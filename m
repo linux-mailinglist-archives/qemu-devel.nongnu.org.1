@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDBC7D17E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 23:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1658D7D17EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 23:20:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwqc-0007sR-8p; Fri, 20 Oct 2023 17:15:58 -0400
+	id 1qtwu6-0000TD-9Y; Fri, 20 Oct 2023 17:19:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtwqT-0007qv-Gr
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 17:15:54 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtwu0-0000SO-6P
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 17:19:29 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtwqP-0007pd-7J
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 17:15:48 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4083f61312eso10031935e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 14:15:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtwty-0008F4-2q
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 17:19:27 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9c2a0725825so193808666b.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 14:19:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697836540; x=1698441340; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1697836764; x=1698441564; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lfO0uvg9mKbsiC1XdY3w4ZdEsw/mojB8z1/BpJV8lHc=;
- b=Rb8yJp70V+YPwNqwMFKzFGdKYqnZLRtQX8ONNGm8ZUdSLqA2KhzHoxEEa7RQQJB1R6
- wVSZFuWS8a2xCCNL6ZLaCrHWrBJUdRq2QlVKk1tXR3qsYwpYnsxqkpIkvQDfhJL5pmBv
- VjyQuAIkms3wnhdQy5M30/bsyxjY4ejPHZ1Pyw8ix/T8Uk1Q+unW4z3QoLY5dGapB64p
- koGO3PksHM2vhuimxUTvfjoQCJv632kx5yz323PstLajWFBZFNhqf7ElEkQ07wQrObzG
- vnSUSqVNBbY/99DgqLLp093n1VK5g/tO8nMgviBHQ5LxP0f5z76hJH+JRI86ax0h+Ndd
- TrrA==
+ bh=ib+JITab3xwyMO1LJ0opSISh0jTZte2Lbb5Da/hyI+k=;
+ b=eSkEIR0WsuJA7IlxG/I4W8c6UqhedciTd0cClTitDvIEF3jI3ftRgBmcoVuiJLz4Q/
+ QxeZ8Tbohe1TPHYSjGGBymid6VP+vTPTVG5tPnXNJACEiRHZfCmOhwdAEk4khrg0xCzY
+ BURoGkyCDq4Egr6jYIT4As7GLKjiTA+xBMesXZiaS6KlAmjzo/y2Ftq+dabi34SI5MV9
+ RDBv3uIkwLlxwwO6ipe6s1CcTrABjjRi7fWBYeDgrEqk5ll4+dHMRfzR1GJiU9xH4Oev
+ ln1qY5536MZRT+CvyVanJf5mTUt5Ay2aIMH3JQ4DeO0gNaGhnXG1dw1gLmsgXOORcSeC
+ t9iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697836540; x=1698441340;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1697836764; x=1698441564;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lfO0uvg9mKbsiC1XdY3w4ZdEsw/mojB8z1/BpJV8lHc=;
- b=e0h6AZ3JVi5ESxWmk3S6SF3rnK6PGd6Hkqw1SgpQGwFCYMQbKy7R4fZLHRBn+X1L9D
- EBY3cJO0jBgLzSql768EQzMAgPRyoLnajkhAXf2ePDXo+CN8Ct+Ir0wG+bxJY1YWs5uF
- M7JYnw++bX0UHf2dDRG99t5CYegYWrqhOS20RxVA9uFr8eHYsm1zAVn4szIMIhYUMs6H
- myyKbO7gBCN7cgdIXOCON9RLhL5tSjRfNPZUtBX7lDQ0UlywYBrU6RHFj6yr7i2RC4hj
- CZRY46PL34+ZKtoH2u8YzEOUswMWuF2R3jOOCh15u/rkuXTwemyDYjttl+28O2N+ckj5
- r0Iw==
-X-Gm-Message-State: AOJu0YxEXa/iQo38XPY3kRnN8i9QcoQu17duXv4jfZwMKStQ1VNDsGqM
- EoisGlwWgheSUkyDCVgfMKZNQg==
-X-Google-Smtp-Source: AGHT+IFVdOwUFlgto3W2p9viSWRQOsmilJwN7Ib2AxcBNWwhBKHyVnkNaYycJh+xxaaCIk45YC4d1w==
-X-Received: by 2002:a05:600c:358e:b0:408:3a67:f6f5 with SMTP id
- p14-20020a05600c358e00b004083a67f6f5mr2504424wmq.18.1697836540506; 
- Fri, 20 Oct 2023 14:15:40 -0700 (PDT)
+ bh=ib+JITab3xwyMO1LJ0opSISh0jTZte2Lbb5Da/hyI+k=;
+ b=NnVLDGz9dyI3uOWkxyV3Y5NIquVcqtGPF1n8JrhTderUjZ7Z2GbGM7RGKxEvW7bVzV
+ rZVC9enyjpxsWFasgvZnu08sNLqign5JrfoP20Y8qBd9iUhSGJi6PFDXTG+Gly0MB4Lb
+ dy/pI71n5czecULKGQ39NJDkrvW7xRk8oRG+3EZvQ7Iu0LaIP552FEE/VBaZeY0Ioe3E
+ FVshRYTOKUVJeip8j5+BkDeb/s8RtMRtQg+GlLHGxaUZtvNgxNmm2YtXdAVrKXHsN/qG
+ /nQiYZTiu2NCgwJtvQL1Kl6rfewN8mcsQeShLvPG9MpYfIy7nurNhuskreC+OZLeTIiy
+ S/Rw==
+X-Gm-Message-State: AOJu0YxLYrDwpZyt7ZvbfSlYtNK3JFrC8bmrMQi0ynrCFRHps3mDtfh0
+ BzmEHqlBhFHUdSCrNjOOqmJr+A==
+X-Google-Smtp-Source: AGHT+IFUgKjpEdhH9MtHDJ0JXZhB8mnoGzHoSt40xwBgDZnXR3iR7zE+irqeRr5PAwIbiZ9hsBOwAw==
+X-Received: by 2002:a17:906:fe04:b0:9c4:8a30:8428 with SMTP id
+ wy4-20020a170906fe0400b009c48a308428mr2035874ejb.47.1697836764162; 
+ Fri, 20 Oct 2023 14:19:24 -0700 (PDT)
 Received: from [192.168.69.115] (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
  [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
- h17-20020a05600c499100b0040772138bb7sm7705840wmp.2.2023.10.20.14.15.39
+ f26-20020a170906085a00b009ad8796a6aesm2196210ejd.56.2023.10.20.14.19.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Oct 2023 14:15:40 -0700 (PDT)
-Message-ID: <7773ae46-02b4-2dd2-d7e0-9ae1bd39489c@linaro.org>
-Date: Fri, 20 Oct 2023 23:15:37 +0200
+ Fri, 20 Oct 2023 14:19:23 -0700 (PDT)
+Message-ID: <3a5c1f46-9dda-ec60-1f08-a65a2391c0c6@linaro.org>
+Date: Fri, 20 Oct 2023 23:19:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 05/65] target/hppa: Remove load_const
+Subject: Re: [PATCH v2 13/65] target/hppa: Introduce TYPE_HPPA64_CPU
+Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@gmx.de
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
- <20231020204331.139847-6-richard.henderson@linaro.org>
-Content-Language: en-US
+ <20231020204331.139847-14-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231020204331.139847-6-richard.henderson@linaro.org>
+In-Reply-To: <20231020204331.139847-14-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -94,13 +94,61 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/10/23 22:42, Richard Henderson wrote:
-> Replace with tcg_constant_reg.
+> Prepare for the qemu binary supporting both pa10 and pa20
+> at the same time.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/hppa/translate.c | 21 +++++++--------------
->   1 file changed, 7 insertions(+), 14 deletions(-)
+>   target/hppa/cpu-qom.h   |  1 +
+>   target/hppa/cpu.h       |  5 +++++
+>   target/hppa/cpu.c       | 34 +++++++++++++++++++---------------
+>   target/hppa/translate.c |  2 ++
+>   4 files changed, 27 insertions(+), 15 deletions(-)
+
+
+> diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+> index 1644297bf8..192aae268d 100644
+> --- a/target/hppa/cpu.c
+> +++ b/target/hppa/cpu.c
+> @@ -207,20 +207,24 @@ static void hppa_cpu_class_init(ObjectClass *oc, void *data)
+>       cc->tcg_ops = &hppa_tcg_ops;
+>   }
+>   
+> -static const TypeInfo hppa_cpu_type_info = {
+> -    .name = TYPE_HPPA_CPU,
+> -    .parent = TYPE_CPU,
+> -    .instance_size = sizeof(HPPACPU),
+> -    .instance_align = __alignof(HPPACPU),
+> -    .instance_init = hppa_cpu_initfn,
+> -    .abstract = false,
+> -    .class_size = sizeof(HPPACPUClass),
+> -    .class_init = hppa_cpu_class_init,
+> +static const TypeInfo hppa_cpu_type_infos[] = {
+> +    {
+> +        .name = TYPE_HPPA_CPU,
+> +        .parent = TYPE_CPU,
+> +        .instance_size = sizeof(HPPACPU),
+> +        .instance_align = __alignof(HPPACPU),
+> +        .instance_init = hppa_cpu_initfn,
+> +        .abstract = false,
+> +        .class_size = sizeof(HPPACPUClass),
+> +        .class_init = hppa_cpu_class_init,
+> +    },
+> +#ifdef TARGET_HPPA64
+> +    {
+> +        .name = TYPE_HPPA64_CPU,
+> +        .parent = TYPE_HPPA_CPU,
+> +        .instance_init = hppa64_cpu_initfn,
+
+hppa64_cpu_initfn() is never declared and removed in patch #29,
+remnant from old branch? Otherwise,
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+(and thanks for converting to DEFINE_TYPES).
+
+> +    },
+> +#endif
+>   };
 
 
