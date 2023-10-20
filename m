@@ -2,76 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C987D13F9
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E972A7D1404
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:33:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtsLD-0000P3-DM; Fri, 20 Oct 2023 12:27:15 -0400
+	id 1qtsQY-0005mZ-8K; Fri, 20 Oct 2023 12:32:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qtsLB-0000Og-Vh
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:27:14 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qtsL9-0007rN-Jp
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:27:13 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-52bd9ddb741so1533717a12.0
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:27:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697819229; x=1698424029; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=OTV8XYLdcVNKH5FLoYvzobLiYCjo+VJHtno0MlKMTS8=;
- b=pC/WQkZ1MVFg5Y1Nqx7VVJ5ouyNQ7Bw/sIiKxySjsNzWM1cNim/0KdyvTKp2onYKlb
- MraT7XG3R9cNwOYzni5oYXzNfufduP5ZwwY/mzRDBAi9hZKdqAQp9iBHQbvsQMiWaBEK
- zRKjEFALrPa2zyab/SAV8jZ9eoPvPAmj4EoQKatPzNXFBemaW+IYc+YvUOD4ReEaEZjF
- GrTxQfDWPCL3VM/kcMtEQoxOSVR+3ScbA9ljSYg7CFhdhzC3N7KXtr9U+IFvaibU5SfZ
- 3o5COxZfBMpHnYr879SYpUnxS4cHIMdAI1Bihwy8fZwxZWyFVSm6R4yvEiqCQnXydd5L
- V2nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697819229; x=1698424029;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OTV8XYLdcVNKH5FLoYvzobLiYCjo+VJHtno0MlKMTS8=;
- b=N0uUB6I5lf8skuiBt6oUJuwPePUotMNqWm1wDG0w4shWnAkL0EAajvl9G+3DGf72Nw
- kU5FFfcNh116TZXxzhntJC4CzpsHOIl+UFUCfGszmaXKgQFGyDgMTXcwG9Etbg4x8g2X
- wda/iiJOip9PmQJGQW4AJmLes1zWfU0EeTQe2OeKLJlAZMWI51qh9VkAj6EMclFbavSW
- l3i3ZYMoleYb3LM5rmTqx04UqQbg16oxLcDxTeA5ba8EigIbc+pBGF1K5zu3myVKGJh8
- fYdO5tOLLdtKh2GPOZDjMNewhhyt7giTyWfR9u4KoSUuHLcGP4rgDq7OX5pVeE0L0eP5
- nUzw==
-X-Gm-Message-State: AOJu0Yx2iYqPz0NK3q76m+pC2rk4zErYC/NPGw5izXA7PVI/kzZtMiYT
- MsLIqeRyLhdhHOn/DyaLo6Zw/eOTdS/WBfT8sX3qaA==
-X-Google-Smtp-Source: AGHT+IExV2+QZKs5QQSsruPBY4I1AE1eEUoZaVyjIReec7OVd/j38pbgKN7mJQr8sRyJKynFGCLtlvJShUMQuIaqYSU=
-X-Received: by 2002:a17:906:4fca:b0:9bf:9f04:e63b with SMTP id
- i10-20020a1709064fca00b009bf9f04e63bmr2048188ejw.23.1697819229280; Fri, 20
- Oct 2023 09:27:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <87mswd6zi5.fsf@linaro.org>
-In-Reply-To: <87mswd6zi5.fsf@linaro.org>
-From: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Date: Fri, 20 Oct 2023 17:26:57 +0100
-Message-ID: <CAHDbmO3U0B1aam8G6TB0sjVu0iSbGX9yy2JMeGF7bPsFEZNfNA@mail.gmail.com>
-Subject: Re: alpha toolchain broken for static builds in bookworm?
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>,
- Matthias Klose <doko@debian.org>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>, debian-alpha@lists.debian.org
-Content-Type: multipart/alternative; boundary="0000000000000dfacd0608285827"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qtsQV-0005m7-Rd; Fri, 20 Oct 2023 12:32:43 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qtsQT-0000Lb-IE; Fri, 20 Oct 2023 12:32:43 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39KGAYsc027709; Fri, 20 Oct 2023 16:32:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=aTEWIniqsxNQl9kkNX1vfgGsunuySo1qaZrG+lN3pOc=;
+ b=A63o5gmR4eOkTpSeZi4wKHBI5EFirMnCmnz14lUFoHMT69PfdA7pi/SOyosgUJHutUZB
+ QSO9c/uWCcm9SnrV3io57w8B8Ciga+0MBdYSz7pDUl7JlXZYHQ5bwCKeh5DhCPAUHB3i
+ TpBGCVcecI0GyAFNRDeR7wdfSmv+aq4XxqvxlKbSDNsh/sg7Tw1r5GVzBERBZh/3jufF
+ JtfFGb+yYka0z2KNBu73egLOe/1jFNpwRW6ibL0LYl1IHX12sAtHn18ak+mvYjL8F0Zx
+ +ejgTLJE7F2gmXu7r1D73hLgQCZP98iyWshoKIfhLQKEF03CECWAeTOsi2WQeg4D5Bx0 1A== 
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuvubgvs6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Oct 2023 16:32:21 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39KEwDuh002779; Fri, 20 Oct 2023 16:32:09 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc44dsbe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Oct 2023 16:32:09 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39KGW8s820710010
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Oct 2023 16:32:09 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E55D58067;
+ Fri, 20 Oct 2023 16:32:08 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5545F58064;
+ Fri, 20 Oct 2023 16:32:08 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Oct 2023 16:32:08 +0000 (GMT)
+Message-ID: <53fccc103ab72cfd93e98fd28bd0a869a43b6a83.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/2] misc/pca9552: Fix inverted input status
+From: Miles Glenn <milesg@linux.vnet.ibm.com>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Andrew
+ Jeffery <andrew@codeconstruct.com.au>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>, f4bug@amsat.org
+Date: Fri, 20 Oct 2023 11:32:08 -0500
+In-Reply-To: <01edf713-6bec-adec-5fa5-5195b5dd4273@linaro.org>
+References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
+ <20231019204011.3174115-2-milesg@linux.vnet.ibm.com>
+ <e0f36ef6336df26d5c123c5861d6a779c94e3eb9.camel@codeconstruct.com.au>
+ <01edf713-6bec-adec-5fa5-5195b5dd4273@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SrAi1bOEb5-NC0bUlzMDxGDbmJu1cRj-
+X-Proofpoint-ORIG-GUID: SrAi1bOEb5-NC0bUlzMDxGDbmJu1cRj-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-20_10,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011
+ malwarescore=0 phishscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
+ definitions=main-2310200138
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,202 +109,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000000dfacd0608285827
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, 2023-10-20 at 11:42 +0200, Philippe Mathieu-Daudé wrote:
+> On 20/10/23 04:51, Andrew Jeffery wrote:
+> > On Thu, 2023-10-19 at 15:40 -0500, Glenn Miles wrote:
+> > > > The pca9552 INPUT0 and INPUT1 registers are supposed to
+> > > > hold the logical values of the LED pins.  A logical 0
+> > > > should be seen in the INPUT0/1 registers for a pin when
+> > > > its corresponding LSn bits are set to 0, which is also
+> > > > the state needed for turning on an LED in a typical
+> > > > usage scenario.  Existing code was doing the opposite
+> > > > and setting INPUT0/1 bit to a 1 when the LSn bit was
+> > > > set to 0, so this commit fixes that.
+> > > > 
+> > > > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> > > > ---
+> > > > 
+> > > > Changes from prior version:
+> > > >      - Added comment regarding pca953X
+> > > >      - Added cover letter
+> > > > 
+> > > >   hw/misc/pca9552.c          | 18 +++++++++++++-----
+> > > >   tests/qtest/pca9552-test.c |  6 +++---
+> > > >   2 files changed, 16 insertions(+), 8 deletions(-)
+> > > > 
+> > > > diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+> > > > index fff19e369a..445f56a9e8 100644
+> > > > --- a/hw/misc/pca9552.c
+> > > > +++ b/hw/misc/pca9552.c
+> > > > @@ -36,7 +36,10 @@ typedef struct PCA955xClass PCA955xClass;
+> > > >   
+> > > >   DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
+> > > >                          TYPE_PCA955X)
+> > > > -
+> > > > +/*
+> > > > + * Note:  The LED_ON and LED_OFF configuration values for the
+> > > > PCA955X
+> > > > + *        chips are the reverse of the PCA953X family of
+> > > > chips.
+> > > > + */
+> > > >   #define PCA9552_LED_ON   0x0
+> > > >   #define PCA9552_LED_OFF  0x1
+> > > >   #define PCA9552_LED_PWM0 0x2
+> > > > @@ -112,13 +115,18 @@ static void
+> > > > pca955x_update_pin_input(PCA955xState *s)
+> > > >   
+> > > >           switch (config) {
+> > > >           case PCA9552_LED_ON:
+> > > > -            qemu_set_irq(s->gpio[i], 1);
+> > > > -            s->regs[input_reg] |= 1 << input_shift;
+> > > > -            break;
+> > > > -        case PCA9552_LED_OFF:
+> > > > +            /* Pin is set to 0V to turn on LED */
+> > > >               qemu_set_irq(s->gpio[i], 0);
+> > > >               s->regs[input_reg] &= ~(1 << input_shift);
+> > > >               break;
+> > > > +        case PCA9552_LED_OFF:
+> > > > +            /*
+> > > > +             * Pin is set to Hi-Z to turn off LED and
+> > > > +             * pullup sets it to a logical 1.
+> > > > +             */
+> > > > +            qemu_set_irq(s->gpio[i], 1);
+> > > > +            s->regs[input_reg] |= 1 << input_shift;
+> > > > +            break;
+> > 
+> > So the witherspoon-bmc machine was a user of the PCA9552 outputs as
+> > LEDs. I guess its LEDs were in the wrong state the whole time? That
+> > looks like the only user though, and shouldn't be negatively
+> > affected.
+> 
+> Usually GPIO polarity is a machine/board property, not a device
+> one.
+> 
+> We could use the LED API (hw/misc/led.h) which initialize each
+> output with GpioPolarity.
+> 
 
-Ahh I was looking in the wrong place - glibc-sources shows the fix
-in 2.36-9+deb12u1:
+Thanks for your comments!   This piqued my curiosity so I decided to
+run a test with the witherspoon-bmc machine.  Without my changes, I ran
+the following command to turn off LED13 on the pca9552 which I had
+previously set to "on":
 
-glibc (2.36-9+deb12u1) bookworm; urgency=3Dmedium
+  qom-set /machine/unattached/device[18] led13 off
 
-  [ Aurelien Jarno ]
-  * debian/patches/git-updates.diff: update from upstream stable branch:
-    - Affecting bookworm release architectures:
-      - Improve mcount overflow handling in gmon.
-      - Fix a buffer overflow in gmon (CVE-2023-0687).
-      - Fix a memory corruption when incorrectly calling gmon functions
-        repeatedly on in wrong order.
-      - Fix a deadlock in getaddrinfo (__check_pf) with deferred
-cancellation.
-      - Fix y2038 support in strftime on 32-bit architectures.
-      - Fix corner case parsing of /etc/gshadow which can return bad
-pointers
-        causing segfaults in applications.
-      - Fix a deadlock in system() when called concurrently from multiple
-        threads.
-      - cdefs: limit definition of fortification macros to __FORTIFY_LEVEL
-> 0
-        to support old C90 compilers.
-    - Not affecting bookworm release architectures:
-      - Fix LFS POSIX lock constants for powerpc64.
-      - Fix GL(dl_phdr) and GL(dl_phnum) for static builds.  Closes:
-#1028200.
-    - Not affecting debian architectures:
-      - Fix LFS POSIX lock constants on 32 bit arch with 64 bit default
-        time_t.
-    - No change in the generated code:
-      - Fix asm constraints in amd64 version of feraiseexcept (bug not
-visible
-        with GCC 12).
+I had GDB connected at the time with a breakpoint set on
+led_set_state() so that I could see what was happening.  Due to the
+inversion bug, I expected the pca9552 code to set the pin low and also
+set the irq low, which it did.  The connected LED's on this pca9552
+were all configured as GPIO_POLARITY_ACTIVE_LOW, so I expected that
+setting the irq state low would actually turn on the LED.  Instead it
+turned off the LED.
 
-So I guess we just need a rebuild of the later glibc for the alpha cross
-compiler?
+Reviewing the LED code, I believe the problem lies here:
 
-On Fri, 20 Oct 2023 at 17:16, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
+static void led_set_state_gpio_handler(void *opaque, int line, int
+new_state)
+{
+    LEDState *s = LED(opaque);
 
-> Hi,
->
-> While updating QEMU's debian-all-test-cross docker image to bookworm I
-> found "check-tcg" broke for alpha. The docker image is essentially a
-> slim debian image with minimal qemu build deps and all the cross
-> compilers Debian packages that support a QEMU guest.
->
-> Digging into the failure it was pretty early on in start-up code:
->
->   (gdb) x/5i $pc
->   =3D> 0x12003e370 <__ctype_init+48>:       ldq     t0,0(t0)
->      0x12003e374 <__ctype_init+52>:       ldq     t4,56(t0)
->      0x12003e378 <__ctype_init+56>:       ldq     t2,64(t0)
->      0x12003e37c <__ctype_init+60>:       ldq     t0,80(t0)
->      0x12003e380 <__ctype_init+64>:       lda     t4,256(t4)
->   (gdb) p/x $t0
->   $1 =3D 0x0
->
-> which looks like TLS is very broken on static builds. Chatting with
-> Peter and Adhemerval pointed me to:
->
->   https://lists.debian.org/debian-alpha/2023/01/msg00020.html
->
-> which has been merged into glibc. However I can't work out if its in the
-> bookwork packages. I suspect not because I ran a test where I bumped
-> debian-all-test-cross to trixie (which ships 2.37-3cross1) and alpha
-> passes check-tcg. However I'm not sure how to navigate the
-> cross-toolchain-base-ports-62 to work out if the fix is in. The upstream
-> doesn't have any stable release tags beyond glibc-2.36.
->
-> In the release/2.36/master branch the fix is:
->
->   d5aaece8a3 elf: Fix GL(dl_phdr) and GL(dl_phnum) for static builds [BZ
-> #29864]
->
-> So to summarise:
->
->   - what does Debian's 2.36-8cross1 map to on the release branch?
->   - if it doesn't include the above commit can we get a newer release
->     with a fix?
->
-> Thanks,
->
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
->
+    assert(line == 0);
+    led_set_state(s, !!new_state != s->gpio_active_high);
+}
 
 
---=20
-Alex Benn=C3=A9e
-Emulation and Virtualisation Tech Lead @ Linaro
+In my test, new_state was 0 and gpio_active_high was 0, resulting in
+the boolean expression of ( 0 != 0 ) which is false and results in
+turning off the LED.  So, this looks like a bug to me.
 
---0000000000000dfacd0608285827
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+For another simpler example, if the LED polarity was set to
+GPIO_POLARITY_ACTIVE_HIGH, then s->gpio_active_high would be 1.  Then,
+if we set the irq line to 1, wouldn't we expect the LED to turn on? 
+However, as the code stands, it would actually turn the LED off.  So, I
+think we can remove one of the "!"'s from in front of new_state.  Then,
+if the LED is active high and the irq line is set high, it would turn
+on the LED.  Correct?
 
-<div dir=3D"ltr"><div>Ahh I was looking in the wrong place - glibc-sources =
-shows the fix in=C2=A02.36-9+deb12u1:</div><div><br></div><div></div><div>g=
-libc (2.36-9+deb12u1) bookworm; urgency=3Dmedium<br><br>=C2=A0 [ Aurelien J=
-arno ]<br>=C2=A0 * debian/patches/git-updates.diff: update from upstream st=
-able branch:<br>=C2=A0 =C2=A0 - Affecting bookworm release architectures:<b=
-r>=C2=A0 =C2=A0 =C2=A0 - Improve mcount overflow handling in gmon.<br>=C2=
-=A0 =C2=A0 =C2=A0 - Fix a buffer overflow in gmon (CVE-2023-0687).<br>=C2=
-=A0 =C2=A0 =C2=A0 - Fix a memory corruption when incorrectly calling gmon f=
-unctions<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 repeatedly on in wrong order.<br>=
-=C2=A0 =C2=A0 =C2=A0 - Fix a deadlock in getaddrinfo (__check_pf) with defe=
-rred cancellation.<br>=C2=A0 =C2=A0 =C2=A0 - Fix y2038 support in strftime =
-on 32-bit architectures.<br>=C2=A0 =C2=A0 =C2=A0 - Fix corner case parsing =
-of /etc/gshadow which can return bad pointers<br>=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 causing segfaults in applications.<br>=C2=A0 =C2=A0 =C2=A0 - Fix a dead=
-lock in system() when called concurrently from multiple<br>=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 threads.<br>=C2=A0 =C2=A0 =C2=A0 - cdefs: limit definition of=
- fortification macros to __FORTIFY_LEVEL &gt; 0<br>=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 to support old C90 compilers.<br>=C2=A0 =C2=A0 - Not affecting bookworm=
- release architectures:<br>=C2=A0 =C2=A0 =C2=A0 - Fix LFS POSIX lock consta=
-nts for powerpc64.<br>=C2=A0 =C2=A0 =C2=A0 - Fix GL(dl_phdr) and GL(dl_phnu=
-m) for static builds.=C2=A0 Closes: #1028200.<br>=C2=A0 =C2=A0 - Not affect=
-ing debian architectures:<br>=C2=A0 =C2=A0 =C2=A0 - Fix LFS POSIX lock cons=
-tants on 32 bit arch with 64 bit default<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 tim=
-e_t.<br>=C2=A0 =C2=A0 - No change in the generated code:<br>=C2=A0 =C2=A0 =
-=C2=A0 - Fix asm constraints in amd64 version of feraiseexcept (bug not vis=
-ible<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 with GCC 12).</div><div><br></div><div>=
-So I guess we just need a rebuild of the later glibc for the alpha cross co=
-mpiler?<br></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" clas=
-s=3D"gmail_attr">On Fri, 20 Oct 2023 at 17:16, Alex Benn=C3=A9e &lt;<a href=
-=3D"mailto:alex.bennee@linaro.org">alex.bennee@linaro.org</a>&gt; wrote:<br=
-></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
-border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi,<br>
-<br>
-While updating QEMU&#39;s debian-all-test-cross docker image to bookworm I<=
-br>
-found &quot;check-tcg&quot; broke for alpha. The docker image is essentiall=
-y a<br>
-slim debian image with minimal qemu build deps and all the cross<br>
-compilers Debian packages that support a QEMU guest.<br>
-<br>
-Digging into the failure it was pretty early on in start-up code:<br>
-<br>
-=C2=A0 (gdb) x/5i $pc<br>
-=C2=A0 =3D&gt; 0x12003e370 &lt;__ctype_init+48&gt;:=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0ldq=C2=A0 =C2=A0 =C2=A0t0,0(t0)<br>
-=C2=A0 =C2=A0 =C2=A00x12003e374 &lt;__ctype_init+52&gt;:=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0ldq=C2=A0 =C2=A0 =C2=A0t4,56(t0)<br>
-=C2=A0 =C2=A0 =C2=A00x12003e378 &lt;__ctype_init+56&gt;:=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0ldq=C2=A0 =C2=A0 =C2=A0t2,64(t0)<br>
-=C2=A0 =C2=A0 =C2=A00x12003e37c &lt;__ctype_init+60&gt;:=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0ldq=C2=A0 =C2=A0 =C2=A0t0,80(t0)<br>
-=C2=A0 =C2=A0 =C2=A00x12003e380 &lt;__ctype_init+64&gt;:=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0lda=C2=A0 =C2=A0 =C2=A0t4,256(t4)<br>
-=C2=A0 (gdb) p/x $t0<br>
-=C2=A0 $1 =3D 0x0<br>
-<br>
-which looks like TLS is very broken on static builds. Chatting with<br>
-Peter and Adhemerval pointed me to:<br>
-<br>
-=C2=A0 <a href=3D"https://lists.debian.org/debian-alpha/2023/01/msg00020.ht=
-ml" rel=3D"noreferrer" target=3D"_blank">https://lists.debian.org/debian-al=
-pha/2023/01/msg00020.html</a><br>
-<br>
-which has been merged into glibc. However I can&#39;t work out if its in th=
-e<br>
-bookwork packages. I suspect not because I ran a test where I bumped<br>
-debian-all-test-cross to trixie (which ships 2.37-3cross1) and alpha<br>
-passes check-tcg. However I&#39;m not sure how to navigate the<br>
-cross-toolchain-base-ports-62 to work out if the fix is in. The upstream<br=
->
-doesn&#39;t have any stable release tags beyond glibc-2.36.<br>
-<br>
-In the release/2.36/master branch the fix is:<br>
-<br>
-=C2=A0 d5aaece8a3 elf: Fix GL(dl_phdr) and GL(dl_phnum) for static builds [=
-BZ #29864]<br>
-<br>
-So to summarise:<br>
-<br>
-=C2=A0 - what does Debian&#39;s 2.36-8cross1 map to on the release branch?<=
-br>
-=C2=A0 - if it doesn&#39;t include the above commit can we get a newer rele=
-ase<br>
-=C2=A0 =C2=A0 with a fix?<br>
-<br>
-Thanks,<br>
-<br>
--- <br>
-Alex Benn=C3=A9e<br>
-Virtualisation Tech Lead @ Linaro<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"l=
-tr">Alex Benn=C3=A9e<br>Emulation and Virtualisation Tech Lead @ Linaro</di=
-v></div>
+Thanks,
 
---0000000000000dfacd0608285827--
+Glenn
+
 
