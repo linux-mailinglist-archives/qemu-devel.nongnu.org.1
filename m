@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30487D1786
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE117D1760
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:48:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwLp-0007hH-Pl; Fri, 20 Oct 2023 16:44:09 -0400
+	id 1qtwLq-0007oL-TV; Fri, 20 Oct 2023 16:44:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLL-0007fP-Fb
+ id 1qtwLL-0007ft-St
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:39 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLJ-00088B-DD
+ id 1qtwLJ-00088H-Mz
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:39 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6b9af7d41d2so1253114b3a.0
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6bd0e1b1890so1095352b3a.3
  for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697834615; x=1698439415; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697834616; x=1698439416; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2zsMSRhlbZwVzQVen6DKnQDDskBCrZAwA6YeAeDVn/c=;
- b=xYdEHX353qnw1YqndbLVA53rMSjfEm0aJfZHoW/8+UZvismFWM9wgN0GQPw/g2q/ci
- hJVwC6+GqhZUlMw3fckshKHDxBYEM94RLba2SmfFm34fzLm3cHYfUwWb5X64dC1QisnD
- GEUoPMpPrXJifYrgf3vJFWLCWPZHMXiwQgSPvY8hga2jddyFnRXP/leqRj8Zy/al4wO1
- mV+rmYrBxBAmw3PRiIsUL14Q2nSUkCYYbi7gDxIQjLHxw5e89fMDXyPSHMR7TPkQqw6E
- HeFhddoz6DkGeP3s32n7P6nCaqcEq1hXyqsL0dSdLqzDIFK4tCbKvmwaLwIScsv4jgBB
- NBvg==
+ bh=EEVa0UToFhXataikrG28OSq2vCy6h8vLUqtzrSHrlk8=;
+ b=FiHA/uDIV9XFAaj/zdJdSGoX9N3o6t0QR/JKVxJ7t5lYAvXGCpHAlAi7keRiYBCuS3
+ P0baMmmC3SBR1lSn3MSrDCDQrqizc8GOt1ftrQAb0vcWtVEpeJ+nTSVHylyVvXtJgnP2
+ FtUbPMGgoQTFd5r6c4HsJaRuuCD9kyYZkKay8kdPej5hbd5XfNxIg7CeD8wlanNVvaQZ
+ 7xQYK2rUEv3tgA219/BRt1yuT80ryOLcSq+7vTyR5wxEwy1psDv1ZofZtGt/Z4UiODPE
+ FD5zF+QhxxEOSWaArdwg9MEZE0hvwZUSQUSzjtp9nT+fPrciM6alcZCwmjs3Mio+a5nw
+ Er1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697834615; x=1698439415;
+ d=1e100.net; s=20230601; t=1697834616; x=1698439416;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2zsMSRhlbZwVzQVen6DKnQDDskBCrZAwA6YeAeDVn/c=;
- b=wvlpSAVG/HU4LAHbDZMZQ2maHqlP8l/UVL8tvVb8BhVDehIH486L0Bgw3c4DCNGpbd
- +evkqGLsKyjL9iDFP7TrFJSqZTC0opXB6nVWb5rb2gVRi+n9ZjvoBHwex6RpZwyoG/2I
- moEf0wy37ICgLIQ02Zr6ZLsE8a15qTS2VXSVAzkblm2LB5eIXMi+VpWv4qexK8/vk7/R
- iBSnWX/2S9kB8MI3xiDMkerKObM8D1pz4XRAXHEXho/wdF7FCqpFclCT+v/ygETfdotp
- cGqgPwddTQrSqgvQcRp2Puywjdpk0YIWcrWqL7qLtzEOmdl3TsKau1PbAaKly0pyyAYl
- rkPQ==
-X-Gm-Message-State: AOJu0YxBAv8GHpwEpFBDs52/iWk7W/p/61xGea7GyMuC7r37b0vgov3i
- nJQTr2+QFwBCnLYLnnxLYGysjrSiQ3Ym0sR+PW8=
-X-Google-Smtp-Source: AGHT+IEjYQOMPArhPrF0UiRjWZYzveHBmKchjORI0BYG/7QnMb3N6Pedu7ntykgjquRMYWAQ9zwcSg==
-X-Received: by 2002:a05:6a20:1604:b0:14e:43b0:5f99 with SMTP id
- l4-20020a056a20160400b0014e43b05f99mr2903499pzj.52.1697834615290; 
- Fri, 20 Oct 2023 13:43:35 -0700 (PDT)
+ bh=EEVa0UToFhXataikrG28OSq2vCy6h8vLUqtzrSHrlk8=;
+ b=gNaRuw+SUG8oYRmzip9UQh4InYorUHVdW51ALXFyEC6NW59O+ZE7pmMCeMCr4B7vJh
+ ABeg6QaSky0rXp0zz7MQt+oqO48/+HNzcwUdPIFyaMhIZ9U1pQnlkOc6MvwumeiYV3nm
+ BrK3UQ1nFWgR9j3NX1t/0jIyCdhCr5IWvgyb9aTu5TtOjFCJZ26nrZt6PQlTa49mzae2
+ 9dupmWU1oWrU3SAwGka6mu6gEg6zsMTeewLReLX6BgjNFx0rY+9GtsoRwwTQeId0Inax
+ RQ/LPi3sNR1bU9Ja+d/VDjGVR5AWJh3u8gwQlCuu5XqemFN8k4TJT7zPAeCwyMy4IXWy
+ BjVA==
+X-Gm-Message-State: AOJu0YwBOunYQ5ZRnbTB7/egF1s8SZiK5bd2D10NhZoOjprEo9uKCt94
+ w9M38NQgnY6DUSeZ/km6SyqUzejXQ5yizFVver4=
+X-Google-Smtp-Source: AGHT+IHBySjp39F5QRjMzZcRNV5AnkAKKw5Fjd+Cf5YPZ9KqiQ11w6o2tT+71q7/IPvcbvM1u1t97w==
+X-Received: by 2002:a05:6a00:194c:b0:6b7:18c1:c09a with SMTP id
+ s12-20020a056a00194c00b006b718c1c09amr2737723pfk.5.1697834616278; 
+ Fri, 20 Oct 2023 13:43:36 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.34
+ k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:43:34 -0700 (PDT)
+ Fri, 20 Oct 2023 13:43:35 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: [PATCH v2 02/65] tcg: Improve expansion of deposit into a constant
-Date: Fri, 20 Oct 2023 13:42:28 -0700
-Message-Id: <20231020204331.139847-3-richard.henderson@linaro.org>
+Cc: deller@gmx.de,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 03/65] target/hppa: Remove get_temp
+Date: Fri, 20 Oct 2023 13:42:29 -0700
+Message-Id: <20231020204331.139847-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,355 +92,325 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generalize tcg_gen_deposit_z_* from 0 to any constant.
-Use this to automatically simplify tcg_gen_deposit_*.
+Replace with tcg_temp_new without recording into ctx.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg-op.c | 295 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 174 insertions(+), 121 deletions(-)
+ target/hppa/translate.c | 76 +++++++++++++++++------------------------
+ 1 file changed, 31 insertions(+), 45 deletions(-)
 
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 2ef4b866e2..049b684ccc 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -597,6 +597,70 @@ void tcg_gen_rotri_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 9f3ba9f42f..3065fbf625 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -254,8 +254,7 @@ typedef struct DisasContext {
+     target_ureg iaoq_n;
+     TCGv_reg iaoq_n_var;
+ 
+-    int ntempr, ntempl;
+-    TCGv_reg tempr[8];
++    int ntempl;
+     TCGv_tl  templ[4];
+ 
+     DisasCond null_cond;
+@@ -492,13 +491,6 @@ static void cond_free(DisasCond *cond)
      }
  }
  
-+static void tcg_gen_deposit_i_i32(TCGv_i32 ret, uint32_t i, TCGv_i32 arg,
-+                                  unsigned int ofs, unsigned int len)
-+{
-+    i = deposit32(i, ofs, len, 0);
-+
-+    if (ofs + len == 32) {
-+        tcg_gen_shli_i32(ret, arg, ofs);
-+        goto finish;
-+    }
-+    if (ofs == 0) {
-+        tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
-+        goto finish;
-+    }
-+    if (TCG_TARGET_HAS_deposit_i32
-+        && TCG_TARGET_deposit_i32_valid(ofs, len)) {
-+        tcg_gen_op5ii_i32(INDEX_op_deposit_i32, ret,
-+                          tcg_constant_i32(i), arg, ofs, len);
-+        return;
-+    }
-+
-+    /*
-+     * To help two-operand hosts we prefer to zero-extend first,
-+     * which allows ARG to stay live.
-+     */
-+    switch (len) {
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i32) {
-+            tcg_gen_ext16u_i32(ret, arg);
-+            tcg_gen_shli_i32(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i32) {
-+            tcg_gen_ext8u_i32(ret, arg);
-+            tcg_gen_shli_i32(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    /* Otherwise prefer zero-extension over AND for code size.  */
-+    switch (ofs + len) {
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i32) {
-+            tcg_gen_shli_i32(ret, arg, ofs);
-+            tcg_gen_ext16u_i32(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i32) {
-+            tcg_gen_shli_i32(ret, arg, ofs);
-+            tcg_gen_ext8u_i32(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
-+    tcg_gen_shli_i32(ret, ret, ofs);
-+
-+ finish:
-+    tcg_gen_ori_i32(ret, ret, i);
-+}
-+
- void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
-                          unsigned int ofs, unsigned int len)
+-static TCGv_reg get_temp(DisasContext *ctx)
+-{
+-    unsigned i = ctx->ntempr++;
+-    g_assert(i < ARRAY_SIZE(ctx->tempr));
+-    return ctx->tempr[i] = tcg_temp_new();
+-}
+-
+ #ifndef CONFIG_USER_ONLY
+ static TCGv_tl get_temp_tl(DisasContext *ctx)
  {
-@@ -613,6 +677,14 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
-         tcg_gen_mov_i32(ret, arg2);
-         return;
-     }
-+
-+    /* Deposit of a value into a constant. */
-+    ts = tcgv_i32_temp(arg1);
-+    if (ts->kind == TEMP_CONST) {
-+        tcg_gen_deposit_i_i32(ret, ts->val, arg2, ofs, len);
-+        return;
-+    }
-+
-     if (TCG_TARGET_HAS_deposit_i32 && TCG_TARGET_deposit_i32_valid(ofs, len)) {
-         tcg_gen_op5ii_i32(INDEX_op_deposit_i32, ret, arg1, arg2, ofs, len);
-         return;
-@@ -667,53 +739,7 @@ void tcg_gen_deposit_z_i32(TCGv_i32 ret, TCGv_i32 arg,
-     tcg_debug_assert(len <= 32);
-     tcg_debug_assert(ofs + len <= 32);
+@@ -510,7 +502,7 @@ static TCGv_tl get_temp_tl(DisasContext *ctx)
  
--    if (ofs + len == 32) {
--        tcg_gen_shli_i32(ret, arg, ofs);
--    } else if (ofs == 0) {
--        tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
--    } else if (TCG_TARGET_HAS_deposit_i32
--               && TCG_TARGET_deposit_i32_valid(ofs, len)) {
--        TCGv_i32 zero = tcg_constant_i32(0);
--        tcg_gen_op5ii_i32(INDEX_op_deposit_i32, ret, zero, arg, ofs, len);
--    } else {
--        /* To help two-operand hosts we prefer to zero-extend first,
--           which allows ARG to stay live.  */
--        switch (len) {
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i32) {
--                tcg_gen_ext16u_i32(ret, arg);
--                tcg_gen_shli_i32(ret, ret, ofs);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i32) {
--                tcg_gen_ext8u_i32(ret, arg);
--                tcg_gen_shli_i32(ret, ret, ofs);
--                return;
--            }
--            break;
--        }
--        /* Otherwise prefer zero-extension over AND for code size.  */
--        switch (ofs + len) {
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i32) {
--                tcg_gen_shli_i32(ret, arg, ofs);
--                tcg_gen_ext16u_i32(ret, ret);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i32) {
--                tcg_gen_shli_i32(ret, arg, ofs);
--                tcg_gen_ext8u_i32(ret, ret);
--                return;
--            }
--            break;
--        }
--        tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
--        tcg_gen_shli_i32(ret, ret, ofs);
--    }
-+    tcg_gen_deposit_i_i32(ret, 0, arg, ofs, len);
- }
- 
- void tcg_gen_extract_i32(TCGv_i32 ret, TCGv_i32 arg,
-@@ -2226,6 +2252,98 @@ void tcg_gen_rotri_i64(TCGv_i64 ret, TCGv_i64 arg1, int64_t arg2)
-     }
- }
- 
-+static void tcg_gen_deposit_i_i64(TCGv_i64 ret, uint64_t i, TCGv_i64 arg,
-+                                  unsigned int ofs, unsigned int len)
-+{
-+    i = deposit64(i, ofs, len, 0);
-+
-+    if (ofs + len == 64) {
-+        tcg_gen_shli_i64(ret, arg, ofs);
-+        goto finish;
-+    }
-+    if (ofs == 0) {
-+        tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
-+        goto finish;
-+    }
-+    if (TCG_TARGET_HAS_deposit_i64
-+        && TCG_TARGET_deposit_i64_valid(ofs, len)) {
-+        tcg_gen_op5ii_i64(INDEX_op_deposit_i64, ret,
-+                          tcg_constant_i64(i), arg, ofs, len);
-+        return;
-+    }
-+
-+    if (TCG_TARGET_REG_BITS == 32) {
-+        if (ofs >= 32) {
-+            tcg_gen_deposit_i_i32(TCGV_HIGH(ret), i >> 32,
-+                                  TCGV_LOW(arg), ofs - 32, len);
-+            tcg_gen_movi_i32(TCGV_LOW(ret), i);
-+            return;
-+        }
-+        if (ofs + len <= 32) {
-+            tcg_gen_deposit_i_i32(TCGV_LOW(ret), i, TCGV_LOW(arg), ofs, len);
-+            tcg_gen_movi_i32(TCGV_HIGH(ret), i >> 32);
-+            return;
-+        }
-+    }
-+
-+    /*
-+     * To help two-operand hosts we prefer to zero-extend first,
-+     * which allows ARG to stay live.
-+     */
-+    switch (len) {
-+    case 32:
-+        if (TCG_TARGET_HAS_ext32u_i64) {
-+            tcg_gen_ext32u_i64(ret, arg);
-+            tcg_gen_shli_i64(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i64) {
-+            tcg_gen_ext16u_i64(ret, arg);
-+            tcg_gen_shli_i64(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i64) {
-+            tcg_gen_ext8u_i64(ret, arg);
-+            tcg_gen_shli_i64(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    /* Otherwise prefer zero-extension over AND for code size.  */
-+    switch (ofs + len) {
-+    case 32:
-+        if (TCG_TARGET_HAS_ext32u_i64) {
-+            tcg_gen_shli_i64(ret, arg, ofs);
-+            tcg_gen_ext32u_i64(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i64) {
-+            tcg_gen_shli_i64(ret, arg, ofs);
-+            tcg_gen_ext16u_i64(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i64) {
-+            tcg_gen_shli_i64(ret, arg, ofs);
-+            tcg_gen_ext8u_i64(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
-+    tcg_gen_shli_i64(ret, ret, ofs);
-+
-+ finish:
-+    tcg_gen_ori_i64(ret, ret, i);
-+}
-+
- void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
-                          unsigned int ofs, unsigned int len)
+ static TCGv_reg load_const(DisasContext *ctx, target_sreg v)
  {
-@@ -2242,6 +2360,14 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
-         tcg_gen_mov_i64(ret, arg2);
-         return;
+-    TCGv_reg t = get_temp(ctx);
++    TCGv_reg t = tcg_temp_new();
+     tcg_gen_movi_reg(t, v);
+     return t;
+ }
+@@ -518,7 +510,7 @@ static TCGv_reg load_const(DisasContext *ctx, target_sreg v)
+ static TCGv_reg load_gpr(DisasContext *ctx, unsigned reg)
+ {
+     if (reg == 0) {
+-        TCGv_reg t = get_temp(ctx);
++        TCGv_reg t = tcg_temp_new();
+         tcg_gen_movi_reg(t, 0);
+         return t;
+     } else {
+@@ -529,7 +521,7 @@ static TCGv_reg load_gpr(DisasContext *ctx, unsigned reg)
+ static TCGv_reg dest_gpr(DisasContext *ctx, unsigned reg)
+ {
+     if (reg == 0 || ctx->null_cond.c != TCG_COND_NEVER) {
+-        return get_temp(ctx);
++        return tcg_temp_new();
+     } else {
+         return cpu_gr[reg];
      }
-+
-+    /* Deposit of a value into a constant. */
-+    ts = tcgv_i64_temp(arg1);
-+    if (ts->kind == TEMP_CONST) {
-+        tcg_gen_deposit_i_i64(ret, ts->val, arg2, ofs, len);
-+        return;
-+    }
-+
-     if (TCG_TARGET_HAS_deposit_i64 && TCG_TARGET_deposit_i64_valid(ofs, len)) {
-         tcg_gen_op5ii_i64(INDEX_op_deposit_i64, ret, arg1, arg2, ofs, len);
-         return;
-@@ -2311,80 +2437,7 @@ void tcg_gen_deposit_z_i64(TCGv_i64 ret, TCGv_i64 arg,
-     tcg_debug_assert(len <= 64);
-     tcg_debug_assert(ofs + len <= 64);
+@@ -1071,7 +1063,7 @@ static DisasCond do_unit_cond(unsigned cf, TCGv_reg res,
+ static TCGv_reg do_add_sv(DisasContext *ctx, TCGv_reg res,
+                           TCGv_reg in1, TCGv_reg in2)
+ {
+-    TCGv_reg sv = get_temp(ctx);
++    TCGv_reg sv = tcg_temp_new();
+     TCGv_reg tmp = tcg_temp_new();
  
--    if (ofs + len == 64) {
--        tcg_gen_shli_i64(ret, arg, ofs);
--    } else if (ofs == 0) {
--        tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
--    } else if (TCG_TARGET_HAS_deposit_i64
--               && TCG_TARGET_deposit_i64_valid(ofs, len)) {
--        TCGv_i64 zero = tcg_constant_i64(0);
--        tcg_gen_op5ii_i64(INDEX_op_deposit_i64, ret, zero, arg, ofs, len);
--    } else {
--        if (TCG_TARGET_REG_BITS == 32) {
--            if (ofs >= 32) {
--                tcg_gen_deposit_z_i32(TCGV_HIGH(ret), TCGV_LOW(arg),
--                                      ofs - 32, len);
--                tcg_gen_movi_i32(TCGV_LOW(ret), 0);
--                return;
--            }
--            if (ofs + len <= 32) {
--                tcg_gen_deposit_z_i32(TCGV_LOW(ret), TCGV_LOW(arg), ofs, len);
--                tcg_gen_movi_i32(TCGV_HIGH(ret), 0);
--                return;
--            }
--        }
--        /* To help two-operand hosts we prefer to zero-extend first,
--           which allows ARG to stay live.  */
--        switch (len) {
--        case 32:
--            if (TCG_TARGET_HAS_ext32u_i64) {
--                tcg_gen_ext32u_i64(ret, arg);
--                tcg_gen_shli_i64(ret, ret, ofs);
--                return;
--            }
--            break;
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i64) {
--                tcg_gen_ext16u_i64(ret, arg);
--                tcg_gen_shli_i64(ret, ret, ofs);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i64) {
--                tcg_gen_ext8u_i64(ret, arg);
--                tcg_gen_shli_i64(ret, ret, ofs);
--                return;
--            }
--            break;
--        }
--        /* Otherwise prefer zero-extension over AND for code size.  */
--        switch (ofs + len) {
--        case 32:
--            if (TCG_TARGET_HAS_ext32u_i64) {
--                tcg_gen_shli_i64(ret, arg, ofs);
--                tcg_gen_ext32u_i64(ret, ret);
--                return;
--            }
--            break;
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i64) {
--                tcg_gen_shli_i64(ret, arg, ofs);
--                tcg_gen_ext16u_i64(ret, ret);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i64) {
--                tcg_gen_shli_i64(ret, arg, ofs);
--                tcg_gen_ext8u_i64(ret, ret);
--                return;
--            }
--            break;
--        }
--        tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
--        tcg_gen_shli_i64(ret, ret, ofs);
--    }
-+    tcg_gen_deposit_i_i64(ret, 0, arg, ofs, len);
+     tcg_gen_xor_reg(sv, res, in1);
+@@ -1085,7 +1077,7 @@ static TCGv_reg do_add_sv(DisasContext *ctx, TCGv_reg res,
+ static TCGv_reg do_sub_sv(DisasContext *ctx, TCGv_reg res,
+                           TCGv_reg in1, TCGv_reg in2)
+ {
+-    TCGv_reg sv = get_temp(ctx);
++    TCGv_reg sv = tcg_temp_new();
+     TCGv_reg tmp = tcg_temp_new();
+ 
+     tcg_gen_xor_reg(sv, res, in1);
+@@ -1108,20 +1100,20 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_reg in1,
+     cb_msb = NULL;
+ 
+     if (shift) {
+-        tmp = get_temp(ctx);
++        tmp = tcg_temp_new();
+         tcg_gen_shli_reg(tmp, in1, shift);
+         in1 = tmp;
+     }
+ 
+     if (!is_l || cond_need_cb(c)) {
+         TCGv_reg zero = tcg_constant_reg(0);
+-        cb_msb = get_temp(ctx);
++        cb_msb = tcg_temp_new();
+         tcg_gen_add2_reg(dest, cb_msb, in1, zero, in2, zero);
+         if (is_c) {
+             tcg_gen_add2_reg(dest, cb_msb, dest, cb_msb, cpu_psw_cb_msb, zero);
+         }
+         if (!is_l) {
+-            cb = get_temp(ctx);
++            cb = tcg_temp_new();
+             tcg_gen_xor_reg(cb, in1, in2);
+             tcg_gen_xor_reg(cb, cb, dest);
+         }
+@@ -1414,11 +1406,11 @@ static void form_gva(DisasContext *ctx, TCGv_tl *pgva, TCGv_reg *pofs,
+ 
+     /* Note that RX is mutually exclusive with DISP.  */
+     if (rx) {
+-        ofs = get_temp(ctx);
++        ofs = tcg_temp_new();
+         tcg_gen_shli_reg(ofs, cpu_gr[rx], scale);
+         tcg_gen_add_reg(ofs, ofs, base);
+     } else if (disp || modify) {
+-        ofs = get_temp(ctx);
++        ofs = tcg_temp_new();
+         tcg_gen_addi_reg(ofs, base, disp);
+     } else {
+         ofs = base;
+@@ -1538,7 +1530,7 @@ static bool do_load(DisasContext *ctx, unsigned rt, unsigned rb,
+         dest = dest_gpr(ctx, rt);
+     } else {
+         /* Make sure if RT == RB, we see the result of the load.  */
+-        dest = get_temp(ctx);
++        dest = tcg_temp_new();
+     }
+     do_load_reg(ctx, dest, rb, rx, scale, disp, sp, modify, mop);
+     save_gpr(ctx, rt, dest);
+@@ -1854,7 +1846,7 @@ static bool do_ibranch(DisasContext *ctx, TCGv_reg dest,
+         if (link != 0) {
+             copy_iaoq_entry(cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
+         }
+-        next = get_temp(ctx);
++        next = tcg_temp_new();
+         tcg_gen_mov_reg(next, dest);
+         if (is_n) {
+             if (use_nullify_skip(ctx)) {
+@@ -1896,7 +1888,7 @@ static bool do_ibranch(DisasContext *ctx, TCGv_reg dest,
+         a1 = ctx->null_cond.a1;
+ 
+         tmp = tcg_temp_new();
+-        next = get_temp(ctx);
++        next = tcg_temp_new();
+ 
+         copy_iaoq_entry(tmp, ctx->iaoq_n, ctx->iaoq_n_var);
+         tcg_gen_movcond_reg(c, next, a0, a1, tmp, dest);
+@@ -1938,11 +1930,11 @@ static TCGv_reg do_ibranch_priv(DisasContext *ctx, TCGv_reg offset)
+         return offset;
+     case 3:
+         /* Privilege 3 is minimum and is never allowed to increase.  */
+-        dest = get_temp(ctx);
++        dest = tcg_temp_new();
+         tcg_gen_ori_reg(dest, offset, 3);
+         break;
+     default:
+-        dest = get_temp(ctx);
++        dest = tcg_temp_new();
+         tcg_gen_andi_reg(dest, offset, -4);
+         tcg_gen_ori_reg(dest, dest, ctx->privilege);
+         tcg_gen_movcond_reg(TCG_COND_GTU, dest, dest, offset, dest, offset);
+@@ -2104,7 +2096,7 @@ static bool trans_mfctl(DisasContext *ctx, arg_mfctl *a)
+         break;
+     }
+ 
+-    tmp = get_temp(ctx);
++    tmp = tcg_temp_new();
+     tcg_gen_ld_reg(tmp, tcg_env, offsetof(CPUHPPAState, cr[ctl]));
+     save_gpr(ctx, rt, tmp);
+ 
+@@ -2177,7 +2169,7 @@ static bool trans_mtctl(DisasContext *ctx, arg_mtctl *a)
+     case CR_IIAOQ:
+         /* FIXME: Respect PSW_Q bit */
+         /* The write advances the queue and stores to the back element.  */
+-        tmp = get_temp(ctx);
++        tmp = tcg_temp_new();
+         tcg_gen_ld_reg(tmp, tcg_env,
+                        offsetof(CPUHPPAState, cr_back[ctl - CR_IIASQ]));
+         tcg_gen_st_reg(tmp, tcg_env, offsetof(CPUHPPAState, cr[ctl]));
+@@ -2243,7 +2235,7 @@ static bool trans_rsm(DisasContext *ctx, arg_rsm *a)
+ 
+     nullify_over(ctx);
+ 
+-    tmp = get_temp(ctx);
++    tmp = tcg_temp_new();
+     tcg_gen_ld_reg(tmp, tcg_env, offsetof(CPUHPPAState, psw));
+     tcg_gen_andi_reg(tmp, tmp, ~a->i);
+     gen_helper_swap_system_mask(tmp, tcg_env, tmp);
+@@ -2263,7 +2255,7 @@ static bool trans_ssm(DisasContext *ctx, arg_ssm *a)
+ 
+     nullify_over(ctx);
+ 
+-    tmp = get_temp(ctx);
++    tmp = tcg_temp_new();
+     tcg_gen_ld_reg(tmp, tcg_env, offsetof(CPUHPPAState, psw));
+     tcg_gen_ori_reg(tmp, tmp, a->i);
+     gen_helper_swap_system_mask(tmp, tcg_env, tmp);
+@@ -2283,7 +2275,7 @@ static bool trans_mtsm(DisasContext *ctx, arg_mtsm *a)
+     nullify_over(ctx);
+ 
+     reg = load_gpr(ctx, a->r);
+-    tmp = get_temp(ctx);
++    tmp = tcg_temp_new();
+     gen_helper_swap_system_mask(tmp, tcg_env, reg);
+ 
+     /* Exit the TB to recognize new interrupts.  */
+@@ -2692,7 +2684,7 @@ static bool do_uaddcm(DisasContext *ctx, arg_rrr_cf *a, bool is_tc)
+     }
+     tcg_r1 = load_gpr(ctx, a->r1);
+     tcg_r2 = load_gpr(ctx, a->r2);
+-    tmp = get_temp(ctx);
++    tmp = tcg_temp_new();
+     tcg_gen_not_reg(tmp, tcg_r2);
+     do_unit(ctx, a->t, tcg_r1, tmp, a->cf, is_tc, tcg_gen_add_reg);
+     return nullify_end(ctx);
+@@ -2714,7 +2706,7 @@ static bool do_dcor(DisasContext *ctx, arg_rr_cf *a, bool is_i)
+ 
+     nullify_over(ctx);
+ 
+-    tmp = get_temp(ctx);
++    tmp = tcg_temp_new();
+     tcg_gen_shri_reg(tmp, cpu_psw_cb, 3);
+     if (!is_i) {
+         tcg_gen_not_reg(tmp, tmp);
+@@ -2866,7 +2858,7 @@ static bool trans_ldc(DisasContext *ctx, arg_ldst *a)
+     if (a->m) {
+         /* Base register modification.  Make sure if RT == RB,
+            we see the result of the load.  */
+-        dest = get_temp(ctx);
++        dest = tcg_temp_new();
+     } else {
+         dest = dest_gpr(ctx, a->t);
+     }
+@@ -2992,7 +2984,7 @@ static bool do_cmpb(DisasContext *ctx, unsigned r, TCGv_reg in1,
+     DisasCond cond;
+ 
+     in2 = load_gpr(ctx, r);
+-    dest = get_temp(ctx);
++    dest = tcg_temp_new();
+ 
+     tcg_gen_sub_reg(dest, in1, in2);
+ 
+@@ -3029,7 +3021,7 @@ static bool do_addb(DisasContext *ctx, unsigned r, TCGv_reg in1,
+     cb_msb = NULL;
+ 
+     if (cond_need_cb(c)) {
+-        cb_msb = get_temp(ctx);
++        cb_msb = tcg_temp_new();
+         tcg_gen_movi_reg(cb_msb, 0);
+         tcg_gen_add2_reg(dest, cb_msb, in1, cb_msb, in2, cb_msb);
+     } else {
+@@ -3388,7 +3380,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+     nullify_over(ctx);
+ #endif
+ 
+-    tmp = get_temp(ctx);
++    tmp = tcg_temp_new();
+     tcg_gen_addi_reg(tmp, load_gpr(ctx, a->b), a->disp);
+     tmp = do_ibranch_priv(ctx, tmp);
+ 
+@@ -3485,7 +3477,7 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
+ static bool trans_blr(DisasContext *ctx, arg_blr *a)
+ {
+     if (a->x) {
+-        TCGv_reg tmp = get_temp(ctx);
++        TCGv_reg tmp = tcg_temp_new();
+         tcg_gen_shli_reg(tmp, load_gpr(ctx, a->x), 3);
+         tcg_gen_addi_reg(tmp, tmp, ctx->iaoq_f + 8);
+         /* The computation here never changes privilege level.  */
+@@ -3503,7 +3495,7 @@ static bool trans_bv(DisasContext *ctx, arg_bv *a)
+     if (a->x == 0) {
+         dest = load_gpr(ctx, a->b);
+     } else {
+-        dest = get_temp(ctx);
++        dest = tcg_temp_new();
+         tcg_gen_shli_reg(dest, load_gpr(ctx, a->x), 3);
+         tcg_gen_add_reg(dest, dest, load_gpr(ctx, a->b));
+     }
+@@ -3834,7 +3826,7 @@ static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
+ 
+     nullify_over(ctx);
+ 
+-    t = get_temp(ctx);
++    t = tcg_temp_new();
+     tcg_gen_ld32u_reg(t, tcg_env, offsetof(CPUHPPAState, fr0_shadow));
+ 
+     if (a->y == 1) {
+@@ -4089,9 +4081,7 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     bound = -(ctx->base.pc_first | TARGET_PAGE_MASK) / 4;
+     ctx->base.max_insns = MIN(ctx->base.max_insns, bound);
+ 
+-    ctx->ntempr = 0;
+     ctx->ntempl = 0;
+-    memset(ctx->tempr, 0, sizeof(ctx->tempr));
+     memset(ctx->templ, 0, sizeof(ctx->templ));
  }
  
- void tcg_gen_extract_i64(TCGv_i64 ret, TCGv_i64 arg,
+@@ -4140,7 +4130,7 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+            This will be overwritten by a branch.  */
+         if (ctx->iaoq_b == -1) {
+             ctx->iaoq_n = -1;
+-            ctx->iaoq_n_var = get_temp(ctx);
++            ctx->iaoq_n_var = tcg_temp_new();
+             tcg_gen_addi_reg(ctx->iaoq_n_var, cpu_iaoq_b, 4);
+         } else {
+             ctx->iaoq_n = ctx->iaoq_b + 4;
+@@ -4161,13 +4151,9 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     }
+ 
+     /* Forget any temporaries allocated.  */
+-    for (i = 0, n = ctx->ntempr; i < n; ++i) {
+-        ctx->tempr[i] = NULL;
+-    }
+     for (i = 0, n = ctx->ntempl; i < n; ++i) {
+         ctx->templ[i] = NULL;
+     }
+-    ctx->ntempr = 0;
+     ctx->ntempl = 0;
+ 
+     /* Advance the insn queue.  Note that this check also detects
 -- 
 2.34.1
 
