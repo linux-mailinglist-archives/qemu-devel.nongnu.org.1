@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA077D0A9A
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C287D0A99
 	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 10:35:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtkxX-0000IK-6Q; Fri, 20 Oct 2023 04:34:19 -0400
+	id 1qtkwp-0007oI-V6; Fri, 20 Oct 2023 04:33:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtkxI-00008Z-Oj
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 04:34:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qtkwi-0007nU-UJ; Fri, 20 Oct 2023 04:33:28 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtkxH-0002oZ-8Z
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 04:34:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697790842;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ExjKUgn7axteSCEOabWgquodqKYCjk/OCBBPC9x63g4=;
- b=JWPKZBw80TXiLeS2g4vPUQL8/4tcTUryceENRk5cZfNwuKxmfBTatpaENeHH1UyhBYxuUt
- 1tiH5KDVlDI1S3ZGKOEroOgUnnMbD2B2WrjM8Oci5lm4/G/xT/mBAWfOxOH9Z2pHW1EwSt
- sCOCr4j1/BKw4bmtld7T4k4R2dYLswI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-74-Esz6OVCDNQuLDrNUykpu6Q-1; Fri, 20 Oct 2023 04:33:51 -0400
-X-MC-Unique: Esz6OVCDNQuLDrNUykpu6Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE61088D023;
- Fri, 20 Oct 2023 08:33:50 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9C3568CEF;
- Fri, 20 Oct 2023 08:33:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9433A21E6A1F; Fri, 20 Oct 2023 10:33:49 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,
- qemu-block@nongnu.org,  qemu-s390x@nongnu.org,  Juan Quintela
- <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>
-Subject: Re: [PATCH v2 10/22] qapi: Correct error message for
- 'vcpu_dirty_limit' parameter
-References: <20231005045041.52649-1-philmd@linaro.org>
- <20231005045041.52649-11-philmd@linaro.org>
-Date: Fri, 20 Oct 2023 10:33:49 +0200
-In-Reply-To: <20231005045041.52649-11-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 5 Oct 2023 06:50:27
- +0200")
-Message-ID: <875y318zgy.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qtkwc-0002LX-F0; Fri, 20 Oct 2023 04:33:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1697790802; x=1729326802;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=tExpAgCycKkq4Jarc0yvqd7IX/S0VLVWSqHREEBjgwQ=;
+ b=cybAQ1mU/3zrFwXyTarWrFZP2ln6ennAbqmCk+cUFxxU4szb8W7ri/pF
+ wOMkWvgdrlClYuas9mYC/iIxqCuQL97/m6/LrF34FAc/CSA2msLcYGr/e
+ 6d2ebT9DYTWQcYJ8WsPdtJl4SHv4jgWkgsDQiSHsEesuyMgAUfm5/Z1KQ
+ 2Jsp9lYFawAFGkLUrUsmz+urY0qTq8GiuEH1IxKakxTC3SlmjaZpbsie9
+ hOUhsZwiiJAUJ+/bUfT1HOz2vP9PH+unFBcmZGvvFlBPcHspeFJ308uIx
+ sgeNY5vGeyt+VZqG2SkReaowj76pVqjv4iMECs2W4C/vpMFGi/KxSjIYQ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="5064650"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="5064650"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2023 01:33:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="848018758"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; d="scan'208";a="848018758"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by FMSMGA003.fm.intel.com with ESMTP; 20 Oct 2023 01:33:12 -0700
+Date: Fri, 20 Oct 2023 16:44:50 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Bin Meng <bin.meng@windriver.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Cameron Esfahani <dirty@apple.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-riscv@nongnu.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 5/6] target/i386/hvf: Use x86_cpu in
+ simulate_[rdmsr|wrmsr]()
+Message-ID: <ZTI+Al+V69uMJnfA@intel.com>
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-6-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231009110239.66778-6-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,51 +90,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
-
-> QERR_INVALID_PARAMETER_VALUE is defined as:
->
->   #define QERR_INVALID_PARAMETER_VALUE \
->       "Parameter '%s' expects %s"
->
-> The current error is formatted as:
->
->   "Parameter 'vcpu_dirty_limit' expects is invalid, it must greater then =
-1 MB/s"
->
-> Replace by:
->
->   "Parameter 'vcpu_dirty_limit' is invalid, it must greater then 1 MB/s"
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On Mon, Oct 09, 2023 at 01:02:38PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Mon,  9 Oct 2023 13:02:38 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH 5/6] target/i386/hvf: Use x86_cpu in
+>  simulate_[rdmsr|wrmsr]()
+> X-Mailer: git-send-email 2.41.0
+> 
+> We already have 'x86_cpu = X86_CPU(cpu)'. Use the variable
+> instead of doing another QOM cast with X86_CPU().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  migration/options.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/migration/options.c b/migration/options.c
-> index 1d1e1321b0..79fce0c3a9 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -1163,9 +1163,8 @@ bool migrate_params_check(MigrationParameters *para=
-ms, Error **errp)
->=20=20
->      if (params->has_vcpu_dirty_limit &&
->          (params->vcpu_dirty_limit < 1)) {
-> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-> -                   "vcpu_dirty_limit",
-> -                   "is invalid, it must greater then 1 MB/s");
-> +        error_setg(errp, "Parameter 'vcpu_dirty_limit' is invalid,"
-> +                         " it must greater then 1 MB/s");
->          return false;
->      }
+>  target/i386/hvf/x86_emu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Make that "greater than", please.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Arrgh, the unit is MB/s even in QMP:
-
-    # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
-    #     Defaults to 1.  (Since 8.1)
-
-Should be Bytes.  Escaped review, and now it's too late to fix.
-
+> 
+> diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
+> index ccda568478..af1f205ecf 100644
+> --- a/target/i386/hvf/x86_emu.c
+> +++ b/target/i386/hvf/x86_emu.c
+> @@ -676,7 +676,7 @@ void simulate_rdmsr(struct CPUState *cpu)
+>          val = rdtscp() + rvmcs(cpu->accel->fd, VMCS_TSC_OFFSET);
+>          break;
+>      case MSR_IA32_APICBASE:
+> -        val = cpu_get_apic_base(X86_CPU(cpu)->apic_state);
+> +        val = cpu_get_apic_base(x86_cpu->apic_state);
+>          break;
+>      case MSR_IA32_UCODE_REV:
+>          val = x86_cpu->ucode_rev;
+> @@ -776,7 +776,7 @@ void simulate_wrmsr(struct CPUState *cpu)
+>      case MSR_IA32_TSC:
+>          break;
+>      case MSR_IA32_APICBASE:
+> -        cpu_set_apic_base(X86_CPU(cpu)->apic_state, data);
+> +        cpu_set_apic_base(x86_cpu->apic_state, data);
+>          break;
+>      case MSR_FSBASE:
+>          wvmcs(cpu->accel->fd, VMCS_GUEST_FS_BASE, data);
+> -- 
+> 2.41.0
+> 
+> 
+> 
 
