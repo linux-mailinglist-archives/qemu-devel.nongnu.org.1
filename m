@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C127D16BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB517D16BF
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:04:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtvi6-0001xC-Rr; Fri, 20 Oct 2023 16:03:06 -0400
+	id 1qtvjd-000426-Ae; Fri, 20 Oct 2023 16:04:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtvi3-0001r7-SY
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:03:03 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qtvjb-0003x4-VT
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:04:39 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtvhz-0005TU-NE
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:03:03 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1cacde97002so5696305ad.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:02:58 -0700 (PDT)
+ id 1qtvjZ-0005tV-Ef
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:04:39 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6b709048f32so1107666b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:04:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697832177; x=1698436977; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yOyWTz8Kx3JTuLtJa3OcB8g3zKWOaO0uiOsmwttm3zM=;
- b=PxFumCIW2h0gt+SvPQO4uS9TD9zsZO/aR6RyCQ3nqsYKlNlJLgZpBvs71+MXfVvY/r
- a7G2S50vGzrSopyHDPgnQt0CjlkAJMpvZlV2p/bIjbjRfqb+GR375OkxGKFSOA4uIWej
- vK2H3gHaA61sYXBXjMAXMjNCzdWNDsDL3UZKrf3NUe8iv/5vBs8fWVk4EmN1J0n3js8A
- OVDdYw7CekTTMdDzvCcBjjEzKFMJchPt/BktkbWsEFtFTr7AhT+UU4hZ1N4QCduyOZyI
- ax4BletB+JEy8bv/6Sb+vfbu1TdyXGmeqpUnh1ztaRZtAPXL0qZTJmICIQHIc/JdHu+3
- E8Yg==
+ d=ventanamicro.com; s=google; t=1697832275; x=1698437075; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3qtPEMnjbXS/VQ0mGxfdQ1sEQoiygD6WyM0+vaO1Nfk=;
+ b=YE25GssFQ7OjSpJd4QUW/dB/EDWQgItawvb6WvVKJSkSTxlc7iZ1Kqo4/SV4nyl1//
+ LPYKmCux1IzJbwcXUu7oVF6Qho2JXIIgtX8OJXU9UgIJHJic8a8AtfvJQbhVjfo+soI8
+ V3cIk+ZsiY+S/QNTDkW2yOSbuh4XpX9ecx++w4MowDKobzpqWMD7EjqT1VDCfIHPQq3+
+ cBWkbrDwIu9NgKQE53svWMiiNYoClyTlG4TkpnhoxLjwZrXWlxrDmhcclVOLKz2/dDYy
+ EFIKF9ZOAhriHZz/TDXn+XSEEoE3ycPz3YVEkBEBbCRQpWfSBkam1OGkZppYBCkU6xJ0
+ OlLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697832177; x=1698436977;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yOyWTz8Kx3JTuLtJa3OcB8g3zKWOaO0uiOsmwttm3zM=;
- b=UnqEWuuKZVadP6zRTeMG/1VwfG0Wj7Aww+mehvMuWqYwam77FoYYMP9Nc3Vx78Cdrm
- wkOR96z2tEngD2R19J0etwHuzd4bGhpFTxX2qluLVCTiQt7dAHbqzIEFQjcPmOhwgOJr
- YKoXJNJDabkC20qxlSmu48lCMPNJWBdgUmJc+cmZaDKd7XERgKoINKYL3/u69d6m/a9b
- je4KJ7stpxl3iI20CwEQD4TpPLXXVVK5egdkyYn4iNVbVWYsxc2Y3fd0I7uaFRlQBS/t
- kovi7fqIK8QWgsCx8Y81OhXCtk39QzcSoe8Rerzzqgn++9WTyQamuOgbJc3BOzz3Q6UZ
- TBXw==
-X-Gm-Message-State: AOJu0YxuDzeOqnIMYBb6zxTpEQ8RUoNO899qmHTX79FwmwbWONlFBGNO
- 37nHx4o99aEpE/hZ21boAfOUhIVIhsUaBrP3E8Y=
-X-Google-Smtp-Source: AGHT+IHuibEbymYa7X+wcFwGb/u34XAklE8TWfsCMAykJ+zpOqllyVNYNsVpuV9n3TfS8tayMKxqLg==
-X-Received: by 2002:a17:903:124e:b0:1c9:ea71:8032 with SMTP id
- u14-20020a170903124e00b001c9ea718032mr2845243plh.31.1697832176899; 
- Fri, 20 Oct 2023 13:02:56 -0700 (PDT)
-Received: from grind.. ([177.45.186.249]) by smtp.gmail.com with ESMTPSA id
- b11-20020a170902bd4b00b001c9d6923e7dsm1890680plx.222.2023.10.20.13.02.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:02:56 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1697832275; x=1698437075;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3qtPEMnjbXS/VQ0mGxfdQ1sEQoiygD6WyM0+vaO1Nfk=;
+ b=wsB9mfb57UdYKzzZa3Ny5nGerZ70kBqOvJEnVndUa9hCkGl4JYraAp+1JfVeFAwbUw
+ dfuNO8bUrXkgDQ/en4HPIvJ9rYgjVGC4rU/ycL0c3Iy45cIUA6g0U/zl0mDx7ZinTZyk
+ NQjqjB92DL84plRnpEzA3C6Q28X2pSEk7JegC5vBpqPHK+cjwYdjocXOux3dGAbX/n9p
+ K1qMH5vdeh7zLtqsFvCcy/AcpsVyS0w6ys+yCGQgLFkO+fR1kl7GrnCtPMY81I0qVDE+
+ 1HQmaeI5TELOjnDaEshS6UbGVzesAgrFTOzIAFLRtqurjOFnQTdkPKLaboMtlAZYeHeq
+ Cj8g==
+X-Gm-Message-State: AOJu0YwlcDN1Lhpo+KWf06umlKRCxNj6xe67FO8wTiffQZpHQpZ3BeXr
+ sHQ98FWGm7uTBkekShZR76nKso73VrjeUgserAI=
+X-Google-Smtp-Source: AGHT+IH3kQysdkpr5+Ul0wEeQIjYrbDwU/oXTsFVDYHwLmNCpAEhLeUyhAyBl/MYqcrwcAbdEPHoCg==
+X-Received: by 2002:a05:6a20:840b:b0:163:5bfd:ae5b with SMTP id
+ c11-20020a056a20840b00b001635bfdae5bmr3477508pzd.15.1697832275500; 
+ Fri, 20 Oct 2023 13:04:35 -0700 (PDT)
+Received: from [192.168.68.107] ([177.45.186.249])
+ by smtp.gmail.com with ESMTPSA id
+ u7-20020aa78487000000b00694fee1011asm1913031pfn.208.2023.10.20.13.04.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 20 Oct 2023 13:04:35 -0700 (PDT)
+Message-ID: <56726933-267f-4018-9632-e9bf0b476901@ventanamicro.com>
+Date: Fri, 20 Oct 2023 17:04:31 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs/system/riscv: remove core limit from virt machine
+Content-Language: en-US
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 1/1] docs/system/riscv: update 'virt' machine core limit
-Date: Fri, 20 Oct 2023 17:02:47 -0300
-Message-ID: <20231020200247.334403-2-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231020200247.334403-1-dbarboza@ventanamicro.com>
-References: <20231020200247.334403-1-dbarboza@ventanamicro.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x630.google.com
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+References: <20231019134812.241044-1-dbarboza@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231019134812.241044-1-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,30 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'virt' RISC-V machine does not have a 8 core limit. The current
-limit is set in include/hw/riscv/virt.h, VIRT_CPUS_MAX, set to 512 at
-this moment.
+The commit title is misleading. We're not removing the core limit, we're
+updating it.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1945
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- docs/system/riscv/virt.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I just sent a new version with an appropriate commit title. Thanks,
 
-diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-index f9a2eac544..f5fa7b8b29 100644
---- a/docs/system/riscv/virt.rst
-+++ b/docs/system/riscv/virt.rst
-@@ -12,7 +12,7 @@ Supported devices
- 
- The ``virt`` machine supports the following devices:
- 
--* Up to 8 generic RV32GC/RV64GC cores, with optional extensions
-+* Up to 512 generic RV32GC/RV64GC cores, with optional extensions
- * Core Local Interruptor (CLINT)
- * Platform-Level Interrupt Controller (PLIC)
- * CFI parallel NOR flash memory
--- 
-2.41.0
 
+Daniel
+
+On 10/19/23 10:48, Daniel Henrique Barboza wrote:
+> The 'virt' RISC-V machine does not have a 8 core limit. The current
+> limit is set in include/hw/riscv/virt.h, VIRT_CPUS_MAX, set to 512 at
+> this moment.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1945
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   docs/system/riscv/virt.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+> index f9a2eac544..f5fa7b8b29 100644
+> --- a/docs/system/riscv/virt.rst
+> +++ b/docs/system/riscv/virt.rst
+> @@ -12,7 +12,7 @@ Supported devices
+>   
+>   The ``virt`` machine supports the following devices:
+>   
+> -* Up to 8 generic RV32GC/RV64GC cores, with optional extensions
+> +* Up to 512 generic RV32GC/RV64GC cores, with optional extensions
+>   * Core Local Interruptor (CLINT)
+>   * Platform-Level Interrupt Controller (PLIC)
+>   * CFI parallel NOR flash memory
 
