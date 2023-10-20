@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02E37D0916
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 09:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23867D0903
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 09:00:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtjTh-0004P5-Pb; Fri, 20 Oct 2023 02:59:25 -0400
+	id 1qtjU1-0004oO-GR; Fri, 20 Oct 2023 02:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtjTf-0004Eg-Ju
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:59:23 -0400
+ id 1qtjTn-0004ei-Na
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:59:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtjTd-0003mx-S3
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:59:23 -0400
+ id 1qtjTj-0003ox-5N
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:59:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697785161;
+ s=mimecast20190719; t=1697785166;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UvqeZdhYhfKzgLjBZRcYvls2Y57BmP1MiE49zKSMaRk=;
- b=GJL5+nHCMMBZzTCICEB4W37wOZK2JW+d4RVFPfbSnv45/DCznH43ImnBkd+Wqy7tgObfMW
- +Id8uImX+FAZCLXH7ae18kAVj1zG/peglWofs3Z4V159a/hare3hJZfZbuhsy8lIIdB55m
- VX8JKKrBLBZZhgLa+j+cwzole9agT3E=
+ bh=NSgHyHEZfPE9cd1uGtechBOjRxN9vNPYJYi2OtzuiQ0=;
+ b=hBV8PZI6cKvXw4KzFQICxzUX++gHgGrGuqoyxuc+g3xFXfzMkwzcFuD745hcYEYX1KDEPw
+ XUffsuWjbPA/UPcdtF+9clqMZRTOn2fviLqHLUMZFcUyb0h6QOkNmOc8H8yckAo+nNeIhz
+ IfgDma39P+cBMorw6fUZH8+SnMEodww=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-495-MNOE15wlNZmcK9X0buzJ3g-1; Fri, 20 Oct 2023 02:59:06 -0400
-X-MC-Unique: MNOE15wlNZmcK9X0buzJ3g-1
+ us-mta-395-A4rH87AqMS-35XtixiB6ZQ-1; Fri, 20 Oct 2023 02:59:13 -0400
+X-MC-Unique: A4rH87AqMS-35XtixiB6ZQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B251E2810D45;
- Fri, 20 Oct 2023 06:59:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C07C29AA2C2;
+ Fri, 20 Oct 2023 06:59:11 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 84BE825C0;
- Fri, 20 Oct 2023 06:58:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 06B3725C0;
+ Fri, 20 Oct 2023 06:59:04 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org,
@@ -75,9 +75,9 @@ Cc: qemu-s390x@nongnu.org,
  Leonardo Bras <leobras@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Greg Kurz <groug@kaod.org>, qemu-block@nongnu.org
-Subject: [PULL 09/17] tests/qtest: Introduce qtest_has_machine_with_env
-Date: Fri, 20 Oct 2023 08:57:43 +0200
-Message-ID: <20231020065751.26047-10-quintela@redhat.com>
+Subject: [PULL 10/17] tests/qtest: Introduce qtest_resolve_machine_alias
+Date: Fri, 20 Oct 2023 08:57:44 +0200
+Message-ID: <20231020065751.26047-11-quintela@redhat.com>
 In-Reply-To: <20231020065751.26047-1-quintela@redhat.com>
 References: <20231020065751.26047-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -109,70 +109,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-Add a variant of qtest_has_machine() that receives an environment
-variable containing an alternate QEMU binary path.
+The migration tests are being enhanced to test migration between
+different QEMU versions. A requirement of migration is that the
+machine type between source and destination matches, including the
+version.
+
+We cannot hardcode machine types in the tests because those change
+with each release. QEMU provides a machine type alias that has a fixed
+name, but points to the latest machine type at each release.
+
+Add a helper to resolve the alias into the exact machine
+type. E.g. "-machine pc" resolves to "pc-i440fx-8.2"
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231018192741.25885-5-farosas@suse.de>
+Message-ID: <20231018192741.25885-6-farosas@suse.de>
 ---
- tests/qtest/libqtest.h | 9 +++++++++
- tests/qtest/libqtest.c | 9 +++++++--
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ tests/qtest/libqtest.h | 10 ++++++++++
+ tests/qtest/libqtest.c | 16 ++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index 76fc195f1c..d16deb9891 100644
+index d16deb9891..6e3d3525bf 100644
 --- a/tests/qtest/libqtest.h
 +++ b/tests/qtest/libqtest.h
-@@ -930,6 +930,15 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
-  */
- bool qtest_has_machine(const char *machine);
+@@ -922,6 +922,16 @@ void qtest_qmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+                                 bool skip_old_versioned);
  
 +/**
-+ * qtest_has_machine_with_env:
++ * qtest_resolve_machine_alias:
 + * @var: Environment variable from where to take the QEMU binary
-+ * @machine: The machine to look for
++ * @alias: The alias to resolve
 + *
-+ * Returns: true if the machine is available in the specified binary.
++ * Returns: the machine type corresponding to the alias if any,
++ * otherwise NULL.
 + */
-+bool qtest_has_machine_with_env(const char *var, const char *machine);
++char *qtest_resolve_machine_alias(const char *var, const char *alias);
 +
  /**
-  * qtest_has_device:
-  * @device: The device to look for
+  * qtest_has_machine:
+  * @machine: The machine to look for
 diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 3cc7bf3076..603d900e7d 100644
+index 603d900e7d..c843c41188 100644
 --- a/tests/qtest/libqtest.c
 +++ b/tests/qtest/libqtest.c
-@@ -1565,12 +1565,12 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+@@ -1565,6 +1565,22 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
      }
  }
  
--bool qtest_has_machine(const char *machine)
-+bool qtest_has_machine_with_env(const char *var, const char *machine)
- {
-     struct MachInfo *machines;
-     int i;
- 
--    machines = qtest_get_machines(NULL);
-+    machines = qtest_get_machines(var);
- 
-     for (i = 0; machines[i].name != NULL; i++) {
-         if (g_str_equal(machine, machines[i].name) ||
-@@ -1582,6 +1582,11 @@ bool qtest_has_machine(const char *machine)
-     return false;
- }
- 
-+bool qtest_has_machine(const char *machine)
++char *qtest_resolve_machine_alias(const char *var, const char *alias)
 +{
-+    return qtest_has_machine_with_env(NULL, machine);
++    struct MachInfo *machines;
++    int i;
++
++    machines = qtest_get_machines(var);
++
++    for (i = 0; machines[i].name != NULL; i++) {
++        if (machines[i].alias && g_str_equal(alias, machines[i].alias)) {
++            return g_strdup(machines[i].name);
++        }
++    }
++
++    return NULL;
 +}
 +
- bool qtest_has_device(const char *device)
+ bool qtest_has_machine_with_env(const char *var, const char *machine)
  {
-     static QList *list;
+     struct MachInfo *machines;
 -- 
 2.41.0
 
