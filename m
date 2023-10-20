@@ -2,104 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735C97D117F
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 16:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 785697D1184
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 16:25:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtqPN-0006ys-PG; Fri, 20 Oct 2023 10:23:25 -0400
+	id 1qtqQm-0003Fy-Pq; Fri, 20 Oct 2023 10:24:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qtqPK-0006rt-UP; Fri, 20 Oct 2023 10:23:23 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtqQk-0003DE-JF
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 10:24:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qtqPI-0004oc-U3; Fri, 20 Oct 2023 10:23:22 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39KEJWw2018578; Fri, 20 Oct 2023 14:23:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=SrMHY3CRYkIOD3mjbA6Z73jblHu5H+NkQF3k3JsNmIM=;
- b=rmwmBbm2Q+YA+hW/9NZz/2P2TeYI1FUS+8i8VCGKn2RmZC0C5uUgyFQOJ9bCCH9qIyJw
- Rn8ikoXtNqlxwM/pNrJVm5MSvSo0zc2z2cpZB4CtRjt7lwB6++DU711bGCk6SfPWDuot
- LFnxPm8zG8CCJPWrLY8Ojk7LeHjpNeKZm02vqHwKoBhIy61DCdasLA8n2B71zkV4QH6o
- JHhLn23Q2bmYUQCNhsYrDyBIUq2EcBM7aTQqwkYuxNbi4sRcQpIAjp1tE1ShklIC+MXs
- laG3f7aYxVJ9sN/dEMy69c9PEPNbCYujlEFj+4dQAmy+kMeUBZGad0JFx91oTfhqsXBa 5Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuu7bg53f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Oct 2023 14:23:17 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39KEJX1b018644;
- Fri, 20 Oct 2023 14:23:17 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuu7bg52y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Oct 2023 14:23:16 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39KC4nG6029794; Fri, 20 Oct 2023 14:23:16 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tuc47n27u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Oct 2023 14:23:16 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39KENCT346727440
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Oct 2023 14:23:12 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB1572004B;
- Fri, 20 Oct 2023 14:23:12 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A4F420040;
- Fri, 20 Oct 2023 14:23:12 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.152.224.66])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 20 Oct 2023 14:23:12 +0000 (GMT)
-Date: Fri, 20 Oct 2023 16:23:11 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Eric Farman <farman@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
- Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix a couple s390 paths
-Message-ID: <20231020162311.468c16fe@p-imbrenda>
-In-Reply-To: <20231020141509.2096591-1-farman@linux.ibm.com>
-References: <20231020141509.2096591-1-farman@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtqQi-0005jG-5L
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 10:24:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697811887;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=eKkurRpxg+wOFE0iX+4T11sU7fO+QJQ+3FWVLnmKKHQ=;
+ b=H3TrojIzfO/GDcRCsYsp0agDT6GVoDutJVL7zjgDB7+9GD9JfcAE7UuNs3dqGVP78JOlVH
+ K5YwPRYxgb5Wp+qcG7CmVRkM92mnxvA8wVP5WsSjvO06r0016zsiUIEXzuMO3iC+1QZFaV
+ A3D4S+J4cOV+8XCzzaJAaYR2luCKlus=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-4MFtPeOrO4Wj_Pr-85jeSg-1; Fri, 20 Oct 2023 10:24:36 -0400
+X-MC-Unique: 4MFtPeOrO4Wj_Pr-85jeSg-1
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-3b2e2d3560bso1246530b6e.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 07:24:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697811875; x=1698416675;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eKkurRpxg+wOFE0iX+4T11sU7fO+QJQ+3FWVLnmKKHQ=;
+ b=rVtNEIXUwX6MN6BqpOTbl1zztmoKHJxceDR75knSkr3+nvxnQYuwfHILqNEfI1WGyD
+ wJXMFPgxhFG5LeAeQlXQq7VZJFyFmZ6WdSl9Qmu5eoC20U7dc/l0kAs3kUUVwUHm/71S
+ CT+W3cz9eLCuncRhL/Hq8J5K0rkXomYauoRCmQffuAx558oeSz8RhfwtZSMXRC/s7v4+
+ AcVCetIYMUj/KxU5U16mQ+Uhv+5Bz2UfOTEN41QC1tUPDlVas/HwHfghLQ9qhf8+fhUY
+ J8R2Z1tOO/ihqXqGFZqLIbNsdfx3i2/wnuU/VLGlB9AQXqH7DWzDCuOhpEdy8lILqWuY
+ H5Hw==
+X-Gm-Message-State: AOJu0YwtF/BG7S7sDYfxrMo3WmNob5fIBEU51TtJzsutgvEoFHf5pGex
+ jFA3YOaKlXqvj4+s6AEu6F+3vsIbalijzVrLhsKctasfoCO96rnYCWqTNVBydib8FderuQZeeO4
+ rda4cFP+t613oTjo=
+X-Received: by 2002:a05:6808:1c1:b0:3b2:f588:5a9c with SMTP id
+ x1-20020a05680801c100b003b2f5885a9cmr1951059oic.6.1697811875660; 
+ Fri, 20 Oct 2023 07:24:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9nU4QfqkPslUPlVzupEd+r96um1Zx94YSNrhzT/oENqwmZI6u9FdQqNfZ/zfBz5Esc9GNdw==
+X-Received: by 2002:a05:6808:1c1:b0:3b2:f588:5a9c with SMTP id
+ x1-20020a05680801c100b003b2f5885a9cmr1951037oic.6.1697811875383; 
+ Fri, 20 Oct 2023 07:24:35 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
+ [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
+ pz6-20020ad45506000000b0065b24c08994sm710039qvb.128.2023.10.20.07.24.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 20 Oct 2023 07:24:35 -0700 (PDT)
+Message-ID: <de6d7692-34fd-403e-b5ea-026f7699c32f@redhat.com>
+Date: Fri, 20 Oct 2023 16:24:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Fix a couple s390 paths
+Content-Language: en-US
+To: Eric Farman <farman@linux.ibm.com>, qemu-devel@nongnu.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Juan Quintela <quintela@redhat.com>, QEMU Trivial <qemu-trivial@nongnu.org>
+References: <20231020141509.2096591-1-farman@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231020141509.2096591-1-farman@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: toelGxtsrLLdtXeKc1biNgMjrbeKYLRq
-X-Proofpoint-ORIG-GUID: 2qyHk8BY1kB70QVOzlbBQF-y1k4aiauu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-20_10,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- impostorscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=736 adultscore=0
- spamscore=0 malwarescore=0 bulkscore=0 clxscore=1011 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310200117
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=imbrenda@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,42 +144,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 20 Oct 2023 16:15:09 +0200
-Eric Farman <farman@linux.ibm.com> wrote:
-
+On 20/10/2023 16.15, Eric Farman wrote:
 > These are simple typos, since the directories don't exist but the
 > files themselves do in hw/s390x/
 > 
 > Fixes: 56e3483402 ("MAINTAINERS: split out s390x sections")
 > Signed-off-by: Eric Farman <farman@linux.ibm.com>
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
 > ---
->  MAINTAINERS | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>   MAINTAINERS | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
 > index 9bd4fe378d..ac71eff7fa 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
 > @@ -2574,7 +2574,7 @@ M: Halil Pasic <pasic@linux.ibm.com>
->  M: Christian Borntraeger <borntraeger@linux.ibm.com>
->  S: Supported
->  F: hw/s390x/storage-keys.h
+>   M: Christian Borntraeger <borntraeger@linux.ibm.com>
+>   S: Supported
+>   F: hw/s390x/storage-keys.h
 > -F: hw/390x/s390-skeys*.c
 > +F: hw/s390x/s390-skeys*.c
->  L: qemu-s390x@nongnu.org
->  
->  S390 storage attribute device
+>   L: qemu-s390x@nongnu.org
+>   
+>   S390 storage attribute device
 > @@ -2582,7 +2582,7 @@ M: Halil Pasic <pasic@linux.ibm.com>
->  M: Christian Borntraeger <borntraeger@linux.ibm.com>
->  S: Supported
->  F: hw/s390x/storage-attributes.h
+>   M: Christian Borntraeger <borntraeger@linux.ibm.com>
+>   S: Supported
+>   F: hw/s390x/storage-attributes.h
 > -F: hw/s390/s390-stattrib*.c
 > +F: hw/s390x/s390-stattrib*.c
->  L: qemu-s390x@nongnu.org
->  
->  S390 floating interrupt controller
+>   L: qemu-s390x@nongnu.org
+>   
+>   S390 floating interrupt controller
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
