@@ -2,103 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154DD7D0B16
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32ADD7D0B1D
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:08:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlQU-0005fk-6h; Fri, 20 Oct 2023 05:04:14 -0400
+	id 1qtlTx-00037E-Vo; Fri, 20 Oct 2023 05:07:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlQO-0005ag-Nk
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:04:10 -0400
+ id 1qtlTt-00032g-HE
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:07:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlQL-0004Wb-R9
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:04:07 -0400
+ id 1qtlTr-0005Ae-QL
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:07:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697792643;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=s7iOD38ZQAWCDHfMChkcturqXvPftdRJcTPsjG9smas=;
- b=V1RQwzRJpu7WJ3fuQkQt48uIJRQHeWeLX05sdyqGxzN7hLuTtyyRBabkxwAPL77eFdUEeb
- pFtetOM8VmO18qkYCuS3odhLQzWcz06lPTiPj77pwQqhdao3QJZWt1U+WqgX9VJjIWcmHM
- A3IA2I/cE5c7Fpz2x9mP2gXPbRoQhFs=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-287--A1roAHFMN2NfETkAKQySg-1; Fri, 20 Oct 2023 05:04:02 -0400
-X-MC-Unique: -A1roAHFMN2NfETkAKQySg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c5073588cbso4258211fa.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:04:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697792641; x=1698397441;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=s7iOD38ZQAWCDHfMChkcturqXvPftdRJcTPsjG9smas=;
- b=czqMe94ue9c2pBZ4kKaLCxtkbNLTDGQU/dx1eWkt1Gm/qCw2NsvyrcLkEz9Bx4ONa4
- r4ZGQ1JzvBnb3u22FoJ/2/7TQn2OY6RFEMlrefoI96xCaAbz8A0O8515ONOryj0Rlr7l
- MfHgHQWsv8gSpmscEd+q6I2FfftcMffn5U0sZhOpQcHEPQZzrkCfK9VfgQITjSe71XXt
- gk7no30NeurGiBzofTVERugHREFT2FLfIGnef3K1reOJ+zsDnVAzkNjSDG2JJFXT24UZ
- XuUgoIdcIgwsAL51PCHvYUWpc/yvkoiKeI2oRvd3pSEQTY2TA0x09LpmChDga+RfsxG8
- FbHA==
-X-Gm-Message-State: AOJu0YwcBLNdcBzhiIFXkUByHSCOsJad9VAvPhz1tahWqonVGlGmUWlp
- R3yzcRAq1JWp2GoHpNOHmIRdyeFFAx8rYJ6BEIEpqldyPf9zVLSLymVb6xhkS1goIJ3aDeuWJPq
- An1nQHXnZ6DXEJQ0=
-X-Received: by 2002:a2e:a22c:0:b0:2c5:1bd3:5658 with SMTP id
- i12-20020a2ea22c000000b002c51bd35658mr851910ljm.28.1697792640857; 
- Fri, 20 Oct 2023 02:04:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkaiweh5iqJMVBscdQZTW94gUX6yR/iNpwTsVA3OFSN4B0SDaaubRpGxr1P0+jzSwWVTsWtw==
-X-Received: by 2002:a2e:a22c:0:b0:2c5:1bd3:5658 with SMTP id
- i12-20020a2ea22c000000b002c51bd35658mr851872ljm.28.1697792640483; 
- Fri, 20 Oct 2023 02:04:00 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- 17-20020a05600c231100b00401d8181f8bsm6437426wmo.25.2023.10.20.02.03.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 02:04:00 -0700 (PDT)
+ s=mimecast20190719; t=1697792862;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YpSXkSExCLWND3UOS6rl5xmtJOtuXQPJE15D7cnE9HM=;
+ b=Yxb6h7IFooF6AmLmVxR71Tp/Xcz+eLEt3IBcmidANLvPPDfNLwuhNUR4ngoF6smDxL36x9
+ GQvff4sUP+rmLi2VxMdRRM01EfoEsjVvuSP8iwy6Dhby2nkSQfSwssFa9DfFIE7NTEyn1J
+ qoHeiKgdNeL8aU8L7NiZhQGe7TLfZ7w=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-57-O_3ADSKhMgSdeuPCpJ9I8A-1; Fri, 20 Oct 2023 05:07:38 -0400
+X-MC-Unique: O_3ADSKhMgSdeuPCpJ9I8A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B96483827977;
+ Fri, 20 Oct 2023 09:07:37 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.194.127])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5417D2166B26;
+ Fri, 20 Oct 2023 09:07:32 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: qemu-devel@nongnu.org,  Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,  qemu-s390x@nongnu.org,  Gerd
- Hoffmann <kraxel@redhat.com>,  Corey Minyard <cminyard@mvista.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,  Richard Henderson
- <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,  Fabiano Rosas <farosas@suse.de>,
- Eric Farman <farman@linux.ibm.com>,  Peter Xu <peterx@redhat.com>,  Harsh
- Prateek Bora <harshpb@linux.ibm.com>,  John Snow <jsnow@redhat.com>,
- qemu-block@nongnu.org,  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,  =?utf-8?Q?Marc-Andr?=
- =?utf-8?Q?=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Stefan Weil <sw@weilnetz.de>,
- qemu-arm@nongnu.org,  Jason Wang <jasowang@redhat.com>,  Corey Minyard
- <minyard@acm.org>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  "Michael
- S. Tsirkin" <mst@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>,  David
- Gibson <david@gibson.dropbear.id.au>,  Halil Pasic <pasic@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH 10/13] migration: Improve example and documentation of
- vmstate_register()
-In-Reply-To: <8b7a67bf-6d45-374c-13ee-fbb85b4b21bc@linux.ibm.com> (Stefan
- Berger's message of "Thu, 19 Oct 2023 16:38:15 -0400")
-References: <20231019190831.20363-1-quintela@redhat.com>
- <20231019190831.20363-11-quintela@redhat.com>
- <8b7a67bf-6d45-374c-13ee-fbb85b4b21bc@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Fri, 20 Oct 2023 11:03:59 +0200
-Message-ID: <87bkct1x8g.fsf@secure.mitica>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Eric Farman <farman@linux.ibm.com>, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Corey Minyard <cminyard@mvista.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Corey Minyard <minyard@acm.org>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Halil Pasic <pasic@linux.ibm.com>, Leonardo Bras <leobras@redhat.com>,
+ John Snow <jsnow@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-block@nongnu.org, qemu-s390x@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Stefan Weil <sw@weilnetz.de>
+Subject: [PATCH v2 00/13] migration: Check for duplicates on vmstate_register()
+Date: Fri, 20 Oct 2023 11:07:18 +0200
+Message-ID: <20231020090731.28701-1-quintela@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -120,69 +95,139 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Berger <stefanb@linux.ibm.com> wrote:
-> On 10/19/23 15:08, Juan Quintela wrote:
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>   docs/devel/migration.rst | 12 ++++++++----
->>   1 file changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
->> index c3e1400c0c..a9fde75862 100644
->> --- a/docs/devel/migration.rst
->> +++ b/docs/devel/migration.rst
->> @@ -165,13 +165,17 @@ An example (from hw/input/pckbd.c)
->>         }
->>     };
->>
->> -We are declaring the state with name "pckbd".
->> -The ``version_id`` is 3, and the fields are 4 uint8_t in a KBDState str=
-ucture.
->> -We registered this with:
->> +We are declaring the state with name "pckbd".  The ``version_id`` is
->> +3, and the fields are 4 uint8_t in a KBDState structure.  We
->
-> and there are 4=C2=A0 uint8_t fields in the KBDState structure.
+Hi
 
-Done thanks.
+Hi
 
->
->> +registered this with one of those.  The first one will generate a
->
-> I am not sure what this means 'We registered this with one of
-> those'. What is 'one of those'?
+on this v2:
+- rebased on top of master (no conflicts)
+- handled reviewed by
+- improved documentation
+- Changed the ppc hack to maintain backwards compatibility.
 
-Changed to:
+Please review.
 
-We
-registered this ``VMSTATEDescription`` with one of the following
-functions.
+[v1]
+This series are based in a patch from Peter than check if a we try to
+register the same device with the same instance_id more than once.  It
+was not merged when he sent it because it broke "make check".  So I
+fixed all devices to be able to merge it.
 
-> Maybe you mean: We register the KBDState with one of the following
-> functions.
->
->> +device ``instance_id`` different for each registration.  Use the
->> +second one if you already have an id different for each instance of
->> +the device:
-> ... have an id that is is different for each ...
+- I create vmstate_register_any(), its the same that
+  vmstate_register(VMSTATE_INSTANCE_ID_ANY)
+- Later I check in vmstate_register() that they are not calling it
+  with VMSTATE_INSTANCE_ID_ANY
+- After that I change vmstate_register() to make sure that we don't
+  include a duplicate.
 
-Done
+And we get all the errors that I change in patches 3, 4, 5, 6, 7.
+After those patches: make check works again.
+And then I reviewed all the rest of vmstate_register() callers.
 
->>
->>   .. code:: c
->>
->> -    vmstate_register(NULL, 0, &vmstate_kbd, s);
->> +    vmstate_register_any(NULL, &vmstate_kbd, s);
->> +    vmstate_register(NULL, instance_id, &vmstate_kbd, s);
->>
->>   For devices that are ``qdev`` based, we can register the device in the=
- class
->>   init function:
+There are the cases where they pass a device_id that is generated
+somehow, that ones are ok.
 
-Thanks
+Then we have the ones that pass always 0.  This ones are only valid
+when there is a maximum of one device instantiated for a given
+machine.
+
+- audio: you can choose more than one audio output.
+- eeprom93xx: you can have more than one e100 card.
+
+- vmware_vga: I am not completely sure here, it appears that you could
+  have more than one.  Notice that VMSTATE_INSTANCE_ID_ANY will give
+  us the value 0 if there is only one instance, so we are in no
+  trouble.  We can drop it if people think that we can't have more
+  than one vmware_vga.
+
+- for the rest of the devices, I can't see any that can be
+  instantiated more than once (testing it is easy, just starting the
+  machine will make it fail).  Notice that again, for the same
+  reasoning, we could change all the calls to _any().  And only left
+  the vmstate_register(... 0 ...) calls for devices that we know that
+  we only ever want one.
+
+What needs to be done:
+
+- icp/server: We need to rename the old icp server name.  Notice that
+  I doubt that anyone is migrating this, but I need help from PPC
+  experts.  As said in the commit message, it is "abusing" the interface:
+  - it register a new device
+  - it realizes that it is instantiting an old beard
+  - it unregister the new device
+  - it registers the old device
+
+- rest of devices:
+
+  * pxa2xx devices: I can't see how you can create more than one
+    device in a machine
+  * acpi_build: I can't see how to create more than once.
+  * replay: neither
+  * cpu timers: created in vl.c
+  * global_state: only once
+  * s390 css: not a way that I can think
+  * spapr: looks only one
+  * or1ktimer: I can only see one
+  * tsc*: I see only use in pxa2xx and one by board
+
+- And now, another abuser:
+
+vmstate_register(VMSTATE_IF(tcet), tcet->liobn, &vmstate_spapr_tce_table,
+
+tcet->liobn is an uint32_t, and instance_id is an int.  And it just happens that is value is < VMSTATE_INSTANCE_ID_ANY.
+
+Please, review.
+
+Juan Quintela (12):
+  migration: Create vmstate_register_any()
+  migration: Use vmstate_register_any()
+  migration: Use vmstate_register_any() for isa-ide
+  migration: Use vmstate_register_any() for ipmi-bt*
+  migration: Use VMSTATE_INSTANCE_ID_ANY for slirp
+  migration: Use VMSTATE_INSTANCE_ID_ANY for s390 devices
+  migration: Hack to maintain backwards compatibility for ppc
+  migration: vmstate_register() check that instance_id is valid
+  migration: Improve example and documentation of vmstate_register()
+  migration: Use vmstate_register_any() for audio
+  migration: Use vmstate_register_any() for eeprom93xx
+  migration: Use vmstate_register_any() for vmware_vga
+
+Peter Xu (1):
+  migration: Check in savevm_state_handler_insert for dups
+
+ docs/devel/migration.rst    | 12 ++++++++----
+ include/migration/vmstate.h | 34 ++++++++++++++++++++++++++++++++++
+ audio/audio.c               |  2 +-
+ backends/dbus-vmstate.c     |  3 +--
+ backends/tpm/tpm_emulator.c |  3 +--
+ hw/display/vmware_vga.c     |  2 +-
+ hw/i2c/core.c               |  2 +-
+ hw/ide/isa.c                |  2 +-
+ hw/input/adb.c              |  2 +-
+ hw/input/ads7846.c          |  2 +-
+ hw/input/stellaris_input.c  |  3 +--
+ hw/intc/xics.c              | 17 +++++++++++++++--
+ hw/ipmi/ipmi_bmc_extern.c   |  2 +-
+ hw/ipmi/ipmi_bmc_sim.c      |  2 +-
+ hw/ipmi/isa_ipmi_bt.c       |  2 +-
+ hw/ipmi/isa_ipmi_kcs.c      |  2 +-
+ hw/net/eepro100.c           |  3 +--
+ hw/nvram/eeprom93xx.c       |  2 +-
+ hw/pci/pci.c                |  2 +-
+ hw/ppc/spapr.c              | 25 +++++++++++++++++++++++--
+ hw/ppc/spapr_nvdimm.c       |  3 +--
+ hw/s390x/s390-skeys.c       |  3 ++-
+ hw/s390x/s390-stattrib.c    |  3 ++-
+ hw/timer/arm_timer.c        |  2 +-
+ hw/virtio/virtio-mem.c      |  4 ++--
+ migration/savevm.c          | 32 ++++++++++++++++++++++++++++++++
+ net/slirp.c                 |  5 +++--
+ 27 files changed, 139 insertions(+), 37 deletions(-)
+
+-- 
+2.41.0
 
 
