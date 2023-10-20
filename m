@@ -2,68 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A2C7D13B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DA27D13DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:17:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qts1d-0005zp-Q0; Fri, 20 Oct 2023 12:07:01 -0400
+	id 1qtsAY-0000Wl-AE; Fri, 20 Oct 2023 12:16:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qts1b-0005sM-MX
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:06:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qts1Z-0001Wb-VX
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:06:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697818017;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2vkkC+Eo+AaRbwHH76pl/K1Se9UL0pUfPzjxqpvJ/+k=;
- b=RvqnyFGd3ineHYj6wRfX+vEd+XzYrebPlG8VuhROI0OOG/HcQYI+EPygaXyHY7TRRNDQb2
- QCwrOunO/7hDkIz5ArHP5vnvaT8TTM/dsqECyC1udNQufa+gmuCY3Hvb3fImkPz/qvPcIQ
- n2FeSTibjJBwfX8E5/ZKoXUnbSP2NR4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-654-8aGemrCKO-G36bSkAZ2SJg-1; Fri, 20 Oct 2023 12:06:30 -0400
-X-MC-Unique: 8aGemrCKO-G36bSkAZ2SJg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B35410201F4;
- Fri, 20 Oct 2023 16:06:30 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.57])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A30812026D66;
- Fri, 20 Oct 2023 16:06:29 +0000 (UTC)
-Date: Thu, 19 Oct 2023 11:51:17 -0700
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/14] linux-user patch queue
-Message-ID: <20231019185117.GA414291@fedora>
-References: <20231018233134.1594292-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtsAW-0000WY-2a
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:16:12 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtsAS-0004Z2-DA
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:16:11 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40675f06f1fso12797975e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:16:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697818563; x=1698423363; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:user-agent:from:to:cc:subject:date:message-id:reply-to;
+ bh=GDbL6Mo4wpAhcHFPKBdGxdswiLrH14lvwplut/17gXk=;
+ b=binS8okxOQXBOfAB7Jn7fU59M0JwBVus7AVrLh78+OoxmHF7CaM+qKbOGa1jvNLqkG
+ O6QehvrRlxzaRC6MXzkoz3XlCnw8VRO1BxaHchN9JGUlTmXXP2JmX7W8VQaiz8Ij6aOd
+ MdM+LQAMU8mATFuPRRJsfsIr7kxJLt5fLCqLFhCIjoIJ0Ir2tNK7iu8/DQDTPuauelhz
+ 8QU1yb9EPMdE3BelMLqVVG6yZ7bNQ6V+bdrGQhr8Ow4NaMo7HFGnk85ICJPULPnbps1h
+ O15+Cu2p64HcQFxiM1B4Nhi9TdyixQ/WllWfIQqv0/uZBP/TXNiwy7yvy1QuevySC8Cb
+ OO2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697818563; x=1698423363;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:user-agent:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GDbL6Mo4wpAhcHFPKBdGxdswiLrH14lvwplut/17gXk=;
+ b=SRcvLO3OCN26tVKJ92VRc0n/+S6Xnj7cfG3VrFFEJ7lAb6NHMscI1Jv8CGioH4hfaa
+ GH2v5OOg3+SHz1NubPVWJMULf3eV30sy6i9wiXE8kcYUBjiOKD5Q1A/rWF+bz2t6iuFe
+ TRgHqtFpaLRBe9kQXHqwnHhciZWEBFVO7ulAlaGh94jbT05bvQiKeGnWj8Cvf1BBAThV
+ p8RBqQQLj/bxtUFkaS2QMTEGkVV57MJUKHDCQg9VdyTvMGbDr33LOKmftXod0eaQUhYD
+ XAA9go+Mj2RE+fN34VuZVH/vl4Mg85T3ywUsCgf15xsW3G3ux5GtLX9+g8y4fDu8Usd5
+ 6dVw==
+X-Gm-Message-State: AOJu0YwJXlaEBxEbRiWTPqLbnAVm4vdenaksq4795TC1J15AMYEo+tqx
+ KLDpcSNdalWeeRRvabLBex+KBw==
+X-Google-Smtp-Source: AGHT+IFp4rlnCgNH5uDROkpQ307gZEpXoDeE1mx3aF2I0WH1cLNVW10wbgErwcoCJOsmfag7jcEgLQ==
+X-Received: by 2002:adf:eec8:0:b0:32d:ddb9:289f with SMTP id
+ a8-20020adfeec8000000b0032dddb9289fmr5753858wrp.34.1697818563227; 
+ Fri, 20 Oct 2023 09:16:03 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ u25-20020a05600c00d900b004068495910csm7226372wmm.23.2023.10.20.09.16.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Oct 2023 09:16:02 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 786461FFBB;
+ Fri, 20 Oct 2023 17:16:02 +0100 (BST)
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Richard
+ Henderson <richard.henderson@linaro.org>, Adhemerval Zanella Netto
+ <adhemerval.zanella@linaro.org>, Matthias Klose <doko@debian.org>, Peter
+ Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, debian-alpha@lists.debian.org
+Subject: alpha toolchain broken for static builds in bookworm?
+Date: Fri, 20 Oct 2023 17:02:59 +0100
+Message-ID: <87mswd6zi5.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="GC2fEEXV/WYEMTkw"
-Content-Disposition: inline
-In-Reply-To: <20231018233134.1594292-1-richard.henderson@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,30 +95,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
---GC2fEEXV/WYEMTkw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+While updating QEMU's debian-all-test-cross docker image to bookworm I
+found "check-tcg" broke for alpha. The docker image is essentially a
+slim debian image with minimal qemu build deps and all the cross
+compilers Debian packages that support a QEMU guest.
 
-Applied, thanks.
+Digging into the failure it was pretty early on in start-up code:
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+  (gdb) x/5i $pc
+  =3D> 0x12003e370 <__ctype_init+48>:       ldq     t0,0(t0)
+     0x12003e374 <__ctype_init+52>:       ldq     t4,56(t0)
+     0x12003e378 <__ctype_init+56>:       ldq     t2,64(t0)
+     0x12003e37c <__ctype_init+60>:       ldq     t0,80(t0)
+     0x12003e380 <__ctype_init+64>:       lda     t4,256(t4)
+  (gdb) p/x $t0
+  $1 =3D 0x0
 
---GC2fEEXV/WYEMTkw
-Content-Type: application/pgp-signature; name="signature.asc"
+which looks like TLS is very broken on static builds. Chatting with
+Peter and Adhemerval pointed me to:
 
------BEGIN PGP SIGNATURE-----
+  https://lists.debian.org/debian-alpha/2023/01/msg00020.html
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUxeqUACgkQnKSrs4Gr
-c8h9qQgAjdsMIleSG/lorHqj1VAk+3iq/LyJopbWf3OCiW2EULlN6SsRw2PKPO5m
-mksNfjd5FWVssY2xCXoiTiachbXSqU/j0bB7ublCMpO4qhxRpHLxuOvCY1S1443i
-o+9KQp8B3CQnvK8tdMXdViQi0EQIMi5SZm/EDnSD7CgbqJcGbq59W4sH8K7J738b
-5e1cDXWAM6Z3lIIzSMlAzj6DaTXI5od4J8a5gCqDRZa4H1GbsAo34fZoP7h7PeWm
-Nb3O5OmMWb8pUPcGAvhR+uevdSHKcpFySzb5r9xZ2B/P3FWYSshtV9Osh79myJ0y
-mf2L9Gk15YEG7MvJ3VjFzreK72xw7A==
-=6dho
------END PGP SIGNATURE-----
+which has been merged into glibc. However I can't work out if its in the
+bookwork packages. I suspect not because I ran a test where I bumped
+debian-all-test-cross to trixie (which ships 2.37-3cross1) and alpha
+passes check-tcg. However I'm not sure how to navigate the
+cross-toolchain-base-ports-62 to work out if the fix is in. The upstream
+doesn't have any stable release tags beyond glibc-2.36.
 
---GC2fEEXV/WYEMTkw--
+In the release/2.36/master branch the fix is:
 
+  d5aaece8a3 elf: Fix GL(dl_phdr) and GL(dl_phnum) for static builds [BZ #2=
+9864]
+
+So to summarise:
+
+  - what does Debian's 2.36-8cross1 map to on the release branch?
+  - if it doesn't include the above commit can we get a newer release
+    with a fix?
+
+Thanks,
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
