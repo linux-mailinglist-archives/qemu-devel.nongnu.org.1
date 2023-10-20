@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C7D7D17A4
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A72B7D17A5
 	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:56:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwLr-0007oi-6S; Fri, 20 Oct 2023 16:44:11 -0400
+	id 1qtwLr-0007p3-TL; Fri, 20 Oct 2023 16:44:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLN-0007hh-Pp
+ id 1qtwLO-0007hp-29
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:42 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLM-00088k-53
+ id 1qtwLM-00088x-Hl
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:41 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6be0277c05bso1102452b3a.0
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:39 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6b77ab73c6fso996538b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697834618; x=1698439418; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697834619; x=1698439419; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mNZMizemvrujc4XnqyNiXy5WpOSPf3XvMMBFfWR0das=;
- b=RnmRBdrI+h5w9HRYz5jsc0pzZA+pd/07bKZNk8Au1qN48sQiBy5lFCgv9e/RtuLL1q
- GiEs+2tuuz1a8ncXaT2Cq23IvAFsJlYVKN/g0vQiPh6YDH9HsHucPG8y8Ar5D9NAJjbF
- MoIVwKnFUx5adszealubgwGKkZ6+U9ZEVqqRv98m776tw60lSouaS52qEMg8II1i1Hrj
- FhHDoKS356gCCWuigb3/G7XeHUa44lhWBJ7cfoUvt5m2Ddatygycs4EePh4iGrV6qRHP
- NrGPtQ8L0E13C1V+tO5PgLaa0372IWgR0JkylgTmYtRi6eXWVatAkknXLewv0fND5moa
- c1/g==
+ bh=F2CpBYHyN5WTjKAnF9eC52gwF9DPW7ui+s7AIy3W9Zs=;
+ b=pImwqOd/1AE+NzS0DLx3mHVnCxK6ZP0NwiA/mCv3t17g7qVml1OWE3lVM8p31Gqfcz
+ RNw3nIydILK45fDD3/HdX1bKHR8gTSsNHs72YBcIrv3JBZe9E+v/LFTClVUxkVHQ2Csk
+ PuA4gsvhqS/dWK2SSmTIFQIBS3bg5QuLlRLJ+If/HvRVORf1iEs2Z2rsv+xBofbhf7wv
+ PYb9RNqxpzK9VFlubISvOq+9oXmXlE/oTRBr6SKA5pAzcSulf4cDMXpiet7ZBqTDEA+I
+ UpUhJ5HbH13/HrNofDVZHTzZl2rD9MsC3gp91Fbam4JW8ZA+JQtREvfSB9pS9AvZNCAz
+ QUFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697834618; x=1698439418;
+ d=1e100.net; s=20230601; t=1697834619; x=1698439419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mNZMizemvrujc4XnqyNiXy5WpOSPf3XvMMBFfWR0das=;
- b=qyTcaXOfhuDSQQXn0C3g4v1x/7jngbDGdcNQ2kz3tCK9ZX0aCCZn/ENeq2cs4V6BOD
- TOl4ltFaN5Xkx/hk22oWWD3MJXYqWSmfyG40pZXZaTpFL05J8RHYMfQJY9oAZSAOuaj7
- V5THhE6i5LtwZBQgiZC16qeGXt+ZkYGsOgJeBGBgUgjdi41qnkK+yA3GGzkezbXbB68M
- lrW1FZT2JEmcDwASPpZ52EfrS9hJfEQJHm9hL1hMqAzXttaFE999cBvUYenGhVsu9Q1A
- Fjfo/Q1PLpGfKviXO1x+eO8w4+3dq5INb6+hN9YSY8yDMMFOUlj587SwxDP+k+723ocs
- encQ==
-X-Gm-Message-State: AOJu0YyHbqR59Y7f+Ot2NLhZ0q6yHGNJsHhDv96/FdXuBeZl7RRyuDyS
- PgP/R5SrFydDoe+Rc7UaHOBuWI0oY+azrmcSRsc=
-X-Google-Smtp-Source: AGHT+IE6Vhd2w20Jgcz08xYJXysD2LbJdnbS3UYmvCXAC4bSjDKOBqG6maCGRz6NWoASekZRP/3T9w==
-X-Received: by 2002:a05:6a20:728c:b0:15a:836:7239 with SMTP id
- o12-20020a056a20728c00b0015a08367239mr3260263pzk.11.1697834618352; 
- Fri, 20 Oct 2023 13:43:38 -0700 (PDT)
+ bh=F2CpBYHyN5WTjKAnF9eC52gwF9DPW7ui+s7AIy3W9Zs=;
+ b=k8yoeXCw0135Dd8F3zSbRrEx6KKClkY9EnmR2d58fOjxeOu7yv4Ehfy32RgVNT6FM/
+ YvdS8x0lLxsKRB6sz04OnVhbYJlhCK4C2q6T2yj13/Lo6befUTArtbfRVdPoOg2IeWx2
+ K43gngya7my5l4HjgxbyMrWr+LEEyr9eiIaZOSVMZ67LervQPSQplMFBPxaM/kOOdqK+
+ Ez6S3A39Y+dePzPqHmASeoUqYLTtz0Pdoce5Hgb7G4MFSZm6BU5KN+rwZKWj7R178jGr
+ HlTqp75wM2zj0+qBYRNNOZPHeAP86ComH7GEbtsTxiqsKtWwrUbdEOtAwmrU2ITb246h
+ SqLg==
+X-Gm-Message-State: AOJu0Yw6Nig2rdPC5oKwLPuU//HI2wgiVOSAS+hQwqYqAXQfmW+BnHKu
+ BbgKnF+6wYuUglkpDgiCKmjqc+uq6v7hT0DpDOM=
+X-Google-Smtp-Source: AGHT+IEqQBT19IfyxEpHrXEOQWDaeUwU2zYKqePB6v8fSQ/dl2zjLW4Um2fXcK5zBMzuzjqJmYVsKg==
+X-Received: by 2002:a05:6a20:144c:b0:159:e4ab:15ce with SMTP id
+ a12-20020a056a20144c00b00159e4ab15cemr4053103pzi.15.1697834619119; 
+ Fri, 20 Oct 2023 13:43:39 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.37
+ k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:43:37 -0700 (PDT)
+ Fri, 20 Oct 2023 13:43:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 05/65] target/hppa: Remove load_const
-Date: Fri, 20 Oct 2023 13:42:31 -0700
-Message-Id: <20231020204331.139847-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 06/65] target/hppa: Fix hppa64 case in machine.c
+Date: Fri, 20 Oct 2023 13:42:32 -0700
+Message-Id: <20231020204331.139847-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,94 +90,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace with tcg_constant_reg.
+Typo of VMSTATE_UINTTR_V and VMSTATE_UINTTR_ARRAY_V macros.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ target/hppa/machine.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 5302381a56..21f97f63a9 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -488,13 +488,6 @@ static void cond_free(DisasCond *cond)
-     }
- }
- 
--static TCGv_reg load_const(DisasContext *ctx, target_sreg v)
--{
--    TCGv_reg t = tcg_temp_new();
--    tcg_gen_movi_reg(t, v);
--    return t;
--}
--
- static TCGv_reg load_gpr(DisasContext *ctx, unsigned reg)
- {
-     if (reg == 0) {
-@@ -1164,7 +1157,7 @@ static bool do_add_imm(DisasContext *ctx, arg_rri_cf *a,
-     if (a->cf) {
-         nullify_over(ctx);
-     }
--    tcg_im = load_const(ctx, a->i);
-+    tcg_im = tcg_constant_reg(a->i);
-     tcg_r2 = load_gpr(ctx, a->r);
-     do_add(ctx, a->t, tcg_im, tcg_r2, 0, 0, is_tsv, is_tc, 0, a->cf);
-     return nullify_end(ctx);
-@@ -1253,7 +1246,7 @@ static bool do_sub_imm(DisasContext *ctx, arg_rri_cf *a, bool is_tsv)
-     if (a->cf) {
-         nullify_over(ctx);
-     }
--    tcg_im = load_const(ctx, a->i);
-+    tcg_im = tcg_constant_reg(a->i);
-     tcg_r2 = load_gpr(ctx, a->r);
-     do_sub(ctx, a->t, tcg_im, tcg_r2, is_tsv, 0, 0, a->cf);
-     return nullify_end(ctx);
-@@ -2808,7 +2801,7 @@ static bool trans_cmpiclr(DisasContext *ctx, arg_rri_cf *a)
-         nullify_over(ctx);
-     }
- 
--    tcg_im = load_const(ctx, a->i);
-+    tcg_im = tcg_constant_reg(a->i);
-     tcg_r2 = load_gpr(ctx, a->r);
-     do_cmpclr(ctx, a->t, tcg_im, tcg_r2, a->cf);
- 
-@@ -2994,7 +2987,7 @@ static bool trans_cmpb(DisasContext *ctx, arg_cmpb *a)
- static bool trans_cmpbi(DisasContext *ctx, arg_cmpbi *a)
- {
-     nullify_over(ctx);
--    return do_cmpb(ctx, a->r, load_const(ctx, a->i), a->c, a->f, a->n, a->disp);
-+    return do_cmpb(ctx, a->r, tcg_constant_reg(a->i), a->c, a->f, a->n, a->disp);
- }
- 
- static bool do_addb(DisasContext *ctx, unsigned r, TCGv_reg in1,
-@@ -3033,7 +3026,7 @@ static bool trans_addb(DisasContext *ctx, arg_addb *a)
- static bool trans_addbi(DisasContext *ctx, arg_addbi *a)
- {
-     nullify_over(ctx);
--    return do_addb(ctx, a->r, load_const(ctx, a->i), a->c, a->f, a->n, a->disp);
-+    return do_addb(ctx, a->r, tcg_constant_reg(a->i), a->c, a->f, a->n, a->disp);
- }
- 
- static bool trans_bb_sar(DisasContext *ctx, arg_bb_sar *a)
-@@ -3345,7 +3338,7 @@ static bool trans_depwi_sar(DisasContext *ctx, arg_depwi_sar *a)
-     if (a->c) {
-         nullify_over(ctx);
-     }
--    return do_depw_sar(ctx, a->t, a->c, a->nz, a->clen, load_const(ctx, a->i));
-+    return do_depw_sar(ctx, a->t, a->c, a->nz, a->clen, tcg_constant_reg(a->i));
- }
- 
- static bool trans_be(DisasContext *ctx, arg_be *a)
-@@ -3852,7 +3845,7 @@ static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
-             return true;
-         }
-         if (inv) {
--            TCGv_reg c = load_const(ctx, mask);
-+            TCGv_reg c = tcg_constant_reg(mask);
-             tcg_gen_or_reg(t, t, c);
-             ctx->null_cond = cond_make(TCG_COND_EQ, t, c);
-         } else {
+diff --git a/target/hppa/machine.c b/target/hppa/machine.c
+index 905991d7f9..0c0bba68c0 100644
+--- a/target/hppa/machine.c
++++ b/target/hppa/machine.c
+@@ -24,9 +24,9 @@
+ #if TARGET_REGISTER_BITS == 64
+ #define qemu_put_betr   qemu_put_be64
+ #define qemu_get_betr   qemu_get_be64
+-#define VMSTATE_UINTTL_V(_f, _s, _v) \
++#define VMSTATE_UINTTR_V(_f, _s, _v) \
+     VMSTATE_UINT64_V(_f, _s, _v)
+-#define VMSTATE_UINTTL_ARRAY_V(_f, _s, _n, _v) \
++#define VMSTATE_UINTTR_ARRAY_V(_f, _s, _n, _v) \
+     VMSTATE_UINT64_ARRAY_V(_f, _s, _n, _v)
+ #else
+ #define qemu_put_betr   qemu_put_be32
 -- 
 2.34.1
 
