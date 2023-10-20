@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B2F7D0B21
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 281D07D0B30
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:11:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlUh-0003b8-S1; Fri, 20 Oct 2023 05:08:35 -0400
+	id 1qtlUm-0004Cz-Fm; Fri, 20 Oct 2023 05:08:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlU9-0003By-Pr
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:06 -0400
+ id 1qtlUV-0003U9-CI
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlU2-0005DR-5t
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:07:56 -0400
+ id 1qtlUQ-0005G9-KP
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697792873;
+ s=mimecast20190719; t=1697792890;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1i/vjvPSsjx/12IINAKkf0zhBDFoSfjtGxqHNz9eHic=;
- b=eQS4R8YVBqR34StOOyajDmChmQ+vbx/Pdpeq1Cf9SdR5gz7ioIjJZtZJVjnE0KiSZ0AD+f
- oVfT5L/Ws+ryXD7HHP3YJ5oYiP6wy2gh4KfYsTXwBLsdca83+UpPEp6CXmxh198EOK8HNj
- U8OBiIAYCqx8ZJgQG38di0thisnDU/4=
+ bh=3xBo/mKNO9gsqJTQsAlkJDwZHHQKx0WUD9WZ+VD3gI4=;
+ b=iTcOkvQhTNwoioqtyLkUX0jhx2WiEojOMWjBz/WzSDo6lcEUqcDaoUou/8QuRYIUOmrgzn
+ gFUA6FvPPNQQaf0J8O1CwmShhKm9PM3fNMbqLye//wfyUFMAAWZ02zNMo1YuhrBGt9VoPP
+ QCVTMsecrIu0vh8PYT3k5l2IQdja948=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-205-9_qzrGGVMOCg3o3n4mgFUw-1; Fri, 20 Oct 2023 05:07:50 -0400
-X-MC-Unique: 9_qzrGGVMOCg3o3n4mgFUw-1
+ us-mta-331-mleJ7PrONoqy3ZRNbJYDdw-1; Fri, 20 Oct 2023 05:07:55 -0400
+X-MC-Unique: mleJ7PrONoqy3ZRNbJYDdw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 938BC8F46E3;
- Fri, 20 Oct 2023 09:07:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 144A2185A790;
+ Fri, 20 Oct 2023 09:07:54 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 64A922166B2A;
- Fri, 20 Oct 2023 09:07:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DBDCD2166B26;
+ Fri, 20 Oct 2023 09:07:48 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,9 +68,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Stefan Weil <sw@weilnetz.de>, Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH v2 02/13] migration: Use vmstate_register_any()
-Date: Fri, 20 Oct 2023 11:07:20 +0200
-Message-ID: <20231020090731.28701-3-quintela@redhat.com>
+Subject: [PATCH v2 03/13] migration: Use vmstate_register_any() for isa-ide
+Date: Fri, 20 Oct 2023 11:07:21 +0200
+Message-ID: <20231020090731.28701-4-quintela@redhat.com>
 In-Reply-To: <20231020090731.28701-1-quintela@redhat.com>
 References: <20231020090731.28701-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -100,172 +100,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This are the easiest cases, where we were already using
-VMSTATE_INSTANCE_ID_ANY.
+Otherwise qom-test fails.
+
+ok 4 /i386/qom/x-remote
+qemu-system-i386: savevm_state_handler_insert: Detected duplicate SaveStateEntry: id=isa-ide, instance_id=0x0
+Broken pipe
+../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
+Aborted (core dumped)
+$
 
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- backends/dbus-vmstate.c     | 3 +--
- backends/tpm/tpm_emulator.c | 3 +--
- hw/i2c/core.c               | 2 +-
- hw/input/adb.c              | 2 +-
- hw/input/ads7846.c          | 2 +-
- hw/input/stellaris_input.c  | 3 +--
- hw/net/eepro100.c           | 3 +--
- hw/pci/pci.c                | 2 +-
- hw/ppc/spapr_nvdimm.c       | 3 +--
- hw/timer/arm_timer.c        | 2 +-
- hw/virtio/virtio-mem.c      | 4 ++--
- 11 files changed, 12 insertions(+), 17 deletions(-)
+ hw/ide/isa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/backends/dbus-vmstate.c b/backends/dbus-vmstate.c
-index 57369ec0f2..a9d8cb0acd 100644
---- a/backends/dbus-vmstate.c
-+++ b/backends/dbus-vmstate.c
-@@ -426,8 +426,7 @@ dbus_vmstate_complete(UserCreatable *uc, Error **errp)
-         return;
-     }
- 
--    if (vmstate_register(VMSTATE_IF(self), VMSTATE_INSTANCE_ID_ANY,
--                         &dbus_vmstate, self) < 0) {
-+    if (vmstate_register_any(VMSTATE_IF(self), &dbus_vmstate, self) < 0) {
-         error_setg(errp, "Failed to register vmstate");
-     }
+diff --git a/hw/ide/isa.c b/hw/ide/isa.c
+index 95053e026f..ea60c08116 100644
+--- a/hw/ide/isa.c
++++ b/hw/ide/isa.c
+@@ -73,7 +73,7 @@ static void isa_ide_realizefn(DeviceState *dev, Error **errp)
+     ide_bus_init(&s->bus, sizeof(s->bus), dev, 0, 2);
+     ide_init_ioport(&s->bus, isadev, s->iobase, s->iobase2);
+     ide_bus_init_output_irq(&s->bus, isa_get_irq(isadev, s->irqnum));
+-    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_isa, s);
++    vmstate_register_any(VMSTATE_IF(dev), &vmstate_ide_isa, s);
+     ide_bus_register_restart_cb(&s->bus);
  }
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index 402a2d6312..8920b75251 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -978,8 +978,7 @@ static void tpm_emulator_inst_init(Object *obj)
-         qemu_add_vm_change_state_handler(tpm_emulator_vm_state_change,
-                                          tpm_emu);
- 
--    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
--                     &vmstate_tpm_emulator, obj);
-+    vmstate_register_any(NULL, &vmstate_tpm_emulator, obj);
- }
- 
- /*
-diff --git a/hw/i2c/core.c b/hw/i2c/core.c
-index bed594fe59..879a1d45cb 100644
---- a/hw/i2c/core.c
-+++ b/hw/i2c/core.c
-@@ -64,7 +64,7 @@ I2CBus *i2c_init_bus(DeviceState *parent, const char *name)
-     bus = I2C_BUS(qbus_new(TYPE_I2C_BUS, parent, name));
-     QLIST_INIT(&bus->current_devs);
-     QSIMPLEQ_INIT(&bus->pending_masters);
--    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_i2c_bus, bus);
-+    vmstate_register_any(NULL, &vmstate_i2c_bus, bus);
-     return bus;
- }
- 
-diff --git a/hw/input/adb.c b/hw/input/adb.c
-index 214ae6f42b..8aed0da2cd 100644
---- a/hw/input/adb.c
-+++ b/hw/input/adb.c
-@@ -247,7 +247,7 @@ static void adb_bus_realize(BusState *qbus, Error **errp)
-     adb_bus->autopoll_timer = timer_new_ms(QEMU_CLOCK_VIRTUAL, adb_autopoll,
-                                            adb_bus);
- 
--    vmstate_register(NULL, -1, &vmstate_adb_bus, adb_bus);
-+    vmstate_register_any(NULL, &vmstate_adb_bus, adb_bus);
- }
- 
- static void adb_bus_unrealize(BusState *qbus)
-diff --git a/hw/input/ads7846.c b/hw/input/ads7846.c
-index dc0998ac79..91116c6bdb 100644
---- a/hw/input/ads7846.c
-+++ b/hw/input/ads7846.c
-@@ -158,7 +158,7 @@ static void ads7846_realize(SSIPeripheral *d, Error **errp)
- 
-     ads7846_int_update(s);
- 
--    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_ads7846, s);
-+    vmstate_register_any(NULL, &vmstate_ads7846, s);
- }
- 
- static void ads7846_class_init(ObjectClass *klass, void *data)
-diff --git a/hw/input/stellaris_input.c b/hw/input/stellaris_input.c
-index e6ee5e11f1..a58721c8cd 100644
---- a/hw/input/stellaris_input.c
-+++ b/hw/input/stellaris_input.c
-@@ -88,6 +88,5 @@ void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode)
-     }
-     s->num_buttons = n;
-     qemu_add_kbd_event_handler(stellaris_gamepad_put_key, s);
--    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
--                     &vmstate_stellaris_gamepad, s);
-+    vmstate_register_any(NULL, &vmstate_stellaris_gamepad, s);
- }
-diff --git a/hw/net/eepro100.c b/hw/net/eepro100.c
-index dc07984ae9..94ce9e18ff 100644
---- a/hw/net/eepro100.c
-+++ b/hw/net/eepro100.c
-@@ -1883,8 +1883,7 @@ static void e100_nic_realize(PCIDevice *pci_dev, Error **errp)
- 
-     s->vmstate = g_memdup(&vmstate_eepro100, sizeof(vmstate_eepro100));
-     s->vmstate->name = qemu_get_queue(s->nic)->model;
--    vmstate_register(VMSTATE_IF(&pci_dev->qdev), VMSTATE_INSTANCE_ID_ANY,
--                     s->vmstate, s);
-+    vmstate_register_any(VMSTATE_IF(&pci_dev->qdev), s->vmstate, s);
- }
- 
- static void eepro100_instance_init(Object *obj)
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index b0d21bf43a..294c3c38ea 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -147,7 +147,7 @@ static void pci_bus_realize(BusState *qbus, Error **errp)
-     bus->machine_done.notify = pcibus_machine_done;
-     qemu_add_machine_init_done_notifier(&bus->machine_done);
- 
--    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_pcibus, bus);
-+    vmstate_register_any(NULL, &vmstate_pcibus, bus);
- }
- 
- static void pcie_bus_realize(BusState *qbus, Error **errp)
-diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
-index b2f009c816..ad7afe7544 100644
---- a/hw/ppc/spapr_nvdimm.c
-+++ b/hw/ppc/spapr_nvdimm.c
-@@ -876,8 +876,7 @@ static void spapr_nvdimm_realize(NVDIMMDevice *dimm, Error **errp)
-         s_nvdimm->hcall_flush_required = true;
-     }
- 
--    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
--                     &vmstate_spapr_nvdimm_states, dimm);
-+    vmstate_register_any(NULL, &vmstate_spapr_nvdimm_states, dimm);
- }
- 
- static void spapr_nvdimm_unrealize(NVDIMMDevice *dimm)
-diff --git a/hw/timer/arm_timer.c b/hw/timer/arm_timer.c
-index 69c8863472..9afe8da831 100644
---- a/hw/timer/arm_timer.c
-+++ b/hw/timer/arm_timer.c
-@@ -181,7 +181,7 @@ static arm_timer_state *arm_timer_init(uint32_t freq)
-     s->control = TIMER_CTRL_IE;
- 
-     s->timer = ptimer_init(arm_timer_tick, s, PTIMER_POLICY_LEGACY);
--    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_arm_timer, s);
-+    vmstate_register_any(NULL, &vmstate_arm_timer, s);
-     return s;
- }
- 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 9dc3c61b5a..a5ea3be414 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -1119,8 +1119,8 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
-     host_memory_backend_set_mapped(vmem->memdev, true);
-     vmstate_register_ram(&vmem->memdev->mr, DEVICE(vmem));
-     if (vmem->early_migration) {
--        vmstate_register(VMSTATE_IF(vmem), VMSTATE_INSTANCE_ID_ANY,
--                         &vmstate_virtio_mem_device_early, vmem);
-+        vmstate_register_any(VMSTATE_IF(vmem),
-+                             &vmstate_virtio_mem_device_early, vmem);
-     }
-     qemu_register_reset(virtio_mem_system_reset, vmem);
  
 -- 
 2.41.0
