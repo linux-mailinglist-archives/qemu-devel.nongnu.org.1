@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC85B7D100D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 14:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A98C7D100C
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 14:58:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtp4R-0001r3-P1; Fri, 20 Oct 2023 08:57:43 -0400
+	id 1qtp4l-000267-It; Fri, 20 Oct 2023 08:58:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtp4O-0001ps-Ol
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:57:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtp4d-00023e-Ty
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:57:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtp4N-0003C6-3F
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:57:40 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtp4W-0003Lj-Vl
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:57:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697806658;
+ s=mimecast20190719; t=1697806667;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=8xnr61vkCiU8hEDDEYbuPtJzxWEesy4Nxz1kN2OVVKg=;
- b=eGHRiQZcnEt6mRRk3XsY4QhcK8Bo/QC/n5OD6Ph2FPe47WHO+HYjUf1SvA4RwzdwFIADGw
- lrCZ8TE1CA+80wi20k7bhGb2C/CXNg6G/jsHMsE13MG5YUmr0aJvInDsNJk3M0E9l2cugV
- UTSKS+6arEnDUmdMxUAFA1ziUOV8voM=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=j7d6/TDtpiHkxOz2wUVnlSf3kuJnT2Yu2Dp1B0ebjH4=;
+ b=Mjp7bDMvPGjKQ294Kna8Fdt+bLI1xvG2ym0uvrQy297jU5noxFJK8VFMRTiQ+4pymAipxL
+ AakjPW80oM2kkEeuZSo9IOiqz+32EzLcP/nIMGl+FqMTO2s+DI5ubfFIjrYeVUhe7ZeUj8
+ tAU1cZ/PfTEnCeKPQ0UalrgiAv0xJOE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-86-aYUCRN_HMou2gttdhaHv9A-1; Fri, 20 Oct 2023 08:57:31 -0400
-X-MC-Unique: aYUCRN_HMou2gttdhaHv9A-1
+ us-mta-551-f0Dkc9yBM--Es0M2qvdxgw-1; Fri, 20 Oct 2023 08:57:33 -0400
+X-MC-Unique: f0Dkc9yBM--Es0M2qvdxgw-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5082C2810D6D;
- Fri, 20 Oct 2023 12:57:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B3A73C0F694;
+ Fri, 20 Oct 2023 12:57:33 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.54])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C1089503B;
- Fri, 20 Oct 2023 12:57:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 94F27503B;
+ Fri, 20 Oct 2023 12:57:31 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>
@@ -46,22 +47,24 @@ Cc: qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
  David Hildenbrand <david@redhat.com>,
  Claudio Imbrenda <imbrenda@linux.ibm.com>,
  Juan Quintela <quintela@redhat.com>
-Subject: [PATCH 0/3] hw/s390x: Don't call register_savevm_live() during
- instance_init()
-Date: Fri, 20 Oct 2023 14:57:25 +0200
-Message-ID: <20231020125728.579747-1-thuth@redhat.com>
+Subject: [PATCH 1/3] hw/s390x/s390-skeys: Don't call register_savevm_live()
+ during instance_init()
+Date: Fri, 20 Oct 2023 14:57:26 +0200
+Message-ID: <20231020125728.579747-2-thuth@redhat.com>
+In-Reply-To: <20231020125728.579747-1-thuth@redhat.com>
+References: <20231020125728.579747-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,23 +80,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We must not call register_savevm_live() during instance_init()
-since instances can be created at any time, e.g. during introspection
-of a device. We must register the savevm handler during realize()
-instead. Fix it now in the s390x devices.
+Since the instance_init() function immediately tries to set the
+property to "true", the s390_skeys_set_migration_enabled() tries
+to register a savevm handler during instance_init(). However,
+instance_init() functions can be called multiple times, e.g. for
+introspection of devices. That means multiple instances of devices
+can be created during runtime (which is fine as long as they all
+don't get realized, too), so the "Prevent double registration of
+savevm handler" check in the s390_skeys_set_migration_enabled()
+function does not work at all as expected (since there could be
+more than one instance).
 
-Thomas Huth (3):
-  hw/s390x/s390-skeys: Don't call register_savevm_live() during
-    instance_init()
-  hw/s390x/s390-stattrib: Simplify handling of the "migration-enabled"
-    property
-  hw/s390x/s390-stattrib: Don't call register_savevm_live() during
-    instance_init()
+Thus we must not call register_savevm_live() from an instance_init()
+function at all. Move this to the realize() function instead. This
+way we can also get rid of the property getter and setter functions
+completely, simplifying the code along the way quite a bit.
 
- hw/s390x/s390-skeys.c    | 35 ++++++--------------------
- hw/s390x/s390-stattrib.c | 54 +++++++++++++++-------------------------
- 2 files changed, 28 insertions(+), 61 deletions(-)
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/s390x/s390-skeys.c | 35 ++++++++---------------------------
+ 1 file changed, 8 insertions(+), 27 deletions(-)
 
+diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
+index 5024faf411..8e9d9e41e8 100644
+--- a/hw/s390x/s390-skeys.c
++++ b/hw/s390x/s390-skeys.c
+@@ -12,6 +12,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
+ #include "hw/boards.h"
++#include "hw/qdev-properties.h"
+ #include "hw/s390x/storage-keys.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-misc-target.h"
+@@ -432,58 +433,38 @@ static int s390_storage_keys_load(QEMUFile *f, void *opaque, int version_id)
+     return ret;
+ }
+ 
+-static inline bool s390_skeys_get_migration_enabled(Object *obj, Error **errp)
+-{
+-    S390SKeysState *ss = S390_SKEYS(obj);
+-
+-    return ss->migration_enabled;
+-}
+-
+ static SaveVMHandlers savevm_s390_storage_keys = {
+     .save_state = s390_storage_keys_save,
+     .load_state = s390_storage_keys_load,
+ };
+ 
+-static inline void s390_skeys_set_migration_enabled(Object *obj, bool value,
+-                                            Error **errp)
++static void s390_skeys_realize(DeviceState *dev, Error **errp)
+ {
+-    S390SKeysState *ss = S390_SKEYS(obj);
+-
+-    /* Prevent double registration of savevm handler */
+-    if (ss->migration_enabled == value) {
+-        return;
+-    }
+-
+-    ss->migration_enabled = value;
++    S390SKeysState *ss = S390_SKEYS(dev);
+ 
+     if (ss->migration_enabled) {
+         register_savevm_live(TYPE_S390_SKEYS, 0, 1,
+                              &savevm_s390_storage_keys, ss);
+-    } else {
+-        unregister_savevm(VMSTATE_IF(ss), TYPE_S390_SKEYS, ss);
+     }
+ }
+ 
+-static void s390_skeys_instance_init(Object *obj)
+-{
+-    object_property_add_bool(obj, "migration-enabled",
+-                             s390_skeys_get_migration_enabled,
+-                             s390_skeys_set_migration_enabled);
+-    object_property_set_bool(obj, "migration-enabled", true, NULL);
+-}
++static Property s390_skeys_props[] = {
++    DEFINE_PROP_BOOL("migration-enabled", S390SKeysState, migration_enabled, true),
++};
+ 
+ static void s390_skeys_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+ 
+     dc->hotpluggable = false;
++    dc->realize = s390_skeys_realize;
++    device_class_set_props(dc, s390_skeys_props);
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+ }
+ 
+ static const TypeInfo s390_skeys_info = {
+     .name          = TYPE_S390_SKEYS,
+     .parent        = TYPE_DEVICE,
+-    .instance_init = s390_skeys_instance_init,
+     .instance_size = sizeof(S390SKeysState),
+     .class_init    = s390_skeys_class_init,
+     .class_size    = sizeof(S390SKeysClass),
 -- 
 2.41.0
 
