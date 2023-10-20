@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067307D208F
+	by mail.lfdr.de (Postfix) with ESMTPS id 126807D2090
 	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 03:04:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quMs9-0000ZE-Dn; Sat, 21 Oct 2023 21:03:17 -0400
+	id 1quMs9-0000Xt-3w; Sat, 21 Oct 2023 21:03:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quMs6-0000PS-O0
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:14 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1quMs7-0000T9-P0
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:15 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quMs5-0006ky-2K
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:14 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c9e072472bso13176765ad.2
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 18:03:12 -0700 (PDT)
+ id 1quMs6-0006lD-6T
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:15 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-5b837dc2855so1443022a12.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 18:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697936591; x=1698541391; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697936593; x=1698541393; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ohZho2OXubKsrxSmJRncIJsie51PfO2xP60hSp8Ncbw=;
- b=gtV7eS+9Ps5OKQ3lBAO1yH0idQqkxaTnntII3gQqHKZpQeOchIwFvme6drpemYB7Xy
- lrjupAMnQIaCg/qOPvTd9TA5op3l863gEM8R3toqIjwPbmyPMTiow3qpVCpv6v5niGCy
- SmuiZ0L+ns2gNofTVekrsWBv3SiM0pX7qBckXyfwgjh54FRpRsVCXw6w01+NS8iCQGjV
- JPmk+yslk8LDLCDIvMmmVKHItFcZv3zyWJntAnjjHmspqBSgkJWhBUgLbOg57xd1hdns
- YBxPJ/XiwgjpyU7OldXqNKpLfzZQ6sAXZ64o7CstYtg06QXCTmdBfhY4gHh+HoDJvmNL
- BPWA==
+ bh=y1WWu6RI/8kIYK8I70BRGyaj9oj5p14/0uTAY1l74vA=;
+ b=O/kqINYZnIZDmZGuNfgMPkxK8tAXT5SfSYEgFgmU6rECS71WhrFBtTZ2aGAVGa5Zqa
+ +JctumXFucpueLbWEZvpL6N5voj1TMJ3gaPiAXzgsW3HkJD/ntaR6muo1JNyEwH9KncK
+ QVgGrli+Q9g2kxni99zxe2GdPtLY9krHfm2nVaFgx1A2NEunk0cgOBAT8lBRqYuqt3xi
+ ud31E1eo6HtBudckVkoPw83VgNlLHmYO/S+rTvgl7F0/+Ffwj6aXedjriFikrWgRO6I3
+ XtWFHA3VXoqFjBPts1POwGwYrGs5OH1rh7J8bc3vcuS/NmUXxrMwg3+5YAv7e+Vb7i4P
+ +xsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697936591; x=1698541391;
+ d=1e100.net; s=20230601; t=1697936593; x=1698541393;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ohZho2OXubKsrxSmJRncIJsie51PfO2xP60hSp8Ncbw=;
- b=ZH6n6/lXcUsCFXdUWKbWPOSJTA+nBH8oTLpbhlZdDyRlztcZE65E98v1SwfHh95Jbg
- kll1OcqBKI20PgZvYQw+VH8/et9eY0OvGH1wW+1qitC/h3RmE1GJVgpXUcGU5fElEmYT
- v3O11wlRmaFM8Ywdm+ziL1P5Qt8vtaqRBJtXifT/hypAF3rr9gx9b2Ck47kUkRRsKnQD
- yCpTESgknezX0MNQ7Ks1YeNljsDbFIV1Bmx1PldWpxlZ/XsXCRumMagv8XZJLj/z+DR5
- vZbj5XUKgoduYf4qnm2ppD+BZSgq0mtHuf8cGBF0Y+z6KpvXj377kVbZVMVlJTcHmFvz
- Vl0w==
-X-Gm-Message-State: AOJu0Yww9E9tG5VZ5jGmDLCEnOaAhQla5ArnCarGe2uFRpvk7HYa2hM0
- lu1ylXaFmyZtiXThZ2BXhUBNDQ==
-X-Google-Smtp-Source: AGHT+IFvqrIPnJncCNBPD6boB31h/hE1STu1WvXgf7hBs+3jJxFmJDnwZmaOafMdWa7TYf8F2EEPQA==
-X-Received: by 2002:a17:902:e402:b0:1c9:ca02:645c with SMTP id
- m2-20020a170902e40200b001c9ca02645cmr3444877ple.36.1697936591303; 
- Sat, 21 Oct 2023 18:03:11 -0700 (PDT)
+ bh=y1WWu6RI/8kIYK8I70BRGyaj9oj5p14/0uTAY1l74vA=;
+ b=ednp8poxHgN2crzGBMtvrc4Tfu6AHNGUtb50tAJyWyVZ12kUZzrGwQNDlkPGueRzXw
+ Ht3l+uQAWD/qA2I+sP8sXdnT00z0BQbpjN4y/LKgRGbO4+eI3yRIpMQO7sJ4KB9qqNAf
+ mez0f54c4UvcgcUnVUg7nagoO9w3Oe8ngqD/EXN6x8/g8QtV42DM/eXZvZIvCsEOYSuF
+ pviG9IwawI3qtr0IFTJInSyycm4n/zUmozXKgmcrnOY+t5mGPC5ykKxfxwC1eUwZzBCU
+ LM4pneQx/NsZrinMS9LwgtDwmcOGQfI7o086YQlKi3HoTlblWuY3lp1rw7yKiOjUb9HQ
+ fIew==
+X-Gm-Message-State: AOJu0Yw8xUcwNEUNCvOMLUPpLSPNR4O2ypAs+iTc2SUi1/55TJXItGrY
+ yDYJD/bJtA2Kek2+R1VlRLJ3pQ==
+X-Google-Smtp-Source: AGHT+IEdiTLOI0BkKpAmct5Rj2NRTX59hT9x2Dhz2fWGTOccYZxHr5gm0g2nHWieEocROiHiN1he1Q==
+X-Received: by 2002:a17:902:e5cf:b0:1c9:dff1:6de7 with SMTP id
+ u15-20020a170902e5cf00b001c9dff16de7mr8383461plf.7.1697936592833; 
+ Sat, 21 Oct 2023 18:03:12 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- jb14-20020a170903258e00b001bc21222e34sm3704336plb.285.2023.10.21.18.03.10
+ jb14-20020a170903258e00b001bc21222e34sm3704336plb.285.2023.10.21.18.03.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 21 Oct 2023 18:03:10 -0700 (PDT)
-Message-ID: <63a90f1f-5db4-44df-abce-8ebe6a404076@linaro.org>
-Date: Fri, 20 Oct 2023 12:06:50 -0700
+ Sat, 21 Oct 2023 18:03:12 -0700 (PDT)
+Message-ID: <af5539ab-ecb1-483f-b96e-1604239a4e6e@linaro.org>
+Date: Fri, 20 Oct 2023 14:31:43 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] Allow user enable/disable LSX/LASX
+Subject: Re: [PATCH v3 0/9] hw/arm/pxa2xx: SysBus/QDev fixes
 Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: philmd@redhat.com, peter.maydell@linaro.org, eblake@redhat.com,
- armbru@redhat.com, maobibo@loongson.cn
-References: <20231020084925.3457084-1-gaosong@loongson.cn>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>, 
+ qemu-arm@nongnu.org
+References: <20231020130331.50048-1-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231020084925.3457084-1-gaosong@loongson.cn>
+In-Reply-To: <20231020130331.50048-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -7
 X-Spam_score: -0.8
 X-Spam_bar: /
@@ -94,35 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/20/23 01:49, Song Gao wrote:
+On 10/20/23 06:03, Philippe Mathieu-Daudé wrote:
+> Missing review: 6-9
+> 
 > Hi,
 > 
-> This series adds the cpu model 'max' support. and allow users
-> enable/disable LSX/LASX features.
+> Extracted from a bigger series which enforce QDev state machine
+> (qdev instance must be realized before external API is used on
+> it).
 > 
-> V3:
-> - Remove patch 2, add cpu feature flags;
-> - Remove unused code has_lsx, has_lasx.
+> While here, pxa2xx i2c/intc devices received some qdev fondness.
 > 
-> V2:
-> - Use qapi type OnOffAuto;
-> - Add patch2, add cpu feature flags;
-> - patch4: show more query results.
+> Since v3:
+> - Added Thomas R-b tags
 > 
+> Since v2:
+> - Fixed i2c_init_bus() call in pxa2xx_i2c_init() (new patch)
 > 
-> Song Gao (3):
->    target/loongarch: Add cpu model 'max'
->    target/loongarch: Allow user enable/disable LSX/LASX features
->    target/loongarch: Implement query-cpu-model-expansion
-> 
->   qapi/machine-target.json              |  6 ++-
->   target/loongarch/cpu.c                | 74 +++++++++++++++++++++++++++
->   target/loongarch/cpu.h                |  2 +
->   target/loongarch/loongarch-qmp-cmds.c | 64 +++++++++++++++++++++++
->   4 files changed, 144 insertions(+), 2 deletions(-)
-> 
+> Philippe Mathieu-Daudé (9):
+>    hw/sd/pxa2xx: Realize sysbus device before accessing it
+>    hw/sd/pxa2xx: Do not open-code sysbus_create_simple()
+>    hw/pcmcia/pxa2xx: Realize sysbus device before accessing it
+>    hw/pcmcia/pxa2xx: Do not open-code sysbus_create_simple()
+>    hw/pcmcia/pxa2xx: Inline pxa2xx_pcmcia_init()
+>    hw/intc/pxa2xx: Convert to Resettable interface
+>    hw/intc/pxa2xx: Pass CPU reference using QOM link property
+>    hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of pxa2xx_pic_init()
+>    hw/arm/pxa2xx: Realize PXA2XX_I2C device before accessing it
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
