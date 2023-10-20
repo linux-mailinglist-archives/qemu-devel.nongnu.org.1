@@ -2,103 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8EC7D1FD0
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 23:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E81E7D2092
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 03:04:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quJR1-0007xF-SJ; Sat, 21 Oct 2023 17:23:03 -0400
+	id 1quMs4-0000OM-OL; Sat, 21 Oct 2023 21:03:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1quJQz-0007ug-3m; Sat, 21 Oct 2023 17:23:01 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1quJQt-0006PC-Hg; Sat, 21 Oct 2023 17:23:00 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39LLEeVs025145; Sat, 21 Oct 2023 21:17:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=DLg3x7nUZtM/n5hj57h/ikKtd/YP4/mXwH4Ni5F0eIw=;
- b=tRUk0+iflhYd0s1n75tmorRyImJmzwV1QWgZdoAl6ZiAVrBjjeAFse7FKgb3F0NyvzAy
- 4owQnMlBKSRuGtChZCsUZWZmxmM1kXbSgDSTiwUd4nZ0zTFlY4NoSKkwm7XxqLloNyvX
- GKKJxxntMMOZEfmX6nmElTW/S4k0bDGWP4mJMZ1ZZ4MPtK2O9jIcqZ1EOd4Eb7HBxi0i
- oNgDaX1eYK2yOQOfm9LkcD3u3krPyW0gl/c9xQKXI7Y7TbxPL5Kn8L6shpADlXANs6ox
- u88noEwcxU20ZznitOj6ASQG5lu8xcwpcJBbquFHTo4qLF+m6iLZqtcr6UjFHqvKQVXU sw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvpcq81s0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 21 Oct 2023 21:17:29 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39LLFH2w027854;
- Sat, 21 Oct 2023 21:17:28 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvpcq81rr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 21 Oct 2023 21:17:28 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39LKPVmw007095; Sat, 21 Oct 2023 21:17:27 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc27wcat-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 21 Oct 2023 21:17:27 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39LLHRmg58982718
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 21 Oct 2023 21:17:27 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 584D358052;
- Sat, 21 Oct 2023 21:17:27 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE06B58065;
- Sat, 21 Oct 2023 21:17:26 +0000 (GMT)
-Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Sat, 21 Oct 2023 21:17:26 +0000 (GMT)
-From: Ninad Palsule <ninad@linux.ibm.com>
-To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
- andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, lvivier@redhat.com
-Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
-Subject: [PATCH v6 10/10] hw/fsi: Update MAINTAINER list
-Date: Sat, 21 Oct 2023 16:17:19 -0500
-Message-Id: <20231021211720.3571082-11-ninad@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231021211720.3571082-1-ninad@linux.ibm.com>
-References: <20231021211720.3571082-1-ninad@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1quMs2-0000OA-Kx
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:10 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1quMs1-0006kO-02
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:10 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6b36e1fcea0so1611458b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 18:03:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697936586; x=1698541386; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Viw3V9BmxIPUP4OzjfOAJwhqirsHsFg4WT303wKFZT8=;
+ b=Znz4ET9BGMZN2G3qy98uUIug4cKs6lFCoctCA0lviJ5Jq6IW7GPE9vU9Ci7ZKHvBdY
+ MdtMc63+l6ug1P98+Gn4HTvbDyl7ZjxY3HX5q/nU3LiO5hnlmWwkJnrUwH+Jr4JkSnGH
+ NXuh866y0swjacMtUZrralGFJiHvqJ4OWBjpuJEOq4kEVsmy+Mk2KUDaxOqzL4DznCPK
+ foFppcvawAhXA77ToYVcIXAjvm7fXc55WlSQhShdVvDb6WfbFiutU7MqQhnyOK0xK9u3
+ 9hQSVo9DuIiMFwmpGwnIrEl54NczwGmajVXDQmMdeDWzAqwzpkHChyiZO16T+jpB1XxS
+ OPHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697936586; x=1698541386;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Viw3V9BmxIPUP4OzjfOAJwhqirsHsFg4WT303wKFZT8=;
+ b=CUofo0Bw+xWhtLtZzU9GQPlZo3vz8O/3KUx9DUbSqSiv2QSHG4OoQbXRNN4tB65KvV
+ j5hkE1OiAo+IhCgdXF7Xfv1INqYHqvw5iFT/xxmTuFitSUIlqrGq76G022oZglHMV2jJ
+ tKCZGgZzGYENGGmUZu6c2NuyxbInxQLFD+AT7pi4dXXcAFT9SB6OMtdcAZhxu2PBto/c
+ ctF2xTWl98sU+fgFNWUKgjf1AhKmWGJxTjbNYM65UKuUEgsPaD7Px8dc8JvfApmYT/hB
+ Jks65u8TzKHudRlgnU/e6LL5HbdzQ0g7HIrn9VdX2imX0aUDwwZGAD2AE41dBK2pL9+/
+ 1fGg==
+X-Gm-Message-State: AOJu0YwDb3IaXN322ffHwlqSt0VFk28w7mvBY8koHiWEa8AOEPa56dvD
+ R2ChSkNSpPB/eHlFJbjayiEj3w==
+X-Google-Smtp-Source: AGHT+IGUPiO7A/qdvapP8Qhp77zvat9v1tkAJ/wKoMMF50CGYrk+rg5NhmR/zzgaTFr8myjBuVNDXw==
+X-Received: by 2002:a17:903:124e:b0:1c6:1ab1:93eb with SMTP id
+ u14-20020a170903124e00b001c61ab193ebmr4955768plh.17.1697936586414; 
+ Sat, 21 Oct 2023 18:03:06 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ jb14-20020a170903258e00b001bc21222e34sm3704336plb.285.2023.10.21.18.03.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 21 Oct 2023 18:03:05 -0700 (PDT)
+Message-ID: <1dd41410-3649-4f5f-9cf6-0e7c8b963f61@linaro.org>
+Date: Fri, 20 Oct 2023 08:50:50 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/5] hw/audio/pcspk: Inline pcspk_init()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-ppc@nongnu.org
+References: <20231020105447.43482-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231020105447.43482-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lRpdtGZ8DLDJm4ul_aktClCFGIxujuCq
-X-Proofpoint-GUID: d8IEImrCumNC9_8BU8rLUUgJYmw_7tCh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-21_13,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- mlxlogscore=918 lowpriorityscore=0 adultscore=0 mlxscore=0 spamscore=0
- clxscore=1015 priorityscore=1501 phishscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310210195
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,39 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added maintainer for IBM FSI model
+On 10/20/23 03:54, Philippe Mathieu-Daudé wrote:
+> Since v2:
+> - Propagate error in hw/i386/
+> 
+> Philippe Mathieu-Daudé (5):
+>    hw/i386/pc: Pass Error** argument to pc_basic_device_init()
+>    hw/i386/pc: Propagate error if HPET device creation failed
+>    hw/i386/pc: Inline legacy pcspk_init() in pc_basic_device_init()
+>    hw/isa/i82378: Inline legacy pcspk_init()
+>    hw/mips/jazz: Inline and remove legacy pcspk_init()
+> 
+>   include/hw/audio/pcspk.h | 10 ----------
+>   include/hw/i386/pc.h     |  5 +++--
+>   hw/i386/pc.c             | 17 +++++++++++++----
+>   hw/i386/pc_piix.c        |  2 +-
+>   hw/i386/pc_q35.c         |  2 +-
+>   hw/isa/i82378.c          |  7 ++++++-
+>   hw/mips/jazz.c           |  5 ++++-
+>   7 files changed, 28 insertions(+), 20 deletions(-)
+> 
 
-Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
----
-V4:
-  - Added separate commit for MAINTAINER change.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-V5:
-  - Use * instead of listing all files in dir
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7f9912baa0..381923c937 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3476,6 +3476,14 @@ F: tests/qtest/adm1272-test.c
- F: tests/qtest/max34451-test.c
- F: tests/qtest/isl_pmbus_vr-test.c
- 
-+FSI
-+M: Ninad Palsule <ninad@linux.ibm.com>
-+S: Maintained
-+F: hw/fsi/*
-+F: include/hw/fsi/*
-+F: docs/specs/fsi.rst
-+F: tests/qtest/fsi-test.c
-+
- Firmware schema specifications
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Daniel P. Berrange <berrange@redhat.com>
--- 
-2.39.2
-
+r~
 
