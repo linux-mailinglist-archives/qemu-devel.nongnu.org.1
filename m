@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDB87D144E
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D37BC7D1447
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtsVf-0003eZ-Jz; Fri, 20 Oct 2023 12:38:03 -0400
+	id 1qtsVd-0003VN-Ta; Fri, 20 Oct 2023 12:38:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVK-0003C5-Mq
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:37:47 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVY-0003J3-JA
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:37:58 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVG-0002UN-JX
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:37:41 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9bf86b77a2aso158840866b.0
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:37:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVN-0002WM-Ck
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:37:51 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-523100882f2so1512230a12.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:37:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697819856; x=1698424656; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697819863; x=1698424663; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z4zSU56YOB/kPm9j9X/WOBopNqbVDhMN21ij6wb+YZU=;
- b=nC4nxVkmIUF/RiOdg6XFUMMai707JJJLRu29GsLiUhzMoFyb6cAJw6nm7Cf3yCufYm
- WhzpuAaZt9mIRI0gCuL2fUUS4YTOfhbzsbiFRLB9WcYVkFUS5xILE7B0a84c3EN+f4tI
- GdEvnwtrhqkCo9EoJj6z3jeZCxVWbnlzmtV/8jG8cVzAKQ4IjmnZeymAY1FngTq1qyOY
- x0qLHD1If9ePbPnXv3735cHjl/ol+iigzDXGKqxAUtns0+GD2Iuvs7X3zuD+V8bopvBc
- sF7tvQQGJOqgsL9/7DG6CO3CMO7IvuSdIimez9Hw0XiCktpZSHuoR0c5NdnOy2i6T49j
- umCQ==
+ bh=lIfqIPgjXaT+HDThdwR33vMHRV/AQLZXNgmR/zi6+zY=;
+ b=szzuUPkKTNsnv2t0fwjExL1sKpkTOcPVMA6IXkOmzpnrB6qP9vnhOn1tVPm2tH9Liw
+ vVGMXVNacKwDSP0whtCMpIfFZqkPBvnUFAad1CMTSPI594iBY7OgGZ5ZNMGNa+soJ90o
+ PGPa53g1mBYrM7B4gPIQ7hVFQ53TnhSQHpZ8mKsjga5iiXngbpGjL60qLhTFOtzSVYYd
+ ZWoaejGs8uBW4T4b1C0kCuaMZXG3UlspHvg8iRbbTWMGSlApDQ0hmFhz7+u3JHN1norT
+ s1WTtyy7EaLtLqC1n48tEabRDjTNWRWc+Myh5KMWqdME90L4+B8kvSaJA0NypAluDTqA
+ 7zkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697819856; x=1698424656;
+ d=1e100.net; s=20230601; t=1697819863; x=1698424663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z4zSU56YOB/kPm9j9X/WOBopNqbVDhMN21ij6wb+YZU=;
- b=AzJGrwdVpBFCYvweXKkkD1j5e+ikALBOTcz0l68TxATr03gPIOkrs4Lj088tOhUuN5
- JiFV2b+ybQXE1kmgXcDcid4IrgdwbP3FvC1OZkqyTCqRn0Ewh2SXwpVZaej5rHS3Cin/
- huVYbUwCrUQceMv94CKzV5E+tsIkfjlb8mrofH6sxBLS54Lyz+Xb+Z3CBRNRwHGicR4/
- uG8zUGQEmAEuw8XwoIydIzbQTFKDhn//35oZe8upOhED3SVvuAnK6TtbMucCU6S5bdLB
- WDpbZ1e+7+c4aDuVVYD6Y0DfcDFDzJklWdXyyz/9UpJM4V/koUXN/YJ8K/zMx36gwJoo
- +uWw==
-X-Gm-Message-State: AOJu0YxJ0OXPBxMtFOXUX3fHY+nHC0DTI9oIvHDdxFxO42yYZD6dRBtY
- mYBdLPk+C91MTUtLs96SMphyODziijoPVbblB98=
-X-Google-Smtp-Source: AGHT+IFzE8rRAYRNGkxdtIkU8F15D+clgt+fZzmt2nFT9O/jx8yWn16j3wmMgA1YAJA0Zxgs4hb2Aw==
-X-Received: by 2002:a17:907:97c2:b0:9c5:45f8:c529 with SMTP id
- js2-20020a17090797c200b009c545f8c529mr1549786ejc.20.1697819855974; 
- Fri, 20 Oct 2023 09:37:35 -0700 (PDT)
+ bh=lIfqIPgjXaT+HDThdwR33vMHRV/AQLZXNgmR/zi6+zY=;
+ b=lBtkhvo/abPxmUQx1kQw8VgjeB3dY0rfLsLO4v2u9GV9EY8PXoE9iNlpQkaFvogiO/
+ Clj7TdFXUlCygoA+IFFJPF201aU8rKlyYQiFTKhDtgkA3XRHUAT7BZ9WVfB7MkiLiSxw
+ E6iMRxPR1kOujZKP3EJWkpxu1x04176zVyIWSeZd4+rmpLujIUSkr3u/l7M9LID7uw8M
+ oBl6AePu5J5b9Ouxmxg1x/9PVuZwXex34K0TAWwzDoEqV5sJsQOhRDSZYKGQmPecOJJn
+ nQUakeD3v8EBV8WkHTNJJDNmEFhhvba+NMQIubkWlIWmkhR/A528DraaJQpbyToQIaZJ
+ tTyg==
+X-Gm-Message-State: AOJu0YxeGseha8Fu/IcnTAPgkTIsE7tskUZPjv64xm4rcRXCuf184rE7
+ 3GxwrvbuxTONYZ/sBn4rK4/aGaiWmZ+VHf7JyV8=
+X-Google-Smtp-Source: AGHT+IHBVyZvw4f5Hs2t7cng9Y5f77G/O2sVJ7W2ZL6Q5XN2PZL/Jc6G4ofUIv4JkhfUQQT3G+9t1Q==
+X-Received: by 2002:a50:ab12:0:b0:530:7ceb:33c with SMTP id
+ s18-20020a50ab12000000b005307ceb033cmr1872603edc.4.1697819863159; 
+ Fri, 20 Oct 2023 09:37:43 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
  [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
- z15-20020a17090655cf00b0099bc038eb2bsm1782737ejp.58.2023.10.20.09.37.33
+ m14-20020a50ef0e000000b0053f0e4e0411sm1747279eds.76.2023.10.20.09.37.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Oct 2023 09:37:35 -0700 (PDT)
+ Fri, 20 Oct 2023 09:37:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -67,20 +67,22 @@ Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 06/19] cpus: Filter for target specific CPU (s390x)
-Date: Fri, 20 Oct 2023 18:36:28 +0200
-Message-ID: <20231020163643.86105-7-philmd@linaro.org>
+ Alistair Francis <Alistair.Francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH 07/19] cpus: Filter for target specific CPU (riscv)
+Date: Fri, 20 Oct 2023 18:36:29 +0200
+Message-ID: <20231020163643.86105-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231020163643.86105-1-philmd@linaro.org>
 References: <20231020163643.86105-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,46 +105,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enforce qemu_get_cpu() to return S390X CPUs in S390X specific files.
+Enforce qemu_get_cpu() to return RISCV CPUs in RISCV specific files.
 
 Mechanical change using the following coccinelle script:
 
   @@ expression index; @@
   -   qemu_get_cpu(index, NULL)
-  +   qemu_get_cpu(index, TYPE_S390_CPU)
+  +   qemu_get_cpu(index, TYPE_RISCV_CPU)
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/s390x/ipl.c             | 2 +-
- hw/s390x/s390-virtio-ccw.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/intc/sifive_plic.c | 2 +-
+ hw/riscv/boot.c       | 2 +-
+ hw/riscv/opentitan.c  | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index 14cd0a1f7b..377f43416c 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -671,7 +671,7 @@ void s390_ipl_get_reset_request(CPUState **cs, enum s390_reset *reset_type)
- {
-     S390IPLState *ipl = get_ipl_device();
+diff --git a/hw/intc/sifive_plic.c b/hw/intc/sifive_plic.c
+index 3e2534ac04..ea0e7af16e 100644
+--- a/hw/intc/sifive_plic.c
++++ b/hw/intc/sifive_plic.c
+@@ -499,7 +499,7 @@ DeviceState *sifive_plic_create(hwaddr addr, char *hart_config,
  
--    *cs = qemu_get_cpu(ipl->reset_cpu_index, NULL);
-+    *cs = qemu_get_cpu(ipl->reset_cpu_index, TYPE_S390_CPU);
-     if (!*cs) {
-         /* use any CPU */
-         *cs = first_cpu;
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 7628b746a8..3bb4b13c5e 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -583,7 +583,7 @@ static HotplugHandler *s390_get_hotplug_handler(MachineState *machine,
+     for (i = 0; i < plic->num_addrs; i++) {
+         int cpu_num = plic->addr_config[i].hartid;
+-        CPUState *cpu = qemu_get_cpu(cpu_num, NULL);
++        CPUState *cpu = qemu_get_cpu(cpu_num, TYPE_RISCV_CPU);
  
- static void s390_nmi(NMIState *n, int cpu_index, Error **errp)
- {
--    CPUState *cs = qemu_get_cpu(cpu_index, NULL);
-+    CPUState *cs = qemu_get_cpu(cpu_index, TYPE_S390_CPU);
+         if (plic->addr_config[i].mode == PLICMode_M) {
+             qdev_connect_gpio_out(dev, cpu_num - hartid_base + num_harts,
+diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+index ea733b3df1..1d004660d4 100644
+--- a/hw/riscv/boot.c
++++ b/hw/riscv/boot.c
+@@ -49,7 +49,7 @@ char *riscv_plic_hart_config_string(int hart_count)
+     int i;
  
-     s390_cpu_restart(S390_CPU(cs));
- }
+     for (i = 0; i < hart_count; i++) {
+-        CPUState *cs = qemu_get_cpu(i, NULL);
++        CPUState *cs = qemu_get_cpu(i, TYPE_RISCV_CPU);
+         CPURISCVState *env = &RISCV_CPU(cs)->env;
+ 
+         if (kvm_enabled()) {
+diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
+index e98361de19..106ef5d2d0 100644
+--- a/hw/riscv/opentitan.c
++++ b/hw/riscv/opentitan.c
+@@ -190,7 +190,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->plic), 0, memmap[IBEX_DEV_PLIC].base);
+ 
+     for (i = 0; i < ms->smp.cpus; i++) {
+-        CPUState *cpu = qemu_get_cpu(i, NULL);
++        CPUState *cpu = qemu_get_cpu(i, TYPE_RISCV_CPU);
+ 
+         qdev_connect_gpio_out(DEVICE(&s->plic), ms->smp.cpus + i,
+                               qdev_get_gpio_in(DEVICE(cpu), IRQ_M_EXT));
+@@ -223,7 +223,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
+                        0, qdev_get_gpio_in(DEVICE(&s->plic),
+                        IBEX_TIMER_TIMEREXPIRED0_0));
+     qdev_connect_gpio_out(DEVICE(&s->timer), 0,
+-                          qdev_get_gpio_in(DEVICE(qemu_get_cpu(0, NULL)),
++                          qdev_get_gpio_in(DEVICE(qemu_get_cpu(0, TYPE_RISCV_CPU)),
+                                            IRQ_M_TIMER));
+ 
+     /* SPI-Hosts */
 -- 
 2.41.0
 
