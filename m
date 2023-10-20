@@ -2,64 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D212A7D077E
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 07:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52CE7D0783
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 07:11:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qthiU-0003yT-Rg; Fri, 20 Oct 2023 01:06:34 -0400
+	id 1qthmd-0006I7-IA; Fri, 20 Oct 2023 01:10:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qthiS-0003y0-3E
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 01:06:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qthmb-0006E1-24
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 01:10:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qthiQ-0007Ry-Hx
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 01:06:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qthmY-0008OG-SM
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 01:10:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697778389;
+ s=mimecast20190719; t=1697778646;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hYFSpNc/22pvdQd4DuLOvG6VT1KzHoIAhPOocUUc4PY=;
- b=Cp0AT4sYHh+RA0ldQMw09l98lL8KL6Ix9SrGo9oypEKGe1Cs1Uv4b+U8CXfG/PSYDPJKbd
- xObjB7asBhG3vBngD5Xsm8l6CDvwqsShJpo4BkfqTEYsPqYdaYpu1CFB5RzP126QxJXEIT
- y2cJ5k4oBpzPf+f0XfiPrrN6RrxMNNQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-205-odSH73ENPfqvb78em1rsTA-1; Fri, 20 Oct 2023 01:06:23 -0400
-X-MC-Unique: odSH73ENPfqvb78em1rsTA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2793E811764;
- Fri, 20 Oct 2023 05:06:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 01A622166B26;
- Fri, 20 Oct 2023 05:06:22 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E47A621E6A1F; Fri, 20 Oct 2023 07:06:21 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  dgilbert@redhat.com,
- pbonzini@redhat.com,  berrange@redhat.com,  eblake@redhat.com,
- manish.mishra@nutanix.com,  aravind.retnakaran@nutanix.com,  Het Gala
- <het.gala@nutanix.com>,  Juan Quintela <quintela@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v14 02/14] fixup! migration: New QAPI type 'MigrateAddress'
-References: <20231019192353.31500-1-farosas@suse.de>
- <20231019192353.31500-3-farosas@suse.de>
-Date: Fri, 20 Oct 2023 07:06:21 +0200
-In-Reply-To: <20231019192353.31500-3-farosas@suse.de> (Fabiano Rosas's message
- of "Thu, 19 Oct 2023 16:23:41 -0300")
-Message-ID: <87y1fxc27m.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Io22AlB6AmYiJqIE/pvw6w0VjuBmOEBWuqiH3e/uCd4=;
+ b=fd1s4wC5+7RNZ+JR9HOOBsO8rwaio3uM0rSaMBVD51KqVpe4sUzMJ1liVK/G5VE9ckjeyz
+ V92uSK/ZZRXHjKL5TAlMDT/5AnrrT7z7RK2Eh8wM4PAs7HA0Uxa6AJHOA1mu4bGSsHkB5l
+ TD824t8ciME9NlGiC0JpWLIARzQD6Xc=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303-eL2prUGHNIaU3TjyjUgBdQ-1; Fri, 20 Oct 2023 01:10:38 -0400
+X-MC-Unique: eL2prUGHNIaU3TjyjUgBdQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-778964b7c8bso45531685a.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 22:10:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697778638; x=1698383438;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Io22AlB6AmYiJqIE/pvw6w0VjuBmOEBWuqiH3e/uCd4=;
+ b=usbc+tlVNOjD+ndXn6PtU+mKtsL9P4vf14npwDWgKR9EPJwmL5sqlPO2MDjSDUetIW
+ fi/4C7YXAmR75euWKNPhLF/SgOkmZDsZCv5UuI6dpKfS+0W04AJJJcd89fxlxqY/kpq0
+ 9IJJf7dQ24s9qhldPRx9PUNGUNRSn3QOuD6TVKE7I36tZ5JSuBSlc6H5hE5XbM9o2rNc
+ lki3qzekudrQiq47+RZQOj4iHXWM6ouNByr7iL1VoXG6nc9q6PrwUwBdOnsA/6aFNS4/
+ WYfL19LJvC/rPNuAq30CwVFaHBOfKxCTpOebQAK8NFtta2wT0Rxd5R1NbKjtDR0Zr8ZH
+ INTw==
+X-Gm-Message-State: AOJu0YzmLS8fxhYHTHvS9H0QNXl20H71UlJTiWt7YBKEVlZyUP7gRCiJ
+ a60zFhwL8QSDwaU8aFQMgTNb6LkNoPuqSJixUSwIC++RvJpGAMWaIKoB4CFP6H9ifjNHu2o7Wv2
+ BPX2wmeeLf5ucMQY=
+X-Received: by 2002:a05:620a:254c:b0:774:106c:7df9 with SMTP id
+ s12-20020a05620a254c00b00774106c7df9mr828675qko.11.1697778637943; 
+ Thu, 19 Oct 2023 22:10:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGA4RImw1aIMMV2ho8L7W1mnUPapBVCgFZgQw0LnRg2Kilc0bwwSE1gIg0hu3Q+8We7awBpmQ==
+X-Received: by 2002:a05:620a:254c:b0:774:106c:7df9 with SMTP id
+ s12-20020a05620a254c00b00774106c7df9mr828632qko.11.1697778637635; 
+ Thu, 19 Oct 2023 22:10:37 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
+ [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
+ v7-20020a05620a090700b0076f124abe4dsm348676qkv.77.2023.10.19.22.10.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 22:10:37 -0700 (PDT)
+Message-ID: <81b1bcb8-4217-4324-8bb5-8edde40a1838@redhat.com>
+Date: Fri, 20 Oct 2023 07:10:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/13] RFC migration: icp/server is a mess
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Greg Kurz <groug@kaod.org>, Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-s390x@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Fabiano Rosas <farosas@suse.de>, Eric Farman <farman@linux.ibm.com>,
+ Peter Xu <peterx@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, qemu-arm@nongnu.org,
+ Jason Wang <jasowang@redhat.com>, Corey Minyard <minyard@acm.org>,
+ Leonardo Bras <leobras@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
+ <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20231019190831.20363-1-quintela@redhat.com>
+ <20231019190831.20363-8-quintela@redhat.com> <20231019224935.03232495@bahia>
+ <f5245b42-2a0a-430c-b10c-e9d3530af80b@kaod.org>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <f5245b42-2a0a-430c-b10c-e9d3530af80b@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +146,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,72 +162,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+On 19/10/2023 23.15, Cédric Le Goater wrote:
+> On 10/19/23 22:49, Greg Kurz wrote:
+>> Hi Juan,
+>>
+>> On Thu, 19 Oct 2023 21:08:25 +0200
+>> Juan Quintela <quintela@redhat.com> wrote:
+>>
+>>> Current code does:
+>>> - register pre_2_10_vmstate_dummy_icp with "icp/server" and instance
+>>>    dependinfg on cpu number
+>>> - for newer machines, it register vmstate_icp with "icp/server" name
+>>>    and instance 0
+>>> - now it unregisters "icp/server" for the 1st instance.
+>>>
+>>
+>> Heh I remember about this hack... it was caused by some rework in
+>> the interrupt controller that broke migration.
+>>
+>>> This is wrong at many levels:
+>>> - we shouldn't have two VMSTATEDescriptions with the same name
+>>
+>> I don't know how bad it is. The idea here is to send extra
+>> state in the stream because older QEMU expect it (but won't use
+>> it), so it made sense to keep the same name.
+>>
+>>> - In case this is the only solution that we can came with, it needs to
+>>>    be:
+>>>    * register pre_2_10_vmstate_dummy_icp
+>>>    * unregister pre_2_10_vmstate_dummy_icp
+>>>    * register real vmstate_icp
+>>>
+>>> As the initialization of this machine is already complex enough, I
+>>> need help from PPC maintainers to fix this.
+>>>
+>>
+>> What about dropping all this code, i.e. basically reverting 46f7afa37096 
+>> ("spapr:
+>> fix migration of ICPState objects from/to older QEMU") ?
+> 
+> I'd vote for removing the dummy ICP states for pre-2.10 pseries machines.
+> Migration compatibility would be broken for these old versions but, with
+> a clear error report, it should be more than enough. I doubt anyone will
+> need such a feature now days.
 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  qapi/migration.json | 20 ++++++++++++++++++--
->  1 file changed, 18 insertions(+), 2 deletions(-)
->
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index c352c7ac52..602cb706e3 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -1519,10 +1519,25 @@
->  #
->  # @rdma: Migrate via RDMA.
->  #
-> +# @file: Direct the migration stream to a file.
-> +#
->  # Since 8.2
->  ##
->  { 'enum': 'MigrationAddressType',
-> -  'data': ['socket', 'exec', 'rdma'] }
-> +  'data': ['socket', 'exec', 'rdma', 'file'] }
+In that case: Please also put the pseries-2.1 machine up to pseries-2.9 onto 
+the deprecation list, so that they can finally get removed after two 
+releases. It does not make sense to keep compat machines around if the 
+compatibility is not available anymore.
 
-I don't like our use of spaces around parenthesis in the QAPI schema,
-but I like inconsistency even less: please insert a space after '['.
-
-> +
-> +##
-> +# @FileMigrationArgs:
-> +#
-> +# @path: file path
-
-Name this @filename for local consistency.  We use both @filename and
-@path for filenames in the schema, which is sad.  However,
-migration.json uses only @filename so far.  Let's keep it that way.
-
-"file path" is awfully terse.  Maybe "file to receive the migration
-stream"?
-
-> +#
-> +# @offset: initial offset for the file
-
-Again, too terse.  How is @offset to be used?  Start writing at this
-file offset?
-
-> +#
-> +# Since 8.2
-> +##
-> +{ 'struct': 'FileMigrationArgs',
-> +  'data': {'path': 'str',
-
-Please insert a space after '{', and reindent the next line.
-
-> +           'offset': 'uint64' } }
->  
->  ##
->  # @MigrationExecCommand:
-> @@ -1547,7 +1562,8 @@
->    'data': {
->      'socket': 'SocketAddress',
->      'exec': 'MigrationExecCommand',
-> -    'rdma': 'InetSocketAddress' } }
-> +    'rdma': 'InetSocketAddress',
-> +    'file': 'FileMigrationArgs' } }
->  
->  ##
->  # @migrate:
+  Thomas
 
 
