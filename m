@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6967D1795
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A957D1778
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:50:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwP6-000250-SG; Fri, 20 Oct 2023 16:47:32 -0400
+	id 1qtwPZ-0002O6-4c; Fri, 20 Oct 2023 16:48:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwP4-00023T-0C
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:30 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1qtwPI-0002IK-LY
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:48 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwP2-0001EK-B1
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:29 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6be840283ceso1162851b3a.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:47:27 -0700 (PDT)
+ id 1qtwP3-0001EQ-3w
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:41 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6bf03b98b9bso1507152b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:47:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697834847; x=1698439647; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EaDJt/aWXDXMzB/5b+cw749X5lfpuA3DGgkyKvYHvVQ=;
- b=dIXwHgAR/3biY/wFcJ9VOGfU74MqbElexA86Mhc3l/9YaXzt/EMVX9mlku91fKOto/
- h/1BucG3Vyd2AYrgaEWEvqKsziglpqTJpwaJagrnjEhnxr9/ZsLi/6CgIMpuTIEDU+bx
- 0g3qMpq4/0t41oWixOnMKLMwkzqeL/9lOp09PAV2FdC8avjTnlJu6qmahEB8hsfIGqCT
- K641fuFUl44aO2l8pDmvkwfYuNKqRHs7JTtkip6aLBmzmlzKOQwgcSBZyIDx8bshJlii
- sGw0RT0SubmNP026taTah3BbvdGpTdn/EeivrqXlOwuDkts2pSPCjc0MgG5hbLGhoew5
- 9A2w==
+ bh=hkIbB3zmI08zQqo8JvI15EoPXprMPyQ2OgXzm/sTzaE=;
+ b=YgzFjKpzx9qaaY4kgnyLh0p1qxddSikeSGexGxeFWVG+kFsdBrj1/QLVXWH15wNHIq
+ fIyoSMIF6UJR3FBKfAH+F7Z6w94XrpQ7PnbuZfXMaOPEbyujyn87F8cXKs6C1MD5PSfo
+ ei8iebG9+Bv/9Qcb5ca0Ws2GZsD1IjTcv6LUSW1j/aZMYk+kqjwmBVDgejmYcttG0kXa
+ NFZjsZReTuvAIQ3x7a08bpzOxB2hU4aLii28gp3/XsRwRRpFDbINC30scX/b+LDq4Ja0
+ 8kHmrKn8QtUyMvFLNy9n299FP/RXBRJSJlgdqzi10l8YUYEvDvwrj9DbdqHJw29kwNYm
+ REiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697834847; x=1698439647;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EaDJt/aWXDXMzB/5b+cw749X5lfpuA3DGgkyKvYHvVQ=;
- b=m1Lahxk4XVBqpo3c0Tzz2UEzA6LgPeukERylrZu5WdfQPIFAOz++cttCSf3ovfxSAJ
- 2Px3y1L3yzatyNjpAqKApfD88qI6WRjMLf8ZzBfAPUApZkncjZrlRxr8ryp50fU0NXew
- 3GTFlvJ1rpisy5bv/vKpK/r9BBVGS4WzJqo/UoUapLNtY921bR8hSwUzJmICaKvkNEiV
- 7kd7CrYAjUkkmw/A69KvDEytrD+PTXThwpia1Lv1JnTuE2QI21mZFYLvr1R3EQCvHpnD
- c6+klwKcnMiKCYOT26G4hzDSJ3yd4T4rH9IPQaeXhlygP+Jm4ZihV9yNZ7uhPnpTzkKl
- nhzg==
-X-Gm-Message-State: AOJu0YzuMTDKOpLqASVkhHW93QJBb99GyTsIka+cW4vX76XKA8vaWhdq
- UIZHOlHbnFdcfaH3iVAkmpCdgYp3v15ekJpjBjk=
-X-Google-Smtp-Source: AGHT+IFh3Vt0RmiGb3d0aupVa0qouYJxhW/llBMQOntPwbGBoyLwDbyUhcmXfEtQhZqMzpOoueev5A==
-X-Received: by 2002:a05:6a20:918e:b0:179:f81b:12d9 with SMTP id
- v14-20020a056a20918e00b00179f81b12d9mr3089394pzd.11.1697834846982; 
- Fri, 20 Oct 2023 13:47:26 -0700 (PDT)
+ bh=hkIbB3zmI08zQqo8JvI15EoPXprMPyQ2OgXzm/sTzaE=;
+ b=wZVP/OpBePFTL77dEBA6pBQWvOJFNBHlqyov5OZFAWyLai5NAUNaSdsts+gxk1Hfbj
+ BTH78iW6pl16wP4gpVaROR3WCCOckXyMvuBQkjODoYS6w2s5pRxEdQ/QjV0pEV7ZnTGa
+ X/vzhbgzZWWzhfxdYqBEKotrjO1d/ogFznoCc5F8AoOO8uE9O2i9eY24xRUlD7OF2gxR
+ tGmJkwn5fzGqkg8Yf6d6amZzdtLauLxCRe5BYcGjp06ffzRrCsQdRToPoBxnamKF/J36
+ yPoNK8CtY4v2TrXjhL2lFMEY39sb+vsbpOoDXjsCa7N5WTLMKWODJYbEog6RVtjGr22x
+ PX7w==
+X-Gm-Message-State: AOJu0Yzmq49NlNRR3xLGEGM5tTVFhAvYo7+1o6j0NckrEDWoNaaRjAhK
+ Pjx8GH/7DkEWxgS4lTSwhHbiIp1nrnH7L/Zl6as=
+X-Google-Smtp-Source: AGHT+IG9vSh9day8Fd1+MXBsukDZ/+jwv9twec7U1ZjAKP3bwLhJrlAxbcsq9YRrLZ9njAW+e/C2dw==
+X-Received: by 2002:a05:6a20:7f8e:b0:14d:e615:277c with SMTP id
+ d14-20020a056a207f8e00b0014de615277cmr4756602pzj.11.1697834847658; 
+ Fri, 20 Oct 2023 13:47:27 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- u7-20020aa78487000000b00694fee1011asm1946775pfn.208.2023.10.20.13.47.26
+ u7-20020aa78487000000b00694fee1011asm1946775pfn.208.2023.10.20.13.47.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:47:26 -0700 (PDT)
+ Fri, 20 Oct 2023 13:47:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 62/65] target/hppa: Simplify trans_dep*_imm
-Date: Fri, 20 Oct 2023 13:43:28 -0700
-Message-Id: <20231020204331.139847-63-richard.henderson@linaro.org>
+Subject: [PATCH v2 63/65] include/hw/elf: Remove truncating signed casts
+Date: Fri, 20 Oct 2023 13:43:29 -0700
+Message-Id: <20231020204331.139847-64-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,124 +90,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All of the special cases here are now handled during
-generic expansion.
+There's nothing about elf that specifically requires signed vs unsigned.
+This is very much a target-specific preference.
+
+In the meantime, casting low and high from uint64_t back to Elf_SWord
+to uint64_t discards high bits that might have been set by translate_fn.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 80 +++++++++++++----------------------------
- 1 file changed, 25 insertions(+), 55 deletions(-)
+ include/hw/elf_ops.h | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index ce2aff8c4e..47cfb16738 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3473,80 +3473,50 @@ static bool trans_extr_imm(DisasContext *ctx, arg_extr_imm *a)
-     return nullify_end(ctx);
- }
- 
--static bool trans_depi_imm(DisasContext *ctx, arg_depi_imm *a)
-+static bool do_dep_imm(DisasContext *ctx, unsigned rt, unsigned c,
-+                       bool d, unsigned len, unsigned cpos,
-+                       TCGv_i64 src, TCGv_i64 val)
- {
--    unsigned len, width;
--    uint64_t mask0, mask1;
-+    unsigned width = d ? 64 : 32;
-     TCGv_i64 dest;
- 
--    if (!ctx->is_pa20 && a->d) {
--        return false;
-+    if (cpos + len > width) {
-+        len = width - cpos;
-     }
--    if (a->c) {
-+
-+    if (c) {
-         nullify_over(ctx);
+diff --git a/include/hw/elf_ops.h b/include/hw/elf_ops.h
+index dffb0e73d2..0a5c258fe6 100644
+--- a/include/hw/elf_ops.h
++++ b/include/hw/elf_ops.h
+@@ -385,10 +385,11 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
      }
  
--    len = a->len;
--    width = a->d ? 64 : 32;
--    if (a->cpos + len > width) {
--        len = width - a->cpos;
--    }
-+    dest = dest_gpr(ctx, rt);
-+    tcg_gen_deposit_i64(dest, src, val, cpos, len);
-+    save_gpr(ctx, rt, dest);
- 
--    dest = dest_gpr(ctx, a->t);
--    mask0 = deposit64(0, a->cpos, len, a->i);
--    mask1 = deposit64(-1, a->cpos, len, a->i);
--
--    if (a->nz) {
--        TCGv_i64 src = load_gpr(ctx, a->t);
--        tcg_gen_andi_i64(dest, src, mask1);
--        tcg_gen_ori_i64(dest, dest, mask0);
--    } else {
--        tcg_gen_movi_i64(dest, mask0);
--    }
--    save_gpr(ctx, a->t, dest);
--
--    /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
--    if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
-+    if (c) {
-+        ctx->null_cond = do_sed_cond(ctx, c, d, dest);
+     if (pflags) {
+-        *pflags = (elf_word)ehdr.e_flags;
++        *pflags = ehdr.e_flags;
++    }
++    if (pentry) {
++        *pentry = ehdr.e_entry;
      }
-     return nullify_end(ctx);
- }
+-    if (pentry)
+-        *pentry = (uint64_t)(elf_sword)ehdr.e_entry;
  
--static bool trans_dep_imm(DisasContext *ctx, arg_dep_imm *a)
-+static bool trans_depi_imm(DisasContext *ctx, arg_depi_imm *a)
- {
--    unsigned rs = a->nz ? a->t : 0;
--    unsigned len, width;
--    TCGv_i64 dest, val;
--
-     if (!ctx->is_pa20 && a->d) {
-         return false;
+     glue(load_symbols, SZ)(&ehdr, fd, must_swab, clear_lsb, sym_cb);
+ 
+@@ -610,10 +611,12 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
+         }
      }
--    if (a->c) {
--        nullify_over(ctx);
--    }
-+    return do_dep_imm(ctx, a->t, a->c, a->d, a->len, a->cpos,
-+                      a->nz ? load_gpr(ctx, a->t) : ctx->zero,
-+                      tcg_constant_i64(a->i));
-+}
  
--    len = a->len;
--    width = a->d ? 64 : 32;
--    if (a->cpos + len > width) {
--        len = width - a->cpos;
-+static bool trans_dep_imm(DisasContext *ctx, arg_dep_imm *a)
-+{
-+    if (!ctx->is_pa20 && a->d) {
-+        return false;
-     }
--
--    dest = dest_gpr(ctx, a->t);
--    val = load_gpr(ctx, a->r);
--    if (rs == 0) {
--        tcg_gen_deposit_z_i64(dest, val, a->cpos, len);
--    } else {
--        tcg_gen_deposit_i64(dest, cpu_gr[rs], val, a->cpos, len);
--    }
--    save_gpr(ctx, a->t, dest);
--
--    /* Install the new nullification.  */
--    cond_free(&ctx->null_cond);
--    if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
--    }
--    return nullify_end(ctx);
-+    return do_dep_imm(ctx, a->t, a->c, a->d, a->len, a->cpos,
-+                      a->nz ? load_gpr(ctx, a->t) : ctx->zero,
-+                      load_gpr(ctx, a->r));
- }
- 
- static bool do_dep_sar(DisasContext *ctx, unsigned rt, unsigned c,
+-    if (lowaddr)
+-        *lowaddr = (uint64_t)(elf_sword)low;
+-    if (highaddr)
+-        *highaddr = (uint64_t)(elf_sword)high;
++    if (lowaddr) {
++        *lowaddr = low;
++    }
++    if (highaddr) {
++        *highaddr = high;
++    }
+     ret = total_size;
+  fail:
+     if (mapped_file) {
 -- 
 2.34.1
 
