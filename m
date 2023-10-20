@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0469C7D0B2F
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E497D0B29
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:10:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlUt-0004ec-Hx; Fri, 20 Oct 2023 05:08:47 -0400
+	id 1qtlUy-00051E-3q; Fri, 20 Oct 2023 05:08:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlUr-0004Vs-2f
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qtlUw-0004yx-Jj
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlUp-0005UD-9D
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:44 -0400
+ id 1qtlUu-0005VY-Pe
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697792922;
+ s=mimecast20190719; t=1697792928;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tepxTd/hr2hYG2r+hVUPCLMjLaoLxcfQ8Km0xq5qjnw=;
- b=AjuncBnzTKX/SBLNRFacH3O11MqXvTSHb+rKgyMK5GqR5wCghCi8RqhRn/4JwRqFh16ycP
- djUoA1yH0RSPSzAfPPSetyogGsdcHyQpLVcFICs3YSuEb0cac6nTW105arl1O8wp0e3QFL
- UteL6UjB7jFQo2JyYlDtL+OkuATpaYA=
+ bh=rsZO9JKw/HmQqEUnOwIt6ZganKj0eOZM2jgWPc50M1Q=;
+ b=F51xygYj02m5h2nnejlhXTFj0zXRPgG8Rr7l/24u4MokNhm2FUc6Ic8V/rtrBlplCtFwHf
+ fqpOkFSSB74FFBXXhsICg/5dqrMgTBukLGsmKwpqAfL80t9VQ378gZzipgmUv8DhJPeWpZ
+ +3z36ETvkZw9xDp0a4F5LibKJ9iVHlk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-114-HvdrOnCQMoiohaUW5ttz_Q-1; Fri, 20 Oct 2023 05:08:38 -0400
-X-MC-Unique: HvdrOnCQMoiohaUW5ttz_Q-1
+ us-mta-237-aCdwP-BQPimrSxh-6rhhqQ-1; Fri, 20 Oct 2023 05:08:43 -0400
+X-MC-Unique: aCdwP-BQPimrSxh-6rhhqQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 09421185A797;
- Fri, 20 Oct 2023 09:08:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7646188B771;
+ Fri, 20 Oct 2023 09:08:42 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EF6132166B28;
- Fri, 20 Oct 2023 09:08:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4AB5A2166B26;
+ Fri, 20 Oct 2023 09:08:37 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,22 +68,22 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Stefan Weil <sw@weilnetz.de>, Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH v2 11/13] migration: Use vmstate_register_any() for audio
-Date: Fri, 20 Oct 2023 11:07:29 +0200
-Message-ID: <20231020090731.28701-12-quintela@redhat.com>
+Subject: [PATCH v2 12/13] migration: Use vmstate_register_any() for eeprom93xx
+Date: Fri, 20 Oct 2023 11:07:30 +0200
+Message-ID: <20231020090731.28701-13-quintela@redhat.com>
 In-Reply-To: <20231020090731.28701-1-quintela@redhat.com>
 References: <20231020090731.28701-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,36 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can have more than one audio card.
+We can have more than one eeprom93xx.
+For instance:
 
-void audio_init_audiodevs(void)
-{
-    AudiodevListEntry *e;
-
-    QSIMPLEQ_FOREACH(e, &audiodevs, next) {
-        audio_init(e->dev, &error_fatal);
-    }
-}
+e100_nic_realize() -> eeprom93xx_new()
 
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- audio/audio.c | 2 +-
+ hw/nvram/eeprom93xx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/audio/audio.c b/audio/audio.c
-index e9815d6812..f91e05b72c 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -1781,7 +1781,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
+diff --git a/hw/nvram/eeprom93xx.c b/hw/nvram/eeprom93xx.c
+index 1081e2cc0d..57d63638d7 100644
+--- a/hw/nvram/eeprom93xx.c
++++ b/hw/nvram/eeprom93xx.c
+@@ -321,7 +321,7 @@ eeprom_t *eeprom93xx_new(DeviceState *dev, uint16_t nwords)
+     /* Output DO is tristate, read results in 1. */
+     eeprom->eedo = 1;
+     logout("eeprom = 0x%p, nwords = %u\n", eeprom, nwords);
+-    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_eeprom, eeprom);
++    vmstate_register_any(VMSTATE_IF(dev), &vmstate_eeprom, eeprom);
+     return eeprom;
+ }
  
-     QTAILQ_INSERT_TAIL(&audio_states, s, list);
-     QLIST_INIT (&s->card_head);
--    vmstate_register (NULL, 0, &vmstate_audio, s);
-+    vmstate_register_any(NULL, &vmstate_audio, s);
-     return s;
- 
- out:
 -- 
 2.41.0
 
