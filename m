@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E247D0F9D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 14:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE5B7D0FA5
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 14:28:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtoYA-0004Mr-GZ; Fri, 20 Oct 2023 08:24:22 -0400
+	id 1qtobz-0007vx-Lr; Fri, 20 Oct 2023 08:28:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qtoY4-0004Mb-ON
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:24:16 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qtobx-0007vV-CO
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:28:17 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qtoY3-0000oI-68
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:24:16 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4084e49a5e5so6323605e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 05:24:14 -0700 (PDT)
+ id 1qtobv-0002OH-Q3
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:28:17 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-408382da7f0so6299325e9.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 05:28:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697804653; x=1698409453; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697804893; x=1698409693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=MJjbJSejQ6MfyGvh+AjxoZWkdE3Onk5lvy5IN/zMVvI=;
- b=iUAh0Pz/WbUR4dtn6nxDFe39qAR1FsLFwPHkfW2T1o9IiRnN9gNPvx8sqjDQO8An9A
- MuOB23dVxmHhhupFEWy7KX+iKSahjGqaCoUSr4jURro2TlcwmPK9TAqxeHOFprI7UyFI
- QDFOeE8Ntc4nAQIvND3ACuJsQ/3OVcJajKuM3yOXiZbnAM4qSHai42KeidLqJsCDAgJF
- QNA9syUsmr0emJ6cf1oXQfT20Kb5WlwPTPWzzod3MjEiKtHjrU6YyfPddRrOAYTyNhRY
- U9fhAqEnVA0K3lPAzOmDKunoVIcXjdDwNf02lsvy/8JnLWTdbCuAg9WMGSjlTxmVFE/j
- GpFQ==
+ bh=cwTvZKcaEjTu9+xh86tNUadoic0MXHKQPems1msTY1U=;
+ b=sw2tGGU0f/I0Vzp5aSMMM+u++hCInzCrQ/NaWzolavHM25O2EHdkTGBtRR0z0hdPyG
+ geqfU1fdSZsdoth4XCMKhNUXNSXtQimhDMPyvva2zvph5x9voXq9mCQvf/KhiYlJcN55
+ IZO/rSPKzeyWxbLwTsq/tZU4JhQUsCuEVbfNUSwYXqR6B03066AXZ6RSjntD+XULMQnj
+ Fo1u4bEx+IF27MR+b7Uh3Iom0XFqkqHVSUeahLwSVJZp9DOAjwW6tSMCliL2cLLIWzTC
+ pJFyCziBRDP9UWcNmK40yuLGwmN8QaRcROBX/6LvXiyhftYZPfts4dJ3/LkVBC7YrVPD
+ nCTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697804653; x=1698409453;
+ d=1e100.net; s=20230601; t=1697804893; x=1698409693;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MJjbJSejQ6MfyGvh+AjxoZWkdE3Onk5lvy5IN/zMVvI=;
- b=vxmRMCDjakrPbZpNp5RjgTLWD6y9NykDcxMpyP6SIds1UzBENRtWBQDX14MhYYHgh/
- RIR99i9qSrTXPYVZneub75GHYWPbwIPpdEZxrAR7LMuvBCijgKmXUKvyCKH7jb3g6Rka
- eWfcTfn+ZZjFlo0ojL7XYHld2E9H0pvhZ4fI+Lp8fWowJMLPRNcDsdkw04SddRxQLAyd
- 1Cc4kEJ6dggjUzzjrMJpdHB+N5+iPttUyVAX2ArqnxMatMTg45+MjKAYstIL+4SSiXo2
- xGQHNIXVLEG678P6iAgSEl8h0wYBYjrMc/yLYEWrvcGBquVFU7JsEz0pmlAfmtkv1Y9l
- GZKQ==
-X-Gm-Message-State: AOJu0Ywy3sC64VAuD5pXIylirax6tzGW6ZIiCEWMOfWm/pXWRGCBVaIC
- KMraxuHZ9K2QfQNslDxDiahXxfLMDmjdxaZpWOk=
-X-Google-Smtp-Source: AGHT+IFvzjFNDxIGSWO1Kxm4/msOsYtHzJcYGuelbRvcKfBwcQgb8Hg6Fk9A7Muf1gtrvY3hiqXeWQ==
-X-Received: by 2002:a5d:474d:0:b0:32d:9cdd:a23 with SMTP id
- o13-20020a5d474d000000b0032d9cdd0a23mr1149278wrs.25.1697804653157; 
- Fri, 20 Oct 2023 05:24:13 -0700 (PDT)
-Received: from meli.delivery (adsl-21.109.242.226.tellas.gr. [109.242.226.21])
+ bh=cwTvZKcaEjTu9+xh86tNUadoic0MXHKQPems1msTY1U=;
+ b=iGCUPElMioI6COvnNhSKjF3JPpdtcvtY7Bc8mnb2ugM7VOA+jM61XQIpf+uqTpDzj4
+ 8jCQQ55zhiFVahSo0TEq8KL2k7Api0Z2LbWKxEOCpRa3i9+cbA0DrLU7d3bM5EyyXrgP
+ pRBkWiZA/fIvr5QWTza/YfA23Z0WGP2QThTFfpjNEBx8hBTCokUIIAh2rQ+/viQppo4e
+ R4Mzu1F8K7DiRelPRut2WmyMdgqjgtZNRNXAzvZMZZKk+pXsamjEciVdZZwCQDQKU8gV
+ IFqU2IN8qftOeZY4IXIyK2v7LynQZ7w+zlICdW7VzUfbnn9GvpirPsdxzQmg/vmSVJ5n
+ o1Cg==
+X-Gm-Message-State: AOJu0YxHijzVmQRwTYNKLA+gh69UZodrcOS/Rc3WopKPx8k9+cnTjJCs
+ I31HsACaKkS3QN8pogCeKuif49GtYGjYRIkgqng=
+X-Google-Smtp-Source: AGHT+IG3RwSBBAZ4N2Apk23FJXrXSx9bbClhSKr0EJjdZEFjopSrNQsvUe6zesz5aoWHguBKgF0AEg==
+X-Received: by 2002:a05:600c:5249:b0:401:2ee0:7558 with SMTP id
+ fc9-20020a05600c524900b004012ee07558mr1303451wmb.32.1697804893577; 
+ Fri, 20 Oct 2023 05:28:13 -0700 (PDT)
+Received: from meli.delivery (adsl-165.37.6.1.tellas.gr. [37.6.1.165])
  by smtp.gmail.com with ESMTPSA id
- k12-20020a5d518c000000b0031f82743e25sm1578140wrv.67.2023.10.20.05.24.12
+ s10-20020a05600c45ca00b00407752f5ab6sm2107647wmo.6.2023.10.20.05.28.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 05:24:12 -0700 (PDT)
-Date: Fri, 20 Oct 2023 15:23:55 +0300
+ Fri, 20 Oct 2023 05:28:13 -0700 (PDT)
+Date: Fri, 20 Oct 2023 15:24:27 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 Cc: 
-Subject: Re: [PATCH 02/17] kvm: require KVM_CAP_INTERNAL_ERROR_DATA
+Subject: Re: [PATCH 04/17] kvm: require KVM_CAP_IRQFD for kernel irqchip
 User-Agent: meli 0.8.2
 References: <20231018163728.363879-1-pbonzini@redhat.com>
- <20231018163728.363879-3-pbonzini@redhat.com>
-In-Reply-To: <20231018163728.363879-3-pbonzini@redhat.com>
-Message-ID: <2tuga.hjrd4s8hfdvo@linaro.org>
+ <20231018163728.363879-5-pbonzini@redhat.com>
+In-Reply-To: <20231018163728.363879-5-pbonzini@redhat.com>
+Message-ID: <2tumz.a27pk52hntp7@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,9 +94,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, 18 Oct 2023 19:37, Paolo Bonzini <pbonzini@redhat.com> wrote:
->This was introduced in KVM in Linux 2.6.33, we can require it unconditionally.
+>KVM_CAP_IRQFD is always available on architectures that support an in-kernel
+>interrupt controller, and was introduced in Linux 2.6.32.  We can require
+>it unconditionally.
 >
 >Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>---
+> accel/kvm/kvm-all.c         | 13 +++++--------
+> accel/stubs/kvm-stub.c      |  1 -
+> hw/intc/arm_gicv3_its_kvm.c |  2 +-
+> include/sysemu/kvm.h        |  6 +++---
+> target/riscv/kvm/kvm-cpu.c  |  2 +-
+> 5 files changed, 10 insertions(+), 14 deletions(-)
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
