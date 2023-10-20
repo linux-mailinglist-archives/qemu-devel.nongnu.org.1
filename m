@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2427D144B
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0A97D1432
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:38:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtsVd-0003U7-ES; Fri, 20 Oct 2023 12:38:01 -0400
+	id 1qtsVh-0003mw-NT; Fri, 20 Oct 2023 12:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVa-0003Mb-TH
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:37:58 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVe-0003f3-OH
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:38:02 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVX-0002XI-3H
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:37:58 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53e2308198eso1558831a12.1
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:37:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVb-0002aJ-Ec
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:38:02 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9ba081173a3so170513466b.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:37:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697819869; x=1698424669; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697819877; x=1698424677; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=q4kg06JcXQgpZkYD+aAuvNPHOfoXMdKM9u+t0AGSCsc=;
- b=y7TDR7gocgMIl43p3qs3dE9Hi/fpBdYlyg1vuedF75sXYg0bImBkPCLvD65FmDVYQZ
- t0U1VUeOlQYzyXh3tdsUfFSaRYnQrMoKzysSOLHfRsa9+0kLJQQECZ9TYARW0jBCerOk
- yaLMyf1420PsqnIgz5yMVMhyLzzCxCVflxkkfJIlMoxFqvYAI63N+obNSsKFVajxRL6R
- +7KvU/wF7cjU8Cd95j5p2IZU/XbHyr0sYnbasAnf8BTwd0VAqbMu2sQ97I8wDT4HJGzj
- 9M5JiHYv57eBmMd6qLh+rCv7rdKlGRdfMbtekuRWuodMsDC8kzCw/Hrxw4rrRxNIWkj4
- XjPw==
+ bh=0QpJSioSzBNTf91irQMN8BpZyzwJ1kd2+nNN3fujF2w=;
+ b=jD507VLv1Q3DXpYYv4XOY/iKw6lLXZelPaf6QslcZil7D12UZCuiVO8B5iBcKmcPXA
+ uUgR1ATUBPeS64AbMhWzUvMVfp/PjwlDbY//xeEMixhQmzYJ5ZtNtKnq5e/fkmU3NB0r
+ RWA5F7R7LlBzooUvEPScCz7b87wTNVnYId5aWb3zsuNhpi6GBkn70H4ilk7s0MYVeTBb
+ NgyluahTH9RUMpuC81gJ2pD7XRfQazMl8QV6/nj0bifO/CmodxTa35x9421PvtZK/A65
+ Y9+O/m90cvcq8tT8r5enqHD3s/4oS8G8VGN13ZJ6sWQ86PJupGKC7nUQGS6XwvS47jrF
+ QVwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697819869; x=1698424669;
+ d=1e100.net; s=20230601; t=1697819877; x=1698424677;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q4kg06JcXQgpZkYD+aAuvNPHOfoXMdKM9u+t0AGSCsc=;
- b=ukV0haGO9G6Lehz4kpS7bofn+U6i10cqxvBFERzKTt2L0Kqr2qFArnALcq1ZBguS5S
- F6NTKpW4vCDJWDz7+JX1a5jvvHJabpY2I6PMH24DU/EmdAgZbVXLWyQ1eKint4w3SU50
- sFox7B+L+dVc5SoOoEeZ7w6/vEMVBQ472DhD4MmLSm5tER6pd6ikLEUO0GHGAdwUHivS
- iAQDte1Oac31hiENW5KSBB5MxzDuHURo5fyXOAX4N/g/uaNvGDR4hIjPMptX1IhIaMxl
- PdmwJ9ZrTf/MQuzqbX9sNPE5gjiBTmahuYkrLj4FNhzweg2Q2FQwrEjdMBCqxDV5KjT7
- NJIw==
-X-Gm-Message-State: AOJu0YwMOC80zC79kdKdDX5pTEk0XJkxyCSsuoJPtgozxymtMFrVdyuj
- +sZFuQjAHYGQVIc9ZsF63uo8+iEC/xoBaoo7YIE=
-X-Google-Smtp-Source: AGHT+IEdrkG9FwSyY/AKa9oPX4+3ml15l30g0cytwWkx3WA2O/VxxtOxCvAUt/yP8dWulgtn962GBQ==
-X-Received: by 2002:a50:d542:0:b0:53f:a4f7:7bfb with SMTP id
- f2-20020a50d542000000b0053fa4f77bfbmr1828115edj.17.1697819869764; 
- Fri, 20 Oct 2023 09:37:49 -0700 (PDT)
+ bh=0QpJSioSzBNTf91irQMN8BpZyzwJ1kd2+nNN3fujF2w=;
+ b=g/s3/WOaTChRaQTjkIyOccNJMqjwqF37KQ00DfjsMZfpZmT8SrR8Kx5WunSnuTvhBg
+ E7+UoD9Ps4/Knp8VQ/AhDO7YnXru7p6148++bpc9k7lZKY7EnBwLjKGRgtLXZ0WGcffo
+ +TMCn00Tnp9+vd1R8H9GGR3WFtTc7c1QMQdkr4Y45xTFiF/xHOso9RGI4JZljf3vms3E
+ KnNsWSNVo8W2a0MHbWe+zjTKgkL9+idBjKl3IlTCoV0j8akga+gyoPHET8EZj59eRjfP
+ bPIuVuRK8DVeqRuwv6FbblDN28lkFOKXxZBnoaf4EwEFaMkMJiGQKQHeTHiSJvIj1Dbp
+ 1OZg==
+X-Gm-Message-State: AOJu0YwmQywj0lm4dXQLsEI3wRPVHVDoz553geW+4i3w41i/qqyvsAYp
+ AGCi0pUy5wAxq6jeoVqSTEa8sVlerZZSZGTDBS0=
+X-Google-Smtp-Source: AGHT+IHqqcCwQhtVKj3SGAIse1HKAYov1qgaQecpg8n6CsqYo+8qJqXaoPpYybRA/SRbJ+rMfgxwJw==
+X-Received: by 2002:a17:907:988:b0:9c5:2806:72e2 with SMTP id
+ bf8-20020a170907098800b009c5280672e2mr1733573ejc.34.1697819877055; 
+ Fri, 20 Oct 2023 09:37:57 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
  [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
- c21-20020a50d655000000b00537963f692esm1813284edj.0.2023.10.20.09.37.47
+ pw17-20020a17090720b100b009bd9ac83a9fsm1771713ejb.152.2023.10.20.09.37.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Oct 2023 09:37:49 -0700 (PDT)
+ Fri, 20 Oct 2023 09:37:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -66,18 +66,21 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 08/19] cpus: Filter for target specific CPU (ppc)
-Date: Fri, 20 Oct 2023 18:36:30 +0200
-Message-ID: <20231020163643.86105-9-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
+Subject: [PATCH 09/19] cpus: Filter for target specific CPU (x86)
+Date: Fri, 20 Oct 2023 18:36:31 +0200
+Message-ID: <20231020163643.86105-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231020163643.86105-1-philmd@linaro.org>
 References: <20231020163643.86105-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,46 +103,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enforce qemu_get_cpu() to return PPC CPUs in PPC specific files.
+Enforce qemu_get_cpu() to return X86 CPUs in X86 specific files.
 
 Mechanical change using the following coccinelle script:
 
   @@ expression index; @@
   -   qemu_get_cpu(index, NULL)
-  +   qemu_get_cpu(index, TYPE_POWERPC_CPU)
+  +   qemu_get_cpu(index, TYPE_X86_CPU)
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/e500.c         | 2 +-
- hw/ppc/ppce500_spin.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/hyperv/hyperv.c        |  2 +-
+ hw/i386/kvm/xen_evtchn.c  |  8 ++++----
+ target/i386/kvm/xen-emu.c | 14 +++++++-------
+ target/i386/monitor.c     |  2 +-
+ 4 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 380bbe1fe6..c4bf3fef32 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -495,7 +495,7 @@ static int ppce500_load_device_tree(PPCE500MachineState *pms,
-         char *cpu_name;
-         uint64_t cpu_release_addr = pmc->spin_base + (i * 0x20);
+diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
+index a43f29ad8d..cdda93e14d 100644
+--- a/hw/hyperv/hyperv.c
++++ b/hw/hyperv/hyperv.c
+@@ -226,7 +226,7 @@ struct HvSintRoute {
  
--        cpu = qemu_get_cpu(i, NULL);
-+        cpu = qemu_get_cpu(i, TYPE_POWERPC_CPU);
-         if (cpu == NULL) {
-             continue;
-         }
-diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
-index 3b113fbbdb..142bd45f18 100644
---- a/hw/ppc/ppce500_spin.c
-+++ b/hw/ppc/ppce500_spin.c
-@@ -125,7 +125,7 @@ static void spin_write(void *opaque, hwaddr addr, uint64_t value,
-     SpinInfo *curspin = &s->spin[env_idx];
-     uint8_t *curspin_p = (uint8_t*)curspin;
+ static CPUState *hyperv_find_vcpu(uint32_t vp_index)
+ {
+-    CPUState *cs = qemu_get_cpu(vp_index, NULL);
++    CPUState *cs = qemu_get_cpu(vp_index, TYPE_X86_CPU);
+     assert(hyperv_vp_index(cs) == vp_index);
+     return cs;
+ }
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index de3650ba3b..d75b53934d 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -542,7 +542,7 @@ static void deassign_kernel_port(evtchn_port_t port)
+ static int assign_kernel_port(uint16_t type, evtchn_port_t port,
+                               uint32_t vcpu_id)
+ {
+-    CPUState *cpu = qemu_get_cpu(vcpu_id, NULL);
++    CPUState *cpu = qemu_get_cpu(vcpu_id, TYPE_X86_CPU);
+     struct kvm_xen_hvm_attr ha;
  
--    cpu = qemu_get_cpu(env_idx, NULL);
-+    cpu = qemu_get_cpu(env_idx, TYPE_POWERPC_CPU);
-     if (cpu == NULL) {
-         /* Unknown CPU */
-         return;
+     if (!cpu) {
+@@ -589,7 +589,7 @@ static bool valid_port(evtchn_port_t port)
+ 
+ static bool valid_vcpu(uint32_t vcpu)
+ {
+-    return !!qemu_get_cpu(vcpu, NULL);
++    return !!qemu_get_cpu(vcpu, TYPE_X86_CPU);
+ }
+ 
+ static void unbind_backend_ports(XenEvtchnState *s)
+@@ -917,7 +917,7 @@ static int set_port_pending(XenEvtchnState *s, evtchn_port_t port)
+ 
+     if (s->evtchn_in_kernel) {
+         XenEvtchnPort *p = &s->port_table[port];
+-        CPUState *cpu = qemu_get_cpu(p->vcpu, NULL);
++        CPUState *cpu = qemu_get_cpu(p->vcpu, TYPE_X86_CPU);
+         struct kvm_irq_routing_xen_evtchn evt;
+ 
+         if (!cpu) {
+@@ -1779,7 +1779,7 @@ int xen_evtchn_translate_pirq_msi(struct kvm_irq_routing_entry *route,
+         return -EINVAL;
+     }
+ 
+-    cpu = qemu_get_cpu(s->port_table[port].vcpu, NULL);
++    cpu = qemu_get_cpu(s->port_table[port].vcpu, TYPE_X86_CPU);
+     if (!cpu) {
+         return -EINVAL;
+     }
+diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
+index f289af906c..0a973c0259 100644
+--- a/target/i386/kvm/xen-emu.c
++++ b/target/i386/kvm/xen-emu.c
+@@ -384,7 +384,7 @@ static void do_set_vcpu_info_gpa(CPUState *cs, run_on_cpu_data data)
+ 
+ void *kvm_xen_get_vcpu_info_hva(uint32_t vcpu_id)
+ {
+-    CPUState *cs = qemu_get_cpu(vcpu_id, NULL);
++    CPUState *cs = qemu_get_cpu(vcpu_id, TYPE_X86_CPU);
+     if (!cs) {
+         return NULL;
+     }
+@@ -418,7 +418,7 @@ void kvm_xen_maybe_deassert_callback(CPUState *cs)
+ 
+ void kvm_xen_set_callback_asserted(void)
+ {
+-    CPUState *cs = qemu_get_cpu(0, NULL);
++    CPUState *cs = qemu_get_cpu(0, TYPE_X86_CPU);
+ 
+     if (cs) {
+         X86_CPU(cs)->env.xen_callback_asserted = true;
+@@ -427,7 +427,7 @@ void kvm_xen_set_callback_asserted(void)
+ 
+ void kvm_xen_inject_vcpu_callback_vector(uint32_t vcpu_id, int type)
+ {
+-    CPUState *cs = qemu_get_cpu(vcpu_id, NULL);
++    CPUState *cs = qemu_get_cpu(vcpu_id, TYPE_X86_CPU);
+     uint8_t vector;
+ 
+     if (!cs) {
+@@ -491,7 +491,7 @@ static void do_set_vcpu_timer_virq(CPUState *cs, run_on_cpu_data data)
+ 
+ int kvm_xen_set_vcpu_virq(uint32_t vcpu_id, uint16_t virq, uint16_t port)
+ {
+-    CPUState *cs = qemu_get_cpu(vcpu_id, NULL);
++    CPUState *cs = qemu_get_cpu(vcpu_id, TYPE_X86_CPU);
+ 
+     if (!cs) {
+         return -ENOENT;
+@@ -588,7 +588,7 @@ static int xen_set_shared_info(uint64_t gfn)
+     trace_kvm_xen_set_shared_info(gfn);
+ 
+     for (i = 0; i < XEN_LEGACY_MAX_VCPUS; i++) {
+-        CPUState *cpu = qemu_get_cpu(i, NULL);
++        CPUState *cpu = qemu_get_cpu(i, TYPE_X86_CPU);
+         if (cpu) {
+             async_run_on_cpu(cpu, do_set_vcpu_info_default_gpa,
+                              RUN_ON_CPU_HOST_ULONG(gpa));
+@@ -834,7 +834,7 @@ static int kvm_xen_hcall_evtchn_upcall_vector(struct kvm_xen_exit *exit,
+         return -EINVAL;
+     }
+ 
+-    target_cs = qemu_get_cpu(up.vcpu, NULL);
++    target_cs = qemu_get_cpu(up.vcpu, TYPE_X86_CPU);
+     if (!target_cs) {
+         return -EINVAL;
+     }
+@@ -1161,7 +1161,7 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_xen_exit *exit, X86CPU *cpu,
+ {
+     CPUState *cs = CPU(cpu);
+     CPUState *dest = cs->cpu_index == vcpu_id ? cs : qemu_get_cpu(vcpu_id,
+-                                                                  NULL);
++                                                                  TYPE_X86_CPU);
+     int err;
+ 
+     if (!dest) {
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index aca7be61dd..01bfb4e3f1 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -592,7 +592,7 @@ void hmp_mce(Monitor *mon, const QDict *qdict)
+     if (qdict_get_try_bool(qdict, "broadcast", false)) {
+         flags |= MCE_INJECT_BROADCAST;
+     }
+-    cs = qemu_get_cpu(cpu_index, NULL);
++    cs = qemu_get_cpu(cpu_index, TYPE_X86_CPU);
+     if (cs != NULL) {
+         cpu = X86_CPU(cs);
+         cpu_x86_inject_mce(mon, cpu, bank, status, mcg_status, addr, misc,
 -- 
 2.41.0
 
