@@ -2,88 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864777D1377
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C107D137C
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:02:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtrur-0005If-0E; Fri, 20 Oct 2023 12:00:01 -0400
+	id 1qtrwo-0006sl-Jf; Fri, 20 Oct 2023 12:02:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtruo-0005Es-RI
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:59:58 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qtrvj-00062F-Tg
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:00:56 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtrum-0008UN-K0
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:59:58 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40850b244beso6956085e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 08:59:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qtrvc-0000Pf-N6
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:00:55 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-5842a7fdc61so186308eaf.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:00:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697817594; x=1698422394; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=H3qRuG7BKbTEc6nrwgr7wiqKAoP/BVqIfN3IMumn/Uc=;
- b=zWnSfleBqgh12fxx36OAtj6qAztVwTgxjtrmrR0ipSiYpqxezmtjiG2d0jL/WLtaC9
- hwiGFDqwSp91PmDEwahqpOlr19D6NpY9MeYqlJul+Uq9GCKJ49Yaa6aGrCzcHhlKbl8T
- TC8fuKhic4Be3NVE3kbpBoVv56d3D2qya1R/ZOcdYC+uFUYYfBpbQmCH2tActuEmtooI
- CDmu8LOwccb+xROt75+8349ZXf/pXi8T5TBMm8FlwsPOsXGASPavEL+an6N4PuCpjtlp
- NltqrTF2sDtCHyHT4od9Es00ZmRvW8ftlrquT8MNzNx+THtRjTL0yRibKKFldhwARo+H
- WPgw==
+ d=gmail.com; s=20230601; t=1697817646; x=1698422446; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ybzK6tYNMymjhRKKHA9VoHc7e1IbOGYvoEkSuz0DuMU=;
+ b=LjakePwb61VUZZDPXg9gKagSoyWKkNesXPTmOQ/5FnN/tgqwICowqXVyZgd9Wx/LuA
+ BbsmJvLZ6N0pn5fZ94CJECQj2mtTU4uV1uhQQ+NLXIPPUWg92ARDFA5IKdAy7Jc1SQww
+ AUoiWYx94/p1Fh3LqR/qMGjiPEABFDPAzLDZMFPEYdJOaOjVzwPpizfeCxlPMPavxibW
+ eqp36IjSGCYOo+C3WbM4KWlRzCaed6sHwjTTQPEKSGQbd0eAPnNH9N4Dfq41YTCVl2b0
+ FIlNq7wqAbGVpXhYq6lHPR97wMZF/vFWtVBwxWqywUJfuG0k6coNKZDqHctN66v/TH81
+ 1NeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697817594; x=1698422394;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H3qRuG7BKbTEc6nrwgr7wiqKAoP/BVqIfN3IMumn/Uc=;
- b=k+csoE2p+r1ssTB2S8f3eUJa7zq6q9qYFIBMWBiHCU0bXADx+TAWyKmx2/U+1D+kR4
- 8BJIXq2Aq00fDZse2QxQAuUlBonmhjWqNg5rUlodqjP9lzJp1YfC8E/hdILIRCO6xIeY
- TRhaR1GIN+Zx1SUXl1s3ecZpZPHSSD4OoxNAPf9/C563u1wtVcDyw1HIlWBOplOOlS3c
- ycDSZDdW8SL32nWFxPLrlIB4bPPyLiaym17O1//hqAY8XMgyMmAhvz3OyKrPNl0eCWXt
- lJ9fFI6rE/iMTFqIMWCRUN0oAYIUJAevmz7sQVDsa0BnbKRLL1Ihx6mVmY99Pll0QcvE
- P1zg==
-X-Gm-Message-State: AOJu0YybZMx0ndhGr4u/qal01mqCwQgl1aPJxhU7fjwwbY7aJppg9nkV
- w7qDUo/M9QgtFOxYBwYE3udpdQ==
-X-Google-Smtp-Source: AGHT+IHJsyWKs61+JNyce4EgYbfdAnIGOlQurqWCu/ed9qgAjssChCOhB3eTYTEBI0a4zAnf2pgCvA==
-X-Received: by 2002:a5d:628f:0:b0:32d:9e4f:7190 with SMTP id
- k15-20020a5d628f000000b0032d9e4f7190mr1792781wru.60.1697817594422; 
- Fri, 20 Oct 2023 08:59:54 -0700 (PDT)
-Received: from [192.168.69.115] (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
- [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
- n7-20020a5d6b87000000b003140f47224csm1953860wrx.15.2023.10.20.08.59.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Oct 2023 08:59:54 -0700 (PDT)
-Message-ID: <5563056c-0144-ee4b-bd99-e51f31369feb@linaro.org>
-Date: Fri, 20 Oct 2023 17:59:51 +0200
+ d=1e100.net; s=20230601; t=1697817646; x=1698422446;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ybzK6tYNMymjhRKKHA9VoHc7e1IbOGYvoEkSuz0DuMU=;
+ b=hcMnqmNuxPXvSJzxBUyYayeitrOMaHmbf5GgGvJjz+OVmq1VWuDIRtIuie+txCzM+b
+ Zmg7p1BoP1JEIc5F+7iAZoJ03nO1zM7qsNzJ+dQeR0lMLh+6vcVKlopsBtsWPWHljORl
+ RJi1IoZAPqngrGZ4vyooEnglrNslUCnqJFCd9IQ+oKGg1D/v8XXQQpD7C8tsyG8eehRL
+ E8AZwfYVtwqoDjRY/Zdn8muILI2FcbgVN0fltYoDSWrD0Nju3cRdHKlhWCG6el7TmJOt
+ AzJvY3gGOsoNTXnhtfPZG6PR8LPEYRUDFsR1BYNhnPofsh65Gci4kjbjW6hnwT1lrbzt
+ nQUQ==
+X-Gm-Message-State: AOJu0YzHRtMoFC2k0kOrSH1AusTOGWABONdzp3d+MhTHIsuf0/Icr382
+ foftbaROBpjLUZx7MxnB+Z3cc/tRe5om2lx1FkQ=
+X-Google-Smtp-Source: AGHT+IFnNMek+PafUyBK1nX+CtqOyapKJ7la74YJWPfE1lh4mKn/omb/MuhWf/rMWyomSWqc8malLLGAZoNvk8dzam8=
+X-Received: by 2002:a4a:bb0f:0:b0:582:99ae:ca4c with SMTP id
+ f15-20020a4abb0f000000b0058299aeca4cmr2753014oop.8.1697817645778; Fri, 20 Oct
+ 2023 09:00:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 1/1] stm32f2xx_usart: implement TX interrupts
-Content-Language: en-US
-To: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
-Cc: Alistair Francis <alistair@alistair23.me>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "open list:STM32F205" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-References: <20231020111428.3260965-1-hans-erik.floryd@rt-labs.com>
- <74d96828-dae9-64fe-5947-ba83ce54206d@linaro.org>
- <CADS1RdQLmbdobcAsO+DM79N2TgaErCwrctATXNf6a7VYT6hBqA@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CADS1RdQLmbdobcAsO+DM79N2TgaErCwrctATXNf6a7VYT6hBqA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+References: <cover.1697739629.git.mst@redhat.com>
+In-Reply-To: <cover.1697739629.git.mst@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Fri, 20 Oct 2023 09:00:33 -0700
+Message-ID: <CAJSP0QVTPz4i6WgsNxrOS+M6JqakM8i7eROWg0XAraFcRYajgQ@mail.gmail.com>
+Subject: Re: [PULL v2 00/78] virtio,pc,pci: features, cleanups
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,309 +86,285 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/10/23 16:40, Hans-Erik Floryd wrote:
-> Hi Phil,
-> 
-> On Fri, 20 Oct 2023 at 14:42, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Hi Hans-Erik,
->>
->> On 20/10/23 13:14, Hans-Erik Floryd wrote:
->>> Generate interrupt if either of the TXE, TC or RXNE bits are active
->>> and the corresponding interrupt enable bit is set.
->>>
->>> Signed-off-by: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
->>> ---
->>>    hw/char/stm32f2xx_usart.c         | 29 +++++++++++++++++------------
->>>    include/hw/char/stm32f2xx_usart.h | 10 ++++++----
->>>    2 files changed, 23 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
->>> index fde67f4f03..2947c3a260 100644
->>> --- a/hw/char/stm32f2xx_usart.c
->>> +++ b/hw/char/stm32f2xx_usart.c
->>> @@ -53,6 +53,16 @@ static int stm32f2xx_usart_can_receive(void *opaque)
->>>        return 0;
->>>    }
->>>
->>> +static void stm32f2xx_update(STM32F2XXUsartState *s)
->>> +{
->>> +    uint32_t mask = s->usart_sr & s->usart_cr1;
->>> +    if (mask & (USART_SR_TXE | USART_SR_TC | USART_SR_RXNE)) {
->>> +        qemu_set_irq(s->irq, 1);
->>> +    } else {
->>> +        qemu_set_irq(s->irq, 0);
->>> +    }
->>> +}
->>> +
->>>    static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf, int size)
->>>    {
->>>        STM32F2XXUsartState *s = opaque;
->>> @@ -66,9 +76,7 @@ static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf, int size)
->>>        s->usart_dr = *buf;
->>>        s->usart_sr |= USART_SR_RXNE;
->>>
->>> -    if (s->usart_cr1 & USART_CR1_RXNEIE) {
->>> -        qemu_set_irq(s->irq, 1);
->>> -    }
->>> +    stm32f2xx_update(s);
->>>
->>>        DB_PRINT("Receiving: %c\n", s->usart_dr);
->>>    }
->>> @@ -85,7 +93,7 @@ static void stm32f2xx_usart_reset(DeviceState *dev)
->>>        s->usart_cr3 = 0x00000000;
->>>        s->usart_gtpr = 0x00000000;
->>>
->>> -    qemu_set_irq(s->irq, 0);
->>> +    stm32f2xx_update(s);
->>>    }
->>>
->>>    static uint64_t stm32f2xx_usart_read(void *opaque, hwaddr addr,
->>> @@ -100,13 +108,14 @@ static uint64_t stm32f2xx_usart_read(void *opaque, hwaddr addr,
->>>        case USART_SR:
->>>            retvalue = s->usart_sr;
->>>            qemu_chr_fe_accept_input(&s->chr);
->>> +        stm32f2xx_update(s);
->>>            return retvalue;
->>>        case USART_DR:
->>>            DB_PRINT("Value: 0x%" PRIx32 ", %c\n", s->usart_dr, (char) s->usart_dr);
->>>            retvalue = s->usart_dr & 0x3FF;
->>>            s->usart_sr &= ~USART_SR_RXNE;
->>>            qemu_chr_fe_accept_input(&s->chr);
->>> -        qemu_set_irq(s->irq, 0);
->>> +        stm32f2xx_update(s);
->>>            return retvalue;
->>>        case USART_BRR:
->>>            return s->usart_brr;
->>> @@ -145,9 +154,7 @@ static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
->>>            } else {
->>>                s->usart_sr &= value;
->>>            }
->>> -        if (!(s->usart_sr & USART_SR_RXNE)) {
->>> -            qemu_set_irq(s->irq, 0);
->>> -        }
->>> +        stm32f2xx_update(s);
->>>            return;
->>>        case USART_DR:
->>>            if (value < 0xF000) {
->>> @@ -161,6 +168,7 @@ static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
->>>                   clear TC by writing 0 to the SR register, so set it again
->>>                   on each write. */
->>>                s->usart_sr |= USART_SR_TC;
->>> +            stm32f2xx_update(s);
->>>            }
->>>            return;
->>>        case USART_BRR:
->>> @@ -168,10 +176,7 @@ static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
->>>            return;
->>>        case USART_CR1:
->>>            s->usart_cr1 = value;
->>> -            if (s->usart_cr1 & USART_CR1_RXNEIE &&
->>> -                s->usart_sr & USART_SR_RXNE) {
->>> -                qemu_set_irq(s->irq, 1);
->>> -            }
->>> +        stm32f2xx_update(s);
->>>            return;
->>>        case USART_CR2:
->>>            s->usart_cr2 = value;
->>> diff --git a/include/hw/char/stm32f2xx_usart.h b/include/hw/char/stm32f2xx_usart.h
->>> index 65bcc85470..fdfa7424a7 100644
->>> --- a/include/hw/char/stm32f2xx_usart.h
->>> +++ b/include/hw/char/stm32f2xx_usart.h
->>> @@ -48,10 +48,12 @@
->>>    #define USART_SR_TC   (1 << 6)
->>>    #define USART_SR_RXNE (1 << 5)
->>>
->>> -#define USART_CR1_UE  (1 << 13)
->>> -#define USART_CR1_RXNEIE  (1 << 5)
->>> -#define USART_CR1_TE  (1 << 3)
->>> -#define USART_CR1_RE  (1 << 2)
->>> +#define USART_CR1_UE     (1 << 13)
->>> +#define USART_CR1_TXEIE  (1 << 7)
->>> +#define USART_CR1_TCEIE  (1 << 6)
->>> +#define USART_CR1_RXNEIE (1 << 5)
->>> +#define USART_CR1_TE     (1 << 3)
->>> +#define USART_CR1_RE     (1 << 2)
->>>
->>>    #define TYPE_STM32F2XX_USART "stm32f2xx-usart"
->>>    OBJECT_DECLARE_SIMPLE_TYPE(STM32F2XXUsartState, STM32F2XX_USART)
->>
->> To keep your changes trivial to review, I split your patch in 4:
-> 
-> Ok - do you also want me to split the patch in the next version?
+On Thu, 19 Oct 2023 at 11:30, Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> Changes from v1:
+>     dropped shadow vq patches
+>
+> The following changes since commit ec6f9f135d5e5596ab0258da2ddd048f1fd8c3=
+59:
+>
+>   Merge tag 'migration-20231017-pull-request' of https://gitlab.com/juan.=
+quintela/qemu into staging (2023-10-17 10:06:21 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+>
+> for you to fetch changes up to 16ef005ba922d5af498e9f0f2ee6b29a318821a8:
+>
+>   intel-iommu: Report interrupt remapping faults, fix return value (2023-=
+10-19 14:11:17 -0400)
+>
+> ----------------------------------------------------------------
+> virtio,pc,pci: features, cleanups
+>
+> infrastructure for vhost-vdpa shadow work
+> piix south bridge rework
+> reconnect for vhost-user-scsi
+> dummy ACPI QTG DSM for cxl
+>
+> tests, cleanups, fixes all over the place
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>
 
-I had to do it because I found your patch including too many
-changes at once. Other might find the same (usually we ask for
-one atomical change per commit: easier to review, and also
-useful if there is a bug, you can revert the single offending
-commit). Since I did the split, I can post it and you can
-re-use the splitted patch series.
+Hi Michael,
+I think the following bios-tables-test failure is caused by this pull reque=
+st:
 
->> 1/ Extract stm32f2xx_update_irq()
->>
->> -- >8 --
->> diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
->> index fde67f4f03..519d3461a3 100644
->> --- a/hw/char/stm32f2xx_usart.c
->> +++ b/hw/char/stm32f2xx_usart.c
->> @@ -53,6 +53,17 @@ static int stm32f2xx_usart_can_receive(void *opaque)
->>        return 0;
->>    }
->>
->> +static void stm32f2xx_update_irq(STM32F2XXUsartState *s)
->> +{
->> +    uint32_t mask = s->usart_sr & s->usart_cr1;
->> +
->> +    if (mask & (USART_SR_TXE | USART_SR_TC | USART_SR_RXNE)) {
->> +        qemu_set_irq(s->irq, 1);
->> +    } else {
->> +        qemu_set_irq(s->irq, 0);
->> +    }
->> +}
->> +
->>    static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf,
->> int size)
->>    {
->>        STM32F2XXUsartState *s = opaque;
->> @@ -66,9 +77,7 @@ static void stm32f2xx_usart_receive(void *opaque,
->> const uint8_t *buf, int size)
->>        s->usart_dr = *buf;
->>        s->usart_sr |= USART_SR_RXNE;
->>
->> -    if (s->usart_cr1 & USART_CR1_RXNEIE) {
->> -        qemu_set_irq(s->irq, 1);
->> -    }
->> +    stm32f2xx_update_irq(s);
->>
->>        DB_PRINT("Receiving: %c\n", s->usart_dr);
->>    }
->> @@ -85,7 +94,7 @@ static void stm32f2xx_usart_reset(DeviceState *dev)
->>        s->usart_cr3 = 0x00000000;
->>        s->usart_gtpr = 0x00000000;
->>
->> -    qemu_set_irq(s->irq, 0);
->> +    stm32f2xx_update_irq(s);
->>    }
->>
->>    static uint64_t stm32f2xx_usart_read(void *opaque, hwaddr addr,
->> @@ -106,7 +115,7 @@ static uint64_t stm32f2xx_usart_read(void *opaque,
->> hwaddr addr,
->>            retvalue = s->usart_dr & 0x3FF;
->>            s->usart_sr &= ~USART_SR_RXNE;
->>            qemu_chr_fe_accept_input(&s->chr);
->> -        qemu_set_irq(s->irq, 0);
->> +        stm32f2xx_update_irq(s);
->>            return retvalue;
->>        case USART_BRR:
->>            return s->usart_brr;
->> @@ -145,9 +154,7 @@ static void stm32f2xx_usart_write(void *opaque,
->> hwaddr addr,
->>            } else {
->>                s->usart_sr &= value;
->>            }
->> -        if (!(s->usart_sr & USART_SR_RXNE)) {
->> -            qemu_set_irq(s->irq, 0);
->> -        }
->> +        stm32f2xx_update_irq(s);
->>            return;
->>        case USART_DR:
->>            if (value < 0xF000) {
->> @@ -168,10 +175,7 @@ static void stm32f2xx_usart_write(void *opaque,
->> hwaddr addr,
->>            return;
->>        case USART_CR1:
->>            s->usart_cr1 = value;
->> -            if (s->usart_cr1 & USART_CR1_RXNEIE &&
->> -                s->usart_sr & USART_SR_RXNE) {
->> -                qemu_set_irq(s->irq, 1);
->> -            }
->> +        stm32f2xx_update_irq(s);
->>            return;
->>        case USART_CR2:
->>            s->usart_cr2 = value;
->> ---
->>
->> 2/ Update IRQ when SR is read
->>
->> -- >8 --
->> diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
->> index 519d3461a3..46e29089bc 100644
->> --- a/hw/char/stm32f2xx_usart.c
->> +++ b/hw/char/stm32f2xx_usart.c
->> @@ -109,6 +109,7 @@ static uint64_t stm32f2xx_usart_read(void *opaque,
->> hwaddr addr,
->>        case USART_SR:
->>            retvalue = s->usart_sr;
->>            qemu_chr_fe_accept_input(&s->chr);
->> +        stm32f2xx_update_irq(s);
->>            return retvalue;
->>        case USART_DR:
->>            DB_PRINT("Value: 0x%" PRIx32 ", %c\n", s->usart_dr, (char)
->> s->usart_dr);
->> ---
->>
->> Why is this required?
-> 
-> It's not required yet although it may be if support for more bits are
-> added (IDLE for instance). Although rereading the manual I'm not sure
-> that's how it would be implemented so I'll remove it.
-> 
->>
->> 3/ Update IRQ when DR is written
->>
->> -- >8 --
->> diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
->> index 46e29089bc..74f007591a 100644
->> --- a/hw/char/stm32f2xx_usart.c
->> +++ b/hw/char/stm32f2xx_usart.c
->> @@ -169,6 +169,7 @@ static void stm32f2xx_usart_write(void *opaque,
->> hwaddr addr,
->>                   clear TC by writing 0 to the SR register, so set it again
->>                   on each write. */
->>                s->usart_sr |= USART_SR_TC;
->> +            stm32f2xx_update_irq(s);
->>            }
->>            return;
->>        case USART_BRR:
->> ---
->>
->> This change makes sense
->>
->> 4/ Add more CR1 bit definitions
->>
->> -- >8 --
->> diff --git a/include/hw/char/stm32f2xx_usart.h
->> b/include/hw/char/stm32f2xx_usart.h
->> index 65bcc85470..fdfa7424a7 100644
->> --- a/include/hw/char/stm32f2xx_usart.h
->> +++ b/include/hw/char/stm32f2xx_usart.h
->> @@ -49,6 +49,8 @@
->>    #define USART_SR_RXNE (1 << 5)
->>
->>    #define USART_CR1_UE     (1 << 13)
->> +#define USART_CR1_TXEIE  (1 << 7)
->> +#define USART_CR1_TCEIE  (1 << 6)
->>    #define USART_CR1_RXNEIE (1 << 5)
->>    #define USART_CR1_TE     (1 << 3)
->>    #define USART_CR1_RE     (1 << 2)
->> ---
->>
->> These are not used, why add them?
-> 
-> For completeness since RXNEIE was already defined. Also for
-> documentation, to show that SR_TX/CR_TXEIE etc share bit numbers,
-> which the implementation relies on.
-> 
-> I can remove it though. Should I also remove RXNEIE which is no longer needed?
+>>> MALLOC_PERTURB_=3D158 QTEST_QEMU_IMG=3D./qemu-img QTEST_QEMU_BINARY=3D.=
+/qemu-system-x86_64 G_TEST_DBUS_DAEMON=3D/builds/qemu-project/qemu/tests/db=
+us-vmstate-daemon.sh QTEST_QEMU_STORAGE_DAEMON_BINARY=3D./storage-daemon/qe=
+mu-storage-daemon PYTHON=3D/builds/qemu-project/qemu/build/pyvenv/bin/pytho=
+n3.8 /builds/qemu-project/qemu/build/tests/qtest/bios-tables-test --tap -k
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80 =E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95
+stderr:
+qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested
+(260) exceeds the recommended cpus supported by KVM (240)
+qemu-system-x86_64: -accel kvm: warning: Number of hotpluggable cpus
+requested (260) exceeds the recommended cpus supported by KVM (240)
+qemu-system-x86_64: -accel kvm: warning: Number of hotpluggable cpus
+requested (520) exceeds the recommended cpus supported by KVM (240)
+Number of hotpluggable cpus requested (520) exceeds the maximum cpus
+supported by KVM (288)
+socket_accept failed: Resource temporarily unavailable
+**
+ERROR:../tests/qtest/libqtest.c:496:qtest_init_internal: assertion
+failed: (s->fd >=3D 0 && s->qmp_fd >=3D 0)
+../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU
+process but encountered exit status 1 (expected 0)
+(test program exited with status code -6)
 
-I'm not against adding the definitions, but better if they are used :)
+https://gitlab.com/qemu-project/qemu/-/jobs/5338513625
 
-My review reflex was "oh, definitions are added but not used, is that
-a bug or a left over?".
+Please take a look. Thanks!
 
-I'll post your splitted patches shortly.
+Stefan
 
-Regard,
-
-Phil.
+> ----------------------------------------------------------------
+> Ani Sinha (1):
+>       hw/i386/cxl: ensure maxram is greater than ram size for calculating=
+ cxl range
+>
+> Bernhard Beschow (30):
+>       hw/i386/acpi-build: Remove build-time assertion on PIIX/ICH9 reset =
+registers being identical
+>       hw/i386/pc: Merge two if statements into one
+>       hw/i386/pc_piix: Allow for setting properties before realizing PIIX=
+3 south bridge
+>       hw/i386/pc_piix: Assign PIIX3's ISA interrupts before its realize()
+>       hw/isa/piix3: Resolve redundant PIIX_NUM_PIC_IRQS
+>       hw/i386/pc_piix: Wire PIIX3's ISA interrupts by new "isa-irqs" prop=
+erty
+>       hw/i386/pc_piix: Remove redundant "piix3" variable
+>       hw/isa/piix3: Rename "pic" attribute to "isa_irqs_in"
+>       hw/i386/pc_q35: Wire ICH9 LPC function's interrupts before its real=
+ize()
+>       hw/isa/piix3: Wire PIC IRQs to ISA bus in host device
+>       hw/i386/pc: Wire RTC ISA IRQs in south bridges
+>       hw/isa/piix3: Create IDE controller in host device
+>       hw/isa/piix3: Create USB controller in host device
+>       hw/isa/piix3: Create power management controller in host device
+>       hw/isa/piix3: Drop the "3" from PIIX base class name
+>       hw/isa/piix4: Remove unused inbound ISA interrupt lines
+>       hw/isa/piix4: Rename "isa" attribute to "isa_irqs_in"
+>       hw/isa/piix4: Rename reset control operations to match PIIX3
+>       hw/isa/piix4: Reuse struct PIIXState from PIIX3
+>       hw/isa/piix3: Merge hw/isa/piix4.c
+>       hw/isa/piix: Allow for optional PIC creation in PIIX3
+>       hw/isa/piix: Allow for optional PIT creation in PIIX3
+>       hw/isa/piix: Harmonize names of reset control memory regions
+>       hw/isa/piix: Share PIIX3's base class with PIIX4
+>       hw/isa/piix: Reuse PIIX3 base class' realize method in PIIX4
+>       hw/isa/piix: Rename functions to be shared for PCI interrupt trigge=
+ring
+>       hw/isa/piix: Reuse PIIX3's PCI interrupt triggering in PIIX4
+>       hw/isa/piix: Resolve duplicate code regarding PCI interrupt wiring
+>       hw/isa/piix: Implement multi-process QEMU support also for PIIX4
+>       hw/i386/pc_piix: Make PIIX4 south bridge usable in PC machine
+>
+> Damien Zammit (1):
+>       timer/i8254: Fix one shot PIT mode
+>
+> Dave Jiang (1):
+>       hw/cxl: Add QTG _DSM support for ACPI0017 device
+>
+> David Woodhouse (1):
+>       intel-iommu: Report interrupt remapping faults, fix return value
+>
+> Hanna Czenczek (1):
+>       vhost-user: Fix protocol feature bit conflict
+>
+> Hawkins Jiawei (7):
+>       vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+>       vdpa: Avoid using vhost_vdpa_net_load_*() outside vhost_vdpa_net_lo=
+ad()
+>       vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
+>       vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_add=
+()
+>       vdpa: Introduce cursors to vhost_vdpa_net_loadx()
+>       vhost: Expose vhost_svq_available_slots()
+>       vdpa: Send cvq state load commands in parallel
+>
+> Ilya Maximets (1):
+>       memory: initialize 'fv' in MemoryRegionCache to make Coverity happy
+>
+> Jonathan Cameron (2):
+>       tests/acpi: Allow update of DSDT.cxl
+>       tests/acpi: Update DSDT.cxl with QTG DSM
+>
+> Laszlo Ersek (7):
+>       vhost-user: strip superfluous whitespace
+>       vhost-user: tighten "reply_supported" scope in "set_vring_addr"
+>       vhost-user: factor out "vhost_user_write_sync"
+>       vhost-user: flatten "enforce_reply" into "vhost_user_write_sync"
+>       vhost-user: hoist "write_sync", "get_features", "get_u64"
+>       vhost-user: allow "vhost_set_vring" to wait for a reply
+>       vhost-user: call VHOST_USER_SET_VRING_ENABLE synchronously
+>
+> Li Feng (5):
+>       vhost-user-common: send get_inflight_fd once
+>       vhost: move and rename the conn retry times
+>       vhost-user-scsi: support reconnect to backend
+>       vhost-user-scsi: start vhost when guest kicks
+>       vhost-user: fix lost reconnect
+>
+> Matheus Tavares Bernardino (1):
+>       hw/display: fix memleak from virtio_add_resource
+>
+> Stefan Hajnoczi (3):
+>       vhost-user: do not send RESET_OWNER on device reset
+>       vhost-backend: remove vhost_kernel_reset_device()
+>       virtio: call ->vhost_reset_device() during reset
+>
+> Thomas Huth (1):
+>       MAINTAINERS: Add include/hw/intc/i8259.h to the PC chip section
+>
+> Zhao Liu (16):
+>       tests: test-smp-parse: Add the test for cores/threads per socket he=
+lpers
+>       tests: bios-tables-test: Prepare the ACPI table change for smbios t=
+ype4 count test
+>       tests: bios-tables-test: Add test for smbios type4 count
+>       tests: bios-tables-test: Add ACPI table binaries for smbios type4 c=
+ount test
+>       tests: bios-tables-test: Prepare the ACPI table change for smbios t=
+ype4 core count test
+>       tests: bios-tables-test: Add test for smbios type4 core count
+>       tests: bios-tables-test: Add ACPI table binaries for smbios type4 c=
+ore count test
+>       tests: bios-tables-test: Prepare the ACPI table change for smbios t=
+ype4 core count2 test
+>       tests: bios-tables-test: Extend smbios core count2 test to cover ge=
+neral topology
+>       tests: bios-tables-test: Update ACPI table binaries for smbios core=
+ count2 test
+>       tests: bios-tables-test: Prepare the ACPI table change for smbios t=
+ype4 thread count test
+>       tests: bios-tables-test: Add test for smbios type4 thread count
+>       tests: bios-tables-test: Add ACPI table binaries for smbios type4 t=
+hread count test
+>       tests: bios-tables-test: Prepare the ACPI table change for smbios t=
+ype4 thread count2 test
+>       tests: bios-tables-test: Add test for smbios type4 thread count2
+>       tests: bios-tables-test: Add ACPI table binaries for smbios type4 t=
+hread count2 test
+>
+>  hw/i386/intel_iommu_internal.h            |   1 +
+>  hw/virtio/vhost-shadow-virtqueue.h        |   1 +
+>  include/exec/memory.h                     |   2 +
+>  include/hw/acpi/cxl.h                     |   1 +
+>  include/hw/i386/pc.h                      |   2 +
+>  include/hw/southbridge/piix.h             |  30 ++-
+>  include/hw/virtio/vhost-scsi-common.h     |   2 +-
+>  include/hw/virtio/vhost-user-scsi.h       |   6 +
+>  include/hw/virtio/vhost-user.h            |   6 +-
+>  include/hw/virtio/vhost.h                 |  12 +
+>  subprojects/libvhost-user/libvhost-user.h |   3 +-
+>  hw/acpi/cxl.c                             |  69 ++++++
+>  hw/block/vhost-user-blk.c                 |   6 +-
+>  hw/display/virtio-dmabuf.c                |  12 +-
+>  hw/i386/acpi-build.c                      |   6 +-
+>  hw/i386/intel_iommu.c                     | 150 ++++++++----
+>  hw/i386/pc.c                              |  19 +-
+>  hw/i386/pc_piix.c                         | 123 +++++++---
+>  hw/i386/pc_q35.c                          |  14 +-
+>  hw/isa/lpc_ich9.c                         |   9 +-
+>  hw/isa/{piix3.c =3D> piix.c}                | 281 ++++++++++++++++------
+>  hw/isa/piix4.c                            | 302 ------------------------
+>  hw/mips/malta.c                           |   5 +-
+>  hw/scsi/vhost-scsi-common.c               |  47 ++--
+>  hw/scsi/vhost-scsi.c                      |   6 +-
+>  hw/scsi/vhost-user-scsi.c                 | 254 +++++++++++++++++---
+>  hw/timer/i8254_common.c                   |   4 +-
+>  hw/virtio/vhost-backend.c                 |   6 -
+>  hw/virtio/vhost-shadow-virtqueue.c        |   2 +-
+>  hw/virtio/vhost-user-gpio.c               |   5 +-
+>  hw/virtio/vhost-user.c                    | 239 ++++++++++---------
+>  hw/virtio/vhost.c                         |   9 +
+>  hw/virtio/virtio.c                        |   4 +
+>  net/vhost-vdpa.c                          | 374 +++++++++++++++++++-----=
+------
+>  tests/qtest/bios-tables-test.c            | 116 ++++++++-
+>  tests/unit/test-smp-parse.c               |  67 ++++--
+>  MAINTAINERS                               |   7 +-
+>  docs/interop/vhost-user.rst               |  11 +
+>  docs/system/target-i386-desc.rst.inc      |   8 +
+>  hw/i386/Kconfig                           |   3 +-
+>  hw/isa/Kconfig                            |   8 +-
+>  hw/isa/meson.build                        |   3 +-
+>  hw/mips/Kconfig                           |   2 +-
+>  meson.build                               |   1 +
+>  tests/data/acpi/q35/APIC.core-count       | Bin 0 -> 544 bytes
+>  tests/data/acpi/q35/APIC.core-count2      | Bin 2478 -> 3238 bytes
+>  tests/data/acpi/q35/APIC.thread-count     | Bin 0 -> 544 bytes
+>  tests/data/acpi/q35/APIC.thread-count2    | Bin 0 -> 7398 bytes
+>  tests/data/acpi/q35/APIC.type4-count      | Bin 0 -> 1072 bytes
+>  tests/data/acpi/q35/DSDT.core-count       | Bin 0 -> 12913 bytes
+>  tests/data/acpi/q35/DSDT.core-count2      | Bin 32495 -> 33770 bytes
+>  tests/data/acpi/q35/DSDT.cxl              | Bin 9655 -> 9713 bytes
+>  tests/data/acpi/q35/DSDT.thread-count     | Bin 0 -> 12913 bytes
+>  tests/data/acpi/q35/DSDT.thread-count2    | Bin 0 -> 63671 bytes
+>  tests/data/acpi/q35/DSDT.type4-count      | Bin 0 -> 18589 bytes
+>  tests/data/acpi/q35/FACP.core-count       | Bin 0 -> 244 bytes
+>  tests/data/acpi/q35/FACP.thread-count     | Bin 0 -> 244 bytes
+>  tests/data/acpi/q35/FACP.thread-count2    | Bin 0 -> 244 bytes
+>  tests/data/acpi/q35/FACP.type4-count      | Bin 0 -> 244 bytes
+>  59 files changed, 1386 insertions(+), 852 deletions(-)
+>  rename hw/isa/{piix3.c =3D> piix.c} (52%)
+>  delete mode 100644 hw/isa/piix4.c
+>  create mode 100644 tests/data/acpi/q35/APIC.core-count
+>  create mode 100644 tests/data/acpi/q35/APIC.thread-count
+>  create mode 100644 tests/data/acpi/q35/APIC.thread-count2
+>  create mode 100644 tests/data/acpi/q35/APIC.type4-count
+>  create mode 100644 tests/data/acpi/q35/DSDT.core-count
+>  create mode 100644 tests/data/acpi/q35/DSDT.thread-count
+>  create mode 100644 tests/data/acpi/q35/DSDT.thread-count2
+>  create mode 100644 tests/data/acpi/q35/DSDT.type4-count
+>  create mode 100644 tests/data/acpi/q35/FACP.core-count
+>  create mode 100644 tests/data/acpi/q35/FACP.thread-count
+>  create mode 100644 tests/data/acpi/q35/FACP.thread-count2
+>  create mode 100644 tests/data/acpi/q35/FACP.type4-count
+>
+>
 
