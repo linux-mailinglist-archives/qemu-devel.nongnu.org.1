@@ -2,95 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF03F7D151B
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 19:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AF27D151E
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 19:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qttaA-0004BN-MJ; Fri, 20 Oct 2023 13:46:46 -0400
+	id 1qttbV-0005KV-Q0; Fri, 20 Oct 2023 13:48:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qtta4-00049D-2K; Fri, 20 Oct 2023 13:46:40 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from
+ <BATV+5f4592396010e9e3c002+7362+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qttbS-0005K8-MN; Fri, 20 Oct 2023 13:48:07 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qtta1-00049m-E4; Fri, 20 Oct 2023 13:46:39 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39KHeRt4022256; Fri, 20 Oct 2023 17:46:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=tOcei5cKqx+jAenkdcI3tbTfcY+Gva/0jOHTtP5rsBg=;
- b=jjCSfRxUmH+Jnrce/PQJyrlHCqTeBskwCN5VWq+4QWv5lOT6WpBpBM04wR8R6tcmffdN
- WeRCy8r3yTDE/RBnfKx/1UG9j2kam6li8GsfiNR6z/bm1mqN+YcXgt8oYVSLwz4VO3g6
- rPu3F+TVDUvqM5HeldpE/GWQw9trP0SYikAPtTKYIsequjpPa+1YudRM/U7drf/HhyPS
- VN0pw6h8kMqB7xmRvEB+gLIFJdPkg6D9uq7836xFC8aO4muYMN+HC79F4OOeZH/Y27mS
- X5BJeT/ZjxADyMbtZlC388D3+bBmVLRcAoelREf310jruRWSOapNsb7mi7p4ZEASoPIX Aw== 
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tux5dg9cg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Oct 2023 17:46:17 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39KHWW1T032062; Fri, 20 Oct 2023 17:46:04 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tuc35p6wn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Oct 2023 17:46:04 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39KHk39A3474022
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Oct 2023 17:46:03 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0816658061;
- Fri, 20 Oct 2023 17:46:03 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E6F958053;
- Fri, 20 Oct 2023 17:46:02 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 20 Oct 2023 17:46:02 +0000 (GMT)
-Message-ID: <ab414faad0e6b5004110fa9c23da6771393c31e8.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/2] misc/pca9552: Let external devices set pca9552 inputs
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: Andrew Jeffery <andrew@codeconstruct.com.au>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>
-Date: Fri, 20 Oct 2023 12:46:02 -0500
-In-Reply-To: <5145c79ae63a5798663cc1ecae205d77865ae30a.camel@codeconstruct.com.au>
-References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
- <20231019204011.3174115-3-milesg@linux.vnet.ibm.com>
- <5145c79ae63a5798663cc1ecae205d77865ae30a.camel@codeconstruct.com.au>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vHrdt2ARC0KVa-Hen-0IBKUbmmgTACDB
-X-Proofpoint-ORIG-GUID: vHrdt2ARC0KVa-Hen-0IBKUbmmgTACDB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-20_10,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 impostorscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- bulkscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310200149
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from
+ <BATV+5f4592396010e9e3c002+7362+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qttbQ-0004VX-2p; Fri, 20 Oct 2023 13:48:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=4asvvPQ4zBlyRpa2vhuFjhoiAxy0Stomlbt1oMwUNp0=; b=jzw5ntQeECvt5JqMcqHU2C6O6q
+ rTGGcSLypqvw6CJuHdVu78wcGnKGX2ZAlqZk9XKimFTbKozeQmiPSsGpsTMs2wVzPbufbMdOAaS/7
+ FJhlYZK9n0RdwOoUR2ICqlQj7LExJjw9NkOUeMyLDwuyv8MP+H2d2Ut77j7BVK4PqSUFdY/BArjyu
+ s9Mv5tGSDXLfmdPntIa/k91AX0eU9BEmJUhgNcadWIurTnV8CQDjlkbfQPu9GuxueUnkx4h892zJB
+ G8zy9Ro4SrFEXNg6UEvib+p2+aiGu/L3kogUHjmenUC66WCBZ4rikgBds1HVYm1zV6WK4DtAR8duo
+ L6X1hSBw==;
+Received: from [2001:8b0:10b:5:f7e9:453b:fc3b:2f6]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qttbH-00ERaa-Mh; Fri, 20 Oct 2023 17:47:55 +0000
+Message-ID: <c9431ff971a464e96cff061eb5d62b9865f2ec9b.camel@infradead.org>
+Subject: Re: [PATCH 11/12] hw/xen: automatically assign device index to
+ block devices
+From: David Woodhouse <dwmw2@infradead.org>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Anthony Perard
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Richard Henderson
+ <richard.henderson@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org, 
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+Date: Fri, 20 Oct 2023 18:47:54 +0100
+In-Reply-To: <950f3a62dfcecce902037f95575f1013697a5925.camel@infradead.org>
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <20231016151909.22133-12-dwmw2@infradead.org> <ZS+cutIjulWBQakk@redhat.com>
+ <950f3a62dfcecce902037f95575f1013697a5925.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-8FLDoG2Lppp2TASqZ2OU"
+User-Agent: Evolution 3.44.4-0ubuntu2 
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+5f4592396010e9e3c002+7362+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,187 +83,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-10-20 at 15:18 +1030, Andrew Jeffery wrote:
-> On Thu, 2023-10-19 at 15:40 -0500, Glenn Miles wrote:
-> > Allow external devices to drive pca9552 input pins by adding
-> > input GPIO's to the model.  This allows a device to connect
-> > its output GPIO's to the pca9552 input GPIO's.
-> > 
-> > In order for an external device to set the state of a pca9552
-> > pin, the pin must first be configured for high impedance (LED
-> > is off).  If the pca9552 pin is configured to drive the pin low
-> > (LED is on), then external input will be ignored.
-> > 
-> > Here is a table describing the logical state of a pca9552 pin
-> > given the state being driven by the pca9552 and an external device:
-> > 
-> >                    PCA9552
-> >                    Configured
-> >                    State
-> > 
-> >                   | Hi-Z | Low |
-> >             ------+------+-----+
-> >   External   Hi-Z |  Hi  | Low |
-> >   Device    ------+------+-----+
-> >   State      Low  |  Low | Low |
-> >             ------+------+-----+
-> > 
-> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > ---
-> > 
-> > Changes from previous version:
-> >  - Added #define's for external state values
-> >  - Added logic state table to commit message
-> >  - Added cover letter
-> > 
-> >  hw/misc/pca9552.c         | 41 ++++++++++++++++++++++++++++++++++-
-> > ----
-> >  include/hw/misc/pca9552.h |  3 ++-
-> >  2 files changed, 38 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-> > index 445f56a9e8..ed814d1f98 100644
-> > --- a/hw/misc/pca9552.c
-> > +++ b/hw/misc/pca9552.c
-> > @@ -44,6 +44,8 @@ DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
-> >  #define PCA9552_LED_OFF  0x1
-> >  #define PCA9552_LED_PWM0 0x2
-> >  #define PCA9552_LED_PWM1 0x3
-> > +#define PCA9552_PIN_LOW  0x0
-> > +#define PCA9552_PIN_HIZ  0x1
-> >  
-> >  static const char *led_state[] = {"on", "off", "pwm0", "pwm1"};
-> >  
-> > @@ -116,16 +118,22 @@ static void
-> > pca955x_update_pin_input(PCA955xState *s)
-> >          switch (config) {
-> >          case PCA9552_LED_ON:
-> >              /* Pin is set to 0V to turn on LED */
-> > -            qemu_set_irq(s->gpio[i], 0);
-> > +            qemu_set_irq(s->gpio_out[i], 0);
-> 
-> pca955x_update_pin_input() is called by the external GPIO handling
-> path
-> as well as the I2C command handling path. If the I2C path sets the
-> line
-> low followed by the device attached to the GPIO setting the line low
-> then I think each change will issue an event on the outbound GPIO. Is
-> that desired behaviour? Does it matter?
-> 
 
-I think these questions probably depend a lot on the recieving device,
-but at best, I think it's inefficient and at worst, depending on the
-recieving device, it could lead to bugs, so I'll add a check.
+--=-8FLDoG2Lppp2TASqZ2OU
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
- 
-> >              s->regs[input_reg] &= ~(1 << input_shift);
-> >              break;
-> >          case PCA9552_LED_OFF:
-> >              /*
-> >               * Pin is set to Hi-Z to turn off LED and
-> > -             * pullup sets it to a logical 1.
-> > +             * pullup sets it to a logical 1 unless
-> > +             * external device drives it low.
-> >               */
-> > -            qemu_set_irq(s->gpio[i], 1);
-> > -            s->regs[input_reg] |= 1 << input_shift;
-> > +            if (s->ext_state[i] == PCA9552_PIN_LOW) {
-> > +                qemu_set_irq(s->gpio_out[i], 0);
-> 
-> Similarly here - it might be the case that both devices have pulled
-> the
-> line low and now the I2C path is releasing it. Given the external
-> device had already pulled the line low as well should we expect an
-> event to occur issued here? Should it matter?
-> 
-> Andrew
-> 
+On Wed, 2023-10-18 at 11:52 +0100, David Woodhouse wrote:
+>=20
+> And xen_config_dev_nic() probably just needs to loop doing the same
+> as
+> I did in pc_init_nic() in
+> https://lore.kernel.org/qemu-devel/20231017182545.97973-5-dwmw2@infradead=
+.org/T/#u
+>=20
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (xen_bus && (!nd->model ||=
+ g_str_equal(model, "xen-net-
+> device"))) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Devic=
+eState *dev =3D qdev_new("xen-net-device");
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qdev_=
+set_nic_properties(dev, nd);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qdev_=
+realize_and_unref(dev, xen_bus, &error_fatal);
+>=20
+>=20
+> ... but this just reinforces what I said there about "if
+> qmp_device_add() can find the damn bus and do this right, why do we
+> have to litter it through platform code?"
 
-See previous response.
+I had a look through the network setup.
 
-Thanks for the review!
+There are a bunch of platforms adding specific devices to their own
+internal system bus, which often use nd_table[] directly. Sometimes
+they do so whether it's been set up or now.
 
-Glenn
+They can mostly be divided into two camps. Some of them will create
+their NIC anyway, and will use a matching -nic configuration if it
+exists. Others will only create their NIC if a corresponding -nic
+configuration does exist.
 
-> > +                s->regs[input_reg] &= ~(1 << input_shift);
-> > +            } else {
-> > +                qemu_set_irq(s->gpio_out[i], 1);
-> > +                s->regs[input_reg] |= 1 << input_shift;
-> > +            }
-> >              break;
-> >          case PCA9552_LED_PWM0:
-> >          case PCA9552_LED_PWM1:
-> > @@ -340,6 +348,7 @@ static const VMStateDescription pca9552_vmstate
-> > = {
-> >          VMSTATE_UINT8(len, PCA955xState),
-> >          VMSTATE_UINT8(pointer, PCA955xState),
-> >          VMSTATE_UINT8_ARRAY(regs, PCA955xState, PCA955X_NR_REGS),
-> > +        VMSTATE_UINT8_ARRAY(ext_state, PCA955xState,
-> > PCA955X_PIN_COUNT_MAX),
-> >          VMSTATE_I2C_SLAVE(i2c, PCA955xState),
-> >          VMSTATE_END_OF_LIST()
-> >      }
-> > @@ -358,6 +367,7 @@ static void pca9552_reset(DeviceState *dev)
-> >      s->regs[PCA9552_LS2] = 0x55;
-> >      s->regs[PCA9552_LS3] = 0x55;
-> >  
-> > +    memset(s->ext_state, PCA9552_PIN_HIZ, PCA955X_PIN_COUNT_MAX);
-> >      pca955x_update_pin_input(s);
-> >  
-> >      s->pointer = 0xFF;
-> > @@ -380,6 +390,26 @@ static void pca955x_initfn(Object *obj)
-> >      }
-> >  }
-> >  
-> > +static void pca955x_set_ext_state(PCA955xState *s, int pin, int
-> > level)
-> > +{
-> > +    if (s->ext_state[pin] != level) {
-> > +        uint16_t pins_status = pca955x_pins_get_status(s);
-> > +        s->ext_state[pin] = level;
-> > +        pca955x_update_pin_input(s);
-> > +        pca955x_display_pins_status(s, pins_status);
-> > +    }
-> > +}
-> > +
-> > +static void pca955x_gpio_in_handler(void *opaque, int pin, int
-> > level)
-> > +{
-> > +
-> > +    PCA955xState *s = PCA955X(opaque);
-> > +    PCA955xClass *k = PCA955X_GET_CLASS(s);
-> > +
-> > +    assert((pin >= 0) && (pin < k->pin_count));
-> > +    pca955x_set_ext_state(s, pin, level);
-> > +}
-> > +
-> >  static void pca955x_realize(DeviceState *dev, Error **errp)
-> >  {
-> >      PCA955xClass *k = PCA955X_GET_CLASS(dev);
-> > @@ -389,7 +419,8 @@ static void pca955x_realize(DeviceState *dev,
-> > Error **errp)
-> >          s->description = g_strdup("pca-unspecified");
-> >      }
-> >  
-> > -    qdev_init_gpio_out(dev, s->gpio, k->pin_count);
-> > +    qdev_init_gpio_out(dev, s->gpio_out, k->pin_count);
-> > +    qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
-> >  }
-> >  
-> >  static Property pca955x_properties[] = {
-> > diff --git a/include/hw/misc/pca9552.h b/include/hw/misc/pca9552.h
-> > index b6f4e264fe..c36525f0c3 100644
-> > --- a/include/hw/misc/pca9552.h
-> > +++ b/include/hw/misc/pca9552.h
-> > @@ -30,7 +30,8 @@ struct PCA955xState {
-> >      uint8_t pointer;
-> >  
-> >      uint8_t regs[PCA955X_NR_REGS];
-> > -    qemu_irq gpio[PCA955X_PIN_COUNT_MAX];
-> > +    qemu_irq gpio_out[PCA955X_PIN_COUNT_MAX];
-> > +    uint8_t ext_state[PCA955X_PIN_COUNT_MAX];
-> >      char *description; /* For debugging purpose only */
-> >  };
-> >  
+This is fairly random, and perhaps platforms should be more consistent,
+but it's best to avoid user-visible changes as much as possible while
+doing the cleanup, so I've kept them as they were.
 
+I've created qemu_configure_nic_device() and qemu_create_nic_device()
+functions for those two use cases respectively, and most code which
+directly accesses nd_table[] can be converted to those fairly simply:
+https://git.infradead.org/users/dwmw2/qemu.git/commitdiff/7b4fb6fc10a4
+
+It means I can throw away the horrid parts of -nic support for the Xen
+network device, which were in the pc and xenfv platforms, and replace
+it with a trivial loop in xenbus_init():
+
++    /* This is a bus-generic "configure all NICs on this bus type" */
++    while ((qnic =3D qemu_create_nic_device("xen-net-device", true, "xen")=
+)) {
++            qdev_realize_and_unref(qnic, bus, &error_fatal);
+
+Other than that one (which is cheating because there's only one type of
+network device that can be instantiated on the XenBus), the only
+remaining case is PCI. Most platforms just iterate over the -nic
+configurations adding devices to a PCI bus of the platform's choice.
+In some cases there's a special case, the first one goes at a specific
+devfn and/or on a different bus.
+
+There was a little more variation here... for example fuloong2e would
+put the first nic (nd_table[0]) in slot 7 only if it's an rtl8139 (if
+the model is unspecified). But PReP would put the first PCI NIC in slot
+3 *regardless* of whether it's the expected PCNET or not.
+
+I didn't faithfully preserve the behaviour there, because I don't think
+it matters. They mostly look like this now (e.g. hw/sh4/r2d):
+
++    nd =3D qemu_find_nic_info(mc->default_nic, true, NULL);
++    if (nd) {
++        pci_nic_init_nofail(nd, pci_bus, mc->default_nic, "2");
++    }
++    pci_init_nic_devices(pci_bus, mc->default_nic);
+
+So they'll take the first NIC configuration which is of the expected
+model (again, or unspecified model) and place that in the special slot,
+and then put the rest of the devices wherever they land.
+
+For the change in behaviour to *matter*, the user would have to
+explicitly specify a NIC of the *non-default* type first, and then a
+NIC of the default type. My new code will put the default-type NIC in
+the "right place", while the old code mostly wouldn't. I think that's
+an OK change to make.
+
+My plan is to *remember* which NIC models are used for lookups during
+the board in, so that qemu_show_nic_devices() can print them all at the
+end.
+
+Current WIP if anyone wants to take a quick look at
+https://git.infradead.org/users/dwmw2/qemu.git/shortlog/refs/heads/xenfv-ne=
+t
+but the weekend arrived quicker than I'd hoped, so I haven't quite got
+it into shape to post yet. Hopefully it makes sense as an approach
+though?
+
+
+
+--=-8FLDoG2Lppp2TASqZ2OU
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDIwMTc0NzU0WjAvBgkqhkiG9w0BCQQxIgQgV5RZNcKF
+wIFoEPV5qYQMok4+hSt7Bau9DYfnNCME91swgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBZ99jY4Q+GqTxQ4AxTC5SbrrEm18q6KUml
+VOiu3fCZIgZKWHKbSWOnAxwxDNW3FG60ZYC+7x9+lkonSGmlkyEJlM8o19rIrEFddmWK0M84bfRz
+ZGbNX5Z8LN6YNy0hYSBjdFXtt8rY4Jmu00aYuIhmWz8O9/I4EgAcMmBx6fHZjbeWhPBqS5yNDuo/
+CRjKXpmZmmHmmDJF9itc5lSGzcX3vCEEOAW/t7MplHBXQxiRP/YvZQPnIQyH2VSM2CxXCLIvF+RU
+ZWrsQdAztKsYpADJw+N95DZI+k9TZ3bxNELYkIOXJEgS3sG00/o0a8yh1ho6osgt4LCj37zM0M+G
+Hg2eCF2iBTFyC52Qh/vlWq0KRruIFtc8w4OELvio+xXL54E3RmV4TlmXQ+uuv4czXELLzacv2ncn
+Q7zeH8wcFgQBBU+4YfU48Cg7foU07X1qqd2K5GzNaCXihn6YksdLN4yScIpRVc9ydl7t67xqe4Xe
+AovXeZWPb8IzSIVjOmmruOVu87Ri2oipwkMij1DsN9tENEHL95zNQl2OVPmizhHhioSGjaYbtV1J
+NAGYJsSJHyjkx5jlRk+ih0Io4YOQDep730OadUyLP3vpNJo7WgaJ5UN7c/D32ZVLIgUQuixWI6BC
+2Y6r4vXLs1XyFuGH46+q3b1SF+6nw7AhCoddkaIvOAAAAAAAAA==
+
+
+--=-8FLDoG2Lppp2TASqZ2OU--
 
