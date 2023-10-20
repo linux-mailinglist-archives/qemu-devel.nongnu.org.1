@@ -2,112 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F127D0C5D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 257627D0C65
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:57:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtmDi-0003Vu-1t; Fri, 20 Oct 2023 05:55:06 -0400
+	id 1qtmEw-0005Ov-Pz; Fri, 20 Oct 2023 05:56:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtmDY-0003Ka-PU
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:55:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qtmEZ-00052Q-Ak
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:56:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtmDX-00039t-1P
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:54:56 -0400
+ id 1qtmEU-0003S4-Mw
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:55:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697795692;
+ s=mimecast20190719; t=1697795743;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vGSxRR5YJgfZ0gSIKkT8v7VX/vApFn3Jra8KVp93HBM=;
- b=bTq6cPPIfCDs09FgpkktIsE47CWcRSzge0v91KIHoKTDBqtzalZDtWjgiXhrjaAbgQcS60
- WxPVUGX8Q0I+fMIxeHUXaWowMNWwTekLJXM4R9DWtZzTiZWDvMX9ls/uXSz/23dPje2IFG
- YRMr4Am/RUduBIIgcAB+8XG+DiJlg10=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KLMU+I9osao7AtazXCWDbLO2o5vrv5iN8qcDoN2HNVU=;
+ b=MCzIrvUzYsqHmUtcpyjkC2CtnU3BndoQBxnCnu0t1+RVC21jQaZkP/LXgx5gEWAld5g1NM
+ 8WD7Vpg5baVo4kv7T6IHbUItow+EfIa5kLQuPp0BEfB6fhw0O0laI4jwAqi/eHW7yxlcT/
+ spaXFF1xcso1+lYLmoHgLFRlqus4MaY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-5fXrEgNEOOm5h2-y-nJDQg-1; Fri, 20 Oct 2023 05:54:51 -0400
-X-MC-Unique: 5fXrEgNEOOm5h2-y-nJDQg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-408524e2368so1813515e9.0
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:54:51 -0700 (PDT)
+ us-mta-41-CcVcRKnSO9O9pkLLZmnDgA-1; Fri, 20 Oct 2023 05:55:40 -0400
+X-MC-Unique: CcVcRKnSO9O9pkLLZmnDgA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-408212415abso3919875e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:55:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697795690; x=1698400490;
+ d=1e100.net; s=20230601; t=1697795739; x=1698400539;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vGSxRR5YJgfZ0gSIKkT8v7VX/vApFn3Jra8KVp93HBM=;
- b=xKPcZC9YXOnZ/B+M9z5tV4BF071JVmww+lUInkdzaUdJHp2cdOxBs8pNx5c8giqCS7
- siOE16fJzhHnwwB5WoqOWyzqyKHHPJDXrkca+UpD4vRZBX6v5EmgJLfoDzbWFaoaLhSS
- Ma80BuWmhdfXJlAUK3v5hjupHRgua+HFPXGd+7Ya79PWceWEahmXDNj6gZqjpd+lB8aX
- GggaR1KBk5KsaCs0ellarfRbOopRlXvpvXBqJ2VhGVxDgutxgD789KJiLEyPpgQ3OOjh
- kXkS/8OBU4HqJpAF86QcsWwCXCBMxfbJgj9T+zmx70UiM0SrK3vQDsEylslqjhZNwEGi
- sfFg==
-X-Gm-Message-State: AOJu0YzzNeOEZcmTzhzsb0Q5dmZ8RCyCpcIoJHviaHqV1htGSCzB9/Vf
- czMQLm+JBhk3iA4Llr0bSKpT0Loxy+GgV6QdyC6CJ0lQmFECiauf858HYauOXUFyFpYkIeLq19Z
- 8+GCl9zdMbV9q7aM=
-X-Received: by 2002:a05:600c:154a:b0:406:4573:81d2 with SMTP id
- f10-20020a05600c154a00b00406457381d2mr1011782wmg.39.1697795690027; 
- Fri, 20 Oct 2023 02:54:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/62h5i1qPiOHJa34xRI2T687/pTx/CqWe5zoRK57EVWuwqvLEIVhuCBPIwYn+lWqx2pVXRw==
-X-Received: by 2002:a05:600c:154a:b0:406:4573:81d2 with SMTP id
- f10-20020a05600c154a00b00406457381d2mr1011741wmg.39.1697795689619; 
- Fri, 20 Oct 2023 02:54:49 -0700 (PDT)
+ bh=KLMU+I9osao7AtazXCWDbLO2o5vrv5iN8qcDoN2HNVU=;
+ b=chr/DXpWaeoBNyCq3Ig+TiWCEQQs9mKdUEcEEhEUmvX0rnJwey2nk5zERgfqTwxvBt
+ fB2Rp9w7qlBZ2BDsP0TVCNcfjazuPWOLssErhQE9Bn9Sqg2j2IZqC/kRoF/a770IIsYK
+ boe3+qKZ//pY7Setiwh4vxuTolA0KM2EMeCLxzRfHV3OO5btq/dewvp9sGlr4TV+2AVR
+ iyQmPQqLZxWVS4jJXQgnV2dmGGzlRB/g8jRFawdGtl5hdFzqXqGl19f9/T9KAoo3tG77
+ /0IVtlojbDvueM21oNTZgtol5bdkrE9lHGLYc9ouBr/mdjcrno3ptriPmLyHJaW3ifVA
+ 5rDQ==
+X-Gm-Message-State: AOJu0YxSSfGSxdPm23jfGbWukaRRM+D26Xh1VzBHJN1rBh93wTgSZulg
+ Dj8/c1v5qhfgOuxY/4n8KTJlqmin400BhIaTOTILlSNwzJK4I/kwEbsgWnJPG26O22u65RyIKUG
+ TTb8K0oDUH0vTyAk=
+X-Received: by 2002:a05:600c:4593:b0:401:b504:b6a0 with SMTP id
+ r19-20020a05600c459300b00401b504b6a0mr1097889wmo.3.1697795739080; 
+ Fri, 20 Oct 2023 02:55:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBKB2FOolaXg8d3rhvQTrVfHCS/njN0B508BkFRPh6HaH9UwJ+wp+V+Gf+IPUQ1dHgKN7gFg==
+X-Received: by 2002:a05:600c:4593:b0:401:b504:b6a0 with SMTP id
+ r19-20020a05600c459300b00401b504b6a0mr1097874wmo.3.1697795738802; 
+ Fri, 20 Oct 2023 02:55:38 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- c39-20020a05600c4a2700b0040588d85b3asm6354301wmp.15.2023.10.20.02.54.48
+ h14-20020a05600c314e00b003fbe4cecc3bsm6612838wmo.16.2023.10.20.02.55.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 02:54:49 -0700 (PDT)
+ Fri, 20 Oct 2023 02:55:38 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,  Harsh
- Prateek Bora <harshpb@linux.ibm.com>,  David Hildenbrand
- <david@redhat.com>,  Samuel Thibault <samuel.thibault@ens-lyon.org>,  Eric
- Farman <farman@linux.ibm.com>,  qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,
- Thomas Huth <thuth@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,  David Gibson
- <david@gibson.dropbear.id.au>,  Corey Minyard <cminyard@mvista.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,  Peter Xu <peterx@redhat.com>,
- Corey Minyard <minyard@acm.org>,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Halil Pasic <pasic@linux.ibm.com>,
- Leonardo Bras <leobras@redhat.com>,  John Snow <jsnow@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,  Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>,  Ilya Leoshkevich <iii@linux.ibm.com>,
- Jason Wang <jasowang@redhat.com>,  qemu-block@nongnu.org,
- qemu-s390x@nongnu.org,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Daniel Henrique
- Barboza <danielhb413@gmail.com>,  Stefan Weil <sw@weilnetz.de>,  Stefan
- Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 06/13] migration: Use VMSTATE_INSTANCE_ID_ANY for
- s390 devices
-In-Reply-To: <b8b79cb0-1537-b0bb-5c30-1ac2582034cb@linux.ibm.com> (Christian
- Borntraeger's message of "Fri, 20 Oct 2023 11:26:13 +0200")
-References: <20231020090731.28701-1-quintela@redhat.com>
- <20231020090731.28701-7-quintela@redhat.com>
- <b8b79cb0-1537-b0bb-5c30-1ac2582034cb@linux.ibm.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,  qemu-block@nongnu.org,
+ qemu-s390x@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>
+Subject: Re: [PATCH v2 10/22] qapi: Correct error message for
+ 'vcpu_dirty_limit' parameter
+In-Reply-To: <875y318zgy.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Fri, 20 Oct 2023 10:33:49 +0200")
+References: <20231005045041.52649-1-philmd@linaro.org>
+ <20231005045041.52649-11-philmd@linaro.org>
+ <875y318zgy.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Fri, 20 Oct 2023 11:54:48 +0200
-Message-ID: <87il71zkif.fsf@secure.mitica>
+Date: Fri, 20 Oct 2023 11:55:37 +0200
+Message-ID: <87edhpzkh2.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,109 +109,59 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
-> Am 20.10.23 um 11:07 schrieb Juan Quintela:
->> Just with make check I can see that we can have more than one of this
->> devices, so use ANY.
->> ok 5 /s390x/device/introspect/abstract-interfaces
->> ...
->> Broken pipe
->> ../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195:
->> kill_qemu() tried to terminate QEMU process but encountered exit
->> status 1 (expected 0)
->> Aborted (core dumped)
->> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
+Markus Armbruster <armbru@redhat.com> wrote:
+> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+>
+>> QERR_INVALID_PARAMETER_VALUE is defined as:
+>>
+>>   #define QERR_INVALID_PARAMETER_VALUE \
+>>       "Parameter '%s' expects %s"
+>>
+>> The current error is formatted as:
+>>
+>>   "Parameter 'vcpu_dirty_limit' expects is invalid, it must greater then=
+ 1 MB/s"
+>>
+>> Replace by:
+>>
+>>   "Parameter 'vcpu_dirty_limit' is invalid, it must greater then 1 MB/s"
+>>
+>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 >> ---
->>   hw/s390x/s390-skeys.c    | 3 ++-
->>   hw/s390x/s390-stattrib.c | 3 ++-
->>   2 files changed, 4 insertions(+), 2 deletions(-)
+>>  migration/options.c | 5 ++---
+>>  1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/migration/options.c b/migration/options.c
+>> index 1d1e1321b0..79fce0c3a9 100644
+>> --- a/migration/options.c
+>> +++ b/migration/options.c
+>> @@ -1163,9 +1163,8 @@ bool migrate_params_check(MigrationParameters *par=
+ams, Error **errp)
+>>=20=20
+>>      if (params->has_vcpu_dirty_limit &&
+>>          (params->vcpu_dirty_limit < 1)) {
+>> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+>> -                   "vcpu_dirty_limit",
+>> -                   "is invalid, it must greater then 1 MB/s");
+>> +        error_setg(errp, "Parameter 'vcpu_dirty_limit' is invalid,"
+>> +                         " it must greater then 1 MB/s");
+>>          return false;
+>>      }
 >
-> Actually both devices should be the=C5=95e only once - I think.
-
-Reverting the patch (but with the check that we don't add duplicated
-entries):
-
-# Testing device 's390-skeys-qemu'
-Broken pipe
-../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:194: kill_qemu() t=
-ried to terminate QEMU process but encountered exit status 1 (expected 0)
-Aborted (core dumped)
-$=20
-
-This is device-intraspect-test.
-
-Somehow this function decides that you can hotplug this two s390
-devices, if that is not the case, they need to be marked somehow not
-hot-plugabble.
-
-static void test_one_device(QTestState *qts, const char *type)
-{
-    QDict *resp;
-    char *help, *escaped;
-    GRegex *comma;
-
-    g_test_message("Testing device '%s'", type);
-
-    resp =3D qtest_qmp(qts, "{'execute': 'device-list-properties',"
-                          " 'arguments': {'typename': %s}}",
-               type);
-    qobject_unref(resp);
-
-    comma =3D g_regex_new(",", 0, 0, NULL);
-    escaped =3D g_regex_replace_literal(comma, type, -1, 0, ",,", 0, NULL);
-    g_regex_unref(comma);
-
-    help =3D qtest_hmp(qts, "device_add \"%s,help\"", escaped);
-    g_free(help);
-    g_free(escaped);
-}
-
-Thanks, Juan.
-
-
-
+> Make that "greater than", please.
 >
->> diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
->> index 5024faf411..ef089e1967 100644
->> --- a/hw/s390x/s390-skeys.c
->> +++ b/hw/s390x/s390-skeys.c
->> @@ -22,6 +22,7 @@
->>   #include "sysemu/kvm.h"
->>   #include "migration/qemu-file-types.h"
->>   #include "migration/register.h"
->> +#include "migration/vmstate.h"
->>     #define S390_SKEYS_BUFFER_SIZE (128 * KiB)  /* Room for 128k
->> storage keys */
->>   #define S390_SKEYS_SAVE_FLAG_EOS 0x01
->> @@ -457,7 +458,7 @@ static inline void s390_skeys_set_migration_enabled(=
-Object *obj, bool value,
->>       ss->migration_enabled =3D value;
->>         if (ss->migration_enabled) {
->> -        register_savevm_live(TYPE_S390_SKEYS, 0, 1,
->> +        register_savevm_live(TYPE_S390_SKEYS, VMSTATE_INSTANCE_ID_ANY, =
-1,
->>                                &savevm_s390_storage_keys, ss);
->>       } else {
->>           unregister_savevm(VMSTATE_IF(ss), TYPE_S390_SKEYS, ss);
->> diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
->> index 220e845d12..055d382c3c 100644
->> --- a/hw/s390x/s390-stattrib.c
->> +++ b/hw/s390x/s390-stattrib.c
->> @@ -13,6 +13,7 @@
->>   #include "qemu/units.h"
->>   #include "migration/qemu-file.h"
->>   #include "migration/register.h"
->> +#include "migration/vmstate.h"
->>   #include "hw/s390x/storage-attributes.h"
->>   #include "qemu/error-report.h"
->>   #include "exec/ram_addr.h"
->> @@ -380,7 +381,7 @@ static void s390_stattrib_instance_init(Object *obj)
->>   {
->>       S390StAttribState *sas =3D S390_STATTRIB(obj);
->>   -    register_savevm_live(TYPE_S390_STATTRIB, 0, 0,
->> +    register_savevm_live(TYPE_S390_STATTRIB, VMSTATE_INSTANCE_ID_ANY, 0,
->>                            &savevm_s390_stattrib_handlers, sas);
->>         object_property_add_bool(obj, "migration-enabled",
+> Arrgh, the unit is MB/s even in QMP:
+>
+>     # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+>     #     Defaults to 1.  (Since 8.1)
+>
+> Should be Bytes.  Escaped review, and now it's too late to fix.
+
+I want a Time Machine.
+I want a Time Machine.
+
+Wait, if I had a Time Machine I would not be fixing old bugs O:-)
+
+Later, Juan.
 
 
