@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847DA7D1D00
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 14:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3798B7D1D0D
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 14:09:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quAjp-00034o-86; Sat, 21 Oct 2023 08:05:54 -0400
+	id 1quAjo-00032O-3x; Sat, 21 Oct 2023 08:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAjV-0002zf-Ph; Sat, 21 Oct 2023 08:05:34 -0400
+ id 1quAjY-00030F-UI; Sat, 21 Oct 2023 08:05:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAjT-0000u5-CI; Sat, 21 Oct 2023 08:05:33 -0400
+ id 1quAjX-0000zV-2A; Sat, 21 Oct 2023 08:05:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1534F2C32F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 94A012C330;
  Sat, 21 Oct 2023 15:05:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D1A093067D;
- Sat, 21 Oct 2023 15:05:25 +0300 (MSK)
-Received: (nullmailer pid 220778 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 3AA3F3067E;
+ Sat, 21 Oct 2023 15:05:26 +0300 (MSK)
+Received: (nullmailer pid 220781 invoked by uid 1000);
  Sat, 21 Oct 2023 12:05:25 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
- qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 01/17] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
- query_port()
-Date: Sat, 21 Oct 2023 15:05:03 +0300
-Message-Id: <20231021120519.220720-2-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 02/17] hw/ppc/ppc440_uc: Remove dead l2sram_update_mappings()
+Date: Sat, 21 Oct 2023 15:05:04 +0300
+Message-Id: <20231021120519.220720-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231021120519.220720-1-mjt@tls.msk.ru>
 References: <20231021120519.220720-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,74 +60,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-In query_port() we pass the address of a local pvrdma_port_attr
-struct to the rdma_query_backend_port() function.  Unfortunately,
-rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
-and the two are not the same length.
+Apparently l2sram_update_mappings() bit-rotted over time,
+when defining MAP_L2SRAM we get:
 
-Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
-long, and ibv_port_attr is 52 bytes, because it has a few extra
-fields at the end.
+  hw/ppc/ppc440_uc.c:83:17: error: no member named 'isarc' in 'struct ppc4xx_l2sram_t'
+      if (l2sram->isarc != isarc ||
+          ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:84:18: error: no member named 'isacntl' in 'struct ppc4xx_l2sram_t'
+          (l2sram->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
+           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:85:21: error: no member named 'isacntl' in 'struct ppc4xx_l2sram_t'
+          if (l2sram->isacntl & 0x80000000) {
+              ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:88:50: error: no member named 'isarc_ram' in 'struct ppc4xx_l2sram_t'
+                                          &l2sram->isarc_ram);
+                                           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:93:50: error: no member named 'isarc_ram' in 'struct ppc4xx_l2sram_t'
+                                          &l2sram->isarc_ram);
+                                           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:96:17: error: no member named 'dsarc' in 'struct ppc4xx_l2sram_t'
+      if (l2sram->dsarc != dsarc ||
+          ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:97:18: error: no member named 'dsacntl' in 'struct ppc4xx_l2sram_t'
+          (l2sram->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
+           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:98:21: error: no member named 'dsacntl' in 'struct ppc4xx_l2sram_t'
+          if (l2sram->dsacntl & 0x80000000) {
+              ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:100:52: error: no member named 'dsarc' in 'struct ppc4xx_l2sram_t'
+              if (!(isacntl & 0x80000000) || l2sram->dsarc != isarc) {
+                                             ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:103:54: error: no member named 'dsarc_ram' in 'struct ppc4xx_l2sram_t'
+                                              &l2sram->dsarc_ram);
+                                               ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:111:54: error: no member named 'dsarc_ram' in 'struct ppc4xx_l2sram_t'
+                                              &l2sram->dsarc_ram);
+                                               ~~~~~~  ^
 
-Fortunately, all we do with the attrs struct after the call is to
-read a few specific fields out of it which are all at the same
-offsets in both structs, so we can simply make the local variable the
-correct type.  This also lets us drop the cast (which should have
-been a bit of a warning flag that we were doing something wrong
-here).
+Remove that dead code.
 
-We do however need to add extra casts for the fields of the
-struct that are enums: clang will complain about the implicit
-cast to a different enum type otherwise.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/rdma/vmw/pvrdma_cmd.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ hw/ppc/ppc440_uc.c | 42 ------------------------------------------
+ 1 file changed, 42 deletions(-)
 
-diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
-index c6ed025982..d385d18d9c 100644
---- a/hw/rdma/vmw/pvrdma_cmd.c
-+++ b/hw/rdma/vmw/pvrdma_cmd.c
-@@ -129,23 +129,27 @@ static int query_port(PVRDMADev *dev, union pvrdma_cmd_req *req,
+diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
+index 4181c843a8..7d6ca70387 100644
+--- a/hw/ppc/ppc440_uc.c
++++ b/hw/ppc/ppc440_uc.c
+@@ -73,46 +73,6 @@ typedef struct ppc4xx_l2sram_t {
+     uint32_t isram0[11];
+ } ppc4xx_l2sram_t;
+ 
+-#ifdef MAP_L2SRAM
+-static void l2sram_update_mappings(ppc4xx_l2sram_t *l2sram,
+-                                   uint32_t isarc, uint32_t isacntl,
+-                                   uint32_t dsarc, uint32_t dsacntl)
+-{
+-    if (l2sram->isarc != isarc ||
+-        (l2sram->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
+-        if (l2sram->isacntl & 0x80000000) {
+-            /* Unmap previously assigned memory region */
+-            memory_region_del_subregion(get_system_memory(),
+-                                        &l2sram->isarc_ram);
+-        }
+-        if (isacntl & 0x80000000) {
+-            /* Map new instruction memory region */
+-            memory_region_add_subregion(get_system_memory(), isarc,
+-                                        &l2sram->isarc_ram);
+-        }
+-    }
+-    if (l2sram->dsarc != dsarc ||
+-        (l2sram->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
+-        if (l2sram->dsacntl & 0x80000000) {
+-            /* Beware not to unmap the region we just mapped */
+-            if (!(isacntl & 0x80000000) || l2sram->dsarc != isarc) {
+-                /* Unmap previously assigned memory region */
+-                memory_region_del_subregion(get_system_memory(),
+-                                            &l2sram->dsarc_ram);
+-            }
+-        }
+-        if (dsacntl & 0x80000000) {
+-            /* Beware not to remap the region we just mapped */
+-            if (!(isacntl & 0x80000000) || dsarc != isarc) {
+-                /* Map new data memory region */
+-                memory_region_add_subregion(get_system_memory(), dsarc,
+-                                            &l2sram->dsarc_ram);
+-            }
+-        }
+-    }
+-}
+-#endif
+-
+ static uint32_t dcr_read_l2sram(void *opaque, int dcrn)
  {
-     struct pvrdma_cmd_query_port *cmd = &req->query_port;
-     struct pvrdma_cmd_query_port_resp *resp = &rsp->query_port_resp;
--    struct pvrdma_port_attr attrs = {};
-+    struct ibv_port_attr attrs = {};
- 
-     if (cmd->port_num > MAX_PORTS) {
-         return -EINVAL;
+     ppc4xx_l2sram_t *l2sram = opaque;
+@@ -193,7 +153,6 @@ static void dcr_write_l2sram(void *opaque, int dcrn, uint32_t val)
+         /*l2sram->isram1[dcrn - DCR_L2CACHE_BASE] = val;*/
+         break;
      }
+-    /*l2sram_update_mappings(l2sram, isarc, isacntl, dsarc, dsacntl);*/
+ }
  
--    if (rdma_backend_query_port(&dev->backend_dev,
--                                (struct ibv_port_attr *)&attrs)) {
-+    if (rdma_backend_query_port(&dev->backend_dev, &attrs)) {
-         return -ENOMEM;
-     }
+ static void l2sram_reset(void *opaque)
+@@ -203,7 +162,6 @@ static void l2sram_reset(void *opaque)
+     memset(l2sram->l2cache, 0, sizeof(l2sram->l2cache));
+     l2sram->l2cache[DCR_L2CACHE_STAT - DCR_L2CACHE_BASE] = 0x80000000;
+     memset(l2sram->isram0, 0, sizeof(l2sram->isram0));
+-    /*l2sram_update_mappings(l2sram, isarc, isacntl, dsarc, dsacntl);*/
+ }
  
-     memset(resp, 0, sizeof(*resp));
- 
--    resp->attrs.state = dev->func0->device_active ? attrs.state :
--                                                    PVRDMA_PORT_DOWN;
--    resp->attrs.max_mtu = attrs.max_mtu;
--    resp->attrs.active_mtu = attrs.active_mtu;
-+    /*
-+     * The state, max_mtu and active_mtu fields are enums; the values
-+     * for pvrdma_port_state and pvrdma_mtu match those for
-+     * ibv_port_state and ibv_mtu, so we can cast them safely.
-+     */
-+    resp->attrs.state = dev->func0->device_active ?
-+        (enum pvrdma_port_state)attrs.state : PVRDMA_PORT_DOWN;
-+    resp->attrs.max_mtu = (enum pvrdma_mtu)attrs.max_mtu;
-+    resp->attrs.active_mtu = (enum pvrdma_mtu)attrs.active_mtu;
-     resp->attrs.phys_state = attrs.phys_state;
-     resp->attrs.gid_tbl_len = MIN(MAX_PORT_GIDS, attrs.gid_tbl_len);
-     resp->attrs.max_msg_sz = 1024;
+ void ppc4xx_l2sram_init(CPUPPCState *env)
 -- 
 2.39.2
 
