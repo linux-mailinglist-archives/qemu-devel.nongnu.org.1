@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754647D1FC1
+	by mail.lfdr.de (Postfix) with ESMTPS id 936A17D1FC2
 	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 23:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quJLz-0003sF-5Z; Sat, 21 Oct 2023 17:17:51 -0400
+	id 1quJLt-0003o3-UB; Sat, 21 Oct 2023 17:17:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1quJLx-0003rY-4A; Sat, 21 Oct 2023 17:17:49 -0400
+ id 1quJLr-0003mY-Am; Sat, 21 Oct 2023 17:17:43 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1quJLu-0005Tw-JW; Sat, 21 Oct 2023 17:17:48 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ id 1quJLo-0005Sx-8s; Sat, 21 Oct 2023 17:17:43 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39LKlsU6012159; Sat, 21 Oct 2023 21:17:28 GMT
+ 39LLAkmV015280; Sat, 21 Oct 2023 21:17:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=lTYOyQLChs57Tv/Msiu3Bop/mtTq8obBnujclN2SpYw=;
- b=eRQ/wjTKE5z2LqDUZq+G0E24qtquY915uo5aHZ3i1tJ9A3+QAleeGv6RbtcaQ5vSUdbi
- FJKFsTCdoJjDVN5zS77akjcZoYmeZWgRJuU/IrsE0K4uFQqBbh8O6+kDQV5Sf98KMKZE
- y9SJ2FkMPsIvUciqRmzb0UdLOFWXLqijGuHAXRgRjkPXAxJTLoAut+K+GR7nVZAzXlKA
- +RzTggyz9AXeDERc1EtKUg/WQswwaux6xXCJkoLCAJzMwAStzipOo2tL+8unIk6/gd+r
- Zl2GLFJLieg+bH7Ypn2EFTrFtDWp4i+5VbRivs1rvrr9k57WGrdjfT08h+17hhKPKelm Pg== 
+ bh=ML9GCWfKkWkDp9qiSvPP/zc54/fAzmFtFR+NkD8lI30=;
+ b=hQIYUneMaZPdvwJxQ8bAqgjO1/tApd3h12BFj5SG2rl6iIzy2/6WiYDHIjfdt8+0zv1t
+ t/bFT950nqsqEUCxDqupTL06SHgfqb878lq0xk73A/LwU5wVhlk1JiLyQIAZjNdmeZP/
+ x5NE0CIfaaTGR/ccQ3A6wwXiZFEeJkBIhdiCtcfcylRZURQJCQciiTWbX6V+KE3Uygq6
+ BrkiJ0oxNLXaZ32gWiDnhaGAsJAprccurRigc3UN+4RPP0+oNgWSnWL3syUqashORctz
+ 4fpgjaX9CVE3Aa5OM9k+Ovq0DyW8AkaIg4KwOT/OuTscF791GEmul+loAryhvWj2Gy5Q EQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvp080g4e-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvny1ghsk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Sat, 21 Oct 2023 21:17:27 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39LLFCnu031909;
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39LLAw43015881;
  Sat, 21 Oct 2023 21:17:26 GMT
 Received: from ppma11.dal12v.mail.ibm.com
  (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvp080g44-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvny1ghsb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Sat, 21 Oct 2023 21:17:26 +0000
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
  by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39LKK8PE019366; Sat, 21 Oct 2023 21:17:25 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc45dcev-1
+ 39LKMT5B019458; Sat, 21 Oct 2023 21:17:25 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc45dcew-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Sat, 21 Oct 2023 21:17:25 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
  [10.241.53.104])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39LLHOBD33489254
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39LLHPp821299824
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Sat, 21 Oct 2023 21:17:25 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B26C158065;
- Sat, 21 Oct 2023 21:17:24 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2E42758052;
+ Sat, 21 Oct 2023 21:17:25 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52A275805D;
+ by IMSVA (Postfix) with ESMTP id BFDD458056;
  Sat, 21 Oct 2023 21:17:24 +0000 (GMT)
 Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
  by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
@@ -70,25 +70,25 @@ To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
  philmd@linaro.org, lvivier@redhat.com
 Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org,
  Andrew Jeffery <andrew@aj.id.au>
-Subject: [PATCH v6 04/10] hw/fsi: Introduce IBM's FSI
-Date: Sat, 21 Oct 2023 16:17:13 -0500
-Message-Id: <20231021211720.3571082-5-ninad@linux.ibm.com>
+Subject: [PATCH v6 05/10] hw/fsi: IBM's On-chip Peripheral Bus
+Date: Sat, 21 Oct 2023 16:17:14 -0500
+Message-Id: <20231021211720.3571082-6-ninad@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231021211720.3571082-1-ninad@linux.ibm.com>
 References: <20231021211720.3571082-1-ninad@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: I2x1eD5EVuW2s-rlA5VhwNwyystqK95x
-X-Proofpoint-ORIG-GUID: ZIV8JejmwjQ8KsydokZZEK0Qp7eUOpcR
+X-Proofpoint-ORIG-GUID: laqBV07KHXtOeFqSX6QfxCDBrXFuG562
+X-Proofpoint-GUID: knSsVA1x16odMV3ddkImNYu1u2r8lq9t
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-21_13,2023-10-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=999 malwarescore=0
- clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ impostorscore=0 mlxscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 priorityscore=1501
+ adultscore=0 phishscore=0 mlxlogscore=995 suspectscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2310170001 definitions=main-2310210196
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
@@ -117,331 +117,303 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 This is a part of patchset where IBM's Flexible Service Interface is
 introduced.
 
-This commit models the FSI bus. CFAM is hanging out of FSI bus. The bus
-is model such a way that it is embedded inside the FSI master which is a
-bus controller.
-
-The FSI master: A controller in the platform service processor (e.g.
-BMC) driving CFAM engine accesses into the POWER chip. At the
-hardware level FSI is a bit-based protocol supporting synchronous and
-DMA-driven accesses of engines in a CFAM.
+The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
+POWER processors. This now makes an appearance in the ASPEED SoC due
+to tight integration of the FSI master IP with the OPB, mainly the
+existence of an MMIO-mapping of the CFAM address straight onto a
+sub-region of the OPB address space.
 
 Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
 Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 ---
 v2:
-- Incorporated review comments by Joel
+- Incorporated review comment by Joel.
 v5:
 - Incorporated review comments by Cedric.
 v6:
 - Incorporated review comments by Cedric & Daniel
 ---
- include/hw/fsi/fsi-master.h |  30 ++++++
- hw/fsi/fsi-master.c         | 202 ++++++++++++++++++++++++++++++++++++
- hw/fsi/fsi.c                |  25 +++++
- hw/fsi/meson.build          |   2 +-
- hw/fsi/trace-events         |   2 +
- 5 files changed, 260 insertions(+), 1 deletion(-)
- create mode 100644 include/hw/fsi/fsi-master.h
- create mode 100644 hw/fsi/fsi-master.c
- create mode 100644 hw/fsi/fsi.c
+ include/hw/fsi/opb.h |  43 ++++++++++++
+ hw/fsi/fsi-master.c  |   3 +-
+ hw/fsi/opb.c         | 164 +++++++++++++++++++++++++++++++++++++++++++
+ hw/fsi/Kconfig       |   4 ++
+ hw/fsi/meson.build   |   1 +
+ hw/fsi/trace-events  |   8 +++
+ 6 files changed, 221 insertions(+), 2 deletions(-)
+ create mode 100644 include/hw/fsi/opb.h
+ create mode 100644 hw/fsi/opb.c
 
-diff --git a/include/hw/fsi/fsi-master.h b/include/hw/fsi/fsi-master.h
+diff --git a/include/hw/fsi/opb.h b/include/hw/fsi/opb.h
 new file mode 100644
-index 0000000000..847078919c
+index 0000000000..9b143564ae
 --- /dev/null
-+++ b/include/hw/fsi/fsi-master.h
-@@ -0,0 +1,30 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2019 IBM Corp.
-+ *
-+ * IBM Flexible Service Interface Master
-+ */
-+#ifndef FSI_FSI_MASTER_H
-+#define FSI_FSI_MASTER_H
-+
-+#include "exec/memory.h"
-+#include "hw/qdev-core.h"
-+#include "hw/fsi/fsi.h"
-+
-+#define TYPE_FSI_MASTER "fsi.master"
-+OBJECT_DECLARE_SIMPLE_TYPE(FSIMasterState, FSI_MASTER)
-+
-+#define FSI_MASTER_NR_REGS ((0x2e0 >> 2) + 1)
-+
-+typedef struct FSIMasterState {
-+    DeviceState parent;
-+    MemoryRegion iomem;
-+    MemoryRegion opb2fsi;
-+
-+    FSIBus bus;
-+
-+    uint32_t regs[FSI_MASTER_NR_REGS];
-+} FSIMasterState;
-+
-+
-+#endif /* FSI_FSI_H */
-diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
-new file mode 100644
-index 0000000000..fa23af3de2
---- /dev/null
-+++ b/hw/fsi/fsi-master.c
-@@ -0,0 +1,202 @@
++++ b/include/hw/fsi/opb.h
+@@ -0,0 +1,43 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + * Copyright (C) 2023 IBM Corp.
 + *
-+ * IBM Flexible Service Interface master
++ * IBM On-Chip Peripheral Bus
++ */
++#ifndef FSI_OPB_H
++#define FSI_OPB_H
++
++#include "exec/memory.h"
++#include "hw/fsi/fsi-master.h"
++
++#define TYPE_OP_BUS "opb"
++OBJECT_DECLARE_SIMPLE_TYPE(OPBus, OP_BUS)
++
++typedef struct OPBus {
++        /*< private >*/
++        BusState bus;
++
++        /*< public >*/
++        MemoryRegion mr;
++        AddressSpace as;
++
++        /* Model OPB as dumb enough just to provide an address-space */
++        /* TODO: Maybe don't store device state in the bus? */
++        FSIMasterState fsi;
++} OPBus;
++
++typedef struct OPBusClass {
++        BusClass parent_class;
++} OPBusClass;
++
++uint8_t fsi_opb_read8(OPBus *opb, hwaddr addr);
++uint16_t fsi_opb_read16(OPBus *opb, hwaddr addr);
++uint32_t fsi_opb_read32(OPBus *opb, hwaddr addr);
++void fsi_opb_write8(OPBus *opb, hwaddr addr, uint8_t data);
++void fsi_opb_write16(OPBus *opb, hwaddr addr, uint16_t data);
++void fsi_opb_write32(OPBus *opb, hwaddr addr, uint32_t data);
++
++void fsi_opb_fsi_master_address(OPBus *opb, hwaddr addr);
++void fsi_opb_opb2fsi_address(OPBus *opb, hwaddr addr);
++
++#endif /* FSI_OPB_H */
+diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
+index fa23af3de2..91d1a57c4e 100644
+--- a/hw/fsi/fsi-master.c
++++ b/hw/fsi/fsi-master.c
+@@ -11,8 +11,7 @@
+ #include "trace.h"
+ 
+ #include "hw/fsi/fsi-master.h"
+-
+-#define TYPE_OP_BUS "opb"
++#include "hw/fsi/opb.h"
+ 
+ #define TO_REG(x)                               ((x) >> 2)
+ 
+diff --git a/hw/fsi/opb.c b/hw/fsi/opb.c
+new file mode 100644
+index 0000000000..087e233701
+--- /dev/null
++++ b/hw/fsi/opb.c
+@@ -0,0 +1,164 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (C) 2023 IBM Corp.
++ *
++ * IBM On-chip Peripheral Bus
 + */
 +
 +#include "qemu/osdep.h"
++
 +#include "qapi/error.h"
 +#include "qemu/log.h"
 +#include "trace.h"
 +
-+#include "hw/fsi/fsi-master.h"
++#include "hw/fsi/opb.h"
 +
-+#define TYPE_OP_BUS "opb"
-+
-+#define TO_REG(x)                               ((x) >> 2)
-+
-+#define FSI_MMODE                               TO_REG(0x000)
-+#define   FSI_MMODE_IPOLL_DMA_EN                BE_BIT(0)
-+#define   FSI_MMODE_HW_ERROR_RECOVERY_EN        BE_BIT(1)
-+#define   FSI_MMODE_RELATIVE_ADDRESS_EN         BE_BIT(2)
-+#define   FSI_MMODE_PARITY_CHECK_EN             BE_BIT(3)
-+#define   FSI_MMODE_CLOCK_DIVIDER_0             BE_GENMASK(4, 13)
-+#define   FSI_MMODE_CLOCK_DIVIDER_1             BE_GENMASK(14, 23)
-+#define   FSI_MMODE_DEBUG_EN                    BE_BIT(24)
-+
-+#define FSI_MDELAY                              TO_REG(0x004)
-+#define   FSI_MDELAY_ECHO_0                     BE_GENMASK(0, 3)
-+#define   FSI_MDELAY_SEND_0                     BE_GENMASK(4, 7)
-+#define   FSI_MDELAY_ECHO_1                     BE_GENMASK(8, 11)
-+#define   FSI_MDELAY_SEND_1                     BE_GENMASK(12, 15)
-+
-+#define FSI_MENP0                               TO_REG(0x010)
-+#define FSI_MENP32                              TO_REG(0x014)
-+#define FSI_MSENP0                              TO_REG(0x018)
-+#define FSI_MLEVP0                              TO_REG(0x018)
-+#define FSI_MSENP32                             TO_REG(0x01c)
-+#define FSI_MLEVP32                             TO_REG(0x01c)
-+#define FSI_MCENP0                              TO_REG(0x020)
-+#define FSI_MREFP0                              TO_REG(0x020)
-+#define FSI_MCENP32                             TO_REG(0x024)
-+#define FSI_MREFP32                             TO_REG(0x024)
-+
-+#define FSI_MAEB                                TO_REG(0x070)
-+#define   FSI_MAEB_ANY_CPU_ERROR                BE_BIT(0)
-+#define   FSI_MAEB_ANY_DMA_ERROR                BE_GENMASK(1, 16)
-+#define   FSI_MAEB_ANY_PARITY_ERROR             BE_BIT(17)
-+
-+#define FSI_MVER                                TO_REG(0x074)
-+#define   FSI_MVER_VERSION                      BE_GENMASK(0, 7)
-+#define   FSI_MVER_BRIDGES                      BE_GENMASK(8, 15)
-+#define   FSI_MVER_PORTS                        BE_GENMASK(16, 23)
-+
-+#define FSI_MRESP0                              TO_REG(0x0d0)
-+#define   FSI_MRESP0_RESET_PORT_GENERAL         BE_BIT(0)
-+#define   FSI_MRESP0_RESET_PORT_ERROR           BE_BIT(1)
-+#define   FSI_MRESP0_RESET_ALL_BRIDGES_GENERAL  BE_BIT(2)
-+#define   FSI_MRESP0_RESET_ALL_PORTS_GENERAL    BE_BIT(3)
-+#define   FSI_MRESP0_RESET_MASTER               BE_BIT(4)
-+#define   FSI_MRESP0_RESET_PARITY_ERROR_LATCH   BE_BIT(5)
-+
-+#define FSI_MRESB0                              TO_REG(0x1d0)
-+#define   FSI_MRESB0_RESET_GENERAL              BE_BIT(0)
-+#define   FSI_MRESB0_RESET_ERROR                BE_BIT(1)
-+#define   FSI_MRESB0_SET_DMA_SUSPEND            BE_BIT(5)
-+#define   FSI_MRESB0_CLEAR_DMA_SUSPEND          BE_BIT(6)
-+#define   FSI_MRESB0_SET_DELAY_MEASURE          BE_BIT(7)
-+
-+#define FSI_MECTRL                              TO_REG(0x2e0)
-+#define   FSI_MECTRL_TEST_PULSE                 BE_GENMASK(0, 7)
-+#define   FSI_MECTRL_INHIBIT_PARITY_ERROR       BE_GENMASK(8, 15)
-+#define   FSI_MECTRL_ENABLE_OPB_ERR_ACK         BE_BIT(16)
-+#define   FSI_MECTRL_AUTO_TERMINATE             BE_BIT(17)
-+#define   FSI_MECTRL_PORT_ERROR_FREEZE          BE_BIT(18)
-+
-+static uint64_t fsi_master_read(void *opaque, hwaddr addr, unsigned size)
++uint8_t fsi_opb_read8(OPBus *opb, hwaddr addr)
 +{
-+    FSIMasterState *s = FSI_MASTER(opaque);
++    MemTxResult tx;
++    uint8_t data;
 +
-+    trace_fsi_master_read(addr, size);
-+
-+    if (addr + size > sizeof(s->regs)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
-+                      __func__, addr, size);
-+        return 0;
++    tx = address_space_read(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, &data,
++                            sizeof(data));
++    if (tx) {
++        trace_fsi_opb_read8(addr, sizeof(data));
 +    }
 +
-+    return s->regs[TO_REG(addr)];
++    return data;
 +}
 +
-+static void fsi_master_write(void *opaque, hwaddr addr, uint64_t data,
-+                             unsigned size)
++uint16_t fsi_opb_read16(OPBus *opb, hwaddr addr)
 +{
-+    FSIMasterState *s = FSI_MASTER(opaque);
++    MemTxResult tx;
++    uint16_t data;
 +
-+    trace_fsi_master_write(addr, size, data);
++    tx = address_space_read(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, &data,
++                            sizeof(data));
++    if (tx) {
++        trace_fsi_opb_read16(addr, sizeof(data));
++    }
 +
-+    if (addr + size > sizeof(s->regs)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out of bounds write: %"HWADDR_PRIx" for %u\n",
-+                      __func__, addr, size);
++    return data;
++}
++
++uint32_t fsi_opb_read32(OPBus *opb, hwaddr addr)
++{
++    MemTxResult tx;
++    uint32_t data;
++
++    tx = address_space_read(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, &data,
++                            sizeof(data));
++    if (tx) {
++        trace_fsi_opb_read32(addr, sizeof(data));
++    }
++
++    return data;
++}
++
++void fsi_opb_write8(OPBus *opb, hwaddr addr, uint8_t data)
++{
++    MemTxResult tx;
++
++    tx = address_space_write(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, &data,
++                             sizeof(data));
++    if (tx) {
++        trace_fsi_opb_write8(addr, sizeof(data));
++    }
++}
++
++void fsi_opb_write16(OPBus *opb, hwaddr addr, uint16_t data)
++{
++    MemTxResult tx;
++
++    tx = address_space_write(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, &data,
++                             sizeof(data));
++    if (tx) {
++        trace_fsi_opb_write16(addr, sizeof(data));
++    }
++}
++
++void fsi_opb_write32(OPBus *opb, hwaddr addr, uint32_t data)
++{
++    MemTxResult tx;
++
++    tx = address_space_write(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, &data,
++                             sizeof(data));
++    if (tx) {
++        trace_fsi_opb_write32(addr, sizeof(data));
++    }
++}
++
++void fsi_opb_fsi_master_address(OPBus *opb, hwaddr addr)
++{
++    memory_region_transaction_begin();
++    memory_region_set_address(&opb->fsi.iomem, addr);
++    memory_region_transaction_commit();
++}
++
++void fsi_opb_opb2fsi_address(OPBus *opb, hwaddr addr)
++{
++    memory_region_transaction_begin();
++    memory_region_set_address(&opb->fsi.opb2fsi, addr);
++    memory_region_transaction_commit();
++}
++
++static void fsi_opb_realize(BusState *bus, Error **errp)
++{
++    OPBus *opb = OP_BUS(bus);
++
++    memory_region_init_io(&opb->mr, OBJECT(opb), NULL, opb,
++                          NULL, UINT32_MAX);
++    address_space_init(&opb->as, &opb->mr, "opb");
++
++    if (!object_property_set_bool(OBJECT(&opb->fsi), "realized", true, errp)) {
 +        return;
 +    }
 +
-+    switch (TO_REG(addr)) {
-+    case FSI_MENP0:
-+        s->regs[FSI_MENP0] = data;
-+        break;
-+    case FSI_MENP32:
-+        s->regs[FSI_MENP32] = data;
-+        break;
-+    case FSI_MSENP0:
-+        s->regs[FSI_MENP0] |= data;
-+        break;
-+    case FSI_MSENP32:
-+        s->regs[FSI_MENP32] |= data;
-+        break;
-+    case FSI_MCENP0:
-+        s->regs[FSI_MENP0] &= ~data;
-+        break;
-+    case FSI_MCENP32:
-+        s->regs[FSI_MENP32] &= ~data;
-+        break;
-+    case FSI_MRESP0:
-+        /* Perform necessary resets leave register 0 to indicate no errors */
-+        break;
-+    case FSI_MRESB0:
-+        if (data & FSI_MRESB0_RESET_GENERAL) {
-+            device_cold_reset(DEVICE(opaque));
-+        }
-+        if (data & FSI_MRESB0_RESET_ERROR) {
-+            /* FIXME: this seems dubious */
-+            device_cold_reset(DEVICE(opaque));
-+        }
-+        break;
-+    default:
-+        s->regs[TO_REG(addr)] = data;
-+    }
++    memory_region_add_subregion(&opb->mr, 0x80000000, &opb->fsi.iomem);
++
++    /* OPB2FSI region */
++    /*
++     * Avoid endianness issues by mapping each slave's memory region directly.
++     * Manually bridging multiple address-spaces causes endian swapping
++     * headaches as memory_region_dispatch_read() and
++     * memory_region_dispatch_write() correct the endianness based on the
++     * target machine endianness and not relative to the device endianness on
++     * either side of the bridge.
++     */
++    /*
++     * XXX: This is a bit hairy and will need to be fixed when I sort out the
++     * bus/slave relationship and any changes to the CFAM modelling (multiple
++     * slaves, LBUS)
++     */
++    memory_region_add_subregion(&opb->mr, 0xa0000000, &opb->fsi.opb2fsi);
 +}
 +
-+static const struct MemoryRegionOps fsi_master_ops = {
-+    .read = fsi_master_read,
-+    .write = fsi_master_write,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
-+static void fsi_master_realize(DeviceState *dev, Error **errp)
++static void fsi_opb_init(Object *o)
 +{
-+    FSIMasterState *s = FSI_MASTER(dev);
++    OPBus *opb = OP_BUS(o);
 +
-+    qbus_init(&s->bus, sizeof(s->bus), TYPE_FSI_BUS, DEVICE(s), NULL);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(s), &fsi_master_ops, s,
-+                          TYPE_FSI_MASTER, 0x10000000);
-+    memory_region_init(&s->opb2fsi, OBJECT(s), "fsi.opb2fsi", 0x10000000);
-+
-+    if (!object_property_set_bool(OBJECT(&s->bus), "realized", true, errp)) {
-+        return;
-+    }
-+
-+    memory_region_add_subregion(&s->opb2fsi, 0, &s->bus.slave.mr);
-+
-+    /* Let's add first CFAM */
-+    object_initialize_child(OBJECT(BUS(&s->bus)), TYPE_FSI_CFAM, &s->bus.slave,
-+                            TYPE_FSI_CFAM);
-+    qdev_set_parent_bus(DEVICE(&s->bus.slave), BUS(&s->bus), &error_abort);
-+    object_property_set_bool(OBJECT(&s->bus.slave), "realized", true, errp);
++    object_initialize_child(o, "fsi-master", &opb->fsi, TYPE_FSI_MASTER);
++    qdev_set_parent_bus(DEVICE(&opb->fsi), BUS(o), &error_abort);
 +}
 +
-+static void fsi_master_reset(DeviceState *dev)
++static void fsi_opb_class_init(ObjectClass *klass, void *data)
 +{
-+    FSIMasterState *s = FSI_MASTER(dev);
-+
-+    /* ASPEED default */
-+    s->regs[FSI_MVER] = 0xe0050101;
++    BusClass *bc = BUS_CLASS(klass);
++    bc->realize = fsi_opb_realize;
 +}
 +
-+static void fsi_master_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->bus_type = TYPE_OP_BUS;
-+    dc->desc = "FSI Master";
-+    dc->realize = fsi_master_realize;
-+    dc->reset = fsi_master_reset;
-+}
-+
-+static const TypeInfo fsi_master_info = {
-+    .name = TYPE_FSI_MASTER,
-+    .parent = TYPE_DEVICE,
-+    .instance_size = sizeof(FSIMasterState),
-+    .class_init = fsi_master_class_init,
-+};
-+
-+static void fsi_register_types(void)
-+{
-+    type_register_static(&fsi_master_info);
-+}
-+
-+type_init(fsi_register_types);
-diff --git a/hw/fsi/fsi.c b/hw/fsi/fsi.c
-new file mode 100644
-index 0000000000..180283746e
---- /dev/null
-+++ b/hw/fsi/fsi.c
-@@ -0,0 +1,25 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2023 IBM Corp.
-+ *
-+ * IBM Flexible Service Interface
-+ */
-+#include "qemu/osdep.h"
-+
-+#include "qapi/error.h"
-+
-+#include "hw/fsi/fsi.h"
-+#include "hw/fsi/cfam.h"
-+
-+static const TypeInfo fsi_bus_info = {
-+    .name = TYPE_FSI_BUS,
++static const TypeInfo opb_info = {
++    .name = TYPE_OP_BUS,
 +    .parent = TYPE_BUS,
-+    .instance_size = sizeof(FSIBus),
++    .instance_init = fsi_opb_init,
++    .instance_size = sizeof(OPBus),
++    .class_init = fsi_opb_class_init,
++    .class_size = sizeof(OPBusClass),
 +};
 +
-+static void fsi_bus_register_types(void)
++static void fsi_opb_register_types(void)
 +{
-+    type_register_static(&fsi_bus_info);
++    type_register_static(&opb_info);
 +}
 +
-+type_init(fsi_bus_register_types);
++type_init(fsi_opb_register_types);
+diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+index 8d712e77ed..0f6e6d331a 100644
+--- a/hw/fsi/Kconfig
++++ b/hw/fsi/Kconfig
+@@ -1,3 +1,7 @@
++config FSI_OPB
++    bool
++    select FSI_CFAM
++
+ config FSI_CFAM
+     bool
+     select FSI
 diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
-index a9e7cd4099..f617943b4a 100644
+index f617943b4a..407b8c2775 100644
 --- a/hw/fsi/meson.build
 +++ b/hw/fsi/meson.build
-@@ -1,4 +1,4 @@
- system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
+@@ -2,3 +2,4 @@ system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
  system_ss.add(when: 'CONFIG_FSI_SCRATCHPAD', if_true: files('engine-scratchpad.c'))
  system_ss.add(when: 'CONFIG_FSI_CFAM', if_true: files('cfam.c'))
--system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi-slave.c'))
-+system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c','fsi-slave.c'))
+ system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c','fsi-slave.c'))
++system_ss.add(when: 'CONFIG_FSI_OPB', if_true: files('opb.c'))
 diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
-index b57b2dcc86..89d8cd62c8 100644
+index 89d8cd62c8..13b211a815 100644
 --- a/hw/fsi/trace-events
 +++ b/hw/fsi/trace-events
-@@ -7,3 +7,5 @@ fsi_cfam_unimplemented_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%"
- fsi_cfam_config_write_noaddr(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
- fsi_slave_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
+@@ -9,3 +9,11 @@ fsi_slave_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
  fsi_slave_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
-+fsi_master_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
-+fsi_master_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+ fsi_master_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
+ fsi_master_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
++fsi_opb_read8(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
++fsi_opb_read16(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
++fsi_opb_read32(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
++fsi_opb_write8(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
++fsi_opb_write16(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
++fsi_opb_write32(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
++fsi_opb_unimplemented_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
++fsi_opb_unimplemented_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
 -- 
 2.39.2
 
