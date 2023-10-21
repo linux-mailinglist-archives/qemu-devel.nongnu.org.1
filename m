@@ -2,91 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00C67D19BE
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 01:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F342F7D1AE8
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 07:34:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtzKd-0002Fy-3E; Fri, 20 Oct 2023 19:55:07 -0400
+	id 1qu4al-00074t-1R; Sat, 21 Oct 2023 01:32:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1qtzKb-0002Fl-9V
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 19:55:05 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qu4ah-000747-TI
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:03 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1qtzKW-0005Hi-OT
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 19:55:05 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-32caaa1c493so974874f8f.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 16:54:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qu4af-0008Jp-OC
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:03 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6b89ab5ddb7so1497374b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 22:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=opnsrc.net; s=google; t=1697846098; x=1698450898; darn=nongnu.org;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xz8bWnjdOplbbo/tIACduAuNBNSv3px5fnsiJDBLxFA=;
- b=h6rwJ4dKWdxEBXPis7cgjtCWv9rAzLUCr28+fFyF/VqzAUSaK3mGc42cPYpkWER8I4
- B5KRq/iAeOVNKdMi0azlIST9dyyr/qkjfd0n+ELHkBtAFed/8/DNsOCR3Eiso3Y7mBrx
- ii7zlR/Vxxn1skY9vGj5xtdP6ulbwZ3A9wNToHEpyFDK0x5lLLCiDkllUXaFLv1du2I9
- g0dYUv6+Ayz+1ygp3T2qaA+f4ZXB2GEint7DAiCtwo4MEvWz7kLrvILvlC7Nejm/u2Kt
- G0iRqrePNY4+KDiYaHoeu+91/DrlH+6I8L1V/BeIHpCHmqXx9atMmLeqpkCQ7ETxSRi5
- hNmg==
+ d=linaro.org; s=google; t=1697866319; x=1698471119; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gwaFbKF3XaA6AxRC/WRGZg9TvJmEyppaDeDi79CnphQ=;
+ b=Lz/nHDpwjNxx8jdq4Vadiix1HwjjUfJd1LmONUa2Ee7Is5Fdksm8JR8xzuTiXFCVMt
+ 8bPinfhaqtfq3FUVD2b5hGTdNhikzzZKJwhr9Uo+zaIgk9wjEEWvEJ7cH7BqQPOURHAY
+ KswT8y8xRzg8I+7R3pboASjfq/VbyWs5HHMT2F9twO36i3w9odNUtg8oDIeYDHHIMIG6
+ fVLd2vT0wvtsO4PzI5fJWFpJGWr1M9+9Lx2M9PCdNJUiRdFltOg48SSKVGVUAEuKef/U
+ Sa6YrT9oLxWb5GQ3YCxbCQgB9QTlqqUjnnTDyoJsEy6tf3yzMA+P+tn7UfHgIVwMhTjd
+ 1WYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697846098; x=1698450898;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xz8bWnjdOplbbo/tIACduAuNBNSv3px5fnsiJDBLxFA=;
- b=om9EEiSvPWAP0T/NFZJLuKqAiXrO6LxtV2E1aIt/yNo7cNl+mkgV7aIM8+nB0VM6FA
- MrXWiMS4LKrhxBom5UWfobKiQEDSv+UovRe+0XJIBd4VDZjVWuc7M6sDxa52tbU+xL2+
- DYmdafN0DnnHAsZD2UMU5rmVQB9FP3AyxITCnxv2LbBPyMQPqfuX6AF0IxGpEV5KDn8M
- FQYrfm7p4pelrCVjGCE88XBv7HNoaxfp+khf2xpa/2Scn7AcjBGFsfGEkj7jcy4FFcX6
- 7emRbsdfw3eakiomsj93jBoXYTMmOLXbH4JPAf92oUO2jhqA4p6XAFVLskc4BIujgTTc
- eWmw==
-X-Gm-Message-State: AOJu0YzZ/HeuD/iwmsXAVbfmDOk59TRtPjHu8/2RJ5DQzz7XLN2PJiWV
- ssXy4XrH3SxOW5gYMm1PZZOn7Q==
-X-Google-Smtp-Source: AGHT+IHLOErmRT7ZnKnRgpE65nmUi6JJYT46t/VNEi7uVTDYee3pcxMOuv4q9ll5olJKNGrvYmmbFQ==
-X-Received: by 2002:adf:ef8b:0:b0:32d:b8f8:2b1b with SMTP id
- d11-20020adfef8b000000b0032db8f82b1bmr2205690wro.26.1697846097988; 
- Fri, 20 Oct 2023 16:54:57 -0700 (PDT)
-Received: from [10.8.0.13] ([185.223.232.243])
- by smtp.gmail.com with ESMTPSA id
- c4-20020a056000104400b003142e438e8csm2616134wrx.26.2023.10.20.16.54.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Oct 2023 16:54:57 -0700 (PDT)
-Subject: Re: [PULL v2 29/53] hw/i386: Remove now redundant TYPE_ACPI_GED_X86
-To: Bernhard Beschow <shentey@gmail.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-References: <cover.1696477105.git.mst@redhat.com>
- <c9c8ba69d5dbe5c1c6370e1f09ebd7531509d075.1696477105.git.mst@redhat.com>
- <15e70616-6abb-63a4-17d0-820f4a254607@opnsrc.net>
- <BE6564AF-6317-49CB-91AF-C88F1D31DF4E@gmail.com>
-From: Salil Mehta <salil.mehta@opnsrc.net>
-Message-ID: <7234ffe0-d617-1b0f-b61a-986724ffd20a@opnsrc.net>
-Date: Sat, 21 Oct 2023 00:54:56 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ d=1e100.net; s=20230601; t=1697866319; x=1698471119;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gwaFbKF3XaA6AxRC/WRGZg9TvJmEyppaDeDi79CnphQ=;
+ b=Yg9cIopygH70tvb7CRymN0D972JDsbmZZBHOUxM4kBfvNd8wyqgft2ZWGJixIZw1sL
+ f7w/FajpHuu74MDrXKi9B/bx3Snad+W8sryne3K6tJaQXfaJaIpVoFWq4NEhkNrDFEqS
+ twaUvmBtyVSRwWstXXh4Wt6HR52AejfvIIEwDggIo/NcKYCTw6/5cUsQ3DpaPDupvJSv
+ OdMzbZ0cD4D1EhfyvjPsz8TPAw6c+ULc0C8o7CiI3AfeTm+VWHMJD/m5Bf9IuxZy+4lM
+ l91LRnWo8rLOLaGJ43j1J+yV1LZRCpVqS4SXPVeGM/aEJwvqSv30WaVPIWaX06QU8H4f
+ CtOQ==
+X-Gm-Message-State: AOJu0Yzp9Id89fA0AlswZMSmbzAuD/4H9PwwefqOE8pTYdwPsHw5IRWy
+ ZMhGuKwNeSxtNh75FyDhC/1CHphoYlQfr9CQYEw=
+X-Google-Smtp-Source: AGHT+IELKq9/cu66beaHb16V9KUsNdBmR3LGl+T1ZfQIntWnqmVYksHSmsAkapuUsbpnTKqEVETvtg==
+X-Received: by 2002:a05:6a00:1991:b0:6be:4e6e:2a85 with SMTP id
+ d17-20020a056a00199100b006be4e6e2a85mr4040246pfl.30.1697866319531; 
+ Fri, 20 Oct 2023 22:31:59 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ f20-20020a056a001ad400b006b2677d3684sm2434831pfv.206.2023.10.20.22.31.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Oct 2023 22:31:58 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v3 00/90] target/sparc: Convert to decodetree
+Date: Fri, 20 Oct 2023 22:30:28 -0700
+Message-Id: <20231021053158.278135-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <BE6564AF-6317-49CB-91AF-C88F1D31DF4E@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=salil.mehta@opnsrc.net; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,166 +88,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Bernhard,
+Changes for v3:
+  * Relax v8 simm13 checking for Tcc.
+  * Split gen_op_addx_int and reorganize to not clobber current cc_op.
+  * Do not replicate decoding for insns that can set cc_op.
 
-On 19/10/2023 11:33, Bernhard Beschow wrote:
-> 
-> 
-> Am 18. Oktober 2023 17:38:33 UTC schrieb Salil Mehta <salil.mehta@opnsrc.net>:
->> Hello,
-> 
-> Hi Salil,
-> 
->> Can we assume that every machine type will have all the features which a GED Device can multiplex present together? like will Memory and CPU Hotplug makes sense for all the type of machines?
-> 
-> I can't really answer these questions -- I'm by no means an ACPI expert. My idea about removing TYPE_ACPI_GED_X86 really was not more than the commit message says: To remove unneeded code.
+Changes for v2:
+  * Fixes for JMPL, RETT, SAVE and RESTORE.
+  * Fixes for FMOV etc, which had lost gen_op_clear_ieee_excp_and_FTT.
+  * Allow conditional exceptions to be raised out of line
+    Use this for gen_check_align and conditional trap.
+  * Keep properties and feature bits in sync.
 
 
-Sure, cleanup is not an issue.
-
-In fact, question is whether every machine type would be interested in 
-initializing other code like hot-plug related initialization in the 
-acpi_get_intfn() especially when that machine type does not supports it.
-
-Another question is whether every machine can without breaking other 
-architecture or features?
+r~
 
 
-Even in your case as well some unnecessary code legs will get 
-initialized so cleanup is not complete either - isn't it?
+Richard Henderson (90):
+  target/sparc: Clear may_lookup for npc == DYNAMIC_PC
+  target/sparc: Implement check_align inline
+  target/sparc: Avoid helper_raise_exception in helper_st_asi
+  target/sparc: Set TCG_GUEST_DEFAULT_MO
+  configs: Enable MTTCG for sparc, sparc64
+  target/sparc: Define features via cpu-feature.h.inc
+  target/sparc: Use CPU_FEATURE_BIT_* for cpu properties
+  target/sparc: Remove sparcv7 cpu features
+  target/sparc: Add decodetree infrastructure
+  target/sparc: Define AM_CHECK for sparc32
+  target/sparc: Move CALL to decodetree
+  target/sparc: Move BPcc and Bicc to decodetree
+  target/sparc: Move BPr to decodetree
+  target/sparc: Move FBPfcc and FBfcc to decodetree
+  target/sparc: Merge gen_cond with only caller
+  target/sparc: Merge gen_fcond with only caller
+  target/sparc: Merge gen_branch_[an] with only caller
+  target/sparc: Pass DisasCompare to advance_jump_cond
+  target/sparc: Move SETHI to decodetree
+  target/sparc: Move Tcc to decodetree
+  target/sparc: Move RDASR, STBAR, MEMBAR to decodetree
+  target/sparc: Move RDPSR, RDHPR to decodetree
+  target/sparc: Move RDWIM, RDPR to decodetree
+  target/sparc: Move RDTBR, FLUSHW to decodetree
+  target/sparc: Move WRASR to decodetree
+  target/sparc: Move WRPSR, SAVED, RESTORED to decodetree
+  target/sparc: Move WRWIM, WRPR to decodetree
+  target/sparc: Move WRTBR, WRHPR to decodetree
+  target/sparc: Move basic arithmetic to decodetree
+  target/sparc: Move ADDC to decodetree
+  target/sparc: Move MULX to decodetree
+  target/sparc: Move UMUL, SMUL to decodetree
+  target/sparc: Move SUBC to decodetree
+  target/sparc: Move UDIVX, SDIVX to decodetree
+  target/sparc: Move UDIV, SDIV to decodetree
+  target/sparc: Move TADD, TSUB, MULS to decodetree
+  target/sparc: Move SLL, SRL, SRA to decodetree
+  target/sparc: Move MOVcc, MOVR to decodetree
+  target/sparc: Move POPC to decodetree
+  target/sparc: Convert remaining v8 coproc insns to decodetree
+  target/sparc: Move JMPL, RETT, RETURN to decodetree
+  target/sparc: Move FLUSH, SAVE, RESTORE to decodetree
+  target/sparc: Move DONE, RETRY to decodetree
+  target/sparc: Split out resolve_asi
+  target/sparc: Drop ifdef around get_asi and friends
+  target/sparc: Split out ldst functions with asi pre-computed
+  target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for GET_ASI_DTWINX
+  target/sparc: Move simple integer load/store to decodetree
+  target/sparc: Move asi integer load/store to decodetree
+  target/sparc: Move LDSTUB, LDSTUBA to decodetree
+  target/sparc: Move SWAP, SWAPA to decodetree
+  target/sparc: Move CASA, CASXA to decodetree
+  target/sparc: Move PREFETCH, PREFETCHA to decodetree
+  target/sparc: Split out fp ldst functions with asi precomputed
+  target/sparc: Move simple fp load/store to decodetree
+  target/sparc: Move asi fp load/store to decodetree
+  target/sparc: Move LDFSR, STFSR to decodetree
+  target/sparc: Merge LDFSR, LDXFSR implementations
+  target/sparc: Move EDGE* to decodetree
+  target/sparc: Move ARRAY* to decodetree
+  target/sparc: Move ADDRALIGN* to decodetree
+  target/sparc: Move BMASK to decodetree
+  target/sparc: Move FMOVS, FNEGS, FABSS, FSRC*S, FNOT*S to decodetree
+  target/sparc: Move FMOVD, FNEGD, FABSD, FSRC*D, FNOT*D to decodetree
+  target/sparc: Use tcg_gen_vec_{add,sub}*
+  target/sparc: Move gen_ne_fop_FFF insns to decodetree
+  target/sparc: Move gen_ne_fop_DDD insns to decodetree
+  target/sparc: Move PDIST to decodetree
+  target/sparc: Move gen_gsr_fop_DDD insns to decodetree
+  target/sparc: Move gen_fop_FF insns to decodetree
+  target/sparc: Move gen_fop_DD insns to decodetree
+  target/sparc: Move FSQRTq to decodetree
+  target/sparc: Move gen_fop_FFF insns to decodetree
+  target/sparc: Move gen_fop_DDD insns to decodetree
+  target/sparc: Move gen_fop_QQQ insns to decodetree
+  target/sparc: Move FSMULD to decodetree
+  target/sparc: Move FDMULQ to decodetree
+  target/sparc: Move gen_fop_FD insns to decodetree
+  target/sparc: Move FiTOd, FsTOd, FsTOx to decodetree
+  target/sparc: Move FqTOs, FqTOi to decodetree
+  target/sparc: Move FqTOd, FqTOx to decodetree
+  target/sparc: Move FiTOq, FsTOq to decodetree
+  target/sparc: Move FdTOq, FxTOq to decodetree
+  target/sparc: Move FMOVq, FNEGq, FABSq to decodetree
+  target/sparc: Move FMOVR, FMOVcc, FMOVfcc to decodetree
+  target/sparc: Convert FCMP, FCMPE to decodetree
+  target/sparc: Move FPCMP* to decodetree
+  target/sparc: Move FPACK16, FPACKFIX to decodetree
+  target/sparc: Convert FZERO, FONE to decodetree
+  target/sparc: Remove disas_sparc_legacy
 
+ configs/targets/sparc-softmmu.mak   |    1 +
+ configs/targets/sparc64-softmmu.mak |    1 +
+ linux-user/sparc/target_syscall.h   |    6 +-
+ target/sparc/cpu.h                  |   76 +-
+ target/sparc/helper.h               |   16 +-
+ target/sparc/cpu-feature.h.inc      |   14 +
+ target/sparc/insns.decode           |  547 +++
+ target/sparc/cpu.c                  |   41 +-
+ target/sparc/fop_helper.c           |   17 +-
+ target/sparc/helper.c               |    8 -
+ target/sparc/ldst_helper.c          |   17 +-
+ target/sparc/translate.c            | 7072 +++++++++++++--------------
+ target/sparc/vis_helper.c           |   59 -
+ target/sparc/meson.build            |    3 +
+ 14 files changed, 4127 insertions(+), 3751 deletions(-)
+ create mode 100644 target/sparc/cpu-feature.h.inc
+ create mode 100644 target/sparc/insns.decode
 
-For now, I will proceed with changing this for ARM and then if x86 needs 
-it can either revert this patch or re-implement it as also suggested by 
-Michael?
+-- 
+2.34.1
 
-
-> 
-> That said, I wonder myself if the GED device could be uniformly implemented across architectures and if -- in theory -- it could be used in the pc-i440fx machine instead of the Frankenstein hotplug implementation in PIIX4.
-
-
-I will leave it up to x86 maintainers to answer that.
-
-But superficially, it looks there are some historical reasons (maybe 
-related to legacy firmware?) because of which the switch from legacy to 
-modern type of CPU Hotplug interface happens.
-
-
-Thanks
-Salil.
-
-> 
-> Best regards,
-> Bernhard
-> 
->>
->> If answer is no, then shouldn't every machine type override the base GED type and define it own versions of instance_init() function? AFAICS, GED can multiplex non-hotplug events as well.
->>
->> To support CPU Htoplug on ARM platforms we are using GED but x86/microvm does not supports hot-plugging and while creating TYPE_GED_DEVICE it will end up initializing CPU Hotplug regions and code as well. This is far from clean.
->>
->> Beside 'qtest' fails for x86/microvm machine type because 'possible_cpus_arch_ids' is not defined for x86/microvm so we get errors like below:
->>
->> stderr:
->> qemu-system-x86_64: ../hw/acpi/cpu.c:224: cpu_hotplug_hw_init: Assertion `mc->possible_cpu_arch_ids' failed.
->> Broken pipe
->> ../tests/qtest/libqtest.c:200: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
->>
->> Above can be avoided if cpu_hotplug_hw_init() does not gets called for x86/microvm machine.
->>
->> ARM can have its own version of generic_event_device_arm64.c with its own version of instance_init() having a call to cpu_hotplug_hw_init().
->>
->> Maybe I have missed something here?
->>
->>
->> Many thanks
->> Salil.
->>
->>
->> On 05/10/2023 04:44, Michael S. Tsirkin wrote:
->>> From: Bernhard Beschow <shentey@gmail.com>
->>>
->>> Now that TYPE_ACPI_GED_X86 doesn't assign AcpiDeviceIfClass::madt_cpu any more
->>> it is the same as TYPE_ACPI_GED.
->>>
->>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> Message-Id: <20230908084234.17642-6-shentey@gmail.com>
->>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->>> ---
->>>    include/hw/acpi/generic_event_device.h |  2 --
->>>    hw/i386/generic_event_device_x86.c     | 27 --------------------------
->>>    hw/i386/microvm.c                      |  2 +-
->>>    hw/i386/meson.build                    |  1 -
->>>    4 files changed, 1 insertion(+), 31 deletions(-)
->>>    delete mode 100644 hw/i386/generic_event_device_x86.c
->>>
->>> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
->>> index d831bbd889..ba84ce0214 100644
->>> --- a/include/hw/acpi/generic_event_device.h
->>> +++ b/include/hw/acpi/generic_event_device.h
->>> @@ -69,8 +69,6 @@
->>>    #define TYPE_ACPI_GED "acpi-ged"
->>>    OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
->>>    -#define TYPE_ACPI_GED_X86 "acpi-ged-x86"
->>> -
->>>    #define ACPI_GED_EVT_SEL_OFFSET    0x0
->>>    #define ACPI_GED_EVT_SEL_LEN       0x4
->>>    diff --git a/hw/i386/generic_event_device_x86.c b/hw/i386/generic_event_device_x86.c
->>> deleted file mode 100644
->>> index 8fc233e1f1..0000000000
->>> --- a/hw/i386/generic_event_device_x86.c
->>> +++ /dev/null
->>> @@ -1,27 +0,0 @@
->>> -/*
->>> - * x86 variant of the generic event device for hw reduced acpi
->>> - *
->>> - * This program is free software; you can redistribute it and/or modify it
->>> - * under the terms and conditions of the GNU General Public License,
->>> - * version 2 or later, as published by the Free Software Foundation.
->>> - */
->>> -
->>> -#include "qemu/osdep.h"
->>> -#include "hw/acpi/generic_event_device.h"
->>> -
->>> -static const TypeInfo acpi_ged_x86_info = {
->>> -    .name          = TYPE_ACPI_GED_X86,
->>> -    .parent        = TYPE_ACPI_GED,
->>> -    .interfaces = (InterfaceInfo[]) {
->>> -        { TYPE_HOTPLUG_HANDLER },
->>> -        { TYPE_ACPI_DEVICE_IF },
->>> -        { }
->>> -    }
->>> -};
->>> -
->>> -static void acpi_ged_x86_register_types(void)
->>> -{
->>> -    type_register_static(&acpi_ged_x86_info);
->>> -}
->>> -
->>> -type_init(acpi_ged_x86_register_types)
->>> diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
->>> index 8deeb62774..b9c93039e2 100644
->>> --- a/hw/i386/microvm.c
->>> +++ b/hw/i386/microvm.c
->>> @@ -204,7 +204,7 @@ static void microvm_devices_init(MicrovmMachineState *mms)
->>>          /* Optional and legacy devices */
->>>        if (x86_machine_is_acpi_enabled(x86ms)) {
->>> -        DeviceState *dev = qdev_new(TYPE_ACPI_GED_X86);
->>> +        DeviceState *dev = qdev_new(TYPE_ACPI_GED);
->>>            qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT);
->>>            sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
->>>            /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMHP); */
->>> diff --git a/hw/i386/meson.build b/hw/i386/meson.build
->>> index cfdbfdcbcb..ff879069c9 100644
->>> --- a/hw/i386/meson.build
->>> +++ b/hw/i386/meson.build
->>> @@ -20,7 +20,6 @@ i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx-epc.c','sgx.c'),
->>>                                    if_false: files('sgx-stub.c'))
->>>      i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
->>> -i386_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_event_device_x86.c'))
->>>    i386_ss.add(when: 'CONFIG_PC', if_true: files(
->>>      'pc.c',
->>>      'pc_sysfw.c',
->>>
 
