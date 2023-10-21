@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEC17D1B12
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 07:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C037D1B0D
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 07:41:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qu4ea-0003Kk-0U; Sat, 21 Oct 2023 01:36:04 -0400
+	id 1qu4eb-0003La-1X; Sat, 21 Oct 2023 01:36:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qu4eQ-0002qD-9n
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:35:54 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ id 1qu4eR-0002xd-Ni
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:35:55 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qu4eO-00018p-Kw
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:35:54 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-57de6e502fcso906994eaf.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 22:35:52 -0700 (PDT)
+ id 1qu4eP-000196-KJ
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:35:55 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-584042a01eeso911565eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 22:35:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697866551; x=1698471351; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697866552; x=1698471352; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rCBYXApxSIdghuI/qlMU2hqEbFXCl70ucXr5x/f3RzQ=;
- b=zpp+lWm1DkDRjSXa+YrRCb8c8quq093lIGNDRSr/zrUYsxVEuB8zSN5dIxBZxn6s4N
- MtceZYDadGoTeteKVj9XCDCUtfqSqJwSRhdqgDrlFnGj0eTlOdAwu8Wbo+IScBOKLpr7
- y+gtZJjPTO6Mq73Y4c3J8eutupd5YVDQIC718cOsMk/X4Idq2CPQvmQAnXRFLfVLmGlk
- MaJ/LXcUH0w60CXu10V2JM9Q8tKYBJGOnjs48L4cFQP/H1JbKSvI1vdsdpoiv17ioH0w
- Dvx8Usg1jDdKJF583+vYReIS8ft9IOvJLzT/o2KawRCHmB1BFLxaMbiB2SPDxhFqFcik
- G/oQ==
+ bh=b8dGhFnSwGD+IVCD+Tds1f4W8LU5kAw2CBFihjzH7f4=;
+ b=hoVNzPlLfTkk3f4QEKvytshXqoWAcRVm6tD999WntlUw9wcCDSzqX8pdqpHhmPPLy/
+ KZL5gUo6wD48920lzsH9xrxIeBsqN9ccJVG7HV0K8MkZZlvklfX1L2jWzRfLsrVF8hii
+ la39mvYdP2XIc5FXSsR56bWGeNhqEXjseqdz1KXmPzZOeI7a6FEsVXosQBY8fuFtlJP1
+ fkBK23gTse1Te96hvI+SqLBlCAN7paUb8QZIpfeWNaU9oPTOVZBkdLD/4hdqdTk+XWEp
+ KMUgI9XQ8wktqbsu3YP6X6z5X/x0cZguWMFJGVqrzuLLNUL58yoGx9lHR0YsHeGpdz3V
+ u/ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697866551; x=1698471351;
+ d=1e100.net; s=20230601; t=1697866552; x=1698471352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rCBYXApxSIdghuI/qlMU2hqEbFXCl70ucXr5x/f3RzQ=;
- b=RiH1NzXGgj+MwO4VwbVBkdlOtSKbfOYcjP0Wr3GA76vLnrbKaYYyEGEbYIjjSv5gQJ
- W+eofVCRG9YaG2JhYtctQaUGJouRWpnUQ1O7lMGEr1mBG3DTSrDPN3O86GjWuDe2bcwh
- zjxFFs4tcx/hfXD/U+F8Y2uHM94ZqhU3+FHgRE2SDJaps7lnYR70H46ytb3Hs4jqctnC
- PZgGtdtTOn8+/8l5dm+nAYu11xBHw2uYuup7BzO3P8BxsX1q2XRhdcbswpGStFWyXPSm
- K2ADBmzBQpGB0BMYARiXTzcGrpPZdk2gJLSq618/zomxzAgmzaRDRsHdIQO489esUpLW
- 69Tg==
-X-Gm-Message-State: AOJu0YysE007El0Ty16GNFGkWpQExtwnmcfog4/bQJqwFn5jrhI0+jhj
- pkO+aJK1S4vHVNi0U/25xuwCymAM0voTjEqzmhY=
-X-Google-Smtp-Source: AGHT+IE73SNCTC0bKxR9dIeAfSeyiVRgCZlOebBMXhWjUjGMh+ShOOsq5RciieAZG0vrtgZESwVy7Q==
-X-Received: by 2002:a05:6870:2893:b0:1e9:da6f:a161 with SMTP id
- gy19-20020a056870289300b001e9da6fa161mr4749040oab.3.1697866551284; 
- Fri, 20 Oct 2023 22:35:51 -0700 (PDT)
+ bh=b8dGhFnSwGD+IVCD+Tds1f4W8LU5kAw2CBFihjzH7f4=;
+ b=YdqPKQeCYaLjhLHl7mI1tFxHjbqKuHdoaxNByMEXoxUunPqEpXbOb+jXn//jWbtRE3
+ R5n0zcs+vkBP5cV6jgL+o2sZCy2o1FDVGJ1QBdOd02zoewTS7feECQhf4G796a7Qu8D0
+ c4gWecryKE6eQjdpPCbzqnD8MD+iTLqf6Axx79A2orUf1Fc0GTcxp2/Dfb87OuM1+s5F
+ XMQI1990xtJuFKsxVCQ7N+aOP39k/VFnXw77jbQ0jpLIkKOdFCzv5CS6+tstbcRDir/4
+ TqVM+nfnnPw6XcGPiyiF8l8WTOLvQp0lnZQ1K3xpFrVUrwrxpbxFhLh1WEhlvA6Pilng
+ dVYQ==
+X-Gm-Message-State: AOJu0YyrUvaajKFcSeZGROqYS23LderH7EEeWiRpPoVWTyEgeweG3942
+ mESKr++mHidIHgMefAIvMcq3nFuM9vIdVg4qbTA=
+X-Google-Smtp-Source: AGHT+IH3PTM2vcz0GY4ZR/cmM51DFIuUW91VA1BFTQa2K+jHmie3EmvUGZeQ2lxF8oMSDZUbo9q0Qg==
+X-Received: by 2002:a05:6870:a550:b0:1d6:5b09:1584 with SMTP id
+ p16-20020a056870a55000b001d65b091584mr4609322oal.5.1697866552222; 
+ Fri, 20 Oct 2023 22:35:52 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- h1-20020a62b401000000b00690d255b5a1sm2427978pfn.217.2023.10.20.22.35.50
+ h1-20020a62b401000000b00690d255b5a1sm2427978pfn.217.2023.10.20.22.35.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 22:35:50 -0700 (PDT)
+ Fri, 20 Oct 2023 22:35:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 62/90] target/sparc: Move BMASK to decodetree
-Date: Fri, 20 Oct 2023 22:31:30 -0700
-Message-Id: <20231021053158.278135-63-richard.henderson@linaro.org>
+Subject: [PATCH v3 63/90] target/sparc: Move FMOVS, FNEGS, FABSS, FSRC*S,
+ FNOT*S to decodetree
+Date: Fri, 20 Oct 2023 22:31:31 -0700
+Message-Id: <20231021053158.278135-64-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231021053158.278135-1-richard.henderson@linaro.org>
 References: <20231021053158.278135-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,71 +93,216 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  2 ++
- target/sparc/translate.c  | 22 +++++++++++++---------
- 2 files changed, 15 insertions(+), 9 deletions(-)
+ target/sparc/insns.decode | 13 ++++++
+ target/sparc/translate.c  | 92 +++++++++++++++++++++------------------
+ 2 files changed, 62 insertions(+), 43 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 855627b55e..9ea5e09dfc 100644
+index 9ea5e09dfc..63fbc19fc9 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -255,6 +255,8 @@ RETRY       10 00001 111110 00000 0 0000000000000
+@@ -38,6 +38,10 @@ CALL    01 i:s30
+ &r_r_r      rd rs1 rs2
+ @r_r_r      .. rd:5  ...... rs1:5 . ........ rs2:5         &r_r_r
  
-     ALIGNADDR   10 ..... 110110 ..... 0 0001 1000 .....    @r_r_r
-     ALIGNADDRL  10 ..... 110110 ..... 0 0001 1010 .....    @r_r_r
++&r_r        rd rs
++@r_r1       .. rd:5  ...... rs:5  . ........ .....         &r_r
++@r_r2       .. rd:5  ...... ..... . ........ rs:5          &r_r
 +
-+    BMASK       10 ..... 110110 ..... 0 0001 1001 .....    @r_r_r
+ {
+   [
+     STBAR           10 00000 101000 01111 0 0000000000000
+@@ -234,6 +238,10 @@ RESTORE     10 ..... 111101 ..... . .............          @r_r_ri
+ DONE        10 00000 111110 00000 0 0000000000000
+ RETRY       10 00001 111110 00000 0 0000000000000
+ 
++FMOVs       10 ..... 110100 00000 0 0000 0001 .....        @r_r2
++FNEGs       10 ..... 110100 00000 0 0000 0101 .....        @r_r2
++FABSs       10 ..... 110100 00000 0 0000 1001 .....        @r_r2
++
+ {
+   [
+     EDGE8cc     10 ..... 110110 ..... 0 0000 0000 .....    @r_r_r
+@@ -257,6 +265,11 @@ RETRY       10 00001 111110 00000 0 0000000000000
+     ALIGNADDRL  10 ..... 110110 ..... 0 0001 1010 .....    @r_r_r
+ 
+     BMASK       10 ..... 110110 ..... 0 0001 1001 .....    @r_r_r
++
++    FSRCs       10 ..... 110110 ..... 0 0111 0101 00000    @r_r1  # FSRC1s
++    FSRCs       10 ..... 110110 00000 0 0111 1001 .....    @r_r2  # FSRC2s
++    FNOTs       10 ..... 110110 ..... 0 0110 1011 00000    @r_r1  # FNOT1s
++    FNOTs       10 ..... 110110 00000 0 0110 0111 .....    @r_r2  # FNOT2s
    ]
    NCP           10 ----- 110110 ----- --------- -----      # v8 CPop1
  }
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 92a6988fae..bccebfc953 100644
+index bccebfc953..fb44c5ad73 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4370,6 +4370,18 @@ static void gen_op_alignaddrl(TCGv dst, TCGv s1, TCGv s2)
- TRANS(ALIGNADDR, VIS1, do_rrr, a, gen_op_alignaddr)
- TRANS(ALIGNADDRL, VIS1, do_rrr, a, gen_op_alignaddrl)
+@@ -1393,6 +1393,29 @@ static void gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
+     cmp->c2 = tcg_constant_tl(0);
+ }
  
-+static void gen_op_bmask(TCGv dst, TCGv s1, TCGv s2)
++static void gen_op_clear_ieee_excp_and_FTT(void)
 +{
-+#ifdef TARGET_SPARC64
-+    tcg_gen_add_tl(dst, s1, s2);
-+    tcg_gen_deposit_tl(cpu_gsr, cpu_gsr, dst, 32, 32);
-+#else
-+    g_assert_not_reached();
-+#endif
++    tcg_gen_andi_tl(cpu_fsr, cpu_fsr, FSR_FTT_CEXC_NMASK);
 +}
 +
-+TRANS(BMASK, VIS2, do_rrr, a, gen_op_bmask)
++static void gen_op_fmovs(TCGv_i32 dst, TCGv_i32 src)
++{
++    gen_op_clear_ieee_excp_and_FTT();
++    tcg_gen_mov_i32(dst, src);
++}
 +
- static bool do_shift_r(DisasContext *dc, arg_shiftr *a, bool l, bool u)
++static void gen_op_fnegs(TCGv_i32 dst, TCGv_i32 src)
++{
++    gen_op_clear_ieee_excp_and_FTT();
++    gen_helper_fnegs(dst, src);
++}
++
++static void gen_op_fabss(TCGv_i32 dst, TCGv_i32 src)
++{
++    gen_op_clear_ieee_excp_and_FTT();
++    gen_helper_fabss(dst, src);
++}
++
+ #ifdef TARGET_SPARC64
+ static void gen_op_fcmps(int fccno, TCGv_i32 r_rs1, TCGv_i32 r_rs2)
  {
-     TCGv dst, src1, src2;
-@@ -4920,7 +4932,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+@@ -1553,11 +1576,6 @@ static int gen_trap_ifnofpu(DisasContext *dc)
+     return 0;
+ }
+ 
+-static void gen_op_clear_ieee_excp_and_FTT(void)
+-{
+-    tcg_gen_andi_tl(cpu_fsr, cpu_fsr, FSR_FTT_CEXC_NMASK);
+-}
+-
+ static void gen_fop_FF(DisasContext *dc, int rd, int rs,
+                               void (*gen)(TCGv_i32, TCGv_ptr, TCGv_i32))
  {
-     unsigned int opc, rs1, rs2, rd;
-     TCGv cpu_src1 __attribute__((unused));
--    TCGv cpu_src2 __attribute__((unused));
-     TCGv_i32 cpu_src1_32, cpu_src2_32;
-     TCGv_i64 cpu_src1_64, cpu_src2_64;
-     TCGv_i32 cpu_dst_32 __attribute__((unused));
-@@ -5285,15 +5296,8 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                 case 0x014: /* VIS I array32 */
+@@ -1572,19 +1590,6 @@ static void gen_fop_FF(DisasContext *dc, int rd, int rs,
+     gen_store_fpr_F(dc, rd, dst);
+ }
+ 
+-static void gen_ne_fop_FF(DisasContext *dc, int rd, int rs,
+-                          void (*gen)(TCGv_i32, TCGv_i32))
+-{
+-    TCGv_i32 dst, src;
+-
+-    src = gen_load_fpr_F(dc, rs);
+-    dst = gen_dest_fpr_F(dc);
+-
+-    gen(dst, src);
+-
+-    gen_store_fpr_F(dc, rd, dst);
+-}
+-
+ static void gen_fop_FFF(DisasContext *dc, int rd, int rs1, int rs2,
+                         void (*gen)(TCGv_i32, TCGv_ptr, TCGv_i32, TCGv_i32))
+ {
+@@ -4920,6 +4925,27 @@ static bool do_stfsr(DisasContext *dc, arg_r_r_ri *a, MemOp mop)
+ TRANS(STFSR, ALL, do_stfsr, a, MO_TEUL)
+ TRANS(STXFSR, 64, do_stfsr, a, MO_TEUQ)
+ 
++static bool do_ff(DisasContext *dc, arg_r_r *a,
++                  void (*func)(TCGv_i32, TCGv_i32))
++{
++    TCGv_i32 tmp;
++
++    if (gen_trap_ifnofpu(dc)) {
++        return true;
++    }
++
++    tmp = gen_load_fpr_F(dc, a->rs);
++    func(tmp, tmp);
++    gen_store_fpr_F(dc, a->rd, tmp);
++    return advance_pc(dc);
++}
++
++TRANS(FMOVs, ALL, do_ff, a, gen_op_fmovs)
++TRANS(FNEGs, ALL, do_ff, a, gen_op_fnegs)
++TRANS(FABSs, ALL, do_ff, a, gen_op_fabss)
++TRANS(FSRCs, VIS1, do_ff, a, tcg_gen_mov_i32)
++TRANS(FNOTs, VIS1, do_ff, a, tcg_gen_not_i32)
++
+ #define CHECK_IU_FEATURE(dc, FEATURE)                      \
+     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
+         goto illegal_insn;
+@@ -4961,15 +4987,9 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ 
+                 switch (xop) {
+                 case 0x1: /* fmovs */
+-                    cpu_src1_32 = gen_load_fpr_F(dc, rs2);
+-                    gen_store_fpr_F(dc, rd, cpu_src1_32);
+-                    break;
+                 case 0x5: /* fnegs */
+-                    gen_ne_fop_FF(dc, rd, rs2, gen_helper_fnegs);
+-                    break;
+                 case 0x9: /* fabss */
+-                    gen_ne_fop_FF(dc, rd, rs2, gen_helper_fabss);
+-                    break;
++                    g_assert_not_reached(); /* in decodetree */
+                 case 0x29: /* fsqrts */
+                     gen_fop_FF(dc, rd, rs2, gen_helper_fsqrts);
+                     break;
+@@ -5297,6 +5317,10 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                  case 0x018: /* VIS I alignaddr */
                  case 0x01a: /* VIS I alignaddrl */
--                    g_assert_not_reached();  /* in decodetree */
                  case 0x019: /* VIS II bmask */
--                    CHECK_FPU_FEATURE(dc, VIS2);
--                    cpu_src1 = gen_load_gpr(dc, rs1);
--                    cpu_src2 = gen_load_gpr(dc, rs2);
--                    tcg_gen_add_tl(cpu_dst, cpu_src1, cpu_src2);
--                    tcg_gen_deposit_tl(cpu_gsr, cpu_gsr, cpu_dst, 32, 32);
--                    gen_store_gpr(dc, rd, cpu_dst);
--                    break;
-+                    g_assert_not_reached();  /* in decodetree */
++                case 0x067: /* VIS I fnot2s */
++                case 0x06b: /* VIS I fnot1s */
++                case 0x075: /* VIS I fsrc1s */
++                case 0x079: /* VIS I fsrc2s */
+                     g_assert_not_reached();  /* in decodetree */
                  case 0x020: /* VIS I fcmple16 */
                      CHECK_FPU_FEATURE(dc, VIS1);
+@@ -5484,10 +5508,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     gen_ne_fop_DD(dc, rd, rs2, tcg_gen_not_i64);
+                     break;
+-                case 0x067: /* VIS I fnot2s */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    gen_ne_fop_FF(dc, rd, rs2, tcg_gen_not_i32);
+-                    break;
+                 case 0x068: /* VIS I fandnot1 */
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     gen_ne_fop_DDD(dc, rd, rs2, rs1, tcg_gen_andc_i64);
+@@ -5500,10 +5520,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     gen_ne_fop_DD(dc, rd, rs1, tcg_gen_not_i64);
+                     break;
+-                case 0x06b: /* VIS I fnot1s */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    gen_ne_fop_FF(dc, rd, rs1, tcg_gen_not_i32);
+-                    break;
+                 case 0x06c: /* VIS I fxor */
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     gen_ne_fop_DDD(dc, rd, rs1, rs2, tcg_gen_xor_i64);
+@@ -5541,11 +5557,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                      cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+                     gen_store_fpr_D(dc, rd, cpu_src1_64);
+                     break;
+-                case 0x075: /* VIS I fsrc1s */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_32 = gen_load_fpr_F(dc, rs1);
+-                    gen_store_fpr_F(dc, rd, cpu_src1_32);
+-                    break;
+                 case 0x076: /* VIS I fornot2 */
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     gen_ne_fop_DDD(dc, rd, rs1, rs2, tcg_gen_orc_i64);
+@@ -5559,11 +5570,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                     cpu_src1_64 = gen_load_fpr_D(dc, rs2);
+                     gen_store_fpr_D(dc, rd, cpu_src1_64);
+                     break;
+-                case 0x079: /* VIS I fsrc2s */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_32 = gen_load_fpr_F(dc, rs2);
+-                    gen_store_fpr_F(dc, rd, cpu_src1_32);
+-                    break;
+                 case 0x07a: /* VIS I fornot1 */
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     gen_ne_fop_DDD(dc, rd, rs2, rs1, tcg_gen_orc_i64);
 -- 
 2.34.1
 
