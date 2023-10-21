@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303BA7D1AE6
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 07:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A497D1AF5
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 07:37:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qu4az-0007Bp-Ke; Sat, 21 Oct 2023 01:32:21 -0400
+	id 1qu4bH-0007Hr-52; Sat, 21 Oct 2023 01:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qu4au-0007A7-2a
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:16 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qu4av-0007BQ-2K
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:17 -0400
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qu4as-0008Ov-FK
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:15 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6bf03b98b9bso1675038b3a.1
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 22:32:14 -0700 (PDT)
+ id 1qu4at-0008PH-GH
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:16 -0400
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-1e9c9d181d6so1103903fac.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 22:32:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697866333; x=1698471133; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697866334; x=1698471134; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pRMTQptI2nfQXOSpXQo/O0ul1mHB/BhVdQiXtwwiUDw=;
- b=B/utY96650aNFsj48teI+n7ofj+ivT4P2GH4iyuoOBB0rzbTrQpw6AJ4RpGF1vTAyg
- RYXIIrQJBQaRSktow+cU4FjOg6PXbVH8ytAlKvFSHELw/Q/+YYxtf08KBkoPGCAcR/no
- WUFFYuvmjzQ5NlNB1yIMnTihPv2qasttEtDi4ppcS6XZzULBA8sODf6EV4jcZJZCsNAY
- oAoyNqa6z7PrN4Xsitft5tBlGphx6dCaWq6G6I5m89HRTcGa3KaAWlvJiOITOv3GlMek
- fDLi8cdb0aGYGjc2/QXfN1CDjBfy6Bbwg4eWSNnOvR5yW2MQ/Zz33a0mRMDRx0q1ucX7
- HE0Q==
+ bh=0bRQOnevKS41xkhrVOREUbtHjCWnHr38sXTFU/ZrPKc=;
+ b=k6ByhLGIJjfbJV9LVDTIeMPrOyFVYGUchUGylXo8xSRjs2T5zfIxkOq2CBVqZtmc/U
+ ScB0SdEcU67zIUUrON/k0BXmCg+CpCbBPNpnJpBDZ+4oOJ5gJFbPjRASuewI7E2MsnGN
+ v9oGAx58ebna1Cha8PPM2yieBekKGkzLzlldDQyYgYMfqUQQ/vgvLMjVqmxKsCmBrOAD
+ QjYC8yUIfXZ0V4g3/cZVIt/7U+aqmelMqPVFCDVXHiKC86m5lpNIdkUHc0/sKt5782w2
+ TMUCuFiw1ChnfVlh4eCcEjBDH1a1MDwZYFnyyVtpe9CRAoy+MRj6Zg5Jm5AbXcnCQObo
+ Cckg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697866333; x=1698471133;
+ d=1e100.net; s=20230601; t=1697866334; x=1698471134;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pRMTQptI2nfQXOSpXQo/O0ul1mHB/BhVdQiXtwwiUDw=;
- b=l84ghE3iiOIRooF69BSi2zRmr51qHC6Y7CNwUvQ/Q+iCfgTD25GkPt/PHIILfvJ1wG
- Gx8gG/Z29Ea8Z1HaPwrH0DB836jOr+l6xlBwXBE0j8ed/i98W0N5Esd0nOqp2Oy5h8Do
- H05FF52GHYaX7jJNvR93j9s+FJBnj9iVrzsiGbhcRZU3L1L4n9HCcIYdj8d+AmzMnCJS
- z5gFadY/WAiBBap2TLo6h2NV9OO3PLFzitagdOmodu5co+y81v3fzIfCAFDceLABxXpb
- ffwOVhoMKJH+gTNSUIwvnBs1lhAiyqM/CWuWpTEbcwgTzPBgOcQ0ga5rP9dP23NKaYpd
- srKQ==
-X-Gm-Message-State: AOJu0YxIoG3TiG1l/ED0KNLFUGzel/Pg9dBenANKqXmn72eyqSTJ8vWl
- OCzgEx0KkPE13I9DckuJKUoBNeUKSWDAMdmODco=
-X-Google-Smtp-Source: AGHT+IG6O7LSJfxsBiXz3k4sqeoxC7Ox/qvdR1iaymcUVUywkSvmjPOx9VboGjRm+WAKU0IMGRtgiw==
-X-Received: by 2002:a05:6a20:8e23:b0:15a:4c23:870b with SMTP id
- y35-20020a056a208e2300b0015a4c23870bmr4682658pzj.23.1697866333106; 
- Fri, 20 Oct 2023 22:32:13 -0700 (PDT)
+ bh=0bRQOnevKS41xkhrVOREUbtHjCWnHr38sXTFU/ZrPKc=;
+ b=tN7sznl8lG3hoDBRjcI0UCLj8dp79E7OJJDgIQHQpaX30gCiG8rUskhLqKGgKc9arG
+ HfmLaLzc/rjBsKD4fMyVwg9HZlRRPax/5wKGQLf7+rwGV8V8qZavDcGiXS0hlxAgXHP5
+ 7xLRVLb1Wb71vGcTTI7OXHtQG4AqT3Mw2+UUQC09KSzGApaQ+ROmeZRBqzh5RkniEIXS
+ pD4Ok0MvU5XnDJcxiRPTLyaD6DoSZ8ItUIikXZWv/yTNSlijSI+MD5sIb5aHRnWW6IZb
+ PueqcnWbuzY1njIPPxTAAgC81/+06gtmC5khxYK0U9FLJjvFL6hgTzx+ndmLTdH30Srh
+ GjZg==
+X-Gm-Message-State: AOJu0Yw1LAMuaBCFbXtqR5DFqs5ann7kfVmAdfyQrFwf9begDHSlnWfq
+ C/9tT11Cj1zeI1RxY007UMA38eFMFm8kIgfpUjM=
+X-Google-Smtp-Source: AGHT+IF+QUOQl2Jw8OMev7pyhD25DqQk0mTjom2Y4haeVCiaeTrPC2gvfo+bDszj8uwdQ2w2/DpuUA==
+X-Received: by 2002:a05:6870:1254:b0:1e9:dd69:2fc1 with SMTP id
+ 20-20020a056870125400b001e9dd692fc1mr3952699oao.7.1697866334116; 
+ Fri, 20 Oct 2023 22:32:14 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- f20-20020a056a001ad400b006b2677d3684sm2434831pfv.206.2023.10.20.22.32.12
+ f20-20020a056a001ad400b006b2677d3684sm2434831pfv.206.2023.10.20.22.32.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 22:32:12 -0700 (PDT)
+ Fri, 20 Oct 2023 22:32:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 16/90] target/sparc: Merge gen_fcond with only caller
-Date: Fri, 20 Oct 2023 22:30:44 -0700
-Message-Id: <20231021053158.278135-17-richard.henderson@linaro.org>
+Cc: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v3 17/90] target/sparc: Merge gen_branch_[an] with only caller
+Date: Fri, 20 Oct 2023 22:30:45 -0700
+Message-Id: <20231021053158.278135-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231021053158.278135-1-richard.henderson@linaro.org>
 References: <20231021053158.278135-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,58 +90,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ target/sparc/translate.c | 73 +++++++++++++++++-----------------------
+ 1 file changed, 30 insertions(+), 43 deletions(-)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 2664db302d..b8d51d6d64 100644
+index b8d51d6d64..503598ed93 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -1309,19 +1309,6 @@ static void gen_fcompare(DisasCompare *cmp, unsigned int cc, unsigned int cond)
-     }
+@@ -900,47 +900,6 @@ static void gen_branch2(DisasContext *dc, target_ulong pc1,
+     gen_goto_tb(dc, 1, pc2, pc2 + 4);
  }
  
--static void gen_fcond(TCGv r_dst, unsigned int cc, unsigned int cond)
+-static void gen_branch_a(DisasContext *dc, target_ulong pc1)
 -{
--    DisasCompare cmp;
--    gen_fcompare(&cmp, cc, cond);
+-    TCGLabel *l1 = gen_new_label();
+-    target_ulong npc = dc->npc;
 -
--    /* The interface is to return a boolean in r_dst.  */
--    if (cmp.is_bool) {
--        tcg_gen_mov_tl(r_dst, cmp.c1);
+-    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_cond, 0, l1);
+-
+-    gen_goto_tb(dc, 0, npc, pc1);
+-
+-    gen_set_label(l1);
+-    gen_goto_tb(dc, 1, npc + 4, npc + 8);
+-
+-    dc->base.is_jmp = DISAS_NORETURN;
+-}
+-
+-static void gen_branch_n(DisasContext *dc, target_ulong pc1)
+-{
+-    target_ulong npc = dc->npc;
+-
+-    if (npc & 3) {
+-        switch (npc) {
+-        case DYNAMIC_PC:
+-        case DYNAMIC_PC_LOOKUP:
+-            tcg_gen_mov_tl(cpu_pc, cpu_npc);
+-            tcg_gen_addi_tl(cpu_npc, cpu_npc, 4);
+-            tcg_gen_movcond_tl(TCG_COND_NE, cpu_npc,
+-                               cpu_cond, tcg_constant_tl(0),
+-                               tcg_constant_tl(pc1), cpu_npc);
+-            dc->pc = npc;
+-            break;
+-        default:
+-            g_assert_not_reached();
+-        }
 -    } else {
--        tcg_gen_setcond_tl(cmp.cond, r_dst, cmp.c1, cmp.c2);
+-        dc->pc = npc;
+-        dc->jump_pc[0] = pc1;
+-        dc->jump_pc[1] = npc + 4;
+-        dc->npc = JUMP_PC;
 -    }
 -}
 -
- // Inverted logic
- static const TCGCond gen_tcg_cond_reg[8] = {
-     TCG_COND_NEVER,  /* reserved */
-@@ -2992,6 +2979,7 @@ TRANS(BPcc,  64, do_bpcc, a)
- static bool do_fbpfcc(DisasContext *dc, arg_bcc *a)
+ static void gen_generic_branch(DisasContext *dc)
  {
-     target_long target = address_mask_i(dc, dc->pc + a->i * 4);
-+    DisasCompare cmp;
+     TCGv npc0 = tcg_constant_tl(dc->jump_pc[0]);
+@@ -2942,10 +2901,38 @@ static bool advance_jump_uncond_always(DisasContext *dc, bool annul,
  
-     if (gen_trap_ifnofpu(dc)) {
-         return true;
-@@ -3003,7 +2991,13 @@ static bool do_fbpfcc(DisasContext *dc, arg_bcc *a)
-         return advance_jump_uncond_always(dc, a->a, target);
-     default:
-         flush_cond(dc);
--        gen_fcond(cpu_cond, a->cc, a->cond);
+ static bool advance_jump_cond(DisasContext *dc, bool annul, target_ulong dest)
+ {
++    target_ulong npc = dc->npc;
 +
-+        gen_fcompare(&cmp, a->cc, a->cond);
-+        if (cmp.is_bool) {
-+            tcg_gen_mov_tl(cpu_cond, cmp.c1);
+     if (annul) {
+-        gen_branch_a(dc, dest);
++        TCGLabel *l1 = gen_new_label();
++
++        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_cond, 0, l1);
++        gen_goto_tb(dc, 0, npc, dest);
++        gen_set_label(l1);
++        gen_goto_tb(dc, 1, npc + 4, npc + 8);
++
++        dc->base.is_jmp = DISAS_NORETURN;
+     } else {
+-        gen_branch_n(dc, dest);
++        if (npc & 3) {
++            switch (npc) {
++            case DYNAMIC_PC:
++            case DYNAMIC_PC_LOOKUP:
++                tcg_gen_mov_tl(cpu_pc, cpu_npc);
++                tcg_gen_addi_tl(cpu_npc, cpu_npc, 4);
++                tcg_gen_movcond_tl(TCG_COND_NE, cpu_npc,
++                                   cpu_cond, tcg_constant_tl(0),
++                                   tcg_constant_tl(dest), cpu_npc);
++                dc->pc = npc;
++                break;
++            default:
++                g_assert_not_reached();
++            }
 +        } else {
-+            tcg_gen_setcond_tl(cmp.cond, cpu_cond, cmp.c1, cmp.c2);
++            dc->pc = npc;
++            dc->jump_pc[0] = dest;
++            dc->jump_pc[1] = npc + 4;
++            dc->npc = JUMP_PC;
 +        }
-         return advance_jump_cond(dc, a->a, target);
      }
+     return true;
  }
 -- 
 2.34.1
