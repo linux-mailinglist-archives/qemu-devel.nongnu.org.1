@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D1A7D1D01
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 14:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 268817D1D03
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 14:07:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quAjw-00039M-MW; Sat, 21 Oct 2023 08:06:00 -0400
+	id 1quAjx-0003AX-Sx; Sat, 21 Oct 2023 08:06:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAjc-00031H-Kd; Sat, 21 Oct 2023 08:05:41 -0400
+ id 1quAjc-00031I-LP; Sat, 21 Oct 2023 08:05:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAja-000107-7B; Sat, 21 Oct 2023 08:05:40 -0400
+ id 1quAja-00010C-CG; Sat, 21 Oct 2023 08:05:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1EE7D2C332;
+ by isrv.corpit.ru (Postfix) with ESMTP id 49CD72C333;
  Sat, 21 Oct 2023 15:05:52 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F221930680;
- Sat, 21 Oct 2023 15:05:26 +0300 (MSK)
-Received: (nullmailer pid 220787 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 3D49E30681;
+ Sat, 21 Oct 2023 15:05:27 +0300 (MSK)
+Received: (nullmailer pid 220790 invoked by uid 1000);
  Sat, 21 Oct 2023 12:05:25 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 04/17] MAINTAINERS: Add the nios2 interrupt controller to the
- nios2 section
-Date: Sat, 21 Oct 2023 15:05:06 +0300
-Message-Id: <20231021120519.220720-5-mjt@tls.msk.ru>
+Subject: [PULL 05/17] MAINTAINERS: Add include/hw/intc/i8259.h to the PC chip
+ section
+Date: Sat, 21 Oct 2023 15:05:07 +0300
+Message-Id: <20231021120519.220720-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231021120519.220720-1-mjt@tls.msk.ru>
 References: <20231021120519.220720-1-mjt@tls.msk.ru>
@@ -61,29 +61,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-These files obviously belong to the nios2 target, so they should
-be listed in the nios2 section in the MAINTAINERS file.
+i8259.c is already listed here, so the corresponding header should
+be mentioned in this section, too.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c814ed04c4..5732d2f6ad 100644
+index 5732d2f6ad..ab95af5be2 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -284,7 +284,9 @@ R: Marek Vasut <marex@denx.de>
- S: Orphan
- F: target/nios2/
- F: hw/nios2/
-+F: hw/intc/nios2_vic.c
- F: disas/nios2.c
-+F: include/hw/intc/nios2_vic.h
- F: configs/devices/nios2-softmmu/default.mak
- F: tests/docker/dockerfiles/debian-nios2-cross.d/build-toolchain.sh
- F: tests/tcg/nios2/
+@@ -1781,6 +1781,7 @@ F: include/hw/dma/i8257.h
+ F: include/hw/i2c/pm_smbus.h
+ F: include/hw/input/i8042.h
+ F: include/hw/intc/ioapic*
++F: include/hw/intc/i8259.h
+ F: include/hw/isa/i8259_internal.h
+ F: include/hw/isa/superio.h
+ F: include/hw/timer/hpet.h
 -- 
 2.39.2
 
