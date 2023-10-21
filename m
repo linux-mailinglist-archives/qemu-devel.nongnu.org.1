@@ -2,72 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D417D1DBE
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 16:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A687D1F50
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 22:07:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quDOm-0004Jv-GQ; Sat, 21 Oct 2023 10:56:20 -0400
+	id 1quIEC-00048e-Pw; Sat, 21 Oct 2023 16:05:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1quDOh-0004Ib-Uw; Sat, 21 Oct 2023 10:56:15 -0400
-Received: from mailout06.t-online.de ([194.25.134.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1quDOc-0003Lm-Fq; Sat, 21 Oct 2023 10:56:15 -0400
-Received: from fwd89.aul.t-online.de (fwd89.aul.t-online.de [10.223.144.115])
- by mailout06.t-online.de (Postfix) with SMTP id B94528F25;
- Sat, 21 Oct 2023 16:56:01 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.16.231]) by fwd89.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1quDOS-0Wph3p0; Sat, 21 Oct 2023 16:56:01 +0200
-Message-ID: <3217207d-7b75-4354-8923-c637b19700fa@t-online.de>
-Date: Sat, 21 Oct 2023 16:55:59 +0200
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1quIEA-00046K-2J
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 16:05:42 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1quIE7-0006qF-Kk
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 16:05:41 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9b96c3b4be4so287758466b.1
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 13:05:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1697918736; x=1698523536;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zvT4k7WW8dK/L3s/qHnjsztIYAybaYKJqNyN1ZNc86U=;
+ b=AZ7gPPuB+p3Oy+l47lr3U+16UTG4vBuvrGJ2IIiv2xP2Wr79JZVU4yoxWmesyQ0NX9
+ Fwqzjl2wuP7DU4puL7kFcaonVZpeh4Rtv8dVvK7i1Fuj+fipdaxDejR0vKgZmX8GOsLw
+ hRRLIXVQefEaDIEa5PEl9dzbSKBX0idqAXkmkF445w1cH1jCwupYCokm65vlC7QBD1Vj
+ vNxCqNR2Ci4L4JbEJR6ihOd3VRPQl6y+TMhnaHC3ySAFo0S0d9IOKzIEjCSDfE8kyYgL
+ pny0HptOTKGKptbLG9lvI9l4ssxRMk5aaIu7XP0+u6sS72IMjSiON+WWxgABmS4o69Ib
+ O7ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697918736; x=1698523536;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zvT4k7WW8dK/L3s/qHnjsztIYAybaYKJqNyN1ZNc86U=;
+ b=ZT2Vpy/SlGKZKZHHxV5uHnPHVhoE8dM/Z3Dw1Xfp2dOp9ufVsR/nZ44xTF8OF1NBZH
+ lQ5AVmQWojrQCQwwC7DeR/1Ucx5SdvX9OoGaL5D79prvCgC3RJZ/iLysF/jvviXDULy8
+ +pt7Y0Zs3t8dwG/1yiwQtlD1wnkJc9UaxJEia0+VzALYZ8LfZWSSwe+/MEuEWHsrHjZR
+ QBqHc3wnvvA0B/7o/fYjKqU5LRJOUZIqjnZDNrVOioVTyiDJLjsBaGFsBdSeM64vjdqn
+ Qtsul5TAzzZU86JymPlXOUDVe/8rZeQFPNKRTQFJ5/7JZPSu3eiVtZj3B/jwdYQF9fsr
+ CgFA==
+X-Gm-Message-State: AOJu0YzJsVbYIUAZsOXEFAE0JmorwPqTWDESUESrrVewyy1hIzNYbJy/
+ FIIKlJln0ugUfwjEHrG8pI1LK+fpXsr+sszjeBs=
+X-Google-Smtp-Source: AGHT+IHMrWDEVlUloGQ2H+QNpZtB9HXiQqSAXkDdHapZ+Hdily37zVnkDYL2gf4XVTTQV6y8uzDYUg==
+X-Received: by 2002:a17:907:985:b0:9ba:dcbf:6f53 with SMTP id
+ bf5-20020a170907098500b009badcbf6f53mr3890245ejc.35.1697918735803; 
+ Sat, 21 Oct 2023 13:05:35 -0700 (PDT)
+Received: from localhost.localdomain (89-104-8-249.customer.bnet.at.
+ [89.104.8.249]) by smtp.gmail.com with ESMTPSA id
+ u2-20020a17090617c200b0098ce63e36e9sm4138253eje.16.2023.10.21.13.05.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 21 Oct 2023 13:05:35 -0700 (PDT)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: dirty@apple.com, roman@roolebo.dev, pbonzini@redhat.com,
+ lists@philjordan.eu, phil@philjordan.eu
+Subject: [PATCH v2 0/4] hvf x86 correctness and efficiency improvements part 1
+Date: Sat, 21 Oct 2023 22:05:14 +0200
+Message-Id: <20231021200518.30125-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/13] migration: Use vmstate_register_any() for audio
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Eric Farman <farman@linux.ibm.com>, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- David Gibson <david@gibson.dropbear.id.au>,
- Corey Minyard <cminyard@mvista.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Xu <peterx@redhat.com>, Corey Minyard <minyard@acm.org>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Halil Pasic <pasic@linux.ibm.com>, Leonardo Bras <leobras@redhat.com>,
- John Snow <jsnow@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Jason Wang <jasowang@redhat.com>,
- qemu-block@nongnu.org, qemu-s390x@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goat?=
- =?UTF-8?Q?er?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Stefan Weil
- <sw@weilnetz.de>, Stefan Berger <stefanb@linux.ibm.com>
-References: <20231020090731.28701-1-quintela@redhat.com>
- <20231020090731.28701-12-quintela@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <20231020090731.28701-12-quintela@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TOI-EXPURGATEID: 150726::1697900161-EFFFCD63-7E963AA8/0/0 CLEAN NORMAL
-X-TOI-MSGID: cf83e3da-6fa2-4273-bb2a-6a3fc8781b9c
-Received-SPF: pass client-ip=194.25.134.19; envelope-from=vr_qemu@t-online.de;
- helo=mailout06.t-online.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: neutral client-ip=2a00:1450:4864:20::62f;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,45 +90,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.10.23 um 11:07 schrieb Juan Quintela:
-> We can have more than one audio card.
+This is a series of semi-related patches for the x86 macOS Hypervisor.framework
+(hvf) accelerator backend. The intention is to (1) fix bugs and (2) move the
+hvf backend to use more modern and efficient APIs in Hypervisor.framework.
 
-Hi Juan,
+The eventual goal is to replace the main hv_vcpu_run() call with
+hv_vcpu_run_until(); the final 2 patches for this were included in v1 of this
+series, but I've omitted them until part 2 this time around, as discussion
+raised some questions about edge cases and race conditions when forcing VM
+exits. I'm still working on getting solid answers on those questions and will
+only then follow up with corresponding patches. Until then, this first set
+of changes lays some groundwork.
 
-I wouldn't use the term "audio card" here. In QEMU speak, Audiodev is an
-"audio backend".
+Patch 1 enables the INVTSC CPUID bit when running with hvf. This can enable
+some optimisations in the guest OS, and I've not found any reason it shouldn't
+be allowed for hvf based hosts. It now also includes setting a migration
+blocker when the feature is active.
 
-With best regards,
-Volker
+Patch 2 fixes a bunch of compile warnings that kept littering my build logs,
+so I finally caved and fixed them. As far as I can tell, these were all
+ancient typos.
 
->
-> void audio_init_audiodevs(void)
-> {
->     AudiodevListEntry *e;
->
->     QSIMPLEQ_FOREACH(e, &audiodevs, next) {
->         audio_init(e->dev, &error_fatal);
->     }
-> }
->
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->  audio/audio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/audio/audio.c b/audio/audio.c
-> index e9815d6812..f91e05b72c 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -1781,7 +1781,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
->  
->      QTAILQ_INSERT_TAIL(&audio_states, s, list);
->      QLIST_INIT (&s->card_head);
-> -    vmstate_register (NULL, 0, &vmstate_audio, s);
-> +    vmstate_register_any(NULL, &vmstate_audio, s);
->      return s;
->  
->  out:
+Patch 3 sorts out the minor mess of hvf vCPU IDs/handles. The aarch64 and
+x86-64 versions of Hypervisor.framework's APIs use different integral types
+(uint64_t vs unsigned int) when referencing vCPUs, so this changes the code
+to use the correct one depending on build arch instead of awkward pointer
+casts. (There's currently only one instance of such a cast, but the patches
+in part 2 would have added more, so I'm fixing this preemptively.)
+
+Patch 4 fixes dirty page tracking for the x86 hvf backend. This has
+previously only accidentally worked because hv_vcpu_run() makes spurious EPT
+fault exits. Switching to hv_vcpu_run_until() surfaces this issue when using
+an emulated VGA adapter for example, as those use dirty page tracking to do
+partial screen updates.
+
+changelog:
+v2:
+ - Migration blocker when INVTSC is set (Thanks Paolo for pointing that out!)
+ - Dirty page tracking fix (Thanks Roman for noticing the regression in
+   observed behaviour on certain VMs, which led me to debugging this issue.)
+ - vCPU handle type cleanup (Based on discussion with Paolo)
+ - Added fixes for existing compile warnings.
+ - Split patch series into 2 parts.
+
+This work has been sponsored by Sauce Labs Inc.
+
+Phil Dennis-Jordan (4):
+  i386: hvf: Adds support for INVTSC cpuid bit
+  hvf: Fixes some compilation warnings
+  hvf: Consistent types for vCPU handles
+  i386/hvf: Fixes dirty memory tracking by page granularity RX->RWX
+    change
+
+ accel/hvf/hvf-accel-ops.c    |  2 +-
+ include/sysemu/hvf_int.h     |  4 +++-
+ target/i386/hvf/hvf.c        | 23 +++++++++++++++++++++--
+ target/i386/hvf/vmx.h        |  3 +--
+ target/i386/hvf/x86_cpuid.c  |  4 ++++
+ target/i386/hvf/x86_decode.c |  2 +-
+ target/i386/hvf/x86_emu.c    |  4 ++--
+ 7 files changed, 33 insertions(+), 9 deletions(-)
+
+-- 
+2.36.1
 
 
