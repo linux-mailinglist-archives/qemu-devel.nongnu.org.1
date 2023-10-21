@@ -2,99 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2CC7D1F77
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 22:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 124427D1F7B
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 22:23:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quIUA-0003Tw-RA; Sat, 21 Oct 2023 16:22:14 -0400
+	id 1quIVC-0004bs-8S; Sat, 21 Oct 2023 16:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1quIU8-0003Sn-ER; Sat, 21 Oct 2023 16:22:12 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1quIV9-0004aM-JT; Sat, 21 Oct 2023 16:23:15 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1quIU4-0001dn-AI; Sat, 21 Oct 2023 16:22:12 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ id 1quIV5-0001lg-Ec; Sat, 21 Oct 2023 16:23:15 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39LKA6uS023736; Sat, 21 Oct 2023 20:21:55 GMT
+ 39LJlmT5004430; Sat, 21 Oct 2023 20:22:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=CqtXiDDtt8oM/cOp66bvjvmLFD/Jwosmj4GO5XQTP7c=;
- b=mFRJtEAYvqao0XtOSQFO0ybs9Iu9QY6+SRm/fzqBTaksf04XvyRwZ5w6eDGX8Os1+6Hq
- 5aaDl25FY4oWqzAPL/l9kSI7P6u+SQBBSusZ/jIoOTgNw67pgng0MKqApmjZe8jTCa/Q
- D/+LKe0MxZwC8igzWYBsOFhHFGVnI6gE2uM0dfM9YVMNRb0OhoBxuCZAbVaOcXp0c+G0
- cSQQIQjpBxp5GTQAUuzoHILwonRIg0DlCRaKDkb4p2od7P/2Ai02UfBWjPf8LIqr6xI9
- uLA9m0O/SwyVsb4shVk9WleQz62BNURIr1cAZU/IrWcIUHcQOU8BPMvBAkfUkasIEzUg wg== 
+ bh=El2oYZ6nMdSleaG6DLsXDgOVdZ5Sgms1RKGavpUvqzQ=;
+ b=lYwcgb+kU7mc4nyXaROd54LLHXtYGE8djer/QwWLb+lM+AcjKzh2B1OrqTkT9BfSMD8f
+ qjRi/P+vQ8PzN14KEvBoW5Ali96SRam3BqtL+EZrToZ2loKrMg5KaumIubVDgwH0sydi
+ bOs0FmTNpTS/LSl9yQGJ7wS1QObcC8iFOSE0uyyW7opEXjy+fnQMRGeTPr7bek3t5dAB
+ DbSDLiln6YONaOX4vIFe6ImtGmbXoGufmmBQ0RtLDrA5B/YFBK7rRjkTAzXbXf/Eow84
+ uAfooKK+p+BwkWu5vkzFTNfUmf4EYhkML4AjzPrmyksnYhVFsj55+Yv8DJwN0sNuI6tL 5w== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvneh871g-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvn400fyx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 21 Oct 2023 20:21:54 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39LKAg4Q024386;
- Sat, 21 Oct 2023 20:21:54 GMT
+ Sat, 21 Oct 2023 20:22:55 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39LKH7SQ005505;
+ Sat, 21 Oct 2023 20:22:54 GMT
 Received: from ppma13.dal12v.mail.ibm.com
  (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvneh8716-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tvn400fyk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 21 Oct 2023 20:21:54 +0000
+ Sat, 21 Oct 2023 20:22:54 +0000
 Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
  by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39LKFqeW007102; Sat, 21 Oct 2023 20:21:53 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc27w5df-1
+ 39LK4paQ007084; Sat, 21 Oct 2023 20:22:53 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc27w5hh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 21 Oct 2023 20:21:53 +0000
+ Sat, 21 Oct 2023 20:22:53 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39LKLqLH50790826
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39LKMrwu16515616
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 21 Oct 2023 20:21:52 GMT
+ Sat, 21 Oct 2023 20:22:53 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 66B0458055;
- Sat, 21 Oct 2023 20:21:52 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 454B658055;
+ Sat, 21 Oct 2023 20:22:53 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0182D58043;
- Sat, 21 Oct 2023 20:21:51 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 991B958043;
+ Sat, 21 Oct 2023 20:22:51 +0000 (GMT)
 Received: from [9.67.95.215] (unknown [9.67.95.215])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Sat, 21 Oct 2023 20:21:50 +0000 (GMT)
-Message-ID: <6eb57aea-edee-41a5-874b-e2f3d413aa71@linux.ibm.com>
-Date: Sat, 21 Oct 2023 15:21:50 -0500
+ Sat, 21 Oct 2023 20:22:51 +0000 (GMT)
+Message-ID: <26b21483-357e-4382-beb3-7356b445196b@linux.ibm.com>
+Date: Sat, 21 Oct 2023 15:22:51 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 01/10] hw/fsi: Introduce IBM's Local bus
 Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, thuth@redhat.com, philmd@linaro.org,
+ lvivier@redhat.com, qemu-arm@nongnu.org
 References: <20231011151339.2782132-1-ninad@linux.ibm.com>
- <20231011151339.2782132-2-ninad@linux.ibm.com>
- <78725dd0-53c3-4b6f-a632-2fed0d383b79@kaod.org>
+ <20231011151339.2782132-2-ninad@linux.ibm.com> <ZTDlf2jfj5tYGuSM@redhat.com>
+ <1159f076-385b-491c-974e-fe72f850f341@linux.ibm.com>
+ <ZTFUx/YiaCKHxwf7@redhat.com>
 From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <78725dd0-53c3-4b6f-a632-2fed0d383b79@kaod.org>
+In-Reply-To: <ZTFUx/YiaCKHxwf7@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: KIbUYetNat40r8eoMmNaGaynV6Z6pGTn
-X-Proofpoint-GUID: kKSukZm5LiW11c_sGJQEG9SOuYnR4BZQ
+X-Proofpoint-GUID: rxNXo2P36wLZPqfXvnoQjI8JeOkxVUBc
+X-Proofpoint-ORIG-GUID: 6rYs3lQkfUH73VgQC7vrIzxLs7iCjzDj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-21_12,2023-10-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 spamscore=0 mlxscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310210186
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ spamscore=0 phishscore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=969 bulkscore=0 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310210187
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -117,262 +118,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+Hello Daniel,
 
-On 10/19/23 03:08, Cédric Le Goater wrote:
-> On 10/11/23 17:13, Ninad Palsule wrote:
->> This is a part of patchset where IBM's Flexible Service Interface is
->> introduced.
+On 10/19/23 11:09, Daniel P. Berrangé wrote:
+> On Thu, Oct 19, 2023 at 10:34:52AM -0500, Ninad Palsule wrote:
+>> Hello Daniel,
 >>
->> The LBUS is modelled to maintain the qdev bus hierarchy and to take
->> advantage of the object model to automatically generate the CFAM
->> configuration block. The configuration block presents engines in the
->> order they are attached to the CFAM's LBUS. Engine implementations
->> should subclass the LBusDevice and set the 'config' member of
->> LBusDeviceClass to match the engine's type.
->>
->> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> ---
->> v2:
->> - Incorporated Joel's review comments.
->> v5:
->> - Incorporated review comments by Cedric.
->> ---
->>   include/hw/fsi/lbus.h | 51 +++++++++++++++++++++++++
->>   include/qemu/bitops.h |  6 +++
->>   hw/fsi/lbus.c         | 87 +++++++++++++++++++++++++++++++++++++++++++
->>   hw/Kconfig            |  1 +
->>   hw/fsi/Kconfig        |  2 +
->>   hw/fsi/meson.build    |  1 +
->>   hw/meson.build        |  1 +
->>   7 files changed, 149 insertions(+)
->>   create mode 100644 include/hw/fsi/lbus.h
->>   create mode 100644 hw/fsi/lbus.c
->>   create mode 100644 hw/fsi/Kconfig
->>   create mode 100644 hw/fsi/meson.build
->>
->> diff --git a/include/hw/fsi/lbus.h b/include/hw/fsi/lbus.h
->> new file mode 100644
->> index 0000000000..408fe25831
->> --- /dev/null
->> +++ b/include/hw/fsi/lbus.h
->> @@ -0,0 +1,51 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM Local bus and connected device structures.
->> + */
->> +#ifndef FSI_LBUS_H
->> +#define FSI_LBUS_H
->> +
->> +#include "exec/memory.h"
->> +#include "hw/qdev-core.h"
->> +
->> +#define TYPE_FSI_LBUS_DEVICE "fsi.lbus.device"
->> +OBJECT_DECLARE_TYPE(FSILBusDevice, FSILBusDeviceClass, FSI_LBUS_DEVICE)
->> +
->> +#define FSI_LBUS_MEM_REGION_SIZE  (2 * 1024 * 1024)
->> +#define FSI_LBUSDEV_IOMEM_SIZE    0x400
->> +
->> +typedef struct FSILBusDevice {
->> +    DeviceState parent;
->> +
->> +    MemoryRegion iomem;
->> +    uint32_t address;
->> +} FSILBusDevice;
->> +
->> +typedef struct FSILBusDeviceClass {
->> +    DeviceClass parent;
->> +
->> +    uint32_t config;
->> +} FSILBusDeviceClass;
->> +
->> +typedef struct FSILBusNode {
->> +    FSILBusDevice *ldev;
->> +
->> +    QLIST_ENTRY(FSILBusNode) next;
->> +} FSILBusNode;
->> +
->> +#define TYPE_FSI_LBUS "fsi.lbus"
->> +OBJECT_DECLARE_SIMPLE_TYPE(FSILBus, FSI_LBUS)
->> +
->> +typedef struct FSILBus {
->> +    BusState bus;
->> +
->> +    MemoryRegion mr;
->> +
->> +    QLIST_HEAD(, FSILBusNode) devices;
->> +} FSILBus;
->> +
->> +DeviceState *lbus_create_device(FSILBus *bus, const char *type, 
->> uint32_t addr);
->> +int lbus_add_device(FSILBus *bus, FSILBusDevice *dev);
->> +#endif /* FSI_LBUS_H */
->> diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
->> index cb3526d1f4..e12496f619 100644
->> --- a/include/qemu/bitops.h
->> +++ b/include/qemu/bitops.h
->> @@ -618,4 +618,10 @@ static inline uint64_t half_unshuffle64(uint64_t x)
->>       return x;
->>   }
->>   +/* Bitwise operations at the word level. */
->> +#define BE_BIT(x)                          BIT(31 - (x))
->> +#define GENMASK(t, b) \
->> +    (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 1))
->> +#define BE_GENMASK(t, b)                   GENMASK(BE_BIT(t), 
->> BE_BIT(b))
->> +
->>   #endif
->
-> Oh I forgot. please remove this change above.
+>> On 10/19/23 03:14, Daniel P. Berrangé wrote:
+>>> On Wed, Oct 11, 2023 at 10:13:30AM -0500, Ninad Palsule wrote:
+>>>> This is a part of patchset where IBM's Flexible Service Interface is
+>>>> introduced.
+>>>>
+>>>> The LBUS is modelled to maintain the qdev bus hierarchy and to take
+>>>> advantage of the object model to automatically generate the CFAM
+>>>> configuration block. The configuration block presents engines in the
+>>>> order they are attached to the CFAM's LBUS. Engine implementations
+>>>> should subclass the LBusDevice and set the 'config' member of
+>>>> LBusDeviceClass to match the engine's type.
+>>>>
+>>>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>>>> ---
+>>>> v2:
+>>>> - Incorporated Joel's review comments.
+>>>> v5:
+>>>> - Incorporated review comments by Cedric.
+>>>> ---
+>>>>    include/hw/fsi/lbus.h | 51 +++++++++++++++++++++++++
+>>>>    include/qemu/bitops.h |  6 +++
+>>>>    hw/fsi/lbus.c         | 87 +++++++++++++++++++++++++++++++++++++++++++
+>>>>    hw/Kconfig            |  1 +
+>>>>    hw/fsi/Kconfig        |  2 +
+>>>>    hw/fsi/meson.build    |  1 +
+>>>>    hw/meson.build        |  1 +
+>>>>    7 files changed, 149 insertions(+)
+>>>>    create mode 100644 include/hw/fsi/lbus.h
+>>>>    create mode 100644 hw/fsi/lbus.c
+>>>>    create mode 100644 hw/fsi/Kconfig
+>>>>    create mode 100644 hw/fsi/meson.build
+>>>> +DeviceState *lbus_create_device(FSILBus *bus, const char *type, uint32_t addr)
+>>>> +{
+>>>> +    DeviceState *dev;
+>>>> +    FSILBusNode *node;
+>>>> +    BusState *state = BUS(bus);
+>>>> +
+>>>> +    dev = qdev_new(type);
+>>>> +    qdev_prop_set_uint8(dev, "address", addr);
+>>>> +    qdev_realize_and_unref(dev, state, &error_fatal);
+>>>> +
+>>>> +    /* Move to post_load */
+>>>> +    node = g_malloc(sizeof(struct FSILBusNode));
+>>> This allocation pattern is discouraged in favour of:
+>>>
+>>>       node = g_new0(FSILBusNode, 1);
+>> I am using g_malloc() because I want program to terminate. I don't think
+>> g_new0 provide this functionality. Please let me know.
+> All the glib memory allocation functions terminate on OOM, except
+> for the ones with '_try_' in their name.
 
-Fixed. Sorry I should have fixed it last patch.
+Sorry, you are right. I have removed this function as per Cedric's comment.
 
 Thanks for the review.
 
-~Ninad
+Regards,
+
+Ninad
 
 >
-> Thanks,
->
-> C.
->
->
->> diff --git a/hw/fsi/lbus.c b/hw/fsi/lbus.c
->> new file mode 100644
->> index 0000000000..d7117d1299
->> --- /dev/null
->> +++ b/hw/fsi/lbus.c
->> @@ -0,0 +1,87 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM Local bus where FSI slaves are connected
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +#include "qapi/error.h"
->> +#include "hw/fsi/lbus.h"
->> +
->> +#include "hw/qdev-properties.h"
->> +
->> +static void lbus_realize(BusState *bus, Error **errp)
->> +{
->> +    FSILBusNode *node;
->> +    FSILBus *lbus = FSI_LBUS(bus);
->> +
->> +    memory_region_init(&lbus->mr, OBJECT(lbus), TYPE_FSI_LBUS,
->> +                       FSI_LBUS_MEM_REGION_SIZE - 
->> FSI_LBUSDEV_IOMEM_SIZE);
->> +
->> +    QLIST_FOREACH(node, &lbus->devices, next) {
->> +        memory_region_add_subregion(&lbus->mr, node->ldev->address,
->> + &node->ldev->iomem);
->> +    }
->> +}
->> +
->> +static void lbus_class_init(ObjectClass *klass, void *data)
->> +{
->> +    BusClass *k = BUS_CLASS(klass);
->> +    k->realize = lbus_realize;
->> +}
->> +
->> +static const TypeInfo lbus_info = {
->> +    .name = TYPE_FSI_LBUS,
->> +    .parent = TYPE_BUS,
->> +    .instance_size = sizeof(FSILBus),
->> +    .class_init = lbus_class_init,
->> +};
->> +
->> +static Property lbus_device_props[] = {
->> +    DEFINE_PROP_UINT32("address", FSILBusDevice, address, 0),
->> +    DEFINE_PROP_END_OF_LIST(),
->> +};
->> +
->> +DeviceState *lbus_create_device(FSILBus *bus, const char *type, 
->> uint32_t addr)
->> +{
->> +    DeviceState *dev;
->> +    FSILBusNode *node;
->> +    BusState *state = BUS(bus);
->> +
->> +    dev = qdev_new(type);
->> +    qdev_prop_set_uint8(dev, "address", addr);
->> +    qdev_realize_and_unref(dev, state, &error_fatal);
->> +
->> +    /* Move to post_load */
->> +    node = g_malloc(sizeof(struct FSILBusNode));
->> +    node->ldev = FSI_LBUS_DEVICE(dev);
->> +    QLIST_INSERT_HEAD(&bus->devices, node, next);
->> +
->> +    return dev;
->> +}
->> +
->> +static void lbus_device_class_init(ObjectClass *klass, void *data)
->> +{
->> +    DeviceClass *dc = DEVICE_CLASS(klass);
->> +
->> +    dc->bus_type = TYPE_FSI_LBUS;
->> +    device_class_set_props(dc, lbus_device_props);
->> +}
->> +
->> +static const TypeInfo lbus_device_type_info = {
->> +    .name = TYPE_FSI_LBUS_DEVICE,
->> +    .parent = TYPE_DEVICE,
->> +    .instance_size = sizeof(FSILBusDevice),
->> +    .abstract = true,
->> +    .class_init = lbus_device_class_init,
->> +    .class_size = sizeof(FSILBusDeviceClass),
->> +};
->> +
->> +static void lbus_register_types(void)
->> +{
->> +    type_register_static(&lbus_info);
->> +    type_register_static(&lbus_device_type_info);
->> +}
->> +
->> +type_init(lbus_register_types);
->> diff --git a/hw/Kconfig b/hw/Kconfig
->> index ba62ff6417..2ccb73add5 100644
->> --- a/hw/Kconfig
->> +++ b/hw/Kconfig
->> @@ -9,6 +9,7 @@ source core/Kconfig
->>   source cxl/Kconfig
->>   source display/Kconfig
->>   source dma/Kconfig
->> +source fsi/Kconfig
->>   source gpio/Kconfig
->>   source hyperv/Kconfig
->>   source i2c/Kconfig
->> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
->> new file mode 100644
->> index 0000000000..e650c660f0
->> --- /dev/null
->> +++ b/hw/fsi/Kconfig
->> @@ -0,0 +1,2 @@
->> +config FSI_LBUS
->> +    bool
->> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
->> new file mode 100644
->> index 0000000000..4074d3a7d2
->> --- /dev/null
->> +++ b/hw/fsi/meson.build
->> @@ -0,0 +1 @@
->> +system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
->> diff --git a/hw/meson.build b/hw/meson.build
->> index c7ac7d3d75..6c71ee9cfa 100644
->> --- a/hw/meson.build
->> +++ b/hw/meson.build
->> @@ -43,6 +43,7 @@ subdir('virtio')
->>   subdir('watchdog')
->>   subdir('xen')
->>   subdir('xenpv')
->> +subdir('fsi')
->>     subdir('alpha')
->>   subdir('arm')
->
+> With regards,
+> Daniel
 
