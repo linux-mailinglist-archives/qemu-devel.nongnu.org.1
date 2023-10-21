@@ -2,77 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887087D1C8F
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 12:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE387D1CDA
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 13:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qu9QD-0005Jz-DQ; Sat, 21 Oct 2023 06:41:33 -0400
+	id 1quACz-0000uy-KR; Sat, 21 Oct 2023 07:31:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qu9Q9-0005GA-Kf; Sat, 21 Oct 2023 06:41:29 -0400
-Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qu9Q7-0006Ww-CG; Sat, 21 Oct 2023 06:41:28 -0400
-Received: by mail-yb1-xb2d.google.com with SMTP id
- 3f1490d57ef6-d9beb865a40so1629969276.1; 
- Sat, 21 Oct 2023 03:41:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697884884; x=1698489684; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E0uh7CZSfuO0NQUKKWFNoyeP1THkGbAk1ccRunKqJws=;
- b=Wrv6m8jJTGmGheFCn5N5EfN108T9E7y/Bj2s6NPKzjuIBEBIZeFcrSTKkbNItIlwGb
- npnQ/Ukc1OyCrWsnhX7CTbqJu9CU29WophRQxLGJmhFsxwjM8w1YH/mL9+qx1Q8Nhg4H
- phQaPbaTiDjziVr35t6PoP9F8dfbQxmyB35zdfU7CKsaVWVDJjv2OBvV1IrGFtwfIvgq
- O++tI+8PVeBf7nzZOPWdbm/8ULqxpCGXcXCX68puiICfqnL3wiLsWM/KyiREhWDA1mGD
- 3Llr6E5/Gn912e0PbmY6JCT7D15Cen8GUbMkIllKZKg3ygzXlJsqFmZHnj0gUOEzfeY1
- phNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697884884; x=1698489684;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E0uh7CZSfuO0NQUKKWFNoyeP1THkGbAk1ccRunKqJws=;
- b=GKEcCt6RYXzf6TpXi20H2IllmDLvjE7kcWmNezwyMSbhDq31J4+k2bP1UO03gW42kf
- qQwbUgm8XilyoKPuSVVVmUcMx4tCrIBxbrpZQCp+nDGhilqu43xaX7stPtehmS25+b4M
- OPy1TMmLtOKhIbHa4LthtIN3+GuOKq2bqvTMliKohCh7ngReKaSqE3TZ7gLCxGGsVc1Q
- lay2q07E8GZiULgAX/wX2LrIrUv9luBIxH3mSTzIjQGIt4oEmqUBKv74iBm8CKqI7eZH
- 4A584UzAr3qCNJp96p8ZggIpYpNhX2OhwOto2mOJ7hHJzJEUeURizRn2QrvZLXj9RRih
- oJyw==
-X-Gm-Message-State: AOJu0YzT6UjdgOjh3ox8NBBvNyvMylvOtW0SDJKWrPBzRtMjDUSdmRLL
- XISUBhG11f8RJhk29JA7A2vp6ghQchnCRVaDSyt0f/B5vvzqO+HM
-X-Google-Smtp-Source: AGHT+IGN73Uk/oczE2Qg2fWh2lX64mQobBJ+p9oolI46Zm50OLZ3uNki/uJwhF4mdcLbCCofF6GbmicFK3MnkGl7Nq8=
-X-Received: by 2002:a05:6902:188f:b0:d9a:bddd:f714 with SMTP id
- cj15-20020a056902188f00b00d9abdddf714mr5618272ybb.9.1697884884657; Sat, 21
- Oct 2023 03:41:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1quACw-0000uH-0O; Sat, 21 Oct 2023 07:31:54 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1quACt-0000xu-Jm; Sat, 21 Oct 2023 07:31:53 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 1B8122C322;
+ Sat, 21 Oct 2023 14:32:11 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 21D3530676;
+ Sat, 21 Oct 2023 14:31:46 +0300 (MSK)
+Message-ID: <78323369-f211-4281-b365-7de1fc5788f8@tls.msk.ru>
+Date: Sat, 21 Oct 2023 14:31:46 +0300
 MIME-Version: 1.0
-References: <20231019125854.390385-1-alexander.ivanov@virtuozzo.com>
- <20231019125854.390385-2-alexander.ivanov@virtuozzo.com>
-In-Reply-To: <20231019125854.390385-2-alexander.ivanov@virtuozzo.com>
-From: Mike Maslenkin <mike.maslenkin@gmail.com>
-Date: Sat, 21 Oct 2023 13:40:48 +0300
-Message-ID: <CAL77WPC79j7LUJNTYpf5uyH3JFViDKsMMRktzfgtoZKHUVhEWA@mail.gmail.com>
-Subject: Re: [PATCH v2 01/20] parallels: Set s->used_bmap to NULL in
- parallels_free_used_bitmap()
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, den@virtuozzo.com, 
- stefanha@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com, 
- hreitz@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
- envelope-from=mike.maslenkin@gmail.com; helo=mail-yb1-xb2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add unvalued folders in tests/tcg/ to the
+ right sections
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, qemu-ppc@nongnu.org
+References: <20231018062401.20746-1-thuth@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20231018062401.20746-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,35 +59,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 4:06=E2=80=AFPM Alexander Ivanov
-<alexander.ivanov@virtuozzo.com> wrote:
->
-> After used bitmap freeng s->used_bmap points to the freed memory. If we t=
-ry
-> to free used bitmap one more time it leads to double free error.
->
-> Set s->used_bmap to NULL to exclude double free error.
->
-> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> ---
->  block/parallels.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/block/parallels.c b/block/parallels.c
-> index 6b46623241..ba1fdde259 100644
-> --- a/block/parallels.c
-> +++ b/block/parallels.c
-> @@ -244,6 +244,7 @@ static void parallels_free_used_bitmap(BlockDriverSta=
-te *bs)
->  {
->      BDRVParallelsState *s =3D bs->opaque;
->      s->used_bmap_size =3D 0;
-> +    s->used_bmap =3D NULL;
->      g_free(s->used_bmap);
->  }
+[Trim recipient list]
 
-Shouldn't it be added after g_free() call?
+18.10.2023 09:24, Thomas Huth:
+> Some subfolders in tests/tcg/ are already listed in the MAINTAINERS
+> file, some others aren't listed yet. Add the missing ones now to the
+> MAINTAINERS file, too, to make sure that get_maintainers.pl reports
+> the correct maintainer.
 
-Regards,
-Mike.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b3599746c4..b80124f60f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -327,6 +329,7 @@ F: hw/ppc/trace*
+>   F: configs/devices/ppc*
+>   F: docs/system/ppc/embedded.rst
+>   F: docs/system/target-ppc.rst
+> +F: tests/tcg/ppc*/*
+
+FWIW, this hunk needs earlier series "MAINTAINERS: Collect unmaintained files
+under PPC entries", in particular "MAINTAINERS: Add PPC common files to PowerPC
+TCG CPUs", which is still not in master.  Maybe it's better to fold this change
+to the PPC series.
+
+/mjt
+
 
