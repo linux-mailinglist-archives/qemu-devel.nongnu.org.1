@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0187D1AEC
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 07:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA937D1AF6
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 07:38:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qu4bF-0007Da-4m; Sat, 21 Oct 2023 01:32:37 -0400
+	id 1qu4bH-0007IR-Te; Sat, 21 Oct 2023 01:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qu4av-0007BZ-Iv
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:17 -0400
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1qu4aw-0007Bq-IB
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:18 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qu4at-0008Ph-UL
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:17 -0400
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6cd33d51852so1006650a34.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 22:32:15 -0700 (PDT)
+ id 1qu4av-0008Pz-08
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 01:32:18 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3b3ec45d6e9so1048275b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 22:32:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697866335; x=1698471135; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pe3uuotNEE/3RgpcgrZRfr0F8BaHUoNj59/qICwQLyk=;
- b=vbE4E1UdZKUO1BrBxRO8g94jIhTa8FizzPxg04GHF1CFBVM0L1dLajn/HY5ZxpEIPW
- LQAmB/1eJYdg81SD4F+BCo8cwXZ2A0OG3xWKeFOBVL1DgTZSDBZgNUiOBfDPJhJN4yi7
- d46TRhLy6oGqjNbUIusCo8/8pI9XrUdXhH0kXpugdDe6CmVBaLFuL6kQb26IR4RQwHRN
- UxrH05v0LrLW6US8qPdro7py+joWBFjjKhIXHoyqdpEQY69UVDxEy4po0/W7DHnSyAGg
- g1ktLnaKSs3Nh5qrFMj6cpJOGVq/noZdTtXJwnHga8yJfsGuUhHzDOCGqcQZvMCiSp+3
- ek/A==
+ bh=lzvcZe31/ZJG4v0X6So+um8Fp3Qd2Uum0t8sUDXqISw=;
+ b=RVX8MxnHNC2M2+2OJTsTlYEo97k6p1ETF9XmBN+5T6qOvsVfsuM3stfArs8hiQ2sFr
+ wN+F1MGMlHgG4FALATEcktGXfAJfyxrsHhAg+QbqZLFPVzX9ktqfzUOvQmfs4PJ8L70F
+ OF28XxNwAcLGdmG6Zn7vmJu03PzsCluM43M3WAtf4acct4FDXGZzynK8fV8efQ0JN1/6
+ yKsjW/7Pet5cFSeu5KvwWIup0C4HWSEuz7fv6xHOK+DGSysPS+Y8Cd0eZTByJ8XGvDbR
+ Gls24IVHx7mRRUJtlJ3LxGXtZVbSyi1+nkwk0OFja88V1KQMXeZh4UZtCNMOYzq992G8
+ o7lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697866335; x=1698471135;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pe3uuotNEE/3RgpcgrZRfr0F8BaHUoNj59/qICwQLyk=;
- b=EBi6QH3YeU1Ex/P3/J/OrTFqyhvBp34yTruROR/8qdafuWWnU9+WPqYcMeEV1r7e/z
- +25hnGut4PKVlsWBer7HucQNczmEm5W2f4DKzjKWWfsxh0S1jz2dhXTkkO8w2vgNTGD7
- UZu7oI8ds9HtwkcFfKJ+x+qU5gX3qwrVD3qKKgjJDZ14lDeBJb02rQRVEmz7BGNku9Ow
- kMJc6Hly2pf6rXtxJSfvBZ+1NC1HBjDMD/C8IGRFaWUyb1BWjBxYar8Dy+1f6miFYMZS
- S9eR/Jfy4M4dTdbjD4N9H+JlkVOVJNfXWMZ99fBSh75z6TxiZCMpNf3rmq0E8UCVg2HD
- ZN4Q==
-X-Gm-Message-State: AOJu0YxSlbCJN3yElVV237SMKO5z4hKi/Ub1n8xC/chS+3Q7iY84LVv2
- bB8QDQo2je2tBGOFtNZ14a7N1SIN5CuReL7ocXk=
-X-Google-Smtp-Source: AGHT+IHOLBb8v/svftUXiZSp/AlqDsDrKX84SMPtJPbiZ18kG6naAnYn4qczptJn4q9dTSkCVlh+yg==
-X-Received: by 2002:a05:6830:10c2:b0:6cd:a989:c7ea with SMTP id
- z2-20020a05683010c200b006cda989c7eamr4308359oto.16.1697866334849; 
- Fri, 20 Oct 2023 22:32:14 -0700 (PDT)
+ bh=lzvcZe31/ZJG4v0X6So+um8Fp3Qd2Uum0t8sUDXqISw=;
+ b=TnXUSTPKorAjdfz1nEL7Tc9CwuCMin93Vs4amOCkAlOji8HqfDzIJb10m/F15QKpCD
+ +TwBfPC1qbjTzw2S/cHWyGZ95vAiPlbQJ0GZekh2L7puvrJUjg1l6/PerIfT3uF1pf3h
+ qRFP2/vet/QShA780otakfmIkLatYtvwKIQjebuHfFC8e5QNtvApwrXksPXia/BeN+Xk
+ FqdaAye7noe/rHDQOcMm0ePY4TXyKsu2CGQTa35m09+/WBH4x8hfCbs12D4+5wyvm0uv
+ i3hM6VRE5JwfEANRCia9HmsF5lbBwWOVdLaXUhSgLNuoS8AYlsaEEZeLIP9QiIIRth9u
+ iWBA==
+X-Gm-Message-State: AOJu0Yy2KcaOu+FpgoWZM2KkRW3QgZHaga1ZUEwlk68fvSC3z1Gc5XZ8
+ VW6w3aFws2Z6fRQdT5Y7t5qToOkE51WOTjB96wI=
+X-Google-Smtp-Source: AGHT+IHnCdZYXo4Uo8ihkC0n9X8sB3RZjjU5PuZJmWNMNqwy+hlfn5No44lT0TKIjdMhsiITDgIHpA==
+X-Received: by 2002:a54:4e84:0:b0:3af:75e2:4c34 with SMTP id
+ c4-20020a544e84000000b003af75e24c34mr3696457oiy.50.1697866335724; 
+ Fri, 20 Oct 2023 22:32:15 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- f20-20020a056a001ad400b006b2677d3684sm2434831pfv.206.2023.10.20.22.32.14
+ f20-20020a056a001ad400b006b2677d3684sm2434831pfv.206.2023.10.20.22.32.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 22:32:14 -0700 (PDT)
+ Fri, 20 Oct 2023 22:32:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 18/90] target/sparc: Pass DisasCompare to advance_jump_cond
-Date: Fri, 20 Oct 2023 22:30:46 -0700
-Message-Id: <20231021053158.278135-19-richard.henderson@linaro.org>
+Subject: [PATCH v3 19/90] target/sparc: Move SETHI to decodetree
+Date: Fri, 20 Oct 2023 22:30:47 -0700
+Message-Id: <20231021053158.278135-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231021053158.278135-1-richard.henderson@linaro.org>
 References: <20231021053158.278135-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,96 +90,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fold the condition into the branch or movcond when possible.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 31 +++++++++++++------------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+ target/sparc/insns.decode |  6 +++++
+ target/sparc/translate.c  | 50 ++++++++++++---------------------------
+ 2 files changed, 21 insertions(+), 35 deletions(-)
 
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 9ab3f2eb82..f6f5401b10 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -3,6 +3,10 @@
+ # Sparc instruction decode definitions.
+ # Copyright (c) 2023 Richard Henderson <rth@twiddle.net>
+ 
++##
++## Major Opcodes 00 and 01 -- branches, call, and sethi.
++##
++
+ &bcc    i a cond cc
+ BPcc    00 a:1 cond:4   001 cc:1 0 - i:s19                 &bcc
+ Bicc    00 a:1 cond:4   010          i:s22                 &bcc cc=0
+@@ -14,4 +18,6 @@ BPr     00 a:1 0 cond:3 011 ..     - rs1:5 ..............  i=%d16
+ 
+ NCP     00 -   ----     111 ----------------------         # CBcc
+ 
++SETHI   00 rd:5         100 i:22
++
+ CALL    01 i:s30
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 503598ed93..d12f2b4b87 100644
+index d12f2b4b87..cdd929282a 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2899,14 +2899,15 @@ static bool advance_jump_uncond_always(DisasContext *dc, bool annul,
+@@ -2873,6 +2873,10 @@ static bool advance_pc(DisasContext *dc)
      return true;
  }
  
--static bool advance_jump_cond(DisasContext *dc, bool annul, target_ulong dest)
-+static bool advance_jump_cond(DisasContext *dc, DisasCompare *cmp,
-+                              bool annul, target_ulong dest)
++/*
++ * Major opcodes 00 and 01 -- branches, call, and sethi
++ */
++
+ static bool advance_jump_uncond_never(DisasContext *dc, bool annul)
  {
-     target_ulong npc = dc->npc;
- 
      if (annul) {
-         TCGLabel *l1 = gen_new_label();
+@@ -3029,6 +3033,15 @@ static bool trans_NCP(DisasContext *dc, arg_NCP *a)
+ #endif
+ }
  
--        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_cond, 0, l1);
-+        tcg_gen_brcond_tl(tcg_invert_cond(cmp->cond), cmp->c1, cmp->c2, l1);
-         gen_goto_tb(dc, 0, npc, dest);
-         gen_set_label(l1);
-         gen_goto_tb(dc, 1, npc + 4, npc + 8);
-@@ -2919,8 +2920,8 @@ static bool advance_jump_cond(DisasContext *dc, bool annul, target_ulong dest)
-             case DYNAMIC_PC_LOOKUP:
-                 tcg_gen_mov_tl(cpu_pc, cpu_npc);
-                 tcg_gen_addi_tl(cpu_npc, cpu_npc, 4);
--                tcg_gen_movcond_tl(TCG_COND_NE, cpu_npc,
--                                   cpu_cond, tcg_constant_tl(0),
-+                tcg_gen_movcond_tl(cmp->cond, cpu_npc,
-+                                   cmp->c1, cmp->c2,
-                                    tcg_constant_tl(dest), cpu_npc);
-                 dc->pc = npc;
-                 break;
-@@ -2932,6 +2933,11 @@ static bool advance_jump_cond(DisasContext *dc, bool annul, target_ulong dest)
-             dc->jump_pc[0] = dest;
-             dc->jump_pc[1] = npc + 4;
-             dc->npc = JUMP_PC;
-+            if (cmp->is_bool) {
-+                tcg_gen_mov_tl(cpu_cond, cmp->c1);
-+            } else {
-+                tcg_gen_setcond_tl(cmp->cond, cpu_cond, cmp->c1, cmp->c2);
-+            }
-         }
-     }
-     return true;
-@@ -2951,12 +2957,7 @@ static bool do_bpcc(DisasContext *dc, arg_bcc *a)
-         flush_cond(dc);
++static bool trans_SETHI(DisasContext *dc, arg_SETHI *a)
++{
++    /* Special-case %g0 because that's the canonical nop.  */
++    if (a->rd) {
++        gen_store_gpr(dc, a->rd, tcg_constant_tl((uint32_t)a->i << 10));
++    }
++    return advance_pc(dc);
++}
++
+ #define CHECK_IU_FEATURE(dc, FEATURE)                      \
+     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
+         goto illegal_insn;
+@@ -3049,41 +3062,8 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+     rd = GET_FIELD(insn, 2, 6);
  
-         gen_compare(&cmp, a->cc, a->cond, dc);
--        if (cmp.is_bool) {
--            tcg_gen_mov_tl(cpu_cond, cmp.c1);
--        } else {
--            tcg_gen_setcond_tl(cmp.cond, cpu_cond, cmp.c1, cmp.c2);
+     switch (opc) {
+-    case 0:                     /* branches/sethi */
+-        {
+-            unsigned int xop = GET_FIELD(insn, 7, 9);
+-            switch (xop) {
+-#ifdef TARGET_SPARC64
+-            case 0x1:           /* V9 BPcc */
+-                g_assert_not_reached(); /* in decodetree */
+-            case 0x3:           /* V9 BPr */
+-                g_assert_not_reached(); /* in decodetree */
+-            case 0x5:           /* V9 FBPcc */
+-                g_assert_not_reached(); /* in decodetree */
+-#else
+-            case 0x7:           /* CBN+x */
+-                g_assert_not_reached(); /* in decodetree */
+-#endif
+-            case 0x2:           /* BN+x */
+-                g_assert_not_reached(); /* in decodetree */
+-            case 0x6:           /* FBN+x */
+-                g_assert_not_reached(); /* in decodetree */
+-            case 0x4:           /* SETHI */
+-                /* Special-case %g0 because that's the canonical nop.  */
+-                if (rd) {
+-                    uint32_t value = GET_FIELD(insn, 10, 31);
+-                    TCGv t = gen_dest_gpr(dc, rd);
+-                    tcg_gen_movi_tl(t, value << 10);
+-                    gen_store_gpr(dc, rd, t);
+-                }
+-                break;
+-            case 0x0:           /* UNIMPL */
+-            default:
+-                goto illegal_insn;
+-            }
+-            break;
 -        }
--        return advance_jump_cond(dc, a->a, target);
-+        return advance_jump_cond(dc, &cmp, a->a, target);
-     }
- }
- 
-@@ -2980,12 +2981,7 @@ static bool do_fbpfcc(DisasContext *dc, arg_bcc *a)
-         flush_cond(dc);
- 
-         gen_fcompare(&cmp, a->cc, a->cond);
--        if (cmp.is_bool) {
--            tcg_gen_mov_tl(cpu_cond, cmp.c1);
--        } else {
--            tcg_gen_setcond_tl(cmp.cond, cpu_cond, cmp.c1, cmp.c2);
--        }
--        return advance_jump_cond(dc, a->a, target);
-+        return advance_jump_cond(dc, &cmp, a->a, target);
-     }
- }
- 
-@@ -3006,8 +3002,7 @@ static bool trans_BPr(DisasContext *dc, arg_BPr *a)
- 
-     flush_cond(dc);
-     gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
--    tcg_gen_setcond_tl(cmp.cond, cpu_cond, cmp.c1, cmp.c2);
--    return advance_jump_cond(dc, a->a, target);
-+    return advance_jump_cond(dc, &cmp, a->a, target);
- }
- 
- static bool trans_CALL(DisasContext *dc, arg_CALL *a)
+-        break;
++    case 0:
++        goto illegal_insn; /* in decodetree */
+     case 1:
+         g_assert_not_reached(); /* in decodetree */
+     case 2:                     /* FPU & Logical Operations */
 -- 
 2.34.1
 
