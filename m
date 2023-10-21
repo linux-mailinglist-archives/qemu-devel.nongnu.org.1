@@ -2,40 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C3E7D1CDC
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 13:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE67D7D1CE1
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 13:46:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quAHC-0003GV-3q; Sat, 21 Oct 2023 07:36:18 -0400
+	id 1quAPn-0000NB-FH; Sat, 21 Oct 2023 07:45:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAH9-0003G9-5Y; Sat, 21 Oct 2023 07:36:15 -0400
+ id 1quAPh-0000M0-JY; Sat, 21 Oct 2023 07:45:06 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAH7-0002ul-Gx; Sat, 21 Oct 2023 07:36:14 -0400
+ id 1quAPX-0004Gm-2l; Sat, 21 Oct 2023 07:45:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 54A492C325;
- Sat, 21 Oct 2023 14:36:35 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3AC712C32A;
+ Sat, 21 Oct 2023 14:45:15 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 535F430677;
- Sat, 21 Oct 2023 14:36:10 +0300 (MSK)
-Message-ID: <72293a33-2a18-4845-aee6-47ff0a405823@tls.msk.ru>
-Date: Sat, 21 Oct 2023 14:36:10 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2FC113067B;
+ Sat, 21 Oct 2023 14:44:50 +0300 (MSK)
+Message-ID: <d44e4501-0358-4b06-9d94-647b87f65dbb@tls.msk.ru>
+Date: Sat, 21 Oct 2023 14:44:50 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Fix typo in openpic_kvm.c entry
+Subject: Re: [PATCH 0/8] MAINTAINERS: Collect unmaintained files under PPC
+ entries
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, qemu-ppc@nongnu.org,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-References: <20231019155822.499027-1-thuth@redhat.com>
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-trivial@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+References: <20231002122326.365368-1-clg@kaod.org>
+ <746b3fa0-dff6-4db7-a07e-57228447d32a@kaod.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20231019155822.499027-1-thuth@redhat.com>
+In-Reply-To: <746b3fa0-dff6-4db7-a07e-57228447d32a@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -58,33 +62,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-19.10.2023 18:58, Thomas Huth :
-> It's a .c file, not a header!
+18.10.2023 09:38, Cédric Le Goater :
 > 
-> Fixes: ff8cdbbd7e ("MAINTAINERS: Add information for OpenPIC")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c12511c73b..a110a0c7a4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1418,7 +1418,7 @@ F: hw/pci-host/ppce500.c
->   F: include/hw/ppc/ppc_e500.h
->   F: include/hw/pci-host/ppce500.h
->   F: pc-bios/u-boot.e500
-> -F: hw/intc/openpic_kvm.h
-> +F: hw/intc/openpic_kvm.c
->   F: include/hw/ppc/openpic_kvm.h
->   F: docs/system/ppc/ppce500.rst
+> Adding Cc: qemu-trivial@nongnu.org because these changes don't need to go
+> through the ppc tree.
 
-This change is also based on the same "MAINTAINERS: Collect unmaintained files
-under PPC entries", namely "Adjust file list for PPC e500 machines" patch.
-Maybe it can be folded into the same series?
+Heh.  You guys puzzled me quite a bit ;)
 
-Thanks,
+Now this puzzle is complete.
+Okay, let's pick whole bunch (together with follow-up changes by Thomas)
+in the trivial-patches tree :)
 
 /mjt
+
 
