@@ -2,37 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B327D1D08
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 14:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 847DA7D1D00
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Oct 2023 14:07:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quAjh-000309-HB; Sat, 21 Oct 2023 08:05:46 -0400
+	id 1quAjp-00034o-86; Sat, 21 Oct 2023 08:05:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAjV-0002ze-Lk; Sat, 21 Oct 2023 08:05:33 -0400
+ id 1quAjV-0002zf-Ph; Sat, 21 Oct 2023 08:05:34 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1quAjT-0000tx-0I; Sat, 21 Oct 2023 08:05:33 -0400
+ id 1quAjT-0000u5-CI; Sat, 21 Oct 2023 08:05:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BB5782C32E;
- Sat, 21 Oct 2023 15:05:50 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1534F2C32F;
+ Sat, 21 Oct 2023 15:05:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A70693067C;
+ by tsrv.corpit.ru (Postfix) with SMTP id D1A093067D;
  Sat, 21 Oct 2023 15:05:25 +0300 (MSK)
-Received: (nullmailer pid 220774 invoked by uid 1000);
+Received: (nullmailer pid 220778 invoked by uid 1000);
  Sat, 21 Oct 2023 12:05:25 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 00/17] Trivial patches for 2023-10-21
-Date: Sat, 21 Oct 2023 15:05:02 +0300
-Message-Id: <20231021120519.220720-1-mjt@tls.msk.ru>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
+ qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 01/17] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
+ query_port()
+Date: Sat, 21 Oct 2023 15:05:03 +0300
+Message-Id: <20231021120519.220720-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231021120519.220720-1-mjt@tls.msk.ru>
+References: <20231021120519.220720-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -56,56 +59,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 384dbdda94c0bba55bf186cccd3714bbb9b737e9:
+From: Peter Maydell <peter.maydell@linaro.org>
 
-  Merge tag 'migration-20231020-pull-request' of https://gitlab.com/juan.quintela/qemu into staging (2023-10-20 06:46:53 -0700)
+In query_port() we pass the address of a local pvrdma_port_attr
+struct to the rdma_query_backend_port() function.  Unfortunately,
+rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
+and the two are not the same length.
 
-are available in the Git repository at:
+Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
+long, and ibv_port_attr is 52 bytes, because it has a few extra
+fields at the end.
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+Fortunately, all we do with the attrs struct after the call is to
+read a few specific fields out of it which are all at the same
+offsets in both structs, so we can simply make the local variable the
+correct type.  This also lets us drop the cast (which should have
+been a bit of a warning flag that we were doing something wrong
+here).
 
-for you to fetch changes up to a4a2f7f8161ed1dbaa748350c4bc2d86c4d77d97:
+We do however need to add extra casts for the fields of the
+struct that are enums: clang will complain about the implicit
+cast to a different enum type otherwise.
 
-  MAINTAINERS: Add the ompic.c file to the or1k-sim section (2023-10-21 15:00:22 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2023-10-21
-
-This is mostly updates to MAINTAINERS, plus a fix for pvrdma
-and dead code removal in ppc440_uc.
-
-----------------------------------------------------------------
-Cédric Le Goater (7):
-      ppc/{bamboo, virtex_ml507}: Remove useless dependency on ppc405.h header
-      MAINTAINERS: Adjust file list for PPC ref405ep machine
-      MAINTAINERS: Adjust file list for PPC 4xx CPUs
-      MAINTAINERS: Adjust file list for PPC e500 machines
-      MAINTAINERS: Adjust file list for PPC pseries machine
-      MAINTAINERS: Add fw_cfg.c to PPC mac99 machine
-      MAINTAINERS: Add PPC common files to PowerPC TCG CPUs
-
-Eric Farman (1):
-      MAINTAINERS: Fix a couple s390 paths
-
-Peter Maydell (1):
-      hw/rdma/vmw/pvrdma_cmd: Use correct struct in query_port()
-
-Philippe Mathieu-Daudé (2):
-      hw/ppc/ppc440_uc: Remove dead l2sram_update_mappings()
-      MAINTAINERS: Cover hw/ppc/ppc440_uc.c with Sam460ex board
-
-Thomas Huth (6):
-      MAINTAINERS: Add the nios2 interrupt controller to the nios2 section
-      MAINTAINERS: Add include/hw/intc/i8259.h to the PC chip section
-      MAINTAINERS: Add docs/devel/ebpf_rss.rst to the EBPF section
-      MAINTAINERS: Add unvalued folders in tests/tcg/ to the right sections
-      MAINTAINERS: Fix typo in openpic_kvm.c entry
-      MAINTAINERS: Add the ompic.c file to the or1k-sim section
-
- MAINTAINERS              | 37 ++++++++++++++++++++++++++++++++-----
- hw/ppc/ppc440_bamboo.c   |  1 -
- hw/ppc/ppc440_uc.c       | 42 ------------------------------------------
- hw/ppc/virtex_ml507.c    |  1 -
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
  hw/rdma/vmw/pvrdma_cmd.c | 18 +++++++++++-------
- 5 files changed, 43 insertions(+), 56 deletions(-)
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
+index c6ed025982..d385d18d9c 100644
+--- a/hw/rdma/vmw/pvrdma_cmd.c
++++ b/hw/rdma/vmw/pvrdma_cmd.c
+@@ -129,23 +129,27 @@ static int query_port(PVRDMADev *dev, union pvrdma_cmd_req *req,
+ {
+     struct pvrdma_cmd_query_port *cmd = &req->query_port;
+     struct pvrdma_cmd_query_port_resp *resp = &rsp->query_port_resp;
+-    struct pvrdma_port_attr attrs = {};
++    struct ibv_port_attr attrs = {};
+ 
+     if (cmd->port_num > MAX_PORTS) {
+         return -EINVAL;
+     }
+ 
+-    if (rdma_backend_query_port(&dev->backend_dev,
+-                                (struct ibv_port_attr *)&attrs)) {
++    if (rdma_backend_query_port(&dev->backend_dev, &attrs)) {
+         return -ENOMEM;
+     }
+ 
+     memset(resp, 0, sizeof(*resp));
+ 
+-    resp->attrs.state = dev->func0->device_active ? attrs.state :
+-                                                    PVRDMA_PORT_DOWN;
+-    resp->attrs.max_mtu = attrs.max_mtu;
+-    resp->attrs.active_mtu = attrs.active_mtu;
++    /*
++     * The state, max_mtu and active_mtu fields are enums; the values
++     * for pvrdma_port_state and pvrdma_mtu match those for
++     * ibv_port_state and ibv_mtu, so we can cast them safely.
++     */
++    resp->attrs.state = dev->func0->device_active ?
++        (enum pvrdma_port_state)attrs.state : PVRDMA_PORT_DOWN;
++    resp->attrs.max_mtu = (enum pvrdma_mtu)attrs.max_mtu;
++    resp->attrs.active_mtu = (enum pvrdma_mtu)attrs.active_mtu;
+     resp->attrs.phys_state = attrs.phys_state;
+     resp->attrs.gid_tbl_len = MIN(MAX_PORT_GIDS, attrs.gid_tbl_len);
+     resp->attrs.max_msg_sz = 1024;
+-- 
+2.39.2
+
 
