@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EFE7D222C
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 908FF7D221E
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUfH-0000OQ-74; Sun, 22 Oct 2023 05:22:31 -0400
+	id 1quUfQ-0000Rz-5r; Sun, 22 Oct 2023 05:22:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUfE-0000IF-6T
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUfM-0000R7-ON
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUfC-0000Cm-3n
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUfL-0000E2-8p
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697966545;
+ s=mimecast20190719; t=1697966554;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ichudybxzU8iz9vDb7x7lgGWFY23q5nvCS0lnP0+5LI=;
- b=TdHQSLa3bgO2LHOR/qdoF3pJPUEz4OXrlCxR2YYUVIspuW77ysN/b26ySyg+sZvREmTJEl
- 8xmDDAV9vTfUJpVuXe+32aXAdiLrA0VDZ04jai9IQCh4VJJlKm2VNfHwdrH9JJ9ocDJCeE
- y5ExCXHfnqmkimsFlQjpYlhw6EePiQM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=axsLHZnyDqeJsUPQJ6Te7VvBOL93A3E/3UAHlG8ASYU=;
+ b=N0EVNoQN/X/vtOGasVfQVpkgX2E6CdJDQ4v/2rmvp8sVJgQLk0uY47qG/KsfJ3Rrjqr2SE
+ KctM98z7hkqcj8QHhAE05pjCWE3+wq+G1PnjGsh6kgKht2FTK/68kc/OyP8eRfep+MFnNf
+ kWmyHJyTGnYUS5DeFnczSiH54VplNGA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-oKC3bu-4P6y042g8aNHgEg-1; Sun, 22 Oct 2023 05:22:23 -0400
-X-MC-Unique: oKC3bu-4P6y042g8aNHgEg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32df2fc01e8so130626f8f.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:22:23 -0700 (PDT)
+ us-mta-318-jAqZ-f8DORuEWaM4aNMIqw-1; Sun, 22 Oct 2023 05:22:27 -0400
+X-MC-Unique: jAqZ-f8DORuEWaM4aNMIqw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32da215295fso883862f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:22:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966542; x=1698571342;
+ d=1e100.net; s=20230601; t=1697966545; x=1698571345;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ichudybxzU8iz9vDb7x7lgGWFY23q5nvCS0lnP0+5LI=;
- b=KCv0n7gq+FOG4wXe0D8t701iIn7lxbrT+MTYQtYiK9gCCotrzY23th+AQTLblBBOTE
- x0UeEw7kStr5BukVsh484CSpdf2GXwfyOuWNc39/+nQUvBg0je0HCPcH5q2+k39a2DfT
- Uu0MVzhL1wJVoiFjhjfdqwQHr8nC3UYGc1wZ33Qgfq0CUDovywo1LftvzqDide6g1wMP
- qmcH0QAoUY6AuGJR/XT582NNOlQlFnsD1I0OT2d1Wi1sh7uGgdYpTPRQ1saIZePoCUbF
- DkeoJrJKqt2/HFLHgLPNVWb6b2TsMkRiElSGA+oq5chPGzDtTOIRnonfJLDrqeDUwHwO
- sXvQ==
-X-Gm-Message-State: AOJu0YxOzr4Ba4IaFlLbMgbio3u0cVe6xbd9DuxrV68m/o04mFh34Jxg
- y/tZOV6IahscrKVaRwLBJ6H4nsoCjuSqZh2EHMOD3BOpRu+mP4bxBYH2ScVafr1GUmJ6gE65L7M
- FcKTV6W3qsyJUb6291chfiCiICk9E4srJIH3ie95u+z5KvZNPql1WszsBzINHxB9F3wgH
-X-Received: by 2002:adf:a189:0:b0:32d:c6b7:96d0 with SMTP id
- u9-20020adfa189000000b0032dc6b796d0mr9265827wru.11.1697966541855; 
- Sun, 22 Oct 2023 02:22:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3TDQ9k/2syc2Xxe7XyeAnaDQkGALOJebPe3xRaKUljOqWkyJ03Deczfkdkr8DITab6DJQLw==
-X-Received: by 2002:adf:a189:0:b0:32d:c6b7:96d0 with SMTP id
- u9-20020adfa189000000b0032dc6b796d0mr9265808wru.11.1697966541413; 
- Sun, 22 Oct 2023 02:22:21 -0700 (PDT)
+ bh=axsLHZnyDqeJsUPQJ6Te7VvBOL93A3E/3UAHlG8ASYU=;
+ b=XreRxtDA3jqtCxq7Sr6XlrhsOYrC8KFBOuu7N0FBYrHoVnbDWC5/RRf1ZbmFdJjblI
+ Xv4EgEgNQ+Ho52NFwocdBcIHiTBCahwah2hMr/UyiC69zxOCnnsRzz2mfpa4yppDr7wq
+ 76H5yWV47Nu/EJhGUU/fMJDCCHTOV0bQZUPud5YfPoDpA148kJU6aVmFQQs7vpVNj6F0
+ 5K5TiNX2Lx7baTKN4qSfgqXU+bMxtWE2/tji57Vk8pGXsOk273eC9lLdeKKU7wRoG54F
+ S7+VmbkCaUeUNlcnnHdb5ZkL1o7iBRA0CZrgqsVxjOyQ4l95db9CIN8uiaBg+E3gOYHQ
+ EotQ==
+X-Gm-Message-State: AOJu0YyIs/G809bNH8usWzBMeLy/QAuFPxulkjVdaAwQG1Pv0eTcsmVP
+ XwvbMrh63D9uE8vz3ASvGuxFfFaO1zBtfOOIzhQssVpnQhdQcNMDGsbjSvsj4gDcKZIWUAKF+jN
+ BwGsYCuDrziVY/2jJe1ixurPoG5dp4mJ6Irf1fSfagwEH+QAnF5aLPDEsb1W8k3fV48i0
+X-Received: by 2002:a5d:5248:0:b0:32d:8e6f:ecb3 with SMTP id
+ k8-20020a5d5248000000b0032d8e6fecb3mr3718280wrc.65.1697966545693; 
+ Sun, 22 Oct 2023 02:22:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRkt+oQtTrxs6yjVSKS5dSPv3OkL5oRYBMviLbxkIuAb+awd1Cif4ecBe6EqPC7Hy0kZDVpw==
+X-Received: by 2002:a5d:5248:0:b0:32d:8e6f:ecb3 with SMTP id
+ k8-20020a5d5248000000b0032d8e6fecb3mr3718264wrc.65.1697966545427; 
+ Sun, 22 Oct 2023 02:22:25 -0700 (PDT)
 Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
- y34-20020a05600c342200b004063977eccesm11260476wmp.42.2023.10.22.02.22.19
+ p5-20020a5d4585000000b0032d8034724esm5289950wrq.94.2023.10.22.02.22.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:22:20 -0700 (PDT)
-Date: Sun, 22 Oct 2023 05:22:17 -0400
+ Sun, 22 Oct 2023 02:22:24 -0700 (PDT)
+Date: Sun, 22 Oct 2023 05:22:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL v3 07/62] vdpa: Send cvq state load commands in parallel
-Message-ID: <acec5f685c7ad6bd3c9bb9a57d4e509160480376.1697966402.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Laszlo Ersek <lersek@redhat.com>,
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>,
+ Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Albert Esteve <aesteve@redhat.com>
+Subject: [PULL v3 08/62] vhost-user: strip superfluous whitespace
+Message-ID: <1428831981edc53fe819f76d07306f6b041fe55c.1697966402.git.mst@redhat.com>
 References: <cover.1697966402.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,14 +80,14 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1697966402.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,293 +104,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+From: Laszlo Ersek <lersek@redhat.com>
 
-This patch enables sending CVQ state load commands
-in parallel at device startup by following steps:
-
-  * Refactor vhost_vdpa_net_load_cmd() to iterate through
-the control commands shadow buffers. This allows different
-CVQ state load commands to use their own unique buffers.
-
-  * Delay the polling and checking of buffers until either
-the SVQ is full or control commands shadow buffers are full.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <9350f32278e39f7bce297b8f2d82dac27c6f8c9a.1697165821.git.yin31149@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
+Cc: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: German Maglione <gmaglione@redhat.com>
+Cc: Liu Jiang <gerry@linux.alibaba.com>
+Cc: Sergio Lopez Pascual <slp@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Albert Esteve <aesteve@redhat.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20231002203221.17241-2-lersek@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 165 +++++++++++++++++++++++++++++------------------
- 1 file changed, 102 insertions(+), 63 deletions(-)
+ hw/virtio/vhost-user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index ef4d242811..4b7c3b81b8 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -661,6 +661,31 @@ static void vhost_vdpa_net_load_cursor_reset(VhostVDPAState *s,
-     in_cursor->iov_len = vhost_vdpa_net_cvq_cmd_page_len();
- }
- 
-+/*
-+ * Poll SVQ for multiple pending control commands and check the device's ack.
-+ *
-+ * Caller should hold the BQL when invoking this function.
-+ *
-+ * @s: The VhostVDPAState
-+ * @len: The length of the pending status shadow buffer
-+ */
-+static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s, size_t len)
-+{
-+    /* device uses a one-byte length ack for each control command */
-+    ssize_t dev_written = vhost_vdpa_net_svq_poll(s, len);
-+    if (unlikely(dev_written != len)) {
-+        return -EIO;
-+    }
-+
-+    /* check the device's ack */
-+    for (int i = 0; i < len; ++i) {
-+        if (s->status[i] != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
-+    }
-+    return 0;
-+}
-+
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-                                        struct iovec *out_cursor,
-                                        struct iovec *in_cursor, uint8_t class,
-@@ -671,11 +696,31 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-         .class = class,
-         .cmd = cmd,
-     };
--    size_t data_size = iov_size(data_sg, data_num);
-+    size_t data_size = iov_size(data_sg, data_num), cmd_size;
-     struct iovec out, in;
-     ssize_t r;
-+    unsigned dummy_cursor_iov_cnt;
-+    VhostShadowVirtqueue *svq = g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
- 
-     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
-+    cmd_size = sizeof(ctrl) + data_size;
-+    if (vhost_svq_available_slots(svq) < 2 ||
-+        iov_size(out_cursor, 1) < cmd_size) {
-+        /*
-+         * It is time to flush all pending control commands if SVQ is full
-+         * or control commands shadow buffers are full.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, in_cursor->iov_base -
-+                                     (void *)s->status);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-+
-+        vhost_vdpa_net_load_cursor_reset(s, out_cursor, in_cursor);
-+    }
- 
-     /* pack the CVQ command header */
-     iov_from_buf(out_cursor, 1, 0, &ctrl, sizeof(ctrl));
-@@ -684,7 +729,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-                out_cursor->iov_base + sizeof(ctrl), data_size);
- 
-     /* extract the required buffer from the cursor for output */
--    iov_copy(&out, 1, out_cursor, 1, 0, sizeof(ctrl) + data_size);
-+    iov_copy(&out, 1, out_cursor, 1, 0, cmd_size);
-     /* extract the required buffer from the cursor for input */
-     iov_copy(&in, 1, in_cursor, 1, 0, sizeof(*s->status));
- 
-@@ -693,11 +738,13 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-         return r;
-     }
- 
--    /*
--     * We can poll here since we've had BQL from the time
--     * we sent the descriptor.
--     */
--    return vhost_vdpa_net_svq_poll(s, 1);
-+    /* iterate the cursors */
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&out_cursor, &dummy_cursor_iov_cnt, cmd_size);
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&in_cursor, &dummy_cursor_iov_cnt, sizeof(*s->status));
-+
-+    return 0;
- }
- 
- static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-@@ -709,15 +756,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_base = (void *)n->mac,
-             .iov_len = sizeof(n->mac),
-         };
--        ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_MAC,
--                                                  VIRTIO_NET_CTRL_MAC_ADDR_SET,
--                                                  &data, 1);
--        if (unlikely(dev_written < 0)) {
--            return dev_written;
--        }
--        if (*s->status != VIRTIO_NET_OK) {
--            return -EIO;
-+        ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                            VIRTIO_NET_CTRL_MAC,
-+                                            VIRTIO_NET_CTRL_MAC_ADDR_SET,
-+                                            &data, 1);
-+        if (unlikely(r < 0)) {
-+            return r;
-         }
-     }
- 
-@@ -762,15 +806,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_len = mul_macs_size,
-         },
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                VIRTIO_NET_CTRL_MAC,
--                                VIRTIO_NET_CTRL_MAC_TABLE_SET,
--                                data, ARRAY_SIZE(data));
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                        VIRTIO_NET_CTRL_MAC,
-+                                        VIRTIO_NET_CTRL_MAC_TABLE_SET,
-+                                        data, ARRAY_SIZE(data));
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -782,7 +823,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-                                   struct iovec *in_cursor)
- {
-     struct virtio_net_ctrl_mq mq;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
-         return 0;
-@@ -793,15 +834,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-         .iov_base = &mq,
-         .iov_len = sizeof(mq),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_MQ,
--                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_MQ,
-+                                VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-+                                &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -813,7 +851,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-                                         struct iovec *in_cursor)
- {
-     uint64_t offloads;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj,
-                                  VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
-@@ -841,15 +879,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-         .iov_base = &offloads,
-         .iov_len = sizeof(offloads),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-+                                VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
-+                                &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -865,16 +900,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
-         .iov_base = &on,
-         .iov_len = sizeof(on),
-     };
--    ssize_t dev_written;
-+    ssize_t r;
- 
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_RX,
--                                          cmd, &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1031,15 +1062,12 @@ static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
-         .iov_base = &vid,
-         .iov_len = sizeof(vid),
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_VLAN,
--                                                  VIRTIO_NET_CTRL_VLAN_ADD,
--                                                  &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (unlikely(*s->status != VIRTIO_NET_OK)) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                        VIRTIO_NET_CTRL_VLAN,
-+                                        VIRTIO_NET_CTRL_VLAN_ADD,
-+                                        &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1106,6 +1134,17 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
-         if (unlikely(r)) {
-             return r;
-         }
-+
-+        /*
-+         * We need to poll and check all pending device's used buffers.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, in_cursor.iov_base - (void *)s->status);
-+        if (unlikely(r)) {
-+            return r;
-+        }
-     }
- 
-     for (int i = 0; i < v->dev->vq_index; ++i) {
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 68eb1f0c99..3e33a2e9e0 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -388,7 +388,7 @@ static int vhost_user_write(struct vhost_dev *dev, VhostUserMsg *msg,
+      * operations such as configuring device memory mappings or issuing device
+      * resets, which affect the whole device instead of individual VQs,
+      * vhost-user messages should only be sent once.
+-     * 
++     *
+      * Devices with multiple vhost_devs are given an associated dev->vq_index
+      * so per_device requests are only sent if vq_index is 0.
+      */
 -- 
 MST
 
