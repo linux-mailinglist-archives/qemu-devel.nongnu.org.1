@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B0E7D2350
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 16:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD817D2360
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 16:35:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quZ09-0006pK-9c; Sun, 22 Oct 2023 10:00:21 -0400
+	id 1quZWR-0002LW-DP; Sun, 22 Oct 2023 10:33:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
- id 1quZ04-0006ow-5I
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 10:00:16 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1quZWO-0002HN-MI
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 10:33:40 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
- id 1quZ01-0006ra-N8
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 10:00:15 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2c51f5a1ecdso39367221fa.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 07:00:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1quZWM-0003tb-JS
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 10:33:40 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-507a0907896so3508092e87.2
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 07:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1697983211; x=1698588011;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bYpW3jPcacRLf35yrCIDcJ3c7/bUr0K4lRMdd4aXh3w=;
- b=n5ZA7egVxacaRcUZgdJ5P9Wna5Ie6fqOehjUL3hAbvRmn6SuHp0VZbxJBzip6myH67
- xGrYWrqntLr91aJ3+MpERR6l0qYMQo3ps8r7ehw1Kn5hfW+3YRXv6CTuAlcIyIjC16Vy
- +5zm+ifBt2WnoNtvlk+bxne06h11jRzwFx0o7lwN1je0DXVc0TukD3Mdwl6wjbx7Gsvh
- L+EGYzQLLXaIm4sBpodu/fqD78hcYHopgLhHU6GLMR80M/CQ2pWHm0sVT2bZ7rvVaPLn
- pw95r9Gae7xmoOYmaT8HjT6s+c+Jeq679O0N5dD4naWuZ/uAI9Iainh6TwNxAhjWogkG
- korQ==
+ d=gmail.com; s=20230601; t=1697985217; x=1698590017; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3TOxX7Clc2brGwicCRXkvMYCgtCK8527p4vfyY6j5nw=;
+ b=KbKwLZURMBfCKHfHrxc2ureiiLmuMGc622CF36M9i1OD9oUnJKWBCT7kCe8pB2kC0G
+ tCbi9zeyjUBinZh3GHU57qdCwOZj9ErSGB6wE6MWEi/h+9L9JKbD5y/O6eAXahFarOST
+ sQdvFhw/odaEvk1Wh75oqelhG0oFdxRhrWIBjsZiND3YEOW8PTBgSUX67TwSCO+Nh/zx
+ maT5nMTVcMnmrDUn3sFmLo2HyPlCw3XyH3Ynmzq9cOiuyQ63OaK9uEYASd3Xdg2N1zrd
+ aeJp/PTSBQFuwk9d2+yfdDmNzteZ1qFqyiPe5FCJv9CKld2COPePUD0agkN2vjnx+OrO
+ CCTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697983211; x=1698588011;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bYpW3jPcacRLf35yrCIDcJ3c7/bUr0K4lRMdd4aXh3w=;
- b=Rgt/1vk4W1HdS/2TU8vrdwXPmirM5Vf4t49YteT7jQbv5191V9LAaaRtKk5B/xVnn6
- d93DnPTbBA3MfqQYPQ8i3qupw+hmbrK1WUgPXFfAU4rXYyzXrvhcwnz8VX+jghsBiplc
- AbDxXx8mgf+otEEyvkH1RssAzFHiCDiZL90UIs+eoIdX+svGkxXZBVB9EvAB8klOQT0p
- kPnAYn8ZYTujjRD/9roDGC3zD6eXerFbd00USNHSqP0x49CpcnqYBJE1q0Y5zzrZjpmR
- KJ6v925GqDaPqdx6QlBqmag8hefnwMeb8hH2rwxWbhTWDiDNNHQLQlFrnZJNLrdQ/56x
- QM8w==
-X-Gm-Message-State: AOJu0YwDiiWochRXc7C58BnuYKOzHLVqibA3bPYl+Y1Xh/jzbqClm0up
- FuTc9cMroQNGfoPOmmA0Urh4zmDHipVzsldhPDXmTQ==
-X-Google-Smtp-Source: AGHT+IHlD5YRn822zChoEq+yMlXpbFO18GTvG+WKxJPaQVO8LoQq7s6DydqP35DCoiffBM5GgUbHQgqD4EyYv+6Uss8=
-X-Received: by 2002:a2e:8ece:0:b0:2c3:cb49:43b9 with SMTP id
- e14-20020a2e8ece000000b002c3cb4943b9mr3260022ljl.20.1697983211034; Sun, 22
- Oct 2023 07:00:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697985217; x=1698590017;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3TOxX7Clc2brGwicCRXkvMYCgtCK8527p4vfyY6j5nw=;
+ b=XNAQVdcceDBfDKPKmf3NXqrnd+hTsnJYF5Lky7aNcSTidZK3bTtGFqtRSzBv+oHM0A
+ v1QR3aYP16i2qJHEwsTeLhl2FaIEPF9vTWzTzz/ZJ0USZR/pmOw2yaD3AMCaqLL5nm6p
+ USNsm7uBqBaDfB0GWSgsJddFIqiv7v9a0XY+te+wlRY0fueZ5c+69bw2HJ88GcI5yeTw
+ gV4iO+QKa/fXpolnep+qlJLh8k66bvGM9P7MRvurkvHjliLQD45BPs6v7UU6zVrYwqME
+ VHsbsOIZLDNqC16Lo3HrwgfNtRXhotZloov598jHAORv8XYgZ9W6WrP9iup+1iPhpcSQ
+ bmRQ==
+X-Gm-Message-State: AOJu0YyKe5GIPAU5iFxlrwHtAi0iJ7bs7LsPW1cO0iBNWdKlucTsunqF
+ W5eU4+/331NqtktcywqbqJ4WFq6Y2G1pY0KD4NI=
+X-Google-Smtp-Source: AGHT+IGYqpYKkx0nCBubLX3IFDXR4EdJh/sAz0BtBIr+eO5phczJfZrylTIaHyBwbeHlykaFxWVtaw0Wslbe1pAkdBY=
+X-Received: by 2002:a05:6512:41d:b0:504:7ff8:3430 with SMTP id
+ u29-20020a056512041d00b005047ff83430mr4697678lfk.10.1697985216055; Sun, 22
+ Oct 2023 07:33:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230926160637.27995-1-minhquangbui99@gmail.com>
- <20230926160637.27995-2-minhquangbui99@gmail.com>
-In-Reply-To: <20230926160637.27995-2-minhquangbui99@gmail.com>
-From: Phil Dennis-Jordan <lists@philjordan.eu>
-Date: Sun, 22 Oct 2023 15:59:59 +0200
-Message-ID: <CAGCz3vtQiRkeErcA9NpUeu0Ak7o=qsy02PiVvZrEMoP=86MU1g@mail.gmail.com>
-Subject: Re: [PATCH v8 1/5] i386/tcg: implement x2APIC registers MSR access
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Joao Martins <joao.m.martins@oracle.com>, Peter Xu <peterx@redhat.com>, 
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/mixed; boundary="000000000000210c6d06084e8672"
-Received-SPF: neutral client-ip=2a00:1450:4864:20::22f;
- envelope-from=lists@philjordan.eu; helo=mail-lj1-x22f.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
+References: <cover.1697902949.git.yin31149@gmail.com>
+ <b7cd0c8d6a58b16b086f11714d2908ad35c67caa.1697902949.git.yin31149@gmail.com>
+ <20231022055541-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231022055541-mutt-send-email-mst@kernel.org>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Sun, 22 Oct 2023 22:33:24 +0800
+Message-ID: <CAKrof1MaQeaU=VhSm2oncaMb--H2vyAKdQpYCU-G43R2XkdFzw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] vdpa: Restore hash calculation state
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=yin31149@gmail.com; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,109 +90,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000210c6d06084e8672
-Content-Type: text/plain; charset="UTF-8"
+=E5=9C=A8 2023/10/22 18:00, Michael S. Tsirkin =E5=86=99=E9=81=93:
+> On Sun, Oct 22, 2023 at 10:00:48AM +0800, Hawkins Jiawei wrote:
+>> This patch introduces vhost_vdpa_net_load_rss() to restore
+>> the hash calculation state at device's startup.
+>>
+>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>> ---
+>> v3:
+>>    - remove the `do_rss` argument in vhost_vdpa_net_load_rss()
+>>    - zero reserved fields in "cfg" manually instead of using memset()
+>> to prevent compiler "array-bounds" warning
+>>
+>> v2: https://lore.kernel.org/all/f5ffad10699001107022851e0560cb394039d6b0=
+.1693297766.git.yin31149@gmail.com/
+>>    - resolve conflict with updated patch
+>> "vdpa: Send all CVQ state load commands in parallel"
+>>    - move the `table` declaration at the beginning of the
+>> vhost_vdpa_net_load_rss()
+>>
+>> RFC: https://lore.kernel.org/all/a54ca70b12ebe2f3c391864e41241697ab1aba3=
+0.1691762906.git.yin31149@gmail.com/
+>>
+>>   net/vhost-vdpa.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 89 insertions(+)
+>>
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index 4b7c3b81b8..2e4bad65b4 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -817,6 +817,86 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
+s, const VirtIONet *n,
+>>       return 0;
+>>   }
+>>
+>> +static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *=
+n,
+>> +                                   struct iovec *out_cursor,
+>> +                                   struct iovec *in_cursor)
+>> +{
+>> +    struct virtio_net_rss_config cfg;
+>> +    ssize_t r;
+>> +    g_autofree uint16_t *table =3D NULL;
+>> +
+>> +    /*
+>> +     * According to VirtIO standard, "Initially the device has all hash
+>> +     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
+>> +     *
+>> +     * Therefore, there is no need to send this CVQ command if the
+>> +     * driver disable the all hash types, which aligns with
+>
+> disables? or disabled
 
-I can confirm that this works. The build issue obviously needs fixing,
-but once that's fixed, this improves on the status quo.
+It should be "disables".
+I will correct this in the v4 patch.
 
-I've tested this and patch 2/5 with x2apic CPUID bit enabled with the
-hvf backend on macOS. To make it work in hvf mode, I used the attached
-additional minimal patch to wire it up, but with that in place it
-noticeably improves guest OS performance. (This patch doesn't yet
-implement raising exceptions or checking for x2apic mode, more on that
-in my comments below.)
+>
+>> +     * the device's defaults.
+>> +     *
+>> +     * Note that the device's defaults can mismatch the driver's
+>> +     * configuration only at live migration.
+>> +     */
+>> +    if (!n->rss_data.enabled ||
+>> +        n->rss_data.hash_types =3D=3D VIRTIO_NET_HASH_REPORT_NONE) {
+>> +        return 0;
+>> +    }
+>> +
+>> +    table =3D g_malloc_n(n->rss_data.indirections_len,
+>> +                       sizeof(n->rss_data.indirections_table[0]));
+>> +    cfg.hash_types =3D cpu_to_le32(n->rss_data.hash_types);
+>> +
+>> +    /*
+>> +     * According to VirtIO standard, "Field reserved MUST contain zeroe=
+s.
+>> +     * It is defined to make the structure to match the layout of
+>> +     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
+>> +     *
+>> +     * Therefore, we need to zero the fields in struct virtio_net_rss_c=
+onfig,
+>> +     * which corresponds the `reserved` field in
+>
+> corresponds to
 
-Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
+I will correct this in the v4 patch.
 
-On Tue, 26 Sept 2023 at 18:08, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
-> @@ -455,6 +469,19 @@ void helper_rdmsr(CPUX86State *env)
->          val = (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
->          break;
->      }
-> +    case MSR_APIC_START ... MSR_APIC_END: {
-> +        int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
-> +
-> +        if (!is_x2apic_mode(env_archcpu(env)->apic_state)) {
-> +            raise_exception_ra(env, EXCP0D_GPF, GETPC());
-> +        }
-> +
-> +        qemu_mutex_lock_iothread();
-> +        val = apic_register_read(index);
-> +        qemu_mutex_unlock_iothread();
+>
+>> +     * struct virtio_net_hash_config.
+>> +     */
+>> +    cfg.indirection_table_mask =3D 0;
+>> +    cfg.unclassified_queue =3D 0;
+>> +    table[0] =3D 0; /* the actual indirection table for cfg */
+>> +    cfg.max_tx_vq =3D 0;
+>
+> Wouldn't it be easier to just do cfg =3D {} where it is defined?
 
-Shouldn't the x2apic mode check technically be inside the lock?
-Furthermore, we need the mode check logic in each accelerator whose
-MSR read and write we wire up. Finally, there's the exception raising
-issue which Michael noted.
+Normally, it should follow your pattern, but there are two reasons why
+I'm doing it in a different way here.
 
-So my suggestion would be to wrap the x2apic mode check and the call
-to the lower level apic_register_read into a standalone
-apic_x2apic_msr_read() or similar, and the equivalent for writes.
-These functions should then also return success or failure, the latter
-indicating an exception should be raised. Raising the exception can
-then also be implemented for each accelerator at the relevant call
-site. That contains the raise_exception_ra call in the TCG specific
-code, and I can do the equivalent on the hvf side.
+Firstly, in the subsequent patchset, both hash calculation and rss will
+reuse vhost_vdpa_net_load_rss() to restore their state. Given the
+similarity of their CVQ commands, if we only explicitly handle the
+fields assignment for rss case, while placing the hash calculation field
+assignment at the definition site, it would disperse the logic within
+the function, making it look odd.
 
-It may also be cleaner to only implement the shared xAPIC and x2APIC
-functionality in the apic_register_{read|write} functions, and put the
-code that's specific to MMIO and MSR paths in the
-apic_mem_{read|write} and apic_x2apic_msr_{read|write} wrappers,
-respectively? Not sure.
+Secondly, to ensure compatibility for rss case, we cannot use the
+'indirection_table' field in the cfg. Instead, we need to allocate a
+separate 'table' variable here. Even if we initialize the other fields
+of the hash calculation case at the definition site, we still need to
+manually set 'table' to 0 here. Hence, it makes more sense to set
+everything together at this point.
 
---000000000000210c6d06084e8672
-Content-Type: application/octet-stream; 
-	name="0001-i386-hvf-Wires-up-MSRs-and-enables-x2apic-mode-when-.patch"
-Content-Disposition: attachment; 
-	filename="0001-i386-hvf-Wires-up-MSRs-and-enables-x2apic-mode-when-.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_lo1ihaha0>
-X-Attachment-Id: f_lo1ihaha0
+But I am okay if you think it is better to place the field assignment
+for the hash calculation case at the definition site.
 
-RnJvbSBmNDY2MWYyYjhkYzAzZGVkMGRlMTg2YzhiM2U0OWRlYmI1OTg3NmZjIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBQaGlsIERlbm5pcy1Kb3JkYW4gPHBoaWxAcGhpbGpvcmRhbi5l
-dT4KRGF0ZTogU3VuLCAyMiBPY3QgMjAyMyAxNToxNToxMiArMDIwMApTdWJqZWN0OiBbUEFUQ0hd
-IGkzODY6IGh2ZjogV2lyZXMgdXAgTVNScyBhbmQgZW5hYmxlcyB4MmFwaWMgbW9kZSB3aGVuIHVz
-aW5nCiBodmYKClRoaXMgY2hhbmdlIGFkZHMgc3VwcG9ydCBmb3IgcmVjZW50bHkgaW1wbGVtZW50
-ZWQgeDJhcGljIE1TUiByZWFkcyBhbmQKd3JpdGVzIHdoZW4gdXNpbmcgbWFjT1MgSHlwZXJ2aXNv
-ci5mcmFtZXdvcmsuIFRoZSBjb3JyZXNwb25kaW5nIENQVUlECmZsYWcgaXMgbGlrZXdpc2UgYWxs
-b3ctbGlzdGVkIHdoZW4gdXNpbmcgdGhlIGFjY2VsZXJhdG9yLgoKU2lnbmVkLW9mZi1ieTogUGhp
-bCBEZW5uaXMtSm9yZGFuIDxwaGlsQHBoaWxqb3JkYW4uZXU+Ci0tLQogdGFyZ2V0L2kzODYvaHZm
-L3g4Nl9jcHVpZC5jIHwgNCArKy0tCiB0YXJnZXQvaTM4Ni9odmYveDg2X2VtdS5jICAgfCA2ICsr
-KysrKwogMiBmaWxlcyBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpk
-aWZmIC0tZ2l0IGEvdGFyZ2V0L2kzODYvaHZmL3g4Nl9jcHVpZC5jIGIvdGFyZ2V0L2kzODYvaHZm
-L3g4Nl9jcHVpZC5jCmluZGV4IGU1NmNkODQxMWIuLjRmMjYwZDQ2YTggMTAwNjQ0Ci0tLSBhL3Rh
-cmdldC9pMzg2L2h2Zi94ODZfY3B1aWQuYworKysgYi90YXJnZXQvaTM4Ni9odmYveDg2X2NwdWlk
-LmMKQEAgLTY0LDggKzY0LDggQEAgdWludDMyX3QgaHZmX2dldF9zdXBwb3J0ZWRfY3B1aWQodWlu
-dDMyX3QgZnVuYywgdWludDMyX3QgaWR4LAogICAgICAgICAgICAgIENQVUlEX1BBVCB8IENQVUlE
-X1BTRTM2IHwgQ1BVSURfQ0xGTFVTSCB8IENQVUlEX01NWCB8CiAgICAgICAgICAgICAgQ1BVSURf
-RlhTUiB8IENQVUlEX1NTRSB8IENQVUlEX1NTRTIgfCBDUFVJRF9TUzsKICAgICAgICAgZWN4ICY9
-IENQVUlEX0VYVF9TU0UzIHwgQ1BVSURfRVhUX1BDTE1VTFFEUSB8IENQVUlEX0VYVF9TU1NFMyB8
-Ci0gICAgICAgICAgICAgQ1BVSURfRVhUX0ZNQSB8IENQVUlEX0VYVF9DWDE2IHwgQ1BVSURfRVhU
-X1BDSUQgfAotICAgICAgICAgICAgIENQVUlEX0VYVF9TU0U0MSB8IENQVUlEX0VYVF9TU0U0MiB8
-IENQVUlEX0VYVF9NT1ZCRSB8CisgICAgICAgICAgICAgQ1BVSURfRVhUX0ZNQSB8IENQVUlEX0VY
-VF9DWDE2IHwgQ1BVSURfRVhUX1BDSUQgfCBDUFVJRF9FWFRfU1NFNDEgfAorICAgICAgICAgICAg
-IENQVUlEX0VYVF9TU0U0MiB8IENQVUlEX0VYVF9YMkFQSUMgfCBDUFVJRF9FWFRfTU9WQkUgfAog
-ICAgICAgICAgICAgIENQVUlEX0VYVF9QT1BDTlQgfCBDUFVJRF9FWFRfQUVTIHwgQ1BVSURfRVhU
-X1hTQVZFIHwKICAgICAgICAgICAgICBDUFVJRF9FWFRfQVZYIHwgQ1BVSURfRVhUX0YxNkMgfCBD
-UFVJRF9FWFRfUkRSQU5EOwogICAgICAgICBlY3ggfD0gQ1BVSURfRVhUX0hZUEVSVklTT1I7CmRp
-ZmYgLS1naXQgYS90YXJnZXQvaTM4Ni9odmYveDg2X2VtdS5jIGIvdGFyZ2V0L2kzODYvaHZmL3g4
-Nl9lbXUuYwppbmRleCBlODQ4MzFlNmMyLi5hNzY0YTU2NGRmIDEwMDY0NAotLS0gYS90YXJnZXQv
-aTM4Ni9odmYveDg2X2VtdS5jCisrKyBiL3RhcmdldC9pMzg2L2h2Zi94ODZfZW11LmMKQEAgLTc1
-MCw2ICs3NTAsOSBAQCB2b2lkIHNpbXVsYXRlX3JkbXNyKHN0cnVjdCBDUFVTdGF0ZSAqY3B1KQog
-ICAgICAgICB2YWwgPSBjcy0+bnJfdGhyZWFkcyAqIGNzLT5ucl9jb3JlczsgLyogdGhyZWFkIGNv
-dW50LCBiaXRzIDE1Li4wICovCiAgICAgICAgIHZhbCB8PSAoKHVpbnQzMl90KWNzLT5ucl9jb3Jl
-cyA8PCAxNik7IC8qIGNvcmUgY291bnQsIGJpdHMgMzEuLjE2ICovCiAgICAgICAgIGJyZWFrOwor
-ICAgIGNhc2UgTVNSX0FQSUNfU1RBUlQgLi4uIE1TUl9BUElDX0VORDoKKyAgICAgICAgdmFsID0g
-YXBpY19yZWdpc3Rlcl9yZWFkKG1zciAtIE1TUl9BUElDX1NUQVJUKTsKKyAgICAgICAgYnJlYWs7
-CiAgICAgZGVmYXVsdDoKICAgICAgICAgLyogZnByaW50ZihzdGRlcnIsICIlczogdW5rbm93biBt
-c3IgMHgleFxuIiwgX19mdW5jX18sIG1zcik7ICovCiAgICAgICAgIHZhbCA9IDA7CkBAIC04NDQs
-NiArODQ3LDkgQEAgdm9pZCBzaW11bGF0ZV93cm1zcihzdHJ1Y3QgQ1BVU3RhdGUgKmNwdSkKICAg
-ICBjYXNlIE1TUl9NVFJSZGVmVHlwZToKICAgICAgICAgZW52LT5tdHJyX2RlZnR5cGUgPSBkYXRh
-OwogICAgICAgICBicmVhazsKKyAgICBjYXNlIE1TUl9BUElDX1NUQVJUIC4uLiBNU1JfQVBJQ19F
-TkQ6CisgICAgICAgIGFwaWNfcmVnaXN0ZXJfd3JpdGUobXNyIC0gTVNSX0FQSUNfU1RBUlQsIGRh
-dGEpOworICAgICAgICBicmVhazsKICAgICBkZWZhdWx0OgogICAgICAgICBicmVhazsKICAgICB9
-Ci0tIAoyLjM2LjEKCg==
---000000000000210c6d06084e8672--
+>
+>> +
+>> +    /*
+>> +     * Consider that virtio_net_handle_rss() currently does not restore=
+ the
+>> +     * hash key length parsed from the CVQ command sent from the guest =
+into
+>> +     * n->rss_data and uses the maximum key length in other code, so we=
+ also
+>> +     * employthe the maxium key length here.
+>
+> two typos
+
+I will correct these typos in the v4 patch.
+
+>
+>> +     */
+>> +    cfg.hash_key_length =3D sizeof(n->rss_data.key);
+>> +
+>> +    const struct iovec data[] =3D {
+>> +        {
+>> +            .iov_base =3D &cfg,
+>> +            .iov_len =3D offsetof(struct virtio_net_rss_config,
+>> +                                indirection_table),
+>> +        }, {
+>> +            .iov_base =3D table,
+>> +            .iov_len =3D n->rss_data.indirections_len *
+>> +                       sizeof(n->rss_data.indirections_table[0]),
+>> +        }, {
+>> +            .iov_base =3D &cfg.max_tx_vq,
+>> +            .iov_len =3D offsetof(struct virtio_net_rss_config, hash_ke=
+y_data) -
+>> +                       offsetof(struct virtio_net_rss_config, max_tx_vq=
+),
+>> +        }, {
+>> +            .iov_base =3D (void *)n->rss_data.key,
+>
+> cast to void * should not be needed here.
+
+Without this cast, the compiler raises the following warning:
+
+../net/vhost-vdpa.c: In function =E2=80=98vhost_vdpa_net_load_rss=E2=80=99:
+../net/vhost-vdpa.c:907:25: error: initialization discards =E2=80=98const=
+=E2=80=99
+qualifier from pointer target type [-Werror=3Ddiscarded-qualifiers]
+   907 |             .iov_base =3D n->rss_data.key,
+
+
+The issue arises because `n` is a pointer to const, and
+`n->rss_data.key` is an array. So `n->rss_data.key` is treated as a
+pointer to const.
+
+Thanks!
+
+
+>
+>> +            .iov_len =3D sizeof(n->rss_data.key),
+>> +        }
+>> +    };
+>> +
+>> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> +                                VIRTIO_NET_CTRL_MQ,
+>> +                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
+>> +                                data, ARRAY_SIZE(data));
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+>>                                     const VirtIONet *n,
+>>                                     struct iovec *out_cursor,
+>> @@ -842,6 +922,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
+,
+>>           return r;
+>>       }
+>>
+>> +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPO=
+RT)) {
+>> +        return 0;
+>> +    }
+>> +
+>> +    r =3D vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor);
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>> +    }
+>> +
+>>       return 0;
+>>   }
+>>
+>> --
+>> 2.25.1
+>
 
