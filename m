@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942987D20A1
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 03:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 169737D20BA
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 04:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quNHa-0003kr-Jb; Sat, 21 Oct 2023 21:29:34 -0400
+	id 1quNm7-0004vJ-Jb; Sat, 21 Oct 2023 22:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quNHY-0003kV-FT
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:29:32 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1quNm2-0004us-Ql
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 22:01:03 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quNHW-0002mB-Q2
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:29:32 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-1e10507a4d6so1675093fac.1
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 18:29:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1quNm1-0008Tf-68
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 22:01:02 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1ca74e77aecso23342665ad.1
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 19:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697938169; x=1698542969; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gUdIwM9a9fzr4xrCKGrW+zLWuchdXV1ltRHAYLtkHYA=;
- b=If5RALHKOlMm+Tr26hLniqLpqYEUUyM8FuFy9MlCnI8fG8rTitbaXaygwDmgadP92w
- oKRdT10waPs5PCSGxZDQf6R0ICzEeRcniqbqxcoimIAR6z3k22gG/EmCZYvrleAfQFV9
- ntwSE7l33PzELM+bc75P1kinToTAmzqZDsBalo/Lq8TnnAr33WF9fF6XjJYUzElg0/fD
- 2PnSg1383K5aWfjls2mUtXx5f8Na+4YImIm6VLG2BV8t0pcD3pGPS1+e+NDXB+NJ3dmo
- 1SvzirXPTxyO0GuIXSltsVf0TfvzhZN268vkURvDO9cHsYhWKn9YlrCK0B7ybDgOGSuB
- ysnw==
+ d=gmail.com; s=20230601; t=1697940056; x=1698544856; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/Iu3xgE4H0o6md740PwAk+ciW9VCG5zCZsc3oL/pt3E=;
+ b=iecmjUJu0TBDqH3bW1Yu3POfQExUsVlmJbEim0mvukU/njptd7+gkQU2uQOmZepu5Z
+ y5uiGRIl605P1I+at4P5v9W5UVaRzYfi3NPLL7JB0iqYyOv4DUHiVWTnvvy1/HSeTLqa
+ H8ZkSVAIPVbWvTh7Oqop5a4USH3mmtRA0OH8W1TuHlKAtBXp4mguNfNnx9/MsMEk3WgO
+ Yd4CvPpA1BzFShL8/YAbJn8YLcTQSt1TYostdxLzBqvKsoDHD4NPwyxwTtqacqcQQYPz
+ 0qCu4UGo+B8VTNjUqytaR5B/gBRWfTbEM+92b+pxRlUBbBlD0LmBFS9ABqCboMr5YY4Q
+ fbog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697938169; x=1698542969;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gUdIwM9a9fzr4xrCKGrW+zLWuchdXV1ltRHAYLtkHYA=;
- b=NJxFhTRIw1Baz7p+wm61gh7HAj1L5W42RviA9AgeD9JgJtcoOfPHS6X0i27IIuZmCr
- 0NLe41QlMA69sAODVsN85EnWRmJjDdi/uc+DMAIzDb0WHxWfZjy5ilTNjNvtw81mmWen
- UO3z7kGMDClddp+mrPWhawRX/8t8mEOHnq9dpe98NShGzYov4T6gReF1xXW0jLIcA8GC
- BGIZl36vbXGhm76rHJEMTyogHmDEr6aCKCOwrccnSg4wvNjEgv2WBVMhdU86jCwjDFa4
- 9f3EuP+J1qnTCPLsCStJV/hi455FO++cRRgjhbDCrqVJ8m5Lij59E45TlhwR8zir6NXp
- weQg==
-X-Gm-Message-State: AOJu0Yz5bLbSSvaOu/e5RAHCUE9umMcHmuNqhV5ggupaWGp0M6fCj1d+
- OyDLu3kY+L7gSll4qxnRIHw0DA==
-X-Google-Smtp-Source: AGHT+IH1coVxyX2mYckc1U9SljQgaLjdE02GWqTSN2NMDaAv4DBSsTI40Zvi6weoifROdpiediVDzA==
-X-Received: by 2002:a05:6871:2312:b0:1e9:a434:58a5 with SMTP id
- sf18-20020a056871231200b001e9a43458a5mr6475934oab.46.1697938169265; 
- Sat, 21 Oct 2023 18:29:29 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- nk19-20020a17090b195300b00268b9862343sm5312836pjb.24.2023.10.21.18.29.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 21 Oct 2023 18:29:28 -0700 (PDT)
-Message-ID: <4339bf9e-ad25-41b7-91cd-1da8c65d782d@linaro.org>
-Date: Sat, 21 Oct 2023 18:29:26 -0700
+ d=1e100.net; s=20230601; t=1697940056; x=1698544856;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/Iu3xgE4H0o6md740PwAk+ciW9VCG5zCZsc3oL/pt3E=;
+ b=ibWGWJh5OgbguO3RXfmQKC6KLWwIKj+/vRarqw7vZuxoMEqi1aFXOHCf32h5G1Q6X4
+ oymb1La3BfZxwbga9zR5safx+wsfn20IhfurB7nEaDTb5VZNzlor9GcrrZWl6cQGarVC
+ WBz9rUGpZw2rei9IskCEslK/+kGW9AblGLhhAYvVrAkXlz0QjMATrNne//RKA0lX+gm1
+ +u/ddvb4B2FW3yIq/dUDL6KDeNTZdzH17VG8ckeS8xk92QmAAV1mWd0eFc9hMUAyTalw
+ Z/5QkCJCKfTHAU8I88I6Fc2IlUkRHMPX82lj/5++U6seeHm5ldAlaLptabUbEQ1sBQbH
+ EQCw==
+X-Gm-Message-State: AOJu0YzzxNfxLr5HyxORKWtUnQmCF34y/1BDPwOICqPYpa8kAviXqccg
+ sZnni7ypMUvN0PiBO98WQko=
+X-Google-Smtp-Source: AGHT+IFt4asnipcJXSdnbwc3J93/Kuud1tX6KUEeoNfKJvC+rzJ4Po1gUaBsIoEerDHjmDSqLINvig==
+X-Received: by 2002:a17:903:189:b0:1c9:c879:ee74 with SMTP id
+ z9-20020a170903018900b001c9c879ee74mr7672429plg.26.1697940055530; 
+ Sat, 21 Oct 2023 19:00:55 -0700 (PDT)
+Received: from localhost ([124.64.17.222]) by smtp.gmail.com with ESMTPSA id
+ ju17-20020a170903429100b001c0a4146961sm3767694plb.19.2023.10.21.19.00.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 21 Oct 2023 19:00:55 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	yin31149@gmail.com,
+	18801353760@163.com
+Subject: [PATCH v3 0/2] Vhost-vdpa Shadow Virtqueue Hash calculation Support
+Date: Sun, 22 Oct 2023 10:00:47 +0800
+Message-Id: <cover.1697902949.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] target/i386: Use tcg_gen_ext_tl
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, laurent@vivier.eu, ysato@users.sourceforge.jp,
- kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com
-References: <20231019182921.1772928-1-richard.henderson@linaro.org>
- <20231019182921.1772928-4-richard.henderson@linaro.org>
- <5f54e3e1-1c90-0249-04f4-df522e292abe@linaro.org>
- <03ba02fd-fade-4409-be16-2f81a5690b4c@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <03ba02fd-fade-4409-be16-2f81a5690b4c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=yin31149@gmail.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,45 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/21/23 00:59, Paolo Bonzini wrote:
-> On 10/19/23 23:57, Philippe Mathieu-Daudé wrote:
->> On 19/10/23 20:29, Richard Henderson wrote:
->>> -    default:
->>> +    if (memop_size(size) == TARGET_LONG_BITS) {
->>>           return src;
->>>       }
-> 
-> Any opinions about adding something like this on top?
-> 
-> ------------------------- 8< -------------------------------
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH] include, target/i386: define and use MO_TL
+This series enables shadowed CVQ to intercept
+VIRTIO_NET_CTRL_MQ_HASH_CONFIG command through shadowed CVQ,
+update the virtio NIC device model so qemu send it in a
+migration, and the restore of that Hash calculation state
+in the destination.
 
-Yes, that looks fine.
+ChangeLog
+=========
+v3:
+  - remove the `do_rss` argument in vhost_vdpa_net_load_rss()
+  - zero reserved fields in "cfg" manually instead of using memset()
+to prevent compiler "array-bounds" warning
 
->   static TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp size, bool sign)
->   {
-> -    if (memop_size(size) == TARGET_LONG_BITS) {
-> +    if (size == MO_TL) {
+v2: https://lore.kernel.org/all/cover.1693297766.git.yin31149@gmail.com/
+  - resolve conflict with updated patch
+"vdpa: Send all CVQ state load commands in parallel", move the
+`table` declaration at the beginning of the vhost_vdpa_net_load_rss()
+in patch
+"vdpa: Restore hash calculation state"
 
-Yep.
+RFC: https://lore.kernel.org/all/cover.1691762906.git.yin31149@gmail.com/#t
 
-> I can add it in my x86 series if desirable ...
+TestStep
+========
+1. test the migration using vp-vdpa device
+  - For L0 guest, boot QEMU with two virtio-net-pci net device with
+`ctrl_vq`, `mq`, `hash` features on, command line like:
+	-netdev tap,...
+	-device virtio-net-pci,disable-legacy=on,disable-modern=off,
+iommu_platform=on,mq=on,ctrl_vq=on,hash=on,guest_announce=off,
+indirect_desc=off,queue_reset=off,guest_uso4=off,guest_uso6=off,
+host_uso=off,...
 
-That's probably fine; you may well get your PR in before my next.
+  - For L1 guest, apply the relative patch series and compile the
+source code, start QEMU with two vdpa device with svq mode on,
+enable the `ctrl_vq`, `mq`, `hash` features on, command line like:
+      -netdev type=vhost-vdpa,x-svq=true,...
+      -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
+hash=on,...
 
->>> +    tcg_gen_ext_tl(dst, src, size | (sign ? MO_SIGN : 0));
->>> +    return dst;
->>>   }
->>
->> While here, I'd rename 'size' -> 'mop'. Regardless,
-> 
-> Not sure about that, because "size" should be just the low bits of MemOp (the MO_SIGN bit 
-> is passed separately).
+  - For L2 source guest, run the following bash command:
+```bash
+#!/bin/sh
 
-Agreed.
+ethtool -K eth0 rxhash on
+```
+  - Gdb attach the destination VM and break at the
+vhost_vdpa_net_load_rss()
 
+  - Execute the live migration in L2 source monitor
 
-r~
+  - Result
+    * with this series, gdb can hit the breakpoint and continue
+the executing without triggering any error or warning.
+
+Hawkins Jiawei (2):
+  vdpa: Restore hash calculation state
+  vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
+
+ net/vhost-vdpa.c | 90 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
+
+-- 
+2.25.1
 
 
