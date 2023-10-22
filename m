@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475FE7D215B
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABBF57D2180
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:14:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quRaD-0001CD-Or; Sun, 22 Oct 2023 02:05:06 -0400
+	id 1quRaL-0001l1-O4; Sun, 22 Oct 2023 02:05:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRZx-0000KL-2S
+ id 1quRZx-0000KO-2N
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:04:49 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRZq-0002Dz-J6
+ id 1quRZr-0002EC-Bg
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:04:47 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6b5e6301a19so2090218b3a.0
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:04:41 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6b89ab5ddb7so2209171b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697954681; x=1698559481; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TTNgbuPbtC9nIODeF8TXrQUffC7OOzP95DUSxezgrqQ=;
- b=F/jk6djgRbmrcB7Y2yEQED3JTOF7WQQYtkkiaS1PEdMIETNp86c6LF1gsBp0+rHwMc
- KAmcKPgqEjHKXN7/DGeb15XNcteGQ5oHPBga+u1TqtNYWudItZycpOIgeF9PbAtpGfhx
- 42GDrvg5NBomU1etxJW1giFKjHiC0wael4NFJA5VPmstllFaQfni16JFzkMP40ExEWNm
- b/OpYnX2RN4zd1ciEJ8bPXSLKcPm65xrUIj+ENwzmlnrUWkVbE7ZDFdKHsoWSwPqvvDB
- H7K4licMKfaMy+6giO879trW94GZdnO2s0Sxm76VnT5SELhO/dwRXaJO5wLhSRwql0nU
- dcUg==
+ bh=n4gVY2mbOcElI1vUEaatHV71uTw57mIjZRVd7BNlWrY=;
+ b=GWnva+CKbZMhj45NzKQ8ufWEMhZ1zUepkcf3OkA6Twics1KAGtqxg/AFcmuoyuAYKO
+ tz02rQWFjA0xr7spfTRqvIx2/FSVVO0qOphI6UAOYZBSaYhawvKHIi5D3gBFYD2PJlr5
+ B55KSHJLLobsS4BQYuzKy4ZcFiibAQvXWXQxxbPkAFjpkCWk6HSwj5ZGOP1RtxQ4ym7i
+ iwnIkeamZZvDHoNrwxd/vAawBd9YgdbpqNZVe8iyG2AvBjNPvIz/sq9/YvgeX+erva7Z
+ qWiUIi4xhai9992cLST7dNWZd5OtK+VCPWXCzaoM2vpyYfCyviEZgxs1SWZ3xrwvpQfw
+ GNSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697954681; x=1698559481;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TTNgbuPbtC9nIODeF8TXrQUffC7OOzP95DUSxezgrqQ=;
- b=nt566WpDXBcBidwCSVFCndwrK49V7H79ZRsB/fIVRugUwhQBM/Fyjbe8Iv6CThOJK2
- dICJGK5gsRtQRUbiSdKaCgJ2HjfN8LypM7BIQyjVCOQhWLRsxEZOcZ/jyO20qoitptfu
- embbyk3iM1CNZizV+ptdIAS0uxj+Bxd8zO/pJbwP/euXRD6usQ6r2LKEXS2QVD2V80GA
- AEYwBeA5ypvbBmpUGZy5LNo8YLM9gvpwMRm+v26mVdsGY+DZYPrVNaQA2e/pAGhUxfvF
- PZIvGjF3ABB3XSryUSLI8qA3YAwL2zjdkRsmcvBVuIy65RtO7HhDtywbnrvNYU1Hu3pT
- zTVA==
-X-Gm-Message-State: AOJu0Ywu+HKPFZbX4o4oUVmhuJr6S28VnPVM77PJAJX0yHyvQ9LzzERj
- WuM3wHcqDon2LH+Iv5tDvPFODXplZ8osym/gK9Q=
-X-Google-Smtp-Source: AGHT+IFHSgdbVYRw9lEn9FYmIy5euyDzHdznzQG6+yoiyZZTWx/5f9i1BNnwrJmYPzK+Wg6/x5+Qlg==
-X-Received: by 2002:a05:6a00:13a5:b0:6bb:4360:159e with SMTP id
- t37-20020a056a0013a500b006bb4360159emr7203957pfg.17.1697954680851; 
- Sat, 21 Oct 2023 23:04:40 -0700 (PDT)
+ bh=n4gVY2mbOcElI1vUEaatHV71uTw57mIjZRVd7BNlWrY=;
+ b=XuPj47bm/pOT1lxupzV+K20aWMEHpJnFw1Lc2w+p2M989OxpNI/g5kQtUb1pb4vSqV
+ NqWtH0hTghz6k4KrOGaoP0K0HwVshW1RtDvYT05r1CprKa0h5plsSfyy4QcPmy9X0F3D
+ rsctkelbU6jxemMhx8tFKzYcMFf0zOwLnV4TusgsFeq3eS0un49La3KiTdHq9E63+fHm
+ 06eiwt/wQUzvshA1wBUfBB6W1ZTYy3eH+4OVhYsTgu3ypWDOJlW3EcaxcU7ANkq5YOSE
+ nlbgc+TZPsL/R5EUZu3sUvsS/tzOpQciXYKB57D9Z7L/EhclZo8sjHwFXAEzYHP71HzC
+ U02w==
+X-Gm-Message-State: AOJu0YxYL8zIZCjys65ck6UglKywkVOQE2LZDegZa84l6Y1QEusRftId
+ lh2VcOffwIAX+1kLsdpH8vNlCR2Ng5YSret4670=
+X-Google-Smtp-Source: AGHT+IGmfLStXddeLXQxhsyEstdz1jfyFjNUMJQPDJI9VKS7O19RbbtcHUOIMpwch/8OTMIeRMPnZA==
+X-Received: by 2002:a05:6a00:248d:b0:6b2:5992:9e89 with SMTP id
+ c13-20020a056a00248d00b006b259929e89mr7517000pfv.9.1697954681529; 
+ Sat, 21 Oct 2023 23:04:41 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  fb13-20020a056a002d8d00b0068a46cd4120sm4007373pfb.199.2023.10.21.23.04.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 23:04:40 -0700 (PDT)
+ Sat, 21 Oct 2023 23:04:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 46/90] target/sparc: Split out ldst functions with asi
- pre-computed
-Date: Sat, 21 Oct 2023 22:59:47 -0700
-Message-Id: <20231022060031.490251-47-richard.henderson@linaro.org>
+Subject: [PATCH v4 47/90] target/sparc: Use tcg_gen_qemu_{ld,
+ st}_i128 for GET_ASI_DTWINX
+Date: Sat, 21 Oct 2023 22:59:48 -0700
+Message-Id: <20231022060031.490251-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022060031.490251-1-richard.henderson@linaro.org>
 References: <20231022060031.490251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,423 +91,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As an intermediate step in decodetree conversion, create
-new functions passing in DisasASI and not insn.
+Perform one atomic 16-byte operation.
+The atomicity is required for the LDTXA instructions.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 215 ++++++++++++++++++++++-----------------
- 1 file changed, 123 insertions(+), 92 deletions(-)
+ target/sparc/translate.c | 48 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 6802399647..dbadc860c3 100644
+index dbadc860c3..f0284ac87b 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2147,25 +2147,21 @@ static DisasASI get_asi(DisasContext *dc, int insn, MemOp memop)
-     return resolve_asi(dc, asi, memop);
- }
- 
--static void __attribute__((unused))
--gen_ld_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn, MemOp memop)
-+static void gen_ld_asi0(DisasContext *dc, DisasASI *da, TCGv dst, TCGv addr)
- {
--    DisasASI da = get_asi(dc, insn, memop);
--
--    switch (da.type) {
-+    switch (da->type) {
-     case GET_ASI_EXCP:
-         break;
-     case GET_ASI_DTWINX: /* Reserved for ldda.  */
-         gen_exception(dc, TT_ILL_INSN);
-         break;
-     case GET_ASI_DIRECT:
--        gen_address_mask(dc, addr);
--        tcg_gen_qemu_ld_tl(dst, addr, da.mem_idx, da.memop | MO_ALIGN);
-+        tcg_gen_qemu_ld_tl(dst, addr, da->mem_idx, da->memop | MO_ALIGN);
-         break;
-     default:
-         {
--            TCGv_i32 r_asi = tcg_constant_i32(da.asi);
--            TCGv_i32 r_mop = tcg_constant_i32(memop | MO_ALIGN);
-+            TCGv_i32 r_asi = tcg_constant_i32(da->asi);
-+            TCGv_i32 r_mop = tcg_constant_i32(da->memop | MO_ALIGN);
- 
-             save_state(dc);
- #ifdef TARGET_SPARC64
-@@ -2183,33 +2179,38 @@ gen_ld_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn, MemOp memop)
- }
- 
- static void __attribute__((unused))
--gen_st_asi(DisasContext *dc, TCGv src, TCGv addr, int insn, MemOp memop)
-+gen_ld_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn, MemOp memop)
- {
-     DisasASI da = get_asi(dc, insn, memop);
- 
--    switch (da.type) {
-+    gen_address_mask(dc, addr);
-+    gen_ld_asi0(dc, &da, dst, addr);
-+}
-+
-+static void gen_st_asi0(DisasContext *dc, DisasASI *da, TCGv src, TCGv addr)
-+{
-+    switch (da->type) {
-     case GET_ASI_EXCP:
-         break;
-+
-     case GET_ASI_DTWINX: /* Reserved for stda.  */
--#ifndef TARGET_SPARC64
--        gen_exception(dc, TT_ILL_INSN);
--        break;
--#else
--        if (!(dc->def->features & CPU_FEATURE_HYPV)) {
-+        if (TARGET_LONG_BITS == 32) {
-+            gen_exception(dc, TT_ILL_INSN);
-+            break;
-+        } else if (!(dc->def->features & CPU_FEATURE_HYPV)) {
-             /* Pre OpenSPARC CPUs don't have these */
-             gen_exception(dc, TT_ILL_INSN);
--            return;
-+            break;
-         }
--        /* in OpenSPARC T1+ CPUs TWINX ASIs in store instructions
--         * are ST_BLKINIT_ ASIs */
--#endif
-+        /* In OpenSPARC T1+ CPUs TWINX ASIs in store are ST_BLKINIT_ ASIs */
-         /* fall through */
-+
-     case GET_ASI_DIRECT:
--        gen_address_mask(dc, addr);
--        tcg_gen_qemu_st_tl(src, addr, da.mem_idx, da.memop | MO_ALIGN);
-+        tcg_gen_qemu_st_tl(src, addr, da->mem_idx, da->memop | MO_ALIGN);
-         break;
--#if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
-+
-     case GET_ASI_BCOPY:
-+        assert(TARGET_LONG_BITS == 32);
-         /* Copy 32 bytes from the address in SRC to ADDR.  */
-         /* ??? The original qemu code suggests 4-byte alignment, dropping
-            the low bits, but the only place I can see this used is in the
-@@ -2227,18 +2228,18 @@ gen_st_asi(DisasContext *dc, TCGv src, TCGv addr, int insn, MemOp memop)
-             for (i = 0; i < 32; i += 4) {
-                 /* Since the loads and stores are paired, allow the
-                    copy to happen in the host endianness.  */
--                tcg_gen_qemu_ld_i32(tmp, saddr, da.mem_idx, MO_UL);
--                tcg_gen_qemu_st_i32(tmp, daddr, da.mem_idx, MO_UL);
-+                tcg_gen_qemu_ld_i32(tmp, saddr, da->mem_idx, MO_UL);
-+                tcg_gen_qemu_st_i32(tmp, daddr, da->mem_idx, MO_UL);
-                 tcg_gen_add_tl(saddr, saddr, four);
-                 tcg_gen_add_tl(daddr, daddr, four);
-             }
-         }
-         break;
--#endif
-+
-     default:
-         {
--            TCGv_i32 r_asi = tcg_constant_i32(da.asi);
--            TCGv_i32 r_mop = tcg_constant_i32(memop | MO_ALIGN);
-+            TCGv_i32 r_asi = tcg_constant_i32(da->asi);
-+            TCGv_i32 r_mop = tcg_constant_i32(da->memop | MO_ALIGN);
- 
-             save_state(dc);
- #ifdef TARGET_SPARC64
-@@ -2258,16 +2259,49 @@ gen_st_asi(DisasContext *dc, TCGv src, TCGv addr, int insn, MemOp memop)
-     }
- }
- 
-+static void __attribute__((unused))
-+gen_st_asi(DisasContext *dc, TCGv src, TCGv addr, int insn, MemOp memop)
-+{
-+    DisasASI da = get_asi(dc, insn, memop);
-+
-+    gen_address_mask(dc, addr);
-+    gen_st_asi0(dc, &da, src, addr);
-+}
-+
-+static void gen_swap_asi0(DisasContext *dc, DisasASI *da,
-+                          TCGv dst, TCGv src, TCGv addr)
-+{
-+    switch (da->type) {
-+    case GET_ASI_EXCP:
-+        break;
-+    case GET_ASI_DIRECT:
-+        gen_swap(dc, dst, src, addr, da->mem_idx, da->memop);
-+        break;
-+    default:
-+        /* ??? Should be DAE_invalid_asi.  */
-+        gen_exception(dc, TT_DATA_ACCESS);
-+        break;
-+    }
-+}
-+
- static void __attribute__((unused))
- gen_swap_asi(DisasContext *dc, TCGv dst, TCGv src, TCGv addr, int insn)
- {
-     DisasASI da = get_asi(dc, insn, MO_TEUL);
- 
--    switch (da.type) {
-+    gen_address_mask(dc, addr);
-+    gen_swap_asi0(dc, &da, dst, src, addr);
-+}
-+
-+static void gen_cas_asi0(DisasContext *dc, DisasASI *da,
-+                         TCGv oldv, TCGv newv, TCGv cmpv, TCGv addr)
-+{
-+    switch (da->type) {
-     case GET_ASI_EXCP:
--        break;
-+        return;
-     case GET_ASI_DIRECT:
--        gen_swap(dc, dst, src, addr, da.mem_idx, da.memop);
-+        tcg_gen_atomic_cmpxchg_tl(oldv, addr, cmpv, newv,
-+                                  da->mem_idx, da->memop | MO_ALIGN);
-         break;
-     default:
-         /* ??? Should be DAE_invalid_asi.  */
-@@ -2280,34 +2314,33 @@ static void __attribute__((unused))
- gen_cas_asi(DisasContext *dc, TCGv addr, TCGv cmpv, int insn, int rd)
- {
-     DisasASI da = get_asi(dc, insn, MO_TEUL);
--    TCGv oldv;
-+    TCGv oldv = gen_dest_gpr(dc, rd);
-+    TCGv newv = gen_load_gpr(dc, rd);
- 
--    switch (da.type) {
--    case GET_ASI_EXCP:
--        return;
--    case GET_ASI_DIRECT:
--        oldv = tcg_temp_new();
--        tcg_gen_atomic_cmpxchg_tl(oldv, addr, cmpv, gen_load_gpr(dc, rd),
--                                  da.mem_idx, da.memop | MO_ALIGN);
--        gen_store_gpr(dc, rd, oldv);
--        break;
--    default:
--        /* ??? Should be DAE_invalid_asi.  */
--        gen_exception(dc, TT_DATA_ACCESS);
--        break;
--    }
-+    gen_address_mask(dc, addr);
-+    gen_cas_asi0(dc, &da, oldv, newv, cmpv, addr);
-+    gen_store_gpr(dc, rd, oldv);
- }
- 
- static void __attribute__((unused))
--gen_ldstub_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn)
-+gen_casx_asi(DisasContext *dc, TCGv addr, TCGv cmpv, int insn, int rd)
- {
--    DisasASI da = get_asi(dc, insn, MO_UB);
-+    DisasASI da = get_asi(dc, insn, MO_TEUQ);
-+    TCGv oldv = gen_dest_gpr(dc, rd);
-+    TCGv newv = gen_load_gpr(dc, rd);
- 
--    switch (da.type) {
-+    gen_address_mask(dc, addr);
-+    gen_cas_asi0(dc, &da, oldv, newv, cmpv, addr);
-+    gen_store_gpr(dc, rd, oldv);
-+}
-+
-+static void gen_ldstub_asi0(DisasContext *dc, DisasASI *da, TCGv dst, TCGv addr)
-+{
-+    switch (da->type) {
-     case GET_ASI_EXCP:
-         break;
-     case GET_ASI_DIRECT:
--        gen_ldstub(dc, dst, addr, da.mem_idx);
-+        gen_ldstub(dc, dst, addr, da->mem_idx);
-         break;
-     default:
-         /* ??? In theory, this should be raise DAE_invalid_asi.
-@@ -2315,7 +2348,7 @@ gen_ldstub_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn)
-         if (tb_cflags(dc->base.tb) & CF_PARALLEL) {
-             gen_helper_exit_atomic(tcg_env);
-         } else {
--            TCGv_i32 r_asi = tcg_constant_i32(da.asi);
-+            TCGv_i32 r_asi = tcg_constant_i32(da->asi);
-             TCGv_i32 r_mop = tcg_constant_i32(MO_UB);
-             TCGv_i64 s64, t64;
- 
-@@ -2335,6 +2368,15 @@ gen_ldstub_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn)
-     }
- }
- 
-+static void __attribute__((unused))
-+gen_ldstub_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn)
-+{
-+    DisasASI da = get_asi(dc, insn, MO_UB);
-+
-+    gen_address_mask(dc, addr);
-+    gen_ldstub_asi0(dc, &da, dst, addr);
-+}
-+
- static void __attribute__((unused))
- gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
- {
-@@ -2527,36 +2569,32 @@ gen_stf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
-     }
- }
- 
--static void __attribute__((unused))
--gen_ldda_asi(DisasContext *dc, TCGv addr, int insn, int rd)
-+static void gen_ldda_asi0(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
- {
--    DisasASI da = get_asi(dc, insn, MO_TEUQ);
-     TCGv hi = gen_dest_gpr(dc, rd);
-     TCGv lo = gen_dest_gpr(dc, rd + 1);
- 
--    switch (da.type) {
-+    switch (da->type) {
-     case GET_ASI_EXCP:
+@@ -2579,11 +2579,27 @@ static void gen_ldda_asi0(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
          return;
  
      case GET_ASI_DTWINX:
-         assert(TARGET_LONG_BITS == 64);
--        gen_address_mask(dc, addr);
--        tcg_gen_qemu_ld_tl(hi, addr, da.mem_idx, da.memop | MO_ALIGN_16);
-+        tcg_gen_qemu_ld_tl(hi, addr, da->mem_idx, da->memop | MO_ALIGN_16);
-         tcg_gen_addi_tl(addr, addr, 8);
--        tcg_gen_qemu_ld_tl(lo, addr, da.mem_idx, da.memop);
-+        tcg_gen_qemu_ld_tl(lo, addr, da->mem_idx, da->memop);
+-        assert(TARGET_LONG_BITS == 64);
+-        tcg_gen_qemu_ld_tl(hi, addr, da->mem_idx, da->memop | MO_ALIGN_16);
+-        tcg_gen_addi_tl(addr, addr, 8);
+-        tcg_gen_qemu_ld_tl(lo, addr, da->mem_idx, da->memop);
++#ifdef TARGET_SPARC64
++        {
++            MemOp mop = (da->memop & MO_BSWAP) | MO_128 | MO_ALIGN_16;
++            TCGv_i128 t = tcg_temp_new_i128();
++
++            tcg_gen_qemu_ld_i128(t, addr, da->mem_idx, mop);
++            /*
++             * Note that LE twinx acts as if each 64-bit register result is
++             * byte swapped.  We perform one 128-bit LE load, so must swap
++             * the order of the writebacks.
++             */
++            if ((mop & MO_BSWAP) == MO_TE) {
++                tcg_gen_extr_i128_i64(lo, hi, t);
++            } else {
++                tcg_gen_extr_i128_i64(hi, lo, t);
++            }
++        }
          break;
++#else
++        g_assert_not_reached();
++#endif
  
      case GET_ASI_DIRECT:
          {
-             TCGv_i64 tmp = tcg_temp_new_i64();
- 
--            gen_address_mask(dc, addr);
--            tcg_gen_qemu_ld_i64(tmp, addr, da.mem_idx, da.memop | MO_ALIGN);
-+            tcg_gen_qemu_ld_i64(tmp, addr, da->mem_idx, da->memop | MO_ALIGN);
- 
-             /* Note that LE ldda acts as if each 32-bit register
-                result is byte swapped.  Having just performed one
-                64-bit bswap, we need now to swap the writebacks.  */
--            if ((da.memop & MO_BSWAP) == MO_TE) {
-+            if ((da->memop & MO_BSWAP) == MO_TE) {
-                 tcg_gen_extr_i64_tl(lo, hi, tmp);
-             } else {
-                 tcg_gen_extr_i64_tl(hi, lo, tmp);
-@@ -2570,15 +2608,15 @@ gen_ldda_asi(DisasContext *dc, TCGv addr, int insn, int rd)
-            real hardware allows others.  This can be seen with e.g.
-            FreeBSD 10.3 wrt ASI_IC_TAG.  */
-         {
--            TCGv_i32 r_asi = tcg_constant_i32(da.asi);
--            TCGv_i32 r_mop = tcg_constant_i32(da.memop);
-+            TCGv_i32 r_asi = tcg_constant_i32(da->asi);
-+            TCGv_i32 r_mop = tcg_constant_i32(da->memop);
-             TCGv_i64 tmp = tcg_temp_new_i64();
- 
-             save_state(dc);
-             gen_helper_ld_asi(tmp, tcg_env, addr, r_asi, r_mop);
- 
-             /* See above.  */
--            if ((da.memop & MO_BSWAP) == MO_TE) {
-+            if ((da->memop & MO_BSWAP) == MO_TE) {
-                 tcg_gen_extr_i64_tl(lo, hi, tmp);
-             } else {
-                 tcg_gen_extr_i64_tl(hi, lo, tmp);
-@@ -2592,21 +2630,28 @@ gen_ldda_asi(DisasContext *dc, TCGv addr, int insn, int rd)
- }
- 
- static void __attribute__((unused))
--gen_stda_asi(DisasContext *dc, TCGv hi, TCGv addr, int insn, int rd)
-+gen_ldda_asi(DisasContext *dc, TCGv addr, int insn, int rd)
- {
-     DisasASI da = get_asi(dc, insn, MO_TEUQ);
-+
-+    gen_address_mask(dc, addr);
-+    gen_ldda_asi0(dc, &da, addr, rd);
-+}
-+
-+static void gen_stda_asi0(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
-+{
-+    TCGv hi = gen_load_gpr(dc, rd);
-     TCGv lo = gen_load_gpr(dc, rd + 1);
- 
--    switch (da.type) {
-+    switch (da->type) {
-     case GET_ASI_EXCP:
+@@ -2648,11 +2664,27 @@ static void gen_stda_asi0(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
          break;
  
      case GET_ASI_DTWINX:
-         assert(TARGET_LONG_BITS == 64);
--        gen_address_mask(dc, addr);
--        tcg_gen_qemu_st_tl(hi, addr, da.mem_idx, da.memop | MO_ALIGN_16);
-+        tcg_gen_qemu_st_tl(hi, addr, da->mem_idx, da->memop | MO_ALIGN_16);
-         tcg_gen_addi_tl(addr, addr, 8);
--        tcg_gen_qemu_st_tl(lo, addr, da.mem_idx, da.memop);
-+        tcg_gen_qemu_st_tl(lo, addr, da->mem_idx, da->memop);
+-        assert(TARGET_LONG_BITS == 64);
+-        tcg_gen_qemu_st_tl(hi, addr, da->mem_idx, da->memop | MO_ALIGN_16);
+-        tcg_gen_addi_tl(addr, addr, 8);
+-        tcg_gen_qemu_st_tl(lo, addr, da->mem_idx, da->memop);
++#ifdef TARGET_SPARC64
++        {
++            MemOp mop = (da->memop & MO_BSWAP) | MO_128 | MO_ALIGN_16;
++            TCGv_i128 t = tcg_temp_new_i128();
++
++            /*
++             * Note that LE twinx acts as if each 64-bit register result is
++             * byte swapped.  We perform one 128-bit LE store, so must swap
++             * the order of the construction.
++             */
++            if ((mop & MO_BSWAP) == MO_TE) {
++                tcg_gen_concat_i64_i128(t, lo, hi);
++            } else {
++                tcg_gen_concat_i64_i128(t, hi, lo);
++            }
++            tcg_gen_qemu_st_i128(t, addr, da->mem_idx, mop);
++        }
          break;
++#else
++        g_assert_not_reached();
++#endif
  
      case GET_ASI_DIRECT:
-@@ -2616,13 +2661,12 @@ gen_stda_asi(DisasContext *dc, TCGv hi, TCGv addr, int insn, int rd)
-             /* Note that LE stda acts as if each 32-bit register result is
-                byte swapped.  We will perform one 64-bit LE store, so now
-                we must swap the order of the construction.  */
--            if ((da.memop & MO_BSWAP) == MO_TE) {
-+            if ((da->memop & MO_BSWAP) == MO_TE) {
-                 tcg_gen_concat_tl_i64(t64, lo, hi);
-             } else {
-                 tcg_gen_concat_tl_i64(t64, hi, lo);
-             }
--            gen_address_mask(dc, addr);
--            tcg_gen_qemu_st_i64(t64, addr, da.mem_idx, da.memop | MO_ALIGN);
-+            tcg_gen_qemu_st_i64(t64, addr, da->mem_idx, da->memop | MO_ALIGN);
-         }
-         break;
- 
-@@ -2642,7 +2686,7 @@ gen_stda_asi(DisasContext *dc, TCGv hi, TCGv addr, int insn, int rd)
-             tcg_gen_concat_tl_i64(t64, lo, hi);
-             tcg_gen_andi_tl(d_addr, addr, -8);
-             for (i = 0; i < 32; i += 8) {
--                tcg_gen_qemu_st_i64(t64, d_addr, da.mem_idx, da.memop);
-+                tcg_gen_qemu_st_i64(t64, d_addr, da->mem_idx, da->memop);
-                 tcg_gen_add_tl(d_addr, d_addr, eight);
-             }
-         }
-@@ -2652,12 +2696,12 @@ gen_stda_asi(DisasContext *dc, TCGv hi, TCGv addr, int insn, int rd)
-         /* ??? In theory we've handled all of the ASIs that are valid
-            for stda, and this should raise DAE_invalid_asi.  */
          {
--            TCGv_i32 r_asi = tcg_constant_i32(da.asi);
--            TCGv_i32 r_mop = tcg_constant_i32(da.memop);
-+            TCGv_i32 r_asi = tcg_constant_i32(da->asi);
-+            TCGv_i32 r_mop = tcg_constant_i32(da->memop);
-             TCGv_i64 t64 = tcg_temp_new_i64();
- 
-             /* See above.  */
--            if ((da.memop & MO_BSWAP) == MO_TE) {
-+            if ((da->memop & MO_BSWAP) == MO_TE) {
-                 tcg_gen_concat_tl_i64(t64, lo, hi);
-             } else {
-                 tcg_gen_concat_tl_i64(t64, hi, lo);
-@@ -2671,25 +2715,12 @@ gen_stda_asi(DisasContext *dc, TCGv hi, TCGv addr, int insn, int rd)
- }
- 
- static void __attribute__((unused))
--gen_casx_asi(DisasContext *dc, TCGv addr, TCGv cmpv, int insn, int rd)
-+gen_stda_asi(DisasContext *dc, TCGv hi, TCGv addr, int insn, int rd)
- {
-     DisasASI da = get_asi(dc, insn, MO_TEUQ);
--    TCGv oldv;
- 
--    switch (da.type) {
--    case GET_ASI_EXCP:
--        return;
--    case GET_ASI_DIRECT:
--        oldv = tcg_temp_new();
--        tcg_gen_atomic_cmpxchg_tl(oldv, addr, cmpv, gen_load_gpr(dc, rd),
--                                  da.mem_idx, da.memop | MO_ALIGN);
--        gen_store_gpr(dc, rd, oldv);
--        break;
--    default:
--        /* ??? Should be DAE_invalid_asi.  */
--        gen_exception(dc, TT_DATA_ACCESS);
--        break;
--    }
-+    gen_address_mask(dc, addr);
-+    gen_stda_asi0(dc, &da, addr, rd);
- }
- 
- static TCGv get_src1(DisasContext *dc, unsigned int insn)
 -- 
 2.34.1
 
