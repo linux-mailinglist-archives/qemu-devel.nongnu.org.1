@@ -2,92 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B3C7D2240
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1837D225B
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:33:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUkR-00033U-Kn; Sun, 22 Oct 2023 05:27:52 -0400
+	id 1quUpF-0005Mj-Gn; Sun, 22 Oct 2023 05:32:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUji-0001m9-Jg
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:27:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUjg-00016E-01
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:27:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697966819;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=q7yLJhsKzBOqiWUrJA7Var67GrcuSuwHsIVThsjTdeY=;
- b=AZceZH6y5Mn/h7UbrwY4X2Fiy8Zzw6wWjp8j/cnROKBktcDqcdXLAk6VKVkJIbny0jUUh2
- Se08vbVG1ha3iK5nnz4cEqjqrdjp5jp87AmTCZEVbUdLha5M7g3j9D/3yoHVRR1l0Z6UkR
- N/D2rqKlrthOSCo/wqQNeX0r2a9QIqc=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-133-KSdT25lYOdWfcpvuwRPaPw-1; Sun, 22 Oct 2023 05:26:58 -0400
-X-MC-Unique: KSdT25lYOdWfcpvuwRPaPw-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-5079fd9754cso2208431e87.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:26:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1quUpC-0005Mb-AN
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:32:46 -0400
+Received: from mail-lf1-f41.google.com ([209.85.167.41])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1quUpA-0001vw-85
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:32:45 -0400
+Received: by mail-lf1-f41.google.com with SMTP id
+ 2adb3069b0e04-507a55302e0so2986953e87.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:32:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966816; x=1698571616;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q7yLJhsKzBOqiWUrJA7Var67GrcuSuwHsIVThsjTdeY=;
- b=YTkNyeljL03FdBwLoWEqLZz3z3SFPtsI7ZD6eMQxJgPB8H94kcoNOk83Y5h4HhROtn
- 8SUMl07Tu/KgXiSOLAmDoTRzWDAaV5GUTnagxnOjx/tPakEiRdboQgQ4cvCq7ToL6k2k
- WCVxGUOBaIgRaJnGwb3JpHybv2fd0nQ336TAVbmn0sfzeNwE8KCSGDa3Zl93LPMdoTTt
- 79Ez+yDEhJn084y0gpEymnsE2vAuy4bN3bc2OTHbQxzcCET6uvFMTcBGDE2qmyq8NzvJ
- fenYw6yxlhcXtQ/Qt9nzUXG918npeuz64HZnXMLxu3uWfdagFRTCjFXQc+rJ+5FAJpm9
- C48g==
-X-Gm-Message-State: AOJu0Yx9/Sj9Yx00+urYX4eRNfQxZDtZmQ5Lzo61C02NG0yGVeZnd04N
- Zu84F3ZbPYndCii8Ytu9Ztr52Q3sP0RLq7bYhxnQhdg1FQVHqqvqXU0aZTh38fob6taKR1PJbP0
- QYpjNZuMA3Q/jq/THVggZVwVAitqcxl/d2eevY4erqP3GqZbWwQOTQwN+QO0I7RU9XbAK
-X-Received: by 2002:ac2:58e2:0:b0:507:b8e5:dfd5 with SMTP id
- v2-20020ac258e2000000b00507b8e5dfd5mr3827898lfo.5.1697966815922; 
- Sun, 22 Oct 2023 02:26:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFltfhngwGQ9a62MPFgXubZIBT0DkuAipv7KY+bcSpnK2D12/iVltGALqnE/QzkhInqi9j1ww==
-X-Received: by 2002:ac2:58e2:0:b0:507:b8e5:dfd5 with SMTP id
- v2-20020ac258e2000000b00507b8e5dfd5mr3827878lfo.5.1697966815528; 
- Sun, 22 Oct 2023 02:26:55 -0700 (PDT)
-Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
- r9-20020a05600c320900b0040644e699a0sm11239699wmp.45.2023.10.22.02.26.53
+ d=1e100.net; s=20230601; t=1697967162; x=1698571962;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+iFmUqXBxoNI1ygM8rUxSXjD1MMRNdDeKtKmzK6VS4Y=;
+ b=jJRuP7zjL3CDZX1UTA/YtpS3Ryrbr7G8drziYJvZjR7LLc+TtdrtPUM0A+wFAtTmGb
+ HVmiUckb3kFyCe4xw8JyOSv5b8LRKV/ySqkYCLxGTmaPVD+XRjTMz94PhKpbzp3ObYe5
+ iOEwIiTJVzp+UbZtl6dnx4/IGcHzACWgwCYrCTlvQduMBJrOR94P7DoBDfqwDy5Od57y
+ es46p1GLasB63urZyJtd1/6K+ua5qKaRMtWe/bdYspmZvv20dg2GInZYoAIAu8MlmGCt
+ NRngtzQh6zyMe94nn0b2yxyfhWShgdiD3GBFM0MYRhYLtY8E0kJou4yAA/jrY0lR4i3u
+ jymg==
+X-Gm-Message-State: AOJu0YyVNBCw8fdOK3tqxFGbjvUxsXhfw4x8kW65iO6lWAvEtlMmTp3n
+ 2lrui9J1DQcdt8L0KwrT8GJZrO4ecGo=
+X-Google-Smtp-Source: AGHT+IEPfL3s+vgSFXjicIpZ9qN1/CDZw1z4cV2hVl0qrSrKmQ/SoiJU1KEudG8ChsdxWR8KjvH90g==
+X-Received: by 2002:a05:6512:5d5:b0:500:b7dc:6c90 with SMTP id
+ o21-20020a05651205d500b00500b7dc6c90mr4006744lfo.36.1697967161936; 
+ Sun, 22 Oct 2023 02:32:41 -0700 (PDT)
+Received: from fedora (ip-109-43-176-141.web.vodafone.de. [109.43.176.141])
+ by smtp.gmail.com with ESMTPSA id
+ i7-20020a50fc07000000b00534e791296bsm4551536edr.37.2023.10.22.02.32.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:26:55 -0700 (PDT)
-Date: Sun, 22 Oct 2023 05:26:50 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL v3 62/62] intel-iommu: Report interrupt remapping faults, fix
- return value
-Message-ID: <c7016bf700cfbee52d2797bc4c592a39b17c4de7.1697966402.git.mst@redhat.com>
-References: <cover.1697966402.git.mst@redhat.com>
+ Sun, 22 Oct 2023 02:32:41 -0700 (PDT)
+Date: Sun, 22 Oct 2023 11:32:40 +0200
+From: Thomas Huth <huth@tuxfamily.org>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PATCH 3/6] hw/m68k/mcf_intc: Expose MMIO region via SysBus API
+Message-ID: <20231022113240.7b5724d0@fedora>
+In-Reply-To: <20231020150627.56893-4-philmd@linaro.org>
+References: <20231020150627.56893-1-philmd@linaro.org>
+ <20231020150627.56893-4-philmd@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1697966402.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.167.41; envelope-from=th.huth@gmail.com;
+ helo=mail-lf1-f41.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,360 +81,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Am Fri, 20 Oct 2023 17:06:23 +0200
+schrieb Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
 
-A generic X86IOMMUClass->int_remap function should not return VT-d
-specific values; fix it to return 0 if the interrupt was successfully
-translated or -EINVAL if not.
+> QOM objects shouldn't access each other internals fields
+> except using the QOM API.
+>=20
+> Here the caller of mcf_intc_init() access the MMIO region from
+> the MCF_INTC state. Avoid that by exposing that region via
+> sysbus_init_mmio(), then get it with sysbus_mmio_get_region().
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/m68k/mcf_intc.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-The VTD_FR_IR_xxx values are supposed to be used to actually raise
-faults through the fault reporting mechanism, so do that instead for
-the case where the IRQ is actually being injected.
-
-There is more work to be done here, as pretranslations for the KVM IRQ
-routing table can't fault; an untranslatable IRQ should be handled in
-userspace and the fault raised only when the IRQ actually happens (if
-indeed the IRTE is still not valid at that time). But we can work on
-that later; we can at least raise faults for the direct case.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Message-Id: <31bbfc9041690449d3ac891f4431ec82174ee1b4.camel@infradead.org>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/i386/intel_iommu_internal.h |   1 +
- hw/i386/intel_iommu.c          | 150 ++++++++++++++++++++++-----------
- 2 files changed, 103 insertions(+), 48 deletions(-)
-
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index e1450c5cfe..f8cf99bddf 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -268,6 +268,7 @@
- #define VTD_FRCD_FI(val)        ((val) & ~0xfffULL)
- #define VTD_FRCD_PV(val)        (((val) & 0xffffULL) << 40)
- #define VTD_FRCD_PP(val)        (((val) & 0x1) << 31)
-+#define VTD_FRCD_IR_IDX(val)    (((val) & 0xffffULL) << 48)
- 
- /* DMA Remapping Fault Conditions */
- typedef enum VTDFaultReason {
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 2c832ab68b..30a108a42b 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -469,21 +469,12 @@ static void vtd_set_frcd_and_update_ppf(IntelIOMMUState *s, uint16_t index)
- 
- /* Must not update F field now, should be done later */
- static void vtd_record_frcd(IntelIOMMUState *s, uint16_t index,
--                            uint16_t source_id, hwaddr addr,
--                            VTDFaultReason fault, bool is_write,
--                            bool is_pasid, uint32_t pasid)
-+                            uint64_t hi, uint64_t lo)
- {
--    uint64_t hi = 0, lo;
-     hwaddr frcd_reg_addr = DMAR_FRCD_REG_OFFSET + (((uint64_t)index) << 4);
- 
-     assert(index < DMAR_FRCD_REG_NR);
- 
--    lo = VTD_FRCD_FI(addr);
--    hi = VTD_FRCD_SID(source_id) | VTD_FRCD_FR(fault) |
--         VTD_FRCD_PV(pasid) | VTD_FRCD_PP(is_pasid);
--    if (!is_write) {
--        hi |= VTD_FRCD_T;
--    }
-     vtd_set_quad_raw(s, frcd_reg_addr, lo);
-     vtd_set_quad_raw(s, frcd_reg_addr + 8, hi);
- 
-@@ -509,17 +500,11 @@ static bool vtd_try_collapse_fault(IntelIOMMUState *s, uint16_t source_id)
- }
- 
- /* Log and report an DMAR (address translation) fault to software */
--static void vtd_report_dmar_fault(IntelIOMMUState *s, uint16_t source_id,
--                                  hwaddr addr, VTDFaultReason fault,
--                                  bool is_write, bool is_pasid,
--                                  uint32_t pasid)
-+static void vtd_report_frcd_fault(IntelIOMMUState *s, uint64_t source_id,
-+                                  uint64_t hi, uint64_t lo)
- {
-     uint32_t fsts_reg = vtd_get_long_raw(s, DMAR_FSTS_REG);
- 
--    assert(fault < VTD_FR_MAX);
--
--    trace_vtd_dmar_fault(source_id, fault, addr, is_write);
--
-     if (fsts_reg & VTD_FSTS_PFO) {
-         error_report_once("New fault is not recorded due to "
-                           "Primary Fault Overflow");
-@@ -539,8 +524,7 @@ static void vtd_report_dmar_fault(IntelIOMMUState *s, uint16_t source_id,
-         return;
-     }
- 
--    vtd_record_frcd(s, s->next_frcd_reg, source_id, addr, fault,
--                    is_write, is_pasid, pasid);
-+    vtd_record_frcd(s, s->next_frcd_reg, hi, lo);
- 
-     if (fsts_reg & VTD_FSTS_PPF) {
-         error_report_once("There are pending faults already, "
-@@ -565,6 +549,40 @@ static void vtd_report_dmar_fault(IntelIOMMUState *s, uint16_t source_id,
-     }
- }
- 
-+/* Log and report an DMAR (address translation) fault to software */
-+static void vtd_report_dmar_fault(IntelIOMMUState *s, uint16_t source_id,
-+                                  hwaddr addr, VTDFaultReason fault,
-+                                  bool is_write, bool is_pasid,
-+                                  uint32_t pasid)
-+{
-+    uint64_t hi, lo;
-+
-+    assert(fault < VTD_FR_MAX);
-+
-+    trace_vtd_dmar_fault(source_id, fault, addr, is_write);
-+
-+    lo = VTD_FRCD_FI(addr);
-+    hi = VTD_FRCD_SID(source_id) | VTD_FRCD_FR(fault) |
-+         VTD_FRCD_PV(pasid) | VTD_FRCD_PP(is_pasid);
-+    if (!is_write) {
-+        hi |= VTD_FRCD_T;
-+    }
-+
-+    vtd_report_frcd_fault(s, source_id, hi, lo);
-+}
-+
-+
-+static void vtd_report_ir_fault(IntelIOMMUState *s, uint64_t source_id,
-+                                VTDFaultReason fault, uint16_t index)
-+{
-+    uint64_t hi, lo;
-+
-+    lo = VTD_FRCD_IR_IDX(index);
-+    hi = VTD_FRCD_SID(source_id) | VTD_FRCD_FR(fault);
-+
-+    vtd_report_frcd_fault(s, source_id, hi, lo);
-+}
-+
- /* Handle Invalidation Queue Errors of queued invalidation interface error
-  * conditions.
-  */
-@@ -3305,8 +3323,9 @@ static Property vtd_properties[] = {
- };
- 
- /* Read IRTE entry with specific index */
--static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
--                        VTD_IR_TableEntry *entry, uint16_t sid)
-+static bool vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-+                         VTD_IR_TableEntry *entry, uint16_t sid,
-+                         bool do_fault)
- {
-     static const uint16_t vtd_svt_mask[VTD_SQ_MAX] = \
-         {0xffff, 0xfffb, 0xfff9, 0xfff8};
-@@ -3317,7 +3336,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-     if (index >= iommu->intr_size) {
-         error_report_once("%s: index too large: ind=0x%x",
-                           __func__, index);
--        return -VTD_FR_IR_INDEX_OVER;
-+        if (do_fault) {
-+            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_INDEX_OVER, index);
-+        }
-+        return false;
-     }
- 
-     addr = iommu->intr_root + index * sizeof(*entry);
-@@ -3325,7 +3347,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-                         entry, sizeof(*entry), MEMTXATTRS_UNSPECIFIED)) {
-         error_report_once("%s: read failed: ind=0x%x addr=0x%" PRIx64,
-                           __func__, index, addr);
--        return -VTD_FR_IR_ROOT_INVAL;
-+        if (do_fault) {
-+            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_ROOT_INVAL, index);
-+        }
-+        return false;
-     }
- 
-     entry->data[0] = le64_to_cpu(entry->data[0]);
-@@ -3333,11 +3358,24 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
- 
-     trace_vtd_ir_irte_get(index, entry->data[1], entry->data[0]);
- 
-+    /*
-+     * The remaining potential fault conditions are "qualified" by the
-+     * Fault Processing Disable bit in the IRTE. Even "not present".
-+     * So just clear the do_fault flag if PFD is set, which will
-+     * prevent faults being raised.
-+     */
-+    if (entry->irte.fault_disable) {
-+        do_fault = false;
-+    }
-+
-     if (!entry->irte.present) {
-         error_report_once("%s: detected non-present IRTE "
-                           "(index=%u, high=0x%" PRIx64 ", low=0x%" PRIx64 ")",
-                           __func__, index, entry->data[1], entry->data[0]);
--        return -VTD_FR_IR_ENTRY_P;
-+        if (do_fault) {
-+            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_ENTRY_P, index);
-+        }
-+        return false;
-     }
- 
-     if (entry->irte.__reserved_0 || entry->irte.__reserved_1 ||
-@@ -3345,7 +3383,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-         error_report_once("%s: detected non-zero reserved IRTE "
-                           "(index=%u, high=0x%" PRIx64 ", low=0x%" PRIx64 ")",
-                           __func__, index, entry->data[1], entry->data[0]);
--        return -VTD_FR_IR_IRTE_RSVD;
-+        if (do_fault) {
-+            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_IRTE_RSVD, index);
-+        }
-+        return false;
-     }
- 
-     if (sid != X86_IOMMU_SID_INVALID) {
-@@ -3361,7 +3402,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-                 error_report_once("%s: invalid IRTE SID "
-                                   "(index=%u, sid=%u, source_id=%u)",
-                                   __func__, index, sid, source_id);
--                return -VTD_FR_IR_SID_ERR;
-+                if (do_fault) {
-+                    vtd_report_ir_fault(iommu, sid, VTD_FR_IR_SID_ERR, index);
-+                }
-+                return false;
-             }
-             break;
- 
-@@ -3373,7 +3417,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-                 error_report_once("%s: invalid SVT_BUS "
-                                   "(index=%u, bus=%u, min=%u, max=%u)",
-                                   __func__, index, bus, bus_min, bus_max);
--                return -VTD_FR_IR_SID_ERR;
-+                if (do_fault) {
-+                    vtd_report_ir_fault(iommu, sid, VTD_FR_IR_SID_ERR, index);
-+                }
-+                return false;
-             }
-             break;
- 
-@@ -3382,23 +3429,24 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-                               "(index=%u, type=%d)", __func__,
-                               index, entry->irte.sid_vtype);
-             /* Take this as verification failure. */
--            return -VTD_FR_IR_SID_ERR;
-+            if (do_fault) {
-+                vtd_report_ir_fault(iommu, sid, VTD_FR_IR_SID_ERR, index);
-+            }
-+            return false;
-         }
-     }
- 
--    return 0;
-+    return true;
- }
- 
- /* Fetch IRQ information of specific IR index */
--static int vtd_remap_irq_get(IntelIOMMUState *iommu, uint16_t index,
--                             X86IOMMUIrq *irq, uint16_t sid)
-+static bool vtd_remap_irq_get(IntelIOMMUState *iommu, uint16_t index,
-+                              X86IOMMUIrq *irq, uint16_t sid, bool do_fault)
- {
-     VTD_IR_TableEntry irte = {};
--    int ret = 0;
- 
--    ret = vtd_irte_get(iommu, index, &irte, sid);
--    if (ret) {
--        return ret;
-+    if (!vtd_irte_get(iommu, index, &irte, sid, do_fault)) {
-+        return false;
-     }
- 
-     irq->trigger_mode = irte.irte.trigger_mode;
-@@ -3417,16 +3465,15 @@ static int vtd_remap_irq_get(IntelIOMMUState *iommu, uint16_t index,
-     trace_vtd_ir_remap(index, irq->trigger_mode, irq->vector,
-                        irq->delivery_mode, irq->dest, irq->dest_mode);
- 
--    return 0;
-+    return true;
- }
- 
- /* Interrupt remapping for MSI/MSI-X entry */
- static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
-                                    MSIMessage *origin,
-                                    MSIMessage *translated,
--                                   uint16_t sid)
-+                                   uint16_t sid, bool do_fault)
- {
--    int ret = 0;
-     VTD_IR_MSIAddress addr;
-     uint16_t index;
-     X86IOMMUIrq irq = {};
-@@ -3443,14 +3490,20 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
-     if (origin->address & VTD_MSI_ADDR_HI_MASK) {
-         error_report_once("%s: MSI address high 32 bits non-zero detected: "
-                           "address=0x%" PRIx64, __func__, origin->address);
--        return -VTD_FR_IR_REQ_RSVD;
-+        if (do_fault) {
-+            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_RSVD, 0);
-+        }
-+        return -EINVAL;
-     }
- 
-     addr.data = origin->address & VTD_MSI_ADDR_LO_MASK;
-     if (addr.addr.__head != 0xfee) {
-         error_report_once("%s: MSI address low 32 bit invalid: 0x%" PRIx32,
-                           __func__, addr.data);
--        return -VTD_FR_IR_REQ_RSVD;
-+        if (do_fault) {
-+            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_RSVD, 0);
-+        }
-+        return -EINVAL;
-     }
- 
-     /* This is compatible mode. */
-@@ -3469,9 +3522,8 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
-         index += origin->data & VTD_IR_MSI_DATA_SUBHANDLE;
-     }
- 
--    ret = vtd_remap_irq_get(iommu, index, &irq, sid);
--    if (ret) {
--        return ret;
-+    if (!vtd_remap_irq_get(iommu, index, &irq, sid, do_fault)) {
-+        return -EINVAL;
-     }
- 
-     if (addr.addr.sub_valid) {
-@@ -3481,7 +3533,10 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
-                               "(sid=%u, address=0x%" PRIx64
-                               ", data=0x%" PRIx32 ")",
-                               __func__, sid, origin->address, origin->data);
--            return -VTD_FR_IR_REQ_RSVD;
-+            if (do_fault) {
-+                vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_RSVD, 0);
-+            }
-+            return -EINVAL;
-         }
-     } else {
-         uint8_t vector = origin->data & 0xff;
-@@ -3521,7 +3576,7 @@ static int vtd_int_remap(X86IOMMUState *iommu, MSIMessage *src,
-                          MSIMessage *dst, uint16_t sid)
- {
-     return vtd_interrupt_remap_msi(INTEL_IOMMU_DEVICE(iommu),
--                                   src, dst, sid);
-+                                   src, dst, sid, false);
- }
- 
- static MemTxResult vtd_mem_ir_read(void *opaque, hwaddr addr,
-@@ -3547,9 +3602,8 @@ static MemTxResult vtd_mem_ir_write(void *opaque, hwaddr addr,
-         sid = attrs.requester_id;
-     }
- 
--    ret = vtd_interrupt_remap_msi(opaque, &from, &to, sid);
-+    ret = vtd_interrupt_remap_msi(opaque, &from, &to, sid, true);
-     if (ret) {
--        /* TODO: report error */
-         /* Drop this interrupt */
-         return MEMTX_ERROR;
-     }
--- 
-MST
-
+Tested-by: Thomas Huth <huth@tuxfamily.org>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
