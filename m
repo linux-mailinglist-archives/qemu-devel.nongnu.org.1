@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160BC7D23F7
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7538C7D23F9
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:57:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qualu-0006KV-TP; Sun, 22 Oct 2023 11:53:47 -0400
+	id 1qualu-0006Iq-32; Sun, 22 Oct 2023 11:53:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1quala-0005PP-Df; Sun, 22 Oct 2023 11:53:26 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1qualr-0006GK-Fc; Sun, 22 Oct 2023 11:53:43 -0400
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qualT-0008WF-Fs; Sun, 22 Oct 2023 11:53:26 -0400
+ <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1qualp-0000XF-IQ; Sun, 22 Oct 2023 11:53:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=HOx5IwxtS1QVSZAtDVm2t9NNNk95b57VMhnZXGvMKg0=; b=rv55j5Z641+WrDbx2SDJ+G8W45
- ThK6O4QWd2R0tV3yylW9YX1BXTxHa+mzeJkXR3A3lKH0df493zAkJ57mL6jU/7u3XoKA1fJ5J6RbG
- JVvj656r/q0nxqtOFKzVdvDWQLWqjkAcRuTaBBUudP4j+dIWu7mbkjlrsTtBW3YC+wKLwA3RTjIaD
- v49jTAZqT73USsFXBw5JEDBBkzdTGKOoJ3DfDPDL5PzhuC0Gw9+A4MMSb8zqN5msTNe7q+nFcnLq0
- d4hOSSRteS05EP/2apLcmjh0HV0eP6CmINCKAM1M9gvQb1cAGRkkK+EO2RPDbPza9dZ054UgstUPg
- EHKEbNRQ==;
+ bh=CbpypJM+7758idssLucgHt3d8KaEsPzws7dfN1MFAeI=; b=M688D+yehinlotRUrOat5KbGKy
+ 829STlbnnKEdhJPqlWBv6O7k1rVZ6XbZ0SV6ItGgSuuyDDCNBoxxb90RS8KfDTw+U8H55dYB5CWa/
+ gDsXJhKbrkwfZ4qgGvP7+cXJy0mouWaWRhCAeA7uEWDPTFK9NSijkMiQzVuhAiXPmcKBMS6Npii6p
+ DvMqXidNsPhCXAmAsU0WjR5V5HvmERdy9W5lO3kpqniMx6wtF8JX2cNYTa1DKXX8b/5KmeoZSfgSF
+ sfWE1FTZXFYXCWvNPnZnkCqUFWeD3+BJ7YiQ1OvWCCtsAk1DTAMWzFffrJr/rwO2KXL8AMJPIxWRN
+ Mi9NQvTQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1quakJ-008TGT-9k; Sun, 22 Oct 2023 15:52:07 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+ id 1quakJ-00DCmv-23; Sun, 22 Oct 2023 15:53:21 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1quakI-001qZf-2u; Sun, 22 Oct 2023 16:52:06 +0100
+ Linux)) id 1quakJ-001qZn-0G; Sun, 22 Oct 2023 16:52:07 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,19 +83,19 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH 21/45] hw/arm/allwinner: use qemu_configure_nic_device()
-Date: Sun, 22 Oct 2023 16:51:36 +0100
-Message-Id: <20231022155200.436340-22-dwmw2@infradead.org>
+Subject: [PATCH 23/45] hw/arm/exynos4: use qemu_create_nic_device()
+Date: Sun, 22 Oct 2023 16:51:38 +0100
+Message-Id: <20231022155200.436340-24-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231022155200.436340-1-dwmw2@infradead.org>
 References: <20231022155200.436340-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -122,98 +122,26 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/arm/allwinner-a10.c |  6 +-----
- hw/arm/allwinner-h3.c  |  6 +-----
- hw/arm/allwinner-r40.c | 27 ++-------------------------
- 3 files changed, 4 insertions(+), 35 deletions(-)
+ hw/arm/exynos4_boards.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/allwinner-a10.c b/hw/arm/allwinner-a10.c
-index b0ea3f7f66..57f52871ec 100644
---- a/hw/arm/allwinner-a10.c
-+++ b/hw/arm/allwinner-a10.c
-@@ -142,11 +142,7 @@ static void aw_a10_realize(DeviceState *dev, Error **errp)
-     sysbus_realize(SYS_BUS_DEVICE(&s->dramc), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->dramc), 0, AW_A10_DRAMC_BASE);
+diff --git a/hw/arm/exynos4_boards.c b/hw/arm/exynos4_boards.c
+index ef5bcbc212..b804357e2a 100644
+--- a/hw/arm/exynos4_boards.c
++++ b/hw/arm/exynos4_boards.c
+@@ -76,10 +76,8 @@ static void lan9215_init(uint32_t base, qemu_irq irq)
+     SysBusDevice *s;
  
--    /* FIXME use qdev NIC properties instead of nd_table[] */
+     /* This should be a 9215 but the 9118 is close enough */
 -    if (nd_table[0].used) {
--        qemu_check_nic_model(&nd_table[0], TYPE_AW_EMAC);
--        qdev_set_nic_properties(DEVICE(&s->emac), &nd_table[0]);
--    }
-+    qemu_configure_nic_device(DEVICE(&s->emac), true, NULL);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->emac), errp)) {
-         return;
-     }
-diff --git a/hw/arm/allwinner-h3.c b/hw/arm/allwinner-h3.c
-index f05afddf7e..4f102ad082 100644
---- a/hw/arm/allwinner-h3.c
-+++ b/hw/arm/allwinner-h3.c
-@@ -369,11 +369,7 @@ static void allwinner_h3_realize(DeviceState *dev, Error **errp)
-                               "sd-bus");
- 
-     /* EMAC */
--    /* FIXME use qdev NIC properties instead of nd_table[] */
--    if (nd_table[0].used) {
--        qemu_check_nic_model(&nd_table[0], TYPE_AW_SUN8I_EMAC);
--        qdev_set_nic_properties(DEVICE(&s->emac), &nd_table[0]);
--    }
-+    qemu_configure_nic_device(DEVICE(&s->emac), true, NULL);
-     object_property_set_link(OBJECT(&s->emac), "dma-memory",
-                              OBJECT(get_system_memory()), &error_fatal);
-     sysbus_realize(SYS_BUS_DEVICE(&s->emac), &error_fatal);
-diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
-index a0d367c60d..4d5661b014 100644
---- a/hw/arm/allwinner-r40.c
-+++ b/hw/arm/allwinner-r40.c
-@@ -294,7 +294,6 @@ static void allwinner_r40_init(Object *obj)
- 
- static void allwinner_r40_realize(DeviceState *dev, Error **errp)
- {
--    const char *r40_nic_models[] = { "gmac", "emac", NULL };
-     AwR40State *s = AW_R40(dev);
- 
-     /* CPUs */
-@@ -454,31 +453,8 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->dramc), 2,
-                     s->memmap[AW_R40_DEV_DRAMPHY]);
- 
--    /* nic support gmac and emac */
--    for (int i = 0; i < ARRAY_SIZE(r40_nic_models) - 1; i++) {
--        NICInfo *nic = &nd_table[i];
--
--        if (!nic->used) {
--            continue;
--        }
--        if (qemu_show_nic_models(nic->model, r40_nic_models)) {
--            exit(0);
--        }
--
--        switch (qemu_find_nic_model(nic, r40_nic_models, r40_nic_models[0])) {
--        case 0: /* gmac */
--            qdev_set_nic_properties(DEVICE(&s->gmac), nic);
--            break;
--        case 1: /* emac */
--            qdev_set_nic_properties(DEVICE(&s->emac), nic);
--            break;
--        default:
--            exit(1);
--            break;
--        }
--    }
--
-     /* GMAC */
-+    qemu_configure_nic_device(DEVICE(&s->gmac), true, "gmac");
-     object_property_set_link(OBJECT(&s->gmac), "dma-memory",
-                                      OBJECT(get_system_memory()), &error_fatal);
-     sysbus_realize(SYS_BUS_DEVICE(&s->gmac), &error_fatal);
-@@ -487,6 +463,7 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
-                        qdev_get_gpio_in(DEVICE(&s->gic), AW_R40_GIC_SPI_GMAC));
- 
-     /* EMAC */
-+    qemu_configure_nic_device(DEVICE(&s->emac), true, "emac");
-     sysbus_realize(SYS_BUS_DEVICE(&s->emac), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->emac), 0, s->memmap[AW_R40_DEV_EMAC]);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->emac), 0,
+-        qemu_check_nic_model(&nd_table[0], "lan9118");
+-        dev = qdev_new(TYPE_LAN9118);
+-        qdev_set_nic_properties(dev, &nd_table[0]);
++    dev = qemu_create_nic_device(TYPE_LAN9118, true, NULL);
++    if (dev) {
+         qdev_prop_set_uint32(dev, "mode_16bit", 1);
+         s = SYS_BUS_DEVICE(dev);
+         sysbus_realize_and_unref(s, &error_fatal);
 -- 
 2.40.1
 
