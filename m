@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090AE7D215D
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9F67D218A
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:16:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quRaN-0002Js-Gq; Sun, 22 Oct 2023 02:05:15 -0400
+	id 1quRa7-0000s8-7Q; Sun, 22 Oct 2023 02:04:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRa0-0000UV-85
+ id 1quRa0-0000UW-83
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:04:52 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRZt-0002Et-Ea
+ id 1quRZu-0002F6-PI
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:04:51 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5844bc378feso381397eaf.0
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:04:44 -0700 (PDT)
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-5842c251d7cso1003527eaf.1
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:04:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697954684; x=1698559484; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697954685; x=1698559485; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mP6+VlPNB//yP5a6QZd7OLrJPFY+aQa3GFEyeJdT0uQ=;
- b=sEx/7C9hZ2Cv2+03hCSp3rPY8HZfUHwAVeHSE4PJK6BHwXoJSulhre6H1fabfILTWG
- ROoDieoyoJG0MUTMQPfH8TVUKha0EpIYEw2lf3tp1Z39D/pr4gDpCEpyuXcoCwccPQhf
- IoTpqQzeRy9VBk7vIBTFOHkBt9ynEMHCMhghl/mVSNFY9+JDR4b8kZLt2MYQkYgEAB6L
- fAmO1py41UBr9mltcVV3d/e9/cejIu9j6Qp1dLpXc63D8jpvTNAGHdDL4LrRrIz8COj7
- bmx81F9V1QtLLlMu+Mxz2wpnR41Y9OQ7GM2WBHpLrD5SGYsmzs96Dd36f3uU0FbiwKvI
- Gk9Q==
+ bh=JgafbUxzPcRrNpMg2DdW/+ZW+itPO8ApXYi0Ba+fYVM=;
+ b=hTfrPgCN0X50zKZwTY5v81YKYm02zSbssqMtGwyC5Gzbgn+UE3hEjXu+kRb1ZoopFR
+ e/Qvuc+QY5XUCVLgor7tZa2JLua/ClVctSEQ7soZRUJVGiDHOir/owgprEeAo9H0oBiS
+ AMXpytVjorOEJycrGiFLFjeStlF/rTlhE0xbtiiRzVSE3xuLga4rOmzOYAGjRMeWe/1S
+ Rr8w1V4hOTLi6oGcxo9Coj4KPHV6zcimSRKDZwQWVNLEAPBLBB3rUPeYgXLDDbutCufv
+ 6nrmBhOYVQ2p/fWxSLRdp6fcaeDrD8Pw/KnbhkQh1Jrbgmo+i2GKCY6jT9jndfNbw4qK
+ avmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697954684; x=1698559484;
+ d=1e100.net; s=20230601; t=1697954685; x=1698559485;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mP6+VlPNB//yP5a6QZd7OLrJPFY+aQa3GFEyeJdT0uQ=;
- b=SVbz5DPYm/F554Qld3OS+Vi48vGQJ2ieDnz1CFyD8pcnfWY4ELBHjPdYBV6A8PA0tP
- cAcM+6y6/735uC/2HJtd9fhgF3GW9ppJf/OdcfbxoBLF1dbrAOf3jb4ZujvPkP2MbIcB
- lbAXd1lx4sjXncDHwaxP9qZnRwyGYheVyoDmcXhv7Kg3j7pLLi7wRXSJVIxws2Rq1v+w
- r+kU7KR761gmZOLTyCBZEU5One0MpdSG6zYbMMuxMwH7VrECyGw8+L17BUHT6GNYJsdM
- Lik/1LgF5e3WEfWCKXkbClIXGSUHrIKhIBzFPwb/xln9sCO4SNyIg5FUWldJ6CZ0LPPi
- 4zsA==
-X-Gm-Message-State: AOJu0Yw35TwkVc0gLpK4ZzL1QokPhLTBG/MyyKQyB3pzrC8UN6UUP5PA
- nDv73g2IM402laXOz8DRScitoMEc5TuPG8yia/U=
-X-Google-Smtp-Source: AGHT+IEGChhWIBmmMwFeL1VTk0IGBnZy1NT2KAK1DgvudzdvM1amXZQwgkLpYP5e4FsC/00jsQXNQg==
-X-Received: by 2002:a05:6358:418d:b0:14f:736b:7745 with SMTP id
- w13-20020a056358418d00b0014f736b7745mr7227055rwc.31.1697954683837; 
- Sat, 21 Oct 2023 23:04:43 -0700 (PDT)
+ bh=JgafbUxzPcRrNpMg2DdW/+ZW+itPO8ApXYi0Ba+fYVM=;
+ b=arW05ZOfE2dZ/TAe4e7q8JIbS2cbdpPqvH4Mu578L2rLUZjKZSHBotpLIotOmv8VWi
+ NwjW2zpqNxMHp8e+Rg8k6xAl4rnjL+j1emfSOVaaFfWBv2jIeJq0r8NIJkvOZvbDlPU3
+ +XeZI0JHKs7gOU1zTZQ1ZSNgAyB7660UWbazMUJ1ckOHhUyvi4NwX1P7ctTiuM5X/yEs
+ skcx07qC4zV4z+n7qwvGfcTNvm9nAZOjcbLj+S6J13K2dCLsjs4yDrq6VyD8vnRQVpqZ
+ Noj6waktKFyLFXSpbazsU+8Dzsa0M6/2QF+6VUBaDs5hEcRJtsweX1tBR0Fy2I3d0CtY
+ ChIw==
+X-Gm-Message-State: AOJu0YzEULI+PENHasXseWJkyh65njZZ7VD9EyCTdZnXwhHQr6dEJVye
+ +qXcHq0Vsqg0h0S0ijBlIjNuf7lLuXi+NjUOg9w=
+X-Google-Smtp-Source: AGHT+IGhf/Cr+8pLVxQGbnzrmSIl3IkGkKhdNKyqeGy/9mZsI7jnfY2EG7rO/0mXYiHB9Gipfxp/pA==
+X-Received: by 2002:a05:6358:4311:b0:143:61d:ffd3 with SMTP id
+ r17-20020a056358431100b00143061dffd3mr5475098rwc.4.1697954684676; 
+ Sat, 21 Oct 2023 23:04:44 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  fb13-20020a056a002d8d00b0068a46cd4120sm4007373pfb.199.2023.10.21.23.04.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 23:04:43 -0700 (PDT)
+ Sat, 21 Oct 2023 23:04:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 50/90] target/sparc: Move LDSTUB, LDSTUBA to decodetree
-Date: Sat, 21 Oct 2023 22:59:51 -0700
-Message-Id: <20231022060031.490251-51-richard.henderson@linaro.org>
+Subject: [PATCH v4 51/90] target/sparc: Move SWAP, SWAPA to decodetree
+Date: Sat, 21 Oct 2023 22:59:52 -0700
+Message-Id: <20231022060031.490251-52-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022060031.490251-1-richard.henderson@linaro.org>
 References: <20231022060031.490251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,140 +90,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove gen_ldstub_asi.
-Rename gen_ldstub_asi0 to gen_ldstub_asi.
-Merge gen_ldstub into gen_ldstub_asi.
+Remove gen_swap_asi.
+Rename gen_swap_asi0 to gen_swap_asi.
+Merge gen_swap into gen_swap_asi.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  4 ++++
- target/sparc/translate.c  | 46 +++++++++++++++++++--------------------
- 2 files changed, 26 insertions(+), 24 deletions(-)
+ target/sparc/insns.decode |  4 +++
+ target/sparc/translate.c  | 58 +++++++++++++++++----------------------
+ 2 files changed, 29 insertions(+), 33 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 280b19f033..2f950000b5 100644
+index 2f950000b5..9c4597317c 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -284,6 +284,10 @@ STD         11 ..... 010111 ..... . .............          @r_r_i_asi # STDA
- STX         11 ..... 011110 ..... . .............          @r_r_r_asi # STXA
- STX         11 ..... 011110 ..... . .............          @r_r_i_asi # STXA
+@@ -288,6 +288,10 @@ LDSTUB      11 ..... 001101 ..... . .............          @r_r_ri_na
+ LDSTUB      11 ..... 011101 ..... . .............          @r_r_r_asi # LDSTUBA
+ LDSTUB      11 ..... 011101 ..... . .............          @r_r_i_asi # LDSTUBA
  
-+LDSTUB      11 ..... 001101 ..... . .............          @r_r_ri_na
-+LDSTUB      11 ..... 011101 ..... . .............          @r_r_r_asi # LDSTUBA
-+LDSTUB      11 ..... 011101 ..... . .............          @r_r_i_asi # LDSTUBA
++SWAP        11 ..... 001111 ..... . .............          @r_r_ri_na
++SWAP        11 ..... 011111 ..... . .............          @r_r_r_asi # SWAPA
++SWAP        11 ..... 011111 ..... . .............          @r_r_i_asi # SWAPA
 +
  NCP         10 ----- 110110 ----- --------- -----          # v8 CPop1
  NCP         10 ----- 110111 ----- --------- -----          # v8 CPop2
  
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 7af95df66f..cba453e5ff 100644
+index cba453e5ff..4a42acafd9 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -1891,13 +1891,6 @@ static void gen_swap(DisasContext *dc, TCGv dst, TCGv src,
-     tcg_gen_atomic_xchg_tl(dst, addr, src, mmu_idx, memop | MO_ALIGN);
+@@ -1884,13 +1884,6 @@ static void gen_ne_fop_QD(DisasContext *dc, int rd, int rs,
+     gen_update_fprs_dirty(dc, QFPREG(rd));
  }
  
--static void gen_ldstub(DisasContext *dc, TCGv dst, TCGv addr, int mmu_idx)
+-static void gen_swap(DisasContext *dc, TCGv dst, TCGv src,
+-                     TCGv addr, int mmu_idx, MemOp memop)
 -{
--    TCGv m1 = tcg_constant_tl(0xff);
 -    gen_address_mask(dc, addr);
--    tcg_gen_atomic_xchg_tl(dst, addr, m1, mmu_idx, MO_UB);
+-    tcg_gen_atomic_xchg_tl(dst, addr, src, mmu_idx, memop | MO_ALIGN);
 -}
 -
  /* asi moves */
  typedef enum {
      GET_ASI_HELPER,
-@@ -2316,13 +2309,14 @@ gen_casx_asi(DisasContext *dc, TCGv addr, TCGv cmpv, int insn, int rd)
-     gen_store_gpr(dc, rd, oldv);
+@@ -2243,14 +2236,15 @@ static void gen_st_asi(DisasContext *dc, DisasASI *da, TCGv src, TCGv addr)
+     }
  }
  
--static void gen_ldstub_asi0(DisasContext *dc, DisasASI *da, TCGv dst, TCGv addr)
-+static void gen_ldstub_asi(DisasContext *dc, DisasASI *da, TCGv dst, TCGv addr)
+-static void gen_swap_asi0(DisasContext *dc, DisasASI *da,
+-                          TCGv dst, TCGv src, TCGv addr)
++static void gen_swap_asi(DisasContext *dc, DisasASI *da,
++                         TCGv dst, TCGv src, TCGv addr)
  {
      switch (da->type) {
      case GET_ASI_EXCP:
          break;
      case GET_ASI_DIRECT:
--        gen_ldstub(dc, dst, addr, da->mem_idx);
-+        tcg_gen_atomic_xchg_tl(dst, addr, tcg_constant_tl(0xff),
-+                               da->mem_idx, MO_UB);
+-        gen_swap(dc, dst, src, addr, da->mem_idx, da->memop);
++        tcg_gen_atomic_xchg_tl(dst, addr, src,
++                               da->mem_idx, da->memop | MO_ALIGN);
          break;
      default:
-         /* ??? In theory, this should be raise DAE_invalid_asi.
-@@ -2350,15 +2344,6 @@ static void gen_ldstub_asi0(DisasContext *dc, DisasASI *da, TCGv dst, TCGv addr)
+         /* ??? Should be DAE_invalid_asi.  */
+@@ -2259,15 +2253,6 @@ static void gen_swap_asi0(DisasContext *dc, DisasASI *da,
      }
  }
  
 -static void __attribute__((unused))
--gen_ldstub_asi(DisasContext *dc, TCGv dst, TCGv addr, int insn)
+-gen_swap_asi(DisasContext *dc, TCGv dst, TCGv src, TCGv addr, int insn)
 -{
--    DisasASI da = get_asi(dc, insn, MO_UB);
+-    DisasASI da = get_asi(dc, insn, MO_TEUL);
 -
 -    gen_address_mask(dc, addr);
--    gen_ldstub_asi0(dc, &da, dst, addr);
+-    gen_swap_asi0(dc, &da, dst, src, addr);
 -}
 -
- static void __attribute__((unused))
- gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
+ static void gen_cas_asi0(DisasContext *dc, DisasASI *da,
+                          TCGv oldv, TCGv newv, TCGv cmpv, TCGv addr)
  {
-@@ -4764,6 +4749,23 @@ static bool trans_STD(DisasContext *dc, arg_r_r_ri_asi *a)
+@@ -4766,6 +4751,24 @@ static bool trans_LDSTUB(DisasContext *dc, arg_r_r_ri_asi *a)
      return advance_pc(dc);
  }
  
-+static bool trans_LDSTUB(DisasContext *dc, arg_r_r_ri_asi *a)
++static bool trans_SWAP(DisasContext *dc, arg_r_r_ri_asi *a)
 +{
-+    TCGv addr, reg;
++    TCGv addr, dst, src;
 +    DisasASI da;
 +
 +    addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
 +    if (addr == NULL) {
 +        return false;
 +    }
-+    da = resolve_asi(dc, a->asi, MO_UB);
++    da = resolve_asi(dc, a->asi, MO_TEUL);
 +
-+    reg = gen_dest_gpr(dc, a->rd);
-+    gen_ldstub_asi(dc, &da, reg, addr);
-+    gen_store_gpr(dc, a->rd, reg);
++    dst = gen_dest_gpr(dc, a->rd);
++    src = gen_load_gpr(dc, a->rd);
++    gen_swap_asi(dc, &da, dst, src, addr);
++    gen_store_gpr(dc, a->rd, dst);
 +    return advance_pc(dc);
 +}
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -5592,21 +5594,20 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                 case 0x3:       /* ldd, load double word */
+@@ -4777,7 +4780,7 @@ static bool trans_LDSTUB(DisasContext *dc, arg_r_r_ri_asi *a)
+ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ {
+     unsigned int opc, rs1, rs2, rd;
+-    TCGv cpu_src1;
++    TCGv cpu_src1 __attribute__((unused));
+     TCGv cpu_src2 __attribute__((unused));
+     TCGv_i32 cpu_src1_32, cpu_src2_32, cpu_dst_32;
+     TCGv_i64 cpu_src1_64, cpu_src2_64, cpu_dst_64;
+@@ -5595,6 +5598,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                  case 0x9:       /* ldsb, load signed byte */
                  case 0xa:       /* ldsh, load signed halfword */
-+                case 0xd:       /* ldstub */
+                 case 0xd:       /* ldstub */
++                case 0x0f:      /* swap */
                  case 0x10:      /* lda, V9 lduwa, load word alternate */
                  case 0x11:      /* lduba, load unsigned byte alternate */
                  case 0x12:      /* lduha, load unsigned halfword alternate */
-                 case 0x13:      /* ldda, load double word alternate */
+@@ -5602,25 +5606,13 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                  case 0x19:      /* ldsba, load signed byte alternate */
                  case 0x1a:      /* ldsha, load signed halfword alternate */
-+                case 0x1d:      /* ldstuba */
+                 case 0x1d:      /* ldstuba */
++                case 0x1f:      /* swapa */
                      g_assert_not_reached();  /* in decodetree */
                  case 0x08:      /* V9 ldsw */
                  case 0x0b:      /* V9 ldx */
                  case 0x18:      /* V9 ldswa */
                  case 0x1b:      /* V9 ldxa */
                      goto illegal_insn;  /* in decodetree */
--                case 0xd:       /* ldstub */
--                    gen_ldstub(dc, cpu_val, cpu_addr, dc->mem_idx);
+-                case 0x0f:
+-                    /* swap, swap register with memory. Also atomically */
+-                    cpu_src1 = gen_load_gpr(dc, rd);
+-                    gen_swap(dc, cpu_val, cpu_src1, cpu_addr,
+-                             dc->mem_idx, MO_TEUL);
 -                    break;
-                 case 0x0f:
-                     /* swap, swap register with memory. Also atomically */
-                     cpu_src1 = gen_load_gpr(dc, rd);
-@@ -5614,9 +5615,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                              dc->mem_idx, MO_TEUL);
-                     break;
- #if !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
--                case 0x1d:      /* ldstuba -- XXX: should be atomically */
--                    gen_ldstub_asi(dc, cpu_val, cpu_addr, insn);
+-#if !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
+-                case 0x1f:      /* swapa, swap reg with alt. memory. Also
+-                                   atomically */
+-                    cpu_src1 = gen_load_gpr(dc, rd);
+-                    gen_swap_asi(dc, cpu_val, cpu_src1, cpu_addr, insn);
 -                    break;
-                 case 0x1f:      /* swapa, swap reg with alt. memory. Also
-                                    atomically */
-                     cpu_src1 = gen_load_gpr(dc, rd);
+-#endif
+ #ifdef TARGET_SPARC64
+                 case 0x2d: /* V9 prefetch, no effect */
+                     goto skip_move;
 -- 
 2.34.1
 
