@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A31B7D2253
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5AE7D2228
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:24:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUgQ-00059l-Dq; Sun, 22 Oct 2023 05:23:42 -0400
+	id 1quUgU-0005q7-6S; Sun, 22 Oct 2023 05:23:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgN-0004tj-Jg
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgP-00057c-Dq
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgJ-0000Pa-U4
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:39 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgN-0000Pw-PD
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697966615;
+ s=mimecast20190719; t=1697966619;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uQ6e9TBmbkGr/609GK2LAExHu2tk4bgtDcm3tAT8ROI=;
- b=af5aIdP3kA32e7ISiO85mhprbVUAkcj68f6uV79wWLtBuNmR5rangWXykjiT+d9ERASmxG
- NMEHlJyg5CpM/pq0R74X7QcGg5x7qZRBI4pgcdSViQNI/wqawVkhlbYfZ1aMZv33dCEE/O
- QBZfqs4j+8M2IvpXQpHp/sbV1s4czCQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Pzl+3SpXCzlVlixQWa1M8uUNysQnsBwV7t6Y2e5urE4=;
+ b=C0PvUg2Cp2p267pgDHst6NK1HYqxdxDeFuqK86fy5pLgSAKIxS71WaxqIdP60Yo2hDLMAk
+ W67ybYOU6xNSsSWZzCXaQV0LJfAkS5HvOljVUV+9ljPOe0d9bEBYuQAr4jalgsSPzcG4N4
+ Ydk8x3/PRcXY2kGu3NauI49JxDpno4c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92-N5qHILgUNyuDfpKLvPLVhA-1; Sun, 22 Oct 2023 05:23:33 -0400
-X-MC-Unique: N5qHILgUNyuDfpKLvPLVhA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4084d0b171eso13960255e9.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:23:32 -0700 (PDT)
+ us-mta-637-N1ibNbjFNkOrHDFyCJzgWA-1; Sun, 22 Oct 2023 05:23:37 -0400
+X-MC-Unique: N1ibNbjFNkOrHDFyCJzgWA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32da47641b5so1033771f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:23:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966611; x=1698571411;
+ d=1e100.net; s=20230601; t=1697966615; x=1698571415;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uQ6e9TBmbkGr/609GK2LAExHu2tk4bgtDcm3tAT8ROI=;
- b=JRoXVhRdr455neJvLMI5Vt+qRh0ESdfMcCVi4IK3sYnW5OMp7HKtnxEoryKVriL0QO
- 5q4waulVCJcTZ4QFdaGtex9gA5+ar1UW0iRwo8BCsi7w/T0ripPieiap/PizUpGwWF14
- lDEWGajQBVjlOMurbgWwtrTfTFeFmq0rM1nj7HiinsUfFTuYaSJIMWxQCa6d4b5jeGY+
- XXPnCdxbyK6kirKn3ZZonWewkBBsl6Ijtj4I/wQ3jryetX6P+GZ3MGrkr37z0NyIHUfL
- +ukfkarnntDSZ/PwYVbpa0L8D38/mwxuYfLFQO8h3EhpHqmwnSIjRL9FVKg7b/3jz304
- V0eA==
-X-Gm-Message-State: AOJu0YxEl7b4Y00MuEIYdHXnuk3TC39KYzKAphmCP+by6nZwTu3cYP30
- ANmjp9ZDMSyKpdPs75WAo/w8ei5vzL9x7/V1Rcm9K9KFQpKAOGc1fkzJykgr+8ClEHaeFXWUIWC
- hbyTK8Y3H2JqB2c47y+aRaj6Nsb8dtSVR+Q89W1IQ+gH5Gb39HJBCWHDoMwyKvWHvjdG1
-X-Received: by 2002:a05:600c:602a:b0:407:4126:f71c with SMTP id
- az42-20020a05600c602a00b004074126f71cmr9157198wmb.6.1697966611232; 
- Sun, 22 Oct 2023 02:23:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNgl7cHkPhLLtnXKtquwqJh1+gi74YpNvWhgyvYCjDKZAmEGepen083YFwyQgiHdo8tAcMbg==
-X-Received: by 2002:a05:600c:602a:b0:407:4126:f71c with SMTP id
- az42-20020a05600c602a00b004074126f71cmr9157179wmb.6.1697966610969; 
- Sun, 22 Oct 2023 02:23:30 -0700 (PDT)
+ bh=Pzl+3SpXCzlVlixQWa1M8uUNysQnsBwV7t6Y2e5urE4=;
+ b=p6G1s4sLIZFxIIM4A8INAP6pL5Vq5YwoSFO1j8JgwAbtQ2w0SYnaYk2ZD5TiCHqGqD
+ eN/3red5O5fc/kIGP1joL8SJh8Zra7zsIZxHVNa0fpJCM7QNZiolxxfR2zNPzf03G3on
+ AhKoLI9vwYMeSYLH9FtnmTf/J2RIHRQ8qz2Oy9BvnQq9pzrOXp6WseMYe6AmmV1oaA19
+ sde900uqIC4zE89NuotSvNU7zzO14xKIdpKTEkuJ9JAEmo6b4/3Qe8mb6xYbJ2pnlGgd
+ buwphS5I+VcLdtX2C7bAGoJg4hA+oHM5urspltrKA2J6x7oEoBz+h+ZWcRQ11qpdWKo+
+ cGdA==
+X-Gm-Message-State: AOJu0Yx2BYm584EBB8S+4X/14OMtg5IBLrdECwQEpAW3e6XT2YqJ8fQ7
+ UfIpz7X8MgDnqqKAfTVyEFHkO+PbGAFla0l30t7K1Tctdz9BPFBsiuW+rS4YbsiWLn8kxPKXsiw
+ aKbYD29we7fSZ3eVjDI8PzfKO2usozQSnkjznaTWSg/jZTvi4n49lpGP52qV4tv2oTn+z
+X-Received: by 2002:a5d:664c:0:b0:32d:93aa:3d63 with SMTP id
+ f12-20020a5d664c000000b0032d93aa3d63mr4631557wrw.69.1697966615529; 
+ Sun, 22 Oct 2023 02:23:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGvc9KUMTAncOmKvVGtz92vaBolbkXoWoNm1hAtcn4/6CB324NPi6cPb/tDr0snC82D7uEqqQ==
+X-Received: by 2002:a5d:664c:0:b0:32d:93aa:3d63 with SMTP id
+ f12-20020a5d664c000000b0032d93aa3d63mr4631541wrw.69.1697966615235; 
+ Sun, 22 Oct 2023 02:23:35 -0700 (PDT)
 Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
- p3-20020a05600c468300b0040646a708dasm6454046wmo.15.2023.10.22.02.23.29
+ r6-20020a5d6946000000b0032da4c98ab2sm5274424wrw.35.2023.10.22.02.23.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:23:30 -0700 (PDT)
-Date: Sun, 22 Oct 2023 05:23:27 -0400
+ Sun, 22 Oct 2023 02:23:34 -0700 (PDT)
+Date: Sun, 22 Oct 2023 05:23:31 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- Albert Esteve <aesteve@redhat.com>, Matheus@redhat.com,
- Tavares@redhat.com, Bernardino@redhat.com, &lt@redhat.com
-Subject: [PULL v3 21/62] hw/display: fix memleak from virtio_add_resource
-Message-ID: <9b50fd02900c11e6e50c7913e5772031749b3e8d.1697966402.git.mst@redhat.com>
+ Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL v3 22/62] hw/i386/pc: Merge two if statements into one
+Message-ID: <9c91051119f8c493a5802c4f5347516679e55552.1697966402.git.mst@redhat.com>
 References: <cover.1697966402.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -75,14 +76,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1697966402.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,81 +100,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-When the given uuid is already present in the hash table,
-virtio_add_resource() does not add the passed VirtioSharedObject. In
-this case, free it in the callers to avoid leaking memory. This fixed
-the following `make check` error, when built with --enable-sanitizers:
+By being the only entity assigning a non-NULL value to "rtc_irq", the first if
+statement determines whether the second if statement is executed. So merge the
+two statements into one.
 
-  4/166 qemu:unit / test-virtio-dmabuf   ERROR 1.51s   exit status 1
-
-  ==7716==ERROR: LeakSanitizer: detected memory leaks
-  Direct leak of 320 byte(s) in 20 object(s) allocated from:
-      #0 0x7f6fc16e3808 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cc:144
-      #1 0x7f6fc1503e98 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x57e98)
-      #2 0x564d63cafb6b in test_add_invalid_resource ../tests/unit/test-virtio-dmabuf.c:100
-      #3 0x7f6fc152659d  (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x7a59d)
-  SUMMARY: AddressSanitizer: 320 byte(s) leaked in 20 allocation(s).
-
-The changes at virtio_add_resource() itself are not strictly necessary
-for the memleak fix, but they make it more obvious that, on an error
-return, the passed object is not added to the hash.
-
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Message-Id: <c61c13f9a0c67dec473bdbfc8789c29ef26c900b.1696624734.git.quic_mathbern@quicinc.com>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20231007123843.127151-2-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Albert Esteve <aesteve@redhat.com>
-Signed-off-by: Matheus Tavares Bernardino &lt;<a href="mailto:quic_mathbern@quicinc.com" target="_blank">quic_mathbern@quicinc.com</a>&gt;<br>
 ---
- hw/display/virtio-dmabuf.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ hw/i386/pc.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
-index 4a8e430f3d..3dba4577ca 100644
---- a/hw/display/virtio-dmabuf.c
-+++ b/hw/display/virtio-dmabuf.c
-@@ -29,7 +29,7 @@ static int uuid_equal_func(const void *lhv, const void *rhv)
- 
- static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
- {
--    bool result = false;
-+    bool result = true;
- 
-     g_mutex_lock(&lock);
-     if (resource_uuids == NULL) {
-@@ -39,7 +39,9 @@ static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
-                                                g_free);
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index bb3854d1d0..7e6c4dc526 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1199,7 +1199,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+     DeviceState *hpet = NULL;
+     int pit_isa_irq = 0;
+     qemu_irq pit_alt_irq = NULL;
+-    qemu_irq rtc_irq = NULL;
+     ISADevice *pit = NULL;
+     MemoryRegion *ioport80_io = g_new(MemoryRegion, 1);
+     MemoryRegion *ioportF0_io = g_new(MemoryRegion, 1);
+@@ -1219,6 +1218,8 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+      */
+     if (pcms->hpet_enabled && (!kvm_irqchip_in_kernel() ||
+                                kvm_has_pit_state2())) {
++        qemu_irq rtc_irq;
++
+         hpet = qdev_try_new(TYPE_HPET);
+         if (!hpet) {
+             error_report("couldn't create HPET device");
+@@ -1243,9 +1244,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+         pit_isa_irq = -1;
+         pit_alt_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_PIT_INT);
+         rtc_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_RTC_INT);
+-    }
+-
+-    if (rtc_irq) {
+         qdev_connect_gpio_out(DEVICE(rtc_state), 0, rtc_irq);
+     } else {
+         uint32_t irq = object_property_get_uint(OBJECT(rtc_state),
+@@ -1253,6 +1251,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+                                                 &error_fatal);
+         isa_connect_gpio_out(rtc_state, 0, irq);
      }
-     if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
--        result = g_hash_table_insert(resource_uuids, uuid, value);
-+        g_hash_table_insert(resource_uuids, uuid, value);
-+    } else {
-+        result = false;
-     }
-     g_mutex_unlock(&lock);
++
+     object_property_add_alias(OBJECT(pcms), "rtc-time", OBJECT(rtc_state),
+                               "date");
  
-@@ -57,6 +59,9 @@ bool virtio_add_dmabuf(QemuUUID *uuid, int udmabuf_fd)
-     vso->type = TYPE_DMABUF;
-     vso->value = GINT_TO_POINTER(udmabuf_fd);
-     result = virtio_add_resource(uuid, vso);
-+    if (!result) {
-+        g_free(vso);
-+    }
- 
-     return result;
- }
-@@ -72,6 +77,9 @@ bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
-     vso->type = TYPE_VHOST_DEV;
-     vso->value = dev;
-     result = virtio_add_resource(uuid, vso);
-+    if (!result) {
-+        g_free(vso);
-+    }
- 
-     return result;
- }
 -- 
 MST
 
