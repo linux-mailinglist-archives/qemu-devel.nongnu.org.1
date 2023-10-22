@@ -2,92 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2BD7D25CE
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 22:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767227D2678
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 00:08:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quety-0001sU-Ls; Sun, 22 Oct 2023 16:18:22 -0400
+	id 1qugay-0006Xh-UC; Sun, 22 Oct 2023 18:06:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quetw-0001s8-Pb
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:18:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quetv-0006lZ-C2
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:18:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698005898;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+6UEYQBu/Dqgh/sz0C77HuJTs8B/70/DderQeQMVTRg=;
- b=WeiaJZ17zcbDSUi0/9rb+ge42k1RNBE3SVeHcL1B8cUZ7PWuXcgBstj70Y/posyGKgH7e0
- a/GMVFfUEkKJ+y3JBo7B43FVR+rbhuDcxL8WS3SAdcxn/3fqcK613UCYLR75kkWPpfcUMG
- ViLldoIVhcYD1PSVPi3U01OHdbAcu/Q=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-436-W-_nbR0eOxeWKAXVdNLUag-1; Sun, 22 Oct 2023 16:18:06 -0400
-X-MC-Unique: W-_nbR0eOxeWKAXVdNLUag-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66011f0d521so11045076d6.1
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 13:18:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qugau-0006Wx-3f; Sun, 22 Oct 2023 18:06:48 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qugao-0008Iq-I2; Sun, 22 Oct 2023 18:06:47 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9c41e95efcbso378561266b.3; 
+ Sun, 22 Oct 2023 15:06:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698012399; x=1698617199; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
+ :reply-to; bh=S+IC8QbjH/bGFjYo+lXeMuYN2qJyH6doP9CoNSdD2rE=;
+ b=BF4Wgu+/qep3BQPjmoLNH3rzJ8joR81Z94qd+eAZAsOx1F7rmk6SN7plRnKTN+2cig
+ 4qst04nqwxiAdxzcet9F5piiiGY3VQFZ3XPXduiv+baR7UMWoY5+uUo3P/DfnmUpEi1a
+ HAxcUDvgdLUmCuxyhOXAISEnZ0jkOAOcgV0e8m4IrxsFIcCGt0GWT1boN28TlOPmCRzq
+ iOUt1QtH9ccnmbFwgt6Gumtr2LbTmk+6w/z4sVpdGvGjkayNIn0flHs6AgjjKVSPlwnR
+ JRaj/Cpmbck83I9g9RlCWtJ/l6KQApI6woCFET6AM2YTZh854oLEn3lfWFNWPaGj+AOz
+ BCOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698005886; x=1698610686;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+6UEYQBu/Dqgh/sz0C77HuJTs8B/70/DderQeQMVTRg=;
- b=GT3IiD6ylp40n1CvlFYHBpbz5gqO6pmyVkjbDttdWYmveFeEXh1Nk/stpzTLeExf8l
- qehZJVc+4KKqfiT797jL3Z9FUM7wDK4JXaLEWIOwDSXVd1X0ihcu8l1LazZWtqeqvvzx
- 2JGwunqh+4qM8q1+KWSmQdUE7oQZfGDaozmeo4Z8D7djXQ350UGtAtj/4ZJTGSpaRqXa
- F0PRtQoJV7ye7wsYD9lQxd+17J+CrjD1IG0KsA+d3A76m2iOsJVd0YC0vFrDCyEFmXDm
- CvCvfbz6Qs6YN0EznV5pwZuQxVuuRznLSUK1dH5nwKcqWmAPXECsCxhC+b2vEPOByy5m
- ut5Q==
-X-Gm-Message-State: AOJu0YwljFTIvtn2uszTeG92pzeNMWPkpTUrM44tP0k7QTzR3vU3xGRC
- HKmvm77hrMPRK2Syt/pISf1vQ1aLHlqnirNlriqY4J0NdCN3OLH7aGtR8XPGZN7EvS+MptLbg9P
- rvefh3KHnHwkzx6I=
-X-Received: by 2002:a05:620a:2793:b0:76f:1846:2f6b with SMTP id
- g19-20020a05620a279300b0076f18462f6bmr7702423qkp.1.1698005886158; 
- Sun, 22 Oct 2023 13:18:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE+r4qEvroebnsmNcncq8mOBVmGSOrDK/9Zf13YIB0Pmf+Few7iAJx48IplecLeiHHux0zAdw==
-X-Received: by 2002:a05:620a:2793:b0:76f:1846:2f6b with SMTP id
- g19-20020a05620a279300b0076f18462f6bmr7702410qkp.1.1698005885835; 
- Sun, 22 Oct 2023 13:18:05 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- u24-20020a05620a085800b007756e75b91bsm2215671qku.78.2023.10.22.13.18.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 13:18:05 -0700 (PDT)
-Date: Sun, 22 Oct 2023 16:17:49 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: quintela@redhat.com, qemu-devel@nongnu.org,
- Leonardo Bras <leobras@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
- semaphore
-Message-ID: <ZTWDbc2b3PNQKizx@x1n>
-References: <20231012140651.13122-1-farosas@suse.de>
- <20231012140651.13122-2-farosas@suse.de>
- <87sf676kxt.fsf@secure.mitica> <87r0lqy83p.fsf@suse.de>
- <87wmvi3akc.fsf@secure.mitica> <87lebyy5ac.fsf@suse.de>
- <87a5se3161.fsf@secure.mitica> <ZTF9vL8yyn6McuTx@x1n>
- <87ttql20hz.fsf@secure.mitica> <87ttqlh32h.fsf@suse.de>
+ d=1e100.net; s=20230601; t=1698012399; x=1698617199;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=S+IC8QbjH/bGFjYo+lXeMuYN2qJyH6doP9CoNSdD2rE=;
+ b=Wiuw8Nkf/P6A6PaU/q97DBlJfg4KwMBnz+koK9lafBRa3OmH7ibxA2m/S1RXPu9BEn
+ oCCwCr5Ul9bMXIOkynKWQxd7hMB2wEf1E0JieNSPD/jdwxcfPHji7wMklaKZErsfD22z
+ pC9KfiKt4T5l/G77WqMcgoAQvUjkXeUxm5e4Klq4YjR9P7gcTLwhaFAseUAZaOubVIfm
+ lRQfDBnLe2q4VroBqfmFS/v88R7XRgoXwx0bkB5vN2D36I55HZ+UhBEkw7QyBl4VNUNz
+ QjJmCpFfOHSv+N8SiqRo8h6SCKlL7+PnVtUW6PXMyukLnnpkhyA8Nb513NIR9pwOSAV7
+ 03zw==
+X-Gm-Message-State: AOJu0Yw9gWEE4Zsnl6416YIFUD2FhDV9UBlsc3fh5dUDTiL/f5b/tdp+
+ iasZ4F0r182bQNnWJisixB0=
+X-Google-Smtp-Source: AGHT+IE/ErqGPKfl0tCRktSW3lx3ZHw4Hw6yw+gwRDZJeRcFacuz5dyv/72bAk3UcFcAwePwo0HX9A==
+X-Received: by 2002:a17:906:d542:b0:9be:e153:3f2e with SMTP id
+ cr2-20020a170906d54200b009bee1533f2emr4925587ejc.29.1698012399225; 
+ Sun, 22 Oct 2023 15:06:39 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-013-189-152.77.13.pool.telefonica.de.
+ [77.13.189.152]) by smtp.gmail.com with ESMTPSA id
+ a20-20020a1709066d5400b0099bd5d28dc4sm5628630ejt.195.2023.10.22.15.06.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 22 Oct 2023 15:06:38 -0700 (PDT)
+Date: Sun, 22 Oct 2023 22:06:30 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, balaton@eik.bme.hu,
+ philmd@linaro.org
+Subject: Re: [PATCH 1/2] ide/pci.c: introduce pci_ide_update_mode() function
+In-Reply-To: <20231019130452.508426-2-mark.cave-ayland@ilande.co.uk>
+References: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
+ <20231019130452.508426-2-mark.cave-ayland@ilande.co.uk>
+Message-ID: <B2C0A4CE-0382-48F0-A513-8AD69960F2BF@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87ttqlh32h.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,39 +91,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 20, 2023 at 09:48:54AM -0300, Fabiano Rosas wrote:
-> > If pending_job == 0 -> owner of the channel is migration_thread and it
-> > can use it.
-> >
-> > If pending_job > 0 -> owner of the channel is the channel thread and
-> > migration_thread can't use it.
-> 
-> Do you really mean "migration_thread" here or just multifd_send_pages()?
-> Because multifd_send_sync_main() doesn't care about this ownership
-> rule. Does that mean that code is incorrect?
 
-Yes, that's also what I was referring as the confusion, too.
 
-[...]
+Am 19=2E Oktober 2023 13:04:51 UTC schrieb Mark Cave-Ayland <mark=2Ecave-a=
+yland@ilande=2Eco=2Euk>:
+>This function reads the value of the PCI_CLASS_PROG register for PCI IDE
+>controllers and configures the PCI BARs and/or IDE ioports accordingly=2E
+>
+>In the case where we switch to legacy mode, the PCI BARs are set to retur=
+n zero
+>(as suggested in the "PCI IDE Controller" specification), the legacy IDE =
+ioports
+>are enabled, and the PCI interrupt pin cleared to indicate legacy IRQ rou=
+ting=2E
+>
+>Conversely when we switch to native mode, the legacy IDE ioports are disa=
+bled
+>and the PCI interrupt pin set to indicate native IRQ routing=2E The conte=
+nts of
+>the PCI BARs are unspecified, but this is not an issue since if a PCI IDE
+>controller has been switched to native mode then its BARs will need to be
+>programmed=2E
+>
+>Signed-off-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
+>---
+> hw/ide/pci=2Ec         | 90 ++++++++++++++++++++++++++++++++++++++++++++
+> include/hw/ide/pci=2Eh |  1 +
+> 2 files changed, 91 insertions(+)
+>
+>diff --git a/hw/ide/pci=2Ec b/hw/ide/pci=2Ec
+>index a25b352537=2E=2E9eb30af632 100644
+>--- a/hw/ide/pci=2Ec
+>+++ b/hw/ide/pci=2Ec
+>@@ -104,6 +104,96 @@ const MemoryRegionOps pci_ide_data_le_ops =3D {
+>     =2Eendianness =3D DEVICE_LITTLE_ENDIAN,
+> };
+>=20
+>+static const MemoryRegionPortio ide_portio_list[] =3D {
+>+    { 0, 8, 1, =2Eread =3D ide_ioport_read, =2Ewrite =3D ide_ioport_writ=
+e },
+>+    { 0, 1, 2, =2Eread =3D ide_data_readw, =2Ewrite =3D ide_data_writew =
+},
+>+    { 0, 1, 4, =2Eread =3D ide_data_readl, =2Ewrite =3D ide_data_writel =
+},
+>+    PORTIO_END_OF_LIST(),
+>+};
+>+
+>+static const MemoryRegionPortio ide_portio2_list[] =3D {
+>+    { 0, 1, 1, =2Eread =3D ide_status_read, =2Ewrite =3D ide_ctrl_write =
+},
+>+    PORTIO_END_OF_LIST(),
+>+};
+>+
+>+void pci_ide_update_mode(PCIIDEState *s)
+>+{
+>+    PCIDevice *d =3D PCI_DEVICE(s);
+>+    uint8_t mode =3D d->config[PCI_CLASS_PROG];
+>+
+>+    switch (mode) {
 
-> It's a semantic issue really, but I'd rather we avoid locking ourselves
-> more into the "pages" idea for multifd threads. The data being sent by
-> the multifd thread should be opaque.
+Maybe
 
-I've put these ideas into a RFC patchset here:
+  switch (mode & 0xf) {
 
-[PATCH RFC 0/7] migration/multifd: quit unitifications and separate sync packet
+here such that only the bits relevant to the PCI IDE controller specificat=
+ion are analyzed? Then we can omit the high '8' nibble in the case labels w=
+hich indicate bus master capability which is obviously out of scope of the =
+switch statement (since you're not touching the BM DMA BAR)=2E
 
-I kept it "pending_job" there, avoid using "pages" as a name.
+>+    case 0x8a:
 
-Fabiano, I have a patch there that dropped p->quit, so there will be
-crossovers with your patchset.  I tried to leave that alone, but found I'd
-better clean that up when add the send thread helpers.  Let's see how it
-goes..
+Perhaps we could add a
 
-Thanks,
+  case 0x0:
 
--- 
-Peter Xu
+in front of the above label for compatibility with PIIX-IDE? That way, thi=
+s function could be reused in the future for resetting PIIX-IDE=2E
 
+>+        /* Both channels legacy mode */
+>+
+>+        /* Zero BARs */
+>+        pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x0);
+>+        pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x0);
+>+        pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x0);
+>+        pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x0);
+>+
+>+        /* Clear interrupt pin */
+>+        pci_config_set_interrupt_pin(d->config, 0);
+
+Do we really need to toggle the interrupt pin in this function? Or is this=
+ VIA-specific? This byte isn't even defined for PIIX-IDE=2E
+
+Best regards,
+Bernhard
+
+>+
+>+        /* Add legacy IDE ports */
+>+        if (!s->bus[0]=2Eportio_list=2Eowner) {
+>+            portio_list_init(&s->bus[0]=2Eportio_list, OBJECT(d),
+>+                             ide_portio_list, &s->bus[0], "ide");
+>+            portio_list_add(&s->bus[0]=2Eportio_list,
+>+                            pci_address_space_io(d), 0x1f0);
+>+        }
+>+
+>+        if (!s->bus[0]=2Eportio2_list=2Eowner) {
+>+            portio_list_init(&s->bus[0]=2Eportio2_list, OBJECT(d),
+>+                             ide_portio2_list, &s->bus[0], "ide");
+>+            portio_list_add(&s->bus[0]=2Eportio2_list,
+>+                            pci_address_space_io(d), 0x3f6);
+>+        }
+>+
+>+        if (!s->bus[1]=2Eportio_list=2Eowner) {
+>+            portio_list_init(&s->bus[1]=2Eportio_list, OBJECT(d),
+>+                                ide_portio_list, &s->bus[1], "ide");
+>+            portio_list_add(&s->bus[1]=2Eportio_list,
+>+                            pci_address_space_io(d), 0x170);
+>+        }
+>+
+>+        if (!s->bus[1]=2Eportio2_list=2Eowner) {
+>+            portio_list_init(&s->bus[1]=2Eportio2_list, OBJECT(d),
+>+                             ide_portio2_list, &s->bus[1], "ide");
+>+            portio_list_add(&s->bus[1]=2Eportio2_list,
+>+                            pci_address_space_io(d), 0x376);
+>+        }
+>+        break;
+>+
+>+    case 0x8f:
+>+        /* Both channels native mode */
+>+
+>+        /* Set interrupt pin */
+>+        pci_config_set_interrupt_pin(d->config, 1);
+>+
+>+        /* Remove legacy IDE ports */
+>+        if (s->bus[0]=2Eportio_list=2Eowner) {
+>+            portio_list_del(&s->bus[0]=2Eportio_list);
+>+            portio_list_destroy(&s->bus[0]=2Eportio_list);
+>+        }
+>+
+>+        if (s->bus[0]=2Eportio2_list=2Eowner) {
+>+            portio_list_del(&s->bus[0]=2Eportio2_list);
+>+            portio_list_destroy(&s->bus[0]=2Eportio2_list);
+>+        }
+>+
+>+        if (s->bus[1]=2Eportio_list=2Eowner) {
+>+            portio_list_del(&s->bus[1]=2Eportio_list);
+>+            portio_list_destroy(&s->bus[1]=2Eportio_list);
+>+        }
+>+
+>+        if (s->bus[1]=2Eportio2_list=2Eowner) {
+>+            portio_list_del(&s->bus[1]=2Eportio2_list);
+>+            portio_list_destroy(&s->bus[1]=2Eportio2_list);
+>+        }
+>+        break;
+>+    }
+>+}
+>+
+> static IDEState *bmdma_active_if(BMDMAState *bmdma)
+> {
+>     assert(bmdma->bus->retry_unit !=3D (uint8_t)-1);
+>diff --git a/include/hw/ide/pci=2Eh b/include/hw/ide/pci=2Eh
+>index 1ff469de87=2E=2Ea814a0a7c3 100644
+>--- a/include/hw/ide/pci=2Eh
+>+++ b/include/hw/ide/pci=2Eh
+>@@ -61,6 +61,7 @@ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val);
+> void bmdma_status_writeb(BMDMAState *bm, uint32_t val);
+> extern MemoryRegionOps bmdma_addr_ioport_ops;
+> void pci_ide_create_devs(PCIDevice *dev);
+>+void pci_ide_update_mode(PCIIDEState *s);
+>=20
+> extern const VMStateDescription vmstate_ide_pci;
+> extern const MemoryRegionOps pci_ide_cmd_le_ops;
 
