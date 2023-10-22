@@ -2,79 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD817D2360
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 16:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE1E7D240F
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 18:00:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quZWR-0002LW-DP; Sun, 22 Oct 2023 10:33:43 -0400
+	id 1qualq-0006EP-Jo; Sun, 22 Oct 2023 11:53:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1quZWO-0002HN-MI
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 10:33:40 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1quZWM-0003tb-JS
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 10:33:40 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-507a0907896so3508092e87.2
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 07:33:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697985217; x=1698590017; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3TOxX7Clc2brGwicCRXkvMYCgtCK8527p4vfyY6j5nw=;
- b=KbKwLZURMBfCKHfHrxc2ureiiLmuMGc622CF36M9i1OD9oUnJKWBCT7kCe8pB2kC0G
- tCbi9zeyjUBinZh3GHU57qdCwOZj9ErSGB6wE6MWEi/h+9L9JKbD5y/O6eAXahFarOST
- sQdvFhw/odaEvk1Wh75oqelhG0oFdxRhrWIBjsZiND3YEOW8PTBgSUX67TwSCO+Nh/zx
- maT5nMTVcMnmrDUn3sFmLo2HyPlCw3XyH3Ynmzq9cOiuyQ63OaK9uEYASd3Xdg2N1zrd
- aeJp/PTSBQFuwk9d2+yfdDmNzteZ1qFqyiPe5FCJv9CKld2COPePUD0agkN2vjnx+OrO
- CCTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697985217; x=1698590017;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3TOxX7Clc2brGwicCRXkvMYCgtCK8527p4vfyY6j5nw=;
- b=XNAQVdcceDBfDKPKmf3NXqrnd+hTsnJYF5Lky7aNcSTidZK3bTtGFqtRSzBv+oHM0A
- v1QR3aYP16i2qJHEwsTeLhl2FaIEPF9vTWzTzz/ZJ0USZR/pmOw2yaD3AMCaqLL5nm6p
- USNsm7uBqBaDfB0GWSgsJddFIqiv7v9a0XY+te+wlRY0fueZ5c+69bw2HJ88GcI5yeTw
- gV4iO+QKa/fXpolnep+qlJLh8k66bvGM9P7MRvurkvHjliLQD45BPs6v7UU6zVrYwqME
- VHsbsOIZLDNqC16Lo3HrwgfNtRXhotZloov598jHAORv8XYgZ9W6WrP9iup+1iPhpcSQ
- bmRQ==
-X-Gm-Message-State: AOJu0YyKe5GIPAU5iFxlrwHtAi0iJ7bs7LsPW1cO0iBNWdKlucTsunqF
- W5eU4+/331NqtktcywqbqJ4WFq6Y2G1pY0KD4NI=
-X-Google-Smtp-Source: AGHT+IGYqpYKkx0nCBubLX3IFDXR4EdJh/sAz0BtBIr+eO5phczJfZrylTIaHyBwbeHlykaFxWVtaw0Wslbe1pAkdBY=
-X-Received: by 2002:a05:6512:41d:b0:504:7ff8:3430 with SMTP id
- u29-20020a056512041d00b005047ff83430mr4697678lfk.10.1697985216055; Sun, 22
- Oct 2023 07:33:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qualZ-0005KU-HD; Sun, 22 Oct 2023 11:53:25 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qualT-0008WN-Ff; Sun, 22 Oct 2023 11:53:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=2ozELbKHkKHeNb6bnWRyBsoC9+/E0sXiWudbUWInik4=; b=jcnzNmszPyaB124Gx0UWtLrs3X
+ bYojddjEskTFHs6cEv0HtIX9voAJJ6SdYknNtP0aDxdF8+UHaj91KXy3vt+8IOqVlsh0vhdZ4ASc/
+ 0ugSvkjXXV9s3DKzJXKFPcjbb16VPRejRJ3J8DzSGRLuy0Z/0Q55uEj216c3eA/GHwiMco3MMz3so
+ Uar3JBlJG6kopv8j5w+nAqs8vcwmhE+Ku9VDi3DIvl+uUbmTF5mR2/zpM7BgdkfK4OULstoLI4OrN
+ By6lz6SgNEE+D5sAtezMpGcB7uqjwXPx7d7w0ofTnxHX9plbhDMMxdiddmE3JE1qQ3YorVYEa3scA
+ z5OejpZw==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1quakG-008TGC-UF; Sun, 22 Oct 2023 15:52:04 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
+ Linux)) id 1quakG-001qYC-1V; Sun, 22 Oct 2023 16:52:04 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Song Gao <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
+ Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
+ Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ xen-devel@lists.xenproject.org
+Subject: [PATCH 0/45] Rework matching of network devices to -nic options
+Date: Sun, 22 Oct 2023 16:51:15 +0100
+Message-Id: <20231022155200.436340-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <cover.1697902949.git.yin31149@gmail.com>
- <b7cd0c8d6a58b16b086f11714d2908ad35c67caa.1697902949.git.yin31149@gmail.com>
- <20231022055541-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231022055541-mutt-send-email-mst@kernel.org>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Sun, 22 Oct 2023 22:33:24 +0800
-Message-ID: <CAKrof1MaQeaU=VhSm2oncaMb--H2vyAKdQpYCU-G43R2XkdFzw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] vdpa: Restore hash calculation state
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=yin31149@gmail.com; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,213 +116,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=E5=9C=A8 2023/10/22 18:00, Michael S. Tsirkin =E5=86=99=E9=81=93:
-> On Sun, Oct 22, 2023 at 10:00:48AM +0800, Hawkins Jiawei wrote:
->> This patch introduces vhost_vdpa_net_load_rss() to restore
->> the hash calculation state at device's startup.
->>
->> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
->> ---
->> v3:
->>    - remove the `do_rss` argument in vhost_vdpa_net_load_rss()
->>    - zero reserved fields in "cfg" manually instead of using memset()
->> to prevent compiler "array-bounds" warning
->>
->> v2: https://lore.kernel.org/all/f5ffad10699001107022851e0560cb394039d6b0=
-.1693297766.git.yin31149@gmail.com/
->>    - resolve conflict with updated patch
->> "vdpa: Send all CVQ state load commands in parallel"
->>    - move the `table` declaration at the beginning of the
->> vhost_vdpa_net_load_rss()
->>
->> RFC: https://lore.kernel.org/all/a54ca70b12ebe2f3c391864e41241697ab1aba3=
-0.1691762906.git.yin31149@gmail.com/
->>
->>   net/vhost-vdpa.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 89 insertions(+)
->>
->> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->> index 4b7c3b81b8..2e4bad65b4 100644
->> --- a/net/vhost-vdpa.c
->> +++ b/net/vhost-vdpa.c
->> @@ -817,6 +817,86 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
-s, const VirtIONet *n,
->>       return 0;
->>   }
->>
->> +static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *=
-n,
->> +                                   struct iovec *out_cursor,
->> +                                   struct iovec *in_cursor)
->> +{
->> +    struct virtio_net_rss_config cfg;
->> +    ssize_t r;
->> +    g_autofree uint16_t *table =3D NULL;
->> +
->> +    /*
->> +     * According to VirtIO standard, "Initially the device has all hash
->> +     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
->> +     *
->> +     * Therefore, there is no need to send this CVQ command if the
->> +     * driver disable the all hash types, which aligns with
->
-> disables? or disabled
+In https://lore.kernel.org/qemu-devel/20231019154020.99080-20-dwmw2@infradead.org/
+I lamented that the default NIC creation seemed fairly hackish but "that
+isn't a yak I want to shave today."
 
-It should be "disables".
-I will correct this in the v4 patch.
+Yet here we are...
 
->
->> +     * the device's defaults.
->> +     *
->> +     * Note that the device's defaults can mismatch the driver's
->> +     * configuration only at live migration.
->> +     */
->> +    if (!n->rss_data.enabled ||
->> +        n->rss_data.hash_types =3D=3D VIRTIO_NET_HASH_REPORT_NONE) {
->> +        return 0;
->> +    }
->> +
->> +    table =3D g_malloc_n(n->rss_data.indirections_len,
->> +                       sizeof(n->rss_data.indirections_table[0]));
->> +    cfg.hash_types =3D cpu_to_le32(n->rss_data.hash_types);
->> +
->> +    /*
->> +     * According to VirtIO standard, "Field reserved MUST contain zeroe=
-s.
->> +     * It is defined to make the structure to match the layout of
->> +     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
->> +     *
->> +     * Therefore, we need to zero the fields in struct virtio_net_rss_c=
-onfig,
->> +     * which corresponds the `reserved` field in
->
-> corresponds to
+Most platforms iterating directly over the nd_table[] are doing one of 
+two things. Either they are creating the NIC for their platform and want
+to find a matching -nic configuration for it, if such exists. Or they
+are only going to create that platform NIC if a matching config *does*
+exist.
 
-I will correct this in the v4 patch.
+All of those can be converted to the new qemu_configure_nic_device()
+and qemu_create_nic_device() functions. The latter of which will call
+qdev_new() to create the device (and apply the config) if a matching
+NIC config does exist for it. The existing behaviour of each platform
+has been preserved for now, despite it being apparently fairly random.
 
->
->> +     * struct virtio_net_hash_config.
->> +     */
->> +    cfg.indirection_table_mask =3D 0;
->> +    cfg.unclassified_queue =3D 0;
->> +    table[0] =3D 0; /* the actual indirection table for cfg */
->> +    cfg.max_tx_vq =3D 0;
->
-> Wouldn't it be easier to just do cfg =3D {} where it is defined?
+PCI and indeed XenBus can use a qemu_create_nic_bus_devices() which will 
+create all NICs that live on a given bus type. That covers most 
+platforms, but some PCI platforms do something special with the first 
+NIC of a given type, placing it in the slot where it would have been on 
+the real hardware. There were various inconsistencies in the way the 
+platforms did so, and whether they cared what model the NIC was. Those 
+subtle behavioural changes I *have* allowed to change, and now the 
+pci_init_nic_slot() function will pick the first NIC that the user 
+specified which isn't explicitly *not* the default type, and put that
+in  the specified slot.
 
-Normally, it should follow your pattern, but there are two reasons why
-I'm doing it in a different way here.
+The tests for npcm7xx used to lament that they had to instantiate both
+NICs even when they wanted to test only the second, because there was
+no way to specify which hardware devices gets which configuration. I
+made that untrue, by allowing 'emc0' and 'emc1' aliases, and fixed up
+the test accordingly.
 
-Firstly, in the subsequent patchset, both hash calculation and rss will
-reuse vhost_vdpa_net_load_rss() to restore their state. Given the
-similarity of their CVQ commands, if we only explicitly handle the
-fields assignment for rss case, while placing the hash calculation field
-assignment at the definition site, it would disperse the logic within
-the function, making it look odd.
+There are one or two special cases which want to do special things with
+the MAC address of the primary NIC, to set up a system identification
+(or force it to use an Apple OUI, in the case of m68k/q400). All those
+work out relatively cleanly too.
 
-Secondly, to ensure compatibility for rss case, we cannot use the
-'indirection_table' field in the cfg. Instead, we need to allocate a
-separate 'table' variable here. Even if we initialize the other fields
-of the hash calculation case at the definition site, we still need to
-manually set 'table' to 0 here. Hence, it makes more sense to set
-everything together at this point.
+And I can ditch the two ugly patches which fixed up the Xen network
+device handling, and replace them with a simple call to the new
+qemu_create_nic_bus_devices() function.
 
-But I am okay if you think it is better to place the field assignment
-for the hash calculation case at the definition site.
+I suspect that we can remove the pci_init_nic_devices() from platform
+code and just do it later, except for platforms which *care* which
+PCI bus the dynamic devices go on (is that just sun4u which puts its
+primary NIC onto a different bus?).
 
->
->> +
->> +    /*
->> +     * Consider that virtio_net_handle_rss() currently does not restore=
- the
->> +     * hash key length parsed from the CVQ command sent from the guest =
-into
->> +     * n->rss_data and uses the maximum key length in other code, so we=
- also
->> +     * employthe the maxium key length here.
->
-> two typos
+Finally, while we're at it, clean up -nic model=help to only print
+the device models which are actually usable on the given platform
+rather than just listing them *all*.
 
-I will correct these typos in the v4 patch.
+And now we can make nd_table[] and nb_nics static in net/net.c because
+nothing else has any business poking at them directly.
 
->
->> +     */
->> +    cfg.hash_key_length =3D sizeof(n->rss_data.key);
->> +
->> +    const struct iovec data[] =3D {
->> +        {
->> +            .iov_base =3D &cfg,
->> +            .iov_len =3D offsetof(struct virtio_net_rss_config,
->> +                                indirection_table),
->> +        }, {
->> +            .iov_base =3D table,
->> +            .iov_len =3D n->rss_data.indirections_len *
->> +                       sizeof(n->rss_data.indirections_table[0]),
->> +        }, {
->> +            .iov_base =3D &cfg.max_tx_vq,
->> +            .iov_len =3D offsetof(struct virtio_net_rss_config, hash_ke=
-y_data) -
->> +                       offsetof(struct virtio_net_rss_config, max_tx_vq=
-),
->> +        }, {
->> +            .iov_base =3D (void *)n->rss_data.key,
->
-> cast to void * should not be needed here.
+David Woodhouse (45):
+      net: add qemu_{configure,create}_nic_device(), qemu_find_nic_info()
+      net: report list of available models according to platform
+      net: add qemu_create_nic_bus_devices()
+      hw/pci: add pci_init_nic_devices(), pci_init_nic_in_slot()
+      hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()
+      hw/xen: use qemu_create_nic_bus_devices() to instantiate Xen NICs
+      hw/alpha/dp264: use pci_init_nic_devices()
+      hw/arm/sbsa-ref: use pci_init_nic_devices()
+      hw/arm/virt: use pci_init_nic_devices()
+      hw/hppa: use pci_init_nic_devices()
+      hw/loongarch: use pci_init_nic_devices()
+      hw/mips/fuloong2e: use pci_init_nic_devices()
+      hw/mips/malta: use pci_init_nic_devices()
+      hw/mips/loongson3_virt: use pci_init_nic_devices()
+      hw/ppc/prep: use pci_init_nic_devices()
+      hw/ppc/spapr: use qemu_get_nic_info() and pci_init_nic_devices()
+      hw/ppc: use pci_init_nic_devices()
+      hw/sh4/r2d: use pci_init_nic_devices()
+      hw/sparc64/sun4u: use pci_init_nic_devices()
+      hw/xtensa/virt: use pci_init_nic_devices()
+      hw/arm/allwinner: use qemu_configure_nic_device()
+      hw/arm/aspeed: use qemu_configure_nic_device()
+      hw/arm/exynos4: use qemu_create_nic_device()
+      hw/arm/fsl: use qemu_configure_nic_device()
+      hw/net/smc91c111: use qemu_configure_nic_device()
+      hw/net/lan9118: use qemu_configure_nic_device()
+      hw/arm/highbank: use qemu_create_nic_device()
+      hw/arm/npcm7xx: use qemu_configure_nic_device, allow emc0/emc1 as aliases
+      hw/arm/stellaris: use qemu_find_nic_info()
+      hw/arm: use qemu_configure_nic_device()
+      hw/net/etraxfs-eth: use qemu_configure_nic_device()
+      hw/m68k/mcf5208: use qemu_create_nic_device()
+      hw/m68k/q800: use qemu_configure_nic_device()
+      hw/microblaze: use qemu_configure_nic_device()
+      hw/mips: use qemu_create_nic_device()
+      hw/net/lasi_i82596: use qemu_configure_nic_device()
+      hw/openrisc/openrisc_sim: use qemu_create_nic_device()
+      hw/riscv: use qemu_configure_nic_device()
+      hw/s390x/s390-virtio-ccw: use qemu_create_nic_device()
+      hw/sparc/sun4m: use qemu_configure_nic_device()
+      hw/xtensa/xtfpga: use qemu_create_nic_device()
+      net: remove qemu_check_nic_model()
+      hw/pci: remove pci_nic_init_nofail()
+      net: remove qemu_show_nic_models(), qemu_find_nic_model()
+      net: make nb_nics and nd_table[] static in net/net.c
 
-Without this cast, the compiler raises the following warning:
+ hw/alpha/dp264.c                         |   4 +-
+ hw/arm/allwinner-a10.c                   |   6 +-
+ hw/arm/allwinner-h3.c                    |   6 +-
+ hw/arm/allwinner-r40.c                   |  27 +---
+ hw/arm/aspeed.c                          |   9 +-
+ hw/arm/exynos4_boards.c                  |   6 +-
+ hw/arm/fsl-imx25.c                       |   2 +-
+ hw/arm/fsl-imx6.c                        |   2 +-
+ hw/arm/fsl-imx6ul.c                      |   2 +-
+ hw/arm/fsl-imx7.c                        |   2 +-
+ hw/arm/gumstix.c                         |   6 +-
+ hw/arm/highbank.c                        |  12 +-
+ hw/arm/integratorcp.c                    |   5 +-
+ hw/arm/kzm.c                             |   4 +-
+ hw/arm/mainstone.c                       |   3 +-
+ hw/arm/mps2-tz.c                         |   8 +-
+ hw/arm/mps2.c                            |   2 +-
+ hw/arm/msf2-soc.c                        |   6 +-
+ hw/arm/musicpal.c                        |   3 +-
+ hw/arm/npcm7xx.c                         |  16 +-
+ hw/arm/realview.c                        |  25 ++-
+ hw/arm/sbsa-ref.c                        |   4 +-
+ hw/arm/stellaris.c                       |  30 +++-
+ hw/arm/versatilepb.c                     |  15 +-
+ hw/arm/vexpress.c                        |   4 +-
+ hw/arm/virt.c                            |   4 +-
+ hw/arm/xilinx_zynq.c                     |  11 +-
+ hw/arm/xlnx-versal.c                     |   7 +-
+ hw/arm/xlnx-zynqmp.c                     |   8 +-
+ hw/cris/axis_dev88.c                     |   9 +-
+ hw/hppa/machine.c                        |   6 +-
+ hw/i386/pc.c                             |  20 +--
+ hw/loongarch/virt.c                      |   4 +-
+ hw/m68k/mcf5208.c                        |  20 +--
+ hw/m68k/q800.c                           |  28 ++--
+ hw/microblaze/petalogix_ml605_mmu.c      |   3 +-
+ hw/microblaze/petalogix_s3adsp1800_mmu.c |   3 +-
+ hw/mips/fuloong2e.c                      |  16 +-
+ hw/mips/jazz.c                           |  16 +-
+ hw/mips/loongson3_virt.c                 |   4 +-
+ hw/mips/malta.c                          |  15 +-
+ hw/mips/mipssim.c                        |  13 +-
+ hw/net/etraxfs_eth.c                     |   5 +-
+ hw/net/lan9118.c                         |   5 +-
+ hw/net/lasi_i82596.c                     |   3 +-
+ hw/net/smc91c111.c                       |   5 +-
+ hw/openrisc/openrisc_sim.c               |  18 +--
+ hw/pci/pci.c                             |  73 +++------
+ hw/ppc/e500.c                            |   4 +-
+ hw/ppc/mac_newworld.c                    |   4 +-
+ hw/ppc/mac_oldworld.c                    |   4 +-
+ hw/ppc/ppc440_bamboo.c                   |  13 +-
+ hw/ppc/prep.c                            |   7 +-
+ hw/ppc/spapr.c                           |  18 +--
+ hw/riscv/microchip_pfsoc.c               |  13 +-
+ hw/riscv/sifive_u.c                      |   7 +-
+ hw/s390x/s390-virtio-ccw.c               |  11 +-
+ hw/sh4/r2d.c                             |   6 +-
+ hw/sparc/sun4m.c                         |   8 +-
+ hw/sparc64/sun4u.c                       |  27 +---
+ hw/xen/xen-bus.c                         |   4 +
+ hw/xen/xen_devconfig.c                   |  25 ---
+ hw/xenpv/xen_machine_pv.c                |   9 --
+ hw/xtensa/virt.c                         |   4 +-
+ hw/xtensa/xtfpga.c                       |  11 +-
+ include/hw/cris/etraxfs.h                |   2 +-
+ include/hw/net/lan9118.h                 |   2 +-
+ include/hw/net/ne2000-isa.h              |   2 -
+ include/hw/net/smc91c111.h               |   2 +-
+ include/hw/pci/pci.h                     |   7 +-
+ include/hw/xen/xen-legacy-backend.h      |   1 -
+ include/net/net.h                        |  18 +--
+ net/net.c                                | 252 +++++++++++++++++++++++++------
+ system/globals.c                         |   2 -
+ tests/qtest/npcm7xx_emc-test.c           |  18 +--
+ 75 files changed, 455 insertions(+), 531 deletions(-)
 
-../net/vhost-vdpa.c: In function =E2=80=98vhost_vdpa_net_load_rss=E2=80=99:
-../net/vhost-vdpa.c:907:25: error: initialization discards =E2=80=98const=
-=E2=80=99
-qualifier from pointer target type [-Werror=3Ddiscarded-qualifiers]
-   907 |             .iov_base =3D n->rss_data.key,
 
-
-The issue arises because `n` is a pointer to const, and
-`n->rss_data.key` is an array. So `n->rss_data.key` is treated as a
-pointer to const.
-
-Thanks!
-
-
->
->> +            .iov_len =3D sizeof(n->rss_data.key),
->> +        }
->> +    };
->> +
->> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
->> +                                VIRTIO_NET_CTRL_MQ,
->> +                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
->> +                                data, ARRAY_SIZE(data));
->> +    if (unlikely(r < 0)) {
->> +        return r;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->>   static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
->>                                     const VirtIONet *n,
->>                                     struct iovec *out_cursor,
->> @@ -842,6 +922,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
-,
->>           return r;
->>       }
->>
->> +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPO=
-RT)) {
->> +        return 0;
->> +    }
->> +
->> +    r =3D vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor);
->> +    if (unlikely(r < 0)) {
->> +        return r;
->> +    }
->> +
->>       return 0;
->>   }
->>
->> --
->> 2.25.1
->
 
