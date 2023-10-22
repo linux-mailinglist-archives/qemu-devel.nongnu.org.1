@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57317D2155
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA3F7D2145
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quRWT-0000fU-6E; Sun, 22 Oct 2023 02:01:13 -0400
+	id 1quRX3-0001gV-BB; Sun, 22 Oct 2023 02:01:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRWI-0000c1-Bu
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:01:02 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1quRWn-0000sk-Gz
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:01:33 -0400
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRWG-0001cP-NA
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:01:02 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c5cd27b1acso18398455ad.2
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:01:00 -0700 (PDT)
+ id 1quRWl-0001hZ-5v
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:01:33 -0400
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3b3e13fc1f7so1676587b6e.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697954459; x=1698559259; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697954490; x=1698559290; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=loiG8IoonkY1ZKs18NLWsqcd2RIkcRcXOOGkEupcu0Y=;
- b=D6qMMm3jbV8s2IfbqBfKQ4vk4J8U2bDUFp7l2sIDeATeLzHQJ7LWSPrr0yFHleIkK6
- QKFTAPac5PSWmf3nTbUtz7gzg9nlnln9W0LJIA8jcHAGgY3nx+6kr6U2rVi5caodsbcN
- qfhJ+KQbF7gx/mS+LZIjB0irA/bU0EOhcDDftVOLn8lh4SekkjYkRlmsYgvWtmqLHeee
- A4Xa9AZXFi58D+Ljhw5O+YNkDASXaKaeN3oc5bm5SZT0DmbcdkEkZJ1TKZ2zwwl3Ba6z
- gs2edkIYsxELJKLxCXZFFJfTVhP2IwPyz0dcGJ2fUBFhf/B6cxbqHsYX68Br3af2DjFa
- 6cdg==
+ bh=W7WT3KgN8dsMjmh9I4YlPumtwnaUsA+5OvmhpgUYvm0=;
+ b=vOPZfMUhyhKR3daafIn1jgB9QCSBeUDow7uAo3seMS2RrsuzKqpwXwZrFsHSGALr91
+ seyNpdEoE9KiKFpea3sCzeTB6BljxGAdiJu5imCmtzKWJ+1MprJPMUXJcSJ32Fr5Rxay
+ qHxouGEztt6pjWhDcpowsgFMWPIL0xrFsk92VpEqeR/CaQ9SMmcsV4QcjRNog5gDkwcF
+ Rv/6MEuNOKd+hbCqpPOm4k4vX94ILtpkVeyWb1yX5mm0ne5KsTJRQ6r+ZTJl/mquEvV/
+ XICvcTz1psDSM/pC88SGouqW9QRy+6u8iQu2cGhZtUKfdVmB9D01iy6xR+3tTdnTfbfm
+ CQNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697954459; x=1698559259;
+ d=1e100.net; s=20230601; t=1697954490; x=1698559290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=loiG8IoonkY1ZKs18NLWsqcd2RIkcRcXOOGkEupcu0Y=;
- b=CEM8V15lqsqVLT6D1djY86bbLyxb/kRQuoYDFv0H8y2mdfe1kgY0jHZtvxZkGz02Aq
- DD9K97h+KNeEuygfVon67jfFF5r5jafLy2CQo/6Ffp4mfSWhYjNCG1oMtiKqoFBQnedE
- db7A2Nmdcz5toxpXSrJaq+I0aCI0u5LSJ8OhWJ5ZK7f0kehakiWAz/8oMb6E+vXi109p
- ZCpgNT9aPdP8POGvafI/2n0GSGThqv6T+uRtbwzc4vlq+ydENom4Ys7IZkpR/YeCu3eK
- rJCQQktHmZmaWdm9bMUjQtLbT+O+6uEBKo9UyhfOPdRwCKzYkN20aappRl+W5q8a55Dm
- p0cw==
-X-Gm-Message-State: AOJu0YzEpFZtSeeZKP6zPMbnBX+469RCZyKuGl5W8Mmnpj/u9Ed5a/mu
- joaN1CfPBPSTWQqx+l4GyM7u4YDLD7pr/LGPzwM=
-X-Google-Smtp-Source: AGHT+IFV26Nd2d8HHZlgwSboW05icXCe7MzfdCQgG8aeURa6HHCGuUF0lDGGIFTQFwTVN5GpdDmSAA==
-X-Received: by 2002:a17:903:455:b0:1ca:3e64:2378 with SMTP id
- iw21-20020a170903045500b001ca3e642378mr5843439plb.4.1697954459312; 
- Sat, 21 Oct 2023 23:00:59 -0700 (PDT)
+ bh=W7WT3KgN8dsMjmh9I4YlPumtwnaUsA+5OvmhpgUYvm0=;
+ b=At7MmzzgMDch0Y+fa9iCsGLoSl0ZwTOTftnhiNStraBI0OEk7a2UUAGQ47N9gEHSAD
+ FEy+oseWh9xo9eFU/uMeIACzbPSxMkNj7w5rCliE82il1C+YPTVJ5AMapHcEQ7V265yJ
+ fyGjrH63acfiheOKn7K5ic/qBs/be4aIE8Dw5tXM1WYlaa9YfPo+xE7UUKI9ON0QmZ0+
+ soDy3oJtGUonV3rzDqadZbPWpf0TuCicvmGQO+2AhUVI6OItHkL8Ko7fLUarQkhQj8Xw
+ xuCOGfrzkZEdzCNfKSUxd+lsKRybn/OtQsiOaHQKloaeHhkTyZBxGKiYJC2wFHht6rp0
+ oCLg==
+X-Gm-Message-State: AOJu0YwPq9baN5LGbHvocEqSJmVN0PMh+je/HWp3u+Q/z9MSXjD0DrJl
+ jVydfHUQjZvGYO6oJhvUYBt/SnEw4q1yn7w5qVo=
+X-Google-Smtp-Source: AGHT+IFx39hQz134sxLGF9twYJ8tQ3jwBN4ZtgO+AyHrjQJj1uISqQUCjtPrUUP8spwyO54btFYFyQ==
+X-Received: by 2002:a05:6808:221d:b0:3ae:1446:d48b with SMTP id
+ bd29-20020a056808221d00b003ae1446d48bmr8322511oib.3.1697954460056; 
+ Sat, 21 Oct 2023 23:01:00 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.58
+ je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 23:00:58 -0700 (PDT)
+ Sat, 21 Oct 2023 23:00:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 32/90] target/sparc: Move UMUL, SMUL to decodetree
-Date: Sat, 21 Oct 2023 22:59:33 -0700
-Message-Id: <20231022060031.490251-33-richard.henderson@linaro.org>
+Subject: [PATCH v4 33/90] target/sparc: Move SUBC to decodetree
+Date: Sat, 21 Oct 2023 22:59:34 -0700
+Message-Id: <20231022060031.490251-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022060031.490251-1-richard.henderson@linaro.org>
 References: <20231022060031.490251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,69 +92,210 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  2 ++
- target/sparc/translate.c  | 21 +++------------------
- 2 files changed, 5 insertions(+), 18 deletions(-)
+ target/sparc/insns.decode |   1 +
+ target/sparc/translate.c  | 147 +++++++++++++++++++++++++-------------
+ 2 files changed, 98 insertions(+), 50 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 1a04a8e229..d6a7256e71 100644
+index d6a7256e71..a188452d2e 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -167,6 +167,8 @@ XORN        10 ..... 0.0111 ..... . .............          @r_r_ri_cc
+@@ -165,6 +165,7 @@ ANDN        10 ..... 0.0101 ..... . .............          @r_r_ri_cc
+ ORN         10 ..... 0.0110 ..... . .............          @r_r_ri_cc
+ XORN        10 ..... 0.0111 ..... . .............          @r_r_ri_cc
  ADDC        10 ..... 0.1000 ..... . .............          @r_r_ri_cc
++SUBC        10 ..... 0.1100 ..... . .............          @r_r_ri_cc
  
  MULX        10 ..... 001001 ..... . .............          @r_r_ri_cc0
-+UMUL        10 ..... 0.1010 ..... . .............          @r_r_ri_cc
-+SMUL        10 ..... 0.1011 ..... . .............          @r_r_ri_cc
- 
- Tcc_r       10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
- {
+ UMUL        10 ..... 0.1010 ..... . .............          @r_r_ri_cc
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index be00bd00fc..d79e28ab7f 100644
+index d79e28ab7f..7e2a74a816 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2882,6 +2882,7 @@ static void gen_faligndata(TCGv dst, TCGv gsr, TCGv s1, TCGv s2)
- #define avail_ASR17(C)    ((C)->def->features & CPU_FEATURE_ASR17)
- #define avail_GL(C)       ((C)->def->features & CPU_FEATURE_GL)
- #define avail_HYPV(C)     ((C)->def->features & CPU_FEATURE_HYPV)
-+#define avail_MUL(C)      ((C)->def->features & CPU_FEATURE_MUL)
- #define avail_POWERDOWN(C) ((C)->def->features & CPU_FEATURE_POWERDOWN)
+@@ -525,51 +525,11 @@ static void gen_op_sub_cc(TCGv dst, TCGv src1, TCGv src2)
+     tcg_gen_mov_tl(dst, cpu_cc_dst);
+ }
  
- /* Default case for non jump instructions. */
-@@ -4211,6 +4212,8 @@ TRANS(ANDN, ALL, do_arith, a, CC_OP_LOGIC, tcg_gen_andc_tl, NULL)
- TRANS(ORN, ALL, do_arith, a, CC_OP_LOGIC, tcg_gen_orc_tl, NULL)
- TRANS(XORN, ALL, do_arith, a, CC_OP_LOGIC, tcg_gen_eqv_tl, NULL)
- TRANS(MULX, 64, do_arith, a, 0, tcg_gen_mul_tl, tcg_gen_muli_tl)
-+TRANS(UMUL, MUL, do_arith, a, CC_OP_LOGIC, gen_op_umul, NULL)
-+TRANS(SMUL, MUL, do_arith, a, CC_OP_LOGIC, gen_op_smul, NULL)
- 
- static bool trans_OR(DisasContext *dc, arg_r_r_ri_cc *a)
+-static void gen_op_subx_int(DisasContext *dc, TCGv dst, TCGv src1,
+-                            TCGv src2, int update_cc)
++static void gen_op_subc_int(TCGv dst, TCGv src1, TCGv src2,
++                            TCGv_i32 carry_32, bool update_cc)
  {
-@@ -4701,24 +4704,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+-    TCGv_i32 carry_32;
+     TCGv carry;
+ 
+-    switch (dc->cc_op) {
+-    case CC_OP_DIV:
+-    case CC_OP_LOGIC:
+-        /* Carry is known to be zero.  Fall back to plain SUB.  */
+-        if (update_cc) {
+-            gen_op_sub_cc(dst, src1, src2);
+-        } else {
+-            tcg_gen_sub_tl(dst, src1, src2);
+-        }
+-        return;
+-
+-    case CC_OP_ADD:
+-    case CC_OP_TADD:
+-    case CC_OP_TADDTV:
+-        carry_32 = gen_add32_carry32();
+-        break;
+-
+-    case CC_OP_SUB:
+-    case CC_OP_TSUB:
+-    case CC_OP_TSUBTV:
+-        if (TARGET_LONG_BITS == 32) {
+-            /* We can re-use the host's hardware carry generation by using
+-               a SUB2 opcode.  We discard the low part of the output.
+-               Ideally we'd combine this operation with the add that
+-               generated the carry in the first place.  */
+-            carry = tcg_temp_new();
+-            tcg_gen_sub2_tl(carry, dst, cpu_cc_src, src1, cpu_cc_src2, src2);
+-            goto sub_done;
+-        }
+-        carry_32 = gen_sub32_carry32();
+-        break;
+-
+-    default:
+-        /* We need external help to produce the carry.  */
+-        carry_32 = tcg_temp_new_i32();
+-        gen_helper_compute_C_icc(carry_32, tcg_env);
+-        break;
+-    }
+-
+ #if TARGET_LONG_BITS == 64
+     carry = tcg_temp_new();
+     tcg_gen_extu_i32_i64(carry, carry_32);
+@@ -580,16 +540,75 @@ static void gen_op_subx_int(DisasContext *dc, TCGv dst, TCGv src1,
+     tcg_gen_sub_tl(dst, src1, src2);
+     tcg_gen_sub_tl(dst, dst, carry);
+ 
+- sub_done:
+     if (update_cc) {
++        tcg_debug_assert(dst == cpu_cc_dst);
+         tcg_gen_mov_tl(cpu_cc_src, src1);
+         tcg_gen_mov_tl(cpu_cc_src2, src2);
+-        tcg_gen_mov_tl(cpu_cc_dst, dst);
+-        tcg_gen_movi_i32(cpu_cc_op, CC_OP_SUBX);
+-        dc->cc_op = CC_OP_SUBX;
+     }
+ }
+ 
++static void gen_op_subc_add(TCGv dst, TCGv src1, TCGv src2)
++{
++    gen_op_subc_int(dst, src1, src2, gen_add32_carry32(), false);
++}
++
++static void gen_op_subccc_add(TCGv dst, TCGv src1, TCGv src2)
++{
++    gen_op_subc_int(dst, src1, src2, gen_sub32_carry32(), true);
++}
++
++static void gen_op_subc_int_sub(TCGv dst, TCGv src1, TCGv src2, bool update_cc)
++{
++    TCGv discard;
++
++    if (TARGET_LONG_BITS == 64) {
++        gen_op_subc_int(dst, src1, src2, gen_sub32_carry32(), update_cc);
++        return;
++    }
++
++    /*
++     * We can re-use the host's hardware carry generation by using
++     * a SUB2 opcode.  We discard the low part of the output.
++     */
++    discard = tcg_temp_new();
++    tcg_gen_sub2_tl(discard, dst, cpu_cc_src, src1, cpu_cc_src2, src2);
++
++    if (update_cc) {
++        tcg_debug_assert(dst == cpu_cc_dst);
++        tcg_gen_mov_tl(cpu_cc_src, src1);
++        tcg_gen_mov_tl(cpu_cc_src2, src2);
++    }
++}
++
++static void gen_op_subc_sub(TCGv dst, TCGv src1, TCGv src2)
++{
++    gen_op_subc_int_sub(dst, src1, src2, false);
++}
++
++static void gen_op_subccc_sub(TCGv dst, TCGv src1, TCGv src2)
++{
++    gen_op_subc_int_sub(dst, src1, src2, true);
++}
++
++static void gen_op_subc_int_generic(TCGv dst, TCGv src1, TCGv src2,
++                                    bool update_cc)
++{
++    TCGv_i32 carry_32 = tcg_temp_new_i32();
++
++    gen_helper_compute_C_icc(carry_32, tcg_env);
++    gen_op_subc_int(dst, src1, src2, carry_32, update_cc);
++}
++
++static void gen_op_subc_generic(TCGv dst, TCGv src1, TCGv src2)
++{
++    gen_op_subc_int_generic(dst, src1, src2, false);
++}
++
++static void gen_op_subccc_generic(TCGv dst, TCGv src1, TCGv src2)
++{
++    gen_op_subc_int_generic(dst, src1, src2, true);
++}
++
+ static void gen_op_mulscc(TCGv dst, TCGv src1, TCGv src2)
+ {
+     TCGv r_temp, zero, t0;
+@@ -4280,6 +4299,38 @@ static bool trans_ADDC(DisasContext *dc, arg_r_r_ri_cc *a)
+     return do_arith(dc, a, CC_OP_ADDX, func, NULL);
+ }
+ 
++static bool trans_SUBC(DisasContext *dc, arg_r_r_ri_cc *a)
++{
++    void (*func)(TCGv, TCGv, TCGv);
++
++    switch (dc->cc_op) {
++    case CC_OP_DIV:
++    case CC_OP_LOGIC:
++        /* Carry is known to be zero.  Fall back to plain SUB.  */
++        if (a->cc) {
++            return do_arith(dc, a, CC_OP_SUB, gen_op_sub_cc, NULL);
++        }
++        return do_arith(dc, a, -1, tcg_gen_sub_tl, tcg_gen_subi_tl);
++
++    case CC_OP_ADD:
++    case CC_OP_TADD:
++    case CC_OP_TADDTV:
++        func = a->cc ? gen_op_subccc_add : gen_op_subc_add;
++        break;
++
++    case CC_OP_SUB:
++    case CC_OP_TSUB:
++    case CC_OP_TSUBTV:
++        func = a->cc ? gen_op_subccc_sub : gen_op_subc_sub;
++        break;
++
++    default:
++        func = a->cc ? gen_op_subccc_generic : gen_op_subc_generic;
++        break;
++    }
++    return do_arith(dc, a, CC_OP_SUBX, func, NULL);
++}
++
+ #define CHECK_IU_FEATURE(dc, FEATURE)                      \
+     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
+         goto illegal_insn;
+@@ -4704,10 +4755,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                      cpu_src1 = get_src1(dc, insn);
                      cpu_src2 = get_src2(dc, insn);
                      switch (xop & ~0x10) {
--                    case 0xa: /* umul */
--                        CHECK_IU_FEATURE(dc, MUL);
--                        gen_op_umul(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
+-                    case 0xc: /* subx, V9 subc */
+-                        gen_op_subx_int(dc, cpu_dst, cpu_src1, cpu_src2,
+-                                        (xop & 0x10));
 -                        break;
--                    case 0xb: /* smul */
--                        CHECK_IU_FEATURE(dc, MUL);
--                        gen_op_smul(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
--                        break;
-                     case 0xc: /* subx, V9 subc */
-                         gen_op_subx_int(dc, cpu_dst, cpu_src1, cpu_src2,
-                                         (xop & 0x10));
+ #ifdef TARGET_SPARC64
+                     case 0xd: /* V9 udivx */
+                         gen_helper_udivx(cpu_dst, tcg_env, cpu_src1, cpu_src2);
 -- 
 2.34.1
 
