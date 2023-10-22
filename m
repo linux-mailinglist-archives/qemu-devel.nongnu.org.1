@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C2F7D25C9
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 22:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2BD7D25CE
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 22:18:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1queoa-0005Gb-OM; Sun, 22 Oct 2023 16:12:48 -0400
+	id 1quety-0001sU-Ls; Sun, 22 Oct 2023 16:18:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1queoY-0005FW-Ld
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:12:46 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quetw-0001s8-Pb
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:18:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1queoX-00061t-5I
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:12:46 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quetv-0006lZ-C2
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:18:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698005563;
+ s=mimecast20190719; t=1698005898;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=QmqhK+JgD9oXmIthMn+SAkCj7IdZVJuTdH9Qh84fJac=;
- b=XhOhN7xV81Iwm2/VzVQBr0NL+S37b1Zu2Nkz4hksj7xvI+PpVJc9WUxRQasV72Rc4cXVhi
- nhYphMxAQR8uOe3AnqMSiGQfZNMlIzx5/zir3vjPMkpQ5XzJikteU2QMPJoQHibBGlMhz1
- Mtcrw7Fm+QsNqYTOcVHTB5eXGrQ5bQ8=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+6UEYQBu/Dqgh/sz0C77HuJTs8B/70/DderQeQMVTRg=;
+ b=WeiaJZ17zcbDSUi0/9rb+ge42k1RNBE3SVeHcL1B8cUZ7PWuXcgBstj70Y/posyGKgH7e0
+ a/GMVFfUEkKJ+y3JBo7B43FVR+rbhuDcxL8WS3SAdcxn/3fqcK613UCYLR75kkWPpfcUMG
+ ViLldoIVhcYD1PSVPi3U01OHdbAcu/Q=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-04pYdnSyMcCyKsJrlRzrlA-1; Sun, 22 Oct 2023 16:12:42 -0400
-X-MC-Unique: 04pYdnSyMcCyKsJrlRzrlA-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66cfa898cfeso7839796d6.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 13:12:42 -0700 (PDT)
+ us-mta-436-W-_nbR0eOxeWKAXVdNLUag-1; Sun, 22 Oct 2023 16:18:06 -0400
+X-MC-Unique: W-_nbR0eOxeWKAXVdNLUag-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-66011f0d521so11045076d6.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 13:18:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698005561; x=1698610361;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QmqhK+JgD9oXmIthMn+SAkCj7IdZVJuTdH9Qh84fJac=;
- b=JTu1ToRZi+Ga4UtV9fQVTanLxRkONl6EHA1HQjdjgUW6EzHk8LGpf8LKn+cgDLj5yr
- YqwXOnzwS/6aOXd5a/Fvc6GJ/GJv5DnkVdR9znE5DgH6wpunU7f/G080B14DArS4sOgw
- Vgalc03LAXeuFtiB9xJNqCCqWI6C+FwZju7RB5jA8Ejo9YK7rC4bWotEV+g07zUGOee7
- zdYdocuUas/7Iudla5SMe2CZ73oqTEQ0QLo0DMdwHrPIqWGbWKTAZNl9vjc3W4qkPCyG
- +08GFlW3IanVHFHVdU1K6HNXq3ZSvIT0/4YFrupPA2uHc6E4z6fZ/efcjAuqllwx8/4x
- e6FA==
-X-Gm-Message-State: AOJu0Yw3hmfrP4l9o10Eae6jevoKPRfMRk69JUFmnawfwy5Zj3cVIv4B
- ecKJuumgLVEgNaw+/YKw8+MlC6wLZvg9H470RfOfGZDI9Er7XNvRXLBNnXenN0N33cTSDNZMdKs
- BCLy8b3gJA6lsLNasqZZvB+3eindSyzBHDVEUikquen3Lp7WQFSqiOM3PBiQ7eQxm89+JrC2L
-X-Received: by 2002:ad4:5844:0:b0:66d:169a:a661 with SMTP id
- de4-20020ad45844000000b0066d169aa661mr7492848qvb.4.1698005561755; 
- Sun, 22 Oct 2023 13:12:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKhfuWjZQciM3w3sDLaoO6iwhIX9y+OBqCDq0opdA/e5z4SibcHCGsmzgT5ixDH0+Jg5DY9w==
-X-Received: by 2002:ad4:5844:0:b0:66d:169a:a661 with SMTP id
- de4-20020ad45844000000b0066d169aa661mr7492837qvb.4.1698005561406; 
- Sun, 22 Oct 2023 13:12:41 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- x11-20020a0cfe0b000000b0065af657ddf7sm2330515qvr.144.2023.10.22.13.12.40
+ d=1e100.net; s=20230601; t=1698005886; x=1698610686;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+6UEYQBu/Dqgh/sz0C77HuJTs8B/70/DderQeQMVTRg=;
+ b=GT3IiD6ylp40n1CvlFYHBpbz5gqO6pmyVkjbDttdWYmveFeEXh1Nk/stpzTLeExf8l
+ qehZJVc+4KKqfiT797jL3Z9FUM7wDK4JXaLEWIOwDSXVd1X0ihcu8l1LazZWtqeqvvzx
+ 2JGwunqh+4qM8q1+KWSmQdUE7oQZfGDaozmeo4Z8D7djXQ350UGtAtj/4ZJTGSpaRqXa
+ F0PRtQoJV7ye7wsYD9lQxd+17J+CrjD1IG0KsA+d3A76m2iOsJVd0YC0vFrDCyEFmXDm
+ CvCvfbz6Qs6YN0EznV5pwZuQxVuuRznLSUK1dH5nwKcqWmAPXECsCxhC+b2vEPOByy5m
+ ut5Q==
+X-Gm-Message-State: AOJu0YwljFTIvtn2uszTeG92pzeNMWPkpTUrM44tP0k7QTzR3vU3xGRC
+ HKmvm77hrMPRK2Syt/pISf1vQ1aLHlqnirNlriqY4J0NdCN3OLH7aGtR8XPGZN7EvS+MptLbg9P
+ rvefh3KHnHwkzx6I=
+X-Received: by 2002:a05:620a:2793:b0:76f:1846:2f6b with SMTP id
+ g19-20020a05620a279300b0076f18462f6bmr7702423qkp.1.1698005886158; 
+ Sun, 22 Oct 2023 13:18:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE+r4qEvroebnsmNcncq8mOBVmGSOrDK/9Zf13YIB0Pmf+Few7iAJx48IplecLeiHHux0zAdw==
+X-Received: by 2002:a05:620a:2793:b0:76f:1846:2f6b with SMTP id
+ g19-20020a05620a279300b0076f18462f6bmr7702410qkp.1.1698005885835; 
+ Sun, 22 Oct 2023 13:18:05 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ u24-20020a05620a085800b007756e75b91bsm2215671qku.78.2023.10.22.13.18.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 13:12:41 -0700 (PDT)
+ Sun, 22 Oct 2023 13:18:05 -0700 (PDT)
+Date: Sun, 22 Oct 2023 16:17:49 -0400
 From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- peterx@redhat.com
-Subject: [PATCH RFC 7/7] migration: Further unify paths for multifd normal or
- sync requests
-Date: Sun, 22 Oct 2023 16:12:11 -0400
-Message-ID: <20231022201211.452861-8-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231022201211.452861-1-peterx@redhat.com>
-References: <20231022201211.452861-1-peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: quintela@redhat.com, qemu-devel@nongnu.org,
+ Leonardo Bras <leobras@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
+ semaphore
+Message-ID: <ZTWDbc2b3PNQKizx@x1n>
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-2-farosas@suse.de>
+ <87sf676kxt.fsf@secure.mitica> <87r0lqy83p.fsf@suse.de>
+ <87wmvi3akc.fsf@secure.mitica> <87lebyy5ac.fsf@suse.de>
+ <87a5se3161.fsf@secure.mitica> <ZTF9vL8yyn6McuTx@x1n>
+ <87ttql20hz.fsf@secure.mitica> <87ttqlh32h.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87ttqlh32h.fsf@suse.de>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -99,94 +103,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide multifd_send_execute() for merging duplicated codes.
+On Fri, Oct 20, 2023 at 09:48:54AM -0300, Fabiano Rosas wrote:
+> > If pending_job == 0 -> owner of the channel is migration_thread and it
+> > can use it.
+> >
+> > If pending_job > 0 -> owner of the channel is the channel thread and
+> > migration_thread can't use it.
+> 
+> Do you really mean "migration_thread" here or just multifd_send_pages()?
+> Because multifd_send_sync_main() doesn't care about this ownership
+> rule. Does that mean that code is incorrect?
 
-The trick here is multifd_send_execute() will conditionally hold the mutex
-when returned, depending on the retval.
+Yes, that's also what I was referring as the confusion, too.
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/multifd.c | 51 ++++++++++++++++++++++-----------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+[...]
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index fe8d746ff9..0052e5daee 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -717,6 +717,29 @@ static bool multifd_do_send(MultiFDSendParams *p, Error **errp)
-     return true;
- }
- 
-+/*
-+ * When succeed: returns true, mutex held.
-+ * When failed:  returns false, mutex released.
-+ */
-+static bool multifd_send_execute(MultiFDSendParams *p, Error **errp)
-+{
-+    if (!multifd_send_prepare(p, errp)) {
-+        qemu_mutex_unlock(&p->mutex);
-+        assert(*errp);
-+        return false;
-+    }
-+
-+    /* Send the packets without mutex */
-+    qemu_mutex_unlock(&p->mutex);
-+    if (!multifd_do_send(p, errp)) {
-+        assert(*errp);
-+        return false;
-+    }
-+    qemu_mutex_lock(&p->mutex);
-+
-+    return true;
-+}
-+
- static void *multifd_send_thread(void *opaque)
- {
-     MultiFDSendParams *p = opaque;
-@@ -746,40 +769,16 @@ static void *multifd_send_thread(void *opaque)
- 
-         qemu_mutex_lock(&p->mutex);
-         if (p->pending_job) {
--            if (!multifd_send_prepare(p, &local_err)) {
--                assert(local_err);
--                qemu_mutex_unlock(&p->mutex);
-+            if (!multifd_send_execute(p, &local_err)) {
-                 goto out;
-             }
--
--            /* Send the packets without mutex */
--            qemu_mutex_unlock(&p->mutex);
--            if (!multifd_do_send(p, &local_err)) {
--                assert(local_err);
--                goto out;
--            }
--            qemu_mutex_lock(&p->mutex);
--
--            /* Send successful, mark the task completed */
-             p->pending_job = false;
- 
-         } else if (p->pending_sync) {
-             p->flags |= MULTIFD_FLAG_SYNC;
--
--            if (!multifd_send_prepare(p, &local_err)) {
--                assert(local_err);
--                qemu_mutex_unlock(&p->mutex);
--                goto out;
--            }
--
--            /* Send the packets without mutex */
--            qemu_mutex_unlock(&p->mutex);
--            if (!multifd_do_send(p, &local_err)) {
--                assert(local_err);
-+            if (!multifd_send_execute(p, &local_err)) {
-                 goto out;
-             }
--            qemu_mutex_lock(&p->mutex);
--
-             qemu_sem_post(&p->sem_sync);
-             p->pending_sync = false;
-         }
+> It's a semantic issue really, but I'd rather we avoid locking ourselves
+> more into the "pages" idea for multifd threads. The data being sent by
+> the multifd thread should be opaque.
+
+I've put these ideas into a RFC patchset here:
+
+[PATCH RFC 0/7] migration/multifd: quit unitifications and separate sync packet
+
+I kept it "pending_job" there, avoid using "pages" as a name.
+
+Fabiano, I have a patch there that dropped p->quit, so there will be
+crossovers with your patchset.  I tried to leave that alone, but found I'd
+better clean that up when add the send thread helpers.  Let's see how it
+goes..
+
+Thanks,
+
 -- 
-2.41.0
+Peter Xu
 
 
