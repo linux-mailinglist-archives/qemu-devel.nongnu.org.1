@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D15B7D221D
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D5B7D2230
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:26:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUg9-0003f5-5E; Sun, 22 Oct 2023 05:23:25 -0400
+	id 1quUgR-0005He-DF; Sun, 22 Oct 2023 05:23:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUg7-0003Wm-Ck
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:23 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgN-0004uw-OI
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUg5-0000O5-E2
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:22 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgJ-0000PV-Lr
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697966600;
+ s=mimecast20190719; t=1697966614;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=pK7tbuaeKJdZf3nB4jRfGMSAPSPT/dWMGPTuzqv6QUY=;
- b=XKotDTlwdWirtK1lYmG4WspawlY6xtRCYAsgVpMfEQ2/0zav4FM1GF3pigmMA5P668b9E5
- Zgv2dcNkHpQ7Cn0lNZ+OigmxTDxfzU4nCzsVFGBSnV/y/pTKqmoI9KHV4pY/+i05fgnXv2
- 9QoFkLRKxvg8kUmxIpvjAaAF46m/AJo=
+ bh=fsLh7ia6XRW9dnJHrit24Lv0bVF86UyjHpRok70ZRQs=;
+ b=BoVVwITGtktc57p4tAoFlCCPX033bIva1L3XgIF23umjcDEUJ6E2WELowLsVIyYDjbSrzP
+ tZG4xlQfLnUca7fzhKzIhz58ODejHNCoMhZU8MfhsyUTgfjAVX7B5WY1XN4kmKZXDuPIkF
+ PlY/kqef8PX5YT/XzsYUfuWKu4Cykmc=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-nqAfZzn1Mi6SjQXPpCA4Ng-1; Sun, 22 Oct 2023 05:23:18 -0400
-X-MC-Unique: nqAfZzn1Mi6SjQXPpCA4Ng-1
+ us-mta-226-AS7FVEpvN_mRV3gwRlHZTg-1; Sun, 22 Oct 2023 05:23:22 -0400
+X-MC-Unique: AS7FVEpvN_mRV3gwRlHZTg-1
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-408f9cee5e8so3746445e9.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:23:18 -0700 (PDT)
+ 5b1f17b1804b1-4067f186094so12684725e9.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:23:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966596; x=1698571396;
+ d=1e100.net; s=20230601; t=1697966600; x=1698571400;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pK7tbuaeKJdZf3nB4jRfGMSAPSPT/dWMGPTuzqv6QUY=;
- b=UEVMs+p/rFu/mM4IFvj86+RXg9gTyaqUfRfPezOkW2rwbufPjKL6Lcw6mOjeX7C+kV
- OG4DTFpO38q9LqyPgcpUV5hidk0W9ELAkMk/5B5o1PYeak3OHL4iW0A2F5zTYWAEViqk
- lOsa0Opb7NaQomtGVqQu2CVxC2qEPnlpZ2Dffyv10x5ixOWPT8bZmWT5HPpP6yr2MkrQ
- NlkPbPKTNISTZMaUyL407xUMxJ4YTxidBQfR1gidn+1v3V+ACbMdLMUOuAeWaQCM01yG
- RbrPnoNxDObPVhknLAKaAkn3EKgDnJ8HnbTAvx61EQplGh+a7svEgOJSbzQafG8sGACd
- eGjA==
-X-Gm-Message-State: AOJu0YxKgLrrVItNyGnJ2uvTlLhxtP8SSLBzUTZlNJWFuljKVBMWJkfc
- kvAz21nP0eHh4hokLMn/uww1F672cJguvODga/IIwLgcwv414z9C5Sgld2O4fhtD80wlGy7ZIeM
- Rq14SzHbUy4j/sHWL0wKD5C8fwTN7vh+c6UUPAwFG4csmSiTEeZyqKG2dUk3/t3CGlCPL
-X-Received: by 2002:a05:600c:1992:b0:401:daf2:2735 with SMTP id
- t18-20020a05600c199200b00401daf22735mr4822359wmq.31.1697966596716; 
- Sun, 22 Oct 2023 02:23:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAAnf8HTcsDXqPqdzhu7fwm29zPUVyWrv0ApOznfEmvYuuwQm39Swk57QHqrubqf4ZBSezmw==
-X-Received: by 2002:a05:600c:1992:b0:401:daf2:2735 with SMTP id
- t18-20020a05600c199200b00401daf22735mr4822345wmq.31.1697966596389; 
- Sun, 22 Oct 2023 02:23:16 -0700 (PDT)
+ bh=fsLh7ia6XRW9dnJHrit24Lv0bVF86UyjHpRok70ZRQs=;
+ b=rIrn+Gv/Czk1F8hf0mUk2G5ZT2dvE1l83EujMvjRcvt5/id6rk7q/FRKU+MyniDyJA
+ w164uQ2tBaHviStiadoWO9emJKv6HVhkEBzdh81XaElN7bKFBe/WvT/jGS+g8dpJ0UBM
+ FYBfvO+FH6yt1y8z+ZwdHikACx35kogUp66cxpR7Bdv0iKE11NnSQBrAd9wTzpMR6hLm
+ p2tbnPJfdJJuNvlAhA3RBDe4JaahbTSOevcp+UwW3FcIsnp2agQvtYasZeb5n5ilebR7
+ tlaIBS5yJHDBsmMCg1cfdCWmQhs/VvKlYsWfuBOaYyeDIAVomuQ2vqpfIZf0HWZsvcpA
+ DZKg==
+X-Gm-Message-State: AOJu0YyKY5Go5u0FNLfJkthHCgFc5c1wL1M3bi8Gt73mpr+lz5yjUVrO
+ Y0b5XSwLYU9/rIxnVORYcKK0DOFS7PDYbUpgdLElmYd1gOOhsppwLyRymMx0NIhsPj4IBviVMF2
+ aaqGmYn1ZyxyF3B82cBu8LxGY0o1sUMnaaibAx8lrN4JqNmGFMuzRxL6gnLybNvTHARZv
+X-Received: by 2002:a05:600c:1ca5:b0:401:b6f6:d8fd with SMTP id
+ k37-20020a05600c1ca500b00401b6f6d8fdmr4661908wms.6.1697966600478; 
+ Sun, 22 Oct 2023 02:23:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHaoYaxhaEAi9fICScqoGvV/+5+A6zOylW98nVswOQUJz8LeXKO/scSTg9VG0hqPtDeK5VDpg==
+X-Received: by 2002:a05:600c:1ca5:b0:401:b6f6:d8fd with SMTP id
+ k37-20020a05600c1ca500b00401b6f6d8fdmr4661889wms.6.1697966600127; 
+ Sun, 22 Oct 2023 02:23:20 -0700 (PDT)
 Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
- e7-20020a05600c218700b00407efbc4361sm11203120wme.9.2023.10.22.02.23.14
+ y7-20020a5d4ac7000000b0032dde679398sm5274838wrs.8.2023.10.22.02.23.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:23:15 -0700 (PDT)
-Date: Sun, 22 Oct 2023 05:23:12 -0400
+ Sun, 22 Oct 2023 02:23:19 -0700 (PDT)
+Date: Sun, 22 Oct 2023 05:23:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Hanna Czenczek <hreitz@redhat.com>
-Subject: [PULL v3 17/62] vhost-backend: remove vhost_kernel_reset_device()
-Message-ID: <e6383293eb01928692047e617665a742cca87e23.1697966402.git.mst@redhat.com>
+ Hanna Czenczek <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v3 18/62] virtio: call ->vhost_reset_device() during reset
+Message-ID: <c0c4f147291f37765a5275aa24c3e1195468903b.1697966402.git.mst@redhat.com>
 References: <cover.1697966402.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,48 +106,133 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-vhost_kernel_reset_device() invokes RESET_OWNER, which disassociates the
-owner process from the device. The device is left non-operational since
-SET_OWNER is only called once during startup in vhost_dev_init().
+vhost-user-scsi has a VirtioDeviceClass->reset() function that calls
+->vhost_reset_device(). The other vhost devices don't notify the vhost
+device upon reset.
 
-vhost_kernel_reset_device() is never called so this latent bug never
-appears. Get rid of vhost_kernel_reset_device() for now. If someone
-needs it in the future they'll need to implement it correctly.
+Stateful vhost devices may need to handle device reset in order to free
+resources or prevent stale device state from interfering after reset.
+
+Call ->vhost_device_reset() from virtio_reset() so that that vhost
+devices are notified of device reset.
+
+This patch affects behavior as follows:
+- vhost-kernel: No change in behavior since ->vhost_reset_device() is
+  not implemented.
+- vhost-user: back-ends that negotiate
+  VHOST_USER_PROTOCOL_F_RESET_DEVICE now receive a
+  VHOST_USER_DEVICE_RESET message upon device reset. Otherwise there is
+  no change in behavior. DPDK, SPDK, libvhost-user, and the
+  vhost-user-backend crate do not negotiate
+  VHOST_USER_PROTOCOL_F_RESET_DEVICE automatically.
+- vhost-vdpa: an extra SET_STATUS 0 call is made during device reset.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-Id: <20231004014532.1228637-3-stefanha@redhat.com>
+Message-Id: <20231004014532.1228637-4-stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- hw/virtio/vhost-backend.c | 6 ------
- 1 file changed, 6 deletions(-)
+ include/hw/virtio/vhost.h | 10 ++++++++++
+ hw/scsi/vhost-user-scsi.c | 11 -----------
+ hw/virtio/vhost.c         |  9 +++++++++
+ hw/virtio/virtio.c        |  4 ++++
+ meson.build               |  1 +
+ 5 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
-index 8e581575c9..17f3fc6a08 100644
---- a/hw/virtio/vhost-backend.c
-+++ b/hw/virtio/vhost-backend.c
-@@ -197,11 +197,6 @@ static int vhost_kernel_set_owner(struct vhost_dev *dev)
-     return vhost_kernel_call(dev, VHOST_SET_OWNER, NULL);
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index c7e5467693..00e0a669b8 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -339,4 +339,14 @@ int vhost_dev_set_inflight(struct vhost_dev *dev,
+ int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
+                            struct vhost_inflight *inflight);
+ bool vhost_dev_has_iommu(struct vhost_dev *dev);
++
++#ifdef CONFIG_VHOST
++int vhost_reset_device(struct vhost_dev *hdev);
++#else
++static inline int vhost_reset_device(struct vhost_dev *hdev)
++{
++    return -ENOSYS;
++}
++#endif /* CONFIG_VHOST */
++
+ #endif
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 78aef4765f..b7c6100f3e 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -62,16 +62,6 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+     }
  }
  
--static int vhost_kernel_reset_device(struct vhost_dev *dev)
+-static void vhost_user_scsi_reset(VirtIODevice *vdev)
 -{
--    return vhost_kernel_call(dev, VHOST_RESET_OWNER, NULL);
+-    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
+-    struct vhost_dev *dev = &vsc->dev;
+-
+-    if (dev->vhost_ops->vhost_reset_device) {
+-        dev->vhost_ops->vhost_reset_device(dev);
+-    }
 -}
 -
- static int vhost_kernel_get_vq_index(struct vhost_dev *dev, int idx)
+ static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
  {
-     assert(idx >= dev->vq_index && idx < dev->vq_index + dev->nvqs);
-@@ -322,7 +317,6 @@ const VhostOps kernel_ops = {
-         .vhost_get_features = vhost_kernel_get_features,
-         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
-         .vhost_set_owner = vhost_kernel_set_owner,
--        .vhost_reset_device = vhost_kernel_reset_device,
-         .vhost_get_vq_index = vhost_kernel_get_vq_index,
-         .vhost_vsock_set_guest_cid = vhost_kernel_vsock_set_guest_cid,
-         .vhost_vsock_set_running = vhost_kernel_vsock_set_running,
+ }
+@@ -191,7 +181,6 @@ static void vhost_user_scsi_class_init(ObjectClass *klass, void *data)
+     vdc->get_features = vhost_scsi_common_get_features;
+     vdc->set_config = vhost_scsi_common_set_config;
+     vdc->set_status = vhost_user_scsi_set_status;
+-    vdc->reset = vhost_user_scsi_reset;
+     fwc->get_dev_path = vhost_scsi_common_get_fw_dev_path;
+ }
+ 
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 9f37206ba0..92a6933f66 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -2154,3 +2154,12 @@ int vhost_net_set_backend(struct vhost_dev *hdev,
+ 
+     return -ENOSYS;
+ }
++
++int vhost_reset_device(struct vhost_dev *hdev)
++{
++    if (hdev->vhost_ops->vhost_reset_device) {
++        return hdev->vhost_ops->vhost_reset_device(hdev);
++    }
++
++    return -ENOSYS;
++}
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 6facd64fbc..fb24bc927b 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -2136,6 +2136,10 @@ void virtio_reset(void *opaque)
+         vdev->device_endian = virtio_default_endian();
+     }
+ 
++    if (vdev->vhost_started) {
++        vhost_reset_device(k->get_vhost(vdev));
++    }
++
+     if (k->reset) {
+         k->reset(vdev);
+     }
+diff --git a/meson.build b/meson.build
+index e0d1f84b26..cbee764817 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2134,6 +2134,7 @@ config_host_data.set('CONFIG_TPM', have_tpm)
+ config_host_data.set('CONFIG_TSAN', get_option('tsan'))
+ config_host_data.set('CONFIG_USB_LIBUSB', libusb.found())
+ config_host_data.set('CONFIG_VDE', vde.found())
++config_host_data.set('CONFIG_VHOST', have_vhost)
+ config_host_data.set('CONFIG_VHOST_NET', have_vhost_net)
+ config_host_data.set('CONFIG_VHOST_NET_USER', have_vhost_net_user)
+ config_host_data.set('CONFIG_VHOST_NET_VDPA', have_vhost_net_vdpa)
 -- 
 MST
 
