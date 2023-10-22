@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694587D2140
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCF17D213D
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quRWZ-0000mj-Pr; Sun, 22 Oct 2023 02:01:19 -0400
+	id 1quRWU-0000kf-Kr; Sun, 22 Oct 2023 02:01:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRWE-0000ay-Rw
+ id 1quRWF-0000b2-3R
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:01:00 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRWC-0001b6-LC
+ id 1quRWD-0001bN-Ax
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:58 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1c9d3a21f7aso18144605ad.2
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6b20a48522fso1748960b3a.1
  for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:00:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697954455; x=1698559255; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697954456; x=1698559256; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VO6vWcKYJslbm9/yoJ+t3ZpT4RSCM4gjLz6Gp/K2cjk=;
- b=RTbqnHknc5/JeZYC492ayledlAkUk5brRfGaTDVJdfy1hqZmP27v7Bc8gHQV3desOI
- BWTEHhoAUpCkolGOCEWCH6vDyhvRbM397uX+ArxI5HB/ONaKKkhMZu2Fwo1VvOWcmGiH
- xoji3GE6z7IUZ60/C3lvZO7nHvnbT/yl5BwzHzEKdhf/zNDrP7BNX+UtYy6xI3W0U+w6
- zF/lVl5x+fQkZB+FvTCl4/t9xBJkAaiFXf6MAF5/zjQXByTmU4TAM0V+wj5ps3MIWT4V
- 6mLfT63/cQd/dM0SlQswUBDjmhs+mFWBeTEoEUgSIrDNNMZDmR5Ib2XzhcAJMaVVZ/yA
- QYxg==
+ bh=2mMYmKwJtPq/+64v43x89L2IhKcuVN5x2HBXcrC0/Jw=;
+ b=Gs/9jXvcz8wPlvfweLZBU/o6nfY/Dem51XDTri9wfNaQ+Sa2G788XJLiQyR6LSJv4m
+ lyDNOTWYfSqHJYZJ5TgpgtXYoNE5DezP8fBMFwarZABAKrmAP539bFl9Zr+IFc/orVnv
+ lua1mGZPKK17JJHIbt2pGeEDjGhhbqphBnlZ7xgnN4K0bAqsQd3YJWP6fEwg6dMWl3xV
+ jy3QzNt6eBK5x19cqNL3bwGP37IduezAIDz2fOf72Jyh2Zmn+BZU/0oCpSeX79tj/miB
+ yigyg2+BRbDfxopiON4UWitKvXaosoziDEvpRWfJLEfX77AO/gVvebCtOZdIVU20eEpf
+ u8dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697954455; x=1698559255;
+ d=1e100.net; s=20230601; t=1697954456; x=1698559256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VO6vWcKYJslbm9/yoJ+t3ZpT4RSCM4gjLz6Gp/K2cjk=;
- b=h9fAbi1madfSr4CMl6C6ZrsIbcXGdCaznM+BP/CpksgbZAXO0ubIuhxRmkVR1KD9AK
- eXvmBpl+qy/CLW34lism4SZeMFA74IihmnMRYduc5Tu60eCiQMTSoDAVK2wP+dBhcTpT
- YyZ5XHFV7U30S9ug3lG/fr+vPy1QKJ5fBnLFvzTbj36Qqr7xe9dkMBejue+dpU89rO6N
- sjfVDjljzRSNwaxGTSxTOMFLVIWRoZNKqIbkvckLxOP2u3Wl4K0sXF99DMW6R1AiyqUm
- IQz3/vj0G2Eo/PFtsZP2GSS50f7NMvwXaX9UfA32lO8X3m2HtOwlBh8mcE/OtAUFusn2
- Uilg==
-X-Gm-Message-State: AOJu0YxXp96bW9s3UDeCYAq6uKq1O/d9IussXyPf9t/vIiOPMpnle3F7
- lK5BASevvInIZ5qZ3PjiUmwE9WZZsseHIRnX2aE=
-X-Google-Smtp-Source: AGHT+IHYM9VRw8RABWz5XU24vhW1PlVt+/YG0kUeZNe/nom8JWxwG00aZECb3jHVGg9hz7TBRjNHog==
-X-Received: by 2002:a17:902:e0cb:b0:1c9:e85a:4296 with SMTP id
- e11-20020a170902e0cb00b001c9e85a4296mr5017699pla.6.1697954455166; 
- Sat, 21 Oct 2023 23:00:55 -0700 (PDT)
+ bh=2mMYmKwJtPq/+64v43x89L2IhKcuVN5x2HBXcrC0/Jw=;
+ b=aX+P0BrokLTmn8ohDjMUslM9QawTC/nCd+Me/fBTaIrSI2KlNZT5ghhkZGciuZRWxH
+ WaRFwdpcoYQ6iZm6Eupiix7LOMhVwBV598LPsPArD8xSrH1xqjSF3R0vcwexEQxQAU7T
+ Oy0wDf6GTF6azKlzD2HJmp7BEfbWZ2kgLlgh1mmHs0ZPp0+aIZOT/+PdrLeKa/mMlB/i
+ r/44qOILzsz4AoeUKBPZBiSyF0uX0vib/ku+ZtufGFQ71RT4a+lSzk2heVDxy6ph1SuQ
+ ITJFsWzIeGMwlJCQsnD/ksrOiDTi7PDHmthDfB3tGuws+YWpAWvgjOKly5idhw5cisHh
+ plgg==
+X-Gm-Message-State: AOJu0YwUhNuXnadz8rvqiYMJo9oWHWaGaUStJ2SlWFlM1qxBu6IhZ2lc
+ 7GyN0zu7M3QNO+autS099LWVtj5a05uPIsT6Nzs=
+X-Google-Smtp-Source: AGHT+IGnT+HQn5em8UoRomUInYLAFNnfCXf5xh7mxs75xiyGeQ6w6eiyFqBlJgNeYpa6aCtvxOzBfA==
+X-Received: by 2002:a05:6a20:4e1a:b0:15d:e8ce:145 with SMTP id
+ gk26-20020a056a204e1a00b0015de8ce0145mr4064378pzb.21.1697954456050; 
+ Sat, 21 Oct 2023 23:00:56 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.54
+ je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 23:00:54 -0700 (PDT)
+ Sat, 21 Oct 2023 23:00:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 27/90] target/sparc: Move WRWIM, WRPR to decodetree
-Date: Sat, 21 Oct 2023 22:59:28 -0700
-Message-Id: <20231022060031.490251-28-richard.henderson@linaro.org>
+Subject: [PATCH v4 28/90] target/sparc: Move WRTBR, WRHPR to decodetree
+Date: Sat, 21 Oct 2023 22:59:29 -0700
+Message-Id: <20231022060031.490251-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022060031.490251-1-richard.henderson@linaro.org>
 References: <20231022060031.490251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,419 +90,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Implement htstate in the obvious way.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  21 +++
- target/sparc/translate.c  | 350 +++++++++++++++++++++++---------------
- 2 files changed, 235 insertions(+), 136 deletions(-)
+ target/sparc/insns.decode |   9 +++
+ target/sparc/translate.c  | 130 ++++++++++++++++++++++----------------
+ 2 files changed, 85 insertions(+), 54 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 45cf47a32f..f478999ee1 100644
+index f478999ee1..eab737fdcc 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -117,6 +117,27 @@ RDPR_gl             10 rd:5  101010 10000 0 0000000000000
- RDPR_strand_status  10 rd:5  101010 11010 0 0000000000000
- RDPR_ver            10 rd:5  101010 11111 0 0000000000000
+@@ -143,6 +143,15 @@ WRPR_strand_status  10 11010 110010 ..... . .............  @n_r_ri
+   RDTBR     10 rd:5  101011 00000 0 0000000000000
+ }
  
 +{
-+  WRWIM             10 00000 110010 ..... . .............  @n_r_ri
-+  WRPR_tpc          10 00000 110010 ..... . .............  @n_r_ri
++  WRTBR             10 00000 110011 ..... . .............  @n_r_ri
++  WRHPR_hpstate     10 00000 110011 ..... . .............  @n_r_ri
 +}
-+WRPR_tnpc           10 00001 110010 ..... . .............  @n_r_ri
-+WRPR_tstate         10 00010 110010 ..... . .............  @n_r_ri
-+WRPR_tt             10 00011 110010 ..... . .............  @n_r_ri
-+WRPR_tick           10 00100 110010 ..... . .............  @n_r_ri
-+WRPR_tba            10 00101 110010 ..... . .............  @n_r_ri
-+WRPR_pstate         10 00110 110010 ..... . .............  @n_r_ri
-+WRPR_tl             10 00111 110010 ..... . .............  @n_r_ri
-+WRPR_pil            10 01000 110010 ..... . .............  @n_r_ri
-+WRPR_cwp            10 01001 110010 ..... . .............  @n_r_ri
-+WRPR_cansave        10 01010 110010 ..... . .............  @n_r_ri
-+WRPR_canrestore     10 01011 110010 ..... . .............  @n_r_ri
-+WRPR_cleanwin       10 01100 110010 ..... . .............  @n_r_ri
-+WRPR_otherwin       10 01101 110010 ..... . .............  @n_r_ri
-+WRPR_wstate         10 01110 110010 ..... . .............  @n_r_ri
-+WRPR_gl             10 10000 110010 ..... . .............  @n_r_ri
-+WRPR_strand_status  10 11010 110010 ..... . .............  @n_r_ri
++WRHPR_htstate       10 00001 110011 ..... . .............  @n_r_ri
++WRHPR_hintp         10 00011 110011 ..... . .............  @n_r_ri
++WRHPR_htba          10 00101 110011 ..... . .............  @n_r_ri
++WRHPR_hstick_cmpr   10 11111 110011 ..... . .............  @n_r_ri
 +
+ Tcc_r       10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
  {
-   FLUSHW    10 00000 101011 00000 0 0000000000000
-   RDTBR     10 rd:5  101011 00000 0 0000000000000
+   # For v7, the entire simm13 field is present, but masked to 7 bits.
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 8d1af552f8..8735cf1845 100644
+index 8735cf1845..ea991bf1f8 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -44,6 +44,10 @@
- #define gen_helper_rdccr(D, E)          qemu_build_not_reached()
- #define gen_helper_rdcwp(D, E)          qemu_build_not_reached()
- #define gen_helper_wrccr(E, S)          qemu_build_not_reached()
-+#define gen_helper_wrcwp(E, S)          qemu_build_not_reached()
-+#define gen_helper_wrgl(E, S)           g_assert_not_reached()
-+#define gen_helper_wrpil(E, S)          qemu_build_not_reached()
-+#define gen_helper_wrpstate(E, S)       qemu_build_not_reached()
- #define gen_helper_set_softint(E, S)    qemu_build_not_reached()
- #define gen_helper_clear_softint(E, S)  qemu_build_not_reached()
- #define gen_helper_write_softint(E, S)  qemu_build_not_reached()
-@@ -3840,6 +3844,214 @@ static void do_wrpsr(DisasContext *dc, TCGv src)
+@@ -4052,6 +4052,81 @@ static void do_wrssr(DisasContext *dc, TCGv src)
  
- TRANS(WRPSR, 32, do_wr_special, a, supervisor(dc), do_wrpsr)
+ TRANS(WRPR_strand_status, HYPV, do_wr_special, a, hypervisor(dc), do_wrssr)
  
-+static void do_wrwim(DisasContext *dc, TCGv src)
++TRANS(WRTBR, 32, do_wr_special, a, supervisor(dc), do_wrtba)
++
++static void do_wrhpstate(DisasContext *dc, TCGv src)
 +{
 +#ifdef TARGET_SPARC64
-+    qemu_build_not_reached();
-+#else
-+    target_ulong mask = MAKE_64BIT_MASK(0, dc->def->nwindows);
-+    tcg_gen_andi_tl(cpu_wim, src, mask);
-+#endif
-+}
-+
-+TRANS(WRWIM, 32, do_wr_special, a, supervisor(dc), do_wrwim)
-+
-+static void do_wrtpc(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
-+
-+    gen_load_trap_state_at_tl(r_tsptr);
-+    tcg_gen_st_tl(src, r_tsptr, offsetof(trap_state, tpc));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_tpc, 64, do_wr_special, a, supervisor(dc), do_wrtpc)
-+
-+static void do_wrtnpc(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
-+
-+    gen_load_trap_state_at_tl(r_tsptr);
-+    tcg_gen_st_tl(src, r_tsptr, offsetof(trap_state, tnpc));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_tnpc, 64, do_wr_special, a, supervisor(dc), do_wrtnpc)
-+
-+static void do_wrtstate(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
-+
-+    gen_load_trap_state_at_tl(r_tsptr);
-+    tcg_gen_st_tl(src, r_tsptr, offsetof(trap_state, tstate));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_tstate, 64, do_wr_special, a, supervisor(dc), do_wrtstate)
-+
-+static void do_wrtt(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
-+
-+    gen_load_trap_state_at_tl(r_tsptr);
-+    tcg_gen_st32_tl(src, r_tsptr, offsetof(trap_state, tt));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_tt, 64, do_wr_special, a, supervisor(dc), do_wrtt)
-+
-+static void do_wrtick(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    TCGv_ptr r_tickptr = tcg_temp_new_ptr();
-+
-+    tcg_gen_ld_ptr(r_tickptr, tcg_env, offsetof(CPUSPARCState, tick));
-+    translator_io_start(&dc->base);
-+    gen_helper_tick_set_count(r_tickptr, src);
-+    /* End TB to handle timer interrupt */
++    tcg_gen_st_i64(src, tcg_env, offsetof(CPUSPARCState, hpstate));
 +    dc->base.is_jmp = DISAS_EXIT;
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_tick, 64, do_wr_special, a, supervisor(dc), do_wrtick)
-+
-+static void do_wrtba(DisasContext *dc, TCGv src)
-+{
-+    tcg_gen_mov_tl(cpu_tbr, src);
-+}
-+
-+TRANS(WRPR_tba, 64, do_wr_special, a, supervisor(dc), do_wrtba)
-+
-+static void do_wrpstate(DisasContext *dc, TCGv src)
-+{
-+    save_state(dc);
-+    if (translator_io_start(&dc->base)) {
-+        dc->base.is_jmp = DISAS_EXIT;
-+    }
-+    gen_helper_wrpstate(tcg_env, src);
-+    dc->npc = DYNAMIC_PC;
-+}
-+
-+TRANS(WRPR_pstate, 64, do_wr_special, a, supervisor(dc), do_wrpstate)
-+
-+static void do_wrtl(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    save_state(dc);
-+    tcg_gen_st32_tl(src, tcg_env, offsetof(CPUSPARCState, tl));
-+    dc->npc = DYNAMIC_PC;
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_tl, 64, do_wr_special, a, supervisor(dc), do_wrtl)
-+
-+static void do_wrpil(DisasContext *dc, TCGv src)
-+{
-+    if (translator_io_start(&dc->base)) {
-+        dc->base.is_jmp = DISAS_EXIT;
-+    }
-+    gen_helper_wrpil(tcg_env, src);
-+}
-+
-+TRANS(WRPR_pil, 64, do_wr_special, a, supervisor(dc), do_wrpil)
-+
-+static void do_wrcwp(DisasContext *dc, TCGv src)
-+{
-+    gen_helper_wrcwp(tcg_env, src);
-+}
-+
-+TRANS(WRPR_cwp, 64, do_wr_special, a, supervisor(dc), do_wrcwp)
-+
-+static void do_wrcansave(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    tcg_gen_st32_tl(src, tcg_env, offsetof(CPUSPARCState, cansave));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_cansave, 64, do_wr_special, a, supervisor(dc), do_wrcansave)
-+
-+static void do_wrcanrestore(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    tcg_gen_st32_tl(src, tcg_env, offsetof(CPUSPARCState, canrestore));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_canrestore, 64, do_wr_special, a, supervisor(dc), do_wrcanrestore)
-+
-+static void do_wrcleanwin(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    tcg_gen_st32_tl(src, tcg_env, offsetof(CPUSPARCState, cleanwin));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_cleanwin, 64, do_wr_special, a, supervisor(dc), do_wrcleanwin)
-+
-+static void do_wrotherwin(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    tcg_gen_st32_tl(src, tcg_env, offsetof(CPUSPARCState, otherwin));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_otherwin, 64, do_wr_special, a, supervisor(dc), do_wrotherwin)
-+
-+static void do_wrwstate(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    tcg_gen_st32_tl(src, tcg_env, offsetof(CPUSPARCState, wstate));
-+#else
-+    qemu_build_not_reached();
-+#endif
-+}
-+
-+TRANS(WRPR_wstate, 64, do_wr_special, a, supervisor(dc), do_wrwstate)
-+
-+static void do_wrgl(DisasContext *dc, TCGv src)
-+{
-+    gen_helper_wrgl(tcg_env, src);
-+}
-+
-+TRANS(WRPR_gl, GL, do_wr_special, a, supervisor(dc), do_wrgl)
-+
-+/* UA2005 strand status */
-+static void do_wrssr(DisasContext *dc, TCGv src)
-+{
-+#ifdef TARGET_SPARC64
-+    tcg_gen_mov_tl(cpu_ssr, src);
 +#else
 +    g_assert_not_reached();
 +#endif
 +}
 +
-+TRANS(WRPR_strand_status, HYPV, do_wr_special, a, hypervisor(dc), do_wrssr)
++TRANS(WRHPR_hpstate, HYPV, do_wr_special, a, hypervisor(dc), do_wrhpstate)
++
++static void do_wrhtstate(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    TCGv_i32 tl = tcg_temp_new_i32();
++    TCGv_ptr tp = tcg_temp_new_ptr();
++
++    tcg_gen_ld_i32(tl, tcg_env, offsetof(CPUSPARCState, tl));
++    tcg_gen_andi_i32(tl, tl, MAXTL_MASK);
++    tcg_gen_shli_i32(tl, tl, 3);
++    tcg_gen_ext_i32_ptr(tp, tl);
++    tcg_gen_add_ptr(tp, tp, tcg_env);
++
++    tcg_gen_st_i64(src, tp, offsetof(CPUSPARCState, htstate));
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(WRHPR_htstate, HYPV, do_wr_special, a, hypervisor(dc), do_wrhtstate)
++
++static void do_wrhintp(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    tcg_gen_mov_tl(cpu_hintp, src);
++#else
++    g_assert_not_reached();
++#endif
++}
++
++TRANS(WRHPR_hintp, HYPV, do_wr_special, a, hypervisor(dc), do_wrhintp)
++
++static void do_wrhtba(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    tcg_gen_mov_tl(cpu_htba, src);
++#else
++    g_assert_not_reached();
++#endif
++}
++
++TRANS(WRHPR_htba, HYPV, do_wr_special, a, hypervisor(dc), do_wrhtba)
++
++static void do_wrhstick_cmpr(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tickptr = tcg_temp_new_ptr();
++
++    tcg_gen_mov_tl(cpu_hstick_cmpr, src);
++    tcg_gen_ld_ptr(r_tickptr, tcg_env, offsetof(CPUSPARCState, hstick));
++    translator_io_start(&dc->base);
++    gen_helper_tick_set_limit(r_tickptr, cpu_hstick_cmpr);
++    /* End TB to handle timer interrupt */
++    dc->base.is_jmp = DISAS_EXIT;
++#else
++    g_assert_not_reached();
++#endif
++}
++
++TRANS(WRHPR_hstick_cmpr, HYPV, do_wr_special, a, hypervisor(dc),
++      do_wrhstick_cmpr)
 +
  static bool do_saved_restored(DisasContext *dc, void (*func)(TCGv_env))
  {
      if (!supervisor(dc)) {
-@@ -4526,142 +4738,8 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+@@ -4737,63 +4812,10 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ #endif
                      case 0x30:
                          goto illegal_insn;  /* WRASR in decodetree */
- #if !defined(CONFIG_USER_ONLY)
--                    case 0x32: /* wrwim, V9 wrpr */
+-#if !defined(CONFIG_USER_ONLY)
+                     case 0x32:
+                         goto illegal_insn;  /* WRPR in decodetree */
+                     case 0x33: /* wrtbr, UA2005 wrhpr */
 -                        {
+-#ifndef TARGET_SPARC64
 -                            if (!supervisor(dc))
+-                                goto priv_insn;
+-                            tcg_gen_xor_tl(cpu_tbr, cpu_src1, cpu_src2);
+-#else
+-                            CHECK_IU_FEATURE(dc, HYPV);
+-                            if (!hypervisor(dc))
 -                                goto priv_insn;
 -                            cpu_tmp0 = tcg_temp_new();
 -                            tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
--#ifdef TARGET_SPARC64
 -                            switch (rd) {
--                            case 0: // tpc
--                                {
--                                    TCGv_ptr r_tsptr;
--
--                                    r_tsptr = tcg_temp_new_ptr();
--                                    gen_load_trap_state_at_tl(r_tsptr);
--                                    tcg_gen_st_tl(cpu_tmp0, r_tsptr,
--                                                  offsetof(trap_state, tpc));
--                                }
+-                            case 0: // hpstate
+-                                tcg_gen_st_i64(cpu_tmp0, tcg_env,
+-                                               offsetof(CPUSPARCState,
+-                                                        hpstate));
+-                                save_state(dc);
+-                                gen_op_next_insn();
+-                                tcg_gen_exit_tb(NULL, 0);
+-                                dc->base.is_jmp = DISAS_NORETURN;
 -                                break;
--                            case 1: // tnpc
--                                {
--                                    TCGv_ptr r_tsptr;
--
--                                    r_tsptr = tcg_temp_new_ptr();
--                                    gen_load_trap_state_at_tl(r_tsptr);
--                                    tcg_gen_st_tl(cpu_tmp0, r_tsptr,
--                                                  offsetof(trap_state, tnpc));
--                                }
+-                            case 1: // htstate
+-                                // XXX gen_op_wrhtstate();
 -                                break;
--                            case 2: // tstate
--                                {
--                                    TCGv_ptr r_tsptr;
--
--                                    r_tsptr = tcg_temp_new_ptr();
--                                    gen_load_trap_state_at_tl(r_tsptr);
--                                    tcg_gen_st_tl(cpu_tmp0, r_tsptr,
--                                                  offsetof(trap_state,
--                                                           tstate));
--                                }
+-                            case 3: // hintp
+-                                tcg_gen_mov_tl(cpu_hintp, cpu_tmp0);
 -                                break;
--                            case 3: // tt
--                                {
--                                    TCGv_ptr r_tsptr;
--
--                                    r_tsptr = tcg_temp_new_ptr();
--                                    gen_load_trap_state_at_tl(r_tsptr);
--                                    tcg_gen_st32_tl(cpu_tmp0, r_tsptr,
--                                                    offsetof(trap_state, tt));
--                                }
+-                            case 5: // htba
+-                                tcg_gen_mov_tl(cpu_htba, cpu_tmp0);
 -                                break;
--                            case 4: // tick
+-                            case 31: // hstick_cmpr
 -                                {
 -                                    TCGv_ptr r_tickptr;
 -
+-                                    tcg_gen_mov_tl(cpu_hstick_cmpr, cpu_tmp0);
 -                                    r_tickptr = tcg_temp_new_ptr();
 -                                    tcg_gen_ld_ptr(r_tickptr, tcg_env,
--                                                   offsetof(CPUSPARCState, tick));
+-                                                   offsetof(CPUSPARCState, hstick));
 -                                    translator_io_start(&dc->base);
--                                    gen_helper_tick_set_count(r_tickptr,
--                                                              cpu_tmp0);
+-                                    gen_helper_tick_set_limit(r_tickptr,
+-                                                              cpu_hstick_cmpr);
 -                                    /* End TB to handle timer interrupt */
 -                                    dc->base.is_jmp = DISAS_EXIT;
 -                                }
 -                                break;
--                            case 5: // tba
--                                tcg_gen_mov_tl(cpu_tbr, cpu_tmp0);
--                                break;
--                            case 6: // pstate
--                                save_state(dc);
--                                if (translator_io_start(&dc->base)) {
--                                    dc->base.is_jmp = DISAS_EXIT;
--                                }
--                                gen_helper_wrpstate(tcg_env, cpu_tmp0);
--                                dc->npc = DYNAMIC_PC;
--                                break;
--                            case 7: // tl
--                                save_state(dc);
--                                tcg_gen_st32_tl(cpu_tmp0, tcg_env,
--                                               offsetof(CPUSPARCState, tl));
--                                dc->npc = DYNAMIC_PC;
--                                break;
--                            case 8: // pil
--                                if (translator_io_start(&dc->base)) {
--                                    dc->base.is_jmp = DISAS_EXIT;
--                                }
--                                gen_helper_wrpil(tcg_env, cpu_tmp0);
--                                break;
--                            case 9: // cwp
--                                gen_helper_wrcwp(tcg_env, cpu_tmp0);
--                                break;
--                            case 10: // cansave
--                                tcg_gen_st32_tl(cpu_tmp0, tcg_env,
--                                                offsetof(CPUSPARCState,
--                                                         cansave));
--                                break;
--                            case 11: // canrestore
--                                tcg_gen_st32_tl(cpu_tmp0, tcg_env,
--                                                offsetof(CPUSPARCState,
--                                                         canrestore));
--                                break;
--                            case 12: // cleanwin
--                                tcg_gen_st32_tl(cpu_tmp0, tcg_env,
--                                                offsetof(CPUSPARCState,
--                                                         cleanwin));
--                                break;
--                            case 13: // otherwin
--                                tcg_gen_st32_tl(cpu_tmp0, tcg_env,
--                                                offsetof(CPUSPARCState,
--                                                         otherwin));
--                                break;
--                            case 14: // wstate
--                                tcg_gen_st32_tl(cpu_tmp0, tcg_env,
--                                                offsetof(CPUSPARCState,
--                                                         wstate));
--                                break;
--                            case 16: // UA2005 gl
--                                CHECK_IU_FEATURE(dc, GL);
--                                gen_helper_wrgl(tcg_env, cpu_tmp0);
--                                break;
--                            case 26: // UA2005 strand status
--                                CHECK_IU_FEATURE(dc, HYPV);
--                                if (!hypervisor(dc))
--                                    goto priv_insn;
--                                tcg_gen_mov_tl(cpu_ssr, cpu_tmp0);
--                                break;
+-                            case 6: // hver readonly
 -                            default:
 -                                goto illegal_insn;
--                            }
--#else
--                            tcg_gen_trunc_tl_i32(cpu_wim, cpu_tmp0);
--                            if (dc->def->nwindows != 32) {
--                                tcg_gen_andi_tl(cpu_wim, cpu_wim,
--                                                (1 << dc->def->nwindows) - 1);
 -                            }
 -#endif
 -                        }
 -                        break;
-+                    case 0x32:
-+                        goto illegal_insn;  /* WRPR in decodetree */
-                     case 0x33: /* wrtbr, UA2005 wrhpr */
+-#endif
++                        goto illegal_insn;  /* WRTBR, WRHPR in decodetree */
+ #ifdef TARGET_SPARC64
+                     case 0x2c: /* V9 movcc */
                          {
- #ifndef TARGET_SPARC64
 -- 
 2.34.1
 
