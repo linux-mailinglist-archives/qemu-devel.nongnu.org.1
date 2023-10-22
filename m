@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249837D25C2
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 22:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F56F7D25C5
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 22:14:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1queoX-0005F4-H2; Sun, 22 Oct 2023 16:12:45 -0400
+	id 1queoa-0005GI-AS; Sun, 22 Oct 2023 16:12:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1queoU-0005Ce-GH
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:12:42 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1queoV-0005D3-55
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:12:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1queoS-00060v-Ki
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1queoT-000618-HK
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 16:12:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698005558;
+ s=mimecast20190719; t=1698005560;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GEK3BC2R+ljz1Pe0etq5Hqc5Baqx24HXWF1XvvP10jw=;
- b=huSvny0VB9XHgNijTA08jdBfFjYruTHxRmjp38GQnmKAoDDQydSimb2DKtJnS3bsfG6wlF
- N1L+KLwPESlFXyptQr2D7od6O04fGR7hfIeJkCuTYcob0W+WNbOwLBKaVqDkil+o6qTtXr
- 1cIydGTD6R1JPnzVkySaF300gAS5nVU=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=w3Z7cHyCISTXqbo3tI+yi6RkFj6TgXVXNtX2A4hjFww=;
+ b=PN3GE4OnzJyXlymJZFz1ZaaD74dyLgNIPOpcR5s9B0Xx3grnqIhKmn9x+KEhyp/xGIqElB
+ JTx/YbboBJo49b6C286zV/hYS7RoR7+Z92hsKQ7WAhK7wbNx+EDCBHUPBsA+JM3wy1dg/x
+ Sz+QZfo5SNlbegwMpIsrZxrVFUNg5bE=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-480-F7XOLwcwMbOp1pyVwgrpcQ-1; Sun, 22 Oct 2023 16:12:37 -0400
-X-MC-Unique: F7XOLwcwMbOp1pyVwgrpcQ-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3ade1013032so901243b6e.1
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 13:12:37 -0700 (PDT)
+ us-mta-100-lH_YLdjsPYOMSp8zgs6XLQ-1; Sun, 22 Oct 2023 16:12:38 -0400
+X-MC-Unique: lH_YLdjsPYOMSp8zgs6XLQ-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-581e7b03855so1204145eaf.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 13:12:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698005556; x=1698610356;
+ d=1e100.net; s=20230601; t=1698005557; x=1698610357;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GEK3BC2R+ljz1Pe0etq5Hqc5Baqx24HXWF1XvvP10jw=;
- b=AttO+wcLJYo6zGvTaZhKUfc3x1Nv/A+kh/1XHjSSH8ASTisqfXZpARdPxM3CPlLwmU
- eAes0qNYaUXfCQu4btYKbk4+IE6j+aiQZ/6mk2J+dPHIeQRtWYuzxJgmG1mi9DJKriVV
- XPX1/E3p3ckHpMCUfcohVKeMKvVvptBBPHZ8UHUZdAj8Fn8b2fTNpJJiHpAuR7uQcOfK
- XEDZg7EnhShMWo0qWWbVdUMc6yQ4z5h+S/lRj0WSVmC1ZoN5xHB5HJpYymLf/9EF6xKj
- fofNGuK1XB/GKiwk7alAFPRf61fXFjvrlhC4rx4PEWRRMP5tAilQJCCjgYp+37B163NR
- 7qsg==
-X-Gm-Message-State: AOJu0YxdHoXk6FQ0+Hrxer50hKg2YKNUUun6QOR6BmOUq3Wi4OoiPZsy
- A6D5Nl6lXMPSKYLzrw9ArLEyvwGoa09Ji0Ve/ycGFvMjCRAK/koeGwni2TCNy85imlGyT5dbyAF
- KN9rjFhFCOg1CsPzBLEzm8GQdZm0HsmrnokrjJ/rtEKtYMpXR3MIT039A/Uu82QiiTMSuk/As
-X-Received: by 2002:a05:6808:38c6:b0:3a9:f25d:d917 with SMTP id
- el6-20020a05680838c600b003a9f25dd917mr8377637oib.4.1698005556494; 
- Sun, 22 Oct 2023 13:12:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEaH17Qcs7m4G/kZvhXh+gI3ScRQtv4S+b7ty/qaUpH+mSDsLBteeMs7h5qXVNNoeS2cinuPQ==
-X-Received: by 2002:a05:6808:38c6:b0:3a9:f25d:d917 with SMTP id
- el6-20020a05680838c600b003a9f25dd917mr8377625oib.4.1698005556187; 
- Sun, 22 Oct 2023 13:12:36 -0700 (PDT)
+ bh=w3Z7cHyCISTXqbo3tI+yi6RkFj6TgXVXNtX2A4hjFww=;
+ b=PzIAmCLSB0BLQU9aVooeL33OeXOsHPmTPiLgaiMGirpC2//qPDXLZG0+C1Ko5PlnCK
+ RCphhFTVquzEHnV4IIcziCAMs4G57ngQgWlZiqK3fuX9cdgTkFZU5mWSLeHtFYEGdxKs
+ sGPcmM0gM7fCT3BDXWRW3jFIAuvNWi41Ql+N5NtaTXLOjztRAX1s8QmxnqQpX9l+Vbqa
+ d59rK85Ofe1xj85R7x80tLjVI+NPM1LnRLj3HhzKzLjLSyjkB69aIvIhRQtQjq0+KIdD
+ azNpInPb/jhzj/N3XRvBXQ5+l16RcRbX+AD3Q8zNzvUrAW2wE64K2JEH4hrECQd+No7Z
+ eZfQ==
+X-Gm-Message-State: AOJu0Yx7J/Hcn9ggcxbrb6sA7uR92MxSFcnJIbIzfANMX09GBc0InBQY
+ BUQjMEpj6peum/2QDhTkKvKfzSLmf30LTcZyqH4T4gt0t+nlBfPhbtO2M+UWT5wD5dxj9pGHUyY
+ C9aX3j8pRsaaHDistUT6VO1OQG1e+rzMMQAhTwqeNufiS5hhxjHnwK7e0ZUfGDvdXFXMdsuuA
+X-Received: by 2002:a05:6870:9d98:b0:1e9:a8ff:67e3 with SMTP id
+ pv24-20020a0568709d9800b001e9a8ff67e3mr9408267oab.4.1698005557639; 
+ Sun, 22 Oct 2023 13:12:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkNJYSq0/lLd+0nSdmJm31J7B4r3mkNSq3AAVPho0SEqm8bWrECoEmgczYLxJa5HB12SfRRg==
+X-Received: by 2002:a05:6870:9d98:b0:1e9:a8ff:67e3 with SMTP id
+ pv24-20020a0568709d9800b001e9a8ff67e3mr9408252oab.4.1698005557310; 
+ Sun, 22 Oct 2023 13:12:37 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- x11-20020a0cfe0b000000b0065af657ddf7sm2330515qvr.144.2023.10.22.13.12.35
+ x11-20020a0cfe0b000000b0065af657ddf7sm2330515qvr.144.2023.10.22.13.12.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 13:12:35 -0700 (PDT)
+ Sun, 22 Oct 2023 13:12:36 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com
-Subject: [PATCH RFC 2/7] migration: Fix error leak in
- multifd_tls_outgoing_handshake()
-Date: Sun, 22 Oct 2023 16:12:06 -0400
-Message-ID: <20231022201211.452861-3-peterx@redhat.com>
+Subject: [PATCH RFC 3/7] migration: multifd_send_kick_main()
+Date: Sun, 22 Oct 2023 16:12:07 -0400
+Message-ID: <20231022201211.452861-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231022201211.452861-1-peterx@redhat.com>
 References: <20231022201211.452861-1-peterx@redhat.com>
@@ -77,14 +76,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,29 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Error* is leaked when error triggerred.
+When a multifd sender thread hit errors, it always needs to kick the main
+thread by kicking all the semaphores that it can be waiting upon.
 
-It logically should have a Fixes here, but since the code changed a few
-times, the backport won't be straightforward anyway.  Let's not bother with
-leaking an error in the failure path for now.
+Provide a helper for it and deduplicate the code.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 1 +
- 1 file changed, 1 insertion(+)
+ migration/multifd.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index c8bdd88041..4afdd88602 100644
+index 4afdd88602..33fb21d0e4 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -789,6 +789,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+@@ -374,6 +374,18 @@ struct {
+     MultiFDMethods *ops;
+ } *multifd_send_state;
+ 
++/*
++ * The migration thread can wait on either of the two semaphores.  This
++ * function can be used to kick the main thread out of waiting on either of
++ * them.  Should mostly only be called when something wrong happened with
++ * the current multifd send thread.
++ */
++static void multifd_send_kick_main(MultiFDSendParams *p)
++{
++    qemu_sem_post(&p->sem_sync);
++    qemu_sem_post(&multifd_send_state->channels_ready);
++}
++
+ /*
+  * How we use multifd_send_state->pages and channel->pages?
+  *
+@@ -746,8 +758,7 @@ out:
+         assert(local_err);
+         trace_multifd_send_error(p->id);
+         multifd_send_terminate_threads(local_err);
+-        qemu_sem_post(&p->sem_sync);
+-        qemu_sem_post(&multifd_send_state->channels_ready);
++        multifd_send_kick_main(p);
+         error_free(local_err);
+     }
+ 
+@@ -787,8 +798,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+      * is not created, and then tell who pay attention to me.
+      */
      p->quit = true;
-     qemu_sem_post(&multifd_send_state->channels_ready);
-     qemu_sem_post(&p->sem_sync);
-+    error_free(err);
+-    qemu_sem_post(&multifd_send_state->channels_ready);
+-    qemu_sem_post(&p->sem_sync);
++    multifd_send_kick_main(p);
+     error_free(err);
  }
  
- static void *multifd_tls_handshake_thread(void *opaque)
+@@ -859,8 +869,7 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
+ {
+      migrate_set_error(migrate_get_current(), err);
+      /* Error happen, we need to tell who pay attention to me */
+-     qemu_sem_post(&multifd_send_state->channels_ready);
+-     qemu_sem_post(&p->sem_sync);
++     multifd_send_kick_main(p);
+      /*
+       * Although multifd_send_thread is not created, but main migration
+       * thread need to judge whether it is running, so we need to mark
 -- 
 2.41.0
 
