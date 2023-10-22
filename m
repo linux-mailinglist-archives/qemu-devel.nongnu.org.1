@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AA57D2210
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29057D221A
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUev-0008JW-6y; Sun, 22 Oct 2023 05:22:09 -0400
+	id 1quUf3-0008T4-Ib; Sun, 22 Oct 2023 05:22:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUet-0008JI-8u
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUf1-0008SB-Ro
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUer-00008a-LV
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUf0-0000AA-9p
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:22:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697966525;
+ s=mimecast20190719; t=1697966533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Aub/+wNbCvirFXr2bctIYe5dvlzn9T6vBOGQpLtPcEM=;
- b=VIHeir8tG6TuvSJBaCqyiCiF8aZV5xWyUO4BZVA/QnHKe20cUzah5yxrb9Srwx47MS66AD
- TdKTXP+YaCNiGzKyK6zCePJV9yYkrUBpdj9tY57TOv5b7EgyAWN8v5GgDhc54vKzKceCca
- 9wUbuZxaWQ/Bw0NdnG8DBWPkDqSlV8c=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UQlj+8sgMBKeSBER7AOYNOJcGiMheAyQ6KzKwKB4ADc=;
+ b=arc3/inKk1JSuVFYEDIr7TOggNEjz0U07hvPEflcKi/2Rv/lmrUOENIYgvgpbsb+JBK+3F
+ RKKDjgy0Ti+6ogReQqEjR/lq09JE9bHSHWF9Ovxf5zMe0pOg7mWq4/NdH7UZGRDTZGvZXL
+ 5B5KFGdaRUrzxcXFVuY5vJ5p6cfG6KI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-t05i7cn4NySz8bAsS_6CRA-1; Sun, 22 Oct 2023 05:22:02 -0400
-X-MC-Unique: t05i7cn4NySz8bAsS_6CRA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32da7983d20so1125556f8f.1
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:22:02 -0700 (PDT)
+ us-mta-466-kjyKTIAtPo6SVdqLWItq6w-1; Sun, 22 Oct 2023 05:22:06 -0400
+X-MC-Unique: kjyKTIAtPo6SVdqLWItq6w-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40768556444so14521795e9.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:22:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966521; x=1698571321;
+ d=1e100.net; s=20230601; t=1697966525; x=1698571325;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Aub/+wNbCvirFXr2bctIYe5dvlzn9T6vBOGQpLtPcEM=;
- b=QoTe5KpkUcrevt7dD2NtPjoVv8g7AEI3Uf9qMPGRmFcgH2zAaesZuR5J8tAsASYLmi
- 9q/TizOLrbb4eSXvqKDwd50iv/Y1gEL5xmSw62tOjQmu62zJDBjxMXHsE8uYFYTEEnEi
- vWwSmjE84UDcojZta+JDuy6nYok35nB3eXdMxKrnxQO1vvybA4YaJ+9HqcaEKJs5e9gZ
- PLClL63+AcG3ZvSaw4BFSaizq9Dbv3TROAUc8leLtZHwjEyaU3JLYIECEzVZppsyhrc/
- hbgyfrESG9MoChd7VXPqsggidTSTeh/L/cdz/U5hINyUTUl8CwSPNoeOvbi8LJXoEgX/
- klyw==
-X-Gm-Message-State: AOJu0YwAhStgfLgHEx1MBoENP+Nnlpky426priOV5bLW23uLzIMdwAG1
- x5+xrRz2CX7cUfVdgK61VG8s9IgIGjIFthQK9CluCK2ekG59aFBrkMfMKJLefICfnnUpbp7jNAs
- c4kty7EonsOeJSgMq1IwzamYv/AW2InVjyxlGwQcO5QW/uQ/MTmL/QAZN56UdcJywDobn
-X-Received: by 2002:adf:8bdc:0:b0:32d:c65c:933d with SMTP id
- w28-20020adf8bdc000000b0032dc65c933dmr9189791wra.7.1697966521415; 
- Sun, 22 Oct 2023 02:22:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2FarCuUHy/PgJ/lhuXoMVSSZzENKAaM2sMEdmQswTpaeUd9OaCk/W1BUqd3QiMffKGxBrsQ==
-X-Received: by 2002:adf:8bdc:0:b0:32d:c65c:933d with SMTP id
- w28-20020adf8bdc000000b0032dc65c933dmr9189776wra.7.1697966521135; 
- Sun, 22 Oct 2023 02:22:01 -0700 (PDT)
+ bh=UQlj+8sgMBKeSBER7AOYNOJcGiMheAyQ6KzKwKB4ADc=;
+ b=gh1fKspjiyZtyZhN4RjvAwQbwDX61EoKEWwUHULb33D2gv+rEpL9PkGhJjX9D7+eQ3
+ 7qQuxP6a16M2ckETVa9hHN0j7YTT4NaisAYt9u7V2DptCwNi70/FzRaITLkGAAftS2Mt
+ kkE2GrREpzNLKDxdDwX3fzFJNqwk34yXZ6RHT44f2d84PfvlPNq2arbUq9gqc/xnePdF
+ zaPMNm3t5hOBocUAm25Y3h2ItuemAqlPBoTSYSsyhzcChOzeRxx4hfxQC4HgKlvn5O2K
+ AFl08UXF+CcfQMxU2g2xh4y4meeloTL4DGBktgLnRdZzuUGPj7ydKqPfPZQT5oHhxCe7
+ /Yvg==
+X-Gm-Message-State: AOJu0Yw/oJQSpQXlV0cJ1mx2tizctxJczBgE2st3b8z9F2eZhbLyuYmG
+ bIOua/5zSsoy3T0mL/CMnThznnPd4xyb1NI6yWYn0eYlebZlmXj5jnTYj9rOtmN9LxwdSz02jXl
+ vmDI/1RMX8XfQJ/m2R3JppZ1W8Tv/0A88vh9IEkmnpqM3P0bn946IAN/1qGJupmd/Eg2Z
+X-Received: by 2002:a05:600c:46d1:b0:405:3dbc:8823 with SMTP id
+ q17-20020a05600c46d100b004053dbc8823mr5421838wmo.12.1697966525123; 
+ Sun, 22 Oct 2023 02:22:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFviErRYyxm5RUCpa3s+jZ9JIznC4IzBoS93CHHQJbXOIfKsidpmBjP8J9nS1HrH3QgAjFyQ==
+X-Received: by 2002:a05:600c:46d1:b0:405:3dbc:8823 with SMTP id
+ q17-20020a05600c46d100b004053dbc8823mr5421821wmo.12.1697966524633; 
+ Sun, 22 Oct 2023 02:22:04 -0700 (PDT)
 Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
- h14-20020a05600c314e00b003fbe4cecc3bsm11347444wmo.16.2023.10.22.02.21.59
+ r9-20020a05600c320900b0040644e699a0sm11230803wmp.45.2023.10.22.02.22.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:22:00 -0700 (PDT)
-Date: Sun, 22 Oct 2023 05:21:58 -0400
+ Sun, 22 Oct 2023 02:22:04 -0700 (PDT)
+Date: Sun, 22 Oct 2023 05:22:01 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Hawkins Jiawei <yin31149@gmail.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL v3 01/62] vdpa: Use iovec for vhost_vdpa_net_cvq_add()
-Message-ID: <0e6bff0d43bf04c6e7a16c2775879816ca056b3d.1697966402.git.mst@redhat.com>
+Subject: [PULL v3 02/62] vdpa: Avoid using vhost_vdpa_net_load_*() outside
+ vhost_vdpa_net_load()
+Message-ID: <327dedb8df91f57ef917ab5b5db519146ee6f08b.1697966402.git.mst@redhat.com>
 References: <cover.1697966402.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,14 +78,14 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1697966402.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,119 +104,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hawkins Jiawei <yin31149@gmail.com>
 
-Next patches in this series will no longer perform an
-immediate poll and check of the device's used buffers
-for each CVQ state load command. Consequently, there
-will be multiple pending buffers in the shadow VirtQueue,
-making it a must for every control command to have its
-own buffer.
+Next patches in this series will refactor vhost_vdpa_net_load_cmd()
+to iterate through the control commands shadow buffers, allowing QEMU
+to send CVQ state load commands in parallel at device startup.
 
-To achieve this, this patch refactor vhost_vdpa_net_cvq_add()
-to accept `struct iovec`, which eliminates the coupling of
-control commands to `s->cvq_cmd_out_buffer` and `s->status`,
-allowing them to use their own buffer.
+Considering that QEMU always forwards the CVQ command serialized
+outside of vhost_vdpa_net_load(), it is more elegant to send the
+CVQ commands directly without invoking vhost_vdpa_net_load_*() helpers.
 
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <8a328f146fb043f34edb75ba6d043d2d6de88f99.1697165821.git.yin31149@gmail.com>
+Message-Id: <254f0618efde7af7229ba4fdada667bb9d318991.1697165821.git.yin31149@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 39 ++++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
+ net/vhost-vdpa.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 939c984d5b..618758596a 100644
+index 618758596a..86b8d31244 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -618,22 +618,14 @@ static void vhost_vdpa_net_cvq_stop(NetClientState *nc)
-     vhost_vdpa_net_client_stop(nc);
- }
- 
--static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
--                                      size_t in_len)
-+static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s,
-+                                    const struct iovec *out_sg, size_t out_num,
-+                                    const struct iovec *in_sg, size_t in_num)
+@@ -1114,12 +1114,14 @@ static NetClientInfo net_vhost_vdpa_cvq_info = {
+  */
+ static int vhost_vdpa_net_excessive_mac_filter_cvq_add(VhostVDPAState *s,
+                                                        VirtQueueElement *elem,
+-                                                       struct iovec *out)
++                                                       struct iovec *out,
++                                                       const struct iovec *in)
  {
--    /* Buffers for the device */
--    const struct iovec out = {
--        .iov_base = s->cvq_cmd_out_buffer,
--        .iov_len = out_len,
--    };
--    const struct iovec in = {
--        .iov_base = s->status,
--        .iov_len = sizeof(virtio_net_ctrl_ack),
--    };
-     VhostShadowVirtqueue *svq = g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
-     int r;
+     struct virtio_net_ctrl_mac mac_data, *mac_ptr;
+     struct virtio_net_ctrl_hdr *hdr_ptr;
+     uint32_t cursor;
+     ssize_t r;
++    uint8_t on = 1;
  
--    r = vhost_svq_add(svq, &out, 1, &in, 1, NULL);
-+    r = vhost_svq_add(svq, out_sg, out_num, in_sg, in_num, NULL);
-     if (unlikely(r != 0)) {
-         if (unlikely(r == -ENOSPC)) {
-             qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device queue\n",
-@@ -659,6 +651,15 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
-         .cmd = cmd,
-     };
-     size_t data_size = iov_size(data_sg, data_num);
-+    /* Buffers for the device */
-+    const struct iovec out = {
-+        .iov_base = s->cvq_cmd_out_buffer,
-+        .iov_len = sizeof(ctrl) + data_size,
-+    };
-+    const struct iovec in = {
-+        .iov_base = s->status,
-+        .iov_len = sizeof(*s->status),
-+    };
- 
-     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
- 
-@@ -669,8 +670,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
-     iov_to_buf(data_sg, data_num, 0,
-                s->cvq_cmd_out_buffer + sizeof(ctrl), data_size);
- 
--    return vhost_vdpa_net_cvq_add(s, data_size + sizeof(ctrl),
--                                  sizeof(virtio_net_ctrl_ack));
-+    return vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
- }
- 
- static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n)
-@@ -1248,10 +1248,15 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
-         .iov_base = s->cvq_cmd_out_buffer,
-     };
-     /* in buffer used for device model */
--    const struct iovec in = {
-+    const struct iovec model_in = {
-         .iov_base = &status,
-         .iov_len = sizeof(status),
-     };
-+    /* in buffer used for vdpa device */
-+    const struct iovec vdpa_in = {
-+        .iov_base = s->status,
-+        .iov_len = sizeof(*s->status),
-+    };
-     ssize_t dev_written = -EINVAL;
- 
-     out.iov_len = iov_to_buf(elem->out_sg, elem->out_num, 0,
-@@ -1285,7 +1290,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
-             goto out;
-         }
-     } else {
--        dev_written = vhost_vdpa_net_cvq_add(s, out.iov_len, sizeof(status));
-+        dev_written = vhost_vdpa_net_cvq_add(s, &out, 1, &vdpa_in, 1);
+     /* parse the non-multicast MAC address entries from CVQ command */
+     cursor = sizeof(*hdr_ptr);
+@@ -1167,7 +1169,13 @@ static int vhost_vdpa_net_excessive_mac_filter_cvq_add(VhostVDPAState *s,
+      * filter table to the vdpa device, it should send the
+      * VIRTIO_NET_CTRL_RX_PROMISC CVQ command to enable promiscuous mode
+      */
+-    r = vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_PROMISC, 1);
++    hdr_ptr = out->iov_base;
++    out->iov_len = sizeof(*hdr_ptr) + sizeof(on);
++
++    hdr_ptr->class = VIRTIO_NET_CTRL_RX;
++    hdr_ptr->cmd = VIRTIO_NET_CTRL_RX_PROMISC;
++    iov_from_buf(out, 1, sizeof(*hdr_ptr), &on, sizeof(on));
++    r = vhost_vdpa_net_cvq_add(s, out, 1, in, 1);
+     if (unlikely(r < 0)) {
+         return r;
+     }
+@@ -1285,7 +1293,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+          * the CVQ command directly.
+          */
+         dev_written = vhost_vdpa_net_excessive_mac_filter_cvq_add(s, elem,
+-                                                                  &out);
++                                                            &out, &vdpa_in);
          if (unlikely(dev_written < 0)) {
              goto out;
          }
-@@ -1301,7 +1306,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
-     }
- 
-     status = VIRTIO_NET_ERR;
--    virtio_net_handle_ctrl_iov(svq->vdev, &in, 1, &out, 1);
-+    virtio_net_handle_ctrl_iov(svq->vdev, &model_in, 1, &out, 1);
-     if (status != VIRTIO_NET_OK) {
-         error_report("Bad CVQ processing in model");
-     }
 -- 
 MST
 
