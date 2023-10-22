@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043587D208E
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 03:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 942987D20A1
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 03:31:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quMsD-0000rv-ER; Sat, 21 Oct 2023 21:03:21 -0400
+	id 1quNHa-0003kr-Jb; Sat, 21 Oct 2023 21:29:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quMsA-0000ef-K1
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:18 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1quNHY-0003kV-FT
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:29:32 -0400
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quMs8-0006li-2p
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:03:17 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1cab2c24ecdso12447665ad.0
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 18:03:15 -0700 (PDT)
+ id 1quNHW-0002mB-Q2
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 21:29:32 -0400
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-1e10507a4d6so1675093fac.1
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 18:29:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697936594; x=1698541394; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697938169; x=1698542969; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LjzveHNl+4iP12W87RtgmzneFKAZ4X5/aQ+bp6JxbsE=;
- b=X93q9Jb7rcABJ2yJSFt8tGvmORR4nfnEop3MbC1my35CZwKFHJshUd0qjS83MYueA8
- diGsbEFc5DY4GPChfxnUrRS8vo72WUwp5cVNxnqeM+OSXAU9gVRnVAbgeygLrhOXyhXG
- auJxtMElvJXDcpz2IH44dc0nYzooek/r3Jp7fcDVsww2jPR50MkfztFb8MnXla5jPoEe
- nbKBmVIws/2HwCeKI+uKy7WLIBeWf/SbhRd1wmFf0i+1786USfCsphBKVAy+877qNWn+
- TISNywikLeRciGeVP1O8bsQ7yT6EzplwMyRQtODRg6gVP+TpYsbG0qwFe0xQxJGqjPIV
- cE9g==
+ bh=gUdIwM9a9fzr4xrCKGrW+zLWuchdXV1ltRHAYLtkHYA=;
+ b=If5RALHKOlMm+Tr26hLniqLpqYEUUyM8FuFy9MlCnI8fG8rTitbaXaygwDmgadP92w
+ oKRdT10waPs5PCSGxZDQf6R0ICzEeRcniqbqxcoimIAR6z3k22gG/EmCZYvrleAfQFV9
+ ntwSE7l33PzELM+bc75P1kinToTAmzqZDsBalo/Lq8TnnAr33WF9fF6XjJYUzElg0/fD
+ 2PnSg1383K5aWfjls2mUtXx5f8Na+4YImIm6VLG2BV8t0pcD3pGPS1+e+NDXB+NJ3dmo
+ 1SvzirXPTxyO0GuIXSltsVf0TfvzhZN268vkURvDO9cHsYhWKn9YlrCK0B7ybDgOGSuB
+ ysnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697936594; x=1698541394;
+ d=1e100.net; s=20230601; t=1697938169; x=1698542969;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LjzveHNl+4iP12W87RtgmzneFKAZ4X5/aQ+bp6JxbsE=;
- b=qL4+l+XQOUgBmA9mIoUbd6FZXtaXUngIUA0guS6WIdYUEH8Jken0lvo8xA1ZJGDjMD
- aZdZh2vVzekBgWhhurBxhqgCS5s1mNfcaNEqTF+aaI4E/IshXZL5ZJ+lYdrjszQ3bSYf
- NyIMz6Gw9B0KuI85tDCe+ucgdXYH8bsqukWTM7LtPuseWW+1OJeLAbeAgiighoQeqC0E
- z4y8CGo2v6TNZkhlqlNrACeyCwpgsjb+/wsAg5B2r/3at/GuEm4A3BKkpyhRbuoA22b/
- w0qmKzzuJNxi2igCiyGEaFxu6YjTo9yZRBj5wGH8T2Hz9LiCP3/ePC5kPXfd4Ym2wyiS
- BHiA==
-X-Gm-Message-State: AOJu0YwSlyDTA4AHKVsZJU+K8081gqaZTfD1xMuFv5A8ur+R3IzgX9M+
- PLP/LDOgcUwLG0kkOD1YYM6ZrQ==
-X-Google-Smtp-Source: AGHT+IFURXn3AhP5MukgpQ19sZ3/lLdnSRzgoFL4Z5yB+ptBT6uraMEATH6+a/AhaaJxLiB2r/H/dw==
-X-Received: by 2002:a17:903:2115:b0:1b9:e937:9763 with SMTP id
- o21-20020a170903211500b001b9e9379763mr3841341ple.12.1697936594489; 
- Sat, 21 Oct 2023 18:03:14 -0700 (PDT)
+ bh=gUdIwM9a9fzr4xrCKGrW+zLWuchdXV1ltRHAYLtkHYA=;
+ b=NJxFhTRIw1Baz7p+wm61gh7HAj1L5W42RviA9AgeD9JgJtcoOfPHS6X0i27IIuZmCr
+ 0NLe41QlMA69sAODVsN85EnWRmJjDdi/uc+DMAIzDb0WHxWfZjy5ilTNjNvtw81mmWen
+ UO3z7kGMDClddp+mrPWhawRX/8t8mEOHnq9dpe98NShGzYov4T6gReF1xXW0jLIcA8GC
+ BGIZl36vbXGhm76rHJEMTyogHmDEr6aCKCOwrccnSg4wvNjEgv2WBVMhdU86jCwjDFa4
+ 9f3EuP+J1qnTCPLsCStJV/hi455FO++cRRgjhbDCrqVJ8m5Lij59E45TlhwR8zir6NXp
+ weQg==
+X-Gm-Message-State: AOJu0Yz5bLbSSvaOu/e5RAHCUE9umMcHmuNqhV5ggupaWGp0M6fCj1d+
+ OyDLu3kY+L7gSll4qxnRIHw0DA==
+X-Google-Smtp-Source: AGHT+IH1coVxyX2mYckc1U9SljQgaLjdE02GWqTSN2NMDaAv4DBSsTI40Zvi6weoifROdpiediVDzA==
+X-Received: by 2002:a05:6871:2312:b0:1e9:a434:58a5 with SMTP id
+ sf18-20020a056871231200b001e9a43458a5mr6475934oab.46.1697938169265; 
+ Sat, 21 Oct 2023 18:29:29 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- jb14-20020a170903258e00b001bc21222e34sm3704336plb.285.2023.10.21.18.03.13
+ nk19-20020a17090b195300b00268b9862343sm5312836pjb.24.2023.10.21.18.29.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 21 Oct 2023 18:03:13 -0700 (PDT)
-Message-ID: <2654c74f-c65c-449b-8de4-625c5a73d660@linaro.org>
-Date: Fri, 20 Oct 2023 14:40:33 -0700
+ Sat, 21 Oct 2023 18:29:28 -0700 (PDT)
+Message-ID: <4339bf9e-ad25-41b7-91cd-1da8c65d782d@linaro.org>
+Date: Sat, 21 Oct 2023 18:29:26 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] hw/m68k: Strengthen QOM/SysBus API uses
+Subject: Re: [PATCH 3/7] target/i386: Use tcg_gen_ext_tl
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>, Thomas Huth <huth@tuxfamily.org>
-References: <20231020150627.56893-1-philmd@linaro.org>
+Cc: qemu-arm@nongnu.org, laurent@vivier.eu, ysato@users.sourceforge.jp,
+ kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com
+References: <20231019182921.1772928-1-richard.henderson@linaro.org>
+ <20231019182921.1772928-4-richard.henderson@linaro.org>
+ <5f54e3e1-1c90-0249-04f4-df522e292abe@linaro.org>
+ <03ba02fd-fade-4409-be16-2f81a5690b4c@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231020150627.56893-1-philmd@linaro.org>
+In-Reply-To: <03ba02fd-fade-4409-be16-2f81a5690b4c@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2001:4860:4864:20::30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,21 +99,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/20/23 08:06, Philippe Mathieu-Daudé wrote:
-> Avoid QOM objects poking at each other internals:
-> - Pass "link" properties
-> - Access MMIO via SysBus API
-> - Simplify using sysbus_create_simple()
+On 10/21/23 00:59, Paolo Bonzini wrote:
+> On 10/19/23 23:57, Philippe Mathieu-Daudé wrote:
+>> On 19/10/23 20:29, Richard Henderson wrote:
+>>> -    default:
+>>> +    if (memop_size(size) == TARGET_LONG_BITS) {
+>>>           return src;
+>>>       }
 > 
-> Philippe Mathieu-Daudé (6):
->    hw/m68k/irqc: Pass CPU using QOM link property
->    hw/m68k/mcf5206: Pass CPU using QOM link property
->    hw/m68k/mcf_intc: Expose MMIO region via SysBus API
->    hw/m68k/mcf_intc: Pass CPU using QOM link property
->    hw/m68k/next-cube: Do not open-code sysbus_create_simple()
->    hw/m68k/virt: Do not open-code sysbus_create_simple()
+> Any opinions about adding something like this on top?
+> 
+> ------------------------- 8< -------------------------------
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH] include, target/i386: define and use MO_TL
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Yes, that looks fine.
+
+>   static TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp size, bool sign)
+>   {
+> -    if (memop_size(size) == TARGET_LONG_BITS) {
+> +    if (size == MO_TL) {
+
+Yep.
+
+> I can add it in my x86 series if desirable ...
+
+That's probably fine; you may well get your PR in before my next.
+
+>>> +    tcg_gen_ext_tl(dst, src, size | (sign ? MO_SIGN : 0));
+>>> +    return dst;
+>>>   }
+>>
+>> While here, I'd rename 'size' -> 'mop'. Regardless,
+> 
+> Not sure about that, because "size" should be just the low bits of MemOp (the MO_SIGN bit 
+> is passed separately).
+
+Agreed.
+
 
 r~
+
 
