@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E247D222E
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D50D7D2227
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:24:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUfr-0001um-M5; Sun, 22 Oct 2023 05:23:07 -0400
+	id 1quUgG-0004Sc-Pz; Sun, 22 Oct 2023 05:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUfm-0001kW-7q
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:02 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgE-0004E7-70
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUfj-0000J8-Qr
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUg9-0000Of-8M
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697966579;
+ s=mimecast20190719; t=1697966604;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HAXg1GA35XKbMBiopu3Arj0qNQ/LAhb7uC4aAavHa34=;
- b=T1vbezO5B4F7UUnMyZfzBXwloq3vpuaBJkF9EkZKHcNBq/SRQJZxeK1gjOA4v/+3N/zUNZ
- 5pjKmLuOcBhmQils9LXFZm/rlZfkXATCXoG3t0gVivd4af9HzyU//FZFdfCFGAFMczJZ0+
- fLcLBSiugOfpoMjFlSe7hGgVjlAJppU=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=n62ZCYLMWQB+v9G4ohwIMDOGfFG/zqXCKAbKv3KvAW8=;
+ b=HOzcwkP2yZrVG3XVM8L8ufRQYVUjeF83BHPrtZP5ERqAPe78TdGiF/GOxT/9JidPNKmeBP
+ iCOxoxeyXMIEJBgX1F5UhYaaueqoZtH1wHVfdxa8Rj5Hr2WE9IOlLZ313iLSUHl/pxpOtB
+ Yp+kUgK8/U92jyvaVnU1fowG621Amj0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-9qJL3Vn2OM6aTjHa9vIfhw-1; Sun, 22 Oct 2023 05:22:55 -0400
-X-MC-Unique: 9qJL3Vn2OM6aTjHa9vIfhw-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-507a3ae32beso2195920e87.2
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:22:55 -0700 (PDT)
+ us-mta-439-nbk0nM2NPyS56RN93x-KGA-1; Sun, 22 Oct 2023 05:23:12 -0400
+X-MC-Unique: nbk0nM2NPyS56RN93x-KGA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-407f9d07b41so14237055e9.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:23:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966573; x=1698571373;
+ d=1e100.net; s=20230601; t=1697966591; x=1698571391;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HAXg1GA35XKbMBiopu3Arj0qNQ/LAhb7uC4aAavHa34=;
- b=D4ahAEdlzmpsGjMtxt91J0GENneXQpxASCupSlZd8qEIKZQ/EpQBxf8Ex3ooRjOpxx
- p6+HwQbMqA7GUXVOV2CkkHuhKog8dulli67WM1V14C8aSyyfG2noefChwusdga7TBRab
- XHGemI4IhqHoEQNJhPDOAvXu4aEvO6UTsH3v6HboxDKLBWvFr5dVVaHWc+b3KMNRrnT/
- zV1ECiIqnyJ5/UWWyMAMw+3CyTQp0QSW7ZKu4UOSzHg9zkuYbH47OU0Bs03y6HW5gY3Q
- q7aBXNC28iIfMgg1O5wM3C/4r2n7jBRWsDm7bxyPFWfz1EjMn49y54pUljs24bme2S3K
- z54Q==
-X-Gm-Message-State: AOJu0YwxeOiGf9Rf9NB6v5AKDpRmo9mffXIJ2VNYzkHoWyhGGjncTUgq
- IFHtzyfB4wY/oosQdJEL8/gFyr17sgtsVRso2qemFYkaKTtNxYP6KkaNnaY3Ep6YZXO3fhPEc8+
- BJjfGCs34PEFl/x0zsS4LXSwI9lcEA78gJ6pBAzFZ+1TSICxJDvrAeMhUQbT2Le4vSP2E
-X-Received: by 2002:a05:6512:2090:b0:507:b942:86ba with SMTP id
- t16-20020a056512209000b00507b94286bamr3909304lfr.32.1697966573316; 
- Sun, 22 Oct 2023 02:22:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/7WfjhGv5Lt//l2LNRShlCk6btiW6utFhNsblCHqAVSmq4LbtQBLKM87PsrvvV7lhhw8buQ==
-X-Received: by 2002:a05:6512:2090:b0:507:b942:86ba with SMTP id
- t16-20020a056512209000b00507b94286bamr3909294lfr.32.1697966573064; 
- Sun, 22 Oct 2023 02:22:53 -0700 (PDT)
+ bh=n62ZCYLMWQB+v9G4ohwIMDOGfFG/zqXCKAbKv3KvAW8=;
+ b=fQndtVgHX2QSkvg+527WFsa/IoX278yiLXIwSmR1bidp4pJMruQZ22rWRCX6UqVavZ
+ pLdQ9oAFGI5XhAC5fNtu2MlZlzXsOdWAgJsXUaXzH4KoOJuYrfvPsj6jcxcUUMy4aKw0
+ nvEltZSD0c2YUNIi7WYQrMcEZoD5KI63Ea5X1XqBuVV+W08LzHDUAN1fKe55zu5ZBnZ1
+ fEZdiQcILMgVZ9Bx8aA5C0pkVUd62jwsmP+ubXp0/g9d54wQLudh14zHzSNDXMiyY8Tb
+ d4DISYcaWXwNv6uLlA4oI7b5IW71NdUOTRQ9AtxTUs+0uQroZRX4K7D0SdhWqO5o75O0
+ A9Ng==
+X-Gm-Message-State: AOJu0Yy22P5gLkE4dVwpuJhWG5tfcSzuNRPeP/MK/n65tfl2MwHZ/9I1
+ Olz0aDgg6Snbpb31peOmpJaKmKP3gJuLk2sbm/kfI8NCQeFank5OTDQPktacwxhpRcr+sfVT2Aj
+ nIJcMWcbSj87ZaX9zbPVCLdxVWgqqe6totkIAKBSR4fb9mm6ynW4KTMbzXNLVyQ3SB15o
+X-Received: by 2002:a05:600c:3c87:b0:406:eef6:3540 with SMTP id
+ bg7-20020a05600c3c8700b00406eef63540mr4671406wmb.0.1697966591027; 
+ Sun, 22 Oct 2023 02:23:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnyxE7PiXwcXKGpeDw9yhldlAi2K7G1wsYSd5QDvDgJbBsrC5Iunl9f3Y/NZenfz7NxIXEBg==
+X-Received: by 2002:a05:600c:3c87:b0:406:eef6:3540 with SMTP id
+ bg7-20020a05600c3c8700b00406eef63540mr4671386wmb.0.1697966590559; 
+ Sun, 22 Oct 2023 02:23:10 -0700 (PDT)
 Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
- c16-20020a05600c0ad000b004063c9f68f2sm6464342wmr.26.2023.10.22.02.22.51
+ p5-20020a05600c358500b004053a6b8c41sm6477353wmq.12.2023.10.22.02.22.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:22:52 -0700 (PDT)
-Date: Sun, 22 Oct 2023 05:22:49 -0400
+ Sun, 22 Oct 2023 02:23:09 -0700 (PDT)
+Date: Sun, 22 Oct 2023 05:22:53 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Ilya Maximets <i.maximets@ovn.org>, David Hildenbrand <david@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v3 15/62] memory: initialize 'fv' in MemoryRegionCache to make
- Coverity happy
-Message-ID: <b15c18c51910ec5ef8c506f641f487507e42c79b.1697966402.git.mst@redhat.com>
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL v3 16/62] vhost-user: do not send RESET_OWNER on device reset
+Message-ID: <22d2464f7ee6242114733e62541eed14cde15977.1697966402.git.mst@redhat.com>
 References: <cover.1697966402.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -85,7 +83,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,67 +99,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Coverity scan reports multiple false-positive "defects" for the
-following series of actions in virtio.c:
+The VHOST_USER_RESET_OWNER message is deprecated in the spec:
 
-  MemoryRegionCache indirect_desc_cache;
-  address_space_cache_init_empty(&indirect_desc_cache);
-  address_space_cache_destroy(&indirect_desc_cache);
+   This is no longer used. Used to be sent to request disabling all
+   rings, but some back-ends interpreted it to also discard connection
+   state (this interpretation would lead to bugs).  It is recommended
+   that back-ends either ignore this message, or use it to disable all
+   rings.
 
-For some reason it's unable to recognize the dependency between 'mrs.mr'
-and 'fv' and insists that '!mrs.mr' check in address_space_cache_destroy
-may take a 'false' branch, even though it is explicitly initialized to
-NULL in the address_space_cache_init_empty():
+The only caller of vhost_user_reset_device() is vhost_user_scsi_reset().
+It checks that F_RESET_DEVICE was negotiated before calling it:
 
-  *** CID 1522371:  Memory - illegal accesses  (UNINIT)
-  /qemu/hw/virtio/virtio.c: 1627 in virtqueue_split_pop()
-  1621         }
-  1622
-  1623         vq->inuse++;
-  1624
-  1625         trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
-  1626     done:
-  >>>     CID 1522371:  Memory - illegal accesses  (UNINIT)
-  >>>     Using uninitialized value "indirect_desc_cache.fv" when
-  >>>     calling "address_space_cache_destroy".
-  1627         address_space_cache_destroy(&indirect_desc_cache);
-  1628
-  1629         return elem;
-  1630
-  1631     err_undo_map:
-  1632         virtqueue_undo_map_desc(out_num, in_num, iov);
+  static void vhost_user_scsi_reset(VirtIODevice *vdev)
+  {
+      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
+      struct vhost_dev *dev = &vsc->dev;
 
-  ** CID 1522370:  Memory - illegal accesses  (UNINIT)
+      /*
+       * Historically, reset was not implemented so only reset devices
+       * that are expecting it.
+       */
+      if (!virtio_has_feature(dev->protocol_features,
+                              VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
+          return;
+      }
 
-Instead of trying to silence these false positive reports in 4
-different places, initializing 'fv' as well, as this doesn't result
-in any noticeable performance impact.
+      if (dev->vhost_ops->vhost_reset_device) {
+          dev->vhost_ops->vhost_reset_device(dev);
+      }
+  }
 
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Message-Id: <20231009104322.3085887-1-i.maximets@ovn.org>
+Therefore VHOST_USER_RESET_OWNER is actually never sent by
+vhost_user_reset_device(). Remove the dead code. This effectively moves
+the vhost-user protocol specific code from vhost-user-scsi.c into
+vhost-user.c where it belongs.
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20231004014532.1228637-2-stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
 ---
- include/exec/memory.h | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/scsi/vhost-user-scsi.c |  9 ---------
+ hw/virtio/vhost-user.c    | 13 +++++++++----
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 653a32ea10..9087d02769 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -2793,6 +2793,8 @@ int64_t address_space_cache_init(MemoryRegionCache *cache,
- static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
- {
-     cache->mrs.mr = NULL;
-+    /* There is no real need to initialize fv, but it makes Coverity happy. */
-+    cache->fv = NULL;
- }
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index df6b66cc1a..78aef4765f 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -67,15 +67,6 @@ static void vhost_user_scsi_reset(VirtIODevice *vdev)
+     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
+     struct vhost_dev *dev = &vsc->dev;
  
- /**
+-    /*
+-     * Historically, reset was not implemented so only reset devices
+-     * that are expecting it.
+-     */
+-    if (!virtio_has_feature(dev->protocol_features,
+-                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
+-        return;
+-    }
+-
+     if (dev->vhost_ops->vhost_reset_device) {
+         dev->vhost_ops->vhost_reset_device(dev);
+     }
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 427ee0ebfb..f9414f03de 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -1482,12 +1482,17 @@ static int vhost_user_reset_device(struct vhost_dev *dev)
+ {
+     VhostUserMsg msg = {
+         .hdr.flags = VHOST_USER_VERSION,
++        .hdr.request = VHOST_USER_RESET_DEVICE,
+     };
+ 
+-    msg.hdr.request = virtio_has_feature(dev->protocol_features,
+-                                         VHOST_USER_PROTOCOL_F_RESET_DEVICE)
+-        ? VHOST_USER_RESET_DEVICE
+-        : VHOST_USER_RESET_OWNER;
++    /*
++     * Historically, reset was not implemented so only reset devices
++     * that are expecting it.
++     */
++    if (!virtio_has_feature(dev->protocol_features,
++                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
++        return -ENOSYS;
++    }
+ 
+     return vhost_user_write(dev, &msg, NULL, 0);
+ }
 -- 
 MST
 
