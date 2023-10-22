@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388B27D214A
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 581BF7D217B
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:14:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quRWQ-0000e1-Rf; Sun, 22 Oct 2023 02:01:10 -0400
+	id 1quRWR-0000e8-JD; Sun, 22 Oct 2023 02:01:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRWB-0000Zv-Ip
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:56 -0400
-Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
+ id 1quRWD-0000ap-EK
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:58 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRW9-0001aB-WF
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:55 -0400
-Received: by mail-il1-x12e.google.com with SMTP id
- e9e14a558f8ab-357a69dde08so9869935ab.1
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:00:53 -0700 (PDT)
+ id 1quRWB-0001aW-1r
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:57 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-1e9fbb7d88eso1744900fac.3
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:00:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697954453; x=1698559253; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697954454; x=1698559254; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=asz40augiXcc49Y45ipmViblriY/2MT+gl4uuC0pd+Y=;
- b=lCo+p6eNnlwDZ+C2tG99Z1/FhGHv/lKGSynaGmqhoynVIeYEpEcaIo5jOeHOqH98Q0
- CVjyPvBiPyi9TH7KfmACWDOyFbm4j/MZ35WHBj7MTypXWLPcPr0REWJ1NsicSW754nwi
- BB3X/fGYDFStBkMxPdoS5K/qLhs3XUl2D+HjP9r2/VPEE4SIXGblWt2EXwgFTMtegEap
- DkEx2RaqzK7loc7MNtKx36BBHgeT1+RYqrBSG4qjWriA81F9rPwDHCQ8ISnSQ1qDUItr
- pUjy/bJFOzk4nDbGz7Goa1SxVnVfnbb1Q+yL9QuMhaYYUfNjkGF9aB/WITz8pTJutsXL
- ROCQ==
+ bh=KFbStpHsCPM8dUO0Jv4AXBBkyO0rJOhcl7c8kZjHn4s=;
+ b=zDorqomt7Ckg+8PPAZDVSio7143iVFpg85DDaoMq5la7IRcXoB45lEXOX7hnR3/sOi
+ 8HOeUU4PMwoBxp1pQxPfeLOi3qlSAFqoJITjUQpHUHf2wobPTogMkmgeX9aMSqvc0XAC
+ 69Ecy8DE60krWNIjPUOSBdRyCYxkdALSFohBCoJ25U8X0xiIeHlNoxiYf0rrxaD958Yq
+ oOktzddm+C1r3I4kHoNvu0nlIQLU5rU6Aj6UHvaihNXXpgMhtRNkwXQfffxVFbrIgKM0
+ cNS6UutgXLxhIOa9mKHIt+bl6U/pTrd+fR+9HE5AS9x/iW+ULT73PD1ZF+6nQ8nT3LwK
+ ShvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697954453; x=1698559253;
+ d=1e100.net; s=20230601; t=1697954454; x=1698559254;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=asz40augiXcc49Y45ipmViblriY/2MT+gl4uuC0pd+Y=;
- b=kR5MUWz3ClrQ9S51U1FMDebsq0mr/6fpZJkwaTGdcuAH6avI43k80fmnJDjbdFeZoz
- xqU7XHTak1RD6deCfnwJMZmAZupWVuB2mxG5vidZkk5a2+ff/dwqvG8bvLOfMR8F5qjP
- x6BInz+es0Ix1eUFSkUvY9wWVMunQdRW1bJRIjdNzNZWiigOzQ9I9zaEmZKZIoF8Rkiz
- 2n5oeBwkyJJngAu1XUooS+LmskqoWgN7nSgagbQIlcI9rZKyitY+8Sd4sW3w6vsvzGUQ
- aTYrropI2eCiZmEZpPbdj3tD1yKPyQb30Xws4ppvgplNXMq/4gSwereAUsqilpNAhEwA
- fq/w==
-X-Gm-Message-State: AOJu0YzYDzJgmlYvrnHUhHAyQicmJWhUPf+OzDKbbVjqYKQiamFJUCdw
- MkVHhOQXsYS/xUNIOTWWD6n4j+UEk1BFrHyQbH8=
-X-Google-Smtp-Source: AGHT+IHTKsNalpKCNleySRaHXVv/ikVigRVBR5m5Hm/EBBakmsLu2RvwhzCfcnckVSj/sZMPWzB0pg==
-X-Received: by 2002:a05:6e02:1ba2:b0:349:296c:9b8a with SMTP id
- n2-20020a056e021ba200b00349296c9b8amr7108021ili.2.1697954452871; 
- Sat, 21 Oct 2023 23:00:52 -0700 (PDT)
+ bh=KFbStpHsCPM8dUO0Jv4AXBBkyO0rJOhcl7c8kZjHn4s=;
+ b=q56CYjHWUPwv0EVn3D4MsCUVMW8+R/Q1tBnR+s8yYTYcKug9cTNm4xH5kDfc14gcyq
+ WDctXMFCJstBicgDlUFm2x2slc+d4gGI5uMZcQjGM0IEIsHcSJdS5pPLhEhVn1Ggs+FE
+ 8NDD4tajQ2UxLagS1m1UxZzxPcGo+naF1S0vIdK6Mk/oO+9G/uMZhdslmL08EtXkhDM/
+ JBQpRLc4OrBbiMbRBY5w1o7mIjj5ZYmZ8BKhP6gOn0AakqH8yZEV3iJfW8cIK/IWLoU2
+ xwK90aqHaWfHnR4MhhWBf7u/RQWIfmzHJwp2PdJEIohbX3BPrLGE9nfb3O+5I4mwQU+i
+ Mogw==
+X-Gm-Message-State: AOJu0YyPPr841kosAfIGQGu1Fzy9BwXUsoTLSLqbqRBJoeAaZqWXkYWc
+ ZEwgurfkoCRc03OqojeiktXSJuJcKYyhif8UDeY=
+X-Google-Smtp-Source: AGHT+IF6uWyaXvB51Q5y6248s2VApD/fm2kRrXlb8DNlpCqy2zNiJ3pQad8xu8Nc+yoiUxHX8BNEHg==
+X-Received: by 2002:a05:6870:7a3:b0:1e9:90d2:f546 with SMTP id
+ en35-20020a05687007a300b001e990d2f546mr6777300oab.37.1697954453651; 
+ Sat, 21 Oct 2023 23:00:53 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 23:00:52 -0700 (PDT)
+ Sat, 21 Oct 2023 23:00:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 24/90] target/sparc: Move RDTBR, FLUSHW to decodetree
-Date: Sat, 21 Oct 2023 22:59:25 -0700
-Message-Id: <20231022060031.490251-25-richard.henderson@linaro.org>
+Subject: [PATCH v4 25/90] target/sparc: Move WRASR to decodetree
+Date: Sat, 21 Oct 2023 22:59:26 -0700
+Message-Id: <20231022060031.490251-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022060031.490251-1-richard.henderson@linaro.org>
 References: <20231022060031.490251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12e;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,74 +92,452 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  5 +++++
- target/sparc/translate.c  | 23 +++++++++++------------
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ target/sparc/insns.decode |  31 ++++
+ target/sparc/translate.c  | 353 +++++++++++++++++++++-----------------
+ 2 files changed, 225 insertions(+), 159 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 7d91a7bc83..0b6f4c9c38 100644
+index 0b6f4c9c38..118f0f1f17 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -76,6 +76,11 @@ RDPR_gl             10 rd:5  101010 10000 0 0000000000000
- RDPR_strand_status  10 rd:5  101010 11010 0 0000000000000
- RDPR_ver            10 rd:5  101010 11111 0 0000000000000
+@@ -22,6 +22,13 @@ SETHI   00 rd:5         100 i:22
  
-+{
-+  FLUSHW    10 00000 101011 00000 0 0000000000000
-+  RDTBR     10 rd:5  101011 00000 0 0000000000000
-+}
+ CALL    01 i:s30
+ 
++##
++## Major Opcode 10 -- integer, floating-point, vis, and system insns.
++##
 +
- Tcc_r       10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
++&r_r_ri     rd rs1 rs2_or_imm imm:bool
++@n_r_ri     .. ..... ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri rd=0
++
  {
-   # For v7, the entire simm13 field is present, but masked to 7 bits.
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 0dd963776c..83659ec5b3 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -3497,6 +3497,7 @@ static TCGv do_rdtba(DisasContext *dc, TCGv dst)
-     return cpu_tbr;
+   [
+     STBAR           10 00000 101000 01111 0 0000000000000
+@@ -44,6 +51,30 @@ CALL    01 i:s30
+   RDY               10 rd:5  101000 rs1:5 0 0000000000000
  }
  
-+TRANS(RDTBR, 32, do_rd_special, supervisor(dc), a->rd, do_rdtba)
- TRANS(RDPR_tba, 64, do_rd_special, supervisor(dc), a->rd, do_rdtba)
++{
++  [
++    WRY             10 00000 110000 ..... . .............  @n_r_ri
++    WRCCR           10 00010 110000 ..... . .............  @n_r_ri
++    WRASI           10 00011 110000 ..... . .............  @n_r_ri
++    WRFPRS          10 00110 110000 ..... . .............  @n_r_ri
++    {
++      WRGSR         10 10011 110000 ..... . .............  @n_r_ri
++      WRPOWERDOWN   10 10011 110000 ..... . .............  @n_r_ri
++    }
++    WRSOFTINT_SET   10 10100 110000 ..... . .............  @n_r_ri
++    WRSOFTINT_CLR   10 10101 110000 ..... . .............  @n_r_ri
++    WRSOFTINT       10 10110 110000 ..... . .............  @n_r_ri
++    WRTICK_CMPR     10 10111 110000 ..... . .............  @n_r_ri
++    WRSTICK         10 11000 110000 ..... . .............  @n_r_ri
++    WRSTICK_CMPR    10 11001 110000 ..... . .............  @n_r_ri
++  ]
++  # Before v8, rs1==0 was WRY, and the rest executed as nop.
++  [
++    NOP_v7          10 ----- 110000 ----- 0 00000000 -----
++    NOP_v7          10 ----- 110000 ----- 1 -------- -----
++  ]
++}
++
+ {
+   RDPSR             10 rd:5  101001 00000 0 0000000000000
+   RDHPR_hpstate     10 rd:5  101001 00000 0 0000000000000
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 83659ec5b3..3afeb226fa 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -37,10 +37,15 @@
+ #undef  HELPER_H
  
- static TCGv do_rdpstate(DisasContext *dc, TCGv dst)
-@@ -3635,6 +3636,16 @@ static TCGv do_rdver(DisasContext *dc, TCGv dst)
+ #ifdef TARGET_SPARC64
+-#define gen_helper_rdpsr(D, E)     qemu_build_not_reached()
++#define gen_helper_rdpsr(D, E)          qemu_build_not_reached()
++#define gen_helper_power_down(E)        g_assert_not_reached()
+ #else
+-#define gen_helper_rdccr(D, E)     qemu_build_not_reached()
+-#define gen_helper_rdcwp(D, E)     qemu_build_not_reached()
++#define gen_helper_rdccr(D, E)          qemu_build_not_reached()
++#define gen_helper_rdcwp(D, E)          qemu_build_not_reached()
++#define gen_helper_wrccr(E, S)          qemu_build_not_reached()
++#define gen_helper_set_softint(E, S)    qemu_build_not_reached()
++#define gen_helper_clear_softint(E, S)  qemu_build_not_reached()
++#define gen_helper_write_softint(E, S)  qemu_build_not_reached()
+ #endif
  
- TRANS(RDPR_ver, 64, do_rd_special, supervisor(dc), a->rd, do_rdver)
+ /* Dynamic PC, must exit to main loop. */
+@@ -2852,6 +2857,7 @@ static void gen_faligndata(TCGv dst, TCGv gsr, TCGv s1, TCGv s2)
+ #define avail_ASR17(C)    ((C)->def->features & CPU_FEATURE_ASR17)
+ #define avail_GL(C)       ((C)->def->features & CPU_FEATURE_GL)
+ #define avail_HYPV(C)     ((C)->def->features & CPU_FEATURE_HYPV)
++#define avail_POWERDOWN(C) ((C)->def->features & CPU_FEATURE_POWERDOWN)
  
-+static bool trans_FLUSHW(DisasContext *dc, arg_FLUSHW *a)
+ /* Default case for non jump instructions. */
+ static bool advance_pc(DisasContext *dc)
+@@ -3053,6 +3059,10 @@ static bool trans_SETHI(DisasContext *dc, arg_SETHI *a)
+     return advance_pc(dc);
+ }
+ 
++/*
++ * Major Opcode 10 -- integer, floating-point, vis, and system insns.
++ */
++
+ static bool do_tcc(DisasContext *dc, int cond, int cc,
+                    int rs1, bool imm, int rs2_or_imm)
+ {
+@@ -3646,6 +3656,186 @@ static bool trans_FLUSHW(DisasContext *dc, arg_FLUSHW *a)
+ #endif
+ }
+ 
++static bool do_wr_special(DisasContext *dc, arg_r_r_ri *a, bool priv,
++                          void (*func)(DisasContext *, TCGv))
++{
++    TCGv src;
++
++    /* For simplicity, we under-decoded the rs2 form. */
++    if (!a->imm && (a->rs2_or_imm & ~0x1f)) {
++        return false;
++    }
++    if (!priv) {
++        return raise_priv(dc);
++    }
++
++    if (a->rs1 == 0 && (a->imm || a->rs2_or_imm == 0)) {
++        src = tcg_constant_tl(a->rs2_or_imm);
++    } else {
++        TCGv src1 = gen_load_gpr(dc, a->rs1);
++        if (a->rs2_or_imm == 0) {
++            src = src1;
++        } else {
++            src = tcg_temp_new();
++            if (a->imm) {
++                tcg_gen_xori_tl(src, src1, a->rs2_or_imm);
++            } else {
++                tcg_gen_xor_tl(src, src1, gen_load_gpr(dc, a->rs2_or_imm));
++            }
++        }
++    }
++    func(dc, src);
++    return advance_pc(dc);
++}
++
++static void do_wry(DisasContext *dc, TCGv src)
++{
++    tcg_gen_ext32u_tl(cpu_y, src);
++}
++
++TRANS(WRY, ALL, do_wr_special, a, true, do_wry)
++
++static void do_wrccr(DisasContext *dc, TCGv src)
++{
++    gen_helper_wrccr(tcg_env, src);
++}
++
++TRANS(WRCCR, 64, do_wr_special, a, true, do_wrccr)
++
++static void do_wrasi(DisasContext *dc, TCGv src)
 +{
 +#ifdef TARGET_SPARC64
-+    gen_helper_flushw(tcg_env);
-+    return advance_pc(dc);
++    TCGv tmp = tcg_temp_new();
++    tcg_gen_andi_tl(tmp, src, 0xff);
++    tcg_gen_st32_tl(tmp, tcg_env, offsetof(CPUSPARCState, asi));
++    /* End TB to notice changed ASI. */
++    dc->base.is_jmp = DISAS_EXIT;
 +#else
-+    return false;
++    qemu_build_not_reached();
 +#endif
++}
++
++TRANS(WRASI, 64, do_wr_special, a, true, do_wrasi)
++
++static void do_wrfprs(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    tcg_gen_trunc_tl_i32(cpu_fprs, src);
++    dc->fprs_dirty = 0;
++    dc->base.is_jmp = DISAS_EXIT;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(WRFPRS, 64, do_wr_special, a, true, do_wrfprs)
++
++static void do_wrgsr(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    gen_trap_ifnofpu(dc);
++    tcg_gen_mov_tl(cpu_gsr, src);
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(WRGSR, 64, do_wr_special, a, true, do_wrgsr)
++
++static void do_wrsoftint_set(DisasContext *dc, TCGv src)
++{
++    gen_helper_set_softint(tcg_env, src);
++}
++
++TRANS(WRSOFTINT_SET, 64, do_wr_special, a, supervisor(dc), do_wrsoftint_set)
++
++static void do_wrsoftint_clr(DisasContext *dc, TCGv src)
++{
++    gen_helper_clear_softint(tcg_env, src);
++}
++
++TRANS(WRSOFTINT_CLR, 64, do_wr_special, a, supervisor(dc), do_wrsoftint_clr)
++
++static void do_wrsoftint(DisasContext *dc, TCGv src)
++{
++    gen_helper_write_softint(tcg_env, src);
++}
++
++TRANS(WRSOFTINT, 64, do_wr_special, a, supervisor(dc), do_wrsoftint)
++
++static void do_wrtick_cmpr(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tickptr = tcg_temp_new_ptr();
++
++    tcg_gen_mov_tl(cpu_tick_cmpr, src);
++    tcg_gen_ld_ptr(r_tickptr, tcg_env, offsetof(CPUSPARCState, tick));
++    translator_io_start(&dc->base);
++    gen_helper_tick_set_limit(r_tickptr, cpu_tick_cmpr);
++    /* End TB to handle timer interrupt */
++    dc->base.is_jmp = DISAS_EXIT;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(WRTICK_CMPR, 64, do_wr_special, a, supervisor(dc), do_wrtick_cmpr)
++
++static void do_wrstick(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tickptr = tcg_temp_new_ptr();
++
++    tcg_gen_ld_ptr(r_tickptr, tcg_env, offsetof(CPUSPARCState, stick));
++    translator_io_start(&dc->base);
++    gen_helper_tick_set_count(r_tickptr, src);
++    /* End TB to handle timer interrupt */
++    dc->base.is_jmp = DISAS_EXIT;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(WRSTICK, 64, do_wr_special, a, supervisor(dc), do_wrstick)
++
++static void do_wrstick_cmpr(DisasContext *dc, TCGv src)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tickptr = tcg_temp_new_ptr();
++
++    tcg_gen_mov_tl(cpu_stick_cmpr, src);
++    tcg_gen_ld_ptr(r_tickptr, tcg_env, offsetof(CPUSPARCState, stick));
++    translator_io_start(&dc->base);
++    gen_helper_tick_set_limit(r_tickptr, cpu_stick_cmpr);
++    /* End TB to handle timer interrupt */
++    dc->base.is_jmp = DISAS_EXIT;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(WRSTICK_CMPR, 64, do_wr_special, a, supervisor(dc), do_wrstick_cmpr)
++
++static void do_wrpowerdown(DisasContext *dc, TCGv src)
++{
++    save_state(dc);
++    gen_helper_power_down(tcg_env);
++}
++
++TRANS(WRPOWERDOWN, POWERDOWN, do_wr_special, a, supervisor(dc), do_wrpowerdown)
++
++static bool trans_NOP_v7(DisasContext *dc, arg_NOP_v7 *a)
++{
++    /*
++     * TODO: Need a feature bit for sparcv8.
++     * In the meantime, treat all 32-bit cpus like sparcv7.
++     */
++    if (avail_32(dc)) {
++        return advance_pc(dc);
++    }
++    return false;
 +}
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -3665,18 +3676,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-             TCGv cpu_dst __attribute__((unused)) = tcg_temp_new();
-             TCGv cpu_tmp0 __attribute__((unused));
- 
--#if defined(TARGET_SPARC64) || !defined(CONFIG_USER_ONLY)
--            if (xop == 0x2b) { /* rdtbr / V9 flushw */
--#ifdef TARGET_SPARC64
--                gen_helper_flushw(tcg_env);
+@@ -4306,162 +4496,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                         break;
+ #endif
+                     case 0x30:
+-                        {
+-                            cpu_tmp0 = tcg_temp_new();
+-                            switch(rd) {
+-                            case 0: /* wry */
+-                                tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                                tcg_gen_andi_tl(cpu_y, cpu_tmp0, 0xffffffff);
+-                                break;
+-#ifndef TARGET_SPARC64
+-                            case 0x01 ... 0x0f: /* undefined in the
+-                                                   SPARCv8 manual, nop
+-                                                   on the microSPARC
+-                                                   II */
+-                            case 0x10 ... 0x1f: /* implementation-dependent
+-                                                   in the SPARCv8
+-                                                   manual, nop on the
+-                                                   microSPARC II */
+-                                if ((rd == 0x13) && (dc->def->features &
+-                                                     CPU_FEATURE_POWERDOWN)) {
+-                                    /* LEON3 power-down */
+-                                    save_state(dc);
+-                                    gen_helper_power_down(tcg_env);
+-                                }
+-                                break;
 -#else
--                if (!supervisor(dc))
--                    goto priv_insn;
--                gen_store_gpr(dc, rd, cpu_tbr);
+-                            case 0x2: /* V9 wrccr */
+-                                tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                                gen_helper_wrccr(tcg_env, cpu_tmp0);
+-                                tcg_gen_movi_i32(cpu_cc_op, CC_OP_FLAGS);
+-                                dc->cc_op = CC_OP_FLAGS;
+-                                break;
+-                            case 0x3: /* V9 wrasi */
+-                                tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                                tcg_gen_andi_tl(cpu_tmp0, cpu_tmp0, 0xff);
+-                                tcg_gen_st32_tl(cpu_tmp0, tcg_env,
+-                                                offsetof(CPUSPARCState, asi));
+-                                /*
+-                                 * End TB to notice changed ASI.
+-                                 * TODO: Could notice src1 = %g0 and IS_IMM,
+-                                 * update DisasContext and not exit the TB.
+-                                 */
+-                                save_state(dc);
+-                                gen_op_next_insn();
+-                                tcg_gen_lookup_and_goto_ptr();
+-                                dc->base.is_jmp = DISAS_NORETURN;
+-                                break;
+-                            case 0x6: /* V9 wrfprs */
+-                                tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                                tcg_gen_trunc_tl_i32(cpu_fprs, cpu_tmp0);
+-                                dc->fprs_dirty = 0;
+-                                save_state(dc);
+-                                gen_op_next_insn();
+-                                tcg_gen_exit_tb(NULL, 0);
+-                                dc->base.is_jmp = DISAS_NORETURN;
+-                                break;
+-                            case 0xf: /* V9 sir, nop if user */
+-#if !defined(CONFIG_USER_ONLY)
+-                                if (supervisor(dc)) {
+-                                    ; // XXX
+-                                }
 -#endif
--                break;
--            }
+-                                break;
+-                            case 0x13: /* Graphics Status */
+-                                if (gen_trap_ifnofpu(dc)) {
+-                                    goto jmp_insn;
+-                                }
+-                                tcg_gen_xor_tl(cpu_gsr, cpu_src1, cpu_src2);
+-                                break;
+-                            case 0x14: /* Softint set */
+-                                if (!supervisor(dc))
+-                                    goto illegal_insn;
+-                                tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                                gen_helper_set_softint(tcg_env, cpu_tmp0);
+-                                break;
+-                            case 0x15: /* Softint clear */
+-                                if (!supervisor(dc))
+-                                    goto illegal_insn;
+-                                tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                                gen_helper_clear_softint(tcg_env, cpu_tmp0);
+-                                break;
+-                            case 0x16: /* Softint write */
+-                                if (!supervisor(dc))
+-                                    goto illegal_insn;
+-                                tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                                gen_helper_write_softint(tcg_env, cpu_tmp0);
+-                                break;
+-                            case 0x17: /* Tick compare */
+-#if !defined(CONFIG_USER_ONLY)
+-                                if (!supervisor(dc))
+-                                    goto illegal_insn;
 -#endif
-             if (xop == 0x34) {   /* FPU Operations */
-                 if (gen_trap_ifnofpu(dc)) {
-                     goto jmp_insn;
+-                                {
+-                                    TCGv_ptr r_tickptr;
+-
+-                                    tcg_gen_xor_tl(cpu_tick_cmpr, cpu_src1,
+-                                                   cpu_src2);
+-                                    r_tickptr = tcg_temp_new_ptr();
+-                                    tcg_gen_ld_ptr(r_tickptr, tcg_env,
+-                                                   offsetof(CPUSPARCState, tick));
+-                                    translator_io_start(&dc->base);
+-                                    gen_helper_tick_set_limit(r_tickptr,
+-                                                              cpu_tick_cmpr);
+-                                    /* End TB to handle timer interrupt */
+-                                    dc->base.is_jmp = DISAS_EXIT;
+-                                }
+-                                break;
+-                            case 0x18: /* System tick */
+-#if !defined(CONFIG_USER_ONLY)
+-                                if (!supervisor(dc))
+-                                    goto illegal_insn;
+-#endif
+-                                {
+-                                    TCGv_ptr r_tickptr;
+-
+-                                    tcg_gen_xor_tl(cpu_tmp0, cpu_src1,
+-                                                   cpu_src2);
+-                                    r_tickptr = tcg_temp_new_ptr();
+-                                    tcg_gen_ld_ptr(r_tickptr, tcg_env,
+-                                                   offsetof(CPUSPARCState, stick));
+-                                    translator_io_start(&dc->base);
+-                                    gen_helper_tick_set_count(r_tickptr,
+-                                                              cpu_tmp0);
+-                                    /* End TB to handle timer interrupt */
+-                                    dc->base.is_jmp = DISAS_EXIT;
+-                                }
+-                                break;
+-                            case 0x19: /* System tick compare */
+-#if !defined(CONFIG_USER_ONLY)
+-                                if (!supervisor(dc))
+-                                    goto illegal_insn;
+-#endif
+-                                {
+-                                    TCGv_ptr r_tickptr;
+-
+-                                    tcg_gen_xor_tl(cpu_stick_cmpr, cpu_src1,
+-                                                   cpu_src2);
+-                                    r_tickptr = tcg_temp_new_ptr();
+-                                    tcg_gen_ld_ptr(r_tickptr, tcg_env,
+-                                                   offsetof(CPUSPARCState, stick));
+-                                    translator_io_start(&dc->base);
+-                                    gen_helper_tick_set_limit(r_tickptr,
+-                                                              cpu_stick_cmpr);
+-                                    /* End TB to handle timer interrupt */
+-                                    dc->base.is_jmp = DISAS_EXIT;
+-                                }
+-                                break;
+-
+-                            case 0x10: /* Performance Control */
+-                            case 0x11: /* Performance Instrumentation
+-                                          Counter */
+-                            case 0x12: /* Dispatch Control */
+-#endif
+-                            default:
+-                                goto illegal_insn;
+-                            }
+-                        }
+-                        break;
++                        goto illegal_insn;  /* WRASR in decodetree */
+ #if !defined(CONFIG_USER_ONLY)
+                     case 0x31: /* wrpsr, V9 saved, restored */
+                         {
 -- 
 2.34.1
 
