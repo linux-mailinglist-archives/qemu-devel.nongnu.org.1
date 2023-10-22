@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6364D7D23F3
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA427D23ED
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:56:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qualx-0006NJ-2w; Sun, 22 Oct 2023 11:53:49 -0400
+	id 1qual1-0004mg-3P; Sun, 22 Oct 2023 11:52:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qualb-0005TA-Ld; Sun, 22 Oct 2023 11:53:27 -0400
+ id 1quakn-0004jm-Ch; Sun, 22 Oct 2023 11:52:40 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qualT-0008WG-Js; Sun, 22 Oct 2023 11:53:27 -0400
+ id 1quakj-0008WK-FW; Sun, 22 Oct 2023 11:52:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=wFuuCRY8zOui6HSYprCMQeB6ch0WHk4OtRxF9bp2LAI=; b=eM7z4la1nf5TDHe2rrilvxonok
- YHTegQ2krOgylCgVG4t6L7b/SWP1IZbamqZ0Kkpc1RSHkfTJNfy3pd9yF6EhdUzxWuxj20QUXAT7r
- orSi4/1mWIHOfc0shwS+tVeoilm4XeKDzJC0cSnzBRQZSTk9gWRY9wKOF3vu2z6jtusPLfhlA1klS
- Pecahj9vzg69+FVNRpSuJZxlhBWUsH0GDgfH1nm3P8R3kIy1uS9V703UkIS+iBdjtJfYMaiRzgBZF
- aOTTQH41SetltFFXtS7ymeSYcZrtGtBezyfulG8VJ1BHXjKDGjeBl1C8atioBKTqyIKzFsIC2mw4e
- eVwkcONQ==;
+ bh=khyoXveG/BzHXWd28g0ECVTdEF2TXXqaXCqlRIzwomY=; b=pddXftyc1ckCsPadnXZvUQT0bW
+ M5Ptl/u0mEOZM6a8arO++FndlfmK/9In3Y97NEiNvV6S/gnoMc4rPMktdQsqrpE8ITBGZJbN9YP+h
+ 7WXXezLpKgcUU6qsBUYt55PTO8nrIX1XqBdlBWxj+18Iu4HEasNRQpUygH0u4uQXNqaYtF60lY4tL
+ 2m5FzcX/XbiRWZ/oyNZkKLHejWh2LoySZb1SG5qDHBrUfq3SzhLhWqh128Iuw4s8tFqGtH7/LW26M
+ dH0EP2RhBj/PoLPN9AezB/IU1DfNzJ769NI+o+uIhQ8Ac7QVnflEBlQ/DmyiYcCPxCUv9Jyt8FKH2
+ ON7Jh9Sw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1quakK-008TGh-EG; Sun, 22 Oct 2023 15:52:08 +0000
+ id 1quakK-008TGm-Ep; Sun, 22 Oct 2023 15:52:08 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1quakJ-001qaN-2W; Sun, 22 Oct 2023 16:52:07 +0100
+ Linux)) id 1quakJ-001qaY-36; Sun, 22 Oct 2023 16:52:07 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,9 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH 31/45] hw/net/etraxfs-eth: use qemu_configure_nic_device()
-Date: Sun, 22 Oct 2023 16:51:46 +0100
-Message-Id: <20231022155200.436340-32-dwmw2@infradead.org>
+Subject: [PATCH 33/45] hw/m68k/q800: use qemu_configure_nic_device()
+Date: Sun, 22 Oct 2023 16:51:48 +0100
+Message-Id: <20231022155200.436340-34-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231022155200.436340-1-dwmw2@infradead.org>
 References: <20231022155200.436340-1-dwmw2@infradead.org>
@@ -120,72 +120,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
+Then fetch the MAC that was assigned, if any. And assign one if not,
+ensuring that it uses the Apple OUI.
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/cris/axis_dev88.c      | 9 ++++-----
- hw/net/etraxfs_eth.c      | 5 ++---
- include/hw/cris/etraxfs.h | 2 +-
- 3 files changed, 7 insertions(+), 9 deletions(-)
+ hw/m68k/q800.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/hw/cris/axis_dev88.c b/hw/cris/axis_dev88.c
-index d82050d927..b41c4de9ff 100644
---- a/hw/cris/axis_dev88.c
-+++ b/hw/cris/axis_dev88.c
-@@ -308,15 +308,14 @@ void axisdev88_init(MachineState *machine)
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index 1d7cd5ff1c..94e7c0dd60 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -271,6 +271,7 @@ static void q800_machine_init(MachineState *machine)
+     BusState *adb_bus;
+     NubusBus *nubus;
+     DriveInfo *dinfo;
++    MACAddr mac;
+     uint8_t rng_seed[32];
  
-     /* Add the two ethernet blocks.  */
-     dma_eth = g_malloc0(sizeof dma_eth[0] * 4); /* Allocate 4 channels.  */
--    etraxfs_eth_init(&nd_table[0], 0x30034000, 1, &dma_eth[0], &dma_eth[1]);
+     linux_boot = (kernel_filename != NULL);
+@@ -371,13 +372,6 @@ static void q800_machine_init(MachineState *machine)
+ 
+     /* MACSONIC */
+ 
 -    if (nb_nics > 1) {
--        etraxfs_eth_init(&nd_table[1], 0x30036000, 2, &dma_eth[2], &dma_eth[3]);
+-        error_report("q800 can only have one ethernet interface");
+-        exit(1);
 -    }
- 
-+    etraxfs_eth_init(0x30034000, 1, &dma_eth[0], &dma_eth[1]);
-     /* The DMA Connector block is missing, hardwire things for now.  */
-     etraxfs_dmac_connect_client(etraxfs_dmac, 0, &dma_eth[0]);
-     etraxfs_dmac_connect_client(etraxfs_dmac, 1, &dma_eth[1]);
--    if (nb_nics > 1) {
-+
-+    if (qemu_find_nic_info(dev, true, "fseth")) {
-+        etraxfs_eth_init(0x30036000, 2, &dma_eth[2], &dma_eth[3]);
-         etraxfs_dmac_connect_client(etraxfs_dmac, 6, &dma_eth[2]);
-         etraxfs_dmac_connect_client(etraxfs_dmac, 7, &dma_eth[3]);
-     }
-diff --git a/hw/net/etraxfs_eth.c b/hw/net/etraxfs_eth.c
-index 1b82aec794..ab60eaac04 100644
---- a/hw/net/etraxfs_eth.c
-+++ b/hw/net/etraxfs_eth.c
-@@ -646,15 +646,14 @@ static void etraxfs_eth_class_init(ObjectClass *klass, void *data)
- 
- /* Instantiate an ETRAXFS Ethernet MAC.  */
- DeviceState *
--etraxfs_eth_init(NICInfo *nd, hwaddr base, int phyaddr,
-+etraxfs_eth_init(hwaddr base, int phyaddr,
-                  struct etraxfs_dma_client *dma_out,
-                  struct etraxfs_dma_client *dma_in)
- {
-     DeviceState *dev;
--    qemu_check_nic_model(nd, "fseth");
- 
-     dev = qdev_new("etraxfs-eth");
--    qdev_set_nic_properties(dev, nd);
-+    qemu_configure_nic_device(dev, true, "fseth");
-     qdev_prop_set_uint32(dev, "phyaddr", phyaddr);
- 
+-
+-    qemu_check_nic_model(&nd_table[0], "dp83932");
+-
      /*
-diff --git a/include/hw/cris/etraxfs.h b/include/hw/cris/etraxfs.h
-index 467b529dc0..012c4e9974 100644
---- a/include/hw/cris/etraxfs.h
-+++ b/include/hw/cris/etraxfs.h
-@@ -31,7 +31,7 @@
- #include "hw/sysbus.h"
- #include "qapi/error.h"
- 
--DeviceState *etraxfs_eth_init(NICInfo *nd, hwaddr base, int phyaddr,
-+DeviceState *etraxfs_eth_init(hwaddr base, int phyaddr,
-                               struct etraxfs_dma_client *dma_out,
-                               struct etraxfs_dma_client *dma_in);
- 
+      * MacSonic driver needs an Apple MAC address
+      * Valid prefix are:
+@@ -387,14 +381,22 @@ static void q800_machine_init(MachineState *machine)
+      * 08:00:07 Apple
+      * (Q800 use the last one)
+      */
+-    nd_table[0].macaddr.a[0] = 0x08;
+-    nd_table[0].macaddr.a[1] = 0x00;
+-    nd_table[0].macaddr.a[2] = 0x07;
+-
+     object_initialize_child(OBJECT(machine), "dp8393x", &m->dp8393x,
+                             TYPE_DP8393X);
+     dev = DEVICE(&m->dp8393x);
+-    qdev_set_nic_properties(dev, &nd_table[0]);
++    if (qemu_configure_nic_device(dev, TYPE_DP8393X, true, "dp83932")) {
++        gchar *macstr = object_property_get_str(OBJECT(dev));
++        if (macstr) {
++            net_parse_macaddr(mac.a, macstr);
++            g_free(macstr);
++        }
++    }
++    qemu_macaddr_default_if_unset(&mac);
++    mac.a[0] = 0x08;
++    mac.a[1] = 0x00;
++    mac.a[2] = 0x07;
++    qemu_prop_set_macaddr(dev, "mac", &mac.a);
++
+     qdev_prop_set_uint8(dev, "it_shift", 2);
+     qdev_prop_set_bit(dev, "big_endian", true);
+     object_property_set_link(OBJECT(dev), "dma_mr",
+@@ -415,7 +417,7 @@ static void q800_machine_init(MachineState *machine)
+     prom = memory_region_get_ram_ptr(dp8393x_prom);
+     checksum = 0;
+     for (i = 0; i < 6; i++) {
+-        prom[i] = revbit8(nd_table[0].macaddr.a[i]);
++        prom[i] = revbit8(mac.a[i]);
+         checksum ^= prom[i];
+     }
+     prom[7] = 0xff - checksum;
 -- 
 2.40.1
 
