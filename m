@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307597D20BB
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 04:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2E37D20BF
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 04:18:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quNmE-0004wH-D1; Sat, 21 Oct 2023 22:01:14 -0400
+	id 1quO0y-0005p9-Ix; Sat, 21 Oct 2023 22:16:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1quNmB-0004w0-Rf
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 22:01:11 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1quO0w-0005ox-5Q
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 22:16:26 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1quNmA-00005N-9l
- for qemu-devel@nongnu.org; Sat, 21 Oct 2023 22:01:11 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-581fb6f53fcso1333889eaf.2
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 19:01:09 -0700 (PDT)
+ id 1quO0u-0003Kz-LV
+ for qemu-devel@nongnu.org; Sat, 21 Oct 2023 22:16:25 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3b2e22a4004so1581198b6e.3
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 19:16:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697940069; x=1698544869; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6Zkhc2NQAeeqYzXh/RsRR65qUOXQfq8E//Iu0JHwYnI=;
- b=aGSK8CRmllk+BqdnEMiiPdZWM1WYiCFBco1lSuKYCx1Jm17X9+KUtmPk/kF5dV46KU
- QwD7+OmICM92lVU/KV4thkjObcIO5yLbqgBCbgEPltHiPyFYWYq9eKAXXmTfzbX9wauW
- 0idljUEYggs2C92dlGt/XnEwbGkmybtZLllZKCM4jOWzBQCZD9ETQ7qc3Il5SYdqMyCN
- KBhgsro8Rg8DUndk3P9Upwi1mzneAHxz2zATKqXgkclDiqql9cJSYPhsymZSRGv7gSoQ
- Cav514N7cNCxX4KjPyscnxtxz2g+QOUKxy9rz8Q4dZmixkYudaeSh44J/1QiOu7yLfmV
- K16A==
+ d=gmail.com; s=20230601; t=1697940983; x=1698545783; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h0Nn7ykEFiIg5X13Nkv5CbkqLn8sjkHkKUxeNYr9uEc=;
+ b=IOXK5F6Y4QCKCT255HXLcOyQKm2oGL5ruiPNWR+Yr3BIRdKlU+0KtDCkCbT61rpu5z
+ wX8oV3wUx/s2HZT0TEgCSfbpdEjltn6+koCsYVOUf9IRCVD+uOh8rSzjtTN4cSmSmo1r
+ 3mkyBB54XD185IN+a84wB2QimPg1PGRnVlcOWbGuAncFLJ+sFBfMGfYaHlDtTd8UlYyF
+ zM4drhdsKXbOGOQRcfmek2y6Ny3P8cTNuG99rUp2bcrakwjI21rdLygShtElcMFpy1Yc
+ YP/HA+Y8hQwTCO+4Om6vhI5BRSfzZ17z5Wjv+acfeLJE1Z95UhBSSNY60M3A1RiwxkCv
+ /50w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697940069; x=1698544869;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6Zkhc2NQAeeqYzXh/RsRR65qUOXQfq8E//Iu0JHwYnI=;
- b=i8kbZetbg+m8Fu/BuMSGxN+Fpk6QE4jabfqx3hts+v7PM87viJ4nZQiSJPa27Zc+/q
- 7Gc2ZiW6qUMM994SBJyqPwx544Qd5ZdT5KF3bM3ES3z9WTTqFAyfQpElb8nHp1JRqHbp
- HPDgUXzRJhv2OOT+tKrFONsPRmwa6Fz8H6gaZsicklb0esT8W6mzMuLD/s+OLhRryiNJ
- lEDZmw38oFLVglTM9iuojp+sBReHVd8Me9aIJkXYVISwDvBUkZhza0n1muGg62HZ9M3+
- yrEI5NwsbIkvpHRxPu5zVloPtApL+8J6CiUImmx+xyZI0xODqC3MOuAuZkPglgVNuhfA
- QRfg==
-X-Gm-Message-State: AOJu0YxJHLLEAS+p5u+XRYlQtJvuOVTyg6cp30hVZnwr8spUIV1PvzWq
- ZFHFiT6zkSgbRrmIdhNuiCM=
-X-Google-Smtp-Source: AGHT+IE+WyWb8lPJABCuNLNANvRs0o/kGIUDwRD8vur3KpUnskZHhTUQkR8oNJEdSmS5fh9fic3B1g==
-X-Received: by 2002:a05:6358:7f09:b0:143:91a2:8df1 with SMTP id
- p9-20020a0563587f0900b0014391a28df1mr6488487rwn.3.1697940068626; 
- Sat, 21 Oct 2023 19:01:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697940983; x=1698545783;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h0Nn7ykEFiIg5X13Nkv5CbkqLn8sjkHkKUxeNYr9uEc=;
+ b=oq3zecQVwirUNvd84ODzGbXgBnLHiX5oP8gfyoaewtps7WkFFIL5qTGzhz9esSjAjZ
+ H8SvWIVM8qR52spWvyIPfJshH/j1GDEkmkVBDZ+JZkk25p0O/y5j/5NwfOX5yjPQDjNd
+ NVRoTT8qp8kNPtHOOfttvpzfSZ2FemmBuVfUv0RO7/QXfcnn0iyX/Bgkj76kAQ5RpB1W
+ j+afwrjdRWRGnMJLiyKcEWwUXjCWVtoVz+uEJggq6I0Rp2O+cXMqTiZUqEMtc5eWl4J1
+ Vov0j8zFFI+4jun7KtgzAlhdcxPH8VPeEijexQUmBvQShnLRP5JOCUVr5u1scZmYjxPJ
+ G0Iw==
+X-Gm-Message-State: AOJu0Yys2D7aBvCRivUT8+r2ycjDWEg0Q7/su2EfUW1a+WOQ9LR4buW1
+ 9HWmbmnNjH8JMANkl/G9hS48aeXvfu9WRTfZvus=
+X-Google-Smtp-Source: AGHT+IFbx50AIWOOnW8/LwPQJt4rGLnh5yvlj08FzohIwxEQTO8unsGTRSjc7pGNOIneJM4BvRRCCA==
+X-Received: by 2002:a05:6808:60e:b0:3b2:defb:e562 with SMTP id
+ y14-20020a056808060e00b003b2defbe562mr6346665oih.45.1697940983120; 
+ Sat, 21 Oct 2023 19:16:23 -0700 (PDT)
 Received: from localhost ([124.64.17.222]) by smtp.gmail.com with ESMTPSA id
- i13-20020a056a00004d00b0069344caf840sm3975537pfk.18.2023.10.21.19.01.06
+ z4-20020aa79904000000b006b6f3bc8123sm3846881pff.50.2023.10.21.19.16.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 19:01:08 -0700 (PDT)
+ Sat, 21 Oct 2023 19:16:22 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -62,16 +61,15 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH v3 2/2] vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
-Date: Sun, 22 Oct 2023 10:00:49 +0800
-Message-Id: <c3b69f0a65600722c1e4d3aa14d53a71e8ffb888.1697902949.git.yin31149@gmail.com>
+Subject: [PATCH v4 0/3] Vhost-vdpa Shadow Virtqueue RSS Support
+Date: Sun, 22 Oct 2023 10:16:14 +0800
+Message-Id: <cover.1697904740.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1697902949.git.yin31149@gmail.com>
-References: <cover.1697902949.git.yin31149@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=yin31149@gmail.com; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=yin31149@gmail.com; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -95,29 +93,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable SVQ with VIRTIO_NET_F_HASH_REPORT feature.
+This series enables shadowed CVQ to intercept RSS command
+through shadowed CVQ, update the virtio NIC device model
+so qemu send it in a migration, and the restore of that
+RSS state in the destination.
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
----
-v3: no code changes
+Note that this patch should be based on
+patch "Vhost-vdpa Shadow Virtqueue Hash calculation Support" at [1].
 
-v2: https://lore.kernel.org/all/a67d4abc2c8c5c7636addc729daa5432fa8193bd.1693297766.git.yin31149@gmail.com/
+[1]. https://lore.kernel.org/all/cover.1697902949.git.yin31149@gmail.com/
 
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+ChangeLog
+=========
+v4:
+  - add do_rss argument and relative code in vhost_vdpa_net_load_rss()
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 2e4bad65b4..4c65c53fd2 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -121,6 +121,7 @@ static const uint64_t vdpa_svq_device_features =
-     BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR) |
-     /* VHOST_F_LOG_ALL is exposed by SVQ */
-     BIT_ULL(VHOST_F_LOG_ALL) |
-+    BIT_ULL(VIRTIO_NET_F_HASH_REPORT) |
-     BIT_ULL(VIRTIO_NET_F_RSC_EXT) |
-     BIT_ULL(VIRTIO_NET_F_STANDBY) |
-     BIT_ULL(VIRTIO_NET_F_SPEED_DUPLEX);
+v3: https://lore.kernel.org/all/cover.1693299194.git.yin31149@gmail.com/
+  - resolve conflict with updated patch
+"Vhost-vdpa Shadow Virtqueue Hash calculation Support" in patch
+"vdpa: Restore receive-side scaling state"
+
+RFC v2: https://lore.kernel.org/all/cover.1691926415.git.yin31149@gmail.com/
+  - Correct the feature usage to VIRTIO_NET_F_HASH_REPORT when
+loading the hash calculation state in
+patch "vdpa: Restore receive-side scaling state"
+
+RFC v1: https://lore.kernel.org/all/cover.1691766252.git.yin31149@gmail.com/
+
+TestStep
+========
+1. test the migration using vp-vdpa device
+  - For L0 guest, boot QEMU with two virtio-net-pci net device with
+`in-qemu` RSS, command line like:
+	-netdev tap,vhost=off...
+	-device virtio-net-pci,disable-legacy=on,disable-modern=off,
+iommu_platform=on,mq=on,ctrl_vq=on,hash=on,rss=on,guest_announce=off,
+indirect_desc=off,queue_reset=off,guest_uso4=off,guest_uso6=off,
+host_uso=off,...
+
+  - For L1 guest, apply the relative patch series and compile the
+source code, start QEMU with two vdpa device with svq mode on,
+enable the `ctrl_vq`, `mq`, `rss` features on, command line like:
+      -netdev type=vhost-vdpa,x-svq=true,...
+      -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
+rss=on,...
+
+  - For L2 source guest, run the following bash command:
+```bash
+#!/bin/sh
+
+ethtool -K eth0 rxhash on
+```
+
+  - Execute the live migration in L2 source monitor
+
+  - Result
+    * with this series, L2 QEMU can execute without
+triggering any error or warning. L0 QEMU echo
+"Can't load eBPF RSS - fallback to software RSS".
+
+Hawkins Jiawei (3):
+  vdpa: Add SetSteeringEBPF method for NetClientState
+  vdpa: Restore receive-side scaling state
+  vdpa: Allow VIRTIO_NET_F_RSS in SVQ
+
+ net/vhost-vdpa.c | 72 ++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 51 insertions(+), 21 deletions(-)
+
 -- 
 2.25.1
 
