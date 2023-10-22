@@ -2,70 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65CC7D220C
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C747D220D
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:19:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUbw-0006BP-N4; Sun, 22 Oct 2023 05:19:04 -0400
+	id 1quUcX-0006nz-T6; Sun, 22 Oct 2023 05:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1quUbt-0006B9-PV
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:19:01 -0400
-Received: from mail-ed1-f44.google.com ([209.85.208.44])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1quUbr-0007wV-Kp
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:19:01 -0400
-Received: by mail-ed1-f44.google.com with SMTP id
- 4fb4d7f45d1cf-51e28cac164so6979313a12.1
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:18:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUcW-0006m1-7R
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:19:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUcU-0007yv-Ge
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:19:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697966377;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dQhdZm/kC0jnKoOEm4c9xGYHC8W1UIcU4mcrOqBoyXw=;
+ b=hGoWkA8Yvvc6dOc5w0Fk8FiHS8EquI8qD17ecCDjmgi33RjehgvzQHfwhELmTnHXbyngRR
+ zfcawrSpfRjDKUVzAlX6zl2m2W4xFunVCGjJrZdV7Qddzl1HOHmNj+sXa8E4s2N3JmZDv7
+ JiheUgy17F6ksJxIG+T84FTpBCZPGYc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-487-aCSlrJlfP9SP2OwQG7jl6g-1; Sun, 22 Oct 2023 05:19:36 -0400
+X-MC-Unique: aCSlrJlfP9SP2OwQG7jl6g-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32db43129c6so1126242f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:19:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966338; x=1698571138;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=F13wbX4Z12wrWcyLid1TJ2QAnyD8a02io7TDxPwN3fk=;
- b=AbSz9fWXKqJJXfhGwy71hl0et7RQzpF/NrgCACWnkmwb9lu0f7LrwNDQmnrsAJ9TZQ
- ubHcREcGATpX+KXFBQeBsDRge3wJGUJmFiICILv0yI7LszDrg182m6YGX+Pud3NHzlGF
- pFarSpIduFouKlJiwhDpzJugoaPBVed2hCx9VaEHQ29yUT72Nv6S/VtznAFwSePVbSs+
- I9hYWjHWwLg4WkaaeKQQr1rq8ufw0c+SJSP04Tj6/O8KCDOjIDr3QEaZncRxIdHBfSpE
- AaRy/DFDdKPjGaqH3eauwOqx+JZxw5pOLJ8HbqBzmrw6LNuC9G6gMtMszcZ1/HXa/AQk
- nOpg==
-X-Gm-Message-State: AOJu0YzWDujNOzC8VTmnDUFCHqEMffZaVgP01EunZ92PaSzJJ0rTejuT
- YJGJ16yYQt3sgdifUltKDPA=
-X-Google-Smtp-Source: AGHT+IHcSlKdYokxve9G7zx/hhXrkzd8bTiyquFd/zSCUvHn+OAFBnVNEN+K4o/5MAnlSPY81fJSoQ==
-X-Received: by 2002:a17:907:7e8d:b0:9bb:a243:e6fb with SMTP id
- qb13-20020a1709077e8d00b009bba243e6fbmr4511633ejc.3.1697966337497; 
- Sun, 22 Oct 2023 02:18:57 -0700 (PDT)
-Received: from fedora (ip-109-43-176-141.web.vodafone.de. [109.43.176.141])
- by smtp.gmail.com with ESMTPSA id
- jy20-20020a170907763400b009b97d9ae329sm4805451ejc.198.2023.10.22.02.18.56
+ d=1e100.net; s=20230601; t=1697966375; x=1698571175;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dQhdZm/kC0jnKoOEm4c9xGYHC8W1UIcU4mcrOqBoyXw=;
+ b=YvB8DkYUHyauYWZXt5cAxG9blbgJ4xvV97a2b1FApIhVNctMx/n0eprIa+W8rLdIjD
+ KPDu5gt49TU5H+Uq5KcvJfKtP1Nv3MgsMe6uJ3ahwOMCCOOhEC9p8dUGA/2ZfuWUunz/
+ S1lMWY8bChhMXBeeKCl/ovAI6g+86GQ5CpdXphelZp/52bhaXWbOR1H0Tfs5ipRYwARl
+ FYPMLbiI+VeNXa3umoTl/u1wdjm2IIgka1offWHpPbexpPfDKKcIXtdETDBjtOrBOQZ+
+ b29+2ggyeNl4ZFJ4LWMbPsyjxDWmfDkuBGf5KOo3r3dpMD9RqEM/tb+PEkqLmssB5K3B
+ +szQ==
+X-Gm-Message-State: AOJu0Yz4qhP7CLCzcxxccQiuGWrGX64tv1RiDOtdtfzmeG1lbMXgbkYY
+ +Bh/ug7eozHxT9ywg2ZByt2ypRPhGQoDikMhLumVOYfMeQbfJwjhw/6T+kYK7E9m/WgIR0vLuku
+ lof6bJ0ZdW4IdxOU=
+X-Received: by 2002:a05:6000:79d:b0:32d:a688:8813 with SMTP id
+ bu29-20020a056000079d00b0032da6888813mr6177941wrb.32.1697966374966; 
+ Sun, 22 Oct 2023 02:19:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDIPgMTZ57oueUpP8uzzSx9X28nn+YGcCbEGxdlZIyCZNCyRAIowStWeVGRocR9k5BVXkJew==
+X-Received: by 2002:a05:6000:79d:b0:32d:a688:8813 with SMTP id
+ bu29-20020a056000079d00b0032da6888813mr6177923wrb.32.1697966374649; 
+ Sun, 22 Oct 2023 02:19:34 -0700 (PDT)
+Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
+ l3-20020a5d5603000000b0032ddf2804ccsm5223900wrv.83.2023.10.22.02.19.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:18:57 -0700 (PDT)
-Date: Sun, 22 Oct 2023 11:18:55 +0200
-From: Thomas Huth <huth@tuxfamily.org>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH 1/6] hw/m68k/irqc: Pass CPU using QOM link property
-Message-ID: <20231022111855.0411838c@fedora>
-In-Reply-To: <20231020150627.56893-2-philmd@linaro.org>
-References: <20231020150627.56893-1-philmd@linaro.org>
- <20231020150627.56893-2-philmd@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ Sun, 22 Oct 2023 02:19:33 -0700 (PDT)
+Date: Sun, 22 Oct 2023 05:19:30 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 00/16] tests: Add CPU topology related smbios test cases
+Message-ID: <20231022051905-mutt-send-email-mst@kernel.org>
+References: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.208.44; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f44.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,89 +100,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Fri, 20 Oct 2023 17:06:21 +0200
-schrieb Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
+On Thu, Sep 28, 2023 at 08:59:27PM +0800, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Hi all,
+> 
+> This patchset is the v2 which adds more description about the topology
+> selection under Igor's comments.
 
-> Avoid the interrupt controller directly access the 'first_cpu'
-> global. Pass it from the board code.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
+I dropped this due to CI failures.
+
+> In this patchset, add these test cases:
+> 
+> 1. Add the case to test 2 newly added topology helpers (patch 1):
+>    * machine_topo_get_cores_per_socket()
+>    * machine_topo_get_threads_per_socket()
+> 
+> 2. Add the cases in bios-tables-test.c to:
+>    * test smbios type4 table count (patch 2-4).
+>    * test smbios type4 core count field (patch 5-7).
+>    * update the test of smbios type4 core count2 field (patch 8-10).
+>    * test smbios type4 thread count (patch 11-13).
+>    * test smbios type4 thread count2 (patch 14-16).
+> 
+> With the above new cases, cover all commits of [1] in test.
+> 
+> v1: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg04420.html
+> 
+> [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html
+> 
+> Regards,
+> Zhao
 > ---
->  include/hw/intc/m68k_irqc.h |  1 +
->  hw/intc/m68k_irqc.c         | 10 +++++++++-
->  hw/m68k/virt.c              |  2 ++
->  3 files changed, 12 insertions(+), 1 deletion(-)
->=20
-> diff --git a/include/hw/intc/m68k_irqc.h b/include/hw/intc/m68k_irqc.h
-> index ef91f21812..693e33b0aa 100644
-> --- a/include/hw/intc/m68k_irqc.h
-> +++ b/include/hw/intc/m68k_irqc.h
-> @@ -33,6 +33,7 @@ typedef struct M68KIRQCState {
->      SysBusDevice parent_obj;
-> =20
->      uint8_t ipr;
-> +    ArchCPU *cpu;
-> =20
->      /* statistics */
->      uint64_t stats_irq_count[M68K_IRQC_LEVEL_NUM];
-> diff --git a/hw/intc/m68k_irqc.c b/hw/intc/m68k_irqc.c
-> index 0c515e4ecb..e09705eeaf 100644
-> --- a/hw/intc/m68k_irqc.c
-> +++ b/hw/intc/m68k_irqc.c
-> @@ -11,6 +11,7 @@
->  #include "cpu.h"
->  #include "migration/vmstate.h"
->  #include "monitor/monitor.h"
-> +#include "hw/qdev-properties.h"
->  #include "hw/nmi.h"
->  #include "hw/intc/intc.h"
->  #include "hw/intc/m68k_irqc.h"
-> @@ -35,7 +36,7 @@ static void m68k_irqc_print_info(InterruptStatsProvider=
- *obj, Monitor *mon)
->  static void m68k_set_irq(void *opaque, int irq, int level)
->  {
->      M68KIRQCState *s =3D opaque;
-> -    M68kCPU *cpu =3D M68K_CPU(first_cpu);
-> +    M68kCPU *cpu =3D M68K_CPU(s->cpu);
->      int i;
-> =20
->      if (level) {
-> @@ -85,12 +86,19 @@ static const VMStateDescription vmstate_m68k_irqc =3D=
- {
->      }
->  };
-> =20
-> +static Property m68k_irqc_properties[] =3D {
-> +    DEFINE_PROP_LINK("m68k-cpu", M68KIRQCState, cpu,
-> +                     TYPE_M68K_CPU, ArchCPU *),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
->  static void m68k_irqc_class_init(ObjectClass *oc, void *data)
->   {
->      DeviceClass *dc =3D DEVICE_CLASS(oc);
->      NMIClass *nc =3D NMI_CLASS(oc);
->      InterruptStatsProviderClass *ic =3D INTERRUPT_STATS_PROVIDER_CLASS(o=
-c);
-> =20
-> +    device_class_set_props(dc, m68k_irqc_properties);
->      nc->nmi_monitor_handler =3D m68k_nmi;
->      dc->reset =3D m68k_irqc_reset;
->      dc->vmsd =3D &vmstate_m68k_irqc;
-> diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-> index 2dd3c99894..da35e74bd9 100644
-> --- a/hw/m68k/virt.c
-> +++ b/hw/m68k/virt.c
-> @@ -155,6 +155,8 @@ static void virt_init(MachineState *machine)
->      /* IRQ Controller */
-> =20
->      irqc_dev =3D qdev_new(TYPE_M68K_IRQC);
-> +    object_property_set_link(OBJECT(irqc_dev), "m68k-cpu",
-> +                             OBJECT(first_cpu), &error_abort);
-
-I'd rather use the local variable "cpu" instead of "first_cpu" here.
-
-Apart from that:
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+> Zhao Liu (16):
+>   tests: test-smp-parse: Add the test for cores/threads per socket
+>     helpers
+>   tests: bios-tables-test: Prepare the ACPI table change for smbios
+>     type4 count test
+>   tests: bios-tables-test: Add test for smbios type4 count
+>   tests: bios-tables-test: Add ACPI table binaries for smbios type4
+>     count test
+>   tests: bios-tables-test: Prepare the ACPI table change for smbios
+>     type4 core count test
+>   tests: bios-tables-test: Add test for smbios type4 core count
+>   tests: bios-tables-test: Add ACPI table binaries for smbios type4 core
+>     count test
+>   tests: bios-tables-test: Prepare the ACPI table change for smbios
+>     type4 core count2 test
+>   tests: bios-tables-test: Extend smbios core count2 test to cover
+>     general topology
+>   tests: bios-tables-test: Update ACPI table binaries for smbios core
+>     count2 test
+>   tests: bios-tables-test: Prepare the ACPI table change for smbios
+>     type4 thread count test
+>   tests: bios-tables-test: Add test for smbios type4 thread count
+>   tests: bios-tables-test: Add ACPI table binaries for smbios type4
+>     thread count test
+>   tests: bios-tables-test: Prepare the ACPI table change for smbios
+>     type4 thread count2 test
+>   tests: bios-tables-test: Add test for smbios type4 thread count2
+>   tests: bios-tables-test: Add ACPI table binaries for smbios type4
+>     thread count2 test
+> 
+>  tests/data/acpi/q35/APIC.core-count    | Bin 0 -> 544 bytes
+>  tests/data/acpi/q35/APIC.core-count2   | Bin 2478 -> 3238 bytes
+>  tests/data/acpi/q35/APIC.thread-count  | Bin 0 -> 544 bytes
+>  tests/data/acpi/q35/APIC.thread-count2 | Bin 0 -> 7398 bytes
+>  tests/data/acpi/q35/APIC.type4-count   | Bin 0 -> 1072 bytes
+>  tests/data/acpi/q35/DSDT.core-count    | Bin 0 -> 12913 bytes
+>  tests/data/acpi/q35/DSDT.core-count2   | Bin 32495 -> 33770 bytes
+>  tests/data/acpi/q35/DSDT.thread-count  | Bin 0 -> 12913 bytes
+>  tests/data/acpi/q35/DSDT.thread-count2 | Bin 0 -> 63671 bytes
+>  tests/data/acpi/q35/DSDT.type4-count   | Bin 0 -> 18589 bytes
+>  tests/data/acpi/q35/FACP.core-count    | Bin 0 -> 244 bytes
+>  tests/data/acpi/q35/FACP.thread-count  | Bin 0 -> 244 bytes
+>  tests/data/acpi/q35/FACP.thread-count2 | Bin 0 -> 244 bytes
+>  tests/data/acpi/q35/FACP.type4-count   | Bin 0 -> 244 bytes
+>  tests/qtest/bios-tables-test.c         | 116 ++++++++++++++++++++++++-
+>  tests/unit/test-smp-parse.c            |  67 +++++++++++---
+>  16 files changed, 167 insertions(+), 16 deletions(-)
+>  create mode 100644 tests/data/acpi/q35/APIC.core-count
+>  create mode 100644 tests/data/acpi/q35/APIC.thread-count
+>  create mode 100644 tests/data/acpi/q35/APIC.thread-count2
+>  create mode 100644 tests/data/acpi/q35/APIC.type4-count
+>  create mode 100644 tests/data/acpi/q35/DSDT.core-count
+>  create mode 100644 tests/data/acpi/q35/DSDT.thread-count
+>  create mode 100644 tests/data/acpi/q35/DSDT.thread-count2
+>  create mode 100644 tests/data/acpi/q35/DSDT.type4-count
+>  create mode 100644 tests/data/acpi/q35/FACP.core-count
+>  create mode 100644 tests/data/acpi/q35/FACP.thread-count
+>  create mode 100644 tests/data/acpi/q35/FACP.thread-count2
+>  create mode 100644 tests/data/acpi/q35/FACP.type4-count
+> 
+> -- 
+> 2.34.1
 
 
