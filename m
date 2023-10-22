@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E146D7D24AD
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 18:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C12D7D24AB
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 18:55:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qubjD-0001RY-VK; Sun, 22 Oct 2023 12:55:03 -0400
+	id 1qubjF-0001ak-0s; Sun, 22 Oct 2023 12:55:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qubiz-0001JK-73
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 12:54:49 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1qubj6-0001R2-Rt
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 12:54:57 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qubix-00034U-Nt
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 12:54:48 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-27d11401516so1530506a91.2
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 09:54:46 -0700 (PDT)
+ id 1qubj5-00035n-FO
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 12:54:56 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5859d13f73dso1384280a12.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 09:54:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697993685; x=1698598485; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697993694; x=1698598494; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BDw0R8bcPDYhRrIi/2+xqiqr1ikkeKjjUD451Pzb01Y=;
- b=IU36V1O+ISrmxGnY8m09N1e+98ihvfxQAheBb5akHoHavqmNqwUZkcgRzaoEK9VPm1
- dmBC89xPXnkN1tziONzKWpqM3o5BQDbYxHyPuqVWjODvJbEc4RYe42RRCECsvWrgZgnc
- fBBpNiF2mKs/On9TLL92MxUgnzQUaKCiymFMQmrnTR9ZMatxIbkcoky1l4UtaZ2i1Uct
- 1uPCjDvY8j8d0kc3k2ioQ1m2Ypf9GcTeDf7NwYYnMzu9wt4UtglyWYR93Cso7sJVhg6E
- nSpNeM8oANyKAXzvzmRsMMSqwOSvJHstuTnR+F5P8TKigqOd9NtzULiVGzYcSTQu1m4F
- Zw4w==
+ bh=AaVA7FlHxMw4bqhGIA3t8y5F0TB2H9BOmAqHzpClhtk=;
+ b=HJgOpMW4weiAbiiGuOYXIumTf9HgoaG3YpL3T9+FD2OXmda+D7G1urL3widh1sH3Aq
+ CAcraW8DWPLdsjxj1mKQ75Mk/qWLf0KCLnaBt1WqiQLX5//brAuZEuheL8xIEKjzfzzA
+ /A8XBCYGe+gzQt8WPX61kG7O5/VIWSX6D+RxYh1K5O4cDAfj/xtrvRr/AnAD4cidOAZp
+ Bd9/5HCM7cW1A9w5ukWtTnOJEIo/0FIF2iWyC1owwvAlriAG260LFzRklz43aTES4j2C
+ IwrwB9NQ67wrDFMi+GjeWaZZ9PoNtjOU5uA5DZeD2BK4uDmr+PGB5ZLOuJh5OLfLkTpQ
+ 8gkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697993685; x=1698598485;
+ d=1e100.net; s=20230601; t=1697993694; x=1698598494;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BDw0R8bcPDYhRrIi/2+xqiqr1ikkeKjjUD451Pzb01Y=;
- b=fezgqZR1X8PClK5hUopV8lGc+B50DGtozSSdmWAYfMeo/8dRkLh7teCxEGZ8yGdYKO
- iiXHFZq9p9LpGFvATHxOhn7hI/3PIcl6PoknIBTCT7Y3w/k8k0btkN6DS6DjFHm02MR7
- iI3RoGGaIvwZPujONl6F0qyq14JkWO5VatSHYC/83OdEoB/lkwKn75FdVs9WuCcKarp/
- TfmyTxmhJ1tyeXDQvHlGHlaf7+BKxQmRGkBHtHj0LYX6w4XlJk8ajHDCW+oG8SO9CCq4
- w3TiqLX5whpgC1bm8OQAlh5ORh+42dj4cm8het0mI7+kdgOzL2mX+12iJvSKz3lOzltg
- qvJQ==
-X-Gm-Message-State: AOJu0YyjLQvR2YhWJ8paTBoC6xuaYwcbvjHbYogHDtpm2Jc7N2BKsKu0
- uAR8+Zb9GH8EcH5dL859p52tpw==
-X-Google-Smtp-Source: AGHT+IHz00TS7Gkce50B1hv/hOgDvBfB18w6UrQ/msny/JljrJGv8hqEr3vNA3ZcziYSTIwe+pFrbg==
-X-Received: by 2002:a17:90a:d450:b0:27d:c36:e12d with SMTP id
- cz16-20020a17090ad45000b0027d0c36e12dmr4810344pjb.6.1697993685430; 
- Sun, 22 Oct 2023 09:54:45 -0700 (PDT)
+ bh=AaVA7FlHxMw4bqhGIA3t8y5F0TB2H9BOmAqHzpClhtk=;
+ b=lMJ02RPB19nxXQWzS72d5nBe1yyaWxzN5TzAxBbq9eLHcMKlzte/yvQEsaVWHy9cHS
+ GZ1mhAMWLYX2W2PT4Bi5iAKxTDy3EDtCGTGxzLOiAtSBjTUsntNGKH04S7SAcDGzP9/f
+ sz6auk8LBGbOV+TgoNhbGOQfZB9/II4XnAo9LmIWzprKzhBKCm3OPP2jTNYLNVcGZWno
+ r7ktT81fvnWcVgNfPI1ct2c7x7Q1S+INRrMtYNIRc+S8KfI/eff64MaWpTtfh0M11LtW
+ lALKtDQdLzUKzQQSYl8JiORGCz8ATE7cAlfZqQ4YUGNpEr7kWcewNR44cLcem/h3cZYD
+ yVNA==
+X-Gm-Message-State: AOJu0YzVbdoz8jhW6Ok7bMwSk/ieyRIB8nyoJMPSiYl3EdzxrSZ1J2KQ
+ JXEKa9g5/SWIeJTgyAD+VgtDfw==
+X-Google-Smtp-Source: AGHT+IFiVKFtkf5wRrafC8DNuMTU9tb6guhPAAZ5nf5L1QaTX2mzbCBUq3+nBQ9OwKswVIhB9oMGRA==
+X-Received: by 2002:a17:90a:b903:b0:27d:5504:4cc8 with SMTP id
+ p3-20020a17090ab90300b0027d55044cc8mr5255340pjr.9.1697993694211; 
+ Sun, 22 Oct 2023 09:54:54 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- d10-20020a17090a2a4a00b002790ded9c6dsm4934130pjg.31.2023.10.22.09.54.44
+ d10-20020a17090a2a4a00b002790ded9c6dsm4934130pjg.31.2023.10.22.09.54.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Oct 2023 09:54:45 -0700 (PDT)
-Message-ID: <5de741a7-aca6-40e5-916c-25153cbb4fb0@linaro.org>
-Date: Sun, 22 Oct 2023 09:54:43 -0700
+ Sun, 22 Oct 2023 09:54:53 -0700 (PDT)
+Message-ID: <225e4c3c-2d44-4f2a-b398-60e57a002434@linaro.org>
+Date: Sun, 22 Oct 2023 09:54:52 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] hw/char/stm32f2xx_usart: Update IRQ when DR is
- written
+Subject: Re: [PATCH v2 4/4] hw/char/stm32f2xx_usart: Add more definitions for
+ CR1 register
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>, qemu-devel@nongnu.org
@@ -70,13 +70,13 @@ Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Alistair Francis <alistair@alistair23.me>
 References: <20231020170009.86870-1-philmd@linaro.org>
- <20231020170009.86870-4-philmd@linaro.org>
+ <20231020170009.86870-5-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231020170009.86870-4-philmd@linaro.org>
+In-Reply-To: <20231020170009.86870-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,21 +106,32 @@ On 10/20/23 10:00, Philippe Mathieu-Daudé wrote:
 > [PMD: Split from bigger patch]
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/char/stm32f2xx_usart.c | 1 +
->   1 file changed, 1 insertion(+)
+> Useful if unused?
+> ---
+>   include/hw/char/stm32f2xx_usart.h | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
 > 
-> diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
-> index 46e29089bc..74f007591a 100644
-> --- a/hw/char/stm32f2xx_usart.c
-> +++ b/hw/char/stm32f2xx_usart.c
-> @@ -169,6 +169,7 @@ static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
->                  clear TC by writing 0 to the SR register, so set it again
->                  on each write. */
->               s->usart_sr |= USART_SR_TC;
-> +            stm32f2xx_update_irq(s);
->           }
->           return;
->       case USART_BRR:
+> diff --git a/include/hw/char/stm32f2xx_usart.h b/include/hw/char/stm32f2xx_usart.h
+> index 65bcc85470..fdfa7424a7 100644
+> --- a/include/hw/char/stm32f2xx_usart.h
+> +++ b/include/hw/char/stm32f2xx_usart.h
+> @@ -48,10 +48,12 @@
+>   #define USART_SR_TC   (1 << 6)
+>   #define USART_SR_RXNE (1 << 5)
+>   
+> -#define USART_CR1_UE  (1 << 13)
+> -#define USART_CR1_RXNEIE  (1 << 5)
+> -#define USART_CR1_TE  (1 << 3)
+> -#define USART_CR1_RE  (1 << 2)
+> +#define USART_CR1_UE     (1 << 13)
+> +#define USART_CR1_TXEIE  (1 << 7)
+> +#define USART_CR1_TCEIE  (1 << 6)
+> +#define USART_CR1_RXNEIE (1 << 5)
+> +#define USART_CR1_TE     (1 << 3)
+> +#define USART_CR1_RE     (1 << 2)
+>   
+>   #define TYPE_STM32F2XX_USART "stm32f2xx-usart"
+>   OBJECT_DECLARE_SIMPLE_TYPE(STM32F2XXUsartState, STM32F2XX_USART)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
