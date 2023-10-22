@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5B67D2705
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 01:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95D47D2713
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 01:34:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quhtf-0007Jt-1A; Sun, 22 Oct 2023 19:30:15 -0400
+	id 1quhtm-0007KH-4e; Sun, 22 Oct 2023 19:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quhtP-00079i-3z
+ id 1quhtP-0007A7-Iy
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:29:59 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quhtM-0006mv-Og
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:29:58 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6ba54c3ed97so2636660b3a.2
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 16:29:55 -0700 (PDT)
+ id 1quhtM-0006n6-Ok
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:29:59 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-1eb6c559ab4so260547fac.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 16:29:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698017394; x=1698622194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698017395; x=1698622195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=y4JjGfXc1ZK0slmW0Mduo2FRxtvtvRQNj+3A0+w7cQs=;
- b=gYDCJGKyMIMVrfE17HC9EoxPDEZ5OO96iZs0DmvrAsrQSExNhl61UcvPiPtE12Lv7+
- DiwxvRAQflcO5Q402QaRcUrqEs9AuGINOfIRL7KOh/NLTGGRtgsD1fqpSe1ulOYwT8MB
- p4gOPNqqKYSMdkQfsJ4PeYtfPSnPUeuy9hYwnItdCZGXkyBB72fGdOVRwiHYS29wWSC7
- Ii52aPMaZFYtD+Qy7X/8+woB5wfAjr73J+BpnjiTqL8wPSoJVQ7WNEGy7G2JHN4lSO9X
- ZpRoESs1CcNudl88WSYVnY8+VcpMfH+ZrShK4Alfh4MBja4ypOE4J8lVDotsynEqUTcK
- h3Dg==
+ bh=zEBBC87M+M74G9VePVYzj1ubW0xjjFngqxM/dIsRAKg=;
+ b=L6hcCjMPYzPivU6Fx2AE/lfyO/rYoIa9xFdliaNYX2X/LtICIpwKVSnSV6zAbWvKqn
+ rn+qieT8AZfP1A52ZqEn/GxH91cXL+zHJIcm8m4fnoxz0YNjtKZDC0Bv+NtK/A18OfhY
+ +UsRKwoOewph4arNiR4Y+IppRVDHrBf0TOLv0WbT0st7n6RJ049ebi5IEnvsHUp0wPMA
+ FD1Ylf0wdtTRkLWslydpBiPrf4LaUSLJZ/TMW4Az119/YY71RPRKeLqT/Hq9y6Ur988O
+ gBxTyswj9Tig9zkjiEsLr9nsWDcHiyCG4iTdqjlI/cUIHhQtoFKsQoq4/hKWWM8NzV9b
+ CBeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698017394; x=1698622194;
+ d=1e100.net; s=20230601; t=1698017395; x=1698622195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y4JjGfXc1ZK0slmW0Mduo2FRxtvtvRQNj+3A0+w7cQs=;
- b=WR5FbBTwL/QLhlFWwZyMRjEioCY9RDrVxCgW9KL046AZHOIWIrdnWZ/ew1pkP8/3TY
- l9I+ZJ583/g2GMqoXuQrQc2wKVBCOr74/+zERyUbCtjMs9O0CXZurr5NojuWP6wv9V2H
- lNiMlanAOWeZ2UVn3s7EmWh3W9kQluXx/8eXaPmLPMCwYyenQVqVxEaC10fcBkUYkmKO
- rX/GJpZJIjUB/0AZEdCoRDZi1npV2/x/YzC+7k7X1XADZCjkRlri7zgkUcqUDPj0bgaV
- I0F/skGixEdcBz5AR9cJQJFPQuVNXii5C3neOgCIOJZKgSTgzLxhujOdeLPY0hVSI32U
- NT+A==
-X-Gm-Message-State: AOJu0YwPtkauSHDbrx2UJMHhX+ocQlUSAC79ohZC5Y2d1paemQfF/YKG
- x9wSJrUJY8zWqvadmM1oRvP0Vgdnm6+4O/w66qc=
-X-Google-Smtp-Source: AGHT+IEbZqoaLBblw5bXTKixOnXZ8Vx/YB35ktSJ14QesO9/rNkLMSTTwN4FbvAh/3byQAZ3Z9nC8A==
-X-Received: by 2002:a05:6a00:13a6:b0:68a:5395:7aa5 with SMTP id
- t38-20020a056a0013a600b0068a53957aa5mr9839014pfg.17.1698017394413; 
- Sun, 22 Oct 2023 16:29:54 -0700 (PDT)
+ bh=zEBBC87M+M74G9VePVYzj1ubW0xjjFngqxM/dIsRAKg=;
+ b=d6D/tAESN9dVxih+iF7pjpl5TSSHOEExvx0AZmoG4TPbtojDf5GYTP/UYGHGc9AmFv
+ JyjzZx27Us3svt292eg4sinZzDE4L+1sqsAFPXviexMezQLDj2EplF1oihmIbWcXqe6X
+ tWB+DvBSm40LSuo4gIWh/QxgCuoP+fVtURNXRcfHsaPcgA2GuKtMfFoamtbDxA3GNhzd
+ loo1ZPTcrZyu5izZf7NAgAaeSDbfZE5U8Z0c6el0ru0AKa/1t1Qeepfu9Kyerjsb6XdW
+ OB7R1I+H7MBBXdHh71zBLDkws33nMsivlJhq1ldHySh1EVbCkIJ0PuCNlI8StRFgiSYP
+ AfeA==
+X-Gm-Message-State: AOJu0YyfK0ZncreITaaXDk4L3oSg/ip/kWm3ic42Hs5ohsmfOalblKff
+ FbLAqP3fTq3NEDSEy9Q1yjhbUQ+tvyO4ldH32UI=
+X-Google-Smtp-Source: AGHT+IHPMg4jY3bghHCQ6AHaA2YJTzqGesQo7YCPfVUuMT4ZPelXlvmNBBjgTxJH3NW57Wjt4wprBg==
+X-Received: by 2002:a05:6870:818f:b0:1e9:b0be:d004 with SMTP id
+ k15-20020a056870818f00b001e9b0bed004mr10853287oae.47.1698017395253; 
+ Sun, 22 Oct 2023 16:29:55 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k26-20020a63ba1a000000b005b25a04cf8bsm4023772pgf.12.2023.10.22.16.29.53
+ k26-20020a63ba1a000000b005b25a04cf8bsm4023772pgf.12.2023.10.22.16.29.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 16:29:53 -0700 (PDT)
+ Sun, 22 Oct 2023 16:29:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v5 23/94] target/sparc: Move RDPSR, RDHPR to decodetree
-Date: Sun, 22 Oct 2023 16:28:21 -0700
-Message-Id: <20231022232932.80507-24-richard.henderson@linaro.org>
+Subject: [PATCH v5 24/94] target/sparc: Move RDWIM, RDPR to decodetree
+Date: Sun, 22 Oct 2023 16:28:22 -0700
+Message-Id: <20231022232932.80507-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022232932.80507-1-richard.henderson@linaro.org>
 References: <20231022232932.80507-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,203 +90,477 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement htstate in the obvious way.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/847
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  10 ++++
- target/sparc/translate.c  | 116 ++++++++++++++++++++++++--------------
- 2 files changed, 83 insertions(+), 43 deletions(-)
+ target/sparc/insns.decode |  22 +++
+ target/sparc/translate.c  | 320 ++++++++++++++++++++++----------------
+ 2 files changed, 204 insertions(+), 138 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 1b084c5b97..a7d78eb6c6 100644
+index a7d78eb6c6..7d91a7bc83 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -44,6 +44,16 @@ CALL    01 i:s30
-   RDY               10 rd:5  101000 rs1:5 0 0000000000000
- }
+@@ -54,6 +54,28 @@ RDHPR_htba          10 rd:5  101001 00101 0 0000000000000
+ RDHPR_hver          10 rd:5  101001 00110 0 0000000000000
+ RDHPR_hstick_cmpr   10 rd:5  101001 11111 0 0000000000000
  
 +{
-+  RDPSR             10 rd:5  101001 00000 0 0000000000000
-+  RDHPR_hpstate     10 rd:5  101001 00000 0 0000000000000
++  RDWIM             10 rd:5  101010 00000 0 0000000000000
++  RDPR_tpc          10 rd:5  101010 00000 0 0000000000000
 +}
-+RDHPR_htstate       10 rd:5  101001 00001 0 0000000000000
-+RDHPR_hintp         10 rd:5  101001 00011 0 0000000000000
-+RDHPR_htba          10 rd:5  101001 00101 0 0000000000000
-+RDHPR_hver          10 rd:5  101001 00110 0 0000000000000
-+RDHPR_hstick_cmpr   10 rd:5  101001 11111 0 0000000000000
++RDPR_tnpc           10 rd:5  101010 00001 0 0000000000000
++RDPR_tstate         10 rd:5  101010 00010 0 0000000000000
++RDPR_tt             10 rd:5  101010 00011 0 0000000000000
++RDPR_tick           10 rd:5  101010 00100 0 0000000000000
++RDPR_tba            10 rd:5  101010 00101 0 0000000000000
++RDPR_pstate         10 rd:5  101010 00110 0 0000000000000
++RDPR_tl             10 rd:5  101010 00111 0 0000000000000
++RDPR_pil            10 rd:5  101010 01000 0 0000000000000
++RDPR_cwp            10 rd:5  101010 01001 0 0000000000000
++RDPR_cansave        10 rd:5  101010 01010 0 0000000000000
++RDPR_canrestore     10 rd:5  101010 01011 0 0000000000000
++RDPR_cleanwin       10 rd:5  101010 01100 0 0000000000000
++RDPR_otherwin       10 rd:5  101010 01101 0 0000000000000
++RDPR_wstate         10 rd:5  101010 01110 0 0000000000000
++RDPR_gl             10 rd:5  101010 10000 0 0000000000000
++RDPR_strand_status  10 rd:5  101010 11010 0 0000000000000
++RDPR_ver            10 rd:5  101010 11111 0 0000000000000
 +
  Tcc_r       10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
  {
    # For v7, the entire simm13 field is present, but masked to 7 bits.
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 9af4578525..b58c2594ca 100644
+index b58c2594ca..6e415d7070 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -36,9 +36,12 @@
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
--#ifndef TARGET_SPARC64
-+#ifdef TARGET_SPARC64
-+# define gen_helper_rdpsr(D, E)                 qemu_build_not_reached()
-+#else
+@@ -40,6 +40,7 @@
+ # define gen_helper_rdpsr(D, E)                 qemu_build_not_reached()
+ #else
  # define gen_helper_rdccr(D, E)                 qemu_build_not_reached()
++# define gen_helper_rdcwp(D, E)                 qemu_build_not_reached()
  # define gen_helper_tick_get_count(D, E, T, C)  qemu_build_not_reached()
-+# define MAXTL_MASK                             0
+ # define MAXTL_MASK                             0
  #endif
- 
- /* Dynamic PC, must exit to main loop. */
-@@ -71,8 +74,12 @@ static TCGv cpu_hintp, cpu_htba, cpu_hver, cpu_ssr, cpu_ver;
+@@ -61,15 +62,14 @@ static TCGv_i32 cpu_psr;
+ static TCGv cpu_fsr, cpu_pc, cpu_npc;
+ static TCGv cpu_regs[32];
+ static TCGv cpu_y;
+-#ifndef CONFIG_USER_ONLY
+ static TCGv cpu_tbr;
+-#endif
+ static TCGv cpu_cond;
+ #ifdef TARGET_SPARC64
+ static TCGv_i32 cpu_xcc, cpu_fprs;
+ static TCGv cpu_gsr;
+ static TCGv cpu_tick_cmpr, cpu_stick_cmpr, cpu_hstick_cmpr;
+ static TCGv cpu_hintp, cpu_htba, cpu_hver, cpu_ssr, cpu_ver;
++# define cpu_wim                ({ qemu_build_not_reached(); (TCGv)NULL; })
+ #else
  static TCGv cpu_wim;
  # define cpu_fprs               ({ qemu_build_not_reached(); (TCGv)NULL; })
- # define cpu_gsr                ({ qemu_build_not_reached(); (TCGv)NULL; })
--# define cpu_tick_cmpr          ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_hintp              ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_hstick_cmpr        ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_htba               ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_hver               ({ qemu_build_not_reached(); (TCGv)NULL; })
+@@ -78,8 +78,10 @@ static TCGv cpu_wim;
+ # define cpu_hstick_cmpr        ({ qemu_build_not_reached(); (TCGv)NULL; })
+ # define cpu_htba               ({ qemu_build_not_reached(); (TCGv)NULL; })
+ # define cpu_hver               ({ qemu_build_not_reached(); (TCGv)NULL; })
++# define cpu_ssr                ({ qemu_build_not_reached(); (TCGv)NULL; })
  # define cpu_stick_cmpr         ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_tick_cmpr          ({ qemu_build_not_reached(); (TCGv)NULL; })
+ # define cpu_tick_cmpr          ({ qemu_build_not_reached(); (TCGv)NULL; })
++# define cpu_ver                ({ qemu_build_not_reached(); (TCGv)NULL; })
  #endif
  /* Floating point registers */
  static TCGv_i64 cpu_fpr[TARGET_DPREGS];
-@@ -272,15 +279,14 @@ static void gen_move_Q(DisasContext *dc, unsigned int rd, unsigned int rs)
- /* moves */
- #ifdef CONFIG_USER_ONLY
- #define supervisor(dc) 0
--#ifdef TARGET_SPARC64
- #define hypervisor(dc) 0
+@@ -2709,8 +2711,7 @@ static void gen_fmovq(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
+     gen_update_fprs_dirty(dc, qd);
+ }
+ 
+-#ifndef CONFIG_USER_ONLY
+-static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
++static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr)
+ {
+     TCGv_i32 r_tl = tcg_temp_new_i32();
+ 
+@@ -2731,7 +2732,6 @@ static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
+         tcg_gen_add_ptr(r_tsptr, r_tsptr, r_tl_tmp);
+     }
+ }
 -#endif
+ 
+ static void gen_edge(DisasContext *dc, TCGv dst, TCGv s1, TCGv s2,
+                      int width, bool cc, bool left)
+@@ -2866,11 +2866,13 @@ static void gen_faligndata(TCGv dst, TCGv gsr, TCGv s1, TCGv s2)
+ # define avail_32(C)      false
+ # define avail_ASR17(C)   false
+ # define avail_64(C)      true
++# define avail_GL(C)      ((C)->def->features & CPU_FEATURE_GL)
+ # define avail_HYPV(C)    ((C)->def->features & CPU_FEATURE_HYPV)
  #else
- #ifdef TARGET_SPARC64
- #define hypervisor(dc) (dc->hypervisor)
- #define supervisor(dc) (dc->supervisor | dc->hypervisor)
- #else
- #define supervisor(dc) (dc->supervisor)
-+#define hypervisor(dc) 0
- #endif
+ # define avail_32(C)      true
+ # define avail_ASR17(C)   ((C)->def->features & CPU_FEATURE_ASR17)
+ # define avail_64(C)      false
++# define avail_GL(C)      false
+ # define avail_HYPV(C)    false
  #endif
  
-@@ -3320,6 +3326,69 @@ static TCGv do_rdstrand_status(DisasContext *dc, TCGv dst)
+@@ -3389,6 +3391,177 @@ static TCGv do_rdhstick_cmpr(DisasContext *dc, TCGv dst)
+ TRANS(RDHPR_hstick_cmpr, HYPV, do_rd_special, hypervisor(dc), a->rd,
+       do_rdhstick_cmpr)
  
- TRANS(RDSTRAND_STATUS, HYPV, do_rd_special, true, a->rd, do_rdstrand_status)
- 
-+static TCGv do_rdpsr(DisasContext *dc, TCGv dst)
++static TCGv do_rdwim(DisasContext *dc, TCGv dst)
 +{
-+    update_psr(dc);
-+    gen_helper_rdpsr(dst, tcg_env);
++    return cpu_wim;
++}
++
++TRANS(RDWIM, 32, do_rd_special, supervisor(dc), a->rd, do_rdwim)
++
++static TCGv do_rdtpc(DisasContext *dc, TCGv dst)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
++
++    gen_load_trap_state_at_tl(r_tsptr);
++    tcg_gen_ld_tl(dst, r_tsptr, offsetof(trap_state, tpc));
++    return dst;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(RDPR_tpc, 64, do_rd_special, supervisor(dc), a->rd, do_rdtpc)
++
++static TCGv do_rdtnpc(DisasContext *dc, TCGv dst)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
++
++    gen_load_trap_state_at_tl(r_tsptr);
++    tcg_gen_ld_tl(dst, r_tsptr, offsetof(trap_state, tnpc));
++    return dst;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(RDPR_tnpc, 64, do_rd_special, supervisor(dc), a->rd, do_rdtnpc)
++
++static TCGv do_rdtstate(DisasContext *dc, TCGv dst)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
++
++    gen_load_trap_state_at_tl(r_tsptr);
++    tcg_gen_ld_tl(dst, r_tsptr, offsetof(trap_state, tstate));
++    return dst;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(RDPR_tstate, 64, do_rd_special, supervisor(dc), a->rd, do_rdtstate)
++
++static TCGv do_rdtt(DisasContext *dc, TCGv dst)
++{
++#ifdef TARGET_SPARC64
++    TCGv_ptr r_tsptr = tcg_temp_new_ptr();
++
++    gen_load_trap_state_at_tl(r_tsptr);
++    tcg_gen_ld32s_tl(dst, r_tsptr, offsetof(trap_state, tt));
++    return dst;
++#else
++    qemu_build_not_reached();
++#endif
++}
++
++TRANS(RDPR_tt, 64, do_rd_special, supervisor(dc), a->rd, do_rdtt)
++TRANS(RDPR_tick, 64, do_rd_special, supervisor(dc), a->rd, do_rdtick)
++
++static TCGv do_rdtba(DisasContext *dc, TCGv dst)
++{
++    return cpu_tbr;
++}
++
++TRANS(RDPR_tba, 64, do_rd_special, supervisor(dc), a->rd, do_rdtba)
++
++static TCGv do_rdpstate(DisasContext *dc, TCGv dst)
++{
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(pstate));
 +    return dst;
 +}
 +
-+TRANS(RDPSR, 32, do_rd_special, supervisor(dc), a->rd, do_rdpsr)
++TRANS(RDPR_pstate, 64, do_rd_special, supervisor(dc), a->rd, do_rdpstate)
 +
-+static TCGv do_rdhpstate(DisasContext *dc, TCGv dst)
++static TCGv do_rdtl(DisasContext *dc, TCGv dst)
 +{
-+    tcg_gen_ld_tl(dst, tcg_env, env64_field_offsetof(hpstate));
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(tl));
 +    return dst;
 +}
 +
-+TRANS(RDHPR_hpstate, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhpstate)
++TRANS(RDPR_tl, 64, do_rd_special, supervisor(dc), a->rd, do_rdtl)
 +
-+static TCGv do_rdhtstate(DisasContext *dc, TCGv dst)
++static TCGv do_rdpil(DisasContext *dc, TCGv dst)
 +{
-+    TCGv_i32 tl = tcg_temp_new_i32();
-+    TCGv_ptr tp = tcg_temp_new_ptr();
-+
-+    tcg_gen_ld_i32(tl, tcg_env, env64_field_offsetof(tl));
-+    tcg_gen_andi_i32(tl, tl, MAXTL_MASK);
-+    tcg_gen_shli_i32(tl, tl, 3);
-+    tcg_gen_ext_i32_ptr(tp, tl);
-+    tcg_gen_add_ptr(tp, tp, tcg_env);
-+
-+    tcg_gen_ld_tl(dst, tp, env64_field_offsetof(htstate));
++    tcg_gen_ld32s_tl(dst, tcg_env, env_field_offsetof(psrpil));
 +    return dst;
 +}
 +
-+TRANS(RDHPR_htstate, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhtstate)
++TRANS(RDPR_pil, 64, do_rd_special, supervisor(dc), a->rd, do_rdpil)
 +
-+static TCGv do_rdhintp(DisasContext *dc, TCGv dst)
++static TCGv do_rdcwp(DisasContext *dc, TCGv dst)
 +{
-+    return cpu_hintp;
++    gen_helper_rdcwp(dst, tcg_env);
++    return dst;
 +}
 +
-+TRANS(RDHPR_hintp, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhintp)
++TRANS(RDPR_cwp, 64, do_rd_special, supervisor(dc), a->rd, do_rdcwp)
 +
-+static TCGv do_rdhtba(DisasContext *dc, TCGv dst)
++static TCGv do_rdcansave(DisasContext *dc, TCGv dst)
 +{
-+    return cpu_htba;
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(cansave));
++    return dst;
 +}
 +
-+TRANS(RDHPR_htba, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhtba)
++TRANS(RDPR_cansave, 64, do_rd_special, supervisor(dc), a->rd, do_rdcansave)
 +
-+static TCGv do_rdhver(DisasContext *dc, TCGv dst)
++static TCGv do_rdcanrestore(DisasContext *dc, TCGv dst)
 +{
-+    return cpu_hver;
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(canrestore));
++    return dst;
 +}
 +
-+TRANS(RDHPR_hver, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhver)
++TRANS(RDPR_canrestore, 64, do_rd_special, supervisor(dc), a->rd,
++      do_rdcanrestore)
 +
-+static TCGv do_rdhstick_cmpr(DisasContext *dc, TCGv dst)
++static TCGv do_rdcleanwin(DisasContext *dc, TCGv dst)
 +{
-+    return cpu_hstick_cmpr;
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(cleanwin));
++    return dst;
 +}
 +
-+TRANS(RDHPR_hstick_cmpr, HYPV, do_rd_special, hypervisor(dc), a->rd,
-+      do_rdhstick_cmpr)
++TRANS(RDPR_cleanwin, 64, do_rd_special, supervisor(dc), a->rd, do_rdcleanwin)
++
++static TCGv do_rdotherwin(DisasContext *dc, TCGv dst)
++{
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(otherwin));
++    return dst;
++}
++
++TRANS(RDPR_otherwin, 64, do_rd_special, supervisor(dc), a->rd, do_rdotherwin)
++
++static TCGv do_rdwstate(DisasContext *dc, TCGv dst)
++{
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(wstate));
++    return dst;
++}
++
++TRANS(RDPR_wstate, 64, do_rd_special, supervisor(dc), a->rd, do_rdwstate)
++
++static TCGv do_rdgl(DisasContext *dc, TCGv dst)
++{
++    tcg_gen_ld32s_tl(dst, tcg_env, env64_field_offsetof(gl));
++    return dst;
++}
++
++TRANS(RDPR_gl, GL, do_rd_special, supervisor(dc), a->rd, do_rdgl)
++
++/* UA2005 strand status */
++static TCGv do_rdssr(DisasContext *dc, TCGv dst)
++{
++    return cpu_ssr;
++}
++
++TRANS(RDPR_strand_status, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdssr)
++
++static TCGv do_rdver(DisasContext *dc, TCGv dst)
++{
++    return cpu_ver;
++}
++
++TRANS(RDPR_ver, 64, do_rd_special, supervisor(dc), a->rd, do_rdver)
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -3351,45 +3420,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+@@ -3419,133 +3592,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+             TCGv cpu_dst __attribute__((unused)) = tcg_temp_new();
              TCGv cpu_tmp0 __attribute__((unused));
  
- #if !defined(CONFIG_USER_ONLY)
--            if (xop == 0x29) { /* rdpsr / UA2005 rdhpr */
--#ifndef TARGET_SPARC64
+-#if !defined(CONFIG_USER_ONLY)
+-            if (xop == 0x2a) { /* rdwim / V9 rdpr */
 -                if (!supervisor(dc)) {
 -                    goto priv_insn;
 -                }
--                update_psr(dc);
--                gen_helper_rdpsr(cpu_dst, tcg_env);
--#else
--                CHECK_IU_FEATURE(dc, HYPV);
--                if (!hypervisor(dc))
--                    goto priv_insn;
+-                cpu_tmp0 = tcg_temp_new();
+-#ifdef TARGET_SPARC64
 -                rs1 = GET_FIELD(insn, 13, 17);
 -                switch (rs1) {
--                case 0: // hpstate
--                    tcg_gen_ld_i64(cpu_dst, tcg_env,
--                                   offsetof(CPUSPARCState, hpstate));
+-                case 0: // tpc
+-                    {
+-                        TCGv_ptr r_tsptr;
+-
+-                        r_tsptr = tcg_temp_new_ptr();
+-                        gen_load_trap_state_at_tl(r_tsptr, tcg_env);
+-                        tcg_gen_ld_tl(cpu_tmp0, r_tsptr,
+-                                      offsetof(trap_state, tpc));
+-                    }
 -                    break;
--                case 1: // htstate
--                    // gen_op_rdhtstate();
+-                case 1: // tnpc
+-                    {
+-                        TCGv_ptr r_tsptr;
+-
+-                        r_tsptr = tcg_temp_new_ptr();
+-                        gen_load_trap_state_at_tl(r_tsptr, tcg_env);
+-                        tcg_gen_ld_tl(cpu_tmp0, r_tsptr,
+-                                      offsetof(trap_state, tnpc));
+-                    }
 -                    break;
--                case 3: // hintp
--                    tcg_gen_mov_tl(cpu_dst, cpu_hintp);
+-                case 2: // tstate
+-                    {
+-                        TCGv_ptr r_tsptr;
+-
+-                        r_tsptr = tcg_temp_new_ptr();
+-                        gen_load_trap_state_at_tl(r_tsptr, tcg_env);
+-                        tcg_gen_ld_tl(cpu_tmp0, r_tsptr,
+-                                      offsetof(trap_state, tstate));
+-                    }
 -                    break;
--                case 5: // htba
--                    tcg_gen_mov_tl(cpu_dst, cpu_htba);
+-                case 3: // tt
+-                    {
+-                        TCGv_ptr r_tsptr = tcg_temp_new_ptr();
+-
+-                        gen_load_trap_state_at_tl(r_tsptr, tcg_env);
+-                        tcg_gen_ld32s_tl(cpu_tmp0, r_tsptr,
+-                                         offsetof(trap_state, tt));
+-                    }
 -                    break;
--                case 6: // hver
--                    tcg_gen_mov_tl(cpu_dst, cpu_hver);
+-                case 4: // tick
+-                    {
+-                        TCGv_ptr r_tickptr;
+-                        TCGv_i32 r_const;
+-
+-                        r_tickptr = tcg_temp_new_ptr();
+-                        r_const = tcg_constant_i32(dc->mem_idx);
+-                        tcg_gen_ld_ptr(r_tickptr, tcg_env,
+-                                       offsetof(CPUSPARCState, tick));
+-                        if (translator_io_start(&dc->base)) {
+-                            dc->base.is_jmp = DISAS_EXIT;
+-                        }
+-                        gen_helper_tick_get_count(cpu_tmp0, tcg_env,
+-                                                  r_tickptr, r_const);
+-                    }
 -                    break;
--                case 31: // hstick_cmpr
--                    tcg_gen_mov_tl(cpu_dst, cpu_hstick_cmpr);
+-                case 5: // tba
+-                    tcg_gen_mov_tl(cpu_tmp0, cpu_tbr);
 -                    break;
+-                case 6: // pstate
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, pstate));
+-                    break;
+-                case 7: // tl
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, tl));
+-                    break;
+-                case 8: // pil
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, psrpil));
+-                    break;
+-                case 9: // cwp
+-                    gen_helper_rdcwp(cpu_tmp0, tcg_env);
+-                    break;
+-                case 10: // cansave
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, cansave));
+-                    break;
+-                case 11: // canrestore
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, canrestore));
+-                    break;
+-                case 12: // cleanwin
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, cleanwin));
+-                    break;
+-                case 13: // otherwin
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, otherwin));
+-                    break;
+-                case 14: // wstate
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, wstate));
+-                    break;
+-                case 16: // UA2005 gl
+-                    CHECK_IU_FEATURE(dc, GL);
+-                    tcg_gen_ld32s_tl(cpu_tmp0, tcg_env,
+-                                     offsetof(CPUSPARCState, gl));
+-                    break;
+-                case 26: // UA2005 strand status
+-                    CHECK_IU_FEATURE(dc, HYPV);
+-                    if (!hypervisor(dc))
+-                        goto priv_insn;
+-                    tcg_gen_mov_tl(cpu_tmp0, cpu_ssr);
+-                    break;
+-                case 31: // ver
+-                    tcg_gen_mov_tl(cpu_tmp0, cpu_ver);
+-                    break;
+-                case 15: // fq
 -                default:
 -                    goto illegal_insn;
 -                }
+-#else
+-                tcg_gen_ext_i32_tl(cpu_tmp0, cpu_wim);
 -#endif
--                gen_store_gpr(dc, rd, cpu_dst);
+-                gen_store_gpr(dc, rd, cpu_tmp0);
 -                break;
 -            }
-             if (xop == 0x2a) { /* rdwim / V9 rdpr */
-                 if (!supervisor(dc)) {
-                     goto priv_insn;
+-#endif
+ #if defined(TARGET_SPARC64) || !defined(CONFIG_USER_ONLY)
+             if (xop == 0x2b) { /* rdtbr / V9 flushw */
+ #ifdef TARGET_SPARC64
+@@ -4391,7 +4437,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                                     TCGv_ptr r_tsptr;
+ 
+                                     r_tsptr = tcg_temp_new_ptr();
+-                                    gen_load_trap_state_at_tl(r_tsptr, tcg_env);
++                                    gen_load_trap_state_at_tl(r_tsptr);
+                                     tcg_gen_st_tl(cpu_tmp0, r_tsptr,
+                                                   offsetof(trap_state, tpc));
+                                 }
+@@ -4401,7 +4447,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                                     TCGv_ptr r_tsptr;
+ 
+                                     r_tsptr = tcg_temp_new_ptr();
+-                                    gen_load_trap_state_at_tl(r_tsptr, tcg_env);
++                                    gen_load_trap_state_at_tl(r_tsptr);
+                                     tcg_gen_st_tl(cpu_tmp0, r_tsptr,
+                                                   offsetof(trap_state, tnpc));
+                                 }
+@@ -4411,7 +4457,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                                     TCGv_ptr r_tsptr;
+ 
+                                     r_tsptr = tcg_temp_new_ptr();
+-                                    gen_load_trap_state_at_tl(r_tsptr, tcg_env);
++                                    gen_load_trap_state_at_tl(r_tsptr);
+                                     tcg_gen_st_tl(cpu_tmp0, r_tsptr,
+                                                   offsetof(trap_state,
+                                                            tstate));
+@@ -4422,7 +4468,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                                     TCGv_ptr r_tsptr;
+ 
+                                     r_tsptr = tcg_temp_new_ptr();
+-                                    gen_load_trap_state_at_tl(r_tsptr, tcg_env);
++                                    gen_load_trap_state_at_tl(r_tsptr);
+                                     tcg_gen_st32_tl(cpu_tmp0, r_tsptr,
+                                                     offsetof(trap_state, tt));
+                                 }
+@@ -5851,9 +5897,7 @@ void sparc_tcg_init(void)
+         { &cpu_pc, offsetof(CPUSPARCState, pc), "pc" },
+         { &cpu_npc, offsetof(CPUSPARCState, npc), "npc" },
+         { &cpu_y, offsetof(CPUSPARCState, y), "y" },
+-#ifndef CONFIG_USER_ONLY
+         { &cpu_tbr, offsetof(CPUSPARCState, tbr), "tbr" },
+-#endif
+     };
+ 
+     unsigned int i;
 -- 
 2.34.1
 
