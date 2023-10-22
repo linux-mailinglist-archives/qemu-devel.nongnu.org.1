@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27547D23F5
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 159317D240C
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 18:00:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qual1-0004nt-S6; Sun, 22 Oct 2023 11:52:52 -0400
+	id 1quale-0005XL-2I; Sun, 22 Oct 2023 11:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1quakr-0004lc-HQ; Sun, 22 Oct 2023 11:52:42 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1qual4-0004rZ-UE; Sun, 22 Oct 2023 11:52:55 -0400
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1quako-0008WQ-H5; Sun, 22 Oct 2023 11:52:41 -0400
+ <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1qual0-0000Af-1v; Sun, 22 Oct 2023 11:52:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=jiJokkAd+xFdnQ5u2oAofZ5wGwg1JXjEJQz9TEy2l7Q=; b=fnKS23KVp+Jq2Us1+mVC4C7LWL
- 9TTKXsX/mF6OW9aMxjPdN8+8QgpNwBOYNiYFv7Npnyv9hTrJqnwnWlP56lTrGNkm4PAeXyLg9wc7j
- wjo6qfGtVVFdhLQEMVbUfXTaVlMvXVeIJM9FuPSXahJw2JdhiARnBGsmBtyxaPgiYjNDdSEbmDQA6
- Wi2mTu4FfszMUQDsybU9Iuuzfp23oThWzCRzGBKaMAag0YT3a/oMrz9gbNq0BCkJYP6YqG0wz2ssi
- UWSyOGQK79+yF+C2h03XsEzHER1t/zSjKOPruuHqSAt/JJgrHz+3K9MSDb0KIe0qHFjlp4984OPdN
- LJTUIo1A==;
+ bh=9qWbK+XlQ4g+snp8vZ6Q76nLv7WCuuiJelCPcWERw+E=; b=TH0DfNv+/GkrIUofo1aPAcDDb4
+ PG7p3nn76qfe5trIKXpIKgCOdMA7VCkEXLmPHf6YAhBLZiWfHtUY5SMAmXIeAltfrEMfIpKFBvNh0
+ BqfK3W7wLO8py6AAGGLc7xbtTtbVmZFiiaUPKaqvFT/MVb6qkqawlYDRoO3ivslXPp34+KDjV9dVj
+ V1E7zn3zD3cZZQ4Af7UTo4anky3ZvbSDaeyCXNX/Yvjb2mqXqGofbI/DtnGjKPYVUqliSPUjUxOki
+ AQOrEbXCu2H7uV9fodBW1G6PursGXHXvyzoxZFEOvfq9MqMmuizPfSimjBbTRs28WxLdc+BeHmnyS
+ Co3VHILg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1quakH-008TGE-6H; Sun, 22 Oct 2023 15:52:05 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+ id 1quakI-00DCmi-0T; Sun, 22 Oct 2023 15:52:10 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1quakG-001qYJ-2G; Sun, 22 Oct 2023 16:52:04 +0100
+ Linux)) id 1quakG-001qYR-2u; Sun, 22 Oct 2023 16:52:04 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,20 +83,20 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH 02/45] net: report list of available models according to
- platform
-Date: Sun, 22 Oct 2023 16:51:17 +0100
-Message-Id: <20231022155200.436340-3-dwmw2@infradead.org>
+Subject: [PATCH 04/45] hw/pci: add pci_init_nic_devices(),
+ pci_init_nic_in_slot()
+Date: Sun, 22 Oct 2023 16:51:19 +0100
+Message-Id: <20231022155200.436340-5-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231022155200.436340-1-dwmw2@infradead.org>
 References: <20231022155200.436340-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -121,147 +121,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-By noting the models for which a configuration was requested, we can give
-the user an accurate list of which NIC models were actually available on
-the platform/configuration that was otherwise chosen.
+The loop over nd_table[] to add PCI NICs is repeated in quite a few
+places. Add a helper function to do it.
+
+Some platforms also try to instantiate a specific model in a specific
+slot, to match the real hardware. Add pci_init_nic_in_slot() for that
+purpose.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- net/net.c | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ hw/pci/pci.c         | 45 ++++++++++++++++++++++++++++++++++++++++++++
+ include/hw/pci/pci.h |  4 +++-
+ 2 files changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/net/net.c b/net/net.c
-index 606816a3b3..6e20f9d2e9 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -75,6 +75,8 @@ typedef QSIMPLEQ_HEAD(, NetdevQueueEntry) NetdevQueue;
- 
- static NetdevQueue nd_queue = QSIMPLEQ_HEAD_INITIALIZER(nd_queue);
- 
-+static GHashTable *nic_model_help;
-+
- /***********************************************************/
- /* network device redirectors */
- 
-@@ -1072,12 +1074,94 @@ static int net_init_nic(const Netdev *netdev, const char *name,
-     return idx;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index b0d21bf43a..904f189d30 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1932,6 +1932,51 @@ PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
+     return pci_dev;
  }
  
-+static gboolean add_nic_result(gpointer key, gpointer value, gpointer user_data)
++void pci_init_nic_devices(PCIBus *bus, const char *default_model)
 +{
-+    GPtrArray *results = user_data;
-+    GPtrArray *alias_list = value;
-+    const char *model = key;
-+    char *result;
++    qemu_create_nic_bus_devices(&bus->qbus, TYPE_PCI_DEVICE, default_model,
++                                "virtio", "virtio-net-pci");
++}
 +
-+    if (!alias_list) {
-+        result = g_strdup(model);
-+    } else {
-+        GString *result_str = g_string_new(model);
-+        int i;
++bool pci_init_nic_in_slot(PCIBus *rootbus, const char *model,
++                          const char *alias, const char *devaddr)
++{
++    NICInfo *nd = qemu_find_nic_info(model, true, alias);
++    int dom, busnr, devfn;
++    PCIDevice *pci_dev;
++    unsigned slot;
++    PCIBus *bus;
 +
-+        g_string_append(result_str, " (aka ");
-+        for (i = 0; i < alias_list->len; i++) {
-+            if (i) {
-+                g_string_append(result_str, ", ");
-+            }
-+            g_string_append(result_str, alias_list->pdata[i]);
-+        }
-+        g_string_append(result_str, ")");
-+        result = result_str->str;
-+        g_string_free(result_str, false);
-+        g_ptr_array_unref(alias_list);
++    if (!nd) {
++        return false;
 +    }
-+    g_ptr_array_add(results, result);
++
++    if (!devaddr || pci_parse_devaddr(devaddr, &dom, &busnr, &slot, NULL) < 0) {
++        error_report("Invalid PCI device address %s for device %s",
++                     devaddr, model);
++        exit(1);
++    }
++
++    if (dom != 0) {
++        error_report("No support for non-zero PCI domains");
++        exit(1);
++    }
++
++    devfn = PCI_DEVFN(slot, 0);
++
++    bus = pci_find_bus_nr(rootbus, busnr);
++    if (!bus) {
++        error_report("Invalid PCI device address %s for device %s",
++                     devaddr, model);
++        exit(1);
++    }
++
++    pci_dev = pci_new(devfn, model);
++    qdev_set_nic_properties(&pci_dev->qdev, nd);
++    pci_realize_and_unref(pci_dev, bus, &error_fatal);
 +    return true;
 +}
 +
-+static int model_cmp(char **a, char **b)
-+{
-+    return strcmp(*a, *b);
-+}
-+
-+static void show_nic_models(void)
-+{
-+    GPtrArray *results = g_ptr_array_new();
-+    int i;
-+
-+    g_hash_table_foreach_remove(nic_model_help, add_nic_result, results);
-+    g_ptr_array_sort(results, (GCompareFunc)model_cmp);
-+
-+    printf("Available NIC models for this configuration:\n");
-+    for (i = 0 ; i < results->len; i++) {
-+        printf("%s\n", (char *)results->pdata[i]);
-+    }
-+    g_hash_table_unref(nic_model_help);
-+    nic_model_help = NULL;
-+}
-+
-+static void add_nic_model_help(const char *model, const char *alias)
-+{
-+    GPtrArray *alias_list = NULL;
-+
-+    if (g_hash_table_lookup_extended(nic_model_help, model, NULL,
-+                                     (gpointer *)&alias_list)) {
-+        /* Already exists, no alias to add: return */
-+        if (!alias) {
-+            return;
-+        }
-+        if (alias_list) {
-+            /* Check if this alias is already in the list. Add if not. */
-+            if (!g_ptr_array_find_with_equal_func(alias_list, alias,
-+                                                  g_str_equal, NULL)) {
-+                g_ptr_array_add(alias_list, g_strdup(alias));
-+            }
-+            return;
-+        }
-+    }
-+    /* Either this model wasn't in the list already, or a first alias added */
-+    if (alias) {
-+        alias_list = g_ptr_array_new();
-+        g_ptr_array_set_free_func(alias_list, g_free);
-+        g_ptr_array_add(alias_list, g_strdup(alias));
-+    }
-+    g_hash_table_replace(nic_model_help, g_strdup(model), alias_list);
-+}
-+
- NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
-                             const char *alias)
+ PCIDevice *pci_vga_init(PCIBus *bus)
  {
-     NICInfo *nd;
-     int i;
+     vga_interface_created = true;
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index b70a0b95ff..76d3ddab25 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -320,7 +320,9 @@ void pci_device_reset(PCIDevice *dev);
+ PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
+                                const char *default_model,
+                                const char *default_devaddr);
+-
++void pci_init_nic_devices(PCIBus *bus, const char *default_model);
++bool pci_init_nic_in_slot(PCIBus *rootbus, const char *default_model,
++                          const char *alias, const char *devaddr);
+ PCIDevice *pci_vga_init(PCIBus *bus);
  
-+    if (nic_model_help) {
-+        add_nic_model_help(typename, alias);
-+    }
-+
-     for (i = 0; i < nb_nics; i++) {
-         nd = &nd_table[i];
- 
-@@ -1590,6 +1674,10 @@ void net_check_clients(void)
-     NetClientState *nc;
-     int i;
- 
-+    if (nic_model_help) {
-+        show_nic_models();
-+        exit(0);
-+    }
-     net_hub_check_clients();
- 
-     QTAILQ_FOREACH(nc, &net_clients, next) {
-@@ -1669,6 +1757,12 @@ static int net_param_nic(void *dummy, QemuOpts *opts, Error **errp)
-     memset(ni, 0, sizeof(*ni));
-     ni->model = qemu_opt_get_del(opts, "model");
- 
-+    if (!nic_model_help && !g_strcmp0(ni->model, "help")) {
-+        nic_model_help = g_hash_table_new_full(g_str_hash, g_str_equal,
-+                                               g_free, NULL);
-+        return 0;
-+    }
-+
-     /* Create an ID if the user did not specify one */
-     nd_id = g_strdup(qemu_opts_id(opts));
-     if (!nd_id) {
+ static inline PCIBus *pci_get_bus(const PCIDevice *dev)
 -- 
 2.40.1
 
