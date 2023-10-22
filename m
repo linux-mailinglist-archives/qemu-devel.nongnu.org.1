@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159317D240C
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 18:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 483C17D23FA
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:57:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quale-0005XL-2I; Sun, 22 Oct 2023 11:53:30 -0400
+	id 1qualm-0005vT-H5; Sun, 22 Oct 2023 11:53:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qual4-0004rZ-UE; Sun, 22 Oct 2023 11:52:55 -0400
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qualZ-0005Hl-1I; Sun, 22 Oct 2023 11:53:25 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qual0-0000Af-1v; Sun, 22 Oct 2023 11:52:54 -0400
+ <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qualT-0008WJ-EN; Sun, 22 Oct 2023 11:53:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=9qWbK+XlQ4g+snp8vZ6Q76nLv7WCuuiJelCPcWERw+E=; b=TH0DfNv+/GkrIUofo1aPAcDDb4
- PG7p3nn76qfe5trIKXpIKgCOdMA7VCkEXLmPHf6YAhBLZiWfHtUY5SMAmXIeAltfrEMfIpKFBvNh0
- BqfK3W7wLO8py6AAGGLc7xbtTtbVmZFiiaUPKaqvFT/MVb6qkqawlYDRoO3ivslXPp34+KDjV9dVj
- V1E7zn3zD3cZZQ4Af7UTo4anky3ZvbSDaeyCXNX/Yvjb2mqXqGofbI/DtnGjKPYVUqliSPUjUxOki
- AQOrEbXCu2H7uV9fodBW1G6PursGXHXvyzoxZFEOvfq9MqMmuizPfSimjBbTRs28WxLdc+BeHmnyS
- Co3VHILg==;
+ bh=FMouo7QQ2KXBuiMSmFA+4AfL0Ua1HAyBapVBTrY+ccg=; b=E0MEqNTVEqlo96r8WBTGAVzqqM
+ WOKcOlQeHsyeBbKjvLocphxD2lv+IUnbo81qo4Gi8Ktprvj7QIsyonsqWnzpb6OOPkO6/ISjmBAUT
+ 3cOR4aeWvSKwvGx1bye1Sj1ciosiHzjrp3Uw4rmtGQzaE3FyA3smV1/12tjUNgzq7XqBPVZWalOVt
+ zBBQ1o1LCIK5OLWeBP+Gg+KhKs+xHPxXY5rvoK8+6ZPH+Fgf0LmxVxU5NvjwvXiYbRqF/dSoVrff7
+ J74lSXT7XFrvvrI1CNgBtAVzSR4Re5OKPzgXMgsJdWI1d9DTkWHZUlToq6Yq1BeKTuuVpT9FIp0qK
+ 5C/gpQSg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1quakI-00DCmi-0T; Sun, 22 Oct 2023 15:52:10 +0000
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1quakH-008TGH-DY; Sun, 22 Oct 2023 15:52:05 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1quakG-001qYR-2u; Sun, 22 Oct 2023 16:52:04 +0100
+ Linux)) id 1quakH-001qYV-01; Sun, 22 Oct 2023 16:52:05 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,20 +83,20 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH 04/45] hw/pci: add pci_init_nic_devices(),
- pci_init_nic_in_slot()
-Date: Sun, 22 Oct 2023 16:51:19 +0100
-Message-Id: <20231022155200.436340-5-dwmw2@infradead.org>
+Subject: [PATCH 05/45] hw/i386/pc: use qemu_get_nic_info() and
+ pci_init_nic_devices()
+Date: Sun, 22 Oct 2023 16:51:20 +0100
+Message-Id: <20231022155200.436340-6-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231022155200.436340-1-dwmw2@infradead.org>
 References: <20231022155200.436340-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -121,90 +121,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The loop over nd_table[] to add PCI NICs is repeated in quite a few
-places. Add a helper function to do it.
+Eliminate direct access to nd_table[] and nb_nics by processing the the
+ISA NICs first and then calling pci_init_nic_devices() for the test.
 
-Some platforms also try to instantiate a specific model in a specific
-slot, to match the real hardware. Add pci_init_nic_in_slot() for that
-purpose.
+It's important to do this *before* the subsequent patch which registers
+the Xen PV network devices, because the code being remove here didn't
+check whether nd->instantiated was already set before using each entry.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/pci/pci.c         | 45 ++++++++++++++++++++++++++++++++++++++++++++
- include/hw/pci/pci.h |  4 +++-
- 2 files changed, 48 insertions(+), 1 deletion(-)
+ hw/i386/pc.c                | 20 ++++++++++----------
+ include/hw/net/ne2000-isa.h |  2 --
+ 2 files changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index b0d21bf43a..904f189d30 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1932,6 +1932,51 @@ PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
-     return pci_dev;
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index bb3854d1d0..e08600cbb3 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -652,8 +652,10 @@ static void pc_init_ne2k_isa(ISABus *bus, NICInfo *nd)
+ {
+     static int nb_ne2k = 0;
+ 
+-    if (nb_ne2k == NE2000_NB_MAX)
++    if (nb_ne2k == NE2000_NB_MAX) {
++        error_setg(&error_fatal, "maximum number of ISA NE2000 devices exceeded");
+         return;
++    }
+     isa_ne2000_init(bus, ne2000_io[nb_ne2k],
+                     ne2000_irq[nb_ne2k], nd);
+     nb_ne2k++;
+@@ -1294,19 +1296,17 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
+ {
+     MachineClass *mc = MACHINE_CLASS(pcmc);
+-    int i;
++    bool default_is_ne2k = g_str_equal(mc->default_nic, TYPE_ISA_NE2000);
++    NICInfo *nd;
+ 
+     rom_set_order_override(FW_CFG_ORDER_OVERRIDE_NIC);
+-    for (i = 0; i < nb_nics; i++) {
+-        NICInfo *nd = &nd_table[i];
+-        const char *model = nd->model ? nd->model : mc->default_nic;
+ 
+-        if (g_str_equal(model, "ne2k_isa")) {
+-            pc_init_ne2k_isa(isa_bus, nd);
+-        } else {
+-            pci_nic_init_nofail(nd, pci_bus, model, NULL);
+-        }
++    while ((nd = qemu_find_nic_info(TYPE_ISA_NE2000, default_is_ne2k, NULL))) {
++        pc_init_ne2k_isa(isa_bus, nd);
+     }
++
++    pci_init_nic_devices(pci_bus, mc->default_nic);
++
+     rom_reset_order_override();
  }
  
-+void pci_init_nic_devices(PCIBus *bus, const char *default_model)
-+{
-+    qemu_create_nic_bus_devices(&bus->qbus, TYPE_PCI_DEVICE, default_model,
-+                                "virtio", "virtio-net-pci");
-+}
-+
-+bool pci_init_nic_in_slot(PCIBus *rootbus, const char *model,
-+                          const char *alias, const char *devaddr)
-+{
-+    NICInfo *nd = qemu_find_nic_info(model, true, alias);
-+    int dom, busnr, devfn;
-+    PCIDevice *pci_dev;
-+    unsigned slot;
-+    PCIBus *bus;
-+
-+    if (!nd) {
-+        return false;
-+    }
-+
-+    if (!devaddr || pci_parse_devaddr(devaddr, &dom, &busnr, &slot, NULL) < 0) {
-+        error_report("Invalid PCI device address %s for device %s",
-+                     devaddr, model);
-+        exit(1);
-+    }
-+
-+    if (dom != 0) {
-+        error_report("No support for non-zero PCI domains");
-+        exit(1);
-+    }
-+
-+    devfn = PCI_DEVFN(slot, 0);
-+
-+    bus = pci_find_bus_nr(rootbus, busnr);
-+    if (!bus) {
-+        error_report("Invalid PCI device address %s for device %s",
-+                     devaddr, model);
-+        exit(1);
-+    }
-+
-+    pci_dev = pci_new(devfn, model);
-+    qdev_set_nic_properties(&pci_dev->qdev, nd);
-+    pci_realize_and_unref(pci_dev, bus, &error_fatal);
-+    return true;
-+}
-+
- PCIDevice *pci_vga_init(PCIBus *bus)
+diff --git a/include/hw/net/ne2000-isa.h b/include/hw/net/ne2000-isa.h
+index af59ee0b02..73bae10ad1 100644
+--- a/include/hw/net/ne2000-isa.h
++++ b/include/hw/net/ne2000-isa.h
+@@ -22,8 +22,6 @@ static inline ISADevice *isa_ne2000_init(ISABus *bus, int base, int irq,
  {
-     vga_interface_created = true;
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index b70a0b95ff..76d3ddab25 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -320,7 +320,9 @@ void pci_device_reset(PCIDevice *dev);
- PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
-                                const char *default_model,
-                                const char *default_devaddr);
--
-+void pci_init_nic_devices(PCIBus *bus, const char *default_model);
-+bool pci_init_nic_in_slot(PCIBus *rootbus, const char *default_model,
-+                          const char *alias, const char *devaddr);
- PCIDevice *pci_vga_init(PCIBus *bus);
+     ISADevice *d;
  
- static inline PCIBus *pci_get_bus(const PCIDevice *dev)
+-    qemu_check_nic_model(nd, "ne2k_isa");
+-
+     d = isa_try_new(TYPE_ISA_NE2000);
+     if (d) {
+         DeviceState *dev = DEVICE(d);
 -- 
 2.40.1
 
