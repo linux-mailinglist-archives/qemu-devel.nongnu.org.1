@@ -2,79 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABD37D2679
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 00:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E227D267A
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 00:13:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qugeq-00015R-DS; Sun, 22 Oct 2023 18:10:52 -0400
+	id 1quggo-0003ys-5G; Sun, 22 Oct 2023 18:12:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qugen-00014D-Kd; Sun, 22 Oct 2023 18:10:49 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1quggl-0003xj-RA; Sun, 22 Oct 2023 18:12:52 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qugeX-0000fr-Ck; Sun, 22 Oct 2023 18:10:49 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-53e08b60febso3959929a12.1; 
- Sun, 22 Oct 2023 15:10:32 -0700 (PDT)
+ id 1quggk-0000vP-8x; Sun, 22 Oct 2023 18:12:51 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9adb9fa7200so560982666b.0; 
+ Sun, 22 Oct 2023 15:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698012630; x=1698617430; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698012768; x=1698617568; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
- :reply-to; bh=4d7FBk6mKpSrFGEHyf/DaYSTvG6DvWB3M0KGguvtStM=;
- b=JKL13CFULq96Z5uSTfHySKE4/QW7/OxnGPSzddkgSWclUwszSHA4YAtB6BjOK4pK95
- uDN43DzFKCtGctGA1tgzewyKL6RLCV7aHKznlNmfr8FKdX/zSxrMJ4ZUu9XNHsvat6Gf
- SJksjNwksmMgjjiE5lotcTabhNs4S2U9tf7K8lY79VQgsG9ZekxW4LDv38J2HtPKuKu3
- BuYKgVVzvDYLHzQ8xu/xirFiWelNOVVHRhe+lhAY3dxK6+ZiB5HPGvY9CDO+eHKsiaxG
- jnBNOLYdxFKq1k0zrxjS+2Mf9FCoBcTjAZVmfnVGpG0RYdgbGiSV9G4Ba6eTvDswrX1Y
- 7A6g==
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sCpnGD55Q7fObKJtDUP8c4YWGRzGNdECiLDWVn5FFdU=;
+ b=OJ+6fcHDLduqtW/MLopTUz1b06LR5MZNHoooFmFf/vXmIk07OSfSryb4IjwaVnwRQp
+ Q8TeROCZtHx30MZiFaErvaxRrFzKYUntrAz8ttTPvVcgsPImwZcqIeBCRgQD6xuWJd18
+ t1PpTIOfuhH4IgC0vqtJBiLHzKprNgT3YWX19fQvj2pB+0MRZ1oDbikbMkAZ1YkY27Xg
+ xzIq7znrd8MUcIuscDFHZAj1cdx+g9a99CdWuARkwm9LDNUQ4ZutROc96Y4brazZ5je0
+ EXiiTY4g9FQesyddqq96mURAAoKfoYp8qtM7F9bHjex7oeqMAlnhr6ueeQNYFJS9uZ5M
+ osGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698012630; x=1698617430;
+ d=1e100.net; s=20230601; t=1698012768; x=1698617568;
  h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4d7FBk6mKpSrFGEHyf/DaYSTvG6DvWB3M0KGguvtStM=;
- b=HlSrj09g01p4EWA8cIOATyK5+S/7yz29HJIcTWckIHNYVCbHH5FyXceBfP92G2jhz0
- ZrfqtQazKi6SLeH+zhd8ujGaPPhVsHjXwdORmDA+CAKGksB7pXJdODPOLkq/AdQ7Aqsm
- N8UymKWypZnG5yaRuz1iViP2db3mDWxCPxYSjtiaTQ2PUs0Il3Ega4gnvYvWhz3MQFil
- dbR+AMfvfQBl4jqoYbq9HOBuXg5S8NxB0Iv0yZoTusCl0+6CqVtegsQvHBIFp0qwkmd+
- /V3SU6oo3x/+sfFKJOEFSm19Tf67LrNySrUcRYmro6gQMEPNkHtdQy/OigXyfTwLJfng
- JcNQ==
-X-Gm-Message-State: AOJu0YwYGLc3cfZ6mXVWGnuHu4e1Jor6QLVo99giDmvc/eXtJ8Gq6yLL
- 2tpcEJoa3I0osH0vPajqI9Q=
-X-Google-Smtp-Source: AGHT+IHqjRE07MqMnB0gYiXUlOTugbFecMwavUTGCjB/mB2MgUa9qqLiS+67iZMNJeyp/3LWf+B5Lw==
-X-Received: by 2002:a50:99da:0:b0:53f:25c4:357d with SMTP id
- n26-20020a5099da000000b0053f25c4357dmr4403244edb.6.1698012630147; 
- Sun, 22 Oct 2023 15:10:30 -0700 (PDT)
+ bh=sCpnGD55Q7fObKJtDUP8c4YWGRzGNdECiLDWVn5FFdU=;
+ b=l9UB1pWUgYOHKLLHNMZ7TuvtNhm2spLErYQYbIF0DxxE6S1FaqK4KuKv7uOtVJWbve
+ M8Rhu0VWX1vUfLvWKQ0iTmPCskQFcg8FAvncIOWsw7HYEmlVW3EA3F9cVtpQaO5hLyQI
+ Hwf9xmMjYj4txug4YegZPcqHqJ6x5U5BsYRsc6N3S/n6pOk9RJGB94DZ8oLzlZ1xCGuf
+ gckwC3dyvH4DO9VdI+V4S4FZu/r2a8Ov2jWdqBPormND8TKAis7IZkhYRGX4OHKr1wo9
+ Ws7kn7fL3N9AcZkhZ7RNxwVsb0qHZxPVElt7eCCq1wVGmCU3GZsGkrAbn/Hz9hK8KC//
+ rgWQ==
+X-Gm-Message-State: AOJu0YyYK5izGRwPH7pcNr8tpmjsUyMvsWPjHO3ndAw9F5LcJJzR3onE
+ Btlx9kK6vIXCrDtFsVQ0GWg=
+X-Google-Smtp-Source: AGHT+IGEcsrBKK1HsKEA7RKuYPOIL0Qmt4TVxGIN4PT76gm5tCCWZ2d23DKHfB2n4rWAPrubupFSTQ==
+X-Received: by 2002:a17:906:53d4:b0:9c8:5b61:7bd7 with SMTP id
+ p20-20020a17090653d400b009c85b617bd7mr3152328ejo.22.1698012768016; 
+ Sun, 22 Oct 2023 15:12:48 -0700 (PDT)
 Received: from [127.0.0.1] (dynamic-077-013-189-152.77.13.pool.telefonica.de.
  [77.13.189.152]) by smtp.gmail.com with ESMTPSA id
- cw3-20020a056402228300b0053eb69ca1bcsm5302075edb.92.2023.10.22.15.10.28
+ w21-20020a170907271500b009ad81554c1bsm5583390ejk.55.2023.10.22.15.12.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Oct 2023 15:10:28 -0700 (PDT)
-Date: Sun, 22 Oct 2023 22:10:20 +0000
+ Sun, 22 Oct 2023 15:12:47 -0700 (PDT)
+Date: Sun, 22 Oct 2023 22:12:41 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, balaton@eik.bme.hu,
- philmd@linaro.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_0/2=5D_ide=3A_implement_simple_legacy/?=
- =?US-ASCII?Q?native_mode_switching_for_PCI_IDE_controllers?=
-In-Reply-To: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
-References: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
-Message-ID: <1C2A3DE2-A4E8-42D3-BE70-710AA8EB53E7@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, qemu-ppc@nongnu.org,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_4/4=5D_hw/isa/i82378=3A_Propagate?=
+ =?US-ASCII?Q?_error_if_PC=5FSPEAKER_device_creation_failed?=
+In-Reply-To: <20231020171509.87839-5-philmd@linaro.org>
+References: <20231020171509.87839-1-philmd@linaro.org>
+ <20231020171509.87839-5-philmd@linaro.org>
+Message-ID: <18851B00-B0E0-4DA4-B58F-B07F80B78EFC@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,49 +100,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 19=2E Oktober 2023 13:04:50 UTC schrieb Mark Cave-Ayland <mark=2Ecave-a=
-yland@ilande=2Eco=2Euk>:
->This series adds a simple implementation of legacy/native mode switching =
-for PCI
->IDE controllers and updates the via-ide device to use it=2E
+Am 20=2E Oktober 2023 17:15:08 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
+philmd@linaro=2Eorg>:
+>In commit 40f8214fcd ("hw/audio/pcspk: Inline pcspk_init()")
+>we neglected to give a change to the caller to handle failed
+>device creation cleanly=2E Respect the caller API contract and
+>propagate the error if creating the PC_SPEAKER device ever
+>failed=2E This avoid yet another bad API use to be taken as
+>example and copy / pasted all over the code base=2E
 >
->The approach I take here is to add a new pci_ide_update_mode() function w=
-hich handles
->management of the PCI BARs and legacy IDE ioports for each mode to avoid =
-exposing
->details of the internal logic to individual PCI IDE controllers=2E
->
->As noted in [1] this is extracted from a local WIP branch I have which co=
-ntains
->further work in this area=2E However for the moment I've kept it simple (=
-and
->restricted it to the via-ide device) which is good enough for Zoltan's PP=
-C
->images whilst paving the way for future improvements after 8=2E2=2E
->
->Signed-off-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
+>Reported-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>Suggested-by: Markus Armbruster <armbru@redhat=2Ecom>
+>Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
 
-I've successfully tested this series on top of my pc-via branch, so for th=
-e series:
-Tested-by: Bernhard Beschow <shentey@gmail=2Ecom>
+Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
 
-I've added comments to the first patch=2E
-
-Best regards,
-Bernhard
-
+>---
+> hw/isa/i82378=2Ec | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
 >
->
->[1] https://lists=2Egnu=2Eorg/archive/html/qemu-devel/2023-10/msg05403=2E=
-html
->
->Mark Cave-Ayland (2):
->  ide/pci=2Ec: introduce pci_ide_update_mode() function
->  hw/ide/via: implement legacy/native mode switching
->
-> hw/ide/pci=2Ec         | 90 ++++++++++++++++++++++++++++++++++++++++++++
-> hw/ide/via=2Ec         | 20 +++++++++-
-> include/hw/ide/pci=2Eh |  1 +
-> 3 files changed, 109 insertions(+), 2 deletions(-)
->
+>diff --git a/hw/isa/i82378=2Ec b/hw/isa/i82378=2Ec
+>index 79ffbb52a0=2E=2E203b92c264 100644
+>--- a/hw/isa/i82378=2Ec
+>+++ b/hw/isa/i82378=2Ec
+>@@ -105,7 +105,9 @@ static void i82378_realize(PCIDevice *pci, Error **er=
+rp)
+>     /* speaker */
+>     pcspk =3D isa_new(TYPE_PC_SPEAKER);
+>     object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), &error_f=
+atal);
+>-    isa_realize_and_unref(pcspk, isabus, &error_fatal);
+>+    if (!isa_realize_and_unref(pcspk, isabus, errp)) {
+>+        return;
+>+    }
+>=20
+>     /* 2 82C37 (dma) */
+>     isa_create_simple(isabus, "i82374");
 
