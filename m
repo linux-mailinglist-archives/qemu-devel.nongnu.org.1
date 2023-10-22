@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C1497D2133
+	by mail.lfdr.de (Postfix) with ESMTPS id 379B27D2134
 	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:01:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quRW1-0000TX-Bz; Sun, 22 Oct 2023 02:00:45 -0400
+	id 1quRW1-0000Te-78; Sun, 22 Oct 2023 02:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRVu-0000Ha-OZ
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:38 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1quRVy-0000NM-32
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:42 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRVs-0001Tu-Ih
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:38 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c5cd27b1acso18397615ad.2
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:00:36 -0700 (PDT)
+ id 1quRVu-0001UR-2a
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:39 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5859a7d6556so1729791a12.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:00:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697954435; x=1698559235; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697954436; x=1698559236; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jXlmVTgalHfsB9Nikgsdxk0ApYZwOaGhGlv+ImBLl8Q=;
- b=Q8YYGmT0LwUbJdwaiYbuALtdBU3Bd4yxC6BoObfFW54wa8wkwyKFq/WsucwmDq3Jjm
- 2/+W5U7rJpiUyqyMolqJCMBVqe8E3O7jL3vPKLaBmmaGR8AeRdB0+/d+JIoAWFeYaqSm
- FSrkl/RQXI4q66itOPl0msa9yiB22Oug3W3s894CE3cfI20xjl2mLXmXh7zYcZylx5DE
- igKRI/gKuzAJkxvVAV/H7QjlnMGTQ7aFissYiwR33uQ9N6rtXiGPVWi58v3W3WxK0DsS
- U98DNlbk3S04D1bjV78rfQu4+KmgHpemJuU0H4vprEqZ7dQwQBRL+cfU3aJf2vVSkzq/
- nNIw==
+ bh=Xd5Svu0+B7OGG++QiM45a02WgNYRHjpbrT0y5ShkAgs=;
+ b=cd6jvtOq9pwgTqPmNqOzqIj6EO0/D41oaEtIzb6j1Q5+ww33cbs9Iy/4zambvCyk2A
+ VnWdnLQqVGVGH8ro3FHTpNVGVjanoV79Mtbj6Oa1dLOPrfdlsa58mtN+kt1Vdnpej0VP
+ 2uXASFYxvmfjbYblwmrj5oPcjQX8QQ2SroannGENomUYwoa9nXQruW8fx3E+Mtg7f+lQ
+ LdzLWi9RgpQCZOXiMmOatfaTfUIZ5dYusVKbG3Fg+5Fnt9qYQeylhd1+66KdZe8gCi3d
+ xvgBjZN5l16BG8kHlDilrLW2ip2Jl3lE2KMbFzKJrZZCZOgk9MGk/vxqRSQYyHYFHTTJ
+ XOOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697954435; x=1698559235;
+ d=1e100.net; s=20230601; t=1697954436; x=1698559236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jXlmVTgalHfsB9Nikgsdxk0ApYZwOaGhGlv+ImBLl8Q=;
- b=vVUiqeLTRC2XeFo1ZggjBuuF/J5nwsSq/qFuRP0gR/xNawpX62nxA4zn0ENJOy9fza
- swvj0uTqkHj257S7dcWcG0YJHZdOsXlR/XGuJgnG86MVu+ArdZMUAAFebd6CZx7us07k
- eiGfy+S3dUokXFKtMp2qvJLuOY819EDeVtmsLVR6FcH9oVT4Mats7QpDKBBj5bAxXu08
- 9LTY97gdzykmIqpA6ueHEyvwt5Pm1f5qraWs2qxpRx5e2wg5EV7+bG70KfdgOWL+Ibvs
- 7BXe9oHsnKFrvUdLndct7jyxcgqzQdY/lgiDCp5akxVZ9FPfYJeoa1wtcYEBYtYh8aOe
- o27Q==
-X-Gm-Message-State: AOJu0YxZDf7CZLfGbuopnFSwNTTad/qEaw5s+IeTFNN3dMtgt+hWr2Pj
- F0jGfTRSHDAvnvTLvVROxHZGkGHh3Ygz7F2vrTE=
-X-Google-Smtp-Source: AGHT+IGI/CFuu5rufqlMoRONKFBvf80ViyC/EuLvkkAXrMHAwwkR/ntImw7Gg9Dynkl6S2J7sFJ+tQ==
-X-Received: by 2002:a17:902:efcc:b0:1ca:3093:77b with SMTP id
- ja12-20020a170902efcc00b001ca3093077bmr5117485plb.47.1697954434944; 
- Sat, 21 Oct 2023 23:00:34 -0700 (PDT)
+ bh=Xd5Svu0+B7OGG++QiM45a02WgNYRHjpbrT0y5ShkAgs=;
+ b=aihDWFq8FWYwxpP+JSeO7tgiSHJK+vtFOhGGT7WA83z3PkkA42KvutTLmrvdrLXsbx
+ 9zTC2lS58aO1/JrrXJdTxTY+aNMeHL06LUXRYZ3KVqFb+UlGNT10ZGBr3QZE0bTvd21r
+ 0Ow4wZSRo9aGxsP6ZGuy76lVLK9pPhvB7xv9ej0gXoXe7fqLCMzrgUiZPf+1sNNAobYQ
+ 5VGgHIqwfRRYXagUPNHIckXWMcFTrEcRCddkm8oNdsgxRaQEcUyc701h5oza/e4f7Z+a
+ 2HQTCcG0ZaFXRt8AVo5df/7cb68i1W+tT3dD84RUCrdpcwBlGJA0DIdC1q9t7Yr7VO8Z
+ iSPA==
+X-Gm-Message-State: AOJu0YwNFtkaaEm0OAJf27JS16iFoujFi+JX6BdYNIv76Cje6TAcGYEh
+ ZBikxHZ1Itd97oJI8DN1gOe+S3LD9wXJss/Eei8=
+X-Google-Smtp-Source: AGHT+IE0bCqpfTnhG6ay/GpPbCRw4WCBtynrGCcl7nmjaekwRCo/N+j/3cP3dR+9dH10TxRCH2q9Qg==
+X-Received: by 2002:a17:902:e0cb:b0:1c9:e85a:4296 with SMTP id
+ e11-20020a170902e0cb00b001c9e85a4296mr5017259pla.6.1697954436531; 
+ Sat, 21 Oct 2023 23:00:36 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.34
+ je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 23:00:34 -0700 (PDT)
+ Sat, 21 Oct 2023 23:00:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 02/90] target/sparc: Implement check_align inline
-Date: Sat, 21 Oct 2023 22:59:03 -0700
-Message-Id: <20231022060031.490251-3-richard.henderson@linaro.org>
+Cc: mark.cave-ayland@ilande.co.uk,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 04/90] target/sparc: Set TCG_GUEST_DEFAULT_MO
+Date: Sat, 21 Oct 2023 22:59:05 -0700
+Message-Id: <20231022060031.490251-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022060031.490251-1-richard.henderson@linaro.org>
 References: <20231022060031.490251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,186 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Emit the exception at the end of the translation block,
-so that the non-exception case can fall through.
+Always use TSO, per the Oracle 2015 manual.
+This is slightly less restrictive than the TCG_MO_ALL default,
+and happens to match the i386 model, which will eliminate a few
+extra barriers on that host.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/helper.h      |  1 -
- target/sparc/ldst_helper.c |  7 ++--
- target/sparc/translate.c   | 68 +++++++++++++++++++++++++++++++++-----
- 3 files changed, 61 insertions(+), 15 deletions(-)
+ target/sparc/cpu.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index b8f1e78c75..b116ddcb29 100644
---- a/target/sparc/helper.h
-+++ b/target/sparc/helper.h
-@@ -24,7 +24,6 @@ DEF_HELPER_FLAGS_2(tick_set_count, TCG_CALL_NO_RWG, void, ptr, i64)
- DEF_HELPER_FLAGS_3(tick_get_count, TCG_CALL_NO_WG, i64, env, ptr, int)
- DEF_HELPER_FLAGS_2(tick_set_limit, TCG_CALL_NO_RWG, void, ptr, i64)
- #endif
--DEF_HELPER_FLAGS_3(check_align, TCG_CALL_NO_WG, void, env, tl, i32)
- DEF_HELPER_1(debug, void, env)
- DEF_HELPER_1(save, void, env)
- DEF_HELPER_1(restore, void, env)
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 78b03308ae..246de86c98 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -360,6 +360,7 @@ static inline void do_check_asi(CPUSPARCState *env, int asi, uintptr_t ra)
- #endif /* !CONFIG_USER_ONLY */
- #endif
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index b3a98f1d74..9fc5c401d2 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -6,6 +6,29 @@
+ #include "exec/cpu-defs.h"
+ #include "qemu/cpu-float.h"
  
-+#if defined(TARGET_SPARC64) || !defined(CONFIG_USER_ONLY)
- static void do_check_align(CPUSPARCState *env, target_ulong addr,
-                            uint32_t align, uintptr_t ra)
- {
-@@ -367,11 +368,7 @@ static void do_check_align(CPUSPARCState *env, target_ulong addr,
-         cpu_raise_exception_ra(env, TT_UNALIGNED, ra);
-     }
- }
--
--void helper_check_align(CPUSPARCState *env, target_ulong addr, uint32_t align)
--{
--    do_check_align(env, addr, align, GETPC());
--}
-+#endif
- 
- #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY) &&   \
-     defined(DEBUG_MXCC)
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 8fabed28fd..8f6fd453e7 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -68,6 +68,15 @@ static TCGv cpu_wim;
- /* Floating point registers */
- static TCGv_i64 cpu_fpr[TARGET_DPREGS];
- 
-+typedef struct DisasDelayException {
-+    struct DisasDelayException *next;
-+    TCGLabel *lab;
-+    TCGv_i32 excp;
-+    /* Saved state at parent insn. */
-+    target_ulong pc;
-+    target_ulong npc;
-+} DisasDelayException;
++/*
++ * From Oracle SPARC Architecture 2015:
++ *
++ *   Compatibility notes: The PSO memory model described in SPARC V8 and
++ *   SPARC V9 compatibility architecture specifications was never implemented
++ *   in a SPARC V9 implementation and is not included in the Oracle SPARC
++ *   Architecture specification.
++ *
++ *   The RMO memory model described in the SPARC V9 specification was
++ *   implemented in some non-Sun SPARC V9 implementations, but is not
++ *   directly supported in Oracle SPARC Architecture 2015 implementations.
++ *
++ * Therefore always use TSO in QEMU.
++ *
++ * D.5 Specification of Partial Store Order (PSO)
++ *   ... [loads] are followed by an implied MEMBAR #LoadLoad | #LoadStore.
++ *
++ * D.6 Specification of Total Store Order (TSO)
++ *   ... PSO with the additional requirement that all [stores] are followed
++ *   by an implied MEMBAR #StoreStore.
++ */
++#define TCG_GUEST_DEFAULT_MO  (TCG_MO_LD_LD | TCG_MO_LD_ST | TCG_MO_ST_ST)
 +
- typedef struct DisasContext {
-     DisasContextBase base;
-     target_ulong pc;    /* current Program Counter: integer or DYNAMIC_PC */
-@@ -89,6 +98,7 @@ typedef struct DisasContext {
-     int fprs_dirty;
-     int asi;
- #endif
-+    DisasDelayException *delay_excp_list;
- } DisasContext;
- 
- typedef struct {
-@@ -984,9 +994,38 @@ static void gen_exception(DisasContext *dc, int which)
-     dc->base.is_jmp = DISAS_NORETURN;
- }
- 
--static void gen_check_align(TCGv addr, int mask)
-+static TCGLabel *delay_exceptionv(DisasContext *dc, TCGv_i32 excp)
- {
--    gen_helper_check_align(tcg_env, addr, tcg_constant_i32(mask));
-+    DisasDelayException *e = g_new0(DisasDelayException, 1);
-+
-+    e->next = dc->delay_excp_list;
-+    dc->delay_excp_list = e;
-+
-+    e->lab = gen_new_label();
-+    e->excp = excp;
-+    e->pc = dc->pc;
-+    /* Caller must have used flush_cond before branch. */
-+    assert(e->npc != JUMP_PC);
-+    e->npc = dc->npc;
-+
-+    return e->lab;
-+}
-+
-+static TCGLabel *delay_exception(DisasContext *dc, int excp)
-+{
-+    return delay_exceptionv(dc, tcg_constant_i32(excp));
-+}
-+
-+static void gen_check_align(DisasContext *dc, TCGv addr, int mask)
-+{
-+    TCGv t = tcg_temp_new();
-+    TCGLabel *lab;
-+
-+    tcg_gen_andi_tl(t, addr, mask);
-+
-+    flush_cond(dc);
-+    lab = delay_exception(dc, TT_UNALIGNED);
-+    tcg_gen_brcondi_tl(TCG_COND_NE, t, 0, lab);
- }
- 
- static void gen_mov_pc_npc(DisasContext *dc)
-@@ -5019,9 +5058,9 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                         tcg_gen_mov_tl(cpu_tmp0, cpu_src1);
-                     }
-                 }
-+                gen_check_align(dc, cpu_tmp0, 3);
-                 gen_helper_restore(tcg_env);
-                 gen_mov_pc_npc(dc);
--                gen_check_align(cpu_tmp0, 3);
-                 tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
-                 dc->npc = DYNAMIC_PC_LOOKUP;
-                 goto jmp_insn;
-@@ -5044,12 +5083,9 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                 switch (xop) {
-                 case 0x38:      /* jmpl */
-                     {
--                        TCGv t = gen_dest_gpr(dc, rd);
--                        tcg_gen_movi_tl(t, dc->pc);
--                        gen_store_gpr(dc, rd, t);
--
-+                        gen_check_align(dc, cpu_tmp0, 3);
-+                        gen_store_gpr(dc, rd, tcg_constant_tl(dc->pc));
-                         gen_mov_pc_npc(dc);
--                        gen_check_align(cpu_tmp0, 3);
-                         gen_address_mask(dc, cpu_tmp0);
-                         tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
-                         dc->npc = DYNAMIC_PC_LOOKUP;
-@@ -5060,8 +5096,8 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                     {
-                         if (!supervisor(dc))
-                             goto priv_insn;
-+                        gen_check_align(dc, cpu_tmp0, 3);
-                         gen_mov_pc_npc(dc);
--                        gen_check_align(cpu_tmp0, 3);
-                         tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
-                         dc->npc = DYNAMIC_PC;
-                         gen_helper_rett(tcg_env);
-@@ -5643,6 +5679,7 @@ static void sparc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
-+    DisasDelayException *e, *e_next;
-     bool may_lookup;
- 
-     switch (dc->base.is_jmp) {
-@@ -5704,6 +5741,19 @@ static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
-     default:
-         g_assert_not_reached();
-     }
-+
-+    for (e = dc->delay_excp_list; e ; e = e_next) {
-+        gen_set_label(e->lab);
-+
-+        tcg_gen_movi_tl(cpu_pc, e->pc);
-+        if (e->npc % 4 == 0) {
-+            tcg_gen_movi_tl(cpu_npc, e->npc);
-+        }
-+        gen_helper_raise_exception(tcg_env, e->excp);
-+
-+        e_next = e->next;
-+        g_free(e);
-+    }
- }
- 
- static void sparc_tr_disas_log(const DisasContextBase *dcbase,
+ #if !defined(TARGET_SPARC64)
+ #define TARGET_DPREGS 16
+ #else
 -- 
 2.34.1
 
