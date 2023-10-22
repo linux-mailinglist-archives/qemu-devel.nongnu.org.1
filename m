@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688B37D2708
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 01:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68FB77D26FB
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 01:31:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quhtC-00074v-Ga; Sun, 22 Oct 2023 19:29:46 -0400
+	id 1quhtI-00076w-Iy; Sun, 22 Oct 2023 19:29:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quht8-00073R-9f
+ id 1quht9-00073h-CV
  for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:29:43 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quht6-0006hd-N6
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:29:42 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-1eb33c06d08so981719fac.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 16:29:40 -0700 (PDT)
+ id 1quht7-0006i8-IP
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:29:43 -0400
+Received: by mail-il1-x136.google.com with SMTP id
+ e9e14a558f8ab-357cd0d4e47so4203005ab.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 16:29:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698017379; x=1698622179; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698017380; x=1698622180; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Jiy4wOodRVlFspzzZethCiArH1v1AZS8FVXwpd5smRE=;
- b=DO671GJ3PT5bNiMS8ZP5iQpfcypXoF/uTWfUvGVoWcxfusm4MzmWJRjn9u1+TLkE4p
- /qtFdlhIZqfKv2buGvzoafBBlXhgyqOj5He/Q7jKZmJ6L+HYQP2KwuLQ1/59Wnc/3IOH
- gY9+auc45E8f+AgO89Y64oKI2UaAJIsXMgt6AUVWMz8URtMCxNy5X0Mnc3WPJJKakOtO
- u6bI0ujOkQUi3gbiz60Oa50sjgBFAChcXc4uLruBm2tFvG2Faal5sbw78ZOmOObbqxho
- ysyubZLe6FHksdoF8myBJOSCgz1H6UaBS5mlcqUZVmdN89V1zJIeVIszrSfwNUAKwOKC
- f1+w==
+ bh=clLDX0OMwpp8pXeARARKHNXdrMJ0cLB2t4O0gfCmBGk=;
+ b=Zbvsb+Q5s+dlks7Mr8NHsyMyfp53zFVhqnVOlwhxvL5ZfHxNz+ZTW7YFsPHCuQlCcb
+ B1+cKmWU4/5smmRaUbYCmcD15MOP9pVLHb9hLhcJkejrZcES3xLbIgvhYg6PoN61QY6O
+ A+J5ANV0vy4zaULfeDeqGReHKaB3EZIDodek7TcHesuVtVQ9cQrkjMmVJSG/B05O7mcc
+ 5QvBLxNECTY/RHgdd4LDx9bGBgUwomYz8+htUk3qol+dET+u4Mdm6ikDqesyxs6JWPKN
+ XAJo4hn2Gzoag3kUXeZWHxVPubErIK9h4ptYrpBlu9h7xWYr7Imp5dh0VaEwnmiFgFTi
+ 2Z1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698017379; x=1698622179;
+ d=1e100.net; s=20230601; t=1698017380; x=1698622180;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jiy4wOodRVlFspzzZethCiArH1v1AZS8FVXwpd5smRE=;
- b=tenCDFCN6V8bFPUrWDYDRK0JEyfhptBq9oDWgvnH1Jzbd6eSia6eT7FwMped+zzwUm
- QF0FTsxb8Qq0BXB+z7yPmYmElZrgRLwojoi6XgUg3LRgYzBeLjaa+/bxnlPMTGLR0r0o
- Yo9AMN0HaErFuF6S+ZMIrjMEj+NTPO5won3R7Lr2P69f1URFoqFH27j5HkpfUzQAz+cu
- 313jQt4aAvy9YlufpisoYKTWFqkWc4bTRNkfxAkJNJTpXqhIwEiER7VnjRqQ6hVvDrYi
- BOxyF3fGmX7EnRj8Ww8gVq/b2ztFB9SJxqunI5abffUvxW8bkRFz14C7GQkn1XRHsdX1
- NoKQ==
-X-Gm-Message-State: AOJu0YwSw4Mr4c2az3F+iUDVC6wwTIZjdLnaFJD9gXLDorpxP6tJJwUX
- ky8+yZ64XNGhz6TxkXucMzNhXag5ikJT03NscgE=
-X-Google-Smtp-Source: AGHT+IF3GcYmFwdD00zLw6PSrkCooT6mFNDiFM+uzMAHkpDVy8waiBpS3TNK4+L9a8bXsHgTDGeDBg==
-X-Received: by 2002:a05:6870:d188:b0:1e9:c28f:45b9 with SMTP id
- a8-20020a056870d18800b001e9c28f45b9mr10483645oac.19.1698017379405; 
- Sun, 22 Oct 2023 16:29:39 -0700 (PDT)
+ bh=clLDX0OMwpp8pXeARARKHNXdrMJ0cLB2t4O0gfCmBGk=;
+ b=AzTQA/hh0twUhAJpCE0z7zY5iex6eqhBTi2F45KmV2f64wI6k3AZfrfwZhEfqyH+GW
+ 4mFTKyE+kq87FC8BYc1HLgJ+quR8/skSt9T3wyiUMzv42NJYrqxfGOs0Hr9SWPEsIcWG
+ w/OC04PSD4t2Tu//tOr3amfk5Dng5Sn21G4uMwOnrdHIcVuTVRjI71/HmsTyoA8O2Jr3
+ h9k7qfi6JPeH2r/n2un86CEGwJM15GQ2CmInEAX6odoGoXIEYGN7GYnqMi3vJDYL3qLJ
+ 3b1hKWnYURR2QJMxZOg+ZGL6/wyeqcik9VKTiCIfe/A7bXh9P+vjVpUGMo9zrTDAE5Fe
+ +crQ==
+X-Gm-Message-State: AOJu0Yysqp2qLH+pI+Z+NYlK5irTuQUZ/TvFNSHShCq1kQZar7PRtUbi
+ VoBIcW1fG1vep2MOXAOgkpRlOyhzVoTjYF2x5eM=
+X-Google-Smtp-Source: AGHT+IHhoqabKSjOfO3n3LCKidvQ8EUOGHy8Wr3VPC5m5+Yw/j0E+K5MYvLcvyUEjf+D2/C3glYx2w==
+X-Received: by 2002:a05:6e02:20ee:b0:357:9817:934c with SMTP id
+ q14-20020a056e0220ee00b003579817934cmr10020889ilv.20.1698017380252; 
+ Sun, 22 Oct 2023 16:29:40 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k26-20020a63ba1a000000b005b25a04cf8bsm4023772pgf.12.2023.10.22.16.29.38
+ k26-20020a63ba1a000000b005b25a04cf8bsm4023772pgf.12.2023.10.22.16.29.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 22 Oct 2023 16:29:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v5 06/94] target/sparc: Define features via cpu-feature.h.inc
-Date: Sun, 22 Oct 2023 16:28:04 -0700
-Message-Id: <20231022232932.80507-7-richard.henderson@linaro.org>
+Subject: [PATCH v5 07/94] target/sparc: Use CPU_FEATURE_BIT_* for cpu
+ properties
+Date: Sun, 22 Oct 2023 16:28:05 -0700
+Message-Id: <20231022232932.80507-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022232932.80507-1-richard.henderson@linaro.org>
 References: <20231022232932.80507-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::136;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,85 +91,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manage feature bits automatically.
+Use symbols not integer constants for the bit positions.
 
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/cpu.h             | 32 +++++++++++++-------------------
- target/sparc/cpu-feature.h.inc | 19 +++++++++++++++++++
- 2 files changed, 32 insertions(+), 19 deletions(-)
- create mode 100644 target/sparc/cpu-feature.h.inc
+ target/sparc/cpu.c | 72 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 44 insertions(+), 28 deletions(-)
 
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 9fc5c401d2..aaecbf0876 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -291,25 +291,19 @@ struct sparc_def_t {
-     uint32_t maxtl;
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 8ba96ae225..330b7bead3 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -545,21 +545,22 @@ static const sparc_def_t sparc_defs[] = {
+ #endif
  };
  
--#define CPU_FEATURE_FLOAT        (1 << 0)
--#define CPU_FEATURE_FLOAT128     (1 << 1)
--#define CPU_FEATURE_SWAP         (1 << 2)
--#define CPU_FEATURE_MUL          (1 << 3)
--#define CPU_FEATURE_DIV          (1 << 4)
--#define CPU_FEATURE_FLUSH        (1 << 5)
--#define CPU_FEATURE_FSQRT        (1 << 6)
--#define CPU_FEATURE_FMUL         (1 << 7)
--#define CPU_FEATURE_VIS1         (1 << 8)
--#define CPU_FEATURE_VIS2         (1 << 9)
--#define CPU_FEATURE_FSMULD       (1 << 10)
--#define CPU_FEATURE_HYPV         (1 << 11)
--#define CPU_FEATURE_CMT          (1 << 12)
--#define CPU_FEATURE_GL           (1 << 13)
--#define CPU_FEATURE_TA0_SHUTDOWN (1 << 14) /* Shutdown on "ta 0x0" */
--#define CPU_FEATURE_ASR17        (1 << 15)
--#define CPU_FEATURE_CACHE_CTRL   (1 << 16)
--#define CPU_FEATURE_POWERDOWN    (1 << 17)
--#define CPU_FEATURE_CASA         (1 << 18)
-+#define FEATURE(X)  CPU_FEATURE_BIT_##X,
-+enum {
-+#include "cpu-feature.h.inc"
-+};
-+
-+#undef FEATURE
-+#define FEATURE(X)  CPU_FEATURE_##X = 1u << CPU_FEATURE_BIT_##X,
-+
-+enum {
-+#include "cpu-feature.h.inc"
-+};
-+
-+#undef FEATURE
++/* This must match sparc_cpu_properties[]. */
+ static const char * const feature_name[] = {
+-    "float",
+-    "float128",
+-    "swap",
+-    "mul",
+-    "div",
+-    "flush",
+-    "fsqrt",
+-    "fmul",
+-    "vis1",
+-    "vis2",
+-    "fsmuld",
+-    "hypv",
+-    "cmt",
+-    "gl",
++    [CPU_FEATURE_BIT_FLOAT] = "float",
++    [CPU_FEATURE_BIT_FLOAT128] = "float128",
++    [CPU_FEATURE_BIT_SWAP] = "swap",
++    [CPU_FEATURE_BIT_MUL] = "mul",
++    [CPU_FEATURE_BIT_DIV] = "div",
++    [CPU_FEATURE_BIT_FLUSH] = "flush",
++    [CPU_FEATURE_BIT_FSQRT] = "fsqrt",
++    [CPU_FEATURE_BIT_FMUL] = "fmul",
++    [CPU_FEATURE_BIT_VIS1] = "vis1",
++    [CPU_FEATURE_BIT_VIS2] = "vis2",
++    [CPU_FEATURE_BIT_FSMULD] = "fsmuld",
++    [CPU_FEATURE_BIT_HYPV] = "hypv",
++    [CPU_FEATURE_BIT_CMT] = "cmt",
++    [CPU_FEATURE_BIT_GL] = "gl",
+ };
  
- #ifndef TARGET_SPARC64
- #define CPU_DEFAULT_FEATURES (CPU_FEATURE_FLOAT | CPU_FEATURE_SWAP |  \
-diff --git a/target/sparc/cpu-feature.h.inc b/target/sparc/cpu-feature.h.inc
-new file mode 100644
-index 0000000000..d35fe90c92
---- /dev/null
-+++ b/target/sparc/cpu-feature.h.inc
-@@ -0,0 +1,19 @@
-+FEATURE(FLOAT)
-+FEATURE(FLOAT128)
-+FEATURE(SWAP)
-+FEATURE(MUL)
-+FEATURE(DIV)
-+FEATURE(FLUSH)
-+FEATURE(FSQRT)
-+FEATURE(FMUL)
-+FEATURE(VIS1)
-+FEATURE(VIS2)
-+FEATURE(FSMULD)
-+FEATURE(HYPV)
-+FEATURE(CMT)
-+FEATURE(GL)
-+FEATURE(TA0_SHUTDOWN) /* Shutdown on "ta 0x0" */
-+FEATURE(ASR17)
-+FEATURE(CACHE_CTRL)
-+FEATURE(POWERDOWN)
-+FEATURE(CASA)
+ static void print_features(uint32_t features, const char *prefix)
+@@ -835,21 +836,36 @@ static PropertyInfo qdev_prop_nwindows = {
+     .set   = sparc_set_nwindows,
+ };
+ 
++/* This must match feature_name[]. */
+ static Property sparc_cpu_properties[] = {
+-    DEFINE_PROP_BIT("float",    SPARCCPU, env.def.features, 0, false),
+-    DEFINE_PROP_BIT("float128", SPARCCPU, env.def.features, 1, false),
+-    DEFINE_PROP_BIT("swap",     SPARCCPU, env.def.features, 2, false),
+-    DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features, 3, false),
+-    DEFINE_PROP_BIT("div",      SPARCCPU, env.def.features, 4, false),
+-    DEFINE_PROP_BIT("flush",    SPARCCPU, env.def.features, 5, false),
+-    DEFINE_PROP_BIT("fsqrt",    SPARCCPU, env.def.features, 6, false),
+-    DEFINE_PROP_BIT("fmul",     SPARCCPU, env.def.features, 7, false),
+-    DEFINE_PROP_BIT("vis1",     SPARCCPU, env.def.features, 8, false),
+-    DEFINE_PROP_BIT("vis2",     SPARCCPU, env.def.features, 9, false),
+-    DEFINE_PROP_BIT("fsmuld",   SPARCCPU, env.def.features, 10, false),
+-    DEFINE_PROP_BIT("hypv",     SPARCCPU, env.def.features, 11, false),
+-    DEFINE_PROP_BIT("cmt",      SPARCCPU, env.def.features, 12, false),
+-    DEFINE_PROP_BIT("gl",       SPARCCPU, env.def.features, 13, false),
++    DEFINE_PROP_BIT("float",    SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_FLOAT, false),
++    DEFINE_PROP_BIT("float128", SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_FLOAT128, false),
++    DEFINE_PROP_BIT("swap",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_SWAP, false),
++    DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_MUL, false),
++    DEFINE_PROP_BIT("div",      SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_DIV, false),
++    DEFINE_PROP_BIT("flush",    SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_FLUSH, false),
++    DEFINE_PROP_BIT("fsqrt",    SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_FSQRT, false),
++    DEFINE_PROP_BIT("fmul",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_FMUL, false),
++    DEFINE_PROP_BIT("vis1",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_VIS1, false),
++    DEFINE_PROP_BIT("vis2",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_VIS2, false),
++    DEFINE_PROP_BIT("fsmuld",   SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_FSMULD, false),
++    DEFINE_PROP_BIT("hypv",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_HYPV, false),
++    DEFINE_PROP_BIT("cmt",      SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_CMT, false),
++    DEFINE_PROP_BIT("gl",       SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_GL, false),
+     DEFINE_PROP_UNSIGNED("iu-version", SPARCCPU, env.def.iu_version, 0,
+                          qdev_prop_uint64, target_ulong),
+     DEFINE_PROP_UINT32("fpu-version", SPARCCPU, env.def.fpu_version, 0),
 -- 
 2.34.1
 
