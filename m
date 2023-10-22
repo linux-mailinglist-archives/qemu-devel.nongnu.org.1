@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379B27D2134
+	by mail.lfdr.de (Postfix) with ESMTPS id 498087D2137
 	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 08:01:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quRW1-0000Te-78; Sun, 22 Oct 2023 02:00:45 -0400
+	id 1quRW5-0000Vz-Tt; Sun, 22 Oct 2023 02:00:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRVy-0000NM-32
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:42 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1quRVz-0000OX-1A
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:43 -0400
+Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quRVu-0001UR-2a
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:39 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5859a7d6556so1729791a12.0
- for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:00:37 -0700 (PDT)
+ id 1quRVv-0001Us-8A
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 02:00:42 -0400
+Received: by mail-oi1-x22f.google.com with SMTP id
+ 5614622812f47-3b3ec45d6e9so1515876b6e.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Oct 2023 23:00:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697954436; x=1698559236; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697954438; x=1698559238; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Xd5Svu0+B7OGG++QiM45a02WgNYRHjpbrT0y5ShkAgs=;
- b=cd6jvtOq9pwgTqPmNqOzqIj6EO0/D41oaEtIzb6j1Q5+ww33cbs9Iy/4zambvCyk2A
- VnWdnLQqVGVGH8ro3FHTpNVGVjanoV79Mtbj6Oa1dLOPrfdlsa58mtN+kt1Vdnpej0VP
- 2uXASFYxvmfjbYblwmrj5oPcjQX8QQ2SroannGENomUYwoa9nXQruW8fx3E+Mtg7f+lQ
- LdzLWi9RgpQCZOXiMmOatfaTfUIZ5dYusVKbG3Fg+5Fnt9qYQeylhd1+66KdZe8gCi3d
- xvgBjZN5l16BG8kHlDilrLW2ip2Jl3lE2KMbFzKJrZZCZOgk9MGk/vxqRSQYyHYFHTTJ
- XOOQ==
+ bh=tQ1zFkOdaQ00+kG6T0oOcQWDrsqZkAPXDw5MzbWcocE=;
+ b=qW+39a1ugRe+Xa9In7JE6U4kNvp2x1fOntzxXcGfFno1fQ4aR2qKtszcp2hIc89vn+
+ WoGEQTss4EcE9RPK/tYj03Q8TlerR1XBP656V5YC6IhkFVNiooPdEnvyBAXjOfd0wYJ6
+ Ralyj/Wq/D9NMgIXutGMfMwwOnxjiGt5XJuHxt6HqsI1biOifDHVE6SLWQrDe22Lnj9Z
+ MEHUrukXxyhbMnd8bKTPquBJDPkn+3dAa5ykB43+6NljcQZkFU5oqsB4bvDKRSmNxnZA
+ bBEV26UvdW92RgjC+j5raPb8CPC86GW7iOW0poNO9zkLxpbngmNoD2w5630Ov3x/rv04
+ XiZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697954436; x=1698559236;
+ d=1e100.net; s=20230601; t=1697954438; x=1698559238;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xd5Svu0+B7OGG++QiM45a02WgNYRHjpbrT0y5ShkAgs=;
- b=aihDWFq8FWYwxpP+JSeO7tgiSHJK+vtFOhGGT7WA83z3PkkA42KvutTLmrvdrLXsbx
- 9zTC2lS58aO1/JrrXJdTxTY+aNMeHL06LUXRYZ3KVqFb+UlGNT10ZGBr3QZE0bTvd21r
- 0Ow4wZSRo9aGxsP6ZGuy76lVLK9pPhvB7xv9ej0gXoXe7fqLCMzrgUiZPf+1sNNAobYQ
- 5VGgHIqwfRRYXagUPNHIckXWMcFTrEcRCddkm8oNdsgxRaQEcUyc701h5oza/e4f7Z+a
- 2HQTCcG0ZaFXRt8AVo5df/7cb68i1W+tT3dD84RUCrdpcwBlGJA0DIdC1q9t7Yr7VO8Z
- iSPA==
-X-Gm-Message-State: AOJu0YwNFtkaaEm0OAJf27JS16iFoujFi+JX6BdYNIv76Cje6TAcGYEh
- ZBikxHZ1Itd97oJI8DN1gOe+S3LD9wXJss/Eei8=
-X-Google-Smtp-Source: AGHT+IE0bCqpfTnhG6ay/GpPbCRw4WCBtynrGCcl7nmjaekwRCo/N+j/3cP3dR+9dH10TxRCH2q9Qg==
-X-Received: by 2002:a17:902:e0cb:b0:1c9:e85a:4296 with SMTP id
- e11-20020a170902e0cb00b001c9e85a4296mr5017259pla.6.1697954436531; 
- Sat, 21 Oct 2023 23:00:36 -0700 (PDT)
+ bh=tQ1zFkOdaQ00+kG6T0oOcQWDrsqZkAPXDw5MzbWcocE=;
+ b=Q7k0yvu55yeEyVoiDIiW5EKoWA9ripMCBtf8yBBzYPlZKipzyxWXAOP/zxyNfWroWp
+ v+zs29VvMk6dyeBzeXpBRZ75C2yixyDiLrBAuabuK+cf+krq1AtIPE2Wexp/5GwSE22G
+ bloATXRVCPv5c6ZDOC0hkDt98DclAHeGu3CBjYrmaBx67xQ3j+EPF95Wx/GK8pYtA1l5
+ DX5xrxkxunk6HZ6MhP0iXoFvhxek/5nTcntu35hh4JJsEnc2ABBqVKQB6Dqbq7LbrUuc
+ Wwe9vt5fgQX0wfbaeW2lObn2mQXJNORrCkZpXAH2XeMf9yJWRPIDwsHWmv3Vohq4FEZ8
+ J0mQ==
+X-Gm-Message-State: AOJu0YzpvfW7XQNowLYTY4FFNZ9lpY0of287oA7nAVpDnBMdLfTTYSwb
+ G96EKeLTPUjr42IyEjGpf3ACvZ7wL2KkNKQddwY=
+X-Google-Smtp-Source: AGHT+IGLrFelT3MRPHy5qMiurpAvX9IJvdAjCsDeLkBpPF7GhrQAQX14OrQpnEvRZcwr97EW+XACDw==
+X-Received: by 2002:a05:6808:ecb:b0:3b2:ee79:c0fd with SMTP id
+ q11-20020a0568080ecb00b003b2ee79c0fdmr7554968oiv.1.1697954438056; 
+ Sat, 21 Oct 2023 23:00:38 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.35
+ je17-20020a170903265100b001c728609574sm3999887plb.6.2023.10.21.23.00.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Oct 2023 23:00:36 -0700 (PDT)
+ Sat, 21 Oct 2023 23:00:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 04/90] target/sparc: Set TCG_GUEST_DEFAULT_MO
-Date: Sat, 21 Oct 2023 22:59:05 -0700
-Message-Id: <20231022060031.490251-5-richard.henderson@linaro.org>
+Cc: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v4 06/90] target/sparc: Define features via cpu-feature.h.inc
+Date: Sat, 21 Oct 2023 22:59:07 -0700
+Message-Id: <20231022060031.490251-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022060031.490251-1-richard.henderson@linaro.org>
 References: <20231022060031.490251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,51 +90,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Always use TSO, per the Oracle 2015 manual.
-This is slightly less restrictive than the TCG_MO_ALL default,
-and happens to match the i386 model, which will eliminate a few
-extra barriers on that host.
+Manage feature bits automatically.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/cpu.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ target/sparc/cpu.h             | 32 +++++++++++++-------------------
+ target/sparc/cpu-feature.h.inc | 19 +++++++++++++++++++
+ 2 files changed, 32 insertions(+), 19 deletions(-)
+ create mode 100644 target/sparc/cpu-feature.h.inc
 
 diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index b3a98f1d74..9fc5c401d2 100644
+index 9fc5c401d2..aaecbf0876 100644
 --- a/target/sparc/cpu.h
 +++ b/target/sparc/cpu.h
-@@ -6,6 +6,29 @@
- #include "exec/cpu-defs.h"
- #include "qemu/cpu-float.h"
+@@ -291,25 +291,19 @@ struct sparc_def_t {
+     uint32_t maxtl;
+ };
  
-+/*
-+ * From Oracle SPARC Architecture 2015:
-+ *
-+ *   Compatibility notes: The PSO memory model described in SPARC V8 and
-+ *   SPARC V9 compatibility architecture specifications was never implemented
-+ *   in a SPARC V9 implementation and is not included in the Oracle SPARC
-+ *   Architecture specification.
-+ *
-+ *   The RMO memory model described in the SPARC V9 specification was
-+ *   implemented in some non-Sun SPARC V9 implementations, but is not
-+ *   directly supported in Oracle SPARC Architecture 2015 implementations.
-+ *
-+ * Therefore always use TSO in QEMU.
-+ *
-+ * D.5 Specification of Partial Store Order (PSO)
-+ *   ... [loads] are followed by an implied MEMBAR #LoadLoad | #LoadStore.
-+ *
-+ * D.6 Specification of Total Store Order (TSO)
-+ *   ... PSO with the additional requirement that all [stores] are followed
-+ *   by an implied MEMBAR #StoreStore.
-+ */
-+#define TCG_GUEST_DEFAULT_MO  (TCG_MO_LD_LD | TCG_MO_LD_ST | TCG_MO_ST_ST)
+-#define CPU_FEATURE_FLOAT        (1 << 0)
+-#define CPU_FEATURE_FLOAT128     (1 << 1)
+-#define CPU_FEATURE_SWAP         (1 << 2)
+-#define CPU_FEATURE_MUL          (1 << 3)
+-#define CPU_FEATURE_DIV          (1 << 4)
+-#define CPU_FEATURE_FLUSH        (1 << 5)
+-#define CPU_FEATURE_FSQRT        (1 << 6)
+-#define CPU_FEATURE_FMUL         (1 << 7)
+-#define CPU_FEATURE_VIS1         (1 << 8)
+-#define CPU_FEATURE_VIS2         (1 << 9)
+-#define CPU_FEATURE_FSMULD       (1 << 10)
+-#define CPU_FEATURE_HYPV         (1 << 11)
+-#define CPU_FEATURE_CMT          (1 << 12)
+-#define CPU_FEATURE_GL           (1 << 13)
+-#define CPU_FEATURE_TA0_SHUTDOWN (1 << 14) /* Shutdown on "ta 0x0" */
+-#define CPU_FEATURE_ASR17        (1 << 15)
+-#define CPU_FEATURE_CACHE_CTRL   (1 << 16)
+-#define CPU_FEATURE_POWERDOWN    (1 << 17)
+-#define CPU_FEATURE_CASA         (1 << 18)
++#define FEATURE(X)  CPU_FEATURE_BIT_##X,
++enum {
++#include "cpu-feature.h.inc"
++};
 +
- #if !defined(TARGET_SPARC64)
- #define TARGET_DPREGS 16
- #else
++#undef FEATURE
++#define FEATURE(X)  CPU_FEATURE_##X = 1u << CPU_FEATURE_BIT_##X,
++
++enum {
++#include "cpu-feature.h.inc"
++};
++
++#undef FEATURE
+ 
+ #ifndef TARGET_SPARC64
+ #define CPU_DEFAULT_FEATURES (CPU_FEATURE_FLOAT | CPU_FEATURE_SWAP |  \
+diff --git a/target/sparc/cpu-feature.h.inc b/target/sparc/cpu-feature.h.inc
+new file mode 100644
+index 0000000000..d35fe90c92
+--- /dev/null
++++ b/target/sparc/cpu-feature.h.inc
+@@ -0,0 +1,19 @@
++FEATURE(FLOAT)
++FEATURE(FLOAT128)
++FEATURE(SWAP)
++FEATURE(MUL)
++FEATURE(DIV)
++FEATURE(FLUSH)
++FEATURE(FSQRT)
++FEATURE(FMUL)
++FEATURE(VIS1)
++FEATURE(VIS2)
++FEATURE(FSMULD)
++FEATURE(HYPV)
++FEATURE(CMT)
++FEATURE(GL)
++FEATURE(TA0_SHUTDOWN) /* Shutdown on "ta 0x0" */
++FEATURE(ASR17)
++FEATURE(CACHE_CTRL)
++FEATURE(POWERDOWN)
++FEATURE(CASA)
 -- 
 2.34.1
 
