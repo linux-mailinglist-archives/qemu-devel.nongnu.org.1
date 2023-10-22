@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC9A7D2417
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 18:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D9F7D23E8
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:55:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qual7-0004pv-3Y; Sun, 22 Oct 2023 11:52:58 -0400
+	id 1quan9-0000QX-VO; Sun, 22 Oct 2023 11:55:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1quakq-0004lS-0v; Sun, 22 Oct 2023 11:52:40 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1quamj-0008FE-In; Sun, 22 Oct 2023 11:54:40 -0400
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1quako-0008WI-CM; Sun, 22 Oct 2023 11:52:39 -0400
+ <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1quamg-0000Xv-0Q; Sun, 22 Oct 2023 11:54:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=350z0rMMun2JRDk6OAEQdA+JsY37n82We01MlpWX5pg=; b=ImWsx5WrIr08Ag7fyqW0t8hzmN
- 4SkNQT2tb8YkKezRdD2dJt0hInj/BqQCINRbuKRji9Xb5NS3sdcXUz+YqeRqKaeWK9OCqNiWqJmbs
- TC2f/iS/MJGY7BpqVqcigjPcWAWdzROV2yXQR8NkJ+abvMmdnjFur3vHnNyLtFj+2lRivWY37WdhS
- 6aCExMkok6D0szWPv7/X0vBDWvtDPInnSQ06A0m3fGu4dcX7bnNkCt00w1V5ve8JFPyNV+EnHN/iX
- CuGRG9eA1kzR/zyE7+/f+FllC9ON2Tg3VMifjng9c5d9xgO7dt6xAYHunYI06RCke6vyO35pOG1h8
- E7GiuGzw==;
+ bh=W0adFdXMEbi8j4klLNUE97TjOqmUyikyi07uSfzF8bk=; b=qpLAo7x6BHsqRoyzs5LkZJVNpU
+ rTqiz5+Kq2oN/1n+kFGKWDDux3umF5SQIwtEJ9v7BBHiQVLR1Rs0LiuNG7KzjEORDAW18ZjsxHFx1
+ msfIqKZXpZQ6XCKXgGFOx0UssR8BTar+zheMXWCYmiI0eKjaP0RFd3ihZBF8VvbZFIQDWgCAT53Nr
+ WIvL1++L7kuTZhujt3SbsK364oiN7GCurcqrSj1+0kBuQrk774oS0IKc8QvVEF3E8T9w41pygkm7U
+ IkTBTSrjRSFNyGb1MkrMrvWdF6sIRhZbA9j//JaP7l1yDFWkVrcjaRZSkCT9kmW7nK1/1t/vDswLw
+ Qu/TrZKg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1quakI-008TGM-En; Sun, 22 Oct 2023 15:52:06 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+ id 1quakI-00DCml-0V; Sun, 22 Oct 2023 15:53:38 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1quakH-001qYj-16; Sun, 22 Oct 2023 16:52:05 +0100
+ Linux)) id 1quakH-001qYo-1T; Sun, 22 Oct 2023 16:52:05 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,19 +83,19 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH 08/45] hw/arm/sbsa-ref: use pci_init_nic_devices()
-Date: Sun, 22 Oct 2023 16:51:23 +0100
-Message-Id: <20231022155200.436340-9-dwmw2@infradead.org>
+Subject: [PATCH 09/45] hw/arm/virt: use pci_init_nic_devices()
+Date: Sun, 22 Oct 2023 16:51:24 +0100
+Message-Id: <20231022155200.436340-10-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231022155200.436340-1-dwmw2@infradead.org>
 References: <20231022155200.436340-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -122,24 +122,24 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/arm/sbsa-ref.c | 4 +---
+ hw/arm/virt.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 3c7dfcd6dc..582a28ce92 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -691,9 +691,7 @@ static void create_pcie(SBSAMachineState *sms)
- 
-     pci = PCI_HOST_BRIDGE(dev);
-     if (pci->bus) {
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 15e74249f9..6b43b92b89 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1477,9 +1477,7 @@ static void create_pcie(VirtMachineState *vms)
+     pci->bypass_iommu = vms->default_bus_bypass_iommu;
+     vms->bus = pci->bus;
+     if (vms->bus) {
 -        for (i = 0; i < nb_nics; i++) {
 -            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
 -        }
 +        pci_init_nic_devices(pci->bus, mc->default_nic);
      }
  
-     pci_create_simple(pci->bus, -1, "bochs-display");
+     nodename = vms->pciehb_nodename = g_strdup_printf("/pcie@%" PRIx64, base);
 -- 
 2.40.1
 
