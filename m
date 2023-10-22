@@ -2,84 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54767D2693
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 00:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C6D7D26DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 00:47:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qugr2-0005z1-Ij; Sun, 22 Oct 2023 18:23:28 -0400
+	id 1quhCP-0005kO-GG; Sun, 22 Oct 2023 18:45:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qugr0-0005yn-NQ; Sun, 22 Oct 2023 18:23:26 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qugqz-0002pF-4w; Sun, 22 Oct 2023 18:23:26 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-53e2308198eso4027388a12.1; 
- Sun, 22 Oct 2023 15:23:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698013402; x=1698618202; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7Wl80BntDXLJ5alJtSfXBhCLSDKvstWU6Z6plzeUDXY=;
- b=gVhHDTHq68dFH87zIcXyFg3SaWzdJF6yO5Sficm3GoabmIIyZhvPAz2h12gskB6hym
- QSq4cMTeOHVzuSUBM2c+0V6PNMaWuvj6g0YnYKnwO1kwZnLnqYCDE2iMYICqs7PXsTbT
- wX6Cc2GMH8fqw7DuSQ/wAsYUf5X+x/ohy0FUZlUqQJNNbRWO/aZ0+yIlUJ/Znb7CPtrD
- 44z7UdONJ8r8u3H2YIvKnm9hv5XhXTJtpfNyWLAD3uPBuVViK1dluoIMdz+s7Dl0Gyv+
- 2guYD076oKaUEhARwspHg6/8CjxQuwIxL77t7TecZ8FstA5V2kTWRAz0RcCylXPOvugH
- 3sXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698013402; x=1698618202;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7Wl80BntDXLJ5alJtSfXBhCLSDKvstWU6Z6plzeUDXY=;
- b=aDP+Ue5covwwtmjm5khrXzme8OL+nzgHSGxVXJ7Vpl+U3d4M2LE9Gto+OQEW3FU2+e
- iYt7JpOhyMYdOytw3ltq/zy+K7JtbR3K5WRiCwlmv0P9hBwSabZSmQeOPjNOfF/MiuUv
- WCLOTp3yS9aWnnMAY5F40g8RrMcnRnvJ+HBj+vOpogRzBadLmCVS60VQmmmd1O7jPkMj
- dMz1Ll1AAvRhTq6DwZwAc2MIApHOSJEVM7HK8o9q7ShQ/hzeKwF3Mqo6KtmjRPQd4S/i
- 00Gw1al4nc2FhaEOYuMu+XL5LZA7vDUykpK++Wjo694YjzgcieuXJXxeBBsSztwXE0XA
- e0Fg==
-X-Gm-Message-State: AOJu0Yzoqnb5S/qOxJb17vH50Tm71v+qpv7JAWSWfRz794arXZxLh4cp
- cnjWDZRXBDTvhYmygRfICxQ=
-X-Google-Smtp-Source: AGHT+IEfnk8URp8iLoKNbfQ5GGkdS9jJItpHE8+j+i0zUJIf4ydJh51GF+OhJIX1lXwn86KQdBzFVQ==
-X-Received: by 2002:a17:907:7293:b0:9ae:4878:1172 with SMTP id
- dt19-20020a170907729300b009ae48781172mr5895556ejc.7.1698013402220; 
- Sun, 22 Oct 2023 15:23:22 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-013-189-152.77.13.pool.telefonica.de.
- [77.13.189.152]) by smtp.gmail.com with ESMTPSA id
- qx17-20020a170906fcd100b00997c1d125fasm5642275ejb.170.2023.10.22.15.23.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Oct 2023 15:23:21 -0700 (PDT)
-Date: Sun, 22 Oct 2023 22:23:14 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, qemu-ppc@nongnu.org,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v4 0/4] hw/audio/pcspk: Inline pcspk_init()
-In-Reply-To: <20231020171509.87839-1-philmd@linaro.org>
-References: <20231020171509.87839-1-philmd@linaro.org>
-Message-ID: <D0ECDB9D-F04B-46F5-BFE6-94257FB4FF65@gmail.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1quhCN-0005kC-7K
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 18:45:31 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1quhCK-0007Gf-Sb
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 18:45:30 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 265A875606C;
+ Mon, 23 Oct 2023 00:45:22 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 67C2F74705E; Mon, 23 Oct 2023 00:45:21 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 647087456A7;
+ Mon, 23 Oct 2023 00:45:21 +0200 (CEST)
+Date: Mon, 23 Oct 2023 00:45:21 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org
+cc: Gerd Hoffmann <kraxel@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 0/3] Misc ati-vga patches
+In-Reply-To: <cover.1696942148.git.balaton@eik.bme.hu>
+Message-ID: <2875d8e4-e0b0-2167-7f71-f4df3588e80d@eik.bme.hu>
+References: <cover.1696942148.git.balaton@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,37 +60,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 10 Oct 2023, BALATON Zoltan wrote:
+> Some misc patches I had laying around that could be upstreamed just to
+> clean up my tree a bit.
 
+Ping? Is Gerd still the maintainer of gfx or who else should be cc'd on 
+such patches?
 
-Am 20=2E Oktober 2023 17:15:04 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
-philmd@linaro=2Eorg>:
->Unfortunately v2 was merged as commit 40f8214fcd,
->so adapt v3 to clean the mess=2E
+Regards,
+BALATON Zoltan
+
+> BALATON Zoltan (3):
+>  ati-vga: Fix aperture sizes
+>  ati-vga: Support unaligned access to GPIO DDC registers
+>  ati-vga: Add 30 bit palette access register
 >
->Philippe Mathieu-Daud=C3=A9 (4):
->  hw/i386/pc: Pass Error** argument to pc_basic_device_init()
->  hw/i386/pc: Propagate error if HPET device creation failed
->  hw/i386/pc: Propagate error if PC_SPEAKER device creation failed
-
-I'm not sure if I'd do these first three patches=2E The reason is that mac=
-hines don't inherit from DeviceState and therefore don't have canonical met=
-hods such as realize() to propagate errors=2E Propagating the errors in the=
- machine init helper methods seem a bit ad-hoc to me=2E
-
->  hw/isa/i82378: Propagate error if PC_SPEAKER device creation failed
-
-The reason I suggested use of `errp` here is that it is already a paramete=
-r=2E
-
-Best regards,
-Bernhard
-
+> hw/display/ati.c      | 50 ++++++++++++++++++++++++++++---------------
+> hw/display/ati_dbg.c  |  1 +
+> hw/display/ati_int.h  |  1 +
+> hw/display/ati_regs.h |  1 +
+> 4 files changed, 36 insertions(+), 17 deletions(-)
 >
-> include/hw/i386/pc=2Eh |  5 +++--
-> hw/i386/pc=2Ec         | 15 +++++++++++----
-> hw/i386/pc_piix=2Ec    |  2 +-
-> hw/i386/pc_q35=2Ec     |  2 +-
-> hw/isa/i82378=2Ec      |  4 +++-
-> 5 files changed, 19 insertions(+), 9 deletions(-)
 >
 
