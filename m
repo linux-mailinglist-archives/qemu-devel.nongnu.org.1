@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D8C7D2409
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA017D23E6
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:55:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qualt-0006I5-IG; Sun, 22 Oct 2023 11:53:45 -0400
+	id 1qualI-0004tv-Oc; Sun, 22 Oct 2023 11:53:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1quala-0005P8-8D; Sun, 22 Oct 2023 11:53:26 -0400
+ id 1quaks-0004lr-G5; Sun, 22 Oct 2023 11:52:43 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+88d8721f4af1339c2fab+7364+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qualT-00004t-JH; Sun, 22 Oct 2023 11:53:25 -0400
+ id 1quako-00004w-ID; Sun, 22 Oct 2023 11:52:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=0g2a82VH4gMCB3QhQoMvbFi3kUWOmKpYhQ7p6DKI8gg=; b=boPXLVBXAzKUUr3G7Cyr0GsWcS
- eOWRpIEQqHcHJY5/+NZZjC8fqSH+EgmnOi0vBRmd0JVDOJ/UAwgySC6UkwBxHvU3RO1CBTnw3OGEa
- +uc+n5Opp7OmB4oRg+weNpxoYJHRURIdzekYQtQt3Lp9ZTxhwKgmHr4tHvr2rlKqKIvvIlx5aC/wA
- F6F/8WQt2IQ+F0ruD3fhDr7Mx8sQAmnBQRnKoK6tjXNRVThrjttCviFsi2XYL6Vkyps3P/wBNZZGE
- igNHrC/s0hAXaE8nUF0mlcDcMvdMSulhSof8Uztem7KoyOjytCs6GDQBYRRCgOlWuTVyM/hO4fPx2
- QDwZA5cw==;
+ bh=hC+8OBLQ6TWPZEybs0lVPrKizh4726sFY9u4hhRhbIY=; b=fDPPVNgKahIXw2sWosyOS59B6U
+ aezjPTyZg5+fu5TplWvw6F75WoG6fhRhbhZo1tvgknB8gYmGw4BH5gqwZ1FSJ7xGNQXfgAjX5RMNw
+ nbosUg8Rp1mLUvZjTqpkM0EHKwUy0mSfSCGcRoVYyA6oNfZCv04l1UV+mFHxifHvTDhQJYWVvGWIO
+ oTo5iVr7igGWHO9HWPwDPaWGbIcqeJ9840vpOlZWiSZ7cKqSqf8KOHheAaApZbRaKU/6H8GE28ddR
+ oGEUu/qQNaOhxyiIUnoJX1LNpVrHVx982edPVIFgPPedlOSJRvLFg2MWaIiVfudXKxHk1X055MMhl
+ HKli6jRg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1quakK-008TGp-Mm; Sun, 22 Oct 2023 15:52:08 +0000
+ id 1quakL-008TGq-DL; Sun, 22 Oct 2023 15:52:09 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1quakK-001qal-0u; Sun, 22 Oct 2023 16:52:08 +0100
+ Linux)) id 1quakK-001qap-1B; Sun, 22 Oct 2023 16:52:08 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,9 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH 36/45] hw/net/lasi_i82596: use qemu_configure_nic_device()
-Date: Sun, 22 Oct 2023 16:51:51 +0100
-Message-Id: <20231022155200.436340-37-dwmw2@infradead.org>
+Subject: [PATCH 37/45] hw/openrisc/openrisc_sim: use qemu_create_nic_device()
+Date: Sun, 22 Oct 2023 16:51:52 +0100
+Message-Id: <20231022155200.436340-38-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231022155200.436340-1-dwmw2@infradead.org>
 References: <20231022155200.436340-1-dwmw2@infradead.org>
@@ -122,26 +122,52 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/net/lasi_i82596.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/openrisc/openrisc_sim.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/hw/net/lasi_i82596.c b/hw/net/lasi_i82596.c
-index e37f7fabe9..c4c197aaa8 100644
---- a/hw/net/lasi_i82596.c
-+++ b/hw/net/lasi_i82596.c
-@@ -125,11 +125,10 @@ SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space,
-     static const MACAddr HP_MAC = {
-         .a = { 0x08, 0x00, 0x09, 0xef, 0x34, 0xf6 } };
+diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
+index 35da123aef..bffd6f721f 100644
+--- a/hw/openrisc/openrisc_sim.c
++++ b/hw/openrisc/openrisc_sim.c
+@@ -170,7 +170,7 @@ static void openrisc_create_fdt(Or1ksimState *state,
  
--    qemu_check_nic_model(&nd_table[0], TYPE_LASI_82596);
-     dev = qdev_new(TYPE_LASI_82596);
-     s = SYSBUS_I82596(dev);
-     s->state.irq = lan_irq;
--    qdev_set_nic_properties(dev, &nd_table[0]);
-+    qemu_configure_nic_device(dev, true, NULL);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     s->state.conf.macaddr = HP_MAC; /* set HP MAC prefix */
+ static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
+                                   int num_cpus, OpenRISCCPU *cpus[],
+-                                  int irq_pin, NICInfo *nd)
++                                  int irq_pin)
+ {
+     void *fdt = state->fdt;
+     DeviceState *dev;
+@@ -178,8 +178,10 @@ static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
+     char *nodename;
+     int i;
  
+-    dev = qdev_new("open_eth");
+-    qdev_set_nic_properties(dev, nd);
++    dev = qemu_create_nic_device("open_eth", true, NULL);
++    if (!dev) {
++        return;
++    }
+ 
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
+@@ -313,12 +315,10 @@ static void openrisc_sim_init(MachineState *machine)
+     openrisc_create_fdt(state, or1ksim_memmap, smp_cpus, machine->ram_size,
+                         machine->kernel_cmdline);
+ 
+-    if (nd_table[0].used) {
+-        openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
+-                              or1ksim_memmap[OR1KSIM_ETHOC].size,
+-                              smp_cpus, cpus,
+-                              OR1KSIM_ETHOC_IRQ, nd_table);
+-    }
++    openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
++                          or1ksim_memmap[OR1KSIM_ETHOC].size,
++                          smp_cpus, cpus,
++                          OR1KSIM_ETHOC_IRQ);
+ 
+     if (smp_cpus > 1) {
+         openrisc_sim_ompic_init(state, or1ksim_memmap[OR1KSIM_OMPIC].base,
 -- 
 2.40.1
 
