@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7F77D273E
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 01:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02247D2732
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 01:37:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qui0D-0007os-Sd; Sun, 22 Oct 2023 19:37:01 -0400
+	id 1qui09-0007e1-Vs; Sun, 22 Oct 2023 19:36:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qui08-0007em-Ov
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:36:56 -0400
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1qui07-0007aO-1M
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:36:55 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qui04-0008Sj-T8
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:36:56 -0400
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3b2f5aed39cso1975948b6e.1
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 16:36:51 -0700 (PDT)
+ id 1qui04-0008Sr-S7
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 19:36:54 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6bd32d1a040so2743435b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 16:36:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698017811; x=1698622611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DmQyG43mCrJ9kXy27QqhFZG91TAM/SqRMs/u01+5FU8=;
- b=vRf4ygMoipbmCh8S9e4iLESiIPDYClB2rbDkYKCNgccUToADBVASJcRA//mGsi3J4l
- jsLsqvAY67C8I/LZGy02rVHyF0EVud6neBHIhdpFBj/bgBZJfc8Lwiu9xvIdmVwsarZh
- TdYfP4bhqnb9HRlYzwJGPsWrAZyjLsuKhT7GxZ02rCPHEHQMKhk5LKUMdQAErGUkZ/8l
- R0lC2JjyYamqgy2IkZl8D78fDA6lHFdx0tu8wjZgeysvrDi3LqdhlBLmVfPQ05I0QFdG
- 92GCg3sdfJ25Q4kCl+j7rluxGuwHJ8cnehUUp5WFyDiO8sSm1O3xco4+kiM+tiZQ2+9g
- tFsw==
+ bh=clHdPvVHqlgLO1rrHzLrpHURBAaotB3FsnBjwuvMWcA=;
+ b=vKKshEbrzP6xwwRUQEkASGEA33asRnFxhPnwvlXtbyIcF2o890lD1ccbL2ck+x+M/R
+ 4jwVjgwOEsYei0bD965epFGP/M1G7k+9AWE942wvb3dU68hw6PocP519ZZy4xbmLF+Dd
+ 64LrOKFPNG2MIl0x2NpsrIMXNa8wbAQLrW29XrUGduKcp3XiDwh7u/wRugSgMYCryZ4o
+ hIcF2+8jrEtWAIdgabQeUkPdHoJ1ErMISyzEJXvkeKP2uh2xHjZDIlFyqxKuTwPPwztK
+ DgU0Mh3mdW/iLpKXIbGemqVVmdjcd3q+GjlxefuO3wegghm2IJZOdSvruO2R8BqFKJVw
+ wpAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698017811; x=1698622611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DmQyG43mCrJ9kXy27QqhFZG91TAM/SqRMs/u01+5FU8=;
- b=XaJ8yfv/v04V5XJu2IHfJNtNXTvJKaGN+8QtPSvENAhmOz8odzpZZSZc/Yx5J8n37F
- NJqqFQpQZzVHBJUAxj/eLarlBnQlVMeqCPfx6+4Ycd3xDk2P6YLcyab7DHrFJR6xVY4z
- 7WMEgvoLAaNTIp4jJ3EE3b9I8MHRSH3krhlBzPHGQFbQaYzrzTL1HPFRkNWZ7rMv2224
- GpNQE7++EXripI7BHmgpj2ujatMK87h4CNh/3o6fsIwp5jxxbZcyhAr6lSnUylOtj7BR
- ng6hO058vwBZEU4LrMcWYz0ocTAd1RzfhU8aOCfOfwsRaY7MHbdv0nNR26VpwBvqzRtq
- KLrA==
-X-Gm-Message-State: AOJu0YzJ+9Ef52KerYfFjAvvJDOqzV6qE3ayHAsUkU4eMlOStIzKKUOU
- stVvf3BIdCZlGK/iQMRP3kB4kFzalOE+AHaZdzc=
-X-Google-Smtp-Source: AGHT+IFGDefPQ+vRUfMWy1uGS1F1H3no3xk8flTQBqEOxKCy3RcKEOW7HsB7ENNzl1JzXUL3jfhYGA==
-X-Received: by 2002:a05:6808:ab7:b0:3ad:f5b7:d691 with SMTP id
- r23-20020a0568080ab700b003adf5b7d691mr8995670oij.18.1698017810828; 
- Sun, 22 Oct 2023 16:36:50 -0700 (PDT)
+ bh=clHdPvVHqlgLO1rrHzLrpHURBAaotB3FsnBjwuvMWcA=;
+ b=hzr7jqU+JlBfzAmixJgvRgyRiesZTzQ4YKLp2dmEmTd1zABQixvOwjGK6wUlkJa8I8
+ Hs9yuAvPgQW5nryLRwu5SfbLhyAZbYSCcAaoK5lOjFAJh/X1rRcZfmoG96U8vA7UBBxz
+ V0MGuPk98y1Rx03uASZii00agXYtRUR9mAbn8WgFv/cyHySV3LZViYdmOV2dJWeKFuWu
+ U6VgUNFPrnyZ2hjIf2NXOGtQjs2oy6qvOCyxbSsm2B3z8m4/T0prAGYGpz3P+gmFvJXJ
+ TeOyjTOq/xkReOh1h3tzXUgePplr1lFP1F2/IfV7l0839yQgeEhqDP+yJw0Hrx5PBnep
+ QJCA==
+X-Gm-Message-State: AOJu0Yw7wybDbxNTrjUbDdh9i1Rpemqe7Y/V8glY76z/JkQTEoORxNF/
+ B4IiSpBiJqMlHKHQsf2y5KpyG4m3G6ByDXjfKZU=
+X-Google-Smtp-Source: AGHT+IHrUtxO7hcS4f16CKeSe1ShECgv7Fag3D8T99OjGGUgNVea5I+JIcMklXpYUPWsdGXCiEKCWA==
+X-Received: by 2002:a05:6a00:238b:b0:6be:314c:16cb with SMTP id
+ f11-20020a056a00238b00b006be314c16cbmr9718098pfc.10.1698017811530; 
+ Sun, 22 Oct 2023 16:36:51 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  k26-20020a63ba1a000000b005b25a04cf8bsm4026861pgf.12.2023.10.22.16.36.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 16:36:50 -0700 (PDT)
+ Sun, 22 Oct 2023 16:36:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v5 90/94] target/sparc: Convert FCMP, FCMPE to decodetree
-Date: Sun, 22 Oct 2023 16:29:28 -0700
-Message-Id: <20231022232932.80507-91-richard.henderson@linaro.org>
+Subject: [PATCH v5 91/94] target/sparc: Move FPCMP* to decodetree
+Date: Sun, 22 Oct 2023 16:29:29 -0700
+Message-Id: <20231022232932.80507-92-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231022232932.80507-1-richard.henderson@linaro.org>
 References: <20231022232932.80507-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,221 +94,162 @@ Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |   7 ++
- target/sparc/translate.c  | 145 +++++++++++++++++++++++---------------
- 2 files changed, 96 insertions(+), 56 deletions(-)
+ target/sparc/insns.decode |  9 ++++
+ target/sparc/translate.c  | 90 +++++++++++++++++----------------------
+ 2 files changed, 47 insertions(+), 52 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index d4487e326a..f197bb0b36 100644
+index f197bb0b36..781c3cd7f7 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -296,6 +296,13 @@ FMOVRs      10 rd:5  110101 rs1:5    0 cond:3  00101 rs2:5
- FMOVRd      10 rd:5  110101 rs1:5    0 cond:3  00110 rs2:5
- FMOVRq      10 rd:5  110101 rs1:5    0 cond:3  00111 rs2:5
+@@ -327,6 +327,15 @@ FCMPEq      10 000 cc:2 110101 rs1:5  0 0101 0111 rs2:5
  
-+FCMPs       10 000 cc:2 110101 rs1:5  0 0101 0001 rs2:5
-+FCMPd       10 000 cc:2 110101 rs1:5  0 0101 0010 rs2:5
-+FCMPq       10 000 cc:2 110101 rs1:5  0 0101 0011 rs2:5
-+FCMPEs      10 000 cc:2 110101 rs1:5  0 0101 0101 rs2:5
-+FCMPEd      10 000 cc:2 110101 rs1:5  0 0101 0110 rs2:5
-+FCMPEq      10 000 cc:2 110101 rs1:5  0 0101 0111 rs2:5
+     BMASK       10 ..... 110110 ..... 0 0001 1001 .....    @r_r_r
+ 
++    FPCMPLE16   10 ..... 110110 ..... 0 0010 0000 .....    @r_r_r
++    FPCMPNE16   10 ..... 110110 ..... 0 0010 0010 .....    @r_r_r
++    FPCMPGT16   10 ..... 110110 ..... 0 0010 1000 .....    @r_r_r
++    FPCMPEQ16   10 ..... 110110 ..... 0 0010 1010 .....    @r_r_r
++    FPCMPLE32   10 ..... 110110 ..... 0 0010 0100 .....    @r_r_r
++    FPCMPNE32   10 ..... 110110 ..... 0 0010 0110 .....    @r_r_r
++    FPCMPGT32   10 ..... 110110 ..... 0 0010 1100 .....    @r_r_r
++    FPCMPEQ32   10 ..... 110110 ..... 0 0010 1110 .....    @r_r_r
 +
- {
-   [
-     EDGE8cc     10 ..... 110110 ..... 0 0000 0000 .....    @r_r_r
+     FMUL8x16    10 ..... 110110 ..... 0 0011 0001 .....    @r_r_r
+     FMUL8x16AU  10 ..... 110110 ..... 0 0011 0011 .....    @r_r_r
+     FMUL8x16AL  10 ..... 110110 ..... 0 0011 0101 .....    @r_r_r
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 42c3a51b38..8ba07fac2f 100644
+index 8ba07fac2f..42347ac8c0 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -5122,6 +5122,82 @@ TRANS(FMOVsfcc, 64, do_fmovfcc, a, false, gen_fmovs)
- TRANS(FMOVdfcc, 64, do_fmovfcc, a, false, gen_fmovd)
- TRANS(FMOVqfcc, 64, do_fmovfcc, a, true, gen_fmovq)
+@@ -64,6 +64,14 @@
+ # define gen_helper_wrpil(E, S)                 qemu_build_not_reached()
+ # define gen_helper_wrpstate(E, S)              qemu_build_not_reached()
+ # define gen_helper_fabsq                ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmpeq16             ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmpeq32             ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmpgt16             ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmpgt32             ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmple16             ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmple32             ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmpne16             ({ qemu_build_not_reached(); NULL; })
++# define gen_helper_fcmpne32             ({ qemu_build_not_reached(); NULL; })
+ # define gen_helper_fdtox                ({ qemu_build_not_reached(); NULL; })
+ # define gen_helper_fexpand              ({ qemu_build_not_reached(); NULL; })
+ # define gen_helper_fmul8sux16           ({ qemu_build_not_reached(); NULL; })
+@@ -4944,6 +4952,34 @@ TRANS(FPACK32, VIS1, do_ddd, a, gen_op_fpack32)
+ TRANS(FALIGNDATAg, VIS1, do_ddd, a, gen_op_faligndata)
+ TRANS(BSHUFFLE, VIS2, do_ddd, a, gen_op_bshuffle)
  
-+static bool do_fcmps(DisasContext *dc, arg_FCMPs *a, bool e)
-+{
-+    TCGv_i32 src1, src2;
-+
-+    if (avail_32(dc) && a->cc != 0) {
-+        return false;
-+    }
-+    if (gen_trap_ifnofpu(dc)) {
-+        return true;
-+    }
-+
-+    gen_op_clear_ieee_excp_and_FTT();
-+    src1 = gen_load_fpr_F(dc, a->rs1);
-+    src2 = gen_load_fpr_F(dc, a->rs2);
-+    if (e) {
-+        gen_op_fcmpes(a->cc, src1, src2);
-+    } else {
-+        gen_op_fcmps(a->cc, src1, src2);
-+    }
-+    return advance_pc(dc);
-+}
-+
-+TRANS(FCMPs, ALL, do_fcmps, a, false)
-+TRANS(FCMPEs, ALL, do_fcmps, a, true)
-+
-+static bool do_fcmpd(DisasContext *dc, arg_FCMPd *a, bool e)
++static bool do_rdd(DisasContext *dc, arg_r_r_r *a,
++                   void (*func)(TCGv, TCGv_i64, TCGv_i64))
 +{
 +    TCGv_i64 src1, src2;
++    TCGv dst;
 +
-+    if (avail_32(dc) && a->cc != 0) {
-+        return false;
-+    }
 +    if (gen_trap_ifnofpu(dc)) {
 +        return true;
 +    }
 +
-+    gen_op_clear_ieee_excp_and_FTT();
++    dst = gen_dest_gpr(dc, a->rd);
 +    src1 = gen_load_fpr_D(dc, a->rs1);
 +    src2 = gen_load_fpr_D(dc, a->rs2);
-+    if (e) {
-+        gen_op_fcmped(a->cc, src1, src2);
-+    } else {
-+        gen_op_fcmpd(a->cc, src1, src2);
-+    }
++    func(dst, src1, src2);
++    gen_store_gpr(dc, a->rd, dst);
 +    return advance_pc(dc);
 +}
 +
-+TRANS(FCMPd, ALL, do_fcmpd, a, false)
-+TRANS(FCMPEd, ALL, do_fcmpd, a, true)
++TRANS(FPCMPLE16, VIS1, do_rdd, a, gen_helper_fcmple16)
++TRANS(FPCMPNE16, VIS1, do_rdd, a, gen_helper_fcmpne16)
++TRANS(FPCMPGT16, VIS1, do_rdd, a, gen_helper_fcmpgt16)
++TRANS(FPCMPEQ16, VIS1, do_rdd, a, gen_helper_fcmpeq16)
 +
-+static bool do_fcmpq(DisasContext *dc, arg_FCMPq *a, bool e)
-+{
-+    if (avail_32(dc) && a->cc != 0) {
-+        return false;
-+    }
-+    if (gen_trap_ifnofpu(dc)) {
-+        return true;
-+    }
-+    if (gen_trap_float128(dc)) {
-+        return true;
-+    }
++TRANS(FPCMPLE32, VIS1, do_rdd, a, gen_helper_fcmple32)
++TRANS(FPCMPNE32, VIS1, do_rdd, a, gen_helper_fcmpne32)
++TRANS(FPCMPGT32, VIS1, do_rdd, a, gen_helper_fcmpgt32)
++TRANS(FPCMPEQ32, VIS1, do_rdd, a, gen_helper_fcmpeq32)
 +
-+    gen_op_clear_ieee_excp_and_FTT();
-+    gen_op_load_fpr_QT0(QFPREG(a->rs1));
-+    gen_op_load_fpr_QT1(QFPREG(a->rs2));
-+    if (e) {
-+        gen_op_fcmpeq(a->cc);
-+    } else {
-+        gen_op_fcmpq(a->cc);
-+    }
-+    return advance_pc(dc);
-+}
-+
-+TRANS(FCMPq, ALL, do_fcmpq, a, false)
-+TRANS(FCMPEq, ALL, do_fcmpq, a, true)
-+
- #define CHECK_IU_FEATURE(dc, FEATURE)                      \
-     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
-         goto illegal_insn;
-@@ -5132,15 +5208,7 @@ TRANS(FMOVqfcc, 64, do_fmovfcc, a, true, gen_fmovq)
- /* before an instruction, dc->pc must be static */
- static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ static bool do_env_ddd(DisasContext *dc, arg_r_r_r *a,
+                        void (*func)(TCGv_i64, TCGv_env, TCGv_i64, TCGv_i64))
  {
--    unsigned int opc, rs1, rs2, rd;
--    TCGv cpu_src1 __attribute__((unused));
--    TCGv_i32 cpu_src1_32, cpu_src2_32;
--    TCGv_i64 cpu_src1_64, cpu_src2_64;
--    TCGv_i32 cpu_dst_32 __attribute__((unused));
--    TCGv_i64 cpu_dst_64 __attribute__((unused));
--
--    opc = GET_FIELD(insn, 0, 1);
--    rd = GET_FIELD(insn, 2, 6);
-+    unsigned int opc = GET_FIELD(insn, 0, 1);
- 
-     switch (opc) {
-     case 0:
-@@ -5150,61 +5218,22 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-     case 2:                     /* FPU & Logical Operations */
-         {
-             unsigned int xop = GET_FIELD(insn, 7, 12);
--            TCGv cpu_dst __attribute__((unused)) = tcg_temp_new();
- 
-             if (xop == 0x34) {   /* FPU Operations */
-                 goto illegal_insn; /* in decodetree */
-             } else if (xop == 0x35) {   /* FPU Operations */
--                if (gen_trap_ifnofpu(dc)) {
--                    goto jmp_insn;
--                }
--                gen_op_clear_ieee_excp_and_FTT();
--                rs1 = GET_FIELD(insn, 13, 17);
--                rs2 = GET_FIELD(insn, 27, 31);
--                xop = GET_FIELD(insn, 18, 26);
--
--                switch (xop) {
--                    case 0x51: /* fcmps, V9 %fcc */
--                        cpu_src1_32 = gen_load_fpr_F(dc, rs1);
--                        cpu_src2_32 = gen_load_fpr_F(dc, rs2);
--                        gen_op_fcmps(rd & 3, cpu_src1_32, cpu_src2_32);
--                        break;
--                    case 0x52: /* fcmpd, V9 %fcc */
--                        cpu_src1_64 = gen_load_fpr_D(dc, rs1);
--                        cpu_src2_64 = gen_load_fpr_D(dc, rs2);
--                        gen_op_fcmpd(rd & 3, cpu_src1_64, cpu_src2_64);
--                        break;
--                    case 0x53: /* fcmpq, V9 %fcc */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        gen_op_load_fpr_QT0(QFPREG(rs1));
--                        gen_op_load_fpr_QT1(QFPREG(rs2));
--                        gen_op_fcmpq(rd & 3);
--                        break;
--                    case 0x55: /* fcmpes, V9 %fcc */
--                        cpu_src1_32 = gen_load_fpr_F(dc, rs1);
--                        cpu_src2_32 = gen_load_fpr_F(dc, rs2);
--                        gen_op_fcmpes(rd & 3, cpu_src1_32, cpu_src2_32);
--                        break;
--                    case 0x56: /* fcmped, V9 %fcc */
--                        cpu_src1_64 = gen_load_fpr_D(dc, rs1);
--                        cpu_src2_64 = gen_load_fpr_D(dc, rs2);
--                        gen_op_fcmped(rd & 3, cpu_src1_64, cpu_src2_64);
--                        break;
--                    case 0x57: /* fcmpeq, V9 %fcc */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        gen_op_load_fpr_QT0(QFPREG(rs1));
--                        gen_op_load_fpr_QT1(QFPREG(rs2));
--                        gen_op_fcmpeq(rd & 3);
--                        break;
--                    default:
--                        goto illegal_insn;
--                }
-+                goto illegal_insn; /* in decodetree */
+@@ -5226,11 +5262,9 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
              } else if (xop == 0x36) {
  #ifdef TARGET_SPARC64
                  /* VIS */
-+                TCGv_i64 cpu_src1_64, cpu_src2_64, cpu_dst_64;
-+                TCGv_i32 cpu_dst_32;
-+                TCGv cpu_dst = tcg_temp_new();
+-                TCGv_i64 cpu_src1_64, cpu_src2_64, cpu_dst_64;
++                TCGv_i64 cpu_src1_64, cpu_dst_64;
+                 TCGv_i32 cpu_dst_32;
+-                TCGv cpu_dst = tcg_temp_new();
                  int opf = GET_FIELD_SP(insn, 5, 13);
--                rs1 = GET_FIELD(insn, 13, 17);
--                rs2 = GET_FIELD(insn, 27, 31);
-+                int rs1 = GET_FIELD(insn, 13, 17);
-+                int rs2 = GET_FIELD(insn, 27, 31);
-+                int rd = GET_FIELD(insn, 2, 6);
-+
-                 if (gen_trap_ifnofpu(dc)) {
-                     goto jmp_insn;
-                 }
-@@ -5389,14 +5418,18 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-         goto illegal_insn; /* in decodetree */
-     }
-     advance_pc(dc);
-+#ifdef TARGET_SPARC64
-  jmp_insn:
-+#endif
-     return;
-  illegal_insn:
-     gen_exception(dc, TT_ILL_INSN);
-     return;
-+#ifdef TARGET_SPARC64
-  nfpu_insn:
-     gen_op_fpexception_im(dc, FSR_FTT_UNIMPFPOP);
-     return;
-+#endif
- }
+-                int rs1 = GET_FIELD(insn, 13, 17);
+                 int rs2 = GET_FIELD(insn, 27, 31);
+                 int rd = GET_FIELD(insn, 2, 6);
  
- static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+@@ -5306,63 +5340,15 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                 case 0x03a: /* VIS I fpack32 */
+                 case 0x048: /* VIS I faligndata */
+                 case 0x04c: /* VIS II bshuffle */
+-                    g_assert_not_reached();  /* in decodetree */
+                 case 0x020: /* VIS I fcmple16 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmple16(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x022: /* VIS I fcmpne16 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmpne16(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x024: /* VIS I fcmple32 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmple32(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x026: /* VIS I fcmpne32 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmpne32(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x028: /* VIS I fcmpgt16 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmpgt16(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x02a: /* VIS I fcmpeq16 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmpeq16(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x02c: /* VIS I fcmpgt32 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmpgt32(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x02e: /* VIS I fcmpeq32 */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                    cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                    gen_helper_fcmpeq32(cpu_dst, cpu_src1_64, cpu_src2_64);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
++                    g_assert_not_reached();  /* in decodetree */
+                 case 0x03b: /* VIS I fpack16 */
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     cpu_src1_64 = gen_load_fpr_D(dc, rs2);
 -- 
 2.34.1
 
