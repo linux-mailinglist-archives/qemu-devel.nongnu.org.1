@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5AE7D2228
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8BB7D2225
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 11:24:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quUgU-0005q7-6S; Sun, 22 Oct 2023 05:23:47 -0400
+	id 1quUgY-0006OX-5K; Sun, 22 Oct 2023 05:23:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgP-00057c-Dq
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgV-00065Q-Dt
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgN-0000Pw-PD
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1quUgS-0000QQ-8L
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 05:23:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697966619;
+ s=mimecast20190719; t=1697966623;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Pzl+3SpXCzlVlixQWa1M8uUNysQnsBwV7t6Y2e5urE4=;
- b=C0PvUg2Cp2p267pgDHst6NK1HYqxdxDeFuqK86fy5pLgSAKIxS71WaxqIdP60Yo2hDLMAk
- W67ybYOU6xNSsSWZzCXaQV0LJfAkS5HvOljVUV+9ljPOe0d9bEBYuQAr4jalgsSPzcG4N4
- Ydk8x3/PRcXY2kGu3NauI49JxDpno4c=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Gq5a9cgklusamAnqr6u4RtpwEQcuiHF1hB7JetLkRXQ=;
+ b=exY49Mqo8X3kuozCfCdDhumLY/5SDkUyX+aOgFaEG1S+6EekaMYY5SXeDQLiqvt/agm2t0
+ aPTA+FIfB0rXEf3xWtCLYPdUV9xpHRGDHPILcJjQZ7yxTyX5xiInmrhoTXQnQVIQ0IWVfZ
+ NPGeTW5289RBOFh6RqbD7I0kRq9HR2k=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-N1ibNbjFNkOrHDFyCJzgWA-1; Sun, 22 Oct 2023 05:23:37 -0400
-X-MC-Unique: N1ibNbjFNkOrHDFyCJzgWA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32da47641b5so1033771f8f.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:23:37 -0700 (PDT)
+ us-mta-359-5mZ_5GAQMh6_clwyHGV2Iw-1; Sun, 22 Oct 2023 05:23:42 -0400
+X-MC-Unique: 5mZ_5GAQMh6_clwyHGV2Iw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4084d08235fso14307795e9.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 02:23:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697966615; x=1698571415;
+ d=1e100.net; s=20230601; t=1697966620; x=1698571420;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pzl+3SpXCzlVlixQWa1M8uUNysQnsBwV7t6Y2e5urE4=;
- b=p6G1s4sLIZFxIIM4A8INAP6pL5Vq5YwoSFO1j8JgwAbtQ2w0SYnaYk2ZD5TiCHqGqD
- eN/3red5O5fc/kIGP1joL8SJh8Zra7zsIZxHVNa0fpJCM7QNZiolxxfR2zNPzf03G3on
- AhKoLI9vwYMeSYLH9FtnmTf/J2RIHRQ8qz2Oy9BvnQq9pzrOXp6WseMYe6AmmV1oaA19
- sde900uqIC4zE89NuotSvNU7zzO14xKIdpKTEkuJ9JAEmo6b4/3Qe8mb6xYbJ2pnlGgd
- buwphS5I+VcLdtX2C7bAGoJg4hA+oHM5urspltrKA2J6x7oEoBz+h+ZWcRQ11qpdWKo+
- cGdA==
-X-Gm-Message-State: AOJu0Yx2BYm584EBB8S+4X/14OMtg5IBLrdECwQEpAW3e6XT2YqJ8fQ7
- UfIpz7X8MgDnqqKAfTVyEFHkO+PbGAFla0l30t7K1Tctdz9BPFBsiuW+rS4YbsiWLn8kxPKXsiw
- aKbYD29we7fSZ3eVjDI8PzfKO2usozQSnkjznaTWSg/jZTvi4n49lpGP52qV4tv2oTn+z
-X-Received: by 2002:a5d:664c:0:b0:32d:93aa:3d63 with SMTP id
- f12-20020a5d664c000000b0032d93aa3d63mr4631557wrw.69.1697966615529; 
- Sun, 22 Oct 2023 02:23:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvc9KUMTAncOmKvVGtz92vaBolbkXoWoNm1hAtcn4/6CB324NPi6cPb/tDr0snC82D7uEqqQ==
-X-Received: by 2002:a5d:664c:0:b0:32d:93aa:3d63 with SMTP id
- f12-20020a5d664c000000b0032d93aa3d63mr4631541wrw.69.1697966615235; 
- Sun, 22 Oct 2023 02:23:35 -0700 (PDT)
+ bh=Gq5a9cgklusamAnqr6u4RtpwEQcuiHF1hB7JetLkRXQ=;
+ b=tjDN+gcM+HkpzsW4k7Xw3s6wo1yV7XPI0+K8Hd9yxb2q//l50sWdOjgPayrsRPOibf
+ orAm61V4v3Z8ErAfKsPVNJmI87vWRcoEwPDs2lIPk9CIOX0UM0xj6GCHh8vh77gDqv1s
+ VUFasc2j4QGaBpKJC+8CzCF3p5Zx1eeqcxZrmC1z/TVSJMkjVDGxHHlreP2bIzfIvdMD
+ 1/CVP7RfV7mzVBfzRmFDwnWpGh8M6Bp9qfHS9RQEUAGB73cpo3DoghaoPcMnICDjgzB2
+ 9lVmjr/qudGXXGdlY+l03Bdxc0yNnQlW9y5hGBkB72HO/YisdbCTlpYIi6ewiIQdrmyg
+ zEig==
+X-Gm-Message-State: AOJu0YzRcYsSe8rO64mJy3Uks1KqWCFnmonNuAH52LdOAiCWqpWAoYJ/
+ Porr+pjW+GV/c5ASeOiwXvQk6fbyEEBRIxNIuaptBRStrvJRx8show8gyqM4XXJZ+Ahh+LuqdHH
+ GesUZKtsjIVto1UDxpi0PxRjIrqrOXWwSLlISAoPN8PczSjIWKWs5s8ItV5BBXpPNsF5O
+X-Received: by 2002:a05:6000:152:b0:31f:8999:c409 with SMTP id
+ r18-20020a056000015200b0031f8999c409mr4621955wrx.66.1697966620618; 
+ Sun, 22 Oct 2023 02:23:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQZL0dmF1bSYTh4eFksYKlo1FBpyH9TrDLkKPp8SEf2JyAYZl2WRcsXj2GavRL9HrN/fAFIQ==
+X-Received: by 2002:a05:6000:152:b0:31f:8999:c409 with SMTP id
+ r18-20020a056000015200b0031f8999c409mr4621940wrx.66.1697966620294; 
+ Sun, 22 Oct 2023 02:23:40 -0700 (PDT)
 Received: from redhat.com ([2.52.1.53]) by smtp.gmail.com with ESMTPSA id
- r6-20020a5d6946000000b0032da4c98ab2sm5274424wrw.35.2023.10.22.02.23.33
+ r4-20020adff704000000b0032d88e370basm5295065wrp.34.2023.10.22.02.23.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Oct 2023 02:23:34 -0700 (PDT)
-Date: Sun, 22 Oct 2023 05:23:31 -0400
+ Sun, 22 Oct 2023 02:23:39 -0700 (PDT)
+Date: Sun, 22 Oct 2023 05:23:35 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -67,8 +67,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v3 22/62] hw/i386/pc: Merge two if statements into one
-Message-ID: <9c91051119f8c493a5802c4f5347516679e55552.1697966402.git.mst@redhat.com>
+Subject: [PULL v3 23/62] hw/i386/pc_piix: Allow for setting properties before
+ realizing PIIX3 south bridge
+Message-ID: <fe9a7350c2900c9609e7a8ce1e042e3458a245e2.1697966402.git.mst@redhat.com>
 References: <cover.1697966402.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,57 +103,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-By being the only entity assigning a non-NULL value to "rtc_irq", the first if
-statement determines whether the second if statement is executed. So merge the
-two statements into one.
+The next patches will need to take advantage of it.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20231007123843.127151-2-shentey@gmail.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20231007123843.127151-3-shentey@gmail.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ hw/i386/pc_piix.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index bb3854d1d0..7e6c4dc526 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1199,7 +1199,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-     DeviceState *hpet = NULL;
-     int pit_isa_irq = 0;
-     qemu_irq pit_alt_irq = NULL;
--    qemu_irq rtc_irq = NULL;
-     ISADevice *pit = NULL;
-     MemoryRegion *ioport80_io = g_new(MemoryRegion, 1);
-     MemoryRegion *ioportF0_io = g_new(MemoryRegion, 1);
-@@ -1219,6 +1218,8 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-      */
-     if (pcms->hpet_enabled && (!kvm_irqchip_in_kernel() ||
-                                kvm_has_pit_state2())) {
-+        qemu_irq rtc_irq;
-+
-         hpet = qdev_try_new(TYPE_HPET);
-         if (!hpet) {
-             error_report("couldn't create HPET device");
-@@ -1243,9 +1244,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-         pit_isa_irq = -1;
-         pit_alt_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_PIT_INT);
-         rtc_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_RTC_INT);
--    }
--
--    if (rtc_irq) {
-         qdev_connect_gpio_out(DEVICE(rtc_state), 0, rtc_irq);
-     } else {
-         uint32_t irq = object_property_get_uint(OBJECT(rtc_state),
-@@ -1253,6 +1251,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-                                                 &error_fatal);
-         isa_connect_gpio_out(rtc_state, 0, irq);
-     }
-+
-     object_property_add_alias(OBJECT(pcms), "rtc-time", OBJECT(rtc_state),
-                               "date");
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index e36a3262b2..6d2f5509e6 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -264,7 +264,8 @@ static void pc_init1(MachineState *machine,
+         PIIX3State *piix3;
+         PCIDevice *pci_dev;
  
+-        pci_dev = pci_create_simple_multifunction(pci_bus, -1, TYPE_PIIX3_DEVICE);
++        pci_dev = pci_new_multifunction(-1, TYPE_PIIX3_DEVICE);
++        pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
+ 
+         if (xen_enabled()) {
+             pci_device_set_intx_routing_notifier(
 -- 
 MST
 
