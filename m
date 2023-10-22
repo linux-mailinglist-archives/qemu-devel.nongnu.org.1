@@ -2,96 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1767D227F
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 12:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67EDB7D228F
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 12:24:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quVQn-0004tv-85; Sun, 22 Oct 2023 06:11:37 -0400
+	id 1quVbR-0002gl-4Y; Sun, 22 Oct 2023 06:22:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1quVQk-0004tX-Eo
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 06:11:34 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1quVQh-0007eB-VZ
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 06:11:33 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso1554094f8f.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 03:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697969489; x=1698574289; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=w8JFUCot8S9eu44AKIhTfrXVeCLin4WSAbWUtGjztnA=;
- b=sC1QGPZ8REAJPLKe0PUyelzRZ4jkh1mlcTzVDwVYsdoGJG6wR3i9P5qt1eJsxa7KRF
- W4gqsTpXSVnXuiiNSIlr6ON1DKWMggWZ8WeAd/f0L4o5irg7zphHK0efPoaR7MVbUJ6Z
- 6UCA2zkRt7k5oF7pToY/WDdqmlS/yZtAw+OUSfPyifDpelAwa/ZI+DX4c8nQmoAYEOUs
- 8CPsLxCUkDPacNJ0z8fYLiB2AwY78x4gXYi4O3uTUwNhFYcM6ARbOJPsVSphXoJTZXz0
- Lnq7JYn24XnKp25kWdWvn6NoTSe1JWRu+rEzlCoiQf6rAuyaA1ysh8sXLj9T87I6rykU
- QLcQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1quVbO-0002cY-Rg
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 06:22:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1quVbL-00017L-OB
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 06:22:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697970150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=D7zvgOly6LMBYYcc1BiE4ZrjS+b/8TNyHgDNDFtUNKk=;
+ b=L3Jdl4a/aE23b9kh24iGhXzpW7ShUNW4UMRdtaELXhVpbHqJDzOCp2w0KhMzb9s8JHtx6/
+ rZroPbfggqMT2l1te6lJaBYUJ7pJohGR1QnOcEAvifDoq3CL8gEKj3CsBstW0AUn7M25QO
+ kGMP3dNCoCxw/q4DzdBvuIuCuArC5hc=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-487-Fk-Na50zOtaUXWeEunnKvA-1; Sun, 22 Oct 2023 06:22:18 -0400
+X-MC-Unique: Fk-Na50zOtaUXWeEunnKvA-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ a1e0cc1a2514c-7b6dd44b2easo1648772241.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 03:22:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697969489; x=1698574289;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w8JFUCot8S9eu44AKIhTfrXVeCLin4WSAbWUtGjztnA=;
- b=F8bAyA7SMno8eUg8KE9LRlLB/OcU73AYNl5LbofXvMy3QjDuD2KqeNUzj2IgLwfjJo
- 6VQAdhaH8DeFdhDuvreLPEtSE96zuCsVjcEziFyhdGi8v5PT5SQcFKFPJ8kZjSCyixIF
- HPcGCBpY3c0xahm+nof1abihUjskkEPd6mG0efU+jdfyMsPoPf4RJFkRzQoBPIdRHvPX
- MWySuZhewtPbOV+SZ7BvwmCc9zJGxkyFUy+WgwTGGb3VOmOVecMcidA70IKzzl6NcMQB
- p2iMqgzTdsdqM3bVP0n/WERYGNeU/aUbH1dXoP34G88qIIXOmszlPVxRga9Bjm56ONi3
- v/lA==
-X-Gm-Message-State: AOJu0Yw7nxZW01QClFO6jjHR7C8g+F6pMNpAJVVNiM6xRtumrQ9BLS8x
- +M3d1QzqbQr9YrGrdVVTDm9UNA==
-X-Google-Smtp-Source: AGHT+IH+GyMgXZDKR3gwjIl4BEO9/O4v0mVLVIDvnWqcZRx1PXY/pNTeUHYn0xFnycCX2ut8A+qOqw==
-X-Received: by 2002:adf:e848:0:b0:32d:a404:404e with SMTP id
- d8-20020adfe848000000b0032da404404emr4689096wrn.60.1697969489362; 
- Sun, 22 Oct 2023 03:11:29 -0700 (PDT)
-Received: from meli.delivery (adsl-141.37.6.162.tellas.gr. [37.6.162.141])
- by smtp.gmail.com with ESMTPSA id
- p11-20020a5d68cb000000b003247d3e5d99sm5368951wrw.55.2023.10.22.03.11.28
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 22 Oct 2023 03:11:28 -0700 (PDT)
-Date: Sun, 22 Oct 2023 12:58:44 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
- Gerd Hoffmann <kraxel@redhat.com>
-Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- "K=?UTF-8?B?xZE=?= v=?UTF-8?B?w6E=?= g=?UTF-8?B?w7M=?= ,
- Zolt=?UTF-8?B?w6E=?= n" <DirtY.iCE.hu@gmail.com>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v12 02/11] Add virtio-sound-pci device
-User-Agent: meli 0.8.2
-References: <cover.1697709630.git.manos.pitsidianakis@linaro.org>
- <f68a8f30642a95f2a64a943beede32815c43fcdb.1697709630.git.manos.pitsidianakis@linaro.org>
- <235cbc94-8de9-4960-bb4d-3d861784436a@t-online.de>
-In-Reply-To: <235cbc94-8de9-4960-bb4d-3d861784436a@t-online.de>
-Message-ID: <2xdn2.m5cl6s6mv22s@linaro.org>
+ d=1e100.net; s=20230601; t=1697970138; x=1698574938;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=D7zvgOly6LMBYYcc1BiE4ZrjS+b/8TNyHgDNDFtUNKk=;
+ b=ZWsN8GoRIVB87gNQOMCxSCQ8tJ6XqsggOF8mZieYVuCD1DJDxeSmZImfqq7ap2AWMt
+ l8PSPquo29Iti4q4gSUofqtZtsvnhG8AhWG9JmyZ3PFiy80YFeDmt8bYmUhqCd0ucBWF
+ 9wkNrX+teQwxOPfPdYgnD7sKmwo8krx9l+sHnDsI3CyUfFvmXt9AoixTjTVw3vsrSAkT
+ FM88em/V2eG/VeC860QsdiYSjORWOAIZQks2HhWKDWqY3ge72eJk9+0WVFhbdBMWsM6l
+ iylKbfAwjSLTEOabphMmtzizrYuBO871r+2LlopRwv8XxdYReNbVyQwF696UeCLLJgJ8
+ BUcg==
+X-Gm-Message-State: AOJu0YxlI1TkV8AUKtCjloK6HBiJZQWf8lm8MI9uu0aj/3aZg4OEKAA/
+ ZtwEb81QmF8V3PyLSruLPCkdjg739b3vRyg5DxjlgjToOoRNMNhkm4au7CKckAzRSngJcvMaLHo
+ L1JlGBgsRrNBdJ9EMqiVFklLUSSGK9EA=
+X-Received: by 2002:a67:b006:0:b0:457:ba55:b913 with SMTP id
+ z6-20020a67b006000000b00457ba55b913mr5502765vse.34.1697970138033; 
+ Sun, 22 Oct 2023 03:22:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWHjpRFOASBHIwclgaR0wOT3CTheXtVHMr4kPrj/wAfoEfM4qZAPcLQno/PsEKF+nHTgqALX0GTZnxiwQWP8k=
+X-Received: by 2002:a67:b006:0:b0:457:ba55:b913 with SMTP id
+ z6-20020a67b006000000b00457ba55b913mr5502755vse.34.1697970137728; Sun, 22 Oct
+ 2023 03:22:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x435.google.com
+References: <20231019182921.1772928-1-richard.henderson@linaro.org>
+ <20231019182921.1772928-4-richard.henderson@linaro.org>
+ <5f54e3e1-1c90-0249-04f4-df522e292abe@linaro.org>
+ <03ba02fd-fade-4409-be16-2f81a5690b4c@redhat.com>
+ <4339bf9e-ad25-41b7-91cd-1da8c65d782d@linaro.org>
+In-Reply-To: <4339bf9e-ad25-41b7-91cd-1da8c65d782d@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sun, 22 Oct 2023 12:22:07 +0200
+Message-ID: <CABgObfaZgav6tGbuykNqtxMezCa7f2Gtzx_ER30upgGUCX7W=Q@mail.gmail.com>
+Subject: Re: [PATCH 3/7] target/i386: Use tcg_gen_ext_tl
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>, 
+ Laurent Vivier <laurent@vivier.eu>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>
+Content-Type: multipart/alternative; boundary="000000000000e629b106084b7a9f"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,18 +100,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Volker,
+--000000000000e629b106084b7a9f
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 21 Oct 2023 12:07, Volker Rümelin <vr_qemu@t-online.de> wrote:
->the virtio-sound device alias doesn't work.
+Il dom 22 ott 2023, 03:29 Richard Henderson <richard.henderson@linaro.org>
+ha scritto:
 
-Yes, there's no virtio-sound alias hence why it does not work.
+> >   static TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp size, bool sign)
+> >   {
+> > -    if (memop_size(size) == TARGET_LONG_BITS) {
+> > +    if (size == MO_TL) {
+>
+> Yep.
+>
+> > I can add it in my x86 series if desirable ...
+>
+> That's probably fine; you may well get your PR in before my next.
+>
 
-I will wait a bit before spinning a new version of the series because 
-the goal post keeps moving forward everytime there's a new version while 
-there is still stuff to address. If this is the only change I'd like to 
-hear from Gerd if this is ok to merge otherwise, and perhaps I can send 
-a new version of this patch only?
+I will probably keep only SHA instructions for 8.2 (plus the VEX todos and
+the reorganized checks) and delay the rest.
 
-Manos
+There are a bunch of things I would do in a slightly different manner now,
+so it's better to clean up the generic x86 decoder code before implementing
+the less orthogonal instruction formats from the one-byte. I should have
+time to finish opcodes 0xC0 to 0xFF over the Christmas break in time for
+9.0. :)
+
+Paolo
+
+
+
+> >>> +    tcg_gen_ext_tl(dst, src, size | (sign ? MO_SIGN : 0));
+> >>> +    return dst;
+> >>>   }
+> >>
+> >> While here, I'd rename 'size' -> 'mop'. Regardless,
+> >
+> > Not sure about that, because "size" should be just the low bits of MemOp
+> (the MO_SIGN bit
+> > is passed separately).
+>
+> Agreed.
+>
+>
+> r~
+>
+>
+
+--000000000000e629b106084b7a9f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il dom 22 ott 2023, 03:29 Richard Henderson &lt;<a hre=
+f=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.org</a>&=
+gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">&gt;=C2=A0 =C2=A0st=
+atic TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp size, bool sign)<br>
+&gt;=C2=A0 =C2=A0{<br>
+&gt; -=C2=A0=C2=A0=C2=A0 if (memop_size(size) =3D=3D TARGET_LONG_BITS) {<br=
+>
+&gt; +=C2=A0=C2=A0=C2=A0 if (size =3D=3D MO_TL) {<br>
+<br>
+Yep.<br>
+<br>
+&gt; I can add it in my x86 series if desirable ...<br>
+<br>
+That&#39;s probably fine; you may well get your PR in before my next.<br></=
+blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">I will=
+ probably keep only SHA instructions for 8.2 (plus the VEX todos and the re=
+organized checks) and delay the rest.</div><div dir=3D"auto"><br></div><div=
+ dir=3D"auto">There are a bunch of things I would do in a slightly differen=
+t manner now, so it&#39;s better to clean up the generic x86 decoder code b=
+efore implementing the less orthogonal instruction formats from the one-byt=
+e. I should have time to finish opcodes 0xC0 to 0xFF over the Christmas bre=
+ak in time for 9.0. :)</div><div dir=3D"auto"><br></div><div dir=3D"auto">P=
+aolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=
+=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+&gt;&gt;&gt; +=C2=A0=C2=A0=C2=A0 tcg_gen_ext_tl(dst, src, size | (sign ? MO=
+_SIGN : 0));<br>
+&gt;&gt;&gt; +=C2=A0=C2=A0=C2=A0 return dst;<br>
+&gt;&gt;&gt; =C2=A0 }<br>
+&gt;&gt;<br>
+&gt;&gt; While here, I&#39;d rename &#39;size&#39; -&gt; &#39;mop&#39;. Reg=
+ardless,<br>
+&gt; <br>
+&gt; Not sure about that, because &quot;size&quot; should be just the low b=
+its of MemOp (the MO_SIGN bit <br>
+&gt; is passed separately).<br>
+<br>
+Agreed.<br>
+<br>
+<br>
+r~<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000e629b106084b7a9f--
+
 
