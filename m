@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D9F7D23E8
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EF67D23FD
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Oct 2023 17:58:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quan9-0000QX-VO; Sun, 22 Oct 2023 11:55:04 -0400
+	id 1quam1-0006YV-CN; Sun, 22 Oct 2023 11:53:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1quamj-0008FE-In; Sun, 22 Oct 2023 11:54:40 -0400
+ id 1qualr-0006GG-Ew; Sun, 22 Oct 2023 11:53:43 -0400
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+fd6248c3715d1825373b+7364+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1quamg-0000Xv-0Q; Sun, 22 Oct 2023 11:54:36 -0400
+ id 1qualp-0000XD-KR; Sun, 22 Oct 2023 11:53:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=W0adFdXMEbi8j4klLNUE97TjOqmUyikyi07uSfzF8bk=; b=qpLAo7x6BHsqRoyzs5LkZJVNpU
- rTqiz5+Kq2oN/1n+kFGKWDDux3umF5SQIwtEJ9v7BBHiQVLR1Rs0LiuNG7KzjEORDAW18ZjsxHFx1
- msfIqKZXpZQ6XCKXgGFOx0UssR8BTar+zheMXWCYmiI0eKjaP0RFd3ihZBF8VvbZFIQDWgCAT53Nr
- WIvL1++L7kuTZhujt3SbsK364oiN7GCurcqrSj1+0kBuQrk774oS0IKc8QvVEF3E8T9w41pygkm7U
- IkTBTSrjRSFNyGb1MkrMrvWdF6sIRhZbA9j//JaP7l1yDFWkVrcjaRZSkCT9kmW7nK1/1t/vDswLw
- Qu/TrZKg==;
+ bh=GvZd+mCmu6NeCRzPCg8aufDD7tl83G6RcEOJSEC8eMQ=; b=C9RQBDaLCN/hUGMgMuuERfefi6
+ Wnmx6kPEVaAqcY/910QB2Iuqp/dlofXdmNWxnJhRfWKVg5AeIW1pFajvtYPRs0cGkVTFYxL48B6qf
+ oI6Db4U8ZZhHAaOMI4ZLqaN7bAPPEH6rZUFjVyGp+sBTdppM42m4vlqdQQ/f7+4/Nr85PsIAghKtb
+ YcfPpOvfKU9J7dboi9h3a8EA7ldlMem44fYg2U5Pjw2sMMQ9xVkGKP761OB2X4XCrOmrDSRG387xP
+ dbIgMUHhwu15mLmK919753XxuZzf3fpGSUAv3vLGcx7HGD4FzF6XjTTP6ZE03iyhWCOKYQkmNBoKS
+ TbxcbEpQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1quakI-00DCml-0V; Sun, 22 Oct 2023 15:53:38 +0000
+ id 1quakI-00DCmm-0U; Sun, 22 Oct 2023 15:53:23 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1quakH-001qYo-1T; Sun, 22 Oct 2023 16:52:05 +0100
+ Linux)) id 1quakH-001qYt-1s; Sun, 22 Oct 2023 16:52:05 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,9 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH 09/45] hw/arm/virt: use pci_init_nic_devices()
-Date: Sun, 22 Oct 2023 16:51:24 +0100
-Message-Id: <20231022155200.436340-10-dwmw2@infradead.org>
+Subject: [PATCH 10/45] hw/hppa: use pci_init_nic_devices()
+Date: Sun, 22 Oct 2023 16:51:25 +0100
+Message-Id: <20231022155200.436340-11-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231022155200.436340-1-dwmw2@infradead.org>
 References: <20231022155200.436340-1-dwmw2@infradead.org>
@@ -122,24 +122,26 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/arm/virt.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/hppa/machine.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 15e74249f9..6b43b92b89 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1477,9 +1477,7 @@ static void create_pcie(VirtMachineState *vms)
-     pci->bypass_iommu = vms->default_bus_bypass_iommu;
-     vms->bus = pci->bus;
-     if (vms->bus) {
--        for (i = 0; i < nb_nics; i++) {
--            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
--        }
-+        pci_init_nic_devices(pci->bus, mc->default_nic);
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index cf28cb9586..97d9b44c4f 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -272,10 +272,8 @@ static void machine_hppa_init(MachineState *machine)
+                         qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
      }
  
-     nodename = vms->pciehb_nodename = g_strdup_printf("/pcie@%" PRIx64, base);
+-    for (i = 0; i < nb_nics; i++) {
+-        if (!enable_lasi_lan()) {
+-            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
+-        }
++    if (!enable_lasi_lan()) {
++        pci_init_nic_devices(pci_bus, mc->default_nic);
+     }
+ 
+     /* PS/2 Keyboard/Mouse */
 -- 
 2.40.1
 
