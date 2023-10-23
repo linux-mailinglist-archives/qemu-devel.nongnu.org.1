@@ -2,99 +2,173 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622507D3905
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BE37D3978
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:38:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quvdl-0003KJ-Nn; Mon, 23 Oct 2023 10:10:47 -0400
+	id 1quw2l-0002Te-JZ; Mon, 23 Oct 2023 10:36:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1quvdZ-0003Is-HZ; Mon, 23 Oct 2023 10:10:33 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1quw2i-0002Q5-L3
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:36:32 -0400
+Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1quvdV-0005mr-1N; Mon, 23 Oct 2023 10:10:33 -0400
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1quw2f-0005LM-ET
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:36:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698070230; x=1729606230;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=iM0osDfJQlHcURPap0S7S9PxkzGbUqhS2HdMRF5Q6RY=;
- b=PwSpZZJRbdet0W+GvdJW6ZdGc+fRxk1X7RteLgOg3ksKnBbdFDvrOS6n
- e8OyKU9mDj97MzbpAK/lCBfJf4aC5Zwlff/9HEkjS0Deie80nbhArCPy1
- XbO7S9UShIHpN9/GyTQLNuDo1Dpf2Cve66X4Sd7LQQH7biV3pzVljx79w
- IqUnlbymAZ+2l+Y1GAIseGuLv8No3b4fBwgrMlV1Dfj3Of/lHqK4AdO7V
- e/MhU1ND+dzCK/xEIYCBYPA3wF4DThc95HhL0sx3/I4UMlffA+hiAggv5
- mwRmOmzP1oa+7qk8ukhnir+cWE9I3BR521F3SVfwQxg7a31lEgohVYfO5 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="5471500"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="5471500"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2023 07:10:24 -0700
+ t=1698071789; x=1729607789;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=BA3c1GSKna7ocMGDzv/r+/vFX91s0/aKFHYIA+az23I=;
+ b=eFCbZKLCM2nJe+PHhDr0oOPcEdOqiJfA7ZqgLy7hiIk2CsCzur3NDniE
+ 3XZXNsULOCE01Fx2sAesbqK4QOaRV+6XFLfxbeFeuOL0oUUxAec2+p5R0
+ lE0Qv6DxVBF3rA95ZhTeta4uJJYD6Y4//d4wpV0Ov8V4FMvvs3wmQh6GL
+ WyC5QDjCF5wpFr3Em2In6ROUCoSIdPtQb5vXfHDUCc+wCKZg7qHDkS4FV
+ 9gvrqxka2WV+84IFum4bbOSHGg/TpdliFhqSVp26gzsoatkf2XdFt1N7d
+ nkvSu3PdMI1rNEbdoW3M1CtZQ7wLTMI3zTeRbA+PNBgaCM5/4FKfaV37Z g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="390741437"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; d="scan'208";a="390741437"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2023 07:36:23 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="758152040"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; d="scan'208";a="758152040"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga002.jf.intel.com with ESMTP; 23 Oct 2023 07:10:12 -0700
-Date: Mon, 23 Oct 2023 22:21:51 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-arm@nongnu.org,
- qemu-riscv@nongnu.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Alistair Francis <alistair@alistair23.me>,
- David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Song Gao <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Zhao Liu <zhao1.liu@intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH 01/19] cpus: Add argument to qemu_get_cpu() to filter
- CPUs by QOM type
-Message-ID: <ZTaBfzLDL1+Aayur@intel.com>
-References: <20231020163643.86105-1-philmd@linaro.org>
- <20231020163643.86105-2-philmd@linaro.org>
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="823978490"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; d="scan'208";a="823978490"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 23 Oct 2023 07:36:23 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Mon, 23 Oct 2023 07:36:22 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Mon, 23 Oct 2023 07:36:22 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Mon, 23 Oct 2023 07:36:22 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.40) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Mon, 23 Oct 2023 07:36:22 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BCtzxqOPEluXlJ86UfFCmVdRJ8OIUfYDjxeIRbg8paTgP0ctUdq2qP2vWnpK5nwTZkRXs+wF4arxRPtkip17eXhHnmMr2y+qD6q2D4WKuy9NdRtMVL2ywYw4m+VvfJNKcYzTUGktT/wL2V/bhoyhK5xR6UNzrEVd16YcRerATLSX2zwb6fy/+wbLxSSDXMIpt1M01iU5TtYJnh6vTYsd6jNsZvUM1KC5ZRH62iq8uPscl5Ija4dE12XaU0C8CykKSYSl4VR7V5wZqi9X9XvVjVsFazW5/jGyIdfZfv+gnzsb4DAyK6N39SPhrqCALI1zKjV3cKaDIIzsd9y/Zriozg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BA3c1GSKna7ocMGDzv/r+/vFX91s0/aKFHYIA+az23I=;
+ b=hPiSaNTOvedjUboy3+yxyydN3x/D/D2p9T/oMzCfZZ21nJFW3cD8UJ+yM4KTnZvtZLKP9KINFFRfNQdym7j92h+ZPslMqJBJxfvdUsU2chId+VVz8t+4qgt6bVz839s8kd7+BF3hdfAaFz2r/vj1aWhPd7n9zeWYKUm75H2kpKRRdorugeGuhW4Rlsu7qnGnr5rOQU8Scn2rCu+oE9bw7TwsJCXdfJ6v26nZZXx2q8oob7vYP2yLRGv38Ky3EVfbVz3poxyHeczgYZ7VCstHp1weJ+tPrm3CGZ8o0qpxWFRzW7WyzMjXz7bVNy50r6msIY8nE41DRv+ILfNKgPLO+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BY5PR11MB4388.namprd11.prod.outlook.com (2603:10b6:a03:1c9::17)
+ by SN7PR11MB7440.namprd11.prod.outlook.com (2603:10b6:806:340::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Mon, 23 Oct
+ 2023 14:36:17 +0000
+Received: from BY5PR11MB4388.namprd11.prod.outlook.com
+ ([fe80::a164:ef88:9f1a:8519]) by BY5PR11MB4388.namprd11.prod.outlook.com
+ ([fe80::a164:ef88:9f1a:8519%3]) with mapi id 15.20.6907.032; Mon, 23 Oct 2023
+ 14:36:17 +0000
+From: "Liu, Yuan1" <yuan1.liu@intel.com>
+To: =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+CC: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ "farosas@suse.de" <farosas@suse.de>, "leobras@redhat.com"
+ <leobras@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Zou,
+ Nanhai" <nanhai.zou@intel.com>
+Subject: RE: [PATCH 0/5] Live Migration Acceleration with IAA Compression
+Thread-Topic: [PATCH 0/5] Live Migration Acceleration with IAA Compression
+Thread-Index: AQHaAmKFMfJOhFrqz0aucJcr+N/dnbBQ/WaigAA1hgCAAAi9gIAAAmkAgAW4zJCAADwXgIAALNVQ
+Date: Mon, 23 Oct 2023 14:36:16 +0000
+Message-ID: <BY5PR11MB4388E7499CC21519B8B6C74AA3D8A@BY5PR11MB4388.namprd11.prod.outlook.com>
+References: <20231018221224.599065-1-yuan1.liu@intel.com>
+ <87cyxa6dso.fsf@secure.mitica> <ZTFCnqbbqlmsUkRC@redhat.com>
+ <ZTFJ84SnSOAcU5gY@x1n> <ZTFL+N3mxESxXpfv@redhat.com>
+ <BY5PR11MB4388F9495DD42ACCFB980A6CA3D8A@BY5PR11MB4388.namprd11.prod.outlook.com>
+ <ZTZLI1r+U5EbX12E@redhat.com>
+In-Reply-To: <ZTZLI1r+U5EbX12E@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BY5PR11MB4388:EE_|SN7PR11MB7440:EE_
+x-ms-office365-filtering-correlation-id: d03779e3-0cbe-476a-2437-08dbd3d56a57
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: w2TNBMG8yX8Uk3+oMokpiC4g1V6VGergVt4PRIQlDgu3xbRUmhIBg2SpRJMOZ0Ffqu9mKfUg5jK2oJRLswZugI/4pEqVpZdB6OrdSLtYr7FE5Bn1nmH/FMji8XHzbpS277dAmVXXzky60CUxTJLH/fUT2+EZeS/hHFojEofsIZSHcvSy3nX5RKIjy1nAzWH/L0mB4YogSgcEBh50b7SokRv+xdvLEjKqZaZdjDqRh9QTsUXcdSLYxQQ0DICMVDpC1BhqQcPBDPm+MxYvjec4TdyXZahkF/cCqPs4iMRcArX0mfgrJ+LLBPmjjNCS5kCVZyK7GtNNJQOcGhQ+uvosEHqfsSQrdH9Nu74sMPrZwdzm/1GKk1EALOlCglaoGt7ZRkWTSMDe/V9DJ656Sl4oigVBzQUy6ml9i7MqQDPy8xdMV0czyV+JsKZXpDZPo18CWdyXtk9q2ZPJLsGCqlvXiFJsbT9qlMbz0gOgdM4NoRSMGJ97prLLxPLiyw5X43y8O52Ffs5DfRVB0Z79jcduavkxraDJ/Uo0Ifce1CcwC9glHLc5hlrhEa7xc+g4IBdzinxc8aFCFy0RMlCCxXFwLkEd8I7tukAtSlCqVyeWhomOrCCJwEa2nbOmHEJOwhBIp9+nFQkiSqqtEZufxa4xLg==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR11MB4388.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(39860400002)(366004)(346002)(136003)(396003)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(66899024)(55016003)(86362001)(66946007)(54906003)(76116006)(66446008)(66556008)(66476007)(64756008)(41300700001)(6916009)(316002)(7696005)(9686003)(6506007)(5660300002)(966005)(478600001)(52536014)(33656002)(4326008)(8936002)(71200400001)(2906002)(26005)(122000001)(38100700002)(107886003)(53546011)(82960400001)(8676002)(83380400001)(38070700009);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RUhpbCtSZEQ2U051SmxnSlQ2VjFpSUhnYndWTlA0VWxMSUY0UjVseXZSUW9H?=
+ =?utf-8?B?dW5zVlFDUG1zaEFIbktBekFqcUhxYkphUEl6ejRDY0RMZVZONlNCWW0vdHQv?=
+ =?utf-8?B?Tm9NcmVLK2FpOUxCSVJacnQxTENQL2lsUkdJY3BuQ3JNMDd1bGQrMFZ6T3J4?=
+ =?utf-8?B?VGZ0dkJVZWsxNE1jKzFTMW84d3VRSkhIZzZxdjB2WlRML3hpa1oyU1VoWDNN?=
+ =?utf-8?B?Zk1Md2N6Y25zSXhiekE1Vm8wV25vTUw4VVdGTW1mMkhnVC91dVFrYmtONEMw?=
+ =?utf-8?B?VFJxY2lXOFdSd3NFcU54SWYzQXJaaFNobmhwamgvRGQ2QkZSUXhPWEdmUEV6?=
+ =?utf-8?B?dkxVRXlmWFJGT2ZsSmVQR1c5R2FiZ0Exb0dVWXNKWlYraDE1K21RU3l3YlF1?=
+ =?utf-8?B?c1VReXpZSFBEeUxHNjdzSFFNTmJDUHpaR21GNk9kcGx3NnpNQUdiSzE2VFlj?=
+ =?utf-8?B?dWtwZlMxUkN0bFRFWWtVdUh3cmxlNUx5bktoYkFiVXJqZzN1RTEyNnhUUGZj?=
+ =?utf-8?B?eEVDK1gySUR6bXNpc2ZBUVlaSGpRZmlNN3ZBS3FwVlVqUjJmajJ3eVFlUFRa?=
+ =?utf-8?B?ZnR6QmgyTHZ0VGFsNTk0Tlk4RitlQzg3WnEyeU1wVlFtc1Q2MGJrWmxlZzB1?=
+ =?utf-8?B?amppd2k5TXlMTW54TnNtU0dzanBxT2Y5YjJNRlJwT0JUangwOTBJMjdwdUJy?=
+ =?utf-8?B?emtBSW1Tc0JuYzAyc3RyOExkK241akxVZFBQWjhsb01PWUVicko0bk1HYmtG?=
+ =?utf-8?B?YTJTQWp1eDA4TUF6d3FqeTRsL2cxMis2NWJ6cjlHdnNEZ0NocTZ3cURyUEN2?=
+ =?utf-8?B?ZEtBZm1rRHY5ajlmOTVCMGIyQjZmRDRSSnBTbUgzRmw0TzgxMHkrN0R4c2Vv?=
+ =?utf-8?B?Vlo5R0ZsZlFPbmd3TTdxOE15dGkyS2trRHc1T3ZUaHh5S3JsUDB1LzErZ2hw?=
+ =?utf-8?B?czBtckxST2xuQzVtMU9yZlEzcnBKUHkyb3JmSW12V2xqeDdiVGNHUHlCQ1FJ?=
+ =?utf-8?B?a3ZGYmp5YjFwRHF1azB2ZSs0Z1JKNG82cEU2SjRxT21HZk5iajZhT1c1YWRY?=
+ =?utf-8?B?ZkhFWFRBTDZ3aXMyNDUvQ1lFak1FZVkvakJUWkg1VEt4c1NBSEJya0cyWUlz?=
+ =?utf-8?B?eVJ3b1pHdHRMUHZhRjBOMmN5dWQ0YmNNRXQ1RTR4MUk5OVUweXlFMDAzUC9P?=
+ =?utf-8?B?K3lWbFREQnR1NzY3MmkxUzlwZzVEU20rZTVOMmE0dUdLUlBGN2llTHBWQUlB?=
+ =?utf-8?B?VDFIejJPallzU1Y0d3RwdjZTTGpUdHRUU0tRWjY1OUpQL1BRL3ZsNEJYZjRT?=
+ =?utf-8?B?VzlUZEF2bDhrc01hdmI2bVNHMVc3UUhEcDRQL2FnZTF0Yi9TMGVtVERXUDlh?=
+ =?utf-8?B?WjFXL0hrRE9OSkVheW8zdE9mckFOU01CSUtxRGFTYjF3ck1LWWJUcWlIVnAr?=
+ =?utf-8?B?RnNqRjEzVW1XY2U4dWtBV0NZbDVPQTRoOXF3Wkl1M09TSVZ4MjJMTjMrdDNa?=
+ =?utf-8?B?VktMN2k2NHZ0MGtzRE5VcHdpc3pRQjVmTU9teFJNLzFPV1lGS3BrUGw5cnNh?=
+ =?utf-8?B?Z2R0WEF5d0F4dExhbFlzTkczcFNOTlRaUHhaYngyQmtpTGFyUXp5U0dybjlJ?=
+ =?utf-8?B?VkpSU2RlT3Jia2s3aCt6TnVldE5uNmhBemZYcllkVE9aZXYvSm5LcWJKNXhV?=
+ =?utf-8?B?TDkrVUtLNlpPamVUTjVHOE1hK3Exc3ZBMmdxdG53aGhxQzF3Rk52Y1pEdFpQ?=
+ =?utf-8?B?VWtXZzF4bzl2Qno2Qk40OXd2WDU4SGlmb0lTVXh1NVlHb0QwLzdYR0h0TWtK?=
+ =?utf-8?B?K0gwdlJqWHZHTm1GNlVST1ZYbDIrS2VuWGhocnM0SmRUYkxIbjBxQkE5SFlz?=
+ =?utf-8?B?MUYxT1RNWS90Mi9sYldKRk1nTWVuQ0tsN01sTm9TRU1UcncrM3dRTU11Tzhz?=
+ =?utf-8?B?ZWVjZENadnIydE9qV1R1Z1dSZzZORFkwR1VnZjcvTW5EdGs4MTFkWUNHck83?=
+ =?utf-8?B?a2lHZzVrUUszUFhnN3J0dEs5OWRKVk45SnhUcnpkUmRLbGFLajd2cTMrdFlS?=
+ =?utf-8?B?U0c0WGpjR0FKS1BuT1dCOTJML0VkcWNiRTdhak1PMjlCcU14ZlNva2ZsTU9E?=
+ =?utf-8?Q?kLvYMobiM7sletr4mqSzJKKEb?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231020163643.86105-2-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4388.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d03779e3-0cbe-476a-2437-08dbd3d56a57
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2023 14:36:16.8117 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cayUbP5GVSvFBQNpKHw9j11BYvln6jeT4aE8kHngl3P/AW2+kbMGmxhwiHL3Z4BvUsWvst38e35xiyRXeWNMDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7440
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.65; envelope-from=yuan1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,803 +184,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
-
-On Fri, Oct 20, 2023 at 06:36:23PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Fri, 20 Oct 2023 18:36:23 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [RFC PATCH 01/19] cpus: Add argument to qemu_get_cpu() to filter
->  CPUs by QOM type
-> X-Mailer: git-send-email 2.41.0
-> 
-> Heterogeneous machines have different type of CPU.
-> qemu_get_cpu() returning unfiltered CPUs doesn't make
-> sense anymore. Add a 'type' argument to filter CPU by
-> QOM type.
-> 
-> Type in "hw/core/cpu.h" and implementation in cpu-common.c
-> modified manually, then convert all call sites by passing
-> a NULL argument using the following coccinelle script:
-> 
->   @@
->   expression index;
->   @@
->   -   qemu_get_cpu(index)
->   +   qemu_get_cpu(index, NULL)
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> RFC: Is this hot path code? What is the cost of this QOM cast check?
-> ---
->  include/hw/core/cpu.h               |  3 ++-
->  cpu-common.c                        |  5 ++++-
->  hw/arm/boot.c                       |  2 +-
->  hw/arm/fsl-imx7.c                   |  2 +-
->  hw/arm/pxa2xx_gpio.c                |  2 +-
->  hw/arm/sbsa-ref.c                   |  4 ++--
->  hw/arm/vexpress.c                   |  2 +-
->  hw/arm/virt-acpi-build.c            |  2 +-
->  hw/arm/virt.c                       |  8 ++++----
->  hw/arm/xlnx-versal-virt.c           |  2 +-
->  hw/core/generic-loader.c            |  2 +-
->  hw/cpu/a15mpcore.c                  |  4 ++--
->  hw/cpu/a9mpcore.c                   |  2 +-
->  hw/hyperv/hyperv.c                  |  2 +-
->  hw/i386/kvm/xen_evtchn.c            |  8 ++++----
->  hw/intc/arm_gicv3_common.c          |  2 +-
->  hw/intc/arm_gicv3_cpuif.c           |  2 +-
->  hw/intc/arm_gicv3_kvm.c             |  2 +-
->  hw/intc/riscv_aclint.c              |  2 +-
->  hw/intc/sifive_plic.c               |  4 ++--
->  hw/loongarch/virt.c                 | 10 +++++-----
->  hw/m68k/mcf5206.c                   |  2 +-
->  hw/ppc/e500.c                       |  2 +-
->  hw/ppc/ppce500_spin.c               |  2 +-
->  hw/riscv/boot.c                     |  2 +-
->  hw/riscv/opentitan.c                |  4 ++--
->  hw/s390x/ipl.c                      |  2 +-
->  hw/s390x/s390-virtio-ccw.c          |  2 +-
->  monitor/hmp-cmds-target.c           |  4 ++--
->  stats/stats-hmp-cmds.c              |  2 +-
->  system/cpus.c                       |  2 +-
->  target/i386/kvm/xen-emu.c           | 15 ++++++++-------
->  target/i386/monitor.c               |  2 +-
->  target/mips/cpu.c                   |  2 +-
->  target/mips/tcg/sysemu/cp0_helper.c |  2 +-
->  target/s390x/cpu_models.c           | 10 +++++-----
->  36 files changed, 66 insertions(+), 61 deletions(-)
-> 
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index 12205b7882..2a6008dd96 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -903,12 +903,13 @@ static inline bool cpu_in_exclusive_context(const CPUState *cpu)
->  /**
->   * qemu_get_cpu:
->   * @index: The CPUState@cpu_index value of the CPU to obtain.
-
-The meaning of index needs to be clearly defined here, I understand that
-on a heterogeneous machine, CPUs of different ISAs will be numbered from
-0 respectively, i.e. CPU0 of type0 is numbered 0, CPU1 of type0 is
-numbered 1, and CPU 2 of type1 is also numbered 0, CPU3 of tyoe1 is also
-numbered 1, thus we need another "type" to differentiate between CPU0
-and CPU2, and CPU1 and CPU3...Is my understanding correct?
-
-If so, the change to the qemu_get_cpu() interface actually implies a
-change in the meaning of "index"; in the context of the old
-qemu_get_cpu(index), "index" looked to refer to the system wide index,
-while in the context of the new qemu_get_cpu(index, type), "index"
-becomes the sub index of a certain cluster range.
-
-If future heterogeneous machines still use different clusters to
-organize different ISA cores, can we consider introducing the
-cluster_index/qemu_get_cluster_cpu(cluster_index, type)? This seems to
-avoid the confusion caused by the different meanings of index in
-symmetric and heterogeneous machines.
-
-Regards,
-Zhao
-
-> + * @type: The QOM type to filter for, including its derivatives.
->   *
->   * Gets a CPU matching @index.
->   *
->   * Returns: The CPU or %NULL if there is no matching CPU.
->   */
-> -CPUState *qemu_get_cpu(int index);
-> +CPUState *qemu_get_cpu(int index, const char *type);
->  
->  /**
->   * cpu_exists:
-> diff --git a/cpu-common.c b/cpu-common.c
-> index c81fd72d16..e0d7f7e7e7 100644
-> --- a/cpu-common.c
-> +++ b/cpu-common.c
-> @@ -107,11 +107,14 @@ void cpu_list_remove(CPUState *cpu)
->      cpu_list_generation_id++;
->  }
->  
-> -CPUState *qemu_get_cpu(int index)
-> +CPUState *qemu_get_cpu(int index, const char *type)
->  {
->      CPUState *cpu;
->  
->      CPU_FOREACH(cpu) {
-> +        if (type && !object_dynamic_cast(OBJECT(cpu), type)) {
-> +            continue;
-> +        }
->          if (cpu->cpu_index == index) {
->              return cpu;
->          }
-> diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-> index 24fa169060..e260168cf5 100644
-> --- a/hw/arm/boot.c
-> +++ b/hw/arm/boot.c
-> @@ -438,7 +438,7 @@ static void fdt_add_psci_node(void *fdt)
->      uint32_t cpu_off_fn;
->      uint32_t cpu_on_fn;
->      uint32_t migrate_fn;
-> -    ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(0));
-> +    ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(0, NULL));
->      const char *psci_method;
->      int64_t psci_conduit;
->      int rc;
-> diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-> index 474cfdc87c..1c1585f3e1 100644
-> --- a/hw/arm/fsl-imx7.c
-> +++ b/hw/arm/fsl-imx7.c
-> @@ -212,7 +212,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
->  
->      for (i = 0; i < smp_cpus; i++) {
->          SysBusDevice *sbd = SYS_BUS_DEVICE(&s->a7mpcore);
-> -        DeviceState  *d   = DEVICE(qemu_get_cpu(i));
-> +        DeviceState  *d   = DEVICE(qemu_get_cpu(i, NULL));
->  
->          irq = qdev_get_gpio_in(d, ARM_CPU_IRQ);
->          sysbus_connect_irq(sbd, i, irq);
-> diff --git a/hw/arm/pxa2xx_gpio.c b/hw/arm/pxa2xx_gpio.c
-> index e7c3d99224..0a698171ab 100644
-> --- a/hw/arm/pxa2xx_gpio.c
-> +++ b/hw/arm/pxa2xx_gpio.c
-> @@ -303,7 +303,7 @@ static void pxa2xx_gpio_realize(DeviceState *dev, Error **errp)
->  {
->      PXA2xxGPIOInfo *s = PXA2XX_GPIO(dev);
->  
-> -    s->cpu = ARM_CPU(qemu_get_cpu(s->ncpu));
-> +    s->cpu = ARM_CPU(qemu_get_cpu(s->ncpu, NULL));
->  
->      qdev_init_gpio_in(dev, pxa2xx_gpio_set, s->lines);
->      qdev_init_gpio_out(dev, s->handler, s->lines);
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index 3c7dfcd6dc..3571d5038f 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -275,7 +275,7 @@ static void create_fdt(SBSAMachineState *sms)
->  
->      for (cpu = sms->smp_cpus - 1; cpu >= 0; cpu--) {
->          char *nodename = g_strdup_printf("/cpus/cpu@%d", cpu);
-> -        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(cpu));
-> +        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(cpu, NULL));
->          CPUState *cs = CPU(armcpu);
->          uint64_t mpidr = sbsa_ref_cpu_mp_affinity(sms, cpu);
->  
-> @@ -478,7 +478,7 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
->       * and the GIC's IRQ/FIQ/VIRQ/VFIQ interrupt outputs to the CPU's inputs.
->       */
->      for (i = 0; i < smp_cpus; i++) {
-> -        DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
-> +        DeviceState *cpudev = DEVICE(qemu_get_cpu(i, NULL));
->          int ppibase = NUM_IRQS + i * GIC_INTERNAL + GIC_NR_SGIS;
->          int irq;
->          /*
-> diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
-> index 8ff37f52ca..0590332fe5 100644
-> --- a/hw/arm/vexpress.c
-> +++ b/hw/arm/vexpress.c
-> @@ -257,7 +257,7 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
->  
->      /* Connect the CPUs to the GIC */
->      for (n = 0; n < smp_cpus; n++) {
-> -        DeviceState *cpudev = DEVICE(qemu_get_cpu(n));
-> +        DeviceState *cpudev = DEVICE(qemu_get_cpu(n, NULL));
->  
->          sysbus_connect_irq(busdev, n, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
->          sysbus_connect_irq(busdev, n + smp_cpus,
-> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> index 6b674231c2..fd6c239c31 100644
-> --- a/hw/arm/virt-acpi-build.c
-> +++ b/hw/arm/virt-acpi-build.c
-> @@ -727,7 +727,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
->      build_append_int_noprefix(table_data, 0, 3);   /* Reserved */
->  
->      for (i = 0; i < MACHINE(vms)->smp.cpus; i++) {
-> -        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(i));
-> +        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(i, NULL));
->          uint64_t physical_base_address = 0, gich = 0, gicv = 0;
->          uint32_t vgic_interrupt = vms->virt ? PPI(ARCH_GIC_MAINT_IRQ) : 0;
->          uint32_t pmu_interrupt = arm_feature(&armcpu->env, ARM_FEATURE_PMU) ?
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 15e74249f9..a8f9d88519 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -355,7 +355,7 @@ static void fdt_add_timer_nodes(const VirtMachineState *vms)
->  
->      qemu_fdt_add_subnode(ms->fdt, "/timer");
->  
-> -    armcpu = ARM_CPU(qemu_get_cpu(0));
-> +    armcpu = ARM_CPU(qemu_get_cpu(0, NULL));
->      if (arm_feature(&armcpu->env, ARM_FEATURE_V8)) {
->          const char compat[] = "arm,armv8-timer\0arm,armv7-timer";
->          qemu_fdt_setprop(ms->fdt, "/timer", "compatible",
-> @@ -394,7 +394,7 @@ static void fdt_add_cpu_nodes(const VirtMachineState *vms)
->       * at least one of them has Aff3 populated, we set #address-cells to 2.
->       */
->      for (cpu = 0; cpu < smp_cpus; cpu++) {
-> -        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(cpu));
-> +        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(cpu, NULL));
->  
->          if (armcpu->mp_affinity & ARM_AFF3_MASK) {
->              addr_cells = 2;
-> @@ -408,7 +408,7 @@ static void fdt_add_cpu_nodes(const VirtMachineState *vms)
->  
->      for (cpu = smp_cpus - 1; cpu >= 0; cpu--) {
->          char *nodename = g_strdup_printf("/cpus/cpu@%d", cpu);
-> -        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(cpu));
-> +        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(cpu, NULL));
->          CPUState *cs = CPU(armcpu);
->  
->          qemu_fdt_add_subnode(ms->fdt, nodename);
-> @@ -799,7 +799,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
->       * and the GIC's IRQ/FIQ/VIRQ/VFIQ interrupt outputs to the CPU's inputs.
->       */
->      for (i = 0; i < smp_cpus; i++) {
-> -        DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
-> +        DeviceState *cpudev = DEVICE(qemu_get_cpu(i, NULL));
->          int ppibase = NUM_IRQS + i * GIC_INTERNAL + GIC_NR_SGIS;
->          /* Mapping from the output timer irq lines from the CPU to the
->           * GIC PPI inputs we use for the virt board.
-> diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-> index 88c561ff63..419ee3b882 100644
-> --- a/hw/arm/xlnx-versal-virt.c
-> +++ b/hw/arm/xlnx-versal-virt.c
-> @@ -103,7 +103,7 @@ static void fdt_add_cpu_nodes(VersalVirt *s, uint32_t psci_conduit)
->  
->      for (i = XLNX_VERSAL_NR_ACPUS - 1; i >= 0; i--) {
->          char *name = g_strdup_printf("/cpus/cpu@%d", i);
-> -        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(i));
-> +        ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(i, NULL));
->  
->          qemu_fdt_add_subnode(s->fdt, name);
->          qemu_fdt_setprop_cell(s->fdt, name, "reg", armcpu->mp_affinity);
-> diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
-> index d4b5c501d8..98830ebd5b 100644
-> --- a/hw/core/generic-loader.c
-> +++ b/hw/core/generic-loader.c
-> @@ -124,7 +124,7 @@ static void generic_loader_realize(DeviceState *dev, Error **errp)
->      qemu_register_reset(generic_loader_reset, dev);
->  
->      if (s->cpu_num != CPU_NONE) {
-> -        s->cpu = qemu_get_cpu(s->cpu_num);
-> +        s->cpu = qemu_get_cpu(s->cpu_num, NULL);
->          if (!s->cpu) {
->              error_setg(errp, "Specified boot CPU#%d is nonexistent",
->                         s->cpu_num);
-> diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-> index bfd8aa5644..8c9098d5d3 100644
-> --- a/hw/cpu/a15mpcore.c
-> +++ b/hw/cpu/a15mpcore.c
-> @@ -65,7 +65,7 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
->          /* Make the GIC's TZ support match the CPUs. We assume that
->           * either all the CPUs have TZ, or none do.
->           */
-> -        cpuobj = OBJECT(qemu_get_cpu(0));
-> +        cpuobj = OBJECT(qemu_get_cpu(0, NULL));
->          has_el3 = object_property_find(cpuobj, "has_el3") &&
->              object_property_get_bool(cpuobj, "has_el3", &error_abort);
->          qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
-> @@ -90,7 +90,7 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
->       * appropriate GIC PPI inputs
->       */
->      for (i = 0; i < s->num_cpu; i++) {
-> -        DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
-> +        DeviceState *cpudev = DEVICE(qemu_get_cpu(i, NULL));
->          int ppibase = s->num_irq - 32 + i * 32;
->          int irq;
->          /* Mapping from the output timer irq lines from the CPU to the
-> diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
-> index d03f57e579..62b7fb3836 100644
-> --- a/hw/cpu/a9mpcore.c
-> +++ b/hw/cpu/a9mpcore.c
-> @@ -56,7 +56,7 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
->      CPUState *cpu0;
->      Object *cpuobj;
->  
-> -    cpu0 = qemu_get_cpu(0);
-> +    cpu0 = qemu_get_cpu(0, NULL);
->      cpuobj = OBJECT(cpu0);
->      if (strcmp(object_get_typename(cpuobj), ARM_CPU_TYPE_NAME("cortex-a9"))) {
->          /* We might allow Cortex-A5 once we model it */
-> diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
-> index 57b402b956..a43f29ad8d 100644
-> --- a/hw/hyperv/hyperv.c
-> +++ b/hw/hyperv/hyperv.c
-> @@ -226,7 +226,7 @@ struct HvSintRoute {
->  
->  static CPUState *hyperv_find_vcpu(uint32_t vp_index)
->  {
-> -    CPUState *cs = qemu_get_cpu(vp_index);
-> +    CPUState *cs = qemu_get_cpu(vp_index, NULL);
->      assert(hyperv_vp_index(cs) == vp_index);
->      return cs;
->  }
-> diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-> index a731738411..de3650ba3b 100644
-> --- a/hw/i386/kvm/xen_evtchn.c
-> +++ b/hw/i386/kvm/xen_evtchn.c
-> @@ -542,7 +542,7 @@ static void deassign_kernel_port(evtchn_port_t port)
->  static int assign_kernel_port(uint16_t type, evtchn_port_t port,
->                                uint32_t vcpu_id)
->  {
-> -    CPUState *cpu = qemu_get_cpu(vcpu_id);
-> +    CPUState *cpu = qemu_get_cpu(vcpu_id, NULL);
->      struct kvm_xen_hvm_attr ha;
->  
->      if (!cpu) {
-> @@ -589,7 +589,7 @@ static bool valid_port(evtchn_port_t port)
->  
->  static bool valid_vcpu(uint32_t vcpu)
->  {
-> -    return !!qemu_get_cpu(vcpu);
-> +    return !!qemu_get_cpu(vcpu, NULL);
->  }
->  
->  static void unbind_backend_ports(XenEvtchnState *s)
-> @@ -917,7 +917,7 @@ static int set_port_pending(XenEvtchnState *s, evtchn_port_t port)
->  
->      if (s->evtchn_in_kernel) {
->          XenEvtchnPort *p = &s->port_table[port];
-> -        CPUState *cpu = qemu_get_cpu(p->vcpu);
-> +        CPUState *cpu = qemu_get_cpu(p->vcpu, NULL);
->          struct kvm_irq_routing_xen_evtchn evt;
->  
->          if (!cpu) {
-> @@ -1779,7 +1779,7 @@ int xen_evtchn_translate_pirq_msi(struct kvm_irq_routing_entry *route,
->          return -EINVAL;
->      }
->  
-> -    cpu = qemu_get_cpu(s->port_table[port].vcpu);
-> +    cpu = qemu_get_cpu(s->port_table[port].vcpu, NULL);
->      if (!cpu) {
->          return -EINVAL;
->      }
-> diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-> index 2ebf880ead..cdf21dfc11 100644
-> --- a/hw/intc/arm_gicv3_common.c
-> +++ b/hw/intc/arm_gicv3_common.c
-> @@ -392,7 +392,7 @@ static void arm_gicv3_common_realize(DeviceState *dev, Error **errp)
->      s->cpu = g_new0(GICv3CPUState, s->num_cpu);
->  
->      for (i = 0; i < s->num_cpu; i++) {
-> -        CPUState *cpu = qemu_get_cpu(i);
-> +        CPUState *cpu = qemu_get_cpu(i, NULL);
->          uint64_t cpu_affid;
->  
->          s->cpu[i].cpu = cpu;
-> diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-> index d07b13eb27..f765b3d4b5 100644
-> --- a/hw/intc/arm_gicv3_cpuif.c
-> +++ b/hw/intc/arm_gicv3_cpuif.c
-> @@ -2795,7 +2795,7 @@ void gicv3_init_cpuif(GICv3State *s)
->      int i;
->  
->      for (i = 0; i < s->num_cpu; i++) {
-> -        ARMCPU *cpu = ARM_CPU(qemu_get_cpu(i));
-> +        ARMCPU *cpu = ARM_CPU(qemu_get_cpu(i, NULL));
->          GICv3CPUState *cs = &s->cpu[i];
->  
->          /*
-> diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-> index 72ad916d3d..d1ff9886aa 100644
-> --- a/hw/intc/arm_gicv3_kvm.c
-> +++ b/hw/intc/arm_gicv3_kvm.c
-> @@ -808,7 +808,7 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
->      gicv3_init_irqs_and_mmio(s, kvm_arm_gicv3_set_irq, NULL);
->  
->      for (i = 0; i < s->num_cpu; i++) {
-> -        ARMCPU *cpu = ARM_CPU(qemu_get_cpu(i));
-> +        ARMCPU *cpu = ARM_CPU(qemu_get_cpu(i, NULL));
->  
->          define_arm_cp_regs(cpu, gicv3_cpuif_reginfo);
->      }
-> diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-> index ab1a0b4b3a..a97c0449ec 100644
-> --- a/hw/intc/riscv_aclint.c
-> +++ b/hw/intc/riscv_aclint.c
-> @@ -483,7 +483,7 @@ static void riscv_aclint_swi_realize(DeviceState *dev, Error **errp)
->  
->      /* Claim software interrupt bits */
->      for (i = 0; i < swi->num_harts; i++) {
-> -        RISCVCPU *cpu = RISCV_CPU(qemu_get_cpu(swi->hartid_base + i));
-> +        RISCVCPU *cpu = RISCV_CPU(qemu_get_cpu(swi->hartid_base + i, NULL));
->          /* We don't claim mip.SSIP because it is writable by software */
->          if (riscv_cpu_claim_interrupts(cpu, swi->sswi ? 0 : MIP_MSIP) < 0) {
->              error_report("MSIP already claimed");
-> diff --git a/hw/intc/sifive_plic.c b/hw/intc/sifive_plic.c
-> index 5522ede2cf..a32e7f1924 100644
-> --- a/hw/intc/sifive_plic.c
-> +++ b/hw/intc/sifive_plic.c
-> @@ -392,7 +392,7 @@ static void sifive_plic_realize(DeviceState *dev, Error **errp)
->       * hardware controlled when a PLIC is attached.
->       */
->      for (i = 0; i < s->num_harts; i++) {
-> -        RISCVCPU *cpu = RISCV_CPU(qemu_get_cpu(s->hartid_base + i));
-> +        RISCVCPU *cpu = RISCV_CPU(qemu_get_cpu(s->hartid_base + i, NULL));
->          if (riscv_cpu_claim_interrupts(cpu, MIP_SEIP) < 0) {
->              error_setg(errp, "SEIP already claimed");
->              return;
-> @@ -499,7 +499,7 @@ DeviceState *sifive_plic_create(hwaddr addr, char *hart_config,
->  
->      for (i = 0; i < plic->num_addrs; i++) {
->          int cpu_num = plic->addr_config[i].hartid;
-> -        CPUState *cpu = qemu_get_cpu(cpu_num);
-> +        CPUState *cpu = qemu_get_cpu(cpu_num, NULL);
->  
->          if (plic->addr_config[i].mode == PLICMode_M) {
->              qdev_connect_gpio_out(dev, cpu_num - hartid_base + num_harts,
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index 2952fe452e..e888aea892 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -170,7 +170,7 @@ static void fdt_add_cpu_nodes(const LoongArchMachineState *lams)
->      /* cpu nodes */
->      for (num = smp_cpus - 1; num >= 0; num--) {
->          char *nodename = g_strdup_printf("/cpus/cpu@%d", num);
-> -        LoongArchCPU *cpu = LOONGARCH_CPU(qemu_get_cpu(num));
-> +        LoongArchCPU *cpu = LOONGARCH_CPU(qemu_get_cpu(num, NULL));
->          CPUState *cs = CPU(cpu);
->  
->          qemu_fdt_add_subnode(ms->fdt, nodename);
-> @@ -560,7 +560,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
->       * +--------+ +---------+ +---------+
->       */
->      for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
-> -        cpu_state = qemu_get_cpu(cpu);
-> +        cpu_state = qemu_get_cpu(cpu, NULL);
->          cpudev = DEVICE(cpu_state);
->          lacpu = LOONGARCH_CPU(cpu_state);
->          env = &(lacpu->env);
-> @@ -594,7 +594,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
->       * cpu_pin[9:2] <= intc_pin[7:0]
->       */
->      for (cpu = 0; cpu < MIN(ms->smp.cpus, EXTIOI_CPUS); cpu++) {
-> -        cpudev = DEVICE(qemu_get_cpu(cpu));
-> +        cpudev = DEVICE(qemu_get_cpu(cpu, NULL));
->          for (pin = 0; pin < LS3A_INTC_IP; pin++) {
->              qdev_connect_gpio_out(extioi, (cpu * 8 + pin),
->                                    qdev_get_gpio_in(cpudev, pin + 2));
-> @@ -726,7 +726,7 @@ static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
->      kernel_addr = load_kernel_info(loaderparams);
->      if (!machine->firmware) {
->          for (i = 0; i < machine->smp.cpus; i++) {
-> -            lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
-> +            lacpu = LOONGARCH_CPU(qemu_get_cpu(i, NULL));
->              lacpu->env.load_elf = true;
->              lacpu->env.elf_address = kernel_addr;
->          }
-> @@ -859,7 +859,7 @@ static void loongarch_init(MachineState *machine)
->      fdt_add_flash_node(lams);
->      /* register reset function */
->      for (i = 0; i < machine->smp.cpus; i++) {
-> -        lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
-> +        lacpu = LOONGARCH_CPU(qemu_get_cpu(i, NULL));
->          qemu_register_reset(reset_load_elf, lacpu);
->      }
->      /* Initialize the IO interrupt subsystem */
-> diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
-> index 2ab1b4f059..a0851f58a9 100644
-> --- a/hw/m68k/mcf5206.c
-> +++ b/hw/m68k/mcf5206.c
-> @@ -601,7 +601,7 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
->      s->timer[1] = m5206_timer_init(s->pic[10]);
->      s->uart[0] = mcf_uart_init(s->pic[12], serial_hd(0));
->      s->uart[1] = mcf_uart_init(s->pic[13], serial_hd(1));
-> -    s->cpu = M68K_CPU(qemu_get_cpu(0));
-> +    s->cpu = M68K_CPU(qemu_get_cpu(0, NULL));
->  }
->  
->  static void mcf5206_mbar_class_init(ObjectClass *oc, void *data)
-> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-> index e04114fb3c..380bbe1fe6 100644
-> --- a/hw/ppc/e500.c
-> +++ b/hw/ppc/e500.c
-> @@ -495,7 +495,7 @@ static int ppce500_load_device_tree(PPCE500MachineState *pms,
->          char *cpu_name;
->          uint64_t cpu_release_addr = pmc->spin_base + (i * 0x20);
->  
-> -        cpu = qemu_get_cpu(i);
-> +        cpu = qemu_get_cpu(i, NULL);
->          if (cpu == NULL) {
->              continue;
->          }
-> diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
-> index bbce63e8a4..3b113fbbdb 100644
-> --- a/hw/ppc/ppce500_spin.c
-> +++ b/hw/ppc/ppce500_spin.c
-> @@ -125,7 +125,7 @@ static void spin_write(void *opaque, hwaddr addr, uint64_t value,
->      SpinInfo *curspin = &s->spin[env_idx];
->      uint8_t *curspin_p = (uint8_t*)curspin;
->  
-> -    cpu = qemu_get_cpu(env_idx);
-> +    cpu = qemu_get_cpu(env_idx, NULL);
->      if (cpu == NULL) {
->          /* Unknown CPU */
->          return;
-> diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-> index 52bf8e67de..ea733b3df1 100644
-> --- a/hw/riscv/boot.c
-> +++ b/hw/riscv/boot.c
-> @@ -49,7 +49,7 @@ char *riscv_plic_hart_config_string(int hart_count)
->      int i;
->  
->      for (i = 0; i < hart_count; i++) {
-> -        CPUState *cs = qemu_get_cpu(i);
-> +        CPUState *cs = qemu_get_cpu(i, NULL);
->          CPURISCVState *env = &RISCV_CPU(cs)->env;
->  
->          if (kvm_enabled()) {
-> diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
-> index 436503f1ba..e98361de19 100644
-> --- a/hw/riscv/opentitan.c
-> +++ b/hw/riscv/opentitan.c
-> @@ -190,7 +190,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
->      sysbus_mmio_map(SYS_BUS_DEVICE(&s->plic), 0, memmap[IBEX_DEV_PLIC].base);
->  
->      for (i = 0; i < ms->smp.cpus; i++) {
-> -        CPUState *cpu = qemu_get_cpu(i);
-> +        CPUState *cpu = qemu_get_cpu(i, NULL);
->  
->          qdev_connect_gpio_out(DEVICE(&s->plic), ms->smp.cpus + i,
->                                qdev_get_gpio_in(DEVICE(cpu), IRQ_M_EXT));
-> @@ -223,7 +223,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
->                         0, qdev_get_gpio_in(DEVICE(&s->plic),
->                         IBEX_TIMER_TIMEREXPIRED0_0));
->      qdev_connect_gpio_out(DEVICE(&s->timer), 0,
-> -                          qdev_get_gpio_in(DEVICE(qemu_get_cpu(0)),
-> +                          qdev_get_gpio_in(DEVICE(qemu_get_cpu(0, NULL)),
->                                             IRQ_M_TIMER));
->  
->      /* SPI-Hosts */
-> diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-> index 515dcf51b5..14cd0a1f7b 100644
-> --- a/hw/s390x/ipl.c
-> +++ b/hw/s390x/ipl.c
-> @@ -671,7 +671,7 @@ void s390_ipl_get_reset_request(CPUState **cs, enum s390_reset *reset_type)
->  {
->      S390IPLState *ipl = get_ipl_device();
->  
-> -    *cs = qemu_get_cpu(ipl->reset_cpu_index);
-> +    *cs = qemu_get_cpu(ipl->reset_cpu_index, NULL);
->      if (!*cs) {
->          /* use any CPU */
->          *cs = first_cpu;
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 2d75f2131f..7628b746a8 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -583,7 +583,7 @@ static HotplugHandler *s390_get_hotplug_handler(MachineState *machine,
->  
->  static void s390_nmi(NMIState *n, int cpu_index, Error **errp)
->  {
-> -    CPUState *cs = qemu_get_cpu(cpu_index);
-> +    CPUState *cs = qemu_get_cpu(cpu_index, NULL);
->  
->      s390_cpu_restart(S390_CPU(cs));
->  }
-> diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-> index d9fbcac08d..e501b997f8 100644
-> --- a/monitor/hmp-cmds-target.c
-> +++ b/monitor/hmp-cmds-target.c
-> @@ -36,7 +36,7 @@ int monitor_set_cpu(Monitor *mon, int cpu_index)
->  {
->      CPUState *cpu;
->  
-> -    cpu = qemu_get_cpu(cpu_index);
-> +    cpu = qemu_get_cpu(cpu_index, NULL);
->      if (cpu == NULL) {
->          return -1;
->      }
-> @@ -103,7 +103,7 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
->              cpu_dump_state(cs, NULL, CPU_DUMP_FPU);
->          }
->      } else {
-> -        cs = vcpu >= 0 ? qemu_get_cpu(vcpu) : mon_get_cpu(mon);
-> +        cs = vcpu >= 0 ? qemu_get_cpu(vcpu, NULL) : mon_get_cpu(mon);
->  
->          if (!cs) {
->              if (vcpu >= 0) {
-> diff --git a/stats/stats-hmp-cmds.c b/stats/stats-hmp-cmds.c
-> index 1f91bf8bd5..0e58336c7f 100644
-> --- a/stats/stats-hmp-cmds.c
-> +++ b/stats/stats-hmp-cmds.c
-> @@ -147,7 +147,7 @@ static StatsFilter *stats_filter(StatsTarget target, const char *names,
->      case STATS_TARGET_VCPU:
->      {
->          strList *vcpu_list = NULL;
-> -        CPUState *cpu = qemu_get_cpu(cpu_index);
-> +        CPUState *cpu = qemu_get_cpu(cpu_index, NULL);
->          char *canonical_path = object_get_canonical_path(OBJECT(cpu));
->  
->          QAPI_LIST_PREPEND(vcpu_list, canonical_path);
-> diff --git a/system/cpus.c b/system/cpus.c
-> index 0848e0dbdb..3e7c80e91b 100644
-> --- a/system/cpus.c
-> +++ b/system/cpus.c
-> @@ -751,7 +751,7 @@ void qmp_memsave(int64_t addr, int64_t size, const char *filename,
->          cpu_index = 0;
->      }
->  
-> -    cpu = qemu_get_cpu(cpu_index);
-> +    cpu = qemu_get_cpu(cpu_index, NULL);
->      if (cpu == NULL) {
->          error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "cpu-index",
->                     "a CPU number");
-> diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-> index 76348f9d5d..f289af906c 100644
-> --- a/target/i386/kvm/xen-emu.c
-> +++ b/target/i386/kvm/xen-emu.c
-> @@ -384,7 +384,7 @@ static void do_set_vcpu_info_gpa(CPUState *cs, run_on_cpu_data data)
->  
->  void *kvm_xen_get_vcpu_info_hva(uint32_t vcpu_id)
->  {
-> -    CPUState *cs = qemu_get_cpu(vcpu_id);
-> +    CPUState *cs = qemu_get_cpu(vcpu_id, NULL);
->      if (!cs) {
->          return NULL;
->      }
-> @@ -418,7 +418,7 @@ void kvm_xen_maybe_deassert_callback(CPUState *cs)
->  
->  void kvm_xen_set_callback_asserted(void)
->  {
-> -    CPUState *cs = qemu_get_cpu(0);
-> +    CPUState *cs = qemu_get_cpu(0, NULL);
->  
->      if (cs) {
->          X86_CPU(cs)->env.xen_callback_asserted = true;
-> @@ -427,7 +427,7 @@ void kvm_xen_set_callback_asserted(void)
->  
->  void kvm_xen_inject_vcpu_callback_vector(uint32_t vcpu_id, int type)
->  {
-> -    CPUState *cs = qemu_get_cpu(vcpu_id);
-> +    CPUState *cs = qemu_get_cpu(vcpu_id, NULL);
->      uint8_t vector;
->  
->      if (!cs) {
-> @@ -491,7 +491,7 @@ static void do_set_vcpu_timer_virq(CPUState *cs, run_on_cpu_data data)
->  
->  int kvm_xen_set_vcpu_virq(uint32_t vcpu_id, uint16_t virq, uint16_t port)
->  {
-> -    CPUState *cs = qemu_get_cpu(vcpu_id);
-> +    CPUState *cs = qemu_get_cpu(vcpu_id, NULL);
->  
->      if (!cs) {
->          return -ENOENT;
-> @@ -588,7 +588,7 @@ static int xen_set_shared_info(uint64_t gfn)
->      trace_kvm_xen_set_shared_info(gfn);
->  
->      for (i = 0; i < XEN_LEGACY_MAX_VCPUS; i++) {
-> -        CPUState *cpu = qemu_get_cpu(i);
-> +        CPUState *cpu = qemu_get_cpu(i, NULL);
->          if (cpu) {
->              async_run_on_cpu(cpu, do_set_vcpu_info_default_gpa,
->                               RUN_ON_CPU_HOST_ULONG(gpa));
-> @@ -834,7 +834,7 @@ static int kvm_xen_hcall_evtchn_upcall_vector(struct kvm_xen_exit *exit,
->          return -EINVAL;
->      }
->  
-> -    target_cs = qemu_get_cpu(up.vcpu);
-> +    target_cs = qemu_get_cpu(up.vcpu, NULL);
->      if (!target_cs) {
->          return -EINVAL;
->      }
-> @@ -1160,7 +1160,8 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_xen_exit *exit, X86CPU *cpu,
->                                    int cmd, int vcpu_id, uint64_t arg)
->  {
->      CPUState *cs = CPU(cpu);
-> -    CPUState *dest = cs->cpu_index == vcpu_id ? cs : qemu_get_cpu(vcpu_id);
-> +    CPUState *dest = cs->cpu_index == vcpu_id ? cs : qemu_get_cpu(vcpu_id,
-> +                                                                  NULL);
->      int err;
->  
->      if (!dest) {
-> diff --git a/target/i386/monitor.c b/target/i386/monitor.c
-> index 6512846327..aca7be61dd 100644
-> --- a/target/i386/monitor.c
-> +++ b/target/i386/monitor.c
-> @@ -592,7 +592,7 @@ void hmp_mce(Monitor *mon, const QDict *qdict)
->      if (qdict_get_try_bool(qdict, "broadcast", false)) {
->          flags |= MCE_INJECT_BROADCAST;
->      }
-> -    cs = qemu_get_cpu(cpu_index);
-> +    cs = qemu_get_cpu(cpu_index, NULL);
->      if (cs != NULL) {
->          cpu = X86_CPU(cs);
->          cpu_x86_inject_mce(mon, cpu, bank, status, mcg_status, addr, misc,
-> diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-> index 83ee54f766..17e9e06a15 100644
-> --- a/target/mips/cpu.c
-> +++ b/target/mips/cpu.c
-> @@ -117,7 +117,7 @@ static void mips_cpu_dump_state(CPUState *cs, FILE *f, int flags)
->  
->  void cpu_set_exception_base(int vp_index, target_ulong address)
->  {
-> -    MIPSCPU *vp = MIPS_CPU(qemu_get_cpu(vp_index));
-> +    MIPSCPU *vp = MIPS_CPU(qemu_get_cpu(vp_index, NULL));
->      vp->env.exception_base = address;
->  }
->  
-> diff --git a/target/mips/tcg/sysemu/cp0_helper.c b/target/mips/tcg/sysemu/cp0_helper.c
-> index 5da1124589..fcaba37c40 100644
-> --- a/target/mips/tcg/sysemu/cp0_helper.c
-> +++ b/target/mips/tcg/sysemu/cp0_helper.c
-> @@ -126,7 +126,7 @@ static CPUMIPSState *mips_cpu_map_tc(CPUMIPSState *env, int *tc)
->      cs = env_cpu(env);
->      vpe_idx = tc_idx / cs->nr_threads;
->      *tc = tc_idx % cs->nr_threads;
-> -    other_cs = qemu_get_cpu(vpe_idx);
-> +    other_cs = qemu_get_cpu(vpe_idx, NULL);
->      if (other_cs == NULL) {
->          return env;
->      }
-> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-> index b1e77b3a2b..4a44ee56a9 100644
-> --- a/target/s390x/cpu_models.c
-> +++ b/target/s390x/cpu_models.c
-> @@ -150,7 +150,7 @@ uint32_t s390_get_hmfai(void)
->      static S390CPU *cpu;
->  
->      if (!cpu) {
-> -        cpu = S390_CPU(qemu_get_cpu(0));
-> +        cpu = S390_CPU(qemu_get_cpu(0, NULL));
->      }
->  
->      if (!cpu || !cpu->model) {
-> @@ -164,7 +164,7 @@ uint8_t s390_get_mha_pow(void)
->      static S390CPU *cpu;
->  
->      if (!cpu) {
-> -        cpu = S390_CPU(qemu_get_cpu(0));
-> +        cpu = S390_CPU(qemu_get_cpu(0, NULL));
->      }
->  
->      if (!cpu || !cpu->model) {
-> @@ -179,7 +179,7 @@ uint32_t s390_get_ibc_val(void)
->      static S390CPU *cpu;
->  
->      if (!cpu) {
-> -        cpu = S390_CPU(qemu_get_cpu(0));
-> +        cpu = S390_CPU(qemu_get_cpu(0, NULL));
->      }
->  
->      if (!cpu || !cpu->model) {
-> @@ -199,7 +199,7 @@ void s390_get_feat_block(S390FeatType type, uint8_t *data)
->      static S390CPU *cpu;
->  
->      if (!cpu) {
-> -        cpu = S390_CPU(qemu_get_cpu(0));
-> +        cpu = S390_CPU(qemu_get_cpu(0, NULL));
->      }
->  
->      if (!cpu || !cpu->model) {
-> @@ -213,7 +213,7 @@ bool s390_has_feat(S390Feat feat)
->      static S390CPU *cpu;
->  
->      if (!cpu) {
-> -        cpu = S390_CPU(qemu_get_cpu(0));
-> +        cpu = S390_CPU(qemu_get_cpu(0, NULL));
->      }
->  
->      if (!cpu || !cpu->model) {
-> -- 
-> 2.41.0
-> 
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBEYW5pZWwgUC4gQmVycmFuZ8Op
+IDxiZXJyYW5nZUByZWRoYXQuY29tPg0KPiBTZW50OiBNb25kYXksIE9jdG9iZXIgMjMsIDIwMjMg
+NjozMCBQTQ0KPiBUbzogTGl1LCBZdWFuMSA8eXVhbjEubGl1QGludGVsLmNvbT4NCj4gQ2M6IFBl
+dGVyIFh1IDxwZXRlcnhAcmVkaGF0LmNvbT47IEp1YW4gUXVpbnRlbGEgPHF1aW50ZWxhQHJlZGhh
+dC5jb20+Ow0KPiBmYXJvc2FzQHN1c2UuZGU7IGxlb2JyYXNAcmVkaGF0LmNvbTsgcWVtdS1kZXZl
+bEBub25nbnUub3JnOyBab3UsDQo+IE5hbmhhaSA8bmFuaGFpLnpvdUBpbnRlbC5jb20+DQo+IFN1
+YmplY3Q6IFJlOiBbUEFUQ0ggMC81XSBMaXZlIE1pZ3JhdGlvbiBBY2NlbGVyYXRpb24gd2l0aCBJ
+QUEgQ29tcHJlc3Npb24NCj4gDQo+IE9uIE1vbiwgT2N0IDIzLCAyMDIzIGF0IDA4OjMzOjQ0QU0g
+KzAwMDAsIExpdSwgWXVhbjEgd3JvdGU6DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
+LQ0KPiA+ID4gRnJvbTogRGFuaWVsIFAuIEJlcnJhbmfDqSA8YmVycmFuZ2VAcmVkaGF0LmNvbT4N
+Cj4gPiA+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVyIDE5LCAyMDIzIDExOjMyIFBNDQo+ID4gPiBU
+bzogUGV0ZXIgWHUgPHBldGVyeEByZWRoYXQuY29tPg0KPiA+ID4gQ2M6IEp1YW4gUXVpbnRlbGEg
+PHF1aW50ZWxhQHJlZGhhdC5jb20+OyBMaXUsIFl1YW4xDQo+ID4gPiA8eXVhbjEubGl1QGludGVs
+LmNvbT47IGZhcm9zYXNAc3VzZS5kZTsgbGVvYnJhc0ByZWRoYXQuY29tOyBxZW11LQ0KPiA+ID4g
+ZGV2ZWxAbm9uZ251Lm9yZzsgWm91LCBOYW5oYWkgPG5hbmhhaS56b3VAaW50ZWwuY29tPg0KPiA+
+ID4gU3ViamVjdDogUmU6IFtQQVRDSCAwLzVdIExpdmUgTWlncmF0aW9uIEFjY2VsZXJhdGlvbiB3
+aXRoIElBQQ0KPiA+ID4gQ29tcHJlc3Npb24NCj4gPiA+DQo+ID4gPiBPbiBUaHUsIE9jdCAxOSwg
+MjAyMyBhdCAxMToyMzozMUFNIC0wNDAwLCBQZXRlciBYdSB3cm90ZToNCj4gPiA+ID4gT24gVGh1
+LCBPY3QgMTksIDIwMjMgYXQgMDM6NTI6MTRQTSArMDEwMCwgRGFuaWVsIFAuIEJlcnJhbmfDqSB3
+cm90ZToNCj4gPiA+ID4gPiBPbiBUaHUsIE9jdCAxOSwgMjAyMyBhdCAwMTo0MDoyM1BNICswMjAw
+LCBKdWFuIFF1aW50ZWxhIHdyb3RlOg0KPiA+ID4gPiA+ID4gWXVhbiBMaXUgPHl1YW4xLmxpdUBp
+bnRlbC5jb20+IHdyb3RlOg0KPiA+ID4gPiA+ID4gPiBIaSwNCj4gPiA+ID4gPiA+ID4NCj4gPiA+
+ID4gPiA+ID4gSSBhbSB3cml0aW5nIHRvIHN1Ym1pdCBhIGNvZGUgY2hhbmdlIGFpbWVkIGF0IGVu
+aGFuY2luZyBsaXZlDQo+ID4gPiA+ID4gPiA+IG1pZ3JhdGlvbiBhY2NlbGVyYXRpb24gYnkgbGV2
+ZXJhZ2luZyB0aGUgY29tcHJlc3Npb24NCj4gPiA+ID4gPiA+ID4gY2FwYWJpbGl0eSBvZiB0aGUg
+SW50ZWwgSW4tTWVtb3J5IEFuYWx5dGljcyBBY2NlbGVyYXRvciAoSUFBKS4NCj4gPiA+ID4gPiA+
+ID4NCj4gPiA+ID4gPiA+ID4gRW5hYmxpbmcgY29tcHJlc3Npb24gZnVuY3Rpb25hbGl0eSBkdXJp
+bmcgdGhlIGxpdmUgbWlncmF0aW9uDQo+ID4gPiA+ID4gPiA+IHByb2Nlc3MgY2FuIGVuaGFuY2Ug
+cGVyZm9ybWFuY2UsIHRoZXJlYnkgcmVkdWNpbmcgZG93bnRpbWUNCj4gPiA+ID4gPiA+ID4gYW5k
+IG5ldHdvcmsgYmFuZHdpZHRoIHJlcXVpcmVtZW50cy4gSG93ZXZlciwgdGhpcw0KPiA+ID4gPiA+
+ID4gPiBpbXByb3ZlbWVudCBjb21lcyBhdCB0aGUgY29zdCBvZiBhZGRpdGlvbmFsIENQVSByZXNv
+dXJjZXMsDQo+ID4gPiA+ID4gPiA+IHBvc2luZyBhIGNoYWxsZW5nZSBmb3IgY2xvdWQgc2Vydmlj
+ZSBwcm92aWRlcnMgaW4gdGVybXMgb2YNCj4gPiA+ID4gPiA+ID4gcmVzb3VyY2UgYWxsb2NhdGlv
+bi4gVG8gYWRkcmVzcyB0aGlzIGNoYWxsZW5nZSwgSSBoYXZlDQo+ID4gPiA+ID4gPiA+IGZvY3Vz
+ZWQgb24gb2ZmbG9hZGluZyB0aGUgY29tcHJlc3Npb24NCj4gPiA+IG92ZXJoZWFkIHRvIHRoZSBJ
+QUEgaGFyZHdhcmUsIHJlc3VsdGluZyBpbiBwZXJmb3JtYW5jZSBnYWlucy4NCj4gPiA+ID4gPiA+
+ID4NCj4gPiA+ID4gPiA+ID4gVGhlIGltcGxlbWVudGF0aW9uIG9mIHRoZSBJQUEgKGRlKWNvbXBy
+ZXNzaW9uIGNvZGUgaXMgYmFzZWQNCj4gPiA+ID4gPiA+ID4gb24gSW50ZWwgUXVlcnkgUHJvY2Vz
+c2luZyBMaWJyYXJ5IChRUEwpLCBhbiBvcGVuLXNvdXJjZQ0KPiA+ID4gPiA+ID4gPiBzb2Z0d2Fy
+ZSBwcm9qZWN0IGRlc2lnbmVkIGZvciBJQUEgaGlnaC1sZXZlbCBzb2Z0d2FyZSBwcm9ncmFtbWlu
+Zy4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBBZnRlciByZXZpZXdpbmcgdGhlIHBhdGNoZXM6
+DQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gLSB3aHkgYXJlIHlvdSBkb2luZyB0aGlzIG9uIHRv
+cCBvZiBvbGQgY29tcHJlc3Npb24gY29kZSwgdGhhdCBpcw0KPiA+ID4gPiA+ID4gICBvYnNvbGV0
+ZSwgZGVwcmVjYXRlZCBhbmQgYnVnZ3kNCj4gPiBTb21lIHVzZXJzIGhhdmUgbm90IGVuYWJsZWQg
+dGhlIG11bHRpZmQgZmVhdHVyZSB5ZXQsIGJ1dCB0aGV5IHdpbGwgZGVjaWRlDQo+IHdoZXRoZXIg
+dG8gZW5hYmxlIHRoZSBjb21wcmVzc2lvbiBmZWF0dXJlIGJhc2VkIG9uIHRoZSBsb2FkIHNpdHVh
+dGlvbi4gU28gSSdtDQo+IHdvbmRlcmluZyBpZiwgd2l0aG91dCBtdWx0aWZkLCB0aGUgY29tcHJl
+c3Npb24gZnVuY3Rpb25hbGl0eSB3aWxsIG5vIGxvbmdlciBiZQ0KPiBhdmFpbGFibGU/DQo+ID4N
+Cj4gPiA+ID4gPiA+IC0gd2h5IGFyZSB5b3Ugbm90IGRvaW5nIGl0IG9uIHRvcCBvZiBtdWx0aWZk
+Lg0KPiA+IEkgcGxhbiB0byBzdWJtaXQgdGhlIHN1cHBvcnQgZm9yIG11bHRpZmQgaW5kZXBlbmRl
+bnRseSBiZWNhdXNlIHRoZQ0KPiA+IG11bHRpZmQgY29tcHJlc3Npb24gYW5kIGxlZ2FjeSBjb21w
+cmVzc2lvbiBjb2RlIGFyZSBzZXBhcmF0ZS4NCj4gDQo+IFNvIHRoZSBjb3JlIHF1ZXN0aW9uIGhl
+ciAoZm9yIG1pZ3JhdGlvbiBtYWludGFpbmVycykgaXMgd2hldGhlciBjb250cmlidXRvcnMNCj4g
+c2hvdWxkIGJlIHNwZW5kaW5nIGFueSB0aW1lIGF0IGFsbCBvbiBub24tbXVsdGlmZCBjb2RlLCBv
+ciBpZiBuZXcgZmVhdHVyZXMNCj4gc2hvdWxkIGJlIGV4Y2x1c2l2ZWx5IGZvciBtdWx0aWZkID8N
+Cj4gDQo+IEkgZG9lc24ndCBtYWtlIGEgbG90IG9mIHNlbnNlIG92ZXIgdGhlIGxvbmcgdGVybSB0
+byBoYXZlIHBlb3BsZSBzcGVuZGluZyB0aW1lDQo+IGltcGxlbWVudGluZyB0aGUgc2FtZSBmZWF0
+dXJlcyB0d2ljZS4gSU9XLCBzaG91bGQgd2UgYmUgZGlyZWN0bHkgY29udHJpYnV0b3JzDQo+IGV4
+cGxpY2l0bHkgdG93YXJkcyBtdWx0aWZkIG9ubHksIGFuZCBldmVuIGNvbnNpZGVyIGRlcHJlY2F0
+aW5nIG5vbi1tdWx0aWZkIGNvZGUNCj4gYXQgc29tZSB0aW1lID8NCj4gDQo+ID4gPiA+ID4gSSdt
+IG5vdCBzdXJlIHRoYXQgaXMgaWRlYWwgYXBwcm9hY2guICBJSVVDLCB0aGUgSUFBL1FQTCBsaWJy
+YXJ5DQo+ID4gPiA+ID4gaXMgbm90IGRlZmluaW5nIGEgbmV3IGNvbXByZXNzaW9uIGZvcm1hdC4g
+UmF0aGVyIGl0IGlzIHByb3ZpZGluZw0KPiA+ID4gPiA+IGEgaGFyZHdhcmUgYWNjZWxlcmF0b3Ig
+Zm9yICdkZWZsYXRlJyBmb3JtYXQsIGFzIGNhbiBiZSBtYWRlDQo+ID4gPiA+ID4gY29tcGF0aWJs
+ZSB3aXRoIHpsaWI6DQo+ID4gPiA+ID4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IGh0dHBzOi8vaW50
+ZWwuZ2l0aHViLmlvL3FwbC9kb2N1bWVudGF0aW9uL2Rldl9ndWlkZV9kb2NzL2NfdXNlX2MNCj4g
+PiA+ID4gPiBhc2VzDQo+ID4gPiA+ID4gL2RlZmxhdGUvY19kZWZsYXRlX3psaWJfZ3ppcC5odG1s
+I3psaWItYW5kLWd6aXAtY29tcGF0aWJpbGl0eS1yZQ0KPiA+ID4gPiA+IGZlcmUNCj4gPiA+ID4g
+PiBuY2UtbGluaw0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gV2l0aCBtdWx0aWZkIHdlIGFscmVhZHkg
+aGF2ZSBhICd6bGliJyBjb21wcmVzc2lvbiBmb3JtYXQsIGFuZCBzbw0KPiA+ID4gPiA+IHRoaXMg
+SUFBL1FQTCBsb2dpYyB3b3VsZCBlZmZlY3RpdmVseSBqdXN0IGJlIGEgcHJvdmlkaW5nIGENCj4g
+PiA+ID4gPiBzZWNvbmQgaW1wbGVtZW50YXRpb24gb2YgemxpYi4NCj4gPiA+ID4gPg0KPiA+ID4g
+PiA+IEdpdmVuIHRoZSB1c2Ugb2YgYSBzdGFuZGFyZCBmb3JtYXQsIEkgd291bGQgZXhwZWN0IHRv
+IGJlIGFibGUgdG8NCj4gPiA+ID4gPiB1c2Ugc29mdHdhcmUgemxpYiBvbiB0aGUgc3JjLCBtaXhl
+ZCB3aXRoIElBQS9RUEwgemxpYiBvbiB0aGUNCj4gPiA+ID4gPiB0YXJnZXQsIG9yIHZpY2EtdmVy
+Y2EuDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBJT1csIHJhdGhlciB0aGFuIGRlZmluaW5nIGEgbmV3
+IGNvbXByZXNzaW9uIGZvcm1hdCBmb3IgdGhpcywgSQ0KPiA+ID4gPiA+IHRoaW5rIHdlIGNvdWxk
+IGxvb2sgYXQgYSBuZXcgbWlncmF0aW9uIHBhcmFtZXRlciBmb3INCj4gPiA+ID4gPg0KPiA+ID4g
+PiA+ICJjb21wcmVzc2lvbi1hY2NlbGVyYXRvciI6IFsiYXV0byIsICJub25lIiwgInFwbCJdDQo+
+ID4gPiA+ID4NCj4gPiA+ID4gPiB3aXRoICdhdXRvJyB0aGUgZGVmYXVsdCwgc3VjaCB0aGF0IHdl
+IGNhbiBhdXRvbWF0aWNhbGx5IGVuYWJsZQ0KPiA+ID4gPiA+IElBQS9RUEwgd2hlbiAnemxpYicg
+Zm9ybWF0IGlzIHJlcXVlc3RlZCwgaWYgcnVubmluZyBvbiBhDQo+ID4gPiA+ID4gc3VpdGFibGUg
+aG9zdC4NCj4gPiA+ID4NCj4gPiA+ID4gSSB3YXMgYWxzbyBjdXJpb3VzIGFib3V0IHRoZSBmb3Jt
+YXQgb2YgY29tcHJlc3Npb24gY29tcGFyaW5nIHRvDQo+ID4gPiA+IHNvZnR3YXJlIG9uZXMgd2hl
+biByZWFkaW5nLg0KPiA+ID4gPg0KPiA+ID4gPiBXb3VsZCB0aGVyZSBiZSBhIHVzZSBjYXNlIHRo
+YXQgb25lIHdvdWxkIHByZWZlciBzb2Z0IGNvbXByZXNzaW9uDQo+ID4gPiA+IGV2ZW4gaWYgaGFy
+ZHdhcmUgYWNjZWxlcmF0b3IgZXhpc3RlZCwgbm8gbWF0dGVyIG9uIHNyYy9kc3Q/DQo+ID4gPiA+
+DQo+ID4gPiA+IEknbSB3b25kZXJpbmcgd2hldGhlciB3ZSBjYW4gYXZvaWQgdGhhdCBvbmUgbW9y
+ZSBwYXJhbWV0ZXIgYnV0DQo+ID4gPiA+IGFsd2F5cyB1c2UgaGFyZHdhcmUgYWNjZWxlcmF0aW9u
+cyBhcyBsb25nIGFzIHBvc3NpYmxlLg0KPiA+DQo+ID4gSSB3YW50IHRvIGFkZCBhIG5ldyBjb21w
+cmVzc2lvbiBmb3JtYXQoUVBMIG9yIElBQS1EZWZsYXRlKSBoZXJlLg0KPiA+IFRoZSByZWFzb25z
+IGFyZSBhcyBmb2xsb3dzOg0KPiA+DQo+ID4gMS4gVGhlIFFQTCBsaWJyYXJ5IGFscmVhZHkgc3Vw
+cG9ydHMgYm90aCBzb2Z0d2FyZSBhbmQgaGFyZHdhcmUgcGF0aHMNCj4gPiAgICBmb3IgY29tcHJl
+c3Npb24uIFRoZSBzb2Z0d2FyZSBwYXRoIHVzZXMgYSBmYXN0IERlZmxhdGUgY29tcHJlc3Npb24N
+Cj4gPiAgICBhbGdvcml0aG0sIHdoaWxlIHRoZSBoYXJkd2FyZSBwYXRoIHVzZXMgSUFBLg0KPiAN
+Cj4gVGhhdCdzIG5vdCBhIHJlYXNvbiB0byBkZXNjcmliZSB0aGlzIGFzIGEgbmV3IGZvcm1hdCBp
+biBRRU1VLiBJdCBpcyBzdGlsbCBkZWZsYXRlLA0KPiBhbmQgc28gY29uY2VwdHVhbGx5IHdlIGNh
+biBtb2RlbCB0aGlzIGFzICd6bGliJyBhbmQgcG90ZW50aWFsbHkgY2hvb3NlIHRvIHVzZQ0KPiBR
+UEwgYXV0b21hdGljYWxseS4NCj4gDQo+ID4gMi4gUVBMJ3Mgc29mdHdhcmUgYW5kIGhhcmR3YXJl
+IHBhdGhzIGFyZSBiYXNlZCBvbiB0aGUgRGVmbGF0ZSBhbGdvcml0aG0sDQo+ID4gICAgYnV0IHRo
+ZXJlIGlzIGEgbGltaXRhdGlvbjogdGhlIGhpc3RvcnkgYnVmZmVyIG9ubHkgc3VwcG9ydHMgNEsu
+IFRoZQ0KPiA+ICAgIGRlZmF1bHQgaGlzdG9yeSBidWZmZXIgZm9yIHpsaWIgaXMgMzJLLCB3aGlj
+aCBtZWFucyB0aGF0IElBQSBjYW5ub3QNCj4gPiAgICBkZWNvbXByZXNzIHpsaWItY29tcHJlc3Nl
+ZCBkYXRhLiBIb3dldmVyLCB6bGliIGNhbiBkZWNvbXByZXNzIElBQS0NCj4gPiAgICBjb21wcmVz
+c2VkIGRhdGEuDQo+IA0KPiBUaGF0J3MgYWdhaW4gbm90IGEgcmVhc29uIHRvIGNhbGwgaXQgYSBu
+ZXcgY29tcHJlc3Npb24gZm9ybWF0IGluIFFFTVUuIEl0DQo+IHdvdWxkIG1lYW4sIGhvd2V2ZXIs
+IGlmIGNvbXByZXNzaW9uLWFjY2VsZXJhdG9yPWF1dG8sIHdlIHdvdWxkIG5vdCBiZSBhYmxlDQo+
+IHRvIHNhZmVseSBlbmFibGUgUVBMIG9uIHRoZSBpbmNvbWluZyBRRU1VLCBhcyB3ZSBjYW4ndCBi
+ZSBzdXJlIHRoZSBzcmMgdXNlZCBhDQo+IDRrIHdpbmRvdy4gIFdlIGNvdWxkIHN0aWxsIGF1dG9t
+YXRpY2FsbHkgZW5hYmxlIFFQTCBvbiBvdXRnb2luZyBzaWRlIHRob3VnaC4NClllcywgdGhlIGNv
+bXByZXNzaW9uLWFjY2VsZXJhdG9yPWF1dG8gaXMgYWx3YXlzIGF2YWlsYWJsZSBmb3IgdGhlIHNv
+dXJjZSBzaWRlLg0KRm9yIHRoZSBkZXN0aW5hdGlvbiBzaWRlLCBhIGZhbGxiYWNrIG1lY2hhbmlz
+bSBpcyBuZWVkZWQsIHdoaWNoIHN3aXRjaGVzIFFQTCB0byB6bGliIG9yIFFQTCBzb2Z0d2FyZSBw
+YXRoIGRlY29tcHJlc3Npb24gd2hlbiB0aGUgaGlzdG9yeSBidWZmZXIgaXMgbGFyZ2VyIHRoYW4g
+NEsuDQoNCkluIHRoZSBuZXh0IHZlcnNpb24gb2YgdGhlIHBhdGNoLCBJIHdvdWxkIGNvbnNpZGVy
+IG5vdCBhZGRpbmcgYSBuZXcgY29tcHJlc3Npb24gYWxnb3JpdGhtLCBidXQgaW5zdGVhZCBhZGRp
+bmcgYSBjb21wcmVzc2lvbi1hY2NlbGVyYXRvciBwYXJhbWV0ZXIuDQpUaGVuIA0KQ29tcHJlc3Np
+b24gYWxnb3JpdGhtW3psaWJdDQpDb21wcmVzc2lvbiBhY2NlbGVyYXRvcltOb25lLCBhdXRvLCBp
+YWFdDQoNCj4gPiAzLiBGb3IgemxpYiBhbmQgenN0ZCwgSW50ZWwgUXVpY2tBc3Npc3QgVGVjaG5v
+bG9neSBjYW4gYWNjZWxlcmF0ZQ0KPiA+ICAgIGJvdGggb2YgdGhlbS4NCj4gDQo+IFdoYXQncyB0
+aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIHRoaXMsIGFuZCB0aGUgSUFBL1FQTCA/DQpCb3RoIElBQSBh
+bmQgUUFUIHN1cHBvcnQgdGhlIGNvbXByZXNzaW9uIGZlYXR1cmUuDQpJQUEgZXhjbHVzaXZlbHkg
+c3VwcG9ydHMgdGhlIGRlZmxhdGUgYWxnb3JpdGhtLCB3aGljaCBpcyBjb21wYXRpYmxlIHdpdGgg
+emxpYiAoaGlzdG9yeSBidWZmZXIgPD0gNEspLiBJdHMgdGFyZ2V0IHdvcmtsb2FkIGluY2x1ZGVz
+IGNvbXByZXNzaW9uIGFuZCBkYXRhIGFuYWx5c2lzLg0KUUFUIHN1cHBvcnRzIHRoZSBkZWZsYXRl
+L3pzdGQvbHo0IGFsZ29yaXRobXMgYW5kIGlzIGNvbXBhdGlibGUgd2l0aCBzb2Z0d2FyZSB6bGli
+L3pzdGQvbHo0LiBJdHMgdGFyZ2V0IHdvcmtsb2FkIGluY2x1ZGVzIGNvbXByZXNzaW9uIGFuZCBl
+bmNyeXB0aW9uLg0KDQpUaGUgUVBMIHNvZnR3YXJlIHBhdGggaXMgYSBjb21wb25lbnQgb2YgdGhl
+IEludGVsIElTQS1MIGxpYnJhcnkgKGh0dHBzOi8vZ2l0aHViLmNvbS9pbnRlbC9pc2EtbCksIGEg
+cmFwaWQgZGVmbGF0ZSBjb21wcmVzc2lvbiBsaWJyYXJ5IHRoYXQgaXMgZnVsbHkgY29tcGF0aWJs
+ZSB3aXRoIHpsaWIsIA0KSVNBLUwgaGFzIHRoZSBzYW1lIGhpZ2ggY29tcHJlc3Npb24gcmF0aW8g
+YXMgemxpYiwgYW5kIHRoZSB0aHJvdWdocHV0IGlzIG11Y2ggYmV0dGVyIHRoYW4gemxpYi4NClFQ
+TCBlbnN1cmVzIHRoYXQgdGhlIHNvZnR3YXJlIGNhbiBlZmZpY2llbnRseSBkZWNvbXByZXNzIElB
+QS1jb21wcmVzc2VkIGRhdGEgd2hlbiBJQUEgaXMgdW5hdmFpbGFibGUuDQoNCj4gLS0NCj4gfDog
+aHR0cHM6Ly9iZXJyYW5nZS5jb20gICAgICAtby0gICAgaHR0cHM6Ly93d3cuZmxpY2tyLmNvbS9w
+aG90b3MvZGJlcnJhbmdlIDp8DQo+IHw6IGh0dHBzOi8vbGlidmlydC5vcmcgICAgICAgICAtby0g
+ICAgICAgICAgICBodHRwczovL2ZzdG9wMTM4LmJlcnJhbmdlLmNvbSA6fA0KPiB8OiBodHRwczov
+L2VudGFuZ2xlLXBob3RvLm9yZyAgICAtby0gICAgaHR0cHM6Ly93d3cuaW5zdGFncmFtLmNvbS9k
+YmVycmFuZ2UgOnwNCg0K
 
