@@ -2,90 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417EA7D3E88
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2407E7D3EA9
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:10:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzIg-000430-KT; Mon, 23 Oct 2023 14:05:15 -0400
+	id 1quzMT-0005Mw-DK; Mon, 23 Oct 2023 14:09:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1quzIT-00042P-3r
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:05:01 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1quzIO-0006BT-5U
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:04:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6L8RugFCUwlMmFOtqJDjc871TS9ETSNhlySZM0S1TnU=; b=v+CK7i8kbl+8GpaBCGfNLE6fKu
- AdDzVhMWUrE2K7kmQMBwn9NAplDpNiBIpgPncwet/PTZgqurE4a3H0Ib5CeveiPwx7JI3qJfPb02P
- VMWJozFYDHYNao1E/O7zhapGQFqfJUolICiq3+c/CGSOjBzJ1ADbAYNq38V1kPaMEK1R2CY21ircz
- oG1n6/Z6RkSY8FrpYsIh7LsCHTlXHlwt27MARbEIGoiPzOFOkS/R9dfreGWWCDg18D+TmJVhMh9+X
- xYP8YIfLwYZlNA6l7QgFC7YRB+bKH3MF9etxbpJ4RgT+ndv2BYA3yJVngqzb9E/owTAn+3zEluBT6
- 6o72i0oNsnNNoSqGL/t9HpHuanm8xNy22pgGevzIBcifX1qFJOUNyyC2I2T6PixODYmVeC9Nxm6Ll
- reWApH8aKZuYTettvXgKuPAs6ZFqmFj0Bv7B/eBVNEDVBe0d2KqLqUcHFNtJwB9EwsdScJD5DVcyd
- eVF2eztcpdnZ3gpyHSG0barF8VGhyXZ20HkRvYZEd5n0PMWAoKqmvrr+qBewaWBA3uPYnP7nWdEP4
- tjcJwvax9Bjf83g7Joztzp1nH3/BU06yuvCgFUiPZewjihgyEItEvxsJSwX84wAN81BHRQKzV1ecR
- NESrUdOZ51oEG4px2ZaY/7kLsid1pPo1KuMyK1YAg=;
-Received: from [2a00:23c4:8bb0:3200:776d:f8ec:db63:d979]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1quzIA-0005Sm-0D; Mon, 23 Oct 2023 19:04:46 +0100
-Message-ID: <0527eade-2132-4f4d-b862-0e097dcc7c52@ilande.co.uk>
-Date: Mon, 23 Oct 2023 19:04:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20231022232932.80507-1-richard.henderson@linaro.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20231022232932.80507-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:3200:776d:f8ec:db63:d979
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v5 00/94] target/sparc: Convert to decodetree
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from
+ <3vrY2ZQYKCjcmbmnlkZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--titusr.bounces.google.com>)
+ id 1quzMQ-0005MB-Lb
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:09:06 -0400
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3vrY2ZQYKCjcmbmnlkZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--titusr.bounces.google.com>)
+ id 1quzMN-0006vz-Vi
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:09:06 -0400
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-5a909b4e079so41940157b3.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1698084542; x=1698689342; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=m1XT0xBuPrAtJ1iK8mhDdZ+M7+W4QcQKUYRQGvykvRo=;
+ b=t88/OzId8lTgwV62rZX6yb3EUKFuV3HRM0eJv40pyaO04zPSO0uKha5JcTJbKVOBN9
+ rGBt4E7MGiqQGTTU2RonikDpADltdGuW05MnDzVyIBajpHlvDGwCNwY9fH13uvdWILWg
+ zQDyHqNA5O7rgoQtwnX/W3Zow3pVwhqPxBKaR4OWQT61sSQa07mClAqxhFTE9TgTPo7Y
+ iSEElNJkNU/2OypDOSGICQuh0GVGP4WgbnvMCpAKR+VY5c5mRrVD0aBnF3I6w/NZp1v3
+ 84GAmaZ2C2OkP2PBMCvoCQt+lnJAGD+APrHwvjnV6jei9GUDgNCpn80C+bw5o3XZC9wn
+ hyTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698084542; x=1698689342;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=m1XT0xBuPrAtJ1iK8mhDdZ+M7+W4QcQKUYRQGvykvRo=;
+ b=fKcJjl30PqB1ectq6sJaoKobV/Pwytyk9PDPqYgsw7lQ4DwB8SAvWK5RvdWhSrXLfh
+ ywkCdZ1S249dA1L0RcA5nMXzEM3l0WB9cQXC0HcVWlRSP7oFa4Ntn4nETNbGj3ssPHr2
+ pm0dOgSmiYNJjK5cGqIMiLH2NoLgPEeUCeQg2PYTkGs44Ymsb0A3iJvRoXUadFR+QOLb
+ U7FzuxIdkdvV9VF8v2m6lrYWoRDtm+WQ+OdH+1+zQ5ahWWtP46w6tIIPHIYbSYCxNRU/
+ PizLX/uo5Rnrtfamkx9smvFtLfJ/Tx/Hs6d5tZqhjfI/IO5LgcANV38bimSSNgp9rWuV
+ tv2Q==
+X-Gm-Message-State: AOJu0YwYFDeAtdWkbgFUanUm/HZTcqQl6wkGnqdtgpbf/pdIzei2pD8A
+ iOzPCCCkl7tnCi9QH/V3dZuDEIw9lck=
+X-Google-Smtp-Source: AGHT+IGMKYY+xci/g1HyjRI06IQnGM7MYmlSEQCwEcgykPFPzc4fmbwPGO8C8AsSDVWyAr6FNlrgsb1Zd3M=
+X-Received: from titusr.c.googlers.com ([fda3:e722:ac3:cc00:14:4d90:c0a8:22b8])
+ (user=titusr job=sendgmr) by 2002:a0d:d50f:0:b0:59b:c6bb:babb with SMTP id
+ x15-20020a0dd50f000000b0059bc6bbbabbmr225254ywd.6.1698084542321; Mon, 23 Oct
+ 2023 11:09:02 -0700 (PDT)
+Date: Mon, 23 Oct 2023 18:08:29 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.758.gaed0368e0e-goog
+Message-ID: <20231023180837.91785-1-titusr@google.com>
+Subject: [PATCH v3 0/8] PMBus fixes and new functions
+From: Titus Rwantare <titusr@google.com>
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org, minyard@acm.org, 
+ philmd@linaro.org
+Cc: Titus Rwantare <titusr@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3vrY2ZQYKCjcmbmnlkZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--titusr.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,141 +87,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/2023 00:27, Richard Henderson wrote:
+This patch series contains fixes and improvements to PMBus support in QEMU.
 
-> Changes for v5:
->    * Add Mark's a-b and t-b.
-> 
->    * Fixes to features:
->      - Use CPU_FEATURE_BIT_* in feature_name[] (patch 7).
->      - Don't allow features to be set/unset in nonsensical ways (new patch 8).
-> 
->    * Adjustments to ifdefs:
->      - Make avail_FOO() constant when the feature must be set/unset.
->        This fixes the do_wrhtstate build issue Mark saw.
->      - Introduce envN_field_offsetof().
->      - Remove TCG globals only used for {RD,WR}{PR,HPR} (new patches 30-32).
+The following has been added:
+   - Support for block receive
+   - Support for devices with fans
+   - Support for the VCAP register for devices with onboard energy storage
+   - A bitfield struct for the vout mode register, whose bits determine the formatting of several read commands in PMBus
+Fixes:
+   - String read now handles now logs an error when passed an empty string
 
-Do you need me to run v5 through my boot tests just to be sure, or are the latest 
-changes trivial enough that this won't be an issue?
+This series is in preparation for some additional sensors that exercise
+this functionality that will be incoming shortly.
 
-> Richard Henderson (94):
->    target/sparc: Clear may_lookup for npc == DYNAMIC_PC
->    target/sparc: Implement check_align inline
->    target/sparc: Avoid helper_raise_exception in helper_st_asi
->    target/sparc: Set TCG_GUEST_DEFAULT_MO
->    configs: Enable MTTCG for sparc, sparc64
->    target/sparc: Define features via cpu-feature.h.inc
->    target/sparc: Use CPU_FEATURE_BIT_* for cpu properties
->    target/sparc: Remove sparcv7 cpu features
->    target/sparc: Partition cpu features
->    target/sparc: Add decodetree infrastructure
->    target/sparc: Define AM_CHECK for sparc32
->    target/sparc: Move CALL to decodetree
->    target/sparc: Move BPcc and Bicc to decodetree
->    target/sparc: Move BPr to decodetree
->    target/sparc: Move FBPfcc and FBfcc to decodetree
->    target/sparc: Merge gen_cond with only caller
->    target/sparc: Merge gen_fcond with only caller
->    target/sparc: Merge gen_branch_[an] with only caller
->    target/sparc: Pass DisasCompare to advance_jump_cond
->    target/sparc: Move SETHI to decodetree
->    target/sparc: Move Tcc to decodetree
->    target/sparc: Move RDASR, STBAR, MEMBAR to decodetree
->    target/sparc: Move RDPSR, RDHPR to decodetree
->    target/sparc: Move RDWIM, RDPR to decodetree
->    target/sparc: Move RDTBR, FLUSHW to decodetree
->    target/sparc: Move WRASR to decodetree
->    target/sparc: Move WRPSR, SAVED, RESTORED to decodetree
->    target/sparc: Move WRWIM, WRPR to decodetree
->    target/sparc: Move WRTBR, WRHPR to decodetree
->    target/sparc: Remove cpu_wim
->    target/sparc: Remove cpu_tick_cmpr, cpu_stick_cmpr, cpu_hstick_cmpr
->    target/sparc: Remove cpu_hintp, cpu_htba, cpu_hver, cpu_ssr, cpu_ver
->    target/sparc: Move basic arithmetic to decodetree
->    target/sparc: Move ADDC to decodetree
->    target/sparc: Move MULX to decodetree
->    target/sparc: Move UMUL, SMUL to decodetree
->    target/sparc: Move SUBC to decodetree
->    target/sparc: Move UDIVX, SDIVX to decodetree
->    target/sparc: Move UDIV, SDIV to decodetree
->    target/sparc: Move TADD, TSUB, MULS to decodetree
->    target/sparc: Move SLL, SRL, SRA to decodetree
->    target/sparc: Move MOVcc, MOVR to decodetree
->    target/sparc: Move POPC to decodetree
->    target/sparc: Convert remaining v8 coproc insns to decodetree
->    target/sparc: Move JMPL, RETT, RETURN to decodetree
->    target/sparc: Move FLUSH, SAVE, RESTORE to decodetree
->    target/sparc: Move DONE, RETRY to decodetree
->    target/sparc: Split out resolve_asi
->    target/sparc: Drop ifdef around get_asi and friends
->    target/sparc: Split out ldst functions with asi pre-computed
->    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for GET_ASI_DTWINX
->    target/sparc: Move simple integer load/store to decodetree
->    target/sparc: Move asi integer load/store to decodetree
->    target/sparc: Move LDSTUB, LDSTUBA to decodetree
->    target/sparc: Move SWAP, SWAPA to decodetree
->    target/sparc: Move CASA, CASXA to decodetree
->    target/sparc: Move PREFETCH, PREFETCHA to decodetree
->    target/sparc: Split out fp ldst functions with asi precomputed
->    target/sparc: Move simple fp load/store to decodetree
->    target/sparc: Move asi fp load/store to decodetree
->    target/sparc: Move LDFSR, STFSR to decodetree
->    target/sparc: Merge LDFSR, LDXFSR implementations
->    target/sparc: Move EDGE* to decodetree
->    target/sparc: Move ARRAY* to decodetree
->    target/sparc: Move ADDRALIGN* to decodetree
->    target/sparc: Move BMASK to decodetree
->    target/sparc: Move FMOVS, FNEGS, FABSS, FSRC*S, FNOT*S to decodetree
->    target/sparc: Move FMOVD, FNEGD, FABSD, FSRC*D, FNOT*D to decodetree
->    target/sparc: Use tcg_gen_vec_{add,sub}*
->    target/sparc: Move gen_ne_fop_FFF insns to decodetree
->    target/sparc: Move gen_ne_fop_DDD insns to decodetree
->    target/sparc: Move PDIST to decodetree
->    target/sparc: Move gen_gsr_fop_DDD insns to decodetree
->    target/sparc: Move gen_fop_FF insns to decodetree
->    target/sparc: Move gen_fop_DD insns to decodetree
->    target/sparc: Move FSQRTq to decodetree
->    target/sparc: Move gen_fop_FFF insns to decodetree
->    target/sparc: Move gen_fop_DDD insns to decodetree
->    target/sparc: Move gen_fop_QQQ insns to decodetree
->    target/sparc: Move FSMULD to decodetree
->    target/sparc: Move FDMULQ to decodetree
->    target/sparc: Move gen_fop_FD insns to decodetree
->    target/sparc: Move FiTOd, FsTOd, FsTOx to decodetree
->    target/sparc: Move FqTOs, FqTOi to decodetree
->    target/sparc: Move FqTOd, FqTOx to decodetree
->    target/sparc: Move FiTOq, FsTOq to decodetree
->    target/sparc: Move FdTOq, FxTOq to decodetree
->    target/sparc: Move FMOVq, FNEGq, FABSq to decodetree
->    target/sparc: Move FMOVR, FMOVcc, FMOVfcc to decodetree
->    target/sparc: Convert FCMP, FCMPE to decodetree
->    target/sparc: Move FPCMP* to decodetree
->    target/sparc: Move FPACK16, FPACKFIX to decodetree
->    target/sparc: Convert FZERO, FONE to decodetree
->    target/sparc: Remove disas_sparc_legacy
-> 
->   configs/targets/sparc-softmmu.mak   |    1 +
->   configs/targets/sparc64-softmmu.mak |    1 +
->   linux-user/sparc/target_syscall.h   |    6 +-
->   target/sparc/cpu.h                  |   76 +-
->   target/sparc/helper.h               |   16 +-
->   target/sparc/cpu-feature.h.inc      |   14 +
->   target/sparc/insns.decode           |  547 +++
->   target/sparc/cpu.c                  |   72 +-
->   target/sparc/fop_helper.c           |   17 +-
->   target/sparc/helper.c               |    8 -
->   target/sparc/ldst_helper.c          |   17 +-
->   target/sparc/translate.c            | 6968 +++++++++++++--------------
->   target/sparc/vis_helper.c           |   59 -
->   target/sparc/meson.build            |    3 +
->   14 files changed, 4025 insertions(+), 3780 deletions(-)
->   create mode 100644 target/sparc/cpu-feature.h.inc
->   create mode 100644 target/sparc/insns.decode
+Thanks
 
+Changes in v3:
+   - Added fixes to PMBus: page resets and fault clearing
 
-ATB,
+Changes in v2:
+   - Expanded commit descriptions
+   - Added the ADM1266 device model that uses new functions
 
-Mark.
+Titus Rwantare (8):
+  hw/i2c: pmbus add support for block receive
+  hw/i2c: pmbus: add vout mode bitfields
+  hw/i2c: pmbus: add fan support
+  hw/i2c: pmbus: add VCAP register
+  hw/sensor: add ADM1266 device model
+  tests/qtest: add tests for ADM1266
+  hw/i2c: pmbus: immediately clear faults on request
+  hw/i2c: pmbus: reset page register for out of range reads
+
+ hw/arm/Kconfig                |   1 +
+ hw/i2c/pmbus_device.c         | 237 +++++++++++++++++++++++++++++--
+ hw/sensor/Kconfig             |   5 +
+ hw/sensor/adm1266.c           | 254 ++++++++++++++++++++++++++++++++++
+ hw/sensor/meson.build         |   1 +
+ include/hw/i2c/pmbus_device.h |  17 +++
+ tests/qtest/adm1266-test.c    | 123 ++++++++++++++++
+ tests/qtest/max34451-test.c   |  24 ++++
+ tests/qtest/meson.build       |   1 +
+ 9 files changed, 653 insertions(+), 10 deletions(-)
+ create mode 100644 hw/sensor/adm1266.c
+ create mode 100644 tests/qtest/adm1266-test.c
+
+--
+2.42.0.758.gaed0368e0e-goog
 
 
