@@ -2,84 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AB57D4361
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 01:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C0D7D4368
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 01:44:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv4YD-0000Oe-1d; Mon, 23 Oct 2023 19:41:37 -0400
+	id 1qv4aS-0001B6-7A; Mon, 23 Oct 2023 19:43:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qv4YA-0000Nw-8L
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 19:41:34 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qv4Y8-0001xD-HA
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 19:41:33 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6b77ab73c6fso2812476b3a.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 16:41:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qv4aO-0001AM-Tq; Mon, 23 Oct 2023 19:43:53 -0400
+Received: from pi.codeconstruct.com.au ([203.29.241.158]
+ helo=codeconstruct.com.au)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qv4aM-0002Dv-LO; Mon, 23 Oct 2023 19:43:52 -0400
+Received: from [192.168.68.112]
+ (ppp118-210-136-142.adl-adc-lon-bras33.tpg.internode.on.net
+ [118.210.136.142])
+ by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 50ACE20059;
+ Tue, 24 Oct 2023 07:43:43 +0800 (AWST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698104491; x=1698709291; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hzEKh2Cso1+QBX1C2ZDTEkBn1WmsHGY9WBAyHVsVpZE=;
- b=ntUzoYHSA4EMVdkLlyazc1dupZ44d8xWdoLHUrriyked0iV8cwTdOGnf+rVArqXW+V
- bgpy0YO634o2KFfe0S99rg3C7PRJScotzjwwo/M1MDSpNERczzwykH20tkmNM4JTbRwt
- Ths+whRewstrae86Lwdj3RyTEWn+DRoM+X4YNWD5RPIrYWJUn0JdvIJFKv80Ha8eZCW5
- kr2y/m6Cg/+fe4Tc1j6p6ytqygkTgxq0Eq6q8qulexrIre4+r2+RnlmPtx6dKtAx5VXj
- recnH+JokNQRV0GBAl40g8R1z/TrnIH68dv5oy4tz52bUypYJNOusYDkpEoXLqlI/a92
- 4Gmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698104491; x=1698709291;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hzEKh2Cso1+QBX1C2ZDTEkBn1WmsHGY9WBAyHVsVpZE=;
- b=NNIntNvhUc5HtbX0t47W3JgZm5qXFFVDDxS819K8wsZv3ON11LsOJvtWxslE7/r3vg
- 8DI1q1Dd0Z7SXV3v/Uy/RNaAJnZZAPoqkBfq5j9ljUfeVZo4VZMZ2N6KveaagMiLZDlQ
- 7dBCaFJLoSRLGrU1W9tLEwtbuXcG3Hva+CQQ6ydRCsoAIqDvyQ79Jpty9Tfi4MVX0ipb
- xgUXMnj2KA2d6C8gGmOKwXHJToFWh9uNNFbivE1l6NGvGVAj9Ug4u+W9y0h4Xw3VMyrj
- 3sQw4ERuQHUhnSaDso57He/FJ44j+Zp3bDruU+WqRm/WaBnHlTKmVoWGfLXemLZQjjfc
- wb8w==
-X-Gm-Message-State: AOJu0YyZ56IJLHdk2IVbd8nWI+NUaymZbQ77KI9BhLykxrOG2uOV74XA
- 8yh2Vuz5TBuFquUwHBBD/hV65SBJdyiqLzlqAfY=
-X-Google-Smtp-Source: AGHT+IHjbCMZjDfGkcP+mQymW9ivKFP0wakgjqRWxs+PsrWEZsFBOATXHtNRht7+EVSJIpLzwGsuXw==
-X-Received: by 2002:a05:6a21:1a9:b0:f0:50c4:4c43 with SMTP id
- le41-20020a056a2101a900b000f050c44c43mr1595405pzb.5.1698104491043; 
- Mon, 23 Oct 2023 16:41:31 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- p26-20020aa79e9a000000b006bfb8a34c64sm1711555pfq.88.2023.10.23.16.41.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Oct 2023 16:41:30 -0700 (PDT)
-Message-ID: <f8a39597-0b35-4c06-a5ea-cf251d89844b@linaro.org>
-Date: Mon, 23 Oct 2023 16:41:29 -0700
+ d=codeconstruct.com.au; s=2022a; t=1698104623;
+ bh=vVQ6R0s6mgvK7aJB8O+3GzfbNvo+mvSprNLad1Ie9pc=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References;
+ b=Py08vbpPh/l4MVZELML74anp3r4p/ewMSNNgkF4mm6MKtqfnuj5J49f/3DA6HLv2q
+ 7w1/pCSIy+gGKditQCfSsF8vOONhVIorleVfXhlz1uCYsTrWmsySOTVcwiIiWdEhB6
+ mMTEgNYtzOL8saZyDzNDRrdxUkDcTvW3hEwHnH3uZ+OFsm65KGk1tx6bf1mnf0O7de
+ pu49orJIuRNCCs+LewCoNcZkwhwgNJKYui6OnGu4OlJ01tZ+dpZy7pTbkv93QloYvN
+ bb0w32qO8VWRspkhu7dVmv49t1jxDPwRKFkCIEeW3LnpvhweHdt9NzYlZ0jkKv5pMS
+ 5QupV5MARpa5A==
+Message-ID: <7ba3d0298be8edbfbbc16882aa17fa38e70662be.camel@codeconstruct.com.au>
+Subject: Re: [PATCH v2 3/3] misc/pca9552: Only update output GPIOs if state
+ changed
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>, philmd@linaro.org
+Date: Tue, 24 Oct 2023 10:13:41 +1030
+In-Reply-To: <20231020182321.163109-4-milesg@linux.vnet.ibm.com>
+References: <20231020182321.163109-1-milesg@linux.vnet.ibm.com>
+ <20231020182321.163109-4-milesg@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/9] target/sparc: Use tcg_gen_extract_tl
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20231023160944.10692-1-philmd@linaro.org>
- <20231023160944.10692-6-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231023160944.10692-6-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=203.29.241.158;
+ envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,39 +70,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/23/23 09:09, Philippe Mathieu-Daudé wrote:
-> Inspired-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Fri, 2023-10-20 at 13:23 -0500, Glenn Miles wrote:
+> The pca9552 code was updating output GPIO states whenever
+> the pin state was updated even if the state did not change.
+> This commit adds a check so that we only update the GPIO
+> output when the pin state actually changes.
+
+Given this is intertwined with patch 2/3 that adds the input mode
+capability, I think they should be squashed together?
+
+>=20
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 > ---
->   target/sparc/translate.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-> index f92ff80ac8..16d9151b90 100644
-> --- a/target/sparc/translate.c
-> +++ b/target/sparc/translate.c
-> @@ -740,14 +740,12 @@ static void gen_op_eval_bvc(TCGv dst, TCGv_i32 src)
->   static void gen_mov_reg_FCC0(TCGv reg, TCGv src,
->                                       unsigned int fcc_offset)
->   {
-> -    tcg_gen_shri_tl(reg, src, FSR_FCC0_SHIFT + fcc_offset);
-> -    tcg_gen_andi_tl(reg, reg, 0x1);
-> +    tcg_gen_extract_tl(reg, src, FSR_FCC0_SHIFT + fcc_offset, 1);
->   }
->   
->   static void gen_mov_reg_FCC1(TCGv reg, TCGv src, unsigned int fcc_offset)
->   {
-> -    tcg_gen_shri_tl(reg, src, FSR_FCC1_SHIFT + fcc_offset);
-> -    tcg_gen_andi_tl(reg, reg, 0x1);
-> +    tcg_gen_extract_tl(reg, src, FSR_FCC1_SHIFT + fcc_offset, 1);
->   }
+>=20
+> New commit in v2
+>=20
+>  hw/misc/pca9552.c | 25 ++++++++++++++++++-------
+>  1 file changed, 18 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+> index ed814d1f98..4ed6903404 100644
+> --- a/hw/misc/pca9552.c
+> +++ b/hw/misc/pca9552.c
+> @@ -112,14 +112,15 @@ static void pca955x_update_pin_input(PCA955xState *=
+s)
+> =20
+>      for (i =3D 0; i < k->pin_count; i++) {
+>          uint8_t input_reg =3D PCA9552_INPUT0 + (i / 8);
+> -        uint8_t input_shift =3D (i % 8);
+> +        uint8_t bit_mask =3D 1 << (i % 8);
+>          uint8_t config =3D pca955x_pin_get_config(s, i);
+> +        uint8_t old_value =3D s->regs[input_reg] & bit_mask;
+> +        uint8_t new_value;
+> =20
+>          switch (config) {
+>          case PCA9552_LED_ON:
+>              /* Pin is set to 0V to turn on LED */
+> -            qemu_set_irq(s->gpio_out[i], 0);
+> -            s->regs[input_reg] &=3D ~(1 << input_shift);
+> +            s->regs[input_reg] &=3D ~bit_mask;
+>              break;
+>          case PCA9552_LED_OFF:
+>              /*
+> @@ -128,11 +129,9 @@ static void pca955x_update_pin_input(PCA955xState *s=
+)
+>               * external device drives it low.
+>               */
+>              if (s->ext_state[i] =3D=3D PCA9552_PIN_LOW) {
+> -                qemu_set_irq(s->gpio_out[i], 0);
+> -                s->regs[input_reg] &=3D ~(1 << input_shift);
+> +                s->regs[input_reg] &=3D ~bit_mask;
+>              } else {
+> -                qemu_set_irq(s->gpio_out[i], 1);
+> -                s->regs[input_reg] |=3D 1 << input_shift;
+> +                s->regs[input_reg] |=3D  bit_mask;
+>              }
+>              break;
+>          case PCA9552_LED_PWM0:
+> @@ -141,6 +140,18 @@ static void pca955x_update_pin_input(PCA955xState *s=
+)
+>          default:
+>              break;
+>          }
+> +
+> +        /* update irq state only if pin state changed */
+> +        new_value =3D s->regs[input_reg] & bit_mask;
+> +        if (new_value !=3D old_value) {
+> +            if (new_value) {
+> +                /* changed from 0 to 1 */
+> +                qemu_set_irq(s->gpio_out[i], 1);
+> +            } else {
+> +                /* changed from 1 to 0 */
+> +                qemu_set_irq(s->gpio_out[i], 0);
+> +            }
 
-I have patches as yet not published which remove these entirely.
+Slightly code-golf-y, but the inner if-else here may be compressed to:
 
-But this is correct in the meantime,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+    qemu_set_irq(s->gpio_out[i], !!new_value);
 
-
-r~
-
+Andrew
 
