@@ -2,71 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840877D375F
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8F77D3851
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:43:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quuXu-0004W6-Eb; Mon, 23 Oct 2023 09:00:38 -0400
+	id 1quvCs-0000g8-S7; Mon, 23 Oct 2023 09:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1quuXY-0004UZ-Qh
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:00:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1quuXS-0006kK-Rw
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:00:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698066009;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dbG3C+KcYEOZMy0a+ntk6jmiiuQX3K4Q76XSP77dn/s=;
- b=BtIz1NV9gVWOt5n37IHO1IfPUMgpocKJU6W1RYDKeNYj36V2Uh62U8Ll3erGRtkbOOjlWY
- JvUIgF8zr2Zf39r38tAehkR9VwRr33YRvufU0+jQz3ByVr4KNJSY3ZCK2+NU5n5qBjcEnA
- oS8RqDTDrEkJUthRfz1DLSsnxSNdLVY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-338-E1l3X6wCOom6l3z3JegOsA-1; Mon, 23 Oct 2023 09:00:05 -0400
-X-MC-Unique: E1l3X6wCOom6l3z3JegOsA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CAEFC1859168;
- Mon, 23 Oct 2023 13:00:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.144])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 05DBC111D794;
- Mon, 23 Oct 2023 12:59:58 +0000 (UTC)
-Date: Mon, 23 Oct 2023 14:59:57 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
- eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
- jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v3 5/9] mirror: implement mirror_change method
-Message-ID: <ZTZuTRw/+EYY0Nc+@redhat.com>
-References: <20231013092143.365296-1-f.ebner@proxmox.com>
- <20231013092143.365296-6-f.ebner@proxmox.com>
- <ZTAO+TJuztCHDsUW@redhat.com>
- <92c65eb0-a069-48ea-9cbb-f8dd27b1f632@proxmox.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1quvCq-0000em-C5
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:56 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1quvCo-0007Mp-3r
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:56 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40842752c6eso26692655e9.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 06:42:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698068572; x=1698673372; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tsALRE6RrHu0YAN38jhq5z9ZVAL7fyhPR2ahdfibRCE=;
+ b=IvS7sykEjFLy9K+44zxQJx6oM+SEciHawu9d/fjowRDbZ5+TZV45NowTkfCLMXULwU
+ Bp0cx3CTjanHpeVy8Rr0PUu9Q1NEgWDLNQgVVuRGizZV1pZCdmVbcOBVin3+U5IyFmTb
+ ptUAd+V4dvd/yBV1PmgqTvNbqRsqetNqTCfiAviJUEgdlXaLbLqpG+F/8gW6k8Ic7yC5
+ QxWvBBoWSsCaViLjY5yyuwwLZXFiTVSSxqBHwQh7KKmtCOrh7FRapXaCTGxsDRBtxygh
+ aXPiDKiWNe34ZswtY6ANgBYR7SSjUVaF82sRc+tM0ns0+GL2E92UJJlPlIUvQKcoVNWt
+ e/1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698068572; x=1698673372;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=tsALRE6RrHu0YAN38jhq5z9ZVAL7fyhPR2ahdfibRCE=;
+ b=ZcgnEOv7oiQdURdgSeedUfCGsSf0SyDCrzP3qUSHYEHALmugliX4+suIZTt4Jx2ndP
+ ojxZIqsXKSTj3fd7aZOyoYJet1n+oh1FbyxWXFfN2Dyl5R6egTOCKX5TbNrizbix8KXB
+ TZW0GvX2jjYnoKqNt7TsH9P9QewfjTYT/5mQqncCFs/HPd+5aRYMh6HX8E/pj8SdIZkp
+ aBLw5xawVeeCEdyVSyaGM49DkOVoAZ6+viDNkdgZ/Jc0JdifoX9DE8o7dNQ7fYDsV/IC
+ UxbKB4x+hYiqOHCs3Nzu3L2Oy0TPGUL++GolUPVywPlNwdMJFLrx2DTY07BYebcy+2zu
+ kiBw==
+X-Gm-Message-State: AOJu0YyWsdp3zkvSO8qB504wZ9NoFLm07you1VSkrVHd5s0Gmopyr2+9
+ Dmv8IwSYdwatcwufPcQ8BRZREA==
+X-Google-Smtp-Source: AGHT+IHqMFLS4s2K/d99tsW0qhpkEpKeuUDwt/W8h+T5hDpvZSxSJojtO9xlPqxwe0Igiv/lKDox7Q==
+X-Received: by 2002:a05:600c:1f8d:b0:407:8ee2:9986 with SMTP id
+ je13-20020a05600c1f8d00b004078ee29986mr6486852wmb.26.1698068571902; 
+ Mon, 23 Oct 2023 06:42:51 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ o24-20020a05600c339800b0040303a9965asm14191489wmp.40.2023.10.23.06.42.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Oct 2023 06:42:51 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id DF0F61FFBB;
+ Mon, 23 Oct 2023 14:42:50 +0100 (BST)
+References: <20231021122502.26746-1-neither@nut.email>
+User-agent: mu4e 1.11.22; emacs 29.1.90
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Julian Ganz <neither@nut.email>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: Re: [PATCH] tcg-plugins: add a hook for interrupts, exceptions and
+ traps
+Date: Mon, 23 Oct 2023 14:08:51 +0100
+In-reply-to: <20231021122502.26746-1-neither@nut.email>
+Message-ID: <87v8ax4fqd.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <92c65eb0-a069-48ea-9cbb-f8dd27b1f632@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,183 +98,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 23.10.2023 um 13:37 hat Fiona Ebner geschrieben:
-> Am 18.10.23 um 18:59 schrieb Kevin Wolf:
-> > Am 13.10.2023 um 11:21 hat Fiona Ebner geschrieben:
-> >> which allows switching the @copy-mode from 'background' to
-> >> 'write-blocking'.
-> >>
-> >> This is useful for management applications, so they can start out in
-> >> background mode to avoid limiting guest write speed and switch to
-> >> active mode when certain criteria are fulfilled.
-> >>
-> >> In presence of an iothread, the copy_mode member is now shared between
-> >> the iothread and the main thread, so turn accesses to it atomic.
-> >>
-> >> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> >> ---
-> >>
-> >> Changes in v3:
-> >>     * turn accesses to copy_mode atomic and...
-> >>     * ...slightly adapt error handling in mirror_change as a
-> >>       consequence
-> > 
-> > It would be good to have a comment at the field declaration that it's
-> > meant to be accessed with atomics.
-> > 
-> > As we don't have further synchonisation, is the idea that during the
-> > switchover it basically doesn't matter if we read the old or the new
-> > value?
-> > 
-> > After reading the whole patch, it seems that the field is only ever
-> > written under the BQL, while iothreads only read it, and only once per
-> > request (after the previous patch). This is why no further
-> > synchonisation is needed. If other threads could write it, too,
-> > mirror_change() would probably have to be more careful. As the code
-> > depends on this, adding that to the comment would be useful, too.
-> > 
-> 
-> Will do in v4.
-> 
-> >>  block/mirror.c       | 33 ++++++++++++++++++++++++++++++---
-> >>  qapi/block-core.json | 13 ++++++++++++-
-> >>  2 files changed, 42 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/block/mirror.c b/block/mirror.c
-> >> index 8992c09172..889cce5414 100644
-> >> --- a/block/mirror.c
-> >> +++ b/block/mirror.c
-> >> @@ -1075,7 +1075,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
-> >>                   */
-> >>                  job_transition_to_ready(&s->common.job);
-> >>              }
-> >> -            if (s->copy_mode != MIRROR_COPY_MODE_BACKGROUND) {
-> >> +            if (qatomic_read(&s->copy_mode) != MIRROR_COPY_MODE_BACKGROUND) {
-> >>                  s->actively_synced = true;
-> >>              }
-> > 
-> > What resets s->actively_synced when we switch away from active mode?
-> > 
-> >>  
-> >> @@ -1246,6 +1246,32 @@ static bool commit_active_cancel(Job *job, bool force)
-> >>      return force || !job_is_ready(job);
-> >>  }
-> >>  
-> >> +static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
-> >> +                          Error **errp)
-> >> +{
-> >> +    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
-> >> +    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
-> >> +    MirrorCopyMode current;
-> > 
-> > This is GLOBAL_STATE_CODE(), right? Let's be explicit about it.
-> > 
-> 
-> Maybe it wouldn't need to be if we also set actively_synced to false in
-> bdrv_mirror_top_do_write() if/when setting the bitmap. Thinking about
-> it, that change shouldn't hurt in any case. But sure, I'll add the
-> GLOBAL_STATE_CODE annotation here. If ever required not to be
-> GLOBAL_STATE_CODE code, it can still be adapted later.
 
-Maybe we'll want to change it later so that we have some kind of
-automatic switch in the job coroutine, then it might not be
-GLOBAL_STATE_CODE() any more. For now, that's not a concern and it makes
-reasoning about the rest of the function easier.
+Julian Ganz <neither@nut.email> writes:
 
-> >> +
-> >> +    if (qatomic_read(&s->copy_mode) == change_opts->copy_mode) {
-> >> +        return;
-> >> +    }
-> >> +
-> >> +    if (change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING) {
-> >> +        error_setg(errp, "Change to copy mode '%s' is not implemented",
-> >> +                   MirrorCopyMode_str(change_opts->copy_mode));
-> >> +        return;
-> >> +    }
-> > 
-> > Ah, ok, we don't even allow the switch I was wondering about above. What
-> > would be needed, apart from removing this check, to make it work?
-> > 
-> 
-> Of course, setting actively_synced to false, as you pointed out above.
-> But I think it would also require more synchronization, because I think
-> otherwise the iothread could still read the old value of copy_mode (as
-> MIRROR_COPY_MODE_WRITE_BLOCKING) right afterwards and might set
-> actively_synced to true again. Do you want me to think it through in
-> detail and allow the change in the other direction too? I guess that
-> would also require using the job mutex instead of atomics. Or should we
-> wait until somebody actually requires that?
+> Some analysis greatly benefits, or depends on, information about
+> interrupts. For example, we may need to handle the execution of a new
+> translation block differently if it is not the result of normal program
+> flow but of an interrupt.
 
-I won't stop you if you want to implement it, it's an obvious feature to
-add and I like symmetry. But if nobody has a use for it, there is no
-reason to make your life harder. I was mostly just curious if you're
-already aware of any challenges in the other direction that made you
-tackle a more limited problem for now.
+I can see the benefit for plugins knowing the context - for QEMU itself
+there is no real difference in how it handles blocks that are part of an
+interrupt.
 
-> >> +    current = qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
-> >> +                              change_opts->copy_mode);
-> >> +    if (current != MIRROR_COPY_MODE_BACKGROUND) {
-> >> +        error_setg(errp, "Expected current copy mode '%s', got '%s'",
-> >> +                   MirrorCopyMode_str(MIRROR_COPY_MODE_BACKGROUND),
-> >> +                   MirrorCopyMode_str(current));
-> >> +    }
-> > 
-> > The error path is strange. We return an error, but the new mode is still
-> > set. On the other hand, this is probably also the old mode unless
-> > someone added a new value to the enum, so it didn't actually change. And
-> > because this function is the only place that changes copy_mode and we're
-> > holding the BQL, the case can't even happen and this could be an
-> > assertion.
-> > 
-> 
-> AFAIU and testing seem to confirm this, the new mode is only set when
-> the current mode is MIRROR_COPY_MODE_BACKGROUND. The error is only set
-> when the current mode is not MIRROR_COPY_MODE_BACKGROUND and thus when
-> the mode wasn't changed.
+> Even with the existing interfaces, it is more or less possible to
+> discern these situations using some heuristice. For example, the PC
+> landing in a trap vector is a strong indicator that a trap, i.e. an
+> interrupt or event occured. However, such heuristics require knowledge
+> about the architecture and may be prone to errors.
 
-Yes, the new mode is only set when it was MIRROR_COPY_MODE_BACKGROUND,
-that's the meaning of cmpxchg.
+Does this requirement go away if you can query the current execution
+state via registers?
 
-And now that I checked the return value of qatomic_cmpxchg(), it's not
-the actual value, but it returns the second parameter (the expected old
-value). As this is a constant in our call, that's what we'll always get
-back. So the whole check is pointless, even as an assertion. It's
-trivially true, and I expect it's even obvious enough for the compiler
-that it might just optimise it away.
+> The callback introduced by this change provides a generic and
+> easy-to-use interface for plugin authors. It allows them to register a
+> callback in which they may alter some plugin-internal state to convey
+> the firing of an interrupt for a given CPU, or perform some stand-alone
+> analysis based on the interrupt and, for example, the CPU state.
+>
+> Signed-off-by: Julian Ganz <neither@nut.email>
+> ---
+>  accel/tcg/cpu-exec.c         |  3 +++
+>  include/qemu/plugin-event.h  |  1 +
+>  include/qemu/plugin.h        |  4 ++++
+>  include/qemu/qemu-plugin.h   | 11 +++++++++++
+>  plugins/core.c               | 12 ++++++++++++
+>  plugins/qemu-plugins.symbols |  1 +
+>  6 files changed, 32 insertions(+)
+>
+> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+> index 1a5bc90220..e094d9236d 100644
+> --- a/accel/tcg/cpu-exec.c
+> +++ b/accel/tcg/cpu-exec.c
+> @@ -754,6 +754,8 @@ static inline bool cpu_handle_exception(CPUState *cpu=
+, int *ret)
+>              qemu_mutex_unlock_iothread();
+>              cpu->exception_index =3D -1;
+>=20=20
+> +            qemu_plugin_vcpu_interrupt_cb(cpu);
+> +
+>              if (unlikely(cpu->singlestep_enabled)) {
+>                  /*
+>                   * After processing the exception, ensure an EXCP_DEBUG =
+is
+> @@ -866,6 +868,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+>                  if (need_replay_interrupt(interrupt_request)) {
+>                      replay_interrupt();
+>                  }
+> +                qemu_plugin_vcpu_interrupt_cb(cpu);
 
-Just qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
-change_opts->copy_mode); without using the (constant) result should be
-enough.
+My worry here is:
 
-> Adding a new copy mode shouldn't cause issues either? It's just not
-> going to be supported to change away from that mode (or to that mode,
-> because of the change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING
-> check above) without adapting the code first.
+ a) we are conflating QEMU exceptions and interrupts as the same thing
+ b) this is leaking internal implementation details of the translator
 
-The checks above won't prevent NEW_MODE -> WRITE_BLOCKING. Of course,
-the cmpxchg() won't actually do anything as long as we still have
-BACKGROUND there as the expected old value. So in this case, QMP would
-probably return success, but we would stay in NEW_MODE.
+For example EXCP_SEMIHOST isn't actually an interrupt (we don't change
+processor state or control flow). It's just the internal signalling we
+use to handle our semihosting implementation. Similarly the
+CPU_INTERRUPT_EXITTB interrupt isn't really changing state, just
+ensuring we exit the run loop so house keeping is done.
 
-That's different from what I thought (I didn't really realise that we
-have a cmpxchg here and not just a xchg), but also not entirely right.
+The "correct" way for ARM for example would be to register a helper
+function with arm_register_el_change_hook() and trigger the callbacks
+that way. However each architecture does its own IRQ modelling so you
+would need to work out where in the plumbing to do each callback.
 
-Of course, all of this is hypothetical. I'm not aware of any desire to
-add a new copy mode.
+>                  /*
+>                   * After processing the interrupt, ensure an EXCP_DEBUG =
+is
+>                   * raised when single-stepping so that GDB doesn't miss =
+the
+> diff --git a/include/qemu/plugin-event.h b/include/qemu/plugin-event.h
+> index 7056d8427b..d085bdda4e 100644
+> --- a/include/qemu/plugin-event.h
+> +++ b/include/qemu/plugin-event.h
+> @@ -20,6 +20,7 @@ enum qemu_plugin_event {
+>      QEMU_PLUGIN_EV_VCPU_SYSCALL_RET,
+>      QEMU_PLUGIN_EV_FLUSH,
+>      QEMU_PLUGIN_EV_ATEXIT,
+> +    QEMU_PLUGIN_EV_VCPU_INTERRUPT,
+>      QEMU_PLUGIN_EV_MAX, /* total number of plugin events we support */
+>  };
+>=20=20
+> diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+> index 7fdc3a4849..f942e45f41 100644
+> --- a/include/qemu/plugin.h
+> +++ b/include/qemu/plugin.h
+> @@ -190,6 +190,7 @@ void qemu_plugin_vcpu_exit_hook(CPUState *cpu);
+>  void qemu_plugin_tb_trans_cb(CPUState *cpu, struct qemu_plugin_tb *tb);
+>  void qemu_plugin_vcpu_idle_cb(CPUState *cpu);
+>  void qemu_plugin_vcpu_resume_cb(CPUState *cpu);
+> +void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu);
+>  void
+>  qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1,
+>                           uint64_t a2, uint64_t a3, uint64_t a4, uint64_t=
+ a5,
+> @@ -270,6 +271,9 @@ static inline void qemu_plugin_vcpu_idle_cb(CPUState =
+*cpu)
+>  static inline void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
+>  { }
+>=20=20
+> +static inline void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu)
+> +{ }
+> +
+>  static inline void
+>  qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1, uint64=
+_t a2,
+>                           uint64_t a3, uint64_t a4, uint64_t a5, uint64_t=
+ a6,
+> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+> index 50a9957279..2eb4b325fe 100644
+> --- a/include/qemu/qemu-plugin.h
+> +++ b/include/qemu/qemu-plugin.h
+> @@ -206,6 +206,17 @@ void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_i=
+d_t id,
+>  void qemu_plugin_register_vcpu_resume_cb(qemu_plugin_id_t id,
+>                                           qemu_plugin_vcpu_simple_cb_t cb=
+);
+>=20=20
+> +/**
+> + * qemu_plugin_register_vcpu_interrupt_cb() - register a vCPU interrupt =
+callback
+> + * @id: plugin ID
+> + * @cb: callback function
+> + *
+> + * The @cb function is called every time a vCPU receives an interrupt, e=
+xception
+> + * or trap.
 
-> Of course, if we want to allow switching from active to background mode,
-> the function needs to be adapted too.
-> 
-> I wanted to make it more future-proof for the case where it might not be
-> the only place changing the value and based it on what Vladimir
-> suggested in the review of v2:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg03552.html
+As discussed above you would trigger for a lot more than that. You would
+also miss a lot of the other interesting transitions which don't need an
+asynchronous signal. For example HELPER(exception_return) happily
+changes control flow but doesn't need to use the exception mechanism to
+do it.=20
 
-As long as all of these places are GLOBAL_STATE_CODE(), we should be
-fine. If we get iothread code that changes it, too, I think your code
-becomes racy because the value could be changed by the iothread between
-the first check if we already have the new value and the actual change.
+> + */
+> +void qemu_plugin_register_vcpu_interrupt_cb(qemu_plugin_id_t id,
+> +                                            qemu_plugin_vcpu_simple_cb_t=
+ cb);
+> +
+>  /** struct qemu_plugin_tb - Opaque handle for a translation block */
+>  struct qemu_plugin_tb;
+>  /** struct qemu_plugin_insn - Opaque handle for a translated instruction=
+ */
+> diff --git a/plugins/core.c b/plugins/core.c
+> index fcd33a2bff..3658bdef45 100644
+> --- a/plugins/core.c
+> +++ b/plugins/core.c
+> @@ -103,6 +103,7 @@ static void plugin_vcpu_cb__simple(CPUState *cpu, enu=
+m qemu_plugin_event ev)
+>      case QEMU_PLUGIN_EV_VCPU_EXIT:
+>      case QEMU_PLUGIN_EV_VCPU_IDLE:
+>      case QEMU_PLUGIN_EV_VCPU_RESUME:
+> +    case QEMU_PLUGIN_EV_VCPU_INTERRUPT:
+>          /* iterate safely; plugins might uninstall themselves at any tim=
+e */
+>          QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
+>              qemu_plugin_vcpu_simple_cb_t func =3D cb->f.vcpu_simple;
+> @@ -400,6 +401,11 @@ void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
+>      plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
+>  }
+>=20=20
+> +void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu)
+> +{
+> +    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_INTERRUPT);
+> +}
+> +
+>  void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_id_t id,
+>                                         qemu_plugin_vcpu_simple_cb_t cb)
+>  {
+> @@ -412,6 +418,12 @@ void qemu_plugin_register_vcpu_resume_cb(qemu_plugin=
+_id_t id,
+>      plugin_register_cb(id, QEMU_PLUGIN_EV_VCPU_RESUME, cb);
+>  }
+>=20=20
+> +void qemu_plugin_register_vcpu_interrupt_cb(qemu_plugin_id_t id,
+> +                                            qemu_plugin_vcpu_simple_cb_t=
+ cb)
+> +{
+> +    plugin_register_cb(id, QEMU_PLUGIN_EV_VCPU_INTERRUPT, cb);
+> +}
+> +
+>  void qemu_plugin_register_flush_cb(qemu_plugin_id_t id,
+>                                     qemu_plugin_simple_cb_t cb)
+>  {
+> diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+> index 71f6c90549..1fddb4b9fd 100644
+> --- a/plugins/qemu-plugins.symbols
+> +++ b/plugins/qemu-plugins.symbols
+> @@ -35,6 +35,7 @@
+>    qemu_plugin_register_vcpu_tb_exec_cb;
+>    qemu_plugin_register_vcpu_tb_exec_inline;
+>    qemu_plugin_register_vcpu_tb_trans_cb;
+> +  qemu_plugin_register_vcpu_interrupt_cb;
+>    qemu_plugin_reset;
+>    qemu_plugin_start_code;
+>    qemu_plugin_tb_get_insn;
 
-Kevin
+I'm not opposed to adding such a API hook to plugins but I don't think
+the current approach does what you want. If we do add a new API it is
+customary to either expand an existing plugin or add a new one to
+demonstrate the use of the API.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
