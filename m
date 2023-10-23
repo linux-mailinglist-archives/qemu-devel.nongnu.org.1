@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE74F7D35E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D4F7D35E9
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:56:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qutW8-0001Hs-QU; Mon, 23 Oct 2023 07:54:45 -0400
+	id 1qutXW-0001cr-OM; Mon, 23 Oct 2023 07:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qutW7-0001Hi-6N
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:54:43 -0400
+ id 1qutWs-0001Yq-Tx
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:55:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qutW5-00081C-CE
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:54:42 -0400
+ id 1qutWr-0008Hz-9l
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:55:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698062079;
+ s=mimecast20190719; t=1698062126;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8rVR1fnjI+Jj1f8zgkGQJDdGdRCJKiBQuNWQE4MCpzE=;
- b=jOYppjziqbqf468qRz16OahS5N9QS74AyBh331YKyaTPmnlsz+ljk1gorvxAlpXjBHvonr
- W/5Ho6cxn0IqAaiuCkp6ZXS8aAwPpZaK1X23iKpchYYlAh9etkuZCPdJmObjk8q1R+qYJr
- cgJi0WKtnmxizy8WieLAhI/YiJ/QDr4=
+ bh=ganBSGyT5RjfSI8SW6aEJMWaWohlQNEJnjEDAEgHAwY=;
+ b=SGB8Tq9iX1ayjwcMUIMsbaHWrk4FDQXffrp6EMuFo5QabAA1DwD4U/GDwPm2fe2A5PqYcn
+ rkbLfwxuvtIX2uJGUQy0V/3Kk108BsFpvU8afEKAu7zCDT4SMlNfVzw1ZYW6PYjGFGcw1P
+ rS+I0o7AOS7mnE/fA+dfD1Ohg9FHl4k=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-l2B82q_cNzex9NK8oVznjQ-1; Mon,
- 23 Oct 2023 07:54:37 -0400
-X-MC-Unique: l2B82q_cNzex9NK8oVznjQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-B0lwibOQMBKMZfwILpxang-1; Mon,
+ 23 Oct 2023 07:55:25 -0400
+X-MC-Unique: B0lwibOQMBKMZfwILpxang-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EBF011C06EE0;
- Mon, 23 Oct 2023 11:54:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 062B829AA38B;
+ Mon, 23 Oct 2023 11:55:25 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.124])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 32457492BFB;
- Mon, 23 Oct 2023 11:54:35 +0000 (UTC)
-Date: Mon, 23 Oct 2023 12:54:33 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0B9D525C0;
+ Mon, 23 Oct 2023 11:55:21 +0000 (UTC)
+Date: Mon, 23 Oct 2023 12:55:20 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, dgilbert@redhat.com,
@@ -53,18 +53,18 @@ Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, dgilbert@redhat.com,
  Het Gala <het.gala@nutanix.com>,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v14 10/14] fixup! migration: New migrate and
- migrate-incoming argument 'channels'
-Message-ID: <ZTZe+Tw+D5S/4Mgd@redhat.com>
+Subject: Re: [PATCH v14 04/14] fixup! migration: convert migration 'uri' into
+ 'MigrateAddress'
+Message-ID: <ZTZfKJjG99L2i+Jg@redhat.com>
 References: <20231019192353.31500-1-farosas@suse.de>
- <20231019192353.31500-11-farosas@suse.de>
+ <20231019192353.31500-5-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231019192353.31500-11-farosas@suse.de>
+In-Reply-To: <20231019192353.31500-5-farosas@suse.de>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -90,39 +90,18 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 04:23:49PM -0300, Fabiano Rosas wrote:
+On Thu, Oct 19, 2023 at 04:23:43PM -0300, Fabiano Rosas wrote:
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  qapi/migration.json | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  migration/file.c      | 2 +-
+>  migration/file.h      | 1 +
+>  migration/migration.c | 6 ++++++
+>  3 files changed, 8 insertions(+), 1 deletion(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-assuming you'll just squash into the previous patch
+assuming it'll be squashed into previous
 
-> 
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 85ad5f2601..f51e6663bb 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -1666,6 +1666,14 @@
->  #                                    "port": "1050" } } ] } }
->  # <- { "return": {} }
->  #
-> +# -> { "execute": "migrate",
-> +#      "arguments": {
-> +#          "channels": [ { "channel-type": "main",
-> +#                          "addr": { "transport": "file",
-> +#                                    "path": "/tmp/migfile",
-> +#                                    "offset": "0x1000" } } ] } }
-> +# <- { "return": {} }
-> +#
->  ##
->  { 'command': 'migrate',
->    'data': {'*uri': 'str', '*channels': [ 'MigrationChannel' ],
-> -- 
-> 2.35.3
-> 
 
 With regards,
 Daniel
