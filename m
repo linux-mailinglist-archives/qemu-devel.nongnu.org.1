@@ -2,71 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07077D3724
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3137D3737
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quuL5-0002nc-3G; Mon, 23 Oct 2023 08:47:23 -0400
+	id 1quuP8-0007Yb-1W; Mon, 23 Oct 2023 08:51:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1quuKo-0002XL-Cx
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:47:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1quuKk-0003h9-QX
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:47:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698065221;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=btvW6KMmZAkCTGZo87KJbtFPguGbmIS3uolm+ASrD6k=;
- b=ahLdeSAkQAI27scBUV6ABevdxavbLRQeo9E4/NPbPdVPmyHwX0kw1P+xA6+aK8aZGPIL+W
- IfCxKG4kWXSgZ1zw9o2b1mtV7hdC2X9+dwt8hWiMG4zO8ihfYnu9fQYx5kdw501e83i6Cw
- cmyDU7VsPhTbKlTGeckJpy/XMzRvq0A=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-ui7RXRLdPE2wJP3K6obe6A-1; Mon, 23 Oct 2023 08:46:58 -0400
-X-MC-Unique: ui7RXRLdPE2wJP3K6obe6A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0161B85C1A5;
- Mon, 23 Oct 2023 12:46:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.124])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D67DF503B;
- Mon, 23 Oct 2023 12:46:56 +0000 (UTC)
-Date: Mon, 23 Oct 2023 13:46:49 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH V1 2/4] migration: per-mode blockers
-Message-ID: <ZTZrOb0XqOWPwFQj@redhat.com>
-References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
- <1697748466-373230-3-git-send-email-steven.sistare@oracle.com>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1quuP6-0007Vu-0V
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:51:32 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1quuP2-00057b-LB
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:51:31 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-538e8eca9c1so4747805a12.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 05:51:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698065486; x=1698670286; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=d/GZw909RfOunItm2KggrrXC9aZXw2AvjFnQ9ajvocM=;
+ b=MD3nCnbk/EodSkQuGaDENRSvoSJKf6SlsdTm3gUjRa5miYZ7DZn/Ac7AAA/oLJkoe6
+ aLzrBk/ELuZlASM1omwDYn2YKNLMBFTLgCUg26qM+tHcFBgJKRDCKKjeTEpsk8xPOGsf
+ 9RZExAAde7Eo1QsXN9g4Ujq0eYUfISfWX+ror6KGZfhUDOicZga1zzubmGCi+hISr7rW
+ zT66bdWDX2CNEfEDSSXAAUjoXJJ1E9j8FCWSngNV+o0Rsx9EsoN7w3k/aVSMHIajxUtd
+ e3JH+SsxUJWT4T2NSNi2fUs4pij+9he0HWxwkrvXYiyzjOE1jQP07z9PZY9nITxi5yS6
+ KGsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698065486; x=1698670286;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=d/GZw909RfOunItm2KggrrXC9aZXw2AvjFnQ9ajvocM=;
+ b=FgzLihrhcIw8e1iVk95F5Gil2Jp6Q7y00umwgLi0aQzMbCm2/OAtsgHDzkkdOerB9W
+ VY3dYmRISJAkehsrRLTfLrR9mhKi3pzZwbKpk6KdmOxsmvsWKvCCOIQVWkFWo+G1hvUH
+ 5XURAE79IUuhvERdzPneqFs6Dcokd/q2nsjDIcXQEBh2qRIpr+wYVThCRWVcLxjt0082
+ qqFwaqPBr3XlwaVD0Fey8/pHsIjqO0B3ugm6/e5jxK8uvN9Whl5CtoeC4Bb6iiJg1qVa
+ CDCGS/jJnLKmDg0r/oj6p3tARbSITTsf8SXUmFyTLalQGyq2CBpr6Y16LLr/Snu62Iu0
+ 2CHw==
+X-Gm-Message-State: AOJu0Yx66wj5sDx0nFOfV3nBRmdyGYJMISLUTP5mLmr0jOHXgHPeu5LL
+ b6ZuDX+9oJOOSdT8LodKy8YwxQ==
+X-Google-Smtp-Source: AGHT+IFBciXYXg1yuOeb1sIjU/vrRgC0KZtXxGjy/j9OZ0NZUYqkSKgdw2wODEDy2OuyCqF4YXFadg==
+X-Received: by 2002:a17:907:2ce1:b0:9c1:9bc5:c25c with SMTP id
+ hz1-20020a1709072ce100b009c19bc5c25cmr7471111ejc.22.1698065486485; 
+ Mon, 23 Oct 2023 05:51:26 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ h25-20020a170906261900b00992e14af9c3sm6647585ejc.143.2023.10.23.05.51.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Oct 2023 05:51:26 -0700 (PDT)
+Date: Mon, 23 Oct 2023 14:51:25 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Anup Patel <apatel@ventanamicro.com>, Atish Kumar Patra <atishp@rivosinc.com>, 
+ Haibo Xu <haibo1.xu@intel.com>
+Subject: Re: [PATCH v3 07/12] hw/riscv/virt-acpi-build.c: Add CMO information
+ in RHCT
+Message-ID: <20231023-bef871e5fa4e26f66db68961@orel>
+References: <20231019132648.23703-1-sunilvl@ventanamicro.com>
+ <20231019132648.23703-8-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1697748466-373230-3-git-send-email-steven.sistare@oracle.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20231019132648.23703-8-sunilvl@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,327 +103,20 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 01:47:44PM -0700, Steve Sistare wrote:
-> Extend the blocker interface so that a blocker can be registered for
-> one or more migration modes.  The existing interfaces register a
-> blocker for all modes, and the new interfaces take a varargs list
-> of modes.
+On Thu, Oct 19, 2023 at 06:56:43PM +0530, Sunil V L wrote:
+> When CMO related extensions like Zicboz, Zicbom and Zicbop are enabled, the
+> block size for those extensions need to be communicated via CMO node in
+> RHCT. Add CMO node in RHCT if any of those CMO extensions are detected.
 > 
-> Internally, maintain a separate blocker list per mode.  The same Error
-> object may be added to multiple lists.  When a block is deleted, it is
-> removed from every list, and the Error is freed.
-
-I'm not sure that assocating blockers with migration modes is
-the optimal way to model this.
-
-IIUC, some of the migration blockers exist because the feature
-relies on state that only exists on the current host.
-
-This isn't a problem with CPR since the migration is within
-the same host.  At the time though, these blockers should
-likely be redundant for a normal migration that uses "localhost".
-
-We can't express the distinction between localhost-migrate
-and cross-host-migrate historically, but we should have done.
-This new patch largely enables that I think which is good.
-
-What I think this means is that we shouldn't tie blockers
-to modes, but rather have different types of blockers as
-a bit set
-
-  enum MigrationBlockerType {
-     MIGRATION_BLOCKER_LOCAL_HOST = (1 << 0),
-     MIGRATION_BLOCKER_CROSS_HOST = (1 << 1),
-  };
-
-  #define MIGRATION_BLOCKER_ALL 0xff
-
-
-Cpr would check for blockers with MIGRATION_BLOCKER_LOCAL_HOST
-set only.
-
-Normal migration within localhost only would similarly only
-check MIGRATION_BLOCKER_LOCAL_HOST
-
-Normal migration between arbitrary host would check for
-MIGRATION_BLOCKER_LOCAL_HOST and MIGRATION_BLOCKER_CROSS_HOST
-
-
-
-> 
-> No functional change until a new mode is added.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
->  include/migration/blocker.h | 44 +++++++++++++++++++--
->  migration/migration.c       | 95 ++++++++++++++++++++++++++++++++++++++-------
->  stubs/migr-blocker.c        | 10 +++++
->  3 files changed, 132 insertions(+), 17 deletions(-)
-> 
-> diff --git a/include/migration/blocker.h b/include/migration/blocker.h
-> index b048f30..a687ac0 100644
-> --- a/include/migration/blocker.h
-> +++ b/include/migration/blocker.h
-> @@ -14,8 +14,12 @@
->  #ifndef MIGRATION_BLOCKER_H
->  #define MIGRATION_BLOCKER_H
->  
-> +#include "qapi/qapi-types-migration.h"
-> +
-> +#define MIG_MODE_ALL MIG_MODE__MAX
-> +
->  /**
-> - * @migrate_add_blocker - prevent migration from proceeding
-> + * @migrate_add_blocker - prevent all modes of migration from proceeding
->   *
->   * @reasonp - address of an error to be returned whenever migration is attempted
->   *
-> @@ -30,8 +34,8 @@
->  int migrate_add_blocker(Error **reasonp, Error **errp);
->  
->  /**
-> - * @migrate_add_blocker_internal - prevent migration from proceeding without
-> - *                                 only-migrate implications
-> + * @migrate_add_blocker_internal - prevent all modes of migration from
-> + *                                 proceeding, but ignore -only-migratable
->   *
->   * @reasonp - address of an error to be returned whenever migration is attempted
->   *
-> @@ -50,7 +54,7 @@ int migrate_add_blocker(Error **reasonp, Error **errp);
->  int migrate_add_blocker_internal(Error **reasonp, Error **errp);
->  
->  /**
-> - * @migrate_del_blocker - remove a blocking error from migration and free it.
-> + * @migrate_del_blocker - remove a migration blocker from all modes and free it.
->   *
->   * @reasonp - address of the error blocking migration
->   *
-> @@ -58,4 +62,36 @@ int migrate_add_blocker_internal(Error **reasonp, Error **errp);
->   */
->  void migrate_del_blocker(Error **reasonp);
->  
-> +/**
-> + * @migrate_add_blocker_normal - prevent normal migration mode from proceeding
-> + *
-> + * @reasonp - address of an error to be returned whenever migration is attempted
-> + *
-> + * @errp - [out] The reason (if any) we cannot block migration right now.
-> + *
-> + * @returns - 0 on success, -EBUSY/-EACCES on failure, with errp set.
-> + *
-> + * *@reasonp is freed and set to NULL if failure is returned.
-> + * On success, the caller must not free @reasonp, except by
-> + *   calling migrate_del_blocker.
-> + */
-> +int migrate_add_blocker_normal(Error **reasonp, Error **errp);
-> +
-> +/**
-> + * @migrate_add_blocker_modes - prevent some modes of migration from proceeding
-> + *
-> + * @reasonp - address of an error to be returned whenever migration is attempted
-> + *
-> + * @errp - [out] The reason (if any) we cannot block migration right now.
-> + *
-> + * @mode - one or more migration modes to be blocked.  The list is terminated
-> + *         by -1 or MIG_MODE_ALL.  For the latter, all modes are blocked.
-> + *
-> + * @returns - 0 on success, -EBUSY/-EACCES on failure, with errp set.
-> + *
-> + * *@reasonp is freed and set to NULL if failure is returned.
-> + * On success, the caller must not free *@reasonp before the blocker is removed.
-> + */
-> +int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...);
-> +
->  #endif
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 67547eb..b8b54e6 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -92,7 +92,7 @@ enum mig_rp_message_type {
->  static MigrationState *current_migration;
->  static MigrationIncomingState *current_incoming;
->  
-> -static GSList *migration_blockers;
-> +static GSList *migration_blockers[MIG_MODE__MAX];
->  
->  static bool migration_object_check(MigrationState *ms, Error **errp);
->  static int migration_maybe_pause(MigrationState *s,
-> @@ -1011,7 +1011,7 @@ static void fill_source_migration_info(MigrationInfo *info)
->  {
->      MigrationState *s = migrate_get_current();
->      int state = qatomic_read(&s->state);
-> -    GSList *cur_blocker = migration_blockers;
-> +    GSList *cur_blocker = migration_blockers[migrate_mode()];
->  
->      info->blocked_reasons = NULL;
->  
-> @@ -1475,38 +1475,105 @@ int migrate_init(MigrationState *s, Error **errp)
->      return 0;
->  }
->  
-> -int migrate_add_blocker_internal(Error **reasonp, Error **errp)
-> +static bool is_busy(Error **reasonp, Error **errp)
->  {
-> +    ERRP_GUARD();
-> +
->      /* Snapshots are similar to migrations, so check RUN_STATE_SAVE_VM too. */
->      if (runstate_check(RUN_STATE_SAVE_VM) || !migration_is_idle()) {
->          error_propagate_prepend(errp, *reasonp,
->                                  "disallowing migration blocker "
->                                  "(migration/snapshot in progress) for: ");
->          *reasonp = NULL;
-> -        return -EBUSY;
-> +        return true;
->      }
-> -
-> -    migration_blockers = g_slist_prepend(migration_blockers, *reasonp);
-> -    return 0;
-> +    return false;
->  }
->  
-> -int migrate_add_blocker(Error **reasonp, Error **errp)
-> +static bool is_only_migratable(Error **reasonp, Error **errp, int modes)
->  {
-> -    if (only_migratable) {
-> +    ERRP_GUARD();
-> +
-> +    if (only_migratable && (modes & BIT(MIG_MODE_NORMAL))) {
->          error_propagate_prepend(errp, *reasonp,
->                                  "disallowing migration blocker "
->                                  "(--only-migratable) for: ");
->          *reasonp = NULL;
-> +        return true;
-> +    }
-> +    return false;
-> +}
-> +
-> +static int get_modes(MigMode mode, va_list ap)
-> +{
-> +    int modes = 0;
-> +
-> +    while (mode != -1 && mode != MIG_MODE_ALL) {
-> +        assert(mode >= MIG_MODE_NORMAL && mode < MIG_MODE__MAX);
-> +        modes |= BIT(mode);
-> +        mode = va_arg(ap, MigMode);
-> +    }
-> +    if (mode == MIG_MODE_ALL) {
-> +        modes = BIT(MIG_MODE__MAX) - 1;
-> +    }
-> +    return modes;
-> +}
-> +
-> +static int add_blockers(Error **reasonp, Error **errp, int modes)
-> +{
-> +    for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-> +        if (modes & BIT(mode)) {
-> +            migration_blockers[mode] = g_slist_prepend(migration_blockers[mode],
-> +                                                       *reasonp);
-> +        }
-> +    }
-> +    return 0;
-> +}
-> +
-> +int migrate_add_blocker(Error **reasonp, Error **errp)
-> +{
-> +    return migrate_add_blocker_modes(reasonp, errp, MIG_MODE_ALL);
-> +}
-> +
-> +int migrate_add_blocker_normal(Error **reasonp, Error **errp)
-> +{
-> +    return migrate_add_blocker_modes(reasonp, errp, MIG_MODE_NORMAL, -1);
-> +}
-> +
-> +int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...)
-> +{
-> +    int modes;
-> +    va_list ap;
-> +
-> +    va_start(ap, mode);
-> +    modes = get_modes(mode, ap);
-> +    va_end(ap);
-> +
-> +    if (is_only_migratable(reasonp, errp, modes)) {
->          return -EACCES;
-> +    } else if (is_busy(reasonp, errp)) {
-> +        return -EBUSY;
->      }
-> +    return add_blockers(reasonp, errp, modes);
-> +}
->  
-> -    return migrate_add_blocker_internal(reasonp, errp);
-> +int migrate_add_blocker_internal(Error **reasonp, Error **errp)
-> +{
-> +    int modes = BIT(MIG_MODE__MAX) - 1;
-> +
-> +    if (is_busy(reasonp, errp)) {
-> +        return -EBUSY;
-> +    }
-> +    return add_blockers(reasonp, errp, modes);
->  }
->  
->  void migrate_del_blocker(Error **reasonp)
->  {
->      if (*reasonp) {
-> -        migration_blockers = g_slist_remove(migration_blockers, *reasonp);
-> +        for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-> +            migration_blockers[mode] = g_slist_remove(migration_blockers[mode],
-> +                                                      *reasonp);
-> +        }
->          error_free(*reasonp);
->          *reasonp = NULL;
->      }
-> @@ -1602,12 +1669,14 @@ void qmp_migrate_pause(Error **errp)
->  
->  bool migration_is_blocked(Error **errp)
->  {
-> +    GSList *blockers = migration_blockers[migrate_mode()];
-> +
->      if (qemu_savevm_state_blocked(errp)) {
->          return true;
->      }
->  
-> -    if (migration_blockers) {
-> -        error_propagate(errp, error_copy(migration_blockers->data));
-> +    if (blockers) {
-> +        error_propagate(errp, error_copy(blockers->data));
->          return true;
->      }
->  
-> diff --git a/stubs/migr-blocker.c b/stubs/migr-blocker.c
-> index 17a5dbf..11cbff2 100644
-> --- a/stubs/migr-blocker.c
-> +++ b/stubs/migr-blocker.c
-> @@ -6,6 +6,16 @@ int migrate_add_blocker(Error **reasonp, Error **errp)
->      return 0;
->  }
->  
-> +int migrate_add_blocker_normal(Error **reasonp, Error **errp)
-> +{
-> +    return 0;
-> +}
-> +
-> +int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...)
-> +{
-> +    return 0;
-> +}
-> +
->  void migrate_del_blocker(Error **reasonp)
->  {
->  }
-> -- 
-> 1.8.3.1
-> 
-> 
+>  hw/riscv/virt-acpi-build.c | 64 +++++++++++++++++++++++++++++++++-----
+>  1 file changed, 56 insertions(+), 8 deletions(-)
+>
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
