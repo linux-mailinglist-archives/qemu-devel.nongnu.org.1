@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F317D2811
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 03:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA467D2812
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 03:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qujtE-00032K-5D; Sun, 22 Oct 2023 21:37:56 -0400
+	id 1qujuQ-0003sW-4n; Sun, 22 Oct 2023 21:39:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qujtB-0002zW-C5; Sun, 22 Oct 2023 21:37:53 -0400
-Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
+ id 1qujuO-0003ry-2R; Sun, 22 Oct 2023 21:39:08 -0400
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qujt9-0002sK-RS; Sun, 22 Oct 2023 21:37:53 -0400
-Received: by mail-ua1-x932.google.com with SMTP id
- a1e0cc1a2514c-7b6e3dc54e0so1818175241.1; 
- Sun, 22 Oct 2023 18:37:51 -0700 (PDT)
+ id 1qujuM-0002zc-If; Sun, 22 Oct 2023 21:39:07 -0400
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7ab9f1efecfso925762241.3; 
+ Sun, 22 Oct 2023 18:39:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698025070; x=1698629870; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698025145; x=1698629945; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GqseqGmsRb9aZIeDmS9PEuQ20yiaKMX4z00p0uiuwvw=;
- b=POg+gvD5vzOfuvavI8FryKGJD26wuuyz9pXk1CYO3+60/FDBnRKl3jYOVS+WrgA4bq
- 6p3pMdMjCymn0J6w1h+jjsjiTZac/72lrfadGnaGz2/sz3hnhh6eqT31oRuR9i0j+m1B
- 5SUs/2ldYiW5bVPRv8zJWldtAi6HmNmdgneni9Ardh6/RWSbPaFkE7G626zhvKb+lOs+
- p+sm76bjm3xiTtZ+W5xt8Ezw0s1b25o5Te6i4uSXnKyc4rBOOsbsOIoIngpeIEIPbCcG
- h9ptlJ6L+oMeDFzggMIPFaLKLMICkxg3Rm3C8kby2mkPAuvCxrWe/rjoncnrFowksq/b
- ZfIQ==
+ bh=ZWIlbeaQFd1CLw+TIe+ZDHatnBw+FkEOm4UgcCTcIwU=;
+ b=fG7AX3J9D+mePwTjwgfO9Zlf8uuconlQ3hocfdWwz7gl0oUCvtGOAcgSvpQ32EcYsa
+ giUxsiEhyc67XwkwH4mNxRgBMsCPmnp5ttVvaCvrATa+4kgh2blFA5mEzMaTTcvtguLq
+ G8pqXJF0/9YnbtnCvKP2Yc9LrUsLVSC4WFxcLedMnO6xnnmVeojTOR1IKRfcaMuXMRKZ
+ Cwn4WWniTD1SUbII4ojJgTsSdEHjjA8mLKWLWoNuDmWwZ5vLfYe4mrwSRqYqVrpqqGbG
+ UgJg915pf33QnovV1cmIs3Lw/3IA1DPJEh2r5iSGaBrkuI2GwuKIu/Nnxv7a1+D3gNiG
+ 42lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698025070; x=1698629870;
+ d=1e100.net; s=20230601; t=1698025145; x=1698629945;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GqseqGmsRb9aZIeDmS9PEuQ20yiaKMX4z00p0uiuwvw=;
- b=adc7DfSeHWA6rAL1xuYlzBpNV8mZ3ptOycpsZOYPUInuCK+k6NUZtC4cGcvdIw5Gpf
- NALw8uBCIPDh2Yiopjt0TrdsatEDNKIrr17iaTtZJtdEjyFJ3JmGuXeJPdinoUb0ZWYP
- UKj0PuTxf3i6EK7JyFGRuseGHtsyCGOgto/x2IbwBGGXSHX75+3OPOKLh0uBG/d9Kf/g
- a3ZFDWHXWiZ5hl6Bd2IfQ5JHjWXxOQsbf3XSNsQn2RfpHuS3/O0Cf5wWb9JTF0zuKtmA
- mbRPAVZUwDUb1FGh1aHEnzcLE4IlwvQz5696AbZAdua8CidMxsahW49kMvO7H1VnvD28
- xGgg==
-X-Gm-Message-State: AOJu0Ywq8mO7wzR7T3U3X5PSPTwpHyx83POh9GvP8Y3nKcn2pFBpSt1w
- Mm7dxWrv8BcS3aGHj/pa20vg9jVD89Jpk4S6L1Y=
-X-Google-Smtp-Source: AGHT+IFU/N1cTYyvyQYuH4rvLdeo1Xh2jjt17TIByfdlS7GDcJpn0zqmdwEKMYv5w2MFB414MheWyGz4v3p9/D3uyho=
-X-Received: by 2002:a05:6102:205b:b0:452:618b:13e3 with SMTP id
- q27-20020a056102205b00b00452618b13e3mr4201069vsr.9.1698025070472; Sun, 22 Oct
- 2023 18:37:50 -0700 (PDT)
+ bh=ZWIlbeaQFd1CLw+TIe+ZDHatnBw+FkEOm4UgcCTcIwU=;
+ b=GH99OB3c9IVEEi7RRZrjFXNwM8YmyA9mHXnlQARUtCt9x4n4IoanqBg0OfkcW8VIsC
+ vAZ8/E4ivWvFsX1A3ouWxCIUPD9EgY6ekD6Doa7tCWTVwC65X4fLFcFfqyEU7SDyBBIk
+ Kt5jicbrRdtDr2c3dsYuWvFhIWXL8RUUs1DyLlF3uxsg5KRUl+X+TNQ0SZBBN0SUbJ23
+ IlujvxlMRU7gcachJJkhcl9082vjo0tjY8ujM5ip7bi6Phomsxg3Vm/uDMJAo3KRbNvK
+ HfTVroXv92apG/sPiP8OKJ8dX3VHIRj6IBxXCQwPM/TCHG9doDMkrdAf++JKHBT7WBU0
+ uXZw==
+X-Gm-Message-State: AOJu0Yx3VbkDzfdm8rwzzt6P13nLdqNHJOgnoiI4yZc3c/QNBz3UllfI
+ yfrQ9H4hhjQFuaMxeNcn2PfR7U2UuTNPlDLFwu8=
+X-Google-Smtp-Source: AGHT+IGu+kRu+Tq2wqek2U9GOuZemyKNRfx+wl+yrdIDJ6L6T09pc8wwDj6HdaGXUlrrvrN18NbK9VrjywEUYtXOWZc=
+X-Received: by 2002:a67:c309:0:b0:457:bf4d:2ee1 with SMTP id
+ r9-20020a67c309000000b00457bf4d2ee1mr7701237vsj.13.1698025145007; Sun, 22 Oct
+ 2023 18:39:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231020170009.86870-1-philmd@linaro.org>
- <20231020170009.86870-4-philmd@linaro.org>
-In-Reply-To: <20231020170009.86870-4-philmd@linaro.org>
+ <20231020170009.86870-5-philmd@linaro.org>
+In-Reply-To: <20231020170009.86870-5-philmd@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 23 Oct 2023 11:37:23 +1000
-Message-ID: <CAKmqyKP39XHT5ny5UKvVj01sZRVy6tREZSe2+bXVvvT34UJk3A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] hw/char/stm32f2xx_usart: Update IRQ when DR is
- written
+Date: Mon, 23 Oct 2023 11:38:38 +1000
+Message-ID: <CAKmqyKPZZVT6yG9BB5-7CGwrucA5EAywJU2S1WS9m+UmndzeWA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] hw/char/stm32f2xx_usart: Add more definitions for
+ CR1 register
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>, qemu-devel@nongnu.org, 
  qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
@@ -65,8 +65,8 @@ Cc: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>, qemu-devel@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Alistair Francis <alistair@alistair23.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -90,7 +90,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 21, 2023 at 3:01=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+On Sat, Oct 21, 2023 at 4:20=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
 <philmd@linaro.org> wrote:
 >
 > From: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
@@ -98,30 +98,12 @@ On Sat, Oct 21, 2023 at 3:01=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
 > Signed-off-by: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
 > [PMD: Split from bigger patch]
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> Useful if unused?
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Still useful I think
+
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
-
-> ---
->  hw/char/stm32f2xx_usart.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
-> index 46e29089bc..74f007591a 100644
-> --- a/hw/char/stm32f2xx_usart.c
-> +++ b/hw/char/stm32f2xx_usart.c
-> @@ -169,6 +169,7 @@ static void stm32f2xx_usart_write(void *opaque, hwadd=
-r addr,
->                 clear TC by writing 0 to the SR register, so set it again
->                 on each write. */
->              s->usart_sr |=3D USART_SR_TC;
-> +            stm32f2xx_update_irq(s);
->          }
->          return;
->      case USART_BRR:
-> --
-> 2.41.0
->
->
 
