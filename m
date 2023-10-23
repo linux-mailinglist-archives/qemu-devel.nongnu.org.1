@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FAF7D3EAC
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0437D3EAA
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:10:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzMV-0005Oh-MB; Mon, 23 Oct 2023 14:09:11 -0400
+	id 1quzMY-0005SM-HA; Mon, 23 Oct 2023 14:09:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3wLY2ZQYKCjkodopnmbjjbgZ.XjhlZhp-YZqZgijibip.jmb@flex--titusr.bounces.google.com>)
- id 1quzMS-0005Nd-QF
+ <3wbY2ZQYKCjopepqonckkcha.Ykimaiq-Zarahjkjcjq.knc@flex--titusr.bounces.google.com>)
+ id 1quzMS-0005NP-IF
  for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:09:08 -0400
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3wLY2ZQYKCjkodopnmbjjbgZ.XjhlZhp-YZqZgijibip.jmb@flex--titusr.bounces.google.com>)
- id 1quzMR-0006wy-6t
+ <3wbY2ZQYKCjopepqonckkcha.Ykimaiq-Zarahjkjcjq.knc@flex--titusr.bounces.google.com>)
+ id 1quzMQ-0006xN-EX
  for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:09:08 -0400
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-5a839b31a0dso70400437b3.0
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-5a7af53bde4so50094757b3.0
  for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:09:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1698084544; x=1698689344; darn=nongnu.org;
+ d=google.com; s=20230601; t=1698084545; x=1698689345; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=KbV14A8alfaUICvgPRLDukMHo/7m/lBZ+95cv/4vjS0=;
- b=rK+ya0Hsvjna+X0keynGni/1hOBAKfos88oacPZtgX5CLiRdcXEqXT0pkeNsXa/8n1
- XvASqW25ISpd5fIixXD4HYH/dKiKCyzHZQGI7H5PMcFLA+qo95mqn3kwvbTcET1A6+/M
- Z5JQfikEpwlM11d1ICjByTUCPwl3wpPs6Sr29q2GSd2rMvyvCznePmOHrr8KfzHoz5EG
- bcUzuseqcf4WA9Ujp3GtPXj/GjdSOW/9JTzR00QJRBWUdA1pPp3ofT2VhDWZRwrF7xYO
- J5LYLsHfoJyHOGWu/v9tX6eSjY4+FUGaSXgBOv6YWamB3SQpTpDS5QOmyJHPFey5XwM8
- 63xg==
+ bh=IVqYj4it6Gbk8q7NLywy+QqsqPeqJ6ajVaN0kVt6mXo=;
+ b=t4HIHBOgxVukwK2htMr7/vZrKbqTKGDUmF3dSKGV7V9Px8xBjvSzW7XF8d3kzIbagu
+ ph5ifXVNlZPH3jz0qGtDx2tGn0KJXh7i1jJDBPOzQXTiI7+0rN2Da5LSx9r2Ze4CzJZO
+ T2t0YGLOuvhoSN0aCX42hK+IgoGdBITv/Opr4q/X5VUmSmHGfU1q3lYmgKFvXDvVVDun
+ ohA5zYeKE0D6MQcRYcsqqz0Xz/Hz7iA+Z7lUqYFkQ0DvZkfk9S7oC3NXHBSZr/tHlHmX
+ mTRbe2n2i++M6/RPBd+uiEYKGGC4c6JwTVvbTnF7xTymGfRq3/idT/nZRfClp74qLRaV
+ 1ldw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698084544; x=1698689344;
+ d=1e100.net; s=20230601; t=1698084545; x=1698689345;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KbV14A8alfaUICvgPRLDukMHo/7m/lBZ+95cv/4vjS0=;
- b=k0he9NcqhnXPKihR68VsqnQV8Ry9B5fTShnwViUHoLhylMwkNYsCdIfb89eEBWdVna
- xKKd8ucefSFtVxeyF8P+BUUtBeN7NSRLGHhVSjxZJedm+RJocbCPEYXWeZHmP3xX+Jxo
- 8aTxteJe2PhK/aTm0qkNmXvbUnjEcIGhPsNMR6DRFQCWXXozUsauBgisl+xtORBUuP/U
- NUgxGnwU1Y3cqUb5U/rFobIqX99fFflg3UTjpZfwaTdq4ZBxMCrUYKgWCUhnd3t/Jb1j
- 9BhIm016Kk+crzj8mPJXeO9auXRvB5BGmH5TOD5foms2cZ3MsZ1IWFecjQxfj2BVx2HN
- T25A==
-X-Gm-Message-State: AOJu0YzTlzpl026Blq5nZigUyUfTJBaOXvtAURgEbMJMkFOVOzZEZP0a
- PAZdfIf+o1/D5EIXm3t9mzBO70RRsUg=
-X-Google-Smtp-Source: AGHT+IGajiyMpp23xxkw2f1DngnEIVRNGpEmSZaYlZ5LfTSq0bFGJtJZGIU97RsWUFbkJwjsFguibntxF+w=
+ bh=IVqYj4it6Gbk8q7NLywy+QqsqPeqJ6ajVaN0kVt6mXo=;
+ b=oKWFMKfhLIYnGMD4/sSt4PDWFQi9Nnz6QUAIwqcvdj+eY8Mo2PNV+8WeNH13dehjNF
+ FotXKOnneS4fLF9/hJHmQdcSyCRCZ3ZgrfbTdz/D2RiUd3k78JfIq2Ay+cxMoTBrtQK4
+ aIBbYXhLt7Kr1PJeX5SKGeau6OTIA/a3pGUBRyaZebdvq0Hhbh9JL2HMxShA5B8hA1L9
+ jEin3IpiKTw7IdTI7HiVKjOLfzrS+W3e4YE3DzvdtfDGjKmBs9YlwMhdaYDELgydiU4k
+ VvhHfJ10KnVJb2L7mKW62IpaKC8Y6iW+nEGfK5PUhRRcvCcqqDRKEguwqcwOUYOTlG04
+ QLuA==
+X-Gm-Message-State: AOJu0YxjlpBp/6Xeq3KF/EFSmbnOq6Z/2D34Ylh80YHkB0xqfTZnxevd
+ NXJHuF4SNZADJvzS9HMTdLykipKMiqw=
+X-Google-Smtp-Source: AGHT+IGH0IufvyX2Tsf2wMYxZhJs7YspGF2ilDPwyrVwmmXgeXHRn3ktflsA6V8Wesq+ek10RBE6s28ANho=
 X-Received: from titusr.c.googlers.com ([fda3:e722:ac3:cc00:14:4d90:c0a8:22b8])
- (user=titusr job=sendgmr) by 2002:a81:6cc3:0:b0:5a7:a98a:4af0 with SMTP id
- h186-20020a816cc3000000b005a7a98a4af0mr220029ywc.3.1698084544085; Mon, 23 Oct
- 2023 11:09:04 -0700 (PDT)
-Date: Mon, 23 Oct 2023 18:08:31 +0000
+ (user=titusr job=sendgmr) by 2002:a25:d601:0:b0:d9b:e3f6:c8c6 with SMTP id
+ n1-20020a25d601000000b00d9be3f6c8c6mr205230ybg.4.1698084545044; Mon, 23 Oct
+ 2023 11:09:05 -0700 (PDT)
+Date: Mon, 23 Oct 2023 18:08:32 +0000
 In-Reply-To: <20231023180837.91785-1-titusr@google.com>
 Mime-Version: 1.0
 References: <20231023180837.91785-1-titusr@google.com>
 X-Mailer: git-send-email 2.42.0.758.gaed0368e0e-goog
-Message-ID: <20231023180837.91785-3-titusr@google.com>
-Subject: [PATCH v3 2/8] hw/i2c: pmbus: add vout mode bitfields
+Message-ID: <20231023180837.91785-4-titusr@google.com>
+Subject: [PATCH v3 3/8] hw/i2c: pmbus: add fan support
 From: Titus Rwantare <titusr@google.com>
 To: qemu-arm@nongnu.org, qemu-devel@nongnu.org, minyard@acm.org, 
  philmd@linaro.org
-Cc: Titus Rwantare <titusr@google.com>, Hao Wu <wuhaotsh@google.com>
+Cc: Titus Rwantare <titusr@google.com>,
+ Stephen Longfield <slongfield@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3wLY2ZQYKCjkodopnmbjjbgZ.XjhlZhp-YZqZgijibip.jmb@flex--titusr.bounces.google.com;
- helo=mail-yw1-x114a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3wbY2ZQYKCjopepqonckkcha.Ykimaiq-Zarahjkjcjq.knc@flex--titusr.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -89,39 +90,244 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VOUT_MODE command is described in the PMBus Specification,
-Part II, Ver 1.3 Section 8.3
+PMBus devices may integrate fans whose operation is configurable
+over PMBus. This commit allows the driver to read and write the
+fan control registers but does not model the operation of fans.
 
-VOUT_MODE has a three bit mode and 4 bit parameter, the three bit
-mode determines whether voltages are formatted as uint16, uint16,
-VID, and Direct modes. VID and Direct modes use the remaining 5 bits
-to scale the voltage readings.
-
-Reviewed-by: Hao Wu <wuhaotsh@google.com>
+Reviewed-by: Stephen Longfield <slongfield@google.com>
 Signed-off-by: Titus Rwantare <titusr@google.com>
 ---
- include/hw/i2c/pmbus_device.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/i2c/pmbus_device.c         | 176 ++++++++++++++++++++++++++++++++++
+ include/hw/i2c/pmbus_device.h |   1 +
+ 2 files changed, 177 insertions(+)
 
+diff --git a/hw/i2c/pmbus_device.c b/hw/i2c/pmbus_device.c
+index ea15490720..c1d8c93056 100644
+--- a/hw/i2c/pmbus_device.c
++++ b/hw/i2c/pmbus_device.c
+@@ -500,6 +500,54 @@ static uint8_t pmbus_receive_byte(SMBusDevice *smd)
+         }
+         break;
+ 
++    case PMBUS_FAN_CONFIG_1_2:            /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send8(pmdev, pmdev->pages[index].fan_config_1_2);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_1:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].fan_command_1);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_2:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].fan_command_2);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_FAN_CONFIG_3_4:            /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send8(pmdev, pmdev->pages[index].fan_config_3_4);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_3:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].fan_command_3);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_4:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].fan_command_4);
++        } else {
++            goto passthough;
++        }
++        break;
++
+     case PMBUS_VOUT_OV_FAULT_LIMIT:       /* R/W word */
+         if (pmdev->pages[index].page_flags & PB_HAS_VOUT) {
+             pmbus_send16(pmdev, pmdev->pages[index].vout_ov_fault_limit);
+@@ -810,6 +858,22 @@ static uint8_t pmbus_receive_byte(SMBusDevice *smd)
+         pmbus_send8(pmdev, pmdev->pages[index].status_mfr_specific);
+         break;
+ 
++    case PMBUS_STATUS_FANS_1_2:           /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send8(pmdev, pmdev->pages[index].status_fans_1_2);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_STATUS_FANS_3_4:           /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send8(pmdev, pmdev->pages[index].status_fans_3_4);
++        } else {
++            goto passthough;
++        }
++        break;
++
+     case PMBUS_READ_EIN:                  /* Read-Only block 5 bytes */
+         if (pmdev->pages[index].page_flags & PB_HAS_EIN) {
+             pmbus_send(pmdev, pmdev->pages[index].read_ein, 5);
+@@ -882,6 +946,54 @@ static uint8_t pmbus_receive_byte(SMBusDevice *smd)
+         }
+         break;
+ 
++    case PMBUS_READ_FAN_SPEED_1:          /* Read-Only word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].read_fan_speed_1);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_READ_FAN_SPEED_2:          /* Read-Only word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].read_fan_speed_2);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_READ_FAN_SPEED_3:          /* Read-Only word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].read_fan_speed_3);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_READ_FAN_SPEED_4:          /* Read-Only word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].read_fan_speed_4);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_READ_DUTY_CYCLE:           /* Read-Only word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].read_duty_cycle);
++        } else {
++            goto passthough;
++        }
++        break;
++
++    case PMBUS_READ_FREQUENCY:            /* Read-Only word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send16(pmdev, pmdev->pages[index].read_frequency);
++        } else {
++            goto passthough;
++        }
++        break;
++
+     case PMBUS_READ_POUT:                 /* Read-Only word */
+         if (pmdev->pages[index].page_flags & PB_HAS_POUT) {
+             pmbus_send16(pmdev, pmdev->pages[index].read_pout);
+@@ -1305,6 +1417,54 @@ static int pmbus_write_data(SMBusDevice *smd, uint8_t *buf, uint8_t len)
+         }
+         break;
+ 
++    case PMBUS_FAN_CONFIG_1_2:            /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmdev->pages[index].fan_config_1_2 = pmbus_receive8(pmdev);
++        } else {
++            goto passthrough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_1:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmdev->pages[index].fan_command_1 = pmbus_receive16(pmdev);
++        } else {
++            goto passthrough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_2:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmdev->pages[index].fan_command_2 = pmbus_receive16(pmdev);
++        } else {
++            goto passthrough;
++        }
++        break;
++
++    case PMBUS_FAN_CONFIG_3_4:            /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmdev->pages[index].fan_config_3_4 = pmbus_receive8(pmdev);
++        } else {
++            goto passthrough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_3:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmdev->pages[index].fan_command_3 = pmbus_receive16(pmdev);
++        } else {
++            goto passthrough;
++        }
++        break;
++
++    case PMBUS_FAN_COMMAND_4:             /* R/W word */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmdev->pages[index].fan_command_4 = pmbus_receive16(pmdev);
++        } else {
++            goto passthrough;
++        }
++        break;
++
+     case PMBUS_VOUT_OV_FAULT_LIMIT:       /* R/W word */
+         if (pmdev->pages[index].page_flags & PB_HAS_VOUT) {
+             pmdev->pages[index].vout_ov_fault_limit = pmbus_receive16(pmdev);
+@@ -1610,6 +1770,22 @@ static int pmbus_write_data(SMBusDevice *smd, uint8_t *buf, uint8_t len)
+         pmdev->pages[index].status_mfr_specific = pmbus_receive8(pmdev);
+         break;
+ 
++    case PMBUS_STATUS_FANS_1_2:           /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send8(pmdev, pmdev->pages[index].status_fans_1_2);
++        } else {
++            goto passthrough;
++        }
++        break;
++
++    case PMBUS_STATUS_FANS_3_4:           /* R/W byte */
++        if (pmdev->pages[index].page_flags & PB_HAS_FAN) {
++            pmbus_send8(pmdev, pmdev->pages[index].status_fans_3_4);
++        } else {
++            goto passthrough;
++        }
++        break;
++
+     case PMBUS_PAGE_PLUS_READ:            /* Block Read-only */
+     case PMBUS_CAPABILITY:                /* Read-Only byte */
+     case PMBUS_COEFFICIENTS:              /* Read-only block 5 bytes */
 diff --git a/include/hw/i2c/pmbus_device.h b/include/hw/i2c/pmbus_device.h
-index 7dc00cc4d9..2e95164aa1 100644
+index 2e95164aa1..ad431bdc7c 100644
 --- a/include/hw/i2c/pmbus_device.h
 +++ b/include/hw/i2c/pmbus_device.h
-@@ -444,6 +444,14 @@ typedef struct PMBusCoefficients {
-     int32_t R;     /* exponent */
- } PMBusCoefficients;
+@@ -258,6 +258,7 @@ OBJECT_DECLARE_TYPE(PMBusDevice, PMBusDeviceClass,
+ #define PB_HAS_TEMP2               BIT_ULL(41)
+ #define PB_HAS_TEMP3               BIT_ULL(42)
+ #define PB_HAS_TEMP_RATING         BIT_ULL(43)
++#define PB_HAS_FAN                 BIT_ULL(44)
+ #define PB_HAS_MFR_INFO            BIT_ULL(50)
+ #define PB_HAS_STATUS_MFR_SPECIFIC BIT_ULL(51)
  
-+/**
-+ * VOUT_Mode bit fields
-+ */
-+typedef struct PMBusVoutMode {
-+    uint8_t  mode:3;
-+    int8_t   exp:5;
-+} PMBusVoutMode;
-+
- /**
-  * Convert sensor values to direct mode format
-  *
 -- 
 2.42.0.758.gaed0368e0e-goog
 
