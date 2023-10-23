@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9DF7D410C
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C07AF7D411B
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:40:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv1g1-0003po-NX; Mon, 23 Oct 2023 16:37:29 -0400
+	id 1qv1g3-00046m-4x; Mon, 23 Oct 2023 16:37:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fk-0003Yn-SV
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:14 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fq-0003jl-SG
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:20 -0400
 Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1ff-0001t1-OH
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:10 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fk-0001tM-Jn
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:18 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 57F411FE33;
- Mon, 23 Oct 2023 20:37:06 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C2B741FE35;
+ Mon, 23 Oct 2023 20:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698093426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698093428; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LxXCrbtkZnuGnuLEOFYoGSN8ud46u43gByhDryWps9k=;
- b=dHjUTrmrJDeH+d8Zf1KDQSMq7rySrZYGsUMD//vVhFny7mXNCS34PLDTRRwOUX2zd+aqM0
- M/scemS/j3orEXQ6PgTzIqjX4vXKmoz89tU9YAqxod1SanSkTwal/KZmSRAgvsprIhKJqY
- ZC6uLNDzkD7f8ctQDC+JeTHIVDPlN1Q=
+ bh=rGDXXkd9mpTgbPLkflQJtoKien+TPU2p5r3bG/wfUw4=;
+ b=GU+qB/vmoWKYvn5lnjxBrDq5lWme+Dfl3iavBlbOSgfzyfx4W5J2kbuXFyg1gbgSdNJq39
+ NHpKprGUVMkjM8G4vvadK3vYjbW2XhizyQRXas66wY7qbXhmlaAoAy1oyUz/wm7D0XK4tu
+ TFLWQLaCt43NNJLLpDzs3ol3H9gGrDA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698093426;
+ s=susede2_ed25519; t=1698093428;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LxXCrbtkZnuGnuLEOFYoGSN8ud46u43gByhDryWps9k=;
- b=OHL4cQy3V4zpKgcwf50PluyOxsQeXfoZpKnccXK3R+CH1xLdU3ZSAgCmjTa7ASn9vml9/G
- 6EfFcNRqHIGBa5Cw==
+ bh=rGDXXkd9mpTgbPLkflQJtoKien+TPU2p5r3bG/wfUw4=;
+ b=csYAX9ZwppK2sQza+S4VQQp9z/GGuct/YPbhbKsMWnbZ9uVyxA8O6sdKIo9qZykUsmP3A7
+ /4YquCwuklx8k8AQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6B785132FD;
- Mon, 23 Oct 2023 20:37:04 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C0642132FD;
+ Mon, 23 Oct 2023 20:37:06 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id SCjNDXDZNmV1JQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:37:04 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id GGBHInLZNmV1JQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:37:06 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v2 20/29] migration/multifd: Add incoming QIOChannelFile
- support
-Date: Mon, 23 Oct 2023 17:35:59 -0300
-Message-Id: <20231023203608.26370-21-farosas@suse.de>
+Subject: [PATCH v2 21/29] migration/multifd: Add pages to the receiving side
+Date: Mon, 23 Oct 2023 17:36:00 -0300
+Message-Id: <20231023203608.26370-22-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231023203608.26370-1-farosas@suse.de>
 References: <20231023203608.26370-1-farosas@suse.de>
@@ -100,141 +99,248 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On the receiving side we don't need to differentiate between main
-channel and threads, so whichever channel is defined first gets to be
-the main one. And since there are no packets, use the atomic channel
-count to index into the params array.
+Currently multifd does not need to have knowledge of pages on the
+receiving side because all the information needed is within the
+packets that come in the stream.
+
+We're about to add support to fixed-ram migration, which cannot use
+packets because it expects the ramblock section in the migration file
+to contain only the guest pages data.
+
+Add a pointer to MultiFDPages in the multifd_recv_state and use the
+pages similarly to what we already do on the sending side. The pages
+are used to transfer data between the ram migration code in the main
+migration thread and the multifd receiving threads.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/file.c      | 39 +++++++++++++++++++++++++++++----------
- migration/migration.c |  2 ++
- migration/multifd.c   |  7 ++++++-
- migration/multifd.h   |  1 +
- 4 files changed, 38 insertions(+), 11 deletions(-)
+ migration/multifd.c | 107 ++++++++++++++++++++++++++++++++++++++++++++
+ migration/multifd.h |  13 +++++-
+ 2 files changed, 119 insertions(+), 1 deletion(-)
 
-diff --git a/migration/file.c b/migration/file.c
-index 93b9b7bf5d..ad75225f43 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -6,13 +6,15 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/cutils.h"
- #include "qapi/error.h"
-+#include "qemu/cutils.h"
-+#include "qemu/error-report.h"
- #include "channel.h"
- #include "file.h"
- #include "migration.h"
- #include "io/channel-file.h"
- #include "io/channel-util.h"
-+#include "options.h"
- #include "trace.h"
- 
- #define OFFSET_OPTION ",offset="
-@@ -136,7 +138,8 @@ void file_start_incoming_migration(const char *filespec, Error **errp)
-     g_autofree char *filename = g_strdup(filespec);
-     QIOChannelFile *fioc = NULL;
-     uint64_t offset = 0;
--    QIOChannel *ioc;
-+    int channels = 1;
-+    int i = 0, fd;
- 
-     trace_migration_file_incoming(filename);
- 
-@@ -146,16 +149,32 @@ void file_start_incoming_migration(const char *filespec, Error **errp)
- 
-     fioc = qio_channel_file_new_path(filename, O_RDONLY, 0, errp);
-     if (!fioc) {
--        return;
-+        goto out;
-+    }
-+
-+    if (migrate_multifd()) {
-+        channels += migrate_multifd_channels();
-     }
- 
--    ioc = QIO_CHANNEL(fioc);
--    if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
-+    fd = fioc->fd;
-+
-+    do {
-+        QIOChannel *ioc = QIO_CHANNEL(fioc);
-+
-+        if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
-+            return;
-+        }
-+
-+        qio_channel_set_name(ioc, "migration-file-incoming");
-+        qio_channel_add_watch_full(ioc, G_IO_IN,
-+                                   file_accept_incoming_migration,
-+                                   NULL, NULL,
-+                                   g_main_context_get_thread_default());
-+    } while (++i < channels && (fioc = qio_channel_file_new_fd(fd)));
-+
-+out:
-+    if (!fioc) {
-+        error_report("Error creating migration incoming channel");
-         return;
-     }
--    qio_channel_set_name(QIO_CHANNEL(ioc), "migration-file-incoming");
--    qio_channel_add_watch_full(ioc, G_IO_IN,
--                               file_accept_incoming_migration,
--                               NULL, NULL,
--                               g_main_context_get_thread_default());
- }
-diff --git a/migration/migration.c b/migration/migration.c
-index ba806cea55..5fa726f6d4 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -756,6 +756,8 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-         }
- 
-         default_channel = (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC));
-+    } else if (migrate_multifd() && migrate_fixed_ram()) {
-+        default_channel = multifd_recv_first_channel();
-     } else {
-         default_channel = !mis->from_src_file;
-     }
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 75a17ea8ab..ad51210f13 100644
+index ad51210f13..20e8635740 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -1242,6 +1242,11 @@ int multifd_load_setup(Error **errp)
-     return 0;
- }
+@@ -992,6 +992,8 @@ int multifd_save_setup(Error **errp)
  
-+bool multifd_recv_first_channel(void)
+ struct {
+     MultiFDRecvParams *params;
++    /* array of pages to receive */
++    MultiFDPages_t *pages;
+     /* number of created threads */
+     int count;
+     /* syncs main thread and channels */
+@@ -1002,6 +1004,75 @@ struct {
+     MultiFDMethods *ops;
+ } *multifd_recv_state;
+ 
++static int multifd_recv_pages(QEMUFile *f)
 +{
-+    return !multifd_recv_state;
++    int i;
++    static int next_recv_channel;
++    MultiFDRecvParams *p = NULL;
++    MultiFDPages_t *pages = multifd_recv_state->pages;
++
++    /*
++     * next_channel can remain from a previous migration that was
++     * using more channels, so ensure it doesn't overflow if the
++     * limit is lower now.
++     */
++    next_recv_channel %= migrate_multifd_channels();
++    for (i = next_recv_channel;; i = (i + 1) % migrate_multifd_channels()) {
++        p = &multifd_recv_state->params[i];
++
++        qemu_mutex_lock(&p->mutex);
++        if (p->quit) {
++            error_report("%s: channel %d has already quit!", __func__, i);
++            qemu_mutex_unlock(&p->mutex);
++            return -1;
++        }
++        if (!p->pending_job) {
++            p->pending_job++;
++            next_recv_channel = (i + 1) % migrate_multifd_channels();
++            break;
++        }
++        qemu_mutex_unlock(&p->mutex);
++    }
++
++    multifd_recv_state->pages = p->pages;
++    p->pages = pages;
++    qemu_mutex_unlock(&p->mutex);
++    qemu_sem_post(&p->sem);
++
++    return 1;
 +}
 +
- bool multifd_recv_all_channels_created(void)
++int multifd_recv_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset)
++{
++    MultiFDPages_t *pages = multifd_recv_state->pages;
++    bool changed = false;
++
++    if (!pages->block) {
++        pages->block = block;
++    }
++
++    if (pages->block == block) {
++        pages->offset[pages->num] = offset;
++        pages->num++;
++
++        if (pages->num < pages->allocated) {
++            return 1;
++        }
++    } else {
++        changed = true;
++    }
++
++    if (multifd_recv_pages(f) < 0) {
++        return -1;
++    }
++
++    if (changed) {
++        return multifd_recv_queue_page(f, block, offset);
++    }
++
++    return 1;
++}
++
+ static void multifd_recv_terminate_threads(Error *err)
  {
-     int thread_count = migrate_multifd_channels();
-@@ -1284,7 +1289,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-         /* initial packet */
-         num_packets = 1;
-     } else {
--        id = 0;
-+        id = qatomic_read(&multifd_recv_state->count);
+     int i;
+@@ -1023,6 +1094,7 @@ static void multifd_recv_terminate_threads(Error *err)
+ 
+         qemu_mutex_lock(&p->mutex);
+         p->quit = true;
++        qemu_sem_post(&p->sem);
+         /*
+          * We could arrive here for two reasons:
+          *  - normal quit, i.e. everything went fine, just finished
+@@ -1072,8 +1144,11 @@ void multifd_load_cleanup(void)
+         p->c = NULL;
+         qemu_mutex_destroy(&p->mutex);
+         qemu_sem_destroy(&p->sem_sync);
++        qemu_sem_destroy(&p->sem);
+         g_free(p->name);
+         p->name = NULL;
++        multifd_pages_clear(p->pages);
++        p->pages = NULL;
+         p->packet_len = 0;
+         g_free(p->packet);
+         p->packet = NULL;
+@@ -1086,6 +1161,8 @@ void multifd_load_cleanup(void)
+     qemu_sem_destroy(&multifd_recv_state->sem_sync);
+     g_free(multifd_recv_state->params);
+     multifd_recv_state->params = NULL;
++    multifd_pages_clear(multifd_recv_state->pages);
++    multifd_recv_state->pages = NULL;
+     g_free(multifd_recv_state);
+     multifd_recv_state = NULL;
+ }
+@@ -1148,6 +1225,25 @@ static void *multifd_recv_thread(void *opaque)
+                 break;
+             }
+             p->num_packets++;
++        } else {
++            /*
++             * No packets, so we need to wait for the vmstate code to
++             * queue pages.
++             */
++            qemu_sem_wait(&p->sem);
++            qemu_mutex_lock(&p->mutex);
++            if (!p->pending_job) {
++                qemu_mutex_unlock(&p->mutex);
++                break;
++            }
++
++            for (int i = 0; i < p->pages->num; i++) {
++                p->normal[p->normal_num] = p->pages->offset[i];
++                p->normal_num++;
++            }
++
++            p->pages->num = 0;
++            p->host = p->pages->block->host;
+         }
+ 
+         flags = p->flags;
+@@ -1170,6 +1266,13 @@ static void *multifd_recv_thread(void *opaque)
+             qemu_sem_post(&multifd_recv_state->sem_sync);
+             qemu_sem_wait(&p->sem_sync);
+         }
++
++        if (!use_packets) {
++            qemu_mutex_lock(&p->mutex);
++            p->pending_job--;
++            p->pages->block = NULL;
++            qemu_mutex_unlock(&p->mutex);
++        }
      }
  
-     p = &multifd_recv_state->params[id];
+     if (local_err) {
+@@ -1204,6 +1307,7 @@ int multifd_load_setup(Error **errp)
+     thread_count = migrate_multifd_channels();
+     multifd_recv_state = g_malloc0(sizeof(*multifd_recv_state));
+     multifd_recv_state->params = g_new0(MultiFDRecvParams, thread_count);
++    multifd_recv_state->pages = multifd_pages_init(page_count);
+     qatomic_set(&multifd_recv_state->count, 0);
+     qemu_sem_init(&multifd_recv_state->sem_sync, 0);
+     multifd_recv_state->ops = multifd_ops[migrate_multifd_compression()];
+@@ -1213,8 +1317,11 @@ int multifd_load_setup(Error **errp)
+ 
+         qemu_mutex_init(&p->mutex);
+         qemu_sem_init(&p->sem_sync, 0);
++        qemu_sem_init(&p->sem, 0);
+         p->quit = false;
++        p->pending_job = 0;
+         p->id = i;
++        p->pages = multifd_pages_init(page_count);
+ 
+         if (use_packets) {
+             p->packet_len = sizeof(MultiFDPacket_t)
 diff --git a/migration/multifd.h b/migration/multifd.h
-index a835643b48..a112ec7ac6 100644
+index a112ec7ac6..b571b1e4a2 100644
 --- a/migration/multifd.h
 +++ b/migration/multifd.h
-@@ -18,6 +18,7 @@ void multifd_save_cleanup(void);
- int multifd_load_setup(Error **errp);
- void multifd_load_cleanup(void);
- void multifd_load_shutdown(void);
-+bool multifd_recv_first_channel(void);
- bool multifd_recv_all_channels_created(void);
- void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
+@@ -24,6 +24,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
  void multifd_recv_sync_main(void);
+ int multifd_send_sync_main(QEMUFile *f);
+ int multifd_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset);
++int multifd_recv_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset);
+ 
+ /* Multifd Compression flags */
+ #define MULTIFD_FLAG_SYNC (1 << 0)
+@@ -153,9 +154,13 @@ typedef struct {
+     uint32_t page_size;
+     /* number of pages in a full packet */
+     uint32_t page_count;
++    /* multifd flags for receiving ram */
++    int read_flags;
+ 
+     /* syncs main thread and channels */
+     QemuSemaphore sem_sync;
++    /* sem where to wait for more work */
++    QemuSemaphore sem;
+ 
+     /* this mutex protects the following parameters */
+     QemuMutex mutex;
+@@ -167,6 +172,13 @@ typedef struct {
+     uint32_t flags;
+     /* global number of generated multifd packets */
+     uint64_t packet_num;
++    int pending_job;
++    /* array of pages to sent.
++     * The owner of 'pages' depends of 'pending_job' value:
++     * pending_job == 0 -> migration_thread can use it.
++     * pending_job != 0 -> multifd_channel can use it.
++     */
++    MultiFDPages_t *pages;
+ 
+     /* thread local variables. No locking required */
+ 
+@@ -210,4 +222,3 @@ typedef struct {
+ void multifd_register_ops(int method, MultiFDMethods *ops);
+ 
+ #endif
+-
 -- 
 2.35.3
 
