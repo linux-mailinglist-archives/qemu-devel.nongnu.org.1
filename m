@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AE67D2AAE
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 08:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4677D2AAF
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 08:48:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quoiU-0004H4-L3; Mon, 23 Oct 2023 02:47:10 -0400
+	id 1quojL-00054n-B8; Mon, 23 Oct 2023 02:48:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoiS-0004G0-DX
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:47:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quojJ-00054f-FB
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:48:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoiR-0001T0-0q
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:47:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quojI-0001Zo-4T
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:48:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698043626;
+ s=mimecast20190719; t=1698043679;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=5CC1c5P4CeNm/9XLiFqn4P/uGJBD0H9R+xNEi4Iddz4=;
- b=CXhqo8aZIT/O/+I2+BQyc6JSEN5eXMJYH5RlpzrPP3XSRdgfiJPpkyEwnAp7eupwva4F1M
- UoBE74Lbqz4GHtQJyvCfvCOybarAMhAxm8gQgytniE6Xigj2L/pUkLmGf9adFVW7FpQapZ
- 8ick9SGAJNM+a19jTvRrIY6v9AQyt2E=
+ bh=sRsKBS2MKVtRlZuF/oUNbEv6gfGm8VLd7fGrPWt7NRQ=;
+ b=hDRjHSXWankKfB2WKBK74sP1NKO/L863oXSFISFy34QwzURkAKIVrkT8OJJuIx1igAavhn
+ AVll55CMDhNJWWr+h997jnz04I1XPtZ0PQ8kIAh2+kIxUkHg4LNpSAqwNntf/9yAhU/atm
+ TGOGOr9Pfo4ecmf/OXNvmrdrh6Y3zMk=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-bc9aU4JSPkCzwVXnwbq6ig-1; Mon, 23 Oct 2023 02:46:54 -0400
-X-MC-Unique: bc9aU4JSPkCzwVXnwbq6ig-1
+ us-mta-630--Z47bKj0PKOQGGZK1v91_Q-1; Mon, 23 Oct 2023 02:47:53 -0400
+X-MC-Unique: -Z47bKj0PKOQGGZK1v91_Q-1
 Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9c7558b838aso178229066b.2
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 23:46:54 -0700 (PDT)
+ a640c23a62f3a-9bea60bd1adso409773766b.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 23:47:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698043613; x=1698648413;
+ d=1e100.net; s=20230601; t=1698043672; x=1698648472;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5CC1c5P4CeNm/9XLiFqn4P/uGJBD0H9R+xNEi4Iddz4=;
- b=jPUKQXDOti6e4qvyp36bh3pThAfUla3YfziMPb/CFnP3xqN2pS8gL4HjvWRJWVXtLx
- 4wHDiWv8wcYWe2tDb4p/71D3R/tFlpBvDFLWxXOZQL760p0J/Y5n0DJ6bqCXyh4jfz6l
- ytQxA0RbKFfCF+OU9EoNTQ3qvz4+5prTrQBNvhJCOk16GtPIpmuqayWZYZLjlL8+S6Sf
- qD/Z4L3y6aDSh8ir2eWfcMOflhpDQ4CjBlkkIThEw0lxsBmCpxR8iQP994ci31JwNxRa
- /P+XIOoQUrUM+cdGk1aQ71asTFfYySJ08DaV7XdUCsgEhGGiWMKOJY+B9LdJRWJK3pMl
- M9oA==
-X-Gm-Message-State: AOJu0Ywn/DxD/B0XNdvXmiGs50dtl6t9cwnFKyTKXmnN5621XD58SAMI
- xwsZutqE5I49dZbMG03lMIl+3Vd/naj/bfADnn7hZ9J+kP9xHZvW+BrI9HMUrHtFVu7HR1tqaYO
- cD4FHQufGO8o6GXQ=
-X-Received: by 2002:a17:907:608b:b0:9b2:9e44:222e with SMTP id
- ht11-20020a170907608b00b009b29e44222emr8254425ejc.19.1698043613706; 
- Sun, 22 Oct 2023 23:46:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjUpozCvlGOStG5zYKHVDijoGk9rIENG9Fz/EV4zvw0SKHH4rm9qVFtMGUvKCJSvtayzcpSw==
-X-Received: by 2002:a17:907:608b:b0:9b2:9e44:222e with SMTP id
- ht11-20020a170907608b00b009b29e44222emr8254414ejc.19.1698043613443; 
- Sun, 22 Oct 2023 23:46:53 -0700 (PDT)
+ bh=sRsKBS2MKVtRlZuF/oUNbEv6gfGm8VLd7fGrPWt7NRQ=;
+ b=QpLaxE/Te4mBKHV+Q8+hNDMn/h7WBlNncjJpZlAEqo5g7N8rypGT2a7A5YeaErHrOP
+ RWZqFt8JvwL3TgspJUfgU9g42yrdTyoajanW+umE/bpIedNTbpzfzf9XGGjhYqDm1OYF
+ xaicx5pmrZlBmLk0O41yUfFuy11gtUvTDdTbRCx4lzRZtRPtr0WeiZiS/jRTSbX7GhoK
+ x/Dzzq/q7YXupkIQTvE3FVkgii2FykdF3dQnTmNb6+oKlOMP4e9CJ58zSERrYOeMTyuK
+ mwHx2ZLY85uiat1IgBC43KBv1BNafSDTrkysqyAh9ujLL6P0B9STy5YqENmbg7yfTSHy
+ e2tw==
+X-Gm-Message-State: AOJu0Yw17cbLsfnxRrTuGdu8zT73MeF+qBgaMnrwcVNrY1fzUXHV+mGZ
+ EKRTkcqifvwqFgLi+Tb3lYmtvZa9ZsHKp+FJvKRsxVtgkU5gfzYDjZSg1fX8ySAr3HRASEfXSe6
+ UPut7dkNHtCxK1x8=
+X-Received: by 2002:a17:907:988:b0:9ae:6648:9b53 with SMTP id
+ bf8-20020a170907098800b009ae66489b53mr9374238ejc.23.1698043672014; 
+ Sun, 22 Oct 2023 23:47:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWVQfYNBvrsX3S08Xn/OUec7MoUIRWwQK0S5LMdSAiimFXB9wYjCpHyJm9yodxQgeou6U4Lg==
+X-Received: by 2002:a17:907:988:b0:9ae:6648:9b53 with SMTP id
+ bf8-20020a170907098800b009ae66489b53mr9374230ejc.23.1698043671837; 
+ Sun, 22 Oct 2023 23:47:51 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- u16-20020a170906655000b009c3f1b3e988sm6062764ejn.90.2023.10.22.23.46.51
+ u16-20020a170906655000b009c3f1b3e988sm6062764ejn.90.2023.10.22.23.47.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Oct 2023 23:46:52 -0700 (PDT)
-Message-ID: <6f06be57-f065-4a40-bcce-b73740f87e36@redhat.com>
-Date: Mon, 23 Oct 2023 08:46:51 +0200
+ Sun, 22 Oct 2023 23:47:50 -0700 (PDT)
+Message-ID: <fadacc7f-b5b9-4440-9b2d-ccb8679c0758@redhat.com>
+Date: Mon, 23 Oct 2023 08:47:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/9] hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of
- pxa2xx_pic_init()
+Subject: Re: [PATCH v3 9/9] hw/arm/pxa2xx: Realize PXA2XX_I2C device before
+ accessing it
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
 References: <20231020130331.50048-1-philmd@linaro.org>
- <20231020130331.50048-9-philmd@linaro.org>
+ <20231020130331.50048-10-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,7 +116,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231020130331.50048-9-philmd@linaro.org>
+In-Reply-To: <20231020130331.50048-10-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -144,12 +144,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/10/2023 15.03, Philippe Mathieu-Daudé wrote:
+> qbus_new(), called in i2c_init_bus(), should not be called
+> on unrealized device.
+> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/arm/pxa2xx_pic.c | 16 ++++++++++------
->   1 file changed, 10 insertions(+), 6 deletions(-)
+>   hw/arm/pxa2xx.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-
 
 
