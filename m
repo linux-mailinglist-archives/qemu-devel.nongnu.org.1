@@ -2,85 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CADB7D3CF5
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 19:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5AB7D3D18
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 19:10:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quyHm-0008E7-Tr; Mon, 23 Oct 2023 13:00:14 -0400
+	id 1quyQZ-0004SD-HP; Mon, 23 Oct 2023 13:09:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1quyHh-0008Cp-6D
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:00:09 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1quyHe-0002Xp-Hr
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:00:08 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6b87c1edfd5so2645544b3a.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 10:00:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698080404; x=1698685204; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tVV5n5FHB1W7modGzywv9Begg+ZwO7nKGsbDd1c0Y6U=;
- b=AMTzJiHHw+acizhBimiYlDa+HyxdLA1To5hqa9+sRhLMB7oKF0nh+pPybXue2hgK3L
- XHScTH+Zp2+pu6rljKy9hI5UEriITcXMJzCa3lgeu3DvEYqrMZVPYlUcA9MkT1eRHNiB
- LqUBUSfjxp82xNxbHi2XWh9X4bP4d+C9sV5ihbsYl7o12Lb3ribo/rbuvR4cVb7wQY9G
- kVdc+7SI72b7x2+6hh/O8j5C/BVYk+T1LExV2ons5E9Fj+1BDme2faSR0BcxCVgquX++
- ga+NHhWxi6QiulUD2Wxnf9jUHlGOMU0pbyvw24lsj7X62HRy4S/1XDpn9YNBVLAnlDjt
- fxJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698080404; x=1698685204;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tVV5n5FHB1W7modGzywv9Begg+ZwO7nKGsbDd1c0Y6U=;
- b=mORFqTAIOvwEpUNCj09AEDuvKrJglQlBEEoXcyKiD0Bl/MSegMMeQ3zcWcK86ML7oW
- qgeaiYcGWU8jhQ4MXTSpkEgc7jIg0KLR5K7EBj/fyDX5XLUoMqSLEqPs/eDlUwlkzfzb
- S4ZIor0xcceQ5wsYH/IHi9lby91cp7CJEeC+UWwjsHP1j3whN1iWCQmgLsY3V+ufHFej
- YYPVHLNcFbx60ZJfwkPekGHRTnw1S7ie7p6IfdvnWlKSLXSJ5ONHB6RbQ/K1xwBCkdi3
- w0iOO3cxWJr604Ms3GEG5JX12hW9Ir/KyROc1hMdZfQ97ox+tnkkvPOuY3vCJV6TAVXW
- imrw==
-X-Gm-Message-State: AOJu0YyeU+oETgETPj3zfUUWNZbJmeOdiTr0D5aaLgqUPmCchLYQcgpi
- 1QS77AKsj5GLcbR1bSbZL8wSog==
-X-Google-Smtp-Source: AGHT+IEv7R8nJ4WTedZcimiuGi840TrSdeIoTirJ799eQHFWJTgLnMiFjrN6D9hSX5H8MB2xV9L08g==
-X-Received: by 2002:aa7:991e:0:b0:6b8:2ef3:331d with SMTP id
- z30-20020aa7991e000000b006b82ef3331dmr6654445pff.10.1698080404272; 
- Mon, 23 Oct 2023 10:00:04 -0700 (PDT)
-Received: from [192.168.68.107] ([191.255.2.33])
- by smtp.gmail.com with ESMTPSA id
- y9-20020aa78f29000000b006879493aca0sm6383662pfr.26.2023.10.23.10.00.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Oct 2023 10:00:03 -0700 (PDT)
-Message-ID: <0e66af36-bd36-4b42-b901-ed726af207b7@ventanamicro.com>
-Date: Mon, 23 Oct 2023 14:00:00 -0300
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1quyQS-0004RA-Us; Mon, 23 Oct 2023 13:09:13 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1quyQR-0004Ju-7A; Mon, 23 Oct 2023 13:09:12 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39NGjXu1020498; Mon, 23 Oct 2023 17:08:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=56TAYe4jMsA2K9CSB96fKcnyNqTUMT7iqIFk15jeCHM=;
+ b=QkkcnwFf/Fd9L/ifad7PSszBPopRHkgX4wAs16bCtepkjir7Ed1DtpyiCuwnLzrvgLHo
+ Wl6TDA/G7S0YQahyizBSSsLqUVOspDnw80YhJQGxMK7IaF+1QkanOU4gz9Ua+zb/Er/n
+ bZfWX9oOIKcO6uMvuZjlldZubO9e3NgAwLWlgoWoSoTQg6LHw9kuC/npNHMPoqweD5C9
+ gZVOFkZ1t67JFRnmJgFH1PXtZhKdzQCrifK8Sm7fFqFASkfXWp6B1mcjT9dBsv/dXdLP
+ jIbrRFW/t9vNC360hYVtZ3jrf+J+gAA9IYOh0FmKTEQNQEfSAa+rGe6S2KBF1CVWJQWy gQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3twvmsrvnt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Oct 2023 17:08:51 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39NGjgSE021558;
+ Mon, 23 Oct 2023 17:08:51 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3twvmsrvnc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Oct 2023 17:08:51 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39NEUCCs024392; Mon, 23 Oct 2023 17:08:50 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvu6jsksk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Oct 2023 17:08:50 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39NH8oHq45220166
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 23 Oct 2023 17:08:50 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 145DE58065;
+ Mon, 23 Oct 2023 17:08:50 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7BB3358056;
+ Mon, 23 Oct 2023 17:08:48 +0000 (GMT)
+Received: from [9.67.93.191] (unknown [9.67.93.191])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Oct 2023 17:08:48 +0000 (GMT)
+Message-ID: <f2a50afd-3fa1-47d2-960e-0aaaf57c7cd2@linux.ibm.com>
+Date: Mon, 23 Oct 2023 12:08:47 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] target/riscv/tcg: add user flag for profile support
+Subject: Re: [PATCH v6 02/10] hw/fsi: Introduce IBM's scratchpad
 Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
- <20231020223951.357513-4-dbarboza@ventanamicro.com>
- <20231023-2018025adea3ffaebbbefe23@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231023-2018025adea3ffaebbbefe23@orel>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231021211720.3571082-1-ninad@linux.ibm.com>
+ <20231021211720.3571082-3-ninad@linux.ibm.com>
+ <957bc5db-53aa-6946-edf3-3b728a52b660@linaro.org>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <957bc5db-53aa-6946-edf3-3b728a52b660@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kkUTwDcct006zzG7tzwcrBnQ0dcxA0nI
+X-Proofpoint-GUID: sCuTPTX_VXjUOZp9ZTXFASWJrD2ZylzE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-23_15,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0
+ mlxlogscore=794 clxscore=1015 impostorscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 bulkscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
+ definitions=main-2310230148
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,126 +118,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello Philippe,
 
-
-On 10/23/23 05:16, Andrew Jones wrote:
-> On Fri, Oct 20, 2023 at 07:39:48PM -0300, Daniel Henrique Barboza wrote:
->> The TCG emulation implements all the extensions described in the
->> RVA22U64 profile, both mandatory and optional. The mandatory extensions
->> will be enabled via the profile flag. We'll leave the optional
->> extensions to be enabled by hand.
+On 10/23/23 10:00, Philippe Mathieu-Daudé wrote:
+> On 21/10/23 23:17, Ninad Palsule wrote:
+>> This is a part of patchset where scratchpad is introduced.
 >>
->> Given that this is the first profile we're implementing in TCG we'll
->> need some ground work first:
+>> The scratchpad provides a set of non-functional registers. The firmware
+>> is free to use them, hardware does not support any special management
+>> support. The scratchpad registers can be read or written from LBUS
+>> slave.
 >>
->> - all profiles declared in riscv_profiles[] will be exposed to users.
->> TCG is the main accelerator we're considering when adding profile
->> support in QEMU, so for now it's safe to assume that all profiles in
->> riscv_profiles[] will be relevant to TCG;
+>> In this model, The LBUS device is parent for the scratchpad.
 >>
->> - we'll not support user profile settings for vendor CPUs. The flags
->> will still be exposed but users won't be able to change them. The idea
->> is that vendor CPUs in the future can enable profiles internally in
->> their cpu_init() functions, showing to the external world that the CPU
->> supports a certain profile. But users won't be able to enable/disable
->> it;
->>
->> - Setting a profile to 'true' means 'enable all mandatory extensions of
->> this profile, setting it to 'false' means disabling all its mandatory
->> extensions. Disabling a profile is discouraged for regular use and will
->> issue an user warning. User choices for individual extensions will take
->> precedence, i.e. enabling a profile will not enable extensions that the
->> user set to 'false', and vice-versa. This will make us independent of
->> left-to-right ordering in the QEMU command line, i.e. the following QEMU
->> command lines:
->>
->> -cpu rv64,zicbom=false,rva22u64=true,Zifencei=false
->> -cpu rv64,zicbom=false,Zifencei=false,rva22u64=true
->> -cpu rv64,rva22u64=true,zicbom=false,Zifencei=false
->>
->> They mean the same thing: "enable all mandatory extensions of the
->> rva22u64 profile while keeping zicbom and Zifencei disabled".
-> 
-> Hmm, I'm not sure I agree with special-casing profiles like this. I think
-> the left-to-right processing should be consistent for all. I'm also not
-> sure we should always warn when disabling a profile. For example, if a
-> user does
-> 
->   -cpu rv64,rva22u64=true,rva22u64=false
-> 
-> then they'll get a warning, even though all they're doing is restoring the
-> cpu model. While that looks like an odd thing to do, a script may be
-> adding the rva22u64=true and the rva22u64=false is the user input which
-> undoes what the script did.
+>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>> ---
+>> v2:
+>> - Incorporated Joel's review comments.
+>> v5:
+>> - Incorporated review comments by Cedric.
+>> v6:
+>> - Incorporated review comments by Daniel.
+>> ---
+>>   meson.build                        |  1 +
+>>   hw/fsi/trace.h                     |  1 +
+>>   include/hw/fsi/engine-scratchpad.h | 32 ++++++++++
+>>   include/hw/fsi/fsi.h               | 16 +++++
+>>   hw/fsi/engine-scratchpad.c         | 93 ++++++++++++++++++++++++++++++
+>>   hw/fsi/Kconfig                     |  4 ++
+>>   hw/fsi/meson.build                 |  1 +
+>>   hw/fsi/trace-events                |  2 +
+>>   8 files changed, 150 insertions(+)
+>>   create mode 100644 hw/fsi/trace.h
+>>   create mode 100644 include/hw/fsi/engine-scratchpad.h
+>>   create mode 100644 include/hw/fsi/fsi.h
+>>   create mode 100644 hw/fsi/engine-scratchpad.c
+>>   create mode 100644 hw/fsi/trace-events
+>
+>
+>> diff --git a/include/hw/fsi/fsi.h b/include/hw/fsi/fsi.h
+>> new file mode 100644
+>> index 0000000000..e65f26f17b
+>> --- /dev/null
+>> +++ b/include/hw/fsi/fsi.h
+>> @@ -0,0 +1,16 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * IBM Flexible Service Interface
+>> + */
+>> +#ifndef FSI_FSI_H
+>> +#define FSI_FSI_H
+>> +
+>> +/* Bitwise operations at the word level. */
+>> +#define BE_BIT(x)                          BIT(31 - (x))
+>> +#define GENMASK(t, b) \
+>> +    (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 1))
+>
+> Please use MAKE_64BIT_MASK() from "qemu/bitops.h".
 
-QEMU options do not work with a "the user enabled then disabled the same option,
-thus it'll count as nothing happened" logic. The last instance of the option will
-overwrite all previous instances. In the example you mentioned above the user would
-disable all mandatory extensions of rva22u64 in the CPU, doesn't matter if the
-same profile was enabled beforehand.
+The GENMASK and MAKE_64BIT_MASK macros are invoke differently.
 
-Sure, the can put code in place to make this happen, but then this would make
-profiles act different than regular extensions. "-cpu rv64,zicbom=true -cpu rv64,zicbom=false"
-will disable zicbom, it will not preserve the original 'zicbom' rv64 default. If
-we're going to keep left-to-right ordering consistent, this behavior should also
-be consistent as well.
+GENMASK is invoked with bit t and bit b (t:b) and it provides the mask and
 
+MAKE_64BIT_MASK uses shift and length.
 
-As for warnings, I agree that we'll throw warnings even when nothing of notice happened.
-For example:
+Thanks for the review.
 
--cpu rv64,rva22u64=false -cpu rv64,rva22u64=true
+Regards,
 
-This will throw a warning even though the user ended up enabling the extension
-in the end.
-
-
-We can fix it by postponing warnings to realize().
-
-
-> 
-> As far as warnings go, it'd be nice to warn when mandatory profile
-> extensions are disabled from an enabled profile. Doing that might be
-> useful for debug, but users which do it without being aware they're
-> "breaking" the profile may learn from that warning. Note, the warning
-> should only come when the profile is actually enabled and when the
-> extension would actually be disabled, i.e.
-> 
->   -cpu rv64,rva22u64=true,c=off
-> 
-> should warn
-> 
->   -cpu rv64,c=off,rva22u64=true
-> 
-> should not warn (rva22u64 overrides c=off since it's to the right)
-> 
->   -cpu rv64,rva22u64=true,rva22u64=false,c=off
-> 
-> should not warn (rva22u64 is not enabled)
-
-Ack for all the above.
-
-> 
-> And,
-> 
->   -cpu rv64,rva22u64=true,rva24u64=false
-> 
-> should warn for each extension which is mandatory in both profiles.
-
-The way I'm imagining this happening is to cycle through all profiles during realize(),
-see which ones are enabled, and then warn if the user disabled their mandatory
-extensions. In this example we would warn for all rva22 mandatory extensions
-that were disabled because we disabled rva24, but we won't emit any warnings for
-rva24 mandatory extensions given that the profile is marked as disabled.
+Ninad
 
 
-
-Thanks,
-
-Daniel
-
-
-> 
-> Thanks,
-> drew
+>> +#define BE_GENMASK(t, b)                   GENMASK(BE_BIT(t), 
+>> BE_BIT(b))
+>> +
+>> +#endif
+>
 
