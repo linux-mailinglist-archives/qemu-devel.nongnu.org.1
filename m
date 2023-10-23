@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2527D2F91
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 12:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED957D2F9D
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 12:23:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qus3E-00010R-Vi; Mon, 23 Oct 2023 06:20:49 -0400
+	id 1qus4m-0001qO-Ib; Mon, 23 Oct 2023 06:22:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1qus3C-00010H-Fg
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:20:46 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qus4k-0001pp-7s
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:22:22 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1qus34-0006Sx-Dr
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:20:40 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9c773ac9b15so385163266b.2
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 03:20:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qus4g-0006gp-Vf
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:22:20 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-507bd19eac8so4525264e87.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 03:22:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.com; s=google; t=1698056436; x=1698661236; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=BuiG7nIfc9kiBUbruMz9kzdSGS6ACMxDj2X+ABh+FQY=;
- b=lFcGnRncdPBwufn9PSf8ZhR9a3ztgncqgbo273YVcCg5WoecgEQQlxhwCQ2wWO3Bag
- yH9Z02Ae3yl0icl/si6RV03wCcWYGXcjbg4ib64HC+dbdtdgDgSeVwhNVfzkBNWE1WV3
- 49M2DJQF+Xu7Qz33+t+WnqQ1dX+FIGFfKJ1GU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698056436; x=1698661236;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1698056537; x=1698661337; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BuiG7nIfc9kiBUbruMz9kzdSGS6ACMxDj2X+ABh+FQY=;
- b=WYMVmfBaGi2gJWfyqUa+BQNZUuSbrnjpHsVFJcH0PfzHmdrX7nFGcWAjpDxWd/KSKM
- Wy3hah+Upi1uC/MCnLFJBIxcBU/832QHBzklan1OYLoiHXp6oFCkZRYFczDFNhrypJxY
- 4OR3LKKRu2EQhK7hJGMyYIv6tJtmFJHvfbiz7cg3JmcEmJ0PeKji+aMB0FJrWpquAjgV
- /q2RXC/rvhxUMX0PdwR1EiFdpSWv/sTuHG1VUl7EGPHE0vEWuGin1QVk6c2G417LFtYY
- alcF661rZZCrODhTWjZGR8axAuYRB2P8pmRIVdZ1uFuo3uja36FaUVKlBz3xy1Gjh/HV
- dJVA==
-X-Gm-Message-State: AOJu0YzvBqzgrOOyXQjUmSppwELSGFldLNPSy4yZz1oyT27Xg6Nz6zdq
- aG81MBNqs48foK40MF6dMXld7Q==
-X-Google-Smtp-Source: AGHT+IErp7TjDMR/UbYPqa9SztjLUVsq32jr9HyVBudMf3DQsuxoH+yqtEfss/q/f83eXnU+4lMpSw==
-X-Received: by 2002:a17:907:86a0:b0:9bd:fc4a:c70b with SMTP id
- qa32-20020a17090786a000b009bdfc4ac70bmr7690113ejc.70.1698056435966; 
- Mon, 23 Oct 2023 03:20:35 -0700 (PDT)
-Received: from perard.uk.xensource.com (default-46-102-197-194.interdsl.co.uk.
- [46.102.197.194]) by smtp.gmail.com with ESMTPSA id
- f7-20020a1709062c4700b009c3828fec06sm6290437ejh.81.2023.10.23.03.20.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 03:20:35 -0700 (PDT)
-Date: Mon, 23 Oct 2023 11:20:34 +0100
-From: Anthony PERARD <anthony.perard@citrix.com>
-To: Vikram Garhwal <vikram.garhwal@amd.com>
-Cc: qemu-devel@nongnu.org, sstabellini@kernel.org,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Subject: Re: [QEMU][PATCH v4 1/2] xen_arm: Create virtio-mmio devices during
- initialization
-Message-ID: <153814fe-0989-48a9-9d2f-45c09e1ad517@perard>
-References: <20230830043518.21584-1-vikram.garhwal@amd.com>
- <20230830043518.21584-2-vikram.garhwal@amd.com>
- <9f3aad26-0233-4987-9fb0-cfcf8d424ef4@perard>
- <ZSb2BlxYGOfbshqq@amd.com>
+ bh=akSx94y29wJ1BBmll8Y5u7TkxESKwKfaGVRLD7rBkcs=;
+ b=mE7Q835yWeAIeK3jO2MIIW36Ck3xxM1FmGDXtCMJRVIPtaXgKHfBopUUKyV/Lm+1gz
+ zZJDf6rV0UX+qfjDsn0JsSEbjyuMSWwqRv9H03+ziY6CfVVhehcWAzpPcUIujPRKGcZi
+ DfeQ6RBMMPluOmev48n9LidFIXo33ZS1fD2fP3TiWcVNlDh1g0BFRtmphbzsTKn8XDUe
+ xVJZilGFOPjp9u+salqsFK8aYzxtypIm8TeAb95Y76dprOIVqclPzcP8ft0oq+LAOBZW
+ +3wkxEqCZMJdwqfzj3oF+o7WZdYi7/cX7vcRq6CAkZqTdI+6J23ySF8B9VoPbBpEcPcu
+ 6AIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698056537; x=1698661337;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=akSx94y29wJ1BBmll8Y5u7TkxESKwKfaGVRLD7rBkcs=;
+ b=mo7WDNL0TTUZGBBzxl6g5CA56CdrHz0jGgoDAoo7NGMRBsJbKpJBGnJd6Jqe8cs1xJ
+ ps3znXu6J5W5IEHIDlVcjptYFb78YeiiUsMT/wPNq32HlpobsKhUNnSaKVU0DP30AK6m
+ +MFT33x//4gn/orHb55kVwKjb0GhH61eSFI21ccRKDOCr2kyFWyRciBLXkVDG4di0neF
+ 1CTUtW8+72HBgB+i/lPdYRctj6tJGK35/jvnm1a9EtWayUYfbS4T/fmiYsNsKYr2/Ya9
+ vDxmwf11ObsOC+rTgyckJ63sYuqPptPiqh2fyKrTYok8wGLXaWHM1AjGPcNNPHbj6Oxg
+ 4ZGg==
+X-Gm-Message-State: AOJu0Yx7iLtiNTUDDqRUK0A1B+lUkmU7QPZvRBjdYFogMBviH8L5U1E1
+ X7un7gEJXVuPmUUoG+jnnM1wGR3AX6IKhcPOS4pJMw==
+X-Google-Smtp-Source: AGHT+IEGLJYNEeLG8veZiujgOlXgghnHt/Jqe+RAmmpj//wibCiq9pwtu5cLjb8/GEptDsI/g7Mn3BWhjyJvJtUgqHI=
+X-Received: by 2002:a05:6512:3c9f:b0:507:96e7:c08d with SMTP id
+ h31-20020a0565123c9f00b0050796e7c08dmr3585632lfv.61.1698056537025; Mon, 23
+ Oct 2023 03:22:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZSb2BlxYGOfbshqq@amd.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=anthony.perard@cloud.com; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20231023024059.3858349-1-gaosong@loongson.cn>
+ <b0e7be32-ab05-a39c-f722-44b2eaac8318@loongson.cn>
+In-Reply-To: <b0e7be32-ab05-a39c-f722-44b2eaac8318@loongson.cn>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 23 Oct 2023 11:22:06 +0100
+Message-ID: <CAFEAcA8UEC1XSsjuSbwDmiUs03VVK=wTY0PHSte-4f1=hk3EgA@mail.gmail.com>
+Subject: Re: [PATCH] target/loongarch: Support 4K page size
+To: maobibo <maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org, 
+ richard.henderson@linaro.org, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,66 +88,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 11, 2023 at 12:22:46PM -0700, Vikram Garhwal wrote:
-> Hi Anthony,
-> On Thu, Oct 05, 2023 at 11:40:57AM +0100, Anthony PERARD wrote:
-> > Hi Vikram,
-> > 
-> > This patch prevent QEMU from been build with Xen 4.15. See comments.
-> > 
-> > Also, why didn't you CC all the maintainers of
-> > include/hw/xen/xen_native.h?
-> I missed it. Initial version didn't have this file change and i missed updating
-> my cc list.
+On Mon, 23 Oct 2023 at 05:06, maobibo <maobibo@loongson.cn> wrote:
+>
+>
+>
+> =E5=9C=A8 2023/10/23 =E4=B8=8A=E5=8D=8810:40, Song Gao =E5=86=99=E9=81=93=
+:
+> > The LoongArch kernel supports 4K page size.
+> > Change TARGET_PAGE_BITS to 12.
+> >
+> > Signed-off-by: Song Gao <gaosong@loongson.cn>
+> > ---
+> >   target/loongarch/cpu-param.h  | 2 +-
+> >   target/loongarch/tlb_helper.c | 9 ++++-----
+> >   2 files changed, 5 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.=
+h
+> > index 1265dc7cb5..cfe195db4e 100644
+> > --- a/target/loongarch/cpu-param.h
+> > +++ b/target/loongarch/cpu-param.h
+> > @@ -12,6 +12,6 @@
+> >   #define TARGET_PHYS_ADDR_SPACE_BITS 48
+> >   #define TARGET_VIRT_ADDR_SPACE_BITS 48
+> >
+> > -#define TARGET_PAGE_BITS 14
+> > +#define TARGET_PAGE_BITS 12
+> Hi Gaosong,
+>
+> The popular OS about LoongArch still uses 16K page size, qemu should
+> follow the rule of OS rather than defining 4K page size alone.
 
-I use `cccmd` to never miss anyone, and I don't have to build a cc list ;-)
+The TARGET_PAGE_BITS value in QEMU is a property of the hardware,
+not the guest OS. It should specify the smallest page size the
+guest can configure the CPU to use. If the guest asks for a
+larger page size than the minimum then that works fine. See
+for example PPC64 -- on this architecture both 4K and 64K
+pages are possible, so we define TARGET_PAGE_BITS to 12,
+even though a lot of Linux guests use 64K pages.
 
-$ git config sendemail.cccmd
-scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback
+It is slightly less efficient when the guest uses a page size
+larger than the TARGET_PAGE_BITS value indicates, so if you
+have an architecture where some CPUs support small pages
+but most do not, you can do what Arm does, and use the
+TARGET_PAGE_BITS_VARY support. This makes the TARGET_PAGE_BITS
+macro be a runtime-configurable value, where a machine model can
+set the mc->minimum_page_bits value to indicate that that
+machine doesn't need the small-pages handling.
 
-> > > +static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
-> > > +                                               domid_t domid, uint32_t irq,
-> > > +                                               unsigned int level)
-> > > +{
-> > > +    return 0;
-> > 
-> > Shouldn't this return something like -ENOSYS, instead of returning a
-> > success?
-> Changed return to -ENOSYS for older version.
-
-Actually, at least on linux, looks like the function would return either
--1 or 0, and set errno. It seems that xendevicemodel_set_irq_level()
-ultimately called ioctl(), but also the code in
-xen.git/tools/libs/devicemodel/ also only returns -1 or 0.
-
-So it's probably best to set errno=ENOSYS and return -1.
-
-> > 
-> > > diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> > > index 1d3e6d481a..7393b37355 100644
-> > > --- a/hw/arm/xen_arm.c
-> > > +++ b/hw/arm/xen_arm.c
-> > > +
-> > > +static void xen_set_irq(void *opaque, int irq, int level)
-> > > +{
-> > > +    xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level);
-> > 
-> > So, you just ignore the return value here. Shouldn't there be some kind
-> > of error check?
-> > 
-> > And is it OK to create a virtio-mmio device without an error, even when
-> > we could find out that it never going to work (e.g. on Xen 4.14)?
-> This is something Oleksandr can answer better as it was written by him. But
-> I think we can print an error "virtio init failed" and exit the
-> machine init. Does that aligns with your thinking?
-
-Something like that, yes, if possible. It would be a bit difficult
-because xen_set_irq() seems to only be a handler which might only be
-called after the machine as started. So I'm not sure what would be best
-to do here.
-
-Thanks,
-
--- 
-Anthony PERARD
+thanks
+-- PMM
 
