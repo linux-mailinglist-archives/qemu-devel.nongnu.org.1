@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1E87D32D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A45AC7D3361
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:29:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qut1S-0004fp-Aw; Mon, 23 Oct 2023 07:23:02 -0400
+	id 1qut6m-0006Pd-6f; Mon, 23 Oct 2023 07:28:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qut1Q-0004fX-KP
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:23:00 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qut6i-0006PS-3K
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:28:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qut1O-0001h4-Vp
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:23:00 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qut6f-000310-9U
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:28:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698060177;
+ s=mimecast20190719; t=1698060503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RLbIz15Lk3jA4p1mCz/7i8PWTEyET+2IVNLkCOpjosM=;
- b=IZStOtaPFcUQ7TY3q3OUEn6zUlueOJMUltBRE+mSXJVr9iJbsn2Rh5aqFZ9odTkiao79k5
- jT9JjkzreEUccucurLwF412uU+IorNSWyLJT5nsce9d1rtHxsee+La1ysHj7CC0Lvzbs1K
- kLdYRG+tGenIQ2DoUFixhCTt508HqUY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UWYRoKQpeVkRqjA3jjgCSWqlqo+W3Js+e+XRJdIdjpA=;
+ b=QOqvcK+8/0P7zxtU13YLvddi9TxbLZ2RuGgY83K/i8K4wbqxIFKQfoDp29N6LKmeqIdOF/
+ DKKCg+q4cVZQdIF7SQylr+rksrWhnaZCKctEcpVI8rgKH1XUSZmrxU5krNfeNsyxsRasds
+ WcmE5Jw0C/LCrDF6pnv2ycoBx6TOip4=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-14jjzwRJNBGhjFzBzYFzbw-1; Mon, 23 Oct 2023 07:22:55 -0400
-X-MC-Unique: 14jjzwRJNBGhjFzBzYFzbw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32d8d17dcbaso1501445f8f.2
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 04:22:55 -0700 (PDT)
+ us-mta-142-qfjroTaWPeeglhkxH2l6LA-1; Mon, 23 Oct 2023 07:28:22 -0400
+X-MC-Unique: qfjroTaWPeeglhkxH2l6LA-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-66d12cd3591so38053806d6.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 04:28:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698060174; x=1698664974;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RLbIz15Lk3jA4p1mCz/7i8PWTEyET+2IVNLkCOpjosM=;
- b=n3Kb6PaCCSHshTzW11xsZV/61DR1QjHSaGmaXfXJ8syYz5oWQ3bw3ARlxHzM2f3tYA
- v8SqJ3cYUWgeZBWeJChOo0DaRiO2nLM8b3940P4RG+EE7uiJrhPsKudW30L4bijDnbVM
- Rj3OQssxRa0fmLxk+nlbd+kpHLQvvCDTLvYg520yhPjYzTe9Z2gAWy/N4ZnZTXA81Go5
- CFax4Df0oTY4q2xmqYp81QcLSLBTRrePuU5oouSM182HRCKa1ZCGz8d9hovmoI97ixUg
- VKv0vNuDKuyi4qrEX50JJ2zYIagqTwZaifLqNZ7qFRMte1cnMcIDxpKROKmnRm+QL70F
- Ozxw==
-X-Gm-Message-State: AOJu0YzfOw5XACrP8XpzpLkEWG1e1NpQyahunSnBd31I1mrFjktgz0nS
- fMfPGmOX78rzGUwXt1NP/n3NWHC3tglZDGBhcOMHZ3aJx5JvTRO2df/Tro2lEjt3akN+SBYBApR
- GnL0UyCc0XQCszp8=
-X-Received: by 2002:adf:f286:0:b0:32d:a7d0:247a with SMTP id
- k6-20020adff286000000b0032da7d0247amr6038325wro.48.1698060174546; 
- Mon, 23 Oct 2023 04:22:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKkE6lFw8QU3bRCvChuSx52X0uCD9T5CJHmd0j/jg6MZLu77xy9fcos/O7rYGpTpRZ91HQpg==
-X-Received: by 2002:adf:f286:0:b0:32d:a7d0:247a with SMTP id
- k6-20020adff286000000b0032da7d0247amr6038314wro.48.1698060174183; 
- Mon, 23 Oct 2023 04:22:54 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f2:e88f:2c2c:db43:583d:d30e])
+ d=1e100.net; s=20230601; t=1698060501; x=1698665301;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UWYRoKQpeVkRqjA3jjgCSWqlqo+W3Js+e+XRJdIdjpA=;
+ b=Tcp/OV0ITlX1AgkSRIUCPEOb69oH25x+1gLxdgMBY5D2ZssC8R9ziR2UJtYC3vuyen
+ Y2lRuv6lTaEru4/WMdeCnTdZsl6jcrEG0/0P8lo0n00JXR0xvd4sUI7y49FtkUEUOisq
+ qUzxrU8yZkTPfoJXds56Q1YQLJ+j+95rHakaAr10bEjk25qDRDGPRTc6H73hKukAK1WU
+ 23lE0TU2kCRrrra6Q3KT6eOrc77HxcmzNdSKoQsH+zvP9QHB+7loRCBczhjptTV3sozp
+ dSq+MbCk0Jcd0tfR8qEQeNDBLAPSkc3G1D3LEkAytzpxC/xrEA7Ll4yA9RArbMn0dxY0
+ C7kg==
+X-Gm-Message-State: AOJu0Yysygq8pBq+0Wfou7JFqyxtaJQQHN4I8iYeA3kLPv5DwTglDa0u
+ j1Z9xZSibrFW0rYEOfw6WdDwcSVT75CmMkZ3JOaWkv5KkSVE0ARRMETaxR/7Y2rSRzVDAebKn1i
+ jwT9+yg8nrKGFv6E=
+X-Received: by 2002:a05:6214:3008:b0:66d:bbfb:839b with SMTP id
+ ke8-20020a056214300800b0066dbbfb839bmr1302547qvb.41.1698060501403; 
+ Mon, 23 Oct 2023 04:28:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEi6Krd2qjm9xb7OKzlJhLBaBc/5XLjOsc2Dnk4zguQmj/xj/b5Y7d9cod4++WH45za+n3myA==
+X-Received: by 2002:a05:6214:3008:b0:66d:bbfb:839b with SMTP id
+ ke8-20020a056214300800b0066dbbfb839bmr1302529qvb.41.1698060500988; 
+ Mon, 23 Oct 2023 04:28:20 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
+ ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
  by smtp.gmail.com with ESMTPSA id
- n7-20020a5d6b87000000b003140f47224csm7513566wrx.15.2023.10.23.04.22.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 04:22:53 -0700 (PDT)
-Date: Mon, 23 Oct 2023 07:22:48 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Mario Casquero <mcasquer@redhat.com>,
- "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: Re: [PATCH v1] virtio-mem: fix division by zero in
- virtio_mem_activate_memslots_to_plug()
-Message-ID: <20231023072237-mutt-send-email-mst@kernel.org>
-References: <20231023111341.219317-1-david@redhat.com>
+ u8-20020a0562140b0800b0066d11e63ba1sm2811773qvj.5.2023.10.23.04.28.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 23 Oct 2023 04:28:20 -0700 (PDT)
+Message-ID: <6225270f-0925-4148-900e-31d6595a5849@redhat.com>
+Date: Mon, 23 Oct 2023 13:28:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231023111341.219317-1-david@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] igb: Add Function Level Reset to PF and VF
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+References: <20230829090529.184438-1-clg@kaod.org>
+ <20230829090529.184438-3-clg@kaod.org>
+ <CACGkMEu6nznVGTyk8gjrZ3jE=bEAd2bDDi9PPwjDKNFkXnVhSQ@mail.gmail.com>
+ <d9df1c95-f681-4962-be74-671cef90e908@redhat.com>
+ <b744bd42-0b46-44ce-8d60-28d4d31427e0@redhat.com>
+ <CACGkMEtbsVCAUFe6AomYe3EO=iBOXze6vJ20c8p0AbsXogocCw@mail.gmail.com>
+ <0ba67ce3-ce96-4ac0-9941-9f3cb6321145@daynix.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <0ba67ce3-ce96-4ac0-9941-9f3cb6321145@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,102 +106,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 01:13:41PM +0200, David Hildenbrand wrote:
-> When running with "dynamic-memslots=off", we enter
-> virtio_mem_activate_memslots_to_plug() to return immediately again
-> because "vmem->dynamic_memslots == false". However, the compiler might
-> not optimize out calculating start_idx+end_idx, where we divide by
-> vmem->memslot_size. In such a configuration, the memslot size is 0 and
-> we'll get a division by zero:
+On 10/23/23 12:57, Akihiko Odaki wrote:
+> On 2023/10/23 12:11, Jason Wang wrote:
+>> On Fri, Oct 20, 2023 at 5:41 PM Cédric Le Goater <clg@redhat.com> wrote:
+>>>
+>>> On 10/20/23 09:40, Cédric Le Goater wrote:
+>>>> On 10/20/23 06:24, Jason Wang wrote:
+>>>>> On Tue, Aug 29, 2023 at 5:06 PM Cédric Le Goater <clg@kaod.org> wrote:
+>>>>>>
+>>>>>> From: Cédric Le Goater <clg@redhat.com>
+>>>>>>
+>>>>>> The Intel 82576EB GbE Controller say that the Physical and Virtual
+>>>>>> Functions support Function Level Reset. Add the capability to each
+>>>>>> device model.
+>>>>>>
+>>>>>
+>>>>> Do we need to do migration compatibility for this?
+>>>>
+>>>> Yes. it does. the config space is now different.
+>>>
+>>> Jason,
+>>>
+>>> To avoid an extra compat property, would it be ok to let the VF peek into
+>>> the PF capabilities to set FLR or not ? Something like below.
+>>
+>> I might be wrong, but it looks to me it's still a behaviour change?
 > 
->     (qemu) qom-set vmem0 requested-size 3G
->     (qemu) q35.sh: line 38: 622940 Floating point exception(core dumped)
-> 
-> The same is true for virtio_mem_deactivate_unplugged_memslots(), however
-> we never really reach that code without a prior
-> virtio_mem_activate_memslots_to_plug() call.
-> 
-> Let's fix it by simply calling these functions only with
-> "dynamic-memslots=on".
-> 
-> This was found when using a debug build of QEMU.
-> 
-> Reprted-by: Mario Casquero <mcasquer@redhat.com>
-> Fixes: 177f9b1ee464 ("virtio-mem: Expose device memory dynamically via multiple memslots if enabled")
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> I think it's fine as long as the FLR capability of the PF is initialized with a compat property; there is no need of another property for the VFs.
 
+Yes. I wasn't clear enough in the statement above. I am trying to
+avoid *2* compat properties, one in each model.
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+We could also check the PF property in the VF. I think this better.
+I will send a v2.
 
-> ---
->  hw/virtio/virtio-mem.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-> index 9dc3c61b5a..be4b0b364f 100644
-> --- a/hw/virtio/virtio-mem.c
-> +++ b/hw/virtio/virtio-mem.c
-> @@ -525,9 +525,7 @@ static void virtio_mem_activate_memslots_to_plug(VirtIOMEM *vmem,
->                                   vmem->memslot_size;
->      unsigned int idx;
->  
-> -    if (!vmem->dynamic_memslots) {
-> -        return;
-> -    }
-> +    assert(vmem->dynamic_memslots);
->  
->      /* Activate all involved memslots in a single transaction. */
->      memory_region_transaction_begin();
-> @@ -547,9 +545,7 @@ static void virtio_mem_deactivate_unplugged_memslots(VirtIOMEM *vmem,
->                                   vmem->memslot_size;
->      unsigned int idx;
->  
-> -    if (!vmem->dynamic_memslots) {
-> -        return;
-> -    }
-> +    assert(vmem->dynamic_memslots);
->  
->      /* Deactivate all memslots with unplugged blocks in a single transaction. */
->      memory_region_transaction_begin();
-> @@ -598,7 +594,9 @@ static int virtio_mem_set_block_state(VirtIOMEM *vmem, uint64_t start_gpa,
->          virtio_mem_notify_unplug(vmem, offset, size);
->          virtio_mem_set_range_unplugged(vmem, start_gpa, size);
->          /* Deactivate completely unplugged memslots after updating the state. */
-> -        virtio_mem_deactivate_unplugged_memslots(vmem, offset, size);
-> +        if (vmem->dynamic_memslots) {
-> +            virtio_mem_deactivate_unplugged_memslots(vmem, offset, size);
-> +        }
->          return 0;
->      }
->  
-> @@ -635,9 +633,11 @@ static int virtio_mem_set_block_state(VirtIOMEM *vmem, uint64_t start_gpa,
->           * blocks we are plugging here. The following notification will inform
->           * registered listeners about the blocks we're plugging.
->           */
-> -        virtio_mem_activate_memslots_to_plug(vmem, offset, size);
-> +        if (vmem->dynamic_memslots) {
-> +            virtio_mem_activate_memslots_to_plug(vmem, offset, size);
-> +        }
->          ret = virtio_mem_notify_plug(vmem, offset, size);
-> -        if (ret) {
-> +        if (ret && vmem->dynamic_memslots) {
->              virtio_mem_deactivate_unplugged_memslots(vmem, offset, size);
->          }
->      }
-> @@ -749,7 +749,9 @@ static int virtio_mem_unplug_all(VirtIOMEM *vmem)
->          notifier_list_notify(&vmem->size_change_notifiers, &vmem->size);
->  
->          /* Deactivate all memslots after updating the state. */
-> -        virtio_mem_deactivate_unplugged_memslots(vmem, 0, region_size);
-> +        if (vmem->dynamic_memslots) {
-> +            virtio_mem_deactivate_unplugged_memslots(vmem, 0, region_size);
-> +        }
->      }
->  
->      trace_virtio_mem_unplugged_all();
-> -- 
-> 2.41.0
+Thanks,
+
+C.
+
 
 
