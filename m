@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368377D3656
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF877D365F
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:23:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qutv7-00055a-Kq; Mon, 23 Oct 2023 08:20:33 -0400
+	id 1qutxU-0000hP-PX; Mon, 23 Oct 2023 08:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qutv3-00052Q-Um
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:20:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qutuv-00062M-Ia
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:20:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698063620;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fnzNXiWLDv7ylhgL/fLLFDEJj0ulw28+W2ZEyDUtu50=;
- b=hGenCNi7feQyBQniPanWNiLA8uERPlbMjbzDMluj4hI3/H5dWY5hEVG3/loOKxVHo6Mghi
- QEmYl6BrS9Y4j4Ww8Wj1WPwu1hdXKqK2kHX4LoPKtQILCWNNRUJduyD8jm3jdT7in23Yul
- 6ZzuOPI1xEllwun1Y4Wl2jdhkB27Hy8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-DdvojmYtOXWl_0EYKFqyvg-1; Mon,
- 23 Oct 2023 08:20:08 -0400
-X-MC-Unique: DdvojmYtOXWl_0EYKFqyvg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AF283813F34;
- Mon, 23 Oct 2023 12:20:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.124])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 83E47503B;
- Mon, 23 Oct 2023 12:20:06 +0000 (UTC)
-Date: Mon, 23 Oct 2023 13:20:02 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- prerna.saxena@nutanix.com, dgilbert@redhat.com, pbonzini@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com, Het Gala <het.gala@nutanix.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: Should we replace QAPI? (was: [PATCH v14 02/14] fixup!
- migration: New QAPI type 'MigrateAddress')
-Message-ID: <ZTZk8oDcqiIWbuh5@redhat.com>
-References: <20231019192353.31500-1-farosas@suse.de>
- <20231019192353.31500-3-farosas@suse.de>
- <87y1fxc27m.fsf@pond.sub.org> <87wmvhh4zm.fsf@suse.de>
- <87o7gt1ncz.fsf@pond.sub.org> <ZTKBIUEayhIOshcD@redhat.com>
- <87h6mhr9u0.fsf_-_@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qutxP-0000fn-2A
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:22:55 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qutxM-0006LF-Sf
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:22:54 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-9b1ebc80d0aso473939166b.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 05:22:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698063771; x=1698668571; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=puFxVh/ZtdcJ4sXYQ8EaSuqCmvBIGtW72pjs81TIQ2U=;
+ b=k/9YShkIOSRQxLk3rMvRciL/hIyRsVzLfEWe86ctZj25i+W1zXbJCfOxnE6ca9IJO/
+ QAWdgeJDJrvEhui3HTGOhJtdctE3mNyrWeFLnJHRBDYBIM4VM1kr3vZEqEEyu0AK86vi
+ L4DcVzEXYKiQRR5dFBbuGTt1MyRIn1nQ8Dp1p8CDKA0gnliXay/e34ALsoSvcmpDdxoi
+ 4kGr0NABF47kqvKQqzSsotD/pmpgPUYhT2QnjcKYdm/66pQIbuIvXeSLoMdXw38/NLXo
+ kMe4kf5bhsXdrQm8slTiFRRW1vPqWi5ftYTpnVvZWOwl4Y+QBqhdgu//BS5lfrjPzl7Y
+ Zk1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698063771; x=1698668571;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=puFxVh/ZtdcJ4sXYQ8EaSuqCmvBIGtW72pjs81TIQ2U=;
+ b=liho0iu58EukWLk90fbrHD4z8REtuEowsiyoaa5AHX9jwK9IC3Ean91R0NSgr8gqSD
+ eD1dbFEFIom0beSdsj2Y9lL76pg7V8gcIW1GH9H/AkAytqHITwoWtlWQjnpXg3Zq64eY
+ lhswja1KICEPPZwVahzGwUP5nA+ayXvGp50t44Gyq+iFUwS0O9y7SOIH9+i2Yi+QXQmg
+ Sp8g+1e9ogi+Hr4BgOVkf3F98UzwejxQhJQ3I6r3EkRsBOMgfbBN1dyQfM19SmaaQK2m
+ BNDpjTqNd7L1jgbyHhPGbPcJ6rstPbfSYr1EybB49VE+aDdvasFhwMzYWQX2zFkkO5Sz
+ QgLQ==
+X-Gm-Message-State: AOJu0YwqHMab3PJXznCf6iVksTy7Ms5BGU5siQdD+fE8ngSsr4tZ/ptT
+ Eo+9oedDV1Ue7grRXEoB/Sl1uw==
+X-Google-Smtp-Source: AGHT+IFLjNEbeMdo/V666XTn6Mdn6RAwk/x1eEAiXATRqLS8ehgHxo3wjVttbsNp6E6cla/F+hKiNQ==
+X-Received: by 2002:a17:907:980c:b0:9bd:a75a:5644 with SMTP id
+ ji12-20020a170907980c00b009bda75a5644mr8085753ejc.16.1698063771041; 
+ Mon, 23 Oct 2023 05:22:51 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ fx4-20020a170906b74400b009b9a1714524sm6658794ejb.12.2023.10.23.05.22.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Oct 2023 05:22:50 -0700 (PDT)
+Date: Mon, 23 Oct 2023 14:22:49 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Anup Patel <apatel@ventanamicro.com>, Atish Kumar Patra <atishp@rivosinc.com>, 
+ Haibo Xu <haibo1.xu@intel.com>
+Subject: Re: [PATCH v3 01/12] hw/arm/virt-acpi-build.c: Migrate fw_cfg
+ creation to common location
+Message-ID: <20231023-5fcf9635262134fc5b1847cc@orel>
+References: <20231019132648.23703-1-sunilvl@ventanamicro.com>
+ <20231019132648.23703-2-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87h6mhr9u0.fsf_-_@pond.sub.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ONE_TIME=0.714, PLING_QUERY=0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20231019132648.23703-2-sunilvl@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,174 +103,173 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 11:01:43AM +0200, Markus Armbruster wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
+On Thu, Oct 19, 2023 at 06:56:37PM +0530, Sunil V L wrote:
+> RISC-V also needs to use the same code to create fw_cfg in DSDT. So, avoid
+> code duplication by moving the code in arm and riscv to a device specific
+> file.
 > 
-> > On Fri, Oct 20, 2023 at 02:37:16PM +0200, Markus Armbruster wrote:
-> >> Fabiano Rosas <farosas@suse.de> writes:
-> >> 
-> >> > Markus Armbruster <armbru@redhat.com> writes:
-> >> >
-> >> >> Fabiano Rosas <farosas@suse.de> writes:
-> >> >>
-> >> >>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >> >
-> >> > Side question: are we using valid JSON at all? I threw this in a random
-> >> > online linter and it complains about the single quotes. We could have a
-> >> > proper tool doing the validation in CI.
-> >> 
-> >> You've come a sad, sad place.
-> >> 
-> >> docs/devel/qapi-code-gen.rst:
-> >> 
-> >>     Schema syntax
-> >>     -------------
-> >> 
-> >>     Syntax is loosely based on `JSON <http://www.ietf.org/rfc/rfc8259.txt>`_.
-> >>     Differences:
-> >> 
-> >>     * Comments: start with a hash character (``#``) that is not part of a
-> >>       string, and extend to the end of the line.
-> >> 
-> >>     * Strings are enclosed in ``'single quotes'``, not ``"double quotes"``.
-> >> 
-> >>     * Strings are restricted to printable ASCII, and escape sequences to
-> >>       just ``\\``.
-> >> 
-> >>     * Numbers and ``null`` are not supported.
-> >> 
-> >> If your reaction to item 2 is "this is stupid", you'd be exactly right.
-> >> 
-> >> Here's the conclusion of a discussion on possible improvements we had in
-> >> 2020:
-> >> https://lore.kernel.org/qemu-devel/877dt5ofoi.fsf@dusky.pond.sub.org/
-> >
-> > Looking at those options again I so strongly want to be able to
-> > say "none of the above".
-> >
-> > We have a need to describe data structures, and generate code for
-> > serializing/deserializing them on the wire. We created a language
-> > for this and wrote our own C code generator, our own docs generator,
-> > own our json parser & formatter, and now are also writing our own
-> > Go code generator (Python, Rust too ?).
-> >
-> > IMHO this is way too much NiH for my likely, and creates a maint
-> > burden for ourselves that we could do without.
-> >
-> > <open-can-of-worms>
-> > At the point in time we invented QAPI this was perhaps justifiable,
-> > though even back then I thought we should have done a binary format
-> > and used XDR to describe it, as a standard pre-existing language and
-> > toolset.
+> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  hw/arm/virt-acpi-build.c       | 19 ++-----------------
+>  hw/nvram/fw_cfg-acpi.c         | 17 +++++++++++++++++
+>  hw/nvram/meson.build           |  1 +
+>  hw/riscv/virt-acpi-build.c     | 19 ++-----------------
+>  include/hw/nvram/fw_cfg_acpi.h |  9 +++++++++
+>  5 files changed, 31 insertions(+), 34 deletions(-)
+>  create mode 100644 hw/nvram/fw_cfg-acpi.c
+>  create mode 100644 include/hw/nvram/fw_cfg_acpi.h
 > 
-> Path dependence...
-> 
-> I wasn't involved in the decisions that led to QAPI, nor its initial
-> design and implementation.
-> 
-> Its design was substantially constrained by QMP, which predates QAPI by
-> almost two years.  I was involved in QMP's design for a bit.  We argued
-> back and forth, and I eventually stepped aside to let the guys doing the
-> actual work make the decisions.
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index 6b674231c2..b8e725d953 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -35,7 +35,7 @@
+>  #include "target/arm/cpu.h"
+>  #include "hw/acpi/acpi-defs.h"
+>  #include "hw/acpi/acpi.h"
+> -#include "hw/nvram/fw_cfg.h"
+> +#include "hw/nvram/fw_cfg_acpi.h"
+>  #include "hw/acpi/bios-linker-loader.h"
+>  #include "hw/acpi/aml-build.h"
+>  #include "hw/acpi/utils.h"
+> @@ -94,21 +94,6 @@ static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
+>      aml_append(scope, dev);
+>  }
+>  
+> -static void acpi_dsdt_add_fw_cfg(Aml *scope, const MemMapEntry *fw_cfg_memmap)
+> -{
+> -    Aml *dev = aml_device("FWCF");
+> -    aml_append(dev, aml_name_decl("_HID", aml_string("QEMU0002")));
+> -    /* device present, functioning, decoding, not shown in UI */
+> -    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+> -    aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
+> -
+> -    Aml *crs = aml_resource_template();
+> -    aml_append(crs, aml_memory32_fixed(fw_cfg_memmap->base,
+> -                                       fw_cfg_memmap->size, AML_READ_WRITE));
+> -    aml_append(dev, aml_name_decl("_CRS", crs));
+> -    aml_append(scope, dev);
+> -}
+> -
+>  static void acpi_dsdt_add_flash(Aml *scope, const MemMapEntry *flash_memmap)
+>  {
+>      Aml *dev, *crs;
+> @@ -864,7 +849,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>      if (vmc->acpi_expose_flash) {
+>          acpi_dsdt_add_flash(scope, &memmap[VIRT_FLASH]);
+>      }
+> -    acpi_dsdt_add_fw_cfg(scope, &memmap[VIRT_FW_CFG]);
+> +    fw_cfg_acpi_dsdt_add(scope, &memmap[VIRT_FW_CFG]);
+>      acpi_dsdt_add_virtio(scope, &memmap[VIRT_MMIO],
+>                      (irqmap[VIRT_MMIO] + ARM_SPI_BASE), NUM_VIRTIO_TRANSPORTS);
+>      acpi_dsdt_add_pci(scope, memmap, irqmap[VIRT_PCIE] + ARM_SPI_BASE, vms);
+> diff --git a/hw/nvram/fw_cfg-acpi.c b/hw/nvram/fw_cfg-acpi.c
+> new file mode 100644
+> index 0000000000..4eeb81bc36
+> --- /dev/null
+> +++ b/hw/nvram/fw_cfg-acpi.c
+> @@ -0,0 +1,17 @@
 
-I'm somewhat conflating QMP & QAPI in my previous message too.
+Should add an SPDX.
 
-> The maintenance burden is modest, but real.  The QAPI generator has
-> gotten ~1.6 patches per week for the last five years, trending down.  In
-> the last year, it's been 68 patches, 437 insertions, 338 deletions
-> total, much of it in docs/devel/qapi-code-gen.rst.  Meanwhile, the
-> entire project has had 130 times as many patches, 620 times as many
-> insertions, and 400 times as many deletions.
-> 
-> QAPI infrastructure maintenance is dwarved several times over by QAPI
-> schema maintenance.  Chiefly patch review.
+> +#include "hw/nvram/fw_cfg_acpi.h"
+> +#include "hw/acpi/aml-build.h"
+> +
+> +void fw_cfg_acpi_dsdt_add(Aml *scope, const MemMapEntry *fw_cfg_memmap)
+> +{
+> +    Aml *dev = aml_device("FWCF");
+> +    aml_append(dev, aml_name_decl("_HID", aml_string("QEMU0002")));
+> +    /* device present, functioning, decoding, not shown in UI */
+> +    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+> +    aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
+> +
+> +    Aml *crs = aml_resource_template();
+> +    aml_append(crs, aml_memory32_fixed(fw_cfg_memmap->base,
+> +                                       fw_cfg_memmap->size, AML_READ_WRITE));
+> +    aml_append(dev, aml_name_decl("_CRS", crs));
+> +    aml_append(scope, dev);
+> +}
+> diff --git a/hw/nvram/meson.build b/hw/nvram/meson.build
+> index 75e415b1a0..4996c72456 100644
+> --- a/hw/nvram/meson.build
+> +++ b/hw/nvram/meson.build
+> @@ -17,3 +17,4 @@ system_ss.add(when: 'CONFIG_XLNX_EFUSE_ZYNQMP', if_true: files(
+>  system_ss.add(when: 'CONFIG_XLNX_BBRAM', if_true: files('xlnx-bbram.c'))
+>  
+>  specific_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr_nvram.c'))
+> +specific_ss.add(when: 'CONFIG_ACPI', if_true: files('fw_cfg-acpi.c'))
+> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+> index 7331248f59..d8772c2821 100644
+> --- a/hw/riscv/virt-acpi-build.c
+> +++ b/hw/riscv/virt-acpi-build.c
+> @@ -28,6 +28,7 @@
+>  #include "hw/acpi/acpi.h"
+>  #include "hw/acpi/aml-build.h"
+>  #include "hw/acpi/utils.h"
+> +#include "hw/nvram/fw_cfg_acpi.h"
+>  #include "qapi/error.h"
+>  #include "qemu/error-report.h"
+>  #include "sysemu/reset.h"
+> @@ -97,22 +98,6 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
+>      }
+>  }
+>  
+> -static void acpi_dsdt_add_fw_cfg(Aml *scope, const MemMapEntry *fw_cfg_memmap)
+> -{
+> -    Aml *dev = aml_device("FWCF");
+> -    aml_append(dev, aml_name_decl("_HID", aml_string("QEMU0002")));
+> -
+> -    /* device present, functioning, decoding, not shown in UI */
+> -    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+> -    aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
+> -
+> -    Aml *crs = aml_resource_template();
+> -    aml_append(crs, aml_memory32_fixed(fw_cfg_memmap->base,
+> -                                       fw_cfg_memmap->size, AML_READ_WRITE));
+> -    aml_append(dev, aml_name_decl("_CRS", crs));
+> -    aml_append(scope, dev);
+> -}
+> -
+>  /* RHCT Node[N] starts at offset 56 */
+>  #define RHCT_NODE_ARRAY_OFFSET 56
+>  
+> @@ -226,7 +211,7 @@ static void build_dsdt(GArray *table_data,
+>      scope = aml_scope("\\_SB");
+>      acpi_dsdt_add_cpus(scope, s);
+>  
+> -    acpi_dsdt_add_fw_cfg(scope, &memmap[VIRT_FW_CFG]);
+> +    fw_cfg_acpi_dsdt_add(scope, &memmap[VIRT_FW_CFG]);
+>  
+>      aml_append(dsdt, scope);
+>  
+> diff --git a/include/hw/nvram/fw_cfg_acpi.h b/include/hw/nvram/fw_cfg_acpi.h
+> new file mode 100644
+> index 0000000000..6e2c5f04b7
+> --- /dev/null
+> +++ b/include/hw/nvram/fw_cfg_acpi.h
+> @@ -0,0 +1,9 @@
 
-Yeah, patch review on new additions is primary amount and work
-and indeed the bit we actually do want to be investing most
-time in, as API modelling is a hard problem that needs careful
-review.
+And an SPDX here too.
 
-> To be fair, adding language bindings will take a non-trivial one time
-> investment plus ongoing maintenance for each language.
+> +#ifndef FW_CFG_ACPI_H
+> +#define FW_CFG_ACPI_H
+> +
+> +#include "qemu/osdep.h"
+> +#include "exec/hwaddr.h"
+> +
+> +void fw_cfg_acpi_dsdt_add(Aml *scope, const MemMapEntry *fw_cfg_memmap);
+> +
+> +#endif
+> -- 
+> 2.34.1
+>
 
-As well as the developer & reviewer man hours cost from creatnig
-such language bindings, there's also the negative impact of
-potential developers being discouraged from interacting with QEMU
-precisely to avoid taking on this man hours cost. Impossible to
-quantify, as we can't measure how many projects haven't even been
-started, due to such avoidance. This hidden cost of discouragement
-is where I think the value of using standard protocols wins out
-the most.
+Otherwise,
 
-> 
-> > Today I wouldn't suggest XDR, but would be inclined to suggest
-> > Protobuf. This already has code & docs generators for every
-> > programming language we would ever need.
-> >
-> > Protobuf has a defined serialization format too though which is
-> > binary based IIUC, so distinct from our JSON wire format.
-> >
-> > The interesting question though is whether it would be feasible to
-> > transition to this today, despite our historical baggage ? With
-> > recent interest in accessing QAPI for many more languages, it
-> 
-> Go, Rust, and what else?
-
-The big one is Python, which we should have done years ago, since
-we use it widely in our own test suites.
-
-Over time QEMU is widely used enough though, that it would be
-conceptually useful for many other non-niche languages to have
-formal APIs for talking to QEMU, but not compelling enough to
-justify manually writing such APIs or code generators ourselves.
-
-> > is timely to consider if we can adopt a standardized toolset to
-> > reduce this burden of talking to QEMU from other languages.
-> >
-> > A transition would need several big ticket items
-> >
-> >  * A QAPI visitor impl that can spit out the protobuf document.
-> >    ie to translate all our existing QAPI formats into protobuf,
-> >    as doing this manually would be madness. This is probably
-> >    the easy bit.
-> 
-> This is about machine-assisted translation of the QAPI schema to
-> protobuf, isn't it?
-
-Yeah, schema conversion.
-
-
-> >            Above all it does assume it is possible to define a
-> > loss-less mapping from QAPI -> Protobuf language. I've not proved
-> > this is possible, but my inclination is that it probably should be,
-> > and if not, we could likely enable it by strategically deprecated
-> > and then deleting troublesome bits prior to a conversion.
-> > </open-can-of-worms>
-> 
-> While I share your distaste for the massive NIH QAPI has become, I'm not
-> sure replacing it now is economical.  It requires a massive one-time
-> investment, offset by saving us one-time investments into QAPI bindings
-> for other languages of interest.  Whether it can actually reduce ongoing
-> maintenance appreciably after the replacement is unclear.
-
-This is the really hard to answer question, as the calculating value of
-a conversion relies on predicting an unknowable future. It is right to
-be sceptical about the value of changing, but also worth thinking about
-it none the less.
-
-Its probably the kind of project that someone who doesn't have to justify
-their time would do as an experiment in a fork of QEMU for a while to
-see how it actually works out.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
