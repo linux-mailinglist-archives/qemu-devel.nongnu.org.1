@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3C27D2AAD
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 08:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AE67D2AAE
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 08:47:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quohA-0003RN-AF; Mon, 23 Oct 2023 02:45:48 -0400
+	id 1quoiU-0004H4-L3; Mon, 23 Oct 2023 02:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoh7-0003Qs-Pl
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:45:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoiS-0004G0-DX
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:47:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoh6-0001Gu-FY
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:45:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoiR-0001T0-0q
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:47:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698043543;
+ s=mimecast20190719; t=1698043626;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=cBr/NphSnwu114X5q6Jlit06K0k4qu9oIeQu9l2CWDw=;
- b=Y27UmpCWuu3D8a8de6AtMKOPgvNu8RAkP0XZ1QyVOUw4HBsZy5C8QObcclivFfgOoQD7wN
- ldppRwSDkWrLyeoUgA32Ku2okCaHyk2Zy8drJQAa2a+GV0sI2oI+EV/Jj85m7+0UUB4Hjr
- j20gQfovYdUw9DOPDPxEAYwnpUjgRhs=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5CC1c5P4CeNm/9XLiFqn4P/uGJBD0H9R+xNEi4Iddz4=;
+ b=CXhqo8aZIT/O/+I2+BQyc6JSEN5eXMJYH5RlpzrPP3XSRdgfiJPpkyEwnAp7eupwva4F1M
+ UoBE74Lbqz4GHtQJyvCfvCOybarAMhAxm8gQgytniE6Xigj2L/pUkLmGf9adFVW7FpQapZ
+ 8ick9SGAJNM+a19jTvRrIY6v9AQyt2E=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-jB4dU1T_MV6u9d854kvpMA-1; Mon, 23 Oct 2023 02:45:40 -0400
-X-MC-Unique: jB4dU1T_MV6u9d854kvpMA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9ae0601d689so187910266b.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 23:45:39 -0700 (PDT)
+ us-mta-652-bc9aU4JSPkCzwVXnwbq6ig-1; Mon, 23 Oct 2023 02:46:54 -0400
+X-MC-Unique: bc9aU4JSPkCzwVXnwbq6ig-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9c7558b838aso178229066b.2
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 23:46:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698043539; x=1698648339;
+ d=1e100.net; s=20230601; t=1698043613; x=1698648413;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cBr/NphSnwu114X5q6Jlit06K0k4qu9oIeQu9l2CWDw=;
- b=HSwIBLJAAzSpWBqZMSbOwP5TbMJSkomy+QrodUJhSgA39t17VfnyM9VVXU8RVb5qEw
- Svjen/6ci8Z7ALtT6Bu06FvbvAil/xjDEUPlVXJOyf97a28MTtR/mFcE4EAnpKeEHaXj
- spTyUDYGlS2ovMaf9+ZjXV0CsLtb9UuCqdVLfHj88MZw+bxnsZqEtnOHcuQWYpfdStP6
- tK8Tu29ZtV1HhcVOcLDT4gTiiKycEUxgSJbguGwhw1fTpcRoEk5Am2kM8jaW3euB0B+Y
- 7/jG2ZClc0Rfuzq+wQPY3bpOYHGuSgHiGnssSCfSb9WQIATh4Y6WbW/+wDKcWPudf0+t
- wqKw==
-X-Gm-Message-State: AOJu0YyA5W8KGbtseL9AfqrSCBejgM69Co6XaVUvNXNdPsw9SNO1Pzyr
- QnhlizmXhR1p02ObwHYwmtpYUaCFC7Lh5qxCMYI+Bt6h59m317gO4obnIdxU0cXMonmQRv/yNDf
- jVe7PGT8JwOgIGbE=
-X-Received: by 2002:a17:907:60d4:b0:9ad:ef31:6efc with SMTP id
- hv20-20020a17090760d400b009adef316efcmr7473667ejc.21.1698043539045; 
- Sun, 22 Oct 2023 23:45:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqaaVn3J6OQ6gdqCuR8Ok7uEaV7MM9X8e94ooSRcgpz8oOWJyVbTCiLHuFRmOz2ixXlqtkpA==
-X-Received: by 2002:a17:907:60d4:b0:9ad:ef31:6efc with SMTP id
- hv20-20020a17090760d400b009adef316efcmr7473662ejc.21.1698043538789; 
- Sun, 22 Oct 2023 23:45:38 -0700 (PDT)
+ bh=5CC1c5P4CeNm/9XLiFqn4P/uGJBD0H9R+xNEi4Iddz4=;
+ b=jPUKQXDOti6e4qvyp36bh3pThAfUla3YfziMPb/CFnP3xqN2pS8gL4HjvWRJWVXtLx
+ 4wHDiWv8wcYWe2tDb4p/71D3R/tFlpBvDFLWxXOZQL760p0J/Y5n0DJ6bqCXyh4jfz6l
+ ytQxA0RbKFfCF+OU9EoNTQ3qvz4+5prTrQBNvhJCOk16GtPIpmuqayWZYZLjlL8+S6Sf
+ qD/Z4L3y6aDSh8ir2eWfcMOflhpDQ4CjBlkkIThEw0lxsBmCpxR8iQP994ci31JwNxRa
+ /P+XIOoQUrUM+cdGk1aQ71asTFfYySJ08DaV7XdUCsgEhGGiWMKOJY+B9LdJRWJK3pMl
+ M9oA==
+X-Gm-Message-State: AOJu0Ywn/DxD/B0XNdvXmiGs50dtl6t9cwnFKyTKXmnN5621XD58SAMI
+ xwsZutqE5I49dZbMG03lMIl+3Vd/naj/bfADnn7hZ9J+kP9xHZvW+BrI9HMUrHtFVu7HR1tqaYO
+ cD4FHQufGO8o6GXQ=
+X-Received: by 2002:a17:907:608b:b0:9b2:9e44:222e with SMTP id
+ ht11-20020a170907608b00b009b29e44222emr8254425ejc.19.1698043613706; 
+ Sun, 22 Oct 2023 23:46:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjUpozCvlGOStG5zYKHVDijoGk9rIENG9Fz/EV4zvw0SKHH4rm9qVFtMGUvKCJSvtayzcpSw==
+X-Received: by 2002:a17:907:608b:b0:9b2:9e44:222e with SMTP id
+ ht11-20020a170907608b00b009b29e44222emr8254414ejc.19.1698043613443; 
+ Sun, 22 Oct 2023 23:46:53 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- u16-20020a170906655000b009c3f1b3e988sm6062764ejn.90.2023.10.22.23.45.38
+ u16-20020a170906655000b009c3f1b3e988sm6062764ejn.90.2023.10.22.23.46.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Oct 2023 23:45:38 -0700 (PDT)
-Message-ID: <4a55f2d1-1666-4e05-8680-213d98aed6a2@redhat.com>
-Date: Mon, 23 Oct 2023 08:45:37 +0200
+ Sun, 22 Oct 2023 23:46:52 -0700 (PDT)
+Message-ID: <6f06be57-f065-4a40-bcce-b73740f87e36@redhat.com>
+Date: Mon, 23 Oct 2023 08:46:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/9] hw/intc/pxa2xx: Pass CPU reference using QOM link
- property
+Subject: Re: [PATCH v3 8/9] hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of
+ pxa2xx_pic_init()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
 References: <20231020130331.50048-1-philmd@linaro.org>
- <20231020130331.50048-8-philmd@linaro.org>
+ <20231020130331.50048-9-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,17 +116,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231020130331.50048-8-philmd@linaro.org>
+In-Reply-To: <20231020130331.50048-9-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -144,14 +144,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/10/2023 15.03, Philippe Mathieu-Daudé wrote:
-> QOM objects shouldn't access each other internals fields
-> except using the QOM API.
-> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/arm/pxa2xx_pic.c | 11 ++++++++++-
->   1 file changed, 10 insertions(+), 1 deletion(-)
+>   hw/arm/pxa2xx_pic.c | 16 ++++++++++------
+>   1 file changed, 10 insertions(+), 6 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
