@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF24C7D289E
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 04:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E614F7D287D
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 04:27:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qukmx-00032U-Id; Sun, 22 Oct 2023 22:35:31 -0400
+	id 1qukdA-0004rY-Js; Sun, 22 Oct 2023 22:25:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qukmt-00031y-AJ; Sun, 22 Oct 2023 22:35:27 -0400
-Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qukmr-0004j7-Ly; Sun, 22 Oct 2023 22:35:27 -0400
-Received: by mail-vk1-xa32.google.com with SMTP id
- 71dfb90a1353d-49d6bd3610cso1242595e0c.1; 
- Sun, 22 Oct 2023 19:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698028524; x=1698633324; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DXluwi1vyq0LvLxU+daWwG8i3ejzFLn17omiskpJBzA=;
- b=AtutcUPzQF6jpn5mYuhK6RfocHTAKVi1fRt5xyWOUwKrJLlAYUz+cgt6KaD+DLzXFv
- kNnFiPGiZwztjbatNaTFOPjq9ywTj3OZltrJPYEWixRNoF4sV+It5WcevIhyYgbidW+q
- 9jvaxSRNktb2ewcEnlH2lOZ5A0QMs5mRAw1Or1UjvkL/aTEX/+nyqHAqpXHaoJvnb2dY
- Ny1hmm/UjlxcfVSrSiTMWHyzC9fquIf0MGbs6wsoFO/eTCcdtQe1AghM7kQrP/FtRN8z
- DtIwrN91XOYM397Y+HvbMLPeJvnp/Sup1lQUAsoAgPuiPbtjA9LkqUgVoeeyjUG0WDh2
- A7rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698028524; x=1698633324;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DXluwi1vyq0LvLxU+daWwG8i3ejzFLn17omiskpJBzA=;
- b=Xb9JhE30sbPJaMonNlzATeCfSXFeMDUYuwmSilNnz0TN/eclSDSz4SyPfqjYOX1Yg9
- qtLUa/xy1qzkL07Wl9Lnmeyzf7zC+PfFf7v8WGC/GA2B7cqppoVizmMiEzJ+kQbGxBoX
- xBccdpAIMF8Twj4mmiJMFaTLHeGDEzXMMolMWMcP3htxR6RoOPWHw89LnSh+OVMmT/IA
- vgjTtnOAqVg9+uOj576veIL7S12tGfJvPQkweZak7KQJUKgXxk5TTikgLDE4gS1sH5/J
- yQ/1eFGNrGJJOZL2rhskfnL0jAs8NcU04arDw5mN4hN+1mdNBDPbEX1i5WRdJr8SZpmX
- CKPA==
-X-Gm-Message-State: AOJu0YzStCthoH6D9XWI1PQ+S28fGetyhsshx3qMNcBJaH8OQXl6CSJo
- NCMuUSaKC3iUZSi3tCjQP7ewmt1ArK2bxnNj5OA=
-X-Google-Smtp-Source: AGHT+IEbILoahlp2+BWQWDJdJQyANbtHelRwKSAhDxxlSK42SdeE6ltvrzxm948PfvUr6tSFHr682F5D/WV+Ra8mkkM=
-X-Received: by 2002:a05:6122:3c81:b0:49a:9146:ec02 with SMTP id
- fy1-20020a0561223c8100b0049a9146ec02mr8181913vkb.1.1698028524242; Sun, 22 Oct
- 2023 19:35:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qukd6-0004rO-6S
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 22:25:20 -0400
+Received: from mgamail.intel.com ([134.134.136.65])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qukd3-0002ve-KM
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 22:25:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1698027917; x=1729563917;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=k6G/hBw6NSgNoNteehGWLaMc8qX0Pvgn0GWBRb14L4M=;
+ b=TN5KGWqPTYEIbyfsDkKIrwIYMuE9tZUi0QSVZlKuvF1X6ABn78IIFkd9
+ xjCS1tHF+5xbIjv3NEuaBynRfvDsb36KSIseqiXnNn3ESpwzD4L9SCD0E
+ lpgQyThqVmdOj+HKyvUUWOAOH6jwzud8O9Hr8MQ6jm5cnAstLsnFuyVAN
+ Vn8jAMwX6YDeIv0+R5yukPzCnquIn6S5iEun7p5EB8/utFE3K5DTqsaMP
+ fKNDduRjJOxsEUqm9HYB5hmpL6e3152S61l0iTBpBR8lE0xRAi+Kbts6V
+ haY5vSWO9bJeTe1XF+/5XpHhT1v+/N7+YogND4bmnG9glSOTPmi4mXy7l A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="390639111"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; d="scan'208";a="390639111"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2023 19:25:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="931549619"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; d="scan'208";a="931549619"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga005.jf.intel.com with ESMTP; 22 Oct 2023 19:25:06 -0700
+Date: Mon, 23 Oct 2023 10:36:45 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v2 15/16] tests: bios-tables-test: Add test for smbios
+ type4 thread count2
+Message-ID: <ZTXcPT5mvqvHZzN8@intel.com>
+References: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
+ <20230928125943.1816922-16-zhao1.liu@linux.intel.com>
+ <20231022051520-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-References: <20231019065644.1431798-1-mchitale@ventanamicro.com>
-In-Reply-To: <20231019065644.1431798-1-mchitale@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 23 Oct 2023 12:34:57 +1000
-Message-ID: <CAKmqyKM-NaWD-_b_V86Np86_j_a+=_221635gFG2shSiV__rhQ@mail.gmail.com>
-Subject: Re: [PATCH v2] target/riscv: pmp: Clear pmp/smepmp bits on reset
-To: Mayuresh Chitale <mchitale@ventanamicro.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231022051520-mutt-send-email-mst@kernel.org>
+Received-SPF: none client-ip=134.134.136.65;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,101 +84,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 4:57=E2=80=AFPM Mayuresh Chitale
-<mchitale@ventanamicro.com> wrote:
->
-> As per the Priv and Smepmp specifications, certain bits such as the 'L'
-> bit of pmp entries and mseccfg.MML can only be cleared upon reset and it
-> is necessary to do so to allow 'M' mode firmware to correctly reinitializ=
-e
-> the pmp/smpemp state across reboots. As required by the spec, also clear
-> the 'A' field of pmp entries.
->
-> Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Hi Michael,
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+On Sun, Oct 22, 2023 at 05:17:29AM -0400, Michael S. Tsirkin wrote:
+> Date: Sun, 22 Oct 2023 05:17:29 -0400
+> From: "Michael S. Tsirkin" <mst@redhat.com>
+> Subject: Re: [PATCH v2 15/16] tests: bios-tables-test: Add test for smbios
+>  type4 thread count2
+> 
+> On Thu, Sep 28, 2023 at 08:59:42PM +0800, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > This tests the commit 7298fd7de5551 ("hw/smbios: Fix thread count in
+> > type4").
+> > 
+> > In smbios_build_type_4_table() (hw/smbios/smbios.c), if the number of
+> > threads in the socket is more than 255, then smbios type4 table encodes
+> > threads per socket into the thread count2 field.
+> > 
+> > So for the topology in this case, there're the following considerations:
+> > 1. threads per socket should be more than 255 to ensure we could cover
+> >    the thread count2 field.
+> > 2. The original bug was that threads per socket was miscalculated, so
+> >    now we should configure as many topology levels as possible (mutiple
+> >    sockets & dies, no module since x86 hasn't supported it) to cover
+> >    more general topology scenarios, to ensure that the threads per
+> >    socket encoded in the thread count2 field is correct.
+> > 3. For the more general topology, we should also add "cpus" (presented
+> >    threads for machine) and "maxcpus" (total threads for machine) to
+> >    make sure that configuring unpluged CPUs in smp (cpus < maxcpus)
+> >    does not affect the correctness of threads per socket for thread
+> >    count2 field.
+> > 
+> > Based on these considerations, select the topology as the follow:
+> > 
+> > -smp cpus=210,maxcpus=520,sockets=2,dies=2,cores=65,threads=2
+> > 
+> > The expected thread count2 = threads per socket = threads (2)
+> > * cores (65) * dies (2) = 260.
+> > 
+> > Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> There's a problem here: not all hosts support such high
+> number of vCPUs.
+> Number of hotpluggable cpus requested (520) exceeds the maximum cpus
+> supported by KVM (288)
+> socket_accept failed: Resource temporarily unavailable
+> **
+> 
+> Dropped for now pls come up with a solution.
 
-Alistair
+I'll drop multiple sockets/dies for this case.
+The previsou thread count test has already covered the complex topology
+level case so that for thread count2 we can not configure so many
+sockets/dies, just check that there are more than 255 threads in a
+socket.
 
-> ---
->
-> Changes in v2:
-> =3D=3D=3D=3D
-> - Rebase on latest riscv-to-apply.next
-> - Clear 'A' field.
->
->  target/riscv/cpu.c | 11 +++++++++++
->  target/riscv/pmp.c | 10 ++++++++++
->  target/riscv/pmp.h |  2 ++
->  3 files changed, 23 insertions(+)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index dad167833cc..491e0e46e2e 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -883,6 +883,17 @@ static void riscv_cpu_reset_hold(Object *obj)
->      }
->      /* mmte is supposed to have pm.current hardwired to 1 */
->      env->mmte |=3D (EXT_STATUS_INITIAL | MMTE_M_PM_CURRENT);
-> +
-> +    /*
-> +     * Clear mseccfg and unlock all the PMP entries upon reset.
-> +     * This is allowed as per the priv and smepmp specifications
-> +     * and is needed to clear stale entries across reboots.
-> +     */
-> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
-> +        env->mseccfg =3D 0;
-> +    }
-> +
-> +    pmp_unlock_entries(env);
->  #endif
->      env->xl =3D riscv_cpu_mxl(env);
->      riscv_cpu_update_mask(env);
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index 21d2489e27e..4dfaa28fce2 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -135,6 +135,16 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32=
-_t pmp_index, uint8_t val)
->      return false;
->  }
->
-> +void pmp_unlock_entries(CPURISCVState *env)
-> +{
-> +    uint32_t pmp_num =3D pmp_get_num_rules(env);
-> +    int i;
-> +
-> +    for (i =3D 0; i < pmp_num; i++) {
-> +        env->pmp_state.pmp[i].cfg_reg &=3D ~(PMP_LOCK | PMP_AMATCH);
-> +    }
-> +}
-> +
->  static void pmp_decode_napot(target_ulong a, target_ulong *sa,
->                               target_ulong *ea)
->  {
-> diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-> index cf5c99f8e68..9af8614cd4f 100644
-> --- a/target/riscv/pmp.h
-> +++ b/target/riscv/pmp.h
-> @@ -28,6 +28,7 @@ typedef enum {
->      PMP_READ  =3D 1 << 0,
->      PMP_WRITE =3D 1 << 1,
->      PMP_EXEC  =3D 1 << 2,
-> +    PMP_AMATCH =3D (3 << 3),
->      PMP_LOCK  =3D 1 << 7
->  } pmp_priv_t;
->
-> @@ -81,6 +82,7 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t =
-pmp_index);
->  void pmp_update_rule_nums(CPURISCVState *env);
->  uint32_t pmp_get_num_rules(CPURISCVState *env);
->  int pmp_priv_to_page_prot(pmp_priv_t pmp_priv);
-> +void pmp_unlock_entries(CPURISCVState *env);
->
->  #define MSECCFG_MML_ISSET(env) get_field(env->mseccfg, MSECCFG_MML)
->  #define MSECCFG_MMWP_ISSET(env) get_field(env->mseccfg, MSECCFG_MMWP)
-> --
-> 2.34.1
->
->
+I'll refresh a new version.
+
+Regards,
+Zhao
+
+> 
+> 
+> > ---
+> > Changes since v1:
+> >  * Dropped the extra variable: uint64_t thread_count2_addr. (Igor)
+> >  * Added description of the consideration for topology selection of this
+> >    case in commit message. (Igor)
+> > ---
+> >  tests/qtest/bios-tables-test.c | 31 +++++++++++++++++++++++++++++++
+> >  1 file changed, 31 insertions(+)
+> > 
+> > diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> > index f8e3e349e09f..58119d8979c6 100644
+> > --- a/tests/qtest/bios-tables-test.c
+> > +++ b/tests/qtest/bios-tables-test.c
+> > @@ -96,6 +96,7 @@ typedef struct {
+> >      uint8_t smbios_core_count;
+> >      uint16_t smbios_core_count2;
+> >      uint8_t smbios_thread_count;
+> > +    uint16_t smbios_thread_count2;
+> >      uint8_t *required_struct_types;
+> >      int required_struct_types_len;
+> >      int type4_count;
+> > @@ -644,6 +645,7 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+> >      uint8_t thread_count, expected_thread_count = data->smbios_thread_count;
+> >      uint16_t speed, expected_speed[2];
+> >      uint16_t core_count2, expected_core_count2 = data->smbios_core_count2;
+> > +    uint16_t thread_count2, expected_thread_count2 = data->smbios_thread_count2;
+> >      int offset[2];
+> >      int i;
+> >  
+> > @@ -680,6 +682,15 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+> >          if (expected_core_count == 0xFF && expected_core_count2) {
+> >              g_assert_cmpuint(core_count2, ==, expected_core_count2);
+> >          }
+> > +
+> > +        thread_count2 = qtest_readw(data->qts,
+> > +                            addr + offsetof(struct smbios_type_4,
+> > +                            thread_count2));
+> > +
+> > +        /* Thread Count has reached its limit, checking Thread Count 2 */
+> > +        if (expected_thread_count == 0xFF && expected_thread_count2) {
+> > +            g_assert_cmpuint(thread_count2, ==, expected_thread_count2);
+> > +        }
+> >      }
+> >  }
+> >  
+> > @@ -1050,6 +1061,7 @@ static void test_acpi_q35_tcg_thread_count(void)
+> >          .required_struct_types = base_required_struct_types,
+> >          .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+> >          .smbios_thread_count = 27,
+> > +        .smbios_thread_count2 = 27,
+> >      };
+> >  
+> >      test_acpi_one("-machine smbios-entry-point-type=64 "
+> > @@ -1058,6 +1070,23 @@ static void test_acpi_q35_tcg_thread_count(void)
+> >      free_test_data(&data);
+> >  }
+> >  
+> > +static void test_acpi_q35_tcg_thread_count2(void)
+> > +{
+> > +    test_data data = {
+> > +        .machine = MACHINE_Q35,
+> > +        .variant = ".thread-count2",
+> > +        .required_struct_types = base_required_struct_types,
+> > +        .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+> > +        .smbios_thread_count = 0xFF,
+> > +        .smbios_thread_count2 = 260,
+> > +    };
+> > +
+> > +    test_acpi_one("-machine smbios-entry-point-type=64 "
+> > +                  "-smp cpus=210,maxcpus=520,sockets=2,dies=2,cores=65,threads=2",
+> > +                  &data);
+> > +    free_test_data(&data);
+> > +}
+> > +
+> >  static void test_acpi_q35_tcg_bridge(void)
+> >  {
+> >      test_data data = {};
+> > @@ -2216,6 +2245,8 @@ int main(int argc, char *argv[])
+> >                                 test_acpi_q35_tcg_core_count2);
+> >                  qtest_add_func("acpi/q35/thread-count",
+> >                                 test_acpi_q35_tcg_thread_count);
+> > +                qtest_add_func("acpi/q35/thread-count2",
+> > +                               test_acpi_q35_tcg_thread_count2);
+> >              }
+> >              if (qtest_has_device("virtio-iommu-pci")) {
+> >                  qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
+> > -- 
+> > 2.34.1
+> 
 
