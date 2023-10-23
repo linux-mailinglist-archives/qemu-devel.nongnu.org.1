@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CFE87D28B4
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 04:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 227D87D28BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 04:55:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qukyc-0000Nk-S7; Sun, 22 Oct 2023 22:47:34 -0400
+	id 1qul5P-0001ec-BO; Sun, 22 Oct 2023 22:54:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qukyb-0000NT-4v
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 22:47:33 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qukyJ-00069K-Sf
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 22:47:32 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxpPCu3jVlNtczAA--.35473S3;
- Mon, 23 Oct 2023 10:47:10 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxL92q3jVltr8uAA--.35828S3; 
- Mon, 23 Oct 2023 10:47:08 +0800 (CST)
-Subject: Re: [PATCH v1 0/6] linux-user/loongarch64: Add LSX/LASX sigcontext
-From: gaosong <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, philmd@redhat.com, maobibo@loongson.cn,
- laurent@vivier.eu, deller@gmx.de, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20231010033701.385725-1-gaosong@loongson.cn>
-Message-ID: <701f6866-0e52-e4f9-89b7-201a2feed321@loongson.cn>
-Date: Mon, 23 Oct 2023 10:47:07 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qul5N-0001dy-6O; Sun, 22 Oct 2023 22:54:33 -0400
+Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qul5L-00075N-G0; Sun, 22 Oct 2023 22:54:32 -0400
+Received: by mail-vk1-xa31.google.com with SMTP id
+ 71dfb90a1353d-49d14708479so1240401e0c.2; 
+ Sun, 22 Oct 2023 19:54:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698029670; x=1698634470; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=897cKE31Z8E/zEM4wL2dQxHdaLDF/9RmuPVmbFB0ciw=;
+ b=kYq7s9dRxOrjYK387QybYfq+KtBAywit8WJXyOoNpgUod9MrU0BNQULwPJmhcNcX8G
+ uaBZkGCrvv/GcRO2VjB3CoRqzoGAU58ytRHXadmACcLOPVSS2rFlAp2fM6Tu5QQya3do
+ m72jTkO42RPrq28F322AS4gh/T7O55mFxnlY3gTIQGkK6iSPMHS3BZZlrSPB6RZa8hdx
+ GVGbbDCR0fUawp2j8CXXNPm9uwElULz8OzW63eLZnTFiTLfBUqaXl6wuEcpsBkDXNzLN
+ wp33zuplzGR3qQNC7D93Fx+BPd5mGL8S93wpedafT6X8K5SlldWZi/3fCVjhedAsxjgk
+ HjoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698029670; x=1698634470;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=897cKE31Z8E/zEM4wL2dQxHdaLDF/9RmuPVmbFB0ciw=;
+ b=TnPn1XHWKHOQT5G8NTBm16/LtnHr5/CIhizpg0FQVSq/gJdMMR+JV9ptNoPAv8dMzD
+ rh99tRnWkzE/R1BHZyFkli8zdyUbCwocTpdOwJdGwXmgrF27KxxgHv9UZf/pfWQccuTd
+ 0ETHuvD7031GggpUcw8yADGX/PfgN51NFdvAObRNqWsVj+u3ZCAXyKdW5i9HcSEqjxJ1
+ vO8Au4JLNZq6KBACJS4w+A1ZMm+BdDduxdZmAL4CwF+oerp7vJJToyu/4wucMbgLCIdk
+ z8oIicXuYvOxL/JYyBJhHKbQgZ8XkrAXT5ZUn3ovplS3Q8snDzVPk8mwJp3lVCXTYqdM
+ xp4w==
+X-Gm-Message-State: AOJu0Yyj32b1ILUrewaVKvmPufzHbNgroEmx4BXn8NM+0Ln4YJTM1aIY
+ 7Tn2QSb46GvmjcQ8OFknC3/ml4zgwDfQoZYZ87g=
+X-Google-Smtp-Source: AGHT+IHS0QyvW8+/KrVKVQHMziUMVZd0C2l2o3F5ennbToiUXXpzxq0/WXdBVij97lkrJxeMKkc2eKCl6TktZYmuz8o=
+X-Received: by 2002:a1f:1fd1:0:b0:49d:d73e:5d07 with SMTP id
+ f200-20020a1f1fd1000000b0049dd73e5d07mr5736126vkf.16.1698029670041; Sun, 22
+ Oct 2023 19:54:30 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20231010033701.385725-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8BxL92q3jVltr8uAA--.35828S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3GFWUWw4DZw4xKryUGr1DCFX_yoW3ZryDpF
- W3CF17ur4rJr45WF1DJa10y3W3tFn5CF4UCr97J340krWa93sY9ay7WFW8AFy5AryDWFya
- vr1DJws09F1Ut3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAF
- wI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI
- 0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280
- aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2
- xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAq
- x4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r
- 1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF
- 7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxV
- WUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8
- yCJUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.339, SPF_HELO_NONE=0.001,
+References: <20231017221226.136764-1-dbarboza@ventanamicro.com>
+ <20231017221226.136764-3-dbarboza@ventanamicro.com>
+In-Reply-To: <20231017221226.136764-3-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 23 Oct 2023 12:54:03 +1000
+Message-ID: <CAKmqyKPn+t0WH+mztkMfT73Efoch-=21QcV782q8h7S-aaTm4g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] target/riscv/tcg: add ext_zicntr disable support
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,336 +88,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping !
+On Wed, Oct 18, 2023 at 8:13=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Support for the zicntr counters are already in place. We need a way to
+> disable them if the user wants to. This is done by restricting access to
+> the CYCLE, TIME, and INSTRET counters via the 'ctr()' predicate when
+> we're about to access them.
+>
+> Disabling zicntr happens via the command line or if its dependency,
+> zicsr, happens to be disabled. We'll check for zicsr during realize() and=
+,
+> in case it's absent, disable zicntr. However, if the user was explicit
+> about having zicntr support, error out instead of disabling it.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-ÔÚ 2023/10/10 ÉÏÎç11:36, Song Gao Ð´µÀ:
-> Hi, All.
->
-> This series adds save/restore sigcontext.
->
-> We use extctx_flags to choces which sigcontext need save/restore.
->
-> The extctx_flags default value is EXTCTX_FLAGS_FPU, we need
-> save/restore fpu context.
->
-> After a LSX/LASX instruction is execed, extctx_flags value change to
-> EXTCTX_FLAGS_LSX/LASX, we always need save/restore lsx/lasx context.
->
->
-> The test_signal.c is a simple test.
->
-> The default vreg len is 64. After execed a LSX instruction, the vreg len is
-> 128, and then we exec a FPU instruction, the vreg len is also 128. After
-> execed a LASX instruction, the vreg len is 256, and then we exec a FPU
-> instruction, the vreg len is also 256.
->
-> test_signal.c:
->
-> #include <unistd.h>
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <errno.h>
-> #include <signal.h>
-> #include <asm/ucontext.h>
-> #include <setjmp.h>
-> #include <stdint.h>
-> #include <string.h>
->
-> static sigjmp_buf jmpbuf;
->
-> struct _ctx_layout {
->          struct sctx_info *addr;
->          unsigned int size;
-> };
->
-> struct extctx_layout {
->          unsigned long size;
->          unsigned int flags;
->          struct _ctx_layout fpu;
->          struct _ctx_layout lsx;
->          struct _ctx_layout lasx;
->          struct _ctx_layout end;
-> };
-> static int parse_extcontext(struct sigcontext *sc, struct extctx_layout *extctx)
-> {
->      uint32_t magic, size;
->      struct sctx_info *info = (struct sctx_info *)&sc->sc_extcontext;
->
->      while(1) {
->          magic = (uint32_t)info->magic;
->          size =  (uint32_t)info->size;
->
->          printf("magic is %lx\n", magic);
->          printf("size is %lx\n", size);
->          switch (magic) {
->          case 0: /* END*/
->              return 0;
->          case FPU_CTX_MAGIC:
->              if (size < (sizeof(struct sctx_info) +
->                          sizeof(struct fpu_context))) {
->                  return -1;
->              }
->              extctx->fpu.addr = info;
->              break;
->          case LSX_CTX_MAGIC:
->              if (size < (sizeof(struct sctx_info) +
->                          sizeof(struct lsx_context))) {
->                  return -1;
->              }
->              extctx->lsx.addr = info;
->              break;
->          case LASX_CTX_MAGIC:
->              if (size < (sizeof(struct sctx_info) +
->                          sizeof(struct lasx_context))) {
->                  return -1;
->              }
->              extctx->lasx.addr = info;
->              break;
->          default:
->              return -1;
->          }
->          info = (struct sctx_info *)((char *)info +size);
->      }
->      return 0;
-> }
->
-> static int n = 0;
->
-> static void do_signal(int sig, siginfo_t *info, void *ucontext)
-> {
->      int i;
->      struct ucontext *uc = (struct ucontext *)ucontext;
->      struct extctx_layout extctx;
->
->      memset(&extctx, 0, sizeof(struct extctx_layout));
->
->      printf("pc        : %016lx\n", uc->uc_mcontext.sc_pc);
->
->      parse_extcontext(&uc->uc_mcontext, &extctx);
->
->      if (n < 5) {
->          printf("extctx.lasx.addr is %lx\n", extctx.lasx.addr);
->          printf("extctx.lsx.addr  is %lx\n", extctx.lsx.addr);
->          printf("extctx.fpu.addr  is %lx\n", extctx.fpu.addr);
->
->          if (extctx.lasx.addr) {
->              struct sctx_info *info = extctx.lasx.addr;
->              struct lasx_context *lasx_ctx = (struct lasx_context *)((char *)info +
->                                              sizeof(struct sctx_info));
->              printf("vl        : %016lx\n", 256);
->          } else if (extctx.lsx.addr) {
->              struct sctx_info *info = extctx.lsx.addr;
->              struct lsx_context *lsx_ctx = (struct lsx_context *)((char *)info +
->                                            sizeof(struct sctx_info));
->              printf("vl        : %016lx\n", 128);
->          } else if (extctx.fpu.addr) {
->              struct sctx_info *info = extctx.fpu.addr;
->              struct fpu_context *fpu_ctx = (struct fpu_context *)((char *)info +
->                                            sizeof(struct sctx_info));
->              printf("vl        : %016lx\n", 64);
->          }
->      }
->      n++;
->
->      printf("n is -------------- %d\n", n);
->      if (n == 1) {
->          // vaddwev.w.hu    $vr27, $vr22, $vr29
->          asm volatile(".word 0x702ef6db");
->          printf("After execed LSX instructons  vaddwev.w.hu\n");
->      }
->
->      if (n == 2) {
->          // 0101395e        fadd.d          $fs6, $ft2, $ft6
->          asm volatile(".word 0x0101395e");
->          printf("After execed FPU instructions fadd\n");
->      }
->
->      if (n == 3) {
->          // xvextrins.d     $xr13, $xr15, 0x59
->          asm volatile(".word 0x778165ed");
->          printf("After execed LASX instructions xvextrins.d\n");
->      }
->
->      if (n == 4) {
->          // 0101395e        fadd.d          $fs6, $ft2, $ft6
->          asm volatile(".word 0x0101395e");
->          printf("After execed FPU instructions fadd\n");
->      }
->
->      if (n == 5) {
->          exit(0);
->      }
->
->      siglongjmp(jmpbuf, 1);
-> }
->
-> static int setup_signal(int sig, void (*fn) (int, siginfo_t *, void *))
-> {
->      struct sigaction my_act;
->      int ret;
->
->      my_act.sa_sigaction = fn;
->      my_act.sa_flags = SA_SIGINFO;
->      sigemptyset(&my_act.sa_mask);
->
->      ret = sigaction(sig, &my_act, NULL);
->      if (ret != 0) {
->          printf("FAIL: signal %d\n", sig);
->          return SIG_ERR;
->      }
-> }
->
-> int main()
-> {
->      setup_signal(SIGSEGV, do_signal);
->
->      sigsetjmp(jmpbuf, 1);
->
->      int result = 0;
->      void *addr = 0x00012;
->      result = *(int *)addr;
->
->      return 0;
-> }
->
->
-> On 3A5000 machine:
->
-> [root@archlinux LASX]# ./test_signal
-> pc        : 0000000120000b44
-> magic is 46505501
-> size is 120
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 0
-> extctx.lsx.addr  is 0
-> extctx.fpu.addr  is 7ffffbdd2120
-> vl        : 0000000000000040
-> n is -------------- 1
-> After execed LSX instructons  vaddwev.w.hu
-> pc        : 0000000120000b44
-> magic is 53580001
-> size is 220
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 0
-> extctx.lsx.addr  is 7ffffbdd2020
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000080
-> n is -------------- 2
-> After execed FPU instructions fadd
-> pc        : 0000000120000b44
-> magic is 53580001
-> size is 220
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 0
-> extctx.lsx.addr  is 7ffffbdd2020
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000080
-> n is -------------- 3
-> After execed LASX instructions xvextrins.d
-> pc        : 0000000120000b44
-> magic is 41535801
-> size is 430
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 7ffffbdd1e10
-> extctx.lsx.addr  is 0
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000100
-> n is -------------- 4
-> After execed FPU instructions fadd
-> pc        : 0000000120000b44
-> magic is 41535801
-> size is 430
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 7ffffbdd1e10
-> extctx.lsx.addr  is 0
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000100
-> n is -------------- 5
->
-> QEMU user-mode on X86:
->
-> root@loongson-KVM:~/work/code/qemu# ./build/qemu-loongarch64 test_signal
-> pc        : 0000000120000b44
-> magic is 46505501
-> size is 120
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 0
-> extctx.lsx.addr  is 0
-> extctx.fpu.addr  is 7fd92279f110
-> vl        : 0000000000000040
-> n is -------------- 1
-> After exec LSX instructons  vaddwev.w.hu
-> pc        : 0000000120000b44
-> magic is 53580001
-> size is 220
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 0
-> extctx.lsx.addr  is 7fd92279f010
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000080
-> n is -------------- 2
-> After execed FPU instructions fadd
-> pc        : 0000000120000b44
-> magic is 53580001
-> size is 220
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 0
-> extctx.lsx.addr  is 7fd92279f010
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000080
-> n is -------------- 3
-> After execed LASX instructions xvextrins.d
-> pc        : 0000000120000b44
-> magic is 41535801
-> size is 430
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 7fd92279ee00
-> extctx.lsx.addr  is 0
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000100
-> n is -------------- 4
-> After execed FPU instructions fadd
-> pc        : 0000000120000b44
-> magic is 41535801
-> size is 430
-> magic is 0
-> size is 0
-> extctx.lasx.addr is 7fd92279ee00
-> extctx.lsx.addr  is 0
-> extctx.fpu.addr  is 0
-> vl        : 0000000000000100
-> n is -------------- 5
->
->
-> Please review, thanks.
->
-> Song Gao (6):
->    target/loongarch: Add env->extctx_flags for user-mode setup extcontext
->    target/loongarch: Add set_vec_extctx to set LSX/LASX instructions
->      extctx_flags
->    linux-user/loongarch64: Fix setup_extcontext alloc wrong fpu_context
->      size
->    linux-user/loongarch64: setup_sigframe() set 'end' context size 0
->    linux-user/loongarch64: Add LSX sigcontext save/restore
->    linux-user/loongarch64: Add LASX sigcontext save/restore
->
->   linux-user/loongarch64/signal.c             | 168 +++++++++++++++++---
->   target/loongarch/cpu.c                      |   2 +
->   target/loongarch/cpu.h                      |   2 +
->   target/loongarch/insn_trans/trans_vec.c.inc |  12 ++
->   target/loongarch/internals.h                |   4 +
->   target/loongarch/translate.c                |   3 +
->   target/loongarch/translate.h                |   1 +
->   7 files changed, 170 insertions(+), 22 deletions(-)
->
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
+This should come before we expose the property to users though
+
+Alistair
+
+> ---
+>  target/riscv/csr.c         | 4 ++++
+>  target/riscv/tcg/tcg-cpu.c | 8 ++++++++
+>  2 files changed, 12 insertions(+)
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index a5be1c202c..05c6a69123 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -122,6 +122,10 @@ static RISCVException ctr(CPURISCVState *env, int cs=
+rno)
+>
+>      if ((csrno >=3D CSR_CYCLE && csrno <=3D CSR_INSTRET) ||
+>          (csrno >=3D CSR_CYCLEH && csrno <=3D CSR_INSTRETH)) {
+> +        if (!riscv_cpu_cfg(env)->ext_zicntr) {
+> +            return RISCV_EXCP_ILLEGAL_INST;
+> +        }
+> +
+>          goto skip_ext_pmu_check;
+>      }
+>
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index bbce254ee1..a01b876621 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -541,6 +541,14 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu=
+, Error **errp)
+>          cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksh), true);
+>      }
+>
+> +    if (cpu->cfg.ext_zicntr && !cpu->cfg.ext_zicsr) {
+> +        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zicntr))) {
+> +            error_setg(errp, "zicntr requires zicsr");
+> +            return;
+> +        }
+> +        cpu->cfg.ext_zicntr =3D false;
+> +    }
+> +
+>      /*
+>       * Disable isa extensions based on priv spec after we
+>       * validated and set everything we need.
+> --
+> 2.41.0
+>
+>
 
