@@ -2,48 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC377D3470
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D29D7D34BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:42:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qutHS-0001QD-0y; Mon, 23 Oct 2023 07:39:34 -0400
+	id 1qutJg-0004DC-9n; Mon, 23 Oct 2023 07:41:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qutHG-0001MD-NP; Mon, 23 Oct 2023 07:39:22 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qutJb-0004BC-5s
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:41:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qutHE-00059I-NO; Mon, 23 Oct 2023 07:39:22 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 6DCDF4442F;
- Mon, 23 Oct 2023 13:39:18 +0200 (CEST)
-Message-ID: <b81617df-2a68-4a89-9518-8441e01aaa0f@proxmox.com>
-Date: Mon, 23 Oct 2023 13:39:17 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] mirror: allow switching from background to active
- mode
-Content-Language: en-US
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qutJY-0005iz-Fm
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:41:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698061303;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GkeNXbpwgy0PNZxJDuj/8zb+1Kq/TzobWkCvLwzGSVU=;
+ b=eJBdN4wJYBn4mBF/IAyWv44tU7rXz4xGHDJwbPZHQ2wUFhmBWIILTQoWV/M3D6TZBL/qdt
+ U6EQud5C4i6/gs8COblgHsds18zi3xyMnnJjaXHj8+LbU/KoyNpA5jp+UCR0c80ms7BJT9
+ 3vulTjjfe6SupT+DtAFvTkLMVnjB9aM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-438-kZCerQGpMp-5J9m3qaFHrQ-1; Mon, 23 Oct 2023 07:41:40 -0400
+X-MC-Unique: kZCerQGpMp-5J9m3qaFHrQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40357811E92;
+ Mon, 23 Oct 2023 11:41:40 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D9DFF2166B26;
+ Mon, 23 Oct 2023 11:41:39 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E483721E6A1F; Mon, 23 Oct 2023 13:41:38 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
 To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
- eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
- jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com
-References: <20231013092143.365296-1-f.ebner@proxmox.com>
- <ZTEwzi8x6cFfP9+e@redhat.com>
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <ZTEwzi8x6cFfP9+e@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  peter.maydell@linaro.org,
+ pbonzini@redhat.com
+Subject: Re: [PATCH 11/11] qdev: Rework array properties based on list visitor
+References: <20230908143703.172758-1-kwolf@redhat.com>
+ <20230908143703.172758-12-kwolf@redhat.com>
+ <874jjms0x6.fsf@pond.sub.org> <ZSl4c1GwDAB+EH+i@redhat.com>
+ <87lec590ce.fsf@pond.sub.org> <ZS0t0VYXcCNTcRXc@redhat.com>
+Date: Mon, 23 Oct 2023 13:41:38 +0200
+In-Reply-To: <ZS0t0VYXcCNTcRXc@redhat.com> (Kevin Wolf's message of "Mon, 16
+ Oct 2023 14:34:25 +0200")
+Message-ID: <875y2xpnv1.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,18 +83,493 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.10.23 um 15:36 schrieb Kevin Wolf:
-> Most of this series looks good to me. Apart from the comments I made in
-> the individual patches, I would like to see iotests coverage of changing
-> the mirroring mode. At the least to show that the query result changes,
-> but ideally also that requests really block after switchting to active.
-> I think with a throttled target node and immediately reading the target
-> when the write request completes we should be able to check this.
-> 
+Kevin Wolf <kwolf@redhat.com> writes:
 
-I'll try to work something out for v4.
+> Am 14.10.2023 um 08:36 hat Markus Armbruster geschrieben:
+>> Kevin Wolf <kwolf@redhat.com> writes:
+>> 
+>> > Am 22.09.2023 um 17:05 hat Markus Armbruster geschrieben:
+>> >> Kevin Wolf <kwolf@redhat.com> writes:
+>> >> 
+>> >> > Until now, array properties are actually implemented with a hack that
+>> >> > uses multiple properties on the QOM level: a static "foo-len" property
+>> >> > and after it is set, dynamically created "foo[i]" properties.
+>> >> >
+>> >> > In external interfaces (-device on the command line and device_add in
+>> >> > QMP), this interface was broken by commit f3558b1b ('qdev: Base object
+>> >> > creation on QDict rather than QemuOpts') because QDicts are unordered
+>> >> > and therefore it could happen that QEMU tried to set the indexed
+>> >> > properties before setting the length, which fails and effectively makes
+>> >> > array properties inaccessible. In particular, this affects the 'ports'
+>> >> > property of the 'rocker' device.
+>> >> >
+>> >> > This patch reworks the external interface so that instead of using a
+>> >> > separate top-level property for the length and for each element, we use
+>> >> > a single true array property that accepts a list value. In the external
+>> >> > interfaces, this is naturally expressed as a JSON list and makes array
+>> >> > properties accessible again.
+>> >> >
+>> >> > Creating an array property on the command line without using JSON format
+>> >> > is currently not possible. This could be fixed by switching from
+>> >> > QemuOpts to a keyval parser, which however requires consideration of the
+>> >> > compatibility implications.
+>> >> >
+>> >> > All internal users of devices with array properties go through
+>> >> > qdev_prop_set_array() at this point, so updating it takes care of all of
+>> >> > them.
+>> >> >
+>> >> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1090
+>> >> > Fixes: f3558b1b763683bb877f7dd5b282469cdadc65c3
+>> >> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+>
+>> >> > +{
+>> >> > +    return (Property) {
+>> >> > +        .info = parent_prop->arrayinfo,
+>> >> > +        .name = name,
+>> >> > +        /*
+>> >> > +         * This ugly piece of pointer arithmetic sets up the offset so
+>> >> > +         * that when the underlying release hook calls qdev_get_prop_ptr
+>> >> > +         * they get the right answer despite the array element not actually
+>> >> > +         * being inside the device struct.
+>> >> > +         */
+>> >> > +        .offset = elem - (char *) obj,
+>> >> 
+>> >> Isn't this is undefined behavior?
+>> >
+>> > It should be at least less illegal than the old version of it, which did
+>> > the calculation on void * and still worked in practice...
+>> >
+>> > But yes, strictly speaking, it's probably undefined behaviour. I can
+>> > calculate on uintptr_t instead, and then it should be defined here.
+>> >
+>> > The QOM counterpart object_field_prop_ptr() is probably still undefined
+>> > because it calculates on a pointer and I think the spec allows casting
+>> > back to a pointer only after we've applied the offset so that we stay in
+>> > the same object with pointer arithmetics.
+>> 
+>> We should not have to waste time on worrying about compilers using UB
+>> fine print against us, but sadly we do.
+>> 
+>> I'm not objecting to your code, I'm merely pointing out a potential time
+>> bomb.  In a programming environment that has embraced time bombing with
+>> gusto.
+>
+> While I'm touching this part, I'll change it to uintptr_t. I'll leave
+> the counterpart for later.
+>
+>> >> Delete the space between (char *) and obj.
+>> >> 
+>> >> > +    };
+>> >> > +}
+>> >> > +
+>> >> > +/*
+>> >> > + * Object property release callback for array properties: We call the underlying
+>> >> > + * element's property release hook for each element.
+>> >> > + *
+>> >> > + * Note that it is the responsibility of the individual device's deinit to free
+>> >> > + * the array proper.
+>> >> 
+>> >> What is a device's "deinit"?  Is it the unrealize() method?  The
+>> >> instance_finalize() method?
+>> >
+>> > Who knows? I only moved this comment.
+>> 
+>> Opportunity to improve it.  Not a demand.
+>
+> If you have a better version of it? My guess is only a guess, so I'd
+> avoid putting it in the code without understanding if there are reasons
+> why it has to be a specific place, or why a specific place doesn't work.
+>
+> Leaving it vague is probably better than being specific, but potentially
+> wrong.
 
-Best Regards,
-Fiona
+Fair.
+
+>> > My guess is that it doesn't really matter as long as _something_ frees
+>> > the array when unplugging the device.
+>> >
+>> >> >   */
+>> >> > -static void array_element_release(Object *obj, const char *name, void *opaque)
+>> >> > +static void release_prop_array(Object *obj, const char *name, void *opaque)
+>> >> >  {
+>> >> > -    ArrayElementProperty *p = opaque;
+>> >> > -    if (p->release) {
+>> >> > -        p->release(obj, name, opaque);
+>> >> > +    Property *prop = opaque;
+>> >> > +    uint32_t *alenptr = object_field_prop_ptr(obj, prop);
+>> >> > +    void **arrayptr = (void *)obj + prop->arrayoffset;
+>> >> 
+>> >> I'd call these @plen and @pelts, but that's clearly a matter of taste.
+>> >
+>> > I just kept the old names in set_prop_array() and used the same names in
+>> > new functions to stay consistent. But to be honest, @plen and @pelts
+>> > would be equally confusing to me.
+>> >
+>> > My own choice would probably have been something like array_len and
+>> > array_data (if you want to know that it's a pointer, look at its type).
+>> >
+>> >> > +    char *elem = *arrayptr;
+>> >> > +    int i;
+>> >> > +
+>> >> > +    for (i = 0; i < *alenptr; i++) {
+>> >> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem);
+>> >> > +        prop->arrayinfo->release(obj, NULL, &elem_prop);
+>> >> > +        elem += prop->arrayfieldsize;
+>> >> >      }
+>> >> > -    g_free(p->propname);
+>> >> > -    g_free(p);
+>> >> >  }
+>> >> >  
+>> >> > -static void set_prop_arraylen(Object *obj, Visitor *v, const char *name,
+>> >> > -                              void *opaque, Error **errp)
+>> >> > +/*
+>> >> > + * Setter for an array property. This sets both the array length (which is
+>> >> > + * technically the property field in the object) and the array itself (a pointer
+>> >> > + * to which is stored in the additional field described by prop->arrayoffset).
+>> >> > + */
+>> >> > +static void set_prop_array(Object *obj, Visitor *v, const char *name,
+>> >> > +                           void *opaque, Error **errp)
+>> >> >  {
+>> >> > -    /* Setter for the property which defines the length of a
+>> >> > -     * variable-sized property array. As well as actually setting the
+>> >> > -     * array-length field in the device struct, we have to create the
+>> >> > -     * array itself and dynamically add the corresponding properties.
+>> >> > -     */
+>> >> > +    ERRP_GUARD();
+>> >> > +
+>> >> 
+>> >> Drop the blank line.
+>> >> 
+>> >> >      Property *prop = opaque;
+>> >> >      uint32_t *alenptr = object_field_prop_ptr(obj, prop);
+>> >> >      void **arrayptr = (void *)obj + prop->arrayoffset;
+>> >> > -    void *eltptr;
+>> >> > -    const char *arrayname;
+>> >> > -    int i;
+>> >> > +    GenericList *list, *elem, *next;
+>> >> > +    const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
+>> >> 
+>> >> This can be smaller than the size of the QAPI-generated list type, since
+>> >> the compiler may add padding.  Does it matter?
+>> >
+>> > If it happens in practice, it does matter. Do we have any cleaner way to
+>> > get the element size without knowing the content of the list?
+>> >
+>> > I expect that because GenericList only contains a single pointer, the
+>> > rest should have natural alignment
+>> 
+>> Yes, GenericList's size and alignment should match a pointer's:
+>> 
+>>     typedef struct GenericList {
+>>         struct GenericList *next;
+>>         char padding[];
+>>     } GenericList;
+>> 
+>> >                                    and therefore the compiler shouldn't
+>> > have any reason to insert padding.
+>> 
+>> The actual list will look like
+>> 
+>>     struct FOOList {
+>>         FOOList *next;
+>>         FOOTYPE value;
+>>     }
+>> 
+>> where FOOTYPE is some QAPI-generated type.  No padding as long as
+>> FOOTYPE's alignment divides the pointer size.  I figure that's true for
+>> our current targets and generated QAPI types (currently pointers,
+>> double, bool, or integers up to 64 bits).
+>
+> I'm quite confused about the whole alignment stuff at the moment, but
+> after looking some more at the code, I think I just realised one
+> important thing: We're actually not dealing with QAPI-generated types
+> here, but with custom visitors in QOM property setters.
+
+Hmm.
+
+The patch is about qdev array properties, which are special QOM
+properties.
+
+A QOM property encapsulates arbitray C data within a QOM object.  Its
+get() method enables getting this data with an output visitor, and its
+set() method enables setting it with an input visitor.
+
+When the C data is a QAPI type T, set() and get() simply call
+visit_type_T().  Example: property_get_uint8_ptr(),
+property_set_uint8_ptr().
+
+When it isn't, set() and get() do what qapi/visitor.h calls a "virtual
+walk".  Example: the array property we're discussing here.
+
+However, there's a catch: set_prop_array() doesn't visit the property's
+C data (a heap-allocated array of ELEMENT-TYPE) directly.  Instead, it
+visits a heap-allocated GenericList of ELEMENT-TYPE, which it later
+copies to the array.
+
+Here's the visit:
+
+    /* Read the whole input into a temporary list */
+    elem = list;
+    while (elem) {
+        Property elem_prop = array_elem_prop(obj, prop, name, elem->padding);
+--->    prop->arrayinfo->set(obj, v, NULL, &elem_prop, errp);
+        if (*errp) {
+            ok = false;
+            goto out_obj;
+        }
+        (*alenptr)++;
+        elem = visit_next_list(v, elem, list_elem_size);
+    }
+
+The call marked ---> visits an element at address &elem->padding.
+
+This address is pointer-aligned.  What if the element type requires more
+alignment?  Unusual, but certainly not impossible.  For instance, SSE
+and AVX vectors require 16 or even 32 byte alignment.
+
+Or am I confused?
+
+>                                                         The netdev one
+> specifically (which is used in the array property of the 'rocker'
+> device) uses NICPeers (not a pointer to NICPeers!), which is much
+> larger.
+>
+> But now I'm wondering, FOOList doesn't even exist as a type. We're
+> calculating list_elem_size only to pass it to visit_start_list(), which
+> doesn't have FOOList either. What does the visitor do with it?
+>
+> It seems it doesn't do anything with it except using it as the size to
+> malloc() elements. And then we (the array property code in this patch)
+> use &elem->padding as the element pointer, directly from GenericList,
+> not any specific FOOList. So I think this just means that we never
+> insert any padding and what the compiler would do with a hypothetical
+> FOOList, which doesn't even have to exist as a type, doesn't matter.
+>
+> Am I missing something or does this mean that the code is actually fine?
+>
+>> > If you think this is not enough and there is no other way to get the
+>> > size of the list elements, we might have to generate packed structs for
+>> > the QAPI list types (which are really only two pointers, so not much to
+>> > lose when we do that).
+>> 
+>> Could we assert the element type's alignment divides GenericList's size?
+>> Not here, obviously, but in DEFINE_PROP_ARRAY(), where we can use
+>> __alignof__(_arraytype).
+>
+> A bit tricky because we're in the middle of a literal, but I suppose
+> with the GCC extension we could change one random element of the struct
+> to something like:
+>
+>     ({ QEMU_BUILD_BUG_ON(...); real_value; })
+>
+> Of course, if my thoughts above were right, this might not actually be
+> needed.
+>
+>> We could also play with attribute aligned to ensure GenericList's size is
+>> safe, but I doubt that's worthwhile.
+>> 
+>> >> > +    char *elemptr;
+>> >> > +    bool ok = true;
+>> >> >  
+>> >> >      if (*alenptr) {
+>> >> >          error_setg(errp, "array size property %s may not be set more than once",
+>> >> >                     name);
+>> >> >          return;
+>> >> >      }
+>> >> > -    if (!visit_type_uint32(v, name, alenptr, errp)) {
+>> >> > +
+>> >> > +    if (!visit_start_list(v, name, &list, list_elem_size, errp)) {
+>> >> >          return;
+>> >> >      }
+>> >> > -    if (!*alenptr) {
+>> >> > +
+>> >> > +    /* Read the whole input into a temporary list */
+>> >> > +    elem = list;
+>> >> > +    while (elem) {
+>> >> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem->padding);
+>> >> > +        prop->arrayinfo->set(obj, v, NULL, &elem_prop, errp);
+>> >> > +        if (*errp) {
+>> >> > +            ok = false;
+>> >> > +            goto out_obj;
+>> >> > +        }
+>> >> > +        (*alenptr)++;
+>> >> > +        elem = visit_next_list(v, elem, list_elem_size);
+>> >> > +    }
+>> >> > +
+>> >> > +    ok = visit_check_list(v, errp);
+>> >> > +out_obj:
+>> >> > +    visit_end_list(v, (void**) &list);
+>> >> > +
+>> >> > +    if (!ok) {
+>> >> > +        for (elem = list; elem; elem = next) {
+>> >> > +            next = elem->next;
+>> >> > +            g_free(elem);
+>> >> > +        }
+>> >> 
+>> >> We consume the list even on error.  It's too late in my day for me to
+>> >> see why that's proper.
+>> >
+>> > Who else would free it otherwise?
+>> >
+>> > This is pretty much the same as the generated list visitors do.
+>> 
+>> Help me out: point me to the precedence you have in mind.
+>
+> Any QAPI generated list visiting function should do. As an example, I'm
+> looking at visit_type_Qcow2BitmapInfoList():
+>
+>     ...
+>     ok = visit_check_list(v, errp);
+> out_obj:
+>     visit_end_list(v, (void **)obj);
+>     if (!ok && visit_is_input(v)) {
+>         qapi_free_Qcow2BitmapInfoList(*obj);
+>         *obj = NULL;
+>     }
+>     return ok;
+> }
+>
+> On failure, it calls qapi_free_Qcow2BitmapInfoList().
+>
+> What's probably wrong in my code is that to be a full equivalent, it
+> also needs to free things behind pointers that are owned by elem, i.e.
+> call prop->arrayinfo->release().
+>
+> In practice, it doesn't currently make a difference because none of the
+> types used with array properties actually have a release callback.
+> Should still be fixed, of course.
+
+Glad I got sufficiently confused to ask ;)
+
+>> >> >          return;
+>> >> >      }
+>> >> >  
+>> >> > -    /* DEFINE_PROP_ARRAY guarantees that name should start with this prefix;
+>> >> > -     * strip it off so we can get the name of the array itself.
+>> >> > +    /*
+>> >> > +     * Now that we know how big the array has to be, move the data over to a
+>> >> > +     * linear array and free the temporary list.
+>> >> >       */
+>> >> > -    assert(strncmp(name, PROP_ARRAY_LEN_PREFIX,
+>> >> > -                   strlen(PROP_ARRAY_LEN_PREFIX)) == 0);
+>> >> > -    arrayname = name + strlen(PROP_ARRAY_LEN_PREFIX);
+>> >> > +    *arrayptr = g_malloc_n(*alenptr, prop->arrayfieldsize);
+>> >> > +    elemptr = *arrayptr;
+>> >> > +    for (elem = list; elem; elem = next) {
+>> >> > +        memcpy(elemptr, elem->padding, prop->arrayfieldsize);
+>> >> > +        elemptr += prop->arrayfieldsize;
+>> >> > +        next = elem->next;
+>> >> > +        g_free(elem);
+>> >> > +    }
+>> >> > +}
+>> >> >  
+>> >> > -    /* Note that it is the responsibility of the individual device's deinit
+>> >> > -     * to free the array proper.
+>> >> > -     */
+>> >> > -    *arrayptr = eltptr = g_malloc0(*alenptr * prop->arrayfieldsize);
+>> >> > -    for (i = 0; i < *alenptr; i++, eltptr += prop->arrayfieldsize) {
+>> >> > -        char *propname = g_strdup_printf("%s[%d]", arrayname, i);
+>> >> > -        ArrayElementProperty *arrayprop = g_new0(ArrayElementProperty, 1);
+>> >> > -        arrayprop->release = prop->arrayinfo->release;
+>> >> > -        arrayprop->propname = propname;
+>> >> > -        arrayprop->prop.info = prop->arrayinfo;
+>> >> > -        arrayprop->prop.name = propname;
+>> >> > -        /* This ugly piece of pointer arithmetic sets up the offset so
+>> >> > -         * that when the underlying get/set hooks call qdev_get_prop_ptr
+>> >> > -         * they get the right answer despite the array element not actually
+>> >> > -         * being inside the device struct.
+>> >> > -         */
+>> >> > -        arrayprop->prop.offset = eltptr - (void *)obj;
+>> >> > -        assert(object_field_prop_ptr(obj, &arrayprop->prop) == eltptr);
+>> >> > -        object_property_add(obj, propname,
+>> >> > -                            arrayprop->prop.info->name,
+>> >> > -                            field_prop_getter(arrayprop->prop.info),
+>> >> > -                            field_prop_setter(arrayprop->prop.info),
+>> >> > -                            array_element_release,
+>> >> > -                            arrayprop);
+>> >> > +static void get_prop_array(Object *obj, Visitor *v, const char *name,
+>> >> > +                           void *opaque, Error **errp)
+>> >> > +{
+>> >> > +    ERRP_GUARD();
+>> >> > +
+>> >> 
+>> >> Drop the blank line.
+>> >> 
+>> >> > +    Property *prop = opaque;
+>> >> > +    uint32_t *alenptr = object_field_prop_ptr(obj, prop);
+>> >> > +    void **arrayptr = (void *)obj + prop->arrayoffset;
+>> >> > +    char *elem = *arrayptr;
+>> >> > +    GenericList *list;
+>> >> > +    const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
+>> >> > +    int i;
+>> >> > +
+>> >> > +    if (!visit_start_list(v, name, &list, list_elem_size, errp)) {
+>> >> > +        return;
+>> >> >      }
+>> >> > +
+>> >> > +    for (i = 0; i < *alenptr; i++) {
+>> >> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem);
+>> >> > +        prop->arrayinfo->get(obj, v, NULL, &elem_prop, errp);
+>> >> > +        if (*errp) {
+>> >> > +            goto out_obj;
+>> >> > +        }
+>> >> > +        elem += prop->arrayfieldsize;
+>> >> > +    }
+>> >> > +
+>> >> 
+>> >> You neglect to call visit_check_list().
+>> >
+>> > It is documented to be intended for input visitors only. Do we need it
+>> > with an output visitor?
+>> 
+>> Help me out: where is that documented?
+>
+> In struct Visitor:
+>
+>     /* Optional; intended for input visitors */
+>     bool (*check_list)(Visitor *v, Error **errp);
+
+I think this comment tries to say "this is intended to be used by input
+visitors", which doesn't quite imply "only input visitors use this".
+
+> And indeed, the existing output vistors don't implement it.
+
+It's implemented by all the input visitors.
+
+Fine print: the forward visitor is the same kind of visitor as the one
+it wraps, either input or output.  It implements check_list()
+unconditionally.
+
+> Admittedly, the public visit_check_list() is less clear:
+>
+>     /*
+>      * Prepare for completing a list visit.
+>      *
+>      * On failure, store an error through @errp.  Can happen only when @v
+>      * is an input visitor.
+>      *
+>      * Return true on success, false on failure.
+>      *
+>      * Should be called prior to visit_end_list() if all other
+>      * intermediate visit steps were successful, to allow the visitor one
+>      * last chance to report errors.  May be skipped on a cleanup path,
+>      * where there is no need to check for further errors.
+>      */
+>     bool visit_check_list(Visitor *v, Error **errp);
+>
+> If you prefer, I can add it here just to be sure. Instead of having real
+> error handling, assert(ok) should be enough.
+
+We either tighten the public visitor contract to make calling
+visit_check_list() clearly optional when you know you're not using an
+input visitor.
+
+Or we call it here, too.  Probably simpler.
+
+>> >> > +out_obj:
+>> >> > +    visit_end_list(v, (void**) &list);
+>> >> >  }
+>
+> Kevin
 
 
