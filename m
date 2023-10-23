@@ -2,80 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA837D2D90
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 11:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9DC7D2DD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 11:15:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quqos-0006xv-Uf; Mon, 23 Oct 2023 05:01:55 -0400
+	id 1qur0H-00068p-LN; Mon, 23 Oct 2023 05:13:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1quqor-0006xK-0l
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:01:53 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qur0E-00067S-7h
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:13:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1quqop-0007IF-2v
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:01:52 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qur0C-0000hb-9a
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:13:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698051708;
+ s=mimecast20190719; t=1698052414;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Mi7FgVo+iRm4mw3RKsvYzsu8ywMmB+4deJxtNMszD1A=;
- b=QJFbBrAtGKOlo2iK1ABHpyXmk8FXPDiYMG6rjHbliq4frfkClCWFdc4MJ7IbB+t/yucILS
- GgfpsjnKyJBBwItwq+qNG41yHW7wzS75cmWLTZuFiQ0UhS9eSeyYIZINmL3ARWvvjxeGaL
- QVwvq4XC8GCv+DxGXOSypfRd554yLTM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-444-W-thhzu2M7aVy9gsZDVa6Q-1; Mon, 23 Oct 2023 05:01:45 -0400
-X-MC-Unique: W-thhzu2M7aVy9gsZDVa6Q-1
+ bh=nn+fYJsDpVjw5mzNwZ3I3Eb7QWFFj3dSdiReSu1ZVQo=;
+ b=NmwdjmHPBKFMI8YrYay8b1B9RIPE0EbdvitWC0lFD57aSj99BHMGCwRv43qklNokL5wgAq
+ ++i+uJi1hjfMLTp12sCOCZdgcXuu9PpspY9eQ2eZxVm5Lu8yqnCIZReq/30TA0A3eT1tmZ
+ hsJ9BsLPL2Tc4BKtr6y+dIFAOIldzcA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-184-N0u6m8-hMVGRI8bRC_JXfg-1; Mon, 23 Oct 2023 05:13:20 -0400
+X-MC-Unique: N0u6m8-hMVGRI8bRC_JXfg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 75E0F3C176E7;
- Mon, 23 Oct 2023 09:01:44 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3645E2166B26;
- Mon, 23 Oct 2023 09:01:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3F10321E6A1F; Mon, 23 Oct 2023 11:01:43 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,  qemu-devel@nongnu.org,
- prerna.saxena@nutanix.com,  dgilbert@redhat.com,  pbonzini@redhat.com,
- eblake@redhat.com,  manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com,  Het Gala <het.gala@nutanix.com>,  Juan
- Quintela <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo
- Bras <leobras@redhat.com>
-Subject: Should we replace QAPI? (was: [PATCH v14 02/14] fixup! migration:
- New QAPI type 'MigrateAddress')
-References: <20231019192353.31500-1-farosas@suse.de>
- <20231019192353.31500-3-farosas@suse.de> <87y1fxc27m.fsf@pond.sub.org>
- <87wmvhh4zm.fsf@suse.de> <87o7gt1ncz.fsf@pond.sub.org>
- <ZTKBIUEayhIOshcD@redhat.com>
-Date: Mon, 23 Oct 2023 11:01:43 +0200
-In-Reply-To: <ZTKBIUEayhIOshcD@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Fri, 20 Oct 2023 14:31:13 +0100")
-Message-ID: <87h6mhr9u0.fsf_-_@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F261B185A78E;
+ Mon, 23 Oct 2023 09:13:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.144])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C97E32166B26;
+ Mon, 23 Oct 2023 09:13:18 +0000 (UTC)
+Date: Mon, 23 Oct 2023 11:13:17 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: lv.mengzhao@zte.com.cn
+Cc: stefanha@redhat.com, mst@redhat.com, hreitz@redhat.com,
+ qemu-devel@nongnu.org, hu.jian@zte.com.cn, cv11411@126.com
+Subject: Re: Re: [PATCH] virtio-blk: don't start dataplane during the stop of
+ dataplane
+Message-ID: <ZTY5LdHS0heABvRY@redhat.com>
+References: <202310191528414853267@zte.com.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202310191528414853267@zte.com.cn>
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ONE_TIME=0.714, PLING_QUERY=0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,161 +77,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Am 19.10.2023 um 09:28 hat lv.mengzhao@zte.com.cn geschrieben:
+> On Tue, Oct 17, 2023 at 10:04PM +0800, stefanha@redhat.com wrote:
+> > > From: hujian <hu.jian@zte.com.cn> 
+> > >  
+> > > During the stop of dataplane for virtio-blk, virtio_bus_cleanup_host_notifier() is be
+> > > called to clean up notifier at the end, if polled ioeventfd, virtio_blk_handle_output()
+> > > is used to handle io request. But due to s->dataplane_disabled is false, it will be
+> > > returned directly, which drops io request.
+> > > Backtrace:
+> > > ->virtio_blk_data_plane_stop
+> > >   ->virtio_bus_cleanup_host_notifier
+> > >     ->virtio_queue_host_notifier_read
+> > >       ->virtio_queue_notify_vq
+> > >         ->vq->handle_output
+> > >           ->virtio_blk_handle_output
+> > >             ->if (s->dataplane  && !s->dataplane_stoped)
+> > >               ->if (!s->dataplane_disabled)
+> > >                 ->return *
+> > >             ->virtio_blk_handle_output_do
+> > > The above problem can occur when using "virsh reset" cmdline to reset guest, while
+> > > guest does io.
+> > > To fix this problem, don't try to start dataplane if s->stopping is true, and io would
+> > > be handled by virtio_blk_handle_vq().
+> > >  
+> > > Signed-off-by: hujian <hu.jian@zte.com.cn> 
+> > > ---
+> > >  hw/block/virtio-blk.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > I have dropped this patch again after Fiona pointed out it does not
+> > compile and Kevin noticed that handling requests from the main loop
+> > thread while the I/O is still being processed in the IOThread is going
+> > to cause thread-safety issues.
+> > 
+> > Can you explain the problem you are seeing in more detail? You run
+> > "virsh reset" while the guest is doing I/O. Then what happens?
+> > 
+> > Stefan
+> 
+> 1 Compilation issues
+> I'm sorry to be in such a hurry to submit the patch that I forgot to
+> compile it locally.  Compilable patches are at the bottom.
 
-> On Fri, Oct 20, 2023 at 02:37:16PM +0200, Markus Armbruster wrote:
->> Fabiano Rosas <farosas@suse.de> writes:
->>=20
->> > Markus Armbruster <armbru@redhat.com> writes:
->> >
->> >> Fabiano Rosas <farosas@suse.de> writes:
->> >>
->> >>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> >
->> > Side question: are we using valid JSON at all? I threw this in a random
->> > online linter and it complains about the single quotes. We could have a
->> > proper tool doing the validation in CI.
->>=20
->> You've come a sad, sad place.
->>=20
->> docs/devel/qapi-code-gen.rst:
->>=20
->>     Schema syntax
->>     -------------
->>=20
->>     Syntax is loosely based on `JSON <http://www.ietf.org/rfc/rfc8259.tx=
-t>`_.
->>     Differences:
->>=20
->>     * Comments: start with a hash character (``#``) that is not part of a
->>       string, and extend to the end of the line.
->>=20
->>     * Strings are enclosed in ``'single quotes'``, not ``"double quotes"=
-``.
->>=20
->>     * Strings are restricted to printable ASCII, and escape sequences to
->>       just ``\\``.
->>=20
->>     * Numbers and ``null`` are not supported.
->>=20
->> If your reaction to item 2 is "this is stupid", you'd be exactly right.
->>=20
->> Here's the conclusion of a discussion on possible improvements we had in
->> 2020:
->> https://lore.kernel.org/qemu-devel/877dt5ofoi.fsf@dusky.pond.sub.org/
->
-> Looking at those options again I so strongly want to be able to
-> say "none of the above".
->
-> We have a need to describe data structures, and generate code for
-> serializing/deserializing them on the wire. We created a language
-> for this and wrote our own C code generator, our own docs generator,
-> own our json parser & formatter, and now are also writing our own
-> Go code generator (Python, Rust too ?).
->
-> IMHO this is way too much NiH for my likely, and creates a maint
-> burden for ourselves that we could do without.
->
-> <open-can-of-worms>
-> At the point in time we invented QAPI this was perhaps justifiable,
-> though even back then I thought we should have done a binary format
-> and used XDR to describe it, as a standard pre-existing language and
-> toolset.
+The more worrying part is that without building it, you also can't have
+tested it. How much testing did the new, compilable patch undergo?
 
-Path dependence...
+> 2 Troubleshooting
+> We have done a lifecycle test for the VM (QEMU version: 4.1.0, Host
+> kernel version: 4.18), which is loop execution: virsh create -> virsh
+> suspend -> virsh resume -> virsh reset -> virsh shutdown, and io
+> stress test inside the virtual machine. After the loop is executed
+> about 200 times, after "virsh reset" is executed, the virtual machine
+> goes into emergency mode and fails to start normally. Theoretically,
+> "virsh reset" may causes data loss of virtual machine, but not enough
+> to put it into emergency mode.
 
-I wasn't involved in the decisions that led to QAPI, nor its initial
-design and implementation.
+QEMU 4.1.0 is quite old. Do you happen to know if the problem is still
+reproducible on current git master (or 8.1.0)?
 
-Its design was substantially constrained by QMP, which predates QAPI by
-almost two years.  I was involved in QMP's design for a bit.  We argued
-back and forth, and I eventually stepped aside to let the guys doing the
-actual work make the decisions.
+Though from your description of the bug and what the code looks like
+today, I would expect so.
 
-QAPI was further constrained by the desire to use it with QOM.  The two
-are joined at the hip by visitors.  Nevertheless, QOM and QAPI are
-integrated poorly.
+> Coincidentally, I happen to be fixing another different fault with the
+> same phenomenon, which is caused by a our private patch, this patch
+> calls virtio_blk_data_plane_ [stop|start] to operate the dataplane, if
+> QEMU is processing io requests at same time, it may cause the loss of
+> io requests.
+> 
+> Analyzing virtio_blk_data_plane_stop(),
+> virtio_bus_cleanup_host_notifier() is used to clean up notifiers, and
+> my understanding is that it would handle the remaining IO requests.
 
-My general attitude towards generating source code is "don't; use a more
-powerful programming language".  Instead of creating yet another pillar
-supporting Greenspun's Tenth Rule, I feel we should have embedded a
-sufficiently powerful programming language, and used it for the control
-plane.  My choice would've been Lisp.
+Well, as you found out, it doesn't actually do that in practice. I'm
+not sure what the idea behind it was. Handling the remaining requests in
+our case would be a problem because we're not in the right state to
+handle requests.
 
-The maintenance burden is modest, but real.  The QAPI generator has
-gotten ~1.6 patches per week for the last five years, trending down.  In
-the last year, it's been 68 patches, 437 insertions, 338 deletions
-total, much of it in docs/devel/qapi-code-gen.rst.  Meanwhile, the
-entire project has had 130 times as many patches, 620 times as many
-insertions, and 400 times as many deletions.
+> The stack is as follows, I add the print at the star line and find
+> that virtio_blk_handle_output() returned directly instead of
+> continuing to call virtio_blk_handle_vq() to handle io. So I modify
+> the code here to make it don't return during the stop of dataplane,
+> and our internal private patch works normally.
+> 
+> Backtrace:
+> ->virtio_blk_data_plane_stop
+>   ->virtio_bus_cleanup_host_notifier
+>     ->virtio_queue_host_notifier_read
+>       ->virtio_queue_notify_vq
+>         ->vq->handle_output
+>           ->virtio_blk_handle_output
+>             ->if (s->dataplane  && !s->dataplane_stoped)
+>               ->if (!s->dataplane_disabled)
+>                 ->return *
+>             ->virtio_blk_handle_vq
+> 
+> Back to the problem caused by the virsh reset, libvirt sends the
+> "system_reset" QEMU monitor command to QEMU, and QEMU calls
+> qmp_system_reset(), and eventually calls
+> virtio_blk_data_plane_[stop|start] to reset devices. I suspect that io
+> loss will also occur if QEMU still has io to process during the stop
+> of dataplane. 
 
-QAPI infrastructure maintenance is dwarved several times over by QAPI
-schema maintenance.  Chiefly patch review.
+Hm... But why can the guest expect that requests are processed during a
+hard reset? Intuitively dropping remaining requests after a certain
+point where you do a reset doesn't sound like a problem.
 
-To be fair, adding language bindings will take a non-trivial one time
-investment plus ongoing maintenance for each language.
+> 3 Thread-safety issues
+> virtio_blk_data_plane_stop() calls blk_set_aio_context() to switch bs
+> back to the QEMU main loop after virtio_bus_cleanup_host_notifier(),
+> so the remaining IO requests are still handling by iothread(if
+> configured). I'm a little confused as to why there is thread-safety
+> issues.
 
-> Today I wouldn't suggest XDR, but would be inclined to suggest
-> Protobuf. This already has code & docs generators for every
-> programming language we would ever need.
->
-> Protobuf has a defined serialization format too though which is
-> binary based IIUC, so distinct from our JSON wire format.
->
-> The interesting question though is whether it would be feasible to
-> transition to this today, despite our historical baggage ? With
-> recent interest in accessing QAPI for many more languages, it
+blk_set_aio_context() only tells the BlockBackend which iothread to
+expect requests from. The device needs to take care to actually send
+requests from the same thread that it promised to the BlockBackend. In
+your stack trace, we still promise that requests come from the iothread,
+but we're actually trying to process them in the main thread:
+virtio_blk_data_plane_stop() runs in the main thread and indirectly
+calls virtio_blk_handle_output(), so with your fix, they would be
+handled in the main thread before blk_set_aio_context() was called. This
+isn't right.
 
-Go, Rust, and what else?
+We would have to delay processing requests until after we have
+completely switched back to the non-dataplane mode. And after thinking a
+bit about this, this seems to be exactly what the current code is doing:
+In fact, returning from virtio_blk_handle_output() doesn't drop the
+request. It just means that we're not processing it right now, it still
+remains queued (there is no virtqueue_pop() involved when we return
+early).
 
-> is timely to consider if we can adopt a standardized toolset to
-> reduce this burden of talking to QEMU from other languages.
->
-> A transition would need several big ticket items
->
->  * A QAPI visitor impl that can spit out the protobuf document.
->    ie to translate all our existing QAPI formats into protobuf,
->    as doing this manually would be madness. This is probably
->    the easy bit.
+So I think returning there early is the right thing to do.
 
-This is about machine-assisted translation of the QAPI schema to
-protobuf, isn't it?
+I'm not entirely sure where your problem happens. What would make most
+sense is that virtio_blk_reset() throws away the requests. But throwing
+away unprocessed requests is exactly what I would expect from a reset,
+so I don't really see a problem in that.
 
->  * A custom protobuf visitor impl that can spit out C code
->    that has the same API as our QAPI C generator. ie so we can
->    avoid a big bang to convert all of QEMU internals. I suspect
->    this is quite alot of work.
+We probably need to dig a bit deeper to figure out why your guest has a
+problem with this. Can you give some details about the guest? Like which
+OS, filesystem, other storage related configuration etc.? At this point
+it sounds a bit like a guest side bug.
 
-The alternative is a big bang to convert, which could be less work or
-more.
+> Lastly, please CC to cv11411@126.com, this is my private email, so I
+> can contact with you in my free time, Thanks.
 
->  * A custom protobuf serializer compatible with our current
->    JSON format. ie so that QEMU can continue to expose the
->    current QMP protocol to apps for legacy compat for some
->    period of time, while also exposing a new native binary
->    protobuf protocol for future usage. Also probably quite
->    alot of work.
+Ok. What I usually do in such cases is that I already CC myself with the
+alternative address to make sure that nobody forgets to add it while
+replying.
 
-No alternative.
-
-> That's all certainly quite alot of work and probably things I have
-> forgotten.
-
-QOM's use of QAPI might add problems.
-
->            Above all it does assume it is possible to define a
-> loss-less mapping from QAPI -> Protobuf language. I've not proved
-> this is possible, but my inclination is that it probably should be,
-> and if not, we could likely enable it by strategically deprecated
-> and then deleting troublesome bits prior to a conversion.
-> </open-can-of-worms>
-
-While I share your distaste for the massive NIH QAPI has become, I'm not
-sure replacing it now is economical.  It requires a massive one-time
-investment, offset by saving us one-time investments into QAPI bindings
-for other languages of interest.  Whether it can actually reduce ongoing
-maintenance appreciably after the replacement is unclear.
-
-Pretty much the same for QOM.
+Kevin
 
 
