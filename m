@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F7C7D4111
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB3E7D4116
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:40:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv1gL-0004Lq-0g; Mon, 23 Oct 2023 16:37:49 -0400
+	id 1qv1gN-0004ie-M4; Mon, 23 Oct 2023 16:37:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fu-0003nq-TB
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:24 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fx-0003pU-4j
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:27 -0400
 Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fr-0001u4-AX
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:21 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fu-0001uS-AX
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:23 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2ACEE21B28;
- Mon, 23 Oct 2023 20:37:18 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8CF5121B0E;
+ Mon, 23 Oct 2023 20:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698093438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698093440; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B8nEthtwB2qEKS5Hv45AtaqNIBTuRIA7SDrRGv3fpRE=;
- b=d7geVfelSn1pQUZ6lzI6MQAQS/HXhbdK7mo3tRk0vq/LEXOn1bwMkBUrWslSoDsAacxveY
- +BqZkKttKjZwTFDecxYBNrn2HlMNSoChn96np6UwLbFR1ZbSRziEZI2E8jv8zBdYLvxGgp
- 4TZZpH8HIdsZmMAXnP7DQOnFec39/pg=
+ bh=TvFX52MvFl8uE+na5ThDGfRCvVD8CmpSVUukn+S2dHg=;
+ b=2GL0D2nfhhR4UjIKmI/FMj7I/2aRQYP1miSwkJb7wpet3nnBc7r1CgH3kpdwZ+Vqi+9Hk6
+ fGgniuHYt3mEnUx06I/+BrBg5A8Fuu3cwQyhagl08bQPNbOxfOTXAK1z7IVIP8/qUBWyla
+ FTeriPHK8kNWxtrgxRn+A/L3qe475+E=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698093438;
+ s=susede2_ed25519; t=1698093440;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B8nEthtwB2qEKS5Hv45AtaqNIBTuRIA7SDrRGv3fpRE=;
- b=VqmQUIMcBxYxaTnK+zQQczkmNuhpi7jDy0goqZ3PwJeM2+JnPsfNDzggCJ9/nZE9iZXeWG
- mJYNznKROzwh09CQ==
+ bh=TvFX52MvFl8uE+na5ThDGfRCvVD8CmpSVUukn+S2dHg=;
+ b=6NlwyTIEvTTPfSiLg4sivI7+uAhCQaGMV6EQbU5QRC1eRYRzoTllFfRzEjcMs2TycQO79V
+ MFkqXOFIJJ01vrCg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 355A4132FD;
- Mon, 23 Oct 2023 20:37:16 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 97FE4132FD;
+ Mon, 23 Oct 2023 20:37:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id yI8vAHzZNmV1JQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:37:16 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id uMy4F37ZNmV1JQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:37:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v2 25/29] migration/multifd: Support outgoing fixed-ram stream
+Subject: [PATCH v2 26/29] migration/multifd: Support incoming fixed-ram stream
  format
-Date: Mon, 23 Oct 2023 17:36:04 -0300
-Message-Id: <20231023203608.26370-26-farosas@suse.de>
+Date: Mon, 23 Oct 2023 17:36:05 -0300
+Message-Id: <20231023203608.26370-27-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231023203608.26370-1-farosas@suse.de>
 References: <20231023203608.26370-1-farosas@suse.de>
@@ -100,190 +100,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new fixed-ram stream format uses a file transport and puts ram
-pages in the migration file at their respective offsets and can be
-done in parallel by using the pwritev system call which takes iovecs
-and an offset.
+For the incoming fixed-ram migration we need to read the ramblock
+headers, get the pages bitmap and send the host address of each
+non-zero page to the multifd channel thread for writing.
 
-Add support to enabling the new format along with multifd to make use
-of the threading and page handling already in place.
-
-This requires multifd to stop sending headers and leaving the stream
-format to the fixed-ram code. When it comes time to write the data, we
-need to call a version of qio_channel_write that can take an offset.
+To read from the migration file we need a preadv function that can
+read into the iovs in segments of contiguous pages because (as in the
+writing case) the file offset applies to the entire iovec.
 
 Usage on HMP is:
 
-(qemu) stop
 (qemu) migrate_set_capability multifd on
 (qemu) migrate_set_capability fixed-ram on
 (qemu) migrate_set_parameter max-bandwidth 0
 (qemu) migrate_set_parameter multifd-channels 8
-(qemu) migrate file:migfile
+(qemu) migrate_incoming file:migfile
+(qemu) info status
+(qemu) c
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- include/qemu/bitops.h | 13 ++++++++++
- migration/multifd.c   | 55 +++++++++++++++++++++++++++++++++++++++++--
- migration/options.c   |  6 -----
- migration/ram.c       |  2 +-
- 4 files changed, 67 insertions(+), 9 deletions(-)
+ migration/multifd.c | 13 ++++++++++++-
+ migration/ram.c     |  9 +++++++--
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
-index cb3526d1f4..2c0a2fe751 100644
---- a/include/qemu/bitops.h
-+++ b/include/qemu/bitops.h
-@@ -67,6 +67,19 @@ static inline void clear_bit(long nr, unsigned long *addr)
-     *p &= ~mask;
- }
- 
-+/**
-+ * clear_bit_atomic - Clears a bit in memory atomically
-+ * @nr: Bit to clear
-+ * @addr: Address to start counting from
-+ */
-+static inline void clear_bit_atomic(long nr, unsigned long *addr)
-+{
-+    unsigned long mask = BIT_MASK(nr);
-+    unsigned long *p = addr + BIT_WORD(nr);
-+
-+    return qatomic_and(p, ~mask);
-+}
-+
- /**
-  * change_bit - Toggle a bit in memory
-  * @nr: Bit to change
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 20e8635740..3f95a41ee9 100644
+index 3f95a41ee9..3b6053ae5a 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -260,6 +260,19 @@ static void multifd_pages_clear(MultiFDPages_t *pages)
-     g_free(pages);
+@@ -142,6 +142,7 @@ static void nocomp_recv_cleanup(MultiFDRecvParams *p)
+ static int nocomp_recv_pages(MultiFDRecvParams *p, Error **errp)
+ {
+     uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
++    uint64_t read_base = 0;
+ 
+     if (flags != MULTIFD_FLAG_NOCOMP) {
+         error_setg(errp, "multifd %u: flags received %x flags expected %x",
+@@ -152,7 +153,13 @@ static int nocomp_recv_pages(MultiFDRecvParams *p, Error **errp)
+         p->iov[i].iov_base = p->host + p->normal[i];
+         p->iov[i].iov_len = p->page_size;
+     }
+-    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
++
++    if (migrate_fixed_ram()) {
++        read_base = p->pages->block->pages_offset - (uint64_t) p->host;
++    }
++
++    return qio_channel_read_full_all(p->c, p->iov, p->normal_num, read_base,
++                                     p->read_flags, errp);
  }
  
-+static void multifd_set_file_bitmap(MultiFDSendParams *p)
-+{
-+    MultiFDPages_t *pages = p->pages;
-+
-+    if (!pages->block) {
-+        return;
-+    }
-+
-+    for (int i = 0; i < p->normal_num; i++) {
-+        ramblock_set_shadow_bmap_atomic(pages->block, pages->offset[i]);
-+    }
-+}
-+
- static void multifd_send_fill_packet(MultiFDSendParams *p)
- {
-     MultiFDPacket_t *packet = p->packet;
-@@ -606,6 +619,29 @@ int multifd_send_sync_main(QEMUFile *f)
-         }
+ static MultiFDMethods multifd_nocomp_ops = {
+@@ -1225,6 +1232,7 @@ void multifd_recv_sync_main(void)
+     if (!migrate_multifd() || !migrate_multifd_packets()) {
+         return;
      }
++
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDRecvParams *p = &multifd_recv_state->params[i];
  
-+    if (!migrate_multifd_packets()) {
-+        /*
-+         * There's no sync packet to send. Just make sure the sending
-+         * above has finished.
-+         */
-+        for (i = 0; i < migrate_multifd_channels(); i++) {
-+            qemu_sem_wait(&multifd_send_state->channels_ready);
-+        }
-+
-+        /* sanity check and release the channels */
-+        for (i = 0; i < migrate_multifd_channels(); i++) {
-+            MultiFDSendParams *p = &multifd_send_state->params[i];
-+
-+            qemu_mutex_lock(&p->mutex);
-+            assert(!p->pending_job || p->quit);
-+            qemu_mutex_unlock(&p->mutex);
-+
-+            qemu_sem_post(&p->sem);
-+        }
-+
-+        return 0;
-+    }
-+
-     /*
-      * When using zero-copy, it's necessary to flush the pages before any of
-      * the pages can be sent again, so we'll make sure the new version of the
-@@ -689,6 +725,8 @@ static void *multifd_send_thread(void *opaque)
+@@ -1257,6 +1265,7 @@ static void *multifd_recv_thread(void *opaque)
  
-         if (p->pending_job) {
-             uint32_t flags;
-+            uint64_t write_base;
-+
-             p->normal_num = 0;
+     while (true) {
+         uint32_t flags;
++        p->normal_num = 0;
  
-             if (!use_packets || use_zero_copy_send) {
-@@ -713,6 +751,16 @@ static void *multifd_send_thread(void *opaque)
-             if (use_packets) {
-                 multifd_send_fill_packet(p);
-                 p->num_packets++;
-+                write_base = 0;
-+            } else {
-+                multifd_set_file_bitmap(p);
-+
-+                /*
-+                 * If we subtract the host page now, we don't need to
-+                 * pass it into qio_channel_write_full_all() below.
-+                 */
-+                write_base = p->pages->block->pages_offset -
-+                    (uint64_t)p->pages->block->host;
-             }
- 
-             flags = p->flags;
-@@ -738,8 +786,9 @@ static void *multifd_send_thread(void *opaque)
-                 p->iov[0].iov_base = p->packet;
-             }
- 
--            ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num, NULL,
--                                              0, p->write_flags, &local_err);
-+            ret = qio_channel_write_full_all(p->c, p->iov, p->iovs_num,
-+                                             write_base, NULL, 0,
-+                                             p->write_flags, &local_err);
-             if (ret != 0) {
-                 break;
-             }
-@@ -969,6 +1018,8 @@ int multifd_save_setup(Error **errp)
- 
-         if (migrate_zero_copy_send()) {
-             p->write_flags = QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
-+        } else if (!use_packets) {
-+            p->write_flags |= QIO_CHANNEL_WRITE_FLAG_WITH_OFFSET;
-         } else {
-             p->write_flags = 0;
+         if (p->quit) {
+             break;
+@@ -1378,6 +1387,8 @@ int multifd_load_setup(Error **errp)
+             p->packet_len = sizeof(MultiFDPacket_t)
+                 + sizeof(uint64_t) * page_count;
+             p->packet = g_malloc0(p->packet_len);
++        } else {
++            p->read_flags |= QIO_CHANNEL_READ_FLAG_WITH_OFFSET;
          }
-diff --git a/migration/options.c b/migration/options.c
-index 469d5d4c50..2193d69e71 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -648,12 +648,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-     }
- 
-     if (new_caps[MIGRATION_CAPABILITY_FIXED_RAM]) {
--        if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
--            error_setg(errp,
--                       "Fixed-ram migration is incompatible with multifd");
--            return false;
--        }
--
-         if (new_caps[MIGRATION_CAPABILITY_XBZRLE]) {
-             error_setg(errp,
-                        "Fixed-ram migration is incompatible with xbzrle");
+         p->name = g_strdup_printf("multifdrecv_%d", i);
+         p->iov = g_new0(struct iovec, page_count);
 diff --git a/migration/ram.c b/migration/ram.c
-index 3497ed186a..5c67e30e55 100644
+index 5c67e30e55..9a5ee4767b 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -1161,7 +1161,7 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss,
+@@ -3985,8 +3985,13 @@ static void read_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block,
+             host = host_from_ram_block_offset(block, offset);
+             read_len = MIN(len, TARGET_PAGE_SIZE);
  
-     if (migrate_fixed_ram()) {
-         /* zero pages are not transferred with fixed-ram */
--        clear_bit(offset >> TARGET_PAGE_BITS, pss->block->shadow_bmap);
-+        clear_bit_atomic(offset >> TARGET_PAGE_BITS, pss->block->shadow_bmap);
-         return 1;
+-            read = qemu_get_buffer_at(f, host, read_len,
+-                                      block->pages_offset + offset);
++            if (migrate_multifd()) {
++                multifd_recv_queue_page(f, block, offset);
++                read = read_len;
++            } else {
++                read = qemu_get_buffer_at(f, host, read_len,
++                                          block->pages_offset + offset);
++            }
+             completed += read;
+         }
      }
- 
 -- 
 2.35.3
 
