@@ -2,95 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7547D36B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1777D36FB
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:38:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quu6C-0006xi-Ri; Mon, 23 Oct 2023 08:32:00 -0400
+	id 1quuB7-0002NB-BW; Mon, 23 Oct 2023 08:37:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1quu65-0006wr-SY
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:31:53 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1quu61-00087B-9o
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:31:51 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-9b95622c620so494444666b.0
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 05:31:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698064307; x=1698669107; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=KF7fL36npFJhBZTQEN1kO2xrKduT7F+8SzUe4B1Jc/M=;
- b=jZCFgcCFGbByAdXm4RE70OsgpC+BOG3kFwtHP6rAAtZrG3//iL3gnE0+azfRF0P+6R
- BSaCpfv6bdDwnlSXZt9KBeYU7P1BAFw8kXv0/mkCr3NNNg32NE+/S2bREWAKsBrFmoqY
- YbycmyYk8En123Rp7CqGCc+Ti/5AloOJyjnMSaIwo6wTfquh4i4KCii0+eTitVSnSnuG
- sX0AR5PiW0AN/yInG0MVUjdOZUudLqcy3xE5hBRjomLlLFJ8WCMQxJlkfEHYTHRMBW95
- w40CRm0x59SPlnE4exZJZpvzMscDFFZ9vwyDMp1nxdNGTjKAzQyZMsFAwTNSRBlNeTgE
- 9oBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698064307; x=1698669107;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KF7fL36npFJhBZTQEN1kO2xrKduT7F+8SzUe4B1Jc/M=;
- b=RQbTZ+QyvS1ahPj+CrUgJmVkOHg3Vifj/HatV6LTATW7eo8WJH4xuJzbpFD/thzrlB
- IwMH2kZNdz/KNaNJHoE8Qs73xA0Et1xhQY4XWlwcKXBsOyYc85BaQkocQ/bOfqatVmRU
- hxP8wx+Cwai+ZeM76WRi1sseEa/Gjn/BF81th1fyseOEBIj7cvSyaRw1d4+MWCsDR9es
- EdR4UgyXsbqQUhdh/h54H0GXF1TjiG1QnKFWnb2Gatt6JWrteD+kxZvdwXD5S2cOj9c7
- jRgzC2Ty7K4mG5EGuDHpEBl5vtpl0NUH/uY9Nx9sEfoyfCuYuj1A2pqR+JCnF1+kOBRP
- IwIA==
-X-Gm-Message-State: AOJu0Yx5jEukPMDBz3NgrZByw0mOHZAZeDhg4S2FzMq5TfIrIYwhhVDR
- tN61I1mNW63XFLWHyXmnao0FRw==
-X-Google-Smtp-Source: AGHT+IGuYgskNikwO7VpjNvKVkHGx7Yu4RlWOWR9qopFtT0YI1Gg24xUOiYwhNz58z6L2WeG2QHGSA==
-X-Received: by 2002:a17:906:6a22:b0:9be:d15e:8ca2 with SMTP id
- qw34-20020a1709066a2200b009bed15e8ca2mr5289295ejc.39.1698064307406; 
- Mon, 23 Oct 2023 05:31:47 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- u21-20020a50d515000000b0053dbb214d96sm6390502edi.13.2023.10.23.05.31.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 05:31:47 -0700 (PDT)
-Date: Mon, 23 Oct 2023 14:31:46 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Ani Sinha <anisinha@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Anup Patel <apatel@ventanamicro.com>, Atish Kumar Patra <atishp@rivosinc.com>, 
- Haibo Xu <haibo1.xu@intel.com>
-Subject: Re: [PATCH v3 03/12] hw/riscv: virt: Make few IMSIC macros and
- functions public
-Message-ID: <20231023-676f1ddf57f2af985da7c382@orel>
-References: <20231019132648.23703-1-sunilvl@ventanamicro.com>
- <20231019132648.23703-4-sunilvl@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1quuB2-0002MW-T8
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:37:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1quuAv-0000vJ-Qr
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:36:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698064612;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=F+CRA24nGBkNeQwzOFr7JCYRcSMlBMq147SAtrDaPNA=;
+ b=aP5OMqa1oVe96H3Oj8Kdv3r+VW1SeNjxD/meg6jADjga8nk3fYmY888YRLl2qQx7p9wKp5
+ lnSHe00ApfkGUPUlSyNkdqJ81szB2IzVoHpAs7U/zFHLjYtbcS6WTUereTlmwq4lTmGlyX
+ iIGQeS5EBdK9g47QjeoWphpnffrRzZM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-247-ceA5Lsc-NeSqVXoy-TPJRg-1; Mon, 23 Oct 2023 08:36:51 -0400
+X-MC-Unique: ceA5Lsc-NeSqVXoy-TPJRg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A23B80F8FD;
+ Mon, 23 Oct 2023 12:36:51 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.124])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D66BC8C0A;
+ Mon, 23 Oct 2023 12:36:48 +0000 (UTC)
+Date: Mon, 23 Oct 2023 13:36:46 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH V1 3/4] cpr: relax some blockers
+Message-ID: <ZTZo3gXG1Jyzw0jq@redhat.com>
+References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
+ <1697748466-373230-4-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231019132648.23703-4-sunilvl@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x635.google.com
+In-Reply-To: <1697748466-373230-4-git-send-email-steven.sistare@oracle.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,21 +79,212 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 06:56:39PM +0530, Sunil V L wrote:
-> Some macros and static function related to IMSIC are defined in virt.c.
-> They are required in virt-acpi-build.c. So, make them public.
-> 
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->  hw/riscv/virt.c         | 25 +------------------------
->  include/hw/riscv/virt.h | 25 +++++++++++++++++++++++++
->  2 files changed, 26 insertions(+), 24 deletions(-)
->
+On Thu, Oct 19, 2023 at 01:47:45PM -0700, Steve Sistare wrote:
+> Some devices block migration because they rely on local state that
+> is not migrated to the target host, such as for local filesystems.
+> These need not block cpr, which will restart qemu on the same host.
+> Narrow the scope of these blockers so they only apply to normal mode.
+> They will not block cpr modes when they are added in subsequent patches.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Looking at these changes, it is not entirely clear to me
+why many of these features were blocked for migration
+in the first place, and thus it is even less clear why
+we should be OK to relax this for cpr.
+
+I'd prefer to see some justification for each file,
+explaining why the current blocker exists and why
+it is OK to relax it for cpr.
+
+> 
+> No functional change until a new mode is added.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> ---
+>  backends/tpm/tpm_emulator.c | 2 +-
+>  block/parallels.c           | 2 +-
+>  block/qcow.c                | 2 +-
+>  block/vdi.c                 | 2 +-
+>  block/vhdx.c                | 2 +-
+>  block/vmdk.c                | 2 +-
+>  block/vpc.c                 | 2 +-
+>  block/vvfat.c               | 2 +-
+>  hw/9pfs/9p.c                | 2 +-
+>  hw/scsi/vhost-scsi.c        | 2 +-
+>  hw/virtio/vhost.c           | 2 +-
+>  target/i386/nvmm/nvmm-all.c | 3 ++-
+>  12 files changed, 13 insertions(+), 12 deletions(-)
+> 
+> diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+> index bf1a90f..ac66aee 100644
+> --- a/backends/tpm/tpm_emulator.c
+> +++ b/backends/tpm/tpm_emulator.c
+> @@ -534,7 +534,7 @@ static int tpm_emulator_block_migration(TPMEmulator *tpm_emu)
+>          error_setg(&tpm_emu->migration_blocker,
+>                     "Migration disabled: TPM emulator does not support "
+>                     "migration");
+> -        if (migrate_add_blocker(&tpm_emu->migration_blocker, &err) < 0) {
+> +        if (migrate_add_blocker_normal(&tpm_emu->migration_blocker, &err) < 0) {
+>              error_report_err(err);
+>              return -1;
+>          }
+> diff --git a/block/parallels.c b/block/parallels.c
+> index 1697a2e..8a520db 100644
+> --- a/block/parallels.c
+> +++ b/block/parallels.c
+> @@ -1369,7 +1369,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          error_setg(errp, "Migration blocker error");
+>          goto fail;
+> diff --git a/block/qcow.c b/block/qcow.c
+> index fdd4c83..eab68e3 100644
+> --- a/block/qcow.c
+> +++ b/block/qcow.c
+> @@ -307,7 +307,7 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vdi.c b/block/vdi.c
+> index fd7e365..c647d72 100644
+> --- a/block/vdi.c
+> +++ b/block/vdi.c
+> @@ -498,7 +498,7 @@ static int vdi_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail_free_bmap;
+>      }
+> diff --git a/block/vhdx.c b/block/vhdx.c
+> index e37f8c0..a9d0874 100644
+> --- a/block/vhdx.c
+> +++ b/block/vhdx.c
+> @@ -1096,7 +1096,7 @@ static int vhdx_open(BlockDriverState *bs, QDict *options, int flags,
+>      error_setg(&s->migration_blocker, "The vhdx format used by node '%s' "
+>                 "does not support live migration",
+>                 bdrv_get_device_or_node_name(bs));
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vmdk.c b/block/vmdk.c
+> index 1335d39..85864b8 100644
+> --- a/block/vmdk.c
+> +++ b/block/vmdk.c
+> @@ -1386,7 +1386,7 @@ static int vmdk_open(BlockDriverState *bs, QDict *options, int flags,
+>      error_setg(&s->migration_blocker, "The vmdk format used by node '%s' "
+>                 "does not support live migration",
+>                 bdrv_get_device_or_node_name(bs));
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vpc.c b/block/vpc.c
+> index c30cf86..aa1a48a 100644
+> --- a/block/vpc.c
+> +++ b/block/vpc.c
+> @@ -452,7 +452,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vvfat.c b/block/vvfat.c
+> index 266e036..9d050ba 100644
+> --- a/block/vvfat.c
+> +++ b/block/vvfat.c
+> @@ -1268,7 +1268,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+>                     "The vvfat (rw) format used by node '%s' "
+>                     "does not support live migration",
+>                     bdrv_get_device_or_node_name(bs));
+> -        ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +        ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>          if (ret < 0) {
+>              goto fail;
+>          }
+> diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+> index af636cf..369dfc8 100644
+> --- a/hw/9pfs/9p.c
+> +++ b/hw/9pfs/9p.c
+> @@ -1501,7 +1501,7 @@ static void coroutine_fn v9fs_attach(void *opaque)
+>          error_setg(&s->migration_blocker,
+>                     "Migration is disabled when VirtFS export path '%s' is mounted in the guest using mount_tag '%s'",
+>                     s->ctx.fs_root ? s->ctx.fs_root : "NULL", s->tag);
+> -        err = migrate_add_blocker(&s->migration_blocker, NULL);
+> +        err = migrate_add_blocker_normal(&s->migration_blocker, NULL);
+>          if (err < 0) {
+>              clunk_fid(s, fid);
+>              goto out;
+> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+> index 14e23cc..bf528d5 100644
+> --- a/hw/scsi/vhost-scsi.c
+> +++ b/hw/scsi/vhost-scsi.c
+> @@ -208,7 +208,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+>                  "When external environment supports it (Orchestrator migrates "
+>                  "target SCSI device state or use shared storage over network), "
+>                  "set 'migratable' property to true to enable migration.");
+> -        if (migrate_add_blocker(&vsc->migration_blocker, errp) < 0) {
+> +        if (migrate_add_blocker_normal(&vsc->migration_blocker, errp) < 0) {
+>              goto free_virtio;
+>          }
+>      }
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index d737671..f5e9625 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -1527,7 +1527,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+>      }
+>  
+>      if (hdev->migration_blocker != NULL) {
+> -        r = migrate_add_blocker(&hdev->migration_blocker, errp);
+> +        r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
+>          if (r < 0) {
+>              goto fail_busyloop;
+>          }
+> diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+> index 7d752bc..0cfcdac 100644
+> --- a/target/i386/nvmm/nvmm-all.c
+> +++ b/target/i386/nvmm/nvmm-all.c
+> @@ -929,7 +929,8 @@ nvmm_init_vcpu(CPUState *cpu)
+>          error_setg(&nvmm_migration_blocker,
+>              "NVMM: Migration not supported");
+>  
+> -        if (migrate_add_blocker(&nvmm_migration_blocker, &local_error) < 0) {
+> +        ret = migrate_add_blocker_normal(&nvmm_migration_blocker, &local_error);
+> +        if (ret < 0) {
+>              error_report_err(local_error);
+>              return -EINVAL;
+>          }
+> -- 
+> 1.8.3.1
+> 
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
