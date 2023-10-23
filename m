@@ -2,78 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979037D40F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D287D4107
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:39:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv1ex-0002iL-Pu; Mon, 23 Oct 2023 16:36:23 -0400
+	id 1qv1ez-0002j5-VS; Mon, 23 Oct 2023 16:36:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1es-0002hz-EB
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:36:18 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1ex-0002ie-By
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:36:23 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1eo-0001mY-KN
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:36:16 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1es-0001mk-95
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:36:20 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 120941FE32;
- Mon, 23 Oct 2023 20:36:13 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4697521B24;
+ Mon, 23 Oct 2023 20:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698093373; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=wAjnyfkR5anQQOysjvg5DcIaen25L5N/kjABb7QhSrM=;
- b=VfVu14eGyGW+BXNiDGHGK4szME/Buifaey+9ShGcWejZ8cC893J0N93mzYXdQS4IWtVXCt
- u35dHIRr7dAS6vppbRuTH218Ho0i854FOlkhtzxQzXIiNGuNCOMGY9/gHjkAmTpTWIF7TZ
- 80EHCzLaKbWaoU9JjUuUw7NIMWdkGPw=
+ t=1698093376; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2SO3JnEnMhOQJ8CPQPJIKFKAyEl5rYqk1sj5JESuE5w=;
+ b=GY0XD0a7RJWyIJ0I+FIxKmLZwVuSoYtbzOyz7e/Dgf0DvGpXwOyczDtCsohPj6PE8BCiVb
+ sw4t6cRqdYtH6++UzbzaNnxbNQnYR7TN9bR9kcHpbx3OJdTl+Ak6zazG21FLIMHB+lYsLE
+ l2iXy6hEy970pqjSv4wlw5JvcgNCSMg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698093373;
+ s=susede2_ed25519; t=1698093376;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=wAjnyfkR5anQQOysjvg5DcIaen25L5N/kjABb7QhSrM=;
- b=+9Uf25zm5Hpx6GtRLhog1IkBYiwLIXwA7beNihdxlLP369U6RgnQ2ZJSS2FXdMeY7nLjDF
- flzymDOMHbEelWDw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2SO3JnEnMhOQJ8CPQPJIKFKAyEl5rYqk1sj5JESuE5w=;
+ b=k9ilP6I/mT0tqPOVR/LcoPNoO3u4wzyG/FbHUN2jmoZP3n2xRpTmXNP13xrDXb6Fz5in7/
+ 4wn6LhDwHR7B2XCg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1A645132FD;
- Mon, 23 Oct 2023 20:36:10 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 81A7B132FD;
+ Mon, 23 Oct 2023 20:36:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 8913NTrZNmV1JQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:36:10 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id 6HdREj3ZNmV1JQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:36:13 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v2 00/29] migration: File based migration with multifd and
- fixed-ram
-Date: Mon, 23 Oct 2023 17:35:39 -0300
-Message-Id: <20231023203608.26370-1-farosas@suse.de>
+ Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ Steve Sistare <steven.sistare@oracle.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 01/29] tests/qtest: migration events
+Date: Mon, 23 Oct 2023 17:35:40 -0300
+Message-Id: <20231023203608.26370-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20231023203608.26370-1-farosas@suse.de>
+References: <20231023203608.26370-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: -6.10
-X-Spamd-Result: default: False [-6.10 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: -2.10
+X-Spamd-Result: default: False [-2.10 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-3.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ R_MISSING_CHARSET(2.50)[]; MIME_GOOD(-0.10)[text/plain];
+ BROKEN_CONTENT_TYPE(1.50)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[11];
  MID_CONTAINS_FROM(1.00)[]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
  RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -96,115 +101,264 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Steve Sistare <steven.sistare@oracle.com>
 
-Here's the migration to file using fixed offsets for each RAM
-page. We're calling it fixed-ram migration.
+Define a state object to capture events seen by migration tests, to allow
+more events to be captured in a subsequent patch, and simplify event
+checking in wait_for_migration_pass.  No functional change.
 
-There's 3 big pieces in this series:
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+ tests/qtest/migration-helpers.c | 24 ++++-------
+ tests/qtest/migration-helpers.h |  8 ++--
+ tests/qtest/migration-test.c    | 74 +++++++++++++++------------------
+ 3 files changed, 46 insertions(+), 60 deletions(-)
 
-1) Fixed-ram: The single-threaded (no multifd) implementation of the
-fixed-ram migration. This adds:
-  - infrastructure for preadv/pwritev;
-  - a bitmap to keep track of which pages are written to the file;
-  - a migration header containing fixed-ram-specific information;
-  - a capability to enable the feature;
-  - the /x86/migration/multifd/file/fixed-ram/* tests.
-
-2) Multifd support: Changes to multifd to support fixed-ram. The main
-point here is that we don't need the synchronous parts of multifd,
-only the page-queuing, multi-threading and IO is of interest. This
-adds:
-  - the use_packets() option to skip sending packets when doing fixed-ram;
-
-  - the concept of pages to the receiving side. We want to collect the
-    pages from the file using multifd as well.
-
-3) Auto-pause capability: A new capability to allow QEMU to pause the
-VM when the type of migration selected would already result in a
-paused VM at the end of migration (snapshots, file migration). This is
-intended to allow QEMU to implement optimizations for the migration
-types that don't need the live migration infrastructure.
-
-The feature is opt-in for new migration code in QEMU, but opt-out for
-QEMU users. I.e. new migration code must declare that it supports
-auto-pause, but the management layer needs to turn the capability off
-to force a live migration.
-
-Thanks
-
-v1:
-https://lore.kernel.org/r/20230330180336.2791-1-farosas@suse.de
-
-Fabiano Rosas (21):
-  tests/qtest: Move QTestMigrationState to libqtest
-  tests/qtest: Allow waiting for migration events
-  migration: Return the saved state from global_state_store
-  migration: Introduce global_state_store_once
-  migration: Add auto-pause capability
-  migration: Run "file:" migration with a stopped VM
-  tests/qtest: File migration auto-pause tests
-  migration: fixed-ram: Add URI compatibility check
-  migration/ram: Introduce 'fixed-ram' migration capability
-  migration/multifd: Allow multifd without packets
-  migration/multifd: Add outgoing QIOChannelFile support
-  migration/multifd: Add incoming QIOChannelFile support
-  migration/multifd: Add pages to the receiving side
-  io: Add a pwritev/preadv version that takes a discontiguous iovec
-  migration/ram: Add a wrapper for fixed-ram shadow bitmap
-  migration/ram: Ignore multifd flush when doing fixed-ram migration
-  migration/multifd: Support outgoing fixed-ram stream format
-  migration/multifd: Support incoming fixed-ram stream format
-  tests/qtest: Add a multifd + fixed-ram migration test
-  migration: Add direct-io parameter
-  tests/qtest: Add a test for migration with direct-io and multifd
-
-Nikolay Borisov (7):
-  io: add and implement QIO_CHANNEL_FEATURE_SEEKABLE for channel file
-  io: Add generic pwritev/preadv interface
-  io: implement io_pwritev/preadv for QIOChannelFile
-  migration/qemu-file: add utility methods for working with seekable
-    channels
-  migration/ram: Add support for 'fixed-ram' outgoing migration
-  migration/ram: Add support for 'fixed-ram' migration restore
-  tests/qtest: migration-test: Add tests for fixed-ram file-based
-    migration
-
-Steve Sistare (1):
-  tests/qtest: migration events
-
- docs/devel/migration.rst            |  14 ++
- include/exec/ramblock.h             |   8 +
- include/io/channel.h                | 133 ++++++++++++
- include/migration/global_state.h    |   3 +-
- include/migration/qemu-file-types.h |   2 +
- include/qemu/bitops.h               |  13 ++
- include/qemu/osdep.h                |   2 +
- io/channel-file.c                   |  60 ++++++
- io/channel.c                        | 140 +++++++++++++
- migration/file.c                    | 114 ++++++++--
- migration/file.h                    |  10 +-
- migration/global_state.c            |  20 +-
- migration/migration-hmp-cmds.c      |  10 +
- migration/migration.c               |  55 ++++-
- migration/multifd.c                 | 313 +++++++++++++++++++++++-----
- migration/multifd.h                 |  14 +-
- migration/options.c                 |  79 +++++++
- migration/options.h                 |   5 +
- migration/qemu-file.c               |  80 +++++++
- migration/qemu-file.h               |   4 +
- migration/ram.c                     | 203 +++++++++++++++++-
- migration/ram.h                     |   1 +
- migration/savevm.c                  |   1 +
- qapi/migration.json                 |  26 ++-
- tests/qtest/libqtest.c              |  14 ++
- tests/qtest/libqtest.h              |  25 +++
- tests/qtest/migration-helpers.c     | 108 +++++++---
- tests/qtest/migration-helpers.h     |  10 +-
- tests/qtest/migration-test.c        | 219 ++++++++++++++-----
- util/osdep.c                        |   9 +
- 30 files changed, 1520 insertions(+), 175 deletions(-)
-
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index 24fb7b3525..fd3b94efa2 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -24,26 +24,16 @@
+  */
+ #define MIGRATION_STATUS_WAIT_TIMEOUT 120
+ 
+-bool migrate_watch_for_stop(QTestState *who, const char *name,
+-                            QDict *event, void *opaque)
+-{
+-    bool *seen = opaque;
+-
+-    if (g_str_equal(name, "STOP")) {
+-        *seen = true;
+-        return true;
+-    }
+-
+-    return false;
+-}
+-
+-bool migrate_watch_for_resume(QTestState *who, const char *name,
++bool migrate_watch_for_events(QTestState *who, const char *name,
+                               QDict *event, void *opaque)
+ {
+-    bool *seen = opaque;
++    QTestMigrationState *state = opaque;
+ 
+-    if (g_str_equal(name, "RESUME")) {
+-        *seen = true;
++    if (g_str_equal(name, "STOP")) {
++        state->stop_seen = true;
++        return true;
++    } else if (g_str_equal(name, "RESUME")) {
++        state->resume_seen = true;
+         return true;
+     }
+ 
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index e31dc85cc7..c1d4c84995 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -15,9 +15,11 @@
+ 
+ #include "libqtest.h"
+ 
+-bool migrate_watch_for_stop(QTestState *who, const char *name,
+-                            QDict *event, void *opaque);
+-bool migrate_watch_for_resume(QTestState *who, const char *name,
++typedef struct QTestMigrationState {
++    bool stop_seen, resume_seen;
++} QTestMigrationState;
++
++bool migrate_watch_for_events(QTestState *who, const char *name,
+                               QDict *event, void *opaque);
+ 
+ G_GNUC_PRINTF(3, 4)
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 35e0ded9d7..0425d1d527 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -43,8 +43,8 @@
+ unsigned start_address;
+ unsigned end_address;
+ static bool uffd_feature_thread_id;
+-static bool got_src_stop;
+-static bool got_dst_resume;
++static QTestMigrationState src_state;
++static QTestMigrationState dst_state;
+ 
+ /*
+  * An initial 3 MB offset is used as that corresponds
+@@ -230,6 +230,13 @@ static void wait_for_serial(const char *side)
+     } while (true);
+ }
+ 
++static void wait_for_stop(QTestState *who, QTestMigrationState *state)
++{
++    if (!state->stop_seen) {
++        qtest_qmp_eventwait(who, "STOP");
++    }
++}
++
+ /*
+  * It's tricky to use qemu's migration event capability with qtest,
+  * events suddenly appearing confuse the qmp()/hmp() responses.
+@@ -277,21 +284,19 @@ static void read_blocktime(QTestState *who)
+     qobject_unref(rsp_return);
+ }
+ 
++/*
++ * Wait for two changes in the migration pass count, but bail if we stop.
++ */
+ static void wait_for_migration_pass(QTestState *who)
+ {
+-    uint64_t initial_pass = get_migration_pass(who);
+-    uint64_t pass;
++    uint64_t pass, prev_pass = 0, changes = 0;
+ 
+-    /* Wait for the 1st sync */
+-    while (!got_src_stop && !initial_pass) {
+-        usleep(1000);
+-        initial_pass = get_migration_pass(who);
+-    }
+-
+-    do {
++    while (changes < 2 && !src_state.stop_seen) {
+         usleep(1000);
+         pass = get_migration_pass(who);
+-    } while (pass == initial_pass && !got_src_stop);
++        changes += (pass != prev_pass);
++        prev_pass = pass;
++    }
+ }
+ 
+ static void check_guests_ram(QTestState *who)
+@@ -617,10 +622,7 @@ static void migrate_postcopy_start(QTestState *from, QTestState *to)
+ {
+     qtest_qmp_assert_success(from, "{ 'execute': 'migrate-start-postcopy' }");
+ 
+-    if (!got_src_stop) {
+-        qtest_qmp_eventwait(from, "STOP");
+-    }
+-
++    wait_for_stop(from, &src_state);
+     qtest_qmp_eventwait(to, "RESUME");
+ }
+ 
+@@ -755,8 +757,9 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         }
+     }
+ 
+-    got_src_stop = false;
+-    got_dst_resume = false;
++    dst_state = (QTestMigrationState) { };
++    src_state = (QTestMigrationState) { };
++
+     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
+         memory_size = "150M";
+ 
+@@ -847,8 +850,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+     if (!args->only_target) {
+         *from = qtest_init_with_env(QEMU_ENV_SRC, cmd_source);
+         qtest_qmp_set_event_callback(*from,
+-                                     migrate_watch_for_stop,
+-                                     &got_src_stop);
++                                     migrate_watch_for_events,
++                                     &src_state);
+     }
+ 
+     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
+@@ -868,8 +871,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                  ignore_stderr);
+     *to = qtest_init_with_env(QEMU_ENV_DST, cmd_target);
+     qtest_qmp_set_event_callback(*to,
+-                                 migrate_watch_for_resume,
+-                                 &got_dst_resume);
++                                 migrate_watch_for_events,
++                                 &dst_state);
+ 
+     /*
+      * Remove shmem file immediately to avoid memory leak in test failed case.
+@@ -1619,9 +1622,7 @@ static void test_precopy_common(MigrateCommon *args)
+          */
+         if (args->result == MIG_TEST_SUCCEED) {
+             qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
+-            if (!got_src_stop) {
+-                qtest_qmp_eventwait(from, "STOP");
+-            }
++            wait_for_stop(from, &src_state);
+             migrate_ensure_converge(from);
+         }
+     }
+@@ -1667,9 +1668,8 @@ static void test_precopy_common(MigrateCommon *args)
+              */
+             wait_for_migration_complete(from);
+ 
+-            if (!got_src_stop) {
+-                qtest_qmp_eventwait(from, "STOP");
+-            }
++            wait_for_stop(from, &src_state);
++
+         } else {
+             wait_for_migration_complete(from);
+             /*
+@@ -1682,7 +1682,7 @@ static void test_precopy_common(MigrateCommon *args)
+             qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
+         }
+ 
+-        if (!got_dst_resume) {
++        if (!dst_state.resume_seen) {
+             qtest_qmp_eventwait(to, "RESUME");
+         }
+ 
+@@ -1723,9 +1723,7 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
+ 
+     if (stop_src) {
+         qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
+-        if (!got_src_stop) {
+-            qtest_qmp_eventwait(from, "STOP");
+-        }
++        wait_for_stop(from, &src_state);
+     }
+ 
+     if (args->result == MIG_TEST_QMP_ERROR) {
+@@ -1747,7 +1745,7 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
+         qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
+     }
+ 
+-    if (!got_dst_resume) {
++    if (!dst_state.resume_seen) {
+         qtest_qmp_eventwait(to, "RESUME");
+     }
+ 
+@@ -1868,9 +1866,7 @@ static void test_ignore_shared(void)
+ 
+     migrate_wait_for_dirty_mem(from, to);
+ 
+-    if (!got_src_stop) {
+-        qtest_qmp_eventwait(from, "STOP");
+-    }
++    wait_for_stop(from, &src_state);
+ 
+     qtest_qmp_eventwait(to, "RESUME");
+ 
+@@ -2380,7 +2376,7 @@ static void test_migrate_auto_converge(void)
+             break;
+         }
+         usleep(20);
+-        g_assert_false(got_src_stop);
++        g_assert_false(src_state.stop_seen);
+     } while (true);
+     /* The first percentage of throttling should be at least init_pct */
+     g_assert_cmpint(percentage, >=, init_pct);
+@@ -2719,9 +2715,7 @@ static void test_multifd_tcp_cancel(void)
+ 
+     migrate_ensure_converge(from);
+ 
+-    if (!got_src_stop) {
+-        qtest_qmp_eventwait(from, "STOP");
+-    }
++    wait_for_stop(from, &src_state);
+     qtest_qmp_eventwait(to2, "RESUME");
+ 
+     wait_for_serial("dest_serial");
 -- 
 2.35.3
 
