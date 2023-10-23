@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD627D3ADB
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C78AC7D3ADD
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:32:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quwtk-00011j-Hw; Mon, 23 Oct 2023 11:31:20 -0400
+	id 1quwtn-000130-TQ; Mon, 23 Oct 2023 11:31:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1quwtd-00010E-8l
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:31:14 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1quwte-00010W-Tw
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:31:17 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1quwtb-0002LD-0E
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:31:13 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1quwtc-0002LK-Dl
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:31:14 -0400
 Received: from cslab-raptor.. (unknown [166.111.226.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 8853044501;
- Mon, 23 Oct 2023 15:31:07 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id BE23844522;
+ Mon, 23 Oct 2023 15:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1698075069; bh=KEVLyqXFsTJd9zK7S6cSpQTaoyE0gNxT7i8Lr/a8r5A=;
+ t=1698075071; bh=7CWG1+U1RIQLA7zIpzmakebwddv6Te65FrvXrsXLy2I=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=vDxgk74fdTJ8hLmfma7B0RgSZ5NzlK75gAy3UN1GBd6BI6FMkPL4AW0/fLk8HAOv6
- qpM75NQ2QTB1vvZm6iHymYbOks2Z1imSuF8BM9uANML+OMm9s7NHoXTPYTxYjVJ9Ez
- 3EqKIgBSTm7zzU4kkdDoLqjb8uZGX+siXwRc/NHQ=
+ b=AzzaynHw3Ds9TgZrkQa7PvuWsx/TarveoJkAyqEA4se5Qb+Is2jfUae84UtrL1Ldb
+ AQYvOIxBevIyE8AVOKg5fGxRXnmp2i2VrRfJDxnK+EwzeSt1wfmpLh2LU+N3Lyq4mU
+ ajdcKAUWMtgeJe9wfLmIyGbOwuP82e0pIm9X0uZU=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
  Jiajie Chen <c@jia.je>
-Subject: [PATCH 3/5] target/loongarch: Add amcas[_db].{b/h/w/d}
-Date: Mon, 23 Oct 2023 23:29:20 +0800
-Message-ID: <20231023153029.269211-5-c@jia.je>
+Subject: [PATCH 4/5] target/loongarch: Add estimated reciprocal instructions
+Date: Mon, 23 Oct 2023 23:29:21 +0800
+Message-ID: <20231023153029.269211-6-c@jia.je>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023153029.269211-2-c@jia.je>
 References: <20231023153029.269211-2-c@jia.je>
@@ -64,132 +64,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new instructions are introduced in LoongArch v1.1:
+Add the following new instructions in LoongArch v1.1:
 
-- amcas.b
-- amcas.h
-- amcas.w
-- amcas.d
-- amcas_db.b
-- amcas_db.h
-- amcas_db.w
-- amcas_db.d
+- frecipe.s
+- frecipe.d
+- frsqrte.s
+- frsqrte.d
+- vfrecipe.s
+- vfrecipe.d
+- vfrsqrte.s
+- vfrsqrte.d
+- xvfrecipe.s
+- xvfrecipe.d
+- xvfrsqrte.s
+- xvfrsqrte.d
 
-The new instructions are gated by CPUCFG2.LAMCAS.
+They are guarded by CPUCFG2.FRECIPE. Altought the instructions allow
+implementation to improve performance by reducing precision, we use the
+existing softfloat implementation.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
 ---
- target/loongarch/cpu.h                        |  1 +
- target/loongarch/disas.c                      |  8 +++++++
- .../loongarch/insn_trans/trans_atomic.c.inc   | 24 +++++++++++++++++++
- target/loongarch/insns.decode                 |  8 +++++++
- target/loongarch/translate.h                  |  1 +
- 5 files changed, 42 insertions(+)
+ target/loongarch/cpu.h                         |  1 +
+ target/loongarch/disas.c                       | 12 ++++++++++++
+ target/loongarch/insn_trans/trans_farith.c.inc |  4 ++++
+ target/loongarch/insn_trans/trans_vec.c.inc    |  8 ++++++++
+ target/loongarch/insns.decode                  | 12 ++++++++++++
+ target/loongarch/translate.h                   |  6 ++++++
+ 6 files changed, 43 insertions(+)
 
 diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 7166c07756..80a476c3f8 100644
+index 80a476c3f8..8f938effa8 100644
 --- a/target/loongarch/cpu.h
 +++ b/target/loongarch/cpu.h
-@@ -156,6 +156,7 @@ FIELD(CPUCFG2, LBT_MIPS, 20, 1)
+@@ -155,6 +155,7 @@ FIELD(CPUCFG2, LBT_ARM, 19, 1)
+ FIELD(CPUCFG2, LBT_MIPS, 20, 1)
  FIELD(CPUCFG2, LSPW, 21, 1)
  FIELD(CPUCFG2, LAM, 22, 1)
++FIELD(CPUCFG2, FRECIPE, 25, 1)
  FIELD(CPUCFG2, LAM_BH, 27, 1)
-+FIELD(CPUCFG2, LAMCAS, 28, 1)
+ FIELD(CPUCFG2, LAMCAS, 28, 1)
  
- /* cpucfg[3] bits */
- FIELD(CPUCFG3, CCDMA, 0, 1)
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index d33aa8173a..4aa67749cf 100644
+index 4aa67749cf..9eb49fb5e3 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -575,6 +575,14 @@ INSN(fldx_s,       frr)
- INSN(fldx_d,       frr)
- INSN(fstx_s,       frr)
- INSN(fstx_d,       frr)
-+INSN(amcas_b,      rrr)
-+INSN(amcas_h,      rrr)
-+INSN(amcas_w,      rrr)
-+INSN(amcas_d,      rrr)
-+INSN(amcas_db_b,   rrr)
-+INSN(amcas_db_h,   rrr)
-+INSN(amcas_db_w,   rrr)
-+INSN(amcas_db_d,   rrr)
- INSN(amswap_b,     rrr)
- INSN(amswap_h,     rrr)
- INSN(amadd_b,      rrr)
-diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
-index cd28e217ad..bea567fdaf 100644
---- a/target/loongarch/insn_trans/trans_atomic.c.inc
-+++ b/target/loongarch/insn_trans/trans_atomic.c.inc
-@@ -45,6 +45,22 @@ static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-     return true;
- }
+@@ -473,6 +473,10 @@ INSN(frecip_s,     ff)
+ INSN(frecip_d,     ff)
+ INSN(frsqrt_s,     ff)
+ INSN(frsqrt_d,     ff)
++INSN(frecipe_s,    ff)
++INSN(frecipe_d,    ff)
++INSN(frsqrte_s,    ff)
++INSN(frsqrte_d,    ff)
+ INSN(fmov_s,       ff)
+ INSN(fmov_d,       ff)
+ INSN(movgr2fr_w,   fr)
+@@ -1424,6 +1428,10 @@ INSN_LSX(vfrecip_s,        vv)
+ INSN_LSX(vfrecip_d,        vv)
+ INSN_LSX(vfrsqrt_s,        vv)
+ INSN_LSX(vfrsqrt_d,        vv)
++INSN_LSX(vfrecipe_s,       vv)
++INSN_LSX(vfrecipe_d,       vv)
++INSN_LSX(vfrsqrte_s,       vv)
++INSN_LSX(vfrsqrte_d,       vv)
  
-+static bool gen_cas(DisasContext *ctx, arg_rrr *a,
-+                    void (*func)(TCGv, TCGv, TCGv, TCGv, TCGArg, MemOp),
-+                    MemOp mop)
-+{
-+    TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
-+    TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
-+    TCGv val = gpr_src(ctx, a->rk, EXT_NONE);
-+
-+    addr = make_address_i(ctx, addr, 0);
-+
-+    func(dest, addr, dest, val, ctx->mem_idx, mop);
-+    gen_set_gpr(a->rd, dest, EXT_NONE);
-+
-+    return true;
-+}
-+
- static bool gen_am(DisasContext *ctx, arg_rrr *a,
-                    void (*func)(TCGv, TCGv, TCGv, TCGArg, MemOp),
-                    MemOp mop)
-@@ -73,6 +89,14 @@ TRANS(ll_w, ALL, gen_ll, MO_TESL)
- TRANS(sc_w, ALL, gen_sc, MO_TESL)
- TRANS(ll_d, 64, gen_ll, MO_TEUQ)
- TRANS(sc_d, 64, gen_sc, MO_TEUQ)
-+TRANS(amcas_b, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESB)
-+TRANS(amcas_h, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESW)
-+TRANS(amcas_w, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESL)
-+TRANS(amcas_d, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TEUQ)
-+TRANS(amcas_db_b, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESB)
-+TRANS(amcas_db_h, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESW)
-+TRANS(amcas_db_w, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESL)
-+TRANS(amcas_db_d, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TEUQ)
- TRANS(amswap_b, LAM_BH, gen_am, tcg_gen_atomic_xchg_tl, MO_TESB)
- TRANS(amswap_h, LAM_BH, gen_am, tcg_gen_atomic_xchg_tl, MO_TESW)
- TRANS(amadd_b, LAM_BH, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESB)
+ INSN_LSX(vfcvtl_s_h,       vv)
+ INSN_LSX(vfcvth_s_h,       vv)
+@@ -2338,6 +2346,10 @@ INSN_LASX(xvfrecip_s,        vv)
+ INSN_LASX(xvfrecip_d,        vv)
+ INSN_LASX(xvfrsqrt_s,        vv)
+ INSN_LASX(xvfrsqrt_d,        vv)
++INSN_LASX(xvfrecipe_s,       vv)
++INSN_LASX(xvfrecipe_d,       vv)
++INSN_LASX(xvfrsqrte_s,       vv)
++INSN_LASX(xvfrsqrte_d,       vv)
+ 
+ INSN_LASX(xvfcvtl_s_h,       vv)
+ INSN_LASX(xvfcvth_s_h,       vv)
+diff --git a/target/loongarch/insn_trans/trans_farith.c.inc b/target/loongarch/insn_trans/trans_farith.c.inc
+index f4a0dea727..356cdf99b7 100644
+--- a/target/loongarch/insn_trans/trans_farith.c.inc
++++ b/target/loongarch/insn_trans/trans_farith.c.inc
+@@ -191,6 +191,10 @@ TRANS(frecip_s, FP_SP, gen_ff, gen_helper_frecip_s)
+ TRANS(frecip_d, FP_DP, gen_ff, gen_helper_frecip_d)
+ TRANS(frsqrt_s, FP_SP, gen_ff, gen_helper_frsqrt_s)
+ TRANS(frsqrt_d, FP_DP, gen_ff, gen_helper_frsqrt_d)
++TRANS(frecipe_s, FRECIPE_FP_SP, gen_ff, gen_helper_frecip_s)
++TRANS(frecipe_d, FRECIPE_FP_DP, gen_ff, gen_helper_frecip_d)
++TRANS(frsqrte_s, FRECIPE_FP_SP, gen_ff, gen_helper_frsqrt_s)
++TRANS(frsqrte_d, FRECIPE_FP_DP, gen_ff, gen_helper_frsqrt_d)
+ TRANS(flogb_s, FP_SP, gen_ff, gen_helper_flogb_s)
+ TRANS(flogb_d, FP_DP, gen_ff, gen_helper_flogb_d)
+ TRANS(fclass_s, FP_SP, gen_ff, gen_helper_fclass_s)
+diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
+index 98f856bb29..1c93e19ac4 100644
+--- a/target/loongarch/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/insn_trans/trans_vec.c.inc
+@@ -4409,12 +4409,20 @@ TRANS(vfrecip_s, LSX, gen_vv_ptr, gen_helper_vfrecip_s)
+ TRANS(vfrecip_d, LSX, gen_vv_ptr, gen_helper_vfrecip_d)
+ TRANS(vfrsqrt_s, LSX, gen_vv_ptr, gen_helper_vfrsqrt_s)
+ TRANS(vfrsqrt_d, LSX, gen_vv_ptr, gen_helper_vfrsqrt_d)
++TRANS(vfrecipe_s, FRECIPE_LSX, gen_vv_ptr, gen_helper_vfrecip_s)
++TRANS(vfrecipe_d, FRECIPE_LSX, gen_vv_ptr, gen_helper_vfrecip_d)
++TRANS(vfrsqrte_s, FRECIPE_LSX, gen_vv_ptr, gen_helper_vfrsqrt_s)
++TRANS(vfrsqrte_d, FRECIPE_LSX, gen_vv_ptr, gen_helper_vfrsqrt_d)
+ TRANS(xvfsqrt_s, LASX, gen_xx_ptr, gen_helper_vfsqrt_s)
+ TRANS(xvfsqrt_d, LASX, gen_xx_ptr, gen_helper_vfsqrt_d)
+ TRANS(xvfrecip_s, LASX, gen_xx_ptr, gen_helper_vfrecip_s)
+ TRANS(xvfrecip_d, LASX, gen_xx_ptr, gen_helper_vfrecip_d)
+ TRANS(xvfrsqrt_s, LASX, gen_xx_ptr, gen_helper_vfrsqrt_s)
+ TRANS(xvfrsqrt_d, LASX, gen_xx_ptr, gen_helper_vfrsqrt_d)
++TRANS(xvfrecipe_s, FRECIPE_LASX, gen_xx_ptr, gen_helper_vfrecip_s)
++TRANS(xvfrecipe_d, FRECIPE_LASX, gen_xx_ptr, gen_helper_vfrecip_d)
++TRANS(xvfrsqrte_s, FRECIPE_LASX, gen_xx_ptr, gen_helper_vfrsqrt_s)
++TRANS(xvfrsqrte_d, FRECIPE_LASX, gen_xx_ptr, gen_helper_vfrsqrt_d)
+ 
+ TRANS(vfcvtl_s_h, LSX, gen_vv_ptr, gen_helper_vfcvtl_s_h)
+ TRANS(vfcvth_s_h, LSX, gen_vv_ptr, gen_helper_vfcvth_s_h)
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 678ce42038..cf4123cd46 100644
+index cf4123cd46..92078f0f9f 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -261,6 +261,14 @@ ll_w            0010 0000 .............. ..... .....     @rr_i14s2
- sc_w            0010 0001 .............. ..... .....     @rr_i14s2
- ll_d            0010 0010 .............. ..... .....     @rr_i14s2
- sc_d            0010 0011 .............. ..... .....     @rr_i14s2
-+amcas_b         0011 10000101 10000 ..... ..... .....    @rrr
-+amcas_h         0011 10000101 10001 ..... ..... .....    @rrr
-+amcas_w         0011 10000101 10010 ..... ..... .....    @rrr
-+amcas_d         0011 10000101 10011 ..... ..... .....    @rrr
-+amcas_db_b      0011 10000101 10100 ..... ..... .....    @rrr
-+amcas_db_h      0011 10000101 10101 ..... ..... .....    @rrr
-+amcas_db_w      0011 10000101 10110 ..... ..... .....    @rrr
-+amcas_db_d      0011 10000101 10111 ..... ..... .....    @rrr
- amswap_b        0011 10000101 11000 ..... ..... .....    @rrr
- amswap_h        0011 10000101 11001 ..... ..... .....    @rrr
- amadd_b         0011 10000101 11010 ..... ..... .....    @rrr
+@@ -371,6 +371,10 @@ frecip_s        0000 00010001 01000 10101 ..... .....    @ff
+ frecip_d        0000 00010001 01000 10110 ..... .....    @ff
+ frsqrt_s        0000 00010001 01000 11001 ..... .....    @ff
+ frsqrt_d        0000 00010001 01000 11010 ..... .....    @ff
++frecipe_s       0000 00010001 01000 11101 ..... .....    @ff
++frecipe_d       0000 00010001 01000 11110 ..... .....    @ff
++frsqrte_s       0000 00010001 01001 00001 ..... .....    @ff
++frsqrte_d       0000 00010001 01001 00010 ..... .....    @ff
+ fscaleb_s       0000 00010001 00001 ..... ..... .....    @fff
+ fscaleb_d       0000 00010001 00010 ..... ..... .....    @fff
+ flogb_s         0000 00010001 01000 01001 ..... .....    @ff
+@@ -1115,6 +1119,10 @@ vfrecip_s        0111 00101001 11001 11101 ..... .....    @vv
+ vfrecip_d        0111 00101001 11001 11110 ..... .....    @vv
+ vfrsqrt_s        0111 00101001 11010 00001 ..... .....    @vv
+ vfrsqrt_d        0111 00101001 11010 00010 ..... .....    @vv
++vfrecipe_s       0111 00101001 11010 00101 ..... .....    @vv
++vfrecipe_d       0111 00101001 11010 00110 ..... .....    @vv
++vfrsqrte_s       0111 00101001 11010 01001 ..... .....    @vv
++vfrsqrte_d       0111 00101001 11010 01010 ..... .....    @vv
+ 
+ vfcvtl_s_h       0111 00101001 11011 11010 ..... .....    @vv
+ vfcvth_s_h       0111 00101001 11011 11011 ..... .....    @vv
+@@ -1879,6 +1887,10 @@ xvfrecip_s       0111 01101001 11001 11101 ..... .....    @vv
+ xvfrecip_d       0111 01101001 11001 11110 ..... .....    @vv
+ xvfrsqrt_s       0111 01101001 11010 00001 ..... .....    @vv
+ xvfrsqrt_d       0111 01101001 11010 00010 ..... .....    @vv
++xvfrecipe_s      0111 01101001 11010 00101 ..... .....    @vv
++xvfrecipe_d      0111 01101001 11010 00110 ..... .....    @vv
++xvfrsqrte_s      0111 01101001 11010 01001 ..... .....    @vv
++xvfrsqrte_d      0111 01101001 11010 01010 ..... .....    @vv
+ 
+ xvfcvtl_s_h      0111 01101001 11011 11010 ..... .....    @vv
+ xvfcvth_s_h      0111 01101001 11011 11011 ..... .....    @vv
 diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
-index 0b230530e7..3affefdafc 100644
+index 3affefdafc..651c5796ca 100644
 --- a/target/loongarch/translate.h
 +++ b/target/loongarch/translate.h
-@@ -23,6 +23,7 @@
- #define avail_LSPW(C)   (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSPW))
- #define avail_LAM(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAM))
- #define avail_LAM_BH(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAM_BH))
-+#define avail_LAMCAS(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAMCAS))
- #define avail_LSX(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSX))
+@@ -28,6 +28,12 @@
  #define avail_LASX(C)   (FIELD_EX32((C)->cpucfg2, CPUCFG2, LASX))
  #define avail_IOCSR(C)  (FIELD_EX32((C)->cpucfg1, CPUCFG1, IOCSR))
+ 
++#define avail_FRECIPE(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, FRECIPE))
++#define avail_FRECIPE_FP_SP(C) (avail_FRECIPE(C) && avail_FP_SP(C))
++#define avail_FRECIPE_FP_DP(C) (avail_FRECIPE(C) && avail_FP_DP(C))
++#define avail_FRECIPE_LSX(C)   (avail_FRECIPE(C) && avail_LSX(C))
++#define avail_FRECIPE_LASX(C)   (avail_FRECIPE(C) && avail_LASX(C))
++
+ /*
+  * If an operation is being performed on less than TARGET_LONG_BITS,
+  * it may require the inputs to be sign- or zero-extended; which will
 -- 
 2.42.0
 
