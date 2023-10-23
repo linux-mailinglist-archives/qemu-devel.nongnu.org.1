@@ -2,86 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8F77D3851
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A58A7D378B
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:16:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quvCs-0000g8-S7; Mon, 23 Oct 2023 09:42:58 -0400
+	id 1quulz-000156-Am; Mon, 23 Oct 2023 09:15:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1quvCq-0000em-C5
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:56 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1quvCo-0007Mp-3r
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:56 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40842752c6eso26692655e9.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 06:42:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698068572; x=1698673372; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tsALRE6RrHu0YAN38jhq5z9ZVAL7fyhPR2ahdfibRCE=;
- b=IvS7sykEjFLy9K+44zxQJx6oM+SEciHawu9d/fjowRDbZ5+TZV45NowTkfCLMXULwU
- Bp0cx3CTjanHpeVy8Rr0PUu9Q1NEgWDLNQgVVuRGizZV1pZCdmVbcOBVin3+U5IyFmTb
- ptUAd+V4dvd/yBV1PmgqTvNbqRsqetNqTCfiAviJUEgdlXaLbLqpG+F/8gW6k8Ic7yC5
- QxWvBBoWSsCaViLjY5yyuwwLZXFiTVSSxqBHwQh7KKmtCOrh7FRapXaCTGxsDRBtxygh
- aXPiDKiWNe34ZswtY6ANgBYR7SSjUVaF82sRc+tM0ns0+GL2E92UJJlPlIUvQKcoVNWt
- e/1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698068572; x=1698673372;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=tsALRE6RrHu0YAN38jhq5z9ZVAL7fyhPR2ahdfibRCE=;
- b=ZcgnEOv7oiQdURdgSeedUfCGsSf0SyDCrzP3qUSHYEHALmugliX4+suIZTt4Jx2ndP
- ojxZIqsXKSTj3fd7aZOyoYJet1n+oh1FbyxWXFfN2Dyl5R6egTOCKX5TbNrizbix8KXB
- TZW0GvX2jjYnoKqNt7TsH9P9QewfjTYT/5mQqncCFs/HPd+5aRYMh6HX8E/pj8SdIZkp
- aBLw5xawVeeCEdyVSyaGM49DkOVoAZ6+viDNkdgZ/Jc0JdifoX9DE8o7dNQ7fYDsV/IC
- UxbKB4x+hYiqOHCs3Nzu3L2Oy0TPGUL++GolUPVywPlNwdMJFLrx2DTY07BYebcy+2zu
- kiBw==
-X-Gm-Message-State: AOJu0YyWsdp3zkvSO8qB504wZ9NoFLm07you1VSkrVHd5s0Gmopyr2+9
- Dmv8IwSYdwatcwufPcQ8BRZREA==
-X-Google-Smtp-Source: AGHT+IHqMFLS4s2K/d99tsW0qhpkEpKeuUDwt/W8h+T5hDpvZSxSJojtO9xlPqxwe0Igiv/lKDox7Q==
-X-Received: by 2002:a05:600c:1f8d:b0:407:8ee2:9986 with SMTP id
- je13-20020a05600c1f8d00b004078ee29986mr6486852wmb.26.1698068571902; 
- Mon, 23 Oct 2023 06:42:51 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- o24-20020a05600c339800b0040303a9965asm14191489wmp.40.2023.10.23.06.42.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 06:42:51 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id DF0F61FFBB;
- Mon, 23 Oct 2023 14:42:50 +0100 (BST)
-References: <20231021122502.26746-1-neither@nut.email>
-User-agent: mu4e 1.11.22; emacs 29.1.90
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Julian Ganz <neither@nut.email>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: Re: [PATCH] tcg-plugins: add a hook for interrupts, exceptions and
- traps
-Date: Mon, 23 Oct 2023 14:08:51 +0100
-In-reply-to: <20231021122502.26746-1-neither@nut.email>
-Message-ID: <87v8ax4fqd.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1quulp-00011f-Gq; Mon, 23 Oct 2023 09:15:01 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1quulm-0001bL-By; Mon, 23 Oct 2023 09:15:01 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 53E1675606C;
+ Mon, 23 Oct 2023 15:14:54 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 074FF74705E; Mon, 23 Oct 2023 15:14:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 04227745681;
+ Mon, 23 Oct 2023 15:14:54 +0200 (CEST)
+Date: Mon, 23 Oct 2023 15:14:53 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v5 17/19] hw/sm501: allow compiling without PIXMAN
+In-Reply-To: <20231023113047.2572137-18-marcandre.lureau@redhat.com>
+Message-ID: <1bb1f023-0618-5dad-c269-07bb010f5a14@eik.bme.hu>
+References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
+ <20231023113047.2572137-18-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed; boundary="3866299591-798776552-1698066894=:423"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,218 +66,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Julian Ganz <neither@nut.email> writes:
+--3866299591-798776552-1698066894=:423
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-> Some analysis greatly benefits, or depends on, information about
-> interrupts. For example, we may need to handle the execution of a new
-> translation block differently if it is not the result of normal program
-> flow but of an interrupt.
-
-I can see the benefit for plugins knowing the context - for QEMU itself
-there is no real difference in how it handles blocks that are part of an
-interrupt.
-
-> Even with the existing interfaces, it is more or less possible to
-> discern these situations using some heuristice. For example, the PC
-> landing in a trap vector is a strong indicator that a trap, i.e. an
-> interrupt or event occured. However, such heuristics require knowledge
-> about the architecture and may be prone to errors.
-
-Does this requirement go away if you can query the current execution
-state via registers?
-
-> The callback introduced by this change provides a generic and
-> easy-to-use interface for plugin authors. It allows them to register a
-> callback in which they may alter some plugin-internal state to convey
-> the firing of an interrupt for a given CPU, or perform some stand-alone
-> analysis based on the interrupt and, for example, the CPU state.
+On Mon, 23 Oct 2023, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 >
-> Signed-off-by: Julian Ganz <neither@nut.email>
+> Drop the "x-pixman" property and use fallback path in such case.
+
+Patch diverged from commit message, the x-pixman property is not dropped 
+just the default changed. Needs updated commit message to reflect that.
+
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  accel/tcg/cpu-exec.c         |  3 +++
->  include/qemu/plugin-event.h  |  1 +
->  include/qemu/plugin.h        |  4 ++++
->  include/qemu/qemu-plugin.h   | 11 +++++++++++
->  plugins/core.c               | 12 ++++++++++++
->  plugins/qemu-plugins.symbols |  1 +
->  6 files changed, 32 insertions(+)
+> hw/display/sm501.c | 59 +++++++++++++++++++++++++++++++++-------------
+> 1 file changed, 42 insertions(+), 17 deletions(-)
 >
-> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-> index 1a5bc90220..e094d9236d 100644
-> --- a/accel/tcg/cpu-exec.c
-> +++ b/accel/tcg/cpu-exec.c
-> @@ -754,6 +754,8 @@ static inline bool cpu_handle_exception(CPUState *cpu=
-, int *ret)
->              qemu_mutex_unlock_iothread();
->              cpu->exception_index =3D -1;
->=20=20
-> +            qemu_plugin_vcpu_interrupt_cb(cpu);
+> diff --git a/hw/display/sm501.c b/hw/display/sm501.c
+> index 0eecd00701..282671d1b3 100644
+> --- a/hw/display/sm501.c
+> +++ b/hw/display/sm501.c
+> @@ -438,6 +438,12 @@
+> #define SM501_HWC_WIDTH                 64
+> #define SM501_HWC_HEIGHT                64
+>
+> +#ifdef CONFIG_PIXMAN
+> +#define DEFAULT_X_PIXMAN 7
+> +#else
+> +#define DEFAULT_X_PIXMAN 0
+> +#endif
 > +
->              if (unlikely(cpu->singlestep_enabled)) {
->                  /*
->                   * After processing the exception, ensure an EXCP_DEBUG =
-is
-> @@ -866,6 +868,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
->                  if (need_replay_interrupt(interrupt_request)) {
->                      replay_interrupt();
->                  }
-> +                qemu_plugin_vcpu_interrupt_cb(cpu);
+> /* SM501 local memory size taken from "linux/drivers/mfd/sm501.c" */
+> static const uint32_t sm501_mem_local_size[] = {
+>     [0] = 4 * MiB,
+> @@ -730,7 +736,6 @@ static void sm501_2d_operation(SM501State *s)
+>     switch (cmd) {
+>     case 0: /* BitBlt */
+>     {
+> -        static uint32_t tmp_buf[16384];
+>         unsigned int src_x = (s->twoD_source >> 16) & 0x01FFF;
+>         unsigned int src_y = s->twoD_source & 0xFFFF;
+>         uint32_t src_base = s->twoD_source_base & 0x03FFFFFF;
+> @@ -828,9 +833,11 @@ static void sm501_2d_operation(SM501State *s)
+>                 de = db + (width + (height - 1) * dst_pitch) * bypp;
+>                 overlap = (db < se && sb < de);
+>             }
+> +#ifdef CONFIG_PIXMAN
+>             if (overlap && (s->use_pixman & BIT(2))) {
+>                 /* pixman can't do reverse blit: copy via temporary */
+>                 int tmp_stride = DIV_ROUND_UP(width * bypp, sizeof(uint32_t));
+> +                static uint32_t tmp_buf[16384];
+>                 uint32_t *tmp = tmp_buf;
+>
+>                 if (tmp_stride * sizeof(uint32_t) * height > sizeof(tmp_buf)) {
+> @@ -860,9 +867,12 @@ static void sm501_2d_operation(SM501State *s)
+>                                        dst_pitch * bypp / sizeof(uint32_t),
+>                                        8 * bypp, 8 * bypp, src_x, src_y,
+>                                        dst_x, dst_y, width, height);
+> -            } else {
+> +            } else
+> +#else
+> +            {
+>                 fallback = true;
+>             }
+> +#endif
+>             if (fallback) {
+>                 uint8_t *sp = s->local_mem + src_base;
+>                 uint8_t *d = s->local_mem + dst_base;
+> @@ -894,20 +904,23 @@ static void sm501_2d_operation(SM501State *s)
+>             color = cpu_to_le16(color);
+>         }
+>
+> +#ifdef CONFIG_PIXMAN
+>         if (!(s->use_pixman & BIT(0)) || (width == 1 && height == 1) ||
+>             !pixman_fill((uint32_t *)&s->local_mem[dst_base],
+>                          dst_pitch * bypp / sizeof(uint32_t), 8 * bypp,
+> -                         dst_x, dst_y, width, height, color)) {
+> -            /* fallback when pixman failed or we don't want to call it */
+> -            uint8_t *d = s->local_mem + dst_base;
+> -            unsigned int x, y, i;
+> -            for (y = 0; y < height; y++) {
+> -                i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
+> -                for (x = 0; x < width; x++, i += bypp) {
+> -                    stn_he_p(&d[i], bypp, color);
+> +                         dst_x, dst_y, width, height, color))
+> +#endif
+> +            {
+> +                /* fallback when pixman failed or we don't want to call it */
+> +                uint8_t *d = s->local_mem + dst_base;
+> +                unsigned int x, y, i;
+> +                for (y = 0; y < height; y++) {
+> +                    i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
+> +                    for (x = 0; x < width; x++, i += bypp) {
+> +                        stn_he_p(&d[i], bypp, color);
+> +                    }
+>                 }
+>             }
+> -        }
+>         break;
+>     }
+>     default:
+> @@ -1875,9 +1888,15 @@ static void sm501_reset(SM501State *s)
+>     s->twoD_wrap = 0;
+> }
+>
+> -static void sm501_init(SM501State *s, DeviceState *dev,
+> -                       uint32_t local_mem_bytes)
+> +static bool sm501_init(SM501State *s, DeviceState *dev,
+> +                       uint32_t local_mem_bytes, Error **errp)
+> {
+> +#ifndef CONFIG_PIXMAN
+> +    if (s->use_pixman != 0) {
+> +        error_setg(&error_warn, "x-pixman != 0, not effective without PIXMAN");
 
-My worry here is:
+I think this should just be warn_report not an error
 
- a) we are conflating QEMU exceptions and interrupts as the same thing
- b) this is leaking internal implementation details of the translator
-
-For example EXCP_SEMIHOST isn't actually an interrupt (we don't change
-processor state or control flow). It's just the internal signalling we
-use to handle our semihosting implementation. Similarly the
-CPU_INTERRUPT_EXITTB interrupt isn't really changing state, just
-ensuring we exit the run loop so house keeping is done.
-
-The "correct" way for ARM for example would be to register a helper
-function with arm_register_el_change_hook() and trigger the callbacks
-that way. However each architecture does its own IRQ modelling so you
-would need to work out where in the plumbing to do each callback.
-
->                  /*
->                   * After processing the interrupt, ensure an EXCP_DEBUG =
-is
->                   * raised when single-stepping so that GDB doesn't miss =
-the
-> diff --git a/include/qemu/plugin-event.h b/include/qemu/plugin-event.h
-> index 7056d8427b..d085bdda4e 100644
-> --- a/include/qemu/plugin-event.h
-> +++ b/include/qemu/plugin-event.h
-> @@ -20,6 +20,7 @@ enum qemu_plugin_event {
->      QEMU_PLUGIN_EV_VCPU_SYSCALL_RET,
->      QEMU_PLUGIN_EV_FLUSH,
->      QEMU_PLUGIN_EV_ATEXIT,
-> +    QEMU_PLUGIN_EV_VCPU_INTERRUPT,
->      QEMU_PLUGIN_EV_MAX, /* total number of plugin events we support */
->  };
->=20=20
-> diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-> index 7fdc3a4849..f942e45f41 100644
-> --- a/include/qemu/plugin.h
-> +++ b/include/qemu/plugin.h
-> @@ -190,6 +190,7 @@ void qemu_plugin_vcpu_exit_hook(CPUState *cpu);
->  void qemu_plugin_tb_trans_cb(CPUState *cpu, struct qemu_plugin_tb *tb);
->  void qemu_plugin_vcpu_idle_cb(CPUState *cpu);
->  void qemu_plugin_vcpu_resume_cb(CPUState *cpu);
-> +void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu);
->  void
->  qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1,
->                           uint64_t a2, uint64_t a3, uint64_t a4, uint64_t=
- a5,
-> @@ -270,6 +271,9 @@ static inline void qemu_plugin_vcpu_idle_cb(CPUState =
-*cpu)
->  static inline void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
->  { }
->=20=20
-> +static inline void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu)
-> +{ }
+> +    }
+> +#endif
 > +
->  static inline void
->  qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1, uint64=
-_t a2,
->                           uint64_t a3, uint64_t a4, uint64_t a5, uint64_t=
- a6,
-> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-> index 50a9957279..2eb4b325fe 100644
-> --- a/include/qemu/qemu-plugin.h
-> +++ b/include/qemu/qemu-plugin.h
-> @@ -206,6 +206,17 @@ void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_i=
-d_t id,
->  void qemu_plugin_register_vcpu_resume_cb(qemu_plugin_id_t id,
->                                           qemu_plugin_vcpu_simple_cb_t cb=
-);
->=20=20
-> +/**
-> + * qemu_plugin_register_vcpu_interrupt_cb() - register a vCPU interrupt =
-callback
-> + * @id: plugin ID
-> + * @cb: callback function
-> + *
-> + * The @cb function is called every time a vCPU receives an interrupt, e=
-xception
-> + * or trap.
+>     s->local_mem_size_index = get_local_mem_size_index(local_mem_bytes);
+>
+>     /* local memory */
+> @@ -1916,6 +1935,7 @@ static void sm501_init(SM501State *s, DeviceState *dev,
+>
+>     /* create qemu graphic console */
+>     s->con = graphic_console_init(dev, 0, &sm501_ops, s);
+> +    return true;
 
-As discussed above you would trigger for a lot more than that. You would
-also miss a lot of the other interesting transitions which don't need an
-asynchronous signal. For example HELPER(exception_return) happily
-changes control flow but doesn't need to use the exception mechanism to
-do it.=20
+and no need to add errp as we never return false so it won't be printed 
+anyway.
 
-> + */
-> +void qemu_plugin_register_vcpu_interrupt_cb(qemu_plugin_id_t id,
-> +                                            qemu_plugin_vcpu_simple_cb_t=
- cb);
-> +
->  /** struct qemu_plugin_tb - Opaque handle for a translation block */
->  struct qemu_plugin_tb;
->  /** struct qemu_plugin_insn - Opaque handle for a translated instruction=
- */
-> diff --git a/plugins/core.c b/plugins/core.c
-> index fcd33a2bff..3658bdef45 100644
-> --- a/plugins/core.c
-> +++ b/plugins/core.c
-> @@ -103,6 +103,7 @@ static void plugin_vcpu_cb__simple(CPUState *cpu, enu=
-m qemu_plugin_event ev)
->      case QEMU_PLUGIN_EV_VCPU_EXIT:
->      case QEMU_PLUGIN_EV_VCPU_IDLE:
->      case QEMU_PLUGIN_EV_VCPU_RESUME:
-> +    case QEMU_PLUGIN_EV_VCPU_INTERRUPT:
->          /* iterate safely; plugins might uninstall themselves at any tim=
-e */
->          QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
->              qemu_plugin_vcpu_simple_cb_t func =3D cb->f.vcpu_simple;
-> @@ -400,6 +401,11 @@ void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
->      plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
->  }
->=20=20
-> +void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu)
-> +{
-> +    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_INTERRUPT);
-> +}
-> +
->  void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_id_t id,
->                                         qemu_plugin_vcpu_simple_cb_t cb)
->  {
-> @@ -412,6 +418,12 @@ void qemu_plugin_register_vcpu_resume_cb(qemu_plugin=
-_id_t id,
->      plugin_register_cb(id, QEMU_PLUGIN_EV_VCPU_RESUME, cb);
->  }
->=20=20
-> +void qemu_plugin_register_vcpu_interrupt_cb(qemu_plugin_id_t id,
-> +                                            qemu_plugin_vcpu_simple_cb_t=
- cb)
-> +{
-> +    plugin_register_cb(id, QEMU_PLUGIN_EV_VCPU_INTERRUPT, cb);
-> +}
-> +
->  void qemu_plugin_register_flush_cb(qemu_plugin_id_t id,
->                                     qemu_plugin_simple_cb_t cb)
->  {
-> diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-> index 71f6c90549..1fddb4b9fd 100644
-> --- a/plugins/qemu-plugins.symbols
-> +++ b/plugins/qemu-plugins.symbols
-> @@ -35,6 +35,7 @@
->    qemu_plugin_register_vcpu_tb_exec_cb;
->    qemu_plugin_register_vcpu_tb_exec_inline;
->    qemu_plugin_register_vcpu_tb_trans_cb;
-> +  qemu_plugin_register_vcpu_interrupt_cb;
->    qemu_plugin_reset;
->    qemu_plugin_start_code;
->    qemu_plugin_tb_get_insn;
+> }
+>
+> static const VMStateDescription vmstate_sm501_state = {
+> @@ -2014,7 +2034,9 @@ static void sm501_realize_sysbus(DeviceState *dev, Error **errp)
+>     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+>     MemoryRegion *mr;
+>
+> -    sm501_init(&s->state, dev, s->vram_size);
+> +    if (!sm501_init(&s->state, dev, s->vram_size, errp)) {
+> +        return;
+> +    }
 
-I'm not opposed to adding such a API hook to plugins but I don't think
-the current approach does what you want. If we do add a new API it is
-customary to either expand an existing plugin or add a new one to
-demonstrate the use of the API.
+This could be left alone too, just issuing a warning above should be 
+enough, no other cahnges are needed.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Regards,
+BALATON Zoltan
+
+>     if (get_local_mem_size(&s->state) != s->vram_size) {
+>         error_setg(errp, "Invalid VRAM size, nearest valid size is %" PRIu32,
+>                    get_local_mem_size(&s->state));
+> @@ -2038,7 +2060,8 @@ static void sm501_realize_sysbus(DeviceState *dev, Error **errp)
+>
+> static Property sm501_sysbus_properties[] = {
+>     DEFINE_PROP_UINT32("vram-size", SM501SysBusState, vram_size, 0),
+> -    DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, 7),
+> +    /* this a debug option, prefer PROP_UINT over PROP_BIT for simplicity */
+> +    DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, DEFAULT_X_PIXMAN),
+>     DEFINE_PROP_END_OF_LIST(),
+> };
+>
+> @@ -2112,7 +2135,9 @@ static void sm501_realize_pci(PCIDevice *dev, Error **errp)
+> {
+>     SM501PCIState *s = PCI_SM501(dev);
+>
+> -    sm501_init(&s->state, DEVICE(dev), s->vram_size);
+> +    if (!sm501_init(&s->state, DEVICE(dev), s->vram_size, errp)) {
+> +        return;
+> +    }
+>     if (get_local_mem_size(&s->state) != s->vram_size) {
+>         error_setg(errp, "Invalid VRAM size, nearest valid size is %" PRIu32,
+>                    get_local_mem_size(&s->state));
+> @@ -2126,7 +2151,7 @@ static void sm501_realize_pci(PCIDevice *dev, Error **errp)
+>
+> static Property sm501_pci_properties[] = {
+>     DEFINE_PROP_UINT32("vram-size", SM501PCIState, vram_size, 64 * MiB),
+> -    DEFINE_PROP_UINT8("x-pixman", SM501PCIState, state.use_pixman, 7),
+> +    DEFINE_PROP_UINT8("x-pixman", SM501PCIState, state.use_pixman, DEFAULT_X_PIXMAN),
+>     DEFINE_PROP_END_OF_LIST(),
+> };
+>
+>
+--3866299591-798776552-1698066894=:423--
 
