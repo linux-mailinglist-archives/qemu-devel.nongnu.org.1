@@ -2,59 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AA27D2C42
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 10:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603467D2C70
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 10:15:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quq0I-000379-20; Mon, 23 Oct 2023 04:09:38 -0400
+	id 1quq55-0007w4-6g; Mon, 23 Oct 2023 04:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amit@infradead.org>)
- id 1qupzw-00034Y-Lj
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 04:09:18 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1quq4v-0007sI-5w
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 04:14:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amit@infradead.org>)
- id 1qupzs-0006bz-P4
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 04:09:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Transfer-Encoding:
- Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=WwcqNabniOcxw22jhCXQVj9Rfu7zBNy6e5iElUp4UP0=; b=I6boOcA8Sfl0CVBAEfrf/pvczx
- I+MgDRH3PLTTACi2BILPX68NnX+G5kJT4Pu3H1C7TZcicWh0Z+GDD7nUW+cNxpAb5OTeeDOkdK+ig
- UemtqqzyJqkfc7Jw33sNn0MQudOcEecbkABt2c1/krJOU3b1ugvdfJIkuCJ3L0io5OiZj9qGshaas
- 1V32mQ+gccvQiwxzB94htQ2kJvGyp6fObyCurSRNC2tzUlRIrIzvJdm0lpiylyk7IEuVRwor+GAy9
- 11EgVOrqGyIbEb0rzPavb5TBcOYV/AhMfHvqSm1/HaPP8rNmNpuu9x7D/0Tr8GPgH81DE2CZZQkxu
- rlXVGU3A==;
-Received: from [45.88.97.211] (helo=[172.31.28.226])
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qupzj-00CbiO-7t; Mon, 23 Oct 2023 08:09:03 +0000
-Message-ID: <d0acd0d9e6dc1e73477126348816a23e18b9e931.camel@infradead.org>
-Subject: Re: [PATCH v3 0/9] virtio-console: notify about the terminal size
-From: Amit Shah <amit@infradead.org>
-To: Filip Hejsek <filip.hejsek@gmail.com>, Szymon Lukasz
- <noh4hss@gmail.com>,  qemu-devel@nongnu.org
-Cc: lvivier@redhat.com, berrange@redhat.com, amit@kernel.org,
- mst@redhat.com,  marcandre.lureau@redhat.com, pbonzini@redhat.com
-Date: Mon, 23 Oct 2023 10:09:01 +0200
-In-Reply-To: <3913e8227c343a5d9bfcc2ac1f01d9bd8eceac7a.camel@gmail.com>
-References: <20200629164041.472528-1-noh4hss@gmail.com>
- <3913e8227c343a5d9bfcc2ac1f01d9bd8eceac7a.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1quq4t-0007s9-8J
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 04:14:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698048861;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uoARVbaVzE8Klcf/2UJiBvPdsoBHjWiewZkEcG70H2w=;
+ b=YK5IRHWahWIg/Ea+VTUTKAGs++1hjJpOl/vll8l5cx23JZTjmLMI9W7x7wxf6C7vIv0SL9
+ /FKiPE9BkLDqOA7yCdr1Y38X9adyyq3bo5AmyIqKZmUoRr6mAoCbMqt9o//LX02ZYwPtBl
+ 6uiFvKozJNDNyjfH5qEOZ5BpiOLiiCA=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-iEjYIriUNLey7iyWyMeFFQ-1; Mon, 23 Oct 2023 04:14:19 -0400
+X-MC-Unique: iEjYIriUNLey7iyWyMeFFQ-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5b2c12c8248so1654304a12.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 01:14:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698048858; x=1698653658;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uoARVbaVzE8Klcf/2UJiBvPdsoBHjWiewZkEcG70H2w=;
+ b=ftkpnZmZ2vlH3iEGg9104fZgsLcJ2+02ZSV1qOn27sA+lEbMtemeZehBik6ZHxKrB0
+ jjPwwV2z4HXiCmtsKfIgwvXc1mxc2qQuV+fHpEJzP4lsN9GkDzkDQq5IEeMdwx101JpA
+ WQyS/aIMG+Nk4G70O8jWrrhbf/soBUkQJsvhvl+MLdK1/89901H4A8LZFPm0zN9AZmnD
+ JzdHob7xPV4nIUUL87KoS/paRaL8NmF2T+ZrAUoR3sn9VEUu+Uhu5w2hd3QoHnZaaaUU
+ pboctQpzkZiNBhtPBTw+L1e7heypfu8GS8IQ3RkREeXRi0OVSZ/X8LhpP5TRkuoJCZLb
+ PiWg==
+X-Gm-Message-State: AOJu0Yy32NpLPAucvGc00563TTkB1i4URuTuNJj/zcKzMlVGaKP3QjOh
+ Ae4r4yDYXOSEX8xo1Q2AWGeBivBFYyBAXBDjCWx/uar5qm37TdpZRN1fy111anvmg8NEBFnTn8w
+ 2V2eTQ1LyhigMlUBqrw65BZNJ8ltcrOs=
+X-Received: by 2002:a05:6a20:54a0:b0:13d:17cc:5bca with SMTP id
+ i32-20020a056a2054a000b0013d17cc5bcamr7164688pzk.18.1698048857505; 
+ Mon, 23 Oct 2023 01:14:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzq70ts5bDupwKjfq3lxncqOWwvXbGNczquvLBuYAQ7b8ip74Jouf9GwofikaNrblGdeCbW4K+TH/mBEYJsmM=
+X-Received: by 2002:a05:6a20:54a0:b0:13d:17cc:5bca with SMTP id
+ i32-20020a056a2054a000b0013d17cc5bcamr7164645pzk.18.1698048856339; Mon, 23
+ Oct 2023 01:14:16 -0700 (PDT)
 MIME-Version: 1.0
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=amit@infradead.org; helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20231023074613.41327-1-aesteve@redhat.com>
+ <-ngmaSLF2S5emYjTBWcLRNzvJRoe_eZ-Nv9HQhE6ZLuK8nIE2ZbfVh2G2O2Z41GoIFIRpts0ukEtFXUx8pNAptmrZBhlXxaQGykx_qCZ_9k=@emersion.fr>
+In-Reply-To: <-ngmaSLF2S5emYjTBWcLRNzvJRoe_eZ-Nv9HQhE6ZLuK8nIE2ZbfVh2G2O2Z41GoIFIRpts0ukEtFXUx8pNAptmrZBhlXxaQGykx_qCZ_9k=@emersion.fr>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Mon, 23 Oct 2023 10:14:05 +0200
+Message-ID: <CADSE00KW4+hpbAbZAusBngq5FYSa067wYJCGeetqngWRJaD9Kg@mail.gmail.com>
+Subject: Re: [PATCH v6 0/9] Fix cursor planes with virtualized drivers
+To: Simon Ser <contact@emersion.fr>
+Cc: qemu-devel@nongnu.org, zackr@vmware.com, linux-doc@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
+ iforbes@vmware.com, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Chia-I Wu <olvaffe@gmail.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Hans de Goede <hdegoede@redhat.com>, 
+ Matt Roper <matthew.d.roper@intel.com>, David Airlie <airlied@gmail.com>,
+ banackm@vmware.com, 
+ Rob Clark <robdclark@gmail.com>, javierm@redhat.com, krastevm@vmware.com, 
+ spice-devel@lists.freedesktop.org, 
+ Gurchetan Singh <gurchetansingh@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
+ David Airlie <airlied@redhat.com>, virtualization@lists.linux-foundation.org, 
+ linux-kernel@vger.kernel.org, mombasawalam@vmware.com, 
+ Daniel Vetter <daniel@ffwll.ch>, ppaalanen@gmail.com, 
+ VMware Graphics Reviewers <linux-graphics-maintainer@vmware.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000e4cdbd06085dce80"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,24 +107,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-10-23 at 05:12 +0200, Filip Hejsek wrote:
-> I have found this 3 year old patch adding virtio console resize
-> support, which seems to have been forgotten at that time. I would like
-> to see this feature merged.
->=20
-> Szymon, you have originally submitted this patch, would you be willing
-> to update it for the latest development tree and resubmit it?
->=20
-> If it turns out that Szymon doesn't want to work on this anymore for
-> any reason (or doesn't respond), could I resubmit the patch myself?
-> The contributing guidelines don't say anything about this. I'm
-> especially unsure how to deal with Signed-off-by, as in such case I
-> would be (re)submitting sombody else's work, but potentially with my
-> modifications. I'm willing to update and test the patch, and if
-> necessary, address any review feedback.
+--000000000000e4cdbd06085dce80
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-You should keep Szymon's SOB, mention your changes in the commit
-message below that SOB and put in your own after.
+On Mon, Oct 23, 2023 at 9:55=E2=80=AFAM Simon Ser <contact@emersion.fr> wro=
+te:
 
-	Amit
+> On Monday, October 23rd, 2023 at 09:46, Albert Esteve <aesteve@redhat.com=
+>
+> wrote:
+>
+> > Link to the IGT test covering this patch (already merged):
+> > https://lists.freedesktop.org/archives/igt-dev/2023-July/058427.html
+>
+> Hmm. IGT should not be merged before the kernel, because as long as the
+> kernel is not merged there might be some uAPI changes.
+>
+
+Right, but uAPI header was not updated on the IGT side. As per suggestion
+of the
+maintainers, I added a static variable that matches the definition on this
+patch:
+https://lists.freedesktop.org/archives/igt-dev/2023-August/058803.html
+
++/**
++ * Clients which do set cursor hotspot and treat the cursor plane
++ * like a mouse cursor should set this property.
++ */
++#define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT	6
+
+
+Once this patch gets upstreamed, the localized definition will be removed,
+replaced by the real one.
+
+
+> > Mutter patch:
+> > https://lists.freedesktop.org/archives/igt-dev/2023-July/058427.html
+>
+> Seems like this link is same as IGT? Copy-pasta fail maybe?
+>
+>
+Ah yes, my bad, this is the correct link:
+https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/3337
+
+--000000000000e4cdbd06085dce80
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 23, 2023 at 9:55=E2=80=AF=
+AM Simon Ser &lt;<a href=3D"mailto:contact@emersion.fr">contact@emersion.fr=
+</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
+On Monday, October 23rd, 2023 at 09:46, Albert Esteve &lt;<a href=3D"mailto=
+:aesteve@redhat.com" target=3D"_blank">aesteve@redhat.com</a>&gt; wrote:<br=
+>
+<br>
+&gt; Link to the IGT test covering this patch (already merged):<br>
+&gt; <a href=3D"https://lists.freedesktop.org/archives/igt-dev/2023-July/05=
+8427.html" rel=3D"noreferrer" target=3D"_blank">https://lists.freedesktop.o=
+rg/archives/igt-dev/2023-July/058427.html</a><br>
+<br>
+Hmm. IGT should not be merged before the kernel, because as long as the<br>
+kernel is not merged there might be some uAPI changes.<br></blockquote><div=
+><br></div><div>Right, but uAPI header was not updated on the IGT side. As =
+per suggestion of the</div><div>maintainers, I added a static variable that=
+ matches the definition=C2=A0on this patch:</div><div><a href=3D"https://li=
+sts.freedesktop.org/archives/igt-dev/2023-August/058803.html">https://lists=
+.freedesktop.org/archives/igt-dev/2023-August/058803.html</a></div><div><pr=
+e style=3D"color:rgb(0,0,0)">+/**
++ * Clients which do set cursor hotspot and treat the cursor plane
++ * like a mouse cursor should set this property.
++ */
++#define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT	6</pre></div><div>=C2=A0=
+</div><div>Once this patch gets upstreamed, the localized definition will b=
+e removed,</div><div>replaced by the real one.</div><div><br></div><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
+ solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; Mutter patch:<br>
+&gt; <a href=3D"https://lists.freedesktop.org/archives/igt-dev/2023-July/05=
+8427.html" rel=3D"noreferrer" target=3D"_blank">https://lists.freedesktop.o=
+rg/archives/igt-dev/2023-July/058427.html</a><br>
+<br>
+Seems like this link is same as IGT? Copy-pasta fail maybe?<br>
+<br></blockquote><div><br></div><div>Ah yes, my bad, this is the correct li=
+nk:</div><div><a href=3D"https://gitlab.gnome.org/GNOME/mutter/-/merge_requ=
+ests/3337">https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/3337</a>=
+=C2=A0</div></div></div>
+
+--000000000000e4cdbd06085dce80--
+
 
