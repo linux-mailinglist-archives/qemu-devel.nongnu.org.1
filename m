@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324607D3F27
+	by mail.lfdr.de (Postfix) with ESMTPS id A92DE7D3F29
 	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:24:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzYM-00043B-JY; Mon, 23 Oct 2023 14:21:26 -0400
+	id 1quzYQ-0004CA-B0; Mon, 23 Oct 2023 14:21:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quzYK-00042y-Oh
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:21:24 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quzYO-00045p-Ah
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:21:28 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quzYI-0001Cj-VZ
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:21:24 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quzYM-0001Cz-MV
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:21:28 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D91111FE2D;
- Mon, 23 Oct 2023 18:21:21 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8462E21B0B;
+ Mon, 23 Oct 2023 18:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698085281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ t=1698085285; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3njnR7F2Mk4PbaMRNV5mzXvaSiKu7K/ea1a3GDweu2s=;
- b=fBGveMzcpDtqFiTnfIj6IltVzFrjxbV8fuEVKgWkGrJwQn8T6RwRar1xU704LYHCjiCsei
- vjEzXh2mkub+0fW+MXPbhWEXL5Bl2OFCuBNcV2fEy5vrA42MjEBIyvKp4wJ8iVFNnhpLFn
- 5RjxfJItE37lMEjkDclpk8irzhluuMM=
+ bh=BhlVzTLoLO/CmynImRVIWcvhXYqGphEZ6ZnilgHSyWA=;
+ b=qx8KNf64WWnIivSTtZIDCC7c7xQy3SmDNMWhzrq+n5m++vYAJZHOXa82IuV9yknOtZvyhQ
+ 3zM0wAP72gy0aoBzUZRES4ABOMDY9mpgFwJ5cAGBc+criQbYBpkkLH+YOqtq6Ttaz+Qznm
+ aoh2tGFRrdLqm0fRoUtLLoCGrBx1LvM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698085281;
+ s=susede2_ed25519; t=1698085285;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3njnR7F2Mk4PbaMRNV5mzXvaSiKu7K/ea1a3GDweu2s=;
- b=lhKdRD8lLBbV0uTKLQ3Pkxc3mttS6KEh00Wad6Aii7C7ZB4BwewcMUk26FJ1PwVttm2vJ6
- KH/IzFSajh4O1uAg==
+ bh=BhlVzTLoLO/CmynImRVIWcvhXYqGphEZ6ZnilgHSyWA=;
+ b=l90DyEPQoLHAlkG4s2TxIPIdP0EJ0zOB5tk9eptA7oRAyPRJjmEM6cZ3Tw3CSvBoFUbDqs
+ ngfHgR9E+VK8TYBw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 64CC4132FD;
- Mon, 23 Oct 2023 18:21:18 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 50987132FD;
+ Mon, 23 Oct 2023 18:21:22 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id KAcQDJ65NmX8ZwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 18:21:18 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id wM1qB6K5NmX8ZwAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 18:21:22 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: prerna.saxena@nutanix.com, dgilbert@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com, armbru@redhat.com, eblake@redhat.com,
  manish.mishra@nutanix.com, aravind.retnakaran@nutanix.com,
  Het Gala <het.gala@nutanix.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v15 06/14] migration: convert rdma backend to accept
- MigrateAddress
-Date: Mon, 23 Oct 2023 15:20:45 -0300
-Message-Id: <20231023182053.8711-7-farosas@suse.de>
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: [PATCH v15 07/14] migration: convert exec backend to accept
+ MigrateAddress.
+Date: Mon, 23 Oct 2023 15:20:46 -0300
+Message-Id: <20231023182053.8711-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231023182053.8711-1-farosas@suse.de>
 References: <20231023182053.8711-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: -6.10
-X-Spamd-Result: default: False [-6.10 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: -2.10
+X-Spamd-Result: default: False [-2.10 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-3.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ R_MISSING_CHARSET(2.50)[]; MIME_GOOD(-0.10)[text/plain];
+ BROKEN_CONTENT_TYPE(1.50)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_TWELVE(0.00)[14];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_TWELVE(0.00)[13];
  MID_CONTAINS_FROM(1.00)[]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
  RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -105,184 +104,161 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Het Gala <het.gala@nutanix.com>
 
-RDMA based transport backend for 'migrate'/'migrate-incoming' QAPIs
-accept new wire protocol of MigrateAddress struct.
+Exec transport backend for 'migrate'/'migrate-incoming' QAPIs accept
+new wire protocol of MigrateAddress struct.
 
 It is achived by parsing 'uri' string and storing migration parameters
-required for RDMA connection into well defined InetSocketAddress struct.
+required for exec connection into strList struct.
 
 Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
 Signed-off-by: Het Gala <het.gala@nutanix.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c |  8 ++++----
- migration/rdma.c      | 33 +++++++++++----------------------
- migration/rdma.h      |  6 ++++--
- 3 files changed, 19 insertions(+), 28 deletions(-)
+ migration/exec.c      | 73 +++++++++++++++++++++++++++++++------------
+ migration/exec.h      |  4 +--
+ migration/migration.c |  8 ++---
+ 3 files changed, 59 insertions(+), 26 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index a929fbb3f1..df1698cd5f 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -509,7 +509,7 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
-             fd_start_incoming_migration(saddr->u.fd.str, errp);
-         }
- #ifdef CONFIG_RDMA
--    } else if (strstart(uri, "rdma:", &p)) {
-+    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
-         if (migrate_compress()) {
-             error_setg(errp, "RDMA and compression can't be used together");
-             return;
-@@ -522,7 +522,7 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
-             error_setg(errp, "RDMA and multifd can't be used together");
-             return;
-         }
--        rdma_start_incoming_migration(p, errp);
-+        rdma_start_incoming_migration(&channel->u.rdma, errp);
+diff --git a/migration/exec.c b/migration/exec.c
+index 32f5143dfd..47d2f3b8fb 100644
+--- a/migration/exec.c
++++ b/migration/exec.c
+@@ -39,20 +39,51 @@ const char *exec_get_cmd_path(void)
+ }
  #endif
-     } else if (strstart(uri, "exec:", &p)) {
-         exec_start_incoming_migration(p, errp);
-@@ -1800,8 +1800,8 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
-             fd_start_outgoing_migration(s, saddr->u.fd.str, &local_err);
-         }
- #ifdef CONFIG_RDMA
--    } else if (strstart(uri, "rdma:", &p)) {
--        rdma_start_outgoing_migration(s, p, &local_err);
-+    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
-+        rdma_start_outgoing_migration(s, &channel->u.rdma, &local_err);
- #endif
-     } else if (strstart(uri, "exec:", &p)) {
-         exec_start_outgoing_migration(s, p, &local_err);
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 2a1852ec7f..7a9ce5230e 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -289,7 +289,6 @@ typedef struct RDMALocalBlocks {
- typedef struct RDMAContext {
-     char *host;
-     int port;
--    char *host_port;
  
-     RDMAWorkRequestData wr_data[RDMA_WRID_MAX];
- 
-@@ -2431,9 +2430,7 @@ static void qemu_rdma_cleanup(RDMAContext *rdma)
-         rdma->channel = NULL;
-     }
-     g_free(rdma->host);
--    g_free(rdma->host_port);
-     rdma->host = NULL;
--    rdma->host_port = NULL;
- }
- 
- 
-@@ -2723,28 +2720,16 @@ static void qemu_rdma_return_path_dest_init(RDMAContext *rdma_return_path,
-     rdma_return_path->is_return_path = true;
- }
- 
--static RDMAContext *qemu_rdma_data_init(const char *host_port, Error **errp)
-+static RDMAContext *qemu_rdma_data_init(InetSocketAddress *saddr, Error **errp)
- {
-     RDMAContext *rdma = NULL;
--    InetSocketAddress *addr;
- 
-     rdma = g_new0(RDMAContext, 1);
-     rdma->current_index = -1;
-     rdma->current_chunk = -1;
- 
--    addr = g_new(InetSocketAddress, 1);
--    if (!inet_parse(addr, host_port, NULL)) {
--        rdma->port = atoi(addr->port);
--        rdma->host = g_strdup(addr->host);
--        rdma->host_port = g_strdup(host_port);
--    } else {
--        error_setg(errp, "RDMA ERROR: bad RDMA migration address '%s'",
--                   host_port);
--        g_free(rdma);
--        rdma = NULL;
--    }
--
--    qapi_free_InetSocketAddress(addr);
-+    rdma->host = g_strdup(saddr->host);
-+    rdma->port = atoi(saddr->port);
-     return rdma;
- }
- 
-@@ -3353,6 +3338,7 @@ static int qemu_rdma_accept(RDMAContext *rdma)
-                                             .private_data_len = sizeof(cap),
-                                          };
-     RDMAContext *rdma_return_path = NULL;
-+    g_autoptr(InetSocketAddress) isock = g_new0(InetSocketAddress, 1);
-     struct rdma_cm_event *cm_event;
-     struct ibv_context *verbs;
-     int ret;
-@@ -3367,13 +3353,16 @@ static int qemu_rdma_accept(RDMAContext *rdma)
-         goto err_rdma_dest_wait;
-     }
- 
-+    isock->host = rdma->host;
-+    isock->port = g_strdup_printf("%d", rdma->port);
+-void exec_start_outgoing_migration(MigrationState *s, const char *command, Error **errp)
++/* provides the length of strList */
++static int
++str_list_length(strList *list)
++{
++    int len = 0;
++    strList *elem;
 +
-     /*
-      * initialize the RDMAContext for return path for postcopy after first
-      * connection request reached.
-      */
-     if ((migrate_postcopy() || migrate_return_path())
-         && !rdma->is_return_path) {
--        rdma_return_path = qemu_rdma_data_init(rdma->host_port, NULL);
-+        rdma_return_path = qemu_rdma_data_init(isock, NULL);
-         if (rdma_return_path == NULL) {
-             rdma_ack_cm_event(cm_event);
-             goto err_rdma_dest_wait;
-@@ -4072,7 +4061,8 @@ static void rdma_accept_incoming_migration(void *opaque)
-     }
- }
- 
--void rdma_start_incoming_migration(const char *host_port, Error **errp)
-+void rdma_start_incoming_migration(InetSocketAddress *host_port,
++    for (elem = list; elem != NULL; elem = elem->next) {
++        len++;
++    }
++
++    return len;
++}
++
++static void
++init_exec_array(strList *command, char **argv, Error **errp)
++{
++    int i = 0;
++    strList *lst;
++
++    for (lst = command; lst; lst = lst->next) {
++        argv[i++] = lst->value;
++    }
++
++    argv[i] = NULL;
++    return;
++}
++
++void exec_start_outgoing_migration(MigrationState *s, strList *command,
 +                                   Error **errp)
  {
-     MigrationState *s = migrate_get_current();
-     int ret;
-@@ -4116,13 +4106,12 @@ cleanup_rdma:
- err:
-     if (rdma) {
-         g_free(rdma->host);
--        g_free(rdma->host_port);
+     QIOChannel *ioc;
+ 
+-#ifdef WIN32
+-    const char *argv[] = { exec_get_cmd_path(), "/c", command, NULL };
+-#else
+-    const char *argv[] = { "/bin/sh", "-c", command, NULL };
+-#endif
++    int length = str_list_length(command);
++    g_auto(GStrv) argv = (char **) g_new0(const char *, length + 1);
+ 
+-    trace_migration_exec_outgoing(command);
+-    ioc = QIO_CHANNEL(qio_channel_command_new_spawn(argv,
+-                                                    O_RDWR,
+-                                                    errp));
++    init_exec_array(command, argv, errp);
++    g_autofree char *new_command = g_strjoinv(" ", (char **)argv);
++
++    trace_migration_exec_outgoing(new_command);
++    ioc = QIO_CHANNEL(
++        qio_channel_command_new_spawn(
++                            (const char * const *) g_steal_pointer(&argv),
++                            O_RDWR,
++                            errp));
+     if (!ioc) {
+         return;
      }
-     g_free(rdma);
+@@ -71,20 +102,22 @@ static gboolean exec_accept_incoming_migration(QIOChannel *ioc,
+     return G_SOURCE_REMOVE;
  }
  
- void rdma_start_outgoing_migration(void *opaque,
--                            const char *host_port, Error **errp)
-+                            InetSocketAddress *host_port, Error **errp)
+-void exec_start_incoming_migration(const char *command, Error **errp)
++void exec_start_incoming_migration(strList *command, Error **errp)
  {
-     MigrationState *s = opaque;
-     RDMAContext *rdma_return_path = NULL;
-diff --git a/migration/rdma.h b/migration/rdma.h
-index 30b15b4466..a8d27f33b8 100644
---- a/migration/rdma.h
-+++ b/migration/rdma.h
-@@ -14,15 +14,17 @@
-  *
-  */
+     QIOChannel *ioc;
  
-+#include "qemu/sockets.h"
+-#ifdef WIN32
+-    const char *argv[] = { exec_get_cmd_path(), "/c", command, NULL };
+-#else
+-    const char *argv[] = { "/bin/sh", "-c", command, NULL };
+-#endif
++    int length = str_list_length(command);
++    g_auto(GStrv) argv = (char **) g_new0(const char *, length + 1);
+ 
+-    trace_migration_exec_incoming(command);
+-    ioc = QIO_CHANNEL(qio_channel_command_new_spawn(argv,
+-                                                    O_RDWR,
+-                                                    errp));
++    init_exec_array(command, argv, errp);
++    g_autofree char *new_command = g_strjoinv(" ", (char **)argv);
 +
- #ifndef QEMU_MIGRATION_RDMA_H
- #define QEMU_MIGRATION_RDMA_H
++    trace_migration_exec_incoming(new_command);
++    ioc = QIO_CHANNEL(
++        qio_channel_command_new_spawn(
++                            (const char * const *) g_steal_pointer(&argv),
++                            O_RDWR,
++                            errp));
+     if (!ioc) {
+         return;
+     }
+diff --git a/migration/exec.h b/migration/exec.h
+index 736cd71028..3107f205e3 100644
+--- a/migration/exec.h
++++ b/migration/exec.h
+@@ -23,8 +23,8 @@
+ #ifdef WIN32
+ const char *exec_get_cmd_path(void);
+ #endif
+-void exec_start_incoming_migration(const char *host_port, Error **errp);
++void exec_start_incoming_migration(strList *host_port, Error **errp);
  
- #include "exec/memory.h"
- 
--void rdma_start_outgoing_migration(void *opaque, const char *host_port,
-+void rdma_start_outgoing_migration(void *opaque, InetSocketAddress *host_port,
+-void exec_start_outgoing_migration(MigrationState *s, const char *host_port,
++void exec_start_outgoing_migration(MigrationState *s, strList *host_port,
                                     Error **errp);
- 
--void rdma_start_incoming_migration(const char *host_port, Error **errp);
-+void rdma_start_incoming_migration(InetSocketAddress *host_port, Error **errp);
- 
- /*
-  * Constants used by rdma return codes
+ #endif
+diff --git a/migration/migration.c b/migration/migration.c
+index df1698cd5f..b9ca257c6c 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -524,8 +524,8 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
+         }
+         rdma_start_incoming_migration(&channel->u.rdma, errp);
+ #endif
+-    } else if (strstart(uri, "exec:", &p)) {
+-        exec_start_incoming_migration(p, errp);
++    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
++        exec_start_incoming_migration(channel->u.exec.args, errp);
+     } else if (strstart(uri, "file:", &p)) {
+         file_start_incoming_migration(p, errp);
+     } else {
+@@ -1803,8 +1803,8 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
+     } else if (channel->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
+         rdma_start_outgoing_migration(s, &channel->u.rdma, &local_err);
+ #endif
+-    } else if (strstart(uri, "exec:", &p)) {
+-        exec_start_outgoing_migration(s, p, &local_err);
++    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
++        exec_start_outgoing_migration(s, channel->u.exec.args, &local_err);
+     } else if (strstart(uri, "file:", &p)) {
+         file_start_outgoing_migration(s, p, &local_err);
+     } else {
 -- 
 2.35.3
 
