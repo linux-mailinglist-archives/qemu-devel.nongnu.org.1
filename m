@@ -2,93 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872BF7D4173
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 23:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00F97D41BE
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 23:32:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv283-00059r-2c; Mon, 23 Oct 2023 17:06:27 -0400
+	id 1qv2WG-0003e6-H3; Mon, 23 Oct 2023 17:31:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qv27z-00058g-5M; Mon, 23 Oct 2023 17:06:23 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
+ id 1qv2WF-0003dw-EQ
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 17:31:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qv27x-0006yH-3e; Mon, 23 Oct 2023 17:06:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Dr9m+YpSPjEFT2L8EYUXCW8h8CZqz2yhSCVNPJs6rPI=; b=klDaQbOCD1F8WRCSF4kNAqVw5V
- GF7vNgBN7nADw2Tf6KNvgaP395oF5K3ZqUxAEF0DgSTeu5CCYSNgrtSiSxlVmpK58P/xyuX4IqL74
- LVxcwVpovPzk6VlX7E9p6Lgqh/2h7YpRSDaJOEbsKZgFPVy/K+S7sd1KKVZDoLGhiXlPXXI5VcPgf
- 5mhv0v66sHsDnu+EaUmjQT8x4lwvNhj5Evc1svMiHNQBFFKkeCRRLdiw/yuSiO/vLnbu+mhyT/EvJ
- 26D8dNsCts6Ndde3er5nrGhtju/sN11NzWr+1ddFqLZOqY92evykugHRnqDZW8AL1vwBJbzIZFDgz
- yz1QzA0RDXbGFXQFIu+DgqzvOw/5sQ7dc/FzolOpWA987MZWOBPPPGfeojm2H/p+O9AoNdR93Gttz
- KpsFpyHj7NVIhvgpigjy4S6KZWE1+tQl3XfwNDh2UrEhJDyViry2yScYL9r/uArXFl3/DUi20B+FK
- 3cOPsXbN49aqz8UsBLxP8z38/sBRzzh1xq4UsDDT3znQTJ9d4L4FICyvHdHKKqJnXKFobmza/U1d3
- fZ6UWACPqmdEhG9mOaNZiUYD0SAWWdutX4kIK+1GBFgVrWKDc0o42tYf1Ru4yH+03iHq+DSB5pGot
- +Z9bBeWm31X0EgIuoHwcZx4CDrNhYQFhOZsJRXnLI=;
-Received: from [2a00:23c4:8bb0:3200:776d:f8ec:db63:d979]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qv27k-0006c8-I3; Mon, 23 Oct 2023 22:06:12 +0100
-Message-ID: <2601c66e-bd00-4df6-8a74-c8b2f81b052d@ilande.co.uk>
-Date: Mon, 23 Oct 2023 22:06:11 +0100
+ (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
+ id 1qv2WD-0002Y1-P4
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 17:31:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698096684;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=F1k2Vg92RJrxv+gYLNepXp/tJyAR04nx8wa9wG6p0is=;
+ b=CimN6h1JUMp/gj6nGR8TfO/DAC61/vDmqsrj5voBcsF+0WBdbCWDwGzNR7CovecDcQx7KC
+ 6XElkjK80WonxCfhuYLwulfbQpU8bb1liWGRRRTeQTXyGonKoeTLjKuJjtajhNUsfgJFbq
+ l1s1vlF9GoFeVuEFzNzjA8GiiPv+Pjs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-250-maCHI05XOSGXqitwQfvDGg-1; Mon, 23 Oct 2023 17:29:41 -0400
+X-MC-Unique: maCHI05XOSGXqitwQfvDGg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4084e4ce543so23325425e9.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 14:29:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698096580; x=1698701380;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=F1k2Vg92RJrxv+gYLNepXp/tJyAR04nx8wa9wG6p0is=;
+ b=e9qF0g5x3+SOqjcjFOEp7VRPFR5O8w65K2SQg/wRCwxSbo30PujP8jYlcX/IvhQtvq
+ puWPhs+L+5ZlwRc8ylHOjWpMo/EY3mzwmBGdiRE2nyB3pkXl0XhKVsO43CEyep+Q7pY6
+ 6NEGvhfJEkf1Z6QB3XRSfSKau21/6vvxvZkp67lnYSBvsckE1hCroMM1BoSEkWDZm7ag
+ oDxrV6+osGxAzzYGr4esEbrpYa/Xrnu0+329FoTXYGBeJFXWFoaaoZh2ctjZx9goPHrl
+ soNb4EJI0bkI+qmlhan4FP7mGApzw/YmmalWCTsBg+geWL9FdtiYjufi++3KxoRszXe6
+ a3wQ==
+X-Gm-Message-State: AOJu0YwskXJrioC7YqYqJPWdTvVZpXdD4c2cLJVTWZTWb5snQzENoTIM
+ miJZZSMXxwqqCtQ9pwMHf4u2zn6HkWAR7Ohiqaa09G1W5NoA9MhJm9DVcQ3GOa1CcHc5f3PGgFP
+ n7fuZYGT8ZaXERqY=
+X-Received: by 2002:a05:600c:45ca:b0:408:575e:f24f with SMTP id
+ s10-20020a05600c45ca00b00408575ef24fmr5647853wmo.28.1698096580653; 
+ Mon, 23 Oct 2023 14:29:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwIqmyWxHtLCEV9sJcM7Mm48Qpb+Y1PSoNkRJSeRh4CaGlNviwDWwltxau6u5GNETKD69b9g==
+X-Received: by 2002:a05:600c:45ca:b0:408:575e:f24f with SMTP id
+ s10-20020a05600c45ca00b00408575ef24fmr5647840wmo.28.1698096580275; 
+ Mon, 23 Oct 2023 14:29:40 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es.
+ [92.176.231.205]) by smtp.gmail.com with ESMTPSA id
+ e7-20020a05600c218700b00407efbc4361sm14963606wme.9.2023.10.23.14.29.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Oct 2023 14:29:39 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: zackr@vmware.com, contact@emersion.fr, linux-doc@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
+ iforbes@vmware.com, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Chia-I Wu <olvaffe@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Hans de Goede <hdegoede@redhat.com>, Matt Roper
+ <matthew.d.roper@intel.com>, David Airlie <airlied@gmail.com>,
+ banackm@vmware.com, Rob Clark <robdclark@gmail.com>, krastevm@vmware.com,
+ spice-devel@lists.freedesktop.org, Gurchetan Singh
+ <gurchetansingh@chromium.org>, Jonathan Corbet <corbet@lwn.net>, David
+ Airlie <airlied@redhat.com>, virtualization@lists.linux-foundation.org,
+ linux-kernel@vger.kernel.org, mombasawalam@vmware.com, Daniel Vetter
+ <daniel@ffwll.ch>, ppaalanen@gmail.com, VMware Graphics Reviewers
+ <linux-graphics-maintainer@vmware.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH v6 9/9] drm: Introduce documentation for hotspot properties
+In-Reply-To: <20231023074613.41327-10-aesteve@redhat.com>
+References: <20231023074613.41327-1-aesteve@redhat.com>
+ <20231023074613.41327-10-aesteve@redhat.com>
+Date: Mon, 23 Oct 2023 23:29:39 +0200
+Message-ID: <87h6mh10zg.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, balaton@eik.bme.hu,
- philmd@linaro.org
-References: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
- <20231019130452.508426-2-mark.cave-ayland@ilande.co.uk>
- <B2C0A4CE-0382-48F0-A513-8AD69960F2BF@gmail.com>
- <4C3F58DB-2AAA-43CA-8576-07CFBB66066D@gmail.com>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <4C3F58DB-2AAA-43CA-8576-07CFBB66066D@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:3200:776d:f8ec:db63:d979
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 1/2] ide/pci.c: introduce pci_ide_update_mode() function
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=fmartine@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,176 +108,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/2023 18:19, Bernhard Beschow wrote:
+Albert Esteve <aesteve@redhat.com> writes:
 
-> Am 22. Oktober 2023 22:06:30 UTC schrieb Bernhard Beschow <shentey@gmail.com>:
->>
->>
->> Am 19. Oktober 2023 13:04:51 UTC schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
->>> This function reads the value of the PCI_CLASS_PROG register for PCI IDE
->>> controllers and configures the PCI BARs and/or IDE ioports accordingly.
->>>
->>> In the case where we switch to legacy mode, the PCI BARs are set to return zero
->>> (as suggested in the "PCI IDE Controller" specification), the legacy IDE ioports
->>> are enabled, and the PCI interrupt pin cleared to indicate legacy IRQ routing.
->>>
->>> Conversely when we switch to native mode, the legacy IDE ioports are disabled
->>> and the PCI interrupt pin set to indicate native IRQ routing. The contents of
->>> the PCI BARs are unspecified, but this is not an issue since if a PCI IDE
->>> controller has been switched to native mode then its BARs will need to be
->>> programmed.
->>>
->>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>> ---
->>> hw/ide/pci.c         | 90 ++++++++++++++++++++++++++++++++++++++++++++
->>> include/hw/ide/pci.h |  1 +
->>> 2 files changed, 91 insertions(+)
->>>
->>> diff --git a/hw/ide/pci.c b/hw/ide/pci.c
->>> index a25b352537..9eb30af632 100644
->>> --- a/hw/ide/pci.c
->>> +++ b/hw/ide/pci.c
->>> @@ -104,6 +104,96 @@ const MemoryRegionOps pci_ide_data_le_ops = {
->>>      .endianness = DEVICE_LITTLE_ENDIAN,
->>> };
->>>
->>> +static const MemoryRegionPortio ide_portio_list[] = {
->>> +    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
->>> +    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
->>> +    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
->>> +    PORTIO_END_OF_LIST(),
->>> +};
->>> +
->>> +static const MemoryRegionPortio ide_portio2_list[] = {
-> 
-> Although the naming seems familiar: What about renaming both lists to something like ide_portio_primary_list resp. ide_portio_secondary_list? Having one list carrying a number in its name while omitting it for the other I find rather confusing.
+> From: Michael Banack <banackm@vmware.com>
+>
+> To clarify the intent and reasoning behind the hotspot properties
+> introduce userspace documentation that goes over cursor handling
+> in para-virtualized environments.
+>
+> The documentation is generic enough to not special case for any
+> specific hypervisor and should apply equally to all.
+>
+> Signed-off-by: Zack Rusin <zackr@vmware.com>
 
-The two different portio_lists don't represent the primary and secondary interfaces 
-though: they represent the command and data ports for a single interface. I've left 
-the naming as-is (at least for now) so that all of the IDEBus fields, ISA IDE ioports 
-and PCI IDE ioports all share the same naming convention.
+The author is Michael Banack but it's missing a SoB from them.
+I don't think there's a need to resend for this, can be added
+when applying. But either Michael or Zack should confirm that
+is the correct thing to do for this patch.
 
->>> +    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
->>> +    PORTIO_END_OF_LIST(),
->>> +};
->>> +
->>> +void pci_ide_update_mode(PCIIDEState *s)
->>> +{
->>> +    PCIDevice *d = PCI_DEVICE(s);
->>> +    uint8_t mode = d->config[PCI_CLASS_PROG];
->>> +
->>> +    switch (mode) {
->>
->> Maybe
->>
->>   switch (mode & 0xf) {
->>
->> here such that only the bits relevant to the PCI IDE controller specification are analyzed? Then we can omit the high '8' nibble in the case labels which indicate bus master capability which is obviously out of scope of the switch statement (since you're not touching the BM DMA BAR).
->>
->>> +    case 0x8a:
->>
->> Perhaps we could add a
->>
->>   case 0x0:
->>
->> in front of the above label for compatibility with PIIX-IDE? That way, this function could be reused in the future for resetting PIIX-IDE.
->>
->>> +        /* Both channels legacy mode */
->>> +
->>> +        /* Zero BARs */
->>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x0);
->>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x0);
->>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x0);
->>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x0);
->>> +
->>> +        /* Clear interrupt pin */
->>> +        pci_config_set_interrupt_pin(d->config, 0);
->>
->> Do we really need to toggle the interrupt pin in this function? Or is this VIA-specific? This byte isn't even defined for PIIX-IDE.
->>
->> Best regards,
->> Bernhard
->>
->>> +
->>> +        /* Add legacy IDE ports */
->>> +        if (!s->bus[0].portio_list.owner) {
->>> +            portio_list_init(&s->bus[0].portio_list, OBJECT(d),
->>> +                             ide_portio_list, &s->bus[0], "ide");
->>> +            portio_list_add(&s->bus[0].portio_list,
->>> +                            pci_address_space_io(d), 0x1f0);
->>> +        }
->>> +
->>> +        if (!s->bus[0].portio2_list.owner) {
->>> +            portio_list_init(&s->bus[0].portio2_list, OBJECT(d),
->>> +                             ide_portio2_list, &s->bus[0], "ide");
->>> +            portio_list_add(&s->bus[0].portio2_list,
->>> +                            pci_address_space_io(d), 0x3f6);
->>> +        }
->>> +
->>> +        if (!s->bus[1].portio_list.owner) {
->>> +            portio_list_init(&s->bus[1].portio_list, OBJECT(d),
->>> +                                ide_portio_list, &s->bus[1], "ide");
->>> +            portio_list_add(&s->bus[1].portio_list,
->>> +                            pci_address_space_io(d), 0x170);
->>> +        }
->>> +
->>> +        if (!s->bus[1].portio2_list.owner) {
->>> +            portio_list_init(&s->bus[1].portio2_list, OBJECT(d),
->>> +                             ide_portio2_list, &s->bus[1], "ide");
->>> +            portio_list_add(&s->bus[1].portio2_list,
->>> +                            pci_address_space_io(d), 0x376);
->>> +        }
->>> +        break;
->>> +
->>> +    case 0x8f:
->>> +        /* Both channels native mode */
->>> +
->>> +        /* Set interrupt pin */
->>> +        pci_config_set_interrupt_pin(d->config, 1);
->>> +
->>> +        /* Remove legacy IDE ports */
->>> +        if (s->bus[0].portio_list.owner) {
->>> +            portio_list_del(&s->bus[0].portio_list);
->>> +            portio_list_destroy(&s->bus[0].portio_list);
->>> +        }
->>> +
->>> +        if (s->bus[0].portio2_list.owner) {
->>> +            portio_list_del(&s->bus[0].portio2_list);
->>> +            portio_list_destroy(&s->bus[0].portio2_list);
->>> +        }
->>> +
->>> +        if (s->bus[1].portio_list.owner) {
->>> +            portio_list_del(&s->bus[1].portio_list);
->>> +            portio_list_destroy(&s->bus[1].portio_list);
->>> +        }
->>> +
->>> +        if (s->bus[1].portio2_list.owner) {
->>> +            portio_list_del(&s->bus[1].portio2_list);
->>> +            portio_list_destroy(&s->bus[1].portio2_list);
->>> +        }
->>> +        break;
->>> +    }
->>> +}
->>> +
->>> static IDEState *bmdma_active_if(BMDMAState *bmdma)
->>> {
->>>      assert(bmdma->bus->retry_unit != (uint8_t)-1);
->>> diff --git a/include/hw/ide/pci.h b/include/hw/ide/pci.h
->>> index 1ff469de87..a814a0a7c3 100644
->>> --- a/include/hw/ide/pci.h
->>> +++ b/include/hw/ide/pci.h
->>> @@ -61,6 +61,7 @@ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val);
->>> void bmdma_status_writeb(BMDMAState *bm, uint32_t val);
->>> extern MemoryRegionOps bmdma_addr_ioport_ops;
->>> void pci_ide_create_devs(PCIDevice *dev);
->>> +void pci_ide_update_mode(PCIIDEState *s);
->>>
->>> extern const VMStateDescription vmstate_ide_pci;
->>> extern const MemoryRegionOps pci_ide_cmd_le_ops;
+The doc itself looks great to me and it clarifies a lot about
+cursor hotspots.
 
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-ATB,
+-- 
+Best regards,
 
-Mark.
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
