@@ -2,83 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D5D7D433F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 01:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 550B07D4341
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 01:36:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv4P4-0000wO-Jf; Mon, 23 Oct 2023 19:32:10 -0400
+	id 1qv4S5-0003ZT-16; Mon, 23 Oct 2023 19:35:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qv4P2-0000w2-5p
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 19:32:08 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qv4P0-00008K-8J
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 19:32:07 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c9e95aa02dso28129145ad.0
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 16:32:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qv4S0-0003Yx-10; Mon, 23 Oct 2023 19:35:12 -0400
+Received: from pi.codeconstruct.com.au ([203.29.241.158]
+ helo=codeconstruct.com.au)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qv4Rv-0000p4-T8; Mon, 23 Oct 2023 19:35:11 -0400
+Received: from [192.168.68.112]
+ (ppp118-210-136-142.adl-adc-lon-bras33.tpg.internode.on.net
+ [118.210.136.142])
+ by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 73DD320059;
+ Tue, 24 Oct 2023 07:34:52 +0800 (AWST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698103923; x=1698708723; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=P1YtvzqN84BtH88CwTLAcZuKB5YetEKdVg3R/4iIEug=;
- b=VkXpme6vTif93VzYmagj2U10eHZBL/sZMAW+hVWrgJIAxsdhhrHGQqvh8BYQEu6Lso
- ZSKfMr6l2Im8SACvflOTundtT/HU3IrjwGLA/ZBmGRH5njv5jzgUhUjpLKMoufJb3NDg
- dAOvFcZWfVb7SzxdDspRLfPu2CGVkwoX84BZvxCVBUsa/0tnbpKTawi0xiQKV9C+t3p8
- KROiZFyZxGHX1cOOLgOjNtI2yWHR5+LX4DfVmC+KRdtvLyVPWD99Hg0eMK/zu6x++qwX
- sHZs3gyu8La0Q/idVbl9h47C9p1X32WtRUUTF4MBuXzwFzWtZ2Ad3xHhwhUe/td3aVsg
- 7C9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698103923; x=1698708723;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P1YtvzqN84BtH88CwTLAcZuKB5YetEKdVg3R/4iIEug=;
- b=rSIbdAU/aYJAjXM/wFdO1nl6RInWSzFJLcIv8pP1r4Z60iLFKqlAUwtFXKEeF+cwYm
- Rql2mSyr0AFOgSfBOnSnsNEGjm+h1eisstNSfcz2esBv6UH1DQHzMa5lD39cymzEjU/w
- Mr4Yk01Q54vXwBYA3JJ9r+9KWSzU4aIQrUYSb4Hzt/DEk7QHglD+bW/4t8GGRSjBxIfS
- VCnhIVkHWw5FUAWuVkh1fRnRBt7GNIxqLhIFqoR8iUVPI3wmqxFsju9L6f0YCCqVw1wL
- SKJY5Kj5c4LEcgzg8DkPuvGBqxGIHjtxfF/Y8++VeYLABUZzs/epov4JP2kd9nniI4Hh
- yBKQ==
-X-Gm-Message-State: AOJu0YyCah8gQZj6n87bfUSQ3+ppM9ZbrdLTfIlhImc8ZQ4Obz8wWfVo
- AVJ4Fp18Vot2QTXJhXo2YTcSBg==
-X-Google-Smtp-Source: AGHT+IHgVLdlSvYvUIwQt61O/rSmvKYaZEPX0mM8FOToxxSnf3O0y8eCKKm9lX0RwVPhCIqsJWD7ew==
-X-Received: by 2002:a17:902:e54e:b0:1c9:ddd8:9950 with SMTP id
- n14-20020a170902e54e00b001c9ddd89950mr13851921plf.21.1698103922680; 
- Mon, 23 Oct 2023 16:32:02 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- m5-20020a170902db8500b001b9f032bb3dsm6429170pld.3.2023.10.23.16.32.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Oct 2023 16:32:02 -0700 (PDT)
-Message-ID: <e978d05e-b744-4663-ab45-5a12e7b97537@linaro.org>
-Date: Mon, 23 Oct 2023 16:32:00 -0700
+ d=codeconstruct.com.au; s=2022a; t=1698104094;
+ bh=PrhhsoMwtf7fni5RNvl4eHhvdLaa5t3ue7ZCbGm1iBc=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References;
+ b=PHvz62yjnvJQvReGzOCwQfQrhQ91nbaIjxddpgt26uJzAYv12YWPn3Q2GAVBiMfS4
+ lsFDYzOkWuu+cmn5Mx04UGmQQMRxAGBlNBXX+kays6F9pyOEvf1P4QSDYmSkHPGs+h
+ +fTcgI09QMKnSlOYXYhMBpIXDGlEPRV3HbyZ9mMrNYlNvHJt9g6CDwAKj8ogpJsiTs
+ l+fMUgPd6jtyf+Vx16LXEdgzrG4MG0Lrs/6kMz4mjuTH38eMFKGTaL6hPlCyEtHT+u
+ P/+ydKFDBYPaMPrRyAvNJlq2jbtVKnxjGbZgqeA2DusDn/ttB3NvUUZkKUCzMl8FaF
+ P/Rm+tMTaPzQw==
+Message-ID: <47ec73eb44a8b5f5cd894f97d1e88677845cbd7a.camel@codeconstruct.com.au>
+Subject: Re: [PATCH 1/2] misc/pca9552: Fix inverted input status
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Miles Glenn <milesg@linux.vnet.ibm.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>, f4bug@amsat.org
+Date: Tue, 24 Oct 2023 10:04:51 +1030
+In-Reply-To: <53fccc103ab72cfd93e98fd28bd0a869a43b6a83.camel@linux.vnet.ibm.com>
+References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
+ <20231019204011.3174115-2-milesg@linux.vnet.ibm.com>
+ <e0f36ef6336df26d5c123c5861d6a779c94e3eb9.camel@codeconstruct.com.au>
+ <01edf713-6bec-adec-5fa5-5195b5dd4273@linaro.org>
+ <53fccc103ab72cfd93e98fd28bd0a869a43b6a83.camel@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] target/avr: Use tcg_gen_extract_tl
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>
-References: <20231023160944.10692-1-philmd@linaro.org>
- <20231023160944.10692-2-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231023160944.10692-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=203.29.241.158;
+ envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,14 +73,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/23/23 09:09, Philippe Mathieu-Daudé wrote:
-> Inspired-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/avr/translate.c | 18 ++++++------------
->   1 file changed, 6 insertions(+), 12 deletions(-)
+On Fri, 2023-10-20 at 11:32 -0500, Miles Glenn wrote:
+> On Fri, 2023-10-20 at 11:42 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
+> > On 20/10/23 04:51, Andrew Jeffery wrote:
+> > > On Thu, 2023-10-19 at 15:40 -0500, Glenn Miles wrote:
+> > > > > The pca9552 INPUT0 and INPUT1 registers are supposed to
+> > > > > hold the logical values of the LED pins.  A logical 0
+> > > > > should be seen in the INPUT0/1 registers for a pin when
+> > > > > its corresponding LSn bits are set to 0, which is also
+> > > > > the state needed for turning on an LED in a typical
+> > > > > usage scenario.  Existing code was doing the opposite
+> > > > > and setting INPUT0/1 bit to a 1 when the LSn bit was
+> > > > > set to 0, so this commit fixes that.
+> > > > >=20
+> > > > > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> > > > > ---
+> > > > >=20
+> > > > > Changes from prior version:
+> > > > >      - Added comment regarding pca953X
+> > > > >      - Added cover letter
+> > > > >=20
+> > > > >   hw/misc/pca9552.c          | 18 +++++++++++++-----
+> > > > >   tests/qtest/pca9552-test.c |  6 +++---
+> > > > >   2 files changed, 16 insertions(+), 8 deletions(-)
+> > > > >=20
+> > > > > diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+> > > > > index fff19e369a..445f56a9e8 100644
+> > > > > --- a/hw/misc/pca9552.c
+> > > > > +++ b/hw/misc/pca9552.c
+> > > > > @@ -36,7 +36,10 @@ typedef struct PCA955xClass PCA955xClass;
+> > > > >  =20
+> > > > >   DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
+> > > > >                          TYPE_PCA955X)
+> > > > > -
+> > > > > +/*
+> > > > > + * Note:  The LED_ON and LED_OFF configuration values for the
+> > > > > PCA955X
+> > > > > + *        chips are the reverse of the PCA953X family of
+> > > > > chips.
+> > > > > + */
+> > > > >   #define PCA9552_LED_ON   0x0
+> > > > >   #define PCA9552_LED_OFF  0x1
+> > > > >   #define PCA9552_LED_PWM0 0x2
+> > > > > @@ -112,13 +115,18 @@ static void
+> > > > > pca955x_update_pin_input(PCA955xState *s)
+> > > > >  =20
+> > > > >           switch (config) {
+> > > > >           case PCA9552_LED_ON:
+> > > > > -            qemu_set_irq(s->gpio[i], 1);
+> > > > > -            s->regs[input_reg] |=3D 1 << input_shift;
+> > > > > -            break;
+> > > > > -        case PCA9552_LED_OFF:
+> > > > > +            /* Pin is set to 0V to turn on LED */
+> > > > >               qemu_set_irq(s->gpio[i], 0);
+> > > > >               s->regs[input_reg] &=3D ~(1 << input_shift);
+> > > > >               break;
+> > > > > +        case PCA9552_LED_OFF:
+> > > > > +            /*
+> > > > > +             * Pin is set to Hi-Z to turn off LED and
+> > > > > +             * pullup sets it to a logical 1.
+> > > > > +             */
+> > > > > +            qemu_set_irq(s->gpio[i], 1);
+> > > > > +            s->regs[input_reg] |=3D 1 << input_shift;
+> > > > > +            break;
+> > >=20
+> > > So the witherspoon-bmc machine was a user of the PCA9552 outputs as
+> > > LEDs. I guess its LEDs were in the wrong state the whole time? That
+> > > looks like the only user though, and shouldn't be negatively
+> > > affected.
+> >=20
+> > Usually GPIO polarity is a machine/board property, not a device
+> > one.
+> >=20
+> > We could use the LED API (hw/misc/led.h) which initialize each
+> > output with GpioPolarity.
+> >=20
+>=20
+> Thanks for your comments!   This piqued my curiosity so I decided to
+> run a test with the witherspoon-bmc machine.  Without my changes, I ran
+> the following command to turn off LED13 on the pca9552 which I had
+> previously set to "on":
+>=20
+>   qom-set /machine/unattached/device[18] led13 off
+>=20
+> I had GDB connected at the time with a breakpoint set on
+> led_set_state() so that I could see what was happening.  Due to the
+> inversion bug, I expected the pca9552 code to set the pin low and also
+> set the irq low, which it did.  The connected LED's on this pca9552
+> were all configured as GPIO_POLARITY_ACTIVE_LOW, so I expected that
+> setting the irq state low would actually turn on the LED.  Instead it
+> turned off the LED.
+>=20
+> Reviewing the LED code, I believe the problem lies here:
+>=20
+> static void led_set_state_gpio_handler(void *opaque, int line, int
+> new_state)
+> {
+>     LEDState *s =3D LED(opaque);
+>=20
+>     assert(line =3D=3D 0);
+>     led_set_state(s, !!new_state !=3D s->gpio_active_high);
+> }
+>=20
+>=20
+> In my test, new_state was 0 and gpio_active_high was 0, resulting in
+> the boolean expression of ( 0 !=3D 0 ) which is false and results in
+> turning off the LED.  So, this looks like a bug to me.
+>=20
+> For another simpler example, if the LED polarity was set to
+> GPIO_POLARITY_ACTIVE_HIGH, then s->gpio_active_high would be 1.  Then,
+> if we set the irq line to 1, wouldn't we expect the LED to turn on?=20
+> However, as the code stands, it would actually turn the LED off.  So, I
+> think we can remove one of the "!"'s from in front of new_state.  Then,
+> if the LED is active high and the irq line is set high, it would turn
+> on the LED.  Correct?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Seems reasonable to me. Looks like Philippe added the LED behaviour in
+Fddb67f6402b8 ("hw/misc/led: Allow connecting from GPIO output"), so
+his input would be helpful. Perhaps send a fix for review?
 
-r~
+Andrew
 
