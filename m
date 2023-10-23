@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429777D3719
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED1D7D3614
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quuJL-0006ct-78; Mon, 23 Oct 2023 08:45:35 -0400
+	id 1qutfB-0005D6-IP; Mon, 23 Oct 2023 08:04:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppaalanen@gmail.com>)
- id 1quqDN-0003DD-An
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 04:23:09 -0400
-Received: from mail-lf1-x143.google.com ([2a00:1450:4864:20::143])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qutf4-0005Cj-N6
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:04:00 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ppaalanen@gmail.com>)
- id 1quqDL-0000lN-21
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 04:23:08 -0400
-Received: by mail-lf1-x143.google.com with SMTP id
- 2adb3069b0e04-5079eed8bfbso4216290e87.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 01:23:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qutf2-0001u0-J3
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:03:58 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40839807e82so18334175e9.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 05:03:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698049384; x=1698654184; darn=nongnu.org;
- h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=yILl0/y7g1lM4NMlXc0rK5OqjDqsDZrg7ur6TMfehp0=;
- b=E0ncwyXhkcj+DXNJDSISMmi3GIgPrAJQnM4hRHcZHR2AR4uo58KN09Cmp9C2Jsj5f3
- Nh42Wd8I5eiBhgxjzretne/QOPLxsemcPQkLpj2ANMMOn7tinL2Mz0w0gug3BJ+0vQxe
- U3C6eH7w+uc3AmOFL/APelxBU8yA2G7o1eJR77J5A6fYnmaz1cQJ4EEuQ5UXd6mvht3V
- MZnYUAnw4rlZCovgsDoOf+960GMvI8Uv2CxIoW+gKiu6P4Yzf0Uni6eJV32R5riFkdNS
- khv44NvbMqh2fFBcKLKv8+VE8ImddwJ9YfrvBzaPWwizqbR2IAdx9Kn3zfVHzaxo+AGS
- yz4A==
+ d=linaro.org; s=google; t=1698062631; x=1698667431; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0zthSL1JcThw35kIc/x8MAVw7jIY2hkjTwBTgdREXbw=;
+ b=WpwvCZIFmrZriFs0wGMgOnEcqvDf1QyaEyWD5ER9j9whZeH0I0rkBHJHXfx6bS87kt
+ q04FsABhvKW/jwgZ7ru2V8C5HnN/rIljOgiHYsiLQf14SMmcv4zadXzYTpakfdP8xtKA
+ lZftw3r3JrhllybclEvd03ew/eRjXF6nVxOARKtuuFhvF6v41w7K4qxZNSdk/b8d9dXm
+ +SG0uRzgEen+vJHZbjqYP+W+iYqjUhxNSOWLeO44yVSzbyLkXGLY03hAcB+G6odlov1H
+ XB4F75HyNk2gysPet69AUM7fs9HM+mKhz1D9Sabc+SW0Mv2lIPolTOTdKMJW4OvrZ1En
+ Uftw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698049384; x=1698654184;
- h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yILl0/y7g1lM4NMlXc0rK5OqjDqsDZrg7ur6TMfehp0=;
- b=UjxMB/p0jdD8cSyLlm4o4g1J7xHIQot3kWzk4bu+3oz0+wOVCjnMt6U7a+uppLvKCD
- pLRSuFU/15c4a+f/11a/SI64qt4z9+GZrnpmOvjfpOIJfpxxBlrKDDf4ZutYwfMc+YBj
- HorAk/3K6xCAAiIKJc85zTCeRZZZY6KP8dZw8H3mpnsoMfkqgFB6r8PyiWU8oqUEqxnn
- vBwIBiDdhH3+Be/JpGDQrQTNsVeDjNGch9ybl+mNPLrxZyO1k9VR/VZLKsL5hbidmDq3
- vS1DHVsk0WQWXtR7WE2TIrGvvqHMYta1Aqx8HLL/m7uCh3Pw80Q9QXvKpxWISo+z3f0t
- OEyw==
-X-Gm-Message-State: AOJu0YzJ6eu132Xi37TGSiCRyD4ujwgVXX3EEQUskyO96SP+eAnt8d6c
- nihLSKmlKBBEEDlCRwo+Ia4=
-X-Google-Smtp-Source: AGHT+IHfLv2FTvbtP+XDfCQMq0/4gQd56gQXMbgJziOzy1KkvTPqQfj0aDzIIvyqse8I9pxQmKfFcw==
-X-Received: by 2002:a05:6512:5c3:b0:500:cb2b:8678 with SMTP id
- o3-20020a05651205c300b00500cb2b8678mr5314280lfo.40.1698049383921; 
- Mon, 23 Oct 2023 01:23:03 -0700 (PDT)
-Received: from eldfell ([194.136.85.206]) by smtp.gmail.com with ESMTPSA id
- u25-20020ac258d9000000b004f85d80ca64sm1608145lfo.221.2023.10.23.01.23.03
+ d=1e100.net; s=20230601; t=1698062631; x=1698667431;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0zthSL1JcThw35kIc/x8MAVw7jIY2hkjTwBTgdREXbw=;
+ b=dsfkE/nk2u3XIem4aVUm4BmckgU3SG9piYVXs7dpeYUZ65M+uM9m1xT4zPGFwzkLOI
+ oQ+npyjOe+YdrWKvYdm0dQFz+VtclnWxp4EujhKYuxsehld2b0Zsf4LxWpfZ3CZDY0qk
+ pNgp7xnhhfIy4hdsrAF81AB0L9R8C2C9cGp/KYXDXg/QpHULpLZmpH3xsLTDMHD+XzYi
+ t1jl8zaRIlNBaA3Qy9s+F2E4MEDYF2kBIUlF0VVsw96rFyM3WkYfXLTnN8CTylqVSD68
+ 32JTxbpEB9AlzrmJ8o/IzSYY2lxqD+MLz3mo9dVuQ5jsNf+8bGiD4fEtr0Ly7oWbB7ZW
+ X88A==
+X-Gm-Message-State: AOJu0YzjIvPO644Ty+hgEN1u2F+O/oM3wpA4finqhcwnvSx0zK3Q0yoA
+ Bvq/Lzd2Ixtjjyy8GJFJuE8aJqFD9rOl4qbRwcU=
+X-Google-Smtp-Source: AGHT+IHQsXChybrgV0ZrwMCSar/jD+bodlMtpDVH2p8nElnTae+8GVXlU4jv54rifRbJKo6OlkX8Jg==
+X-Received: by 2002:a05:600c:46d1:b0:3fe:1fd9:bedf with SMTP id
+ q17-20020a05600c46d100b003fe1fd9bedfmr8309723wmo.11.1698062631398; 
+ Mon, 23 Oct 2023 05:03:51 -0700 (PDT)
+Received: from localhost.localdomain (adsl-69.109.242.226.tellas.gr.
+ [109.242.226.69]) by smtp.gmail.com with ESMTPSA id
+ p12-20020a05600c418c00b0040773c69fc0sm13819506wmh.11.2023.10.23.05.03.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 01:23:03 -0700 (PDT)
-Date: Mon, 23 Oct 2023 11:23:00 +0300
-From: Pekka Paalanen <ppaalanen@gmail.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, zackr@vmware.com, contact@emersion.fr,
- linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Maxime Ripard
- <mripard@kernel.org>, iforbes@vmware.com, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Chia-I Wu <olvaffe@gmail.com>, Thomas
- Zimmermann <tzimmermann@suse.de>, Hans de Goede <hdegoede@redhat.com>, Matt
- Roper <matthew.d.roper@intel.com>, David Airlie <airlied@gmail.com>,
- banackm@vmware.com, Rob Clark <robdclark@gmail.com>, javierm@redhat.com,
- krastevm@vmware.com, spice-devel@lists.freedesktop.org, Gurchetan Singh
- <gurchetansingh@chromium.org>, Jonathan Corbet <corbet@lwn.net>, David
- Airlie <airlied@redhat.com>, virtualization@lists.linux-foundation.org,
- linux-kernel@vger.kernel.org, mombasawalam@vmware.com, Daniel Vetter
- <daniel@ffwll.ch>, VMware Graphics Reviewers
- <linux-graphics-maintainer@vmware.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v6 9/9] drm: Introduce documentation for hotspot properties
-Message-ID: <20231023112300.732e18fa@eldfell>
-In-Reply-To: <20231023074613.41327-10-aesteve@redhat.com>
-References: <20231023074613.41327-1-aesteve@redhat.com>
- <20231023074613.41327-10-aesteve@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+ Mon, 23 Oct 2023 05:03:50 -0700 (PDT)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org,
+	"Gerd Hoffmann" <kraxel@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Igor Skalkin" <Igor.Skalkin@opensynergy.com>,
+ "Anton Yakovlev" <Anton.Yakovlev@opensynergy.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ "Eduardo Habkost" <eduardo@habkost.net>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ =?UTF-8?q?K=C5=91v=C3=A1g=C3=B3=2C=20Zolt=C3=A1n?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Mark Cave-Ayland" <mark.cave-ayland@ilande.co.uk>,
+ "Stefano Garzarella" <sgarzare@redhat.com>
+Subject: [PATCH v13 00/11] Add VIRTIO sound card
+Date: Mon, 23 Oct 2023 15:03:17 +0300
+Message-Id: <cover.1698062525.git.manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/BqH+LEjYZrs8=tT7kXjXoDd";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Received-SPF: pass client-ip=2a00:1450:4864:20::143;
- envelope-from=ppaalanen@gmail.com; helo=mail-lf1-x143.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 23 Oct 2023 08:44:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,186 +104,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/BqH+LEjYZrs8=tT7kXjXoDd
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+This patch series adds an audio device implementing the recent virtio
+sound spec (1.2) and a corresponding PCI wrapper device.
 
-On Mon, 23 Oct 2023 09:46:13 +0200
-Albert Esteve <aesteve@redhat.com> wrote:
+v13 can be found online at:
 
-> From: Michael Banack <banackm@vmware.com>
->=20
-> To clarify the intent and reasoning behind the hotspot properties
-> introduce userspace documentation that goes over cursor handling
-> in para-virtualized environments.
->=20
-> The documentation is generic enough to not special case for any
-> specific hypervisor and should apply equally to all.
->=20
-> Signed-off-by: Zack Rusin <zackr@vmware.com>
+https://gitlab.com/epilys/qemu/-/tree/virtio-snd-v13
+
+Ref e7fb941cf7636fdff40cbdcdcd660dec5f15ca3c
+
+Main differences with v12 patch series [^v12]:
+
+- Fixed device aliases (thanks Volker Rümelin <vr_qemu@t-online.de>)
+
+v11[^v11] -> v12[^v12]
+======================
+
+- Moved devices from hw/virtio under hw/audio.
+
+v10[^v10] -> v11[^v11]
+======================
+
+- Rebased against upstream, which has minor changes to the AUD_* API.
+- Fixed noise in playback because of invalid bounds when accessing the
+  audio data in the VirtQueueElement.
+- Refactor invalid I/O message queue flushing into separate function.
+- Removed attempt to write unwritten bytes to QEMU sound backend when
+  flushing: it should only happen when the stream STARTs.
+- Set latency_bytes to buffer size when returning TX I/O message because
+  it happens immediately after writing the last bytes to the QEMU
+  backend, therefore there might be up to <buffer size> bytes to be
+  played before all the buffer data has finished playing.
+- Addressed [^v10] review comments:
+  - Refactored VirtIOSoundPCMBuffer return code into a function instead
+    of using goto labels in output/input audio callbacks. (Suggested by
+    <philmd@linaro.org>)
+
+v9[^v9] -> v10[^v10]
+====================
+
+- Addressed [^v9] review comments.
+- Copy buffer data just before playing it on the host instead of when
+  the IO message arrives. This in most cases takes care of the buffer
+  not being populated with data from the guest application when it
+  firsts arrives.
+
+v8[^v8] -> v9[^v9]
+==================
+
+- Addressed [^v8] review comments.
+- Add cpu_to_le32(_) and le32_to_cpu(_) conversions for messages from/to
+  the guest according to the virtio spec.
+- Inlined some functions and types to reduce review complexity.
+- Corrected the replies to IO messages; now both Playback and Capture
+  work correctly for me. (If you hear cracks in pulseaudio+guest, try
+  pipewire+guest).
+
+v7[^v7] -> v8[^v8]
+==================
+
+- Addressed [^v7] review comments.
+  Functions that were called from more than one place for code re-use
+  are not created until they are actually needed.
+- Fixed cases where block->offset was not respected in Playback
+
+v6[^v6] -> v7[^v7]
+==================
+
+- Removed minor stale/duplicate code.
+- Addressed [^v6] review comments.
+  Notably, the audio driver name is now `virtio` instead of
+  `virtio-sound`.
+- Fixed some invalid pointer logic.
+- Fixed minor typos and updated documentation.
+
+v5[^v5] -> v6[^v6]
+==================
+
+- Free any existing PCM stream resources before allocating a new one.
+- Add docs.
+
+v4[^v4] -> v5[^v5]
+==================
+
+- Use ERRP_GUARD() to propagate errors.
+- Use virtio_add_feature() instead of XORing constants.
+- Use %zu format specifier for size_t.
+
+v3[^v3] -> v4[^v4]
+==================
+
+- Addressed review style comments.
+- Split patches for easier review.
+
+v2[^v2] -> v3[^v3]
+==================
+
+- Addressed review comments.
+
+v1[^v1] -> v2[^v2]
+==================
+
+- Split virtio-snd and virtio-snd-pci devices to two commits
+- Added audio capture support
+
+Previously:
+
+[^v12]:
+https://lore.kernel.org/qemu-devel/cover.1697709630.git.manos.pitsidianakis@linaro.org/
+[^v11]:
+https://lore.kernel.org/qemu-devel/cover.1696935992.git.manos.pitsidianakis@linaro.org/
+[^v10]:
+https://lore.kernel.org/qemu-devel/cover.1695996196.git.manos.pitsidianakis@linaro.org/
+[^v9]:
+https://lore.kernel.org/qemu-devel/cover.1694588927.git.manos.pitsidianakis@linaro.org/
+[^v8]:
+https://lore.kernel.org/qemu-devel/cover.1693252037.git.manos.pitsidianakis@linaro.org/
+[^v7]:
+https://lore.kernel.org/qemu-devel/cover.1692731646.git.manos.pitsidianakis@linaro.org/
+[^v6]:
+https://lore.kernel.org/qemu-devel/cover.1692089917.git.manos.pitsidianakis@linaro.org/
+[^v5]:
+https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/
+[^v4]:
+https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/
+[^v3]:
+https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/
+[^v2]:
+https://lore.kernel.org/qemu-devel/cover.1686238728.git.manos.pitsidianakis@linaro.org/
+[^v1]:
+https://lore.kernel.org/qemu-devel/20230526204845.673031-1-manos.pitsidianakis@linaro.org/
+
+Manos Pitsidianakis (11):
+  Add virtio-sound device stub
+  Add virtio-sound-pci device
+  virtio-sound: handle control messages and streams
+  virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
+  virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
+  virtio-sound: handle VIRTIO_SND_R_PCM_SET_PARAMS
+  virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
+  virtio-sound: handle VIRTIO_SND_R_PCM_RELEASE
+  virtio-sound: implement audio output (TX)
+  virtio-sound: implement audio capture (RX)
+  docs/system: add basic virtio-snd documentation
+
+ MAINTAINERS                        |    9 +
+ docs/system/device-emulation.rst   |    1 +
+ docs/system/devices/virtio-snd.rst |   49 +
+ hw/audio/Kconfig                   |    5 +
+ hw/audio/meson.build               |    2 +
+ hw/audio/trace-events              |   20 +
+ hw/audio/virtio-snd-pci.c          |   93 ++
+ hw/audio/virtio-snd.c              | 1409 ++++++++++++++++++++++++++++
+ include/hw/audio/virtio-snd.h      |  235 +++++
+ system/qdev-monitor.c              |    2 +
+ 10 files changed, 1825 insertions(+)
+ create mode 100644 docs/system/devices/virtio-snd.rst
+ create mode 100644 hw/audio/virtio-snd-pci.c
+ create mode 100644 hw/audio/virtio-snd.c
+ create mode 100644 include/hw/audio/virtio-snd.h
 
 
-Hi,
+base-commit: 384dbdda94c0bba55bf186cccd3714bbb9b737e9
+-- 
+2.39.2
 
-the below doc text:
-
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-
-
-Thanks,
-pq
-
-
-> ---
->  Documentation/gpu/drm-kms.rst |  6 ++++
->  drivers/gpu/drm/drm_plane.c   | 58 ++++++++++++++++++++++++++++++++++-
->  2 files changed, 63 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/gpu/drm-kms.rst b/Documentation/gpu/drm-kms.rst
-> index a0c83fc481264..158cdcc9351f9 100644
-> --- a/Documentation/gpu/drm-kms.rst
-> +++ b/Documentation/gpu/drm-kms.rst
-> @@ -577,6 +577,12 @@ Variable Refresh Properties
->  .. kernel-doc:: drivers/gpu/drm/drm_connector.c
->     :doc: Variable refresh properties
-> =20
-> +Cursor Hotspot Properties
-> +---------------------------
-> +
-> +.. kernel-doc:: drivers/gpu/drm/drm_plane.c
-> +   :doc: hotspot properties
-> +
->  Existing KMS Properties
->  -----------------------
-> =20
-> diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
-> index 1dc00ad4c33c3..f3f2eae83cca8 100644
-> --- a/drivers/gpu/drm/drm_plane.c
-> +++ b/drivers/gpu/drm/drm_plane.c
-> @@ -230,6 +230,61 @@ static int create_in_format_blob(struct drm_device *=
-dev, struct drm_plane *plane
->  	return 0;
->  }
-> =20
-> +/**
-> + * DOC: hotspot properties
-> + *
-> + * HOTSPOT_X: property to set mouse hotspot x offset.
-> + * HOTSPOT_Y: property to set mouse hotspot y offset.
-> + *
-> + * When the plane is being used as a cursor image to display a mouse poi=
-nter,
-> + * the "hotspot" is the offset within the cursor image where mouse events
-> + * are expected to go.
-> + *
-> + * Positive values move the hotspot from the top-left corner of the curs=
-or
-> + * plane towards the right and bottom.
-> + *
-> + * Most display drivers do not need this information because the
-> + * hotspot is not actually connected to anything visible on screen.
-> + * However, this is necessary for display drivers like the para-virtuali=
-zed
-> + * drivers (eg qxl, vbox, virtio, vmwgfx), that are attached to a user c=
-onsole
-> + * with a mouse pointer.  Since these consoles are often being remoted o=
-ver a
-> + * network, they would otherwise have to wait to display the pointer mov=
-ement to
-> + * the user until a full network round-trip has occurred.  New mouse eve=
-nts have
-> + * to be sent from the user's console, over the network to the virtual i=
-nput
-> + * devices, forwarded to the desktop for processing, and then the cursor=
- plane's
-> + * position can be updated and sent back to the user's console over the =
-network.
-> + * Instead, with the hotspot information, the console can anticipate the=
- new
-> + * location, and draw the mouse cursor there before the confirmation com=
-es in.
-> + * To do that correctly, the user's console must be able predict how the
-> + * desktop will process mouse events, which normally requires the deskto=
-p's
-> + * mouse topology information, ie where each CRTC sits in the mouse coor=
-dinate
-> + * space.  This is typically sent to the para-virtualized drivers using =
-some
-> + * driver-specific method, and the driver then forwards it to the consol=
-e by
-> + * way of the virtual display device or hypervisor.
-> + *
-> + * The assumption is generally made that there is only one cursor plane =
-being
-> + * used this way at a time, and that the desktop is feeding all mouse de=
-vices
-> + * into the same global pointer.  Para-virtualized drivers that require =
-this
-> + * should only be exposing a single cursor plane, or find some other way
-> + * to coordinate with a userspace desktop that supports multiple pointer=
-s.
-> + * If the hotspot properties are set, the cursor plane is therefore assu=
-med to be
-> + * used only for displaying a mouse cursor image, and the position of th=
-e combined
-> + * cursor plane + offset can therefore be used for coordinating with inp=
-ut from a
-> + * mouse device.
-> + *
-> + * The cursor will then be drawn either at the location of the plane in =
-the CRTC
-> + * console, or as a free-floating cursor plane on the user's console
-> + * corresponding to their desktop mouse position.
-> + *
-> + * DRM clients which would like to work correctly on drivers which expose
-> + * hotspot properties should advertise DRM_CLIENT_CAP_CURSOR_PLANE_HOTSP=
-OT.
-> + * Setting this property on drivers which do not special case
-> + * cursor planes will return EOPNOTSUPP, which can be used by userspace =
-to
-> + * gauge requirements of the hardware/drivers they're running on. Advert=
-ising
-> + * DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT implies that the userspace client=
- will be
-> + * correctly setting the hotspot properties.
-> + */
-> +
->  /**
->   * drm_plane_create_hotspot_properties - creates the mouse hotspot
->   * properties and attaches them to the given cursor plane
-> @@ -237,7 +292,8 @@ static int create_in_format_blob(struct drm_device *d=
-ev, struct drm_plane *plane
->   * @plane: drm cursor plane
->   *
->   * This function enables the mouse hotspot property on a given
-> - * cursor plane.
-> + * cursor plane. Look at the documentation for hotspot properties
-> + * to get a better understanding for what they're used for.
->   *
->   * RETURNS:
->   * Zero for success or -errno
-
-
---Sig_/BqH+LEjYZrs8=tT7kXjXoDd
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmU2LWQACgkQI1/ltBGq
-qqc9jg/+O49j7A2awfs+aCc+PJsIXZzo6/vpt0Axrl++SGV6BNXjwSGNNGddCUQE
-rZNaWJK3+JBbIqpk9fGz+kNUM1G3UJ5HCveIbl1lCetewGdeJGumMV7gB6/VnK32
-zPDon8yBLibA0vHIZHeVp/7ELBNWzPy4XSt3FyOE0dLCen7xukneyZy8bCPpXfR3
-bXr7kJV/N2XgZl7MgLRNOMnj/okbJ4dWzD4qUR7Pe8EC0zZ/pBlk7gMfQWeNk1Yl
-UmFUix99PDTf3x8BaI22sD9hUg7qkSp1Tf4GtndKyrG5atgYJ61t+1HUAEg8oCJ4
-eMH5umZhmm956T7/q7YTv+s3KkyOADQ1tK1ePOSB6I3uM1FF/LqnpzxFQgu11z3O
-cl5q1crqZORm+3Sa6X9J7EAFNZzW8+9WD+qgQeuc1o2/mFplmL/fzs/OzkzhTCik
-cZVkAFnIykWSoZSka9eG/Xt205wTTBgc0wgryr5OpRr50DCdLr+FfklNM4YLmcqU
-ReoL1MWdDPcDtj7t6eaYXTa67kSQaSO/JSbz60cQ9Tt+Rhod6K6MtLFRyTIvFTYj
-rISYdRD8Q4Pr8I96vlFXMUsy5hs8amyx5yrWHPWMp+7arZxUbSwupaaRFmTtAiSr
-pJCgOmQFFHP+nAbRemAx1+TfNde21rdHuu4ud5Nq3p4ZnzY/taQ=
-=75Es
------END PGP SIGNATURE-----
-
---Sig_/BqH+LEjYZrs8=tT7kXjXoDd--
 
