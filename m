@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD997D4102
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1887D411E
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:40:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv1g4-0004H0-Fa; Mon, 23 Oct 2023 16:37:32 -0400
+	id 1qv1g3-00040g-MV; Mon, 23 Oct 2023 16:37:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fq-0003jL-R8
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:20 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fs-0003mF-TF
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:22 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fm-0001ti-Jh
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:18 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qv1fq-0001tu-Hy
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 16:37:19 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 692C71FE37;
- Mon, 23 Oct 2023 20:37:13 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BA65B218B8;
+ Mon, 23 Oct 2023 20:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698093433; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698093435; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fioivwaIQ4HIvSYijeTJFczB0DjmhMjP2qC1xqQx5q8=;
- b=LJTWQq5FBOdS7sXlx2j7/YzrQ9taZWUVehZ9BzC1Ll6gHtpM1ukBz4pejYpo24B+reiccP
- v2QQQF/+rchuspAYPfjF9dTWC/uZKQZDSeA470K12zXS9xcJhzUE6SQxaDGplGA9OAjTkr
- qWqrDxtrnLwrnOjYD5RMfqHwOspnKts=
+ bh=U8REzouWVMUSyxt0F5ihPhQ2s5ZaLga2GdJROF81qn0=;
+ b=NmuacHj91YLceXLktn8Gog37dnISdr2RZ7L4YjdhgWS3TJj7Hz0Pp17ZA56qeeANdfdaKz
+ RrsVXAq7/UH5Ku4e1Nw+yWY5fP705KR1gylEMZXO26oKdkM86uBbIdjh6K0iotiCzEC/yL
+ SpT7Jb0dRM7GAQNt+UbhNTzCBHBlnqM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698093433;
+ s=susede2_ed25519; t=1698093435;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fioivwaIQ4HIvSYijeTJFczB0DjmhMjP2qC1xqQx5q8=;
- b=dUQGJL3EX4xHXUS1Tf018mBXjG92DxNRe0iHwuddztJYv1HCVd1uRXKEcJVmbmcO6Bfmcc
- EyBpQK/1vuQzBWBQ==
+ bh=U8REzouWVMUSyxt0F5ihPhQ2s5ZaLga2GdJROF81qn0=;
+ b=WAfaqhxflCfBR81DChLVw2lEnsNIK9DdouVhNk1oAS/UVSLGFuwm7saxDtF7ZwzObOlAYl
+ Xm71EJmkhUONo/AA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7E1AC132FD;
- Mon, 23 Oct 2023 20:37:11 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CDDED132FD;
+ Mon, 23 Oct 2023 20:37:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id +G9EEnfZNmV1JQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:37:11 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id cJHYJXnZNmV1JQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 20:37:13 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v2 23/29] migration/ram: Add a wrapper for fixed-ram shadow
- bitmap
-Date: Mon, 23 Oct 2023 17:36:02 -0300
-Message-Id: <20231023203608.26370-24-farosas@suse.de>
+Subject: [PATCH v2 24/29] migration/ram: Ignore multifd flush when doing
+ fixed-ram migration
+Date: Mon, 23 Oct 2023 17:36:03 -0300
+Message-Id: <20231023203608.26370-25-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231023203608.26370-1-farosas@suse.de>
 References: <20231023203608.26370-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: -1.90
-X-Spamd-Result: default: False [-1.90 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: -1.75
+X-Spamd-Result: default: False [-1.75 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  R_MISSING_CHARSET(2.50)[]; MIME_GOOD(-0.10)[text/plain];
@@ -75,9 +75,9 @@ X-Spamd-Result: default: False [-1.90 / 50.00]; ARC_NA(0.00)[];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
  MID_CONTAINS_FROM(1.00)[]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-2.80)[99.16%]
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-2.65)[98.44%]
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -100,43 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll need to set the shadow_bmap bits from outside ram.c soon and
-TARGET_PAGE_BITS is poisoned, so add a wrapper to it.
+Some functionalities of multifd are incompatible with the 'fixed-ram'
+migration format.
+
+The MULTIFD_FLUSH flag in particular is not used because in fixed-ram
+there is no sinchronicity between migration source and destination so
+there is not need for a sync packet. In fact, fixed-ram disables
+packets in multifd as a whole.
+
+Make sure RAM_SAVE_FLAG_MULTIFD_FLUSH is never emitted when fixed-ram
+is enabled.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/ram.c | 5 +++++
- migration/ram.h | 1 +
- 2 files changed, 6 insertions(+)
+ migration/ram.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/migration/ram.c b/migration/ram.c
-index cea6971ab2..8e34c1b597 100644
+index 8e34c1b597..3497ed186a 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -3160,6 +3160,11 @@ static void ram_save_shadow_bmap(QEMUFile *f)
-     }
- }
- 
-+void ramblock_set_shadow_bmap_atomic(RAMBlock *block, ram_addr_t offset)
-+{
-+    set_bit_atomic(offset >> TARGET_PAGE_BITS, block->shadow_bmap);
-+}
-+
- /**
-  * ram_save_iterate: iterative stage for migration
-  *
-diff --git a/migration/ram.h b/migration/ram.h
-index 145c915ca7..1acadffb06 100644
---- a/migration/ram.h
-+++ b/migration/ram.h
-@@ -75,6 +75,7 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *rb);
- bool ramblock_page_is_discarded(RAMBlock *rb, ram_addr_t start);
- void postcopy_preempt_shutdown_file(MigrationState *s);
- void *postcopy_preempt_thread(void *opaque);
-+void ramblock_set_shadow_bmap_atomic(RAMBlock *block, ram_addr_t offset);
- 
- /* ram cache */
- int colo_init_ram_cache(void);
+@@ -1386,7 +1386,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+         pss->page = 0;
+         pss->block = QLIST_NEXT_RCU(pss->block, next);
+         if (!pss->block) {
+-            if (migrate_multifd() &&
++            if (!migrate_fixed_ram() && migrate_multifd() &&
+                 !migrate_multifd_flush_after_each_section()) {
+                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
+                 int ret = multifd_send_sync_main(f);
 -- 
 2.35.3
 
