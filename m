@@ -2,73 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E38F7D2EBC
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 11:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C9D7D2E93
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 11:37:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qurT2-0001wg-67; Mon, 23 Oct 2023 05:43:24 -0400
+	id 1qurL4-0005kc-8N; Mon, 23 Oct 2023 05:35:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+91fa634947ba19782c4e+7365+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qurSy-0001wA-SX; Mon, 23 Oct 2023 05:43:21 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qurL1-0005kT-8N
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:35:07 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+91fa634947ba19782c4e+7365+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qurSv-0006ub-LQ; Mon, 23 Oct 2023 05:43:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=QJnLNJLIKQ/1yQL84M0rKohbw6CIp8aEbajAdE1XPdk=; b=CUdLWyALBJqmFbDGesKzP61pFX
- yMyqMvl8eVP0caNQqIuXFssX8lBUzWgpK0Cz1fE8ycmQ7Zc364gqWYFOTEzYFjujFruaRGkPf/g16
- 2GvuZQFH7+oO5B5p06BuB9jm6y2Zb0P3hOi7BsVk8I5q9ZzHdu8NlWI5fNR9PAEQX1FoAvUwcQygR
- BrsvhK9U4XPB2XlRKtxIRyatSt0Ur8ot4pBTYRH2JCADNdaRtv6ro02JzxVUyyL4XCxYYdUYirxQk
- sSvo6tPiHXwM1MjlSxzPFY4mccQVObrvA0FIliR8oJ5LExfja1ipELp+yx7XX+ndJ15ku4AvAk9s8
- aSwfOOyQ==;
-Received: from [31.94.4.150] (helo=[IPv6:::1])
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qurSo-00D2s3-IS; Mon, 23 Oct 2023 09:43:10 +0000
-Date: Mon, 23 Oct 2023 10:42:58 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Igor Mammedov <imammedo@redhat.com>
-CC: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Marcelo Tosatti <mtosatti@redhat.com>, 
- qemu-block@nongnu.org, xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
- =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_11/12=5D_hw/xen=3A_automaticall?=
- =?US-ASCII?Q?y_assign_device_index_to_block_devices?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20231023113002.0e83c209@imammedo.users.ipa.redhat.com>
-References: <20231016151909.22133-1-dwmw2@infradead.org>
- <20231016151909.22133-12-dwmw2@infradead.org>
- <20231018093239.3d525fd8@imammedo.users.ipa.redhat.com>
- <3f3487af227dcdce7afb37e8406d5ce8dcdbf55f.camel@infradead.org>
- <20231023113002.0e83c209@imammedo.users.ipa.redhat.com>
-Message-ID: <8CBFDABE-6BD7-4924-BB69-EF5EAA04A34D@infradead.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qurKy-00050v-EE
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:35:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1698053705; x=1729589705;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=PxZ9aMEXwLxObgR4+dNITZ7cKCMTxJ8aQZEOvUAT0xY=;
+ b=dTWkZ136YySg5h5GAO9igXxzj4rID9F0A8z7ZLS6qICIA31tzeKlV6CV
+ ChORojVetmDTGOVhhpYG9tsolVLXpzgnXpi7qQzXhE7G+MAqJ2KIU54IX
+ QY0ZGYukxZ/eH8bh/ML+IV2Tv4NIqgDpMhWajRTrv1AR6N8KCn5Zm9TMk
+ e2OaGn8ChEivcpA0Bk3Gy/VYsnPUVLGwPsGcTDmHIQlLdkHufBdD6+Gkd
+ RHt9a6LVZHqOf9XlOwo2KEvUxm+NxnITWmQ3cEy2BeI1P6Xq+ec2Hf7fG
+ rdsg9VCxvcJH9yD3JIg80SWWRLqrgorBfAa+zclu8ufN9OwZ+xNo+p0YI w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="8359464"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
+   d="scan'208";a="8359464"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2023 02:35:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="707882839"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; d="scan'208";a="707882839"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orsmga003.jf.intel.com with ESMTP; 23 Oct 2023 02:34:57 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 00/16] tests: Add CPU topology related smbios test cases
+Date: Mon, 23 Oct 2023 17:46:19 +0800
+Message-Id: <20231023094635.1588282-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+91fa634947ba19782c4e+7365+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=192.198.163.7;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,48 +78,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Zhao Liu <zhao1.liu@intel.com>
+
+Hi all,
+
+This patchset is the v3 which fixes the CI failure [1] reported in v2:
+
+Number of hotpluggable cpus requested (520) exceeds the maximum cpus
+supported by KVM (288)
+socket_accept failed: Resource temporarily unavailable
 
 
-On 23 October 2023 10:30:02 BST, Igor Mammedov <imammedo@redhat=2Ecom> wro=
-te:
->On Wed, 18 Oct 2023 09:32:47 +0100
->David Woodhouse <dwmw2@infradead=2Eorg> wrote:
->
->> On Wed, 2023-10-18 at 09:32 +0200, Igor Mammedov wrote:
->> > On Mon, 16 Oct 2023 16:19:08 +0100
->> > David Woodhouse <dwmw2@infradead=2Eorg> wrote:
->> >  =20
->> > > From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
->> > >  =20
->> >=20
->> > is this index a user (guest) visible? =20
->>=20
->> Yes=2E It defines what block device (e=2Eg=2E /dev/xvda) the disk appea=
-rs as
->> in the guest=2E In the common case, it literally encodes the Linux
->> major/minor numbers=2E So xvda (major 202) is 0xca00, xvdb is 0xca10 et=
-c=2E
->
->that makes 'index' an implicit ABI and a subject to versioning
->when the way it's assigned changes (i=2Ee=2E one has to use versioned
->machine types to keep older versions working the they used to)=2E
->
->From what I remember it's discouraged to make QEMU invent
->various IDs that are part of ABI (guest or mgmt side)=2E
->Instead it's preferred for mgmt side/user to provide that explicitly=2E
->
->Basically you are trading off manageability/simplicity at QEMU
->level with CLI usability for human user=2E
->I don't care much as long as it is hidden within xen code base,
->but maybe libvirt does=2E
+Changes in v3
+=============
 
-Well, it can still be set explicitly=2E So not so much a "trade-off" as ad=
-ding the option for the user to choose the simple way=2E
+v3 reduces the vCPU number from 520 to 260 to meet the CI host's
+limitation (up to 288 vCPUs).
 
-Yes, in a way it's an ABI, just like the dynamic assignment of PCI devfn f=
-or network devices added with "-nic"=2E And I think also for virtio block d=
-evices too? And for the ISA ne2000=2E
+Since the binary file is pre-built, the vCPU number must be hardcoded in
+the test case, and it is not possible to dynamically decide the number
+of vCPUs to boot on the different Host.
 
-But it seems unlikely that we'll ever really want to change "the first one=
- is xvda, the second is xvdb=2E=2E=2E=2E"
+Therefore, cutting the vCPU number to 260 is sufficient for CI. (Note,
+the original core count2 test case picks 275 vCPUs, so 260 vCPUs could
+be safe to pass the CI...)
+
+Since v2, v3 just changes these 2 patches to fix that failure:
+ * [PATCH v3 15/16] tests: bios-tables-test: Add test for smbios type4
+   thread count2
+ * [PATCH v3 16/16] tests: bios-tables-test: Add ACPI table binaries for
+   smbios type4 thread count2 test
+
+
+Introduction
+============
+
+In this patchset, add these test cases:
+
+1. Add the case to test 2 newly added topology helpers (patch 1):
+   * machine_topo_get_cores_per_socket()
+   * machine_topo_get_threads_per_socket()
+
+2. Add the cases in bios-tables-test.c to:
+   * test smbios type4 table count (patch 2-4).
+   * test smbios type4 core count field (patch 5-7).
+   * update the test of smbios type4 core count2 field (patch 8-10).
+   * test smbios type4 thread count (patch 11-13).
+   * test smbios type4 thread count2 (patch 14-16).
+
+With the above new cases, cover all commits of [2] in test.
+
+[1]: https://lore.kernel.org/qemu-devel/20231022051520-mutt-send-email-mst@kernel.org/
+[2]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html
+
+Regards,
+Zhao
+---
+Zhao Liu (16):
+  tests: test-smp-parse: Add the test for cores/threads per socket
+    helpers
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 count test
+  tests: bios-tables-test: Add test for smbios type4 count
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4
+    count test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 core count test
+  tests: bios-tables-test: Add test for smbios type4 core count
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4 core
+    count test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 core count2 test
+  tests: bios-tables-test: Extend smbios core count2 test to cover
+    general topology
+  tests: bios-tables-test: Update ACPI table binaries for smbios core
+    count2 test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 thread count test
+  tests: bios-tables-test: Add test for smbios type4 thread count
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4
+    thread count test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 thread count2 test
+  tests: bios-tables-test: Add test for smbios type4 thread count2
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4
+    thread count2 test
+
+ tests/data/acpi/q35/APIC.core-count    | Bin 0 -> 544 bytes
+ tests/data/acpi/q35/APIC.core-count2   | Bin 2478 -> 3238 bytes
+ tests/data/acpi/q35/APIC.thread-count  | Bin 0 -> 544 bytes
+ tests/data/acpi/q35/APIC.thread-count2 | Bin 0 -> 3238 bytes
+ tests/data/acpi/q35/APIC.type4-count   | Bin 0 -> 1072 bytes
+ tests/data/acpi/q35/DSDT.core-count    | Bin 0 -> 12913 bytes
+ tests/data/acpi/q35/DSDT.core-count2   | Bin 32495 -> 33770 bytes
+ tests/data/acpi/q35/DSDT.thread-count  | Bin 0 -> 12913 bytes
+ tests/data/acpi/q35/DSDT.thread-count2 | Bin 0 -> 33770 bytes
+ tests/data/acpi/q35/DSDT.type4-count   | Bin 0 -> 18589 bytes
+ tests/data/acpi/q35/FACP.core-count    | Bin 0 -> 244 bytes
+ tests/data/acpi/q35/FACP.thread-count  | Bin 0 -> 244 bytes
+ tests/data/acpi/q35/FACP.thread-count2 | Bin 0 -> 244 bytes
+ tests/data/acpi/q35/FACP.type4-count   | Bin 0 -> 244 bytes
+ tests/qtest/bios-tables-test.c         | 116 ++++++++++++++++++++++++-
+ tests/unit/test-smp-parse.c            |  67 +++++++++++---
+ 16 files changed, 167 insertions(+), 16 deletions(-)
+ create mode 100644 tests/data/acpi/q35/APIC.core-count
+ create mode 100644 tests/data/acpi/q35/APIC.thread-count
+ create mode 100644 tests/data/acpi/q35/APIC.thread-count2
+ create mode 100644 tests/data/acpi/q35/APIC.type4-count
+ create mode 100644 tests/data/acpi/q35/DSDT.core-count
+ create mode 100644 tests/data/acpi/q35/DSDT.thread-count
+ create mode 100644 tests/data/acpi/q35/DSDT.thread-count2
+ create mode 100644 tests/data/acpi/q35/DSDT.type4-count
+ create mode 100644 tests/data/acpi/q35/FACP.core-count
+ create mode 100644 tests/data/acpi/q35/FACP.thread-count
+ create mode 100644 tests/data/acpi/q35/FACP.thread-count2
+ create mode 100644 tests/data/acpi/q35/FACP.type4-count
+
+-- 
+2.34.1
+
 
