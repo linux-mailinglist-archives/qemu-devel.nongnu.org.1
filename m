@@ -2,55 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0C47D3A0D
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FE47D3A17
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:54:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quwGh-0002fM-D5; Mon, 23 Oct 2023 10:50:59 -0400
+	id 1quwJW-0004m5-VB; Mon, 23 Oct 2023 10:53:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quwGc-0002eG-4f
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:50:54 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quwJU-0004lp-VE
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:53:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quwGa-0001QO-ES
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:50:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quwJT-00029d-Fd
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:53:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698072651;
+ s=mimecast20190719; t=1698072830;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=VyKbuywy9aHbGdkjstY3H7Bq9LZ6S1FiDWff/PsbhDY=;
- b=esWzjTx1cjmDg7TmCGW3LtAs697nTC65FcFSRNwSb5r5EeW4Ctj+nMMtNWawNT/NsyUiao
- OEzYy+3iSiyTV6oganIrLLifpdIAxGJ/4V0MsvRXzwOOvQJ6xdvqo4xvt9iDCgvUUhUxOP
- +3u7+4KEN3b4dzDwky6TwGp9DGa/WT0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-256-hp_WbNVdO1OIA19WtWjyEA-1; Mon,
- 23 Oct 2023 10:50:47 -0400
-X-MC-Unique: hp_WbNVdO1OIA19WtWjyEA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4E52B2808FE4;
- Mon, 23 Oct 2023 14:50:47 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.193.213])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D73E32166B26;
- Mon, 23 Oct 2023 14:50:45 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH] migration/ram: Fix compilation with -Wshadow=local
-Date: Mon, 23 Oct 2023 16:50:44 +0200
-Message-ID: <20231023145044.104866-1-thuth@redhat.com>
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=iA3W6Y0JhE2vUD7ScgsqJHElbP5D2rlCckNmrK7Le+A=;
+ b=ZLjTVwsNOsF7IjS7yyW8s97pjzoa+zAh8bZNeBylC+ljR2NxbzQAQcSgxdUJ9xoEmUKoth
+ Xv8c/m6zaBd1bparttYGRrmYMNP78OUrfY6ygmSrxMfBdYk6lpWGwCq2VZkz/mQnBWHXDD
+ yjC69THg4vlNk6y5PnaxbHXK7kZSRCE=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-616-iVB5qNiLOb2U26QM9_DYGg-1; Mon, 23 Oct 2023 10:53:41 -0400
+X-MC-Unique: iVB5qNiLOb2U26QM9_DYGg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-66d7b75c854so9075436d6.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 07:53:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698072821; x=1698677621;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iA3W6Y0JhE2vUD7ScgsqJHElbP5D2rlCckNmrK7Le+A=;
+ b=ikFtu+TSuO2/a31ybsNwnJFz8AHFOO2YBEiPk1Sc+L6swXjXfU46SBTkqIOS6UxbGB
+ qmGddK3g5IYWffYk9+s6XX1bCNG+vfe3l4dkYVOiDYQyCevLG74We2TIRmRJF7bB7P3E
+ NFoYzFPbtV2fGZUO8rTbp2WXLu+kjAZNR5zVbHTqI1svpNZx+Mj15O79baLzgbwrKrDi
+ I6JxYDWY9NWSwSSnSnrb00BRYbJCZp8UyrTV0LiEjLS23RrutrCgyN3F3VduFMR0mHMo
+ xTbhSkk3hPuftPzo2wqtYNPxuXrpzCyToyYvqu2XfjQzGQKM4zJZZln95l7F6PQAAn0a
+ UO3g==
+X-Gm-Message-State: AOJu0YwhSs8xvJIUEDwyvpXyl1uoyJRiwQkXO3zbPcKtMrsYdXan+Ka/
+ YsXTi3vzFBu4UCBoaksjcCKthwAmW4MoqSBkB2+OH29P6139qTolfqxK6XtBC/Xnsaw9PnMUfpX
+ O+BOvqBx5tK3xBZ0=
+X-Received: by 2002:a05:6214:d0e:b0:668:e12a:1d1c with SMTP id
+ 14-20020a0562140d0e00b00668e12a1d1cmr9712327qvh.3.1698072821110; 
+ Mon, 23 Oct 2023 07:53:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG5SlPV+LZBbPTzaqDjknP4mEViINFtjdSo/0szeTx62oUyFVnwnIJvhfVRvs8frqdH6uRw6g==
+X-Received: by 2002:a05:6214:d0e:b0:668:e12a:1d1c with SMTP id
+ 14-20020a0562140d0e00b00668e12a1d1cmr9712315qvh.3.1698072820741; 
+ Mon, 23 Oct 2023 07:53:40 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ d7-20020a05620a166700b0077402573fb4sm2750586qko.124.2023.10.23.07.53.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Oct 2023 07:53:40 -0700 (PDT)
+Date: Mon, 23 Oct 2023 10:53:38 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH RFC 4/7] migration: Drop MultiFDSendParams.quit and
+ cleanup error paths
+Message-ID: <ZTaI8vJpGeOQSfZH@x1n>
+References: <20231022201211.452861-1-peterx@redhat.com>
+ <20231022201211.452861-5-peterx@redhat.com>
+ <87jzrdz9gr.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87jzrdz9gr.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -74,30 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need for a new variable here, especially not for one that shadows
-a variable from the beginning of the function scope. With this change
-the code now successfully compiles with -Wshadow=local.
+Fabiano,
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- migration/ram.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+On Mon, Oct 23, 2023 at 11:42:28AM -0300, Fabiano Rosas wrote:
+> > diff --git a/migration/multifd.c b/migration/multifd.c
+> > index 33fb21d0e4..9d458914a9 100644
+> > --- a/migration/multifd.c
+> > +++ b/migration/multifd.c
+> > @@ -411,10 +411,6 @@ static int multifd_send_pages(QEMUFile *f)
+> >      MultiFDSendParams *p = NULL; /* make happy gcc */
+> >      MultiFDPages_t *pages = multifd_send_state->pages;
+> >  
+> > -    if (qatomic_read(&multifd_send_state->exiting)) {
+> > -        return -1;
+> > -    }
+> > -
+> 
+> I'd keep this. This function can be called from outside of multifd code
+> so the channels could be completely gone already.
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 92769902bb..9de9e54fa9 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3238,8 +3238,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
- 
-         ram_flush_compressed_data(rs);
- 
--        int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
--        if (ret < 0) {
-+        if (rdma_registration_stop(f, RAM_CONTROL_FINISH) < 0) {
-             qemu_file_set_error(f, ret);
-         }
-     }
+I can definitely add it back; nothing hurts.  But I want to make sure I
+didn't miss some point.
+
+Do you have a specific path that could trigger what you said?
+
 -- 
-2.41.0
+Peter Xu
 
 
