@@ -2,88 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E107D3AB2
+	by mail.lfdr.de (Postfix) with ESMTPS id A844F7D3AB3
 	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quwoQ-00053J-GX; Mon, 23 Oct 2023 11:25:50 -0400
+	id 1quwow-0005BW-BS; Mon, 23 Oct 2023 11:26:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quwoL-000530-S7
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:25:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1quwos-00059I-9i
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:26:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quwoI-0001ER-Gn
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:25:44 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1quwoq-0001Ir-7T
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:26:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698074741;
+ s=mimecast20190719; t=1698074775;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=vI2k3c1u0+zMs4l/cI3+MwHr/zZSVs/IeWlIZCdij48=;
- b=dx9zzUqsXPx8Z5KA8JJN1y9arfSEehYSiQqhNO10OwSaA/rBNI9euo6pUySNhECS5vovxB
- IswMn+zTi3LZns66ckSLgeeg/PgkAlMFeQzYbjXqe6WQkBazAXM4oFF4V2s5q+3pKnABpW
- +B2XLZZtUo3TtGn734l/vUcDU5gNBR0=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-FN3impx2NjCMBCae6SvsWg-1; Mon, 23 Oct 2023 11:25:32 -0400
-X-MC-Unique: FN3impx2NjCMBCae6SvsWg-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-45a62748716so25516137.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 08:25:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698074732; x=1698679532;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vI2k3c1u0+zMs4l/cI3+MwHr/zZSVs/IeWlIZCdij48=;
- b=etL3muA3r47fJJDKe9/P54LSDekUP7FqGfadcwaxShmpR/X4j2y9xnXevuLIs4CqkL
- Png4t9ujPlKvlflEhHxNHYj6ImDdu6H4A/54zdD/6kaLXFBnPYE2aXJGIf3h7k/82PPR
- OKGRIj8iqtOO1QL5j3Yubk2ZLGgS8aJNIjdfZY3ws7mvlbPaXQ7gtTmABEYme9oR+jOG
- tT7Y57fpCDQHBZvvIJNopY8pb9rtk6zfZmT5m5ypOQOJke1OwZ8PzEDIzMI7vM9NSKlV
- NqgX+ntG07DyUWpRTwnUg4A8TdisY+1UKIJDYu5/PDiZBnX26iXCsFbiPHSjKZZ/frIi
- uqhw==
-X-Gm-Message-State: AOJu0YzWKYoL2t680MYS2HUB5kop8/IPkX4H6BZzIwnxLcRnNBmxTbSj
- u2dQk2oHJPxDL11IBvi4SegTkpehfJcAPTb+e8XdN/AwKgj8G6x0J405KggUmn3Ow6g7FEpYSg4
- z6Y8jVemKIk+7dho=
-X-Received: by 2002:a67:fe89:0:b0:457:c159:9675 with SMTP id
- b9-20020a67fe89000000b00457c1599675mr4407561vsr.1.1698074732492; 
- Mon, 23 Oct 2023 08:25:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVbh6h5A1KWM/xt+rIKIl5Zlwwnk3Bf+8dLMo0AeMap13Mvm++5An2+nNVNTDx4hNh2Qq3NQ==
-X-Received: by 2002:a67:fe89:0:b0:457:c159:9675 with SMTP id
- b9-20020a67fe89000000b00457c1599675mr4407544vsr.1.1698074732213; 
- Mon, 23 Oct 2023 08:25:32 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- e6-20020a05620a208600b007742218dc42sm2759569qka.119.2023.10.23.08.25.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 08:25:31 -0700 (PDT)
-Date: Mon, 23 Oct 2023 11:25:29 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH V1 3/4] cpr: relax some blockers
-Message-ID: <ZTaQaT8N4lMF6+3p@x1n>
-References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
- <1697748466-373230-4-git-send-email-steven.sistare@oracle.com>
- <87r0lpzl8w.fsf@secure.mitica>
+ bh=b9uTfxbLG36YjodNUJq6jleTJ5tVh5ds3FOlqEnYlCM=;
+ b=B1SZ0KNGp78IfVKLiZZyPpy8YWYnC3sSaE4BDi/A9uYVDQqMXOsnFEm0HfkLhUkn5GRKeq
+ K3wwtww1zvD5WcZ0C4WDGdNCmFSLWtDd9m/a08r114M3AX7TircdHv5wJRrScPzutxdYl4
+ nt3yA50eNiUfpRjdfzTdCWQdbfLSfJ4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-131-e7E9CJlyOnuOOMunWP6V0w-1; Mon, 23 Oct 2023 11:26:02 -0400
+X-MC-Unique: e7E9CJlyOnuOOMunWP6V0w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED8953C14916;
+ Mon, 23 Oct 2023 15:26:01 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CC77125C2;
+ Mon, 23 Oct 2023 15:26:01 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C072821E6A1F; Mon, 23 Oct 2023 17:26:00 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Hanna Reitz <hreitz@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,
+ qemu-devel@nongnu.org,  qemu-block@nongnu.org
+Subject: Re: [PATCH] block/snapshot: Fix compiler warning with -Wshadow=local
+References: <20231023144402.103139-1-thuth@redhat.com>
+Date: Mon, 23 Oct 2023 17:26:00 +0200
+In-Reply-To: <20231023144402.103139-1-thuth@redhat.com> (Thomas Huth's message
+ of "Mon, 23 Oct 2023 16:44:02 +0200")
+Message-ID: <87zg09jr7b.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87r0lpzl8w.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,33 +79,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 20, 2023 at 11:38:55AM +0200, Juan Quintela wrote:
-> Steve Sistare <steven.sistare@oracle.com> wrote:
-> > Some devices block migration because they rely on local state that
-> > is not migrated to the target host, such as for local filesystems.
-> > These need not block cpr, which will restart qemu on the same host.
-> > Narrow the scope of these blockers so they only apply to normal mode.
-> > They will not block cpr modes when they are added in subsequent patches.
-> >
-> > No functional change until a new mode is added.
-> >
-> > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> 
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> 
-> They are all basically block devices support, would be great to have a
-> comment from someone from the block layer.
+Thomas Huth <thuth@redhat.com> writes:
 
-There're also non-block ones like vhost/9pfs/..
+> No need to declare a new variable in the the inner code block
+> here, we can re-use the "ret" variable that has been declared
+> at the beginning of the function. With this change, the code
+> can now be successfully compiled with -Wshadow=local again.
+>
+> Fixes: a32e781838 ("Mark bdrv_snapshot_fallback() and callers GRAPH_RDLOCK")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  block/snapshot.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/block/snapshot.c b/block/snapshot.c
+> index 6e16eb803a..50adf5381e 100644
+> --- a/block/snapshot.c
+> +++ b/block/snapshot.c
+> @@ -629,8 +629,8 @@ int bdrv_all_goto_snapshot(const char *name,
+>      while (iterbdrvs) {
+>          BlockDriverState *bs = iterbdrvs->data;
+>          AioContext *ctx = bdrv_get_aio_context(bs);
+> -        int ret = 0;
+>          bool all_snapshots_includes_bs;
 
-I agree with Daniel that we should split and allow module maintainers to
-review.  Maybe we can unify changes of the same module into one patch.
-Even if so, some comments for each site on explaining why local migration
-can skip the blocker would be greatly helpful.
+Blank line between declarations and statements, please.
 
-Thanks,
+I'm not sure we actually need the assignment.  Proving we don't looks
+like a poor use of our time, though.
 
--- 
-Peter Xu
+I recommend to move the assignment from here...
+
+> +        ret = 0;
+>  
+>          aio_context_acquire(ctx);
+>          bdrv_graph_rdlock_main_loop();
+           all_snapshots_includes_bs = bdrv_all_snapshots_includes_bs(bs);
+           bdrv_graph_rdunlock_main_loop();
+
+... down to here.
+
+           if (devices || all_snapshots_includes_bs) {
+               ret = bdrv_snapshot_goto(bs, name, errp);
+           }
+           aio_context_release(ctx);
+           if (ret < 0) {
+
+We lose the symmetry with the other three while (iterbdrvs) loops.  Do
+we care?
 
 
