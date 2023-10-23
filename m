@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521437D28C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 05:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22237D28EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 05:13:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qulC8-0003Tw-QZ; Sun, 22 Oct 2023 23:01:32 -0400
+	id 1qulMA-00024N-06; Sun, 22 Oct 2023 23:11:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qulC7-0003TT-6Z; Sun, 22 Oct 2023 23:01:31 -0400
-Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qulC5-0008Ow-9L; Sun, 22 Oct 2023 23:01:30 -0400
-Received: by mail-vk1-xa31.google.com with SMTP id
- 71dfb90a1353d-4a8158e8613so1143204e0c.3; 
- Sun, 22 Oct 2023 20:01:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698030088; x=1698634888; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=knQoWeGR7b2Ctgu87wqWxobRWfPB9rMktSOsqOPVdJI=;
- b=R/WheOzMfdFuZ7MyisJZA8Z0p3+wBleuoqniEbV7Rq8plNcz1RvzqJirjuWjdk8MDz
- i94o9YGfj18ycUK2ZsAx2qgVcuG0BPlHTT18zmnpIl3oLPlea+AN52gvl3QEOcixaUyD
- 2bEA7YWvYP62ETmchNxFelDWtguCn36l/gZHYydiKB0B4hLN/DDrMN6CNgOup55DFWf6
- RrOUgflXn+LQyo054UiornzAhuI/lLMxv/XbJEIy8Asqbx6t3iPwY2QufGlQaBMC3FAZ
- yu6biDZ/km4ZuGlTAFObkzcwkltkq3+ZR0hVSfrg166FXx8tlYtzqGP/QQ3JO1ZjUeNO
- 9Ncg==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qulM6-00023s-CU
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 23:11:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qulM4-0001ZO-J8
+ for qemu-devel@nongnu.org; Sun, 22 Oct 2023 23:11:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698030706;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rFMUTA19+VXURujY76E4DzRwLKvhtPToyDxymN1R6Lc=;
+ b=ZJwAc3GrF+Cc2wU/3QrOL8LlLNZvt1Dpj+X+ODJmpI3r1cj+cthygpN7VKmbzruGO05x0l
+ vhwxZUiPliyPGyYPcu/fNaDUyruT8DKYRlK6HkSM9BZ+iJEkcchz9Ly2UsOzSqzliAzpb+
+ tyNKX9v4lJrdXdw/xzkziBqkQ5HJWM8=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-146-t5cQuk1sMve6hvVwhs7BkA-1; Sun, 22 Oct 2023 23:11:45 -0400
+X-MC-Unique: t5cQuk1sMve6hvVwhs7BkA-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-507a0904cdbso2970710e87.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 20:11:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698030088; x=1698634888;
+ d=1e100.net; s=20230601; t=1698030703; x=1698635503;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=knQoWeGR7b2Ctgu87wqWxobRWfPB9rMktSOsqOPVdJI=;
- b=RsZqYw4xMZGReMTYre2FqktTQyScgBTyU0r2thLaO6vXCWeGuTjYtNw/4Y0V/xvPzW
- 033Ae+YoPrtMgB0P/INXNUCEK++O9bp393JcjnFYCVYTCyheaomDOG9h+JifmOsKdZk0
- TVSc0srDJmH5yZJRVnyOi7h1J62Cg019gwZvhZC4m+2i4L+ePSlaEgZAWipWdGrhxXvv
- f0MHPcVbbuR2AcW/FaQoTR64FZR5RpAZsfdhjUxe8jMEnoaxc8rqnBCzCxB1k5JmY9KQ
- ZCUE0uOnfzCEIAkp8Mg9hCTHkBergvl0PEi+UMONMuW5+RzZvn/izPVRX/RN8HNZ/Fmk
- 1GzQ==
-X-Gm-Message-State: AOJu0YwtC/EkABsf3kjlLMquf4v3ioZe6LQxPtaTXAV0p17Grvd2QO4m
- 3dENvJoC1kfVElmtTCpt4v+Mb3sLUjpM3TAjgus=
-X-Google-Smtp-Source: AGHT+IG4YS0+jYCo1L0QgvFEwinQbnF8CiKdv+aUh4wjL4tkctnHzZXgrPIbApcIeWdDVAIVzCZhNaiJAagSyCMp1ok=
-X-Received: by 2002:a67:e013:0:b0:457:b9da:db12 with SMTP id
- c19-20020a67e013000000b00457b9dadb12mr6682080vsl.12.1698030087831; Sun, 22
- Oct 2023 20:01:27 -0700 (PDT)
+ bh=rFMUTA19+VXURujY76E4DzRwLKvhtPToyDxymN1R6Lc=;
+ b=XzpDec1m5vhNa0k/obq3CUxb3FPEz5ZSDmZZiwyQi6Xr6E+g7UYgbgegCYYyZjnICR
+ i3DPyPj9dZYcOL4RH02UfoGvNnDJANgULIAQ5qHf+9b6DrjgkfpHYDzVoI4HsgaYFmx0
+ PdFgD683QaXGmgqmEdtOA/ULIXTmOL3GUNlfTdUq+Vfy2SXHdDBk31h5wBdExmb7DIi7
+ cXY0bYLUBdeq0scjJc0KQX7lVJF6IeK2ediQGmjMnKZgJDnLPl+OqJXRgd1ZUH6HS+W8
+ 4glX72UubRnyFT5ifcDoGLS8Mfi3JCwOOqbX3m3gxnTPo6CTcfMLWw+gnzVpYVdLpyG+
+ NxiQ==
+X-Gm-Message-State: AOJu0YzxKuxnN2XP7pUeQA2fbGVHC/CFlyTR2e0vnP5G/mAnAUVxhMgE
+ lJuUQonCfcdk6+lqcdm0qwkVpGaIw4rWrfxqKgVcpyKQbCiZtTJMq4pLQMZKW1Elv8HgJIvrD/h
+ vEYnR7U3ca2a8uZeucfel0ZthL2nrhp8=
+X-Received: by 2002:a05:6512:230b:b0:504:4165:54ab with SMTP id
+ o11-20020a056512230b00b00504416554abmr2436855lfu.56.1698030703665; 
+ Sun, 22 Oct 2023 20:11:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOOqZEnBBsALCvbmAgBC9+FWJSYzztfYgLFm28FCsR/AYmBosN8OZlD+QqiUgCggZGyVLjUd7M+m28Nmt+cvc=
+X-Received: by 2002:a05:6512:230b:b0:504:4165:54ab with SMTP id
+ o11-20020a056512230b00b00504416554abmr2436848lfu.56.1698030703317; Sun, 22
+ Oct 2023 20:11:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231018195638.211151-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20231018195638.211151-1-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 23 Oct 2023 13:00:00 +1000
-Message-ID: <CAKmqyKO4ac=OycEDuQv4PZc6+K2s73e=NhVCNbKenhSpeU1YGA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] riscv: query-cpu-model-expansion API
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
+References: <20230829090529.184438-1-clg@kaod.org>
+ <20230829090529.184438-3-clg@kaod.org>
+ <CACGkMEu6nznVGTyk8gjrZ3jE=bEAd2bDDi9PPwjDKNFkXnVhSQ@mail.gmail.com>
+ <d9df1c95-f681-4962-be74-671cef90e908@redhat.com>
+ <b744bd42-0b46-44ce-8d60-28d4d31427e0@redhat.com>
+In-Reply-To: <b744bd42-0b46-44ce-8d60-28d4d31427e0@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 23 Oct 2023 11:11:32 +0800
+Message-ID: <CACGkMEtbsVCAUFe6AomYe3EO=iBOXze6vJ20c8p0AbsXogocCw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] igb: Add Function Level Reset to PF and VF
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,142 +99,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 7:05=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Fri, Oct 20, 2023 at 5:41=E2=80=AFPM C=C3=A9dric Le Goater <clg@redhat.c=
+om> wrote:
 >
-> Hi,
+> On 10/20/23 09:40, C=C3=A9dric Le Goater wrote:
+> > On 10/20/23 06:24, Jason Wang wrote:
+> >> On Tue, Aug 29, 2023 at 5:06=E2=80=AFPM C=C3=A9dric Le Goater <clg@kao=
+d.org> wrote:
+> >>>
+> >>> From: C=C3=A9dric Le Goater <clg@redhat.com>
+> >>>
+> >>> The Intel 82576EB GbE Controller say that the Physical and Virtual
+> >>> Functions support Function Level Reset. Add the capability to each
+> >>> device model.
+> >>>
+> >>
+> >> Do we need to do migration compatibility for this?
+> >
+> > Yes. it does. the config space is now different.
 >
-> This is a re-send of v2 after fixing a trivial conflict with Alistair's
-> riscv-to-apply.next.
+> Jason,
 >
-> No other changes made. All patches acked.
->
-> Changes from v2:
-> - rebased with Alistair's riscv-to-apply.next
-> - v2 link: https://lore.kernel.org/qemu-riscv/20230926184019.166352-1-dba=
-rboza@ventanamicro.com/
->
->
-> --- API usage examples ---
->
-> Launch QEMU with "-S" to be able to issue QMP query commands before the m=
-achine starts:
->
-> $ ./build/qemu-system-riscv64 -S -M virt -display none -qmp  tcp:localhos=
-t:1234,server,wait=3Doff
->
-> Then use QMP to access the API:
->
-> $ ./scripts/qmp/qmp-shell localhost:1234
-> Welcome to the QMP low-level shell!
-> Connected to QEMU 8.1.50
->
-> - Query the default attributes for the 'rv64' CPU:
->
-> (QEMU)  query-cpu-model-expansion type=3Dfull model=3D{"name":"rv64"}
-> {"return": {"model": {"name": "rv64", "props": {"zicond": false, "x-zvfh"=
-: false, "mmu": true, "x-zvfbfwma": false, "x-zvfbfmin": false, "xtheadbs":=
- false, "xtheadbb": false, "xtheadba": false, "xtheadmemidx": false, "smsta=
-teen": false, "zfinx": false, "Zve64f": false, "Zve32f": false, "x-zvfhmin"=
-: false, "xventanacondops": false, "xtheadcondmov": false, "svpbmt": false,=
- "zbs": true, "zbc": true, "zbb": true, "zba": true, "zicboz": true, "xthea=
-dmac": false, "Zfh": false, "Zfa": true, "zbkx": false, "zbkc": false, "zbk=
-b": false, "Zve64d": false, "x-zfbfmin": false, "zk": false, "x-epmp": fals=
-e, "xtheadmempair": false, "zkt": false, "zks": false, "zkr": false, "zkn":=
- false, "Zfhmin": false, "zksh": false, "zknh": false, "zkne": false, "zknd=
-": false, "zhinx": false, "Zicsr": true, "sscofpmf": false, "Zihintntl": tr=
-ue, "sstc": true, "xtheadcmo": false, "x-zvbb": false, "zksed": false, "x-z=
-vkned": false, "xtheadsync": false, "x-zvkg": false, "zhinxmin": false, "sv=
-adu": true, "xtheadfmv": false, "x-zvksed": false, "svnapot": false, "pmp":=
- true, "x-zvknhb": false, "x-zvknha": false, "xtheadfmemidx": false, "x-zvk=
-sh": false, "zdinx": false, "zicbom": true, "Zihintpause": true, "svinval":=
- false, "zcf": false, "zce": false, "zcd": false, "zcb": false, "zca": fals=
-e, "x-ssaia": false, "x-smaia": false, "zmmul": false, "x-zvbc": false, "Zi=
-fencei": true, "zcmt": false, "zcmp": false, "Zawrs": true}}}}
->
-> - Query if the 'rv64' CPU with g=3Dtrue,zifencei=3Dfalse is a valid expan=
-sion:
->
-> (QEMU) query-cpu-model-expansion type=3Dfull model=3D{"name":"rv64","prop=
-s":{"g":true,"zifencei":false}}
-> {"error": {"class": "GenericError", "desc": "RVG requires Zifencei but us=
-er set Zifencei to false"}}
->
-> - Query a model expansion for the 'rv64' CPU with RVV enabled:
->
-> (QEMU) query-cpu-model-expansion type=3Dfull model=3D{"name":"max","props=
-":{"v":true}}
-> {"return": {"model": {"name": "max", "props": {"zicond": true, "x-zvfh": =
-false, "mmu": true, "x-zvfbfwma": false, "x-zvfbfmin": false, "xtheadbs": f=
-alse, "xtheadbb": false, "xtheadba": false, "xtheadmemidx": false, "smstate=
-en": true, "zfinx": false, "x-zvfhmin": false, "zfhmin": true, "xventanacon=
-dops": false, "zicsr": true, "xtheadcondmov": false, "zihintntl": true, "sv=
-pbmt": true, "zbs": true, "zbc": true, "zbb": true, "zba": true, "zicboz": =
-true, "xtheadmac": false, "zbkx": true, "zbkc": true, "zbkb": true, "x-zfbf=
-min": false, "zk": true, "x-epmp": false, "xtheadmempair": false, "zkt": tr=
-ue, "zks": true, "zkr": true, "zkn": true, "zksh": true, "zknh": true, "zkn=
-e": true, "zknd": true, "zhinx": false, "sscofpmf": true, "sstc": true, "zi=
-hintpause": true, "xtheadcmo": false, "x-zvbb": false, "zksed": true, "x-zv=
-kned": false, "xtheadsync": false, "x-zvkg": false, "zhinxmin": false, "zif=
-encei": true, "svadu": true, "xtheadfmv": false, "x-zvksed": false, "zawrs"=
-: true, "svnapot": true, "pmp": true, "x-zvknhb": false, "x-zvknha": false,=
- "xtheadfmemidx": false, "x-zvksh": false, "zdinx": false, "zicbom": true, =
-"zve64f": true, "zve32f": true, "svinval": true, "zcf": false, "zce": false=
-, "zcd": true, "zcb": true, "zca": true, "x-ssaia": false, "x-smaia": false=
-, "zmmul": true, "x-zvbc": false, "zfh": true, "zfa": true, "zcmt": false, =
-"zcmp": false, "zve64d": true}}}}
->
-> - Querying vendor CPUs is also supported:
->
-> (QEMU) query-cpu-model-expansion type=3Dfull model=3D{"name":"veyron-v1"}
-> {"return": {"model": {"name": "veyron-v1", "props": {"zicond": false, "x-=
-zvfh": false, "mmu": true, "x-zvfbfwma": false, "x-zvfbfmin": false, "xthea=
-dbs": false, "xtheadbb": false, "xtheadba": false, "xtheadmemidx": false, "=
-smstateen": true, "zfinx": false, "x-zvfhmin": false, "zfhmin": false, "xve=
-ntanacondops": true, "zicsr": true, "xtheadcondmov": false, "zihintntl": fa=
-lse, "svpbmt": true, "zbs": true, "zbc": true, "zbb": true, "zba": true, "z=
-icboz": true, "xtheadmac": false, "zbkx": false, "zbkc": false, "zbkb": fal=
-se, "x-zfbfmin": false, "zk": false, "x-epmp": false, "xtheadmempair": fals=
-e, "zkt": false, "zks": false, "zkr": false, "zkn": false, "zksh": false, "=
-zknh": false, "zkne": false, "zknd": false, "zhinx": false, "sscofpmf": tru=
-e, "sstc": true, "zihintpause": false, "xtheadcmo": false, "x-zvbb": false,=
- "zksed": false, "x-zvkned": false, "xtheadsync": false, "x-zvkg": false, "=
-zhinxmin": false, "zifencei": true, "svadu": false, "xtheadfmv": false, "x-=
-zvksed": false, "zawrs": false, "svnapot": true, "pmp": true, "x-zvknhb": f=
-alse, "x-zvknha": false, "xtheadfmemidx": false, "x-zvksh": false, "zdinx":=
- false, "zicbom": true, "zve64f": false, "zve32f": false, "svinval": true, =
-"zcf": false, "zce": false, "zcd": false, "zcb": false, "zca": false, "x-ss=
-aia": true, "x-smaia": true, "zmmul": false, "x-zvbc": false, "zfh": false,=
- "zfa": false, "zcmt": false, "zcmp": false, "zve64d": false}}}}
->
->
-> Daniel Henrique Barboza (6):
->   target/riscv/kvm/kvm-cpu.c: add missing property getters()
->   qapi,risc-v: add query-cpu-model-expansion
->   target/riscv/tcg: add tcg_cpu_finalize_features()
->   target/riscv: handle custom props in qmp_query_cpu_model_expansion
->   target/riscv: add riscv_cpu_accelerator_compatible()
->   target/riscv/riscv-qmp-cmds.c: check CPU accel in
->     query-cpu-model-expansion
+> To avoid an extra compat property, would it be ok to let the VF peek into
+> the PF capabilities to set FLR or not ? Something like below.
 
-Thanks!
+I might be wrong, but it looks to me it's still a behaviour change?
 
-Applied to riscv-to-apply.next
-
-Alistair
+Thanks
 
 >
->  qapi/machine-target.json      |   6 +-
->  target/riscv/cpu.c            |  27 +++++-
->  target/riscv/cpu.h            |   2 +
->  target/riscv/kvm/kvm-cpu.c    |  40 ++++++++-
->  target/riscv/riscv-qmp-cmds.c | 160 ++++++++++++++++++++++++++++++++++
->  target/riscv/tcg/tcg-cpu.c    |  70 +++++++++------
->  target/riscv/tcg/tcg-cpu.h    |   2 +
->  7 files changed, 271 insertions(+), 36 deletions(-)
+> Thanks,
 >
-> --
-> 2.41.0
+> C.
 >
 >
+> @@ -238,6 +238,12 @@ static const MemoryRegionOps mmio_ops =3D
+>       },
+>   };
+>
+> +static bool igbvf_check_pf_flr(PCIDevice *dev)
+> +{
+> +    return !!(pci_get_long(dev->config + dev->exp.exp_cap + PCI_EXP_DEVC=
+AP)
+> +              & PCI_EXP_DEVCAP_FLR);
+> +}
+> +
+>   static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
+>   {
+>       IgbVfState *s =3D IGBVF(dev);
+> @@ -267,7 +273,9 @@ static void igbvf_pci_realize(PCIDevice
+>           hw_error("Failed to initialize PCIe capability");
+>       }
+>
+> -    pcie_cap_flr_init(dev);
+> +    if (igbvf_check_pf_flr(pcie_sriov_get_pf(dev))) {
+> +        pcie_cap_flr_init(dev);
+> +    }
+>
+>       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
+>           hw_error("Failed to initialize AER capability");
+>
+>
+> >
+> > Thanks,
+> >
+> > C.
+> >
+> >
+> >>
+> >> Thanks
+> >>
+> >>> Cc:  Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+> >>> Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
+> >>> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >>> Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >>> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> >>> ---
+> >>>   hw/net/igb.c   | 3 +++
+> >>>   hw/net/igbvf.c | 3 +++
+> >>>   2 files changed, 6 insertions(+)
+> >>>
+> >>> diff --git a/hw/net/igb.c b/hw/net/igb.c
+> >>> index e70a66ee038e..b8c170ad9b1a 100644
+> >>> --- a/hw/net/igb.c
+> >>> +++ b/hw/net/igb.c
+> >>> @@ -101,6 +101,7 @@ static void igb_write_config(PCIDevice *dev, uint=
+32_t addr,
+> >>>
+> >>>       trace_igb_write_config(addr, val, len);
+> >>>       pci_default_write_config(dev, addr, val, len);
+> >>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+> >>>
+> >>>       if (range_covers_byte(addr, len, PCI_COMMAND) &&
+> >>>           (dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
+> >>> @@ -433,6 +434,8 @@ static void igb_pci_realize(PCIDevice *pci_dev, E=
+rror **errp)
+> >>>       }
+> >>>
+> >>>       /* PCIe extended capabilities (in order) */
+> >>> +    pcie_cap_flr_init(pci_dev);
+> >>> +
+> >>>       if (pcie_aer_init(pci_dev, 1, 0x100, 0x40, errp) < 0) {
+> >>>           hw_error("Failed to initialize AER capability");
+> >>>       }
+> >>> diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
+> >>> index 07343fa14a89..55e321e4ec20 100644
+> >>> --- a/hw/net/igbvf.c
+> >>> +++ b/hw/net/igbvf.c
+> >>> @@ -204,6 +204,7 @@ static void igbvf_write_config(PCIDevice *dev, ui=
+nt32_t addr, uint32_t val,
+> >>>   {
+> >>>       trace_igbvf_write_config(addr, val, len);
+> >>>       pci_default_write_config(dev, addr, val, len);
+> >>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+> >>>   }
+> >>>
+> >>>   static uint64_t igbvf_mmio_read(void *opaque, hwaddr addr, unsigned=
+ size)
+> >>> @@ -266,6 +267,8 @@ static void igbvf_pci_realize(PCIDevice *dev, Err=
+or **errp)
+> >>>           hw_error("Failed to initialize PCIe capability");
+> >>>       }
+> >>>
+> >>> +    pcie_cap_flr_init(dev);
+> >>> +
+> >>>       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
+> >>>           hw_error("Failed to initialize AER capability");
+> >>>       }
+> >>> --
+> >>> 2.41.0
+> >>>
+> >>>
+> >>
+> >
+>
+
 
