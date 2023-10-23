@@ -2,87 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25787D373B
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07EAB7D3753
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 14:58:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quuRE-0000fr-8x; Mon, 23 Oct 2023 08:53:44 -0400
+	id 1quuUR-0002mV-9k; Mon, 23 Oct 2023 08:57:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
- id 1quuR2-0000eB-L3
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:53:34 -0400
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
- id 1quuR1-0005Or-8G
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:53:32 -0400
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-5a7dafb659cso32496907b3.0
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 05:53:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698065608; x=1698670408; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a0dDF3t2Y3R42MV4MvN3OUdTDsXY0CKI7/snKq5SAc4=;
- b=R5vPVvfEs3AoaKiZQQeRlLubCLQ6CIIJ+N50z+hCg8c/wwyFoJ6NuoWGqBCR97gz5Z
- HBXPm3lVaNycb/TBGcitK1vHiPjf0POUX6mFThBEpcOhLMtw+cd0k3OWP+DTGC4UI5vk
- ZW1djIoxMpTPnyxZBPQip2W9JIwh2bQoMGezzyymWYL6u/M7wGQ0knwYYJ6GTj88Yn6r
- jv/Xh4BJQT2Qy9DE3L21W5Xg9ES+fmB79Cr5hQ6CDWp+/qiKoKk4WBwL+DDOn9PHWFUP
- 8VVp1vacTesWyHo1RL7jAkgAI+I5G4X8LnO4G8FLDQYFKhdbCdrbYFpRia/Wa0oUwLul
- yMpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698065608; x=1698670408;
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=a0dDF3t2Y3R42MV4MvN3OUdTDsXY0CKI7/snKq5SAc4=;
- b=hAyFbexq/SxRtAiGN1T1hrPIaBdWD4UExxKULipdEwEUhuIOATD1tBIJ6WknRYa9h8
- noFa8hBMi/cazjKOQtYyFNG3UTAzLRIeJesAyT1fb7UK+BS9nVtNndbu+tvlfA7yRPzL
- iEHA3i/iNm+gIOP/1YVMMJNqFbXVSFjF1nh9uIf3Co0tYddZPFEfpRUTxU7PJmkTw/Qy
- VAR5Vso4+1L+kAV1Hw/4HFTOy6taqXhHU5rNJe0oWG+g61xvFZONv09PWI3+p5Bve6Ws
- C8Bs9YLKOJ2Pw4mfLMScjBzXjpvXZz+sD8S9UJo1pC4nju/KdFWjuAKKADGsfZpEm+r6
- wsLA==
-X-Gm-Message-State: AOJu0Yy16/F2vwfDmVBpNpBQAjWQxkFBfzrkE/lWj95iBtzjdfGPddmM
- OzTZrL9BgjeDQTtmIyU6TJBTku23dg==
-X-Google-Smtp-Source: AGHT+IEMi4W8m0puJVNpP1ZBEzlmfq4I3CmFYKoG4YFLgsxwMB3ol87bsecVta6rFbp/zmbQaEK3ig==
-X-Received: by 2002:a0d:d989:0:b0:5a7:bfbf:691d with SMTP id
- b131-20020a0dd989000000b005a7bfbf691dmr9328525ywe.42.1698065608594; 
- Mon, 23 Oct 2023 05:53:28 -0700 (PDT)
-Received: from serve.minyard.net ([47.189.89.62])
- by smtp.gmail.com with ESMTPSA id
- t78-20020a0dea51000000b005a7e6a68f0fsm3096353ywe.25.2023.10.23.05.53.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 05:53:27 -0700 (PDT)
-Received: from mail.minyard.net (unknown
- [IPv6:2001:470:b8f6:1b:939d:9bb3:396f:9748])
- by serve.minyard.net (Postfix) with ESMTPSA id 2472B18000C;
- Mon, 23 Oct 2023 12:53:27 +0000 (UTC)
-Date: Mon, 23 Oct 2023 07:53:25 -0500
-From: Corey Minyard <minyard@acm.org>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/ipmi: Don't call vmstate_register() from
- instance_init() functions
-Message-ID: <ZTZsxfUm+ECJMpB4@mail.minyard.net>
-References: <20231020145554.662751-1-thuth@redhat.com>
- <87pm15shj2.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1quuUH-0002kD-Hv
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:56:56 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1quuUB-0005wv-OF
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 08:56:52 -0400
+Received: from loongson.cn (unknown [10.20.42.173])
+ by gateway (Coremail) with SMTP id _____8Cxc_CGbTZlqPQzAA--.35578S3;
+ Mon, 23 Oct 2023 20:56:39 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dxnd6DbTZlNF0vAA--.36473S3; 
+ Mon, 23 Oct 2023 20:56:37 +0800 (CST)
+Subject: Re: [PATCH] target/loongarch: Support 4K page size
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org,
+ richard.henderson@linaro.org, philmd@linaro.org
+References: <20231023024059.3858349-1-gaosong@loongson.cn>
+ <b0e7be32-ab05-a39c-f722-44b2eaac8318@loongson.cn>
+ <CAFEAcA8UEC1XSsjuSbwDmiUs03VVK=wTY0PHSte-4f1=hk3EgA@mail.gmail.com>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <6b6bf8c6-c4de-450e-0b50-27d3324df68a@loongson.cn>
+Date: Mon, 23 Oct 2023 20:56:36 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pm15shj2.fsf@secure.mitica>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=tcminyard@gmail.com; helo=mail-yw1-x1130.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <CAFEAcA8UEC1XSsjuSbwDmiUs03VVK=wTY0PHSte-4f1=hk3EgA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Dxnd6DbTZlNF0vAA--.36473S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Ar18uF45Kw18ZFy7KrWUWrX_yoW8tw1Dpa
+ yfA3Wvkr4DWrZxKa1FqwnxCFnIyanrKF12qFnrKrW8twn8t34IyF1vkrZ3Ca4fZFW8CFWI
+ vr4Dtry3uF1DZacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUrNtx
+ DUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.339,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,27 +79,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: minyard@acm.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 01:30:09PM +0200, Juan Quintela wrote:
-> Thomas Huth <thuth@redhat.com> wrote:
-> > instance_init() can be called multiple times, e.g. during introspection
-> > of the device. We should not install the vmstate handlers here. Do it
-> > in the realize() function instead.
-> >
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> 
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> 
-> It fixes my issues.
-> 
-> Should I take this through the Migration tree?
 
-That's fine with me.
 
-Acked-by: Corey Minyard <cminyard@mvista.com>
+在 2023/10/23 下午6:22, Peter Maydell 写道:
+> On Mon, 23 Oct 2023 at 05:06, maobibo <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> 在 2023/10/23 上午10:40, Song Gao 写道:
+>>> The LoongArch kernel supports 4K page size.
+>>> Change TARGET_PAGE_BITS to 12.
+>>>
+>>> Signed-off-by: Song Gao <gaosong@loongson.cn>
+>>> ---
+>>>    target/loongarch/cpu-param.h  | 2 +-
+>>>    target/loongarch/tlb_helper.c | 9 ++++-----
+>>>    2 files changed, 5 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.h
+>>> index 1265dc7cb5..cfe195db4e 100644
+>>> --- a/target/loongarch/cpu-param.h
+>>> +++ b/target/loongarch/cpu-param.h
+>>> @@ -12,6 +12,6 @@
+>>>    #define TARGET_PHYS_ADDR_SPACE_BITS 48
+>>>    #define TARGET_VIRT_ADDR_SPACE_BITS 48
+>>>
+>>> -#define TARGET_PAGE_BITS 14
+>>> +#define TARGET_PAGE_BITS 12
+>> Hi Gaosong,
+>>
+>> The popular OS about LoongArch still uses 16K page size, qemu should
+>> follow the rule of OS rather than defining 4K page size alone.
+> 
+> The TARGET_PAGE_BITS value in QEMU is a property of the hardware,
+> not the guest OS. It should specify the smallest page size the
+> guest can configure the CPU to use. If the guest asks for a
+> larger page size than the minimum then that works fine. See
+> for example PPC64 -- on this architecture both 4K and 64K
+> pages are possible, so we define TARGET_PAGE_BITS to 12,
+> even though a lot of Linux guests use 64K pages.
+> 
+> It is slightly less efficient when the guest uses a page size
+> larger than the TARGET_PAGE_BITS value indicates, so if you
+> have an architecture where some CPUs support small pages
+> but most do not, you can do what Arm does, and use the
+> TARGET_PAGE_BITS_VARY support. This makes the TARGET_PAGE_BITS
+> macro be a runtime-configurable value, where a machine model can
+> set the mc->minimum_page_bits value to indicate that that
+> machine doesn't need the small-pages handling.
+Peter,
+
+Thanks for your guidance, the TARGET_PAGE_BITS setting issue puzzle
+us for a long time. I have a simple test for kernel with 4K/16K 
+different page size, it boots well if TARGET_PAGE_BITS
+is set as 12. And we will do more test, we will switch to 
+TARGET_PAGE_BITS to 12 if all the test pass.
+
+Regards
+Bibo Mao
 
 > 
+> thanks
+> -- PMM
+> 
+
 
