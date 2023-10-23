@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058397D3EFA
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 284387D3EFB
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:18:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzQu-0005UO-KR; Mon, 23 Oct 2023 14:13:44 -0400
+	id 1quzQv-0005VT-J8; Mon, 23 Oct 2023 14:13:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quzQq-0005Tb-5v
+ id 1quzQq-0005Ti-DI
  for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:40 -0400
-Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quzQk-00084r-ML
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:39 -0400
-Received: by mail-oo1-xc36.google.com with SMTP id
- 006d021491bc7-5842c251d7cso1760725eaf.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:13:33 -0700 (PDT)
+ id 1quzQk-000854-KF
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:40 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-5a1d89ff4b9so1869125a12.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:13:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698084812; x=1698689612; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698084813; x=1698689613; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AA7L0NLzkIrOUcDjlwriga27ooiuuZ7zo9pLt3rHark=;
- b=F7A1RbUMV/uPK4zcLlGQw9iEv54WZHHHMcmPA6G2ov8QZT3gjsqT67b/NNhmL/BArp
- 0vPFdWMddjr0Oyh/nz2J+e9S/G7z6qAEiX94hm9RXrHLztlyPYOBcysp2s3zuTwDPFKo
- Abhom6Ew3dANGzjSIOy6R1fVqcdj+P8S8malI6n0dExmouYHcnCo0foNEmCFrWGAviq+
- mq0+8mqp58w/L/wnfBa7s4MV3MOfPMJbbRaaRQLoKt9CQZeoT939VfazyNt82/Fjg5Rh
- 8vpWinWXDSkvPrBaNw0hYb0LOstPuqFns2jk5yINvKkGyt4ulqck1CYGQKRY9RAcX8JP
- JB8A==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kPve6f7zLeYUZnfvyB8rknIVGRQNk3b6m8Mg7HCCt/Y=;
+ b=mHaPp5Sc8KUo2G09Y6mouormtju1BZf6HjGq1pX+3BL2AV6k8dtaHDML4wQcfOewfj
+ OfDfJ0kfsLKf2Q9+lBUoHmp4VxirE7ejZD89pvsUMcCNjReeGaViaYYa/D6KmaKiFbUQ
+ 658RNPCqQlMyQfstnJY+JPTXIJBbKdL1kj6PQ2fkcwC8duvIW/JW9G/a8cp32Uq709Ek
+ gspVn5GZT+1bv+SFZZfEgHR6dFWqpqSzIKRBJwQh4ilCvYRZ+oywWmRg8r7Jgk7lDlYy
+ 0Dja1/sCNLvp2oNSQ89ns0LW2PVXlQSZbX6dRSz1oOgLCyLVmthx3qmCCsqnblBgY1Y0
+ VWcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698084812; x=1698689612;
+ d=1e100.net; s=20230601; t=1698084813; x=1698689613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AA7L0NLzkIrOUcDjlwriga27ooiuuZ7zo9pLt3rHark=;
- b=I+NcaAsizoZWOL9yExLyInFKFyDNo3M/E45W1ODLfLiVVOW/R6S+1WBcdPE7S8ZrS8
- L2O4WJrK949Z7jH1RSP5ryOGpDr4ph8bKnEMZFir5Pv/VNjjgAJjEysTkvS5vwLuiJS1
- jtdEqtHrx1d5DkkbF3oa+yfWUqFXw2T4ftoZCspbDVC8KS71uKPDSgRoXs40OHwwZhSP
- lpBWIqA/kH/3BgUgIqouAHHubDdCTBmT2nzzq/26FgfvE2EI6QIvXIZbxiG0ISmhOncJ
- nEBMgd2s54y9BX4mBHbwVbWGwARDdtd8E/moF6oH5sqaqo+R2ym+PztGhtOhshU9wHPB
- drXw==
-X-Gm-Message-State: AOJu0Yzg6TvspiiDu1BtHROtvLzg2yiBwY6O6Pb1ORmjeBLepnsFDB7R
- PJJnVSu/nCsSs6rOHwc07O56fYCKrl5An0E/ft4=
-X-Google-Smtp-Source: AGHT+IEZOTZV89AvubM81Goo2+Irk0ayhwqnNr9/HMamnqMfRvKr3GqKLqlA0FcT6UScf4uwB2LY7w==
-X-Received: by 2002:a05:6358:15c6:b0:168:e1d3:adf2 with SMTP id
- t6-20020a05635815c600b00168e1d3adf2mr3127812rwh.2.1698084812243; 
- Mon, 23 Oct 2023 11:13:32 -0700 (PDT)
+ bh=kPve6f7zLeYUZnfvyB8rknIVGRQNk3b6m8Mg7HCCt/Y=;
+ b=wXJB5HFtPefa5zwu5fpbaa8jInVmH3DVGBrjoCt1Y1SXZ5Zgv2vp63UKOWz6oDN4AC
+ 7hE2StB3SrM05t5f2sVQJCs3IIU+Rv9Fz4VqbN/tSamonNFsC8KE1jiAngya7incOvN5
+ vV9l4sqvVtu6EWs08K8NNnxKASar7TxeQZEpMHLRV0rb6o5R92YrI4Ll4nQ2/cuICSWH
+ d5VAIhAwsnyKUoPTXVdCfH0QS9k+nlSVmKekkZrki2GMKRXb2+uUSF1LIpP1wMxr/v3b
+ wWfQcaDfKB2IFXvFAUqwzxktkmWygNxcXwyEcznGTNCYKtm/rFBebrpr0HwK3hDi9KDQ
+ Gxlg==
+X-Gm-Message-State: AOJu0YxTNm1f/KmzUGxV5MlNe7jP/azPt6M7FiHSfBocRxQq2rz51NoX
+ g/RarimFNyslCPIqhIgHe/ahzxudcpCxodv7W2g=
+X-Google-Smtp-Source: AGHT+IH59+EoFVi72cLxRr1vKpplfUnND49lj5a/mv27f+HyDmTe5DawwM+F3/HxAF1IrvvAtFzMZA==
+X-Received: by 2002:a05:6a20:54a6:b0:14c:a53c:498e with SMTP id
+ i38-20020a056a2054a600b0014ca53c498emr354664pzk.42.1698084813052; 
+ Mon, 23 Oct 2023 11:13:33 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- v10-20020a65568a000000b005b83bc255fbsm5205137pgs.71.2023.10.23.11.13.31
- for <qemu-devel@nongnu.org>
+ v10-20020a65568a000000b005b83bc255fbsm5205137pgs.71.2023.10.23.11.13.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 11:13:31 -0700 (PDT)
+ Mon, 23 Oct 2023 11:13:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v3 01/38] tcg/ppc: Untabify tcg-target.c.inc
-Date: Mon, 23 Oct 2023 11:12:52 -0700
-Message-Id: <20231023181329.171490-2-richard.henderson@linaro.org>
+Cc: Jordan Niethe <jniethe5@gmail.com>
+Subject: [PULL v3 02/38] tcg/ppc: Enable direct branching tcg_out_goto_tb with
+ TCG_REG_TB
+Date: Mon, 23 Oct 2023 11:12:53 -0700
+Message-Id: <20231023181329.171490-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231023181329.171490-1-richard.henderson@linaro.org>
 References: <20231023181329.171490-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,42 +91,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Jordan Niethe <jniethe5@gmail.com>
+
+Direct branch patching was disabled when using TCG_REG_TB in commit
+736a1588c1 ("tcg/ppc: Fix race in goto_tb implementation").
+
+The issue with direct branch patching with TCG_REG_TB is the lack of
+synchronization between the new TCG_REG_TB being established and the
+direct branch being patched in.
+
+If each translation block is responsible for establishing its own
+TCG_REG_TB then there can be no synchronization issue.
+
+Make each translation block begin by setting up its own TCG_REG_TB.
+Use the preferred 'bcl 20,31,$+4' sequence.
+
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+[rth: Split out tcg_out_tb_start, power9 addpcis]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target.c.inc | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tcg/ppc/tcg-target.c.inc | 48 ++++++++++++++--------------------------
+ 1 file changed, 17 insertions(+), 31 deletions(-)
 
 diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 5c873b2161..5cecc6ed95 100644
+index 5cecc6ed95..9197cfd6c6 100644
 --- a/tcg/ppc/tcg-target.c.inc
 +++ b/tcg/ppc/tcg-target.c.inc
-@@ -221,7 +221,7 @@ static inline bool in_range_b(tcg_target_long target)
+@@ -2509,9 +2509,6 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+ 
+     tcg_out_mov(s, TCG_TYPE_PTR, TCG_AREG0, tcg_target_call_iarg_regs[0]);
+     tcg_out32(s, MTSPR | RS(tcg_target_call_iarg_regs[1]) | CTR);
+-    if (USE_REG_TB) {
+-        tcg_out_mov(s, TCG_TYPE_PTR, TCG_REG_TB, tcg_target_call_iarg_regs[1]);
+-    }
+     tcg_out32(s, BCCTR | BO_ALWAYS);
+ 
+     /* Epilogue */
+@@ -2529,7 +2526,13 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+ 
+ static void tcg_out_tb_start(TCGContext *s)
+ {
+-    /* nothing to do */
++    /* Load TCG_REG_TB. */
++    if (USE_REG_TB) {
++        /* bcl 20,31,$+4 (preferred form for getting nia) */
++        tcg_out32(s, BC | BO_ALWAYS | BI(7, CR_SO) | 0x4 | LK);
++        tcg_out32(s, MFSPR | RT(TCG_REG_TB) | LR);
++        tcg_out32(s, ADDI | TAI(TCG_REG_TB, TCG_REG_TB, -4));
++    }
  }
  
- static uint32_t reloc_pc24_val(const tcg_insn_unit *pc,
--			       const tcg_insn_unit *target)
-+                               const tcg_insn_unit *target)
+ static void tcg_out_exit_tb(TCGContext *s, uintptr_t arg)
+@@ -2542,32 +2545,22 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
  {
-     ptrdiff_t disp = tcg_ptr_byte_diff(target, pc);
-     tcg_debug_assert(in_range_b(disp));
-@@ -241,7 +241,7 @@ static bool reloc_pc24(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
+     uintptr_t ptr = get_jmp_target_addr(s, which);
+ 
++    /* Direct branch will be patched by tb_target_set_jmp_target. */
++    set_jmp_insn_offset(s, which);
++    tcg_out32(s, NOP);
++
++    /* When branch is out of range, fall through to indirect. */
+     if (USE_REG_TB) {
+         ptrdiff_t offset = tcg_tbrel_diff(s, (void *)ptr);
+-        tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
+-    
+-        /* TODO: Use direct branches when possible. */
+-        set_jmp_insn_offset(s, which);
+-        tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
+-
+-        tcg_out32(s, BCCTR | BO_ALWAYS);
+-
+-        /* For the unlinked case, need to reset TCG_REG_TB.  */
+-        set_jmp_reset_offset(s, which);
+-        tcg_out_mem_long(s, ADDI, ADD, TCG_REG_TB, TCG_REG_TB,
+-                         -tcg_current_code_size(s));
++        tcg_out_mem_long(s, LD, LDX, TCG_REG_TMP1, TCG_REG_TB, offset);
+     } else {
+-        /* Direct branch will be patched by tb_target_set_jmp_target. */
+-        set_jmp_insn_offset(s, which);
+-        tcg_out32(s, NOP);
+-
+-        /* When branch is out of range, fall through to indirect. */
+         tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
+         tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t)ptr);
+-        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
+-        tcg_out32(s, BCCTR | BO_ALWAYS);
+-        set_jmp_reset_offset(s, which);
+     }
++
++    tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
++    tcg_out32(s, BCCTR | BO_ALWAYS);
++    set_jmp_reset_offset(s, which);
  }
  
- static uint16_t reloc_pc14_val(const tcg_insn_unit *pc,
--			       const tcg_insn_unit *target)
-+                               const tcg_insn_unit *target)
- {
-     ptrdiff_t disp = tcg_ptr_byte_diff(target, pc);
-     tcg_debug_assert(disp == (int16_t) disp);
-@@ -3645,7 +3645,7 @@ static void expand_vec_mul(TCGType type, unsigned vece, TCGv_vec v0,
-                   tcgv_vec_arg(t1), tcgv_vec_arg(t2));
-         vec_gen_3(INDEX_op_ppc_pkum_vec, type, vece, tcgv_vec_arg(v0),
-                   tcgv_vec_arg(v0), tcgv_vec_arg(t1));
--	break;
-+        break;
+ void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+@@ -2577,10 +2570,6 @@ void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+     intptr_t diff = addr - jmp_rx;
+     tcg_insn_unit insn;
  
-     case MO_32:
-         tcg_debug_assert(!have_isa_2_07);
+-    if (USE_REG_TB) {
+-        return;
+-    }
+-
+     if (in_range_b(diff)) {
+         insn = B | (diff & 0x3fffffc);
+     } else {
+@@ -2600,9 +2589,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     switch (opc) {
+     case INDEX_op_goto_ptr:
+         tcg_out32(s, MTSPR | RS(args[0]) | CTR);
+-        if (USE_REG_TB) {
+-            tcg_out_mov(s, TCG_TYPE_PTR, TCG_REG_TB, args[0]);
+-        }
+         tcg_out32(s, ADDI | TAI(TCG_REG_R3, 0, 0));
+         tcg_out32(s, BCCTR | BO_ALWAYS);
+         break;
 -- 
 2.34.1
 
