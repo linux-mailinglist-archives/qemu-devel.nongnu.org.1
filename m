@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015957D3ED2
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5EC7D3EBA
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzRG-0005o8-B3; Mon, 23 Oct 2023 14:14:06 -0400
+	id 1quzRJ-00061e-G0; Mon, 23 Oct 2023 14:14:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quzRA-0005fk-BD
+ id 1quzRA-0005g0-Kl
  for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:14:00 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quzR6-0008Gx-H2
+ id 1quzR7-0008H7-OT
  for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:14:00 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6b87c1edfd5so2722596b3a.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:13:55 -0700 (PDT)
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-5840fe01176so2283012eaf.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:13:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698084835; x=1698689635; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698084836; x=1698689636; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QOgygXHDxUHtfSFg6wMi8J9He8Jq0o2OiYkY7oLrEpM=;
- b=PrshqDM37Noanvu4ezPThl2V/kkmtx5+5ahssjfzCdSPfJJ+s6+ILW1AIMl/ja+OJb
- ll/teYNj7Ow0vTubsCIgb1Bz315I+NAPkOBkahxbjuaa5+3anBoCgjGTTfUSQAJZAVpb
- CQKHM5akfQ4O5Y9vncpzSC9/Bmcye7P55nZ1MLavda5zK5HwevFSUQcOkS5TDVtUo5PG
- J50ENOS0OWjdfbn3Ylzh+MVRcN60QOR7/mH+iG2tejg0g6rdr9SWa5lcK8HS/s3tBzcc
- /iGZag/Ys9aa+KJ7icZl448AsNsEdouj+IoMIWJwkrlv1BvIrSAkZV+HtP+pfx3ZZHOH
- 6YZg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=i+3c/q3YHMTCq7WXcy5yo10z7tmQCbWln7ShYoiyjhk=;
+ b=IZjoJGwIRbcZYnoSriIOCMXL/4gz+pt+htEaHjH5/EQo547t4i0vdtbceSj2KYTV+h
+ i++8x904Qo3ArOP8zhJLSxjeULtqWNuE7ajrP/ZzSi711i3bflcwmzEU42gj+77mEDBK
+ SMonMEXN207HQtRvdbdVtsfta0bp7IF38vh9xO7bp/g0lO3KeSKne62m+guF36beTk72
+ NSdqjlo3fH7/IY2aUJwQXxvEOZY0d0ITLaBA3N+k0umkCluCBmV5K/AK4tboU48rHLEu
+ lfhjIzN+80DBAU7Zc9JaYGqiUoA9IQ7mIU9swr3TIGXS6kqbH4bghKo1loqm0yIdHt/F
+ M6eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698084835; x=1698689635;
+ d=1e100.net; s=20230601; t=1698084836; x=1698689636;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QOgygXHDxUHtfSFg6wMi8J9He8Jq0o2OiYkY7oLrEpM=;
- b=R38Fu2g5bVOsECpGxG5jxoxLKsQB6tpwToRKhKvxleyozS5uXadUuQlNCeCEcBVKQz
- JGJNB/T56+ofobK/Rmt6frlrqi7xltJ9c4VBvI++KU+6up9ykPKy05ZxVJ497T6czwtw
- Htogk+6etaDmyvRNYBJYKPYQ9+8AH9uunp4Uu8BGYNxKimmdZY5wKCmW9ORdXXOR6Ql/
- 9PvXgSrJYv/xhUvzLJptj8QdEeLm2XaUONACskVEMt5LTMwE4gGvLdgUiF0xQxoinGso
- LcPFoqV0+CM3M46SDn8rLN1HhKBj3soRy9Baj21nYasOcBDPiODm3JQdY7T2YJ/3Nalv
- 6lHA==
-X-Gm-Message-State: AOJu0YxmP515xfYlvR2SPVLJO6yqBV5r6ZsueCq7nAoJVTHpEiSrYE/s
- dZ68OfHXt7Xcb3QhYZVMfDCRV1u+0Y2qgNPzET0=
-X-Google-Smtp-Source: AGHT+IFfoN5L+vwHGQxHVykmb4r1VWURoJBJEG9/LtXKD8SsT9zEsTKEXIsdBntwPg3Cm/rGaR9xnA==
-X-Received: by 2002:a05:6a00:10c4:b0:6b8:780:94e5 with SMTP id
- d4-20020a056a0010c400b006b8078094e5mr8729053pfu.18.1698084834755; 
- Mon, 23 Oct 2023 11:13:54 -0700 (PDT)
+ bh=i+3c/q3YHMTCq7WXcy5yo10z7tmQCbWln7ShYoiyjhk=;
+ b=QlqECqXRprfc8pbK1an8Wx5bLp8Dg3q7sc9tfG0ptUWeolVd4Z3aCG77kcUVb+WPOO
+ uZftTlwjZVkye0VnpWFxpsgoz62tAMcpxbTFiN66OfRsiA+e6JoAzJRSGaRmkgzWU00e
+ OwQJAkDorQLHMBYIQoJA1xbyit6i4y4DmtFMAw8AmZCK7zQlO3L4A848DcukM89hg5Xv
+ Of8qMdNyO/6PxCf/F07OqDPU34eyfO9s0EUKNWS0HDDKsWfF/QB/XsV/ADIJpHWC+Ol1
+ UfstV9RjtKdCHf3pGSQlx8+4ZfqH6qV3+wMwf9/2ZvFxjcI2LenPm1Ite9ZyAhMjmIIT
+ DqaA==
+X-Gm-Message-State: AOJu0Yy9bRgRfG6I3ok9hUzZIrl6Nclmu8edKUmtn2SMi/T+E9/qlTgG
+ KXzxP7sPWnelGMObDlINHW8kWvpVdTX/AJo5WdA=
+X-Google-Smtp-Source: AGHT+IGZGsesex72tWOxHZmSLV1vK6zxZWHSCRoLZQnljIhS0SqGHGG1WqwiXm7X/encjabcc94PsQ==
+X-Received: by 2002:a05:6358:5bc8:b0:168:e469:7530 with SMTP id
+ i8-20020a0563585bc800b00168e4697530mr2610905rwf.32.1698084835820; 
+ Mon, 23 Oct 2023 11:13:55 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  v10-20020a65568a000000b005b83bc255fbsm5205137pgs.71.2023.10.23.11.13.54
- for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 11:13:54 -0700 (PDT)
+ Mon, 23 Oct 2023 11:13:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v3 27/38] tcg: Optimize past conditional branches
-Date: Mon, 23 Oct 2023 11:13:18 -0700
-Message-Id: <20231023181329.171490-28-richard.henderson@linaro.org>
+Cc: Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v3 28/38] tcg: Add tcg_gen_{ld,st}_i128
+Date: Mon, 23 Oct 2023 11:13:19 -0700
+Message-Id: <20231023181329.171490-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231023181329.171490-1-richard.henderson@linaro.org>
 References: <20231023181329.171490-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,36 +92,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already register allocate through extended basic blocks,
-optimize through extended basic blocks as well.
+Do not require the translators to jump through concat and
+extract of i64 in order to move values to and from env.
 
+Tested-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/tcg/tcg-op-common.h |  3 +++
+ tcg/tcg-op.c                | 22 ++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 3013eb04e6..2db5177c32 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -688,12 +688,14 @@ static void finish_folding(OptContext *ctx, TCGOp *op)
-     int i, nb_oargs;
+diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
+index 2048f92b5e..56d4e9cb9f 100644
+--- a/include/tcg/tcg-op-common.h
++++ b/include/tcg/tcg-op-common.h
+@@ -747,6 +747,9 @@ void tcg_gen_mov_i128(TCGv_i128 dst, TCGv_i128 src);
+ void tcg_gen_extr_i128_i64(TCGv_i64 lo, TCGv_i64 hi, TCGv_i128 arg);
+ void tcg_gen_concat_i64_i128(TCGv_i128 ret, TCGv_i64 lo, TCGv_i64 hi);
  
-     /*
--     * For an opcode that ends a BB, reset all temp data.
--     * We do no cross-BB optimization.
-+     * We only optimize extended basic blocks.  If the opcode ends a BB
-+     * and is not a conditional branch, reset all temp data.
-      */
-     if (def->flags & TCG_OPF_BB_END) {
--        memset(&ctx->temps_used, 0, sizeof(ctx->temps_used));
-         ctx->prev_mb = NULL;
-+        if (!(def->flags & TCG_OPF_COND_BRANCH)) {
-+            memset(&ctx->temps_used, 0, sizeof(ctx->temps_used));
-+        }
-         return;
++void tcg_gen_ld_i128(TCGv_i128 ret, TCGv_ptr base, tcg_target_long offset);
++void tcg_gen_st_i128(TCGv_i128 val, TCGv_ptr base, tcg_target_long offset);
++
+ static inline void tcg_gen_concat32_i64(TCGv_i64 ret, TCGv_i64 lo, TCGv_i64 hi)
+ {
+     tcg_gen_deposit_i64(ret, lo, hi, 32, 32);
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index c29355b67b..b4dbb2f2ba 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -2880,6 +2880,28 @@ void tcg_gen_mov_i128(TCGv_i128 dst, TCGv_i128 src)
      }
+ }
  
++void tcg_gen_ld_i128(TCGv_i128 ret, TCGv_ptr base, tcg_target_long offset)
++{
++    if (HOST_BIG_ENDIAN) {
++        tcg_gen_ld_i64(TCGV128_HIGH(ret), base, offset);
++        tcg_gen_ld_i64(TCGV128_LOW(ret), base, offset + 8);
++    } else {
++        tcg_gen_ld_i64(TCGV128_LOW(ret), base, offset);
++        tcg_gen_ld_i64(TCGV128_HIGH(ret), base, offset + 8);
++    }
++}
++
++void tcg_gen_st_i128(TCGv_i128 val, TCGv_ptr base, tcg_target_long offset)
++{
++    if (HOST_BIG_ENDIAN) {
++        tcg_gen_st_i64(TCGV128_HIGH(val), base, offset);
++        tcg_gen_st_i64(TCGV128_LOW(val), base, offset + 8);
++    } else {
++        tcg_gen_st_i64(TCGV128_LOW(val), base, offset);
++        tcg_gen_st_i64(TCGV128_HIGH(val), base, offset + 8);
++    }
++}
++
+ /* QEMU specific operations.  */
+ 
+ void tcg_gen_exit_tb(const TranslationBlock *tb, unsigned idx)
 -- 
 2.34.1
 
