@@ -2,98 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519717D29DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 08:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3C27D2AAD
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 08:47:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quo1l-00068j-4t; Mon, 23 Oct 2023 02:03:01 -0400
+	id 1quohA-0003RN-AF; Mon, 23 Oct 2023 02:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quo1V-000660-Vi
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:02:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoh7-0003Qs-Pl
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:45:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quo1K-0003Bi-E9
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:02:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quoh6-0001Gu-FY
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 02:45:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698040932;
+ s=mimecast20190719; t=1698043543;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=W5MV1gFNb82nnFIYVa5B5yAoXaVdbnLhgg6SAwJYVIw=;
- b=IH5SSyM3NjAGs7EgQYRFTW0kpFGpVoMUiOJpJkwInL41ctg6TXi9rKUf5JgWhCnnKwxEKM
- ZZmASYpKEyNDo2kx+m0GGhjZsdM/nfUdOjAVml9tvl85qc7NPFQASFY/7maNKt98j8yU5I
- vnRwgaNZ4icCtmim5UdQcC+n8jEa+fg=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cBr/NphSnwu114X5q6Jlit06K0k4qu9oIeQu9l2CWDw=;
+ b=Y27UmpCWuu3D8a8de6AtMKOPgvNu8RAkP0XZ1QyVOUw4HBsZy5C8QObcclivFfgOoQD7wN
+ ldppRwSDkWrLyeoUgA32Ku2okCaHyk2Zy8drJQAa2a+GV0sI2oI+EV/Jj85m7+0UUB4Hjr
+ j20gQfovYdUw9DOPDPxEAYwnpUjgRhs=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-CqsV12wrObq1MJLZgSXS9Q-1; Mon, 23 Oct 2023 02:02:10 -0400
-X-MC-Unique: CqsV12wrObq1MJLZgSXS9Q-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9c797b497e8so123023866b.0
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 23:02:09 -0700 (PDT)
+ us-mta-613-jB4dU1T_MV6u9d854kvpMA-1; Mon, 23 Oct 2023 02:45:40 -0400
+X-MC-Unique: jB4dU1T_MV6u9d854kvpMA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9ae0601d689so187910266b.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 23:45:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698040929; x=1698645729;
+ d=1e100.net; s=20230601; t=1698043539; x=1698648339;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W5MV1gFNb82nnFIYVa5B5yAoXaVdbnLhgg6SAwJYVIw=;
- b=gTl6lchsp/qIx9xi1bPNFQ99aMf+PIgZpRhHddvc4Wdcf9IoJvwjJzv0OtqUy6CjNT
- oSRiVoOLuGxKIF0+MazNE/GlCW/BvO6VDqSj9k9BE7brw9hQ/uIQgwn06CWRdFcTCSm3
- pz9MPX12L8e+lRrHC59HRO0CPiy4bQocRwbWR6gFkGw3bs2FHkdZ6IrhbYNGcTXNrVTy
- veo070kznoxMeA0C1UXtFPFqJc2bWu8S9QMEycH13zTOEPM+VldM0rSL9dbV2KnmiR8m
- 1oHwgE2JNDdsLwPzJjfzl8+htlM3oNqlB7Bqo62UtyYURwHP2whyEUKFbPY513I6HNZO
- ETtA==
-X-Gm-Message-State: AOJu0YzvBrJYoOFD9QUKo6NlcHsLRFdVXi8r16ZMA6m7q1Qkrr8C+Sbp
- 6r1IKu9oVbN3cPqQV2GgF9732tbkLTRBBCzg/5MerjAcxOtX6fY+MiON2aHJ73in2yEQOQQ0Wig
- 9eTODfGZOaLUCm8E=
-X-Received: by 2002:a17:907:2d09:b0:9c3:a3f2:4cec with SMTP id
- gs9-20020a1709072d0900b009c3a3f24cecmr5603990ejc.0.1698040929048; 
- Sun, 22 Oct 2023 23:02:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMBMamq9Cgzx3kNWD3Ee4QoZXnOYzcGq/StLeIG/pEM6BDo+ff/rjwkNHzziv7UB4/MNjoCA==
-X-Received: by 2002:a17:907:2d09:b0:9c3:a3f2:4cec with SMTP id
- gs9-20020a1709072d0900b009c3a3f24cecmr5603980ejc.0.1698040928727; 
- Sun, 22 Oct 2023 23:02:08 -0700 (PDT)
+ bh=cBr/NphSnwu114X5q6Jlit06K0k4qu9oIeQu9l2CWDw=;
+ b=HSwIBLJAAzSpWBqZMSbOwP5TbMJSkomy+QrodUJhSgA39t17VfnyM9VVXU8RVb5qEw
+ Svjen/6ci8Z7ALtT6Bu06FvbvAil/xjDEUPlVXJOyf97a28MTtR/mFcE4EAnpKeEHaXj
+ spTyUDYGlS2ovMaf9+ZjXV0CsLtb9UuCqdVLfHj88MZw+bxnsZqEtnOHcuQWYpfdStP6
+ tK8Tu29ZtV1HhcVOcLDT4gTiiKycEUxgSJbguGwhw1fTpcRoEk5Am2kM8jaW3euB0B+Y
+ 7/jG2ZClc0Rfuzq+wQPY3bpOYHGuSgHiGnssSCfSb9WQIATh4Y6WbW/+wDKcWPudf0+t
+ wqKw==
+X-Gm-Message-State: AOJu0YyA5W8KGbtseL9AfqrSCBejgM69Co6XaVUvNXNdPsw9SNO1Pzyr
+ QnhlizmXhR1p02ObwHYwmtpYUaCFC7Lh5qxCMYI+Bt6h59m317gO4obnIdxU0cXMonmQRv/yNDf
+ jVe7PGT8JwOgIGbE=
+X-Received: by 2002:a17:907:60d4:b0:9ad:ef31:6efc with SMTP id
+ hv20-20020a17090760d400b009adef316efcmr7473667ejc.21.1698043539045; 
+ Sun, 22 Oct 2023 23:45:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqaaVn3J6OQ6gdqCuR8Ok7uEaV7MM9X8e94ooSRcgpz8oOWJyVbTCiLHuFRmOz2ixXlqtkpA==
+X-Received: by 2002:a17:907:60d4:b0:9ad:ef31:6efc with SMTP id
+ hv20-20020a17090760d400b009adef316efcmr7473662ejc.21.1698043538789; 
+ Sun, 22 Oct 2023 23:45:38 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- a19-20020a1709065f9300b009b94c545678sm6028653eju.153.2023.10.22.23.02.06
+ u16-20020a170906655000b009c3f1b3e988sm6062764ejn.90.2023.10.22.23.45.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Oct 2023 23:02:08 -0700 (PDT)
-Message-ID: <76272c6c-f7b6-4fbd-a457-8cf14048ddca@redhat.com>
-Date: Mon, 23 Oct 2023 08:02:05 +0200
+ Sun, 22 Oct 2023 23:45:38 -0700 (PDT)
+Message-ID: <4a55f2d1-1666-4e05-8680-213d98aed6a2@redhat.com>
+Date: Mon, 23 Oct 2023 08:45:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/13] migration: Use vmstate_register_any() for isa-ide
+Subject: Re: [PATCH v3 7/9] hw/intc/pxa2xx: Pass CPU reference using QOM link
+ property
 Content-Language: en-US
-To: quintela@redhat.com, John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Eric Farman <farman@linux.ibm.com>, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, David Gibson <david@gibson.dropbear.id.au>,
- Corey Minyard <cminyard@mvista.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Xu <peterx@redhat.com>, Corey Minyard <minyard@acm.org>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Halil Pasic <pasic@linux.ibm.com>, Leonardo Bras <leobras@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Jason Wang <jasowang@redhat.com>,
- qemu-block@nongnu.org, qemu-s390x@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goat?=
- =?UTF-8?Q?er?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Stefan Weil
- <sw@weilnetz.de>, Stefan Berger <stefanb@linux.ibm.com>
-References: <20231020090731.28701-1-quintela@redhat.com>
- <20231020090731.28701-4-quintela@redhat.com>
- <efef6d37-925c-415e-9a59-85e528eacb7b@redhat.com>
- <871qdpytau.fsf@secure.mitica>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
+References: <20231020130331.50048-1-philmd@linaro.org>
+ <20231020130331.50048-8-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -137,9 +116,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <871qdpytau.fsf@secure.mitica>
+In-Reply-To: <20231020130331.50048-8-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -164,58 +143,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/10/2023 21.42, Juan Quintela wrote:
-> Thomas Huth <thuth@redhat.com> wrote:
->> On 20/10/2023 11.07, Juan Quintela wrote:
->>> Otherwise qom-test fails.
->>> ok 4 /i386/qom/x-remote
->>> qemu-system-i386: savevm_state_handler_insert: Detected duplicate SaveStateEntry: id=isa-ide, instance_id=0x0
->>> Broken pipe
->>> ../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
->>> Aborted (core dumped)
->>> $
->>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
->>> Signed-off-by: Juan Quintela <quintela@redhat.com>
->>> ---
->>>    hw/ide/isa.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>> diff --git a/hw/ide/isa.c b/hw/ide/isa.c
->>> index 95053e026f..ea60c08116 100644
->>> --- a/hw/ide/isa.c
->>> +++ b/hw/ide/isa.c
->>> @@ -73,7 +73,7 @@ static void isa_ide_realizefn(DeviceState *dev, Error **errp)
->>>        ide_bus_init(&s->bus, sizeof(s->bus), dev, 0, 2);
->>>        ide_init_ioport(&s->bus, isadev, s->iobase, s->iobase2);
->>>        ide_bus_init_output_irq(&s->bus, isa_get_irq(isadev, s->irqnum));
->>> -    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_isa, s);
->>> +    vmstate_register_any(VMSTATE_IF(dev), &vmstate_ide_isa, s);
->>>        ide_bus_register_restart_cb(&s->bus);
->>>    }
->>
->> Would it make sense to use another unique ID of the device instead? E.g.:
->>
->> diff a/hw/ide/isa.c b/hw/ide/isa.c
->> --- a/hw/ide/isa.c
->> +++ b/hw/ide/isa.c
->> @@ -73,7 +73,9 @@ static void isa_ide_realizefn(DeviceState *dev, Error **errp)
->>       ide_bus_init(&s->bus, sizeof(s->bus), dev, 0, 2);
->>       ide_init_ioport(&s->bus, isadev, s->iobase, s->iobase2);
->>       ide_bus_init_output_irq(&s->bus, isa_get_irq(isadev, s->irqnum));
->> -    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_isa, s);
->> +    vmstate_register(VMSTATE_IF(dev),
->> +                     object_property_get_int(OBJECT(dev), "irq", &error_abort),
->> +                     &vmstate_ide_isa, s);
->>       ide_bus_register_restart_cb(&s->bus);
->>   }
->>     Thomas
+On 20/10/2023 15.03, Philippe Mathieu-Daudé wrote:
+> QOM objects shouldn't access each other internals fields
+> except using the QOM API.
 > 
-> Ide is not my part of expertise.
-> But anything that is different for each instantance is going to be good
-> for me.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/arm/pxa2xx_pic.c | 11 ++++++++++-
+>   1 file changed, 10 insertions(+), 1 deletion(-)
 
-It's not really my turf either ... ok, so unless the IDE maintainer speaks 
-up, I think it's maybe best if you continue with your "_any" patch.
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
