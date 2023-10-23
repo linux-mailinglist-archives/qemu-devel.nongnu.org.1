@@ -2,53 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3597B7D3AEF
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8807D3AF0
 	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:36:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quwxr-0006k0-Qq; Mon, 23 Oct 2023 11:35:36 -0400
+	id 1quwyQ-0006yY-G5; Mon, 23 Oct 2023 11:36:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1quwxi-0006i7-RG
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:35:27 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1quwxS-0002tb-Hf
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:35:25 -0400
-Received: from [192.168.1.2] (unknown [223.72.40.200])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 235214447B;
- Mon, 23 Oct 2023 15:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1698075307; bh=oImBTvzxaQbpPK/m02g5Ye+gUnxR1lfh/PKu5Cwip8I=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=g+HlJ+sN5j83RHW6eoAXVn8Msnnd+FfX3qWZhwcG24EduHon2v12sgp483NOzfcrc
- iRjil7s7yP2OC4GsguKRab/JcFTubGjdQzMO+GwYrDb1NLQhz8JM+GC1JA4bJEgXgd
- eQimot8BmyZslxxd1YgVRCRCCfNaUUwA7Ajoub/0=
-Message-ID: <20d3fb6b-421c-4259-aca4-d881a48152f0@jia.je>
-Date: Mon, 23 Oct 2023 23:35:01 +0800
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quwyD-0006xX-N6
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:35:58 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quwyA-0003JH-VK
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:35:57 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 6C37C1FE28;
+ Mon, 23 Oct 2023 15:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698075353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rrx41nNI7ACFAwZJ59YbADNR+osusJ9tbnTGj5JlbOU=;
+ b=DKF8+13xeRtWzD6UmpEv74Ir7KMcJ6QtJU/54SdDCmiUuTSrFypc3mPhOy5V4cLzFwqN12
+ fyh9zeqjbYVyhsJmXDzT+aw8M3kIFzN2odJL7m2RH4xigmJ4h8AaU1kH0N+NwnXdODKmfL
+ UprEeCvGoLRHfCJuWDeLPU2UPVthTnc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698075353;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rrx41nNI7ACFAwZJ59YbADNR+osusJ9tbnTGj5JlbOU=;
+ b=jrjL3PA1AnPM8YzZC5mzrVsFpYbeqUN4KLqbB/xJ5W8bQjoWnjb5xwWv9tjLg5MYcjnUK9
+ ro/klANMsK96yJCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F3A3B132FD;
+ Mon, 23 Oct 2023 15:35:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id jIdPL9iSNmXGFQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 15:35:52 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH RFC 4/7] migration: Drop MultiFDSendParams.quit and
+ cleanup error paths
+In-Reply-To: <ZTaI8vJpGeOQSfZH@x1n>
+References: <20231022201211.452861-1-peterx@redhat.com>
+ <20231022201211.452861-5-peterx@redhat.com> <87jzrdz9gr.fsf@suse.de>
+ <ZTaI8vJpGeOQSfZH@x1n>
+Date: Mon, 23 Oct 2023 12:35:50 -0300
+Message-ID: <875y2xz6zt.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] target/loongarch: Add amcas[_db].{b/h/w/d}
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name
-References: <20231023153029.269211-2-c@jia.je>
- <20231023153029.269211-5-c@jia.je>
-Content-Language: en-US
-From: Jiajie Chen <c@jia.je>
-In-Reply-To: <20231023153029.269211-5-c@jia.je>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -6.07
+X-Spamd-Result: default: False [-6.07 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-1.97)[94.87%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,137 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Peter Xu <peterx@redhat.com> writes:
 
-On 2023/10/23 23:29, Jiajie Chen wrote:
-> The new instructions are introduced in LoongArch v1.1:
+> Fabiano,
 >
-> - amcas.b
-> - amcas.h
-> - amcas.w
-> - amcas.d
-> - amcas_db.b
-> - amcas_db.h
-> - amcas_db.w
-> - amcas_db.d
+> On Mon, Oct 23, 2023 at 11:42:28AM -0300, Fabiano Rosas wrote:
+>> > diff --git a/migration/multifd.c b/migration/multifd.c
+>> > index 33fb21d0e4..9d458914a9 100644
+>> > --- a/migration/multifd.c
+>> > +++ b/migration/multifd.c
+>> > @@ -411,10 +411,6 @@ static int multifd_send_pages(QEMUFile *f)
+>> >      MultiFDSendParams *p = NULL; /* make happy gcc */
+>> >      MultiFDPages_t *pages = multifd_send_state->pages;
+>> >  
+>> > -    if (qatomic_read(&multifd_send_state->exiting)) {
+>> > -        return -1;
+>> > -    }
+>> > -
+>> 
+>> I'd keep this. This function can be called from outside of multifd code
+>> so the channels could be completely gone already.
 >
-> The new instructions are gated by CPUCFG2.LAMCAS.
+> I can definitely add it back; nothing hurts.  But I want to make sure I
+> didn't miss some point.
 >
-> Signed-off-by: Jiajie Chen <c@jia.je>
-> ---
->   target/loongarch/cpu.h                        |  1 +
->   target/loongarch/disas.c                      |  8 +++++++
->   .../loongarch/insn_trans/trans_atomic.c.inc   | 24 +++++++++++++++++++
->   target/loongarch/insns.decode                 |  8 +++++++
->   target/loongarch/translate.h                  |  1 +
->   5 files changed, 42 insertions(+)
->
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index 7166c07756..80a476c3f8 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -156,6 +156,7 @@ FIELD(CPUCFG2, LBT_MIPS, 20, 1)
->   FIELD(CPUCFG2, LSPW, 21, 1)
->   FIELD(CPUCFG2, LAM, 22, 1)
->   FIELD(CPUCFG2, LAM_BH, 27, 1)
-> +FIELD(CPUCFG2, LAMCAS, 28, 1)
->   
->   /* cpucfg[3] bits */
->   FIELD(CPUCFG3, CCDMA, 0, 1)
-> diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-> index d33aa8173a..4aa67749cf 100644
-> --- a/target/loongarch/disas.c
-> +++ b/target/loongarch/disas.c
-> @@ -575,6 +575,14 @@ INSN(fldx_s,       frr)
->   INSN(fldx_d,       frr)
->   INSN(fstx_s,       frr)
->   INSN(fstx_d,       frr)
-> +INSN(amcas_b,      rrr)
-> +INSN(amcas_h,      rrr)
-> +INSN(amcas_w,      rrr)
-> +INSN(amcas_d,      rrr)
-> +INSN(amcas_db_b,   rrr)
-> +INSN(amcas_db_h,   rrr)
-> +INSN(amcas_db_w,   rrr)
-> +INSN(amcas_db_d,   rrr)
->   INSN(amswap_b,     rrr)
->   INSN(amswap_h,     rrr)
->   INSN(amadd_b,      rrr)
-> diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
-> index cd28e217ad..bea567fdaf 100644
-> --- a/target/loongarch/insn_trans/trans_atomic.c.inc
-> +++ b/target/loongarch/insn_trans/trans_atomic.c.inc
-> @@ -45,6 +45,22 @@ static bool gen_sc(DisasContext *ctx, arg_rr_i *a, MemOp mop)
->       return true;
->   }
->   
-> +static bool gen_cas(DisasContext *ctx, arg_rrr *a,
-> +                    void (*func)(TCGv, TCGv, TCGv, TCGv, TCGArg, MemOp),
-> +                    MemOp mop)
-> +{
-> +    TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
-> +    TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
-> +    TCGv val = gpr_src(ctx, a->rk, EXT_NONE);
-> +
-> +    addr = make_address_i(ctx, addr, 0);
-> +
+> Do you have a specific path that could trigger what you said?
 
-I'm unsure if I can use the same TCGv for the first and the third 
-argument here. If it violates with the assumption, a temporary register 
-can be used.
+I don't, just thought of being conservative since this is a multifd
+external API (of sorts).
 
-> +    func(dest, addr, dest, val, ctx->mem_idx, mop);
-> +    gen_set_gpr(a->rd, dest, EXT_NONE);
-> +
-> +    return true;
-> +}
-> +
->   static bool gen_am(DisasContext *ctx, arg_rrr *a,
->                      void (*func)(TCGv, TCGv, TCGv, TCGArg, MemOp),
->                      MemOp mop)
-> @@ -73,6 +89,14 @@ TRANS(ll_w, ALL, gen_ll, MO_TESL)
->   TRANS(sc_w, ALL, gen_sc, MO_TESL)
->   TRANS(ll_d, 64, gen_ll, MO_TEUQ)
->   TRANS(sc_d, 64, gen_sc, MO_TEUQ)
-> +TRANS(amcas_b, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESB)
-> +TRANS(amcas_h, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESW)
-> +TRANS(amcas_w, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESL)
-> +TRANS(amcas_d, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TEUQ)
-> +TRANS(amcas_db_b, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESB)
-> +TRANS(amcas_db_h, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESW)
-> +TRANS(amcas_db_w, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TESL)
-> +TRANS(amcas_db_d, LAMCAS, gen_cas, tcg_gen_atomic_cmpxchg_tl, MO_TEUQ)
->   TRANS(amswap_b, LAM_BH, gen_am, tcg_gen_atomic_xchg_tl, MO_TESB)
->   TRANS(amswap_h, LAM_BH, gen_am, tcg_gen_atomic_xchg_tl, MO_TESW)
->   TRANS(amadd_b, LAM_BH, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESB)
-> diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-> index 678ce42038..cf4123cd46 100644
-> --- a/target/loongarch/insns.decode
-> +++ b/target/loongarch/insns.decode
-> @@ -261,6 +261,14 @@ ll_w            0010 0000 .............. ..... .....     @rr_i14s2
->   sc_w            0010 0001 .............. ..... .....     @rr_i14s2
->   ll_d            0010 0010 .............. ..... .....     @rr_i14s2
->   sc_d            0010 0011 .............. ..... .....     @rr_i14s2
-> +amcas_b         0011 10000101 10000 ..... ..... .....    @rrr
-> +amcas_h         0011 10000101 10001 ..... ..... .....    @rrr
-> +amcas_w         0011 10000101 10010 ..... ..... .....    @rrr
-> +amcas_d         0011 10000101 10011 ..... ..... .....    @rrr
-> +amcas_db_b      0011 10000101 10100 ..... ..... .....    @rrr
-> +amcas_db_h      0011 10000101 10101 ..... ..... .....    @rrr
-> +amcas_db_w      0011 10000101 10110 ..... ..... .....    @rrr
-> +amcas_db_d      0011 10000101 10111 ..... ..... .....    @rrr
->   amswap_b        0011 10000101 11000 ..... ..... .....    @rrr
->   amswap_h        0011 10000101 11001 ..... ..... .....    @rrr
->   amadd_b         0011 10000101 11010 ..... ..... .....    @rrr
-> diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
-> index 0b230530e7..3affefdafc 100644
-> --- a/target/loongarch/translate.h
-> +++ b/target/loongarch/translate.h
-> @@ -23,6 +23,7 @@
->   #define avail_LSPW(C)   (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSPW))
->   #define avail_LAM(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAM))
->   #define avail_LAM_BH(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAM_BH))
-> +#define avail_LAMCAS(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAMCAS))
->   #define avail_LSX(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSX))
->   #define avail_LASX(C)   (FIELD_EX32((C)->cpucfg2, CPUCFG2, LASX))
->   #define avail_IOCSR(C)  (FIELD_EX32((C)->cpucfg1, CPUCFG1, IOCSR))
 
