@@ -2,71 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CBD7D384D
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9DD7D3855
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:45:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quvCp-0000W4-0s; Mon, 23 Oct 2023 09:42:55 -0400
+	id 1quvEd-000264-Dx; Mon, 23 Oct 2023 09:44:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1quvCl-0000P2-0Z
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1quvCj-0007MJ-Be
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698068568;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3srV4Gm1ksQiJrOJIhacCwt8+4D8AOhsm6+o+iJiYy4=;
- b=ZTftTwENYzc8VGOuBiNrodOAk1vApM7m4pi5EQ5ad4Pqbm9HzUIjv7xTw9yniXG/VuhXD+
- GBnsiRPBW8K9oXSU87HpyBGfIfwuhR8HLeFlhUI3JmQsfWDTAnsDBb4pzeBbzLbSKc+IlK
- ihYkIXIE4rrTVJ/t+HRE2VfGb8NwtHA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-_npB_AAzOa6YZrvrrqLf9Q-1; Mon, 23 Oct 2023 09:42:43 -0400
-X-MC-Unique: _npB_AAzOa6YZrvrrqLf9Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77A9F802896;
- Mon, 23 Oct 2023 13:42:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.144])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CA86B2166B26;
- Mon, 23 Oct 2023 13:42:39 +0000 (UTC)
-Date: Mon, 23 Oct 2023 15:42:38 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
- eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
- jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v3 1/9] blockjob: introduce block-job-change QMP command
-Message-ID: <ZTZ4TlOwFNZgb9pq@redhat.com>
-References: <20231013092143.365296-1-f.ebner@proxmox.com>
- <20231013092143.365296-2-f.ebner@proxmox.com>
- <ZS//MVrI7XeJT0Bq@redhat.com>
- <64667e64-0b32-4cb4-b76a-4bd444964e3d@proxmox.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1quvEb-00025p-AV
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:44:45 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1quvEZ-0007ZF-RR
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:44:45 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2c16757987fso48082291fa.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 06:44:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698068682; x=1698673482; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=K4G1RPZ0ootCbObgKqBn1VHNOLJlCm1a4OFgfZNvNiw=;
+ b=h6F0QQhiN3yP2p0y2LG5LvxmyUN1Ue/vG/y4KYi71ArJQ9+uMwo3X52YCJ5meG76AS
+ wgJof+SGH/T3x+/YyRaCleNbB+7FV2sdlJtF3ErKsnIH50xwaJSULZRAQwkUcnoLpeH+
+ cs0DM9LHxS0qvQ7AYPm63zYvkBExrZZwyM5pm1zJgBz+TCbrrffhYVEJI+GdYQAWAe5L
+ 6l1GI9ROgin4XW5NDIOEZybCxfeiyAQMR7mcZ8GybnMEANc4h2neaYfQgZqdA8MzVjGb
+ pm86jwfxgnfravKqH6ZVW6MqswOa8UTB30mDkMS3RolfMBAypS3TshrIOtYZ1Jv2fhmg
+ xiXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698068682; x=1698673482;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=K4G1RPZ0ootCbObgKqBn1VHNOLJlCm1a4OFgfZNvNiw=;
+ b=YCv+E/AmlV5/oXHeYj6aDd14doxiB9GSJPQwq8fExVoaCg49MeoDOJj4aE2yeTfj8F
+ XHCHqBmAb5R57RwdOXFQ8SCMgxAuGqB8qRLvUQaNHeBfPM4w1C42UgB3ge15gTxzRhDk
+ 8TnFs6m3tkECjULjDbliUkJ1K0dmyhyK9N+13oWRGxuX/uIXFCCtxJc5vD0DdgYcdtE3
+ uMXgr33uRhsOz+qGSyFcA3FEZGMbH/xoHvkgbwFwWgEmnBfRUhxFn1PkgWmy66io5fuh
+ CM5v17mg2HTzxFOBv10L5ybK5SmzPSSKPkRQn759UyV9zGVQu28PB6vmwNoDW6hRnFXP
+ ubQw==
+X-Gm-Message-State: AOJu0Yx4azthKTZfK9VsL0lV5OxyfDxb79tViBoyzWLpQpsCdjyqiDZq
+ 2gDRASSE83oN9+4rneTXxLzcrzUjGhfseViI3vc=
+X-Google-Smtp-Source: AGHT+IEuoOOJKW48BFxyHElwtJXNUOwXzejPg7NqK2rRLToM6WUrrhWE3lgVv5SR+QoBrYysLZAMfQ==
+X-Received: by 2002:a2e:9a89:0:b0:2bc:b821:84ad with SMTP id
+ p9-20020a2e9a89000000b002bcb82184admr5155434lji.16.1698068682018; 
+ Mon, 23 Oct 2023 06:44:42 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ p10-20020a05600c05ca00b004083729fc14sm14018619wmd.20.2023.10.23.06.44.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Oct 2023 06:44:41 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 261C31FFBB;
+ Mon, 23 Oct 2023 14:44:41 +0100 (BST)
+References: <20231016093143.222551-1-liucong2@kylinos.cn>
+User-agent: mu4e 1.11.22; emacs 29.1.90
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Cong Liu <liucong2@kylinos.cn>
+Cc: Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] contrib/plugins: Close file descriptor on connect failure
+Date: Mon, 23 Oct 2023 14:44:36 +0100
+In-reply-to: <20231016093143.222551-1-liucong2@kylinos.cn>
+Message-ID: <87r0ll4fna.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64667e64-0b32-4cb4-b76a-4bd444964e3d@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,49 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 23.10.2023 um 11:31 hat Fiona Ebner geschrieben:
-> Am 18.10.23 um 17:52 schrieb Kevin Wolf:
-> > Am 13.10.2023 um 11:21 hat Fiona Ebner geschrieben:
-> >> which will allow changing job-type-specific options after job
-> >> creation.
-> >>
-> >> In the JobVerbTable, the same allow bits as for set-speed are used,
-> >> because set-speed can be considered an existing change command.
-> >>
-> >> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> >> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> > 
-> >> diff --git a/job.c b/job.c
-> >> index 72d57f0934..99a2e54b54 100644
-> >> --- a/job.c
-> >> +++ b/job.c
-> >> @@ -80,6 +80,7 @@ bool JobVerbTable[JOB_VERB__MAX][JOB_STATUS__MAX] = {
-> >>      [JOB_VERB_COMPLETE]             = {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-> >>      [JOB_VERB_FINALIZE]             = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-> >>      [JOB_VERB_DISMISS]              = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-> >> +    [JOB_VERB_CHANGE]               = {0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
-> >>  };
-> > 
-> > I'm not sure if I would have included JOB_STATUS_CREATED, i.e. before
-> > the job has even started, but it's not necessarily a problem. The
-> > implementation just need to be careful to work even in early stages. But
-> > probably the early stages include some part of JOB_STATUS_RUNNING, too,
-> > so they'd have to do this anyway.
-> > 
-> 
-> As mentioned in the commit message, I copied the bits from
-> JOB_VERB_SET_SPEED, because that seemed to be very similar, as it can
-> also be seen as a change operation (and who knows, maybe it can be
-> merged into JOB_VERB_CHANGE at some point in the future). But I can
-> remove the bit if you want me to.
 
-I think it's fine as it is, just something to keep in mind while
-reviewing implementations.
+Cong Liu <liucong2@kylinos.cn> writes:
 
-What you could do is adding something to the comment for the change
-callback in blockjob_int.h, like "Note that this can already be called
-before the job coroutine is running".
+> This patch closes the file descriptor fd on connect failure to avoid
+> resource leak.
+>
+> Signed-off-by: Cong Liu <liucong2@kylinos.cn>
+> ---
+>  contrib/plugins/lockstep.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
+> index f0cb8792c6fa..3c0f2b485181 100644
+> --- a/contrib/plugins/lockstep.c
+> +++ b/contrib/plugins/lockstep.c
+> @@ -303,6 +303,7 @@ static bool connect_socket(const char *path)
+>      sockaddr.sun_family =3D AF_UNIX;
+>      if (g_strlcpy(sockaddr.sun_path, path, pathlen) >=3D pathlen) {
+>          perror("bad path");
+> +        close(fd);
+>          return false;
+>      }
 
-Kevin
+Queued to plugins/next, thanks.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
