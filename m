@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EBA7D2810
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 03:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F317D2811
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 03:38:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qujsP-0001g8-9A; Sun, 22 Oct 2023 21:37:05 -0400
+	id 1qujtE-00032K-5D; Sun, 22 Oct 2023 21:37:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qujsN-0001fL-6f; Sun, 22 Oct 2023 21:37:03 -0400
-Received: from mail-ua1-x92e.google.com ([2607:f8b0:4864:20::92e])
+ id 1qujtB-0002zW-C5; Sun, 22 Oct 2023 21:37:53 -0400
+Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qujsL-0002ob-P7; Sun, 22 Oct 2023 21:37:02 -0400
-Received: by mail-ua1-x92e.google.com with SMTP id
- a1e0cc1a2514c-7b652e785dbso1040031241.0; 
- Sun, 22 Oct 2023 18:37:01 -0700 (PDT)
+ id 1qujt9-0002sK-RS; Sun, 22 Oct 2023 21:37:53 -0400
+Received: by mail-ua1-x932.google.com with SMTP id
+ a1e0cc1a2514c-7b6e3dc54e0so1818175241.1; 
+ Sun, 22 Oct 2023 18:37:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698025020; x=1698629820; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698025070; x=1698629870; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kKCog19UpRbCVEHNVCgHNEUYu8Mhg2C8RE/Hafk9Tqo=;
- b=J5dHGEwPUo6aRiWGGjLvQiw/mxqUIMU24uktFfP9z9xvyFk/1uwe5UtslQ5BM87sxA
- g8f8qvGIhC70Xly+Pv1OT2Gp1o7Q/OgYWYMZIIb2PyCmWjYF2ZW3oGxm2SDOoIPvk18E
- i6fsCuXuZTQg48HBy4mQzkBqpxKs+UE6PbO7V4Yx2lcAVVYGhUR3NtD2xdYlO1voA3oH
- 2EL7Sc57hYBZl4quqoxW/aYt3lFEj++Y+yQD3m9hpSjJzImK07RII53LimRgP2Bv4OTI
- LBmjw3NtlpEtcxyAhjd+nQxESRjXLalvUcgqru0rarFJLunu9LLoyiERA1toRyNk3/DI
- MGaw==
+ bh=GqseqGmsRb9aZIeDmS9PEuQ20yiaKMX4z00p0uiuwvw=;
+ b=POg+gvD5vzOfuvavI8FryKGJD26wuuyz9pXk1CYO3+60/FDBnRKl3jYOVS+WrgA4bq
+ 6p3pMdMjCymn0J6w1h+jjsjiTZac/72lrfadGnaGz2/sz3hnhh6eqT31oRuR9i0j+m1B
+ 5SUs/2ldYiW5bVPRv8zJWldtAi6HmNmdgneni9Ardh6/RWSbPaFkE7G626zhvKb+lOs+
+ p+sm76bjm3xiTtZ+W5xt8Ezw0s1b25o5Te6i4uSXnKyc4rBOOsbsOIoIngpeIEIPbCcG
+ h9ptlJ6L+oMeDFzggMIPFaLKLMICkxg3Rm3C8kby2mkPAuvCxrWe/rjoncnrFowksq/b
+ ZfIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698025020; x=1698629820;
+ d=1e100.net; s=20230601; t=1698025070; x=1698629870;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kKCog19UpRbCVEHNVCgHNEUYu8Mhg2C8RE/Hafk9Tqo=;
- b=ulSXrskIaHZATFGGYrDC5Md9KTMmq0n7HYUkSKYahj1KFeBdfA7y3VzbAzxpj+49yw
- PNc3B35IXjtX8LEferxxnx52QE3BEL6OKsjpL5++C0V+lIK5QmbdSPS3uWhws0CxXZyR
- TwXGrfZxduhzlz2H4zC8pu47tPG4wwxIAaDAifp8evjT+NE6+7J3lAsDFFjzv3nEKcig
- i14efqBsOkWaRo8WKSnLLTpT2iZLmy0P5E8S3srt/N6CENooTZTdWyeknUtm7erIQZdJ
- lsja+HzRl9rDyqEZD9gO7zQNf9NX/93G64w6O6RMFX3FzALbWtBtZ0Uk1q055yrVoUvf
- v9Tg==
-X-Gm-Message-State: AOJu0YxnVbVsynrp+Dk2C8I4TcFL059Au5lSMCiur3s3qRnXdrlI/hEU
- R8dkqJl2QyY5bYYMfUf2IWPpVfODjyz0PRMKoY4=
-X-Google-Smtp-Source: AGHT+IFgI5J5RNmGhms5Uk/JoV08tTqxmH+O+usmPgvZexWvafLXAVYMU+Oua3mXYz6Zy9JShj4Oln51rfwBV+xiDY0=
-X-Received: by 2002:a67:e192:0:b0:457:e881:32c6 with SMTP id
- e18-20020a67e192000000b00457e88132c6mr6575076vsl.11.1698025020238; Sun, 22
- Oct 2023 18:37:00 -0700 (PDT)
+ bh=GqseqGmsRb9aZIeDmS9PEuQ20yiaKMX4z00p0uiuwvw=;
+ b=adc7DfSeHWA6rAL1xuYlzBpNV8mZ3ptOycpsZOYPUInuCK+k6NUZtC4cGcvdIw5Gpf
+ NALw8uBCIPDh2Yiopjt0TrdsatEDNKIrr17iaTtZJtdEjyFJ3JmGuXeJPdinoUb0ZWYP
+ UKj0PuTxf3i6EK7JyFGRuseGHtsyCGOgto/x2IbwBGGXSHX75+3OPOKLh0uBG/d9Kf/g
+ a3ZFDWHXWiZ5hl6Bd2IfQ5JHjWXxOQsbf3XSNsQn2RfpHuS3/O0Cf5wWb9JTF0zuKtmA
+ mbRPAVZUwDUb1FGh1aHEnzcLE4IlwvQz5696AbZAdua8CidMxsahW49kMvO7H1VnvD28
+ xGgg==
+X-Gm-Message-State: AOJu0Ywq8mO7wzR7T3U3X5PSPTwpHyx83POh9GvP8Y3nKcn2pFBpSt1w
+ Mm7dxWrv8BcS3aGHj/pa20vg9jVD89Jpk4S6L1Y=
+X-Google-Smtp-Source: AGHT+IFU/N1cTYyvyQYuH4rvLdeo1Xh2jjt17TIByfdlS7GDcJpn0zqmdwEKMYv5w2MFB414MheWyGz4v3p9/D3uyho=
+X-Received: by 2002:a05:6102:205b:b0:452:618b:13e3 with SMTP id
+ q27-20020a056102205b00b00452618b13e3mr4201069vsr.9.1698025070472; Sun, 22 Oct
+ 2023 18:37:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231020170009.86870-1-philmd@linaro.org>
- <20231020170009.86870-3-philmd@linaro.org>
-In-Reply-To: <20231020170009.86870-3-philmd@linaro.org>
+ <20231020170009.86870-4-philmd@linaro.org>
+In-Reply-To: <20231020170009.86870-4-philmd@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 23 Oct 2023 11:36:33 +1000
-Message-ID: <CAKmqyKPJoyMmoNAX9JrHz6_SSphqRkEJPy3AUaV0eu+701Ow9g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] hw/char/stm32f2xx_usart: Update IRQ when SR is read
+Date: Mon, 23 Oct 2023 11:37:23 +1000
+Message-ID: <CAKmqyKP39XHT5ny5UKvVj01sZRVy6tREZSe2+bXVvvT34UJk3A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] hw/char/stm32f2xx_usart: Update IRQ when DR is
+ written
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>, qemu-devel@nongnu.org, 
  qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
@@ -64,8 +65,8 @@ Cc: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>, qemu-devel@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Alistair Francis <alistair@alistair23.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92e;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -89,7 +90,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 21, 2023 at 4:12=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+On Sat, Oct 21, 2023 at 3:01=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
 <philmd@linaro.org> wrote:
 >
 > From: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
@@ -97,10 +98,8 @@ On Sat, Oct 21, 2023 at 4:12=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
 > Signed-off-by: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
 > [PMD: Split from bigger patch]
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> Is this required?
 
-I don't think this is required
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
@@ -109,19 +108,18 @@ Alistair
 >  1 file changed, 1 insertion(+)
 >
 > diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
-> index 519d3461a3..46e29089bc 100644
+> index 46e29089bc..74f007591a 100644
 > --- a/hw/char/stm32f2xx_usart.c
 > +++ b/hw/char/stm32f2xx_usart.c
-> @@ -109,6 +109,7 @@ static uint64_t stm32f2xx_usart_read(void *opaque, hw=
-addr addr,
->      case USART_SR:
->          retvalue =3D s->usart_sr;
->          qemu_chr_fe_accept_input(&s->chr);
-> +        stm32f2xx_update_irq(s);
->          return retvalue;
->      case USART_DR:
->          DB_PRINT("Value: 0x%" PRIx32 ", %c\n", s->usart_dr, (char) s->us=
-art_dr);
+> @@ -169,6 +169,7 @@ static void stm32f2xx_usart_write(void *opaque, hwadd=
+r addr,
+>                 clear TC by writing 0 to the SR register, so set it again
+>                 on each write. */
+>              s->usart_sr |=3D USART_SR_TC;
+> +            stm32f2xx_update_irq(s);
+>          }
+>          return;
+>      case USART_BRR:
 > --
 > 2.41.0
 >
