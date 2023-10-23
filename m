@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46FC7D400F
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 21:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A167D40EA
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 22:34:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv0Q2-000316-Qu; Mon, 23 Oct 2023 15:16:54 -0400
+	id 1qv1bS-0000lu-Ge; Mon, 23 Oct 2023 16:32:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qv0Q1-00030w-DZ
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 15:16:53 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qv1bQ-0000l6-Fu; Mon, 23 Oct 2023 16:32:44 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qv0Pn-0002tu-MM
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 15:16:51 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-408382da7f0so30374925e9.0
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 12:16:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qv1bM-0000xc-QQ; Mon, 23 Oct 2023 16:32:44 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-99de884ad25so562906366b.3; 
+ Mon, 23 Oct 2023 13:32:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698088598; x=1698693398; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4+GK01YeisXdjigIIDWtGw4jYotMfaJxD7ZqhVaqCWQ=;
- b=o2wy8pbW9OhVN2vvTI/9XtX/iSHUwk5M5AmuSJZ6DvQNaGhUyFoiCTDCwFaKsgB2lQ
- oE1QQTZnJtSdZ+jTbZBbO2J/6NIN1OjZ2maWnl8OkqZ7npS3tjS9oY4HLnei77BPhVZt
- M7YLGlV+A/luzkKkERZCEB62U+twhpsiel925bXbFojb6Dq3/Js1A0oColxrhD4grINS
- ggHOwNlZskAn8f23DymqHgZeNZdRk15rHhd92oA/nheAshaRxkDsbBVw+EDIkBGVtNlU
- lCc2vWQdPprQuGCboLdZ2Uyu379Qt5QJagGWg035Sm354vN4JyWhhxPLNc9aTmWGhrfj
- Dkng==
+ d=gmail.com; s=20230601; t=1698093158; x=1698697958; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
+ :reply-to; bh=mbO97fEp/nfIBF78REiS8BpB/odBmamqwB0+LNxxzQc=;
+ b=d4gVot4bi3yLSUEOW2ibh9h5rM62cW8TMSdDZNkMWB8oi6pagIRoGptGIe1zqtwjTm
+ tijuV9NdSgq5zntsoLbXLPLvBdlh08RDFEDKvcyVFI6l4Y4eCJ4X5gWRU1BybFUn5Ytk
+ ESLGFj4deP57BcKUxYU0dBS1PmIPtVwLvjRYqs8K+igWnAbtgEvZL3SK832OsZ6XrkRW
+ xONxXmuBXhuU8rZyInSOuQTYjDPcS3NrDVqAU+7V+X5oE9aJH3tN0tItKp9ZuvTeZ0+O
+ lhnWN0CRWhRjbk2sv75eFx/Z8ATt8UihCdwKegTJ3bopdTNizjYVLB+QQA810ejCQ9Iw
+ xiXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698088598; x=1698693398;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=4+GK01YeisXdjigIIDWtGw4jYotMfaJxD7ZqhVaqCWQ=;
- b=wvdD5AH1c1rvd8X3ejI7+gwga9tIdfHpAly8Fz1fmMp2SuVS8/sxe+Z57JzzBOIWkR
- sHhMQ8xN8JqXHs6r1z3vyyvC/8VaocYtoB0wUmwtAD/eQbrlnYKafu1zuTdkl9YUOlry
- +rM2tHjPegku9lcK/aLIIlC1DY9qTKSf4tirWuQhWOJsv8jCHsncJqvN08JNTgB8s6Oa
- vxNW2OcR1bFsc2J7fQ5YgDDi/jF/pmsWAcKWS6etpJ2LgJ5BLi9GMy4au0uMQ/w9hch/
- 7H5dmHd/GqXMMKHZRvVAZNgeXZPQLRxQtxclzQnTMS60nHD/4ZWaZigKu8Exw1j0V7Vo
- dJVQ==
-X-Gm-Message-State: AOJu0YzeiqU/cKPpJRsHrP6rpeBw/y/NamqP32nMeAtOo/t7+0kn5xJ6
- l4DV3Wg/W/9ZNlCRHz0zp0uZKh6RkhAcCqd+rWg=
-X-Google-Smtp-Source: AGHT+IHhrhcdRsZgy4A33feBQ9H1SWtexUQ6x50hz2ghq1NplAEvyJLuJi6PSUYu6GDw/j/Y6hrsmA==
-X-Received: by 2002:a05:600c:3555:b0:405:3e9a:f1e3 with SMTP id
- i21-20020a05600c355500b004053e9af1e3mr7720727wmq.11.1698088597636; 
- Mon, 23 Oct 2023 12:16:37 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- 1-20020a05600c228100b0040596352951sm14616524wmf.5.2023.10.23.12.16.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 12:16:37 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id C5E2C1FFBB;
- Mon, 23 Oct 2023 20:16:36 +0100 (BST)
-References: <20231023180837.91785-1-titusr@google.com>
-User-agent: mu4e 1.11.22; emacs 29.1.90
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Titus Rwantare <titusr@google.com>
-Cc: qemu-arm@nongnu.org, minyard@acm.org, philmd@linaro.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 0/8] PMBus fixes and new functions
-Date: Mon, 23 Oct 2023 20:10:47 +0100
-In-reply-to: <20231023180837.91785-1-titusr@google.com>
-Message-ID: <874jih40a3.fsf@linaro.org>
+ d=1e100.net; s=20230601; t=1698093158; x=1698697958;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mbO97fEp/nfIBF78REiS8BpB/odBmamqwB0+LNxxzQc=;
+ b=ka20iXhbkJA7bUxS2myQwMnEOYEJKeAUmHbxOvb3IyDE/HKz9Gwlzkw8t6bnxxj7Xw
+ ywJQcX+QgHvxVMu1bQEnqQIcK6NfbkAgTHoaTcQoa5X9IOZuqDbo5QCM77RWhjeMvz1u
+ MFwBCkYzqgOTwj/USqzwOqZeg5evBT+koOxtwJOE7jmvJ8kvWsQH7UBHUe2Km7S7YdJH
+ 0L3V2AnYgTYV5eu8PJ6YpQW73KYJar8cA5s7qQlT/HF0VGOdzgjJUXYi2bAWIHH8Bqhn
+ RPRMlu/ZBdrIjCIWHVXzovsx2DnefiegvpGmFfN50PbIquTjngQBL63igZtF5MPAjXrU
+ wh/Q==
+X-Gm-Message-State: AOJu0YzcpHcXJkEU1r+m5qFsezo+05l0N17ePajLCGWMbrTOr8ByVN/W
+ uB3UcqCaKRKNIN8Ia2b1BOQ=
+X-Google-Smtp-Source: AGHT+IGt9ndJuqrTlP9N017kXWQrD9daWK51TC/ws16ASlwp9fosR0AN8sdr4rP/QE0uG+MydkIwgQ==
+X-Received: by 2002:a17:907:9618:b0:9af:4561:591d with SMTP id
+ gb24-20020a170907961800b009af4561591dmr8001063ejc.18.1698093158282; 
+ Mon, 23 Oct 2023 13:32:38 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-013-204-122.77.13.pool.telefonica.de.
+ [77.13.204.122]) by smtp.gmail.com with ESMTPSA id
+ b7-20020a1709062b4700b009ade1a4f795sm7001110ejg.168.2023.10.23.13.32.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 23 Oct 2023 13:32:37 -0700 (PDT)
+Date: Mon, 23 Oct 2023 17:19:16 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, balaton@eik.bme.hu,
+ philmd@linaro.org
+Subject: Re: [PATCH 1/2] ide/pci.c: introduce pci_ide_update_mode() function
+In-Reply-To: <B2C0A4CE-0382-48F0-A513-8AD69960F2BF@gmail.com>
+References: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
+ <20231019130452.508426-2-mark.cave-ayland@ilande.co.uk>
+ <B2C0A4CE-0382-48F0-A513-8AD69960F2BF@gmail.com>
+Message-ID: <4C3F58DB-2AAA-43CA-8576-07CFBB66066D@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,71 +93,190 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Titus Rwantare <titusr@google.com> writes:
 
-> This patch series contains fixes and improvements to PMBus support in QEM=
-U.
+Am 22=2E Oktober 2023 22:06:30 UTC schrieb Bernhard Beschow <shentey@gmail=
+=2Ecom>:
 >
-> The following has been added:
->    - Support for block receive
->    - Support for devices with fans
->    - Support for the VCAP register for devices with onboard energy storage
->    - A bitfield struct for the vout mode register, whose bits determine t=
-he formatting of several read commands in PMBus
-> Fixes:
->    - String read now handles now logs an error when passed an empty string
 >
-> This series is in preparation for some additional sensors that exercise
-> this functionality that will be incoming shortly.
+>Am 19=2E Oktober 2023 13:04:51 UTC schrieb Mark Cave-Ayland <mark=2Ecave-=
+ayland@ilande=2Eco=2Euk>:
+>>This function reads the value of the PCI_CLASS_PROG register for PCI IDE
+>>controllers and configures the PCI BARs and/or IDE ioports accordingly=
+=2E
+>>
+>>In the case where we switch to legacy mode, the PCI BARs are set to retu=
+rn zero
+>>(as suggested in the "PCI IDE Controller" specification), the legacy IDE=
+ ioports
+>>are enabled, and the PCI interrupt pin cleared to indicate legacy IRQ ro=
+uting=2E
+>>
+>>Conversely when we switch to native mode, the legacy IDE ioports are dis=
+abled
+>>and the PCI interrupt pin set to indicate native IRQ routing=2E The cont=
+ents of
+>>the PCI BARs are unspecified, but this is not an issue since if a PCI ID=
+E
+>>controller has been switched to native mode then its BARs will need to b=
+e
+>>programmed=2E
+>>
+>>Signed-off-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
+>>---
+>> hw/ide/pci=2Ec         | 90 +++++++++++++++++++++++++++++++++++++++++++=
++
+>> include/hw/ide/pci=2Eh |  1 +
+>> 2 files changed, 91 insertions(+)
+>>
+>>diff --git a/hw/ide/pci=2Ec b/hw/ide/pci=2Ec
+>>index a25b352537=2E=2E9eb30af632 100644
+>>--- a/hw/ide/pci=2Ec
+>>+++ b/hw/ide/pci=2Ec
+>>@@ -104,6 +104,96 @@ const MemoryRegionOps pci_ide_data_le_ops =3D {
+>>     =2Eendianness =3D DEVICE_LITTLE_ENDIAN,
+>> };
+>>=20
+>>+static const MemoryRegionPortio ide_portio_list[] =3D {
+>>+    { 0, 8, 1, =2Eread =3D ide_ioport_read, =2Ewrite =3D ide_ioport_wri=
+te },
+>>+    { 0, 1, 2, =2Eread =3D ide_data_readw, =2Ewrite =3D ide_data_writew=
+ },
+>>+    { 0, 1, 4, =2Eread =3D ide_data_readl, =2Ewrite =3D ide_data_writel=
+ },
+>>+    PORTIO_END_OF_LIST(),
+>>+};
+>>+
+>>+static const MemoryRegionPortio ide_portio2_list[] =3D {
 
-You seem to have missed a number of tags from previous postings:
+Although the naming seems familiar: What about renaming both lists to some=
+thing like ide_portio_primary_list resp=2E ide_portio_secondary_list? Havin=
+g one list carrying a number in its name while omitting it for the other I =
+find rather confusing=2E
 
-  https://qemu.readthedocs.io/en/master/devel/submitting-a-patch.html#prope=
-r-use-of-reviewed-by-tags-can-aid-review
+Best regards,
+Bernhard
 
-(although I notice we only mention Reviewed-by in the docs)
-
-You can use a tool like b4 to apply a series and collect the tags. It
-will also collect the Message-Id's which are also useful.
-
-Once you've fixed up your tags I think as the maintainer you can submit
-a pull request.
-
+>>+    { 0, 1, 1, =2Eread =3D ide_status_read, =2Ewrite =3D ide_ctrl_write=
+ },
+>>+    PORTIO_END_OF_LIST(),
+>>+};
+>>+
+>>+void pci_ide_update_mode(PCIIDEState *s)
+>>+{
+>>+    PCIDevice *d =3D PCI_DEVICE(s);
+>>+    uint8_t mode =3D d->config[PCI_CLASS_PROG];
+>>+
+>>+    switch (mode) {
 >
-> Thanks
+>Maybe
 >
-> Changes in v3:
->    - Added fixes to PMBus: page resets and fault clearing
+>  switch (mode & 0xf) {
 >
-> Changes in v2:
->    - Expanded commit descriptions
->    - Added the ADM1266 device model that uses new functions
+>here such that only the bits relevant to the PCI IDE controller specifica=
+tion are analyzed? Then we can omit the high '8' nibble in the case labels =
+which indicate bus master capability which is obviously out of scope of the=
+ switch statement (since you're not touching the BM DMA BAR)=2E
 >
-> Titus Rwantare (8):
->   hw/i2c: pmbus add support for block receive
->   hw/i2c: pmbus: add vout mode bitfields
->   hw/i2c: pmbus: add fan support
->   hw/i2c: pmbus: add VCAP register
->   hw/sensor: add ADM1266 device model
->   tests/qtest: add tests for ADM1266
->   hw/i2c: pmbus: immediately clear faults on request
->   hw/i2c: pmbus: reset page register for out of range reads
+>>+    case 0x8a:
 >
->  hw/arm/Kconfig                |   1 +
->  hw/i2c/pmbus_device.c         | 237 +++++++++++++++++++++++++++++--
->  hw/sensor/Kconfig             |   5 +
->  hw/sensor/adm1266.c           | 254 ++++++++++++++++++++++++++++++++++
->  hw/sensor/meson.build         |   1 +
->  include/hw/i2c/pmbus_device.h |  17 +++
->  tests/qtest/adm1266-test.c    | 123 ++++++++++++++++
->  tests/qtest/max34451-test.c   |  24 ++++
->  tests/qtest/meson.build       |   1 +
->  9 files changed, 653 insertions(+), 10 deletions(-)
->  create mode 100644 hw/sensor/adm1266.c
->  create mode 100644 tests/qtest/adm1266-test.c
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+>Perhaps we could add a
+>
+>  case 0x0:
+>
+>in front of the above label for compatibility with PIIX-IDE? That way, th=
+is function could be reused in the future for resetting PIIX-IDE=2E
+>
+>>+        /* Both channels legacy mode */
+>>+
+>>+        /* Zero BARs */
+>>+        pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x0);
+>>+        pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x0);
+>>+        pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x0);
+>>+        pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x0);
+>>+
+>>+        /* Clear interrupt pin */
+>>+        pci_config_set_interrupt_pin(d->config, 0);
+>
+>Do we really need to toggle the interrupt pin in this function? Or is thi=
+s VIA-specific? This byte isn't even defined for PIIX-IDE=2E
+>
+>Best regards,
+>Bernhard
+>
+>>+
+>>+        /* Add legacy IDE ports */
+>>+        if (!s->bus[0]=2Eportio_list=2Eowner) {
+>>+            portio_list_init(&s->bus[0]=2Eportio_list, OBJECT(d),
+>>+                             ide_portio_list, &s->bus[0], "ide");
+>>+            portio_list_add(&s->bus[0]=2Eportio_list,
+>>+                            pci_address_space_io(d), 0x1f0);
+>>+        }
+>>+
+>>+        if (!s->bus[0]=2Eportio2_list=2Eowner) {
+>>+            portio_list_init(&s->bus[0]=2Eportio2_list, OBJECT(d),
+>>+                             ide_portio2_list, &s->bus[0], "ide");
+>>+            portio_list_add(&s->bus[0]=2Eportio2_list,
+>>+                            pci_address_space_io(d), 0x3f6);
+>>+        }
+>>+
+>>+        if (!s->bus[1]=2Eportio_list=2Eowner) {
+>>+            portio_list_init(&s->bus[1]=2Eportio_list, OBJECT(d),
+>>+                                ide_portio_list, &s->bus[1], "ide");
+>>+            portio_list_add(&s->bus[1]=2Eportio_list,
+>>+                            pci_address_space_io(d), 0x170);
+>>+        }
+>>+
+>>+        if (!s->bus[1]=2Eportio2_list=2Eowner) {
+>>+            portio_list_init(&s->bus[1]=2Eportio2_list, OBJECT(d),
+>>+                             ide_portio2_list, &s->bus[1], "ide");
+>>+            portio_list_add(&s->bus[1]=2Eportio2_list,
+>>+                            pci_address_space_io(d), 0x376);
+>>+        }
+>>+        break;
+>>+
+>>+    case 0x8f:
+>>+        /* Both channels native mode */
+>>+
+>>+        /* Set interrupt pin */
+>>+        pci_config_set_interrupt_pin(d->config, 1);
+>>+
+>>+        /* Remove legacy IDE ports */
+>>+        if (s->bus[0]=2Eportio_list=2Eowner) {
+>>+            portio_list_del(&s->bus[0]=2Eportio_list);
+>>+            portio_list_destroy(&s->bus[0]=2Eportio_list);
+>>+        }
+>>+
+>>+        if (s->bus[0]=2Eportio2_list=2Eowner) {
+>>+            portio_list_del(&s->bus[0]=2Eportio2_list);
+>>+            portio_list_destroy(&s->bus[0]=2Eportio2_list);
+>>+        }
+>>+
+>>+        if (s->bus[1]=2Eportio_list=2Eowner) {
+>>+            portio_list_del(&s->bus[1]=2Eportio_list);
+>>+            portio_list_destroy(&s->bus[1]=2Eportio_list);
+>>+        }
+>>+
+>>+        if (s->bus[1]=2Eportio2_list=2Eowner) {
+>>+            portio_list_del(&s->bus[1]=2Eportio2_list);
+>>+            portio_list_destroy(&s->bus[1]=2Eportio2_list);
+>>+        }
+>>+        break;
+>>+    }
+>>+}
+>>+
+>> static IDEState *bmdma_active_if(BMDMAState *bmdma)
+>> {
+>>     assert(bmdma->bus->retry_unit !=3D (uint8_t)-1);
+>>diff --git a/include/hw/ide/pci=2Eh b/include/hw/ide/pci=2Eh
+>>index 1ff469de87=2E=2Ea814a0a7c3 100644
+>>--- a/include/hw/ide/pci=2Eh
+>>+++ b/include/hw/ide/pci=2Eh
+>>@@ -61,6 +61,7 @@ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val);
+>> void bmdma_status_writeb(BMDMAState *bm, uint32_t val);
+>> extern MemoryRegionOps bmdma_addr_ioport_ops;
+>> void pci_ide_create_devs(PCIDevice *dev);
+>>+void pci_ide_update_mode(PCIIDEState *s);
+>>=20
+>> extern const VMStateDescription vmstate_ide_pci;
+>> extern const MemoryRegionOps pci_ide_cmd_le_ops;
 
