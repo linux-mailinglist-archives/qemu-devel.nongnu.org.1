@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED957D2F9D
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 12:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740AC7D2FEA
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 12:31:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qus4m-0001qO-Ib; Mon, 23 Oct 2023 06:22:24 -0400
+	id 1qusCV-0003sj-Ug; Mon, 23 Oct 2023 06:30:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qus4k-0001pp-7s
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:22:22 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qus4g-0006gp-Vf
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:22:20 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-507bd19eac8so4525264e87.0
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 03:22:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698056537; x=1698661337; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=akSx94y29wJ1BBmll8Y5u7TkxESKwKfaGVRLD7rBkcs=;
- b=mE7Q835yWeAIeK3jO2MIIW36Ck3xxM1FmGDXtCMJRVIPtaXgKHfBopUUKyV/Lm+1gz
- zZJDf6rV0UX+qfjDsn0JsSEbjyuMSWwqRv9H03+ziY6CfVVhehcWAzpPcUIujPRKGcZi
- DfeQ6RBMMPluOmev48n9LidFIXo33ZS1fD2fP3TiWcVNlDh1g0BFRtmphbzsTKn8XDUe
- xVJZilGFOPjp9u+salqsFK8aYzxtypIm8TeAb95Y76dprOIVqclPzcP8ft0oq+LAOBZW
- +3wkxEqCZMJdwqfzj3oF+o7WZdYi7/cX7vcRq6CAkZqTdI+6J23ySF8B9VoPbBpEcPcu
- 6AIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698056537; x=1698661337;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=akSx94y29wJ1BBmll8Y5u7TkxESKwKfaGVRLD7rBkcs=;
- b=mo7WDNL0TTUZGBBzxl6g5CA56CdrHz0jGgoDAoo7NGMRBsJbKpJBGnJd6Jqe8cs1xJ
- ps3znXu6J5W5IEHIDlVcjptYFb78YeiiUsMT/wPNq32HlpobsKhUNnSaKVU0DP30AK6m
- +MFT33x//4gn/orHb55kVwKjb0GhH61eSFI21ccRKDOCr2kyFWyRciBLXkVDG4di0neF
- 1CTUtW8+72HBgB+i/lPdYRctj6tJGK35/jvnm1a9EtWayUYfbS4T/fmiYsNsKYr2/Ya9
- vDxmwf11ObsOC+rTgyckJ63sYuqPptPiqh2fyKrTYok8wGLXaWHM1AjGPcNNPHbj6Oxg
- 4ZGg==
-X-Gm-Message-State: AOJu0Yx7iLtiNTUDDqRUK0A1B+lUkmU7QPZvRBjdYFogMBviH8L5U1E1
- X7un7gEJXVuPmUUoG+jnnM1wGR3AX6IKhcPOS4pJMw==
-X-Google-Smtp-Source: AGHT+IEGLJYNEeLG8veZiujgOlXgghnHt/Jqe+RAmmpj//wibCiq9pwtu5cLjb8/GEptDsI/g7Mn3BWhjyJvJtUgqHI=
-X-Received: by 2002:a05:6512:3c9f:b0:507:96e7:c08d with SMTP id
- h31-20020a0565123c9f00b0050796e7c08dmr3585632lfv.61.1698056537025; Mon, 23
- Oct 2023 03:22:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qusCR-0003s4-Bl
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:30:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qusCN-0008Pi-2U
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 06:30:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698057012;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ngrzek2AH0ra100BB2zUNnm1vbQMvZi/VznuLHeTwZA=;
+ b=gNv1xgrkXP8kn6h4R46M/smmQ/qsfGtxuI01j6aqse1ldFwKbfu7MF6t7iuHmTtY8UxQFF
+ EJcvm1ILJRREp1GLN1bqjxqjmGh6RwzDr6N27pO+TDwQwN1U36jzmgn+b0wyBmYWT0ydT0
+ I4GYKdyfr4cmwWjUn5GK/PglkBZZ6M8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-505-t8OHTqFCPoGx-Lt0hzwlAg-1; Mon, 23 Oct 2023 06:30:10 -0400
+X-MC-Unique: t8OHTqFCPoGx-Lt0hzwlAg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08F03811E94;
+ Mon, 23 Oct 2023 10:30:10 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.124])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CCE641121314;
+ Mon, 23 Oct 2023 10:30:07 +0000 (UTC)
+Date: Mon, 23 Oct 2023 11:29:55 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: "Liu, Yuan1" <yuan1.liu@intel.com>
+Cc: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ "farosas@suse.de" <farosas@suse.de>,
+ "leobras@redhat.com" <leobras@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>
+Subject: Re: [PATCH 0/5] Live Migration Acceleration with IAA Compression
+Message-ID: <ZTZLI1r+U5EbX12E@redhat.com>
+References: <20231018221224.599065-1-yuan1.liu@intel.com>
+ <87cyxa6dso.fsf@secure.mitica> <ZTFCnqbbqlmsUkRC@redhat.com>
+ <ZTFJ84SnSOAcU5gY@x1n> <ZTFL+N3mxESxXpfv@redhat.com>
+ <BY5PR11MB4388F9495DD42ACCFB980A6CA3D8A@BY5PR11MB4388.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-References: <20231023024059.3858349-1-gaosong@loongson.cn>
- <b0e7be32-ab05-a39c-f722-44b2eaac8318@loongson.cn>
-In-Reply-To: <b0e7be32-ab05-a39c-f722-44b2eaac8318@loongson.cn>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 23 Oct 2023 11:22:06 +0100
-Message-ID: <CAFEAcA8UEC1XSsjuSbwDmiUs03VVK=wTY0PHSte-4f1=hk3EgA@mail.gmail.com>
-Subject: Re: [PATCH] target/loongarch: Support 4K page size
-To: maobibo <maobibo@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org, 
- richard.henderson@linaro.org, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BY5PR11MB4388F9495DD42ACCFB980A6CA3D8A@BY5PR11MB4388.namprd11.prod.outlook.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,57 +86,130 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 23 Oct 2023 at 05:06, maobibo <maobibo@loongson.cn> wrote:
->
->
->
-> =E5=9C=A8 2023/10/23 =E4=B8=8A=E5=8D=8810:40, Song Gao =E5=86=99=E9=81=93=
-:
-> > The LoongArch kernel supports 4K page size.
-> > Change TARGET_PAGE_BITS to 12.
-> >
-> > Signed-off-by: Song Gao <gaosong@loongson.cn>
-> > ---
-> >   target/loongarch/cpu-param.h  | 2 +-
-> >   target/loongarch/tlb_helper.c | 9 ++++-----
-> >   2 files changed, 5 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.=
-h
-> > index 1265dc7cb5..cfe195db4e 100644
-> > --- a/target/loongarch/cpu-param.h
-> > +++ b/target/loongarch/cpu-param.h
-> > @@ -12,6 +12,6 @@
-> >   #define TARGET_PHYS_ADDR_SPACE_BITS 48
-> >   #define TARGET_VIRT_ADDR_SPACE_BITS 48
-> >
-> > -#define TARGET_PAGE_BITS 14
-> > +#define TARGET_PAGE_BITS 12
-> Hi Gaosong,
->
-> The popular OS about LoongArch still uses 16K page size, qemu should
-> follow the rule of OS rather than defining 4K page size alone.
+On Mon, Oct 23, 2023 at 08:33:44AM +0000, Liu, Yuan1 wrote:
+> > -----Original Message-----
+> > From: Daniel P. Berrangé <berrange@redhat.com>
+> > Sent: Thursday, October 19, 2023 11:32 PM
+> > To: Peter Xu <peterx@redhat.com>
+> > Cc: Juan Quintela <quintela@redhat.com>; Liu, Yuan1
+> > <yuan1.liu@intel.com>; farosas@suse.de; leobras@redhat.com; qemu-
+> > devel@nongnu.org; Zou, Nanhai <nanhai.zou@intel.com>
+> > Subject: Re: [PATCH 0/5] Live Migration Acceleration with IAA Compression
+> > 
+> > On Thu, Oct 19, 2023 at 11:23:31AM -0400, Peter Xu wrote:
+> > > On Thu, Oct 19, 2023 at 03:52:14PM +0100, Daniel P. Berrangé wrote:
+> > > > On Thu, Oct 19, 2023 at 01:40:23PM +0200, Juan Quintela wrote:
+> > > > > Yuan Liu <yuan1.liu@intel.com> wrote:
+> > > > > > Hi,
+> > > > > >
+> > > > > > I am writing to submit a code change aimed at enhancing live
+> > > > > > migration acceleration by leveraging the compression capability
+> > > > > > of the Intel In-Memory Analytics Accelerator (IAA).
+> > > > > >
+> > > > > > Enabling compression functionality during the live migration
+> > > > > > process can enhance performance, thereby reducing downtime and
+> > > > > > network bandwidth requirements. However, this improvement comes
+> > > > > > at the cost of additional CPU resources, posing a challenge for
+> > > > > > cloud service providers in terms of resource allocation. To
+> > > > > > address this challenge, I have focused on offloading the compression
+> > overhead to the IAA hardware, resulting in performance gains.
+> > > > > >
+> > > > > > The implementation of the IAA (de)compression code is based on
+> > > > > > Intel Query Processing Library (QPL), an open-source software
+> > > > > > project designed for IAA high-level software programming.
+> > > > >
+> > > > > After reviewing the patches:
+> > > > >
+> > > > > - why are you doing this on top of old compression code, that is
+> > > > >   obsolete, deprecated and buggy
+> Some users have not enabled the multifd feature yet, but they will decide whether to enable the compression feature based on the load situation. So I'm wondering if, without multifd, the compression functionality will no longer be available?
+> 
+> > > > > - why are you not doing it on top of multifd.
+> I plan to submit the support for multifd independently because the
+> multifd compression and legacy compression code are separate.
 
-The TARGET_PAGE_BITS value in QEMU is a property of the hardware,
-not the guest OS. It should specify the smallest page size the
-guest can configure the CPU to use. If the guest asks for a
-larger page size than the minimum then that works fine. See
-for example PPC64 -- on this architecture both 4K and 64K
-pages are possible, so we define TARGET_PAGE_BITS to 12,
-even though a lot of Linux guests use 64K pages.
+So the core question her (for migration maintainers) is whether
+contributors should be spending any time at all on non-multifd
+code, or if new features should be exclusively for multifd ?
 
-It is slightly less efficient when the guest uses a page size
-larger than the TARGET_PAGE_BITS value indicates, so if you
-have an architecture where some CPUs support small pages
-but most do not, you can do what Arm does, and use the
-TARGET_PAGE_BITS_VARY support. This makes the TARGET_PAGE_BITS
-macro be a runtime-configurable value, where a machine model can
-set the mc->minimum_page_bits value to indicate that that
-machine doesn't need the small-pages handling.
+I doesn't make a lot of sense over the long term to have people
+spending time implementing the same features twice. IOW, should
+we be directly contributors explicitly towards multifd only,
+and even consider deprecating non-multifd code at some time ?
 
-thanks
--- PMM
+> > > > I'm not sure that is ideal approach.  IIUC, the IAA/QPL library is
+> > > > not defining a new compression format. Rather it is providing a
+> > > > hardware accelerator for 'deflate' format, as can be made compatible
+> > > > with zlib:
+> > > >
+> > > >
+> > > > https://intel.github.io/qpl/documentation/dev_guide_docs/c_use_cases
+> > > > /deflate/c_deflate_zlib_gzip.html#zlib-and-gzip-compatibility-refere
+> > > > nce-link
+> > > >
+> > > > With multifd we already have a 'zlib' compression format, and so
+> > > > this IAA/QPL logic would effectively just be a providing a second
+> > > > implementation of zlib.
+> > > >
+> > > > Given the use of a standard format, I would expect to be able to use
+> > > > software zlib on the src, mixed with IAA/QPL zlib on the target, or
+> > > > vica-verca.
+> > > >
+> > > > IOW, rather than defining a new compression format for this, I think
+> > > > we could look at a new migration parameter for
+> > > >
+> > > > "compression-accelerator": ["auto", "none", "qpl"]
+> > > >
+> > > > with 'auto' the default, such that we can automatically enable
+> > > > IAA/QPL when 'zlib' format is requested, if running on a suitable
+> > > > host.
+> > >
+> > > I was also curious about the format of compression comparing to
+> > > software ones when reading.
+> > >
+> > > Would there be a use case that one would prefer soft compression even
+> > > if hardware accelerator existed, no matter on src/dst?
+> > >
+> > > I'm wondering whether we can avoid that one more parameter but always
+> > > use hardware accelerations as long as possible.
+>
+> I want to add a new compression format(QPL or IAA-Deflate) here.
+> The reasons are as follows:
+>
+> 1. The QPL library already supports both software and hardware paths
+>    for compression. The software path uses a fast Deflate compression
+>    algorithm, while the hardware path uses IAA.
+
+That's not a reason to describe this as a new format in QEMU. It is
+still deflate, and so conceptually we can model this as 'zlib' and
+potentially choose to use QPL automatically.
+
+> 2. QPL's software and hardware paths are based on the Deflate algorithm,
+>    but there is a limitation: the history buffer only supports 4K. The
+>    default history buffer for zlib is 32K, which means that IAA cannot
+>    decompress zlib-compressed data. However, zlib can decompress IAA-
+>    compressed data.
+
+That's again not a reason to call it a new compression format in
+QEMU. It would mean, however, if compression-accelerator=auto, we
+would not be able to safely enable QPL on the incoming QEMU, as we
+can't be sure the src used a 4k window.  We could still automatically
+enable QPL on outgoing side though.
+
+> 3. For zlib and zstd, Intel QuickAssist Technology can accelerate
+>    both of them.
+
+What's the difference between this, and the IAA/QPL ? 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
