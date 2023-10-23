@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9737D3FA1
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A237D3FD3
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 21:07:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv06G-0003Gl-Px; Mon, 23 Oct 2023 14:56:28 -0400
+	id 1qv0FM-00074V-F4; Mon, 23 Oct 2023 15:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qv06C-0003Ga-UN
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:56:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qv0FK-00073a-L6
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 15:05:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qv06A-0007eH-ST
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:56:24 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qv0FI-0000kn-Gl
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 15:05:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698087381;
+ s=mimecast20190719; t=1698087946;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Wc3YMRBKekpqo9GoU0awDi8QO01LjQ46+Zll9W/Zkhs=;
- b=CxXsFlTMBUH7w6Ktp/uo3kLU7/xdY6ccRZ55G57YMJQuSiEAouMX5hZEtM5xRci8KG1nIP
- LlnBZovw/7XDiK5JDFQ99knGd3Fr/rp612Q0l6DNMoa5X34K0bCyuYYNOb116nO5n9HUFI
- shW9x9dXbldtABzNmdHCnHphNO0YcQE=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tHlHfLnGp9x77VLcHdmF3ex8hXUhtqlWdXqoIvugkRk=;
+ b=LB9xr1JHuGZaehEmMgtwK1QYEyOVO5DhQAkJbgkIcFL99XXVpS/t+rmbmj4ClMdFJ4tXla
+ jiUwRdJBDdZ+IieIPK1YDiGaIPnkiT1zdR5ND2FLUiBKlVU8+mM5GmJNjbJrKrL7KXWSfe
+ fvbeiDR+VKLqbQcgKOIjpEFH1NHW1kQ=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-s69JNCUbP2aVU62KZe-_7w-1; Mon, 23 Oct 2023 14:55:58 -0400
-X-MC-Unique: s69JNCUbP2aVU62KZe-_7w-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-77891ef5fc9so90031585a.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:55:58 -0700 (PDT)
+ us-mta-436-6Oxe3DsRMBaX--I8R1zcyg-1; Mon, 23 Oct 2023 15:05:29 -0400
+X-MC-Unique: 6Oxe3DsRMBaX--I8R1zcyg-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-1e9d213d27bso581537fac.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 12:05:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698087357; x=1698692157;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wc3YMRBKekpqo9GoU0awDi8QO01LjQ46+Zll9W/Zkhs=;
- b=Hi4Z6Tv4mwoF5CzmfRhZB7VkPn3DaFGgklHKb1R0X26peR5QtdPyvHFWTTkNExcgUR
- 71PJpD+4n4DvXTs3+XQHG0hMpyZhZo40tq9OmEtBHStkmR0N2f96rtW/SyCFLWQYlelO
- /rAZkgeopiSJniyYbWr95h25QZVPR9Px8E9w3XPjg4tFXCOXSUhlcN7qHUq3XuSTHwfu
- 1tb3J1l7VBBGMy/lLVKwi08XtV5PPQn+1KvfCzJ/vt/UK341IF3wAsXBuVtaTwxnS+m9
- HmPC9KkiCMhEIa+f/FMEPMXN33q66Cu2aUMjM7ECqYqgv/VOs5corZb5CkhgULf1Hsmh
- TPfA==
-X-Gm-Message-State: AOJu0YzqyWBKzfc8ZkFLu60Ec5jKjxsKcuozY5Ra5mftkN8pM9FwvHjz
- eN0lPdxG2JbsvXrhVu8hcn5LwIhPRC8nhiLZyo1Oy45gIgxFyZqYE2JvA3wjXZ/ADKMtvhzTR+z
- Gg3TTX7PMmnSwBao=
-X-Received: by 2002:a05:620a:27cc:b0:776:f188:eee6 with SMTP id
- i12-20020a05620a27cc00b00776f188eee6mr10247870qkp.2.1698087357554; 
- Mon, 23 Oct 2023 11:55:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmEbJKldVjgrsg5e6BU5zY8FpZUtyQFIRWKlfdjXV3Nni6B2XWQKD35sM1Oqdmp6TPTM52cg==
-X-Received: by 2002:a05:620a:27cc:b0:776:f188:eee6 with SMTP id
- i12-20020a05620a27cc00b00776f188eee6mr10247856qkp.2.1698087357191; 
- Mon, 23 Oct 2023 11:55:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698087929; x=1698692729;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tHlHfLnGp9x77VLcHdmF3ex8hXUhtqlWdXqoIvugkRk=;
+ b=MjHqEPc1TgL91mdVYuwWV0Cf0iKghIKfYPzpYZmSCQVf9OKxIEq+Wxj58kjXGyG3gL
+ cOmAbXXbRLGT0I/BnoIEHLFoxfPMfYcI5Uf6yFqxfVAzkmPZQEgCws5ANgjkENYMHZFJ
+ zaOa3qRdoVrSSuXNtFHXi9ysEzjMKbVFuhFOPUGeaK38Z6jXsFl0/DyttBb2NgW4KJCq
+ veIXuSIFjyYQGGCQxeAhJaICRoXZ/BMyMDZPLk8ETlHjd1MuUEhGoVioDtq8gOWADSWY
+ 68CeX4boj6R0t5Aqz8yeYDJtYCL5NKguDoS+MFbObGvk5nv4sZIx/Bfw8rCCQqXXoaLK
+ oQ3w==
+X-Gm-Message-State: AOJu0YxbKzGfUYJ826uefnSkCYkyfpaOE25e/5SebSpgcu095iI0l92H
+ pADh4kk87JHpB8siuzzG3nLqZO5OkP1TOPXd/SEA/9G//gFBmI16429LzylZL2lH98dLmzzgG+i
+ sKeeRYLNJvSi9S/w=
+X-Received: by 2002:a05:6870:4d17:b0:1e9:8a7e:5893 with SMTP id
+ pn23-20020a0568704d1700b001e98a7e5893mr12383691oab.5.1698087928793; 
+ Mon, 23 Oct 2023 12:05:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERzLt9+HFFCW3h0k1K5O3UMXgHU8Y2jhaLmFBLrU8a9DgIg62VCIXYKn/RM5rNrik4tuO/Nw==
+X-Received: by 2002:a05:6870:4d17:b0:1e9:8a7e:5893 with SMTP id
+ pn23-20020a0568704d1700b001e98a7e5893mr12383665oab.5.1698087928416; 
+ Mon, 23 Oct 2023 12:05:28 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- c6-20020a05620a11a600b007756f60bcacsm2905761qkk.79.2023.10.23.11.55.56
+ gd14-20020a05622a5c0e00b0041b381b9833sm2929996qtb.75.2023.10.23.12.05.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 11:55:56 -0700 (PDT)
-Date: Mon, 23 Oct 2023 14:55:54 -0400
+ Mon, 23 Oct 2023 12:05:28 -0700 (PDT)
+Date: Mon, 23 Oct 2023 15:05:26 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: ram_save_complete() is fishy (was: Re: [PATCH] migration/ram:
- Fix compilation with -Wshadow=local)
-Message-ID: <ZTbBuhMOUCwCs8Km@x1n>
-References: <20231023145044.104866-1-thuth@redhat.com> <ZTaX00kf3UcQG/AF@x1n>
- <a326eafb-955b-4867-94f5-052672f93138@redhat.com>
- <75a76824-9b8e-45d3-a2ae-718295223715@redhat.com>
+Subject: Re: [PATCH V1 4/4] cpr: reboot mode
+Message-ID: <ZTbD9kL1ggc8UsVK@x1n>
+References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
+ <1697748466-373230-5-git-send-email-steven.sistare@oracle.com>
+ <ZTaTrEPcK2yU8MT5@x1n>
+ <389959d5-6d15-4557-839b-575b43bd2ed4@oracle.com>
+ <17f8d519-f86f-4857-93c4-080f0b18834b@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <75a76824-9b8e-45d3-a2ae-718295223715@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <17f8d519-f86f-4857-93c4-080f0b18834b@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,101 +100,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 07:30:04PM +0200, Thomas Huth wrote:
-> On 23/10/2023 19.11, Thomas Huth wrote:
-> > On 23/10/2023 17.57, Peter Xu wrote:
-> > > On Mon, Oct 23, 2023 at 04:50:44PM +0200, Thomas Huth wrote:
-> > > > No need for a new variable here, especially not for one that shadows
-> > > > a variable from the beginning of the function scope. With this change
-> > > > the code now successfully compiles with -Wshadow=local.
-> > > > 
-> > > > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > > > ---
-> > > >   migration/ram.c | 3 +--
-> > > >   1 file changed, 1 insertion(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/migration/ram.c b/migration/ram.c
-> > > > index 92769902bb..9de9e54fa9 100644
-> > > > --- a/migration/ram.c
-> > > > +++ b/migration/ram.c
-> > > > @@ -3238,8 +3238,7 @@ static int ram_save_complete(QEMUFile *f,
-> > > > void *opaque)
-> > > >           ram_flush_compressed_data(rs);
-> > > > -        int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
-> > > > -        if (ret < 0) {
-> > > > +        if (rdma_registration_stop(f, RAM_CONTROL_FINISH) < 0) {
-> > > 
-> > > We may need to rename "ret" to something else?  qemu_file_set_error(),
-> > > right below, will reference the error returned.
-> > > 
-> > > >               qemu_file_set_error(f, ret);   <-----------------
+On Mon, Oct 23, 2023 at 02:51:50PM -0400, Steven Sistare wrote:
+> On 10/23/2023 2:29 PM, Steven Sistare wrote:
+> > On 10/23/2023 11:39 AM, Peter Xu wrote:
+> >> On Thu, Oct 19, 2023 at 01:47:46PM -0700, Steve Sistare wrote:
+> >>> Add the cpr-reboot migration mode.  Usage:
+> >>>
+> >>> $ qemu-system-$arch -monitor stdio ...
+> >>> QEMU 8.1.50 monitor - type 'help' for more information
+> >>> (qemu) migrate_set_capability x-ignore-shared on
+> >>> (qemu) migrate_set_parameter mode cpr-reboot
+> >>> (qemu) migrate -d file:vm.state
+> >>> (qemu) info status
+> >>> VM status: paused (postmigrate)
+> >>> (qemu) quit
+> >>>
+> >>> $ qemu-system-$arch -monitor stdio -incoming defer ...
+> >>> QEMU 8.1.50 monitor - type 'help' for more information
+> >>> (qemu) migrate_set_capability x-ignore-shared on
+> >>> (qemu) migrate_set_parameter mode cpr-reboot
+> >>> (qemu) migrate_incoming file:vm.state
+> >>> (qemu) info status
+> >>> VM status: running
+> >>>
+> >>> In this mode, the migrate command saves state to a file, allowing one
+> >>> to quit qemu, reboot to an updated kernel, and restart an updated version
+> >>> of qemu.  The caller must specify a migration URI that writes to and reads
+> >>> from a file.  Unlike normal mode, the use of certain local storage options
+> >>> does not block the migration, but the caller must not modify guest block
+> >>> devices between the quit and restart.  The guest RAM memory-backend must
+> >>> be shared, and the @x-ignore-shared migration capability must be set,
+> >>> to avoid saving RAM to the file.  Guest RAM must be non-volatile across
+> >>> reboot, such as by backing it with a dax device, but this is not enforced.
+> >>> The restarted qemu arguments must match those used to initially start qemu,
+> >>> plus the -incoming option.
+> >>>
+> >>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> >>> ---
+> >>>  qapi/migration.json | 16 +++++++++++++++-
+> >>>  1 file changed, 15 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/qapi/migration.json b/qapi/migration.json
+> >>> index 184fb78..2d862fa 100644
+> >>> --- a/qapi/migration.json
+> >>> +++ b/qapi/migration.json
+> >>> @@ -620,9 +620,23 @@
+> >>>  #
+> >>>  # @normal: the original form of migration. (since 8.2)
+> >>>  #
+> >>> +# @cpr-reboot: The migrate command saves state to a file, allowing one to
+> >>> +#              quit qemu, reboot to an updated kernel, and restart an updated
+> >>> +#              version of qemu.  The caller must specify a migration URI
+> >>> +#              that writes to and reads from a file.  Unlike normal mode,
+> >>> +#              the use of certain local storage options does not block the
+> >>> +#              migration, but the caller must not modify guest block devices
+> >>> +#              between the quit and restart.  The guest RAM memory-backend
+> >>> +#              must be shared, and the @x-ignore-shared migration capability
+> >>> +#              must be set, to avoid saving it to the file.  Guest RAM must
+> >>> +#              be non-volatile across reboot, such as by backing it with
+> >>> +#              a dax device, but this is not enforced.  The restarted qemu
+> >>> +#              arguments must match those used to initially start qemu, plus
+> >>> +#              the -incoming option. (since 8.2)
+> >>
+> >> What happens if someone migrates with non-shared memory, or without
+> >> ignore-shared?  Is it only because it'll be slow saving and loading?
+> >>
+> >> If that's required, we should fail the mode set if (1) non-shared memory is
+> >> used, or (2) x-ignore-shared is not enabled.  But I had a feeling it's the
+> >> other way round.
 > > 
-> > Oh, drat, right ... that's exactly one of the reasons why shadowing
-> > variables is a bad idea ;-)
+> > Juan also asked me to clarify this.  I plan to resubmit this:
 > > 
-> > I'll redo a v2.
-> 
-> Actually, there is more fishy stuff in this function:
-> 
-> static int ram_save_complete(QEMUFile *f, void *opaque)
-> {
->     ...
->     int ret = 0;
->     ...
->     WITH_RCU_READ_LOCK_GUARD() {
->         ...
->         ret = rdma_registration_start(f, RAM_CONTROL_FINISH);
->         if (ret < 0) {
->             qemu_file_set_error(f, ret);
-> ### here we use the outer "ret" variable         ###
+> > #                                        ...  Private guest RAM is saved in
+> > #              the file.  To avoid this cost, the guest RAM memory-backend
+> > #              must be shared, and the @x-ignore-shared migration capability
+> > #              must be set.  ...
 
-[1]
+Okay.  We can also avoid mentioning "private guest RAM is saved to ..."
+because that's what migration already does.  IMO we can simplify all that
+to:
 
->         }
->         ...
->         while (true) {
->             int pages;
-> 
->             pages = ram_find_and_save_block(rs);
->             /* no more blocks to sent */
->             if (pages == 0) {
-> ### here we break without touching "ret" (preserving the previous error) ###
->                 break;
->             }
->             if (pages < 0) {
->                 ret = pages;
-> ###  we only replace the outer "ret" in this break-case here
->                 break;
->             }
->         }
->         ...
->         int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
-> ### so while ret from rdma_registration_start() might be propageted
-> ### below, the ret from rdma_registration_stop() is only local here?
->         if (ret < 0) {
->             qemu_file_set_error(f, ret);
+  It is suggested to use share memory with x-ignore-shared when using this
+  mode.
 
-[2]
+> > 
+> >>
+> >> Reading the whole series, if it's so far all about "local storage", why
+> >> "cpr-reboot"?  Why not "local" or "local storage" as the name?
+> > 
+> > The use case is about rebooting and updating the host, so reboot is in 
+> > the name.  Local storage just happens to be allowed for it.
+> > 
+> >> I had a feeling that this patchset mixed a lot of higher level use case
+> >> into the mode definition.  IMHO we should provide clear definition of each
+> >> mode on what it does.  It's so far not so clear to me, even if I kind of
+> >> know what you plan to do.
+> > 
+> > I believe I already have, in the cover letter, commit message, and qapi 
+> > definition, at the start of each:
+> > 
+> > # @cpr-reboot: The migrate command saves state to a file, allowing one to
+> > #              quit qemu, reboot to an updated kernel, and restart an updated
+> > #              version of qemu.
 
->         }
->     }
-> 
->     if (ret < 0) {
-> ### this might trigger by the "ret" from rdma_registration_start() but
-> ### not by the one from rdma_registration_stop()? ... very weird...
->         return ret;
->     }
-> 
-> Looks like commit 48408174a7ec7 messed up with the return types pretty badly
-> ... any suggestions what's the right way forward here? Should the return
-> value of rdma_registration_start() only be used for the
-> qemu_file_set_error(), too? Or should the return value of
-> rdma_registration_stop() be allowed to be used for the "return ret" at the
-> end, too?
+I think this is why I'm confused: above sentence is describing a very
+generic migration to file scenario to me.  IOW, I think I can get the same
+result described even with normal migration to file, or am I wrong?
 
-Right that's indeed confusing, but it seems confusing too even before that
-commit.  AFAICT, we should "break" for both [1][2] above for any error
-occured..
+IMHO the description here needs to explain the difference and when an user
+should use this mode.  I think the real answer resides in your whole set,
+I'll try to read that.
+
+In all cases, can we name it something like "live-upgrade" v.s. "normal"?
+
+> > 
+> > The cover letter hints at the cpr-exec use case, and the long V9 patch series
+> > describes it, and I will make sure the use case comes first when I submit cpr-exec,
+> > which is:
+>     * restart an updated version of qemu     (I buried the lead - steve)
+> >   * much shorter guest downtime than cpr reboot
+> >   * support vfio without requiring guest suspension
+> >   * keep certain character devices alive
+> > 
+> >> I tried again google what CPR is for and found this:
+> >>
+> >> https://lists.gnu.org/archive/html/qemu-devel/2020-07/msg08541.html
+> >>
+> >> I also prefer spell it out, at least make it clear on what that means..  I
+> >> didn't even see "Checkpoint/restart" words mentioned anywhere in this
+> >> patchset.
+> > 
+> > Will do.
+> > 
+> >> Besides: do you have a tree somewhere for the whole set of latest CPR work?
+> > 
+> > I have the V9 patch series:
+> >   https://lore.kernel.org/qemu-devel/1658851843-236870-1-git-send-email-steven.sistare@oracle.com
+> > and I can re-send my proposal for breaking it down into patch sets that I presented in the
+> > qemu community meeting, if you did not save it.
+
+No need to resend.  A link is exactly what I need; git tree even better.
+I'll comment when I get something when reading that.
 
 Thanks,
 
