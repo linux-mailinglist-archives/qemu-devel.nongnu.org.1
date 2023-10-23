@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91027D382F
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F417D3848
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:41:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quv4a-000870-Na; Mon, 23 Oct 2023 09:34:24 -0400
+	id 1quvAa-00073w-Nu; Mon, 23 Oct 2023 09:40:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quv4U-00082G-7c
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:34:19 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvAN-0006xK-LY
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:40:23 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quv4R-0005r3-Ur
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:34:17 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvAL-00070I-Kv
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:40:23 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B1A0E1FE18;
- Mon, 23 Oct 2023 13:34:14 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id B686321AE8;
+ Mon, 23 Oct 2023 13:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698068054; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698068418; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=zJobP9XGCF5bizBy7a41YExA00ZhJ2wfDsUh9BBgQKE=;
- b=2SxUt78fePhAcklbYr6/ETGzGbkGejJOqkgcGKtm1LY//NO62IVH2krhe1k9LXug+Ukfvn
- 9KxMFyadaSSbXwjdtRrvLsZCxmnqKXq/hKZjUFKFldILJ2aGfMOcAUPF9atMR/MIrjPdHA
- 3JEF3dZ4Ippi9v3jQxnaWcuOc50muGk=
+ bh=UaM64wLyTcYX5DuzcSxpwPt6uERYdOCcpkjwxp19+eE=;
+ b=RgInh6Lhq+2GT746rjCBMNxNslIY9t5iEdJkghh7HtcFxLptoDKIGnB/4jPCK6WKDDDVNR
+ JNVB8j1e9by5kaXdiiPLczhczPb7TnQA5N6oIhqP1XxKB9MQOzWux5Adq/NYwq6P/Y9G1G
+ YUji9//4bHSRGbwYniOUGW+zZHIBWqc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698068054;
+ s=susede2_ed25519; t=1698068418;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=zJobP9XGCF5bizBy7a41YExA00ZhJ2wfDsUh9BBgQKE=;
- b=NU1d87SE4VfL9GxVASQ+tTvVvDg9Miz1IwZe4J6wAOzy+Bnc7Zy7LUWa5cUd+nxh74EpBM
- GxfE2UkhTWxOZjAg==
+ bh=UaM64wLyTcYX5DuzcSxpwPt6uERYdOCcpkjwxp19+eE=;
+ b=zKvnYg+upZYaxxs+K6OSQKzB/l0kr+nvead+OCWeb6A+M5JDXZ38xt7lB1UBA2YmT1jR80
+ XpoxXA4s8q1wdsDA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 29F6C132FD;
- Mon, 23 Oct 2023 13:34:13 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3FE8D132FD;
+ Mon, 23 Oct 2023 13:40:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id ZgsZOlV2NmUpUgAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 13:34:13 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id +kpbA8J3NmX+VQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 13:40:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
 Cc: Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>, Juan
- Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v2 03/11] migration: Remove save_page_use_compression()
-In-Reply-To: <20231019110724.15324-4-quintela@redhat.com>
+ Quintela <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>
+Subject: Re: [PATCH v2 04/11] migration: Make
+ compress_data_with_multithreads return bool
+In-Reply-To: <20231019110724.15324-5-quintela@redhat.com>
 References: <20231019110724.15324-1-quintela@redhat.com>
- <20231019110724.15324-4-quintela@redhat.com>
-Date: Mon, 23 Oct 2023 10:34:11 -0300
-Message-ID: <87r0llbgz0.fsf@suse.de>
+ <20231019110724.15324-5-quintela@redhat.com>
+Date: Mon, 23 Oct 2023 10:40:15 -0300
+Message-ID: <87lebtbgow.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: -7.09
-X-Spamd-Result: default: False [-7.09 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.99)[99.95%];
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[99.99%];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FREEMAIL_ENVRCPT(0.00)[web.de];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ RCPT_COUNT_FIVE(0.00)[6];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,web.de]
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -97,12 +100,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Juan Quintela <quintela@redhat.com> writes:
 
-> After previous patch, we disable the posiblity that we use compression
-> together with xbzrle.  So we can use directly migrate_compress().
->
-> Once there, now we don't need the rs parameter, so remove it.
->
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Reviewed-by: Lukas Straub <lukasstraub2@web.de>
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+
 
