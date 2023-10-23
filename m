@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698D87D3B0D
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A16F7D3B12
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:41:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qux1i-0000KL-HO; Mon, 23 Oct 2023 11:39:34 -0400
+	id 1qux1s-0000TZ-1X; Mon, 23 Oct 2023 11:39:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qux1h-0000KC-LJ
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:39:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qux1d-0003p6-Nt
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:39:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698075569;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3ae+Ybj5RCgWcRJNoHAbIB/oPS6lE67oR6resNNaAdE=;
- b=SE/opYCJU9sd7pgIAI9bQeq79l0tP4ON42kQNqoWu/14i0NQUuwBweCvLmtNzwsuhpGIjM
- LHpfd5J9q6VIR14KOb3uqjmcAffFDT2i2RPmepEbc5o1uMs3y1dn7FuxE0ZgrmXHalnSrq
- xFI9QmcGIvKfLv9n/Yu1hhATepLznHE=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-PeglwP8ZPsajoGY6T5Oznw-1; Mon, 23 Oct 2023 11:39:27 -0400
-X-MC-Unique: PeglwP8ZPsajoGY6T5Oznw-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66011f0d521so13377986d6.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 08:39:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698075567; x=1698680367;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qux1q-0000Sw-3g
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:39:42 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qux1o-0003q7-ES
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:39:41 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1caa371dcd8so20690915ad.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 08:39:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698075579; x=1698680379; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3ae+Ybj5RCgWcRJNoHAbIB/oPS6lE67oR6resNNaAdE=;
- b=odKjf2Lvd/+Owtjy/ClLP18DlWRCeqJIjtcOYYKg7CrmfdaY+hZ77eYmlYghBJW0u0
- E+e2GubkD45nHXk2WYd40+QXg8RBugZ1R7zP/26ctiTcIeGp+GGGl5/BCnxhgH2PUCDa
- 5z6XZ7X57GQFj6KceYpJHAqfSqMLo5d+1Du2IRVWe526wjEW0kbt4mGOOzshfTarsv8F
- 6mXmYZ7DRcEzOb54uMplJbrMAN+zH+XPxuAOREgtE2wbhvCMssMbaBbkqnlxJu9Z6MIc
- dJy6iiSqR8wuMfLeoOSXxZo3u5z1ls0yiVLnooLb0xIbc/SJ73E/66W0JUESfC0mcmv/
- AZqA==
-X-Gm-Message-State: AOJu0YxmMkSbg0i43BnDDviQpk0E3BGU64vGnl2thVhZiaPAtlw42eGp
- dktzonz23Ye1iLLdfQFnv/GdZmPwYkAUWfL+KkVhG5/AMvOeLofscAGbHddi320U9RuF8kI5mEW
- XO8+XQlNNATVsjfs=
-X-Received: by 2002:a05:6214:5509:b0:66d:1178:8729 with SMTP id
- mb9-20020a056214550900b0066d11788729mr10615137qvb.0.1698075567058; 
- Mon, 23 Oct 2023 08:39:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErOLXVo4LZyyTv6tpjCNPk9mG1QpvDEvabWcEPFydIbpD03bx6WuwQ5FgpADKnUSmwiZEWEQ==
-X-Received: by 2002:a05:6214:5509:b0:66d:1178:8729 with SMTP id
- mb9-20020a056214550900b0066d11788729mr10615117qvb.0.1698075566735; 
- Mon, 23 Oct 2023 08:39:26 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- m24-20020ac86898000000b004108ce94882sm2801605qtq.83.2023.10.23.08.39.26
+ bh=FrJFBp0QUtJN2hNlPZJWGh/625/6+NhPTSOe44ahUpo=;
+ b=N1gsTn+rgkVfVjMf4Q88/oEDQhCeFMue605emFrE+Y628XuXic4KZzjmTcV2yKpCxt
+ XN/yNMRKR4457xugGRmSiRP6W4D8buCP0hVFvYGbsmGcRmV1qWEAzOU1LBBkqOh/BApH
+ 4+jafxYwi7gKAwc9YUq5eVkADlTdPyM4bF6ufYImYVuZarbF7TsK7gNy+rV0fq228Y8A
+ VLEdc9CeLh7ATE0Xwp8ZADGcZeY+/9w8TJor6qpD2MGpFepsxq8pGz0w2fiX17wK1X4B
+ zmHedu+DxSYcraQYbiigWfraQfunhWq1E/0Q3u32FlQrOcNJcVkfNaB8oly/a2cFDqoO
+ sY6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698075579; x=1698680379;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FrJFBp0QUtJN2hNlPZJWGh/625/6+NhPTSOe44ahUpo=;
+ b=efKnRE+vT0DKwVv3VMzs6zNuKgn6Rs+vclIworooTYCeey1qIgbD+40fQb0yqGt/zb
+ KYTdmjIR2AXwKKrsJ0GL3/gRdISRy2NwZT5ArFv3b5EAxsEP0djkUKuqNa1U+OrRyH9x
+ aEymfABRC+wUNoKC8qHa/jEvfpky/xJfrNS9eug3lQUqyIyEtlRDN2s2o87XdrpW7yQZ
+ lv8s1d+rXE/qQVlMFAx8C9wJKJ7RVuJXplvax9iZ4NXZETGfmLnooaLkYY9TuWArNDGY
+ VMm+/YaIW6ZXimbr7iT7AQhJJ0Yzisj5LK8Bex8l4gAOjoGOU9f4jfFj4JkullrHW17d
+ SSdg==
+X-Gm-Message-State: AOJu0Yw5TMz14EKQ9LOcNp5eXrPrwY41C0CCtJ6Gtkw3VouiaEn8d/aK
+ qpnIGXBrkyvuzZYBWwbWZiOGox6UfVjaPKfDigQ=
+X-Google-Smtp-Source: AGHT+IHhezE0l9D02XEAc3ecB3fZ/mxUINpRgfEdoO+TjRed5bXgTiDDgTyUhXEIo4BN3gcVfl+ngg==
+X-Received: by 2002:a17:903:294e:b0:1ca:5a82:e582 with SMTP id
+ li14-20020a170903294e00b001ca5a82e582mr7701849plb.22.1698075578684; 
+ Mon, 23 Oct 2023 08:39:38 -0700 (PDT)
+Received: from grind.. ([191.255.2.33]) by smtp.gmail.com with ESMTPSA id
+ k20-20020a170902ba9400b001b891259eddsm6053063pls.197.2023.10.23.08.39.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 08:39:26 -0700 (PDT)
-Date: Mon, 23 Oct 2023 11:39:24 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH V1 4/4] cpr: reboot mode
-Message-ID: <ZTaTrEPcK2yU8MT5@x1n>
-References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
- <1697748466-373230-5-git-send-email-steven.sistare@oracle.com>
+ Mon, 23 Oct 2023 08:39:38 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 2/4] target/riscv/kvm: add zicntr reg
+Date: Mon, 23 Oct 2023 12:39:25 -0300
+Message-ID: <20231023153927.435083-3-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231023153927.435083-1-dbarboza@ventanamicro.com>
+References: <20231023153927.435083-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1697748466-373230-5-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,105 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 01:47:46PM -0700, Steve Sistare wrote:
-> Add the cpr-reboot migration mode.  Usage:
-> 
-> $ qemu-system-$arch -monitor stdio ...
-> QEMU 8.1.50 monitor - type 'help' for more information
-> (qemu) migrate_set_capability x-ignore-shared on
-> (qemu) migrate_set_parameter mode cpr-reboot
-> (qemu) migrate -d file:vm.state
-> (qemu) info status
-> VM status: paused (postmigrate)
-> (qemu) quit
-> 
-> $ qemu-system-$arch -monitor stdio -incoming defer ...
-> QEMU 8.1.50 monitor - type 'help' for more information
-> (qemu) migrate_set_capability x-ignore-shared on
-> (qemu) migrate_set_parameter mode cpr-reboot
-> (qemu) migrate_incoming file:vm.state
-> (qemu) info status
-> VM status: running
-> 
-> In this mode, the migrate command saves state to a file, allowing one
-> to quit qemu, reboot to an updated kernel, and restart an updated version
-> of qemu.  The caller must specify a migration URI that writes to and reads
-> from a file.  Unlike normal mode, the use of certain local storage options
-> does not block the migration, but the caller must not modify guest block
-> devices between the quit and restart.  The guest RAM memory-backend must
-> be shared, and the @x-ignore-shared migration capability must be set,
-> to avoid saving RAM to the file.  Guest RAM must be non-volatile across
-> reboot, such as by backing it with a dax device, but this is not enforced.
-> The restarted qemu arguments must match those used to initially start qemu,
-> plus the -incoming option.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->  qapi/migration.json | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 184fb78..2d862fa 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -620,9 +620,23 @@
->  #
->  # @normal: the original form of migration. (since 8.2)
->  #
-> +# @cpr-reboot: The migrate command saves state to a file, allowing one to
-> +#              quit qemu, reboot to an updated kernel, and restart an updated
-> +#              version of qemu.  The caller must specify a migration URI
-> +#              that writes to and reads from a file.  Unlike normal mode,
-> +#              the use of certain local storage options does not block the
-> +#              migration, but the caller must not modify guest block devices
-> +#              between the quit and restart.  The guest RAM memory-backend
-> +#              must be shared, and the @x-ignore-shared migration capability
-> +#              must be set, to avoid saving it to the file.  Guest RAM must
-> +#              be non-volatile across reboot, such as by backing it with
-> +#              a dax device, but this is not enforced.  The restarted qemu
-> +#              arguments must match those used to initially start qemu, plus
-> +#              the -incoming option. (since 8.2)
+Add zicntr support in the KVM driver now that QEMU supports it.
 
-What happens if someone migrates with non-shared memory, or without
-ignore-shared?  Is it only because it'll be slow saving and loading?
+This reg was added in Linux 6.6.
 
-If that's required, we should fail the mode set if (1) non-shared memory is
-used, or (2) x-ignore-shared is not enabled.  But I had a feeling it's the
-other way round.
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/kvm/kvm-cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Reading the whole series, if it's so far all about "local storage", why
-"cpr-reboot"?  Why not "local" or "local storage" as the name?
-
-I had a feeling that this patchset mixed a lot of higher level use case
-into the mode definition.  IMHO we should provide clear definition of each
-mode on what it does.  It's so far not so clear to me, even if I kind of
-know what you plan to do.
-
-I tried again google what CPR is for and found this:
-
-https://lists.gnu.org/archive/html/qemu-devel/2020-07/msg08541.html
-
-I also prefer spell it out, at least make it clear on what that means..  I
-didn't even see "Checkpoint/restart" words mentioned anywhere in this
-patchset.
-
-Besides: do you have a tree somewhere for the whole set of latest CPR work?
-
-Thanks,
-
-> +#
->  ##
->  { 'enum': 'MigMode',
-> -  'data': [ 'normal' ] }
-> +  'data': [ 'normal', 'cpr-reboot' ] }
->  
->  ##
->  # @BitmapMigrationBitmapAliasTransform:
-> -- 
-> 1.8.3.1
-> 
-
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index cf98071f92..0a8be40786 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -228,6 +228,7 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zicbom", ext_zicbom, KVM_RISCV_ISA_EXT_ZICBOM),
+     KVM_EXT_CFG("zicboz", ext_zicboz, KVM_RISCV_ISA_EXT_ZICBOZ),
++    KVM_EXT_CFG("zicntr", ext_zicntr, KVM_RISCV_ISA_EXT_ZICNTR),
+     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
+     KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
+     KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
 -- 
-Peter Xu
+2.41.0
 
 
