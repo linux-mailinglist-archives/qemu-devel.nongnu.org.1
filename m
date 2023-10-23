@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBCFC7D29D8
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 07:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B707D29D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 07:59:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qunwA-0003u5-SM; Mon, 23 Oct 2023 01:57:14 -0400
+	id 1qunxI-0004Dt-63; Mon, 23 Oct 2023 01:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qunw4-0003tQ-Oa
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 01:57:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qunx4-00049j-IC
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 01:58:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qunw1-0001xh-UA
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 01:57:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qunx3-00029Z-9A
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 01:58:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698040625;
+ s=mimecast20190719; t=1698040688;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Z9I8Gy+tt9muRxgB7Y4VOE11YLz3BOwS5tkxgCmtRDE=;
- b=U1xM0lG1goWaEX9qvY7p5SFAsm3/sbr5L2En8u2R3QB3Xg/3n8aSnhmqUDtPFAO5Uz170Z
- /rXPGIac4xLEsdBN1sHnuUIRD+0jH14Ue7PfqK7oFmBEqz3Sf8bleZ/SIbVzl9afBqKlsI
- 9GYJktjW1SVktVRDtvGig6Bp1c1MwtI=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9OL7gXuM5OjPge9sOBk+/4z28cPXCqGOvC1LkBp3I2k=;
+ b=O4vdZZEZwKE3U09eVpw7yNSwyyWmaA24IPmB2OgS6+IDHilgTgeA77AMyMtq4HevCjEEcA
+ aD7M3YEYJOyZhWVlMb4Ua8cwCUnTOcy8UHTlGAc3q2ZNT9RZ6JdmtmT6Eadedu0NyDervH
+ ohTKC2J/UR363wKTWqzGjSXgFs9g2Xs=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-198-6DAWWVx9PEyU2N56X541TA-1; Mon, 23 Oct 2023 01:57:01 -0400
-X-MC-Unique: 6DAWWVx9PEyU2N56X541TA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9c7f0a33afbso102843966b.3
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 22:57:01 -0700 (PDT)
+ us-mta-62-GFvTF6xfONmQhrLz4jyCFw-1; Mon, 23 Oct 2023 01:58:06 -0400
+X-MC-Unique: GFvTF6xfONmQhrLz4jyCFw-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c50bebd8dfso25188301fa.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 22:58:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698040620; x=1698645420;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z9I8Gy+tt9muRxgB7Y4VOE11YLz3BOwS5tkxgCmtRDE=;
- b=Le/6N4FPXieivErQp3/xb00d5EvDKNMQvTTm5ZpSurUwK7538aJ0pnzLC6pL+fJyGt
- rW/swxRb6I0Mi9yFuuy6OmtbQ7IxSG1nsL4JmEtV6jG8Sl74mSMvN0IAMQAYv8gp6ep2
- Zb+Xxa1phZ6GJF8wd7kdsEUzue4eHRlTiyPxOk7bdTNHxjXJI9DIDGzcc2dMrtPhSLw9
- W/JTX9xCzJs8ofE9d2llhoIKEyuP2i3zVO91qnFG7kHwlvDMlkZapS6vFFsfIREP92P+
- kyII1MkEv+Dv48hGdUxqwOQpHO/Rk2flNmTCMfo0LLZ9u41P4zbFwo43bh4YKTvPCMIh
- 3zIQ==
-X-Gm-Message-State: AOJu0YzmijUboD3KzJp0hyjHNhkC1m8903G7nKiKkHWyc1H2rczhBMRK
- Szip7HYwY466OWzJcylA2RliE5l6XlPi5vsaKXJHjCKXHqkC0YgdYN+jc2h83nL8VDlDI7gHAiF
- 4Qyo63F9rD628wFY=
-X-Received: by 2002:a05:6402:510d:b0:53f:731a:e513 with SMTP id
- m13-20020a056402510d00b0053f731ae513mr6037318edd.25.1698040620258; 
- Sun, 22 Oct 2023 22:57:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzCbtRLbcftpx1UEFMUW1GK48mVhHVByOCVzDS1CuoPQRu5xP/KWd9pLn80/0//l5x7FR4jg==
-X-Received: by 2002:a05:6402:510d:b0:53f:731a:e513 with SMTP id
- m13-20020a056402510d00b0053f731ae513mr6037315edd.25.1698040619978; 
- Sun, 22 Oct 2023 22:56:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698040685; x=1698645485;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9OL7gXuM5OjPge9sOBk+/4z28cPXCqGOvC1LkBp3I2k=;
+ b=fwRN0H4q+pWam4X2aUwzKTP83BA3CtJRJJHFLmo2vm5N3lSFPo1RuX4YN3HOId3OIa
+ Vhl2KsSWHY4RKqFQNisLGfEihmZ+ViHO3uzBAdmPlGyu0eXdaYDpfYVHIm34vwzF0W3I
+ tRIrBqt4xMUqJcd5iI5XGLcyHFSuLi+jo4EYsI9HUoom6Fsl3IFIbe0LKW4P3wEmMH1U
+ nvWsk0SrhRWkvoZhxZzPMRm5pK+BhrEAWYHXU2Qla7phhHSzfCdyg0bQiGG977CK3wet
+ myLb3OrORUmcx742tXTK2I+da19pChptpRWDNXRxDuQVzlY4XIoTRnIbXltlNrR8zo/K
+ FCLQ==
+X-Gm-Message-State: AOJu0YwNsxWhHapLS6j8lLl3OjpGvXPfxa1vqpMLaVljhD594zFc/T9r
+ bVOa1bZHs/Yys72EY5hSTkzfwiGj0yqkQTysvU3TGd8FHzWMJGFhuA57BEETKHSC30OshjVaRaG
+ A1EFunufGUyL1M2Y=
+X-Received: by 2002:a05:6512:1396:b0:507:9615:b918 with SMTP id
+ fc22-20020a056512139600b005079615b918mr6493157lfb.52.1698040685313; 
+ Sun, 22 Oct 2023 22:58:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENXxl1vj6lpZInrwTOYH1+rm16Vhc3n96yqAN3dKRSZUH20K68rxyoeLYio1Ekt+uOWr7OEg==
+X-Received: by 2002:a05:6512:1396:b0:507:9615:b918 with SMTP id
+ fc22-20020a056512139600b005079615b918mr6493149lfb.52.1698040684996; 
+ Sun, 22 Oct 2023 22:58:04 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- co2-20020a0564020c0200b0053ed70ebd7csm5743366edb.31.2023.10.22.22.56.57
+ co2-20020a0564020c0200b0053ed70ebd7csm5743366edb.31.2023.10.22.22.58.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Oct 2023 22:56:58 -0700 (PDT)
-Message-ID: <6401be8b-55ac-4967-bb6e-4af15d6ea109@redhat.com>
-Date: Mon, 23 Oct 2023 07:56:56 +0200
+ Sun, 22 Oct 2023 22:58:04 -0700 (PDT)
+Message-ID: <44e595a6-99be-4ed4-a4cd-4464d95351d5@redhat.com>
+Date: Mon, 23 Oct 2023 07:58:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add unvalued folders in tests/tcg/ to the
- right sections
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, qemu-ppc@nongnu.org
-References: <20231018062401.20746-1-thuth@redhat.com>
- <78323369-f211-4281-b365-7de1fc5788f8@tls.msk.ru>
+Subject: Re: [PATCH 0/8] MAINTAINERS: Collect unmaintained files under PPC
+ entries
 Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-trivial@nongnu.org
+References: <20231002122326.365368-1-clg@kaod.org>
+ <746b3fa0-dff6-4db7-a07e-57228447d32a@kaod.org>
+ <d44e4501-0358-4b06-9d94-647b87f65dbb@tls.msk.ru>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -117,7 +118,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <78323369-f211-4281-b365-7de1fc5788f8@tls.msk.ru>
+In-Reply-To: <d44e4501-0358-4b06-9d94-647b87f65dbb@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -128,7 +129,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,32 +145,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/10/2023 13.31, Michael Tokarev wrote:
-> [Trim recipient list]
+On 21/10/2023 13.44, Michael Tokarev wrote:
+> 18.10.2023 09:38, Cédric Le Goater :
+>>
+>> Adding Cc: qemu-trivial@nongnu.org because these changes don't need to go
+>> through the ppc tree.
 > 
-> 18.10.2023 09:24, Thomas Huth:
->> Some subfolders in tests/tcg/ are already listed in the MAINTAINERS
->> file, some others aren't listed yet. Add the missing ones now to the
->> MAINTAINERS file, too, to make sure that get_maintainers.pl reports
->> the correct maintainer.
+> Heh.  You guys puzzled me quite a bit ;)
 > 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index b3599746c4..b80124f60f 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -327,6 +329,7 @@ F: hw/ppc/trace*
->>   F: configs/devices/ppc*
->>   F: docs/system/ppc/embedded.rst
->>   F: docs/system/target-ppc.rst
->> +F: tests/tcg/ppc*/*
-> 
-> FWIW, this hunk needs earlier series "MAINTAINERS: Collect unmaintained files
-> under PPC entries", in particular "MAINTAINERS: Add PPC common files to PowerPC
-> TCG CPUs", which is still not in master.  Maybe it's better to fold this change
-> to the PPC series.
+> Now this puzzle is complete.
+> Okay, let's pick whole bunch (together with follow-up changes by Thomas)
+> in the trivial-patches tree :)
 
-Ah, right, sorry, I should have used a "Based-on" tag or something like that.
-Anyway, fine for me if this gets squashed into Cédric's patch!
+Thanks for sorting it out :-)
 
   Thomas
 
