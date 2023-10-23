@@ -2,50 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619507D3E84
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 417EA7D3E88
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:05:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzGy-00029G-EH; Mon, 23 Oct 2023 14:03:28 -0400
+	id 1quzIg-000430-KT; Mon, 23 Oct 2023 14:05:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1quzGw-00027w-5X; Mon, 23 Oct 2023 14:03:26 -0400
+ id 1quzIT-00042P-3r
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:05:01 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1quzGu-00060M-LD; Mon, 23 Oct 2023 14:03:25 -0400
+ id 1quzIO-0006BT-5U
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:04:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=yU7AqehdW4OHHBu8KJvelvnNyNgY2a8GLk5ALpCMwV8=; b=09Uf9BGvZ2wAS3r+1JtbLVBMRE
- mt1PC8UTs7yhhXcLtacCnDczwp8wKcf4rMWq4zquYOUqnV9X1tfz01L37bVpk+qj0it8ZPqj/aWWg
- IL2Y1P9wwPHfUfiDa4We2RkP/oF+ZDG08Zdga6efYiTq/QUzFGLD1i864+kXr6FKAMPkxCbh3u9zT
- 7LXNMFZ2p7h7Gaev0xhfachy+uYYpltJqT/CJv+zo2iNwKwN9msXo4QshIxsNQt6kxy+Pbiu97UDL
- hrqcnaVPEfGRxAtfWRjRh+NnusK+BWagnNmublQckyiFZAgXZGCaE661ygNsU6BhkJcc6sC+9/gKW
- bI/hWkzrfac0CoDa9iElXAVI+e+DRY1tGw4uO4pt2l117aVZ+czs2kJUczbyU+yk4T8tafd2zMMpt
- GybnBbZwClNzSRLN3j+bxws2sdrYxb/eo6V9K/753LZe9Sk/+DPWWC4eAvKf0MbkRW+UCgFvoU6uv
- WVjmnJFpHQlH2bXaYiBlg4cvKS3CP6C09ftVKU/01CImTEIvdJx2H/vJWYatZ4CCziwK1S4h87voD
- J9XTBwm4zleDJUzS4VZ1KvemxO4zI6qlTETs8Xk2pRqEWf86xKV9+ybaPPcHzPY2zW46jFMbn1U2B
- l49/JueZtTDcM8HwSzl23rUJmupV5/iNssKUqSqgM=;
+ bh=6L8RugFCUwlMmFOtqJDjc871TS9ETSNhlySZM0S1TnU=; b=v+CK7i8kbl+8GpaBCGfNLE6fKu
+ AdDzVhMWUrE2K7kmQMBwn9NAplDpNiBIpgPncwet/PTZgqurE4a3H0Ib5CeveiPwx7JI3qJfPb02P
+ VMWJozFYDHYNao1E/O7zhapGQFqfJUolICiq3+c/CGSOjBzJ1ADbAYNq38V1kPaMEK1R2CY21ircz
+ oG1n6/Z6RkSY8FrpYsIh7LsCHTlXHlwt27MARbEIGoiPzOFOkS/R9dfreGWWCDg18D+TmJVhMh9+X
+ xYP8YIfLwYZlNA6l7QgFC7YRB+bKH3MF9etxbpJ4RgT+ndv2BYA3yJVngqzb9E/owTAn+3zEluBT6
+ 6o72i0oNsnNNoSqGL/t9HpHuanm8xNy22pgGevzIBcifX1qFJOUNyyC2I2T6PixODYmVeC9Nxm6Ll
+ reWApH8aKZuYTettvXgKuPAs6ZFqmFj0Bv7B/eBVNEDVBe0d2KqLqUcHFNtJwB9EwsdScJD5DVcyd
+ eVF2eztcpdnZ3gpyHSG0barF8VGhyXZ20HkRvYZEd5n0PMWAoKqmvrr+qBewaWBA3uPYnP7nWdEP4
+ tjcJwvax9Bjf83g7Joztzp1nH3/BU06yuvCgFUiPZewjihgyEItEvxsJSwX84wAN81BHRQKzV1ecR
+ NESrUdOZ51oEG4px2ZaY/7kLsid1pPo1KuMyK1YAg=;
 Received: from [2a00:23c4:8bb0:3200:776d:f8ec:db63:d979]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1quzGj-0005Sm-7i; Mon, 23 Oct 2023 19:03:17 +0100
-Message-ID: <e40f5640-943e-4a6a-bf18-2f02f4827766@ilande.co.uk>
-Date: Mon, 23 Oct 2023 19:03:17 +0100
+ id 1quzIA-0005Sm-0D; Mon, 23 Oct 2023 19:04:46 +0100
+Message-ID: <0527eade-2132-4f4d-b862-0e097dcc7c52@ilande.co.uk>
+Date: Mon, 23 Oct 2023 19:04:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, balaton@eik.bme.hu,
- philmd@linaro.org
-References: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
- <1C2A3DE2-A4E8-42D3-BE70-710AA8EB53E7@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231022232932.80507-1-richard.henderson@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -71,13 +70,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <1C2A3DE2-A4E8-42D3-BE70-710AA8EB53E7@gmail.com>
+In-Reply-To: <20231022232932.80507-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:3200:776d:f8ec:db63:d979
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 0/2] ide: implement simple legacy/native mode switching
- for PCI IDE controllers
+Subject: Re: [PATCH v5 00/94] target/sparc: Convert to decodetree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -103,44 +101,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/10/2023 23:10, Bernhard Beschow wrote:
+On 23/10/2023 00:27, Richard Henderson wrote:
 
-> Am 19. Oktober 2023 13:04:50 UTC schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
->> This series adds a simple implementation of legacy/native mode switching for PCI
->> IDE controllers and updates the via-ide device to use it.
->>
->> The approach I take here is to add a new pci_ide_update_mode() function which handles
->> management of the PCI BARs and legacy IDE ioports for each mode to avoid exposing
->> details of the internal logic to individual PCI IDE controllers.
->>
->> As noted in [1] this is extracted from a local WIP branch I have which contains
->> further work in this area. However for the moment I've kept it simple (and
->> restricted it to the via-ide device) which is good enough for Zoltan's PPC
->> images whilst paving the way for future improvements after 8.2.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Changes for v5:
+>    * Add Mark's a-b and t-b.
 > 
-> I've successfully tested this series on top of my pc-via branch, so for the series:
-> Tested-by: Bernhard Beschow <shentey@gmail.com>
+>    * Fixes to features:
+>      - Use CPU_FEATURE_BIT_* in feature_name[] (patch 7).
+>      - Don't allow features to be set/unset in nonsensical ways (new patch 8).
 > 
-> I've added comments to the first patch.
-> 
-> Best regards,
-> Bernhard
+>    * Adjustments to ifdefs:
+>      - Make avail_FOO() constant when the feature must be set/unset.
+>        This fixes the do_wrhtstate build issue Mark saw.
+>      - Introduce envN_field_offsetof().
+>      - Remove TCG globals only used for {RD,WR}{PR,HPR} (new patches 30-32).
 
-Thanks a lot! I'll make the change to the switch() statement and then post an updated 
-v2 later this evening.
+Do you need me to run v5 through my boot tests just to be sure, or are the latest 
+changes trivial enough that this won't be an issue?
 
->> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
->>
->> Mark Cave-Ayland (2):
->>   ide/pci.c: introduce pci_ide_update_mode() function
->>   hw/ide/via: implement legacy/native mode switching
->>
->> hw/ide/pci.c         | 90 ++++++++++++++++++++++++++++++++++++++++++++
->> hw/ide/via.c         | 20 +++++++++-
->> include/hw/ide/pci.h |  1 +
->> 3 files changed, 109 insertions(+), 2 deletions(-)
+> Richard Henderson (94):
+>    target/sparc: Clear may_lookup for npc == DYNAMIC_PC
+>    target/sparc: Implement check_align inline
+>    target/sparc: Avoid helper_raise_exception in helper_st_asi
+>    target/sparc: Set TCG_GUEST_DEFAULT_MO
+>    configs: Enable MTTCG for sparc, sparc64
+>    target/sparc: Define features via cpu-feature.h.inc
+>    target/sparc: Use CPU_FEATURE_BIT_* for cpu properties
+>    target/sparc: Remove sparcv7 cpu features
+>    target/sparc: Partition cpu features
+>    target/sparc: Add decodetree infrastructure
+>    target/sparc: Define AM_CHECK for sparc32
+>    target/sparc: Move CALL to decodetree
+>    target/sparc: Move BPcc and Bicc to decodetree
+>    target/sparc: Move BPr to decodetree
+>    target/sparc: Move FBPfcc and FBfcc to decodetree
+>    target/sparc: Merge gen_cond with only caller
+>    target/sparc: Merge gen_fcond with only caller
+>    target/sparc: Merge gen_branch_[an] with only caller
+>    target/sparc: Pass DisasCompare to advance_jump_cond
+>    target/sparc: Move SETHI to decodetree
+>    target/sparc: Move Tcc to decodetree
+>    target/sparc: Move RDASR, STBAR, MEMBAR to decodetree
+>    target/sparc: Move RDPSR, RDHPR to decodetree
+>    target/sparc: Move RDWIM, RDPR to decodetree
+>    target/sparc: Move RDTBR, FLUSHW to decodetree
+>    target/sparc: Move WRASR to decodetree
+>    target/sparc: Move WRPSR, SAVED, RESTORED to decodetree
+>    target/sparc: Move WRWIM, WRPR to decodetree
+>    target/sparc: Move WRTBR, WRHPR to decodetree
+>    target/sparc: Remove cpu_wim
+>    target/sparc: Remove cpu_tick_cmpr, cpu_stick_cmpr, cpu_hstick_cmpr
+>    target/sparc: Remove cpu_hintp, cpu_htba, cpu_hver, cpu_ssr, cpu_ver
+>    target/sparc: Move basic arithmetic to decodetree
+>    target/sparc: Move ADDC to decodetree
+>    target/sparc: Move MULX to decodetree
+>    target/sparc: Move UMUL, SMUL to decodetree
+>    target/sparc: Move SUBC to decodetree
+>    target/sparc: Move UDIVX, SDIVX to decodetree
+>    target/sparc: Move UDIV, SDIV to decodetree
+>    target/sparc: Move TADD, TSUB, MULS to decodetree
+>    target/sparc: Move SLL, SRL, SRA to decodetree
+>    target/sparc: Move MOVcc, MOVR to decodetree
+>    target/sparc: Move POPC to decodetree
+>    target/sparc: Convert remaining v8 coproc insns to decodetree
+>    target/sparc: Move JMPL, RETT, RETURN to decodetree
+>    target/sparc: Move FLUSH, SAVE, RESTORE to decodetree
+>    target/sparc: Move DONE, RETRY to decodetree
+>    target/sparc: Split out resolve_asi
+>    target/sparc: Drop ifdef around get_asi and friends
+>    target/sparc: Split out ldst functions with asi pre-computed
+>    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for GET_ASI_DTWINX
+>    target/sparc: Move simple integer load/store to decodetree
+>    target/sparc: Move asi integer load/store to decodetree
+>    target/sparc: Move LDSTUB, LDSTUBA to decodetree
+>    target/sparc: Move SWAP, SWAPA to decodetree
+>    target/sparc: Move CASA, CASXA to decodetree
+>    target/sparc: Move PREFETCH, PREFETCHA to decodetree
+>    target/sparc: Split out fp ldst functions with asi precomputed
+>    target/sparc: Move simple fp load/store to decodetree
+>    target/sparc: Move asi fp load/store to decodetree
+>    target/sparc: Move LDFSR, STFSR to decodetree
+>    target/sparc: Merge LDFSR, LDXFSR implementations
+>    target/sparc: Move EDGE* to decodetree
+>    target/sparc: Move ARRAY* to decodetree
+>    target/sparc: Move ADDRALIGN* to decodetree
+>    target/sparc: Move BMASK to decodetree
+>    target/sparc: Move FMOVS, FNEGS, FABSS, FSRC*S, FNOT*S to decodetree
+>    target/sparc: Move FMOVD, FNEGD, FABSD, FSRC*D, FNOT*D to decodetree
+>    target/sparc: Use tcg_gen_vec_{add,sub}*
+>    target/sparc: Move gen_ne_fop_FFF insns to decodetree
+>    target/sparc: Move gen_ne_fop_DDD insns to decodetree
+>    target/sparc: Move PDIST to decodetree
+>    target/sparc: Move gen_gsr_fop_DDD insns to decodetree
+>    target/sparc: Move gen_fop_FF insns to decodetree
+>    target/sparc: Move gen_fop_DD insns to decodetree
+>    target/sparc: Move FSQRTq to decodetree
+>    target/sparc: Move gen_fop_FFF insns to decodetree
+>    target/sparc: Move gen_fop_DDD insns to decodetree
+>    target/sparc: Move gen_fop_QQQ insns to decodetree
+>    target/sparc: Move FSMULD to decodetree
+>    target/sparc: Move FDMULQ to decodetree
+>    target/sparc: Move gen_fop_FD insns to decodetree
+>    target/sparc: Move FiTOd, FsTOd, FsTOx to decodetree
+>    target/sparc: Move FqTOs, FqTOi to decodetree
+>    target/sparc: Move FqTOd, FqTOx to decodetree
+>    target/sparc: Move FiTOq, FsTOq to decodetree
+>    target/sparc: Move FdTOq, FxTOq to decodetree
+>    target/sparc: Move FMOVq, FNEGq, FABSq to decodetree
+>    target/sparc: Move FMOVR, FMOVcc, FMOVfcc to decodetree
+>    target/sparc: Convert FCMP, FCMPE to decodetree
+>    target/sparc: Move FPCMP* to decodetree
+>    target/sparc: Move FPACK16, FPACKFIX to decodetree
+>    target/sparc: Convert FZERO, FONE to decodetree
+>    target/sparc: Remove disas_sparc_legacy
+> 
+>   configs/targets/sparc-softmmu.mak   |    1 +
+>   configs/targets/sparc64-softmmu.mak |    1 +
+>   linux-user/sparc/target_syscall.h   |    6 +-
+>   target/sparc/cpu.h                  |   76 +-
+>   target/sparc/helper.h               |   16 +-
+>   target/sparc/cpu-feature.h.inc      |   14 +
+>   target/sparc/insns.decode           |  547 +++
+>   target/sparc/cpu.c                  |   72 +-
+>   target/sparc/fop_helper.c           |   17 +-
+>   target/sparc/helper.c               |    8 -
+>   target/sparc/ldst_helper.c          |   17 +-
+>   target/sparc/translate.c            | 6968 +++++++++++++--------------
+>   target/sparc/vis_helper.c           |   59 -
+>   target/sparc/meson.build            |    3 +
+>   14 files changed, 4025 insertions(+), 3780 deletions(-)
+>   create mode 100644 target/sparc/cpu-feature.h.inc
+>   create mode 100644 target/sparc/insns.decode
 
 
 ATB,
