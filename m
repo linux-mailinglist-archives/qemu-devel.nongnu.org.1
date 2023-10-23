@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22237D28EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 05:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D09857D2925
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 05:40:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qulMA-00024N-06; Sun, 22 Oct 2023 23:11:54 -0400
+	id 1qulmX-0001t9-AE; Sun, 22 Oct 2023 23:39:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qulM6-00023s-CU
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 23:11:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qulM4-0001ZO-J8
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 23:11:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698030706;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rFMUTA19+VXURujY76E4DzRwLKvhtPToyDxymN1R6Lc=;
- b=ZJwAc3GrF+Cc2wU/3QrOL8LlLNZvt1Dpj+X+ODJmpI3r1cj+cthygpN7VKmbzruGO05x0l
- vhwxZUiPliyPGyYPcu/fNaDUyruT8DKYRlK6HkSM9BZ+iJEkcchz9Ly2UsOzSqzliAzpb+
- tyNKX9v4lJrdXdw/xzkziBqkQ5HJWM8=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-t5cQuk1sMve6hvVwhs7BkA-1; Sun, 22 Oct 2023 23:11:45 -0400
-X-MC-Unique: t5cQuk1sMve6hvVwhs7BkA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-507a0904cdbso2970710e87.1
- for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 20:11:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qulmT-0001ss-4A; Sun, 22 Oct 2023 23:39:05 -0400
+Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qulmR-0005hM-62; Sun, 22 Oct 2023 23:39:04 -0400
+Received: by mail-vk1-xa36.google.com with SMTP id
+ 71dfb90a1353d-49ab0641e77so1234525e0c.0; 
+ Sun, 22 Oct 2023 20:39:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698032341; x=1698637141; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tF1MgKOCFK14ezvXAqnC5iepsOjXwv5RD8H609Y53JM=;
+ b=ULQlcSzXy9sAXnKaKkIryE35+3ZxytV9Wy4IiKju//3tNghsiRtQ5sWlXCTt1eii2l
+ PplzHE7HO7w8/2Sl0sweyuoHHSy93m8634Pon6n6/QCxdJlFZ6FSXQwNoDUpYXG0ChgX
+ qNumVYOn8NmK1/nDqNrR+hRG7QHIuuGA/7vp9jXTuQCtq/kyuGbXfxOUkC/q/kE5ot6D
+ YdD44oWvymnZS52xFHk5O8GBrYYq5BhOIUI0T5T0xjp1k3UwG8XRgTlCv0qq8WLls2L6
+ RaFlcjUV+Xm8qpVeXhu1hHNHijOgzFjNUqgta+vrpo5Ed0kdANVVxd4NR4MKci4lTXPt
+ o2Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698030703; x=1698635503;
+ d=1e100.net; s=20230601; t=1698032341; x=1698637141;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rFMUTA19+VXURujY76E4DzRwLKvhtPToyDxymN1R6Lc=;
- b=XzpDec1m5vhNa0k/obq3CUxb3FPEz5ZSDmZZiwyQi6Xr6E+g7UYgbgegCYYyZjnICR
- i3DPyPj9dZYcOL4RH02UfoGvNnDJANgULIAQ5qHf+9b6DrjgkfpHYDzVoI4HsgaYFmx0
- PdFgD683QaXGmgqmEdtOA/ULIXTmOL3GUNlfTdUq+Vfy2SXHdDBk31h5wBdExmb7DIi7
- cXY0bYLUBdeq0scjJc0KQX7lVJF6IeK2ediQGmjMnKZgJDnLPl+OqJXRgd1ZUH6HS+W8
- 4glX72UubRnyFT5ifcDoGLS8Mfi3JCwOOqbX3m3gxnTPo6CTcfMLWw+gnzVpYVdLpyG+
- NxiQ==
-X-Gm-Message-State: AOJu0YzxKuxnN2XP7pUeQA2fbGVHC/CFlyTR2e0vnP5G/mAnAUVxhMgE
- lJuUQonCfcdk6+lqcdm0qwkVpGaIw4rWrfxqKgVcpyKQbCiZtTJMq4pLQMZKW1Elv8HgJIvrD/h
- vEYnR7U3ca2a8uZeucfel0ZthL2nrhp8=
-X-Received: by 2002:a05:6512:230b:b0:504:4165:54ab with SMTP id
- o11-20020a056512230b00b00504416554abmr2436855lfu.56.1698030703665; 
- Sun, 22 Oct 2023 20:11:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOOqZEnBBsALCvbmAgBC9+FWJSYzztfYgLFm28FCsR/AYmBosN8OZlD+QqiUgCggZGyVLjUd7M+m28Nmt+cvc=
-X-Received: by 2002:a05:6512:230b:b0:504:4165:54ab with SMTP id
- o11-20020a056512230b00b00504416554abmr2436848lfu.56.1698030703317; Sun, 22
- Oct 2023 20:11:43 -0700 (PDT)
+ bh=tF1MgKOCFK14ezvXAqnC5iepsOjXwv5RD8H609Y53JM=;
+ b=TcKn3Q2cZi2UFx023YsADqHzbT+1m5njkYkavViLDkhIX1mfm4MmnWQIOHOtWakxdH
+ oyv5i7mzC4LXMCh1H1eJbsnguLajrk17ck7CSDLspbzsdvFDxf4kxfaVruRnO8z/GbKZ
+ pzUvhNCIWBU4lrCnGr3mKCe1LoIzvNqc39ln+50YOK12+gln6/yc357WOAiMhbl6Co30
+ oqW6Gj4vfVh4/yagoUWfzjQdiCNoaH+5gPYqxXPyvv7D1tzucAVcpOALv3nWGmfiKOar
+ kZXoCtiKqENb4egynfTLDDsVrH2n6IpRZFAh3zZIlb7iJr2N3Vn4r8PvP7KMn8D6tK79
+ Wfng==
+X-Gm-Message-State: AOJu0YwqNEbKjN5kqzyQ/N2Brpxa69scPRXn/XmLFiEH4N0tRE0fk5US
+ kPGNllSLABjtrLMT9ryxoZPGcQN9kGl59Fy9wqk=
+X-Google-Smtp-Source: AGHT+IH671VPJHeSKljhNE1rTb3KfdayIY2x2TBWyjGB5Hg/GwWbBG7cIgsWl3PsB+zIYHLCtZdGR0VWBIyR81TsBeM=
+X-Received: by 2002:a67:ca01:0:b0:457:c46b:8fba with SMTP id
+ z1-20020a67ca01000000b00457c46b8fbamr7437149vsk.5.1698032341511; Sun, 22 Oct
+ 2023 20:39:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230829090529.184438-1-clg@kaod.org>
- <20230829090529.184438-3-clg@kaod.org>
- <CACGkMEu6nznVGTyk8gjrZ3jE=bEAd2bDDi9PPwjDKNFkXnVhSQ@mail.gmail.com>
- <d9df1c95-f681-4962-be74-671cef90e908@redhat.com>
- <b744bd42-0b46-44ce-8d60-28d4d31427e0@redhat.com>
-In-Reply-To: <b744bd42-0b46-44ce-8d60-28d4d31427e0@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 23 Oct 2023 11:11:32 +0800
-Message-ID: <CACGkMEtbsVCAUFe6AomYe3EO=iBOXze6vJ20c8p0AbsXogocCw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] igb: Add Function Level Reset to PF and VF
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+References: <20231017221226.136764-1-dbarboza@ventanamicro.com>
+ <20231017221226.136764-5-dbarboza@ventanamicro.com>
+In-Reply-To: <20231017221226.136764-5-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 23 Oct 2023 13:38:34 +1000
+Message-ID: <CAKmqyKPMzGC7G6hjSG_-nmHQsL0R9ztYtOrUc+_kXZXAHxAnVQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] target/riscv/cpu.c: add zihpm extension flag
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa36.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,139 +88,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 20, 2023 at 5:41=E2=80=AFPM C=C3=A9dric Le Goater <clg@redhat.c=
-om> wrote:
+On Wed, Oct 18, 2023 at 8:14=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> On 10/20/23 09:40, C=C3=A9dric Le Goater wrote:
-> > On 10/20/23 06:24, Jason Wang wrote:
-> >> On Tue, Aug 29, 2023 at 5:06=E2=80=AFPM C=C3=A9dric Le Goater <clg@kao=
-d.org> wrote:
-> >>>
-> >>> From: C=C3=A9dric Le Goater <clg@redhat.com>
-> >>>
-> >>> The Intel 82576EB GbE Controller say that the Physical and Virtual
-> >>> Functions support Function Level Reset. Add the capability to each
-> >>> device model.
-> >>>
-> >>
-> >> Do we need to do migration compatibility for this?
-> >
-> > Yes. it does. the config space is now different.
+> zihpm is the Hardware Performance Counters extension described in
+> chapter 12 of the unprivileged spec. It describes support for 29
+> unprivileged performance counters, hpmcounter3-hpmcounter31.
 >
-> Jason,
+> As with zicntr, QEMU already implements zihpm before it was even an
+> extension. zihpm is also part of the RVA22 profile, so add it to QEMU
+> to complement the future profile implementation.
 >
-> To avoid an extra compat property, would it be ok to let the VF peek into
-> the PF capabilities to set FLR or not ? Something like below.
+> Default it to 'true' for all existing CPUs since it was always present
+> in the code.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c     | 3 +++
+>  target/riscv/cpu_cfg.h | 1 +
+>  2 files changed, 4 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index f478245254..c64cd726f4 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -84,6 +84,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
+>      ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_zifencei),
+>      ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+>      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
+),
+> +    ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
+>      ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
+>      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+>      ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
+> @@ -1185,6 +1186,7 @@ static void riscv_cpu_init(Object *obj)
+>       * users disable them.
+>       */
+>      RISCV_CPU(obj)->cfg.ext_zicntr =3D true;
+> +    RISCV_CPU(obj)->cfg.ext_zihpm =3D true;
+>  }
+>
+>  typedef struct misa_ext_info {
+> @@ -1274,6 +1276,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[]=
+ =3D {
+>      MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
+>
+>      MULTI_EXT_CFG_BOOL("zicntr", ext_zicntr, true),
+> +    MULTI_EXT_CFG_BOOL("zihpm", ext_zihpm, true),
 
-I might be wrong, but it looks to me it's still a behaviour change?
+Same here. Just make this change after or with the logic to disable
+the extension
 
-Thanks
+Alistair
 
 >
-> Thanks,
->
-> C.
->
->
-> @@ -238,6 +238,12 @@ static const MemoryRegionOps mmio_ops =3D
->       },
->   };
->
-> +static bool igbvf_check_pf_flr(PCIDevice *dev)
-> +{
-> +    return !!(pci_get_long(dev->config + dev->exp.exp_cap + PCI_EXP_DEVC=
-AP)
-> +              & PCI_EXP_DEVCAP_FLR);
-> +}
-> +
->   static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
->   {
->       IgbVfState *s =3D IGBVF(dev);
-> @@ -267,7 +273,9 @@ static void igbvf_pci_realize(PCIDevice
->           hw_error("Failed to initialize PCIe capability");
->       }
->
-> -    pcie_cap_flr_init(dev);
-> +    if (igbvf_check_pf_flr(pcie_sriov_get_pf(dev))) {
-> +        pcie_cap_flr_init(dev);
-> +    }
->
->       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
->           hw_error("Failed to initialize AER capability");
+>      MULTI_EXT_CFG_BOOL("zba", ext_zba, true),
+>      MULTI_EXT_CFG_BOOL("zbb", ext_zbb, true),
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 3c91b63609..173bd7d910 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -69,6 +69,7 @@ struct RISCVCPUConfig {
+>      bool ext_zicond;
+>      bool ext_zihintntl;
+>      bool ext_zihintpause;
+> +    bool ext_zihpm;
+>      bool ext_smstateen;
+>      bool ext_sstc;
+>      bool ext_svadu;
+> --
+> 2.41.0
 >
 >
-> >
-> > Thanks,
-> >
-> > C.
-> >
-> >
-> >>
-> >> Thanks
-> >>
-> >>> Cc:  Sriram Yagnaraman <sriram.yagnaraman@est.tech>
-> >>> Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
-> >>> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> >>> Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> >>> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
-> >>> ---
-> >>>   hw/net/igb.c   | 3 +++
-> >>>   hw/net/igbvf.c | 3 +++
-> >>>   2 files changed, 6 insertions(+)
-> >>>
-> >>> diff --git a/hw/net/igb.c b/hw/net/igb.c
-> >>> index e70a66ee038e..b8c170ad9b1a 100644
-> >>> --- a/hw/net/igb.c
-> >>> +++ b/hw/net/igb.c
-> >>> @@ -101,6 +101,7 @@ static void igb_write_config(PCIDevice *dev, uint=
-32_t addr,
-> >>>
-> >>>       trace_igb_write_config(addr, val, len);
-> >>>       pci_default_write_config(dev, addr, val, len);
-> >>> +    pcie_cap_flr_write_config(dev, addr, val, len);
-> >>>
-> >>>       if (range_covers_byte(addr, len, PCI_COMMAND) &&
-> >>>           (dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
-> >>> @@ -433,6 +434,8 @@ static void igb_pci_realize(PCIDevice *pci_dev, E=
-rror **errp)
-> >>>       }
-> >>>
-> >>>       /* PCIe extended capabilities (in order) */
-> >>> +    pcie_cap_flr_init(pci_dev);
-> >>> +
-> >>>       if (pcie_aer_init(pci_dev, 1, 0x100, 0x40, errp) < 0) {
-> >>>           hw_error("Failed to initialize AER capability");
-> >>>       }
-> >>> diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
-> >>> index 07343fa14a89..55e321e4ec20 100644
-> >>> --- a/hw/net/igbvf.c
-> >>> +++ b/hw/net/igbvf.c
-> >>> @@ -204,6 +204,7 @@ static void igbvf_write_config(PCIDevice *dev, ui=
-nt32_t addr, uint32_t val,
-> >>>   {
-> >>>       trace_igbvf_write_config(addr, val, len);
-> >>>       pci_default_write_config(dev, addr, val, len);
-> >>> +    pcie_cap_flr_write_config(dev, addr, val, len);
-> >>>   }
-> >>>
-> >>>   static uint64_t igbvf_mmio_read(void *opaque, hwaddr addr, unsigned=
- size)
-> >>> @@ -266,6 +267,8 @@ static void igbvf_pci_realize(PCIDevice *dev, Err=
-or **errp)
-> >>>           hw_error("Failed to initialize PCIe capability");
-> >>>       }
-> >>>
-> >>> +    pcie_cap_flr_init(dev);
-> >>> +
-> >>>       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
-> >>>           hw_error("Failed to initialize AER capability");
-> >>>       }
-> >>> --
-> >>> 2.41.0
-> >>>
-> >>>
-> >>
-> >
->
-
 
