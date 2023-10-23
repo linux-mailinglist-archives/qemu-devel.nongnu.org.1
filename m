@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381757D343C
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278E27D33CB
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:34:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qutAl-000233-HM; Mon, 23 Oct 2023 07:32:39 -0400
+	id 1qutAi-0001bK-EJ; Mon, 23 Oct 2023 07:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qutAR-00011n-Fk
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:32:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qutAI-0000aa-HY
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:32:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qutAQ-0003l1-2b
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:32:19 -0400
+ id 1qutAD-0003iT-IA
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:32:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698060737;
+ s=mimecast20190719; t=1698060724;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=57TVdxGyNAJi1cI0andU5/2uWsnO2QLQ7cg3JIKUwmk=;
- b=ZJOO8VU3I9Ej1sxKzQU9Ahoih6XtWUEY3rtRWTrRV9KN0V3cNCupzYtYCseEWoCVwj4NmK
- lem717DYtbbqUkfhlBO1D0ljXBwtpVJD8e/7cGqIIMG/ZHosaXNN9L3Wg42h38ZAWRxPel
- Ru0G+lvJYMTpBv0PRWfPQ5CWtH6E+Ww=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-153-iOXlmI2xP0-5gr-GdeezAQ-1; Mon, 23 Oct 2023 07:31:54 -0400
-X-MC-Unique: iOXlmI2xP0-5gr-GdeezAQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=wqmOM7rKyw7voqq+osQzrdnEyrMcVOyoluafJI8nvmY=;
+ b=AYFt0ssWtcBf3EgREqkVqQ5WwZZy3GRi/m9srbh1NLV7zmKus+BEUcU8xPL7vRx5m4vl6S
+ LUINYX1j/JemQBLyD11ajCVof1z7BdtnCAbquFJrkgIgOpmwDGhHXR7Nx8YJUt6AGJOSjI
+ piI2JT3MaGrHcggOQcQW9YcLtHuL0gY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-684-07APhz5hMFyz_OadQ2HL0A-1; Mon, 23 Oct 2023 07:31:59 -0400
+X-MC-Unique: 07APhz5hMFyz_OadQ2HL0A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96E0B185A79C;
- Mon, 23 Oct 2023 11:31:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ABE1A3C14904;
+ Mon, 23 Oct 2023 11:31:58 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.50])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9E8CD2166B27;
- Mon, 23 Oct 2023 11:31:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DED601121320;
+ Mon, 23 Oct 2023 11:31:56 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
@@ -54,16 +54,16 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 14/19] ui/gtk: -display gtk requires PIXMAN
-Date: Mon, 23 Oct 2023 15:30:41 +0400
-Message-ID: <20231023113047.2572137-15-marcandre.lureau@redhat.com>
+Subject: [PATCH v5 15/19] ui/dbus: do not require PIXMAN
+Date: Mon, 23 Oct 2023 15:30:42 +0400
+Message-ID: <20231023113047.2572137-16-marcandre.lureau@redhat.com>
 In-Reply-To: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
 References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -71,7 +71,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,28 +90,208 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Implement a fallback path for region 2D update.
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- meson.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ ui/dbus-listener.c | 90 ++++++++++++++++++++++++++++++++--------------
+ ui/meson.build     |  4 +--
+ 2 files changed, 65 insertions(+), 29 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 3d6e41d1fb..dbc7af091c 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1507,7 +1507,11 @@ gtkx11 = not_found
- vte = not_found
- have_gtk_clipboard = get_option('gtk_clipboard').enabled()
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 36548a7f52..18f556aa73 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -26,9 +26,6 @@
+ #include "qapi/error.h"
+ #include "sysemu/sysemu.h"
+ #include "dbus.h"
+-#ifdef CONFIG_OPENGL
+-#include <pixman.h>
+-#endif
+ #ifdef G_OS_UNIX
+ #include <gio/gunixfdlist.h>
+ #endif
+@@ -41,6 +38,7 @@
+ #include "ui/shader.h"
+ #include "ui/egl-helpers.h"
+ #include "ui/egl-context.h"
++#include "ui/qemu-pixman.h"
+ #endif
+ #include "trace.h"
  
--if not get_option('gtk').auto() or have_system
-+if get_option('gtk') \
-+             .disable_auto_if(not have_system) \
-+             .require(pixman.found(),
-+                      error_message: 'cannot enable GTK if pixman is not available') \
-+             .allowed()
-   gtk = dependency('gtk+-3.0', version: '>=3.22.0',
-                    method: 'pkg-config',
-                    required: get_option('gtk'))
+@@ -62,9 +60,11 @@ struct _DBusDisplayListener {
+ 
+     QemuDBusDisplay1Listener *proxy;
+ 
+-#ifdef CONFIG_OPENGL
++#ifdef CONFIG_PIXMAN
+     /* Keep track of the damage region */
+     pixman_region32_t gl_damage;
++#else
++    int gl_damage;
+ #endif
+ 
+     DisplayChangeListener dcl;
+@@ -545,6 +545,7 @@ static void dbus_gl_refresh(DisplayChangeListener *dcl)
+         return;
+     }
+ 
++#ifdef CONFIG_PIXMAN
+     int n_rects = pixman_region32_n_rects(&ddl->gl_damage);
+ 
+     for (int i = 0; i < n_rects; i++) {
+@@ -555,6 +556,13 @@ static void dbus_gl_refresh(DisplayChangeListener *dcl)
+                             box->x2 - box->x1, box->y2 - box->y1);
+     }
+     pixman_region32_clear(&ddl->gl_damage);
++#else
++    if (ddl->gl_damage) {
++        dbus_call_update_gl(dcl, 0, 0,
++                            surface_width(ddl->ds), surface_height(ddl->ds));
++        ddl->gl_damage = 0;
++    }
++#endif
+ }
+ #endif /* OPENGL */
+ 
+@@ -569,20 +577,64 @@ static void dbus_gl_gfx_update(DisplayChangeListener *dcl,
+ {
+     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
+ 
++#ifdef CONFIG_PIXMAN
+     pixman_region32_t rect_region;
+     pixman_region32_init_rect(&rect_region, x, y, w, h);
+     pixman_region32_union(&ddl->gl_damage, &ddl->gl_damage, &rect_region);
+     pixman_region32_fini(&rect_region);
++#else
++    ddl->gl_damage++;
++#endif
+ }
+ #endif
+ 
++static void dbus_gfx_update_sub(DBusDisplayListener *ddl,
++                                int x, int y, int w, int h)
++{
++    pixman_image_t *img;
++    size_t stride;
++    GVariant *v_data;
++
++    /* make a copy, since gvariant only handles linear data */
++    stride = w * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(surface_format(ddl->ds)), 8);
++    img = pixman_image_create_bits(surface_format(ddl->ds),
++                                   w, h, NULL, stride);
++#ifdef CONFIG_PIXMAN
++    pixman_image_composite(PIXMAN_OP_SRC, ddl->ds->image, NULL, img,
++                           x, y, 0, 0, 0, 0, w, h);
++#else
++    {
++        uint8_t *src = (uint8_t *)pixman_image_get_data(ddl->ds->image);
++        uint8_t *dst = (uint8_t *)pixman_image_get_data(img);
++        int bp = PIXMAN_FORMAT_BPP(surface_format(ddl->ds)) / 8;
++        int hh;
++
++        for (hh = 0; hh < h; hh++) {
++            memcpy(&dst[stride * hh],
++                   &src[surface_stride(ddl->ds) * (hh + y) + x * bp],
++                   stride);
++        }
++    }
++#endif
++    v_data = g_variant_new_from_data(
++        G_VARIANT_TYPE("ay"),
++        pixman_image_get_data(img),
++        pixman_image_get_stride(img) * h,
++        TRUE,
++        (GDestroyNotify)pixman_image_unref,
++        img);
++    qemu_dbus_display1_listener_call_update(ddl->proxy,
++        x, y, w, h, pixman_image_get_stride(img), pixman_image_get_format(img),
++        v_data,
++        G_DBUS_CALL_FLAGS_NONE,
++        DBUS_DEFAULT_TIMEOUT, NULL, NULL, NULL);
++}
++
+ static void dbus_gfx_update(DisplayChangeListener *dcl,
+                             int x, int y, int w, int h)
+ {
+     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
+-    pixman_image_t *img;
+     GVariant *v_data;
+-    size_t stride;
+ 
+     assert(ddl->ds);
+ 
+@@ -619,25 +671,7 @@ static void dbus_gfx_update(DisplayChangeListener *dcl,
+         return;
+     }
+ 
+-    /* make a copy, since gvariant only handles linear data */
+-    stride = w * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(surface_format(ddl->ds)), 8);
+-    img = pixman_image_create_bits(surface_format(ddl->ds),
+-                                   w, h, NULL, stride);
+-    pixman_image_composite(PIXMAN_OP_SRC, ddl->ds->image, NULL, img,
+-                           x, y, 0, 0, 0, 0, w, h);
+-
+-    v_data = g_variant_new_from_data(
+-        G_VARIANT_TYPE("ay"),
+-        pixman_image_get_data(img),
+-        pixman_image_get_stride(img) * h,
+-        TRUE,
+-        (GDestroyNotify)pixman_image_unref,
+-        img);
+-    qemu_dbus_display1_listener_call_update(ddl->proxy,
+-        x, y, w, h, pixman_image_get_stride(img), pixman_image_get_format(img),
+-        v_data,
+-        G_DBUS_CALL_FLAGS_NONE,
+-        DBUS_DEFAULT_TIMEOUT, NULL, NULL, NULL);
++    dbus_gfx_update_sub(ddl, x, y, w, h);
+ }
+ 
+ #ifdef CONFIG_OPENGL
+@@ -751,8 +785,10 @@ dbus_display_listener_dispose(GObject *object)
+     g_clear_object(&ddl->map_proxy);
+     g_clear_object(&ddl->d3d11_proxy);
+     g_clear_pointer(&ddl->peer_process, CloseHandle);
+-#ifdef CONFIG_OPENGL
++#ifdef CONFIG_PIXMAN
+     pixman_region32_fini(&ddl->gl_damage);
++#endif
++#ifdef CONFIG_OPENGL
+     egl_fb_destroy(&ddl->fb);
+ #endif
+ #endif
+@@ -787,7 +823,7 @@ dbus_display_listener_class_init(DBusDisplayListenerClass *klass)
+ static void
+ dbus_display_listener_init(DBusDisplayListener *ddl)
+ {
+-#ifdef CONFIG_OPENGL
++#ifdef CONFIG_PIXMAN
+     pixman_region32_init(&ddl->gl_damage);
+ #endif
+ }
+diff --git a/ui/meson.build b/ui/meson.build
+index 7f806a6d48..bfa06b8c01 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -93,7 +93,7 @@ if dbus_display
+                                           '--generate-c-code', '@BASENAME@'])
+   dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies: gio)
+   dbus_display1_dep = declare_dependency(link_with: dbus_display1_lib, include_directories: include_directories('.'))
+-  dbus_ss.add(when: [gio, pixman, dbus_display1_dep],
++  dbus_ss.add(when: [gio, dbus_display1_dep],
+               if_true: [files(
+                 'dbus-chardev.c',
+                 'dbus-clipboard.c',
+@@ -101,7 +101,7 @@ if dbus_display
+                 'dbus-error.c',
+                 'dbus-listener.c',
+                 'dbus.c',
+-              ), opengl, gbm])
++              ), opengl, gbm, pixman])
+   ui_modules += {'dbus' : dbus_ss}
+ endif
+ 
 -- 
 2.41.0
 
