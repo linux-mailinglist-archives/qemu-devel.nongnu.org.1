@@ -2,88 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033787D3387
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF697D3397
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:32:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qut90-000784-2P; Mon, 23 Oct 2023 07:30:50 -0400
+	id 1qut9F-0007Cb-Ig; Mon, 23 Oct 2023 07:31:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qut8T-000776-Aw
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:30:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qut99-0007BY-IF
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:30:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qut8R-0003N2-RO
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:30:16 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qut97-0003Qg-7c
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:30:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698060614;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=mRQ8E1xvKA+L7l9skhMn7f+BJe6mtIg8kFIrHheAdW0=;
- b=hLuNSEn6me90wX1+WzlUHh1Y6mn2QepiQwDOwHPmGaWYiIGS8wl4gkqB6IqKDhGOsZP7Md
- Jt/BadZWwQ+K+ygIU1FpbUuVhZ80rz+xUaCl6mvfjzQK2TYiYRqe8uk4YDq6ppAB92ybqm
- rlNdA0R8XV0FBaJxm3G7Vs+1W2V7ugk=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-203-X_jiXzeuMMqahOtWWEST2A-1; Mon, 23 Oct 2023 07:30:12 -0400
-X-MC-Unique: X_jiXzeuMMqahOtWWEST2A-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-507b0270b7fso3250788e87.3
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 04:30:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698060611; x=1698665411;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mRQ8E1xvKA+L7l9skhMn7f+BJe6mtIg8kFIrHheAdW0=;
- b=S8uKi0+b/9j+MTuX57a7w7AVbWk0jpUzJVoTgwiu3W78eZn2qpJDkCiU/6349tXYJY
- Gwf1WE9FCkEfJau4WzIAKGxUgppgxUsy7XkCu1FHvp2wbgvOgJ4/6r8+p7QYp1sQb/m5
- Hcg0aVuG/WK7fu3ybkzPGiBofYa/+xenH3yn8aSvcqUmFESruB+Kkl6KBFuvrMIH8s1G
- WWnAb2ZIC/mZ2dmcEAh8lneHAlF53xuNS2zlV6MinR2An0qJqBecUdiB0Bj2VU4SJrKr
- 4nW33OoglbE7RuxcFRi7CidtO21D7qLUqmjdQ9A5Ro+Ild352nqi/OhSx88d/QzJlASL
- Vz2g==
-X-Gm-Message-State: AOJu0Yx174rm8JlIX2W/2h5XgZTZ1r2PuOU00SFL+tpXMUz82p85jkrI
- Dtev80BHcY94uKYYJ8vzoM/WyhMKSW0OnFpaiwsygQBkzNwkwUp1WCRlbnYz+CCkHhbsNpox1tW
- tlEMzNwNYss6b9F6+d8LumBA=
-X-Received: by 2002:a05:6512:24e:b0:503:2e6:685e with SMTP id
- b14-20020a056512024e00b0050302e6685emr5675360lfo.14.1698060611117; 
- Mon, 23 Oct 2023 04:30:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFcmEwIKGhZAy03YDU/71FZYjvTxJIkQPFXnvPX11IP9HjvGB9hqmgBFV4QArvG4Gt97Pstxw==
-X-Received: by 2002:a05:6512:24e:b0:503:2e6:685e with SMTP id
- b14-20020a056512024e00b0050302e6685emr5675345lfo.14.1698060610704; 
- Mon, 23 Oct 2023 04:30:10 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- j7-20020a5d6187000000b003253523d767sm7606744wru.109.2023.10.23.04.30.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 04:30:09 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Corey Minyard <minyard@acm.org>
-Subject: Re: [PATCH] hw/ipmi: Don't call vmstate_register() from
- instance_init() functions
-In-Reply-To: <20231020145554.662751-1-thuth@redhat.com> (Thomas Huth's message
- of "Fri, 20 Oct 2023 16:55:54 +0200")
-References: <20231020145554.662751-1-thuth@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Mon, 23 Oct 2023 13:30:09 +0200
-Message-ID: <87pm15shj2.fsf@secure.mitica>
+ s=mimecast20190719; t=1698060656;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LfReCdHjhmuPQQHFVsxjOnnqROLONk4FSPW5c1U3mIc=;
+ b=JbPukcAMsxqQRmvYUsEXSjxlHfgVNtZikhXMDcSGmqfmjeFWvn+KYhbRzVmNBvu+aznvvY
+ LWdbhnBbQHGV+lrd0DcEe1VFbTIa2Jo53YwaDbFX8/gZsYhVAZlTgdT1uyoTrZcfo6LKm+
+ FMlkeRKy5UT1nsUmxd883Jn2CUhHslc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-194-5_3YDeHbNVCQcAP0xI4ptw-1; Mon, 23 Oct 2023 07:30:52 -0400
+X-MC-Unique: 5_3YDeHbNVCQcAP0xI4ptw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 203EE3C14912;
+ Mon, 23 Oct 2023 11:30:52 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7453225C0;
+ Mon, 23 Oct 2023 11:30:49 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v5 00/19] Make Pixman an optional dependency
+Date: Mon, 23 Oct 2023 15:30:27 +0400
+Message-ID: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,21 +82,100 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> wrote:
-> instance_init() can be called multiple times, e.g. during introspection
-> of the device. We should not install the vmstate handlers here. Do it
-> in the realize() function instead.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Hi,
 
-It fixes my issues.
+QEMU system emulators can be made to compile and work without Pixman.
 
-Should I take this through the Migration tree?
+Only a few devices and options actually require it (VNC, Gtk, Spice for ex) and
+will have to be compiled out.
+
+However, most of QEMU graphics-related code is based on pixman_image_t and
+format. If we want to provide mostly compatible QEMU machines with or without
+Pixman, all we need to do is to have a small compatibility header with just the
+bare minimum for those types (see "ui: add pixman-compat.h"). There are a
+limited number of operations related to geometry that are slightly better
+implemented in QEMU (without Pixman, see "virtio-gpu: replace PIXMAN for
+region/rect test").
+
+Without this simple compatibility header approach, QEMU at runtime becomes a
+very different emulator (without graphics device/board, display etc) and full of
+"if PIXMAN" conditions in the code. This is a much worse outcome imho, compared
+to this small header maintainance and compatibility story.
+
+Fixes:
+https://gitlab.com/qemu-project/qemu/-/issues/1172
+
+v5:
+- fixed "vl: move display early init before default devices" patch
+
+v4:
+- added "vl: move display early init before default devices" patch
+- code style fixes
+- a-b from Zoltan
+
+v3:
+- improve transient meson condition in first patch (Paolo)
+- use muxed console as fallback by default (Paolo)
+- make pixman-compat.h closer to original API
+- keep "x-pixman" property for sm501 (Zoltan)
+
+Marc-André Lureau (19):
+  build-sys: add a "pixman" feature
+  ui: compile out some qemu-pixman functions when !PIXMAN
+  ui: add pixman-compat.h
+  vl: move display early init before default devices
+  ui/console: allow to override the default VC
+  ui/vc: console-vc requires PIXMAN
+  qmp/hmp: disable screendump if PIXMAN is missing
+  virtio-gpu: replace PIXMAN for region/rect test
+  ui/console: when PIXMAN is unavailable, don't draw placeholder msg
+  vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when !PIXMAN
+  ui/gl: opengl doesn't require PIXMAN
+  ui/vnc: VNC requires PIXMAN
+  ui/spice: SPICE/QXL requires PIXMAN
+  ui/gtk: -display gtk requires PIXMAN
+  ui/dbus: do not require PIXMAN
+  arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
+  hw/sm501: allow compiling without PIXMAN
+  hw/display: make ATI_VGA depend on PIXMAN
+  build-sys: make pixman actually optional
+
+ configs/devices/mips64el-softmmu/default.mak |   2 +-
+ meson.build                                  |  25 ++-
+ qapi/ui.json                                 |   3 +-
+ include/ui/console.h                         |   2 +
+ include/ui/pixman-compat.h                   | 195 +++++++++++++++++++
+ include/ui/qemu-pixman.h                     |  11 +-
+ include/ui/rect.h                            |  59 ++++++
+ hw/display/sm501.c                           |  59 ++++--
+ hw/display/vhost-user-gpu.c                  |   2 +
+ hw/display/virtio-gpu.c                      |  30 ++-
+ system/vl.c                                  |  68 ++++---
+ ui/console-vc-stubs.c                        |  33 ++++
+ ui/console.c                                 |  19 ++
+ ui/dbus-listener.c                           |  90 ++++++---
+ ui/qemu-pixman.c                             |   6 +
+ ui/ui-hmp-cmds.c                             |   2 +
+ ui/ui-qmp-cmds.c                             |   2 +
+ Kconfig.host                                 |   3 +
+ hmp-commands.hx                              |   2 +
+ hw/arm/Kconfig                               |   3 +-
+ hw/display/Kconfig                           |   9 +-
+ hw/display/meson.build                       |   4 +-
+ meson_options.txt                            |   2 +
+ scripts/meson-buildoptions.sh                |   3 +
+ ui/meson.build                               |  24 +--
+ 25 files changed, 541 insertions(+), 117 deletions(-)
+ create mode 100644 include/ui/pixman-compat.h
+ create mode 100644 include/ui/rect.h
+ create mode 100644 ui/console-vc-stubs.c
+
+-- 
+2.41.0
 
 
