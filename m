@@ -2,97 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00F97D41BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 23:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47AF7D421B
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 23:57:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv2WG-0003e6-H3; Mon, 23 Oct 2023 17:31:28 -0400
+	id 1qv2uF-0002tq-TF; Mon, 23 Oct 2023 17:56:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
- id 1qv2WF-0003dw-EQ
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 17:31:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qv2uD-0002tb-QO; Mon, 23 Oct 2023 17:56:13 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
- id 1qv2WD-0002Y1-P4
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 17:31:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698096684;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=F1k2Vg92RJrxv+gYLNepXp/tJyAR04nx8wa9wG6p0is=;
- b=CimN6h1JUMp/gj6nGR8TfO/DAC61/vDmqsrj5voBcsF+0WBdbCWDwGzNR7CovecDcQx7KC
- 6XElkjK80WonxCfhuYLwulfbQpU8bb1liWGRRRTeQTXyGonKoeTLjKuJjtajhNUsfgJFbq
- l1s1vlF9GoFeVuEFzNzjA8GiiPv+Pjs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-maCHI05XOSGXqitwQfvDGg-1; Mon, 23 Oct 2023 17:29:41 -0400
-X-MC-Unique: maCHI05XOSGXqitwQfvDGg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4084e4ce543so23325425e9.3
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 14:29:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698096580; x=1698701380;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=F1k2Vg92RJrxv+gYLNepXp/tJyAR04nx8wa9wG6p0is=;
- b=e9qF0g5x3+SOqjcjFOEp7VRPFR5O8w65K2SQg/wRCwxSbo30PujP8jYlcX/IvhQtvq
- puWPhs+L+5ZlwRc8ylHOjWpMo/EY3mzwmBGdiRE2nyB3pkXl0XhKVsO43CEyep+Q7pY6
- 6NEGvhfJEkf1Z6QB3XRSfSKau21/6vvxvZkp67lnYSBvsckE1hCroMM1BoSEkWDZm7ag
- oDxrV6+osGxAzzYGr4esEbrpYa/Xrnu0+329FoTXYGBeJFXWFoaaoZh2ctjZx9goPHrl
- soNb4EJI0bkI+qmlhan4FP7mGApzw/YmmalWCTsBg+geWL9FdtiYjufi++3KxoRszXe6
- a3wQ==
-X-Gm-Message-State: AOJu0YwskXJrioC7YqYqJPWdTvVZpXdD4c2cLJVTWZTWb5snQzENoTIM
- miJZZSMXxwqqCtQ9pwMHf4u2zn6HkWAR7Ohiqaa09G1W5NoA9MhJm9DVcQ3GOa1CcHc5f3PGgFP
- n7fuZYGT8ZaXERqY=
-X-Received: by 2002:a05:600c:45ca:b0:408:575e:f24f with SMTP id
- s10-20020a05600c45ca00b00408575ef24fmr5647853wmo.28.1698096580653; 
- Mon, 23 Oct 2023 14:29:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwIqmyWxHtLCEV9sJcM7Mm48Qpb+Y1PSoNkRJSeRh4CaGlNviwDWwltxau6u5GNETKD69b9g==
-X-Received: by 2002:a05:600c:45ca:b0:408:575e:f24f with SMTP id
- s10-20020a05600c45ca00b00408575ef24fmr5647840wmo.28.1698096580275; 
- Mon, 23 Oct 2023 14:29:40 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es.
- [92.176.231.205]) by smtp.gmail.com with ESMTPSA id
- e7-20020a05600c218700b00407efbc4361sm14963606wme.9.2023.10.23.14.29.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 14:29:39 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
-Cc: zackr@vmware.com, contact@emersion.fr, linux-doc@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
- iforbes@vmware.com, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Chia-I Wu <olvaffe@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- Hans de Goede <hdegoede@redhat.com>, Matt Roper
- <matthew.d.roper@intel.com>, David Airlie <airlied@gmail.com>,
- banackm@vmware.com, Rob Clark <robdclark@gmail.com>, krastevm@vmware.com,
- spice-devel@lists.freedesktop.org, Gurchetan Singh
- <gurchetansingh@chromium.org>, Jonathan Corbet <corbet@lwn.net>, David
- Airlie <airlied@redhat.com>, virtualization@lists.linux-foundation.org,
- linux-kernel@vger.kernel.org, mombasawalam@vmware.com, Daniel Vetter
- <daniel@ffwll.ch>, ppaalanen@gmail.com, VMware Graphics Reviewers
- <linux-graphics-maintainer@vmware.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v6 9/9] drm: Introduce documentation for hotspot properties
-In-Reply-To: <20231023074613.41327-10-aesteve@redhat.com>
-References: <20231023074613.41327-1-aesteve@redhat.com>
- <20231023074613.41327-10-aesteve@redhat.com>
-Date: Mon, 23 Oct 2023 23:29:39 +0200
-Message-ID: <87h6mh10zg.fsf@minerva.mail-host-address-is-not-set>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qv2uB-0007SA-B9; Mon, 23 Oct 2023 17:56:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=wSrOO1dvbvhZ4eZ8z7gRIFv+9aVYCbPb47P1HnMun9w=; b=TmFT+4Z1H0nDv3lR3H3Z+ngmZO
+ E/5l1LBsQhqpACL8G8+pv3BXtWxim4TviX7PVq+DC9Q6+361K+qEzDlUqBKQ2NvtkqAxZackWkyY/
+ Q6mYlJtHoYyKixd9+qjwqUUt2DnuB7FgZFuTRMUMtuYaizMrvjXI/bNKCpS249F2PMUv9p1RNmany
+ jfBlHZCfn0qKqqPhTBaXGIcQgqWvHeBBltt94a0/vfuVEVv+9TpWDz/a7HKY41Y7wEoHGIaK7s+47
+ sSsmO82iW68daYMqqyGcfDp/RJM5X/LVFgvK+K9di6atj3PtLoTxt7WZ9Qqc4uh++UH4oBpA5wePA
+ CkOyjt+0MuoL9RXIlhgPjjzfn+0VsqAL17jQE54ojrk3rSEgHbOcXjUF3PZoIIawkPIuqrR6BBEke
+ XMqn8a9fuWtF1j+Yql7vlidz7w94H7aLTIs63u1EZdQT9VdQWoNqbewKuYAVCWy+Gwhox75blSkOT
+ mROauuyDQXIOxUaV9GwqYbfTs6vfiV7ySEazEGCHKz2IWHB5T3ZJ2IIpa3f841b0PHF6UruhUeM/9
+ wyJ1Tn90AoSg3+KCDyuYGbaVCwsptvzz7YrqFZzQ6NwotoxgQAWZB0niq13pXR3CeehM+uUqJ0phJ
+ peN/7PgFr4kzZkce84HEQ+rgGE5HkSqeHY93GQ8gQ=;
+Received: from [2a00:23c4:8bb0:3200:776d:f8ec:db63:d979]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qv2tx-00072t-4M; Mon, 23 Oct 2023 22:56:01 +0100
+Message-ID: <03dc6815-92e9-4439-b25f-372d3984df49@ilande.co.uk>
+Date: Mon, 23 Oct 2023 22:56:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=fmartine@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ philmd@linaro.org, shentey@gmail.com
+References: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
+ <20231019130452.508426-3-mark.cave-ayland@ilande.co.uk>
+ <74b653a6-e883-4149-4f53-521761a52db5@eik.bme.hu>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <74b653a6-e883-4149-4f53-521761a52db5@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:3200:776d:f8ec:db63:d979
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 2/2] hw/ide/via: implement legacy/native mode switching
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,34 +103,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Albert Esteve <aesteve@redhat.com> writes:
+On 20/10/2023 00:09, BALATON Zoltan wrote:
 
-> From: Michael Banack <banackm@vmware.com>
->
-> To clarify the intent and reasoning behind the hotspot properties
-> introduce userspace documentation that goes over cursor handling
-> in para-virtualized environments.
->
-> The documentation is generic enough to not special case for any
-> specific hypervisor and should apply equally to all.
->
-> Signed-off-by: Zack Rusin <zackr@vmware.com>
+> On Thu, 19 Oct 2023, Mark Cave-Ayland wrote:
+>> Allow the VIA IDE controller to switch between both legacy and native modes by
+>> calling pci_ide_update_mode() to reconfigure the device whenever PCI_CLASS_PROG
+>> is updated.
+>>
+>> This patch also moves the setting of PCI_CLASS_PROG from via_ide_realize() to
+>> via_ide_reset() and clears PCI_INTERRUPT_PIN to ensure that if a PCI device
+>> reset occurs then the device configuration is always consistent.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>> hw/ide/via.c | 20 ++++++++++++++++++--
+>> 1 file changed, 18 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/ide/via.c b/hw/ide/via.c
+>> index fff23803a6..e6278dd419 100644
+>> --- a/hw/ide/via.c
+>> +++ b/hw/ide/via.c
+>> @@ -28,6 +28,7 @@
+>> #include "hw/pci/pci.h"
+>> #include "migration/vmstate.h"
+>> #include "qemu/module.h"
+>> +#include "qemu/range.h"
+>> #include "sysemu/dma.h"
+>> #include "hw/isa/vt82c686.h"
+>> #include "hw/ide/pci.h"
+>> @@ -128,6 +129,9 @@ static void via_ide_reset(DeviceState *dev)
+>>         ide_bus_reset(&d->bus[i]);
+>>     }
+>>
+>> +    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
+>> +    pci_ide_update_mode(d);
+>> +
+>>     pci_set_word(pci_conf + PCI_COMMAND, PCI_COMMAND_IO | PCI_COMMAND_WAIT);
+>>     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+>>                  PCI_STATUS_DEVSEL_MEDIUM);
+>> @@ -137,7 +141,7 @@ static void via_ide_reset(DeviceState *dev)
+>>     pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+>>     pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+>>     pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
+> 
+> I'd remove these BAR defaults as they are not effective and aren't valid BAR values 
+> (missing IO bit) so likely would not work even if they weren't cleared but if you 
+> want to keep them maybe add a comment about that they will be zeroed by PCI reset 
+> anyway so only here for reference.
 
-The author is Michael Banack but it's missing a SoB from them.
-I don't think there's a need to resend for this, can be added
-when applying. But either Michael or Zack should confirm that
-is the correct thing to do for this patch.
+I've had a look again at the other PCI IDE controllers and none of the others attempt 
+to set default BAR addresses except for PIIX-IDE, and that is simply to indicate the 
+BMDMA BAR is an I/O BAR. So in retrospect, I'll add a commit to remove these BAR 
+addresses as you've suggested above.
 
-The doc itself looks great to me and it clarifies a lot about
-cursor hotspots.
+>> -    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+>> +    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000000e);
+> 
+> I did not get the commit message why it needs to 0 the intrerrupt pin because 
+> pci_ide_update_mode will set it above so I think this line could just use 
+> pci_set_byte() to set the PCI_INTERRUPT_LINE only now. (Although it still contradicts 
+> the VT8231 data sheet about the interrupt pin default value but I don't care as long 
+> as it works.)
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+If you're happy then I'll make the change to use pci_set_byte().
 
--- 
-Best regards,
+> Regards,
+> BALATON Zoltan
+> 
+>>
+>>     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+>>     pci_set_long(pci_conf + 0x40, 0x0a090600);
+>> @@ -159,6 +163,18 @@ static void via_ide_reset(DeviceState *dev)
+>>     pci_set_long(pci_conf + 0xc0, 0x00020001);
+>> }
+>>
+>> +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
+>> +                              uint32_t val, int len)
+>> +{
+>> +    PCIIDEState *d = PCI_IDE(pd);
+>> +
+>> +    pci_default_write_config(pd, addr, val, len);
+>> +
+>> +    if (range_covers_byte(addr, len, PCI_CLASS_PROG)) {
+>> +        pci_ide_update_mode(d);
+>> +    }
+>> +}
+>> +
+>> static void via_ide_realize(PCIDevice *dev, Error **errp)
+>> {
+>>     PCIIDEState *d = PCI_IDE(dev);
+>> @@ -166,7 +182,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
+>>     uint8_t *pci_conf = dev->config;
+>>     int i;
+>>
+>> -    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
+>>     pci_set_long(pci_conf + PCI_CAPABILITY_LIST, 0x000000c0);
+>>     dev->wmask[PCI_INTERRUPT_LINE] = 0;
+>>     dev->wmask[PCI_CLASS_PROG] = 5;
+>> @@ -221,6 +236,7 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
+>>     /* Reason: only works as function of VIA southbridge */
+>>     dc->user_creatable = false;
+>>
+>> +    k->config_write = via_ide_cfg_write;
+>>     k->realize = via_ide_realize;
+>>     k->exit = via_ide_exitfn;
+>>     k->vendor_id = PCI_VENDOR_ID_VIA;
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+
+ATB,
+
+Mark.
 
 
