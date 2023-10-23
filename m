@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F417D3848
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 958F87D384B
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:42:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quvAa-00073w-Nu; Mon, 23 Oct 2023 09:40:37 -0400
+	id 1quvC3-0008PN-R3; Mon, 23 Oct 2023 09:42:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvAN-0006xK-LY
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:40:23 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvC1-0008PC-Um
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:05 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvAL-00070I-Kv
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:40:23 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvC0-0007IZ-F3
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:42:05 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id B686321AE8;
- Mon, 23 Oct 2023 13:40:18 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 386DA1FE17;
+ Mon, 23 Oct 2023 13:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698068418; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698068523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UaM64wLyTcYX5DuzcSxpwPt6uERYdOCcpkjwxp19+eE=;
- b=RgInh6Lhq+2GT746rjCBMNxNslIY9t5iEdJkghh7HtcFxLptoDKIGnB/4jPCK6WKDDDVNR
- JNVB8j1e9by5kaXdiiPLczhczPb7TnQA5N6oIhqP1XxKB9MQOzWux5Adq/NYwq6P/Y9G1G
- YUji9//4bHSRGbwYniOUGW+zZHIBWqc=
+ bh=Cfj4ctClPArJuN2ioFaBH5l8a+IMXPxlQlPZULaGzNs=;
+ b=Fz0W0y7uL9LsVL9QQPsePf0LJGq7CyCoCNtAfxpF1SBnGJ8PbRZmhPjNeh5eUSLiCaaAaO
+ YeMz3t0MQqgO1owknM8qyqrqdkSkicbtKt0gvmclxKFMyRkovlVLK+AvxIc+MDhTuM9ME3
+ jB1fr9890HqUvsIOhrq//TGXgy3jWks=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698068418;
+ s=susede2_ed25519; t=1698068523;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UaM64wLyTcYX5DuzcSxpwPt6uERYdOCcpkjwxp19+eE=;
- b=zKvnYg+upZYaxxs+K6OSQKzB/l0kr+nvead+OCWeb6A+M5JDXZ38xt7lB1UBA2YmT1jR80
- XpoxXA4s8q1wdsDA==
+ bh=Cfj4ctClPArJuN2ioFaBH5l8a+IMXPxlQlPZULaGzNs=;
+ b=OTdw4zkqVuLDr3vYHLMVfILEz7oZWat8vInxJ3f1RVIxSxfs04EM4M8j79vrXXYJIUbm1a
+ uIcerVf3nRYDMUCA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3FE8D132FD;
- Mon, 23 Oct 2023 13:40:18 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B549D132FD;
+ Mon, 23 Oct 2023 13:42:02 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id +kpbA8J3NmX+VQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 13:40:18 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id 4ln4Hyp4NmXaVgAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 13:42:02 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
 Cc: Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>, Juan
  Quintela <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>
-Subject: Re: [PATCH v2 04/11] migration: Make
- compress_data_with_multithreads return bool
-In-Reply-To: <20231019110724.15324-5-quintela@redhat.com>
+Subject: Re: [PATCH v2 05/11] migration: Simplify
+ compress_page_with_multithread()
+In-Reply-To: <20231019110724.15324-6-quintela@redhat.com>
 References: <20231019110724.15324-1-quintela@redhat.com>
- <20231019110724.15324-5-quintela@redhat.com>
-Date: Mon, 23 Oct 2023 10:40:15 -0300
-Message-ID: <87lebtbgow.fsf@suse.de>
+ <20231019110724.15324-6-quintela@redhat.com>
+Date: Mon, 23 Oct 2023 10:42:00 -0300
+Message-ID: <87il6xbglz.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
+Authentication-Results: smtp-out2.suse.de;
 	none
 X-Spam-Score: -7.10
 X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
@@ -74,8 +74,8 @@ X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
  RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
  FREEMAIL_CC(0.00)[redhat.com,web.de]
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -100,9 +100,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Juan Quintela <quintela@redhat.com> writes:
 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Move the goto to a while true.
+>
 > Reviewed-by: Lukas Straub <lukasstraub2@web.de>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-
 
