@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7527D3B8A
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79CD7D3B8C
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 17:57:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quxG6-0000WF-0G; Mon, 23 Oct 2023 11:54:26 -0400
+	id 1quxIx-0001XI-3m; Mon, 23 Oct 2023 11:57:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quxG4-0000W7-Kc
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:54:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quxIu-0001XA-Hk
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:57:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quxG3-0006bR-AJ
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:54:24 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1quxIs-00075P-Rq
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 11:57:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698076461;
+ s=mimecast20190719; t=1698076638;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Th+D9dRVPWitNJyOLas7iwMPriJ/8uuv1Dy6Xe+kADY=;
- b=fN2672FmvdSoRGN+6mWv2aQWHaFwBkGSWoWRg8xMAVEEFWcIUjCLfBOVYVvn1eVRFm8iR8
- G6QeWQwphOeJRmtGKkKnpw8INiSYCOmLBTo7xERKNF7JA1escE47IZYxFCP9L8SV3E+cng
- jI3AyYvOBr+83frT+WJJHGUiOBKl5Gw=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=J2ZIxCBUCZSvYebMBNxr9rU6hSdiUCX70dmsOkbWyEI=;
+ b=SF/mkJJrRGK3BS/ZtVw4+ZzZFmsd2oaDEpdKJmq6lzGaAn8A31ZZRvvJBpflx3BVoABC9C
+ gEPMUaeyknTs9e5Du/dIfKdidRVq/T7gNT7OY0cgpUeOd8qNBzJcxQNaXl9QzG1wasetcC
+ q/Q+AhY8gCGRV5088MfaDPNCz+9YzEU=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-481-rLB5vq5iOK-9mU4-tPo3IQ-1; Mon, 23 Oct 2023 11:54:18 -0400
-X-MC-Unique: rLB5vq5iOK-9mU4-tPo3IQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-77898c3fbd3so37290585a.0
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 08:54:18 -0700 (PDT)
+ us-mta-572-lW9LnatcPUSB3D7ZiCTtUA-1; Mon, 23 Oct 2023 11:57:10 -0400
+X-MC-Unique: lW9LnatcPUSB3D7ZiCTtUA-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3b40deadcb7so487868b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 08:57:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698076458; x=1698681258;
+ d=1e100.net; s=20230601; t=1698076630; x=1698681430;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Th+D9dRVPWitNJyOLas7iwMPriJ/8uuv1Dy6Xe+kADY=;
- b=mXJaYxAkVzr4lPRyU//aTveUfmbmj0p2cjDaIDiSCFNxkvm87dYi/vOIyP164N6xwu
- gSBvEXal/amVZdGJISRohkddg3h0OujKZoHOqyXgA3GD+8eCC5IZB+NDJ55LfPhLDTur
- np+PwRxGqWdBHMnmoGxb8oV0qoaXwxiDA1Mwo3fVjq8YCHfEtH0GuKkPzzcPkzlDrGOH
- AQ0MZOmJVnAAUlc9Nul2fDAS6YX7gXT2X4tol4OjEb/+WGzvg47hE2VlgU3F8W66QSfP
- qkT0nJ9nWwJDP3suL1rwRgFbF1NItJyVhMW+zM9X6EvjoJZgf/1+m0I4iEnzCZqJghWc
- Td+w==
-X-Gm-Message-State: AOJu0Yz6sEAjHtV8hVMqc9UiGu5gXqee6s/cJVl9Y4K3fLnGMKD/gIIF
- AIbwNDZH80PZPAg8lTFzVV9P5VpmzPZPHL9Sl3xNfEPRZO8T52eVmb/rOtMtzV3i5FkGzGopHRn
- Uzr3HyJX6XKHx9QA=
-X-Received: by 2002:a05:620a:2790:b0:775:7921:732e with SMTP id
- g16-20020a05620a279000b007757921732emr9163373qkp.3.1698076458387; 
- Mon, 23 Oct 2023 08:54:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFo24VMkRCO71IVOtBV15Rql3m6hD/DW57X+6R9e+q5FSir4w2KO+CCPgUuzOIv7iQ4KXOkqA==
-X-Received: by 2002:a05:620a:2790:b0:775:7921:732e with SMTP id
- g16-20020a05620a279000b007757921732emr9163361qkp.3.1698076458074; 
- Mon, 23 Oct 2023 08:54:18 -0700 (PDT)
+ bh=J2ZIxCBUCZSvYebMBNxr9rU6hSdiUCX70dmsOkbWyEI=;
+ b=bzI8FqMMNi7Rzsi18DQK9jFEwxkyxR+Phgc6BJ4CgKyBY4IB29USNX1UQhd7/a2M4q
+ Wkw6jHHcet1rRSpGuw1aVD5cG0aLJxg1Q55IIJIInrNyUVK6FwXcyXk/fwl2g40T1zOg
+ 30mn+FCgMp6EnMe41RRfI5ONRPZ/Aj+aREIXDilvxsOzDimhxl99/CgEq58u0IWQZ1r6
+ +UPjO61XWF3JuHbSf4JqLdIVupd77qvThT+u9C/xj0Fi3ZTmXFstg2e9c46cLSsDx/Wq
+ F8riIwv2IL6rK8P9WVpnFbejIGNvvH95u/8a1JWMJ7CxCkUvSnKQ6zPFpfL3JExLHahF
+ 7g+g==
+X-Gm-Message-State: AOJu0YwcBiQkaZeJ3vl+n6O5CafEO9v78uOG1wI6yRZmW6+kEeniIG6B
+ ZbjCt76jYLj/3JMiFtXeU6zpmI8ZHwfhq/4i684ySi14FSDvFIAUd1emoe6pGjMW1LyNI/CapJl
+ McPc6E6iNPSQ/um0=
+X-Received: by 2002:a05:6808:14d6:b0:3b2:9c2f:50e0 with SMTP id
+ f22-20020a05680814d600b003b29c2f50e0mr10539969oiw.5.1698076629913; 
+ Mon, 23 Oct 2023 08:57:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbqdF/3gjlXWDahliSPIVjW4ZlJR9tuqPw/1NV0axL4UYPtmjH8DmndNDgL5qWojqra+APbQ==
+X-Received: by 2002:a05:6808:14d6:b0:3b2:9c2f:50e0 with SMTP id
+ f22-20020a05680814d600b003b29c2f50e0mr10539955oiw.5.1698076629646; 
+ Mon, 23 Oct 2023 08:57:09 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- n17-20020a05620a223100b007770673e757sm2806180qkh.94.2023.10.23.08.54.17
+ u12-20020a05621411ac00b0066d5220d860sm2971561qvv.18.2023.10.23.08.57.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 08:54:17 -0700 (PDT)
-Date: Mon, 23 Oct 2023 11:54:15 -0400
+ Mon, 23 Oct 2023 08:57:09 -0700 (PDT)
+Date: Mon, 23 Oct 2023 11:57:07 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH RFC 4/7] migration: Drop MultiFDSendParams.quit and
- cleanup error paths
-Message-ID: <ZTaXJwXExv60D7L0@x1n>
-References: <20231022201211.452861-1-peterx@redhat.com>
- <20231022201211.452861-5-peterx@redhat.com>
- <87jzrdz9gr.fsf@suse.de> <ZTaI8vJpGeOQSfZH@x1n>
- <875y2xz6zt.fsf@suse.de>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH] migration/ram: Fix compilation with -Wshadow=local
+Message-ID: <ZTaX00kf3UcQG/AF@x1n>
+References: <20231023145044.104866-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <875y2xz6zt.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20231023145044.104866-1-thuth@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,11 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 12:35:50PM -0300, Fabiano Rosas wrote:
-> I don't, just thought of being conservative since this is a multifd
-> external API (of sorts).
+On Mon, Oct 23, 2023 at 04:50:44PM +0200, Thomas Huth wrote:
+> No need for a new variable here, especially not for one that shadows
+> a variable from the beginning of the function scope. With this change
+> the code now successfully compiles with -Wshadow=local.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  migration/ram.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 92769902bb..9de9e54fa9 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -3238,8 +3238,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+>  
+>          ram_flush_compressed_data(rs);
+>  
+> -        int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
+> -        if (ret < 0) {
+> +        if (rdma_registration_stop(f, RAM_CONTROL_FINISH) < 0) {
 
-No worry, let me just keep it there.  Thanks for the quick reviews!
+We may need to rename "ret" to something else?  qemu_file_set_error(),
+right below, will reference the error returned.
+
+>              qemu_file_set_error(f, ret);   <-----------------
+
+Thanks,
+
+>          }
+>      }
+> -- 
+> 2.41.0
+> 
 
 -- 
 Peter Xu
