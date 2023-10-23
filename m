@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C140B7D3918
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF407D3921
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:18:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quvjN-0006Oh-20; Mon, 23 Oct 2023 10:16:33 -0400
+	id 1quvkp-0007Vh-05; Mon, 23 Oct 2023 10:18:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvjH-0006OI-Se
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:16:28 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvkl-0007VF-RK
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:17:59 -0400
 Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvjG-0007Fc-Dr
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:16:27 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvkk-0007d7-9V
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:17:59 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 166AD1FE17;
- Mon, 23 Oct 2023 14:16:25 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D944D1FE18;
+ Mon, 23 Oct 2023 14:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698070585; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698070676; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=d6WMk/LefrgD+4aZh5+m8++vxygw3hC8L/83jCdMJz0=;
- b=BW6bNEUkVMZV+nbPyZVlakO04379ozicH0Yi/Ip494FpiK1dddTADkS8jYdB2CSYVOiaRs
- JeNUrEq3zcehJNcouZdH6QwJ4iTcR0hPD48NGSAAj+02WdsTvP07zkpPj16mhIGFItXs/8
- IGFGnvSCNt45s5KCKl3S9Y4sVp/Ry3s=
+ bh=XeK5sCuYcXFozWXnpfHoLIgZM3Ggl2Nw/o/ogLz7qQk=;
+ b=fnc2zaFUe0tdDBp6bnqzKie+4wr1D6wP8kDF0OODxDIfCclJMORfVBIE1KtGOeduMj9hhQ
+ O0PCwr8tNTFLyPEsKCGVGSHJxP4V95xIPW5sYKclocw3VMEvrxbFNXxAUyMFbCBfnE2EyA
+ kb6bh8fgPURO562DuMeusjfRarmdF7c=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698070585;
+ s=susede2_ed25519; t=1698070676;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=d6WMk/LefrgD+4aZh5+m8++vxygw3hC8L/83jCdMJz0=;
- b=WA813pLEGml07VO02It/97jsRWE18uxU02xkQjsiPJ1nNzccE6bZybl9+iX+2i+iPcR7Ae
- nQPnDG41lLYgejDA==
+ bh=XeK5sCuYcXFozWXnpfHoLIgZM3Ggl2Nw/o/ogLz7qQk=;
+ b=p2ZsNuKyusaVEqYMSTKSBfdAMelIS1Ap0xHibLVOTI/1aK2TbRzf5ToPTcCZpCQLeQYq39
+ XbPaoNFj/0II7BDA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 91744139C2;
- Mon, 23 Oct 2023 14:16:24 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5F51F139C2;
+ Mon, 23 Oct 2023 14:17:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 7ts3FziANmXdaAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 14:16:24 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id 60PlCpSANmXJaQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 14:17:56 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, peterx@redhat.com
-Subject: Re: [PATCH RFC 1/7] migration: Drop stale comment for multifd zero
- copy
-In-Reply-To: <20231022201211.452861-2-peterx@redhat.com>
+Subject: Re: [PATCH RFC 2/7] migration: Fix error leak in
+ multifd_tls_outgoing_handshake()
+In-Reply-To: <20231022201211.452861-3-peterx@redhat.com>
 References: <20231022201211.452861-1-peterx@redhat.com>
- <20231022201211.452861-2-peterx@redhat.com>
-Date: Mon, 23 Oct 2023 11:16:22 -0300
-Message-ID: <87pm15zao9.fsf@suse.de>
+ <20231022201211.452861-3-peterx@redhat.com>
+Date: Mon, 23 Oct 2023 11:17:54 -0300
+Message-ID: <87msw9zalp.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
 Authentication-Results: smtp-out2.suse.de;
 	none
-X-Spam-Score: -6.93
-X-Spamd-Result: default: False [-6.93 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.83)[99.25%];
+X-Spam-Score: -6.85
+X-Spamd-Result: default: False [-6.85 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.75)[98.90%];
  FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
  TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-3.00)[-1.000];
@@ -97,10 +97,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Peter Xu <peterx@redhat.com> writes:
 
-> We've already done that with multifd_flush_after_each_section, for multifd
-> in general.  Drop the stale "TODO-like" comment.
+> The Error* is leaked when error triggerred.
+>
+> It logically should have a Fixes here, but since the code changed a few
+> times, the backport won't be straightforward anyway.  Let's not bother with
+> leaking an error in the failure path for now.
 >
 > Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/multifd.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index c8bdd88041..4afdd88602 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -789,6 +789,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+>      p->quit = true;
+>      qemu_sem_post(&multifd_send_state->channels_ready);
+>      qemu_sem_post(&p->sem_sync);
+> +    error_free(err);
+>  }
+>  
+>  static void *multifd_tls_handshake_thread(void *opaque)
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
