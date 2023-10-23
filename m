@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C3E7D2EA3
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 11:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E38F7D2EBC
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 11:44:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qurOj-0006eD-W3; Mon, 23 Oct 2023 05:38:58 -0400
+	id 1qurT2-0001wg-67; Mon, 23 Oct 2023 05:43:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hans-erik.floryd@rt-labs.com>)
- id 1qurOa-0006XP-CA
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:38:48 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hans-erik.floryd@rt-labs.com>)
- id 1qurOY-00069g-Dk
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 05:38:48 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1ca215cc713so16382535ad.3
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 02:38:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rt-labs-com.20230601.gappssmtp.com; s=20230601; t=1698053924; x=1698658724;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tsJyX4TfKJA3zFCOJLEpoqaUqIFOUY/32FohvbS+1UU=;
- b=vGR7rFxfh0pRyCzhZM+Ef+kbOY86nzs8tNQweyOV8a8vzOPR0NKyAzPQDYdAwKPxty
- COhVHrCfmVZKgoChQ55pmwKpf+UYcRuRiNxJrQil97Zyi5iF9cLVjCw2+lNRfw1IGjK0
- uKc7OZj/JBsbUszaGtdaz6w2cyUXdt13ttJTbpPdbGqUmIFG5ZUgl42EXE7KpEyTI0Ib
- +S3VhWNzjTunAVo0bT6ne5Oc+DnnTcy7ABNZ14jPrDZ4xMV/UOFuOtUi0cGD8Q1lCR4Z
- N/P74bd4PSLGW+E1cq4nPNXcbEzDCieP3ktufHsUtFVY0iPlIDxiLlXY7FUHiyIqWEqw
- 6qzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698053924; x=1698658724;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tsJyX4TfKJA3zFCOJLEpoqaUqIFOUY/32FohvbS+1UU=;
- b=k3IlQ0R8OY1fNyDtl61gELLg9/gICkoumBhkZ9ddH7ZGmj/rTPMVROzOZRmlFzH9Ha
- riOLI2UNUSr2pDO5V0F9ciF/YRz216+K+2JZaWpSD+xjaE1lGrs99tGVRn57n+fy+WOj
- 29K3UDB2yWRVNsWbSkgnF3qAOXM0JQv+8tMKxq/itpHFTCcpKeLnho8/+QwFNUlAI7QJ
- vBNCCppQxi524N/NMGYiZw2bFul6bBUNVuMroR5ZCfmDgiaHORghV0un8HnZimzDBIRH
- lk10TWbvqRcedNHAc+yzu6t1Q5y/KGGZ451fJrYeujkfUSa1QW/9iVQQZrsavZOCaBBu
- DWXg==
-X-Gm-Message-State: AOJu0YyRDcBTz2RwMtb0VqWvLt+RYhooSFD32zCdRLQXhcVOXgT3SnUl
- R9L4C4l3qolGxeG7MkMuRhIiaSXATZSLmo7FEWIrVQ==
-X-Google-Smtp-Source: AGHT+IFadVVLLcyK3irFKtyxZBORWPKTBKwCs/MKLWFI0woYamcTmy7NFEUhv4xg76bgvmcZIKy2pIRWuPX+UvD5QDY=
-X-Received: by 2002:a17:902:e88a:b0:1c4:13cd:b85f with SMTP id
- w10-20020a170902e88a00b001c413cdb85fmr7259210plg.5.1698053923947; Mon, 23 Oct
- 2023 02:38:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <BATV+91fa634947ba19782c4e+7365+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qurSy-0001wA-SX; Mon, 23 Oct 2023 05:43:21 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+91fa634947ba19782c4e+7365+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qurSv-0006ub-LQ; Mon, 23 Oct 2023 05:43:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=QJnLNJLIKQ/1yQL84M0rKohbw6CIp8aEbajAdE1XPdk=; b=CUdLWyALBJqmFbDGesKzP61pFX
+ yMyqMvl8eVP0caNQqIuXFssX8lBUzWgpK0Cz1fE8ycmQ7Zc364gqWYFOTEzYFjujFruaRGkPf/g16
+ 2GvuZQFH7+oO5B5p06BuB9jm6y2Zb0P3hOi7BsVk8I5q9ZzHdu8NlWI5fNR9PAEQX1FoAvUwcQygR
+ BrsvhK9U4XPB2XlRKtxIRyatSt0Ur8ot4pBTYRH2JCADNdaRtv6ro02JzxVUyyL4XCxYYdUYirxQk
+ sSvo6tPiHXwM1MjlSxzPFY4mccQVObrvA0FIliR8oJ5LExfja1ipELp+yx7XX+ndJ15ku4AvAk9s8
+ aSwfOOyQ==;
+Received: from [31.94.4.150] (helo=[IPv6:::1])
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qurSo-00D2s3-IS; Mon, 23 Oct 2023 09:43:10 +0000
+Date: Mon, 23 Oct 2023 10:42:58 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Igor Mammedov <imammedo@redhat.com>
+CC: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ qemu-block@nongnu.org, xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_11/12=5D_hw/xen=3A_automaticall?=
+ =?US-ASCII?Q?y_assign_device_index_to_block_devices?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20231023113002.0e83c209@imammedo.users.ipa.redhat.com>
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <20231016151909.22133-12-dwmw2@infradead.org>
+ <20231018093239.3d525fd8@imammedo.users.ipa.redhat.com>
+ <3f3487af227dcdce7afb37e8406d5ce8dcdbf55f.camel@infradead.org>
+ <20231023113002.0e83c209@imammedo.users.ipa.redhat.com>
+Message-ID: <8CBFDABE-6BD7-4924-BB69-EF5EAA04A34D@infradead.org>
 MIME-Version: 1.0
-References: <20231020170009.86870-1-philmd@linaro.org>
- <20231020170009.86870-3-philmd@linaro.org>
- <CAKmqyKPJoyMmoNAX9JrHz6_SSphqRkEJPy3AUaV0eu+701Ow9g@mail.gmail.com>
-In-Reply-To: <CAKmqyKPJoyMmoNAX9JrHz6_SSphqRkEJPy3AUaV0eu+701Ow9g@mail.gmail.com>
-From: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
-Date: Mon, 23 Oct 2023 11:38:32 +0200
-Message-ID: <CADS1RdShzeE_VCMDMjCEcN06f6cEVh3dQ61g=oOKSsEBJAwuuA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] hw/char/stm32f2xx_usart: Update IRQ when SR is read
-To: Alistair Francis <alistair23@gmail.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Alistair Francis <alistair@alistair23.me>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=hans-erik.floryd@rt-labs.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+91fa634947ba19782c4e+7365+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,29 +85,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 23 Oct 2023 at 03:37, Alistair Francis <alistair23@gmail.com> wrote=
-:
->
-> On Sat, Oct 21, 2023 at 4:12=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-> <philmd@linaro.org> wrote:
-> >
-> > From: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
-> >
-> > Signed-off-by: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
-> > [PMD: Split from bigger patch]
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > ---
-> > Is this required?
->
-> I don't think this is required
->
-> Alistair
 
-I agree this should be removed. It was added because the manual says
-that some irq:s are cleared by a combination of reading SR and writing
-to DR. However, those bits are not implemented yet, and probably the
-clearing should be done when writing DR anyway.
 
-Thanks for reviewing,
- Hans-Erik
+On 23 October 2023 10:30:02 BST, Igor Mammedov <imammedo@redhat=2Ecom> wro=
+te:
+>On Wed, 18 Oct 2023 09:32:47 +0100
+>David Woodhouse <dwmw2@infradead=2Eorg> wrote:
+>
+>> On Wed, 2023-10-18 at 09:32 +0200, Igor Mammedov wrote:
+>> > On Mon, 16 Oct 2023 16:19:08 +0100
+>> > David Woodhouse <dwmw2@infradead=2Eorg> wrote:
+>> >  =20
+>> > > From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+>> > >  =20
+>> >=20
+>> > is this index a user (guest) visible? =20
+>>=20
+>> Yes=2E It defines what block device (e=2Eg=2E /dev/xvda) the disk appea=
+rs as
+>> in the guest=2E In the common case, it literally encodes the Linux
+>> major/minor numbers=2E So xvda (major 202) is 0xca00, xvdb is 0xca10 et=
+c=2E
+>
+>that makes 'index' an implicit ABI and a subject to versioning
+>when the way it's assigned changes (i=2Ee=2E one has to use versioned
+>machine types to keep older versions working the they used to)=2E
+>
+>From what I remember it's discouraged to make QEMU invent
+>various IDs that are part of ABI (guest or mgmt side)=2E
+>Instead it's preferred for mgmt side/user to provide that explicitly=2E
+>
+>Basically you are trading off manageability/simplicity at QEMU
+>level with CLI usability for human user=2E
+>I don't care much as long as it is hidden within xen code base,
+>but maybe libvirt does=2E
+
+Well, it can still be set explicitly=2E So not so much a "trade-off" as ad=
+ding the option for the user to choose the simple way=2E
+
+Yes, in a way it's an ABI, just like the dynamic assignment of PCI devfn f=
+or network devices added with "-nic"=2E And I think also for virtio block d=
+evices too? And for the ISA ne2000=2E
+
+But it seems unlikely that we'll ever really want to change "the first one=
+ is xvda, the second is xvdb=2E=2E=2E=2E"
 
