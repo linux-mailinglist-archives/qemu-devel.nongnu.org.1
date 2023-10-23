@@ -2,48 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AC37D3910
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C140B7D3918
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 16:17:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quvh5-0005Oa-J6; Mon, 23 Oct 2023 10:14:11 -0400
+	id 1quvjN-0006Oh-20; Mon, 23 Oct 2023 10:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1quvh3-0005O1-81; Mon, 23 Oct 2023 10:14:09 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1quvh1-0006cb-83; Mon, 23 Oct 2023 10:14:09 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4B0C8444B1;
- Mon, 23 Oct 2023 16:14:04 +0200 (CEST)
-Message-ID: <e84fc767-e50c-4578-9640-44365c96f814@proxmox.com>
-Date: Mon, 23 Oct 2023 16:14:03 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvjH-0006OI-Se
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:16:28 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvjG-0007Fc-Dr
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 10:16:27 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 166AD1FE17;
+ Mon, 23 Oct 2023 14:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698070585; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=d6WMk/LefrgD+4aZh5+m8++vxygw3hC8L/83jCdMJz0=;
+ b=BW6bNEUkVMZV+nbPyZVlakO04379ozicH0Yi/Ip494FpiK1dddTADkS8jYdB2CSYVOiaRs
+ JeNUrEq3zcehJNcouZdH6QwJ4iTcR0hPD48NGSAAj+02WdsTvP07zkpPj16mhIGFItXs/8
+ IGFGnvSCNt45s5KCKl3S9Y4sVp/Ry3s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698070585;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=d6WMk/LefrgD+4aZh5+m8++vxygw3hC8L/83jCdMJz0=;
+ b=WA813pLEGml07VO02It/97jsRWE18uxU02xkQjsiPJ1nNzccE6bZybl9+iX+2i+iPcR7Ae
+ nQPnDG41lLYgejDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 91744139C2;
+ Mon, 23 Oct 2023 14:16:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 7ts3FziANmXdaAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 14:16:24 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, peterx@redhat.com
+Subject: Re: [PATCH RFC 1/7] migration: Drop stale comment for multifd zero
+ copy
+In-Reply-To: <20231022201211.452861-2-peterx@redhat.com>
+References: <20231022201211.452861-1-peterx@redhat.com>
+ <20231022201211.452861-2-peterx@redhat.com>
+Date: Mon, 23 Oct 2023 11:16:22 -0300
+Message-ID: <87pm15zao9.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/9] mirror: implement mirror_change method
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
- eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
- jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com
-References: <20231013092143.365296-1-f.ebner@proxmox.com>
- <20231013092143.365296-6-f.ebner@proxmox.com> <ZTAO+TJuztCHDsUW@redhat.com>
- <92c65eb0-a069-48ea-9cbb-f8dd27b1f632@proxmox.com>
- <ZTZuTRw/+EYY0Nc+@redhat.com>
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <ZTZuTRw/+EYY0Nc+@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -6.93
+X-Spamd-Result: default: False [-6.93 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.83)[99.25%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,94 +95,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 23.10.23 um 14:59 schrieb Kevin Wolf:
-> Am 23.10.2023 um 13:37 hat Fiona Ebner geschrieben: 
->>>> +    current = qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
->>>> +                              change_opts->copy_mode);
->>>> +    if (current != MIRROR_COPY_MODE_BACKGROUND) {
->>>> +        error_setg(errp, "Expected current copy mode '%s', got '%s'",
->>>> +                   MirrorCopyMode_str(MIRROR_COPY_MODE_BACKGROUND),
->>>> +                   MirrorCopyMode_str(current));
->>>> +    }
->>>
->>> The error path is strange. We return an error, but the new mode is still
->>> set. On the other hand, this is probably also the old mode unless
->>> someone added a new value to the enum, so it didn't actually change. And
->>> because this function is the only place that changes copy_mode and we're
->>> holding the BQL, the case can't even happen and this could be an
->>> assertion.
->>>
->>
->> AFAIU and testing seem to confirm this, the new mode is only set when
->> the current mode is MIRROR_COPY_MODE_BACKGROUND. The error is only set
->> when the current mode is not MIRROR_COPY_MODE_BACKGROUND and thus when
->> the mode wasn't changed.
-> 
-> Yes, the new mode is only set when it was MIRROR_COPY_MODE_BACKGROUND,
-> that's the meaning of cmpxchg.
-> 
-> And now that I checked the return value of qatomic_cmpxchg(), it's not
-> the actual value, but it returns the second parameter (the expected old
-> value). As this is a constant in our call, that's what we'll always get
-> back. So the whole check is pointless, even as an assertion. It's
-> trivially true, and I expect it's even obvious enough for the compiler
-> that it might just optimise it away.
-> 
+Peter Xu <peterx@redhat.com> writes:
 
-From testing, I can see that it returns the current value, not the
-second parameter. I.e. if I am in MIRROR_COPY_MODE_WRITE_BLOCKING, it
-will return MIRROR_COPY_MODE_WRITE_BLOCKING. (Of course, I have to
-comment out the other check to reach the cmpxchg call while in that mode).
+> We've already done that with multifd_flush_after_each_section, for multifd
+> in general.  Drop the stale "TODO-like" comment.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-> Just qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
-> change_opts->copy_mode); without using the (constant) result should be
-> enough.
-> 
->> Adding a new copy mode shouldn't cause issues either? It's just not
->> going to be supported to change away from that mode (or to that mode,
->> because of the change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING
->> check above) without adapting the code first.
-> 
-> The checks above won't prevent NEW_MODE -> WRITE_BLOCKING. Of course,
-> the cmpxchg() won't actually do anything as long as we still have
-> BACKGROUND there as the expected old value. So in this case, QMP would
-> probably return success, but we would stay in NEW_MODE.
-> 
-
-No, that's the whole point of the check. It would fail with the error,
-saying that it expected the current mode to be background and not the
-new mode.
-
-> That's different from what I thought (I didn't really realise that we
-> have a cmpxchg here and not just a xchg), but also not entirely right.
-> 
-> Of course, all of this is hypothetical. I'm not aware of any desire to
-> add a new copy mode.
-> 
->> Of course, if we want to allow switching from active to background mode,
->> the function needs to be adapted too.
->>
->> I wanted to make it more future-proof for the case where it might not be
->> the only place changing the value and based it on what Vladimir
->> suggested in the review of v2:
->> https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg03552.html
-> 
-> As long as all of these places are GLOBAL_STATE_CODE(), we should be
-> fine. If we get iothread code that changes it, too, I think your code
-> becomes racy because the value could be changed by the iothread between
-> the first check if we already have the new value and the actual change.
-> 
-
-Right, but I think the only issue would be if the mode changes from
-MIRROR_COPY_MODE_BACKGROUND to MIRROR_COPY_MODE_WRITE_BLOCKING between
-the checks, because then the QMP call would fail with the error that the
-mode was not the expected MIRROR_COPY_MODE_BACKGROUND. But arguably,
-that is still correct. If we are already in the requested mode at the
-time of the first check, we're fine.
-
-Still, I'll add the GLOBAL_STATE_CODE() and a comment for the future :)
-
-Best Regards,
-Fiona
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
