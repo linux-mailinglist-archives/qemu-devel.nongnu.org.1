@@ -2,131 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482857D3E49
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 19:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36C77D3E4A
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 19:49:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quz1X-0002bV-TF; Mon, 23 Oct 2023 13:47:31 -0400
+	id 1quz3B-0003X5-Ts; Mon, 23 Oct 2023 13:49:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quz1J-0002b0-00
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:47:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1quz39-0003Wu-OR
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:49:11 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1quz1H-0002mL-66
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:47:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698083234;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=j7SYw79g2I5E6DmXc6G5L42Qoa1cEEOV4NCaPwvJ6UA=;
- b=AKNjw+agOAWRZTxR5DILhHbXjkRaVOfIgtdJoWwayoR3rB2KEoI0WRK+oXxZO47cglHahV
- dQ7LrWAz+4InYNradXyosxj2JSeeaVyKAqkR/QVfSqJup1QpLxXnTqTxnBhdq7aoO06MQL
- neyYPy2QpnUQR/o7770sYkMqoijV1yE=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-c-NCg_KMP8OcgzX7WqUwOQ-1; Mon, 23 Oct 2023 13:47:12 -0400
-X-MC-Unique: c-NCg_KMP8OcgzX7WqUwOQ-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6557c921deeso54279506d6.2
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 10:47:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698083231; x=1698688031;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j7SYw79g2I5E6DmXc6G5L42Qoa1cEEOV4NCaPwvJ6UA=;
- b=erAtZ7jWb0oilZEvvhJU1Bx+oed4zJiXEXHrtwPKc1sGY7jvmFRlTg7S85hq7o5I9P
- 8nYSmaY3rqEAcit9F3GxsRaxCMggzzkl9S6fxhY+k3XXcFDzXdA9el/BFW8eo+gPGCYU
- sundgvEaMuAWbFMmR/VTFlAgk8p0CKBAfz4r7NjcFxo+wDWZQaOcMaaJLC5Vvj/+TFj/
- xBjKd+3no7WGAvxsilLWAtBSPjKr8WRrb2dAPbvfZSxLweiPVoAAoLXxg0mdD9+PDFho
- PYwTPmG5+GYbETnb8hQ0tzSq0tzZhlw9qMeuxx0d+wdCbrEkPFAaUr0iO6ZKjxjOmN4K
- tc2Q==
-X-Gm-Message-State: AOJu0YwQQ39GMBQX1zJgU/jhFUBOmE3q9/Qog2BgWRNdcRf8x7OqG+Oo
- lwEuOV9EmOY8UD8t+OjMXrDvenD1aaFJ5mmrz1TlERT3/sXF3QxbVGofg4IUlZuLOqoouD61X/E
- zYYozf9J0PZckG9Q=
-X-Received: by 2002:a05:6214:21e8:b0:66d:237d:8f75 with SMTP id
- p8-20020a05621421e800b0066d237d8f75mr11610029qvj.35.1698083231637; 
- Mon, 23 Oct 2023 10:47:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyMU1JlLxWNkYFETpMI1Ir2FieoH1U1ibOHiZHlQZAfjE1MkUU0V+vf8MGfYrhofU8JDKfNQ==
-X-Received: by 2002:a05:6214:21e8:b0:66d:237d:8f75 with SMTP id
- p8-20020a05621421e800b0066d237d8f75mr11610014qvj.35.1698083231433; 
- Mon, 23 Oct 2023 10:47:11 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
- [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- m17-20020ad44d51000000b0066d04196c39sm3029642qvm.81.2023.10.23.10.47.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Oct 2023 10:47:10 -0700 (PDT)
-Message-ID: <d3118b33-920c-4a1d-993a-ef17aab2489a@redhat.com>
-Date: Mon, 23 Oct 2023 19:47:07 +0200
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1quz37-0003Fi-Oa
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:49:11 -0400
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1quz35-00032F-2m; Mon, 23 Oct 2023 19:49:07 +0200
+Message-ID: <bd1f8faf-01fd-40e0-967c-a5e4f9cbba74@maciej.szmigiero.name>
+Date: Mon, 23 Oct 2023 19:49:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block/snapshot: Fix compiler warning with -Wshadow=local
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org
-References: <20231023144402.103139-1-thuth@redhat.com>
- <87zg09jr7b.fsf@pond.sub.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
- aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
- QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
- EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
- 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
- eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
- ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
- zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
- tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
- WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
- UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
- BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
- 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
- +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
- 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
- gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
- WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
- VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
- knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
- cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
- X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
- AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
- ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
- fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
- 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
- cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
- ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
- Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
- oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
- IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
- yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <87zg09jr7b.fsf@pond.sub.org>
+Subject: Re: [PATCH v1] virtio-mem: fix division by zero in
+ virtio_mem_activate_memslots_to_plug()
+Content-Language: en-US, pl-PL
+To: David Hildenbrand <david@redhat.com>
+Cc: Mario Casquero <mcasquer@redhat.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, qemu-devel@nongnu.org
+References: <20231023111341.219317-1-david@redhat.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <20231023111341.219317-1-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -142,71 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/2023 17.26, Markus Armbruster wrote:
-> Thomas Huth <thuth@redhat.com> writes:
+On 23.10.2023 13:13, David Hildenbrand wrote:
+> When running with "dynamic-memslots=off", we enter
+> virtio_mem_activate_memslots_to_plug() to return immediately again
+> because "vmem->dynamic_memslots == false". However, the compiler might
+> not optimize out calculating start_idx+end_idx, where we divide by
+> vmem->memslot_size. In such a configuration, the memslot size is 0 and
+> we'll get a division by zero:
 > 
->> No need to declare a new variable in the the inner code block
->> here, we can re-use the "ret" variable that has been declared
->> at the beginning of the function. With this change, the code
->> can now be successfully compiled with -Wshadow=local again.
->>
->> Fixes: a32e781838 ("Mark bdrv_snapshot_fallback() and callers GRAPH_RDLOCK")
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   block/snapshot.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/block/snapshot.c b/block/snapshot.c
->> index 6e16eb803a..50adf5381e 100644
->> --- a/block/snapshot.c
->> +++ b/block/snapshot.c
->> @@ -629,8 +629,8 @@ int bdrv_all_goto_snapshot(const char *name,
->>       while (iterbdrvs) {
->>           BlockDriverState *bs = iterbdrvs->data;
->>           AioContext *ctx = bdrv_get_aio_context(bs);
->> -        int ret = 0;
->>           bool all_snapshots_includes_bs;
+>      (qemu) qom-set vmem0 requested-size 3G
+>      (qemu) q35.sh: line 38: 622940 Floating point exception(core dumped)
 > 
-> Blank line between declarations and statements, please.
+> The same is true for virtio_mem_deactivate_unplugged_memslots(), however
+> we never really reach that code without a prior
+> virtio_mem_activate_memslots_to_plug() call.
 > 
-> I'm not sure we actually need the assignment.  Proving we don't looks
-> like a poor use of our time, though.
-
-I stared at the code for a while, and I think we don't urgently need it. But 
-I'd still recommend to rather keep it to render the code more robust for 
-future changes (imagine someone adds some code that changes ret in between, 
-but does not return on negative values...)
-
-> I recommend to move the assignment from here...
+> Let's fix it by simply calling these functions only with
+> "dynamic-memslots=on".
 > 
->> +        ret = 0;
->>   
->>           aio_context_acquire(ctx);
->>           bdrv_graph_rdlock_main_loop();
->             all_snapshots_includes_bs = bdrv_all_snapshots_includes_bs(bs);
->             bdrv_graph_rdunlock_main_loop();
+> This was found when using a debug build of QEMU.
 > 
-> ... down to here.
-> 
->             if (devices || all_snapshots_includes_bs) {
->                 ret = bdrv_snapshot_goto(bs, name, errp);
->             }
+> Reprted-by: Mario Casquero <mcasquer@redhat.com>
+> Fixes: 177f9b1ee464 ("virtio-mem: Expose device memory dynamically via multiple memslots if enabled")
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-IMHO this would look best in my eyes:
-
-         ret = (devices || all_snapshots_includes_bs) ?
-               bdrv_snapshot_goto(bs, name, errp) : 0;
-
-I'll send a v2 with this change.
-
->             aio_context_release(ctx);
->             if (ret < 0) {
-> 
-> We lose the symmetry with the other three while (iterbdrvs) loops.  Do
-> we care?
-
-No, at least I don't ;-)
-
-  Thomas
+Thanks,
+Maciej
 
 
