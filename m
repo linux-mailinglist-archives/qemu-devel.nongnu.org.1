@@ -2,49 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBC47D28A7
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 04:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D231A7D28AC
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 04:45:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quksV-0006fc-3x; Sun, 22 Oct 2023 22:41:15 -0400
+	id 1qukvo-0007Pa-2t; Sun, 22 Oct 2023 22:44:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1quksS-0006fQ-If
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 22:41:12 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1quksP-0005Ua-7b
- for qemu-devel@nongnu.org; Sun, 22 Oct 2023 22:41:12 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cxh+g73TVl0dYzAA--.65134S3;
- Mon, 23 Oct 2023 10:40:59 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxkN053TVl7L0uAA--.35823S2; 
- Mon, 23 Oct 2023 10:40:57 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
- maobibo@loongson.cn
-Subject: [PATCH] target/loongarch: Support 4K page size
-Date: Mon, 23 Oct 2023 10:40:59 +0800
-Message-Id: <20231023024059.3858349-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qukvj-0007P0-IS; Sun, 22 Oct 2023 22:44:35 -0400
+Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qukvh-0005hp-RU; Sun, 22 Oct 2023 22:44:35 -0400
+Received: by mail-vk1-xa35.google.com with SMTP id
+ 71dfb90a1353d-4a8158e8613so1139651e0c.3; 
+ Sun, 22 Oct 2023 19:44:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698029072; x=1698633872; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=h2B6XLR+PgFDNyBUK3FJ5jxVcDnkOQQ08hkqspczkZk=;
+ b=TD41S//g6IQeKMfipjBnuPuXX5LoA/176YF4NfScGqhXYs9KyvQPq7SCYWFzezXCuR
+ 9V5xirHSPdwKFls55HBTnhucKln1aECZ5N6W0Hd0OOPMGYnUhQeQ9vv0FdsbCmTb2WLH
+ +xMCrtPyCIXPikuuSO4wyV/Pnj+VTP0dMmrpSkmBpnixwRcX11g4H+HRYUezhctxoCbR
+ FWgB+zGsBue5T2mXjZR3NVq21WjbSCUimkTG9SSZYOgDdqQ7xNAR+/XJcOhnwbQLXBzw
+ A72fQP+Nsfo6NUCK6EI9CHmeWznB562KzuQdVKNo66yPexBQ+MAENrdlkA0yRg5gNUw7
+ M6wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698029072; x=1698633872;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=h2B6XLR+PgFDNyBUK3FJ5jxVcDnkOQQ08hkqspczkZk=;
+ b=vFKLjwFX1oRdZCeMOpwHYQkcTZO7NFD9TIQfD8scY5Wm5MjSEy7a1qzVVBkmBYCNnp
+ MNaGB4hHCXg85ZOxojc52HhCRuhKl1d8Fh86ZbNT+TMqxdb7d+Z3MKwHUxmX5S5aJTPt
+ Moi9m0+LTSUKJ5NiyuMHTXjkkL+TwO+Lagcst4jMbrQW6XfxaylsbxIb0au7FWxm1s23
+ RLStr9/bpmCBZ9t4q1Wfk7uxxne9aJbHcpjaPoXRbHigS9lsaAyU/ZpzBvQcHf9x+kX3
+ Nl26NSumJvvMOG7xPsJVZ8Cb6Krdfb8dOJsKEHJlbzJzU0K31+XIZWelfHh4rcR2ZG9A
+ tZfA==
+X-Gm-Message-State: AOJu0Yx+x+RnKLuKvLWMlpaPJmKFFdbAeykJrZUut1huB/GKxrll2e9n
+ R3HBJ6M1N10ir81de0RYrhkxrrZJ4HREN6B9vC+zOuYP8hQ=
+X-Google-Smtp-Source: AGHT+IFTF33XCHfcSpPmXP/C3sRWMExciSrrwFujKd6F+x/wmeDblJg/JLsH6qy0RaE4RouoL1rscifALfbx7+6yIWA=
+X-Received: by 2002:a67:c204:0:b0:452:62b2:36b with SMTP id
+ i4-20020a67c204000000b0045262b2036bmr7529244vsj.30.1698029071829; Sun, 22 Oct
+ 2023 19:44:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxkN053TVl7L0uAA--.35823S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20231019065644.1431798-1-mchitale@ventanamicro.com>
+In-Reply-To: <20231019065644.1431798-1-mchitale@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 23 Oct 2023 12:44:05 +1000
+Message-ID: <CAKmqyKNzFeKMiAAjurvhAcoEjOPU=ZF2QyXD6__XcKExQYEeTg@mail.gmail.com>
+Subject: Re: [PATCH v2] target/riscv: pmp: Clear pmp/smepmp bits on reset
+To: Mayuresh Chitale <mchitale@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa35.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,62 +86,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The LoongArch kernel supports 4K page size.
-Change TARGET_PAGE_BITS to 12.
+On Thu, Oct 19, 2023 at 4:57=E2=80=AFPM Mayuresh Chitale
+<mchitale@ventanamicro.com> wrote:
+>
+> As per the Priv and Smepmp specifications, certain bits such as the 'L'
+> bit of pmp entries and mseccfg.MML can only be cleared upon reset and it
+> is necessary to do so to allow 'M' mode firmware to correctly reinitializ=
+e
+> the pmp/smpemp state across reboots. As required by the spec, also clear
+> the 'A' field of pmp entries.
+>
+> Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu-param.h  | 2 +-
- target/loongarch/tlb_helper.c | 9 ++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+Thanks!
 
-diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.h
-index 1265dc7cb5..cfe195db4e 100644
---- a/target/loongarch/cpu-param.h
-+++ b/target/loongarch/cpu-param.h
-@@ -12,6 +12,6 @@
- #define TARGET_PHYS_ADDR_SPACE_BITS 48
- #define TARGET_VIRT_ADDR_SPACE_BITS 48
- 
--#define TARGET_PAGE_BITS 14
-+#define TARGET_PAGE_BITS 12
- 
- #endif
-diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-index c8b8b0497f..449043c68b 100644
---- a/target/loongarch/tlb_helper.c
-+++ b/target/loongarch/tlb_helper.c
-@@ -60,6 +60,9 @@ static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
-         tlb_rplv = 0;
-     }
- 
-+    /* Remove sw bit between bit12 -- bit PS*/
-+    tlb_ppn = tlb_ppn & ~(((0x1UL << (tlb_ps - 12)) -1));
-+
-     /* Check access rights */
-     if (!tlb_v) {
-         return TLBRET_INVALID;
-@@ -82,10 +85,6 @@ static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
-         return TLBRET_DIRTY;
-     }
- 
--    /*
--     * tlb_entry contains ppn[47:12] while 16KiB ppn is [47:15]
--     * need adjust.
--     */
-     *physical = (tlb_ppn << R_TLBENTRY_64_PPN_SHIFT) |
-                 (address & MAKE_64BIT_MASK(0, tlb_ps));
-     *prot = PAGE_READ;
-@@ -774,7 +773,7 @@ void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
-         /* Move Global bit */
-         tmp0 = ((tmp0 & (1 << LOONGARCH_HGLOBAL_SHIFT))  >>
-                 LOONGARCH_HGLOBAL_SHIFT) << R_TLBENTRY_G_SHIFT |
--                (tmp0 & (~(1 << R_TLBENTRY_G_SHIFT)));
-+                (tmp0 & (~(1 << LOONGARCH_HGLOBAL_SHIFT)));
-         ps = ptbase + ptwidth - 1;
-         if (odd) {
-             tmp0 += MAKE_64BIT_MASK(ps, 1);
--- 
-2.25.1
+Applied to riscv-to-apply.next
 
+Alistair
+
+> ---
+>
+> Changes in v2:
+> =3D=3D=3D=3D
+> - Rebase on latest riscv-to-apply.next
+> - Clear 'A' field.
+>
+>  target/riscv/cpu.c | 11 +++++++++++
+>  target/riscv/pmp.c | 10 ++++++++++
+>  target/riscv/pmp.h |  2 ++
+>  3 files changed, 23 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index dad167833cc..491e0e46e2e 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -883,6 +883,17 @@ static void riscv_cpu_reset_hold(Object *obj)
+>      }
+>      /* mmte is supposed to have pm.current hardwired to 1 */
+>      env->mmte |=3D (EXT_STATUS_INITIAL | MMTE_M_PM_CURRENT);
+> +
+> +    /*
+> +     * Clear mseccfg and unlock all the PMP entries upon reset.
+> +     * This is allowed as per the priv and smepmp specifications
+> +     * and is needed to clear stale entries across reboots.
+> +     */
+> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
+> +        env->mseccfg =3D 0;
+> +    }
+> +
+> +    pmp_unlock_entries(env);
+>  #endif
+>      env->xl =3D riscv_cpu_mxl(env);
+>      riscv_cpu_update_mask(env);
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 21d2489e27e..4dfaa28fce2 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -135,6 +135,16 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32=
+_t pmp_index, uint8_t val)
+>      return false;
+>  }
+>
+> +void pmp_unlock_entries(CPURISCVState *env)
+> +{
+> +    uint32_t pmp_num =3D pmp_get_num_rules(env);
+> +    int i;
+> +
+> +    for (i =3D 0; i < pmp_num; i++) {
+> +        env->pmp_state.pmp[i].cfg_reg &=3D ~(PMP_LOCK | PMP_AMATCH);
+> +    }
+> +}
+> +
+>  static void pmp_decode_napot(target_ulong a, target_ulong *sa,
+>                               target_ulong *ea)
+>  {
+> diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
+> index cf5c99f8e68..9af8614cd4f 100644
+> --- a/target/riscv/pmp.h
+> +++ b/target/riscv/pmp.h
+> @@ -28,6 +28,7 @@ typedef enum {
+>      PMP_READ  =3D 1 << 0,
+>      PMP_WRITE =3D 1 << 1,
+>      PMP_EXEC  =3D 1 << 2,
+> +    PMP_AMATCH =3D (3 << 3),
+>      PMP_LOCK  =3D 1 << 7
+>  } pmp_priv_t;
+>
+> @@ -81,6 +82,7 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t =
+pmp_index);
+>  void pmp_update_rule_nums(CPURISCVState *env);
+>  uint32_t pmp_get_num_rules(CPURISCVState *env);
+>  int pmp_priv_to_page_prot(pmp_priv_t pmp_priv);
+> +void pmp_unlock_entries(CPURISCVState *env);
+>
+>  #define MSECCFG_MML_ISSET(env) get_field(env->mseccfg, MSECCFG_MML)
+>  #define MSECCFG_MMWP_ISSET(env) get_field(env->mseccfg, MSECCFG_MMWP)
+> --
+> 2.34.1
+>
+>
 
