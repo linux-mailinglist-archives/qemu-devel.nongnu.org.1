@@ -2,47 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4437D342C
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 167207D3442
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 13:38:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qutAH-0000Mj-8A; Mon, 23 Oct 2023 07:32:09 -0400
+	id 1qutAP-0000k1-TF; Mon, 23 Oct 2023 07:32:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qut9o-0007r7-EJ
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:31:43 -0400
+ id 1qut9w-0008Fy-0g
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:31:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qut9m-0003b6-58
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:31:40 -0400
+ id 1qut9u-0003eP-Eg
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 07:31:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698060697;
+ s=mimecast20190719; t=1698060705;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T6xjrN7887k/ybU0jIiiMTuLEWDRldLbFb/r1uyi5ms=;
- b=DyJYgSSandIzXzcKvVhcv0STiQw+l0M0uIpVM/mCnTG76pTx8ssPw/u3yR1LvYOnDXW5PD
- MJwW2ec8C8XQ6jBuZg1sFOGCw7Nzi71hogdJXjKfTFTmeergczwxguGLUaMNphbnjeBzp4
- uvDcbpJ+NWc9sfs2a+4dbNntpxgIeic=
+ bh=kJiPpvjKWBAnBlGP3KkhDI2+e8BdQyJQjN7KhYL75jw=;
+ b=YQ9AtFAjAJ9KVnYVGbDSBo6s8e0KDdROe64JvwmC7SIl9zCOgPkib1F5UD1R632hjulG9k
+ QPiX08M1aKZw0Ve0BjtQFjfJrIWdBVO6+GY6ndMoxDUrGUww1MRseKDe49xFXrb2VD7oD0
+ 8enjGYLU89R4kOrlOm66tjq4oAxrxNs=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-oEimriL8PZKDCEYDmgmSJg-1; Mon,
- 23 Oct 2023 07:31:33 -0400
-X-MC-Unique: oEimriL8PZKDCEYDmgmSJg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-257-7ZxFKvUtNsqGt3yKOBWORA-1; Mon, 23 Oct 2023 07:31:37 -0400
+X-MC-Unique: 7ZxFKvUtNsqGt3yKOBWORA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84648280604A;
- Mon, 23 Oct 2023 11:31:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 196353C14912;
+ Mon, 23 Oct 2023 11:31:37 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.50])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0CCC91C060AE;
- Mon, 23 Oct 2023 11:31:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5563240C6F79;
+ Mon, 23 Oct 2023 11:31:36 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
@@ -55,16 +54,16 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 09/19] ui/console: when PIXMAN is unavailable,
- don't draw placeholder msg
-Date: Mon, 23 Oct 2023 15:30:36 +0400
-Message-ID: <20231023113047.2572137-10-marcandre.lureau@redhat.com>
+Subject: [PATCH v5 10/19] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
+ !PIXMAN
+Date: Mon, 23 Oct 2023 15:30:37 +0400
+Message-ID: <20231023113047.2572137-11-marcandre.lureau@redhat.com>
 In-Reply-To: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
 References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -92,33 +91,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-When we can't draw text, simply show a blank display.
+This simply means that 2d drawing updates won't be handled, but 3d
+should work.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/console.c | 2 ++
+ hw/display/vhost-user-gpu.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/ui/console.c b/ui/console.c
-index a72c495b5a..8e688d3569 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -584,6 +584,7 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                                 const char *msg)
- {
-     DisplaySurface *surface = qemu_create_displaysurface(w, h);
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 1150521d9d..709c8a02a1 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -307,6 +307,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         dpy_gl_update(con, m->x, m->y, m->width, m->height);
+         break;
+     }
 +#ifdef CONFIG_PIXMAN
-     pixman_color_t bg = QEMU_PIXMAN_COLOR_BLACK;
-     pixman_color_t fg = QEMU_PIXMAN_COLOR_GRAY;
-     pixman_image_t *glyph;
-@@ -598,6 +599,7 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                  x+i, y, FONT_WIDTH, FONT_HEIGHT);
-         qemu_pixman_image_unref(glyph);
+     case VHOST_USER_GPU_UPDATE: {
+         VhostUserGpuUpdate *m = &msg->payload.update;
+ 
+@@ -334,6 +335,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         }
+         break;
      }
 +#endif
-     surface->flags |= QEMU_PLACEHOLDER_FLAG;
-     return surface;
- }
+     default:
+         g_warning("unhandled message %d %d", msg->request, msg->size);
+     }
 -- 
 2.41.0
 
