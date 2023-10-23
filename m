@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F0E7D3C07
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 18:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CEE7D3C7A
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 18:29:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quxas-0005vk-Mf; Mon, 23 Oct 2023 12:15:54 -0400
+	id 1quxmt-00061G-1d; Mon, 23 Oct 2023 12:28:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1quxaf-0005LO-2I
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:15:42 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1quxmj-00060x-HJ
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:28:11 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1quxac-0002f8-Vx
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:15:40 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4083f613272so29921395e9.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 09:15:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1quxmh-0004x4-Mj
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:28:09 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-408382da7f0so29052445e9.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 09:28:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698077737; x=1698682537; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TfX/MvlEYf/7hz+QG3EnaVsvJE5Ovf/xGQEp6sLQqcQ=;
- b=Ux+T8CS3vgNJiym7ggd1p/s4B4z3GITlmW7IQ3XTbFXTrXGUkiqAWO6nsf75KkbBZo
- Ktj2KTnTLYDdK+YZDB4b7YfvusWYDtsLxQ/Y7NCPGOy442YpWM1Ng0UUEy6dfgL4zHPU
- iIuMjprFNHh4pvna97bMg6n7GHeNzzR1beCADQuNHjWrysMaeEoLdAU15jIO2n5mX1z8
- 9yEEQKfxYxo41yBkKQqyj011pokDjrXGqPbVRNP4xrtGo5crqNgiS11l9ElWWtbo7ZuS
- T4ERYkRzi5FxkXn3fuTIG2Wgi2KFYqFD6BSGr0ejMQsx7ceXRArQ0j0I4qJSbV4xCfBI
- lRsg==
+ d=linaro.org; s=google; t=1698078486; x=1698683286; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:user-agent:from:to:cc:subject:date:message-id:reply-to;
+ bh=naTE7Hy9ICRd+wxIu16V4jsm8CfjTcKLRXG90dWKMp4=;
+ b=HZ8UbTCzNNCLzlZxex9bw/PPxxqQIIFRvntln9nrwHGQN5SiXePcTvpDqImzgsChXm
+ Vn3kGDJcrYJ0kUSwsSt26v55aID5Z4LgekQD+7TO6WPafyI74RvOrRwojAgPXPpZ7HdN
+ Sg+MMnpAYZfUALju9s7Li1+PWHUAWVki/OGd1tY9RWytCH2/uz2dPZB1X/ySr3JJ6Psr
+ z/EbEd1MZRBLeoYvsq2g505mvKSq1NXxXWX1UVVRFSxvDN/yGjxcU1aRbIvlolDCRAMj
+ P3Z12JcREzpt6eBldm2X9GTvMRfFtIBYRcZrnSn+cjN2jGmRYD/URIaMFpGqSLHPPhHe
+ XbNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698077737; x=1698682537;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TfX/MvlEYf/7hz+QG3EnaVsvJE5Ovf/xGQEp6sLQqcQ=;
- b=O8PtBXOLnOxeER4j2G1hIoj9w55+54WPh7L90zz2pRv2eYm4g4LndOF3WMw4w8zVzB
- iIvR/LC9HoHQL1kP/tjLZ01qxSxYq4qyizxX2tUZq8sb+p9of82KwCtgz/2SYoIgasDc
- uvK6dgCvgLntzctG1gDe5qjo8MFBXEM/3HHm946UBwYmTOCWzUxYGBrcWVy9ccNuIuZ6
- XEVy7MZc2uSHCAQ4oYrhxmpKL8L+uth5r3+S8D+egEHpQw8KhBECR+rosxuiScX4U7A8
- ZR7CdNGsYE/UERASrM0i/OugmRBuikpnfPuJhegpkFp0kkEBsPa5bzyrrMgKRN/6SWMY
- K5CQ==
-X-Gm-Message-State: AOJu0YzhWpyfgkLpRHDdq8h84xDcJy3XAqDBN4IB53kR7qgucVC9Tebd
- MvDKyqHX7JY7sJu2mE+dRGlx3Gl4MSUShMQLk2Y=
-X-Google-Smtp-Source: AGHT+IHsMHbruJObdAMCYkEd1CDpSDXbI4cSsu6oCO2QwxEgagHYRD+T30D7+jpdnjhR0+4A8gv10w==
-X-Received: by 2002:a05:600c:1907:b0:408:6fae:1aae with SMTP id
- j7-20020a05600c190700b004086fae1aaemr4685655wmq.31.1698077737515; 
- Mon, 23 Oct 2023 09:15:37 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1698078486; x=1698683286;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:user-agent:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=naTE7Hy9ICRd+wxIu16V4jsm8CfjTcKLRXG90dWKMp4=;
+ b=cvm3xQW1WdRqCRSt+Kyvj7F8B0oDpmQZ0st+uHucMcKBClZMqx1ViH204Gygg1Whhx
+ 5jYZKmVLPkjFzWVtjUcIll/EwtFiO3mZi6n2J7oBnGdW+t7AXLVWZRnZTXk1XbgiMIWI
+ h1Nri6BhubLWmyigtbxV0HkZsxyDNmPxK2TP2/FB0B4+w63UAEuoOWRN181L8uCE0B7w
+ PxS46+O8+MFLQnmOwmBFMIMW7xIGp7ZRdMP/QnDBjl5oZtBG2q0m6MFyfw9RKCjqOmKm
+ oV5UDWZYA2zU56+0RFIy2GPuT4kzrw50ZM0fr4Uzg4nCR7MfE8g5Cm7zjwBKjpwMQrNR
+ mGTg==
+X-Gm-Message-State: AOJu0Yydvseh4GK9W+iVFLOQt4sTTAOIymp2HAJM6++yQgVuYBPfZ9wC
+ nETRcT8v5yR+80nuX5USuSo3RQ==
+X-Google-Smtp-Source: AGHT+IFvAT8mSvvzx91QdzLWcqBJWEN+//xNH+0JYAoC/z1zS5bf96inYyvMtBbmTelEr9F0yS1yyw==
+X-Received: by 2002:a05:600c:5112:b0:408:57bb:ef96 with SMTP id
+ o18-20020a05600c511200b0040857bbef96mr5716548wms.30.1698078485731; 
+ Mon, 23 Oct 2023 09:28:05 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a05600c2e4c00b0040648217f4fsm14460597wmf.39.2023.10.23.09.15.36
+ b14-20020a05600c4e0e00b0040607da271asm14644975wmq.31.2023.10.23.09.28.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 09:15:37 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Axel Heider <axel.heider@hensoldt.net>, Laszlo Ersek <lersek@redhat.com>,
- Ard Biesheuvel <ardb@kernel.org>, Shannon Zhao <shannon.zhaosl@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 3/3] hw/arm/virt: allow creation of a second NonSecure UART
-Date: Mon, 23 Oct 2023 17:15:32 +0100
-Message-Id: <20231023161532.2729084-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231023161532.2729084-1-peter.maydell@linaro.org>
-References: <20231023161532.2729084-1-peter.maydell@linaro.org>
+ Mon, 23 Oct 2023 09:28:05 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id E25381FFBB;
+ Mon, 23 Oct 2023 17:28:04 +0100 (BST)
+User-agent: mu4e 1.11.22; emacs 29.1.90
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, Stefan
+ Hajnoczi <stefanha@redhat.com>, Michael S. Tsirkin <mst@redhat.com>
+Cc: Leo Yan <leo.yan@linaro.org>, qemu-devel <qemu-devel@nongnu.org>
+Subject: State of contrib/vhost-user-input?
+Date: Mon, 23 Oct 2023 17:18:24 +0100
+Message-ID: <878r7t482z.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,186 +93,230 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For some use-cases, it is helpful to have more than one UART
-available to the guest. If the second UART slot is not already
-used for a TrustZone Secure-World-only UART, create it as a
-NonSecure UART only when the user provides a serial backend
-(e.g. via a second -serial command line option).
 
-This avoids problems where existing guest software only expects
-a single UART, and gets confused by the second UART in the DTB.
-The major example of this is older EDK2 firmware, which will
-send the GRUB bootloader output to UART1 and the guest
-serial output to UART0. Users who want to use both UARTs
-with a guest setup including EDK2 are advised to update
-to a newer EDK2.
+Hi,
 
-TODO: give specifics of which EDK2 version has this fix,
-once the patches which fix EDK2 are upstream.
+I'm trying to get the contrib/vhost-user-input working but it exits
+during the boot up sequence:
 
-Inspired-by: Axel Heider <axel.heider@hensoldt.net>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-This patch was originally based on the one from Axel Heider
-that aimed to do the same thing:
-https://lore.kernel.org/qemu-devel/166990501232.22022.16582561244534011083-1@git.sr.ht/
-but by the time I had added the ACPI support and dealt with
-the EDK2 compatibility awkwardness, I found I had pretty
-much rewritten it. So this combination of author and tags
-seemed to me the most appropriate, but I'm happy to adjust
-if people (esp. Axel!) would prefer otherwise.
+  =E2=9E=9C  gdb --args ./vhost-user-input -p /dev/input/event22 -s /tmp/mo=
+use.sock
+  GNU gdb (GDB) 15.0.50.20231012-git
+  <snip>
+  Reading symbols from ./vhost-user-input...
+  (gdb) b map_ring
+  Breakpoint 1 at 0x7634c: file ../../subprojects/libvhost-user/libvhost-us=
+er.c, line 618.
+  (gdb) r
+  Starting program: /home/alex/lsrc/qemu.git/builds/arm.debug/contrib/vhost=
+-user-input/vhost-user-input -p /dev/input/event22 -s /tmp/mouse.sock
+  [Thread debugging using libthread_db enabled]
+  Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+  [New Thread 0x7ffff7afb6c0 (LWP 3807698)]
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_FEATURES (1)
+  Flags:   0x1
+  Size:    0
+  Sending back to guest u64: 0x0000000175000000
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_PROTOCOL_FEATURES (15)
+  Flags:   0x1
+  Size:    0
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_PROTOCOL_FEATURES (16)
+  Flags:   0x1
+  Size:    8
+  u64: 0x0000000000008e2b
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_QUEUE_NUM (17)
+  Flags:   0x1
+  Size:    0
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_MAX_MEM_SLOTS (36)
+  Flags:   0x1
+  Size:    0
+  u64: 0x0000000000000020
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_BACKEND_REQ_FD (21)
+  Flags:   0x9
+  Size:    0
+  Fds: 6
+  Got backend_fd: 6
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_OWNER (3)
+  Flags:   0x1
+  Size:    0
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_FEATURES (1)
+  Flags:   0x1
+  Size:    0
+  Sending back to guest u64: 0x0000000175000000
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_VRING_CALL (13)
+  Flags:   0x1
+  Size:    8
+  Fds: 7
+  u64: 0x0000000000000000
+  Got call_fd: 7 for vq: 0
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_VRING_ERR (14)
+  Flags:   0x1
+  Size:    8
+  Fds: 8
+  u64: 0x0000000000000000
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_VRING_CALL (13)
+  Flags:   0x1
+  Size:    8
+  Fds: 9
+  u64: 0x0000000000000001
+  Got call_fd: 9 for vq: 1
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_VRING_ERR (14)
+  Flags:   0x1
+  Size:    8
+  Fds: 10
+  u64: 0x0000000000000001
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_GET_CONFIG (24)
+  Flags:   0x1
+  Size:    148
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_FEATURES (2)
+  Flags:   0x1
+  Size:    8
+  u64: 0x0000000170000000
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_VRING_NUM (8)
+  Flags:   0x1
+  Size:    8
+  State.index: 0
+  State.num:   64
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_VRING_BASE (10)
+  Flags:   0x1
+  Size:    8
+  State.index: 0
+  State.num:   0
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Request: VHOST_USER_SET_VRING_ADDR (9)
+  Flags:   0x1
+  Size:    40
+  vhost_vring_addr:
+      index:  0
+      flags:  0
+      desc_user_addr:   0x00007f283491a000
+      used_user_addr:   0x00007f283491a4c0
+      avail_user_addr:  0x00007f283491a400
+      log_guest_addr:   0x0000000100b1a4c0
 
-It is in theory possible to slightly work around the
-incorrect behaviour of old EDK2 binaries by listing the
-two UARTs in the opposite order in the DTB. However since
-old EDK2 ends up using the two UARTs in different orders
-depending on which phase of boot it is in (and in particular
-with EDK2 debug builds debug messages go to a mix of both
-UARTs) this doesn't seem worthwhile. I think most users
-who are interested in the second UART are likely to be
-using a bare-metal or direct Linux boot anyway.
----
- docs/system/arm/virt.rst |  6 +++++-
- include/hw/arm/virt.h    |  1 +
- hw/arm/virt-acpi-build.c | 12 ++++++++----
- hw/arm/virt.c            | 38 +++++++++++++++++++++++++++++++++++---
- 4 files changed, 49 insertions(+), 8 deletions(-)
+  Thread 1 "vhost-user-inpu" hit Breakpoint 1, map_ring (dev=3D0x7fffffffdd=
+60, vq=3D0x555555609ea0) at ../../subprojects/libvhost-user/libvhost-user.c=
+:618
+  warning: Source file is more recent than executable.
+  618         vq->vring.desc =3D qva_to_va(dev, vq->vra.desc_user_addr);
+  (gdb) s
+  qva_to_va (dev=3D0x7fffffffdd60, qemu_addr=3D139810657378304) at ../../su=
+bprojects/libvhost-user/libvhost-user.c:231
+  231         for (i =3D 0; i < dev->nregions; i++) {
+  (gdb) p dev->nregions
+  $1 =3D 0
+  (gdb) n
+  240         return NULL;
+  (gdb)
+  241     }
+  (gdb) c
+  Continuing.
+  Setting virtq addresses:
+      vring_desc  at (nil)
+      vring_used  at (nil)
+      vring_avail at (nil)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index e1697ac8f48..028d2416d5b 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -26,7 +26,7 @@ The virt board supports:
- 
- - PCI/PCIe devices
- - Flash memory
--- One PL011 UART
-+- Either one or two PL011 UARTs for the NonSecure World
- - An RTC
- - The fw_cfg device that allows a guest to obtain data from QEMU
- - A PL061 GPIO controller
-@@ -48,6 +48,10 @@ The virt board supports:
-   - A secure flash memory
-   - 16MB of secure RAM
- 
-+The second NonSecure UART only exists if a backend is configured
-+explicitly (e.g. with a second -serial command line option) and
-+TrustZone emulation is not enabled.
-+
- Supported guest CPU types:
- 
- - ``cortex-a7`` (32-bit)
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 0de58328b2f..da15eb342bd 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -150,6 +150,7 @@ struct VirtMachineState {
-     bool ras;
-     bool mte;
-     bool dtb_randomness;
-+    bool second_ns_uart_present;
-     OnOffAuto acpi;
-     VirtGICType gic_version;
-     VirtIOMMUType iommu;
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 54f26640982..b812f33c929 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -77,11 +77,11 @@ static void acpi_dsdt_add_cpus(Aml *scope, VirtMachineState *vms)
- }
- 
- static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
--                                           uint32_t uart_irq)
-+                               uint32_t uart_irq, int uartidx)
- {
--    Aml *dev = aml_device("COM0");
-+    Aml *dev = aml_device("COM%d", uartidx);
-     aml_append(dev, aml_name_decl("_HID", aml_string("ARMH0011")));
--    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-+    aml_append(dev, aml_name_decl("_UID", aml_int(uartidx)));
- 
-     Aml *crs = aml_resource_template();
-     aml_append(crs, aml_memory32_fixed(uart_memmap->base,
-@@ -860,7 +860,11 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-     scope = aml_scope("\\_SB");
-     acpi_dsdt_add_cpus(scope, vms);
-     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0],
--                       (irqmap[VIRT_UART0] + ARM_SPI_BASE));
-+                       (irqmap[VIRT_UART0] + ARM_SPI_BASE), 0);
-+    if (vms->second_ns_uart_present) {
-+        acpi_dsdt_add_uart(scope, &memmap[VIRT_UART1],
-+                           (irqmap[VIRT_UART1] + ARM_SPI_BASE), 1);
-+    }
-     if (vmc->acpi_expose_flash) {
-         acpi_dsdt_add_flash(scope, &memmap[VIRT_FLASH]);
-     }
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index fd524aed6b6..7f60df7d7b2 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -856,7 +856,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
- }
- 
- static void create_uart(const VirtMachineState *vms, int uart,
--                        MemoryRegion *mem, Chardev *chr)
-+                        MemoryRegion *mem, Chardev *chr, bool secure)
- {
-     char *nodename;
-     hwaddr base = vms->memmap[uart].base;
-@@ -894,6 +894,8 @@ static void create_uart(const VirtMachineState *vms, int uart,
-         qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", nodename);
-     } else {
-         qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial1", nodename);
-+    }
-+    if (secure) {
-         /* Mark as not usable by the normal world */
-         qemu_fdt_setprop_string(ms->fdt, nodename, "status", "disabled");
-         qemu_fdt_setprop_string(ms->fdt, nodename, "secure-status", "okay");
-@@ -2269,11 +2271,41 @@ static void machvirt_init(MachineState *machine)
- 
-     fdt_add_pmu_nodes(vms);
- 
--    create_uart(vms, VIRT_UART0, sysmem, serial_hd(0));
-+    /*
-+     * The first UART always exists. If the security extensions are
-+     * enabled, the second UART also always exists. Otherwise, it only exists
-+     * if a backend is configured explicitly via '-serial <backend>'.
-+     * This avoids potentially breaking existing user setups that expect
-+     * only one NonSecure UART to be present (for instance, older EDK2
-+     * binaries).
-+     *
-+     * The nodes end up in the DTB in reverse order of creation, so we must
-+     * create UART0 last to ensure it appears as the first node in the DTB,
-+     * for compatibility with guest software that just iterates through the
-+     * DTB to find the first UART, as older versions of EDK2 do.
-+     * DTB readers that follow the spec, as Linux does, should honour the
-+     * aliases node information and /chosen/stdout-path regardless of
-+     * the order that nodes appear in the DTB.
-+     *
-+     * For similar back-compatibility reasons, if UART1 is the secure UART
-+     * we create it second (and so it appears first in the DTB), because
-+     * that's what QEMU has always done.
-+     */
-+    if (!vms->secure) {
-+        Chardev *serial1 = serial_hd(1);
-+
-+        if (serial1) {
-+            vms->second_ns_uart_present = true;
-+            create_uart(vms, VIRT_UART1, sysmem, serial1, false);
-+        }
-+    }
-+    create_uart(vms, VIRT_UART0, sysmem, serial_hd(0), false);
-+    if (vms->secure) {
-+        create_uart(vms, VIRT_UART1, secure_sysmem, serial_hd(1), true);
-+    }
- 
-     if (vms->secure) {
-         create_secure_ram(vms, secure_sysmem, secure_tag_sysmem);
--        create_uart(vms, VIRT_UART1, secure_sysmem, serial_hd(1));
-     }
- 
-     if (tag_sysmem) {
--- 
-2.34.1
+  ** (vhost-user-input:3807669): CRITICAL **: 17:16:14.554: Invalid vring_a=
+ddr message
 
+  [Thread 0x7ffff7afb6c0 (LWP 3807698) exited]
+  [Inferior 1 (process 3807669) exited with code 01]
+  (gdb) q
+
+Which looks like libvhost-user is expecting
+VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS to be negotiated and the
+resulting VHOST_USER_ADD_MEM_REG to be sent. How is this meant to work
+if the protocol feature isn't negotiated?
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
