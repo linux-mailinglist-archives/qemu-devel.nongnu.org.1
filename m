@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8F47D38AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC247D38AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 15:59:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quvRw-0001qG-EZ; Mon, 23 Oct 2023 09:58:32 -0400
+	id 1quvSg-0002sl-Gv; Mon, 23 Oct 2023 09:59:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvRt-0001oC-32
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:58:29 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvSd-0002sN-44
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:59:15 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvRr-0002bv-DF
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:58:28 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1quvSb-0002mD-N7
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 09:59:14 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A26931FE17;
- Mon, 23 Oct 2023 13:58:24 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id DBD5D21AEC;
+ Mon, 23 Oct 2023 13:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698069504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698069551; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uh+6YOM2AVZhtQgVgPICNE4M76D4lKOfYU7YrkpFVSQ=;
- b=xq7Ypa1ItukGAYkr1fa3n0D5AiAYpEIJIV6MTI51yIBN1EmpGKeYCMWU823qnFd5hleFU0
- mWvmq+55Tz8KTGdBBjtBcU8bPCaWNv8Zm3lv3u+cgMlk4l9RqqSY9b4fXSM/hZd/azOa1R
- do7NLwTtHPdwbrv5/k0CACEjj+DicxE=
+ bh=aHJj1fQwVYDGqwK7/lapBz18yEBWoQFh4LGJqWSv8RE=;
+ b=e4BPNgVJhM55OoLeHMFiwOeqfL85T8PyJc+BLWaAR5TiATIg+n0+4VBBGpArl1VuY9fAlY
+ kpTSsA7GDl3dbo1KZKp8SKFJIoOu+mh//ByGUBGXPZAIEcUGti+3z/Ner5i1ult/j2fsis
+ aouUpi0SVIIAXmgZPXAk2ygFJkw1Aqw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698069504;
+ s=susede2_ed25519; t=1698069551;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uh+6YOM2AVZhtQgVgPICNE4M76D4lKOfYU7YrkpFVSQ=;
- b=Coun6jAcHvL8MihGsZxTfhczyc8FrMfBAmM4K+sAQcDBIfVuGyl6tWv7XhgYMqq9ybSrt1
- 1bafGkuxlhFyvgCg==
+ bh=aHJj1fQwVYDGqwK7/lapBz18yEBWoQFh4LGJqWSv8RE=;
+ b=L6o1z/CUtUJaYvjuDzOM7uoVMueaq+vN9D9HWO5ecgNbpQepC6iDQzWgKoJLCRJ5QH6qsH
+ 1b1hDxLFcn3Wh7Bg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 29E43132FD;
- Mon, 23 Oct 2023 13:58:23 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6666F139C2;
+ Mon, 23 Oct 2023 13:59:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id vG+WOf97NmVGXwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 13:58:23 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id fZKwDC98NmW2XwAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 23 Oct 2023 13:59:11 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
 Cc: Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>, Juan
  Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v2 08/11] migration: Export send_queued_data()
-In-Reply-To: <20231019110724.15324-9-quintela@redhat.com>
+Subject: Re: [PATCH v2 09/11] migration: Move ram_flush_compressed_data() to
+ ram-compress.c
+In-Reply-To: <20231019110724.15324-10-quintela@redhat.com>
 References: <20231019110724.15324-1-quintela@redhat.com>
- <20231019110724.15324-9-quintela@redhat.com>
-Date: Mon, 23 Oct 2023 10:58:21 -0300
-Message-ID: <871qdl1lvm.fsf@suse.de>
+ <20231019110724.15324-10-quintela@redhat.com>
+Date: Mon, 23 Oct 2023 10:59:09 -0300
+Message-ID: <87y1ftzbgy.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: -7.08
-X-Spamd-Result: default: False [-7.08 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.98)[99.91%];
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[99.99%];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
@@ -71,8 +72,8 @@ X-Spamd-Result: default: False [-7.08 / 50.00]; ARC_NA(0.00)[];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
  RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -97,9 +98,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Juan Quintela <quintela@redhat.com> writes:
 
-> This function is only used for compression.  So we rename it as
-> compress_send_queued_data().  We put it on ram-compress.h because we
-> are moving it later to ram-compress.c.
+> As we export it, rename it compress_flush_data().
 >
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 
