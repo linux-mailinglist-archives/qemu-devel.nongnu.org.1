@@ -2,96 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DE67D3CEE
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 18:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CADB7D3CF5
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 19:01:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quyE5-0006QJ-1l; Mon, 23 Oct 2023 12:56:25 -0400
+	id 1quyHm-0008E7-Tr; Mon, 23 Oct 2023 13:00:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1quyE2-0006Oo-9L; Mon, 23 Oct 2023 12:56:22 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1quyDx-0001f4-3u; Mon, 23 Oct 2023 12:56:22 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39NGjWug023589; Mon, 23 Oct 2023 16:56:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=TqMUpZZdS9MEyjmNgOWW5RkYuCjbkL9nCmHB3UG0bQU=;
- b=ByOL0tReR8+mWWD+kG6OdEjN6Xsc5FY/S/dX3LJ0ZeXcUzwp6TnvdJGukTt7S8p4cr8+
- UeyTAPBWcQYUdCwV++4gz+a0LblsFQbw9EL6JtlQcAh8j+1zvjmTvazTUswEzIlj2Uv9
- i0UzuC9LrtZGjTwb77g01jMBGnNOy1APf9lvjUbajjba1pIQpnixhItlfSanpU4Klj/a
- te20Yt8lvVoQKQ0TZr0q6cF1KuAZfcuOLdDhHbepdd6ogroAFA3tU1EZOPLDU7u5MmWG
- 4Yf90aUAcvfx5LVUOIQd7FUp48FqCGRJGcjFF65VxXzZ8q87yhucTpRsxChmd22IvyDk mw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3twvmq8cx8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Oct 2023 16:56:04 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39NGjv49025930;
- Mon, 23 Oct 2023 16:56:03 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3twvmq8cqp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Oct 2023 16:56:02 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39NEMLU5024381; Mon, 23 Oct 2023 16:52:20 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvu6jsgbu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Oct 2023 16:52:20 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39NGqJAL8323672
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Oct 2023 16:52:20 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 974E258060;
- Mon, 23 Oct 2023 16:52:19 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6074C58056;
- Mon, 23 Oct 2023 16:52:19 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 23 Oct 2023 16:52:19 +0000 (GMT)
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-ppc@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- clg@kaod.org, npiggin@gmail.com, fbarrat@linux.ibm.com
-Subject: [PATCH] ppc/pnv: Fix number of I2C engines and ports for power9/10
-Date: Mon, 23 Oct 2023 11:52:00 -0500
-Message-Id: <20231023165200.3846121-1-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1quyHh-0008Cp-6D
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:00:09 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1quyHe-0002Xp-Hr
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 13:00:08 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6b87c1edfd5so2645544b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 10:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698080404; x=1698685204; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=tVV5n5FHB1W7modGzywv9Begg+ZwO7nKGsbDd1c0Y6U=;
+ b=AMTzJiHHw+acizhBimiYlDa+HyxdLA1To5hqa9+sRhLMB7oKF0nh+pPybXue2hgK3L
+ XHScTH+Zp2+pu6rljKy9hI5UEriITcXMJzCa3lgeu3DvEYqrMZVPYlUcA9MkT1eRHNiB
+ LqUBUSfjxp82xNxbHi2XWh9X4bP4d+C9sV5ihbsYl7o12Lb3ribo/rbuvR4cVb7wQY9G
+ kVdc+7SI72b7x2+6hh/O8j5C/BVYk+T1LExV2ons5E9Fj+1BDme2faSR0BcxCVgquX++
+ ga+NHhWxi6QiulUD2Wxnf9jUHlGOMU0pbyvw24lsj7X62HRy4S/1XDpn9YNBVLAnlDjt
+ fxJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698080404; x=1698685204;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tVV5n5FHB1W7modGzywv9Begg+ZwO7nKGsbDd1c0Y6U=;
+ b=mORFqTAIOvwEpUNCj09AEDuvKrJglQlBEEoXcyKiD0Bl/MSegMMeQ3zcWcK86ML7oW
+ qgeaiYcGWU8jhQ4MXTSpkEgc7jIg0KLR5K7EBj/fyDX5XLUoMqSLEqPs/eDlUwlkzfzb
+ S4ZIor0xcceQ5wsYH/IHi9lby91cp7CJEeC+UWwjsHP1j3whN1iWCQmgLsY3V+ufHFej
+ YYPVHLNcFbx60ZJfwkPekGHRTnw1S7ie7p6IfdvnWlKSLXSJ5ONHB6RbQ/K1xwBCkdi3
+ w0iOO3cxWJr604Ms3GEG5JX12hW9Ir/KyROc1hMdZfQ97ox+tnkkvPOuY3vCJV6TAVXW
+ imrw==
+X-Gm-Message-State: AOJu0YyeU+oETgETPj3zfUUWNZbJmeOdiTr0D5aaLgqUPmCchLYQcgpi
+ 1QS77AKsj5GLcbR1bSbZL8wSog==
+X-Google-Smtp-Source: AGHT+IEv7R8nJ4WTedZcimiuGi840TrSdeIoTirJ799eQHFWJTgLnMiFjrN6D9hSX5H8MB2xV9L08g==
+X-Received: by 2002:aa7:991e:0:b0:6b8:2ef3:331d with SMTP id
+ z30-20020aa7991e000000b006b82ef3331dmr6654445pff.10.1698080404272; 
+ Mon, 23 Oct 2023 10:00:04 -0700 (PDT)
+Received: from [192.168.68.107] ([191.255.2.33])
+ by smtp.gmail.com with ESMTPSA id
+ y9-20020aa78f29000000b006879493aca0sm6383662pfr.26.2023.10.23.10.00.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 23 Oct 2023 10:00:03 -0700 (PDT)
+Message-ID: <0e66af36-bd36-4b42-b901-ed726af207b7@ventanamicro.com>
+Date: Mon, 23 Oct 2023 14:00:00 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9WXQ9ja5nNn-0QOwpxE9S_LBjRalNCzZ
-X-Proofpoint-GUID: 3LnrD8fEG2oIp5LtNXyUblRecQNKqOo2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-23_15,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=577 mlxscore=0 clxscore=1015 suspectscore=0 bulkscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310230147
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] target/riscv/tcg: add user flag for profile support
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
+ <20231020223951.357513-4-dbarboza@ventanamicro.com>
+ <20231023-2018025adea3ffaebbbefe23@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231023-2018025adea3ffaebbbefe23@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,129 +97,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Power9 is supposed to have 4 PIB-connected I2C engines with the
-following number of ports on each engine:
 
-    0: 2
-    1: 13
-    2: 2
-    3: 2
 
-Power10 also has 4 engines but has the following number of ports
-on each engine:
+On 10/23/23 05:16, Andrew Jones wrote:
+> On Fri, Oct 20, 2023 at 07:39:48PM -0300, Daniel Henrique Barboza wrote:
+>> The TCG emulation implements all the extensions described in the
+>> RVA22U64 profile, both mandatory and optional. The mandatory extensions
+>> will be enabled via the profile flag. We'll leave the optional
+>> extensions to be enabled by hand.
+>>
+>> Given that this is the first profile we're implementing in TCG we'll
+>> need some ground work first:
+>>
+>> - all profiles declared in riscv_profiles[] will be exposed to users.
+>> TCG is the main accelerator we're considering when adding profile
+>> support in QEMU, so for now it's safe to assume that all profiles in
+>> riscv_profiles[] will be relevant to TCG;
+>>
+>> - we'll not support user profile settings for vendor CPUs. The flags
+>> will still be exposed but users won't be able to change them. The idea
+>> is that vendor CPUs in the future can enable profiles internally in
+>> their cpu_init() functions, showing to the external world that the CPU
+>> supports a certain profile. But users won't be able to enable/disable
+>> it;
+>>
+>> - Setting a profile to 'true' means 'enable all mandatory extensions of
+>> this profile, setting it to 'false' means disabling all its mandatory
+>> extensions. Disabling a profile is discouraged for regular use and will
+>> issue an user warning. User choices for individual extensions will take
+>> precedence, i.e. enabling a profile will not enable extensions that the
+>> user set to 'false', and vice-versa. This will make us independent of
+>> left-to-right ordering in the QEMU command line, i.e. the following QEMU
+>> command lines:
+>>
+>> -cpu rv64,zicbom=false,rva22u64=true,Zifencei=false
+>> -cpu rv64,zicbom=false,Zifencei=false,rva22u64=true
+>> -cpu rv64,rva22u64=true,zicbom=false,Zifencei=false
+>>
+>> They mean the same thing: "enable all mandatory extensions of the
+>> rva22u64 profile while keeping zicbom and Zifencei disabled".
+> 
+> Hmm, I'm not sure I agree with special-casing profiles like this. I think
+> the left-to-right processing should be consistent for all. I'm also not
+> sure we should always warn when disabling a profile. For example, if a
+> user does
+> 
+>   -cpu rv64,rva22u64=true,rva22u64=false
+> 
+> then they'll get a warning, even though all they're doing is restoring the
+> cpu model. While that looks like an odd thing to do, a script may be
+> adding the rva22u64=true and the rva22u64=false is the user input which
+> undoes what the script did.
 
-    0: 14
-    1: 14
-    2: 2
-    3: 16
+QEMU options do not work with a "the user enabled then disabled the same option,
+thus it'll count as nothing happened" logic. The last instance of the option will
+overwrite all previous instances. In the example you mentioned above the user would
+disable all mandatory extensions of rva22u64 in the CPU, doesn't matter if the
+same profile was enabled beforehand.
 
-Current code assumes that they all have the same (maximum) number.
-This can be a problem if software expects to see a certain number
-of ports present (Power Hypervisor seems to care).
+Sure, the can put code in place to make this happen, but then this would make
+profiles act different than regular extensions. "-cpu rv64,zicbom=true -cpu rv64,zicbom=false"
+will disable zicbom, it will not preserve the original 'zicbom' rv64 default. If
+we're going to keep left-to-right ordering consistent, this behavior should also
+be consistent as well.
 
-Fixed this by adding separate tables for power9 and power10 that
-map the I2C controller number to the number of I2C buses that should
-be attached for that engine.
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
+As for warnings, I agree that we'll throw warnings even when nothing of notice happened.
+For example:
 
-Based-on: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
-([PATCH] ppc/pnv: Connect PNV I2C controller to powernv10)
+-cpu rv64,rva22u64=false -cpu rv64,rva22u64=true
 
- hw/ppc/pnv.c              | 12 ++++++++----
- include/hw/ppc/pnv_chip.h |  5 +----
- 2 files changed, 9 insertions(+), 8 deletions(-)
+This will throw a warning even though the user ended up enabling the extension
+in the end.
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 2655b6e506..6ad4a1a7b1 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1507,6 +1507,8 @@ static void pnv_chip_power9_pec_realize(PnvChip *chip, Error **errp)
-     }
- }
- 
-+static int pnv_power9_i2c_ports_per_ctlr[PNV9_CHIP_MAX_I2C] = {2, 13, 2, 2};
-+
- static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
- {
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(dev);
-@@ -1626,7 +1628,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-         Object *obj =  OBJECT(&chip9->i2c[i]);
- 
-         object_property_set_int(obj, "engine", i + 1, &error_fatal);
--        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+        object_property_set_int(obj, "num-busses",
-+                                pnv_power9_i2c_ports_per_ctlr[i],
-                                 &error_fatal);
-         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-@@ -1667,7 +1670,6 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
-     dc->desc = "PowerNV Chip POWER9";
-     k->num_pecs = PNV9_CHIP_MAX_PEC;
-     k->i2c_num_engines = PNV9_CHIP_MAX_I2C;
--    k->i2c_num_ports = PNV9_CHIP_MAX_I2C_PORTS;
- 
-     device_class_set_parent_realize(dc, pnv_chip_power9_realize,
-                                     &k->parent_realize);
-@@ -1751,6 +1753,8 @@ static void pnv_chip_power10_phb_realize(PnvChip *chip, Error **errp)
-     }
- }
- 
-+static int pnv_power10_i2c_ports_per_ctlr[PNV10_CHIP_MAX_I2C] = {14, 14, 2, 16};
-+
- static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
- {
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(dev);
-@@ -1877,7 +1881,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         Object *obj =  OBJECT(&chip10->i2c[i]);
- 
-         object_property_set_int(obj, "engine", i + 1, &error_fatal);
--        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+        object_property_set_int(obj, "num-busses",
-+                                pnv_power10_i2c_ports_per_ctlr[i],
-                                 &error_fatal);
-         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-@@ -1918,7 +1923,6 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
-     dc->desc = "PowerNV Chip POWER10";
-     k->num_pecs = PNV10_CHIP_MAX_PEC;
-     k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
--    k->i2c_num_ports = PNV10_CHIP_MAX_I2C_PORTS;
- 
-     device_class_set_parent_realize(dc, pnv_chip_power10_realize,
-                                     &k->parent_realize);
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 5815d96ecf..be1fec5698 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -88,8 +88,7 @@ struct Pnv9Chip {
- #define PNV9_CHIP_MAX_PEC 3
-     PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
- 
--#define PNV9_CHIP_MAX_I2C 3
--#define PNV9_CHIP_MAX_I2C_PORTS 1
-+#define PNV9_CHIP_MAX_I2C 4
-     PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
- };
- 
-@@ -122,7 +121,6 @@ struct Pnv10Chip {
-     PnvPhb4PecState pecs[PNV10_CHIP_MAX_PEC];
- 
- #define PNV10_CHIP_MAX_I2C 4
--#define PNV10_CHIP_MAX_I2C_PORTS 2
-     PnvI2C       i2c[PNV10_CHIP_MAX_I2C];
- };
- 
-@@ -140,7 +138,6 @@ struct PnvChipClass {
-     uint32_t     num_phbs;
- 
-     uint32_t     i2c_num_engines;
--    uint32_t     i2c_num_ports;
- 
-     DeviceRealize parent_realize;
- 
--- 
-2.31.1
 
+We can fix it by postponing warnings to realize().
+
+
+> 
+> As far as warnings go, it'd be nice to warn when mandatory profile
+> extensions are disabled from an enabled profile. Doing that might be
+> useful for debug, but users which do it without being aware they're
+> "breaking" the profile may learn from that warning. Note, the warning
+> should only come when the profile is actually enabled and when the
+> extension would actually be disabled, i.e.
+> 
+>   -cpu rv64,rva22u64=true,c=off
+> 
+> should warn
+> 
+>   -cpu rv64,c=off,rva22u64=true
+> 
+> should not warn (rva22u64 overrides c=off since it's to the right)
+> 
+>   -cpu rv64,rva22u64=true,rva22u64=false,c=off
+> 
+> should not warn (rva22u64 is not enabled)
+
+Ack for all the above.
+
+> 
+> And,
+> 
+>   -cpu rv64,rva22u64=true,rva24u64=false
+> 
+> should warn for each extension which is mandatory in both profiles.
+
+The way I'm imagining this happening is to cycle through all profiles during realize(),
+see which ones are enabled, and then warn if the user disabled their mandatory
+extensions. In this example we would warn for all rva22 mandatory extensions
+that were disabled because we disabled rva24, but we won't emit any warnings for
+rva24 mandatory extensions given that the profile is marked as disabled.
+
+
+
+Thanks,
+
+Daniel
+
+
+> 
+> Thanks,
+> drew
 
