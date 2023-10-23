@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072A27D3EA7
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5304D7D3EF0
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:18:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzMZ-0005TK-4a; Mon, 23 Oct 2023 14:09:15 -0400
+	id 1quzR0-0005XI-B9; Mon, 23 Oct 2023 14:13:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3xbY2ZQYKCj4ynyzxwlttlqj.htrvjrz-ij0jqstslsz.twl@flex--titusr.bounces.google.com>)
- id 1quzMW-0005QB-Dr
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:09:12 -0400
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1quzQq-0005Tn-Io
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:41 -0400
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3xbY2ZQYKCj4ynyzxwlttlqj.htrvjrz-ij0jqstslsz.twl@flex--titusr.bounces.google.com>)
- id 1quzMU-00071E-Ec
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:09:12 -0400
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-5a8ebc70d33so45190887b3.1
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:09:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1quzQj-00084o-HY
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:40 -0400
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-584042a01eeso2273640eaf.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:13:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1698084549; x=1698689349; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=tr6BqDILaxbn7Hhg/79zBHPldU+oVgC3RO+BYZpqcOE=;
- b=VTlrvUwXsUqvjPovrdpyyAJqSJKOI924WMtT0EDqGwHARrneLIXcxJ85AwESAmHnp5
- d88It1kRr17K2NcT5td2+8PEFpygeHjVrrB6u7qE2Be6amZiwl0Q/d8b3mqEH4RmUe8/
- wx8XQ346fnWA3nWugDjPb1ayAFGDFB+mtu2f3A+U15jL8enTvgzQpBI7oWI2GaCWfKp7
- tfWOunO8yzZfXTF58L5iLvGu7cFPK/yPdHtLJ6Rjlvo4t+4vg8blqbkFr/77t/1mo7oU
- wjvuC1EDvul9s2Asg7BQVZ2cN2dZBmGrnWC9EQbMVcZQB9cCEUww4FKfP42MAcBPalOG
- CKLw==
+ d=linaro.org; s=google; t=1698084811; x=1698689611; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WjzvqQCuN3vfcxEAuX13c66rOumAyotiYigjyRFcdp0=;
+ b=G/n5F8OpXqSDnVwjG7QQK92q7v73hxxxevZptPftsIek7d3EUO6W0nv1sQxcUBxhL0
+ fW5DFRovlNyBBkPMSsR0SAKgz5mI0IeBhSLUzTsjz2HlFizuyuzJTtS5fhR1Kq2D+khQ
+ VVdpPMzTG0hirMWHZWOCgrWGZoiEfVup773fvNUF3JXrLDwijUxcbBj6tGanGmstMXHQ
+ ThVJJ/agCYUslyNYJNjIvzO/s2wxDNjZQ9pCX3hGzsnMs/wmVn0MLfhFokab9hNMuTyR
+ swkSCUv51N/ZWqREk1x1+UiMtkNoCIBa8IUDhe7TlDbBqNBmsUPPQBfSlg9CKHxQ0QHl
+ mHmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698084549; x=1698689349;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tr6BqDILaxbn7Hhg/79zBHPldU+oVgC3RO+BYZpqcOE=;
- b=hRgSIXac0PZWIxTaTCUwYq7FzKiBjhZnEb+X2qt1+9M+06V4tEueonvHYlgbA5e05G
- /VotsToTYc4D1+okaWtQCK8tm4IstoAyjhMq4Ul/OST3vKspGFpX5NG5ANJRo5qakSWB
- p9sJTfIMfGnX8e+VQ4BmK3YjVkIDuaH9YOOZyiV1W1hWGcLmKLVTuJFRu74c2w0Huo8b
- 9dTesElc8S86wpoPMYlwdo+YGUsITYERHl3mGsv3o+Tf0InEjdbIlvcEXStMKHNWxn6P
- XlyHfemjDUVzWbjpwVfMpEDCsg9aubgTvzyAeIZaip5Bmaapwr4tiJl62TJiwr24f5Hu
- GxzQ==
-X-Gm-Message-State: AOJu0Yy7KGOi4CJGRT73cYdN9jxIg83I7Ts1dzcqaEfr0EYBLV9eA5Uh
- aYDOrohF77RD+vY2VpQJG19q0oP19hw=
-X-Google-Smtp-Source: AGHT+IFTGU2ylOZsJJs271UfERTgOcZotBMTZymeHbxZZpAw1sHjeo841WrsvwlBnAL0rw2GCjKpNHXGQYY=
-X-Received: from titusr.c.googlers.com ([fda3:e722:ac3:cc00:14:4d90:c0a8:22b8])
- (user=titusr job=sendgmr) by 2002:a0d:d50f:0:b0:5a7:ba09:44b6 with SMTP id
- x15-20020a0dd50f000000b005a7ba0944b6mr213630ywd.0.1698084549313; Mon, 23 Oct
- 2023 11:09:09 -0700 (PDT)
-Date: Mon, 23 Oct 2023 18:08:37 +0000
-In-Reply-To: <20231023180837.91785-1-titusr@google.com>
-Mime-Version: 1.0
-References: <20231023180837.91785-1-titusr@google.com>
-X-Mailer: git-send-email 2.42.0.758.gaed0368e0e-goog
-Message-ID: <20231023180837.91785-9-titusr@google.com>
-Subject: [PATCH v3 8/8] hw/i2c: pmbus: reset page register for out of range
- reads
-From: Titus Rwantare <titusr@google.com>
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org, minyard@acm.org, 
- philmd@linaro.org
-Cc: Titus Rwantare <titusr@google.com>, Hao Wu <wuhaotsh@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3xbY2ZQYKCj4ynyzxwlttlqj.htrvjrz-ij0jqstslsz.twl@flex--titusr.bounces.google.com;
- helo=mail-yw1-x114a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ d=1e100.net; s=20230601; t=1698084811; x=1698689611;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WjzvqQCuN3vfcxEAuX13c66rOumAyotiYigjyRFcdp0=;
+ b=kjpp/vFqwMakY9bwNjMZCBmC9FLaexewYRDsy6Y+Uq5GLW5oGquiVn51Sa5TBkqzMk
+ VeRIO2ijKIdztoOnJi+xT08f5ucSOvOv3Aa0kKqRi9cr7l/vl7BG3S0sAgRsAYcXNA52
+ JGUtnY+L5+/X4pFRNysQ4JcBMIJm2Vjggl8TH65SfBQNvlOluDxZfCzpxPSG5Frp3qmx
+ C00Ehxo38zF0E0GyFhYclGA1f5Nw47wKK8MPie/l74ZTZXgngC9KP18XuLWzO21NIPtU
+ NsGO+hiQwRgXgJBDP1x3+Tt8uaFO1hAlRMYWB5/c6UyhPD6cLGV1UPZn4QxD8mtqI9Hf
+ RxlQ==
+X-Gm-Message-State: AOJu0Yx1n0rV2buHRwFwGtCLrOFoJ+QsG50HZ3ID+XVp8Zpt/1w/ntjQ
+ iEHsrtWQpLz4moxkyiPqllQqicdZ1HpKuav9y6s=
+X-Google-Smtp-Source: AGHT+IHoLHN0htTfR6vJxzH/KvwfECEs2XmJC1m2j/GR9CBYOzlDUMWd7aVT1hGYCSO5ToOFJruwpQ==
+X-Received: by 2002:a05:6359:6d9a:b0:168:e7f4:8fc9 with SMTP id
+ tg26-20020a0563596d9a00b00168e7f48fc9mr1711247rwb.24.1698084811401; 
+ Mon, 23 Oct 2023 11:13:31 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ v10-20020a65568a000000b005b83bc255fbsm5205137pgs.71.2023.10.23.11.13.30
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Oct 2023 11:13:30 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL v3 00/38] tcg patch queue
+Date: Mon, 23 Oct 2023 11:12:51 -0700
+Message-Id: <20231023181329.171490-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,106 +87,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The linux pmbus driver scans all possible pages and does not reset the
-current page after the scan, making all future page reads fail as out of range
-on devices with a single page.
+v3: Rebase and add a few more patches.
 
-This change resets out of range pages immediately on write.
 
-Also added a qtest for simultaneous writes to all pages.
+r~
 
-Signed-off-by: Titus Rwantare <titusr@google.com>
-Reviewed-by: Hao Wu <wuhaotsh@google.com>
----
- hw/i2c/pmbus_device.c       | 18 +++++++++---------
- tests/qtest/max34451-test.c | 24 ++++++++++++++++++++++++
- 2 files changed, 33 insertions(+), 9 deletions(-)
 
-diff --git a/hw/i2c/pmbus_device.c b/hw/i2c/pmbus_device.c
-index 481e158380..1b978e588f 100644
---- a/hw/i2c/pmbus_device.c
-+++ b/hw/i2c/pmbus_device.c
-@@ -1255,6 +1255,15 @@ static int pmbus_write_data(SMBusDevice *smd, uint8_t *buf, uint8_t len)
- 
-     if (pmdev->code == PMBUS_PAGE) {
-         pmdev->page = pmbus_receive8(pmdev);
-+
-+        if (pmdev->page > pmdev->num_pages - 1 && pmdev->page != PB_ALL_PAGES) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: page %u is out of range\n",
-+                          __func__, pmdev->page);
-+            pmdev->page = 0; /* undefined behaviour - reset to page 0 */
-+            pmbus_cml_error(pmdev);
-+            return PMBUS_ERR_BYTE;
-+        }
-         return 0;
-     }
- 
-@@ -1268,15 +1277,6 @@ static int pmbus_write_data(SMBusDevice *smd, uint8_t *buf, uint8_t len)
-         return 0;
-     }
- 
--    if (pmdev->page > pmdev->num_pages - 1) {
--        qemu_log_mask(LOG_GUEST_ERROR,
--                        "%s: page %u is out of range\n",
--                        __func__, pmdev->page);
--        pmdev->page = 0; /* undefined behaviour - reset to page 0 */
--        pmbus_cml_error(pmdev);
--        return PMBUS_ERR_BYTE;
--    }
--
-     index = pmdev->page;
- 
-     switch (pmdev->code) {
-diff --git a/tests/qtest/max34451-test.c b/tests/qtest/max34451-test.c
-index 0c98d0764c..dbf6ddc829 100644
---- a/tests/qtest/max34451-test.c
-+++ b/tests/qtest/max34451-test.c
-@@ -18,6 +18,7 @@
- #define TEST_ID "max34451-test"
- #define TEST_ADDR (0x4e)
- 
-+#define MAX34451_MFR_MODE               0xD1
- #define MAX34451_MFR_VOUT_PEAK          0xD4
- #define MAX34451_MFR_IOUT_PEAK          0xD5
- #define MAX34451_MFR_TEMPERATURE_PEAK   0xD6
-@@ -315,6 +316,28 @@ static void test_ot_faults(void *obj, void *data, QGuestAllocator *alloc)
-     }
- }
- 
-+#define RAND_ON_OFF_CONFIG  0x12
-+#define RAND_MFR_MODE       0x3456
-+
-+/* test writes to all pages */
-+static void test_all_pages(void *obj, void *data, QGuestAllocator *alloc)
-+{
-+    uint16_t i2c_value;
-+    QI2CDevice *i2cdev = (QI2CDevice *)obj;
-+
-+    i2c_set8(i2cdev, PMBUS_PAGE, PB_ALL_PAGES);
-+    i2c_set8(i2cdev, PMBUS_ON_OFF_CONFIG, RAND_ON_OFF_CONFIG);
-+    max34451_i2c_set16(i2cdev, MAX34451_MFR_MODE, RAND_MFR_MODE);
-+
-+    for (int i = 0; i < MAX34451_NUM_TEMP_DEVICES + MAX34451_NUM_PWR_DEVICES;
-+         i++) {
-+        i2c_value = i2c_get8(i2cdev, PMBUS_ON_OFF_CONFIG);
-+        g_assert_cmphex(i2c_value, ==, RAND_ON_OFF_CONFIG);
-+        i2c_value = max34451_i2c_get16(i2cdev, MAX34451_MFR_MODE);
-+        g_assert_cmphex(i2c_value, ==, RAND_MFR_MODE);
-+    }
-+}
-+
- static void max34451_register_nodes(void)
- {
-     QOSGraphEdgeOptions opts = {
-@@ -332,5 +355,6 @@ static void max34451_register_nodes(void)
-     qos_add_test("test_ro_regs", "max34451", test_ro_regs, NULL);
-     qos_add_test("test_ov_faults", "max34451", test_ov_faults, NULL);
-     qos_add_test("test_ot_faults", "max34451", test_ot_faults, NULL);
-+    qos_add_test("test_all_pages", "max34451", test_all_pages, NULL);
- }
- libqos_init(max34451_register_nodes);
--- 
-2.42.0.758.gaed0368e0e-goog
+The following changes since commit 384dbdda94c0bba55bf186cccd3714bbb9b737e9:
 
+  Merge tag 'migration-20231020-pull-request' of https://gitlab.com/juan.quintela/qemu into staging (2023-10-20 06:46:53 -0700)
+
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20231023
+
+for you to fetch changes up to e40df3522b384d3b7dd38187d735bd6228b20e47:
+
+  target/xtensa: Use tcg_gen_sextract_i32 (2023-10-22 16:44:49 -0700)
+
+----------------------------------------------------------------
+tcg: Drop unused tcg_temp_free define
+tcg: Introduce tcg_use_softmmu
+tcg: Optimize past conditional branches
+tcg: Use constant zero when expanding with divu2
+tcg: Add negsetcondi
+tcg: Define MO_TL
+tcg: Export tcg_gen_ext_{i32,i64,tl}
+target/*: Use tcg_gen_ext_*
+tcg/ppc: Enable direct branching tcg_out_goto_tb with TCG_REG_TB
+tcg/ppc: Use ADDPCIS for power9
+tcg/ppc: Use prefixed instructions for power10
+tcg/ppc: Disable TCG_REG_TB for Power9/Power10
+tcg/ppc: Enable direct branching tcg_out_goto_tb with TCG_REG_TB
+tcg/ppc: Use ADDPCIS for power9
+tcg/ppc: Use prefixed instructions for power10
+tcg/ppc: Disable TCG_REG_TB for Power9/Power10
+
+----------------------------------------------------------------
+Jordan Niethe (1):
+      tcg/ppc: Enable direct branching tcg_out_goto_tb with TCG_REG_TB
+
+Mike Frysinger (1):
+      tcg: drop unused tcg_temp_free define
+
+Paolo Bonzini (2):
+      tcg: add negsetcondi
+      tcg: Define MO_TL
+
+Richard Henderson (34):
+      tcg/ppc: Untabify tcg-target.c.inc
+      tcg/ppc: Reinterpret tb-relative to TB+4
+      tcg/ppc: Use ADDPCIS in tcg_out_tb_start
+      tcg/ppc: Use ADDPCIS in tcg_out_movi_int
+      tcg/ppc: Use ADDPCIS for the constant pool
+      tcg/ppc: Use ADDPCIS in tcg_out_goto_tb
+      tcg/ppc: Use PADDI in tcg_out_movi
+      tcg/ppc: Use prefixed instructions in tcg_out_mem_long
+      tcg/ppc: Use PLD in tcg_out_movi for constant pool
+      tcg/ppc: Use prefixed instructions in tcg_out_dupi_vec
+      tcg/ppc: Use PLD in tcg_out_goto_tb
+      tcg/ppc: Disable TCG_REG_TB for Power9/Power10
+      tcg: Introduce tcg_use_softmmu
+      tcg: Provide guest_base fallback for system mode
+      tcg/arm: Use tcg_use_softmmu
+      tcg/aarch64: Use tcg_use_softmmu
+      tcg/i386: Use tcg_use_softmmu
+      tcg/loongarch64: Use tcg_use_softmmu
+      tcg/mips: Use tcg_use_softmmu
+      tcg/ppc: Use tcg_use_softmmu
+      tcg/riscv: Do not reserve TCG_GUEST_BASE_REG for guest_base zero
+      tcg/riscv: Use tcg_use_softmmu
+      tcg/s390x: Use tcg_use_softmmu
+      tcg: Use constant zero when expanding with divu2
+      tcg: Optimize past conditional branches
+      tcg: Add tcg_gen_{ld,st}_i128
+      target/i386: Use i128 for 128 and 256-bit loads and stores
+      tcg: Export tcg_gen_ext_{i32,i64,tl}
+      target/arm: Use tcg_gen_ext_i64
+      target/i386: Use tcg_gen_ext_tl
+      target/m68k: Use tcg_gen_ext_i32
+      target/rx: Use tcg_gen_ext_i32
+      target/tricore: Use tcg_gen_*extract_tl
+      target/xtensa: Use tcg_gen_sextract_i32
+
+ include/exec/target_long.h       |   2 +
+ include/tcg/tcg-op-common.h      |   9 +
+ include/tcg/tcg-op.h             |   6 +-
+ include/tcg/tcg.h                |   8 +-
+ target/arm/tcg/translate-a64.c   |  37 +--
+ target/i386/tcg/translate.c      |  91 +++----
+ target/m68k/translate.c          |  23 +-
+ target/rx/translate.c            |  11 +-
+ target/tricore/translate.c       |  20 +-
+ target/xtensa/translate.c        |  12 +-
+ tcg/optimize.c                   |   8 +-
+ tcg/tcg-op-ldst.c                |  28 +-
+ tcg/tcg-op.c                     |  50 +++-
+ tcg/tcg.c                        |  13 +-
+ tcg/aarch64/tcg-target.c.inc     | 177 ++++++------
+ tcg/arm/tcg-target.c.inc         | 203 +++++++-------
+ tcg/i386/tcg-target.c.inc        | 198 +++++++-------
+ tcg/loongarch64/tcg-target.c.inc | 126 +++++----
+ tcg/mips/tcg-target.c.inc        | 231 ++++++++--------
+ tcg/ppc/tcg-target.c.inc         | 561 ++++++++++++++++++++++++++-------------
+ tcg/riscv/tcg-target.c.inc       | 189 ++++++-------
+ tcg/s390x/tcg-target.c.inc       | 161 ++++++-----
+ 22 files changed, 1152 insertions(+), 1012 deletions(-)
 
