@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1078D7D3EB9
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE5A7D3EF5
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 20:18:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quzQz-0005Xn-Eh; Mon, 23 Oct 2023 14:13:49 -0400
+	id 1quzQw-0005WD-Pq; Mon, 23 Oct 2023 14:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quzQt-0005Uv-TE
+ id 1quzQu-0005VA-Gn
  for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:44 -0400
-Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1quzQn-00085V-TC
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:42 -0400
-Received: by mail-il1-x12a.google.com with SMTP id
- e9e14a558f8ab-3574f99d260so13874505ab.3
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:13:37 -0700 (PDT)
+ id 1quzQp-00085c-M9
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 14:13:44 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-5849fc56c62so740927eaf.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 11:13:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698084817; x=1698689617; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698084818; x=1698689618; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=O6ypWKYmP3E0vSS+zdR/mRhAnNRJOT7ENlr0UKfEKr4=;
- b=SNmNGQrN2g5O35Es58hxTzmOLL9q2hKtJA0yIwINGZ2l0ovBLQPGFm45yygM5XJuxC
- 845d7CINs+EX2B8iWes8TCWMfGJ9yb6HlJFCreSzKjIpL6wQLb6ga0EEZ6yAsFhVhR+C
- l4HLIfmjumx0lOPmTgmGIaRzzvVD9H8DAK9Ouw8ZcRVHAb71X+yKNh51u+9cWdZhzB/n
- tf8M8zhAIRwN+hNffxmkO9HbRDz/AspF4y+ZDTEDSIYYU6Sxqpqw4d/5iN2kFeS5clv8
- kSzSBdlyy43rxNCaK5r5oHttULYtF4G2jKurDrliBt1honO4y3hMeqRRqt+pueca35z7
- jMVg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IcT+t2NWvvAgl7ag7U9fcr97JnnF4drB4JEVTRDmT40=;
+ b=mQkW5tIj3yWQgjTi6C0WcCpCINt/dwAoqOEYlN4ID+EapZBwBhZMFty8iekGzZyory
+ tCV66mSb2nmFBgLg1sdZe9hb1Jn5OEizVlP/wfibCvEE4GaWYOonTkUoQfbHz3j/VSi9
+ fVZGGJbzzMyFTgfDCyM6TIYVEbWMD1jf9zGjmf6CDViEyVlO1koEJxM3yeOwkhZY0GHH
+ 7xJ/KbC/ghfkT3s0mwIqi8ciSKU4YUerhQr7lzc9lFKLJH0gsXtCKRnEpS+Ox4s9RPar
+ rY2N/j6p2s0tSLM9SKLYUggCgVleJqOkdKykYltVDPF20sDoxkpJMdyaYvXbSnYicG2M
+ +g/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698084817; x=1698689617;
+ d=1e100.net; s=20230601; t=1698084818; x=1698689618;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O6ypWKYmP3E0vSS+zdR/mRhAnNRJOT7ENlr0UKfEKr4=;
- b=q+58CLdO07+risDag70Tepy2Q73qLRiFkDM2iMDhh4G8AFPBYwnT/g3leyEBmetm57
- 4aBiwHNjeFjthA4KH6VLQVAVK1AVJiJuw6JPP/nKgpYeiFvTD2dPzgfV5ytVKK0gxBVr
- tX9NkOUkkp6vdxD4VVXT9Udib9Q8TP41vWe9qCI4E40MjSQiV761+PEAt6WsItXKNuCr
- 0OOVpx00/MoPDRes0RpuKRxk+uBI3HdZxoHWucHbYkrYI5jJHxmNdBa90QjA2AkUdavD
- FGHnSEFkP+ouBi7dKTCXkBjK2ZWM+h/ZtRUUY/X4hFzGKwiEBEtFe07VUI1QVpD5Xv3D
- d5RA==
-X-Gm-Message-State: AOJu0Yx1zurbVXbhW9XnJvpGf57WQxQEq1JqTS21eivTfERr5IRDOq0g
- XaZI8jq9H4AM8mzOG0day14Ektq/A/buBNAL6Vc=
-X-Google-Smtp-Source: AGHT+IFlxnPyU3U5+5KGGqbtqkuODatPTkYq856PXRC/Sladmc11dbzTaUjARe7S0WqEHy46nxbmiw==
-X-Received: by 2002:a92:c248:0:b0:351:b22:af5c with SMTP id
- k8-20020a92c248000000b003510b22af5cmr12775741ilo.32.1698084816853; 
- Mon, 23 Oct 2023 11:13:36 -0700 (PDT)
+ bh=IcT+t2NWvvAgl7ag7U9fcr97JnnF4drB4JEVTRDmT40=;
+ b=wXpAHVSnj3p/GGsGGgAUEHqRMdhEPLiBDlnB6YZ7GSkIzPVCl0P8cT36epqStCv6xA
+ 8x7q4TCe7CsUiGCIw1ZGo4BdF1QCaQVzblHmoCmhX0ZGjYtLWlHkXwLanX41pgZhJO9c
+ ZRroJJC0xrwpIZDd5fMTqwHRHHRsYfHeB5Q/Y8H98TdlX7cMlVBgwuPuZiLRlCHqVaXb
+ IRNEnMDAS4fSf8GFp9u9A8DosMG/1ya/7PqhL6t2nhFJ+htdpMjlltWYdiwbACYupiHG
+ CW2XNIs1mC6fa5+5CNfXmlbsdCyr3zGnsAZ4TZhCNyVtN2WAVjE+jnoirDwBAhS54nbk
+ XYtg==
+X-Gm-Message-State: AOJu0YyV7lD9Ikj2EgZYUuh1eBGrlN8ULaNOtSiioS4z2nSF5QuHLb/s
+ on8gVhCdbFaPSghUVtOdu0VxzbjvuPlkJqYrVN8=
+X-Google-Smtp-Source: AGHT+IG0Drd2MMEtgAcNjrQHIZwLI2zOeB4cogpvZf0p5VR/Ovfolsy76o8TReHSCktrbocPEoqwpw==
+X-Received: by 2002:a05:6358:810c:b0:168:d6cd:7b2e with SMTP id
+ p12-20020a056358810c00b00168d6cd7b2emr5661037rwk.29.1698084817955; 
+ Mon, 23 Oct 2023 11:13:37 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- v10-20020a65568a000000b005b83bc255fbsm5205137pgs.71.2023.10.23.11.13.36
- for <qemu-devel@nongnu.org>
+ v10-20020a65568a000000b005b83bc255fbsm5205137pgs.71.2023.10.23.11.13.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Oct 2023 11:13:36 -0700 (PDT)
+ Mon, 23 Oct 2023 11:13:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v3 07/38] tcg/ppc: Use ADDPCIS in tcg_out_goto_tb
-Date: Mon, 23 Oct 2023 11:12:58 -0700
-Message-Id: <20231023181329.171490-8-richard.henderson@linaro.org>
+Cc: Jordan Niethe <jniethe5@gmail.com>
+Subject: [PULL v3 08/38] tcg/ppc: Use PADDI in tcg_out_movi
+Date: Mon, 23 Oct 2023 11:12:59 -0700
+Message-Id: <20231023181329.171490-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231023181329.171490-1-richard.henderson@linaro.org>
 References: <20231023181329.171490-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,41 +90,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+PADDI can load 34-bit immediates and 34-bit pc-relative addresses.
+
+Reviewed-by: Jordan Niethe <jniethe5@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target.c.inc | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tcg/ppc/tcg-target.c.inc | 51 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
 diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 720f92ff33..6337b1e8be 100644
+index 6337b1e8be..f4235383c6 100644
 --- a/tcg/ppc/tcg-target.c.inc
 +++ b/tcg/ppc/tcg-target.c.inc
-@@ -2593,6 +2593,7 @@ static void tcg_out_exit_tb(TCGContext *s, uintptr_t arg)
- static void tcg_out_goto_tb(TCGContext *s, int which)
- {
-     uintptr_t ptr = get_jmp_target_addr(s, which);
-+    int16_t lo;
+@@ -719,6 +719,38 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
+     return true;
+ }
  
-     /* Direct branch will be patched by tb_target_set_jmp_target. */
-     set_jmp_insn_offset(s, which);
-@@ -2602,9 +2603,15 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
-     if (USE_REG_TB) {
-         ptrdiff_t offset = ppc_tbrel_diff(s, (void *)ptr);
-         tcg_out_mem_long(s, LD, LDX, TCG_REG_TMP1, TCG_REG_TB, offset);
-+    } else if (have_isa_3_00) {
-+        ptrdiff_t offset = tcg_pcrel_diff(s, (void *)ptr) - 4;
-+        lo = offset;
-+        tcg_out_addpcis(s, TCG_REG_TMP1, offset - lo);
-+        tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, lo);
-     } else {
--        tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
--        tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t)ptr);
-+        lo = ptr;
-+        tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - lo);
-+        tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, lo);
++/* Ensure that the prefixed instruction does not cross a 64-byte boundary. */
++static bool tcg_out_need_prefix_align(TCGContext *s)
++{
++    return ((uintptr_t)s->code_ptr & 0x3f) == 0x3c;
++}
++
++static void tcg_out_prefix_align(TCGContext *s)
++{
++    if (tcg_out_need_prefix_align(s)) {
++        tcg_out32(s, NOP);
++    }
++}
++
++static ptrdiff_t tcg_pcrel_diff_for_prefix(TCGContext *s, const void *target)
++{
++    return tcg_pcrel_diff(s, target) - (tcg_out_need_prefix_align(s) ? 4 : 0);
++}
++
++/* Output Type 10 Prefix - Modified Load/Store Form (MLS:D) */
++static void tcg_out_mls_d(TCGContext *s, tcg_insn_unit opc, unsigned rt,
++                          unsigned ra, tcg_target_long imm, bool r)
++{
++    tcg_insn_unit p, i;
++
++    p = OPCD(1) | (2 << 24) | (r << 20) | ((imm >> 16) & 0x3ffff);
++    i = opc | TAI(rt, ra, imm);
++
++    tcg_out_prefix_align(s);
++    tcg_out32(s, p);
++    tcg_out32(s, i);
++}
++
+ static void tcg_out_mem_long(TCGContext *s, int opi, int opx, TCGReg rt,
+                              TCGReg base, tcg_target_long offset);
+ 
+@@ -1017,6 +1049,25 @@ static void tcg_out_movi_int(TCGContext *s, TCGType type, TCGReg ret,
+         return;
      }
  
-     tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
++    /*
++     * Load values up to 34 bits, and pc-relative addresses,
++     * with one prefixed insn.
++     */
++    if (have_isa_3_10) {
++        if (arg == sextract64(arg, 0, 34)) {
++            /* pli ret,value = paddi ret,0,value,0 */
++            tcg_out_mls_d(s, ADDI, ret, 0, arg, 0);
++            return;
++        }
++
++        tmp = tcg_pcrel_diff_for_prefix(s, (void *)arg);
++        if (tmp == sextract64(tmp, 0, 34)) {
++            /* pla ret,value = paddi ret,0,value,1 */
++            tcg_out_mls_d(s, ADDI, ret, 0, tmp, 1);
++            return;
++        }
++    }
++
+     /* Load 32-bit immediates with two insns.  Note that we've already
+        eliminated bare ADDIS, so we know both insns are required.  */
+     if (TCG_TARGET_REG_BITS == 32 || arg == (int32_t)arg) {
 -- 
 2.34.1
 
