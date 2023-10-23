@@ -2,56 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3FA7D3C0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 18:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B587D3BD0
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 18:10:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1quxbn-0000a3-5i; Mon, 23 Oct 2023 12:16:51 -0400
+	id 1quxV5-0000Do-9C; Mon, 23 Oct 2023 12:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1quxbl-0000Z0-A5
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:16:49 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1quxbj-0002s4-2N
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:16:49 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SDgHL0vrLz6K6Rw;
- Tue, 24 Oct 2023 00:14:06 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 23 Oct 2023 17:16:44 +0100
-To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Michael Tsirkin
- <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-CC: <linuxarm@huawei.com>, Fan Ni <fan.ni@samsung.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Gregory Price
- <gregory.price@memverge.com>, Davidlohr Bueso <dave@stgolabs.net>, Klaus
- Jensen <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v2 17/17] hw/cxl: Add tunneled command support to mailbox for
- switch cci.
-Date: Mon, 23 Oct 2023 17:08:06 +0100
-Message-ID: <20231023160806.13206-18-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231023160806.13206-1-Jonathan.Cameron@huawei.com>
-References: <20231023160806.13206-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1quxV1-0008Rl-A1
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:09:53 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1quxUz-0001Kt-JG
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 12:09:50 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4084e49a5e5so29815285e9.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 09:09:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698077387; x=1698682187; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=432n4xQzBSP8lJH0hMQFD/7+8DUyL3Vy3V7TxS2yWU4=;
+ b=OUAe/QStp2ZbgG+W80/DhrGe0RyJCaQax+dY1VfQ57CIJwj2DdpDmmpgMHk+4IaCr4
+ beefWCvuXqS0EE6SDhZgQIRgJoLdffp3xeZwPakD0rcRovHGiCEpK7cXljQLzOLQV1+s
+ EYtL0owj1Sz8pL2y2eW+D2hViWuZ2h9rZvUXTs7iDdU8/HBhSjhRDZDHokHWcBWyPpBS
+ Kzf2A/hT4lyrqd+8RLXdJHRSm4sDAPh0w6jITkI3pMwV5eEKEeawcWPIH57+qhQGeytf
+ /lEBFYBypZJb7H1kF2pXfR+c3YzTdJNOBuwc9+CnP9fr/MQogrmLasWQByn2FqKQlt/X
+ pafg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698077387; x=1698682187;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=432n4xQzBSP8lJH0hMQFD/7+8DUyL3Vy3V7TxS2yWU4=;
+ b=MuDdzUDqmDyQkkSpGvLm3sksiStZpBnPvZ1GA+FJhXmdtOZZC0mA+6phbgPjIFtBoW
+ 1noFEDwGuZB0tbqudPk3m3mC0Pk4h6piAAzCe+LRkNepWILWzYs3a8gCPCjavhweCbpb
+ NDfU6OyN8ArQO/Y7OPdcVIyF52BGWXoGEonLMkdcbTwL3z2jXrglwdltid+K8nIdDSKz
+ d25ZsufzLOZhoUPNyKavFVvQ/0PO/iOeJLHlt5Z6tfEKlFEJz9XdcL6vFQMlHf2muIS6
+ mD+Y/0sGMEl2sLoAkOJKldalPeH7NF1RIpOb9BovFZH9iQLvboppcboDo4Mnt10PmMlb
+ l6gg==
+X-Gm-Message-State: AOJu0YzdaqpATTCmYl7wTa1sbjnnqcPlDDbnbRWPRPNgb2dI/995FMMU
+ 4qn32jtMDNAcdXSNOqOimHmcbkXn2i3+/ZdnrqA=
+X-Google-Smtp-Source: AGHT+IGf++9weWY46f/CQQgs97kf91yqDe+JvfMgoQTXGBZl4tF4bPAn7Kup0GsL9kftR8iV8jndiQ==
+X-Received: by 2002:adf:e551:0:b0:31a:d4e4:4f63 with SMTP id
+ z17-20020adfe551000000b0031ad4e44f63mr6031463wrm.18.1698077387468; 
+ Mon, 23 Oct 2023 09:09:47 -0700 (PDT)
+Received: from m1x-phil.lan (thr44-h01-176-170-216-159.dsl.sta.abo.bbox.fr.
+ [176.170.216.159]) by smtp.gmail.com with ESMTPSA id
+ e16-20020adfef10000000b0032d8354fb43sm8120053wro.76.2023.10.23.09.09.46
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 23 Oct 2023 09:09:47 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/9] tcg: Use tcg_gen_[s]extract_{i32,i64,tl}
+Date: Mon, 23 Oct 2023 18:09:35 +0200
+Message-ID: <20231023160944.10692-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,300 +85,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implementation of tunneling makes the choice that our Type 3 device is
-a Logical Device (LD) of a Multi-Logical Device (MLD) that just happens to
-only have one LD for now.
+Based-on: <20231019182921.1772928-1-richard.henderson@linaro.org>
 
-Tunneling is supported from a Switch Mailbox CCI (and shortly via MCTP over
-I2C connected to the switch MCTP CCI) via an outer level to the FM owned LD
-in the MLD Type 3 device. From there an inner tunnel may be used to access
-particular LDs.
+Philippe Mathieu-Daudé (9):
+  target/avr: Use tcg_gen_extract_tl
+  target/cris: Use tcg_gen_extract_tl
+  target/mips: Use tcg_gen_extract_i32
+  target/ppc: Use tcg_gen_extract_i32
+  target/sparc: Use tcg_gen_extract_tl
+  target/xtensa: Use tcg_gen_extract_i32
+  target/mips: Use tcg_gen_sextract_tl
+  target/cris: Use tcg_gen_sextract_tl
+  target/ppc: Use tcg_gen_sextract_tl
 
-Protocol wise, the following is what happens in a real system but we
-don't emulate the transports - just the destinations and the payloads.
+ target/avr/translate.c          | 18 ++++++------------
+ target/cris/translate.c         |  6 ++----
+ target/i386/tcg/translate.c     |  9 +++------
+ target/mips/tcg/mxu_translate.c |  6 ++----
+ target/mips/tcg/translate.c     | 12 ++++--------
+ target/ppc/translate.c          | 28 ++++++----------------------
+ target/sparc/translate.c        |  6 ++----
+ target/xtensa/translate.c       |  6 +-----
+ 8 files changed, 26 insertions(+), 65 deletions(-)
 
-( Host -> Switch Mailbox CCI - in band FM-API mailbox command
-  or
-  Host -> Switch MCTP CCI - MCTP over I2C using the CXL FM-API
-  MCTP Binding.
-)
-then (if a tunnel command)
-Switch -> Type 3 FM Owned LD - MCTP over PCI VDM using the
-CXL FM-API binding (addressed by switch port)
-then (if unwrapped command also a tunnel command)
-Type 3 FM Owned LD to LD0 via internal transport
-(addressed by LD number)
-
-or (added shortly)
-
-Host to Type 3 FM Owned MCTP CCI - MCTP over I2C using the
-CXL FM-API MCTP Binding.
-then (if unwrapped comand is a tunnel comamnd)
-Type 3 FM Owned LD to LD0 via internal transport.
-(addressed by LD number)
-
-It is worth noting that the tunneling commands over PCI VDM
-presumably use the appropriate MCTP binding depending on opcode.
-This may be the CXL FMAPI binding or the CXL Memory Device Binding.
-
-Additional commands will need to be added to make this
-useful beyond testing the tunneling works.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
----
-v2:
-- Fix some missing element in tunneled responses (tag, cmd, cmd_set)
-  Picked up by adding a more exhaustive test case.
-- Reordering to move the MCTP over i2c support to after this resulted
-  in various changes.
----
- include/hw/cxl/cxl_device.h |   9 ++
- hw/cxl/cxl-mailbox-utils.c  | 162 ++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3.c          |  11 +++
- 3 files changed, 182 insertions(+)
-
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 70aca9024c..61b7f897f7 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -279,6 +279,12 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-                             size_t len_in, uint8_t *pl_in,
-                             size_t *len_out, uint8_t *pl_out,
-                             bool *bg_started);
-+void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
-+                                           DeviceState *intf,
-+                                           size_t payload_max);
-+
-+void cxl_initialize_t3_ld_cci(CXLCCI *cci, DeviceState *d,
-+                              DeviceState *intf, size_t payload_max);
- 
- #define cxl_device_cap_init(dstate, reg, cap_id, ver)                      \
-     do {                                                                   \
-@@ -397,6 +403,9 @@ struct CXLType3Dev {
-     CXLComponentState cxl_cstate;
-     CXLDeviceState cxl_dstate;
-     CXLCCI cci; /* Primary PCI mailbox CCI */
-+    /* Always intialized as no way to know if a VDM might show up */
-+    CXLCCI vdm_fm_owned_ld_mctp_cci;
-+    CXLCCI ld0_cci;
- 
-     /* DOE */
-     DOECap doe_cdat;
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 693c2cbdcd..b365575097 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -82,8 +82,132 @@ enum {
-     PHYSICAL_SWITCH = 0x51,
-         #define IDENTIFY_SWITCH_DEVICE      0x0
-         #define GET_PHYSICAL_PORT_STATE     0x1
-+    TUNNEL = 0x53,
-+        #define MANAGEMENT_COMMAND     0x0
- };
- 
-+/* CCI Message Format CXL r3.0 Figure 7-19 */
-+typedef struct CXLCCIMessage {
-+    uint8_t category;
-+#define CXL_CCI_CAT_REQ 0
-+#define CXL_CCI_CAT_RSP 1
-+    uint8_t tag;
-+    uint8_t resv1;
-+    uint8_t command;
-+    uint8_t command_set;
-+    uint8_t pl_length[3];
-+    uint16_t rc;
-+    uint16_t vendor_specific;
-+    uint8_t payload[];
-+} QEMU_PACKED CXLCCIMessage;
-+
-+/* This command is only defined to an MLD FM Owned LD or an MHD */
-+static CXLRetCode cmd_tunnel_management_cmd(const struct cxl_cmd *cmd,
-+                                            uint8_t *payload_in,
-+                                            size_t len_in,
-+                                            uint8_t *payload_out,
-+                                            size_t *len_out,
-+                                            CXLCCI *cci)
-+{
-+    PCIDevice *tunnel_target;
-+    CXLCCI *target_cci;
-+    struct {
-+        uint8_t port_or_ld_id;
-+        uint8_t target_type;
-+        uint16_t size;
-+        CXLCCIMessage ccimessage;
-+    } QEMU_PACKED *in;
-+    struct {
-+        uint16_t resp_len;
-+        uint8_t resv[2];
-+        CXLCCIMessage ccimessage;
-+    } QEMU_PACKED *out;
-+    size_t pl_length, length_out;
-+    bool bg_started;
-+    int rc;
-+
-+    if (cmd->in < sizeof(*in)) {
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+    in = (void *)payload_in;
-+    out = (void *)payload_out;
-+
-+    /* Enough room for minimum sized message - no payload */
-+    if (in->size < sizeof(in->ccimessage)) {
-+        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+    }
-+    /* Length of input payload should be in->size + a wrapping tunnel header */
-+    if (in->size != len_in - offsetof(typeof(*out), ccimessage)) {
-+        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-+    }
-+    if (in->ccimessage.category != CXL_CCI_CAT_REQ) {
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+
-+    if (in->target_type != 0) {
-+        qemu_log_mask(LOG_UNIMP,
-+                      "Tunneled Command sent to non existent FM-LD");
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+
-+    /*
-+     * Target of a tunnel unfortunately depends on type of CCI readint
-+     * the message.
-+     * If in a switch, then it's the port number.
-+     * If in an MLD it is the ld number.
-+     * If in an MHD target type indicate where we are going.
-+     */
-+    if (object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_TYPE3)) {
-+        CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+        if (in->port_or_ld_id != 0) {
-+            /* Only pretending to have one for now! */
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        target_cci = &ct3d->ld0_cci;
-+    } else if (object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_USP)) {
-+        CXLUpstreamPort *usp = CXL_USP(cci->d);
-+
-+        tunnel_target = pcie_find_port_by_pn(&PCI_BRIDGE(usp)->sec_bus,
-+                                             in->port_or_ld_id);
-+        if (!tunnel_target) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        tunnel_target =
-+            pci_bridge_get_sec_bus(PCI_BRIDGE(tunnel_target))->devices[0];
-+        if (!tunnel_target) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        if (object_dynamic_cast(OBJECT(tunnel_target), TYPE_CXL_TYPE3)) {
-+            CXLType3Dev *ct3d = CXL_TYPE3(tunnel_target);
-+            /* Tunneled VDMs always land on FM Owned LD */
-+            target_cci = &ct3d->vdm_fm_owned_ld_mctp_cci;
-+        } else {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+    } else {
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+
-+    pl_length = in->ccimessage.pl_length[2] << 16 |
-+        in->ccimessage.pl_length[1] << 8 | in->ccimessage.pl_length[0];
-+    rc = cxl_process_cci_message(target_cci,
-+                                 in->ccimessage.command_set,
-+                                 in->ccimessage.command,
-+                                 pl_length, in->ccimessage.payload,
-+                                 &length_out, out->ccimessage.payload,
-+                                 &bg_started);
-+    /* Payload should be in place. Rest of CCI header and needs filling */
-+    out->resp_len = length_out + sizeof(CXLCCIMessage);
-+    st24_le_p(out->ccimessage.pl_length, length_out);
-+    out->ccimessage.rc = rc;
-+    out->ccimessage.category = CXL_CCI_CAT_RSP;
-+    out->ccimessage.command = in->ccimessage.command;
-+    out->ccimessage.command_set = in->ccimessage.command_set;
-+    out->ccimessage.tag = in->ccimessage.tag;
-+    *len_out = length_out + sizeof(*out);
-+
-+    return CXL_MBOX_SUCCESS;
-+}
- 
- static CXLRetCode cmd_events_get_records(const struct cxl_cmd *cmd,
-                                          uint8_t *payload_in, size_t len_in,
-@@ -1171,6 +1295,8 @@ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
-         cmd_identify_switch_device, 0, 0 },
-     [PHYSICAL_SWITCH][GET_PHYSICAL_PORT_STATE] = { "SWITCH_PHYSICAL_PORT_STATS",
-         cmd_get_physical_port_state, ~0, 0 },
-+    [TUNNEL][MANAGEMENT_COMMAND] = { "TUNNEL_MANAGEMENT_COMMAND",
-+                                     cmd_tunnel_management_cmd, ~0, 0 },
- };
- 
- /*
-@@ -1347,3 +1473,39 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
-     cci->intf = d;
-     cxl_init_cci(cci, payload_max);
- }
-+
-+static const struct cxl_cmd cxl_cmd_set_t3_ld[256][256] = {
-+    [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0, 0 },
-+    [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
-+                              0 },
-+    [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-+};
-+
-+void cxl_initialize_t3_ld_cci(CXLCCI *cci, DeviceState *d, DeviceState *intf,
-+                               size_t payload_max)
-+{
-+    cci->cxl_cmd_set = cxl_cmd_set_t3_ld;
-+    cci->d = d;
-+    cci->intf = intf;
-+    cxl_init_cci(cci, payload_max);
-+}
-+
-+static const struct cxl_cmd cxl_cmd_set_t3_fm_owned_ld_mctp[256][256] = {
-+    [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0,  0},
-+    [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
-+                              0 },
-+    [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-+    [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
-+    [TUNNEL][MANAGEMENT_COMMAND] = { "TUNNEL_MANAGEMENT_COMMAND",
-+                                     cmd_tunnel_management_cmd, ~0, 0 },
-+};
-+
-+void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
-+                                           DeviceState *intf,
-+                                           size_t payload_max)
-+{
-+    cci->cxl_cmd_set = cxl_cmd_set_t3_fm_owned_ld_mctp;
-+    cci->d = d;
-+    cci->intf = intf;
-+    cxl_init_cci(cci, payload_max);
-+}
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index a766c64575..52647b4ac7 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -936,6 +936,17 @@ static void ct3d_reset(DeviceState *dev)
- 
-     cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
-     cxl_device_register_init_t3(ct3d);
-+
-+    /*
-+     * Bring up an endpoint to target with MCTP over VDM.
-+     * This device is emulating an MLD with single LD for now.
-+     */
-+    cxl_initialize_t3_fm_owned_ld_mctpcci(&ct3d->vdm_fm_owned_ld_mctp_cci,
-+                                          DEVICE(ct3d), DEVICE(ct3d),
-+                                          512); /* Max payload made up */
-+    cxl_initialize_t3_ld_cci(&ct3d->ld0_cci, DEVICE(ct3d), DEVICE(ct3d),
-+                             512); /* Max payload made up */
-+
- }
- 
- static Property ct3_props[] = {
 -- 
-2.39.2
+2.41.0
 
 
