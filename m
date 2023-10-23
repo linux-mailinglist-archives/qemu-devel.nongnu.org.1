@@ -2,69 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B167D293D
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 06:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBCFC7D29D8
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Oct 2023 07:58:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qumD5-00070B-Bf; Mon, 23 Oct 2023 00:06:35 -0400
+	id 1qunwA-0003u5-SM; Mon, 23 Oct 2023 01:57:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1qumD2-000701-IE
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 00:06:32 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1qumCy-0001Rf-JA
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 00:06:32 -0400
-Received: from loongson.cn (unknown [10.20.42.173])
- by gateway (Coremail) with SMTP id _____8Cx5_Ez8TVlX9ozAA--.34934S3;
- Mon, 23 Oct 2023 12:06:11 +0800 (CST)
-Received: from [10.20.42.173] (unknown [10.20.42.173])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cxzt4u8TVlq9IuAA--.35592S3; 
- Mon, 23 Oct 2023 12:06:08 +0800 (CST)
-Subject: Re: [PATCH] target/loongarch: Support 4K page size
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org
-References: <20231023024059.3858349-1-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <b0e7be32-ab05-a39c-f722-44b2eaac8318@loongson.cn>
-Date: Mon, 23 Oct 2023 12:06:07 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qunw4-0003tQ-Oa
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 01:57:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qunw1-0001xh-UA
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 01:57:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698040625;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Z9I8Gy+tt9muRxgB7Y4VOE11YLz3BOwS5tkxgCmtRDE=;
+ b=U1xM0lG1goWaEX9qvY7p5SFAsm3/sbr5L2En8u2R3QB3Xg/3n8aSnhmqUDtPFAO5Uz170Z
+ /rXPGIac4xLEsdBN1sHnuUIRD+0jH14Ue7PfqK7oFmBEqz3Sf8bleZ/SIbVzl9afBqKlsI
+ 9GYJktjW1SVktVRDtvGig6Bp1c1MwtI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-6DAWWVx9PEyU2N56X541TA-1; Mon, 23 Oct 2023 01:57:01 -0400
+X-MC-Unique: 6DAWWVx9PEyU2N56X541TA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9c7f0a33afbso102843966b.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Oct 2023 22:57:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698040620; x=1698645420;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Z9I8Gy+tt9muRxgB7Y4VOE11YLz3BOwS5tkxgCmtRDE=;
+ b=Le/6N4FPXieivErQp3/xb00d5EvDKNMQvTTm5ZpSurUwK7538aJ0pnzLC6pL+fJyGt
+ rW/swxRb6I0Mi9yFuuy6OmtbQ7IxSG1nsL4JmEtV6jG8Sl74mSMvN0IAMQAYv8gp6ep2
+ Zb+Xxa1phZ6GJF8wd7kdsEUzue4eHRlTiyPxOk7bdTNHxjXJI9DIDGzcc2dMrtPhSLw9
+ W/JTX9xCzJs8ofE9d2llhoIKEyuP2i3zVO91qnFG7kHwlvDMlkZapS6vFFsfIREP92P+
+ kyII1MkEv+Dv48hGdUxqwOQpHO/Rk2flNmTCMfo0LLZ9u41P4zbFwo43bh4YKTvPCMIh
+ 3zIQ==
+X-Gm-Message-State: AOJu0YzmijUboD3KzJp0hyjHNhkC1m8903G7nKiKkHWyc1H2rczhBMRK
+ Szip7HYwY466OWzJcylA2RliE5l6XlPi5vsaKXJHjCKXHqkC0YgdYN+jc2h83nL8VDlDI7gHAiF
+ 4Qyo63F9rD628wFY=
+X-Received: by 2002:a05:6402:510d:b0:53f:731a:e513 with SMTP id
+ m13-20020a056402510d00b0053f731ae513mr6037318edd.25.1698040620258; 
+ Sun, 22 Oct 2023 22:57:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzCbtRLbcftpx1UEFMUW1GK48mVhHVByOCVzDS1CuoPQRu5xP/KWd9pLn80/0//l5x7FR4jg==
+X-Received: by 2002:a05:6402:510d:b0:53f:731a:e513 with SMTP id
+ m13-20020a056402510d00b0053f731ae513mr6037315edd.25.1698040619978; 
+ Sun, 22 Oct 2023 22:56:59 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
+ [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
+ co2-20020a0564020c0200b0053ed70ebd7csm5743366edb.31.2023.10.22.22.56.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 22 Oct 2023 22:56:58 -0700 (PDT)
+Message-ID: <6401be8b-55ac-4967-bb6e-4af15d6ea109@redhat.com>
+Date: Mon, 23 Oct 2023 07:56:56 +0200
 MIME-Version: 1.0
-In-Reply-To: <20231023024059.3858349-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add unvalued folders in tests/tcg/ to the
+ right sections
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, qemu-ppc@nongnu.org
+References: <20231018062401.20746-1-thuth@redhat.com>
+ <78323369-f211-4281-b365-7de1fc5788f8@tls.msk.ru>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <78323369-f211-4281-b365-7de1fc5788f8@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cxzt4u8TVlq9IuAA--.35592S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7AFyUKFykZryDCw48Zw4DKFX_yoW8uFW8pr
- W7AF1jkF4UKrZrG3Zaga45WrnrZr47Gr4aqa1fKrWFyrs0q34xZF1ktwsI9F4xJw45ur4I
- qw1qya4j9F4UXacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
- 05UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.339, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,72 +144,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-ÔÚ 2023/10/23 ÉÏÎç10:40, Song Gao Ð´µÀ:
-> The LoongArch kernel supports 4K page size.
-> Change TARGET_PAGE_BITS to 12.
+On 21/10/2023 13.31, Michael Tokarev wrote:
+> [Trim recipient list]
 > 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/cpu-param.h  | 2 +-
->   target/loongarch/tlb_helper.c | 9 ++++-----
->   2 files changed, 5 insertions(+), 6 deletions(-)
+> 18.10.2023 09:24, Thomas Huth:
+>> Some subfolders in tests/tcg/ are already listed in the MAINTAINERS
+>> file, some others aren't listed yet. Add the missing ones now to the
+>> MAINTAINERS file, too, to make sure that get_maintainers.pl reports
+>> the correct maintainer.
 > 
-> diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.h
-> index 1265dc7cb5..cfe195db4e 100644
-> --- a/target/loongarch/cpu-param.h
-> +++ b/target/loongarch/cpu-param.h
-> @@ -12,6 +12,6 @@
->   #define TARGET_PHYS_ADDR_SPACE_BITS 48
->   #define TARGET_VIRT_ADDR_SPACE_BITS 48
->   
-> -#define TARGET_PAGE_BITS 14
-> +#define TARGET_PAGE_BITS 12
-Hi Gaosong,
-
-The popular OS about LoongArch still uses 16K page size, qemu should 
-follow the rule of OS rather than defining 4K page size alone.
-
-Regards
-Bibo Mao
-
->   
->   #endif
-> diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-> index c8b8b0497f..449043c68b 100644
-> --- a/target/loongarch/tlb_helper.c
-> +++ b/target/loongarch/tlb_helper.c
-> @@ -60,6 +60,9 @@ static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
->           tlb_rplv = 0;
->       }
->   
-> +    /* Remove sw bit between bit12 -- bit PS*/
-> +    tlb_ppn = tlb_ppn & ~(((0x1UL << (tlb_ps - 12)) -1));
-> +
->       /* Check access rights */
->       if (!tlb_v) {
->           return TLBRET_INVALID;
-> @@ -82,10 +85,6 @@ static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
->           return TLBRET_DIRTY;
->       }
->   
-> -    /*
-> -     * tlb_entry contains ppn[47:12] while 16KiB ppn is [47:15]
-> -     * need adjust.
-> -     */
->       *physical = (tlb_ppn << R_TLBENTRY_64_PPN_SHIFT) |
->                   (address & MAKE_64BIT_MASK(0, tlb_ps));
->       *prot = PAGE_READ;
-> @@ -774,7 +773,7 @@ void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
->           /* Move Global bit */
->           tmp0 = ((tmp0 & (1 << LOONGARCH_HGLOBAL_SHIFT))  >>
->                   LOONGARCH_HGLOBAL_SHIFT) << R_TLBENTRY_G_SHIFT |
-> -                (tmp0 & (~(1 << R_TLBENTRY_G_SHIFT)));
-> +                (tmp0 & (~(1 << LOONGARCH_HGLOBAL_SHIFT)));
->           ps = ptbase + ptwidth - 1;
->           if (odd) {
->               tmp0 += MAKE_64BIT_MASK(ps, 1);
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index b3599746c4..b80124f60f 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -327,6 +329,7 @@ F: hw/ppc/trace*
+>> Â  F: configs/devices/ppc*
+>> Â  F: docs/system/ppc/embedded.rst
+>> Â  F: docs/system/target-ppc.rst
+>> +F: tests/tcg/ppc*/*
 > 
+> FWIW, this hunk needs earlier series "MAINTAINERS: Collect unmaintained files
+> under PPC entries", in particular "MAINTAINERS: Add PPC common files to PowerPC
+> TCG CPUs", which is still not in master.Â  Maybe it's better to fold this change
+> to the PPC series.
+
+Ah, right, sorry, I should have used a "Based-on" tag or something like that.
+Anyway, fine for me if this gets squashed into CÃ©dric's patch!
+
+  Thomas
 
 
