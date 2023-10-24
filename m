@@ -2,72 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A0B7D5338
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8E57D53B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 16:12:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHnT-00022C-Pm; Tue, 24 Oct 2023 09:50:16 -0400
+	id 1qvI7Y-0001Ip-Qo; Tue, 24 Oct 2023 10:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qvHnG-0001u7-Vt
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:50:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qvHnE-0000hx-VC
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:50:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698155398;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Uz79ENvKJy3IcFQoj7GTONP9olciBa4kGEF7DUaeOE0=;
- b=YsCLhJFuUy1alPCPfsA8g16ar7uA3CUMGaJg9lu+uL2inNTSno03JUPHD2A2q3Ba6Nd4UH
- n5XId4PCa3ihkSUrxZRSW7LkcrA6Jv1c7xX9qvzCKzfPLn3G7rwXRHzoErIUC86NH+zk+V
- sB/2HckCbagmh5kAgeQSBjk2HRygsaA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-292-ZuQlgaePMzqtBaIllCiwQA-1; Tue, 24 Oct 2023 09:49:57 -0400
-X-MC-Unique: ZuQlgaePMzqtBaIllCiwQA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5C63802891;
- Tue, 24 Oct 2023 13:49:56 +0000 (UTC)
-Received: from [10.39.195.39] (unknown [10.39.195.39])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 15BE0492BD9;
- Tue, 24 Oct 2023 13:49:52 +0000 (UTC)
-Message-ID: <a6cda7bb-ccf0-b701-eed6-90f1826beba3@redhat.com>
-Date: Tue, 24 Oct 2023 15:49:49 +0200
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvI7S-0001IC-7m; Tue, 24 Oct 2023 10:10:55 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvI7O-0005PD-Ra; Tue, 24 Oct 2023 10:10:53 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50802148be9so1733122e87.2; 
+ Tue, 24 Oct 2023 07:10:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698156649; x=1698761449; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=O4Y3NJJxZnet/u/+ClOIVYQTH9XNjb8AeBmOgUc+Wdk=;
+ b=BMiurp8WNunOz6k80PB2zne3ZFbyy2ozHCEEO/KlboOct3BZggklpGE1vixAutIxTj
+ d4m391OJCQLNZ6h4vtEagAIamM+Bxua6oW7kPYbUa7SqS2h6FS0WQywZRR/Gq0Sfkx2y
+ 5oai/PYww8u7cQey91Rn2QrjspM7FTIDiQuLrKDoLVTnP07aa7jVpB6vhh0HaCHA9qc8
+ nerh1OF1KSckxs613BU9Uwm3/tWoJseD/63oAFl885ODVXTUfPktGdXVfDZWIvsp+GG1
+ O9G9PkJhkUNh7/RidoceYWnGLc1Yayw4o7QHT57U51Zcbko3gg4t6Exx5cXxb629qKan
+ 0Cxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698156649; x=1698761449;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=O4Y3NJJxZnet/u/+ClOIVYQTH9XNjb8AeBmOgUc+Wdk=;
+ b=P01aHUty4ODQbM62q2ywEl4HTSgpB16IlGa6OceTsGKLp2OpWMhAF1OknsJGQxFR66
+ CzjfXkpaJewnUTkFW56lOD1fMXfMon+rhRXuphtBdARphXaZJ+jDEX3OyM4gEkSvOT1i
+ nAfvTTHwnlsC2gBBT/01F3kWwO0mYoGNfM4fSYZl6X1BT7dlIHmMWvMlYoUP0Fk7yNLn
+ xdizEwT7Sud5KP/SN/rOfMCS1lCw3lh2vt52aYQ4oiW2u1QEPqzWEGWO3Q0XQmws2Lnc
+ vWznoMHD/mCjV54tfqmkdjr1y+dpHihhA5R3brYzhh0eibm+CRvqcRidBgUbS1eAuiPF
+ KcwQ==
+X-Gm-Message-State: AOJu0YzwTFdP/9iLbgWOI9eSoq5nBgKADyVMyAL6lOPiYJuwJdU4bbE8
+ 6V0eaNOs0GLJEC5ddqT8M70=
+X-Google-Smtp-Source: AGHT+IHszHDLVtShMAkzRbGqalZC2ZdGiWC/tPXrcM+mvjAw5eIWwjZ5DaBiH9KKgD4DF1MNxjUmSQ==
+X-Received: by 2002:ac2:5398:0:b0:506:8d2a:5653 with SMTP id
+ g24-20020ac25398000000b005068d2a5653mr8824946lfh.47.1698156648053; 
+ Tue, 24 Oct 2023 07:10:48 -0700 (PDT)
+Received: from [192.168.6.66] (54-240-197-238.amazon.com. [54.240.197.238])
+ by smtp.gmail.com with ESMTPSA id
+ n15-20020a7bcbcf000000b004060f0a0fdbsm16824685wmi.41.2023.10.24.07.10.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 24 Oct 2023 07:10:47 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <0e169b58-f481-4b77-8385-6a1a58b57df1@xen.org>
+Date: Tue, 24 Oct 2023 15:10:46 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH 3/3] hw/arm/virt: allow creation of a second NonSecure UART
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/12] hw/xen: prevent duplicate device registrations
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Axel Heider <axel.heider@hensoldt.net>, Ard Biesheuvel <ardb@kernel.org>, 
- Shannon Zhao <shannon.zhaosl@gmail.com>, Igor Mammedov
- <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20231023161532.2729084-1-peter.maydell@linaro.org>
- <20231023161532.2729084-4-peter.maydell@linaro.org>
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <20231023161532.2729084-4-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Marcelo Tosatti
+ <mtosatti@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <20231016151909.22133-10-dwmw2@infradead.org>
+Organization: Xen Project
+In-Reply-To: <20231016151909.22133-10-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=xadimgnik@gmail.com; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,207 +101,244 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/23/23 18:15, Peter Maydell wrote:
-> For some use-cases, it is helpful to have more than one UART
-> available to the guest. If the second UART slot is not already
-> used for a TrustZone Secure-World-only UART, create it as a
-> NonSecure UART only when the user provides a serial backend
-> (e.g. via a second -serial command line option).
+On 16/10/2023 16:19, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> This avoids problems where existing guest software only expects
-> a single UART, and gets confused by the second UART in the DTB.
-> The major example of this is older EDK2 firmware, which will
-> send the GRUB bootloader output to UART1 and the guest
-> serial output to UART0. Users who want to use both UARTs
-> with a guest setup including EDK2 are advised to update
-> to a newer EDK2.
+> Ensure that we have a XenBackendInstance for every device regardless
+> of whether it was "discovered" in XenStore or created directly in QEMU.
 > 
-> TODO: give specifics of which EDK2 version has this fix,
-> once the patches which fix EDK2 are upstream.
-
-The patches should hopefully land in edk2-stable202311 (i.e., in the
-November release).
-
-The new ArmVirtQemu behavior is as follows:
-
-- just one UART: same as before
-
-- two UARTs: the UEFI console is on the "chosen" UART, and the edk2
-DEBUG log is on the "first non-chosen" UART (i.e., on the "other" UART,
-in practice).
-
-series
-Tested-by: Laszlo Ersek <lersek@redhat.com>
-
-Thanks
-Laszlo
-
-
+> This allows the backend_list to be a source of truth about whether a
+> given backend exists, and allows us to reject duplicates.
 > 
-> Inspired-by: Axel Heider <axel.heider@hensoldt.net>
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> This also cleans up the fact that backend drivers were calling
+> xen_backend_set_device() with a XenDevice immediately after calling
+> qdev_realize_and_unref() on it, when it wasn't theirs to play with any
+> more.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
-> This patch was originally based on the one from Axel Heider
-> that aimed to do the same thing:
-> https://lore.kernel.org/qemu-devel/166990501232.22022.16582561244534011083-1@git.sr.ht/
-> but by the time I had added the ACPI support and dealt with
-> the EDK2 compatibility awkwardness, I found I had pretty
-> much rewritten it. So this combination of author and tags
-> seemed to me the most appropriate, but I'm happy to adjust
-> if people (esp. Axel!) would prefer otherwise.
+>   hw/block/xen-block.c         |  1 -
+>   hw/char/xen_console.c        |  2 +-
+>   hw/xen/xen-backend.c         | 78 ++++++++++++++++++++++++++----------
+>   hw/xen/xen-bus.c             |  8 ++++
+>   include/hw/xen/xen-backend.h |  3 ++
+>   5 files changed, 69 insertions(+), 23 deletions(-)
 > 
-> It is in theory possible to slightly work around the
-> incorrect behaviour of old EDK2 binaries by listing the
-> two UARTs in the opposite order in the DTB. However since
-> old EDK2 ends up using the two UARTs in different orders
-> depending on which phase of boot it is in (and in particular
-> with EDK2 debug builds debug messages go to a mix of both
-> UARTs) this doesn't seem worthwhile. I think most users
-> who are interested in the second UART are likely to be
-> using a bare-metal or direct Linux boot anyway.
-> ---
->  docs/system/arm/virt.rst |  6 +++++-
->  include/hw/arm/virt.h    |  1 +
->  hw/arm/virt-acpi-build.c | 12 ++++++++----
->  hw/arm/virt.c            | 38 +++++++++++++++++++++++++++++++++++---
->  4 files changed, 49 insertions(+), 8 deletions(-)
-> 
-> diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-> index e1697ac8f48..028d2416d5b 100644
-> --- a/docs/system/arm/virt.rst
-> +++ b/docs/system/arm/virt.rst
-> @@ -26,7 +26,7 @@ The virt board supports:
->  
->  - PCI/PCIe devices
->  - Flash memory
-> -- One PL011 UART
-> +- Either one or two PL011 UARTs for the NonSecure World
->  - An RTC
->  - The fw_cfg device that allows a guest to obtain data from QEMU
->  - A PL061 GPIO controller
-> @@ -48,6 +48,10 @@ The virt board supports:
->    - A secure flash memory
->    - 16MB of secure RAM
->  
-> +The second NonSecure UART only exists if a backend is configured
-> +explicitly (e.g. with a second -serial command line option) and
-> +TrustZone emulation is not enabled.
+> diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+> index a07cd7eb5d..9262338535 100644
+> --- a/hw/block/xen-block.c
+> +++ b/hw/block/xen-block.c
+> @@ -975,7 +975,6 @@ static void xen_block_device_create(XenBackendInstance *backend,
+>           goto fail;
+>       }
+>   
+> -    xen_backend_set_device(backend, xendev);
+>       return;
+>   
+>   fail:
+> diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
+> index bd20be116c..2825b8c511 100644
+> --- a/hw/char/xen_console.c
+> +++ b/hw/char/xen_console.c
+> @@ -468,7 +468,7 @@ static void xen_console_device_create(XenBackendInstance *backend,
+>       Chardev *cd = NULL;
+>       struct qemu_xs_handle *xsh = xenbus->xsh;
+>   
+> -    if (qemu_strtoul(name, NULL, 10, &number)) {
+> +    if (qemu_strtoul(name, NULL, 10, &number) || number >= INT_MAX) {
+>           error_setg(errp, "failed to parse name '%s'", name);
+>           goto fail;
+>       }
+I don't think this hunk belongs here, does it? Seems like it should be 
+in patch 7.
+
+> diff --git a/hw/xen/xen-backend.c b/hw/xen/xen-backend.c
+> index b9bf70a9f5..dcb4329258 100644
+> --- a/hw/xen/xen-backend.c
+> +++ b/hw/xen/xen-backend.c
+> @@ -101,22 +101,28 @@ static XenBackendInstance *xen_backend_list_find(XenDevice *xendev)
+>       return NULL;
+>   }
+>   
+> -bool xen_backend_exists(const char *type, const char *name)
+> +static XenBackendInstance *xen_backend_lookup(const XenBackendImpl *impl, const char *name)
+
+This name is a little close to xen_backend_table_lookup()... perhaps 
+that one should be renamed xen_backend_impl_lookup() for clarity.
+
+>   {
+> -    const XenBackendImpl *impl = xen_backend_table_lookup(type);
+>       XenBackendInstance *backend;
+>   
+> -    if (!impl) {
+> -        return false;
+> -    }
+> -
+>       QLIST_FOREACH(backend, &backend_list, entry) {
+>           if (backend->impl == impl && !strcmp(backend->name, name)) {
+> -            return true;
+> +            return backend;
+>           }
+>       }
+>   
+> -    return false;
+> +    return NULL;
+> +}
 > +
->  Supported guest CPU types:
->  
->  - ``cortex-a7`` (32-bit)
-> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-> index 0de58328b2f..da15eb342bd 100644
-> --- a/include/hw/arm/virt.h
-> +++ b/include/hw/arm/virt.h
-> @@ -150,6 +150,7 @@ struct VirtMachineState {
->      bool ras;
->      bool mte;
->      bool dtb_randomness;
-> +    bool second_ns_uart_present;
->      OnOffAuto acpi;
->      VirtGICType gic_version;
->      VirtIOMMUType iommu;
-> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> index 54f26640982..b812f33c929 100644
-> --- a/hw/arm/virt-acpi-build.c
-> +++ b/hw/arm/virt-acpi-build.c
-> @@ -77,11 +77,11 @@ static void acpi_dsdt_add_cpus(Aml *scope, VirtMachineState *vms)
->  }
->  
->  static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
-> -                                           uint32_t uart_irq)
-> +                               uint32_t uart_irq, int uartidx)
->  {
-> -    Aml *dev = aml_device("COM0");
-> +    Aml *dev = aml_device("COM%d", uartidx);
->      aml_append(dev, aml_name_decl("_HID", aml_string("ARMH0011")));
-> -    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-> +    aml_append(dev, aml_name_decl("_UID", aml_int(uartidx)));
->  
->      Aml *crs = aml_resource_template();
->      aml_append(crs, aml_memory32_fixed(uart_memmap->base,
-> @@ -860,7 +860,11 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
->      scope = aml_scope("\\_SB");
->      acpi_dsdt_add_cpus(scope, vms);
->      acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0],
-> -                       (irqmap[VIRT_UART0] + ARM_SPI_BASE));
-> +                       (irqmap[VIRT_UART0] + ARM_SPI_BASE), 0);
-> +    if (vms->second_ns_uart_present) {
-> +        acpi_dsdt_add_uart(scope, &memmap[VIRT_UART1],
-> +                           (irqmap[VIRT_UART1] + ARM_SPI_BASE), 1);
-> +    }
->      if (vmc->acpi_expose_flash) {
->          acpi_dsdt_add_flash(scope, &memmap[VIRT_FLASH]);
->      }
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index fd524aed6b6..7f60df7d7b2 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -856,7 +856,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
->  }
->  
->  static void create_uart(const VirtMachineState *vms, int uart,
-> -                        MemoryRegion *mem, Chardev *chr)
-> +                        MemoryRegion *mem, Chardev *chr, bool secure)
->  {
->      char *nodename;
->      hwaddr base = vms->memmap[uart].base;
-> @@ -894,6 +894,8 @@ static void create_uart(const VirtMachineState *vms, int uart,
->          qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", nodename);
->      } else {
->          qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial1", nodename);
-> +    }
-> +    if (secure) {
->          /* Mark as not usable by the normal world */
->          qemu_fdt_setprop_string(ms->fdt, nodename, "status", "disabled");
->          qemu_fdt_setprop_string(ms->fdt, nodename, "secure-status", "okay");
-> @@ -2269,11 +2271,41 @@ static void machvirt_init(MachineState *machine)
->  
->      fdt_add_pmu_nodes(vms);
->  
-> -    create_uart(vms, VIRT_UART0, sysmem, serial_hd(0));
-> +    /*
-> +     * The first UART always exists. If the security extensions are
-> +     * enabled, the second UART also always exists. Otherwise, it only exists
-> +     * if a backend is configured explicitly via '-serial <backend>'.
-> +     * This avoids potentially breaking existing user setups that expect
-> +     * only one NonSecure UART to be present (for instance, older EDK2
-> +     * binaries).
-> +     *
-> +     * The nodes end up in the DTB in reverse order of creation, so we must
-> +     * create UART0 last to ensure it appears as the first node in the DTB,
-> +     * for compatibility with guest software that just iterates through the
-> +     * DTB to find the first UART, as older versions of EDK2 do.
-> +     * DTB readers that follow the spec, as Linux does, should honour the
-> +     * aliases node information and /chosen/stdout-path regardless of
-> +     * the order that nodes appear in the DTB.
-> +     *
-> +     * For similar back-compatibility reasons, if UART1 is the secure UART
-> +     * we create it second (and so it appears first in the DTB), because
-> +     * that's what QEMU has always done.
-> +     */
-> +    if (!vms->secure) {
-> +        Chardev *serial1 = serial_hd(1);
+> +bool xen_backend_exists(const char *type, const char *name)
+> +{
+> +    const XenBackendImpl *impl = xen_backend_table_lookup(type);
 > +
-> +        if (serial1) {
-> +            vms->second_ns_uart_present = true;
-> +            create_uart(vms, VIRT_UART1, sysmem, serial1, false);
+> +    if (!impl) {
+> +        return false;
+> +    }
+> +
+> +    return !!xen_backend_lookup(impl, name);
+>   }
+>   
+>   static void xen_backend_list_remove(XenBackendInstance *backend)
+> @@ -138,11 +144,10 @@ void xen_backend_device_create(XenBus *xenbus, const char *type,
+>       backend = g_new0(XenBackendInstance, 1);
+>       backend->xenbus = xenbus;
+>       backend->name = g_strdup(name);
+> -
+> -    impl->create(backend, opts, errp);
+> -
+>       backend->impl = impl;
+>       xen_backend_list_add(backend);
+> +
+> +    impl->create(backend, opts, errp);
+>   }
+>   
+>   XenBus *xen_backend_get_bus(XenBackendInstance *backend)
+> @@ -155,13 +160,6 @@ const char *xen_backend_get_name(XenBackendInstance *backend)
+>       return backend->name;
+>   }
+>   
+> -void xen_backend_set_device(XenBackendInstance *backend,
+> -                            XenDevice *xendev)
+> -{
+> -    g_assert(!backend->xendev);
+> -    backend->xendev = xendev;
+> -}
+> -
+
+The declaration also needs removing from xen-backend.h presumably.
+
+>   XenDevice *xen_backend_get_device(XenBackendInstance *backend)
+>   {
+>       return backend->xendev;
+> @@ -178,9 +176,7 @@ bool xen_backend_try_device_destroy(XenDevice *xendev, Error **errp)
+>       }
+>   
+>       impl = backend->impl;
+> -    if (backend->xendev) {
+> -        impl->destroy(backend, errp);
+> -    }
+> +    impl->destroy(backend, errp);
+>   
+>       xen_backend_list_remove(backend);
+>       g_free(backend->name);
+> @@ -188,3 +184,43 @@ bool xen_backend_try_device_destroy(XenDevice *xendev, Error **errp)
+>   
+>       return true;
+>   }
+> +
+> +bool xen_backend_device_realized(XenDevice *xendev, Error **errp)
+> +{
+> +    XenDeviceClass *xendev_class = XEN_DEVICE_GET_CLASS(xendev);
+> +    const char *type = xendev_class->backend ? : object_get_typename(OBJECT(xendev));
+> +    const XenBackendImpl *impl = xen_backend_table_lookup(type);
+> +    XenBackendInstance *backend;
+> +
+> +    if (!impl) {
+> +        return false;
+> +    }
+> +
+> +    backend = xen_backend_lookup(impl, xendev->name);
+> +    if (backend) {
+> +        if (backend->xendev && backend->xendev != xendev) {
+> +            error_setg(errp, "device %s/%s already exists", type, xendev->name);
+> +            return false;
 > +        }
+> +        backend->xendev = xendev;
+> +        return true;
 > +    }
-> +    create_uart(vms, VIRT_UART0, sysmem, serial_hd(0), false);
-> +    if (vms->secure) {
-> +        create_uart(vms, VIRT_UART1, secure_sysmem, serial_hd(1), true);
+> +
+> +    backend = g_new0(XenBackendInstance, 1);
+> +    backend->xenbus = XEN_BUS(qdev_get_parent_bus(DEVICE(xendev)));
+> +    backend->xendev = xendev;
+> +    backend->name = g_strdup(xendev->name);
+> +    backend->impl = impl;
+> +
+> +    xen_backend_list_add(backend);
+> +    return true;
+> +}
+
+Not sure I'm getting my head around this. How does this play with the 
+legacy backend code? The point about having the impl list was so that 
+the newer xenbus code didn't conflict with the legacy backend code, 
+which thinks it has carte blanche ownership of a class.
+
+   Paul
+
+> +
+> +void xen_backend_device_unrealized(XenDevice *xendev)
+> +{
+> +    XenBackendInstance *backend = xen_backend_list_find(xendev);
+> +
+> +    if (backend) {
+> +        backend->xendev = NULL;
 > +    }
->  
->      if (vms->secure) {
->          create_secure_ram(vms, secure_sysmem, secure_tag_sysmem);
-> -        create_uart(vms, VIRT_UART1, secure_sysmem, serial_hd(1));
->      }
->  
->      if (tag_sysmem) {
+> +}
+> diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+> index 0da2aa219a..0b232d1f94 100644
+> --- a/hw/xen/xen-bus.c
+> +++ b/hw/xen/xen-bus.c
+> @@ -359,6 +359,8 @@ static void xen_bus_realize(BusState *bus, Error **errp)
+>   
+>       g_free(type);
+>       g_free(key);
+> +
+> +    xen_bus_enumerate(xenbus);
+>       return;
+>   
+>   fail:
+> @@ -958,6 +960,8 @@ static void xen_device_unrealize(DeviceState *dev)
+>   
+>       trace_xen_device_unrealize(type, xendev->name);
+>   
+> +    xen_backend_device_unrealized(xendev);
+> +
+>       if (xendev->exit.notify) {
+>           qemu_remove_exit_notifier(&xendev->exit);
+>           xendev->exit.notify = NULL;
+> @@ -1024,6 +1028,10 @@ static void xen_device_realize(DeviceState *dev, Error **errp)
+>           goto unrealize;
+>       }
+>   
+> +    if (!xen_backend_device_realized(xendev, errp)) {
+> +        goto unrealize;
+> +    }
+> +
+>       trace_xen_device_realize(type, xendev->name);
+>   
+>       xendev->xsh = qemu_xen_xs_open();
+> diff --git a/include/hw/xen/xen-backend.h b/include/hw/xen/xen-backend.h
+> index 0f01631ae7..3f1e764c51 100644
+> --- a/include/hw/xen/xen-backend.h
+> +++ b/include/hw/xen/xen-backend.h
+> @@ -38,4 +38,7 @@ void xen_backend_device_create(XenBus *xenbus, const char *type,
+>                                  const char *name, QDict *opts, Error **errp);
+>   bool xen_backend_try_device_destroy(XenDevice *xendev, Error **errp);
+>   
+> +bool xen_backend_device_realized(XenDevice *xendev, Error **errp);
+> +void xen_backend_device_unrealized(XenDevice *xendev);
+> +
+>   #endif /* HW_XEN_BACKEND_H */
 
 
