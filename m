@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55C77D577B
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 856FF7D5782
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:11:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvJxe-0004an-U7; Tue, 24 Oct 2023 12:08:54 -0400
+	id 1qvJzz-0007wm-CO; Tue, 24 Oct 2023 12:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvJxZ-0004Ye-OA
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:08:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvJzx-0007wJ-M7; Tue, 24 Oct 2023 12:11:17 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvJxW-0005gC-LF
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:08:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698163725;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Ic84osD5aEUc8NB6vuTu56y+tSX2CP5viTwq/ogUtco=;
- b=DKdypcUThzAziMKW6s2PqR0CvW0rJZkKD9QUP17fdIgHCErMMByb9bwbflEJJZka6tMqFY
- A6FfQyNN+Ib4/E6hlAMQoXLMMmi62l8Z+saqjFAuqgIY/scYuLKj+gRGqhuWtW8VWDDLPG
- GKQfnR+I0VBeSisyRASLCuu93J6uaO8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-qlryp22MNfGj-PijlkxhHw-1; Tue, 24 Oct 2023 12:08:43 -0400
-X-MC-Unique: qlryp22MNfGj-PijlkxhHw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4084001846eso32650525e9.1
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:08:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698163722; x=1698768522;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ic84osD5aEUc8NB6vuTu56y+tSX2CP5viTwq/ogUtco=;
- b=DeLQPk47JA4Lcg6leYIz4AQTuRi2udc2Y0hrHT0lbQIvauwCvPX883wgQSQnU7eY7N
- YlWn7osNfTUXSgRZ01gWDwAUYKoLehnygR5xfV3Uew2itXBrmhltOXtjdSN3u/7uftdg
- YgILrmoC4G9DRThuF9VBf1jhJWhPmXjbVBzduFYxSRVDEDbRH5+5D5bZck4G7jsxgkCg
- 0JblulMBqz6NbMy7iaP2lhfSInnhHf9AQ9k1mHHbbpOmSqyVfupOoRt4o1gCVov6l8Ki
- eobsea+MXM60iCzu4YyA6C6y92HdW0oUAr1zPaJLeHqWRQ2g4ZnUt/Zhm5Aa8JnrzKSM
- 9qeg==
-X-Gm-Message-State: AOJu0YwdG5fCNEE5aIO3UNfJdEdcMkYd+snUYd/k56oX+fioCmIw8/3l
- E+tbuLZu5RjKTGeQz8QTyD3gAMAwwgWCpLsoQHbJ6hc0jx+O9zO+qUKPjD5/QBCwk/gES1KByAd
- UTdBTCZ85DhTwKuY=
-X-Received: by 2002:a05:600c:2943:b0:407:8b61:da70 with SMTP id
- n3-20020a05600c294300b004078b61da70mr9426353wmd.9.1698163722052; 
- Tue, 24 Oct 2023 09:08:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzss20DpEPCPajFWJkEfNSIXMyFx+aOXp6fohmX8pYQMZ7GQzEiU6XMtQiZld/YmLEI+SIow==
-X-Received: by 2002:a05:600c:2943:b0:407:8b61:da70 with SMTP id
- n3-20020a05600c294300b004078b61da70mr9426338wmd.9.1698163721695; 
- Tue, 24 Oct 2023 09:08:41 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- fm15-20020a05600c0c0f00b004090ca6d785sm2239785wmb.2.2023.10.24.09.08.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 09:08:40 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Leonardo Bras
- <leobras@redhat.com>
-Subject: Re: [PATCH v3 1/1] migration: vmstate_register() check that
- instance_id is valid
-In-Reply-To: <ZTfjd3AFVFaMiAqm@x1n> (Peter Xu's message of "Tue, 24 Oct 2023
- 11:32:07 -0400")
-References: <20231024150336.89632-1-quintela@redhat.com>
- <20231024150336.89632-2-quintela@redhat.com> <ZTfjd3AFVFaMiAqm@x1n>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 24 Oct 2023 18:08:40 +0200
-Message-ID: <87cyx4knp3.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from
+ <BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvJzt-0006IO-Dm; Tue, 24 Oct 2023 12:11:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=S8eG8DOYG4FW8UmHvuqS7MrY9L0t0tq6fnfvkj5dUUc=; b=HtT/3IMQHB5Kxd9vyQJTLHtpIy
+ INVuQOnPoSpqg7YlCihvrP0UWsnOvZ8DXmGCpmlIkmtuo1MK5uSmSIM+5io3I+ioFGH4La/juggqN
+ fxmALH+Piuj5opny+5wAO/n8huZ0gSeqW9qlN2vYRiYBTafxav6RAv6rF8cCpXwFbS95+/jG8RGGi
+ vCLNnUeWz41JP+j/TzijVVdOGFxKW1mu401gzmbC4+3/ghX+2pnh58BURRG3kWtsW6LQIFBCPJHew
+ Ym7EuwJ3l7+rrZtls6cR1q44LQ6zpoWnr1m03Qx9FALftXIoO2hUx8lB/HsPRDLsQwJlBPcyQkFwZ
+ SN84fEOg==;
+Received: from [2001:8b0:10b:5:758e:a1c4:bc7:e7a7]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qvJzn-003Rvn-Vz; Tue, 24 Oct 2023 16:11:08 +0000
+Message-ID: <bc275683bf33f3246ca255ae1cb66796b10a405a.camel@infradead.org>
+Subject: Re: [PATCH 0/12] Get Xen PV shim running in qemu
+From: David Woodhouse <dwmw2@infradead.org>
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
+ Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, 
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+Date: Tue, 24 Oct 2023 17:11:04 +0100
+In-Reply-To: <877cnc2fxs.fsf@linaro.org>
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <877cnc2fxs.fsf@linaro.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-4Sk+s3sogPBNbhi6YfJd"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,90 +78,226 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> wrote:
-> On Tue, Oct 24, 2023 at 05:03:36PM +0200, Juan Quintela wrote:
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>  include/migration/vmstate.h | 6 ++++++
->>  1 file changed, 6 insertions(+)
->> 
->> diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
->> index 9821918631..c48cd8bb68 100644
->> --- a/include/migration/vmstate.h
->> +++ b/include/migration/vmstate.h
->> @@ -28,6 +28,7 @@
->>  #define QEMU_VMSTATE_H
->>  
->>  #include "hw/vmstate-if.h"
->> +#include "qemu/error-report.h"
->>  
->>  typedef struct VMStateInfo VMStateInfo;
->>  typedef struct VMStateField VMStateField;
->> @@ -1226,6 +1227,11 @@ static inline int vmstate_register(VMStateIf *obj, int instance_id,
->>                                     const VMStateDescription *vmsd,
->>                                     void *opaque)
->>  {
->> +    if (instance_id == VMSTATE_INSTANCE_ID_ANY) {
->> +        error_report("vmstate_register: Invalid device: %s instance_id: %d",
->> +                     vmsd->name, instance_id);
->> +        return -1;
->> +    }
->>      return vmstate_register_with_alias_id(obj, instance_id, vmsd,
->>                                            opaque, -1, 0, NULL);
->>  }
->
-> Juan, could you remind me what's the benefit of failing it like that?
+
+--=-4Sk+s3sogPBNbhi6YfJd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2023-10-24 at 16:24 +0100, Alex Benn=C3=A9e wrote:
+>=20
+> David Woodhouse <dwmw2@infradead.org> writes:
+>=20
+> > I hadn't got round to getting the PV shim running yet; I thought it wou=
+ld
+> > need work on the multiboot loader. Turns out it doesn't. I *did* need t=
+o
+> > fix a couple of brown-paper-bag bugs in the per-vCPU upcall vector supp=
+ort,
+> > and implement Xen console support though. Now I can test PV guests:
+> >=20
+> > =C2=A0$ qemu-system-x86_64 --accel kvm,xen-version=3D0x40011,kernel-irq=
+chip=3Dsplit \
+> > =C2=A0=C2=A0 -chardev stdio,mux=3Don,id=3Dchar0 -device xen-console,cha=
+rdev=3Dchar0 \
+> > =C2=A0=C2=A0 -drive file=3D${GUEST_IMAGE},if=3Dxen -display none -m 1G =
+\
+> > =C2=A0=C2=A0 -kernel ~/git/xen/xen/xen -initrd ~/git/linux/arch/x86/boo=
+t/bzImage
+> > =C2=A0\
+>=20
+
+(Reordering your questions so the answers flow better)
+
+> Would it be possible to have some sort of overview document in our
+> manual for how Xen guests are supported under KVM?
+
+https://qemu-project.gitlab.io/qemu/system/i386/xen.html covers running
+Xen HVM guests under Qemu/KVM.
+
+What I'm adding here is the facility to support Xen PV guests. There is
+a corresponding update to the documentation in my working tree at=20
+https://git.infradead.org/users/dwmw2/qemu.git/shortlog/refs/heads/xenfv
+
+https://git.infradead.org/users/dwmw2/qemu.git/commitdiff/af693bf51141
+
+PV mode is the old mode which predates proper virtualization support in
+the CPUs, where a guest kernel *knows* it doesn't have access to real
+(or indeed virtualized) hardware. It runs in ring 1 (or ring 3 on
+x86_64) and makes hypercalls to Xen to ask it to do all the MMU
+management.
+
+When Spectre/Meltdown happened, running actual PV guests directly under
+Xen became kind of insane, so we hacked a version of Xen to work as a
+"shim", running inside a proper HVM guest, and just providing those MMU
+management services to its guest. Its *only* guest. This shim doesn't
+even do any of the PV disk/block stuff; that's passed through directly
+to the real hypervisor.
+
+So you have a real Xen hypervisor, then a "PV shim" Xen running inside
+that hardware virtual machine, and a guest kernel hosted by that PV
+shim.
+
+Now, since Qemu/KVM can now pretend to be Xen and host guests that
+think they're running as Xen HVM guests... Qemu/KVM can host that PV
+shim too. As noted, I just had to realise that we could use '-initrd'
+to trick Qemu's multiboot loader into doing it... and fix a few brown
+paper bag bugs.
+
+> So this is a KVM guest running the Xen hypervisor (via -kernel) and a
+> Dom0 Linux guest (via -initrd)?
+
+Fairly much. It's a KVM guest running that "shim" version of the Xen
+hypervisor via -kernel, and a Linux guest via -initrd.
+
+Although I wouldn't call that a "Dom0 Linux guest" because we tend to
+use "Dom0" to mean the control domain, which can launch other (DomU)
+guests... and that isn't what's happening here. It's more of a "Dom1".
+The one and only unprivileged guest.
+
+In particular, there's no nested virtualization here. Because in that
+sense, what "Xen" does to host a PV guest isn't really virtualization.
+
+> Should this work for any Xen architecture or is this x86 specific? Does
+> the -M machine model matter?
+
+It's currently x86-specific and KVM-specific. You can use the pc or q35
+models as you see fit, although see the doc linked above for discussion
+of the IDE 'unplug' mechanism. And recent patches on the list to fix it
+for q35.
+
+It would be interesting to make it work on other platforms, and even
+with TCG. I've tried to keep it as portable as possible up to a point,
+but without too much gratuitous overengineering to chase that goal.
+
+Making it work with TCG would require dealing with all the struct
+layouts where alignment/padding differs on different host
+architectures, so we probably wouldn't be able to use the Xen public
+header files directly. And we would need to implement some of the basic
+event channel delivery and shared info page handling that we rely on
+KVM to do for us. The latter probably isn't that hard; the former is
+what stopped me even bothering.
+
+Making it work for e.g. Arm would require porting some of the KVM
+support to Arm in the kernel (it's currently x86-specific). And/or
+making it work for TCG.... but the parts that *are* accelerated in the
+kernel (timers, IPIs, etc) are there for a reason though. If we do make
+it work for TCG by implementing those in userspace, I wouldn't
+necessarily want a *KVM* guest to have to rely on those in userspace.
+
+--=-4Sk+s3sogPBNbhi6YfJd
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI0MTYxMTA0WjAvBgkqhkiG9w0BCQQxIgQguAewgaTc
+Srrqk0vnNZ7U1LIFYjWkgXzrhBnSW86r0I8wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCGksgicHDbYHy9s8iOCHtBA7CwCaB+Jcta
+HmB/zM38MzpUoJxU6EUBaWQ6zUXw+QaurF3HulNZPOCB0LTWr/49EHslmutmsoXsM8VDUh9Kwx3o
+B4xCjD0lZY+3+dT+61piMQToN035vcFLQqL8nbAaFsGoXTxkbZxAb6fgEROKQAQBseVXZQlI5vsB
+VDLCYXAZYcu1TlvnZbmrnXfssUo0Lgr0B2gX07dE+C8ojZ/PGhylUtjmEX4wr1iLu7/Bo1MnDCHU
+AA2add/c8BXZrd0Gr98DEfM7HsvOJO5UMufAfNdfUOWUU1WnTNccYVd36iRyi3b9qcAWc8PgAwOk
+CgLySD5EKlsVVxUsgFbqy7rg/aC8Y6qbqZ9FcRm+8Y8sS/JRDXuztSkx2vjkDw12AK5ud8TT5UTA
+9hQCQPwFJfwjFeI/Wk3Lcf/pVAy0Fyrc8bH3rDpi/7+BBtG2SoN2qzMoiVM/GE7LXk3aireMC+E7
+UPeE1VSyHbSkWwERxKchJzoVAuM2DYOsGtYyek8WiuTuAqBZrZemvkU1nUDe10lCmOI8oYsOxK8C
+SxO+AbTTnMAIPqCVL0AfP/1jJjTf04aJJcTE95f1U23AvdXIjU15YOdEp8fIzYpJxU0e61tr0pao
+/yzyAbQj0+ihFWCRhRsZfqXfwQrVD9chbo5eyGgRQgAAAAAAAA==
 
 
-> IIUC you want to suggest using vmstate_register_any(), but I think it's all
-> fine to do vmstate_register(VMSTATE_INSTANCE_ID_ANY)?  You didn't have a
-> commit message, so I am guessing..
-
-This is v3.  v1 and v2 had much more messages, so I thought this was not
-necessary.
-
-We had lots of places that had vmstate_register(..., 0, ...) where it
-should have s/0/VMSTATE_INSTANCE_ID_ANY/
-
-The idea here is that we use vmstate_register_any(...) when we don't
-care about the number and we know there is only to be one device.
-
-On my tree, I started with the test:
-
-    if (instance_id < 0) {
-        error_report("vmstate_register: Invalid device: %s instance_id: %d",
-                     vmsd->name, instance_id);
-        return -1;
-    }
-
-But then ppc abuses this interface and passes an uint32_t where it
-should be an int, so I have to check only for that specific value.
-
-> Even if that is wanted, the current error message can be confusing to a
-> developer adding a new vmstate_register(VMSTATE_INSTANCE_ID_ANY) call.
-> Maybe directly suggest vmstate_register_any() in the error message?  But
-> again, I don't see a benefit, vmstate_register(VMSTATE_INSTANCE_ID_ANY)
-> should still work if without this patch?  Where did I miss?
-
-You are right, using the other interface.
-
-Initial version on this series, I split vmstate_register() into:
-- vmstate_register_any()
-- vmstate_register_id()  /* the difference with vmstate_register() was
-                            just this test */
-
-After auditing all the callers, I decided that using
-vmstate_register_id() didn't brough we a lot, so I just dropped that
-patches but left the test.
-
-Forcing to use vmstate_register_any() makes easier to grep for the
-places that try to use the vmstate_register(), but perhaps that is not
-enough convenient.
-
-Later, Juan.
-
+--=-4Sk+s3sogPBNbhi6YfJd--
 
