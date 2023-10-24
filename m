@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE867D5154
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D05F57D51B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHHG-00049Q-T7; Tue, 24 Oct 2023 09:17:02 -0400
+	id 1qvHID-0005zZ-A8; Tue, 24 Oct 2023 09:17:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHGR-0002Nu-1T
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qvHGf-0002wB-F7
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHGM-0001sq-Az
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:04 -0400
+ id 1qvHGb-0001wH-Pd
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153361;
+ s=mimecast20190719; t=1698153377;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=12UW4S7DwReY5i7WbgLvv6myQHnsED050vB3pRolHAs=;
- b=dV0KKvIyuKjflh68vdwWTIvXjvOGvyuEnYQzNjG5EMrfK+vIqmI4C/8ryBYXrIADaNgWhy
- 29P6yj/o/jTqsSEU/5s53UqhuCKdRpCes4qLyabsTwiSH7LZ+wn+Kxy2yu6DGSaXjoegzZ
- 2/5LCDmRs3W1CUOyetj8uQyOpiInUIo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-YRUdb2dENQ6nkuSypCmt8g-1; Tue,
- 24 Oct 2023 09:15:55 -0400
-X-MC-Unique: YRUdb2dENQ6nkuSypCmt8g-1
+ bh=XdFHJUBuMGnAWFqd7hEgg2x2gUonHhaiV5RCE6MlQuA=;
+ b=hmRElxcKjQGAbKq0+QZkjLKhZHsUFTXPUucsGXmW4aoqdJVbJQB8ej/Sj4GsH6fkCUH/Fl
+ OVyzJRepDzg4ulRV0nZAmVlHatncyEOnRUYnuw+2LV5xeCVITgq5JDie6QEYDtW7uxVzU+
+ YdLLbKRMKGEf/sEZhtUNToMwASTC9CQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-zK0mN5RGOHOy7FeMXq-BIQ-1; Tue, 24 Oct 2023 09:16:03 -0400
+X-MC-Unique: zK0mN5RGOHOy7FeMXq-BIQ-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 287423813F2E;
- Tue, 24 Oct 2023 13:15:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 319E08164E8;
+ Tue, 24 Oct 2023 13:16:01 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 763D11C060AE;
- Tue, 24 Oct 2023 13:15:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 71E1A1C060AE;
+ Tue, 24 Oct 2023 13:15:54 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -72,24 +72,24 @@ Cc: Eric Blake <eblake@redhat.com>,
  Eric Farman <farman@linux.ibm.com>, Juan Quintela <quintela@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 24/39] migration: set file error on subsection loading
-Date: Tue, 24 Oct 2023 15:12:50 +0200
-Message-ID: <20231024131305.87468-25-quintela@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PULL 25/39] migration: Create vmstate_register_any()
+Date: Tue, 24 Oct 2023 15:12:51 +0200
+Message-ID: <20231024131305.87468-26-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,32 +106,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+We have lots of cases where we are using an instance_id==0 when we
+should be using VMSTATE_INSTANCE_ID_ANY (-1).  Basically everything
+that can have more than one needs to have a proper instance_id or -1
+and the system will take one for it.
 
-commit 13cde50889237 ("vmstate: Return error in case of error") sets
-QemuFile error to stop reading from it and report to the caller (checked
-by unit tests). We should do the same on subsection loading error.
+vmstate_register_any(): We register with -1.
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231024084043.2926316-8-marcandre.lureau@redhat.com>
+Message-ID: <20231020090731.28701-2-quintela@redhat.com>
 ---
- migration/vmstate.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/migration/vmstate.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 16e33a5d34..9c36803c8a 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -179,6 +179,7 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-     assert(field->flags == VMS_END);
-     ret = vmstate_subsection_load(f, vmsd, opaque);
-     if (ret != 0) {
-+        qemu_file_set_error(f, ret);
-         return ret;
-     }
-     if (vmsd->post_load) {
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 1af181877c..1ea97ccf2d 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -1230,6 +1230,23 @@ static inline int vmstate_register(VMStateIf *obj, int instance_id,
+                                           opaque, -1, 0, NULL);
+ }
+ 
++/**
++ * vmstate_register_any() - legacy function to register state
++ * serialisation description and let the function choose the id
++ *
++ * New code shouldn't be using this function as QOM-ified devices have
++ * dc->vmsd to store the serialisation description.
++ *
++ * Returns: 0 on success, -1 on failure
++ */
++static inline int vmstate_register_any(VMStateIf *obj,
++                                       const VMStateDescription *vmsd,
++                                       void *opaque)
++{
++    return vmstate_register_with_alias_id(obj, VMSTATE_INSTANCE_ID_ANY, vmsd,
++                                          opaque, -1, 0, NULL);
++}
++
+ void vmstate_unregister(VMStateIf *obj, const VMStateDescription *vmsd,
+                         void *opaque);
+ 
 -- 
 2.41.0
 
