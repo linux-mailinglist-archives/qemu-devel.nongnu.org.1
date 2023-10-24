@@ -2,46 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514167D5696
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E667D56A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:37:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvJQw-0007ob-HK; Tue, 24 Oct 2023 11:35:08 -0400
+	id 1qvJSx-0004dX-Bf; Tue, 24 Oct 2023 11:37:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvJQE-0006UI-Ah; Tue, 24 Oct 2023 11:34:22 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvJQ8-0005lT-Lq; Tue, 24 Oct 2023 11:34:22 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 2112A757295;
- Tue, 24 Oct 2023 17:34:10 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id F35DA75728F; Tue, 24 Oct 2023 17:34:09 +0200 (CEST)
-Message-Id: <4cc1d15caec82cfa081175a62e4d65d68d590a7d.1698158152.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1698158152.git.balaton@eik.bme.hu>
-References: <cover.1698158152.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v4 8/8] target/ppc: Clean up ifdefs in excp_helper.c, part 3
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvJSu-0004Tf-Sy; Tue, 24 Oct 2023 11:37:08 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvJSo-0006nj-Qs; Tue, 24 Oct 2023 11:37:08 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40891d38e3fso22268205e9.1; 
+ Tue, 24 Oct 2023 08:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698161819; x=1698766619; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=A8ZSzBnis7KNXr8T2w9cXrHfqOor5r4c/mfSgp7VlQs=;
+ b=jqekbZrPWwrT83xBwLo5KBG34AA/XRVCAUtle+5TnheHzeGN526FGesONq5xumr0EH
+ nq2/L4IWRGCiJn6k9Nlnt+rt0IinbC93GwnaFruJuwzEUlir6aPu5NUaSpAgomA7+toV
+ w+hQGkynmh96vGEnmEIN/ZnIlw4JF3cewSK/agP14KZGSn29140x0/leOuVdn/DRjakD
+ xiKw5ntTklbfSBY0rhR5QQ68ZxVxpQr5CaL5MAHWHKjCC8Osvjhg6YMrCXItM3bYjYZT
+ xtNBUfh66/z82LQgDiXczdIFengVtZ+/lWFt46BUqpFreM58JtRfyI4YyQOHn4hTPmrG
+ mOQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698161819; x=1698766619;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=A8ZSzBnis7KNXr8T2w9cXrHfqOor5r4c/mfSgp7VlQs=;
+ b=TKeamtWVb3+9yr+sVR/qSLnlWVrGsOSniGu7PWhiLm0DlrFHH8osbiVwy11pE6Sgzt
+ ll5BRnzhCRfHlwjdqM7GsZV3Pj7CQw+BEUYZFgtwxIYxhpmYAGKkM/HKzY+luECbBm1v
+ kA5xArmgC0jtUY/lqEWOPyOOMGeZoAgDl9xTKiIFZaEGw5RbfjJpeBLc0dVroEsMKNTK
+ rnvsOwASeRcSVgSJvE1xHmlfojKzI7puDerJxnDBabyVBUkc7iiN77gDRhcTjM+k2OfE
+ YoOG2aqZSuWr0yr8uxKPC75d6UXeGEltKZtzkH63/aCOoVkNrS32A9ddbiP1d9GjmyHF
+ /Ylw==
+X-Gm-Message-State: AOJu0YwwYfCwqCZpGrLTHl/fwKviM366L4TbBYzj8xRgCYVyBHULFn90
+ plaeux4iSZuV4zgP2xCuEmc=
+X-Google-Smtp-Source: AGHT+IF1dcmYSOIBAYhyDN+rJjDUtbiR7bpGX9yxUQ7nJ0qnc13saq8mF6pQ7QGMUfeqrZmcr7qgJw==
+X-Received: by 2002:a05:600c:1d19:b0:401:b2c7:349b with SMTP id
+ l25-20020a05600c1d1900b00401b2c7349bmr9736055wms.7.1698161819005; 
+ Tue, 24 Oct 2023 08:36:59 -0700 (PDT)
+Received: from [192.168.6.66] (54-240-197-238.amazon.com. [54.240.197.238])
+ by smtp.gmail.com with ESMTPSA id
+ x24-20020a05600c179800b0040523bef620sm785126wmo.0.2023.10.24.08.36.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 24 Oct 2023 08:36:58 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <979ce4f2-195c-4488-869e-72c9abed1339@xen.org>
+Date: Tue, 24 Oct 2023 16:36:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>
-Date: Tue, 24 Oct 2023 17:34:09 +0200 (CEST)
-X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/24] hw/xen: populate store frontend nodes with
+ XenStore PFN/port
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ Bernhard Beschow <shentey@gmail.com>, Joel Upham <jupham125@gmail.com>
+References: <20231019154020.99080-1-dwmw2@infradead.org>
+ <20231019154020.99080-11-dwmw2@infradead.org>
+Organization: Xen Project
+In-Reply-To: <20231019154020.99080-11-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -55,84 +106,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Concatenate #if blocks that are ending then beginning on the next line
-again.
+On 19/10/2023 16:40, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> This is kind of redundant since without being able to get these through
+> some other method (HVMOP_get_param) the guest wouldn't be able to access
+> XenStore in order to find them. But Xen populates them, and it does
+> allow guests to *rebind* to the event channel port after a reset.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/i386/kvm/xen_xenstore.c | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
+> 
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- target/ppc/excp_helper.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
-
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 1eecec0919..e9b5ef5a82 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2496,10 +2496,8 @@ void helper_raise_exception(CPUPPCState *env, uint32_t exception)
- {
-     raise_exception_err_ra(env, exception, 0, 0);
- }
--#endif /* CONFIG_TCG */
- 
- #ifndef CONFIG_USER_ONLY
--#ifdef CONFIG_TCG
- void helper_store_msr(CPUPPCState *env, target_ulong val)
- {
-     uint32_t excp = hreg_store_msr(env, val, 0);
-@@ -2605,9 +2603,7 @@ void helper_hrfid(CPUPPCState *env)
- {
-     do_rfi(env, env->spr[SPR_HSRR0], env->spr[SPR_HSRR1]);
- }
--#endif /* TARGET_PPC64 */
- 
--#ifdef TARGET_PPC64
- void helper_rfebb(CPUPPCState *env, target_ulong s)
- {
-     target_ulong msr = env->msr;
-@@ -2707,10 +2703,8 @@ void helper_rfmci(CPUPPCState *env)
-     /* FIXME: choose CSRR1 or MCSRR1 based on cpu type */
-     do_rfi(env, env->spr[SPR_BOOKE_MCSRR0], env->spr[SPR_BOOKE_MCSRR1]);
- }
--#endif /* CONFIG_TCG */
--#endif /* !defined(CONFIG_USER_ONLY) */
-+#endif /* !CONFIG_USER_ONLY */
- 
--#ifdef CONFIG_TCG
- void helper_tw(CPUPPCState *env, target_ulong arg1, target_ulong arg2,
-                uint32_t flags)
- {
-@@ -2738,9 +2732,7 @@ void helper_td(CPUPPCState *env, target_ulong arg1, target_ulong arg2,
-     }
- }
- #endif /* TARGET_PPC64 */
--#endif /* CONFIG_TCG */
- 
--#ifdef CONFIG_TCG
- static uint32_t helper_SIMON_LIKE_32_64(uint32_t x, uint64_t key, uint32_t lane)
- {
-     const uint16_t c = 0xfffc;
-@@ -2851,11 +2843,8 @@ HELPER_HASH(HASHST, env->spr[SPR_HASHKEYR], true, NPHIE)
- HELPER_HASH(HASHCHK, env->spr[SPR_HASHKEYR], false, NPHIE)
- HELPER_HASH(HASHSTP, env->spr[SPR_HASHPKEYR], true, PHIE)
- HELPER_HASH(HASHCHKP, env->spr[SPR_HASHPKEYR], false, PHIE)
--#endif /* CONFIG_TCG */
- 
- #ifndef CONFIG_USER_ONLY
--#ifdef CONFIG_TCG
--
- /* Embedded.Processor Control */
- static int dbell2irq(target_ulong rb)
- {
-@@ -3197,5 +3186,5 @@ bool ppc_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
-     return false;
- }
- 
--#endif /* CONFIG_TCG */
- #endif /* !CONFIG_USER_ONLY */
-+#endif /* CONFIG_TCG */
--- 
-2.30.9
+Reviewed-by: Paul Durrant <paul@xen.org>
 
 
