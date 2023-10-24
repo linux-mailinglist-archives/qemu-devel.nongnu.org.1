@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FD87D5D1C
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 23:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7417D5D3B
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 23:31:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvOqz-0006bm-M8; Tue, 24 Oct 2023 17:22:21 -0400
+	id 1qvOyQ-0001Br-Op; Tue, 24 Oct 2023 17:30:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvOqw-0006bX-LX; Tue, 24 Oct 2023 17:22:19 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qvOyJ-0001B3-CS; Tue, 24 Oct 2023 17:29:57 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvOqp-0006EW-Pp; Tue, 24 Oct 2023 17:22:18 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ id 1qvOyH-0007Gv-ET; Tue, 24 Oct 2023 17:29:55 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OLCwNK012740; Tue, 24 Oct 2023 21:21:59 GMT
+ 39OLRAig008532; Tue, 24 Oct 2023 21:29:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=20OCEaLL45CYoryFN0eFzFnul6Qs4Dg3Je0ad2Lxwsg=;
- b=Ix9s7ncafosw5SNOG+o+5+1EZRuPhfpBALB51yNnjOc1CA8S4tJMd5CF+2jprF3xdxSO
- pyGhHtJoa3sBs3R2Jt6LZxJfhFn2ibd9bOFiHFXPuLgSiXAjMKsojRZhbpjak/SGospK
- v8n6/DfLcHqE5wI4dLR5F8VTN73s8zCqKRJmUzk4AyERh0RqpyVn+Z55nBic/LSbMWV4
- T6crzI2W6yEpNAstDNlblCBplecHNMU9LFbnmryRSC+AqxKSLUEsFmWFNT5u3vunPGr+
- EuPPZtMLHE0cQBqUqVn+UhN3lCb2G4gCH5cOaGlexFb8A50iHNK/2pcEfJBdqDnYNm3K cw== 
+ bh=CxcV4cSV5siQjhk1sl6au2EFr86ycWPs1XImRYL+OLc=;
+ b=BqVK0VSJXxscRWXp5/wtZ05Glsnd9ZcE11xNU18ebTr0iAYbP6cJdbcIFQOc4Z+Jlmvq
+ go9hNsbVB4ayun35qAQjVLut94hgwtwkChHqZpaCWBOfzKAj+frHtiM2CnAi49F2QpnD
+ y2bk1Pk2Xj8rHrLGVfo5l/e3HzeDBQLv/dx5m89EE/ymi7X/MxiSAg8ecvxI2j7v8QgF
+ ROFn05YI3aGjh3bpiU24qXtkDiR2Jhnd2SCSN+Se60RUjsAz6AhM5fPAe+OJCYJmLClc
+ dUqjmbmwbMu5BWw2AmBVuwerHUSETz1ETK6sqAHQ1rlxl+1oYFKFlUrbPSrxPmZ+IEzD XA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txnmw09wj-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txnumr1qw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 21:21:59 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39OLGoFL027576;
- Tue, 24 Oct 2023 21:21:58 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txnmw09wd-1
+ Tue, 24 Oct 2023 21:29:49 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39OLSkTn010738;
+ Tue, 24 Oct 2023 21:29:49 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txnumr1qk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 21:21:58 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OKe1sv023800; Tue, 24 Oct 2023 21:21:57 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvryt2jn7-1
+ Tue, 24 Oct 2023 21:29:49 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39OKGlO4012349; Tue, 24 Oct 2023 21:29:48 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvup1sua9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 21:21:57 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39OLLvrP30802350
+ Tue, 24 Oct 2023 21:29:48 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39OLTl5N22741708
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Oct 2023 21:21:57 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A91558058;
- Tue, 24 Oct 2023 21:21:57 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F7E158059;
- Tue, 24 Oct 2023 21:21:56 +0000 (GMT)
+ Tue, 24 Oct 2023 21:29:48 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ABC4458060;
+ Tue, 24 Oct 2023 21:29:47 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 779105805A;
+ Tue, 24 Oct 2023 21:29:47 +0000 (GMT)
 Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 24 Oct 2023 21:21:56 +0000 (GMT)
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Oct 2023 21:29:47 +0000 (GMT)
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 To: qemu-ppc@nongnu.org
 Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
  clg@kaod.org, npiggin@gmail.com, fbarrat@linux.ibm.com
-Subject: [PATCH v2] ppc/pnv: Fix number of I2C engines and ports for power9/10
-Date: Tue, 24 Oct 2023 16:21:48 -0500
-Message-Id: <20231024212148.33387-1-milesg@linux.vnet.ibm.com>
+Subject: [PATCH v2 RESEND] ppc/pnv: Fix number of I2C engines and ports for
+ power9/10
+Date: Tue, 24 Oct 2023 16:29:44 -0500
+Message-Id: <20231024212944.34043-1-milesg@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Mc_RjgCTOLcxPhDLsc32Pt5dXeQMzZrx
-X-Proofpoint-ORIG-GUID: v3LkLEQUwnxarA5S6JU4KDlePQmDhqT3
+X-Proofpoint-ORIG-GUID: hn6KSByOs5F9FFY9LEFBzK_qTMa62zs3
+X-Proofpoint-GUID: iCmgipQsu0sKbGAXYp2HXCxNQnJxQsxy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-24_21,2023-10-24_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=654
- priorityscore=1501 mlxscore=0 impostorscore=0 adultscore=0 malwarescore=0
+ mlxlogscore=597 phishscore=0
+ impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0 bulkscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 spamscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310240184
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+ definitions=main-2310240185
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -134,6 +135,8 @@ be attached for that engine.
 
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 ---
+Based-on: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
+([PATCH] ppc/pnv: Connect PNV I2C controller to powernv10)
 
 Changes from v1:
     - Added i2c_ports_per_engine to PnvChipClass
