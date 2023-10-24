@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE2E7D4AF8
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A30F37D4B2C
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:55:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvD9J-0006bV-R7; Tue, 24 Oct 2023 04:52:29 -0400
+	id 1qvD9O-0006gg-Q0; Tue, 24 Oct 2023 04:52:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qvD9I-0006bC-1A
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:52:28 -0400
+ id 1qvD9M-0006fQ-C4
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:52:32 -0400
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qvD9G-0005vv-De
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:52:27 -0400
+ id 1qvD9K-0005vv-Gr
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:52:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698137547; x=1729673547;
+ t=1698137551; x=1729673551;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vG3avHPqLIgBk6CFRfp5zBkudtT1jFdHJhfibDtCqas=;
- b=VYnWZr9Z6sMPWhEZfrBBt3rXWSRIl2oSWc65q672cTBsyfQQo2r3+MP3
- m5DWrQL5mdxPW8rpEiOdkEKX4ZmUhDGOYmBR0AfV8iitmuVUqvQhPJ8j2
- IXulujLyt1R2pnd+ZfKTSHZzSGvunDOUZHneO/BoBmR2W7oMd8yBMWSig
- u7gvBMqsXfPhF0xZIagbPNP+Aj8Pc8JKL+1G5Lu9ZUy9YkBDJ8xKGS/yW
- J+CV4ZkCzbCkx0YhDh4KEkuTtAIay6nx+ypOzGyZ247BKD99qO2BB2/vo
- DBN3ANK5Aw9CAd3RWZIEkN7Sth4cnhgoZVDiORCk9W+5aZbKj2Y60L/V9 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="5638327"
+ bh=4opFv5gZlPghtdFYlMcRuhrtU9m/JKFpT86TK4Zq0gY=;
+ b=MhAHWpYKw5an/WEOYXn5x1jtTlJM8odM6OL7k2n14ZS50Qrd2UPs5OH/
+ 1U6QGx5n3wdzH0uDke0+aqxomTLKNjO+oPS6ZcfyfCBApqUmlefhabhXY
+ Y6rxXA2THgAOXPNPM5dVc9ugYLB/fnAgMPrJ6zdKSyoAR79sP4Jcw0KGW
+ CLvnUB0I/CZ0Z0dJ9EiYmMcw7PkWayA2SHUvCcWfbGQuA4KXgFk82rKYs
+ YbHxstg/c1vSfmlxrFrZSJNcUNSTihsqKQL3HGOWlXBBfa2vPLLYXLOZC
+ xwZPZh8HkVG/DxZNiHZ+KmZMsRESrTfe9ajRjefgiwrow+aHltmuiQihm w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="5638338"
 X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
-   d="scan'208";a="5638327"
+   d="scan'208";a="5638338"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2023 01:52:26 -0700
+ 24 Oct 2023 01:52:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="793417981"
-X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; d="scan'208";a="793417981"
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="793417997"
+X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; d="scan'208";a="793417997"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga001.jf.intel.com with ESMTP; 24 Oct 2023 01:52:22 -0700
+ by orsmga001.jf.intel.com with ESMTP; 24 Oct 2023 01:52:25 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -52,15 +52,15 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 04/20] hw/cpu: Update the comments of nr_cores and nr_dies
-Date: Tue, 24 Oct 2023 17:03:07 +0800
-Message-Id: <20231024090323.1859210-5-zhao1.liu@linux.intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, Robert Hoo <robert.hu@linux.intel.com>
+Subject: [PATCH v5 05/20] i386/cpu: Fix i/d-cache topology to core level for
+ Intel CPU
+Date: Tue, 24 Oct 2023 17:03:08 +0800
+Message-Id: <20231024090323.1859210-6-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231024090323.1859210-1-zhao1.liu@linux.intel.com>
 References: <20231024090323.1859210-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=198.175.65.9;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
@@ -87,49 +87,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-In the nr_threads' comment, specify it represents the
-number of threads in the "core" to avoid confusion.
+For i-cache and d-cache, current QEMU hardcodes the maximum IDs for CPUs
+sharing cache (CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits
+25:14]) to 0, and this means i-cache and d-cache are shared in the SMT
+level.
 
-Also add comment for nr_dies in CPUX86State.
+This is correct if there's single thread per core, but is wrong for the
+hyper threading case (one core contains multiple threads) since the
+i-cache and d-cache are shared in the core level other than SMT level.
 
+For AMD CPU, commit 8f4202fb1080 ("i386: Populate AMD Processor Cache
+Information for cpuid 0x8000001D") has already introduced i/d cache
+topology as core level by default.
+
+Therefore, in order to be compatible with both multi-threaded and
+single-threaded situations, we should set i-cache and d-cache be shared
+at the core level by default.
+
+This fix changes the default i/d cache topology from per-thread to
+per-core. Potentially, this change in L1 cache topology may affect the
+performance of the VM if the user does not specifically specify the
+topology or bind the vCPU. However, the way to achieve optimal
+performance should be to create a reasonable topology and set the
+appropriate vCPU affinity without relying on QEMU's default topology
+structure.
+
+Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
+Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
 Changes since v3:
- * The new patch split out of CPUSTATE.nr_cores' fix. (Xiaoyao)
----
- include/hw/core/cpu.h | 2 +-
- target/i386/cpu.h     | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ * Change the description of current i/d cache encoding status to avoid
+   misleading to "architectural rules". (Xiaoyao)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 18593db5b20e..8197642671a9 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -408,7 +408,7 @@ struct qemu_work_item;
-  *   See TranslationBlock::TCG CF_CLUSTER_MASK.
-  * @tcg_cflags: Pre-computed cflags for this cpu.
-  * @nr_cores: Number of cores within this CPU package.
-- * @nr_threads: Number of threads within this CPU.
-+ * @nr_threads: Number of threads within this CPU core.
-  * @running: #true if CPU is currently running (lockless).
-  * @has_waiter: #true if a CPU is currently waiting for the cpu_exec_end;
-  * valid under cpu_list_lock.
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 471e71dbc5eb..a8f8fe3bbaf2 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1882,6 +1882,7 @@ typedef struct CPUArchState {
- 
-     TPRAccess tpr_access_type;
- 
-+    /* Number of dies within this CPU package. */
-     unsigned nr_dies;
- } CPUX86State;
- 
+Changes since v1:
+ * Split this fix from the patch named "i386/cpu: Fix number of
+   addressable IDs in CPUID.04H".
+ * Add the explanation of the impact on performance. (Xiaoyao)
+---
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 36214c84ec14..a3b170db108e 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6112,12 +6112,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             switch (count) {
+             case 0: /* L1 dcache info */
+                 encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
+-                                    1, cs->nr_cores,
++                                    cs->nr_threads, cs->nr_cores,
+                                     eax, ebx, ecx, edx);
+                 break;
+             case 1: /* L1 icache info */
+                 encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
+-                                    1, cs->nr_cores,
++                                    cs->nr_threads, cs->nr_cores,
+                                     eax, ebx, ecx, edx);
+                 break;
+             case 2: /* L2 cache info */
 -- 
 2.34.1
 
