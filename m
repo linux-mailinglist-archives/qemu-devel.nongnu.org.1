@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614C27D54F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893717D55B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:20:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvJ4F-00057U-Km; Tue, 24 Oct 2023 11:11:39 -0400
+	id 1qvJAf-0007n1-44; Tue, 24 Oct 2023 11:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvJ48-00050t-VD
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:11:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvJAP-0007US-6R
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:18:06 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvJ47-0000vc-4K
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:11:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698160290;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KIqlxPz51TKatnb8SnVpvOTh0EK/sIsjRQSdp/ndJ1A=;
- b=IIcV/htcy8Zu88kHYhPv9t4gLP/vqYGSSTeyw3IIoNWyTZQmzzxKbijDwSXMnm7T7uYfhg
- t8H3/yK7YQxbDesBmbBK+KpHYNBBNaWRts3VjPuhwLTV1d8+63JsOauDxIU2AauvZ1IPiZ
- qEI/noh8knzAEhr0utkXF2uywsAzVbE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-dW6HXZWEPVqF-clQ2J9uYw-1; Tue,
- 24 Oct 2023 11:11:12 -0400
-X-MC-Unique: dW6HXZWEPVqF-clQ2J9uYw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D45161C05B06;
- Tue, 24 Oct 2023 15:11:11 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 90CB72026D68;
- Tue, 24 Oct 2023 15:11:09 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
- Leonardo Bras <leobras@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 12/12] qemu-file: Make qemu_fflush() return errors
-Date: Tue, 24 Oct 2023 17:10:42 +0200
-Message-ID: <20231024151042.90349-13-quintela@redhat.com>
-In-Reply-To: <20231024151042.90349-1-quintela@redhat.com>
-References: <20231024151042.90349-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from
+ <BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvJAK-00029q-Us
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:17:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=vljkhOi5P4K1o7XVh50RT5GgDqYFQNgzgO+23b5JlEU=; b=u1VBFfz0Cxebf839YlpkxcVbKg
+ x4RkMTu6H1GpAFlu/OuVi7DmI5svFlDb3chMpcVvdpu38scgfBnq/aa1TjJ2ziFD1DuSGwqf2X8cw
+ rQtE64M+NdtN2wpFWntNJAO8+Gal5R1nUlERIDdYxJlYS62Rj429UK2bjbLk1R8bMSzP3u0YycfoL
+ A7l9qoIKlI11pCe22dLLMcSTkQPwqOm9gfJBZQCJTHbYAcRKiy9WA+OpVNQWAPxdfsF+C12thBTQb
+ I0y1rnxW0iBP7aR5agaFpHKtfDiNlNPJDAWaNu8ETASzl03xacE9EVJGzWyDCfXflzPXFzJGELYnD
+ 1iI3BtBA==;
+Received: from [2001:8b0:10b:5:758e:a1c4:bc7:e7a7]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qvJAD-003BtW-Vg; Tue, 24 Oct 2023 15:17:50 +0000
+Message-ID: <72ea536333fc9942f3c39acee571fc8f5ad98ba6.camel@infradead.org>
+Subject: Re: [PATCH 2/4] hw/xen: update Xen PV NIC to XenDevice model
+From: David Woodhouse <dwmw2@infradead.org>
+To: paul@xen.org, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
+ Perard <anthony.perard@citrix.com>, Jason Wang <jasowang@redhat.com>,
+ xen-devel@lists.xenproject.org
+Date: Tue, 24 Oct 2023 16:17:49 +0100
+In-Reply-To: <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
+References: <20231017182545.97973-1-dwmw2@infradead.org>
+ <20231017182545.97973-3-dwmw2@infradead.org>
+ <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-muEmYn7tGoFJPFeGcN56"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,255 +81,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This let us simplify code of this shape.
 
-   qemu_fflush(f);
-   int ret = qemu_file_get_error(f);
-   if (ret) {
-      return ret;
-   }
+--=-muEmYn7tGoFJPFeGcN56
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-into:
+On Tue, 2023-10-24 at 15:47 +0100, Paul Durrant wrote:
+> On 17/10/2023 19:25, David Woodhouse wrote:
+> > +
+> > +#define xen_pv_printf(a, n, ...) qemu_printf(__VA_ARGS__)
+>=20
+> Why define this...
 
-   int ret = qemu_fflush(f);
-   if (ret) {
-      return ret;
-   }
+In the first place, just to make it build in the short term. Then I
+forgot to clean it up before posting. In my tree this is all tracing
+now.
 
-I updated all callers where there is any error check.
-qemu_fclose() don't need to check for f->last_error because
-qemu_fflush() returns it at the beggining of the function.
+>=20
+> > @@ -232,7 +258,7 @@ static ssize_t net_rx_packet(NetClientState *nc, co=
+nst uint8_t *buf, size_t size
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 RING_IDX rc, rp;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 void *page;
+> > =C2=A0=20
+> > -=C2=A0=C2=A0=C2=A0 if (netdev->xendev.be_state !=3D XenbusStateConnect=
+ed) {
+> > +=C2=A0=C2=A0=C2=A0 if (netdev->rx_ring.sring =3D=3D NULL) {
+>=20
+> Why not a straight swap for xen_device_backend_get_state()? Hard to see=
+=20
+> whether there any hidden side effects of this change otherwise.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
+Could do, but what I *actually* cared about when looking at that check,
+was whether the ring pointer was NULL. So I checked that explicitly.
 
----
+It should be identical.
 
-In v2: Now that we call always qemu_fflush() for all files, we can
-simplify qemu_fclose()
----
- migration/qemu-file.h |  2 +-
- migration/colo.c      | 11 +++--------
- migration/migration.c |  7 +------
- migration/qemu-file.c | 23 +++++++----------------
- migration/ram.c       | 22 +++++++---------------
- migration/rdma.c      |  4 +---
- migration/savevm.c    |  3 +--
- 7 files changed, 21 insertions(+), 51 deletions(-)
+> > +static void xen_netdev_frontend_changed(XenDevice *xendev,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 enum xenbus_state frontend_state,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 Error **errp)
+> > =C2=A0 {
+> > -=C2=A0=C2=A0=C2=A0 struct XenNetDev *netdev =3D container_of(xendev, s=
+truct XenNetDev, xendev);
+> > -=C2=A0=C2=A0=C2=A0 net_tx_packets(netdev);
+> > -=C2=A0=C2=A0=C2=A0 qemu_flush_queued_packets(qemu_get_queue(netdev->ni=
+c));
+> > +=C2=A0=C2=A0=C2=A0 ERRP_GUARD();
+> > +=C2=A0=C2=A0=C2=A0 enum xenbus_state backend_state =3D xen_device_back=
+end_get_state(xendev);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 trace_xen_netdev_frontend_changed(xendev->name, fro=
+ntend_state);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 switch (frontend_state) {
+> > +=C2=A0=C2=A0=C2=A0 case XenbusStateInitialised:
+>=20
+> I don't think that's really a valid state for a network frontend. Linux=
+=20
+> netback just ignores it.
 
-diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index 1b2f6b8d8f..1774116f79 100644
---- a/migration/qemu-file.h
-+++ b/migration/qemu-file.h
-@@ -71,7 +71,7 @@ void qemu_file_set_error_obj(QEMUFile *f, int ret, Error *err);
- void qemu_file_set_error(QEMUFile *f, int ret);
- int qemu_file_shutdown(QEMUFile *f);
- QEMUFile *qemu_file_get_return_path(QEMUFile *f);
--void qemu_fflush(QEMUFile *f);
-+int qemu_fflush(QEMUFile *f);
- void qemu_file_set_blocking(QEMUFile *f, bool block);
- int qemu_file_get_to_fd(QEMUFile *f, int fd, size_t size);
- 
-diff --git a/migration/colo.c b/migration/colo.c
-index 72f4f7b37e..4447e34914 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -314,9 +314,7 @@ static void colo_send_message(QEMUFile *f, COLOMessage msg,
-         return;
-     }
-     qemu_put_be32(f, msg);
--    qemu_fflush(f);
--
--    ret = qemu_file_get_error(f);
-+    ret = qemu_fflush(f);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Can't send COLO message");
-     }
-@@ -335,9 +333,7 @@ static void colo_send_message_value(QEMUFile *f, COLOMessage msg,
-         return;
-     }
-     qemu_put_be64(f, value);
--    qemu_fflush(f);
--
--    ret = qemu_file_get_error(f);
-+    ret = qemu_fflush(f);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Failed to send value for message:%s",
-                          COLOMessage_str(msg));
-@@ -483,8 +479,7 @@ static int colo_do_checkpoint_transaction(MigrationState *s,
-     }
- 
-     qemu_put_buffer(s->to_dst_file, bioc->data, bioc->usage);
--    qemu_fflush(s->to_dst_file);
--    ret = qemu_file_get_error(s->to_dst_file);
-+    ret = qemu_fflush(s->to_dst_file);
-     if (ret < 0) {
-         goto out;
-     }
-diff --git a/migration/migration.c b/migration/migration.c
-index a6cde985a2..ce12fca520 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -305,12 +305,7 @@ static int migrate_send_rp_message(MigrationIncomingState *mis,
-     qemu_put_be16(mis->to_src_file, (unsigned int)message_type);
-     qemu_put_be16(mis->to_src_file, len);
-     qemu_put_buffer(mis->to_src_file, data, len);
--    qemu_fflush(mis->to_src_file);
--
--    /* It's possible that qemu file got error during sending */
--    ret = qemu_file_get_error(mis->to_src_file);
--
--    return ret;
-+    return qemu_fflush(mis->to_src_file);
- }
- 
- /* Request one page from the source VM at the given start address.
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 7e738743ce..d64500310d 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -262,14 +262,14 @@ static void qemu_iovec_release_ram(QEMUFile *f)
-  * This will flush all pending data. If data was only partially flushed, it
-  * will set an error state.
-  */
--void qemu_fflush(QEMUFile *f)
-+int qemu_fflush(QEMUFile *f)
- {
-     if (!qemu_file_is_writable(f)) {
--        return;
-+        return f->last_error;
-     }
- 
--    if (qemu_file_get_error(f)) {
--        return;
-+    if (f->last_error) {
-+        return f->last_error;
-     }
-     if (f->iovcnt > 0) {
-         Error *local_error = NULL;
-@@ -287,6 +287,7 @@ void qemu_fflush(QEMUFile *f)
- 
-     f->buf_index = 0;
-     f->iovcnt = 0;
-+    return f->last_error;
- }
- 
- /*
-@@ -353,22 +354,12 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
-  */
- int qemu_fclose(QEMUFile *f)
- {
--    int ret, ret2;
--    qemu_fflush(f);
--    ret = qemu_file_get_error(f);
--
--    ret2 = qio_channel_close(f->ioc, NULL);
-+    int ret = qemu_fflush(f);
-+    int ret2 = qio_channel_close(f->ioc, NULL);
-     if (ret >= 0) {
-         ret = ret2;
-     }
-     g_clear_pointer(&f->ioc, object_unref);
--
--    /* If any error was spotted before closing, we should report it
--     * instead of the close() return value.
--     */
--    if (f->last_error) {
--        ret = f->last_error;
--    }
-     error_free(f->last_error_obj);
-     g_free(f);
-     trace_qemu_file_fclose();
-diff --git a/migration/ram.c b/migration/ram.c
-index 6d2bf50614..3a1d9882ce 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -305,17 +305,15 @@ int64_t ramblock_recv_bitmap_send(QEMUFile *file,
- 
-     qemu_put_be64(file, size);
-     qemu_put_buffer(file, (const uint8_t *)le_bitmap, size);
-+    g_free(le_bitmap);
-     /*
-      * Mark as an end, in case the middle part is screwed up due to
-      * some "mysterious" reason.
-      */
-     qemu_put_be64(file, RAMBLOCK_RECV_BITMAP_ENDING);
--    qemu_fflush(file);
--
--    g_free(le_bitmap);
--
--    if (qemu_file_get_error(file)) {
--        return qemu_file_get_error(file);
-+    int ret = qemu_fflush(file);
-+    if (ret) {
-+        return ret;
-     }
- 
-     return size + sizeof(size);
-@@ -3055,9 +3053,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     }
- 
-     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
--    qemu_fflush(f);
--
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- /**
-@@ -3176,10 +3172,8 @@ out:
-         }
- 
-         qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
--        qemu_fflush(f);
-         ram_transferred_add(8);
--
--        ret = qemu_file_get_error(f);
-+        ret = qemu_fflush(f);
-     }
-     if (ret < 0) {
-         return ret;
-@@ -3256,9 +3250,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-     }
-     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
--    qemu_fflush(f);
--
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- static void ram_state_pending_estimate(void *opaque, uint64_t *must_precopy,
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 2a1852ec7f..0884333190 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -3849,9 +3849,7 @@ int rdma_registration_start(QEMUFile *f, uint64_t flags)
- 
-     trace_rdma_registration_start(flags);
-     qemu_put_be64(f, RAM_SAVE_FLAG_HOOK);
--    qemu_fflush(f);
--
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- /*
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 9c90499609..b19d625259 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1583,8 +1583,7 @@ int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only,
-     }
- 
- flush:
--    qemu_fflush(f);
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- /* Give an estimate of the amount left to be transferred,
--- 
-2.41.0
+Must we? I was thinking of making the ->frontend_changed() methods
+optional and allowing backends to just provide ->connect() and
+->disconnect() methods instead if they wanted to. Because we have three
+identical ->frontend_changed() methods now...
 
+
+
+--=-muEmYn7tGoFJPFeGcN56
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI0MTUxNzQ5WjAvBgkqhkiG9w0BCQQxIgQg9fMDVsqe
+Ll8SEFMdg53uf8+qe2GqrzgUmWIWrc34k34wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgA3QiM0z5WQhoXxEMmNjaAy6orYuC6+DXf7
+P89rmTWuRDsg+EzsznwWhTe6PFdbymkr27OCviqEha37R3TAmy5rEef6LULiqt/suJHJQcpOe+VF
+T66icOTbhh+TB10PeNHkmISzyjrgtLtHni7Ky/0wUDpekw58JsA3rfLMCURK1s3V70cpgXV3vMqp
+TJt47ZRwvxTs0mWU1MVKiNUTgcAyGkl96pDBopnxwGp16UAjOsJzH7OPhyF+XyRiUzMWqsxY79rw
+S8pj1aOvFm72sbGwdD2o/itSJL5IJ+cMV5TFNn2orACbNmkv2896IZUO5YuY9Lyn3F2vvB5HcvAi
+v8g82iVFWgD+WbFrWBOXbiitrnm2I2WsaPuWTSFkTNMPLj61YNzB3RTjg2wXzWLc3c/1OoXcZhv/
+5GQJIQ5QWXQIvGI3WgXEK7C1RQzWqud1gAAIGieSCeZv1PWXt9qzCacTfKOwnlB3QDZbXSGMe4wR
+h9W9jcx+GQARQ1zs5Katy6KWhrTsH6yrvxLMMtD5sMBW/bWlTkIWkFpB+Ck9ZQgRaeSCOoDRkDh8
+xAHLctKqz2emj47J/q35LUtxfaK3vroFXe5LByZVmu/daEORvrKCtX2194IZFTWSLXnT+SH3kC13
+7c25yX2fdtN96/iXDTFYQGqPlWnGRtpcnTHpJY9uegAAAAAAAA==
+
+
+--=-muEmYn7tGoFJPFeGcN56--
 
