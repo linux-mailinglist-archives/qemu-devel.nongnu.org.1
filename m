@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA637D582C
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDE37D5834
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvKDl-0002F1-6M; Tue, 24 Oct 2023 12:25:34 -0400
+	id 1qvKDn-0002IH-NB; Tue, 24 Oct 2023 12:25:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvKDW-0001hq-9d
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:25:21 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvKDd-0001t6-Nf
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:25:28 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvKDT-0001Eo-0j
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:25:18 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-408425c7c10so38874505e9.0
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:25:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvKDZ-0001G0-1N
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:25:25 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so36576745e9.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698164713; x=1698769513; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698164719; x=1698769519; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xBLyy7Cf+oXVlWV7APmJwsDD8O0kUea2KuFgfmlS14s=;
- b=iX41Fdk18oWV3fz6hHWrpH6sNMs1QXAOxgBcnYz2+4DgHWq9jDzKx+j1ziNnXtLGKi
- ON0KYKt/LH4mRdgqkt3WAe7SJTFC1GAzdXJ+ZgIu7e0MV4yWyXgmrITD2oYyCs0P2JuK
- Yaf3Q6geTsgMWk9y8JWPTp6QsMugUN0hT8jLjy/zcKsx4eUbrTgmefslvXeesQq/HutX
- oAKEBAAt/sNsNKbjTinKZiWgNF8zvuSfVWXv8QOKuJghj3ydEUXo4DJejY2hveLta+K1
- iROVrXXmqP36paJ1CyeGgf9DlIAsyzHnQYkCzaQx+T2DfUdfRZRxGtDWH2vIYZK1VCvB
- RJuA==
+ bh=Q4xG1SGrlkbfyD6T120iqZLe7yEuOvDM9ye6JQ98D3Q=;
+ b=NrKQYMBXgdGd09YTQL2O6phK/pF7nSDTqXTpCVtkCkBgFmapko30RZps9pEBLoIeoD
+ dqT24mg6GqlSI7FVlJvGE5u82Jbxy9dMk9XeJ7Y+TtJQOnAgcSQ6ee/4g58m/CE3I3Im
+ 5xKR7iIchb4Who1Z0fFC1HHpWRp5oHLNhhMWiM+w2kJqpPtSjCMlsTGhABsBIolbxVVT
+ ZfrsWlAYV+HWdDsBW1plszS7TzzwF4nGqJqfs/ENLc5o56xitZXw0jISqruMNcPJ/9YD
+ hKuFxYpu5NNCtwg7MvrAZJI92U5DQZg9CCwLW9p42iKnUjOyYxUmukAb6Ti6E3/Q3vI7
+ 36tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698164713; x=1698769513;
+ d=1e100.net; s=20230601; t=1698164719; x=1698769519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xBLyy7Cf+oXVlWV7APmJwsDD8O0kUea2KuFgfmlS14s=;
- b=J+y2pcmiovwO1svljZIVRZKgRC4pzdmu3tsYg86ycgy5sDBYLdu94ryD2CEnOwO5tt
- SaPYs/hgE+4i+22JUzFmxrRgDxTYTFo62w/NMYSNnP/1x3wcdEOogxk2orUnvz/o/4dE
- TNWWsfITlShopidrdmigxJHH//GQW0MUuL8rfOnpOQGfxMBv33DLHkLItk2DLz+vNVGB
- wJSAdRH1I73bUk4VJHVaPMnDta0FhhibBSEEHVnuoVl4b44YWimw6L0iKSfvpIxSziqo
- SWkXnv/NYki+UbmVXMJh5kt50mvJD1Cp4NaDakTRJ+i3jrvCk5DDOT23PxD9HK500cOe
- HgQQ==
-X-Gm-Message-State: AOJu0Yzz4zo3qrZcWRdhwFyYzXjW5k3TeLp3Z29E6ZnDWG3ufvIaW0Xp
- tMlQthNVSkkYqTWZIo6m81YUCJ8jLUatYxxIJf4=
-X-Google-Smtp-Source: AGHT+IEszfb/w7lby4EjM+dADGeJwoeO9PrNq+w+8PfeCZOKckQx4GuWB5xSQK6N7/gJNY3ZsU2Ftw==
-X-Received: by 2002:a05:600c:a07:b0:405:3251:47a1 with SMTP id
- z7-20020a05600c0a0700b00405325147a1mr9354995wmp.40.1698164713328; 
- Tue, 24 Oct 2023 09:25:13 -0700 (PDT)
+ bh=Q4xG1SGrlkbfyD6T120iqZLe7yEuOvDM9ye6JQ98D3Q=;
+ b=ddt059hRA/pa06MYvv3fVrDjnYR5mbG7Y4hRYDUcFXQ/b7iVvKs14C2YBV1qbrwQtI
+ Ak5sExqf0Eb0g1u6aF0Id6hbW6WT+Jr3qvVS6gL8qtC3l0LcSRmq5UWx2rq7Co6abVWA
+ XVPfTYpK6vZ0YprAMjObdFVVMsYwcAUUWFYICl6qgPl6/w8ibfUzOY192YzgXdK11MQp
+ t9d6Ghh+mVfbqbsU9X81G8cckckuikk6wfCGKpB5nrfvfhp3EiI8N2dS41WHD3GM6zEx
+ H9ECQ/E/n7H0+kaHWqsOF1iMbcwdQjJmJcKFJgEJEv5d4Y5pk3xnC2h8Iahyr6MpjPxk
+ Zzwg==
+X-Gm-Message-State: AOJu0Yy36bxfZpv7/utfTr698iX1+xGo0GpvjlAqu6672j8RqhQtBGY4
+ vfNzUiOB627wIev2qX1wIG5I4kE/XFgxPP3aQWo=
+X-Google-Smtp-Source: AGHT+IEzHVnSZqm4Awi2pWjhstPizoTo2yleMJmRy6njwTGhurNZUjhLj1gr6foZuhoc2nR0BFhHfQ==
+X-Received: by 2002:a05:600c:4fc3:b0:405:1c19:b747 with SMTP id
+ o3-20020a05600c4fc300b004051c19b747mr9645820wmq.15.1698164718896; 
+ Tue, 24 Oct 2023 09:25:18 -0700 (PDT)
 Received: from m1x-phil.lan (sem44-h01-176-172-55-165.dsl.sta.abo.bbox.fr.
  [176.172.55.165]) by smtp.gmail.com with ESMTPSA id
- g14-20020a05600c310e00b0040813e14b49sm17205378wmo.30.2023.10.24.09.25.12
+ r9-20020a05600c158900b0040776008abdsm12285067wmf.40.2023.10.24.09.25.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 24 Oct 2023 09:25:13 -0700 (PDT)
+ Tue, 24 Oct 2023 09:25:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
  Andrew Jeffery <andrew@aj.id.au>, qemu-arm@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 08/11] hw/arm/aspeed: Check 'memory' link is set in common
- aspeed_soc_realize
-Date: Tue, 24 Oct 2023 18:24:19 +0200
-Message-ID: <20231024162423.40206-9-philmd@linaro.org>
+Subject: [PATCH 09/11] hw/arm/aspeed: Move AspeedSoCState::armv7m to
+ Aspeed10x0SoCState
+Date: Tue, 24 Oct 2023 18:24:20 +0200
+Message-ID: <20231024162423.40206-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231024162423.40206-1-philmd@linaro.org>
 References: <20231024162423.40206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,40 +94,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The v7-M core is specific to the Aspeed 10x0 series,
+remove it from the common AspeedSoCState.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/aspeed_soc_common.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/hw/arm/aspeed_soc.h |  5 ++---
+ hw/arm/aspeed_ast10x0.c     | 27 +++++++++++++++------------
+ hw/arm/fby35.c              | 13 ++++++++-----
+ 3 files changed, 25 insertions(+), 20 deletions(-)
 
-diff --git a/hw/arm/aspeed_soc_common.c b/hw/arm/aspeed_soc_common.c
-index b66f769d18..828f61093b 100644
---- a/hw/arm/aspeed_soc_common.c
-+++ b/hw/arm/aspeed_soc_common.c
-@@ -114,6 +114,16 @@ void aspeed_mmio_map_unimplemented(AspeedSoCState *s, SysBusDevice *dev,
-                                         sysbus_mmio_get_region(dev, 0), -1000);
- }
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index ee7926b81c..2118a441f7 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -47,13 +47,10 @@
+ #define ASPEED_JTAG_NUM  2
  
-+static void aspeed_soc_realize(DeviceState *dev, Error **errp)
-+{
-+    AspeedSoCState *s = ASPEED_SOC(dev);
+ struct AspeedSoCState {
+-    /*< private >*/
+     DeviceState parent;
+ 
+-    /*< public >*/
+     ARMCPU cpu[ASPEED_CPUS_NUM];
+     A15MPPrivState     a7mpcore;
+-    ARMv7MState        armv7m;
+     MemoryRegion *memory;
+     MemoryRegion *dram_mr;
+     MemoryRegion dram_container;
+@@ -117,6 +114,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(Aspeed2600SoCState, ASPEED2600_SOC)
+ 
+ struct Aspeed10x0SoCState {
+     AspeedSoCState parent;
 +
-+    if (!s->memory) {
-+        error_setg(errp, "'memory' link is not set");
-+        return;
-+    }
-+}
-+
- static Property aspeed_soc_properties[] = {
-     DEFINE_PROP_LINK("dram", AspeedSoCState, dram_mr, TYPE_MEMORY_REGION,
-                      MemoryRegion *),
-@@ -126,6 +136,7 @@ static void aspeed_soc_class_init(ObjectClass *oc, void *data)
++    ARMv7MState armv7m;
+ };
+ 
+ #define TYPE_ASPEED10X0_SOC "aspeed10x0-soc"
+diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
+index 1c15bf422f..8becb146a8 100644
+--- a/hw/arm/aspeed_ast10x0.c
++++ b/hw/arm/aspeed_ast10x0.c
+@@ -101,13 +101,15 @@ static const int aspeed_soc_ast1030_irqmap[] = {
+ 
+ static qemu_irq aspeed_soc_ast1030_get_irq(AspeedSoCState *s, int dev)
  {
-     DeviceClass *dc = DEVICE_CLASS(oc);
++    Aspeed10x0SoCState *a = ASPEED10X0_SOC(s);
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
  
-+    dc->realize = aspeed_soc_realize;
-     device_class_set_props(dc, aspeed_soc_properties);
+-    return qdev_get_gpio_in(DEVICE(&s->armv7m), sc->irqmap[dev]);
++    return qdev_get_gpio_in(DEVICE(&a->armv7m), sc->irqmap[dev]);
  }
  
+ static void aspeed_soc_ast1030_init(Object *obj)
+ {
++    Aspeed10x0SoCState *a = ASPEED10X0_SOC(obj);
+     AspeedSoCState *s = ASPEED_SOC(obj);
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+     char socname[8];
+@@ -118,7 +120,7 @@ static void aspeed_soc_ast1030_init(Object *obj)
+         g_assert_not_reached();
+     }
+ 
+-    object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
++    object_initialize_child(obj, "armv7m", &a->armv7m, TYPE_ARMV7M);
+ 
+     s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
+ 
+@@ -185,6 +187,7 @@ static void aspeed_soc_ast1030_init(Object *obj)
+ 
+ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+ {
++    Aspeed10x0SoCState *a = ASPEED10X0_SOC(dev_soc);
+     AspeedSoCState *s = ASPEED_SOC(dev_soc);
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+     DeviceState *armv7m;
+@@ -206,17 +209,17 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+                                   0x40000);
+ 
+     /* AST1030 CPU Core */
+-    armv7m = DEVICE(&s->armv7m);
++    armv7m = DEVICE(&a->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 256);
+     qdev_prop_set_string(armv7m, "cpu-type", sc->cpu_type);
+     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+-    object_property_set_link(OBJECT(&s->armv7m), "memory",
++    object_property_set_link(OBJECT(&a->armv7m), "memory",
+                              OBJECT(s->memory), &error_abort);
+-    sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), &error_abort);
++    sysbus_realize(SYS_BUS_DEVICE(&a->armv7m), &error_abort);
+ 
+     /* Internal SRAM */
+     sram_name = g_strdup_printf("aspeed.sram.%d",
+-                                CPU(s->armv7m.cpu)->cpu_index);
++                                CPU(a->armv7m.cpu)->cpu_index);
+     memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size, &err);
+     if (err != NULL) {
+         error_propagate(errp, err);
+@@ -249,7 +252,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+     }
+     aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->i2c), 0, sc->memmap[ASPEED_DEV_I2C]);
+     for (i = 0; i < ASPEED_I2C_GET_CLASS(&s->i2c)->num_busses; i++) {
+-        qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->armv7m),
++        qemu_irq irq = qdev_get_gpio_in(DEVICE(&a->armv7m),
+                                         sc->irqmap[ASPEED_DEV_I2C] + i);
+         /* The AST1030 I2C controller has one IRQ per bus. */
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c.busses[i]), 0, irq);
+@@ -261,7 +264,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+     }
+     aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->i3c), 0, sc->memmap[ASPEED_DEV_I3C]);
+     for (i = 0; i < ASPEED_I3C_NR_DEVICES; i++) {
+-        qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->armv7m),
++        qemu_irq irq = qdev_get_gpio_in(DEVICE(&a->armv7m),
+                                         sc->irqmap[ASPEED_DEV_I3C] + i);
+         /* The AST1030 I3C controller has one IRQ per bus. */
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i3c.devices[i]), 0, irq);
+@@ -290,19 +293,19 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+      * On the AST1030 LPC subdevice IRQs are connected straight to the GIC.
+      */
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->lpc), 1 + aspeed_lpc_kcs_1,
+-                       qdev_get_gpio_in(DEVICE(&s->armv7m),
++                       qdev_get_gpio_in(DEVICE(&a->armv7m),
+                                 sc->irqmap[ASPEED_DEV_KCS] + aspeed_lpc_kcs_1));
+ 
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->lpc), 1 + aspeed_lpc_kcs_2,
+-                       qdev_get_gpio_in(DEVICE(&s->armv7m),
++                       qdev_get_gpio_in(DEVICE(&a->armv7m),
+                                 sc->irqmap[ASPEED_DEV_KCS] + aspeed_lpc_kcs_2));
+ 
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->lpc), 1 + aspeed_lpc_kcs_3,
+-                       qdev_get_gpio_in(DEVICE(&s->armv7m),
++                       qdev_get_gpio_in(DEVICE(&a->armv7m),
+                                 sc->irqmap[ASPEED_DEV_KCS] + aspeed_lpc_kcs_3));
+ 
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->lpc), 1 + aspeed_lpc_kcs_4,
+-                       qdev_get_gpio_in(DEVICE(&s->armv7m),
++                       qdev_get_gpio_in(DEVICE(&a->armv7m),
+                                 sc->irqmap[ASPEED_DEV_KCS] + aspeed_lpc_kcs_4));
+ 
+     /* UART */
+diff --git a/hw/arm/fby35.c b/hw/arm/fby35.c
+index f2ff6c1abf..c8bc75d870 100644
+--- a/hw/arm/fby35.c
++++ b/hw/arm/fby35.c
+@@ -28,7 +28,7 @@ struct Fby35State {
+     Clock *bic_sysclk;
+ 
+     AspeedSoCState bmc;
+-    AspeedSoCState bic;
++    Aspeed10x0SoCState bic;
+ 
+     bool mmio_exec;
+ };
+@@ -114,10 +114,13 @@ static void fby35_bmc_init(Fby35State *s)
+ 
+ static void fby35_bic_init(Fby35State *s)
+ {
++    AspeedSoCState *soc;
++
+     s->bic_sysclk = clock_new(OBJECT(s), "SYSCLK");
+     clock_set_hz(s->bic_sysclk, 200000000ULL);
+ 
+     object_initialize_child(OBJECT(s), "bic", &s->bic, "ast1030-a1");
++    soc = ASPEED_SOC(&s->bic);
+ 
+     memory_region_init(&s->bic_memory, OBJECT(&s->bic), "bic-memory",
+                        UINT64_MAX);
+@@ -125,12 +128,12 @@ static void fby35_bic_init(Fby35State *s)
+     qdev_connect_clock_in(DEVICE(&s->bic), "sysclk", s->bic_sysclk);
+     object_property_set_link(OBJECT(&s->bic), "memory", OBJECT(&s->bic_memory),
+                              &error_abort);
+-    aspeed_soc_uart_set_chr(&s->bic, ASPEED_DEV_UART5, serial_hd(1));
++    aspeed_soc_uart_set_chr(soc, ASPEED_DEV_UART5, serial_hd(1));
+     qdev_realize(DEVICE(&s->bic), NULL, &error_abort);
+ 
+-    aspeed_board_init_flashes(&s->bic.fmc, "sst25vf032b", 2, 2);
+-    aspeed_board_init_flashes(&s->bic.spi[0], "sst25vf032b", 2, 4);
+-    aspeed_board_init_flashes(&s->bic.spi[1], "sst25vf032b", 2, 6);
++    aspeed_board_init_flashes(&soc->fmc, "sst25vf032b", 2, 2);
++    aspeed_board_init_flashes(&soc->spi[0], "sst25vf032b", 2, 4);
++    aspeed_board_init_flashes(&soc->spi[1], "sst25vf032b", 2, 6);
+ }
+ 
+ static void fby35_init(MachineState *machine)
 -- 
 2.41.0
 
