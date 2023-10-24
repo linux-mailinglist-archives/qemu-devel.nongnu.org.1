@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2FA7D43FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 02:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD587D440F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 02:31:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv5Fa-0006bV-Lk; Mon, 23 Oct 2023 20:26:26 -0400
+	id 1qv5Jx-00089V-7s; Mon, 23 Oct 2023 20:30:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qv5FY-0006aj-Ty
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 20:26:24 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1qv5Js-00088W-V6
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 20:30:52 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qv5FV-0003cg-PV
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 20:26:23 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1c9d3a21f7aso32395485ad.2
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 17:26:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1qv5Jq-0004lJ-KZ
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 20:30:52 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-507a0907896so5833222e87.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 17:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698107180; x=1698711980; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gvVyGBM8T6J19KXSvJoJDVcHQm+/47YxyeikL42z7hc=;
- b=p9+CgfGhlpBnD4o10lp+ZeUZK33vBnOjee49YWRV2Y7PS93wp1HRYc11Lic+Glk5OI
- VYgWZB/kLaqEyzw2BfPddzc4h9f0prlY5FE7jTd2j4sgr2lTkGro8X1qUOuu3yMqqSAp
- aNWlQnFxeakM7cfqU+6rLOK3JzVsHT6OzYSTwZvRoCe9k4C+h6cHUV1vx2fbcB4QaDhk
- NMc9SNfFaJy8zxnv6MlcYiE/4fca9/1TJgzwkbsMlqbnNxLGfj3HU9/t7p8z+p/1awat
- 1/TONnFU8QiMswM5eK8ORUJ2tHsu1lqxVJifuZf6Idtab73VdreyP0jQd6tp/v2qJZ66
- gaAw==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1698107447; x=1698712247;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hZIDcxlca7p9XBVGvLi+LRaNzw+sHyUcvlHAjA/fGh8=;
+ b=parf7Q9a+Fd6hEQGlLn+VS/WOSfuZw4ry9vtsMT477KS/PuDIEcCkAx3+jh8CAQT4F
+ 6YBOawpAuB5pLLC6APLJFHMcSxI/sqzFi28IL80ekKQN1IWCF7pRzdfWSMjFLfsaGoD4
+ UW6gp7UQcFkDdhKb1rGSjCBRSbWwmHhv97K4qrTGRqu62moyPBFe/Xzy7tZKZBmiPMj3
+ tOMxJDwaw3dXSgfc/pjVnQOJjyDiqtQ9EHbqgyqqrPELBFLXDuVX+CE6HDrqMi9wy3Mk
+ oOKGfEfT6RYXS8jlbaaFVd/BSdov8Y5SZuflIJCQYB3ccRu7pzd3PnPpwDeECJSgusHA
+ 1NLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698107180; x=1698711980;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gvVyGBM8T6J19KXSvJoJDVcHQm+/47YxyeikL42z7hc=;
- b=NSp5phHvVs0EfT64luBN9jPmpQbsu7/rKd9Ajyez9L8n1DEdvucD/v9F7Yopm2RylV
- h3bT4/jXOUqq5UDnp9pUekHHtDNThLlM3AfvAB/7it98wT/38aCu1N/UJBxlTSmNlv7Z
- M+2cw6QA9E4ydByYj36vNq6u9XIGHUt72DIhaBhFcg2Mznt0wf6hGZDFURg2ZS2zVoWO
- 5V6IjTexcxK8mWsKo2lW9X3HGEnosjCfSWZo0wD8ri2FOFKs07UIqLsXwcUf/FBk73+i
- h5i+qGJjlpKWWob77Tf65CzW8SZbBcDfvnv/e2ZxiaGI/ZlB5DZfd6Yk8rysL25iKvEA
- 3TgA==
-X-Gm-Message-State: AOJu0Yzuh8WDfBxCukful2pctGJJXR+pEeezyfT1BEmGbDRNQzUVcNKo
- 6XUV+3fYTagYmlV5KwzbXU4KDw==
-X-Google-Smtp-Source: AGHT+IG0A6sXduSr1MwmQPpw222loHCtZTt36ClEEF+PEAfAuRW/yL3kODCedkVpm751W24UsOjQ9A==
-X-Received: by 2002:a17:903:184:b0:1c6:1bf9:d88d with SMTP id
- z4-20020a170903018400b001c61bf9d88dmr13454862plg.44.1698107180209; 
- Mon, 23 Oct 2023 17:26:20 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- ix5-20020a170902f80500b001bb750189desm6513500plb.255.2023.10.23.17.26.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Oct 2023 17:26:19 -0700 (PDT)
-Message-ID: <db537981-e8ee-419c-9bc1-d9092ec60deb@linaro.org>
-Date: Mon, 23 Oct 2023 17:26:18 -0700
+ d=1e100.net; s=20230601; t=1698107447; x=1698712247;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hZIDcxlca7p9XBVGvLi+LRaNzw+sHyUcvlHAjA/fGh8=;
+ b=WXXzE93Cy2JQ6eHT8xHuqXrzhErV5PwVZxSZSGWqlFcBDdCalnO6jlw2n1q8Xpqc6E
+ xMxnsN1Vc+4TSklStUEtsT3h0POEyH1U/P8WtK+RRA4pTileR8foe/wQu81SfrwwG6kj
+ /nE/coKaTH+5rMn+P9Q0OyPBLL0vGC4ZeCovczRvdHa2ieG8qtO732cu9rYiyyyXlVhV
+ UWEWBJrfwfnAfuFcQq7Ge2+KBhywWIYZmBgReXl3P8vnswVROygJbNmC8lbNDXrK9CMi
+ WoFD5Mpi0+l35NH+WjUBOTspDcAyRCtDfaI3DtyXBFovygRfpniaRbI5hKie/CFiypR8
+ dbjw==
+X-Gm-Message-State: AOJu0Ywmi/4Sy8QJQ74q2orG0Cmwc3pzuHH9tqbcWt12CMh14pnmY19J
+ uBafatv72rr36RpJDK9sBkUkR9Wv+N/EEIw6zCewuQ==
+X-Google-Smtp-Source: AGHT+IGQslPupVujIPGeNSv5o7zUiJnA+g6CkEVuGosEFKVLmfPruprNwUoOWmwzGFn6+XVhKdFiYX1ViBqXshnDIpk=
+X-Received: by 2002:a19:6716:0:b0:500:780b:5bdc with SMTP id
+ b22-20020a196716000000b00500780b5bdcmr6858160lfc.49.1698107446919; Mon, 23
+ Oct 2023 17:30:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 8/9] target/cris: Use tcg_gen_sextract_tl
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-References: <20231023160944.10692-1-philmd@linaro.org>
- <20231023160944.10692-9-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231023160944.10692-9-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20231018154434.17367-1-rbradford@rivosinc.com>
+ <20231018154434.17367-6-rbradford@rivosinc.com>
+ <CAKmqyKPeyseoGFtpHefWvLWSjjpZaAbBbSoQZyvb5Ti3SiGKsw@mail.gmail.com>
+In-Reply-To: <CAKmqyKPeyseoGFtpHefWvLWSjjpZaAbBbSoQZyvb5Ti3SiGKsw@mail.gmail.com>
+From: Atish Kumar Patra <atishp@rivosinc.com>
+Date: Mon, 23 Oct 2023 17:30:36 -0700
+Message-ID: <CAHBxVyF_cGnOv-pUNV2DMEADBTFgHqwFjLQv9O3v_x0107OYWw@mail.gmail.com>
+Subject: Re: [PATCH v4 5/6] docs/about/deprecated: Document RISC-V "pmu-num"
+ deprecation
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+ "reviewer:Incompatible changes" <libvir-list@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=atishp@rivosinc.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,32 +93,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/23/23 09:09, Philippe Mathieu-Daudé wrote:
-> Inspired-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> RFC: please double-check bits
-> ---
->   target/cris/translate.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/target/cris/translate.c b/target/cris/translate.c
-> index 65b07e1d80..3a161f8f73 100644
-> --- a/target/cris/translate.c
-> +++ b/target/cris/translate.c
-> @@ -336,8 +336,7 @@ static void t_gen_cris_mstep(TCGv d, TCGv a, TCGv b, TCGv ccs)
->        */
->       t = tcg_temp_new();
->       tcg_gen_shli_tl(d, a, 1);
-> -    tcg_gen_shli_tl(t, ccs, 31 - 3);
-> -    tcg_gen_sari_tl(t, t, 31);
-> +    tcg_gen_sextract_tl(t, ccs, 3, 1);
+On Sun, Oct 22, 2023 at 7:04=E2=80=AFPM Alistair Francis <alistair23@gmail.=
+com> wrote:
+>
+> On Thu, Oct 19, 2023 at 1:47=E2=80=AFAM Rob Bradford <rbradford@rivosinc.=
+com> wrote:
+> >
+> > This has been replaced by a "pmu-mask" property that provides much more
+> > flexibility.
+> >
+> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+>
+> Alistair
+>
+> > ---
+> >  docs/about/deprecated.rst | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> > index 2febd2d12f..857b5d4fc4 100644
+> > --- a/docs/about/deprecated.rst
+> > +++ b/docs/about/deprecated.rst
+> > @@ -405,6 +405,18 @@ Specifying the iSCSI password in plain text on the=
+ command line using the
+> >  used instead, to refer to a ``--object secret...`` instance that provi=
+des
+> >  a password via a file, or encrypted.
+> >
+> > +CPU device properties
+> > +'''''''''''''''''''''
+> > +
+> > +``pmu-num=3Dn`` on RISC-V CPUs (since 8.2)
+> > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > +
+> > +In order to support more flexible counter configurations this has been=
+ replaced
+> > +by a ``pmu-mask`` property. If set of counters is continuous then the =
+mask can
+> > +be calculated with ``((2 ^ n) - 1) << 3``. The least significant three=
+ bits
+> > +must be left clear.
+> > +
+> > +
+> >  Backwards compatibility
+> >  -----------------------
+> >
+> > --
+> > 2.41.0
+> >
+> >
 
-tcg_gen_sextract_tl(t, ccs, ctz32(N_FLAG), 1);
 
-Also, it appears t_gen_cris_mstep consumes CCS without making sure that it is up-to-date.
-Edgar?
-
-
-r~
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
 
