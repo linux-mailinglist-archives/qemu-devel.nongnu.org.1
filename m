@@ -2,106 +2,187 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514087D471F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 07:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F302A7D472E
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 08:05:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvAN7-0001kv-Jx; Tue, 24 Oct 2023 01:54:33 -0400
+	id 1qvAW3-0003aK-66; Tue, 24 Oct 2023 02:03:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qvAN3-0001kY-F6
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 01:54:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qvAW1-0003Zz-2I
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 02:03:45 -0400
+Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qvAMz-000538-DJ
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 01:54:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698126864;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=29MSXS8Ff0KGy9ttMmvyrvZNG1AG8MZWu8WZUzURdRw=;
- b=AViLRwAa6LCJZZOBnppfbySIcmxuUB2xdsszL58qND6RQDrnXHWmB5TZ/1DuUvkighwdlb
- w5MY1g06VfY0/tljRv2Ky/g/FW+f0TkaKyFYmm7eujzXfgWXafHL3GzE//4LaazW7d30lw
- HHj/rt+SwxO6oy8YAJ2GIcpuPXX3Npo=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-133-2Hdr__O-M4C3xZ9cmXPyJA-1; Tue, 24 Oct 2023 01:54:23 -0400
-X-MC-Unique: 2Hdr__O-M4C3xZ9cmXPyJA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7789f06778aso888241285a.0
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 22:54:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698126862; x=1698731662;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=29MSXS8Ff0KGy9ttMmvyrvZNG1AG8MZWu8WZUzURdRw=;
- b=L5rNxMVU2cWgX34u2t9c/oO64UkfvN+6xncSkEah0pO1IDakNppip/m7PyEp7inS0Y
- 6TzUF8+3vuTUVkDXZK6a1l+xCzFiS7cTBljKkaX/8UmeJ6GexbuWs8PSIQNM2RLh++Kk
- 0KkGd3+4J8UOCf0PIElx5pTKP9zbfKsLcTqDKf+cNzptRrJQbHdssLFR+HymRT6uGFGB
- RhPSt6QbhffSvXOoiI3szulMtytNhO9GFvVNrWC5y7kZ/vHXhT0dmNViDsLUkP6gKtkh
- xF6QJkOESpRFEBClvMD8vsZ3fc/4Qvpw6lM4qT5B224qYJj9C2hfTQLOmcI15P/9ZNnn
- bdag==
-X-Gm-Message-State: AOJu0Yz1rtBPM8kuGqoO07LQVCZo++dqaf5EUHCQipb5oZNyCLfq3AP3
- 4zWZ/2eUbSSc/Un4M9hmor/zRbKJBupKMh1Ch+k2RbfxIJ7jVN4Zo1RuYEMf0XDkuy1r9MgkYPj
- u4bBG+Ut0EGPEgxlxnwaPdbHV6iobXfi2Vtf7wQdqflHn7iQbDkPKavWYPusCoyungPDZ
-X-Received: by 2002:a05:620a:44d3:b0:775:8fab:8c6f with SMTP id
- y19-20020a05620a44d300b007758fab8c6fmr18843825qkp.29.1698126861994; 
- Mon, 23 Oct 2023 22:54:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0dAGBLq//gmeTnuzIddTONVGSXpFjtLgL1gVc9QfRMQhD7wJik0fSeFCA9CY/jMRLtPucBg==
-X-Received: by 2002:a05:620a:44d3:b0:775:8fab:8c6f with SMTP id
- y19-20020a05620a44d300b007758fab8c6fmr18843789qkp.29.1698126861486; 
- Mon, 23 Oct 2023 22:54:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
- ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
- by smtp.gmail.com with ESMTPSA id
- k7-20020a0cd687000000b0065b02eaeee7sm3396139qvi.83.2023.10.23.22.54.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Oct 2023 22:54:21 -0700 (PDT)
-Message-ID: <7ba4059a-db0d-476c-b925-407e4832e686@redhat.com>
-Date: Tue, 24 Oct 2023 07:54:15 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] hw/pci: modify pci_setup_iommu() to set PCIIOMMUOps
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qvAVy-0006nv-3T
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 02:03:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1698127422; x=1729663422;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=pxu6uLInzIlWzq7Lp3OvdBLWzaLxyKtVM2YQ5Nuk+nA=;
+ b=YOYFCfEy+DapuOlB1lA40/w2BDDJtoUsvfnIkjVidnHZlE7xmTIHX3ns
+ MoADH0FCZxThhqRN88SPgQv9nImZm1rA9QdtYVvnNFRBylb8dOf/3Bgy7
+ 7NWHPdHrwyWmJGwNMNfd8oKC5TUfOGvpAzTzrQTga8T2HT+e5m3vB2JQn
+ obYWJPz4nS3Ox04RANNQUgePEIhJQHWmsXcKcLCP1Y0ga/AkFkx1nf0Eb
+ kgmNSOaHaI7ZyLoF2ZycYDM4/y+b/oQsMH7oKuZO/hsxK2EN+nUSNVOMw
+ cgTKfZhwPOb3DukxCp+zSk0EZzdukDnIPa1lf2+DkmY8etyIjN9cs+SG9 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="386804582"
+X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; d="scan'208";a="386804582"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2023 23:03:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="751888198"
+X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; d="scan'208";a="751888198"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 23 Oct 2023 23:03:33 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Mon, 23 Oct 2023 23:03:33 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Mon, 23 Oct 2023 23:03:33 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Mon, 23 Oct 2023 23:03:33 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Mon, 23 Oct 2023 23:03:32 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YpIAdAWrFoMYlY/3tJIuOUja6cJjNMY2x3f2mJ9OPysvapUtkSCBjCy8vGk3+wIKTBR4N6QLRsWwKPDrZkzb1iBPvMZKxQr4zMznYmWLMEyxv/ic3JSaNeBE6Mlbzw78ZMbmCVGzYqP+xoznZEC7dQzJ7BWcM0sXeUHgqv5jI9TAF7EBgk0rlhoyQAm0jBnYcPmJKstRrxkt5c+EQjsognlzAmSPs9zI/TruDBMaTA+16A+VAgP9AmRITvNBkH43afuKhi7X5RQx/bX3DD9PaLq3uuM6cxYsggWmn7GfO09AAeHRamO4lYdyQjDgXO/VdJf4oDfklz/7yh8G384JIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pxu6uLInzIlWzq7Lp3OvdBLWzaLxyKtVM2YQ5Nuk+nA=;
+ b=avt6ICxS8xHmtYrCKz8Yw4qTWIbbWfxnG0qKZaP47pKi9HnBelIM0Tvv9rxkVsTnFnz120cFq6B1809toW6nFL5B/GBSlUAXa88t03esCkEoDp8UXfqf351VBbZbDcx76roeHyqopwyVLf1s9ITj+e7Zv2caXSYvO0WYk4IihYLUVhRACzYbAlIZyJ9S1qRzepEZ4WD2wpZMo4gooyhHvIcfE2sN3zUVD0LU5RwCP4izWxEAJ0Xt3RvpIR6bilns3PtmTf/+rULdpXh8WE+U7g/UqXSDIO8iykaZahn6NLDk6iOyQRLYcunEPaJX/olAksukI0GKkDILkibKA89wXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6722.namprd11.prod.outlook.com (2603:10b6:510:1ae::15)
+ by MW4PR11MB6837.namprd11.prod.outlook.com (2603:10b6:303:221::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26; Tue, 24 Oct
+ 2023 06:03:30 +0000
+Received: from PH7PR11MB6722.namprd11.prod.outlook.com
+ ([fe80::2cfd:ca55:d42a:e46a]) by PH7PR11MB6722.namprd11.prod.outlook.com
+ ([fe80::2cfd:ca55:d42a:e46a%3]) with mapi id 15.20.6907.025; Tue, 24 Oct 2023
+ 06:03:30 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L"
+ <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
+ <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>, David Gibson
+ <david@gibson.dropbear.id.au>
+Subject: RE: [PATCH v2 02/27] vfio: Introduce base object for VFIOContainer
+ and targetted interface
+Thread-Topic: [PATCH v2 02/27] vfio: Introduce base object for VFIOContainer
+ and targetted interface
+Thread-Index: AQHaAA1niboIxiaoHk+mLfxtQdCD+rBOI2WAgACzxLCAAFwsgIABLpGggACqjoCAAP5hIIAAUToAgAUvEgCAAO2fYA==
+Date: Tue, 24 Oct 2023 06:03:29 +0000
+Message-ID: <PH7PR11MB6722A19603BF7CB244BBB27A92DFA@PH7PR11MB6722.namprd11.prod.outlook.com>
+References: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
+ <20231016083223.1519410-3-zhenzhong.duan@intel.com>
+ <f8089865-20cf-4f11-981a-e593a103a387@redhat.com>
+ <PH7PR11MB6722FF23DC574EB09300075292D5A@PH7PR11MB6722.namprd11.prod.outlook.com>
+ <c5c0c0ff-3eb1-4b46-b39c-e4e7fa250618@redhat.com>
+ <PH7PR11MB67226A6A32A4655138CE1C8A92D4A@PH7PR11MB6722.namprd11.prod.outlook.com>
+ <cf232093-a59c-49ef-9271-bb691860215b@redhat.com>
+ <PH7PR11MB6722D6969CD287A86CFC469792DBA@PH7PR11MB6722.namprd11.prod.outlook.com>
+ <3573353d-5153-2678-e121-33cf20798aa6@redhat.com>
+ <759053f1-995b-4238-b0be-bace84a1249c@redhat.com>
+In-Reply-To: <759053f1-995b-4238-b0be-bace84a1249c@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Joao Martins <joao.m.martins@oracle.com>, Yi Liu <yi.l.liu@intel.com>,
- Kevin Tian <kevin.tian@intel.com>, Jacob Pan
- <jacob.jun.pan@linux.intel.com>, Peter Xu <peterx@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Yi Sun <yi.y.sun@linux.intel.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Helge Deller <deller@gmx.de>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20231023082416.180262-1-clg@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231023082416.180262-1-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6722:EE_|MW4PR11MB6837:EE_
+x-ms-office365-filtering-correlation-id: a19a3117-7050-4921-8c30-08dbd456f220
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: bTGhrRiS2JV9OPadCEaVk2hSSjtgAiyjhJT+A7/4ZXvk8JwG2MtqEXAYyFZAN1MkfJbssNhMo1w62hK9cBZQWdfNNZMOY+xi4g2nGO1axOpPB5hMbv4xDzieYo+Upjxw6GZA4292+RglhY2/FzCsrqY4lkSeN7Puy9HT+4F4YAJyO10rj83dtomX5zD2sypmMe7yVD6ilcwwBQ9o0pRy1OIoeRVLYOgEywSNn2g7KEKJCbaDW7239cDMpUnP/PxHcEw8sWDIK1dh5snrs7QLlZaLXq+maJwtNcbI8472+Ew8K3/3OjYlZeQuVNGb9U3FGigHZHLwRFsIWIOcIPeUDlu5U9kvJw0sGDDzEPh5+n//PXlb+EXsZjNtL040/hGJnee4gWfki5Zuxm73aUT7RyVi4c8/7Lm8d/hjKC8yDLLlQ+TGdTa89wh79Agx2AaAmymOEPNidVCwuE6GImRmmE7NdweLoxdOcT33DuKJ6PjZJTZNTbGxdvPZffST4QSAdW6Ixh24L7rqE7YjT/k0mU0JRlX5NQYYH/L96esZbwiQMpBxZWn8lCfN1sH/Sb4fwYf+540OUzcezbyZNwOpAeQxwQZ8eoAse7l/1vNKsqLGOLT5zzkv+lDoFU7DEaKYf80/jO3Pww7pKam4H8cc+Q9QNDQrcIyyoXubc8webaM=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6722.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(346002)(366004)(396003)(39860400002)(136003)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(38070700009)(26005)(9686003)(53546011)(55016003)(478600001)(86362001)(966005)(82960400001)(38100700002)(33656002)(122000001)(2906002)(66574015)(83380400001)(7416002)(71200400001)(7696005)(6506007)(8676002)(66556008)(54906003)(8936002)(316002)(4326008)(52536014)(66446008)(41300700001)(66476007)(76116006)(110136005)(66946007)(64756008)(5660300002)(2004002);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YlFEelFxU0grenIvVk1YNldrN283eko4WUZFaHZETithTHlRMUFBZ1MrMmFm?=
+ =?utf-8?B?aG9rRUVJUnIvL3AxZ0dva0g0Y0xDWTVaVlMzVTdadzNwZnBLYlBWTGsyWHJh?=
+ =?utf-8?B?TXI5cHVOWVN0bUhDdkdXR3Y4QitLemF2TmhVQUlSTUY5NlFPTXVaVGFrWUEz?=
+ =?utf-8?B?NTlRR0xTZWpwdkV5UUFFRkJTYUIvajB2N285VE9lOW5KUWVMc2tPS3N2Nkox?=
+ =?utf-8?B?cEs3WUFreUNtNlhMN2lPTjB4VjJpQ293NXVNQUVMMklyaC9oOGU2cWJwb1F1?=
+ =?utf-8?B?b1VDR1RpTGY4WmxXc1N6UXRkYVJTVWloMHJyUzdReEt6RXJ2aWpnOFpadERM?=
+ =?utf-8?B?WWUzMUxyU1ZTU1NzMGgrTVhVbXpmOGtjWHY5QjVWTy8rMjRpZWViRDM2ZCtE?=
+ =?utf-8?B?ZzdRcVA2R3lmRzVyL09JMzkrQUoxQWZxTi94N1JTcEQvUVVXTXVZQVk5TFRz?=
+ =?utf-8?B?d3VnYlBNTkl6S2FkTmRIcm5Fem8yREJqL0dWU2pzaHcvNFlFVG0vMXZqdmJj?=
+ =?utf-8?B?Ykp4SUZDNGtIUGE5UnlmbVAyWlJvR21ITThiaFBab3gyMEpaRC9FZHJ2OTlI?=
+ =?utf-8?B?aENaWTIwb1ZLSXFPRk01T0s2N213anYyWDNGWkVQc3IyTklZa1pYZUFZdzA5?=
+ =?utf-8?B?a2FUck0rL2hVQjgyTUdRdXVDS2M3VjdqNVp6OWUzNldjUVdhYTVuemFlM0Ni?=
+ =?utf-8?B?U3NyVFgzQ2k3Uy9IS05OS0lBcnIrODRjM0NmcW0yV3NNcXBGQVJNS0p4OGpn?=
+ =?utf-8?B?T3I2RkI5TGtCaG5kUHMyUitSRmcyR3JMeFArUWN5L0U5Ryt1T0wxVHhSNS93?=
+ =?utf-8?B?RDhHTDd2MS8rRm5OanVoQno2d3ByRDVQN3Y1SFJHN2RiU21TNU5SUmVuNDhN?=
+ =?utf-8?B?YVl0dlBVWUF3aW53Z29CY0pXblkyajdDa1cvemU0OVRELy9VZWptQndqMWJQ?=
+ =?utf-8?B?b0lHSjJIbERhaUcwbkRrZTh4MFBnaGsvK1JDNjlCQytxcGRoSnNUNEdVNnoz?=
+ =?utf-8?B?N0hjNWMvd1JaTWlCMjdEVVQwakxjS3NGZmt1T3FhTm81YWwyc3RBb0xTalQ4?=
+ =?utf-8?B?RHNTdzlJR0svTWd1S3JPYjFHcUVuMEtFTTI2bE5BdG5aWDZ1YkFWK1NOclJi?=
+ =?utf-8?B?MlpKQVRkQlJkQ0w1dUt1WjYxcWhYd3NsMHN0aWE3eTZDV2JPQ3crL0V5Mm5r?=
+ =?utf-8?B?eVhKQlJPaXhER2htbHFUVmVZeG9lL1FOL2lBc1FLb3NMUEhYWW1JZnlXU0N1?=
+ =?utf-8?B?QUJSSkd0c3pLb3lVcXp2M3lFTGlLaU13aGNzYTBmd1BtMEpMeUx6SlpYaFh6?=
+ =?utf-8?B?cTJmTFpYTnFlRDV4bnNYZHZhbWxsQjU4YndkUGZSYmM1bUlRUjNaWUNDU1Vt?=
+ =?utf-8?B?Qlp0cjNuV1dneUduOTFDK1ozS1VjQ0dHdWNEcURXOVNydS9kMGc0bHhzbFdM?=
+ =?utf-8?B?ajYrVUFCcGMxaEFyR0FJZnFTN2diOElEMlJtSGxTS1hWMGNzbWxQTGFJZEN5?=
+ =?utf-8?B?V0wreGlJR1YvcW1MWWVXNHdhMXA0VFJFMkFJKzIrOTNTS1BWVUhKL3N2YWlt?=
+ =?utf-8?B?VC9qd2p4TU5KUGxCL3J0L0NaT2hyaWVYRjZSR2IxcEhvQ0ZrR21CWWl1ei9i?=
+ =?utf-8?B?NjV1WXBuMTArSEYwU3c0TXQxS3NBUFZPdGl0ZHFDcnJQbVJVQzR6NE5Dcnhn?=
+ =?utf-8?B?VEExeFNsL244aVNDSXo0UE1oZ0M4ditSKzFORkljOWYwZEhBSU1oYWFVVnpB?=
+ =?utf-8?B?T3dUNCtHNng4RXVtTWI5Qkxjb1FXaHBSbHZoT1F6UVU1YmJMNjV1ZXAvcUZn?=
+ =?utf-8?B?U045d2VCMjg1STRjNHgzNWVKeHVuSkV2dkxCTFdDRzY5b3pLTklrZmRzNHRL?=
+ =?utf-8?B?MUJZUXczMzVNMHZoZTZEMXJwZ0VFTlorV1Vwa0RGZFFwbmN6UFRqNlFwbzhh?=
+ =?utf-8?B?SjVBYWFMaDVnTytvMXNxakhOcTRyc2pkZXRYRlFXZjFWRy85aUt0YnloTEx5?=
+ =?utf-8?B?WFF4czdvTFRtWmlhbWV5TU5PYWlDMjAzSHV4NE1YaE1MdnhhZmE1UTFqN29q?=
+ =?utf-8?B?ZURFYlRWcHVFMkpTZDZxdEtoWmRjQ0g0WjJURG1uRDgxZGwxOVJSdndNdm5s?=
+ =?utf-8?Q?Cyx3iWH8R6ISYbdqAYKL5MhkK?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6722.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a19a3117-7050-4921-8c30-08dbd456f220
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Oct 2023 06:03:29.7099 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jf9wh+ei5ERwpMvkJt49D6PSgVvGj93TlE+p7xA0GPEfafKF8MChR9wzcnU3F8nbj/voen5HSnYr6NpaGEQg6VvamfIn7iM6TcGYyzQ22Mc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6837
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.115;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,675 +198,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Michael,
-
-On 10/23/23 10:24, Cédric Le Goater wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
-> 
-> This patch modifies pci_setup_iommu() to set PCIIOMMUOps
-> instead of setting PCIIOMMUFunc. PCIIOMMUFunc is used to
-> get an address space for a PCI device in vendor specific
-> way. The PCIIOMMUOps still offers this functionality. But
-> using PCIIOMMUOps leaves space to add more iommu related
-> vendor specific operations.
-> 
-> Cc: Kevin Tian <kevin.tian@intel.com>
-> Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Eric Auger <eric.auger@redhat.com>
-> Cc: Yi Sun <yi.y.sun@linux.intel.com>
-> Cc: David Gibson <david@gibson.dropbear.id.au>
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Eric Auger <eric.auger@redhat.com>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Hervé Poussineau <hpoussin@reactos.org>
-> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Cc: BALATON Zoltan <balaton@eik.bme.hu>
-> Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>
-> Cc: Jagannathan Raman <jag.raman@oracle.com>
-> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-> Cc: Eric Farman <farman@linux.ibm.com>
-> Cc: Halil Pasic <pasic@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Eric Auger <eric.auger@redhat.com>
-> [ clg: - refreshed on latest QEMU
->         - included hw/remote/iommu.c
->         - documentation update
->         - asserts in pci_setup_iommu()
->         - removed checks on iommu_bus->iommu_ops->get_address_space
->         - included Elroy PCI host (PA-RISC) ]
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
-> 
->   Hello,
-> 
->   Initially sent by Yi Liu as part of series "intel_iommu: expose
->   Shared Virtual Addressing to VMs" [1], this patch would also simplify
->   the changes Joao wants to introduce in "vfio: VFIO migration support
->   with vIOMMU" [2].
-> 
->   Has anyone objections ?
-
-
-
-Could you please ack this patch (or not) ? I will take it in vfio-next then
-if you agree.
-
-Thanks,
-
-C.
-
-
-
-> 
->   Thanks,
-> 
->   C.
-> 
->   [1] https://lore.kernel.org/qemu-devel/20210302203827.437645-5-yi.l.liu@intel.com/
->   [2] https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
-> 
->   Changes in v5 :
-> 
->   - Fixes for new Elroy PCI host (PA-RISC) model
-> 
->   Changes in v4 :
-> 
->   - describe get_address_space() as a mandatory callback
-> 
->   Changes in v3 :
-> 
->   - New Documentation
->   - Create a pci.rst for the kernel-doc comments of
->     include/hw/pci/pci.h
->   - asserts in pci_setup_iommu()
->   - removed checks on iommu_bus->iommu_ops->get_address_space
-> 
->   Changes in v2 :
-> 
->   - PCIIOMMUOps definition cleanups
->   
->   docs/devel/index-api.rst |  1 +
->   docs/devel/pci.rst       |  8 ++++++++
->   include/hw/pci/pci.h     | 36 ++++++++++++++++++++++++++++++++++--
->   include/hw/pci/pci_bus.h |  2 +-
->   hw/alpha/typhoon.c       |  6 +++++-
->   hw/arm/smmu-common.c     |  6 +++++-
->   hw/i386/amd_iommu.c      |  6 +++++-
->   hw/i386/intel_iommu.c    |  6 +++++-
->   hw/pci-host/astro.c      |  6 +++++-
->   hw/pci-host/designware.c |  6 +++++-
->   hw/pci-host/dino.c       |  6 +++++-
->   hw/pci-host/pnv_phb3.c   |  6 +++++-
->   hw/pci-host/pnv_phb4.c   |  6 +++++-
->   hw/pci-host/ppce500.c    |  6 +++++-
->   hw/pci-host/raven.c      |  6 +++++-
->   hw/pci-host/sabre.c      |  6 +++++-
->   hw/pci/pci.c             | 18 +++++++++++++-----
->   hw/ppc/ppc440_pcix.c     |  6 +++++-
->   hw/ppc/spapr_pci.c       |  6 +++++-
->   hw/remote/iommu.c        |  6 +++++-
->   hw/s390x/s390-pci-bus.c  |  8 ++++++--
->   hw/virtio/virtio-iommu.c |  6 +++++-
->   22 files changed, 143 insertions(+), 26 deletions(-)
->   create mode 100644 docs/devel/pci.rst
-> 
-> diff --git a/docs/devel/index-api.rst b/docs/devel/index-api.rst
-> index 539ad29c215e803568b1d7b0ba6766c0cc9d2b8b..fe01b2b488d0b61376560011a660389603e4ce8e 100644
-> --- a/docs/devel/index-api.rst
-> +++ b/docs/devel/index-api.rst
-> @@ -11,6 +11,7 @@ generated from in-code annotations to function prototypes.
->      loads-stores
->      memory
->      modules
-> +   pci
->      qom-api
->      qdev-api
->      ui
-> diff --git a/docs/devel/pci.rst b/docs/devel/pci.rst
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..68739334f3c936cc28b8fceac6dbebbfe68e78a2
-> --- /dev/null
-> +++ b/docs/devel/pci.rst
-> @@ -0,0 +1,8 @@
-> +=============
-> +PCI subsystem
-> +=============
-> +
-> +API Reference
-> +-------------
-> +
-> +.. kernel-doc:: include/hw/pci/pci.h
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index ea5aff118bde588a1a3d4fc58d4740fd20d6d88e..fa6313aabc43b81594ee95d1d17bd9653aeb7a69 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -363,10 +363,42 @@ void pci_bus_get_w64_range(PCIBus *bus, Range *range);
->   
->   void pci_device_deassert_intx(PCIDevice *dev);
->   
-> -typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *, int);
-> +
-> +/**
-> + * struct PCIIOMMUOps: callbacks structure for specific IOMMU handlers
-> + * of a PCIBus
-> + *
-> + * Allows to modify the behavior of some IOMMU operations of the PCI
-> + * framework for a set of devices on a PCI bus.
-> + */
-> +typedef struct PCIIOMMUOps {
-> +    /**
-> +     * @get_address_space: get the address space for a set of devices
-> +     * on a PCI bus.
-> +     *
-> +     * Mandatory callback which returns a pointer to an #AddressSpace
-> +     *
-> +     * @bus: the #PCIBus being accessed.
-> +     *
-> +     * @opaque: the data passed to pci_setup_iommu().
-> +     *
-> +     * @devfn: device and function number
-> +     */
-> +   AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
-> +} PCIIOMMUOps;
->   
->   AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
-> -void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
-> +
-> +/**
-> + * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
-> + *
-> + * Let PCI host bridges define specific operations.
-> + *
-> + * @bus: the #PCIBus being updated.
-> + * @ops: the #PCIIOMMUOps
-> + * @opaque: passed to callbacks of the @ops structure.
-> + */
-> +void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque);
->   
->   pcibus_t pci_bar_address(PCIDevice *d,
->                            int reg, uint8_t type, pcibus_t size);
-> diff --git a/include/hw/pci/pci_bus.h b/include/hw/pci/pci_bus.h
-> index 56531759578ffe2c6eccc92ebae4acabf47e390d..226131254621f257eefb45356489c125381e6a87 100644
-> --- a/include/hw/pci/pci_bus.h
-> +++ b/include/hw/pci/pci_bus.h
-> @@ -33,7 +33,7 @@ enum PCIBusFlags {
->   struct PCIBus {
->       BusState qbus;
->       enum PCIBusFlags flags;
-> -    PCIIOMMUFunc iommu_fn;
-> +    const PCIIOMMUOps *iommu_ops;
->       void *iommu_opaque;
->       uint8_t devfn_min;
->       uint32_t slot_reserved_mask;
-> diff --git a/hw/alpha/typhoon.c b/hw/alpha/typhoon.c
-> index 49a80550c54d4ed9ee40f9959cbf2c83240d8e39..e8711ae16a3e16c733405034be5e65688ef4d3df 100644
-> --- a/hw/alpha/typhoon.c
-> +++ b/hw/alpha/typhoon.c
-> @@ -738,6 +738,10 @@ static AddressSpace *typhoon_pci_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->       return &s->pchip.iommu_as;
->   }
->   
-> +static const PCIIOMMUOps typhoon_iommu_ops = {
-> +    .get_address_space = typhoon_pci_dma_iommu,
-> +};
-> +
->   static void typhoon_set_irq(void *opaque, int irq, int level)
->   {
->       TyphoonState *s = opaque;
-> @@ -897,7 +901,7 @@ PCIBus *typhoon_init(MemoryRegion *ram, qemu_irq *p_isa_irq,
->                                "iommu-typhoon", UINT64_MAX);
->       address_space_init(&s->pchip.iommu_as, MEMORY_REGION(&s->pchip.iommu),
->                          "pchip0-pci");
-> -    pci_setup_iommu(b, typhoon_pci_dma_iommu, s);
-> +    pci_setup_iommu(b, &typhoon_iommu_ops, s);
->   
->       /* Pchip0 PCI special/interrupt acknowledge, 0x801.F800.0000, 64MB.  */
->       memory_region_init_io(&s->pchip.reg_iack, OBJECT(s), &alpha_pci_iack_ops,
-> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-> index f35ae9aa22cb1a62cc16c2534cb3c290862b0799..9a8ac45431abb80fc5e9f60104248cb356509088 100644
-> --- a/hw/arm/smmu-common.c
-> +++ b/hw/arm/smmu-common.c
-> @@ -605,6 +605,10 @@ static AddressSpace *smmu_find_add_as(PCIBus *bus, void *opaque, int devfn)
->       return &sdev->as;
->   }
->   
-> +static const PCIIOMMUOps smmu_ops = {
-> +    .get_address_space = smmu_find_add_as,
-> +};
-> +
->   IOMMUMemoryRegion *smmu_iommu_mr(SMMUState *s, uint32_t sid)
->   {
->       uint8_t bus_n, devfn;
-> @@ -661,7 +665,7 @@ static void smmu_base_realize(DeviceState *dev, Error **errp)
->       s->smmu_pcibus_by_busptr = g_hash_table_new(NULL, NULL);
->   
->       if (s->primary_bus) {
-> -        pci_setup_iommu(s->primary_bus, smmu_find_add_as, s);
-> +        pci_setup_iommu(s->primary_bus, &smmu_ops, s);
->       } else {
->           error_setg(errp, "SMMU is not attached to any PCI bus!");
->       }
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index 7965415b47152f307a84e2823ccdcf8a2c2ff66f..4203144da9865efa61afc0df2fae12f8fd432728 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -1450,6 +1450,10 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->       return &iommu_as[devfn]->as;
->   }
->   
-> +static const PCIIOMMUOps amdvi_iommu_ops = {
-> +    .get_address_space = amdvi_host_dma_iommu,
-> +};
-> +
->   static const MemoryRegionOps mmio_mem_ops = {
->       .read = amdvi_mmio_read,
->       .write = amdvi_mmio_write,
-> @@ -1581,7 +1585,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
->                             AMDVI_MMIO_SIZE);
->       memory_region_add_subregion(get_system_memory(), AMDVI_BASE_ADDR,
->                                   &s->mmio);
-> -    pci_setup_iommu(bus, amdvi_host_dma_iommu, s);
-> +    pci_setup_iommu(bus, &amdvi_iommu_ops, s);
->       amdvi_init(s);
->   }
->   
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index e4f6cedcb14f24ecd7da34eadfec3c52dae2c228..e1d42ba893180969f5912f04ebf443dacc9a3e85 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -4034,6 +4034,10 @@ static AddressSpace *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->       return &vtd_as->as;
->   }
->   
-> +static PCIIOMMUOps vtd_iommu_ops = {
-> +    .get_address_space = vtd_host_dma_iommu,
-> +};
-> +
->   static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
->   {
->       X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
-> @@ -4156,7 +4160,7 @@ static void vtd_realize(DeviceState *dev, Error **errp)
->       s->vtd_address_spaces = g_hash_table_new_full(vtd_as_hash, vtd_as_equal,
->                                         g_free, g_free);
->       vtd_init(s);
-> -    pci_setup_iommu(bus, vtd_host_dma_iommu, dev);
-> +    pci_setup_iommu(bus, &vtd_iommu_ops, dev);
->       /* Pseudo address space under root PCI bus. */
->       x86ms->ioapic_as = vtd_host_dma_iommu(bus, s, Q35_PSEUDO_DEVFN_IOAPIC);
->       qemu_add_machine_init_done_notifier(&vtd_machine_done_notify);
-> diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-> index 4b2d7caf2d4bdd306958727d6ee6e7480a8ef086..84e0ca14ac5af5c9d343b6f894f579d1b3b95ea8 100644
-> --- a/hw/pci-host/astro.c
-> +++ b/hw/pci-host/astro.c
-> @@ -345,6 +345,10 @@ static AddressSpace *elroy_pcihost_set_iommu(PCIBus *bus, void *opaque,
->       return &s->astro->iommu_as;
->   }
->   
-> +static const PCIIOMMUOps elroy_pcihost_iommu_ops = {
-> +    .get_address_space = elroy_pcihost_set_iommu,
-> +};
-> +
->   /*
->    * Encoding in IOSAPIC:
->    * base_addr == 0xfffa0000, we want to get 0xa0ff0000.
-> @@ -834,7 +838,7 @@ static void astro_realize(DeviceState *obj, Error **errp)
->                                    &elroy->pci_io);
->   
->           /* Host memory as seen from the PCI side, via the IOMMU.  */
-> -        pci_setup_iommu(PCI_HOST_BRIDGE(elroy)->bus, elroy_pcihost_set_iommu,
-> +        pci_setup_iommu(PCI_HOST_BRIDGE(elroy)->bus, &elroy_pcihost_iommu_ops,
->                                    elroy);
->       }
->   }
-> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-> index 6f5442f108874f6217fa122ac08c1ce27ad20cb9..f477f97847d753341f341281ed2abed2ce242574 100644
-> --- a/hw/pci-host/designware.c
-> +++ b/hw/pci-host/designware.c
-> @@ -663,6 +663,10 @@ static AddressSpace *designware_pcie_host_set_iommu(PCIBus *bus, void *opaque,
->       return &s->pci.address_space;
->   }
->   
-> +static const PCIIOMMUOps designware_iommu_ops = {
-> +    .get_address_space = designware_pcie_host_set_iommu,
-> +};
-> +
->   static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
->   {
->       PCIHostState *pci = PCI_HOST_BRIDGE(dev);
-> @@ -705,7 +709,7 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
->       address_space_init(&s->pci.address_space,
->                          &s->pci.address_space_root,
->                          "pcie-bus-address-space");
-> -    pci_setup_iommu(pci->bus, designware_pcie_host_set_iommu, s);
-> +    pci_setup_iommu(pci->bus, &designware_iommu_ops, s);
->   
->       qdev_realize(DEVICE(&s->root), BUS(pci->bus), &error_fatal);
->   }
-> diff --git a/hw/pci-host/dino.c b/hw/pci-host/dino.c
-> index 82503229faf8a44b3974b2256b641ce18a77692b..5b0947a16c9ec4abf8668bc4563b1cc181f154f3 100644
-> --- a/hw/pci-host/dino.c
-> +++ b/hw/pci-host/dino.c
-> @@ -354,6 +354,10 @@ static AddressSpace *dino_pcihost_set_iommu(PCIBus *bus, void *opaque,
->       return &s->bm_as;
->   }
->   
-> +static const PCIIOMMUOps dino_iommu_ops = {
-> +    .get_address_space = dino_pcihost_set_iommu,
-> +};
-> +
->   /*
->    * Dino interrupts are connected as shown on Page 78, Table 23
->    * (Little-endian bit numbers)
-> @@ -481,7 +485,7 @@ static void dino_pcihost_init(Object *obj)
->           g_free(name);
->       }
->   
-> -    pci_setup_iommu(phb->bus, dino_pcihost_set_iommu, s);
-> +    pci_setup_iommu(phb->bus, &dino_iommu_ops, s);
->   
->       sysbus_init_mmio(sbd, &s->this_mem);
->   
-> diff --git a/hw/pci-host/pnv_phb3.c b/hw/pci-host/pnv_phb3.c
-> index c5e58f4086aef34fa0b5307c10b261c0c6e3ac34..2a74dbe45f59b207b57b3b8af8856ac5cf04d114 100644
-> --- a/hw/pci-host/pnv_phb3.c
-> +++ b/hw/pci-host/pnv_phb3.c
-> @@ -968,6 +968,10 @@ static AddressSpace *pnv_phb3_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->       return &ds->dma_as;
->   }
->   
-> +static PCIIOMMUOps pnv_phb3_iommu_ops = {
-> +    .get_address_space = pnv_phb3_dma_iommu,
-> +};
-> +
->   static void pnv_phb3_instance_init(Object *obj)
->   {
->       PnvPHB3 *phb = PNV_PHB3(obj);
-> @@ -1012,7 +1016,7 @@ void pnv_phb3_bus_init(DeviceState *dev, PnvPHB3 *phb)
->       object_property_set_int(OBJECT(pci->bus), "chip-id", phb->chip_id,
->                               &error_abort);
->   
-> -    pci_setup_iommu(pci->bus, pnv_phb3_dma_iommu, phb);
-> +    pci_setup_iommu(pci->bus, &pnv_phb3_iommu_ops, phb);
->   }
->   
->   static void pnv_phb3_realize(DeviceState *dev, Error **errp)
-> diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
-> index 29cb11a5d94c6a72a8111dd95346be906a7bc4fe..37c7afc18c9b17b25df8356907f0d87d7d621ac2 100644
-> --- a/hw/pci-host/pnv_phb4.c
-> +++ b/hw/pci-host/pnv_phb4.c
-> @@ -1518,6 +1518,10 @@ static void pnv_phb4_xscom_realize(PnvPHB4 *phb)
->                               &phb->phb_regs_mr);
->   }
->   
-> +static PCIIOMMUOps pnv_phb4_iommu_ops = {
-> +    .get_address_space = pnv_phb4_dma_iommu,
-> +};
-> +
->   static void pnv_phb4_instance_init(Object *obj)
->   {
->       PnvPHB4 *phb = PNV_PHB4(obj);
-> @@ -1557,7 +1561,7 @@ void pnv_phb4_bus_init(DeviceState *dev, PnvPHB4 *phb)
->       object_property_set_int(OBJECT(pci->bus), "chip-id", phb->chip_id,
->                               &error_abort);
->   
-> -    pci_setup_iommu(pci->bus, pnv_phb4_dma_iommu, phb);
-> +    pci_setup_iommu(pci->bus, &pnv_phb4_iommu_ops, phb);
->       pci->bus->flags |= PCI_BUS_EXTENDED_CONFIG_SPACE;
->   }
->   
-> diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
-> index 38814247f2a5b7c1a6b55e18673f3fe8c348fbee..453a4e6ed3b02ed448c3fad71bd45eb73a5dbbb3 100644
-> --- a/hw/pci-host/ppce500.c
-> +++ b/hw/pci-host/ppce500.c
-> @@ -435,6 +435,10 @@ static AddressSpace *e500_pcihost_set_iommu(PCIBus *bus, void *opaque,
->       return &s->bm_as;
->   }
->   
-> +static const PCIIOMMUOps ppce500_iommu_ops = {
-> +    .get_address_space = e500_pcihost_set_iommu,
-> +};
-> +
->   static void e500_pcihost_realize(DeviceState *dev, Error **errp)
->   {
->       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-> @@ -469,7 +473,7 @@ static void e500_pcihost_realize(DeviceState *dev, Error **errp)
->       memory_region_init(&s->bm, OBJECT(s), "bm-e500", UINT64_MAX);
->       memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
->       address_space_init(&s->bm_as, &s->bm, "pci-bm");
-> -    pci_setup_iommu(b, e500_pcihost_set_iommu, s);
-> +    pci_setup_iommu(b, &ppce500_iommu_ops, s);
->   
->       pci_create_simple(b, 0, "e500-host-bridge");
->   
-> diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-> index 9a11ac4b2b610646790ed2016f73a16bce4fa42f..86c3a4908712988637484967e88155afb1413742 100644
-> --- a/hw/pci-host/raven.c
-> +++ b/hw/pci-host/raven.c
-> @@ -223,6 +223,10 @@ static AddressSpace *raven_pcihost_set_iommu(PCIBus *bus, void *opaque,
->       return &s->bm_as;
->   }
->   
-> +static const PCIIOMMUOps raven_iommu_ops = {
-> +    .get_address_space = raven_pcihost_set_iommu,
-> +};
-> +
->   static void raven_change_gpio(void *opaque, int n, int level)
->   {
->       PREPPCIState *s = opaque;
-> @@ -320,7 +324,7 @@ static void raven_pcihost_initfn(Object *obj)
->       memory_region_add_subregion(&s->bm, 0         , &s->bm_pci_memory_alias);
->       memory_region_add_subregion(&s->bm, 0x80000000, &s->bm_ram_alias);
->       address_space_init(&s->bm_as, &s->bm, "raven-bm");
-> -    pci_setup_iommu(&s->pci_bus, raven_pcihost_set_iommu, s);
-> +    pci_setup_iommu(&s->pci_bus, &raven_iommu_ops, s);
->   
->       h->bus = &s->pci_bus;
->   
-> diff --git a/hw/pci-host/sabre.c b/hw/pci-host/sabre.c
-> index dcb2e230b67274d4b87c86eb884e052c26031c27..d0851b48b02237d41f64f6cce6f0aa4740ca0d87 100644
-> --- a/hw/pci-host/sabre.c
-> +++ b/hw/pci-host/sabre.c
-> @@ -112,6 +112,10 @@ static AddressSpace *sabre_pci_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->       return &is->iommu_as;
->   }
->   
-> +static const PCIIOMMUOps sabre_iommu_ops = {
-> +    .get_address_space = sabre_pci_dma_iommu,
-> +};
-> +
->   static void sabre_config_write(void *opaque, hwaddr addr,
->                                  uint64_t val, unsigned size)
->   {
-> @@ -384,7 +388,7 @@ static void sabre_realize(DeviceState *dev, Error **errp)
->       /* IOMMU */
->       memory_region_add_subregion_overlap(&s->sabre_config, 0x200,
->                       sysbus_mmio_get_region(SYS_BUS_DEVICE(s->iommu), 0), 1);
-> -    pci_setup_iommu(phb->bus, sabre_pci_dma_iommu, s->iommu);
-> +    pci_setup_iommu(phb->bus, &sabre_iommu_ops, s->iommu);
->   
->       /* APB secondary busses */
->       pci_dev = pci_new_multifunction(PCI_DEVFN(1, 0), TYPE_SIMBA_PCI_BRIDGE);
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 7d09e1a39dfddd0ce2826972e8e2ddf0ef0693a5..b8484be09c1e8ef4fda0b0d0e2d986d8765e071d 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -2678,7 +2678,7 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
->       PCIBus *iommu_bus = bus;
->       uint8_t devfn = dev->devfn;
->   
-> -    while (iommu_bus && !iommu_bus->iommu_fn && iommu_bus->parent_dev) {
-> +    while (iommu_bus && !iommu_bus->iommu_ops && iommu_bus->parent_dev) {
->           PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
->   
->           /*
-> @@ -2717,15 +2717,23 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
->   
->           iommu_bus = parent_bus;
->       }
-> -    if (!pci_bus_bypass_iommu(bus) && iommu_bus && iommu_bus->iommu_fn) {
-> -        return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
-> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus->iommu_ops) {
-> +        return iommu_bus->iommu_ops->get_address_space(bus,
-> +                                 iommu_bus->iommu_opaque, devfn);
->       }
->       return &address_space_memory;
->   }
->   
-> -void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
-> +void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
->   {
-> -    bus->iommu_fn = fn;
-> +    /*
-> +     * If called, pci_setup_iommu() should provide a minimum set of
-> +     * useful callbacks for the bus.
-> +     */
-> +    assert(ops);
-> +    assert(ops->get_address_space);
-> +
-> +    bus->iommu_ops = ops;
->       bus->iommu_opaque = opaque;
->   }
->   
-> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-> index 672090de9478e9c8e9ba8151b72bcaf93495d223..df4ee374d04bea092c4f81098f82514c12c0519c 100644
-> --- a/hw/ppc/ppc440_pcix.c
-> +++ b/hw/ppc/ppc440_pcix.c
-> @@ -449,6 +449,10 @@ static AddressSpace *ppc440_pcix_set_iommu(PCIBus *b, void *opaque, int devfn)
->       return &s->bm_as;
->   }
->   
-> +static const PCIIOMMUOps ppc440_iommu_ops = {
-> +    .get_address_space = ppc440_pcix_set_iommu,
-> +};
-> +
->   /*
->    * Some guests on sam460ex write all kinds of garbage here such as
->    * missing enable bit and low bits set and still expect this to work
-> @@ -503,7 +507,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
->       memory_region_init(&s->bm, OBJECT(s), "bm-ppc440-pcix", UINT64_MAX);
->       memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
->       address_space_init(&s->bm_as, &s->bm, "pci-bm");
-> -    pci_setup_iommu(h->bus, ppc440_pcix_set_iommu, s);
-> +    pci_setup_iommu(h->bus, &ppc440_iommu_ops, s);
->   
->       memory_region_init(&s->container, OBJECT(s), "pci-container", PCI_ALL_SIZE);
->       memory_region_init_io(&h->conf_mem, OBJECT(s), &ppc440_pcix_host_conf_ops,
-> diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-> index 370c5a90f2184bbe75de9a3b950096960c67189e..a27024e45a4188c5b21e7d41ecf3d337bbbb47f0 100644
-> --- a/hw/ppc/spapr_pci.c
-> +++ b/hw/ppc/spapr_pci.c
-> @@ -780,6 +780,10 @@ static AddressSpace *spapr_pci_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->       return &phb->iommu_as;
->   }
->   
-> +static const PCIIOMMUOps spapr_iommu_ops = {
-> +    .get_address_space = spapr_pci_dma_iommu,
-> +};
-> +
->   static char *spapr_phb_vfio_get_loc_code(SpaprPhbState *sphb,  PCIDevice *pdev)
->   {
->       g_autofree char *path = NULL;
-> @@ -1978,7 +1982,7 @@ static void spapr_phb_realize(DeviceState *dev, Error **errp)
->       memory_region_add_subregion(&sphb->iommu_root, SPAPR_PCI_MSI_WINDOW,
->                                   &sphb->msiwindow);
->   
-> -    pci_setup_iommu(bus, spapr_pci_dma_iommu, sphb);
-> +    pci_setup_iommu(bus, &spapr_iommu_ops, sphb);
->   
->       pci_bus_set_route_irq_fn(bus, spapr_route_intx_pin_to_irq);
->   
-> diff --git a/hw/remote/iommu.c b/hw/remote/iommu.c
-> index 1391dd712ceda0bb5b524651362350471f31f93a..7c56aad0fc14a3a411303dcf3baacef5edfd3d1e 100644
-> --- a/hw/remote/iommu.c
-> +++ b/hw/remote/iommu.c
-> @@ -100,6 +100,10 @@ static void remote_iommu_finalize(Object *obj)
->       iommu->elem_by_devfn = NULL;
->   }
->   
-> +static const PCIIOMMUOps remote_iommu_ops = {
-> +    .get_address_space = remote_iommu_find_add_as,
-> +};
-> +
->   void remote_iommu_setup(PCIBus *pci_bus)
->   {
->       RemoteIommu *iommu = NULL;
-> @@ -108,7 +112,7 @@ void remote_iommu_setup(PCIBus *pci_bus)
->   
->       iommu = REMOTE_IOMMU(object_new(TYPE_REMOTE_IOMMU));
->   
-> -    pci_setup_iommu(pci_bus, remote_iommu_find_add_as, iommu);
-> +    pci_setup_iommu(pci_bus, &remote_iommu_ops, iommu);
->   
->       object_property_add_child(OBJECT(pci_bus), "remote-iommu", OBJECT(iommu));
->   
-> diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-> index 2ca36f9f3be11866b6c9cb83a61da01d93a4b7c0..347580ebacfe1dd832063b667aa593097ba6926d 100644
-> --- a/hw/s390x/s390-pci-bus.c
-> +++ b/hw/s390x/s390-pci-bus.c
-> @@ -652,6 +652,10 @@ static AddressSpace *s390_pci_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->       return &iommu->as;
->   }
->   
-> +static const PCIIOMMUOps s390_iommu_ops = {
-> +    .get_address_space = s390_pci_dma_iommu,
-> +};
-> +
->   static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
->   {
->       uint8_t expected, actual;
-> @@ -839,7 +843,7 @@ static void s390_pcihost_realize(DeviceState *dev, Error **errp)
->       b = pci_register_root_bus(dev, NULL, s390_pci_set_irq, s390_pci_map_irq,
->                                 NULL, get_system_memory(), get_system_io(), 0,
->                                 64, TYPE_PCI_BUS);
-> -    pci_setup_iommu(b, s390_pci_dma_iommu, s);
-> +    pci_setup_iommu(b, &s390_iommu_ops, s);
->   
->       bus = BUS(b);
->       qbus_set_hotplug_handler(bus, OBJECT(dev));
-> @@ -1058,7 +1062,7 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
->   
->           pdev = PCI_DEVICE(dev);
->           pci_bridge_map_irq(pb, dev->id, s390_pci_map_irq);
-> -        pci_setup_iommu(&pb->sec_bus, s390_pci_dma_iommu, s);
-> +        pci_setup_iommu(&pb->sec_bus, &s390_iommu_ops, s);
->   
->           qbus_set_hotplug_handler(BUS(&pb->sec_bus), OBJECT(s));
->   
-> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-> index dede0d41aa56efbe8af6ff50bc57c78a5917fe09..89fb5767d13ffc14d0261cc43aa16346fcad0ec8 100644
-> --- a/hw/virtio/virtio-iommu.c
-> +++ b/hw/virtio/virtio-iommu.c
-> @@ -461,6 +461,10 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
->       return &sdev->as;
->   }
->   
-> +static const PCIIOMMUOps virtio_iommu_ops = {
-> +    .get_address_space = virtio_iommu_find_add_as,
-> +};
-> +
->   static int virtio_iommu_attach(VirtIOIOMMU *s,
->                                  struct virtio_iommu_req_attach *req)
->   {
-> @@ -1332,7 +1336,7 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
->       s->as_by_busptr = g_hash_table_new_full(NULL, NULL, NULL, g_free);
->   
->       if (s->primary_bus) {
-> -        pci_setup_iommu(s->primary_bus, virtio_iommu_find_add_as, s);
-> +        pci_setup_iommu(s->primary_bus, &virtio_iommu_ops, s);
->       } else {
->           error_setg(errp, "VIRTIO-IOMMU is not attached to any PCI bus!");
->       }
-
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
+IDxjbGdAcmVkaGF0LmNvbT4NCj5TZW50OiBNb25kYXksIE9jdG9iZXIgMjMsIDIwMjMgMTE6Mjkg
+UE0NCj48ZGF2aWRAZ2lic29uLmRyb3BiZWFyLmlkLmF1Pg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0gg
+djIgMDIvMjddIHZmaW86IEludHJvZHVjZSBiYXNlIG9iamVjdCBmb3IgVkZJT0NvbnRhaW5lciBh
+bmQNCj50YXJnZXR0ZWQgaW50ZXJmYWNlDQo+DQo+T24gMTAvMjAvMjMgMTA6MTksIEVyaWMgQXVn
+ZXIgd3JvdGU6DQo+PiBIaSwNCj4+IE9uIDEwLzIwLzIzIDA3OjQ4LCBEdWFuLCBaaGVuemhvbmcg
+d3JvdGU6DQo+Pj4gSGkgQ8OpZHJpYywNCj4+Pg0KPj4+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2Ut
+LS0tLQ0KPj4+PiBGcm9tOiBDw6lkcmljIExlIEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+DQo+Pj4+
+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVyIDE5LCAyMDIzIDg6MTggUE0NCj4+Pj4gU3ViamVjdDog
+UmU6IFtQQVRDSCB2MiAwMi8yN10gdmZpbzogSW50cm9kdWNlIGJhc2Ugb2JqZWN0IGZvciBWRklP
+Q29udGFpbmVyDQo+YW5kDQo+Pj4+IHRhcmdldHRlZCBpbnRlcmZhY2UNCj4+Pj4NCj4+Pj4gT24g
+MTAvMTkvMjMgMDQ6MjksIER1YW4sIFpoZW56aG9uZyB3cm90ZToNCj4+Pj4+PiAtLS0tLU9yaWdp
+bmFsIE1lc3NhZ2UtLS0tLQ0KPj4+Pj4+IEZyb206IEPDqWRyaWMgTGUgR29hdGVyIDxjbGdAcmVk
+aGF0LmNvbT4NCj4+Pj4+PiBTZW50OiBXZWRuZXNkYXksIE9jdG9iZXIgMTgsIDIwMjMgNDowNCBQ
+TQ0KPj4+Pj4+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjIgMDIvMjddIHZmaW86IEludHJvZHVjZSBi
+YXNlIG9iamVjdCBmb3INCj5WRklPQ29udGFpbmVyDQo+Pj4+IGFuZA0KPj4+Pj4+IHRhcmdldHRl
+ZCBpbnRlcmZhY2UNCj4+Pj4+Pg0KPj4+Pj4+IE9uIDEwLzE4LzIzIDA0OjQxLCBEdWFuLCBaaGVu
+emhvbmcgd3JvdGU6DQo+Pj4+Pj4+IEhpIEPDqWRyaWMsDQo+Pj4+Pj4+DQo+Pj4+Pj4+PiAtLS0t
+LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPj4+Pj4+Pj4gRnJvbTogQ8OpZHJpYyBMZSBHb2F0ZXIg
+PGNsZ0ByZWRoYXQuY29tPg0KPj4+Pj4+Pj4gU2VudDogVHVlc2RheSwgT2N0b2JlciAxNywgMjAy
+MyAxMTo1MSBQTQ0KPj4+Pj4+Pj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MiAwMi8yN10gdmZpbzog
+SW50cm9kdWNlIGJhc2Ugb2JqZWN0IGZvcg0KPlZGSU9Db250YWluZXINCj4+Pj4+PiBhbmQNCj4+
+Pj4+Pj4+IHRhcmdldHRlZCBpbnRlcmZhY2UNCj4+Pj4+Pj4+DQo+Pj4+Pj4+PiBPbiAxMC8xNi8y
+MyAxMDozMSwgWmhlbnpob25nIER1YW4gd3JvdGU6DQo+Pj4+Pj4+Pj4gRnJvbTogRXJpYyBBdWdl
+ciA8ZXJpYy5hdWdlckByZWRoYXQuY29tPg0KPj4+Pj4+Pj4+DQo+Pj4+Pj4+Pj4gSW50cm9kdWNl
+IGEgZHVtYiBWRklPQ29udGFpbmVyIGJhc2Ugb2JqZWN0IGFuZCBpdHMgdGFyZ2V0dGVkDQo+aW50
+ZXJmYWNlLg0KPj4+Pj4+Pj4+IFRoaXMgaXMgd2lsbGluZ2x5IG5vdCBhIFFPTSBvYmplY3QgYmVj
+YXVzZSB3ZSBkb24ndCB3YW50IGl0IHRvIGJlDQo+Pj4+Pj4+Pj4gdmlzaWJsZSBmcm9tIHRoZSB1
+c2VyIGludGVyZmFjZS4gIFRoZSBWRklPQ29udGFpbmVyIHdpbGwgYmUgc21vb3RobHkNCj4+Pj4+
+Pj4+PiBwb3B1bGF0ZWQgaW4gc3Vic2VxdWVudCBwYXRjaGVzIGFzIHdlbGwgYXMgaW50ZXJmYWNl
+cy4NCj4+Pj4+Pj4+Pg0KPj4+Pj4+Pj4+IE5vIGZ1Y250aW9uYWwgY2hhbmdlIGludGVuZGVkLg0K
+Pj4+Pj4+Pj4+DQo+Pj4+Pj4+Pj4gU2lnbmVkLW9mZi1ieTogRXJpYyBBdWdlciA8ZXJpYy5hdWdl
+ckByZWRoYXQuY29tPg0KPj4+Pj4+Pj4+IFNpZ25lZC1vZmYtYnk6IFlpIExpdSA8eWkubC5saXVA
+aW50ZWwuY29tPg0KPj4+Pj4+Pj4+IFNpZ25lZC1vZmYtYnk6IFlpIFN1biA8eWkueS5zdW5AbGlu
+dXguaW50ZWwuY29tPg0KPj4+Pj4+Pj4+IFNpZ25lZC1vZmYtYnk6IFpoZW56aG9uZyBEdWFuIDx6
+aGVuemhvbmcuZHVhbkBpbnRlbC5jb20+DQo+Pj4+Pj4+Pj4gLS0tDQo+Pj4+Pj4+Pj4gICAgICBp
+bmNsdWRlL2h3L3ZmaW8vdmZpby1jb21tb24uaCAgICAgICAgIHwgIDggKy0tDQo+Pj4+Pj4+Pj4g
+ICAgICBpbmNsdWRlL2h3L3ZmaW8vdmZpby1jb250YWluZXItYmFzZS5oIHwgODINCj4+Pj4+PiAr
+KysrKysrKysrKysrKysrKysrKysrKysrKysNCj4+Pj4+Pj4+PiAgICAgIDIgZmlsZXMgY2hhbmdl
+ZCwgODQgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkNCj4+Pj4+Pj4+PiAgICAgIGNyZWF0
+ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL2h3L3ZmaW8vdmZpby1jb250YWluZXItYmFzZS5oDQo+Pj4+
+Pj4+Pj4NCj4+Pj4+Pj4+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29tbW9u
+LmggYi9pbmNsdWRlL2h3L3ZmaW8vdmZpby0NCj4+Pj4+PiBjb21tb24uaA0KPj4+Pj4+Pj4+IGlu
+ZGV4IDM0NjQ4ZTUxOGUuLjk2NTFjZjkyMWMgMTAwNjQ0DQo+Pj4+Pj4+Pj4gLS0tIGEvaW5jbHVk
+ZS9ody92ZmlvL3ZmaW8tY29tbW9uLmgNCj4+Pj4+Pj4+PiArKysgYi9pbmNsdWRlL2h3L3ZmaW8v
+dmZpby1jb21tb24uaA0KPj4+Pj4+Pj4+IEBAIC0zMCw2ICszMCw3IEBADQo+Pj4+Pj4+Pj4gICAg
+ICAjaW5jbHVkZSA8bGludXgvdmZpby5oPg0KPj4+Pj4+Pj4+ICAgICAgI2VuZGlmDQo+Pj4+Pj4+
+Pj4gICAgICAjaW5jbHVkZSAic3lzZW11L3N5c2VtdS5oIg0KPj4+Pj4+Pj4+ICsjaW5jbHVkZSAi
+aHcvdmZpby92ZmlvLWNvbnRhaW5lci1iYXNlLmgiDQo+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+PiAgICAg
+ICNkZWZpbmUgVkZJT19NU0dfUFJFRklYICJ2ZmlvICVzOiAiDQo+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+
+PiBAQCAtODEsNiArODIsNyBAQCB0eXBlZGVmIHN0cnVjdCBWRklPQWRkcmVzc1NwYWNlIHsNCj4+
+Pj4+Pj4+PiAgICAgIHN0cnVjdCBWRklPR3JvdXA7DQo+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+PiAgICAg
+IHR5cGVkZWYgc3RydWN0IFZGSU9MZWdhY3lDb250YWluZXIgew0KPj4+Pj4+Pj4+ICsgICAgVkZJ
+T0NvbnRhaW5lciBiY29udGFpbmVyOw0KPj4+Pj4+Pj4gVGhhdCdzIHRoZSBwYXJlbnQgY2xhc3Ms
+IHJpZ2h0ID8NCj4+Pj4+Pj4gUmlnaHQuDQo+Pj4+Pj4+DQo+Pj4+Pj4+Pj4gICAgICAgICAgVkZJ
+T0FkZHJlc3NTcGFjZSAqc3BhY2U7DQo+Pj4+Pj4+Pj4gICAgICAgICAgaW50IGZkOyAvKiAvZGV2
+L3ZmaW8vdmZpbywgZW1wb3dlcmVkIGJ5IHRoZSBhdHRhY2hlZCBncm91cHMgKi8NCj4+Pj4+Pj4+
+PiAgICAgICAgICBNZW1vcnlMaXN0ZW5lciBsaXN0ZW5lcjsNCj4+Pj4+Pj4+PiBAQCAtMjAwLDEy
+ICsyMDIsNiBAQCB0eXBlZGVmIHN0cnVjdCBWRklPRGlzcGxheSB7DQo+Pj4+Pj4+Pj4gICAgICAg
+ICAgfSBkbWFidWY7DQo+Pj4+Pj4+Pj4gICAgICB9IFZGSU9EaXNwbGF5Ow0KPj4+Pj4+Pj4+DQo+
+Pj4+Pj4+Pj4gLXR5cGVkZWYgc3RydWN0IHsNCj4+Pj4+Pj4+PiAtICAgIHVuc2lnbmVkIGxvbmcg
+KmJpdG1hcDsNCj4+Pj4+Pj4+PiAtICAgIGh3YWRkciBzaXplOw0KPj4+Pj4+Pj4+IC0gICAgaHdh
+ZGRyIHBhZ2VzOw0KPj4+Pj4+Pj4+IC19IFZGSU9CaXRtYXA7DQo+Pj4+Pj4+Pj4gLQ0KPj4+Pj4+
+Pj4+ICAgICAgdm9pZCB2ZmlvX2hvc3Rfd2luX2FkZChWRklPTGVnYWN5Q29udGFpbmVyICpjb250
+YWluZXIsDQo+Pj4+Pj4+Pj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIGh3YWRkciBtaW5f
+aW92YSwgaHdhZGRyIG1heF9pb3ZhLA0KPj4+Pj4+Pj4+ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB1aW50NjRfdCBpb3ZhX3Bnc2l6ZXMpOw0KPj4+Pj4+Pj4+IGRpZmYgLS1naXQgYS9pbmNs
+dWRlL2h3L3ZmaW8vdmZpby1jb250YWluZXItYmFzZS5oDQo+Yi9pbmNsdWRlL2h3L3ZmaW8vdmZp
+by0NCj4+Pj4+Pj4+IGNvbnRhaW5lci1iYXNlLmgNCj4+Pj4+Pj4+PiBuZXcgZmlsZSBtb2RlIDEw
+MDY0NA0KPj4+Pj4+Pj4+IGluZGV4IDAwMDAwMDAwMDAuLmFmYzg1NDNkMjINCj4+Pj4+Pj4+PiAt
+LS0gL2Rldi9udWxsDQo+Pj4+Pj4+Pj4gKysrIGIvaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29udGFp
+bmVyLWJhc2UuaA0KPj4+Pj4+Pj4+IEBAIC0wLDAgKzEsODIgQEANCj4+Pj4+Pj4+PiArLyoNCj4+
+Pj4+Pj4+PiArICogVkZJTyBCQVNFIENPTlRBSU5FUg0KPj4+Pj4+Pj4+ICsgKg0KPj4+Pj4+Pj4+
+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMjMgSW50ZWwgQ29ycG9yYXRpb24uDQo+Pj4+Pj4+Pj4gKyAq
+IENvcHlyaWdodCBSZWQgSGF0LCBJbmMuIDIwMjMNCj4+Pj4+Pj4+PiArICoNCj4+Pj4+Pj4+PiAr
+ICogQXV0aG9yczogWWkgTGl1IDx5aS5sLmxpdUBpbnRlbC5jb20+DQo+Pj4+Pj4+Pj4gKyAqICAg
+ICAgICAgIEVyaWMgQXVnZXIgPGVyaWMuYXVnZXJAcmVkaGF0LmNvbT4NCj4+Pj4+Pj4+PiArICoN
+Cj4+Pj4+Pj4+PiArICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVk
+aXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkNCj4+Pj4+Pj4+PiArICogaXQgdW5kZXIgdGhlIHRl
+cm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQNCj5ieQ0K
+Pj4+Pj4+Pj4+ICsgKiB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lv
+biAyIG9mIHRoZSBMaWNlbnNlLCBvcg0KPj4+Pj4+Pj4+ICsgKiAoYXQgeW91ciBvcHRpb24pIGFu
+eSBsYXRlciB2ZXJzaW9uLg0KPj4+Pj4+Pj4+ICsNCj4+Pj4+Pj4+PiArICogVGhpcyBwcm9ncmFt
+IGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsDQo+Pj4+
+Pj4+Pj4gKyAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBs
+aWVkIHdhcnJhbnR5DQo+b2YNCj4+Pj4+Pj4+PiArICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5F
+U1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlDQo+dGhlDQo+Pj4+Pj4+Pj4gKyAqIEdO
+VSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuDQo+Pj4+Pj4+Pj4gKw0K
+Pj4+Pj4+Pj4+ICsgKiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5IG9mIHRoZSBHTlUg
+R2VuZXJhbCBQdWJsaWMgTGljZW5zZQ0KPj4+PiBhbG9uZw0KPj4+Pj4+Pj4+ICsgKiB3aXRoIHRo
+aXMgcHJvZ3JhbTsgaWYgbm90LCBzZWUgPGh0dHA6Ly93d3cuZ251Lm9yZy9saWNlbnNlcy8+Lg0K
+Pj4+Pj4+Pj4+ICsgKi8NCj4+Pj4+Pj4+PiArDQo+Pj4+Pj4+Pj4gKyNpZm5kZWYgSFdfVkZJT19W
+RklPX0JBU0VfQ09OVEFJTkVSX0gNCj4+Pj4+Pj4+PiArI2RlZmluZSBIV19WRklPX1ZGSU9fQkFT
+RV9DT05UQUlORVJfSA0KPj4+Pj4+Pj4+ICsNCj4+Pj4+Pj4+PiArI2luY2x1ZGUgImV4ZWMvbWVt
+b3J5LmgiDQo+Pj4+Pj4+Pj4gKyNpZm5kZWYgQ09ORklHX1VTRVJfT05MWQ0KPj4+Pj4+Pj4+ICsj
+aW5jbHVkZSAiZXhlYy9od2FkZHIuaCINCj4+Pj4+Pj4+PiArI2VuZGlmDQo+Pj4+Pj4+Pj4gKw0K
+Pj4+Pj4+Pj4+ICt0eXBlZGVmIHN0cnVjdCBWRklPQ29udGFpbmVyIFZGSU9Db250YWluZXI7DQo+
+Pj4+Pj4+Pj4gK3R5cGVkZWYgc3RydWN0IFZGSU9EZXZpY2UgVkZJT0RldmljZTsNCj4+Pj4+Pj4+
+PiArdHlwZWRlZiBzdHJ1Y3QgVkZJT0lPTU1VQmFja2VuZE9wc0NsYXNzDQo+Pj4+IFZGSU9JT01N
+VUJhY2tlbmRPcHNDbGFzczsNCj4+Pj4+Pj4+PiArDQo+Pj4+Pj4+Pj4gK3R5cGVkZWYgc3RydWN0
+IHsNCj4+Pj4+Pj4+PiArICAgIHVuc2lnbmVkIGxvbmcgKmJpdG1hcDsNCj4+Pj4+Pj4+PiArICAg
+IGh3YWRkciBzaXplOw0KPj4+Pj4+Pj4+ICsgICAgaHdhZGRyIHBhZ2VzOw0KPj4+Pj4+Pj4+ICt9
+IFZGSU9CaXRtYXA7DQo+Pj4+Pj4+Pj4gKw0KPj4+Pj4+Pj4+ICsvKg0KPj4+Pj4+Pj4+ICsgKiBU
+aGlzIGlzIHRoZSBiYXNlIG9iamVjdCBmb3IgdmZpbyBjb250YWluZXIgYmFja2VuZHMNCj4+Pj4+
+Pj4+PiArICovDQo+Pj4+Pj4+Pj4gK3N0cnVjdCBWRklPQ29udGFpbmVyIHsNCj4+Pj4+Pj4+PiAr
+ICAgIFZGSU9JT01NVUJhY2tlbmRPcHNDbGFzcyAqb3BzOw0KPj4+Pj4+Pj4gVGhpcyBpcyB1bmV4
+cGVjdGVkLg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+IEkgdGhvdWdodCB0aGF0IGFuIGFic3RyYWN0IFFP
+TSBtb2RlbCBmb3IgVkZJT0NvbnRhaW5lciB3YXMgZ29pbmcNCj4+Pj4+Pj4+IHRvIGJlIGludHJv
+ZHVjZWQgd2l0aCBhIFZGSU9Db250YWluZXJDbGFzcyB3aXRoIHRoZSBvcHMgYmVsb3cNCj4+Pj4+
+Pj4+IChWRklPSU9NTVVCYWNrZW5kT3BzQ2xhc3MpLg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+IFRoZW4s
+IHdlIHdvdWxkIGNhbGwgOg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+ICAgICAgIFZGSU9Db250YWluZXJD
+bGFzcyAqdmNjID0gVkZJT19DT05UQUlORVJfR0VUX0NMQVNTKGNvbnRhaW5lcik7DQo+Pj4+Pj4+
+Pg0KPj4+Pj4+Pj4gdG8gZ2V0IHRoZSBzcGVjaWZpYyBpbXBsZW1lbnRhdGlvbiBmb3IgdGhlIGN1
+cnJlbnQgY29udGFpbmVyLg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+IEkgZG9uJ3QgdW5kZXJzdGFuZCB0
+aGUgVkZJT0lPTU1VQmFja2VuZE9wc0NsYXNzIHBvaW50ZXIgYW5kDQo+Pj4+Pj4+PiBUWVBFX1ZG
+SU9fSU9NTVVfQkFDS0VORF9PUFMuIEl0IHNlZW1zIHJlZHVuZGFudC4NCj4+Pj4+Pj4gVGhlIG9y
+aWdpbmFsIGltcGxlbWVudGF0aW9uIHdhcyBhYnN0cmFjdCBRT00gbW9kZWwuIEJ1dCBpdCB3YXNu
+J3QNCj4+Pj4gYWNjZXB0ZWQsDQo+Pj4+Pj4+IHNlZSBodHRwczovL2xvcmUua2VybmVsLm9yZy9h
+bGwvWW11RnYyczVUUHV3N0slMkZ1QHlla2tvLyBmb3INCj5kZXRhaWxzLg0KPj4+Pj4+IEkgc2Vl
+IHRoZSBpZGVhIHdhcyBjaGFsbGVuZ2VkLCBub3QgcmVqZWN0ZWQuIEkgbmVlZCB0byBkaWcgaW4g
+ZnVydGhlciBhbmQgdGhpcw0KPj4+Pj4+IHdpbGwgdGFrZSB0aW1lLg0KPj4+Pj4gVGhhbmtzIGZv
+ciBoZWxwIGxvb2tpbmcgaW50byBpdC4NCj4+Pj4+DQo+Pj4+PiArRGF2aWQsIEhpIERhdmlkLCBJ
+J20gZGlnZ2luZyBpbnRvIHlvdXIgY29uY2VybiBvZiB1c2luZyBRT00gdG8gYWJzdHJhY3QNCj5i
+YXNlDQo+Pj4+PiBjb250YWluZXIgYW5kIGxlZ2FjeSBWRklPQ29udGFpbmVyOg0KPj4+Pj4gIlRo
+ZSBRT00gY2xhc3Mgb2YgdGhpbmdzIGlzIHZpc2libGUgdG8gdGhlIHVzZXIvY29uZmlnIGxheWVy
+IHZpYSBRTVAgKGFuZA0KPj4+PiBzb21ldGltZXMgY29tbWFuZCBsaW5lKS4NCj4+Pj4+IEl0IGRv
+ZXNuJ3QgbmVjZXNzYXJpbHkgY29ycmVzcG9uZCB0byBndWVzdCB2aXNpYmxlIGRpZmZlcmVuY2Vz
+LCBidXQgaXQgb2Z0ZW4NCj5kb2VzLiINCj4+Pj4+DQo+Pj4+PiBBSVVJLCB3aGlsZSBpdCdzIHRy
+dWUgd2hlbiB0aGUgUU9NIHR5cGUgaW5jbHVkZXMgVFlQRV9VU0VSX0NSRUFUQUJMRQ0KPj4+PiBp
+bnRlcmZhY2UsDQo+Pj4+PiBvdGhlcndpc2UsIHVzZXIgY2FuJ3QgY3JlYXRlIGFuIG9iamVjdCBv
+ZiB0aGlzIHR5cGUuIE9ubHkgZGlmZmVyZW5jZSBpcyB1c2VyDQo+d2lsbA0KPj4+PiBzZWUNCj4+
+Pj4+ICJvYmplY3QgdHlwZSAnJXMnIGlzbid0IHN1cHBvcnRlZCBieSBvYmplY3QtYWRkIiBpbnN0
+ZWFkIG9mICJpbnZhbGlkIG9iamVjdA0KPj4+PiB0eXBlOiAlcyIuDQo+Pj4+PiBJcyB5b3VyIGV4
+cGVjdGF0aW9uIHRvIG5vdCBwZXJtaXQgdXNlciB0byBjcmVhdGUgdGhpcyBvYmplY3Qgb3Igb25s
+eSB3YW50DQo+dXNlcg0KPj4+Pj4gdG8gc2VlICJpbnZhbGlkIG9iamVjdCB0eXBlOiAlcyIuDQo+
+Pj4+PiBJZiB5b3UgbWVhbiB0aGUgZmlyc3QsIHRoZW4gSSB0aGluayBRT00gY291bGQgYmUgc3Vp
+dGFibGUgaWYgd2UgZG9uJ3QgaW5jbHVkZQ0KPj4+Pj4gVFlQRV9VU0VSX0NSRUFUQUJMRSBpbnRl
+cmZhY2U/DQo+Pj4+IEkgd2FzIGltYWdpbmluZyBzb21lIGtpbmQgb2YgUU9NIGhpZXJhcmNoeSB1
+bmRlciB0aGUgdmZpbyBkZXZpY2UNCj4+Pj4gd2l0aCB2YXJpb3VzIFFPTSBpbnRlcmZhY2VzIChz
+aW1pbGFyIHRvIHRoZSBvcHMpIHRvIGRlZmluZSB0aGUNCj4+Pj4gcG9zc2libGUgSU9NTVUgYmFj
+a2VuZHMuIFRoZSBmYWN0IHRoYXQgd2UgdXNlIHRoZSBJT01NVUZEIG9iamVjdA0KPj4+ID5mcm9t
+IHRoZSBjb21tYW5kIGxpbmUgbWFkZSBpdCBtb3JlIHBsYXVzaWJsZS4gSSBtaWdodCBiZSBtaXN0
+YWtpbmcuDQo+Pj4NCj4+PiBHb3QgeW91ciBwb2ludC4NCj4+PiBUaGlzIHdheSB3ZSBpbnRyb2R1
+Y2UgYSBuZXcgUU9NIHR5cGUgInZmaW8tcGNpLWlvbW11ZmQiIGZvciBpb21tdWZkDQo+c3VwcG9y
+dCwNCj4+PiBhbmQgdmZpby1wY2kga2VlcCBzYW1lIGZvciBsZWdhY3kgYmFja2VuZCwgZS5nOg0K
+Pj4+DQo+Pj4gI3FlbXUgIC1vYmplY3QgaW9tbXVmZCxpZD1pb21tdWZkMCBcDQo+Pj4gICAgICAg
+ICAgICAgICAgLWRldmljZSB2ZmlvLXBjaS1pb21tdWZkLGlvbW11ZmQ9aW9tbXVmZDAsaWQ9dmZp
+bzAuLi4gXA0KPj4+ICAgICAgICAgICAgICAgLWRldmljZSB2ZmlvLXBjaSxpZD12ZmlvMS4uLg0K
+Pj4geW91IHdvdWxkIG5lZWQgdG8gZG8gdGhhdCBmb3IgYWxsIHR5cGVzIGZvciB2ZmlvIGRldmlj
+ZXMsIGFwLCBjY3csDQo+PiBwbGF0Zm9ybS4gTG9va3MgaGVhdnkgdG8gbWUuIFdoeSB3b3VsZCB3
+ZSBuZWVkIHRvIHVzZSBhIGRpZmZlcmVudA0KPj4gdmZpby1wY2ktKiBkZXZpY2Ugd2hpbGUgd2Ug
+Y291bGQgc3dpdGNoIHRoZSBpb21tdSBiYWNrZW5kIGFjY29yZGluZyB0bw0KPj4gdGhlICJpb21t
+dWZkIiBwcm9wIHByZXNlbmNlLiBUaGUgaW5pdGlhbCBkaXNjdXNzaW9uIHdhcyBhYm91dCBRT015
+ZnlpbmcNCj4+IHRoZSBjb250YWluZXIgaW5zdGVhZC4NCj4NCj55ZXMuDQo+DQo+SSB0b29rIGEg
+Y2xvc2VyIGxvb2sgYXQgdGhlIGZpcnN0IHBhcnQgd2hpY2ggYWRkcyB0aGUgYmFja2VuZCBvcHMs
+DQo+aW5jbHVkaW5nIHBhdGNoIDE5IGFkZGluZyB0aGUgaW9tbXVmZCBiYWNrZW5kLCBub3Qgc2F5
+aW5nIHRoYXQgSSBoYXZlDQo+aWRlbnRpZmllZCBhbGwgdGhlIGRhcmsgY29ybmVycy4NCj4NCj5B
+IFFPTS1saWtlIGRlc2lnbiB3b3VsZCBoYXZlIGludHJvZHVjZWQgYSBWRklPTGVnYWN5Q29udGFp
+bmVyLA0KPmluaGVyaXRpbmcgZnJvbSBWRklPQ29udGFpbmVyIChzYW1lIGZvciBWRklPSU9NTVVG
+RENvbnRhaW5lcikgd2l0aCBhDQo+VkZJT0NvbnRhaW5lckNsYXNzIHRvIGltcGxlbWVudCB0aGUg
+c3BlY2lmaWMgYmFja2VuZCBvcHMuDQo+VkZJT3NwYXByQ29udGFpbmVyIHdvdWxkIGhhdmUgbWFk
+ZSBzZW5zZSBhbHNvLg0KPg0KPkJ1dCBRT00gZG9lc24ndCBzZWVtIHdlbGwgYWRhcHRlZCBmb3Ig
+dGhlIGN1cnJlbnQgbmVlZHMuIFNvIGxldCdzIHRyeQ0KPmEgc2ltcGxlciBhcHByb2FjaC4gSXQg
+c2VlbXMgdGhhdCBWRklPSU9NTVVCYWNrZW5kT3BzQ2xhc3MgaXMNCj51c2VsZXNzLiBJTU8sIGl0
+IGNvdWxkIGJlIGEgY2FsbGJhY2tzIHN0cnVjdHVyZSBsaWtlIHdlIGhhdmUgZm9yDQo+bWVtb3J5
+IHJlZ2lvbnMgaW5pdGlhbGl6ZWQgd2l0aCB2ZmlvX2NvbnRhaW5lcl9pbml0KCkuIFRoaXMgd291
+bGQNCj5yZW1vdmUgc29tZSBub2lzZSBhcm91bmQgdGhlIFFPTSB0eXBlaW5mbyBkZWZpbml0aW9u
+cy4NCg0KWWVzLCBnb29kIHN1Z2dlc3Rpb24sIHdpbGwgZG8uDQoNCj4NCj4nc3RydWN0IHZmaW9f
+aW9tbXVfb3BzJyByZWFkcy9zb3VuZHMgbGlrZSBhIGdvb2QgbmFtZS4NCj4NCj5DYW4gd2UgdHJ5
+IHRoYXQgaW4gYSB2MyA/IEl0IHNob3VsZCBub3QgYmUgc3VjaCBhbiBlYXJ0aHF1YWtlLg0KDQpT
+dXJlLg0KDQo+DQo+c3BhcHIgaGFzIHNvbWUgc2luZ3VsYXJpdGllcyB3aGljaCB3b3VsZCBiZSBn
+b29kIHRvIGlzb2xhdGUgaW4gYQ0KPnZmaW9faW9tbXVfc3BhcHJfb3BzIHRvIHJlbW92ZSBhbGwg
+dGhlIFZGSU9fU1BBUFJfVENFXypfSU9NTVUgY29kZSBpbg0KPmNvbnRhaW5lci5jLiB2ZmlvX2xl
+Z2FjeV97YWRkLGRlbH1fc2VjdGlvbl93aW5kb3cgYXJlIFNQQVBSIHNwZWNpZmljLg0KDQpZZXMs
+IGxldCBtZSB0cnkgaXQuDQoNClRoYW5rcw0KWmhlbnpob25nDQo+DQo+RllJLCBJIGRpZCBzb21l
+IGFkanVzdGVtZW50cyBiYyBvZiB0aGUgcmVjZW50IGludHJvZHVjdGlvbiBvZiBpb3ZhX3Jhbmdl
+cw0KPmluIG15IGJyYW5jaCA6DQo+DQo+ICBodHRwczovL2dpdGh1Yi5jb20vbGVnb2F0ZXIvcWVt
+dS9jb21taXRzL3ZmaW8tOC4yDQo+DQo+VGhhbmtzLA0KPg0KPkMuDQo+DQoNCg==
 
