@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5457D5A40
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 20:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EE87D5AB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 20:37:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvLv5-0007kI-St; Tue, 24 Oct 2023 14:14:24 -0400
+	id 1qvMFu-0004Bp-L9; Tue, 24 Oct 2023 14:35:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qvLv1-0007WV-4I
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 14:14:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qvLut-0005kT-Mz
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 14:14:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698171248;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rmPJ9Uh1bDf6LR646VZJEumDFg+BcPrqKG3uIudyTeQ=;
- b=a4pcoquH/IY1vxnmNAnCm3WIp9gMJQuHpwSquvUxOH/gHH1OCeP/fi5xqKOTVj/IP09FhM
- 3679ALOiuVr6QIdl8saCjEpjqkTBPSLTwoos9VwprHGNPIv/bvHfSJecSDSSKdhihXW6+7
- BmSyTIQpJNqcjjyhfJJMOO16kwdVJqQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-583-8YbPv2tAPeGocaCOHXzx4g-1; Tue,
- 24 Oct 2023 14:14:04 -0400
-X-MC-Unique: 8YbPv2tAPeGocaCOHXzx4g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvMFs-0004Aj-88
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 14:35:52 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvMFm-0002O9-MD
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 14:35:51 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68E23381459F;
- Tue, 24 Oct 2023 18:14:04 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.69])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BD9982166B27;
- Tue, 24 Oct 2023 18:14:02 +0000 (UTC)
-Date: Tue, 24 Oct 2023 13:14:01 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>, 
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 02/12] qemu_file: Use a stat64 for qemu_file_transferred
-Message-ID: <umpbv4qghflhubmfetanz6glvsgadn3yuybcarkyq6v2hd5awe@iylnmrsyqrv2>
-References: <20231024151042.90349-1-quintela@redhat.com>
- <20231024151042.90349-3-quintela@redhat.com>
+ by smtp-out2.suse.de (Postfix) with ESMTPS id EBD991FE9F;
+ Tue, 24 Oct 2023 18:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698172543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eL79aGGX9xCM91MFhc9M7/97a6nA62VQu6IeBDoQOag=;
+ b=XPr76rSHqx70Anv7+dFQMAi78P9INxqH3nT7xRByCi/C7jdfv4c4SklXkV0Nnyy+kJBBpL
+ kND/jF2IarzBq+TPXl5nqEi8iCUhj996PoI8nlgB4NTGzESmO/8naWYWFpXNZlJkwPCOtj
+ /VEMw0J0rah3PuLQr4oHvql0dLsrraU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698172543;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eL79aGGX9xCM91MFhc9M7/97a6nA62VQu6IeBDoQOag=;
+ b=lmOJZh9puqtYzw2yqaRV5VKmcrBZjBNKKxYjUdo4F4Mi0CkIqulDKNRtFFa9gcHLj0SdXP
+ JcVtFntFpBGhCEAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7F2191391C;
+ Tue, 24 Oct 2023 18:35:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id BXDHEn8OOGXUJwAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 24 Oct 2023 18:35:43 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>, Eric Blake
+ <eblake@redhat.com>
+Subject: Re: [PATCH v2 14/29] migration/ram: Introduce 'fixed-ram' migration
+ capability
+In-Reply-To: <87fs20vb2p.fsf@pond.sub.org>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-15-farosas@suse.de> <87fs20vb2p.fsf@pond.sub.org>
+Date: Tue, 24 Oct 2023 15:35:41 -0300
+Message-ID: <87zg07dg1u.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231024151042.90349-3-quintela@redhat.com>
-User-Agent: NeoMutt/20231006
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,27 +86,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 24, 2023 at 05:10:32PM +0200, Juan Quintela wrote:
-> This way we can read it from any thread.
-> I checked that it gives the same value than the current one.  We never
+Markus Armbruster <armbru@redhat.com> writes:
 
-s/than/as/
+> Fabiano Rosas <farosas@suse.de> writes:
+>
+>> Add a new migration capability 'fixed-ram'.
+>>
+>> The core of the feature is to ensure that each ram page has a specific
+>> offset in the resulting migration stream. The reason why we'd want
+>> such behavior are two fold:
+>>
+>>  - When doing a 'fixed-ram' migration the resulting file will have a
+>>    bounded size, since pages which are dirtied multiple times will
+>>    always go to a fixed location in the file, rather than constantly
+>>    being added to a sequential stream. This eliminates cases where a vm
+>>    with, say, 1G of ram can result in a migration file that's 10s of
+>>    GBs, provided that the workload constantly redirties memory.
+>>
+>>  - It paves the way to implement DIRECT_IO-enabled save/restore of the
+>>    migration stream as the pages are ensured to be written at aligned
+>>    offsets.
+>>
+>> For now, enabling the capability has no effect. The next couple of
+>> patches implement the core funcionality.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  docs/devel/migration.rst | 14 ++++++++++++++
+>>  migration/options.c      | 37 +++++++++++++++++++++++++++++++++++++
+>>  migration/options.h      |  1 +
+>>  migration/savevm.c       |  1 +
+>>  qapi/migration.json      |  5 ++++-
+>>  5 files changed, 57 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+>> index c3e1400c0c..6f898b5dbd 100644
+>> --- a/docs/devel/migration.rst
+>> +++ b/docs/devel/migration.rst
+>> @@ -566,6 +566,20 @@ Others (especially either older devices or system devices which for
+>>  some reason don't have a bus concept) make use of the ``instance id``
+>>  for otherwise identically named devices.
+>>  
+>> +Fixed-ram format
+>> +----------------
+>> +
+>> +When the ``fixed-ram`` capability is enabled, a slightly different
+>> +stream format is used for the RAM section. Instead of having a
+>> +sequential stream of pages that follow the RAMBlock headers, the dirty
+>> +pages for a RAMBlock follow its header. This ensures that each RAM
+>> +page has a fixed offset in the resulting migration stream.
+>
+> This requires the migration stream to be seekable, as documented in the
+> QAPI schema below.  I think it's worth documenting here, as well.
+>
 
-> use to qemu_files at the same time.
+Ok.
 
-s/to/two/
+>> +
+>> +The ``fixed-ram`` capaility can be enabled in both source and
+>> +destination with:
+>> +
+>> +    ``migrate_set_capability fixed-ram on``
+>
+> Effect of enabling on the destination?
+>
+> What happens when we enable it only on one end?
+>
 
-> 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->  migration/migration-stats.h | 4 ++++
->  migration/qemu-file.c       | 5 +++--
->  2 files changed, 7 insertions(+), 2 deletions(-)
-> 
+qemu-system-x86_64: Capability fixed-ram is off, but received capability is on
+qemu-system-x86_64: load of migration failed: Invalid argument
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+So I guess that *can* be enabled up there should become a *must*.
 
+>> +
+>>  Return path
+>>  -----------
+>>  
+>
+> [...]
+>
+>> diff --git a/qapi/migration.json b/qapi/migration.json
+>> index 74f12adc0e..1317dd32ab 100644
+>> --- a/qapi/migration.json
+>> +++ b/qapi/migration.json
+>> @@ -527,6 +527,9 @@
+>>  #     VM before migration for an optimal migration performance.
+>>  #     Enabled by default. (since 8.1)
+>>  #
+>> +# @fixed-ram: Migrate using fixed offsets for each RAM page. Requires
+>
+> Two spaces between sentences for consistency, please.
+>
+>> +#             a seekable transport such as a file.  (since 8.1)
+>
+> What is a migration transport?  migration.json doesn't define the term.
+>
+
+The medium that transports the migration. We are about to define some
+terms at the QAPI series:
+
+[PATCH v15 00/14] migration: Modify 'migrate' and 'migrate-incoming'
+QAPI commands for migration
+https://lore.kernel.org/r/20231023182053.8711-1-farosas@suse.de
+
+> Which transports are seekable?
+>
+
+The ones that implement QIO_CHANNEL_FEATURE_SEEKABLE. Currently only
+QIOChannelFile.
+
+> Out of curiosity: what happens if the transport isn't seekable?
+>
+
+We fail the migration. At migration_channels_and_uri_compatible():
+
+    if (migration_needs_seekable_channel() &&
+        !uri_supports_seeking(uri)) {
+        error_setg(errp, "Migration requires seekable transport (e.g. file)");
+        compatible = false;
+    }
+
+>> +#
+>>  # Features:
+>>  #
+>>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+>> @@ -543,7 +546,7 @@
+>>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+>>             'validate-uuid', 'background-snapshot',
+>>             'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+>> -           'dirty-limit', 'auto-pause'] }
+>> +           'dirty-limit', 'auto-pause', 'fixed-ram'] }
+>>  
+>>  ##
+>>  # @MigrationCapabilityStatus:
 
