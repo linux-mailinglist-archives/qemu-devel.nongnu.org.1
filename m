@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C69D7D512F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2747D5198
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHEO-000491-NU; Tue, 24 Oct 2023 09:14:00 -0400
+	id 1qvHEM-00046O-EH; Tue, 24 Oct 2023 09:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHEM-00047a-R9
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:13:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qvHEJ-0003xb-Rb
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:13:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHEI-00013M-M5
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:13:58 -0400
+ id 1qvHEI-000132-7z
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:13:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153233;
+ s=mimecast20190719; t=1698153231;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ag5wALHI/WZ7Tu3k00h4RSWbnUl7APd5QuUK7txDLXI=;
- b=g2z3xeJfJmTg391ZNI7Dsi1+katcObNwD53Oa74iwt5Uu1EHG0G7UwmDWtdvYdsvlH+Qft
- tcs+krz2uXbhuJAJoYcoV7yzI9rm64xRg3iftyAYtuaswacXgq1A+TvgoeW72JL9j6pb6X
- LriGnos9QpjKjoOe2uiPX3qztJILyrg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-651-P78KJj6APISnekRlB9GU-Q-1; Tue, 24 Oct 2023 09:13:42 -0400
-X-MC-Unique: P78KJj6APISnekRlB9GU-Q-1
+ bh=wSytcPgXUihOAo8jO1TEKPhY/Cs4SiCxtxaCJgHSibA=;
+ b=M65s9nvoPGicJ0G2xJj6fsCGvWKYQ8qN/ZlwqJrqUiM+iLTqlyO/VlB9gUjLbtCZ8jqZ/6
+ 9fQ81pBR5hg6XnQdNJSVkqW7OA786r78nkSTJxlz58l6+ou3fkaZ0JguGFEraDmAH3g+Gj
+ 0t2FeFPNGJNGieWCeb7omSDefCb/oIc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-194-Vg8m86fZOGaYBel35wJwoA-1; Tue, 24 Oct 2023 09:13:48 -0400
+X-MC-Unique: Vg8m86fZOGaYBel35wJwoA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E16513C0F660;
- Tue, 24 Oct 2023 13:13:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 62EE980171C;
+ Tue, 24 Oct 2023 13:13:47 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 535751C060AE;
- Tue, 24 Oct 2023 13:13:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3798C1C060B9;
+ Tue, 24 Oct 2023 13:13:41 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -72,22 +73,22 @@ Cc: Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 04/39] migration/doc: We broke backwards compatibility
-Date: Tue, 24 Oct 2023 15:12:30 +0200
-Message-ID: <20231024131305.87468-5-quintela@redhat.com>
+Subject: [PULL 05/39] migration: Receiving a zero page non zero is an error
+Date: Tue, 24 Oct 2023 15:12:31 +0200
+Message-ID: <20231024131305.87468-6-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,230 +105,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we detect that we have broken backwards compatibility in a
-released version, we can't do anything for that version.  But once we
-fix that bug on the next released version, we can "mitigate" that
-problem when migrating to new versions to give a way out of that
-machine until it does a hard reboot.
+We don't allow non zero compressed pages since:
 
-Acked-by: Peter Xu <peterx@redhat.com>
+commit 3edcd7e6ebae3ef0ac178eed5f4225803159562d
+Author: Peter Lieven <pl@kamp.de>
+Date:   Tue Mar 26 10:58:35 2013 +0100
+
+    migration: search for zero instead of dup pages
+
+RDMA case is a bit more complicated, but they don't handle it since:
+
+commit a1febc4950f2c6232c002f401d7cd409f6fa6a88
+Author: Richard Henderson <rth@twiddle.net>
+Date:   Mon Aug 29 11:46:14 2016 -0700
+
+    cutils: Export only buffer_is_zero
+
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231018112827.1325-5-quintela@redhat.com>
+Message-ID: <20231019085259.13307-2-quintela@redhat.com>
 ---
- docs/devel/migration.rst | 202 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 202 insertions(+)
+ migration/ram.c  | 15 +++++++++++----
+ migration/rdma.c |  6 +++++-
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-index 974505e4a7..be913630c3 100644
---- a/docs/devel/migration.rst
-+++ b/docs/devel/migration.rst
-@@ -1235,3 +1235,205 @@ In this section we have considered that we are using the same QEMU
- binary in both sides of the migration.  If we use different QEMU
- versions process, then we need to have into account all other
- differences and the examples become even more complicated.
-+
-+How to mitigate when we have a backward compatibility error
-+-----------------------------------------------------------
-+
-+We broke migration for old machine types continuously during
-+development.  But as soon as we find that there is a problem, we fix
-+it.  The problem is what happens when we detect after we have done a
-+release that something has gone wrong.
-+
-+Let see how it worked with one example.
-+
-+After the release of qemu-8.0 we found a problem when doing migration
-+of the machine type pc-7.2.
-+
-+- $ qemu-7.2 -M pc-7.2  ->  qemu-7.2 -M pc-7.2
-+
-+  This migration works
-+
-+- $ qemu-8.0 -M pc-7.2  ->  qemu-8.0 -M pc-7.2
-+
-+  This migration works
-+
-+- $ qemu-8.0 -M pc-7.2  ->  qemu-7.2 -M pc-7.2
-+
-+  This migration fails
-+
-+- $ qemu-7.2 -M pc-7.2  ->  qemu-8.0 -M pc-7.2
-+
-+  This migration fails
-+
-+So clearly something fails when migration between qemu-7.2 and
-+qemu-8.0 with machine type pc-7.2.  The error messages, and git bisect
-+pointed to this commit.
-+
-+In qemu-8.0 we got this commit::
-+
-+    commit 010746ae1db7f52700cb2e2c46eb94f299cfa0d2
-+    Author: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-+    Date:   Thu Mar 2 13:37:02 2023 +0000
-+
-+    hw/pci/aer: Implement PCI_ERR_UNCOR_MASK register
-+
-+
-+The relevant bits of the commit for our example are this ones::
-+
-+    --- a/hw/pci/pcie_aer.c
-+    +++ b/hw/pci/pcie_aer.c
-+    @@ -112,6 +112,10 @@ int pcie_aer_init(PCIDevice *dev,
-+
-+         pci_set_long(dev->w1cmask + offset + PCI_ERR_UNCOR_STATUS,
-+                      PCI_ERR_UNC_SUPPORTED);
-+    +    pci_set_long(dev->config + offset + PCI_ERR_UNCOR_MASK,
-+    +                 PCI_ERR_UNC_MASK_DEFAULT);
-+    +    pci_set_long(dev->wmask + offset + PCI_ERR_UNCOR_MASK,
-+    +                 PCI_ERR_UNC_SUPPORTED);
-+
-+         pci_set_long(dev->config + offset + PCI_ERR_UNCOR_SEVER,
-+                     PCI_ERR_UNC_SEVERITY_DEFAULT);
-+
-+The patch changes how we configure PCI space for AER.  But QEMU fails
-+when the PCI space configuration is different between source and
-+destination.
-+
-+The following commit shows how this got fixed::
-+
-+    commit 5ed3dabe57dd9f4c007404345e5f5bf0e347317f
-+    Author: Leonardo Bras <leobras@redhat.com>
-+    Date:   Tue May 2 21:27:02 2023 -0300
-+
-+    hw/pci: Disable PCI_ERR_UNCOR_MASK register for machine type < 8.0
-+
-+    [...]
-+
-+The relevant parts of the fix in QEMU are as follow:
-+
-+First, we create a new property for the device to be able to configure
-+the old behaviour or the new behaviour::
-+
-+    diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-+    index 8a87ccc8b0..5153ad63d6 100644
-+    --- a/hw/pci/pci.c
-+    +++ b/hw/pci/pci.c
-+    @@ -79,6 +79,8 @@ static Property pci_props[] = {
-+         DEFINE_PROP_STRING("failover_pair_id", PCIDevice,
-+                            failover_pair_id),
-+         DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-+    +    DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
-+    +                    QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-+         DEFINE_PROP_END_OF_LIST()
-+     };
-+
-+Notice that we enable the feature for new machine types.
-+
-+Now we see how the fix is done.  This is going to depend on what kind
-+of breakage happens, but in this case it is quite simple::
-+
-+    diff --git a/hw/pci/pcie_aer.c b/hw/pci/pcie_aer.c
-+    index 103667c368..374d593ead 100644
-+    --- a/hw/pci/pcie_aer.c
-+    +++ b/hw/pci/pcie_aer.c
-+    @@ -112,10 +112,13 @@ int pcie_aer_init(PCIDevice *dev, uint8_t cap_ver,
-+    uint16_t offset,
-+
-+         pci_set_long(dev->w1cmask + offset + PCI_ERR_UNCOR_STATUS,
-+                      PCI_ERR_UNC_SUPPORTED);
-+    -    pci_set_long(dev->config + offset + PCI_ERR_UNCOR_MASK,
-+    -                 PCI_ERR_UNC_MASK_DEFAULT);
-+    -    pci_set_long(dev->wmask + offset + PCI_ERR_UNCOR_MASK,
-+    -                 PCI_ERR_UNC_SUPPORTED);
-+    +
-+    +    if (dev->cap_present & QEMU_PCIE_ERR_UNC_MASK) {
-+    +        pci_set_long(dev->config + offset + PCI_ERR_UNCOR_MASK,
-+    +                     PCI_ERR_UNC_MASK_DEFAULT);
-+    +        pci_set_long(dev->wmask + offset + PCI_ERR_UNCOR_MASK,
-+    +                     PCI_ERR_UNC_SUPPORTED);
-+    +    }
-+
-+         pci_set_long(dev->config + offset + PCI_ERR_UNCOR_SEVER,
-+                      PCI_ERR_UNC_SEVERITY_DEFAULT);
-+
-+I.e. If the property bit is enabled, we configure it as we did for
-+qemu-8.0.  If the property bit is not set, we configure it as it was in 7.2.
-+
-+And now, everything that is missing is disabling the feature for old
-+machine types::
-+
-+    diff --git a/hw/core/machine.c b/hw/core/machine.c
-+    index 47a34841a5..07f763eb2e 100644
-+    --- a/hw/core/machine.c
-+    +++ b/hw/core/machine.c
-+    @@ -48,6 +48,7 @@ GlobalProperty hw_compat_7_2[] = {
-+         { "e1000e", "migrate-timadj", "off" },
-+         { "virtio-mem", "x-early-migration", "false" },
-+         { "migration", "x-preempt-pre-7-2", "true" },
-+    +    { TYPE_PCI_DEVICE, "x-pcie-err-unc-mask", "off" },
-+     };
-+     const size_t hw_compat_7_2_len = G_N_ELEMENTS(hw_compat_7_2);
-+
-+And now, when qemu-8.0.1 is released with this fix, all combinations
-+are going to work as supposed.
-+
-+- $ qemu-7.2 -M pc-7.2  ->  qemu-7.2 -M pc-7.2 (works)
-+- $ qemu-8.0.1 -M pc-7.2  ->  qemu-8.0.1 -M pc-7.2 (works)
-+- $ qemu-8.0.1 -M pc-7.2  ->  qemu-7.2 -M pc-7.2 (works)
-+- $ qemu-7.2 -M pc-7.2  ->  qemu-8.0.1 -M pc-7.2 (works)
-+
-+So the normality has been restored and everything is ok, no?
-+
-+Not really, now our matrix is much bigger.  We started with the easy
-+cases, migration from the same version to the same version always
-+works:
-+
-+- $ qemu-7.2 -M pc-7.2  ->  qemu-7.2 -M pc-7.2
-+- $ qemu-8.0 -M pc-7.2  ->  qemu-8.0 -M pc-7.2
-+- $ qemu-8.0.1 -M pc-7.2  ->  qemu-8.0.1 -M pc-7.2
-+
-+Now the interesting ones.  When the QEMU processes versions are
-+different.  For the 1st set, their fail and we can do nothing, both
-+versions are released and we can't change anything.
-+
-+- $ qemu-7.2 -M pc-7.2  ->  qemu-8.0 -M pc-7.2
-+- $ qemu-8.0 -M pc-7.2  ->  qemu-7.2 -M pc-7.2
-+
-+This two are the ones that work. The whole point of making the
-+change in qemu-8.0.1 release was to fix this issue:
-+
-+- $ qemu-7.2 -M pc-7.2  ->  qemu-8.0.1 -M pc-7.2
-+- $ qemu-8.0.1 -M pc-7.2  ->  qemu-7.2 -M pc-7.2
-+
-+But now we found that qemu-8.0 neither can migrate to qemu-7.2 not
-+qemu-8.0.1.
-+
-+- $ qemu-8.0 -M pc-7.2  ->  qemu-8.0.1 -M pc-7.2
-+- $ qemu-8.0.1 -M pc-7.2  ->  qemu-8.0 -M pc-7.2
-+
-+So, if we start a pc-7.2 machine in qemu-8.0 we can't migrate it to
-+anything except to qemu-8.0.
-+
-+Can we do better?
-+
-+Yeap.  If we know that we are going to do this migration:
-+
-+- $ qemu-8.0 -M pc-7.2  ->  qemu-8.0.1 -M pc-7.2
-+
-+We can launch the appropriate devices with::
-+
-+  --device...,x-pci-e-err-unc-mask=on
-+
-+And now we can receive a migration from 8.0.  And from now on, we can
-+do that migration to new machine types if we remember to enable that
-+property for pc-7.2.  Notice that we need to remember, it is not
-+enough to know that the source of the migration is qemu-8.0.  Think of
-+this example:
-+
-+$ qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2 -> qemu-8.2 -M pc-7.2
-+
-+In the second migration, the source is not qemu-8.0, but we still have
-+that "problem" and have that property enabled.  Notice that we need to
-+continue having this mark/property until we have this machine
-+rebooted.  But it is not a normal reboot (that don't reload QEMU) we
-+need the machine to poweroff/poweron on a fixed QEMU.  And from now
-+on we can use the proper real machine.
+diff --git a/migration/ram.c b/migration/ram.c
+index 92769902bb..4bfb20c94a 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3715,16 +3715,18 @@ int ram_load_postcopy(QEMUFile *f, int channel)
+         switch (flags & ~RAM_SAVE_FLAG_CONTINUE) {
+         case RAM_SAVE_FLAG_ZERO:
+             ch = qemu_get_byte(f);
++            if (ch != 0) {
++                error_report("Found a zero page with value %d", ch);
++                ret = -EINVAL;
++                break;
++            }
+             /*
+              * Can skip to set page_buffer when
+              * this is a zero page and (block->page_size == TARGET_PAGE_SIZE).
+              */
+-            if (ch || !matches_target_page_size) {
++            if (!matches_target_page_size) {
+                 memset(page_buffer, ch, TARGET_PAGE_SIZE);
+             }
+-            if (ch) {
+-                tmp_page->all_zero = false;
+-            }
+             break;
+ 
+         case RAM_SAVE_FLAG_PAGE:
+@@ -4030,6 +4032,11 @@ static int ram_load_precopy(QEMUFile *f)
+ 
+         case RAM_SAVE_FLAG_ZERO:
+             ch = qemu_get_byte(f);
++            if (ch != 0) {
++                error_report("Found a zero page with value %d", ch);
++                ret = -EINVAL;
++                break;
++            }
+             ram_handle_compressed(host, ch, TARGET_PAGE_SIZE);
+             break;
+ 
+diff --git a/migration/rdma.c b/migration/rdma.c
+index 2a1852ec7f..2d963fd147 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -3592,7 +3592,11 @@ int rdma_registration_handle(QEMUFile *f)
+ 
+             host_addr = block->local_host_addr +
+                             (comp->offset - block->offset);
+-
++            if (comp->value) {
++                error_report("rdma: Zero page with non-zero (%d) value",
++                             comp->value);
++                goto err;
++            }
+             ram_handle_compressed(host_addr, comp->value, comp->length);
+             break;
+ 
 -- 
 2.41.0
 
