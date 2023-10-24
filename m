@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53387D5991
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 19:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB76C7D597E
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 19:11:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvKyp-0004OK-Ja; Tue, 24 Oct 2023 13:14:11 -0400
+	id 1qvKuU-0001lR-TO; Tue, 24 Oct 2023 13:09:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvKyj-0004O1-Hs
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 13:14:05 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvKuS-0001lE-Gl
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 13:09:40 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvKyb-0006vk-1R
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 13:14:03 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4079ed65471so38802515e9.1
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 10:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698167634; x=1698772434; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kATxzfH1MFL0zYjp9WrqziRKhhItPTI7aISne1D41J8=;
- b=uhH6j81qfYxEESH0F1TY++q6zO06Uwi7pFpI8WtDZaHG5J1wYpIpdDaokhjFSKB65H
- KNauScVAIJbEOyWZldlsGm/ucwPH48bX7enl1gy56aTgWVucCsBADt01c5N4Dag265pd
- qghk7LOWwjePmeiAraxaxyzMfes10DdZo7ZPmzjY/cxVZ1NDLHq3naewHrGH1eEBFr2p
- NOLrIfcybDLHoyA17wHxO8psvUe2lWmxrZ0m6tgxpCkBNUYluiJpYP9nLlQ6Zko/22di
- j2XR4kf+rKc1j5d5lgrGOgtVYvSANbTZBBQAKoGtUwcZ2mLiq9AaljYJ8T4b/fnTYOzJ
- S8Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698167634; x=1698772434;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=kATxzfH1MFL0zYjp9WrqziRKhhItPTI7aISne1D41J8=;
- b=KtP7kPLqDif5N6Tkqml9BNEOk4m8TzWhDDPdACcpUrcb/5WSjDltMFgXeb9cpMBsyd
- Qwjhw2sOnkruFMsqo9o49g9P2M3jIbtlmDPxMOJsxIV5kfiE1xwBqeDAy4RtDGigCI27
- SsHMuecSj/mj+9XP/I3UCBa2jS4X796ip4eU1Sc+RCavTUI+8ksC84iUz6Nrsls4AcKD
- IZZWZapm/oJqc9vbmGAH9h1EqGJTA96dEhE/pNFhd8WIXKpzVJfjPfbtjZl01q0pqDKg
- jacQY2gkcjbWMqU+aj0nfnRpllbUWQ+Frxj3Z03883qGEb/dJaOQbxERecvWElRaETXi
- lo1A==
-X-Gm-Message-State: AOJu0YwG2johnJ1PlwJzysZ6LYAoIQoRjKcm9msj7StCLisvfYwizLsk
- Rs7vKjpD7akTrjmfcgiGAIx03ecR6Yt7eX8Ju14=
-X-Google-Smtp-Source: AGHT+IEKyxBR3IvvDsqhzszOCbHVBExscMDxY/wGVW5a1mM63kILLZQblJMpSdC+3LKnDIzAqdX1nw==
-X-Received: by 2002:a05:600c:1c1c:b0:402:f501:447c with SMTP id
- j28-20020a05600c1c1c00b00402f501447cmr9787352wms.0.1698167634251; 
- Tue, 24 Oct 2023 10:13:54 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- 17-20020a05600c231100b00401d8181f8bsm17111227wmo.25.2023.10.24.10.13.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 10:13:53 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 767FC1FFBB;
- Tue, 24 Oct 2023 18:13:53 +0100 (BST)
-References: <20231019102657.129512-1-akihiko.odaki@daynix.com>
-User-agent: mu4e 1.11.22; emacs 29.1.90
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
- =?utf-8?Q?Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v14 00/18] plugins: Allow to read registers
-Date: Tue, 24 Oct 2023 18:08:17 +0100
-In-reply-to: <20231019102657.129512-1-akihiko.odaki@daynix.com>
-Message-ID: <87cyx40wq6.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvKuR-0005UH-0Q
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 13:09:40 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C146921C1C;
+ Tue, 24 Oct 2023 17:09:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698167373; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ylSR4WBHDZv0B6TbuaPLkhSggvpQagosOCtZ9OAZ4/c=;
+ b=gVzD5jlVpLAv4bRTo5e/D7wCYvWtXmqlUGXrg8cRwFI+tOIOjRtbJ9duoApUWKn9Vfd4DJ
+ cLt0IJpg7TZnZmck9C853TsE+1FlCbmoyiPXMZvRyHeukqW5U3HSuRHrlHaxIvpnlAg8Iq
+ 2EDxdDnZYycpSIYNdm88arNSIsvPGPw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698167373;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ylSR4WBHDZv0B6TbuaPLkhSggvpQagosOCtZ9OAZ4/c=;
+ b=LtTeh7OLjiL8qwcINPcf0TW8ba7KiWaPfKxXxpz0KL2YwJcGvOGM4eGKZmnuOO90sLcCsM
+ 8GGrIfWSINBuXlCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5423A134F5;
+ Tue, 24 Oct 2023 17:09:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id F0cyCE36N2XdfgAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 24 Oct 2023 17:09:33 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Zhijian Li <lizhijian@fujitsu.com>, Markus Armbruster
+ <armbru@redhat.com>, Juan Quintela <quintela@redhat.com>, Thomas Huth
+ <thuth@redhat.com>
+Subject: Re: [PATCH v3] migration: Stop migration immediately in RDMA error
+ paths
+In-Reply-To: <20231024163933.516546-1-peterx@redhat.com>
+References: <20231024163933.516546-1-peterx@redhat.com>
+Date: Tue, 24 Oct 2023 14:09:30 -0300
+Message-ID: <87cyx4t0ad.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[99.99%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,29 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Peter Xu <peterx@redhat.com> writes:
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-
-> Based-on: <20231019101030.128431-1-akihiko.odaki@daynix.com>
-> ("[PATCH v5 0/6] gdbstub and TCG plugin improvements")
+> In multiple places, RDMA errors are handled in a strange way, where it only
+> sets qemu_file_set_error() but not stop the migration immediately.
 >
-> I and other people in the University of Tokyo, where I research processor
-> design, found TCG plugins are very useful for processor design
-> exploration.
+> It's not obvious what will happen later if there is already an error.  Make
+> all such failures stop migration immediately.
+>
+> Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Cc: Juan Quintela <quintela@redhat.com>
+> Cc: Fabiano Rosas <farosas@suse.de>
+> Reported-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-So I reviewed this on top of my gdbstub/next series so needed to make
-some tweaks as I didn't have the riscv misa_mxl patches from above
-because there still seems to be some debate about them.
-
-If we can get a series that doesn't depend on them (or the RiscV guys to
-agree with the changes) with the review comments addressed I think I'm
-ready to pull at least 1-15 into my tree for the next pull request.
-
-I want to spend a little more time looking over the plugin API itself
-and experiment with some alternatives. But I don't think that need hold
-up getting the gdbfeature stuff squared away now.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
