@@ -2,64 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EBA7D4BE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 11:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD557D4C1B
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 11:27:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvDcO-0002PV-Qg; Tue, 24 Oct 2023 05:22:32 -0400
+	id 1qvDg9-0003zq-NP; Tue, 24 Oct 2023 05:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvDcN-0002Oz-3b
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:22:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvDg7-0003yt-6a
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:26:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvDcK-0004xQ-UC
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:22:30 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvDg5-00060C-CK
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:26:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698139347;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=zwuHTMKW3wjarxhyvY4spHMbOfYxPVOZQmk0Cn8RX0s=;
- b=Q+7fzH/A/6oIYtPZJLmT0jO1qcLtGOHKkU2619DTbNnY9bdhk4Ac9YI0E0Tp5MmFqjhLiu
- k+CrmQ9fJjt72p8AFEz1CeWmndIQOO0CBFvujxtVuOvTsArqIJlTtbCud0ft0IIa4ZpAed
- sD35WZicalSiZ827Camh5H4ZBr9ClSs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1698139580;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CsfWMtFUNJpiSG5UaqW8/bbG+uFyes2QjmDYMvbfmDs=;
+ b=Ag3PoYHmFIFN22ZShYMqjdVYp1duEtzhSdciUkg1wEhn4J6BYYktFbkuRlWUMdkgVFB+1P
+ Nis3XGU3WDQiK5+kONlqrAj9hQvVwlIgbykBZRp4wTyeOEJOEev4MlOBNSBRojFbEfiV0B
+ iFbu4T1xng7H8BDo+p84XGOrJqLqvgA=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-QpAlJTeLNIax2ws9BdvN0Q-1; Tue, 24 Oct 2023 05:22:24 -0400
-X-MC-Unique: QpAlJTeLNIax2ws9BdvN0Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB05D88D78B;
- Tue, 24 Oct 2023 09:22:23 +0000 (UTC)
-Received: from thuth-p1g4.str.redhat.com (dhcp-192-205.str.redhat.com
- [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 055F32026D4C;
- Tue, 24 Oct 2023 09:22:21 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Markus Armbruster <armbru@redhat.com>
-Cc: Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v2] migration/ram: Fix compilation with -Wshadow=local
-Date: Tue, 24 Oct 2023 11:22:20 +0200
-Message-ID: <20231024092220.55305-1-thuth@redhat.com>
+ us-mta-98-E33pbKhMNKaDQtWWExNX9A-1; Tue, 24 Oct 2023 05:26:12 -0400
+X-MC-Unique: E33pbKhMNKaDQtWWExNX9A-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c50255b905so38338461fa.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 02:26:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698139570; x=1698744370;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CsfWMtFUNJpiSG5UaqW8/bbG+uFyes2QjmDYMvbfmDs=;
+ b=pnwgOJvQSb+llPPF0+4lZdSWI1LKZFV433FFBj+KWpGPRkN1Fzx8S9Bd/Jxmg3Q9J4
+ giIWHwV+Sx03j4IeYMrMSBWHUVSDYx04thb5ut1LYrHsELybbkl9L+5KrRkNOLS55B/y
+ am1sYAO6vuN45iciPDvwtgpv54Ib3Eg7AshCHmPV5qLXK0G0vtf0x2vAx21//IUmPX5+
+ u5YL9VNWNTCCu0rSOh66oKxcaFWCavPyNpb8HXtT/5rzMKqOy1+zDiM1qTSPLqpU5B6M
+ jt5oXoEikGyuJrQZsnpJtoU/JWmxdbRRR9o23ITTroiYXrMMayRn0Iy/0sUfA1814MnG
+ vxSw==
+X-Gm-Message-State: AOJu0YxOHI6Yr2pWsjfkKSwjCCUyQJgiZ2bh2f4gsSn4b114SVpQoeZk
+ itD6O9YiZ4LPGsuptu/j9R8jutQam9y6vsNs1QJ2OKQuCC1O3NNP1DrM5vxTN8KRXBb4Xk4TnHZ
+ KFMa1f4BZ/D47xbQ=
+X-Received: by 2002:a05:651c:2117:b0:2bd:19c5:3950 with SMTP id
+ a23-20020a05651c211700b002bd19c53950mr9729611ljq.33.1698139570627; 
+ Tue, 24 Oct 2023 02:26:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7iA3ayPNixW61qkcTnw8xjSZnkzg1ieuFODpOQuXD0U0vCQuUVGnquqdlIOsqrcyzK1KPZQ==
+X-Received: by 2002:a05:651c:2117:b0:2bd:19c5:3950 with SMTP id
+ a23-20020a05651c211700b002bd19c53950mr9729586ljq.33.1698139570251; 
+ Tue, 24 Oct 2023 02:26:10 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ o27-20020a05600c511b00b004067e905f44sm11724794wms.9.2023.10.24.02.26.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Oct 2023 02:26:09 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org,  Kevin Wolf <kwolf@redhat.com>,  "Michael S.
+ Tsirkin" <mst@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  John Snow
+ <jsnow@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,  Jason Wang
+ <jasowang@redhat.com>
+Subject: Re: [PATCH v2 3/9] net/slirp: use different IDs for each instance
+In-Reply-To: <20231024084043.2926316-4-marcandre.lureau@redhat.com> (marcandre
+ lureau's message of "Tue, 24 Oct 2023 12:40:37 +0400")
+References: <20231024084043.2926316-1-marcandre.lureau@redhat.com>
+ <20231024084043.2926316-4-marcandre.lureau@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 24 Oct 2023 11:26:08 +0200
+Message-ID: <87r0lk1idr.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,47 +104,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename the variable here to avoid that it shadows a variable from
-the beginning of the function scope. With this change the code now
-successfully compiles with -Wshadow=local.
+marcandre.lureau@redhat.com wrote:
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Using always 0, QEMU will end up loading the same instance, even if
+> multiple have been saved.
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- v2: Need the value for the qemu_file_set_error() line, too
+Similar (but different) fix on next Migration PULL request.
 
- migration/ram.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Later, Juan.
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 92769902bb..212add4481 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3208,6 +3208,8 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-     rs->last_stage = !migration_in_colo_state();
- 
-     WITH_RCU_READ_LOCK_GUARD() {
-+        int rdma_reg_ret;
-+
-         if (!migration_in_postcopy()) {
-             migration_bitmap_sync_precopy(rs, true);
-         }
-@@ -3238,9 +3240,9 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
- 
-         ram_flush_compressed_data(rs);
- 
--        int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
--        if (ret < 0) {
--            qemu_file_set_error(f, ret);
-+        rdma_reg_ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
-+        if (rdma_reg_ret < 0) {
-+            qemu_file_set_error(f, rdma_reg_ret);
-         }
-     }
- 
--- 
-2.41.0
+> ---
+>  net/slirp.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/slirp.c b/net/slirp.c
+> index c33b3e02e7..af1451b60f 100644
+> --- a/net/slirp.c
+> +++ b/net/slirp.c
+> @@ -47,6 +47,7 @@
+>  #include "util.h"
+>  #include "migration/register.h"
+>  #include "migration/qemu-file-types.h"
+> +#include "migration/vmstate.h"
+>=20=20
+>  static int get_str_sep(char *buf, int buf_size, const char **pp, int sep)
+>  {
+> @@ -659,7 +660,7 @@ static int net_slirp_init(NetClientState *peer, const=
+ char *model,
+>       * specific version?
+>       */
+>      g_assert(slirp_state_version() =3D=3D 4);
+> -    register_savevm_live("slirp", 0, slirp_state_version(),
+> +    register_savevm_live("slirp", VMSTATE_INSTANCE_ID_ANY, slirp_state_v=
+ersion(),
+>                           &savevm_slirp_state, s->slirp);
+>=20=20
+>      s->poll_notifier.notify =3D net_slirp_poll_notify;
 
 
