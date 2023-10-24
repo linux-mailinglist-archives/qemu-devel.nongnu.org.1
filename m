@@ -2,99 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F4C7D5817
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE3B7D5820
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvKBC-0006PV-ON; Tue, 24 Oct 2023 12:22:54 -0400
+	id 1qvKCs-0000gk-1f; Tue, 24 Oct 2023 12:24:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvKB9-0006I9-Vx; Tue, 24 Oct 2023 12:22:52 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvKCm-0000g2-V2
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:24:33 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvKB4-0000Oh-Jt; Tue, 24 Oct 2023 12:22:51 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4081ccf69dcso32750265e9.0; 
- Tue, 24 Oct 2023 09:22:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvKCl-0000to-3d
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:24:32 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4083dbc43cfso34268865e9.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:24:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698164564; x=1698769364; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=e3Lw885OKwVMAKJ+lcANwbqiLUJvnaLF4rMzyVhxCiE=;
- b=mCUO2Bqg1YtEA9Ixqqe3/Xc3CLGUuAjOK4/DM3MDe1/asTe1ZReEGmOID/BC8fPUFe
- uzFohmCoeiUTsS/EcWZBme2NewfZr8U8jeMhnMoG6/uze5mFqo6gnUrcZPaTUuhbHCUV
- 8S1rByvlDq4lptNRHiKQT3lUF/K56bPY6H7fswtn8x9i6Kp5WyYywJAeQI6FwGvDp9TA
- DFRV/mX2m6zuIb9pODWeJwseus1KwRjI5UPOirNpRGsSR4PMmw0IhRIyjEX/rAvGlmjv
- Cdrl+ActuV5i0lmVNS9yKby/fCwzb0RsuCBIl7TuMRT4yZkDP0I/RDqilzGSvG+gBR4f
- 7RTg==
+ d=linaro.org; s=google; t=1698164666; x=1698769466; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IZ/JIaCD4bgqQwPEUaUAuoz6MNhWNnrfpvJBP8QkU5o=;
+ b=IlGVaHJjY9f0gMSiomodMGs1FNDQTVIOAjO47AhUHJ8s86JMcz0M01+XKwCyb3H8ec
+ VFyLxM4q8TjNUmmoD5q1UwYT76nMXxNDKQIQ9K56s08mK6Abt0FAdVkG1K1f4NLJxH21
+ RlXTVyCNRvG/YnTd3cWnpIoeUvnEaBi08Nr5bEulSxYcSntQL0TigmDmjD3ByngiPymJ
+ ZzsUIexvfYPbEqLxhx699sYrvUiGThTdzSfK/DqtA26YRkEVWhq5wvIwgjI+iOuYCpcl
+ V9j1ntXS+iMGSGSf4N9SPkJlDwfRv1xKaiyj6aZOFZ+N8LFsNX7cuan39wbTeNvelKmI
+ 2ciQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698164564; x=1698769364;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=e3Lw885OKwVMAKJ+lcANwbqiLUJvnaLF4rMzyVhxCiE=;
- b=adn6r5a6I5dPDoQoTgPbDSP6V6/cTR/tsQ8EWFtG6gA0GfiiyWO3+QXXCJic5c6UpZ
- S4lHvF6rt/5/dFViRgDdaS+qlzQCy8LszNZKeO3cNvaHn7QrY0T/sltHfE11q8N+SyfZ
- GbMoUHL+eb8ew+b7agGQHmgUR7viQB2vjKBGASOxo23OcsKn3Noo8adG2FQesm1V+K0Q
- /DmBToZuiYP6fVshKQZAbgmV6zSZYoxcl/ryh3S2pe2ZqCrKe8jQza3Nju0b8msd2gkH
- kOBmcXaMpWSeW9CQqk+7sDxn9jcriwd2eS+XQMBIoJclOQ5lkEWZN2yw9mUnsynRS+SR
- FQjg==
-X-Gm-Message-State: AOJu0YxRPSyw0IVzm1309VfJHsX6Js+41G2ijnq11u7y982KWzNWq8Ye
- AkOhhcGV8CVEYhCTz6HryJ4=
-X-Google-Smtp-Source: AGHT+IGE5clc2rOnE6leeciZfVRiFGqwOxcrDHe1tg4zz2ecPacv7kXaqp1axxGRcGZHMciB9vvCKw==
-X-Received: by 2002:adf:b1d1:0:b0:32d:c755:d73d with SMTP id
- r17-20020adfb1d1000000b0032dc755d73dmr14284793wra.18.1698164564123; 
- Tue, 24 Oct 2023 09:22:44 -0700 (PDT)
-Received: from [192.168.6.66] (54-240-197-230.amazon.com. [54.240.197.230])
- by smtp.gmail.com with ESMTPSA id
- h12-20020adff18c000000b0032d402f816csm10104046wro.98.2023.10.24.09.22.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 09:22:43 -0700 (PDT)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <ab2aabe5-b3c3-43f5-812e-bce98d2e59ae@xen.org>
-Date: Tue, 24 Oct 2023 17:22:41 +0100
+ d=1e100.net; s=20230601; t=1698164666; x=1698769466;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IZ/JIaCD4bgqQwPEUaUAuoz6MNhWNnrfpvJBP8QkU5o=;
+ b=UREL2OjsYuEBWPKdqmYY9EhfG5CAsIYoBpyyzYg7jYNv9fXe5e+64mcRF8vnfXd2jP
+ pgeahxQSz8vGzGMBUVHKxsFeBPcsmrLDMy+8HYuardxZU8+qZUZWROxGYwBKY1bvPmNf
+ rLywt5xdJXw6vMYoFjG4nAsWann6+lLy0TQyrCPK7mHVA6khsoVZrhR4Gn2Eiwubg7J5
+ Ap8voXN0OtZcySpWAPKuFVSZCBrD0awHnyYS0wTTCCXRcPRFF4AMShCnLIozZZ6jjpXZ
+ bjg/fjPAO6C66qU16ABTm5QTF+nqzz90l4dxU6sTV2TpX+19KgQ9frVIf8EeSjWpXuXP
+ 6OQg==
+X-Gm-Message-State: AOJu0YxKLJrER/U4x8FiQGpy+ETwB2PzV2un/yRTPtUVnBuN2Z+vQysP
+ +f/KeJmlxKasn4xPdK0qr6SDTA6//5FPoE/AvTU=
+X-Google-Smtp-Source: AGHT+IGKBkfenD7j+WsuXwLVj6wu2W69Nnh4aWWT+e/XabT7ICQMG0seP4MKgRWX/0w5o029xX7duA==
+X-Received: by 2002:a05:600c:4593:b0:401:b504:b6a0 with SMTP id
+ r19-20020a05600c459300b00401b504b6a0mr10130263wmo.3.1698164666210; 
+ Tue, 24 Oct 2023 09:24:26 -0700 (PDT)
+Received: from m1x-phil.lan (sem44-h01-176-172-55-165.dsl.sta.abo.bbox.fr.
+ [176.172.55.165]) by smtp.gmail.com with ESMTPSA id
+ s10-20020a05600c45ca00b00407752f5ab6sm12592013wmo.6.2023.10.24.09.24.24
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 24 Oct 2023 09:24:25 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@aj.id.au>, qemu-arm@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/11] hw/arm/aspeed: Split AspeedSoCState per 2400/2600/10x0
+Date: Tue, 24 Oct 2023 18:24:11 +0200
+Message-ID: <20231024162423.40206-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/24] hw/xen: handle soft reset for primary console
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
- Bernhard Beschow <shentey@gmail.com>, Joel Upham <jupham125@gmail.com>
-References: <20231019154020.99080-1-dwmw2@infradead.org>
- <20231019154020.99080-17-dwmw2@infradead.org>
- <8ba01df3-6189-4e1e-a70f-37a2d4dd21ed@xen.org>
- <3124d1d6e9af139a3c7b6dbe2b73a82914d3f559.camel@infradead.org>
-Organization: Xen Project
-In-Reply-To: <3124d1d6e9af139a3c7b6dbe2b73a82914d3f559.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,36 +87,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/10/2023 16:48, David Woodhouse wrote:
-> On Tue, 2023-10-24 at 16:44 +0100, Paul Durrant wrote:
->> On 19/10/2023 16:40, David Woodhouse wrote:
->>> From: David Woodhouse <dwmw@amazon.co.uk>
->>>
->>> On soft reset, the prinary console event channel needs to be rebound to
->>> the backend port (in the xen-console driver). We could put that into the
->>> xen-console driver itself, but it's slightly less ugly to keep it within
->>> the KVM/Xen code, by stashing the backend port# on event channel reset
->>> and then rebinding in the primary console reset when it has to recreate
->>> the guest port anyway.
->>
->> Does Xen re-bind the primary console on EVTCHNOP_reset? That's news to
->> me. I go check.
-> 
-> I spent an unhapp hour trying to work out how Xen actually does any of
-> this :)
-> 
-> In the short term I'm more interested in having soft reset work, than
-> an explicit EVTCHNOP_reset. And I can't work out *how*, but we do seem
-> to have console again after a kexec in real Xen.
+Hi,
 
-*Soft* reset may do it, but not the EVTCHNOP_reset hypercall itself, 
-because there's a bunch of impenetrable toolstack magic involved the 
-former. Perhaps you could just push the re-bind code up a layer into
-kvm_xen_soft_reset().
+This series is extracted for a bigger work.
 
-   Paul
+Cortex-A MP clusters (TYPE_A15MPCORE_PRIV) should create
+the ARM cores in its own state. Unfortunately we don't do
+it that way, and this model calls qemu_get_cpu().
+
+In order to remove the qemu_get_cpu() call there, we first
+need to rework some SoC users.
+
+This series rework the Aspeed SoC state, so it is clear
+what fields are really used by a SoC type (2400 / 2600 /
+10x0). It will then be easier to have the MP cluster create
+the core instances.
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (11):
+  hw/arm/aspeed: Extract code common to all boards to a common file
+  hw/arm/aspeed: Rename aspeed_soc_init() as AST2400/2500 specific
+  hw/arm/aspeed: Rename aspeed_soc_realize() as AST2400/2500 specific
+  hw/arm/aspeed: Dynamically allocate AspeedMachineState::soc field
+  hw/arm/aspeed: Introduce TYPE_ASPEED10X0_SOC
+  hw/arm/aspeed: Introduce TYPE_ASPEED2600_SOC
+  hw/arm/aspeed: Introduce TYPE_ASPEED2400_SOC
+  hw/arm/aspeed: Check 'memory' link is set in common aspeed_soc_realize
+  hw/arm/aspeed: Move AspeedSoCState::armv7m to Aspeed10x0SoCState
+  hw/arm/aspeed: Move AspeedSoCState::a7mpcore to Aspeed2600SoCState
+  hw/arm/aspeed: Move AspeedSoCState::cpu/vic to Aspeed2400SoCState
+
+ include/hw/arm/aspeed_soc.h               |  35 +++-
+ hw/arm/aspeed.c                           | 101 +++++------
+ hw/arm/aspeed_ast10x0.c                   |  53 +++---
+ hw/arm/{aspeed_soc.c => aspeed_ast2400.c} | 201 +++++-----------------
+ hw/arm/aspeed_ast2600.c                   |  75 ++++----
+ hw/arm/aspeed_soc_common.c                | 154 +++++++++++++++++
+ hw/arm/fby35.c                            |  27 +--
+ hw/arm/meson.build                        |   3 +-
+ 8 files changed, 364 insertions(+), 285 deletions(-)
+ rename hw/arm/{aspeed_soc.c => aspeed_ast2400.c} (76%)
+ create mode 100644 hw/arm/aspeed_soc_common.c
+
+-- 
+2.41.0
+
 
