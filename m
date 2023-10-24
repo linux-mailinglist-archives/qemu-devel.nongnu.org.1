@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD557D4C1B
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 11:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9017D4C2F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 11:28:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvDg9-0003zq-NP; Tue, 24 Oct 2023 05:26:25 -0400
+	id 1qvDhT-0005Pf-3k; Tue, 24 Oct 2023 05:27:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvDg7-0003yt-6a
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:26:23 -0400
+ id 1qvDhL-0005F2-6p
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:27:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvDg5-00060C-CK
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:26:22 -0400
+ id 1qvDhD-0006Bw-BD
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:27:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698139580;
+ s=mimecast20190719; t=1698139650;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CsfWMtFUNJpiSG5UaqW8/bbG+uFyes2QjmDYMvbfmDs=;
- b=Ag3PoYHmFIFN22ZShYMqjdVYp1duEtzhSdciUkg1wEhn4J6BYYktFbkuRlWUMdkgVFB+1P
- Nis3XGU3WDQiK5+kONlqrAj9hQvVwlIgbykBZRp4wTyeOEJOEev4MlOBNSBRojFbEfiV0B
- iFbu4T1xng7H8BDo+p84XGOrJqLqvgA=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fIV5/5Xq0M3+qwJshypcO0jWQ8ULo9e/aLVFtpZFJmM=;
+ b=JePKRY54n0NEsHTlkMcDVLhK4QRbr8BbfpCf3dTSHBL9RG+WlaJJ/Tbh8cZaI1rwf0aXpL
+ lfcj9sSc5LULB0XXPMoZnUpfG7tGOD+AkJ8WKIrbo/aVB2LTBojZFL906ACbmIqzJsr8Ay
+ qfTZsNJnqGT690uA7Yd3rm2IS61Ez2k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-E33pbKhMNKaDQtWWExNX9A-1; Tue, 24 Oct 2023 05:26:12 -0400
-X-MC-Unique: E33pbKhMNKaDQtWWExNX9A-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c50255b905so38338461fa.0
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 02:26:11 -0700 (PDT)
+ us-mta-120-4fO4lrF3MO6B4uxyd0Wk0w-1; Tue, 24 Oct 2023 05:27:23 -0400
+X-MC-Unique: 4fO4lrF3MO6B4uxyd0Wk0w-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-408534c3ec7so22718305e9.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 02:27:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698139570; x=1698744370;
+ d=1e100.net; s=20230601; t=1698139642; x=1698744442;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CsfWMtFUNJpiSG5UaqW8/bbG+uFyes2QjmDYMvbfmDs=;
- b=pnwgOJvQSb+llPPF0+4lZdSWI1LKZFV433FFBj+KWpGPRkN1Fzx8S9Bd/Jxmg3Q9J4
- giIWHwV+Sx03j4IeYMrMSBWHUVSDYx04thb5ut1LYrHsELybbkl9L+5KrRkNOLS55B/y
- am1sYAO6vuN45iciPDvwtgpv54Ib3Eg7AshCHmPV5qLXK0G0vtf0x2vAx21//IUmPX5+
- u5YL9VNWNTCCu0rSOh66oKxcaFWCavPyNpb8HXtT/5rzMKqOy1+zDiM1qTSPLqpU5B6M
- jt5oXoEikGyuJrQZsnpJtoU/JWmxdbRRR9o23ITTroiYXrMMayRn0Iy/0sUfA1814MnG
- vxSw==
-X-Gm-Message-State: AOJu0YxOHI6Yr2pWsjfkKSwjCCUyQJgiZ2bh2f4gsSn4b114SVpQoeZk
- itD6O9YiZ4LPGsuptu/j9R8jutQam9y6vsNs1QJ2OKQuCC1O3NNP1DrM5vxTN8KRXBb4Xk4TnHZ
- KFMa1f4BZ/D47xbQ=
-X-Received: by 2002:a05:651c:2117:b0:2bd:19c5:3950 with SMTP id
- a23-20020a05651c211700b002bd19c53950mr9729611ljq.33.1698139570627; 
- Tue, 24 Oct 2023 02:26:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH7iA3ayPNixW61qkcTnw8xjSZnkzg1ieuFODpOQuXD0U0vCQuUVGnquqdlIOsqrcyzK1KPZQ==
-X-Received: by 2002:a05:651c:2117:b0:2bd:19c5:3950 with SMTP id
- a23-20020a05651c211700b002bd19c53950mr9729586ljq.33.1698139570251; 
- Tue, 24 Oct 2023 02:26:10 -0700 (PDT)
+ bh=fIV5/5Xq0M3+qwJshypcO0jWQ8ULo9e/aLVFtpZFJmM=;
+ b=YjjlT9A4rAu07wYw/KW53GUo9pTk5I3b49dQt8CbcehvND5KsTEl7iF/yK21hvAs9P
+ 42GB3yCuFep9tKQEH2fZvHX3pPwD/NGA2oZt0FamJsiLlGnD7vZGLlYVj8+N0cZRawPa
+ weWD4bhvxDNyDIZrySDri6GiwLOCCBu8/CDyM4v+iW2p0hUZLlz2tBqMQAyq5X+U05mr
+ o/sQxnrnQOdhIB4hj8+WLZLzJJV/nDYCrAo2y2sea1Kuu7kaUZ/H/xV1MBitP0ZDejF+
+ vdSSYG1W8bFLkWavqQDD+HmRRY1L+VKOV6O5e0nMNr7QOB5KzDq4XetWDIvefEjbhjmI
+ BEHg==
+X-Gm-Message-State: AOJu0YyOd3nJe96mbHXrIHcv+ReYem87sw6FPRZ+eXHosSyLjdZWwazU
+ L3F8BA84xjFRTRsKVRzmWz0GkcKFV4PtpzK6Lijn1EK59ygHmpwcAx7CsqQ7TCB7TFTDOct7lpD
+ a2WrsoFn8qXtAd8g=
+X-Received: by 2002:a05:600c:4f0f:b0:408:3c9e:44b7 with SMTP id
+ l15-20020a05600c4f0f00b004083c9e44b7mr8913807wmq.3.1698139642431; 
+ Tue, 24 Oct 2023 02:27:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWWSFIxFFgbCKWlTD44YicmE0Ojc+66rlPIRv+cxKGb1FAwJmWPO+HA4FPQTxcsHo/WdK+LQ==
+X-Received: by 2002:a05:600c:4f0f:b0:408:3c9e:44b7 with SMTP id
+ l15-20020a05600c4f0f00b004083c9e44b7mr8913792wmq.3.1698139642155; 
+ Tue, 24 Oct 2023 02:27:22 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- o27-20020a05600c511b00b004067e905f44sm11724794wms.9.2023.10.24.02.26.09
+ m16-20020a7bca50000000b00405d9a950a2sm16037131wml.28.2023.10.24.02.27.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 02:26:09 -0700 (PDT)
+ Tue, 24 Oct 2023 02:27:21 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org,  Kevin Wolf <kwolf@redhat.com>,  "Michael S.
@@ -72,14 +72,14 @@ Cc: qemu-devel@nongnu.org,  Kevin Wolf <kwolf@redhat.com>,  "Michael S.
  <leobras@redhat.com>,  Samuel Thibault <samuel.thibault@ens-lyon.org>,
  qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,  Jason Wang
  <jasowang@redhat.com>
-Subject: Re: [PATCH v2 3/9] net/slirp: use different IDs for each instance
-In-Reply-To: <20231024084043.2926316-4-marcandre.lureau@redhat.com> (marcandre
- lureau's message of "Tue, 24 Oct 2023 12:40:37 +0400")
+Subject: Re: [PATCH v2 7/9] migration: set file error on subsection loading
+In-Reply-To: <20231024084043.2926316-8-marcandre.lureau@redhat.com> (marcandre
+ lureau's message of "Tue, 24 Oct 2023 12:40:41 +0400")
 References: <20231024084043.2926316-1-marcandre.lureau@redhat.com>
- <20231024084043.2926316-4-marcandre.lureau@redhat.com>
+ <20231024084043.2926316-8-marcandre.lureau@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 24 Oct 2023 11:26:08 +0200
-Message-ID: <87r0lk1idr.fsf@secure.mitica>
+Date: Tue, 24 Oct 2023 11:27:20 +0200
+Message-ID: <87msw81ibr.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -91,7 +91,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,41 +112,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 marcandre.lureau@redhat.com wrote:
 > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 >
-> Using always 0, QEMU will end up loading the same instance, even if
-> multiple have been saved.
+> commit 13cde50889237 ("vmstate: Return error in case of error") sets
+> QemuFile error to stop reading from it and report to the caller (checked
+> by unit tests). We should do the same on subsection loading error.
 >
 > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-Similar (but different) fix on next Migration PULL request.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Later, Juan.
-
-> ---
->  net/slirp.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/net/slirp.c b/net/slirp.c
-> index c33b3e02e7..af1451b60f 100644
-> --- a/net/slirp.c
-> +++ b/net/slirp.c
-> @@ -47,6 +47,7 @@
->  #include "util.h"
->  #include "migration/register.h"
->  #include "migration/qemu-file-types.h"
-> +#include "migration/vmstate.h"
->=20=20
->  static int get_str_sep(char *buf, int buf_size, const char **pp, int sep)
->  {
-> @@ -659,7 +660,7 @@ static int net_slirp_init(NetClientState *peer, const=
- char *model,
->       * specific version?
->       */
->      g_assert(slirp_state_version() =3D=3D 4);
-> -    register_savevm_live("slirp", 0, slirp_state_version(),
-> +    register_savevm_live("slirp", VMSTATE_INSTANCE_ID_ANY, slirp_state_v=
-ersion(),
->                           &savevm_slirp_state, s->slirp);
->=20=20
->      s->poll_notifier.notify =3D net_slirp_poll_notify;
+queued.
 
 
