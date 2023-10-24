@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E817D51CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734287D51C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:27:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHJv-0000d8-W8; Tue, 24 Oct 2023 09:19:44 -0400
+	id 1qvHK6-0001Jz-T2; Tue, 24 Oct 2023 09:19:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHHd-00054q-0p
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qvHHj-0005JQ-1E
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHHW-00028l-Fd
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:20 -0400
+ id 1qvHHe-0002DO-E8
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153433;
+ s=mimecast20190719; t=1698153441;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w5jcWCJuarmvQpIJ2dG0VPWVcQ2F1rKSx6Uy0+MjrJ4=;
- b=HxaJF8jeX/7x/BTNWFsgVuCxgETIkWKhJyaQgPYpZqEbXQvrKi4xbVwvyXQmwcRWe7wkDX
- Bm20uJta2uS5/tIOg2vJFAaWTu9jF+VY9rLTkDXwuPzpY6kjGmBWOBdem/QA/835vYKXUC
- HvzKKHj8UqceFUpFiEcxYp++l1A5SUM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-kCBjJNUDPSOa9PcB5N6DxQ-1; Tue,
- 24 Oct 2023 09:17:12 -0400
-X-MC-Unique: kCBjJNUDPSOa9PcB5N6DxQ-1
+ bh=77QZXHxmGIv+7ff6eBAOwo4yRfWetR/ODM9nZc4xPZI=;
+ b=hKRNpnT+T5eAzj1Y9ASOp5cqRh+8BdpbX5WNUER623nD20OLIVs1F7RFuny4QS5t8eH6q1
+ CG4ygiUWKfN+t/u9UECnaz/ONvZQmZkLtyVE3F55xChUBCF8tfvNDVCBCl4Idar8lGz2EJ
+ odreBTYfdaEzmBFumEaWoFJ3k30TpVQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-n0PP6jFyMoaYSyuBQyT0tA-1; Tue, 24 Oct 2023 09:17:17 -0400
+X-MC-Unique: n0PP6jFyMoaYSyuBQyT0tA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4CAD5282380E;
- Tue, 24 Oct 2023 13:17:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E004D80171C;
+ Tue, 24 Oct 2023 13:17:15 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 13C2A1C060AE;
- Tue, 24 Oct 2023 13:17:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8E69B1C060AE;
+ Tue, 24 Oct 2023 13:17:09 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -73,23 +73,22 @@ Cc: Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 35/39] qemu-iotests: Filter warnings about block migration
- being deprecated
-Date: Tue, 24 Oct 2023 15:13:01 +0200
-Message-ID: <20231024131305.87468-36-quintela@redhat.com>
+Subject: [PULL 36/39] migration: migrate 'inc' command option is deprecated.
+Date: Tue, 24 Oct 2023 15:13:02 +0200
+Message-ID: <20231024131305.87468-37-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,46 +105,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a new filter that removes the two warnings for test 183.
+Use blockdev-mirror with NBD instead.
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231018115513.2163-2-quintela@redhat.com>
+Message-ID: <20231018115513.2163-3-quintela@redhat.com>
 ---
- tests/qemu-iotests/183           | 2 +-
- tests/qemu-iotests/common.filter | 7 +++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ docs/about/deprecated.rst      | 8 ++++++++
+ qapi/migration.json            | 8 +++++++-
+ migration/migration-hmp-cmds.c | 5 +++++
+ migration/migration.c          | 5 +++++
+ 4 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qemu-iotests/183 b/tests/qemu-iotests/183
-index ee62939e72..b85770458e 100755
---- a/tests/qemu-iotests/183
-+++ b/tests/qemu-iotests/183
-@@ -90,7 +90,7 @@ echo
- reply="$(_send_qemu_cmd $src \
-     "{ 'execute': 'migrate',
-        'arguments': { 'uri': 'unix:${MIG_SOCKET}', 'blk': true } }" \
--    'return\|error')"
-+    'return\|error' | _filter_migration_block_deprecated)"
- echo "$reply"
- if echo "$reply" | grep "compiled without old-style" > /dev/null; then
-     _notrun "migrate -b support not compiled in"
-diff --git a/tests/qemu-iotests/common.filter b/tests/qemu-iotests/common.filter
-index fc3c64bcb8..2846c83808 100644
---- a/tests/qemu-iotests/common.filter
-+++ b/tests/qemu-iotests/common.filter
-@@ -359,5 +359,12 @@ _filter_qcow2_compression_type_bit()
-         -e 's/\(incompatible_features.*\), 3\(,.*\)/\1\2/'
- }
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 2febd2d12f..fc6adf1dea 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -461,3 +461,11 @@ Migration
+ ``skipped`` field in Migration stats has been deprecated.  It hasn't
+ been used for more than 10 years.
  
-+# filter warnings caused for block migration deprecation
-+_filter_migration_block_deprecated()
-+{
-+    gsed -e '/warning: parameter .blk. is deprecated; use blockdev-mirror with NBD instead/d' \
-+         -e '/warning: block migration is deprecated; use blockdev-mirror with NBD instead/d'
-+}
++``inc`` migrate command option (since 8.2)
++''''''''''''''''''''''''''''''''''''''''''
 +
- # make sure this script returns success
- true
++Use blockdev-mirror with NBD instead.
++
++As an intermediate step the ``inc`` functionality can be achieved by
++setting the ``block-incremental`` migration parameter to ``true``.
++But this parameter is also deprecated.
+diff --git a/qapi/migration.json b/qapi/migration.json
+index db3df12d6c..fa7f4f2575 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1524,6 +1524,11 @@
+ #
+ # @resume: resume one paused migration, default "off". (since 3.0)
+ #
++# Features:
++#
++# @deprecated: Member @inc is deprecated.  Use blockdev-mirror with
++#     NBD instead.
++#
+ # Returns: nothing on success
+ #
+ # Since: 0.14
+@@ -1545,7 +1550,8 @@
+ # <- { "return": {} }
+ ##
+ { 'command': 'migrate',
+-  'data': {'uri': 'str', '*blk': 'bool', '*inc': 'bool',
++  'data': {'uri': 'str', '*blk': 'bool',
++           '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
+            '*detach': 'bool', '*resume': 'bool' } }
+ 
+ ##
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index a82597f18e..83176f5bae 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -745,6 +745,11 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
+     const char *uri = qdict_get_str(qdict, "uri");
+     Error *err = NULL;
+ 
++    if (inc) {
++        warn_report("option '-i' is deprecated;"
++                    " use blockdev-mirror with NBD instead");
++    }
++
+     qmp_migrate(uri, !!blk, blk, !!inc, inc,
+                 false, false, true, resume, &err);
+     if (hmp_handle_error(mon, err)) {
+diff --git a/migration/migration.c b/migration/migration.c
+index 67547eb6a1..06a706ad90 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1620,6 +1620,11 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+ {
+     Error *local_err = NULL;
+ 
++    if (blk_inc) {
++        warn_report("parameter 'inc' is deprecated;"
++                    " use blockdev-mirror with NBD instead");
++    }
++
+     if (resume) {
+         if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
+             error_setg(errp, "Cannot resume if there is no "
 -- 
 2.41.0
 
