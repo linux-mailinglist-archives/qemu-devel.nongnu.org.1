@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E657D5A3C
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE017D5A3E
 	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 20:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvLtE-00047q-UC; Tue, 24 Oct 2023 14:12:29 -0400
+	id 1qvLtk-00057k-9e; Tue, 24 Oct 2023 14:13:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvLtB-0003ez-9y; Tue, 24 Oct 2023 14:12:25 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvLt8-0005My-OD; Tue, 24 Oct 2023 14:12:24 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OIAiOj011831; Tue, 24 Oct 2023 18:12:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=FFQEgEx8YbJquu2Ao4GeuWhl7D5qeAnDI6t7HoXxWHE=;
- b=ix9lIdVKCEA8qaqPhcu86B69z7MYLunfCEj2fpvXwUiPIs09chrOK27LZfr8aIjyBeH8
- Q7Xf7LkeXC3wvttDmzcNErQam6iELnmoN/Ur5kbQkvLwm6clsraHIa14kR6/MfaRbMps
- NEifeLqSAC3zocOBetlCpNpKDTSNyv+UYfamGaYTsy75+J5mjLGoie7L91yJanVPnFyp
- G3rP3M7FTHWWFdrO/vQUgyO5SpwAl1uPqNkb0fhjQbW0oYmS9aHKsPL2KGfl8upRGU9h
- d2XzeVoqXP1zirzIZ80vAqioPahTmlt+A8zS5c2iVShDMNu8+gZy5enwHSg4g4dXhzfX rg== 
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txjyer19m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 18:12:12 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OGS6mq026883; Tue, 24 Oct 2023 18:12:11 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsynsaav-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 18:12:11 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39OICBud21758578
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Oct 2023 18:12:11 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 38FC85803F;
- Tue, 24 Oct 2023 18:12:11 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EC59C58056;
- Tue, 24 Oct 2023 18:12:10 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 24 Oct 2023 18:12:10 +0000 (GMT)
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-arm@nongnu.org, clg@kaod.org,
- andrew@codeconstruct.com.au, joel@jms.id.au, philmd@linaro.org
-Subject: [PATCH v3 2/2] misc/pca9552: Let external devices set pca9552 inputs
-Date: Tue, 24 Oct 2023 13:11:44 -0500
-Message-Id: <20231024181144.4045056-3-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231024181144.4045056-1-milesg@linux.vnet.ibm.com>
-References: <20231024181144.4045056-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvLtg-0004tY-71
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 14:12:56 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvLta-0005S8-2L
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 14:12:55 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 525101FE9E;
+ Tue, 24 Oct 2023 18:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698171167; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QuFjuBT12MKx7y0Y/HRmjrY+8s+RB52SpTSjoy6KBE4=;
+ b=DFe7W1IDotCiEOP7h6bykh5tVPYJ6TKZ9yCKn6oYrc5ArtKwR04qJAbcEHS/Yrd7oGxsOI
+ nxl4HFKAoPVFsT63KraYZZaIS52lzDSvr6pqqu3qii3w/xufiyrXQmE3IdvD9Ptp9bmgdu
+ if1COUTS61YcS6LR2oFV7zDst4v71NE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698171167;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QuFjuBT12MKx7y0Y/HRmjrY+8s+RB52SpTSjoy6KBE4=;
+ b=J0JP+0wLJKeFvMI6qC5lgOabgWnRXRAg2O3yZKw+aJNnJS+2nHZAtn8YM+h91yAJg1M9lj
+ EkrEUkRCU+pqHwBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D78521391C;
+ Tue, 24 Oct 2023 18:12:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id X31bKB4JOGWPHQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 24 Oct 2023 18:12:46 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>, Eric Blake
+ <eblake@redhat.com>
+Subject: Re: [PATCH v2 06/29] migration: Add auto-pause capability
+In-Reply-To: <87r0lkvbfd.fsf@pond.sub.org>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-7-farosas@suse.de> <87r0lkvbfd.fsf@pond.sub.org>
+Date: Tue, 24 Oct 2023 15:12:44 -0300
+Message-ID: <8734xzevoj.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6udSF4Cx3YIrBwUseUyIwQn48sKCw80v
-X-Proofpoint-GUID: 6udSF4Cx3YIrBwUseUyIwQn48sKCw80v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-24_17,2023-10-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- mlxlogscore=999 impostorscore=0 lowpriorityscore=0 phishscore=0
- clxscore=1015 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310240155
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -4.10
+X-Spamd-Result: default: False [-4.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.00)[36.35%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[8];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,167 +98,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow external devices to drive pca9552 input pins by adding
-input GPIO's to the model.  This allows a device to connect
-its output GPIO's to the pca9552 input GPIO's.
+Markus Armbruster <armbru@redhat.com> writes:
 
-In order for an external device to set the state of a pca9552
-pin, the pin must first be configured for high impedance (LED
-is off).  If the pca9552 pin is configured to drive the pin low
-(LED is on), then external input will be ignored.
+> Fabiano Rosas <farosas@suse.de> writes:
+>
+>> Add a capability that allows the management layer to delegate to QEMU
+>> the decision of whether to pause a VM and perform a non-live
+>> migration. Depending on the type of migration being performed, this
+>> could bring performance benefits.
+>>
+>> Note that the capability is enabled by default but at this moment no
+>> migration scheme is making use of it.
+>
+> This sounds as if the capability has no effect unless the "migration
+> scheme" (whatever that may be) opts into using it.  Am I confused?
+>
 
-Here is a table describing the logical state of a pca9552 pin
-given the state being driven by the pca9552 and an external device:
+What I mean here is that this capability is implemented and functional,
+but I'm not retroactively enabling any existing migration code to use
+auto-pause. Otherwise people would start seeing their guests being
+paused before migraton in scenarios they never used to pause.
 
-                   PCA9552
-                   Configured
-                   State
+By "migration scheme" I mean types of migration. Or modes of
+operation. Or exclusive parameters. Anything that is different enough
+from what exists today that we would consider a different type of
+migration. Anything that allow us to break backward compatibility
+(because it never existed before to begin with).
 
-                  | Hi-Z | Low |
-            ------+------+-----+
-  External   Hi-Z |  Hi  | Low |
-  Device    ------+------+-----+
-  State      Low  |  Low | Low |
-            ------+------+-----+
+E.g. this series introduces the fixed-ram migration. That never existed
+before. So from the moment we enable that code to use this capability,
+it will always do auto-pause, unless the management layer wants to avoid
+it.
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
-Changes from v2:
-    - Squashed changes to only update output GPIO if state changed
-    - Used Andrew's suggestion to simplify code
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>
+> [...]
+>
+>> diff --git a/qapi/migration.json b/qapi/migration.json
+>> index db3df12d6c..74f12adc0e 100644
+>> --- a/qapi/migration.json
+>> +++ b/qapi/migration.json
+>> @@ -523,6 +523,10 @@
+>>  #     and can result in more stable read performance.  Requires KVM
+>>  #     with accelerator property "dirty-ring-size" set.  (Since 8.1)
+>>  #
+>> +# @auto-pause: If enabled, allows QEMU to decide whether to pause the
+>> +#     VM before migration for an optimal migration performance.
+>> +#     Enabled by default. (since 8.1)
+>
+> If this needs an opt-in to take effect, it should be documented.
+>
 
- hw/misc/pca9552.c         | 50 +++++++++++++++++++++++++++++++++------
- include/hw/misc/pca9552.h |  3 ++-
- 2 files changed, 45 insertions(+), 8 deletions(-)
+Someting like this perhaps?
 
-diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-index 445f56a9e8..fe876471c8 100644
---- a/hw/misc/pca9552.c
-+++ b/hw/misc/pca9552.c
-@@ -44,6 +44,8 @@ DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
- #define PCA9552_LED_OFF  0x1
- #define PCA9552_LED_PWM0 0x2
- #define PCA9552_LED_PWM1 0x3
-+#define PCA9552_PIN_LOW  0x0
-+#define PCA9552_PIN_HIZ  0x1
- 
- static const char *led_state[] = {"on", "off", "pwm0", "pwm1"};
- 
-@@ -110,22 +112,27 @@ static void pca955x_update_pin_input(PCA955xState *s)
- 
-     for (i = 0; i < k->pin_count; i++) {
-         uint8_t input_reg = PCA9552_INPUT0 + (i / 8);
--        uint8_t input_shift = (i % 8);
-+        uint8_t bit_mask = 1 << (i % 8);
-         uint8_t config = pca955x_pin_get_config(s, i);
-+        uint8_t old_value = s->regs[input_reg] & bit_mask;
-+        uint8_t new_value;
- 
-         switch (config) {
-         case PCA9552_LED_ON:
-             /* Pin is set to 0V to turn on LED */
--            qemu_set_irq(s->gpio[i], 0);
--            s->regs[input_reg] &= ~(1 << input_shift);
-+            s->regs[input_reg] &= ~bit_mask;
-             break;
-         case PCA9552_LED_OFF:
-             /*
-              * Pin is set to Hi-Z to turn off LED and
--             * pullup sets it to a logical 1.
-+             * pullup sets it to a logical 1 unless
-+             * external device drives it low.
-              */
--            qemu_set_irq(s->gpio[i], 1);
--            s->regs[input_reg] |= 1 << input_shift;
-+            if (s->ext_state[i] == PCA9552_PIN_LOW) {
-+                s->regs[input_reg] &= ~bit_mask;
-+            } else {
-+                s->regs[input_reg] |=  bit_mask;
-+            }
-             break;
-         case PCA9552_LED_PWM0:
-         case PCA9552_LED_PWM1:
-@@ -133,6 +140,12 @@ static void pca955x_update_pin_input(PCA955xState *s)
-         default:
-             break;
-         }
-+
-+        /* update irq state only if pin state changed */
-+        new_value = s->regs[input_reg] & bit_mask;
-+        if (new_value != old_value) {
-+            qemu_set_irq(s->gpio_out[i], !!new_value);
-+        }
-     }
- }
- 
-@@ -340,6 +353,7 @@ static const VMStateDescription pca9552_vmstate = {
-         VMSTATE_UINT8(len, PCA955xState),
-         VMSTATE_UINT8(pointer, PCA955xState),
-         VMSTATE_UINT8_ARRAY(regs, PCA955xState, PCA955X_NR_REGS),
-+        VMSTATE_UINT8_ARRAY(ext_state, PCA955xState, PCA955X_PIN_COUNT_MAX),
-         VMSTATE_I2C_SLAVE(i2c, PCA955xState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -358,6 +372,7 @@ static void pca9552_reset(DeviceState *dev)
-     s->regs[PCA9552_LS2] = 0x55;
-     s->regs[PCA9552_LS3] = 0x55;
- 
-+    memset(s->ext_state, PCA9552_PIN_HIZ, PCA955X_PIN_COUNT_MAX);
-     pca955x_update_pin_input(s);
- 
-     s->pointer = 0xFF;
-@@ -380,6 +395,26 @@ static void pca955x_initfn(Object *obj)
-     }
- }
- 
-+static void pca955x_set_ext_state(PCA955xState *s, int pin, int level)
-+{
-+    if (s->ext_state[pin] != level) {
-+        uint16_t pins_status = pca955x_pins_get_status(s);
-+        s->ext_state[pin] = level;
-+        pca955x_update_pin_input(s);
-+        pca955x_display_pins_status(s, pins_status);
-+    }
-+}
-+
-+static void pca955x_gpio_in_handler(void *opaque, int pin, int level)
-+{
-+
-+    PCA955xState *s = PCA955X(opaque);
-+    PCA955xClass *k = PCA955X_GET_CLASS(s);
-+
-+    assert((pin >= 0) && (pin < k->pin_count));
-+    pca955x_set_ext_state(s, pin, level);
-+}
-+
- static void pca955x_realize(DeviceState *dev, Error **errp)
- {
-     PCA955xClass *k = PCA955X_GET_CLASS(dev);
-@@ -389,7 +424,8 @@ static void pca955x_realize(DeviceState *dev, Error **errp)
-         s->description = g_strdup("pca-unspecified");
-     }
- 
--    qdev_init_gpio_out(dev, s->gpio, k->pin_count);
-+    qdev_init_gpio_out(dev, s->gpio_out, k->pin_count);
-+    qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
- }
- 
- static Property pca955x_properties[] = {
-diff --git a/include/hw/misc/pca9552.h b/include/hw/misc/pca9552.h
-index b6f4e264fe..c36525f0c3 100644
---- a/include/hw/misc/pca9552.h
-+++ b/include/hw/misc/pca9552.h
-@@ -30,7 +30,8 @@ struct PCA955xState {
-     uint8_t pointer;
- 
-     uint8_t regs[PCA955X_NR_REGS];
--    qemu_irq gpio[PCA955X_PIN_COUNT_MAX];
-+    qemu_irq gpio_out[PCA955X_PIN_COUNT_MAX];
-+    uint8_t ext_state[PCA955X_PIN_COUNT_MAX];
-     char *description; /* For debugging purpose only */
- };
- 
--- 
-2.31.1
+# @auto-pause: If enabled, allows QEMU to decide whether to pause the VM
+#     before migration for an optimal migration performance. Enabled by
+#     default. New migration code needs to opt-in at
+#     migration_should_pause(), otherwise this behaves as if
+#     disabled. (since 8.2)
 
+>> +#
+>>  # Features:
+>>  #
+>>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+>> @@ -539,7 +543,7 @@
+>>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+>>             'validate-uuid', 'background-snapshot',
+>>             'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+>> -           'dirty-limit'] }
+>> +           'dirty-limit', 'auto-pause'] }
+>>  
+>>  ##
+>>  # @MigrationCapabilityStatus:
 
