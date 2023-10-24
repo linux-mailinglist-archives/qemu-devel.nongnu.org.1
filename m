@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E56F7D518F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FEC7D51C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:29:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHJz-00010j-AB; Tue, 24 Oct 2023 09:19:47 -0400
+	id 1qvHK1-000176-Cd; Tue, 24 Oct 2023 09:19:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHHS-0004dn-8w
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qvHHm-0005am-CQ
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHHH-00025y-Kf
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:04 -0400
+ id 1qvHHk-0002FU-ME
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:17:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153418;
+ s=mimecast20190719; t=1698153446;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x6JE+zecAqUmFc34uzto/ns3IimMkz2fuHg268Ewu5c=;
- b=VbjMW+yg3OcdMyx4QWhPd3EpsPsMwgFG6rTfB/IIpMSWC6tj+Pt8mc4RKAPN+gFzSHPUan
- lb1jKmHCEXW7LZl2OOOAn2xzg2hkR3wJBdc7vt3QzDKpZfUj9INx6KmkuqIUrmMbvKW0PX
- /nr3DvIvtuZt0StBbTt/c23EqqZXRic=
+ bh=B8ocWw2ONtnyRRem5Wy8aSxVhZeV7mTRtMjtmw7eCE8=;
+ b=MeeWzUA0gGtpfHLEb699YMoMw6QAjcHrt+I9prX3VArbrEkTu0CpEq6PasKplRislClItI
+ IB/9jzybXybrRbJYncBZs1cxkdSCi1Rwab0ygFUCdaUnt7TzTjZbyPrlLsISUfKGnRoVs5
+ EH9b0fEh0BMk3bDb/SJyWzrL0hMrl+s=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-3-806tSEgyO6-M_eZ_y2St8g-1; Tue, 24 Oct 2023 09:16:57 -0400
-X-MC-Unique: 806tSEgyO6-M_eZ_y2St8g-1
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-Dt_eyC9yPkuiSCwRHS-0vg-1; Tue,
+ 24 Oct 2023 09:17:10 -0400
+X-MC-Unique: Dt_eyC9yPkuiSCwRHS-0vg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D11B53C1E9FC;
- Tue, 24 Oct 2023 13:16:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C559F1DD35EC;
+ Tue, 24 Oct 2023 13:17:02 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 97EA51C060AE;
- Tue, 24 Oct 2023 13:16:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 269291C060B6;
+ Tue, 24 Oct 2023 13:16:56 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -73,24 +74,23 @@ Cc: Eric Blake <eblake@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
  Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PULL 33/39] migration: Use vmstate_register_any() for eeprom93xx
-Date: Tue, 24 Oct 2023 15:12:59 +0200
-Message-ID: <20231024131305.87468-34-quintela@redhat.com>
+Subject: [PULL 34/39] migration: Use vmstate_register_any() for vmware_vga
+Date: Tue, 24 Oct 2023 15:13:00 +0200
+Message-ID: <20231024131305.87468-35-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,29 +106,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can have more than one eeprom93xx.
-For instance:
-
-e100_nic_realize() -> eeprom93xx_new()
+I have no idea if we can have more than one vmware_vga device, so play
+it safe.
 
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231020090731.28701-13-quintela@redhat.com>
+Message-ID: <20231020090731.28701-14-quintela@redhat.com>
 ---
- hw/nvram/eeprom93xx.c | 2 +-
+ hw/display/vmware_vga.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/nvram/eeprom93xx.c b/hw/nvram/eeprom93xx.c
-index 1081e2cc0d..57d63638d7 100644
---- a/hw/nvram/eeprom93xx.c
-+++ b/hw/nvram/eeprom93xx.c
-@@ -321,7 +321,7 @@ eeprom_t *eeprom93xx_new(DeviceState *dev, uint16_t nwords)
-     /* Output DO is tristate, read results in 1. */
-     eeprom->eedo = 1;
-     logout("eeprom = 0x%p, nwords = %u\n", eeprom, nwords);
--    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_eeprom, eeprom);
-+    vmstate_register_any(VMSTATE_IF(dev), &vmstate_eeprom, eeprom);
-     return eeprom;
+diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
+index 09591fbd39..7490d43881 100644
+--- a/hw/display/vmware_vga.c
++++ b/hw/display/vmware_vga.c
+@@ -1264,7 +1264,7 @@ static void vmsvga_init(DeviceState *dev, struct vmsvga_state_s *s,
+ 
+     vga_common_init(&s->vga, OBJECT(dev), &error_fatal);
+     vga_init(&s->vga, OBJECT(dev), address_space, io, true);
+-    vmstate_register(NULL, 0, &vmstate_vga_common, &s->vga);
++    vmstate_register_any(NULL, &vmstate_vga_common, &s->vga);
+     s->new_depth = 32;
  }
  
 -- 
