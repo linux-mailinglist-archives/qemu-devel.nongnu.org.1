@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DE27D51B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9833A7D5136
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:16:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHHP-0004LE-K3; Tue, 24 Oct 2023 09:17:10 -0400
+	id 1qvHGM-0001aO-Ph; Tue, 24 Oct 2023 09:16:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHGZ-0002a4-Vj
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qvHFz-0001BF-Us
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:15:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHGU-0001uQ-Ky
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:13 -0400
+ id 1qvHFw-0001ly-OH
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:15:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153370;
+ s=mimecast20190719; t=1698153335;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=65HtqjEgp5Bqh3Qad91zv3o+mLXRJbK00jYVKDpCWLY=;
- b=Dlj6/u9yzHyv6k178nRhcjBiGNudHfDtWeJN05DRoEWcu2Lxu0QaftfEipU9vQNgZYDqRv
- Z1Kh/B9Fk+GE6rey35mnRyUOaIJk/aA1ie/Rc8DHk+jXqHnzoo24CWOK5AzZoWTJkbQqYP
- l1iRABrLLAbrkl5iZto5+i1k+MS397U=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-B-x7LPgsPp23z57mzDzxcA-1; Tue,
- 24 Oct 2023 09:15:09 -0400
-X-MC-Unique: B-x7LPgsPp23z57mzDzxcA-1
+ bh=2hrQbpcQmjkjZUwzY0IzeCAEPzEo5tGlkuI99YW2Hnk=;
+ b=SE5e4zGH9dHwQ0Dfl2q3BSVS1JVzxpTpHMRmryKDS2NsYEYcygWqup8zfd+B0HxmiA74p3
+ 9faV/tadSbPUKRofsm4nVn9Sfjt4mUE4egWb5UINKWSqmVwgsCqZu6EkbeFrsCa6KPNmXW
+ XCU96BwyqnE5K8uC9yteUqDTUJux3eA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-321-ruQFYi6AMxypqk9Nu_6TGg-1; Tue, 24 Oct 2023 09:15:16 -0400
+X-MC-Unique: ruQFYi6AMxypqk9Nu_6TGg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8AB573813F2F;
- Tue, 24 Oct 2023 13:15:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 38B4F811E86;
+ Tue, 24 Oct 2023 13:15:14 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5E8FD1C060AE;
- Tue, 24 Oct 2023 13:15:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DB2841C060AE;
+ Tue, 24 Oct 2023 13:15:07 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -73,23 +73,23 @@ Cc: Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 17/39] migration: Rename ram_compressed_pages() to
- compress_ram_pages()
-Date: Tue, 24 Oct 2023 15:12:43 +0200
-Message-ID: <20231024131305.87468-18-quintela@redhat.com>
+Subject: [PULL 18/39] hw/ipmi: Don't call vmstate_register() from
+ instance_init() functions
+Date: Tue, 24 Oct 2023 15:12:44 +0200
+Message-ID: <20231024131305.87468-19-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,57 +106,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are moving to have all functions exported from ram-compress.c to
-start with compress_.
+From: Thomas Huth <thuth@redhat.com>
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+instance_init() can be called multiple times, e.g. during introspection
+of the device. We should not install the vmstate handlers here. Do it
+in the realize() function instead.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Acked-by: Corey Minyard <cminyard@mvista.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231019110724.15324-12-quintela@redhat.com>
+Message-ID: <20231020145554.662751-1-thuth@redhat.com>
 ---
- migration/ram-compress.h | 2 +-
- migration/ram-compress.c | 2 +-
- migration/ram.c          | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ hw/ipmi/ipmi_bmc_extern.c | 29 ++++++++++++-----------
+ hw/ipmi/isa_ipmi_bt.c     | 34 +++++++++++++-------------
+ hw/ipmi/isa_ipmi_kcs.c    | 50 +++++++++++++++++++--------------------
+ 3 files changed, 57 insertions(+), 56 deletions(-)
 
-diff --git a/migration/ram-compress.h b/migration/ram-compress.h
-index e222887fb7..0d89a2f55e 100644
---- a/migration/ram-compress.h
-+++ b/migration/ram-compress.h
-@@ -68,7 +68,7 @@ int compress_threads_load_setup(QEMUFile *f);
- void decompress_data_with_multi_threads(QEMUFile *f, void *host, int len);
- 
- void populate_compress(MigrationInfo *info);
--uint64_t ram_compressed_pages(void);
-+uint64_t compress_ram_pages(void);
- void update_compress_thread_counts(const CompressParam *param, int bytes_xmit);
- void compress_update_rates(uint64_t page_count);
- int compress_send_queued_data(CompressParam *param);
-diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-index 036e44085b..fa4388f6a6 100644
---- a/migration/ram-compress.c
-+++ b/migration/ram-compress.c
-@@ -516,7 +516,7 @@ void populate_compress(MigrationInfo *info)
-     info->compression->compression_rate = compression_counters.compression_rate;
+diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
+index e232d35ba2..2117dad35a 100644
+--- a/hw/ipmi/ipmi_bmc_extern.c
++++ b/hw/ipmi/ipmi_bmc_extern.c
+@@ -453,19 +453,6 @@ static void ipmi_bmc_extern_handle_reset(IPMIBmc *b)
+     continue_send(ibe);
  }
  
--uint64_t ram_compressed_pages(void)
-+uint64_t compress_ram_pages(void)
+-static void ipmi_bmc_extern_realize(DeviceState *dev, Error **errp)
+-{
+-    IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(dev);
+-
+-    if (!qemu_chr_fe_backend_connected(&ibe->chr)) {
+-        error_setg(errp, "IPMI external bmc requires chardev attribute");
+-        return;
+-    }
+-
+-    qemu_chr_fe_set_handlers(&ibe->chr, can_receive, receive,
+-                             chr_event, NULL, ibe, NULL, true);
+-}
+-
+ static int ipmi_bmc_extern_post_migrate(void *opaque, int version_id)
  {
-     return compression_counters.pages;
- }
-diff --git a/migration/ram.c b/migration/ram.c
-index 849752ef29..6335564035 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -932,7 +932,7 @@ uint64_t ram_get_total_transferred_pages(void)
+     IPMIBmcExtern *ibe = opaque;
+@@ -499,12 +486,26 @@ static const VMStateDescription vmstate_ipmi_bmc_extern = {
+     }
+ };
+ 
++static void ipmi_bmc_extern_realize(DeviceState *dev, Error **errp)
++{
++    IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(dev);
++
++    if (!qemu_chr_fe_backend_connected(&ibe->chr)) {
++        error_setg(errp, "IPMI external bmc requires chardev attribute");
++        return;
++    }
++
++    qemu_chr_fe_set_handlers(&ibe->chr, can_receive, receive,
++                             chr_event, NULL, ibe, NULL, true);
++
++    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
++}
++
+ static void ipmi_bmc_extern_init(Object *obj)
  {
-     return stat64_get(&mig_stats.normal_pages) +
-         stat64_get(&mig_stats.zero_pages) +
--        ram_compressed_pages() + xbzrle_counters.pages;
-+        compress_ram_pages() + xbzrle_counters.pages;
+     IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(obj);
+ 
+     ibe->extern_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, extern_timeout, ibe);
+-    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
  }
  
- static void migration_update_rates(RAMState *rs, int64_t end_time)
+ static void ipmi_bmc_extern_finalize(Object *obj)
+diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
+index a83e7243d6..aec064d3cd 100644
+--- a/hw/ipmi/isa_ipmi_bt.c
++++ b/hw/ipmi/isa_ipmi_bt.c
+@@ -68,6 +68,21 @@ static void isa_ipmi_bt_lower_irq(IPMIBT *ib)
+     qemu_irq_lower(iib->irq);
+ }
+ 
++static const VMStateDescription vmstate_ISAIPMIBTDevice = {
++    .name = TYPE_IPMI_INTERFACE_PREFIX "isa-bt",
++    .version_id = 2,
++    .minimum_version_id = 2,
++    /*
++     * Version 1 had messed up the array transfer, it's not even usable
++     * because it used VMSTATE_VBUFFER_UINT32, but it did not transfer
++     * the buffer length, so random things would happen.
++     */
++    .fields      = (VMStateField[]) {
++        VMSTATE_STRUCT(bt, ISAIPMIBTDevice, 1, vmstate_IPMIBT, IPMIBT),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static void isa_ipmi_bt_realize(DeviceState *dev, Error **errp)
+ {
+     Error *err = NULL;
+@@ -102,30 +117,15 @@ static void isa_ipmi_bt_realize(DeviceState *dev, Error **errp)
+     qdev_set_legacy_instance_id(dev, iib->bt.io_base, iib->bt.io_length);
+ 
+     isa_register_ioport(isadev, &iib->bt.io, iib->bt.io_base);
+-}
+ 
+-static const VMStateDescription vmstate_ISAIPMIBTDevice = {
+-    .name = TYPE_IPMI_INTERFACE_PREFIX "isa-bt",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
+-    /*
+-     * Version 1 had messed up the array transfer, it's not even usable
+-     * because it used VMSTATE_VBUFFER_UINT32, but it did not transfer
+-     * the buffer length, so random things would happen.
+-     */
+-    .fields      = (VMStateField[]) {
+-        VMSTATE_STRUCT(bt, ISAIPMIBTDevice, 1, vmstate_IPMIBT, IPMIBT),
+-        VMSTATE_END_OF_LIST()
+-    }
+-};
++    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, dev);
++}
+ 
+ static void isa_ipmi_bt_init(Object *obj)
+ {
+     ISAIPMIBTDevice *iib = ISA_IPMI_BT(obj);
+ 
+     ipmi_bmc_find_and_link(obj, (Object **) &iib->bt.bmc);
+-
+-    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, iib);
+ }
+ 
+ static void *isa_ipmi_bt_get_backend_data(IPMIInterface *ii)
+diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
+index b2ed70b9da..b5dcb64616 100644
+--- a/hw/ipmi/isa_ipmi_kcs.c
++++ b/hw/ipmi/isa_ipmi_kcs.c
+@@ -67,6 +67,24 @@ static void isa_ipmi_kcs_lower_irq(IPMIKCS *ik)
+     qemu_irq_lower(iik->irq);
+ }
+ 
++static bool vmstate_kcs_before_version2(void *opaque, int version)
++{
++    return version <= 1;
++}
++
++static const VMStateDescription vmstate_ISAIPMIKCSDevice = {
++    .name = TYPE_IPMI_INTERFACE,
++    .version_id = 2,
++    .minimum_version_id = 1,
++    .fields      = (VMStateField[]) {
++        VMSTATE_VSTRUCT_TEST(kcs, ISAIPMIKCSDevice, vmstate_kcs_before_version2,
++                             0, vmstate_IPMIKCS, IPMIKCS, 1),
++        VMSTATE_VSTRUCT_V(kcs, ISAIPMIKCSDevice, 2, vmstate_IPMIKCS,
++                          IPMIKCS, 2),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static void ipmi_isa_realize(DeviceState *dev, Error **errp)
+ {
+     Error *err = NULL;
+@@ -101,31 +119,6 @@ static void ipmi_isa_realize(DeviceState *dev, Error **errp)
+     qdev_set_legacy_instance_id(dev, iik->kcs.io_base, iik->kcs.io_length);
+ 
+     isa_register_ioport(isadev, &iik->kcs.io, iik->kcs.io_base);
+-}
+-
+-static bool vmstate_kcs_before_version2(void *opaque, int version)
+-{
+-    return version <= 1;
+-}
+-
+-static const VMStateDescription vmstate_ISAIPMIKCSDevice = {
+-    .name = TYPE_IPMI_INTERFACE,
+-    .version_id = 2,
+-    .minimum_version_id = 1,
+-    .fields      = (VMStateField[]) {
+-        VMSTATE_VSTRUCT_TEST(kcs, ISAIPMIKCSDevice, vmstate_kcs_before_version2,
+-                             0, vmstate_IPMIKCS, IPMIKCS, 1),
+-        VMSTATE_VSTRUCT_V(kcs, ISAIPMIKCSDevice, 2, vmstate_IPMIKCS,
+-                          IPMIKCS, 2),
+-        VMSTATE_END_OF_LIST()
+-    }
+-};
+-
+-static void isa_ipmi_kcs_init(Object *obj)
+-{
+-    ISAIPMIKCSDevice *iik = ISA_IPMI_KCS(obj);
+-
+-    ipmi_bmc_find_and_link(obj, (Object **) &iik->kcs.bmc);
+ 
+     /*
+      * Version 1 had an incorrect name, it clashed with the BT
+@@ -135,6 +128,13 @@ static void isa_ipmi_kcs_init(Object *obj)
+     vmstate_register(NULL, 0, &vmstate_ISAIPMIKCSDevice, iik);
+ }
+ 
++static void isa_ipmi_kcs_init(Object *obj)
++{
++    ISAIPMIKCSDevice *iik = ISA_IPMI_KCS(obj);
++
++    ipmi_bmc_find_and_link(obj, (Object **) &iik->kcs.bmc);
++}
++
+ static void *isa_ipmi_kcs_get_backend_data(IPMIInterface *ii)
+ {
+     ISAIPMIKCSDevice *iik = ISA_IPMI_KCS(ii);
 -- 
 2.41.0
 
