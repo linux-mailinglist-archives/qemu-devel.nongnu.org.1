@@ -2,94 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9290B7D53CB
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 16:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E367D53CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 16:21:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvIGm-0006H5-97; Tue, 24 Oct 2023 10:20:32 -0400
+	id 1qvIGq-0006Mi-Hl; Tue, 24 Oct 2023 10:20:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvIGk-0006GA-HI; Tue, 24 Oct 2023 10:20:30 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qvIGo-0006IT-5A
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:20:34 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvIGX-0007Np-8F; Tue, 24 Oct 2023 10:20:30 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4084f682d31so33484235e9.2; 
- Tue, 24 Oct 2023 07:20:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qvIGl-0007Sx-AF
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:20:33 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-31c5cac3ae2so3311742f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 07:20:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698157214; x=1698762014; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=N/RTcnvN+s3qfbGL8IxZ3YpZboBFi25HRb3Ev7DIpus=;
- b=lKfqrhf7WYtKQUwUTnm+VSXGJ1y+6WldVN1P6oG18WL0ARRpWEFP2m3ljAXy4Dqor+
- npI7UoVy/JGu56HzFCk+s5VJ1fYmhOYQ8lsKJH5ijkeiXqy1Mm9/anaw9XEQXkbZHUDl
- 5Ddn11VuoSO8YW2GECdxtnChj0NykBRs4JrBBP5TwuJcA4zP8OclLp85m+Rwxar5rGRm
- hOfCdxjElQ8frjobIsB47Tp+/HbR+lhjqTLd/RATvSdi2VJvXukICpzCEazO4SAD/DTf
- Jv12QyHJuKs967AdC59TUrUeVTSkWNPWfXnNx7DdVq9Dp1tzfJtGoMYqWpQph/RAHf3v
- mJzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698157214; x=1698762014;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1698157229; x=1698762029; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N/RTcnvN+s3qfbGL8IxZ3YpZboBFi25HRb3Ev7DIpus=;
- b=K285sTPvdCtFuo7SUr3XUPkc6SR5tlhCFBJVoA9Fz4xxhBSY+YFiBrwDX371QV72zH
- CEB/OXGYDkDrLLBu9hXTReTfEaloW8G2lQJm5PgW5rW3c136J1k8NeKjCrxGjcCOqe4b
- /8o9oIsTJsKSiuFyeNj/DTbNhMUOR0ED1oQLnlF30euIMqFkryD7ff2nLhytCuvCDSD3
- wOyj11QhGqYJa6azuyh3iNulQOhy8/p3Ybzk/LoJxGP/oJBYBzh4EPJRASeZrJLgrvxH
- 7i1LCwQbrR6DeXtF4lBTJescJU5QKJfJ9UdTN2m1RglrNgD7Ftn2alkTZry9rGnraZTw
- gszQ==
-X-Gm-Message-State: AOJu0Yw+cozCI7jyIcIJe+yRTrO9nRjHltGKB40p30I7AXNWuH7/6QQD
- bV94JxAMnn3Nl4n72eoakSU=
-X-Google-Smtp-Source: AGHT+IEyITPkgMCMhYLgEPjPPOpjFI74iF5+LpLQdanMOxh59eFvYc4PmD1+hbF9zetlTx+c01olxg==
-X-Received: by 2002:a05:600c:5254:b0:405:2d23:16d9 with SMTP id
- fc20-20020a05600c525400b004052d2316d9mr9323630wmb.21.1698157214277; 
- Tue, 24 Oct 2023 07:20:14 -0700 (PDT)
-Received: from [192.168.6.66] (54-240-197-238.amazon.com. [54.240.197.238])
+ bh=ODTkQtGQD4KZ9gUIcggxSOVrhwlkUWj/j+BhGlp+ZNo=;
+ b=la5y1rnOOWpnYi62Jda4P9/kVFKyykomqKMyS/80k1pRwe8Qh3ulkTx42+Ye8r79JS
+ C5EtMHGGewZ3EC9V6aG8Y83EaI16cEAY4/cVjyBF5VO2g6pWecZfsdAwT7W+UpNKFkcE
+ YG8CNG+QZS1AZOKcsQGe9BFtT6F3kgV4EHxFSLO35OB0ktvHgcl8eNCFcFR/WP7jJ+ZE
+ HErEeG6FLCS+pNxHmE2LXjGPVSge/u+sBfNErTvTCJqS+xRkFPa6kwamwZi+FW5VZG51
+ DM9SCtUG2oT3Hbl6j6MXl77bORfVmbWHdltQ3YnKqWc6G1vvPOzb2KZOriMeruajBc1O
+ qfKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698157229; x=1698762029;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ODTkQtGQD4KZ9gUIcggxSOVrhwlkUWj/j+BhGlp+ZNo=;
+ b=oU81T/7t9liDHMklCRsvzft7cuXtBELaaQkrP78e2tKPr/L1AYzRsf8H6WVTmnY7y1
+ 3X6Y35Y80pTr6gRxmYHqdmHXEG9Tw8u6DHir7eYUh8zTSbWZyirZsfOY/mAm+yFvDgYY
+ pkb8HTqMeRwAoeji9COMnEphLluQAVs92uHPqhj6vXhP6OySV3HCXsiVsPAo6So57i7D
+ 4x0PbyXO3C5VqDN2//7N/SBBz34BSpYOihcXwpdQ14hE1Ec3xwh8/IMBEChxT/cAXaS6
+ lAeJh0JDnfll1F1II/COOdzASe2SI2q3RCcqQevvhsNP9Ab9oEoZWCrS5lLhAc7UTcG+
+ qKeg==
+X-Gm-Message-State: AOJu0Ywl+qrAb6qoy0kFqzBZXxdita3rUJE0+Fe/mJa5gTwltmbReYFg
+ /I2xTU13nmN2R8T+Sjco7S6Yvw==
+X-Google-Smtp-Source: AGHT+IGUZg8GBEdkKbQmbLM50FkA5EmLBJEtovx4Otw86nP65HS/pzHcbfg2XlJdI1nXqOIseWXMEQ==
+X-Received: by 2002:a5d:4a86:0:b0:32d:a2c4:18bf with SMTP id
+ o6-20020a5d4a86000000b0032da2c418bfmr8491586wrq.59.1698157229421; 
+ Tue, 24 Oct 2023 07:20:29 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- p12-20020a05600c358c00b00401b242e2e6sm17039468wmq.47.2023.10.24.07.20.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 07:20:13 -0700 (PDT)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <c18439ca-c9ae-4567-bbcf-dffe6f7b72e3@xen.org>
-Date: Tue, 24 Oct 2023 15:20:12 +0100
+ r4-20020adff704000000b0032d88e370basm10042461wrp.34.2023.10.24.07.20.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Oct 2023 07:20:28 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 298BB1FFBB;
+ Tue, 24 Oct 2023 15:20:28 +0100 (BST)
+References: <20231019102657.129512-1-akihiko.odaki@daynix.com>
+ <20231019102657.129512-10-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.22; emacs 29.1.90
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?=
+ <philmd@linaro.org>, Peter Maydell <peter.maydell@linaro.org>, Brian Cain
+ <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>, Laurent Vivier
+ <laurent@vivier.eu>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Daniel Henrique Barboza
+ <danielhb413@gmail.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin
+ Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, Liu
+ Zhiwei <zhiwei_liu@linux.alibaba.com>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Ilya
+ Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org
+Subject: Re: [PATCH v14 09/18] gdbstub: Change gdb_get_reg_cb and
+ gdb_set_reg_cb
+Date: Tue, 24 Oct 2023 15:20:21 +0100
+In-reply-to: <20231019102657.129512-10-akihiko.odaki@daynix.com>
+Message-ID: <87v8aw2jbo.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/12] hw/xen: add support for Xen primary console in
- emulated mode
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Marcelo Tosatti
- <mtosatti@redhat.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, kvm@vger.kernel.org
-References: <20231016151909.22133-1-dwmw2@infradead.org>
- <20231016151909.22133-13-dwmw2@infradead.org>
-Organization: Xen Project
-In-Reply-To: <20231016151909.22133-13-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x331.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,27 +109,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/10/2023 16:19, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> The primary console is special because the toolstack maps a page at a
-> fixed GFN and also allocates the guest-side event channel. Add support
-> for that in emulated mode, so that we can have a primary console.
-> 
-> Add a *very* rudimentary stub of foriegnmem ops for emulated mode, which
-> supports literally nothing except a single-page mapping of the console
-> page. This might as well have been a hack in the xen_console driver, but
-> this way at least the special-casing is kept within the Xen emulation
-> code, and it gives us a hook for a more complete implementation if/when
-> we ever do need one.
-> 
-Why can't you map the console page via the grant table like the xenstore 
-page?
 
-   Paul
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
+> Align the parameters of gdb_get_reg_cb and gdb_set_reg_cb with the
+> gdb_read_register and gdb_write_register members of CPUClass to allow
+> to unify the logic to access registers of the core and coprocessors
+> in the future.
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
