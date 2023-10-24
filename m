@@ -2,92 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5107D5452
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 16:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A237D54AD
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:06:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvIhM-0006hZ-E9; Tue, 24 Oct 2023 10:48:00 -0400
+	id 1qvIyV-00020k-Kc; Tue, 24 Oct 2023 11:05:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvIhJ-0006gx-OC
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:47:58 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvIhD-0004kA-SN
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:47:54 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-32dbbf3c782so3299307f8f.1
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 07:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698158870; x=1698763670; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=8nIDkXcK1L2pA5qIavXRP+zGfeQrahvnDQA7z6M+ogc=;
- b=ABM1kSGboIV28AF/nf+vNOrM4DnWBfKrY/gxnT0r92JraG1fhFUMD3mh9KB5gre4je
- jrxYXTO6ixztFoFAyt46TEnMPw/nqlMxiVASbHcVTVNvTZR2agRdaRw4kDK5tC/I0Mmi
- iflud8HQLx//K/7cfv2wcdnajl8Bj4tTp1s7ANzd0JEqSpkibfivc8BKJxvN5F8JAcdF
- NADLYuu6CYBpFl20u6kyp37j3bG9QcXtv6XR/6/y0ZJQfr6xnyPfq8Oa/xvoSt5EoEyq
- yiRKhYdnBwOYBRO+TeNFxOxIK82hUSM+2mDhDDAbfph7ROtcefWoTHHO4glzLu0vAEmv
- 8afA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698158870; x=1698763670;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8nIDkXcK1L2pA5qIavXRP+zGfeQrahvnDQA7z6M+ogc=;
- b=lZKdC342DxRdNI6csgTFtNd8hSUnJbogFyhigIitDPvJzUEuHM3PJ/0YWTfUk1QRtV
- bmqfiFJFJkMKRJSxeLxR5pfE8vGePTeVfoZlmxxVkYqMruKSkGIrM/e/mfsklHRZq9Rg
- hAP1jT87VXxniOKqbqXnCJ/MtJ+Q4tNP7zZDX7tcSO0ElNeAHiTU4j0RbdRKdKJ1jZQM
- 2YN4vnERNrHS0XSWamKcPJlV/CTm/ifMiv6y4kCLoVePC18jSmk2Wm3Q5q/KY17Zzz9G
- KGKk2qJl8FPNDZefueTSNE330W+1VtuWystXdxKwzlDfW208FB8LcsHzMIFVjkkAy45B
- q7nQ==
-X-Gm-Message-State: AOJu0Yy4Gb0ByVfKjwfSZx+UngxtNmZNmpYDcRv52xFxzX/9HN8iToIk
- RrgSvQRFbYtxKGmflE4sm/k=
-X-Google-Smtp-Source: AGHT+IHokB7bxOsKiiCbpn6zP3VDajwGmSFhddjNbyDlX+FWui44aH6ltyKiqVw/F9MOHwgDod1ZZw==
-X-Received: by 2002:adf:a499:0:b0:32d:a3f7:f0dd with SMTP id
- g25-20020adfa499000000b0032da3f7f0ddmr14062432wrb.25.1698158869738; 
- Tue, 24 Oct 2023 07:47:49 -0700 (PDT)
-Received: from [192.168.6.66] (54-240-197-238.amazon.com. [54.240.197.238])
- by smtp.gmail.com with ESMTPSA id
- o6-20020a5d62c6000000b0032196c508e3sm10007458wrv.53.2023.10.24.07.47.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 07:47:49 -0700 (PDT)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
-Date: Tue, 24 Oct 2023 15:47:47 +0100
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qvIyT-00020S-Br; Tue, 24 Oct 2023 11:05:41 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qvIyQ-0008Vk-3z; Tue, 24 Oct 2023 11:05:41 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39OF0Oow027159; Tue, 24 Oct 2023 15:05:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=+TxjDYff8mKhVwHLIWE8MjqCOpVdQE+q9vdCiowe0OM=;
+ b=jCKjL0UvsEW0vCkwYnsR3Ro2+JLuGAritkKJOJg6AdK1anqMg0GHFkzAurTmFkYLM1bJ
+ crb7tpYaoAcwimD0Ax6rXH15LXX4JoyeKFmZswzvC6a5w2+Y2YlmSlEWDzcFPqnieYQT
+ JANX61IGVdrJ8llZ0Yll4GVUTp3soyh3ddXx89EJ59ZLZWRwgyXiVGvNPZcZw7Z4ebW4
+ SrJJX8ExcQARLBGgAKQp/YMuwopTD9UWzsb1sgOR7uhdReczCH8KCGRLj72gMm3lub3Z
+ Oms3s3B5fxyEgSS2uegq8AHRALoO+R0+CDFnqNhbj2dotFCg1L5mL9sYvcwKxxwLx+MO Fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txg2g0p1v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Oct 2023 15:05:17 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39OF10t6000516;
+ Tue, 24 Oct 2023 15:05:17 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txg2g0ntr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Oct 2023 15:05:16 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39ODM1ka023834; Tue, 24 Oct 2023 15:00:48 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvryt0dkj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Oct 2023 15:00:48 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39OF0mYG13894246
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Oct 2023 15:00:48 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ED5EE5805E;
+ Tue, 24 Oct 2023 15:00:47 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0AB7D58067;
+ Tue, 24 Oct 2023 15:00:47 +0000 (GMT)
+Received: from [9.24.12.86] (unknown [9.24.12.86])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Oct 2023 15:00:46 +0000 (GMT)
+Message-ID: <1b83521d-4885-490e-b8d7-1d760de5c173@linux.ibm.com>
+Date: Tue, 24 Oct 2023 10:00:46 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] hw/xen: update Xen PV NIC to XenDevice model
+Subject: Re: [PATCH v6 06/10] hw/fsi: Aspeed APB2OPB interface
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231021211720.3571082-1-ninad@linux.ibm.com>
+ <20231021211720.3571082-7-ninad@linux.ibm.com>
+ <c1aace06-0eab-4805-b58d-e108b53158dc@kaod.org>
 Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Jason Wang
- <jasowang@redhat.com>, xen-devel@lists.xenproject.org
-References: <20231017182545.97973-1-dwmw2@infradead.org>
- <20231017182545.97973-3-dwmw2@infradead.org>
-Organization: Xen Project
-In-Reply-To: <20231017182545.97973-3-dwmw2@infradead.org>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <c1aace06-0eab-4805-b58d-e108b53158dc@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EXZz0vEMA3VlPIjcguIFguclluDFdMF2
+X-Proofpoint-GUID: 026oargGVM4_W07gkCPh_qOBUvc08cNX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-24_15,2023-10-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ spamscore=0 lowpriorityscore=0 mlxscore=0 bulkscore=0 phishscore=0
+ mlxlogscore=930 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310240129
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,684 +114,494 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/2023 19:25, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->   hw/net/meson.build        |   2 +-
->   hw/net/trace-events       |   9 +
->   hw/net/xen_nic.c          | 426 +++++++++++++++++++++++++++++---------
->   hw/xenpv/xen_machine_pv.c |   1 -
->   4 files changed, 342 insertions(+), 96 deletions(-)
-> 
-> diff --git a/hw/net/meson.build b/hw/net/meson.build
-> index 2632634df3..f64651c467 100644
-> --- a/hw/net/meson.build
-> +++ b/hw/net/meson.build
-> @@ -1,5 +1,5 @@
->   system_ss.add(when: 'CONFIG_DP8393X', if_true: files('dp8393x.c'))
-> -system_ss.add(when: 'CONFIG_XEN', if_true: files('xen_nic.c'))
-> +system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen_nic.c'))
->   system_ss.add(when: 'CONFIG_NE2000_COMMON', if_true: files('ne2000.c'))
->   
->   # PCI network cards
-> diff --git a/hw/net/trace-events b/hw/net/trace-events
-> index 3abfd65e5b..ee56acfbce 100644
-> --- a/hw/net/trace-events
-> +++ b/hw/net/trace-events
-> @@ -482,3 +482,12 @@ dp8393x_receive_oversize(int size) "oversize packet, pkt_size is %d"
->   dp8393x_receive_not_netcard(void) "packet not for netcard"
->   dp8393x_receive_packet(int crba) "Receive packet at 0x%"PRIx32
->   dp8393x_receive_write_status(int crba) "Write status at 0x%"PRIx32
-> +
-> +# xen_nic.c
-> +xen_netdev_realize(int idx, const char *info) "idx %u info '%s'"
-> +xen_netdev_unrealize(int idx) "idx %u"
-> +xen_netdev_create(int idx) "idx %u"
-> +xen_netdev_destroy(int idx) "idx %u"
-> +xen_netdev_disconnect(int idx) "idx %u"
-> +xen_netdev_connect(int idx, unsigned int tx, unsigned int rx, int port) "idx %u tx %u rx %u port %u"
-> +xen_netdev_frontend_changed(const char *idx, int state) "idx %s state %d"
-> diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
-> index 9bbf6599fc..84914c329c 100644
-> --- a/hw/net/xen_nic.c
-> +++ b/hw/net/xen_nic.c
-> @@ -20,6 +20,11 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include "qemu/cutils.h"
-> +#include "qemu/qemu-print.h"
-> +#include "qapi/qmp/qdict.h"
-> +#include "qapi/error.h"
-> +
->   #include <sys/socket.h>
->   #include <sys/ioctl.h>
->   #include <sys/wait.h>
-> @@ -27,18 +32,26 @@
->   #include "net/net.h"
->   #include "net/checksum.h"
->   #include "net/util.h"
-> -#include "hw/xen/xen-legacy-backend.h"
-> +
-> +#include "hw/xen/xen-backend.h"
-> +#include "hw/xen/xen-bus-helper.h"
-> +#include "hw/qdev-properties.h"
-> +#include "hw/qdev-properties-system.h"
->   
->   #include "hw/xen/interface/io/netif.h"
-> +#include "hw/xen/interface/io/xs_wire.h"
-> +
-> +#include "trace.h"
->   
->   /* ------------------------------------------------------------- */
->   
->   struct XenNetDev {
-> -    struct XenLegacyDevice      xendev;  /* must be first */
-> -    char                  *mac;
-> +    struct XenDevice      xendev;  /* must be first */
-> +    XenEventChannel       *event_channel;
-> +    int                   dev;
->       int                   tx_work;
-> -    int                   tx_ring_ref;
-> -    int                   rx_ring_ref;
-> +    unsigned int          tx_ring_ref;
-> +    unsigned int          rx_ring_ref;
->       struct netif_tx_sring *txs;
->       struct netif_rx_sring *rxs;
->       netif_tx_back_ring_t  tx_ring;
-> @@ -47,6 +60,13 @@ struct XenNetDev {
->       NICState              *nic;
->   };
->   
-> +typedef struct XenNetDev XenNetDev;
-> +
-> +#define TYPE_XEN_NET_DEVICE "xen-net-device"
-> +OBJECT_DECLARE_SIMPLE_TYPE(XenNetDev, XEN_NET_DEVICE)
-> +
-> +#define xen_pv_printf(a, n, ...) qemu_printf(__VA_ARGS__)
+Hello Cedric,
 
-Why define this...
-
-> +
->   /* ------------------------------------------------------------- */
->   
->   static void net_tx_response(struct XenNetDev *netdev, netif_tx_request_t *txp, int8_t st)
-> @@ -68,7 +88,8 @@ static void net_tx_response(struct XenNetDev *netdev, netif_tx_request_t *txp, i
->       netdev->tx_ring.rsp_prod_pvt = ++i;
->       RING_PUSH_RESPONSES_AND_CHECK_NOTIFY(&netdev->tx_ring, notify);
->       if (notify) {
-> -        xen_pv_send_notify(&netdev->xendev);
-> +        xen_device_notify_event_channel(XEN_DEVICE(netdev),
-> +                                        netdev->event_channel, NULL);
->       }
->   
->       if (i == netdev->tx_ring.req_cons) {
-> @@ -104,8 +125,9 @@ static void net_tx_error(struct XenNetDev *netdev, netif_tx_request_t *txp, RING
->   #endif
->   }
->   
-> -static void net_tx_packets(struct XenNetDev *netdev)
-> +static bool net_tx_packets(struct XenNetDev *netdev)
->   {
-> +    bool done_something = false;
->       netif_tx_request_t txreq;
->       RING_IDX rc, rp;
->       void *page;
-> @@ -122,6 +144,7 @@ static void net_tx_packets(struct XenNetDev *netdev)
->               }
->               memcpy(&txreq, RING_GET_REQUEST(&netdev->tx_ring, rc), sizeof(txreq));
->               netdev->tx_ring.req_cons = ++rc;
-> +            done_something = true;
->   
->   #if 1
->               /* should not happen in theory, we don't announce the *
-> @@ -151,7 +174,7 @@ static void net_tx_packets(struct XenNetDev *netdev)
->                   continue;
->               }
->   
-> -            xen_pv_printf(&netdev->xendev, 3,
-> +            if (0) qemu_printf(//&netdev->xendev, 3,
-
-... and then not use it here? Perhaps the 'if (0)' ugliness can go in 
-the macro too.
-
->                             "tx packet ref %d, off %d, len %d, flags 0x%x%s%s%s%s\n",
->                             txreq.gref, txreq.offset, txreq.size, txreq.flags,
->                             (txreq.flags & NETTXF_csum_blank)     ? " csum_blank"     : "",
-> @@ -159,8 +182,8 @@ static void net_tx_packets(struct XenNetDev *netdev)
->                             (txreq.flags & NETTXF_more_data)      ? " more_data"      : "",
->                             (txreq.flags & NETTXF_extra_info)     ? " extra_info"     : "");
->   
-> -            page = xen_be_map_grant_ref(&netdev->xendev, txreq.gref,
-> -                                        PROT_READ);
-> +            page = xen_device_map_grant_refs(&netdev->xendev, &txreq.gref, 1,
-> +                                             PROT_READ, NULL);
->               if (page == NULL) {
->                   xen_pv_printf(&netdev->xendev, 0,
->                                 "error: tx gref dereference failed (%d)\n",
-> @@ -181,7 +204,8 @@ static void net_tx_packets(struct XenNetDev *netdev)
->                   qemu_send_packet(qemu_get_queue(netdev->nic),
->                                    page + txreq.offset, txreq.size);
->               }
-> -            xen_be_unmap_grant_ref(&netdev->xendev, page, txreq.gref);
-> +            xen_device_unmap_grant_refs(&netdev->xendev, page, &txreq.gref, 1,
-> +                                        NULL);
->               net_tx_response(netdev, &txreq, NETIF_RSP_OKAY);
->           }
->           if (!netdev->tx_work) {
-> @@ -190,6 +214,7 @@ static void net_tx_packets(struct XenNetDev *netdev)
->           netdev->tx_work = 0;
->       }
->       g_free(tmpbuf);
-> +    return done_something;
->   }
->   
->   /* ------------------------------------------------------------- */
-> @@ -212,14 +237,15 @@ static void net_rx_response(struct XenNetDev *netdev,
->           resp->status = (int16_t)st;
->       }
->   
-> -    xen_pv_printf(&netdev->xendev, 3,
-> +    if (0) qemu_printf(//&netdev->xendev, 3,
-
-Same here.
-
->                     "rx response: idx %d, status %d, flags 0x%x\n",
->                     i, resp->status, resp->flags);
->   
->       netdev->rx_ring.rsp_prod_pvt = ++i;
->       RING_PUSH_RESPONSES_AND_CHECK_NOTIFY(&netdev->rx_ring, notify);
->       if (notify) {
-> -        xen_pv_send_notify(&netdev->xendev);
-> +        xen_device_notify_event_channel(XEN_DEVICE(netdev),
-> +                                        netdev->event_channel, NULL);
->       }
->   }
->   
-> @@ -232,7 +258,7 @@ static ssize_t net_rx_packet(NetClientState *nc, const uint8_t *buf, size_t size
->       RING_IDX rc, rp;
->       void *page;
->   
-> -    if (netdev->xendev.be_state != XenbusStateConnected) {
-> +    if (netdev->rx_ring.sring == NULL) {
-
-Why not a straight swap for xen_device_backend_get_state()? Hard to see 
-whether there any hidden side effects of this change otherwise.
-
->           return -1;
->       }
->   
-> @@ -252,7 +278,8 @@ static ssize_t net_rx_packet(NetClientState *nc, const uint8_t *buf, size_t size
->       memcpy(&rxreq, RING_GET_REQUEST(&netdev->rx_ring, rc), sizeof(rxreq));
->       netdev->rx_ring.req_cons = ++rc;
->   
-> -    page = xen_be_map_grant_ref(&netdev->xendev, rxreq.gref, PROT_WRITE);
-> +    page = xen_device_map_grant_refs(&netdev->xendev, &rxreq.gref, 1,
-> +                                     PROT_WRITE, NULL);
->       if (page == NULL) {
->           xen_pv_printf(&netdev->xendev, 0,
->                         "error: rx gref dereference failed (%d)\n",
-> @@ -261,7 +288,7 @@ static ssize_t net_rx_packet(NetClientState *nc, const uint8_t *buf, size_t size
->           return -1;
->       }
->       memcpy(page + NET_IP_ALIGN, buf, size);
-> -    xen_be_unmap_grant_ref(&netdev->xendev, page, rxreq.gref);
-> +    xen_device_unmap_grant_refs(&netdev->xendev, page, &rxreq.gref, 1, NULL);
->       net_rx_response(netdev, &rxreq, NETIF_RSP_OKAY, NET_IP_ALIGN, size, 0);
->   
->       return size;
-> @@ -275,139 +302,350 @@ static NetClientInfo net_xen_info = {
->       .receive = net_rx_packet,
->   };
->   
-> -static int net_init(struct XenLegacyDevice *xendev)
-> +static void xen_netdev_realize(XenDevice *xendev, Error **errp)
->   {
-> -    struct XenNetDev *netdev = container_of(xendev, struct XenNetDev, xendev);
-> +    ERRP_GUARD();
-> +    XenNetDev *netdev = XEN_NET_DEVICE(xendev);
->   
-> -    /* read xenstore entries */
-> -    if (netdev->mac == NULL) {
-> -        netdev->mac = xenstore_read_be_str(&netdev->xendev, "mac");
-> -    }
-> +    qemu_macaddr_default_if_unset(&netdev->conf.macaddr);
->   
-> -    /* do we have all we need? */
-> -    if (netdev->mac == NULL) {
-> -        return -1;
-> -    }
-> -
-> -    if (net_parse_macaddr(netdev->conf.macaddr.a, netdev->mac) < 0) {
-> -        return -1;
-> -    }
-> +    xen_device_frontend_printf(xendev, "mac", "%02x:%02x:%02x:%02x:%02x:%02x",
-> +                               netdev->conf.macaddr.a[0],
-> +                               netdev->conf.macaddr.a[1],
-> +                               netdev->conf.macaddr.a[2],
-> +                               netdev->conf.macaddr.a[3],
-> +                               netdev->conf.macaddr.a[4],
-> +                               netdev->conf.macaddr.a[5]);
->   
->       netdev->nic = qemu_new_nic(&net_xen_info, &netdev->conf,
-> -                               "xen", NULL, netdev);
-> +                               object_get_typename(OBJECT(xendev)),
-> +                               DEVICE(xendev)->id, netdev);
->   
-> -    qemu_set_info_str(qemu_get_queue(netdev->nic),
-> -                      "nic: xenbus vif macaddr=%s", netdev->mac);
-> +    qemu_format_nic_info_str(qemu_get_queue(netdev->nic), netdev->conf.macaddr.a);
->   
->       /* fill info */
-> -    xenstore_write_be_int(&netdev->xendev, "feature-rx-copy", 1);
-> -    xenstore_write_be_int(&netdev->xendev, "feature-rx-flip", 0);
-> +    xen_device_backend_printf(xendev, "feature-rx-copy", "%u", 1);
-> +    xen_device_backend_printf(xendev, "feature-rx-flip", "%u", 0);
->   
-> -    return 0;
-> +    trace_xen_netdev_realize(netdev->dev, qemu_get_queue(netdev->nic)->info_str);
->   }
->   
-> -static int net_connect(struct XenLegacyDevice *xendev)
-> +static bool net_event(void *_xendev)
->   {
-> -    struct XenNetDev *netdev = container_of(xendev, struct XenNetDev, xendev);
-> -    int rx_copy;
-> +    XenNetDev *netdev = XEN_NET_DEVICE(_xendev);
-> +    bool done_something;
->   
-> -    if (xenstore_read_fe_int(&netdev->xendev, "tx-ring-ref",
-> -                             &netdev->tx_ring_ref) == -1) {
-> -        return -1;
-> +    done_something = net_tx_packets(netdev);
-> +    qemu_flush_queued_packets(qemu_get_queue(netdev->nic));
-> +    return done_something;
-> +}
-> +
-> +static bool xen_netdev_connect(XenDevice *xendev, Error **errp)
-> +{
-> +    XenNetDev *netdev = XEN_NET_DEVICE(xendev);
-> +    unsigned int port, rx_copy;
-> +
-> +    if (xen_device_frontend_scanf(xendev, "tx-ring-ref", "%u",
-> +                                  &netdev->tx_ring_ref) != 1) {
-> +        error_setg(errp, "failed to read tx-ring-ref");
-> +        return false;
->       }
-> -    if (xenstore_read_fe_int(&netdev->xendev, "rx-ring-ref",
-> -                             &netdev->rx_ring_ref) == -1) {
-> -        return 1;
-> +
-> +    if (xen_device_frontend_scanf(xendev, "rx-ring-ref", "%u",
-> +                                  &netdev->rx_ring_ref) != 1) {
-> +        error_setg(errp, "failed to read rx-ring-ref");
-> +        return false;
->       }
-> -    if (xenstore_read_fe_int(&netdev->xendev, "event-channel",
-> -                             &netdev->xendev.remote_port) == -1) {
-> -        return -1;
-> +
-> +    if (xen_device_frontend_scanf(xendev, "event-channel", "%u",
-> +                                  &port) != 1) {
-> +        error_setg(errp, "failed to read event-channel");
-> +        return false;
->       }
->   
-> -    if (xenstore_read_fe_int(&netdev->xendev, "request-rx-copy", &rx_copy) == -1) {
-> +    if (xen_device_frontend_scanf(xendev, "request-rx-copy", "%u",
-> +                                  &rx_copy) != 1) {
->           rx_copy = 0;
->       }
->       if (rx_copy == 0) {
-> -        xen_pv_printf(&netdev->xendev, 0,
-> -                      "frontend doesn't support rx-copy.\n");
-> -        return -1;
-> +        error_setg(errp, "frontend doesn't support rx-copy");
-> +        return false;
->       }
->   
-> -    netdev->txs = xen_be_map_grant_ref(&netdev->xendev,
-> -                                       netdev->tx_ring_ref,
-> -                                       PROT_READ | PROT_WRITE);
-> +    netdev->txs = xen_device_map_grant_refs(xendev,
-> +                                            &netdev->tx_ring_ref, 1,
-> +                                            PROT_READ | PROT_WRITE,
-> +                                            errp);
->       if (!netdev->txs) {
-> -        return -1;
-> +        error_prepend(errp, "failed to map tx grant ref: ");
-> +        return false;
->       }
-> -    netdev->rxs = xen_be_map_grant_ref(&netdev->xendev,
-> -                                       netdev->rx_ring_ref,
-> -                                       PROT_READ | PROT_WRITE);
-> +
-> +    netdev->rxs = xen_device_map_grant_refs(xendev,
-> +                                            &netdev->rx_ring_ref, 1,
-> +                                            PROT_READ | PROT_WRITE,
-> +                                            errp);
->       if (!netdev->rxs) {
-> -        xen_be_unmap_grant_ref(&netdev->xendev, netdev->txs,
-> -                               netdev->tx_ring_ref);
-> -        netdev->txs = NULL;
-> -        return -1;
-> +        error_prepend(errp, "failed to map rx grant ref: ");
-> +        return false;
->       }
-> +
->       BACK_RING_INIT(&netdev->tx_ring, netdev->txs, XEN_PAGE_SIZE);
->       BACK_RING_INIT(&netdev->rx_ring, netdev->rxs, XEN_PAGE_SIZE);
->   
-> -    xen_be_bind_evtchn(&netdev->xendev);
-> +    netdev->event_channel = xen_device_bind_event_channel(xendev, port,
-> +                                                          net_event,
-> +                                                          netdev,
-> +                                                          errp);
-> +    if (!netdev->event_channel) {
-> +        return false;
-> +    }
->   
-> -    xen_pv_printf(&netdev->xendev, 1, "ok: tx-ring-ref %d, rx-ring-ref %d, "
-> -                  "remote port %d, local port %d\n",
-> -                  netdev->tx_ring_ref, netdev->rx_ring_ref,
-> -                  netdev->xendev.remote_port, netdev->xendev.local_port);
-> +    trace_xen_netdev_connect(netdev->dev, netdev->tx_ring_ref,
-> +                             netdev->rx_ring_ref, port);
->   
->       net_tx_packets(netdev);
-> -    return 0;
-> +    return true;
->   }
->   
-> -static void net_disconnect(struct XenLegacyDevice *xendev)
-> +static void xen_netdev_disconnect(XenDevice *xendev, Error **errp)
->   {
-> -    struct XenNetDev *netdev = container_of(xendev, struct XenNetDev, xendev);
-> +    XenNetDev *netdev = XEN_NET_DEVICE(xendev);
-> +
-> +    trace_xen_netdev_disconnect(netdev->dev);
->   
-> -    xen_pv_unbind_evtchn(&netdev->xendev);
-> +    netdev->tx_ring.sring = NULL;
-> +    netdev->rx_ring.sring = NULL;
->   
-> +    if (netdev->event_channel) {
-> +        xen_device_unbind_event_channel(xendev, netdev->event_channel,
-> +                                        errp);
-> +        netdev->event_channel = NULL;
-> +    }
->       if (netdev->txs) {
-> -        xen_be_unmap_grant_ref(&netdev->xendev, netdev->txs,
-> -                               netdev->tx_ring_ref);
-> +        xen_device_unmap_grant_refs(xendev, netdev->txs,
-> +                                    &netdev->tx_ring_ref, 1, errp);
->           netdev->txs = NULL;
->       }
->       if (netdev->rxs) {
-> -        xen_be_unmap_grant_ref(&netdev->xendev, netdev->rxs,
-> -                               netdev->rx_ring_ref);
-> +        xen_device_unmap_grant_refs(xendev, netdev->rxs,
-> +                                    &netdev->rx_ring_ref, 1, errp);
->           netdev->rxs = NULL;
->       }
->   }
->   
-> -static void net_event(struct XenLegacyDevice *xendev)
-> +/* -------------------------------------------------------------------- */
-> +
-> +
-> +static void xen_netdev_frontend_changed(XenDevice *xendev,
-> +                                       enum xenbus_state frontend_state,
-> +                                       Error **errp)
->   {
-> -    struct XenNetDev *netdev = container_of(xendev, struct XenNetDev, xendev);
-> -    net_tx_packets(netdev);
-> -    qemu_flush_queued_packets(qemu_get_queue(netdev->nic));
-> +    ERRP_GUARD();
-> +    enum xenbus_state backend_state = xen_device_backend_get_state(xendev);
-> +
-> +    trace_xen_netdev_frontend_changed(xendev->name, frontend_state);
-> +
-> +    switch (frontend_state) {
-> +    case XenbusStateInitialised:
-
-I don't think that's really a valid state for a network frontend. Linux 
-netback just ignores it.
-
-   Paul
-
-> +    case XenbusStateConnected:
-> +        if (backend_state == XenbusStateConnected) {
-> +            break;
-> +        }
-> +
-> +        xen_netdev_disconnect(xendev, errp);
-> +        if (*errp) {
-> +            break;
-> +        }
-> +
-> +        if (!xen_netdev_connect(xendev, errp)) {
-> +            xen_netdev_disconnect(xendev, NULL);
-> +            xen_device_backend_set_state(xendev, XenbusStateClosing);
-> +            break;
-> +        }
-> +
-> +        xen_device_backend_set_state(xendev, XenbusStateConnected);
-> +        break;
-> +
-> +    case XenbusStateClosing:
-> +        xen_device_backend_set_state(xendev, XenbusStateClosing);
-> +        break;
-> +
-> +    case XenbusStateClosed:
-> +    case XenbusStateUnknown:
-> +        xen_netdev_disconnect(xendev, errp);
-> +        if (*errp) {
-> +            break;
-> +        }
-> +
-> +        xen_device_backend_set_state(xendev, XenbusStateClosed);
-> +        break;
-> +
-> +    default:
-> +        break;
-> +    }
->   }
->   
-> -static int net_free(struct XenLegacyDevice *xendev)
-> +static char *xen_netdev_get_name(XenDevice *xendev, Error **errp)
->   {
-> -    struct XenNetDev *netdev = container_of(xendev, struct XenNetDev, xendev);
-> +    XenNetDev *netdev = XEN_NET_DEVICE(xendev);
-> +
-> +    if (netdev->dev == -1) {
-> +        XenBus *xenbus = XEN_BUS(qdev_get_parent_bus(DEVICE(xendev)));
-> +        char fe_path[XENSTORE_ABS_PATH_MAX + 1];
-> +        int idx = (xen_mode == XEN_EMULATE) ? 0 : 1;
-> +        char *value;
-> +
-> +        /* Theoretically we could go up to INT_MAX here but that's overkill */
-> +        while (idx < 100) {
-> +            snprintf(fe_path, sizeof(fe_path),
-> +                     "/local/domain/%u/device/vif/%u",
-> +                     xendev->frontend_id, idx);
-> +            value = qemu_xen_xs_read(xenbus->xsh, XBT_NULL, fe_path, NULL);
-> +            if (!value) {
-> +                if (errno == ENOENT) {
-> +                    netdev->dev = idx;
-> +                    goto found;
-> +                }
-> +                error_setg(errp, "cannot read %s: %s", fe_path,
-> +                           strerror(errno));
-> +                return NULL;
-> +            }
-> +            free(value);
-> +            idx++;
-> +        }
-> +        error_setg(errp, "cannot find device index for netdev device");
-> +        return NULL;
-> +    }
-> + found:
-> +    return g_strdup_printf("%u", netdev->dev);
-> +}
-> +
-> +static void xen_netdev_unrealize(XenDevice *xendev)
-> +{
-> +    XenNetDev *netdev = XEN_NET_DEVICE(xendev);
-> +
-> +    trace_xen_netdev_unrealize(netdev->dev);
-> +
-> +    /* Disconnect from the frontend in case this has not already happened */
-> +    xen_netdev_disconnect(xendev, NULL);
->   
->       if (netdev->nic) {
->           qemu_del_nic(netdev->nic);
-> -        netdev->nic = NULL;
->       }
-> -    g_free(netdev->mac);
-> -    netdev->mac = NULL;
-> -    return 0;
->   }
->   
->   /* ------------------------------------------------------------- */
->   
-> -struct XenDevOps xen_netdev_ops = {
-> -    .size       = sizeof(struct XenNetDev),
-> -    .flags      = DEVOPS_FLAG_NEED_GNTDEV,
-> -    .init       = net_init,
-> -    .initialise    = net_connect,
-> -    .event      = net_event,
-> -    .disconnect = net_disconnect,
-> -    .free       = net_free,
-> +static Property xen_netdev_properties[] = {
-> +    DEFINE_NIC_PROPERTIES(XenNetDev, conf),
-> +    DEFINE_PROP_INT32("idx", XenNetDev, dev, -1),
-> +    DEFINE_PROP_END_OF_LIST(),
->   };
-> +
-> +static void xen_netdev_class_init(ObjectClass *class, void *data)
-> +{
-> +    DeviceClass *dev_class = DEVICE_CLASS(class);
-> +    XenDeviceClass *xendev_class = XEN_DEVICE_CLASS(class);
-> +
-> +    xendev_class->backend = "qnet";
-> +    xendev_class->device = "vif";
-> +    xendev_class->get_name = xen_netdev_get_name;
-> +    xendev_class->realize = xen_netdev_realize;
-> +    xendev_class->frontend_changed = xen_netdev_frontend_changed;
-> +    xendev_class->unrealize = xen_netdev_unrealize;
-> +    set_bit(DEVICE_CATEGORY_NETWORK, dev_class->categories);
-> +    dev_class->user_creatable = true;
-> +
-> +    device_class_set_props(dev_class, xen_netdev_properties);
-> +}
-> +
-> +static const TypeInfo xen_net_type_info = {
-> +    .name = TYPE_XEN_NET_DEVICE,
-> +    .parent = TYPE_XEN_DEVICE,
-> +    .instance_size = sizeof(XenNetDev),
-> +    .class_init = xen_netdev_class_init,
-> +};
-> +
-> +static void xen_net_register_types(void)
-> +{
-> +    type_register_static(&xen_net_type_info);
-> +}
-> +
-> +type_init(xen_net_register_types)
-> +
-> +/* Called to instantiate a XenNetDev when the backend is detected. */
-> +static void xen_net_device_create(XenBackendInstance *backend,
-> +                                  QDict *opts, Error **errp)
-> +{
-> +    ERRP_GUARD();
-> +    XenBus *xenbus = xen_backend_get_bus(backend);
-> +    const char *name = xen_backend_get_name(backend);
-> +    XenDevice *xendev = NULL;
-> +    unsigned long number;
-> +    const char *macstr;
-> +    XenNetDev *net;
-> +    MACAddr mac;
-> +
-> +    if (qemu_strtoul(name, NULL, 10, &number) || number >= INT_MAX) {
-> +        error_setg(errp, "failed to parse name '%s'", name);
-> +        goto fail;
-> +    }
-> +
-> +    trace_xen_netdev_create(number);
-> +
-> +    macstr = qdict_get_try_str(opts, "mac");
-> +    if (macstr == NULL) {
-> +        error_setg(errp, "no MAC address found");
-> +        goto fail;
-> +    }
-> +
-> +    if (net_parse_macaddr(mac.a, macstr) < 0) {
-> +        error_setg(errp, "failed to parse MAC address");
-> +        goto fail;
-> +    }
-> +
-> +    xendev = XEN_DEVICE(qdev_new(TYPE_XEN_NET_DEVICE));
-> +    net = XEN_NET_DEVICE(xendev);
-> +
-> +    net->dev = number;
-> +    memcpy(&net->conf.macaddr, &mac, sizeof(mac));
-> +
-> +    if (qdev_realize_and_unref(DEVICE(xendev), BUS(xenbus), errp)) {
-> +        xen_backend_set_device(backend, xendev);
-> +        return;
-> +    }
-> +
-> +    error_prepend(errp, "realization of net device %lu failed: ",
-> +                  number);
-> +
-> + fail:
-> +    if (xendev) {
-> +        object_unparent(OBJECT(xendev));
-> +    }
-> +}
-> +
-> +static void xen_net_device_destroy(XenBackendInstance *backend,
-> +                                       Error **errp)
-> +{
-> +    ERRP_GUARD();
-> +    XenDevice *xendev = xen_backend_get_device(backend);
-> +    XenNetDev *netdev = XEN_NET_DEVICE(xendev);
-> +
-> +    trace_xen_netdev_destroy(netdev->dev);
-> +
-> +    object_unparent(OBJECT(xendev));
-> +}
-> +
-> +static const XenBackendInfo xen_net_backend_info  = {
-> +    .type = "qnet",
-> +    .create = xen_net_device_create,
-> +    .destroy = xen_net_device_destroy,
-> +};
-> +
-> +static void xen_net_register_backend(void)
-> +{
-> +    xen_backend_register(&xen_net_backend_info);
-> +}
-> +
-> +xen_backend_init(xen_net_register_backend);
-> diff --git a/hw/xenpv/xen_machine_pv.c b/hw/xenpv/xen_machine_pv.c
-> index 17cda5ec13..764ca5c4fa 100644
-> --- a/hw/xenpv/xen_machine_pv.c
-> +++ b/hw/xenpv/xen_machine_pv.c
-> @@ -55,7 +55,6 @@ static void xen_init_pv(MachineState *machine)
->       }
->   
->       xen_be_register("vfb", &xen_framebuffer_ops);
-> -    xen_be_register("qnic", &xen_netdev_ops);
->   
->       /* configure framebuffer */
->       if (vga_interface_type == VGA_XENFB) {
-
+On 10/24/23 02:46, Cédric Le Goater wrote:
+> On 10/21/23 23:17, Ninad Palsule wrote:
+>> This is a part of patchset where IBM's Flexible Service Interface is
+>> introduced.
+>>
+>> An APB-to-OPB bridge enabling access to the OPB from the ARM core in
+>> the AST2600. Hardware limitations prevent the OPB from being directly
+>> mapped into APB, so all accesses are indirect through the bridge.
+>>
+>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>> ---
+>> v2:
+>> - Incorporated review comments by Joel
+>> v3:
+>> - Incorporated review comments by Thomas Huth
+>> v4:
+>>    - Compile FSI with ASPEED_SOC only.
+>> v5:
+>> - Incorporated review comments by Cedric.
+>> v6:
+>> - Incorporated review comments by Cedric.
+>> ---
+>>   include/hw/fsi/aspeed-apb2opb.h |  33 ++++
+>>   hw/fsi/aspeed-apb2opb.c         | 280 ++++++++++++++++++++++++++++++++
+>>   hw/arm/Kconfig                  |   1 +
+>>   hw/fsi/Kconfig                  |   4 +
+>>   hw/fsi/meson.build              |   1 +
+>>   hw/fsi/trace-events             |   2 +
+>>   6 files changed, 321 insertions(+)
+>>   create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+>>   create mode 100644 hw/fsi/aspeed-apb2opb.c
+>>
+>> diff --git a/include/hw/fsi/aspeed-apb2opb.h 
+>> b/include/hw/fsi/aspeed-apb2opb.h
+>> new file mode 100644
+>> index 0000000000..a81ae67023
+>> --- /dev/null
+>> +++ b/include/hw/fsi/aspeed-apb2opb.h
+>> @@ -0,0 +1,33 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * ASPEED APB2OPB Bridge
+>> + */
+>> +#ifndef FSI_ASPEED_APB2OPB_H
+>> +#define FSI_ASPEED_APB2OPB_H
+>> +
+>> +#include "hw/sysbus.h"
+>> +#include "hw/fsi/opb.h"
+>> +
+>> +#define TYPE_ASPEED_APB2OPB "aspeed.apb2opb"
+>> +OBJECT_DECLARE_SIMPLE_TYPE(AspeedAPB2OPBState, ASPEED_APB2OPB)
+>> +
+>> +#define ASPEED_APB2OPB_NR_REGS ((0xe8 >> 2) + 1)
+>> +
+>> +#define ASPEED_FSI_NUM 2
+>> +
+>> +typedef struct AspeedAPB2OPBState {
+>> +    /*< private >*/
+>> +    SysBusDevice parent_obj;
+>> +
+>> +    /*< public >*/
+>> +    MemoryRegion iomem;
+>> +
+>> +    uint32_t regs[ASPEED_APB2OPB_NR_REGS];
+>> +    qemu_irq irq;
+>> +
+>> +    OPBus opb[ASPEED_FSI_NUM];
+>> +} AspeedAPB2OPBState;
+>> +
+>> +#endif /* FSI_ASPEED_APB2OPB_H */
+>> diff --git a/hw/fsi/aspeed-apb2opb.c b/hw/fsi/aspeed-apb2opb.c
+>> new file mode 100644
+>> index 0000000000..6f97a6bc7d
+>> --- /dev/null
+>> +++ b/hw/fsi/aspeed-apb2opb.c
+>> @@ -0,0 +1,280 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * ASPEED APB-OPB FSI interface
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qemu/log.h"
+>> +#include "qom/object.h"
+>> +#include "qapi/error.h"
+>> +#include "trace.h"
+>> +
+>> +#include "hw/fsi/aspeed-apb2opb.h"
+>> +#include "hw/qdev-core.h"
+>> +
+>> +#define TO_REG(x) (x >> 2)
+>> +#define GENMASK(t, b) (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 
+>> 1))
+>> +
+>> +#define APB2OPB_VERSION                    TO_REG(0x00)
+>> +#define   APB2OPB_VERSION_VER              GENMASK(7, 0)
+>> +
+>> +#define APB2OPB_TRIGGER                    TO_REG(0x04)
+>> +#define   APB2OPB_TRIGGER_EN               BIT(0)
+>> +
+>> +#define APB2OPB_CONTROL                    TO_REG(0x08)
+>> +#define   APB2OPB_CONTROL_OFF              GENMASK(31, 13)
+>> +
+>> +#define APB2OPB_OPB2FSI                    TO_REG(0x0c)
+>> +#define   APB2OPB_OPB2FSI_OFF              GENMASK(31, 22)
+>> +
+>> +#define APB2OPB_OPB0_SEL                   TO_REG(0x10)
+>> +#define APB2OPB_OPB1_SEL                   TO_REG(0x28)
+>> +#define   APB2OPB_OPB_SEL_EN               BIT(0)
+>> +
+>> +#define APB2OPB_OPB0_MODE                  TO_REG(0x14)
+>> +#define APB2OPB_OPB1_MODE                  TO_REG(0x2c)
+>> +#define   APB2OPB_OPB_MODE_RD              BIT(0)
+>> +
+>> +#define APB2OPB_OPB0_XFER                  TO_REG(0x18)
+>> +#define APB2OPB_OPB1_XFER                  TO_REG(0x30)
+>> +#define   APB2OPB_OPB_XFER_FULL            BIT(1)
+>> +#define   APB2OPB_OPB_XFER_HALF            BIT(0)
+>> +
+>> +#define APB2OPB_OPB0_ADDR                  TO_REG(0x1c)
+>> +#define APB2OPB_OPB0_WRITE_DATA            TO_REG(0x20)
+>> +
+>> +#define APB2OPB_OPB1_ADDR                  TO_REG(0x34)
+>> +#define APB2OPB_OPB1_WRITE_DATA                  TO_REG(0x38)
+>> +
+>> +#define APB2OPB_IRQ_STS                    TO_REG(0x48)
+>> +#define   APB2OPB_IRQ_STS_OPB1_TX_ACK      BIT(17)
+>> +#define   APB2OPB_IRQ_STS_OPB0_TX_ACK      BIT(16)
+>> +
+>> +#define APB2OPB_OPB0_WRITE_WORD_ENDIAN     TO_REG(0x4c)
+>> +#define   APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE 0x0011101b
+>> +#define APB2OPB_OPB0_WRITE_BYTE_ENDIAN     TO_REG(0x50)
+>> +#define   APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE 0x0c330f3f
+>> +#define APB2OPB_OPB1_WRITE_WORD_ENDIAN     TO_REG(0x54)
+>> +#define APB2OPB_OPB1_WRITE_BYTE_ENDIAN     TO_REG(0x58)
+>> +#define APB2OPB_OPB0_READ_BYTE_ENDIAN      TO_REG(0x5c)
+>> +#define APB2OPB_OPB1_READ_BYTE_ENDIAN      TO_REG(0x60)
+>> +#define   APB2OPB_OPB0_READ_WORD_ENDIAN_BE  0x00030b1b
+>> +
+>> +#define APB2OPB_OPB0_READ_DATA         TO_REG(0x84)
+>> +#define APB2OPB_OPB1_READ_DATA         TO_REG(0x90)
+>> +
+>> +/*
+>> + * The following magic values came from AST2600 data sheet
+>> + * The register values are defined under section "FSI controller"
+>> + * as initial values.
+>> + */
+>> +static const uint32_t aspeed_apb2opb_reset[ASPEED_APB2OPB_NR_REGS] = {
+>> +     [APB2OPB_VERSION]                = 0x000000a1,
+>> +     [APB2OPB_OPB0_WRITE_WORD_ENDIAN] = 0x0044eee4,
+>> +     [APB2OPB_OPB0_WRITE_BYTE_ENDIAN] = 0x0055aaff,
+>> +     [APB2OPB_OPB1_WRITE_WORD_ENDIAN] = 0x00117717,
+>> +     [APB2OPB_OPB1_WRITE_BYTE_ENDIAN] = 0xffaa5500,
+>> +     [APB2OPB_OPB0_READ_BYTE_ENDIAN]  = 0x0044eee4,
+>> +     [APB2OPB_OPB1_READ_BYTE_ENDIAN]  = 0x00117717
+>> +};
+>> +
+>> +static uint64_t fsi_aspeed_apb2opb_read(void *opaque, hwaddr addr,
+>> +                                        unsigned size)
+>> +{
+>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
+>> +
+>> +    trace_fsi_aspeed_apb2opb_read(addr, size);
+>> +
+>> +    if (addr + size > sizeof(s->regs)) {
+>
+>
+> hmm, the parameter 'size' is a memop transaction size not an address 
+> offset.
+OK, Changed it to validate the register (index) instead of addr + size.
+>
+>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for 
+>> %u\n",
+>> +                      __func__, addr, size);
+>> +        return 0;
+>> +    }
+>> +
+>> +    return s->regs[TO_REG(addr)];
+>> +}
+>> +
+>> +static void fsi_aspeed_apb2opb_write(void *opaque, hwaddr addr, 
+>> uint64_t data,
+>> +                                     unsigned size)
+>> +{
+>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
+>> +
+>> +    trace_fsi_aspeed_apb2opb_write(addr, size, data);
+>> +
+>> +    if (addr + size > sizeof(s->regs)) {
+>
+> same comment.
+Fixed it same as above.
+>
+>
+>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>> +                      "%s: Out of bounds write: %"HWADDR_PRIx" for 
+>> %u\n",
+>> +                      __func__, addr, size);
+>> +        return;
+>> +    }
+>> +
+>> +    switch (TO_REG(addr)) {
+>> +    case APB2OPB_CONTROL:
+>> +        fsi_opb_fsi_master_address(&s->opb[0], data & 
+>> APB2OPB_CONTROL_OFF);
+>
+> fsi_opb_fsi_master_address() should statically defined in this file
+We have separation of OPB bus implementation and APB2OPB interface. If 
+we move this function here then we will be exposing OPB implementation here.
+>
+>> +        break;
+>> +    case APB2OPB_OPB2FSI:
+>> +        fsi_opb_opb2fsi_address(&s->opb[0], data & 
+>> APB2OPB_OPB2FSI_OFF);
+>
+>
+> same for fsi_opb_opb2fsi_address()
+Same as above.
+>
+>> +        break;
+>> +    case APB2OPB_OPB0_WRITE_WORD_ENDIAN:
+>> +        if (data != APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE) {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                          "%s: Bridge needs to be driven as BE 
+>> (0x%x)\n",
+>> +                          __func__, APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE);
+>> +        }
+>> +        break;
+>> +    case APB2OPB_OPB0_WRITE_BYTE_ENDIAN:
+>> +        if (data != APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE) {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                          "%s: Bridge needs to be driven as BE 
+>> (0x%x)\n",
+>> +                          __func__, APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE);
+>> +        }
+>> +        break;
+>> +    case APB2OPB_OPB0_READ_BYTE_ENDIAN:
+>> +        if (data != APB2OPB_OPB0_READ_WORD_ENDIAN_BE) {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                          "%s: Bridge needs to be driven as BE 
+>> (0x%x)\n",
+>> +                          __func__, APB2OPB_OPB0_READ_WORD_ENDIAN_BE);
+>> +        }
+>> +        break;
+>> +    case APB2OPB_TRIGGER:
+>> +    {
+>> +        uint32_t opb, op_mode, op_size, op_addr, op_data;
+>> +
+>> +        assert((s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) ^
+>> +               (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN));
+>> +
+>> +        if (s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) {
+>> +            opb = 0;
+>> +            op_mode = s->regs[APB2OPB_OPB0_MODE];
+>> +            op_size = s->regs[APB2OPB_OPB0_XFER];
+>> +            op_addr = s->regs[APB2OPB_OPB0_ADDR];
+>> +            op_data = s->regs[APB2OPB_OPB0_WRITE_DATA];
+>> +        } else if (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN) {
+>> +            opb = 1;
+>> +            op_mode = s->regs[APB2OPB_OPB1_MODE];
+>> +            op_size = s->regs[APB2OPB_OPB1_XFER];
+>> +            op_addr = s->regs[APB2OPB_OPB1_ADDR];
+>> +            op_data = s->regs[APB2OPB_OPB1_WRITE_DATA];
+>> +        } else {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                          "%s: Invalid operation: 0x%"HWADDR_PRIx" 
+>> for %u\n",
+>> +                          __func__, addr, size);
+>> +            return;
+>> +        }
+>> +
+>> +        if (op_size & ~(APB2OPB_OPB_XFER_HALF | 
+>> APB2OPB_OPB_XFER_FULL)) {
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                          "OPB transaction failed: Unrecognised 
+>> access width: %d\n",
+>
+> Unrecognized
+Fixed
+>
+>> +                          op_size);
+>> +            return;
+>> +        }
+>> +
+>> +        op_size += 1;
+>> +
+>> +        if (op_mode & APB2OPB_OPB_MODE_RD) {
+>> +            int index = opb ? APB2OPB_OPB1_READ_DATA
+>> +                : APB2OPB_OPB0_READ_DATA;
+>> +
+>> +            switch (op_size) {
+>> +            case 1:
+>> +                s->regs[index] = fsi_opb_read8(&s->opb[opb], op_addr);
+>> +                break;
+>> +            case 2:
+>> +                s->regs[index] = fsi_opb_read16(&s->opb[opb], op_addr);
+>> +                break;
+>> +            case 4:
+>> +                s->regs[index] = fsi_opb_read32(&s->opb[opb], op_addr);
+>> +                break;
+>> +            default:
+>> +                qemu_log_mask(LOG_GUEST_ERROR,
+>> +                              "%s: Size not supported: %u\n",
+>> +                              __func__, size);
+>
+> this should use op_size and not size and seems redudant with
+> the unrecognized test above.
+true, Keeping it in case bits meaning change in future.
+>
+>
+>> +                return;
+>> +            }
+>> +        } else {
+>> +            /* FIXME: Endian swizzling */
+>> +            switch (op_size) {
+>> +            case 1:
+>> +                fsi_opb_write8(&s->opb[opb], op_addr, op_data);
+>> +                break;
+>> +            case 2:
+>> +                fsi_opb_write16(&s->opb[opb], op_addr, op_data);
+>> +                break;
+>> +            case 4:
+>> +                fsi_opb_write32(&s->opb[opb], op_addr, op_data);
+>> +                break;
+>> +            default:
+>> +                qemu_log_mask(LOG_GUEST_ERROR,
+>> +                              "%s: Size not supported: %u\n",
+>> +                              __func__, op_size);
+>> +                return;
+>> +            }
+>> +        }
+>
+>
+> The above is equivalent to :
+>
+>         MemTxResult result;
+>         bool is_write = !(op_mode & APB2OPB_OPB_MODE_RD);
+>         int index = opb ? APB2OPB_OPB1_READ_DATA : 
+> APB2OPB_OPB0_READ_DATA;
+>         AddressSpace *as = &s->opb[opb].as;
+>
+>         result = address_space_rw(as, op_addr, MEMTXATTRS_UNSPECIFIED,
+>                                   &op_data, op_size, is_write);
+>         if (result != MEMTX_OK) {
+>             qemu_log_mask(LOG_GUEST_ERROR, "%s: OPB %s failed @%08x\n",
+>                           __func__, is_write ? "write" : "read", 
+> op_addr);
+>             return;
+>         }
+>
+>         if (!is_write) {
+>             s->regs[index] = op_data;
+>         }
+>
+> and the fsi_opb_* routines are useless to me.
+We are trying to keep the separation between OPB implementation and 
+interface hence we have all those fsi_opb_*. I feel that we should keep 
+as it is so that future extensions will be easier. Please let me know.
+>
+>
+>
+>
+>> +        s->regs[APB2OPB_IRQ_STS] |= opb ? APB2OPB_IRQ_STS_OPB1_TX_ACK
+>> +            : APB2OPB_IRQ_STS_OPB0_TX_ACK;
+>> +        break;
+>> +    }
+>> +    }
+>> +
+>> +    s->regs[TO_REG(addr)] = data;
+>> +}
+>> +
+>> +static const struct MemoryRegionOps aspeed_apb2opb_ops = {
+>> +    .read = fsi_aspeed_apb2opb_read,
+>> +    .write = fsi_aspeed_apb2opb_write,
+>> +    .valid.max_access_size = 4,
+>> +    .valid.min_access_size = 4,
+>> +    .impl.max_access_size = 4,
+>> +    .impl.min_access_size = 4,
+>> +    .endianness = DEVICE_LITTLE_ENDIAN,
+>> +};
+>> +
+>> +static void fsi_aspeed_apb2opb_realize(DeviceState *dev, Error **errp)
+>> +{
+>> +    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(dev);
+>> +
+>> +    qbus_init(&s->opb[0], sizeof(s->opb[0]), TYPE_OP_BUS,
+>> +                        DEVICE(s), NULL);
+>> +    qbus_init(&s->opb[1], sizeof(s->opb[1]), TYPE_OP_BUS,
+>> +                        DEVICE(s), NULL);
+>> +
+>> +    sysbus_init_irq(sbd, &s->irq);
+>> +
+>> +    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_apb2opb_ops, s,
+>> +                          TYPE_ASPEED_APB2OPB, 0x1000);
+>> +    sysbus_init_mmio(sbd, &s->iomem);
+>> +}
+>> +
+>> +static void fsi_aspeed_apb2opb_reset(DeviceState *dev)
+>> +{
+>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(dev);
+>> +
+>> +    memcpy(s->regs, aspeed_apb2opb_reset, ASPEED_APB2OPB_NR_REGS);
+>> +}
+>> +
+>> +static void fsi_aspeed_apb2opb_class_init(ObjectClass *klass, void 
+>> *data)
+>> +{
+>> +    DeviceClass *dc = DEVICE_CLASS(klass);
+>> +
+>> +    dc->desc = "ASPEED APB2OPB Bridge";
+>> +    dc->realize = fsi_aspeed_apb2opb_realize;
+>> +    dc->reset = fsi_aspeed_apb2opb_reset;
+>> +}
+>> +
+>> +static const TypeInfo aspeed_apb2opb_info = {
+>> +    .name = TYPE_ASPEED_APB2OPB,
+>> +    .parent = TYPE_SYS_BUS_DEVICE,
+>> +    .instance_size = sizeof(AspeedAPB2OPBState),
+>> +    .class_init = fsi_aspeed_apb2opb_class_init,
+>> +};
+>> +
+>> +static void aspeed_apb2opb_register_types(void)
+>> +{
+>> +    type_register_static(&aspeed_apb2opb_info);
+>> +}
+>> +
+>> +type_init(aspeed_apb2opb_register_types);
+>> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+>> index 7e68348440..d963de74c9 100644
+>> --- a/hw/arm/Kconfig
+>> +++ b/hw/arm/Kconfig
+>> @@ -555,6 +555,7 @@ config ASPEED_SOC
+>>       select LED
+>>       select PMBUS
+>>       select MAX31785
+>> +    select FSI_APB2OPB_ASPEED
+>>     config MPS2
+>>       bool
+>> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+>> index 0f6e6d331a..6bbcb8f6ca 100644
+>> --- a/hw/fsi/Kconfig
+>> +++ b/hw/fsi/Kconfig
+>> @@ -1,3 +1,7 @@
+>> +config FSI_APB2OPB_ASPEED
+>> +    bool
+>> +    select FSI_OPB
+>> +
+>>   config FSI_OPB
+>>       bool
+>>       select FSI_CFAM
+>> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+>> index 407b8c2775..1bc6bb63cc 100644
+>> --- a/hw/fsi/meson.build
+>> +++ b/hw/fsi/meson.build
+>> @@ -3,3 +3,4 @@ system_ss.add(when: 'CONFIG_FSI_SCRATCHPAD', if_true: 
+>> files('engine-scratchpad.c
+>>   system_ss.add(when: 'CONFIG_FSI_CFAM', if_true: files('cfam.c'))
+>>   system_ss.add(when: 'CONFIG_FSI', if_true: 
+>> files('fsi.c','fsi-master.c','fsi-slave.c'))
+>>   system_ss.add(when: 'CONFIG_FSI_OPB', if_true: files('opb.c'))
+>> +system_ss.add(when: 'CONFIG_FSI_APB2OPB_ASPEED', if_true: 
+>> files('aspeed-apb2opb.c'))
+>> diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
+>> index 13b211a815..9a45843eb6 100644
+>> --- a/hw/fsi/trace-events
+>> +++ b/hw/fsi/trace-events
+>> @@ -17,3 +17,5 @@ fsi_opb_write16(uint64_t addr, uint32_t size) 
+>> "@0x%" PRIx64 " size=%d"
+>>   fsi_opb_write32(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
+>>   fsi_opb_unimplemented_read(uint64_t addr, uint32_t size) "@0x%" 
+>> PRIx64 " size=%d"
+>>   fsi_opb_unimplemented_write(uint64_t addr, uint32_t size, uint64_t 
+>> data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+>> +fsi_aspeed_apb2opb_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 
+>> " size=%d"
+>> +fsi_aspeed_apb2opb_write(uint64_t addr, uint32_t size, uint64_t 
+>> data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+>
 
