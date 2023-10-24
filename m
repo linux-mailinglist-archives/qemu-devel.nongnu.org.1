@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483147D51BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38967D51B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHGg-0002pv-75; Tue, 24 Oct 2023 09:16:22 -0400
+	id 1qvHGf-0002RT-Da; Tue, 24 Oct 2023 09:16:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHG3-0001Jr-R9
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:15:46 -0400
+ id 1qvHG6-0001Ls-P2
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:15:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHFz-0001nK-CP
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:15:43 -0400
+ id 1qvHG4-0001oX-Kk
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:15:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153338;
+ s=mimecast20190719; t=1698153343;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RSYc/dqzkS2tFdLQ8nQJGqSs5SG3NKuDB832n+HnggA=;
- b=WZL2vxbcfn1XP6A1VAbknRpdbNbvJQ4fqrYj3D2bYw3xT4jQyIyC1FXMyoFGgn3ZESGQLA
- c3Le9l5r2ZCicEgFf8OHHbRRSXAMrd3RoJaeUIOJJEysvAEx4W+3aMsxAjVxoDZ8vJpKjj
- 2xctiQw/ldqMldM8ZywMLY66NE2bdXE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-MQj-coVGO7GzkH6hQvNYbA-1; Tue,
- 24 Oct 2023 09:15:35 -0400
-X-MC-Unique: MQj-coVGO7GzkH6hQvNYbA-1
+ bh=zNTqpR4R/RiiCgDdxYzqqoUc01rIqkGdDcl+05m0oFw=;
+ b=W919QErq3aIVD/1sUr7/QjCO0At17m2+fJb5n05Roup3IEhnriF/R3kFziaLvACwqDdh0f
+ 0GrERhPL3EOO0YAKgdxq8QiPC+Xqx3FRCEoreD8Mh9/JbiixA7wyiPrwTMGnAthwTVcSCf
+ wzJdTVzBnh7OxnHk7jRjn5FNAvy1bxE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-594-nKSQne_4MK-RndLbm_azyg-1; Tue, 24 Oct 2023 09:15:42 -0400
+X-MC-Unique: nKSQne_4MK-RndLbm_azyg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F10E43813F2A;
- Tue, 24 Oct 2023 13:15:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA6BD811E98;
+ Tue, 24 Oct 2023 13:15:40 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9F92C1C060AE;
- Tue, 24 Oct 2023 13:15:27 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3F6C41C060AE;
+ Tue, 24 Oct 2023 13:15:34 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -73,10 +73,9 @@ Cc: Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 21/39] hw/s390x/s390-stattrib: Don't call
- register_savevm_live() during instance_init()
-Date: Tue, 24 Oct 2023 15:12:47 +0200
-Message-ID: <20231024131305.87468-22-quintela@redhat.com>
+Subject: [PULL 22/39] migration/ram: Fix compilation with -Wshadow=local
+Date: Tue, 24 Oct 2023 15:12:48 +0200
+Message-ID: <20231024131305.87468-23-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -90,7 +89,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,78 +107,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-We must not call register_savevm_live() from an instance_init() function
-(since this could be called multiple times during device introspection).
-Move this to the realize() function instead.
+Rename the variable here to avoid that it shadows a variable from
+the beginning of the function scope. With this change the code now
+successfully compiles with -Wshadow=local.
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231020150554.664422-4-thuth@redhat.com>
+Message-ID: <20231024092220.55305-1-thuth@redhat.com>
 ---
- hw/s390x/s390-stattrib.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ migration/ram.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-index 52f9fc036e..54a138011c 100644
---- a/hw/s390x/s390-stattrib.c
-+++ b/hw/s390x/s390-stattrib.c
-@@ -331,6 +331,17 @@ static const TypeInfo qemu_s390_stattrib_info = {
+diff --git a/migration/ram.c b/migration/ram.c
+index 6335564035..024dedb6b1 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3147,6 +3147,8 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+     rs->last_stage = !migration_in_colo_state();
  
- /* Generic abstract object: */
- 
-+static SaveVMHandlers savevm_s390_stattrib_handlers = {
-+    .save_setup = cmma_save_setup,
-+    .save_live_iterate = cmma_save_iterate,
-+    .save_live_complete_precopy = cmma_save_complete,
-+    .state_pending_exact = cmma_state_pending,
-+    .state_pending_estimate = cmma_state_pending,
-+    .save_cleanup = cmma_save_cleanup,
-+    .load_state = cmma_load,
-+    .is_active = cmma_active,
-+};
+     WITH_RCU_READ_LOCK_GUARD() {
++        int rdma_reg_ret;
 +
- static void s390_stattrib_realize(DeviceState *dev, Error **errp)
- {
-     bool ambiguous = false;
-@@ -338,7 +349,11 @@ static void s390_stattrib_realize(DeviceState *dev, Error **errp)
-     object_resolve_path_type("", TYPE_S390_STATTRIB, &ambiguous);
-     if (ambiguous) {
-         error_setg(errp, "storage_attributes device already exists");
-+        return;
+         if (!migration_in_postcopy()) {
+             migration_bitmap_sync_precopy(rs, true);
+         }
+@@ -3177,9 +3179,9 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+ 
+         compress_flush_data();
+ 
+-        int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
+-        if (ret < 0) {
+-            qemu_file_set_error(f, ret);
++        rdma_reg_ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
++        if (rdma_reg_ret < 0) {
++            qemu_file_set_error(f, rdma_reg_ret);
+         }
      }
-+
-+    register_savevm_live(TYPE_S390_STATTRIB, 0, 0,
-+                         &savevm_s390_stattrib_handlers, dev);
- }
- 
- static Property s390_stattrib_props[] = {
-@@ -355,24 +370,10 @@ static void s390_stattrib_class_init(ObjectClass *oc, void *data)
-     device_class_set_props(dc, s390_stattrib_props);
- }
- 
--static SaveVMHandlers savevm_s390_stattrib_handlers = {
--    .save_setup = cmma_save_setup,
--    .save_live_iterate = cmma_save_iterate,
--    .save_live_complete_precopy = cmma_save_complete,
--    .state_pending_exact = cmma_state_pending,
--    .state_pending_estimate = cmma_state_pending,
--    .save_cleanup = cmma_save_cleanup,
--    .load_state = cmma_load,
--    .is_active = cmma_active,
--};
--
- static void s390_stattrib_instance_init(Object *obj)
- {
-     S390StAttribState *sas = S390_STATTRIB(obj);
- 
--    register_savevm_live(TYPE_S390_STATTRIB, 0, 0,
--                         &savevm_s390_stattrib_handlers, sas);
--
-     sas->migration_cur_gfn = 0;
- }
  
 -- 
 2.41.0
