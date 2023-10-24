@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3617D51B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE867D5154
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:20:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHGi-00038v-7v; Tue, 24 Oct 2023 09:16:24 -0400
+	id 1qvHHG-00049Q-T7; Tue, 24 Oct 2023 09:17:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHGI-0001qN-MU
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:02 -0400
+ id 1qvHGR-0002Nu-1T
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHGG-0001qi-Hd
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:15:58 -0400
+ id 1qvHGM-0001sq-Az
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:16:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153354;
+ s=mimecast20190719; t=1698153361;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/NRSpUIijsQTQV6/Ab+Fo4l/3wg2rU3H4n9wtIAj/fI=;
- b=OSrjmtwd9NEoBJX3Kec12NnrEPz6de0hbWjRXNCXaOJRXJSYrBOLe5ZZP02N4RLV4Xbo9I
- 745J/6wpbOnn7BPicD8e5Vt7ajCd/28vjXczRy1H43nd9pwwMEoMF0Nb+boVLv+iXfsW/q
- Jn71pOo+As3RNl+sS9mb4Z2XTdNzQDY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-385-8sbA3mZJPjK-NrBMu38aGQ-1; Tue, 24 Oct 2023 09:15:48 -0400
-X-MC-Unique: 8sbA3mZJPjK-NrBMu38aGQ-1
+ bh=12UW4S7DwReY5i7WbgLvv6myQHnsED050vB3pRolHAs=;
+ b=dV0KKvIyuKjflh68vdwWTIvXjvOGvyuEnYQzNjG5EMrfK+vIqmI4C/8ryBYXrIADaNgWhy
+ 29P6yj/o/jTqsSEU/5s53UqhuCKdRpCes4qLyabsTwiSH7LZ+wn+Kxy2yu6DGSaXjoegzZ
+ 2/5LCDmRs3W1CUOyetj8uQyOpiInUIo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-YRUdb2dENQ6nkuSypCmt8g-1; Tue,
+ 24 Oct 2023 09:15:55 -0400
+X-MC-Unique: YRUdb2dENQ6nkuSypCmt8g-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D1EF88CDC0;
- Tue, 24 Oct 2023 13:15:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 287423813F2E;
+ Tue, 24 Oct 2023 13:15:54 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 011211C060AE;
- Tue, 24 Oct 2023 13:15:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 763D11C060AE;
+ Tue, 24 Oct 2023 13:15:47 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -73,10 +73,9 @@ Cc: Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 23/39] migration: rename
- vmstate_save_needed->vmstate_section_needed
-Date: Tue, 24 Oct 2023 15:12:49 +0200
-Message-ID: <20231024131305.87468-24-quintela@redhat.com>
+Subject: [PULL 24/39] migration: set file error on subsection loading
+Date: Tue, 24 Oct 2023 15:12:50 +0200
+Message-ID: <20231024131305.87468-25-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -109,67 +108,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The function is used on save at this point. The following commits will
-use it on load.
+commit 13cde50889237 ("vmstate: Return error in case of error") sets
+QemuFile error to stop reading from it and report to the caller (checked
+by unit tests). We should do the same on subsection loading error.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231024084043.2926316-5-marcandre.lureau@redhat.com>
+Message-ID: <20231024084043.2926316-8-marcandre.lureau@redhat.com>
 ---
- include/migration/vmstate.h | 2 +-
- migration/savevm.c          | 2 +-
- migration/vmstate.c         | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ migration/vmstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 1a31fb7293..1af181877c 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -1202,7 +1202,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                          void *opaque, JSONWriter *vmdesc,
-                          int version_id, Error **errp);
- 
--bool vmstate_save_needed(const VMStateDescription *vmsd, void *opaque);
-+bool vmstate_section_needed(const VMStateDescription *vmsd, void *opaque);
- 
- #define  VMSTATE_INSTANCE_ID_ANY  -1
- 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 8622f229e5..ca5c7cebe0 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -985,7 +985,7 @@ static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmdesc)
-     if ((!se->ops || !se->ops->save_state) && !se->vmsd) {
-         return 0;
-     }
--    if (se->vmsd && !vmstate_save_needed(se->vmsd, se->opaque)) {
-+    if (se->vmsd && !vmstate_section_needed(se->vmsd, se->opaque)) {
-         trace_savevm_section_skip(se->idstr, se->section_id);
-         return 0;
-     }
 diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 1cf9e45b85..16e33a5d34 100644
+index 16e33a5d34..9c36803c8a 100644
 --- a/migration/vmstate.c
 +++ b/migration/vmstate.c
-@@ -324,7 +324,7 @@ static void vmsd_desc_field_end(const VMStateDescription *vmsd,
- }
- 
- 
--bool vmstate_save_needed(const VMStateDescription *vmsd, void *opaque)
-+bool vmstate_section_needed(const VMStateDescription *vmsd, void *opaque)
- {
-     if (vmsd->needed && !vmsd->needed(opaque)) {
-         /* optional section not needed */
-@@ -522,7 +522,7 @@ static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
- 
-     trace_vmstate_subsection_save_top(vmsd->name);
-     while (sub && *sub) {
--        if (vmstate_save_needed(*sub, opaque)) {
-+        if (vmstate_section_needed(*sub, opaque)) {
-             const VMStateDescription *vmsdsub = *sub;
-             uint8_t len;
- 
+@@ -179,6 +179,7 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+     assert(field->flags == VMS_END);
+     ret = vmstate_subsection_load(f, vmsd, opaque);
+     if (ret != 0) {
++        qemu_file_set_error(f, ret);
+         return ret;
+     }
+     if (vmsd->post_load) {
 -- 
 2.41.0
 
