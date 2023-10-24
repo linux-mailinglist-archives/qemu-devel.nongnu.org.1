@@ -2,80 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4D57D4DCC
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 12:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C317D4DC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 12:30:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvEhf-0005Da-HL; Tue, 24 Oct 2023 06:32:03 -0400
+	id 1qvEer-0003fl-I1; Tue, 24 Oct 2023 06:29:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvEhc-0005Cr-94
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:32:00 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qvEeg-0003dZ-Dd
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:28:59 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvEhW-00056u-As
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:31:59 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-32df66c691dso1511968f8f.3
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 03:31:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qvEea-0004Jn-LJ
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:28:57 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-53d9f001b35so6329770a12.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 03:28:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698143512; x=1698748312; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+Ppf7ZTLomyQ+xSMcIkUzm/9Zg9t4HsI4jD/hNDjyyY=;
- b=klC5oc7uts09YVRnPfMEDoTF1QCeS7OCeU2swSdL9sEBT1e7LlU/urAHtAdA1PbVgf
- ZpaVTOLaQGV6PXqFyuWlMjWYPZH74cMHe8CUvXLcA2i7aASIxmD/bWO6wc4h8T4Rqd6h
- BRjIAQDGVqH7iPoJUYsXGOo8VRJnTX3SxHETeGxolAjALmKhVZovqWNE1APYlDv2u9aC
- t31wdP0WZWvggwjTDyA9yP+Z4gCkU9fbzGakO1dwg8P+9DjGoo6Wa8xzWO5D9HsG2MTB
- YPjc+lY1Nw05uHaOnmw/NX6chxCBLrUi61bCumg0fOxzp4nNVcbK+KD+u+nj7KVbCTM8
- U9Ww==
+ d=linaro.org; s=google; t=1698143329; x=1698748129; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=aRBM4xxdZYa+4ZDnyGngz8Sq7VYe1PSK/mXapf7mi4s=;
+ b=fRQSCOCsJ8Aw5i6k0Cjs4m2muyECWDmWV0n8sk1P7bJH85diMu2E4+I1R2r4+WXE49
+ 10+gFNUBZiApQuKemw16pW7csxpQ8nOLUxAip/0flI09/vlZh5cU+g+EUXgG2RtDnNP4
+ bAoFfDbYWpmUuPAgy1hXeFEiSPFU1FHK7t1yDA+hlhRSe9/TtvYDZ87S8I7JdlFeZPQ5
+ sj+VxcsRnWk+a+H8Grkz1wnFvUp3dgeqqpPyvOm6JE2qhIhDnGyi9SuWz/rsfYYfJMB2
+ tSrescPcHKU946W+yFKsO63ZUN7/6ifjcW+ZU+SHKmZQy7T2DCqUnmC/8uNE1/OybpG6
+ TEHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698143512; x=1698748312;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=+Ppf7ZTLomyQ+xSMcIkUzm/9Zg9t4HsI4jD/hNDjyyY=;
- b=ln1GCXTHIykKpdiXTnr29DrtKCHpDcosQ7FnK8FyHdOtP+1YN1XKQT/e822VobtW2i
- 83aba0kEPXx1BeOt4PMPsfO4Uk3SWXsZkmZMUde60rSjwy056zZZOLyHzeJx3nc5Kfbe
- iU0uk1m6+TcqEfVHZ3Lehvjl5eD0gGteofAm2CBgtMSZm6wZueZAamUODuYp9upg6uB1
- zQXgV+KfNgF1ZQ+KilKwvEPOZ9nT37WoKlMAsBgZ14e80R7pNhZ+V8mExUNOSIeHMByN
- /5SQdk5eZgx/uVwxsxyCUv/kEnoZ7henhECkbigfNVNrYFtX6kbe29oGMLlJtyQU+Xeq
- Qcxw==
-X-Gm-Message-State: AOJu0Yx6DGT9t9IGDNTxXX5FVkWDh/ODDX9T+T0qlirfXTgos7YcbQe5
- mL1LZoRZsWdkcNyWY+z0/EIXYg==
-X-Google-Smtp-Source: AGHT+IEfVO8TC0ljWRSgMXxN4IQXPSmTdETq6ZWTjsmeZRQiMAg81pEJXctQbJ0DZ02pNAv3if/MpA==
-X-Received: by 2002:adf:ed8e:0:b0:32d:9d99:d0a5 with SMTP id
- c14-20020adfed8e000000b0032d9d99d0a5mr9357555wro.5.1698143511690; 
- Tue, 24 Oct 2023 03:31:51 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- e16-20020adfe7d0000000b0032db8f7f378sm9668139wrn.71.2023.10.24.03.31.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 03:31:51 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id BE7BA1FFBB;
- Tue, 24 Oct 2023 11:31:50 +0100 (BST)
-References: <20231023180837.91785-1-titusr@google.com>
- <874jih40a3.fsf@linaro.org>
- <CAMvPwGpXZxyoX1WNypgNCW+Uj+bcVPn99vF71Myx7jn_c2Fjdg@mail.gmail.com>
-User-agent: mu4e 1.11.22; emacs 29.1.90
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Titus Rwantare <titusr@google.com>
-Cc: qemu-arm@nongnu.org, minyard@acm.org, philmd@linaro.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 0/8] PMBus fixes and new functions
-Date: Tue, 24 Oct 2023 11:06:21 +0100
-In-reply-to: <CAMvPwGpXZxyoX1WNypgNCW+Uj+bcVPn99vF71Myx7jn_c2Fjdg@mail.gmail.com>
-Message-ID: <87zg082twp.fsf@linaro.org>
+ d=1e100.net; s=20230601; t=1698143329; x=1698748129;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aRBM4xxdZYa+4ZDnyGngz8Sq7VYe1PSK/mXapf7mi4s=;
+ b=I2OCK3tbfNKqxyj+xZcBgizirvuAY/GbilXyRp+W7+NdwuqxcFKSm5v/52+V/4iany
+ by+7ebPTcB5ZwfylMztkioLJd00o5mcrav5ZI0o4Ldx+X7XoEi7gHlHIIizJGoSB7aoF
+ LhyB72AaDPcHQOhK6Ni34CUjc7GjbTWhUvN5zLeWD/gd2E6aGULDsy8c9DyjYkhGvhQL
+ hq5eMdJyM/grH30bVwP5+7JI6JxgSqcqJDDtrP4nLdaxUUvd+3RUtrGCMZegHuRJfWVR
+ 6pYe2DC4dZ7itySsOU1xk9PVinX5miF2z3K84Qoa5iU1P5AydGV8wGl5eR25bOigqZ9v
+ +zpg==
+X-Gm-Message-State: AOJu0YwBXQGZDwzkwL3SSRAZbx1OciSoVc+qCrAQ1fxNYSeTyAPuthnN
+ zjuu4qPInMfIFxOB5zB+Bo+UupPjRWoMD8YXzS6L9A==
+X-Google-Smtp-Source: AGHT+IF41xwwy3F4gSBRTmfLfJi5niANgzhv93PN07B8rk+IbxbZxYGRtQo2cq2SbCDj7sXpPUlfqKClkcilLM2nnuk=
+X-Received: by 2002:a50:f68b:0:b0:540:8fc6:dc89 with SMTP id
+ d11-20020a50f68b000000b005408fc6dc89mr2295841edn.25.1698143328945; Tue, 24
+ Oct 2023 03:28:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+References: <20231024094351.50464-1-quic_acaggian@quicinc.com>
+In-Reply-To: <20231024094351.50464-1-quic_acaggian@quicinc.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 24 Oct 2023 11:28:37 +0100
+Message-ID: <CAFEAcA86trVBDe4zJr2Zv-EgWReY2M+yvU83Kc_8nGrjP4_tJg@mail.gmail.com>
+Subject: Re: [RFC] mem: Fix mem region size when is UINT64_MAX
+To: Antonio Caggiano <quic_acaggian@quicinc.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,272 +84,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Titus Rwantare <titusr@google.com> writes:
-
-> On Mon, 23 Oct 2023 at 12:16, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
+On Tue, 24 Oct 2023 at 10:45, Antonio Caggiano
+<quic_acaggian@quicinc.com> wrote:
 >
->> You seem to have missed a number of tags from previous postings:
->>
->>   https://qemu.readthedocs.io/en/master/devel/submitting-a-patch.html#pr=
-oper-use-of-reviewed-by-tags-can-aid-review
->>
->> (although I notice we only mention Reviewed-by in the docs)
->>
->> You can use a tool like b4 to apply a series and collect the tags. It
->> will also collect the Message-Id's which are also useful.
->>
->> Once you've fixed up your tags I think as the maintainer you can submit
->> a pull request.
->>
->> --
->> Alex Benn=C3=A9e
->> Virtualisation Tech Lead @ Linaro
+> This looks like a bug. When the size is `UINT64_MAX`, it is reset to
+> (Int128)`1 << 64` which actually is `UINT64_MAX + 1`.
 >
-> Thanks for the tip about b4, I spent some time getting to grips with
-> it and it's a huge timesaver.
-> I haven't quite figured out how to get it to produce and send a signed
-> pull request, but I don't need that just yet.
+> Then, an assert is triggered when the size is converted back to uin64_t
+> by using the int128_get64() function, as the new value happens to be
+> different than the previous one.
+>
+> Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+> ---
+>  system/memory.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/system/memory.c b/system/memory.c
+> index a800fbc9e5..d41fc6af88 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -1193,9 +1193,6 @@ static void memory_region_do_init(MemoryRegion *mr,
+>                                    uint64_t size)
+>  {
+>      mr->size = int128_make64(size);
+> -    if (size == UINT64_MAX) {
+> -        mr->size = int128_2_64();
+> -    }
 
-A pull request is really just a GPG signed tag that you push to a repo.
-You can use the existing git tooling to create the cover letter for it.
+No, this is intentional. In these memory region creation APIs
+that take a uint64_t size parameter, size == UINT64_MAX is a
+special case that means "actually the full 64 bit address space"
+(and there is no way to ask for an MR to have a size that is
+truly UINT64_MAX bytes). When we create the MR, the size is
+stored in the MemoryRegion struct as its true size, because
+we have an Int128 field there.
 
-I've included my exact steps at the end of the email but really it comes
-down to:
+What assertion (with backtrace) is being hit? The issue is
+probably at that point, not here.
 
-  git tag --sign your-pr-tag
-  git push your-pr-tag
-  git format-patch <series details>
-  git request-pull origin/master your_repo_details your-pr-tag
-
-and finally
-
-  git send-email
-
-My personal exact steps are integrated with my editor but are:
-
-1 Create a branch (optional)
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 git fetch origin
-  =E2=94=82 branch=3D"pr/$(date +%d%m%y)-${series}-${version}"
-  =E2=94=82 if test -z "$prefix" ; then
-  =E2=94=82     git checkout -b $branch origin/master
-  =E2=94=82 else
-  =E2=94=82     git checkout -b $branch HEAD
-  =E2=94=82 fi
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-
-2 Apply patches from mailing list
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 if test -z $prefix; then
-  =E2=94=82     mkdir -p "${series}.patches"
-  =E2=94=82     b4 am -S -t -o "${series}.patches" "${id}"
-  =E2=94=82 else
-  =E2=94=82     echo "Built tree by hand"
-  =E2=94=82 fi
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 if test -z $prefix; then
-  =E2=94=82     git am ${series}.patches/*.mbx
-  =E2=94=82     rm -rf ${series}.patches
-  =E2=94=82 else
-  =E2=94=82     git log --oneline origin/master..
-  =E2=94=82 fi
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-
-3 Check if we are missing any review/comments or tags
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90
-
-
-4 Check for unreviewed patches
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90
-
-
-5 Check all sign-offs are there
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90
-
-
-6 Check we have only 1 Message-Id per commit
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90
-
-
-7 Check commits are good
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90
-
-  We need to ensure we have added our signoff and there is no =E2=80=94 eph=
-emera
-  left from commit history.
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 errors=3D0
-  =E2=94=82 commits=3D0
-  =E2=94=82 while read rev; do
-  =E2=94=82     author=3D$(git show -s --format=3D'%an <%ae>' $rev)
-  =E2=94=82     body=3D$(git show -s --format=3D'%B' $rev)
-  =E2=94=82     title=3D$(git show -s --format=3D'%s' $rev)
-  =E2=94=82=20
-  =E2=94=82     # Check for Author signoff
-  =E2=94=82     if ! grep -q "^Signed-off-by: $author" <<< "$body"; then
-  =E2=94=82         errors=3D$((errors+1))
-  =E2=94=82         echo $(git log -1 --pretty=3Dformat:"missing author sig=
-noff - %h - %an: %s" $rev)
-  =E2=94=82     fi
-  =E2=94=82=20
-  =E2=94=82     # Check for my signoff (fix for quotes)
-  =E2=94=82     if ! grep -q "^Signed-off-by: $signoff" <<< "$body"; then
-  =E2=94=82         errors=3D$((errors+1))
-  =E2=94=82         echo $(git log -1 --pretty=3Dformat:"missing my signoff=
- - %h - %an: %s" $rev)
-  =E2=94=82     fi
-  =E2=94=82=20
-  =E2=94=82     if ! grep -q "^Message-Id: " <<< "$body"; then
-  =E2=94=82         errors=3D$((errors+1))
-  =E2=94=82         echo $(git log -1 --pretty=3Dformat:"missing message id=
- - %h - %an: %s" $rev)
-  =E2=94=82     fi
-  =E2=94=82=20
-  =E2=94=82     # check for unreviewed patches for patches I authored
-  =E2=94=82     if [ "$author" =3D "$signoff" ]; then
-  =E2=94=82         if ! grep -q "^Reviewed-by:" <<< "$body"; then
-  =E2=94=82             echo $(git log -1 --pretty=3Dformat:"unreviewed - %=
-h - %an: %s" $rev)
-  =E2=94=82         fi
-  =E2=94=82     fi
-  =E2=94=82=20
-  =E2=94=82     # Check for stray Based-on tags
-  =E2=94=82     if grep -q "^Based-on: " <<< "$body"; then
-  =E2=94=82         errors=3D$((errors+1))
-  =E2=94=82         echo $(git log -1 --pretty=3Dformat:"has based-on tag -=
- %h - %an: %s" $rev)
-  =E2=94=82     fi
-  =E2=94=82=20
-  =E2=94=82     # Check for stray history
-  =E2=94=82     if grep -q "^--" <<< "$body"; then
-  =E2=94=82         errors=3D$((errors+1))
-  =E2=94=82         echo $(git log -1 --pretty=3Dformat:"has commit history=
- - %h - %an: %s" $rev)
-  =E2=94=82     fi
-  =E2=94=82=20
-  =E2=94=82     commits=3D$((commits+1))
-  =E2=94=82 done < <(git rev-list "origin/master..HEAD")
-  =E2=94=82=20
-  =E2=94=82 echo "Found $errors errors over $commits commits"
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-
-8 Preparing a QEMU Pull Request
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90
-
-  We have two properties here, tversion for the tag and pversion for the
-  iteration of the PULL. This is to account for re-rolls where we detect
-  and issue after tagging but before we send the PR itself.
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 (let ((tag (format
-  =E2=94=82             "pull-%s-%s-%d"
-  =E2=94=82             series
-  =E2=94=82             (format-time-string "%d%m%y")
-  =E2=94=82             tversion)))
-  =E2=94=82   (magit-tag-create tag "HEAD" "--sign")
-  =E2=94=82   tag)
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 set -e
-  =E2=94=82 tag=3D$(git describe)
-  =E2=94=82 git push github $tag
-  =E2=94=82 if test -z $prefix; then
-  =E2=94=82     git push-ci-now gitlab $tag
-  =E2=94=82 else
-  =E2=94=82     git push-ci gitlab $tag
-  =E2=94=82 fi
-  =E2=94=82 echo "pushed $tag"
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 (if (=3D 1 pversion)
-  =E2=94=82     "PULL"
-  =E2=94=82   (format "PULL v%d" pversion))
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 if [ -d "${series}.pull" ]; then
-  =E2=94=82   rm -rf ${series}.pull
-  =E2=94=82 fi
-  =E2=94=82 git format-patch --subject-prefix=3D"$subjprefix" --cover-lette=
-r origin/master..HEAD -p -o ${series}.pull
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-  You can use the $pull macro to fill in the details
-
-
-9 And send the pull request
-=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
-=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
-=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
-=E2=95=90=E2=95=90
-
-  Using the prefix will limit the send to just the cover letter, useful
-  for v2+ pull requests
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 if test -z "$prefix" ; then
-  =E2=94=82   git send-email --confirm=3Dnever --dry-run --quiet ${mailto} =
-${series}.pull/*
-  =E2=94=82 else
-  =E2=94=82   git send-email --confirm=3Dnever --dry-run --quiet ${mailto} =
-${series}.pull/0000*
-  =E2=94=82 fi
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
-  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-  =E2=94=82 if test -z "$prefix" ; then
-  =E2=94=82   git send-email --confirm=3Dnever --quiet ${mailto} ${series}.=
-pull/*
-  =E2=94=82 else
-  =E2=94=82   git send-email --confirm=3Dnever --quiet ${mailto} ${series}.=
-pull/0000*
-  =E2=94=82 fi
-  =E2=94=82 rm -rf ${series}.pull
-  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+thanks
+-- PMM
 
