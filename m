@@ -2,94 +2,122 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FDF7D4EC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 13:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EED317D4EF5
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 13:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvFVF-0005QN-UN; Tue, 24 Oct 2023 07:23:17 -0400
+	id 1qvFg2-0002Xz-8n; Tue, 24 Oct 2023 07:34:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvFVD-0005P5-Vo
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 07:23:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qvFff-0002Fh-05; Tue, 24 Oct 2023 07:34:04 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvFVC-00018U-Bl
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 07:23:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698146593;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=aoe01r4jYivi9hbKboDqHdR26boeLOgGI/gNL6rYKyo=;
- b=CsdJLcDzdXUGutzJFNtePiRuW17GEkAroLLxloIl3y5gLhItlIyVQwpk3XpGh5vVzHp5jd
- DHoW++KWLXZyFOLedeDAXP5lBxLI05YLgLeviVvfNZaBMHIuEQXoUsaYPrEGRQ3GbJH19r
- jptpQ24s1+uipDdP2pzn+Kuvnk+GjAs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-M5OevwOCOHKdi7tG7yBVSA-1; Tue, 24 Oct 2023 07:23:12 -0400
-X-MC-Unique: M5OevwOCOHKdi7tG7yBVSA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3172a94b274so2007212f8f.0
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 04:23:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698146591; x=1698751391;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aoe01r4jYivi9hbKboDqHdR26boeLOgGI/gNL6rYKyo=;
- b=KVfIaA8yagZhq3wmlUKDjaLK/Z9krkC04kj4AqRSeqgCzSiET5JXyRIU9BJmRIyqae
- rtlpC+/Lbcp2GuBRVJ13mPPYvppnZ/ehssoStKiCnF1AEeTgaMflOuC2HraQ2NEY0QV6
- z3mgddGQMwTD3qeD7Cyh7Ivg8iOxnB2v19IjVppHfthI8ISZHAs5S+33zfhQ8u1acy7/
- IrDkmAESmc4GvRrYdlDxjq3e998GYFqbhxx8GsxDpyTWIYnWdRm09Vj8Au8LeOzsxXHd
- BtRxSSdpthUGht4aD9xpc28nCmXsz5Bp+WjlD0JDWn5+e69aF1br0PKMHO3tLMGYkYRz
- MTWA==
-X-Gm-Message-State: AOJu0YyndjOKM577mTu1xZaARBWmU0WS+m2A7mWza+jdhZf9VXF7vm5N
- 4G2jl8IWDLg27BPgQ5ZxoNLhwxf3B4de+JxBBdsjsuhONAyybPcxfFggByyBoNVQQi3e934t8jJ
- pI1v4xhcK9l9UQEE=
-X-Received: by 2002:adf:efcd:0:b0:32d:ad4a:bcef with SMTP id
- i13-20020adfefcd000000b0032dad4abcefmr8394045wrp.2.1698146590959; 
- Tue, 24 Oct 2023 04:23:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGV/301Ga/u0i53UMjrzOeNGx0tZbclB3LCFXHk9eh7um/n06YnYF6UMCAzIrEqihp6TZ2Wog==
-X-Received: by 2002:adf:efcd:0:b0:32d:ad4a:bcef with SMTP id
- i13-20020adfefcd000000b0032dad4abcefmr8394024wrp.2.1698146590552; 
- Tue, 24 Oct 2023 04:23:10 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- f7-20020adff587000000b0031fb91f23e9sm9708148wro.43.2023.10.24.04.23.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 04:23:09 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Fabiano
- Rosas <farosas@suse.de>,  Kevin Wolf <kwolf@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  qemu-block@nongnu.org,  Leonardo Bras
- <leobras@redhat.com>,  Markus Armbruster <armbru@redhat.com>,  Fam Zheng
- <fam@euphon.net>,  Peter Xu <peterx@redhat.com>,  libvir-list@redhat.com
-Subject: Re: [PATCH v8 1/5] qemu-iotests: Filter warnings about block
- migration being deprecated
-In-Reply-To: <0eb68c96-457f-471f-ad2f-f6282eaf04a2@redhat.com> (Hanna
- Czenczek's message of "Tue, 24 Oct 2023 13:11:11 +0200")
-References: <20231018115513.2163-1-quintela@redhat.com>
- <20231018115513.2163-2-quintela@redhat.com>
- <0eb68c96-457f-471f-ad2f-f6282eaf04a2@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 24 Oct 2023 13:23:09 +0200
-Message-ID: <87bkcoz2le.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qvFfb-0003XM-SE; Tue, 24 Oct 2023 07:34:02 -0400
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39OBFruY030894; Tue, 24 Oct 2023 11:32:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=date : from : to :
+ cc : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=qcppdkim1; bh=SDdDuTaN4SoAWEpM2HKbvwWC/AnVWG6bKPnln/BNFPM=;
+ b=Nbu7HyH4d39Kp0iB+z//t5OAGEFCvePvI+VCVMlCc+A7pp3g8W6L2lEyt7AwENfe6nHN
+ BrYi2YgU5WbLlrm6dE8GwNVxLUxPgxkTC7gWf3vqjhSe210N6jeS+HZjP5aN9yKaMW+0
+ gE7Els2Ns4ZmsjMkSSrnufM4WwKkLJlV1QSsCJuYhmoMNj4MbZNivxoc4gFAB9nVe/RY
+ /mgRqddLohVGW71+h2kfx/u2OWkX3hK3IyGkqFd8guImMqyUoOGknoNDjFSKRrtaN84p
+ j3u7VrYEz5a6kTH7TL3iJQlF8qKQqVWyxADB7qLLYF6pAU1a3icvvfco/5ptP25ft3eO Rg== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3twxw5hgfg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Oct 2023 11:32:26 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
+ [10.45.79.139])
+ by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39OBWP59014241
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Oct 2023 11:32:25 GMT
+Received: from qc-i7.hemma.eciton.net (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Tue, 24 Oct 2023 04:32:11 -0700
+Date: Tue, 24 Oct 2023 12:32:08 +0100
+From: Leif Lindholm <quic_llindhol@quicinc.com>
+To: David Woodhouse <dwmw2@infradead.org>
+CC: <qemu-devel@nongnu.org>, Richard Henderson <richard.henderson@linaro.org>, 
+ Beniamino Galvani <b.galvani@gmail.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Strahinja Jankovic
+ <strahinja.p.jankovic@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Andrew Jeffery
+ <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>, Igor Mitsyanko
+ <i.mitsyanko@gmail.com>, Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Alistair Francis
+ <alistair@alistair23.me>, Helge Deller <deller@gmx.de>, Paolo Bonzini
+ <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Song Gao <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>, Laurent
+ Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, =?iso-8859-1?Q?Herv=E9?= Poussineau
+ <hpoussin@reactos.org>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jason Wang <jasowang@redhat.com>, Jia Liu <proljc@gmail.com>,
+ Stafford Horne <shorne@gmail.com>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, David Gibson
+ <david@gibson.dropbear.id.au>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Yoshinori
+ Sato <ysato@users.sourceforge.jp>, Magnus Damm <magnus.damm@gmail.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Anthony Perard <anthony.perard@citrix.com>, Paul
+ Durrant <paul@xen.org>, Max Filippov <jcmvbkbc@gmail.com>,
+ <qemu-arm@nongnu.org>, <qemu-ppc@nongnu.org>, <qemu-riscv@nongnu.org>,
+ <qemu-s390x@nongnu.org>, <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH 08/45] hw/arm/sbsa-ref: use pci_init_nic_devices()
+Message-ID: <ZTerOM9bc5B8v/cc@qc-i7.hemma.eciton.net>
+References: <20231022155200.436340-1-dwmw2@infradead.org>
+ <20231022155200.436340-9-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20231022155200.436340-9-dwmw2@infradead.org>
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: dizOLerF3W9Ktgo_lllh00WJGa4VFPrs
+X-Proofpoint-GUID: dizOLerF3W9Ktgo_lllh00WJGa4VFPrs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-24_11,2023-10-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ spamscore=0 mlxscore=0 bulkscore=0 impostorscore=0 phishscore=0
+ mlxlogscore=781 priorityscore=1501 suspectscore=0 clxscore=1011
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2310170001 definitions=main-2310240097
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_llindhol@quicinc.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,22 +130,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hanna Czenczek <hreitz@redhat.com> wrote:
-> On 18.10.23 13:55, Juan Quintela wrote:
->> Create a new filter that removes the two warnings for test 183.
->>
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>   tests/qemu-iotests/183           | 2 +-
->>   tests/qemu-iotests/common.filter | 7 +++++++
->>   2 files changed, 8 insertions(+), 1 deletion(-)
->
-> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+On Sun, Oct 22, 2023 at 16:51:23 +0100, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 
-Thanks.
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
 
+> ---
+>  hw/arm/sbsa-ref.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index 3c7dfcd6dc..582a28ce92 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -691,9 +691,7 @@ static void create_pcie(SBSAMachineState *sms)
+>  
+>      pci = PCI_HOST_BRIDGE(dev);
+>      if (pci->bus) {
+> -        for (i = 0; i < nb_nics; i++) {
+> -            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
+> -        }
+> +        pci_init_nic_devices(pci->bus, mc->default_nic);
+>      }
+>  
+>      pci_create_simple(pci->bus, -1, "bochs-display");
+> -- 
+> 2.40.1
+> 
 
