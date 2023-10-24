@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D6C7D4B84
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 11:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6557D4B9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 11:11:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvDMD-0002IG-OX; Tue, 24 Oct 2023 05:05:50 -0400
+	id 1qvDQ8-00045I-Jc; Tue, 24 Oct 2023 05:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvDM8-0002Hl-AO
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:05:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvDQ5-00044a-Pd
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:09:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvDM2-00017E-Iy
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:05:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvDQ4-0001pS-Bk
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 05:09:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698138334;
+ s=mimecast20190719; t=1698138587;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=O6Zrdup/OCoJHMLCuVPdazCxckOU76RlkrVV61xOkbA=;
- b=Gx28Z0cVlM5/aeqwtr/Bz9UEwX52dPeKaamyJiYqnjq3dg72e16c81nbgczB+65a1auuiA
- THlLV1RLLXTRSaF4dBNSY3ICgAuuA4xnsmElXWEiHcmyCYuQ8/0IJYZ4RenNsyfugd2JDn
- bsobCLj11f69mGwC+vimXgxb6pW9ttI=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=r+d/g9PjrQ809uuot4mrCFG8zBKvt6WIJ+EG6AtzAZU=;
+ b=UZOTGJgKQ5HpCzqa9QMdejZ+wriIG042YiWQjDkMOJBr+f/FhGm2bPYQZtgdfuhhdf0yKP
+ Gf7yXQHMOcho+WBI+TlQXqw8zSqSn0z1BNIbdz8i/pDhpyGrSJuyrk9CT2cWfLby7cxwgQ
+ 5lZhqokYbqWhFUXq3wFvJavEJm5yjrI=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-362-8mFbFzByNCKenGeCZ1bbDw-1; Tue, 24 Oct 2023 05:05:17 -0400
-X-MC-Unique: 8mFbFzByNCKenGeCZ1bbDw-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66d03b02d16so96718026d6.0
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 02:05:17 -0700 (PDT)
+ us-mta-252-sXv3NbbFMgqSeN0gjX5XTg-1; Tue, 24 Oct 2023 05:09:41 -0400
+X-MC-Unique: sXv3NbbFMgqSeN0gjX5XTg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-66d026cae6eso62067276d6.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 02:09:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698138316; x=1698743116;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=O6Zrdup/OCoJHMLCuVPdazCxckOU76RlkrVV61xOkbA=;
- b=wMEOk5+6FF3jnBppF59tbav9YDOkL0YlIQjmLuhM0/uKN1UPO7a6X3Sr2kyXyXMBxZ
- dN62DK5tjlHacEYScfMsTsjH8VF2hv+gjGoAsRZ0/YQCt6nDpIREZKXF/l7FB5eyxzez
- QTmczYksV/J9wTM7FZZPdPrSPxIx2pPiGGPcU1ESgBvysAjgMHRCItAn/6OpgicCKxXQ
- Jk5WKx6fHEdQathFAzn+KPh31+g1Kx9usdytbKBWBNESAWpRfVd+ZDyyLCoP0qngT3y4
- 3iXUVlBKF504CWbKTfonTu7Febcg2pQU1EvJ9zFm5NtX5prUpfdBwiPCuhyu2Ur9HpB6
- IWLw==
-X-Gm-Message-State: AOJu0Yw5kyxTBKaJlJWfmx7IiVdesnMELE1WOhodPmj85Unq3Xmlq3E6
- XJN64ac9jfJVIVjkL5pf0qH7VIxKXV7fkwjjLgI80mKdxrkF+rM2Pj7xCl8I/N49w7HPY+H0gX7
- fLZNfLeuLQg5QQ8w=
-X-Received: by 2002:ad4:5966:0:b0:66d:593f:9a4c with SMTP id
- eq6-20020ad45966000000b0066d593f9a4cmr17392899qvb.2.1698138316660; 
- Tue, 24 Oct 2023 02:05:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/hwGMyklBf1EboeZOahN9JSai8b8J4SaQ5vpAgRCrykT9tLIrTflSWkZjZgrS3q+yK5Yk4g==
-X-Received: by 2002:ad4:5966:0:b0:66d:593f:9a4c with SMTP id
- eq6-20020ad45966000000b0066d593f9a4cmr17392884qvb.2.1698138316407; 
- Tue, 24 Oct 2023 02:05:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698138580; x=1698743380;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=r+d/g9PjrQ809uuot4mrCFG8zBKvt6WIJ+EG6AtzAZU=;
+ b=rBMPem4KR36DYWEIwGJZiPL8+9BTxG/aYEM0A3xt/UyO5OLlm4FzdOanJmN+GluE8x
+ rV/amIc5g5hvSJ26xJDggA98Rs7W0mMqfjDd2qDuK2iLuaDVu7qxQCf3wLekqiEuJX6L
+ d1k5D1ffq1nwnXTYIZwUdYpm3E+jyWCWqvStPLs7uF0YIoKbz+6sl0nYYSHarHtwKk9x
+ zqZmX/1qb9sPervy3qazm/zwhnwibZvtYkGx//dNyUcI5opxGtuBSXrAnPzDJyoDuwRN
+ eFcik2t/gf/7gCyAFMGXBwh2tZCxVQ/M6LOd/VtA5gu1QLVps3u8gEEt1yscAYi5f489
+ B83Q==
+X-Gm-Message-State: AOJu0YyhEE4ddjE3ZRRolvJX+m+cMV9+sSJjiAIvxWrfv3d9x8yJTfi0
+ soGnwhhOXU3TqpQLSBZ7ClU0qumz9T47k8KfCeFhw7yie4LKzwPe7u63M9VoCkNUyBciwtSc0rD
+ /aUii5nvGBLkVtW4=
+X-Received: by 2002:ad4:4ee2:0:b0:65b:21bf:8fb0 with SMTP id
+ dv2-20020ad44ee2000000b0065b21bf8fb0mr12964603qvb.34.1698138580704; 
+ Tue, 24 Oct 2023 02:09:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE4mKOYmdhwhGOOxbs8KE8z/Cf8vXI4Hwz5lnKoBm5Z1taELFG0W5NNZbN08NBjiRE6eNVNNQ==
+X-Received: by 2002:ad4:4ee2:0:b0:65b:21bf:8fb0 with SMTP id
+ dv2-20020ad44ee2000000b0065b21bf8fb0mr12964584qvb.34.1698138580511; 
+ Tue, 24 Oct 2023 02:09:40 -0700 (PDT)
 Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- l15-20020ad4452f000000b0066cf2423c79sm3505212qvu.139.2023.10.24.02.05.14
+ c2-20020a0cfb02000000b0065d05c8bb5dsm3455036qvp.64.2023.10.24.02.09.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 02:05:16 -0700 (PDT)
-Message-ID: <d41c8909-25e7-40a6-8dcc-2c0094a56f13@redhat.com>
-Date: Tue, 24 Oct 2023 11:05:12 +0200
+ Tue, 24 Oct 2023 02:09:40 -0700 (PDT)
+Message-ID: <88dce00d-20ed-4219-8b4b-1ac0dd30a514@redhat.com>
+Date: Tue, 24 Oct 2023 11:09:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ram_save_complete() is fishy
-To: Peter Xu <peterx@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Leonardo Bras <leobras@redhat.com>
-References: <20231023145044.104866-1-thuth@redhat.com> <ZTaX00kf3UcQG/AF@x1n>
- <a326eafb-955b-4867-94f5-052672f93138@redhat.com>
- <75a76824-9b8e-45d3-a2ae-718295223715@redhat.com> <ZTbBuhMOUCwCs8Km@x1n>
+Subject: Re: [PATCH v5 02/20] tests: Rename test-x86-cpuid.c to test-x86-topo.c
 Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+References: <20231024090323.1859210-1-zhao1.liu@linux.intel.com>
+ <20231024090323.1859210-3-zhao1.liu@linux.intel.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -118,7 +123,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <ZTbBuhMOUCwCs8Km@x1n>
+In-Reply-To: <20231024090323.1859210-3-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -145,110 +150,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/2023 20.55, Peter Xu wrote:
-> On Mon, Oct 23, 2023 at 07:30:04PM +0200, Thomas Huth wrote:
->> On 23/10/2023 19.11, Thomas Huth wrote:
->>> On 23/10/2023 17.57, Peter Xu wrote:
->>>> On Mon, Oct 23, 2023 at 04:50:44PM +0200, Thomas Huth wrote:
->>>>> No need for a new variable here, especially not for one that shadows
->>>>> a variable from the beginning of the function scope. With this change
->>>>> the code now successfully compiles with -Wshadow=local.
->>>>>
->>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>>>> ---
->>>>>    migration/ram.c | 3 +--
->>>>>    1 file changed, 1 insertion(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/migration/ram.c b/migration/ram.c
->>>>> index 92769902bb..9de9e54fa9 100644
->>>>> --- a/migration/ram.c
->>>>> +++ b/migration/ram.c
->>>>> @@ -3238,8 +3238,7 @@ static int ram_save_complete(QEMUFile *f,
->>>>> void *opaque)
->>>>>            ram_flush_compressed_data(rs);
->>>>> -        int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
->>>>> -        if (ret < 0) {
->>>>> +        if (rdma_registration_stop(f, RAM_CONTROL_FINISH) < 0) {
->>>>
->>>> We may need to rename "ret" to something else?  qemu_file_set_error(),
->>>> right below, will reference the error returned.
->>>>
->>>>>                qemu_file_set_error(f, ret);   <-----------------
->>>
->>> Oh, drat, right ... that's exactly one of the reasons why shadowing
->>> variables is a bad idea ;-)
->>>
->>> I'll redo a v2.
->>
->> Actually, there is more fishy stuff in this function:
->>
->> static int ram_save_complete(QEMUFile *f, void *opaque)
->> {
->>      ...
->>      int ret = 0;
->>      ...
->>      WITH_RCU_READ_LOCK_GUARD() {
->>          ...
->>          ret = rdma_registration_start(f, RAM_CONTROL_FINISH);
->>          if (ret < 0) {
->>              qemu_file_set_error(f, ret);
->> ### here we use the outer "ret" variable         ###
+On 24/10/2023 11.03, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> [1]
+> The tests in this file actually test the APIC ID combinations.
+> Rename to test-x86-topo.c to make its name more in line with its
+> actual content.
 > 
->>          }
->>          ...
->>          while (true) {
->>              int pages;
->>
->>              pages = ram_find_and_save_block(rs);
->>              /* no more blocks to sent */
->>              if (pages == 0) {
->> ### here we break without touching "ret" (preserving the previous error) ###
->>                  break;
->>              }
->>              if (pages < 0) {
->>                  ret = pages;
->> ###  we only replace the outer "ret" in this break-case here
->>                  break;
->>              }
->>          }
->>          ...
->>          int ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
->> ### so while ret from rdma_registration_start() might be propageted
->> ### below, the ret from rdma_registration_stop() is only local here?
->>          if (ret < 0) {
->>              qemu_file_set_error(f, ret);
-> 
-> [2]
-> 
->>          }
->>      }
->>
->>      if (ret < 0) {
->> ### this might trigger by the "ret" from rdma_registration_start() but
->> ### not by the one from rdma_registration_stop()? ... very weird...
->>          return ret;
->>      }
->>
->> Looks like commit 48408174a7ec7 messed up with the return types pretty badly
->> ... any suggestions what's the right way forward here? Should the return
->> value of rdma_registration_start() only be used for the
->> qemu_file_set_error(), too? Or should the return value of
->> rdma_registration_stop() be allowed to be used for the "return ret" at the
->> end, too?
-> 
-> Right that's indeed confusing, but it seems confusing too even before that
-> commit.  AFAICT, we should "break" for both [1][2] above for any error
-> occured..
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Babu Moger <babu.moger@amd.com>
+> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
 
-Oh well, looking at the whole file, it seems like most spots that call a 
-rdma_* function just do qemu_file_set_error() afterwards, but then continue 
-with the normal workflow... that looks really confusing to me - if this 
-needs fixing, it should be done by somebody who knows that code better than 
-me, so I'll keep my hands of this and let somebody else fix it if necessary. 
-I'll just respin my original patch to fix the -Wshadow issue.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-  Thomas
 
 
