@@ -2,74 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD107D4868
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 09:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 582377D48A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 09:36:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvBjk-0005S6-S3; Tue, 24 Oct 2023 03:22:00 -0400
+	id 1qvBvo-0003k5-8Z; Tue, 24 Oct 2023 03:34:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mrolnik@gmail.com>)
- id 1qvBjf-0005RK-VC; Tue, 24 Oct 2023 03:21:56 -0400
-Received: from mail-vs1-xe2b.google.com ([2607:f8b0:4864:20::e2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mrolnik@gmail.com>)
- id 1qvBje-0004h9-D4; Tue, 24 Oct 2023 03:21:55 -0400
-Received: by mail-vs1-xe2b.google.com with SMTP id
- ada2fe7eead31-457bac7c3f5so1741160137.2; 
- Tue, 24 Oct 2023 00:21:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698132112; x=1698736912; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=z3XkMZz1feiAlHSZhXxhBpQp5+YAl+omoU5ZAhqJsw4=;
- b=iMCJFpZKNibWhTKPyKUe4bF6cirdUWutGj7kUUZUrW5cX++hv2FSu3ItIfa6o9HqJ2
- ZSxnbPtTn0vnoG9slEGkqK2V/mqL5DZJu0RAGG6R3WwkJ0NgUQqx78VZI+u+sZ7Qe0u0
- cVNBMfErAhjsbKPGIV7epxDStuI7CFOeTKgzA2+4egtxVfeY73Be8YMng1TxRCaxQwYi
- IL2KF+vyyDQDhwgzLy5Wc1dUF6CLZzqw831kBSk1olKonDKb0wvDexD/zG8gTiNbN8VI
- adPFT9OV1SJUb7RXr6THlDukISnndkNXLSPqN9+CilNyFsi1khU6woyioy6vPnsLy2+F
- ZoKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698132112; x=1698736912;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=z3XkMZz1feiAlHSZhXxhBpQp5+YAl+omoU5ZAhqJsw4=;
- b=rE3BTw5xzAMepMklDsPwCyYIpz3yeLjovu1P3kgl4Dl1X8w8hussxzE3fzE0+vQ66i
- F7D3hz1lWjsuoxcRam2qC7Q1L5VdrjswSpMYFBGf1VzMwdu+GihDhpt+hbU5xOhWG0OU
- eyznSFuZeX2qWV6e2Pl86iEzkc1KLUy6XtI/3NS3xRHporYMfjf3MaoWI4CZ05JZWxFf
- 4MQqsIANREN9ydySK737dAUNr7LqpJJnGBFG7keriNKCPlWJHO6VuGqI1qWWGGbjgM59
- L+6oiCrxpP9EI7EVLdlFe9DRzvUzTTm2kWJIx8ZC2nwJY9ntcve7MzqY89sSBrUy2oRd
- rS8A==
-X-Gm-Message-State: AOJu0YyQaRgwPVwQcjB3ZwwGQVqAUJHXvvpgEmxWFGCm0WvVlCWeDgqE
- ooFt5dnUeVcPQ9Fk/UMmi8NH7WgtA8+QXQLqmmzm40pti06CRQ==
-X-Google-Smtp-Source: AGHT+IFhBmT0tOj3VCEka1Wbe46eq5zUtoUh0mq1W7JliUeYgCTxt3fzRoDdihF0XiASLVAauwmm2PH20vG0dV+yyEI=
-X-Received: by 2002:a67:c29c:0:b0:457:fbe2:b8f with SMTP id
- k28-20020a67c29c000000b00457fbe20b8fmr10746431vsj.10.1698132112299; Tue, 24
- Oct 2023 00:21:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=1ohf=GG=kaod.org=clg@ozlabs.org>)
+ id 1qvBvm-0003ee-7z; Tue, 24 Oct 2023 03:34:26 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=1ohf=GG=kaod.org=clg@ozlabs.org>)
+ id 1qvBvj-0007Es-H3; Tue, 24 Oct 2023 03:34:25 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SF3j55JSBz4x1x;
+ Tue, 24 Oct 2023 18:34:17 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SF3j16kbCz4wcf;
+ Tue, 24 Oct 2023 18:34:13 +1100 (AEDT)
+Message-ID: <3d1fc354-0daf-4bf4-bf33-d737e180a14c@kaod.org>
+Date: Tue, 24 Oct 2023 09:34:10 +0200
 MIME-Version: 1.0
-References: <20231023160944.10692-1-philmd@linaro.org>
- <20231023160944.10692-2-philmd@linaro.org>
- <e978d05e-b744-4663-ab45-5a12e7b97537@linaro.org>
-In-Reply-To: <e978d05e-b744-4663-ab45-5a12e7b97537@linaro.org>
-From: Michael Rolnik <mrolnik@gmail.com>
-Date: Tue, 24 Oct 2023 10:21:15 +0300
-Message-ID: <CAK4993h3nF5C6uWQz2W62pBS78UQpr3W0N8-xHbCfTU2M2gy_w@mail.gmail.com>
-Subject: Re: [PATCH 1/9] target/avr: Use tcg_gen_extract_tl
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000055de3106087131e5"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2b;
- envelope-from=mrolnik@gmail.com; helo=mail-vs1-xe2b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 08/10] hw/fsi: Added qtest
+Content-Language: en-US
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20231021211720.3571082-1-ninad@linux.ibm.com>
+ <20231021211720.3571082-9-ninad@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231021211720.3571082-9-ninad@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=1ohf=GG=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,59 +65,255 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000055de3106087131e5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 10/21/23 23:17, Ninad Palsule wrote:
+> Added basic qtests for FSI model.
+> 
+> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+> ---
+> v3:
+>   - Added new qtest as per Cedric's comment.
+> V4:
+>   - Remove MAINTAINER and documentation changes from this commit
+> v6:
+>   - Incorporated review comments by Thomas Huth.
+> ---
+>   tests/qtest/fsi-test.c  | 207 ++++++++++++++++++++++++++++++++++++++++
 
-Reviewed-by: Michael Rolnik <mrolnik@gmail.com>
+please rename the file to aspeed-fsi-test.c
 
-On Tue, Oct 24, 2023 at 2:32=E2=80=AFAM Richard Henderson <
-richard.henderson@linaro.org> wrote:
+Thanks,
 
-> On 10/23/23 09:09, Philippe Mathieu-Daud=C3=A9 wrote:
-> > Inspired-by: Richard Henderson <richard.henderson@linaro.org>
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > ---
-> >   target/avr/translate.c | 18 ++++++------------
-> >   1 file changed, 6 insertions(+), 12 deletions(-)
->
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->
-> r~
->
+C.
 
 
---=20
-Best Regards,
-Michael Rolnik
+>   tests/qtest/meson.build |   1 +
+>   2 files changed, 208 insertions(+)
+>   create mode 100644 tests/qtest/fsi-test.c
+> 
+> diff --git a/tests/qtest/fsi-test.c b/tests/qtest/fsi-test.c
+> new file mode 100644
+> index 0000000000..01a0739092
+> --- /dev/null
+> +++ b/tests/qtest/fsi-test.c
+> @@ -0,0 +1,207 @@
+> +/*
+> + * QTest testcases for IBM's Flexible Service Interface (FSI)
+> + *
+> + * Copyright (c) 2023 IBM Corporation
+> + *
+> + * Authors:
+> + *   Ninad Palsule <ninad@linux.ibm.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include <glib/gstdio.h>
+> +
+> +#include "qemu/module.h"
+> +#include "libqtest-single.h"
+> +
+> +/* Registers from ast2600 specifications */
+> +#define ASPEED_FSI_ENGINER_TRIGGER   0x04
+> +#define ASPEED_FSI_OPB0_BUS_SELECT   0x10
+> +#define ASPEED_FSI_OPB1_BUS_SELECT   0x28
+> +#define ASPEED_FSI_OPB0_RW_DIRECTION 0x14
+> +#define ASPEED_FSI_OPB1_RW_DIRECTION 0x2c
+> +#define ASPEED_FSI_OPB0_XFER_SIZE    0x18
+> +#define ASPEED_FSI_OPB1_XFER_SIZE    0x30
+> +#define ASPEED_FSI_OPB0_BUS_ADDR     0x1c
+> +#define ASPEED_FSI_OPB1_BUS_ADDR     0x34
+> +#define ASPEED_FSI_INTRRUPT_CLEAR    0x40
+> +#define ASPEED_FSI_INTRRUPT_STATUS   0x48
+> +#define ASPEED_FSI_OPB0_BUS_STATUS   0x80
+> +#define ASPEED_FSI_OPB1_BUS_STATUS   0x8c
+> +#define ASPEED_FSI_OPB0_READ_DATA    0x84
+> +#define ASPEED_FSI_OPB1_READ_DATA    0x90
+> +
+> +/*
+> + * FSI Base addresses from the ast2600 specifications.
+> + */
+> +#define AST2600_OPB_FSI0_BASE_ADDR 0x1e79b000
+> +#define AST2600_OPB_FSI1_BASE_ADDR 0x1e79b100
+> +
+> +static uint32_t aspeed_fsi_base_addr;
+> +
+> +static uint32_t aspeed_fsi_readl(QTestState *s, uint32_t reg)
+> +{
+> +    return qtest_readl(s, aspeed_fsi_base_addr + reg);
+> +}
+> +
+> +static void aspeed_fsi_writel(QTestState *s, uint32_t reg, uint32_t val)
+> +{
+> +    qtest_writel(s, aspeed_fsi_base_addr + reg, val);
+> +}
+> +
+> +/* Setup base address and select register */
+> +static void test_fsi_setup(QTestState *s, uint32_t base_addr)
+> +{
+> +    uint32_t curval;
+> +
+> +    /* Set the base select register */
+> +    if (base_addr == AST2600_OPB_FSI0_BASE_ADDR) {
+> +        aspeed_fsi_base_addr = base_addr;
+> +
+> +        /* Unselect FSI1 */
+> +        aspeed_fsi_writel(s, ASPEED_FSI_OPB1_BUS_SELECT, 0x0);
+> +        curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB1_BUS_SELECT);
+> +        g_assert_cmpuint(curval, ==, 0x0);
+> +
+> +        /* Select FSI0 */
+> +        aspeed_fsi_writel(s, ASPEED_FSI_OPB0_BUS_SELECT, 0x1);
+> +        curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB0_BUS_SELECT);
+> +        g_assert_cmpuint(curval, ==, 0x1);
+> +    } else if (base_addr == AST2600_OPB_FSI1_BASE_ADDR) {
+> +        aspeed_fsi_base_addr = base_addr;
+> +
+> +        /* Unselect FSI0 */
+> +        aspeed_fsi_writel(s, ASPEED_FSI_OPB0_BUS_SELECT, 0x0);
+> +        curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB0_BUS_SELECT);
+> +        g_assert_cmpuint(curval, ==, 0x0);
+> +
+> +        /* Select FSI1 */
+> +        aspeed_fsi_writel(s, ASPEED_FSI_OPB1_BUS_SELECT, 0x1);
+> +        curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB1_BUS_SELECT);
+> +        g_assert_cmpuint(curval, ==, 0x1);
+> +    } else {
+> +        g_assert_not_reached();
+> +    }
+> +}
+> +
+> +static void test_fsi_reg_change(QTestState *s, uint32_t reg, uint32_t newval)
+> +{
+> +    uint32_t base;
+> +    uint32_t curval;
+> +
+> +    base = aspeed_fsi_readl(s, reg);
+> +    aspeed_fsi_writel(s, reg, newval);
+> +    curval = aspeed_fsi_readl(s, reg);
+> +    g_assert_cmpuint(curval, ==, newval);
+> +    aspeed_fsi_writel(s, reg, base);
+> +    curval = aspeed_fsi_readl(s, reg);
+> +    g_assert_cmpuint(curval, ==, base);
+> +}
+> +
+> +static void test_fsi0_master_regs(const void *data)
+> +{
+> +    QTestState *s = (QTestState *)data;
+> +
+> +    test_fsi_setup(s, AST2600_OPB_FSI0_BASE_ADDR);
+> +
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB0_RW_DIRECTION, 0xF3F4F514);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB0_XFER_SIZE, 0xF3F4F518);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB0_BUS_ADDR, 0xF3F4F51c);
+> +    test_fsi_reg_change(s, ASPEED_FSI_INTRRUPT_CLEAR, 0xF3F4F540);
+> +    test_fsi_reg_change(s, ASPEED_FSI_INTRRUPT_STATUS, 0xF3F4F548);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB0_BUS_STATUS, 0xF3F4F580);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB0_READ_DATA, 0xF3F4F584);
+> +}
+> +
+> +static void test_fsi1_master_regs(const void *data)
+> +{
+> +    QTestState *s = (QTestState *)data;
+> +
+> +    test_fsi_setup(s, AST2600_OPB_FSI1_BASE_ADDR);
+> +
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB1_RW_DIRECTION, 0xF3F4F514);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB1_XFER_SIZE, 0xF3F4F518);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB1_BUS_ADDR, 0xF3F4F51c);
+> +    test_fsi_reg_change(s, ASPEED_FSI_INTRRUPT_CLEAR, 0xF3F4F540);
+> +    test_fsi_reg_change(s, ASPEED_FSI_INTRRUPT_STATUS, 0xF3F4F548);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB1_BUS_STATUS, 0xF3F4F580);
+> +    test_fsi_reg_change(s, ASPEED_FSI_OPB1_READ_DATA, 0xF3F4F584);
+> +}
+> +
+> +static void test_fsi0_getcfam_addr0(const void *data)
+> +{
+> +    QTestState *s = (QTestState *)data;
+> +    uint32_t curval;
+> +
+> +    test_fsi_setup(s, AST2600_OPB_FSI0_BASE_ADDR);
+> +
+> +    /* Master access direction read */
+> +    aspeed_fsi_writel(s, ASPEED_FSI_OPB0_RW_DIRECTION, 0x1);
+> +    /* word */
+> +    aspeed_fsi_writel(s, ASPEED_FSI_OPB0_XFER_SIZE, 0x3);
+> +    /* Address */
+> +    aspeed_fsi_writel(s, ASPEED_FSI_OPB0_BUS_ADDR, 0xa0000000);
+> +    aspeed_fsi_writel(s, ASPEED_FSI_INTRRUPT_CLEAR, 0x1);
+> +    aspeed_fsi_writel(s, ASPEED_FSI_ENGINER_TRIGGER, 0x1);
+> +
+> +    curval = aspeed_fsi_readl(s, ASPEED_FSI_INTRRUPT_STATUS);
+> +    g_assert_cmpuint(curval, ==, 0x10000);
+> +    curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB0_BUS_STATUS);
+> +    g_assert_cmpuint(curval, ==, 0x0);
+> +    curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB0_READ_DATA);
+> +    g_assert_cmpuint(curval, ==, 0x152d02c0);
+> +}
+> +
+> +static void test_fsi1_getcfam_addr0(const void *data)
+> +{
+> +    QTestState *s = (QTestState *)data;
+> +    uint32_t curval;
+> +
+> +    test_fsi_setup(s, AST2600_OPB_FSI1_BASE_ADDR);
+> +
+> +    /* Master access direction read */
+> +    aspeed_fsi_writel(s, ASPEED_FSI_OPB1_RW_DIRECTION, 0x1);
+> +
+> +    aspeed_fsi_writel(s, ASPEED_FSI_OPB1_XFER_SIZE, 0x3);
+> +    aspeed_fsi_writel(s, ASPEED_FSI_OPB1_BUS_ADDR, 0xa0000000);
+> +    aspeed_fsi_writel(s, ASPEED_FSI_INTRRUPT_CLEAR, 0x1);
+> +    aspeed_fsi_writel(s, ASPEED_FSI_ENGINER_TRIGGER, 0x1);
+> +
+> +    curval = aspeed_fsi_readl(s, ASPEED_FSI_INTRRUPT_STATUS);
+> +    g_assert_cmpuint(curval, ==, 0x20000);
+> +    curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB1_BUS_STATUS);
+> +    g_assert_cmpuint(curval, ==, 0x0);
+> +    curval = aspeed_fsi_readl(s, ASPEED_FSI_OPB1_READ_DATA);
+> +    g_assert_cmpuint(curval, ==, 0x152d02c0);
+> +}
+> +
+> +int main(int argc, char **argv)
+> +{
+> +    int ret = -1;
+> +    QTestState *s;
+> +
+> +    g_test_init(&argc, &argv, NULL);
+> +
+> +    s = qtest_init("-machine ast2600-evb ");
+> +
+> +    /* Tests for OPB/FSI0 */
+> +    qtest_add_data_func("/fsi-test/test_fsi0_master_regs", s,
+> +                        test_fsi0_master_regs);
+> +
+> +    qtest_add_data_func("/fsi-test/test_fsi0_getcfam_addr0", s,
+> +                        test_fsi0_getcfam_addr0);
+> +
+> +    /* Tests for OPB/FSI1 */
+> +    qtest_add_data_func("/fsi-test/test_fsi1_master_regs", s,
+> +                        test_fsi1_master_regs);
+> +
+> +    qtest_add_data_func("/fsi-test/test_fsi1_getcfam_addr0", s,
+> +                        test_fsi1_getcfam_addr0);
+> +
+> +    ret = g_test_run();
+> +    qtest_quit(s);
+> +
+> +    return ret;
+> +}
+> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> index d6022ebd64..74228a4aed 100644
+> --- a/tests/qtest/meson.build
+> +++ b/tests/qtest/meson.build
+> @@ -207,6 +207,7 @@ qtests_arm = \
+>     (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
+>     (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : []) + \
+>     (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : []) + \
+> +  (config_all_devices.has_key('CONFIG_FSI_APB2OPB_ASPEED') ? ['fsi-test'] : []) + \
+>     ['arm-cpu-features',
+>      'boot-serial-test']
+>   
 
---00000000000055de3106087131e5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Reviewed-by: Michael Rolnik &lt;<a href=3D"mailto:mrolnik@=
-gmail.com">mrolnik@gmail.com</a>&gt;</div><br><div class=3D"gmail_quote"><d=
-iv dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 24, 2023 at 2:32=E2=80=AFAM=
- Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">rich=
-ard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
-_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
-,204);padding-left:1ex">On 10/23/23 09:09, Philippe Mathieu-Daud=C3=A9 wrot=
-e:<br>
-&gt; Inspired-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson=
-@linaro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
-&gt; Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philm=
-d@linaro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0target/avr/translate.c | 18 ++++++------------<br>
-&gt;=C2=A0 =C2=A01 file changed, 6 insertions(+), 12 deletions(-)<br>
-<br>
-Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
-ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
-<br>
-r~<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Be=
-st Regards,<br>Michael Rolnik</div>
-
---00000000000055de3106087131e5--
 
