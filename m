@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB297D541F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 16:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C64B7D5432
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 16:40:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvIRD-0004Wx-AM; Tue, 24 Oct 2023 10:31:19 -0400
+	id 1qvIYP-0001j6-QK; Tue, 24 Oct 2023 10:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvIR4-0004TL-6o
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:31:10 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1qvIYM-0001i5-Nc
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:38:42 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvIR1-0001bi-T5
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:31:09 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50797cf5b69so6205247e87.2
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 07:31:07 -0700 (PDT)
+ id 1qvIYK-00039w-NE
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:38:42 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2c523ac38fbso67654761fa.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 07:38:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698157866; x=1698762666; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698158319; x=1698763119; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EWb20dfK560rIF8adWY19+tt4v4j4W+IGWYOb1Mi0Ms=;
- b=kNtBCaOH/bq6O7SCeBA1vzs3t3c8NMv6ZWuAkymeHUjXQkSzMR/2gp/rY12FN1jMrP
- fO5T5jB2K2Awy3gASfo79dDjJIG7mC1Nfr4iQpfyJdegW8yIMBUYo1h00M3/mWDtoOky
- Qb7Xg9VOU09IKCBpe85PF+Fiunq8B9osAKcciQAEKOtg+xv20lKAO1Mfv2P49AD/ggbM
- 2nHKouF+RIFMZNFpBvqkrLFSODHQZagCO2KylyIAda5nd0xcnBLZtJlaAH6f2dc7W3tr
- QiING0js0h4t5rNqqPGKyazN9ScOMryEIhh82mEZizrf7qpiwsp0RpJgrsLguPUcHSTp
- Fs0Q==
+ bh=W3FeRuTW4WxOWZ4DJAIYgBLFmbGMbjfDq3iAhRA6fQM=;
+ b=xNry1K8OOI8EIxnQ/aON5LOk/LHzt3NpCiaErHajKCpH98i/rGsA05EEiNwbka1iM+
+ A+QF1X14nGuCXyuS6qpJQUdFunuD24kYsBp+WvjupiSDdv9HtrommoVN524efte9g7No
+ fhEuJX5L1gzzqATW3ccc3m2vvbKfBpgslsw9tuYjxi5mHIAI3+gJKQaodp7TGT8qOhUb
+ mrg/ugwRT17ffbtXPCLFGOJQ2HHukhXH3k3unXUn5yHeAScPLENoilBz2Xkbop+YuZzR
+ aKXg1VSs6TumeqlW2m15nH4ACJDxgKM2X3zNh1mTnPIo+Zp/SL5fs4L6vyuIlAnl+QQL
+ wzgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698157866; x=1698762666;
+ d=1e100.net; s=20230601; t=1698158319; x=1698763119;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=EWb20dfK560rIF8adWY19+tt4v4j4W+IGWYOb1Mi0Ms=;
- b=Xd+06sAVmY6UklhSqycFDqVOz9d+9ri2qB4FNLgEMAIOzir0phVtWdJTujiNe1rMfv
- jytB1gCOPM3y+BURhg2PDK2IONFCFeIutNnH/5zbNFook6VV/NLUSiv8UEkfeErKyILR
- Ra6/YZ6I0FZdZ4qiPisP2J8oM28/UxYOMYAYN3LmL82egQPINdv5UVCZc6HBqXGx1vBD
- I2frdEK448VkAf+IDXA6Ncvw9z1elVz/3bfM+h4Bu9JzIaqlrM2HaH5O6NLllQd9Nx9X
- gHS7UqZMQCQpAHnZ5c2JDUY7KvnmxjnC4fAz3pP1BR65fQefl8BtTNvGzbvb6xb7HoLA
- k1nA==
-X-Gm-Message-State: AOJu0YzNHDANmaXyvT0z0SEY+RfL3Zp1vnS24MFvbXPNr0aE3fMQ0qsg
- BqfYPy6IKA6lI0s9ErJ+JaEW+g==
-X-Google-Smtp-Source: AGHT+IH0dWMqZZPpseYBO94Ur/wUU/ac0+s6vC+gY0EGN6jxMZY3tl2gJaJy33i+3fRuLGzUgzZqeQ==
-X-Received: by 2002:ac2:52a1:0:b0:503:7c0:ae96 with SMTP id
- r1-20020ac252a1000000b0050307c0ae96mr8129902lfm.20.1698157865812; 
- Tue, 24 Oct 2023 07:31:05 -0700 (PDT)
+ bh=W3FeRuTW4WxOWZ4DJAIYgBLFmbGMbjfDq3iAhRA6fQM=;
+ b=VfEeHqzdAjquE6/GxWO7HNbdtjbDroJiBkiCi6tXfw0yYwdHNFNcHgFy/oSfWQmkM8
+ d+0FyE1wl6sBoxL9VmVwBm5ZTNKyn52PQMqYJ3ft0JzSOS1AYVtJOd3it7F+ocAbB8cf
+ jUfsRXpjvHYv+lBqT29g9T/TZohNnfdgcxGQaCKYz/44UqwvQtWl2tZp/RHVsGvI8SgC
+ BuCquWDpWI8mgxHlySXOo0wZwFgWmjEpiHC6j0wrB5rd6RG+wX6bTzpIp7Cr0TIc9JoD
+ abmrQYzNLrc+x+138jkIOM/hyO5GGJDUe7vfrR4Z2Mj5L4gB5r/xvZYWaj16Ba3FaFqE
+ oI+Q==
+X-Gm-Message-State: AOJu0Yz1T4xyDIbJbXwTU3KwGC/Laur9KriHYZsV3EJdAhbIRgdECZEi
+ lR837wv6PZ5IpvdZ77moIcizeQ==
+X-Google-Smtp-Source: AGHT+IFAuKakjAObzGzF2dfwI7bDfx1Zt63g5IYSs94vbrHm/M+xLsoB7t/2jVKz9ZuSnCPxS2xyBg==
+X-Received: by 2002:a2e:905a:0:b0:2c5:50d:3fc3 with SMTP id
+ n26-20020a2e905a000000b002c5050d3fc3mr8255251ljg.7.1698158318719; 
+ Tue, 24 Oct 2023 07:38:38 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- p16-20020a05600c469000b004090798d29csm3704919wmo.15.2023.10.24.07.31.05
+ 1-20020a05600c228100b0040596352951sm16624391wmf.5.2023.10.24.07.38.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 07:31:05 -0700 (PDT)
+ Tue, 24 Oct 2023 07:38:38 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A57231FFBB;
- Tue, 24 Oct 2023 15:31:04 +0100 (BST)
-References: <20231019102657.129512-1-akihiko.odaki@daynix.com>
- <20231019102657.129512-11-akihiko.odaki@daynix.com>
+ by zen.linaroharston (Postfix) with ESMTP id DB56D1FFBB;
+ Tue, 24 Oct 2023 15:38:37 +0100 (BST)
+References: <878r7t482z.fsf@linaro.org>
+ <CAMxuvaw8b6QEZO_Z_-ityoEOFPRuQ7D0pBVwK3BEKBNWX3S3KA@mail.gmail.com>
 User-agent: mu4e 1.11.22; emacs 29.1.90
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
- =?utf-8?Q?Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v14 10/18] gdbstub: Simplify XML lookup
-Date: Tue, 24 Oct 2023 15:25:05 +0100
-In-reply-to: <20231019102657.129512-11-akihiko.odaki@daynix.com>
-Message-ID: <87o7go2itz.fsf@linaro.org>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Leo Yan <leo.yan@linaro.org>, qemu-devel
+ <qemu-devel@nongnu.org>
+Subject: Re: State of contrib/vhost-user-input?
+Date: Tue, 24 Oct 2023 15:32:07 +0100
+In-reply-to: <CAMxuvaw8b6QEZO_Z_-ityoEOFPRuQ7D0pBVwK3BEKBNWX3S3KA@mail.gmail.com>
+Message-ID: <87jzrc2ihe.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,42 +99,264 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
 
-> Now we know all instances of GDBFeature that is used in CPU so we can
-> traverse them to find XML. This removes the need for a CPU-specific
-> lookup function for dynamic XMLs.
+> Hi Alex
 >
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-<snip>
->  }
->=20=20
-> +static void gdb_register_feature(CPUState *cpu, int base_reg,
-> +                                 gdb_get_reg_cb get_reg, gdb_set_reg_cb =
-set_reg,
-> +                                 const GDBFeature *feature)
-> +{
-> +    guint i =3D cpu->gdb_regs->len;
-> +    GDBRegisterState *s;
-> +
-> +    g_array_set_size(cpu->gdb_regs, i + 1);
-> +    s =3D &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-> +    s->base_reg =3D base_reg;
-> +    s->get_reg =3D get_reg;
-> +    s->set_reg =3D set_reg;
-> +    s->feature =3D feature;
+> On Mon, Oct 23, 2023 at 8:34=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lin=
+aro.org> wrote:
+>>
+>>
+>> Hi,
+>>
+>> I'm trying to get the contrib/vhost-user-input working but it exits
+>> during the boot up sequence:
+>>
+>>   =E2=9E=9C  gdb --args ./vhost-user-input -p /dev/input/event22 -s /tmp=
+/mouse.sock
+>>   GNU gdb (GDB) 15.0.50.20231012-git
+>>   <snip>
+>>   Reading symbols from ./vhost-user-input...
+>>   (gdb) b map_ring
+>>   Breakpoint 1 at 0x7634c: file ../../subprojects/libvhost-user/libvhost=
+-user.c, line 618.
+>>   (gdb) r
+>>   Starting program: /home/alex/lsrc/qemu.git/builds/arm.debug/contrib/vh=
+ost-user-input/vhost-user-input -p /dev/input/event22 -s /tmp/mouse.sock
+>>   [Thread debugging using libthread_db enabled]
+>>   Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so=
+.1".
+>>   [New Thread 0x7ffff7afb6c0 (LWP 3807698)]
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_FEATURES (1)
+>>   Flags:   0x1
+>>   Size:    0
+>>   Sending back to guest u64: 0x0000000175000000
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_PROTOCOL_FEATURES (15)
+>>   Flags:   0x1
+>>   Size:    0
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_PROTOCOL_FEATURES (16)
+>>   Flags:   0x1
+>>   Size:    8
+>>   u64: 0x0000000000008e2b
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_QUEUE_NUM (17)
+>>   Flags:   0x1
+>>   Size:    0
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_MAX_MEM_SLOTS (36)
+>>   Flags:   0x1
+>>   Size:    0
+>>   u64: 0x0000000000000020
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_BACKEND_REQ_FD (21)
+>>   Flags:   0x9
+>>   Size:    0
+>>   Fds: 6
+>>   Got backend_fd: 6
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_OWNER (3)
+>>   Flags:   0x1
+>>   Size:    0
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_FEATURES (1)
+>>   Flags:   0x1
+>>   Size:    0
+>>   Sending back to guest u64: 0x0000000175000000
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_VRING_CALL (13)
+>>   Flags:   0x1
+>>   Size:    8
+>>   Fds: 7
+>>   u64: 0x0000000000000000
+>>   Got call_fd: 7 for vq: 0
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_VRING_ERR (14)
+>>   Flags:   0x1
+>>   Size:    8
+>>   Fds: 8
+>>   u64: 0x0000000000000000
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_VRING_CALL (13)
+>>   Flags:   0x1
+>>   Size:    8
+>>   Fds: 9
+>>   u64: 0x0000000000000001
+>>   Got call_fd: 9 for vq: 1
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_VRING_ERR (14)
+>>   Flags:   0x1
+>>   Size:    8
+>>   Fds: 10
+>>   u64: 0x0000000000000001
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_GET_CONFIG (24)
+>>   Flags:   0x1
+>>   Size:    148
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_FEATURES (2)
+>>   Flags:   0x1
+>>   Size:    8
+>>   u64: 0x0000000170000000
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_VRING_NUM (8)
+>>   Flags:   0x1
+>>   Size:    8
+>>   State.index: 0
+>>   State.num:   64
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_VRING_BASE (10)
+>>   Flags:   0x1
+>>   Size:    8
+>>   State.index: 0
+>>   State.num:   0
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Vhost user message =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>   Request: VHOST_USER_SET_VRING_ADDR (9)
+>>   Flags:   0x1
+>>   Size:    40
+>>   vhost_vring_addr:
+>>       index:  0
+>>       flags:  0
+>>       desc_user_addr:   0x00007f283491a000
+>>       used_user_addr:   0x00007f283491a4c0
+>>       avail_user_addr:  0x00007f283491a400
+>>       log_guest_addr:   0x0000000100b1a4c0
+>>
+>>   Thread 1 "vhost-user-inpu" hit Breakpoint 1, map_ring (dev=3D0x7ffffff=
+fdd60, vq=3D0x555555609ea0) at ../../subprojects/libvhost-user/libvhost-use=
+r.c:618
+>>   warning: Source file is more recent than executable.
+>>   618         vq->vring.desc =3D qva_to_va(dev, vq->vra.desc_user_addr);
+>>   (gdb) s
+>>   qva_to_va (dev=3D0x7fffffffdd60, qemu_addr=3D139810657378304) at ../..=
+/subprojects/libvhost-user/libvhost-user.c:231
+>>   231         for (i =3D 0; i < dev->nregions; i++) {
+>>   (gdb) p dev->nregions
+>>   $1 =3D 0
+>>   (gdb) n
+>>   240         return NULL;
+>>   (gdb)
+>>   241     }
+>>   (gdb) c
+>>   Continuing.
+>>   Setting virtq addresses:
+>>       vring_desc  at (nil)
+>>       vring_used  at (nil)
+>>       vring_avail at (nil)
+>>
+>>   ** (vhost-user-input:3807669): CRITICAL **: 17:16:14.554: Invalid vrin=
+g_addr message
+>>
+>>   [Thread 0x7ffff7afb6c0 (LWP 3807698) exited]
+>>   [Inferior 1 (process 3807669) exited with code 01]
+>>   (gdb) q
+>>
+>> Which looks like libvhost-user is expecting
+>> VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS to be negotiated and the
+>> resulting VHOST_USER_ADD_MEM_REG to be sent. How is this meant to work
+>> if the protocol feature isn't negotiated?
+>
+>
+> How did you start QEMU ? Did you forget to use shared memory ?
 
-Why not just:
+I had:
 
-    GDBRegisterState s  =3D { base_reg, get_reg, set_reg, feature };
-    g_array_append_val(cpu->gdb_regs, s);
+       -m 8192 \
+       -object memory-backend-memfd,id=3Dmem,size=3D8G,share=3Don \
 
-?
+Alongside:
 
+       -device virtio-gpu-pci \
+       -device qemu-xhci -device usb-kbd \
+       -kernel ~/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image.gz -appe=
+nd 'console=3DttyAMA0 root=3D/dev/sda2' \
+       -display gtk,gl=3Don \
+       -chardev socket,id=3Dmouse2,path=3D/tmp/mouse.sock -device vhost-use=
+r-input-pci,chardev=3Dmouse2
 
-Otherwise:
+I even double checked with the generic device I was working with:
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+       -chardev socket,id=3Dmouse2,path=3D/tmp/mouse.sock -device vhost-use=
+r-device-pci,chardev=3Dmouse2,virtio-id=3D18,config_size=3D136,num_vqs=3D2
+
+> We should probably add some error at QEMU level when vhost-user devices
+> are used without shared memory!
+
+That would certainly be a good idea.
 
 --=20
 Alex Benn=C3=A9e
