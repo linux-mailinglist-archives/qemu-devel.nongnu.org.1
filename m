@@ -2,41 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F7B7D5E8F
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 01:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 501FA7D5ED2
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 01:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvQUH-0003Gk-MH; Tue, 24 Oct 2023 19:07:01 -0400
+	id 1qvR9d-00066T-Qq; Tue, 24 Oct 2023 19:49:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvQUE-0003Cr-MI; Tue, 24 Oct 2023 19:06:58 -0400
+ id 1qvR9a-000665-UY; Tue, 24 Oct 2023 19:49:42 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvQU4-0006Ns-M2; Tue, 24 Oct 2023 19:06:58 -0400
+ id 1qvR9Y-0004q9-KG; Tue, 24 Oct 2023 19:49:42 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id A578875606C;
- Wed, 25 Oct 2023 01:06:44 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 2FBE275606C;
+ Wed, 25 Oct 2023 01:49:36 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6E8AF756066; Wed, 25 Oct 2023 01:06:43 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6C9067456A7;
- Wed, 25 Oct 2023 01:06:43 +0200 (CEST)
-Date: Wed, 25 Oct 2023 01:06:43 +0200 (CEST)
+ id ECB0A756066; Wed, 25 Oct 2023 01:49:35 +0200 (CEST)
+Message-Id: <cover.1698190128.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- philmd@linaro.org, shentey@gmail.com
-Subject: Re: [PATCH v2 2/3] ide/via: don't attempt to set default BAR addresses
-In-Reply-To: <20231024224056.842607-3-mark.cave-ayland@ilande.co.uk>
-Message-ID: <725f3192-cfcc-40a8-f185-c566c88eca4e@eik.bme.hu>
-References: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
- <20231024224056.842607-3-mark.cave-ayland@ilande.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
+Subject: [PATCH v6 0/3] Add emulation of AmigaOne XE board
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Date: Wed, 25 Oct 2023 01:49:35 +0200 (CEST)
+X-Spam-Probability: 8%
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -59,46 +55,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 24 Oct 2023, Mark Cave-Ayland wrote:
-> The via-ide device currently attempts to set the default BAR addresses to the
-> values shown in the datasheet, but this doesn't work for 2 reasons: firstly
-> BARS 1-4 do not set the bottom 2 bits to PCI_BASE_ADDRESS_SPACE_IO, and
-> secondly the initial PCI bus reset clears the values of all PCI device BARs
-> after the device itself has been reset.
->
-> Remove the setting of the default BAR addresses from via_ide_reset() to ensure
-> there is no doubt that these values are never exposed to the guest.
+Changes in v6:
+- Dropped patch 1, now it's
+Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI IDE controllers)
+- Added Tested-by from Rene
 
-Suggested-by: BALATON Zoltan <balaton@eik.bme.hu>
+Changes in v5:
+- Fixed avocado test
 
-this was taken from my original patch so I could also add R-b but being in 
-two tags already is enough so let others listed if they want :-)
+Changes in v4:
+- Found typo in comment in patch 1 so ended up rewording it again
+trying to make it more concise. Also take the idea of using
+range_covers_byte from Mark's patch
+- Added RFC patch for avocado test (untested, I don't have Avocado)
+
+Changes in v3:
+- Update values, comment and commit message in patch 1 again
+
+Changes in v2:
+- Update comment and commit message in patch 1 (Mark)
+- Fix irq mapping in patch 2 (Volker)
 
 Regards,
 BALATON Zoltan
 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Tested-by: Bernhard Beschow <shentey@gmail.com>
-> ---
-> hw/ide/via.c | 5 -----
-> 1 file changed, 5 deletions(-)
->
-> diff --git a/hw/ide/via.c b/hw/ide/via.c
-> index fff23803a6..87b134083a 100644
-> --- a/hw/ide/via.c
-> +++ b/hw/ide/via.c
-> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
->     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
->                  PCI_STATUS_DEVSEL_MEDIUM);
->
-> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
-> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
-> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
-> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
-> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
->     pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
->
->     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
->
+BALATON Zoltan (3):
+  hw/pci-host: Add emulation of Mai Logic Articia S
+  hw/ppc: Add emulation of AmigaOne XE board
+  tests/avocado: Add test for amigaone board
+
+ MAINTAINERS                             |   8 +
+ configs/devices/ppc-softmmu/default.mak |   1 +
+ hw/pci-host/Kconfig                     |   5 +
+ hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+ hw/pci-host/meson.build                 |   2 +
+ hw/ppc/Kconfig                          |   7 +
+ hw/ppc/amigaone.c                       | 164 +++++++++++++
+ hw/ppc/meson.build                      |   2 +
+ include/hw/pci-host/articia.h           |  17 ++
+ tests/avocado/ppc_amiga.py              |  38 +++
+ 10 files changed, 537 insertions(+)
+ create mode 100644 hw/pci-host/articia.c
+ create mode 100644 hw/ppc/amigaone.c
+ create mode 100644 include/hw/pci-host/articia.h
+ create mode 100644 tests/avocado/ppc_amiga.py
+
+-- 
+2.30.9
+
 
