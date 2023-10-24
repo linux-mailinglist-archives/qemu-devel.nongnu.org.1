@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F4F7D47D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 08:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7663D7D4801
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 09:09:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvBNz-0006QG-GJ; Tue, 24 Oct 2023 02:59:31 -0400
+	id 1qvBWO-0000LR-Nh; Tue, 24 Oct 2023 03:08:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvBNx-0006PS-DV
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 02:59:29 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvBWN-0000Ks-BL
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 03:08:11 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvBNv-0000kt-Tt
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 02:59:29 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4084e49a5e5so35289865e9.3
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 23:59:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvBWL-0002Gw-JP
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 03:08:11 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4083f613275so33931895e9.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 00:08:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698130766; x=1698735566; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698131288; x=1698736088; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3LKoaw12Kegy/5Wwnu5bK7CWabfG8BwbA9wvMxlQdZI=;
- b=RgiIgt75xS1g81WSUjRKC7povlAyiTKzMrFW8j2EIwgYs9e5ASELiKbDSWa7lCCErB
- FSBYPHS9ch5qy1sQZGBrOIpJW7hfPg+rX8hpWdbuEaoz9w8LdKwQYY0EAfzFHYp5CsKh
- 1Oqh7IBmOj7pM4GDX7iw06ZZULSJPOkuGUFVQ+bpuxMeLwlecUaiBzuzIRM3zhqyf05I
- 64qp6RMqSHBsdF4keTtA+XS1+yvbCvQSg5+8bJpzBDef6StWbzYf/UJcPcRJqNm6lgeG
- Av+miEmYv5QVYOKoaU9a5Kvm3OGaaet/La80FjZkmqEGkjBvbd7lhmYheGYGwNqQAQJt
- +EVw==
+ bh=XmK+RTj/FRggQksmsLuZAYu+Xr+N+hyD+GxtAcrimlc=;
+ b=lyFSb7uI67QCUlV8rpdGWv2r0x1asgUqWtP3uXbaDwEbJifqoD5Mx068YE2e2ealfS
+ fSRcr9Cts0RDsNpH6qja/8htl9xi/RlUAIzambzpUlhvH8AReSxoqsn0Qz3/K2DK3RBC
+ //rTTz3CGoB3x/lJqBRZe/+JiR0WNLnnWfB7gxjLu8TGeCWMlNjIpOQbZ2Y1R+cW11tj
+ vGLdhHh8f+El3HoXc79NgsCLxVDFZ/LHwjTMjAnXOn+lCv3Qu0UBRW9WdFbEaQkQh11U
+ UcV1I4CULiarGhyawSrgV95Cqvg0dLKO76oeNpwYSp/44XhbmfK+f8q4YU/3tHHycyPe
+ Q5NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698130766; x=1698735566;
+ d=1e100.net; s=20230601; t=1698131288; x=1698736088;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3LKoaw12Kegy/5Wwnu5bK7CWabfG8BwbA9wvMxlQdZI=;
- b=Cyr3msY2PkJIWhpp5acjTefuH7cCRXEuwM0Yh7uMDL5+lMuL1QNbTFTbfF6RC6Isx7
- UGnY4C55b+QISQMvi+p/dTZavJkEUfYYCATSpKaog1b/N/qZA4HkFWy74gscuyJ3IAtq
- YBguSmkEppzhLjk9ATf6wU2TiGcU0q0UhZGXViU7ejspu8jprQTWjUdUlE6RcyxjRKxy
- oBqm0LJIuUNkWZ5Qbny9yNHldyn8JrwtZfBsA7lTw2qd1ns/ZHMQYM0OduoaEnhSvlF4
- gP8G+v47/ZEcDyv4KPmjezSA3X+SD31Gt0ecYX/mtlNAVceUitBsG81/WKiUSjJvNB6g
- Bxuw==
-X-Gm-Message-State: AOJu0YzTV2u7a5o0dOq7mfCqMEzXjNI9gWa5Mc2Mrt40+Rwuf2TXvzvj
- HDyj65+sLw/IYcfqWL88U1WtXg==
-X-Google-Smtp-Source: AGHT+IHBgCGOmEpFns7TOif3qZ7m4RtrTb/0GbGpQU2ZohXDTZBpeswhX2yxOVE6tNC2cXlN/aKu2g==
-X-Received: by 2002:a05:600c:4f01:b0:405:3cc5:1105 with SMTP id
- l1-20020a05600c4f0100b004053cc51105mr9013389wmq.8.1698130766190; 
- Mon, 23 Oct 2023 23:59:26 -0700 (PDT)
+ bh=XmK+RTj/FRggQksmsLuZAYu+Xr+N+hyD+GxtAcrimlc=;
+ b=c27cSgD750LAi8CgB0mt9JNm4XxgF3TbshnN6JtJNJA3rYdS7S/JHTGs6BY2MwwwB4
+ K2JlV5B6wzevZaOegq6vRVwjGmuSRAlOAqf5mCF/SeO+pkUsjkldl2G4LB2qnNXvUfkO
+ qV5Xw3s6sL3Yy4mbKRuWSxxEOpXhkpCsF+mHPDchYyJk7C/06sCXHdEvAO7CiuVWg4Nz
+ V6757jEK4c29duKudSObzHjKgDbrBGZg4enc5st1858N4DMOom8LPE1IyFWPqMRb1mtj
+ npXd0OHmB5PXYbyMhE+xDAqe8+1n/2c+1kX8zAewA+DF/7R+RgD8Ssv9Jeh7HiWJGtYB
+ Uyng==
+X-Gm-Message-State: AOJu0YwhHTbc/Nq1t6j0j+HxFYUI6hHdnixDHVCPt2VqKjbRPJlqTlp2
+ 0u4m94+HmSKK22GPaP31t2/PAQ==
+X-Google-Smtp-Source: AGHT+IHehJj0bMywxZp6KIn0kQzy5bCCZaVbJruY4WN3CnPAdiyo+0AnvDwSARB7JwTozHkt7S00Dw==
+X-Received: by 2002:a05:600c:3583:b0:408:59d4:f3c4 with SMTP id
+ p3-20020a05600c358300b0040859d4f3c4mr6681690wmq.10.1698131287756; 
+ Tue, 24 Oct 2023 00:08:07 -0700 (PDT)
 Received: from [192.168.69.115] (sem44-h01-176-172-55-165.dsl.sta.abo.bbox.fr.
  [176.172.55.165]) by smtp.gmail.com with ESMTPSA id
- l23-20020a1c7917000000b004063cced50bsm11027118wme.23.2023.10.23.23.59.24
+ p5-20020a05600c358500b004053a6b8c41sm11195398wmq.12.2023.10.24.00.08.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Oct 2023 23:59:25 -0700 (PDT)
-Message-ID: <bdaf1998-7870-ade6-a611-ed4bd793cf54@linaro.org>
-Date: Tue, 24 Oct 2023 08:59:23 +0200
+ Tue, 24 Oct 2023 00:08:07 -0700 (PDT)
+Message-ID: <4b2e68dd-db49-4041-ee5a-ae2b836bd255@linaro.org>
+Date: Tue, 24 Oct 2023 09:08:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 1/3] hw/arm/virt: Add serial aliases in DTB
+Subject: Re: [PATCH v6 02/10] hw/fsi: Introduce IBM's scratchpad
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Axel Heider <axel.heider@hensoldt.net>, Laszlo Ersek <lersek@redhat.com>, 
- Ard Biesheuvel <ardb@kernel.org>, Shannon Zhao <shannon.zhaosl@gmail.com>, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20231023161532.2729084-1-peter.maydell@linaro.org>
- <20231023161532.2729084-2-peter.maydell@linaro.org>
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org, clg@kaod.org, 
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231021211720.3571082-1-ninad@linux.ibm.com>
+ <20231021211720.3571082-3-ninad@linux.ibm.com>
+ <957bc5db-53aa-6946-edf3-3b728a52b660@linaro.org>
+ <f2a50afd-3fa1-47d2-960e-0aaaf57c7cd2@linux.ibm.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231023161532.2729084-2-peter.maydell@linaro.org>
+In-Reply-To: <f2a50afd-3fa1-47d2-960e-0aaaf57c7cd2@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
 X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,37 +98,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/23 18:15, Peter Maydell wrote:
-> If there is more than one UART in the DTB, then there is no guarantee
-> on which order a guest is supposed to initialise them.  The standard
-> solution to this is "serialN" entries in the "/aliases" node of the
-> dtb which give the nodename of the UARTs.
+On 23/10/23 19:08, Ninad Palsule wrote:
+> Hello Philippe,
 > 
-> At the moment we only have two UARTs in the DTB when one is for
-> the Secure world and one for the Non-Secure world, so this isn't
-> really a problem. However if we want to add a second NS UART we'll
-> need the aliases to ensure guests pick the right one.
+> On 10/23/23 10:00, Philippe Mathieu-Daudé wrote:
+>> On 21/10/23 23:17, Ninad Palsule wrote:
+>>> This is a part of patchset where scratchpad is introduced.
+>>>
+>>> The scratchpad provides a set of non-functional registers. The firmware
+>>> is free to use them, hardware does not support any special management
+>>> support. The scratchpad registers can be read or written from LBUS
+>>> slave.
+>>>
+>>> In this model, The LBUS device is parent for the scratchpad.
+>>>
+>>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>>> ---
+>>> v2:
+>>> - Incorporated Joel's review comments.
+>>> v5:
+>>> - Incorporated review comments by Cedric.
+>>> v6:
+>>> - Incorporated review comments by Daniel.
+>>> ---
+>>>   meson.build                        |  1 +
+>>>   hw/fsi/trace.h                     |  1 +
+>>>   include/hw/fsi/engine-scratchpad.h | 32 ++++++++++
+>>>   include/hw/fsi/fsi.h               | 16 +++++
+>>>   hw/fsi/engine-scratchpad.c         | 93 ++++++++++++++++++++++++++++++
+>>>   hw/fsi/Kconfig                     |  4 ++
+>>>   hw/fsi/meson.build                 |  1 +
+>>>   hw/fsi/trace-events                |  2 +
+>>>   8 files changed, 150 insertions(+)
+>>>   create mode 100644 hw/fsi/trace.h
+>>>   create mode 100644 include/hw/fsi/engine-scratchpad.h
+>>>   create mode 100644 include/hw/fsi/fsi.h
+>>>   create mode 100644 hw/fsi/engine-scratchpad.c
+>>>   create mode 100644 hw/fsi/trace-events
+>>
+>>
+>>> diff --git a/include/hw/fsi/fsi.h b/include/hw/fsi/fsi.h
+>>> new file mode 100644
+>>> index 0000000000..e65f26f17b
+>>> --- /dev/null
+>>> +++ b/include/hw/fsi/fsi.h
+>>> @@ -0,0 +1,16 @@
+>>> +/*
+>>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>>> + * Copyright (C) 2023 IBM Corp.
+>>> + *
+>>> + * IBM Flexible Service Interface
+>>> + */
+>>> +#ifndef FSI_FSI_H
+>>> +#define FSI_FSI_H
+>>> +
+>>> +/* Bitwise operations at the word level. */
+>>> +#define BE_BIT(x)                          BIT(31 - (x))
+>>> +#define GENMASK(t, b) \
+>>> +    (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 1))
+>>
+>> Please use MAKE_64BIT_MASK() from "qemu/bitops.h".
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   hw/arm/virt.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> The GENMASK and MAKE_64BIT_MASK macros are invoke differently.
+> 
+> GENMASK is invoked with bit t and bit b (t:b) and it provides the mask and
+> 
+> MAKE_64BIT_MASK uses shift and length.
 
+Don't we have:
 
-> @@ -889,7 +891,9 @@ static void create_uart(const VirtMachineState *vms, int uart,
->   
->       if (uart == VIRT_UART) {
+#define GENMASK(t, b) MAKE_64BIT_MASK(t, b - t + 1)
 
-I'd have put this patch after the rename (#2 <-> #1). Anyhow,
+?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
->           qemu_fdt_setprop_string(ms->fdt, "/chosen", "stdout-path", nodename);
-> +        qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", nodename);
->       } else {
-> +        qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial1", nodename);
->           /* Mark as not usable by the normal world */
->           qemu_fdt_setprop_string(ms->fdt, nodename, "status", "disabled");
->           qemu_fdt_setprop_string(ms->fdt, nodename, "secure-status", "okay");
+> Thanks for the review.
+> 
+> Regards,
+> 
+> Ninad
+> 
+> 
+>>> +#define BE_GENMASK(t, b)                   GENMASK(BE_BIT(t), 
+>>> BE_BIT(b))
+>>> +
+>>> +#endif
+>>
 
 
