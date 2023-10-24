@@ -2,100 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AA47D591A
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C74A67D5918
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:48:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvKYx-0006q3-DE; Tue, 24 Oct 2023 12:47:27 -0400
+	id 1qvKZ5-00070d-WE; Tue, 24 Oct 2023 12:47:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvKYj-0006nO-2U; Tue, 24 Oct 2023 12:47:13 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvKZ4-00070C-6n
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:47:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvKYg-00080D-4L; Tue, 24 Oct 2023 12:47:12 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OGeMU3022688; Tue, 24 Oct 2023 16:46:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=NSj/QeiNo4qnjm2oE/QWi0dd3BcRGz/97G7DCdUR5fg=;
- b=A0U061/YwkxU051ohkS7GDY3kDil+BjZ22fHtSjl951s0UY1AgxhWFJyl0lqCLR7dSRq
- C1n497yTFPhlNtjAsYB7vTNmw1HwQaSl61SRQDQmYqljXGCyPvQwXp2GdxKal9ZPVVS0
- GdvhtN/q6Y4xkEhPnToKgICq7bzbXlROvROhKDLbXvV0fBEejVsBrXmid6VGfWaF1dXh
- bLiw+SsvyQaWnG4w4hBiEGTVJTk0D76ZSDyFDYNQJ9SJtsPyMQ/dQP4IoGaXLAk6Ig8Y
- 7g69IZrVR5zEOxHOND9ugGCAz5shDsPGPdp5kuLPBVNZN4jceec/DdjnH1RXsVPCg5Yw XA== 
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txhn3r955-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 16:46:47 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OFq10t023782; Tue, 24 Oct 2023 16:46:41 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvryt14ts-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 16:46:40 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39OGke5A27591416
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Oct 2023 16:46:40 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 417C65805B;
- Tue, 24 Oct 2023 16:46:40 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BA89358055;
- Tue, 24 Oct 2023 16:46:39 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 24 Oct 2023 16:46:39 +0000 (GMT)
-Message-ID: <9175c6f7b980ec1790f297a1f81a8c184c70b1aa.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] misc/pca9552: Fix inverted input status
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: Andrew Jeffery <andrew@codeconstruct.com.au>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, f4bug@amsat.org
-Date: Tue, 24 Oct 2023 11:46:39 -0500
-In-Reply-To: <47ec73eb44a8b5f5cd894f97d1e88677845cbd7a.camel@codeconstruct.com.au>
-References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
- <20231019204011.3174115-2-milesg@linux.vnet.ibm.com>
- <e0f36ef6336df26d5c123c5861d6a779c94e3eb9.camel@codeconstruct.com.au>
- <01edf713-6bec-adec-5fa5-5195b5dd4273@linaro.org>
- <53fccc103ab72cfd93e98fd28bd0a869a43b6a83.camel@linux.vnet.ibm.com>
- <47ec73eb44a8b5f5cd894f97d1e88677845cbd7a.camel@codeconstruct.com.au>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: KDgOv5s4gu3YxqVuIMcDrUROpx15kNi9
-X-Proofpoint-GUID: KDgOv5s4gu3YxqVuIMcDrUROpx15kNi9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-24_16,2023-10-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 spamscore=0 clxscore=1015 adultscore=0 mlxscore=0
- malwarescore=0 phishscore=0 bulkscore=0 mlxlogscore=999 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310240144
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvKZ2-00089C-Ha
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:47:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698166050;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=x9XPlIxUKcaWQHXhnZStQ4hsubiNOL3/mPjWRUDrzlg=;
+ b=ilMylcNfzqjcc5Q40g8Denn4OkSZyvuyIkpD9xPRmBNKwdstWc1XsRYQbFLdCrFeixb3JN
+ fGnp3rOPNbMaZmACrS43Nct7/ecVEYLeQ5dJZVYeARF4l+T4n5gmCaTkpvv9tCGOJwTk1g
+ h7PyRolECZf91FPu/40Rjud+sL5wMwM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-KZEILO-bNiyhbXc727zyMw-1; Tue, 24 Oct 2023 12:47:29 -0400
+X-MC-Unique: KZEILO-bNiyhbXc727zyMw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-407f9d07b41so28867635e9.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:47:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698166048; x=1698770848;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=x9XPlIxUKcaWQHXhnZStQ4hsubiNOL3/mPjWRUDrzlg=;
+ b=XnoxgOn3+Sc34wOs0PJvJZ/iqp2ykOJ8qwZMM1ZM2yxi+pAHNhthzcUDA48bqOy18L
+ qDovU0Dtj5IaRY9P4w6MBOzpAU2YshZLhP5s/Yz8UmBivmdqZIRKB8mmOxW0GR2i0VlV
+ Hdb5UuZHBNspYKoUce8EMAToEjm/2M0MREK40y+Ga20ianR3MHXC+pHQmdTqLtk8lWvR
+ icwe3OfGBufVZJczlHJZII8cPBVNUBhZQEo9Y3uh2oe0AfM6p9ffLn3GXEvBowJg6xkV
+ E5FkF3Vf352G3eYhpBas5Af9nK7HE6Rv9kh84oei0QROMLxhfHrAGOLUt0Cb9ETXMdIP
+ b35A==
+X-Gm-Message-State: AOJu0Yz6863/EUXt8YdvUc2o/tD97/A/qIHF2FdeFoyLo+UgR6Xoe3kM
+ UZu+N5GGMbYa+eNRdH0WS7vlccdyirtQg6tHiYsl9o7lJjJPB47RcFx/AXMuzLbe4YDzLuH1/G+
+ WoxZSnH7wdA0u7Ww=
+X-Received: by 2002:a5d:5352:0:b0:32d:b051:9a27 with SMTP id
+ t18-20020a5d5352000000b0032db0519a27mr9578711wrv.20.1698166048464; 
+ Tue, 24 Oct 2023 09:47:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERTSOMAEVPlwGZ8bc3M/Jmkvac+ATJ+qj1TJEuVRc4DQltRVi49mGIKODPYEqX3AVJsa94CA==
+X-Received: by 2002:a5d:5352:0:b0:32d:b051:9a27 with SMTP id
+ t18-20020a5d5352000000b0032db0519a27mr9578696wrv.20.1698166048101; 
+ Tue, 24 Oct 2023 09:47:28 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ l7-20020a5d6687000000b00327bf4f2f14sm10177698wru.88.2023.10.24.09.47.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Oct 2023 09:47:27 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Zhijian Li <lizhijian@fujitsu.com>,  Markus
+ Armbruster <armbru@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Thomas
+ Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2] migration: Stop migration immediately in RDMA error
+ paths
+In-Reply-To: <ZTfxe0zLL8cP2AT3@x1n> (Peter Xu's message of "Tue, 24 Oct 2023
+ 12:31:55 -0400")
+References: <20231024154008.512222-1-peterx@redhat.com>
+ <878r7sknc4.fsf@secure.mitica> <ZTfxe0zLL8cP2AT3@x1n>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 24 Oct 2023 18:47:27 +0200
+Message-ID: <87zg08j7c0.fsf@secure.mitica>
+MIME-Version: 1.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,148 +99,136 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-10-24 at 10:04 +1030, Andrew Jeffery wrote:
-> On Fri, 2023-10-20 at 11:32 -0500, Miles Glenn wrote:
-> > On Fri, 2023-10-20 at 11:42 +0200, Philippe Mathieu-Daudé wrote:
-> > > On 20/10/23 04:51, Andrew Jeffery wrote:
-> > > > On Thu, 2023-10-19 at 15:40 -0500, Glenn Miles wrote:
-> > > > > > The pca9552 INPUT0 and INPUT1 registers are supposed to
-> > > > > > hold the logical values of the LED pins.  A logical 0
-> > > > > > should be seen in the INPUT0/1 registers for a pin when
-> > > > > > its corresponding LSn bits are set to 0, which is also
-> > > > > > the state needed for turning on an LED in a typical
-> > > > > > usage scenario.  Existing code was doing the opposite
-> > > > > > and setting INPUT0/1 bit to a 1 when the LSn bit was
-> > > > > > set to 0, so this commit fixes that.
-> > > > > > 
-> > > > > > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > > > > > ---
-> > > > > > 
-> > > > > > Changes from prior version:
-> > > > > >      - Added comment regarding pca953X
-> > > > > >      - Added cover letter
-> > > > > > 
-> > > > > >   hw/misc/pca9552.c          | 18 +++++++++++++-----
-> > > > > >   tests/qtest/pca9552-test.c |  6 +++---
-> > > > > >   2 files changed, 16 insertions(+), 8 deletions(-)
-> > > > > > 
-> > > > > > diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-> > > > > > index fff19e369a..445f56a9e8 100644
-> > > > > > --- a/hw/misc/pca9552.c
-> > > > > > +++ b/hw/misc/pca9552.c
-> > > > > > @@ -36,7 +36,10 @@ typedef struct PCA955xClass
-> > > > > > PCA955xClass;
-> > > > > >   
-> > > > > >   DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
-> > > > > >                          TYPE_PCA955X)
-> > > > > > -
-> > > > > > +/*
-> > > > > > + * Note:  The LED_ON and LED_OFF configuration values for
-> > > > > > the
-> > > > > > PCA955X
-> > > > > > + *        chips are the reverse of the PCA953X family of
-> > > > > > chips.
-> > > > > > + */
-> > > > > >   #define PCA9552_LED_ON   0x0
-> > > > > >   #define PCA9552_LED_OFF  0x1
-> > > > > >   #define PCA9552_LED_PWM0 0x2
-> > > > > > @@ -112,13 +115,18 @@ static void
-> > > > > > pca955x_update_pin_input(PCA955xState *s)
-> > > > > >   
-> > > > > >           switch (config) {
-> > > > > >           case PCA9552_LED_ON:
-> > > > > > -            qemu_set_irq(s->gpio[i], 1);
-> > > > > > -            s->regs[input_reg] |= 1 << input_shift;
-> > > > > > -            break;
-> > > > > > -        case PCA9552_LED_OFF:
-> > > > > > +            /* Pin is set to 0V to turn on LED */
-> > > > > >               qemu_set_irq(s->gpio[i], 0);
-> > > > > >               s->regs[input_reg] &= ~(1 << input_shift);
-> > > > > >               break;
-> > > > > > +        case PCA9552_LED_OFF:
-> > > > > > +            /*
-> > > > > > +             * Pin is set to Hi-Z to turn off LED and
-> > > > > > +             * pullup sets it to a logical 1.
-> > > > > > +             */
-> > > > > > +            qemu_set_irq(s->gpio[i], 1);
-> > > > > > +            s->regs[input_reg] |= 1 << input_shift;
-> > > > > > +            break;
-> > > > 
-> > > > So the witherspoon-bmc machine was a user of the PCA9552
-> > > > outputs as
-> > > > LEDs. I guess its LEDs were in the wrong state the whole time?
-> > > > That
-> > > > looks like the only user though, and shouldn't be negatively
-> > > > affected.
-> > > 
-> > > Usually GPIO polarity is a machine/board property, not a device
-> > > one.
-> > > 
-> > > We could use the LED API (hw/misc/led.h) which initialize each
-> > > output with GpioPolarity.
-> > > 
-> > 
-> > Thanks for your comments!   This piqued my curiosity so I decided
-> > to
-> > run a test with the witherspoon-bmc machine.  Without my changes, I
-> > ran
-> > the following command to turn off LED13 on the pca9552 which I had
-> > previously set to "on":
-> > 
-> >   qom-set /machine/unattached/device[18] led13 off
-> > 
-> > I had GDB connected at the time with a breakpoint set on
-> > led_set_state() so that I could see what was happening.  Due to the
-> > inversion bug, I expected the pca9552 code to set the pin low and
-> > also
-> > set the irq low, which it did.  The connected LED's on this pca9552
-> > were all configured as GPIO_POLARITY_ACTIVE_LOW, so I expected that
-> > setting the irq state low would actually turn on the LED.  Instead
-> > it
-> > turned off the LED.
-> > 
-> > Reviewing the LED code, I believe the problem lies here:
-> > 
-> > static void led_set_state_gpio_handler(void *opaque, int line, int
-> > new_state)
-> > {
-> >     LEDState *s = LED(opaque);
-> > 
-> >     assert(line == 0);
-> >     led_set_state(s, !!new_state != s->gpio_active_high);
-> > }
-> > 
-> > 
-> > In my test, new_state was 0 and gpio_active_high was 0, resulting
-> > in
-> > the boolean expression of ( 0 != 0 ) which is false and results in
-> > turning off the LED.  So, this looks like a bug to me.
-> > 
-> > For another simpler example, if the LED polarity was set to
-> > GPIO_POLARITY_ACTIVE_HIGH, then s->gpio_active_high would be
-> > 1.  Then,
-> > if we set the irq line to 1, wouldn't we expect the LED to turn
-> > on? 
-> > However, as the code stands, it would actually turn the LED
-> > off.  So, I
-> > think we can remove one of the "!"'s from in front of
-> > new_state.  Then,
-> > if the LED is active high and the irq line is set high, it would
-> > turn
-> > on the LED.  Correct?
-> 
-> Seems reasonable to me. Looks like Philippe added the LED behaviour
-> in
-> Fddb67f6402b8 ("hw/misc/led: Allow connecting from GPIO output"), so
-> his input would be helpful. Perhaps send a fix for review?
-> 
-> Andrew
+Peter Xu <peterx@redhat.com> wrote:
+> On Tue, Oct 24, 2023 at 06:16:27PM +0200, Juan Quintela wrote:
+>> Peter Xu <peterx@redhat.com> wrote:
+>> > In multiple places, RDMA errors are handled in a strange way, where it only
+>> > sets qemu_file_set_error() but not stop the migration immediately.
+>> >
+>> > It's not obvious what will happen later if there is already an error.  Make
+>> > all such failures stop migration immediately.
+>> >
+>> > Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
+>> > Cc: Markus Armbruster <armbru@redhat.com>
+>> > Cc: Juan Quintela <quintela@redhat.com>
+>> > Cc: Fabiano Rosas <farosas@suse.de>
+>> > Reported-by: Thomas Huth <thuth@redhat.com>
+>> > Signed-off-by: Peter Xu <peterx@redhat.com>
+>> > ---
+>> >
+>> > v2:
+>> > - One more line squashed into to fix the build error...  Please ignore v1,
+>> >   sorry for the noise.
+>> >
+>> > This patch is based on Thomas's patch:
+>> >
+>> > [PATCH v2] migration/ram: Fix compilation with -Wshadow=local
+>> > https://lore.kernel.org/r/20231024092220.55305-1-thuth@redhat.com
+>> >
+>> > Above patch should have been queued by both Markus and Juan.
+>> > ---
+>> >  migration/ram.c | 13 ++++++++-----
+>> >  1 file changed, 8 insertions(+), 5 deletions(-)
+>> >
+>> > diff --git a/migration/ram.c b/migration/ram.c
+>> > index 212add4481..1473bb593a 100644
+>> > --- a/migration/ram.c
+>> > +++ b/migration/ram.c
+>> > @@ -3034,11 +3034,13 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+>> >      ret = rdma_registration_start(f, RAM_CONTROL_SETUP);
+>> >      if (ret < 0) {
+>> >          qemu_file_set_error(f, ret);
+>> > +        return ret;
+>> 
+>> I agree
+>> 
+>> >      }
+>> >  
+>> >      ret = rdma_registration_stop(f, RAM_CONTROL_SETUP);
+>> >      if (ret < 0) {
+>> >          qemu_file_set_error(f, ret);
+>> > +        return ret;
+>> 
+>> I agree
+>> 
+>> >      }
+>> >  
+>> >      migration_ops = g_malloc0(sizeof(MigrationOps));
+>> > @@ -3104,6 +3106,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+>> >          ret = rdma_registration_start(f, RAM_CONTROL_ROUND);
+>> >          if (ret < 0) {
+>> >              qemu_file_set_error(f, ret);
+>> > +            goto out;
+>> 
+>> Seems sensible
+>> 
+>> >          }
+>> >  
+>> >          t0 = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
+>> > @@ -3208,8 +3211,6 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+>> >      rs->last_stage = !migration_in_colo_state();
+>> >  
+>> >      WITH_RCU_READ_LOCK_GUARD() {
+>> > -        int rdma_reg_ret;
+>> > -
+>> >          if (!migration_in_postcopy()) {
+>> >              migration_bitmap_sync_precopy(rs, true);
+>> >          }
+>> > @@ -3217,6 +3218,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+>> >          ret = rdma_registration_start(f, RAM_CONTROL_FINISH);
+>> >          if (ret < 0) {
+>> >              qemu_file_set_error(f, ret);
+>> > +            break;
+>> 
+>> Please
+>>               return ret;
+>> 
+>> 
+>> We can do exactly the same with pages < 0.
+>> 
+>> >          }
+>> >  
+>> >          /* try transferring iterative blocks of memory */
+>> > @@ -3240,9 +3242,10 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+>> >  
+>> >          ram_flush_compressed_data(rs);
+>> >  
+>> > -        rdma_reg_ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
+>> > -        if (rdma_reg_ret < 0) {
+>> > -            qemu_file_set_error(f, rdma_reg_ret);
+>> > +        ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
+>> > +        if (ret < 0) {
+>> > +            qemu_file_set_error(f, ret);
+>> > +            break;
+>> >          }
+>> >      }
+>> 
+>> And if we return here, we can just drop the:
+>> 
+>>     if (ret < 0) {
+>>         return ret;
+>>     }
+>> 
+>> 
+>> At the ext of the loop.
+>
+> IIUC that'll be the same as this patch,
 
-Sounds good.  I'll do that.
+No.
 
-Glenn
+if you see a break, you need to search for the loop, and go to the end
+and see what happens.
+
+  return ret;
+
+It is completely obvious what we do in case of error.
+
+> but sure thing I'll prepare a v3.
+
+Thanks.
 
 
