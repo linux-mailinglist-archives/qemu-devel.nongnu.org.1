@@ -2,79 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC63E7D4F75
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 14:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA667D4FA4
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 14:18:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvGB5-0006t6-3d; Tue, 24 Oct 2023 08:06:31 -0400
+	id 1qvGKk-0001wx-Hr; Tue, 24 Oct 2023 08:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvGAn-0006qc-U6
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 08:06:17 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvGKg-0001wF-Ed; Tue, 24 Oct 2023 08:16:26 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvGAm-00027o-3w
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 08:06:13 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-407da05f05aso32425985e9.3
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 05:06:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvGKd-0004Hs-Qe; Tue, 24 Oct 2023 08:16:25 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-32dff202b4bso1282006f8f.1; 
+ Tue, 24 Oct 2023 05:16:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698149167; x=1698753967; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=iQO0rUS/pYybVIAzOqqSurq5TtdAqwkv8i1ZzBFwBlY=;
- b=OpGTldMkdfj/Y84I2CuqM2UyHABQfOqtrrNY+N58Lbxc10nHXP/ATcpilHy8glMn8L
- QItSYlSnsFSt/+e7Otm/s0Hnr5wqOjL7gFWbp1rgZh9TeAlBBWxLGDJp09K9U3pV4pRo
- jABzljtVxFzITCUUF4AazM968atvPLVWDJo4AWGJgtbI5PNUFDIDjDd9OBZhNJ/IJk1Q
- zHVKJyxL7s17UXozSNfeO392/RVCnttqNgXz4I8Av+sPGDa3DHoOzKXB1WhK90vugtF2
- Bjbab2W7Pw9xadQ/a/7OBJFfIaoN6kFevCrnBl2iz3ojqS4s0s4a1eFbe5n3rCvIC+au
- 68lg==
+ d=gmail.com; s=20230601; t=1698149780; x=1698754580; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XqhLs0VKE4eYGQf3IxDeRGyPalLn8V/39qWJijHHo24=;
+ b=AGuWTHs25CmWoUVBFXgZEdELdOTx329tw4exZBuEKjcwRiSX2eShtTCg4reDILczzs
+ ystDYlWjcUMA1SPVckUWAuWZtfskXyWM8SVloLdwSrU0dT4hcAMg66nTYv9q2y6eJyQQ
+ 8khiva8BxQu5iPvQSN/7VyxfiZoog9G59D7w68VFeu+KDfh/N96rmB9he77axEjQu+6e
+ jrerItxdQpqNTNNKMdwvsRVtZMdfZPCnyW1Be9BXxANyCm7MD2Nh9zYfmhPckLnrFtLt
+ ux2kyBTgLM5VZTu+92K7/3ORgR3sR03FndcpBDNRBKestQTqMHQNsb4qhm/4FMnfO627
+ aoSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698149167; x=1698753967;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iQO0rUS/pYybVIAzOqqSurq5TtdAqwkv8i1ZzBFwBlY=;
- b=KCk7nPMlnON3cSDLxpFPkVv2ZHpuZdO/RVUQ0wsOIb4P2o6ER+C/AXGtOEa9/UKeNn
- o6YZKDU+KOePytkwpQpQVi0pTp3ORO9X5nEd7DzzYH1DFbxYeZ4uz7DYbU/v9luf9GTd
- 4x/5XY+fa9MpZiRxe5suIqlVSfGLwn0B/wce0Ll49ZYj3SprEPypRnEgfb3A9/4U4obh
- 00DtsFjJgZfdyTETUEECyD3S6j+U/c95vineA4QlIAWi/MznxOUyRgk7pU46LWHotg3s
- cVK4z0uFKmySj8QP667jjymCgdzsuHp2tpam/t4kqe3EifpJspK3Yt5zAYTNgTRmEoX0
- qzig==
-X-Gm-Message-State: AOJu0YwPkm6m3AutIvI46MkCEaeev7VDpwY0bk7nUDXoCsVF98wl2ld+
- BP7qZ+AWlp010PdVYN6hkGtnNg==
-X-Google-Smtp-Source: AGHT+IEGH00Oac3HwGYYpvBqfNvyLBJcUgWmtvUvBLCh4GtQxf4Sssgcuu5SNppI+Vattiv5iqQFrQ==
-X-Received: by 2002:a05:600c:1d8a:b0:406:54e4:359c with SMTP id
- p10-20020a05600c1d8a00b0040654e4359cmr9461121wms.19.1698149166723; 
- Tue, 24 Oct 2023 05:06:06 -0700 (PDT)
-Received: from [192.168.69.115] (sem44-h01-176-172-55-165.dsl.sta.abo.bbox.fr.
- [176.172.55.165]) by smtp.gmail.com with ESMTPSA id
- s10-20020a05600c45ca00b00407752f5ab6sm12057422wmo.6.2023.10.24.05.06.05
+ d=1e100.net; s=20230601; t=1698149780; x=1698754580;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XqhLs0VKE4eYGQf3IxDeRGyPalLn8V/39qWJijHHo24=;
+ b=DdNQINNK10X/TcrMEyb6FBfXe/WNC4Os9sgee5+dyrisueQJB92pFOjD0prrnVyrOe
+ eXnoSn9NVBXTCi+cEINwKRLVfCmcgjlsmdfLUJZvwAHp6EcWgbHV9QB2NtdGh3J08Ff9
+ 3XIzaV5dbkHYuEC1woP2LNwzXVF2QyPBuypt+kHXdi9OgtkaORI3/ho7YYKwQV+OLYld
+ EZ31N4wj0/h4VAhwEnn63QkqYELFmtlWzrktuY9QQb3SEqms65eeh2niH2TWZgu4uPrv
+ P7CYkn9SYhF05EOZ4IuNGuXzDw/sa/HVA1g9Ax5qVut4rYdjjeDt/l8AT1heRTGlPpQY
+ iCeg==
+X-Gm-Message-State: AOJu0Yw0f9XdbXsqsbJgjcjz4xRY5g9bFKS5aTIsYIWuT26H3R0KIhLG
+ 1tfauNtv2E5sCnvBr0Wbyjw=
+X-Google-Smtp-Source: AGHT+IE4Z5n2fmffxWcQ/sQr9yuXr/uNARW3iYvgNsmcZBaWl9xNE3uVkib5/sqcnF5f4lyc4e1dbQ==
+X-Received: by 2002:adf:e650:0:b0:32d:92fd:9f73 with SMTP id
+ b16-20020adfe650000000b0032d92fd9f73mr7885913wrn.10.1698149779261; 
+ Tue, 24 Oct 2023 05:16:19 -0700 (PDT)
+Received: from [192.168.6.66] (54-240-197-238.amazon.com. [54.240.197.238])
+ by smtp.gmail.com with ESMTPSA id
+ w5-20020adfee45000000b00317a04131c5sm9822690wro.57.2023.10.24.05.16.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 05:06:06 -0700 (PDT)
-Message-ID: <f90ad76f-5a03-0d31-2f7c-4a5cc871d50b@linaro.org>
-Date: Tue, 24 Oct 2023 14:06:04 +0200
+ Tue, 24 Oct 2023 05:16:18 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <456aae8e-ea07-4861-a91b-7c7e28d2a22b@xen.org>
+Date: Tue, 24 Oct 2023 13:16:17 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] qapi: Fix QAPISchemaEntity.__repr__()
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/12] i386/xen: fix per-vCPU upcall vector for Xen
+ emulation
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com
-References: <20231024104841.1569250-1-armbru@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231024104841.1569250-1-armbru@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Marcelo Tosatti
+ <mtosatti@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <20231016151909.22133-2-dwmw2@infradead.org>
+Organization: Xen Project
+In-Reply-To: <20231016151909.22133-2-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,18 +102,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/10/23 12:48, Markus Armbruster wrote:
-> I messed it up on merge.  It's a debugging aid, so no impact on build.
+On 16/10/2023 16:18, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> Fixes: e307a8174bb8 (qapi: provide a friendly string representation of QAPI classes)
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> The per-vCPU upcall vector support had two problems. Firstly it was
+> using the wrong hypercall argument and would always return -EFAULT.
+> And secondly it was using the wrong ioctl() to pass the vector to
+> the kernel and thus the *kernel* would always return -EINVAL.
+> 
+> Linux doesn't (yet) use this mode so it went without decent testing
+> for a while.
+> 
+> Fixes: 105b47fdf2d0 ("i386/xen: implement HVMOP_set_evtchn_upcall_vector")
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   scripts/qapi/schema.py | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   target/i386/kvm/xen-emu.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Paul Durrant <paul@xen.org>
 
 
