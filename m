@@ -2,88 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AB57D4E3E
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 12:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CFF7D4E51
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 12:55:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvEyl-0005Gc-TR; Tue, 24 Oct 2023 06:49:44 -0400
+	id 1qvF3L-0006N5-MX; Tue, 24 Oct 2023 06:54:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1qvEyg-0005CK-O0
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:49:38 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qvF3J-0006MK-4k; Tue, 24 Oct 2023 06:54:25 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1qvEya-0001F4-Rq
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:49:38 -0400
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39O7xx97017130; Tue, 24 Oct 2023 10:49:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=vYmn1KuwuYCGgziN4iM7FVs7+V5K92XT8ao/9X5qV94=;
- b=LnFMvILOdTJbSjs2M87liHJPiNp3seCQANCJdKtLYICs2Tz+ub2hURpVxrJPh5Fw96/a
- Y2A4DCoSkdqFzfmENMtGSEfKyT38uUWKlKgPRIcxkGySrrLP/Al8NsHDPOswVz+zO20s
- tFj3exTMzq91sOkfB9Nm5EZG6sSLkOslRtBRPXKp/T7Me4pXFaHhAsJnUhLMWDr52FSe
- EmumDEszDlcmd+SZqe6kPeb4nNoPYgIPUGgw29TlUHT+md0gCGMToys0QkySZDeJkXJm
- 7GGo+0YlIeiRCnrb2xcCv0zzsXdOfvY6oVE+b6Ca3Ut42yLg664v4OcfF6dm6t+VqUx6 2Q== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3twxa0hn55-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 10:49:29 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39OAnT4a001334
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 10:49:29 GMT
-Received: from [10.251.42.180] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Tue, 24 Oct
- 2023 03:49:28 -0700
-Message-ID: <aaafba0f-d6dc-a280-263c-afcc6b8f7e2b@quicinc.com>
-Date: Tue, 24 Oct 2023 12:49:25 +0200
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qvF3B-0002Kz-AU; Tue, 24 Oct 2023 06:54:24 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1F27344C0E;
+ Tue, 24 Oct 2023 12:54:07 +0200 (CEST)
+Message-ID: <2ec675fb-0bd9-4f3d-b205-2a7fe5101427@proxmox.com>
+Date: Tue, 24 Oct 2023 12:54:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mem: Fix mem region size when is UINT64_MAX
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: <qemu-devel@nongnu.org>
-References: <20231024094351.50464-1-quic_acaggian@quicinc.com>
- <CAFEAcA86trVBDe4zJr2Zv-EgWReY2M+yvU83Kc_8nGrjP4_tJg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] hw/ide: reset: cancel async DMA operation before
+ resetting state
 Content-Language: en-US
-From: Antonio Caggiano <quic_acaggian@quicinc.com>
-In-Reply-To: <CAFEAcA86trVBDe4zJr2Zv-EgWReY2M+yvU83Kc_8nGrjP4_tJg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: 1QAmGiCvye5l_K-K4V9mOIjRcBF8bUrs
-X-Proofpoint-ORIG-GUID: 1QAmGiCvye5l_K-K4V9mOIjRcBF8bUrs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-24_10,2023-10-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0
- mlxscore=0 phishscore=0 mlxlogscore=999 impostorscore=0 clxscore=1011
- bulkscore=0 adultscore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310240091
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_acaggian@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: jsnow@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, srowe@mose.org.uk, mike.maslenkin@gmail.com,
+ qemu-block@nongnu.org, t.lamprecht@proxmox.com, a.lauterer@proxmox.com,
+ philmd@linaro.org, kwolf@redhat.com
+References: <20230906130922.142845-1-f.ebner@proxmox.com>
+In-Reply-To: <20230906130922.142845-1-f.ebner@proxmox.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,78 +58,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+Ping
 
-Thanks for the quick response.
-
-On 24/10/2023 12:28, Peter Maydell wrote:
-> On Tue, 24 Oct 2023 at 10:45, Antonio Caggiano
-> <quic_acaggian@quicinc.com> wrote:
->>
->> This looks like a bug. When the size is `UINT64_MAX`, it is reset to
->> (Int128)`1 << 64` which actually is `UINT64_MAX + 1`.
->>
->> Then, an assert is triggered when the size is converted back to uin64_t
->> by using the int128_get64() function, as the new value happens to be
->> different than the previous one.
->>
->> Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
->> ---
->>   system/memory.c | 3 ---
->>   1 file changed, 3 deletions(-)
->>
->> diff --git a/system/memory.c b/system/memory.c
->> index a800fbc9e5..d41fc6af88 100644
->> --- a/system/memory.c
->> +++ b/system/memory.c
->> @@ -1193,9 +1193,6 @@ static void memory_region_do_init(MemoryRegion *mr,
->>                                     uint64_t size)
->>   {
->>       mr->size = int128_make64(size);
->> -    if (size == UINT64_MAX) {
->> -        mr->size = int128_2_64();
->> -    }
+Am 06.09.23 um 15:09 schrieb Fiona Ebner:
+> If there is a pending DMA operation during ide_bus_reset(), the fact
+> that the IDEState is already reset before the operation is canceled
+> can be problematic. In particular, ide_dma_cb() might be called and
+> then use the reset IDEState which contains the signature after the
+> reset. When used to construct the IO operation this leads to
+> ide_get_sector() returning 0 and nsector being 1. This is particularly
+> bad, because a write command will thus destroy the first sector which
+> often contains a partition table or similar.
 > 
-> No, this is intentional. In these memory region creation APIs
-> that take a uint64_t size parameter, size == UINT64_MAX is a
-> special case that means "actually the full 64 bit address space"
-> (and there is no way to ask for an MR to have a size that is
-> truly UINT64_MAX bytes). When we create the MR, the size is
-> stored in the MemoryRegion struct as its true size, because
-> we have an Int128 field there.
+> Traces showing the unsolicited write happening with IDEState
+> 0x5595af6949d0 being used after reset:
 > 
-> What assertion (with backtrace) is being hit? The issue is
-> probably at that point, not here.
-
-Here you can. I'm basically creating a system_memory of size UINT64_MAX, 
-and the assert is being hit when the memory is registered to KVM.
-
-#5  0x0000fffff6fc4040 in __GI___assert_fail (assertion=0xffffe111d9c8 
-"r == a", file=0xffffe111d960 "qemu/include/qemu/int128.h", line=34, 
-function=0xffffe111f348 <__PRETTY_FUNCTION__.46> "int128_get64") at 
-./assert/assert.c:101
-#6  0x0000ffffe0c8cf6c in int128_get64 (a=18446744073709551616) at 
-qemu/include/qemu/int128.h:34
-#7  0x0000ffffe0c92cec in kvm_region_commit (listener=0xffffd83e92e0) at 
-qemu/accel/kvm/kvm-all.c:1503
-#8  0x0000ffffe0bd495c in memory_region_transaction_commit () at 
-qemu/softmmu/memory.c:1109
-#9  0x0000ffffe0bd8a90 in memory_region_update_container_subregions 
-(subregion=0xaaaaabb6abf0) at qemu/softmmu/memory.c:2606
-#10 0x0000ffffe0bd8b3c in memory_region_add_subregion_common 
-(mr=0xaaaaabb6ae10, offset=0, subregion=0xaaaaabb6abf0) at 
-qemu/softmmu/memory.c:2621
-#11 0x0000ffffe0bd8b74 in memory_region_add_subregion 
-(mr=0xaaaaabb6ae10, offset=0, subregion=0xaaaaabb6abf0) at 
-qemu/softmmu/memory.c:2629
-#12 0x0000ffffe05d5508 in gpex_host_realize (dev=0xaaaaabb69910, 
-errp=0xffffdd4ce1f0) at qemu/hw/pci-host/gpex.c:132
-
+>> ahci_port_write ahci(0x5595af6923f0)[0]: port write [reg:PxSCTL] @ 0x2c: 0x00000300
+>> ahci_reset_port ahci(0x5595af6923f0)[0]: reset port
+>> ide_reset IDEstate 0x5595af6949d0
+>> ide_reset IDEstate 0x5595af694da8
+>> ide_bus_reset_aio aio_cancel
+>> dma_aio_cancel dbs=0x7f64600089a0
+>> dma_blk_cb dbs=0x7f64600089a0 ret=0
+>> dma_complete dbs=0x7f64600089a0 ret=0 cb=0x5595acd40b30
+>> ahci_populate_sglist ahci(0x5595af6923f0)[0]
+>> ahci_dma_prepare_buf ahci(0x5595af6923f0)[0]: prepare buf limit=512 prepared=512
+>> ide_dma_cb IDEState 0x5595af6949d0; sector_num=0 n=1 cmd=DMA WRITE
+>> dma_blk_io dbs=0x7f6420802010 bs=0x5595ae2c6c30 offset=0 to_dev=1
+>> dma_blk_cb dbs=0x7f6420802010 ret=0
 > 
-> thanks
-> -- PMM
+>> (gdb) p *qiov
+>> $11 = {iov = 0x7f647c76d840, niov = 1, {{nalloc = 1, local_iov = {iov_base = 0x0,
+>>       iov_len = 512}}, {__pad = "\001\000\000\000\000\000\000\000\000\000\000",
+>>       size = 512}}}
+>> (gdb) bt
+>> #0  blk_aio_pwritev (blk=0x5595ae2c6c30, offset=0, qiov=0x7f6420802070, flags=0,
+>>     cb=0x5595ace6f0b0 <dma_blk_cb>, opaque=0x7f6420802010)
+>>     at ../block/block-backend.c:1682
+>> #1  0x00005595ace6f185 in dma_blk_cb (opaque=0x7f6420802010, ret=<optimized out>)
+>>     at ../softmmu/dma-helpers.c:179
+>> #2  0x00005595ace6f778 in dma_blk_io (ctx=0x5595ae0609f0,
+>>     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
+>>     io_func=io_func@entry=0x5595ace6ee30 <dma_blk_write_io_func>,
+>>     io_func_opaque=io_func_opaque@entry=0x5595ae2c6c30,
+>>     cb=0x5595acd40b30 <ide_dma_cb>, opaque=0x5595af6949d0,
+>>     dir=DMA_DIRECTION_TO_DEVICE) at ../softmmu/dma-helpers.c:244
+>> #3  0x00005595ace6f90a in dma_blk_write (blk=0x5595ae2c6c30,
+>>     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
+>>     cb=cb@entry=0x5595acd40b30 <ide_dma_cb>, opaque=opaque@entry=0x5595af6949d0)
+>>     at ../softmmu/dma-helpers.c:280
+>> #4  0x00005595acd40e18 in ide_dma_cb (opaque=0x5595af6949d0, ret=<optimized out>)
+>>     at ../hw/ide/core.c:953
+>> #5  0x00005595ace6f319 in dma_complete (ret=0, dbs=0x7f64600089a0)
+>>     at ../softmmu/dma-helpers.c:107
+>> #6  dma_blk_cb (opaque=0x7f64600089a0, ret=0) at ../softmmu/dma-helpers.c:127
+>> #7  0x00005595ad12227d in blk_aio_complete (acb=0x7f6460005b10)
+>>     at ../block/block-backend.c:1527
+>> #8  blk_aio_complete (acb=0x7f6460005b10) at ../block/block-backend.c:1524
+>> #9  blk_aio_write_entry (opaque=0x7f6460005b10) at ../block/block-backend.c:1594
+>> #10 0x00005595ad258cfb in coroutine_trampoline (i0=<optimized out>,
+>>     i1=<optimized out>) at ../util/coroutine-ucontext.c:177
+> 
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-
-Cheers,
-Antonio
 
