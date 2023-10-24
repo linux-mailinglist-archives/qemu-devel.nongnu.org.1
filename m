@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32CA47D5134
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 898B67D5147
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 15:19:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvHFi-0006uZ-DM; Tue, 24 Oct 2023 09:15:22 -0400
+	id 1qvHFM-0006Ru-Ip; Tue, 24 Oct 2023 09:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHFB-0005Nm-Kb
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:14:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qvHFI-00066n-00
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:14:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvHF8-0001IX-6M
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:14:49 -0400
+ id 1qvHFG-0001Kv-3Z
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 09:14:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698153285;
+ s=mimecast20190719; t=1698153293;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uW1Z+v64y+umSQ32w8EgxYbosCFqhn1os2yU1vJh/YQ=;
- b=I5K4TAcqUdOOAq6GKaH/pvz6aSZg0h0p2352bEG3213wH4bRAtzSggJXzULt2/UMawXT3K
- 6mPHGheHhHGNeEURCGqNFDj8EqWha7XgK0eOpUMNaSC9dF2fDXYNar4MtlTZskVrTuAs2L
- OGelnPEDasI/x6KrZf0JWd8LJ7g13I4=
+ bh=8N9eMhXSGAX5ioZRsrn869KMrCb4AUfc/pU+hNfVZPk=;
+ b=SARNNG+9ijBuvVTUpV+7bToBAfEwgj4UkkK46A6Q6cbyOitpRn4ms9mueD+9FE/HFBwSQJ
+ 6uUYyq/KaZ7K4aojErab2Kf4a1K9V/6wViLOBFFHDNoEX3OdoQbQXmn8QoZ60bTK2tjH7u
+ y0ipnDZqruqDnOj4nBeCKQNF4tt3Wc8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-91-XKS5-EocNheYexz_jy6nnA-1; Tue, 24 Oct 2023 09:14:43 -0400
-X-MC-Unique: XKS5-EocNheYexz_jy6nnA-1
+ us-mta-460-Nh3vXhWVMNuzndu7l_iUGQ-1; Tue, 24 Oct 2023 09:14:49 -0400
+X-MC-Unique: Nh3vXhWVMNuzndu7l_iUGQ-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 759BA857D04;
- Tue, 24 Oct 2023 13:14:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EC950811E92;
+ Tue, 24 Oct 2023 13:14:47 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0B9C91C060AE;
- Tue, 24 Oct 2023 13:14:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BF3131C060AE;
+ Tue, 24 Oct 2023 13:14:41 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>,
@@ -72,25 +72,24 @@ Cc: Eric Blake <eblake@redhat.com>,
  Eric Farman <farman@linux.ibm.com>, Juan Quintela <quintela@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
- Lukas Straub <lukasstraub2@web.de>
-Subject: [PULL 13/39] migration: Create compress_update_rates()
-Date: Tue, 24 Oct 2023 15:12:39 +0200
-Message-ID: <20231024131305.87468-14-quintela@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
+Subject: [PULL 14/39] migration: Export send_queued_data()
+Date: Tue, 24 Oct 2023 15:12:40 +0200
+Message-ID: <20231024131305.87468-15-quintela@redhat.com>
 In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
 References: <20231024131305.87468-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,155 +105,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So we can move more compression_counters stuff to ram-compress.c.
-Create compression_counters struct to add the stuff that was on
-MigrationState.
+This function is only used for compression.  So we rename it as
+compress_send_queued_data().  We put it on ram-compress.h because we
+are moving it later to ram-compress.c.
 
-Reviewed-by: Lukas Straub <lukasstraub2@web.de>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231019110724.15324-8-quintela@redhat.com>
+Message-ID: <20231019110724.15324-9-quintela@redhat.com>
 ---
- migration/ram-compress.h |  1 +
- migration/ram.h          |  1 -
- migration/ram-compress.c | 42 +++++++++++++++++++++++++++++++++++++++-
- migration/ram.c          | 29 +--------------------------
- 4 files changed, 43 insertions(+), 30 deletions(-)
+ migration/ram-compress.h | 1 +
+ migration/ram.c          | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/migration/ram-compress.h b/migration/ram-compress.h
-index b228640092..76dacd3ec7 100644
+index 76dacd3ec7..636281ed97 100644
 --- a/migration/ram-compress.h
 +++ b/migration/ram-compress.h
-@@ -71,5 +71,6 @@ void decompress_data_with_multi_threads(QEMUFile *f, void *host, int len);
- void populate_compress(MigrationInfo *info);
+@@ -72,5 +72,6 @@ void populate_compress(MigrationInfo *info);
  uint64_t ram_compressed_pages(void);
  void update_compress_thread_counts(const CompressParam *param, int bytes_xmit);
-+void compress_update_rates(uint64_t page_count);
+ void compress_update_rates(uint64_t page_count);
++int compress_send_queued_data(CompressParam *param);
  
  #endif
-diff --git a/migration/ram.h b/migration/ram.h
-index 3f724b2f02..9f3ad1ee81 100644
---- a/migration/ram.h
-+++ b/migration/ram.h
-@@ -34,7 +34,6 @@
- #include "io/channel.h"
- 
- extern XBZRLECacheStats xbzrle_counters;
--extern CompressionStats compression_counters;
- 
- /* Should be holding either ram_list.mutex, or the RCU lock. */
- #define RAMBLOCK_FOREACH_NOT_IGNORED(block)            \
-diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-index f56e1f8e69..af42cab0fe 100644
---- a/migration/ram-compress.c
-+++ b/migration/ram-compress.c
-@@ -41,7 +41,20 @@
- #include "ram.h"
- #include "migration-stats.h"
- 
--CompressionStats compression_counters;
-+static struct {
-+    int64_t pages;
-+    int64_t busy;
-+    double busy_rate;
-+    int64_t compressed_size;
-+    double compression_rate;
-+    /* compression statistics since the beginning of the period */
-+    /* amount of count that no free thread to compress data */
-+    uint64_t compress_thread_busy_prev;
-+    /* amount bytes after compression */
-+    uint64_t compressed_size_prev;
-+    /* amount of compressed pages */
-+    uint64_t compress_pages_prev;
-+} compression_counters;
- 
- static CompressParam *comp_param;
- static QemuThread *compress_threads;
-@@ -518,3 +531,30 @@ void update_compress_thread_counts(const CompressParam *param, int bytes_xmit)
-     compression_counters.pages++;
- }
- 
-+void compress_update_rates(uint64_t page_count)
-+{
-+    if (!migrate_compress()) {
-+        return;
-+    }
-+    compression_counters.busy_rate = (double)(compression_counters.busy -
-+            compression_counters.compress_thread_busy_prev) / page_count;
-+    compression_counters.compress_thread_busy_prev =
-+            compression_counters.busy;
-+
-+    double compressed_size = compression_counters.compressed_size -
-+        compression_counters.compressed_size_prev;
-+    if (compressed_size) {
-+        double uncompressed_size = (compression_counters.pages -
-+                                    compression_counters.compress_pages_prev) *
-+            qemu_target_page_size();
-+
-+        /* Compression-Ratio = Uncompressed-size / Compressed-size */
-+        compression_counters.compression_rate =
-+            uncompressed_size / compressed_size;
-+
-+        compression_counters.compress_pages_prev =
-+            compression_counters.pages;
-+        compression_counters.compressed_size_prev =
-+            compression_counters.compressed_size;
-+    }
-+}
 diff --git a/migration/ram.c b/migration/ram.c
-index 46209388ec..f7daf2226e 100644
+index f7daf2226e..b6d485358e 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -369,13 +369,6 @@ struct RAMState {
-     bool xbzrle_started;
-     /* Are we on the last stage of migration */
-     bool last_stage;
--    /* compression statistics since the beginning of the period */
--    /* amount of count that no free thread to compress data */
--    uint64_t compress_thread_busy_prev;
--    /* amount bytes after compression */
--    uint64_t compressed_size_prev;
--    /* amount of compressed pages */
--    uint64_t compress_pages_prev;
- 
-     /* total handled target pages at the beginning of period */
-     uint64_t target_page_count_prev;
-@@ -945,7 +938,6 @@ uint64_t ram_get_total_transferred_pages(void)
- static void migration_update_rates(RAMState *rs, int64_t end_time)
- {
-     uint64_t page_count = rs->target_page_count - rs->target_page_count_prev;
--    double compressed_size;
- 
-     /* calculate period counters */
-     stat64_set(&mig_stats.dirty_pages_rate,
-@@ -973,26 +965,7 @@ static void migration_update_rates(RAMState *rs, int64_t end_time)
-         rs->xbzrle_pages_prev = xbzrle_counters.pages;
-         rs->xbzrle_bytes_prev = xbzrle_counters.bytes;
-     }
--
--    if (migrate_compress()) {
--        compression_counters.busy_rate = (double)(compression_counters.busy -
--            rs->compress_thread_busy_prev) / page_count;
--        rs->compress_thread_busy_prev = compression_counters.busy;
--
--        compressed_size = compression_counters.compressed_size -
--                          rs->compressed_size_prev;
--        if (compressed_size) {
--            double uncompressed_size = (compression_counters.pages -
--                                    rs->compress_pages_prev) * TARGET_PAGE_SIZE;
--
--            /* Compression-Ratio = Uncompressed-size / Compressed-size */
--            compression_counters.compression_rate =
--                                        uncompressed_size / compressed_size;
--
--            rs->compress_pages_prev = compression_counters.pages;
--            rs->compressed_size_prev = compression_counters.compressed_size;
--        }
--    }
-+    compress_update_rates(page_count);
+@@ -1264,7 +1264,7 @@ static int ram_save_multifd_page(QEMUFile *file, RAMBlock *block,
+     return 1;
  }
  
- /*
+-static int send_queued_data(CompressParam *param)
++int compress_send_queued_data(CompressParam *param)
+ {
+     PageSearchStatus *pss = &ram_state->pss[RAM_CHANNEL_PRECOPY];
+     MigrationState *ms = migrate_get_current();
+@@ -1306,7 +1306,7 @@ static void ram_flush_compressed_data(void)
+         return;
+     }
+ 
+-    flush_compressed_data(send_queued_data);
++    flush_compressed_data(compress_send_queued_data);
+ }
+ 
+ #define PAGE_ALL_CLEAN 0
+@@ -2041,7 +2041,7 @@ static bool save_compress_page(RAMState *rs, PageSearchStatus *pss,
+     }
+ 
+     return compress_page_with_multi_thread(pss->block, offset,
+-                                           send_queued_data);
++                                           compress_send_queued_data);
+ }
+ 
+ /**
 -- 
 2.41.0
 
