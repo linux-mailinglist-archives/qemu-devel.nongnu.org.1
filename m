@@ -2,46 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6007D5742
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303967D5729
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:00:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvJqj-0003BV-H5; Tue, 24 Oct 2023 12:01:45 -0400
+	id 1qvJnr-00008L-Ok; Tue, 24 Oct 2023 11:58:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1qvJqc-0002rf-BB
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:01:41 -0400
-Received: from jedlik.phy.bme.hu ([152.66.102.83])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1qvJqa-0003uO-2P
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:01:37 -0400
-Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
- id A7B37A0112; Tue, 24 Oct 2023 17:52:28 +0200 (CEST)
-Date: Tue, 24 Oct 2023 17:52:28 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org, 
- Greg Kurz <groug@kaod.org>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH v4 4/8] target/ppc: Move patching nip from exception
- handler to helper_scv
-In-Reply-To: <de324de29469374ca87b3e5f9b6a9aaf61ea5f2b.1698158152.git.balaton@eik.bme.hu>
-Message-ID: <alpine.LMD.2.03.2310241751310.1739@eik.bme.hu>
-References: <cover.1698158152.git.balaton@eik.bme.hu>
- <de324de29469374ca87b3e5f9b6a9aaf61ea5f2b.1698158152.git.balaton@eik.bme.hu>
-User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qvJnn-00007z-PA
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:58:44 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qvJnm-0002ur-0Q
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:58:43 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40907b82ab9so10757065e9.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 08:58:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698163120; x=1698767920; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=awxLtNOqWYASZHdbf28m2QJJs6Pq6yxb+MFNpXcWp9c=;
+ b=KA4kBFJ0lMFc87jOswx4Gb8z4Lp0/ZuM3UYinrmoQZekjyRAk2pyKnv33G1gdtIfh+
+ Q1+M6ZqfFu7DXdtzCSjBwGd3zBWFSCks0g3bUabm7XPjQtnVOSxyv3I9dOOa/veCHAt9
+ bKtys5Pc+sdcuLB6UOkbDM7ChF8Wqt7AeNBeDOLVmjmeCBkZayRmG+4za6YO2daLpCib
+ r0IcM5MsvNIVf+eMg344oQeXP+TU6/pofpkwIncCv0sTDy41ocYLUIJeUuI1spKtEd0/
+ 04q2/Gze9Zt3nSQYhtSS9M+2GeGYuOH5YN6s9LJrvZcTuBZBT0E7hz7V3LHtoqJ13gkV
+ qcKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698163120; x=1698767920;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=awxLtNOqWYASZHdbf28m2QJJs6Pq6yxb+MFNpXcWp9c=;
+ b=EacAM+A6yOvpZKkl+cWxE/XK5m1TynhRpxzB6CPGK31DvfPASx8TVKkuX+K7maWF/l
+ r4Kb1QPWkfGXCLglMrBKG4HCcSyFAXu4AHfov9ncC/UZQ2TtvHPWTiDGjjqy+M48Oueh
+ Zj2AmzIpGHHknTxxQ8+1scYjpJvoo4k6KPvCSVVtRt2FCHspXTH/uEx+c+LX7p1qneEh
+ JpNdiJQ9YpH8QRN0rTF9kPmDYBv6aCWQNPBN2W/OlNwh21y+FDxWywAFoE4EiiWG2bCX
+ h96irPjxA9OFa8Vp/jjElnTG0kP43df5SleK29G47tLpj8qZpIUz4b495lJJraq5ndjL
+ MxQQ==
+X-Gm-Message-State: AOJu0YyYqsLC3z14Rn+KMXsHoCPCTx42BvLZDK9EeAzTHdnpQV6h3mCq
+ WSYU1rL8ShJsoMiO5uyJ29uH5Q==
+X-Google-Smtp-Source: AGHT+IHFJsBjiGP0P/g59ErYALqyrmdMLeBBQ0qB7A9r+Py9lXNQGLOWG8FnMd/oMfpOIud1WyjeTw==
+X-Received: by 2002:adf:e0c4:0:b0:31f:a717:f1b6 with SMTP id
+ m4-20020adfe0c4000000b0031fa717f1b6mr11045299wri.11.1698163119938; 
+ Tue, 24 Oct 2023 08:58:39 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ g7-20020a5d6987000000b003232380ffd7sm10190419wru.102.2023.10.24.08.58.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Oct 2023 08:58:39 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 1D4771FFBB;
+ Tue, 24 Oct 2023 16:58:39 +0100 (BST)
+References: <20231019102657.129512-1-akihiko.odaki@daynix.com>
+ <20231019102657.129512-16-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.22; emacs 29.1.90
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?=
+ <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v14 15/18] cpu: Call plugin hooks only when ready
+Date: Tue, 24 Oct 2023 16:58:25 +0100
+In-reply-to: <20231019102657.129512-16-akihiko.odaki@daynix.com>
+Message-ID: <87ttqg107k.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
-Received-SPF: none client-ip=152.66.102.83;
- envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,66 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 24 Oct 2023, Nicholas Piggin wrote:
 
-Oops, this should have had a From: line here but it was your patch, sorry 
-about the wrong headers.
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-Reagrds,
-BALATON Zoltan
+> The initialization and exit hooks will not affect the state of vCPU
+> outside TCG context, but they may depend on the state of vCPU.
+> Therefore, it's better to call plugin hooks after the vCPU state is
+> fully initialized and before it gets uninitialized.
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-> Unlike sc, for scv a facility unavailable interrupt must be generated
-> if FSCR[SCV]=0 so we can't raise the exception with nip set to next
-> instruction but we can move advancing nip if the FSCR check passes to
-> helper_scv so the exception handler does not need to change it.
->
-> [balaton: added commit message]
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-> target/ppc/excp_helper.c | 2 +-
-> target/ppc/translate.c   | 6 +++++-
-> 2 files changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 22361b6c17..dd08efe4f2 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -1405,7 +1405,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
->     case POWERPC_EXCP_SYSCALL_VECTORED: /* scv exception                     */
->         lev = env->error_code;
->         dump_syscall(env);
-> -        env->nip += 4;
->         new_msr |= env->msr & ((target_ulong)1 << MSR_EE);
->         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
->
-> @@ -2528,6 +2527,7 @@ void helper_ppc_maybe_interrupt(CPUPPCState *env)
-> void helper_scv(CPUPPCState *env, uint32_t lev)
-> {
->     if (env->spr[SPR_FSCR] & (1ull << FSCR_SCV)) {
-> +        env->nip += 4;
->         raise_exception_err(env, POWERPC_EXCP_SYSCALL_VECTORED, lev);
->     } else {
->         raise_exception_err(env, POWERPC_EXCP_FU, FSCR_IC_SCV);
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index a80d24143e..d8cd34721c 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -4554,7 +4554,11 @@ static void gen_scv(DisasContext *ctx)
-> {
->     uint32_t lev = (ctx->opcode >> 5) & 0x7F;
->
-> -    /* Set the PC back to the faulting instruction. */
-> +    /*
-> +     * Set the PC back to the scv instruction (unlike sc), because a facility
-> +     * unavailable interrupt must be generated if FSCR[SCV]=0. The helper
-> +     * advances nip if the FSCR check passes.
-> +     */
->     gen_update_nip(ctx, ctx->cia);
->     gen_helper_scv(tcg_env, tcg_constant_i32(lev));
->
-> -- 
-> 2.30.9
->
->
->
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
