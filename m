@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF00D7D4B36
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC977D4B39
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:55:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvDAY-0000fo-20; Tue, 24 Oct 2023 04:53:46 -0400
+	id 1qvDAY-0000n1-Ue; Tue, 24 Oct 2023 04:53:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qvDAS-0000Rl-96
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:53:40 -0400
+ id 1qvDAT-0000Um-Ev
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:53:41 -0400
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qvDAO-0006Ie-QT
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:53:40 -0400
+ id 1qvDAQ-0006L5-Lz
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:53:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698137617; x=1729673617;
+ t=1698137619; x=1729673619;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=a+74DxT3dREJBY9EaraqrrwqvMhEGimb8T6AvCRGFqw=;
- b=jO5Yhqn/rFwyd7ARuPbfOQ1h+j4n22VjjM/pbAC4BLk1Y5uKsGJxflBV
- DxmVqzPh/uecGk/fQINGBjYl7/GDIPM669A77vL02AI1p1hf7KxD8JNtn
- +dmBA7LcffY4aVNnWbesjyPBmG+sX3fJTJI/iyB7RFKTl3179lQX7nVYM
- /VYFGgm5anY+Wy0Xw21grDElYMWzhZRRDjLhdsujIhjLyNG/qAAcklVr/
- r9Gq9PCg3bCMBggKcw19wpyfXtUyl9YDFqVr8XmW/eCHUl/V2T+b91kUT
- mF47PAmzP8FG3fw1L8svPt80PBz2HUapeBWEHP67bg8hkYGLyOyaoixBz A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="5638554"
+ bh=IcYJ3JWRIhXwVt1LkLnGAUJWGR7gnfonpF5KBsId+tg=;
+ b=eVzXsqpwE3kv1cLuYHolmhzEW5ywXV2W5VC+URH/jwJE74iU5LgyonB1
+ aNNd4J9omPN5UT1EjDv0xJSn6ocxDD3njHWQz/9b9K+DN0FEun1qXrfgx
+ iP3MxMVUWhkSoGLFsb7/z03p05jhZghyI4Uj5JmOdtK5FYX73Bf69m5ZG
+ 7xhkiIntpYYlrGG5TEX8nXk4kFjsmsSGsBrhNxMkU/sAz3R8zMAcw4SM/
+ jJSPBcgAHAWwQjk+S9fZxZ21/UywXJgnLJTTiHE0EsXsMp0Dd/x1vOnPY
+ EtXgQBTW8PM4VrudUWGUo725wUy8cuSl5r3jXIQigWZiH2A0eV+eBsF6G w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="5638570"
 X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
-   d="scan'208";a="5638554"
+   d="scan'208";a="5638570"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2023 01:53:30 -0700
+ 24 Oct 2023 01:53:37 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="793418214"
-X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; d="scan'208";a="793418214"
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="793418231"
+X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; d="scan'208";a="793418231"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga001.jf.intel.com with ESMTP; 24 Oct 2023 01:53:21 -0700
+ by orsmga001.jf.intel.com with ESMTP; 24 Oct 2023 01:53:29 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -53,9 +53,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Babu Moger <babu.moger@amd.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>, Zhuocheng Ding <zhuocheng.ding@intel.com>
-Subject: [PATCH v5 13/20] i386: Support module_id in X86CPUTopoIDs
-Date: Tue, 24 Oct 2023 17:03:16 +0800
-Message-Id: <20231024090323.1859210-14-zhao1.liu@linux.intel.com>
+Subject: [PATCH v5 14/20] i386/cpu: Introduce cluster-id to X86CPU
+Date: Tue, 24 Oct 2023 17:03:17 +0800
+Message-Id: <20231024090323.1859210-15-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231024090323.1859210-1-zhao1.liu@linux.intel.com>
 References: <20231024090323.1859210-1-zhao1.liu@linux.intel.com>
@@ -86,17 +86,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhuocheng Ding <zhuocheng.ding@intel.com>
 
-Add module_id member in X86CPUTopoIDs.
+Introduce cluster-id other than module-id to be consistent with
+CpuInstanceProperties.cluster-id, and this avoids the confusion
+of parameter names when hotplugging.
 
-module_id can be parsed from APIC ID, so also update APIC ID parsing
-rule to support module level. With this support, the conversions with
-module level between X86CPUTopoIDs, X86CPUTopoInfo and APIC ID are
-completed.
-
-module_id can be also generated from cpu topology, and before i386
-supports "clusters" in smp, the default "clusters per die" is only 1,
-thus the module_id generated in this way is 0, so that it will not
-conflict with the module_id generated by APIC ID.
+Following the legacy smp check rules, also add the cluster_id validity
+into x86_cpu_pre_plug().
 
 Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
 Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
@@ -105,129 +100,112 @@ Tested-by: Babu Moger <babu.moger@amd.com>
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
-Changes since v1:
- * Merge the patch "i386: Update APIC ID parsing rule to support module
-   level" into this one. (Yanan)
- * Move the apicid_module_width() and apicid_module_offset() support
-   into the previous modules_per_die related patch. (Yanan)
+Changes since v3:
+ * Use the imperative in the commit message. (Babu)
 ---
- hw/i386/x86.c              | 28 +++++++++++++++++++++-------
- include/hw/i386/topology.h | 17 +++++++++++++----
- 2 files changed, 34 insertions(+), 11 deletions(-)
+ hw/i386/x86.c     | 33 +++++++++++++++++++++++++--------
+ target/i386/cpu.c |  2 ++
+ target/i386/cpu.h |  1 +
+ 3 files changed, 28 insertions(+), 8 deletions(-)
 
 diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 8503d30a133a..3e2fabf3d5bd 100644
+index 3e2fabf3d5bd..12213af3c04c 100644
 --- a/hw/i386/x86.c
 +++ b/hw/i386/x86.c
-@@ -311,11 +311,11 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+@@ -325,6 +325,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+             cpu->die_id = 0;
+         }
  
-     /*
-      * If APIC ID is not set,
--     * set it based on socket/die/core/thread properties.
-+     * set it based on socket/die/cluster/core/thread properties.
-      */
-     if (cpu->apic_id == UNASSIGNED_APIC_ID) {
--        int max_socket = (ms->smp.max_cpus - 1) /
--                                smp_threads / smp_cores / ms->smp.dies;
-+        int max_socket = (ms->smp.max_cpus - 1) / smp_threads / smp_cores /
-+                                ms->smp.clusters / ms->smp.dies;
++        /*
++         * cluster-id was optional in QEMU 8.0 and older, so keep it optional
++         * if there's only one cluster per die.
++         */
++        if (cpu->cluster_id < 0 && ms->smp.clusters == 1) {
++            cpu->cluster_id = 0;
++        }
++
+         if (cpu->socket_id < 0) {
+             error_setg(errp, "CPU socket-id is not set");
+             return;
+@@ -341,6 +349,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+                        cpu->die_id, ms->smp.dies - 1);
+             return;
+         }
++        if (cpu->cluster_id < 0) {
++            error_setg(errp, "CPU cluster-id is not set");
++            return;
++        } else if (cpu->cluster_id > ms->smp.clusters - 1) {
++            error_setg(errp, "Invalid CPU cluster-id: %u must be in range 0:%u",
++                       cpu->cluster_id, ms->smp.clusters - 1);
++            return;
++        }
+         if (cpu->core_id < 0) {
+             error_setg(errp, "CPU core-id is not set");
+             return;
+@@ -360,16 +376,9 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
  
-         /*
-          * die-id was optional in QEMU 4.0 and older, so keep it optional
-@@ -362,17 +362,27 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+         topo_ids.pkg_id = cpu->socket_id;
          topo_ids.die_id = cpu->die_id;
++        topo_ids.module_id = cpu->cluster_id;
          topo_ids.core_id = cpu->core_id;
          topo_ids.smt_id = cpu->thread_id;
-+
-+        /*
-+         * TODO: This is the temporary initialization for topo_ids.module_id to
-+         * avoid "maybe-uninitialized" compilation errors. Will remove when
-+         * X86CPU supports cluster_id.
-+         */
-+        topo_ids.module_id = 0;
-+
+-
+-        /*
+-         * TODO: This is the temporary initialization for topo_ids.module_id to
+-         * avoid "maybe-uninitialized" compilation errors. Will remove when
+-         * X86CPU supports cluster_id.
+-         */
+-        topo_ids.module_id = 0;
+-
          cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
      }
  
-     cpu_slot = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &idx);
-     if (!cpu_slot) {
-         x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
-+
-         error_setg(errp,
--            "Invalid CPU [socket: %u, die: %u, core: %u, thread: %u] with"
--            " APIC ID %" PRIu32 ", valid index range 0:%d",
--            topo_ids.pkg_id, topo_ids.die_id, topo_ids.core_id, topo_ids.smt_id,
--            cpu->apic_id, ms->possible_cpus->len - 1);
-+            "Invalid CPU [socket: %u, die: %u, module: %u, core: %u, thread: %u]"
-+            " with APIC ID %" PRIu32 ", valid index range 0:%d",
-+            topo_ids.pkg_id, topo_ids.die_id, topo_ids.module_id,
-+            topo_ids.core_id, topo_ids.smt_id, cpu->apic_id,
-+            ms->possible_cpus->len - 1);
-         return;
+@@ -414,6 +423,14 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
      }
+     cpu->die_id = topo_ids.die_id;
  
-@@ -493,6 +503,10 @@ const CPUArchIdList *x86_possible_cpu_arch_ids(MachineState *ms)
-             ms->possible_cpus->cpus[i].props.has_die_id = true;
-             ms->possible_cpus->cpus[i].props.die_id = topo_ids.die_id;
-         }
-+        if (ms->smp.clusters > 1) {
-+            ms->possible_cpus->cpus[i].props.has_cluster_id = true;
-+            ms->possible_cpus->cpus[i].props.cluster_id = topo_ids.module_id;
-+        }
-         ms->possible_cpus->cpus[i].props.has_core_id = true;
-         ms->possible_cpus->cpus[i].props.core_id = topo_ids.core_id;
-         ms->possible_cpus->cpus[i].props.has_thread_id = true;
-diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-index 517e51768c13..ed1f3d6c1d5e 100644
---- a/include/hw/i386/topology.h
-+++ b/include/hw/i386/topology.h
-@@ -50,6 +50,7 @@ typedef uint32_t apic_id_t;
- typedef struct X86CPUTopoIDs {
-     unsigned pkg_id;
-     unsigned die_id;
-+    unsigned module_id;
-     unsigned core_id;
-     unsigned smt_id;
- } X86CPUTopoIDs;
-@@ -127,6 +128,7 @@ static inline apic_id_t x86_apicid_from_topo_ids(X86CPUTopoInfo *topo_info,
- {
-     return (topo_ids->pkg_id  << apicid_pkg_offset(topo_info)) |
-            (topo_ids->die_id  << apicid_die_offset(topo_info)) |
-+           (topo_ids->module_id << apicid_module_offset(topo_info)) |
-            (topo_ids->core_id << apicid_core_offset(topo_info)) |
-            topo_ids->smt_id;
- }
-@@ -140,12 +142,16 @@ static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
-                                          X86CPUTopoIDs *topo_ids)
- {
-     unsigned nr_dies = topo_info->dies_per_pkg;
--    unsigned nr_cores = topo_info->cores_per_module *
--                        topo_info->modules_per_die;
-+    unsigned nr_modules = topo_info->modules_per_die;
-+    unsigned nr_cores = topo_info->cores_per_module;
-     unsigned nr_threads = topo_info->threads_per_core;
++    if (cpu->cluster_id != -1 && cpu->cluster_id != topo_ids.module_id) {
++        error_setg(errp, "property cluster-id: %u doesn't match set apic-id:"
++            " 0x%x (cluster-id: %u)", cpu->cluster_id, cpu->apic_id,
++            topo_ids.module_id);
++        return;
++    }
++    cpu->cluster_id = topo_ids.module_id;
++
+     if (cpu->core_id != -1 && cpu->core_id != topo_ids.core_id) {
+         error_setg(errp, "property core-id: %u doesn't match set apic-id:"
+             " 0x%x (core-id: %u)", cpu->core_id, cpu->apic_id,
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 37566eca7e23..4b231cdc5005 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7908,12 +7908,14 @@ static Property x86_cpu_properties[] = {
+     DEFINE_PROP_UINT32("apic-id", X86CPU, apic_id, 0),
+     DEFINE_PROP_INT32("thread-id", X86CPU, thread_id, 0),
+     DEFINE_PROP_INT32("core-id", X86CPU, core_id, 0),
++    DEFINE_PROP_INT32("cluster-id", X86CPU, cluster_id, 0),
+     DEFINE_PROP_INT32("die-id", X86CPU, die_id, 0),
+     DEFINE_PROP_INT32("socket-id", X86CPU, socket_id, 0),
+ #else
+     DEFINE_PROP_UINT32("apic-id", X86CPU, apic_id, UNASSIGNED_APIC_ID),
+     DEFINE_PROP_INT32("thread-id", X86CPU, thread_id, -1),
+     DEFINE_PROP_INT32("core-id", X86CPU, core_id, -1),
++    DEFINE_PROP_INT32("cluster-id", X86CPU, cluster_id, -1),
+     DEFINE_PROP_INT32("die-id", X86CPU, die_id, -1),
+     DEFINE_PROP_INT32("socket-id", X86CPU, socket_id, -1),
+ #endif
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 37bbf32f6c78..2496839f2a28 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2059,6 +2059,7 @@ struct ArchCPU {
+     int32_t node_id; /* NUMA node this CPU belongs to */
+     int32_t socket_id;
+     int32_t die_id;
++    int32_t cluster_id;
+     int32_t core_id;
+     int32_t thread_id;
  
--    topo_ids->pkg_id = cpu_index / (nr_dies * nr_cores * nr_threads);
--    topo_ids->die_id = cpu_index / (nr_cores * nr_threads) % nr_dies;
-+    topo_ids->pkg_id = cpu_index / (nr_dies * nr_modules *
-+                       nr_cores * nr_threads);
-+    topo_ids->die_id = cpu_index / (nr_modules * nr_cores *
-+                       nr_threads) % nr_dies;
-+    topo_ids->module_id = cpu_index / (nr_cores * nr_threads) %
-+                          nr_modules;
-     topo_ids->core_id = cpu_index / nr_threads % nr_cores;
-     topo_ids->smt_id = cpu_index % nr_threads;
- }
-@@ -163,6 +169,9 @@ static inline void x86_topo_ids_from_apicid(apic_id_t apicid,
-     topo_ids->core_id =
-             (apicid >> apicid_core_offset(topo_info)) &
-             ~(0xFFFFFFFFUL << apicid_core_width(topo_info));
-+    topo_ids->module_id =
-+            (apicid >> apicid_module_offset(topo_info)) &
-+            ~(0xFFFFFFFFUL << apicid_module_width(topo_info));
-     topo_ids->die_id =
-             (apicid >> apicid_die_offset(topo_info)) &
-             ~(0xFFFFFFFFUL << apicid_die_width(topo_info));
 -- 
 2.34.1
 
