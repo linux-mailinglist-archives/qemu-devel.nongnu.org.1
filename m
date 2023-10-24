@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A147D58AC
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 874477D5896
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:36:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvKNV-000291-W2; Tue, 24 Oct 2023 12:35:38 -0400
+	id 1qvKNb-0002F2-PY; Tue, 24 Oct 2023 12:35:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qvKNJ-000205-1K
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:35:25 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1qvKNK-00023W-9k
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:35:27 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qvKNB-0004NA-Sz
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:35:23 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c59a4dd14cso5566001fa.2
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:35:17 -0700 (PDT)
+ id 1qvKND-0004Nm-Pz
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:35:25 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40850b244beso37068765e9.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:35:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698165316; x=1698770116; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698165318; x=1698770118; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5WGh0voIbBHj+DcvsvmqoPjrnRTVY8rj8gNN9HFZqcE=;
- b=mi9u3QQnYDNQUTp4jQvIC3ZBhR3jJ4Uri3RpFVVP97cyYAL6gzzK3OAL68FtqBpDO3
- +KmOIsiEhTvPR1TqvhvOS14zfYFFueW1glHS0iw1ygPMR/auRZv3+9LW96mE3cei7DFX
- T+Gp6ufQkwQVU+N6JYMfDePpTTDX0rSQkUNlr9O6ToWnufGIDEaVnx4KhP6UXB6CO7LM
- jwog8Jy8PhkXsH00KOU17HcGelukzF5TvEjvVgwikQjBLxuSVyt9KBSZz9GvPMJAAmUX
- rZ/e2HhYY+sTvMlypK/tbAUh4alZ+ZZcAVqUbsgQ3cDotJq64//pGJWmsmerOaQ+lsIS
- ev1A==
+ :reply-to; bh=G/+qcdpgBnjuo8dOvriQuYuuJGQAP8cL8Iq5TnOvFD8=;
+ b=Fj5x+Q9CE7aAi9+MxOlruJUes6rUve6HY/0qCt2Ck9n/OeidHuK7sd5sp7jM6BxFQl
+ ZLCFpKBkiChm4YHXYyEFuOiS8EFvZxlcS/fJwFqHt7w0VgBY6PUBY2H0k9CgGp05k65n
+ qmQYfCl2IXZO22CXQaM3NvKRF36AM0sOHWIxyEYKhKxORw7msPWbR/jrOq7DRk5uXzlr
+ 8IS9HwtMmAkQn77qYxfr/s2X6haUwMQARCspvoX2NFlMt0UTHlJjqJU1AblH7ezy2dbW
+ 3+TU/aCujxve4yl/5HQ2FJnPV2s7qzDE1HCyxRVG1DfbjPvTvHPXZ6uuWToyXc6A5kJL
+ VgTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698165316; x=1698770116;
+ d=1e100.net; s=20230601; t=1698165318; x=1698770118;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5WGh0voIbBHj+DcvsvmqoPjrnRTVY8rj8gNN9HFZqcE=;
- b=YRo+wNYm/J7mjxIxcc75jfxuJk799LInm2ZBQDLn9aAqIfxbx6cE6wRnsJX3MS1y3E
- wHx7zYoB0OviXR2rUNtQvk0zTAR/5HBzcYvrrSn5c/eFxx0eSXzMfG2Zat6vMgNBopTB
- jecrx8qB+PIjmodGhGghcAClVTU1CGTUCRtZBLaqaVawWmLLMBFyiPRzaizcY8Jz869T
- VaUR3yRmFYqp+5ndiT6AC+z2JHUgOKtF+ByxquREcg7VhPwhQfO7c3eAhgDlNB45swok
- cfoxQJQx+l3aDATJi4jxbQtO5NKKRPOO3O/PYrwNVCLC8lkagXuKxG7c6NVPGg96ih6Q
- TLCg==
-X-Gm-Message-State: AOJu0Yx6Wx2PD6CM7TU7ryhjZ8jMZZ90MXeAYeEn3OtdkZvv+wVlShmU
- C+yTdMPU2Vji74Xx5TecYencEg==
-X-Google-Smtp-Source: AGHT+IE4QM+QyuX7pDjVtv3GmuuT6MDlmtSs0GRZ3jC6lGu9VmUJn+OU7XbZl8aVV2S6XmkhVAuPxg==
-X-Received: by 2002:a2e:9dd9:0:b0:2b9:412a:111d with SMTP id
- x25-20020a2e9dd9000000b002b9412a111dmr8826198ljj.42.1698165315998; 
- Tue, 24 Oct 2023 09:35:15 -0700 (PDT)
+ bh=G/+qcdpgBnjuo8dOvriQuYuuJGQAP8cL8Iq5TnOvFD8=;
+ b=lC5xoc/QLHaZBwelwxXrJnnKWVIeJCb1bNtvMfKW9Euq1o4v2Rqdk6o0YK2MR5TfGJ
+ RC7uwkIyYH2W5JtEMC4ohliueftdbMP1w8eSdlojUb8vkd25inmQJzg3Bvh/eX+fcNqi
+ dHk5pn1SlDee50oRqLLDaFasKquaakOeaBEJj5qxnyBqgkbLpklnOumVDokdDMCxgt3P
+ X8/Q33qi2VMtT3gD0AnZw2rAqXPx4tk9i3KvBXRx0Y/0ZJPIKrM/kfVL/oa6SpPNFbBu
+ tmoN+/k+jWW07ckGzqzz4QSaUAc4gNHAhtE5V7b30/PK059vNonrrxwGQxCzyH9rTZvZ
+ +efQ==
+X-Gm-Message-State: AOJu0YxCU6YTbwRVgpEdvEdDjhpJz0q4D5kt67qmB79RDXdufWESKHFb
+ ACGNim3p0XxfV1aEc56YNI9z0w==
+X-Google-Smtp-Source: AGHT+IF+c3U2rYymheZKxZlPDmdzuvg3itjEE7Da3LcAbBVNHejO6M87LoKFz/Q9Dk83H3F3SpupPA==
+X-Received: by 2002:a05:600c:5488:b0:402:f5c4:2e5a with SMTP id
+ iv8-20020a05600c548800b00402f5c42e5amr10928515wmb.37.1698165317710; 
+ Tue, 24 Oct 2023 09:35:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- p12-20020a05600c418c00b0040773c69fc0sm16860101wmh.11.2023.10.24.09.35.15
+ p12-20020a05600c418c00b0040773c69fc0sm16860101wmh.11.2023.10.24.09.35.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 09:35:15 -0700 (PDT)
+ Tue, 24 Oct 2023 09:35:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 5/6] target/arm: Move ID_AA64PFR* tests together
-Date: Tue, 24 Oct 2023 17:35:09 +0100
-Message-Id: <20231024163510.2972081-6-peter.maydell@linaro.org>
+Subject: [PATCH 6/6] target/arm: Move ID_AA64DFR* feature tests together
+Date: Tue, 24 Oct 2023 17:35:10 +0100
+Message-Id: <20231024163510.2972081-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231024163510.2972081-1-peter.maydell@linaro.org>
 References: <20231024163510.2972081-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,124 +90,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move all the ID_AA64PFR* feature test functions together.
+Move all the ID_AA64DFR* feature test functions together.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-features.h | 86 +++++++++++++++++++--------------------
- 1 file changed, 43 insertions(+), 43 deletions(-)
+ target/arm/cpu-features.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index e73120ef974..0ed05b8b19e 100644
+index 0ed05b8b19e..66212cd7ecc 100644
 --- a/target/arm/cpu-features.h
 +++ b/target/arm/cpu-features.h
-@@ -631,6 +631,49 @@ static inline bool isar_feature_aa64_rme(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64pfr0, ID_AA64PFR0, RME) != 0;
- }
- 
-+static inline bool isar_feature_aa64_dit(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr0, ID_AA64PFR0, DIT) != 0;
-+}
-+
-+static inline bool isar_feature_aa64_scxtnum(const ARMISARegisters *id)
-+{
-+    int key = FIELD_EX64(id->id_aa64pfr0, ID_AA64PFR0, CSV2);
-+    if (key >= 2) {
-+        return true;      /* FEAT_CSV2_2 */
-+    }
-+    if (key == 1) {
-+        key = FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, CSV2_FRAC);
-+        return key >= 2;  /* FEAT_CSV2_1p2 */
-+    }
-+    return false;
-+}
-+
-+static inline bool isar_feature_aa64_ssbs(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SSBS) != 0;
-+}
-+
-+static inline bool isar_feature_aa64_bti(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, BT) != 0;
-+}
-+
-+static inline bool isar_feature_aa64_mte_insn_reg(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) != 0;
-+}
-+
-+static inline bool isar_feature_aa64_mte(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 2;
-+}
-+
-+static inline bool isar_feature_aa64_sme(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SME) != 0;
-+}
-+
- static inline bool isar_feature_aa64_tgran4_lpa2(const ARMISARegisters *id)
- {
-     return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4) >= 1;
-@@ -791,26 +834,6 @@ static inline bool isar_feature_aa64_e0pd(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, E0PD) != 0;
- }
- 
--static inline bool isar_feature_aa64_bti(const ARMISARegisters *id)
--{
--    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, BT) != 0;
--}
--
--static inline bool isar_feature_aa64_mte_insn_reg(const ARMISARegisters *id)
--{
--    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) != 0;
--}
--
--static inline bool isar_feature_aa64_mte(const ARMISARegisters *id)
--{
--    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 2;
--}
--
--static inline bool isar_feature_aa64_sme(const ARMISARegisters *id)
--{
--    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SME) != 0;
--}
--
- static inline bool isar_feature_aa64_pmuv3p1(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64dfr0, ID_AA64DFR0, PMUVER) >= 4 &&
-@@ -829,29 +852,6 @@ static inline bool isar_feature_aa64_pmuv3p5(const ARMISARegisters *id)
-         FIELD_EX64(id->id_aa64dfr0, ID_AA64DFR0, PMUVER) != 0xf;
- }
- 
--static inline bool isar_feature_aa64_dit(const ARMISARegisters *id)
--{
--    return FIELD_EX64(id->id_aa64pfr0, ID_AA64PFR0, DIT) != 0;
--}
--
--static inline bool isar_feature_aa64_scxtnum(const ARMISARegisters *id)
--{
--    int key = FIELD_EX64(id->id_aa64pfr0, ID_AA64PFR0, CSV2);
--    if (key >= 2) {
--        return true;      /* FEAT_CSV2_2 */
--    }
--    if (key == 1) {
--        key = FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, CSV2_FRAC);
--        return key >= 2;  /* FEAT_CSV2_1p2 */
--    }
--    return false;
--}
--
--static inline bool isar_feature_aa64_ssbs(const ARMISARegisters *id)
--{
--    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SSBS) != 0;
--}
--
- static inline bool isar_feature_aa64_debugv8p2(const ARMISARegisters *id)
- {
+@@ -857,6 +857,11 @@ static inline bool isar_feature_aa64_debugv8p2(const ARMISARegisters *id)
      return FIELD_EX64(id->id_aa64dfr0, ID_AA64DFR0, DEBUGVER) >= 8;
+ }
+ 
++static inline bool isar_feature_aa64_doublelock(const ARMISARegisters *id)
++{
++    return FIELD_SEX64(id->id_aa64dfr0, ID_AA64DFR0, DOUBLELOCK) >= 0;
++}
++
+ static inline bool isar_feature_aa64_sve2(const ARMISARegisters *id)
+ {
+     return FIELD_EX64(id->id_aa64zfr0, ID_AA64ZFR0, SVEVER) != 0;
+@@ -922,11 +927,6 @@ static inline bool isar_feature_aa64_sme_fa64(const ARMISARegisters *id)
+     return FIELD_EX64(id->id_aa64smfr0, ID_AA64SMFR0, FA64);
+ }
+ 
+-static inline bool isar_feature_aa64_doublelock(const ARMISARegisters *id)
+-{
+-    return FIELD_SEX64(id->id_aa64dfr0, ID_AA64DFR0, DOUBLELOCK) >= 0;
+-}
+-
+ /*
+  * Feature tests for "does this exist in either 32-bit or 64-bit?"
+  */
 -- 
 2.34.1
 
