@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCB17D49DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D1B7D4A1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:32:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvCdF-0004Wg-6F; Tue, 24 Oct 2023 04:19:21 -0400
+	id 1qvCnx-0001Vs-Lu; Tue, 24 Oct 2023 04:30:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvCdC-0004WI-2W
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:19:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvCd9-0006nT-I5
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:19:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698135553;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=TPij2V05uvbtyn/G8vlgL3snFQZ/m613FKrZXZG/Pbc=;
- b=b17GA4SIcO3KTdur+KmFZEgbPE/pLwJcqZjFjEKV/EWkt8DPregspFcVQQjxbTlIZif9FO
- pzFxpMD0DiRsPMcoZTWJ++RA/6HuJvKpoDcJWXEOyGrfg56kNu3/5pflm+XSJFfwxT+BkO
- oWvcC2KPWx43qhlsV0hjwL9G757Dqp0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-7GolCiNYOMO5O7FM-bSx3w-1; Tue, 24 Oct 2023 04:19:04 -0400
-X-MC-Unique: 7GolCiNYOMO5O7FM-bSx3w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC23680F925;
- Tue, 24 Oct 2023 08:19:03 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.102])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 09707492BD9;
- Tue, 24 Oct 2023 08:19:00 +0000 (UTC)
-Date: Tue, 24 Oct 2023 09:18:52 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
- Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [PATCH v2 10/29] io: Add generic pwritev/preadv interface
-Message-ID: <ZTd97Eb9RwLrsJsN@redhat.com>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-11-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvCnv-0001VK-OH
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:30:23 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvCnn-00012J-Sr
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:30:23 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2c4fe37f166so60393071fa.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 01:30:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698136213; x=1698741013; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DofkXsCTvbZe2X7DyAN5f8buT8fMjFe1M1dZcn34LJc=;
+ b=Fc9NeE5z7qkq2QVnCeJIsjsEXVsXdchnLDiiuRbnAoKYWP9yft2ZVoVAnu2nzoQ/+k
+ 7SPI84kU8NJC6nfFaiuQF0kD0VF4UasEEyqZrq3axwSqzqD9z963sRL+h/uro8aQspMP
+ yMSdhvjt7T21genyf2E/5/h3EnndODzaOjRqFrG1N1cW6ewLx1F6JzkypODyok/wMnjT
+ pJd8SPKaeYZVh2EAUm95tWVz37nO6PXmpeeryG6FZa1J661EiSyYPfpr+UjvoHhqDPgy
+ lzLtRn4umnbNoXgRf8eMjeYOwTxr9BLbmbbS+k8/OOM2vBcQf4RxrNCm2DPY8+9yUxj1
+ EIdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698136213; x=1698741013;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DofkXsCTvbZe2X7DyAN5f8buT8fMjFe1M1dZcn34LJc=;
+ b=MDFMe3lYt4blOrgb5TALKcSVY0eO0xMIIPomFNfnWFznXmkVDdAKNTw9o9J+2Dk9ue
+ 1fq5DeScMLVdkJi8Rs9ThCoY0dD9exY989HVcW6saDF7HqbnLlWKVLIP6dBa9VvJVL4U
+ zbkb+Qj7DuwbG0QUTORKo1qxD8c9CUZB1xP3trF3v66eSAbo2C1Oo8aPIxmXaiLNNike
+ iKfPFOrXdFsPtbRVTT0EtbucNjf3GAV9cvf0c6O5dkck4zSULfU+9CSyraTWK0rR/VHJ
+ P49xthJpT0nKnOFpdCEleLYPWNxlvc0rkTr5mRRbt9JE/pLEA0lN/xbCKDPNN3EHnLvr
+ ss1w==
+X-Gm-Message-State: AOJu0YwwFqbat8/y27nQ7ekUy+J0eji2LU5zf+keKER/BP/Icy5YLu96
+ y5t7DTWn8ySZRpt/aNpez64Gpd920d9voyCgCjg=
+X-Google-Smtp-Source: AGHT+IEgNY1lNhKaqiH+XySTlojRe1Utg4H3Xo25xIKq+RgKfHPG7n44lrGJNEoOexcW8reoaHsp6w==
+X-Received: by 2002:a2e:a7cc:0:b0:2c5:fb9:49b6 with SMTP id
+ x12-20020a2ea7cc000000b002c50fb949b6mr11124885ljp.10.1698136213130; 
+ Tue, 24 Oct 2023 01:30:13 -0700 (PDT)
+Received: from m1x-phil.lan (sem44-h01-176-172-55-165.dsl.sta.abo.bbox.fr.
+ [176.172.55.165]) by smtp.gmail.com with ESMTPSA id
+ l8-20020a05600c1d0800b0040531f5c51asm11506348wms.5.2023.10.24.01.30.11
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 24 Oct 2023 01:30:12 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Thomas Huth <huth@tuxfamily.org>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/6] hw/m68k: Strengthen QOM/SysBus API uses
+Date: Tue, 24 Oct 2023 10:30:03 +0200
+Message-ID: <20231024083010.12453-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231023203608.26370-11-farosas@suse.de>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,144 +86,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 05:35:49PM -0300, Fabiano Rosas wrote:
-> From: Nikolay Borisov <nborisov@suse.com>
-> 
-> Introduce basic pwritev/preadv support in the generic channel layer.
-> Specific implementation will follow for the file channel as this is
-> required in order to support migration streams with fixed location of
-> each ram page.
-> 
-> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  include/io/channel.h | 82 ++++++++++++++++++++++++++++++++++++++++++++
->  io/channel.c         | 58 +++++++++++++++++++++++++++++++
->  2 files changed, 140 insertions(+)
-> 
-> diff --git a/include/io/channel.h b/include/io/channel.h
-> index fcb19fd672..a8181d576a 100644
-> --- a/include/io/channel.h
-> +++ b/include/io/channel.h
-> @@ -131,6 +131,16 @@ struct QIOChannelClass {
->                             Error **errp);
->  
->      /* Optional callbacks */
-> +    ssize_t (*io_pwritev)(QIOChannel *ioc,
-> +                          const struct iovec *iov,
-> +                          size_t niov,
-> +                          off_t offset,
-> +                          Error **errp);
-> +    ssize_t (*io_preadv)(QIOChannel *ioc,
-> +                         const struct iovec *iov,
-> +                         size_t niov,
-> +                         off_t offset,
-> +                         Error **errp);
->      int (*io_shutdown)(QIOChannel *ioc,
->                         QIOChannelShutdown how,
->                         Error **errp);
-> @@ -529,6 +539,78 @@ void qio_channel_set_follow_coroutine_ctx(QIOChannel *ioc, bool enabled);
->  int qio_channel_close(QIOChannel *ioc,
->                        Error **errp);
->  
-> +/**
-> + * qio_channel_pwritev_full
-> + * @ioc: the channel object
-> + * @iov: the array of memory regions to write data from
-> + * @niov: the length of the @iov array
-> + * @offset: offset in the channel where writes should begin
-> + * @errp: pointer to a NULL-initialized error object
-> + *
-> + * Not all implementations will support this facility, so may report
-> + * an error. To avoid errors, the caller may check for the feature
-> + * flag QIO_CHANNEL_FEATURE_SEEKABLE prior to calling this method.
-> + *
-> + * Behaves as qio_channel_writev_full, apart from not supporting
-> + * sending of file handles as well as beginning the write at the
-> + * passed @offset
-> + *
-> + */
-> +ssize_t qio_channel_pwritev_full(QIOChannel *ioc, const struct iovec *iov,
-> +                                 size_t niov, off_t offset, Error **errp);
+All series reviewed.
 
-In terms of naming this should be  just "_pwritev".
+v2:
+- Addressed Thomas comments in patches 1-2
+- Added R-b tags
 
-We don't support FD passing, so the "_full" suffix is not
-appropriate
+Avoid QOM objects poking at each other internals:
+- Pass "link" properties
+- Access MMIO via SysBus API
+- Simplify using sysbus_create_simple()
 
-> +
-> +/**
-> + * qio_channel_pwritev
-> + * @ioc: the channel object
-> + * @buf: the memory region to write data into
-> + * @buflen: the number of bytes to @buf
-> + * @offset: offset in the channel where writes should begin
-> + * @errp: pointer to a NULL-initialized error object
-> + *
-> + * Not all implementations will support this facility, so may report
-> + * an error. To avoid errors, the caller may check for the feature
-> + * flag QIO_CHANNEL_FEATURE_SEEKABLE prior to calling this method.
-> + *
-> + */
-> +ssize_t qio_channel_pwritev(QIOChannel *ioc, char *buf, size_t buflen,
-> +                            off_t offset, Error **errp);
+Philippe Mathieu-Daudé (6):
+  hw/m68k/irqc: Pass CPU using QOM link property
+  hw/m68k/mcf5206: Pass CPU using QOM link property
+  hw/m68k/mcf_intc: Expose MMIO region via SysBus API
+  hw/m68k/mcf_intc: Pass CPU using QOM link property
+  hw/m68k/next-cube: Do not open-code sysbus_create_simple()
+  hw/m68k/virt: Do not open-code sysbus_create_simple()
 
-This isn't passing a vector of buffers, so it should be just
-"pwrite", not "pwritev".
+ include/hw/intc/m68k_irqc.h |  1 +
+ hw/intc/m68k_irqc.c         | 10 +++++++++-
+ hw/m68k/an5206.c            |  6 ++++--
+ hw/m68k/mcf5206.c           |  9 ++++++++-
+ hw/m68k/mcf_intc.c          | 21 ++++++++++++++-------
+ hw/m68k/next-cube.c         |  9 ++-------
+ hw/m68k/virt.c              |  9 ++++-----
+ 7 files changed, 42 insertions(+), 23 deletions(-)
 
-> +
-> +/**
-> + * qio_channel_preadv_full
-> + * @ioc: the channel object
-> + * @iov: the array of memory regions to read data into
-> + * @niov: the length of the @iov array
-> + * @offset: offset in the channel where writes should begin
-> + * @errp: pointer to a NULL-initialized error object
-> + *
-> + * Not all implementations will support this facility, so may report
-> + * an error.  To avoid errors, the caller may check for the feature
-> + * flag QIO_CHANNEL_FEATURE_SEEKABLE prior to calling this method.
-> + *
-> + * Behaves as qio_channel_readv_full, apart from not supporting
-> + * receiving of file handles as well as beginning the read at the
-> + * passed @offset
-> + *
-> + */
-> +ssize_t qio_channel_preadv_full(QIOChannel *ioc, const struct iovec *iov,
-> +                                size_t niov, off_t offset, Error **errp);
-
-"preadv"
-
-
-> +
-> +/**
-> + * qio_channel_preadv
-> + * @ioc: the channel object
-> + * @buf: the memory region to write data into
-> + * @buflen: the number of bytes to @buf
-> + * @offset: offset in the channel where writes should begin
-> + * @errp: pointer to a NULL-initialized error object
-> + *
-> + * Not all implementations will support this facility, so may report
-> + * an error.  To avoid errors, the caller may check for the feature
-> + * flag QIO_CHANNEL_FEATURE_SEEKABLE prior to calling this method.
-> + *
-> + */
-> +ssize_t qio_channel_preadv(QIOChannel *ioc, char *buf, size_t buflen,
-> +                           off_t offset, Error **errp);
-
-"pread"
-
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.41.0
 
 
