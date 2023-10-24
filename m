@@ -2,56 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1338D7D5606
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBD87D5618
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:23:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvJF4-0003YG-D6; Tue, 24 Oct 2023 11:22:51 -0400
+	id 1qvJFC-0003hP-03; Tue, 24 Oct 2023 11:22:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1ohf=GG=kaod.org=clg@ozlabs.org>)
- id 1qvJEW-0003Ed-2u; Tue, 24 Oct 2023 11:22:17 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from
+ <BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvJEz-0003ej-3t
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:22:47 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1ohf=GG=kaod.org=clg@ozlabs.org>)
- id 1qvJEO-0003DQ-J2; Tue, 24 Oct 2023 11:22:15 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SFG4p5dlnz4x5l;
- Wed, 25 Oct 2023 02:22:02 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SFG4k2ccYz4wy6;
- Wed, 25 Oct 2023 02:21:58 +1100 (AEDT)
-Message-ID: <58deedee-a291-4d73-a3f1-09ea16c953f0@kaod.org>
-Date: Tue, 24 Oct 2023 17:21:53 +0200
+ (Exim 4.90_1) (envelope-from
+ <BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvJEn-0003GH-MX
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:22:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=JlWO6RgVPGd8M61ZGob0FmKUMzP8OvgxEpu1tN6QSyY=; b=hP/8A+nbVK64Ypy4/i0/KnUdkd
+ AeYPMQxRl/oWxCcSujRqYqqqeNjqoi7Ib3lFXLFK+8bOv9lFyGap4cLMJ9voAlaNtSFJWmMcXs/db
+ jztBXH7gc0IjbbPbb3Rv7rERq3EfbezJ1yJWPnzLfLq6oYdyVzRsaH0lgzbJVBdYGwFILEziB3nzZ
+ /oRNOx41L7s2+jAZKC7yO2kbe8INnpbhW8dDmh3u/qTe+x0kvDjn3A5iLAZtDjgvpcg3DIYxMIv2F
+ yGI92KLJo8UTi1McQ2mfQ8dyeiedr0oRlJgjIyHgDM/zzuIbVmq2hUQauEDavLBAV4cl+IfPWYFzN
+ B/P4CWtA==;
+Received: from [2001:8b0:10b:5:758e:a1c4:bc7:e7a7]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qvJEl-003ERB-MI; Tue, 24 Oct 2023 15:22:31 +0000
+Message-ID: <7231ce3df7a3872b87e092bd3ed79bc5aa0f1484.camel@infradead.org>
+Subject: Re: [PATCH 1/4] hw/xen: only remove peers of PCI NICs on unplug
+From: David Woodhouse <dwmw2@infradead.org>
+To: paul@xen.org, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
+ Perard <anthony.perard@citrix.com>, Jason Wang <jasowang@redhat.com>,
+ xen-devel@lists.xenproject.org
+Date: Tue, 24 Oct 2023 16:22:31 +0100
+In-Reply-To: <1408fb32-3d91-4eb2-b0e7-4eba0f449906@xen.org>
+References: <20231017182545.97973-1-dwmw2@infradead.org>
+ <20231017182545.97973-2-dwmw2@infradead.org>
+ <1408fb32-3d91-4eb2-b0e7-4eba0f449906@xen.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-8AqSwZNUIqYzq2jVXXzA"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/10] hw/fsi: Aspeed APB2OPB interface
-Content-Language: en-US
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
-References: <20231021211720.3571082-1-ninad@linux.ibm.com>
- <20231021211720.3571082-7-ninad@linux.ibm.com>
- <c1aace06-0eab-4805-b58d-e108b53158dc@kaod.org>
- <1b83521d-4885-490e-b8d7-1d760de5c173@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <1b83521d-4885-490e-b8d7-1d760de5c173@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=1ohf=GG=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+e2898748ca55db067849+7366+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,364 +81,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/24/23 17:00, Ninad Palsule wrote:
-> Hello Cedric,
-> 
-> On 10/24/23 02:46, Cédric Le Goater wrote:
->> On 10/21/23 23:17, Ninad Palsule wrote:
->>> This is a part of patchset where IBM's Flexible Service Interface is
->>> introduced.
->>>
->>> An APB-to-OPB bridge enabling access to the OPB from the ARM core in
->>> the AST2600. Hardware limitations prevent the OPB from being directly
->>> mapped into APB, so all accesses are indirect through the bridge.
->>>
->>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
->>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->>> ---
->>> v2:
->>> - Incorporated review comments by Joel
->>> v3:
->>> - Incorporated review comments by Thomas Huth
->>> v4:
->>>    - Compile FSI with ASPEED_SOC only.
->>> v5:
->>> - Incorporated review comments by Cedric.
->>> v6:
->>> - Incorporated review comments by Cedric.
->>> ---
->>>   include/hw/fsi/aspeed-apb2opb.h |  33 ++++
->>>   hw/fsi/aspeed-apb2opb.c         | 280 ++++++++++++++++++++++++++++++++
->>>   hw/arm/Kconfig                  |   1 +
->>>   hw/fsi/Kconfig                  |   4 +
->>>   hw/fsi/meson.build              |   1 +
->>>   hw/fsi/trace-events             |   2 +
->>>   6 files changed, 321 insertions(+)
->>>   create mode 100644 include/hw/fsi/aspeed-apb2opb.h
->>>   create mode 100644 hw/fsi/aspeed-apb2opb.c
->>>
->>> diff --git a/include/hw/fsi/aspeed-apb2opb.h b/include/hw/fsi/aspeed-apb2opb.h
->>> new file mode 100644
->>> index 0000000000..a81ae67023
->>> --- /dev/null
->>> +++ b/include/hw/fsi/aspeed-apb2opb.h
->>> @@ -0,0 +1,33 @@
->>> +/*
->>> + * SPDX-License-Identifier: GPL-2.0-or-later
->>> + * Copyright (C) 2023 IBM Corp.
->>> + *
->>> + * ASPEED APB2OPB Bridge
->>> + */
->>> +#ifndef FSI_ASPEED_APB2OPB_H
->>> +#define FSI_ASPEED_APB2OPB_H
->>> +
->>> +#include "hw/sysbus.h"
->>> +#include "hw/fsi/opb.h"
->>> +
->>> +#define TYPE_ASPEED_APB2OPB "aspeed.apb2opb"
->>> +OBJECT_DECLARE_SIMPLE_TYPE(AspeedAPB2OPBState, ASPEED_APB2OPB)
->>> +
->>> +#define ASPEED_APB2OPB_NR_REGS ((0xe8 >> 2) + 1)
->>> +
->>> +#define ASPEED_FSI_NUM 2
->>> +
->>> +typedef struct AspeedAPB2OPBState {
->>> +    /*< private >*/
->>> +    SysBusDevice parent_obj;
->>> +
->>> +    /*< public >*/
->>> +    MemoryRegion iomem;
->>> +
->>> +    uint32_t regs[ASPEED_APB2OPB_NR_REGS];
->>> +    qemu_irq irq;
->>> +
->>> +    OPBus opb[ASPEED_FSI_NUM];
->>> +} AspeedAPB2OPBState;
->>> +
->>> +#endif /* FSI_ASPEED_APB2OPB_H */
->>> diff --git a/hw/fsi/aspeed-apb2opb.c b/hw/fsi/aspeed-apb2opb.c
->>> new file mode 100644
->>> index 0000000000..6f97a6bc7d
->>> --- /dev/null
->>> +++ b/hw/fsi/aspeed-apb2opb.c
->>> @@ -0,0 +1,280 @@
->>> +/*
->>> + * SPDX-License-Identifier: GPL-2.0-or-later
->>> + * Copyright (C) 2023 IBM Corp.
->>> + *
->>> + * ASPEED APB-OPB FSI interface
->>> + */
->>> +
->>> +#include "qemu/osdep.h"
->>> +#include "qemu/log.h"
->>> +#include "qom/object.h"
->>> +#include "qapi/error.h"
->>> +#include "trace.h"
->>> +
->>> +#include "hw/fsi/aspeed-apb2opb.h"
->>> +#include "hw/qdev-core.h"
->>> +
->>> +#define TO_REG(x) (x >> 2)
->>> +#define GENMASK(t, b) (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 1))
->>> +
->>> +#define APB2OPB_VERSION                    TO_REG(0x00)
->>> +#define   APB2OPB_VERSION_VER              GENMASK(7, 0)
->>> +
->>> +#define APB2OPB_TRIGGER                    TO_REG(0x04)
->>> +#define   APB2OPB_TRIGGER_EN               BIT(0)
->>> +
->>> +#define APB2OPB_CONTROL                    TO_REG(0x08)
->>> +#define   APB2OPB_CONTROL_OFF              GENMASK(31, 13)
->>> +
->>> +#define APB2OPB_OPB2FSI                    TO_REG(0x0c)
->>> +#define   APB2OPB_OPB2FSI_OFF              GENMASK(31, 22)
->>> +
->>> +#define APB2OPB_OPB0_SEL                   TO_REG(0x10)
->>> +#define APB2OPB_OPB1_SEL                   TO_REG(0x28)
->>> +#define   APB2OPB_OPB_SEL_EN               BIT(0)
->>> +
->>> +#define APB2OPB_OPB0_MODE                  TO_REG(0x14)
->>> +#define APB2OPB_OPB1_MODE                  TO_REG(0x2c)
->>> +#define   APB2OPB_OPB_MODE_RD              BIT(0)
->>> +
->>> +#define APB2OPB_OPB0_XFER                  TO_REG(0x18)
->>> +#define APB2OPB_OPB1_XFER                  TO_REG(0x30)
->>> +#define   APB2OPB_OPB_XFER_FULL            BIT(1)
->>> +#define   APB2OPB_OPB_XFER_HALF            BIT(0)
->>> +
->>> +#define APB2OPB_OPB0_ADDR                  TO_REG(0x1c)
->>> +#define APB2OPB_OPB0_WRITE_DATA            TO_REG(0x20)
->>> +
->>> +#define APB2OPB_OPB1_ADDR                  TO_REG(0x34)
->>> +#define APB2OPB_OPB1_WRITE_DATA                  TO_REG(0x38)
->>> +
->>> +#define APB2OPB_IRQ_STS                    TO_REG(0x48)
->>> +#define   APB2OPB_IRQ_STS_OPB1_TX_ACK      BIT(17)
->>> +#define   APB2OPB_IRQ_STS_OPB0_TX_ACK      BIT(16)
->>> +
->>> +#define APB2OPB_OPB0_WRITE_WORD_ENDIAN     TO_REG(0x4c)
->>> +#define   APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE 0x0011101b
->>> +#define APB2OPB_OPB0_WRITE_BYTE_ENDIAN     TO_REG(0x50)
->>> +#define   APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE 0x0c330f3f
->>> +#define APB2OPB_OPB1_WRITE_WORD_ENDIAN     TO_REG(0x54)
->>> +#define APB2OPB_OPB1_WRITE_BYTE_ENDIAN     TO_REG(0x58)
->>> +#define APB2OPB_OPB0_READ_BYTE_ENDIAN      TO_REG(0x5c)
->>> +#define APB2OPB_OPB1_READ_BYTE_ENDIAN      TO_REG(0x60)
->>> +#define   APB2OPB_OPB0_READ_WORD_ENDIAN_BE  0x00030b1b
->>> +
->>> +#define APB2OPB_OPB0_READ_DATA         TO_REG(0x84)
->>> +#define APB2OPB_OPB1_READ_DATA         TO_REG(0x90)
->>> +
->>> +/*
->>> + * The following magic values came from AST2600 data sheet
->>> + * The register values are defined under section "FSI controller"
->>> + * as initial values.
->>> + */
->>> +static const uint32_t aspeed_apb2opb_reset[ASPEED_APB2OPB_NR_REGS] = {
->>> +     [APB2OPB_VERSION]                = 0x000000a1,
->>> +     [APB2OPB_OPB0_WRITE_WORD_ENDIAN] = 0x0044eee4,
->>> +     [APB2OPB_OPB0_WRITE_BYTE_ENDIAN] = 0x0055aaff,
->>> +     [APB2OPB_OPB1_WRITE_WORD_ENDIAN] = 0x00117717,
->>> +     [APB2OPB_OPB1_WRITE_BYTE_ENDIAN] = 0xffaa5500,
->>> +     [APB2OPB_OPB0_READ_BYTE_ENDIAN]  = 0x0044eee4,
->>> +     [APB2OPB_OPB1_READ_BYTE_ENDIAN]  = 0x00117717
->>> +};
->>> +
->>> +static uint64_t fsi_aspeed_apb2opb_read(void *opaque, hwaddr addr,
->>> +                                        unsigned size)
->>> +{
->>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
->>> +
->>> +    trace_fsi_aspeed_apb2opb_read(addr, size);
->>> +
->>> +    if (addr + size > sizeof(s->regs)) {
->>
->>
->> hmm, the parameter 'size' is a memop transaction size not an address offset.
-> OK, Changed it to validate the register (index) instead of addr + size.
->>
->>> +        qemu_log_mask(LOG_GUEST_ERROR,
->>> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
->>> +                      __func__, addr, size);
->>> +        return 0;
->>> +    }
->>> +
->>> +    return s->regs[TO_REG(addr)];
->>> +}
->>> +
->>> +static void fsi_aspeed_apb2opb_write(void *opaque, hwaddr addr, uint64_t data,
->>> +                                     unsigned size)
->>> +{
->>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
->>> +
->>> +    trace_fsi_aspeed_apb2opb_write(addr, size, data);
->>> +
->>> +    if (addr + size > sizeof(s->regs)) {
->>
->> same comment.
-> Fixed it same as above.
->>
->>
->>> +        qemu_log_mask(LOG_GUEST_ERROR,
->>> +                      "%s: Out of bounds write: %"HWADDR_PRIx" for %u\n",
->>> +                      __func__, addr, size);
->>> +        return;
->>> +    }
->>> +
->>> +    switch (TO_REG(addr)) {
->>> +    case APB2OPB_CONTROL:
->>> +        fsi_opb_fsi_master_address(&s->opb[0], data & APB2OPB_CONTROL_OFF);
->>
->> fsi_opb_fsi_master_address() should statically defined in this file
-> We have separation of OPB bus implementation and APB2OPB interface. If we move this function here then we will be exposing OPB implementation here.
->>
->>> +        break;
->>> +    case APB2OPB_OPB2FSI:
->>> +        fsi_opb_opb2fsi_address(&s->opb[0], data & APB2OPB_OPB2FSI_OFF);
->>
->>
->> same for fsi_opb_opb2fsi_address()
-> Same as above.
->>
->>> +        break;
->>> +    case APB2OPB_OPB0_WRITE_WORD_ENDIAN:
->>> +        if (data != APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE) {
->>> +            qemu_log_mask(LOG_GUEST_ERROR,
->>> +                          "%s: Bridge needs to be driven as BE (0x%x)\n",
->>> +                          __func__, APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE);
->>> +        }
->>> +        break;
->>> +    case APB2OPB_OPB0_WRITE_BYTE_ENDIAN:
->>> +        if (data != APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE) {
->>> +            qemu_log_mask(LOG_GUEST_ERROR,
->>> +                          "%s: Bridge needs to be driven as BE (0x%x)\n",
->>> +                          __func__, APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE);
->>> +        }
->>> +        break;
->>> +    case APB2OPB_OPB0_READ_BYTE_ENDIAN:
->>> +        if (data != APB2OPB_OPB0_READ_WORD_ENDIAN_BE) {
->>> +            qemu_log_mask(LOG_GUEST_ERROR,
->>> +                          "%s: Bridge needs to be driven as BE (0x%x)\n",
->>> +                          __func__, APB2OPB_OPB0_READ_WORD_ENDIAN_BE);
->>> +        }
->>> +        break;
->>> +    case APB2OPB_TRIGGER:
->>> +    {
->>> +        uint32_t opb, op_mode, op_size, op_addr, op_data;
->>> +
->>> +        assert((s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) ^
->>> +               (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN));
->>> +
->>> +        if (s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) {
->>> +            opb = 0;
->>> +            op_mode = s->regs[APB2OPB_OPB0_MODE];
->>> +            op_size = s->regs[APB2OPB_OPB0_XFER];
->>> +            op_addr = s->regs[APB2OPB_OPB0_ADDR];
->>> +            op_data = s->regs[APB2OPB_OPB0_WRITE_DATA];
->>> +        } else if (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN) {
->>> +            opb = 1;
->>> +            op_mode = s->regs[APB2OPB_OPB1_MODE];
->>> +            op_size = s->regs[APB2OPB_OPB1_XFER];
->>> +            op_addr = s->regs[APB2OPB_OPB1_ADDR];
->>> +            op_data = s->regs[APB2OPB_OPB1_WRITE_DATA];
->>> +        } else {
->>> +            qemu_log_mask(LOG_GUEST_ERROR,
->>> +                          "%s: Invalid operation: 0x%"HWADDR_PRIx" for %u\n",
->>> +                          __func__, addr, size);
->>> +            return;
->>> +        }
->>> +
->>> +        if (op_size & ~(APB2OPB_OPB_XFER_HALF | APB2OPB_OPB_XFER_FULL)) {
->>> +            qemu_log_mask(LOG_GUEST_ERROR,
->>> +                          "OPB transaction failed: Unrecognised access width: %d\n",
->>
->> Unrecognized
-> Fixed
->>
->>> +                          op_size);
->>> +            return;
->>> +        }
->>> +
->>> +        op_size += 1;
->>> +
->>> +        if (op_mode & APB2OPB_OPB_MODE_RD) {
->>> +            int index = opb ? APB2OPB_OPB1_READ_DATA
->>> +                : APB2OPB_OPB0_READ_DATA;
->>> +
->>> +            switch (op_size) {
->>> +            case 1:
->>> +                s->regs[index] = fsi_opb_read8(&s->opb[opb], op_addr);
->>> +                break;
->>> +            case 2:
->>> +                s->regs[index] = fsi_opb_read16(&s->opb[opb], op_addr);
->>> +                break;
->>> +            case 4:
->>> +                s->regs[index] = fsi_opb_read32(&s->opb[opb], op_addr);
->>> +                break;
->>> +            default:
->>> +                qemu_log_mask(LOG_GUEST_ERROR,
->>> +                              "%s: Size not supported: %u\n",
->>> +                              __func__, size);
->>
->> this should use op_size and not size and seems redudant with
->> the unrecognized test above.
-> true, Keeping it in case bits meaning change in future.
->>
->>
->>> +                return;
->>> +            }
->>> +        } else {
->>> +            /* FIXME: Endian swizzling */
->>> +            switch (op_size) {
->>> +            case 1:
->>> +                fsi_opb_write8(&s->opb[opb], op_addr, op_data);
->>> +                break;
->>> +            case 2:
->>> +                fsi_opb_write16(&s->opb[opb], op_addr, op_data);
->>> +                break;
->>> +            case 4:
->>> +                fsi_opb_write32(&s->opb[opb], op_addr, op_data);
->>> +                break;
->>> +            default:
->>> +                qemu_log_mask(LOG_GUEST_ERROR,
->>> +                              "%s: Size not supported: %u\n",
->>> +                              __func__, op_size);
->>> +                return;
->>> +            }
->>> +        }
->>
->>
->> The above is equivalent to :
->>
->>         MemTxResult result;
->>         bool is_write = !(op_mode & APB2OPB_OPB_MODE_RD);
->>         int index = opb ? APB2OPB_OPB1_READ_DATA : APB2OPB_OPB0_READ_DATA;
->>         AddressSpace *as = &s->opb[opb].as;
->>
->>         result = address_space_rw(as, op_addr, MEMTXATTRS_UNSPECIFIED,
->>                                   &op_data, op_size, is_write);
->>         if (result != MEMTX_OK) {
->>             qemu_log_mask(LOG_GUEST_ERROR, "%s: OPB %s failed @%08x\n",
->>                           __func__, is_write ? "write" : "read", op_addr);
->>             return;
->>         }
->>
->>         if (!is_write) {
->>             s->regs[index] = op_data;
->>         }
->>
->> and the fsi_opb_* routines are useless to me.
-> We are trying to keep the separation between OPB implementation and interface hence we have all those fsi_opb_*. I feel that we should keep as it is so that future extensions will be easier. Please let me know.
 
-Well, I can't really tell because I don't know enough about FSI :/
+--=-8AqSwZNUIqYzq2jVXXzA
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The models look fragile and I have spent already a lot of time trying
-to untangle what they are trying to do. Please ask your teammates or
-let's see in the next QEMU cycle.
+On Tue, 2023-10-24 at 15:32 +0100, Paul Durrant wrote:
+> On 17/10/2023 19:25, David Woodhouse wrote:
+> > From: David Woodhouse <dwmw@amazon.co.uk>
+> >=20
+> > When the Xen guest asks to unplug *emulated* NICs, it's kind of unhelpf=
+ul
+> > also to unplug the peer of the *Xen* PV NIC.
+> >=20
+> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> > ---
+> > =C2=A0=C2=A0 hw/i386/xen/xen_platform.c | 9 +++++++--
+> > =C2=A0=C2=A0 1 file changed, 7 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
+> > index 17457ff3de..e2dd1b536a 100644
+> > --- a/hw/i386/xen/xen_platform.c
+> > +++ b/hw/i386/xen/xen_platform.c
+> > @@ -140,9 +140,14 @@ static void unplug_nic(PCIBus *b, PCIDevice *d, vo=
+id *o)
+> > =C2=A0=C2=A0 /* Remove the peer of the NIC device. Normally, this would=
+ be a tap device. */
+> > =C2=A0=C2=A0 static void del_nic_peer(NICState *nic, void *opaque)
+> > =C2=A0=C2=A0 {
+> > -=C2=A0=C2=A0=C2=A0 NetClientState *nc;
+> > +=C2=A0=C2=A0=C2=A0 NetClientState *nc =3D qemu_get_queue(nic);
+> > +=C2=A0=C2=A0=C2=A0 ObjectClass *klass =3D module_object_class_by_name(=
+nc->model);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /* Only delete peers of PCI NICs that we're about t=
+o delete */
+> > +=C2=A0=C2=A0=C2=A0 if (!klass || !object_class_dynamic_cast(klass, TYP=
+E_PCI_DEVICE)) {
+>=20
+> Would it not be better to test for object_class_dynamic_cast(klass,=20
+> TYPE_XEN_DEVICE)?
 
-Thanks,
+Only if we also change the actual unplug to destroy non-PCI devices too.
 
-C.
+The only non-PCI device you could have here is an ISA NE2000, I think.
+
+--=-8AqSwZNUIqYzq2jVXXzA
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI0MTUyMjMxWjAvBgkqhkiG9w0BCQQxIgQgwt6djrXv
+wJCpoK+au8BOIJfs9h91P8ZiT76vXzYrVo4wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAeaiStWe3Sm1mTFINlX7di9PVJ016mvhq4
+uKTn5gyg6RFb6/+IIA/tpRRK+8VhIK7s/1V6rWxkrblQbg4uIIHMD+OG01AmQ9SFcgBW9QKXB1P7
+56/2xAUEZaJ9sgU3d+ldOWvnDKs2rg9MRIYbUsyNBeBKvfbo1Cj3H318vGKF2PEQnHDcEtujpc9t
+6rs7vtwWlDMY//siT2kwGu/o8RurHGWnmh4pvWeLrTq6c019Fh9+tmYOrDuUYaibJh6bYLSkTuH8
+orlMxHi4etIgJkyzxowAFj68TNWw9cQJZ7G5E/rfe25mHDkz8kZI6U7dIJHhEDBIlqvIfuBkUQTx
+mWyjkZ6Qm8WA/q/WBowPD4XdAI5l87yyxKq9FA2PJ0fAyXvmaSazfgrai4/EtkuOYifAHm63DCPd
+D+367pA7WAMPj6VzURxHdeZVPqbaxVCUhJW/w5psRkOJtdCIK73XCOrYmtjM8alvEwVLSXT/zx7l
+u/y6xz3DEXPDGQ14Ul9LdbBfCy4rueoalptMxQOWSgeGS2tDAJdrNALtBSQ4yjQ3UUy7mdxAYYUh
+LiH58BhVdJyEQQeM1MGLXM2iVHvVGqUoFgqOpnzPM/H1rD1YiNzo3Wn1wDlxhrbiq6QfkHHMDSH/
+LiV5tSUPxqPaUWwpAKiId7++f5+kw/vZBS1cGB5z5gAAAAAAAA==
 
 
+--=-8AqSwZNUIqYzq2jVXXzA--
 
