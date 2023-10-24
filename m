@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C607D4FE3
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 14:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC607D5021
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 14:43:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvGdU-0004ZV-4X; Tue, 24 Oct 2023 08:35:52 -0400
+	id 1qvGjo-0008Hz-A5; Tue, 24 Oct 2023 08:42:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvGdL-0004Y2-HI; Tue, 24 Oct 2023 08:35:44 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qvGjn-0008Hn-2P; Tue, 24 Oct 2023 08:42:23 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qvGdJ-0008Ul-4A; Tue, 24 Oct 2023 08:35:43 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-408002b5b9fso36448955e9.3; 
- Tue, 24 Oct 2023 05:35:40 -0700 (PDT)
+ id 1qvGjl-0001HI-HB; Tue, 24 Oct 2023 08:42:22 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c50906f941so67157361fa.2; 
+ Tue, 24 Oct 2023 05:42:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698150939; x=1698755739; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698151339; x=1698756139; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Jt2cxa6ddwVCH4+7Ko2rashlvH36j0rjOEJrfGyoF5I=;
- b=MG7p0qOC32pPOhJFhUGyOUNl+98d7ZfaNaY+K3j9EoJ0FfpRsI6TDt87tChurLUssi
- wJxEXdgsk7mm56cJ7A6FK5VSiCihCzXuccA6HQ1dvXf0vtYDuBQfAqBq11vBi8M+4vFG
- YtmgiGKC9sr9ELVRWJMFYr+01c4RBWsBfBdrwrK8iZgx5Np3C80ECR5zGGFGkzpO8S7W
- qEPFs8eMy4DFaY/rqHGQoVFQvjeSzigTtF2njtYvon4XY3fAV2Arfu5Q13VTEzI7NEgT
- m4yc/U4mfTAyKnVsWW9zTTgAllX505r7OrMQHrxerT0YHD/UqyqSio3rk5Fzf8LD3FSW
- V9bw==
+ bh=nleuh30f60jeiNJDPgerM6LHIyJSmfHjZNXbgUudLV0=;
+ b=biAh4SEIQv1g1xRv7EkFWiJDYkh7YUbegozeYA7/OmX/tiHu9uPRSTpCu35jAFu02x
+ Oy7emLc/HaLv6Np+wPIvUVgGv5M3FCPB8XNet5e1h48u0BtNgKAVoMUBrIzUr2eI/KCU
+ LVM7/cHXnjt/wAdLcp3z9oBcuHXClYGgYqswQc5GPmZ/tE7YGak/kosLiOTdmO4PDaiB
+ A93VxAR67xorSQ922qag53CeAlgwXVrgHK71yKRdkji1IUf8VGZ6lgdVsvaxnhGU+uGL
+ rapwBnqkIbrGD7zDFbvWpaEgV1mL/3LnsLozE62h7LsOJqvDRyEvUAKoK/qlsEiU/MY1
+ TPeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698150939; x=1698755739;
+ d=1e100.net; s=20230601; t=1698151339; x=1698756139;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Jt2cxa6ddwVCH4+7Ko2rashlvH36j0rjOEJrfGyoF5I=;
- b=q4S6rsuu5r2vpRLaSKG7v4ncEsVEbvW7ZkMzaTweJjo3Cf9VlCzHcShiMnCKD5E1Yp
- 96B7hvAf/Zuoh8v72a943doxrTYalUs6sGUhjk2mH1QYxgHMAlF4UJJ5aaivDPQrFk47
- Ho/Ymhbf4drse43XIQQ+kdpZg4kFwXaKDCC5LHCof3jmF96HZ7acFG1Qfe7KB9WsvM0b
- xlFNYg1NB/AYIi2N2tPo0MXlwifVpvmJthXr4ghiWEuQbMzBjZfk7Cd07lymq1kEAIDz
- r11X4TAUvqok++xSYO8zJCX4tu72d8c8PCiIvgHesoy+v6ZFe7mFPRgHCYlubr29YuVU
- WbYg==
-X-Gm-Message-State: AOJu0YyMSM/fVgTUA2eCIUR8Of8pKHuZnY8WiKso+4C8MHZ5OHlfC9Te
- G2n8gk0AHcXdWQQx5Ri+suY=
-X-Google-Smtp-Source: AGHT+IHcviZwp5sEUV8HujATdN4eCJmLKJnxtVpxw/CtGmvUMvR85yAd1lcelMOmu9e8/DWbEGFBkQ==
-X-Received: by 2002:a05:600c:154e:b0:405:4a78:a890 with SMTP id
- f14-20020a05600c154e00b004054a78a890mr9583548wmg.8.1698150939091; 
- Tue, 24 Oct 2023 05:35:39 -0700 (PDT)
+ bh=nleuh30f60jeiNJDPgerM6LHIyJSmfHjZNXbgUudLV0=;
+ b=I9VvyKpT4GlCCoSwgnEnc2uOw0ou/Umz2P2WR1oRrO/xvHDrD6PGvRlAMb3z+wQe99
+ UPgv2hAgMoTqWnY4sKTqcdjd79vAtgLxpMb5mTcxUQNxA2vstw61XsbtGjvdV1qiJUaJ
+ UiRAKJlSiybM1X0uFqydn5NAA6Cm9XNxJBZqnbRGuiOc2Eb1d7/uD7NmX49dC0fDAa+2
+ jKNi8Ql/KdHtfyr/E1RtLi/+ZO+tBy7LOF6vXMRMHB8JmIYiGdNFM8AydmckqJ0FXMkb
+ LiTjtG4iOySxppNXyiHJoZtQYt/cRuyoxBvGsAa1/+hXJ061iZz9QE1afLDdhQZtr/Ix
+ ZNIg==
+X-Gm-Message-State: AOJu0YzVF9SNzlQ+OyJ8UbtrRGRVWik3ZmAvY4URNegsY7I4U8veYKSs
+ m6Qa7iSQjsoQvhG+FKmu3hA=
+X-Google-Smtp-Source: AGHT+IG7xfJEIBpaao1AVHuot+7nF+K9gT+jAPeV2BLTz6q/or9dTrt+5Pf96dJ2k8c2f9XmlagJlQ==
+X-Received: by 2002:a2e:aa28:0:b0:2be:54b4:ff90 with SMTP id
+ bf40-20020a2eaa28000000b002be54b4ff90mr7826766ljb.53.1698151339104; 
+ Tue, 24 Oct 2023 05:42:19 -0700 (PDT)
 Received: from [192.168.6.66] (54-240-197-230.amazon.com. [54.240.197.230])
  by smtp.gmail.com with ESMTPSA id
- p15-20020a05600c1d8f00b00402d34ea099sm16729462wms.29.2023.10.24.05.35.37
+ r9-20020a05600c320900b0040644e699a0sm16610990wmp.45.2023.10.24.05.42.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 05:35:38 -0700 (PDT)
+ Tue, 24 Oct 2023 05:42:18 -0700 (PDT)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <84ac7780-e17a-4957-b49b-46a8307eb9da@xen.org>
-Date: Tue, 24 Oct 2023 13:35:37 +0100
+Message-ID: <5ef43a7c-e535-496d-8a14-bccbadab3bc0@xen.org>
+Date: Tue, 24 Oct 2023 13:42:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/12] hw/xen: populate store frontend nodes with XenStore
- PFN/port
+Subject: Re: [PATCH 06/12] hw/xen: add get_frontend_path() method to
+ XenDeviceClass
 Content-Language: en-US
 To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -76,13 +76,13 @@ Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  <mtosatti@redhat.com>, qemu-block@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org
 References: <20231016151909.22133-1-dwmw2@infradead.org>
- <20231016151909.22133-6-dwmw2@infradead.org>
+ <20231016151909.22133-7-dwmw2@infradead.org>
 Organization: Xen Project
-In-Reply-To: <20231016151909.22133-6-dwmw2@infradead.org>
+In-Reply-To: <20231016151909.22133-7-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x32e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=xadimgnik@gmail.com; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,24 +109,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 16/10/2023 16:19, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> This is kind of redundant since without being able to get these through
-> ome other method (HVMOP_get_param) the guest wouldn't be able to access
-
-^ typo
-
-> XenStore in order to find them. But Xen populates them, and it does
-> allow guests to *rebind* to the event channel port after a reset.
+> The primary Xen console is special. The guest's side is set up for it by
+> the toolstack automatically and not by the standard PV init sequence.
 > 
-
-... although this can also be done by querying the remote end of the 
-port before reset.
-
+> Accordingly, its *frontend* doesn't appear in …/device/console/0 either;
+> instead it appears under …/console in the guest's XenStore node.
+> 
+> To allow the Xen console driver to override the frontend path for the
+> primary console, add a method to the XenDeviceClass which can be used
+> instead of the standard xen_device_get_frontend_path()
+> 
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   hw/i386/kvm/xen_xenstore.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+>   hw/xen/xen-bus.c         | 10 +++++++++-
+>   include/hw/xen/xen-bus.h |  2 ++
+>   2 files changed, 11 insertions(+), 1 deletion(-)
 > 
+> diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+> index ece8ec40cd..cc524ed92c 100644
+> --- a/hw/xen/xen-bus.c
+> +++ b/hw/xen/xen-bus.c
+> @@ -711,8 +711,16 @@ static void xen_device_frontend_create(XenDevice *xendev, Error **errp)
+>   {
+>       ERRP_GUARD();
+>       XenBus *xenbus = XEN_BUS(qdev_get_parent_bus(DEVICE(xendev)));
+> +    XenDeviceClass *xendev_class = XEN_DEVICE_GET_CLASS(xendev);
+>   
+> -    xendev->frontend_path = xen_device_get_frontend_path(xendev);
+> +    if (xendev_class->get_frontend_path) {
+> +        xendev->frontend_path = xendev_class->get_frontend_path(xendev, errp);
+> +        if (!xendev->frontend_path) {
+> +            return;
 
-Reviewed-by: Paul Durrant <paul@xen.org>
+I think you need to update errp here to note that you are failing to 
+create the frontend.
+
+   Paul
+
 
 
