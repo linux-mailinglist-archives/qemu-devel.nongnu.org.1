@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6B37D58E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B65197D5917
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:47:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvKTI-0004PN-CK; Tue, 24 Oct 2023 12:41:36 -0400
+	id 1qvKXY-0005xR-Vi; Tue, 24 Oct 2023 12:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvKTF-0004Iy-9J
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:41:33 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qvKTD-0006b6-Ng
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:41:33 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4084b0223ccso36949395e9.2
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698165690; x=1698770490; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=awxLtNOqWYASZHdbf28m2QJJs6Pq6yxb+MFNpXcWp9c=;
- b=GdFiJnXw2zVViqx3z3EKmZdCBkGJYpj8OX3uTmhMgkvCOR4grR+XNfq1t3I8Vt/ln2
- K/sYZIerGDe1uXQnbfxMa61mil+CThEviojJJvSnASPj3A0d8BXuNZf0x51XtPnyGRJK
- z1jJCmpRdwp5Z1lWFRdUG8aL7nMw1i7560TStbI2ttDmXrjLb7PmcLnQ4Tst7+Mgz4Iq
- UgHPL9LNvZZgOiMjIZUCku39oPASlftNpEdCG1d98sRup5QsrNwZpree7u0XXwRCFPxg
- dRv7zGCwJs1guF+2/AtWbLEmRdgbat3kJCnoq4YKYN1Rylx27Njby68p/iM4/8OmAcRp
- xW1w==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvKXT-0005wt-ED
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:45:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvKXR-0007pv-SU
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:45:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698165952;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=ltZRN5BCq4lGfl5kGjKgl2Hwel6tskslokK6szXhLvA=;
+ b=UJKAPs9z5PR8MHCUX+Goz5aSq7NwjtyFeRxWwLVhS+7FLVq5KAm4CcGMoB7aRO9j/fKA+Y
+ 4otDD9sxnzQsdX7FrhuS6pL6y/gbh1/0u2T9nvgkW2q/6H4YZ8ax1t1oVyJ/muVNbPNnl0
+ GgCb296IBJJwpes0zIMF4byFnm+8fQU=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-kdbVcNkRNIqNZCv_P7ZyWQ-1; Tue, 24 Oct 2023 12:45:47 -0400
+X-MC-Unique: kdbVcNkRNIqNZCv_P7ZyWQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-50798a259c7so4679837e87.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:45:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698165690; x=1698770490;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=awxLtNOqWYASZHdbf28m2QJJs6Pq6yxb+MFNpXcWp9c=;
- b=v4novNDVJLe44EGjjFLa9qO9KYvrpxKgzGuuKrpP9nIdeANsoFfaswJElAxMVTBWMk
- dQirSRyZiyq7bR/GPSUZCeAUKdvgsjM6zrGglMhazdrAjPnMj3IWx7ZDjcQ1wJS7pqIX
- fNrZ0dxAZFNbanKxlrqHOoc7vX2qeyktSHe+XOI64618F1CCkNMV9My6up2WKW/QLMyQ
- 2FHfsZIOiUtaXZptyy/iBsSjiMO60Zu/FFeO1VYL76ED7I0tE/nYMJzIki3JJU4c9ITi
- qBrYxE6oJTRQ7T+iEVmOAjSjjgCWiiGe55KK2QkLeejCR8kJ/VDi+uWDzhODubNUpfn1
- DX6A==
-X-Gm-Message-State: AOJu0YyhLliTqG956xbf2feZiHfA7vM8XaRIvf2o9IFezz1TLcV+D6Pu
- ahuRfiZS8m7t00DAASAGHDoOJg==
-X-Google-Smtp-Source: AGHT+IH4culZyQXFaUAdMtOEwOWlzJ/pa1caexlZ1MRsZ6YdLgz5DEhKj2SjQ9WaKukn8RuPGDXuAA==
-X-Received: by 2002:a05:600c:450d:b0:405:3a3b:2aa2 with SMTP id
- t13-20020a05600c450d00b004053a3b2aa2mr10668089wmo.37.1698165689593; 
- Tue, 24 Oct 2023 09:41:29 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- q19-20020a05600c46d300b0040836519dd9sm12457899wmo.25.2023.10.24.09.41.29
+ d=1e100.net; s=20230601; t=1698165946; x=1698770746;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ltZRN5BCq4lGfl5kGjKgl2Hwel6tskslokK6szXhLvA=;
+ b=CAWQAK3ax2yms54Tf53m6+tQlsxqgVymyjFHfiZgJxzolHC5JQtach5E8/xlP7Aoa4
+ dC/9/S1wNmEnhE45W1sXcAO+aj560vTSl/D6v9EnirQM+U0jYjUUgqTXvCjHY63vlGLC
+ e5/J/TWq8XKLNzN4N+EjMJYBD8GlOowmrgnijAfO/L0V2mZShBuAIHytzdDb2XQsNswv
+ WvoErtMK52PHh1PoRv5D/xx5ETBT6p+TKDyu9f8hSgRHrMRkjXgVUM04By4hbCbVDhjN
+ z3AZ0R2QUIjScGX1zX9+NOhJ4BDLPXW5F2UqS8BSdAoKi6rJhx95LsPI5llgT1pW7vzI
+ eTBA==
+X-Gm-Message-State: AOJu0Yy0kEZZ97rDpYlHsfLpVCa7NBLyQRQqrLEwkHRyhL7Vy+EkMC56
+ Jj+gASWuxHwpbZWB2m9N0H0sjiIxrL8+cWTRQyhzMlzvDSRO/UfnKoyhuap96gAvQX+h9XqMDZe
+ RE3PmpiKGZ8izxSU=
+X-Received: by 2002:a05:6512:2352:b0:507:a5dc:6d3e with SMTP id
+ p18-20020a056512235200b00507a5dc6d3emr9678007lfu.31.1698165946543; 
+ Tue, 24 Oct 2023 09:45:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiYOq74c8fA99jI6DuxvxQiBL0ZQr+nlE9jMAgwmG0wTFE5izaaKZgDLyGT3c0ZxsVAUbIEQ==
+X-Received: by 2002:a05:6512:2352:b0:507:a5dc:6d3e with SMTP id
+ p18-20020a056512235200b00507a5dc6d3emr9677996lfu.31.1698165946202; 
+ Tue, 24 Oct 2023 09:45:46 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ h12-20020adff18c000000b0032d402f816csm10143988wro.98.2023.10.24.09.45.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 09:41:29 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A83FA1FFBB;
- Tue, 24 Oct 2023 17:41:28 +0100 (BST)
-References: <20231019102657.129512-1-akihiko.odaki@daynix.com>
- <20231019102657.129512-16-akihiko.odaki@daynix.com>
-User-agent: mu4e 1.11.22; emacs 29.1.90
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
- =?utf-8?Q?Daud=C3=A9?=
- <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v14 15/18] cpu: Call plugin hooks only when ready
-Date: Tue, 24 Oct 2023 17:41:23 +0100
-In-reply-to: <20231019102657.129512-16-akihiko.odaki@daynix.com>
-Message-ID: <87lebs0y87.fsf@linaro.org>
+ Tue, 24 Oct 2023 09:45:45 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Zhijian Li <lizhijian@fujitsu.com>,  Markus
+ Armbruster <armbru@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Thomas
+ Huth <thuth@redhat.com>
+Subject: Re: [PATCH v3] migration: Stop migration immediately in RDMA error
+ paths
+In-Reply-To: <20231024163933.516546-1-peterx@redhat.com> (Peter Xu's message
+ of "Tue, 24 Oct 2023 12:39:33 -0400")
+References: <20231024163933.516546-1-peterx@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 24 Oct 2023 18:45:45 +0200
+Message-ID: <874jigklza.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,22 +98,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-
-> The initialization and exit hooks will not affect the state of vCPU
-> outside TCG context, but they may depend on the state of vCPU.
-> Therefore, it's better to call plugin hooks after the vCPU state is
-> fully initialized and before it gets uninitialized.
+Peter Xu <peterx@redhat.com> wrote:
+> In multiple places, RDMA errors are handled in a strange way, where it only
+> sets qemu_file_set_error() but not stop the migration immediately.
 >
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> It's not obvious what will happen later if there is already an error.  Make
+> all such failures stop migration immediately.
+>
+> Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Cc: Juan Quintela <quintela@redhat.com>
+> Cc: Fabiano Rosas <farosas@suse.de>
+> Reported-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+queued.
+
 
