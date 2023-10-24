@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975917D59E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 19:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE2F7D59E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 19:47:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvLQ7-0005Dl-8n; Tue, 24 Oct 2023 13:42:23 -0400
+	id 1qvLUF-0008ET-Ce; Tue, 24 Oct 2023 13:46:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qvLQ3-00059n-06; Tue, 24 Oct 2023 13:42:19 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qvLUC-0008D4-Jr
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 13:46:36 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qvLQ1-0005NJ-3J; Tue, 24 Oct 2023 13:42:18 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 67AA821AB8;
- Tue, 24 Oct 2023 17:42:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698169335; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bsmfy5isu6dwZtc9j4nGRB4hkuteTjn3YcfmNd07Zr4=;
- b=1qGalg2JDsg0H86ELJqi81KDpvWM48YLVKoQGrWQ8+UQuueIidVWomqbiSRDCtheXMdpaU
- vD9YDzR2Knj2CfTv6y/DvUVK8uAVf79vJ6SOg7x1QDWIHG2fPCTdpUb8xLD2EX66//XHxZ
- AV94vwFR7JRg5Ez1VeT0ZcuAoY3Rqco=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698169335;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bsmfy5isu6dwZtc9j4nGRB4hkuteTjn3YcfmNd07Zr4=;
- b=yFyGiD3BpjAgx879FKViybaOt/JwNgn5pq0b22MLB8MY69b/bcJ6tcaYO2qwVWKnyQnKs/
- Id/EZcpio1j6VsCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E40931391C;
- Tue, 24 Oct 2023 17:42:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id B7lwK/MBOGW7DwAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 24 Oct 2023 17:42:11 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org, =?utf-8?Q?Daniel_P?=
- =?utf-8?Q?_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Juan Quintela <quintela@redhat.com>, Hailiang Zhang
- <zhanghailiang@xfusion.com>, Stefan Hajnoczi <stefanha@redhat.com>, Peter
- Xu <peterx@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras
- <leobras@redhat.com>
-Subject: Re: [PATCH 06/12] qemu-file: Remove _noflush from
- qemu_file_transferred_noflush()
-In-Reply-To: <20231024151042.90349-7-quintela@redhat.com>
-References: <20231024151042.90349-1-quintela@redhat.com>
- <20231024151042.90349-7-quintela@redhat.com>
-Date: Tue, 24 Oct 2023 14:42:09 -0300
-Message-ID: <87v8avsyry.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qvLU0-0006ba-TY
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 13:46:36 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53e84912038so7157461a12.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 10:46:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698169582; x=1698774382; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HOrDbc0nM6QgTDLV84pYjI62RbgxYMi5tMwl8lyeQpM=;
+ b=rNUXMhM4NlKa+0LOpuAumsjviRKIjv4vcoxnw7k+dR68HBsvc736kdx5FbTV9jebjy
+ /vrOJ96qFY8a0P1U3Y5kSYHpjF7pF0VLOyOnszVgp/okEdu2jpLZqvZu6ISd5yX6DPCR
+ hreHACgu5U3JPRpixl75PX2rQBZvZ4lG8EDDa4PV/pSVZ69tHG/H7mUZSQ52P2EB0UXf
+ k+XnUSdCj2E1hft/bAAnHiRfCvQxbtu3aSI8e0mHrc0yW5iOTLAhPFniPw6KC4yD4NxH
+ jzs16M7sGiwzsV/aXO1dBeQmZsamEKJoIAsgFL34Qtf5fWW8jIhi4yOtO65tNHj9sQ/o
+ nPGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698169582; x=1698774382;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HOrDbc0nM6QgTDLV84pYjI62RbgxYMi5tMwl8lyeQpM=;
+ b=suCsK86g6sDyl0scwhOIF1wkdmBPLgmiUHQ+iMHjDDu+Dxe/0HsiM4Vymx3GNqXGv/
+ yQe9piK1RoRR72VfGFTVcvEOlEroycXYs+DiiOicP4CtuE9hAqrRYEWUWgfICelWxgPp
+ bHiaDNJDVoPMxNcjwo+4b1DSmj4k+Z0VEpWGb/rU/do6/ychKY94j+wm8Ym9Hv8Gs1Jf
+ 4cdm6qLAMgcGGlmWD9grVKuRUv7hAnmcrqcG7aBqZLpIZ6YEXykH8LeQbFVMdyBpMpA0
+ WusdMNZxbK7R/ZSv0x8rqB1AjKSMDGR+Q803UWjlp/5Zh7lv9i0VAJ6LchpSQnWVGHYq
+ LIfQ==
+X-Gm-Message-State: AOJu0Yz57wBQnNz9cMyuVpoCNFZLzzEJLMldSWvSpzchojR/fHU7GTC+
+ 2GW6Ot31zt6l6SXqc/r2pf05GUcjEbJ3KxyYq268ow==
+X-Google-Smtp-Source: AGHT+IEV4VyK0MXonrqPazLQNOL5HC9kgfZ26Cs5nIyVVM8i7uyTpoNZwYvYgRlfK95CQS62hpoze01VFKCh6Jv0VtY=
+X-Received: by 2002:a50:ab12:0:b0:530:7ceb:33c with SMTP id
+ s18-20020a50ab12000000b005307ceb033cmr9300084edc.4.1698169582329; Tue, 24 Oct
+ 2023 10:46:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -7.10
-X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[11];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20231024173923.4041874-1-milesg@linux.vnet.ibm.com>
+In-Reply-To: <20231024173923.4041874-1-milesg@linux.vnet.ibm.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 24 Oct 2023 18:46:11 +0100
+Message-ID: <CAFEAcA9ZLk7XYpjOQ-_9JXELK_qjgW3ABmpHY=aiPa+DS-131A@mail.gmail.com>
+Subject: Re: [PATCH] misc/led: LED state is set opposite of what is expected
+To: Glenn Miles <milesg@linux.vnet.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, clg@kaod.org, 
+ andrew@codeconstruct.com.au, joel@jms.id.au, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,129 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On Tue, 24 Oct 2023 at 18:40, Glenn Miles <milesg@linux.vnet.ibm.com> wrote:
+>
+> Testing of the LED state showed that when the LED polarity was
+> set to GPIO_POLARITY_ACTIVE_LOW and a low logic value was set on
+> the input GPIO of the LED, the LED was being turned off when it was
+> expected to be turned on.
 
-> qemu_file_transferred() don't exist anymore, so we can reuse the name.
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
->
-> ---
->
-> v2: Update the documentation (thanks fabiano)
-> ---
->  migration/qemu-file.h | 9 ++++-----
->  migration/block.c     | 4 ++--
->  migration/qemu-file.c | 2 +-
->  migration/savevm.c    | 6 +++---
->  migration/vmstate.c   | 4 ++--
->  5 files changed, 12 insertions(+), 13 deletions(-)
->
-> diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-> index 8b71152754..1b2f6b8d8f 100644
-> --- a/migration/qemu-file.h
-> +++ b/migration/qemu-file.h
-> @@ -34,15 +34,14 @@ QEMUFile *qemu_file_new_output(QIOChannel *ioc);
->  int qemu_fclose(QEMUFile *f);
->  
->  /*
-> - * qemu_file_transferred_noflush:
-> + * qemu_file_transferred:
->   *
-> - * As qemu_file_transferred except for writable files, where no flush
-> - * is performed and the reported amount will include the size of any
-> - * queued buffers, on top of the amount actually transferred.
-> + * No flush is performed and the reported amount will include the size
-> + * of any queued buffers, on top of the amount actually transferred.
->   *
->   * Returns: the total bytes transferred and queued
->   */
-> -uint64_t qemu_file_transferred_noflush(QEMUFile *f);
-> +uint64_t qemu_file_transferred(QEMUFile *f);
->  
->  /*
->   * put_buffer without copying the buffer.
-> diff --git a/migration/block.c b/migration/block.c
-> index b60698d6e2..47f11d0e4f 100644
-> --- a/migration/block.c
-> +++ b/migration/block.c
-> @@ -752,7 +752,7 @@ static int block_save_setup(QEMUFile *f, void *opaque)
->  static int block_save_iterate(QEMUFile *f, void *opaque)
->  {
->      int ret;
-> -    uint64_t last_bytes = qemu_file_transferred_noflush(f);
-> +    uint64_t last_bytes = qemu_file_transferred(f);
->  
->      trace_migration_block_save("iterate", block_mig_state.submitted,
->                                 block_mig_state.transferred);
-> @@ -804,7 +804,7 @@ static int block_save_iterate(QEMUFile *f, void *opaque)
->      }
->  
->      qemu_put_be64(f, BLK_MIG_FLAG_EOS);
-> -    uint64_t delta_bytes = qemu_file_transferred_noflush(f) - last_bytes;
-> +    uint64_t delta_bytes = qemu_file_transferred(f) - last_bytes;
->      return (delta_bytes > 0);
->  }
->  
-> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-> index efa5f11033..0158db2a54 100644
-> --- a/migration/qemu-file.c
-> +++ b/migration/qemu-file.c
-> @@ -618,7 +618,7 @@ int coroutine_mixed_fn qemu_get_byte(QEMUFile *f)
->      return result;
->  }
->  
-> -uint64_t qemu_file_transferred_noflush(QEMUFile *f)
-> +uint64_t qemu_file_transferred(QEMUFile *f)
->  {
->      uint64_t ret = stat64_get(&mig_stats.qemu_file_transferred);
->      int i;
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index 8622f229e5..9c90499609 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -927,9 +927,9 @@ static int vmstate_load(QEMUFile *f, SaveStateEntry *se)
->  static void vmstate_save_old_style(QEMUFile *f, SaveStateEntry *se,
->                                     JSONWriter *vmdesc)
->  {
-> -    uint64_t old_offset = qemu_file_transferred_noflush(f);
-> +    uint64_t old_offset = qemu_file_transferred(f);
->      se->ops->save_state(f, se->opaque);
-> -    uint64_t size = qemu_file_transferred_noflush(f) - old_offset;
-> +    uint64_t size = qemu_file_transferred(f) - old_offset;
->  
->      if (vmdesc) {
->          json_writer_int64(vmdesc, "size", size);
-> @@ -3053,7 +3053,7 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
->          goto the_end;
->      }
->      ret = qemu_savevm_state(f, errp);
-> -    vm_state_size = qemu_file_transferred_noflush(f);
-> +    vm_state_size = qemu_file_transferred(f);
->      ret2 = qemu_fclose(f);
->      if (ret < 0) {
->          goto the_end;
-> diff --git a/migration/vmstate.c b/migration/vmstate.c
-> index 1cf9e45b85..16420fa9a3 100644
-> --- a/migration/vmstate.c
-> +++ b/migration/vmstate.c
-> @@ -386,7 +386,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
->                  void *curr_elem = first_elem + size * i;
->  
->                  vmsd_desc_field_start(vmsd, vmdesc_loop, field, i, n_elems);
-> -                old_offset = qemu_file_transferred_noflush(f);
-> +                old_offset = qemu_file_transferred(f);
->                  if (field->flags & VMS_ARRAY_OF_POINTER) {
->                      assert(curr_elem);
->                      curr_elem = *(void **)curr_elem;
-> @@ -416,7 +416,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
->                      return ret;
->                  }
->  
-> -                written_bytes = qemu_file_transferred_noflush(f) - old_offset;
-> +                written_bytes = qemu_file_transferred(f) - old_offset;
->                  vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes, i);
->  
->                  /* Compressed arrays only care about the first element */
+It looks to me from reading the code like the bug is there
+for active-high GPIO as well ?
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> ---
+>  hw/misc/led.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/misc/led.c b/hw/misc/led.c
+> index f6d6d68bce..96cad7578e 100644
+> --- a/hw/misc/led.c
+> +++ b/hw/misc/led.c
+> @@ -63,7 +63,7 @@ static void led_set_state_gpio_handler(void *opaque, int line, int new_state)
+>      LEDState *s = LED(opaque);
+>
+>      assert(line == 0);
+> -    led_set_state(s, !!new_state != s->gpio_active_high);
+> +    led_set_state(s, !new_state != s->gpio_active_high);
+>  }
+
+Maybe "!!new_state == s->gpio_active_high" would be clearer?
+Then you can see that we are (1) converting the int new_state
+to a bool with the !! idiom and (2) we enable the LED for a
+high input and active-high GPIO.
+
+thanks
+-- PMM
 
