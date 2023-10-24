@@ -2,116 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2787D59EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 19:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E707D5750
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:04:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvLWl-0001zC-EJ; Tue, 24 Oct 2023 13:49:17 -0400
+	id 1qvJsY-0006MC-Bf; Tue, 24 Oct 2023 12:03:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1qvIWN-0008Q1-19
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:36:39 -0400
-Received: from mail-westus2azolkn19012036.outbound.protection.outlook.com
- ([52.103.10.36] helo=MW2PR02CU001.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1qvIWK-0002mv-SX
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 10:36:38 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hEDOnRYuK4vbrtF4+lcWHNXU3lMazYhwQLJ96oc/Krtkorf0J5v24hYsNt3zEYodWMvAYFLDJVvXUoMzVB+baTMsmn/yV4EV42ufOvjc39q3WTILxwCgkUApi84mTQ/pQyWOJeH1jA0VodZLyqP4civJaEfpJcCKs434xfzR0gLyYN3VAYyCyDDv6kZUr2LkobaG9wzuszD+4jq4PQkiqt8ePPSFUgigp0c+SGMKWfYczsSGL1Qf8a89r9rN8rpcXtd/t8rNJAWH5j/e0D2h/CZ1uRhncAcARtLmEqyQjciulgS+Y0ySG6SkRQU+wTGRAeJBaTVQd0n1ug1BABc6ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+wZ1gDLrzS7qPvJTW/StAVikTmWy5YjB5GDS3qDDgCw=;
- b=U7EGNfGCOGGwGTEfDnmLKGTKzW2QTjXMkhcrb88NrvXCF6JzPA6Hm1UDBsXoNjQKqlWzLQ5d9SKCLdu7gSBPiDFJP8VaH6HqQGFh341vryujMiNI6VV6Wc9oDLwFH78bi1GTO4V3L7UU8Q120fXGEYU47TPYo3r1AKsJMjxxJBqHWDt8xKjqyxROdIeOC2vTTWdqtz79QaBZQlKk/9whZ6PoCsAJ7P2MNP8StFK8YyUim9xRrgVqwZMjW0z2R7NeQap7mec6ip0zNYijEHe+Gqa3ztDD/Si+WMTKRsgXYyt+/yt5+4BciMGd3wwF5wmmLmwfDckYtLG++gVFpM4DMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+wZ1gDLrzS7qPvJTW/StAVikTmWy5YjB5GDS3qDDgCw=;
- b=dki9/LW+zpuRQMN1zvsnSYucEpsqwecKkeIKAiAfrUIIacZECVgDFLPxCNRv6w2nfdo0DhYcJGbVfbeAYN4jEUccuj3sALkqIkH0INML5Rumgu1xJMBCOUEdleiIQ2M2L6kXzhX10yC1jwWA18ckeU8nWXVPQRvSunuF1xC/ActVvvPb9Z5xZlN1iD0nCQYQMowX90qZWXHI5os/1v9dbmN99i5SL+TjDasip0GleYtD+7FcljCeDXd9NS+NrZR3im1BPz6/Oz1Vm5NRXr4LqWEov0PRxFSnXUotx18fN+KDp2gL3mOKJgqZZmaqMbaV/rpAYi7ch4V57m2Hqqa3pQ==
-Received: from SN6PR05MB5837.namprd05.prod.outlook.com (2603:10b6:805:f4::20)
- by PH0PR05MB7768.namprd05.prod.outlook.com (2603:10b6:510:2b::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.31; Tue, 24 Oct
- 2023 14:29:59 +0000
-Received: from SN6PR05MB5837.namprd05.prod.outlook.com
- ([fe80::8173:b78d:ab2f:e010]) by SN6PR05MB5837.namprd05.prod.outlook.com
- ([fe80::8173:b78d:ab2f:e010%6]) with mapi id 15.20.6907.032; Tue, 24 Oct 2023
- 14:29:59 +0000
-From: John Platts <john_platts@hotmail.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: [PATCH] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
-Thread-Topic: [PATCH] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
-Thread-Index: AQHaBoOQeT3DB0E5hkqJk36Bpmg0Lw==
-Date: Tue, 24 Oct 2023 14:29:59 +0000
-Message-ID: <SN6PR05MB58376086F8599576F035A54B9DDFA@SN6PR05MB5837.namprd05.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn: [xCG1V8sQrucBxljFkxKMey48AXhWr7mCQBSqPg+CCWvZrTOWyH0ktnXaxFFdCIQz]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR05MB5837:EE_|PH0PR05MB7768:EE_
-x-ms-office365-filtering-correlation-id: b95a7bdf-1b51-480a-ce8c-08dbd49db3c7
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 9saliswdT06XLM3kwhc1jTAbS3PlXtfC9hTar6RvGcYQQGGIxQsLseLh/KCuMjPhYRPtXooMZSWhFPDujgsjkKQRPl39peayg/QGNsbBP6ZKsKn6UIxOZiNTEKq3tEFBNOzh72K64niHmEJnOca/dNoK3yK6liTsXchvtJeAg/hLdcjTRlgxMNSuNAG3xRZSx5cak0YT2hu8DxTiOz3tJy8jprIOCDIGkCFdetZS0EWZO2VAun6CUXBv1ckhvj20EmrBrSFwd9rtWDo9bu5BGygHZH9pP9ZfPajDwWWmQUZodwbehJt+VGMpqCIVbzRXiMLioI2ru3FkgpylmFCbJ6W5Z7+PFu4JrGYshz2JlfjE8m4/8exwf8smeybDyQj3P5j55qLHPRUBLuBPtl9YJvB8/YOK2Gf5U9PiCTKVnA7VBE4xev/dp1UUKsq65eY+wLG+/S3xi8xI80KNRDgRnobmgb2g2xbrDyOT26VegfLVhpotMM5Wm4AnUy1ZQwKp1eu71FcPdfLBa9NkGTjFUPDdYO4QgYt9AV0Vyzq++01x/WRuE7ZI1591R/0UdW+w5tUKvjqElwt/+11eSeKpiWB9gArbaiyRFtfUUX/tNrg=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?b8MFvP5WJPNibqAT5IAGiRNolg2YKCHPeGagmVXXt67lmi+bCmrH4VYpRg?=
- =?iso-8859-1?Q?L8eP9Rb5tw4gtUJG3IAIRtNaGhhUvoMZX66dvuiS/6GrxgP6jTOFV+Bxx/?=
- =?iso-8859-1?Q?VzNZ0HAz4fIK5k6pTE4h+9iKNl7o1nm+ec7jk5peBQAsL7Wpp6We2HGWaC?=
- =?iso-8859-1?Q?KodySDgb1JyDEToFYj71c/WbsQih3bc1yn8R6SOe2xiOOxeuQC3RDIvYdA?=
- =?iso-8859-1?Q?bSefGZII8mBSpR/R+WYhQ69ixgSBdla+ZY0+kzfdu5hD7VCzHYL4bfeb6t?=
- =?iso-8859-1?Q?loxFifUUIyRwjul9XaWnLGf3Clds2v6xp7DLjQ4XF4zVsdqQcm3OwkYJcJ?=
- =?iso-8859-1?Q?JmD5Lujw8TQ0u73C77Onjf9T0oOhDysrsW/DUu7OsmRnTDyZVxlTAJ09QB?=
- =?iso-8859-1?Q?52wc7dVr5sQeSKAFOYxfzWiArnHhsM0vYY1mPZGA6vGVxEjTHjTLXasd00?=
- =?iso-8859-1?Q?e7nWp1EslCdccXDSIGaAGj+1pz0qb3p6Qb/TWdg+czOPiKGRE6Znqv5a4A?=
- =?iso-8859-1?Q?4LuH5sfSNIeSyrHpt3zYTjV/5/f5lEBpXJfohcd9Pyi2MRIWLuqMmZyuQy?=
- =?iso-8859-1?Q?3pLgmJeLk+zNeLL/4KfZg6t+Y5Wrsi86As2KCYaJlxsOXHSE0000gWBsKs?=
- =?iso-8859-1?Q?5Cm3GGEq/xRCTjKq3x4kxK/quYqZMzIQVL7bm7x9xwnTbkRujRlU8TFal8?=
- =?iso-8859-1?Q?hMydzYTV0f1YIqo0j13n0bRPEZOU4+1IXiNx4Dx/ea6Kyytt+p/Olg8L87?=
- =?iso-8859-1?Q?CcWHLKv5VjvH1v2S/ui0oF7/a2Kce1++NGciOFji2X4bXMdichPIP5CfgV?=
- =?iso-8859-1?Q?Ywea/A3nlhchDbJwko5XTQWvWsFity+pCyLLqEiwXM9sbvkNIAdZKhqRcm?=
- =?iso-8859-1?Q?BKhenLV+1EeVUx8Ackm2GbkCPjD7I03I28GdMrHz3+eYhbbDBV3qG6hT1b?=
- =?iso-8859-1?Q?kaOo+xdurmXqMj2W1mdAZzqvCEhdC6W+xMMMUDFF5gC8VwOzxzojTMLUxC?=
- =?iso-8859-1?Q?L5JRBFmuOjiSmsagwWzfmMxtXPDlhFQCG1xJ1qYiJXWiMbBRyiy1yI+aOu?=
- =?iso-8859-1?Q?UuUq/GRRkRYHpVIr5j9O0mTV2qmslSlEHdPY3sFfOuagWrksyhc4qjUyY9?=
- =?iso-8859-1?Q?keyH8USifzpApDFtJBVJI1CZ65qgk9rS734EPiR2mkw4g9yTAEo7lgoeVe?=
- =?iso-8859-1?Q?uW4seuZlqZjcjHVW2iZt+nKUTQpkA0ZoTHy8zase3+Y9YpHFmcifzoNnyc?=
- =?iso-8859-1?Q?SuT0kKuqMiFhzUe9iFSXjZC6Z40RsJXsaawfp9/mbXNY9TDC7eFDDP1Hxr?=
- =?iso-8859-1?Q?hpv7Hd7ml9Rl0qHGMvsDdMTkhw=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qvJs0-0005RP-P3
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:03:05 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qvJry-0004L4-6d
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:03:04 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-32d81864e3fso3133583f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698163380; x=1698768180; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CajMzW5+xKH+W10ISdAz4N8txqOQrokbzpTEWuOZSIY=;
+ b=XTrUcX74gFZTpzipf8wU5PND+LL2t+rrlDBKD90LyxEFsaYITKZ+2PWKrGTJol+M6f
+ 3QWJhcDjAoKNixlCYfICU3ms54fVZAkaEhyohTbsY3MG3kuK9OkKLi6xzldimF92zhO5
+ MvpBG9l+/37byT5QHpD4Jb/+sIs3JFqeB3HTSWqwHlGhAId6gtbBl2jr/ElcHNHP4egI
+ ddgv3IPoAKTntsu/Lql+cyeFoAvceMHCKzNJ6ZlA6ChJr5gG0jFXN24T1J6tIggrzz7Y
+ 0B+udEJD9fI91suuQaScKf7fYOsyS6/gdUhpAnZlaj8llK/R3oZFVTXvfhSPorITqvy1
+ rF+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698163380; x=1698768180;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=CajMzW5+xKH+W10ISdAz4N8txqOQrokbzpTEWuOZSIY=;
+ b=jGW9jcU0Jvnjrgy3YFj9ZsXuFZUEYAAfOks86VeX5Ev2WDe1pZkxMD9N8MqGoIrQlC
+ QyzfP+emQlTnwevFWJjbxrxJ6hf8yWWrR7p8hKxKsRWpFevd+bzT19re5MJi/Tr2Z272
+ yceCU23DeXq43ZDQnhSImxWZMmJWiKtBMluO1mATYpuC/oZ4t2lO7iYVTiGH5+R/+eyu
+ abrgRaZ8zrN9YBnHX9Q44sbAxjDc8oIMxHdmSlkPa0V7KJAmuIHT+sNVl7CrR6YVs7fI
+ 5/Xn5Hxz1U1W5UGWfcO/PXVKMJNTOCxcOJoK8m1U7K2pScl2g0aWywRQoGrkjl+HdeGc
+ 9/NA==
+X-Gm-Message-State: AOJu0Yxi5B8CGVJVAiXYxIv6TEWE1fNqZig8ILFM9y5DAJHdYyVq821F
+ JEdUVMTBxViYaUBl9FnbzoVnLw==
+X-Google-Smtp-Source: AGHT+IFg9z9V7Rha4uQWHkb+jPTY3+307otAvSyimDWxTEns1k3pzIu0TGfIfOtzKDEkb/m0d3mR9A==
+X-Received: by 2002:adf:ec47:0:b0:32d:9718:b32a with SMTP id
+ w7-20020adfec47000000b0032d9718b32amr7617563wrn.0.1698163380311; 
+ Tue, 24 Oct 2023 09:03:00 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ j13-20020a5d452d000000b0032d8eecf901sm10264386wra.3.2023.10.24.09.02.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Oct 2023 09:02:59 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id DF2761FFBB;
+ Tue, 24 Oct 2023 17:02:58 +0100 (BST)
+References: <20230915185453.1871167-1-peter.maydell@linaro.org>
+ <20230915185453.1871167-3-peter.maydell@linaro.org>
+ <87edhtbbod.fsf@linaro.org>
+ <CAFEAcA9pbOuo0uRXLMCngkbF+jpDKRivZ=y66xn1KHunC--zrw@mail.gmail.com>
+User-agent: mu4e 1.11.22; emacs 29.1.90
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz
+ <marcin.juszkiewicz@linaro.org>, Leif Lindholm
+ <quic_llindhol@quicinc.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ qemu-arm@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 2/2] target/arm: Implement Neoverse N2 CPU model
+Date: Tue, 24 Oct 2023 17:02:44 +0100
+In-reply-to: <CAFEAcA9pbOuo0uRXLMCngkbF+jpDKRivZ=y66xn1KHunC--zrw@mail.gmail.com>
+Message-ID: <87pm14100d.fsf@linaro.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4823-7-msonline-outlook-84f76.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR05MB5837.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: b95a7bdf-1b51-480a-ce8c-08dbd49db3c7
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Oct 2023 14:29:59.3869 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR05MB7768
-Received-SPF: pass client-ip=52.103.10.36;
- envelope-from=john_platts@hotmail.com;
- helo=MW2PR02CU001.outbound.protection.outlook.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 24 Oct 2023 13:48:29 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,115 +101,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The patch below fixes a bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2=
- macros in target/ppc/fpu_helper.c where a non-NaN value is incorrectly con=
-verted to 0, 0x80000000, or 0x8000000000000000 if a preceding converted flo=
-ating-point value was a NaN value.=0A=
-=0A=
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1941=0A=
-Signed-off-by: John Platts <john_platts@hotmail.com>=0A=
-=0A=
-diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c=0A=
-index 03150a0f10..d6c8583416 100644=0A=
---- a/target/ppc/fpu_helper.c=0A=
-+++ b/target/ppc/fpu_helper.c=0A=
-@@ -2880,19 +2880,21 @@ uint64_t helper_XSCVSPDPN(uint64_t xb)=0A=
- #define VSX_CVT_FP_TO_INT(op, nels, stp, ttp, sfld, tfld, sfi, rnan)      =
-   \=0A=
- void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc_vsr_t *xb)          =
-   \=0A=
- {                                                                         =
-   \=0A=
-+    int all_flags =3D 0;                                                  =
-     \=0A=
-     ppc_vsr_t t =3D { };                                                  =
-     \=0A=
-     int i, flags;                                                         =
-   \=0A=
-                                                                           =
-   \=0A=
--    helper_reset_fpstatus(env);                                           =
-   \=0A=
--                                                                          =
-   \=0A=
-     for (i =3D 0; i < nels; i++) {                                        =
-     \=0A=
-+        helper_reset_fpstatus(env);                                       =
-   \=0A=
-         t.tfld =3D stp##_to_##ttp##_round_to_zero(xb->sfld, &env->fp_statu=
-s);  \=0A=
-         flags =3D env->fp_status.float_exception_flags;                   =
-     \=0A=
-+        all_flags |=3D flags;                                             =
-     \=0A=
-         if (unlikely(flags & float_flag_invalid)) {                       =
-   \=0A=
-             t.tfld =3D float_invalid_cvt(env, flags, t.tfld, rnan, 0, GETP=
-C());\=0A=
-         }                                                                 =
-   \=0A=
-     }                                                                     =
-   \=0A=
-                                                                           =
-   \=0A=
-+    env->fp_status.float_exception_flags =3D all_flags;                   =
-     \=0A=
-     *xt =3D t;                                                            =
-     \=0A=
-     do_float_check_status(env, sfi, GETPC());                             =
-   \=0A=
- }=0A=
-@@ -2945,15 +2947,16 @@ VSX_CVT_FP_TO_INT128(XSCVQPSQZ, int128, 0x800000000=
-0000000ULL);=0A=
- #define VSX_CVT_FP_TO_INT2(op, nels, stp, ttp, sfi, rnan)                 =
-   \=0A=
- void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc_vsr_t *xb)          =
-   \=0A=
- {                                                                         =
-   \=0A=
-+    int all_flags =3D 0;                                                  =
-     \=0A=
-     ppc_vsr_t t =3D { };                                                  =
-     \=0A=
-     int i, flags;                                                         =
-   \=0A=
-                                                                           =
-   \=0A=
--    helper_reset_fpstatus(env);                                           =
-   \=0A=
--                                                                          =
-   \=0A=
-     for (i =3D 0; i < nels; i++) {                                        =
-     \=0A=
-+        helper_reset_fpstatus(env);                                       =
-   \=0A=
-         t.VsrW(2 * i) =3D stp##_to_##ttp##_round_to_zero(xb->VsrD(i),     =
-     \=0A=
-                                                        &env->fp_status);  =
-   \=0A=
-         flags =3D env->fp_status.float_exception_flags;                   =
-     \=0A=
-+        all_flags |=3D flags;                                             =
-     \=0A=
-         if (unlikely(flags & float_flag_invalid)) {                       =
-   \=0A=
-             t.VsrW(2 * i) =3D float_invalid_cvt(env, flags, t.VsrW(2 * i),=
-     \=0A=
-                                               rnan, 0, GETPC());          =
-   \=0A=
-@@ -2961,6 +2964,7 @@ void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc=
-_vsr_t *xb)             \=0A=
-         t.VsrW(2 * i + 1) =3D t.VsrW(2 * i);                              =
-     \=0A=
-     }                                                                     =
-   \=0A=
-                                                                           =
-   \=0A=
-+    env->fp_status.float_exception_flags =3D all_flags;                   =
-     \=0A=
-     *xt =3D t;                                                            =
-     \=0A=
-     do_float_check_status(env, sfi, GETPC());                             =
-   \=0A=
- }=0A=
+
+Peter Maydell <peter.maydell@linaro.org> writes:
+
+> On Tue, 17 Oct 2023 at 14:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>> > Implement a model of the Neoverse N2 CPU. This is an Armv9.0-A
+>> > processor very similar to the Cortex-A710. The differences are:
+>> >  * no FEAT_EVT
+>> >  * FEAT_DGH (data gathering hint)
+>> >  * FEAT_NV (not yet implemented in QEMU)
+>> >  * Statistical Profiling Extension (not implemented in QEMU)
+>> >  * 48 bit physical address range, not 40
+>> >  * CTR_EL0.DIC =3D 1 (no explicit icache cleaning needed)
+>> >  * PMCR_EL0.N =3D 6 (always 6 PMU counters, not 20)
+>> >
+>> > Because it has 48-bit physical address support, we can use
+>> > this CPU in the sbsa-ref board as well as the virt board.
+>> >
+>> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>> > ---
+>> >  docs/system/arm/virt.rst |   1 +
+>> >  hw/arm/sbsa-ref.c        |   1 +
+>> >  hw/arm/virt.c            |   1 +
+>> >  target/arm/tcg/cpu64.c   | 103 +++++++++++++++++++++++++++++++++++++++
+>> >  4 files changed, 106 insertions(+)
+>> >
+>> > diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+>> > index e1697ac8f48..7c4c80180c6 100644
+>> > --- a/docs/system/arm/virt.rst
+>> > +++ b/docs/system/arm/virt.rst
+>> > @@ -63,6 +63,7 @@ Supported guest CPU types:
+>> >  - ``host`` (with KVM only)
+>> >  - ``neoverse-n1`` (64-bit)
+>> >  - ``neoverse-v1`` (64-bit)
+>> > +- ``neoverse-n2`` (64-bit)
+>> >  - ``max`` (same as ``host`` for KVM; best possible emulation with TCG)
+>> >
+>> >  Note that the default is ``cortex-a15``, so for an AArch64 guest you =
+must
+>> > diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+>> > index bc89eb48062..4db287287e1 100644
+>> > --- a/hw/arm/sbsa-ref.c
+>> > +++ b/hw/arm/sbsa-ref.c
+>> > @@ -154,6 +154,7 @@ static const char * const valid_cpus[] =3D {
+>> >      ARM_CPU_TYPE_NAME("cortex-a72"),
+>> >      ARM_CPU_TYPE_NAME("neoverse-n1"),
+>> >      ARM_CPU_TYPE_NAME("neoverse-v1"),
+>> > +    ARM_CPU_TYPE_NAME("neoverse-n2"),
+>> >      ARM_CPU_TYPE_NAME("max"),
+>> >  };
+>> >
+>> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>> > index 8ad78b23c24..42253462735 100644
+>> > --- a/hw/arm/virt.c
+>> > +++ b/hw/arm/virt.c
+>> > @@ -215,6 +215,7 @@ static const char *valid_cpus[] =3D {
+>> >      ARM_CPU_TYPE_NAME("a64fx"),
+>> >      ARM_CPU_TYPE_NAME("neoverse-n1"),
+>> >      ARM_CPU_TYPE_NAME("neoverse-v1"),
+>> > +    ARM_CPU_TYPE_NAME("neoverse-n2"),
+>> >  #endif
+>> >      ARM_CPU_TYPE_NAME("cortex-a53"),
+>> >      ARM_CPU_TYPE_NAME("cortex-a57"),
+>> > diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+>> > index ea43cf3c1ee..370cc82f0ef 100644
+>> > --- a/target/arm/tcg/cpu64.c
+>> > +++ b/target/arm/tcg/cpu64.c
+>> > @@ -963,6 +963,108 @@ static void aarch64_a710_initfn(Object *obj)
+>> >      aarch64_add_sve_properties(obj);
+>> >  }
+>> >
+>> > +/* Extra IMPDEF regs in the N2 beyond those in the A710 */
+>> > +static const ARMCPRegInfo neoverse_n2_cp_reginfo[] =3D {
+>> > +    { .name =3D "CPURNDBR_EL3", .state =3D ARM_CP_STATE_AA64,
+>> > +      .opc0 =3D 3, .opc1 =3D 6, .crn =3D 15, .crm =3D 3, .opc2 =3D 0,
+>> > +      .access =3D PL3_RW, .type =3D ARM_CP_CONST, .resetvalue =3D 0 },
+>> > +    { .name =3D "CPURNDPEID_EL3", .state =3D ARM_CP_STATE_AA64,
+>> > +      .opc0 =3D 3, .opc1 =3D 6, .crn =3D 15, .crm =3D 3, .opc2 =3D 1,
+>> > +      .access =3D PL3_RW, .type =3D ARM_CP_CONST, .resetvalue =3D 0 },
+>> > +};
+>> > +
+>> > +static void aarch64_neoverse_n2_initfn(Object *obj)
+>> > +{
+>> > +    ARMCPU *cpu =3D ARM_CPU(obj);
+>> > +
+>> > +    cpu->dtb_compatible =3D "arm,neoverse-n2";
+>> > +    set_feature(&cpu->env, ARM_FEATURE_V8);
+>> > +    set_feature(&cpu->env, ARM_FEATURE_NEON);
+>> > +    set_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER);
+>> > +    set_feature(&cpu->env, ARM_FEATURE_AARCH64);
+>> > +    set_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
+>> > +    set_feature(&cpu->env, ARM_FEATURE_EL2);
+>> > +    set_feature(&cpu->env, ARM_FEATURE_EL3);
+>> > +    set_feature(&cpu->env, ARM_FEATURE_PMU);
+>> > +
+>> > +    /* Ordered by Section B.5: AArch64 ID registers */
+>> > +    cpu->midr          =3D 0x410FD493; /* r0p3 */
+>> > +    cpu->revidr        =3D 0;
+>> > +    cpu->isar.id_pfr0  =3D 0x21110131;
+>> > +    cpu->isar.id_pfr1  =3D 0x00010000; /* GIC filled in later */
+>> > +    cpu->isar.id_dfr0  =3D 0x16011099;
+>> > +    cpu->id_afr0       =3D 0;
+>> > +    cpu->isar.id_mmfr0 =3D 0x10201105;
+>> > +    cpu->isar.id_mmfr1 =3D 0x40000000;
+>> > +    cpu->isar.id_mmfr2 =3D 0x01260000;
+>> > +    cpu->isar.id_mmfr3 =3D 0x02122211;
+>> > +    cpu->isar.id_isar0 =3D 0x02101110;
+>> > +    cpu->isar.id_isar1 =3D 0x13112111;
+>> > +    cpu->isar.id_isar2 =3D 0x21232042;
+>> > +    cpu->isar.id_isar3 =3D 0x01112131;
+>> > +    cpu->isar.id_isar4 =3D 0x00010142;
+>> > +    cpu->isar.id_isar5 =3D 0x11011121; /* with Crypto */
+>> > +    cpu->isar.id_mmfr4 =3D 0x01021110;
+>> > +    cpu->isar.id_isar6 =3D 0x01111111;
+>> > +    cpu->isar.mvfr0    =3D 0x10110222;
+>> > +    cpu->isar.mvfr1    =3D 0x13211111;
+>> > +    cpu->isar.mvfr2    =3D 0x00000043;
+>> > +    cpu->isar.id_pfr2  =3D 0x00000011;
+>> > +    cpu->isar.id_aa64pfr0  =3D 0x1201111120111112ull; /* GIC filled i=
+n later */
+>> > +    cpu->isar.id_aa64pfr1  =3D 0x0000000000000221ull;
+>> > +    cpu->isar.id_aa64zfr0  =3D 0x0000110100110021ull; /* with Crypto =
+*/
+>> > +    cpu->isar.id_aa64dfr0  =3D 0x000011f210305619ull;
+>> > +    cpu->isar.id_aa64dfr1  =3D 0;
+>> > +    cpu->id_aa64afr0       =3D 0;
+>> > +    cpu->id_aa64afr1       =3D 0;
+>> > +    cpu->isar.id_aa64isar0 =3D 0x0221111110212120ull; /* with Crypto =
+*/
+>> > +    cpu->isar.id_aa64isar1 =3D 0x0011111101211052ull;
+>> > +    cpu->isar.id_aa64mmfr0 =3D 0x0000022200101125ull;
+>> > +    cpu->isar.id_aa64mmfr1 =3D 0x0000000010212122ull;
+>> > +    cpu->isar.id_aa64mmfr2 =3D 0x1221011112101011ull;
+>> > +    cpu->clidr             =3D 0x0000001482000023ull;
+>> > +    cpu->gm_blocksize      =3D 4;
+>> > +    cpu->ctr               =3D 0x00000004b444c004ull;
+>> > +    cpu->dcz_blocksize     =3D 4;
+>> > +    /* TODO FEAT_MPAM: mpamidr_el1 =3D 0x0000_0001_001e_01ff */
+>>
+>> Jonathan mentioned he was hacking about with MPAM so if there is a stub
+>> implementation of the fields it would be nice to add them.
+>
+> I'm just following the existing A710 code here. There isn't
+> a stub implementation of the fields, which is why there's
+> just a TODO comment documenting the ID register value.
+>
+>> > +
+>> > +    /* Section B.7.2: PMCR_EL0 */
+>> > +    cpu->isar.reset_pmcr_el0 =3D 0x3000;  /* with 6 counters */
+>> > +
+>> > +    /* Section B.8.9: ICH_VTR_EL2 */
+>> > +    cpu->gic_num_lrs =3D 4;
+>> > +    cpu->gic_vpribits =3D 5;
+>> > +    cpu->gic_vprebits =3D 5;
+>> > +    cpu->gic_pribits =3D 5;
+>> > +
+>> > +    /* Section 14: Scalable Vector Extensions support */
+>> > +    cpu->sve_vq.supported =3D 1 << 0;  /* 128bit */
+>> > +
+>> > +    /*
+>> > +     * The Neoverse N2 TRM does not list CCSIDR values.  The layout of
+>> > +     * the caches are in text in Table 7-1, Table 8-1, and Table 9-1.
+>> > +     *
+>> > +     * L1: 4-way set associative 64-byte line size, total 64K.
+>> > +     * L2: 8-way set associative 64 byte line size, total either 512K=
+ or 1024K.
+>> > +     */
+>> > +    cpu->ccsidr[0] =3D make_ccsidr64(4, 64, 64 * KiB);   /* L1 dcache=
+ */
+>> > +    cpu->ccsidr[1] =3D cpu->ccsidr[0];                   /* L1 icache=
+ */
+>> > +    cpu->ccsidr[2] =3D make_ccsidr64(8, 64, 512 * KiB);  /* L2 cache =
+*/
+>> > +
+>> > +    /* FIXME: Not documented -- copied from neoverse-v1 */
+>> > +    cpu->reset_sctlr =3D 0x30c50838;
+>>
+>> Hmm reset_sctlr might need to be bigger because being used for sctlr_el3
+>> is a 64 bit entity which has a number of fields:
+>
+> In theory, yes. In practice, only if we get to a point where we
+> want to set some bit in the top 32 bits, which we don't yet.
+>
+>>
+>>   - DSSBS,bit[44] to have some sort of impdef value
+>>   - the others all look like architecturally UNKNOWN values
+>>
+>> Otherwise I think this is:
+>>
+>>   - 3 - RES1 29:28
+>>   - 0 - RES0 + I assume LE EE bit
+>>   - c - RES1 23, EIS 22 (architecturally UNKNOWN on reset)
+>>   - 5 - RES1 18, 16
+>>   - 0 - RES0 15:14, EnDB 13 (architecturally UNKNOWN on reset), I 12 RES0
+>>   - 8 - EOS 11 (architecturally UNKNOWN on reset)
+>>   - 3 - RES1 5:4
+>>   - 8 - SA 3 (architecturally UNKNOWN on reset)
+>>
+>> It's a little confusing because the language describing these
+>> architecturally unknown states refers to resetting to EL3 (I assume a
+>> decent firmware would make sure everything is set correctly). Which
+>> makes me wonder if reset_sctlr is really "sane values for a direct
+>> kernel boot"?
+>
+> It's the hardware reset value, at least nominally speaking.
+> We use the value for our SCTLR_EL1 if we aren't emulating EL2 or EL3,
+> which means we diverge a little from the hardware which probably doesn't
+> support an EL1-only config.
+>
+> To the extent that we need to set values here for kernel boot, we would
+> do that in hw/arm/boot.c. But mostly we don't, because the kernel sets
+> up the SCTLR register for the EL it is entered in.
+>
+> This used to be a bit better defined on older CPUs when previous
+> versions of the architecture weren't so loose about values being
+> UNKNOWN on reset. It's unfortunate that we don't have the documented
+> value for whatever the IMPDEF reset value is for this CPU. In
+> practice, because it's IMPDEF and UNKNOWN it doesn't matter too much --
+> guest software will set it as needed. The value used here is "safe"
+> because it's one we already use for other CPUs.
+
+Fair enough:
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
