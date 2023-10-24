@@ -2,31 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1B87D5692
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23A97D569A
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:35:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvJQo-0007Ng-Mf; Tue, 24 Oct 2023 11:34:58 -0400
+	id 1qvJQw-0007sO-HO; Tue, 24 Oct 2023 11:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvJQA-0006Iz-Be; Tue, 24 Oct 2023 11:34:18 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1qvJQD-0006RA-Vw; Tue, 24 Oct 2023 11:34:22 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvJPz-0005kD-W0; Tue, 24 Oct 2023 11:34:17 -0400
+ id 1qvJQ8-0005lK-Lk; Tue, 24 Oct 2023 11:34:21 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id E046E7560AC;
- Tue, 24 Oct 2023 17:34:05 +0200 (CEST)
+ by localhost (Postfix) with SMTP id ED0B6757233;
+ Tue, 24 Oct 2023 17:34:06 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id BE04E7560A7; Tue, 24 Oct 2023 17:34:05 +0200 (CEST)
-Message-Id: <de324de29469374ca87b3e5f9b6a9aaf61ea5f2b.1698158152.git.balaton@eik.bme.hu>
+ id C7DD1757202; Tue, 24 Oct 2023 17:34:06 +0200 (CEST)
+Message-Id: <c929b3a123b4746e8f22ec9defd362f2202b9bfd.1698158152.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1698158152.git.balaton@eik.bme.hu>
 References: <cover.1698158152.git.balaton@eik.bme.hu>
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v4 4/8] target/ppc: Move patching nip from exception handler
- to helper_scv
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v4 5/8] target/ppc: Simplify syscall exception handlers
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -35,17 +34,15 @@ To: qemu-devel@nongnu.org,
 Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>
-Date: Tue, 24 Oct 2023 17:34:05 +0200 (CEST)
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: 5
-X-Spam_score: 0.5
-X-Spam_bar: /
-X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_CUSTOM_MED=0.001,
- FORGED_GMAIL_RCVD=1, FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NML_ADSP_CUSTOM_MED=0.9,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Date: Tue, 24 Oct 2023 17:34:06 +0200 (CEST)
+X-Spam-Probability: 8%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,55 +58,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unlike sc, for scv a facility unavailable interrupt must be generated
-if FSCR[SCV]=0 so we can't raise the exception with nip set to next
-instruction but we can move advancing nip if the FSCR check passes to
-helper_scv so the exception handler does not need to change it.
+After previous changes the hypercall handling in 7xx and 74xx
+exception handlers can be folded into one if statement to simpilfy
+this code. Also add "unlikely" to mark the less freqiently used branch
+for the compiler.
 
-[balaton: added commit message]
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/excp_helper.c | 2 +-
- target/ppc/translate.c   | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ target/ppc/excp_helper.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 22361b6c17..dd08efe4f2 100644
+index dd08efe4f2..d073c35989 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -1405,7 +1405,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_SYSCALL_VECTORED: /* scv exception                     */
-         lev = env->error_code;
-         dump_syscall(env);
--        env->nip += 4;
-         new_msr |= env->msr & ((target_ulong)1 << MSR_EE);
-         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
- 
-@@ -2528,6 +2527,7 @@ void helper_ppc_maybe_interrupt(CPUPPCState *env)
- void helper_scv(CPUPPCState *env, uint32_t lev)
- {
-     if (env->spr[SPR_FSCR] & (1ull << FSCR_SCV)) {
-+        env->nip += 4;
-         raise_exception_err(env, POWERPC_EXCP_SYSCALL_VECTORED, lev);
-     } else {
-         raise_exception_err(env, POWERPC_EXCP_FU, FSCR_IC_SCV);
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index a80d24143e..d8cd34721c 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -4554,7 +4554,11 @@ static void gen_scv(DisasContext *ctx)
- {
-     uint32_t lev = (ctx->opcode >> 5) & 0x7F;
- 
--    /* Set the PC back to the faulting instruction. */
-+    /*
-+     * Set the PC back to the scv instruction (unlike sc), because a facility
-+     * unavailable interrupt must be generated if FSCR[SCV]=0. The helper
-+     * advances nip if the FSCR check passes.
-+     */
-     gen_update_nip(ctx, ctx->cia);
-     gen_helper_scv(tcg_env, tcg_constant_i32(lev));
- 
+@@ -762,26 +762,22 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+     {
+         int lev = env->error_code;
+-
+-        if (lev == 1 && cpu->vhyp) {
+-            dump_hcall(env);
+-        } else {
+-            dump_syscall(env);
+-        }
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+          * uses VOF and the 7xx CPUs, so although the 7xx don't have
+          * HV mode, we need to keep hypercall support.
+          */
+-        if (lev == 1 && cpu->vhyp) {
++        if (unlikely(lev == 1 && cpu->vhyp)) {
+             PPCVirtualHypervisorClass *vhc =
+                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
++            dump_hcall(env);
+             vhc->hypercall(cpu->vhyp, cpu);
+             powerpc_reset_excp_state(cpu);
+             return;
++        } else {
++            dump_syscall(env);
+         }
+-
+         break;
+     }
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+@@ -907,26 +903,22 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+     {
+         int lev = env->error_code;
+-
+-        if (lev == 1 && cpu->vhyp) {
+-            dump_hcall(env);
+-        } else {
+-            dump_syscall(env);
+-        }
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+          * uses VOF and the 74xx CPUs, so although the 74xx don't have
+          * HV mode, we need to keep hypercall support.
+          */
+-        if (lev == 1 && cpu->vhyp) {
++        if (unlikely(lev == 1 && cpu->vhyp)) {
+             PPCVirtualHypervisorClass *vhc =
+                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
++            dump_hcall(env);
+             vhc->hypercall(cpu->vhyp, cpu);
+             powerpc_reset_excp_state(cpu);
+             return;
++        } else {
++            dump_syscall(env);
+         }
+-
+         break;
+     }
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
 -- 
 2.30.9
 
