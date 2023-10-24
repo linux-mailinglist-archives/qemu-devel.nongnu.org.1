@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61A57D437D
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 01:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771E97D438F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 02:05:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qv4ko-0001N4-C5; Mon, 23 Oct 2023 19:54:38 -0400
+	id 1qv4u1-0002vb-Ht; Mon, 23 Oct 2023 20:04:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <titusr@google.com>) id 1qv4kk-0001Mh-Qy
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 19:54:34 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1qv4tz-0002vB-5z
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 20:04:07 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <titusr@google.com>) id 1qv4kV-0004Fg-H7
- for qemu-devel@nongnu.org; Mon, 23 Oct 2023 19:54:33 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4084b0223ccso30216345e9.2
- for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 16:54:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1qv4tw-0006Gk-Kb
+ for qemu-devel@nongnu.org; Mon, 23 Oct 2023 20:04:06 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-507c1936fd5so5565490e87.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Oct 2023 17:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1698105252; x=1698710052; darn=nongnu.org;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1698105840; x=1698710640;
+ darn=nongnu.org; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6o+DekYjjnj3xmt+pxvdI6YmCXVRtdmhxWyk/XPyGoU=;
- b=RFMuBy2Q7ylAzpwsTsqWSxGAdC1wXCh8S1vxFICIrECz6EmlZRCy3ALkPuwg2QDk6m
- GEYg2fkesRRino78h+rx1CV37X9b4Z7qfagWQUTE4k+j37+ZI4ecDHO9iaN1rvE8AkXJ
- ynqqoDSHqQZTCbuaoYYU5IfhCccw4RPVaAH0MzhDAaSC6prepnJoiilEFcFcouWPHR7o
- Ztzu+VU/i7ejvsOfWmZEaGn1f6MvCk4M8rnoBJwLgjd2qPACSQjA+df7+rLvmBf6EFH0
- OEQ2JoCchh0XgfRNOfwWKpRbrtf7zY7e7Cedqib/x36w1SZE4ETuqrd/LgAvfNcXUJ7g
- 2Cdw==
+ bh=Gr7cfJqQg77ayxj7s13fub2YDO7k12M2Ww7gVmhpvEE=;
+ b=pT4xv8Hy0xPgZ59V+MZ0kmllzFn2/J7ussAI5KWztOcSKzzHq7J8rq8Rr714P69RKu
+ ZRrfYCHMu+sf1VOMDTZhtOtUcGQxDGhuPwkGHwT1Wjl2eUeqDAO6on9Osbi4HsJHxgNh
+ YyTLvTZ5GZzIl2xCZgukmIA3HIjo9fuPhGkYP32mG+Z2Jj/BPSRudsocq4QUENvCZMat
+ FgV5DrPv8EySrQsct90+DODISvFuGG4P6CtCjSLUqnCluv2BvbI3UCcCxCNylnvawP2h
+ R+WNKl2uuTHuQHySbo+oHCmwEN9ESMOL03Oiw9PBMCMh8ZymG95B9CNleNoVKXYUxANq
+ 6C6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698105252; x=1698710052;
+ d=1e100.net; s=20230601; t=1698105840; x=1698710640;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6o+DekYjjnj3xmt+pxvdI6YmCXVRtdmhxWyk/XPyGoU=;
- b=SKgpGDpyzrLiTufWjZ7o2mmtW8LKITQhyUTijrjg4J7dausTdeImYmFQvHF1vx+ZY1
- wIRNuCoCz0MrHFvjeDfF+4Mv4KlxaUq2Viywzg+lDe9VOzLNTfUGfpY4vDWg+eMCCP/7
- eRcjclYXv3Ai3vQGvjuhS+xBhGlZ9sQyPo721Ld3yZt5Q+VyCx90PlwEPbu7ApIQIjSO
- tZzyxSez2GF241EUqra+uGEts8VY/s49fG0UPd+Im6wzYQ32oOfrB8wvOvNmxknq0Di2
- N4NwoP3jnBAl3d3SXGMJoCgyRwGWC2ao7X9q44xdO+Rtq1IHOWHyzisR7fi7/0/4VR7z
- qK1w==
-X-Gm-Message-State: AOJu0YxS5kG6b7kzQCA3bmgoflj86A3xCm5oTtbe0Tz7ahgMlU7MZ50e
- XA7Ovre3lIMfed3ZXiZs9Hg/U0LHKhNz2D+cYfsCcw==
-X-Google-Smtp-Source: AGHT+IFXA5BXYASV66wpZJBzx7v/e6rwYJWG3ZIXSts0YIzwAU5oJ7L/Pz/nKcYoXhaptq2vOhv0XRL9b9HMdpPJWCU=
-X-Received: by 2002:a5d:4e06:0:b0:32c:d0e0:3e70 with SMTP id
- p6-20020a5d4e06000000b0032cd0e03e70mr7758101wrt.56.1698105252332; Mon, 23 Oct
- 2023 16:54:12 -0700 (PDT)
+ bh=Gr7cfJqQg77ayxj7s13fub2YDO7k12M2Ww7gVmhpvEE=;
+ b=apimsUh7PMPuX7A2Ezhjb1JPIaLiQXck9xZ8HqUbyjCOi8Fr3Ftd96yupjynlYYmoZ
+ N/S7FoLJHi6qhOFsahn+VAVAVLDYXy7Xf67VeCa86BdUccseJ1qRNnhJ8B6jRAoKbCIe
+ j4Cxm8TtYb4McnU8to5LmuDwahQMB1ey8mt5zduHEyXH0Z8k/5fnMKuMqhGYyNCSQdf2
+ aCVz4KIDjBRKntCdMh7HbgXfZnNGngPGHkWLzowpLpZS24ByNeRrEgTzjr65xcVZ7yFz
+ DcvftKHHvRVMtlDDurQkzsl14hUhF0LHA51pJu9eyTDBZ6BAFtt7N4nEBhw0GszaGC5M
+ DSPw==
+X-Gm-Message-State: AOJu0YwAtm9zjdeAACHiNetn+vMsxEaCkbAPp6y3Vq4QWYL9YZ4Epkwn
+ huYk5EdqhhMvCaoCgcqlNqYLf8bWWSVsh4tNjEAK2Q==
+X-Google-Smtp-Source: AGHT+IF8s2IDnT1s0vBOINxSah0kQTMax3Qfc0DDigf+RXEXVsLkCXFn45hsB3x0zblYPEgh36VvU9sikiSJzOsMYmY=
+X-Received: by 2002:a05:6512:6cf:b0:500:c00e:8f15 with SMTP id
+ u15-20020a05651206cf00b00500c00e8f15mr4571689lff.16.1698105840360; Mon, 23
+ Oct 2023 17:04:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231023180837.91785-1-titusr@google.com>
- <874jih40a3.fsf@linaro.org>
-In-Reply-To: <874jih40a3.fsf@linaro.org>
-From: Titus Rwantare <titusr@google.com>
-Date: Mon, 23 Oct 2023 16:53:36 -0700
-Message-ID: <CAMvPwGpXZxyoX1WNypgNCW+Uj+bcVPn99vF71Myx7jn_c2Fjdg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] PMBus fixes and new functions
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-arm@nongnu.org, minyard@acm.org, philmd@linaro.org, 
- qemu-devel@nongnu.org
+References: <20231018154434.17367-1-rbradford@rivosinc.com>
+ <20231018154434.17367-2-rbradford@rivosinc.com>
+In-Reply-To: <20231018154434.17367-2-rbradford@rivosinc.com>
+From: Atish Kumar Patra <atishp@rivosinc.com>
+Date: Mon, 23 Oct 2023 17:03:49 -0700
+Message-ID: <CAHBxVyENFHfK24b6nO8z58ACiFQX7J-foCNE8azJKQHPrz3ZFw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/6] target/riscv: Propagate error from PMU setup
+To: Rob Bradford <rbradford@rivosinc.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=titusr@google.com; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=atishp@rivosinc.com; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,30 +89,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 23 Oct 2023 at 12:16, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
-
-> You seem to have missed a number of tags from previous postings:
+On Wed, Oct 18, 2023 at 8:44=E2=80=AFAM Rob Bradford <rbradford@rivosinc.co=
+m> wrote:
 >
->   https://qemu.readthedocs.io/en/master/devel/submitting-a-patch.html#pro=
-per-use-of-reviewed-by-tags-can-aid-review
+> More closely follow the QEMU style by returning an Error and propagating
+> it there is an error relating to the PMU setup.
 >
-> (although I notice we only mention Reviewed-by in the docs)
+> Further simplify the function by removing the num_counters parameter as
+> this is available from the passed in cpu pointer.
 >
-> You can use a tool like b4 to apply a series and collect the tags. It
-> will also collect the Message-Id's which are also useful.
+> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> ---
+>  target/riscv/pmu.c         | 19 +++++++++----------
+>  target/riscv/pmu.h         |  3 ++-
+>  target/riscv/tcg/tcg-cpu.c |  8 +++++++-
+>  3 files changed, 18 insertions(+), 12 deletions(-)
 >
-> Once you've fixed up your tags I think as the maintainer you can submit
-> a pull request.
+> diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
+> index 36f6307d28..13801ccb78 100644
+> --- a/target/riscv/pmu.c
+> +++ b/target/riscv/pmu.c
+> @@ -434,22 +434,21 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint6=
+4_t value, uint32_t ctr_idx)
+>  }
 >
+>
+> -int riscv_pmu_init(RISCVCPU *cpu, int num_counters)
+> +void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+>  {
+> -    if (num_counters > (RV_MAX_MHPMCOUNTERS - 3)) {
+> -        return -1;
+> +    uint8_t pmu_num =3D cpu->cfg.pmu_num;
+> +
+> +    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
+> +        error_setg(errp, "Number of counters exceeds maximum available")=
+;
+> +        return;
+>      }
+>
+>      cpu->pmu_event_ctr_map =3D g_hash_table_new(g_direct_hash, g_direct_=
+equal);
+>      if (!cpu->pmu_event_ctr_map) {
+> -        /* PMU support can not be enabled */
+> -        qemu_log_mask(LOG_UNIMP, "PMU events can't be supported\n");
+> -        cpu->cfg.pmu_num =3D 0;
+> -        return -1;
+> +        error_setg(errp, "Unable to allocate PMU event hash table");
+> +        return;
+>      }
+>
+>      /* Create a bitmask of available programmable counters */
+> -    cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, num_counters);
+> -
+> -    return 0;
+> +    cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
+>  }
+> diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
+> index 2bfb71ba87..88e0713296 100644
+> --- a/target/riscv/pmu.h
+> +++ b/target/riscv/pmu.h
+> @@ -17,13 +17,14 @@
+>   */
+>
+>  #include "cpu.h"
+> +#include "qapi/error.h"
+>
+>  bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
+>                                          uint32_t target_ctr);
+>  bool riscv_pmu_ctr_monitor_cycles(CPURISCVState *env,
+>                                    uint32_t target_ctr);
+>  void riscv_pmu_timer_cb(void *priv);
+> -int riscv_pmu_init(RISCVCPU *cpu, int num_counters);
+> +void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
+>  int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
+>                                 uint32_t ctr_idx);
+>  int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx=
+);
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index a28918ab30..ed3eb991c0 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -614,7 +614,13 @@ static bool tcg_cpu_realize(CPUState *cs, Error **er=
+rp)
+>      }
+>
+>      if (cpu->cfg.pmu_num) {
+> -        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscof=
+pmf) {
+> +        riscv_pmu_init(cpu, &local_err);
+> +        if (local_err !=3D NULL) {
+> +            error_propagate(errp, local_err);
+> +            return false;
+> +        }
+> +
+> +        if (cpu->cfg.ext_sscofpmf) {
+>              cpu->pmu_timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL,
+>                                            riscv_pmu_timer_cb, cpu);
+>          }
 > --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
+> 2.41.0
+>
 
-Thanks for the tip about b4, I spent some time getting to grips with
-it and it's a huge timesaver.
-I haven't quite figured out how to get it to produce and send a signed
-pull request, but I don't need that just yet.
 
--Titus
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
 
