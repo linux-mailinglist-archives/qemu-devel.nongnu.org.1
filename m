@@ -2,93 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C4C7D5627
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1338D7D5606
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 17:23:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvJG1-00074c-3h; Tue, 24 Oct 2023 11:23:49 -0400
+	id 1qvJF4-0003YG-D6; Tue, 24 Oct 2023 11:22:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qvJFz-00070V-1b
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:23:47 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qvJFt-0003SV-1R
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 11:23:46 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6b36e1fcee9so3861000b3a.3
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 08:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698161019; x=1698765819; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xr2EUHEIijQ2hgbrcd40LrFZAIpqT2SqyWXBDut3uFM=;
- b=jBTX1Ni1f7L0Zt2YI/BsTMpXFmFgTvWMZVj+8evcsMnT+r0ojftjgeoIQOWdv/eAr7
- m/NjlamePatoQktc+hC8lCmFdVJvcD8dcKE9icRZQp5FW5raJ1QR2qq1AMCQC3P9Gkgu
- 7dg7nb4mhfPU7ZcWuRTUXYVl8b1vKJmZYS6xrzhF7FZoyZ5ZIM/FO4k2TwWak4tdzl40
- qUnLpF6lvuE1tLkmzoqfeKeQW1LrDo/cPxMNWmUECQt7Oj7LmTVOCtH6oGtrStePufw0
- pD3AFnFxABvfeVpkx/YzbnIkxBBjD10hRYn0jTuCKQFjQo/vGJE9n+Mq6RPpy+ZgobKZ
- 17pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698161019; x=1698765819;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xr2EUHEIijQ2hgbrcd40LrFZAIpqT2SqyWXBDut3uFM=;
- b=MOoWbk0FZertEFf2DkXAOkxf9TjhwLC46ujtwz28oH7EjM9mhACNgfM8VUzooV6M7s
- FXc966kT+Y1sE7Yo7+sEYIqg7uUzrr/BnVUVKrwLJphYNAwDAwEHWXAp8zfv5Cb7+kYf
- cWZlw5mkowEGnE7oR+rsdiRvses3VgboJF3u061vkAhPqkTLpzVSwbczWxgjlosiImG+
- 16ly3SsIf3iXOGCL5R5A8WC76bvEBAqwAWWgDk171ft1l++u219Tng209mbhrdw2CxXS
- SNOEaghF9cZKCaA8pLD2Uq4Uojr3Y9MnckqaTbjaB0Sg2zmNwV5VzMHilxdrnZpIrgB1
- FuJA==
-X-Gm-Message-State: AOJu0YxoXf/6VWYsa/g7Hf8PZ1QP4eRjhBQF4qUoztI0WR0smgSnCcAb
- zWx2B9BzqS9pWxlqp6PeOGJyEaekxC8phg==
-X-Google-Smtp-Source: AGHT+IG2ckv2Y308wgR7c6o2p2BFPDkX/N+/mTRLbT3xSqWj5hAOQBdssKtDxY4TfN6Df2vdN3r4FA==
-X-Received: by 2002:a05:6a21:3d83:b0:125:517c:4f18 with SMTP id
- bj3-20020a056a213d8300b00125517c4f18mr2741803pzc.8.1698161019258; 
- Tue, 24 Oct 2023 08:23:39 -0700 (PDT)
-Received: from localhost.localdomain ([2001:ee0:50f4:9050:647f:b391:99d7:635d])
- by smtp.googlemail.com with ESMTPSA id
- t29-20020a63445d000000b005ab46970aaasm7196180pgk.17.2023.10.24.08.23.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 08:23:37 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Joao Martins <joao.m.martins@oracle.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <lists@philjordan.eu>,
- Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v9 5/5] amd_iommu: report x2APIC support to the operating
- system
-Date: Tue, 24 Oct 2023 22:21:05 +0700
-Message-Id: <20231024152105.35942-6-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231024152105.35942-1-minhquangbui99@gmail.com>
-References: <20231024152105.35942-1-minhquangbui99@gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=1ohf=GG=kaod.org=clg@ozlabs.org>)
+ id 1qvJEW-0003Ed-2u; Tue, 24 Oct 2023 11:22:17 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=1ohf=GG=kaod.org=clg@ozlabs.org>)
+ id 1qvJEO-0003DQ-J2; Tue, 24 Oct 2023 11:22:15 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SFG4p5dlnz4x5l;
+ Wed, 25 Oct 2023 02:22:02 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SFG4k2ccYz4wy6;
+ Wed, 25 Oct 2023 02:21:58 +1100 (AEDT)
+Message-ID: <58deedee-a291-4d73-a3f1-09ea16c953f0@kaod.org>
+Date: Tue, 24 Oct 2023 17:21:53 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/10] hw/fsi: Aspeed APB2OPB interface
+Content-Language: en-US
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231021211720.3571082-1-ninad@linux.ibm.com>
+ <20231021211720.3571082-7-ninad@linux.ibm.com>
+ <c1aace06-0eab-4805-b58d-e108b53158dc@kaod.org>
+ <1b83521d-4885-490e-b8d7-1d760de5c173@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <1b83521d-4885-490e-b8d7-1d760de5c173@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=1ohf=GG=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,328 +67,364 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds XTSup configuration to let user choose to whether enable
-this feature or not. When XTSup is enabled, additional bytes in IRTE with
-enabled guest virtual VAPIC are used to support 32-bit destination id.
+On 10/24/23 17:00, Ninad Palsule wrote:
+> Hello Cedric,
+> 
+> On 10/24/23 02:46, Cédric Le Goater wrote:
+>> On 10/21/23 23:17, Ninad Palsule wrote:
+>>> This is a part of patchset where IBM's Flexible Service Interface is
+>>> introduced.
+>>>
+>>> An APB-to-OPB bridge enabling access to the OPB from the ARM core in
+>>> the AST2600. Hardware limitations prevent the OPB from being directly
+>>> mapped into APB, so all accesses are indirect through the bridge.
+>>>
+>>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>>> ---
+>>> v2:
+>>> - Incorporated review comments by Joel
+>>> v3:
+>>> - Incorporated review comments by Thomas Huth
+>>> v4:
+>>>    - Compile FSI with ASPEED_SOC only.
+>>> v5:
+>>> - Incorporated review comments by Cedric.
+>>> v6:
+>>> - Incorporated review comments by Cedric.
+>>> ---
+>>>   include/hw/fsi/aspeed-apb2opb.h |  33 ++++
+>>>   hw/fsi/aspeed-apb2opb.c         | 280 ++++++++++++++++++++++++++++++++
+>>>   hw/arm/Kconfig                  |   1 +
+>>>   hw/fsi/Kconfig                  |   4 +
+>>>   hw/fsi/meson.build              |   1 +
+>>>   hw/fsi/trace-events             |   2 +
+>>>   6 files changed, 321 insertions(+)
+>>>   create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+>>>   create mode 100644 hw/fsi/aspeed-apb2opb.c
+>>>
+>>> diff --git a/include/hw/fsi/aspeed-apb2opb.h b/include/hw/fsi/aspeed-apb2opb.h
+>>> new file mode 100644
+>>> index 0000000000..a81ae67023
+>>> --- /dev/null
+>>> +++ b/include/hw/fsi/aspeed-apb2opb.h
+>>> @@ -0,0 +1,33 @@
+>>> +/*
+>>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>>> + * Copyright (C) 2023 IBM Corp.
+>>> + *
+>>> + * ASPEED APB2OPB Bridge
+>>> + */
+>>> +#ifndef FSI_ASPEED_APB2OPB_H
+>>> +#define FSI_ASPEED_APB2OPB_H
+>>> +
+>>> +#include "hw/sysbus.h"
+>>> +#include "hw/fsi/opb.h"
+>>> +
+>>> +#define TYPE_ASPEED_APB2OPB "aspeed.apb2opb"
+>>> +OBJECT_DECLARE_SIMPLE_TYPE(AspeedAPB2OPBState, ASPEED_APB2OPB)
+>>> +
+>>> +#define ASPEED_APB2OPB_NR_REGS ((0xe8 >> 2) + 1)
+>>> +
+>>> +#define ASPEED_FSI_NUM 2
+>>> +
+>>> +typedef struct AspeedAPB2OPBState {
+>>> +    /*< private >*/
+>>> +    SysBusDevice parent_obj;
+>>> +
+>>> +    /*< public >*/
+>>> +    MemoryRegion iomem;
+>>> +
+>>> +    uint32_t regs[ASPEED_APB2OPB_NR_REGS];
+>>> +    qemu_irq irq;
+>>> +
+>>> +    OPBus opb[ASPEED_FSI_NUM];
+>>> +} AspeedAPB2OPBState;
+>>> +
+>>> +#endif /* FSI_ASPEED_APB2OPB_H */
+>>> diff --git a/hw/fsi/aspeed-apb2opb.c b/hw/fsi/aspeed-apb2opb.c
+>>> new file mode 100644
+>>> index 0000000000..6f97a6bc7d
+>>> --- /dev/null
+>>> +++ b/hw/fsi/aspeed-apb2opb.c
+>>> @@ -0,0 +1,280 @@
+>>> +/*
+>>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>>> + * Copyright (C) 2023 IBM Corp.
+>>> + *
+>>> + * ASPEED APB-OPB FSI interface
+>>> + */
+>>> +
+>>> +#include "qemu/osdep.h"
+>>> +#include "qemu/log.h"
+>>> +#include "qom/object.h"
+>>> +#include "qapi/error.h"
+>>> +#include "trace.h"
+>>> +
+>>> +#include "hw/fsi/aspeed-apb2opb.h"
+>>> +#include "hw/qdev-core.h"
+>>> +
+>>> +#define TO_REG(x) (x >> 2)
+>>> +#define GENMASK(t, b) (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 1))
+>>> +
+>>> +#define APB2OPB_VERSION                    TO_REG(0x00)
+>>> +#define   APB2OPB_VERSION_VER              GENMASK(7, 0)
+>>> +
+>>> +#define APB2OPB_TRIGGER                    TO_REG(0x04)
+>>> +#define   APB2OPB_TRIGGER_EN               BIT(0)
+>>> +
+>>> +#define APB2OPB_CONTROL                    TO_REG(0x08)
+>>> +#define   APB2OPB_CONTROL_OFF              GENMASK(31, 13)
+>>> +
+>>> +#define APB2OPB_OPB2FSI                    TO_REG(0x0c)
+>>> +#define   APB2OPB_OPB2FSI_OFF              GENMASK(31, 22)
+>>> +
+>>> +#define APB2OPB_OPB0_SEL                   TO_REG(0x10)
+>>> +#define APB2OPB_OPB1_SEL                   TO_REG(0x28)
+>>> +#define   APB2OPB_OPB_SEL_EN               BIT(0)
+>>> +
+>>> +#define APB2OPB_OPB0_MODE                  TO_REG(0x14)
+>>> +#define APB2OPB_OPB1_MODE                  TO_REG(0x2c)
+>>> +#define   APB2OPB_OPB_MODE_RD              BIT(0)
+>>> +
+>>> +#define APB2OPB_OPB0_XFER                  TO_REG(0x18)
+>>> +#define APB2OPB_OPB1_XFER                  TO_REG(0x30)
+>>> +#define   APB2OPB_OPB_XFER_FULL            BIT(1)
+>>> +#define   APB2OPB_OPB_XFER_HALF            BIT(0)
+>>> +
+>>> +#define APB2OPB_OPB0_ADDR                  TO_REG(0x1c)
+>>> +#define APB2OPB_OPB0_WRITE_DATA            TO_REG(0x20)
+>>> +
+>>> +#define APB2OPB_OPB1_ADDR                  TO_REG(0x34)
+>>> +#define APB2OPB_OPB1_WRITE_DATA                  TO_REG(0x38)
+>>> +
+>>> +#define APB2OPB_IRQ_STS                    TO_REG(0x48)
+>>> +#define   APB2OPB_IRQ_STS_OPB1_TX_ACK      BIT(17)
+>>> +#define   APB2OPB_IRQ_STS_OPB0_TX_ACK      BIT(16)
+>>> +
+>>> +#define APB2OPB_OPB0_WRITE_WORD_ENDIAN     TO_REG(0x4c)
+>>> +#define   APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE 0x0011101b
+>>> +#define APB2OPB_OPB0_WRITE_BYTE_ENDIAN     TO_REG(0x50)
+>>> +#define   APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE 0x0c330f3f
+>>> +#define APB2OPB_OPB1_WRITE_WORD_ENDIAN     TO_REG(0x54)
+>>> +#define APB2OPB_OPB1_WRITE_BYTE_ENDIAN     TO_REG(0x58)
+>>> +#define APB2OPB_OPB0_READ_BYTE_ENDIAN      TO_REG(0x5c)
+>>> +#define APB2OPB_OPB1_READ_BYTE_ENDIAN      TO_REG(0x60)
+>>> +#define   APB2OPB_OPB0_READ_WORD_ENDIAN_BE  0x00030b1b
+>>> +
+>>> +#define APB2OPB_OPB0_READ_DATA         TO_REG(0x84)
+>>> +#define APB2OPB_OPB1_READ_DATA         TO_REG(0x90)
+>>> +
+>>> +/*
+>>> + * The following magic values came from AST2600 data sheet
+>>> + * The register values are defined under section "FSI controller"
+>>> + * as initial values.
+>>> + */
+>>> +static const uint32_t aspeed_apb2opb_reset[ASPEED_APB2OPB_NR_REGS] = {
+>>> +     [APB2OPB_VERSION]                = 0x000000a1,
+>>> +     [APB2OPB_OPB0_WRITE_WORD_ENDIAN] = 0x0044eee4,
+>>> +     [APB2OPB_OPB0_WRITE_BYTE_ENDIAN] = 0x0055aaff,
+>>> +     [APB2OPB_OPB1_WRITE_WORD_ENDIAN] = 0x00117717,
+>>> +     [APB2OPB_OPB1_WRITE_BYTE_ENDIAN] = 0xffaa5500,
+>>> +     [APB2OPB_OPB0_READ_BYTE_ENDIAN]  = 0x0044eee4,
+>>> +     [APB2OPB_OPB1_READ_BYTE_ENDIAN]  = 0x00117717
+>>> +};
+>>> +
+>>> +static uint64_t fsi_aspeed_apb2opb_read(void *opaque, hwaddr addr,
+>>> +                                        unsigned size)
+>>> +{
+>>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
+>>> +
+>>> +    trace_fsi_aspeed_apb2opb_read(addr, size);
+>>> +
+>>> +    if (addr + size > sizeof(s->regs)) {
+>>
+>>
+>> hmm, the parameter 'size' is a memop transaction size not an address offset.
+> OK, Changed it to validate the register (index) instead of addr + size.
+>>
+>>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
+>>> +                      __func__, addr, size);
+>>> +        return 0;
+>>> +    }
+>>> +
+>>> +    return s->regs[TO_REG(addr)];
+>>> +}
+>>> +
+>>> +static void fsi_aspeed_apb2opb_write(void *opaque, hwaddr addr, uint64_t data,
+>>> +                                     unsigned size)
+>>> +{
+>>> +    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
+>>> +
+>>> +    trace_fsi_aspeed_apb2opb_write(addr, size, data);
+>>> +
+>>> +    if (addr + size > sizeof(s->regs)) {
+>>
+>> same comment.
+> Fixed it same as above.
+>>
+>>
+>>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                      "%s: Out of bounds write: %"HWADDR_PRIx" for %u\n",
+>>> +                      __func__, addr, size);
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    switch (TO_REG(addr)) {
+>>> +    case APB2OPB_CONTROL:
+>>> +        fsi_opb_fsi_master_address(&s->opb[0], data & APB2OPB_CONTROL_OFF);
+>>
+>> fsi_opb_fsi_master_address() should statically defined in this file
+> We have separation of OPB bus implementation and APB2OPB interface. If we move this function here then we will be exposing OPB implementation here.
+>>
+>>> +        break;
+>>> +    case APB2OPB_OPB2FSI:
+>>> +        fsi_opb_opb2fsi_address(&s->opb[0], data & APB2OPB_OPB2FSI_OFF);
+>>
+>>
+>> same for fsi_opb_opb2fsi_address()
+> Same as above.
+>>
+>>> +        break;
+>>> +    case APB2OPB_OPB0_WRITE_WORD_ENDIAN:
+>>> +        if (data != APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE) {
+>>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                          "%s: Bridge needs to be driven as BE (0x%x)\n",
+>>> +                          __func__, APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE);
+>>> +        }
+>>> +        break;
+>>> +    case APB2OPB_OPB0_WRITE_BYTE_ENDIAN:
+>>> +        if (data != APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE) {
+>>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                          "%s: Bridge needs to be driven as BE (0x%x)\n",
+>>> +                          __func__, APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE);
+>>> +        }
+>>> +        break;
+>>> +    case APB2OPB_OPB0_READ_BYTE_ENDIAN:
+>>> +        if (data != APB2OPB_OPB0_READ_WORD_ENDIAN_BE) {
+>>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                          "%s: Bridge needs to be driven as BE (0x%x)\n",
+>>> +                          __func__, APB2OPB_OPB0_READ_WORD_ENDIAN_BE);
+>>> +        }
+>>> +        break;
+>>> +    case APB2OPB_TRIGGER:
+>>> +    {
+>>> +        uint32_t opb, op_mode, op_size, op_addr, op_data;
+>>> +
+>>> +        assert((s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) ^
+>>> +               (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN));
+>>> +
+>>> +        if (s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) {
+>>> +            opb = 0;
+>>> +            op_mode = s->regs[APB2OPB_OPB0_MODE];
+>>> +            op_size = s->regs[APB2OPB_OPB0_XFER];
+>>> +            op_addr = s->regs[APB2OPB_OPB0_ADDR];
+>>> +            op_data = s->regs[APB2OPB_OPB0_WRITE_DATA];
+>>> +        } else if (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN) {
+>>> +            opb = 1;
+>>> +            op_mode = s->regs[APB2OPB_OPB1_MODE];
+>>> +            op_size = s->regs[APB2OPB_OPB1_XFER];
+>>> +            op_addr = s->regs[APB2OPB_OPB1_ADDR];
+>>> +            op_data = s->regs[APB2OPB_OPB1_WRITE_DATA];
+>>> +        } else {
+>>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                          "%s: Invalid operation: 0x%"HWADDR_PRIx" for %u\n",
+>>> +                          __func__, addr, size);
+>>> +            return;
+>>> +        }
+>>> +
+>>> +        if (op_size & ~(APB2OPB_OPB_XFER_HALF | APB2OPB_OPB_XFER_FULL)) {
+>>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                          "OPB transaction failed: Unrecognised access width: %d\n",
+>>
+>> Unrecognized
+> Fixed
+>>
+>>> +                          op_size);
+>>> +            return;
+>>> +        }
+>>> +
+>>> +        op_size += 1;
+>>> +
+>>> +        if (op_mode & APB2OPB_OPB_MODE_RD) {
+>>> +            int index = opb ? APB2OPB_OPB1_READ_DATA
+>>> +                : APB2OPB_OPB0_READ_DATA;
+>>> +
+>>> +            switch (op_size) {
+>>> +            case 1:
+>>> +                s->regs[index] = fsi_opb_read8(&s->opb[opb], op_addr);
+>>> +                break;
+>>> +            case 2:
+>>> +                s->regs[index] = fsi_opb_read16(&s->opb[opb], op_addr);
+>>> +                break;
+>>> +            case 4:
+>>> +                s->regs[index] = fsi_opb_read32(&s->opb[opb], op_addr);
+>>> +                break;
+>>> +            default:
+>>> +                qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                              "%s: Size not supported: %u\n",
+>>> +                              __func__, size);
+>>
+>> this should use op_size and not size and seems redudant with
+>> the unrecognized test above.
+> true, Keeping it in case bits meaning change in future.
+>>
+>>
+>>> +                return;
+>>> +            }
+>>> +        } else {
+>>> +            /* FIXME: Endian swizzling */
+>>> +            switch (op_size) {
+>>> +            case 1:
+>>> +                fsi_opb_write8(&s->opb[opb], op_addr, op_data);
+>>> +                break;
+>>> +            case 2:
+>>> +                fsi_opb_write16(&s->opb[opb], op_addr, op_data);
+>>> +                break;
+>>> +            case 4:
+>>> +                fsi_opb_write32(&s->opb[opb], op_addr, op_data);
+>>> +                break;
+>>> +            default:
+>>> +                qemu_log_mask(LOG_GUEST_ERROR,
+>>> +                              "%s: Size not supported: %u\n",
+>>> +                              __func__, op_size);
+>>> +                return;
+>>> +            }
+>>> +        }
+>>
+>>
+>> The above is equivalent to :
+>>
+>>         MemTxResult result;
+>>         bool is_write = !(op_mode & APB2OPB_OPB_MODE_RD);
+>>         int index = opb ? APB2OPB_OPB1_READ_DATA : APB2OPB_OPB0_READ_DATA;
+>>         AddressSpace *as = &s->opb[opb].as;
+>>
+>>         result = address_space_rw(as, op_addr, MEMTXATTRS_UNSPECIFIED,
+>>                                   &op_data, op_size, is_write);
+>>         if (result != MEMTX_OK) {
+>>             qemu_log_mask(LOG_GUEST_ERROR, "%s: OPB %s failed @%08x\n",
+>>                           __func__, is_write ? "write" : "read", op_addr);
+>>             return;
+>>         }
+>>
+>>         if (!is_write) {
+>>             s->regs[index] = op_data;
+>>         }
+>>
+>> and the fsi_opb_* routines are useless to me.
+> We are trying to keep the separation between OPB implementation and interface hence we have all those fsi_opb_*. I feel that we should keep as it is so that future extensions will be easier. Please let me know.
 
-Additionally, this commit exports IVHD type 0x11 besides the old IVHD type
-0x10 in ACPI table. IVHD type 0x10 does not report full set of IOMMU
-features only the legacy ones, so operating system (e.g. Linux) may only
-detects x2APIC support if IVHD type 0x11 is available. The IVHD type 0x10
-is kept so that old operating system that only parses type 0x10 can detect
-the IOMMU device.
+Well, I can't really tell because I don't know enough about FSI :/
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
----
- hw/i386/acpi-build.c | 129 +++++++++++++++++++++++++++----------------
- hw/i386/amd_iommu.c  |  29 +++++++++-
- hw/i386/amd_iommu.h  |  16 ++++--
- 3 files changed, 117 insertions(+), 57 deletions(-)
+The models look fragile and I have spent already a lot of time trying
+to untangle what they are trying to do. Please ask your teammates or
+let's see in the next QEMU cycle.
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 3f2b27cf75..8069971e54 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -2337,30 +2337,23 @@ static void
- build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
-                 const char *oem_table_id)
- {
--    int ivhd_table_len = 24;
-     AMDVIState *s = AMD_IOMMU_DEVICE(x86_iommu_get_default());
-     GArray *ivhd_blob = g_array_new(false, true, 1);
-     AcpiTable table = { .sig = "IVRS", .rev = 1, .oem_id = oem_id,
-                         .oem_table_id = oem_table_id };
-+    uint64_t feature_report;
- 
-     acpi_table_begin(&table, table_data);
-     /* IVinfo - IO virtualization information common to all
-      * IOMMU units in a system
-      */
--    build_append_int_noprefix(table_data, 40UL << 8/* PASize */, 4);
-+    build_append_int_noprefix(table_data,
-+                             (1UL << 0) | /* EFRSup */
-+                             (40UL << 8), /* PASize */
-+                             4);
-     /* reserved */
-     build_append_int_noprefix(table_data, 0, 8);
- 
--    /* IVHD definition - type 10h */
--    build_append_int_noprefix(table_data, 0x10, 1);
--    /* virtualization flags */
--    build_append_int_noprefix(table_data,
--                             (1UL << 0) | /* HtTunEn      */
--                             (1UL << 4) | /* iotblSup     */
--                             (1UL << 6) | /* PrefSup      */
--                             (1UL << 7),  /* PPRSup       */
--                             1);
--
-     /*
-      * A PCI bus walk, for each PCI host bridge, is necessary to create a
-      * complete set of IVHD entries.  Do this into a separate blob so that we
-@@ -2380,56 +2373,94 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
-         build_append_int_noprefix(ivhd_blob, 0x0000001, 4);
-     }
- 
--    ivhd_table_len += ivhd_blob->len;
--
-     /*
-      * When interrupt remapping is supported, we add a special IVHD device
--     * for type IO-APIC.
--     */
--    if (x86_iommu_ir_supported(x86_iommu_get_default())) {
--        ivhd_table_len += 8;
--    }
--
--    /* IVHD length */
--    build_append_int_noprefix(table_data, ivhd_table_len, 2);
--    /* DeviceID */
--    build_append_int_noprefix(table_data,
--                              object_property_get_int(OBJECT(&s->pci), "addr",
--                                                      &error_abort), 2);
--    /* Capability offset */
--    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
--    /* IOMMU base address */
--    build_append_int_noprefix(table_data, s->mmio.addr, 8);
--    /* PCI Segment Group */
--    build_append_int_noprefix(table_data, 0, 2);
--    /* IOMMU info */
--    build_append_int_noprefix(table_data, 0, 2);
--    /* IOMMU Feature Reporting */
--    build_append_int_noprefix(table_data,
--                             (48UL << 30) | /* HATS   */
--                             (48UL << 28) | /* GATS   */
--                             (1UL << 2)   | /* GTSup  */
--                             (1UL << 6),    /* GASup  */
--                             4);
--
--    /* IVHD entries as found above */
--    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
--    g_array_free(ivhd_blob, TRUE);
--
--    /*
--     * Add a special IVHD device type.
-+     * for type IO-APIC
-      * Refer to spec - Table 95: IVHD device entry type codes
-      *
-      * Linux IOMMU driver checks for the special IVHD device (type IO-APIC).
-      * See Linux kernel commit 'c2ff5cf5294bcbd7fa50f7d860e90a66db7e5059'
-      */
-     if (x86_iommu_ir_supported(x86_iommu_get_default())) {
--        build_append_int_noprefix(table_data,
-+        build_append_int_noprefix(ivhd_blob,
-                                  (0x1ull << 56) |           /* type IOAPIC */
-                                  (IOAPIC_SB_DEVID << 40) |  /* IOAPIC devid */
-                                  0x48,                      /* special device */
-                                  8);
-     }
-+
-+    /* IVHD definition - type 10h */
-+    build_append_int_noprefix(table_data, 0x10, 1);
-+    /* virtualization flags */
-+    build_append_int_noprefix(table_data,
-+                             (1UL << 0) | /* HtTunEn      */
-+                             (1UL << 4) | /* iotblSup     */
-+                             (1UL << 6) | /* PrefSup      */
-+                             (1UL << 7),  /* PPRSup       */
-+                             1);
-+
-+    /* IVHD length */
-+    build_append_int_noprefix(table_data, ivhd_blob->len + 24, 2);
-+    /* DeviceID */
-+    build_append_int_noprefix(table_data,
-+                              object_property_get_int(OBJECT(&s->pci), "addr",
-+                                                      &error_abort), 2);
-+    /* Capability offset */
-+    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-+    /* IOMMU base address */
-+    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-+    /* PCI Segment Group */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU info */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU Feature Reporting */
-+    feature_report = (48UL << 30) | /* HATS   */
-+                     (48UL << 28) | /* GATS   */
-+                     (1UL << 2)   | /* GTSup  */
-+                     (1UL << 6);    /* GASup  */
-+    if (s->xtsup) {
-+        feature_report |= (1UL << 0); /* XTSup */
-+    }
-+    build_append_int_noprefix(table_data, feature_report, 4);
-+
-+    /* IVHD entries as found above */
-+    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
-+
-+   /* IVHD definition - type 11h */
-+    build_append_int_noprefix(table_data, 0x11, 1);
-+    /* virtualization flags */
-+    build_append_int_noprefix(table_data,
-+                             (1UL << 0) | /* HtTunEn      */
-+                             (1UL << 4),  /* iotblSup     */
-+                             1);
-+
-+    /* IVHD length */
-+    build_append_int_noprefix(table_data, ivhd_blob->len + 40, 2);
-+    /* DeviceID */
-+    build_append_int_noprefix(table_data,
-+                              object_property_get_int(OBJECT(&s->pci), "addr",
-+                                                      &error_abort), 2);
-+    /* Capability offset */
-+    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-+    /* IOMMU base address */
-+    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-+    /* PCI Segment Group */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU info */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU Attributes */
-+    build_append_int_noprefix(table_data, 0, 4);
-+    /* EFR Register Image */
-+    build_append_int_noprefix(table_data,
-+                              amdvi_extended_feature_register(s),
-+                              8);
-+    /* EFR Register Image 2 */
-+    build_append_int_noprefix(table_data, 0, 8);
-+
-+    /* IVHD entries as found above */
-+    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
-+
-+    g_array_free(ivhd_blob, TRUE);
-     acpi_table_end(linker, &table);
- }
- 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 7965415b47..e7809b641a 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -31,6 +31,7 @@
- #include "hw/i386/apic_internal.h"
- #include "trace.h"
- #include "hw/i386/apic-msidef.h"
-+#include "hw/qdev-properties.h"
- 
- /* used AMD-Vi MMIO registers */
- const char *amdvi_mmio_low[] = {
-@@ -74,6 +75,16 @@ typedef struct AMDVIIOTLBEntry {
-     uint64_t page_mask;         /* physical page size  */
- } AMDVIIOTLBEntry;
- 
-+uint64_t amdvi_extended_feature_register(AMDVIState *s)
-+{
-+    uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
-+    if (s->xtsup) {
-+        feature |= AMDVI_FEATURE_XT;
-+    }
-+
-+    return feature;
-+}
-+
- /* configure MMIO registers at startup/reset */
- static void amdvi_set_quad(AMDVIState *s, hwaddr addr, uint64_t val,
-                            uint64_t romask, uint64_t w1cmask)
-@@ -1155,7 +1166,12 @@ static int amdvi_int_remap_ga(AMDVIState *iommu,
-     irq->vector = irte.hi.fields.vector;
-     irq->dest_mode = irte.lo.fields_remap.dm;
-     irq->redir_hint = irte.lo.fields_remap.rq_eoi;
--    irq->dest = irte.lo.fields_remap.destination;
-+    if (iommu->xtsup) {
-+        irq->dest = irte.lo.fields_remap.destination |
-+                    (irte.hi.fields.destination_hi << 24);
-+    } else {
-+        irq->dest = irte.lo.fields_remap.destination & 0xff;
-+    }
- 
-     return 0;
- }
-@@ -1501,8 +1517,9 @@ static void amdvi_init(AMDVIState *s)
- 
-     /* reset MMIO */
-     memset(s->mmior, 0, AMDVI_MMIO_SIZE);
--    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, AMDVI_EXT_FEATURES,
--            0xffffffffffffffef, 0);
-+    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES,
-+                   amdvi_extended_feature_register(s),
-+                   0xffffffffffffffef, 0);
-     amdvi_set_quad(s, AMDVI_MMIO_STATUS, 0, 0x98, 0x67);
- }
- 
-@@ -1585,6 +1602,11 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     amdvi_init(s);
- }
- 
-+static Property amdvi_properties[] = {
-+    DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static const VMStateDescription vmstate_amdvi_sysbus = {
-     .name = "amd-iommu",
-     .unmigratable = 1
-@@ -1611,6 +1633,7 @@ static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
-     dc->user_creatable = true;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->desc = "AMD IOMMU (AMD-Vi) DMA Remapping device";
-+    device_class_set_props(dc, amdvi_properties);
- }
- 
- static const TypeInfo amdvi_sysbus = {
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index c5065a3e27..73619fe9ea 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -154,6 +154,7 @@
- 
- #define AMDVI_FEATURE_PREFETCH            (1ULL << 0) /* page prefetch       */
- #define AMDVI_FEATURE_PPR                 (1ULL << 1) /* PPR Support         */
-+#define AMDVI_FEATURE_XT                  (1ULL << 2) /* x2APIC Support      */
- #define AMDVI_FEATURE_GT                  (1ULL << 4) /* Guest Translation   */
- #define AMDVI_FEATURE_IA                  (1ULL << 6) /* inval all support   */
- #define AMDVI_FEATURE_GA                  (1ULL << 7) /* guest VAPIC support */
-@@ -173,8 +174,9 @@
- #define AMDVI_IOTLB_MAX_SIZE 1024
- #define AMDVI_DEVID_SHIFT    36
- 
--/* extended feature support */
--#define AMDVI_EXT_FEATURES (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
-+/* default extended feature */
-+#define AMDVI_DEFAULT_EXT_FEATURES \
-+        (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
-         AMDVI_FEATURE_IA | AMDVI_FEATURE_GT | AMDVI_FEATURE_HE | \
-         AMDVI_GATS_MODE | AMDVI_HATS_MODE | AMDVI_FEATURE_GA)
- 
-@@ -276,8 +278,8 @@ union irte_ga_lo {
-                 dm:1,
-                 /* ------ */
-                 guest_mode:1,
--                destination:8,
--                rsvd_1:48;
-+                destination:24,
-+                rsvd_1:32;
-   } fields_remap;
- };
- 
-@@ -285,7 +287,8 @@ union irte_ga_hi {
-   uint64_t val;
-   struct {
-       uint64_t  vector:8,
--                rsvd_2:56;
-+                rsvd_2:48,
-+                destination_hi:8;
-   } fields;
- };
- 
-@@ -364,6 +367,9 @@ struct AMDVIState {
- 
-     /* Interrupt remapping */
-     bool ga_enabled;
-+    bool xtsup;
- };
- 
-+uint64_t amdvi_extended_feature_register(AMDVIState *s);
-+
- #endif
--- 
-2.25.1
+Thanks,
+
+C.
+
 
 
