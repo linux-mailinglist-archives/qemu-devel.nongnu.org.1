@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5834F7D4AAB
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B758B7D4AA0
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:42:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvCys-0004Cc-LD; Tue, 24 Oct 2023 04:41:42 -0400
+	id 1qvCyY-00045z-8j; Tue, 24 Oct 2023 04:41:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qvCyS-0003yl-Fr
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:41:16 -0400
+ id 1qvCyU-00041U-Jx
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:41:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qvCyP-0003LT-QN
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:41:15 -0400
+ id 1qvCyS-0003M1-Pr
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:41:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698136873;
+ s=mimecast20190719; t=1698136875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LnsG5NWQMp6ppcb6O/Y0IH9dMdUd6gQTyemwrekuS08=;
- b=PWTockgSkXoVd5oKEn/OxwHbfOCtGtO9ZupfksWL3uR9X2znYWB0+9Ndyb31EzpC1yhHD8
- s4vgjt0defySlf0IO5ZsZ6hpixwv7DoaQzxVWY59rFpnvcoAuJoAExRoAWBkrEergXrraN
- 8Mrsyf7vlPQz5tKxYFox2d9LzyS5dM0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-1RGbMSjsMmCVGt_lZbA9OQ-1; Tue,
- 24 Oct 2023 04:41:09 -0400
-X-MC-Unique: 1RGbMSjsMmCVGt_lZbA9OQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=JcTpCgZ35LfhC+wFH9xrmV5omvGtiL8P6lxVbihLf/E=;
+ b=X2NW7S6xXdS/NPvr0xyfgKK/PCK881BxkmF1VGBl932Xwopq5VNb+gOxivkINrIiwHf/Ga
+ qDKVy+SnNODwW28OfAEAKbM5bt70omvu3M/FHKfU4Lg7grKQGFOJeCq5DSey/TZk+yArUc
+ +foFT6xqfaJ7blTeAVVR4RBxe5Wv85k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-JJYg65rzNbaQWhiovTqt7g-1; Tue, 24 Oct 2023 04:41:14 -0400
+X-MC-Unique: JJYg65rzNbaQWhiovTqt7g-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A25C1C051A1;
- Tue, 24 Oct 2023 08:41:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB87A811E97;
+ Tue, 24 Oct 2023 08:41:13 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.50])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1CE44492BD9;
- Tue, 24 Oct 2023 08:41:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9B5C825C0;
+ Tue, 24 Oct 2023 08:41:12 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -52,15 +52,15 @@ Cc: Kevin Wolf <kwolf@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Juan Quintela <quintela@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 5/9] migration: check required subsections are loaded, once
-Date: Tue, 24 Oct 2023 12:40:39 +0400
-Message-ID: <20231024084043.2926316-6-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 6/9] migration: check required entries are loaded, once
+Date: Tue, 24 Oct 2023 12:40:40 +0400
+Message-ID: <20231024084043.2926316-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20231024084043.2926316-1-marcandre.lureau@redhat.com>
 References: <20231024084043.2926316-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -88,93 +88,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Check that required subsections have been loaded.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- migration/vmstate.c | 40 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+ migration/savevm.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 16e33a5d34..d6fe38a5e1 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -451,22 +451,51 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+diff --git a/migration/savevm.c b/migration/savevm.c
+index ca5c7cebe0..66c9c3095b 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -217,6 +217,7 @@ typedef struct SaveStateEntry {
+     void *opaque;
+     CompatEntry *compat;
+     int is_ram;
++    bool visited;
+ } SaveStateEntry;
+ 
+ typedef struct SaveState {
+@@ -1739,6 +1740,36 @@ int qemu_save_device_state(QEMUFile *f)
+     return qemu_file_get_error(f);
  }
  
- static const VMStateDescription *
--vmstate_get_subsection(const VMStateDescription **sub, char *idstr)
-+vmstate_get_subsection(const VMStateDescription **sub, char *idstr, bool *visited)
- {
-+    size_t i = 0;
-+
-     while (sub && *sub) {
-         if (strcmp(idstr, (*sub)->name) == 0) {
-+            if (visited[i]) {
-+                return NULL;
-+            }
-+            visited[i] = true;
-             return *sub;
-         }
-+        i++;
-         sub++;
-     }
-     return NULL;
- }
- 
-+static size_t
-+vmstate_get_n_subsections(const VMStateDescription **sub)
++static void savevm_reset_visited(void)
 +{
-+    size_t n = 0;
++    SaveStateEntry *se;
 +
-+    if (!sub) {
-+        return 0;
++    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
++        se->visited = false;
 +    }
-+
-+    while (sub[n]) {
-+        n++;
-+    }
-+
-+    return n;
 +}
 +
- static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-                                    void *opaque)
- {
-+    size_t i, n;
-+    g_autofree bool *visited = NULL;
++static bool loadvm_check_visited(Error **errp)
++{
++    SaveStateEntry *se;
 +
-     trace_vmstate_subsection_load(vmsd->name);
- 
-+    n = vmstate_get_n_subsections(vmsd->subsections);
-+    visited = g_new0(bool, n);
-+
-     while (qemu_peek_byte(f, 0) == QEMU_VM_SUBSECTION) {
-         char idstr[256], *idstr_ret;
-         int ret;
-@@ -492,7 +521,7 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-             /* it doesn't have a valid subsection name */
-             return 0;
-         }
--        sub_vmsd = vmstate_get_subsection(vmsd->subsections, idstr);
-+        sub_vmsd = vmstate_get_subsection(vmsd->subsections, idstr, visited);
-         if (sub_vmsd == NULL) {
-             trace_vmstate_subsection_load_bad(vmsd->name, idstr, "(lookup)");
-             return -ENOENT;
-@@ -509,6 +538,13 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-         }
-     }
- 
-+    for (i = 0; i < n; i++) {
-+        if (!visited[i] && vmstate_section_needed(vmsd->subsections[i], opaque)) {
-+            trace_vmstate_subsection_load_bad(vmsd->name, vmsd->subsections[i]->name, "(not visited)");
-+            return -ENOENT;
++    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
++        if (se->ops && se->ops->is_active && !se->ops->is_active(se->opaque)) {
++            continue;
++        }
++        if (se->vmsd && !vmstate_section_needed(se->vmsd, se->opaque)) {
++            continue;
++        }
++        if (!se->visited) {
++            error_setg(errp, "Missing entry '%s' while loading VM", se->idstr);
++            return false;
 +        }
 +    }
 +
-     trace_vmstate_subsection_load_good(vmsd->name);
++    return true;
++}
++
++
+ static SaveStateEntry *find_se(const char *idstr, uint32_t instance_id)
+ {
+     SaveStateEntry *se;
+@@ -2541,6 +2572,11 @@ qemu_loadvm_section_start_full(QEMUFile *f, MigrationIncomingState *mis)
+                      idstr, instance_id);
+         return -EINVAL;
+     }
++    if (se->visited) {
++        error_report("error while loading state for instance 0x%"PRIx32" of"
++                     " device '%s'", instance_id, idstr);
++        return -EINVAL;
++    }
+ 
+     /* Validate version */
+     if (version_id > se->version_id) {
+@@ -2567,6 +2603,8 @@ qemu_loadvm_section_start_full(QEMUFile *f, MigrationIncomingState *mis)
+         return -EINVAL;
+     }
+ 
++    se->visited = true;
++
      return 0;
  }
+ 
+@@ -2874,7 +2912,12 @@ int qemu_loadvm_state(QEMUFile *f)
+ 
+     cpu_synchronize_all_pre_loadvm();
+ 
++    savevm_reset_visited();
+     ret = qemu_loadvm_state_main(f, mis);
++    if (!loadvm_check_visited(&local_err)) {
++        error_report_err(local_err);
++        return -EINVAL;
++    }
+     qemu_event_set(&mis->main_thread_load_event);
+ 
+     trace_qemu_loadvm_state_post_main(ret);
 -- 
 2.41.0
 
