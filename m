@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33437D4F4D
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 13:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2417D4F52
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 14:01:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvG2D-00018f-BI; Tue, 24 Oct 2023 07:57:21 -0400
+	id 1qvG5i-0002MW-Da; Tue, 24 Oct 2023 08:00:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvG2B-00017r-5k
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 07:57:19 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qvG5M-0002FQ-N6
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 08:00:39 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvG29-0000EP-DS
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 07:57:18 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-53df747cfe5so6850699a12.2
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 04:57:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qvG5I-0000yK-SE
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 08:00:34 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-53e08b60febso6591957a12.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 05:00:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698148635; x=1698753435; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SsXMHlGAtAxeW4+tGI+dpMVlYBNx+wrWl91kBjrqtYw=;
- b=lW6VGexNr7bsu27TZc7C02hhjg0AqeIZjvtUdyvCJfwfu3uBpal7wJr6qnvsuchzFF
- vlI+7QOR0kwjYHElVaa/wC7peautDyi5N87DrGl4bbUWLR2/ydY6OBJ70yNtV044zaye
- ws7zhqvZMyg/vSJbQdl+CFMuQEuM418z8PUyPn5oo+aSFwttR1+1V3RVyX0uZ4tm45/X
- 9kQ1qStj24Kx+AKOKzVSEJE1i7zPxy8K2AvyVcEl39XbEH3jBlwHIvjCN8sctWQNrWf0
- 4zuRUoisyNSt1LOhpNEUItZ616oayylxKIE5c64iupnfzw990U0CfWaLNmJF8DUz3o5t
- mx/g==
+ d=linaro.org; s=google; t=1698148830; x=1698753630; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8EXtKmCUX5kZRtSUzkpsFcryr2SH9bojy4IQf9vTVQM=;
+ b=o7jcGt/3COwaci17mtDimnlBvr5OZY9pIC7ZZufe5lclJeCgGb+SlUbIX6QjZEiaVx
+ YGMZt8zrkIHZoT2jWJhkwYaHUgQfnbDM5O7y8EGnacTJKh39S+HsE+Ro5q0KyXmAbHuh
+ Yw6/kZhIvhcHHcBsBH7ep5ndcYZwypXfwGQPQKzwpjJzNY9Wk3ppAaNsS88Za0DXcc/1
+ B2J656fXkhSe13tfIgWjGfA5TZKvPcZhnILhka3fgdWwPanGPF7jU9FyZxnT3oL0vs+F
+ OYIvWZ+b8reF6BbW1r6UHQXD4qzWEfuSfMCqIzbAx+dby347EX7qFcw9SwJOnM0HqGu2
+ NY/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698148635; x=1698753435;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SsXMHlGAtAxeW4+tGI+dpMVlYBNx+wrWl91kBjrqtYw=;
- b=AiFYxPXeA/juzumMZQTcKmOrSmdu8x/nhVYJcVUU8u4DssjhJ8jSiUuqN8JpLEMtTU
- FSmgb4iUypowHNM5GdJa3kIXujK7AMR0gGsA26F42OfVTbg+wIkPDFRPvrnbahZt/oe9
- RG9t/spt+s0cPVrxp4pDGgdVB10DjkiWCf724CPiBKf+sSLXKzcjrPa8jhCm73vwqdnd
- IhwwG/0F97jU5YaQYI0jmfD34PQ5aLCsE18MQzVQFi0cA1PvpiqDrzl6BoD3fNmtvnxM
- nJIaeTCX6AtT9AK1ykiTsllkZ04R7MNGlM3kHPyVYc5XZEZDgFTHf4ZXBO+iK+TR/JSV
- wyMQ==
-X-Gm-Message-State: AOJu0Yw2tbW0rBxM0/0j7tREz9AUb+OuqRZtstBnNmQBAxKEuBcEAHIW
- 5Spjc+b0h0JDa4eF0Y66Uuf1fw==
-X-Google-Smtp-Source: AGHT+IHmW2oeIkLBa9FNzzlLRda/Erm+OMgoF96sNZisEpMScVTCJ0oVBaoD6YggQuUQsFGRAap4PA==
-X-Received: by 2002:a05:6402:42cb:b0:53f:9d8a:414c with SMTP id
- i11-20020a05640242cb00b0053f9d8a414cmr10350555edc.37.1698148634759; 
- Tue, 24 Oct 2023 04:57:14 -0700 (PDT)
-Received: from [192.168.69.115] (sem44-h01-176-172-55-165.dsl.sta.abo.bbox.fr.
- [176.172.55.165]) by smtp.gmail.com with ESMTPSA id
- h12-20020aa7de0c000000b0053e43492ef1sm7676078edv.65.2023.10.24.04.57.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 04:57:14 -0700 (PDT)
-Message-ID: <ab6655b0-a6cf-4c19-56d2-e1cb0e6ac72b@linaro.org>
-Date: Tue, 24 Oct 2023 13:57:11 +0200
+ d=1e100.net; s=20230601; t=1698148830; x=1698753630;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8EXtKmCUX5kZRtSUzkpsFcryr2SH9bojy4IQf9vTVQM=;
+ b=ssmrFc7OV1nLJ/DydyawQ+3o+g3rj00N9HR1XtBLaFT0KP6ajBP2zWwypThHKCFxj8
+ b6TquCDoDXugoGYl8iBAQ2NDt4/qq9SVWDXz2Irf0Z2c9H4LBa3LPT37XRiEmUoyAqnH
+ ErJgpun/DsBDfoi+2yhJEP8RJXR5xknGYrdo3A7vOljDrbqYZWGOA0junnfsXBkP3iyk
+ ybvK9jHUcCoGDURrmOAu6sly7mzeEEaZcOeqfsdmItCm0gJ5rrRxA2rRICDNT4Fw/99p
+ w843mvc6WO170iE4TD4gAD63s+ynFRsXBunArR604Z4hrkUr4k+e5srqDbT4ixRaoEXI
+ JVJg==
+X-Gm-Message-State: AOJu0YztAKatOGBzybbLFZsDwqQI0lw1DhNpHiHllWJVEipqgBwip2BL
+ rjE5Vaf8csoAXqDFdigqQFczJiZGKLrzCqVL/+UL+Q==
+X-Google-Smtp-Source: AGHT+IErLRMLbLGMr4OEt5mxgh2Xa2ib/FXJnFoosHFxdSgnqecDin4eRIxfJYxkHylf72AVZBMtsnddLqC1YPkBnys=
+X-Received: by 2002:a05:6402:274e:b0:53e:8e09:524d with SMTP id
+ z14-20020a056402274e00b0053e8e09524dmr3386315edd.5.1698148829857; Tue, 24 Oct
+ 2023 05:00:29 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] hw/ide: reset: cancel async DMA operation before
- resetting state
-Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: jsnow@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, srowe@mose.org.uk, mike.maslenkin@gmail.com,
- qemu-block@nongnu.org, t.lamprecht@proxmox.com, a.lauterer@proxmox.com,
- kwolf@redhat.com
-References: <20230906130922.142845-1-f.ebner@proxmox.com>
- <2ec675fb-0bd9-4f3d-b205-2a7fe5101427@proxmox.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <2ec675fb-0bd9-4f3d-b205-2a7fe5101427@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+References: <20231024094351.50464-1-quic_acaggian@quicinc.com>
+ <CAFEAcA86trVBDe4zJr2Zv-EgWReY2M+yvU83Kc_8nGrjP4_tJg@mail.gmail.com>
+ <aaafba0f-d6dc-a280-263c-afcc6b8f7e2b@quicinc.com>
+In-Reply-To: <aaafba0f-d6dc-a280-263c-afcc6b8f7e2b@quicinc.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 24 Oct 2023 13:00:18 +0100
+Message-ID: <CAFEAcA-gi3Up=7N-Y5-RyA0bi+4UHcE=MOryhWZ2rWQk67CrjQ@mail.gmail.com>
+Subject: Re: [RFC] mem: Fix mem region size when is UINT64_MAX
+To: Antonio Caggiano <quic_acaggian@quicinc.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,72 +86,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/10/23 12:54, Fiona Ebner wrote:
-> Ping
+On Tue, 24 Oct 2023 at 11:49, Antonio Caggiano
+<quic_acaggian@quicinc.com> wrote:
+>
+> Hi Peter,
+>
+> Thanks for the quick response.
+>
+> On 24/10/2023 12:28, Peter Maydell wrote:
+> > On Tue, 24 Oct 2023 at 10:45, Antonio Caggiano
+> > <quic_acaggian@quicinc.com> wrote:
+> >>
+> >> This looks like a bug. When the size is `UINT64_MAX`, it is reset to
+> >> (Int128)`1 << 64` which actually is `UINT64_MAX + 1`.
+> >>
+> >> Then, an assert is triggered when the size is converted back to uin64_t
+> >> by using the int128_get64() function, as the new value happens to be
+> >> different than the previous one.
+> >>
+> >> Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+> >> ---
+> >>   system/memory.c | 3 ---
+> >>   1 file changed, 3 deletions(-)
+> >>
+> >> diff --git a/system/memory.c b/system/memory.c
+> >> index a800fbc9e5..d41fc6af88 100644
+> >> --- a/system/memory.c
+> >> +++ b/system/memory.c
+> >> @@ -1193,9 +1193,6 @@ static void memory_region_do_init(MemoryRegion *mr,
+> >>                                     uint64_t size)
+> >>   {
+> >>       mr->size = int128_make64(size);
+> >> -    if (size == UINT64_MAX) {
+> >> -        mr->size = int128_2_64();
+> >> -    }
+> >
+> > No, this is intentional. In these memory region creation APIs
+> > that take a uint64_t size parameter, size == UINT64_MAX is a
+> > special case that means "actually the full 64 bit address space"
+> > (and there is no way to ask for an MR to have a size that is
+> > truly UINT64_MAX bytes). When we create the MR, the size is
+> > stored in the MemoryRegion struct as its true size, because
+> > we have an Int128 field there.
+> >
+> > What assertion (with backtrace) is being hit? The issue is
+> > probably at that point, not here.
+>
+> Here you can. I'm basically creating a system_memory of size UINT64_MAX,
+> and the assert is being hit when the memory is registered to KVM.
 
-John seems busy, I'll take these 2 patches. Thanks Fiona!
+(I've cc'd Paolo to check my understanding of how KVM works.)
 
-> Am 06.09.23 um 15:09 schrieb Fiona Ebner:
->> If there is a pending DMA operation during ide_bus_reset(), the fact
->> that the IDEState is already reset before the operation is canceled
->> can be problematic. In particular, ide_dma_cb() might be called and
->> then use the reset IDEState which contains the signature after the
->> reset. When used to construct the IO operation this leads to
->> ide_get_sector() returning 0 and nsector being 1. This is particularly
->> bad, because a write command will thus destroy the first sector which
->> often contains a partition table or similar.
->>
->> Traces showing the unsolicited write happening with IDEState
->> 0x5595af6949d0 being used after reset:
->>
->>> ahci_port_write ahci(0x5595af6923f0)[0]: port write [reg:PxSCTL] @ 0x2c: 0x00000300
->>> ahci_reset_port ahci(0x5595af6923f0)[0]: reset port
->>> ide_reset IDEstate 0x5595af6949d0
->>> ide_reset IDEstate 0x5595af694da8
->>> ide_bus_reset_aio aio_cancel
->>> dma_aio_cancel dbs=0x7f64600089a0
->>> dma_blk_cb dbs=0x7f64600089a0 ret=0
->>> dma_complete dbs=0x7f64600089a0 ret=0 cb=0x5595acd40b30
->>> ahci_populate_sglist ahci(0x5595af6923f0)[0]
->>> ahci_dma_prepare_buf ahci(0x5595af6923f0)[0]: prepare buf limit=512 prepared=512
->>> ide_dma_cb IDEState 0x5595af6949d0; sector_num=0 n=1 cmd=DMA WRITE
->>> dma_blk_io dbs=0x7f6420802010 bs=0x5595ae2c6c30 offset=0 to_dev=1
->>> dma_blk_cb dbs=0x7f6420802010 ret=0
->>
->>> (gdb) p *qiov
->>> $11 = {iov = 0x7f647c76d840, niov = 1, {{nalloc = 1, local_iov = {iov_base = 0x0,
->>>        iov_len = 512}}, {__pad = "\001\000\000\000\000\000\000\000\000\000\000",
->>>        size = 512}}}
->>> (gdb) bt
->>> #0  blk_aio_pwritev (blk=0x5595ae2c6c30, offset=0, qiov=0x7f6420802070, flags=0,
->>>      cb=0x5595ace6f0b0 <dma_blk_cb>, opaque=0x7f6420802010)
->>>      at ../block/block-backend.c:1682
->>> #1  0x00005595ace6f185 in dma_blk_cb (opaque=0x7f6420802010, ret=<optimized out>)
->>>      at ../softmmu/dma-helpers.c:179
->>> #2  0x00005595ace6f778 in dma_blk_io (ctx=0x5595ae0609f0,
->>>      sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->>>      io_func=io_func@entry=0x5595ace6ee30 <dma_blk_write_io_func>,
->>>      io_func_opaque=io_func_opaque@entry=0x5595ae2c6c30,
->>>      cb=0x5595acd40b30 <ide_dma_cb>, opaque=0x5595af6949d0,
->>>      dir=DMA_DIRECTION_TO_DEVICE) at ../softmmu/dma-helpers.c:244
->>> #3  0x00005595ace6f90a in dma_blk_write (blk=0x5595ae2c6c30,
->>>      sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->>>      cb=cb@entry=0x5595acd40b30 <ide_dma_cb>, opaque=opaque@entry=0x5595af6949d0)
->>>      at ../softmmu/dma-helpers.c:280
->>> #4  0x00005595acd40e18 in ide_dma_cb (opaque=0x5595af6949d0, ret=<optimized out>)
->>>      at ../hw/ide/core.c:953
->>> #5  0x00005595ace6f319 in dma_complete (ret=0, dbs=0x7f64600089a0)
->>>      at ../softmmu/dma-helpers.c:107
->>> #6  dma_blk_cb (opaque=0x7f64600089a0, ret=0) at ../softmmu/dma-helpers.c:127
->>> #7  0x00005595ad12227d in blk_aio_complete (acb=0x7f6460005b10)
->>>      at ../block/block-backend.c:1527
->>> #8  blk_aio_complete (acb=0x7f6460005b10) at ../block/block-backend.c:1524
->>> #9  blk_aio_write_entry (opaque=0x7f6460005b10) at ../block/block-backend.c:1594
->>> #10 0x00005595ad258cfb in coroutine_trampoline (i0=<optimized out>,
->>>      i1=<optimized out>) at ../util/coroutine-ucontext.c:177
->>
->> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
+> #5  0x0000fffff6fc4040 in __GI___assert_fail (assertion=0xffffe111d9c8
+> "r == a", file=0xffffe111d960 "qemu/include/qemu/int128.h", line=34,
+> function=0xffffe111f348 <__PRETTY_FUNCTION__.46> "int128_get64") at
+> ./assert/assert.c:101
+> #6  0x0000ffffe0c8cf6c in int128_get64 (a=18446744073709551616) at
+> qemu/include/qemu/int128.h:34
+> #7  0x0000ffffe0c92cec in kvm_region_commit (listener=0xffffd83e92e0) at
+> qemu/accel/kvm/kvm-all.c:1503
+> #8  0x0000ffffe0bd495c in memory_region_transaction_commit () at
+> qemu/softmmu/memory.c:1109
+> #9  0x0000ffffe0bd8a90 in memory_region_update_container_subregions
+> (subregion=0xaaaaabb6abf0) at qemu/softmmu/memory.c:2606
+> #10 0x0000ffffe0bd8b3c in memory_region_add_subregion_common
+> (mr=0xaaaaabb6ae10, offset=0, subregion=0xaaaaabb6abf0) at
+> qemu/softmmu/memory.c:2621
+> #11 0x0000ffffe0bd8b74 in memory_region_add_subregion
+> (mr=0xaaaaabb6ae10, offset=0, subregion=0xaaaaabb6abf0) at
+> qemu/softmmu/memory.c:2629
+> #12 0x0000ffffe05d5508 in gpex_host_realize (dev=0xaaaaabb69910,
+> errp=0xffffdd4ce1f0) at qemu/hw/pci-host/gpex.c:132
 
+Thanks. It looks like KVM basically doesn't expect to be working
+with a memory region that large -- the KVM kernel APIs for
+registering memslots etc take a uint64_t size, so there's no way
+to say "all of the 64 bit address space". Probably the best
+available improvement would be if we added an assert at the point
+when the memory region initially gets set up with KVM to say
+"this is too big".
+
+Given that we don't run into this upstream, this leaves me
+suspecting that the underlying problem is that a memory
+region this big shouldn't be being registered to KVM in the
+first place. Certainly the gpex PCI controller works fine
+on the arm64 virt board under KVM, so maybe your board code
+is doing something odd when it wires it up?
+
+thanks
+-- PMM
 
