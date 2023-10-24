@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D567D4AB1
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAC87D4ABB
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:45:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvD05-000105-LX; Tue, 24 Oct 2023 04:42:57 -0400
+	id 1qvD25-00031P-LD; Tue, 24 Oct 2023 04:45:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1qvD03-0000mG-3g; Tue, 24 Oct 2023 04:42:55 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1qvD23-000315-VY; Tue, 24 Oct 2023 04:44:59 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1qvD01-0003hb-0o; Tue, 24 Oct 2023 04:42:54 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-53e2308198eso6496867a12.1; 
- Tue, 24 Oct 2023 01:42:51 -0700 (PDT)
+ id 1qvD22-0003xS-Eh; Tue, 24 Oct 2023 04:44:59 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-53de0d1dc46so6757418a12.3; 
+ Tue, 24 Oct 2023 01:44:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698136970; x=1698741770; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698137095; x=1698741895; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wkSC/KRcD0vdxRtbYI2K30HOA1oRU/2QkShpD0VdHVw=;
- b=UdW54QM6wB7vZNUqSo9LGDo0RLLpLul16tH/8nGxqN/l4iisy0QhslLr+aDXEyOwJS
- FZarsM+S1Nh+TRUI3C30uluw+00N5RHoc2ngUWyDEmSsgNK6O721lop1yirpGHMhNodA
- OO4NUI9Ww7E70Cfvgngk8pIP0xrxXIt+HHLKxIEZHsqk2sWQOf78+7eTCsYCtXxa55iG
- IOSgJGGsQd//Utz6N7YKfBK8v4W4MeRAU6n0U1y8AQyV+xwv1BAzN7OfYfzMiYvaL6zD
- pjOWjXG1z9+r2irAGQxeICdh/cGJDgR8tTmprxewhLBgBQBwaYLa6VlsasKt+IiKbrNQ
- 42wg==
+ bh=90kjvmEq2n3m7ZBVpNnPhW5N9zX214BQucMupJIgixY=;
+ b=ZHdgI10OEj5tnjpRz+XCz4BqtQSzG76UMae9o9/bdjcFmkP6YZg3K3xAOswQ7dS+QZ
+ 7KFB5avlqbVgG74P5Xgv19eBq2QAzFHfnBH0FY3y4N2PGZTp287U4VUeq00qWFJB500c
+ ZTeUZ/kNuFlvxnmeXkMb/yWKjJT2T5tOujq+aHzhx+lNLsiUrFQDEVzkwUto7n3Ii6C6
+ 6FTFRZD1HJmslTFmePU2TD9ozkGilz3mPJXeAH8OFPO3bAZvrhKB0RpviX0e+qc5wUxF
+ Oxhg+A84c5snZo1XcqfxDC6TZ554oWg/BzlSAAjODyilupFQ1TapYZz3oNjOd5e6SKIy
+ V5nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698136970; x=1698741770;
+ d=1e100.net; s=20230601; t=1698137095; x=1698741895;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=wkSC/KRcD0vdxRtbYI2K30HOA1oRU/2QkShpD0VdHVw=;
- b=ONEccM4TRG/sARp/cxanhvbCPvji0Nv87odanng1E3DjeDVocW8IsplUbcSQbOBunM
- DDscowMciI7/nZh8E1zJVSULGXSmCuOUiu6KJYH66UB9dNGpfZhII6eBvJHBgxQVuh5z
- P1sIuUf/pu3t4x6KFx90fsRif3ahvHo105nR4z9j90uIBiad1ntz4B5zzHbGRyoaTos8
- vNHtbh/PWiL+JE09weq1OWa079nDnskW7QG8wRNrmXwC3qTTQSxkHowlDXS1et7oRpxS
- tp7Hwy+gnDwCjbjut10+Ob+IhhMCGbzrInEne1V/grrGtjG+5NEUykvybfB8HZ2kxgue
- roOw==
-X-Gm-Message-State: AOJu0Yy5/gJJ5UKJ1Yq7GWEucIfM9L+W7c0kH+vFZvNGXL0UCd0TKLbo
- CINKcvtrLln0BQ2E1e0EJDtWw00jcDDl3c+8Aeg=
-X-Google-Smtp-Source: AGHT+IHHq3lQj9gl5NM9iyPoX1dmUDszJQDrvDKdvq575HtBoqPeCjuivM/pwIfhPvQe1IG/pBlF/utIUZ8BTdWnMwQ=
-X-Received: by 2002:a50:d716:0:b0:53e:ec17:c885 with SMTP id
- t22-20020a50d716000000b0053eec17c885mr7975618edi.10.1698136970216; Tue, 24
- Oct 2023 01:42:50 -0700 (PDT)
+ bh=90kjvmEq2n3m7ZBVpNnPhW5N9zX214BQucMupJIgixY=;
+ b=JKglxDFcJi+rqnHAgu1uWqKN3qY8XyIR7E0Ui+2qcBLXAcWmrdtLNzBp2UEQLfmXVu
+ Ui59x9/8mwURlOyXmfmCn0pgUKU2Lv0+AQfcRoBjQh6CUmorqbWT9gxmyUcibNz8MmrI
+ GokhFCP62vDV8bIKSxrpAZeb822KlbZADKC5LtIKNwL9Zf1T6Yq9fTudRmtace9OlE7h
+ l0zkk1f4CDn88A5OaUtax8VZyxExJL2Adq4uP51m97ofHoHDZd9IXrhVmFjFoYUXuJlU
+ 8f50/fm8GIJ13ErVsvwd9NBmq4Og034dp9TVVpChiSKf+xQSIMlxLsk6JF7csPBVHGVV
+ EshA==
+X-Gm-Message-State: AOJu0YwtA18fsfYlyDKMeV/MSDCWJhqNoZEO6GCdaD6jPoudyvYskoF7
+ +qrJK+Hsso14zE7TKDb+JoJIxlNQTDMFeZLWssAuFo6rwFIcHg==
+X-Google-Smtp-Source: AGHT+IGShYVTEq0vzjjYKpZWy5kNRRWdxZQVhdKPgCO7aAHR8e49LssOTniJbaH7Fz8UppEbH4uouQEn0WO50gIc+3Y=
+X-Received: by 2002:a17:907:a03:b0:9c6:4dec:b1eb with SMTP id
+ bb3-20020a1709070a0300b009c64decb1ebmr8169426ejc.44.1698137095286; Tue, 24
+ Oct 2023 01:44:55 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231023160944.10692-1-philmd@linaro.org>
- <20231023160944.10692-9-philmd@linaro.org>
- <db537981-e8ee-419c-9bc1-d9092ec60deb@linaro.org>
-In-Reply-To: <db537981-e8ee-419c-9bc1-d9092ec60deb@linaro.org>
+ <20231023160944.10692-3-philmd@linaro.org>
+ <e7eb7fb3-81e4-4355-94d4-0e542d7e606c@linaro.org>
+In-Reply-To: <e7eb7fb3-81e4-4355-94d4-0e542d7e606c@linaro.org>
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Tue, 24 Oct 2023 10:42:38 +0200
-Message-ID: <CAJy5ezraq5xpW4F+xAhNyyef+n0=op8bh3uqzVqegKhtfts9Xw@mail.gmail.com>
-Subject: Re: [RFC PATCH 8/9] target/cris: Use tcg_gen_sextract_tl
+Date: Tue, 24 Oct 2023 10:44:44 +0200
+Message-ID: <CAJy5ezp2L3DgOGf31biMvpJv4qJ8xQm0rZ8XGtTVFY4OpKcAjg@mail.gmail.com>
+Subject: Re: [PATCH 2/9] target/cris: Use tcg_gen_extract_tl
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000e3d3690608725205"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x52b.google.com
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Content-Type: multipart/alternative; boundary="0000000000005834400608725ae7"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,125 +86,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e3d3690608725205
+--0000000000005834400608725ae7
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 24, 2023 at 2:26=E2=80=AFAM Richard Henderson <
+On Tue, Oct 24, 2023 at 1:36=E2=80=AFAM Richard Henderson <
 richard.henderson@linaro.org> wrote:
 
 > On 10/23/23 09:09, Philippe Mathieu-Daud=C3=A9 wrote:
 > > Inspired-by: Richard Henderson <richard.henderson@linaro.org>
 > > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > > ---
-> > RFC: please double-check bits
-> > ---
-> >   target/cris/translate.c | 3 +--
-> >   1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/target/cris/translate.c b/target/cris/translate.c
-> > index 65b07e1d80..3a161f8f73 100644
-> > --- a/target/cris/translate.c
-> > +++ b/target/cris/translate.c
-> > @@ -336,8 +336,7 @@ static void t_gen_cris_mstep(TCGv d, TCGv a, TCGv b=
-,
-> TCGv ccs)
-> >        */
-> >       t =3D tcg_temp_new();
-> >       tcg_gen_shli_tl(d, a, 1);
-> > -    tcg_gen_shli_tl(t, ccs, 31 - 3);
-> > -    tcg_gen_sari_tl(t, t, 31);
-> > +    tcg_gen_sextract_tl(t, ccs, 3, 1);
-
-
-> tcg_gen_sextract_tl(t, ccs, ctz32(N_FLAG), 1);
+> >   target/cris/translate.c     | 3 +--
+> >   target/i386/tcg/translate.c | 9 +++------
+> >   2 files changed, 4 insertions(+), 8 deletions(-)
 >
-
-Looks good!
-
-I think the intent was a branch-free version of:
-if (ccs & N_FLAG) {
-    d +=3D b;
-}
-
-Or:
-t =3D ccs & N_FLAG ? UINT32_MAX : 0;
-d +=3D b & t;
-
-
-
+> Accidental merge of two patches, but they both look fine.  :-)
 >
-> Also, it appears t_gen_cris_mstep consumes CCS without making sure that i=
-t
-> is up-to-date.
-> Edgar?
+> With the split, to both:
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 >
 >
-Yes, that looks suspicious!
-
-Best regards,
-Edgar
-
-
 >
+CRIS part looks good with Richard's request to split:
+Reviewed-by: Edgar E. Iglesias <edgar@zeroasic.com>
+
+
+
 > r~
 >
 
---000000000000e3d3690608725205
+--0000000000005834400608725ae7
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">On Tue, Oct 24, 2023 at 2:26=E2=80=AFAM R=
-ichard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">richar=
-d.henderson@linaro.org</a>&gt; wrote:<br></div><div class=3D"gmail_quote"><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft:1px solid rgb(204,204,204);padding-left:1ex">On 10/23/23 09:09, Philipp=
-e Mathieu-Daud=C3=A9 wrote:<br>
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 24, 2023 at 1:36=E2=80=AF=
+AM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
+chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">On 10/23/23 09:09, Philippe Mathieu-Daud=C3=A9 wr=
+ote:<br>
 &gt; Inspired-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson=
 @linaro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 &gt; Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philm=
 d@linaro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
 &gt; ---<br>
-&gt; RFC: please double-check bits<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0target/cris/translate.c | 3 +--<br>
-&gt;=C2=A0 =C2=A01 file changed, 1 insertion(+), 2 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/target/cris/translate.c b/target/cris/translate.c<br>
-&gt; index 65b07e1d80..3a161f8f73 100644<br>
-&gt; --- a/target/cris/translate.c<br>
-&gt; +++ b/target/cris/translate.c<br>
-&gt; @@ -336,8 +336,7 @@ static void t_gen_cris_mstep(TCGv d, TCGv a, TCGv =
-b, TCGv ccs)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0t =3D tcg_temp_new();<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0tcg_gen_shli_tl(d, a, 1);<br>
-&gt; -=C2=A0 =C2=A0 tcg_gen_shli_tl(t, ccs, 31 - 3);<br>
-&gt; -=C2=A0 =C2=A0 tcg_gen_sari_tl(t, t, 31);<br>
-&gt; +=C2=A0 =C2=A0 tcg_gen_sextract_tl(t, ccs, 3, 1);</blockquote><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">
+&gt;=C2=A0 =C2=A0target/cris/translate.c=C2=A0 =C2=A0 =C2=A0| 3 +--<br>
+&gt;=C2=A0 =C2=A0target/i386/tcg/translate.c | 9 +++------<br>
+&gt;=C2=A0 =C2=A02 files changed, 4 insertions(+), 8 deletions(-)<br>
 <br>
-tcg_gen_sextract_tl(t, ccs, ctz32(N_FLAG), 1);<br></blockquote><div><br></d=
-iv><div>Looks good!</div><div><br></div><div>I think the intent was a branc=
-h-free version of:</div><div><div>if (ccs &amp; N_FLAG) {</div><div>=C2=A0 =
-=C2=A0 d=C2=A0<a class=3D"gmail_plusreply" id=3D"gmail-plusReplyChip-3">+=
-=3D b;</a></div><div>}</div></div><div><br></div><div>Or:</div><div>t =3D c=
-cs &amp; N_FLAG ? UINT32_MAX : 0;</div><div>d=C2=A0+=3D b &amp; t;</div><di=
-v><br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">
+Accidental merge of two patches, but they both look fine.=C2=A0 :-)<br>
 <br>
-Also, it appears t_gen_cris_mstep consumes CCS without making sure that it =
-is up-to-date.<br>
-Edgar?<br>
-<br></blockquote><div><br></div><div>Yes, that looks suspicious!</div><div>=
-<br></div><div>Best regards,</div><div>Edgar</div><div>=C2=A0</div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">
+With the split, to both:<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 <br>
+<br></blockquote><div><br></div><div>CRIS part looks good with Richard&#39;=
+s request to split:</div><div>Reviewed-by: Edgar E. Iglesias &lt;<a href=3D=
+"mailto:edgar@zeroasic.com">edgar@zeroasic.com</a>&gt;</div><div><br></div>=
+<div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
+0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
 r~<br>
 </blockquote></div></div>
 
---000000000000e3d3690608725205--
+--0000000000005834400608725ae7--
 
