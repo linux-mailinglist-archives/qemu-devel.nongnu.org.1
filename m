@@ -2,96 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65B77D5928
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862597D5929
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:50:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvKbp-00028a-Gv; Tue, 24 Oct 2023 12:50:26 -0400
+	id 1qvKc5-0002LD-NO; Tue, 24 Oct 2023 12:50:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvKbn-00024A-Vg; Tue, 24 Oct 2023 12:50:24 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qvKbv-0002F7-1w
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:50:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvKbd-0000Yq-Sp; Tue, 24 Oct 2023 12:50:23 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OGm0m5024081; Tue, 24 Oct 2023 16:49:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=0lKyN66Rf1buaK1UeBUAkOfJg+45XKZmOhmJbMRVDSI=;
- b=Ng8gpBfBf18g4pIYh1jmtxhMRFwzQnz6woOs7MSAeG0fp39HxfMGDOPkyNAr6gebwzz0
- tDl5x9zhH+5pHqzmpkdY+SIe5QpXRu3LEaUIwduJik+I6/8CVZEhLBBGflqaBb3ReRI9
- AmYQJZtoSHMBrEZBThkHCu2xN9JhU/NsUySKw2RM+af9ZuQvBIOm4MQ23VwL7nzOGZ39
- aHVA0nb71jRPX6qstaGek/ufWVjD4UCBnnp2zIoo1E6uyDoWKcKDm2A4YFV3n+pZsb8q
- xpGEJ24ySc4s2gd5Y5ZLeF/zCxhA+pNVsNf67CPRyGVv9QnY45mDNSMxCAlBIlznaLDH 6A== 
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txhrpr2qr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 16:49:57 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39OG1UPh010218; Tue, 24 Oct 2023 16:49:56 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsbyh1pv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Oct 2023 16:49:56 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39OGnuZi17564386
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Oct 2023 16:49:56 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48E9D58053;
- Tue, 24 Oct 2023 16:49:56 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C4E0F58043;
- Tue, 24 Oct 2023 16:49:55 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 24 Oct 2023 16:49:55 +0000 (GMT)
-Message-ID: <8dca5989e1db6f433c63183a3922f5ed90582ab1.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 1/3] misc/pca9552: Fix inverted input status
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: Andrew Jeffery <andrew@codeconstruct.com.au>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, philmd@linaro.org
-Date: Tue, 24 Oct 2023 11:49:55 -0500
-In-Reply-To: <3bf8cd017b5d1386e1ed15392c74ed647b993011.camel@codeconstruct.com.au>
-References: <20231020182321.163109-1-milesg@linux.vnet.ibm.com>
- <20231020182321.163109-2-milesg@linux.vnet.ibm.com>
- <3bf8cd017b5d1386e1ed15392c74ed647b993011.camel@codeconstruct.com.au>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Zolw3X7cLff5i05HfArYo6-kw2mSOBWN
-X-Proofpoint-ORIG-GUID: Zolw3X7cLff5i05HfArYo6-kw2mSOBWN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-24_16,2023-10-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 mlxlogscore=896 adultscore=0 phishscore=0 clxscore=1015
- malwarescore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310240145
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qvKbp-0000jH-Us
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:50:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698166225;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mPC8toYf/YgM5sHd4Z8ZR2IysXFlzOvd1MIeNI1w+sQ=;
+ b=A8P9COq89kUBIMuA0xqSAbwEearkDAaliWorkYM7ueT+nm4XOJGuRDRqwLL84jg/vRD/3f
+ rd9LabMRJ3NYxH4fcXa2MYdGKgfx6Wn844eOfRCsSnzY/1GJE4DN05H0MK1RtuQUiUfZ3U
+ GfxeFGb6AKNPB8h0hLlCyxP+nSRE7sQ=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-581-OBbFkm9bM9CzNPIy07qy3A-1; Tue, 24 Oct 2023 12:50:21 -0400
+X-MC-Unique: OBbFkm9bM9CzNPIy07qy3A-1
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-6ce2c3355easo381549a34.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:50:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698166221; x=1698771021;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mPC8toYf/YgM5sHd4Z8ZR2IysXFlzOvd1MIeNI1w+sQ=;
+ b=bzVp9duo9OIYYZWMxDfwOQ25R6zleIvbbuHFGafNwfIg7xuY4UfR4MYZc/ynNL6nr5
+ jKUq3bj2S6odhwIkNqOv8dqchzi9DBDYfKYxGzFzgCDbGzYIfGAz1yZhYZMhUCoHSACz
+ 3m3a5npiGCu7cGtzrtDfZFmK8ZSsW+IIERyLUahUfWKXPmVIal7ClHTLq+pn/jT1b1TY
+ 1y/Hyqtnxq86gaiXIWumXtGo7Re0VQ07OF+MXNAn8Sc75EZ49U97Rg/hegJNkUQosZOR
+ 1Cl0ek0B5M384+vkmvuOzwWkTnqkn6qpynyCy97au911kLpDhrlEzwtc51IedTcFRt1t
+ eWCA==
+X-Gm-Message-State: AOJu0Yx8WxEs1kHi++D5hT7eQOuuQDGLIazwfOwiUDTKriTaDwaBzA68
+ MDlJN413pugpRo2G8xuA4chnEwPIa0iGniGORgpvYOiPgsIo0nNuDOH67oi8VDvBIecoTQS4hI8
+ Xb0QmncRDrbsHyKY=
+X-Received: by 2002:a05:6830:1287:b0:6cd:74d:1f34 with SMTP id
+ z7-20020a056830128700b006cd074d1f34mr13863173otp.1.1698166220928; 
+ Tue, 24 Oct 2023 09:50:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGmYbYKCWUKoVm/3P1RAGZN7eZFgM+qCHRZ+GVtTqtg2kKijNfP7h2u5plCgRfONVo2L7VzA==
+X-Received: by 2002:a05:6830:1287:b0:6cd:74d:1f34 with SMTP id
+ z7-20020a056830128700b006cd074d1f34mr13863157otp.1.1698166220573; 
+ Tue, 24 Oct 2023 09:50:20 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ bu7-20020ad455e7000000b0066d1540f9ecsm3776399qvb.77.2023.10.24.09.50.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Oct 2023 09:50:20 -0700 (PDT)
+Date: Tue, 24 Oct 2023 12:50:18 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v3 1/1] migration: vmstate_register() check that
+ instance_id is valid
+Message-ID: <ZTf1yoZ0GSlRfxSN@x1n>
+References: <20231024150336.89632-1-quintela@redhat.com>
+ <20231024150336.89632-2-quintela@redhat.com> <ZTfjd3AFVFaMiAqm@x1n>
+ <87cyx4knp3.fsf@secure.mitica>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87cyx4knp3.fsf@secure.mitica>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,30 +99,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-10-24 at 10:15 +1030, Andrew Jeffery wrote:
-> On Fri, 2023-10-20 at 13:23 -0500, Glenn Miles wrote:
-> > The pca9552 INPUT0 and INPUT1 registers are supposed to
-> > hold the logical values of the LED pins.  A logical 0
-> > should be seen in the INPUT0/1 registers for a pin when
-> > its corresponding LSn bits are set to 0, which is also
-> > the state needed for turning on an LED in a typical
-> > usage scenario.  Existing code was doing the opposite
-> > and setting INPUT0/1 bit to a 1 when the LSn bit was
-> > set to 0, so this commit fixes that.
-> > 
-> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+On Tue, Oct 24, 2023 at 06:08:40PM +0200, Juan Quintela wrote:
+> Peter Xu <peterx@redhat.com> wrote:
+> > On Tue, Oct 24, 2023 at 05:03:36PM +0200, Juan Quintela wrote:
+> >> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> >> ---
+> >>  include/migration/vmstate.h | 6 ++++++
+> >>  1 file changed, 6 insertions(+)
+> >> 
+> >> diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+> >> index 9821918631..c48cd8bb68 100644
+> >> --- a/include/migration/vmstate.h
+> >> +++ b/include/migration/vmstate.h
+> >> @@ -28,6 +28,7 @@
+> >>  #define QEMU_VMSTATE_H
+> >>  
+> >>  #include "hw/vmstate-if.h"
+> >> +#include "qemu/error-report.h"
+> >>  
+> >>  typedef struct VMStateInfo VMStateInfo;
+> >>  typedef struct VMStateField VMStateField;
+> >> @@ -1226,6 +1227,11 @@ static inline int vmstate_register(VMStateIf *obj, int instance_id,
+> >>                                     const VMStateDescription *vmsd,
+> >>                                     void *opaque)
+> >>  {
+> >> +    if (instance_id == VMSTATE_INSTANCE_ID_ANY) {
+> >> +        error_report("vmstate_register: Invalid device: %s instance_id: %d",
+> >> +                     vmsd->name, instance_id);
+> >> +        return -1;
+> >> +    }
+> >>      return vmstate_register_with_alias_id(obj, instance_id, vmsd,
+> >>                                            opaque, -1, 0, NULL);
+> >>  }
+> >
+> > Juan, could you remind me what's the benefit of failing it like that?
 > 
-> I sent a Reviewed-by tag for v1, don't forget to collect those on
-> your
-> patches before sending out a new set. Something for next time :)
 > 
-> Anyway,
+> > IIUC you want to suggest using vmstate_register_any(), but I think it's all
+> > fine to do vmstate_register(VMSTATE_INSTANCE_ID_ANY)?  You didn't have a
+> > commit message, so I am guessing..
 > 
-> Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> This is v3.  v1 and v2 had much more messages, so I thought this was not
+> necessary.
 > 
+> We had lots of places that had vmstate_register(..., 0, ...) where it
+> should have s/0/VMSTATE_INSTANCE_ID_ANY/
+> 
+> The idea here is that we use vmstate_register_any(...) when we don't
+> care about the number and we know there is only to be one device.
+> 
+> On my tree, I started with the test:
+> 
+>     if (instance_id < 0) {
+>         error_report("vmstate_register: Invalid device: %s instance_id: %d",
+>                      vmsd->name, instance_id);
+>         return -1;
+>     }
+> 
+> But then ppc abuses this interface and passes an uint32_t where it
+> should be an int, so I have to check only for that specific value.
+> 
+> > Even if that is wanted, the current error message can be confusing to a
+> > developer adding a new vmstate_register(VMSTATE_INSTANCE_ID_ANY) call.
+> > Maybe directly suggest vmstate_register_any() in the error message?  But
+> > again, I don't see a benefit, vmstate_register(VMSTATE_INSTANCE_ID_ANY)
+> > should still work if without this patch?  Where did I miss?
+> 
+> You are right, using the other interface.
+> 
+> Initial version on this series, I split vmstate_register() into:
+> - vmstate_register_any()
+> - vmstate_register_id()  /* the difference with vmstate_register() was
+>                             just this test */
+> 
+> After auditing all the callers, I decided that using
+> vmstate_register_id() didn't brough we a lot, so I just dropped that
+> patches but left the test.
+> 
+> Forcing to use vmstate_register_any() makes easier to grep for the
+> places that try to use the vmstate_register(), but perhaps that is not
+> enough convenient.
 
-Yeah, of course I realized that I forgot that after sending it! :-)
+IMHO if we have the dup check in vmstate_register_with_alias_id(),
+instance_id isn't a problem anymore; no abuse should happen without failing
+that already.
 
-Glenn
+Personally I tend to just drop this one.  If to keep it, maybe change the
+error message to suggest the right one, then let it still proceed?  Because
+it still works.  The error will only be a hint but help not so much, IMHO.
+What do you think?
+
+Thanks,
+
+-- 
+Peter Xu
 
 
