@@ -2,47 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CFF7D4E51
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 12:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813097D4E5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 12:56:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvF3L-0006N5-MX; Tue, 24 Oct 2023 06:54:27 -0400
+	id 1qvF56-00079O-4e; Tue, 24 Oct 2023 06:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qvF3J-0006MK-4k; Tue, 24 Oct 2023 06:54:25 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvF54-00078z-HU
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:56:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qvF3B-0002Kz-AU; Tue, 24 Oct 2023 06:54:24 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1F27344C0E;
- Tue, 24 Oct 2023 12:54:07 +0200 (CEST)
-Message-ID: <2ec675fb-0bd9-4f3d-b205-2a7fe5101427@proxmox.com>
-Date: Tue, 24 Oct 2023 12:54:06 +0200
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvF4z-0002pk-B0
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 06:56:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698144968;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=WYEN7FH7IqZtZ+7M6b7K6o0KxuZIzcblLf/uIxLwAcE=;
+ b=gcnG3ht/WEqyzFlMjiJ/Uwne3VoN/AT2EmUqd+6IlK+bf5d/uDRf/DNH5VuXwkRXM19w1n
+ f1MBhhpfwQtcLRhgJjLfFqC44qQ5RyUpXykN4uw4zYti+rrDBi0ZlmVd41Yfs857AuZBWW
+ sC2eyi6rNmALmbhAzzfRaoVhCBYVK80=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-TQIkUXuPMhGO8bEVZmOjAQ-1; Tue, 24 Oct 2023 06:55:50 -0400
+X-MC-Unique: TQIkUXuPMhGO8bEVZmOjAQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4084e4ce543so26818135e9.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 03:55:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698144950; x=1698749750;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WYEN7FH7IqZtZ+7M6b7K6o0KxuZIzcblLf/uIxLwAcE=;
+ b=kNqS1iW+QhsLGj+IabEGujQJDee/nBZvt60+AfA8lkya+vT2hNjJHJmTuxpYMcm5mY
+ vUh15/PiMVLKzPzshn8Z929SpkTJRyyae49vbYj9nKk0jhJpDhyrlan5QP8Cfaf03PSD
+ Die0koSdqpMCW6kQ/pUuwU8Z0ISPdCAPiHzyZaq+vNX+8lqMrQbXHVqX1YQuLF31S3Cq
+ iiHB+iaBUFceTLlY39Cz2uh9RZB3oFZ73KkuGIxKk92S5pukFdScPVLCuhK6/YTABf0i
+ h6C3zD0dIXom5fHYHgAr6ufoevoBbAxcRelKSCx8LnvHTZ2Dh8BMQ+mb9N3sxGfQA9rM
+ 4n4Q==
+X-Gm-Message-State: AOJu0YxXK2/gzxuMouPBM6CliDBR5IB/o3+ejNNTJIBvFOUF0OpexJh/
+ bEQq6s4Sb2cLIEK9k1XhKPvGhcgPf0SSCJjrY+lCsTYuDuf4qaTumVHKQWAbQl0Z7idK6JW0QwY
+ FCQoM0/PA+bQUtcU=
+X-Received: by 2002:a05:600c:1992:b0:406:872d:7725 with SMTP id
+ t18-20020a05600c199200b00406872d7725mr9307806wmq.1.1698144949638; 
+ Tue, 24 Oct 2023 03:55:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/GPJ5jACOHE1fPbPitDMlTg9G/b/icPIKtxw2/Vwn9FNzAJ8mr7lULdgzyuIUF4oHdG1oTg==
+X-Received: by 2002:a05:600c:1992:b0:406:872d:7725 with SMTP id
+ t18-20020a05600c199200b00406872d7725mr9307790wmq.1.1698144949253; 
+ Tue, 24 Oct 2023 03:55:49 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ dk18-20020a0560000b5200b0032dbf6bf7a2sm9729097wrb.97.2023.10.24.03.55.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Oct 2023 03:55:47 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: John Snow <jsnow@redhat.com>,  qemu-devel@nongnu.org,  Peter Maydell
+ <peter.maydell@linaro.org>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,  Samuel Thibault
+ <samuel.thibault@ens-lyon.org>,  Eric Farman <farman@linux.ibm.com>,
+ qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,  Gerd Hoffmann
+ <kraxel@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  David Gibson
+ <david@gibson.dropbear.id.au>,  Corey Minyard <cminyard@mvista.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,  Peter Xu <peterx@redhat.com>,
+ Corey Minyard <minyard@acm.org>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Halil Pasic <pasic@linux.ibm.com>,
+ Leonardo Bras <leobras@redhat.com>,  Nicholas Piggin <npiggin@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Jason
+ Wang <jasowang@redhat.com>,  qemu-block@nongnu.org,
+ qemu-s390x@nongnu.org,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Daniel Henrique
+ Barboza <danielhb413@gmail.com>,  Stefan Weil <sw@weilnetz.de>,  Stefan
+ Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v2 03/13] migration: Use vmstate_register_any() for isa-ide
+In-Reply-To: <76272c6c-f7b6-4fbd-a457-8cf14048ddca@redhat.com> (Thomas Huth's
+ message of "Mon, 23 Oct 2023 08:02:05 +0200")
+References: <20231020090731.28701-1-quintela@redhat.com>
+ <20231020090731.28701-4-quintela@redhat.com>
+ <efef6d37-925c-415e-9a59-85e528eacb7b@redhat.com>
+ <871qdpytau.fsf@secure.mitica>
+ <76272c6c-f7b6-4fbd-a457-8cf14048ddca@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 24 Oct 2023 12:55:47 +0200
+Message-ID: <87o7goz3v0.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] hw/ide: reset: cancel async DMA operation before
- resetting state
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: jsnow@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, srowe@mose.org.uk, mike.maslenkin@gmail.com,
- qemu-block@nongnu.org, t.lamprecht@proxmox.com, a.lauterer@proxmox.com,
- philmd@linaro.org, kwolf@redhat.com
-References: <20230906130922.142845-1-f.ebner@proxmox.com>
-In-Reply-To: <20230906130922.142845-1-f.ebner@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -55,71 +119,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping
+Thomas Huth <thuth@redhat.com> wrote:
+> On 20/10/2023 21.42, Juan Quintela wrote:
+>> Thomas Huth <thuth@redhat.com> wrote:
+>>> On 20/10/2023 11.07, Juan Quintela wrote:
+>>>> Otherwise qom-test fails.
+>>>> ok 4 /i386/qom/x-remote
+>>>> qemu-system-i386: savevm_state_handler_insert: Detected duplicate SaveStateEntry: id=isa-ide, instance_id=0x0
+>>>> Broken pipe
+>>>> ../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
+>>>> Aborted (core dumped)
+>>>> $
+>>>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+>>>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>>>> ---
+>>>>    hw/ide/isa.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>> diff --git a/hw/ide/isa.c b/hw/ide/isa.c
+>>>> index 95053e026f..ea60c08116 100644
+>>>> --- a/hw/ide/isa.c
+>>>> +++ b/hw/ide/isa.c
+>>>> @@ -73,7 +73,7 @@ static void isa_ide_realizefn(DeviceState *dev, Error **errp)
+>>>>        ide_bus_init(&s->bus, sizeof(s->bus), dev, 0, 2);
+>>>>        ide_init_ioport(&s->bus, isadev, s->iobase, s->iobase2);
+>>>>        ide_bus_init_output_irq(&s->bus, isa_get_irq(isadev, s->irqnum));
+>>>> -    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_isa, s);
+>>>> +    vmstate_register_any(VMSTATE_IF(dev), &vmstate_ide_isa, s);
+>>>>        ide_bus_register_restart_cb(&s->bus);
+>>>>    }
+>>>
+>>> Would it make sense to use another unique ID of the device instead? E.g.:
+>>>
+>>> diff a/hw/ide/isa.c b/hw/ide/isa.c
+>>> --- a/hw/ide/isa.c
+>>> +++ b/hw/ide/isa.c
+>>> @@ -73,7 +73,9 @@ static void isa_ide_realizefn(DeviceState *dev, Error **errp)
+>>>       ide_bus_init(&s->bus, sizeof(s->bus), dev, 0, 2);
+>>>       ide_init_ioport(&s->bus, isadev, s->iobase, s->iobase2);
+>>>       ide_bus_init_output_irq(&s->bus, isa_get_irq(isadev, s->irqnum));
+>>> -    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_isa, s);
+>>> +    vmstate_register(VMSTATE_IF(dev),
+>>> +                     object_property_get_int(OBJECT(dev), "irq", &error_abort),
+>>> +                     &vmstate_ide_isa, s);
+>>>       ide_bus_register_restart_cb(&s->bus);
+>>>   }
+>>>     Thomas
+>> Ide is not my part of expertise.
+>> But anything that is different for each instantance is going to be good
+>> for me.
+>
+> It's not really my turf either ... ok, so unless the IDE maintainer
+> speaks up, I think it's maybe best if you continue with your "_any"
+> patch.
 
-Am 06.09.23 um 15:09 schrieb Fiona Ebner:
-> If there is a pending DMA operation during ide_bus_reset(), the fact
-> that the IDEState is already reset before the operation is canceled
-> can be problematic. In particular, ide_dma_cb() might be called and
-> then use the reset IDEState which contains the signature after the
-> reset. When used to construct the IO operation this leads to
-> ide_get_sector() returning 0 and nsector being 1. This is particularly
-> bad, because a write command will thus destroy the first sector which
-> often contains a partition table or similar.
-> 
-> Traces showing the unsolicited write happening with IDEState
-> 0x5595af6949d0 being used after reset:
-> 
->> ahci_port_write ahci(0x5595af6923f0)[0]: port write [reg:PxSCTL] @ 0x2c: 0x00000300
->> ahci_reset_port ahci(0x5595af6923f0)[0]: reset port
->> ide_reset IDEstate 0x5595af6949d0
->> ide_reset IDEstate 0x5595af694da8
->> ide_bus_reset_aio aio_cancel
->> dma_aio_cancel dbs=0x7f64600089a0
->> dma_blk_cb dbs=0x7f64600089a0 ret=0
->> dma_complete dbs=0x7f64600089a0 ret=0 cb=0x5595acd40b30
->> ahci_populate_sglist ahci(0x5595af6923f0)[0]
->> ahci_dma_prepare_buf ahci(0x5595af6923f0)[0]: prepare buf limit=512 prepared=512
->> ide_dma_cb IDEState 0x5595af6949d0; sector_num=0 n=1 cmd=DMA WRITE
->> dma_blk_io dbs=0x7f6420802010 bs=0x5595ae2c6c30 offset=0 to_dev=1
->> dma_blk_cb dbs=0x7f6420802010 ret=0
-> 
->> (gdb) p *qiov
->> $11 = {iov = 0x7f647c76d840, niov = 1, {{nalloc = 1, local_iov = {iov_base = 0x0,
->>       iov_len = 512}}, {__pad = "\001\000\000\000\000\000\000\000\000\000\000",
->>       size = 512}}}
->> (gdb) bt
->> #0  blk_aio_pwritev (blk=0x5595ae2c6c30, offset=0, qiov=0x7f6420802070, flags=0,
->>     cb=0x5595ace6f0b0 <dma_blk_cb>, opaque=0x7f6420802010)
->>     at ../block/block-backend.c:1682
->> #1  0x00005595ace6f185 in dma_blk_cb (opaque=0x7f6420802010, ret=<optimized out>)
->>     at ../softmmu/dma-helpers.c:179
->> #2  0x00005595ace6f778 in dma_blk_io (ctx=0x5595ae0609f0,
->>     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->>     io_func=io_func@entry=0x5595ace6ee30 <dma_blk_write_io_func>,
->>     io_func_opaque=io_func_opaque@entry=0x5595ae2c6c30,
->>     cb=0x5595acd40b30 <ide_dma_cb>, opaque=0x5595af6949d0,
->>     dir=DMA_DIRECTION_TO_DEVICE) at ../softmmu/dma-helpers.c:244
->> #3  0x00005595ace6f90a in dma_blk_write (blk=0x5595ae2c6c30,
->>     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->>     cb=cb@entry=0x5595acd40b30 <ide_dma_cb>, opaque=opaque@entry=0x5595af6949d0)
->>     at ../softmmu/dma-helpers.c:280
->> #4  0x00005595acd40e18 in ide_dma_cb (opaque=0x5595af6949d0, ret=<optimized out>)
->>     at ../hw/ide/core.c:953
->> #5  0x00005595ace6f319 in dma_complete (ret=0, dbs=0x7f64600089a0)
->>     at ../softmmu/dma-helpers.c:107
->> #6  dma_blk_cb (opaque=0x7f64600089a0, ret=0) at ../softmmu/dma-helpers.c:127
->> #7  0x00005595ad12227d in blk_aio_complete (acb=0x7f6460005b10)
->>     at ../block/block-backend.c:1527
->> #8  blk_aio_complete (acb=0x7f6460005b10) at ../block/block-backend.c:1524
->> #9  blk_aio_write_entry (opaque=0x7f6460005b10) at ../block/block-backend.c:1594
->> #10 0x00005595ad258cfb in coroutine_trampoline (i0=<optimized out>,
->>     i1=<optimized out>) at ../util/coroutine-ucontext.c:177
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Ide maintainer can do your change if he likes it.  It is outside of my
+understanding to accept it or not (and furthermore, it breaks migration
+if you have only one device, with more than one it is already broken).
+
+Later, Juan.
 
 
