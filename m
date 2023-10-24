@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00C07D4A15
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9F17D4A17
 	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 10:31:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvCoF-0001e6-QL; Tue, 24 Oct 2023 04:30:43 -0400
+	id 1qvCoJ-0001en-P1; Tue, 24 Oct 2023 04:30:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvCoB-0001d9-BY
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:30:39 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvCoG-0001eF-LW
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:30:44 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvCo9-0001BL-KV
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:30:39 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2c594196344so6282201fa.3
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 01:30:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvCoE-0001Bk-Tp
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 04:30:44 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-5079f3f3d7aso6626579e87.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 01:30:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698136236; x=1698741036; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698136241; x=1698741041; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jQzYUltxj5g7ekyBL7Wz4ZsV8ZVW3gL9B5H+7rR+rus=;
- b=PNljHyadIkI+PytbXF51RcoRqajHJxpDbXRQwfUYVjX7SovpapPNEYO72GbeUaqkM3
- dgDsuWHzEru0tYO2mVKXS4xLkTPUdb2GndK3N9INlaG4TdHeu5rU8qIBtnZ4Aeij1cS/
- 6xTb9V80gSLbE/QSxTJDY1ivHC5qeuSbZtBWx6r4a1FRzADxeRQovypomrkq35ieRgNo
- XFH8jsm7f7twYCnkkaIeQwqsQ9B4LwsqfGsSqWrTblacFj4SOUwcs9LptHcP2H0fCh0v
- hH77GJ804x+7Bb5Cc5/Vxn9FJlHKV3VuiJ0XZGH8NhuPdkr/5wt1cQ4UAAM9TFmApV4M
- 4/JA==
+ bh=ZlPzf4Ab5QFLnbSPHtWGOn/3d8rqF62sEucKv3iijfs=;
+ b=Lf52840PvQDuGWRF/of9bSUajlk4h+l9NZiQr8szwmL+g35GA9CUXyWAyUpPaQ6rEC
+ 6yV9WP631G2iuCzF4lSPlEbKQFY86606MZLB7mY5cR4yLFF47vwhBHuWSv4jYYksGrPN
+ QD5o5h9m4Eay2hvG4/HCSoVNwjCtjHL5g9DKPEJqMuplCnTlQRxHOMj/uv47JkEFtz/L
+ w8Mc63NgppMiJMT8BotQ3uQSN1/Pqk8wQMwQ9e3DKsBr1ZajhOOOj8CIhmzSbvg6y0W2
+ jQWWMFZlCZ85DHNoVmCuiPdwIfkwaISXWgN0+jCiIqRwwXS923mwV+TZ0S8uNbMpWI5Z
+ 4LnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698136236; x=1698741036;
+ d=1e100.net; s=20230601; t=1698136241; x=1698741041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jQzYUltxj5g7ekyBL7Wz4ZsV8ZVW3gL9B5H+7rR+rus=;
- b=ezJLDTVIa1AdI3dNIdeR14opxQ79hEzmMgk5aIa0A3Upr1GnFHsajtjSktI8iGx2yK
- PBaHaqQJVETK7p8PTvxlgcXGiVq+tfUFSlY4k0q754zwoLFM9da0WRoZ02MmW5AbSR1L
- 5M16yC20fQp16GELtJWYoEWo1oH+khg3oiIdHIK40KccY64lTQFauhh97pF6TDdsi/kY
- rrV53dFKaE1AwaOLT1obUqSjAXLmTl0Zk0akEoGKb/ep1HhzwK7oZ3vwTg7wEO0eFXXN
- KW6hb5hwfcfnse7e+3IaCcvKIL/Ojp7LsBqIPbnKeTwFggD7aa1a6xOoI2oAQXPgrvGr
- GzOg==
-X-Gm-Message-State: AOJu0YzAIKFhde1WkLRx0LvyO+vPIJs2jm5Gi7NUduaiAVcjzCFg0wfv
- HyfQz0RN4XFcCRR9xSXv+MZEQedoEgWNfnYj5fo=
-X-Google-Smtp-Source: AGHT+IGl+lGDQGsNcTKSN/DCzqsDII1Z3Rgp0NwT9Z98PTSmVm1EWx/o9taFm0AAq0GSh1r09jrZFg==
-X-Received: by 2002:a2e:91d9:0:b0:2c5:2126:127a with SMTP id
- u25-20020a2e91d9000000b002c52126127amr7535501ljg.17.1698136235662; 
- Tue, 24 Oct 2023 01:30:35 -0700 (PDT)
+ bh=ZlPzf4Ab5QFLnbSPHtWGOn/3d8rqF62sEucKv3iijfs=;
+ b=BjvwYJVa+aRAm/cWPUEfToR+4QBVR1OxR5ARd1dT0DjzJM8J4rSMSSGowEhvBwv32s
+ 9isgQOlEGiqymg0I/pWqW0uRAFD0cnoNnJpbAeZd52Ai4X8E3cpmhUYE5m6f/qZMyGeR
+ DxKz8A11pEHhArmH8/yKVe0+r2xKlfY2JPy+Vq8m4m+m7yhz0Brvii/bU4pIWQgFnO5u
+ 17VBlh1auWJ0GM8JOyqC0YC3Ae1qWEssSpI3P8AS/wlzWYlx/clxmSTkDhUtqY3RwKKs
+ CS8NoTGgz3Lszh9lzSMMSb0URV4JNIMHyUcpAaNxMe95hWLlwi9GwRzyColFHjOVBGF2
+ F/Ag==
+X-Gm-Message-State: AOJu0YzImUkaaQIo/tx/V2l13F5eGuHCUjCmvp3WLxzvoarYZVbn43Y8
+ zIyIPMm0fzj7il5+q6hQ5Y0S1zSlzj45NShLxJM=
+X-Google-Smtp-Source: AGHT+IGZgs/c0k+6qxQNR9uA0EfRXnlgtCEp089IEH9+EDcFy5KQYW88ru9Pm/b9VAN3zoqK2VHakQ==
+X-Received: by 2002:ac2:5f54:0:b0:507:9b93:274b with SMTP id
+ 20-20020ac25f54000000b005079b93274bmr7675505lfz.26.1698136241029; 
+ Tue, 24 Oct 2023 01:30:41 -0700 (PDT)
 Received: from m1x-phil.lan (sem44-h01-176-172-55-165.dsl.sta.abo.bbox.fr.
  [176.172.55.165]) by smtp.gmail.com with ESMTPSA id
- p6-20020a5d6386000000b00327b5ca093dsm9409641wru.117.2023.10.24.01.30.33
+ k12-20020a5d518c000000b0031f82743e25sm9383775wrv.67.2023.10.24.01.30.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 24 Oct 2023 01:30:35 -0700 (PDT)
+ Tue, 24 Oct 2023 01:30:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Thomas Huth <huth@tuxfamily.org>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 4/6] hw/m68k/mcf_intc: Pass CPU using QOM link property
-Date: Tue, 24 Oct 2023 10:30:07 +0200
-Message-ID: <20231024083010.12453-5-philmd@linaro.org>
+Subject: [PATCH v2 5/6] hw/m68k/next-cube: Do not open-code
+ sysbus_create_simple()
+Date: Tue, 24 Oct 2023 10:30:08 +0200
+Message-ID: <20231024083010.12453-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231024083010.12453-1-philmd@linaro.org>
 References: <20231024083010.12453-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,67 +94,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QOM objects shouldn't access each other internals fields
-except using the QOM API.
+Mechanical change using the following coccinelle script:
+
+  @@
+  identifier dev;
+  identifier sbd;
+  expression qom_type;
+  expression addr;
+  @@
+  -    dev = qdev_new(qom_type);
+  -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+  -    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
+  +    dev = sysbus_create_simple(qom_type, addr, NULL);
+
+then manually removing the 'dev' variable to avoid:
+
+  error: variable 'dev' set but not used [-Werror,-Wunused-but-set-variable]
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Thomas Huth <huth@tuxfamily.org>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/mcf_intc.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ hw/m68k/next-cube.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/hw/m68k/mcf_intc.c b/hw/m68k/mcf_intc.c
-index 1f74ea0e14..1d3b34e18c 100644
---- a/hw/m68k/mcf_intc.c
-+++ b/hw/m68k/mcf_intc.c
-@@ -14,6 +14,7 @@
- #include "hw/irq.h"
- #include "hw/sysbus.h"
- #include "hw/m68k/mcf.h"
-+#include "hw/qdev-properties.h"
- #include "qom/object.h"
+diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+index 5d244b3b95..d17e6be8e1 100644
+--- a/hw/m68k/next-cube.c
++++ b/hw/m68k/next-cube.c
+@@ -950,7 +950,6 @@ static void next_cube_init(MachineState *machine)
+     MemoryRegion *bmapm2 = g_new(MemoryRegion, 1);
+     MemoryRegion *sysmem = get_system_memory();
+     const char *bios_name = machine->firmware ?: ROM_FILE;
+-    DeviceState *dev;
+     DeviceState *pcdev;
  
- #define TYPE_MCF_INTC "mcf-intc"
-@@ -176,10 +177,17 @@ static void mcf_intc_instance_init(Object *obj)
-     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->iomem);
- }
+     /* Initialize the cpu core */
+@@ -974,9 +973,7 @@ static void next_cube_init(MachineState *machine)
+     memory_region_add_subregion(sysmem, 0x04000000, machine->ram);
  
-+static Property mcf_intc_properties[] = {
-+    DEFINE_PROP_LINK("m68k-cpu", mcf_intc_state, cpu,
-+                     TYPE_M68K_CPU, M68kCPU *),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void mcf_intc_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
+     /* Framebuffer */
+-    dev = qdev_new(TYPE_NEXTFB);
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x0B000000);
++    sysbus_create_simple(TYPE_NEXTFB, 0x0B000000, NULL);
  
-+    device_class_set_props(dc, mcf_intc_properties);
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->reset = mcf_intc_reset;
- }
-@@ -204,16 +212,13 @@ qemu_irq *mcf_intc_init(MemoryRegion *sysmem,
-                         M68kCPU *cpu)
- {
-     DeviceState  *dev;
--    mcf_intc_state *s;
+     /* MMIO */
+     sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 0, 0x02000000);
+@@ -993,9 +990,7 @@ static void next_cube_init(MachineState *machine)
+     memory_region_add_subregion(sysmem, 0x820c0000, bmapm2);
  
-     dev = qdev_new(TYPE_MCF_INTC);
-+    object_property_set_link(OBJECT(dev), "m68k-cpu",
-+                             OBJECT(cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--
--    s = MCF_INTC(dev);
--    s->cpu = cpu;
--
-     memory_region_add_subregion(sysmem, base,
-                                 sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
+     /* KBD */
+-    dev = qdev_new(TYPE_NEXTKBD);
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x0200e000);
++    sysbus_create_simple(TYPE_NEXTKBD, 0x0200e000, NULL);
  
--    return qemu_allocate_irqs(mcf_intc_set_irq, s, 64);
-+    return qemu_allocate_irqs(mcf_intc_set_irq, dev, 64);
- }
+     /* Load ROM here */
+     /* still not sure if the rom should also be mapped at 0x0*/
 -- 
 2.41.0
 
