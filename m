@@ -2,90 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F7F7D57CE
+	by mail.lfdr.de (Postfix) with ESMTPS id 5514B7D57CD
 	for <lists+qemu-devel@lfdr.de>; Tue, 24 Oct 2023 18:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvK5W-0002K4-4g; Tue, 24 Oct 2023 12:17:02 -0400
+	id 1qvK5Z-0002Rl-LY; Tue, 24 Oct 2023 12:17:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvK5K-0002Hg-OY
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:16:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvK5I-0007e7-HC
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:16:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698164197;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=4l/JYcVag3ltF7J2N8MhSrGvmgKhfevO2dAcFS12D1o=;
- b=fXLwhIzQs/fqJLVyvvXWRqBFdwkqAWvDt6jw02fEjziEUn+f2FhtbeUpy3CNbtSSw9lQT7
- BTtJOd/Mv6JA6MZPWRVp2qclXj6EiNVtzdREu5ELrxmm9AVAh4kqMy9wXE2f3hiWRpqR/2
- HysL6Akm/s/8+HclI+bzSmNaNGtjVgc=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-FrDKxzfSONymGu6_2MHe4Q-1; Tue, 24 Oct 2023 12:16:30 -0400
-X-MC-Unique: FrDKxzfSONymGu6_2MHe4Q-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c50d4a1a33so35449401fa.0
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:16:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvK5O-0002Jp-Ul
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:16:55 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qvK5L-0007ex-Fv
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 12:16:52 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-32003aae100so3371828f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 09:16:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698164208; x=1698769008; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QcongjLqzWg/eaT6MU2YnNd1mAYK2XTOvuPPmT1yxec=;
+ b=QiuzduirN2nqrpwuU+Xqg/A2PNh0euZj0IkLSymYL1eGV7T5a9V5EMCdaZflMomtQl
+ ikon8myCWHtJ5kmUlS0GUVfn4REhaBD29Zw8pBvS657USxhOWndwXXzvpNDD5eVSP8Ep
+ L25Cun4+57NP7dxI62PxAqWSDrWJ5+8HiyjhZ0T89oN/UyJkf8t6MfHewgi/4fs3c1hb
+ xqqUJInv/9SGqMAzNGuz18ukz1cTy3HlDEMHU28nYiKcThKl/xXFYmVv26BRkvsMSQCx
+ kmWqZ37l6K4ay9YnuvTnd8CxIrcRb6cmAxg/voMVaio2uHci60EYe2oRhXiDWGLe8j0A
+ yB4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698164189; x=1698768989;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4l/JYcVag3ltF7J2N8MhSrGvmgKhfevO2dAcFS12D1o=;
- b=aIHkjAqvfjkhyfbrn3ukfHa6+o1Ib437um7y232brwfP4+dwneemmikIcX/BSYr/zJ
- i1hX3BN94lDv4xCOyURIO1+iP3Vrlwg/b52Kv9r/luChg4KWMGtTNcB8lWqfVLZFnpqy
- cJ2nlJEETpOWqvpuT7mlEnLRH3LHbNEKVE82jI1GF/JRZ0EZT8nYiRYXK695ruyWI2zG
- Jfkur8NTQdTm58GTG+BHA2iIjg0D2pGc75TzmGj51d7YuTibnkqcMxn5YaX4dWtG3pQ/
- Nd7AJmi5Q0XZ+HOtC8j4lQARtRQiomir683b/3z61Unm9oR/j0etfQa65tHEE+2pkWg6
- +SVQ==
-X-Gm-Message-State: AOJu0Ywvmodc5bbfhwBF81q4bOytHrTPufYJ7+EHESMM1zcEIpsRzWTk
- rXjUm/hEVZd+QcAQyiUYtZVrjCGEePsb63OckA4784NfzVq4AOpERjqiAkZiGakaobUGjf+/i4f
- yWNE1ar/YGuRDzkg=
-X-Received: by 2002:a2e:7218:0:b0:2c5:4a0:f3cb with SMTP id
- n24-20020a2e7218000000b002c504a0f3cbmr8324963ljc.11.1698164189219; 
- Tue, 24 Oct 2023 09:16:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKV59SRU90us5xe+eP286M9WHKQKbJDN2SmalfK9l06cnCOOWHIZ4Er/I2htJBPwh4/j+tBA==
-X-Received: by 2002:a2e:7218:0:b0:2c5:4a0:f3cb with SMTP id
- n24-20020a2e7218000000b002c504a0f3cbmr8324939ljc.11.1698164188786; 
- Tue, 24 Oct 2023 09:16:28 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- ay10-20020a05600c1e0a00b00405442edc69sm14623371wmb.14.2023.10.24.09.16.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 09:16:27 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Zhijian Li <lizhijian@fujitsu.com>,  Markus
- Armbruster <armbru@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Thomas
- Huth <thuth@redhat.com>
-Subject: Re: [PATCH v2] migration: Stop migration immediately in RDMA error
- paths
-In-Reply-To: <20231024154008.512222-1-peterx@redhat.com> (Peter Xu's message
- of "Tue, 24 Oct 2023 11:40:08 -0400")
-References: <20231024154008.512222-1-peterx@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 24 Oct 2023 18:16:27 +0200
-Message-ID: <878r7sknc4.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1698164208; x=1698769008;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QcongjLqzWg/eaT6MU2YnNd1mAYK2XTOvuPPmT1yxec=;
+ b=ssONS+N7t1lN0lLNCW6BI9lZ24y192+MNYQymceNoDdpsrznJejVvA3x8BbSSIKemj
+ K4wtqzARt88ocAGZWOntpnsA7h18bmyike8dX6cRvoi5jnTUATdNB+b4l6crq+RhYjiq
+ p+7nXs/ytJuogNSap82IPc+iCnT7252OUsazPwVXx2ZfgWV2C9EHJDKvOQNY7exxf4+4
+ hrzUMp+D0/dySaHgIt77usLG4hRdz5HwbKg8bSjjAKTKZuY6ph41oz7BZNNcMSd0yJXE
+ hmDkPddXR7VG5VOMYs8VAYzTov2YbgaoeLquqeUlAsNpLhxr71wlTBfb6D331oEXwbM7
+ tGlg==
+X-Gm-Message-State: AOJu0YzUTDQkFBK2h9NCBR6atB8GjsF10YdUkAZCFD3cX0m7eBkm5CCZ
+ uOHllKIThe4CKgJXEVWYDXpKhxlKAuzbZw==
+X-Google-Smtp-Source: AGHT+IFyYoxCffK4vqNocIJcq/bwK4C7n6go0YOsNpyudOwqbZGUABlQoetDH9qYu8zxPmI97nOj5g==
+X-Received: by 2002:adf:8b97:0:b0:32d:a3cb:4059 with SMTP id
+ o23-20020adf8b97000000b0032da3cb4059mr14684996wra.24.1698164207951; 
+ Tue, 24 Oct 2023 09:16:47 -0700 (PDT)
+Received: from [192.168.6.66] (54-240-197-238.amazon.com. [54.240.197.238])
+ by smtp.gmail.com with ESMTPSA id
+ e16-20020adfe7d0000000b0032db8f7f378sm10249114wrn.71.2023.10.24.09.16.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 24 Oct 2023 09:16:47 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <2e174934-afca-440b-9edc-a5225d2510ea@xen.org>
+Date: Tue, 24 Oct 2023 17:16:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] hw/xen: update Xen PV NIC to XenDevice model
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Jason Wang
+ <jasowang@redhat.com>, xen-devel@lists.xenproject.org
+References: <20231017182545.97973-1-dwmw2@infradead.org>
+ <20231017182545.97973-3-dwmw2@infradead.org>
+ <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
+ <72ea536333fc9942f3c39acee571fc8f5ad98ba6.camel@infradead.org>
+Organization: Xen Project
+In-Reply-To: <72ea536333fc9942f3c39acee571fc8f5ad98ba6.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,121 +103,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> wrote:
-> In multiple places, RDMA errors are handled in a strange way, where it only
-> sets qemu_file_set_error() but not stop the migration immediately.
->
-> It's not obvious what will happen later if there is already an error.  Make
-> all such failures stop migration immediately.
->
-> Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
-> Cc: Markus Armbruster <armbru@redhat.com>
-> Cc: Juan Quintela <quintela@redhat.com>
-> Cc: Fabiano Rosas <farosas@suse.de>
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->
-> v2:
-> - One more line squashed into to fix the build error...  Please ignore v1,
->   sorry for the noise.
->
-> This patch is based on Thomas's patch:
->
-> [PATCH v2] migration/ram: Fix compilation with -Wshadow=local
-> https://lore.kernel.org/r/20231024092220.55305-1-thuth@redhat.com
->
-> Above patch should have been queued by both Markus and Juan.
-> ---
->  migration/ram.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
->
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 212add4481..1473bb593a 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -3034,11 +3034,13 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
->      ret = rdma_registration_start(f, RAM_CONTROL_SETUP);
->      if (ret < 0) {
->          qemu_file_set_error(f, ret);
-> +        return ret;
+On 24/10/2023 16:17, David Woodhouse wrote:
+[snip]
+>>
+>> I don't think that's really a valid state for a network frontend. Linux
+>> netback just ignores it.
+> 
+> Must we? I was thinking of making the ->frontend_changed() methods
+> optional and allowing backends to just provide ->connect() and
+> ->disconnect() methods instead if they wanted to. Because we have three
+> identical ->frontend_changed() methods now...
+> 
 
-I agree
+Now maybe... Not sure things will look so common when other backends are 
+converted. I'd prefer to maintain fidelity with Linux xen-netback as it 
+is generally considered to be the canonical implementation.
 
->      }
->  
->      ret = rdma_registration_stop(f, RAM_CONTROL_SETUP);
->      if (ret < 0) {
->          qemu_file_set_error(f, ret);
-> +        return ret;
-
-I agree
-
->      }
->  
->      migration_ops = g_malloc0(sizeof(MigrationOps));
-> @@ -3104,6 +3106,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
->          ret = rdma_registration_start(f, RAM_CONTROL_ROUND);
->          if (ret < 0) {
->              qemu_file_set_error(f, ret);
-> +            goto out;
-
-Seems sensible
-
->          }
->  
->          t0 = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
-> @@ -3208,8 +3211,6 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
->      rs->last_stage = !migration_in_colo_state();
->  
->      WITH_RCU_READ_LOCK_GUARD() {
-> -        int rdma_reg_ret;
-> -
->          if (!migration_in_postcopy()) {
->              migration_bitmap_sync_precopy(rs, true);
->          }
-> @@ -3217,6 +3218,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
->          ret = rdma_registration_start(f, RAM_CONTROL_FINISH);
->          if (ret < 0) {
->              qemu_file_set_error(f, ret);
-> +            break;
-
-Please
-              return ret;
-
-
-We can do exactly the same with pages < 0.
-
->          }
->  
->          /* try transferring iterative blocks of memory */
-> @@ -3240,9 +3242,10 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
->  
->          ram_flush_compressed_data(rs);
->  
-> -        rdma_reg_ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
-> -        if (rdma_reg_ret < 0) {
-> -            qemu_file_set_error(f, rdma_reg_ret);
-> +        ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
-> +        if (ret < 0) {
-> +            qemu_file_set_error(f, ret);
-> +            break;
->          }
->      }
-
-And if we return here, we can just drop the:
-
-    if (ret < 0) {
-        return ret;
-    }
-
-
-At the ext of the loop.
-
-Later, Juan.
+   Paul
 
 
