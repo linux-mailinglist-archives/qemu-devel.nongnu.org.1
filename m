@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0CC7D762B
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 22:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BC37D7645
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 23:04:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvkxJ-00064w-J9; Wed, 25 Oct 2023 16:58:21 -0400
+	id 1qvl1f-0007SV-GZ; Wed, 25 Oct 2023 17:02:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvkxH-00064e-5N; Wed, 25 Oct 2023 16:58:19 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1qvl1Z-0007Rb-52; Wed, 25 Oct 2023 17:02:45 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qvkxE-0006zA-PK; Wed, 25 Oct 2023 16:58:18 -0400
+ id 1qvl1W-0000Bj-Li; Wed, 25 Oct 2023 17:02:44 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id C5F1F75609B;
- Wed, 25 Oct 2023 22:58:13 +0200 (CEST)
+ by localhost (Postfix) with SMTP id E8458756066;
+ Wed, 25 Oct 2023 23:02:39 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 8AC8D75608E; Wed, 25 Oct 2023 22:58:13 +0200 (CEST)
+ id B16377456A7; Wed, 25 Oct 2023 23:02:39 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 88732756087;
- Wed, 25 Oct 2023 22:58:13 +0200 (CEST)
-Date: Wed, 25 Oct 2023 22:58:13 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id AF77E745681;
+ Wed, 25 Oct 2023 23:02:39 +0200 (CEST)
+Date: Wed, 25 Oct 2023 23:02:39 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
 cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
@@ -36,18 +36,17 @@ cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  Markus Armbruster <armbru@redhat.com>, 
  =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v6 14/23] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
- !PIXMAN
-In-Reply-To: <20231025190818.3278423-15-marcandre.lureau@redhat.com>
-Message-ID: <bc6d4505-df80-8179-0201-7eb396a22547@eik.bme.hu>
+Subject: Re: [PATCH v6 21/23] hw/sm501: allow compiling without PIXMAN
+In-Reply-To: <20231025190818.3278423-22-marcandre.lureau@redhat.com>
+Message-ID: <c24df8e7-949e-a0de-2ddd-578fc4e73aa3@eik.bme.hu>
 References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
- <20231025190818.3278423-15-marcandre.lureau@redhat.com>
+ <20231025190818.3278423-22-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/mixed;
- boundary="3866299591-1446413130-1698267493=:42723"
+ boundary="3866299591-1784342453-1698267759=:42723"
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -71,50 +70,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-1446413130-1698267493=:42723
+--3866299591-1784342453-1698267759=:42723
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
 
 On Wed, 25 Oct 2023, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 >
-> This simply means that 2d drawing updates won't be handled, but 3d
-> should work.
-
-Does this silently break guest display when !PIXMAN or I don't understand 
-what this means (I don't know how this device works). If it causes missing 
-display without PIXMAN should this need pixman or print a warning about 
-that?
-
-Regards,
-BALATON Zoltan
-
+> Change the "x-pixman" property default value and use the fallback path
+> when PIXMAN support is disabled.
+>
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+
 > ---
-> hw/display/vhost-user-gpu.c | 2 ++
-> 1 file changed, 2 insertions(+)
->
-> diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-> index 1150521d9d..709c8a02a1 100644
-> --- a/hw/display/vhost-user-gpu.c
-> +++ b/hw/display/vhost-user-gpu.c
-> @@ -307,6 +307,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
->         dpy_gl_update(con, m->x, m->y, m->width, m->height);
->         break;
->     }
-> +#ifdef CONFIG_PIXMAN
->     case VHOST_USER_GPU_UPDATE: {
->         VhostUserGpuUpdate *m = &msg->payload.update;
->
-> @@ -334,6 +335,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
->         }
->         break;
->     }
-> +#endif
->     default:
->         g_warning("unhandled message %d %d", msg->request, msg->size);
->     }
->
---3866299591-1446413130-1698267493=:42723--
+> hw/display/sm501.c | 46 +++++++++++++++++++++++++++++++++-------------
+> 1 file changed, 33 insertions(+), 13 deletions(-)
+--3866299591-1784342453-1698267759=:42723--
 
