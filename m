@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB6F7D6D2E
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 15:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2627D6DA8
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 15:51:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvdyS-0008AM-Id; Wed, 25 Oct 2023 09:31:04 -0400
+	id 1qveHM-0001UJ-Aa; Wed, 25 Oct 2023 09:50:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qvdyQ-00089u-7J
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 09:31:02 -0400
-Received: from mgamail.intel.com ([134.134.136.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qvdyL-000842-G3
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 09:31:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698240657; x=1729776657;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=olQ2ezotKWBDA6Of1wjDTlEYLDQ2rg4kphj/Smcpnw4=;
- b=lnD04hfszut7u6DInUq4uzWuPpI8Rx/6DiJcJBqDgweAGyRXFy4xKpQw
- b2k2MoQWJGtkeqBYzlAz4N0deYiQnV10wXAEDiqb7LmjNl33F1Tf+R9pB
- xxzBk7MTuXSZphh+y6G7EbJGLSCXWFfI546d41aMxvQtKg7OSNSdHz4RQ
- S221jr3krrlBwQ/xPVY53yd4GH9oQNxgLuONl270uqQgA7ZYZcNmtSQTx
- 47JP0obHk8nQ6kPD+3U7ABtsnoGIVpAmfwvhEUD4DXjQJFFYmBqetTWUr
- xWEMkkqzRdph0V/2mrr39FI5QEhl/WEJ/KFRZjU9uP2UISBNkaQnZkZ4h A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="453775523"
-X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; d="scan'208";a="453775523"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Oct 2023 06:30:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
-   d="scan'208";a="6839921"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 25 Oct 2023 06:30:41 -0700
-Date: Wed, 25 Oct 2023 21:42:29 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v5 00/20] Support smp.clusters for x86 in QEMU
-Message-ID: <ZTkbRUTvdULkDbZU@intel.com>
-References: <20231024090323.1859210-1-zhao1.liu@linux.intel.com>
- <9a8e0ab9-48cf-777b-92ac-cd515eec0cf9@linaro.org>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qveH4-0001Jd-9I
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 09:50:22 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qveGy-0002rD-OG
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 09:50:18 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1caa7597af9so38204795ad.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 06:50:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698241810; x=1698846610; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2HMf3AR10cl+PzngJ1uOsf+MFiWEg4nwUHAbK5K49AI=;
+ b=jNK4LIp3DT+EMvB9mLsZ2s2oMlCGl5/j+eN1YEP3MRxdGyek+Va8rmjn2Q36KDghmP
+ xREEF5tXCbuBQlpHRmJSKWlohYJrMh/aGOoSrGDxSy6xyn4uDqzIg0bQ2jO5hwOh6GyP
+ ZotvIPSQLS4eZ38WVRyxg5uZjDulbyKq6JL2A1qjH82avMTbTU+DYXv1Bxudyc3kkBDZ
+ Y7eGP29IspxCQzyKvLdvCl8NLv5gxDcy3+6SPeXjUg5PgsB29eu3UYeHE86sVfwBQBL0
+ pZDRQT/pwyriD/e1Cd+HQebz5eguidXMQmjH+tM5+98/0CmlAo8libqjS+/YGXs/nxRb
+ yIsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698241810; x=1698846610;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2HMf3AR10cl+PzngJ1uOsf+MFiWEg4nwUHAbK5K49AI=;
+ b=mvcZuvhkuxqN40TwxCzLPgMpHaRKEZzwehCRJtOPs0AlNcJI/wAOOFe3x6cCuRWquD
+ WnAQN/7Sv8ncG1xmVrpqZt+bw/2VdVq0ETOt+sMsMxQ768jxM21ICpSRr/NsFc4TU/gZ
+ fCnZEp/XZqvRpe0IjOhaXO0pAWW9NiqOGTXJ2yrZOujxGfNIP4dMaFjE7bEWb6WUFTLv
+ lw3bd5mSzWRiMmND02GWY7scm6T6hHkhi5a2c8yY9qyrNkw47mZz1P/b6FtB6BKOoQkp
+ ZY0gfBjFVqEAA9i1El0Sb7Tocg32bDLeimWmOV7vQaTFzgqwkteRemDYTpgABVxKjK5N
+ Ta1Q==
+X-Gm-Message-State: AOJu0YzkdEamy6mDEgpD3gQfcxhrpUNoYkeAsAguZ2MnPbjG0FopY/ML
+ oaSBX5tMImwP4FJM3KJ8QZxwygLNSc+socpGSxk=
+X-Google-Smtp-Source: AGHT+IFHH0y8B38KIQA9MFa59YmUHVZdrEbO2rLwcZ4fSdtZd7HLe1/UNpysMw2SPxUOflL4NQa20w==
+X-Received: by 2002:a17:902:facb:b0:1c9:c46c:71fc with SMTP id
+ ld11-20020a170902facb00b001c9c46c71fcmr9590828plb.59.1698241809790; 
+ Wed, 25 Oct 2023 06:50:09 -0700 (PDT)
+Received: from grind.. ([191.255.2.33]) by smtp.gmail.com with ESMTPSA id
+ jw4-20020a170903278400b001ca485b8515sm9252548plb.91.2023.10.25.06.50.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Oct 2023 06:50:09 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v4 0/9] RVA22U64 profile support
+Date: Wed, 25 Oct 2023 10:49:52 -0300
+Message-ID: <20231025135001.531224-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9a8e0ab9-48cf-777b-92ac-cd515eec0cf9@linaro.org>
-Received-SPF: none client-ip=134.134.136.100;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,28 +89,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 12:04:12PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Wed, 25 Oct 2023 12:04:12 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH v5 00/20] Support smp.clusters for x86 in QEMU
-> 
-> Hi Zhao,
-> 
-> On 24/10/23 11:03, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Hi list,
-> > 
-> > This is the our v5 patch series, rebased on the master branch at the
-> > commit 384dbdda94c0 ("Merge tag 'migration-20231020-pull-request' of
-> > https://gitlab.com/juan.quintela/qemu into staging").
-> 
-> Since the 4 first patches are not x86-specific (and are Acked
-> by Michael), I'll queue them to shorten your series. I'll let
-> Paolo look at the rest.
+Based-on: 20231023153927.435083-1-dbarboza@ventanamicro.com
+("[PATCH v3 0/4] riscv: zicntr/zihpm flags and disable support")
 
-Thanks Philippe!
+Hi,
 
--Zhao
+This version has changes based on feedback from Drew and Zhiwei in v3.
+
+Most notable changes:
+
+- profiles flags now have the same weight as individual extension,
+  meaning that left-to-right ordering will change the resulting
+  configuration;
+
+- warnings are no longer being shown if the user disables a profile.
+  We'll make a documentation note about why disabling a profile is an
+  advanced feature instead of warning users simply because they set a
+  single flag to 'off';
+
+- warnings are being shown if the user disables a mandatory extension of
+  a profile the user is enabling. This will cover the scenario where the
+  user is disabling an extension by mistake or, if it's intentional, the
+  user can safely ignore it;
+
+- RVG is being handled closer to a profile. This is something that we
+  decided to do here, in patch 8, to keep consistent with what we're
+  doing with profiles in patch 9. This means that we're now throwing
+  warnings if the user set g=true and then disabled a G extension
+  (IMAFD_zicsr_zifencei) in the command line. 
+
+Series is based on top of:
+
+[PATCH v3 0/4] riscv: zicntr/zihpm flags and disable support
+
+Patches missing acks: 3, 7, 8, 9
+
+Changes from v3:
+- patch 1:
+  - added RVI in the profile definition
+- patch 3:
+  - removed disable profile warning from set() callback
+  - mandatory extensions from a profile that are enabled/disabled has the same
+    priority as individual extensions that are enabled/disabled. Left-to-right
+    ordering matters for the final result
+- patch 6:
+  - change profile misa bits priority to be the same as regular misa bits set
+    in the command line
+- patch 7 (new):
+  - add hash helpers
+- patch 8 (new):
+  - honor user choice for RVG MISA bits
+- patch 9 (new):
+  - throw user warnings if profile extensions are disabled in the command line 
+- v3 link: https://lore.kernel.org/qemu-riscv/20231020223951.357513-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (9):
+  target/riscv: add rva22u64 profile definition
+  target/riscv/kvm: add 'rva22u64' flag as unavailable
+  target/riscv/tcg: add user flag for profile support
+  target/riscv/tcg: add MISA user options hash
+  target/riscv/tcg: add riscv_cpu_write_misa_bit()
+  target/riscv/tcg: handle profile MISA bits
+  target/riscv/tcg: add hash table insert helpers
+  target/riscv/tcg: honor user choice for G MISA bits
+  target/riscv/tcg: warn if profile exts are disabled
+
+ target/riscv/cpu.c         |  20 +++
+ target/riscv/cpu.h         |  12 ++
+ target/riscv/kvm/kvm-cpu.c |   7 +-
+ target/riscv/tcg/tcg-cpu.c | 249 ++++++++++++++++++++++++++++++-------
+ 4 files changed, 245 insertions(+), 43 deletions(-)
+
+-- 
+2.41.0
 
 
