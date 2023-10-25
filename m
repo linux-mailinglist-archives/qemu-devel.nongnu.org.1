@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A253B7D6159
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 07:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E627D618E
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:20:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvWsV-0000CJ-Vp; Wed, 25 Oct 2023 01:56:28 -0400
+	id 1qvXEg-0000cd-KR; Wed, 25 Oct 2023 02:19:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvWsS-00006j-Pk
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:56:25 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvWsQ-0005qP-Kj
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:56:24 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32d9effe314so3579739f8f.3
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 22:56:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698213380; x=1698818180; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Zs2gbkRDyur7pDchslP/aRzZiddSMfd3l/SL3nFyX28=;
- b=QJ5XiLzBDE/dzYlujhgMa45B5is7hiZbFXCfBbuyxmVPkbSvAqVzjSDwh5jdP7lvEO
- gVKrwoYKUE5WzzEBF+zxT4n1xDbkpXFSBW/e0HfdbWEHuNz0SR4v1PQy6VJIsS5tvZrn
- 782VC/Vqb1UKPuiqVJIb53frQrtv16/I8KLopveorOlrxy/Aa057L78Po/aN+1NSM1NT
- R4VKShvQXI+Q/lRetIVhGpJDin0++kiBAiaaza7PUDdFMJMrDXaMQurItI8cEKmQJy5U
- ZkOLH1Z7HR8FGIJ5LT+IoJfaK0bB1OPeWNK1p9kpCTje6QneqQE9Ii5sqjeRTDZGymd/
- Xs/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698213380; x=1698818180;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zs2gbkRDyur7pDchslP/aRzZiddSMfd3l/SL3nFyX28=;
- b=ezA0cj1IanrS6eTwa52RDR9liMwAurA/ro6LykYSdVR7Sb4MqzJWZScvWHFa+NKJqP
- rbqvWokiPpkZsLTcRemUy4Wdov33/Lw40u1spw9VpPdaeQFljNqE7KIznDCZKDgxW3lq
- VbGHSc/Jupibxtp94hKaBIGY57pzJ42tjnt21hcN4jX5zFE7e3vCQp3BJgC1do0iXRGf
- 9QKM1eb0fk5Wq4T24lMEfnCIo7VL1bIk5bhO8fdJXsNdBnsbtL4DyPsIRfeCYdBrqLa7
- VYU4q+iqOel3Vm/ggqGpSHXfeBfVOpjwwprGmst5MKsRUurIJgFOwaWUVBQ3rXHY9Hr2
- e9Gg==
-X-Gm-Message-State: AOJu0YxzeNz55x4MWtEDuNTkuGMmmN/I3H5L+0GWopuFf0F2fiGneZ3g
- +/AHXP7naIil3GNdeAec8bbWYg==
-X-Google-Smtp-Source: AGHT+IFwV3DobD21uGM0FXN6Tbc8qhFQQ3RNRMrGncB1heXMwwTT3NCxlhg2JTW5kfdAQ+x9nTvYyQ==
-X-Received: by 2002:a5d:5744:0:b0:32d:82d8:3442 with SMTP id
- q4-20020a5d5744000000b0032d82d83442mr8044347wrw.53.1698213380397; 
- Tue, 24 Oct 2023 22:56:20 -0700 (PDT)
-Received: from [192.168.69.115] (ghy59-h01-176-171-219-76.dsl.sta.abo.bbox.fr.
- [176.171.219.76]) by smtp.gmail.com with ESMTPSA id
- p7-20020a5d4587000000b0032db430fb9bsm11280228wrq.68.2023.10.24.22.56.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 22:56:20 -0700 (PDT)
-Message-ID: <98eb2407-8612-c617-ec80-a6ac1ddda3fd@linaro.org>
-Date: Wed, 25 Oct 2023 07:56:17 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qvXEe-0000bq-7Y
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:19:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qvXEY-0000lQ-I5
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:19:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698214752;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Qz9nibAudhAmTPodeSx0XLITFaKh7AO80kVAgHaWlMM=;
+ b=P+mi1LOs0iam8E5qgh6VSz6RmjL7/EEQVE4jiRrJCqhfCi2tqC2fY4KzSNI7LwKBV8LFH+
+ jclaATB2GNm0YZ7RoKuwNUSwPMIx5FQUu8eopzjScRDvPP+om2V5wTAIvtry1jS8mMrIr0
+ uOQt6YqFNyWuXXF30Y5E/LaVIHAmNqI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-426-3pTSsSTfO9uA7oDZ6XZScw-1; Wed,
+ 25 Oct 2023 02:19:00 -0400
+X-MC-Unique: 3pTSsSTfO9uA7oDZ6XZScw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 813C33C0FC85;
+ Wed, 25 Oct 2023 06:19:00 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 443252026D4C;
+ Wed, 25 Oct 2023 06:19:00 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DE4FD21E6A1F; Wed, 25 Oct 2023 08:18:58 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Juan Quintela
+ <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Claudio Fontana <cfontana@suse.de>,  Eric Blake
+ <eblake@redhat.com>
+Subject: Re: [PATCH v2 14/29] migration/ram: Introduce 'fixed-ram' migration
+ capability
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-15-farosas@suse.de>
+ <87fs20vb2p.fsf@pond.sub.org> <87zg07dg1u.fsf@suse.de>
+Date: Wed, 25 Oct 2023 08:18:58 +0200
+In-Reply-To: <87zg07dg1u.fsf@suse.de> (Fabiano Rosas's message of "Tue, 24 Oct
+ 2023 15:35:41 -0300")
+Message-ID: <87sf5zkywd.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3 0/8] PMBus fixes and new functions
-To: Titus Rwantare <titusr@google.com>
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-arm@nongnu.org, minyard@acm.org, qemu-devel@nongnu.org
-References: <20231023180837.91785-1-titusr@google.com>
- <874jih40a3.fsf@linaro.org>
- <CAMvPwGpXZxyoX1WNypgNCW+Uj+bcVPn99vF71Myx7jn_c2Fjdg@mail.gmail.com>
- <87zg082twp.fsf@linaro.org> <c87866ad-568b-1917-7617-c63b137a196a@linaro.org>
- <CAMvPwGpyE0BVKJVEo+bZsQz99W_O61fW4TzEwm7A6bCd0bsJ0g@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAMvPwGpyE0BVKJVEo+bZsQz99W_O61fW4TzEwm7A6bCd0bsJ0g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,57 +85,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/10/23 18:07, Titus Rwantare wrote:
-> On Tue, 24 Oct 2023 at 04:50, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> On 24/10/23 12:06, Alex Bennée wrote:
->>
->>> A pull request is really just a GPG signed tag that you push to a repo.
->>> You can use the existing git tooling to create the cover letter for it.
->>>
->>> I've included my exact steps at the end of the email but really it comes
->>> down to:
->>>
->>>     git tag --sign your-pr-tag
->>>     git push your-pr-tag
->>>     git format-patch <series details>
->>>     git request-pull origin/master your_repo_details your-pr-tag
->>>
->>> and finally
->>>
->>>     git send-email
->>>
->>> My personal exact steps are integrated with my editor but are:
->>
->>
->>> 8 Preparing a QEMU Pull Request
->>> ═══════════════════════════════
->>
->>> 9 And send the pull request
->>> ═══════════════════════════
->>
->> For these steps I just do:
->>
->> $ git publish -b origin/master \
->>       --pull-request --sign-pull --keyid=0xMYKEY
->>
->> which uses .gitpublish from commit 08bb160e02,
->> calling get_maintainer.pl for each patch.
->>
->> Using GSuite, I also have in ~/.gitconfig:
->>
->> [sendemail]
->>       smtpServer = smtp.gmail.com
->>       smtpBatchSize = 1
->>       smtpReloginDelay = 3
-> 
-> Thanks all, I'll do some dry runs to walk through these approaches.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Tell me if you want me to unqueue your v4, otherwise I'll send a PR
-with it in a few days.
+> Markus Armbruster <armbru@redhat.com> writes:
+>
+>> Fabiano Rosas <farosas@suse.de> writes:
+>>
+>>> Add a new migration capability 'fixed-ram'.
+>>>
+>>> The core of the feature is to ensure that each ram page has a specific
+>>> offset in the resulting migration stream. The reason why we'd want
+>>> such behavior are two fold:
+>>>
+>>>  - When doing a 'fixed-ram' migration the resulting file will have a
+>>>    bounded size, since pages which are dirtied multiple times will
+>>>    always go to a fixed location in the file, rather than constantly
+>>>    being added to a sequential stream. This eliminates cases where a vm
+>>>    with, say, 1G of ram can result in a migration file that's 10s of
+>>>    GBs, provided that the workload constantly redirties memory.
+>>>
+>>>  - It paves the way to implement DIRECT_IO-enabled save/restore of the
+>>>    migration stream as the pages are ensured to be written at aligned
+>>>    offsets.
+>>>
+>>> For now, enabling the capability has no effect. The next couple of
+>>> patches implement the core funcionality.
+>>>
+>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>> ---
+>>>  docs/devel/migration.rst | 14 ++++++++++++++
+>>>  migration/options.c      | 37 +++++++++++++++++++++++++++++++++++++
+>>>  migration/options.h      |  1 +
+>>>  migration/savevm.c       |  1 +
+>>>  qapi/migration.json      |  5 ++++-
+>>>  5 files changed, 57 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+>>> index c3e1400c0c..6f898b5dbd 100644
+>>> --- a/docs/devel/migration.rst
+>>> +++ b/docs/devel/migration.rst
+>>> @@ -566,6 +566,20 @@ Others (especially either older devices or system devices which for
+>>>  some reason don't have a bus concept) make use of the ``instance id``
+>>>  for otherwise identically named devices.
+>>>  
+>>> +Fixed-ram format
+>>> +----------------
+>>> +
+>>> +When the ``fixed-ram`` capability is enabled, a slightly different
+>>> +stream format is used for the RAM section. Instead of having a
+>>> +sequential stream of pages that follow the RAMBlock headers, the dirty
+>>> +pages for a RAMBlock follow its header. This ensures that each RAM
+>>> +page has a fixed offset in the resulting migration stream.
+>>
+>> This requires the migration stream to be seekable, as documented in the
+>> QAPI schema below.  I think it's worth documenting here, as well.
+>>
+>
+> Ok.
+>
+>>> +
+>>> +The ``fixed-ram`` capaility can be enabled in both source and
+>>> +destination with:
+>>> +
+>>> +    ``migrate_set_capability fixed-ram on``
+>>
+>> Effect of enabling on the destination?
+>>
+>> What happens when we enable it only on one end?
+>>
+>
+> qemu-system-x86_64: Capability fixed-ram is off, but received capability is on
+> qemu-system-x86_64: load of migration failed: Invalid argument
+>
+> So I guess that *can* be enabled up there should become a *must*.
 
-Regards,
+Makes sense.
 
-Phil.
+>>> +
+>>>  Return path
+>>>  -----------
+>>>  
+>>
+>> [...]
+>>
+>>> diff --git a/qapi/migration.json b/qapi/migration.json
+>>> index 74f12adc0e..1317dd32ab 100644
+>>> --- a/qapi/migration.json
+>>> +++ b/qapi/migration.json
+>>> @@ -527,6 +527,9 @@
+>>>  #     VM before migration for an optimal migration performance.
+>>>  #     Enabled by default. (since 8.1)
+>>>  #
+>>> +# @fixed-ram: Migrate using fixed offsets for each RAM page. Requires
+>>
+>> Two spaces between sentences for consistency, please.
+>>
+>>> +#             a seekable transport such as a file.  (since 8.1)
+>>
+>> What is a migration transport?  migration.json doesn't define the term.
+>>
+>
+> The medium that transports the migration. We are about to define some
+> terms at the QAPI series:
+>
+> [PATCH v15 00/14] migration: Modify 'migrate' and 'migrate-incoming'
+> QAPI commands for migration
+> https://lore.kernel.org/r/20231023182053.8711-1-farosas@suse.de
+
+Can't find it there offhand.  No need to explain it further to me now,
+just make sure it's defined at this point in the series when you respin.
+
+>> Which transports are seekable?
+>>
+>
+> The ones that implement QIO_CHANNEL_FEATURE_SEEKABLE. Currently only
+> QIOChannelFile.
+
+Transport seekability needs to be documented clearly.
+
+>> Out of curiosity: what happens if the transport isn't seekable?
+>
+> We fail the migration. At migration_channels_and_uri_compatible():
+>
+>     if (migration_needs_seekable_channel() &&
+>         !uri_supports_seeking(uri)) {
+>         error_setg(errp, "Migration requires seekable transport (e.g. file)");
+>         compatible = false;
+>     }
+
+Thanks!
+
+>>> +#
+>>>  # Features:
+>>>  #
+>>>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+>>> @@ -543,7 +546,7 @@
+>>>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+>>>             'validate-uuid', 'background-snapshot',
+>>>             'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+>>> -           'dirty-limit', 'auto-pause'] }
+>>> +           'dirty-limit', 'auto-pause', 'fixed-ram'] }
+>>>  
+>>>  ##
+>>>  # @MigrationCapabilityStatus:
 
 
