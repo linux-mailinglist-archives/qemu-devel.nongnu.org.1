@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B0E7D7413
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 834AF7D740F
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:15:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvjG3-0005rq-Ic; Wed, 25 Oct 2023 15:09:35 -0400
+	id 1qvjG3-0005ns-PJ; Wed, 25 Oct 2023 15:09:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qvjFy-0005K8-FS
+ id 1qvjFz-0005Kb-0V
  for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:09:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qvjFv-0000Xs-Vr
+ id 1qvjFx-0000Yb-Kd
  for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:09:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698260967;
+ s=mimecast20190719; t=1698260969;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MUYXOavKjr3nBQePklqtEwSaDfyRGwnYpWD8MCr0umI=;
- b=VQQmj41tjjMw4DET6mSYlyW2U3kP+g0HbtiHNuDcAwsCROXFDux0jd0WolbP3uGi/tR7O3
- uFtx+W0Qj1RZEeue7p+WtmYEZH0s+b3abqVYRd0JkaHDN5vppZY/IYT7yiX5mguGgQrwek
- a461CKl6103FsJRF/B53YRxVfOZCk38=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-qkNsX8tXPGqA8QVFp64vBQ-1; Wed,
- 25 Oct 2023 15:09:19 -0400
-X-MC-Unique: qkNsX8tXPGqA8QVFp64vBQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=8y5okX3QpysGx0N17ejN+rdipmBjYxxyu1XjxtJ2Ujk=;
+ b=jQhZ1LObW/18Yp3hL99e8ryJ3nxr2Sv2XuhUJ2sGtIK84svo603+IDQLFDP4rE67a9E33f
+ PF/IoPgNgIF/ULCG4RpF6KNjY7D/GfDjzogNIBXJH3yEhOsoa695JOvOg+MtTlvBYHca6y
+ +U8DklWI47YTinC9bhtPGAKFl6JUR3w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256-cNQkTExqMGK0nfezJP4l6w-1; Wed, 25 Oct 2023 15:09:23 -0400
+X-MC-Unique: cNQkTExqMGK0nfezJP4l6w-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AE2BB1C06903;
- Wed, 25 Oct 2023 19:09:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4D8C6101A54C;
+ Wed, 25 Oct 2023 19:09:23 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.13])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DF379502B;
- Wed, 25 Oct 2023 19:09:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 440912166B26;
+ Wed, 25 Oct 2023 19:09:21 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
@@ -55,17 +55,17 @@ Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v6 13/23] ui/console: when PIXMAN is unavailable,
- don't draw placeholder msg
-Date: Wed, 25 Oct 2023 23:08:07 +0400
-Message-ID: <20231025190818.3278423-14-marcandre.lureau@redhat.com>
+Subject: [PATCH v6 14/23] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
+ !PIXMAN
+Date: Wed, 25 Oct 2023 23:08:08 +0400
+Message-ID: <20231025190818.3278423-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
 References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -73,7 +73,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,34 +92,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-When we can't draw text, simply show a blank display.
+This simply means that 2d drawing updates won't be handled, but 3d
+should work.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- ui/console.c | 2 ++
+ hw/display/vhost-user-gpu.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/ui/console.c b/ui/console.c
-index a72c495b5a..8e688d3569 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -584,6 +584,7 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                                 const char *msg)
- {
-     DisplaySurface *surface = qemu_create_displaysurface(w, h);
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 1150521d9d..709c8a02a1 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -307,6 +307,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         dpy_gl_update(con, m->x, m->y, m->width, m->height);
+         break;
+     }
 +#ifdef CONFIG_PIXMAN
-     pixman_color_t bg = QEMU_PIXMAN_COLOR_BLACK;
-     pixman_color_t fg = QEMU_PIXMAN_COLOR_GRAY;
-     pixman_image_t *glyph;
-@@ -598,6 +599,7 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                  x+i, y, FONT_WIDTH, FONT_HEIGHT);
-         qemu_pixman_image_unref(glyph);
+     case VHOST_USER_GPU_UPDATE: {
+         VhostUserGpuUpdate *m = &msg->payload.update;
+ 
+@@ -334,6 +335,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         }
+         break;
      }
 +#endif
-     surface->flags |= QEMU_PLACEHOLDER_FLAG;
-     return surface;
- }
+     default:
+         g_warning("unhandled message %d %d", msg->request, msg->size);
+     }
 -- 
 2.41.0
 
