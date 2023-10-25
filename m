@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689127D7496
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ECCD7D7497
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:42:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvjj8-0000qp-7e; Wed, 25 Oct 2023 15:39:38 -0400
+	id 1qvjjA-0000ro-4c; Wed, 25 Oct 2023 15:39:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1qvjj5-0000qF-Pz
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:35 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ id 1qvjj7-0000r3-V5
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:37 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1qvjj3-000687-Tz
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:35 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-779fb118fe4so9479285a.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 12:39:33 -0700 (PDT)
+ id 1qvjj5-00068U-Mi
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:37 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-581b6b93bd1so98031eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 12:39:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1698262772; x=1698867572; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1698262774; x=1698867574; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0JqkkF9dhAzE0OkPFi/BNF1Vq1buivPQjPn42c685Sk=;
- b=SsDLvkQTed2tMdWXg/Wbfu7kS81LcEEOg4H9Fgk6gmYcQba0lKqSv9H+H7ifRPmo5M
- 8K7210lgpWiuqVBoWSiJtJxxn/WcK8YIje3Fz10xJcM27GCfrcyAnANgKsal41zwXmwx
- DJOnX3yRi4vMrNI7QxQeOcWgxbNp7Mj+TMOBW0nQZNWE4n5rgOu3/IrNpII22C95edg3
- iQNqcZAuZGrQr/q62Zv0GvJ5S4dVDljoAghXRiQVyZ39IpNOkSP9Besq0GxjWhrsft41
- WXpS3AitB5kFoRmQObsOE8S04lgreiAmLdhu+F8twpsF/Y6mKTpc34cxsRn1+G9hj8XJ
- kumg==
+ bh=k0ANuzGnWOEFY5fWYAHlg+spNpTdLgGmhcWmwSge4rg=;
+ b=Ou1NDxwzxseImjq5CdH69l6PjrdSsblSGfKMgI1vmaGknmAOCRBfWhcZe4IQD6X9kc
+ p/74ks4Q53XRqnXq2rf3EFhuPJ6Gd3x6pqkazpSTj2k+pBNn7hLVdNEEIq6rweN1CWSh
+ aFw5MBJhfPgftc1Y5hm5BPdpoqt5lbo9uTBdQUVrBw86s1ZXl94qMkijkazIX+YSeGrj
+ TmqX2VAQxmUnQXzpx00Ot86UGdID/WEGMFxbBLCKl1VS+U83I+jAEsAw30nKzg0QxLjt
+ ojwX+lgTMu4JSn9tq2+/RsjHFRCC3DyCB/a0oZEjH3CC5IKQFephnnaRRVK3ZmxSB5nb
+ c5Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698262772; x=1698867572;
+ d=1e100.net; s=20230601; t=1698262774; x=1698867574;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0JqkkF9dhAzE0OkPFi/BNF1Vq1buivPQjPn42c685Sk=;
- b=cPuGg82q3/DQ/fgKOjXyB85qShuXNsNzRkpYzu/Wp9pOHCviGpCSguP4jVEkx6WIcy
- n+B2f9ra15OYFLROAsVrOP5C30mrYYcXFA4w3rZzQlxTo0rBheAbbUTRO8CllYH6IRdk
- n+MmYB6SNAanKVZ1jQwBdcrnKkvlIvVoBEDinzi9k1Zzc7NCEK9DBRISAPtQ/YStUzF0
- mFi0jgq3iOWZuxHEEYhSXMl0XtWZPSo7b2Ear+jOKwgBGchMZ+7VNtKQwrlm+iMbUphD
- D5UuWQOw3l7YfYyJUOgCzumf2cKWZZHCVpjL94QrIgb12IkQi0T+RvqBDqIIWKAqluJ8
- C5BA==
-X-Gm-Message-State: AOJu0YwU4ukIOrsx5BK/RMpzc07QN9sTgZLYYUeC0NZ1gg+Kyew/5wuV
- eHAT9OvxEqwD2I5VFA/fYJ5UCg==
-X-Google-Smtp-Source: AGHT+IFvcQoDPlOpKPqJe+cAEq3W0GjfIbenamTgPA6MxpuyOZPPkz7ktB7xbFGqEaiG56LXMaEGyA==
-X-Received: by 2002:a05:620a:1aaa:b0:769:89c8:4fae with SMTP id
- bl42-20020a05620a1aaa00b0076989c84faemr19131809qkb.52.1698262772577; 
- Wed, 25 Oct 2023 12:39:32 -0700 (PDT)
+ bh=k0ANuzGnWOEFY5fWYAHlg+spNpTdLgGmhcWmwSge4rg=;
+ b=gd8rkT6qqNXtX1gXNyZSNBoxA44DE6jQhMoXjXXwP5yWyJ3M31gxefDdmkCx+qXqGe
+ r20Yg8Ru3zoseRiBhTEwyeiLD84tv0XdMCSmPkVBQJLd9w2ii/wdRLVqce6ziiuK1q58
+ ldavgXBB37xxMTgRbcNEIoXU6zqkZOGcmmZFPPBUCAAc2xOuyHiFy8dLaPvjDixYDTWO
+ Bfd3oUIp6eiupp9FvzHhm3lYjjtutW7yaEBCm7clOoG7P0hbUE2ICUQ2l2d/uA503M1F
+ 9GaPTNYptUyFzMs8JcbO4gmwNF9roJhsNznEVxO0aBTGnc8Ipy+0OojZGFgOqRBqDe0Q
+ ieIw==
+X-Gm-Message-State: AOJu0YxbfMrI4RpTKsJfh0hOIc9un6DaAzMqfNasQKWHEqMb2gskGg3L
+ 5xB+BKcScs75ymomxygedrq/vg==
+X-Google-Smtp-Source: AGHT+IFBilC6466lqF/eda52hPHX3w8gTnz8NDR3vD8wB+uzfpBleORPytdybh1pxpgDRLHW7JmgYQ==
+X-Received: by 2002:a05:6358:cd04:b0:168:d0a3:202f with SMTP id
+ gv4-20020a056358cd0400b00168d0a3202fmr13387175rwb.15.1698262774119; 
+ Wed, 25 Oct 2023 12:39:34 -0700 (PDT)
 Received: from n231-230-216.byted.org ([147.160.184.135])
  by smtp.gmail.com with ESMTPSA id
- o8-20020a05620a228800b0076cdc3b5beasm4453721qkh.86.2023.10.25.12.39.32
+ o8-20020a05620a228800b0076cdc3b5beasm4453721qkh.86.2023.10.25.12.39.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 12:39:32 -0700 (PDT)
+ Wed, 25 Oct 2023 12:39:33 -0700 (PDT)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com,
  bryan.zhang@bytedance.com, qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH 03/16] util/dsa: Add dependency idxd.
-Date: Wed, 25 Oct 2023 19:38:09 +0000
-Message-Id: <20231025193822.2813204-4-hao.xiang@bytedance.com>
+Subject: [PATCH 04/16] util/dsa: Implement DSA device start and stop logic.
+Date: Wed, 25 Oct 2023 19:38:10 +0000
+Message-Id: <20231025193822.2813204-5-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20231025193822.2813204-1-hao.xiang@bytedance.com>
 References: <20231025193822.2813204-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x731.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,379 +92,432 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Idxd is the device driver for DSA (Intel Data Streaming
-Accelerator). The driver is fully functioning since Linux
-kernel 5.19. This change adds the driver's header file used
-for userspace development.
+* DSA device open and close.
+* DSA group contains multiple DSA devices.
+* DSA group configure/start/stop/clean.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
 ---
- linux-headers/linux/idxd.h | 356 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 356 insertions(+)
- create mode 100644 linux-headers/linux/idxd.h
+ include/qemu/dsa.h |  49 +++++++
+ util/dsa.c         | 338 +++++++++++++++++++++++++++++++++++++++++++++
+ util/meson.build   |   1 +
+ 3 files changed, 388 insertions(+)
+ create mode 100644 include/qemu/dsa.h
+ create mode 100644 util/dsa.c
 
-diff --git a/linux-headers/linux/idxd.h b/linux-headers/linux/idxd.h
+diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
 new file mode 100644
-index 0000000000..1d553bedbd
+index 0000000000..30246b507e
 --- /dev/null
-+++ b/linux-headers/linux/idxd.h
-@@ -0,0 +1,356 @@
-+/* SPDX-License-Identifier: LGPL-2.1 WITH Linux-syscall-note */
-+/* Copyright(c) 2019 Intel Corporation. All rights rsvd. */
-+#ifndef _USR_IDXD_H_
-+#define _USR_IDXD_H_
++++ b/include/qemu/dsa.h
+@@ -0,0 +1,49 @@
++#ifndef QEMU_DSA_H
++#define QEMU_DSA_H
 +
-+#ifdef __KERNEL__
-+#include <linux/types.h>
-+#else
-+#include <stdint.h>
++#include "qemu/thread.h"
++#include "qemu/queue.h"
++
++#ifdef CONFIG_DSA_OPT
++
++#pragma GCC push_options
++#pragma GCC target("enqcmd")
++
++#include <linux/idxd.h>
++#include "x86intrin.h"
++
 +#endif
 +
-+/* Driver command error status */
-+enum idxd_scmd_stat {
-+	IDXD_SCMD_DEV_ENABLED = 0x80000010,
-+	IDXD_SCMD_DEV_NOT_ENABLED = 0x80000020,
-+	IDXD_SCMD_WQ_ENABLED = 0x80000021,
-+	IDXD_SCMD_DEV_DMA_ERR = 0x80020000,
-+	IDXD_SCMD_WQ_NO_GRP = 0x80030000,
-+	IDXD_SCMD_WQ_NO_NAME = 0x80040000,
-+	IDXD_SCMD_WQ_NO_SVM = 0x80050000,
-+	IDXD_SCMD_WQ_NO_THRESH = 0x80060000,
-+	IDXD_SCMD_WQ_PORTAL_ERR = 0x80070000,
-+	IDXD_SCMD_WQ_RES_ALLOC_ERR = 0x80080000,
-+	IDXD_SCMD_PERCPU_ERR = 0x80090000,
-+	IDXD_SCMD_DMA_CHAN_ERR = 0x800a0000,
-+	IDXD_SCMD_CDEV_ERR = 0x800b0000,
-+	IDXD_SCMD_WQ_NO_SWQ_SUPPORT = 0x800c0000,
-+	IDXD_SCMD_WQ_NONE_CONFIGURED = 0x800d0000,
-+	IDXD_SCMD_WQ_NO_SIZE = 0x800e0000,
-+	IDXD_SCMD_WQ_NO_PRIV = 0x800f0000,
-+	IDXD_SCMD_WQ_IRQ_ERR = 0x80100000,
-+	IDXD_SCMD_WQ_USER_NO_IOMMU = 0x80110000,
-+};
-+
-+#define IDXD_SCMD_SOFTERR_MASK	0x80000000
-+#define IDXD_SCMD_SOFTERR_SHIFT	16
-+
-+/* Descriptor flags */
-+#define IDXD_OP_FLAG_FENCE	0x0001
-+#define IDXD_OP_FLAG_BOF	0x0002
-+#define IDXD_OP_FLAG_CRAV	0x0004
-+#define IDXD_OP_FLAG_RCR	0x0008
-+#define IDXD_OP_FLAG_RCI	0x0010
-+#define IDXD_OP_FLAG_CRSTS	0x0020
-+#define IDXD_OP_FLAG_CR		0x0080
-+#define IDXD_OP_FLAG_CC		0x0100
-+#define IDXD_OP_FLAG_ADDR1_TCS	0x0200
-+#define IDXD_OP_FLAG_ADDR2_TCS	0x0400
-+#define IDXD_OP_FLAG_ADDR3_TCS	0x0800
-+#define IDXD_OP_FLAG_CR_TCS	0x1000
-+#define IDXD_OP_FLAG_STORD	0x2000
-+#define IDXD_OP_FLAG_DRDBK	0x4000
-+#define IDXD_OP_FLAG_DSTS	0x8000
-+
-+/* IAX */
-+#define IDXD_OP_FLAG_RD_SRC2_AECS	0x010000
-+#define IDXD_OP_FLAG_RD_SRC2_2ND	0x020000
-+#define IDXD_OP_FLAG_WR_SRC2_AECS_COMP	0x040000
-+#define IDXD_OP_FLAG_WR_SRC2_AECS_OVFL	0x080000
-+#define IDXD_OP_FLAG_SRC2_STS		0x100000
-+#define IDXD_OP_FLAG_CRC_RFC3720	0x200000
-+
-+/* Opcode */
-+enum dsa_opcode {
-+	DSA_OPCODE_NOOP = 0,
-+	DSA_OPCODE_BATCH,
-+	DSA_OPCODE_DRAIN,
-+	DSA_OPCODE_MEMMOVE,
-+	DSA_OPCODE_MEMFILL,
-+	DSA_OPCODE_COMPARE,
-+	DSA_OPCODE_COMPVAL,
-+	DSA_OPCODE_CR_DELTA,
-+	DSA_OPCODE_AP_DELTA,
-+	DSA_OPCODE_DUALCAST,
-+	DSA_OPCODE_CRCGEN = 0x10,
-+	DSA_OPCODE_COPY_CRC,
-+	DSA_OPCODE_DIF_CHECK,
-+	DSA_OPCODE_DIF_INS,
-+	DSA_OPCODE_DIF_STRP,
-+	DSA_OPCODE_DIF_UPDT,
-+	DSA_OPCODE_CFLUSH = 0x20,
-+};
-+
-+enum iax_opcode {
-+	IAX_OPCODE_NOOP = 0,
-+	IAX_OPCODE_DRAIN = 2,
-+	IAX_OPCODE_MEMMOVE,
-+	IAX_OPCODE_DECOMPRESS = 0x42,
-+	IAX_OPCODE_COMPRESS,
-+	IAX_OPCODE_CRC64,
-+	IAX_OPCODE_ZERO_DECOMP_32 = 0x48,
-+	IAX_OPCODE_ZERO_DECOMP_16,
-+	IAX_OPCODE_ZERO_COMP_32 = 0x4c,
-+	IAX_OPCODE_ZERO_COMP_16,
-+	IAX_OPCODE_SCAN = 0x50,
-+	IAX_OPCODE_SET_MEMBER,
-+	IAX_OPCODE_EXTRACT,
-+	IAX_OPCODE_SELECT,
-+	IAX_OPCODE_RLE_BURST,
-+	IAX_OPCODE_FIND_UNIQUE,
-+	IAX_OPCODE_EXPAND,
-+};
-+
-+/* Completion record status */
-+enum dsa_completion_status {
-+	DSA_COMP_NONE = 0,
-+	DSA_COMP_SUCCESS,
-+	DSA_COMP_SUCCESS_PRED,
-+	DSA_COMP_PAGE_FAULT_NOBOF,
-+	DSA_COMP_PAGE_FAULT_IR,
-+	DSA_COMP_BATCH_FAIL,
-+	DSA_COMP_BATCH_PAGE_FAULT,
-+	DSA_COMP_DR_OFFSET_NOINC,
-+	DSA_COMP_DR_OFFSET_ERANGE,
-+	DSA_COMP_DIF_ERR,
-+	DSA_COMP_BAD_OPCODE = 0x10,
-+	DSA_COMP_INVALID_FLAGS,
-+	DSA_COMP_NOZERO_RESERVE,
-+	DSA_COMP_XFER_ERANGE,
-+	DSA_COMP_DESC_CNT_ERANGE,
-+	DSA_COMP_DR_ERANGE,
-+	DSA_COMP_OVERLAP_BUFFERS,
-+	DSA_COMP_DCAST_ERR,
-+	DSA_COMP_DESCLIST_ALIGN,
-+	DSA_COMP_INT_HANDLE_INVAL,
-+	DSA_COMP_CRA_XLAT,
-+	DSA_COMP_CRA_ALIGN,
-+	DSA_COMP_ADDR_ALIGN,
-+	DSA_COMP_PRIV_BAD,
-+	DSA_COMP_TRAFFIC_CLASS_CONF,
-+	DSA_COMP_PFAULT_RDBA,
-+	DSA_COMP_HW_ERR1,
-+	DSA_COMP_HW_ERR_DRB,
-+	DSA_COMP_TRANSLATION_FAIL,
-+};
-+
-+enum iax_completion_status {
-+	IAX_COMP_NONE = 0,
-+	IAX_COMP_SUCCESS,
-+	IAX_COMP_PAGE_FAULT_IR = 0x04,
-+	IAX_COMP_ANALYTICS_ERROR = 0x0a,
-+	IAX_COMP_OUTBUF_OVERFLOW,
-+	IAX_COMP_BAD_OPCODE = 0x10,
-+	IAX_COMP_INVALID_FLAGS,
-+	IAX_COMP_NOZERO_RESERVE,
-+	IAX_COMP_INVALID_SIZE,
-+	IAX_COMP_OVERLAP_BUFFERS = 0x16,
-+	IAX_COMP_INT_HANDLE_INVAL = 0x19,
-+	IAX_COMP_CRA_XLAT,
-+	IAX_COMP_CRA_ALIGN,
-+	IAX_COMP_ADDR_ALIGN,
-+	IAX_COMP_PRIV_BAD,
-+	IAX_COMP_TRAFFIC_CLASS_CONF,
-+	IAX_COMP_PFAULT_RDBA,
-+	IAX_COMP_HW_ERR1,
-+	IAX_COMP_HW_ERR_DRB,
-+	IAX_COMP_TRANSLATION_FAIL,
-+	IAX_COMP_PRS_TIMEOUT,
-+	IAX_COMP_WATCHDOG,
-+	IAX_COMP_INVALID_COMP_FLAG = 0x30,
-+	IAX_COMP_INVALID_FILTER_FLAG,
-+	IAX_COMP_INVALID_INPUT_SIZE,
-+	IAX_COMP_INVALID_NUM_ELEMS,
-+	IAX_COMP_INVALID_SRC1_WIDTH,
-+	IAX_COMP_INVALID_INVERT_OUT,
-+};
-+
-+#define DSA_COMP_STATUS_MASK		0x7f
-+#define DSA_COMP_STATUS_WRITE		0x80
-+
-+struct dsa_hw_desc {
-+	uint32_t	pasid:20;
-+	uint32_t	rsvd:11;
-+	uint32_t	priv:1;
-+	uint32_t	flags:24;
-+	uint32_t	opcode:8;
-+	uint64_t	completion_addr;
-+	union {
-+		uint64_t	src_addr;
-+		uint64_t	rdback_addr;
-+		uint64_t	pattern;
-+		uint64_t	desc_list_addr;
-+	};
-+	union {
-+		uint64_t	dst_addr;
-+		uint64_t	rdback_addr2;
-+		uint64_t	src2_addr;
-+		uint64_t	comp_pattern;
-+	};
-+	union {
-+		uint32_t	xfer_size;
-+		uint32_t	desc_count;
-+	};
-+	uint16_t	int_handle;
-+	uint16_t	rsvd1;
-+	union {
-+		uint8_t		expected_res;
-+		/* create delta record */
-+		struct {
-+			uint64_t	delta_addr;
-+			uint32_t	max_delta_size;
-+			uint32_t 	delt_rsvd;
-+			uint8_t 	expected_res_mask;
-+		};
-+		uint32_t	delta_rec_size;
-+		uint64_t	dest2;
-+		/* CRC */
-+		struct {
-+			uint32_t	crc_seed;
-+			uint32_t	crc_rsvd;
-+			uint64_t	seed_addr;
-+		};
-+		/* DIF check or strip */
-+		struct {
-+			uint8_t		src_dif_flags;
-+			uint8_t		dif_chk_res;
-+			uint8_t		dif_chk_flags;
-+			uint8_t		dif_chk_res2[5];
-+			uint32_t	chk_ref_tag_seed;
-+			uint16_t	chk_app_tag_mask;
-+			uint16_t	chk_app_tag_seed;
-+		};
-+		/* DIF insert */
-+		struct {
-+			uint8_t		dif_ins_res;
-+			uint8_t		dest_dif_flag;
-+			uint8_t		dif_ins_flags;
-+			uint8_t		dif_ins_res2[13];
-+			uint32_t	ins_ref_tag_seed;
-+			uint16_t	ins_app_tag_mask;
-+			uint16_t	ins_app_tag_seed;
-+		};
-+		/* DIF update */
-+		struct {
-+			uint8_t		src_upd_flags;
-+			uint8_t		upd_dest_flags;
-+			uint8_t		dif_upd_flags;
-+			uint8_t		dif_upd_res[5];
-+			uint32_t	src_ref_tag_seed;
-+			uint16_t	src_app_tag_mask;
-+			uint16_t	src_app_tag_seed;
-+			uint32_t	dest_ref_tag_seed;
-+			uint16_t	dest_app_tag_mask;
-+			uint16_t	dest_app_tag_seed;
-+		};
-+
-+		uint8_t		op_specific[24];
-+	};
-+} __attribute__((packed));
-+
-+struct iax_hw_desc {
-+	uint32_t        pasid:20;
-+	uint32_t        rsvd:11;
-+	uint32_t        priv:1;
-+	uint32_t        flags:24;
-+	uint32_t        opcode:8;
-+	uint64_t        completion_addr;
-+	uint64_t        src1_addr;
-+	uint64_t        dst_addr;
-+	uint32_t        src1_size;
-+	uint16_t        int_handle;
-+	union {
-+		uint16_t        compr_flags;
-+		uint16_t        decompr_flags;
-+	};
-+	uint64_t        src2_addr;
-+	uint32_t        max_dst_size;
-+	uint32_t        src2_size;
-+	uint32_t	filter_flags;
-+	uint32_t	num_inputs;
-+} __attribute__((packed));
-+
-+struct dsa_raw_desc {
-+	uint64_t	field[8];
-+} __attribute__((packed));
-+
-+/*
-+ * The status field will be modified by hardware, therefore it should be
-+ * volatile and prevent the compiler from optimize the read.
++/**
++ * @brief Initializes DSA devices.
++ *
++ * @param dsa_parameter A list of DSA device path from migration parameter.
++ * @return int Zero if successful, otherwise non zero.
 + */
-+struct dsa_completion_record {
-+	volatile uint8_t	status;
-+	union {
-+		uint8_t		result;
-+		uint8_t		dif_status;
-+	};
-+	uint16_t		rsvd;
-+	uint32_t		bytes_completed;
-+	uint64_t		fault_addr;
-+	union {
-+		/* common record */
-+		struct {
-+			uint32_t	invalid_flags:24;
-+			uint32_t	rsvd2:8;
-+		};
++int dsa_init(const char *dsa_parameter);
 +
-+		uint32_t	delta_rec_size;
-+		uint64_t	crc_val;
++/**
++ * @brief Start logic to enable using DSA.
++ */
++void dsa_start(void);
 +
-+		/* DIF check & strip */
-+		struct {
-+			uint32_t	dif_chk_ref_tag;
-+			uint16_t	dif_chk_app_tag_mask;
-+			uint16_t	dif_chk_app_tag;
-+		};
++/**
++ * @brief Stop logic to clean up DSA by halting the device group and cleaning up
++ * the completion thread.
++ */
++void dsa_stop(void);
 +
-+		/* DIF insert */
-+		struct {
-+			uint64_t	dif_ins_res;
-+			uint32_t	dif_ins_ref_tag;
-+			uint16_t	dif_ins_app_tag_mask;
-+			uint16_t	dif_ins_app_tag;
-+		};
++/**
++ * @brief Clean up system resources created for DSA offloading.
++ *        This function is called during QEMU process teardown.
++ */
++void dsa_cleanup(void);
 +
-+		/* DIF update */
-+		struct {
-+			uint32_t	dif_upd_src_ref_tag;
-+			uint16_t	dif_upd_src_app_tag_mask;
-+			uint16_t	dif_upd_src_app_tag;
-+			uint32_t	dif_upd_dest_ref_tag;
-+			uint16_t	dif_upd_dest_app_tag_mask;
-+			uint16_t	dif_upd_dest_app_tag;
-+		};
-+
-+		uint8_t		op_specific[16];
-+	};
-+} __attribute__((packed));
-+
-+struct dsa_raw_completion_record {
-+	uint64_t	field[4];
-+} __attribute__((packed));
-+
-+struct iax_completion_record {
-+	volatile uint8_t        status;
-+	uint8_t                 error_code;
-+	uint16_t                rsvd;
-+	uint32_t                bytes_completed;
-+	uint64_t                fault_addr;
-+	uint32_t                invalid_flags;
-+	uint32_t                rsvd2;
-+	uint32_t                output_size;
-+	uint8_t                 output_bits;
-+	uint8_t                 rsvd3;
-+	uint16_t                xor_csum;
-+	uint32_t                crc;
-+	uint32_t                min;
-+	uint32_t                max;
-+	uint32_t                sum;
-+	uint64_t                rsvd4[2];
-+} __attribute__((packed));
-+
-+struct iax_raw_completion_record {
-+	uint64_t	field[8];
-+} __attribute__((packed));
++/**
++ * @brief Check if DSA is running.
++ *
++ * @return True if DSA is running, otherwise false.
++ */
++bool dsa_is_running(void);
 +
 +#endif
+\ No newline at end of file
+diff --git a/util/dsa.c b/util/dsa.c
+new file mode 100644
+index 0000000000..8edaa892ec
+--- /dev/null
++++ b/util/dsa.c
+@@ -0,0 +1,338 @@
++/*
++ * Use Intel Data Streaming Accelerator to offload certain background
++ * operations.
++ *
++ * Copyright (c) 2023 Hao Xiang <hao.xiang@bytedance.com>
++ *                    Bryan Zhang <bryan.zhang@bytedance.com>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/queue.h"
++#include "qemu/memalign.h"
++#include "qemu/lockable.h"
++#include "qemu/cutils.h"
++#include "qemu/dsa.h"
++#include "qemu/bswap.h"
++#include "qemu/error-report.h"
++#include "qemu/rcu.h"
++
++#ifdef CONFIG_DSA_OPT
++
++#pragma GCC push_options
++#pragma GCC target("enqcmd")
++
++#include <linux/idxd.h>
++#include "x86intrin.h"
++
++#define DSA_WQ_SIZE 4096
++#define MAX_DSA_DEVICES 16
++
++typedef QSIMPLEQ_HEAD(dsa_task_queue, buffer_zero_batch_task) dsa_task_queue;
++
++struct dsa_device {
++    void *work_queue;
++};
++
++struct dsa_device_group {
++    struct dsa_device *dsa_devices;
++    int num_dsa_devices;
++    uint32_t index;
++    bool running;
++    QemuMutex task_queue_lock;
++    QemuCond task_queue_cond;
++    dsa_task_queue task_queue;
++};
++
++uint64_t max_retry_count;
++static struct dsa_device_group dsa_group;
++
++
++/**
++ * @brief This function opens a DSA device's work queue and
++ *        maps the DSA device memory into the current process.
++ *
++ * @param dsa_wq_path A pointer to the DSA device work queue's file path.
++ * @return A pointer to the mapped memory.
++ */
++static void *
++map_dsa_device(const char *dsa_wq_path)
++{
++    void *dsa_device;
++    int fd;
++
++    fd = open(dsa_wq_path, O_RDWR);
++    if (fd < 0) {
++        fprintf(stderr, "open %s failed with errno = %d.\n",
++                dsa_wq_path, errno);
++        return MAP_FAILED;
++    }
++    dsa_device = mmap(NULL, DSA_WQ_SIZE, PROT_WRITE,
++                      MAP_SHARED | MAP_POPULATE, fd, 0);
++    close(fd);
++    if (dsa_device == MAP_FAILED) {
++        fprintf(stderr, "mmap failed with errno = %d.\n", errno);
++        return MAP_FAILED;
++    }
++    return dsa_device;
++}
++
++/**
++ * @brief Initializes a DSA device structure.
++ *
++ * @param instance A pointer to the DSA device.
++ * @param work_queue  A pointer to the DSA work queue.
++ */
++static void
++dsa_device_init(struct dsa_device *instance,
++                void *dsa_work_queue)
++{
++    instance->work_queue = dsa_work_queue;
++}
++
++/**
++ * @brief Cleans up a DSA device structure.
++ *
++ * @param instance A pointer to the DSA device to cleanup.
++ */
++static void
++dsa_device_cleanup(struct dsa_device *instance)
++{
++    if (instance->work_queue != MAP_FAILED) {
++        munmap(instance->work_queue, DSA_WQ_SIZE);
++    }
++}
++
++/**
++ * @brief Initializes a DSA device group.
++ *
++ * @param group A pointer to the DSA device group.
++ * @param num_dsa_devices The number of DSA devices this group will have.
++ *
++ * @return Zero if successful, non-zero otherwise.
++ */
++static int
++dsa_device_group_init(struct dsa_device_group *group,
++                      const char *dsa_parameter)
++{
++    if (dsa_parameter == NULL || strlen(dsa_parameter) == 0) {
++        return 0;
++    }
++
++    int ret = 0;
++    char *local_dsa_parameter = g_strdup(dsa_parameter);
++    const char *dsa_path[MAX_DSA_DEVICES];
++    int num_dsa_devices = 0;
++    char delim[2] = " ";
++
++    char *current_dsa_path = strtok(local_dsa_parameter, delim);
++
++    while (current_dsa_path != NULL) {
++        dsa_path[num_dsa_devices++] = current_dsa_path;
++        if (num_dsa_devices == MAX_DSA_DEVICES) {
++            break;
++        }
++        current_dsa_path = strtok(NULL, delim);
++    }
++
++    group->dsa_devices =
++        malloc(sizeof(struct dsa_device) * num_dsa_devices);
++    group->num_dsa_devices = num_dsa_devices;
++    group->index = 0;
++
++    group->running = false;
++    qemu_mutex_init(&group->task_queue_lock);
++    qemu_cond_init(&group->task_queue_cond);
++    QSIMPLEQ_INIT(&group->task_queue);
++
++    void *dsa_wq = MAP_FAILED;
++    for (int i = 0; i < num_dsa_devices; i++) {
++        dsa_wq = map_dsa_device(dsa_path[i]);
++        if (dsa_wq == MAP_FAILED) {
++            fprintf(stderr, "map_dsa_device failed MAP_FAILED, "
++                    "using simulation.\n");
++            ret = -1;
++            goto exit;
++        }
++        dsa_device_init(&dsa_group.dsa_devices[i], dsa_wq);
++    }
++
++exit:
++    g_free(local_dsa_parameter);
++    return ret;
++}
++
++/**
++ * @brief Starts a DSA device group.
++ *
++ * @param group A pointer to the DSA device group.
++ * @param dsa_path An array of DSA device path.
++ * @param num_dsa_devices The number of DSA devices in the device group.
++ */
++static void
++dsa_device_group_start(struct dsa_device_group *group)
++{
++    group->running = true;
++}
++
++/**
++ * @brief Stops a DSA device group.
++ *
++ * @param group A pointer to the DSA device group.
++ */
++__attribute__((unused))
++static void
++dsa_device_group_stop(struct dsa_device_group *group)
++{
++    group->running = false;
++}
++
++/**
++ * @brief Cleans up a DSA device group.
++ *
++ * @param group A pointer to the DSA device group.
++ */
++static void
++dsa_device_group_cleanup(struct dsa_device_group *group)
++{
++    if (!group->dsa_devices) {
++        return;
++    }
++    for (int i = 0; i < group->num_dsa_devices; i++) {
++        dsa_device_cleanup(&group->dsa_devices[i]);
++    }
++    free(group->dsa_devices);
++    group->dsa_devices = NULL;
++
++    qemu_mutex_destroy(&group->task_queue_lock);
++    qemu_cond_destroy(&group->task_queue_cond);
++}
++
++/**
++ * @brief Returns the next available DSA device in the group.
++ *
++ * @param group A pointer to the DSA device group.
++ *
++ * @return struct dsa_device* A pointer to the next available DSA device
++ *         in the group.
++ */
++__attribute__((unused))
++static struct dsa_device *
++dsa_device_group_get_next_device(struct dsa_device_group *group)
++{
++    if (group->num_dsa_devices == 0) {
++        return NULL;
++    }
++    uint32_t current = qatomic_fetch_inc(&group->index);
++    current %= group->num_dsa_devices;
++    return &group->dsa_devices[current];
++}
++
++/**
++ * @brief Check if DSA is running.
++ *
++ * @return True if DSA is running, otherwise false.
++ */
++bool dsa_is_running(void)
++{
++    return false;
++}
++
++static void
++dsa_globals_init(void)
++{
++    max_retry_count = UINT64_MAX;
++}
++
++/**
++ * @brief Initializes DSA devices.
++ *
++ * @param dsa_parameter A list of DSA device path from migration parameter.
++ * @return int Zero if successful, otherwise non zero.
++ */
++int dsa_init(const char *dsa_parameter)
++{
++    dsa_globals_init();
++
++    return dsa_device_group_init(&dsa_group, dsa_parameter);
++}
++
++/**
++ * @brief Start logic to enable using DSA.
++ *
++ */
++void dsa_start(void)
++{
++    if (dsa_group.num_dsa_devices == 0) {
++        return;
++    }
++    if (dsa_group.running) {
++        return;
++    }
++    dsa_device_group_start(&dsa_group);
++}
++
++/**
++ * @brief Stop logic to clean up DSA by halting the device group and cleaning up
++ * the completion thread.
++ *
++ */
++void dsa_stop(void)
++{
++    struct dsa_device_group *group = &dsa_group;
++
++    if (!group->running) {
++        return;
++    }
++}
++
++/**
++ * @brief Clean up system resources created for DSA offloading.
++ *        This function is called during QEMU process teardown.
++ *
++ */
++void dsa_cleanup(void)
++{
++    dsa_stop();
++    dsa_device_group_cleanup(&dsa_group);
++}
++
++#else
++
++bool dsa_is_running(void)
++{
++    return false;
++}
++
++int dsa_init(const char *dsa_parameter)
++{
++    fprintf(stderr, "Intel Data Streaming Accelerator is not supported "
++                    "on this platform.\n");
++    return -1;
++}
++
++void dsa_start(void) {}
++
++void dsa_stop(void) {}
++
++void dsa_cleanup(void) {}
++
++#endif
++
+diff --git a/util/meson.build b/util/meson.build
+index c4827fd70a..96b916a981 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -83,6 +83,7 @@ if have_block or have_ga
+ endif
+ if have_block
+   util_ss.add(files('aio-wait.c'))
++  util_ss.add(files('dsa.c'))
+   util_ss.add(files('buffer.c'))
+   util_ss.add(files('bufferiszero.c'))
+   util_ss.add(files('hbitmap.c'))
 -- 
 2.30.2
 
