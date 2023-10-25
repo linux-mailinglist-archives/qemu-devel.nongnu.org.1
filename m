@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54277D788C
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9067D788D
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:29:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvnIX-0002KA-1r; Wed, 25 Oct 2023 19:28:25 -0400
+	id 1qvnI8-0001hg-58; Wed, 25 Oct 2023 19:28:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnIG-00026l-FS
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:28:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qvnI6-0001hN-2Z
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnIE-0005Jl-Rr
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:28:08 -0400
+ id 1qvnI4-0005IM-0a
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698276483;
+ s=mimecast20190719; t=1698276475;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6A20MjFucaAoQ3NyQil4EGu/6+7+QedBIOkFjA6UQcY=;
- b=J79jsGqL1m3TxZLsdNSKGdDHY/Tshft/bwnZcAz50Nhw0+Cc0JvyPHBM9RfzzcLX6FSnxB
- UHjIa+Tc4wvlx3DKJjY7Vue4bNcuTifQ1i6AYWZaaZph9Px5NAAbiMJizN5H3CIW3+jGAY
- RInohN0D2Y7+y5T9/wLwQDMbpfmMd10=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BAT6xAK95eTbsz03w/zt/d2PzehBm/TYbJG00acxeKQ=;
+ b=QmrY+CqRALb+Q6Sq4TFiK0gEXHLQPFNT6HzFqiJp5mmZt4BI1qd1GURHJEtUqQ9HxKnJrJ
+ RB/BexFIKFzDXbUsIS5AJtC6H0QDiuPZqbHzDJ7Dh/lBa70yHrhCL/ZaDI4Hr1diCwVsiK
+ Ox2qDmmSm7SDovpkEzHHNzqXx233RDI=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-mw9De3oXMrSvxxvLuJfScg-1; Wed, 25 Oct 2023 19:27:51 -0400
-X-MC-Unique: mw9De3oXMrSvxxvLuJfScg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66d4aa946ceso4176296d6.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:27:51 -0700 (PDT)
+ us-mta-385-tgX6nPhSNjyzZ5zhWDrGNw-1; Wed, 25 Oct 2023 19:27:53 -0400
+X-MC-Unique: tgX6nPhSNjyzZ5zhWDrGNw-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-77405179afdso46105585a.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:27:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698276470; x=1698881270;
+ d=1e100.net; s=20230601; t=1698276473; x=1698881273;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6A20MjFucaAoQ3NyQil4EGu/6+7+QedBIOkFjA6UQcY=;
- b=NaW6zESvZcbgy57rDeCdtk1IJ3Laxfi3pFR7hLQUrXrWoX6j8EErJ/2ABWIOrzeqGC
- C1p4m92tbYE7Va0TiNwjxSlpf9hfFVVttZN/M4hliH+kU9DE0M9vgOMLT3viJq9dUz0j
- CTzLJKT9Hb8Bg8x+zfVUBCh04eBBk9a09F1jJt3PsLGOFieSB1GhFKtJT3fdLk7Zwliu
- JduK350DprbLJx67D4DLSv4sDFfA4ThtRFP8v/kg8WO9fojmpd8X6mzi+gTqAXxY94wa
- 1krEnRmPSsS+wBBwlJC0jZ9DdKr3y31EJkAvrvSFv0tHZNtUdT/zY4CCeQXIfbOI0+3O
- 5O1g==
-X-Gm-Message-State: AOJu0YxAOE8dJUXmBxWxYBFYRl6vuPPG+Z1F/odPz1hN4q3f0y8FS5Ol
- 2MH9DgRTDvxdlv27zceHXTfbzFdDDAH3NkACMD3/kkBJ6Q+0QvzUj5k1R39to9+fkHHzGePPnU3
- HnvQO2K069tLfv0GcaMj1zvm7Kprl9L8Pu3bl/fckO2ejWEOJniQVJaQ8MVpZsAnouCU+4ma5en
- 4=
-X-Received: by 2002:a0c:e907:0:b0:656:48e3:7afe with SMTP id
- a7-20020a0ce907000000b0065648e37afemr1577519qvo.17.1698276470564; 
- Wed, 25 Oct 2023 16:27:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEI9a29SEt22eM7TG7vivuGCGpyPP4roDWDsJyFrGiPeOydrBtpZ1NSZK+LYKjWsrqaqIpOBA==
-X-Received: by 2002:a0c:e907:0:b0:656:48e3:7afe with SMTP id
- a7-20020a0ce907000000b0065648e37afemr1577507qvo.17.1698276470277; 
- Wed, 25 Oct 2023 16:27:50 -0700 (PDT)
+ bh=BAT6xAK95eTbsz03w/zt/d2PzehBm/TYbJG00acxeKQ=;
+ b=JIZMDEuNmSMB9GLHLjhwAU6PJH00wUqQY9lmBpkCDcPxWNE5947vc57tF+ZFeFIiyR
+ 8WpCIVNtJsvdOIfVv54yxggqho4LYUxPFhxs45HbBzUFSUI/n0ltQ9Ut/l6geKd2ZhkW
+ SOBQLRngVt7BgdplVUELt4hoIcRQoDy0NN5X3AIpAPddHlorwm2S4GFzu8UzTMw1hakS
+ m9yIJa/DL1ChwZRA81snV6L8e3lO6uWrgZ805+qUJc25W3/bu3rCZV4U+ChprqNk7E6C
+ nCxv8/B3Mko+RH85J0Pq+r6zD5U2t8iHLtvxqgjFPyJ1oEkkA0+TwUzZszsebt3Uzni5
+ /NIQ==
+X-Gm-Message-State: AOJu0YznF021O4saYou8HEWiGp/BGEbU1KIVft6rNEYxWO14/rBzs13F
+ L/dZ7lMHBF6zvQlg8esRf0R0GSjiBvNHWGG7Jn3bmYW6MSyFnxX0MJXOS9zotzMY1KIaHdisE2r
+ llNLYX6FrgsIOPRLiXhP55uUYJ5eoB/U57bx7rjthwcujmbHTMD5MLpCnmZGsavOkDSyz3rDESD
+ 8=
+X-Received: by 2002:a05:620a:d82:b0:76f:1d96:4eb5 with SMTP id
+ q2-20020a05620a0d8200b0076f1d964eb5mr18075249qkl.36.1698276472812; 
+ Wed, 25 Oct 2023 16:27:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGftSWB4m2g7YJNqVfqNPhPNvEsoILCXm7qaLR6E+8fJU/hEEJml7jmnGNRmKWv+yYp3y2wVQ==
+X-Received: by 2002:a05:620a:d82:b0:76f:1d96:4eb5 with SMTP id
+ q2-20020a05620a0d8200b0076f1d964eb5mr18075235qkl.36.1698276472475; 
+ Wed, 25 Oct 2023 16:27:52 -0700 (PDT)
 Received: from [172.19.0.201] ([192.80.84.35])
  by smtp.gmail.com with ESMTPSA id
- oo17-20020a05620a531100b0076f19b9e96fsm4555852qkn.107.2023.10.25.16.27.48
+ cx22-20020a05620a51d600b007788bb0ab8esm4553236qkb.19.2023.10.25.16.27.51
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 16:27:49 -0700 (PDT)
+ Wed, 25 Oct 2023 16:27:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 16/24] kvm: unify listeners for PIO address space
-Date: Thu, 26 Oct 2023 01:27:09 +0200
-Message-ID: <20231025232718.89428-17-pbonzini@redhat.com>
+Subject: [PULL 17/24] kvm: i386: move KVM_CAP_IRQ_ROUTING detection to
+ kvm_arch_required_capabilities
+Date: Thu, 26 Oct 2023 01:27:10 +0200
+Message-ID: <20231025232718.89428-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231025232718.89428-1-pbonzini@redhat.com>
 References: <20231025232718.89428-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,53 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we now assume that ioeventfds are present, kvm_io_listener is always
-registered.  Merge it with kvm_coalesced_pio_listener in a single
-listener.  Since PIO space does not have KVM memslots attached to it,
-the priority is irrelevant.
+Simple code cleanup.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ target/i386/kvm/kvm.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 120051da649..b59a48da924 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -1105,13 +1105,6 @@ static void kvm_coalesce_pio_del(MemoryListener *listener,
-      }
- }
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index fb6655254fc..94b2516c29f 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -92,6 +92,7 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+     KVM_CAP_INFO(EXT_CPUID),
+     KVM_CAP_INFO(MP_STATE),
+     KVM_CAP_INFO(SIGNAL_MSI),
++    KVM_CAP_INFO(IRQ_ROUTING),
+     KVM_CAP_LAST_INFO
+ };
  
--static MemoryListener kvm_coalesced_pio_listener = {
--    .name = "kvm-coalesced-pio",
--    .coalesced_io_add = kvm_coalesce_pio_add,
--    .coalesced_io_del = kvm_coalesce_pio_del,
--    .priority = MEMORY_LISTENER_PRIORITY_MIN,
--};
+@@ -2590,11 +2591,6 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         return ret;
+     }
+ 
+-    if (!kvm_check_extension(s, KVM_CAP_IRQ_ROUTING)) {
+-        error_report("kvm: KVM_CAP_IRQ_ROUTING not supported by KVM");
+-        return -ENOTSUP;
+-    }
 -
- int kvm_check_extension(KVMState *s, unsigned int extension)
- {
-     int ret;
-@@ -1768,6 +1761,8 @@ void kvm_memory_listener_register(KVMState *s, KVMMemoryListener *kml,
- 
- static MemoryListener kvm_io_listener = {
-     .name = "kvm-io",
-+    .coalesced_io_add = kvm_coalesce_pio_add,
-+    .coalesced_io_del = kvm_coalesce_pio_del,
-     .eventfd_add = kvm_io_ioeventfd_add,
-     .eventfd_del = kvm_io_ioeventfd_del,
-     .priority = MEMORY_LISTENER_PRIORITY_DEV_BACKEND,
-@@ -2598,8 +2593,6 @@ static int kvm_init(MachineState *ms)
-                                  &address_space_memory, 0, "kvm-memory");
-     memory_listener_register(&kvm_io_listener,
-                              &address_space_io);
--    memory_listener_register(&kvm_coalesced_pio_listener,
--                             &address_space_io);
- 
-     s->sync_mmu = !!kvm_vm_check_extension(kvm_state, KVM_CAP_SYNC_MMU);
-     if (!s->sync_mmu) {
+     has_xsave = kvm_check_extension(s, KVM_CAP_XSAVE);
+     has_xcrs = kvm_check_extension(s, KVM_CAP_XCRS);
+     has_pit_state2 = kvm_check_extension(s, KVM_CAP_PIT_STATE2);
 -- 
 2.41.0
 
