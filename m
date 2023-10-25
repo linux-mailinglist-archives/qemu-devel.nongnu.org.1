@@ -2,52 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485E77D7869
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31ED47D787D
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:24:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvn1w-0004OO-DA; Wed, 25 Oct 2023 19:11:16 -0400
+	id 1qvnD2-00081O-NR; Wed, 25 Oct 2023 19:22:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qvn1s-0004Nn-DL
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:11:13 -0400
+ id 1qvnCz-00081G-35
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:22:41 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qvn1p-00076n-KD
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:11:12 -0400
+ id 1qvnCw-0002fM-Q2
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:22:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
- From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=0unIc+HRHCa9G5yOPsrIgYuKh+PMvqm3Sr3oat2XQyo=; b=MmzyD8RDRZqBdm+rJSPyMt5WXC
- T0Bus+jprvpp7XMcXqOZtkvb2Vbr6TYkHRAqmWf2cAB/ba6j3bsXqTCU38F70btLfGsLAOVVsGtZo
- EVwYadG2xErtzHYlW/IpAlJkHIVXmtZIJn+pTk4se57kxjjoNTCpnA2D1VfZc0F5CjQS9HJeaGuHj
- 66RHGGrUWobdMhyP5LV2dFIupcbwK+XB854yg5xY2I4UFCXRqngXJAtDLo9BAkotJrfwraHdICu5m
- +bp11ilqnRvK86sdsz7t6WzT/616G7hVQ9t9rdjjYwN3WD2Dk16xsEXCDiIC+8JDe/nvLonKndNpl
- qvR8EmNA==;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=Hywp//kxabmBhLoPf9bPVzZxrS2G1q+9aoYbZpFBf1M=; b=WaN0SD06nfYFjmYfix+A76J+zz
+ YQyT+iVM2WThChlOuDDqEfqmt4MoBJTB/mEy/4TXaYEW5jfhp34Z7RpQOaCZrl/KTMgaOspab7t6j
+ wKVam5D++ubUNuZXOd4cpVzCYFmFIYhIpazkbUj2nXbZAXTkEpOAEyAWs0IZ0Gj07tsVDuEQr9+uB
+ Y/I/1cOeD5FOtpDwExUHt3L9ushYOQPfZ+yqiuEgKaBWsO6jA4f8xktRXxAWUgli0Aai6Yma7Si17
+ fe9PqCcryiKNctKcQIXhHaG/KlMp04yB9uF1bHiEIx3KxFAo8Mc80+CZeGte8J9OY8PejJ4uMAPVg
+ WTfoxi0w==;
 Received: from [2001:8b0:10b:5:5bd0:63a6:23b2:1881]
  (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qvn1i-00BXjr-Qf; Wed, 25 Oct 2023 23:11:02 +0000
-Message-ID: <e95615834074b72b15138a7176953c014b870e14.camel@infradead.org>
-Subject: [PATCH] KVM: x86/xen: Inject vCPU upcall vector when local APIC is
- enabled
+ id 1qvnCo-00BaQG-2c; Wed, 25 Oct 2023 23:22:30 +0000
+Message-ID: <f8d6eaf9b5f57184a5f6ec5b6103189b77364e3a.camel@infradead.org>
+Subject: Re: [QEMU][PATCHv2 1/8] xen: when unplugging emulated devices skip
+ virtio devices
 From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org, qemu-devel <qemu-devel@nongnu.org>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>,  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>,  Paul Durrant <paul@xen.org>
-Date: Thu, 26 Oct 2023 00:11:02 +0100
+To: Vikram Garhwal <vikram.garhwal@amd.com>, qemu-devel@nongnu.org
+Cc: sstabellini@kernel.org, jgross@suse.com, Anthony Perard
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, "open
+ list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Date: Thu, 26 Oct 2023 00:22:29 +0100
+In-Reply-To: <20231025212422.30371-2-vikram.garhwal@amd.com>
+References: <20231025212422.30371-1-vikram.garhwal@amd.com>
+ <20231025212422.30371-2-vikram.garhwal@amd.com>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-6j3HtAqaZdLd1m6FNVkT"
+ boundary="=-oZqrN/73FRiF017WitQ2"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -78,157 +82,28 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-6j3HtAqaZdLd1m6FNVkT
+--=-oZqrN/73FRiF017WitQ2
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Wed, 2023-10-25 at 14:24 -0700, Vikram Garhwal wrote:
+> From: Juergen Gross <jgross@suse.com>
+>=20
+> Virtio devices should never be unplugged at boot time, as they are
+> similar to pci passthrough devices.
+>=20
+> Signed-off-by: Juergen Gross <jgross@suse.com>
+> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
 
-Linux guests since commit b1c3497e604d ("x86/xen: Add support for
-HVMOP_set_evtchn_upcall_vector") in v6.0 onwards will use the per-vCPU
-upcall vector when it's advertised in the Xen CPUID leaves.
+Hm, do your virtio NICs still actually *work* after that? Or are they
+all disconnected from their netdev peers?=20
 
-This is injected through the local APIC as an MSI, as opposed to the
-older system vector which was merely injected by the hypervisor any
-time the CPU was able to receive an interrupt and the upcall_pending
-flags is set in its vcpu_info.
+I suspect you're going to want a variant of
+https://lore.kernel.org/qemu-devel/20231025145042.627381-19-dwmw2@infradead=
+.org/T/#u
+which also leave the peers of your virtio devices intact?
 
-Effectively, that makes it edge triggered instead of level triggered.
-
-We lose edges.
-
-Specifically, when the local APIC is *disabled*, delivering the MSI
-will fail. Xen checks the vcpu_info->evtchn_upcall_pending flag when
-enabling the local APIC for a vCPU and injects the vector immediately
-if so.
-
-Since userspace doesn't get to notice when the guest enables a local
-APIC which is emulated in KVM, KVM needs to do the same.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
-
-This fixes the case when the kernel is handling event channels. And
-thankfully to support the SCHEDOP_poll wakeups, we expect userspace to
-*promise* that it'll deliver all events through the kernel and never go
-setting bits in the port bitmap for itself. Yay!
-
-However... what about older kernels which don't have the
-KVM_XEN_HVM_CONFIG_EVTCHN_SEND capability and the VMM does it all?
-Well, AFAICT they're screwed. I don't think the VMM gets to *notice*
-when the local APIC is enabled/disabled? Right now, QEMU doesn't even
-get 'info lapic' right in its monitor, although that's fixable.
-
-We could make QEMU notice when kvm_irqchip_send_msi() reports a
-delivery failure, and set a flag which makes it poll the APIC state on
-every exit until the APIC is re-enabled? That's kind of awful though.
-
-Any better options I'm missing?
-
-Thankfully, it's not a particularly common failure mode. For it to show
-up, I needed to:
- =E2=80=A2 Use Linux v6.0+ in the guest,
- =E2=80=A2 Specifically ask QEMU to emulate Xen 4.17 or newer, and
- =E2=80=A2 Hot-online CPUs in the guest.
-
-
-
- arch/x86/kvm/lapic.c |  5 ++++-
- arch/x86/kvm/xen.c   |  2 +-
- arch/x86/kvm/xen.h   | 18 ++++++++++++++++++
- 3 files changed, 23 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index dcd60b39e794..f3f097d70b69 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -41,6 +41,7 @@
- #include "ioapic.h"
- #include "trace.h"
- #include "x86.h"
-+#include "xen.h"
- #include "cpuid.h"
- #include "hyperv.h"
- #include "smm.h"
-@@ -499,8 +500,10 @@ static inline void apic_set_spiv(struct kvm_lapic *api=
-c, u32 val)
- 	}
-=20
- 	/* Check if there are APF page ready requests pending */
--	if (enabled)
-+	if (enabled) {
- 		kvm_make_request(KVM_REQ_APF_READY, apic->vcpu);
-+		kvm_xen_enable_lapic(apic->vcpu);
-+	}
- }
-=20
- static inline void kvm_apic_set_xapic_id(struct kvm_lapic *apic, u8 id)
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 40edf4d1974c..0ea6016ad132 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -471,7 +471,7 @@ void kvm_xen_update_runstate(struct kvm_vcpu *v, int st=
-ate)
- 		kvm_xen_update_runstate_guest(v, state =3D=3D RUNSTATE_runnable);
- }
-=20
--static void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
- {
- 	struct kvm_lapic_irq irq =3D { };
- 	int r;
-diff --git a/arch/x86/kvm/xen.h b/arch/x86/kvm/xen.h
-index f8f1fe22d090..8eba3943b246 100644
---- a/arch/x86/kvm/xen.h
-+++ b/arch/x86/kvm/xen.h
-@@ -18,6 +18,7 @@ extern struct static_key_false_deferred kvm_xen_enabled;
-=20
- int __kvm_xen_has_interrupt(struct kvm_vcpu *vcpu);
- void kvm_xen_inject_pending_events(struct kvm_vcpu *vcpu);
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *vcpu);
- int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr =
-*data);
- int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr =
-*data);
- int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data);
-@@ -36,6 +37,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
- 			 const struct kvm_irq_routing_entry *ue);
- void kvm_xen_update_tsc_info(struct kvm_vcpu *vcpu);
-=20
-+static inline void kvm_xen_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * The local APIC is being enabled. If the per-vCPU upcall vector is
-+	 * set and the vCPU's evtchn_upcall_pending flag is set, inject the
-+	 * interrupt.
-+	 */
-+	if (static_branch_unlikely(&kvm_xen_enabled.key) &&
-+	    vcpu->arch.xen.vcpu_info_cache.active &&
-+	    vcpu->arch.xen.upcall_vector && __kvm_xen_has_interrupt(vcpu))
-+		kvm_xen_inject_vcpu_vector(vcpu);
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return static_branch_unlikely(&kvm_xen_enabled.key) &&
-@@ -101,6 +115,10 @@ static inline void kvm_xen_destroy_vcpu(struct kvm_vcp=
-u *vcpu)
- {
- }
-=20
-+static inline void kvm_xen_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return false;
---=20
-2.40.1
-
-
-
---=-6j3HtAqaZdLd1m6FNVkT
+--=-oZqrN/73FRiF017WitQ2
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -320,25 +195,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI1MjMxMTAyWjAvBgkqhkiG9w0BCQQxIgQg1rfR/zrt
-UXBw0PEsu85U+xJvpKZABXPW26XoHcivNeIwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI1MjMyMjI5WjAvBgkqhkiG9w0BCQQxIgQg+N5V1di/
+kpVs3VFQvPyUODhvqf4FazJRXYUbQCvZtTowgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCm1IvXG3yb87LwKap2rkPTgWgevEISpu7W
-TIZgKlmSmLLJDICSwcKt/bqm75jBqorSZ4F6+nBAf+NKi06AJ6osQjAG+QDkFDpjZA8/toaPKlGn
-eGRz20Bt+Ecieqew7pnZGqkBrPMeeCTtPqGhfGXYO/b0pA1CdNmZrtNG5AsY9UUefXPnMZOCTluG
-afObooMEs8sYLhAnKxpPpwXetPqoUF5DSgnplGWPWHqXeoBlQpjVQRKUbtjtGOps2mPTskSr2H2P
-ZDud0kk0dPKbF6uU1S3OuP8ZIyxQTUBqqUU6pmcSISswPp4MB4Es/3OuuMBs1eW9/T3jWtCSN2fF
-NxZBVMDdneg2anO3WFFQT20Ex/0J2uQhbBEGMVGJ4bGmw0ravYFBlEaSm7pEW8+wfuYevMSQFSgG
-5mNwat4wlHlOv9MaqeuHNS86fNoZ99RwlLZv6TPKKnsDH+6cCtfSLFVwACkfC9wzRANVt4zO8h/F
-0buAXCSr9mxSfe0FoK6j+EntLjTn580t9jQBk6bd1LWJRxs95lSCSMb77DJHkHBJJagCIkXoSspu
-eUhapxV057IQR0JTUZMOV3l5IwOg23yRA2eImtqzh4lWrI+FlbofVc3TMorE8ncG3XuRrMB2CO3J
-AjHgqR82kHSe8+XY21v0oZdyi5k/ovgUSKfLIDPxVQAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgB1RXBC5LDVbp7KyB5xpyUHZ/vxq13ihMlG
+3lx8EF6sVzPtYTJjbYcyKmWM4UkvFC1K1UPQ32xdb0dCsyJ2k1hc+vIE6OKSPOcwPytmC+OSgxP4
+rT+w9M+IlvyriekXVcEfe90vpNmxESEpBOPzvTdC/V7dTSltUn4qjm+F9V94ijwcR8TDbzHYu3LA
+SpHr1pukO3EHa9QstA1noeGl5r/slhQroT8Jja9XIGVFn8M3SP6q40kEnen5CVwcN3gdEAGawZ6K
+Xy2PYlAnNDPmvBCrEQVNEMgv6I4Ke6DjhwIDwBvbgIJtdzg/jvbHlXtTSR6pMuvzUAbxNJSBIBt5
+DkaWpjPju84yvPmtCe+p7dvQ7h9zZ8Knst42tFCsCU4tt3qUTE39suNNi7PGtBuKVjxPjekKtRpn
+TxyErV/6r037MwUniveO9RSEEAAzHCOc+ckP+4RRvFataG92Cb6t/OTR2EkM65K263Xmn8rpj0Sn
+3/vx8H9+AGiBCHrqrjYB0LbV29Tz2L9zfMMsKoDPb4MNHECAXA9iRsS1cractvkPRBVZ52sjVotd
+27TGdlvWBRVKRReBb8XUcxrU0mtzBfR0p4nbBTL+PT2sXkwg1b2DB9i9mHRomccEa5/SgUtI8bZh
+FwjucAkbkBb1Yoz3a9MxZ+awXF5nmGmsfVVa79k/sAAAAAAAAA==
 
 
---=-6j3HtAqaZdLd1m6FNVkT--
+--=-oZqrN/73FRiF017WitQ2--
 
