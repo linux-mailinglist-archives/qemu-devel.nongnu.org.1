@@ -2,70 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E217D6400
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC8B7D6420
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:54:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvYe1-00030z-1W; Wed, 25 Oct 2023 03:49:37 -0400
+	id 1qvYi5-0003rX-KP; Wed, 25 Oct 2023 03:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qvYdx-00030j-D8
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:49:33 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qvYds-0008ND-Vx
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:49:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=JZNl9HLN3dQiXpVfLZXhyIi3YWkr3A1OefSvrV6QHtQ=; b=KkLXfDnHColpmkr9PKSutiK7Ph
- uuFeKT2ipFUEw0W+KWm1igwSLmLKpv7juC+mOzWK4eiXfYkQ5NNOlKNcyyeTs0vivNjmN+IElkxzz
- zhp9NRpzNy9NSJJNwzZUpVynFaFGwucbMTMukv5rF4yYiO+EEV+VaMPx+PTvTd3m0WO4SiBqftV0I
- bTl7W4AmYvAeYKeqDM2qPvxftGh6LUXibgBaUX9USRd0Gk6blw6SqpbHZVw7vbri7deC9sc8f1km5
- Z9knO0tqhBeefZfYDsaiOTBBbRNgQM3xbxH2zKTvMJ8q2EiBd++48eFrQxFS2BqBz/Tz8K+fJTDAl
- nmFIiTEA==;
-Received: from [2001:8b0:10b:5:758e:a1c4:bc7:e7a7]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qvYdZ-007UjW-SQ; Wed, 25 Oct 2023 07:49:10 +0000
-Message-ID: <45314b800ac3a5b089420f7984e38f8adbfd8a3e.camel@infradead.org>
-Subject: Re: [PATCH 2/4] hw/xen: update Xen PV NIC to XenDevice model
-From: David Woodhouse <dwmw2@infradead.org>
-To: paul@xen.org, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
- Perard <anthony.perard@citrix.com>, Jason Wang <jasowang@redhat.com>,
- xen-devel@lists.xenproject.org
-Date: Wed, 25 Oct 2023 08:49:08 +0100
-In-Reply-To: <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
-References: <20231017182545.97973-1-dwmw2@infradead.org>
- <20231017182545.97973-3-dwmw2@infradead.org>
- <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-nuI2+mGGbsHNT14hPH86"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qvYi3-0003r8-2t
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:53:47 -0400
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qvYi1-0000xd-H0
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:53:46 -0400
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-41ccd38eaa5so4980041cf.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 00:53:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698220424; x=1698825224; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TwLlBeaFbzuIZ3zL7LYVmQnizB1iiUNhwx6rlFCD9e4=;
+ b=PX3pdON947qHm56h7yjVJjB3Do4l0/9ETjjVp4OdNVML7RX583MmMhOrIx/GpJytuB
+ 8sQnlfv/Ew+yDq88CQMEE4QqkOW92VrlbJUKbhXOK6lsmy+yXk0UXGjdpErf8slXLc1g
+ 9am5WGYiFMju5Qir3IqzEtJT/sBrQXPeJwNOfayo01+9MkSXgpsXlzGMLbSYNX1albSd
+ 5fsvjkXn1kFRK0NLf7IvmxYmGP8V0Ej92ljk3g50gdnNMHIewsTyScrLO7OlIEEGNBAy
+ XwqtQJcyCmG6GEDhpaRGdjQ9v2b9CPLpOIeQaqqhLzT8zL3oufirPYC8iOiFag72OFky
+ UtMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698220424; x=1698825224;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TwLlBeaFbzuIZ3zL7LYVmQnizB1iiUNhwx6rlFCD9e4=;
+ b=FC8W9B5U1D58LzTEOQWqhzBnRzI9RZyDOzzk7tSFj++XrEVrv+JvtsLIJ+YtOmp6pW
+ CZ49i+1/VymxeRB+cARhqXryHOJSdMvDVj8z167nwuqMOrra1F6tpFlhLrADgbg6U9SH
+ X1PsMCwQK2woNfkzI0XKTviImSS0LhF35J/i0xYMy1JP+JY2srNCWlPtu/SfB7BnAFWw
+ reZNcZEk2k5d4fpLR1qzwqdx5FOUiOgQ7gX5C1d82ppUggbHcT49CAOgQFuj57yNcXZS
+ nR6rC937GhZ0uSc1pbvpuYxV9aZh89g/4zTrc+dZS8sNiwFmjRQ2UtS3C2R5V/bC/4eS
+ o3NA==
+X-Gm-Message-State: AOJu0YxjsU1CSQeSNCHgmmimliNjou8MUZlLKYqOgcybNYb7DystTKhz
+ QtJjC9nBXX6Jydxgr+D3UowvIVq0nypuCv8zdfk=
+X-Google-Smtp-Source: AGHT+IGx99jbLDFC7eDgxbkUYcNEhOF/6UT24mKpE9NSiZVSn4xZMrX4/fHpBL9GhV4s773lOBEb20bb5WPR1alzKqs=
+X-Received: by 2002:a05:622a:1447:b0:417:fe21:b254 with SMTP id
+ v7-20020a05622a144700b00417fe21b254mr21695828qtx.18.1698220424249; Wed, 25
+ Oct 2023 00:53:44 -0700 (PDT)
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20231012104448.1251039-1-mironov@fintech.ru>
+ <CAMxuvazb=kfGHoSxs7J95t9i_OGNdd_oTOmGgHe3hMYk2EwoOA@mail.gmail.com>
+ <8963b4b9de39416db776fcf9c96f348a@fintech.ru>
+In-Reply-To: <8963b4b9de39416db776fcf9c96f348a@fintech.ru>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 25 Oct 2023 11:53:32 +0400
+Message-ID: <CAJ+F1C+6+_Qfa7aNyLg3snoO-cYJvD2-17by1PWGGDWg39jyPQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ui: Replacing pointer in function
+To: =?UTF-8?B?0JzQuNGA0L7QvdC+0LIg0KHQtdGA0LPQtdC5INCS0LvQsNC00LjQvNC40YDQvtCy0LjRhw==?=
+ <mironov@fintech.ru>
+Cc: "kraxel@redhat.com" <kraxel@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ Linux Verification Center <sdl.qemu@linuxtesting.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,141 +91,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
---=-nuI2+mGGbsHNT14hPH86
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Oct 25, 2023 at 11:42=E2=80=AFAM =D0=9C=D0=B8=D1=80=D0=BE=D0=BD=D0=
+=BE=D0=B2 =D0=A1=D0=B5=D1=80=D0=B3=D0=B5=D0=B9 =D0=92=D0=BB=D0=B0=D0=B4=D0=
+=B8=D0=BC=D0=B8=D1=80=D0=BE=D0=B2=D0=B8=D1=87
+<mironov@fintech.ru> wrote:
+>
+> Hello! Is there any progress on this patch?
 
-On Tue, 2023-10-24 at 15:47 +0100, Paul Durrant wrote:
->=20
-> > =C2=A0=C2=A0=20
-> > -=C2=A0=C2=A0=C2=A0 if (netdev->xendev.be_state !=3D XenbusStateConnect=
-ed) {
-> > +=C2=A0=C2=A0=C2=A0 if (netdev->rx_ring.sring =3D=3D NULL) {
->=20
-> Why not a straight swap for xen_device_backend_get_state()? Hard to see=
-=20
-> whether there any hidden side effects of this change otherwise.
+I queued it, waiting for the freeze (in 2w) to focus on bug fixes.
 
-I suppose if I litter it with a few assertions that the iothread mutex
-is locked, I can live with that. As long as it's atomic w.r.t.
-disconnection, they *are* identical checks.
+thanks
 
-(And if it could be running simultaneously with disconnection, we'd be
-hosed anyway).
-
-
---=-nuI2+mGGbsHNT14hPH86
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI1MDc0OTA4WjAvBgkqhkiG9w0BCQQxIgQgqf6kmbpy
-iCj9Gf74Yo9bWLQmRRmHUo1hOFr3dJIdIfUwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgA8UVaOzRGPId5SyGLYr7OGbytoiPUCDulJ
-6fn8Z/lfKE1unDI9kUfzeaKP0a/S5MK0Takq88aKWAzGF7xQw4qZhjWyGA0AIMZ7B8bn03q7BKVD
-Uf/BtxYXbnFoVz0hVsMScf80eL41CTbkNDmzugxx1vh7dU2P7Y7iB4QUkzqb2iQFZubVH9VVtAvr
-lqM3TscrgKkyAjhiSY2FmBs1CAFeTb8Q4t/RKtTvFo3QXxDQLY/QB9lHs+pDz1sh5TmbUPbsK8hT
-QSWjef/TaItsSj+r9hmzve9dcN4J29wKIL5c4LBf+9D6AIdtXVe+cIt0ubhWXeCD7ZO/ruynQtDR
-YpPDtWz8I5VVjbfp6jSPWKPMbikmWSPg56AqqkHlfxty+PyglacwnEuIEDv9MGMtcs82FoQkPYOx
-Qy75GK2U6nPiGW7+BHNFjG5fAjizudN5NOS6u8ltktdxgEt3Nto7QPkHx6MYa4bTWstkkeJLZ8ZU
-rtgZPQHgGV+OfXBi7yoizHK5eH0b5G47oaHqMs/9b+7tERn4LZGuHrKjvjpG34KzjE00TkTKLNoJ
-4MHRcm7lAb7FavoVjBO9ldYjX05thB8IOEVk4RhVdAdiBdlIyEOQRIfr3S4BHvOkNAprDZPd413z
-6/H7wCf5wAgZg3QUokqj6obGBVctWFkmSsoZrLCevAAAAAAAAA==
+>
+> ________________________________
+> =D0=9E=D1=82: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> =D0=9E=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=D0=B5=D0=BD=D0=BE: 16 =D0=BE=
+=D0=BA=D1=82=D1=8F=D0=B1=D1=80=D1=8F 2023 =D0=B3. 15:23:42
+> =D0=9A=D0=BE=D0=BC=D1=83: =D0=9C=D0=B8=D1=80=D0=BE=D0=BD=D0=BE=D0=B2 =D0=
+=A1=D0=B5=D1=80=D0=B3=D0=B5=D0=B9 =D0=92=D0=BB=D0=B0=D0=B4=D0=B8=D0=BC=D0=
+=B8=D1=80=D0=BE=D0=B2=D0=B8=D1=87
+> =D0=9A=D0=BE=D0=BF=D0=B8=D1=8F: kraxel@redhat.com; qemu-devel@nongnu.org;=
+ Linux Verification Center
+> =D0=A2=D0=B5=D0=BC=D0=B0: Re: [PATCH 1/1] ui: Replacing pointer in functi=
+on
+>
+> On Thu, Oct 12, 2023 at 2:46=E2=80=AFPM Sergey Mironov <mironov@fintech.r=
+u> wrote:
+> >
+> > At the end of the first if we see 'vc->gfx.surface =3D NULL;',
+> > further checking of it is pointless. In the second if, ectx is taken.
+> >
+> > Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> >
+> > Co-developed-by: Linux Verification Center <sdl.qemu@linuxtesting.org>
+> > Signed-off-by: Sergey Mironov <mironov@fintech.ru>
+>
+> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> > ---
+> >  ui/gtk.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/ui/gtk.c b/ui/gtk.c
+> > index 935de1209b..5da3f9b022 100644
+> > --- a/ui/gtk.c
+> > +++ b/ui/gtk.c
+> > @@ -1400,7 +1400,7 @@ static void gd_menu_untabify(GtkMenuItem *item, v=
+oid *opaque)
+> >              eglDestroySurface(qemu_egl_display, vc->gfx.esurface);
+> >              vc->gfx.esurface =3D NULL;
+> >          }
+> > -        if (vc->gfx.esurface) {
+> > +        if (vc->gfx.ectx) {
+> >              eglDestroyContext(qemu_egl_display, vc->gfx.ectx);
+> >              vc->gfx.ectx =3D NULL;
+> >          }
+> > --
+> > 2.31.1
+> >
+>
 
 
---=-nuI2+mGGbsHNT14hPH86--
+--=20
+Marc-Andr=C3=A9 Lureau
 
