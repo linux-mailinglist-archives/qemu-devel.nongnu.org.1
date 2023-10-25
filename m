@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709097D74A2
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5C07D74EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvjo4-0002yE-Ih; Wed, 25 Oct 2023 15:44:44 -0400
+	id 1qvjyN-0001FX-IN; Wed, 25 Oct 2023 15:55:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qvjny-0002tN-IV
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:44:38 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qvjyJ-0001FF-TH
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:55:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qvjnw-00074r-Fa
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:44:37 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39PEwFPj006209; Wed, 25 Oct 2023 19:44:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=uQZvqoTHzmxTeWDtHXjYGiz+2ZUfqj5ff1vqKzPGPi8=;
- b=HB6NIFa/MTMDaNofPkUK5QNqr9YxFx2U3px3pstDox0Pk8Z43rBKfszue9d42ziRSehf
- aCThDaMkAE7snfLeTBS31kpyzgOV04UPbEo/PtiNaw+OemZKvf9yElx1RUri9YqWpxI5
- OfG2FnTL4BDFehDzhFpkMBWBRGOW+e8WZqE7cqTxmkp+R7LlLUgn9RRRB+c2++8LSiSA
- T1HUzChB/Gj40wJYs2/oS8LgBSI2W8I9OcJ14MtEFvSiXDNRgZ/K9qNKj8/ml2pbYjEf
- yQn3RZBTJmb2/juHBp3po6vd5W/fbWfGs0mKEcBJvo42m6JcJKwhMXzreWFmXNpul67P GQ== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tv6pd0p66-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Oct 2023 19:44:35 +0000
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 39PIjFRu034583; Wed, 25 Oct 2023 19:44:34 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3tv5374bum-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Oct 2023 19:44:34 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39PJiUNX037154;
- Wed, 25 Oct 2023 19:44:33 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3tv5374bqp-7; Wed, 25 Oct 2023 19:44:33 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 6/6] tests/qtest: migration: add reboot mode test
-Date: Wed, 25 Oct 2023 12:44:29 -0700
-Message-Id: <1698263069-406971-7-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
-References: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-25_09,2023-10-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 phishscore=0
- mlxlogscore=999 mlxscore=0 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310250169
-X-Proofpoint-GUID: n8Bn_vEivO4HIhCCKt5bl3joDcsYbvTf
-X-Proofpoint-ORIG-GUID: n8Bn_vEivO4HIhCCKt5bl3joDcsYbvTf
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qvjyI-0000Rj-3u
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:55:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698263716;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UBiljv0kfTv8dXAdwoJawYkCyjGSo1ol/Me0FiccM9Q=;
+ b=Qqjfo6fZQFYKWDGW5YMlgNaNTsDmCV29QiyvjY5IjND+e7kFHpCG6CYjxajmsSXBYhMkNa
+ GKHOfowYo+b3qWQmBUr9E1mhm6MzgDA7WNrHOcGgMS1M4Lljzo8NdNor3/qMTfT55IAu3N
+ xoYpx6COBMjyMgazKto74ZWOcv314ak=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-XaXkEYrmOIy_B47Vin-oVg-1; Wed, 25 Oct 2023 15:55:14 -0400
+X-MC-Unique: XaXkEYrmOIy_B47Vin-oVg-1
+Received: by mail-io1-f69.google.com with SMTP id
+ ca18e2360f4ac-7a16fe687aaso6209139f.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 12:55:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698263713; x=1698868513;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UBiljv0kfTv8dXAdwoJawYkCyjGSo1ol/Me0FiccM9Q=;
+ b=r09uEJ97IDFUrkXl7E6kg6B4uvDN39omphEC6WEiCqmFwSAIDlmVu9WNZIM/AdLC6V
+ elBWvm61/Qq5l8S/f1EOCPa1ktWqswndjx1t/X6FLhvAUSy+XYcSY4N8+OtIISPvBoA+
+ eBrAUlLt28qBqQG5wfkREBsgRnAGIbR2CIRtTWs0LLZU/Zkiv5HsiH6/NRWJ8SWtgqTO
+ by+jpVnRrMT8gIPLZ9GrLWfzCElmdA9C7XUopZz3wssAnTUJsWyywgMndvdFQOHidcb1
+ Y8J8Y4tkis6OLUAyhCk7R9HSs5X+uzMjbGH1H07TwNF1rxBKAfzzJZMN0m76kYE45r6Q
+ LSOw==
+X-Gm-Message-State: AOJu0YxQT9yPPhQBemg6rYRty7MCkpqOV/MIckCBdyZsO+vu52ih7pJM
+ KMhUHKbTehKmOMoFM8ps5AdqxvqbDq+tB1jktT9TIygPqow0CWYSR0hBm2D7C+xG6UNBBziCcn+
+ Ej0LePAnUW114iPQ=
+X-Received: by 2002:a05:6e02:1a6f:b0:34f:d1bc:c47c with SMTP id
+ w15-20020a056e021a6f00b0034fd1bcc47cmr20931549ilv.22.1698263713518; 
+ Wed, 25 Oct 2023 12:55:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAABPLdRGT6UenlpPcsla4CId0DTNlNiZ4OjXvtMeyC2AoKh2so9CqVSG4IlNbNeqUzJfdCA==
+X-Received: by 2002:a05:6e02:1a6f:b0:34f:d1bc:c47c with SMTP id
+ w15-20020a056e021a6f00b0034fd1bcc47cmr20931528ilv.22.1698263713181; 
+ Wed, 25 Oct 2023 12:55:13 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ c25-20020a02a619000000b0045a04a88b0csm139604jam.86.2023.10.25.12.55.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Oct 2023 12:55:12 -0700 (PDT)
+Date: Wed, 25 Oct 2023 13:55:11 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, "Denis V .
+ Lunev" <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>, Paolo Bonzini
+ <pbonzini@redhat.com>, "Daniel P . =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, "Maciej S .
+ Szmigiero" <maciej.szmigiero@oracle.com>, Fam Zheng <fam@euphon.net>, Juan
+ Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Fabiano Rosas
+ <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 2/2] vfio/pci: Fix buffer overrun when writing the VF token
+Message-ID: <20231025135511.18636e4e.alex.williamson@redhat.com>
+In-Reply-To: <20231025101245.751559-3-clg@redhat.com>
+References: <20231025101245.751559-1-clg@redhat.com>
+ <20231025101245.751559-3-clg@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,57 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- tests/qtest/migration-test.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+On Wed, 25 Oct 2023 12:12:45 +0200
+C=C3=A9dric Le Goater <clg@redhat.com> wrote:
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index e1c1105..de29fc5 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2001,6 +2001,31 @@ static void test_precopy_file_offset_bad(void)
-     test_file_common(&args, false);
- }
- 
-+static void *test_mode_reboot_start(QTestState *from, QTestState *to)
-+{
-+    migrate_set_parameter_str(from, "mode", "cpr-reboot");
-+    migrate_set_parameter_str(to, "mode", "cpr-reboot");
-+
-+    migrate_set_capability(from, "x-ignore-shared", true);
-+    migrate_set_capability(to, "x-ignore-shared", true);
-+
-+    return NULL;
-+}
-+
-+static void test_mode_reboot(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .start.use_shmem = true,
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = test_mode_reboot_start
-+    };
-+
-+    test_file_common(&args, true);
-+}
-+
- static void test_precopy_tcp_plain(void)
- {
-     MigrateCommon args = {
-@@ -3056,6 +3081,8 @@ int main(int argc, char **argv)
-     qtest_add_func("/migration/precopy/file/offset/bad",
-                    test_precopy_file_offset_bad);
- 
-+    qtest_add_func("/migration/mode/reboot", test_mode_reboot);
-+
- #ifdef CONFIG_GNUTLS
-     qtest_add_func("/migration/precopy/unix/tls/psk",
-                    test_precopy_unix_tls_psk);
--- 
-1.8.3.1
+> qemu_uuid_unparse() includes a trailing NUL when writing the uuid
+> string and the buffer size should be UUID_FMT_LEN + 1 bytes. Use the
+> recently added UUID_STR_LEN which defines the correct size.
+>=20
+> Fixes: CID 1522913
+> Fixes: 2dca1b37a760 ("vfio/pci: add support for VF token")
+> Cc: Alex Williamson <alex.williamson@redhat.com>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>  hw/vfio/pci.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 9bfa83aca1a87952e18743c9ca951b1bfc873507..c02a5d70f5e1b8e4d22051285=
+748f514f1b9f008 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3274,7 +3274,7 @@ static void vfio_realize(PCIDevice *pdev, Error **e=
+rrp)
+>      Error *err =3D NULL;
+>      int i, ret;
+>      bool is_mdev;
+> -    char uuid[UUID_FMT_LEN];
+> +    char uuid[UUID_STR_LEN];
+>      char *name;
+> =20
+>      if (vbasedev->fd < 0 && !vbasedev->sysfsdev) {
+
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 
 
