@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095677D6672
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BFB7D6674
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:14:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvZw6-0004hb-4R; Wed, 25 Oct 2023 05:12:22 -0400
+	id 1qvZw0-0003rG-Dc; Wed, 25 Oct 2023 05:12:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvZvY-0002CH-Ct
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:11:48 -0400
+ id 1qvZvZ-0002Cu-KW
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:11:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qvZvV-0006xD-Rq
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:11:48 -0400
+ id 1qvZvY-0006z9-5c
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:11:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698225105;
+ s=mimecast20190719; t=1698225107;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WURYz+QSUQOqeENaypo+x3ugcyTds4vnnwWUFPNiNSU=;
- b=cH7un96B8Kf+jFAF95BX8M72ZfNFhqRmgjf13ECHttHUtzhqcN9gTuQHlIc9kB4AKZ/uJy
- nGwEc7S8UsABAb7qbDvzEcxMJytk6b4VLwNn2AtbIYdzualnNIum7jHyOqsryy7Rg3BXlN
- G3jPPz4T5fci77/La818m1sWf9mTn7k=
+ bh=M/tIWNBaY9Ee7ExQTmfiSPxxxciJyJJWmlcDvxhAYcY=;
+ b=LB9BTfn9I5onOqOiqm8tyeRvxU2z1FDhmqzdHTi/NFDq3iUz9QVI46ibEPX3EtlxJw+GHc
+ wVt3WwiptMJdWakM/xNHGnnpsrXaB61Xl++XE4cbVeHlSrLJyWyCV94fA0bkrQHgQERDhu
+ UgDxBi0HsUW6YIgSj4otX8JAQFkkvsI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-520-xweI3ow1MEWfgFU913ba4w-1; Wed, 25 Oct 2023 05:11:40 -0400
-X-MC-Unique: xweI3ow1MEWfgFU913ba4w-1
+ us-mta-568-SkBWkxi3O5OgcD1vZTicag-1; Wed, 25 Oct 2023 05:11:42 -0400
+X-MC-Unique: SkBWkxi3O5OgcD1vZTicag-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA63E185A783;
- Wed, 25 Oct 2023 09:11:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0526101AA42;
+ Wed, 25 Oct 2023 09:11:41 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 55FBE8C0B;
- Wed, 25 Oct 2023 09:11:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3B36B1120F;
+ Wed, 25 Oct 2023 09:11:40 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
@@ -50,9 +50,9 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  Fabiano Rosas <farosas@suse.de>, Li Zhijian <lizhijian@fujitsu.com>,
  qemu-block@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v2 10/12] migration: Use migration_transferred_bytes()
-Date: Wed, 25 Oct 2023 11:11:15 +0200
-Message-ID: <20231025091117.6342-11-quintela@redhat.com>
+Subject: [PATCH v2 11/12] migration: Remove transferred atomic counter
+Date: Wed, 25 Oct 2023 11:11:16 +0200
+Message-ID: <20231025091117.6342-12-quintela@redhat.com>
 In-Reply-To: <20231025091117.6342-1-quintela@redhat.com>
 References: <20231025091117.6342-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -82,70 +82,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are only two differnces with the old value:
-
-- the amount of QEMUFile that hasn't yet been flushed.  It can be
-  discussed what is more exact, the new or the old one.
-- the amount of transferred bytes that we forgot to account for (the
-  newer is better, i.e. exact).
-
-Notice that this two values are used to:
-a - present to the user
-b - calculate the rate_limit
-
-So a few KB here and there is not going to make a difference.
+After last commit, it is a write only variable.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/migration.c | 2 +-
- migration/ram.c       | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ migration/migration-stats.h | 4 ----
+ migration/multifd.c         | 3 ---
+ migration/ram.c             | 1 -
+ 3 files changed, 8 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index bb62244288..a6cde985a2 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -942,7 +942,7 @@ static void populate_ram_info(MigrationInfo *info, MigrationState *s)
-     size_t page_size = qemu_target_page_size();
- 
-     info->ram = g_malloc0(sizeof(*info->ram));
--    info->ram->transferred = stat64_get(&mig_stats.transferred);
-+    info->ram->transferred = migration_transferred_bytes();
-     info->ram->total = ram_bytes_total();
-     info->ram->duplicate = stat64_get(&mig_stats.zero_pages);
-     /* legacy value.  It is not used anymore */
-diff --git a/migration/ram.c b/migration/ram.c
-index 92769902bb..5ccf70333a 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -564,7 +564,7 @@ void mig_throttle_counter_reset(void)
- 
-     rs->time_last_bitmap_sync = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-     rs->num_dirty_pages_period = 0;
--    rs->bytes_xfer_prev = stat64_get(&mig_stats.transferred);
-+    rs->bytes_xfer_prev = migration_transferred_bytes();
+diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+index 68f3939188..05290ade76 100644
+--- a/migration/migration-stats.h
++++ b/migration/migration-stats.h
+@@ -97,10 +97,6 @@ typedef struct {
+      * Number of bytes sent through RDMA.
+      */
+     Stat64 rdma_bytes;
+-    /*
+-     * Total number of bytes transferred.
+-     */
+-    Stat64 transferred;
+     /*
+      * Number of pages transferred that were full of zeros.
+      */
+diff --git a/migration/multifd.c b/migration/multifd.c
+index e2a45c667a..ec58c58082 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -188,7 +188,6 @@ static int multifd_send_initial_packet(MultiFDSendParams *p, Error **errp)
+         return -1;
+     }
+     stat64_add(&mig_stats.multifd_bytes, size);
+-    stat64_add(&mig_stats.transferred, size);
+     return 0;
  }
  
- /**
-@@ -1030,7 +1030,7 @@ static void migration_trigger_throttle(RAMState *rs)
- {
-     uint64_t threshold = migrate_throttle_trigger_threshold();
-     uint64_t bytes_xfer_period =
--        stat64_get(&mig_stats.transferred) - rs->bytes_xfer_prev;
-+        migration_transferred_bytes() - rs->bytes_xfer_prev;
-     uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
-     uint64_t bytes_dirty_threshold = bytes_xfer_period * threshold / 100;
+@@ -733,8 +732,6 @@ static void *multifd_send_thread(void *opaque)
  
-@@ -1100,7 +1100,7 @@ static void migration_bitmap_sync(RAMState *rs, bool last_stage)
-         /* reset period counters */
-         rs->time_last_bitmap_sync = end_time;
-         rs->num_dirty_pages_period = 0;
--        rs->bytes_xfer_prev = stat64_get(&mig_stats.transferred);
-+        rs->bytes_xfer_prev = migration_transferred_bytes();
+             stat64_add(&mig_stats.multifd_bytes,
+                        p->next_packet_size + p->packet_len);
+-            stat64_add(&mig_stats.transferred,
+-                       p->next_packet_size + p->packet_len);
+             p->next_packet_size = 0;
+             qemu_mutex_lock(&p->mutex);
+             p->pending_job--;
+diff --git a/migration/ram.c b/migration/ram.c
+index 5ccf70333a..6d2bf50614 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -455,7 +455,6 @@ void ram_transferred_add(uint64_t bytes)
+     } else {
+         stat64_add(&mig_stats.downtime_bytes, bytes);
      }
-     if (migrate_events()) {
-         uint64_t generation = stat64_get(&mig_stats.dirty_sync_count);
+-    stat64_add(&mig_stats.transferred, bytes);
+ }
+ 
+ struct MigrationOps {
 -- 
 2.41.0
 
