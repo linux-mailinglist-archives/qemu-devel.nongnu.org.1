@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41827D6128
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 07:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9D87D6133
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 07:31:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvWSK-0005Cs-1N; Wed, 25 Oct 2023 01:29:24 -0400
+	id 1qvWSN-0005RR-Vl; Wed, 25 Oct 2023 01:29:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvWS5-0004tL-Ts
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:29:10 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1qvWS8-000508-AR
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:29:12 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvWS2-0001Fv-E4
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:29:09 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-565e54cb93aso3304938a12.3
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 22:29:04 -0700 (PDT)
+ id 1qvWS5-0001GE-M4
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:29:12 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1cab2c24ecdso34619865ad.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 22:29:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698211743; x=1698816543;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698211748; x=1698816548;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r6j0l4pFqSQGnzpTGvGolk8sQRFNuK5/112JHoxpOOo=;
- b=shzhaxPxKzTzUfXzEiwKkbIoSR4iS+kf54uH20HkzkoqqqCxCoe2GfolhxM+4IK+UN
- VBxfd5L69nIJCPaf3VlOrgwmyTAYDHtS3cwVIqxn7eu5pKwcJF5C5E/GdKaxqqHpWqPR
- XDsx4VeZzd5iS8Zj4XrgwZ2+ZE40A/EByaoDw+0dingVYJmrWzjhrUCfck3vLzonqKoV
- lG0dlrW1Q1vrEvNhXns58bl29lN2Pan/45HAj4mzqqntlwrEzs2OHMdd2gqhGTYuoTn+
- I6PNbP2jKmlDMefQ+waYorJ5CbAeva1TH0h1gG+LLsevVHqURbrSJU8O8TzTB6elgrc4
- 0hBw==
+ bh=FkM2AOX0mfoMM+mEdrh8DDAgQYoEqlrVh9W0zpOY70M=;
+ b=AS2fYGgSTkwKTkizJZH7WOMnpW4l3Xahtdrq2Ku6+TZhT+Ix8qfekySNhfdH6Lck6k
+ nJETlroBS6vI7l7XCqr4uSuYk1X5Rg0ygi2a9wx/WAReWexQ+az3zbf+OsHLKkv8nbNZ
+ OqdUNy/COa4Y/n4tMZrkC/IfofPo1j4UKpkrOs12nhfqvVuqSolYC9Rogz85aRuNJqTN
+ yyegVjw00MnqeR+cD7HXVauan4sClsJ4+FGgLOLMwDgHj/18Ax3zFGf0fWUobxM4cVEb
+ DAkCvfMi/+3zWDdHGAXuPyVv0SmdC5iqpYYE1zHHXv9Gtl1AedqGg62tOphSZiojQXYx
+ 9HdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698211743; x=1698816543;
+ d=1e100.net; s=20230601; t=1698211748; x=1698816548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r6j0l4pFqSQGnzpTGvGolk8sQRFNuK5/112JHoxpOOo=;
- b=Zp+l4wdQtHyi6IVGkA6aGy2fysE7s7CBYV/5gj9vPdQWbgDRcPlhzmh4yRajeL39+N
- 3PVLJo8Msb39b6YWmXW7Xfo3PBiozU9PEUzgWFJ1K2SRCSzBhgMEzz7JEKHkX+9l+iq5
- jrzxqBYHB1/7xOXl7c1CjKi4JCPOtktUOqifo2Trh6FS8aQZJsD3XJzCUPauUxWYPYi7
- 2z70SbngX2hYXe+37mH63q6ytoGgcmjXLq2Jx/R+bldryEMUxvtgK8bXNMGLnObyy5NG
- mSKczlLzbm+b8MZn1+DwruONa2Bgo0yHbkiWbPy7Kof08RNhdrqGMdZES4YE1Wh9zzWg
- 51YA==
-X-Gm-Message-State: AOJu0Yz0b3v8MZwR4+C9hQX4lCW9J0Jb+lR+ByBYgFyc7Raq4l64Bbba
- hkbUXeY8zflY41fc+6i28R/bkA==
-X-Google-Smtp-Source: AGHT+IF8MdfnpeWcmd37mAG7UgdmlcBClhblwQj4Y45zgZWfJP78t3zWWfLG9wRfaa7se3eTabkgbw==
-X-Received: by 2002:a05:6a20:2451:b0:134:2b31:e2a9 with SMTP id
- t17-20020a056a20245100b001342b31e2a9mr4662530pzc.0.1698211743604; 
- Tue, 24 Oct 2023 22:29:03 -0700 (PDT)
+ bh=FkM2AOX0mfoMM+mEdrh8DDAgQYoEqlrVh9W0zpOY70M=;
+ b=V8VhoQ9SysHbVfcul7QlToWw4LeYJF6uGWeh2YViSzxeNyBnItQjrzviKtIJPxpPKC
+ S96J4seqxB5IKTxhhZMxCENxWvgK9KcZsBqEdv8RmCNLShZaCz5PPDxL9YruhMYsZbPr
+ Jc720Y3jNDJsepTtk+YxD4kz16gExsTyzi2sXfPa6ed8nqiFaRdUVIPqnlnbTyP+Zj7u
+ ESo+k3Np/S8QMRVHXinqnQghvPrZzkfpnOnyNzSjVayWzoVrj5CR52LsNtT2i+SpZwzt
+ vE2T3wOmZrUwRpYqxKh2ozPCturLWU6B5LrdkqbYnI1VrMXW31vg5wNuKNhJO/qdoSso
+ 4vbQ==
+X-Gm-Message-State: AOJu0Yzlm/+q599sLH70xExS8tcMMTuSj2Zq0r8UCPMiETq4UEDIjQM0
+ EJpJWv18/P3rtVkwoygeA3ERKQ==
+X-Google-Smtp-Source: AGHT+IGjlg2sR9A0p2Yu5MCceyzuNR+oXUWeGMbpG02mEKqj9CzqdbQNhhHSLPQRdv0PRa0SL5q45w==
+X-Received: by 2002:a17:902:da83:b0:1c7:4973:7b34 with SMTP id
+ j3-20020a170902da8300b001c749737b34mr13393836plx.50.1698211748012; 
+ Tue, 24 Oct 2023 22:29:08 -0700 (PDT)
 Received: from localhost ([157.82.204.207])
  by smtp.gmail.com with UTF8SMTPSA id
- pw4-20020a17090b278400b0026f4bb8b2casm9849830pjb.6.2023.10.24.22.29.01
+ f12-20020a17090274cc00b001b86492d724sm8253688plt.223.2023.10.24.22.29.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 22:29:02 -0700 (PDT)
+ Tue, 24 Oct 2023 22:29:07 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mikhail Tyutin <m.tyutin@yadro.com>,
  Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v15 14/19] gdbstub: Expose functions to read registers
-Date: Wed, 25 Oct 2023 14:27:36 +0900
-Message-ID: <20231025052744.20697-15-akihiko.odaki@daynix.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v15 15/19] cpu: Call plugin hooks only when ready
+Date: Wed, 25 Oct 2023 14:27:37 +0900
+Message-ID: <20231025052744.20697-16-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231025052744.20697-1-akihiko.odaki@daynix.com>
 References: <20231025052744.20697-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::636;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,97 +98,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gdb_find_feature() and gdb_find_feature_register() find registers.
-gdb_read_register() actually reads registers.
+The initialization and exit hooks will not affect the state of vCPU
+outside TCG context, but they may depend on the state of vCPU.
+Therefore, it's better to call plugin hooks after the vCPU state is
+fully initialized and before it gets uninitialized.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/exec/gdbstub.h | 29 +++++++++++++++++++++++++++++
- gdbstub/gdbstub.c      | 31 ++++++++++++++++++++++++++++++-
- 2 files changed, 59 insertions(+), 1 deletion(-)
+ cpu-target.c         | 11 -----------
+ hw/core/cpu-common.c | 10 ++++++++++
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index da9ddfe54c..12336cb600 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -111,6 +111,35 @@ void gdb_feature_builder_end(const GDBFeatureBuilder *builder);
-  */
- const GDBFeature *gdb_find_static_feature(const char *xmlname);
+diff --git a/cpu-target.c b/cpu-target.c
+index 79363ae370..00cd7f4d69 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -42,7 +42,6 @@
+ #include "hw/core/accel-cpu.h"
+ #include "trace/trace-root.h"
+ #include "qemu/accel.h"
+-#include "qemu/plugin.h"
  
-+/**
-+ * gdb_find_feature() - Find a feature associated with a CPU.
-+ * @cpu: The CPU associated with the feature.
-+ * @name: The feature's name.
-+ *
-+ * Return: The feature's number.
-+ */
-+int gdb_find_feature(CPUState *cpu, const char *name);
-+
-+/**
-+ * gdb_find_feature_register() - Find a register associated with a CPU.
-+ * @cpu: The CPU associated with the register.
-+ * @feature: The feature's number returned by gdb_find_feature().
-+ * @name: The register's name.
-+ *
-+ * Return: The register's number.
-+ */
-+int gdb_find_feature_register(CPUState *cpu, int feature, const char *name);
-+
-+/**
-+ * gdb_read_register() - Read a register associated with a CPU.
-+ * @cpu: The CPU associated with the register.
-+ * @buf: The buffer that the read register will be appended to.
-+ * @reg: The register's number returned by gdb_find_feature_register().
-+ *
-+ * Return: The number of read bytes.
-+ */
-+int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
-+
- void gdb_set_stop_cpu(CPUState *cpu);
+ uintptr_t qemu_host_page_size;
+ intptr_t qemu_host_page_mask;
+@@ -143,11 +142,6 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
+     /* Wait until cpu initialization complete before exposing cpu. */
+     cpu_list_add(cpu);
  
- /* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 7d7d887817..ad62cb3f7a 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -490,7 +490,36 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname)
-     g_assert_not_reached();
+-    /* Plugin initialization must wait until cpu_index assigned. */
+-    if (tcg_enabled()) {
+-        qemu_plugin_vcpu_init_hook(cpu);
+-    }
+-
+ #ifdef CONFIG_USER_ONLY
+     assert(qdev_get_vmsd(DEVICE(cpu)) == NULL ||
+            qdev_get_vmsd(DEVICE(cpu))->unmigratable);
+@@ -174,11 +168,6 @@ void cpu_exec_unrealizefn(CPUState *cpu)
+     }
+ #endif
+ 
+-    /* Call the plugin hook before clearing cpu->cpu_index in cpu_list_remove */
+-    if (tcg_enabled()) {
+-        qemu_plugin_vcpu_exit_hook(cpu);
+-    }
+-
+     cpu_list_remove(cpu);
+     /*
+      * Now that the vCPU has been removed from the RCU list, we can call
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 2a2a6eb3eb..409397e2b5 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -210,6 +210,11 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
+         cpu_resume(cpu);
+     }
+ 
++    /* Plugin initialization must wait until the cpu is fully realized. */
++    if (tcg_enabled()) {
++        qemu_plugin_vcpu_init_hook(cpu);
++    }
++
+     /* NOTE: latest generic point where the cpu is fully realized */
  }
  
--static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-+int gdb_find_feature(CPUState *cpu, const char *name)
-+{
-+    GDBRegisterState *r;
-+
-+    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+        r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+        if (!strcmp(name, r->feature->name)) {
-+            return i;
-+        }
-+    }
-+
-+    return -1;
-+}
-+
-+int gdb_find_feature_register(CPUState *cpu, int feature, const char *name)
-+{
-+    GDBRegisterState *r;
-+
-+    r = &g_array_index(cpu->gdb_regs, GDBRegisterState, feature);
-+
-+    for (int i = 0; i < r->feature->num_regs; i++) {
-+        if (r->feature->regs[i] && !strcmp(name, r->feature->regs[i])) {
-+            return r->base_reg + i;
-+        }
-+    }
-+
-+    return -1;
-+}
-+
-+int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+@@ -217,6 +222,11 @@ static void cpu_common_unrealizefn(DeviceState *dev)
  {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
-     GDBRegisterState *r;
+     CPUState *cpu = CPU(dev);
+ 
++    /* Call the plugin hook before clearing the cpu is fully unrealized */
++    if (tcg_enabled()) {
++        qemu_plugin_vcpu_exit_hook(cpu);
++    }
++
+     /* NOTE: latest generic point before the cpu is fully unrealized */
+     cpu_exec_unrealizefn(cpu);
+ }
 -- 
 2.42.0
 
