@@ -2,64 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F29C7D70AF
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E0E7D70B0
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:23:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfgl-0008Nv-6g; Wed, 25 Oct 2023 11:20:56 -0400
+	id 1qvfi7-0000li-JR; Wed, 25 Oct 2023 11:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qvfgg-0008NN-GJ
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:20:51 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qvfi3-0000kF-FY
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:22:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qvfgd-0004xY-CV
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:20:49 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qvfi0-000522-S7
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:22:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698247246;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1698247331;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S5zPLrGVRbXs38xKezpOxwy66RiFCOX7+GEyWZ03jk4=;
- b=UB56kZtjaGtJB6UHHGb7HID61O4InpS+zpF5lmNApbVP4fygjfHpqMm0E5f5FdGQoG3qzV
- AXh5cpJeKjClAQefqHld2QCXeSJmRWbtAjI//ysP1BxYsj9u1uHpCA+RCdUIoTNPoshu/b
- C5/MrO1zZi+yBwHzxDAzPsTOhYRiiHk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-41-r-uDt3QmOCufmYuz1h6Fkw-1; Wed,
- 25 Oct 2023 11:20:44 -0400
-X-MC-Unique: r-uDt3QmOCufmYuz1h6Fkw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=hvyNexdmA22QuLmQAl6avOK6oblpRa82RY3oJguo/S8=;
+ b=Q5FJdIbWd9EAOnsD8+qCbJL83nvcp4Atg084jZS7HNiGegseiQD4DDsPlCyGsUlXMtGQVc
+ QCndIw+Ms88Wv/rbENxUY8Bzjn81AqPUqWW4aObb46PRDCMcGBZAOwumg5TxjCRBCrhKh9
+ hr4ku+zk3AJpBbV6IvQ/G3QHpxk5mPw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-427-P_5Uabf2OyK8KNO0QwNoFg-1; Wed, 25 Oct 2023 11:22:08 -0400
+X-MC-Unique: P_5Uabf2OyK8KNO0QwNoFg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1CD8A280017F;
- Wed, 25 Oct 2023 15:20:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.191])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7570C25C0;
- Wed, 25 Oct 2023 15:20:41 +0000 (UTC)
-Date: Wed, 25 Oct 2023 17:20:40 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
- eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
- jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v3 0/9] mirror: allow switching from background to active
- mode
-Message-ID: <ZTkySKEa4Lt5iNc9@redhat.com>
-References: <20231013092143.365296-1-f.ebner@proxmox.com>
- <ZTEwzi8x6cFfP9+e@redhat.com>
- <b81617df-2a68-4a89-9518-8441e01aaa0f@proxmox.com>
- <3d4cfc31-beb9-4b89-b185-13c6e01ede49@proxmox.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16F1F101A53B;
+ Wed, 25 Oct 2023 15:22:08 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.154])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E5F02492BFA;
+ Wed, 25 Oct 2023 15:22:06 +0000 (UTC)
+Date: Wed, 25 Oct 2023 16:22:05 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
+Message-ID: <ZTkynR7UelpQrpqA@redhat.com>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-29-farosas@suse.de>
+ <ZTja1PqWLF6U7f8n@redhat.com> <87a5s6ep1z.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3d4cfc31-beb9-4b89-b185-13c6e01ede49@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87a5s6ep1z.fsf@suse.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,63 +84,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 25.10.2023 um 14:27 hat Fiona Ebner geschrieben:
-> Am 23.10.23 um 13:39 schrieb Fiona Ebner:
-> > Am 19.10.23 um 15:36 schrieb Kevin Wolf:
-> >> Most of this series looks good to me. Apart from the comments I made in
-> >> the individual patches, I would like to see iotests coverage of changing
-> >> the mirroring mode. At the least to show that the query result changes,
-> >> but ideally also that requests really block after switchting to active.
-> >> I think with a throttled target node and immediately reading the target
-> >> when the write request completes we should be able to check this.
-> >>
-> > 
-> > I'll try to work something out for v4.
-> > 
+On Wed, Oct 25, 2023 at 11:48:08AM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
 > 
-> I'm having a bit of a hard time unfortunately. I created a throttle
-> group with
+> > On Mon, Oct 23, 2023 at 05:36:07PM -0300, Fabiano Rosas wrote:
+> >> Add the direct-io migration parameter that tells the migration code to
+> >> use O_DIRECT when opening the migration stream file whenever possible.
+> >> 
+> >> This is currently only used for the secondary channels of fixed-ram
+> >> migration, which can guarantee that writes are page aligned.
+> >
+> > When you say "secondary channels", I presume you're meaning that
+> > the bulk memory regions will be written with O_DIRECT, while
+> > general vmstate will use normal I/O on the main channel ?  If so,
+> > could we explain that a little more directly.
 > 
-> >                 'iops-total': iops,
-> >                 'iops-total-max': iops
-
-I would have throttled only writes, because you need to do a read to
-check the target and don't want that one to be throttled until the
-writes have completed.
-
-> and used that for the 'throttle' driver for the target. I then tried
-> issuing requests via qemu_io
+> Yes, the main channel writes via QEMUFile, so no O_DIRECT. The channels
+> created via multifd_new_send_channel_create() have O_DIRECT enabled.
 > 
-> >             self.vm.hmp_qemu_io('mirror-top',
-> >                                 f'aio_write -P 1 {req_size * i} {req_size * (i + 1)}')
+> > Having a mixture of O_DIRECT and non-O_DIRECT I/O on the same
+> > file is a little bit of an unusual situation. It will work for
+> > us because we're writing to different regions of the file in
+> > each case.
+> >
+> > Still I wonder if it would be sane in the outgoing case to
+> > include a fsync() on the file in the main channel, to guarantee
+> > that the whole saved file is on-media at completion ? Or perhaps
+> > suggest in QAPI that mgmts might consider doing a fsync
+> > themselves ?
 > 
-> but when I create more requests than the 'iops' limit (to ensure that
-> not all are completed immediately), it will get stuck when draining the
-> temporary BlockBackend used by qemu_io [0]. Note this is while still in
-> background mode.
+> I think that should be present in QIOChannelFile in general. Not even
+> related to this series. I'll add it at qio_channel_file_close() unless
+> you object.
 
-You should be able to get around this by using an existing named
-BlockBackend (created with -drive if=none) instead of a node name.
-mirror-top stays at the root of the tree, right?
+Yes, looking at the places QIOChannelFile is used, I think they would
+all benefit from fdatasync().  fsync() is probably too big of a hammer
 
-> I also wanted to have request going on while the copy mode is changed
-> and for that, I was able to work around the issue by creating an NBD
-> export of the source like in iotest 151 and issuing the requests to the
-> NBD socket instead.
-> 
-> But after I switch to active mode and when I issue more than the 'iops'
-> limit requests to the NBD export then, it also seems to get stuck,
-> visible during shutdown when it tries to close the export[1].
-
-Because the NBD server still throttles the I/O that needs to complete
-until QEMU can shut down? If this is a problem, I suppose you can
-lift the limit on the NBD server side if you use QSD.
-
-graph-changes-while-io is an example of a test cases that uses QSD.
-
-Kevin
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
