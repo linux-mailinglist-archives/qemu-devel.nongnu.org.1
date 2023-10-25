@@ -2,80 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F31E7D709C
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F29C7D70AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:21:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfax-0005as-5j; Wed, 25 Oct 2023 11:14:55 -0400
+	id 1qvfgl-0008Nv-6g; Wed, 25 Oct 2023 11:20:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qvfas-0005Yk-1z
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:14:50 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qvfgg-0008NN-GJ
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:20:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qvfaq-0003gK-Dr
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:14:49 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qvfgd-0004xY-CV
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:20:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698246887;
+ s=mimecast20190719; t=1698247246;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=m24yJh5lRUIb+owuGncADg13pbuEdOLvr6TCX0S2bc0=;
- b=CVoakyhh07725rdQpxxFFheioyZT+WRCgfjH+vwkCk13Zfy8DjJKdERO2vKf4ORGZzm11P
- G4rILHM6esF6GR86EiAYMR63H0SxnCJhzuMCosroA1pgQIc/GOJD//eQllNN16Iu2K5DJg
- 1if1195HIWUYL4PdZm+cg/4cF71rZQo=
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
- [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-NcTMWy16MwmgYK-MVaPgNw-1; Wed, 25 Oct 2023 11:14:45 -0400
-X-MC-Unique: NcTMWy16MwmgYK-MVaPgNw-1
-Received: by mail-oo1-f72.google.com with SMTP id
- 006d021491bc7-581e7b03855so2110757eaf.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 08:14:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698246885; x=1698851685;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=m24yJh5lRUIb+owuGncADg13pbuEdOLvr6TCX0S2bc0=;
- b=XUe0IXJApLBvpGraNLNKMHNikSZ6790gp4N6h2zNdCiJMeblI3QTo8+hCzejofPJiS
- nowvdL9tP7Y7TdYUp73JPWmk4owiKAHRYWHOPw8OgaG+eP+pgvu6bhElkzC6D6ZHPqZZ
- oouaCbgMjI6zF9OsWQWOJS3FOzttN5qKyHM4UVMWLzXMHu2RJGWsamfTNmDbRglg6Jh0
- wxRQ0wKcAdVW7bCjKtIftydME3x/oj9MJmrA+rMZNZeMng61tV/jSDElfhzynI+/XPtn
- 6J3jiZcY7PAuMT0Zu4YDUw3W4q6QVIwea4tGyXP3/kDV+VOyDPMYbwmYinpCE+aK/ePn
- Xj7Q==
-X-Gm-Message-State: AOJu0YzO1/MQmQlA3PCGisHUCGupZWUzlPAzucb+VZxosKPhJ0CLIxH6
- 6KMq7OLTTx+bUqdIZYYk46KF6niGwZaFFLxzE8H7N7SzAcyafAMx9KSrV8BNWCVMOZOaVMovIDI
- PkkussuqWni7bvH0=
-X-Received: by 2002:a05:6358:c9f:b0:168:bff9:939b with SMTP id
- o31-20020a0563580c9f00b00168bff9939bmr11858084rwj.0.1698246885071; 
- Wed, 25 Oct 2023 08:14:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfF9q78vSwe44mWi+U8gl49nN/CqzPT5KAaq7LcXyryyd/LFnPQTkykPGfwOYS0YckreiveA==
-X-Received: by 2002:a05:6358:c9f:b0:168:bff9:939b with SMTP id
- o31-20020a0563580c9f00b00168bff9939bmr11858064rwj.0.1698246884657; 
- Wed, 25 Oct 2023 08:14:44 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- pm10-20020ad446ca000000b0066d1f118b7esm4503683qvb.1.2023.10.25.08.14.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 08:14:44 -0700 (PDT)
-Date: Wed, 25 Oct 2023 11:14:42 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Ethan Chen <ethan84@andestech.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 2/6] system/physmem: IOMMU: Invoke the translate_size
- function if it is implemented
-Message-ID: <ZTkw4itrYANXm4qR@x1n>
-References: <20231025051430.493079-1-ethan84@andestech.com>
- <20231025051430.493079-3-ethan84@andestech.com>
+ bh=S5zPLrGVRbXs38xKezpOxwy66RiFCOX7+GEyWZ03jk4=;
+ b=UB56kZtjaGtJB6UHHGb7HID61O4InpS+zpF5lmNApbVP4fygjfHpqMm0E5f5FdGQoG3qzV
+ AXh5cpJeKjClAQefqHld2QCXeSJmRWbtAjI//ysP1BxYsj9u1uHpCA+RCdUIoTNPoshu/b
+ C5/MrO1zZi+yBwHzxDAzPsTOhYRiiHk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-41-r-uDt3QmOCufmYuz1h6Fkw-1; Wed,
+ 25 Oct 2023 11:20:44 -0400
+X-MC-Unique: r-uDt3QmOCufmYuz1h6Fkw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1CD8A280017F;
+ Wed, 25 Oct 2023 15:20:43 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.191])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7570C25C0;
+ Wed, 25 Oct 2023 15:20:41 +0000 (UTC)
+Date: Wed, 25 Oct 2023 17:20:40 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
+ eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
+ jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
+ alexander.ivanov@virtuozzo.com
+Subject: Re: [PATCH v3 0/9] mirror: allow switching from background to active
+ mode
+Message-ID: <ZTkySKEa4Lt5iNc9@redhat.com>
+References: <20231013092143.365296-1-f.ebner@proxmox.com>
+ <ZTEwzi8x6cFfP9+e@redhat.com>
+ <b81617df-2a68-4a89-9518-8441e01aaa0f@proxmox.com>
+ <3d4cfc31-beb9-4b89-b185-13c6e01ede49@proxmox.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231025051430.493079-3-ethan84@andestech.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <3d4cfc31-beb9-4b89-b185-13c6e01ede49@proxmox.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,45 +83,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 01:14:26PM +0800, Ethan Chen wrote:
-> Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> ---
->  system/physmem.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+Am 25.10.2023 um 14:27 hat Fiona Ebner geschrieben:
+> Am 23.10.23 um 13:39 schrieb Fiona Ebner:
+> > Am 19.10.23 um 15:36 schrieb Kevin Wolf:
+> >> Most of this series looks good to me. Apart from the comments I made in
+> >> the individual patches, I would like to see iotests coverage of changing
+> >> the mirroring mode. At the least to show that the query result changes,
+> >> but ideally also that requests really block after switchting to active.
+> >> I think with a throttled target node and immediately reading the target
+> >> when the write request completes we should be able to check this.
+> >>
+> > 
+> > I'll try to work something out for v4.
+> > 
 > 
-> diff --git a/system/physmem.c b/system/physmem.c
-> index fc2b0fee01..53b6ab735c 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -432,8 +432,13 @@ static MemoryRegionSection address_space_translate_iommu(IOMMUMemoryRegion *iomm
->              iommu_idx = imrc->attrs_to_index(iommu_mr, attrs);
->          }
->  
-> -        iotlb = imrc->translate(iommu_mr, addr, is_write ?
-> -                                IOMMU_WO : IOMMU_RO, iommu_idx);
-> +        if (imrc->translate_size) {
-> +            iotlb = imrc->translate_size(iommu_mr, addr, *plen_out, is_write ?
-> +                                         IOMMU_WO : IOMMU_RO, iommu_idx);
-> +        } else {
-> +            iotlb = imrc->translate(iommu_mr, addr, is_write ?
-> +                                    IOMMU_WO : IOMMU_RO, iommu_idx);
-> +        }
+> I'm having a bit of a hard time unfortunately. I created a throttle
+> group with
+> 
+> >                 'iops-total': iops,
+> >                 'iops-total-max': iops
 
-Currently the translation size is encoded in iotlb.addr_mask.  Can riscv do
-the same?
+I would have throttled only writes, because you need to do a read to
+check the target and don't want that one to be throttled until the
+writes have completed.
 
-For example, lookup addr in match_entry_md() ranges, report size back into
-iotlb.addr_mask, rather than enforcing *plen_out range always resides in
-one translation only.
+> and used that for the 'throttle' driver for the target. I then tried
+> issuing requests via qemu_io
+> 
+> >             self.vm.hmp_qemu_io('mirror-top',
+> >                                 f'aio_write -P 1 {req_size * i} {req_size * (i + 1)}')
+> 
+> but when I create more requests than the 'iops' limit (to ensure that
+> not all are completed immediately), it will get stuck when draining the
+> temporary BlockBackend used by qemu_io [0]. Note this is while still in
+> background mode.
 
-IMHO it's actually legal if *plen_out covers more than one IOMMU
-translations.  QEMU memory core should have taken care of that by
-separately translate the ranges and apply RW on top.  With current proposal
-of translate_size() I think it'll fail instead, which is not wanted.
+You should be able to get around this by using an existing named
+BlockBackend (created with -drive if=none) instead of a node name.
+mirror-top stays at the root of the tree, right?
 
-Thanks,
+> I also wanted to have request going on while the copy mode is changed
+> and for that, I was able to work around the issue by creating an NBD
+> export of the source like in iotest 151 and issuing the requests to the
+> NBD socket instead.
+> 
+> But after I switch to active mode and when I issue more than the 'iops'
+> limit requests to the NBD export then, it also seems to get stuck,
+> visible during shutdown when it tries to close the export[1].
 
--- 
-Peter Xu
+Because the NBD server still throttles the I/O that needs to complete
+until QEMU can shut down? If this is a problem, I suppose you can
+lift the limit on the NBD server side if you use QSD.
+
+graph-changes-while-io is an example of a test cases that uses QSD.
+
+Kevin
 
 
