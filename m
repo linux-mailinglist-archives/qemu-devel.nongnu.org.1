@@ -2,55 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E868C7D63D5
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E217D6400
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvYZy-00017T-4X; Wed, 25 Oct 2023 03:45:26 -0400
+	id 1qvYe1-00030z-1W; Wed, 25 Oct 2023 03:49:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=4l40=GH=kaod.org=clg@ozlabs.org>)
- id 1qvYZs-00016T-Mu; Wed, 25 Oct 2023 03:45:20 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from
+ <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvYdx-00030j-D8
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:49:33 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=4l40=GH=kaod.org=clg@ozlabs.org>)
- id 1qvYZq-0007TR-EK; Wed, 25 Oct 2023 03:45:20 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SFgvH5cFRz4wxX;
- Wed, 25 Oct 2023 18:45:15 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SFgvG00mBz4wch;
- Wed, 25 Oct 2023 18:45:13 +1100 (AEDT)
-Message-ID: <e7e81178-beaf-4aca-8181-6a56b8c74816@kaod.org>
-Date: Wed, 25 Oct 2023 09:45:13 +0200
+ (Exim 4.90_1) (envelope-from
+ <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qvYds-0008ND-Vx
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:49:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=JZNl9HLN3dQiXpVfLZXhyIi3YWkr3A1OefSvrV6QHtQ=; b=KkLXfDnHColpmkr9PKSutiK7Ph
+ uuFeKT2ipFUEw0W+KWm1igwSLmLKpv7juC+mOzWK4eiXfYkQ5NNOlKNcyyeTs0vivNjmN+IElkxzz
+ zhp9NRpzNy9NSJJNwzZUpVynFaFGwucbMTMukv5rF4yYiO+EEV+VaMPx+PTvTd3m0WO4SiBqftV0I
+ bTl7W4AmYvAeYKeqDM2qPvxftGh6LUXibgBaUX9USRd0Gk6blw6SqpbHZVw7vbri7deC9sc8f1km5
+ Z9knO0tqhBeefZfYDsaiOTBBbRNgQM3xbxH2zKTvMJ8q2EiBd++48eFrQxFS2BqBz/Tz8K+fJTDAl
+ nmFIiTEA==;
+Received: from [2001:8b0:10b:5:758e:a1c4:bc7:e7a7]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qvYdZ-007UjW-SQ; Wed, 25 Oct 2023 07:49:10 +0000
+Message-ID: <45314b800ac3a5b089420f7984e38f8adbfd8a3e.camel@infradead.org>
+Subject: Re: [PATCH 2/4] hw/xen: update Xen PV NIC to XenDevice model
+From: David Woodhouse <dwmw2@infradead.org>
+To: paul@xen.org, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
+ Perard <anthony.perard@citrix.com>, Jason Wang <jasowang@redhat.com>,
+ xen-devel@lists.xenproject.org
+Date: Wed, 25 Oct 2023 08:49:08 +0100
+In-Reply-To: <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
+References: <20231017182545.97973-1-dwmw2@infradead.org>
+ <20231017182545.97973-3-dwmw2@infradead.org>
+ <53e3e3e3-7bdc-4102-b833-bcacd496a31f@xen.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-nuI2+mGGbsHNT14hPH86"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/11] hw/arm/aspeed: Move AspeedSoCState::cpu/vic to
- Aspeed2400SoCState
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jeffery <andrew@aj.id.au>, qemu-arm@nongnu.org
-References: <20231024162423.40206-1-philmd@linaro.org>
- <20231024162423.40206-12-philmd@linaro.org>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231024162423.40206-12-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=4l40=GH=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,160 +81,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/24/23 18:24, Philippe Mathieu-Daudé wrote:
-> The ARM array and VIC peripheral are only used by the
-> 2400 series, remove them from the common AspeedSoCState.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+--=-nuI2+mGGbsHNT14hPH86
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2023-10-24 at 15:47 +0100, Paul Durrant wrote:
+>=20
+> > =C2=A0=C2=A0=20
+> > -=C2=A0=C2=A0=C2=A0 if (netdev->xendev.be_state !=3D XenbusStateConnect=
+ed) {
+> > +=C2=A0=C2=A0=C2=A0 if (netdev->rx_ring.sring =3D=3D NULL) {
+>=20
+> Why not a straight swap for xen_device_backend_get_state()? Hard to see=
+=20
+> whether there any hidden side effects of this change otherwise.
+
+I suppose if I litter it with a few assertions that the iothread mutex
+is locked, I can live with that. As long as it's atomic w.r.t.
+disconnection, they *are* identical checks.
+
+(And if it could be running simultaneously with disconnection, we'd be
+hosed anyway).
 
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+--=-nuI2+mGGbsHNT14hPH86
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Thanks,
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI1MDc0OTA4WjAvBgkqhkiG9w0BCQQxIgQgqf6kmbpy
+iCj9Gf74Yo9bWLQmRRmHUo1hOFr3dJIdIfUwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgA8UVaOzRGPId5SyGLYr7OGbytoiPUCDulJ
+6fn8Z/lfKE1unDI9kUfzeaKP0a/S5MK0Takq88aKWAzGF7xQw4qZhjWyGA0AIMZ7B8bn03q7BKVD
+Uf/BtxYXbnFoVz0hVsMScf80eL41CTbkNDmzugxx1vh7dU2P7Y7iB4QUkzqb2iQFZubVH9VVtAvr
+lqM3TscrgKkyAjhiSY2FmBs1CAFeTb8Q4t/RKtTvFo3QXxDQLY/QB9lHs+pDz1sh5TmbUPbsK8hT
+QSWjef/TaItsSj+r9hmzve9dcN4J29wKIL5c4LBf+9D6AIdtXVe+cIt0ubhWXeCD7ZO/ruynQtDR
+YpPDtWz8I5VVjbfp6jSPWKPMbikmWSPg56AqqkHlfxty+PyglacwnEuIEDv9MGMtcs82FoQkPYOx
+Qy75GK2U6nPiGW7+BHNFjG5fAjizudN5NOS6u8ltktdxgEt3Nto7QPkHx6MYa4bTWstkkeJLZ8ZU
+rtgZPQHgGV+OfXBi7yoizHK5eH0b5G47oaHqMs/9b+7tERn4LZGuHrKjvjpG34KzjE00TkTKLNoJ
+4MHRcm7lAb7FavoVjBO9ldYjX05thB8IOEVk4RhVdAdiBdlIyEOQRIfr3S4BHvOkNAprDZPd413z
+6/H7wCf5wAgZg3QUokqj6obGBVctWFkmSsoZrLCevAAAAAAAAA==
 
-C.
 
-
-> ---
->   include/hw/arm/aspeed_soc.h               |  5 +++--
->   hw/arm/{aspeed_soc.c => aspeed_ast2400.c} | 27 +++++++++++++----------
->   hw/arm/meson.build                        |  2 +-
->   3 files changed, 19 insertions(+), 15 deletions(-)
->   rename hw/arm/{aspeed_soc.c => aspeed_ast2400.c} (95%)
-> 
-> diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-> index 6f783138e1..cb832bc1ee 100644
-> --- a/include/hw/arm/aspeed_soc.h
-> +++ b/include/hw/arm/aspeed_soc.h
-> @@ -49,14 +49,12 @@
->   struct AspeedSoCState {
->       DeviceState parent;
->   
-> -    ARMCPU cpu[ASPEED_CPUS_NUM];
->       MemoryRegion *memory;
->       MemoryRegion *dram_mr;
->       MemoryRegion dram_container;
->       MemoryRegion sram;
->       MemoryRegion spi_boot_container;
->       MemoryRegion spi_boot;
-> -    AspeedVICState vic;
->       AspeedRtcState rtc;
->       AspeedTimerCtrlState timerctrl;
->       AspeedI2CState i2c;
-> @@ -99,6 +97,9 @@ OBJECT_DECLARE_TYPE(AspeedSoCState, AspeedSoCClass, ASPEED_SOC)
->   
->   struct Aspeed2400SoCState {
->       AspeedSoCState parent;
-> +
-> +    ARMCPU cpu[ASPEED_CPUS_NUM];
-> +    AspeedVICState vic;
->   };
->   
->   #define TYPE_ASPEED2400_SOC "aspeed2400-soc"
-> diff --git a/hw/arm/aspeed_soc.c b/hw/arm/aspeed_ast2400.c
-> similarity index 95%
-> rename from hw/arm/aspeed_soc.c
-> rename to hw/arm/aspeed_ast2400.c
-> index dfb97f6dbd..a4334c81b8 100644
-> --- a/hw/arm/aspeed_soc.c
-> +++ b/hw/arm/aspeed_ast2400.c
-> @@ -135,13 +135,15 @@ static const int aspeed_soc_ast2400_irqmap[] = {
->   
->   static qemu_irq aspeed_soc_ast2400_get_irq(AspeedSoCState *s, int dev)
->   {
-> +    Aspeed2400SoCState *a = ASPEED2400_SOC(s);
->       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
->   
-> -    return qdev_get_gpio_in(DEVICE(&s->vic), sc->irqmap[dev]);
-> +    return qdev_get_gpio_in(DEVICE(&a->vic), sc->irqmap[dev]);
->   }
->   
->   static void aspeed_ast2400_soc_init(Object *obj)
->   {
-> +    Aspeed2400SoCState *a = ASPEED2400_SOC(obj);
->       AspeedSoCState *s = ASPEED_SOC(obj);
->       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
->       int i;
-> @@ -153,7 +155,7 @@ static void aspeed_ast2400_soc_init(Object *obj)
->       }
->   
->       for (i = 0; i < sc->num_cpus; i++) {
-> -        object_initialize_child(obj, "cpu[*]", &s->cpu[i], sc->cpu_type);
-> +        object_initialize_child(obj, "cpu[*]", &a->cpu[i], sc->cpu_type);
->       }
->   
->       snprintf(typename, sizeof(typename), "aspeed.scu-%s", socname);
-> @@ -167,7 +169,7 @@ static void aspeed_ast2400_soc_init(Object *obj)
->       object_property_add_alias(obj, "hw-prot-key", OBJECT(&s->scu),
->                                 "hw-prot-key");
->   
-> -    object_initialize_child(obj, "vic", &s->vic, TYPE_ASPEED_VIC);
-> +    object_initialize_child(obj, "vic", &a->vic, TYPE_ASPEED_VIC);
->   
->       object_initialize_child(obj, "rtc", &s->rtc, TYPE_ASPEED_RTC);
->   
-> @@ -242,6 +244,7 @@ static void aspeed_ast2400_soc_init(Object *obj)
->   static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
->   {
->       int i;
-> +    Aspeed2400SoCState *a = ASPEED2400_SOC(dev);
->       AspeedSoCState *s = ASPEED_SOC(dev);
->       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
->       Error *err = NULL;
-> @@ -264,15 +267,15 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
->   
->       /* CPU */
->       for (i = 0; i < sc->num_cpus; i++) {
-> -        object_property_set_link(OBJECT(&s->cpu[i]), "memory",
-> +        object_property_set_link(OBJECT(&a->cpu[i]), "memory",
->                                    OBJECT(s->memory), &error_abort);
-> -        if (!qdev_realize(DEVICE(&s->cpu[i]), NULL, errp)) {
-> +        if (!qdev_realize(DEVICE(&a->cpu[i]), NULL, errp)) {
->               return;
->           }
->       }
->   
->       /* SRAM */
-> -    sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&s->cpu[0])->cpu_index);
-> +    sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
->       memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size, &err);
->       if (err) {
->           error_propagate(errp, err);
-> @@ -288,14 +291,14 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
->       aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->scu), 0, sc->memmap[ASPEED_DEV_SCU]);
->   
->       /* VIC */
-> -    if (!sysbus_realize(SYS_BUS_DEVICE(&s->vic), errp)) {
-> +    if (!sysbus_realize(SYS_BUS_DEVICE(&a->vic), errp)) {
->           return;
->       }
-> -    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->vic), 0, sc->memmap[ASPEED_DEV_VIC]);
-> -    sysbus_connect_irq(SYS_BUS_DEVICE(&s->vic), 0,
-> -                       qdev_get_gpio_in(DEVICE(&s->cpu), ARM_CPU_IRQ));
-> -    sysbus_connect_irq(SYS_BUS_DEVICE(&s->vic), 1,
-> -                       qdev_get_gpio_in(DEVICE(&s->cpu), ARM_CPU_FIQ));
-> +    aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->vic), 0, sc->memmap[ASPEED_DEV_VIC]);
-> +    sysbus_connect_irq(SYS_BUS_DEVICE(&a->vic), 0,
-> +                       qdev_get_gpio_in(DEVICE(&a->cpu), ARM_CPU_IRQ));
-> +    sysbus_connect_irq(SYS_BUS_DEVICE(&a->vic), 1,
-> +                       qdev_get_gpio_in(DEVICE(&a->cpu), ARM_CPU_FIQ));
->   
->       /* RTC */
->       if (!sysbus_realize(SYS_BUS_DEVICE(&s->rtc), errp)) {
-> diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-> index 42e7aa36f3..68245d3ad1 100644
-> --- a/hw/arm/meson.build
-> +++ b/hw/arm/meson.build
-> @@ -48,9 +48,9 @@ arm_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx25_pdk.c'
->   arm_ss.add(when: 'CONFIG_FSL_IMX31', if_true: files('fsl-imx31.c', 'kzm.c'))
->   arm_ss.add(when: 'CONFIG_FSL_IMX6', if_true: files('fsl-imx6.c'))
->   arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-> -  'aspeed_soc.c',
->     'aspeed.c',
->     'aspeed_soc_common.c',
-> +  'aspeed_ast2400.c',
->     'aspeed_ast2600.c',
->     'aspeed_ast10x0.c',
->     'aspeed_eeprom.c',
-
+--=-nuI2+mGGbsHNT14hPH86--
 
