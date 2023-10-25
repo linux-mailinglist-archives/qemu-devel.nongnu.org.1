@@ -2,137 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DF57D6AC1
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 14:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D697D6AFA
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 14:15:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvcay-0004O9-G6; Wed, 25 Oct 2023 08:02:44 -0400
+	id 1qvcls-0000qh-IP; Wed, 25 Oct 2023 08:14:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcap-0004MJ-33
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 08:02:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcae-0006O7-BY
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 08:02:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698235343;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=/MtwwgrpkdhHdvEdprEYZoYBdfbvHUCDmrYKwEpkupg=;
- b=SL+fuag6G6HWcmTMKvcYN+zeh4+5fn4aRHYElaO+crN7X6WYeRAZ3JevQBZE6aC1k7IVTZ
- zQEpVyjo+kbpmE8HJCsIGDHktgFMb5DQ8qJ5ghTt0l3gEMSviA0o28kNdZc965Q6JJmqZw
- xkEq49gMu31HWRINm1iS0NQMJ2mnDps=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-4t7gyphsPfGvsF5bcuwgAw-1; Wed, 25 Oct 2023 08:02:22 -0400
-X-MC-Unique: 4t7gyphsPfGvsF5bcuwgAw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7788ce62d50so690655685a.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 05:02:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvclp-0000q6-7C
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 08:13:57 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvcln-0008S3-KD
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 08:13:56 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-32d895584f1so3805702f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 05:13:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698236034; x=1698840834; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=w5EGazJjI8v0lOq++TCEf6NEqh0hZIe3syCD+tlEmO8=;
+ b=gBOYyc0CoUVSJPzawVAHLPROQI0M4vpAUGFawA+ElnG6qndZqgF9LhplcI+5avpSH7
+ LjZblbbUCpIllirkQ93XzonhcC1FRW46fWlKOpVfOP53t9cu1AvCHZ3Gr79iQcE5cBsU
+ kJSoLa7b2x7WbRn/mkZQTz/0iWzvZfdM/HDagu3Jd+kD0cLPidBA258dnNmCeFVn0RzZ
+ QQC8HhzD13YxfmuhI42ouSD+T0gMpzT4PbmDvOnMWEhTISkh2WPdECQ5rCoAAobjPl0A
+ 85Mu8D8t7HjVK71UKldw1MaTozpw+dZe8T43hfFPWe0FM3ci+RaBbpj8/YX7GT5yFyzs
+ cmUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698235342; x=1698840142;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698236034; x=1698840834;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/MtwwgrpkdhHdvEdprEYZoYBdfbvHUCDmrYKwEpkupg=;
- b=DXqDHA9I3tZJUBqAut7Fj4OkTGXFvC94PcQ76Biml6ehAIemKYrD/74JwoGd1nWRc1
- og76jC5v8kR1nxDBrYnQw07EDOy8aBrz3VEQjQqwHMXaLw3pJGUtB+8V2EVQv05WKe01
- Uz/lQ22exIxNVzddRaXsycA+1gZpQsbf4t936Ir57AADW5DmXw2tJWZ92id2BhVwhzh0
- sfwLiX1wv0XuRYd9UDNe5v+vxC64bSNN5KBpSbGaMNp5JHykdotjwUp/nViUE9xhEkkH
- g9gM/QJnSxQ2qNNmo3VVWN3duGbZR3awzs6r5cqgD9eQ/o1mlWWID1vx3b40cnU9BPLd
- VceA==
-X-Gm-Message-State: AOJu0Yw2p8MPYRKxEmoXLkvzMIoeJpoH2K+zkHlQKssqllfXr42qrMuW
- ZqgATBTQdGSbha3fQJm9NQPI2/aufOhOzrgoSlw1apVr8O/1R2MoHVMtoNr9eefCwRZ84FO2dQW
- bMd77d+cG+QyjgjA=
-X-Received: by 2002:ad4:5bca:0:b0:66d:46ac:2fbe with SMTP id
- t10-20020ad45bca000000b0066d46ac2fbemr15850419qvt.16.1698235341931; 
- Wed, 25 Oct 2023 05:02:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOwBDbYyRS1uE8pmzHUnNbDdMBvdaKY0ONao4SuglHxun66PJcqEJW/DR5/pDawdLKHHZ3EQ==
-X-Received: by 2002:ad4:5bca:0:b0:66d:46ac:2fbe with SMTP id
- t10-20020ad45bca000000b0066d46ac2fbemr15850384qvt.16.1698235341622; 
- Wed, 25 Oct 2023 05:02:21 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
- [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- n18-20020a0cec52000000b0065afd35c762sm4341536qvq.91.2023.10.25.05.02.18
+ bh=w5EGazJjI8v0lOq++TCEf6NEqh0hZIe3syCD+tlEmO8=;
+ b=TF4wWTfHI1JufCV3TOVbgCe0R3JW9tuvZPbBtfgzeUMswukK2poVAMSG+bkqEROyTX
+ d1CzFUSMuxBtZiC9DZ7872whNGDpLYZqGBbWnmgAvHOCcszEcpJpkL/Nm4r4fCAoL4MA
+ TSUzzZSFBJaJdZDlFW4i0HezbxRfKYc3qVAlilj4AQDjzK0qRZiVRALOUafi6163KvMc
+ 1iJBCHsAHK6fZFW7+ZRy+HAnq+kifZLnWp8I96iwqERLq6afVypDLNplz6kQrm3Pb5Hz
+ jHa9BTvtwQapiQegku66nRq3HVYNWSLonL1j3Y4VZg8mkBpbkznY99kuA/UXvsoq8i9d
+ DpCQ==
+X-Gm-Message-State: AOJu0Yze2OdH6/+NHZjaqRpcSjI3orgy8/4NZgWePmeCcKOt9dxHWQGx
+ 0wUZ0UgOmjobloMUdmbKY2CUag==
+X-Google-Smtp-Source: AGHT+IEnE6OqbOHSHYLd5Qt7rhj8uPUk0nxujKtlBmCk1jdvuZdr0EyTCas4oLvzVSK/ns47fo/dEg==
+X-Received: by 2002:adf:fdcb:0:b0:32d:aa11:221d with SMTP id
+ i11-20020adffdcb000000b0032daa11221dmr9284774wrs.27.1698236033556; 
+ Wed, 25 Oct 2023 05:13:53 -0700 (PDT)
+Received: from [192.168.69.115] (ghy59-h01-176-171-219-76.dsl.sta.abo.bbox.fr.
+ [176.171.219.76]) by smtp.gmail.com with ESMTPSA id
+ cc17-20020a5d5c11000000b0031c52e81490sm12223814wrb.72.2023.10.25.05.13.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 05:02:21 -0700 (PDT)
-Message-ID: <6af3eadf-9c3d-46c1-b9a8-634a1a7d5d9d@redhat.com>
-Date: Wed, 25 Oct 2023 14:02:15 +0200
+ Wed, 25 Oct 2023 05:13:53 -0700 (PDT)
+Message-ID: <85e11cd1-cfa1-4410-7938-cf5d120fff95@linaro.org>
+Date: Wed, 25 Oct 2023 14:13:50 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 16/19] arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/2] util/uuid: Add UUID_STR_LEN definition
 Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
- <balaton@eik.bme.hu>, qemu-ppc@nongnu.org, Gerd Hoffmann
- <kraxel@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
- <20231023113047.2572137-17-marcandre.lureau@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231023113047.2572137-17-marcandre.lureau@redhat.com>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Denis V . Lunev"
+ <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
+ Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras <leobras@redhat.com>
+References: <20231025101245.751559-1-clg@redhat.com>
+ <20231025101245.751559-2-clg@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231025101245.751559-2-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,19 +102,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/2023 13.30, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On 25/10/23 12:12, Cédric Le Goater wrote:
+> qemu_uuid_unparse() includes a trailing NUL when writing the uuid
+> string and the buffer size should be UUID_FMT_LEN + 1 bytes. Add a
+> define for this size and use it where required.
 > 
-> The Display Port has some strong PIXMAN dependency.
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Cc: Fam Zheng <fam@euphon.net>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 > ---
->   hw/arm/Kconfig         | 3 ++-
->   hw/display/Kconfig     | 5 +++++
->   hw/display/meson.build | 2 +-
->   3 files changed, 8 insertions(+), 2 deletions(-)
+>   include/qemu/uuid.h              | 1 +
+>   block/parallels-ext.c            | 2 +-
+>   block/vdi.c                      | 2 +-
+>   hw/core/qdev-properties-system.c | 2 +-
+>   hw/hyperv/vmbus.c                | 4 ++--
+>   migration/savevm.c               | 4 ++--
+>   tests/unit/test-uuid.c           | 2 +-
+>   util/uuid.c                      | 2 +-
+>   8 files changed, 10 insertions(+), 9 deletions(-)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+> diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
+> index e24a1099e45f2dfc330a578d3ccbe74f3e52e6c1..4e7afaf1d5bd5d382fefbd6f6275d69cf25e7483 100644
+> --- a/include/qemu/uuid.h
+> +++ b/include/qemu/uuid.h
+> @@ -79,6 +79,7 @@ typedef struct {
+>                    "%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx"
+>   
+>   #define UUID_FMT_LEN 36
+> +#define UUID_STR_LEN (UUID_FMT_LEN + 1)
+>   
+>   #define UUID_NONE "00000000-0000-0000-0000-000000000000"
+
+After this patch, when do we need UUID_FMT_LEN?
+If it is dangerous, better drop it and keep:
+
+#define UUID_STR_LEN (36 + 1)
+
+or
+
+#define UUID_STR_LEN (36 + sizeof('\0'))
 
 
