@@ -2,52 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD967D6199
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AC67D6198
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:23:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvXIe-0001kW-SF; Wed, 25 Oct 2023 02:23:28 -0400
+	id 1qvXIU-0001je-GC; Wed, 25 Oct 2023 02:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qvXIa-0001jy-RC; Wed, 25 Oct 2023 02:23:25 -0400
-Received: from out30-119.freemail.mail.aliyun.com ([115.124.30.119])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qvXIR-0001jF-NJ
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:23:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qvXIW-0001IE-Bn; Wed, 25 Oct 2023 02:23:23 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R131e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=7; SR=0;
- TI=SMTPD_---0VutQvnl_1698214984; 
-Received: from 30.198.0.241(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VutQvnl_1698214984) by smtp.aliyun-inc.com;
- Wed, 25 Oct 2023 14:23:04 +0800
-Message-ID: <5b3078bd-9805-43cc-a7e7-660041477913@linux.alibaba.com>
-Date: Wed, 25 Oct 2023 14:22:06 +0800
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qvXIP-0001IQ-PM
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:23:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698214992;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KRB579DAZSOlgDi0rlS3USIc5mdGL59a32CfqZTqZ/Y=;
+ b=eCdZMzPw7aG3k4hvrVeyruWmjUM7ewC/KM9MUxyCg9GF2ihs/4NW2bN6ytVXWar2hv7SzO
+ skPyMLX/h9UgeBs1CBRJ1QcRgSgmnXaEoYxO7AGTlJ0fDUOYalbbxBoEHx5tw72ND29SEP
+ /yOXAUPls/lNE3orn+W7Pdxc6SWiH8k=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-308-7_V4y_PjMYi8NrJjASaOqA-1; Wed,
+ 25 Oct 2023 02:23:04 -0400
+X-MC-Unique: 7_V4y_PjMYi8NrJjASaOqA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34E0B282477F;
+ Wed, 25 Oct 2023 06:23:04 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1352DC15BB8;
+ Wed, 25 Oct 2023 06:23:04 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2231421E6A1F; Wed, 25 Oct 2023 08:23:03 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Juan Quintela
+ <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Claudio Fontana <cfontana@suse.de>,  Eric Blake
+ <eblake@redhat.com>
+Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-29-farosas@suse.de>
+ <878r7svapt.fsf@pond.sub.org> <87msw7ddfp.fsf@suse.de>
+Date: Wed, 25 Oct 2023 08:23:03 +0200
+In-Reply-To: <87msw7ddfp.fsf@suse.de> (Fabiano Rosas's message of "Tue, 24 Oct
+ 2023 16:32:10 -0300")
+Message-ID: <87lebrkypk.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] target/riscv: add rva22u64 profile definition
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, palmer@rivosinc.com
-References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
- <20231020223951.357513-2-dbarboza@ventanamicro.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20231020223951.357513-2-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.119;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-119.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,100 +84,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fabiano Rosas <farosas@suse.de> writes:
 
-On 2023/10/21 6:39, Daniel Henrique Barboza wrote:
-> The rva22U64 profile, described in:
+> Markus Armbruster <armbru@redhat.com> writes:
 >
-> https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc#rva22-profiles
+>> Fabiano Rosas <farosas@suse.de> writes:
+>>
+>>> Add the direct-io migration parameter that tells the migration code to
+>>> use O_DIRECT when opening the migration stream file whenever possible.
+>>>
+>>> This is currently only used for the secondary channels of fixed-ram
+>>> migration, which can guarantee that writes are page aligned.
+>>>
+>>> However the parameter could be made to affect other types of
+>>> file-based migrations in the future.
+>>>
+>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>
+>> When would you want to enable @direct-io, and when would you want to
+>> leave it disabled?
 >
-> Contains a set of CPU extensions aimed for 64-bit userspace
-> applications. Enabling this set to be enabled via a single user flag
-> makes it convenient to enable a predictable set of features for the CPU,
-> giving users more predicability when running/testing their workloads.
+> That depends on a performance analysis. You'd generally leave it
+> disabled unless there's some indication that the operating system is
+> having trouble draining the page cache.
 >
-> QEMU implements all possible extensions of this profile. The exception
-> is Zicbop (Cache-Block Prefetch Operations) that is not available since
-> QEMU RISC-V does not implement a cache model. For this same reason all
-> the so called 'synthetic extensions' described in the profile that are
-> cache related are ignored (Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa,
-> Zicclsm).
+> However I don't think QEMU should attempt any kind of prescription in
+> that regard.
 >
-> An abstraction called RISCVCPUProfile is created to store the profile.
-> 'ext_offsets' contains mandatory extensions that QEMU supports. Same
-> thing with the 'misa_ext' mask. Optional extensions must be enabled
-> manually in the command line if desired.
->
-> The design here is to use the common target/riscv/cpu.c file to store
-> the profile declaration and export it to the accelerator files. Each
-> accelerator is then responsible to expose it (or not) to users and how
-> to enable the extensions.
->
-> Next patches will implement the profile for TCG and KVM.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->   target/riscv/cpu.c | 20 ++++++++++++++++++++
->   target/riscv/cpu.h | 12 ++++++++++++
->   2 files changed, 32 insertions(+)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index c64cd726f4..1b75b506c4 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1397,6 +1397,26 @@ Property riscv_cpu_options[] = {
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
-> +/* Optional extensions left out: RVV, zfh, zkn, zks */
-> +static RISCVCPUProfile RVA22U64 = {
-> +    .name = "rva22u64",
-> +    .misa_ext = RVM | RVA | RVF | RVD | RVC,
+> From the migration implementation perspective, we need to provide
+> alignment guarantees on the stream before allowing direct IO to be
+> enabled. In this series we're just enabling it for the secondary multifd
+> channels which do page-aligned reads/writes.
 
-Why not include RVI?
+I'm asking because QEMU provides too many configuration options with too
+little guidance on how to use them.
 
-Zhiwei
+"You'd generally leave it disabled unless there's some indication that
+the operating system is having trouble draining the page cache" is
+guidance.  It'll be a lot more useful in documentation than in the
+mailing list archive ;)
 
-> +    .ext_offsets = {
-> +        CPU_CFG_OFFSET(ext_zicsr), CPU_CFG_OFFSET(ext_zihintpause),
-> +        CPU_CFG_OFFSET(ext_zba), CPU_CFG_OFFSET(ext_zbb),
-> +        CPU_CFG_OFFSET(ext_zbs), CPU_CFG_OFFSET(ext_zfhmin),
-> +        CPU_CFG_OFFSET(ext_zkt), CPU_CFG_OFFSET(ext_zicntr),
-> +        CPU_CFG_OFFSET(ext_zihpm), CPU_CFG_OFFSET(ext_zicbom),
-> +        CPU_CFG_OFFSET(ext_zicboz),
-> +
-> +        RISCV_PROFILE_EXT_LIST_END
-> +    }
-> +};
-> +
-> +RISCVCPUProfile *riscv_profiles[] = {
-> +    &RVA22U64, NULL,
-> +};
-> +
->   static Property riscv_cpu_properties[] = {
->       DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
->   
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 7f61e17202..53c1970e0a 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -66,6 +66,18 @@ const char *riscv_get_misa_ext_description(uint32_t bit);
->   
->   #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
->   
-> +typedef struct riscv_cpu_profile {
-> +    const char *name;
-> +    uint32_t misa_ext;
-> +    bool enabled;
-> +    bool user_set;
-> +    const int32_t ext_offsets[];
-> +} RISCVCPUProfile;
-> +
-> +#define RISCV_PROFILE_EXT_LIST_END -1
-> +
-> +extern RISCVCPUProfile *riscv_profiles[];
-> +
->   /* Privileged specification version */
->   enum {
->       PRIV_VERSION_1_10_0 = 0,
+>> What happens when you enable @direct-io with a migration that cannot use
+>> O_DIRECT?
+>
+> In this version of the series Daniel suggested that we fail migration in
+> case there's no support for direct IO or the migration doesn't support
+> it.
+
+Makes sense.
+
 
