@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043177D6A75
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 13:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374557D6A91
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 13:57:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvcRs-0004nY-TL; Wed, 25 Oct 2023 07:53:20 -0400
+	id 1qvcUy-0005v9-OD; Wed, 25 Oct 2023 07:56:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcRn-0004mb-Tn
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:53:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcUu-0005th-0Z
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:56:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcRZ-0004Oq-RJ
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:53:13 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcUq-00058O-Ag
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:56:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698234773;
+ s=mimecast20190719; t=1698234982;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=LqXLR1fzx9sf3d1tz/D8ZhMB31ufH/Xigc7+XgPUu+g=;
- b=XlXL8cYRPv8XMw2aNaUgRjPwQSfPz249T7KgFkoF0uaIak8gtb9+8TZ+mniFVoJY0Chmyc
- +aNyp2FWYNzUNbACAfm0ifn9loWEmm3fgt/Ld4kNSDG9ME78bHUoRFI3KtnAT5D4uqFV7p
- iP22RclCfBYaUtWveCvKVAeiGNHxe0M=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=K/rvoJ6Ap7z8s2B6c5QjiszayBRCvcri2jzCyvKtscI=;
+ b=YDf/4qnoUmElYH5qvEewQGn6rMLecmJMz0t50xAGad7n1hQleEDUtR1LbJ46skZbo6ORLP
+ rlTjDg4p5LkmKy7lNXvHkfjQpmQccAUB/M4zFGp5Lk3tU9/snP+N7B+jaa5Du+9qQ1G0Et
+ RD5XYhhcGdlRJcN/utpiqsuIRX0zfNY=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-Fw61sj4YPxGzcuqdH_CLBw-1; Wed, 25 Oct 2023 07:52:52 -0400
-X-MC-Unique: Fw61sj4YPxGzcuqdH_CLBw-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41cca916954so72918951cf.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 04:52:52 -0700 (PDT)
+ us-mta-402-cFT9xByEMTmjuxY5J_vNtg-1; Wed, 25 Oct 2023 07:56:20 -0400
+X-MC-Unique: cFT9xByEMTmjuxY5J_vNtg-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41cb7904d5aso71920801cf.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 04:56:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698234772; x=1698839572;
+ d=1e100.net; s=20230601; t=1698234980; x=1698839780;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LqXLR1fzx9sf3d1tz/D8ZhMB31ufH/Xigc7+XgPUu+g=;
- b=lRbPWzfTz37uDkbTusl1LM1EeSnODUcAdI4Ie5WRObjHhHtu93/8awzokNrrye9UXZ
- NESZh5m2c2yaMGPyr3/Phvyy4S0Yq0nv68FJZnH8zn70MHQBxFRwQriT5dNC9h6HroQc
- xoTcXQA7nbAos1rrlbbxoN31gQh4lt9g1S4x+8bR/jGLL5s9ceFR7EUYf9LsHpqnUSWy
- aX/li4HXxEC9kBKr3IXrOrtYlh3Z15XRifDtC2lXmgO5AVo9H+ZDsu9QOngbg2t+/g+Q
- Mt1+5DY3qyLAFB7vnvCQXzn3DHWbs1vRtSAsT/niNqpM19vZ7MLAQEaLLPPpfh1sK/cc
- rGNQ==
-X-Gm-Message-State: AOJu0YxaFiaA/wGzh7tqOOjB5xl9Ho+OrweToyNTJnWwbL9dntBqXp9m
- rAD49BH7T9AOZH/cwP9594wa0yuVpcmgOS1oRh/I2WKsIH20aG/KRT1WNU4E/NthAfcpUUwCyTY
- eqJqQAjwO5++IH7dE32L8V9U=
-X-Received: by 2002:a05:622a:1701:b0:419:a2c6:8207 with SMTP id
- h1-20020a05622a170100b00419a2c68207mr19796383qtk.22.1698234772082; 
- Wed, 25 Oct 2023 04:52:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6GJ0+97P6xMLN8GkHjb9kQH5tdRROYDVFQFmZdym480rNuqGfRT6ViWyctC0bn9s2axBf7Q==
-X-Received: by 2002:a05:622a:1701:b0:419:a2c6:8207 with SMTP id
- h1-20020a05622a170100b00419a2c68207mr19796369qtk.22.1698234771832; 
- Wed, 25 Oct 2023 04:52:51 -0700 (PDT)
+ bh=K/rvoJ6Ap7z8s2B6c5QjiszayBRCvcri2jzCyvKtscI=;
+ b=oNlJayTz+XyjbPk4V0w936odNfqyI+FjrmtuQrEV53QiNZ/XSfWI/g/NzPxBZItcrm
+ z14b6A6vaQOVGrGqyAY0WWk9FQA/j4cPx02RDwwJMuqy9LBjN+OCzLJMc4TOKhrKBQGR
+ dKnH/mrrWlE17Af7qMvq7/8tsYB2wygVCIoe7A13/JmfCe6PyzjoLmFIOAC2v9TIpRV1
+ tFtLM0OopBYGCVcrd73J3YXe6e1tgOH11Y6RKIwSSpitLBFx4u9FB5LiBFAL0i1/lmY5
+ ZK2X+FBsRYsDSaboYKObhZlIaFJXtMsDwYoHTXZdNybPeJmQ8dobG4XP8Jr2p4so7ul5
+ nmDg==
+X-Gm-Message-State: AOJu0YzWifZnQ2AintmdMP6SXlZ6mhR1LEjpabgx7sH8lTCqYQXY9KNm
+ qgOBR43LqKQOfbmKWiVu9gtMv9hW3DmGmVqozF8Ab+vNrGJGgMBKNasFL/AJm45SIrLCrPtLcRj
+ DageNyjru8g9YIuU=
+X-Received: by 2002:a05:622a:1316:b0:410:9af1:f9b2 with SMTP id
+ v22-20020a05622a131600b004109af1f9b2mr20832854qtk.3.1698234979704; 
+ Wed, 25 Oct 2023 04:56:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFo+UtF2K4jG9/j0ZQcgVEQRA2FjgBVfYij9q3bqnrR1qUjKsbtvb8MzBYzRIT3+h7EvgrXmA==
+X-Received: by 2002:a05:622a:1316:b0:410:9af1:f9b2 with SMTP id
+ v22-20020a05622a131600b004109af1f9b2mr20832837qtk.3.1698234979460; 
+ Wed, 25 Oct 2023 04:56:19 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
  [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- fj22-20020a05622a551600b004198ae7f841sm4172935qtb.90.2023.10.25.04.52.48
+ j9-20020ac84409000000b0041811e71890sm4153625qtn.33.2023.10.25.04.56.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 04:52:51 -0700 (PDT)
-Message-ID: <52338f56-cf2d-4eba-a6a4-5ca517f9fea6@redhat.com>
-Date: Wed, 25 Oct 2023 13:52:46 +0200
+ Wed, 25 Oct 2023 04:56:18 -0700 (PDT)
+Message-ID: <3ceb0bcf-649e-45f6-a5be-1140802e70c7@redhat.com>
+Date: Wed, 25 Oct 2023 13:56:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/19] ui/vnc: VNC requires PIXMAN
+Subject: Re: [PATCH v5 13/19] ui/spice: SPICE/QXL requires PIXMAN
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
@@ -77,7 +77,7 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
  "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
- <20231023113047.2572137-13-marcandre.lureau@redhat.com>
+ <20231023113047.2572137-14-marcandre.lureau@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,17 +121,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231023113047.2572137-13-marcandre.lureau@redhat.com>
+In-Reply-To: <20231023113047.2572137-14-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -153,44 +153,12 @@ On 23/10/2023 13.30, marcandre.lureau@redhat.com wrote:
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   meson.build    | 6 +++++-
->   ui/meson.build | 4 ++--
->   2 files changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 395d7155f6..c4dd9e01ea 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1536,7 +1536,11 @@ endif
->   vnc = not_found
->   jpeg = not_found
->   sasl = not_found
-> -if get_option('vnc').allowed() and have_system
-> +if get_option('vnc') \
-> +             .disable_auto_if(not have_system) \
-> +             .require(pixman.found(),
-> +                      error_message: 'cannot enable VNC if pixman is not available') \
-> +             .allowed()
->     vnc = declare_dependency() # dummy dependency
->     jpeg = dependency('libjpeg', required: get_option('vnc_jpeg'),
->                       method: 'pkg-config')
-> diff --git a/ui/meson.build b/ui/meson.build
-> index 7c99613950..b3525ef064 100644
-> --- a/ui/meson.build
-> +++ b/ui/meson.build
-> @@ -46,8 +46,8 @@ vnc_ss.add(files(
->   ))
->   vnc_ss.add(zlib, jpeg, gnutls)
->   vnc_ss.add(when: sasl, if_true: files('vnc-auth-sasl.c'))
-> -system_ss.add_all(when: vnc, if_true: vnc_ss)
-> -system_ss.add(when: vnc, if_false: files('vnc-stubs.c'))
-> +system_ss.add_all(when: [vnc, pixman], if_true: vnc_ss)
-> +system_ss.add(when: [vnc, pixman], if_false: files('vnc-stubs.c'))
+>   meson.build        |  6 +++++-
+>   hw/display/Kconfig |  2 +-
+>   ui/meson.build     | 10 +++++-----
+>   3 files changed, 11 insertions(+), 7 deletions(-)
 
-Is the change to ui/meson.build required at all? ... if I get the first hunk 
-right, if "vnc" is enabled, that means that pixman has been found, too?
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
 
