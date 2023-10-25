@@ -2,113 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F097D664D
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8147D664E
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:10:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvZtO-0005qc-Rq; Wed, 25 Oct 2023 05:09:34 -0400
+	id 1qvZtR-0005xw-1j; Wed, 25 Oct 2023 05:09:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <JuliusAndreas.Hiller@vector.com>)
- id 1qvXOA-00048W-CL
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:29:10 -0400
-Received: from mail-he1eur01on0628.outbound.protection.outlook.com
- ([2a01:111:f400:fe1e::628]
- helo=EUR01-HE1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <JuliusAndreas.Hiller@vector.com>)
- id 1qvXO6-0002Nd-3G
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:29:10 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fvwnppX7a7qtHMnU9nexegudvlJRkKYkjUJpnkWQ31ieIB6bYV63N4qvq+gLl1Nr7ltKoNc/3KEdj+YUyJcplUuWtC6aJc0fi4vYMGCEKJDRbUVAlFRxuPtVE1IRGYaSdI6XIRZrofnk7zSmZfvX0RXCwO7BIviiILrLSUAE3O3UWTT78TKI+BEY+3sB30dzIF+yyQQkv5ouNzPKwSEVObv+9a4ZCmBz05Hwb0BrEav5fe6s61URcjbPMRNWJa4KWo6Wqfkb9n+VvIIJxVbxVJwLTn3lOtN0p0ziLq+K2bo0cBTawe8CwUsN6gxgqJbafnTpywMfPViAEVAxj4n6uA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=up4cz9Kbg83aywHpkO2jE9cXSpxRpk75xTbe6McWHCE=;
- b=IV3u6LG9NDWM7iBRSP6+xotIz17khrr6RFZzC6zkVujOejuIGAe7t7CT51Cn/W2hvOqUG8tzhDoKiyR4INvavpuxvEA5yxsABt8lCXcmsplLoHqc1oTGBrI5p1/VPbiO0zyswKh/9j9Rk1FMjyo5t960gHlc3cKTjVKDdlvDd9YMMpnNPhEGfHJf5kJfGBZzxDhIs9CMV/wpMZj0I8fuXdtRVC0HcW5lpQtKYq7ZMCHX3gBn+Rb+YxHbutLXzn6TvNrnEjZyr2oTBlro37W2fVX0HWPpcb5j3uaLjZh09x8jxssyr86ujqM9gU12QkN8ou10I4eD+iILdvSTel+gxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 185.199.76.237) smtp.rcpttodomain=redhat.com smtp.mailfrom=vector.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=vector.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vector.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=up4cz9Kbg83aywHpkO2jE9cXSpxRpk75xTbe6McWHCE=;
- b=fmlX/4VwXefoEs/7loMGosh0X940g/xmPgrbc/ELEn15YRog+FEeAyLDKB5BWleQRwanfw9lyeDbnoS/eL+px4SxFAprFjDZ77U99qqyQYVPj4m1feI4KSl8j946jXfzTBxa2yub09XK6ryeuCvCiddD8tSgYb5zamXHFUSiRAU=
-Received: from AS9PR05CA0191.eurprd05.prod.outlook.com (2603:10a6:20b:495::16)
- by AS1PR01MB10223.eurprd01.prod.exchangelabs.com
- (2603:10a6:20b:47e::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.19; Wed, 25 Oct
- 2023 06:29:02 +0000
-Received: from AM1PEPF000252E0.eurprd07.prod.outlook.com
- (2603:10a6:20b:495:cafe::32) by AS9PR05CA0191.outlook.office365.com
- (2603:10a6:20b:495::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.34 via Frontend
- Transport; Wed, 25 Oct 2023 06:29:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 185.199.76.237)
- smtp.mailfrom=vector.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=vector.com;
-Received-SPF: Pass (protection.outlook.com: domain of vector.com designates
- 185.199.76.237 as permitted sender) receiver=protection.outlook.com;
- client-ip=185.199.76.237; helo=mail.vector.com; pr=C
-Received: from mail.vector.com (185.199.76.237) by
- AM1PEPF000252E0.mail.protection.outlook.com (10.167.16.58) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6933.15 via Frontend Transport; Wed, 25 Oct 2023 06:29:02 +0000
-Received: from DE20455NB.vi.vector.int (10.110.138.73) by
- vistrexch1.vi.vector.int (10.149.11.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Wed, 25 Oct 2023 08:29:02 +0200
-From: Julius Andreas Hiller <juliusandreas.hiller@vector.com>
-To: <pbonzini@redhat.com>
-CC: <qemu-devel@nongnu.org>, Julius Andreas Hiller
- <JuliusAndreas.Hiller@vector.com>
-Subject: [PATCH 1/1] Add acpi option to microvm documentation
-Date: Wed, 25 Oct 2023 08:28:19 +0200
-Message-ID: <20231025062819.23175-2-juliusandreas.hiller@vector.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231025062819.23175-1-juliusandreas.hiller@vector.com>
-References: <20231025062819.23175-1-juliusandreas.hiller@vector.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.110.138.73]
-X-ClientProxiedBy: vistrexch1.vi.vector.int (10.149.11.5) To
- vistrexch1.vi.vector.int (10.149.11.5)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM1PEPF000252E0:EE_|AS1PR01MB10223:EE_
-X-MS-Office365-Filtering-Correlation-Id: f26b9c67-6bd2-4b43-58c9-08dbd523ae31
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MOh7KDwKP9xoHQ3TUoJxuc040DIhJu6k7jB8j1AP4stzPKt0+mTAzY62jdkoL1LO3ON77AzkSFVwhFz4K5yvc3GdhsNcmomxi0z97PkYWqeuqPktkRFQqL5s7MJ8Wl5vYuhRWnhz5OR3hMmzBBAR2NQuS4zoRl9a1RNxr7UEi44XVKnpogbWh1VfoGq7rYThQiqhCXHb7g5eSqvwDlTM+j4i7bGWFJibEZ6vmt3hpOQGGqZezUmcCfGuzPfo1nFVWv7EUKgwtcUXBKHuUOFwPiL/4OrBU4NxPndnvvGL5XLjGtQyQB81i4/RgpRHcXFpcLFAPNE/9fE3fE8Afd/VSIQ4/PxHOdNUrQMDxh2QA0SzRVtbQdjAUUe1Jvr7sfcYa1v4JKk5o5ebTZ51iKQs4YxQSk8pE+4rUc1SB8UDTC3UVDx82ZacJIFLJooimD4Y3b46oW8Z1A9gCq+PfRG8NO4vqMqAzELT/osVci8ez4+hl+iobIl04UT8xFrbS+4mGwgXa9mKOCnt3fM6aBQPMmjIx/dIPrYfJmw7ElIWepCR5k4ahId3J/lD26DKJCooaJDDhMzZLW6oIznPzQ2mL0IDFNla3aWv/oyOcLyJPg8AI3B5AYIVlXhcAzeNL+hMhC1+2hDLhen8gV8cFCYiikPcvbVrG5fHMsO3799ki/+hj2JeYal5vyg/esOo5V4j7PoaN+qIE+q4BRoyE/TVhy/NmlGeSVc3ChGcJ75ubA+o4yuUCsty5EyTZ557fNHU
-X-Forefront-Antispam-Report: CIP:185.199.76.237; CTRY:DE; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.vector.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(396003)(376002)(136003)(346002)(230922051799003)(451199024)(186009)(64100799003)(82310400011)(1800799009)(46966006)(36840700001)(26005)(16526019)(336012)(107886003)(1076003)(2616005)(47076005)(82740400003)(356005)(81166007)(86362001)(36756003)(36860700001)(40480700001)(83380400001)(70586007)(70206006)(316002)(6916009)(54906003)(4326008)(8676002)(8936002)(41300700001)(5660300002)(2906002)(6666004)(478600001)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: vector.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2023 06:29:02.5473 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f26b9c67-6bd2-4b43-58c9-08dbd523ae31
-X-MS-Exchange-CrossTenant-Id: c844b2b9-7a68-473f-b386-e2e1b968279d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=c844b2b9-7a68-473f-b386-e2e1b968279d; Ip=[185.199.76.237];
- Helo=[mail.vector.com]
-X-MS-Exchange-CrossTenant-AuthSource: AM1PEPF000252E0.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR01MB10223
-Received-SPF: pass client-ip=2a01:111:f400:fe1e::628;
- envelope-from=JuliusAndreas.Hiller@vector.com;
- helo=EUR01-HE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
+ id 1qvXzj-0003ac-9e; Wed, 25 Oct 2023 03:07:59 -0400
+Received: from zg8tmtu5ljg5lje1ms4xmtka.icoremail.net ([159.89.151.119])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <duchao@eswincomputing.com>)
+ id 1qvXzg-0000y8-0B; Wed, 25 Oct 2023 03:07:59 -0400
+Received: from localhost.localdomain (unknown [10.12.130.31])
+ by app1 (Coremail) with SMTP id TAJkCgAHbkW9vjhlKukAAA--.2473S4;
+ Wed, 25 Oct 2023 15:07:41 +0800 (CST)
+From: Chao Du <duchao@eswincomputing.com>
+To: qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org
+Subject: [PATCH] target/arm: kvm64: remove a redundant KVM_CAP_SET_GUEST_DEBUG
+ probe
+Date: Wed, 25 Oct 2023 07:07:26 +0000
+Message-Id: <20231025070726.22689-1-duchao@eswincomputing.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: TAJkCgAHbkW9vjhlKukAAA--.2473S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4DKw1DAw4fur4Uur17ZFb_yoW8tr1fp3
+ Z3Crs3Jr4ktasxJw1xArsrZr13JrWkKwnFy34FvryrGasxKw15AFWvkrZ5CFyrurWI9r15
+ tF4vyF4Sva1kXr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvS14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+ JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+ CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+ 2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+ W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAKzI0EY4vE
+ 52x082I5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+ C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+ wI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+ v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+ jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43
+ ZEXa7VUU6RRtUUUUU==
+X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
+Received-SPF: pass client-ip=159.89.151.119;
+ envelope-from=duchao@eswincomputing.com;
+ helo=zg8tmtu5ljg5lje1ms4xmtka.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 25 Oct 2023 05:09:30 -0400
+X-Mailman-Approved-At: Wed, 25 Oct 2023 05:09:34 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,37 +70,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Julius Andreas Hiller <JuliusAndreas.Hiller@vector.com>
+The KVM_CAP_SET_GUEST_DEBUG is probed during kvm_init().
+gdbserver will fail to start if the CAP is not supported.
+So no need to make another probe here, like other targets.
 
+Signed-off-by: Chao Du <duchao@eswincomputing.com>
 ---
- docs/system/i386/microvm.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/arm/kvm64.c | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
-diff --git a/docs/system/i386/microvm.rst b/docs/system/i386/microvm.rst
-index 1675e37d3e..5e11dbab0d 100644
---- a/docs/system/i386/microvm.rst
-+++ b/docs/system/i386/microvm.rst
-@@ -4,7 +4,7 @@
- ``microvm`` is a machine type inspired by ``Firecracker`` and
- constructed after its machine model.
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 4bb68646e4..b0bf59b5a1 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -31,13 +31,9 @@
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ghes.h"
  
--It's a minimalist machine type without ``PCI`` nor ``ACPI`` support,
-+It's a minimalist machine type without ``PCI`` support,
- designed for short-lived guests. microvm also establishes a baseline
- for benchmarking and optimizing both QEMU and guest operating systems,
- since it is optimized for both boot time and footprint.
-@@ -50,7 +50,9 @@ It supports the following machine-specific options:
- - microvm.isa-serial=bool (Set off to disable the instantiation an ISA serial port)
- - microvm.pic=OnOffAuto (Enable i8259 PIC)
- - microvm.rtc=OnOffAuto (Enable MC146818 RTC)
--- microvm.auto-kernel-cmdline=bool (Set off to disable adding virtio-mmio devices to the kernel cmdline)
-+- microvm.acpi=bool (Set off to disable ACPI)
-+- microvm.auto-kernel-cmdline=bool (Set on to enable adding virtio-mmio devices to the kernel cmdline, this requires microvm.acpi=off)
-+
+-static bool have_guest_debug;
  
+ void kvm_arm_init_debug(KVMState *s)
+ {
+-    have_guest_debug = kvm_check_extension(s,
+-                                           KVM_CAP_SET_GUEST_DEBUG);
+-
+     max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
+     hw_watchpoints = g_array_sized_new(true, true,
+                                        sizeof(HWWatchpoint), max_hw_wps);
+@@ -1140,33 +1136,23 @@ static const uint32_t brk_insn = 0xd4200000;
  
- Boot options
+ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+ {
+-    if (have_guest_debug) {
+-        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
+-            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
+-            return -EINVAL;
+-        }
+-        return 0;
+-    } else {
+-        error_report("guest debug not supported on this kernel");
++    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
++        cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
+         return -EINVAL;
+     }
++    return 0;
+ }
+ 
+ int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+ {
+     static uint32_t brk;
+ 
+-    if (have_guest_debug) {
+-        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk, 4, 0) ||
+-            brk != brk_insn ||
+-            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
+-            return -EINVAL;
+-        }
+-        return 0;
+-    } else {
+-        error_report("guest debug not supported on this kernel");
++    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk, 4, 0) ||
++        brk != brk_insn ||
++        cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
+         return -EINVAL;
+     }
++    return 0;
+ }
+ 
+ /* See v8 ARM ARM D7.2.27 ESR_ELx, Exception Syndrome Register
 -- 
-2.34.1
+2.17.1
 
 
