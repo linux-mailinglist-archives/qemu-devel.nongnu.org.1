@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262787D709F
+	by mail.lfdr.de (Postfix) with ESMTPS id 2758D7D70A0
 	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:18:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfax-0005cl-P2; Wed, 25 Oct 2023 11:14:56 -0400
+	id 1qvfb4-0005fv-7v; Wed, 25 Oct 2023 11:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qvfau-0005Zk-BY
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:14:52 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qvfay-0005ef-Bt
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:14:56 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qvfas-0003iB-PR
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:14:52 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6934202b8bdso5639648b3a.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 08:14:50 -0700 (PDT)
+ id 1qvfax-0003jD-0o
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:14:56 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1c9d3a21f7aso49429365ad.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 08:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1698246889; x=1698851689; darn=nongnu.org;
+ d=sifive.com; s=google; t=1698246893; x=1698851693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PWrYGN8E3tylotAH/OAbUnzxmsSVvrM8xFBXqtl296k=;
- b=guQmR5VlmFytiDsbWHRptftsuNDvrW78PCrZGfR7M68KACGmh5j+B+hSl/2mR3CQuq
- lpCq0iY9sfRHjBvcNxW1Eo7Dt2VuEbJEBmNUWMdp/mxuF86nyj0zYqTdxpyht7axLxZ6
- 8/twx0y8qkg6EBZ9ExW7qtl5T07ahVxRf+RdTDnYOaMeCBc59lDoDphrGo1Hn44sT2F9
- 6TqO0gNzPUHKH1c02MeCXWocBHozjnRV5geF5mHWAncUB9qIlGFl8WoZsT6vuwwVv+Ee
- c8ppHw6ovamZf2eTzGXpt03rvnpql/IWuUzErptt2LB78yAC1JvPkeVre5g92sVrK2//
- 1Aww==
+ bh=7L+eMQC/hP6kOAoEfxyL11NalUi4Lht4i6fwiKN8tz4=;
+ b=I39uIJOnxTIXSee3ioxKqvFbap1qMmzQipvZqYJV7hjbIsPK+tY9wIIwNAj3RRjUbN
+ 3uGCU/EIvLb1c2VrdoD/Y6b3sSLcVLhiC+eKL97hFfwIwirfBraszAwiqz2tYr0LcYTq
+ TnySAbpg34KOHRXfW0ulYaBeGzLjo0+uOzcYE35mtLrKTKgq5P6rsRkMvh84XknnScD/
+ dRysMQisU/1/CR3coODERyJWtGkHE+uRgLZP4jOEWUF0X3cqqrUe5OBptW5yDKdDj5LD
+ Aj6mHnP9TdDYtt7bS8z0NmHHjpElYteYnCF43wVMG36Cxt25thnoT5gnaUSL2TS7FBSU
+ BYcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698246889; x=1698851689;
+ d=1e100.net; s=20230601; t=1698246893; x=1698851693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PWrYGN8E3tylotAH/OAbUnzxmsSVvrM8xFBXqtl296k=;
- b=vVzGQ6VVNsu1X6WW0dV0dcNh9u8/2BdsOvfZidW+q6XhvCOlZ4eNF3ixxFRsdXRZS5
- hWhJBj0Xu22h89xxz0huOhTAUDI1J7GDwcLEMAH2ShbYmeFknn0z9AGOHzWiCDVT0Iho
- OlsK73Cv8TWd34CBdgOOM+5RafBZnnyK2EvLEt21CVAOzN/Gu3xB0zhUad2bWK0j6Omz
- PwE9owkFPX6OK4/0CQuSk7o2CwHbphm2rq3Yi9D9/gZc2SUAEfihe/+x6mb+4wBD+ZuW
- NGtmroJkUaD09tAKBBNsiYBRpqBD7gF7FbkbUMTwXLFhj9qLPHGNWPc17PCQpHUHk1o5
- dkmA==
-X-Gm-Message-State: AOJu0YztcpI43nFjF2JH2LSeKGZEODPQHn9vI1DaJYyQbp/eKY4/xu4v
- iFyzLXfbPN+9TvGPITjpiocHmgLCkGz2yVqqLeVAFN4kZ1FvichVeUzA8O9zpS/a91xrL/QiCCN
- UAw1GboSIWsWo36wQTn1h7+K7BZxNq1xZE9ShGmHz+kHpFN8tPzenCs734IMO3YQnqVc4LpiV6x
- WF
-X-Google-Smtp-Source: AGHT+IG5aaYA5QecqjCrJdpz/r46e3szGdy1VrE7EdoCmoiiEP3RCqxCJeLv78rkc3SSUJudJb5D5Q==
-X-Received: by 2002:a05:6a20:840b:b0:17b:426f:829 with SMTP id
- c11-20020a056a20840b00b0017b426f0829mr7469494pzd.37.1698246889183; 
- Wed, 25 Oct 2023 08:14:49 -0700 (PDT)
+ bh=7L+eMQC/hP6kOAoEfxyL11NalUi4Lht4i6fwiKN8tz4=;
+ b=Kvkr1UHZgWRMOdr56lkbrWlGOklNYyiPdQZ3t2ai7o5O5G97nudKXdlWxHNLDs9/60
+ CRCBqfHVuiikEVal8h7DbGdkqauXlKYP6/paSiDGlOEkRU+z5xL7Z2JqvHMYjxY7VMkd
+ IxCBI92pCQbUMb0x71extOpzUnx+0Wcz/u6yqOGjoiZP5ZftHTUdd4mwuPJoJzFmLc/x
+ wHhJYzTZJ/cRZ+XKguAcoHUpQZQG3HTAIQjtBwIMxKBZ5trQtHB3KJjqC2/ArZ8TmIVH
+ TUoFFAOj1y46F/Y9HJdzAzGY6UdLZWbvYVfNjA4p/n9/e+R03VUff3qULqA92BUNbiir
+ exXA==
+X-Gm-Message-State: AOJu0YwAtKokEwbOgPgT0J5oARZWHbJ0HWPWaA/5QKXrXQmTpaYYXyVN
+ naT1SmmkakibqE0IvVE+Zgwv2o3tKdF53e9a94pczoA/c52j1ZaLO/Osh125gHXMo2wa1Jg7lds
+ rwVNaGGh3U3OkE4dlvnwMLZuqRF16CYk3pTF14Wa+XGri3e656uI7Hpmh/HelqeUrExm3voayoF
+ CM
+X-Google-Smtp-Source: AGHT+IFDsns5jiki7uY7BOPx8QXLgbO1yLricUgKvvEghnb56xEFytmDpk0+G6/40sqWppXjSWFQAA==
+X-Received: by 2002:a17:903:23cd:b0:1ca:7086:60ec with SMTP id
+ o13-20020a17090323cd00b001ca708660ecmr14467656plh.65.1698246893341; 
+ Wed, 25 Oct 2023 08:14:53 -0700 (PDT)
 Received: from duncan.localdomain (125-228-20-175.hinet-ip.hinet.net.
  [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- w14-20020a63160e000000b005b8ebef9fa0sm2677807pgl.83.2023.10.25.08.14.47
+ w14-20020a63160e000000b005b8ebef9fa0sm2677807pgl.83.2023.10.25.08.14.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 08:14:48 -0700 (PDT)
+ Wed, 25 Oct 2023 08:14:53 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
 Cc: Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 10/14] target/riscv: Move vector crypto extensions to
- riscv_cpu_extensions
-Date: Wed, 25 Oct 2023 23:13:34 +0800
-Message-Id: <20231025151341.725477-11-max.chou@sifive.com>
+ Alistair Francis <Alistair.Francis@wdc.com>
+Subject: [PATCH 11/14] disas/riscv: Add rv_fmt_vd_vs2_uimm format
+Date: Wed, 25 Oct 2023 23:13:35 +0800
+Message-Id: <20231025151341.725477-12-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231025151341.725477-1-max.chou@sifive.com>
 References: <20231025151341.725477-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,68 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because the vector crypto specification is ratified, so move theses
-extensions from riscv_cpu_experimental_exts to riscv_cpu_extensions.
+Add rv_fmt_vd_vs2_uimm format for vector crypto instructions.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/cpu.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ disas/riscv.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 1709df76a9b..5b5805399ee 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1342,6 +1342,24 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zcmt", ext_zcmt, false),
-     MULTI_EXT_CFG_BOOL("zicond", ext_zicond, false),
- 
-+    /* Vector cryptography extensions */
-+    MULTI_EXT_CFG_BOOL("zvbb", ext_zvbb, false),
-+    MULTI_EXT_CFG_BOOL("zvbc", ext_zvbc, false),
-+    MULTI_EXT_CFG_BOOL("zvkb", ext_zvkg, false),
-+    MULTI_EXT_CFG_BOOL("zvkg", ext_zvkg, false),
-+    MULTI_EXT_CFG_BOOL("zvkned", ext_zvkned, false),
-+    MULTI_EXT_CFG_BOOL("zvknha", ext_zvknha, false),
-+    MULTI_EXT_CFG_BOOL("zvknhb", ext_zvknhb, false),
-+    MULTI_EXT_CFG_BOOL("zvksed", ext_zvksed, false),
-+    MULTI_EXT_CFG_BOOL("zvksh", ext_zvksh, false),
-+    MULTI_EXT_CFG_BOOL("zvkt", ext_zvkt, false),
-+    MULTI_EXT_CFG_BOOL("zvkn", ext_zvkn, false),
-+    MULTI_EXT_CFG_BOOL("zvknc", ext_zvknc, false),
-+    MULTI_EXT_CFG_BOOL("zvkng", ext_zvkng, false),
-+    MULTI_EXT_CFG_BOOL("zvks", ext_zvks, false),
-+    MULTI_EXT_CFG_BOOL("zvksc", ext_zvksc, false),
-+    MULTI_EXT_CFG_BOOL("zvksg", ext_zvksg, false),
-+
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-@@ -1374,24 +1392,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-zvfbfmin", ext_zvfbfmin, false),
-     MULTI_EXT_CFG_BOOL("x-zvfbfwma", ext_zvfbfwma, false),
- 
--    /* Vector cryptography extensions */
--    MULTI_EXT_CFG_BOOL("x-zvbb", ext_zvbb, false),
--    MULTI_EXT_CFG_BOOL("x-zvbc", ext_zvbc, false),
--    MULTI_EXT_CFG_BOOL("x-zvkb", ext_zvkg, false),
--    MULTI_EXT_CFG_BOOL("x-zvkg", ext_zvkg, false),
--    MULTI_EXT_CFG_BOOL("x-zvkned", ext_zvkned, false),
--    MULTI_EXT_CFG_BOOL("x-zvknha", ext_zvknha, false),
--    MULTI_EXT_CFG_BOOL("x-zvknhb", ext_zvknhb, false),
--    MULTI_EXT_CFG_BOOL("x-zvksed", ext_zvksed, false),
--    MULTI_EXT_CFG_BOOL("x-zvksh", ext_zvksh, false),
--    MULTI_EXT_CFG_BOOL("x-zvkt", ext_zvkt, false),
--    MULTI_EXT_CFG_BOOL("x-zvkn", ext_zvkn, false),
--    MULTI_EXT_CFG_BOOL("x-zvknc", ext_zvknc, false),
--    MULTI_EXT_CFG_BOOL("x-zvkng", ext_zvkng, false),
--    MULTI_EXT_CFG_BOOL("x-zvks", ext_zvks, false),
--    MULTI_EXT_CFG_BOOL("x-zvksc", ext_zvksc, false),
--    MULTI_EXT_CFG_BOOL("x-zvksg", ext_zvksg, false),
--
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
+diff --git a/disas/riscv.h b/disas/riscv.h
+index 8abb578b515..b242d73b25e 100644
+--- a/disas/riscv.h
++++ b/disas/riscv.h
+@@ -274,6 +274,7 @@ enum {
+ #define rv_fmt_vd_vs2_fs1_vm          "O\tD,F,4m"
+ #define rv_fmt_vd_vs2_imm_vl          "O\tD,F,il"
+ #define rv_fmt_vd_vs2_imm_vm          "O\tD,F,im"
++#define rv_fmt_vd_vs2_uimm            "O\tD,F,u"
+ #define rv_fmt_vd_vs2_uimm_vm         "O\tD,F,um"
+ #define rv_fmt_vd_vs1_vs2_vm          "O\tD,E,Fm"
+ #define rv_fmt_vd_rs1_vs2_vm          "O\tD,1,Fm"
 -- 
 2.34.1
 
