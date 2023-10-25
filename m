@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC0B7D6154
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 07:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A253B7D6159
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 07:57:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvWo3-00064V-CO; Wed, 25 Oct 2023 01:51:51 -0400
+	id 1qvWsV-0000CJ-Vp; Wed, 25 Oct 2023 01:56:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvWo1-00063v-9V
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:51:49 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvWsS-00006j-Pk
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:56:25 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvWnz-00054V-7Z
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:51:49 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-5b8f68ba4e5so888145a12.1
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 22:51:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvWsQ-0005qP-Kj
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 01:56:24 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-32d9effe314so3579739f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 22:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698213106; x=1698817906;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1698213380; x=1698818180; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=TBFIow2hH/JaDs5sLq6CgDtHJ0Hj4bpR/MWqGNToE5I=;
- b=oju6cHxRESNgrppMyt2TTJYTQW3YMGPPWu3mZEdOOkpsTtSL8MnwVe+q0Acb3x8u3F
- MHnMLNcfFkTOsRpSW1hcVxtucLJQ5Z4kVgdoE+qpqZPtt2ynI0mJuy8KqNFTld8RsoAR
- VdJRlUa8v+46dgGnMznJfPE8oiurW2QYvciNtTC6rjR/SWXl687gLi2J6hQ/XL3B5Tah
- o5EJUt6+tD4IX8ygClvc2RPHxu9YiiBN/hGKWdQ9znw8JfuBbPcH/ybhmTol3WQXKOsF
- cIC9vYcLQrGrAxinjLcAKFubzHT0OZGGMsudKKRGbcteTaPFLv4psWORsoE3gg3IgzEu
- IGzQ==
+ bh=Zs2gbkRDyur7pDchslP/aRzZiddSMfd3l/SL3nFyX28=;
+ b=QJ5XiLzBDE/dzYlujhgMa45B5is7hiZbFXCfBbuyxmVPkbSvAqVzjSDwh5jdP7lvEO
+ gVKrwoYKUE5WzzEBF+zxT4n1xDbkpXFSBW/e0HfdbWEHuNz0SR4v1PQy6VJIsS5tvZrn
+ 782VC/Vqb1UKPuiqVJIb53frQrtv16/I8KLopveorOlrxy/Aa057L78Po/aN+1NSM1NT
+ R4VKShvQXI+Q/lRetIVhGpJDin0++kiBAiaaza7PUDdFMJMrDXaMQurItI8cEKmQJy5U
+ ZkOLH1Z7HR8FGIJ5LT+IoJfaK0bB1OPeWNK1p9kpCTje6QneqQE9Ii5sqjeRTDZGymd/
+ Xs/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698213106; x=1698817906;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698213380; x=1698818180;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TBFIow2hH/JaDs5sLq6CgDtHJ0Hj4bpR/MWqGNToE5I=;
- b=bkWS8wnNOuvmBy+RGB6UF5ARiwmE7ooEjg7BH5YYncjauchhKMo9jbqtLCIlR/bOgd
- 0JhKzQq10M14dSkd8Hk8ajB06n2qED+80MN5TQxSimFFNZVA4bzhs5vJB6zkhWOzFeCO
- AnLQOtVTvqQM7iOvJKAu/i6xi57kUtBZBzrwEDb2U9Sqiyx4nVIj7Vsots1vUXj/y4tP
- 6TXEIvzsdAtwSBSpMSdM33nnw14J4bkUarZIamAtMaDxlB23ilG70vB1LGyfE1HnoKiG
- YmAwBFIsP9SDIfVkAPK4AKN1L2fDTC1MR65l6ZRs9uRy8jKORPZ+8YKsVnxHHWzLK8Q8
- JMrQ==
-X-Gm-Message-State: AOJu0Yw+9joXGS8LpkQDF4phVkjqQNTHC3XiSBBR3YLGZj2llE7zVcpd
- czhBEq964KDmphaj5y4PwR+g5A==
-X-Google-Smtp-Source: AGHT+IFH+hJwgRuzHSSZmDydjWmFE8I05uJsIV5QOnZiPolNOuuonGfNr98aJ6Yh8Hs2/Mbf8yFSKw==
-X-Received: by 2002:a05:6a21:a592:b0:156:e1ce:d4a1 with SMTP id
- gd18-20020a056a21a59200b00156e1ced4a1mr6355785pzc.9.1698213105816; 
- Tue, 24 Oct 2023 22:51:45 -0700 (PDT)
-Received: from [157.82.204.207] ([157.82.204.207])
- by smtp.gmail.com with ESMTPSA id
- q21-20020a631f55000000b0059b2316be86sm8009719pgm.46.2023.10.24.22.51.43
+ bh=Zs2gbkRDyur7pDchslP/aRzZiddSMfd3l/SL3nFyX28=;
+ b=ezA0cj1IanrS6eTwa52RDR9liMwAurA/ro6LykYSdVR7Sb4MqzJWZScvWHFa+NKJqP
+ rbqvWokiPpkZsLTcRemUy4Wdov33/Lw40u1spw9VpPdaeQFljNqE7KIznDCZKDgxW3lq
+ VbGHSc/Jupibxtp94hKaBIGY57pzJ42tjnt21hcN4jX5zFE7e3vCQp3BJgC1do0iXRGf
+ 9QKM1eb0fk5Wq4T24lMEfnCIo7VL1bIk5bhO8fdJXsNdBnsbtL4DyPsIRfeCYdBrqLa7
+ VYU4q+iqOel3Vm/ggqGpSHXfeBfVOpjwwprGmst5MKsRUurIJgFOwaWUVBQ3rXHY9Hr2
+ e9Gg==
+X-Gm-Message-State: AOJu0YxzeNz55x4MWtEDuNTkuGMmmN/I3H5L+0GWopuFf0F2fiGneZ3g
+ +/AHXP7naIil3GNdeAec8bbWYg==
+X-Google-Smtp-Source: AGHT+IFwV3DobD21uGM0FXN6Tbc8qhFQQ3RNRMrGncB1heXMwwTT3NCxlhg2JTW5kfdAQ+x9nTvYyQ==
+X-Received: by 2002:a5d:5744:0:b0:32d:82d8:3442 with SMTP id
+ q4-20020a5d5744000000b0032d82d83442mr8044347wrw.53.1698213380397; 
+ Tue, 24 Oct 2023 22:56:20 -0700 (PDT)
+Received: from [192.168.69.115] (ghy59-h01-176-171-219-76.dsl.sta.abo.bbox.fr.
+ [176.171.219.76]) by smtp.gmail.com with ESMTPSA id
+ p7-20020a5d4587000000b0032db430fb9bsm11280228wrq.68.2023.10.24.22.56.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Oct 2023 22:51:45 -0700 (PDT)
-Message-ID: <186c2393-0a88-46dc-a215-f9a5edddb47b@daynix.com>
-Date: Wed, 25 Oct 2023 14:51:41 +0900
+ Tue, 24 Oct 2023 22:56:20 -0700 (PDT)
+Message-ID: <98eb2407-8612-c617-ec80-a6ac1ddda3fd@linaro.org>
+Date: Wed, 25 Oct 2023 07:56:17 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 00/18] plugins: Allow to read registers
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v3 0/8] PMBus fixes and new functions
+To: Titus Rwantare <titusr@google.com>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-arm@nongnu.org, minyard@acm.org, qemu-devel@nongnu.org
+References: <20231023180837.91785-1-titusr@google.com>
+ <874jih40a3.fsf@linaro.org>
+ <CAMvPwGpXZxyoX1WNypgNCW+Uj+bcVPn99vF71Myx7jn_c2Fjdg@mail.gmail.com>
+ <87zg082twp.fsf@linaro.org> <c87866ad-568b-1917-7617-c63b137a196a@linaro.org>
+ <CAMvPwGpyE0BVKJVEo+bZsQz99W_O61fW4TzEwm7A6bCd0bsJ0g@mail.gmail.com>
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20231019102657.129512-1-akihiko.odaki@daynix.com>
- <87cyx40wq6.fsf@linaro.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87cyx40wq6.fsf@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAMvPwGpyE0BVKJVEo+bZsQz99W_O61fW4TzEwm7A6bCd0bsJ0g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,29 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/25 2:08, Alex Bennée wrote:
-> 
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> Based-on: <20231019101030.128431-1-akihiko.odaki@daynix.com>
->> ("[PATCH v5 0/6] gdbstub and TCG plugin improvements")
+On 24/10/23 18:07, Titus Rwantare wrote:
+> On Tue, 24 Oct 2023 at 04:50, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
 >>
->> I and other people in the University of Tokyo, where I research processor
->> design, found TCG plugins are very useful for processor design
->> exploration.
+>> On 24/10/23 12:06, Alex Bennée wrote:
+>>
+>>> A pull request is really just a GPG signed tag that you push to a repo.
+>>> You can use the existing git tooling to create the cover letter for it.
+>>>
+>>> I've included my exact steps at the end of the email but really it comes
+>>> down to:
+>>>
+>>>     git tag --sign your-pr-tag
+>>>     git push your-pr-tag
+>>>     git format-patch <series details>
+>>>     git request-pull origin/master your_repo_details your-pr-tag
+>>>
+>>> and finally
+>>>
+>>>     git send-email
+>>>
+>>> My personal exact steps are integrated with my editor but are:
+>>
+>>
+>>> 8 Preparing a QEMU Pull Request
+>>> ═══════════════════════════════
+>>
+>>> 9 And send the pull request
+>>> ═══════════════════════════
+>>
+>> For these steps I just do:
+>>
+>> $ git publish -b origin/master \
+>>       --pull-request --sign-pull --keyid=0xMYKEY
+>>
+>> which uses .gitpublish from commit 08bb160e02,
+>> calling get_maintainer.pl for each patch.
+>>
+>> Using GSuite, I also have in ~/.gitconfig:
+>>
+>> [sendemail]
+>>       smtpServer = smtp.gmail.com
+>>       smtpBatchSize = 1
+>>       smtpReloginDelay = 3
 > 
-> So I reviewed this on top of my gdbstub/next series so needed to make
-> some tweaks as I didn't have the riscv misa_mxl patches from above
-> because there still seems to be some debate about them.
+> Thanks all, I'll do some dry runs to walk through these approaches.
 
-I think we have sorted out major design questions but two patches in 
-"[PATCH v5 0/6] gdbstub and TCG plugin improvements" still have no 
-Reviewed-by or Acked-by. Namely,
-   [PATCH v4 3/5] target/riscv: Move misa_mxl_max to class
-   [PATCH v4 4/5] target/riscv: Validate misa_mxl_max only once
-
-Can anyone interested in RISC-V look at them?
+Tell me if you want me to unqueue your v4, otherwise I'll send a PR
+with it in a few days.
 
 Regards,
-Akihiko Odaki
+
+Phil.
+
 
