@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD347D66DB
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5356E7D66E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:33:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvaFW-0002qi-FH; Wed, 25 Oct 2023 05:32:29 -0400
+	id 1qvaFo-0003DT-FT; Wed, 25 Oct 2023 05:32:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvaF8-00024S-VK
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:32:04 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qvaFG-0002PI-7h
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:32:10 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvaF3-0002Dl-Mb
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:32:02 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1c9e06f058bso5204205ad.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 02:31:57 -0700 (PDT)
+ id 1qvaFA-0002FU-JB
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:32:09 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1c77449a6daso46401365ad.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 02:32:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698226316; x=1698831116;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698226322; x=1698831122;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bcqIsQdiCYZFXRNv5u0XdcVrMVmBFxXcKDhLQTH6xKs=;
- b=OKdiRzRGIF+i9YPSA+H6f5gYz8qzLmYIYmfKsAtwj5ZMc/f6VYNuZ9zFAOIyaydAav
- l/9RU+SE8U0x24UN213sAoBs8Z/CcXINGv3U+1HHQvkJlF76zA1/TXZry9REXbfVDmq6
- XZtstvJGKCS+bsKdQhH6PyB2DQhF/Rjk7vo0z1Lr1/T79x3z5MPbWDruu7nD72k80pnS
- GUdfcyOX9WkCIu7M0kl58O0/vfIHnn+YVp3KMOetBIGcvi9wxfmJ8yb6LnWaQshUQOp2
- NXXUCFX4yKXOTWEaOaNk55EqSyk9TbXQqU19clwD+ifbQ8dVAUjx/EGoaRTzPMjAFtYz
- vAWg==
+ bh=cyzMHKCVtwpHgwD/FTiq5hihXjhZppmcXEAzZNKEGvE=;
+ b=sepRfRjpb6AwbkobS1rzR06KReqeNwvzt2x2aKV2pFg0BrgOnyYBNDg7/u9EXoXMxA
+ 0R7Ooqi9BkS3RksJbNfNSre+k8jJAnVa9PjOu/R9Nso/do6MTgoWUVoAJpymW6Va/V22
+ JnU2p6typHx2rfj6bZ69d3x0X5ZIn8o0BWb0fibmR+rF10JpbrsWG3bAyL+WvnInzBAJ
+ Za+byf/BvlThgGSJyg2uX3oSH8r0byr9J/xe3LCmCZON2QEH5ueoK8psAsm5v2Dj0NpX
+ CXn2bCnzyrotGe4z1x0u1TcPjZBiXGqO8pZLO9wmFTai9iBSDE2B++XvawvRrKxC8d+e
+ YyVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698226316; x=1698831116;
+ d=1e100.net; s=20230601; t=1698226322; x=1698831122;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bcqIsQdiCYZFXRNv5u0XdcVrMVmBFxXcKDhLQTH6xKs=;
- b=R5ZBK4a+DAac6YI3gS8i9oihg7tUwPUPOGRVAUVf5d2mPX3rXr3JsNiq7SH3J19Qbj
- WfdJZtg8lMSxL8uRqr5oFCwH/sJJZU/UqDIOxu88G/rC8rlQWTvFcv0t9Bdp1aCRLqR4
- JdLtyniH4SbdJ+gL7moYO6jzEWaQmNzxy8uGpElIgsITfOMjwTHQ00cZ9BmGRjiwcdGs
- C/SZ4zlUc4nclhsmDivzQDH5pqg6nBcDoJmCLsXt6DwYw5JpMWfZJ38F7z/ZmqKWVvsi
- KzChtw/C4Ioxo+0WaG66p8N+bdemlMmdnl/RgJbYzdEBcyoLYrUoO8h2vJs3Dc+PkdzV
- eKHQ==
-X-Gm-Message-State: AOJu0YxAUj06WptIH2TEsLZTpgDkKKCIcSJrzlOObOBbsYBp5AkjcjqJ
- oUKCLXm+en/ZKVdmMM/n0XXYdw==
-X-Google-Smtp-Source: AGHT+IF5w6g+RocqXtqzj2vV0vMbHQq2ZHIjESJ2kCyvkQv/9G5N0d/jdLD3io5TF5sTNm9kTyATIA==
-X-Received: by 2002:a17:902:fb03:b0:1b8:8682:62fb with SMTP id
- le3-20020a170902fb0300b001b8868262fbmr19917237plb.4.1698226316234; 
- Wed, 25 Oct 2023 02:31:56 -0700 (PDT)
+ bh=cyzMHKCVtwpHgwD/FTiq5hihXjhZppmcXEAzZNKEGvE=;
+ b=rVDWT28NIjyRG3G9yS+JolWOf05DHyeNZzXvs7Dh7Z1Q8VQKkFW/LBxZOH65XCSTrU
+ akyJGcWP9cmIxlBbZRyauCLtta1eoR0KNQgRKsJTew5qhBGAsnqhqpa6NYjYSGV8amZD
+ CeP6Mru14dB7EAR+JhUbvxLXCHmn6aVHYFtnNas4Cs0nHf2rfbJqxlojmOTqOf2bwGcV
+ FLP0CgjPNaDzXTvBD9zHdEInJUA8WcGVUV7fKAuYv9YRI557lWvN7cAwRv8C8jQ/fV9T
+ mDI5+aWPlei2X4WEswEhPPGxoA/d+qpm8vn+BiE8Jk1aF/IeZASmg6OAsACLrAF6L8GJ
+ L3nA==
+X-Gm-Message-State: AOJu0Ywjci4zJwV68UTeX+4VcwaGjekemFU0ljRhTUffgpzpM2xMv8ws
+ uBhQusPGe4ox19/D8rcJiGN84Q==
+X-Google-Smtp-Source: AGHT+IEzrEwt5yT0vpzE5ooPn/37fMlm2rFSwfq5uVAuyCG0NytTvU+i3IiWTI0WXQuydoRTH1iKwA==
+X-Received: by 2002:a17:90a:d40d:b0:27d:420:7b34 with SMTP id
+ r13-20020a17090ad40d00b0027d04207b34mr15811350pju.37.1698226321757; 
+ Wed, 25 Oct 2023 02:32:01 -0700 (PDT)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- 5-20020a170902e9c500b001c72c07c9d9sm8766932plk.308.2023.10.25.02.31.52
+ n32-20020a17090a2ca300b0027d015c365csm11210989pjd.31.2023.10.25.02.31.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 02:31:54 -0700 (PDT)
+ Wed, 25 Oct 2023 02:32:00 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -64,23 +64,25 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-Subject: [PATCH v16 04/18] target/arm: Use GDBFeature for dynamic XML
-Date: Wed, 25 Oct 2023 18:31:04 +0900
-Message-ID: <20231025093128.33116-5-akihiko.odaki@daynix.com>
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org
+Subject: [PATCH v16 05/18] target/ppc: Use GDBFeature for dynamic XML
+Date: Wed, 25 Oct 2023 18:31:05 +0900
+Message-ID: <20231025093128.33116-6-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231025093128.33116-1-akihiko.odaki@daynix.com>
 References: <20231025093128.33116-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,504 +103,153 @@ gdb_register_coprocessor(), convert the internal representation of
 dynamic feature from plain XML to GDBFeature.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h       |  21 +++---
- target/arm/internals.h |   2 +-
- target/arm/gdbstub.c   | 142 ++++++++++++++++++++---------------------
- target/arm/gdbstub64.c |  95 +++++++++++++--------------
- 4 files changed, 123 insertions(+), 137 deletions(-)
+ target/ppc/cpu-qom.h  |  4 ++--
+ target/ppc/cpu.h      |  1 -
+ target/ppc/cpu_init.c |  4 ----
+ target/ppc/gdbstub.c  | 51 ++++++++++++++++---------------------------
+ 4 files changed, 21 insertions(+), 39 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index a9edfb8353..3702ddaab8 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -25,6 +25,7 @@
- #include "hw/registerfields.h"
- #include "cpu-qom.h"
- #include "exec/cpu-defs.h"
+diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
+index be33786bd8..8d5ebba5d3 100644
+--- a/target/ppc/cpu-qom.h
++++ b/target/ppc/cpu-qom.h
+@@ -20,6 +20,7 @@
+ #ifndef QEMU_PPC_CPU_QOM_H
+ #define QEMU_PPC_CPU_QOM_H
+ 
 +#include "exec/gdbstub.h"
- #include "qapi/qapi-types-common.h"
+ #include "hw/core/cpu.h"
+ #include "qom/object.h"
  
- /* ARM processors have a weak memory model */
-@@ -136,23 +137,21 @@ enum {
-  */
+@@ -186,8 +187,7 @@ struct PowerPCCPUClass {
+     int bfd_mach;
+     uint32_t l1_dcache_size, l1_icache_size;
+ #ifndef CONFIG_USER_ONLY
+-    unsigned int gdb_num_sprs;
+-    const char *gdb_spr_xml;
++    GDBFeature gdb_spr;
+ #endif
+     const PPCHash64Options *hash64_opts;
+     struct ppc_radix_page_info *radix_page_info;
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 30392ebeee..848062bc9f 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1384,7 +1384,6 @@ int ppc_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ int ppc_cpu_gdb_write_register_apple(CPUState *cpu, uint8_t *buf, int reg);
+ #ifndef CONFIG_USER_ONLY
+ hwaddr ppc_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+-void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu);
+ const char *ppc_gdb_get_dynamic_xml(CPUState *cs, const char *xml_name);
+ #endif
+ int ppc64_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 40fe14a6c2..a0178c3ce8 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -6682,10 +6682,6 @@ static void init_ppc_proc(PowerPCCPU *cpu)
+     /* PowerPC implementation specific initialisations (SPRs, timers, ...) */
+     (*pcc->init_proc)(env);
  
- /**
-- * DynamicGDBXMLInfo:
-- * @desc: Contains the XML descriptions.
-- * @num: Number of the registers in this XML seen by GDB.
-+ * DynamicGDBFeatureInfo:
-+ * @desc: Contains the feature descriptions.
-  * @data: A union with data specific to the set of registers
-  *    @cpregs_keys: Array that contains the corresponding Key of
-  *                  a given cpreg with the same order of the cpreg
-  *                  in the XML description.
-  */
--typedef struct DynamicGDBXMLInfo {
--    char *desc;
--    int num;
-+typedef struct DynamicGDBFeatureInfo {
-+    GDBFeature desc;
-     union {
-         struct {
-             uint32_t *keys;
-         } cpregs;
-     } data;
--} DynamicGDBXMLInfo;
-+} DynamicGDBFeatureInfo;
- 
- /* CPU state for each instance of a generic timer (in cp15 c14) */
- typedef struct ARMGenericTimer {
-@@ -880,10 +879,10 @@ struct ArchCPU {
-     uint64_t *cpreg_vmstate_values;
-     int32_t cpreg_vmstate_array_len;
- 
--    DynamicGDBXMLInfo dyn_sysreg_xml;
--    DynamicGDBXMLInfo dyn_svereg_xml;
--    DynamicGDBXMLInfo dyn_m_systemreg_xml;
--    DynamicGDBXMLInfo dyn_m_secextreg_xml;
-+    DynamicGDBFeatureInfo dyn_sysreg_feature;
-+    DynamicGDBFeatureInfo dyn_svereg_feature;
-+    DynamicGDBFeatureInfo dyn_m_systemreg_feature;
-+    DynamicGDBFeatureInfo dyn_m_secextreg_feature;
- 
-     /* Timers used by the generic (architected) timer */
-     QEMUTimer *gt_timer[NUM_GTIMERS];
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 1dd9182a54..99136985ad 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1440,7 +1440,7 @@ static inline uint64_t pmu_counter_mask(CPUARMState *env)
- }
- 
- #ifdef TARGET_AARCH64
--int arm_gen_dynamic_svereg_xml(CPUState *cpu, int base_reg);
-+GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int base_reg);
- int aarch64_gdb_get_sve_reg(CPUARMState *env, GByteArray *buf, int reg);
- int aarch64_gdb_set_sve_reg(CPUARMState *env, uint8_t *buf, int reg);
- int aarch64_gdb_get_fpu_reg(CPUARMState *env, GByteArray *buf, int reg);
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index b7ace24bfc..0b21ee42e0 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -25,11 +25,11 @@
- #include "internals.h"
- #include "cpregs.h"
- 
--typedef struct RegisterSysregXmlParam {
-+typedef struct RegisterSysregFeatureParam {
-     CPUState *cs;
--    GString *s;
-+    GDBFeatureBuilder builder;
-     int n;
--} RegisterSysregXmlParam;
-+} RegisterSysregFeatureParam;
- 
- /* Old gdb always expect FPA registers.  Newer (xml-aware) gdb only expect
-    whatever the target description contains.  Due to a historical mishap
-@@ -215,7 +215,7 @@ static int arm_gdb_get_sysreg(CPUARMState *env, GByteArray *buf, int reg)
-     const ARMCPRegInfo *ri;
-     uint32_t key;
- 
--    key = cpu->dyn_sysreg_xml.data.cpregs.keys[reg];
-+    key = cpu->dyn_sysreg_feature.data.cpregs.keys[reg];
-     ri = get_arm_cp_reginfo(cpu->cp_regs, key);
-     if (ri) {
-         if (cpreg_field_is_64bit(ri)) {
-@@ -232,34 +232,32 @@ static int arm_gdb_set_sysreg(CPUARMState *env, uint8_t *buf, int reg)
-     return 0;
- }
- 
--static void arm_gen_one_xml_sysreg_tag(GString *s, DynamicGDBXMLInfo *dyn_xml,
-+static void arm_gen_one_feature_sysreg(GDBFeatureBuilder *builder,
-+                                       DynamicGDBFeatureInfo *dyn_feature,
-                                        ARMCPRegInfo *ri, uint32_t ri_key,
--                                       int bitsize, int regnum)
-+                                       int bitsize, int n)
- {
--    g_string_append_printf(s, "<reg name=\"%s\"", ri->name);
--    g_string_append_printf(s, " bitsize=\"%d\"", bitsize);
--    g_string_append_printf(s, " regnum=\"%d\"", regnum);
--    g_string_append_printf(s, " group=\"cp_regs\"/>");
--    dyn_xml->data.cpregs.keys[dyn_xml->num] = ri_key;
--    dyn_xml->num++;
-+    gdb_feature_builder_append_reg(builder, ri->name, bitsize, n,
-+                                   "int", "cp_regs");
-+
-+    dyn_feature->data.cpregs.keys[n] = ri_key;
- }
- 
--static void arm_register_sysreg_for_xml(gpointer key, gpointer value,
--                                        gpointer p)
-+static void arm_register_sysreg_for_feature(gpointer key, gpointer value,
-+                                            gpointer p)
- {
-     uint32_t ri_key = (uintptr_t)key;
-     ARMCPRegInfo *ri = value;
--    RegisterSysregXmlParam *param = (RegisterSysregXmlParam *)p;
--    GString *s = param->s;
-+    RegisterSysregFeatureParam *param = p;
-     ARMCPU *cpu = ARM_CPU(param->cs);
-     CPUARMState *env = &cpu->env;
--    DynamicGDBXMLInfo *dyn_xml = &cpu->dyn_sysreg_xml;
-+    DynamicGDBFeatureInfo *dyn_feature = &cpu->dyn_sysreg_feature;
- 
-     if (!(ri->type & (ARM_CP_NO_RAW | ARM_CP_NO_GDB))) {
-         if (arm_feature(env, ARM_FEATURE_AARCH64)) {
-             if (ri->state == ARM_CP_STATE_AA64) {
--                arm_gen_one_xml_sysreg_tag(s , dyn_xml, ri, ri_key, 64,
--                                           param->n++);
-+                arm_gen_one_feature_sysreg(&param->builder, dyn_feature,
-+                                           ri, ri_key, 64, param->n++);
-             }
-         } else {
-             if (ri->state == ARM_CP_STATE_AA32) {
-@@ -268,32 +266,32 @@ static void arm_register_sysreg_for_xml(gpointer key, gpointer value,
-                     return;
-                 }
-                 if (ri->type & ARM_CP_64BIT) {
--                    arm_gen_one_xml_sysreg_tag(s , dyn_xml, ri, ri_key, 64,
--                                               param->n++);
-+                    arm_gen_one_feature_sysreg(&param->builder, dyn_feature,
-+                                               ri, ri_key, 64, param->n++);
-                 } else {
--                    arm_gen_one_xml_sysreg_tag(s , dyn_xml, ri, ri_key, 32,
--                                               param->n++);
-+                    arm_gen_one_feature_sysreg(&param->builder, dyn_feature,
-+                                               ri, ri_key, 32, param->n++);
-                 }
-             }
-         }
-     }
- }
- 
--static int arm_gen_dynamic_sysreg_xml(CPUState *cs, int base_reg)
-+static GDBFeature *arm_gen_dynamic_sysreg_feature(CPUState *cs, int base_reg)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
--    GString *s = g_string_new(NULL);
--    RegisterSysregXmlParam param = {cs, s, base_reg};
+-#if !defined(CONFIG_USER_ONLY)
+-    ppc_gdb_gen_spr_xml(cpu);
+-#endif
 -
--    cpu->dyn_sysreg_xml.num = 0;
--    cpu->dyn_sysreg_xml.data.cpregs.keys = g_new(uint32_t, g_hash_table_size(cpu->cp_regs));
--    g_string_printf(s, "<?xml version=\"1.0\"?>");
--    g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
--    g_string_append_printf(s, "<feature name=\"org.qemu.gdb.arm.sys.regs\">");
--    g_hash_table_foreach(cpu->cp_regs, arm_register_sysreg_for_xml, &param);
--    g_string_append_printf(s, "</feature>");
--    cpu->dyn_sysreg_xml.desc = g_string_free(s, false);
--    return cpu->dyn_sysreg_xml.num;
-+    RegisterSysregFeatureParam param = {cs};
-+    gsize num_regs = g_hash_table_size(cpu->cp_regs);
+     /* MSR bits & flags consistency checks */
+     if (env->msr_mask & (1 << 25)) {
+         switch (env->flags & (POWERPC_FLAG_SPE | POWERPC_FLAG_VRE)) {
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index ec5731e5d6..e3be3dbd10 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -300,15 +300,23 @@ int ppc_cpu_gdb_write_register_apple(CPUState *cs, uint8_t *mem_buf, int n)
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
+-void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
++static void gdb_gen_spr_feature(CPUState *cs)
+ {
+-    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
++    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
++    PowerPCCPU *cpu = POWERPC_CPU(cs);
+     CPUPPCState *env = &cpu->env;
+-    GString *xml;
+-    char *spr_name;
++    GDBFeatureBuilder builder;
+     unsigned int num_regs = 0;
+     int i;
+ 
++    if (pcc->gdb_spr.xml) {
++        return;
++    }
 +
-+    gdb_feature_builder_init(&param.builder,
-+                             &cpu->dyn_sysreg_feature.desc,
-+                             "org.qemu.gdb.arm.sys.regs",
-+                             "system-registers.xml",
-+                             base_reg);
-+    cpu->dyn_sysreg_feature.data.cpregs.keys = g_new(uint32_t, num_regs);
-+    g_hash_table_foreach(cpu->cp_regs, arm_register_sysreg_for_feature, &param);
-+    gdb_feature_builder_end(&param.builder);
-+    return &cpu->dyn_sysreg_feature.desc;
- }
++    gdb_feature_builder_init(&builder, &pcc->gdb_spr,
++                             "org.qemu.power.spr", "power-spr.xml",
++                             cs->gdb_num_regs);
++
+     for (i = 0; i < ARRAY_SIZE(env->spr_cb); i++) {
+         ppc_spr_t *spr = &env->spr_cb[i];
  
- #ifdef CONFIG_TCG
-@@ -385,31 +383,29 @@ static int arm_gdb_set_m_systemreg(CPUARMState *env, uint8_t *buf, int reg)
-     return 0; /* TODO */
- }
+@@ -326,35 +334,13 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
+          */
+         spr->gdb_id = num_regs;
+         num_regs++;
+-    }
+-
+-    if (pcc->gdb_spr_xml) {
+-        return;
+-    }
  
--static int arm_gen_dynamic_m_systemreg_xml(CPUState *cs, int orig_base_reg)
-+static GDBFeature *arm_gen_dynamic_m_systemreg_feature(CPUState *cs,
-+                                                       int base_reg)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
-     CPUARMState *env = &cpu->env;
--    GString *s = g_string_new(NULL);
--    int base_reg = orig_base_reg;
-+    GDBFeatureBuilder builder;
-+    int reg = 0;
-     int i;
- 
--    g_string_printf(s, "<?xml version=\"1.0\"?>");
--    g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
--    g_string_append_printf(s, "<feature name=\"org.gnu.gdb.arm.m-system\">\n");
-+    gdb_feature_builder_init(&builder, &cpu->dyn_m_systemreg_feature.desc,
-+                             "org.gnu.gdb.arm.m-system", "arm-m-system.xml",
-+                             base_reg);
- 
-     for (i = 0; i < ARRAY_SIZE(m_sysreg_def); i++) {
-         if (arm_feature(env, m_sysreg_def[i].feature)) {
--            g_string_append_printf(s,
--                "<reg name=\"%s\" bitsize=\"32\" regnum=\"%d\"/>\n",
--                m_sysreg_def[i].name, base_reg++);
-+            gdb_feature_builder_append_reg(&builder, m_sysreg_def[i].name, 32,
-+                                           reg++, "int", NULL);
-         }
+-    xml = g_string_new("<?xml version=\"1.0\"?>");
+-    g_string_append(xml, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
+-    g_string_append(xml, "<feature name=\"org.qemu.power.spr\">");
+-
+-    for (i = 0; i < ARRAY_SIZE(env->spr_cb); i++) {
+-        ppc_spr_t *spr = &env->spr_cb[i];
+-
+-        if (!spr->name) {
+-            continue;
+-        }
+-
+-        spr_name = g_ascii_strdown(spr->name, -1);
+-        g_string_append_printf(xml, "<reg name=\"%s\"", spr_name);
+-        g_free(spr_name);
+-
+-        g_string_append_printf(xml, " bitsize=\"%d\"", TARGET_LONG_BITS);
+-        g_string_append(xml, " group=\"spr\"/>");
++        gdb_feature_builder_append_reg(&builder, g_ascii_strdown(spr->name, -1),
++                                       TARGET_LONG_BITS, num_regs,
++                                       "int", "spr");
      }
  
--    g_string_append_printf(s, "</feature>");
--    cpu->dyn_m_systemreg_xml.desc = g_string_free(s, false);
--    cpu->dyn_m_systemreg_xml.num = base_reg - orig_base_reg;
+-    g_string_append(xml, "</feature>");
+-
+-    pcc->gdb_num_sprs = num_regs;
+-    pcc->gdb_spr_xml = g_string_free(xml, false);
 +    gdb_feature_builder_end(&builder);
- 
--    return cpu->dyn_m_systemreg_xml.num;
-+    return &cpu->dyn_m_systemreg_feature.desc;
  }
  
- #ifndef CONFIG_USER_ONLY
-@@ -427,31 +423,31 @@ static int arm_gdb_set_m_secextreg(CPUARMState *env, uint8_t *buf, int reg)
-     return 0; /* TODO */
- }
+ const char *ppc_gdb_get_dynamic_xml(CPUState *cs, const char *xml_name)
+@@ -362,7 +348,7 @@ const char *ppc_gdb_get_dynamic_xml(CPUState *cs, const char *xml_name)
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
  
--static int arm_gen_dynamic_m_secextreg_xml(CPUState *cs, int orig_base_reg)
-+static GDBFeature *arm_gen_dynamic_m_secextreg_feature(CPUState *cs,
-+                                                       int base_reg)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
--    GString *s = g_string_new(NULL);
--    int base_reg = orig_base_reg;
-+    GDBFeatureBuilder builder;
-+    char *name;
-+    int reg = 0;
-     int i;
- 
--    g_string_printf(s, "<?xml version=\"1.0\"?>");
--    g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
--    g_string_append_printf(s, "<feature name=\"org.gnu.gdb.arm.secext\">\n");
-+    gdb_feature_builder_init(&builder, &cpu->dyn_m_secextreg_feature.desc,
-+                             "org.gnu.gdb.arm.secext", "arm-m-secext.xml",
-+                             base_reg);
- 
-     for (i = 0; i < ARRAY_SIZE(m_sysreg_def); i++) {
--        g_string_append_printf(s,
--            "<reg name=\"%s_ns\" bitsize=\"32\" regnum=\"%d\"/>\n",
--            m_sysreg_def[i].name, base_reg++);
--        g_string_append_printf(s,
--            "<reg name=\"%s_s\" bitsize=\"32\" regnum=\"%d\"/>\n",
--            m_sysreg_def[i].name, base_reg++);
-+        name = g_strconcat(m_sysreg_def[i].name, "_ns", NULL);
-+        gdb_feature_builder_append_reg(&builder, name, 32, reg++,
-+                                       "int", NULL);
-+        name = g_strconcat(m_sysreg_def[i].name, "_s", NULL);
-+        gdb_feature_builder_append_reg(&builder, name, 32, reg++,
-+                                       "int", NULL);
-     }
- 
--    g_string_append_printf(s, "</feature>");
--    cpu->dyn_m_secextreg_xml.desc = g_string_free(s, false);
--    cpu->dyn_m_secextreg_xml.num = base_reg - orig_base_reg;
-+    gdb_feature_builder_end(&builder);
- 
--    return cpu->dyn_m_secextreg_xml.num;
-+    return &cpu->dyn_m_secextreg_feature.desc;
- }
- #endif
- #endif /* CONFIG_TCG */
-@@ -461,14 +457,14 @@ const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
-     ARMCPU *cpu = ARM_CPU(cs);
- 
-     if (strcmp(xmlname, "system-registers.xml") == 0) {
--        return cpu->dyn_sysreg_xml.desc;
-+        return cpu->dyn_sysreg_feature.desc.xml;
-     } else if (strcmp(xmlname, "sve-registers.xml") == 0) {
--        return cpu->dyn_svereg_xml.desc;
-+        return cpu->dyn_svereg_feature.desc.xml;
-     } else if (strcmp(xmlname, "arm-m-system.xml") == 0) {
--        return cpu->dyn_m_systemreg_xml.desc;
-+        return cpu->dyn_m_systemreg_feature.desc.xml;
- #ifndef CONFIG_USER_ONLY
-     } else if (strcmp(xmlname, "arm-m-secext.xml") == 0) {
--        return cpu->dyn_m_secextreg_xml.desc;
-+        return cpu->dyn_m_secextreg_feature.desc.xml;
- #endif
+     if (strcmp(xml_name, "power-spr.xml") == 0) {
+-        return pcc->gdb_spr_xml;
++        return pcc->gdb_spr.xml;
      }
      return NULL;
-@@ -486,7 +482,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-          */
- #ifdef TARGET_AARCH64
-         if (isar_feature_aa64_sve(&cpu->isar)) {
--            int nreg = arm_gen_dynamic_svereg_xml(cs, cs->gdb_num_regs);
-+            int nreg = arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs)->num_regs;
-             gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
-                                      aarch64_gdb_set_sve_reg, nreg,
-                                      "sve-registers.xml", 0);
-@@ -532,20 +528,20 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-                                  1, "arm-m-profile-mve.xml", 0);
+ }
+@@ -599,7 +585,8 @@ void ppc_gdb_init(CPUState *cs, PowerPCCPUClass *pcc)
+                                  32, "power-vsx.xml", 0);
      }
-     gdb_register_coprocessor(cs, arm_gdb_get_sysreg, arm_gdb_set_sysreg,
--                             arm_gen_dynamic_sysreg_xml(cs, cs->gdb_num_regs),
-+                             arm_gen_dynamic_sysreg_feature(cs, cs->gdb_num_regs)->num_regs,
-                              "system-registers.xml", 0);
- 
- #ifdef CONFIG_TCG
-     if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) {
-         gdb_register_coprocessor(cs,
-             arm_gdb_get_m_systemreg, arm_gdb_set_m_systemreg,
--            arm_gen_dynamic_m_systemreg_xml(cs, cs->gdb_num_regs),
-+            arm_gen_dynamic_m_systemreg_feature(cs, cs->gdb_num_regs)->num_regs,
-             "arm-m-system.xml", 0);
  #ifndef CONFIG_USER_ONLY
-         if (arm_feature(env, ARM_FEATURE_M_SECURITY)) {
-             gdb_register_coprocessor(cs,
-                 arm_gdb_get_m_secextreg, arm_gdb_set_m_secextreg,
--                arm_gen_dynamic_m_secextreg_xml(cs, cs->gdb_num_regs),
-+                arm_gen_dynamic_m_secextreg_feature(cs, cs->gdb_num_regs)->num_regs,
-                 "arm-m-secext.xml", 0);
-         }
++    gdb_gen_spr_feature(cs);
+     gdb_register_coprocessor(cs, gdb_get_spr_reg, gdb_set_spr_reg,
+-                             pcc->gdb_num_sprs, "power-spr.xml", 0);
++                             pcc->gdb_spr.num_regs, "power-spr.xml", 0);
  #endif
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index d7b79a6589..5286d5c604 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -247,7 +247,7 @@ int aarch64_gdb_set_pauth_reg(CPUARMState *env, uint8_t *buf, int reg)
-     return 0;
- }
- 
--static void output_vector_union_type(GString *s, int reg_width,
-+static void output_vector_union_type(GDBFeatureBuilder *builder, int reg_width,
-                                      const char *name)
- {
-     struct TypeSize {
-@@ -282,10 +282,10 @@ static void output_vector_union_type(GString *s, int reg_width,
- 
-     /* First define types and totals in a whole VL */
-     for (i = 0; i < ARRAY_SIZE(vec_lanes); i++) {
--        g_string_append_printf(s,
--                               "<vector id=\"%s%c%c\" type=\"%s\" count=\"%d\"/>",
--                               name, vec_lanes[i].sz, vec_lanes[i].suffix,
--                               vec_lanes[i].gdb_type, reg_width / vec_lanes[i].size);
-+        gdb_feature_builder_append_tag(
-+            builder, "<vector id=\"%s%c%c\" type=\"%s\" count=\"%d\"/>",
-+            name, vec_lanes[i].sz, vec_lanes[i].suffix,
-+            vec_lanes[i].gdb_type, reg_width / vec_lanes[i].size);
-     }
- 
-     /*
-@@ -296,86 +296,77 @@ static void output_vector_union_type(GString *s, int reg_width,
-     for (i = 0; i < ARRAY_SIZE(suf); i++) {
-         int bits = 8 << i;
- 
--        g_string_append_printf(s, "<union id=\"%sn%c\">", name, suf[i]);
-+        gdb_feature_builder_append_tag(builder, "<union id=\"%sn%c\">",
-+                                       name, suf[i]);
-         for (j = 0; j < ARRAY_SIZE(vec_lanes); j++) {
-             if (vec_lanes[j].size == bits) {
--                g_string_append_printf(s, "<field name=\"%c\" type=\"%s%c%c\"/>",
--                                       vec_lanes[j].suffix, name,
--                                       vec_lanes[j].sz, vec_lanes[j].suffix);
-+                gdb_feature_builder_append_tag(
-+                    builder, "<field name=\"%c\" type=\"%s%c%c\"/>",
-+                    vec_lanes[j].suffix, name,
-+                    vec_lanes[j].sz, vec_lanes[j].suffix);
-             }
-         }
--        g_string_append(s, "</union>");
-+        gdb_feature_builder_append_tag(builder, "</union>");
-     }
- 
-     /* And now the final union of unions */
--    g_string_append_printf(s, "<union id=\"%s\">", name);
-+    gdb_feature_builder_append_tag(builder, "<union id=\"%s\">", name);
-     for (i = ARRAY_SIZE(suf) - 1; i >= 0; i--) {
--        g_string_append_printf(s, "<field name=\"%c\" type=\"%sn%c\"/>",
--                               suf[i], name, suf[i]);
-+        gdb_feature_builder_append_tag(builder,
-+                                       "<field name=\"%c\" type=\"%sn%c\"/>",
-+                                       suf[i], name, suf[i]);
-     }
--    g_string_append(s, "</union>");
-+    gdb_feature_builder_append_tag(builder, "</union>");
- }
- 
--int arm_gen_dynamic_svereg_xml(CPUState *cs, int orig_base_reg)
-+GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
--    GString *s = g_string_new(NULL);
--    DynamicGDBXMLInfo *info = &cpu->dyn_svereg_xml;
-     int reg_width = cpu->sve_max_vq * 128;
-     int pred_width = cpu->sve_max_vq * 16;
--    int base_reg = orig_base_reg;
-+    GDBFeatureBuilder builder;
-+    char *name;
-+    int reg = 0;
-     int i;
- 
--    g_string_printf(s, "<?xml version=\"1.0\"?>");
--    g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
--    g_string_append_printf(s, "<feature name=\"org.gnu.gdb.aarch64.sve\">");
-+    gdb_feature_builder_init(&builder, &cpu->dyn_svereg_feature.desc,
-+                             "org.gnu.gdb.aarch64.sve", "sve-registers.xml",
-+                             base_reg);
- 
-     /* Create the vector union type. */
--    output_vector_union_type(s, reg_width, "svev");
-+    output_vector_union_type(&builder, reg_width, "svev");
- 
-     /* Create the predicate vector type. */
--    g_string_append_printf(s,
--                           "<vector id=\"svep\" type=\"uint8\" count=\"%d\"/>",
--                           pred_width / 8);
-+    gdb_feature_builder_append_tag(
-+        &builder, "<vector id=\"svep\" type=\"uint8\" count=\"%d\"/>",
-+        pred_width / 8);
- 
-     /* Define the vector registers. */
-     for (i = 0; i < 32; i++) {
--        g_string_append_printf(s,
--                               "<reg name=\"z%d\" bitsize=\"%d\""
--                               " regnum=\"%d\" type=\"svev\"/>",
--                               i, reg_width, base_reg++);
-+        name = g_strdup_printf("z%d", i);
-+        gdb_feature_builder_append_reg(&builder, name, reg_width, reg++,
-+                                       "svev", NULL);
-     }
- 
-     /* fpscr & status registers */
--    g_string_append_printf(s, "<reg name=\"fpsr\" bitsize=\"32\""
--                           " regnum=\"%d\" group=\"float\""
--                           " type=\"int\"/>", base_reg++);
--    g_string_append_printf(s, "<reg name=\"fpcr\" bitsize=\"32\""
--                           " regnum=\"%d\" group=\"float\""
--                           " type=\"int\"/>", base_reg++);
-+    gdb_feature_builder_append_reg(&builder, "fpsr", 32, reg++,
-+                                   "int", "float");
-+    gdb_feature_builder_append_reg(&builder, "fpcr", 32, reg++,
-+                                   "int", "float");
- 
-     /* Define the predicate registers. */
-     for (i = 0; i < 16; i++) {
--        g_string_append_printf(s,
--                               "<reg name=\"p%d\" bitsize=\"%d\""
--                               " regnum=\"%d\" type=\"svep\"/>",
--                               i, pred_width, base_reg++);
-+        name = g_strdup_printf("p%d", i);
-+        gdb_feature_builder_append_reg(&builder, name, pred_width, reg++,
-+                                       "svep", NULL);
-     }
--    g_string_append_printf(s,
--                           "<reg name=\"ffr\" bitsize=\"%d\""
--                           " regnum=\"%d\" group=\"vector\""
--                           " type=\"svep\"/>",
--                           pred_width, base_reg++);
-+    gdb_feature_builder_append_reg(&builder, "ffr", pred_width, reg++,
-+                                   "svep", "vector");
- 
-     /* Define the vector length pseudo-register. */
--    g_string_append_printf(s,
--                           "<reg name=\"vg\" bitsize=\"64\""
--                           " regnum=\"%d\" type=\"int\"/>",
--                           base_reg++);
-+    gdb_feature_builder_append_reg(&builder, "vg", 64, reg++, "int", NULL);
- 
--    g_string_append_printf(s, "</feature>");
-+    gdb_feature_builder_end(&builder);
- 
--    info->desc = g_string_free(s, false);
--    info->num = base_reg - orig_base_reg;
--    return info->num;
-+    return &cpu->dyn_svereg_feature.desc;
  }
 -- 
 2.42.0
