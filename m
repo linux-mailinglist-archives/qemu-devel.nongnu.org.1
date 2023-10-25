@@ -2,78 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDD37D7117
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F787D7119
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:43:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvg0H-00027d-0D; Wed, 25 Oct 2023 11:41:05 -0400
+	id 1qvg1o-0003GR-DX; Wed, 25 Oct 2023 11:42:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvg0E-00027G-Op
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:41:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvg0C-0000Nn-R9
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:41:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698248458;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nBoKypcjb35WhcPZyttXz2svO5/ArIr14Pbvxd5Kt2I=;
- b=HAzQL8tEeN8VlgdgVV1TXaTUQRa/mbH2tTOSYOyPlS+EjVkL1o3Pv14QttKSuY2pK8AcmB
- 6gHjgrptH80OF1Dt23dcjwz6HKu3EPjFj1W2rs9d4uV3JIODiDWKs3+ocLLs3e9ao/uMdV
- UqKcHo5qayul96lXIzVc0oCO5eEYZ4A=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-321-60cS3eYjMXC1Kvlek6XO_w-1; Wed, 25 Oct 2023 11:40:56 -0400
-X-MC-Unique: 60cS3eYjMXC1Kvlek6XO_w-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0B0778871C3;
- Wed, 25 Oct 2023 15:40:56 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.154])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DA592500C;
- Wed, 25 Oct 2023 15:40:54 +0000 (UTC)
-Date: Wed, 25 Oct 2023 16:40:52 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v2 06/29] migration: Add auto-pause capability
-Message-ID: <ZTk3BJD5cVbIhesr@redhat.com>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-7-farosas@suse.de>
- <ZTjWV9wQ5obKTpOG@redhat.com> <87y1fqerev.fsf@suse.de>
- <ZTkkICSD6j6Xf/KK@redhat.com> <ZTktCM/ccipYaJ80@x1n>
- <ZTkzY0nKtdeZJojP@redhat.com> <ZTk1++TzE+SiT3UH@x1n>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qvg1j-0003D4-Pj
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:42:35 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qvg1g-0000X8-Iu
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:42:35 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1cac80292aeso38319715ad.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 08:42:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698248551; x=1698853351; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pHBwe3N98CTxQYgA0OpqzFBkPW8+uhBzLc9xXUB5YP4=;
+ b=le++0LCqqrMepzSApm/zfAQQfbv7NL/UOBcNEXUuGEVvBd3Ob9VU2hILzsVInf5lpb
+ xhFZSgHBsPj3YX0Dp3XwouNLuvXoken3wqavKFMkoZM/+1datZs1V+HrUAy3utuaz5rC
+ fOy1QKogEy8J011J8bpE5pcX+y1guv8ErfJQDpFulqdG9Sydmnui7JYxHbi3sh0NqeKy
+ o6goJO5XLAhr2WT0MUHvTLH1bHw0rtzQL9SZoa6bXrgyw8gMqvG4bNId0NO5oSkSOvlG
+ ck1/LITGjBypn6e5CJucgAz1H9S+TRXx032+hdO3DafSjEA2vxT2boc2tiLFuc750e0n
+ IiIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698248551; x=1698853351;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pHBwe3N98CTxQYgA0OpqzFBkPW8+uhBzLc9xXUB5YP4=;
+ b=Ri2MUsLrdU0Ilans9Ks+HLZfJ9HGRqfuz9zlEtTeiH+VQc+lakygIm2WTavyBFgRri
+ jGJP5p2jltKN26/LcatfUfVkb0wRtdIj1rDxmGHerMt7RmBAa0EQKCPaGTijlJgQGMtN
+ 8CQtlOLNuhdvdoM4TAi0zQ64yTtNT5HL2mYH1e0b6ahutLl58btys9Te29t9xu6uFZrD
+ YJxKdC8Ui/ggARPV9yrvSLtFEopqqI8//5LU/M2qF1SxWqPVxyD8yT3Rx/vcKTV/z9u+
+ R/sQhFtoz3ckO4sOY+3r3HM7IVcWF2wxk4L1nfGDp5nqFaSKJI2TXaFh2TRpnYhnmk0e
+ +Wnw==
+X-Gm-Message-State: AOJu0Yy6+Jmby4FtrjHDbhqtsqYMTLHMKmb82tdj82M2t2k2adNdgVDF
+ BvseCHzenS8cRfyz6WMBG3G7Zg==
+X-Google-Smtp-Source: AGHT+IHJv4yxw/7RDDq5T6r69uf5jnSvBXyabkpSOPUwReisWw3qMAHCPGLn0urLortt90MAwLpouA==
+X-Received: by 2002:a17:902:d904:b0:1c9:e68a:1b58 with SMTP id
+ c4-20020a170902d90400b001c9e68a1b58mr10283255plz.54.1698248550870; 
+ Wed, 25 Oct 2023 08:42:30 -0700 (PDT)
+Received: from [192.168.68.107] ([191.255.2.33])
+ by smtp.gmail.com with ESMTPSA id
+ j6-20020a170902da8600b001bf6ea340a9sm9386306plx.159.2023.10.25.08.42.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Oct 2023 08:42:30 -0700 (PDT)
+Message-ID: <c18da34b-56ae-4c9c-86a8-379e7b0fc759@ventanamicro.com>
+Date: Wed, 25 Oct 2023 12:42:14 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 38/45] hw/riscv: use qemu_configure_nic_device()
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Andrew Jeffery <andrew@aj.id.au>,
+ Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Song Gao
+ <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
+ Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
+ Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
+ <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, xen-devel@lists.xenproject.org
+References: <20231022155200.436340-1-dwmw2@infradead.org>
+ <20231022155200.436340-39-dwmw2@infradead.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231022155200.436340-39-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZTk1++TzE+SiT3UH@x1n>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,61 +134,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 11:36:27AM -0400, Peter Xu wrote:
-> On Wed, Oct 25, 2023 at 04:25:23PM +0100, Daniel P. Berrangé wrote:
-> > > Libvirt will still use fixed-ram for live snapshot purpose, especially for
-> > > Windows?  Then auto-pause may still be useful to identify that from what
-> > > Fabiano wants to achieve here (which is in reality, non-live)?
-> > > 
-> > > IIRC of previous discussion that was the major point that libvirt can still
-> > > leverage fixed-ram for a live case - since Windows lacks efficient live
-> > > snapshot (background-snapshot feature).
-> > 
-> > Libvirt will use fixed-ram for all APIs it has that involve saving to
-> > disk, with CPUs both running and paused.
-> 
-> There are still two scenarios.  How should we identify them, then?  For
-> sure we can always make it live, but QEMU needs that information to make it
-> efficient for non-live.
-> 
-> Considering when there's no auto-pause, then Libvirt will still need to
-> know the scenario first then to decide whether pausing VM before migration
-> or do nothing, am I right?
 
-libvirt will issue a 'stop' before invoking 'migrate' if it
-needs to. QEMU should be able to optimize that scenario if
-it sees CPUs already stopped when migrate is started ?
 
-> If so, can Libvirt replace that "pause VM" operation with setting
-> auto-pause=on here?  Again, the benefit is QEMU can benefit from it.
+On 10/22/23 12:51, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> I think when pausing Libvirt can still receive an event, then it can
-> cooperate with state changes?  Meanwhile auto-pause=on will be set by
-> Libvirt too, so Libvirt will even have that expectation that QMP migrate
-> later on will pause the VM.
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/riscv/microchip_pfsoc.c | 13 ++-----------
+>   hw/riscv/sifive_u.c        |  7 +------
+>   2 files changed, 3 insertions(+), 17 deletions(-)
 > 
-> > 
-> > > From that POV it sounds like auto-pause is a good knob for that.
-> > 
-> > From libvirt's POV auto-pause will create extra work for integration
-> > for no gain.
-> 
-> Yes, I agree for Libvirt there's no gain, as the gain is on QEMU's side.
-> Could you elaborate what is the complexity for Libvirt to support it?
+> diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+> index b775aa8946..8e0e3aa20c 100644
+> --- a/hw/riscv/microchip_pfsoc.c
+> +++ b/hw/riscv/microchip_pfsoc.c
+> @@ -411,17 +411,8 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
+>           memmap[MICROCHIP_PFSOC_USB].size);
+>   
+>       /* GEMs */
 
-It increases the code paths because we will have to support
-and test different behaviour wrt CPU state for fixed-ram
-vs non-fixed ram usage.
+I believe you forgot to remove the 'nd' variable. Building with this patch (applying
+patches 1 to 4 first) fails with:
 
-With regards,
+
+../hw/riscv/microchip_pfsoc.c: In function ‘microchip_pfsoc_soc_realize’:
+../hw/riscv/microchip_pfsoc.c:205:14: error: unused variable ‘nd’ [-Werror=unused-variable]
+   205 |     NICInfo *nd;
+       |              ^~
+cc1: all warnings being treated as errors
+
+
+Patch looks good otherwise. Thanks,
+
 Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
+> -
+> -    nd = &nd_table[0];
+> -    if (nd->used) {
+> -        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
+> -        qdev_set_nic_properties(DEVICE(&s->gem0), nd);
+> -    }
+> -    nd = &nd_table[1];
+> -    if (nd->used) {
+> -        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
+> -        qdev_set_nic_properties(DEVICE(&s->gem1), nd);
+> -    }
+> +    qemu_configure_nic_device(DEVICE(&s->gem0), true, NULL);
+> +    qemu_configure_nic_device(DEVICE(&s->gem1), true, NULL);
+>   
+>       object_property_set_int(OBJECT(&s->gem0), "revision", GEM_REVISION, errp);
+>       object_property_set_int(OBJECT(&s->gem0), "phy-addr", 8, errp);
+> diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+> index ec76dce6c9..5207ec1fa5 100644
+> --- a/hw/riscv/sifive_u.c
+> +++ b/hw/riscv/sifive_u.c
+> @@ -789,7 +789,6 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
+>       MemoryRegion *l2lim_mem = g_new(MemoryRegion, 1);
+>       char *plic_hart_config;
+>       int i, j;
+> -    NICInfo *nd = &nd_table[0];
+>   
+>       qdev_prop_set_uint32(DEVICE(&s->u_cpus), "num-harts", ms->smp.cpus - 1);
+>       qdev_prop_set_uint32(DEVICE(&s->u_cpus), "hartid-base", 1);
+> @@ -893,11 +892,7 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
+>       }
+>       sysbus_mmio_map(SYS_BUS_DEVICE(&s->otp), 0, memmap[SIFIVE_U_DEV_OTP].base);
+>   
+> -    /* FIXME use qdev NIC properties instead of nd_table[] */
+> -    if (nd->used) {
+> -        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
+> -        qdev_set_nic_properties(DEVICE(&s->gem), nd);
+> -    }
+> +    qemu_configure_nic_device(DEVICE(&s->gem), true, NULL);
+>       object_property_set_int(OBJECT(&s->gem), "revision", GEM_REVISION,
+>                               &error_abort);
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->gem), errp)) {
 
