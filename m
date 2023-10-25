@@ -2,77 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239297D70BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F64E7D70BC
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:28:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfmI-0002kq-9n; Wed, 25 Oct 2023 11:26:38 -0400
+	id 1qvfnM-0003vJ-ST; Wed, 25 Oct 2023 11:27:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvfmG-0002kf-SG
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:26:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qvfnJ-0003th-Bo; Wed, 25 Oct 2023 11:27:41 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvfmF-0005oG-3I
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:26:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698247594;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iCxRy1OhwUKmBWEHf2NAxtHjYfVsVlxHt7uukogM58Q=;
- b=SUPdrpLtqKsdGGLN1U+gzb39R7sLX3ewFUC3vSs3C/OY1g6O+shNBX93gpKDuosc2ctWSf
- JWkvFnsn5qWX+RWXrnJpW77GCAEk7e/EWR62kErkcXDqbLSjSxJbK2fOcvQCeSZJ36nJFZ
- bwAX9qouA9KV8aPAgUL2R2yofLgltMI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-5iDa6QSfPp-q6bPpWXdjBw-1; Wed, 25 Oct 2023 11:26:29 -0400
-X-MC-Unique: 5iDa6QSfPp-q6bPpWXdjBw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4208C811E7E;
- Wed, 25 Oct 2023 15:26:29 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.154])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D2ADB492BFA;
- Wed, 25 Oct 2023 15:26:27 +0000 (UTC)
-Date: Wed, 25 Oct 2023 16:26:25 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v2 19/29] migration/multifd: Add outgoing QIOChannelFile
- support
-Message-ID: <ZTkzoUV3BD3QbigQ@redhat.com>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-20-farosas@suse.de>
- <ZTjlQsw9AvA19+QO@redhat.com> <87o7gmeqp5.fsf@suse.de>
- <ZTkk9MxXydXNlXcU@redhat.com> <877cnaeohv.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qvfnG-00063t-GA; Wed, 25 Oct 2023 11:27:41 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39PFGD8h025738; Wed, 25 Oct 2023 15:27:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=n+Xj4YjRO7+N6vsBCFGPOZ6lhLKrX6v+8qTaOMOZKZs=;
+ b=fDerW6KtO0jAoCZGNaLoYreBN85gOagHtVJIgLuM9xQU9baNw2hmC5jJD1eVtqWHdlHh
+ 7bGHPU8IH2Yo9i2XhfLQHUzU9oitgkW5IQu12mm3dES5mDwmyaY+ToAbP0oSYQbWGh9v
+ i2rqyghXoryHKPoaeAdjjtV+BgoTnkLOIlAt+So20xiKMCqxmbHXGPbfCuD6eNuhUMIf
+ xK1UIzpCVS5vWzHLYKDIlYWDcrnypVOJqb6gX3uAtXxlKkT4hSzTl4Jv83OSvzFnQpTA
+ nCM61NxdSGNLPFhj0apEXVQjMFumv5hZgVVhMkNUHoUl6XLQ29dkMn0Czq/eT1Wm34Qm KA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ty5cm8myp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 25 Oct 2023 15:27:26 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39PFRPue030723;
+ Wed, 25 Oct 2023 15:27:26 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ty5cm8mxm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 25 Oct 2023 15:27:26 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39PDo4SE005105; Wed, 25 Oct 2023 15:27:25 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvtfkq9sj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 25 Oct 2023 15:27:25 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39PFROrf31588942
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 25 Oct 2023 15:27:24 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D24558059;
+ Wed, 25 Oct 2023 15:27:24 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5313558057;
+ Wed, 25 Oct 2023 15:27:24 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 25 Oct 2023 15:27:24 +0000 (GMT)
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-ppc@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ clg@kaod.org, npiggin@gmail.com, fbarrat@linux.ibm.com
+Subject: [PATCH v3] ppc/pnv: Fix number of I2C engines and ports for power9/10
+Date: Wed, 25 Oct 2023 10:27:14 -0500
+Message-Id: <20231025152714.956664-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <877cnaeohv.fsf@suse.de>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: x8CrfEw2MhBxDCs8NKDkELD93Awlawx-
+X-Proofpoint-ORIG-GUID: VHLEVKQbpHnJRbmGfVTEaOxFVHyWbd5B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-25_04,2023-10-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 adultscore=0 impostorscore=0 spamscore=0
+ mlxlogscore=710 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310250134
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,113 +107,137 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 12:00:12PM -0300, Fabiano Rosas wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > On Wed, Oct 25, 2023 at 11:12:38AM -0300, Fabiano Rosas wrote:
-> >> Daniel P. Berrangé <berrange@redhat.com> writes:
-> >> 
-> >> > On Mon, Oct 23, 2023 at 05:35:58PM -0300, Fabiano Rosas wrote:
-> >> >> Allow multifd to open file-backed channels. This will be used when
-> >> >> enabling the fixed-ram migration stream format which expects a
-> >> >> seekable transport.
-> >> >> 
-> >> >> The QIOChannel read and write methods will use the preadv/pwritev
-> >> >> versions which don't update the file offset at each call so we can
-> >> >> reuse the fd without re-opening for every channel.
-> >> >> 
-> >> >> Note that this is just setup code and multifd cannot yet make use of
-> >> >> the file channels.
-> >> >> 
-> >> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >> >> ---
-> >> >>  migration/file.c      | 64 +++++++++++++++++++++++++++++++++++++++++--
-> >> >>  migration/file.h      | 10 +++++--
-> >> >>  migration/migration.c |  2 +-
-> >> >>  migration/multifd.c   | 14 ++++++++--
-> >> >>  migration/options.c   |  7 +++++
-> >> >>  migration/options.h   |  1 +
-> >> >>  6 files changed, 90 insertions(+), 8 deletions(-)
-> >> >> 
-> >> >> diff --git a/migration/file.c b/migration/file.c
-> >> >> index cf5b1bf365..93b9b7bf5d 100644
-> >> >> --- a/migration/file.c
-> >> >> +++ b/migration/file.c
-> >> >> @@ -17,6 +17,12 @@
-> >> >
-> >> >> +void file_send_channel_create(QIOTaskFunc f, void *data)
-> >> >> +{
-> >> >> +    QIOChannelFile *ioc;
-> >> >> +    QIOTask *task;
-> >> >> +    Error *errp = NULL;
-> >> >> +
-> >> >> +    ioc = qio_channel_file_new_path(outgoing_args.fname,
-> >> >> +                                    outgoing_args.flags,
-> >> >> +                                    outgoing_args.mode, &errp);
-> >> >> +    if (!ioc) {
-> >> >> +        file_migration_cancel(errp);
-> >> >> +        return;
-> >> >> +    }
-> >> >> +
-> >> >> +    task = qio_task_new(OBJECT(ioc), f, (gpointer)data, NULL);
-> >> >> +    qio_task_run_in_thread(task, qio_channel_file_connect_worker,
-> >> >> +                           (gpointer)data, NULL, NULL);
-> >> >> +}
-> >> >> +
-> >> >>  void file_start_outgoing_migration(MigrationState *s, const char *filespec,
-> >> >>                                     Error **errp)
-> >> >>  {
-> >> >> -    g_autofree char *filename = g_strdup(filespec);
-> >> >>      g_autoptr(QIOChannelFile) fioc = NULL;
-> >> >> +    g_autofree char *filename = g_strdup(filespec);
-> >> >>      uint64_t offset = 0;
-> >> >>      QIOChannel *ioc;
-> >> >> +    int flags = O_CREAT | O_TRUNC | O_WRONLY;
-> >> >> +    mode_t mode = 0660;
-> >> >>  
-> >> >>      trace_migration_file_outgoing(filename);
-> >> >>  
-> >> >> @@ -50,12 +105,15 @@ void file_start_outgoing_migration(MigrationState *s, const char *filespec,
-> >> >>          return;
-> >> >>      }
-> >> >>  
-> >> >> -    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
-> >> >> -                                     0600, errp);
-> >> 
-> >> By the way, we're experimenting with add-fd to flesh out the interface
-> >> with libvirt and I see that the flags here can conflict with the flags
-> >> set on the fd passed through `virsh --pass-fd ...` due to this at
-> >> monitor_fdset_dup_fd_add():
-> >> 
-> >>     if ((flags & O_ACCMODE) == (mon_fd_flags & O_ACCMODE)) {
-> >>         fd = mon_fdset_fd->fd;
-> >>         break;
-> >>     }
-> >> 
-> >> We're requiring the O_RDONLY, O_WRONLY, O_RDWR flags defined here to
-> >> match the fdset passed into QEMU. Should we just sync the code of the
-> >> two projects to use the same flags? That feels a little clumsy to me.
-> >
-> > Is there a reason for libvirt to have set O_RDONLY for a file used
-> > for outgoing migration ?  I can't recall off-hand.
-> >
-> 
-> The flags need to match exactly, so either libvirt or QEMU could in the
-> future decide to use O_RDWR. Then we'd have a compatibility problem when
-> passing the fds around.
+Power9 is supposed to have 4 PIB-connected I2C engines with the
+following number of ports on each engine:
 
-The "safe" option would be to always open O_RDWR, even if it is
-technically redundant for our current needs.
+    0: 2
+    1: 13
+    2: 2
+    3: 2
 
-With regards,
-Daniel
+Power10 also has 4 engines but has the following number of ports
+on each engine:
+
+    0: 14
+    1: 14
+    2: 2
+    3: 16
+
+Current code assumes that they all have the same (maximum) number.
+This can be a problem if software expects to see a certain number
+of ports present (Power Hypervisor seems to care).
+
+Fixed this by adding separate tables for power9 and power10 that
+map the I2C controller number to the number of I2C buses that should
+be attached for that engine.
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+---
+Based-on: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
+([PATCH] ppc/pnv: Connect PNV I2C controller to powernv10)
+
+Changes from v2:
+    - Moved I2C port definitions close to the class definitions
+    - Changed I2C port array type to const
+
+ hw/ppc/pnv.c              | 12 ++++++++----
+ include/hw/ppc/pnv_chip.h |  6 ++----
+ 2 files changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 2655b6e506..1a728b92a0 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1626,7 +1626,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+         Object *obj =  OBJECT(&chip9->i2c[i]);
+ 
+         object_property_set_int(obj, "engine", i + 1, &error_fatal);
+-        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
++        object_property_set_int(obj, "num-busses",
++                                pcc->i2c_ports_per_engine[i],
+                                 &error_fatal);
+         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
+         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
+@@ -1651,6 +1652,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PnvChipClass *k = PNV_CHIP_CLASS(klass);
++    static const int i2c_ports_per_engine[PNV9_CHIP_MAX_I2C] = {2, 13, 2, 2};
+ 
+     k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
+     k->cores_mask = POWER9_CORE_MASK;
+@@ -1667,7 +1669,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
+     dc->desc = "PowerNV Chip POWER9";
+     k->num_pecs = PNV9_CHIP_MAX_PEC;
+     k->i2c_num_engines = PNV9_CHIP_MAX_I2C;
+-    k->i2c_num_ports = PNV9_CHIP_MAX_I2C_PORTS;
++    k->i2c_ports_per_engine = i2c_ports_per_engine;
+ 
+     device_class_set_parent_realize(dc, pnv_chip_power9_realize,
+                                     &k->parent_realize);
+@@ -1877,7 +1879,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+         Object *obj =  OBJECT(&chip10->i2c[i]);
+ 
+         object_property_set_int(obj, "engine", i + 1, &error_fatal);
+-        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
++        object_property_set_int(obj, "num-busses",
++                                pcc->i2c_ports_per_engine[i],
+                                 &error_fatal);
+         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
+         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
+@@ -1902,6 +1905,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PnvChipClass *k = PNV_CHIP_CLASS(klass);
++    static const int i2c_ports_per_engine[PNV10_CHIP_MAX_I2C] = {14, 14, 2, 16};
+ 
+     k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
+     k->cores_mask = POWER10_CORE_MASK;
+@@ -1918,7 +1922,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
+     dc->desc = "PowerNV Chip POWER10";
+     k->num_pecs = PNV10_CHIP_MAX_PEC;
+     k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
+-    k->i2c_num_ports = PNV10_CHIP_MAX_I2C_PORTS;
++    k->i2c_ports_per_engine = i2c_ports_per_engine;
+ 
+     device_class_set_parent_realize(dc, pnv_chip_power10_realize,
+                                     &k->parent_realize);
+diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+index 5815d96ecf..0ab5c42308 100644
+--- a/include/hw/ppc/pnv_chip.h
++++ b/include/hw/ppc/pnv_chip.h
+@@ -88,8 +88,7 @@ struct Pnv9Chip {
+ #define PNV9_CHIP_MAX_PEC 3
+     PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
+ 
+-#define PNV9_CHIP_MAX_I2C 3
+-#define PNV9_CHIP_MAX_I2C_PORTS 1
++#define PNV9_CHIP_MAX_I2C 4
+     PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
+ };
+ 
+@@ -122,7 +121,6 @@ struct Pnv10Chip {
+     PnvPhb4PecState pecs[PNV10_CHIP_MAX_PEC];
+ 
+ #define PNV10_CHIP_MAX_I2C 4
+-#define PNV10_CHIP_MAX_I2C_PORTS 2
+     PnvI2C       i2c[PNV10_CHIP_MAX_I2C];
+ };
+ 
+@@ -140,7 +138,7 @@ struct PnvChipClass {
+     uint32_t     num_phbs;
+ 
+     uint32_t     i2c_num_engines;
+-    uint32_t     i2c_num_ports;
++    const int    *i2c_ports_per_engine;
+ 
+     DeviceRealize parent_realize;
+ 
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.31.1
 
 
