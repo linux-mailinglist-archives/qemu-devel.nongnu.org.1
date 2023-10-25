@@ -2,71 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936257D7274
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 19:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AE97D7294
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 19:46:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvhog-0006dl-2v; Wed, 25 Oct 2023 13:37:14 -0400
+	id 1qvhwe-0001ST-NQ; Wed, 25 Oct 2023 13:45:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvhoe-0006cz-6Z
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 13:37:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qvhwc-0001SK-M8
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 13:45:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvhoc-0004hk-DO
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 13:37:11 -0400
+ id 1qvhwZ-0006Sk-Im
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 13:45:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698255426;
+ s=mimecast20190719; t=1698255922;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=922xtKTOob6poxpoZsiCw+YhrPnKiBWnIIyzotl6EqI=;
- b=DdXD+z/kJjphurLlGhx6Fj/CCYAaiJiAte88xrLzxzi/gTBry1sbjMpwIej5QZYNIUtKXJ
- kIxNN6CfoZp6xsHvVrtGRyp1jwgnWYfL73z06FvWuiCtVtdcMbjWGnf7k/cvBbHyIznwD1
- w2QEqHEPE5m+ATq2SnO0pedru7cLzi0=
+ bh=61Bhn4ulhMAfYVU11GHlOiPv9SyHdihzjn1xpVMy/Ew=;
+ b=dBWp++rArK1nCB7Vs9/HTnwWnQNNEqteW02oC1xtILXSLLFEH7zYLL3chLhfzKunW9kPoM
+ /7pulz7lUue2Y9rUN+cuwtrzRqO4xY/DGJoK7Dl41xtQFP8ToVN3Krfq2eo5Z/GAb2eykJ
+ xkSXJn64VIh7TFTzKv2BdqLfA+Fzdbg=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-219-n_tunRMeMcqozCzyA1834w-1; Wed,
- 25 Oct 2023 13:37:05 -0400
-X-MC-Unique: n_tunRMeMcqozCzyA1834w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-512-rd8aouAnNJeBPwmlXjs8cA-1; Wed,
+ 25 Oct 2023 13:45:15 -0400
+X-MC-Unique: rd8aouAnNJeBPwmlXjs8cA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD90628004ED;
- Wed, 25 Oct 2023 17:37:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90D0C3800BCD;
+ Wed, 25 Oct 2023 17:45:15 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.154])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E55182166B26;
- Wed, 25 Oct 2023 17:37:03 +0000 (UTC)
-Date: Wed, 25 Oct 2023 18:37:01 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 649501C060AE;
+ Wed, 25 Oct 2023 17:45:14 +0000 (UTC)
+Date: Wed, 25 Oct 2023 18:45:12 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Daan De Meyer <daan.j.demeyer@gmail.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] Add class property to configure KVM device node to use
-Message-ID: <ZTlSPbh2GnhOKExO@redhat.com>
-References: <20231021134015.1119597-1-daan.j.demeyer@gmail.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
+Message-ID: <ZTlUKETW7X6JM3Rg@redhat.com>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-29-farosas@suse.de>
+ <878r7svapt.fsf@pond.sub.org> <87msw7ddfp.fsf@suse.de>
+ <ZTjVg9NVTd0MT6mW@redhat.com> <87cyx2epsv.fsf@suse.de>
+ <ZTkpllWQdLSMw3pP@redhat.com> <8734xyehk6.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231021134015.1119597-1-daan.j.demeyer@gmail.com>
+In-Reply-To: <8734xyehk6.fsf@suse.de>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,25 +90,90 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 21, 2023 at 03:40:15PM +0200, Daan De Meyer wrote:
-> This allows passing the KVM device node to use as a file
-> descriptor via /dev/fdset/XX. Passing the device node to
-> use as a file descriptor allows running qemu unprivileged
-> even when the user running qemu is not in the kvm group
-> on distributions where access to /dev/kvm is gated behind
-> membership of the kvm group (as long as the process invoking
-> qemu is able to open /dev/kvm and passes the file descriptor
-> to qemu).
+On Wed, Oct 25, 2023 at 02:30:01PM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
 > 
-> Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
-> ---
->  accel/kvm/kvm-all.c      | 25 ++++++++++++++++++++++++-
->  include/sysemu/kvm_int.h |  1 +
->  qemu-options.hx          |  8 +++++++-
->  3 files changed, 32 insertions(+), 2 deletions(-)
+> > On Wed, Oct 25, 2023 at 11:32:00AM -0300, Fabiano Rosas wrote:
+> >> Daniel P. Berrangé <berrange@redhat.com> writes:
+> >> 
+> >> > On Tue, Oct 24, 2023 at 04:32:10PM -0300, Fabiano Rosas wrote:
+> >> >> Markus Armbruster <armbru@redhat.com> writes:
+> >> >> 
+> >> >> > Fabiano Rosas <farosas@suse.de> writes:
+> >> >> >
+> >> >> >> Add the direct-io migration parameter that tells the migration code to
+> >> >> >> use O_DIRECT when opening the migration stream file whenever possible.
+> >> >> >>
+> >> >> >> This is currently only used for the secondary channels of fixed-ram
+> >> >> >> migration, which can guarantee that writes are page aligned.
+> >> >> >>
+> >> >> >> However the parameter could be made to affect other types of
+> >> >> >> file-based migrations in the future.
+> >> >> >>
+> >> >> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >> >> >
+> >> >> > When would you want to enable @direct-io, and when would you want to
+> >> >> > leave it disabled?
+> >> >> 
+> >> >> That depends on a performance analysis. You'd generally leave it
+> >> >> disabled unless there's some indication that the operating system is
+> >> >> having trouble draining the page cache.
+> >> >
+> >> > That's not the usage model I would suggest.
+> >> >
+> >> 
+> >> Hehe I took a shot at answering but I really wanted to say "ask Daniel".
+> >> 
+> >> > The biggest value of the page cache comes when it holds data that
+> >> > will be repeatedly accessed.
+> >> >
+> >> > When you are saving/restoring a guest to file, that data is used
+> >> > once only (assuming there's a large gap between save & restore).
+> >> > By using the page cache to save a big guest we essentially purge
+> >> > the page cache of most of its existing data that is likely to be
+> >> > reaccessed, to fill it up with data never to be reaccessed.
+> >> >
+> >> > I usually describe save/restore operations as trashing the page
+> >> > cache.
+> >> >
+> >> > IMHO, mgmt apps should request O_DIRECT always unless they expect
+> >> > the save/restore operation to run in quick succession, or if they
+> >> > know that the host has oodles of free RAM such that existing data
+> >> > in the page cache won't be trashed, or
+> >> 
+> >> Thanks, I'll try to incorporate this to some kind of doc in the next
+> >> version.
+> >> 
+> >> > if the host FS does not support O_DIRECT of course.
+> >> 
+> >> Should we try to probe for this and inform the user?
+> >
+> > qemu_open_internall will already do a nice error message. If it gets
+> > EINVAL when using O_DIRECT, it'll retry without O_DIRECT and if that
+> > works, it'll reoprt "filesystem does not support O_DIRECT"
+> >
+> > Having said that I see a problem with /dev/fdset handling, because
+> > we're only validating O_ACCMODE and that excludes O_DIRECT.
+> >
+> > If the mgmt apps passes an FD with O_DIRECT already set, then it
+> > won't work for VMstate saving which is unaligned.
+> >
+> > If the mgmt app passes an FD without O_DIRECT set, then we are
+> > not setting O_DIRECT for the multifd RAM threads.
+> 
+> Worse, the fds get dup'ed so even without O_DIRECT, we we enable it for
+> the secondary channels the main channel will break on unaligned writes.
+> 
+> For now I can only think of requiring two fds. One for the main channel
+> and a second one for the rest of the channels. And validating the fd
+> flags to make sure O_DIRECT is only allowed to be set in the second fd.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+In this new model I think there's no reason for libvirt to set O_DIRECT
+for its own initial I/O. So we could just totally ignore O_DIRECT when
+initially opening the QIOCHannelFile.
 
+Then provide a method on QIOCHannelFile to enable O_DIRECT on the fly
+which can be called for the multifd threads setup ?
 
 With regards,
 Daniel
