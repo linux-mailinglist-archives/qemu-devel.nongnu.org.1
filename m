@@ -2,87 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548F07D66EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5E27D66DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:33:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvaGU-00085B-Mx; Wed, 25 Oct 2023 05:33:27 -0400
+	id 1qvaFr-0003gj-Hb; Wed, 25 Oct 2023 05:32:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvaGQ-000802-Eb
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:33:22 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvaGM-0002Xq-27
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:33:22 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6b6f4c118b7so4548206b3a.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 02:33:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698226397; x=1698831197;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=itV9w+Ss6i1N1ru8YtKG2pnO/mkiVOZyXV53i4bxjY1G6UsZy1wP7zgY1FQMjS8YII
- dFNytPIoH4Izn8C2iOR6RVvBvtnwx5OKqXB6eEXLfAK3b79O9lJTRISWoZ4HZbqUgBXj
- +kMeO250bVpKsYT2EFUnkrLdVapnwsfo4mvD6OY+WncPmQd6Rd6r/FeoyII4HuduT0f7
- sKojZJT6TVEsOCYSplYFdgUQr//N4QBN2AdMWYINli776iXASnWTrvsR7eAKe6CzTl5k
- Dl9J/X4H1m2yuTD92WKqMdIvIQdup1l8YHKtOI8MkF3joIJNfXnvu9ODjb6nl+VMuYSc
- BfgA==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qvaFY-00033h-UT
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:32:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qvaFP-0002KO-MB
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:32:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698226337;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=TJ63VXOqyBt7LmBcxMZmamsJNmDnngr20ijU0m4FNhE=;
+ b=cXNS8Z0F20HjsNBfXmXinnf1XalRrSNgusCEd0FCWAI1TAqXw85mL+ojOQW37J4k1AsXDK
+ tAOq6vZW8QNrUgQljnIADWOVQnt5QdmucJM2DJ+6zGygYdg2TnZ44l56otPVqClJ9N4KAC
+ fyEdlNxCFqRVJlH7UjIgr0w6OsH3Xfc=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-BpWu64iHPAyErt8W_ntDmw-1; Wed, 25 Oct 2023 05:31:59 -0400
+X-MC-Unique: BpWu64iHPAyErt8W_ntDmw-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2c506abc320so46380701fa.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 02:31:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698226397; x=1698831197;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=UnbG+25SGv/3TdaU0j+Nr0VgEGGPGpbx+dfsn9ORP/yTUji9p5/6NGCMUfgsuNJg8b
- J1kb9wTUAxwgAcyd1jx/aVKieJiH1bpP7Uo/G72WkgSI3VnHJKQTuqZF1eADh90ggG25
- MV3qsPCVKbwS3oX/wY5wMMOUdXPY4U9Jy2X9tYxqQG5+0ZEPZZfgXVb+bj07luXy9xtH
- hrFJGH7OpVjqwVfdhtYGl4BP7Y/dovMXvIaVe96MqvJb+x/BIOp7hIi/O05wZ+5TINr+
- A9ToIhL6SzImEymYFD2173MpLCcc83rfU+vPlMhs8RHyyyUJ2GMq3+DaWianCHauYUq+
- rGcA==
-X-Gm-Message-State: AOJu0YzKJueXEm9M11BMbdUx5nAyrcVpidFkZNQ8tOcvxd8Gsk33mvWk
- qXbtoykcZlIhHd/z3/iZyHV7Rg==
-X-Google-Smtp-Source: AGHT+IHMI0vCnRaLppA5Y05yybnIp2u5RzooBDfeUtQ7Z2R+umY7T4dCbEoTTKP1IuYcwidSVkAYlQ==
-X-Received: by 2002:a05:6a20:c102:b0:15c:b7ba:ea44 with SMTP id
- bh2-20020a056a20c10200b0015cb7baea44mr4681468pzb.60.1698226396718; 
- Wed, 25 Oct 2023 02:33:16 -0700 (PDT)
-Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- e1-20020a630f01000000b005b856fab5e9sm8377316pgl.18.2023.10.25.02.33.14
+ d=1e100.net; s=20230601; t=1698226318; x=1698831118;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TJ63VXOqyBt7LmBcxMZmamsJNmDnngr20ijU0m4FNhE=;
+ b=evoxFVHau+/dLZ4HKJNT3HoC4K2g+McFBCtGUn59sfa5QvX3NIcVxCIQpImhESHor5
+ fEokpmryW9Jt4oIw3EAHUA6vdGRHW3DhnME8mmVhMzzQo7hSJpsWe/WL73vpiwBaFHYO
+ PLaLlbIsB9DpS83i1vl6pLb6fNJExnLBtukHbFIqmojelNPgTyDMJzZ94tlXsDk7Uybn
+ zvfZE28ZW49f6OLUY9CXZ3ykfABZbilskSOEuTBzD/ScLCnt990qSsFqZeVVg1aVcIYS
+ i4HtqgcoYuPyjd156QJzANNUuvprxVC71Nps2yLBuOXuaIzTk/3ZJR5wNCT0l2u3eh3a
+ h5Ow==
+X-Gm-Message-State: AOJu0YzGSsww/ki3kKPSDg2b1DOaOB5bL7W7BuL9elFEEQK5iCmE43sG
+ gpgNFeA5Q3BbKejWj/1PXCYQFZSFimwV0F9fyy5S/biGJ9T14ZMs+Pby95w0fL0VJ1EKn8DhyI6
+ Ipmjz3ucu5jN73k4=
+X-Received: by 2002:a2e:b712:0:b0:2c5:47f:8ff7 with SMTP id
+ j18-20020a2eb712000000b002c5047f8ff7mr11018898ljo.18.1698226318229; 
+ Wed, 25 Oct 2023 02:31:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7R7BVqGyjrXebH0p4FO/FqXHADjLMPfCX+8V2rL5U537y+JQA0hL3IapIvjAWJORbeT3IAg==
+X-Received: by 2002:a2e:b712:0:b0:2c5:47f:8ff7 with SMTP id
+ j18-20020a2eb712000000b002c5047f8ff7mr11018879ljo.18.1698226317739; 
+ Wed, 25 Oct 2023 02:31:57 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c708:8100:1fcd:5169:391e:99af?
+ (p200300cbc70881001fcd5169391e99af.dip0.t-ipconnect.de.
+ [2003:cb:c708:8100:1fcd:5169:391e:99af])
+ by smtp.gmail.com with ESMTPSA id
+ v19-20020a05600c471300b00405959bbf4fsm14307792wmo.19.2023.10.25.02.31.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 02:33:16 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v16 18/18] contrib/plugins: Allow to log registers
-Date: Wed, 25 Oct 2023 18:31:18 +0900
-Message-ID: <20231025093128.33116-19-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231025093128.33116-1-akihiko.odaki@daynix.com>
-References: <20231025093128.33116-1-akihiko.odaki@daynix.com>
+ Wed, 25 Oct 2023 02:31:57 -0700 (PDT)
+Message-ID: <1055386d-2706-4ce2-b190-106510bee52c@redhat.com>
+Date: Wed, 25 Oct 2023 11:31:56 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Question] x86/microvm: why has_hotpluggable_cpus = false but
+ hot(ub)plug APIs exist?
+To: Salil Mehta <salil.mehta@huawei.com>, Igor Mammedov
+ <imammedo@redhat.com>, Salil Mehta <salil.mehta@opnsrc.net>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "mst@redhat.com" <mst@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <78103368-9ea5-167b-5700-7d3d174ff564@opnsrc.net>
+ <87o7gw9btp.fsf@linaro.org> <cbbf59ba-b7ab-b536-12ab-91a0bfc7f1c6@opnsrc.net>
+ <20231024100554.3ef76ebf@imammedo.users.ipa.redhat.com>
+ <f8bad7bdf7ea42b08d52970c47ea101f@huawei.com>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <f8bad7bdf7ea42b08d52970c47ea101f@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::430;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,249 +154,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This demonstrates how a register can be read from a plugin.
+On 25.10.23 11:16, Salil Mehta wrote:
+> Hi Igor,
+> 
+>> From: Igor Mammedov <imammedo@redhat.com>
+>> Sent: Tuesday, October 24, 2023 9:06 AM
+>> To: Salil Mehta <salil.mehta@opnsrc.net>
+>>
+>> On Wed, 18 Oct 2023 17:48:36 +0100
+>> Salil Mehta <salil.mehta@opnsrc.net> wrote:
+>>
+>>> Hi Alex,
+>>>
+>>> On 18/10/2023 16:41, Alex Bennée wrote:
+>>>>
+>>>> Salil Mehta <salil.mehta@opnsrc.net> writes:
+>>>>
+>>>>> Hello,
+>>>>>
+>>>>> Came across below code excerpt in x86/microvm code and wanted to know
+>>>>> why 'has_hotpluggable_cpus' flag has been set to 'false' while various
+>>>>> hot(un)plug APIs have been defined?
+>>>>>
+>>>>> static void microvm_class_init(ObjectClass *oc, void *data)
+>>>>> {
+>>>>>       X86MachineClass *x86mc = X86_MACHINE_CLASS(oc);
+>>>>>       MachineClass *mc = MACHINE_CLASS(oc);
+>>>>>       HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
+>>>>>
+>>>>>       mc->init = microvm_machine_state_init;
+>>>>>
+>>>>>       mc->family = "microvm_i386";
+>>>>>       [...]
+>>>>>       mc->max_cpus = 288;
+>>>>>       mc->has_hotpluggable_cpus = false;  --------> This one
+>>>>>       [...]
+>>>>
+>>>>   From the original commit that added it:
+>>>>
+>>>>     It's a minimalist machine type without PCI nor ACPI support, designed
+>>>>     for short-lived guests. microvm also establishes a baseline for
+>>>>     benchmarking and optimizing both QEMU and guest operating systems,
+>>>>     since it is optimized for both boot time and footprint.
+>>>
+>>>
+>>> Agreed. It looks like ACPI is supported but neither CPU/Memory Hotplug
+>>> is supported for this minimalist machine type.
+>>>
+>>>
+>>> static void microvm_devices_init(MicrovmMachineState *mms)
+>>> {
+>>>       const char *default_firmware;
+>>>       X86MachineState *x86ms = X86_MACHINE(mms);
+>>>
+>>>      [...]
+>>>
+>>>       /* Optional and legacy devices */
+>>>       if (x86_machine_is_acpi_enabled(x86ms)) {
+>>>           DeviceState *dev = qdev_new(TYPE_ACPI_GED_X86);
+>>>           qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT);
+>>>           sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
+>>>        /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMHP); */
+>>>
+>>>           [...]
+>>>
+>>>           sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
+>>>           x86ms->acpi_dev = HOTPLUG_HANDLER(dev);
+>>>       }
+>>>      [...]
+>>> }
+>>>
+>>>>
+>>>> Generally hotplug requires a dance between the VMM and the firmware to
+>>>> properly shutdown and restart hotplug devices. The principle
+>>>> communication mechanism for this is ACPI.
+>>
+>> firmware part in cpu/mem hoptlug usually provided by QEMU by the way of
+>> ACPI tables (which may contain AML code that handles dance with QEMU
+>> while exposing standard interface to guest OS to handle hotplug)
+>>
+>>>
+>>> Agreed.
+>>>
+>>>>>       /* hotplug (for cpu coldplug) */
+>>>>>       mc->get_hotplug_handler = microvm_get_hotplug_handler;
+>>>>>       hc->pre_plug = microvm_device_pre_plug_cb;
+>>>>>       hc->plug = microvm_device_plug_cb;
+>>>>>       hc->unplug_request = microvm_device_unplug_request_cb;
+>>>>>       hc->unplug = microvm_device_unplug_cb;
+>>>
+>>> sorry, I also missed the definitions of the last 2 functions which says
+>>> that unplug is not supported so perhaps these functions are only
+>>> required to support cold plugging which corroborates with the comment as
+>>> well.
+>>
+>> this function are usually used for both cold and hotplug of bus-less devices.
+>> They provide an opt-in way for board to wire up such devices (incl. CPU).
+> 
+> 
+> Sure. I understand but microvm does not support hotplug so presence of
+> unplug{_request} versions brought a doubt in my mind but I realized later
+> that their definitions were empty. Cold-plug does not require unplug
+> versions.
+> 
+> Was there any plan to support hot-plug with microvm in future?
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- docs/devel/tcg-plugins.rst |  10 +++-
- contrib/plugins/execlog.c  | 120 +++++++++++++++++++++++++++----------
- 2 files changed, 97 insertions(+), 33 deletions(-)
+At least virtio-mem for memory hotplug should be fairly straight-forward 
+to wire-up I guess. The relation to ACPI are minimal: we currently only 
+use ACPI SRAT to expose the maximum GPA range that e.g., Linux requires 
+early during boot to properly prepare for memory hotplug (size the 
+virtual memory space for the kernel accordingly). One could use 
+alternative (paravirtualized) interfaces for that.
 
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index 81dcd43a61..c9f8b27590 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -497,6 +497,15 @@ arguments if required::
-   $ qemu-system-arm $(QEMU_ARGS) \
-     -plugin ./contrib/plugins/libexeclog.so,ifilter=st1w,afilter=0x40001808 -d plugin
- 
-+This plugin can also dump a specified register. The specification of register
-+follows `GDB standard target features <https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html>`__.
-+
-+Specify the name of the feature that contains the register and the name of the
-+register with ``rfile`` and ``reg`` options, respectively::
-+
-+  $ qemu-system-arm $(QEMU_ARGS) \
-+    -plugin ./contrib/plugins/libexeclog.so,rfile=org.gnu.gdb.arm.core,reg=sp -d plugin
-+
- - contrib/plugins/cache.c
- 
- Cache modelling plugin that measures the performance of a given L1 cache
-@@ -583,4 +592,3 @@ The following API is generated from the inline documentation in
- include the full kernel-doc annotations.
- 
- .. kernel-doc:: include/qemu/qemu-plugin.h
--
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 82dc2f584e..f3e714c888 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -15,27 +15,43 @@
- 
- #include <qemu-plugin.h>
- 
-+typedef struct CPU {
-+    /* Store last executed instruction on each vCPU as a GString */
-+    GString *last_exec;
-+    GByteArray *reg_history[2];
-+
-+    int reg;
-+} CPU;
-+
- QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
- 
--/* Store last executed instruction on each vCPU as a GString */
--static GPtrArray *last_exec;
-+static CPU *cpus;
-+static int num_cpus;
- static GRWLock expand_array_lock;
- 
- static GPtrArray *imatches;
- static GArray *amatches;
- 
-+static char *rfile_name;
-+static char *reg_name;
-+
- /*
-- * Expand last_exec array.
-+ * Expand cpu array.
-  *
-  * As we could have multiple threads trying to do this we need to
-  * serialise the expansion under a lock.
-  */
--static void expand_last_exec(int cpu_index)
-+static void expand_cpu(int cpu_index)
- {
-     g_rw_lock_writer_lock(&expand_array_lock);
--    while (cpu_index >= last_exec->len) {
--        GString *s = g_string_new(NULL);
--        g_ptr_array_add(last_exec, s);
-+    if (cpu_index >= num_cpus) {
-+        cpus = g_realloc_n(cpus, cpu_index + 1, sizeof(*cpus));
-+        while (cpu_index >= num_cpus) {
-+            cpus[num_cpus].last_exec = g_string_new(NULL);
-+            cpus[num_cpus].reg_history[0] = g_byte_array_new();
-+            cpus[num_cpus].reg_history[1] = g_byte_array_new();
-+            num_cpus++;
-+        }
-     }
-     g_rw_lock_writer_unlock(&expand_array_lock);
- }
-@@ -50,8 +66,8 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
- 
-     /* Find vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    g_assert(cpu_index < last_exec->len);
--    s = g_ptr_array_index(last_exec, cpu_index);
-+    g_assert(cpu_index < num_cpus);
-+    s = cpus[cpu_index].last_exec;
-     g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Indicate type of memory access */
-@@ -77,28 +93,42 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
-  */
- static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
- {
--    GString *s;
-+    int n;
-+    int i;
- 
--    /* Find or create vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    if (cpu_index >= last_exec->len) {
--        g_rw_lock_reader_unlock(&expand_array_lock);
--        expand_last_exec(cpu_index);
--        g_rw_lock_reader_lock(&expand_array_lock);
--    }
--    s = g_ptr_array_index(last_exec, cpu_index);
--    g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Print previous instruction in cache */
--    if (s->len) {
--        qemu_plugin_outs(s->str);
-+    if (cpus[cpu_index].last_exec->len) {
-+        if (cpus[cpu_index].reg >= 0) {
-+            GByteArray *current = cpus[cpu_index].reg_history[0];
-+            GByteArray *last = cpus[cpu_index].reg_history[1];
-+
-+            g_byte_array_set_size(current, 0);
-+            n = qemu_plugin_read_register(current, cpus[cpu_index].reg);
-+
-+            if (n != last->len || memcmp(current->data, last->data, n)) {
-+                g_string_append(cpus[cpu_index].last_exec, ", reg,");
-+                for (i = 0; i < n; i++) {
-+                    g_string_append_printf(cpus[cpu_index].last_exec, " %02x",
-+                                           current->data[i]);
-+                }
-+            }
-+
-+            cpus[cpu_index].reg_history[0] = last;
-+            cpus[cpu_index].reg_history[1] = current;
-+        }
-+
-+        qemu_plugin_outs(cpus[cpu_index].last_exec->str);
-         qemu_plugin_outs("\n");
-     }
- 
-     /* Store new instruction in cache */
-     /* vcpu_mem will add memory access information to last_exec */
--    g_string_printf(s, "%u, ", cpu_index);
--    g_string_append(s, (char *)udata);
-+    g_string_printf(cpus[cpu_index].last_exec, "%u, ", cpu_index);
-+    g_string_append(cpus[cpu_index].last_exec, (char *)udata);
-+
-+    g_rw_lock_reader_unlock(&expand_array_lock);
- }
- 
- /**
-@@ -167,8 +197,10 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-                                              QEMU_PLUGIN_MEM_RW, NULL);
- 
-             /* Register callback on instruction */
--            qemu_plugin_register_vcpu_insn_exec_cb(insn, vcpu_insn_exec,
--                                                   QEMU_PLUGIN_CB_NO_REGS, output);
-+            qemu_plugin_register_vcpu_insn_exec_cb(
-+                insn, vcpu_insn_exec,
-+                rfile_name ? QEMU_PLUGIN_CB_R_REGS : QEMU_PLUGIN_CB_NO_REGS,
-+                output);
- 
-             /* reset skip */
-             skip = (imatches || amatches);
-@@ -177,17 +209,33 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-     }
- }
- 
-+static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
-+{
-+    int reg = -1;
-+
-+    expand_cpu(vcpu_index);
-+
-+    if (rfile_name) {
-+        int rfile = qemu_plugin_find_register_file(vcpu_index, rfile_name);
-+        if (rfile >= 0) {
-+            reg = qemu_plugin_find_register(vcpu_index, rfile, reg_name);
-+        }
-+    }
-+
-+    g_rw_lock_writer_lock(&expand_array_lock);
-+    cpus[vcpu_index].reg = reg;
-+    g_rw_lock_writer_unlock(&expand_array_lock);
-+}
-+
- /**
-  * On plugin exit, print last instruction in cache
-  */
- static void plugin_exit(qemu_plugin_id_t id, void *p)
- {
-     guint i;
--    GString *s;
--    for (i = 0; i < last_exec->len; i++) {
--        s = g_ptr_array_index(last_exec, i);
--        if (s->str) {
--            qemu_plugin_outs(s->str);
-+    for (i = 0; i < num_cpus; i++) {
-+        if (cpus[i].last_exec->str) {
-+            qemu_plugin_outs(cpus[i].last_exec->str);
-             qemu_plugin_outs("\n");
-         }
-     }
-@@ -224,9 +272,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-      * we don't know the size before emulation.
-      */
-     if (info->system_emulation) {
--        last_exec = g_ptr_array_sized_new(info->system.max_vcpus);
--    } else {
--        last_exec = g_ptr_array_new();
-+        cpus = g_new(CPU, info->system.max_vcpus);
-     }
- 
-     for (int i = 0; i < argc; i++) {
-@@ -236,13 +282,23 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-             parse_insn_match(tokens[1]);
-         } else if (g_strcmp0(tokens[0], "afilter") == 0) {
-             parse_vaddr_match(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "rfile") == 0) {
-+            rfile_name = g_strdup(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "reg") == 0) {
-+            reg_name = g_strdup(tokens[1]);
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
-         }
-     }
- 
-+    if ((!rfile_name) != (!reg_name)) {
-+        fputs("file and reg need to be set at the same time\n", stderr);
-+        return -1;
-+    }
-+
-     /* Register translation block and exit callbacks */
-+    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
- 
+The question is whether any form of hotplug is "in the spirit" of microvm.
+
 -- 
-2.42.0
+Cheers,
+
+David / dhildenb
 
 
