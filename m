@@ -2,70 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD647D6FE5
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 16:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F757D702E
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 16:56:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfEu-0006k3-JC; Wed, 25 Oct 2023 10:52:08 -0400
+	id 1qvfJ9-0006Bc-ME; Wed, 25 Oct 2023 10:56:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qvfEG-0005KD-JT; Wed, 25 Oct 2023 10:51:29 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qvfJ7-00068B-B0
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:56:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qvfED-000756-37; Wed, 25 Oct 2023 10:51:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description;
- bh=j1Dn7q6Qaq7MnCa855VhKvMLvN78EtjWJTTcd6S4txs=; b=rRulWpO/m0gfiN0feKRMJZSGn5
- hRb9Vhn0bdyIvk8sj9Nt8PrmsB+acuGZEgM7FOw8AsoyxXxHygnhWbexOYTZSNvolWwwRcUpY7hjN
- XU24Q1mO6Z+auWuq84CoUAajkyrw/NRboHyl27cTjafRF6CgAJ9ul4iipKrpoBn0P3JGvvga1AXmv
- QxxoqHWiJGigYp5z+gD7lgnCjxs+fGVFEcVdbQbvAv6KVjR1H8moKw2mVAHvZ2E9c75IQppZnUuAi
- VRF1jA9gaRSwI4R/1xFcs4XD/lxEjotJUrUjcOw2BevIt2NNd/X3xQnnKAs5Y7sw7WIP62A7xqAxL
- pPIINzNw==;
-Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qvfDb-009NnL-Gt; Wed, 25 Oct 2023 14:50:47 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1qvfDZ-002dFt-2r; Wed, 25 Oct 2023 15:50:45 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
- Bernhard Beschow <shentey@gmail.com>, Joel Upham <jupham125@gmail.com>
-Subject: [PATCH v3 28/28] docs: update Xen-on-KVM documentation
-Date: Wed, 25 Oct 2023 15:50:42 +0100
-Message-Id: <20231025145042.627381-29-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231025145042.627381-1-dwmw2@infradead.org>
-References: <20231025145042.627381-1-dwmw2@infradead.org>
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qvfJ5-0008Fh-Ox
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:56:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698245786;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=FfH2Lw7QFprV6jRke4NQBfhfarGMO6DhB9vcxNJhhvk=;
+ b=YtXdoq5F92YczwolZkzznDYs4jxTK63wVQVo398G7sI7AAZEVDMAKgnSVNXJ+1KfOYObH0
+ H876cNM5MtXk6ssekyd6UGbxpRI21+BKTOZ5Zd8YmHEc5gRp9xbyMoMmRK0ROFa4UCky3g
+ UWc/WbRoc77qUlJ50yf6Zju+netlqU4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-307-3s5W5DtCODiQjFZsYdkfZA-1; Wed, 25 Oct 2023 10:56:25 -0400
+X-MC-Unique: 3s5W5DtCODiQjFZsYdkfZA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-408f9cee5e8so27804655e9.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 07:56:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698245784; x=1698850584;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FfH2Lw7QFprV6jRke4NQBfhfarGMO6DhB9vcxNJhhvk=;
+ b=CAUpkEkz39bQpPv/itOYGpIAIO33rjYvP9vNKDP+SDlcD9Ij+7h2Pae3fbOxqFmg0E
+ SPAmvjYMXR+5V19NO8KxZZIeZCDw1tneqQM91UUTp+/JCSrFmTPec7uu7Sg9f7ncr5Xm
+ IsKhDIKA1lfnCVtP1Oxg57uzhtgSbT86qrqR9bs2HvXz5aEGc4M8Pl45cfuMvn3BvEa6
+ 2CUYl2TA1AKZwyupNOCLQpOMJ5Itvxq+DRFdo6GYOS/Jx7GCMgEd8G4M4R9tNsWeMS6g
+ r22xLgz40yq1f/HrCXEzvn0mqDzYhHksooJS6S3eXyNXyDdPprnHn1L0e7QeehScvQBj
+ Xfyw==
+X-Gm-Message-State: AOJu0YyLpqEKjQGW6xyc5mxTOqy95MAjaqvz9JyjjWPmjP4N4TUfRZGM
+ JJtkALVUbu3bE/ES1QSOPE861/DZqPzffgK+vB+M+zH4BvvCcME8GCrh6NR3mjZT76qSpxHxuVy
+ 1osCyt64bvWvx80s=
+X-Received: by 2002:a05:600c:3502:b0:405:3e5e:6698 with SMTP id
+ h2-20020a05600c350200b004053e5e6698mr13048480wmq.27.1698245783924; 
+ Wed, 25 Oct 2023 07:56:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyuxYq9j0WkCf76htZCOAvGk5EMJ8DURy+hXCMdG6susjmLa8h4sY/kEHiUJeDkD0jogZueQ==
+X-Received: by 2002:a05:600c:3502:b0:405:3e5e:6698 with SMTP id
+ h2-20020a05600c350200b004053e5e6698mr13048465wmq.27.1698245783465; 
+ Wed, 25 Oct 2023 07:56:23 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c708:8100:1fcd:5169:391e:99af?
+ (p200300cbc70881001fcd5169391e99af.dip0.t-ipconnect.de.
+ [2003:cb:c708:8100:1fcd:5169:391e:99af])
+ by smtp.gmail.com with ESMTPSA id
+ n10-20020adffe0a000000b003200c918c81sm12250421wrr.112.2023.10.25.07.56.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Oct 2023 07:56:23 -0700 (PDT)
+Message-ID: <babd9eb7-1f9c-478a-b288-96606795fc8b@redhat.com>
+Date: Wed, 25 Oct 2023 16:56:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+85b1c44ac99574f3713d+7367+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] exec/memory: Introduce the translate_size function
+ within the IOMMU class
+Content-Language: en-US
+To: Ethan Chen <ethan84@andestech.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20231025051430.493079-1-ethan84@andestech.com>
+ <20231025051430.493079-2-ethan84@andestech.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20231025051430.493079-2-ethan84@andestech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,174 +149,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On 25.10.23 07:14, Ethan Chen wrote:
+> IOMMU have size information during translation.
+> 
 
-Add notes about console and network support, and how to launch PV guests.
-Clean up the disk configuration examples now that that's simpler, and
-remove the comment about IDE unplug on q35/AHCI now that it's fixed.
+Can you add some more information why we would want this and how the 
+backend can do "better" things with the size at hand?
 
-Also update stale avocado test filename in MAINTAINERS.
+Note that I was not CCed on the cover letter.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- MAINTAINERS              |   2 +-
- docs/system/i386/xen.rst | 100 ++++++++++++++++++++++++++++-----------
- 2 files changed, 73 insertions(+), 29 deletions(-)
+> Signed-off-by: Ethan Chen <ethan84@andestech.com>
+> ---
+>   include/exec/memory.h | 19 +++++++++++++++++++
+>   1 file changed, 19 insertions(+)
+> 
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 9087d02769..5520b7c8c0 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -396,6 +396,25 @@ struct IOMMUMemoryRegionClass {
+>        */
+>       IOMMUTLBEntry (*translate)(IOMMUMemoryRegion *iommu, hwaddr addr,
+>                                  IOMMUAccessFlags flag, int iommu_idx);
+> +    /**
+> +     * @translate_size:
+> +     *
+> +     * Return a TLB entry that contains a given address and size.
+> +     *
+> +     * @iommu: the IOMMUMemoryRegion
+> +     *
+> +     * @hwaddr: address to be translated within the memory region
+> +     *
+> +     * @size: size to indicate the scope of the entire transaction
+> +     *
+> +     * @flag: requested access permission
+> +     *
+> +     * @iommu_idx: IOMMU index for the translation
+> +     */
+> +    IOMMUTLBEntry (*translate_size)(IOMMUMemoryRegion *iommu, hwaddr addr,
+> +                                    hwaddr size, IOMMUAccessFlags flag,
+> +                                    int iommu_idx);
+> +
+>       /**
+>        * @get_min_page_size:
+>        *
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d36aa44661..0fcc454ccd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -490,7 +490,7 @@ S: Supported
- F: include/sysemu/kvm_xen.h
- F: target/i386/kvm/xen*
- F: hw/i386/kvm/xen*
--F: tests/avocado/xen_guest.py
-+F: tests/avocado/kvm_xen_guest.py
- 
- Guest CPU Cores (other accelerators)
- ------------------------------------
-diff --git a/docs/system/i386/xen.rst b/docs/system/i386/xen.rst
-index f06765e88c..6214c4571e 100644
---- a/docs/system/i386/xen.rst
-+++ b/docs/system/i386/xen.rst
-@@ -15,46 +15,24 @@ Setup
- -----
- 
- Xen mode is enabled by setting the ``xen-version`` property of the KVM
--accelerator, for example for Xen 4.10:
-+accelerator, for example for Xen 4.17:
- 
- .. parsed-literal::
- 
--  |qemu_system| --accel kvm,xen-version=0x4000a,kernel-irqchip=split
-+  |qemu_system| --accel kvm,xen-version=0x40011,kernel-irqchip=split
- 
- Additionally, virtual APIC support can be advertised to the guest through the
- ``xen-vapic`` CPU flag:
- 
- .. parsed-literal::
- 
--  |qemu_system| --accel kvm,xen-version=0x4000a,kernel-irqchip=split --cpu host,+xen_vapic
-+  |qemu_system| --accel kvm,xen-version=0x40011,kernel-irqchip=split --cpu host,+xen-vapic
- 
- When Xen support is enabled, QEMU changes hypervisor identification (CPUID
- 0x40000000..0x4000000A) to Xen. The KVM identification and features are not
- advertised to a Xen guest. If Hyper-V is also enabled, the Xen identification
- moves to leaves 0x40000100..0x4000010A.
- 
--The Xen platform device is enabled automatically for a Xen guest. This allows
--a guest to unplug all emulated devices, in order to use Xen PV block and network
--drivers instead. Under Xen, the boot disk is typically available both via IDE
--emulation, and as a PV block device. Guest bootloaders typically use IDE to load
--the guest kernel, which then unplugs the IDE and continues with the Xen PV block
--device.
--
--This configuration can be achieved as follows
--
--.. parsed-literal::
--
--  |qemu_system| -M pc --accel kvm,xen-version=0x4000a,kernel-irqchip=split \\
--       -drive file=${GUEST_IMAGE},if=none,id=disk,file.locking=off -device xen-disk,drive=disk,vdev=xvda \\
--       -drive file=${GUEST_IMAGE},index=2,media=disk,file.locking=off,if=ide
--
--It is necessary to use the pc machine type, as the q35 machine uses AHCI instead
--of legacy IDE, and AHCI disks are not unplugged through the Xen PV unplug
--mechanism.
--
--VirtIO devices can also be used; Linux guests may need to be dissuaded from
--umplugging them by adding 'xen_emul_unplug=never' on their command line.
--
- Properties
- ----------
- 
-@@ -63,7 +41,10 @@ The following properties exist on the KVM accelerator object:
- ``xen-version``
-   This property contains the Xen version in ``XENVER_version`` form, with the
-   major version in the top 16 bits and the minor version in the low 16 bits.
--  Setting this property enables the Xen guest support.
-+  Setting this property enables the Xen guest support. If Xen version 4.5 or
-+  greater is specified, the HVM leaf in Xen CPUID is populated. Xen version
-+  4.6 enables the vCPU ID in CPUID, and version 4.17 advertises vCPU upcall
-+  vector support to the guest.
- 
- ``xen-evtchn-max-pirq``
-   Xen PIRQs represent an emulated physical interrupt, either GSI or MSI, which
-@@ -83,8 +64,71 @@ The following properties exist on the KVM accelerator object:
-   through simultaneous grants. For guests with large numbers of PV devices and
-   high throughput, it may be desirable to increase this value.
- 
--OS requirements
-----------------
-+Xen paravirtual devices
-+-----------------------
-+
-+The Xen PCI platform device is enabled automatically for a Xen guest. This
-+allows a guest to unplug all emulated devices, in order to use paravirtual
-+block and network drivers instead.
-+
-+Those paravirtual Xen block, network (and console) devices can be created
-+through the command line, and/or hot-plugged.
-+
-+To provide a Xen console device, define a character device and then a device
-+of type ``xen-console`` to connect to it. For the Xen console equivalent of
-+the handy ``-serial mon:stdio`` option, for example:
-+
-+.. parsed-literal::
-+   -chardev -chardev stdio,mux=on,id=char0,signal=off -mon char0 \\
-+   -device xen-console,chardev=char0
-+
-+The Xen network device is ``xen-net-device``, which becomes the default NIC
-+model for emulated Xen guests, meaning that just the default ``-nic user``
-+should automatically work and present a Xen network device to the guest.
-+
-+Disks can be configured with '``-drive file=${GUEST_IMAGE},if=xen``' and will
-+appear to the guest as ``xvda`` onwards.
-+
-+Under Xen, the boot disk is typically available both via IDE emulation, and
-+as a PV block device. Guest bootloaders typically use IDE to load the guest
-+kernel, which then unplugs the IDE and continues with the Xen PV block device.
-+
-+This configuration can be achieved as follows:
-+
-+.. parsed-literal::
-+
-+  |qemu_system| --accel kvm,xen-version=0x40011,kernel-irqchip=split \\
-+       -drive file=${GUEST_IMAGE},if=xen \\
-+       -drive file=${GUEST_IMAGE},file.locking=off,if=ide
-+
-+VirtIO devices can also be used; Linux guests may need to be dissuaded from
-+umplugging them by adding '``xen_emul_unplug=never``' on their command line.
-+
-+Booting Xen PV guests
-+---------------------
-+
-+Booting PV guest kernels is possible by using the Xen PV shim (a version of Xen
-+itself, designed to run inside a Xen HVM guest and provide memory management
-+services for one guest alone).
-+
-+The Xen binary is provided as the ``-kernel`` and the guest kernel itself (or
-+PV Grub image) as the ``-initrd`` image, which actually just means the first
-+multiboot "module". For example:
-+
-+.. parsed-literal::
-+
-+  |qemu_system| --accel kvm,xen-version=0x40011,kernel-irqchip=split \\
-+       -chardev stdio,id=char0 -device xen-console,chardev=char0 \\
-+       -display none  -m 1G  -kernel xen -initrd bzImage \\
-+       -append "pv-shim console=xen,pv -- console=hvc0 root=/dev/xvda1" \\
-+       -drive file=${GUEST_IMAGE},if=xen
-+
-+The Xen image must be built with the ``CONFIG_XEN_GUEST`` and ``CONFIG_PV_SHIM``
-+options, and as of Xen 4.17, Xen's PV shim mode does not support using a serial
-+port; it must have a Xen console or it will panic.
-+
-+Host OS requirements
-+--------------------
- 
- The minimal Xen support in the KVM accelerator requires the host to be running
- Linux v5.12 or newer. Later versions add optimisations: Linux v5.17 added
 -- 
-2.40.1
+Cheers,
+
+David / dhildenb
 
 
