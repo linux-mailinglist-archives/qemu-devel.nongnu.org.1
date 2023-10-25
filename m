@@ -2,92 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5941D7D66AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722827D66AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:23:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qva6U-0001nM-SO; Wed, 25 Oct 2023 05:23:06 -0400
+	id 1qva71-00024T-33; Wed, 25 Oct 2023 05:23:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qva6S-0001kR-Eg
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:23:04 -0400
-Received: from out3-smtp.messagingengine.com ([66.111.4.27])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qva6s-000205-FI
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:23:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qva6Q-0000aa-6l
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:23:04 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id E07815C028D;
- Wed, 25 Oct 2023 05:22:58 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Wed, 25 Oct 2023 05:22:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1698225778; x=
- 1698312178; bh=4ypX31g/i13YoSC7fP57RPLF8i1N4QOhSeCrwMI9BKk=; b=F
- GduFpBGxfi1v4MhbUty1quZRJ2ZxIWvsVON3n5RdG7GDR4rIgug9WEFF3VFght3A
- JpQ7z/Gx300eZ6vacrDPjAO/9SMGbDK6NVTnNRE+QZKnFY00wOXvZIPQIIjMd9zw
- Z3fgGdWtxPmFoSU+xO9MfaqSBT/YK2GrAGUICXVLtPDxea/RNZJLcwzpGUXDLf5s
- eIkfqVxtGQZgxFW/jFrTsvoiC6Z9wnx2+Gw9ZLd1j6zoo/oVPziU0LGKdYoSC5hE
- WIupz6G/So2paEd/3lMJPdg0uUsIQsoCQubXw9XXSX7EOaGSAD9vLy4urFBebj72
- 8zfNYXnaQSIz4QsvTEJBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1698225778; x=1698312178; bh=4ypX31g/i13Yo
- SC7fP57RPLF8i1N4QOhSeCrwMI9BKk=; b=FAML3nuVmwgT2Dqw8vPhHfzoeoAsl
- sKSl5N/v8GWS9Y3rB7OzKQVbUCKmPmANhPJEFYR5097ai+bnhe8zbmwvOw541mrl
- baSAfedzmz/uElMNtG0Kju/HyJf+vy1VPeC/v7iRN7PmP6dU4Tib2fuEtIjsalLh
- /W2BvD0xNU7UkZBwSQPEnnHplL32NFQvAWjae+OIF+0rx8ld0oYh9T/6ltUHUphg
- 7CkVkKIW55a0SxfcYDcpLg5IVyexgcIeVz9FzMqHuRgfxfDTBfqpdvZUGP5Al40Q
- D9pb5/AtC0ld7xxRTr+cp65ibKX6X2fxzyp71HT/3NxoXdCo0DaijdcLg==
-X-ME-Sender: <xms:cd44Zbn2GqSZMEvfSvHK1zdi72O_CaEOGzi65sQhLdBZ3E0JUEVx5g>
- <xme:cd44Ze1ep0FMncyJKoMIhOUb_wAT3m4bXMLiRBIuo5awQIrbe22gr9RkDCGfsXdE-
- djY7l7CPoeg4Y27p7M>
-X-ME-Received: <xmr:cd44ZRqxaFNMdlssLRYO3qY0lyD3sU3m2zoz5d5bDHZkiR4lnwprwHzxp-s>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrledtgdduhecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgruhhs
- ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
- gvrhhnpeejiefftdeuuedugeejtdevleehleegleduvedvkefgudfhleetjeekgeeutdeg
- geenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhnvhhmvgigphhrvghsshdrohhrgh
- enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhs
- sehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:cd44ZTkwjKf-QjfBCRKfhY-jEXZGmUqSdvXh9E3viodxPmjlxKpmSw>
- <xmx:cd44ZZ2C02g22TLn38U87e9Jw3byVe6lu6oBFdi6M6s212SKH8MS0Q>
- <xmx:cd44ZStHCrlArPTH4T2DesGeScFtT8fdzw044ilV_nh3YRkUOOMQ9Q>
- <xmx:ct44ZR_8EvczZsCVHIzWEHAz-yNaCT1TkvFiBk55p6H8JUA__-6niQ>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Oct 2023 05:22:56 -0400 (EDT)
-Date: Wed, 25 Oct 2023 11:22:47 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
-Cc: Andrew Jeffery <andrew@codeconstruct.com.au>, qemu-devel@nongnu.org,
- peter@pjd.dev, joel@jms.id.au, cminyard@mvista.com
-Subject: Re: [PATCH] eeprom_at24c: Model 8-bit data addressing for 16-bit
- devices
-Message-ID: <ZTjeZ6LB96yaiW3l@cormorant.local>
-References: <20230921034816.320655-1-andrew@codeconstruct.com.au>
- <f5e6727c-887c-4533-a5df-db1a57318870@kaod.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qva6q-0000eL-Ed
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:23:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698225807;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=a3+Zs8MPib5PI3yOQRaHqAMWdUFbGgWHftPTH8mMLuY=;
+ b=AVcXol2V+SsLh0mdEZd6/Yh/1cwawpmcWwOfV62akBddTprLVvFDktLoW/8/U9X7QgsLUK
+ +CwR9JyjYuiNZjOtT+SQ7JPB/VfHziI/1f9PRUSwtawuwuk/m/1iD+kat5FWAv0N1pk4yC
+ OvvEtFjLEXYtN6xkW11S/fUOLjd8ry8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-402-z_6iYE8CPH6jBPWexsMCxA-1; Wed, 25 Oct 2023 05:23:18 -0400
+X-MC-Unique: z_6iYE8CPH6jBPWexsMCxA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6EC65881B6D;
+ Wed, 25 Oct 2023 09:23:18 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.154])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 41E4C2026D4C;
+ Wed, 25 Oct 2023 09:23:17 +0000 (UTC)
+Date: Wed, 25 Oct 2023 10:23:14 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v2 25/29] migration/multifd: Support outgoing fixed-ram
+ stream format
+Message-ID: <ZTjegrKXycbsbImz@redhat.com>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-26-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="rceDmsEz9DMFcJN9"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f5e6727c-887c-4533-a5df-db1a57318870@kaod.org>
-Received-SPF: pass client-ip=66.111.4.27; envelope-from=its@irrelevant.dk;
- helo=out3-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+In-Reply-To: <20231023203608.26370-26-farosas@suse.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,69 +80,176 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Oct 23, 2023 at 05:36:04PM -0300, Fabiano Rosas wrote:
+> The new fixed-ram stream format uses a file transport and puts ram
+> pages in the migration file at their respective offsets and can be
+> done in parallel by using the pwritev system call which takes iovecs
+> and an offset.
+> 
+> Add support to enabling the new format along with multifd to make use
+> of the threading and page handling already in place.
+> 
+> This requires multifd to stop sending headers and leaving the stream
+> format to the fixed-ram code. When it comes time to write the data, we
+> need to call a version of qio_channel_write that can take an offset.
+> 
+> Usage on HMP is:
+> 
+> (qemu) stop
+> (qemu) migrate_set_capability multifd on
+> (qemu) migrate_set_capability fixed-ram on
+> (qemu) migrate_set_parameter max-bandwidth 0
+> (qemu) migrate_set_parameter multifd-channels 8
+> (qemu) migrate file:migfile
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  include/qemu/bitops.h | 13 ++++++++++
+>  migration/multifd.c   | 55 +++++++++++++++++++++++++++++++++++++++++--
+>  migration/options.c   |  6 -----
+>  migration/ram.c       |  2 +-
+>  4 files changed, 67 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
+> index cb3526d1f4..2c0a2fe751 100644
+> --- a/include/qemu/bitops.h
+> +++ b/include/qemu/bitops.h
+> @@ -67,6 +67,19 @@ static inline void clear_bit(long nr, unsigned long *addr)
+>      *p &= ~mask;
+>  }
+>  
+> +/**
+> + * clear_bit_atomic - Clears a bit in memory atomically
+> + * @nr: Bit to clear
+> + * @addr: Address to start counting from
+> + */
+> +static inline void clear_bit_atomic(long nr, unsigned long *addr)
+> +{
+> +    unsigned long mask = BIT_MASK(nr);
+> +    unsigned long *p = addr + BIT_WORD(nr);
+> +
+> +    return qatomic_and(p, ~mask);
+> +}
+> +
+>  /**
+>   * change_bit - Toggle a bit in memory
+>   * @nr: Bit to change
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 20e8635740..3f95a41ee9 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -260,6 +260,19 @@ static void multifd_pages_clear(MultiFDPages_t *pages)
+>      g_free(pages);
+>  }
+>  
+> +static void multifd_set_file_bitmap(MultiFDSendParams *p)
+> +{
+> +    MultiFDPages_t *pages = p->pages;
+> +
+> +    if (!pages->block) {
+> +        return;
+> +    }
+> +
+> +    for (int i = 0; i < p->normal_num; i++) {
+> +        ramblock_set_shadow_bmap_atomic(pages->block, pages->offset[i]);
+> +    }
+> +}
+> +
+>  static void multifd_send_fill_packet(MultiFDSendParams *p)
+>  {
+>      MultiFDPacket_t *packet = p->packet;
+> @@ -606,6 +619,29 @@ int multifd_send_sync_main(QEMUFile *f)
+>          }
+>      }
+>  
+> +    if (!migrate_multifd_packets()) {
+> +        /*
+> +         * There's no sync packet to send. Just make sure the sending
+> +         * above has finished.
+> +         */
+> +        for (i = 0; i < migrate_multifd_channels(); i++) {
+> +            qemu_sem_wait(&multifd_send_state->channels_ready);
+> +        }
+> +
+> +        /* sanity check and release the channels */
+> +        for (i = 0; i < migrate_multifd_channels(); i++) {
+> +            MultiFDSendParams *p = &multifd_send_state->params[i];
+> +
+> +            qemu_mutex_lock(&p->mutex);
+> +            assert(!p->pending_job || p->quit);
+> +            qemu_mutex_unlock(&p->mutex);
+> +
+> +            qemu_sem_post(&p->sem);
+> +        }
+> +
+> +        return 0;
+> +    }
+> +
+>      /*
+>       * When using zero-copy, it's necessary to flush the pages before any of
+>       * the pages can be sent again, so we'll make sure the new version of the
+> @@ -689,6 +725,8 @@ static void *multifd_send_thread(void *opaque)
+>  
+>          if (p->pending_job) {
+>              uint32_t flags;
+> +            uint64_t write_base;
+> +
+>              p->normal_num = 0;
+>  
+>              if (!use_packets || use_zero_copy_send) {
+> @@ -713,6 +751,16 @@ static void *multifd_send_thread(void *opaque)
+>              if (use_packets) {
+>                  multifd_send_fill_packet(p);
+>                  p->num_packets++;
+> +                write_base = 0;
+> +            } else {
+> +                multifd_set_file_bitmap(p);
+> +
+> +                /*
+> +                 * If we subtract the host page now, we don't need to
+> +                 * pass it into qio_channel_write_full_all() below.
+> +                 */
+> +                write_base = p->pages->block->pages_offset -
+> +                    (uint64_t)p->pages->block->host;
+>              }
+>  
+>              flags = p->flags;
+> @@ -738,8 +786,9 @@ static void *multifd_send_thread(void *opaque)
+>                  p->iov[0].iov_base = p->packet;
+>              }
+>  
+> -            ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num, NULL,
+> -                                              0, p->write_flags, &local_err);
+> +            ret = qio_channel_write_full_all(p->c, p->iov, p->iovs_num,
+> +                                             write_base, NULL, 0,
+> +                                             p->write_flags, &local_err);
+>              if (ret != 0) {
+>                  break;
+>              }
+> @@ -969,6 +1018,8 @@ int multifd_save_setup(Error **errp)
+>  
+>          if (migrate_zero_copy_send()) {
+>              p->write_flags = QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
+> +        } else if (!use_packets) {
+> +            p->write_flags |= QIO_CHANNEL_WRITE_FLAG_WITH_OFFSET;
+>          } else {
+>              p->write_flags = 0;
+>          }
 
---rceDmsEz9DMFcJN9
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ah, so this is why you had the wierd overloaded design for
+qio_channel_write_full_all in patch 22 that I queried. I'd
+still prefer the simpler design at the QIO level, and just
+calling the appropriate function above. 
 
-On Oct 25 11:14, C=C3=A9dric Le Goater wrote:
-> Cc: Klaus
->=20
-> On 9/21/23 05:48, Andrew Jeffery wrote:
-> > It appears some (many?) EEPROMs that implement 16-bit data addressing
-> > will accept an 8-bit address and clock out non-uniform data for the
-> > read. This behaviour is exploited by an EEPROM detection routine in part
-> > of OpenBMC userspace with a reasonably broad user base:
-> >=20
-> > https://github.com/openbmc/entity-manager/blob/0422a24bb6033605ce75479f=
-675fedc76abb1167/src/fru_device.cpp#L197-L229
-> >=20
-> > The diversity of the set of EEPROMs that it operates against is unclear,
-> > but this code has been around for a while now.
-> >=20
-> > Separately, The NVM Express Management Interface Specification dictates
-> > the provided behaviour in section 8.2 Vital Product Data:
-> >=20
-> > > If only one byte of the Command Offset is provided by the Management
-> > > Controller, then the least significant byte of the internal offset
-> > > shall be set to that value and the most-significant byte of the
-> > > internal offset shall be cleared to 0h
-> >=20
-> > https://nvmexpress.org/wp-content/uploads/NVM-Express-Management-Interf=
-ace-Specification-1.2c-2022.10.06-Ratified.pdf
-> >=20
-> > This change makes it possible to expose NVMe VPD in a manner that can be
-> > dynamically detected by OpenBMC.
-> >=20
-> > Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
->=20
-> It seems that the "at24c-eeprom" model doesn't have a maintainer. Until
-> this is sorted out, may be this change could go through the NVMe queue
-> since it is related.
->=20
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-I can, but I'm not that confident on determining if we choose to
-implement this behavior broadly. I have no qualms, but someone who works
-more with embedded stuff might?
-
---rceDmsEz9DMFcJN9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmU43mYACgkQTeGvMW1P
-DekylwgAjTRoX9Xh4vT3XS26fU4+19JuaNRQq632joAvtOWsJEmVp6IiowqHD8No
-CbKfiAmXR1q1teLJNgeyLvwTNFzzHvUtcS+PTWU00Db5W3vB2v/fs2Ng1pY7sVeS
-llCtUwGOdbZTZLZfArfDJVxv2bVUL3yle1q8nH/iIk+1ZUk3SVqOOJ5t/zyMD0sX
-trG6crtESNx1x1fSS0+dY4TogxiygREXrYsbVFAQ9c59z4MSiGe+vprN7EL7djRz
-ZZ7BPzv1lbZxazE1C7XcAflnYVg1d/5flk6Z8XoNs19ZJo65HTTXto3KH+aOlyzE
-7bR9uYidneEvR36g+1qmtNvSvo8+CA==
-=fS7J
------END PGP SIGNATURE-----
-
---rceDmsEz9DMFcJN9--
 
