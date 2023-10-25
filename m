@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374557D6A91
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 13:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED34F7D6A99
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 13:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvcUy-0005v9-OD; Wed, 25 Oct 2023 07:56:32 -0400
+	id 1qvcVa-0006kn-DQ; Wed, 25 Oct 2023 07:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcUu-0005th-0Z
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:56:29 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcVZ-0006kd-8O
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:57:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcUq-00058O-Ag
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:56:27 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvcVX-0005C3-8n
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 07:57:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698234982;
+ s=mimecast20190719; t=1698235026;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=K/rvoJ6Ap7z8s2B6c5QjiszayBRCvcri2jzCyvKtscI=;
- b=YDf/4qnoUmElYH5qvEewQGn6rMLecmJMz0t50xAGad7n1hQleEDUtR1LbJ46skZbo6ORLP
- rlTjDg4p5LkmKy7lNXvHkfjQpmQccAUB/M4zFGp5Lk3tU9/snP+N7B+jaa5Du+9qQ1G0Et
- RD5XYhhcGdlRJcN/utpiqsuIRX0zfNY=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yW9fFwj8rIVTHWBt78jbKVTA1DF1lI752JDimJOra3s=;
+ b=BRwxjKFRwpVUQ8fLQq4oSWbMXZpzrkiF3v7gHg8W7OFpjZG4VWrGd64HLq4Xv4E1FfSTMz
+ J9+W9ntQLWiYxmyboKzyUTqztly2Puc54LtMo91cfrnord9NtDJe53/6H2pej1N9XpUMgC
+ 0Gq420pPqzzKalnHGmzHh2ZICMwJNjM=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-402-cFT9xByEMTmjuxY5J_vNtg-1; Wed, 25 Oct 2023 07:56:20 -0400
-X-MC-Unique: cFT9xByEMTmjuxY5J_vNtg-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-41cb7904d5aso71920801cf.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 04:56:20 -0700 (PDT)
+ us-mta-460-T09CxYqKOmu0YmdyIsE3pg-1; Wed, 25 Oct 2023 07:57:05 -0400
+X-MC-Unique: T09CxYqKOmu0YmdyIsE3pg-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-779e001ffa5so339394685a.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 04:57:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698234980; x=1698839780;
+ d=1e100.net; s=20230601; t=1698235024; x=1698839824;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=K/rvoJ6Ap7z8s2B6c5QjiszayBRCvcri2jzCyvKtscI=;
- b=oNlJayTz+XyjbPk4V0w936odNfqyI+FjrmtuQrEV53QiNZ/XSfWI/g/NzPxBZItcrm
- z14b6A6vaQOVGrGqyAY0WWk9FQA/j4cPx02RDwwJMuqy9LBjN+OCzLJMc4TOKhrKBQGR
- dKnH/mrrWlE17Af7qMvq7/8tsYB2wygVCIoe7A13/JmfCe6PyzjoLmFIOAC2v9TIpRV1
- tFtLM0OopBYGCVcrd73J3YXe6e1tgOH11Y6RKIwSSpitLBFx4u9FB5LiBFAL0i1/lmY5
- ZK2X+FBsRYsDSaboYKObhZlIaFJXtMsDwYoHTXZdNybPeJmQ8dobG4XP8Jr2p4so7ul5
- nmDg==
-X-Gm-Message-State: AOJu0YzWifZnQ2AintmdMP6SXlZ6mhR1LEjpabgx7sH8lTCqYQXY9KNm
- qgOBR43LqKQOfbmKWiVu9gtMv9hW3DmGmVqozF8Ab+vNrGJGgMBKNasFL/AJm45SIrLCrPtLcRj
- DageNyjru8g9YIuU=
-X-Received: by 2002:a05:622a:1316:b0:410:9af1:f9b2 with SMTP id
- v22-20020a05622a131600b004109af1f9b2mr20832854qtk.3.1698234979704; 
- Wed, 25 Oct 2023 04:56:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFo+UtF2K4jG9/j0ZQcgVEQRA2FjgBVfYij9q3bqnrR1qUjKsbtvb8MzBYzRIT3+h7EvgrXmA==
-X-Received: by 2002:a05:622a:1316:b0:410:9af1:f9b2 with SMTP id
- v22-20020a05622a131600b004109af1f9b2mr20832837qtk.3.1698234979460; 
- Wed, 25 Oct 2023 04:56:19 -0700 (PDT)
+ bh=yW9fFwj8rIVTHWBt78jbKVTA1DF1lI752JDimJOra3s=;
+ b=ZPCM0l3YUle8DQ3AV3pRSZvfGFT6wTu0THWXDnZim8j9pqGvPH3ZreRgP7NAhnxl4Q
+ zxBxfeGlsQIa8nlQopXhTPppLdDX2Nbc+89Z8FsfXunOmLanPFfXaoeXHOYbwYu06Fo4
+ gjdCrwzyw1jHVcAc9uJhI4Lk3hrdi6BVT5VrLIvbu/ZiJWp1At+t0ygSkpq3NHLkztiJ
+ eDvQwpIC9AUe1f7rpAd6Z7D6AzmlVHVR9rPVa22LiaVmQloWVemnXti7PCVm1kM5GNKn
+ +1hHIYNK5DQZPGgAf0T5aVVBEIfoEKrElJ0EiYRb1qlRHTjRwiCsnLQLwF6iH5DXNCaa
+ yCEA==
+X-Gm-Message-State: AOJu0Yyq+NktqjEVeVd2sLNCMN2UOMY5WGcnM8T+VkV7O8y46S8COTog
+ UGlhTb6AsHXJvUhd6duNUguxJ60YHw+OuaVnbL+FKh5SwWWlNgvS6+DiOcfeWcyScLY61z2h5Hy
+ Tw80Lu4KKivcKfHE=
+X-Received: by 2002:a05:620a:8e8a:b0:767:8373:a890 with SMTP id
+ rf10-20020a05620a8e8a00b007678373a890mr11956885qkn.45.1698235024620; 
+ Wed, 25 Oct 2023 04:57:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH83U4CMFtVrolk0txlLJoHCdYr0QT3HeY8Kn8W/Xd/YxLn7HsVuJQFe/AmUmXTtQUtBiw/Vw==
+X-Received: by 2002:a05:620a:8e8a:b0:767:8373:a890 with SMTP id
+ rf10-20020a05620a8e8a00b007678373a890mr11956868qkn.45.1698235024321; 
+ Wed, 25 Oct 2023 04:57:04 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
  [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- j9-20020ac84409000000b0041811e71890sm4153625qtn.33.2023.10.25.04.56.15
+ j9-20020ac84409000000b0041811e71890sm4153625qtn.33.2023.10.25.04.57.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 04:56:18 -0700 (PDT)
-Message-ID: <3ceb0bcf-649e-45f6-a5be-1140802e70c7@redhat.com>
-Date: Wed, 25 Oct 2023 13:56:13 +0200
+ Wed, 25 Oct 2023 04:57:03 -0700 (PDT)
+Message-ID: <8af7f10e-648d-4562-aff4-afbbbc32fc2b@redhat.com>
+Date: Wed, 25 Oct 2023 13:57:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 13/19] ui/spice: SPICE/QXL requires PIXMAN
+Subject: Re: [PATCH v5 14/19] ui/gtk: -display gtk requires PIXMAN
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
@@ -77,7 +77,7 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
  "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
- <20231023113047.2572137-14-marcandre.lureau@redhat.com>
+ <20231023113047.2572137-15-marcandre.lureau@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,18 +121,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231023113047.2572137-14-marcandre.lureau@redhat.com>
+In-Reply-To: <20231023113047.2572137-15-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,12 +154,27 @@ On 23/10/2023 13.30, marcandre.lureau@redhat.com wrote:
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   meson.build        |  6 +++++-
->   hw/display/Kconfig |  2 +-
->   ui/meson.build     | 10 +++++-----
->   3 files changed, 11 insertions(+), 7 deletions(-)
+>   meson.build | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index 3d6e41d1fb..dbc7af091c 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -1507,7 +1507,11 @@ gtkx11 = not_found
+>   vte = not_found
+>   have_gtk_clipboard = get_option('gtk_clipboard').enabled()
+>   
+> -if not get_option('gtk').auto() or have_system
+> +if get_option('gtk') \
+> +             .disable_auto_if(not have_system) \
+> +             .require(pixman.found(),
+> +                      error_message: 'cannot enable GTK if pixman is not available') \
+> +             .allowed()
+>     gtk = dependency('gtk+-3.0', version: '>=3.22.0',
+>                      method: 'pkg-config',
+>                      required: get_option('gtk'))
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-
 
 
