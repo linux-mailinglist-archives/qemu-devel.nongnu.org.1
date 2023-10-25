@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA79A7D7884
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A717D7892
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:30:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvnHy-0001bL-Q9; Wed, 25 Oct 2023 19:27:50 -0400
+	id 1qvnI0-0001ca-NF; Wed, 25 Oct 2023 19:27:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnHw-0001YF-Rt
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qvnHx-0001aC-Ma
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnHu-00053y-BD
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:48 -0400
+ id 1qvnHw-0005Bu-4l
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698276465;
+ s=mimecast20190719; t=1698276467;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ULsRG+XU+XVacD6X5WW4XfFMbqSG6WE2QP4goo2ipGw=;
- b=FQyIx4b79J7msMYUrQGBqjfDkEHE9hQLnTZ5GSyi9OSOAYBNj3IWSWt7h7+tNyi1TtvbI9
- CYnpGZAxg4oJsfTSLjvlTuJuUvAsJOAlKoTH1uX2JVtjEJnjNCTdOWba456VFhS17MY1HB
- LINNNICxd4DpiSVQAd0q7SbGKD9diTY=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fpXBNDQ2zJ3iFM2sYgodeN86HxnKFSz31ivc1oz0iiM=;
+ b=OpVLIU+FspK/oH96lFlPGc9QM0sRMtxV0nRgQ/u+RTQF8XwC58r4HY015aviM5tufe0llu
+ 5el6I+B8wdUIn8taFSq8HfuHWyppLfBjDOynIzHfmcddM6amSO39mHySZPPo20huTlWBUZ
+ xeOPNmSH7kdbooldZ98x08xb/CL6brc=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-INZIIQKHOJiu3thkL8lySw-1; Wed, 25 Oct 2023 19:27:44 -0400
-X-MC-Unique: INZIIQKHOJiu3thkL8lySw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-778999c5f1dso41760085a.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:27:44 -0700 (PDT)
+ us-mta-20-31dBzu3hMx6Jx-gP8qM6EA-1; Wed, 25 Oct 2023 19:27:46 -0400
+X-MC-Unique: 31dBzu3hMx6Jx-gP8qM6EA-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-63d0c38e986so3743256d6.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:27:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698276463; x=1698881263;
+ d=1e100.net; s=20230601; t=1698276465; x=1698881265;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ULsRG+XU+XVacD6X5WW4XfFMbqSG6WE2QP4goo2ipGw=;
- b=LLwWjGlr3sZCwRrPn3YntiKJgLIugLJOeIEcYRrfxRDsMISlPZmlQHK5kNt6dmKPeN
- 6ox+YMEbt0ifWzr46aH9Zzz6cbrMxZXwzMtc9byNVT/GK3sNyiAcf6+D4x5EUVLwklqI
- zgHZKZtGRUtojBIHMMNbvMQ+XiOGdkQY5MWnnY3iBZkf1CGggv9WCV2FsA7ZYQwM9/Re
- R4s9Y8mkqus4EC3IdiNKqbYSFyQCQMb+c3fZZB4ViNL6D8tCzqzCb0QvfNHHgkNOK6ZH
- COgQ9ejfkOGaHECroc1Lz/538iuCST96fnqI21M/v904/kAA2WJpkIbt2X/UmygqDa+K
- lzjg==
-X-Gm-Message-State: AOJu0YwPcNSpkR9obQKCIs9TjtOSOE+ErWANxE8wT9UwNHNnmanAK/kY
- 5/++GbwS4pHr3S33rIdjKQVPMjwPQXCB6qyadZ0p7L2Y5D3Kc5lEDO2R6BE6e43Snz0dXLIu/Uo
- d1tSolHUB/LIa6AwnfHZgY9PBHN80ABLVJcllUfYtOOHjsqsa4G/KTeX19VkTMX9F7aaOJLd/fr
- A=
-X-Received: by 2002:a05:620a:1710:b0:778:a93c:e661 with SMTP id
- az16-20020a05620a171000b00778a93ce661mr18770922qkb.32.1698276463029; 
- Wed, 25 Oct 2023 16:27:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGesiSPoTRvVP+Dz/lrDeKP4SibjPRAGk6vhNXb6oKuX9+bz5kF/K40ULAX/J5h4SS/IA3dlw==
-X-Received: by 2002:a05:620a:1710:b0:778:a93c:e661 with SMTP id
- az16-20020a05620a171000b00778a93ce661mr18770908qkb.32.1698276462648; 
- Wed, 25 Oct 2023 16:27:42 -0700 (PDT)
+ bh=fpXBNDQ2zJ3iFM2sYgodeN86HxnKFSz31ivc1oz0iiM=;
+ b=G0C70qXuQHr+kCT0YWmocqtPCl2n2HHQgv5THLI/aCmlugOJiMZGLhy7UiEjH8yJtO
+ HWTBieqAFfWYLRbREOqPt5Ya1s1W7TuU4ff3XJHWFn/KqBSeGergwbYFCmH/J9vQCa4a
+ RDXBFSsDskiPMCZ+qqBzrIqw6wiQ/KrJfhFbPGiBkHvd/IKlTu2vtoYa9FdI+RrFMcqx
+ YFPM5U/sZja86vfKWIw+IQutNYgYlinBBJkys9CsCcW/6xczEqoycvzSAh4Gizdw6uQK
+ l+uZRC509fmaN/tN1bNWZyubcN0pk9E8L+0qjNXFZUTN/RhHDhxpcQ+UG7dYXhq9djun
+ o4wg==
+X-Gm-Message-State: AOJu0Yzc1vExzlOqGb/S1uTvMSCsX1Ry70nFGiDIVsxRBwa1IaChubY7
+ aAK1U+tnr/NZeycxVYmT4lLdsWhLm1wIDt/bMtmPYRhhtFzJHBP0un5qPenaVKhjCGCOovAUTo4
+ Rkscbxxg6EnayfspaAvesb6gWZAHpvaLEDDO1y0ffDMAE1wuyjmT64jrNBu8DsUBYPnLxs5mkCh
+ U=
+X-Received: by 2002:ad4:5bc8:0:b0:66d:1ffe:bcd4 with SMTP id
+ t8-20020ad45bc8000000b0066d1ffebcd4mr15857873qvt.44.1698276465319; 
+ Wed, 25 Oct 2023 16:27:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyLkXsqqUbwZRs+UTQt3unpIwVOEq5K5Yt0pJIMWrtNQBp706lxIUbc+/AnDezG0yIuyhVmQ==
+X-Received: by 2002:ad4:5bc8:0:b0:66d:1ffe:bcd4 with SMTP id
+ t8-20020ad45bc8000000b0066d1ffebcd4mr15857856qvt.44.1698276464936; 
+ Wed, 25 Oct 2023 16:27:44 -0700 (PDT)
 Received: from [172.19.0.201] ([192.80.84.35])
  by smtp.gmail.com with ESMTPSA id
- l15-20020a05620a0c0f00b0077892023fc5sm4554601qki.120.2023.10.25.16.27.41
+ dh5-20020ad458c5000000b0066cf6f202cdsm4750410qvb.122.2023.10.25.16.27.43
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 16:27:42 -0700 (PDT)
+ Wed, 25 Oct 2023 16:27:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 12/24] kvm: require KVM_IRQFD for kernel irqchip
-Date: Thu, 26 Oct 2023 01:27:05 +0200
-Message-ID: <20231025232718.89428-13-pbonzini@redhat.com>
+Subject: [PULL 13/24] kvm: drop reference to KVM_CAP_PCI_2_3
+Date: Thu, 26 Oct 2023 01:27:06 +0200
+Message-ID: <20231025232718.89428-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231025232718.89428-1-pbonzini@redhat.com>
 References: <20231025232718.89428-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,28 +100,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM_IRQFD was introduced in Linux 2.6.32, and since then it has always been
-available on architectures that support an in-kernel interrupt controller.
-We can require it unconditionally.
+This is a remnant of pre-VFIO device assignment; it is not defined
+anymore by Linux and not used by QEMU.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/sysemu/kvm.h | 1 +
- 1 file changed, 1 insertion(+)
+ accel/kvm/kvm-all.c      | 7 -------
+ include/sysemu/kvm.h     | 1 -
+ include/sysemu/kvm_int.h | 1 -
+ 3 files changed, 9 deletions(-)
 
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index be50d47f7b4..50717a0d634 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2576,8 +2576,6 @@ static int kvm_init(MachineState *ms)
+ 
+     s->max_nested_state_len = kvm_check_extension(s, KVM_CAP_NESTED_STATE);
+ 
+-    s->intx_set_mask = kvm_check_extension(s, KVM_CAP_PCI_2_3);
+-
+     s->irq_set_ioctl = KVM_IRQ_LINE;
+     if (kvm_check_extension(s, KVM_CAP_IRQ_INJECT_STATUS)) {
+         s->irq_set_ioctl = KVM_IRQ_LINE_STATUS;
+@@ -3237,11 +3235,6 @@ int kvm_has_gsi_routing(void)
+ #endif
+ }
+ 
+-int kvm_has_intx_set_mask(void)
+-{
+-    return kvm_state->intx_set_mask;
+-}
+-
+ bool kvm_arm_supports_user_irq(void)
+ {
+     return kvm_check_extension(kvm_state, KVM_CAP_ARM_USER_IRQ);
 diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index 575dee53b39..16d58d2598a 100644
+index 16d58d2598a..bcc9bd96a92 100644
 --- a/include/sysemu/kvm.h
 +++ b/include/sysemu/kvm.h
-@@ -167,6 +167,7 @@ extern bool kvm_msi_use_devid;
- #define kvm_irqchip_is_split() (false)
- #define kvm_async_interrupts_enabled() (false)
- #define kvm_halt_in_kernel() (false)
-+#define kvm_irqfds_enabled() (false)
- #define kvm_eventfds_enabled() (false)
- #define kvm_resamplefds_enabled() (false)
- #define kvm_msi_via_irqfd_enabled() (false)
+@@ -216,7 +216,6 @@ int kvm_has_debugregs(void);
+ int kvm_max_nested_state_length(void);
+ int kvm_has_many_ioeventfds(void);
+ int kvm_has_gsi_routing(void);
+-int kvm_has_intx_set_mask(void);
+ 
+ /**
+  * kvm_arm_supports_user_irq
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index a7dacd12d6c..817238b9582 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -85,7 +85,6 @@ struct KVMState
+ #endif
+     int max_nested_state_len;
+     int many_ioeventfds;
+-    int intx_set_mask;
+     int kvm_shadow_mem;
+     bool kernel_irqchip_allowed;
+     bool kernel_irqchip_required;
 -- 
 2.41.0
 
