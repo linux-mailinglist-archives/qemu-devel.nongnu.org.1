@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED80C7D749E
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2927D749C
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:45:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvjo2-0002wh-85; Wed, 25 Oct 2023 15:44:42 -0400
+	id 1qvjo3-0002xV-1O; Wed, 25 Oct 2023 15:44:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qvjny-0002tO-IP
+ id 1qvjny-0002tE-1D
  for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:44:38 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qvjnu-00074N-JM
+ id 1qvjnv-00074W-TJ
  for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:44:37 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39PEwIUZ026237; Wed, 25 Oct 2023 19:44:33 GMT
+ 39PEwkob004627; Wed, 25 Oct 2023 19:44:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=6IngbwvX5QRx2Ju6S7ksW7OMH5fcan0CqFrRSV+XBCM=;
- b=SO77BQEAjmDoqtEz9WufPRmJ41b+DvIyPisXD1QiwTpHXgrjci04a37WZJcwwaAp3yYq
- i7EnWg/nMaPKqRJPh7U7HLQrFmm2xVgDuy6fU6YTm1FQhsy7SLTlOJNHrgE2cfqBKmAy
- UHhhGM0eu9JvkEO5lPWtFyZL4DrKwZdznM00fztj8Cqp01SVArUaHEXD5rzg8dxaZZAG
- 01Sib7obHBpJMWhzTPkPjK86W6nmeaQpHKGT7gEqAj2Ihls86cgOciLcex4FmbkpPfji
- MrvNzsmu8J3siyr76PKynK4BgIPTdbogPEYJGrmydyTcFTQmk8aEiQ0x55gVeU+lVTlA Rg== 
+ bh=0Tm/GYd2BWb6llQIM5XRrWXbqf9w8dr19lzEtwsICBw=;
+ b=d+GA5Kji+tjktr10LM8xBVZa3WQa17uj9PEb6lbO8opZD9ZNofhaMaUYb0ZpX9lT7U0H
+ T8q48KU0lrujomMoNw/FWR6R5JZmwVOUjkCh2gwkvGmcRqa8xNbs5y4wqlUgSp0t2YQZ
+ JvAWj98U6YiPRDlZ8dfwoT/eBv7ADVoTUKRMzl3pi4RhQOlCxj57t6d8+IUg73wVUj24
+ SDUxDCp3sMGa1/rYhWvPyMPt8SQE1MnLXrk7X/8dN8eA1xGcm42NOsj11wJHCUQBFtew
+ aCKE5/jN80vBBvoJ11ycFRlb/H7kSRa93Nl24BAZInrvFAMSejq2cQ2X/3B+TrV5kGgh 7w== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tv52e0p42-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tv5e38mnc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Oct 2023 19:44:33 +0000
+ Wed, 25 Oct 2023 19:44:34 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 39PIB16B034777; Wed, 25 Oct 2023 19:44:32 GMT
+ with ESMTP id 39PI4bB3034564; Wed, 25 Oct 2023 19:44:33 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3tv5374bsx-1
+ 3tv5374bte-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Oct 2023 19:44:32 +0000
+ Wed, 25 Oct 2023 19:44:33 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39PJiUNR037154;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39PJiUNT037154;
  Wed, 25 Oct 2023 19:44:32 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3tv5374bqp-4; Wed, 25 Oct 2023 19:44:32 +0000
+ ESMTP id 3tv5374bqp-5; Wed, 25 Oct 2023 19:44:32 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 3/6] cpr: relax blockdev migration blockers
-Date: Wed, 25 Oct 2023 12:44:26 -0700
-Message-Id: <1698263069-406971-4-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 4/6] cpr: relax vhost migration blockers
+Date: Wed, 25 Oct 2023 12:44:27 -0700
+Message-Id: <1698263069-406971-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
 References: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
@@ -68,11 +68,11 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  definitions=2023-10-25_09,2023-10-25_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  adultscore=0 phishscore=0
- mlxlogscore=766 mlxscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 bulkscore=0 suspectscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
  definitions=main-2310250169
-X-Proofpoint-ORIG-GUID: wqm0768kJRM2Q_YUK0zI7deixrfMoKRV
-X-Proofpoint-GUID: wqm0768kJRM2Q_YUK0zI7deixrfMoKRV
+X-Proofpoint-GUID: 43rLyxjUaOq89Hr08VJ4JUnjA5_3rDs6
+X-Proofpoint-ORIG-GUID: 43rLyxjUaOq89Hr08VJ4JUnjA5_3rDs6
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -97,117 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some blockdevs block migration because they do not support sharing across
-hosts and/or do not support dirty bitmaps.  These prohibitions do not apply
-if the old and new qemu processes do not run concurrently, and if new qemu
-starts on the same host as old, which is the case for cpr.  Narrow the scope
-of these blockers so they only apply to normal mode.  They will not block
-cpr modes when they are added in subsequent patches.
+vhost blocks migration if logging is not supported to track dirty
+memory, and vhost-user blocks it if the log cannot be saved to a shm fd.
+
+vhost-vdpa blocks migration if both hosts do not support all the device's
+features using a shadow VQ, for tracking requests and dirty memory.
+
+vhost-scsi blocks migration if storage cannot be shared across hosts,
+or if state cannot be migrated.
+
+None of these conditions apply if the old and new qemu processes do
+not run concurrently, and if new qemu starts on the same host as old,
+which is the case for cpr.
+
+Narrow the scope of these blockers so they only apply to normal mode.
+They will not block cpr modes when they are added in subsequent patches.
 
 No functional change until a new mode is added.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 ---
- block/parallels.c | 2 +-
- block/qcow.c      | 2 +-
- block/vdi.c       | 2 +-
- block/vhdx.c      | 2 +-
- block/vmdk.c      | 2 +-
- block/vpc.c       | 2 +-
- block/vvfat.c     | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+ hw/scsi/vhost-scsi.c | 2 +-
+ hw/virtio/vhost.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/parallels.c b/block/parallels.c
-index 1697a2e..8a520db 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -1369,7 +1369,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 14e23cc..bf528d5 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -208,7 +208,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+                 "When external environment supports it (Orchestrator migrates "
+                 "target SCSI device state or use shared storage over network), "
+                 "set 'migratable' property to true to enable migration.");
+-        if (migrate_add_blocker(&vsc->migration_blocker, errp) < 0) {
++        if (migrate_add_blocker_normal(&vsc->migration_blocker, errp) < 0) {
+             goto free_virtio;
+         }
+     }
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index d737671..f5e9625 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1527,7 +1527,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     }
  
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         error_setg(errp, "Migration blocker error");
-         goto fail;
-diff --git a/block/qcow.c b/block/qcow.c
-index fdd4c83..eab68e3 100644
---- a/block/qcow.c
-+++ b/block/qcow.c
-@@ -307,7 +307,7 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
- 
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vdi.c b/block/vdi.c
-index fd7e365..c647d72 100644
---- a/block/vdi.c
-+++ b/block/vdi.c
-@@ -498,7 +498,7 @@ static int vdi_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
- 
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail_free_bmap;
-     }
-diff --git a/block/vhdx.c b/block/vhdx.c
-index e37f8c0..a9d0874 100644
---- a/block/vhdx.c
-+++ b/block/vhdx.c
-@@ -1096,7 +1096,7 @@ static int vhdx_open(BlockDriverState *bs, QDict *options, int flags,
-     error_setg(&s->migration_blocker, "The vhdx format used by node '%s' "
-                "does not support live migration",
-                bdrv_get_device_or_node_name(bs));
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vmdk.c b/block/vmdk.c
-index 1335d39..85864b8 100644
---- a/block/vmdk.c
-+++ b/block/vmdk.c
-@@ -1386,7 +1386,7 @@ static int vmdk_open(BlockDriverState *bs, QDict *options, int flags,
-     error_setg(&s->migration_blocker, "The vmdk format used by node '%s' "
-                "does not support live migration",
-                bdrv_get_device_or_node_name(bs));
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vpc.c b/block/vpc.c
-index c30cf86..aa1a48a 100644
---- a/block/vpc.c
-+++ b/block/vpc.c
-@@ -452,7 +452,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
- 
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vvfat.c b/block/vvfat.c
-index 266e036..9d050ba 100644
---- a/block/vvfat.c
-+++ b/block/vvfat.c
-@@ -1268,7 +1268,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
-                    "The vvfat (rw) format used by node '%s' "
-                    "does not support live migration",
-                    bdrv_get_device_or_node_name(bs));
--        ret = migrate_add_blocker(&s->migration_blocker, errp);
-+        ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-         if (ret < 0) {
-             goto fail;
+     if (hdev->migration_blocker != NULL) {
+-        r = migrate_add_blocker(&hdev->migration_blocker, errp);
++        r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
+         if (r < 0) {
+             goto fail_busyloop;
          }
 -- 
 1.8.3.1
