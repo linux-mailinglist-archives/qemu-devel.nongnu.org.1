@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672297D5F52
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FD17D5F51
 	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 03:03:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvSIB-00059x-6m; Tue, 24 Oct 2023 21:02:39 -0400
+	id 1qvSID-0005AL-90; Tue, 24 Oct 2023 21:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qvSI7-00059f-W1
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 21:02:36 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1qvSIA-0005A9-Vo
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 21:02:38 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qvSI6-0007X6-2I
- for qemu-devel@nongnu.org; Tue, 24 Oct 2023 21:02:35 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6b87c1edfd5so4077806b3a.1
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 18:02:32 -0700 (PDT)
+ id 1qvSI9-0007XJ-2W
+ for qemu-devel@nongnu.org; Tue, 24 Oct 2023 21:02:38 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68fb85afef4so4387878b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 18:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698195751; x=1698800551; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=UcuXpzxHQREbSdw8YR9EuF2IGhId7WepqKSlhEe9Bq0=;
- b=LZNa65dhzgft4+N7NA7SunQBfHmwS6b3DjtQ32ZeqlQmX4gP6pquto+temFiDmy+Ki
- qwGtKOMaEGZcGJmka6q+WJZsOZhFaiwphigjqLd9ud006DowuylTgZXy47DUUd/A0TWD
- S3StVWrcosQP/Ikh0umA0cP5fHrGo7M/5YDQOIBJkALbWzoypbQsf+15J8w2aB0pM2IK
- Ymv8Im3nYDrgu89Ak0i/F0I/mE5hZ8iI47t72yswfQWFbkPEdd5wRzXIOk9YBblCp+Cg
- k+jKRq7TMkKZ23eQTj7KgAoXyeceNRCXYoNLYFwJFbkoOmUryeU4rioKhZ8oIdkOwvLy
- mU4g==
+ d=gmail.com; s=20230601; t=1698195756; x=1698800556; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WRR6oQ/x6XwW2GrevfWEufzkvx9Ekrh4jY/lT89RnKI=;
+ b=Fy9wsTHouX3gA1MiW4vYFkQOjogB5xrbn4T+Kqwz6zK7HdKs/QXm9f2VoOixmUGiaq
+ fgYhNhwN/3wGChgvNsEbCz8j8vSwMVgHzVMIell0kotLmM7yiYyFDSHrd6DtxC3RuBkr
+ FqaVfvO3u73AXQOPuBccVjGW+TeN/A87gFtLZ4+uqO/KN+L081AIN7K2xEJsL9EzvlDo
+ iBXc7Wt32WoQ0TNEwapaL5WRNYWUcLMBRsLiQBhS34fOPDKZojVml9GTJjUTZYfl/lpw
+ hzOFkqL2Yj/6Jov3ax1iysbs1IrW7jc0Yp/KOUp+PWs7IAhx+3uZgneV+mrDFZFlJ7C/
+ llaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698195751; x=1698800551;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UcuXpzxHQREbSdw8YR9EuF2IGhId7WepqKSlhEe9Bq0=;
- b=O15vyckr3vuMenZQ+kxmiAGDaNRRuaAPbNO24+GM7221+EbybmeXdRJrnAAgtmTVH2
- NMjjzK1Fo+Y85lFbjmoaQI7IpgpsF5cnjFIOeEWf34xobYJdy8xeDjFewtl1R5MK/KiJ
- Yiea+C6jV3N/Kzvd4HpkxMMqzATZWredBiybkVTQiyBeg2UbTcTMt9+r9reHmV86NPPj
- hr7kkfd9RfirkGqkGzKlJOtCCnmC+Ee+osqCIHRMkN487ltMnlIlxGxtinapBYyBRBMv
- JjvNXJVRCzJn05HUBwFFOhzgW/PaT/1FSXBon6G/vy+YVIZtA9DGdndC1Exu5U7nPlwq
- My/g==
-X-Gm-Message-State: AOJu0YwU+gPiy9p66LO5o1ypXqbKQNeLC47QuixW+/xeIn5/ihf2AJ+g
- S8rN7BgE6l4siokjoqI5Plw=
-X-Google-Smtp-Source: AGHT+IH0M815kh247X1qu+W+pEpcmeuv/glf6g3UVfF/3E/ljeHRsM+C4wiIqrtOqepszgc5UZcEnQ==
-X-Received: by 2002:a05:6a21:47c7:b0:17e:5d2f:f439 with SMTP id
- as7-20020a056a2147c700b0017e5d2ff439mr4697109pzc.46.1698195750561; 
- Tue, 24 Oct 2023 18:02:30 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698195756; x=1698800556;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WRR6oQ/x6XwW2GrevfWEufzkvx9Ekrh4jY/lT89RnKI=;
+ b=WpxzLxTVmV3XtfU2X0Ug4unRqtSx2SUnHL0cNTvZY3NZNoZM7lUqBJ0P/15IWDGH2z
+ 9mP88VpYHktktFb/RQLpt2RuV+6zFYTAXcEWLyIXJAff+5IOJ5jt06+gkrNlCKg2YXVo
+ A02GdoL1nv6GxGD6EQXXeiabYg0nux23S0RFir1I0CcPwViUPEFVXoVZRvfEZgQd/Ib4
+ XB1wjqHVXuKJ443zyrccEXczI0hvvQhpVAwf3QkGdzud9/hF2Z51RXoWRZcLhMzstjXD
+ R8erf0y7pYiBY1dDkllREI+1KW7Gm5u+v+05BgCzFnsypH0N0Q7UF33hnhnOYryXV51E
+ /gGQ==
+X-Gm-Message-State: AOJu0YzeFkZVGZyQAtkZYgNyDfigYL5kqj8HzDRYazLDz1wDHBj5W//d
+ p+JevZi62lrrO4Ic9PnNVHU=
+X-Google-Smtp-Source: AGHT+IFTnBcSPVQEOwBhB8aLfL64/lKfYAn+Ejl1fvNJcuyg8R9U2ZX+LrjerUp4aP5RiGyzsYOAYQ==
+X-Received: by 2002:a05:6a21:595:b0:15b:c800:48af with SMTP id
+ lw21-20020a056a21059500b0015bc80048afmr4192797pzb.23.1698195755539; 
+ Tue, 24 Oct 2023 18:02:35 -0700 (PDT)
 Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- c12-20020a170902c1cc00b001b03f208323sm7999943plc.64.2023.10.24.18.02.29
+ fb22-20020a056a002d9600b006be17e60708sm8177250pfb.204.2023.10.24.18.02.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 18:02:30 -0700 (PDT)
+ Tue, 24 Oct 2023 18:02:35 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -61,14 +62,16 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH v4 0/2] Vhost-vdpa Shadow Virtqueue Hash calculation Support
-Date: Wed, 25 Oct 2023 09:02:23 +0800
-Message-Id: <cover.1698194366.git.yin31149@gmail.com>
+Subject: [PATCH v4 1/2] vdpa: Restore hash calculation state
+Date: Wed, 25 Oct 2023 09:02:24 +0800
+Message-Id: <dbf699acff8c226596136a55a6abe35ebfeac8b0.1698194366.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1698194366.git.yin31149@gmail.com>
+References: <cover.1698194366.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -92,72 +95,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series enables shadowed CVQ to intercept
-VIRTIO_NET_CTRL_MQ_HASH_CONFIG command through shadowed CVQ,
-update the virtio NIC device model so qemu send it in a
-migration, and the restore of that Hash calculation state
-in the destination.
+This patch introduces vhost_vdpa_net_load_rss() to restore
+the hash calculation state at device's startup.
 
-ChangeLog
-=========
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+---
 v4:
   - fix some typos pointed out by Michael
   - zero the `cfg` fields at the definition suggested by Michael
 
-v3: https://lore.kernel.org/all/cover.1697902949.git.yin31149@gmail.com/
+v3: https://patchwork.kernel.org/project/qemu-devel/patch/b7cd0c8d6a58b16b086f11714d2908ad35c67caa.1697902949.git.yin31149@gmail.com/
   - remove the `do_rss` argument in vhost_vdpa_net_load_rss()
   - zero reserved fields in "cfg" manually instead of using memset()
 to prevent compiler "array-bounds" warning
 
-v2: https://lore.kernel.org/all/cover.1693297766.git.yin31149@gmail.com/
+v2: https://lore.kernel.org/all/f5ffad10699001107022851e0560cb394039d6b0.1693297766.git.yin31149@gmail.com/
   - resolve conflict with updated patch
-"vdpa: Send all CVQ state load commands in parallel", move the
-`table` declaration at the beginning of the vhost_vdpa_net_load_rss()
-in patch
-"vdpa: Restore hash calculation state"
-
-RFC: https://lore.kernel.org/all/cover.1691762906.git.yin31149@gmail.com/#t
-
-TestStep
-========
-1. test the migration using vp-vdpa device
-  - For L0 guest, boot QEMU with two virtio-net-pci net device with
-`ctrl_vq`, `mq`, `hash` features on, command line like:
-	-netdev tap,...
-	-device virtio-net-pci,disable-legacy=on,disable-modern=off,
-iommu_platform=on,mq=on,ctrl_vq=on,hash=on,guest_announce=off,
-indirect_desc=off,queue_reset=off,guest_uso4=off,guest_uso6=off,
-host_uso=off,...
-
-  - For L1 guest, apply the relative patch series and compile the
-source code, start QEMU with two vdpa device with svq mode on,
-enable the `ctrl_vq`, `mq`, `hash` features on, command line like:
-      -netdev type=vhost-vdpa,x-svq=true,...
-      -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
-hash=on,...
-
-  - For L2 source guest, run the following bash command:
-```bash
-#!/bin/sh
-
-ethtool -K eth0 rxhash on
-```
-  - Gdb attach the destination VM and break at the
+"vdpa: Send all CVQ state load commands in parallel"
+  - move the `table` declaration at the beginning of the
 vhost_vdpa_net_load_rss()
 
-  - Execute the live migration in L2 source monitor
+RFC: https://lore.kernel.org/all/a54ca70b12ebe2f3c391864e41241697ab1aba30.1691762906.git.yin31149@gmail.com/
 
-  - Result
-    * with this series, gdb can hit the breakpoint and continue
-the executing without triggering any error or warning.
+ net/vhost-vdpa.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
 
-Hawkins Jiawei (2):
-  vdpa: Restore hash calculation state
-  vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
-
- net/vhost-vdpa.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
-
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 7a226c93bc..e59d40b8ae 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -818,6 +818,88 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
+     return 0;
+ }
+ 
++static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
++                                   struct iovec *out_cursor,
++                                   struct iovec *in_cursor)
++{
++    struct virtio_net_rss_config cfg = {};
++    ssize_t r;
++    g_autofree uint16_t *table = NULL;
++
++    /*
++     * According to VirtIO standard, "Initially the device has all hash
++     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
++     *
++     * Therefore, there is no need to send this CVQ command if the
++     * driver disables the all hash types, which aligns with
++     * the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (!n->rss_data.enabled ||
++        n->rss_data.hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
++        return 0;
++    }
++
++    table = g_malloc_n(n->rss_data.indirections_len,
++                       sizeof(n->rss_data.indirections_table[0]));
++    cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
++
++    /*
++     * According to VirtIO standard, "Field reserved MUST contain zeroes.
++     * It is defined to make the structure to match the layout of
++     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
++     *
++     * Therefore, we need to zero the fields in
++     * struct virtio_net_rss_config, which corresponds to the
++     * `reserved` field in struct virtio_net_hash_config.
++     *
++     * Note that all other fields are zeroed at their definitions,
++     * except for the `indirection_table` field, where the actual data
++     * is stored in the `table` variable to ensure compatibility
++     * with RSS case. Therefore, we need to zero the `table` variable here.
++     */
++    table[0] = 0;
++
++    /*
++     * Considering that virtio_net_handle_rss() currently does not restore
++     * the hash key length parsed from the CVQ command sent from the guest
++     * into n->rss_data and uses the maximum key length in other code, so
++     * we also employ the maximum key length here.
++     */
++    cfg.hash_key_length = sizeof(n->rss_data.key);
++
++    const struct iovec data[] = {
++        {
++            .iov_base = &cfg,
++            .iov_len = offsetof(struct virtio_net_rss_config,
++                                indirection_table),
++        }, {
++            .iov_base = table,
++            .iov_len = n->rss_data.indirections_len *
++                       sizeof(n->rss_data.indirections_table[0]),
++        }, {
++            .iov_base = &cfg.max_tx_vq,
++            .iov_len = offsetof(struct virtio_net_rss_config, hash_key_data) -
++                       offsetof(struct virtio_net_rss_config, max_tx_vq),
++        }, {
++            .iov_base = (void *)n->rss_data.key,
++            .iov_len = sizeof(n->rss_data.key),
++        }
++    };
++
++    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
++                                VIRTIO_NET_CTRL_MQ,
++                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
++                                data, ARRAY_SIZE(data));
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
++    return 0;
++}
++
+ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+                                   const VirtIONet *n,
+                                   struct iovec *out_cursor,
+@@ -843,6 +925,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+         return r;
+     }
+ 
++    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
++        return 0;
++    }
++
++    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor);
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
+     return 0;
+ }
+ 
 -- 
 2.25.1
 
