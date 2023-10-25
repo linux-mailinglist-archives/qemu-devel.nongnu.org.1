@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574B47D709D
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E1C7D708B
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:15:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfb7-0005hv-L8; Wed, 25 Oct 2023 11:15:05 -0400
+	id 1qvfbB-0005kV-S1; Wed, 25 Oct 2023 11:15:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qvfb2-0005gF-Km
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:15:01 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1qvfb8-0005iQ-QH
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:15:07 -0400
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qvfb0-0003jq-4Q
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:15:00 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6b1e46ca282so5804038b3a.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 08:14:57 -0700 (PDT)
+ id 1qvfb3-0003l5-Hv
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:15:06 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-5840bb16101so3325660eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 08:15:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1698246897; x=1698851697; darn=nongnu.org;
+ d=sifive.com; s=google; t=1698246900; x=1698851700; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uhhXgiA9ijhkCgdvzjre6qvwHLpR2uYfFwrcGxeZDYQ=;
- b=jBmRWAaGObUfmYDv2nPYBbK/f4OtSnKNApg1F2VPh7imCMjxE9qf42WAnQSfOqkpE+
- mheFsqlZ2F7yZRUWDqDHSKlCdRa3f7HAHd29AVcFCYufaEpCaeuy085+gQudrqIwraAG
- ZAOtwjMhGyPOHA7P6oQQBhhngNRxUef7rfLlfZvh8PkujOEnGPhAnsKWeqAZRp81/xit
- Mk7yP4ZacBY25eWeQSrmb35JSlDGGmDd+c3gejGFI/KpMinCBjvZy1p+vfHXkAClN4FP
- ZWZgP5L4TWx55kJqvJU0AL5lFKHEY8XpnLIlMZlqMhLVWWUTUMaWGpSsZIwHYwARV00/
- ut/Q==
+ bh=N3EycMYI800mCjoad+AIrSiAoDJQpEk4wNkfXQSFIHE=;
+ b=ZN59RBTZuNJN6iGMGa9Ldw9Vtqx3h6G4liGf7RPn7UNvx0KbDR+zRlZaHwTJY6AFgD
+ y8zbSdXQCa1f9+8QBAJYWf0JS5GEanTPJMHEcjbGB52flLf+G6jujxCDE4kFwZUyEAol
+ AG1D2MPv/bw4GALwn7F4BLX0zIddSvHLTbAikszCxEO/aC8DLDBSAQ/ece3KyYMEb8ry
+ 5Ycfbsk3wzSn8NeD1rpBxhzNqzFyiN0nsMFFkKmPBdLups0LlepY6wIY7eJM81SMK9Rv
+ agB1/Ca2RBTEz2wX2ReJnCI3WJCVMojzBgkPfZTFyC9CKnb14C4I0S3O8r7WXoy2K61+
+ RdYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698246897; x=1698851697;
+ d=1e100.net; s=20230601; t=1698246900; x=1698851700;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uhhXgiA9ijhkCgdvzjre6qvwHLpR2uYfFwrcGxeZDYQ=;
- b=i0DfqTz1uH9JelYKKQTJeELVA7MwTNZHTfeJplZnRrDxHUvd0YLUoByrBeQgj3IHEn
- BlTV6McrnEkJ/+pMzMo8S8b9TOJRWxP8FDxaekGuInyxRxO71wWMZMw50QyHl9e49nrY
- e1jxVlIqcD3ZnVel1r9ilDVJj9Bl8eFJ8wXmVICGigHdEbp7BKWKDxgKIVqSZdBC53eX
- +nxK4crlaBJotEEd72F/bkiuOh0w+WgY1N8YNeRaFG+MlI6MzHJo3XM9dGhkqaoj/k7n
- BLKgu6BMe+3UqydwFnJZqXcPUXfZpfC0bfZBpnAc8xd0zP5TurDLpDyTlFn+wC5nD93U
- +Z5A==
-X-Gm-Message-State: AOJu0Yy0IC/yRKPcaTOU2YnW6kmcn9cIhm0My7yhYYz6rGahLm+T1cd3
- aRWQTVrhab37KQgdNXQWOssSfTan9D5K/K9AtQtKewSVMHYcTbPJZmt2GjJjKNEllVTs/0shnHz
- VcgQ42s49PnNWdGSrd/VbAoxyeqc7TXCVzasLEhcTXdBYj4lfBIl/a8kxyuC7E4FnkkO5AKcxZm
- Um
-X-Google-Smtp-Source: AGHT+IHiNV7l5886K5RJyRZEx4y7KbRDZ5rGOL52oOvaLUaI2tL1RGQ9R2mahd0i/u63Orc5IXa8IA==
-X-Received: by 2002:a05:6a00:2e97:b0:692:a727:1fdd with SMTP id
- fd23-20020a056a002e9700b00692a7271fddmr18972961pfb.4.1698246896595; 
- Wed, 25 Oct 2023 08:14:56 -0700 (PDT)
+ bh=N3EycMYI800mCjoad+AIrSiAoDJQpEk4wNkfXQSFIHE=;
+ b=diWtq6xvX41pivt1Usx9a6dUC3JybkhTnJizQtLQ5kya3NMxf6xO6j/Lrq/8LOziWO
+ 1lhCS7pYHZdOVBBDa0MCXJb7HA3vZ5N579XWRHq/m8aQNu4Efs7cncswo08UOHg3ZcP7
+ 4MVW9NXwIPsGAr5mBhXkVZIChFygDInGZw/eNqJLPZPrjTnygTpDfxAaxRVhqQwnWQ3Y
+ LskDuxwaJFCEVqcaWVItsN29ZFK32IknqUut40WJxHzoSkA0z0NSfckPk3kTNVuih5dj
+ uXZTb0viAZm3RC6ooY3rKPGSI7YQ29EcfqB8EldjSuOlF5ADq4siOd/6cy5yShOrxEH8
+ /mKg==
+X-Gm-Message-State: AOJu0YyeHywMCx5JYbk5HKSpzRCN57iF8CNHZy2ALtZJSAON3LGWQr43
+ qtUvh8ayJC/2Jl2SGclzS1/yYf5VcuU3zRvE2fr/nhx9alsi0CC8QmFz8KdlgcXgqondXlR4fM+
+ 6mFLOfm4oRhA2oVYcFbGESgOXnRHkWdiabNZguLe3XXFcgbabvJs4y40niOrmgcGn8DVCITA/Fk
+ 9l
+X-Google-Smtp-Source: AGHT+IGIpaRSQUsFJWpAcTdTX7cHMgleJXAwuMHM8uioSLV4f7U56eNGdShcLhz00F5Dwd1ln1xKhg==
+X-Received: by 2002:a05:6359:a04:b0:168:d169:44 with SMTP id
+ el4-20020a0563590a0400b00168d1690044mr10539780rwb.1.1698246899907; 
+ Wed, 25 Oct 2023 08:14:59 -0700 (PDT)
 Received: from duncan.localdomain (125-228-20-175.hinet-ip.hinet.net.
  [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- w14-20020a63160e000000b005b8ebef9fa0sm2677807pgl.83.2023.10.25.08.14.55
+ w14-20020a63160e000000b005b8ebef9fa0sm2677807pgl.83.2023.10.25.08.14.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 08:14:56 -0700 (PDT)
+ Wed, 25 Oct 2023 08:14:59 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
 Cc: Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <Alistair.Francis@wdc.com>
-Subject: [PATCH 12/14] disas/riscv: Add rv_codec_vror_vi for vror.vi
-Date: Wed, 25 Oct 2023 23:13:36 +0800
-Message-Id: <20231025151341.725477-13-max.chou@sifive.com>
+Subject: [PATCH 13/14] disas/riscv: Add support for vector crypto extensions
+Date: Wed, 25 Oct 2023 23:13:37 +0800
+Message-Id: <20231025151341.725477-14-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231025151341.725477-1-max.chou@sifive.com>
 References: <20231025151341.725477-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=max.chou@sifive.com; helo=mail-oo1-xc2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,56 +95,260 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add rv_codec_vror_vi for the vector crypto instruction - vror.vi.
-The rotate amount of vror.vi is defined by combining seperated bits.
+This patch adds following v1.0.0 ratified vector crypto extensions
+support to the RISC-V disassembler.
+- Zvbb
+- Zvbc
+- Zvkb
+- Zvkg
+- Zvkned
+- Zvknha
+- Zvknhb
+- Zvksed
+- Zvksh
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- disas/riscv.c | 11 +++++++++++
- disas/riscv.h |  1 +
- 2 files changed, 12 insertions(+)
+ disas/riscv.c | 137 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 137 insertions(+)
 
 diff --git a/disas/riscv.c b/disas/riscv.c
-index 8e89e1d1157..6d60033abab 100644
+index 6d60033abab..5bfa9390c45 100644
 --- a/disas/riscv.c
 +++ b/disas/riscv.c
-@@ -4011,6 +4011,12 @@ static uint32_t operand_vzimm10(rv_inst inst)
-     return (inst << 34) >> 54;
- }
+@@ -862,6 +862,47 @@ typedef enum {
+     rv_op_fltq_q = 831,
+     rv_op_fleq_h = 832,
+     rv_op_fltq_h = 833,
++    rv_op_vaesdf_vv = 834,
++    rv_op_vaesdf_vs = 835,
++    rv_op_vaesdm_vv = 836,
++    rv_op_vaesdm_vs = 837,
++    rv_op_vaesef_vv = 838,
++    rv_op_vaesef_vs = 839,
++    rv_op_vaesem_vv = 840,
++    rv_op_vaesem_vs = 841,
++    rv_op_vaeskf1_vi = 842,
++    rv_op_vaeskf2_vi = 843,
++    rv_op_vaesz_vs = 845,
++    rv_op_vandn_vv = 846,
++    rv_op_vandn_vx = 847,
++    rv_op_vbrev_v = 848,
++    rv_op_vbrev8_v = 849,
++    rv_op_vclmul_vv = 850,
++    rv_op_vclmul_vx = 851,
++    rv_op_vclmulh_vv = 852,
++    rv_op_vclmulh_vx = 853,
++    rv_op_vclz_v = 854,
++    rv_op_vcpop_v = 855,
++    rv_op_vctz_v = 856,
++    rv_op_vghsh_vv = 857,
++    rv_op_vgmul_vv = 858,
++    rv_op_vrev8_v = 859,
++    rv_op_vrol_vv = 860,
++    rv_op_vrol_vx = 861,
++    rv_op_vror_vv = 862,
++    rv_op_vror_vx = 863,
++    rv_op_vror_vi = 864,
++    rv_op_vsha2ch_vv = 865,
++    rv_op_vsha2cl_vv = 866,
++    rv_op_vsha2ms_vv = 867,
++    rv_op_vsm3c_vi = 868,
++    rv_op_vsm3me_vv = 869,
++    rv_op_vsm4k_vi = 870,
++    rv_op_vsm4r_vv = 871,
++    rv_op_vsm4r_vs = 872,
++    rv_op_vwsll_vv = 873,
++    rv_op_vwsll_vx = 874,
++    rv_op_vwsll_vi = 875,
+ } rv_op;
  
-+static uint32_t operand_vzimm6(rv_inst inst)
-+{
-+    return ((inst << 37) >> 63) << 5 |
-+        ((inst << 44) >> 59);
-+}
-+
- static uint32_t operand_bs(rv_inst inst)
- {
-     return (inst << 32) >> 62;
-@@ -4393,6 +4399,11 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-         dec->imm = operand_vimm(inst);
-         dec->vm = operand_vm(inst);
-         break;
-+    case rv_codec_vror_vi:
-+        dec->rd = operand_rd(inst);
-+        dec->rs2 = operand_rs2(inst);
-+        dec->imm = operand_vzimm6(inst);
-+        break;
-     case rv_codec_vsetvli:
-         dec->rd = operand_rd(inst);
-         dec->rs1 = operand_rs1(inst);
-diff --git a/disas/riscv.h b/disas/riscv.h
-index b242d73b25e..19e5ed2ce63 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
-@@ -152,6 +152,7 @@ typedef enum {
-     rv_codec_v_i,
-     rv_codec_vsetvli,
-     rv_codec_vsetivli,
-+    rv_codec_vror_vi,
-     rv_codec_zcb_ext,
-     rv_codec_zcb_mul,
-     rv_codec_zcb_lb,
+ /* register names */
+@@ -2008,6 +2049,47 @@ const rv_opcode_data rvi_opcode_data[] = {
+     { "fltq.q", rv_codec_r, rv_fmt_rd_frs1_frs2, NULL, 0, 0, 0 },
+     { "fleq.h", rv_codec_r, rv_fmt_rd_frs1_frs2, NULL, 0, 0, 0 },
+     { "fltq.h", rv_codec_r, rv_fmt_rd_frs1_frs2, NULL, 0, 0, 0 },
++    { "vaesdf.vv", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaesdf.vs", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaesdm.vv", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaesdm.vs", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaesef.vv", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaesef.vs", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaesem.vv", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaesem.vs", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vaeskf1.vi", rv_codec_v_i, rv_fmt_vd_vs2_uimm, NULL, 0, 0, 0 },
++    { "vaeskf2.vi", rv_codec_v_i, rv_fmt_vd_vs2_uimm, NULL, 0, 0, 0 },
++    { "vaesz.vs", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vandn.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
++    { "vandn.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
++    { "vbrev.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
++    { "vbrev8.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
++    { "vclmul.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
++    { "vclmul.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
++    { "vclmulh.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
++    { "vclmulh.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
++    { "vclz.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
++    { "vcpop.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
++    { "vctz.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
++    { "vghsh.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1, NULL, 0, 0, 0 },
++    { "vgmul.vv", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vrev8.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
++    { "vrol.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
++    { "vrol.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
++    { "vror.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
++    { "vror.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
++    { "vror.vi", rv_codec_vror_vi, rv_fmt_vd_vs2_uimm_vm, NULL, 0, 0, 0 },
++    { "vsha2ch.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1, NULL, 0, 0, 0 },
++    { "vsha2cl.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1, NULL, 0, 0, 0 },
++    { "vsha2ms.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1, NULL, 0, 0, 0 },
++    { "vsm3c.vi", rv_codec_v_i, rv_fmt_vd_vs2_uimm, NULL, 0, 0, 0 },
++    { "vsm3me.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1, NULL, 0, 0, 0 },
++    { "vsm4k.vi", rv_codec_v_i, rv_fmt_vd_vs2_uimm, NULL, 0, 0, 0 },
++    { "vsm4r.vv", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vsm4r.vs", rv_codec_v_r, rv_fmt_vd_vs2, NULL, 0, 0, 0 },
++    { "vwsll.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
++    { "vwsll.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
++    { "vwsll.vi", rv_codec_v_i, rv_fmt_vd_vs2_uimm_vm, NULL, 0, 0, 0 },
+ };
+ 
+ /* CSR names */
+@@ -3176,6 +3258,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+             case 0:
+                 switch ((inst >> 26) & 0b111111) {
+                 case 0: op = rv_op_vadd_vv; break;
++                case 1: op = rv_op_vandn_vv; break;
+                 case 2: op = rv_op_vsub_vv; break;
+                 case 4: op = rv_op_vminu_vv; break;
+                 case 5: op = rv_op_vmin_vv; break;
+@@ -3198,6 +3281,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                     }
+                     break;
+                 case 19: op = rv_op_vmsbc_vvm; break;
++                case 20: op = rv_op_vror_vv; break;
++                case 21: op = rv_op_vrol_vv; break;
+                 case 23:
+                     if (((inst >> 20) & 0b111111) == 32)
+                         op = rv_op_vmv_v_v;
+@@ -3226,6 +3311,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                 case 47: op = rv_op_vnclip_wv; break;
+                 case 48: op = rv_op_vwredsumu_vs; break;
+                 case 49: op = rv_op_vwredsum_vs; break;
++                case 53: op = rv_op_vwsll_vv; break;
+                 }
+                 break;
+             case 1:
+@@ -3323,6 +3409,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                 case 9: op = rv_op_vaadd_vv; break;
+                 case 10: op = rv_op_vasubu_vv; break;
+                 case 11: op = rv_op_vasub_vv; break;
++                case 12: op = rv_op_vclmul_vv; break;
++                case 13: op = rv_op_vclmulh_vv; break;
+                 case 16:
+                     switch ((inst >> 15) & 0b11111) {
+                     case 0: if ((inst >> 25) & 1) op = rv_op_vmv_x_s; break;
+@@ -3338,6 +3426,12 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                     case 5: op = rv_op_vsext_vf4; break;
+                     case 6: op = rv_op_vzext_vf2; break;
+                     case 7: op = rv_op_vsext_vf2; break;
++                    case 8: op = rv_op_vbrev8_v; break;
++                    case 9: op = rv_op_vrev8_v; break;
++                    case 10: op = rv_op_vbrev_v; break;
++                    case 12: op = rv_op_vclz_v; break;
++                    case 13: op = rv_op_vctz_v; break;
++                    case 14: op = rv_op_vcpop_v; break;
+                     }
+                     break;
+                 case 20:
+@@ -3406,6 +3500,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                     }
+                     break;
+                 case 17: op = rv_op_vmadc_vim; break;
++                case 20: case 21: op = rv_op_vror_vi; break;
+                 case 23:
+                     if (((inst >> 20) & 0b111111) == 32)
+                         op = rv_op_vmv_v_i;
+@@ -3437,11 +3532,13 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                 case 45: op = rv_op_vnsra_wi; break;
+                 case 46: op = rv_op_vnclipu_wi; break;
+                 case 47: op = rv_op_vnclip_wi; break;
++                case 53: op = rv_op_vwsll_vi; break;
+                 }
+                 break;
+             case 4:
+                 switch ((inst >> 26) & 0b111111) {
+                 case 0: op = rv_op_vadd_vx; break;
++                case 1: op = rv_op_vandn_vx; break;
+                 case 2: op = rv_op_vsub_vx; break;
+                 case 3: op = rv_op_vrsub_vx; break;
+                 case 4: op = rv_op_vminu_vx; break;
+@@ -3466,6 +3563,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                     }
+                     break;
+                 case 19: op = rv_op_vmsbc_vxm; break;
++                case 20: op = rv_op_vror_vx; break;
++                case 21: op = rv_op_vrol_vx; break;
+                 case 23:
+                     if (((inst >> 20) & 0b111111) == 32)
+                         op = rv_op_vmv_v_x;
+@@ -3494,6 +3593,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                 case 45: op = rv_op_vnsra_wx; break;
+                 case 46: op = rv_op_vnclipu_wx; break;
+                 case 47: op = rv_op_vnclip_wx; break;
++                case 53: op = rv_op_vwsll_vx; break;
+                 }
+                 break;
+             case 5:
+@@ -3554,6 +3654,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                 case 9: op = rv_op_vaadd_vx; break;
+                 case 10: op = rv_op_vasubu_vx; break;
+                 case 11: op = rv_op_vasub_vx; break;
++                case 12: op = rv_op_vclmul_vx; break;
++                case 13: op = rv_op_vclmulh_vx; break;
+                 case 14: op = rv_op_vslide1up_vx; break;
+                 case 15: op = rv_op_vslide1down_vx; break;
+                 case 16:
+@@ -3686,6 +3788,41 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+             case 7: op = rv_op_csrrci; break;
+             }
+             break;
++        case 29:
++            if (((inst >> 25) & 1) == 1 && ((inst >> 12) & 0b111) == 2) {
++                switch ((inst >> 26) & 0b111111) {
++                case 32: op = rv_op_vsm3me_vv; break;
++                case 33: op = rv_op_vsm4k_vi; break;
++                case 34: op = rv_op_vaeskf1_vi; break;
++                case 40:
++                    switch ((inst >> 15) & 0b11111) {
++                    case 0: op = rv_op_vaesdm_vv; break;
++                    case 1: op = rv_op_vaesdf_vv; break;
++                    case 2: op = rv_op_vaesem_vv; break;
++                    case 3: op = rv_op_vaesef_vv; break;
++                    case 16: op = rv_op_vsm4r_vv; break;
++                    case 17: op = rv_op_vgmul_vv; break;
++                    }
++                    break;
++                case 41:
++                    switch ((inst >> 15) & 0b11111) {
++                    case 0: op = rv_op_vaesdm_vs; break;
++                    case 1: op = rv_op_vaesdf_vs; break;
++                    case 2: op = rv_op_vaesem_vs; break;
++                    case 3: op = rv_op_vaesef_vs; break;
++                    case 7: op = rv_op_vaesz_vs; break;
++                    case 16: op = rv_op_vsm4r_vs; break;
++                    }
++                    break;
++                case 42: op = rv_op_vaeskf2_vi; break;
++                case 43: op = rv_op_vsm3c_vi; break;
++                case 44: op = rv_op_vghsh_vv; break;
++                case 45: op = rv_op_vsha2ms_vv; break;
++                case 46: op = rv_op_vsha2ch_vv; break;
++                case 47: op = rv_op_vsha2cl_vv; break;
++                }
++            }
++            break;
+         case 30:
+             switch (((inst >> 22) & 0b1111111000) |
+                     ((inst >> 12) & 0b0000000111)) {
 -- 
 2.34.1
 
