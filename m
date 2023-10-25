@@ -2,63 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659F17D6652
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F647D6645
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:10:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvZtK-0005mR-E4; Wed, 25 Oct 2023 05:09:30 -0400
+	id 1qvZtN-0005qb-Vw; Wed, 25 Oct 2023 05:09:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1qvWSk-0006sl-21; Wed, 25 Oct 2023 01:29:50 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <JuliusAndreas.Hiller@vector.com>)
+ id 1qvXSx-0005gt-Hi
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:34:07 -0400
+Received: from mail-db8eur05on2070.outbound.protection.outlook.com
+ ([40.107.20.70] helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1qvWSh-0001Km-UN; Wed, 25 Oct 2023 01:29:49 -0400
-Received: from Atcsqr.andestech.com (localhost [127.0.0.2] (may be forged))
- by Atcsqr.andestech.com with ESMTP id 39P5FnpH024776;
- Wed, 25 Oct 2023 13:15:49 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 39P5FSdZ024655;
- Wed, 25 Oct 2023 13:15:28 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox.andestech.com (10.0.12.51) by
- ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
- Wed, 25 Oct 2023 13:15:23 +0800
-To: <qemu-devel@nongnu.org>
-CC: Ethan Chen <ethan84@andestech.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
- <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>, Weiwei Li
- <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, "open list:RISC-V TCG CPUs"
- <qemu-riscv@nongnu.org>
-Subject: [PATCH 6/6] hw/riscv/virt: Add IOPMP support
-Date: Wed, 25 Oct 2023 13:14:30 +0800
-Message-ID: <20231025051430.493079-7-ethan84@andestech.com>
+ (Exim 4.90_1) (envelope-from <JuliusAndreas.Hiller@vector.com>)
+ id 1qvXSv-00034x-Vb
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:34:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=enQqV3MmuLYpupgKklOB0egR7fmZqPcshbKAIqDywMAU9AthZqVZkKW0j7NdUEbfcg6U+P8zlLWa/TEUaW2mRgwDW/DHnb/E1Pqqfp1ux5/IKADw+yE6O5fl41QwX2IgumLP+9HPnyfj5qs/WSnaYKP6j0h9A68xCIus2E6fb0ebr2BPd/FZvx1CiQZAbpfE6S83xSFjOyMlAPwSQg4TJNuLZXc2z20l5jSkQqXr3wyAVwJTr0n9uzEK/8YUPKGE0QqWygCPnYk4nfNikHf7wS7unF6Ro8ueZUeMYi8aa9+rVeCNTv0KosW3rErmiZ2NKSyZTUSp6v4l22vQkjWMEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pBjRLoUw0OhpvJTn2vQfZYj4xpR3aK0e0qGMAhqH81A=;
+ b=LTmV388RrD99vBV9pEJOc8ydY+LHLr0xGrFuTUe581euYBaWkPewgtDcEyZhPcfOi3hSBr4/0Mch0PEINemx9Xr3XHRZ7p5D9/0/r4sbY4sWNfgVkWgaMjTIIS+HoLl/fJlhyz6/x1kbGd/OnPk0COE1nDtNl5WjlHECzUNjiCUU5OXKs9Uu05J47ci2ccaTNncasxA8OPfi1y9Xnsgp4gFod/UyfNd6DQymumkROpAg+FXTeNNhKOWhtF/LdOt8Ry6rn9xtfZE8L2ll2FwoHEGAst0FM3D8X2kaWFhHQPuFjT/Y/iJp4N1uisns8cd0wzXA86JmUDVl8IyiTbNgQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 185.199.76.237) smtp.rcpttodomain=redhat.com smtp.mailfrom=vector.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=vector.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vector.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pBjRLoUw0OhpvJTn2vQfZYj4xpR3aK0e0qGMAhqH81A=;
+ b=QQXtpzEQPcHWHTVxcpqYfE+xDO4kZsv0FcLdfed4T/T9blV+CQw22bASurE3JpppYOglc/owYxDQvJy8slVZFlix9Ks889nX551WyEaWgkKSdexRPIf2zWBAnAGgzmOfcABZLjJARqdO5pWIOnHKZAe43gnP/Ty/U0unHU6Ka8M=
+Received: from DU2PR04CA0010.eurprd04.prod.outlook.com (2603:10a6:10:3b::15)
+ by DU2PR01MB8800.eurprd01.prod.exchangelabs.com (2603:10a6:10:2ff::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.19; Wed, 25 Oct
+ 2023 06:29:00 +0000
+Received: from DU6PEPF00009524.eurprd02.prod.outlook.com
+ (2603:10a6:10:3b:cafe::1) by DU2PR04CA0010.outlook.office365.com
+ (2603:10a6:10:3b::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.34 via Frontend
+ Transport; Wed, 25 Oct 2023 06:29:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 185.199.76.237)
+ smtp.mailfrom=vector.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=vector.com;
+Received-SPF: Pass (protection.outlook.com: domain of vector.com designates
+ 185.199.76.237 as permitted sender) receiver=protection.outlook.com;
+ client-ip=185.199.76.237; helo=mail.vector.com; pr=C
+Received: from mail.vector.com (185.199.76.237) by
+ DU6PEPF00009524.mail.protection.outlook.com (10.167.8.5) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6933.15 via Frontend Transport; Wed, 25 Oct 2023 06:28:59 +0000
+Received: from DE20455NB.vi.vector.int (10.110.138.73) by
+ vistrexch1.vi.vector.int (10.149.11.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Wed, 25 Oct 2023 08:28:58 +0200
+From: Julius Andreas Hiller <juliusandreas.hiller@vector.com>
+To: <pbonzini@redhat.com>
+CC: <qemu-devel@nongnu.org>, Julius Andreas Hiller
+ <juliusandreas.hiller@vector.com>
+Subject: [PATCH 0/1] Add acpi option to microvm documentation
+Date: Wed, 25 Oct 2023 08:28:18 +0200
+Message-ID: <20231025062819.23175-1-juliusandreas.hiller@vector.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231025051430.493079-1-ethan84@andestech.com>
-References: <20231025051430.493079-1-ethan84@andestech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.0.12.51]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 39P5FnpH024776
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- TVD_RCVD_IP=0.001 autolearn=no autolearn_force=no
+X-Originating-IP: [10.110.138.73]
+X-ClientProxiedBy: vistrexch1.vi.vector.int (10.149.11.5) To
+ vistrexch1.vi.vector.int (10.149.11.5)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU6PEPF00009524:EE_|DU2PR01MB8800:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64e5fe45-1587-4026-99ca-08dbd523acbc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sJdlXalIcL5grucM9nTb9Yp2lX/0En//yf8Q6zSxVQIDAeWLyScToxYovGWRRay1f670uBYiPnB0tn7JY9W5gxP7oftgXKt/fUW5kwcj0E4YClnbjsm9L8c7vrzvNiF8iycNvC+EWHqHJ0LZB1HxrHX3sFvoGD4fcpbU4aYNhPtx9dTR96Tux2y2BA2qgsk8CdXDaxNSWZxXsUB3Jyma7whYigFXMyXJmGqjOhEFU5QFbIn/MEXL2AdnDVOV0elBz6QjWUA3oJd3x8CjhnvfCFPjyjD1EYzDhKS2OYsrfhZufIKodEhO6RLG7Oja6LaaaQkB38PzrEJp305nqSRnDex0ax/DF9WC0sHuc1MCWVOedFEgMxBy3MKiFcTtVQMBK+qAIi31/k5msCD7Q3j2Tvv2Y61e0GyOMmtirpck+O8tWt1l6FnBV7jFtz296CGrb6KJZ1MabUq2JKqoX92pPcO7L3dyE7ea3nH0lGNCa6a9YJub98srrSuJvy8XAK6/5Wd4hpFuoH34ecCUOuItwelxcCgGtkDx4a4YsCnmxE8Fok1GRWA13WnRJBLZKYynZJ0mcURPqldD7YCa4e41LN2gvBwy/hShr9oZwJb2MfOwgeAZUIHeqU3qw46obXYWQdc2cAxTv9InvO14lIb5N6YY90A+6ev6UqbmbkqHsxxgyrv7sC+p/xf8zQ8vMbnGyRj9fJGOXu3yklqYAkP4wg4GYNMcDq2y+La77xOKn4I9tddjngPqTg43w2/buD8B
+X-Forefront-Antispam-Report: CIP:185.199.76.237; CTRY:DE; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.vector.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(396003)(136003)(376002)(39850400004)(346002)(230922051799003)(64100799003)(82310400011)(451199024)(186009)(1800799009)(36840700001)(46966006)(40480700001)(83380400001)(316002)(47076005)(36860700001)(86362001)(36756003)(41300700001)(356005)(82740400003)(81166007)(70586007)(2906002)(4744005)(70206006)(5660300002)(478600001)(6666004)(54906003)(8676002)(8936002)(4326008)(26005)(1076003)(107886003)(16526019)(2616005)(336012)(6916009)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: vector.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2023 06:28:59.9951 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64e5fe45-1587-4026-99ca-08dbd523acbc
+X-MS-Exchange-CrossTenant-Id: c844b2b9-7a68-473f-b386-e2e1b968279d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=c844b2b9-7a68-473f-b386-e2e1b968279d; Ip=[185.199.76.237];
+ Helo=[mail.vector.com]
+X-MS-Exchange-CrossTenant-AuthSource: DU6PEPF00009524.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR01MB8800
+Received-SPF: pass client-ip=40.107.20.70;
+ envelope-from=JuliusAndreas.Hiller@vector.com;
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 25 Oct 2023 05:09:28 -0400
+X-Mailman-Approved-At: Wed, 25 Oct 2023 05:09:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,183 +118,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Add 'iopmp=on' option to enable iopmp
-- Add 'iopmp_cascade=on' option to enable iopmp cascading.
+Microvm machine received ACPI support which impacts passing of mmio
+devices to guests without ACPI support. Without acpi=off,
+auto-kernel-cmdline will be ignored. 
 
-Signed-off-by: Ethan Chen <ethan84@andestech.com>
----
- hw/riscv/Kconfig        |  2 ++
- hw/riscv/virt.c         | 72 +++++++++++++++++++++++++++++++++++++++--
- include/hw/riscv/virt.h | 10 +++++-
- 3 files changed, 81 insertions(+), 3 deletions(-)
+Julius Andreas Hiller (1):
+  added acpi option
 
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index b6a5eb4452..c30a104aa4 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -45,6 +45,8 @@ config RISCV_VIRT
-     select FW_CFG_DMA
-     select PLATFORM_BUS
-     select ACPI
-+    select ATCDMAC300
-+    select RISCV_IOPMP
- 
- config SHAKTI_C
-     bool
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 9de578c756..d3d4320c73 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -53,6 +53,9 @@
- #include "hw/display/ramfb.h"
- #include "hw/acpi/aml-build.h"
- #include "qapi/qapi-visit-common.h"
-+#include "hw/misc/riscv_iopmp.h"
-+#include "hw/dma/atcdmac300.h"
-+
- 
- /*
-  * The virt machine physical address space used by some of the devices
-@@ -97,6 +100,9 @@ static const MemMapEntry virt_memmap[] = {
-     [VIRT_UART0] =        { 0x10000000,         0x100 },
-     [VIRT_VIRTIO] =       { 0x10001000,        0x1000 },
-     [VIRT_FW_CFG] =       { 0x10100000,          0x18 },
-+    [VIRT_IOPMP] =        { 0x10200000,      0x100000 },
-+    [VIRT_IOPMP2] =       { 0x10300000,      0x100000 },
-+    [VIRT_DMAC] =         { 0x10400000,      0x100000 },
-     [VIRT_FLASH] =        { 0x20000000,     0x4000000 },
-     [VIRT_IMSIC_M] =      { 0x24000000, VIRT_IMSIC_MAX_SIZE },
-     [VIRT_IMSIC_S] =      { 0x28000000, VIRT_IMSIC_MAX_SIZE },
-@@ -1527,13 +1533,32 @@ static void virt_machine_init(MachineState *machine)
- 
-     create_platform_bus(s, mmio_irqchip);
- 
--    serial_mm_init(system_memory, memmap[VIRT_UART0].base,
--        0, qdev_get_gpio_in(mmio_irqchip, UART0_IRQ), 399193,
-+    serial_mm_init(system_memory, memmap[VIRT_UART0].base + 0x20,
-+        0x2, qdev_get_gpio_in(DEVICE(mmio_irqchip), UART0_IRQ), 38400,
-         serial_hd(0), DEVICE_LITTLE_ENDIAN);
- 
-     sysbus_create_simple("goldfish_rtc", memmap[VIRT_RTC].base,
-         qdev_get_gpio_in(mmio_irqchip, RTC_IRQ));
- 
-+    /* DMAC */
-+    DeviceState *dmac_dev = atcdmac300_create("atcdmac300",
-+        memmap[VIRT_DMAC].base, memmap[VIRT_DMAC].size,
-+        qdev_get_gpio_in(DEVICE(mmio_irqchip), DMAC_IRQ));
-+
-+    if (s->have_iopmp) {
-+        /* IOPMP */
-+        DeviceState *iopmp_dev = iopmp_create(memmap[VIRT_IOPMP].base,
-+            qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP_IRQ));
-+        /* DMA with IOPMP */
-+        atcdmac300_connect_iopmp_as(dmac_dev, &(IOPMP(iopmp_dev)->iopmp_as), 0);
-+        if (s->have_iopmp_cascade) {
-+            DeviceState *iopmp_dev2 = iopmp_create(memmap[VIRT_IOPMP2].base,
-+                qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP2_IRQ));
-+            cascade_iopmp(iopmp_dev, iopmp_dev2);
-+        }
-+    }
-+
-+
-     for (i = 0; i < ARRAY_SIZE(s->flash); i++) {
-         /* Map legacy -drive if=pflash to machine properties */
-         pflash_cfi01_legacy_drive(s->flash[i],
-@@ -1628,6 +1653,35 @@ static void virt_set_aclint(Object *obj, bool value, Error **errp)
-     s->have_aclint = value;
- }
- 
-+static bool virt_get_iopmp(Object *obj, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    return s->have_iopmp;
-+}
-+
-+static void virt_set_iopmp(Object *obj, bool value, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    s->have_iopmp = value;
-+}
-+
-+static bool virt_get_iopmp_cascade(Object *obj, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    return s->have_iopmp_cascade;
-+}
-+
-+static void virt_set_iopmp_cascade(Object *obj, bool value, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    s->have_iopmp_cascade = value;
-+}
-+
-+
- bool virt_is_acpi_enabled(RISCVVirtState *s)
- {
-     return s->acpi != ON_OFF_AUTO_OFF;
-@@ -1730,6 +1784,20 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-                               NULL, NULL);
-     object_class_property_set_description(oc, "acpi",
-                                           "Enable ACPI");
-+
-+    object_class_property_add_bool(oc, "iopmp", virt_get_iopmp,
-+                                   virt_set_iopmp);
-+    object_class_property_set_description(oc, "iopmp",
-+                                          "Set on/off to enable/disable "
-+                                          "iopmp device");
-+
-+    object_class_property_add_bool(oc, "iopmp-cascade",
-+                                   virt_get_iopmp_cascade,
-+                                   virt_set_iopmp_cascade);
-+    object_class_property_set_description(oc, "iopmp-cascade",
-+                                          "Set on/off to enable/disable "
-+                                          "iopmp2 device which is cascaded by "
-+                                          "iopmp1 device");
- }
- 
- static const TypeInfo virt_machine_typeinfo = {
-diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-index e5c474b26e..5fa2944d29 100644
---- a/include/hw/riscv/virt.h
-+++ b/include/hw/riscv/virt.h
-@@ -54,6 +54,8 @@ struct RISCVVirtState {
- 
-     int fdt_size;
-     bool have_aclint;
-+    bool have_iopmp;
-+    bool have_iopmp_cascade;
-     RISCVVirtAIAType aia_type;
-     int aia_guests;
-     char *oem_id;
-@@ -82,12 +84,18 @@ enum {
-     VIRT_PCIE_MMIO,
-     VIRT_PCIE_PIO,
-     VIRT_PLATFORM_BUS,
--    VIRT_PCIE_ECAM
-+    VIRT_PCIE_ECAM,
-+    VIRT_IOPMP,
-+    VIRT_IOPMP2,
-+    VIRT_DMAC,
- };
- 
- enum {
-     UART0_IRQ = 10,
-     RTC_IRQ = 11,
-+    DMAC_IRQ = 12,
-+    IOPMP_IRQ = 13,
-+    IOPMP2_IRQ = 14,
-     VIRTIO_IRQ = 1, /* 1 to 8 */
-     VIRTIO_COUNT = 8,
-     PCIE_IRQ = 0x20, /* 32 to 35 */
+ docs/system/i386/microvm.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
 -- 
 2.34.1
 
