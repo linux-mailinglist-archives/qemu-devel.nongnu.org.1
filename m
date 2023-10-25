@@ -2,108 +2,172 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33907D76AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 23:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 831E77D783D
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 00:47:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvlNV-000766-8C; Wed, 25 Oct 2023 17:25:27 -0400
+	id 1qvmcq-0006Bl-DX; Wed, 25 Oct 2023 18:45:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qvlMx-00073w-HW; Wed, 25 Oct 2023 17:24:55 -0400
-Received: from mail-dm3nam02on20628.outbound.protection.outlook.com
- ([2a01:111:f400:7e83::628]
- helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
+ id 1qvmcl-00069x-GR
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 18:45:17 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qvlMu-0006Ti-9V; Wed, 25 Oct 2023 17:24:51 -0400
+ (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
+ id 1qvmca-00073q-BO
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 18:45:14 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39PLGIYA006400; Wed, 25 Oct 2023 22:44:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : in-reply-to : references : date : message-id : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=ms0NngT4qZbSNP6Ac3WQYbwBnx1pElOnraiLn8fl9r0=;
+ b=RnSfjufx3ZWkDQ1sNF28T3yQXr2tX8Af9gSGwm0kv+sVQTpdDXeADBqAjaO3z/Xh6pv0
+ Vd+KAK4MWCmF5kRlhap5GkKgE96ayg5lcoUMMFjVMQs4dgynV4ZloMXtfH7Yucwgha65
+ /TzcYBnQKEdmkY9S8h4szxm+HBld++KfMwWAseY27Qup5rbRSVpz/JSBi4fp1/D5YLBV
+ hNqLCzfTUBHqV6FtgdqUnwj3YuS7ibrB7fErE0fYQzFuqB+irVFFBgon+sUO9nPLr45b
+ Br9eGpnwMUCWgK1xCKbqGZAjPlzafvefptZr11BGXRG1SJ0yZ9fJJldG0ViRZ3EephNy uw== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tv581shp9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 25 Oct 2023 22:44:58 +0000
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 39PLSlHq019029; Wed, 25 Oct 2023 22:44:57 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3tv537kvax-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 25 Oct 2023 22:44:57 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fX0OzAFIpG0LQO6E7c4KIS16lzEJpGECwMWUl6WL86A5d3pcvK7plGZfUQKzoW8E//zurgASvwIlqn+fhnNyl9CP3WvDRyKh5sQ/5db1ZQ2SCEnQIskw4UldVKMvM7A2sLMYIjq9vwTXraLfbbDpBsBjULwJiVd0n53szjKD2PP4G7tZxanpvMNriAzf+5VsiZCLBtMHQkc0P8Kdz+Ib1dGImy4h8/0gKz6EW+J4FrIjTgip7JBxnHhOVOWOzcZo9W4AvUDj85iHrHHkMxLws3S6KN5h7yyotOwaa9jPlC0VvdDPOaTiTlIsIiSEc94NB1ujvImanXgw+u/N7+TGog==
+ b=NY8ZyvfRL8gkMvl7zCNRqzn/TQgtBBw1iL0KpINFbMgb3eqYIFK/B/Oh6TFiXGmuvrwFL5WB019yOmjse9bgmL0LSujUYzrtR87qWF9FEgDfGCDq2bTGigEBX8R2AB/yIHGKwOUQhIIyzeKlfBxPFWzVGJ63FSTBDuQWVgA6A04ZT5zEZ6qgxd5tLnugmlPO9O/AwSxmMQ50Oda7TQe1wV+0qwbe9FqJAJlDX+vS5Jq9aaPV98JhQCJqSWpOc/0E9juuiLRwXomOZI6iWBBcIACeqkb82l9VCS70wfciPJvw37Fl3QDFfh85NW7dQsDgNZQDAYavYfLMQf5/S0zEWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o0vRH12HvDrrWbRTurt84ajWGVWm4j5M7aGxWb5eoY0=;
- b=fqOn+QDqpvNZvbevVs4CcwyqNqMWBsPxv+5A2c30w1uIZt6hh74dhYHgYRcKXaf3OqRslxJ2ipR7uoAPAqcqaDGUaErKBQaUBj3ZiNAGe6mMbQLaFkUG9PKHH4gZ9eX2RtySn/MLEn1VwrhMUqunzzN/5QbWfTQLeLCOyK2XUXascL69CQVFjFvT3YCNreL3wF+Kxy4F3er7xrPmY1rmx54jlVerF7UqCbgVzq+YNV1gQSKiCcLdBBeulvh4Y78xuWRDsCVa5W6EICFN/aATNJC0QF6ceJAmF08ZdW7cPZdM7fwlhq1aEv8B2+i/llSvtjuHwjb6UIgkpnD/4R3oYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ bh=ms0NngT4qZbSNP6Ac3WQYbwBnx1pElOnraiLn8fl9r0=;
+ b=StO4p5gmIGojVn6L+zGcrploaoET6KlBJFT86odv+MgCoZXx1+9McLzmL4i1hQXl6Ib4MK9mCqzmsOAeLOja4s/le9S02s8huZAmAR2FlySJmaUHrPptDxZwwUMkBMdShngTr8zEfcFwfiE0f+FTW1gkUd3iEawt6gBiLAnmT0/4KARySfkjIj93if1v3LyZ8qd1F3L/ybl7HJmvif0AXaicK0JDl3p2c+Re1dAL/XaszxeHGDe+8URE0+EFDuMek1oiiguFguLMo64+Jt5pBHRgakxvCOGO1QV2KgdIcuGPYyobvg2ToPAtI6OjoSUy6MTAITS6buCgkpquFGHIBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o0vRH12HvDrrWbRTurt84ajWGVWm4j5M7aGxWb5eoY0=;
- b=JucI7+ODdh4amrklPfyIMOiR2G9B/eTBD2o595ymQudLanOy4bhsovNmRlAndD2wuHW1G5nXbW9yjA24AOEmcIyznMjA2zIBxHp3qveXaVCGIigC97bLmMqD16hHtidJ2LpZMtRzrjn3hrQjgEdth1qIZAyvx9vCDua4LWT1g+I=
-Received: from SN6PR04CA0093.namprd04.prod.outlook.com (2603:10b6:805:f2::34)
- by CH3PR12MB7593.namprd12.prod.outlook.com (2603:10b6:610:141::20)
+ bh=ms0NngT4qZbSNP6Ac3WQYbwBnx1pElOnraiLn8fl9r0=;
+ b=VP+EVtXDYX1jxGczvbsnG1YyYYQCehqzBGJu4an15ChfALWCPk6ZgyTgCF3Yrvwwq0o8/BCYYlKSff1UEyrj8RgWV1mlZ8Q3C5WBF3Wm9upEMzU/a6B7Ofx+Am8LNJ5Y78X5dWbR17fDaZV5Aj3Ny2ri8sgOh+4D80nW9oYmc2I=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by PH7PR10MB6250.namprd10.prod.outlook.com (2603:10b6:510:212::8)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Wed, 25 Oct
- 2023 21:24:44 +0000
-Received: from SN1PEPF0002BA50.namprd03.prod.outlook.com
- (2603:10b6:805:f2:cafe::3) by SN6PR04CA0093.outlook.office365.com
- (2603:10b6:805:f2::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.19 via Frontend
- Transport; Wed, 25 Oct 2023 21:24:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SN1PEPF0002BA50.mail.protection.outlook.com (10.167.242.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6933.15 via Frontend Transport; Wed, 25 Oct 2023 21:24:43 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Wed, 25 Oct
- 2023 16:24:40 -0500
-Received: from xsjfnuv50.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.32 via Frontend
- Transport; Wed, 25 Oct 2023 16:24:40 -0500
-From: Vikram Garhwal <vikram.garhwal@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <sstabellini@kernel.org>, <vikram.garhwal@amd.com>, <jgross@suse.com>,
- Peter Maydell <peter.maydell@linaro.org>, "open list:ARM TCG CPUs"
- <qemu-arm@nongnu.org>
-Subject: [QEMU][PATCHv2 8/8] hw: arm: Add grant mapping.
-Date: Wed, 25 Oct 2023 14:24:21 -0700
-Message-ID: <20231025212422.30371-9-vikram.garhwal@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20231025212422.30371-1-vikram.garhwal@amd.com>
-References: <20231025212422.30371-1-vikram.garhwal@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26; Wed, 25 Oct
+ 2023 22:44:55 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6d2c:be3a:dbc5:6f9e]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6d2c:be3a:dbc5:6f9e%4]) with mapi id 15.20.6933.019; Wed, 25 Oct 2023
+ 22:44:55 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org, Omar Sandoval
+ <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>, =?utf-8?Q?Daniel?=
+ =?utf-8?Q?_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v3 qemu 0/3] Allow dump-guest-memory to output standard
+ kdump format
+In-Reply-To: <CAJ+F1CLLgb=mYxf69gb+DpNQHrdOFY24Ax0eYfkVS4NxQ=NEgg@mail.gmail.com>
+References: <20230918233233.1431858-1-stephen.s.brennan@oracle.com>
+ <CAJ+F1CLLgb=mYxf69gb+DpNQHrdOFY24Ax0eYfkVS4NxQ=NEgg@mail.gmail.com>
+Date: Wed, 25 Oct 2023 15:44:54 -0700
+Message-ID: <87h6mez5i1.fsf@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR05CA0190.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::15) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA50:EE_|CH3PR12MB7593:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a47e5bb-babc-4206-b625-08dbd5a0cea5
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|PH7PR10MB6250:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9cf1a0f-1863-4764-372b-08dbd5ac024a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RZSRtCUwTGmXG/i5t1WRCeQnbNIZizMwaVFaGXD2Gdi8NtE3ugLOo6e+hdiAffJsMZvvO2ezdC7uF6lvUIeJDatt64sOWCaCCjrihkEjxb+4iTOKFX0VJprRQpIBz73Y86lJnSns4mG/GjlbNwc10kSo0mGGCAl1DRCttnEo1621ZBL0yK9q5e9rVJT/9o66lJOn7znU0QNWbSjplGOyfU0xdwOlEwi6ZBAkO9JqrPdRzpPxZTmPdmjLZqALP3vaEwrH7v6hxserYuihHKp/h36HexsPLEu8TwvU8yXswc+q/kYaajHRpb708xNbo7YKDjMCHxXsHS4Z+0AaevBKaDGyucOLhwDiqydBhyNu1cf0yYADw5kbiALzPOJ9GwJnXKjN1xes9jNCKbG4UFdKefuaRIlQ+wseUTS55qJ+zp78gaOLC3iO/AJrm5J3FUFh+bIImFvqjwm/uF82EaAqzBzrrz8iTE1IZSAB1QANtQpf76IUvlfYcCzAPbK+/5xTf/AIjfPFAgQJsWGzIpqhvTNQINDJr+d53iEhWgXfjmFN9JE+OZwSGgNg56Gu7sYwrGcxOZULn5DnpwyQNP6eEk+S/M9gwBsq9WCtC2YIgcsW3vBXn/4BPjhqfEO9O0Bec55BYb7US0iIFRoQ3H8dJTLEkKTKkZHd5qOLUNNJ/KzXiEDjeVIBEdw9VuIDBAvWpTo8QpRlueGhJb6QSsWDOYH0B4CD2c/En0F/+rC0skRPv6Kb4rmtHhZk+W/RGI8/P6CCtBMSbKdE5/QoIOhrRw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(396003)(376002)(346002)(39860400002)(230922051799003)(186009)(451199024)(82310400011)(64100799003)(1800799009)(46966006)(36840700001)(40470700004)(26005)(36860700001)(82740400003)(2906002)(4744005)(41300700001)(40460700003)(44832011)(5660300002)(86362001)(36756003)(8936002)(8676002)(4326008)(6916009)(54906003)(81166007)(478600001)(1076003)(316002)(70586007)(356005)(70206006)(40480700001)(47076005)(2616005)(426003)(336012)(6666004)(36900700001);
+X-Microsoft-Antispam-Message-Info: V5rV0MfDbuwy2e6Ozmpb2PIUQoofOfPd0fIXp3SqexmLLLmsK++36OsaUT6bga+p0tdZmxzLLB2U14PVOlR1gCgxqk8+yMRaAtEdPJmykvBUnTXB5lMAc19eCPlPRTU0FfY5neFn4qPRF1O3SvMmrykJLhFh0f+cWIUZThsEqP3IlUN0J195H208ZcxAXDWoxGCGOy2O7ds5rJ5bTnyWDBXus6v/PvPfyf8PGdL7x+Y1FH8YUbNYCWERjiy/2xex5PoN7kaAHjWNXEEmio2jvvohWPt27qXL9r9v3CW5Pe9QK1YsZitAE3cv2Hk+hhfktOwaUmU3OdsVrA1Hs8Qe+Aup+VS335pQflE8k7C9kkpTkUUgX2cWf9PFqOQxeGxt9ALWcaVBlqgGvVp8L+kSfY19bL1zp9SFfQbHpkytJn7CBMvMmDbOzSA6JsOPzRQTiA2q9i2xYQBLYxxLIY7pY1psMbon1E05kM/TzYw0qwQS2Kc7ikhnetyo1wUI1GvQvS6ODsUT7IeBpW2B9HkeL78OSUcKvAT90FPJiN2Rotx50sgM+F25yW3tsyol9i4u8jOn0eTCRpcP3amvitJoWQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR10MB6597.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(366004)(136003)(396003)(346002)(376002)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(54906003)(8936002)(6506007)(6512007)(2616005)(83380400001)(53546011)(41300700001)(4326008)(6486002)(2906002)(966005)(478600001)(5660300002)(8676002)(66946007)(66476007)(6916009)(66556008)(38100700002)(86362001)(316002)(36756003);
  DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2023 21:24:43.9632 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a47e5bb-babc-4206-b625-08dbd5a0cea5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002BA50.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7593
-Received-SPF: softfail client-ip=2a01:111:f400:7e83::628;
- envelope-from=vikram.garhwal@amd.com;
- helo=NAM02-DM3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OEFxbXpaNEM0RFJpSHB0VmhINFZ2YXhDL1NKNDkzRSswT0RUaW05WXB3Q216?=
+ =?utf-8?B?d3RmaXBNRWJMazJsem05QmpSUFNYWk5IQkU0eG53NS9YaGhVaUg5Y1Vrd04z?=
+ =?utf-8?B?a08ydTE1MzdhQmowMkMrWkVNYjd0cmVkNVR3NU9qMm9tVkFvM3JoYm5qSmkw?=
+ =?utf-8?B?YVhWcFRnM3crMGNvRXpjWDhLY1pzYnlRMkNhMXl5b0xpRThzNjAzNm1CQ2Fu?=
+ =?utf-8?B?OGJVTVFnZFFURTRzSGlhWUlYa3JoblJLZW44UnMremFucis4alhsdWh6bnNv?=
+ =?utf-8?B?Q3lMYi8wV2hLeGM1SWJvckx0dVp0b0hoNXB1aE5hTERVK3FpU29iSTN0dDZr?=
+ =?utf-8?B?VDBoWmFzN2kxZ0FScTVXUUZZTHZLVVBmSEVFbVBHSVRINUlhRnhkckxoV1ZJ?=
+ =?utf-8?B?Ulp1enpGbFBHVm90OXlYdTVpend2WnVsQ3A4aDBxVUZDd0RnSlpEOU51SWRw?=
+ =?utf-8?B?NFcwWnE2ZENUQXdLbFlqSUY3WkpaUUtUM0hqQ2dQdytBWVRoemF6RFlsV0Zi?=
+ =?utf-8?B?UGdsdWxpbzdxckE4VFRtVFY1d3I1UlVPWngyaERNYm45WW9kc1p1Wm1jZjll?=
+ =?utf-8?B?a2liMmNhUy9XSUI4Y21NcTBiNHZ1L3NlcmxpTEY0WDE2ZlZudGRnUk1BVU8v?=
+ =?utf-8?B?TUdqVkkxUkZWUlpnMXprQk9mOHFXVlREaWhPS1QrQmlEU0RURG9VUElCcFIv?=
+ =?utf-8?B?ZmV2Zy9YWG9oTVhOckppZ1dVT09PRVdMaW9lQitNVEdYTFlSUWN3MkN6UDVz?=
+ =?utf-8?B?LzBrdWkrcTRMU0JldVdwT3hJUENJVWhxRDErbXZCUUpEUjg4Rm5PWk5BWFJM?=
+ =?utf-8?B?QlN6anFONisrbjAwWnRSaDJWUGtRNnFNVFdMdUR1TDN6WDlWcm1YcDJoU1ZQ?=
+ =?utf-8?B?bWgvaWp6TmhyNkZkSEZrSGNQcUtBc3lORmtlTVRsLzhhUy9BUHdoSTZNejgv?=
+ =?utf-8?B?OC8ybkZLUlY4SVBLa3huSlVsRG1NVWhBeUlMZzVjMzdZdWI5MzBvSFJMbkdQ?=
+ =?utf-8?B?ZS9DVjcrbTFIYjYwWkIvcTVxcDJldnVNOG84UlZyVXhYVDc1Q2ZCQk9uVnlo?=
+ =?utf-8?B?bHRxTTZqZ24rTDRobE1OMTdBUTYwa21lLzJxOWJpdUtGd1dHby9rUE1xanpL?=
+ =?utf-8?B?VFRHVCtJY1VidDJBcmxJNjlUOW5YQ0RBWmorMW1FN0NxRjM1Y0UvdzZoQ1cy?=
+ =?utf-8?B?VmJUUnVwQ2VuQlErMk9aRWZNV1EwaFFQdFo4OUNQaEFueUlSRGZLeTBGYlhB?=
+ =?utf-8?B?Q3ZndFBMRjB0SjRLTVRvUWMyK0Y0S3FtQ2ROeVdPWUduQk5qR3FSbWxCdndt?=
+ =?utf-8?B?endWVnFPeVFkZVA3K0hzK1d2ZHN6U1YrODlETHF6WmxQN1QvcnFsYzJFV2RW?=
+ =?utf-8?B?c0dLUk43bFdqbWcwdGtaenpVTHY2L0lLc0x0eW11QWZ4MXNGYkszQ1dhd1o3?=
+ =?utf-8?B?ZU9mSGd5U010V0luNHBpVlBUcGE4M3BYNWJuTVdYMVYwT0VVZzVhYnByTnZQ?=
+ =?utf-8?B?VnZoZU5tOFBERFExQWIwSVl3ZmQ0WW5WSllJckpHTTg4Yk5RYUpHb1Z2OUpk?=
+ =?utf-8?B?Q0oySi84MUNyMCtldk9MQWg0ZHc4K3JDSnUrNGEzWTh3ME0wTFNzTm5VUVJo?=
+ =?utf-8?B?dTNJTUdjcCtOVmFXZjlmMENpcFUvZDlpQXdtaWNOUDlJRFd6NmdHL2xISzNB?=
+ =?utf-8?B?TUcyTm1ySkdhWTZidnpFZFNFRm9rMlNpTjNSamh0ZGg2Rm02LzFJcThwS3lU?=
+ =?utf-8?B?N0hLK2pLY1ZGRExXdlhyNXpkczNaYnNya1JscGNYdkVzTDN3WnlNeUtyYjVR?=
+ =?utf-8?B?V3BPWU1tejNYeGwzdXZObU8vYk9JR1lwVTM5bkh3T1FqNlRSYUdwUVZTSHNl?=
+ =?utf-8?B?MHhCZ1ZTL2FZVTc1NnhGdVk3a1hHS1NyL1pLbFFqemV1UldFaGpObEliTnc0?=
+ =?utf-8?B?eWczSHhORjY1Rll0bUNwVGJrbzlWbTlVMTVhV3AwOEhZSCtGWnBhVDNSVzhj?=
+ =?utf-8?B?VHlTTDl4VkV6Q211d242cEtrdjNwN2orRXJBWlYwdzZ3eXZ3VU0xYllCcUZH?=
+ =?utf-8?B?N2dUYzAzRVF0cWMyS3B1OTNPd3V0QXhWbGdoRkFzenJNMllDcWwrZEhSWUtt?=
+ =?utf-8?B?OExpWURpd2NTMDVVK0l3N2dGTkwvN2F1WXZmK0ZWem94NzNNa1hlZGpmOThO?=
+ =?utf-8?Q?QFlPmI52074yV+1+GlGLC+nM9UjbUSBlkN9tkMoDM7xo?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: bS0XyiSflAZyyHAJVHPO2fJcjyln2dtveqRD6WPtWxcR0sMKVLKw7ZrAt1p0sTvhlcBhUIJQE/0CR/0EOqcaoQ/9hSuhRWw4TWX32XKsDdBujRK211rf2D+FMO2NY7QtqjnGFbb5MDgmNLe3ZU+Zq76rJMrpiJb/Dxwf5p6Mmhgf716Ln1jPHB39eXzCaOWaTnyZailXXpLGKeyImUrswL2iPEorEu1W9zhej2N5GP6spB31EIPoGlSgNWzw4q20GyeIwSpfEhxCphy84JN5RXyNtHaPL0Y44EHCbuytC4UChQA6Xovwcp/ZuRMQ2vnrSco+ZRm1OZN5se4wuX1unQ7hBhBMR8HMwMxS1FtSR6EbqQNIDOquv5Od7rw52cM+sHQzKwnxGetqsa1PJwLKBuc2NLaPdsMF0sCAglvnEzaeMlXv4Jeu9iYNbWlk/sF7xd8AgvCDEMKgoW5WIvZ16JOTx30nLAiF+iqkm4BFr0meyfpM9v8uhsVkPHlEZcjMS3QdNLluGj0F0CWcOKJYanrWMzwlndVkLBQlUOnLOdeBlzQdu1cJeA/9oIKfjfWWGvdfgNmZ0gG9UCD0n/JBCB3ci3sbTHODvRdC3Z2yl+Kz+07x2fhuCzZF5MjO4nQq1H/ZcShXritIeF1FJhhfY+PUcF/+Xoihlq9c7FM/Y0tJKNo2QMc09+iOiQPmToBOY/2MreRE0XIrsH78fCPv4LMZEKmEdDOqp3BdteGHZdCz9FDduc8vDchAPdWqEjLBaD8X5IKKxq3GwB7lyq/UIIpI8MR9TB/6Hudl1HliSyBG76XFUxa2dSg9lA7zehEiXhnNwGeAZVPgawbgia78aC+e1q+EHiQ2OI6Hq8lJX9NOExRWuAEXtmarzI49iiRz
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9cf1a0f-1863-4764-372b-08dbd5ac024a
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2023 22:44:55.3885 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6hheEOP2ST+Ljltlo6V2+0h6BUWIPVBIxLLTbhUyd+g/zyvlgIZBPvWMolzNxnVFYQj1gCvR9vz+slINrS16d9PLHZvozJbJACK22mOt+Ms=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6250
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-25_12,2023-10-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ malwarescore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 phishscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
+ definitions=main-2310250195
+X-Proofpoint-GUID: 2--0jxxNdUVf15EtlJwA8awYfkAaz6xS
+X-Proofpoint-ORIG-GUID: 2--0jxxNdUVf15EtlJwA8awYfkAaz6xS
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=stephen.s.brennan@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,29 +183,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable grant ram mapping support for Xenpvh machine on ARM.
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
+> Hi
+>
+> On Tue, Sep 19, 2023 at 3:32=E2=80=AFAM Stephen Brennan
+> <stephen.s.brennan@oracle.com> wrote:
+>>
+>> Hello all,
+>>
+>> This is the third version of the kdump patch series, the first and
+>> second revisions being visible at [1] and [2] respectively. You can see
+>> the history and motivation for the patch series described in the cover
+>> letter of [2].
+>>
+>> Thank you for your continued feedback and review.
+>> Stephen
+>>
+>> Changes from v2 to v3:
+>> - Rather than use "reassembled" flag in QMP API, represent each kdump
+>>   format "kdump-X" with a new enumerator "kdump-raw-X". (The HMP
+>>   interface retains the -R option)
+>> - Return an error if the file descriptor passed in is not seekable, yet
+>>   the requested dump format is kdump-raw-*
+>>
+>> Changes from v1 to v2:
+>> - Keep the default as the flattened format
+>> - Add QMP / HMP arguments for "reassembled"
+>>
+>> [1]: https://lore.kernel.org/qemu-devel/20230717163855.7383-1-stephen.s.=
+brennan@oracle.com/
+>> [2]: https://lore.kernel.org/qemu-devel/20230914010315.945705-1-stephen.=
+s.brennan@oracle.com/
+>>
+>> Stephen Brennan (3):
+>>   dump: Pass DumpState to write_ functions
+>>   dump: Allow directly outputting raw kdump format
+>>   dump: Add command interface for kdump-raw formats
+>>
+>>  dump/dump-hmp-cmds.c  | 21 +++++++--
+>>  dump/dump.c           | 99 +++++++++++++++++++++++++++++++------------
+>>  hmp-commands.hx       |  9 +++-
+>>  include/sysemu/dump.h |  3 +-
+>>  qapi/dump.json        | 24 +++++++++--
+>>  5 files changed, 119 insertions(+), 37 deletions(-)
+>>
+>> --
+>> 2.39.3
+>>
+>
+> For the series:
+> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> --=20
+> Marc-Andr=C3=A9 Lureau
 
-Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
----
- hw/arm/xen_arm.c | 3 +++
- 1 file changed, 3 insertions(+)
+Hello,
 
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index f83b983ec5..553c289720 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -125,6 +125,9 @@ static void xen_init_ram(MachineState *machine)
-         DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
-                 GUEST_RAM1_BASE, ram_size[1]);
-     }
-+
-+    DPRINTF("init grant ram mapping for XEN\n");
-+    ram_grants = *xen_init_grant_ram();
- }
- 
- void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
--- 
-2.17.1
+Will this be queued for version 8.2? I see here[1] that the feature
+freeze is November 7. I'm not really familiar with QEMU development so I
+didn't know if there was a "linux-next" equivalent I could check.
 
+[1]: https://wiki.qemu.org/Planning/8.2
+
+Thanks,
+Stephen
 
