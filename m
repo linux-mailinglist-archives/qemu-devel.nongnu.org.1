@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B74A7D75A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 22:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1907D75EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 22:44:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvkSi-0005I2-0C; Wed, 25 Oct 2023 16:26:44 -0400
+	id 1qvkhv-0002Pg-WE; Wed, 25 Oct 2023 16:42:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvkSf-0005Hj-V7
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 16:26:42 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qvkht-0002PS-3F
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 16:42:25 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvkSe-0007ph-38
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 16:26:41 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6b20577ef7bso126596b3a.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 13:26:39 -0700 (PDT)
+ id 1qvkhr-0002yb-FL
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 16:42:24 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6b709048f32so161453b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 13:42:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698265598; x=1698870398; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1698266541; x=1698871341; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0FyOe0IRKpFI1erCpN6BCtMWvZSuTSWrywI6BoBtqVU=;
- b=Rk4eIEFYuud1Da7E1bprFu3XDyEhWs/uS7WtVz8fpDHUc8fifVsPEBHGmb3HG7VTK9
- waPROkr0e7ZbEaPTIdklsLpJH89SETjI1Dk4DOxDF5nCCc1VrR6w5JndI7EEtxNDfkhn
- GaHljgWffOswTGLTyh6AB1clt/ZcSR2pMy0NifxuheeFW6EECxZk6MrNSnRcXqtusyLv
- jlXJmOON3nWPCHPhITt025xgfBlHgKU9LK8/NOLDZfhtWl+yZJzlaYrnlF3Ocll+qNMF
- Px6EdzEx8kwVJ4AH9+N8rzbNJ0LwVSTpuZ/VqiafM8lwekN4XbqjLkQQnwxajOf7elxh
- /Aww==
+ bh=9+RRDmz7MiHRK9YxCLGz/w1NIcpWjLBjyDMemP2Z4ek=;
+ b=ObKL3IQ8EpkZltLHreAkVtuhLFJJX58oeFKsR6vRZuOpeQkObqWz+Krzdud3179WPj
+ ZpMkMc2GaFawf+kTyLkkEt/Ly5FrOUasNkgredc+aXdEF683XRH3AsBZzqXJ9VCfMebP
+ k1hDyrK6guoLNZStzwTOA5W1WdSf0ewJIvcNnF6peLNfxJT8s1cUpjtxbyXtk9M9dBmK
+ GYPfRioJZPNTDt1ahIx9Q7+0IITWmxKvHpTGe0HD22mGxbYogzvGRLKSGN0lx//x3PxM
+ jXdklI66nETizYz2bdISyaBkomEa2zLziGGwWksVSqrE2VHFp4RbCACLoYgA47VydOxo
+ apog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698265598; x=1698870398;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1698266541; x=1698871341;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0FyOe0IRKpFI1erCpN6BCtMWvZSuTSWrywI6BoBtqVU=;
- b=FUufjVNENbgKCqqWrn5T8+FSZpwyDYMFLmBkMtFkRum54NCJmuQJ+vhdCbRBj7cZqA
- zuYVWBsK4k2IkV4E5g5klvRcTD50fJ6wx6gfdJTrZotmUIXoWRMkf5GQOX5hKUjeVp/Z
- s6d/4n7f9umYreZEC3GvN3/OFaYPzAt+4IWGnvfxOjioz+VdO/lnhLf6CVgDX/MhVQ8g
- qt7yYjTdLuK57cp9u5vMB3SJ+LlAPz9T/03NMUaKpAsJ9ViJDo02EFCz66dXmQedQJoX
- PUe8NnXG8yebYu/cRX8RD30S0xNZUpZF0+M/QEA7iTEPpKJl/Lm72HA3Oyyq0tnwGfTo
- uF/A==
-X-Gm-Message-State: AOJu0YyxgospNAF4Dn+YZilNbfrHUcNlUUR8Xps92/kY+yk7FuLEyLMu
- DPiXMHy2b5f2l+AAwWaA7mOOeZxFUjbBM3Nn+4g=
-X-Google-Smtp-Source: AGHT+IETAV4MZKkrYa5kXsNNVhMOueJaWuzq7rL0aaiPGtjXhcegEJjZC+bT85HNO8C5/O220pQIAw==
-X-Received: by 2002:a05:6a20:394a:b0:16b:c8f8:a53c with SMTP id
- r10-20020a056a20394a00b0016bc8f8a53cmr6483221pzg.47.1698265598474; 
- Wed, 25 Oct 2023 13:26:38 -0700 (PDT)
+ bh=9+RRDmz7MiHRK9YxCLGz/w1NIcpWjLBjyDMemP2Z4ek=;
+ b=FDqsz9NWKggNMPfXia0Bq+yp/GTvEjDLPM4f0PkJLdz0sAR/iYzx5NT0DxLNvKQpb3
+ xZr2UCxgQasHAmv9/Om/p6FSGevAU6sRUOGKrGjlsgkyNkXX/RgHJb7X0D6PBw8DLR6Y
+ Hd4ZbyP9X5Gbd+vvrgzo0EEbjtCtb13W8bnUh6SRJBq7ObuY+TxZMaF6SaXEqC7s72+x
+ Uf8P/selA4L/jP/jkY7t3H4YWv7WEm7GAgLP7VGreocYm37Z28c6w4SaXYH8dTfeQc8c
+ R1qwwJvIM8DRv5FmrTLOIcOTLUa3kKWNSnLPdHPU8KGJy4rjGN0MmqjC91z02LR9UXvc
+ /ONQ==
+X-Gm-Message-State: AOJu0YwhqcbcN+X9daXntPGnd+ELD7Kc1ebTTNPyV1rAyUKv/yTNtFXx
+ kk2oof7OPpsi/3Q9woHNIHHxlQ==
+X-Google-Smtp-Source: AGHT+IGZ/DbbNXe3+0bvYoVNJa+gAkL3GnfR4w3Vt3Im4Picnbe7bewp4u4a7QYQvUFaBElUU0fQWw==
+X-Received: by 2002:a05:6a20:8f1e:b0:15d:9ee7:180a with SMTP id
+ b30-20020a056a208f1e00b0015d9ee7180amr8072760pzk.4.1698266541066; 
+ Wed, 25 Oct 2023 13:42:21 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- e29-20020aa7981d000000b00690daae925bsm9739547pfl.51.2023.10.25.13.26.37
+ n38-20020a056a000d6600b006c031c6c200sm1718146pfv.88.2023.10.25.13.42.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 13:26:38 -0700 (PDT)
-Message-ID: <6694df94-a28e-4853-b3f2-272f29f4f251@linaro.org>
-Date: Wed, 25 Oct 2023 13:26:36 -0700
+ Wed, 25 Oct 2023 13:42:20 -0700 (PDT)
+Message-ID: <a03cebdc-5659-4f62-819f-74ee9633e4ed@linaro.org>
+Date: Wed, 25 Oct 2023 13:42:18 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 9/9] target/ppc: Use tcg_gen_sextract_tl
+Subject: Re: [RFC PATCH] tcg: allow a target to request canonicalization of
+ SUBI to ADDI
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-References: <20231023160944.10692-1-philmd@linaro.org>
- <20231023160944.10692-10-philmd@linaro.org>
- <b9d9c1a0-5b20-4d33-aaf2-f12097122004@linaro.org>
- <CWHBYSZE3X91.1YCI4JXJ3H2SE@wheely>
- <9da94605-2320-d90d-7caf-847e615f730b@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20231025185956.72677-1-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <9da94605-2320-d90d-7caf-847e615f730b@linaro.org>
+In-Reply-To: <20231025185956.72677-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,46 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/25/23 00:33, Philippe Mathieu-Daudé wrote:
-> Hi Nicholas,
+On 10/25/23 11:59, Paolo Bonzini wrote:
+> On x86, this is more efficient because it enables generation of
+> more LEA instructions.
 > 
-> On 25/10/23 09:09, Nicholas Piggin wrote:
->> On Tue Oct 24, 2023 at 11:04 AM AEST, Richard Henderson wrote:
->>> On 10/23/23 09:09, Philippe Mathieu-Daudé wrote:
->>>> Inspired-by: Richard Henderson <richard.henderson@linaro.org>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>> RFC: Please double-check 32/64 & bits
->>>> ---
->>>>    target/ppc/translate.c | 22 ++++------------------
->>>>    1 file changed, 4 insertions(+), 18 deletions(-)
->>>>
->>>> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
->>>> index c6e1f7c2ca..1370db9bd5 100644
->>>> --- a/target/ppc/translate.c
->>>> +++ b/target/ppc/translate.c
->>>> @@ -2892,13 +2892,7 @@ static void gen_slw(DisasContext *ctx)
->>>>        t0 = tcg_temp_new();
->>>>        /* AND rS with a mask that is 0 when rB >= 0x20 */
->>>> -#if defined(TARGET_PPC64)
->>>> -    tcg_gen_shli_tl(t0, cpu_gpr[rB(ctx->opcode)], 0x3a);
->>>> -    tcg_gen_sari_tl(t0, t0, 0x3f);
->>>> -#else
->>>> -    tcg_gen_shli_tl(t0, cpu_gpr[rB(ctx->opcode)], 0x1a);
->>>> -    tcg_gen_sari_tl(t0, t0, 0x1f);
->>>> -#endif
->>>> +    tcg_gen_sextract_tl(t0, cpu_gpr[rB(ctx->opcode)], 5, 1);
->>>>        tcg_gen_andc_tl(t0, cpu_gpr[rS(ctx->opcode)], t0);
->>>
->>> Patch looks correct as is, so
->>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>
->> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   include/tcg/tcg.h     |  4 ++++
+>   tcg/i386/tcg-target.h |  2 ++
+>   tcg/tcg-op.c          | 20 ++++++++++++++++----
+>   3 files changed, 22 insertions(+), 4 deletions(-)
 > 
-> So are you OK to take this patch as-is as a first iteration?
+> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+> index a9282cdcc60..48e5aeef173 100644
+> --- a/include/tcg/tcg.h
+> +++ b/include/tcg/tcg.h
+> @@ -109,6 +109,10 @@ typedef uint64_t TCGRegSet;
+>   #define TCG_TARGET_HAS_sub2_i32         1
+>   #endif
+>   
+> +#ifndef TCG_TARGET_PREFERS_addi
+> +#define TCG_TARGET_PREFERS_addi         0
+> +#endif
 
-I am, yes.  The simple fact of the ifdef removal is worth it.
+I would rather do this unconditionally.
+
+Many of the tcg backends do this manually, e.g. s390x:
+
+     case INDEX_op_sub_i64:
+         a0 = args[0], a1 = args[1], a2 = args[2];
+         if (const_args[2]) {
+             a2 = -a2;
+             goto do_addi_64;
+         } else {
+             tcg_out_insn(s, RRFa, SGRK, a0, a1, a2);
+         }
+         break;
+
+While we could do something similar for i386, it would be better to not require such hoops 
+in each backend.
+
+We would also want to perform this transformation in optimize.c.
 
 
 r~
+
 
