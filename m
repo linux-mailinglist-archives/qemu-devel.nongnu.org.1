@@ -2,83 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3767D71BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 18:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE017D71EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 18:52:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvgjq-00024C-Su; Wed, 25 Oct 2023 12:28:10 -0400
+	id 1qvh5w-0002j9-UP; Wed, 25 Oct 2023 12:51:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qvgjp-00023v-3k
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 12:28:09 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qvgjn-0001GK-HO
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 12:28:08 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9b1ebc80d0aso874573866b.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 09:28:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698251285; x=1698856085; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=3SI1HDQRYn5vEk3Jxs0ZfjcgDJQfz/8c5MwAMN+n82E=;
- b=nhhyAbe2YE93dx/Smf/y7J/cDte9Rqzp9ZlwKCQ4mhsu6iSc6h9R+u1hJVT/Jctiax
- AnJ/dKMx/+w+0LqjygEcrgUPti0/8DPWk6jTCCevL2gcSY3sYuAGePb6gcrerTWW8o7l
- FQ9gv9SyVa1rlFWa23EU2VlZ+iH3tyV3JeGDE37/DhGF6Hsyzq2pjrDTUlKcFppNV/rk
- r6ehFmhx1hZ7t0HCzdOvbG/bSuJWT02+Xdvkn+o3OZVZBE8Hk7QysPlUFgfOvFBpprr5
- dupPUp1GBqF182HIYXlltc6gH3BmNW0uDc4RNz+9YjuYPiY/APm7xSWpDdrjgTj+i+ps
- A0Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698251285; x=1698856085;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3SI1HDQRYn5vEk3Jxs0ZfjcgDJQfz/8c5MwAMN+n82E=;
- b=RUFseUoh91ily6ZdrKiqwfDWuvzMXs3Qv21y5uDwpSN5hAo9D2PmWkylxM1MkJBgXs
- IlhjQD4iV8+7zvS4mn9QAHGvgTgmXYQkY4YeQmHEdiFCe3loAeUhJ1tCuPZrk7OlM3bE
- 8gmVuIJzG+Hwac2DAhw5K21ZfBzKGcBFEdxAhERDTiM4qtEqe664rqQPDi0VHBmz2E+y
- v2qCei4hJiqVC+aopbGFZd3Xeb0wRuXz6vSP+BC1IBAOIPmsR/NtQIgW8vc+KQVfoQWt
- 3G39rj0fwIoBqUmJ4iCi4ZlpTOh+APVzN2vhQ/9KeLCB48Z9SIHeAw6b8GtF/rvRQpc+
- 1Dng==
-X-Gm-Message-State: AOJu0Yzd/61kI1nM/4qkvfUPMRaZhbahdjDGiuZTB33Q9YvuRNB78ug4
- 3TXLVH7kW9oKk3GmTN1kpvo61w==
-X-Google-Smtp-Source: AGHT+IGllsRs2OU5FQV2P4rzbLWC6hU4Eqn7yaG67yLUJZ+XfURruSkQ8Q6cqlNdcZ4easqKnZmGBQ==
-X-Received: by 2002:a17:907:980c:b0:9bd:a75a:5644 with SMTP id
- ji12-20020a170907980c00b009bda75a5644mr13607887ejc.16.1698251284915; 
- Wed, 25 Oct 2023 09:28:04 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- ay18-20020a170906d29200b009b2c5363ebasm10088849ejb.26.2023.10.25.09.28.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 09:28:04 -0700 (PDT)
-Date: Wed, 25 Oct 2023 18:28:03 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v4 9/9] target/riscv/tcg: warn if profile exts are disabled
-Message-ID: <20231025-8fa7e3ae7b0d41ae96e2e2d1@orel>
-References: <20231025135001.531224-1-dbarboza@ventanamicro.com>
- <20231025135001.531224-10-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1qvh5a-0002i8-Po; Wed, 25 Oct 2023 12:50:39 -0400
+Received: from mail-co1nam11on20625.outbound.protection.outlook.com
+ ([2a01:111:f400:7eab::625]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1qvh5W-00058Q-Ll; Wed, 25 Oct 2023 12:50:37 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hRl4jLf/6EpNq/y1j2wZRyCxCp/ZW21Dr4dtggknIBXoxyZQNTg5H2Ts1Q6/yvofthAwuRO3dMcVXURFCMUMrOpUXtfL3k7nFDVDdo/vDRWYE708o3QPVGtkuaQzMGOVOsC96CNXAaW0j9CWYR6jofv5Cenw+ZIAmCI7LWrFVZyTmogIu+j3r+Q8dW97Ob6dApOxPI9xHOmj/faDS1mGMbYOvURpPTn5fHDH6irzSR17w3ieZwaTIi1W1e8e15EKT0ye3coY8CJDh1u3qZeHIy2xN5EvWrEzotGIVHtxxbNWg4F1UFFy7G1FOzXy9NniKlQEwMZEnKHOmGSjyTykiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Pe/a7LnkWp3xH/Csq8f7IrzhksEz6jUxWEM5HrtyR/U=;
+ b=gvbdGIEqwDUbLoEd1RUzqjSrjbgH0Ez1byDKML9m3pdCZFQi9Rqot7JPaTL6MSftGvgywBqJFg0IqJ2/rSuDPLiyKTmUZwSJHVtUSm6jEewHijg5BpAjwWQVO/9S4u2PwnrZJo7CXGQS/ZUF0z7m5ZPwJvxcr+xWNb/gPENtGKogySQH8bWwRef0/n1KcMHj6PfzsCFGqUTiUhcrzKuIN6TEwMdtJ//Cspfa5OmdWxlCc6y6qNkDzK2EghIloENoWuMqX05eMXU3dygjkaz+M4IjxsmN2n7YZsglcWKY6gtC94txovmKYmNPPygIqoVrsrIy7BAmAnozbId6j35Tpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pe/a7LnkWp3xH/Csq8f7IrzhksEz6jUxWEM5HrtyR/U=;
+ b=4qE4VNzKaZO1dYzoyl81kBNkyW1JQXUnx3jp7gJSDuVeBDf2MiNXd5upSTXQQUqs44VtNWOiiC4bmO2aHi+AlipsgoqaEgDmHFPxFit/PvITg6sXq+1w0mqI86TX+fOuERPOznbS58nL1C7/AQ47U/lAtHRMRDSoQO/SmcIRIRM=
+Received: from BY3PR05CA0018.namprd05.prod.outlook.com (2603:10b6:a03:254::23)
+ by SA0PR12MB4461.namprd12.prod.outlook.com (2603:10b6:806:9c::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.31; Wed, 25 Oct
+ 2023 16:50:28 +0000
+Received: from MWH0EPF000989E7.namprd02.prod.outlook.com
+ (2603:10b6:a03:254:cafe::63) by BY3PR05CA0018.outlook.office365.com
+ (2603:10b6:a03:254::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.8 via Frontend
+ Transport; Wed, 25 Oct 2023 16:50:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MWH0EPF000989E7.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6933.15 via Frontend Transport; Wed, 25 Oct 2023 16:50:27 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Wed, 25 Oct
+ 2023 11:50:14 -0500
+Received: from luc-work-vm (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32 via Frontend
+ Transport; Wed, 25 Oct 2023 11:50:13 -0500
+Date: Wed, 25 Oct 2023 18:50:11 +0200
+From: Luc Michel <luc.michel@amd.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>,
+ <qemu-trivial@nongnu.org>, <qemu-arm@nongnu.org>, Markus Armbruster
+ <armbru@redhat.com>, Beniamino Galvani <b.galvani@gmail.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Strahinja Jankovic
+ <strahinja.p.jankovic@gmail.com>
+Subject: Re: [PATCH 01/10] hw/arm/allwinner-a10: Remove 'hw/arm/boot.h' from
+ header
+Message-ID: <ZTlD1E8lLc3ohC4G@luc-work-vm>
+References: <20231025065316.56817-1-philmd@linaro.org>
+ <20231025065316.56817-2-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20231025135001.531224-10-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62b.google.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231025065316.56817-2-philmd@linaro.org>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989E7:EE_|SA0PR12MB4461:EE_
+X-MS-Office365-Filtering-Correlation-Id: 943bdf04-2e70-4031-16e8-08dbd57a7e17
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: zVqpu6+d6QRiDQuC2JqeX956ANIZd2+fumvPcEGlL3MxBgBkDblf4OKF5dqo1nD5nszCUFJl6L1h5xdYFx1PL2Zi7paE3orEIQ+0mJL/mEXpn0L2cKrqbNO0szJnjlqfnZ47X54CTkrPKm3MbOe9ktjV1SZUkfSdjUwKdGW5G11waNAIz8mjEntpRS7xm4N8vF7DH3IzbbR8VHHHjHtMARw68bXtoTaE7DpRRPlCqgKZWb9Sd6ySdNfynB6iA5MavHNE2iFmX0MpR6Tg/84a0LnXoaoqYkfqrRCqEyRRPoLCsBkxXDFicoUDiDbIgkSdmaRitnJVoExu75CLYpJjJ92M9M9ziT62UgdHylm+xhXlFbCsmTAjwC1KrVUh4KQfcMt7Kojg/OcXDU0fP/2rvkCWMC2NXDrZWWWcrnFgPDvOjduoMoKRcX5xAZ8wQYPxNHtICghNo0ucdBpULbTRxNI9UjLL6q8IKsNoC2MNoI15igegstkAfF1szm8sH+ykFjgJGDIcRMXIAytkdGA5DoHuyhJ3grRNQfjzziGaXtAv1Em1a7wV1HBtROc1/l50Zv7Kq3Xy9z+R8a7KnzyYnXx1ITK6b0xujgBiFfCN8QUmYhlfG16VafPndWZXUey8UywJ7YorgoEHNoadlIJVafds1Rm+1VogM4azu0vsa2EXOFSGqZpkLsMn9y1tCUKTYBy70K9CV42ErerlJ4ojla0lbaFsbD/rT3TEtp/K/QHwTjUhm2c/UWzpD++5LkNWxntHdeSBZh57YkV9SfGsKA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(396003)(346002)(136003)(376002)(39860400002)(230922051799003)(64100799003)(1800799009)(186009)(82310400011)(451199024)(46966006)(36840700001)(40470700004)(55016003)(81166007)(2906002)(44832011)(6916009)(41300700001)(82740400003)(70586007)(70206006)(54906003)(316002)(426003)(9686003)(47076005)(478600001)(83380400001)(356005)(40480700001)(336012)(36860700001)(4326008)(40460700003)(86362001)(5660300002)(8676002)(8936002)(26005)(33716001)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2023 16:50:27.9507 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 943bdf04-2e70-4031-16e8-08dbd57a7e17
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989E7.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4461
+Received-SPF: softfail client-ip=2a01:111:f400:7eab::625;
+ envelope-from=Luc.Michel@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,33 +125,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 10:50:01AM -0300, Daniel Henrique Barboza wrote:
-> Enabling a profile and then disabling some of its mandatory extensions
-> is a valid use. It can be useful for debugging and testing. But the
-> common expected use of enabling a profile is to enable all its mandatory
-> extensions.
+On 08:53 Wed 25 Oct     , Philippe Mathieu-Daudé wrote:
+> "hw/arm/boot.h" is only required on the source file.
 > 
-> Add an user warning when mandatory extensions from an enabled profile
-> are disabled in the command line, like we're already doing with RVG.
-> 
-> After this patch, this will throw warnings:
-> 
-> -cpu rv64,rva22u64=true,zihintpause=false,zicbom=false,zicboz=false
-> 
-> qemu-system-riscv64: warning: Profile rva22u64 mandates disabled extension zihintpause
-> qemu-system-riscv64: warning: Profile rva22u64 mandates disabled extension zicbom
-> qemu-system-riscv64: warning: Profile rva22u64 mandates disabled extension zicboz
-> 
-> Note that the following  will NOT throw warnings because the profile is
-> being enabled last, hence all its mandatory extensions will be enabled:
-> 
-> -cpu rv64,zihintpause=false,zicbom=false,zicboz=false,rva22u64=true
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/tcg/tcg-cpu.c | 57 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Luc Michel <luc.michel@amd.com>
+
+> ---
+>  include/hw/arm/allwinner-a10.h | 1 -
+>  hw/arm/cubieboard.c            | 1 +
+>  2 files changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/arm/allwinner-a10.h b/include/hw/arm/allwinner-a10.h
+> index cd1465c613..2eb83a17ea 100644
+> --- a/include/hw/arm/allwinner-a10.h
+> +++ b/include/hw/arm/allwinner-a10.h
+> @@ -1,7 +1,6 @@
+>  #ifndef HW_ARM_ALLWINNER_A10_H
+>  #define HW_ARM_ALLWINNER_A10_H
+> 
+> -#include "hw/arm/boot.h"
+>  #include "hw/timer/allwinner-a10-pit.h"
+>  #include "hw/intc/allwinner-a10-pic.h"
+>  #include "hw/net/allwinner_emac.h"
+> diff --git a/hw/arm/cubieboard.c b/hw/arm/cubieboard.c
+> index 8c7fa91529..29146f5018 100644
+> --- a/hw/arm/cubieboard.c
+> +++ b/hw/arm/cubieboard.c
+> @@ -21,6 +21,7 @@
+>  #include "hw/boards.h"
+>  #include "hw/qdev-properties.h"
+>  #include "hw/arm/allwinner-a10.h"
+> +#include "hw/arm/boot.h"
+>  #include "hw/i2c/i2c.h"
+> 
+>  static struct arm_boot_info cubieboard_binfo = {
+> --
+> 2.41.0
+> 
+> 
+
+-- 
 
