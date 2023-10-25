@@ -2,66 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477587D6878
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 12:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1347D6877
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 12:28:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvb6w-0000fK-Nf; Wed, 25 Oct 2023 06:27:38 -0400
+	id 1qvb7A-0000nS-9b; Wed, 25 Oct 2023 06:27:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvb6t-0000el-Qx
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:27:35 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvb75-0000iA-CR
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:27:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvb6s-0004Wi-8N
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:27:35 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvb72-0004Xq-WF
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:27:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698229652;
+ s=mimecast20190719; t=1698229664;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RH+Fr2HvhMMrlzUsB1zSHVpZF0/xX0eP6gKWKk+EXzg=;
- b=f3OhOFaKi0kWhU2kE08Ws+L5EdXMWBsmK6NJpcG/p8w5Ex2QOPxqnNfFAq0rWM4VrVW8ek
- WWgX8NXCuQ8kXznniVtGV2f3+Ik9UWNAoD/L0Bo7DNjIUHi9DzNioifQo6q1C7cyvwI5Z8
- guj+FOe0mPZypCzI3Ywh4DepdEHwWfE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jfUhYSK1hn2dpRipPUNq/idVgp43Wp+e6ZcoNkKzlxk=;
+ b=fOZQDb0sYTsqGtRQHXDnfyxvFCpn7VZGsTxt0UT7linaIyT3Cj3Nm+Iup8hvSJ+FyWR0sz
+ 2CXdUYPWtFtdl7Mj2Hf8z0z0I7/xJQw7s7oWkfNnYCZWpwLdLw4Mu5khdgyV5/jzcfGGvS
+ cvsHp+BdwuRjTtg+LMQhkqOgum4xpjs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-reK4z1zIPwasGN3YR0KhWw-1; Wed, 25 Oct 2023 06:27:19 -0400
-X-MC-Unique: reK4z1zIPwasGN3YR0KhWw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 36593857CFA;
- Wed, 25 Oct 2023 10:27:19 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.154])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2EF78492BFA;
- Wed, 25 Oct 2023 10:27:18 +0000 (UTC)
-Date: Wed, 25 Oct 2023 11:27:16 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v2 13/29] migration: fixed-ram: Add URI compatibility check
-Message-ID: <ZTjthKcOWtbiE71L@redhat.com>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-14-farosas@suse.de>
+ us-mta-267-v_UinhpOMqyPQhYopQEgYQ-1; Wed, 25 Oct 2023 06:27:42 -0400
+X-MC-Unique: v_UinhpOMqyPQhYopQEgYQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4084e4ce543so33863555e9.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 03:27:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698229661; x=1698834461;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jfUhYSK1hn2dpRipPUNq/idVgp43Wp+e6ZcoNkKzlxk=;
+ b=E3D46Hxya2/d4WJfzdSOCnHRA9jJnFHuFL/yALy5QgqsSWQ8MUI1M6Gt8MV5eQbM08
+ wD/PxAwG62+BYFh0HzXbjDMLI76F36DsjM23r0/QjLItSmfw3DnYAFgm6BRvKSqa41/J
+ d8CcgXsRoHNPHRumk4G9hB3b4Wrkr5+jhFnjHyY17x6baWm3w1N/9BGL5nXeutJpgslO
+ bQa6mvG+zwzPs5sWBda91RrYmanAP3yxTFL70s+TSMF82jo1+d4uEexPOIzgKMzTgiXX
+ KJXMz4nhT8h1ilM/BvfYCVpCLVzQN2IKTooPpSmsx4bN8F8LTyTuogtqjl4l/OTg+dj7
+ yvCA==
+X-Gm-Message-State: AOJu0YwG8GCdE6hVcaA7Gw/pv+CQwL7W+AYwL6LCZ3xFhYGcJ5SpbuUP
+ dCLGpjlH600YZBFPhQ5oqBi8oxgc5R7al7VX7SX15oHUPuidgdLFfyVSzXKcKYPaCOqceUOwrXT
+ LgtBgUiYTSnGhFKs=
+X-Received: by 2002:a05:600c:46d1:b0:407:8f23:cf3 with SMTP id
+ q17-20020a05600c46d100b004078f230cf3mr10499546wmo.26.1698229661804; 
+ Wed, 25 Oct 2023 03:27:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEveailLYgM1sYQTmLmMy9b7GGZh+gUgkSXtUCmyAaa8O7cgZhFH6IaJ3ioAzIf3LHdESG1gA==
+X-Received: by 2002:a05:600c:46d1:b0:407:8f23:cf3 with SMTP id
+ q17-20020a05600c46d100b004078f230cf3mr10499522wmo.26.1698229661381; 
+ Wed, 25 Oct 2023 03:27:41 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ b13-20020a05600c11cd00b0040770ec2c19sm18937051wmi.10.2023.10.25.03.27.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Oct 2023 03:27:40 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  "Denis V
+ . Lunev" <den@openvz.org>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Stefan Weil <sw@weilnetz.de>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,  "Maciej S . Szmigiero"
+ <maciej.szmigiero@oracle.com>,  Fam Zheng <fam@euphon.net>,  Peter Xu
+ <peterx@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Leonardo Bras
+ <leobras@redhat.com>
+Subject: Re: [PATCH 1/2] util/uuid: Add UUID_STR_LEN definition
+In-Reply-To: <20231025101245.751559-2-clg@redhat.com> (=?utf-8?Q?=22C?=
+ =?utf-8?Q?=C3=A9dric?= Le Goater"'s
+ message of "Wed, 25 Oct 2023 12:12:44 +0200")
+References: <20231025101245.751559-1-clg@redhat.com>
+ <20231025101245.751559-2-clg@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 25 Oct 2023 12:27:40 +0200
+Message-ID: <874jiff143.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231023203608.26370-14-farosas@suse.de>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,28 +108,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 05:35:52PM -0300, Fabiano Rosas wrote:
-> The fixed-ram migration format needs a channel that supports seeking
-> to be able to write each page to an arbitrary offset in the migration
-> stream.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+> qemu_uuid_unparse() includes a trailing NUL when writing the uuid
+> string and the buffer size should be UUID_FMT_LEN + 1 bytes. Add a
+> define for this size and use it where required.
+>
+> Cc: Fam Zheng <fam@euphon.net>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
 > ---
->  migration/migration.c | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
+>  include/qemu/uuid.h              | 1 +
+>  block/parallels-ext.c            | 2 +-
+>  block/vdi.c                      | 2 +-
+>  hw/core/qdev-properties-system.c | 2 +-
+>  hw/hyperv/vmbus.c                | 4 ++--
+>  migration/savevm.c               | 4 ++--
+>  tests/unit/test-uuid.c           | 2 +-
+>  util/uuid.c                      | 2 +-
+>  8 files changed, 10 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 
