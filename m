@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC55A7D7482
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1297D7480
 	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:40:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvjij-0000ma-P8; Wed, 25 Oct 2023 15:39:15 -0400
+	id 1qvjj5-0000pu-UF; Wed, 25 Oct 2023 15:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1qvjie-0000mL-7z
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:08 -0400
-Received: from mail-qv1-xf2b.google.com ([2607:f8b0:4864:20::f2b])
+ id 1qvjj3-0000pg-Qx
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:33 -0400
+Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1qvjia-0005wz-UF
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:08 -0400
-Received: by mail-qv1-xf2b.google.com with SMTP id
- 6a1803df08f44-66cfc96f475so728266d6.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 12:38:59 -0700 (PDT)
+ id 1qvjj1-00067o-1H
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:39:33 -0400
+Received: by mail-qv1-xf2c.google.com with SMTP id
+ 6a1803df08f44-66d03491a1eso740246d6.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 12:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1698262738; x=1698867538; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OImnXVOVX/6nAD5BnV6zruyVE+5cXlOfLSHr10TvICo=;
- b=gtE5gYC2vpYE1lzhFE8aSoACG1Nx3uJreoXyaaVK1USXYILWuHFd777SajOVrzNzmd
- 3b86ilETAZGIzCtqpOgS6dowDUBSxfJVvdTyLK6LKcWVQ39Vz2L3jcA+V9FMENz1aITR
- 0sCVUVqC+pd8ZvGqfwtdTHTER0WeiYllYsdUHQ6MIyGscW2hbT2E8iesnlDsyDRhrlwY
- z6C77GviqNDvCBz4BdmZR4NSyRmCJGE/b7dIqjRp8+K5DpLTLBmDwUlV7UsL8xfMCYq8
- xCc6H64Ug/tSWlOJFFto9hXXEDlpbfYLEEssoQ04k6Isr0UdyJdeLNlqcoycR0Eh76+e
- w5WA==
+ d=bytedance.com; s=google; t=1698262770; x=1698867570; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=j1bNuRq+y2CvFip0F1f8OlNXk4NaSY7ezUEtcTBMZxc=;
+ b=RP/2w6preyrOF9ZbpyK0EvUjkWc3nfi9/3ePZtKjMuXNhOqUrszKDBRSMQxoiZR5CW
+ 7voZYythN52eMdRQJ0GO0ImOSYVc0tVwQrSkRXOpzP2SRcSmIUEB4R1etJY2+O1siDmr
+ r/oQi4kPTQRMbVyXhY66o4lmq53OmuXjF9LWMRC4P5UYw49VAR8NSTeI+5a+mNLm6WD6
+ SRR7Zo6x6uOaiSI1td0gH/TSPzHa6tH/1Sy0olWHBLa/cnMpEGJ2c164W0QQZzzvfMZk
+ B39xxVj2FeASsRZs2zNpSfoMjJ7iJhLkNJTxt0tnSDyq39krl8uL15vZ0ahpZPAhGdvH
+ A4zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698262738; x=1698867538;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OImnXVOVX/6nAD5BnV6zruyVE+5cXlOfLSHr10TvICo=;
- b=oBcXkAl3pOoZMRTfWxQlv3rBBKdMv8lgmtqjZnzOMw+ZLJVXa2C8CHxR/c7Raparfe
- BaSvKwaPkj3uWPANTFtr1EGjC0HLfW9Y1ait98r8Kewy7YScjjd7yaa3U39k9kWIgpV7
- OeekGfPjItOcAK0gmrKZPvAK8w4E33aDe9rPhPMyFjouUq59F8qnxEaTgj+sur/5RTgj
- hVtuHXVyzXEhUNVQryFYROwixNXBkytrMy+GjzPFQue2R9PU0INsM6WDAAx4QBzPw/da
- lp7kfcLlfjhI+smqK9zsAyoTQLfInNq7auaeb+AFSBFqd8VQ3vgfZFZUl7mvigIzOxr4
- yb/Q==
-X-Gm-Message-State: AOJu0YyvuXJlhNj8VfM2m3/sIUBkxwakNDY93QZQf0IgCR4stGjZloSr
- Sw0zoVfnoziGK9ewYsr4EbYmMw==
-X-Google-Smtp-Source: AGHT+IGNjrZ+eXOqi+hbDFdQ7fTi6qqP5aOFdIAX+erahczz1a1Jzp2Um7L5uBn3MqpwiQyjYxLw8A==
-X-Received: by 2002:a05:6214:230e:b0:66d:9d28:3686 with SMTP id
- gc14-20020a056214230e00b0066d9d283686mr19741663qvb.53.1698262738538; 
- Wed, 25 Oct 2023 12:38:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698262770; x=1698867570;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=j1bNuRq+y2CvFip0F1f8OlNXk4NaSY7ezUEtcTBMZxc=;
+ b=hVgqiTQavjZrNU8QaSyPywON8f9Wc7VgPOa41fI28m3rGuePGs31s9mtWkD2xt87VD
+ sW/alzPrPkUEHd4SlS/xKpFEzdw5HwPhpTZPhjMbgLvm2FtWbOkXwK5M6sd72NDgT3sh
+ VqziB8PVAVbWZD4nZ2I/5u/LZ+UsgoXINkmAljAOizs9/XwW3uQ4BPt78xkB2CRZdLOp
+ INkK3snS6ff/u9ZtH+yUiVu+TN4V34llLEuq3Kuw6bec3av+64CIUqwIHANL7xttdNL6
+ P+FaGP60j+TbgEsMhIGlZ4Hy6i9IGvUHuM9fUuxWNQ4R4Ql2IVOnJs4ycuy5LCqnKD02
+ 16Hw==
+X-Gm-Message-State: AOJu0Yx1a5/xBfXKpJXEoEmt/eRmRSRGzx19qDOklwnKjQRJHMicZzky
+ xPJeEILqqpThtSaJx4JSj7T0Nw==
+X-Google-Smtp-Source: AGHT+IFqmtnOCThWaFpypfvK0Klyay6WS8IU6wpDKrCSvU3xVU9fgN1NWvG0lFW9NcoE8XVPfpVQsg==
+X-Received: by 2002:a05:6214:246b:b0:66d:1d92:c694 with SMTP id
+ im11-20020a056214246b00b0066d1d92c694mr22580113qvb.58.1698262769870; 
+ Wed, 25 Oct 2023 12:39:29 -0700 (PDT)
 Received: from n231-230-216.byted.org ([147.160.184.135])
  by smtp.gmail.com with ESMTPSA id
- o8-20020a05620a228800b0076cdc3b5beasm4453721qkh.86.2023.10.25.12.38.58
+ o8-20020a05620a228800b0076cdc3b5beasm4453721qkh.86.2023.10.25.12.39.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 12:38:58 -0700 (PDT)
+ Wed, 25 Oct 2023 12:39:29 -0700 (PDT)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com,
  bryan.zhang@bytedance.com, qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH 00/16] Use Intel DSA accelerator to offload zero page checking
- in multifd live migration.
-Date: Wed, 25 Oct 2023 19:38:06 +0000
-Message-Id: <20231025193822.2813204-1-hao.xiang@bytedance.com>
+Subject: [PATCH 01/16] Cherry pick a set of patches that enables multifd zero
+ page feature.
+Date: Wed, 25 Oct 2023 19:38:07 +0000
+Message-Id: <20231025193822.2813204-2-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20231025193822.2813204-1-hao.xiang@bytedance.com>
+References: <20231025193822.2813204-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2b;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qv1-xf2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-qv1-xf2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,258 +93,575 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Background:
-I posted an RFC about DSA offloading in QEMU:
-https://patchew.org/QEMU/20230529182001.2232069-1-hao.xiang@bytedance.com/
+Juan Quintela had a patchset enabling zero page checking in multifd
+threads.
 
-This patchset implements the DSA offloading on zero page checking in
-multifd live migration code path.
+https://lore.kernel.org/all/20220802063907.18882-13-quintela@redhat.com/
 
-* Overview:
-Intel Data Streaming Accelerator(DSA) is introduced in Intel's 4th generation
-Xeon server, aka Sapphire Rapids.
-https://01.org/blogs/2019/introducing-intel-data-streaming-accelerator
-
-One of the things DSA can do is to offload memory comparison workload from
-CPU to DSA accelerator hardware. This patchset implements a solution to offload
-QEMU's zero page checking from CPU to DSA accelerator hardware. We gain
-two benefits from this change:
-1. Reduces CPU usage in multifd live migration workflow across all use
-cases.
-2. Reduces migration total time in some use cases. 
-
-* Design:
-
-These are the logical steps to perform DSA offloading:
-1. Configure DSA accelerators and create user space openable DSA work
-queues via the idxd driver.
-2. Map DSA's work queue into a user space address space.
-3. Fill an in-memory task descriptor to describe the memory operation.
-4. Use dedicated CPU instruction _enqcmd to queue a task descriptor to
-the work queue.
-5. Pull the task descriptor's completion status field until the task
-completes.
-6. Check return status.
-
-The memory operation is now totally done by the accelerator hardware but
-the new workflow introduces overheads. The overhead is the extra cost CPU
-prepares and submits the task descriptors and the extra cost CPU pulls for
-completion. The design is around minimizing these two overheads.
-
-1. In order to reduce the overhead on task preparation and submission,
-we use batch descriptors. A batch descriptor will contain N individual
-zero page checking tasks where the default N is 128 (default packet size
-/ page size) and we can increase N by setting the packet size via a new
-migration option.
-2. The multifd sender threads prepares and submits batch tasks to DSA
-hardware and it waits on a synchronization object for task completion.
-Whenever a DSA task is submitted, the task structure is added to a
-thread safe queue. It's safe to have multiple multifd sender threads to
-submit tasks concurrently.
-3. Multiple DSA hardware devices can be used. During multifd initialization,
-every sender thread will be assigned a DSA device to work with. We
-use a round-robin scheme to evenly distribute the work across all used
-DSA devices.
-4. Use a dedicated thread dsa_completion to perform busy pulling for all
-DSA task completions. The thread keeps dequeuing DSA tasks from the
-thread safe queue. The thread blocks when there is no outstanding DSA
-task. When pulling for completion of a DSA task, the thread uses CPU
-instruction _mm_pause between the iterations of a busy loop to save some
-CPU power as well as optimizing core resources for the other hypercore.
-5. DSA accelerator can encounter errors. The most popular error is a
-page fault. We have tested using devices to handle page faults but
-performance is bad. Right now, if DSA hits a page fault, we fallback to
-use CPU to complete the rest of the work. The CPU fallback is done in
-the multifd sender thread.
-6. Added a new migration option multifd-dsa-accel to set the DSA device
-path. If set, the multifd workflow will leverage the DSA devices for
-offloading.
-7. Added a new migration option multifd-normal-page-ratio to make
-multifd live migration easier to test. Setting a normal page ratio will
-make live migration recognize a zero page as a normal page and send
-the entire payload over the network. If we want to send a large network
-payload and analyze throughput, this option is useful.
-8. Added a new migration option multifd-packet-size. This can increase
-the number of pages being zero page checked and sent over the network.
-The extra synchronization between the sender threads and the dsa
-completion thread is an overhead. Using a large packet size can reduce
-that overhead.
-
-* Performance:
-
-We use two Intel 4th generation Xeon servers for testing.
-
-Architecture:        x86_64
-CPU(s):              192
-Thread(s) per core:  2
-Core(s) per socket:  48
-Socket(s):           2
-NUMA node(s):        2
-Vendor ID:           GenuineIntel
-CPU family:          6
-Model:               143
-Model name:          Intel(R) Xeon(R) Platinum 8457C
-Stepping:            8
-CPU MHz:             2538.624
-CPU max MHz:         3800.0000
-CPU min MHz:         800.0000
-
-We perform multifd live migration with below setup:
-1. VM has 100GB memory. 
-2. Use the new migration option multifd-set-normal-page-ratio to control the total
-size of the payload sent over the network.
-3. Use 8 multifd channels.
-4. Use tcp for live migration.
-4. Use CPU to perform zero page checking as the baseline.
-5. Use one DSA device to offload zero page checking to compare with the baseline.
-6. Use "perf sched record" and "perf sched timehist" to analyze CPU usage.
-
-A) Scenario 1: 50% (50GB) normal pages on an 100GB vm.
-
-	CPU usage
-
-	|---------------|---------------|---------------|---------------|
-	|		|comm		|runtime(msec)	|totaltime(msec)|
-	|---------------|---------------|---------------|---------------|
-	|Baseline	|live_migration	|5657.58	|		|
-	|		|multifdsend_0	|3931.563	|		|
-	|		|multifdsend_1	|4405.273	|		|
-	|		|multifdsend_2	|3941.968	|		|
-	|		|multifdsend_3	|5032.975	|		|
-	|		|multifdsend_4	|4533.865	|		|
-	|		|multifdsend_5	|4530.461	|		|
-	|		|multifdsend_6	|5171.916	|		|
-	|		|multifdsend_7	|4722.769	|41922		|
-	|---------------|---------------|---------------|---------------|
-	|DSA		|live_migration	|6129.168	|		|
-	|		|multifdsend_0	|2954.717	|		|
-	|		|multifdsend_1	|2766.359	|		|
-	|		|multifdsend_2	|2853.519	|		|
-	|		|multifdsend_3	|2740.717	|		|
-	|		|multifdsend_4	|2824.169	|		|
-	|		|multifdsend_5	|2966.908	|		|
-	|		|multifdsend_6	|2611.137	|		|
-	|		|multifdsend_7	|3114.732	|		|
-	|		|dsa_completion	|3612.564	|32568		|
-	|---------------|---------------|---------------|---------------|
-
-Baseline total runtime is calculated by adding up all multifdsend_X
-and live_migration threads runtime. DSA offloading total runtime is
-calculated by adding up all multifdsend_X, live_migration and
-dsa_completion threads runtime. 41922 msec VS 32568 msec runtime and
-that is 23% total CPU usage savings.
-
-	Latency
-	|---------------|---------------|---------------|---------------|---------------|---------------|
-	|		|total time	|down time	|throughput	|transferred-ram|total-ram	|
-	|---------------|---------------|---------------|---------------|---------------|---------------|	
-	|Baseline	|10343 ms	|161 ms		|41007.00 mbps	|51583797 kb	|102400520 kb	|
-	|---------------|---------------|---------------|---------------|-------------------------------|
-	|DSA offload	|9535 ms	|135 ms		|46554.40 mbps	|53947545 kb	|102400520 kb	|	
-	|---------------|---------------|---------------|---------------|---------------|---------------|
-
-Total time is 8% faster and down time is 16% faster.
-
-B) Scenario 2: 100% (100GB) zero pages on an 100GB vm.
-
-	CPU usage
-	|---------------|---------------|---------------|---------------|
-	|		|comm		|runtime(msec)	|totaltime(msec)|
-	|---------------|---------------|---------------|---------------|
-	|Baseline	|live_migration	|4860.718	|		|
-	|	 	|multifdsend_0	|748.875	|		|
-	|		|multifdsend_1	|898.498	|		|
-	|		|multifdsend_2	|787.456	|		|
-	|		|multifdsend_3	|764.537	|		|
-	|		|multifdsend_4	|785.687	|		|
-	|		|multifdsend_5	|756.941	|		|
-	|		|multifdsend_6	|774.084	|		|
-	|		|multifdsend_7	|782.900	|11154		|
-	|---------------|---------------|-------------------------------|
-	|DSA offloading	|live_migration	|3846.976	|		|
-	|		|multifdsend_0	|191.880	|		|
-	|		|multifdsend_1	|166.331	|		|
-	|		|multifdsend_2	|168.528	|		|
-	|		|multifdsend_3	|197.831	|		|
-	|		|multifdsend_4	|169.580	|		|
-	|		|multifdsend_5	|167.984	|		|
-	|		|multifdsend_6	|198.042	|		|
-	|		|multifdsend_7	|170.624	|		|
-	|		|dsa_completion	|3428.669	|8700		|
-	|---------------|---------------|---------------|---------------|
-
-Baseline total runtime is 11154 msec and DSA offloading total runtime is
-8700 msec. That is 22% CPU savings.
-
-	Latency
-	|--------------------------------------------------------------------------------------------|
-	|		|total time	|down time	|throughput	|transferred-ram|total-ram   |
-	|---------------|---------------|---------------|---------------|---------------|------------|	
-	|Baseline	|4867 ms	|20 ms		|1.51 mbps	|565 kb		|102400520 kb|
-	|---------------|---------------|---------------|---------------|----------------------------|
-	|DSA offload	|3888 ms	|18 ms		|1.89 mbps	|565 kb		|102400520 kb|	
-	|---------------|---------------|---------------|---------------|---------------|------------|
-
-Total time 20% faster and down time 10% faster.
-
-* Testing:
-1. Added unit tests for cover the added code path in dsa.c
-2. Added integration tests to cover multifd live migration using DSA
+Some of the changes in that patchset has already made to upstream but
+a few are still being reviewed. This patch contains the changes from
+the remaining patches. This change serves as the baseline for DSA
 offloading.
 
-* Patchset
-Apply this patchset on top of commit
-800485762e6564e04e2ab315132d477069562d91
+* multifd: Add capability to enable/disable zero_page
+* migration: Export ram_release_page()
+* multifd: Support for zero pages transmission
+* multifd: Zero pages transmission
+* So we use multifd to transmit zero pages.
+---
+ migration/migration-stats.h |   8 +--
+ migration/multifd.c         | 105 ++++++++++++++++++++++++++++--------
+ migration/multifd.h         |  19 ++++++-
+ migration/options.c         |  12 +++++
+ migration/options.h         |   1 +
+ migration/ram.c             |  47 +++++++++++++---
+ migration/trace-events      |   8 +--
+ qapi/migration.json         |   7 ++-
+ 8 files changed, 167 insertions(+), 40 deletions(-)
 
-Hao Xiang (16):
-  Cherry pick a set of patches that enables multifd zero page feature.
-  meson: Introduce new instruction set enqcmd to the build system.
-  util/dsa: Add dependency idxd.
-  util/dsa: Implement DSA device start and stop logic.
-  util/dsa: Implement DSA task enqueue and dequeue.
-  util/dsa: Implement DSA task asynchronous completion thread model.
-  util/dsa: Implement zero page checking in DSA task.
-  util/dsa: Implement DSA task asynchronous submission and wait for
-    completion.
-  migration/multifd: Add new migration option for multifd DSA
-    offloading.
-  migration/multifd: Enable DSA offloading in multifd sender path.
-  migration/multifd: Add test hook to set normal page ratio.
-  migration/multifd: Enable set normal page ratio test hook in multifd.
-  migration/multifd: Add migration option set packet size.
-  migration/multifd: Enable set packet size migration option.
-  util/dsa: Add unit test coverage for Intel DSA task submission and
-    completion.
-  migration/multifd: Add integration tests for multifd with Intel DSA
-    offloading.
-
- include/qemu/dsa.h             |  119 ++++
- linux-headers/linux/idxd.h     |  356 ++++++++++
- meson.build                    |    2 +
- meson_options.txt              |    2 +
- migration/migration-hmp-cmds.c |   22 +
- migration/migration-stats.h    |    8 +-
- migration/multifd-zlib.c       |    4 +-
- migration/multifd-zstd.c       |    4 +-
- migration/multifd.c            |  220 ++++++-
- migration/multifd.h            |   25 +-
- migration/options.c            |  105 +++
- migration/options.h            |    4 +
- migration/ram.c                |   47 +-
- migration/trace-events         |    8 +-
- qapi/migration.json            |   51 +-
- scripts/meson-buildoptions.sh  |    3 +
- tests/qtest/migration-test.c   |   66 +-
- tests/unit/meson.build         |    6 +
- tests/unit/test-dsa.c          |  448 +++++++++++++
- util/dsa.c                     | 1132 ++++++++++++++++++++++++++++++++
- util/meson.build               |    1 +
- 21 files changed, 2577 insertions(+), 56 deletions(-)
- create mode 100644 include/qemu/dsa.h
- create mode 100644 linux-headers/linux/idxd.h
- create mode 100644 tests/unit/test-dsa.c
- create mode 100644 util/dsa.c
-
+diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+index 2358caad63..dca3c100b0 100644
+--- a/migration/migration-stats.h
++++ b/migration/migration-stats.h
+@@ -68,6 +68,10 @@ typedef struct {
+      * Number of pages transferred that were not full of zeros.
+      */
+     Stat64 normal_pages;
++    /*
++     * Number of pages transferred that were full of zeros.
++     */
++    Stat64 zero_pages;
+     /*
+      * Number of bytes sent during postcopy.
+      */
+@@ -97,10 +101,6 @@ typedef struct {
+      * Total number of bytes transferred.
+      */
+     Stat64 transferred;
+-    /*
+-     * Number of pages transferred that were full of zeros.
+-     */
+-    Stat64 zero_pages;
+ } MigrationAtomicStats;
+ 
+ extern MigrationAtomicStats mig_stats;
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 0f6b203877..452fb158b8 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -12,6 +12,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/rcu.h"
++#include "qemu/cutils.h"
+ #include "exec/target_page.h"
+ #include "sysemu/sysemu.h"
+ #include "exec/ramblock.h"
+@@ -268,6 +269,7 @@ static void multifd_send_fill_packet(MultiFDSendParams *p)
+     packet->normal_pages = cpu_to_be32(p->normal_num);
+     packet->next_packet_size = cpu_to_be32(p->next_packet_size);
+     packet->packet_num = cpu_to_be64(p->packet_num);
++    packet->zero_pages = cpu_to_be32(p->zero_num);
+ 
+     if (p->pages->block) {
+         strncpy(packet->ramblock, p->pages->block->idstr, 256);
+@@ -279,6 +281,12 @@ static void multifd_send_fill_packet(MultiFDSendParams *p)
+ 
+         packet->offset[i] = cpu_to_be64(temp);
+     }
++    for (i = 0; i < p->zero_num; i++) {
++        /* there are architectures where ram_addr_t is 32 bit */
++        uint64_t temp = p->zero[i];
++
++        packet->offset[p->normal_num + i] = cpu_to_be64(temp);
++    }
+ }
+ 
+ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+@@ -327,7 +335,15 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+     p->next_packet_size = be32_to_cpu(packet->next_packet_size);
+     p->packet_num = be64_to_cpu(packet->packet_num);
+ 
+-    if (p->normal_num == 0) {
++    p->zero_num = be32_to_cpu(packet->zero_pages);
++    if (p->zero_num > packet->pages_alloc - p->normal_num) {
++        error_setg(errp, "multifd: received packet "
++                   "with %u zero pages and expected maximum pages are %u",
++                   p->zero_num, packet->pages_alloc - p->normal_num) ;
++        return -1;
++    }
++
++    if (p->normal_num == 0 && p->zero_num == 0) {
+         return 0;
+     }
+ 
+@@ -353,6 +369,18 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+         p->normal[i] = offset;
+     }
+ 
++    for (i = 0; i < p->zero_num; i++) {
++        uint64_t offset = be64_to_cpu(packet->offset[p->normal_num + i]);
++
++        if (offset > (p->block->used_length - p->page_size)) {
++            error_setg(errp, "multifd: offset too long %" PRIu64
++                       " (max " RAM_ADDR_FMT ")",
++                       offset, p->block->used_length);
++            return -1;
++        }
++        p->zero[i] = offset;
++    }
++
+     return 0;
+ }
+ 
+@@ -432,6 +460,8 @@ static int multifd_send_pages(QEMUFile *f)
+     p->packet_num = multifd_send_state->packet_num++;
+     multifd_send_state->pages = p->pages;
+     p->pages = pages;
++    stat64_add(&mig_stats.normal_pages, p->normal_num);
++    stat64_add(&mig_stats.zero_pages, p->zero_num);
+     qemu_mutex_unlock(&p->mutex);
+     qemu_sem_post(&p->sem);
+ 
+@@ -548,6 +578,8 @@ void multifd_save_cleanup(void)
+         p->iov = NULL;
+         g_free(p->normal);
+         p->normal = NULL;
++        g_free(p->zero);
++        p->zero = NULL;
+         multifd_send_state->ops->send_cleanup(p, &local_err);
+         if (local_err) {
+             migrate_set_error(migrate_get_current(), local_err);
+@@ -622,7 +654,7 @@ int multifd_send_sync_main(QEMUFile *f)
+         }
+ 
+         p->packet_num = multifd_send_state->packet_num++;
+-        p->flags |= MULTIFD_FLAG_SYNC;
++        p->sync_needed = true;
+         p->pending_job++;
+         qemu_mutex_unlock(&p->mutex);
+         qemu_sem_post(&p->sem);
+@@ -648,6 +680,8 @@ static void *multifd_send_thread(void *opaque)
+     MultiFDSendParams *p = opaque;
+     MigrationThread *thread = NULL;
+     Error *local_err = NULL;
++    /* older qemu don't understand zero page on multifd channel */
++    bool use_multifd_zero_page = !migrate_use_main_zero_page();
+     int ret = 0;
+     bool use_zero_copy_send = migrate_zero_copy_send();
+ 
+@@ -673,9 +707,17 @@ static void *multifd_send_thread(void *opaque)
+         qemu_mutex_lock(&p->mutex);
+ 
+         if (p->pending_job) {
++            RAMBlock *rb = p->pages->block;
+             uint64_t packet_num = p->packet_num;
+-            uint32_t flags;
++            p->flags = 0;
++            if (p->sync_needed) {
++                p->flags |= MULTIFD_FLAG_SYNC;
++                p->sync_needed = false;
++            }
++            qemu_mutex_unlock(&p->mutex);
++
+             p->normal_num = 0;
++            p->zero_num = 0;
+ 
+             if (use_zero_copy_send) {
+                 p->iovs_num = 0;
+@@ -684,27 +726,27 @@ static void *multifd_send_thread(void *opaque)
+             }
+ 
+             for (int i = 0; i < p->pages->num; i++) {
+-                p->normal[p->normal_num] = p->pages->offset[i];
+-                p->normal_num++;
++                uint64_t offset = p->pages->offset[i];
++                if (use_multifd_zero_page &&
++                    buffer_is_zero(rb->host + offset, p->page_size)) {
++                    p->zero[p->zero_num] = offset;
++                    p->zero_num++;
++                    ram_release_page(rb->idstr, offset);
++                } else {
++                    p->normal[p->normal_num] = offset;
++                    p->normal_num++;
++                }
+             }
+ 
+             if (p->normal_num) {
+                 ret = multifd_send_state->ops->send_prepare(p, &local_err);
+                 if (ret != 0) {
+-                    qemu_mutex_unlock(&p->mutex);
+                     break;
+                 }
+             }
+             multifd_send_fill_packet(p);
+-            flags = p->flags;
+-            p->flags = 0;
+-            p->num_packets++;
+-            p->total_normal_pages += p->normal_num;
+-            p->pages->num = 0;
+-            p->pages->block = NULL;
+-            qemu_mutex_unlock(&p->mutex);
+ 
+-            trace_multifd_send(p->id, packet_num, p->normal_num, flags,
++            trace_multifd_send(p->id, packet_num, p->normal_num, p->zero_num, p->flags,
+                                p->next_packet_size);
+ 
+             if (use_zero_copy_send) {
+@@ -731,10 +773,15 @@ static void *multifd_send_thread(void *opaque)
+             stat64_add(&mig_stats.multifd_bytes, p->next_packet_size);
+             stat64_add(&mig_stats.transferred, p->next_packet_size);
+             qemu_mutex_lock(&p->mutex);
++            p->num_packets++;
++            p->total_normal_pages += p->normal_num;
++            p->total_zero_pages += p->zero_num;
++            p->pages->num = 0;
++            p->pages->block = NULL;
+             p->pending_job--;
+             qemu_mutex_unlock(&p->mutex);
+ 
+-            if (flags & MULTIFD_FLAG_SYNC) {
++            if (p->flags & MULTIFD_FLAG_SYNC) {
+                 qemu_sem_post(&p->sem_sync);
+             }
+         } else if (p->quit) {
+@@ -768,7 +815,8 @@ out:
+ 
+     rcu_unregister_thread();
+     migration_threads_remove(thread);
+-    trace_multifd_send_thread_end(p->id, p->num_packets, p->total_normal_pages);
++    trace_multifd_send_thread_end(p->id, p->num_packets, p->total_normal_pages,
++                                  p->total_zero_pages);
+ 
+     return NULL;
+ }
+@@ -944,6 +992,7 @@ int multifd_save_setup(Error **errp)
+         p->normal = g_new0(ram_addr_t, page_count);
+         p->page_size = qemu_target_page_size();
+         p->page_count = page_count;
++        p->zero = g_new0(ram_addr_t, page_count);
+ 
+         if (migrate_zero_copy_send()) {
+             p->write_flags = QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
+@@ -1059,6 +1108,8 @@ void multifd_load_cleanup(void)
+         p->iov = NULL;
+         g_free(p->normal);
+         p->normal = NULL;
++        g_free(p->zero);
++        p->zero = NULL;
+         multifd_recv_state->ops->recv_cleanup(p);
+     }
+     qemu_sem_destroy(&multifd_recv_state->sem_sync);
+@@ -1105,7 +1156,7 @@ static void *multifd_recv_thread(void *opaque)
+     rcu_register_thread();
+ 
+     while (true) {
+-        uint32_t flags;
++        bool sync_needed = false;
+ 
+         if (p->quit) {
+             break;
+@@ -1124,13 +1175,14 @@ static void *multifd_recv_thread(void *opaque)
+             break;
+         }
+ 
+-        flags = p->flags;
++        trace_multifd_recv(p->id, p->packet_num, p->normal_num, p->zero_num,
++                           p->flags, p->next_packet_size);
++        sync_needed = p->flags & MULTIFD_FLAG_SYNC;       
+         /* recv methods don't know how to handle the SYNC flag */
+         p->flags &= ~MULTIFD_FLAG_SYNC;
+-        trace_multifd_recv(p->id, p->packet_num, p->normal_num, flags,
+-                           p->next_packet_size);
+         p->num_packets++;
+         p->total_normal_pages += p->normal_num;
++        p->total_zero_pages += p->zero_num;
+         qemu_mutex_unlock(&p->mutex);
+ 
+         if (p->normal_num) {
+@@ -1140,7 +1192,14 @@ static void *multifd_recv_thread(void *opaque)
+             }
+         }
+ 
+-        if (flags & MULTIFD_FLAG_SYNC) {
++        for (int i = 0; i < p->zero_num; i++) {
++            void *page = p->host + p->zero[i];
++            if (!buffer_is_zero(page, p->page_size)) {
++                memset(page, 0, p->page_size);
++            }
++        }
++
++        if (sync_needed) {
+             qemu_sem_post(&multifd_recv_state->sem_sync);
+             qemu_sem_wait(&p->sem_sync);
+         }
+@@ -1155,7 +1214,8 @@ static void *multifd_recv_thread(void *opaque)
+     qemu_mutex_unlock(&p->mutex);
+ 
+     rcu_unregister_thread();
+-    trace_multifd_recv_thread_end(p->id, p->num_packets, p->total_normal_pages);
++    trace_multifd_recv_thread_end(p->id, p->num_packets, p->total_normal_pages,
++                                  p->total_zero_pages);
+ 
+     return NULL;
+ }
+@@ -1196,6 +1256,7 @@ int multifd_load_setup(Error **errp)
+         p->normal = g_new0(ram_addr_t, page_count);
+         p->page_count = page_count;
+         p->page_size = qemu_target_page_size();
++        p->zero = g_new0(ram_addr_t, page_count);
+     }
+ 
+     for (i = 0; i < thread_count; i++) {
+diff --git a/migration/multifd.h b/migration/multifd.h
+index a835643b48..e8f90776bb 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -48,7 +48,10 @@ typedef struct {
+     /* size of the next packet that contains pages */
+     uint32_t next_packet_size;
+     uint64_t packet_num;
+-    uint64_t unused[4];    /* Reserved for future use */
++    /* zero pages */
++    uint32_t zero_pages;
++    uint32_t unused32[1];    /* Reserved for future use */
++    uint64_t unused64[3];    /* Reserved for future use */
+     char ramblock[256];
+     uint64_t offset[];
+ } __attribute__((packed)) MultiFDPacket_t;
+@@ -118,10 +121,14 @@ typedef struct {
+     MultiFDPacket_t *packet;
+     /* size of the next packet that contains pages */
+     uint32_t next_packet_size;
++    /* Do we need to do an iteration sync */
++    bool sync_needed;
+     /* packets sent through this channel */
+     uint64_t num_packets;
+     /* non zero pages sent through this channel */
+     uint64_t total_normal_pages;
++    /* zero pages sent through this channel */
++    uint64_t total_zero_pages;
+     /* buffers to send */
+     struct iovec *iov;
+     /* number of iovs used */
+@@ -130,6 +137,10 @@ typedef struct {
+     ram_addr_t *normal;
+     /* num of non zero pages */
+     uint32_t normal_num;
++    /* Pages that are  zero */
++    ram_addr_t *zero;
++    /* num of zero pages */
++    uint32_t zero_num;
+     /* used for compression methods */
+     void *data;
+ }  MultiFDSendParams;
+@@ -181,12 +192,18 @@ typedef struct {
+     uint8_t *host;
+     /* non zero pages recv through this channel */
+     uint64_t total_normal_pages;
++    /* zero pages recv through this channel */
++    uint64_t total_zero_pages;
+     /* buffers to recv */
+     struct iovec *iov;
+     /* Pages that are not zero */
+     ram_addr_t *normal;
+     /* num of non zero pages */
+     uint32_t normal_num;
++    /* Pages that are  zero */
++    ram_addr_t *zero;
++    /* num of zero pages */
++    uint32_t zero_num;
+     /* used for de-compression methods */
+     void *data;
+ } MultiFDRecvParams;
+diff --git a/migration/options.c b/migration/options.c
+index 6bbfd4853d..12b1c4dd71 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -189,6 +189,7 @@ Property migration_properties[] = {
+     DEFINE_PROP_MIG_CAP("x-block", MIGRATION_CAPABILITY_BLOCK),
+     DEFINE_PROP_MIG_CAP("x-return-path", MIGRATION_CAPABILITY_RETURN_PATH),
+     DEFINE_PROP_MIG_CAP("x-multifd", MIGRATION_CAPABILITY_MULTIFD),
++    DEFINE_PROP_MIG_CAP("x-main-zero-page", MIGRATION_CAPABILITY_MAIN_ZERO_PAGE),
+     DEFINE_PROP_MIG_CAP("x-background-snapshot",
+             MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT),
+ #ifdef CONFIG_LINUX
+@@ -278,6 +279,13 @@ bool migrate_multifd(void)
+     return s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
+ }
+ 
++bool migrate_use_main_zero_page(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    return s->capabilities[MIGRATION_CAPABILITY_MAIN_ZERO_PAGE];
++}
++
+ bool migrate_pause_before_switchover(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -431,6 +439,7 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
+     MIGRATION_CAPABILITY_LATE_BLOCK_ACTIVATE,
+     MIGRATION_CAPABILITY_RETURN_PATH,
+     MIGRATION_CAPABILITY_MULTIFD,
++    MIGRATION_CAPABILITY_MAIN_ZERO_PAGE,
+     MIGRATION_CAPABILITY_PAUSE_BEFORE_SWITCHOVER,
+     MIGRATION_CAPABILITY_AUTO_CONVERGE,
+     MIGRATION_CAPABILITY_RELEASE_RAM,
+@@ -499,6 +508,9 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+             error_setg(errp, "Postcopy is not yet compatible with multifd");
+             return false;
+         }
++        if (new_caps[MIGRATION_CAPABILITY_MAIN_ZERO_PAGE]) {
++            error_setg(errp, "Postcopy is not yet compatible with main zero copy");
++        }
+     }
+ 
+     if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
+diff --git a/migration/options.h b/migration/options.h
+index 045e2a41a2..c663f637fd 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -85,6 +85,7 @@ int migrate_multifd_channels(void);
+ MultiFDCompression migrate_multifd_compression(void);
+ int migrate_multifd_zlib_level(void);
+ int migrate_multifd_zstd_level(void);
++bool migrate_use_main_zero_page(void);
+ uint8_t migrate_throttle_trigger_threshold(void);
+ const char *migrate_tls_authz(void);
+ const char *migrate_tls_creds(void);
+diff --git a/migration/ram.c b/migration/ram.c
+index 2f5ce4d60b..516b5b9c59 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1292,7 +1292,6 @@ static int ram_save_multifd_page(QEMUFile *file, RAMBlock *block,
+     if (multifd_queue_page(file, block, offset) < 0) {
+         return -1;
+     }
+-    stat64_add(&mig_stats.normal_pages, 1);
+ 
+     return 1;
+ }
+@@ -2149,17 +2148,43 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
+         }
+         return res;
+     }
+-
+     /*
+-     * Do not use multifd in postcopy as one whole host page should be
+-     * placed.  Meanwhile postcopy requires atomic update of pages, so even
+-     * if host page size == guest page size the dest guest during run may
+-     * still see partially copied pages which is data corruption.
++     * Do not use multifd for:
++     * 1. Compression as the first page in the new block should be posted out
++     *    before sending the compressed page
++     * 2. In postcopy as one whole host page should be placed
+      */
+-    if (migrate_multifd() && !migration_in_postcopy()) {
++    if (!save_page_use_compression(rs) && migrate_multifd()
++        && !migration_in_postcopy()) {
++        return ram_save_multifd_page(pss->pss_channel, block, offset);
++    }
++
++    return ram_save_page(rs, pss);
++}
++
++/**
++ * ram_save_target_page_multifd: save one target page
++ *
++ * Returns the number of pages written
++ *
++ * @rs: current RAM state
++ * @pss: data about the page we want to send
++ */
++static int ram_save_target_page_multifd(RAMState *rs, PageSearchStatus *pss)
++{
++    RAMBlock *block = pss->block;
++    ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
++    int res;
++
++    if (!migration_in_postcopy()) {
+         return ram_save_multifd_page(pss->pss_channel, block, offset);
+     }
+ 
++    res = save_zero_page(pss, pss->pss_channel, block, offset);
++    if (res > 0) {
++        return res;
++    }
++
+     return ram_save_page(rs, pss);
+ }
+ 
+@@ -3066,7 +3091,13 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     ram_control_after_iterate(f, RAM_CONTROL_SETUP);
+ 
+     migration_ops = g_malloc0(sizeof(MigrationOps));
+-    migration_ops->ram_save_target_page = ram_save_target_page_legacy;
++
++    if (migrate_multifd() && !migrate_use_main_zero_page()) {
++        migration_ops->ram_save_target_page = ram_save_target_page_multifd;
++    } else {    
++        migration_ops->ram_save_target_page = ram_save_target_page_legacy;
++    }
++
+     ret = multifd_send_sync_main(f);
+     if (ret < 0) {
+         return ret;
+diff --git a/migration/trace-events b/migration/trace-events
+index ee9c8f4d63..3d059f3c06 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -125,21 +125,21 @@ postcopy_preempt_reset_channel(void) ""
+ 
+ # multifd.c
+ multifd_new_send_channel_async(uint8_t id) "channel %u"
+-multifd_recv(uint8_t id, uint64_t packet_num, uint32_t used, uint32_t flags, uint32_t next_packet_size) "channel %u packet_num %" PRIu64 " pages %u flags 0x%x next packet size %u"
++multifd_recv(uint8_t id, uint64_t packet_num, uint32_t normal, uint32_t zero, uint32_t flags, uint32_t next_packet_size) "channel %u packet_num %" PRIu64 " normal pages %u zero pages %u flags 0x%x next packet size %u"
+ multifd_recv_new_channel(uint8_t id) "channel %u"
+ multifd_recv_sync_main(long packet_num) "packet num %ld"
+ multifd_recv_sync_main_signal(uint8_t id) "channel %u"
+ multifd_recv_sync_main_wait(uint8_t id) "channel %u"
+ multifd_recv_terminate_threads(bool error) "error %d"
+-multifd_recv_thread_end(uint8_t id, uint64_t packets, uint64_t pages) "channel %u packets %" PRIu64 " pages %" PRIu64
++multifd_recv_thread_end(uint8_t id, uint64_t packets, uint64_t normal_pages, uint64_t zero_pages) "channel %u packets %" PRIu64 " normal pages %" PRIu64 " zero pages %" PRIu64
+ multifd_recv_thread_start(uint8_t id) "%u"
+-multifd_send(uint8_t id, uint64_t packet_num, uint32_t normal, uint32_t flags, uint32_t next_packet_size) "channel %u packet_num %" PRIu64 " normal pages %u flags 0x%x next packet size %u"
++multifd_send(uint8_t id, uint64_t packet_num, uint32_t normalpages, uint32_t zero_pages, uint32_t flags, uint32_t next_packet_size) "channel %u packet_num %" PRIu64 " normal pages %u zero pages %u flags 0x%x next packet size %u"
+ multifd_send_error(uint8_t id) "channel %u"
+ multifd_send_sync_main(long packet_num) "packet num %ld"
+ multifd_send_sync_main_signal(uint8_t id) "channel %u"
+ multifd_send_sync_main_wait(uint8_t id) "channel %u"
+ multifd_send_terminate_threads(bool error) "error %d"
+-multifd_send_thread_end(uint8_t id, uint64_t packets, uint64_t normal_pages) "channel %u packets %" PRIu64 " normal pages %"  PRIu64
++multifd_send_thread_end(uint8_t id, uint64_t packets, uint64_t normal_pages, uint64_t zero_pages) "channel %u packets %" PRIu64 " normal pages %"  PRIu64 " zero pages %"  PRIu64
+ multifd_send_thread_start(uint8_t id) "%u"
+ multifd_tls_outgoing_handshake_start(void *ioc, void *tioc, const char *hostname) "ioc=%p tioc=%p hostname=%s"
+ multifd_tls_outgoing_handshake_error(void *ioc, const char *err) "ioc=%p err=%s"
+diff --git a/qapi/migration.json b/qapi/migration.json
+index d7dfaa5db9..3a99fe34d8 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -508,6 +508,11 @@
+ #     and should not affect the correctness of postcopy migration.
+ #     (since 7.1)
+ #
++# @main-zero-page: If enabled, the detection of zero pages will be
++#                  done on the main thread.  Otherwise it is done on
++#                  the multifd threads.
++#                  (since 7.1)
++#
+ # @switchover-ack: If enabled, migration will not stop the source VM
+ #     and complete the migration until an ACK is received from the
+ #     destination that it's OK to do so.  Exactly when this ACK is
+@@ -540,7 +545,7 @@
+            { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+            'validate-uuid', 'background-snapshot',
+            'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+-           'dirty-limit'] }
++           'dirty-limit', 'main-zero-page'] }
+ 
+ ##
+ # @MigrationCapabilityStatus:
 -- 
 2.30.2
 
