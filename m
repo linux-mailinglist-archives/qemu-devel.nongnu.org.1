@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184157D67A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB1D7D67BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 12:00:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvacn-00012S-8z; Wed, 25 Oct 2023 05:56:29 -0400
+	id 1qvafx-000303-VB; Wed, 25 Oct 2023 05:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvack-00010s-BA
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:56:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvafv-0002zZ-7f
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:59:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvacV-0007Yh-Oe
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:56:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvafr-0007tJ-Cf
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 05:59:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698227768;
+ s=mimecast20190719; t=1698227978;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=QVmD8zqZydoV3shRVykzUUzCW6h5w8chMX44XbLS5tc=;
- b=RUHSqHEjQ97Qp6hMFT1PjQpQTvEZfF8B39t3MuYeiVX5n+n7VoO8q2V1bt/G6ReU3kPB8S
- HT9peFzECI7boGe1jrM4QNMHv7TUR4cKGBo4loHRsS+xR5W9mxJIV2aJcc3lCqRM6EFj8p
- dFfB92cvNn1FIkeqG1EBBnRZNa+Gh8o=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OTauERrvZ4a7OhK7D7fwk1CM2WdQnSsmEArM1vxFR/c=;
+ b=UuSaItcJd1A3QUZF3DdRdDUiY5B29mOJRGSLfq/+StZTNo9QQG9f8I2Oy4Vz817jA+08Ij
+ IUIqpU1ht6LdBXoJKUCVFNdIEj7Bt/UTjb+c2AmVuS6WNL3iftoOfA/+UBslevyggmWx7s
+ eYO61eONfCjfRGrr8TUOlO158otAo+k=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-wbQHB1uwNsSA73CpAsuaOA-1; Wed, 25 Oct 2023 05:56:07 -0400
-X-MC-Unique: wbQHB1uwNsSA73CpAsuaOA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-779f645c74cso97231085a.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 02:56:07 -0700 (PDT)
+ us-mta-255-bSSXIFgXPhq3JwDKV2M3VQ-1; Wed, 25 Oct 2023 05:59:27 -0400
+X-MC-Unique: bSSXIFgXPhq3JwDKV2M3VQ-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-41cc7bd094fso68868611cf.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 02:59:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698227767; x=1698832567;
+ d=1e100.net; s=20230601; t=1698227967; x=1698832767;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QVmD8zqZydoV3shRVykzUUzCW6h5w8chMX44XbLS5tc=;
- b=JNHC31az6dMvolpfxXScqEz8vmEZKCWQ81Fo2ma0AB45dyheoz348g9Bk0v8lXsiZY
- iC+qwqVXoP1ynmp2hD45uEs1kumAtr+muO8M1ZlioHEodjSG71HCEMm7sdXPdW0UIB1b
- PXHb+ICpzmivt/CUj+iXr2iqn8K6ZkjSrV4hzVLtW+DycIDGAZV6YQhUknLwqjokZ7Bf
- 6G096lwKpo7UzCwqdYvErz+d5/FFt56IFUMDatkCSbxhmuSWWXeKokHMTewYbekKa1EF
- pEJEnwpPlFtf5WRJcGKvX8BXG/NCh7SjDZsAVN73XqpL/CwzauWvHj5+UgbV5XLaaw01
- Vqsg==
-X-Gm-Message-State: AOJu0YynQRkjsGlD02/qPvjJ6WjrGSrTBKrSW7nSgNd1N0i8d1TsBAYa
- BkBIK6xUfros2/P5VIDmnpRlWurpCVk3vkujC9lLTKNtUz1Rt51gutYVdmf/on6a3aSa5e6vX/4
- jT5kgCAlLHcdlN5c=
-X-Received: by 2002:a05:620a:3193:b0:778:b3fa:e0cf with SMTP id
- bi19-20020a05620a319300b00778b3fae0cfmr15624334qkb.40.1698227767338; 
- Wed, 25 Oct 2023 02:56:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzhiLoEn9CZOPMv7atcg4TUHM5Tr9j0yBcPtR9OVGxyRNQmoW5IAGrNFOXN6fTDlsk+s7Yeg==
-X-Received: by 2002:a05:620a:3193:b0:778:b3fa:e0cf with SMTP id
- bi19-20020a05620a319300b00778b3fae0cfmr15624316qkb.40.1698227767068; 
- Wed, 25 Oct 2023 02:56:07 -0700 (PDT)
+ bh=OTauERrvZ4a7OhK7D7fwk1CM2WdQnSsmEArM1vxFR/c=;
+ b=id/f6gNbkdnP7nWyrDoybVeu/f3+dLIayIAjdobobY+RjUgufzzBCrL85RkEtFFgM1
+ z0nkWMFQMoU1EqJVWJ7KYTEx6KYmxHyXzN3ZhBrdB4UfE/maP993QGmoa5QUkvybTgQ1
+ 6zMHw/rqUiDB3IEksI7b/rF9NJgJj36uwBv4GwdG4dI1AvLGC4UCV4296iQLz24Ilqfd
+ UmVPmn5Y1EOMPtH1ZA2lyEDxZ7CqOtJdedWEy6GCQuTngtrd5Q5qq2JdxbvVmeALO+F3
+ ehOIxSF3LEr4tJ685zKBONAugwLjJzzDbMsD4Nkk2p3xY7ul9BM7IDj9as/htwt9Ogtl
+ lKEA==
+X-Gm-Message-State: AOJu0Yz9GWEtNTwuWAHFSEfCnBRxC2gPFRI4qbBp8SggAAgShMAEdLoV
+ krrDtxFmN8Oq9MhMk614CCeHfgPouvBevV6VsNT0XuoaBasAOuS7UbuW+6BSPp4AS+Va4j5AUVB
+ TaLaEGruenqR9rlA=
+X-Received: by 2002:a05:622a:549:b0:419:573c:59a4 with SMTP id
+ m9-20020a05622a054900b00419573c59a4mr22097582qtx.20.1698227966985; 
+ Wed, 25 Oct 2023 02:59:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfBoXb3LaNG/VLtxy8ZqtmMgRTg3ptlnXHqPANhwXhTt7wXkA/qYT8eDkjly+BRo6XPfMcnw==
+X-Received: by 2002:a05:622a:549:b0:419:573c:59a4 with SMTP id
+ m9-20020a05622a054900b00419573c59a4mr22097559qtx.20.1698227966691; 
+ Wed, 25 Oct 2023 02:59:26 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
  [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- ay7-20020a05620a178700b007758d87524esm4075930qkb.3.2023.10.25.02.56.03
+ e28-20020ac84b5c000000b0041cbb7139a9sm4090437qts.65.2023.10.25.02.59.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 02:56:05 -0700 (PDT)
-Message-ID: <4af29498-c70f-4969-ba71-2b30ed281ea6@redhat.com>
-Date: Wed, 25 Oct 2023 11:56:00 +0200
+ Wed, 25 Oct 2023 02:59:25 -0700 (PDT)
+Message-ID: <c2ab022c-45fc-4836-8f00-0169f9fa369f@redhat.com>
+Date: Wed, 25 Oct 2023 11:59:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/19] vl: move display early init before default
- devices
+Subject: Re: [PATCH v5 06/19] ui/vc: console-vc requires PIXMAN
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
@@ -78,7 +77,7 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
  "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
- <20231023113047.2572137-5-marcandre.lureau@redhat.com>
+ <20231023113047.2572137-7-marcandre.lureau@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -122,16 +121,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231023113047.2572137-5-marcandre.lureau@redhat.com>
+In-Reply-To: <20231023113047.2572137-7-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -151,49 +151,19 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 23/10/2023 13.30, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> The next commit needs to have the display registered itself before
-> creating the default VCs.
+> Add stubs for the fallback paths.
+> 
+> get_vc() now returns NULL by default if !PIXMAN.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   system/vl.c | 41 +++++++++++++++++++++++------------------
->   1 file changed, 23 insertions(+), 18 deletions(-)
-> 
-> diff --git a/system/vl.c b/system/vl.c
-> index 92d29bf521..2cecb3d884 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -1349,6 +1349,28 @@ static void qemu_disable_default_devices(void)
->       }
->   }
->   
-> +static void qemu_early_display_init(void)
-> +{
-> +#if defined(CONFIG_VNC)
-> +    if (!QTAILQ_EMPTY(&(qemu_find_opts("vnc")->head))) {
-> +        display_remote++;
-> +    }
-> +#endif
-> +    if (dpy.type == DISPLAY_TYPE_DEFAULT && !display_remote) {
-> +        if (!qemu_display_find_default(&dpy)) {
-> +            dpy.type = DISPLAY_TYPE_NONE;
-> +#if defined(CONFIG_VNC)
-> +            vnc_parse("localhost:0,to=99,id=default");
-> +#endif
-> +        }
-> +    }
-> +    if (dpy.type == DISPLAY_TYPE_DEFAULT) {
-> +        dpy.type = DISPLAY_TYPE_NONE;
-> +    }
-> +
-> +    qemu_display_early_init(&dpy);
-> +}
+>   ui/console-vc-stubs.c | 33 +++++++++++++++++++++++++++++++++
+>   ui/console.c          |  3 +++
+>   ui/meson.build        |  2 +-
+>   3 files changed, 37 insertions(+), 1 deletion(-)
+>   create mode 100644 ui/console-vc-stubs.c
 
-So we now have qemu_early_display_init() and qemu_display_early_init() ... ? 
-That's very confusing, could you maybe come up with a different name for the 
-new function?
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
 
