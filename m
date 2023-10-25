@@ -2,58 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB4B7D6649
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 901E57D6593
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 10:46:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvZtS-00060q-El; Wed, 25 Oct 2023 05:09:38 -0400
+	id 1qvZVr-0001IT-Vz; Wed, 25 Oct 2023 04:45:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1qvZPF-0008Rd-Iy; Wed, 25 Oct 2023 04:38:25 -0400
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <duchao@eswincomputing.com>)
- id 1qvZOy-0000i2-EJ; Wed, 25 Oct 2023 04:38:25 -0400
-Received: from localhost.localdomain (unknown [10.12.130.31])
- by app1 (Coremail) with SMTP id TAJkCgCXCkfe0zhlwOwAAA--.8143S4;
- Wed, 25 Oct 2023 16:37:50 +0800 (CST)
-From: Chao Du <duchao@eswincomputing.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH] target/arm: kvm64: remove a redundant KVM_CAP_SET_GUEST_DEBUG
- probe
-Date: Wed, 25 Oct 2023 08:37:35 +0000
-Message-Id: <20231025083735.25684-1-duchao@eswincomputing.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: TAJkCgCXCkfe0zhlwOwAAA--.8143S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4DKw1DAw4fur4Uur17ZFb_yoW8tr1fp3
- Z3Crs3Jr4ktasxJw1xArsrZr13JrWkKwnFy34FvryrGasxKw15AFWvkrZ5CFyrurWI9r15
- tF4vyF4Sva1kXr7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUyEb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
- 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
- A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xII
- jxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwV
- C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
- 0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
- 1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkIecxEwVCm-wCF04k20xvY
- 0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I
- 0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAI
- cVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcV
- CF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
- c7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU5PpnJUUUUU==
-X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
-Received-SPF: permerror client-ip=129.150.39.64;
- envelope-from=duchao@eswincomputing.com; helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qvZVk-0001I7-0n
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 04:45:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qvZVe-0001lR-Bh
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 04:45:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698223501;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=EAbSklVYdIF0dtE4Zc5s47CTyI59BY8WEpImv7wdPk0=;
+ b=Kco0kVTqTHRRR8EcYlxDZqvSSi4UqgwUTFO4VLSyIXdOSNnmjThAZEUd+jKRyl3ZQrokAB
+ SgyfL9Ww9K8gPHAbyhIFOmyS9/gbxoqkpKedSRuGrC11r0upE5ptzxdClKZi2LZ7JoEi63
+ VSsUW/JNB5hgdIYJGYnxUBVTZAJc0FU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-iQBxxxBpPsGIpFZNyr-0dA-1; Wed,
+ 25 Oct 2023 04:44:59 -0400
+X-MC-Unique: iQBxxxBpPsGIpFZNyr-0dA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9BF643C23FCE;
+ Wed, 25 Oct 2023 08:44:54 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.154])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5DC242166B29;
+ Wed, 25 Oct 2023 08:44:53 +0000 (UTC)
+Date: Wed, 25 Oct 2023 09:44:51 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
+Message-ID: <ZTjVg9NVTd0MT6mW@redhat.com>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-29-farosas@suse.de>
+ <878r7svapt.fsf@pond.sub.org> <87msw7ddfp.fsf@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87msw7ddfp.fsf@suse.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 25 Oct 2023 05:09:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,78 +81,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The KVM_CAP_SET_GUEST_DEBUG is probed during kvm_init().
-gdbserver will fail to start if the CAP is not supported.
-So no need to make another probe here, like other targets.
+On Tue, Oct 24, 2023 at 04:32:10PM -0300, Fabiano Rosas wrote:
+> Markus Armbruster <armbru@redhat.com> writes:
+> 
+> > Fabiano Rosas <farosas@suse.de> writes:
+> >
+> >> Add the direct-io migration parameter that tells the migration code to
+> >> use O_DIRECT when opening the migration stream file whenever possible.
+> >>
+> >> This is currently only used for the secondary channels of fixed-ram
+> >> migration, which can guarantee that writes are page aligned.
+> >>
+> >> However the parameter could be made to affect other types of
+> >> file-based migrations in the future.
+> >>
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >
+> > When would you want to enable @direct-io, and when would you want to
+> > leave it disabled?
+> 
+> That depends on a performance analysis. You'd generally leave it
+> disabled unless there's some indication that the operating system is
+> having trouble draining the page cache.
 
-Signed-off-by: Chao Du <duchao@eswincomputing.com>
----
- target/arm/kvm64.c | 28 +++++++---------------------
- 1 file changed, 7 insertions(+), 21 deletions(-)
+That's not the usage model I would suggest.
 
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 4bb68646e4..b0bf59b5a1 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -31,13 +31,9 @@
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/ghes.h"
- 
--static bool have_guest_debug;
- 
- void kvm_arm_init_debug(KVMState *s)
- {
--    have_guest_debug = kvm_check_extension(s,
--                                           KVM_CAP_SET_GUEST_DEBUG);
--
-     max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
-     hw_watchpoints = g_array_sized_new(true, true,
-                                        sizeof(HWWatchpoint), max_hw_wps);
-@@ -1140,33 +1136,23 @@ static const uint32_t brk_insn = 0xd4200000;
- 
- int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
- {
--    if (have_guest_debug) {
--        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
--            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
--            return -EINVAL;
--        }
--        return 0;
--    } else {
--        error_report("guest debug not supported on this kernel");
-+    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
-+        cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
-         return -EINVAL;
-     }
-+    return 0;
- }
- 
- int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
- {
-     static uint32_t brk;
- 
--    if (have_guest_debug) {
--        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk, 4, 0) ||
--            brk != brk_insn ||
--            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
--            return -EINVAL;
--        }
--        return 0;
--    } else {
--        error_report("guest debug not supported on this kernel");
-+    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk, 4, 0) ||
-+        brk != brk_insn ||
-+        cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
-         return -EINVAL;
-     }
-+    return 0;
- }
- 
- /* See v8 ARM ARM D7.2.27 ESR_ELx, Exception Syndrome Register
+The biggest value of the page cache comes when it holds data that
+will be repeatedly accessed.
+
+When you are saving/restoring a guest to file, that data is used
+once only (assuming there's a large gap between save & restore).
+By using the page cache to save a big guest we essentially purge
+the page cache of most of its existing data that is likely to be
+reaccessed, to fill it up with data never to be reaccessed.
+
+I usually describe save/restore operations as trashing the page
+cache.
+
+IMHO, mgmt apps should request O_DIRECT always unless they expect
+the save/restore operation to run in quick succession, or if they
+know that the host has oodles of free RAM such that existing data
+in the page cache won't be trashed, or if the host FS does not
+support O_DIRECT of course.
+
+> However I don't think QEMU should attempt any kind of prescription in
+> that regard.
+
+It shouldn't prescribe it, but I think our docs should encourage
+its use where possible.
+
+
+With regards,
+Daniel
 -- 
-2.17.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
