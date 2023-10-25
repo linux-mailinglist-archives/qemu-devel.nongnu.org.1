@@ -2,74 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E627D618E
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD967D6199
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:23:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvXEg-0000cd-KR; Wed, 25 Oct 2023 02:19:22 -0400
+	id 1qvXIe-0001kW-SF; Wed, 25 Oct 2023 02:23:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qvXEe-0000bq-7Y
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:19:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qvXIa-0001jy-RC; Wed, 25 Oct 2023 02:23:25 -0400
+Received: from out30-119.freemail.mail.aliyun.com ([115.124.30.119])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qvXEY-0000lQ-I5
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:19:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698214752;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Qz9nibAudhAmTPodeSx0XLITFaKh7AO80kVAgHaWlMM=;
- b=P+mi1LOs0iam8E5qgh6VSz6RmjL7/EEQVE4jiRrJCqhfCi2tqC2fY4KzSNI7LwKBV8LFH+
- jclaATB2GNm0YZ7RoKuwNUSwPMIx5FQUu8eopzjScRDvPP+om2V5wTAIvtry1jS8mMrIr0
- uOQt6YqFNyWuXXF30Y5E/LaVIHAmNqI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-426-3pTSsSTfO9uA7oDZ6XZScw-1; Wed,
- 25 Oct 2023 02:19:00 -0400
-X-MC-Unique: 3pTSsSTfO9uA7oDZ6XZScw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 813C33C0FC85;
- Wed, 25 Oct 2023 06:19:00 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 443252026D4C;
- Wed, 25 Oct 2023 06:19:00 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DE4FD21E6A1F; Wed, 25 Oct 2023 08:18:58 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Juan Quintela
- <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Claudio Fontana <cfontana@suse.de>,  Eric Blake
- <eblake@redhat.com>
-Subject: Re: [PATCH v2 14/29] migration/ram: Introduce 'fixed-ram' migration
- capability
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-15-farosas@suse.de>
- <87fs20vb2p.fsf@pond.sub.org> <87zg07dg1u.fsf@suse.de>
-Date: Wed, 25 Oct 2023 08:18:58 +0200
-In-Reply-To: <87zg07dg1u.fsf@suse.de> (Fabiano Rosas's message of "Tue, 24 Oct
- 2023 15:35:41 -0300")
-Message-ID: <87sf5zkywd.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qvXIW-0001IE-Bn; Wed, 25 Oct 2023 02:23:23 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R131e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=7; SR=0;
+ TI=SMTPD_---0VutQvnl_1698214984; 
+Received: from 30.198.0.241(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VutQvnl_1698214984) by smtp.aliyun-inc.com;
+ Wed, 25 Oct 2023 14:23:04 +0800
+Message-ID: <5b3078bd-9805-43cc-a7e7-660041477913@linux.alibaba.com>
+Date: Wed, 25 Oct 2023 14:22:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] target/riscv: add rva22u64 profile definition
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, palmer@rivosinc.com
+References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
+ <20231020223951.357513-2-dbarboza@ventanamicro.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20231020223951.357513-2-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=115.124.30.119;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-119.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,148 +63,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
 
-> Markus Armbruster <armbru@redhat.com> writes:
+On 2023/10/21 6:39, Daniel Henrique Barboza wrote:
+> The rva22U64 profile, described in:
 >
->> Fabiano Rosas <farosas@suse.de> writes:
->>
->>> Add a new migration capability 'fixed-ram'.
->>>
->>> The core of the feature is to ensure that each ram page has a specific
->>> offset in the resulting migration stream. The reason why we'd want
->>> such behavior are two fold:
->>>
->>>  - When doing a 'fixed-ram' migration the resulting file will have a
->>>    bounded size, since pages which are dirtied multiple times will
->>>    always go to a fixed location in the file, rather than constantly
->>>    being added to a sequential stream. This eliminates cases where a vm
->>>    with, say, 1G of ram can result in a migration file that's 10s of
->>>    GBs, provided that the workload constantly redirties memory.
->>>
->>>  - It paves the way to implement DIRECT_IO-enabled save/restore of the
->>>    migration stream as the pages are ensured to be written at aligned
->>>    offsets.
->>>
->>> For now, enabling the capability has no effect. The next couple of
->>> patches implement the core funcionality.
->>>
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>> ---
->>>  docs/devel/migration.rst | 14 ++++++++++++++
->>>  migration/options.c      | 37 +++++++++++++++++++++++++++++++++++++
->>>  migration/options.h      |  1 +
->>>  migration/savevm.c       |  1 +
->>>  qapi/migration.json      |  5 ++++-
->>>  5 files changed, 57 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
->>> index c3e1400c0c..6f898b5dbd 100644
->>> --- a/docs/devel/migration.rst
->>> +++ b/docs/devel/migration.rst
->>> @@ -566,6 +566,20 @@ Others (especially either older devices or system devices which for
->>>  some reason don't have a bus concept) make use of the ``instance id``
->>>  for otherwise identically named devices.
->>>  
->>> +Fixed-ram format
->>> +----------------
->>> +
->>> +When the ``fixed-ram`` capability is enabled, a slightly different
->>> +stream format is used for the RAM section. Instead of having a
->>> +sequential stream of pages that follow the RAMBlock headers, the dirty
->>> +pages for a RAMBlock follow its header. This ensures that each RAM
->>> +page has a fixed offset in the resulting migration stream.
->>
->> This requires the migration stream to be seekable, as documented in the
->> QAPI schema below.  I think it's worth documenting here, as well.
->>
+> https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc#rva22-profiles
 >
-> Ok.
+> Contains a set of CPU extensions aimed for 64-bit userspace
+> applications. Enabling this set to be enabled via a single user flag
+> makes it convenient to enable a predictable set of features for the CPU,
+> giving users more predicability when running/testing their workloads.
 >
->>> +
->>> +The ``fixed-ram`` capaility can be enabled in both source and
->>> +destination with:
->>> +
->>> +    ``migrate_set_capability fixed-ram on``
->>
->> Effect of enabling on the destination?
->>
->> What happens when we enable it only on one end?
->>
+> QEMU implements all possible extensions of this profile. The exception
+> is Zicbop (Cache-Block Prefetch Operations) that is not available since
+> QEMU RISC-V does not implement a cache model. For this same reason all
+> the so called 'synthetic extensions' described in the profile that are
+> cache related are ignored (Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa,
+> Zicclsm).
 >
-> qemu-system-x86_64: Capability fixed-ram is off, but received capability is on
-> qemu-system-x86_64: load of migration failed: Invalid argument
+> An abstraction called RISCVCPUProfile is created to store the profile.
+> 'ext_offsets' contains mandatory extensions that QEMU supports. Same
+> thing with the 'misa_ext' mask. Optional extensions must be enabled
+> manually in the command line if desired.
 >
-> So I guess that *can* be enabled up there should become a *must*.
+> The design here is to use the common target/riscv/cpu.c file to store
+> the profile declaration and export it to the accelerator files. Each
+> accelerator is then responsible to expose it (or not) to users and how
+> to enable the extensions.
+>
+> Next patches will implement the profile for TCG and KVM.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>   target/riscv/cpu.c | 20 ++++++++++++++++++++
+>   target/riscv/cpu.h | 12 ++++++++++++
+>   2 files changed, 32 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index c64cd726f4..1b75b506c4 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1397,6 +1397,26 @@ Property riscv_cpu_options[] = {
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> +/* Optional extensions left out: RVV, zfh, zkn, zks */
+> +static RISCVCPUProfile RVA22U64 = {
+> +    .name = "rva22u64",
+> +    .misa_ext = RVM | RVA | RVF | RVD | RVC,
 
-Makes sense.
+Why not include RVI?
 
->>> +
->>>  Return path
->>>  -----------
->>>  
->>
->> [...]
->>
->>> diff --git a/qapi/migration.json b/qapi/migration.json
->>> index 74f12adc0e..1317dd32ab 100644
->>> --- a/qapi/migration.json
->>> +++ b/qapi/migration.json
->>> @@ -527,6 +527,9 @@
->>>  #     VM before migration for an optimal migration performance.
->>>  #     Enabled by default. (since 8.1)
->>>  #
->>> +# @fixed-ram: Migrate using fixed offsets for each RAM page. Requires
->>
->> Two spaces between sentences for consistency, please.
->>
->>> +#             a seekable transport such as a file.  (since 8.1)
->>
->> What is a migration transport?  migration.json doesn't define the term.
->>
->
-> The medium that transports the migration. We are about to define some
-> terms at the QAPI series:
->
-> [PATCH v15 00/14] migration: Modify 'migrate' and 'migrate-incoming'
-> QAPI commands for migration
-> https://lore.kernel.org/r/20231023182053.8711-1-farosas@suse.de
+Zhiwei
 
-Can't find it there offhand.  No need to explain it further to me now,
-just make sure it's defined at this point in the series when you respin.
-
->> Which transports are seekable?
->>
->
-> The ones that implement QIO_CHANNEL_FEATURE_SEEKABLE. Currently only
-> QIOChannelFile.
-
-Transport seekability needs to be documented clearly.
-
->> Out of curiosity: what happens if the transport isn't seekable?
->
-> We fail the migration. At migration_channels_and_uri_compatible():
->
->     if (migration_needs_seekable_channel() &&
->         !uri_supports_seeking(uri)) {
->         error_setg(errp, "Migration requires seekable transport (e.g. file)");
->         compatible = false;
->     }
-
-Thanks!
-
->>> +#
->>>  # Features:
->>>  #
->>>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
->>> @@ -543,7 +546,7 @@
->>>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
->>>             'validate-uuid', 'background-snapshot',
->>>             'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
->>> -           'dirty-limit', 'auto-pause'] }
->>> +           'dirty-limit', 'auto-pause', 'fixed-ram'] }
->>>  
->>>  ##
->>>  # @MigrationCapabilityStatus:
-
+> +    .ext_offsets = {
+> +        CPU_CFG_OFFSET(ext_zicsr), CPU_CFG_OFFSET(ext_zihintpause),
+> +        CPU_CFG_OFFSET(ext_zba), CPU_CFG_OFFSET(ext_zbb),
+> +        CPU_CFG_OFFSET(ext_zbs), CPU_CFG_OFFSET(ext_zfhmin),
+> +        CPU_CFG_OFFSET(ext_zkt), CPU_CFG_OFFSET(ext_zicntr),
+> +        CPU_CFG_OFFSET(ext_zihpm), CPU_CFG_OFFSET(ext_zicbom),
+> +        CPU_CFG_OFFSET(ext_zicboz),
+> +
+> +        RISCV_PROFILE_EXT_LIST_END
+> +    }
+> +};
+> +
+> +RISCVCPUProfile *riscv_profiles[] = {
+> +    &RVA22U64, NULL,
+> +};
+> +
+>   static Property riscv_cpu_properties[] = {
+>       DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+>   
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 7f61e17202..53c1970e0a 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -66,6 +66,18 @@ const char *riscv_get_misa_ext_description(uint32_t bit);
+>   
+>   #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
+>   
+> +typedef struct riscv_cpu_profile {
+> +    const char *name;
+> +    uint32_t misa_ext;
+> +    bool enabled;
+> +    bool user_set;
+> +    const int32_t ext_offsets[];
+> +} RISCVCPUProfile;
+> +
+> +#define RISCV_PROFILE_EXT_LIST_END -1
+> +
+> +extern RISCVCPUProfile *riscv_profiles[];
+> +
+>   /* Privileged specification version */
+>   enum {
+>       PRIV_VERSION_1_10_0 = 0,
 
