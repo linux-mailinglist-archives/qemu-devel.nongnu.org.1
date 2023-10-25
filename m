@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724667D62BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758B17D62B7
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:30:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvYIT-0000BO-RM; Wed, 25 Oct 2023 03:27:21 -0400
+	id 1qvYIT-0000BM-Rf; Wed, 25 Oct 2023 03:27:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvYIR-0000AB-Ih
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:27:19 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qvYIS-0000B3-D0
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:27:20 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvYIP-0004f5-IS
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:27:19 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6b5af4662b7so4538789b3a.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 00:27:17 -0700 (PDT)
+ id 1qvYIQ-0004fM-Kw
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 03:27:20 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-27db9fdec0dso4706232a91.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 00:27:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698218836; x=1698823636; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698218837; x=1698823637; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TM/KRrd2eN3gH2XezGt/xyNTAB3pmf+w8+Xiugmh0j8=;
- b=wKJM9KqdB4lIrhwrgp98fVCv6i8NfzafP1vHJDA0hNwALcs6JWASJJdX6rtXRGPV5I
- oykVT+Nw3qXNIEHbneZgb95wrp6a+NUv70n2zF7No37VQPFqQouIf9/f0mibkaWzeq20
- OJoLJ6tYiwGSbzNcH142nnQ0t4fZQ3y5aC2HU7f/ffKnH2sbSYuSgSvsW3TOoND3nQXf
- mbDswcWrzdR0atpFtFCFjBHSCsd8B54uyHCS0peymXR0/rdRIQFr+0MD3qNbam53oJMH
- lHGPQiG/6tmprgukt7OCj2APmJRYlVG+fIZCxp9Ba4WuaNnvQZbphdIKJjaRkRQr/lSh
- Yb9Q==
+ bh=iO7a+DcsBv1QUswJrwtg846br5OcYCcDIc2AiP9uJP0=;
+ b=GQ2pgiuIqFnAQK8yH3/6DCFEbsbdIQU2c3yO+VUYknQMfUfcMeNLwoorsGdzxvdkUC
+ p7UQF7P2f2Y+eD19VHQlYz2a/2u3/aaVEAGdHbYOJb1Cx+YNAxmYfzzSDx73Em20l4MD
+ sNIRHClMEaKOU8TTJy4lgWZiQ2qnEVZ8b3KEbYD7Im1WpcS4MMmLCTlUq9xIgwd47i/V
+ eQOa6ofxOATvkMvnllRB1+BHZFpQfgbw5kIXnOeAUqxdgLMNyV2k7umkqbZ73DV8mGMZ
+ p5qBS7kmiqL9C0I+9G4/g/mdXx+4TFxwtNi7ElWai+UdM7Vky5R/s+6slD7odW5OWHKV
+ vi/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698218836; x=1698823636;
+ d=1e100.net; s=20230601; t=1698218837; x=1698823637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TM/KRrd2eN3gH2XezGt/xyNTAB3pmf+w8+Xiugmh0j8=;
- b=QzxEcEaTJNMrFRIemJKPgBHslFyEakw0v7lJlxjMknoo7kGujOQENp1N7yiaWBb02U
- +Awi0WLPNGZK7rxpZZC5jLgTB8PDM/IsPX3ufxIgUgVve4+zHuEgUq9Z1vZX15kDEeTZ
- xZbHvUTITcDgpVl+dVr3AcLw6gxZu4xOgsTQS2ISRU0gl8nrjlYfKarYV1zz1J+wf+T0
- Dq4Y2prMnm7d44w4t7/8Vs0SEEczOq9AQOPju1LgPDeA6F6AKXpNjs81vMSv2/MBAaGt
- Uxj84eIc54VMhauYirjIM/BmNlWqcFwWXuOAdEZW2Xw5c7IyXM2qoPBgKaMgO5LBsCpr
- Ed7w==
-X-Gm-Message-State: AOJu0Yyq3BDB2FW+oRzLAHevt0ZcqAO7hiKDpdzyjNofSkLdQU0NE0tq
- sZe/aIJxsXk5PG9E8XZ8kLdUeStQ6uU2Ul7lAMw=
-X-Google-Smtp-Source: AGHT+IEGwmXP95QKvubIY45Gp/ieJGJ2hKjBjjVAyUlpTjanOl7XVvMS198bWRbfP/f82XUtOGb+kA==
-X-Received: by 2002:a05:6a21:3298:b0:17b:689e:c757 with SMTP id
- yt24-20020a056a21329800b0017b689ec757mr5331756pzb.11.1698218836308; 
- Wed, 25 Oct 2023 00:27:16 -0700 (PDT)
+ bh=iO7a+DcsBv1QUswJrwtg846br5OcYCcDIc2AiP9uJP0=;
+ b=RFaypAUi6oLkuCqQytwMIqK3vViYntZzowyY4kR1LqgReo0DmpcnoHZHApiVrVUR18
+ DUJFxwrxTkAEyyBS57KEstooAnIBGbLzkWR6NxjOBP4RtvC7zMV6d2JycdvhK6sqWbxL
+ D5saCAqyK+XNG674GEhXs5V4Ysu+ckek4NNIcodK2n0bEngGJ8MhXtFO/5VmL0pictBm
+ iJXOuCOTWTH+/YvEkfvOwFxwnNmB/S1rDKuvBSYL+t5Cag2amkb8zdSgokqajjPIyPU/
+ S1QTZDo7Que0PUNakkSxD8hG+r0tRTDU2m4JZ6xDUJazlqmCNJK3wZMeF9kldV1S1hPR
+ AxDQ==
+X-Gm-Message-State: AOJu0Yx4XGkQdnPsxXqu+KO0pdfVIzAclRDwcrT58g0qZ94x+n4hVsiK
+ Sv/Ri/ABvQRHZqkWPx6UKsGwaqyl1BP0Qb58etg=
+X-Google-Smtp-Source: AGHT+IFg7yG4K7il5lSweG0/lzzrmSPDA7150VnABN3HQ7dI4qFcW6T86L9bBrZSOros3qzl5pAXhA==
+X-Received: by 2002:a17:90a:8c2:b0:27f:df1a:caab with SMTP id
+ 2-20020a17090a08c200b0027fdf1acaabmr745289pjn.21.1698218837255; 
+ Wed, 25 Oct 2023 00:27:17 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- ji5-20020a170903324500b001b06c106844sm8578661plb.151.2023.10.25.00.27.15
+ ji5-20020a170903324500b001b06c106844sm8578661plb.151.2023.10.25.00.27.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 00:27:15 -0700 (PDT)
+ Wed, 25 Oct 2023 00:27:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH 08/29] tcg/aarch64: Generate TBZ, TBNZ
-Date: Wed, 25 Oct 2023 00:26:46 -0700
-Message-Id: <20231025072707.833943-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/29] tcg/arm: Support TCG_COND_TST{EQ,NE}
+Date: Wed, 25 Oct 2023 00:26:47 -0700
+Message-Id: <20231025072707.833943-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231025072707.833943-1-richard.henderson@linaro.org>
 References: <20231025072707.833943-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,156 +90,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test the sign bit for LT/GE vs 0, and TSTNE/EQ vs a power of 2.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target.c.inc | 100 ++++++++++++++++++++++++++++-------
- 1 file changed, 81 insertions(+), 19 deletions(-)
+ tcg/arm/tcg-target.c.inc | 59 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 44 insertions(+), 15 deletions(-)
 
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 2a748b3ee3..e65fc415d2 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -105,6 +105,18 @@ static bool reloc_pc19(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
-     return false;
- }
- 
-+static bool reloc_pc14(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
-+{
-+    const tcg_insn_unit *src_rx = tcg_splitwx_to_rx(src_rw);
-+    ptrdiff_t offset = target - src_rx;
-+
-+    if (offset == sextract64(offset, 0, 14)) {
-+        *src_rw = deposit32(*src_rw, 5, 14, offset);
-+        return true;
-+    }
-+    return false;
-+}
-+
- static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-                         intptr_t value, intptr_t addend)
- {
-@@ -115,6 +127,8 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-         return reloc_pc26(code_ptr, (const tcg_insn_unit *)value);
-     case R_AARCH64_CONDBR19:
-         return reloc_pc19(code_ptr, (const tcg_insn_unit *)value);
-+    case R_AARCH64_TSTBR14:
-+        return reloc_pc14(code_ptr, (const tcg_insn_unit *)value);
-     default:
-         g_assert_not_reached();
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index fc78566494..344143cd10 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -1190,6 +1190,33 @@ static void tcg_out_mb(TCGContext *s, TCGArg a0)
      }
-@@ -369,6 +383,10 @@ typedef enum {
-     /* Conditional branch (immediate).  */
-     I3202_B_C       = 0x54000000,
- 
-+    /* Test and branch (immediate).  */
-+    I3205_TBZ       = 0x36000000,
-+    I3205_TBNZ      = 0x37000000,
-+
-     /* Unconditional branch (immediate).  */
-     I3206_B         = 0x14000000,
-     I3206_BL        = 0x94000000,
-@@ -649,6 +667,14 @@ static void tcg_out_insn_3202(TCGContext *s, AArch64Insn insn,
-     tcg_out32(s, insn | tcg_cond_to_aarch64[c] | (imm19 & 0x7ffff) << 5);
  }
  
-+static void tcg_out_insn_3205(TCGContext *s, AArch64Insn insn,
-+                              TCGReg rt, int imm6, int imm14)
++static TCGCond tcg_out_cmp(TCGContext *s, TCGCond cond, TCGReg a,
++                           TCGArg b, int b_const)
 +{
-+    insn |= (imm6 & 0x20) << (31 - 5);
-+    insn |= (imm6 & 0x1f) << 19;
-+    tcg_out32(s, insn | (imm14 & 0x3fff) << 5 | rt);
++    if (!is_tst_cond(cond)) {
++        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0, a, b, b_const);
++        return cond;
++    }
++
++    cond = tcg_tst_eqne_cond(cond);
++    if (b_const) {
++        int imm12 = encode_imm(b);
++
++        /*
++         * The compare constraints allow rIN, but TST does not support N.
++         * Be prepared to load the constant into a scratch register.
++         */
++        if (imm12 >= 0) {
++            tcg_out_dat_imm(s, COND_AL, ARITH_TST, 0, a, imm12);
++            return cond;
++        }
++        tcg_out_movi32(s, COND_AL, TCG_REG_TMP, b);
++        b = TCG_REG_TMP;
++    }
++    tcg_out_dat_reg(s, COND_AL, ARITH_TST, 0, a, b, SHIFT_IMM_LSL(0));
++    return cond;
 +}
 +
- static void tcg_out_insn_3206(TCGContext *s, AArch64Insn insn, int imm26)
+ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+                             const int *const_args)
  {
-     tcg_out32(s, insn | (imm26 & 0x03ffffff));
-@@ -1412,30 +1438,66 @@ static inline void tcg_out_goto_label(TCGContext *s, TCGLabel *l)
- static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
-                            TCGArg b, bool b_const, TCGLabel *l)
- {
--    intptr_t offset;
--    bool need_cmp;
-+    int tbit = -1;
-+    bool need_cmp = true;
+@@ -1217,6 +1244,13 @@ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+         tcg_out_dat_rI(s, COND_EQ, ARITH_CMP, 0, al, bl, const_bl);
+         return cond;
  
--    if (b_const && b == 0 && (c == TCG_COND_EQ || c == TCG_COND_NE)) {
--        need_cmp = false;
--    } else {
--        need_cmp = true;
--        tcg_out_cmp(s, ext, c, a, b, b_const);
--    }
--
--    if (!l->has_value) {
--        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
--        offset = tcg_in32(s) >> 5;
--    } else {
--        offset = tcg_pcrel_diff(s, l->u.value_ptr) >> 2;
--        tcg_debug_assert(offset == sextract64(offset, 0, 19));
-+    switch (c) {
-+    case TCG_COND_EQ:
-+    case TCG_COND_NE:
-+        if (b_const && b == 0) {
-+            need_cmp = false;
-+        }
-+        break;
-+    case TCG_COND_LT:
-+    case TCG_COND_GE:
-+        if (b_const && b == 0) {
-+            c = (c == TCG_COND_LT ? TCG_COND_TSTNE : TCG_COND_TSTEQ);
-+            tbit = ext ? 63 : 31;
-+            need_cmp = false;
-+        }
-+        break;
 +    case TCG_COND_TSTEQ:
 +    case TCG_COND_TSTNE:
-+        if (b_const && is_power_of_2(b)) {
-+            tbit = ctz64(b);
-+            need_cmp = false;
-+        }
-+        break;
-+    default:
-+        break;
-     }
- 
-     if (need_cmp) {
--        tcg_out_insn(s, 3202, B_C, c, offset);
--    } else if (c == TCG_COND_EQ) {
--        tcg_out_insn(s, 3201, CBZ, ext, a, offset);
-+        tcg_out_cmp(s, ext, c, a, b, b_const);
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
-+        tcg_out_insn(s, 3202, B_C, c, 0);
-+        return;
-+    }
++        /* Similar, but with TST instead of CMP. */
++        tcg_out_dat_rI(s, COND_AL, ARITH_TST, 0, ah, bh, const_bh);
++        tcg_out_dat_rI(s, COND_EQ, ARITH_TST, 0, al, bl, const_bl);
++        return tcg_tst_eqne_cond(cond);
 +
-+    if (tbit >= 0) {
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_TSTBR14, l, 0);
-+        switch (c) {
-+        case TCG_COND_TSTEQ:
-+            tcg_out_insn(s, 3205, TBZ, a, tbit, 0);
-+            break;
-+        case TCG_COND_TSTNE:
-+            tcg_out_insn(s, 3205, TBNZ, a, tbit, 0);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-     } else {
--        tcg_out_insn(s, 3201, CBNZ, ext, a, offset);
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
-+        switch (c) {
-+        case TCG_COND_EQ:
-+            tcg_out_insn(s, 3201, CBZ, ext, a, 0);
-+            break;
-+        case TCG_COND_NE:
-+            tcg_out_insn(s, 3201, CBNZ, ext, a, 0);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-     }
- }
+     case TCG_COND_LT:
+     case TCG_COND_GE:
+         /* We perform a double-word subtraction and examine the result.
+@@ -1805,9 +1839,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         /* Constraints mean that v2 is always in the same register as dest,
+          * so we only need to do "if condition passed, move v1 to dest".
+          */
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_rIK(s, tcg_cond_to_arm_cond[args[5]], ARITH_MOV,
++        c = tcg_out_cmp(s, args[5], args[1], args[2], const_args[2]);
++        tcg_out_dat_rIK(s, tcg_cond_to_arm_cond[c], ARITH_MOV,
+                         ARITH_MVN, args[0], 0, args[3], const_args[3]);
+         break;
+     case INDEX_op_add_i32:
+@@ -1957,25 +1990,21 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         break;
+ 
+     case INDEX_op_brcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                       args[0], args[1], const_args[1]);
+-        tcg_out_goto_label(s, tcg_cond_to_arm_cond[args[2]],
+-                           arg_label(args[3]));
++        c = tcg_out_cmp(s, args[2], args[0], args[1], const_args[1]);
++        tcg_out_goto_label(s, tcg_cond_to_arm_cond[c], arg_label(args[3]));
+         break;
+     case INDEX_op_setcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[args[3]],
++        c = tcg_out_cmp(s, args[3], args[1], args[2], const_args[2]);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[c],
+                         ARITH_MOV, args[0], 0, 1);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(c)],
+                         ARITH_MOV, args[0], 0, 0);
+         break;
+     case INDEX_op_negsetcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[args[3]],
++        c = tcg_out_cmp(s, args[3], args[1], args[2], const_args[2]);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[c],
+                         ARITH_MVN, args[0], 0, 0);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(c)],
+                         ARITH_MOV, args[0], 0, 0);
+         break;
  
 -- 
 2.34.1
