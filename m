@@ -2,137 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE357D67EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 12:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BEB87D67FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 12:14:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvaoy-0007dQ-RL; Wed, 25 Oct 2023 06:09:04 -0400
+	id 1qvatA-0001W2-P0; Wed, 25 Oct 2023 06:13:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvaoq-0007cJ-81
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:08:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1)
+ (envelope-from <SRS0=uXt+=GH=redhat.com=clg@ozlabs.org>)
+ id 1qvat0-0001V3-SX
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:13:17 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvaoo-0001FS-Pk
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:08:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698228533;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Sp5y0za6XJ/Sd2CutG4u2SLT03s7qJXFfppJwYJDj9E=;
- b=QWYXFuAj+LXJAmoNzQR2dEsHDDE6dE+0lFtJ3hpAfyIOQZduDQOH10p1cIBgBuXCURUe0f
- ZC4uE/cXsEGQwQRfMuv9qDb4EHPF7+kgumwxzC5BpNxBB4uu6G9axi9Gacc06nR8wfOWD0
- Jfr1gRtJFE2uLjV5mDnD72CKmL0lRqY=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-evXGP-EQO9W1qqgLfdEDQA-1; Wed, 25 Oct 2023 06:08:51 -0400
-X-MC-Unique: evXGP-EQO9W1qqgLfdEDQA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d040c58eeso75430356d6.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 03:08:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698228531; x=1698833331;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Sp5y0za6XJ/Sd2CutG4u2SLT03s7qJXFfppJwYJDj9E=;
- b=wlXBtChgcenL3sOTcG6axJXMfgYDJodzlQV7TLn2bFFQB7GIb8i+uvMit6a/4R+dK0
- Xw5AMLj1YcZ9APEXYbdm4SULCfLVyGm8or5HJWUtaO4RXv2T82Bjk4D4ED35aC+z/uo9
- 2knpsaALzqMlQp8QsP5iPGtmFE5kAk1h/45XhtdNvIZz1DwPTtKaR6HB4AMLOQP1JJr+
- cjTYLO0HDbjmiYA8occKIZq9nrIG7GCnnn6mKfmEaa6YGRItYBtsynCtXiQgtB2z0kG/
- ZzoEKZOkoWhehItnaDQvmKphQctO0D3jr2xphM7jXK/KK6G452DsHLwnLQKKB7oySUKw
- /yvA==
-X-Gm-Message-State: AOJu0YwIiVmnQYWfV2Tn/YkWAc5l6S5/5nCrhYUVbIqTj4zrS6JEecb4
- MrMqfMaY3TDlEZ7iUcUwiojt62hnUwaxZvsQkXLHuJE22NoF3kg6GE1kBZCny1xLNsK76PLmdNp
- aaO6YuXSRFYGcMig=
-X-Received: by 2002:a05:6214:5006:b0:66d:1b61:f206 with SMTP id
- jo6-20020a056214500600b0066d1b61f206mr19284730qvb.59.1698228531383; 
- Wed, 25 Oct 2023 03:08:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFaA+ilEhhl67jZh5wgu6GpAhdcqsYUNOL56tc7awYRaBYzEBvbTbDrS+VPx5YqDvWmDK8tFg==
-X-Received: by 2002:a05:6214:5006:b0:66d:1b61:f206 with SMTP id
- jo6-20020a056214500600b0066d1b61f206mr19284705qvb.59.1698228531157; 
- Wed, 25 Oct 2023 03:08:51 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
- [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- r13-20020a0cf60d000000b0064f4ac061b0sm4280315qvm.12.2023.10.25.03.08.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 03:08:50 -0700 (PDT)
-Message-ID: <1390cf2c-0da0-43b8-8b50-d393f9d932a8@redhat.com>
-Date: Wed, 25 Oct 2023 12:08:45 +0200
+ (Exim 4.90_1)
+ (envelope-from <SRS0=uXt+=GH=redhat.com=clg@ozlabs.org>)
+ id 1qvasy-0001v6-TG
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 06:13:14 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SFl9k3tzDz4xF4;
+ Wed, 25 Oct 2023 21:12:58 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SFl9c0PHFz4xM6;
+ Wed, 25 Oct 2023 21:12:51 +1100 (AEDT)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Denis V . Lunev" <den@openvz.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
+ Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH 0/2] vfio/pci: Fix buffer overrun when writing the VF token
+Date: Wed, 25 Oct 2023 12:12:43 +0200
+Message-ID: <20231025101245.751559-1-clg@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/19] ui: add pixman-compat.h
-Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, BALATON Zoltan
- <balaton@eik.bme.hu>, qemu-ppc@nongnu.org, Gerd Hoffmann
- <kraxel@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231023113047.2572137-1-marcandre.lureau@redhat.com>
- <20231023113047.2572137-4-marcandre.lureau@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231023113047.2572137-4-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=uXt+=GH=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,26 +72,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/10/2023 13.30, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> This is a tiny subset of PIXMAN API that is used pervasively in QEMU
-> codebase to manage images and identify the underlying format.
-> 
-> It doesn't seems worth to wrap this in a QEMU-specific API.
+Hello,
 
-IMHO it's not very beautiful, but after thinking about it for a while, I 
-think it's acceptable and likely still better than disabling all the 
-dependend devices...
+This series fixes a buffer overrun in VFIO. The buffer used in
+vfio_realize() by qemu_uuid_unparse() is too small, UUID_FMT_LEN lacks
+one byte for the trailing NUL.
 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->   include/ui/pixman-compat.h | 195 +++++++++++++++++++++++++++++++++++++
+Instead of adding + 1, as done elsewhere, the changes introduce a
+UUID_STR_LEN define for the correct size and use it where required.
 
-Just a matter of taste, but I think I'd rather name it "pixman-minimal.h" 
-instead.
+Thanks,
 
-Anyway:
-Acked-by: Thomas Huth <thuth@redhat.com>
+C. 
+
+Cédric Le Goater (2):
+  util/uuid: Add UUID_STR_LEN definition
+  vfio/pci: Fix buffer overrun when writing the VF token
+
+ include/qemu/uuid.h              | 1 +
+ block/parallels-ext.c            | 2 +-
+ block/vdi.c                      | 2 +-
+ hw/core/qdev-properties-system.c | 2 +-
+ hw/hyperv/vmbus.c                | 4 ++--
+ hw/vfio/pci.c                    | 2 +-
+ migration/savevm.c               | 4 ++--
+ tests/unit/test-uuid.c           | 2 +-
+ util/uuid.c                      | 2 +-
+ 9 files changed, 11 insertions(+), 10 deletions(-)
+
+-- 
+2.41.0
 
 
