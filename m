@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACC67D6E71
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 16:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9938E7D6E84
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 16:14:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qveXu-0002Zl-P6; Wed, 25 Oct 2023 10:07:42 -0400
+	id 1qved1-0006eI-W8; Wed, 25 Oct 2023 10:13:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qveXs-0002Zb-Jo
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:07:40 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvecs-0006Ug-M0
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:12:52 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qveXq-00077O-QD
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:07:40 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvecl-000806-TL
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:12:50 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id F2C7421DDC;
- Wed, 25 Oct 2023 14:07:35 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A12601FF65;
+ Wed, 25 Oct 2023 14:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698242856; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698243161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T4cpvH63hjnf2olHsCBuwADsoRGCSj+VWyzb1AX0u3U=;
- b=MuCoVGVOSpxws+HC4vpPZlix1DBvdzClBMZbcG+rZMepqWl5Wv5EywqY+AO/FVK5j9F0Be
- Pbg+v3DacVpWQIB9nNEL8BAPX3YiQT/Yg6gDadpHbvAxe+rcDXFvshrZxW/3F1CxUlzk1C
- 7MqMApZ3nmM1Jg67B/nxSsKyTz4jgp8=
+ bh=JMPgB6joPC0caz/SqECLK1Sx7xOT92d+jRK8fgW/10o=;
+ b=t0FzZHxZwIJ8j8s/770wGEz/eZe8k78UGx5WulXcdtZcSR+k8ma7mNxie8RsguEB78R4k7
+ 41t6OzqHF3TcFR4uhXfpVtwZrP3whbC3D51s3j9stG2cz9O+vwM2iUHmvDxF2fBY02ECdW
+ ytK1941rZHz2vtc7ii53giMQ6GjGC3A=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698242856;
+ s=susede2_ed25519; t=1698243161;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T4cpvH63hjnf2olHsCBuwADsoRGCSj+VWyzb1AX0u3U=;
- b=zPQyFcjLQ1a/ynQ7xPZaU1s5J7rJ+m4C2H7+j4BaCv0cYrxpXyJZZcfE4LVeVfVBQylqSv
- TbojToAAxkbuXGBQ==
+ bh=JMPgB6joPC0caz/SqECLK1Sx7xOT92d+jRK8fgW/10o=;
+ b=nFyjkgey8ECd80J0hqgQ5EA7o4karcbb4+4ysNErVYmEkPK3uU1dXXpxPQZ4KG5oXh4IpT
+ 7pbUviRC8Wi81jDA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8453013524;
- Wed, 25 Oct 2023 14:07:35 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 33DCF138E9;
+ Wed, 25 Oct 2023 14:12:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id K9oVFCchOWXUEwAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 25 Oct 2023 14:07:35 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id EtBzAFkiOWVLFgAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 25 Oct 2023 14:12:41 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, armbru@redhat.com, Juan Quintela
  <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>, Nikolay Borisov
- <nborisov@suse.com>
-Subject: Re: [PATCH v2 16/29] migration/ram: Add support for 'fixed-ram'
- migration restore
-In-Reply-To: <ZTjjMiMkmnPMccjq@redhat.com>
+ <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v2 19/29] migration/multifd: Add outgoing QIOChannelFile
+ support
+In-Reply-To: <ZTjlQsw9AvA19+QO@redhat.com>
 References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-17-farosas@suse.de> <ZTjjMiMkmnPMccjq@redhat.com>
-Date: Wed, 25 Oct 2023 11:07:33 -0300
-Message-ID: <87r0lieqxm.fsf@suse.de>
+ <20231023203608.26370-20-farosas@suse.de> <ZTjlQsw9AvA19+QO@redhat.com>
+Date: Wed, 25 Oct 2023 11:12:38 -0300
+Message-ID: <87o7gmeqp5.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out1.suse.de;
+Authentication-Results: smtp-out2.suse.de;
 	none
 X-Spam-Score: -7.10
 X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
@@ -74,12 +73,12 @@ X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
  MIME_GOOD(-0.10)[text/plain];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[8];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
  FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
  RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
  MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -104,129 +103,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> On Mon, Oct 23, 2023 at 05:35:55PM -0300, Fabiano Rosas wrote:
->> From: Nikolay Borisov <nborisov@suse.com>
+> On Mon, Oct 23, 2023 at 05:35:58PM -0300, Fabiano Rosas wrote:
+>> Allow multifd to open file-backed channels. This will be used when
+>> enabling the fixed-ram migration stream format which expects a
+>> seekable transport.
 >>=20
->> Add the necessary code to parse the format changes for the 'fixed-ram'
->> capability.
+>> The QIOChannel read and write methods will use the preadv/pwritev
+>> versions which don't update the file offset at each call so we can
+>> reuse the fd without re-opening for every channel.
 >>=20
->> One of the more notable changes in behavior is that in the 'fixed-ram'
->> case ram pages are restored in one go rather than constantly looping
->> through the migration stream.
+>> Note that this is just setup code and multifd cannot yet make use of
+>> the file channels.
 >>=20
->> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
 >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 >> ---
->> (farosas) reused more of the common code by making the fixed-ram
->> function take only one ramblock and calling it from inside
->> parse_ramblock.
->> ---
->>  migration/ram.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 93 insertions(+)
+>>  migration/file.c      | 64 +++++++++++++++++++++++++++++++++++++++++--
+>>  migration/file.h      | 10 +++++--
+>>  migration/migration.c |  2 +-
+>>  migration/multifd.c   | 14 ++++++++--
+>>  migration/options.c   |  7 +++++
+>>  migration/options.h   |  1 +
+>>  6 files changed, 90 insertions(+), 8 deletions(-)
 >>=20
->> diff --git a/migration/ram.c b/migration/ram.c
->> index 152a03604f..cea6971ab2 100644
->> --- a/migration/ram.c
->> +++ b/migration/ram.c
->> @@ -3032,6 +3032,32 @@ static void fixed_ram_insert_header(QEMUFile *fil=
-e, RAMBlock *block)
->>      qemu_put_buffer(file, (uint8_t *) header, header_size);
->>  }
->>=20=20
->> +static int fixed_ram_read_header(QEMUFile *file, struct FixedRamHeader =
-*header)
+>> diff --git a/migration/file.c b/migration/file.c
+>> index cf5b1bf365..93b9b7bf5d 100644
+>> --- a/migration/file.c
+>> +++ b/migration/file.c
+>> @@ -17,6 +17,12 @@
+>
+>> +void file_send_channel_create(QIOTaskFunc f, void *data)
 >> +{
->> +    size_t ret, header_size =3D sizeof(struct FixedRamHeader);
+>> +    QIOChannelFile *ioc;
+>> +    QIOTask *task;
+>> +    Error *errp =3D NULL;
 >> +
->> +    ret =3D qemu_get_buffer(file, (uint8_t *)header, header_size);
->> +    if (ret !=3D header_size) {
->> +        return -1;
+>> +    ioc =3D qio_channel_file_new_path(outgoing_args.fname,
+>> +                                    outgoing_args.flags,
+>> +                                    outgoing_args.mode, &errp);
+>> +    if (!ioc) {
+>> +        file_migration_cancel(errp);
+>> +        return;
 >> +    }
 >> +
->> +    /* migration stream is big-endian */
->> +    be32_to_cpus(&header->version);
->> +
->> +    if (header->version > FIXED_RAM_HDR_VERSION) {
->> +        error_report("Migration fixed-ram capability version mismatch (=
-expected %d, got %d)",
->> +                     FIXED_RAM_HDR_VERSION, header->version);
->> +        return -1;
->> +    }
->> +
->> +    be64_to_cpus(&header->page_size);
->> +    be64_to_cpus(&header->bitmap_offset);
->> +    be64_to_cpus(&header->pages_offset);
->> +
->> +
->> +    return 0;
+>> +    task =3D qio_task_new(OBJECT(ioc), f, (gpointer)data, NULL);
+>> +    qio_task_run_in_thread(task, qio_channel_file_connect_worker,
+>> +                           (gpointer)data, NULL, NULL);
 >> +}
 >> +
->>  /*
->>   * Each of ram_save_setup, ram_save_iterate and ram_save_complete has
->>   * long-running RCU critical section.  When rcu-reclaims in the code
->> @@ -3932,6 +3958,68 @@ void colo_flush_ram_cache(void)
->>      trace_colo_flush_ram_cache_end();
->>  }
+>>  void file_start_outgoing_migration(MigrationState *s, const char *files=
+pec,
+>>                                     Error **errp)
+>>  {
+>> -    g_autofree char *filename =3D g_strdup(filespec);
+>>      g_autoptr(QIOChannelFile) fioc =3D NULL;
+>> +    g_autofree char *filename =3D g_strdup(filespec);
+>>      uint64_t offset =3D 0;
+>>      QIOChannel *ioc;
+>> +    int flags =3D O_CREAT | O_TRUNC | O_WRONLY;
+>> +    mode_t mode =3D 0660;
 >>=20=20
->> +static void read_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block,
->> +                                    long num_pages, unsigned long *bitm=
-ap)
->> +{
->> +    unsigned long set_bit_idx, clear_bit_idx;
->> +    unsigned long len;
->> +    ram_addr_t offset;
->> +    void *host;
->> +    size_t read, completed, read_len;
->> +
->> +    for (set_bit_idx =3D find_first_bit(bitmap, num_pages);
->> +         set_bit_idx < num_pages;
->> +         set_bit_idx =3D find_next_bit(bitmap, num_pages, clear_bit_idx=
- + 1)) {
->> +
->> +        clear_bit_idx =3D find_next_zero_bit(bitmap, num_pages, set_bit=
-_idx + 1);
->> +
->> +        len =3D TARGET_PAGE_SIZE * (clear_bit_idx - set_bit_idx);
->> +        offset =3D set_bit_idx << TARGET_PAGE_BITS;
->> +
->> +        for (read =3D 0, completed =3D 0; completed < len; offset +=3D =
-read) {
->> +            host =3D host_from_ram_block_offset(block, offset);
->> +            read_len =3D MIN(len, TARGET_PAGE_SIZE);
->> +
->> +            read =3D qemu_get_buffer_at(f, host, read_len,
->> +                                      block->pages_offset + offset);
->> +            completed +=3D read;
->> +        }
->> +    }
->> +}
->> +
->> +static int parse_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block, ram_a=
-ddr_t length)
->> +{
->> +    g_autofree unsigned long *bitmap =3D NULL;
->> +    struct FixedRamHeader header;
->> +    size_t bitmap_size;
->> +    long num_pages;
->> +    int ret =3D 0;
->> +
->> +    ret =3D fixed_ram_read_header(f, &header);
->> +    if (ret < 0) {
->> +        error_report("Error reading fixed-ram header");
->> +        return -EINVAL;
->> +    }
->> +
->> +    block->pages_offset =3D header.pages_offset;
+>>      trace_migration_file_outgoing(filename);
+>>=20=20
+>> @@ -50,12 +105,15 @@ void file_start_outgoing_migration(MigrationState *=
+s, const char *filespec,
+>>          return;
+>>      }
+>>=20=20
+>> -    fioc =3D qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O=
+_TRUNC,
+>> -                                     0600, errp);
+
+By the way, we're experimenting with add-fd to flesh out the interface
+with libvirt and I see that the flags here can conflict with the flags
+set on the fd passed through `virsh --pass-fd ...` due to this at
+monitor_fdset_dup_fd_add():
+
+    if ((flags & O_ACCMODE) =3D=3D (mon_fd_flags & O_ACCMODE)) {
+        fd =3D mon_fdset_fd->fd;
+        break;
+    }
+
+We're requiring the O_RDONLY, O_WRONLY, O_RDWR flags defined here to
+match the fdset passed into QEMU. Should we just sync the code of the
+two projects to use the same flags? That feels a little clumsy to me.
+
+>> +    fioc =3D qio_channel_file_new_path(filename, flags, mode, errp);
 >
-> Do you think it is worth sanity checking that 'pages_offset' is aligned
-> in some way.
+> So this initially opens the file with O_CREAT|O_TRUNC which
+> makes sense.
 >
-> It is nice that we have flexibility to change the alignment in future
-> if we find 1 MB is not optimal, so I wouldn't want to force 1MB align
-> check htere. Perhaps we could at least sanity check for alignment at
-> TARGET_PAGE_SIZE, to detect a gross data corruption problem ?
+>>      if (!fioc) {
+>>          return;
+>>      }
+>>=20=20
+>> +    outgoing_args.fname =3D g_strdup(filename);
+>> +    outgoing_args.flags =3D flags;
+>> +    outgoing_args.mode =3D mode;
+>
+> We're passing on O_CREAT|O_TRUNC to all the multifd threads too. This
+> doesn't make sense to me - the file should already exist and be truncated
+> by the time the threads open it. I would think they should only be using
+> O_WRONLY and no mode at all.
 >
 
-I don't see why not. I'll add it.
-
+Ok.
 
