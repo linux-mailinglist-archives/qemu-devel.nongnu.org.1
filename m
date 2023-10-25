@@ -2,60 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8147D664E
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 11:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 280BB7D64A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 10:12:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvZtR-0005xw-1j; Wed, 25 Oct 2023 05:09:38 -0400
+	id 1qvYyd-00009L-AP; Wed, 25 Oct 2023 04:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1qvXzj-0003ac-9e; Wed, 25 Oct 2023 03:07:59 -0400
-Received: from zg8tmtu5ljg5lje1ms4xmtka.icoremail.net ([159.89.151.119])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <duchao@eswincomputing.com>)
- id 1qvXzg-0000y8-0B; Wed, 25 Oct 2023 03:07:59 -0400
-Received: from localhost.localdomain (unknown [10.12.130.31])
- by app1 (Coremail) with SMTP id TAJkCgAHbkW9vjhlKukAAA--.2473S4;
- Wed, 25 Oct 2023 15:07:41 +0800 (CST)
-From: Chao Du <duchao@eswincomputing.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Subject: [PATCH] target/arm: kvm64: remove a redundant KVM_CAP_SET_GUEST_DEBUG
- probe
-Date: Wed, 25 Oct 2023 07:07:26 +0000
-Message-Id: <20231025070726.22689-1-duchao@eswincomputing.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: TAJkCgAHbkW9vjhlKukAAA--.2473S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4DKw1DAw4fur4Uur17ZFb_yoW8tr1fp3
- Z3Crs3Jr4ktasxJw1xArsrZr13JrWkKwnFy34FvryrGasxKw15AFWvkrZ5CFyrurWI9r15
- tF4vyF4Sva1kXr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUvS14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
- JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
- CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
- 2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
- W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAKzI0EY4vE
- 52x082I5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
- C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
- wI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
- v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
- jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43
- ZEXa7VUU6RRtUUUUU==
-X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
-Received-SPF: pass client-ip=159.89.151.119;
- envelope-from=duchao@eswincomputing.com;
- helo=zg8tmtu5ljg5lje1ms4xmtka.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qvYyT-00008V-Qw
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 04:10:46 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qvYyR-0004GY-Tt
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 04:10:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1698221444; x=1729757444;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=AhaeKMDNwHqScAHYtVYxZLMzslvCZAv2P4CFwMLMaJ8=;
+ b=nctlHacORadFYJ0du+E0bVd1UMWyLn3X38OeNwDjXEPLqLWxJKvaVtEU
+ LzwZLINXZaDosCk+V0ktxhFWMVrLELNs/5U6wEGjVrHhX6NWz7wdVqSJx
+ n179EIVEAC0dPuebparS2bQKysz68MlpS9dqQVNT5arD+WR2SLg0U6N8C
+ AxN2Mxzm3ych04hFQ2glQndU5XAJhzbCxQJ/kvmGxDiuUPHL9vTzP7sqV
+ ynNOrLUfnKFNbP4cPC4vxrpW6oqYGZ63j9OXLMET5+1Hayw45GD+KOttu
+ aDFOuuSUnHv7Q/gqagGpfKxX6OyRuhquaIeAGzK+FPnx8rxojQCBoJ+x3 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="18212"
+X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
+   d="scan'208";a="18212"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Oct 2023 01:10:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="882376636"
+X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; d="scan'208";a="882376636"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga004.jf.intel.com with ESMTP; 25 Oct 2023 01:10:28 -0700
+Date: Wed, 25 Oct 2023 16:22:07 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v5 02/20] tests: Rename test-x86-cpuid.c to test-x86-topo.c
+Message-ID: <ZTjQLxBjJOiV1Wt2@intel.com>
+References: <20231024090323.1859210-1-zhao1.liu@linux.intel.com>
+ <20231024090323.1859210-3-zhao1.liu@linux.intel.com>
+ <88dce00d-20ed-4219-8b4b-1ac0dd30a514@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <88dce00d-20ed-4219-8b4b-1ac0dd30a514@redhat.com>
+Received-SPF: none client-ip=192.198.163.8;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 25 Oct 2023 05:09:34 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,75 +89,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The KVM_CAP_SET_GUEST_DEBUG is probed during kvm_init().
-gdbserver will fail to start if the CAP is not supported.
-So no need to make another probe here, like other targets.
+On Tue, Oct 24, 2023 at 11:09:34AM +0200, Thomas Huth wrote:
+> Date: Tue, 24 Oct 2023 11:09:34 +0200
+> From: Thomas Huth <thuth@redhat.com>
+> Subject: Re: [PATCH v5 02/20] tests: Rename test-x86-cpuid.c to
+>  test-x86-topo.c
+> 
+> On 24/10/2023 11.03, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > The tests in this file actually test the APIC ID combinations.
+> > Rename to test-x86-topo.c to make its name more in line with its
+> > actual content.
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > Tested-by: Babu Moger <babu.moger@amd.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> 
+> Reviewed-by: Thomas Huth <thuth@redhat.com> 
 
-Signed-off-by: Chao Du <duchao@eswincomputing.com>
----
- target/arm/kvm64.c | 28 +++++++---------------------
- 1 file changed, 7 insertions(+), 21 deletions(-)
+Thanks!
 
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 4bb68646e4..b0bf59b5a1 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -31,13 +31,9 @@
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/ghes.h"
- 
--static bool have_guest_debug;
- 
- void kvm_arm_init_debug(KVMState *s)
- {
--    have_guest_debug = kvm_check_extension(s,
--                                           KVM_CAP_SET_GUEST_DEBUG);
--
-     max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
-     hw_watchpoints = g_array_sized_new(true, true,
-                                        sizeof(HWWatchpoint), max_hw_wps);
-@@ -1140,33 +1136,23 @@ static const uint32_t brk_insn = 0xd4200000;
- 
- int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
- {
--    if (have_guest_debug) {
--        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
--            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
--            return -EINVAL;
--        }
--        return 0;
--    } else {
--        error_report("guest debug not supported on this kernel");
-+    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
-+        cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
-         return -EINVAL;
-     }
-+    return 0;
- }
- 
- int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
- {
-     static uint32_t brk;
- 
--    if (have_guest_debug) {
--        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk, 4, 0) ||
--            brk != brk_insn ||
--            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
--            return -EINVAL;
--        }
--        return 0;
--    } else {
--        error_report("guest debug not supported on this kernel");
-+    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk, 4, 0) ||
-+        brk != brk_insn ||
-+        cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
-         return -EINVAL;
-     }
-+    return 0;
- }
- 
- /* See v8 ARM ARM D7.2.27 ESR_ELx, Exception Syndrome Register
--- 
-2.17.1
-
+-Zhao
 
