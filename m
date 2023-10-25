@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3477D7192
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 18:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DD87D7198
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 18:21:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvgaQ-0006a5-QC; Wed, 25 Oct 2023 12:18:26 -0400
+	id 1qvgcn-0007VB-BR; Wed, 25 Oct 2023 12:20:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qvgaJ-0006Z7-Rm
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 12:18:20 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvgcl-0007Uu-EH
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 12:20:51 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qvgaI-0007pH-AU
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 12:18:19 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-53ebf429b4fso9270255a12.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 09:18:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvgcU-0008Oj-5j
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 12:20:51 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9b6559cbd74so906554866b.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 09:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698250696; x=1698855496; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=9Q2jJf69+REApXG71JA3IUNDwDMkzrzokByVEMfEeQo=;
- b=mmD17EgQPp86MTOz7cVLryWPjB4fLhYistVlAPnMBLoAjOW+w0nChMTOJ/YkQh7P5l
- ObR8MvZV7j8xmkxuAO6OqdgVshG9Jr6xvcB4n7u8Jp9wLKswYfqbv3DJnmgVaf9gNftS
- +++qNKVNqyUflZBSEHebcNm1dn+OqQb+YhmYTbka0IAZaTNPDf9Of7cE0MbbQtJKHXft
- fbhN64H1JOhslXgIv+UHd4ym1Q0tn+GtStAb+VHHiV26MBmR7vz7Wok4HOFTLqzniuMq
- yfzSZ9KkNzzrTt2e0hFPH/LE3poUOVr2onJvxttkLhc8arfgWMdkrPTlEr/IurXVtbkx
- uvTQ==
+ d=linaro.org; s=google; t=1698250832; x=1698855632; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=q6ACUGP0WRTgQ0plbvMgUUM/ZJ2o1YyqfktgMdANNlk=;
+ b=yD+YtncKJbNg6qMUY4wlVDxJAeT4cWzFC8rX3I1aMUW3QWjyZBVgIKoNLPd0U9tL7P
+ 5VGb1B/6GrI3OxCbw0YZn6bm8rHSwhfk/oCytS5ZLc55pMHMll9BFX1UFHMFgTlv6/U3
+ BVhWq+MJQeYIjotABHDTWPOhHZOQySx01tbN739lrakHUGZbKssBAWApdac1uaDFIp8c
+ mZJ6izoCiR+CIAHslONEZTrPhn9S5wDjPmMyUnzyQ9DXjnWzk82IWlnvts05HouKpIW+
+ uXVGuaAyaJ19UQZ1QLF4Cf178/ZrtxcbXolGm5bHNZcQus3kWp315wI6AXxVNolifRGg
+ 54OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698250696; x=1698855496;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9Q2jJf69+REApXG71JA3IUNDwDMkzrzokByVEMfEeQo=;
- b=xGuhmzjL+hAMItVTdYTyGjNyxko0cOpVSWJ9s02BaI446IefzlY8EAA328sTCfCUG+
- M5atOuPTWymiW4SwmA65E4tg35uscFOzwrc14Pohp/MRn2qh85+iKQwk78mwkNstjnbA
- JfxNkslNuxwUb0MpwcmgXHRVUzNiBEwgq0w3WLXTrTlSUIS2vHpgAFv5SAXAmmKug12j
- bEKSUbXBCzA4/TbXTsbZJ9d1xThkNiTNTJag0Lfo47ClrfL36w8zL350WrcNQsy93v1C
- upRxkqCEbS+GUwp5sjBLr6o0fvbOV+1Z7qIMg5jfvAiXjjC26cCDQC2Vd0/7Xd333l6K
- fWjg==
-X-Gm-Message-State: AOJu0YyOZ1Xk/5redDgdOZsJhvPdYGfWoy2l+uzKXENTZeFqyNtiVLim
- A9msrPLVZxon4CxA/Yimh8d/oA==
-X-Google-Smtp-Source: AGHT+IEtBth1LuaWcJqRAwjHuZps56ng8iCjeoSicHco7wedm6V+VK3KRTD6qOf3mGlTpLKKhzwiqg==
-X-Received: by 2002:a17:907:31c1:b0:9be:21dc:8a9a with SMTP id
- xf1-20020a17090731c100b009be21dc8a9amr12118384ejb.39.1698250696680; 
- Wed, 25 Oct 2023 09:18:16 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- gu18-20020a170906f29200b00977cad140a8sm10179720ejb.218.2023.10.25.09.18.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 09:18:16 -0700 (PDT)
-Date: Wed, 25 Oct 2023 18:18:15 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v4 7/9] target/riscv/tcg: add hash table insert helpers
-Message-ID: <20231025-bc6cafdec7af73ef9b189adb@orel>
-References: <20231025135001.531224-1-dbarboza@ventanamicro.com>
- <20231025135001.531224-8-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1698250832; x=1698855632;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q6ACUGP0WRTgQ0plbvMgUUM/ZJ2o1YyqfktgMdANNlk=;
+ b=xKueyPhjvtwVlxdH8Jo/4AuqrT4QRzVmGGya0XXTK248JSa6jshiF6B126sRaqi4WI
+ paoFNLt8dXpUQRl59hhwD39rlHUXjoCnWhIiGA46p46LgUbSdQwvgJ4dRTLVbZWQFAsv
+ qyqzdTvfAYS+EMIn4rDJZ/6E/jyObQOaTG694WD5ryEHXKDMAzKq5ySU7nAhA+jWoIO+
+ IctrbfslYCI6LagM4+ZOoic6Cs1kEPwguKfm36fCkn0TEn8LgjIM7ThWIyh1QcqLoxHb
+ oD2izBorHLonfQ5JJYRQDSGeQCE8GMrlFpQBi2fQGT0dDlQIVJ56yhq2I3v4Bq43vMgq
+ 9loQ==
+X-Gm-Message-State: AOJu0YxSyl8a58JtOc55RX6ZZ3993OrzXR8VFnSjnTflx0c38ugt+9Eo
+ rjagVN57h1drbnhFSDcknmlzSArVd2cRzES00KU=
+X-Google-Smtp-Source: AGHT+IEGAFyZ593bv1ySvwEmdeo9EaRWbMZ8Rclvq6uKAGr1xTqj3U4vP8bN/H4Cw1Eddp7IBqbBMg==
+X-Received: by 2002:a17:907:6093:b0:9ba:2f20:3d7b with SMTP id
+ ht19-20020a170907609300b009ba2f203d7bmr13764939ejc.71.1698250832262; 
+ Wed, 25 Oct 2023 09:20:32 -0700 (PDT)
+Received: from [192.168.69.115] (ghy59-h01-176-171-219-76.dsl.sta.abo.bbox.fr.
+ [176.171.219.76]) by smtp.gmail.com with ESMTPSA id
+ lu12-20020a170906facc00b009cc1e8ed7c5sm2992574ejb.133.2023.10.25.09.20.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Oct 2023 09:20:31 -0700 (PDT)
+Message-ID: <71523694-bc93-e7e5-7144-d00bec2b1614@linaro.org>
+Date: Wed, 25 Oct 2023 18:20:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231025135001.531224-8-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 02/29] tcg/optimize: Split out arg_is_const_val
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231025072707.833943-1-richard.henderson@linaro.org>
+ <20231025072707.833943-3-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231025072707.833943-3-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,15 +92,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 10:49:59AM -0300, Daniel Henrique Barboza wrote:
-> Latest patches added several g_hash_table_insert() patterns. Add two
-> helpers, one for each user hash, to make the code cleaner.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+On 25/10/23 09:26, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/riscv/tcg/tcg-cpu.c | 28 ++++++++++++++++------------
->  1 file changed, 16 insertions(+), 12 deletions(-)
->
+>   tcg/optimize.c | 38 +++++++++++++++++++++++---------------
+>   1 file changed, 23 insertions(+), 15 deletions(-)
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
