@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2F67D788B
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD477D78A0
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:35:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvnIj-0002S1-4k; Wed, 25 Oct 2023 19:28:37 -0400
+	id 1qvnOa-00016l-Hk; Wed, 25 Oct 2023 19:34:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnIH-000273-RD
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:28:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnIF-0005KI-W0
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:28:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698276486;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZY5//aD518+bnTqOsfjSVpnnQxspKQErGS97zV8JuKw=;
- b=ZIGa4FjoQ0dTeI1BASarxny3keoQ7YAhxHGP4/Mo2Q5jgUY6B/oBLw+3jlMOv3hmY5wP4I
- VpS0TdOlS1zXTs7l+FU4HMcFSPdVCz/iAiojzE9+vRcVnuAfMYdA1O3TUW9q+bJgIv8HNZ
- lHklcSadBHp4tNkRcurMbDi/Jw5tjzI=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-Ickhse0RMDSpb2JypViMtg-1; Wed, 25 Oct 2023 19:28:04 -0400
-X-MC-Unique: Ickhse0RMDSpb2JypViMtg-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-778b3526240so41220085a.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:28:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qvnOU-000142-CB
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:34:35 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qvnOR-000748-CW
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:34:33 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1cace3e142eso1970315ad.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:34:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698276869; x=1698881669; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dg1OBB8uq30rbUjGjBKh1rlIsUrMi7z4i1E5b2xoMC8=;
+ b=PU/bOO+VZEn7XYRHojh27v7nvsXEMt2RnjqwnyGwOLMDNBr0U4TEb8YxUi+F/t2jmz
+ uGHFEwg4d4rlGCwZnP2wE6ndoDkEFRYHDtg/Jsh6mvAMLUKYkA5tzWgA0zAhTNhMoon4
+ t251lpF+MXmOgB99K6n0w9SyFmTfmpaoK9GlHMoHsvlGv+dVGGslRbY03I1nJAkFSNvh
+ k0vEa634WU6MsWopDnY4TXrJjZSdhN3Cal+uiHDH+W3FyMv4ay3UuqFmBcoFsvFqVMh2
+ 0szbJ3jRoI9ESK3n0emRh1XT4eMtNDQHJKZKl2Uq4+h/ZZ7w8wP/h0TSbVTw4LLT6tbj
+ lSpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698276484; x=1698881284;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZY5//aD518+bnTqOsfjSVpnnQxspKQErGS97zV8JuKw=;
- b=cslIMn3ofnD1sGYpQaAWKnmqMLHI+Wf2oY0DDSzKRuuEyM/D7m5uS3Sge7ZZ1GusGD
- iymIQfBUR4nDijDfk+w4jaIKo5cIHLADm5TQQ+pp5GcbfBtvqmhrVHPALW0944krKalr
- zTQRE8RgvYLQk1DOlW9WJGsphoACqnlzaC8b3Z7gNYTFtdh4wYqNVm7Xsx8jg4PdYwO5
- ABNxbeqspRE2mO0dqYLCzrI9NYCSRdBf1pVrb6hPyjjamABOrx169HQG5e3cIpLB7/rE
- Cw4mXhejeV6EsPsUmhMC/YM1JzMcwCYCHcpMqv6a8S4vFHxX7XFE1SA6yWv63Q3mtmOJ
- HPWw==
-X-Gm-Message-State: AOJu0YwxgFeRxg78UYvmsIS2dffiO+wxdqKk2mGdA9rZerQgWOwKjeYV
- IefJzmScertRt+3Iz6M91bbsbQBVNYcGUFQp1QQyioiK4Ibjsd6k4OAM2o6MVyXZUI0uOBbJWBt
- K88pVlmK9bKWbMDeCy5GKj1wlxhDox58g3gWXLK6EsmmbJkT4+lD4jD3rcGh/RIz1d5TL54tgC0
- Y=
-X-Received: by 2002:a05:620a:16d6:b0:774:139a:e442 with SMTP id
- a22-20020a05620a16d600b00774139ae442mr16926344qkn.76.1698276483933; 
- Wed, 25 Oct 2023 16:28:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHo01mt/6nNMcd+yPayeP6PNi/iIG/xPMUJEZyyll8mmknmhTkZ3vPX9yKNVMd4KEcwOmvudQ==
-X-Received: by 2002:a05:620a:16d6:b0:774:139a:e442 with SMTP id
- a22-20020a05620a16d600b00774139ae442mr16926330qkn.76.1698276483505; 
- Wed, 25 Oct 2023 16:28:03 -0700 (PDT)
-Received: from [172.19.0.201] ([192.80.84.35])
+ d=1e100.net; s=20230601; t=1698276869; x=1698881669;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dg1OBB8uq30rbUjGjBKh1rlIsUrMi7z4i1E5b2xoMC8=;
+ b=tIKpNkU2jo4+L+QD/iHl1WbebgCc7ee0fAfJmRZkFq4+uMguoQqf87Ixld0zuoYcbH
+ pRRrbMxVykYcZ2BiNaj9wqtY8rp6hgt6LMWnNrVLS4n9ImCtaW2E4qCj3MiHkyiiSFUC
+ rv9pUbdf6+9ygADakEQy91XZ0T3sA+JCJrftrgUTs+YIZbJLcdk+tmg5w/pIKqew3kzY
+ /194ItVyVMvIHFnIXYqElRULryWaCrOr3TUjEMa7RwHu/d1ukdxc3ynI71p/WTFiRY5J
+ vn15W3KL26BW/jag6bkdycB+atzJOd8H9pKx6Myu7ZyA8kWtmCzp9XwgoAwU56JwGabK
+ /9eg==
+X-Gm-Message-State: AOJu0Yy6+QtJU0XtK2Q1DxOkBkLglivJOzZ4HN5xbkR7U3i4DEiGRwQz
+ s3BMRPCW4ILz5nxrPEAOPwZ7oLRdQpUOqVQxJ48=
+X-Google-Smtp-Source: AGHT+IFWj4wF0kcM26kQ8715EO+DLr3ZC7vVQ/j+4ZZ3B/ki43yFnMmIWnkpXhHw/x/yw5N5Z4/nwQ==
+X-Received: by 2002:a17:90b:2b46:b0:27d:882f:e6c5 with SMTP id
+ rr6-20020a17090b2b4600b0027d882fe6c5mr14473017pjb.9.1698276869092; 
+ Wed, 25 Oct 2023 16:34:29 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- bq12-20020a05620a468c00b007678973eaa1sm4576761qkb.127.2023.10.25.16.28.02
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 16:28:02 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PULL 24/24] kvm: i8254: require KVM_CAP_PIT2 and KVM_CAP_PIT_STATE2
-Date: Thu, 26 Oct 2023 01:27:17 +0200
-Message-ID: <20231025232718.89428-25-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231025232718.89428-1-pbonzini@redhat.com>
-References: <20231025232718.89428-1-pbonzini@redhat.com>
+ w5-20020a17090a6b8500b00277371fd346sm475304pjj.30.2023.10.25.16.34.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Oct 2023 16:34:28 -0700 (PDT)
+Message-ID: <bf12b6fd-af13-4d9f-9359-5fb6139a6ffc@linaro.org>
+Date: Wed, 25 Oct 2023 16:34:26 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] target/arm: Move ID_AA64MMFR1 and ID_AA64MMFR2 tests
+ together
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20231024163510.2972081-1-peter.maydell@linaro.org>
+ <20231024163510.2972081-3-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231024163510.2972081-3-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,143 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- hw/i386/kvm/i8254.c        | 38 ++++++++++++--------------------------
- hw/i386/pc.c               |  6 +-----
- target/i386/kvm/kvm.c      |  7 -------
- target/i386/kvm/kvm_i386.h |  1 -
- 4 files changed, 13 insertions(+), 39 deletions(-)
+On 10/24/23 09:35, Peter Maydell wrote:
+> Our list of isar_feature functions is not in any particular order,
+> but tests on fields of the same ID register tend to be grouped
+> together.  A few functions that are tests of fields in ID_AA64MMFR1
+> and ID_AA64MMFR2 are not in the same place as the rest; move them
+> into their groups.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-diff --git a/hw/i386/kvm/i8254.c b/hw/i386/kvm/i8254.c
-index a649b2b7caf..e49b9c4b565 100644
---- a/hw/i386/kvm/i8254.c
-+++ b/hw/i386/kvm/i8254.c
-@@ -97,24 +97,12 @@ static void kvm_pit_get(PITCommonState *pit)
-         return;
-     }
- 
--    if (kvm_has_pit_state2()) {
--        ret = kvm_vm_ioctl(kvm_state, KVM_GET_PIT2, &kpit);
--        if (ret < 0) {
--            fprintf(stderr, "KVM_GET_PIT2 failed: %s\n", strerror(-ret));
--            abort();
--        }
--        pit->channels[0].irq_disabled = kpit.flags & KVM_PIT_FLAGS_HPET_LEGACY;
--    } else {
--        /*
--         * kvm_pit_state2 is superset of kvm_pit_state struct,
--         * so we can use it for KVM_GET_PIT as well.
--         */
--        ret = kvm_vm_ioctl(kvm_state, KVM_GET_PIT, &kpit);
--        if (ret < 0) {
--            fprintf(stderr, "KVM_GET_PIT failed: %s\n", strerror(-ret));
--            abort();
--        }
-+    ret = kvm_vm_ioctl(kvm_state, KVM_GET_PIT2, &kpit);
-+    if (ret < 0) {
-+        fprintf(stderr, "KVM_GET_PIT2 failed: %s\n", strerror(-ret));
-+        abort();
-     }
-+    pit->channels[0].irq_disabled = kpit.flags & KVM_PIT_FLAGS_HPET_LEGACY;
-     for (i = 0; i < 3; i++) {
-         kchan = &kpit.channels[i];
-         sc = &pit->channels[i];
-@@ -170,12 +158,9 @@ static void kvm_pit_put(PITCommonState *pit)
-         kchan->count_load_time = sc->count_load_time - s->kernel_clock_offset;
-     }
- 
--    ret = kvm_vm_ioctl(kvm_state,
--                       kvm_has_pit_state2() ? KVM_SET_PIT2 : KVM_SET_PIT,
--                       &kpit);
-+    ret = kvm_vm_ioctl(kvm_state, KVM_SET_PIT2, &kpit);
-     if (ret < 0) {
--        fprintf(stderr, "%s failed: %s\n",
--                kvm_has_pit_state2() ? "KVM_SET_PIT2" : "KVM_SET_PIT",
-+        fprintf(stderr, "KVM_SET_PIT2 failed: %s\n",
-                 strerror(-ret));
-         abort();
-     }
-@@ -261,11 +246,12 @@ static void kvm_pit_realizefn(DeviceState *dev, Error **errp)
-     };
-     int ret;
- 
--    if (kvm_check_extension(kvm_state, KVM_CAP_PIT2)) {
--        ret = kvm_vm_ioctl(kvm_state, KVM_CREATE_PIT2, &config);
--    } else {
--        ret = kvm_vm_ioctl(kvm_state, KVM_CREATE_PIT);
-+    if (!kvm_check_extension(kvm_state, KVM_CAP_PIT_STATE2) ||
-+        !kvm_check_extension(kvm_state, KVM_CAP_PIT2)) {
-+        error_setg(errp, "In-kernel PIT not available");
-     }
-+
-+    ret = kvm_vm_ioctl(kvm_state, KVM_CREATE_PIT2, &config);
-     if (ret < 0) {
-         error_setg(errp, "Create kernel PIC irqchip failed: %s",
-                    strerror(-ret));
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 11fed78d178..6031234a73f 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1214,12 +1214,8 @@ void pc_basic_device_init(struct PCMachineState *pcms,
- 
-     /*
-      * Check if an HPET shall be created.
--     *
--     * Without KVM_CAP_PIT_STATE2, we cannot switch off the in-kernel PIT
--     * when the HPET wants to take over. Thus we have to disable the latter.
-      */
--    if (pcms->hpet_enabled && (!kvm_irqchip_in_kernel() ||
--                               kvm_has_pit_state2())) {
-+    if (pcms->hpet_enabled) {
-         qemu_irq rtc_irq;
- 
-         hpet = qdev_try_new(TYPE_HPET);
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e364b842e6d..770e81d56e4 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -145,7 +145,6 @@ static uint32_t num_architectural_pmu_fixed_counters;
- 
- static int has_xsave2;
- static int has_xcrs;
--static int has_pit_state2;
- static int has_sregs2;
- static int has_exception_payload;
- static int has_triple_fault_event;
-@@ -162,11 +161,6 @@ static KVMMSRHandlers msr_handlers[KVM_MSR_FILTER_MAX_RANGES];
- static RateLimit bus_lock_ratelimit_ctrl;
- static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
- 
--bool kvm_has_pit_state2(void)
--{
--    return !!has_pit_state2;
--}
--
- bool kvm_has_smm(void)
- {
-     return kvm_vm_check_extension(kvm_state, KVM_CAP_X86_SMM);
-@@ -2543,7 +2537,6 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-     }
- 
-     has_xcrs = kvm_check_extension(s, KVM_CAP_XCRS);
--    has_pit_state2 = kvm_check_extension(s, KVM_CAP_PIT_STATE2);
-     has_sregs2 = kvm_check_extension(s, KVM_CAP_SREGS2) > 0;
- 
-     hv_vpindex_settable = kvm_check_extension(s, KVM_CAP_HYPERV_VP_INDEX);
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 7e60ea4f23f..30fedcffea3 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -33,7 +33,6 @@
- bool kvm_has_smm(void);
- bool kvm_enable_x2apic(void);
- bool kvm_hv_vpindex_settable(void);
--bool kvm_has_pit_state2(void);
- 
- bool kvm_enable_sgx_provisioning(KVMState *s);
- bool kvm_hyperv_expand_features(X86CPU *cpu, Error **errp);
--- 
-2.41.0
+I had initially tried to keep them grouped by ID reg, and then ordered by field bit 
+number.  We obviously haven't kept to that.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
