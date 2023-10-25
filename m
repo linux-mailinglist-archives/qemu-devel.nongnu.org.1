@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E0E7D70B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B477D70B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:26:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfi7-0000li-JR; Wed, 25 Oct 2023 11:22:19 -0400
+	id 1qvflJ-0001vt-8d; Wed, 25 Oct 2023 11:25:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvfi3-0000kF-FY
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:22:15 -0400
+ id 1qvflH-0001vb-M9
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:25:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qvfi0-000522-S7
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:22:14 -0400
+ id 1qvflG-0005fC-1q
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:25:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698247331;
+ s=mimecast20190719; t=1698247533;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hvyNexdmA22QuLmQAl6avOK6oblpRa82RY3oJguo/S8=;
- b=Q5FJdIbWd9EAOnsD8+qCbJL83nvcp4Atg084jZS7HNiGegseiQD4DDsPlCyGsUlXMtGQVc
- QCndIw+Ms88Wv/rbENxUY8Bzjn81AqPUqWW4aObb46PRDCMcGBZAOwumg5TxjCRBCrhKh9
- hr4ku+zk3AJpBbV6IvQ/G3QHpxk5mPw=
+ bh=ELvQYxtueYWS5mp8ZKcJro7XbxrWmhJTuQySz+q+dWI=;
+ b=fD2YjM75ZgPowWLyZve69LwVZwNqpo/OCuBF+CwVFKviPwtdjQUd1LMDSlNyh4M35vyQWs
+ pIf42UTdNcGdwbMaYTHxB+S5PZtDwUB1Ppf8G1QqivnM401fIOj4edfl82OqoV3AgL5N72
+ Z/S2LAjCIHjGh+M0YZmuI7BZDq1MAj8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-427-P_5Uabf2OyK8KNO0QwNoFg-1; Wed, 25 Oct 2023 11:22:08 -0400
-X-MC-Unique: P_5Uabf2OyK8KNO0QwNoFg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-441-3Wm45M9ROrqykCJMIiecZQ-1; Wed, 25 Oct 2023 11:25:28 -0400
+X-MC-Unique: 3Wm45M9ROrqykCJMIiecZQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16F1F101A53B;
- Wed, 25 Oct 2023 15:22:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C7158870E1;
+ Wed, 25 Oct 2023 15:25:27 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.154])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E5F02492BFA;
- Wed, 25 Oct 2023 15:22:06 +0000 (UTC)
-Date: Wed, 25 Oct 2023 16:22:05 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D403C1C060AE;
+ Wed, 25 Oct 2023 15:25:25 +0000 (UTC)
+Date: Wed, 25 Oct 2023 16:25:23 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
-Message-ID: <ZTkynR7UelpQrpqA@redhat.com>
+Subject: Re: [PATCH v2 06/29] migration: Add auto-pause capability
+Message-ID: <ZTkzY0nKtdeZJojP@redhat.com>
 References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-29-farosas@suse.de>
- <ZTja1PqWLF6U7f8n@redhat.com> <87a5s6ep1z.fsf@suse.de>
+ <20231023203608.26370-7-farosas@suse.de>
+ <ZTjWV9wQ5obKTpOG@redhat.com> <87y1fqerev.fsf@suse.de>
+ <ZTkkICSD6j6Xf/KK@redhat.com> <ZTktCM/ccipYaJ80@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87a5s6ep1z.fsf@suse.de>
+In-Reply-To: <ZTktCM/ccipYaJ80@x1n>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -88,41 +89,57 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 11:48:08AM -0300, Fabiano Rosas wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
+On Wed, Oct 25, 2023 at 10:58:16AM -0400, Peter Xu wrote:
+> On Wed, Oct 25, 2023 at 03:20:16PM +0100, Daniel P. Berrangé wrote:
+> > On Wed, Oct 25, 2023 at 10:57:12AM -0300, Fabiano Rosas wrote:
+> > > Daniel P. Berrangé <berrange@redhat.com> writes:
+> > > 
+> > > > On Mon, Oct 23, 2023 at 05:35:45PM -0300, Fabiano Rosas wrote:
+> > > >> Add a capability that allows the management layer to delegate to QEMU
+> > > >> the decision of whether to pause a VM and perform a non-live
+> > > >> migration. Depending on the type of migration being performed, this
+> > > >> could bring performance benefits.
+> > > >
+> > > > I'm not really see what problem this is solving.
+> > > >
+> > > 
+> > > Well, this is the fruit of your discussion with Peter Xu in the previous
+> > > version of the patch.
+> > > 
+> > > To recap: he thinks QEMU is doing useless work with file migrations
+> > > because they are always asynchronous. He thinks we should always pause
+> > > before doing fixed-ram migration. You said that libvirt would rather use
+> > > fixed-ram for a more broad set of savevm-style commands, so you'd rather
+> > > not always pause. I'm trying to cater to both of your wishes. This new
+> > > capability is the middle ground I came up with.
+> > > 
+> > > So fixed-ram would always pause the VM, because that is the primary
+> > > use-case, but libvirt would be allowed to say: don't pause this time.
+> > 
+> > If the VM is going to be powered off immediately after saving
+> > a snapshot then yes, you might as well pause it, but we can't
+> > assume that will be the case.  An equally common use case
+> > would be for saving periodic snapshots of a running VM. This
+> > should be transparent such that the VM remains running the
+> > whole time, except a narrow window at completion of RAM/state
+> > saving where we flip the disk snapshots, so they are in sync
+> > with the RAM snapshot.
 > 
-> > On Mon, Oct 23, 2023 at 05:36:07PM -0300, Fabiano Rosas wrote:
-> >> Add the direct-io migration parameter that tells the migration code to
-> >> use O_DIRECT when opening the migration stream file whenever possible.
-> >> 
-> >> This is currently only used for the secondary channels of fixed-ram
-> >> migration, which can guarantee that writes are page aligned.
-> >
-> > When you say "secondary channels", I presume you're meaning that
-> > the bulk memory regions will be written with O_DIRECT, while
-> > general vmstate will use normal I/O on the main channel ?  If so,
-> > could we explain that a little more directly.
+> Libvirt will still use fixed-ram for live snapshot purpose, especially for
+> Windows?  Then auto-pause may still be useful to identify that from what
+> Fabiano wants to achieve here (which is in reality, non-live)?
 > 
-> Yes, the main channel writes via QEMUFile, so no O_DIRECT. The channels
-> created via multifd_new_send_channel_create() have O_DIRECT enabled.
-> 
-> > Having a mixture of O_DIRECT and non-O_DIRECT I/O on the same
-> > file is a little bit of an unusual situation. It will work for
-> > us because we're writing to different regions of the file in
-> > each case.
-> >
-> > Still I wonder if it would be sane in the outgoing case to
-> > include a fsync() on the file in the main channel, to guarantee
-> > that the whole saved file is on-media at completion ? Or perhaps
-> > suggest in QAPI that mgmts might consider doing a fsync
-> > themselves ?
-> 
-> I think that should be present in QIOChannelFile in general. Not even
-> related to this series. I'll add it at qio_channel_file_close() unless
-> you object.
+> IIRC of previous discussion that was the major point that libvirt can still
+> leverage fixed-ram for a live case - since Windows lacks efficient live
+> snapshot (background-snapshot feature).
 
-Yes, looking at the places QIOChannelFile is used, I think they would
-all benefit from fdatasync().  fsync() is probably too big of a hammer
+Libvirt will use fixed-ram for all APIs it has that involve saving to
+disk, with CPUs both running and paused.
+
+> From that POV it sounds like auto-pause is a good knob for that.
+
+From libvirt's POV auto-pause will create extra work for integration
+for no gain.
 
 With regards,
 Daniel
