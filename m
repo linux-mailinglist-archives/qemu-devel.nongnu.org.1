@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9938E7D6E84
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 16:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3227D6E91
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 16:20:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qved1-0006eI-W8; Wed, 25 Oct 2023 10:13:00 -0400
+	id 1qveiV-0000M0-GS; Wed, 25 Oct 2023 10:18:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvecs-0006Ug-M0
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:12:52 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qveiS-0000Li-6B
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:18:36 -0400
 Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qvecl-000806-TL
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:12:50 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qveiQ-0000sU-4z
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 10:18:35 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A12601FF65;
- Wed, 25 Oct 2023 14:12:41 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id B2DC21FF66;
+ Wed, 25 Oct 2023 14:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698243161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1698243512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JMPgB6joPC0caz/SqECLK1Sx7xOT92d+jRK8fgW/10o=;
- b=t0FzZHxZwIJ8j8s/770wGEz/eZe8k78UGx5WulXcdtZcSR+k8ma7mNxie8RsguEB78R4k7
- 41t6OzqHF3TcFR4uhXfpVtwZrP3whbC3D51s3j9stG2cz9O+vwM2iUHmvDxF2fBY02ECdW
- ytK1941rZHz2vtc7ii53giMQ6GjGC3A=
+ bh=ZMb5hLXjGOx0fLlVZzzD+OHZOYVm+e7gON7ylwoRGDo=;
+ b=hdSC9xmjc3nfO/pPlLnuIYgAFyj3sarZ1cR6Bw1atqysBwD4gLtD7SWB6wpc0o6dbrhEfT
+ 6oc37J4WNzq79Iy3XsdfV5+Csf1BAORBAFtDcCiQ/IBqbZ7mSJL6T9TQupAucTSoadt1Kz
+ 3ax5NZl3p1InP/pWQmW4WdVT8Uw+0hY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698243161;
+ s=susede2_ed25519; t=1698243512;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JMPgB6joPC0caz/SqECLK1Sx7xOT92d+jRK8fgW/10o=;
- b=nFyjkgey8ECd80J0hqgQ5EA7o4karcbb4+4ysNErVYmEkPK3uU1dXXpxPQZ4KG5oXh4IpT
- 7pbUviRC8Wi81jDA==
+ bh=ZMb5hLXjGOx0fLlVZzzD+OHZOYVm+e7gON7ylwoRGDo=;
+ b=L0FHt2cwx1DjJRC4qV2B2xLxAIAuKsMCgZaTGdCM0anEFPuvh0Vnfc4SB5Etkoq53khFa0
+ 5pecoQtTpjgnwfBw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 33DCF138E9;
- Wed, 25 Oct 2023 14:12:41 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 467B7138E9;
+ Wed, 25 Oct 2023 14:18:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id EtBzAFkiOWVLFgAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 25 Oct 2023 14:12:41 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id YKz2BLgjOWUNGQAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 25 Oct 2023 14:18:32 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, armbru@redhat.com, Juan Quintela
  <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v2 19/29] migration/multifd: Add outgoing QIOChannelFile
+Subject: Re: [PATCH v2 20/29] migration/multifd: Add incoming QIOChannelFile
  support
-In-Reply-To: <ZTjlQsw9AvA19+QO@redhat.com>
+In-Reply-To: <ZTjt+WB9FJmPjaVw@redhat.com>
 References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-20-farosas@suse.de> <ZTjlQsw9AvA19+QO@redhat.com>
-Date: Wed, 25 Oct 2023 11:12:38 -0300
-Message-ID: <87o7gmeqp5.fsf@suse.de>
+ <20231023203608.26370-21-farosas@suse.de> <ZTjt+WB9FJmPjaVw@redhat.com>
+Date: Wed, 25 Oct 2023 11:18:29 -0300
+Message-ID: <87lebqeqfe.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -103,108 +103,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> On Mon, Oct 23, 2023 at 05:35:58PM -0300, Fabiano Rosas wrote:
->> Allow multifd to open file-backed channels. This will be used when
->> enabling the fixed-ram migration stream format which expects a
->> seekable transport.
->>=20
->> The QIOChannel read and write methods will use the preadv/pwritev
->> versions which don't update the file offset at each call so we can
->> reuse the fd without re-opening for every channel.
->>=20
->> Note that this is just setup code and multifd cannot yet make use of
->> the file channels.
+> On Mon, Oct 23, 2023 at 05:35:59PM -0300, Fabiano Rosas wrote:
+>> On the receiving side we don't need to differentiate between main
+>> channel and threads, so whichever channel is defined first gets to be
+>> the main one. And since there are no packets, use the atomic channel
+>> count to index into the params array.
 >>=20
 >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 >> ---
->>  migration/file.c      | 64 +++++++++++++++++++++++++++++++++++++++++--
->>  migration/file.h      | 10 +++++--
->>  migration/migration.c |  2 +-
->>  migration/multifd.c   | 14 ++++++++--
->>  migration/options.c   |  7 +++++
->>  migration/options.h   |  1 +
->>  6 files changed, 90 insertions(+), 8 deletions(-)
+>>  migration/file.c      | 39 +++++++++++++++++++++++++++++----------
+>>  migration/migration.c |  2 ++
+>>  migration/multifd.c   |  7 ++++++-
+>>  migration/multifd.h   |  1 +
+>>  4 files changed, 38 insertions(+), 11 deletions(-)
 >>=20
 >> diff --git a/migration/file.c b/migration/file.c
->> index cf5b1bf365..93b9b7bf5d 100644
+>> index 93b9b7bf5d..ad75225f43 100644
 >> --- a/migration/file.c
 >> +++ b/migration/file.c
->> @@ -17,6 +17,12 @@
->
->> +void file_send_channel_create(QIOTaskFunc f, void *data)
->> +{
->> +    QIOChannelFile *ioc;
->> +    QIOTask *task;
->> +    Error *errp =3D NULL;
->> +
->> +    ioc =3D qio_channel_file_new_path(outgoing_args.fname,
->> +                                    outgoing_args.flags,
->> +                                    outgoing_args.mode, &errp);
->> +    if (!ioc) {
->> +        file_migration_cancel(errp);
->> +        return;
+>> @@ -6,13 +6,15 @@
+>>   */
+>>=20=20
+>>  #include "qemu/osdep.h"
+>> -#include "qemu/cutils.h"
+>>  #include "qapi/error.h"
+>> +#include "qemu/cutils.h"
+>> +#include "qemu/error-report.h"
+>>  #include "channel.h"
+>>  #include "file.h"
+>>  #include "migration.h"
+>>  #include "io/channel-file.h"
+>>  #include "io/channel-util.h"
+>> +#include "options.h"
+>>  #include "trace.h"
+>>=20=20
+>>  #define OFFSET_OPTION ",offset=3D"
+>> @@ -136,7 +138,8 @@ void file_start_incoming_migration(const char *files=
+pec, Error **errp)
+>>      g_autofree char *filename =3D g_strdup(filespec);
+>>      QIOChannelFile *fioc =3D NULL;
+>>      uint64_t offset =3D 0;
+>> -    QIOChannel *ioc;
+>> +    int channels =3D 1;
+>> +    int i =3D 0, fd;
+>>=20=20
+>>      trace_migration_file_incoming(filename);
+>>=20=20
+>> @@ -146,16 +149,32 @@ void file_start_incoming_migration(const char *fil=
+espec, Error **errp)
+>>=20=20
+>>      fioc =3D qio_channel_file_new_path(filename, O_RDONLY, 0, errp);
+>>      if (!fioc) {
+>> -        return;
+>> +        goto out;
 >> +    }
 >> +
->> +    task =3D qio_task_new(OBJECT(ioc), f, (gpointer)data, NULL);
->> +    qio_task_run_in_thread(task, qio_channel_file_connect_worker,
->> +                           (gpointer)data, NULL, NULL);
->> +}
+>> +    if (migrate_multifd()) {
+>> +        channels +=3D migrate_multifd_channels();
+>>      }
+>>=20=20
+>> -    ioc =3D QIO_CHANNEL(fioc);
+>> -    if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0)=
+ {
+>> +    fd =3D fioc->fd;
 >> +
->>  void file_start_outgoing_migration(MigrationState *s, const char *files=
-pec,
->>                                     Error **errp)
->>  {
->> -    g_autofree char *filename =3D g_strdup(filespec);
->>      g_autoptr(QIOChannelFile) fioc =3D NULL;
->> +    g_autofree char *filename =3D g_strdup(filespec);
->>      uint64_t offset =3D 0;
->>      QIOChannel *ioc;
->> +    int flags =3D O_CREAT | O_TRUNC | O_WRONLY;
->> +    mode_t mode =3D 0660;
->>=20=20
->>      trace_migration_file_outgoing(filename);
->>=20=20
->> @@ -50,12 +105,15 @@ void file_start_outgoing_migration(MigrationState *=
-s, const char *filespec,
->>          return;
->>      }
->>=20=20
->> -    fioc =3D qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O=
-_TRUNC,
->> -                                     0600, errp);
-
-By the way, we're experimenting with add-fd to flesh out the interface
-with libvirt and I see that the flags here can conflict with the flags
-set on the fd passed through `virsh --pass-fd ...` due to this at
-monitor_fdset_dup_fd_add():
-
-    if ((flags & O_ACCMODE) =3D=3D (mon_fd_flags & O_ACCMODE)) {
-        fd =3D mon_fdset_fd->fd;
-        break;
-    }
-
-We're requiring the O_RDONLY, O_WRONLY, O_RDWR flags defined here to
-match the fdset passed into QEMU. Should we just sync the code of the
-two projects to use the same flags? That feels a little clumsy to me.
-
->> +    fioc =3D qio_channel_file_new_path(filename, flags, mode, errp);
+>> +    do {
+>> +        QIOChannel *ioc =3D QIO_CHANNEL(fioc);
+>> +
+>> +        if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) =
+< 0) {
+>> +            return;
+>> +        }
+>> +
+>> +        qio_channel_set_name(ioc, "migration-file-incoming");
+>> +        qio_channel_add_watch_full(ioc, G_IO_IN,
+>> +                                   file_accept_incoming_migration,
+>> +                                   NULL, NULL,
+>> +                                   g_main_context_get_thread_default());
+>> +    } while (++i < channels && (fioc =3D qio_channel_file_new_fd(fd)));
 >
-> So this initially opens the file with O_CREAT|O_TRUNC which
-> makes sense.
->
->>      if (!fioc) {
->>          return;
->>      }
->>=20=20
->> +    outgoing_args.fname =3D g_strdup(filename);
->> +    outgoing_args.flags =3D flags;
->> +    outgoing_args.mode =3D mode;
->
-> We're passing on O_CREAT|O_TRUNC to all the multifd threads too. This
-> doesn't make sense to me - the file should already exist and be truncated
-> by the time the threads open it. I would think they should only be using
-> O_WRONLY and no mode at all.
+> IIUC, this loop is failing to call qio_channel_io_seek to set
+> the offset on the last 'fioc' that is created.
 >
 
-Ok.
+Ah, this is actually bogus. We don't need to offset the secondary
+channels. That does nothing since we carry pointers to everything in the
+fixed-ram header. This should be out of the loop.
+
 
