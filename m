@@ -2,97 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD157D61B9
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569517D61CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:48:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvXUw-0007H9-LS; Wed, 25 Oct 2023 02:36:10 -0400
+	id 1qvXfB-0003DX-LD; Wed, 25 Oct 2023 02:46:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
- id 1qvXUt-0007GC-B3
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:36:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qvXet-0003D4-8X; Wed, 25 Oct 2023 02:46:30 -0400
+Received: from out30-98.freemail.mail.aliyun.com ([115.124.30.98])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
- id 1qvXUs-0003jR-0B
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:36:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698215764;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3QCkYDGehxxNqzt09gBv9p4n2vFS1oLTgsSq6IkVxVA=;
- b=dsYwNf6M7WcSA53ZGzkRMeh4A0kzl9ETfZzNY2Vg52/aFz49wuJ5l0SDK6NaklQ8xcsSvV
- 5hMEuhwQa/MKTpbdh+3c5UMf02PuxHtu+QqtZLAhBjaujOL3d/qFW24hGi/gv4B+ln+NXe
- kA7PCfr+thDnqxN3Vf/9lAxtWVzgeHI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-5yxWO1_2M8aaePU_lQJGig-1; Wed, 25 Oct 2023 02:36:02 -0400
-X-MC-Unique: 5yxWO1_2M8aaePU_lQJGig-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30e3ee8a42eso2348755f8f.1
- for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 23:36:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698215761; x=1698820561;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3QCkYDGehxxNqzt09gBv9p4n2vFS1oLTgsSq6IkVxVA=;
- b=njZBnXsRjem70RVEpWjLLqsA1ttGm6mwjY27Tqg7RCJl3jPnySuNzt4Ez0WfqaSaAD
- dlMow1D7gB5p4b2jb5TDoxerq4KFZz+s05YuM9YKsndJyfoP3/sR8NORY4lK+pMcANQT
- vuWyMMxDROJXmty+n/KaZV6jwN9vOFR+nqTS8CNu4LuFwNcFY7op+gm1Dn2Rr5HekUbp
- JVZsfAdsUBmiylZSGWqfZZJ9Rxh7EFJAyAJTVh6gbxefiStfV1qycZnb9R6oA22/TMD8
- NWFUlJcQ93qAlWtj7mTddaIbPXTMEPWD/KQGJ1VrwZwCVIgEM4YuCKclJYx6bzeDV142
- +FHQ==
-X-Gm-Message-State: AOJu0YwjdlBX0qDa/rf93B1OPFNA65mM7kIFRRJl25M+il8MLrIITZQJ
- YNh6Ktb5ZrIhAv7vUXXG0EHxlsN2OLTTrw4Pyn3sy8IQleUT9tf+QdgGbh3efHCgWhpsK9F24ML
- 7KJHOZ2HFfGub4Fc=
-X-Received: by 2002:adf:f64a:0:b0:32d:a49c:dfd0 with SMTP id
- x10-20020adff64a000000b0032da49cdfd0mr9244575wrp.64.1698215761749; 
- Tue, 24 Oct 2023 23:36:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5pjp6+UGcNGf+pR7eCaZquF6TdQK9ic+pGsGfXKq7QOOQ0Jp5pQG5o2Uq/SY5UVuq/3Y74g==
-X-Received: by 2002:adf:f64a:0:b0:32d:a49c:dfd0 with SMTP id
- x10-20020adff64a000000b0032da49cdfd0mr9244562wrp.64.1698215761437; 
- Tue, 24 Oct 2023 23:36:01 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es.
- [92.176.231.205]) by smtp.gmail.com with ESMTPSA id
- t14-20020a5d534e000000b0032710f5584fsm11318664wrv.25.2023.10.24.23.36.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Oct 2023 23:36:00 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Michael Banack <banackm@vmware.com>, Albert Esteve <aesteve@redhat.com>,
- qemu-devel@nongnu.org
-Cc: linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org,
- virtualization@lists.linux-foundation.org, Gerd Hoffmann
- <kraxel@redhat.com>, mombasawalam@vmware.com, iforbes@vmware.com, Jonathan
- Corbet <corbet@lwn.net>, VMware Graphics Reviewers
- <linux-graphics-maintainer@vmware.com>, David Airlie <airlied@redhat.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Maxime Ripard
- <mripard@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
- ppaalanen@gmail.com, spice-devel@lists.freedesktop.org, Gurchetan Singh
- <gurchetansingh@chromium.org>, Matt Roper <matthew.d.roper@intel.com>,
- linux-kernel@vger.kernel.org, krastevm@vmware.com
-Subject: Re: [PATCH v6 9/9] drm: Introduce documentation for hotspot properties
-In-Reply-To: <1bbee4ad-79fe-4968-0edc-3eee34ad5972@vmware.com>
-References: <20231023074613.41327-1-aesteve@redhat.com>
- <20231023074613.41327-10-aesteve@redhat.com>
- <87h6mh10zg.fsf@minerva.mail-host-address-is-not-set>
- <1bbee4ad-79fe-4968-0edc-3eee34ad5972@vmware.com>
-Date: Wed, 25 Oct 2023 08:36:00 +0200
-Message-ID: <87a5s79pkf.fsf@minerva.mail-host-address-is-not-set>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qvXep-0005W6-El; Wed, 25 Oct 2023 02:46:26 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R411e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046056;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=7; SR=0;
+ TI=SMTPD_---0VutV4m4_1698216370; 
+Received: from 30.198.0.241(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VutV4m4_1698216370) by smtp.aliyun-inc.com;
+ Wed, 25 Oct 2023 14:46:11 +0800
+Message-ID: <f7a8038c-6ecb-451e-a7ba-bc81ff0bbe05@linux.alibaba.com>
+Date: Wed, 25 Oct 2023 14:45:12 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=fmartine@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/6] target/riscv/tcg: add MISA user options hash
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, palmer@rivosinc.com
+References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
+ <20231020223951.357513-5-dbarboza@ventanamicro.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20231020223951.357513-5-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=115.124.30.98;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-98.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,25 +63,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Michael Banack <banackm@vmware.com> writes:
 
-Hello Michael,
-
-> Yes, that patch should be:
+On 2023/10/21 6:39, Daniel Henrique Barboza wrote:
+> We already track user choice for multi-letter extensions because we
+> needed to honor user choice when enabling/disabling extensions during
+> realize(). We refrained from adding the same mechanism for MISA
+> extensions since we didn't need it.
 >
-> Signed-off-by: Michael Banack <banackm@vmware.com>
+> Profile support requires tne need to check for user choice for MISA
+> extensions, so let's add the corresponding hash now. It works like the
+> existing multi-letter hash (multi_ext_user_opts) but tracking MISA bits
+> options in the cpu_set_misa_ext_cfg() callback.
 >
-
-Great, thanks for the confirmation.
-
-> --Michael Banack
+> Note that we can't re-use the same hash from multi-letter extensions
+> because that hash uses cpu->cfg offsets as keys, while for MISA
+> extensions we're using MISA bits as keys.
 >
+> After adding the user hash in cpu_set_misa_ext_cfg(), setting default
+> values with object_property_set_bool() in add_misa_properties() will end
+> up marking the user choice hash with them. Set the default value
+> manually to avoid it.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>   target/riscv/tcg/tcg-cpu.c | 15 ++++++++++++++-
+>   1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 3dd4783191..59b75a14ac 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -34,6 +34,7 @@
+>   
+>   /* Hash that stores user set extensions */
+>   static GHashTable *multi_ext_user_opts;
+> +static GHashTable *misa_ext_user_opts;
+>   
+>   static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
+>   {
+> @@ -669,6 +670,10 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+>           return;
+>       }
+>   
+> +    g_hash_table_insert(misa_ext_user_opts,
+> +                        GUINT_TO_POINTER(misa_bit),
+> +                        (gpointer)value);
+> +
+>       prev_val = env->misa_ext & misa_bit;
+>   
+>       if (value == prev_val) {
+> @@ -732,6 +737,7 @@ static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+>    */
+>   static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>   {
+> +    CPURISCVState *env = &RISCV_CPU(cpu_obj)->env;
+>       bool use_def_vals = riscv_cpu_is_generic(cpu_obj);
+>       int i;
+>   
+> @@ -752,7 +758,13 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>                               NULL, (void *)misa_cfg);
+>           object_property_set_description(cpu_obj, name, desc);
+>           if (use_def_vals) {
+> -            object_property_set_bool(cpu_obj, name, misa_cfg->enabled, NULL);
+> +            if (misa_cfg->enabled) {
+> +                env->misa_ext |= bit;
+> +                env->misa_ext_mask |= bit;
+> +            } else {
+> +                env->misa_ext &= ~bit;
+> +                env->misa_ext_mask &= ~bit;
+> +            }
+>           }
+>       }
+>   }
+> @@ -989,6 +1001,7 @@ static void tcg_cpu_instance_init(CPUState *cs)
+>       RISCVCPU *cpu = RISCV_CPU(cs);
+>       Object *obj = OBJECT(cpu);
+>   
+> +    misa_ext_user_opts = g_hash_table_new(NULL, g_direct_equal);
 
--- 
-Best regards,
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+Zhiwei
 
+>       multi_ext_user_opts = g_hash_table_new(NULL, g_direct_equal);
+>       riscv_cpu_add_user_properties(obj);
+>   
 
