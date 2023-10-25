@@ -2,99 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F64E7D70BC
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1917D710A
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 17:38:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvfnM-0003vJ-ST; Wed, 25 Oct 2023 11:27:44 -0400
+	id 1qvfvz-0000Sd-Tq; Wed, 25 Oct 2023 11:36:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvfnJ-0003th-Bo; Wed, 25 Oct 2023 11:27:41 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qvfvw-0000PJ-JU
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:36:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qvfnG-00063t-GA; Wed, 25 Oct 2023 11:27:41 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39PFGD8h025738; Wed, 25 Oct 2023 15:27:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=n+Xj4YjRO7+N6vsBCFGPOZ6lhLKrX6v+8qTaOMOZKZs=;
- b=fDerW6KtO0jAoCZGNaLoYreBN85gOagHtVJIgLuM9xQU9baNw2hmC5jJD1eVtqWHdlHh
- 7bGHPU8IH2Yo9i2XhfLQHUzU9oitgkW5IQu12mm3dES5mDwmyaY+ToAbP0oSYQbWGh9v
- i2rqyghXoryHKPoaeAdjjtV+BgoTnkLOIlAt+So20xiKMCqxmbHXGPbfCuD6eNuhUMIf
- xK1UIzpCVS5vWzHLYKDIlYWDcrnypVOJqb6gX3uAtXxlKkT4hSzTl4Jv83OSvzFnQpTA
- nCM61NxdSGNLPFhj0apEXVQjMFumv5hZgVVhMkNUHoUl6XLQ29dkMn0Czq/eT1Wm34Qm KA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ty5cm8myp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Oct 2023 15:27:26 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39PFRPue030723;
- Wed, 25 Oct 2023 15:27:26 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ty5cm8mxm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Oct 2023 15:27:26 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39PDo4SE005105; Wed, 25 Oct 2023 15:27:25 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvtfkq9sj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Oct 2023 15:27:25 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39PFROrf31588942
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Oct 2023 15:27:24 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D24558059;
- Wed, 25 Oct 2023 15:27:24 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5313558057;
- Wed, 25 Oct 2023 15:27:24 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 25 Oct 2023 15:27:24 +0000 (GMT)
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-ppc@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- clg@kaod.org, npiggin@gmail.com, fbarrat@linux.ibm.com
-Subject: [PATCH v3] ppc/pnv: Fix number of I2C engines and ports for power9/10
-Date: Wed, 25 Oct 2023 10:27:14 -0500
-Message-Id: <20231025152714.956664-1-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qvfvu-0007iy-U8
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 11:36:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698248192;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2KnqNgXlC8PFpV/YpGvj+SCdq6EDTqI3w0FbEZZoGO8=;
+ b=a70J4RRN/BkmpmbM3yEthLaYNfiVCba7L2tVvPBqi707SpHBEb3R1OgMC7PjwhCgrerIPo
+ Cw14olhEtzv9x7FVHqvl2eNqUHphqgSQeiAsLy4H03Q7OrXQRs5Yg46WfstUSjgNgEllFQ
+ Lo5WOMQI8/uJq5h49GV8SzNtEhWCct0=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-r8-UemEKOfubXFtxp3Buqg-1; Wed, 25 Oct 2023 11:36:31 -0400
+X-MC-Unique: r8-UemEKOfubXFtxp3Buqg-1
+Received: by mail-vs1-f72.google.com with SMTP id
+ ada2fe7eead31-457eb7363f8so529286137.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 08:36:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698248191; x=1698852991;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2KnqNgXlC8PFpV/YpGvj+SCdq6EDTqI3w0FbEZZoGO8=;
+ b=OFG5JGVp+YbZ0FQger+BgIBbPlEMlfida/ZKn/Rx6hjrE3hYepEZ5KkbIQZM8Yv5qk
+ gSIk/ZN9aQPsc2PWiJAnfCi3eGNw3vl1uVMHk56JS0bQDu9/QIFZ6yIRPyURiQziAWhM
+ /5co7LJp3GOOmp2m9+dLRQQwNp8czDI28rKbNina9cGV5GWjveWLLRU5PaKwS/CoP3e3
+ VZxbyMRWY2W5xd8xdBcWg/Tf+GwhYShpmi9i4I+nslXAtKWqDFUwtPWYxhyohdiaijID
+ pl3v2FKwcGdbmr9ZCqRfSpa9P4MbjFznyz9NVNKZnyCwIry25GzBFeDbAdu8FtJQh1Pj
+ mFjQ==
+X-Gm-Message-State: AOJu0YzzOGZZudXr1vIgYnqKDKcZRcOP9i34TB6lCL0eGJJwPDzvX1mh
+ epZF7h0bk1u2y0nrwcyfDotbf3T6aJKWsKNiNWKI3W87GHZ9GnHj0OxZ+gsTkR+syXZg5Ucf8+n
+ 73QpTzzqVxhXtHEc=
+X-Received: by 2002:a05:6122:491:b0:493:5938:c8a1 with SMTP id
+ o17-20020a056122049100b004935938c8a1mr9127253vkn.0.1698248190694; 
+ Wed, 25 Oct 2023 08:36:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgBAt07CYMMFFy8nij5awoipzj9dERvsdKTuqQEs0XZfwzTZv+hTfQPRbS+tBeuiYtZINpyA==
+X-Received: by 2002:a05:6122:491:b0:493:5938:c8a1 with SMTP id
+ o17-20020a056122049100b004935938c8a1mr9127238vkn.0.1698248190346; 
+ Wed, 25 Oct 2023 08:36:30 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ u10-20020a05622a198a00b0041cb8947ed2sm4306338qtc.26.2023.10.25.08.36.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Oct 2023 08:36:29 -0700 (PDT)
+Date: Wed, 25 Oct 2023 11:36:27 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 06/29] migration: Add auto-pause capability
+Message-ID: <ZTk1++TzE+SiT3UH@x1n>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-7-farosas@suse.de>
+ <ZTjWV9wQ5obKTpOG@redhat.com> <87y1fqerev.fsf@suse.de>
+ <ZTkkICSD6j6Xf/KK@redhat.com> <ZTktCM/ccipYaJ80@x1n>
+ <ZTkzY0nKtdeZJojP@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: x8CrfEw2MhBxDCs8NKDkELD93Awlawx-
-X-Proofpoint-ORIG-GUID: VHLEVKQbpHnJRbmGfVTEaOxFVHyWbd5B
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-25_04,2023-10-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- mlxscore=0 malwarescore=0 adultscore=0 impostorscore=0 spamscore=0
- mlxlogscore=710 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310250134
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+In-Reply-To: <ZTkzY0nKtdeZJojP@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,134 +104,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Power9 is supposed to have 4 PIB-connected I2C engines with the
-following number of ports on each engine:
+On Wed, Oct 25, 2023 at 04:25:23PM +0100, Daniel P. Berrangé wrote:
+> > Libvirt will still use fixed-ram for live snapshot purpose, especially for
+> > Windows?  Then auto-pause may still be useful to identify that from what
+> > Fabiano wants to achieve here (which is in reality, non-live)?
+> > 
+> > IIRC of previous discussion that was the major point that libvirt can still
+> > leverage fixed-ram for a live case - since Windows lacks efficient live
+> > snapshot (background-snapshot feature).
+> 
+> Libvirt will use fixed-ram for all APIs it has that involve saving to
+> disk, with CPUs both running and paused.
 
-    0: 2
-    1: 13
-    2: 2
-    3: 2
+There are still two scenarios.  How should we identify them, then?  For
+sure we can always make it live, but QEMU needs that information to make it
+efficient for non-live.
 
-Power10 also has 4 engines but has the following number of ports
-on each engine:
+Considering when there's no auto-pause, then Libvirt will still need to
+know the scenario first then to decide whether pausing VM before migration
+or do nothing, am I right?
 
-    0: 14
-    1: 14
-    2: 2
-    3: 16
+If so, can Libvirt replace that "pause VM" operation with setting
+auto-pause=on here?  Again, the benefit is QEMU can benefit from it.
 
-Current code assumes that they all have the same (maximum) number.
-This can be a problem if software expects to see a certain number
-of ports present (Power Hypervisor seems to care).
+I think when pausing Libvirt can still receive an event, then it can
+cooperate with state changes?  Meanwhile auto-pause=on will be set by
+Libvirt too, so Libvirt will even have that expectation that QMP migrate
+later on will pause the VM.
 
-Fixed this by adding separate tables for power9 and power10 that
-map the I2C controller number to the number of I2C buses that should
-be attached for that engine.
+> 
+> > From that POV it sounds like auto-pause is a good knob for that.
+> 
+> From libvirt's POV auto-pause will create extra work for integration
+> for no gain.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
-Based-on: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
-([PATCH] ppc/pnv: Connect PNV I2C controller to powernv10)
+Yes, I agree for Libvirt there's no gain, as the gain is on QEMU's side.
+Could you elaborate what is the complexity for Libvirt to support it?
 
-Changes from v2:
-    - Moved I2C port definitions close to the class definitions
-    - Changed I2C port array type to const
+Thanks,
 
- hw/ppc/pnv.c              | 12 ++++++++----
- include/hw/ppc/pnv_chip.h |  6 ++----
- 2 files changed, 10 insertions(+), 8 deletions(-)
-
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 2655b6e506..1a728b92a0 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1626,7 +1626,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-         Object *obj =  OBJECT(&chip9->i2c[i]);
- 
-         object_property_set_int(obj, "engine", i + 1, &error_fatal);
--        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+        object_property_set_int(obj, "num-busses",
-+                                pcc->i2c_ports_per_engine[i],
-                                 &error_fatal);
-         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-@@ -1651,6 +1652,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PnvChipClass *k = PNV_CHIP_CLASS(klass);
-+    static const int i2c_ports_per_engine[PNV9_CHIP_MAX_I2C] = {2, 13, 2, 2};
- 
-     k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
-     k->cores_mask = POWER9_CORE_MASK;
-@@ -1667,7 +1669,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
-     dc->desc = "PowerNV Chip POWER9";
-     k->num_pecs = PNV9_CHIP_MAX_PEC;
-     k->i2c_num_engines = PNV9_CHIP_MAX_I2C;
--    k->i2c_num_ports = PNV9_CHIP_MAX_I2C_PORTS;
-+    k->i2c_ports_per_engine = i2c_ports_per_engine;
- 
-     device_class_set_parent_realize(dc, pnv_chip_power9_realize,
-                                     &k->parent_realize);
-@@ -1877,7 +1879,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         Object *obj =  OBJECT(&chip10->i2c[i]);
- 
-         object_property_set_int(obj, "engine", i + 1, &error_fatal);
--        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+        object_property_set_int(obj, "num-busses",
-+                                pcc->i2c_ports_per_engine[i],
-                                 &error_fatal);
-         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-@@ -1902,6 +1905,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PnvChipClass *k = PNV_CHIP_CLASS(klass);
-+    static const int i2c_ports_per_engine[PNV10_CHIP_MAX_I2C] = {14, 14, 2, 16};
- 
-     k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
-     k->cores_mask = POWER10_CORE_MASK;
-@@ -1918,7 +1922,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
-     dc->desc = "PowerNV Chip POWER10";
-     k->num_pecs = PNV10_CHIP_MAX_PEC;
-     k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
--    k->i2c_num_ports = PNV10_CHIP_MAX_I2C_PORTS;
-+    k->i2c_ports_per_engine = i2c_ports_per_engine;
- 
-     device_class_set_parent_realize(dc, pnv_chip_power10_realize,
-                                     &k->parent_realize);
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 5815d96ecf..0ab5c42308 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -88,8 +88,7 @@ struct Pnv9Chip {
- #define PNV9_CHIP_MAX_PEC 3
-     PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
- 
--#define PNV9_CHIP_MAX_I2C 3
--#define PNV9_CHIP_MAX_I2C_PORTS 1
-+#define PNV9_CHIP_MAX_I2C 4
-     PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
- };
- 
-@@ -122,7 +121,6 @@ struct Pnv10Chip {
-     PnvPhb4PecState pecs[PNV10_CHIP_MAX_PEC];
- 
- #define PNV10_CHIP_MAX_I2C 4
--#define PNV10_CHIP_MAX_I2C_PORTS 2
-     PnvI2C       i2c[PNV10_CHIP_MAX_I2C];
- };
- 
-@@ -140,7 +138,7 @@ struct PnvChipClass {
-     uint32_t     num_phbs;
- 
-     uint32_t     i2c_num_engines;
--    uint32_t     i2c_num_ports;
-+    const int    *i2c_ports_per_engine;
- 
-     DeviceRealize parent_realize;
- 
 -- 
-2.31.1
+Peter Xu
 
 
