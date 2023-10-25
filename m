@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94767D7894
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B1E7D789C
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 01:33:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvnHw-0001Y8-OB; Wed, 25 Oct 2023 19:27:48 -0400
+	id 1qvnHr-0001Wm-9g; Wed, 25 Oct 2023 19:27:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnHv-0001Xz-M1
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:47 -0400
+ id 1qvnHo-0001Vk-Ih
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qvnHu-00052d-95
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:47 -0400
+ id 1qvnHn-0004us-3t
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 19:27:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698276465;
+ s=mimecast20190719; t=1698276458;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UY1wAEDNFydOtexdv37dGc4LgmSZcTd8TGDxaQVmZ0c=;
- b=UEI0CaTG9KtsN/atES14A1tPCOtzs+VzN5U89ZBe1NsNrKIQRKUvCd4rmbqDVpzyxk0idK
- pgqDOT4tqE6UmZe2td9xQ6l6Gly537PJagQbPKN2T/UDpipyDjz6+4WLXrSf1dFWfYkle6
- AY4oD4iAxa5Yy+IQgq0mov5/VbisSrM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nhk3/jPu+ktOTVn2YBI9nIBNFtxvKHkB32N1WAJPDfE=;
+ b=CQ5Q06BhhzLpd+cFiqq81tzHtBJ3F1FdkcaY12DP1ku5mhnJdwXm3XDxVZzcpVSlXHoG5R
+ eTsIjZXB1o7nY3NlCk+IVY5j7fhdP/annA9hT3rjjaq+I5NhB4n54KG969+HuiAY2uesE/
+ P4S/DKZJ95SdbC1iQDztfQm0iiqM0dA=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-159-dCzBCzcBNqapZJOUM4Ghrw-1; Wed, 25 Oct 2023 19:27:34 -0400
-X-MC-Unique: dCzBCzcBNqapZJOUM4Ghrw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d12cd3591so4453546d6.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:27:34 -0700 (PDT)
+ us-mta-319-RSBRYnqkO9iJ6gMCaciCMA-1; Wed, 25 Oct 2023 19:27:36 -0400
+X-MC-Unique: RSBRYnqkO9iJ6gMCaciCMA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7740517a478so39678185a.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 16:27:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698276453; x=1698881253;
+ d=1e100.net; s=20230601; t=1698276455; x=1698881255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UY1wAEDNFydOtexdv37dGc4LgmSZcTd8TGDxaQVmZ0c=;
- b=W4fk9szCLBzqMidRzaMKs1fTibNGvTYBE/s0o7c6cN6g18OzZi5qdYP8zMbDGgUhMv
- g2NWbwuzfCwF0HGZRH2HdfCwuH9V/sXpA/Zw3i+RmTk/kg1Xxw/ImItNv7tHTHXWSBer
- ye7M1S1l99XIxNfNzTILY9FJVgfZuzNAjhdO2aPDGM/Eu1xJsZGEqrm4TZdPHFegx8Cb
- LGNdiLwHc5Ka248g1cgCMsYPWdn1pEgJvAWyVsqY6lDsg4MRqU5pJYDyrvnHRpM/yVf/
- 2v/Rs/FIeTfGV+buPzkXNsRpmhldZgXnUfrW0Tr+wYOkHkHdWYYJivAOoc5wmXc9VbQJ
- Hynw==
-X-Gm-Message-State: AOJu0YzREVnlBPxBmW2scyybf4lU98rWgFE2f3B9dAWL3pK10FRr+IVE
- /xwuxb4Q8KHJjXT+HOG5suqrtdbs0nJKJa/DjnIAOVG0cyQDPtKYHyoxEH8XZZYo2+DWu0fhrMu
- czNJpLuozSwmc/qgu24g++C9iRCV3oOLTj0M2UdnLOVRg+zlK/0yoKpZkJ7nD1cypkIprQVu4Te
- M=
-X-Received: by 2002:a05:6214:c4b:b0:66d:66bd:e60a with SMTP id
- r11-20020a0562140c4b00b0066d66bde60amr14020578qvj.64.1698276452846; 
- Wed, 25 Oct 2023 16:27:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHR/UY/yCIgMT9nKwzW0p/N3JR4nWvNX155Bqa/JOGwiWZesbg7WS41PGELxO1vS33zWlCrTg==
-X-Received: by 2002:a05:6214:c4b:b0:66d:66bd:e60a with SMTP id
- r11-20020a0562140c4b00b0066d66bde60amr14020558qvj.64.1698276452459; 
- Wed, 25 Oct 2023 16:27:32 -0700 (PDT)
+ bh=nhk3/jPu+ktOTVn2YBI9nIBNFtxvKHkB32N1WAJPDfE=;
+ b=kllIzEgHs8ABZ0tv301qqrcP5/CowHs88MPzRX52tq30CqGYpjL04fM6SfcpRk30mi
+ 1frIq6pvFRkv/LzNVMSzwDzdwqJIeLalSDNH0hoi9sQzeOoH2ohzKcCtTJf65Xpy/AY6
+ n3yJy13BbNVDxgK8f3Hwc5Qse181gTU5XoxAJ7cm5ICFYOX5zy/MB1DoNv444tQVbhMx
+ 8DXWgTvgRxKRqjKxvtGpaBBr8gH8om+PUY2ebgdUEUsEovmlj7xvdJ5TpezrHBfTTrBS
+ L7boPavG5km4CEElE78J73BNkgfYha/YgwhOfKPlPTKE0Af3S1ENxIv5d15KH4P7VZ+C
+ nLoQ==
+X-Gm-Message-State: AOJu0YyZ9PmwBl7L1t4kyvUHmLA93Fj2fCuqE2pVPa8UDag846akjRJE
+ 3RNwkNIWmV0SEwIx0792x5uZCBiMjPk9nUmUya2b3Bwl3JHVFdcL9VLs6CzVULVWJLj5nB+KLny
+ LWBaD+J5lwErH4xFB+9ogOqVfxHBHcc7MiBkYk9IHInngnc0FXZrG6dDMjbCmZnl7y/SnlI696h
+ I=
+X-Received: by 2002:a05:620a:c52:b0:778:b0f5:d4ef with SMTP id
+ u18-20020a05620a0c5200b00778b0f5d4efmr17039276qki.30.1698276455612; 
+ Wed, 25 Oct 2023 16:27:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGT3xxaT1MpIVLRxhsOLNbsK2JX05PcQSrbaf4CPKZJmcQJP4VhZnk48WlhSc0nCnxLFB2VHg==
+X-Received: by 2002:a05:620a:c52:b0:778:b0f5:d4ef with SMTP id
+ u18-20020a05620a0c5200b00778b0f5d4efmr17039263qki.30.1698276455277; 
+ Wed, 25 Oct 2023 16:27:35 -0700 (PDT)
 Received: from [172.19.0.201] ([192.80.84.35])
  by smtp.gmail.com with ESMTPSA id
- c15-20020a0cd60f000000b00658266be23fsm4757135qvj.41.2023.10.25.16.27.31
+ o8-20020a05620a228800b0076cdc3b5beasm4585808qkh.86.2023.10.25.16.27.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 16:27:32 -0700 (PDT)
+ Wed, 25 Oct 2023 16:27:33 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PULL 07/24] target/i386: check CPUID_PAE to determine 36 bit
- processor address space
-Date: Thu, 26 Oct 2023 01:27:00 +0200
-Message-ID: <20231025232718.89428-8-pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 08/24] kvm: remove unnecessary stub
+Date: Thu, 26 Oct 2023 01:27:01 +0200
+Message-ID: <20231025232718.89428-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231025232718.89428-1-pbonzini@redhat.com>
 References: <20231025232718.89428-1-pbonzini@redhat.com>
@@ -102,35 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+This function is only invoked from hw/intc/s390_flic_kvm.c, and therefore
+only if CONFIG_KVM is defined.
 
-PAE mode in x86 supports 36 bit address space. Check the PAE CPUID on the
-guest processor and set phys_bits to 36 if PAE feature is set. This is in
-addition to checking the presence of PSE36 CPUID feature for setting 36 bit
-phys_bits.
-
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-ID: <20230912120650.371781-1-anisinha@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/stubs/kvm-stub.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 070c02000fe..fc8484cb5e8 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7377,7 +7377,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-             return;
-         }
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index 51f522e52e8..a323252f8e2 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -92,11 +92,6 @@ void kvm_irqchip_change_notify(void)
+ {
+ }
  
--        if (env->features[FEAT_1_EDX] & CPUID_PSE36) {
-+        if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
-             cpu->phys_bits = 36;
-         } else {
-             cpu->phys_bits = 32;
+-int kvm_irqchip_add_adapter_route(KVMState *s, AdapterInfo *adapter)
+-{
+-    return -ENOSYS;
+-}
+-
+ int kvm_irqchip_add_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
+                                        EventNotifier *rn, int virq)
+ {
 -- 
 2.41.0
 
