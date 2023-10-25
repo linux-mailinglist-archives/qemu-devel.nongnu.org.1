@@ -2,52 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0067D61D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0075F7D61E4
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 08:55:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvXgE-0003yY-9D; Wed, 25 Oct 2023 02:47:50 -0400
+	id 1qvXlw-0008FF-Pf; Wed, 25 Oct 2023 02:53:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qvXgC-0003xF-Ms; Wed, 25 Oct 2023 02:47:48 -0400
-Received: from out30-99.freemail.mail.aliyun.com ([115.124.30.99])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qvXgA-0005fa-JY; Wed, 25 Oct 2023 02:47:48 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R161e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046060;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=7; SR=0;
- TI=SMTPD_---0VutV516_1698216413; 
-Received: from 30.198.0.241(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VutV516_1698216413) by smtp.aliyun-inc.com;
- Wed, 25 Oct 2023 14:47:36 +0800
-Message-ID: <0483f5d2-346a-4b1e-88f3-392605e7a340@linux.alibaba.com>
-Date: Wed, 25 Oct 2023 14:46:38 +0800
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvXlc-0008DT-1e
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:53:24 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvXla-0006qk-Ek
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 02:53:23 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2c5720a321aso48903541fa.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Oct 2023 23:53:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698216800; x=1698821600; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6Qda9vsigsp4Gwj6hYyFf7vLPkt//7koKT5q0vZ3TIc=;
+ b=i9dt7AJ66JYyhgtt4yJ79m4dMK163+XcIyWX8Lt9o4YMifVbjydH2vY6TWn0GsHuWt
+ G5c1at9hnmgRyNFgCZpA8GUeusnGc9ROTtlUradrb1GnM4pTNvrZy3ZNcHei6tR82rSg
+ e+YSeZy3gqH+2wRDiDINurQJ8DayLI9ovCj+G99FYkZd25aO57Crcx2ZbNDCWHOiIIAv
+ 738kZwRFe5Fynjh38bL2tvi0gJzFQwCIw+/zboFXLtnvIAxqUM93pxgwIkniEceiS+fk
+ U/rJCB907uq+cMLQ2J85HdJGb9p43P48z0Hv5zPlHYfdjvShhCBs0KSF8UK1FESM5jf6
+ JWyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698216800; x=1698821600;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6Qda9vsigsp4Gwj6hYyFf7vLPkt//7koKT5q0vZ3TIc=;
+ b=lBaXJCZB6yx0OI63egr3Cec/e4MV6PyCmubqo+ybfnfImdcvky1PCxOuxRXI/dRyUW
+ rfFRd2XEp/v/UX1bP2D9QoACL8tnVPMKKEI0czQZsAVEWKCZl914ovVq9RomN3L1HSAK
+ fzMslc7efp/CshheHn2TyOZ5ugPIoFNltGKhfmU5jIbxZswifeSLfzheNLCiueBXAzSY
+ LHG7JyIGTbi6zzxjiAubpg77PUvzSRVJmfPe3zuLfETO1EhQK6G71wLsDHQ+74UwHAkm
+ 7xCsZkV0gEBqe1d2CT8x51BY9hLS1Jkm3MemN80m3XJnKcm02cVkXnW6yJwPz/3J+AUY
+ BM5w==
+X-Gm-Message-State: AOJu0Yx0tTm9bujkvIYGzbkrMYRBI8RH6SNniq11n1XqcLV9OlfMdTnB
+ GPsNY2TkVRSVKGNf1KmZz8Mhtvqy3VcSEwDrLUk=
+X-Google-Smtp-Source: AGHT+IHww6a84AycyO4oYX3Hn04+7bG5UiEuKvc/7ov4x8IU10viTu/x1LAcYrV9h8DVyUZ0DPlWXw==
+X-Received: by 2002:a05:651c:2123:b0:2c4:ff2e:d6cd with SMTP id
+ a35-20020a05651c212300b002c4ff2ed6cdmr12267173ljq.2.1698216800095; 
+ Tue, 24 Oct 2023 23:53:20 -0700 (PDT)
+Received: from m1x-phil.lan (ghy59-h01-176-171-219-76.dsl.sta.abo.bbox.fr.
+ [176.171.219.76]) by smtp.gmail.com with ESMTPSA id
+ j6-20020a05600c190600b0040641a9d49bsm13795790wmq.17.2023.10.24.23.53.18
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 24 Oct 2023 23:53:19 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
+ qemu-arm@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/10] hw/arm: Move 'hw/arm/boot.h' from header to source
+Date: Wed, 25 Oct 2023 08:53:06 +0200
+Message-ID: <20231025065316.56817-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/6] target/riscv/tcg: handle profile MISA bits
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, palmer@rivosinc.com
-References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
- <20231020223951.357513-7-dbarboza@ventanamicro.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20231020223951.357513-7-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.99;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-99.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,59 +89,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Almost no ARM board header requires "hw/arm/boot.h".
+Move this header inclusion to the source.
 
-On 2023/10/21 6:39, Daniel Henrique Barboza wrote:
-> The profile support is handling multi-letter extensions only. Let's add
-> support for MISA bits as well.
->
-> We'll go through every known MISA bit. If the user set the bit, doesn't
-> matter if to 'true' or 'false', ignore it. If the profile doesn't
-> declare the bit as mandatory, ignore it. Otherwise, set or clear the bit
-> in env->misa_ext and env->misa_ext_mask depending on whether the profile
-> was set to 'true' or 'false'.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->   target/riscv/tcg/tcg-cpu.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
->
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index ba11d0566d..73c7453af6 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -42,6 +42,12 @@ static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
->                                    GUINT_TO_POINTER(ext_offset));
->   }
->   
-> +static bool cpu_misa_ext_is_user_set(uint32_t misa_bit)
-> +{
-> +    return g_hash_table_contains(misa_ext_user_opts,
-> +                                 GUINT_TO_POINTER(misa_bit));
-> +}
-> +
->   static void riscv_cpu_write_misa_bit(RISCVCPU *cpu, uint32_t bit,
->                                        bool enabled)
->   {
-> @@ -797,6 +803,16 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
->   
->       profile->enabled = value;
->   
-> +    for (i = 0; misa_bits[i] != 0; i++) {
-> +        uint32_t bit = misa_bits[i];
-> +
-> +        if (cpu_misa_ext_is_user_set(bit) || !(profile->misa_ext & bit)) {
-> +            continue;
-> +        }
-> +
-> +        riscv_cpu_write_misa_bit(cpu, bit, profile->enabled);
-> +    }
-> +
+Philippe Mathieu-Daudé (10):
+  hw/arm/allwinner-a10: Remove 'hw/arm/boot.h' from header
+  hw/arm/allwinner-h3: Remove 'hw/arm/boot.h' from header
+  hw/arm/allwinner-r40: Remove 'hw/arm/boot.h' from header
+  hw/arm/fsl-imx25: Remove 'hw/arm/boot.h' from header
+  hw/arm/fsl-imx31: Remove 'hw/arm/boot.h' from header
+  hw/arm/fsl-imx6: Remove 'hw/arm/boot.h' from header
+  hw/arm/fsl-imx6ul: Remove 'hw/arm/boot.h' from header
+  hw/arm/fsl-imx7: Remove 'hw/arm/boot.h' from header
+  hw/arm/xlnx-versal: Remove 'hw/arm/boot.h' from header
+  hw/arm/xlnx-zynqmp: Remove 'hw/arm/boot.h' from header
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+ include/hw/arm/allwinner-a10.h | 1 -
+ include/hw/arm/allwinner-h3.h  | 1 -
+ include/hw/arm/allwinner-r40.h | 1 -
+ include/hw/arm/fsl-imx25.h     | 1 -
+ include/hw/arm/fsl-imx31.h     | 1 -
+ include/hw/arm/fsl-imx6.h      | 1 -
+ include/hw/arm/fsl-imx6ul.h    | 1 -
+ include/hw/arm/fsl-imx7.h      | 1 -
+ include/hw/arm/xlnx-versal.h   | 1 -
+ include/hw/arm/xlnx-zynqmp.h   | 1 -
+ hw/arm/bananapi_m2u.c          | 1 +
+ hw/arm/cubieboard.c            | 1 +
+ hw/arm/imx25_pdk.c             | 1 +
+ hw/arm/kzm.c                   | 1 +
+ hw/arm/mcimx6ul-evk.c          | 1 +
+ hw/arm/mcimx7d-sabre.c         | 1 +
+ hw/arm/orangepi.c              | 1 +
+ hw/arm/sabrelite.c             | 1 +
+ hw/arm/xlnx-versal-virt.c      | 1 +
+ hw/arm/xlnx-zcu102.c           | 1 +
+ 20 files changed, 10 insertions(+), 10 deletions(-)
 
-Zhiwei
+-- 
+2.41.0
 
->       for (i = 0; profile->ext_offsets[i] != RISCV_PROFILE_EXT_LIST_END; i++) {
->           ext_offset = profile->ext_offsets[i];
->   
 
