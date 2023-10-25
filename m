@@ -2,84 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053A87D6226
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58ED17D6227
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 09:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvY1r-0006sb-Ta; Wed, 25 Oct 2023 03:10:11 -0400
+	id 1qvY2F-0007SM-Ed; Wed, 25 Oct 2023 03:10:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qvY1m-0006rG-IL; Wed, 25 Oct 2023 03:10:06 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qvY1k-0001Jo-OD; Wed, 25 Oct 2023 03:10:06 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1ca74e77aecso4260525ad.1; 
- Wed, 25 Oct 2023 00:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698217802; x=1698822602; darn=nongnu.org;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QEHIme7JyEIrmSSVHKta4oCyhy8pOhWsd3pOrcrgBss=;
- b=U9Lepn6ueDN54y5LTOmr4sFehnqZtZxkbrXBZ35GKR7gxQ8mmZdZU2lvH7/JKEYpa9
- m/kjfhw+SaCdBTz5d+pUu8hAIu0p8gB50v/yBD6JnjPVUiwZVEV0GU4P7aThQRqFInZ6
- dEbav8yexOEzBXyZbNfDx+P+Em6bPGMPfqKpSmDUj4/W3Wq0K9e6HMnoRqKpp9+e2lHk
- MaOuQfkV3CFCo2rm2cpfc9HYRJewrrFAM9mStGbzQTXB32TPiGBZVOyyw288ZQMEZJ43
- gUA2b1xxBrM1l2pdY2p+NcZiKrydWUAKMEtxlRADR93DqlLIe1DwuPDsmwNOI8f74gzj
- jZtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698217802; x=1698822602;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=QEHIme7JyEIrmSSVHKta4oCyhy8pOhWsd3pOrcrgBss=;
- b=RhNDlH9XaItXMqRq+KfvWo+5jNG9E2mgXUXDOcsUGTmpBsKYdD2apYbNjm8UVJ5it9
- qzU3N0vvsnUhLDA+Mx3J53SjQpf/HhrWVr4zKsPPJFoCwbP3UtumqUxKiHbXHxL9b0FC
- ySFEnTxbb+u2USgZyi7mMWeULvxhmQS3JdpjdFv5VQ3xqfVbPpc4k8rtEcv/hxQgAHaG
- 29xkAdeA2BwLnH6/s5NNEKKQlLEKB6Vd2lPcP+52gIB1M7Z7WcVz25SHjV8oepOQVF6b
- OwCcyfcsHvb5MS4BTEUkjhZn7sJiKOSM7A1uG5kLzdwcolUnOCxmzEs9hcp9fc3s1T+2
- JE4w==
-X-Gm-Message-State: AOJu0YyHji8SiFAsi8sRPZH2mOmB7dBTMN+WHmovVj7FN6t0Bz9Fk3Xr
- Fjj4lKHMuJ9SaeFRFScsvFM=
-X-Google-Smtp-Source: AGHT+IHZSF+b3+KWregwD7t0jvR2aSoxsvZgLkBtx4ICsGVko0lYdZYmf0ojFJshKpjaOKKrsc5FWg==
-X-Received: by 2002:a17:902:ea07:b0:1c9:f6df:8a88 with SMTP id
- s7-20020a170902ea0700b001c9f6df8a88mr27929036plg.26.1698217802554; 
- Wed, 25 Oct 2023 00:10:02 -0700 (PDT)
-Received: from localhost (193-116-88-234.tpgi.com.au. [193.116.88.234])
- by smtp.gmail.com with ESMTPSA id
- a13-20020a63e40d000000b0059d219cb359sm8263799pgi.9.2023.10.25.00.09.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 00:10:01 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Oct 2023 17:09:55 +1000
-Message-Id: <CWHBYSZE3X91.1YCI4JXJ3H2SE@wheely>
-To: "Richard Henderson" <richard.henderson@linaro.org>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- <qemu-devel@nongnu.org>
-Cc: <qemu-ppc@nongnu.org>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Subject: Re: [RFC PATCH 9/9] target/ppc: Use tcg_gen_sextract_tl
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.15.2
-References: <20231023160944.10692-1-philmd@linaro.org>
- <20231023160944.10692-10-philmd@linaro.org>
- <b9d9c1a0-5b20-4d33-aaf2-f12097122004@linaro.org>
-In-Reply-To: <b9d9c1a0-5b20-4d33-aaf2-f12097122004@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <SRS0=4l40=GH=kaod.org=clg@ozlabs.org>)
+ id 1qvY28-0007GQ-VF; Wed, 25 Oct 2023 03:10:28 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=4l40=GH=kaod.org=clg@ozlabs.org>)
+ id 1qvY22-0001Y2-Ga; Wed, 25 Oct 2023 03:10:28 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SFg701dR4z4wx5;
+ Wed, 25 Oct 2023 18:10:20 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SFg6y2rcNz4wd7;
+ Wed, 25 Oct 2023 18:10:18 +1100 (AEDT)
+Message-ID: <d87aa387-fb9c-462b-a9d7-4153406bea29@kaod.org>
+Date: Wed, 25 Oct 2023 09:10:17 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/11] hw/arm/aspeed: Introduce TYPE_ASPEED2400_SOC
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@aj.id.au>, qemu-arm@nongnu.org
+References: <20231024162423.40206-1-philmd@linaro.org>
+ <20231024162423.40206-8-philmd@linaro.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231024162423.40206-8-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=4l40=GH=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,74 +65,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Oct 24, 2023 at 11:04 AM AEST, Richard Henderson wrote:
-> On 10/23/23 09:09, Philippe Mathieu-Daud=C3=A9 wrote:
-> > Inspired-by: Richard Henderson <richard.henderson@linaro.org>
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > ---
-> > RFC: Please double-check 32/64 & bits
-> > ---
-> >   target/ppc/translate.c | 22 ++++------------------
-> >   1 file changed, 4 insertions(+), 18 deletions(-)
-> >=20
-> > diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> > index c6e1f7c2ca..1370db9bd5 100644
-> > --- a/target/ppc/translate.c
-> > +++ b/target/ppc/translate.c
-> > @@ -2892,13 +2892,7 @@ static void gen_slw(DisasContext *ctx)
-> >  =20
-> >       t0 =3D tcg_temp_new();
-> >       /* AND rS with a mask that is 0 when rB >=3D 0x20 */
-> > -#if defined(TARGET_PPC64)
-> > -    tcg_gen_shli_tl(t0, cpu_gpr[rB(ctx->opcode)], 0x3a);
-> > -    tcg_gen_sari_tl(t0, t0, 0x3f);
-> > -#else
-> > -    tcg_gen_shli_tl(t0, cpu_gpr[rB(ctx->opcode)], 0x1a);
-> > -    tcg_gen_sari_tl(t0, t0, 0x1f);
-> > -#endif
-> > +    tcg_gen_sextract_tl(t0, cpu_gpr[rB(ctx->opcode)], 5, 1);
-> >       tcg_gen_andc_tl(t0, cpu_gpr[rS(ctx->opcode)], t0);
->
-> Patch looks correct as is, so
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On 10/24/23 18:24, Philippe Mathieu-Daudé wrote:
+> TYPE_ASPEED2400_SOC inherits from TYPE_ASPEED_SOC.
+> In few commits we'll add more fields, but to keep
+> review process simple, don't add any yet.
+> 
+> TYPE_ASPEED_SOC is common to various Aspeed SoCs,
+> define it in aspeed_soc_common.c.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
->
->
-> However:
-> I'd be tempted to use and+movcond instead of sext+andc.
-
-That would be simpler / more mechnical following of specification
-in the ISA. Might be better to save that for a later patch though.
-Any downsides for backend generation? On host without cmov?
-
-> Also there is a special case of 32-bit shifts with 64-bit shift count on =
-ppc64.
->
-> #ifdef TARGET_PPC64
->      tcg_gen_andi_tl(t0, rb, 0x3f);
-> #else
->      tcg_gen_andi_tl(t0, rb, 0x1f);
->      tcg_gen_andi_tl(t1, rb, 0x20);
->      tcg_gen_movcond_tl(TCG_COND_NE, t1, t1, zero, zero, rs);
->      rs =3D t1;
-> #endif
->      tcg_gen_shl_tl(ra, rs, t0);
->      tcg_gen_ext32u_tl(ra, ra);
->
->
-> It also makes me wonder about adding some TCGCond for bit-test so that th=
-is could be
->
->      tcg_gen_movcond_tl(TCG_COND_TSTNE, t1, rb, 0x20, 0, 0, rs);
->
-> and make use of the "test" vs "cmp" instructions on most hosts, but espec=
-ially x86.
-
-Might be useful.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
 Thanks,
-Nick
+
+C.
+
+
+> ---
+>   include/hw/arm/aspeed_soc.h |  7 +++++
+>   hw/arm/aspeed_soc.c         | 61 +++++++++++--------------------------
+>   hw/arm/aspeed_soc_common.c  | 29 ++++++++++++++++++
+>   3 files changed, 53 insertions(+), 44 deletions(-)
+> 
+> diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+> index 103b1598f6..ee7926b81c 100644
+> --- a/include/hw/arm/aspeed_soc.h
+> +++ b/include/hw/arm/aspeed_soc.h
+> @@ -101,6 +101,13 @@ struct AspeedSoCState {
+>   #define TYPE_ASPEED_SOC "aspeed-soc"
+>   OBJECT_DECLARE_TYPE(AspeedSoCState, AspeedSoCClass, ASPEED_SOC)
+>   
+> +struct Aspeed2400SoCState {
+> +    AspeedSoCState parent;
+> +};
+> +
+> +#define TYPE_ASPEED2400_SOC "aspeed2400-soc"
+> +OBJECT_DECLARE_SIMPLE_TYPE(Aspeed2400SoCState, ASPEED2400_SOC)
+> +
+>   struct Aspeed2600SoCState {
+>       AspeedSoCState parent;
+>   };
+> diff --git a/hw/arm/aspeed_soc.c b/hw/arm/aspeed_soc.c
+> index 191276a320..dfb97f6dbd 100644
+> --- a/hw/arm/aspeed_soc.c
+> +++ b/hw/arm/aspeed_soc.c
+> @@ -497,29 +497,6 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
+>       sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
+>                          aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
+>   }
+> -static Property aspeed_soc_properties[] = {
+> -    DEFINE_PROP_LINK("memory", AspeedSoCState, memory, TYPE_MEMORY_REGION,
+> -                     MemoryRegion *),
+> -    DEFINE_PROP_LINK("dram", AspeedSoCState, dram_mr, TYPE_MEMORY_REGION,
+> -                     MemoryRegion *),
+> -    DEFINE_PROP_END_OF_LIST(),
+> -};
+> -
+> -static void aspeed_soc_class_init(ObjectClass *oc, void *data)
+> -{
+> -    DeviceClass *dc = DEVICE_CLASS(oc);
+> -
+> -    device_class_set_props(dc, aspeed_soc_properties);
+> -}
+> -
+> -static const TypeInfo aspeed_soc_type_info = {
+> -    .name           = TYPE_ASPEED_SOC,
+> -    .parent         = TYPE_DEVICE,
+> -    .instance_size  = sizeof(AspeedSoCState),
+> -    .class_size     = sizeof(AspeedSoCClass),
+> -    .class_init     = aspeed_soc_class_init,
+> -    .abstract       = true,
+> -};
+>   
+>   static void aspeed_soc_ast2400_class_init(ObjectClass *oc, void *data)
+>   {
+> @@ -545,14 +522,6 @@ static void aspeed_soc_ast2400_class_init(ObjectClass *oc, void *data)
+>       sc->get_irq      = aspeed_soc_ast2400_get_irq;
+>   }
+>   
+> -static const TypeInfo aspeed_soc_ast2400_type_info = {
+> -    .name           = "ast2400-a1",
+> -    .parent         = TYPE_ASPEED_SOC,
+> -    .instance_init  = aspeed_ast2400_soc_init,
+> -    .instance_size  = sizeof(AspeedSoCState),
+> -    .class_init     = aspeed_soc_ast2400_class_init,
+> -};
+> -
+>   static void aspeed_soc_ast2500_class_init(ObjectClass *oc, void *data)
+>   {
+>       AspeedSoCClass *sc = ASPEED_SOC_CLASS(oc);
+> @@ -577,18 +546,22 @@ static void aspeed_soc_ast2500_class_init(ObjectClass *oc, void *data)
+>       sc->get_irq      = aspeed_soc_ast2400_get_irq;
+>   }
+>   
+> -static const TypeInfo aspeed_soc_ast2500_type_info = {
+> -    .name           = "ast2500-a1",
+> -    .parent         = TYPE_ASPEED_SOC,
+> -    .instance_init  = aspeed_ast2400_soc_init,
+> -    .instance_size  = sizeof(AspeedSoCState),
+> -    .class_init     = aspeed_soc_ast2500_class_init,
+> -};
+> -static void aspeed_soc_register_types(void)
+> -{
+> -    type_register_static(&aspeed_soc_type_info);
+> -    type_register_static(&aspeed_soc_ast2400_type_info);
+> -    type_register_static(&aspeed_soc_ast2500_type_info);
+> +static const TypeInfo aspeed_soc_ast2400_types[] = {
+> +    {
+> +        .name           = TYPE_ASPEED2400_SOC,
+> +        .parent         = TYPE_ASPEED_SOC,
+> +        .instance_init  = aspeed_ast2400_soc_init,
+> +        .instance_size  = sizeof(Aspeed2400SoCState),
+> +        .abstract       = true,
+> +    }, {
+> +        .name           = "ast2400-a1",
+> +        .parent         = TYPE_ASPEED2400_SOC,
+> +        .class_init     = aspeed_soc_ast2400_class_init,
+> +    }, {
+> +        .name           = "ast2500-a1",
+> +        .parent         = TYPE_ASPEED2400_SOC,
+> +        .class_init     = aspeed_soc_ast2500_class_init,
+> +    },
+>   };
+>   
+> -type_init(aspeed_soc_register_types);
+> +DEFINE_TYPES(aspeed_soc_ast2400_types)
+> diff --git a/hw/arm/aspeed_soc_common.c b/hw/arm/aspeed_soc_common.c
+> index a43f5d2a6f..b66f769d18 100644
+> --- a/hw/arm/aspeed_soc_common.c
+> +++ b/hw/arm/aspeed_soc_common.c
+> @@ -12,6 +12,7 @@
+>   
+>   #include "qemu/osdep.h"
+>   #include "qapi/error.h"
+> +#include "hw/qdev-properties.h"
+>   #include "hw/misc/unimp.h"
+>   #include "hw/arm/aspeed_soc.h"
+>   #include "hw/char/serial.h"
+> @@ -112,3 +113,31 @@ void aspeed_mmio_map_unimplemented(AspeedSoCState *s, SysBusDevice *dev,
+>       memory_region_add_subregion_overlap(s->memory, addr,
+>                                           sysbus_mmio_get_region(dev, 0), -1000);
+>   }
+> +
+> +static Property aspeed_soc_properties[] = {
+> +    DEFINE_PROP_LINK("dram", AspeedSoCState, dram_mr, TYPE_MEMORY_REGION,
+> +                     MemoryRegion *),
+> +    DEFINE_PROP_LINK("memory", AspeedSoCState, memory, TYPE_MEMORY_REGION,
+> +                     MemoryRegion *),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void aspeed_soc_class_init(ObjectClass *oc, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(oc);
+> +
+> +    device_class_set_props(dc, aspeed_soc_properties);
+> +}
+> +
+> +static const TypeInfo aspeed_soc_types[] = {
+> +    {
+> +        .name           = TYPE_ASPEED_SOC,
+> +        .parent         = TYPE_DEVICE,
+> +        .instance_size  = sizeof(AspeedSoCState),
+> +        .class_size     = sizeof(AspeedSoCClass),
+> +        .class_init     = aspeed_soc_class_init,
+> +        .abstract       = true,
+> +    },
+> +};
+> +
+> +DEFINE_TYPES(aspeed_soc_types)
 
 
