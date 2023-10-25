@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E60E7D7404
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A807D7406
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Oct 2023 21:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvjFN-0004gv-80; Wed, 25 Oct 2023 15:08:53 -0400
+	id 1qvjFX-0004lY-3w; Wed, 25 Oct 2023 15:09:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qvjFL-0004fz-Dc
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:08:51 -0400
+ id 1qvjFS-0004kA-35
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:08:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qvjFI-0000JL-UQ
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:08:51 -0400
+ id 1qvjFQ-0000LK-3x
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 15:08:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698260928;
+ s=mimecast20190719; t=1698260935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sIO5QRCE31iBzGTr3ZeklZwn4Itg9W3wBYV5HekWBCc=;
- b=WKwwW533Qx1PH11/mkqhgjw4RMG2ptPtVONp0za1qnMahCvff5A8hBmAHjtugLc4BXsu3F
- Ngu6VfZYt25/rQsH+ePLqv5jGwuEtMI4ypnvtdUgYpVDSDhRtQv724fiIF+tWNv+O5iPt2
- tH3Y+lfxSSVwA2wtpfkF+Z28i2yxzOM=
+ bh=523l5CFDQhMe/8iz9cuQcGu7DmK05F4Kg7km6pZrlLc=;
+ b=KSbRVw5aAwNoQyPP91dCH1tEzDx8LnWtc646xV6WJk0IMCZfetis8aBojOX+Je/cEr4g6Q
+ LNlUpZMgIzV01Pu4Nh1CtnXWNE5oXk+PunaupPaqUdjH5sgWVHccxLdof/tjENFOuGxKXD
+ DiQXVqhs4p0vEnST9HFYxaCe/9SU9tU=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-9Cbo3tjkN6O2VCt5JaS0BA-1; Wed,
- 25 Oct 2023 15:08:45 -0400
-X-MC-Unique: 9Cbo3tjkN6O2VCt5JaS0BA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-rPE0f_bOMY61CP-97BgJKg-1; Wed,
+ 25 Oct 2023 15:08:49 -0400
+X-MC-Unique: rPE0f_bOMY61CP-97BgJKg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 72C5528004F4;
- Wed, 25 Oct 2023 19:08:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DEBA738062AC;
+ Wed, 25 Oct 2023 19:08:48 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.13])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B78262166B26;
- Wed, 25 Oct 2023 19:08:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 84E552166B26;
+ Wed, 25 Oct 2023 19:08:47 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
@@ -55,9 +55,9 @@ Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v6 05/23] vl: drop needless -spice checks
-Date: Wed, 25 Oct 2023 23:07:59 +0400
-Message-ID: <20231025190818.3278423-6-marcandre.lureau@redhat.com>
+Subject: [PATCH v6 06/23] qemu-options: define -vnc only #ifdef CONFIG_VNC
+Date: Wed, 25 Oct 2023 23:08:00 +0400
+Message-ID: <20231025190818.3278423-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
 References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -91,33 +91,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Since commit 5324e3e958e ("qemu-options: define -spice only #ifdef
-CONFIG_SPICE"), it is unnecessary to check at runtime for "-spice"
-option.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- system/vl.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ system/vl.c     | 13 +++++++++----
+ ui/vnc-stubs.c  | 12 ------------
+ qemu-options.hx |  2 ++
+ 3 files changed, 11 insertions(+), 16 deletions(-)
 
 diff --git a/system/vl.c b/system/vl.c
-index 92d29bf521..3be1a78a9d 100644
+index 3be1a78a9d..de6df188da 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -3475,12 +3475,7 @@ void qemu_init(int argc, char **argv)
+@@ -1095,13 +1095,14 @@ DisplayOptions *qmp_query_display_options(Error **errp)
+ 
+ static void parse_display(const char *p)
+ {
+-    const char *opts;
+-
+     if (is_help_option(p)) {
+         qemu_display_help();
+         exit(0);
+     }
+ 
++#ifdef CONFIG_VNC
++    const char *opts;
++
+     if (strstart(p, "vnc", &opts)) {
+         /*
+          * vnc isn't a (local) DisplayType but a protocol for remote
+@@ -1113,9 +1114,11 @@ static void parse_display(const char *p)
+             error_report("VNC requires a display argument vnc=<display>");
+             exit(1);
+         }
+-    } else {
+-        parse_display_qapi(p);
++        return;
+     }
++#endif
++
++    parse_display_qapi(p);
+ }
+ 
+ static inline bool nonempty_str(const char *str)
+@@ -3344,9 +3347,11 @@ void qemu_init(int argc, char **argv)
+                 machine_parse_property_opt(qemu_find_opts("smp-opts"),
+                                            "smp", optarg);
                  break;
- #ifdef CONFIG_SPICE
-             case QEMU_OPTION_spice:
--                olist = qemu_find_opts_err("spice", NULL);
--                if (!olist) {
--                    error_report("spice support is disabled");
--                    exit(1);
--                }
--                opts = qemu_opts_parse_noisily(olist, optarg, false);
-+                opts = qemu_opts_parse_noisily(qemu_find_opts("spice"), optarg, false);
-                 if (!opts) {
-                     exit(1);
-                 }
++#ifdef CONFIG_VNC
+             case QEMU_OPTION_vnc:
+                 vnc_parse(optarg);
+                 break;
++#endif
+             case QEMU_OPTION_no_acpi:
+                 warn_report("-no-acpi is deprecated, use '-machine acpi=off' instead");
+                 qdict_put_str(machine_opts_dict, "acpi", "off");
+diff --git a/ui/vnc-stubs.c b/ui/vnc-stubs.c
+index b4eb3ce718..a96bc86236 100644
+--- a/ui/vnc-stubs.c
++++ b/ui/vnc-stubs.c
+@@ -10,15 +10,3 @@ int vnc_display_pw_expire(const char *id, time_t expires)
+ {
+     return -ENODEV;
+ };
+-void vnc_parse(const char *str)
+-{
+-    if (strcmp(str, "none") == 0) {
+-        return;
+-    }
+-    error_setg(&error_fatal, "VNC support is disabled");
+-}
+-int vnc_init_func(void *opaque, QemuOpts *opts, Error **errp)
+-{
+-    error_setg(errp, "VNC support is disabled");
+-    return -1;
+-}
+diff --git a/qemu-options.hx b/qemu-options.hx
+index e26230bac5..edc8ca6e30 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2424,8 +2424,10 @@ SRST
+     OBP.
+ ERST
+ 
++#ifdef CONFIG_VNC
+ DEF("vnc", HAS_ARG, QEMU_OPTION_vnc ,
+     "-vnc <display>  shorthand for -display vnc=<display>\n", QEMU_ARCH_ALL)
++#endif
+ SRST
+ ``-vnc display[,option[,option[,...]]]``
+     Normally, if QEMU is compiled with graphical window support, it
 -- 
 2.41.0
 
