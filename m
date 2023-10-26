@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF037D7E05
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D750D7D7E1B
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:10:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvvL4-0005bA-VP; Thu, 26 Oct 2023 04:03:34 -0400
+	id 1qvvQw-000326-NA; Thu, 26 Oct 2023 04:09:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qvvKm-0005Va-Vc; Thu, 26 Oct 2023 04:03:18 -0400
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ id 1qvvQp-00031j-99; Thu, 26 Oct 2023 04:09:31 -0400
+Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qvvKl-0006LW-6R; Thu, 26 Oct 2023 04:03:16 -0400
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-41cd8bd5727so4433031cf.3; 
- Thu, 26 Oct 2023 01:03:14 -0700 (PDT)
+ id 1qvvQm-0008NB-8C; Thu, 26 Oct 2023 04:09:30 -0400
+Received: by mail-qv1-xf2d.google.com with SMTP id
+ 6a1803df08f44-66d093265dfso4384876d6.3; 
+ Thu, 26 Oct 2023 01:09:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698307393; x=1698912193; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698307765; x=1698912565; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=khtl84scTpSjIHQq6UYNUcz/DnzrlZyEL1AYEbkgclo=;
- b=EBe40OHF5ozMYCdGYynD340w7ImoAbwGJL2zMt9xroO4+lkCDE5yGEFXSc3wPKCMnI
- lUhE/BtYeui2GwTo5TljuRdaYPo3K90mUt7Gya26iRGVfZsfjuAUVLd7yxU4J/mANpJR
- VetG/y1ms8+lyVASXCvnhZMJ0ENPmoA2uzCy3kRnJqs9kRK+/0xKOL8rZSP9R7WZeDvw
- sceHgdtpqTAdsvbjQyj91iIQyKl1MmPcCkel2qLcDVGYinF9jqjaQFWvmNbAy9GF0Ks3
- 21hQcuCv3LTnZuERh1Ff0RkwRoKFyhxhm/bNqvJNG9sMXF3Joh4z+tZ5nRBohIwWTN8N
- bT9A==
+ bh=IC5m9AAqYvMhf7ADaR+bnPI2wZNYer2Z5KpTC/54nKA=;
+ b=V2N87jF5FDTLcx7eWvKEE4aJUVnvgZZ2kfmUQCKO9QzyNKMaKhPwLOaZnUXOtRLL3r
+ NIlNww1OTVGlbiKJiFbOVpkG0/DmLMHAn9O7jrAchb25F9P2SzqNSoBnKh0k7bqZumVh
+ 4nYCulZvjy4XtQ4bwFlnZleLHzQXRGz1ZWD72pmWlDpd9rafrkImczMEcp+8nHD+9Wnw
+ 71EPuMuqlJLW6XV14SKzHziHmi6dpcP2jfwu2xoMF35hZRLtQypHe6m0N/gXQXGxdZsP
+ PJR8utk4uNUZx6GdGE5nLvwKv+7NgU+21eptHphlYzmIVXAyNdg9J9CpCNxkRsMS0M3P
+ EQ2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698307393; x=1698912193;
+ d=1e100.net; s=20230601; t=1698307765; x=1698912565;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=khtl84scTpSjIHQq6UYNUcz/DnzrlZyEL1AYEbkgclo=;
- b=a4DtQjYjimKE2T7NrTp2+DXWPQ8xt5svYfaT0skpZD2g1dUzFs7924A2lZltDdIYu7
- Anod+9hdHu6aGk7RAiaYNpGRSNj/+4lcOsl+4h2ckCXfn7Ge4KlqdYe09sfR9OO9fmkR
- yD8ShOhz+ReZ7VeHzKAPwO1lDN/vggD4nELEoN09SAMlw1ahqLJtCW11i6dRXhCu1I79
- VVlEZR105dPUS4I9GaJMcclxrXJyulLrnBHD6KG9qwLmS032+4+kbOydoNCg6jBvKFel
- cYT6vGTsgsfll6vvAaI8hXjgJbCURh/JuW42YrvHJ+O9LVMdkXxGk9dfZ1bYtzB/bSv6
- h0RQ==
-X-Gm-Message-State: AOJu0YzLihh1t1jpZ8T9rAWFRKnhZ9yHqaISAFvKCU4EgItWQGYQObFJ
- DgOSb3IWr8gJlwOCchI1xEXCQWFu7VMIAmaNeJ8=
-X-Google-Smtp-Source: AGHT+IEYmQo91OknyW76upmBwMo88HT8UpAa8UpnPtNQhprjZqvE+RnGWmquEJp3GwQ+Vojh/FxVJWq7RZNSqOCFXG4=
-X-Received: by 2002:ac8:5886:0:b0:40f:f0e0:a008 with SMTP id
- t6-20020ac85886000000b0040ff0e0a008mr21589887qta.53.1698307393094; Thu, 26
- Oct 2023 01:03:13 -0700 (PDT)
+ bh=IC5m9AAqYvMhf7ADaR+bnPI2wZNYer2Z5KpTC/54nKA=;
+ b=lPnIULeahZ4TFAPFQP1HjyHsdwkHyvGAzxFKXIr/U4hdUo5ZkNwVFW+iJnoQw2JnXi
+ RmPvHyjo/2HDtTt8AlgHPw90JamvY3iAFuMO9Bap1nlt0Yx8QUoXV8v2t745DsBy87RB
+ I9Eknbg6opUJltcAQq3uMk0R7xhYDzE1MTY48Li02kSwEBnXXoBNdUZeq0PZSVBX4h89
+ batvbHz84UPRANt+5OYxJ9UFXVIKp/svopKEadL16Oi2JWMIHV1fYTGMjb0rb7ZiGWDB
+ WguEqVIxzhYyV39SIdZcUIwPOrIhOpoV/Qc/s+YltWFsnkx7SH8O2fTEyTDmz1f1u3G2
+ c/ig==
+X-Gm-Message-State: AOJu0YwSTBW9wxk3MCpZm/ohpT/4bXzVaKuRY6Wo9eABnpMIsIrZjoFI
+ 7Vtjo86LVbozGfCmZ2S4j0p9wmExp/RrLAst3jU=
+X-Google-Smtp-Source: AGHT+IHf7jWjkAueVR5j0dXvrifZel28UfYQHoGWLaLeQ72lRWb72u/FFUSlQ7DrgFiDIbOu3EVkCn+K1rz6tgWZ4vk=
+X-Received: by 2002:ad4:5aa3:0:b0:66d:6526:d605 with SMTP id
+ u3-20020ad45aa3000000b0066d6526d605mr21732046qvg.63.1698307765425; Thu, 26
+ Oct 2023 01:09:25 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
- <20231025190818.3278423-15-marcandre.lureau@redhat.com>
- <bc6d4505-df80-8179-0201-7eb396a22547@eik.bme.hu>
-In-Reply-To: <bc6d4505-df80-8179-0201-7eb396a22547@eik.bme.hu>
+ <20231025190818.3278423-16-marcandre.lureau@redhat.com>
+ <4b2a7827-b0a0-4cd5-81a4-d4129a53ac82@redhat.com>
+In-Reply-To: <4b2a7827-b0a0-4cd5-81a4-d4129a53ac82@redhat.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 26 Oct 2023 12:03:00 +0400
-Message-ID: <CAJ+F1CK+FwTd=A1KncqQuO_gPsf+anwWYProiPchK_t04wpTcA@mail.gmail.com>
-Subject: Re: [PATCH v6 14/23] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
- !PIXMAN
-To: BALATON Zoltan <balaton@eik.bme.hu>
+Date: Thu, 26 Oct 2023 12:09:14 +0400
+Message-ID: <CAJ+F1C+q1N0MWGHH=L82iyL-gCp__U+eELo9=y5fz0rexUFptQ@mail.gmail.com>
+Subject: Re: [PATCH v6 15/23] ui/gl: opengl doesn't require PIXMAN
+To: Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
  Peter Maydell <peter.maydell@linaro.org>,
  "Dr. David Alan Gilbert" <dave@treblig.org>, 
- Eric Blake <eblake@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-arm@nongnu.org, 
+ Eric Blake <eblake@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-arm@nongnu.org, 
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qv1-xf2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,62 +97,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi
 
-On Thu, Oct 26, 2023 at 12:58=E2=80=AFAM BALATON Zoltan <balaton@eik.bme.hu=
-> wrote:
+On Thu, Oct 26, 2023 at 10:44=E2=80=AFAM Thomas Huth <thuth@redhat.com> wro=
+te:
 >
-> On Wed, 25 Oct 2023, marcandre.lureau@redhat.com wrote:
+> On 25/10/2023 21.08, marcandre.lureau@redhat.com wrote:
 > > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 > >
-> > This simply means that 2d drawing updates won't be handled, but 3d
-> > should work.
->
-> Does this silently break guest display when !PIXMAN or I don't understand
-> what this means (I don't know how this device works). If it causes missin=
-g
-> display without PIXMAN should this need pixman or print a warning about
-> that?
-
-The 2D updates will not be displayed. There will be a warning of
-"unhandled message 8" for each update.
-
-3D updates are still handled, so you could skip the boot phase until
-the guest 3d driver is loaded, or you could have a vhost-user-gpu
-backend that only provides 3D updates (aka dmabuf)
-
->
-> Regards,
-> BALATON Zoltan
->
+> > The QEMU fallback covers the requirements. We still need the flags of
+> > header inclusion with CONFIG_PIXMAN.
+> >
 > > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
 > > ---
-> > hw/display/vhost-user-gpu.c | 2 ++
-> > 1 file changed, 2 insertions(+)
+> >   ui/meson.build | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
 > >
-> > diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-> > index 1150521d9d..709c8a02a1 100644
-> > --- a/hw/display/vhost-user-gpu.c
-> > +++ b/hw/display/vhost-user-gpu.c
-> > @@ -307,6 +307,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, Vhos=
-tUserGpuMsg *msg)
-> >         dpy_gl_update(con, m->x, m->y, m->width, m->height);
-> >         break;
-> >     }
-> > +#ifdef CONFIG_PIXMAN
-> >     case VHOST_USER_GPU_UPDATE: {
-> >         VhostUserGpuUpdate *m =3D &msg->payload.update;
-> >
-> > @@ -334,6 +335,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, Vhos=
-tUserGpuMsg *msg)
-> >         }
-> >         break;
-> >     }
-> > +#endif
-> >     default:
-> >         g_warning("unhandled message %d %d", msg->request, msg->size);
-> >     }
-> >
+> > diff --git a/ui/meson.build b/ui/meson.build
+> > index 3085e10a72..7c99613950 100644
+> > --- a/ui/meson.build
+> > +++ b/ui/meson.build
+> > @@ -60,8 +60,8 @@ endif
+> >   system_ss.add(opengl)
+> >   if opengl.found()
+> >     opengl_ss =3D ss.source_set()
+> > -  opengl_ss.add(gbm)
+> > -  opengl_ss.add(when: [opengl, pixman],
+> > +  opengl_ss.add(gbm, pixman)
+>
+> I don't quite get the above line (sorry, meson ignorant here) ... does
+> "pixman" simply get ignored here if it has not been found?
+>
 
+Yes, when it is 'not_found", it's simply ignored. Essentially, this is
+making pixman from required to optional to build the opengl source
+set.
 
 
 --=20
