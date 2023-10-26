@@ -2,96 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A507E7D7E43
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 296487D7E36
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:15:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvvWN-0005n9-LP; Thu, 26 Oct 2023 04:15:15 -0400
+	id 1qvvW0-0005ix-S0; Thu, 26 Oct 2023 04:14:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qvvWE-0005lj-Om
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:15:06 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qvvWC-0003DD-N7
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:15:06 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-53ed4688b9fso879113a12.0
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 01:15:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698308101; x=1698912901; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=Ql5Vy4pWQNjDcXY9mDI9mWkXrxMH6KemWvgXgYc24PY=;
- b=b3jdnbWx4/2EgT625N5lzFuuCBdB1Q6Zw1OY5CxR4gbnXXyDMu3wyhk+cCXvJYquDp
- f2aHbi1FenlPzx4leY6waVEZcl5Dv8GBQEzdvC8ZaigOQWvTE/6hAKArqJCG0yRRCcNz
- Y0LtdaNOQUt+38QKb+OBkciTVcsmUh90u6cp7sx/Ua4otVtlJdzqn6CLeoahjyOIDQgV
- 8bzOY2i0g+Bng65aBSAfna/gNAwJ0fRke8b2YsdJGZ15BlQc/hjU7uCeDZJti7VCHaVZ
- tth5lJubUXikH6SO6u1rC9RWQmoGXNB3vd78a2RVNTuXGcqTBMPEJseXDpu+/N9Kogv7
- 93Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698308101; x=1698912901;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ql5Vy4pWQNjDcXY9mDI9mWkXrxMH6KemWvgXgYc24PY=;
- b=A1IXklO1h9eEOCjUhzrfRxlpHlv84jNEs0ccFR7BA8An1ksUemIbNTBhTDTfLG6cJh
- bd9m4cgzCeWNULuOvy1caO2Gc8Mt/CoPC8yq9MNaue+Ssw1dD2ae/6vXKpD39CoXh2hL
- ateTy8bzcYtGEyodVOFipPQKqUythR2CvCzMSjLVjQpSQGUcHYbcAqMqW1czW+TYOeP8
- Z+VlHNvaRGMrb/kg7E3Fln3UAzt2kfqvNS0EX1O9zUNsvW/8cX2ZCgedyND3xhH2qb4S
- KxTuzn/3Mbp+qGR6yVFnMMqDGIhNMHZtdzWaaHQLUHQ+EsDUjt4OBS7kQRO5cjBM3ybT
- oImw==
-X-Gm-Message-State: AOJu0YzSxXfzyKbyYVAkGAkxWSOuSTtYeJmdv8xbDVbapMp2EBlf3rhY
- zuRMQ05aJ9jfRXMDZDbSXfJbpg==
-X-Google-Smtp-Source: AGHT+IEeTLwsDxjdkFHpFKi4ZMLMdr0xFhgD4ScRFxrMambRF0ZbA4M3nqgjmLa+zghciBK9sWAe0A==
-X-Received: by 2002:a50:8e19:0:b0:53e:98c6:5100 with SMTP id
- 25-20020a508e19000000b0053e98c65100mr11789231edw.30.1698308101376; 
- Thu, 26 Oct 2023 01:15:01 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- q20-20020a056402033400b0053dd8898f75sm10706781edw.81.2023.10.26.01.15.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 01:15:00 -0700 (PDT)
-Date: Thu, 26 Oct 2023 10:15:00 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Ani Sinha <anisinha@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Anup Patel <apatel@ventanamicro.com>,
- Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
-Subject: Re: [PATCH v4 01/13] hw/arm/virt-acpi-build.c: Migrate fw_cfg
- creation to common location
-Message-ID: <20231026-6b31593481fe2476e49197e5@orel>
-References: <20231025200713.580814-1-sunilvl@ventanamicro.com>
- <20231025200713.580814-2-sunilvl@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qvvVz-0005iX-Gg; Thu, 26 Oct 2023 04:14:51 -0400
+Received: from mail-dbaeur03on2071a.outbound.protection.outlook.com
+ ([2a01:111:f400:fe1a::71a]
+ helo=EUR03-DBA-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qvvVt-0002jJ-AX; Thu, 26 Oct 2023 04:14:51 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=n9Iv+uByc0JlimLtp6Wx00p/QBZ3/FwReOB9suCnCs2Gogl283WdE4vBwBOuS+co9Ef1MNsre3wGLl9ewvqUkSNT7zFODILQ/nbz+nkB6xh8kzRv/uyWINZpX2TZHvCYJW8BOhx6CWTIjZSN/jtMOlNz5rRBsz6Bqg2bbWD0j6FBvGaLA/fWNvRZTPGHH80Fx/CIdlMME/dbNy8Fp8KM2w7iMplZhAqxJm/6Nl8Pa29vKJSSnropzIjatSHhYiUGh6WVBDc5R/SJ+v2IGJygKx0ONSJJU+eX/DfSBEX02KOp2byZW+DCXm+itrD8Xt2iV3+ztvOU84tF/PsD/k2Nog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hYQ8MXWAt4gognTuCl248f/+SLcW3lJQ0/qxHLkJKwk=;
+ b=oKCkE5ohSD4uWNExYGeVQhYaTf2i+Odc16TOoy38ir8uyTJUJRHtPcp2Y+hcURr8ZUd1576sAT0E5xd7bWkDFl1Ph/gLGTbHpfqW8efiwNYPJ/1A7s0QvrkgLp2HoJLUOd9zk85dd7YJeLN9HOwU8hN2gZWJdMDcoTRxflsxm98oTYBHccP75G4WCRmmaanifVFgnLmVY/pjRBonAzvtxnUUt8PIUZrDKj2Eo80ZpZISqpOJ53ULRPXQ3x5YVz2PADnqDEIvr6Iuuvzc0qAgIYssg640AUM/uSnxhUauK5R1kucPithgNp/8H7BXAgTM4UtcYQVnV3fcmek3JvmOzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hYQ8MXWAt4gognTuCl248f/+SLcW3lJQ0/qxHLkJKwk=;
+ b=eaXVBSwOgDUlBE7bCnlGrLPawcqFxTiSC3ZVFJl1ebaJSolkV4RqoFzmOGEj/ISAjCgXHOK1p3iaHEleXf51v/65xflpRF+yQAroYMA2eN4JOzo0wkCDi1VVp1MtPtu8JvRE4HNBcM+UOGAn+DYt4iThtgdxv9WqXTqEz0BCC1vNMuSCFs0B2iKToYYAdtHdnu5WOyRRMODYsxFtpO/QysOAb+xkIp/uDG0DfjgTnoykwHdwUIhoogHLp1yX5rDZKUIS6vR0MxTUF2fTVqSS5NmQSv0F8jPgh2HPCSNw1g9tWVZStCQ+HdXA/eWeh0lR9oJSbMYuDRW2Vqsrx5pIGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by AS8PR08MB6278.eurprd08.prod.outlook.com
+ (2603:10a6:20b:29a::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Thu, 26 Oct
+ 2023 08:14:40 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::597b:57ae:f418:2352]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::597b:57ae:f418:2352%6]) with mapi id 15.20.6933.019; Thu, 26 Oct 2023
+ 08:14:40 +0000
+Message-ID: <c33a3e1a-cc84-4d8b-b546-a078174eb9f0@virtuozzo.com>
+Date: Thu, 26 Oct 2023 11:16:14 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] qemu-img: rebase: stop when reaching EOF of old
+ backing file
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ den@virtuozzo.com
+References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
+ <20230601192836.598602-2-andrey.drobyshev@virtuozzo.com>
+ <02d69c45-4b7b-4b86-aba5-d661102714dd@tls.msk.ru>
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <02d69c45-4b7b-4b86-aba5-d661102714dd@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: VI1PR09CA0131.eurprd09.prod.outlook.com
+ (2603:10a6:803:12c::15) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231025200713.580814-2-sunilvl@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x530.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS8PR08MB6278:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c77644e-80a5-463e-9ef0-08dbd5fb9a1f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: I5bq7f3LNQHqdD2VEjf20MJDxt/rGVpFNxhAk7ARgdnXC0iLx9c84Ki4ihDgYejUW29dMbTAKhdVovTAgSkfbNIoh8DPYTrqY3Nnokqt8T9X2dSXOkBsPeepQOLrnb1F1j78P8HacCoQqvFangwpx4m9MWGta0ZQ4ZumdUlzCrTPl9pC4ju9EMo6gXCxqBo28gx0bVhtOCNgpJMewCRaqVWsVntyE9hL0ok60jfuCZeUjwVq2yQI713KFzko1g+D86ObyhsK5w9OnhMgCKj3lIOP8Ay2cIxCpGVdaAoUOVu1nupsCFz+yxcTUHUtt60gWFugQaUQPj6vFhLGFC3fDd3ZU045pTks9Ku+yNlL1K4x6KlQ2AigjpUY9UlLrhlirfSLZrtx5eacIdWNFQ6+gyQ/UR7ruLAYwFvbQYFUl9nETuuG0oXzTOE4E2nhWO1ukMOgC5/lih1oE/FigTepBJv6edqCtlLQohGxU2xPgozD7sXAkVcUYtxgnIEaDkBMA47T3LJiH5CR0nDK1mkSW9Tyv6bcvYCtsQIWrKlkYkTUHyPtNj/kUu0YhMPWzPYGd0ML4qcW9dBRnbFB2SDZb7++8578TU2s7uh2Pes+ECfR9iojmPSBiamBIbaGG554bwvQYBO/Rc38jwjnFhaf1Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(39850400004)(366004)(396003)(136003)(346002)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(107886003)(6506007)(4744005)(44832011)(2906002)(41300700001)(38100700002)(66476007)(66946007)(6666004)(2616005)(66556008)(53546011)(966005)(6486002)(6512007)(316002)(83380400001)(86362001)(36756003)(31696002)(4326008)(5660300002)(478600001)(8936002)(8676002)(26005)(31686004)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cWZaeFlUWnJiWUdybXF2MmVuMlY2aTdsTisvWDUrSU1LamE2MzdJMmh2d1hp?=
+ =?utf-8?B?M0RNeGh2MGNQbXZpVWs3bGRtay9XMHFhYkRYRm12NXBEVzc3TWUrREFFWUMx?=
+ =?utf-8?B?UEhDY0pxdklPMm15NkVISGxuU1l3cEhlVGFRVmE4NWk1aU1vODJWQy9YRUQ0?=
+ =?utf-8?B?aE5DU054V2wrSlU2Y0VjSnVCd0p3SE8vRXRaZlBkWjR2S2xmZmtSNTdDb3k3?=
+ =?utf-8?B?b1ovcG5BN0hmd0xIeWhrOVhlbnFGVmNBK1czeFVMUngveTdxeWwveE9IQW9x?=
+ =?utf-8?B?RzljVWI3b2phR01TU1BDcXRlUzZqLzU2ZDNmclQzOS9Eb0c2YXBjZTJtQkpu?=
+ =?utf-8?B?ajFqUVJ0Q3VkU2wxbjV3My9DZkdHWC9Pa0x3M1VnZUdobVFkUWlqcGQyUmVp?=
+ =?utf-8?B?c3crTFd5dGZ0a0YrVUJ2MnBoSnNHT3UyZG9CazlOMFl3cHRRdm9sRmw0M2Nk?=
+ =?utf-8?B?UUlkVEtoU0wzWm1IT29HcUdrdmhHU1NDNEFZL2JiMkZkbVJ0b1dRd2k4c2hW?=
+ =?utf-8?B?RWlzblg3L3ZQQW04ZmgyYjFYMDRvcm82Ukh0dC9GL1JUMjh2TWM1dmJ2c1dt?=
+ =?utf-8?B?d0VJOUxLUXdVdS9kS1FzMHpobUtwa3J1N0xkWkMyL3NTZ0JZcjlmZFVKY0ln?=
+ =?utf-8?B?K3YvVG10VmpmcnBqbUdTY2lCT3pRdFovdGt4MmQ1S2dTazBpU29PcUlTMk9K?=
+ =?utf-8?B?ZVFuWGdHQmNrZENEQTVWV0VKR3pzQUhHOXZ6R2RMODk2ODNLOFJyOEE2bk9y?=
+ =?utf-8?B?cTMrK3dXOVpocksxdEJIRnFPK1JGdGtvZ0hZZDdpaGExSksxeFdOMWRTQmZx?=
+ =?utf-8?B?VDFVRlVCalFXZnl3ZTBUYWNoNjVDYlNIenZldGRBcHV6RWtNT0JUK2ltdG8v?=
+ =?utf-8?B?Q3h3SjlYaXg2VmZSaXYrVXhEeWZESHJ4WVF6c0NhSmUzaHpoVVNYQ2ZzZzVQ?=
+ =?utf-8?B?RWhMNy85VGNudlpYOXd0QnE4WC9yYWZkb2N3RFhnV0ExUmZoWVZQNFRDY3Rw?=
+ =?utf-8?B?YWdFb3Ava2lPRXVQaE5wY1FnV29uV2ZhanB4RFBEUHppMWxVNFBtWXJqWEdv?=
+ =?utf-8?B?eWhyMkg1NU9wcUJrT1Z3Mm90SVBSMXV4NlA5cXlXdmJFOTluVHVrSHlwUUhu?=
+ =?utf-8?B?Ymk4blZkM0Y2NmNIQUlGV2lNNlBvVUpqUUd4WnRJZUFLRFFOS0ovUG9EL28z?=
+ =?utf-8?B?U0k3ZjYvellSMklKMTROdTMrMmFudlQvNXdsMXJaRTBTZ0pmOU5kSTRLWTZu?=
+ =?utf-8?B?OEFDdVJ5MzFrWDcyQkVWSEQ4U3NLMEZ3N2VpR3BLK05adVR1Y0hIQjhUSG5v?=
+ =?utf-8?B?UDJkRlNOd0VuTHJhelhGWTVrYUNPTnpVQmlHbmRhbEhVRStVVk1NM2VGbTBP?=
+ =?utf-8?B?YUZCUUxtS09QSTMxS3I4ZjZSQjZ1VzVLMDk5UlM0aTlwZGlzdXByZGlwZVoz?=
+ =?utf-8?B?bFMwb01uK3hQcmt6cm9DRFltYWMxa2YxZXpmcFdXSzZHcVQ2eGg2OFRoUndZ?=
+ =?utf-8?B?NDE2Mm1XZWZqYnRqaUFKV2FpdXIrWVFIdmE3dFVOMTE0bDhUbFE2TW9JUzFv?=
+ =?utf-8?B?VXdSSk93clN1NHVvS3lQTEd5R283dW4zSDJmQkhEMitOekpFdnV1eWQxVExk?=
+ =?utf-8?B?K2NJK2RxcjlQb0dhTGhDZ1NscVJNbEhocVhMakNmRzFvRk5pZkdNSGt2QlZX?=
+ =?utf-8?B?c0pEY2c3MXl3ZlU4YnJVODlTQ1Q4V2lWZk81dFEyRGZQdlJqRnl3V1d5aXJB?=
+ =?utf-8?B?a1U2Z3lHckxsemtCYjN1TzF3V3pzOERxY0VGd3lLOEFTUFpCL3ZJeDdxcTJM?=
+ =?utf-8?B?MFlWRTBwRnMwL3YxaEd2dkdjeDFjanpGKzRnMmFuYmNGRXFua005QVZ1Wk8x?=
+ =?utf-8?B?Sy9BNUVSMS9jS2MzUVlDZUpDeVJ4Q1FPdE54eCtzeWxaYUlkOWUrOURaV2dl?=
+ =?utf-8?B?d2V3REJYYTBZaExlYW9Vcmd3RXNJbDhORUZ6T2U1NTBRdlpFWVBtWVhKTC9I?=
+ =?utf-8?B?WXJQNnQ4Zjk3OTVEYUtFamxCZXE2Nnk4NkZYZVdpVlo5TWR4cTFpTzJITysr?=
+ =?utf-8?B?a2I2WGdac050VmxDQzdRVnlKVFA5T3p6UmdhL1FtVVNDdVRmZEpqSHJqS0RP?=
+ =?utf-8?B?MWR6S2dDNkNLWmhYWkw2MjFoN1A1Q2xpSnc1MFAxc1FwbXJTZDNTT1U5cUtq?=
+ =?utf-8?Q?5Ygl3DhFdk3AKyLLHUkDpGg=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c77644e-80a5-463e-9ef0-08dbd5fb9a1f
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2023 08:14:40.3544 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Uugt1kGTXpmxbs8RyhXHJAV/kRQIaHB/dHOeAj2qjWzFD/WST4570EWo/pdpXPQNRyEWEnojkoP7jtaoZ78Ym0IdOy6L5SDjAiAHxEmpKI0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6278
+Received-SPF: pass client-ip=2a01:111:f400:fe1a::71a;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR03-DBA-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,84 +147,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 26, 2023 at 01:37:01AM +0530, Sunil V L wrote:
-...
-> diff --git a/hw/nvram/fw_cfg-acpi.c b/hw/nvram/fw_cfg-acpi.c
-> new file mode 100644
-> index 0000000000..eddaffc09b
-> --- /dev/null
-> +++ b/hw/nvram/fw_cfg-acpi.c
-> @@ -0,0 +1,44 @@
-> +/*
-> + * Add fw_cfg device in DSDT
-> + *
-> + * Copyright (C) 2008-2010  Kevin O'Connor <kevin@koconnor.net>
-> + * Copyright (C) 2006 Fabrice Bellard
-> + * Copyright (C) 2013 Red Hat Inc
-> + *
-> + * Author: Michael S. Tsirkin <mst@redhat.com>
-> + *
-> + * Copyright (c) 2015 HUAWEI TECHNOLOGIES CO.,LTD.
-> + *
-> + * Author: Shannon Zhao <zhaoshenglong@huawei.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> +
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> +
-> + * You should have received a copy of the GNU General Public License along
-> + * with this program; if not, see <http://www.gnu.org/licenses/>.
+On 10/26/23 09:32, Michael Tokarev wrote:
+> 01.06.2023 22:28, Andrey Drobyshev via:
+>> In case when we're rebasing within one backing chain, and when target
+>> image
+>> is larger than old backing file, bdrv_is_allocated_above() ends up
+>> setting
+>> *pnum = 0.  As a result, target offset isn't getting incremented, and we
+>> get stuck in an infinite for loop.  Let's detect this case and proceed
+>> further down the loop body, as the offsets beyond the old backing size
+>> need
+>> to be explicitly zeroed.
+> 
+> Ping? Has this been forgotten? It's a few months already..
+> 
+> /mjt
 
-I don't recommend creating new files with the long form GPL instead of an
-SPDX. I can't find a QEMU SPDX policy to point at, but pretty much every
-project I work on has been moving towards SPDX, and usually with a format
-policy. I presume QEMU will either slowly work its way there too or
-someday do a mass change. New files can participate in an unofficial slow
-transition now, rather than have to be touched again in a mass change.
+Hi Michael,
 
-...
-> diff --git a/include/hw/nvram/fw_cfg_acpi.h b/include/hw/nvram/fw_cfg_acpi.h
-> new file mode 100644
-> index 0000000000..1c863df329
-> --- /dev/null
-> +++ b/include/hw/nvram/fw_cfg_acpi.h
-> @@ -0,0 +1,15 @@
-> +/*
-> + * ACPI support for fw_cfg
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
+It's not forgotten, there's already v3 of this series and it's already
+taken to the block branch by Kevin:
 
-While QEMU doesn't appear to have an SPDX policy with formatting rules,
-I would format this as
+https://lists.nongnu.org/archive/html/qemu-block/2023-09/msg00593.html
 
-/* SPDX-License-Identifier: GPL-2.0-or-later */
-/*
- * ACPI support for fw_cfg
- */
-
-And the source file above as
-
-// SPDX-License-Identifier: GPL-2.0-or-later
-/*
- * Add fw_cfg device in DSDT
- *
- * ...
- */
-
-as that is the recommended format for many projects (I think starting
-with Linux which documents[1] it) and tools have already learned that
-formatting. QEMU's checkpatch will accept the C99 comment style[2].
-
-[1] https://www.kernel.org/doc/html/latest/process/license-rules.html#license-identifier-syntax
-[2] commit 8d061278d385 ("checkpatch: allow SPDX-License-Identifier")
-
-Thanks,
-drew
+Andrey
 
