@@ -2,84 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A4E7D85DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B6C7D85F6
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:25:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw2AZ-0008Hw-Bx; Thu, 26 Oct 2023 11:21:11 -0400
+	id 1qw2Er-0000rm-C7; Thu, 26 Oct 2023 11:25:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qw2AT-0007ZU-OQ
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:21:05 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qw2AS-0006Sj-1G
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:21:05 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6b709048d8eso930921b3a.2
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 08:21:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1698333662; x=1698938462; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OVqN7eZWpG4AFfm2fo+v1EIqXB/E7QYSqh6BXCl+vPo=;
- b=j1+5ULj4ZoPTQOiK5wXXr970Uz8DQgrIpnvrdc5U68AbaZyaqbKYCHhpFzTPB4fAla
- gNNMtAPOFJEiX7twy9FWUmqcPZ4WLGqhua+WHMUlC4KVpuPM2U5m/RpPBgFWXbMTeiRx
- P0/WymqB5az43nMIkz9XwESYBAGylTxQ9GV1hXEqTNuvMfpoF6e1RpHWoZBINkMb4Hbu
- ccb7x6+9eycsvm7UClrGx0+FczcjYaQUC563RFNqMTOWlh99W62HQzIZnGPcqe1/A13N
- nfabLho9E+luqFPHh9f0fW/KuaJxhhvExK+f5jQuDH6AQvmVQhGBb7aJR1FZHwpVWKEA
- LnZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698333662; x=1698938462;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OVqN7eZWpG4AFfm2fo+v1EIqXB/E7QYSqh6BXCl+vPo=;
- b=u8tNA/HgLr1XnerpSnK4Zinj8VibwnslpMV5Pkr/Rm8CQ2ppoiwvuzV7RKZshSzsZ/
- nr490bDPhnpZSXxoknotKIISArWPpAyreEqptqssSMfq4CDUcqVcU62GNE+i8qVibdp5
- u2oW1OUTxhPFKDPNoNJ1Qy0Mga+dz929Fc3R1Tnbhw2WXEcMRtZbXKH3HsnwhA1m8Vgt
- EoKljGFH1Obtec/sxMrUju8xIquVNC4JwsHMAAUdVHsYulTIyWONZrwAoMvEypNTZlBT
- 9uuOiQAQxkkwWbkryfw1qwgGSkkwbBXuVUHJ/Y1c0BidDjzeYeWD0HrDSoCWgIJ+qtLA
- yXew==
-X-Gm-Message-State: AOJu0YzZrl5yoRkaTa0QOg5oNo5RaWRArk7P+zTyAVw6pRJQQP5nvVI5
- oF4+zK5pfwLD97J08fl9HIOG1ZclPLIALUpno+Gt0fP0Sx2M1g+VuWLqJ8UNSr13h7Jogywt2L+
- XFRuQVi8TVtINBq5KnqozaaqXAhGhzzzMcktDgR0Bv6e+ZaAuUWyPyqePYF7hU4fMTxMrKPvrPV
- 6S
-X-Google-Smtp-Source: AGHT+IERltKT/hxnR/RR4mhvTtUMtwJHNLQ4QKVxIKn01sOrCNWDMN2smK+Q/YWA8F6NvyEX9EvaMw==
-X-Received: by 2002:a17:90a:1a43:b0:27d:12e1:94e0 with SMTP id
- 3-20020a17090a1a4300b0027d12e194e0mr12614883pjl.36.1698333662188; 
- Thu, 26 Oct 2023 08:21:02 -0700 (PDT)
-Received: from duncan.localdomain (125-228-20-175.hinet-ip.hinet.net.
- [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- nv18-20020a17090b1b5200b0027fee011cebsm1326061pjb.10.2023.10.26.08.21.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 08:21:01 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <Alistair.Francis@wdc.com>
-Subject: [PATCH v2 14/14] disas/riscv: Replace TABs with space
-Date: Thu, 26 Oct 2023 23:18:21 +0800
-Message-Id: <20231026151828.754279-15-max.chou@sifive.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231026151828.754279-1-max.chou@sifive.com>
-References: <20231026151828.754279-1-max.chou@sifive.com>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qw2Eb-0000oy-Sc; Thu, 26 Oct 2023 11:25:22 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qw2EZ-0000zv-Ld; Thu, 26 Oct 2023 11:25:21 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39QFORh2013594; Thu, 26 Oct 2023 15:24:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=bgYmqJoFleQS4H1PbfPvZE79DpdZ7LIeAIRGaddso24=;
+ b=CGzkXq+y8bK6GAAf3i1TjtGRx7XSiFmzwDPcAi4PdxwUwWEK4CltP5mgitNHu1D0j8xk
+ onfJUuMMWOjhwd2i5BBnnm6fEpOBc5n1eteSaj791/iuObFlgFIO370pWD5aN6OKyPRW
+ iH5HTb3xHYaOq4wB8kGcBnVKNVIKPxGs+rmKXNfmLeW/1Z1t1rrJD9ekG84mNLaW4Z6a
+ rT/4iMophjpqNUu/oH7/dvPaCuiv1UGfmWxB3HLLShibko6XU72YlzlauK4x2lNlGU/8
+ w2d6bgsmIx9ZhYNeqgl7/NiyW7u6rIw9oRrGOC2Sh0YgH3inw0zJ8GxNz7arV5kyMyRJ 0A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyth3rdp4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Oct 2023 15:24:58 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QFOXFJ014265;
+ Thu, 26 Oct 2023 15:24:57 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyth3rdnq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Oct 2023 15:24:57 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39QE4Rah010218; Thu, 26 Oct 2023 15:24:57 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsbyy6hg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Oct 2023 15:24:57 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39QFOu2h37618116
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 26 Oct 2023 15:24:56 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0A90658053;
+ Thu, 26 Oct 2023 15:24:56 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3232D58043;
+ Thu, 26 Oct 2023 15:24:55 +0000 (GMT)
+Received: from [9.24.12.86] (unknown [9.24.12.86])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 26 Oct 2023 15:24:55 +0000 (GMT)
+Message-ID: <14bca721-8cc0-428a-9898-038b07323571@linux.ibm.com>
+Date: Thu, 26 Oct 2023 10:24:54 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/10] hw/fsi: Introduce IBM's scratchpad
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231021211720.3571082-1-ninad@linux.ibm.com>
+ <20231021211720.3571082-3-ninad@linux.ibm.com>
+ <957bc5db-53aa-6946-edf3-3b728a52b660@linaro.org>
+ <f2a50afd-3fa1-47d2-960e-0aaaf57c7cd2@linux.ibm.com>
+ <4b2e68dd-db49-4041-ee5a-ae2b836bd255@linaro.org>
+Content-Language: en-US
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <4b2e68dd-db49-4041-ee5a-ae2b836bd255@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VRDoNUX0ltXdaisX8JliAu-aYsBzZNHw
+X-Proofpoint-ORIG-GUID: qaOyQk5-T34quNQQXWy0oLndDtnBm4r-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-26_13,2023-10-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ adultscore=0 suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
+ phishscore=0 mlxscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ mlxlogscore=740 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310260133
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,43 +120,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replaces TABs with spaces, making sure to have a consistent coding style
-of 4 space indentations.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
----
- disas/riscv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On 10/24/23 02:08, Philippe Mathieu-Daudé wrote:
+> On 23/10/23 19:08, Ninad Palsule wrote:
+>> Hello Philippe,
+>>
+>> On 10/23/23 10:00, Philippe Mathieu-Daudé wrote:
+>>> On 21/10/23 23:17, Ninad Palsule wrote:
+>>>> This is a part of patchset where scratchpad is introduced.
+>>>>
+>>>> The scratchpad provides a set of non-functional registers. The 
+>>>> firmware
+>>>> is free to use them, hardware does not support any special management
+>>>> support. The scratchpad registers can be read or written from LBUS
+>>>> slave.
+>>>>
+>>>> In this model, The LBUS device is parent for the scratchpad.
+>>>>
+>>>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>>>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>>>> ---
+>>>> v2:
+>>>> - Incorporated Joel's review comments.
+>>>> v5:
+>>>> - Incorporated review comments by Cedric.
+>>>> v6:
+>>>> - Incorporated review comments by Daniel.
+>>>> ---
+>>>>   meson.build                        |  1 +
+>>>>   hw/fsi/trace.h                     |  1 +
+>>>>   include/hw/fsi/engine-scratchpad.h | 32 ++++++++++
+>>>>   include/hw/fsi/fsi.h               | 16 +++++
+>>>>   hw/fsi/engine-scratchpad.c         | 93 
+>>>> ++++++++++++++++++++++++++++++
+>>>>   hw/fsi/Kconfig                     |  4 ++
+>>>>   hw/fsi/meson.build                 |  1 +
+>>>>   hw/fsi/trace-events                |  2 +
+>>>>   8 files changed, 150 insertions(+)
+>>>>   create mode 100644 hw/fsi/trace.h
+>>>>   create mode 100644 include/hw/fsi/engine-scratchpad.h
+>>>>   create mode 100644 include/hw/fsi/fsi.h
+>>>>   create mode 100644 hw/fsi/engine-scratchpad.c
+>>>>   create mode 100644 hw/fsi/trace-events
+>>>
+>>>
+>>>> diff --git a/include/hw/fsi/fsi.h b/include/hw/fsi/fsi.h
+>>>> new file mode 100644
+>>>> index 0000000000..e65f26f17b
+>>>> --- /dev/null
+>>>> +++ b/include/hw/fsi/fsi.h
+>>>> @@ -0,0 +1,16 @@
+>>>> +/*
+>>>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>>>> + * Copyright (C) 2023 IBM Corp.
+>>>> + *
+>>>> + * IBM Flexible Service Interface
+>>>> + */
+>>>> +#ifndef FSI_FSI_H
+>>>> +#define FSI_FSI_H
+>>>> +
+>>>> +/* Bitwise operations at the word level. */
+>>>> +#define BE_BIT(x)                          BIT(31 - (x))
+>>>> +#define GENMASK(t, b) \
+>>>> +    (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 1))
+>>>
+>>> Please use MAKE_64BIT_MASK() from "qemu/bitops.h".
+>>
+>> The GENMASK and MAKE_64BIT_MASK macros are invoke differently.
+>>
+>> GENMASK is invoked with bit t and bit b (t:b) and it provides the 
+>> mask and
+>>
+>> MAKE_64BIT_MASK uses shift and length.
+>
+> Don't we have:
+>
+> #define GENMASK(t, b) MAKE_64BIT_MASK(t, b - t + 1)
+>
+> ?
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 7ea6ea050e9..e9458e574b9 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -3136,12 +3136,12 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 }
-                 break;
-             case 89:
--		switch (((inst >> 12) & 0b111)) {
-+                switch (((inst >> 12) & 0b111)) {
-                 case 0: op = rv_op_fmvp_d_x; break;
-                 }
-                 break;
-             case 91:
--		switch (((inst >> 12) & 0b111)) {
-+                switch (((inst >> 12) & 0b111)) {
-                 case 0: op = rv_op_fmvp_q_x; break;
-                 }
-                 break;
-@@ -4579,7 +4579,7 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-         break;
-     case rv_codec_zcmt_jt:
-         dec->imm = operand_tbl_index(inst);
--	break;
-+        break;
-     case rv_codec_fli:
-         dec->rd = operand_rd(inst);
-         dec->imm = operand_rs1(inst);
--- 
-2.34.1
+You are right. I am able to use this macro. I have removed some unused 
+macros.
 
+Thanks for the review.
+
+Regards,
+
+Ninad
+
+>
+>> Thanks for the review.
+>>
+>> Regards,
+>>
+>> Ninad
+>>
+>>
+>>>> +#define BE_GENMASK(t, b)                   GENMASK(BE_BIT(t), 
+>>>> BE_BIT(b))
+>>>> +
+>>>> +#endif
+>>>
+>
 
