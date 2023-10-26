@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1597D7927
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD427D79A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:39:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo2q-00073u-6G; Wed, 25 Oct 2023 20:16:16 -0400
+	id 1qvo2t-00079n-J4; Wed, 25 Oct 2023 20:16:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2m-00071e-Rr
+ id 1qvo2l-00070s-Fe
  for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:12 -0400
 Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2h-0004rO-L1
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:12 -0400
+ id 1qvo2h-0004rS-M5
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:11 -0400
 Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1bf55a81eeaso2375955ad.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:16:01 -0700 (PDT)
+ d9443c01a7336-1cbf47fa563so2273905ad.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:16:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279360; x=1698884160; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279361; x=1698884161; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mZENFqh4cY1cxr9SwQWDQ8KTGiGlTUEViewQDnyDP2A=;
- b=DD2gscnKqIkrx0u0LZ+eF69R0hdVdAsgKdLrvdafU2t69aAN1babDI3nLAkkCi3/Wu
- CJwY8o31v6lWdKBiBCcQDLL0UlORiHCOscQPQY8/G0i4L5Ptyq7aDV6aKh9e4zyYyuUg
- GZWuHk0O1NkNRKHCU2Lbyixb0EB9qDOyQWh2vIow6gWjwMPohSHhyxle+Bsc0cx78Z1Y
- 5nfF7aIUvtPtRcFSZ3oxN3n366+6Qa6Ud38exCAQAjfMN34V6qorjzjxpbVEhJSlREUa
- z2CI19TqjiB5fkxtfFqGf2f+aKbQOwPhthqQd9z0dSfqzYk7EAPFVNRFZHQoEj8KcyrF
- eZtg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zhJv02LeNSNRi9K7QfhBZ5XwbuSGXoIYziudXEjPl7w=;
+ b=dexLZLnG8XlB4nwE91iyK5LfQE+ksa6jswIdG2J/GHtuzYXQjur9Qwk+wKi6fkl+jd
+ ltD0zqjwfHDFvmU4ZhihH2AOZCq8GLKJdAPDuOXmSu0jpZ7UJ0c/oYFYt2gWGpvOkipG
+ kOzj/EjZJQXHSFx0XC/ggTDzKhDPPe5/IWioGd+s9CP8Xv+MoAMDnif/IEjAWV1pGwn1
+ KkHjkftQzU4BDR84P7zG4ow74hOJ0WXXCTFeIVlWu8+90zhPhGZoUHy9d7zKI8TiIpAQ
+ fv87pLf7bb3X/VYzaSsnm7Xty1KAeFRBGUSnYQO3tVvuJv/3tht/vG9kISml6gzqOZA9
+ f+Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279360; x=1698884160;
+ d=1e100.net; s=20230601; t=1698279361; x=1698884161;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mZENFqh4cY1cxr9SwQWDQ8KTGiGlTUEViewQDnyDP2A=;
- b=S0e14iyPkpqLt4p5xAFKbcVR9rRIlLLN6I28/aza4zNU8TizW7fvxKA5NvXUk3fxqK
- QyFO88ro3/+f0Tv8Jl1MjTAMbbZRvMf1/FgzTGN2q9Pu9Y0Hn2W5EMoXuNAz9MSrIgNQ
- gCOcRBqEumkYd1wo9vE16OM8ZaWHZGf7DTMPa0wjIcVSO+hjJ1iliyvF6FcZ7B4OmswI
- 3IXZ6KI8LUYhgLxXsHcPwufno5m9iu4hmLXLb2Y9VeypFEk0CUKgksyE/LYf7TeC3TJO
- X9rSflhqB/WkgsaGja813lJzw6FSBZ8eK+R/EshkDR360dTVF6i17S/uvBEAfjqTo5LX
- Qojg==
-X-Gm-Message-State: AOJu0YyLB+D5lMk3sykUtlgGKs54L6ND5rOe0Qh+cQVL/UusHd3618hB
- 246p/MsCgRZDIY4B4/hmo4M40rhBl1S2vnRUAj0=
-X-Google-Smtp-Source: AGHT+IHIbT3TgC4K9UhSfQ6jJ7cOMoxLaJUvqiBOjjHihLLcKp0zLA0Fpoc5PIoEAW9Gv8+sc/xBow==
-X-Received: by 2002:a17:903:32d2:b0:1c0:9d6f:9d28 with SMTP id
- i18-20020a17090332d200b001c09d6f9d28mr16203303plr.11.1698279360554; 
- Wed, 25 Oct 2023 17:16:00 -0700 (PDT)
+ bh=zhJv02LeNSNRi9K7QfhBZ5XwbuSGXoIYziudXEjPl7w=;
+ b=XwybAS7lKVjHE0D6NiG5Tk2KIeeKOGxWeiwqcq1cMY7SteWQaNwPaRUVXlvNzsG9jO
+ DT0vsuui8HtgrYVHSaaZ57Y2o9tllsWo0Sl/OCV/PPg4J0JTWvQJp0qH2lhqofDyRrSH
+ 6pzXsvrVnW8cfIRcAEC9u5c1ED9ORc3DJBX4cYT8u5JziuA7BYNfN8h1C1le/4odd5UM
+ xVrQLNiXBGKzbUnFmlswFQVFXzOIkARXBNhfMytE0WIb9ECPaMVXGSa4M4lbUHurX+HS
+ mU+d0Hu4H8SpOAgmqjk8+oIUs4lKDHHTvpFR262YC0Vcxhj0ICISWSpPtTKliy99rSDd
+ 6UXg==
+X-Gm-Message-State: AOJu0YwFL4Q+XSaVMh5V3k+NyHeTTdwYeA6z8NnGk8JwFiH4s8UrHwQI
+ dYH4MEvHsIx0YQkY2gqhG4EJrX68J4t7pLt298k=
+X-Google-Smtp-Source: AGHT+IH5f5FVZZvIATnlBQgaPUWXCFOeeZF8s5S1Z8R4RtljZyszVtOCpKYx7WRN1e6o9yhCajRxkg==
+X-Received: by 2002:a17:902:db0c:b0:1ca:7909:6ee6 with SMTP id
+ m12-20020a170902db0c00b001ca79096ee6mr14908654plx.61.1698279361374; 
+ Wed, 25 Oct 2023 17:16:01 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.59
- for <qemu-devel@nongnu.org>
+ ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.16.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:16:00 -0700 (PDT)
+ Wed, 25 Oct 2023 17:16:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 10/29] tcg/i386: Pass x86 condition codes to tcg_out_cmov
-Date: Wed, 25 Oct 2023 17:13:59 -0700
-Message-Id: <20231026001542.1141412-21-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 11/94] target/sparc: Define AM_CHECK for sparc32
+Date: Wed, 25 Oct 2023 17:14:00 -0700
+Message-Id: <20231026001542.1141412-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
@@ -89,77 +90,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hoist the tcg_cond_to_jcc index outside the function.
+Define as false, which allows some ifdef removal.
 
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/sparc/translate.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index a83f8aab30..0daffb0e70 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -1668,14 +1668,14 @@ static void tcg_out_setcond2(TCGContext *s, const TCGArg *args,
- }
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 080bc5f8a2..9eb2b7e52f 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -268,20 +268,21 @@ static void gen_move_Q(DisasContext *dc, unsigned int rd, unsigned int rs)
+ #endif
  #endif
  
--static void tcg_out_cmov(TCGContext *s, TCGCond cond, int rexw,
-+static void tcg_out_cmov(TCGContext *s, int jcc, int rexw,
-                          TCGReg dest, TCGReg v1)
+-#ifdef TARGET_SPARC64
+-#ifndef TARGET_ABI32
+-#define AM_CHECK(dc) ((dc)->address_mask_32bit)
++#if !defined(TARGET_SPARC64)
++# define AM_CHECK(dc)  false
++#elif defined(TARGET_ABI32)
++# define AM_CHECK(dc)  true
++#elif defined(CONFIG_USER_ONLY)
++# define AM_CHECK(dc)  false
+ #else
+-#define AM_CHECK(dc) (1)
+-#endif
++# define AM_CHECK(dc)  ((dc)->address_mask_32bit)
+ #endif
+ 
+ static void gen_address_mask(DisasContext *dc, TCGv addr)
  {
-     if (have_cmov) {
--        tcg_out_modrm(s, OPC_CMOVCC | tcg_cond_to_jcc[cond] | rexw, dest, v1);
-+        tcg_out_modrm(s, OPC_CMOVCC | jcc | rexw, dest, v1);
-     } else {
-         TCGLabel *over = gen_new_label();
--        tcg_out_jxx(s, tcg_cond_to_jcc[tcg_invert_cond(cond)], over, 1);
-+        tcg_out_jxx(s, jcc ^ 1, over, 1);
-         tcg_out_mov(s, TCG_TYPE_I32, dest, v1);
-         tcg_out_label(s, over);
-     }
-@@ -1686,7 +1686,7 @@ static void tcg_out_movcond(TCGContext *s, int rexw, TCGCond cond,
-                             TCGReg v1)
- {
-     tcg_out_cmp(s, c1, c2, const_c2, rexw);
--    tcg_out_cmov(s, cond, rexw, dest, v1);
-+    tcg_out_cmov(s, tcg_cond_to_jcc[cond], rexw, dest, v1);
+-#ifdef TARGET_SPARC64
+-    if (AM_CHECK(dc))
++    if (AM_CHECK(dc)) {
+         tcg_gen_andi_tl(addr, addr, 0xffffffffULL);
+-#endif
++    }
  }
  
- static void tcg_out_ctz(TCGContext *s, int rexw, TCGReg dest, TCGReg arg1,
-@@ -1698,12 +1698,12 @@ static void tcg_out_ctz(TCGContext *s, int rexw, TCGReg dest, TCGReg arg1,
-             tcg_debug_assert(arg2 == (rexw ? 64 : 32));
-         } else {
-             tcg_debug_assert(dest != arg2);
--            tcg_out_cmov(s, TCG_COND_LTU, rexw, dest, arg2);
-+            tcg_out_cmov(s, JCC_JB, rexw, dest, arg2);
-         }
-     } else {
-         tcg_debug_assert(dest != arg2);
-         tcg_out_modrm(s, OPC_BSF + rexw, dest, arg1);
--        tcg_out_cmov(s, TCG_COND_EQ, rexw, dest, arg2);
-+        tcg_out_cmov(s, JCC_JE, rexw, dest, arg2);
+ static TCGv gen_load_gpr(DisasContext *dc, int reg)
+@@ -1366,11 +1367,9 @@ static void do_branch(DisasContext *dc, int32_t offset, uint32_t insn, int cc)
+     unsigned int cond = GET_FIELD(insn, 3, 6), a = (insn & (1 << 29));
+     target_ulong target = dc->pc + offset;
+ 
+-#ifdef TARGET_SPARC64
+     if (unlikely(AM_CHECK(dc))) {
+         target &= 0xffffffffULL;
      }
- }
+-#endif
+     if (cond == 0x0) {
+         /* unconditional not taken */
+         if (a) {
+@@ -1406,11 +1405,9 @@ static void do_fbranch(DisasContext *dc, int32_t offset, uint32_t insn, int cc)
+     unsigned int cond = GET_FIELD(insn, 3, 6), a = (insn & (1 << 29));
+     target_ulong target = dc->pc + offset;
  
-@@ -1716,7 +1716,7 @@ static void tcg_out_clz(TCGContext *s, int rexw, TCGReg dest, TCGReg arg1,
-             tcg_debug_assert(arg2 == (rexw ? 64 : 32));
-         } else {
-             tcg_debug_assert(dest != arg2);
--            tcg_out_cmov(s, TCG_COND_LTU, rexw, dest, arg2);
-+            tcg_out_cmov(s, JCC_JB, rexw, dest, arg2);
-         }
-     } else {
-         tcg_debug_assert(!const_a2);
-@@ -1729,7 +1729,7 @@ static void tcg_out_clz(TCGContext *s, int rexw, TCGReg dest, TCGReg arg1,
- 
-         /* Since we have destroyed the flags from BSR, we have to re-test.  */
-         tcg_out_cmp(s, arg1, 0, 1, rexw);
--        tcg_out_cmov(s, TCG_COND_EQ, rexw, dest, arg2);
-+        tcg_out_cmov(s, JCC_JE, rexw, dest, arg2);
+-#ifdef TARGET_SPARC64
+     if (unlikely(AM_CHECK(dc))) {
+         target &= 0xffffffffULL;
      }
- }
- 
+-#endif
+     if (cond == 0x0) {
+         /* unconditional not taken */
+         if (a) {
 -- 
 2.34.1
 
