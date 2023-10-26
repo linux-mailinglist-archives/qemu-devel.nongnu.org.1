@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75677D8734
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 19:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD307D8757
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 19:11:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw3nq-0000sO-T3; Thu, 26 Oct 2023 13:05:50 -0400
+	id 1qw3sI-0003UM-1Y; Thu, 26 Oct 2023 13:10:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qw3nn-0000qq-Cr
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 13:05:47 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qw3sG-0003RT-Mk
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 13:10:24 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qw3nf-0004zF-Iw
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 13:05:44 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 3D0541FD7F;
- Thu, 26 Oct 2023 17:05:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698339937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qcHI6ZgNSOV7Lmxb89xNW8+GcoSvs7JfQI4yai+MP9Q=;
- b=USzIZOKRTO7PFsyzajHT4bSQ7kh+I0Da6UmualeI/+pa3IhIaYbNYfdU+hpr65aPGVqrBC
- hk1Nvk+d3HmhY7fOPQJj5lMY0/uTQUmFnKEMM9ZvI4Cge6lev5qXjAO5UW1/ZF2FZCg7NC
- NzPhb9nNInR9Tu7giWaz74r1apGsb1s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698339937;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qcHI6ZgNSOV7Lmxb89xNW8+GcoSvs7JfQI4yai+MP9Q=;
- b=4/FVNr7Oc1DSgQrzsU0dUrZpe32kIEs96/YEf7OipU0mOxNhUw2kMERScbP3KqbqikPQ9C
- VE9s17k6PStp+xBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C180A1358F;
- Thu, 26 Oct 2023 17:05:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 6S3kIWCcOmXTLAAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 26 Oct 2023 17:05:36 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>, Joao Martins
- <joao.m.martins@oracle.com>
-Subject: Re: [PATCH 1/3] migration: Set downtime_start even for postcopy
-In-Reply-To: <20231026155337.596281-2-peterx@redhat.com>
-References: <20231026155337.596281-1-peterx@redhat.com>
- <20231026155337.596281-2-peterx@redhat.com>
-Date: Thu, 26 Oct 2023 14:05:34 -0300
-Message-ID: <87v8atco0x.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qw3s3-0006YE-9A
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 13:10:24 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6b1ef786b7fso1124508b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 10:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698340209; x=1698945009; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=F0Hs6qbZoi/V166+yHaDFOA8TvmCSR2cRnsvqZ1MD4I=;
+ b=pHr6miAtAIzUPsnNJatGRBRYz7R+W8+KvKe++XKK90x5HMOdzJLpqIZwrGGQgiEsan
+ MSAEUVVddFKf9cgN7LBvz99wPJ6JxbNiL8nVTR3+uAxxocVYLukGlEa5SjEfwSX4uj97
+ 5pacxntzv4aXVaK0xj06mnIHilkNfoYjCXQuniSH48A2EeZCJBK0tTNqqGJyhfSkHXQ4
+ 73hm/x9oqzbIqY1XRyIIHRk7di8ESdl2y2xMIuKr222gjA/+BX7MvSqT2IIHuYj0taGI
+ 5m4Nq2vZ8PT4/5xvDF0Djdy7qUuiYKUkTHJd2g1cSgsV76u/MWUE8EBAm4wXwjnzmRSw
+ mgdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698340209; x=1698945009;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=F0Hs6qbZoi/V166+yHaDFOA8TvmCSR2cRnsvqZ1MD4I=;
+ b=ZX3npR0CXepo2SitMzQYkDh6vSpb7smH6gEIESqR1vXvM3+QHkcYV98wjrIM5QxMZb
+ 51QjZh88Z0y9sPivRl3v9L7grFCcod7mWp65VkSLNK3CWLB6rcW5dZvxPgV+az8Ix3m4
+ 9h0OzGYw0jkU7wy0bdeIsyxK7a8FThsm84N0HwjdfI+2UeSe7lOBPxxEEy/99LROGy2A
+ xU+Bz4clw70D5kdidzqt97UVW76lCwtl6PunlaVmFBwt5rLEzYC7uAtoGR4PGKeibjpe
+ JJ6BZbQ7z3sKCLRJNnn97Rv4Qe/uJ+vVaKNdKN1lBNCR+r9PB9p/qZ5K0Qt4wmgy9FBt
+ 4gew==
+X-Gm-Message-State: AOJu0Yzct3GoItcfM9uj+cPXq/q9OhM3k4z7WKxYfn0tpnQMtHZNQ9tC
+ z1Myxeuy8ulEIRQcOQM/1whMNyCDezvU7xaqcp4=
+X-Google-Smtp-Source: AGHT+IH8upnJSORn/tUfuuPqTwaWP23aSETOboJsl83XKg0H8pDvdKnEW8mUmVzVghlkampFjv9JaQ==
+X-Received: by 2002:a05:6a20:a120:b0:17e:4454:edc3 with SMTP id
+ q32-20020a056a20a12000b0017e4454edc3mr436380pzk.47.1698340208874; 
+ Thu, 26 Oct 2023 10:10:08 -0700 (PDT)
+Received: from [192.168.68.107] ([191.255.2.33])
+ by smtp.gmail.com with ESMTPSA id
+ m188-20020a6258c5000000b006bdd1ce6915sm11922143pfb.193.2023.10.26.10.10.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Oct 2023 10:10:08 -0700 (PDT)
+Message-ID: <32d9dbae-2d43-4797-8245-c04540649083@ventanamicro.com>
+Date: Thu, 26 Oct 2023 14:10:04 -0300
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -6.68
-X-Spamd-Result: default: False [-6.68 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.58)[98.11%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/10] target/riscv/tcg: add 'zic64b' support
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20231025234459.581697-1-dbarboza@ventanamicro.com>
+ <20231025234459.581697-2-dbarboza@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231025234459.581697-2-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,16 +96,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
 
-> Postcopy calculates its downtime separately.  It always sets
-> MigrationState.downtime properly, but not MigrationState.downtime_start.
->
-> Make postcopy do the same as other modes on properly recording the
-> timestamp when the VM is going to be stopped.  Drop the temporary variable
-> in postcopy_start() along the way.
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+On 10/25/23 20:44, Daniel Henrique Barboza wrote:
+> zic64b is defined in the RVA22U64 profile [1] as a named feature for
+> "Cache blocks must be 64 bytes in size, naturally aligned in the address
+> space".  It's a fantasy name for 64 bytes cache blocks. RVA22U64
+> mandates this feature, meaning that applications using it expects 64
+> bytes cache blocks.
+> 
+> In theory we're already compliant to it since we're using 64 bytes cache
+> block sizes by default, but nothing is stopping users from enabling a
+> profile and changing the cache block size at the same time.
+> 
+> We'll add zic64b as a 'named feature', not a regular extension, in a
+> sense that we won't write it in riscv,isa. It'll be used solely to track
+> whether the user changed cache sizes and if we should warn about it.
+> 
+> zic64b is default to 'true' since we're already using 64 bytes blocks.
+> If any cache block size (cbom_blocksize or cboz_blocksize) is changed to
+> something different than 64, zic64b is set to 'false' and, if zic64b was
+> set to 'true' in the command line, also throw an user warning.
+> 
+> Our profile implementation set mandatory extensions as if users enabled
+> them in the command line, so this logic will extend to the future RVA22U64
+> implementation as well.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+I talked with Andrew offline. We think that, ***for now***, it's overcomplicated
+and a bit confusing to have these half-extensions to be user set. Most of them
+are internal aspects of the implementation that we're already complying or
+something that do not apply to us (e.g. cache-related features).
+
+We'll not show these flags to users. We'll also add more code in query-cpu-model-expansion
+to expose them, given that they won't be ordinary user flags like the others.
+
+As for this patch, we'll not no longer expose zic64b to users. It'll be an internal
+flag that we'll enable or disable based on the blocksizes alone.
+
+I emphasized 'for now' at the start because there's always the possibility of having
+to treat these named extensions more like regular expansions, adding them in riscv,isa
+and so on. That's not the case for now, so let's simplify while we can.
+
+
+Thanks,
+
+Daniel
+
+
+> 
+> [1] https://github.com/riscv/riscv-profiles/releases/download/v1.0/profiles.pdf
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   target/riscv/cpu.c         | 12 ++++++++++--
+>   target/riscv/cpu.h         |  3 +++
+>   target/riscv/cpu_cfg.h     |  1 +
+>   target/riscv/tcg/tcg-cpu.c | 26 ++++++++++++++++++++++++++
+>   4 files changed, 40 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index f40da4c661..5095f093ba 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1394,6 +1394,12 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> +const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
+> +    MULTI_EXT_CFG_BOOL("zic64b", zic64b, true),
+> +
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+>   /* Deprecated entries marked for future removal */
+>   const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[] = {
+>       MULTI_EXT_CFG_BOOL("Zifencei", ext_zifencei, true),
+> @@ -1423,8 +1429,10 @@ Property riscv_cpu_options[] = {
+>       DEFINE_PROP_UINT16("vlen", RISCVCPU, cfg.vlen, 128),
+>       DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
+>   
+> -    DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
+> -    DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
+> +    DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU,
+> +                       cfg.cbom_blocksize, CB_DEF_VALUE),
+> +    DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU,
+> +                       cfg.cboz_blocksize, CB_DEF_VALUE),
+>   
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 8efc4d83ec..ee9abe61d6 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -64,6 +64,8 @@ extern const uint32_t misa_bits[];
+>   const char *riscv_get_misa_ext_name(uint32_t bit);
+>   const char *riscv_get_misa_ext_description(uint32_t bit);
+>   
+> +#define CB_DEF_VALUE 64
+> +
+>   #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
+>   
+>   /* Privileged specification version */
+> @@ -745,6 +747,7 @@ typedef struct RISCVCPUMultiExtConfig {
+>   extern const RISCVCPUMultiExtConfig riscv_cpu_extensions[];
+>   extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
+>   extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
+> +extern const RISCVCPUMultiExtConfig riscv_cpu_named_features[];
+>   extern const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[];
+>   extern Property riscv_cpu_options[];
+>   
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 6eef4a51ea..b6693320d3 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -107,6 +107,7 @@ struct RISCVCPUConfig {
+>       bool ext_smepmp;
+>       bool rvv_ta_all_1s;
+>       bool rvv_ma_all_1s;
+> +    bool zic64b;
+>   
+>       uint32_t mvendorid;
+>       uint64_t marchid;
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 093bda2e75..ac5f65a757 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -264,6 +264,27 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+>       }
+>   }
+>   
+> +static void riscv_cpu_validate_zic64b(RISCVCPU *cpu)
+> +{
+> +    const char *warn = "zic64b set to 'true' but %s is set to %u. "
+> +                       "zic64b changed to 'false'";
+> +    bool send_warn = cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(zic64b));
+> +
+> +    if (cpu->cfg.cbom_blocksize != CB_DEF_VALUE) {
+> +        cpu->cfg.zic64b = false;
+> +        if (send_warn) {
+> +            warn_report(warn, "cbom_blocksize", cpu->cfg.cbom_blocksize);
+> +        }
+> +    }
+> +
+> +    if (cpu->cfg.cboz_blocksize != CB_DEF_VALUE) {
+> +        cpu->cfg.zic64b = false;
+> +        if (send_warn) {
+> +            warn_report(warn, "cboz_blocksize", cpu->cfg.cboz_blocksize);
+> +        }
+> +    }
+> +}
+> +
+>   /*
+>    * Check consistency between chosen extensions while setting
+>    * cpu->cfg accordingly.
+> @@ -394,6 +415,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+>           return;
+>       }
+>   
+> +    if (cpu->cfg.zic64b) {
+> +        riscv_cpu_validate_zic64b(cpu);
+> +    }
+> +
+>       if (cpu->cfg.ext_zvfh) {
+>           cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvfhmin), true);
+>       }
+> @@ -889,6 +914,7 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>       riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_extensions);
+>       riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_vendor_exts);
+>       riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_experimental_exts);
+> +    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_named_features);
+>   
+>       riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
+>   
 
