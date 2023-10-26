@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE637D85DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC31B7D85E0
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:22:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw2AT-0007Gf-QP; Thu, 26 Oct 2023 11:21:05 -0400
+	id 1qw2AU-0007bu-VW; Thu, 26 Oct 2023 11:21:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qw2AE-00070u-SW
+ id 1qw2AH-000718-0e
  for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:20:55 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qw2A8-0006NA-Ly
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:20:47 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-27d18475ed4so890465a91.0
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 08:20:43 -0700 (PDT)
+ id 1qw2AE-0006NV-HS
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:20:52 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5b9390d6bd3so141891a12.0
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 08:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1698333642; x=1698938442; darn=nongnu.org;
+ d=sifive.com; s=google; t=1698333646; x=1698938446; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=npJ2K69OOSsKJtanlFl7eXChj2RfZqQfMPOCGuCNX+0=;
- b=Kg5hh4Tva8E+YXM8uI/6+Y3spNZA8qHzqEobPpz1R5yKTeYzVF/lmmPTMHQojIcgCs
- 0Kp2YnsThPAZ4VB/zd3MjO9ErVfeDj5eRoPPxrCTHkSpNlSuDG3EG6XqDX8xAIF0DpzL
- Jo3mGk0/XtnyZLxwUcGCZ4x/bOIlNqWkLNhzcs5paunxAygiCOHqbH9ezG8I/A2rRV3d
- Q7zIsO9szBT0bsqri5Ztw+Z+wsBDSIpT7/pwyeUEHxR+LMjG2ibjSHS160RiLq4HwzZo
- 1w/Oi+d+UuzbBGR1CkDI8T1ICcNPeC8tB8EwpyYaSckf+7MvgxdKtLyg9ceFYz1yBzKT
- L9tw==
+ bh=xkwlpLYypRxSWiGHgKxtQp1RAJeqYUNkInw/XRm9smE=;
+ b=ZOeFnU5WmpTwfjspwRMegpzGScG70SgdcNliSJpKaR+j+bW8/1AVgPQA9415FV9EqF
+ WydMee9Ix0M0Cw4l5kXXCawmU4y5/+YNEjWi1BYZBiTfeu/qJBzUrKZ3cWkbrwGCuWwD
+ oPui00EwqpOpjbNJL40RLxKDd4V1qQkotMXIuUCC85S+X4s5eRxzCIOB12jr0gof16a8
+ hGIgJw57LFtJCJbCGd+DsKFkdMuQ3ZTg/2eNJafQI8585CtwOKz1Obh70K5ReH7Y92pP
+ 3ytiAe28sR02OuTqOHrCK/ET7nX9jof8uBJLNECRd/RTHbow9Utrgp8gx4NJGOZCCirG
+ WsgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698333642; x=1698938442;
+ d=1e100.net; s=20230601; t=1698333646; x=1698938446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=npJ2K69OOSsKJtanlFl7eXChj2RfZqQfMPOCGuCNX+0=;
- b=R16jq+RzV3HGh//WB5ugM/HL0vamsYghOkLzQFOTPCtqhSnacnh33HnRXJ3QYbgo2n
- tnWG2FNR7yHsfCaAamGEyPzcaKHY/XvZf4BvJCHSHi7KEgMAARx0pMutmFcdHpL18gnW
- ZvFLI3d60s6/wZh8EIWhLRo8Jp4ZK9+EA4/ux4GnZiWYuk23N4SpGJi/9KLZdXLi/vLu
- h9v5m8ul30SyX/WLC0ENT/QW2NUcazKShyDLT+ytT5CAux7xOxuIsxkYa69mW8pM99XE
- 6p+HxfEHIKdmUioG8/g7vOUh8rPN/+aybe3zkbG3WW8gFghox/ecs/3luwEVj3tYF7Al
- RWUA==
-X-Gm-Message-State: AOJu0YzhyROVh88yRoOB1C1WSFL8jcfbOGjL89o5e+y3ZacpbSGnwl4L
- 0P7bFp40tMWCcyspxgoMwCCyThyY60Lwwtuhv7aptkej+3mXI4/TOkDd1Xm0D2X5Kwjn43Zv6IW
- shqaO3wF9GIMitOpBLaoETzJwo0hcLqq7cceEJuTLSzi0gFopDQZIQ/Ku0N0hvdOhkcORzcvrhv
- nY
-X-Google-Smtp-Source: AGHT+IGI7LNSXd4nkD3L9ysinhjWBQc/NBp/PaYV+apL9rb13k2Sr25mVc+IrXjkxPfZIvh/CDPw4Q==
-X-Received: by 2002:a17:90a:7887:b0:274:6839:6a8c with SMTP id
- x7-20020a17090a788700b0027468396a8cmr15726445pjk.6.1698333642218; 
- Thu, 26 Oct 2023 08:20:42 -0700 (PDT)
+ bh=xkwlpLYypRxSWiGHgKxtQp1RAJeqYUNkInw/XRm9smE=;
+ b=H85QJv+9a8skGz6u6rpfZNbVkf7qjyAE3HakK3eSLktA/3XAo48f7Kw+ALTWPw7d9k
+ 1kCm35NTpR0YwXlmbI7RRBMD3PxB8dPdR6zmot5vLZ4imFc9H2f1dOKH/i4WTQ8U1t5z
+ HiNHKv1CQY3CPinX8qqvUUgTwiWuY6E2/rJ52CM1gtYOd7iuK6UkowX88mQgLsVEZRy6
+ 7eobTrmYZH5t6NteDyQAXmXbROso+dsXxFqU/I2nAksFv+adF8yNJiJmfuqqeR5+ycat
+ 7sbwzft3lbVyEtQX3NYOKgylMt0QdQGPGGZgwYhxy6Fwe+FfHvX+bGmVRNjWZPimjml7
+ s+Zw==
+X-Gm-Message-State: AOJu0YxR/UYL85b4pd21E5Ac5KHJ10dwl8gUcrV5NMvgftps/xEP/I4Z
+ XpMh7mSc8qKg9sHsm+0kgLEGk1JWRB9sZhoJm/Dh+TeT3pv4yfD94rrJpGdQp5lZT6Dkm5/eE2Y
+ 12I/rQUZls8jO4kFp7XDE5jBrCHBUrgXnG5bS54ZKB3bfBBRhVIqNvKl2sk/Ht6BtQS1vsZW+tB
+ tS
+X-Google-Smtp-Source: AGHT+IGyed+0TNJ5I2UdgfuHkrlZXuOSUMwXpdSqYY/ZaWcoYQUE8jPDdK/h7USC2rcDdcUEAwQeOg==
+X-Received: by 2002:a17:90b:1c06:b0:27c:f4a9:7e20 with SMTP id
+ oc6-20020a17090b1c0600b0027cf4a97e20mr3718993pjb.15.1698333645902; 
+ Thu, 26 Oct 2023 08:20:45 -0700 (PDT)
 Received: from duncan.localdomain (125-228-20-175.hinet-ip.hinet.net.
  [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- nv18-20020a17090b1b5200b0027fee011cebsm1326061pjb.10.2023.10.26.08.20.40
+ nv18-20020a17090b1b5200b0027fee011cebsm1326061pjb.10.2023.10.26.08.20.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 08:20:42 -0700 (PDT)
+ Thu, 26 Oct 2023 08:20:45 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -65,26 +65,24 @@ Cc: Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: [PATCH v2 08/14] target/riscv: Add cfg properties for Zvks[c|g]
- extensions
-Date: Thu, 26 Oct 2023 23:18:15 +0800
-Message-Id: <20231026151828.754279-9-max.chou@sifive.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v2 09/14] target/riscv: Expose Zvks[c|g] extnesion properties
+Date: Thu, 26 Oct 2023 23:18:16 +0800
+Message-Id: <20231026151828.754279-10-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026151828.754279-1-max.chou@sifive.com>
 References: <20231026151828.754279-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=max.chou@sifive.com; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=max.chou@sifive.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,58 +98,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vector crypto spec defines the ShangMi algorithm suite related
-extensions (Zvks, Zvksc, Zvksg) combined by several vector crypto
-extensions.
+Expose the properties of ShangMi Algorithm Suite related extensions
+(Zvks, Zvksc, Zvksg).
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/cpu_cfg.h     |  3 +++
- target/riscv/tcg/tcg-cpu.c | 17 +++++++++++++++++
- 2 files changed, 20 insertions(+)
+ target/riscv/cpu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index fd07aa96a27..7b0ca657a6a 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -99,6 +99,9 @@ struct RISCVCPUConfig {
-     bool ext_zvkn;
-     bool ext_zvknc;
-     bool ext_zvkng;
-+    bool ext_zvks;
-+    bool ext_zvksc;
-+    bool ext_zvksg;
-     bool ext_zmmul;
-     bool ext_zvfbfmin;
-     bool ext_zvfbfwma;
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index e460701a13c..f9023ca75c7 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -519,6 +519,23 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvkt), true);
-     }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 8eae8d3e59c..1709df76a9b 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -133,7 +133,10 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zvkng, PRIV_VERSION_1_12_0, ext_zvkng),
+     ISA_EXT_DATA_ENTRY(zvknha, PRIV_VERSION_1_12_0, ext_zvknha),
+     ISA_EXT_DATA_ENTRY(zvknhb, PRIV_VERSION_1_12_0, ext_zvknhb),
++    ISA_EXT_DATA_ENTRY(zvks, PRIV_VERSION_1_12_0, ext_zvks),
++    ISA_EXT_DATA_ENTRY(zvksc, PRIV_VERSION_1_12_0, ext_zvksc),
+     ISA_EXT_DATA_ENTRY(zvksed, PRIV_VERSION_1_12_0, ext_zvksed),
++    ISA_EXT_DATA_ENTRY(zvksg, PRIV_VERSION_1_12_0, ext_zvksg),
+     ISA_EXT_DATA_ENTRY(zvksh, PRIV_VERSION_1_12_0, ext_zvksh),
+     ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
+     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+@@ -1385,6 +1388,9 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+     MULTI_EXT_CFG_BOOL("x-zvkn", ext_zvkn, false),
+     MULTI_EXT_CFG_BOOL("x-zvknc", ext_zvknc, false),
+     MULTI_EXT_CFG_BOOL("x-zvkng", ext_zvkng, false),
++    MULTI_EXT_CFG_BOOL("x-zvks", ext_zvks, false),
++    MULTI_EXT_CFG_BOOL("x-zvksc", ext_zvksc, false),
++    MULTI_EXT_CFG_BOOL("x-zvksg", ext_zvksg, false),
  
-+    if (cpu->cfg.ext_zvksc) {
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvks), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvbc), true);
-+    }
-+
-+    if (cpu->cfg.ext_zvksg) {
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvks), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvkg), true);
-+    }
-+
-+    if (cpu->cfg.ext_zvks) {
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvksed), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvksh), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvkb), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvkt), true);
-+    }
-+
-     if (cpu->cfg.ext_zvkt) {
-         cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvbb), true);
-         cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvbc), true);
+     DEFINE_PROP_END_OF_LIST(),
+ };
 -- 
 2.34.1
 
