@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B55C7D8826
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 20:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE39E7D8830
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 20:22:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw4wi-0004Dy-3s; Thu, 26 Oct 2023 14:19:04 -0400
+	id 1qw4zB-000530-VK; Thu, 26 Oct 2023 14:21:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw4wg-0004Do-IW
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 14:19:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw4wb-0006O7-Fo
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 14:19:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698344335;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1I5ISfoitIjF+nDgBjkkLTQ6w7KWAhoMcvz67fV1dIc=;
- b=SxTyE0vLfau0Qmi4SX4lliLMJ9b5FIqCrOkMJKZmau0H9DNCQ4PrSx54itKgTEDGPngsr6
- ++qVnKUZTDUOecHT5JsSbpmdDTMJd3N0X9fYHzuY4tDinRWqp/RgYuJ+HYLhVET95x6dVw
- 10tyDaKmPy0FSAE/s5Sc+WsOZxdoKZk=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-628-Jmy6xEGIO-GXmQe1fNIzgw-1; Thu, 26 Oct 2023 14:18:53 -0400
-X-MC-Unique: Jmy6xEGIO-GXmQe1fNIzgw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66fab8e9f95so3163866d6.1
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 11:18:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tanmaynpatil105@gmail.com>)
+ id 1qw4z8-00051p-1i
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 14:21:34 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tanmaynpatil105@gmail.com>)
+ id 1qw4z6-0007MS-2y
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 14:21:33 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53df747cfe5so2056718a12.2
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 11:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698344490; x=1698949290; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=UbKcKvdMHgwb1P1dFRNC5YPzHstM+FIyvk7RetDlF10=;
+ b=kQe+4HIGu03JlTytO2Y2Ij2aeXKMr0E4Fjmk6pRxmnmdxHMF0lGAiUZiIJjMp2kvQ5
+ 7UoHn6SJW4+EGmEaoUV07WALl9yibiZcbXX/2JBhPBahfyktSkmrd+mNag2bcyvt+ZgR
+ Y2yZ1OS/rqsj6nz0zioJCZ1h4ba589SmR0cwDP+4faVRCPuXMvOONEJELQ1PILVEATmz
+ HwebEbLhbDnLLdStGoqp6dZ9l0vTemO8zUp3GnddvVfmsp29UFGdfqfnsquhAfvZLzxm
+ 5foMbbk8zzjWoNRJYeLEEWUfS0f2+71wm4Guxux3XuiBnbW3JSD3OgYy3bnSwhcDUgUD
+ I2lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698344333; x=1698949133;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1I5ISfoitIjF+nDgBjkkLTQ6w7KWAhoMcvz67fV1dIc=;
- b=UPoyHqkSj23l5ClhjknWkmyo534oazTSodSMIMxn13aq3YHODoz4IwvsFiKxm0dgus
- /JPCzmtNTvZv4VO5rgGOfcwukICqSIkH5IHFPGt4AZCMjwafFg5nNs5aJNEY3Oxqlw4b
- wONloAGniTyQSRBzwJYSeAofzHD0AexKxycDPMB4CftRu0/SHNJkRyE+6jETKr3phK1b
- 3Wc5usSIm+aZCVqy0m0lITihPR+aVpb7JdaH+9Gauy9MjJRvPPhT8TIpK0KyIiWidBdG
- gK+/vjcsVGAaxNAvMh3uTnmBnIClFWb9R6bX7stHWe1kcQDBOvI3Cv9iNipJmwLKGeZP
- OodA==
-X-Gm-Message-State: AOJu0Yyi9uEviJw4o081ZaW0y3BEfnddYBkOzoqxeFenuM6vZry277Xh
- eBx3eR8cyLH3n1RuquuToVWFSXi8uSwMXHD/m66OK1SVPj94dZaRjZoYDV6YRLIYX6TCn8Jii48
- 9zMNGL2dW+1K6i8o=
-X-Received: by 2002:a05:6214:2b98:b0:65d:486:25c6 with SMTP id
- kr24-20020a0562142b9800b0065d048625c6mr417132qvb.3.1698344333192; 
- Thu, 26 Oct 2023 11:18:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBkWa4ZpfvJe6yY91xO0BiStEXpFNWzSeSvzTxVak0ZMBHKPLfJ3WMKWnEoj1E8rS2R0W0vw==
-X-Received: by 2002:a05:6214:2b98:b0:65d:486:25c6 with SMTP id
- kr24-20020a0562142b9800b0065d048625c6mr417119qvb.3.1698344332917; 
- Thu, 26 Oct 2023 11:18:52 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- w5-20020a0cf705000000b0066d1d2242desm5357064qvn.120.2023.10.26.11.18.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 11:18:52 -0700 (PDT)
-Date: Thu, 26 Oct 2023 14:18:49 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH 0/3] migration: Downtime tracepoints
-Message-ID: <ZTqtieZo/VaSscp5@x1n>
-References: <20231026155337.596281-1-peterx@redhat.com>
- <c8d16910-a496-410c-9c1c-68661b81f030@oracle.com>
- <ZTqb/XDnwhkTUL3s@x1n>
+ d=1e100.net; s=20230601; t=1698344490; x=1698949290;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UbKcKvdMHgwb1P1dFRNC5YPzHstM+FIyvk7RetDlF10=;
+ b=VW/3DtB4wPWyJuYisXdx08jrdCTqyvuZ50eo74hhIsParywVDuvuWBXFiThKemIk17
+ n0LmBTZ3fp/wteKSQWguUl0MXjeco7q5vShT3OXO4ayOi9TyOkYMCYwKB+i/29oGDN5J
+ PtsvWyPxW68vxc2Ldtki78qrW0NFhtnx4MjPYoBlEafSjGdf1M3yPuptV6yx/vVUwH1N
+ fmn/zKjWhXCfDWpAnP0/wbuw6O4a+X5JH6s72GeodE2E1WzAI1oqVjnwYxkrmIIl12x2
+ QGNx6rWTjk4SfkraQMH+aFr/b0pJAcv6btw5sqMybnUphkNU2g7pIGpdo7zQyEmZF94Y
+ T/pg==
+X-Gm-Message-State: AOJu0Yyrol13eJwh0j5NelPQzzX90yR1S8haaaOpssZZj4LHQBTp5SNw
+ g95u3gn0/zudZldRFfR5Zkwf6T1WSEi8fovZ+Dc=
+X-Google-Smtp-Source: AGHT+IE1DmzrMtjMZwr8UYvIf9SL46TkVX3Jjzeh9MSO8YChrpEkKTqya/o3qQqygCFCPoHNedjDq4varfsmoZ7Htfw=
+X-Received: by 2002:a17:907:1c2a:b0:9b2:cf77:a105 with SMTP id
+ nc42-20020a1709071c2a00b009b2cf77a105mr532999ejc.15.1698344489805; Thu, 26
+ Oct 2023 11:21:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZTqb/XDnwhkTUL3s@x1n>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+References: <CAHnsOnP-8PY=pZw3n2jPKeMmiFqsQwp-Dai+dADpe+hskO2kQA@mail.gmail.com>
+ <CAFEAcA83xO3XxuWTK1vdqnH6PKaBpPfNL8A8EyBC1AaGcqhZcg@mail.gmail.com>
+In-Reply-To: <CAFEAcA83xO3XxuWTK1vdqnH6PKaBpPfNL8A8EyBC1AaGcqhZcg@mail.gmail.com>
+From: Tanmay <tanmaynpatil105@gmail.com>
+Date: Thu, 26 Oct 2023 23:51:18 +0530
+Message-ID: <CAHnsOnM1tuwbr7tkF6-jE7bGMPEJs+uXPW-JyA_5AoPe1miTnA@mail.gmail.com>
+Subject: Re: Replace calls to functions named cpu_physical_memory_* with
+ address_space_*.
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, "jsnow@redhat.com" <jsnow@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000056d0c0608a2a4c2"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=tanmaynpatil105@gmail.com; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,88 +87,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 26, 2023 at 01:03:57PM -0400, Peter Xu wrote:
-> On Thu, Oct 26, 2023 at 05:06:37PM +0100, Joao Martins wrote:
-> > On 26/10/2023 16:53, Peter Xu wrote:
-> > > This small series (actually only the last patch; first two are cleanups)
-> > > wants to improve ability of QEMU downtime analysis similarly to what Joao
-> > > used to propose here:
-> > > 
-> > >   https://lore.kernel.org/r/20230926161841.98464-1-joao.m.martins@oracle.com
-> > > 
-> > Thanks for following up on the idea; It's been hard to have enough bandwidth for
-> > everything on the past set of weeks :(
-> 
-> Yeah, totally understdood.  I think our QE team pushed me towards some
-> series like this, while my plan was waiting for your new version. :)
-> 
-> Then when I started I decided to go into per-device.  I was thinking of
-> also persist that information, but then I remembered some ppc guest can
-> have ~40,000 vmstates..  and memory to maintain that may or may not regress
-> a ppc user.  So I figured I should first keep it simple with tracepoints.
-> 
-> > 
-> > > But with a few differences:
-> > > 
-> > >   - Nothing exported yet to qapi, all tracepoints so far
-> > > 
-> > >   - Instead of major checkpoints (stop, iterable, non-iterable, resume-rp),
-> > >     finer granule by providing downtime measurements for each vmstate (I
-> > >     made microsecond to be the unit to be accurate).  So far it seems
-> > >     iterable / non-iterable is the core of the problem, and I want to nail
-> > >     it to per-device.
-> > > 
-> > >   - Trace dest QEMU too
-> > > 
-> > > For the last bullet: consider the case where a device save() can be super
-> > > fast, while load() can actually be super slow.  Both of them will
-> > > contribute to the ultimate downtime, but not a simple summary: when src
-> > > QEMU is save()ing on device1, dst QEMU can be load()ing on device2.  So
-> > > they can run in parallel.  However the only way to figure all components of
-> > > the downtime is to record both.
-> > > 
-> > > Please have a look, thanks.
-> > >
-> > 
-> > I like your series, as it allows a user to pinpoint one particular bad device,
-> > while covering the load side too. The checkpoints of migration on the other hand
-> > were useful -- while also a bit ugly -- for the sort of big picture of how
-> > downtime breaks down. Perhaps we could add that /also/ as tracepoitns without
-> > specifically commiting to be exposed in QAPI.
-> > 
-> > More fundamentally, how can one capture the 'stop' part? There's also time spent
-> > there like e.g. quiescing/stopping vhost-net workers, or suspending the VF
-> > device. All likely as bad to those tracepoints pertaining device-state/ram
-> > related stuff (iterable and non-iterable portions).
-> 
-> Yeah that's a good point.  I didn't cover "stop" yet because I think it's
-> just more tricky and I didn't think it all through, yet.
-> 
-> The first question is, when stopping some backends, the vCPUs are still
-> running, so it's not 100% clear to me on which should be contributed as
-> part of real downtime.
+--000000000000056d0c0608a2a4c2
+Content-Type: text/plain; charset="UTF-8"
 
-I was wrong.. we always stop vcpus first.
+Yeah, I felt that it may not be a cakewalk as it might sound.
 
-If you won't mind, I can add some traceopints for all those spots in this
-series to cover your other series.  I'll also make sure I do that for both
-sides.
+You're right, trying to understand the whole code is overwhelming. I'll
+start with a small section instead.
+
+I have interest in working on x86_64 and Aarch64 architectures within qemu.
+Please let me know if there are any specific tasks from where I can start
+exploring.
 
 Thanks,
+Tanmay
 
-> 
-> Meanwhile that'll be another angle besides vmstates: need to keep some eye
-> on the state change handlers, and that can be a device, or something else.
-> 
-> Did you measure the stop process in some way before?  Do you have some
-> rough number or anything surprising you already observed?
-> 
-> Thanks,
-> 
-> -- 
-> Peter Xu
+On Thu, 26 Oct 2023 at 22:16, Peter Maydell <peter.maydell@linaro.org>
+wrote:
 
--- 
-Peter Xu
+> On Thu, 26 Oct 2023 at 13:48, Tanmay <tanmaynpatil105@gmail.com> wrote:
+> > I'm really interested in contributing to qemu. I wanted to
+> > work on the renaming API calls cpu_physical_memory_* to
+> > address_space_*. I couldn't find any related issues on the
+> > GItlab tracker. Can I work on this issue?
+>
+> You're welcome to, but be aware that this is unfortunately
+> one of the items in the "BiteSizedTasks" list that is
+> not as simple as the one-line description makes it sound.
+> (I have a personal project to try to go through that page and
+> either expand entries into issues in gitlab that describe the
+> task in more detail, or else delete them if they don't really
+> seem to be "bite sized". But I haven't got very far with it yet,
+> so there are still quite a few unhelpful "landmine" tasks on it.
+> Sorry about that :-(  )
+>
+> It also is something where the right thing to do is going to
+> depend on the call-site and what that particular device or piece
+> of code is trying to do -- it is not a mechanical conversion.
+> (This is partly why the conversion is not yet complete.)
+>
+> Most of the devices which use these functions should indeed
+> use address_space_* functions instead, but the question then
+> is "what address space should they access?". That usually ought
+> to be one passed into them by the board code. (commit 112a829f8f0a
+> is an example of that kind of conversion.) Unfortunately many
+> of the remaining uses of cpu_physical_memory_* in hw/ are
+> in very old code which hasn't even been converted to the
+> kind of new device model coding style that would allow you to
+> provide an address space by a QOM property that way. So for
+> those devices this would be just one of a whole pile of
+> "modernizations" and refactorings that need to be done.
+>
+> I think what I would suggest is that rather than starting
+> with this task in general, that you start with what part
+> of QEMU you're interested in working on in particular (eg
+> whether you're interested in a particular target architecture
+> or a particular subsystem like migration, etc), and then
+> we can probably find some tasks that relate to that specific
+> interest and help in starting to understand that part of the
+> code. (QEMU as a whole is too big for anybody to understand
+> all of it...) If what you want to work on turns out to
+> involve one of the bits of code which needs this API upgrade,
+> maybe we can help you work on that; but it might turn out that
+> the two don't overlap at all, or that there's a better starting
+> task.
+>
+> thanks
+> -- PMM
+>
 
+--000000000000056d0c0608a2a4c2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Yeah, I felt that it may not be a cakewalk as it might sou=
+nd.<br><br>You&#39;re right, trying to understand the whole=C2=A0code is ov=
+erwhelming. I&#39;ll start with a small section instead.<div><br>I have int=
+erest in working on x86_64 and Aarch64 architectures within qemu.<div><div>=
+Please let me know if there are any specific tasks from where I can start e=
+xploring.</div><div><br></div><div>Thanks,</div><div>Tanmay</div></div></di=
+v></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr=
+">On Thu, 26 Oct 2023 at 22:16, Peter Maydell &lt;<a href=3D"mailto:peter.m=
+aydell@linaro.org">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
+x solid rgb(204,204,204);padding-left:1ex">On Thu, 26 Oct 2023 at 13:48, Ta=
+nmay &lt;<a href=3D"mailto:tanmaynpatil105@gmail.com" target=3D"_blank">tan=
+maynpatil105@gmail.com</a>&gt; wrote:<br>
+&gt; I&#39;m really interested in contributing to qemu. I wanted to<br>
+&gt; work on the renaming API calls cpu_physical_memory_* to<br>
+&gt; address_space_*. I couldn&#39;t find any related issues on the<br>
+&gt; GItlab tracker. Can I work on this issue?<br>
+<br>
+You&#39;re welcome to, but be aware that this is unfortunately<br>
+one of the items in the &quot;BiteSizedTasks&quot; list that is<br>
+not as simple as the one-line description makes it sound.<br>
+(I have a personal project to try to go through that page and<br>
+either expand entries into issues in gitlab that describe the<br>
+task in more detail, or else delete them if they don&#39;t really<br>
+seem to be &quot;bite sized&quot;. But I haven&#39;t got very far with it y=
+et,<br>
+so there are still quite a few unhelpful &quot;landmine&quot; tasks on it.<=
+br>
+Sorry about that :-(=C2=A0 )<br>
+<br>
+It also is something where the right thing to do is going to<br>
+depend on the call-site and what that particular device or piece<br>
+of code is trying to do -- it is not a mechanical conversion.<br>
+(This is partly why the conversion is not yet complete.)<br>
+<br>
+Most of the devices which use these functions should indeed<br>
+use address_space_* functions instead, but the question then<br>
+is &quot;what address space should they access?&quot;. That usually ought<b=
+r>
+to be one passed into them by the board code. (commit 112a829f8f0a<br>
+is an example of that kind of conversion.) Unfortunately many<br>
+of the remaining uses of cpu_physical_memory_* in hw/ are<br>
+in very old code which hasn&#39;t even been converted to the<br>
+kind of new device model coding style that would allow you to<br>
+provide an address space by a QOM property that way. So for<br>
+those devices this would be just one of a whole pile of<br>
+&quot;modernizations&quot; and refactorings that need to be done.<br>
+<br>
+I think what I would suggest is that rather than starting<br>
+with this task in general, that you start with what part<br>
+of QEMU you&#39;re interested in working on in particular (eg<br>
+whether you&#39;re interested in a particular target architecture<br>
+or a particular subsystem like migration, etc), and then<br>
+we can probably find some tasks that relate to that specific<br>
+interest and help in starting to understand that part of the<br>
+code. (QEMU as a whole is too big for anybody to understand<br>
+all of it...) If what you want to work on turns out to<br>
+involve one of the bits of code which needs this API upgrade,<br>
+maybe we can help you work on that; but it might turn out that<br>
+the two don&#39;t overlap at all, or that there&#39;s a better starting<br>
+task.<br>
+<br>
+thanks<br>
+-- PMM<br>
+</blockquote></div>
+
+--000000000000056d0c0608a2a4c2--
 
