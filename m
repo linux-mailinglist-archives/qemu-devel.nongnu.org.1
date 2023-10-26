@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9C27D79C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC9B7D79D5
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvoUL-0008Sa-9Z; Wed, 25 Oct 2023 20:44:41 -0400
+	id 1qvoaf-0005I9-8x; Wed, 25 Oct 2023 20:51:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvoUI-0008RE-VY
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:44:38 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qvoad-0005Ha-5w; Wed, 25 Oct 2023 20:51:11 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvoUH-0000MP-3S
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:44:38 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1ca215cc713so2161535ad.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:44:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qvoab-0002E9-3j; Wed, 25 Oct 2023 20:51:10 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-581fb6f53fcso225148eaf.2; 
+ Wed, 25 Oct 2023 17:51:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698281075; x=1698885875; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=we2zMIU8OLiozy+wkRrr8+eLMzJIqDWRke2TlpawU0I=;
- b=RSP20X8JMqzHdg0XSkUsRkPo9CrjrWPOdyT5j5ECcGqM0PfjbpnfF6h8RkHk7D1rpo
- iRTykBQ7pBBShO3OTfvGhT3sdyj3Scwqml9QUdhoPLmsQbeSd3UPywDHK4dS8ejzJ/Sp
- udfJLQAAnjhI/IHEAmg03IVfGvo4kiRZIDigqBW5ZtxJu95LSslKtzII9fh9boU886L9
- e8w68fp2OBXLZKakQ485Q9DpbuaVxDwoWRnB/wnC/Ar41e7elLaqACZLAQ4Fo9qJyWqs
- yTF0OBKsSmPvTzkpYCxsvj2dMRGLm/NBjoQv3bFM9MOc9aHwrDyaoarX06r9/GPxFDVO
- 1zSw==
+ d=gmail.com; s=20230601; t=1698281465; x=1698886265; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZvLKDcA1Bbl99MTx91e5m6PwJViefSi8KsQ0LDpK4Lw=;
+ b=INigDWjvN2+WQ2X3/add5QkNX2hU3oRbYC3YJtCWESTmVwLnbPSjKL4zbQYjisRB8+
+ DejgIjR1/ZgkyxY7wl/e1eb6kmhVNGs6Cj5OSDLo+j7ahE1p5ISGjmOXq/X+v4bYoEle
+ xKzdpPnxI/1gM3Q4o59o6LdkYVUdm8EQINo+9AOLIp8AKLupIOf7E6pok4COekGnu+P0
+ 757BiPavlD5umZ0HIRXRHmD+H92bEt+KQhpiScZXsOimAtmie1/CaRYMSEt3zE61BtgX
+ lxfFnuCKQT4TWrRqsbbew5onvKqqT6QqEM+AxFxniuOso7QVMd4RluC3+lUuKr0mPbpP
+ Wqlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698281075; x=1698885875;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=we2zMIU8OLiozy+wkRrr8+eLMzJIqDWRke2TlpawU0I=;
- b=LTZJVHeighcihTjg+PZnSa2Ezo2pPV1VvZcJtGHktVZu1wzTLTuHO5mrivVt49Dq4M
- wMYLAEFN12hYUdjq6LuZUou96UQ1pvCk+o645vel5RgSblDS939Ftw3qVJq650ihdvjZ
- gp0uLLzwYKYNJJP/wIj+QiGR+ja3UaLbyKQXehPcvBEYVzbjK88y029MGhtMBfhtZNie
- ztYacuVnfQL+GJH2htwRAR3XMPijOHFdkQ9IoLbr+dRkIbiK1rGWqAu85ojfyKMuY+sN
- NyenG87RU8ZYpUEAJn6MLvYUCxbjlS5mndCMJGS1cczK9zEovJWDkJIxI1Gn43wufFJX
- JgCw==
-X-Gm-Message-State: AOJu0YzBMA8hSOy9Qdc+mkmWyk+6bsP7Sz7niIG8nJk/Q9SGWH6vIo7t
- //iONoNwmgQDFoN/GjLG/fGfbA==
-X-Google-Smtp-Source: AGHT+IHeyHvy4M0R4AdRUtYaG3Ue2jBgWk7TnhnQxKbIDx3tSO9oI3Ga/b8XkHTu6vJm01B3SzL/zw==
-X-Received: by 2002:a17:902:e414:b0:1b8:94e9:e7cb with SMTP id
- m20-20020a170902e41400b001b894e9e7cbmr10750328ple.21.1698281075584; 
- Wed, 25 Oct 2023 17:44:35 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- i7-20020a170902c94700b001c5d09e9437sm7765138pla.25.2023.10.25.17.44.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 17:44:35 -0700 (PDT)
-Message-ID: <79b3bf7e-71dc-4ac2-bbb0-eb27e6c70ae5@linaro.org>
-Date: Wed, 25 Oct 2023 17:44:33 -0700
+ d=1e100.net; s=20230601; t=1698281465; x=1698886265;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZvLKDcA1Bbl99MTx91e5m6PwJViefSi8KsQ0LDpK4Lw=;
+ b=wWhCSvSOFJICNBw5SX3Dk3zG6vfuwjoeAJb9KwyKSD7XFcan2zusrcaZbV2X5vimTw
+ oDvLvK+Sc7pHcfFu2T4x+lfRJVAUi+LuqhUXZC0yU+HPGkPshcQLQijXRrR9XVJZr7ir
+ xmiQ+j5R3CaXarkfGxJeH5NcJA5FLl7dXzNFuYnv7xC8OfbC2F8P3+QnRjub1M0CD9gd
+ ID6TXRIKSpfma5TKguEQw67cDs4OQKxab7ejrW6jP8qtiqTT2/51KK3l+nlG8/Yqx3I1
+ QDf1a9SDsjiENWCVyZvgA6vRjUDy7n/4EkC6BH/xxd04D5wOeB7ACRUs8qA3SFYLaOAc
+ S96Q==
+X-Gm-Message-State: AOJu0Yz1/eEQ5LPXpigsuz/ZKlXVyjkb+Q7pEUV/WhBwOt8aVEHWzBNi
+ dTWXHoSHz6BqFf+tx1C9r6wchyeqJGLBX+C0e48=
+X-Google-Smtp-Source: AGHT+IEEG/CXIsfuRU2rhKdnDA8u0ton+Avd/Pl40OJt5lgPRrzEyGQtNFz7marDPjlEMwPHDPOGDRy9jypEXYsh4vk=
+X-Received: by 2002:a4a:e8dc:0:b0:573:bf68:8dbc with SMTP id
+ h28-20020a4ae8dc000000b00573bf688dbcmr14060519ooe.7.1698281465607; Wed, 25
+ Oct 2023 17:51:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] accel/tcg: Always require can_do_io
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org
-References: <20230914174436.1597356-1-richard.henderson@linaro.org>
- <20230914174436.1597356-7-richard.henderson@linaro.org>
- <CAJ307EjR0oKs6W=7ZgsqeM1XrHbTYF4sXN2vV9jn1eiRsMewVA@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAJ307EjR0oKs6W=7ZgsqeM1XrHbTYF4sXN2vV9jn1eiRsMewVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+References: <20231024131305.87468-1-quintela@redhat.com>
+In-Reply-To: <20231024131305.87468-1-quintela@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 26 Oct 2023 09:50:53 +0900
+Message-ID: <CAJSP0QVZPM5BkHYBTqXmDBuBvUuAAhjdgX_3Ka0WbqTzBxutvg@mail.gmail.com>
+Subject: Re: [PULL 00/39] Migration 20231024 patches
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Corey Minyard <minyard@acm.org>, Li Zhijian <lizhijian@fujitsu.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, Gerd Hoffmann <kraxel@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Corey Minyard <cminyard@mvista.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, Kevin Wolf <kwolf@redhat.com>,
+ qemu-s390x@nongnu.org, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org, 
+ libvir-list@redhat.com, Stefan Weil <sw@weilnetz.de>, 
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, 
+ Fam Zheng <fam@euphon.net>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Eric Farman <farman@linux.ibm.com>, Markus Armbruster <armbru@redhat.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-ppc@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,82 +108,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/24/23 02:50, Clément Chigot wrote:
-> Hi Richard,
-> 
-> This commit has broken some of our internal bareboard testing on
-> Risc-V 64. At some point in our programs, there is an AMOSWAP (=
-> atomic swap) instruction on I/O. But since this commit, can_do_io is
-> set to false triggering an infinite loop.
-> IIUC the doc (cf [1]), atomic operations on I/O are allowed.
-> 
-> I think there is a CF_LAST_IO flag missing somewhere to allow it, but
-> I'm not sure where this should be. Do you have any ideas ?
-> 
-> Sadly I cannot provide a reproducer that easily, mainly because our
-> microchip has a few patches not yet merged making our binaries not
-> running on the upstream master.
-> But here is a bit of the in_asm backtrace:
-> 
->    | IN: system__bb__riscv_plic__initialize
->    | Priv: 3; Virt: 0
->    | 0x80000eb4:  1141              addi                    sp,sp,-16
->    | 0x80000eb6:  0c0027b7          lui                     a5,49154
->    | 0x80000eba:  e406              sd                      ra,8(sp)
->    | 0x80000ebc:  00010597          auipc                   a1,16
->              # 0x80010ebc
->    | 0x80000ec0:  47458593          addi                    a1,a1,1140
->    | 0x80000ec4:  f3ffe637          lui                     a2,-49154
->    | 0x80000ec8:  01878693          addi                    a3,a5,24
->    | 0x80000ecc:  00f58733          add                     a4,a1,a5
->    | 0x80000ed0:  9732              add                     a4,a4,a2
->    | 0x80000ed2:  4318              lw                      a4,0(a4)
->    | 0x80000ed4:  2701              sext.w                  a4,a4
->    | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5)
->    | 0x80000eda:  0791              addi                    a5,a5,4
->    | 0x80000edc:  fed798e3          bne                     a5,a3,-16
->              # 0x80000ecc
->    |
->    | ----------------
->    | IN: system__bb__riscv_plic__initialize
->    | Priv: 3; Virt: 0
->    | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5)
->    |
->    | ----------------
->    | IN: system__bb__riscv_plic__initialize
->    | Priv: 3; Virt: 0
->    | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5)
->    | * Freeze *
+On Tue, 24 Oct 2023 at 23:45, Juan Quintela <quintela@redhat.com> wrote:
+>
+> The following changes since commit a95260486aa7e78d7c7194eba65cf03311ad94=
+ad:
+>
+>   Merge tag 'pull-tcg-20231023' of https://gitlab.com/rth7680/qemu into s=
+taging (2023-10-23 14:45:46 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/juan.quintela/qemu.git tags/migration-20231024-pull-=
+request
+>
+> for you to fetch changes up to 088f7f03da3f5b3487091302b795c22b1bfe56fb:
+>
+>   migration: Deprecate old compression method (2023-10-24 13:48:24 +0200)
+>
+> ----------------------------------------------------------------
+> Migration Pull request (20231024)
+>
+> Hi
+>
+> In this PULL:
+> - vmstate registration fixes (thomas, juan)
+> - start merging vmstate_section_needed changes (marc)
+> - migration depreactions (juan)
+> - migration documentation for backwards compatibility (juan)
+>
+> Please apply.
 
-I would expect two translations:
+Hi Juan,
+I'm seeing CI failures:
+https://gitlab.com/qemu-project/qemu/-/pipelines/1048630760
 
-(1) with the original TB, aborts execution on !can_do_io.
-(2) with the second TB, we get further into the actual execution and abort execution on 
-TLB_MMIO.
-(3) with the third TB, we clear CF_PARALLEL and execute under cpu_exec_step_atomic.
+You can ignore avocado-system-debian, but the others look like real failure=
+s.
 
-Both 2 and 3 should have had CF_LAST_IO set.
-You can verify this with '-d exec' output.
+Please take a look. Thanks!
 
-As a trivial example from qemu-system-alpha bios startup:
+Stefan
 
-> Trace 0: 0x7f2584008380 [00000000/fffffc0000003ee4/01000000/ff000000] uart_init_line
-> cpu_io_recompile: rewound execution of TB to fffffc0000003ee4
-> ----------------
-> IN: uart_init_line
-> 0xfffffc0000003f20:  stb        t8,0(t6)
-> 
-> Trace 0: 0x7f2584008a00 [00000000/fffffc0000003f20/01000000/ff018001] uart_init_line
-
-Note that the final "/" field is cflags.  The first "Trace" corresponds to (1), where the 
-store is in the middle of the TB.  You can see the io_recompile abort, then the second 
-"Trace" contains {CF_COUNT=1, CF_LAST_IO, CF_MEMI_ONLY}.
-
-In the short term, try adding CF_LAST_IO to cflags in cpu_exec_step_atomic.
-
-I think probably the logic of CF_LAST_IO should always be applied now, since can_do_io is 
-always live, and thus the flag itself should go away.
-
-
-r~
+>
+> ----------------------------------------------------------------
+>
+> Juan Quintela (31):
+>   migration/doc: Add contents
+>   migration/doc: Add documentation for backwards compatiblity
+>   migration/doc: How to migrate when hosts have different features
+>   migration/doc: We broke backwards compatibility
+>   migration: Receiving a zero page non zero is an error
+>   migration: Rename ram_handle_compressed() to ram_handle_zero()
+>   migration: Give one error if trying to set MULTIFD and XBZRLE
+>   migration: Give one error if trying to set COMPRESSION and XBZRLE
+>   migration: Remove save_page_use_compression()
+>   migration: Make compress_data_with_multithreads return bool
+>   migration: Simplify compress_page_with_multithread()
+>   migration: Move busy++ to migrate_with_multithread
+>   migration: Create compress_update_rates()
+>   migration: Export send_queued_data()
+>   migration: Move ram_flush_compressed_data() to ram-compress.c
+>   migration: Merge flush_compressed_data() and compress_flush_data()
+>   migration: Rename ram_compressed_pages() to compress_ram_pages()
+>   migration: Create vmstate_register_any()
+>   migration: Use vmstate_register_any()
+>   migration: Use vmstate_register_any() for isa-ide
+>   migration: Use VMSTATE_INSTANCE_ID_ANY for slirp
+>   migration: Hack to maintain backwards compatibility for ppc
+>   migration: Improve example and documentation of vmstate_register()
+>   migration: Use vmstate_register_any() for audio
+>   migration: Use vmstate_register_any() for eeprom93xx
+>   migration: Use vmstate_register_any() for vmware_vga
+>   qemu-iotests: Filter warnings about block migration being deprecated
+>   migration: migrate 'inc' command option is deprecated.
+>   migration: migrate 'blk' command option is deprecated.
+>   migration: Deprecate block migration
+>   migration: Deprecate old compression method
+>
+> Marc-Andr=C3=A9 Lureau (2):
+>   migration: rename vmstate_save_needed->vmstate_section_needed
+>   migration: set file error on subsection loading
+>
+> Peter Xu (1):
+>   migration: Check in savevm_state_handler_insert for dups
+>
+> Thomas Huth (5):
+>   hw/ipmi: Don't call vmstate_register() from instance_init() functions
+>   hw/s390x/s390-skeys: Don't call register_savevm_live() during
+>     instance_init()
+>   hw/s390x/s390-stattrib: Simplify handling of the "migration-enabled"
+>     property
+>   hw/s390x/s390-stattrib: Don't call register_savevm_live() during
+>     instance_init()
+>   migration/ram: Fix compilation with -Wshadow=3Dlocal
+>
+>  docs/about/deprecated.rst        |  35 ++
+>  docs/devel/migration.rst         | 532 ++++++++++++++++++++++++++++++-
+>  qapi/migration.json              |  93 ++++--
+>  include/migration/vmstate.h      |  30 +-
+>  migration/ram-compress.h         |  10 +-
+>  migration/ram.h                  |   3 +-
+>  audio/audio.c                    |   2 +-
+>  backends/dbus-vmstate.c          |   3 +-
+>  backends/tpm/tpm_emulator.c      |   3 +-
+>  hw/display/vmware_vga.c          |   2 +-
+>  hw/i2c/core.c                    |   2 +-
+>  hw/ide/isa.c                     |   2 +-
+>  hw/input/adb.c                   |   2 +-
+>  hw/input/ads7846.c               |   2 +-
+>  hw/input/stellaris_input.c       |   3 +-
+>  hw/intc/xics.c                   |  18 +-
+>  hw/ipmi/ipmi_bmc_extern.c        |  29 +-
+>  hw/ipmi/isa_ipmi_bt.c            |  34 +-
+>  hw/ipmi/isa_ipmi_kcs.c           |  50 +--
+>  hw/net/eepro100.c                |   3 +-
+>  hw/nvram/eeprom93xx.c            |   2 +-
+>  hw/pci/pci.c                     |   2 +-
+>  hw/ppc/spapr.c                   |  25 +-
+>  hw/ppc/spapr_nvdimm.c            |   3 +-
+>  hw/s390x/s390-skeys.c            |  35 +-
+>  hw/s390x/s390-stattrib.c         |  71 ++---
+>  hw/timer/arm_timer.c             |   2 +-
+>  hw/virtio/virtio-mem.c           |   4 +-
+>  migration/block.c                |   3 +
+>  migration/migration-hmp-cmds.c   |  10 +
+>  migration/migration.c            |  10 +
+>  migration/options.c              |  36 ++-
+>  migration/ram-compress.c         | 112 +++++--
+>  migration/ram.c                  | 114 ++-----
+>  migration/rdma.c                 |   8 +-
+>  migration/savevm.c               |  34 +-
+>  migration/vmstate.c              |   5 +-
+>  net/slirp.c                      |   5 +-
+>  tests/qemu-iotests/183           |   2 +-
+>  tests/qemu-iotests/common.filter |   7 +
+>  40 files changed, 1041 insertions(+), 307 deletions(-)
+>
+> --
+> 2.41.0
+>
+>
 
