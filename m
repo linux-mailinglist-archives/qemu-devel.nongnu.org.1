@@ -2,54 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A147D7D6A
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 09:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3DC7D7D6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 09:15:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvuWJ-0007YC-FB; Thu, 26 Oct 2023 03:11:07 -0400
+	id 1qvuZi-00021W-9E; Thu, 26 Oct 2023 03:14:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=sG9D=GI=redhat.com=clg@ozlabs.org>)
- id 1qvuWG-0007Xd-OT
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 03:11:04 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qvuZf-0001u3-0m
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 03:14:35 -0400
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=sG9D=GI=redhat.com=clg@ozlabs.org>)
- id 1qvuWA-00020R-TU
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 03:11:04 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SGH5857M6z4x23;
- Thu, 26 Oct 2023 18:10:52 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGH572xMWz4wcX;
- Thu, 26 Oct 2023 18:10:51 +1100 (AEDT)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] vfio/pci: Check return value of vfio_set_irq_signaling()
-Date: Thu, 26 Oct 2023 09:10:43 +0200
-Message-ID: <20231026071043.1165994-1-clg@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qvuZb-0002Zw-5N
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 03:14:34 -0400
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 39Q7EITo027112;
+ Thu, 26 Oct 2023 15:14:18 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
+ (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Thu, 26 Oct 2023
+ 15:14:14 +0800
+Date: Thu, 26 Oct 2023 15:14:14 +0800
+To: David Hildenbrand <david@redhat.com>
+CC: <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH 1/6] exec/memory: Introduce the translate_size function
+ within the IOMMU class
+Message-ID: <ZToRxn/jFyj1Mm1r@ethan84-VirtualBox>
+References: <20231025051430.493079-1-ethan84@andestech.com>
+ <20231025051430.493079-2-ethan84@andestech.com>
+ <babd9eb7-1f9c-478a-b288-96606795fc8b@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=sG9D=GI=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <babd9eb7-1f9c-478a-b288-96606795fc8b@redhat.com>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 39Q7EITo027112
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_RCVD_IP=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,135 +66,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-and drop warning when ENOTTY is returned. Only useful for the mdev-mtty
-driver today, which has partial support for INTx: the AUTOMASK
-behavior is not implemented.
+On Wed, Oct 25, 2023 at 04:56:22PM +0200, David Hildenbrand wrote:
+> On 25.10.23 07:14, Ethan Chen wrote:
+> > IOMMU have size information during translation.
+> > 
+> 
+> Can you add some more information why we would want this and how the backend
+> can do "better" things with the size at hand?
+>
+With size information, IOMMU can reject a memory access which is patially in 
+valid region.
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/vfio/pci.c | 46 ++++++++++++++++++++++++++++++----------------
- 1 file changed, 30 insertions(+), 16 deletions(-)
-
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index b27011cee72a0fb3b2d57d297c0b5c2ccff9d9a6..5cbc771e55d83561011785e54a38dea042fc834c 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -114,15 +114,16 @@ static void vfio_intx_eoi(VFIODevice *vbasedev)
-     vfio_unmask_single_irqindex(vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
- }
- 
--static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
-+static int vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
- {
-+    int ret = 0;
- #ifdef CONFIG_KVM
-     int irq_fd = event_notifier_get_fd(&vdev->intx.interrupt);
- 
-     if (vdev->no_kvm_intx || !kvm_irqfds_enabled() ||
-         vdev->intx.route.mode != PCI_INTX_ENABLED ||
-         !kvm_resamplefds_enabled()) {
--        return;
-+        return 0;
-     }
- 
-     /* Get to a known interrupt state */
-@@ -132,23 +133,26 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
-     pci_irq_deassert(&vdev->pdev);
- 
-     /* Get an eventfd for resample/unmask */
--    if (event_notifier_init(&vdev->intx.unmask, 0)) {
-+    ret = event_notifier_init(&vdev->intx.unmask, 0);
-+    if (ret) {
-         error_setg(errp, "event_notifier_init failed eoi");
-         goto fail;
-     }
- 
--    if (kvm_irqchip_add_irqfd_notifier_gsi(kvm_state,
--                                           &vdev->intx.interrupt,
--                                           &vdev->intx.unmask,
--                                           vdev->intx.route.irq)) {
-+    ret = kvm_irqchip_add_irqfd_notifier_gsi(kvm_state,
-+                                             &vdev->intx.interrupt,
-+                                             &vdev->intx.unmask,
-+                                             vdev->intx.route.irq);
-+    if (ret) {
-         error_setg_errno(errp, errno, "failed to setup resample irqfd");
-         goto fail_irqfd;
-     }
- 
--    if (vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
--                               VFIO_IRQ_SET_ACTION_UNMASK,
--                               event_notifier_get_fd(&vdev->intx.unmask),
--                               errp)) {
-+    ret = vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
-+                                 VFIO_IRQ_SET_ACTION_UNMASK,
-+                                 event_notifier_get_fd(&vdev->intx.unmask),
-+                                 errp);
-+    if (ret) {
-         goto fail_vfio;
-     }
- 
-@@ -159,7 +163,7 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
- 
-     trace_vfio_intx_enable_kvm(vdev->vbasedev.name);
- 
--    return;
-+    return 0;
- 
- fail_vfio:
-     kvm_irqchip_remove_irqfd_notifier_gsi(kvm_state, &vdev->intx.interrupt,
-@@ -170,6 +174,7 @@ fail:
-     qemu_set_fd_handler(irq_fd, vfio_intx_interrupt, NULL, vdev);
-     vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
- #endif
-+    return ret;
- }
- 
- static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
-@@ -212,6 +217,7 @@ static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
- static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
- {
-     Error *err = NULL;
-+    int ret;
- 
-     trace_vfio_intx_update(vdev->vbasedev.name,
-                            vdev->intx.route.irq, route->irq);
-@@ -224,9 +230,13 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
-         return;
-     }
- 
--    vfio_intx_enable_kvm(vdev, &err);
-+    ret = vfio_intx_enable_kvm(vdev, &err);
-     if (err) {
--        warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+        if (ret != -ENOTTY) {
-+            warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+        } else {
-+            error_free(err);
-+        }
-     }
- 
-     /* Re-enable the interrupt in cased we missed an EOI */
-@@ -300,9 +310,13 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-         return -errno;
-     }
- 
--    vfio_intx_enable_kvm(vdev, &err);
-+    ret = vfio_intx_enable_kvm(vdev, &err);
-     if (err) {
--        warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+        if (ret != -ENOTTY) {
-+            warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+        } else {
-+            error_free(err);
-+        }
-     }
- 
-     vdev->interrupt = VFIO_INT_INTx;
--- 
-2.41.0
-
+Currently translation function limit memory access size with a mask, so the 
+valid part of access will success. My target is to detect partially hit and 
+reject whole access. Translation function cannot detect partially hit because 
+it lacks size information.
+> Note that I was not CCed on the cover letter.
+> 
+> > Signed-off-by: Ethan Chen <ethan84@andestech.com>
+> > ---
+> >   include/exec/memory.h | 19 +++++++++++++++++++
+> >   1 file changed, 19 insertions(+)
+> > 
+> > diff --git a/include/exec/memory.h b/include/exec/memory.h
+> > index 9087d02769..5520b7c8c0 100644
+> > --- a/include/exec/memory.h
+> > +++ b/include/exec/memory.h
+> > @@ -396,6 +396,25 @@ struct IOMMUMemoryRegionClass {
+> >        */
+> >       IOMMUTLBEntry (*translate)(IOMMUMemoryRegion *iommu, hwaddr addr,
+> >                                  IOMMUAccessFlags flag, int iommu_idx);
+> > +    /**
+> > +     * @translate_size:
+> > +     *
+> > +     * Return a TLB entry that contains a given address and size.
+> > +     *
+> > +     * @iommu: the IOMMUMemoryRegion
+> > +     *
+> > +     * @hwaddr: address to be translated within the memory region
+> > +     *
+> > +     * @size: size to indicate the scope of the entire transaction
+> > +     *
+> > +     * @flag: requested access permission
+> > +     *
+> > +     * @iommu_idx: IOMMU index for the translation
+> > +     */
+> > +    IOMMUTLBEntry (*translate_size)(IOMMUMemoryRegion *iommu, hwaddr addr,
+> > +                                    hwaddr size, IOMMUAccessFlags flag,
+> > +                                    int iommu_idx);
+> > +
+> >       /**
+> >        * @get_min_page_size:
+> >        *
+> 
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+> 
+Thanks,
+Ethan Chen
 
