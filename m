@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FB97D796E
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DE77D7950
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:23:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo2s-00077E-Q0; Wed, 25 Oct 2023 20:16:18 -0400
+	id 1qvo2s-00076j-36; Wed, 25 Oct 2023 20:16:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2o-00072e-1B
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:14 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1qvo2m-00071R-PJ
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:12 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2h-0004rA-Lb
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:13 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c87a85332bso2311445ad.2
+ id 1qvo2h-0004rF-LV
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:12 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1caa7597af9so2154635ad.1
  for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:15:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279358; x=1698884158; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279359; x=1698884159; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lVqtOTdE26FeikcQeSUZ6gzaDd5J2ZKDmGo0pFRcFos=;
- b=aQWOWJMpzZsMkg3EhGGeBZgGUQJwZox9rkIK6jjHVTyhdcXBo2zPLTYBSKuQJpTYNm
- nFPrOdEBYmacHsdxjDmz1x5WMSebK89C7YMViBSX5bla28Icex98CbiAdK+acNFQJwip
- o87xD4ZicZLpyfqcugYR6zqbg3uvWDs1WUlVgwXtdRSPZDeQZCHmBIg1X6PUGcOoPAOa
- EVOgtyxlJC8gtBlNGbUDAPmFyKGhFGbxTKeEWSVwLSChuMepULvlJmji+hVmihIIsIpN
- z4YATzl5pQmU3kv+S1s2Q6UKNdVvWs2DHvL0pDMXeA7hdMzWxdjTxSVasceuSdEWTs++
- NtUQ==
+ :reply-to; bh=iO7a+DcsBv1QUswJrwtg846br5OcYCcDIc2AiP9uJP0=;
+ b=B3IKCrTCuxR2MudJLPC3lJ30xjkNeoqfVBoqWgNQuFjoZUBCDhdNcpCtXnnaz2bSpA
+ KE6vjL2G8VPOQpQNgAn68BsSqZoOOx9hB/1s5Rjl8lPhQzcktf2xJkkw9JmdpeOHcP2D
+ igogNGaJRxaYy1tI2BAPiUsrOFOD+/6RGuvceDp4BnJJLUnvowFOX0DIf6mH72c98JVF
+ Ou4fE9qkGHjhL5oUP5+LgQLr0gXPMik/dPNjUCHpZoMl2pRTDs84QxBAcrbvqLn3YsiO
+ kuLluEAjFIYJafDkKRkr/9yZF+ZK/nY6esxH0yZ1Cestyip/nelu4kIEoyKlXHpk167D
+ Xu4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279358; x=1698884158;
+ d=1e100.net; s=20230601; t=1698279359; x=1698884159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lVqtOTdE26FeikcQeSUZ6gzaDd5J2ZKDmGo0pFRcFos=;
- b=MQRVPv9uFJ2heaL6xBKoYIOVUvci14tx3r6qB2ivOodKVwddKLyu5rnYzZXJGYfrN/
- 9CrDre5yqIoXAqcsZdh+jayOJ2TjN7GuCuwgWGm3Oi7XcUxN1eQKcJTqwwRPE3SusZWa
- HOkrL2hUcu84ReZ09+SXsZlazbmh2IJssoNRmmolBEp7ul9HHh+AdMsUsgELEZFtm0/1
- eIDIDE1pKOIwjRzgFxU0lrx+dFCPLsEEeg/XNYsnQ/iRUW3LbOZRIEG/JGTS7r/tBeKj
- iXbcb/CKkJu//w95jCquoVlJBPhGdlgsEkmvxyFbDI/ig3nIOjvipXj6lSeQ7cvRSvXC
- F/rQ==
-X-Gm-Message-State: AOJu0YxiyCKa8gT16jSr9WvKsLvTxdtaqyyzALY83prIpgZ1nB8W5G7D
- ZY+d63rX6nKZrmYnsqR6Gzk0UDgLyEPjRPpCnD8=
-X-Google-Smtp-Source: AGHT+IH5oE+4QHtXH8Br62l2u3Uvj9FTE+MKvI5ULEq5Qje7Ytx19BynHScuRUN00xeTzeDcqAqUAg==
-X-Received: by 2002:a17:902:c602:b0:1c8:7822:e5c3 with SMTP id
- r2-20020a170902c60200b001c87822e5c3mr14284444plr.47.1698279358399; 
- Wed, 25 Oct 2023 17:15:58 -0700 (PDT)
+ bh=iO7a+DcsBv1QUswJrwtg846br5OcYCcDIc2AiP9uJP0=;
+ b=svbZWHxemeg+XcyTFs7LtF037/AOn3YtAPtKUDB/GAsKY7v38koHJxqGO7wCD8b0nE
+ dpgYVjQhj9ob6FwTmzm6WSRkw/Nt+GLI6dQmh6XKGVisbCMmo5BvYIORhOI/ntke8Pb3
+ pz4BFnu5p5ZqZbkbzC9dOBw7/7ldC2BOAW5BeEFBDco7smOz9E8cl33CdvwOkW7JPt2q
+ 773ev57Ning5vlxNgg3UED1H1dwxPXExQ73eoGAsMIN579M1nym7EyZdIRPx+NrPBcQI
+ RPnCPC7p7Frq6VAcLa82O07qGdB9MwYehW34Ug971jRnCpVZQOWdk285jQlD4j96cS/s
+ vwrA==
+X-Gm-Message-State: AOJu0YxmEzdguBBhRsJoM0qQBYaBCx50H0N0qs+kf+35OFoFq70lGQII
+ Y0wBcKwthupIvvqWLvmkgQFpw84hiCylpmltH+0=
+X-Google-Smtp-Source: AGHT+IFj8EvNuYPBt+WJBapaMLaEKAYU93EDM7LuwtwgoljrQswJ5mQKC+J/8exd1Xat7ImuyQyK6A==
+X-Received: by 2002:a17:902:e551:b0:1bc:3944:9391 with SMTP id
+ n17-20020a170902e55100b001bc39449391mr15752792plf.25.1698279359121; 
+ Wed, 25 Oct 2023 17:15:59 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.57
+ ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 25 Oct 2023 17:15:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/94] target/sparc: Partition cpu features
-Date: Wed, 25 Oct 2023 17:13:56 -0700
-Message-Id: <20231026001542.1141412-18-richard.henderson@linaro.org>
+Subject: [PATCH 09/29] tcg/arm: Support TCG_COND_TST{EQ,NE}
+Date: Wed, 25 Oct 2023 17:13:57 -0700
+Message-Id: <20231026001542.1141412-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,81 +89,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the sparc32 binaries, do not advertise features only available
-to sparc64, so they cannot be enabled.  In the sparc64 binaries,
-do not advertise features mandatory in v9, so they cannot be disabled.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/cpu.c | 42 ++++++++++++++++++++++++------------------
- 1 file changed, 24 insertions(+), 18 deletions(-)
+ tcg/arm/tcg-target.c.inc | 59 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 44 insertions(+), 15 deletions(-)
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index f527244aa4..bb1a155510 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -546,14 +546,17 @@ static const sparc_def_t sparc_defs[] = {
- /* This must match sparc_cpu_properties[]. */
- static const char * const feature_name[] = {
-     [CPU_FEATURE_BIT_FLOAT128] = "float128",
--    [CPU_FEATURE_BIT_MUL] = "mul",
--    [CPU_FEATURE_BIT_DIV] = "div",
--    [CPU_FEATURE_BIT_VIS1] = "vis1",
--    [CPU_FEATURE_BIT_VIS2] = "vis2",
--    [CPU_FEATURE_BIT_FSMULD] = "fsmuld",
--    [CPU_FEATURE_BIT_HYPV] = "hypv",
-+#ifdef TARGET_SPARC64
-     [CPU_FEATURE_BIT_CMT] = "cmt",
-     [CPU_FEATURE_BIT_GL] = "gl",
-+    [CPU_FEATURE_BIT_HYPV] = "hypv",
-+    [CPU_FEATURE_BIT_VIS1] = "vis1",
-+    [CPU_FEATURE_BIT_VIS2] = "vis2",
-+#else
-+    [CPU_FEATURE_BIT_MUL] = "mul",
-+    [CPU_FEATURE_BIT_DIV] = "div",
-+    [CPU_FEATURE_BIT_FSMULD] = "fsmuld",
-+#endif
- };
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index fc78566494..344143cd10 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -1190,6 +1190,33 @@ static void tcg_out_mb(TCGContext *s, TCGArg a0)
+     }
+ }
  
- static void print_features(uint32_t features, const char *prefix)
-@@ -832,22 +835,25 @@ static PropertyInfo qdev_prop_nwindows = {
- static Property sparc_cpu_properties[] = {
-     DEFINE_PROP_BIT("float128", SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_FLOAT128, false),
--    DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_MUL, false),
--    DEFINE_PROP_BIT("div",      SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_DIV, false),
--    DEFINE_PROP_BIT("vis1",     SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_VIS1, false),
--    DEFINE_PROP_BIT("vis2",     SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_VIS2, false),
--    DEFINE_PROP_BIT("fsmuld",   SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_FSMULD, false),
--    DEFINE_PROP_BIT("hypv",     SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_HYPV, false),
-+#ifdef TARGET_SPARC64
-     DEFINE_PROP_BIT("cmt",      SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_CMT, false),
-     DEFINE_PROP_BIT("gl",       SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_GL, false),
-+    DEFINE_PROP_BIT("hypv",     SPARCCPU, env.def.features,
-+                    CPU_FEATURE_BIT_HYPV, false),
-+    DEFINE_PROP_BIT("vis1",     SPARCCPU, env.def.features,
-+                    CPU_FEATURE_BIT_VIS1, false),
-+    DEFINE_PROP_BIT("vis2",     SPARCCPU, env.def.features,
-+                    CPU_FEATURE_BIT_VIS2, false),
-+#else
-+    DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
-+                    CPU_FEATURE_BIT_MUL, false),
-+    DEFINE_PROP_BIT("div",      SPARCCPU, env.def.features,
-+                    CPU_FEATURE_BIT_DIV, false),
-+    DEFINE_PROP_BIT("fsmuld",   SPARCCPU, env.def.features,
-+                    CPU_FEATURE_BIT_FSMULD, false),
-+#endif
-     DEFINE_PROP_UNSIGNED("iu-version", SPARCCPU, env.def.iu_version, 0,
-                          qdev_prop_uint64, target_ulong),
-     DEFINE_PROP_UINT32("fpu-version", SPARCCPU, env.def.fpu_version, 0),
++static TCGCond tcg_out_cmp(TCGContext *s, TCGCond cond, TCGReg a,
++                           TCGArg b, int b_const)
++{
++    if (!is_tst_cond(cond)) {
++        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0, a, b, b_const);
++        return cond;
++    }
++
++    cond = tcg_tst_eqne_cond(cond);
++    if (b_const) {
++        int imm12 = encode_imm(b);
++
++        /*
++         * The compare constraints allow rIN, but TST does not support N.
++         * Be prepared to load the constant into a scratch register.
++         */
++        if (imm12 >= 0) {
++            tcg_out_dat_imm(s, COND_AL, ARITH_TST, 0, a, imm12);
++            return cond;
++        }
++        tcg_out_movi32(s, COND_AL, TCG_REG_TMP, b);
++        b = TCG_REG_TMP;
++    }
++    tcg_out_dat_reg(s, COND_AL, ARITH_TST, 0, a, b, SHIFT_IMM_LSL(0));
++    return cond;
++}
++
+ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+                             const int *const_args)
+ {
+@@ -1217,6 +1244,13 @@ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+         tcg_out_dat_rI(s, COND_EQ, ARITH_CMP, 0, al, bl, const_bl);
+         return cond;
+ 
++    case TCG_COND_TSTEQ:
++    case TCG_COND_TSTNE:
++        /* Similar, but with TST instead of CMP. */
++        tcg_out_dat_rI(s, COND_AL, ARITH_TST, 0, ah, bh, const_bh);
++        tcg_out_dat_rI(s, COND_EQ, ARITH_TST, 0, al, bl, const_bl);
++        return tcg_tst_eqne_cond(cond);
++
+     case TCG_COND_LT:
+     case TCG_COND_GE:
+         /* We perform a double-word subtraction and examine the result.
+@@ -1805,9 +1839,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         /* Constraints mean that v2 is always in the same register as dest,
+          * so we only need to do "if condition passed, move v1 to dest".
+          */
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_rIK(s, tcg_cond_to_arm_cond[args[5]], ARITH_MOV,
++        c = tcg_out_cmp(s, args[5], args[1], args[2], const_args[2]);
++        tcg_out_dat_rIK(s, tcg_cond_to_arm_cond[c], ARITH_MOV,
+                         ARITH_MVN, args[0], 0, args[3], const_args[3]);
+         break;
+     case INDEX_op_add_i32:
+@@ -1957,25 +1990,21 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         break;
+ 
+     case INDEX_op_brcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                       args[0], args[1], const_args[1]);
+-        tcg_out_goto_label(s, tcg_cond_to_arm_cond[args[2]],
+-                           arg_label(args[3]));
++        c = tcg_out_cmp(s, args[2], args[0], args[1], const_args[1]);
++        tcg_out_goto_label(s, tcg_cond_to_arm_cond[c], arg_label(args[3]));
+         break;
+     case INDEX_op_setcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[args[3]],
++        c = tcg_out_cmp(s, args[3], args[1], args[2], const_args[2]);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[c],
+                         ARITH_MOV, args[0], 0, 1);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(c)],
+                         ARITH_MOV, args[0], 0, 0);
+         break;
+     case INDEX_op_negsetcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[args[3]],
++        c = tcg_out_cmp(s, args[3], args[1], args[2], const_args[2]);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[c],
+                         ARITH_MVN, args[0], 0, 0);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(c)],
+                         ARITH_MOV, args[0], 0, 0);
+         break;
+ 
 -- 
 2.34.1
 
