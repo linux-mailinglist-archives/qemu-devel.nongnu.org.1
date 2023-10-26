@@ -2,40 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E407D7CE4
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 08:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CE57D7CED
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 08:36:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvtvF-0003X4-HM; Thu, 26 Oct 2023 02:32:49 -0400
+	id 1qvtyM-000581-Eb; Thu, 26 Oct 2023 02:36:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qvtv8-0003W9-PL; Thu, 26 Oct 2023 02:32:43 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qvtyK-00057a-27
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:36:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qvtv6-0002V9-9Y; Thu, 26 Oct 2023 02:32:42 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qvtyI-00038q-DY
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:35:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E00502D67B;
- Thu, 26 Oct 2023 09:33:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 094992D680;
+ Thu, 26 Oct 2023 09:36:31 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 95F3331420;
- Thu, 26 Oct 2023 09:32:35 +0300 (MSK)
-Message-ID: <02d69c45-4b7b-4b86-aba5-d661102714dd@tls.msk.ru>
-Date: Thu, 26 Oct 2023 09:32:35 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id AF2B631423;
+ Thu, 26 Oct 2023 09:35:56 +0300 (MSK)
+Message-ID: <37c6c860-7b80-45ce-97e7-74b833a905f7@tls.msk.ru>
+Date: Thu, 26 Oct 2023 09:35:56 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] qemu-img: rebase: stop when reaching EOF of old
- backing file
+Subject: Re: [PATCH] linux-user/i386: Properly align signal frame
 Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- den@virtuozzo.com
-References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
- <20230601192836.598602-2-andrey.drobyshev@virtuozzo.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: fanwj@mail.ustc.edu.cn, laurent@vivier.eu
+References: <20230524054647.1093758-1-richard.henderson@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230601192836.598602-2-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20230524054647.1093758-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -60,15 +57,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-01.06.2023 22:28, Andrey Drobyshev via:
-> In case when we're rebasing within one backing chain, and when target image
-> is larger than old backing file, bdrv_is_allocated_above() ends up setting
-> *pnum = 0.  As a result, target offset isn't getting incremented, and we
-> get stuck in an infinite for loop.  Let's detect this case and proceed
-> further down the loop body, as the offsets beyond the old backing size need
-> to be explicitly zeroed.
+24.05.2023 08:46, Richard Henderson:
+> The beginning of the structure, with pretaddr, should be just below
+> 16-byte alignment.  Disconnect fpstate from sigframe, just like the
+> kernel does.
 
-Ping? Has this been forgotten? It's a few months already..
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1648
+
+Ping? Has this been forgotten? It's been 5 months already..
 
 /mjt
 
