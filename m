@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2E97D79A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEF17D7967
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:27:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo9P-0000bG-UC; Wed, 25 Oct 2023 20:23:04 -0400
+	id 1qvo9S-0000kr-Qc; Wed, 25 Oct 2023 20:23:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo9L-0000Db-4B
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:22:59 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1qvo9N-0000XK-5Q
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:23:01 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo9I-0008BF-2I
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:22:58 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-27d1a03f540so242336a91.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:22:55 -0700 (PDT)
+ id 1qvo9K-0008BO-8D
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:22:59 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-577e62e2adfso294149a12.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279774; x=1698884574; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279775; x=1698884575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BibC+DRs59nbFE1Ls41U4uh2VUfxNEDa0ycsD8PCaHk=;
- b=kVlnxQXrX/1PUJZ1ScHRxpW5gu1qlG3lxCNp6v1lFMp2Zfm54FvcpSErCRnrFAwQuD
- gtZnB6xLJsxA2PNHAwBucPp77sm+h+cvoHF8I5BbBO352Tpgca7lLPaoTPqxqfc+FRTh
- ep5aISm00WEaptsSWKD0W1C3jVlPC5nFCMRX1UPfsEP27l8m8fa5pC+4+PTMhSmirIzA
- d/hqo/xmXbGW5Obw4+iB2fpJp7Xlv2sWdBJB+mxrs6SqLgunNBkqX3B2mWg+TkKS/FEX
- fVLYKOH4fvo+0DNE+08bQ1ZUvN1MYxqSF3lHewdSGOa0vKwWqwIo0f5m1o2bB041zRos
- 13iQ==
+ bh=mb776AbN/UqgNrPvlR/H9NLV+RfwQ56KQuO6pLUVjFA=;
+ b=OjVTX4+O6doMeodf+ZSca7uoyAUIX3+m6etFm3eGH3/VkxxmZxauh2eYjz1bfwXlrz
+ vv3JsGAbWnaRtJ/E6UwqqthO1RS8XzDnUE2CJ6GjAPwYaqTf91obbCwTjt0B/YHmKTrs
+ cOGf4VNkTc4/BE4EHlczR9o9ex7rbm1SYq9yGrf/VZaITMDxvfdV1UBNw2uTJ9hOveDn
+ 5RP89M2NHblcvl9Pebmix0MYKy2gYjDVSQstnfzdiq65w1FzJ3W6G4YEAzNywWhYqyrP
+ vKlApIfkrU8Y/On20Zthrl9VNvIaeKFBPgu2oUIDJizqA7guCMJGeFbNvG4zpIwZ9xin
+ cnXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279774; x=1698884574;
+ d=1e100.net; s=20230601; t=1698279775; x=1698884575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BibC+DRs59nbFE1Ls41U4uh2VUfxNEDa0ycsD8PCaHk=;
- b=RBd2+YXTAwczY1D+tgsoxFEwMUcGZa2jRRM9fKItWQiDu5SoxksOu7OUL1zJLEhihz
- 9mpX5y51kNKl6H60a8uWK9Won+Vck/4XRmsnzG4zfsIecLS6zWAiV243RLkDmdCk2nyN
- Sjno05BLqxo8+oxlHmhZRnUA+DIdNr2PK5WWXHgtD6+jab9ebH4L/xv+rWAfK1fhvJM4
- rOW06rmVuvbtJDaBA+Rj2z7waUgRCdWRoQ7ACh3R7ufGQfgvnGUGiOghXaKj7/TIOnh3
- u3qn9Yyl5/2yz0iTQ7IeFHTqygjYoKb4SgWrvR6r8WLilvuJ5VtbeO6OAmBDdSGSSr82
- dcTg==
-X-Gm-Message-State: AOJu0YxjAuhT/hQZqLZ5lTda+yiXJ1L7+WrVJSRuBXRsQhOMW2hC8J7n
- irInrgXczwww+0PJ0lO/Z1/bYJ/a4NSipOvlxOE=
-X-Google-Smtp-Source: AGHT+IEDdYqqF/FHIb87lEISdqFdjL9FeXa4EFeruW0kpzrWlzTyETEpRwH6Yld34mDvILwXTS3Zdg==
-X-Received: by 2002:a17:90b:1016:b0:27d:23f1:ddf5 with SMTP id
- gm22-20020a17090b101600b0027d23f1ddf5mr13425605pjb.30.1698279774430; 
- Wed, 25 Oct 2023 17:22:54 -0700 (PDT)
+ bh=mb776AbN/UqgNrPvlR/H9NLV+RfwQ56KQuO6pLUVjFA=;
+ b=vPwsguRjtUk67XNWLAw9BfUtgi3+cy6/9/Ag1nyx5wL4GuNBuTLdzlyOYylFyqK7np
+ HVMEcxdD+EtRRzK/BuWdBhOLg67HvFweuiGC7se/JRsxRxodkSaeIYF6pQOVrI4Pk7jq
+ MLGb4sx/sMLOI3pGun3dlkagjYM9PNM8+TqP89BAq+NeyLkrHoMKaDZOwr+LhJ0bhfLG
+ wjVvyFQhwWdsjScAuOaib6O7s3zyKP4Om8QbVmMGpokHadHSDkw05GYK15R7pF/Bn8tB
+ QTbN+UV4ggXKcDmxNQCy+L4ASh/PejwfPk6/VDH/W/IMIgo/3PkVmJpKqWcXrLPykUsA
+ Up7Q==
+X-Gm-Message-State: AOJu0YxNEwJnZKkI2dMwAoj1XHf7+cTMJyxNib48s7VPKCyFa8kCov6h
+ AG9YbUt5soHJbSa64+otws7l6kxiVYOFgOp0P6Y=
+X-Google-Smtp-Source: AGHT+IG7T00cHiGmGNeTgQ7aUpzJwZq1AYZRpyBQJCK2N9mTQUPgUoMMpbgfeERiQcl2qwfTa31e4Q==
+X-Received: by 2002:a17:90b:3883:b0:27d:669e:5a10 with SMTP id
+ mu3-20020a17090b388300b0027d669e5a10mr13225442pjb.13.1698279775248; 
+ Wed, 25 Oct 2023 17:22:55 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 9-20020a17090a0cc900b0027463889e72sm499870pjt.55.2023.10.25.17.22.53
+ 9-20020a17090a0cc900b0027463889e72sm499870pjt.55.2023.10.25.17.22.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 25 Oct 2023 17:22:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 56/94] target/sparc: Move CASA, CASXA to decodetree
-Date: Wed, 25 Oct 2023 17:15:04 -0700
-Message-Id: <20231026001542.1141412-86-richard.henderson@linaro.org>
+Subject: [PULL 57/94] target/sparc: Move PREFETCH, PREFETCHA to decodetree
+Date: Wed, 25 Oct 2023 17:15:05 -0700
+Message-Id: <20231026001542.1141412-87-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,169 +90,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove gen_cas_asi, gen_casx_asi.
-Rename gen_cas_asi0 to gen_cas_asi.
-
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  7 ++++
- target/sparc/translate.c  | 72 ++++++++++++++++-----------------------
- 2 files changed, 36 insertions(+), 43 deletions(-)
+ target/sparc/insns.decode |  8 ++++++--
+ target/sparc/translate.c  | 23 ++++++++---------------
+ 2 files changed, 14 insertions(+), 17 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 9c4597317c..82c484fbc7 100644
+index 82c484fbc7..aa452f1d00 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -240,6 +240,8 @@ RETRY       10 00001 111110 00000 0 0000000000000
- @r_r_r_asi  .. rd:5  ...... rs1:5 0     asi:8 rs2_or_imm:5 &r_r_ri_asi imm=0
- @r_r_i_asi  .. rd:5  ...... rs1:5 1     rs2_or_imm:s13     \
-             &r_r_ri_asi imm=1 asi=-2
-+@casa_imm   .. rd:5  ...... rs1:5 1 00000000 rs2_or_imm:5  \
-+            &r_r_ri_asi imm=1 asi=-2
+@@ -231,6 +231,9 @@ RESTORE     10 ..... 111101 ..... . .............          @r_r_ri
+ DONE        10 00000 111110 00000 0 0000000000000
+ RETRY       10 00001 111110 00000 0 0000000000000
  
- LDUW        11 ..... 000000 ..... . .............          @r_r_ri_na
- LDUB        11 ..... 000001 ..... . .............          @r_r_ri_na
-@@ -292,6 +294,11 @@ SWAP        11 ..... 001111 ..... . .............          @r_r_ri_na
- SWAP        11 ..... 011111 ..... . .............          @r_r_r_asi # SWAPA
- SWAP        11 ..... 011111 ..... . .............          @r_r_i_asi # SWAPA
- 
-+CASA        11 ..... 111100 ..... . .............          @r_r_r_asi
-+CASA        11 ..... 111100 ..... . .............          @casa_imm
-+CASXA       11 ..... 111110 ..... . .............          @r_r_r_asi
-+CASXA       11 ..... 111110 ..... . .............          @casa_imm
++NCP         10 ----- 110110 ----- --------- -----          # v8 CPop1
++NCP         10 ----- 110111 ----- --------- -----          # v8 CPop2
 +
- NCP         10 ----- 110110 ----- --------- -----          # v8 CPop1
- NCP         10 ----- 110111 ----- --------- -----          # v8 CPop2
+ ##
+ ## Major Opcode 11 -- load and store instructions
+ ##
+@@ -299,8 +302,9 @@ CASA        11 ..... 111100 ..... . .............          @casa_imm
+ CASXA       11 ..... 111110 ..... . .............          @r_r_r_asi
+ CASXA       11 ..... 111110 ..... . .............          @casa_imm
  
+-NCP         10 ----- 110110 ----- --------- -----          # v8 CPop1
+-NCP         10 ----- 110111 ----- --------- -----          # v8 CPop2
++NOP_v9      11 ----- 101101 ----- 0 00000000 -----         # PREFETCH
++NOP_v9      11 ----- 101101 ----- 1 -------------          # PREFETCH
++NOP_v9      11 ----- 111101 ----- - -------------          # PREFETCHA
+ 
+ NCP         11 ----- 110000 ----- --------- -----          # v8 LDC
+ NCP         11 ----- 110001 ----- --------- -----          # v8 LDCSR
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 29bfc98522..2175c00ded 100644
+index 2175c00ded..363d8b7fc8 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2268,8 +2268,8 @@ static void gen_swap_asi(DisasContext *dc, DisasASI *da,
-     }
- }
- 
--static void gen_cas_asi0(DisasContext *dc, DisasASI *da,
--                         TCGv oldv, TCGv newv, TCGv cmpv, TCGv addr)
-+static void gen_cas_asi(DisasContext *dc, DisasASI *da,
-+                        TCGv oldv, TCGv newv, TCGv cmpv, TCGv addr)
- {
-     switch (da->type) {
-     case GET_ASI_EXCP:
-@@ -2285,30 +2285,6 @@ static void gen_cas_asi0(DisasContext *dc, DisasASI *da,
-     }
- }
- 
--static void __attribute__((unused))
--gen_cas_asi(DisasContext *dc, TCGv addr, TCGv cmpv, int insn, int rd)
--{
--    DisasASI da = get_asi(dc, insn, MO_TEUL);
--    TCGv oldv = gen_dest_gpr(dc, rd);
--    TCGv newv = gen_load_gpr(dc, rd);
--
--    gen_address_mask(dc, addr);
--    gen_cas_asi0(dc, &da, oldv, newv, cmpv, addr);
--    gen_store_gpr(dc, rd, oldv);
--}
--
--static void __attribute__((unused))
--gen_casx_asi(DisasContext *dc, TCGv addr, TCGv cmpv, int insn, int rd)
--{
--    DisasASI da = get_asi(dc, insn, MO_TEUQ);
--    TCGv oldv = gen_dest_gpr(dc, rd);
--    TCGv newv = gen_load_gpr(dc, rd);
--
--    gen_address_mask(dc, addr);
--    gen_cas_asi0(dc, &da, oldv, newv, cmpv, addr);
--    gen_store_gpr(dc, rd, oldv);
--}
--
- static void gen_ldstub_asi(DisasContext *dc, DisasASI *da, TCGv dst, TCGv addr)
- {
-     switch (da->type) {
-@@ -2913,6 +2889,7 @@ static void gen_faligndata(TCGv dst, TCGv gsr, TCGv s1, TCGv s2)
- #ifdef TARGET_SPARC64
- # define avail_32(C)      false
- # define avail_ASR17(C)   false
-+# define avail_CASA(C)    true
- # define avail_DIV(C)     true
- # define avail_MUL(C)     true
- # define avail_POWERDOWN(C) false
-@@ -2922,6 +2899,7 @@ static void gen_faligndata(TCGv dst, TCGv gsr, TCGv s1, TCGv s2)
- #else
- # define avail_32(C)      true
- # define avail_ASR17(C)   ((C)->def->features & CPU_FEATURE_ASR17)
-+# define avail_CASA(C)    ((C)->def->features & CPU_FEATURE_CASA)
- # define avail_DIV(C)     ((C)->def->features & CPU_FEATURE_DIV)
- # define avail_MUL(C)     ((C)->def->features & CPU_FEATURE_MUL)
- # define avail_POWERDOWN(C) ((C)->def->features & CPU_FEATURE_POWERDOWN)
-@@ -4616,6 +4594,28 @@ static bool trans_SWAP(DisasContext *dc, arg_r_r_ri_asi *a)
+@@ -4031,17 +4031,12 @@ static bool trans_NOP(DisasContext *dc, arg_NOP *a)
      return advance_pc(dc);
  }
  
-+static bool do_casa(DisasContext *dc, arg_r_r_ri_asi *a, MemOp mop)
-+{
-+    TCGv addr, o, n, c;
-+    DisasASI da;
-+
-+    addr = gen_ldst_addr(dc, a->rs1, true, 0);
-+    if (addr == NULL) {
-+        return false;
-+    }
-+    da = resolve_asi(dc, a->asi, mop);
-+
-+    o = gen_dest_gpr(dc, a->rd);
-+    n = gen_load_gpr(dc, a->rd);
-+    c = gen_load_gpr(dc, a->rs2_or_imm);
-+    gen_cas_asi(dc, &da, o, n, c, addr);
-+    gen_store_gpr(dc, a->rd, o);
-+    return advance_pc(dc);
-+}
-+
-+TRANS(CASA, CASA, do_casa, a, MO_TEUL)
-+TRANS(CASXA, 64, do_casa, a, MO_TEUQ)
-+
- #define CHECK_IU_FEATURE(dc, FEATURE)                      \
-     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
-         goto illegal_insn;
-@@ -5419,9 +5419,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-             TCGv cpu_addr = tcg_temp_new();
+-static bool trans_NOP_v7(DisasContext *dc, arg_NOP_v7 *a)
+-{
+-    /*
+-     * TODO: Need a feature bit for sparcv8.
+-     * In the meantime, treat all 32-bit cpus like sparcv7.
+-     */
+-    if (avail_32(dc)) {
+-        return advance_pc(dc);
+-    }
+-    return false;
+-}
++/*
++ * TODO: Need a feature bit for sparcv8.
++ * In the meantime, treat all 32-bit cpus like sparcv7.
++ */
++TRANS(NOP_v7, 32, trans_NOP, a)
++TRANS(NOP_v9, 64, trans_NOP, a)
  
-             tcg_gen_mov_tl(cpu_addr, get_src1(dc, insn));
--            if (xop == 0x3c || xop == 0x3e) {
--                /* V9 casa/casxa : no offset */
--            } else if (IS_IMM) {     /* immediate */
-+            if (IS_IMM) {     /* immediate */
-                 simm = GET_FIELDs(insn, 19, 31);
-                 if (simm != 0) {
-                     tcg_gen_addi_tl(cpu_addr, cpu_addr, simm);
-@@ -5634,22 +5632,10 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                     }
-                     gen_stf_asi(dc, cpu_addr, insn, 8, DFPREG(rd));
-                     break;
-+#endif
-                 case 0x3e: /* V9 casxa */
--                    rs2 = GET_FIELD(insn, 27, 31);
--                    cpu_src2 = gen_load_gpr(dc, rs2);
--                    gen_casx_asi(dc, cpu_addr, cpu_src2, insn, rd);
--                    break;
--#endif
--#if !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
-                 case 0x3c: /* V9 or LEON3 casa */
--#ifndef TARGET_SPARC64
--                    CHECK_IU_FEATURE(dc, CASA);
--#endif
--                    rs2 = GET_FIELD(insn, 27, 31);
--                    cpu_src2 = gen_load_gpr(dc, rs2);
--                    gen_cas_asi(dc, cpu_addr, cpu_src2, insn, rd);
--                    break;
--#endif
-+                    goto illegal_insn; /* in decodetree */
-                 default:
-                     goto illegal_insn;
-                 }
+ static bool do_arith_int(DisasContext *dc, arg_r_r_ri_cc *a, int cc_op,
+                          void (*func)(TCGv, TCGv, TCGv),
+@@ -5457,10 +5452,10 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                 case 0x0b:      /* V9 ldx */
+                 case 0x18:      /* V9 ldswa */
+                 case 0x1b:      /* V9 ldxa */
++                case 0x2d:      /* V9 prefetch */
++                case 0x3d:      /* V9 prefetcha */
+                     goto illegal_insn;  /* in decodetree */
+ #ifdef TARGET_SPARC64
+-                case 0x2d: /* V9 prefetch, no effect */
+-                    goto skip_move;
+                 case 0x30: /* V9 ldfa */
+                     if (gen_trap_ifnofpu(dc)) {
+                         goto jmp_insn;
+@@ -5475,8 +5470,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                     gen_ldf_asi(dc, cpu_addr, insn, 8, DFPREG(rd));
+                     gen_update_fprs_dirty(dc, DFPREG(rd));
+                     goto skip_move;
+-                case 0x3d: /* V9 prefetcha, no effect */
+-                    goto skip_move;
+                 case 0x32: /* V9 ldqfa */
+                     CHECK_FPU_FEATURE(dc, FLOAT128);
+                     if (gen_trap_ifnofpu(dc)) {
 -- 
 2.34.1
 
