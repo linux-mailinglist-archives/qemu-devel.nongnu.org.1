@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A537D8029
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 11:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BE87D8031
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 12:03:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvx97-00006O-7n; Thu, 26 Oct 2023 05:59:21 -0400
+	id 1qvxCG-0001Z3-61; Thu, 26 Oct 2023 06:02:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qvx93-00006F-84
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 05:59:17 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qvx91-00067c-BJ
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 05:59:16 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qvx8o-0003ir-27; Thu, 26 Oct 2023 11:59:02 +0200
-Message-ID: <b5b1cf4e-06eb-4a94-b59f-aeb2fa11ead4@maciej.szmigiero.name>
-Date: Thu, 26 Oct 2023 11:58:56 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hyperv: add check for NULL for msg
-Content-Language: en-US, pl-PL
-To: =?UTF-8?B?0JDQvdCw0YHRgtCw0YHQuNGPINCb0Y7QsdC40LzQvtCy0LA=?=
- <abelova@astralinux.ru>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- sdl.qemu@linuxtesting.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20230928132519.26266-1-abelova@astralinux.ru>
- <3f62b1a2-9e13-4d0c-9b47-eb0146a6c80d@maciej.szmigiero.name>
- <95d0b238-8c5f-4cc8-8edc-94cc7f380694@astralinux.ru>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <95d0b238-8c5f-4cc8-8edc-94cc7f380694@astralinux.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <carwynellis@gmail.com>)
+ id 1qvxCE-0001YB-1o; Thu, 26 Oct 2023 06:02:34 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <carwynellis@gmail.com>)
+ id 1qvxCC-0006uh-0q; Thu, 26 Oct 2023 06:02:33 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2c523ac38fbso10852161fa.0; 
+ Thu, 26 Oct 2023 03:02:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698314549; x=1698919349; darn=nongnu.org;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=byBKN+jk+gsnu050ggiIHn4/Tj/YTevSyKsyGV13nOM=;
+ b=Espq58QK9k6UnVd0Pp2EpjBTyWTdo2z1dOJJdN+XKB1liRNb4zQNPVJryb2IsMuFZ3
+ R9vr3cPW314XpdPoL0cbro1FTp1K3H6moPUDfcYg52ah78UPdgwE/aWNVB23gHwwQs8l
+ bNdN11hdEl9ne74NKBZUWi769UfRxjQgQZ8ghc8+CrKnR3236Dylrsn0UojJxGyCWgmi
+ af0kiqPBQ2khM/OfLqYRdYJgGRfPoPv4WEn1Q/NK47FJ4uXeJ4ldU1PGXgHsPR/AabIK
+ 6p2s7db8pliki6LHCI9X3ocIB9fKi5UHRIgWjRMs8u00FskaHVOkkrFtIb8MR+Bnjlqv
+ 8EAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698314549; x=1698919349;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=byBKN+jk+gsnu050ggiIHn4/Tj/YTevSyKsyGV13nOM=;
+ b=uwsHMHR67xtc7gpax2yrs/wq4IRHXGJrf0BEgSeK7PWNLpRCpdQzJokR75bROwqJZZ
+ dMOOOV5teBdHFcF41UdxK++ko48rouGqp6HHiCD88duGGiqjW6N5O7H7ZLn9QYoeD8QU
+ E1RkH6znb0I9DRtm8CrTvO2k84BiuE3clWN9ePJ5EymbPZNaF133gExb77JedZNjrmfi
+ hmz62hfQytsWi++rYHxapPuntA30UOlzv5DA2x9TQrjckSpeNYBseOVr+8Rh+Cw75pi+
+ vbEsLGr2xl5eV2Mf7DNFApweFZShKMVlGlQ+iZNgpxpyS7RoqFjowIdS9r902+Jcybmo
+ Todw==
+X-Gm-Message-State: AOJu0Yxdz8S0nhapAgZaW1Hqp4F0lGUF52EP8z3Zwdr1a0fk08vwPwC5
+ mMkye07NoVtPXNaJHNu4AUw=
+X-Google-Smtp-Source: AGHT+IEOEXcEX5Huy4f5ZDwMVLiYSqVR8HuLMLuO+Ej5cxHUam4Q2guXWEk2R+TV7hdJYu5sXEkdfQ==
+X-Received: by 2002:a2e:a589:0:b0:2c5:21e3:f209 with SMTP id
+ m9-20020a2ea589000000b002c521e3f209mr12810103ljp.23.1698314549085; 
+ Thu, 26 Oct 2023 03:02:29 -0700 (PDT)
+Received: from smtpclient.apple
+ (host86-185-6-213.range86-185.btcentralplus.com. [86.185.6.213])
+ by smtp.gmail.com with ESMTPSA id
+ p21-20020a05600c431500b003fe61c33df5sm2098414wme.3.2023.10.26.03.02.28
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 26 Oct 2023 03:02:28 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH 1/1] ui/cocoa: add full-screen-scaling display option
+From: Carwyn Ellis <carwynellis@gmail.com>
+In-Reply-To: <ef3994e1-6989-41c6-8648-f6c943d6fe64@daynix.com>
+Date: Thu, 26 Oct 2023 11:02:18 +0100
+Cc: QEMU <qemu-devel@nongnu.org>, qemu-trivial@nongnu.org,
+ peter.maydell@linaro.org, philmd@linaro.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FB1DA769-FEFF-4ACF-BB0D-1B5D6B365C1F@gmail.com>
+References: <20231025140443.68520-1-carwynellis@gmail.com>
+ <20231025140443.68520-2-carwynellis@gmail.com>
+ <ef3994e1-6989-41c6-8648-f6c943d6fe64@daynix.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=carwynellis@gmail.com; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,35 +95,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.10.2023 11:31, Анастасия Любимова wrote:
-> 
-> 28/09/23 19:18, Maciej S. Szmigiero пишет:
->> On 28.09.2023 15:25, Anastasia Belova wrote:
->>> cpu_physical_memory_map may return NULL in hyperv_hcall_post_message.
->>> Add check for NULL to avoid NULL-dereference.
->>>
->>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>>
->>> Fixes: 76036a5fc7 ("hyperv: process POST_MESSAGE hypercall")
->>> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
->>
->> Makes sense to me, thanks.
->>
->> Did you run your static checker through the remaining QEMU files,
->> too?
->>
->> I can see similar cpu_physical_memory_map() usage in, for example:
->> target/s390x/helper.c, hw/nvram/spapr_nvram.c, hw/hyperv/vmbus.c,
->> display/ramfb.c...
->>
-> It seems that configurations for analysis do not contain these files
-> so the checker hasn't warned us. Additional time is needed to
-> analyze these pieces of code and form patches if necessary.
 
-No problem, it's not an urgent issue.  
-> Anastasia Belova
 
-Thanks,
-Maciej
+> On 26 Oct 2023, at 03:51, Akihiko Odaki <akihiko.odaki@daynix.com> =
+wrote:
+>=20
+> On 2023/10/25 23:04, carwynellis@gmail.com wrote:
+>> From: Carwyn Ellis <carwynellis@gmail.com>
+>> Provides a display option, full-screen-scaling, that enables scaling =
+of
+>> the display when full-screen mode is enabled.
+>> Also ensures that the corresponding menu item is marked as enabled =
+when
+>> the option is set to on.
+>=20
+> Hi,
+>=20
+> Thank you for your contribution.
+>=20
+> Please drop qemu-trivial@nongnu.org. This change is not that trivial.
+> Instead add "Graphics maintainers" listed in MAINTAINERS file to CC.
+>=20
+> Please also add Signed-off-by tag. See =
+docs/devel/submitting-a-patch.rst to know what the tag means.
+
+Hi,
+
+No problem at all. Thanks for getting back to me so quickly! :)=20
+
+I guess I missed this on the email body so I=E2=80=99ll make sure this =
+is present when I resubmit.
+
+Thanks
+
+>=20
+>> ---
+>>  qapi/ui.json |  6 +++++-
+>>  ui/cocoa.m   | 33 ++++++++++++++++++++-------------
+>>  2 files changed, 25 insertions(+), 14 deletions(-)
+>> diff --git a/qapi/ui.json b/qapi/ui.json
+>> index 006616aa77..9035b230ce 100644
+>> --- a/qapi/ui.json
+>> +++ b/qapi/ui.json
+>> @@ -1409,13 +1409,17 @@
+>>  #     codes match their position on non-Mac keyboards and you can =
+use
+>>  #     Meta/Super and Alt where you expect them.  (default: off)
+>>  #
+>> +# @full-screen-scaling: Scale display to fit when full-screen =
+enabled.
+>> +#     Defaults to "off".
+>> +#
+>=20
+> I think it's better to name zoom-to-fit to align with DisplayGTK.
+> It should also have "(Since 8.2)".
+
+I did look for an existing param but missed this one. Thanks!
+
+>=20
+>>  # Since: 7.0
+>>  ##
+>>  { 'struct': 'DisplayCocoa',
+>>    'data': {
+>>        '*left-command-key': 'bool',
+>>        '*full-grab': 'bool',
+>> -      '*swap-opt-cmd': 'bool'
+>> +      '*swap-opt-cmd': 'bool',
+>> +      '*full-screen-scaling': 'bool'
+>>    } }
+>>    ##
+>> diff --git a/ui/cocoa.m b/ui/cocoa.m
+>> index d95276013c..7ddc4de174 100644
+>> --- a/ui/cocoa.m
+>> +++ b/ui/cocoa.m
+>> @@ -1671,7 +1671,9 @@ static void create_initial_menus(void)
+>>      // View menu
+>>      menu =3D [[NSMenu alloc] initWithTitle:@"View"];
+>>      [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter =
+Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] =
+autorelease]]; // Fullscreen
+>> -    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" =
+action:@selector(zoomToFit:) keyEquivalent:@""] autorelease]];
+>> +    menuItem =3D [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" =
+action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
+>> +    [menuItem setState: (stretch_video) ? NSControlStateValueOn : =
+NSControlStateValueOff];
+>=20
+> nit: You don't need parentheses around strech_video.
+
+No problem - will change this.=20
+
+>=20
+>> +    [menu addItem: menuItem];
+>>      menuItem =3D [[[NSMenuItem alloc] initWithTitle:@"View" =
+action:nil keyEquivalent:@""] autorelease];
+>>      [menuItem setSubmenu:menu];
+>>      [[NSApp mainMenu] addItem:menuItem];
+>> @@ -2041,18 +2043,6 @@ static void cocoa_display_init(DisplayState =
+*ds, DisplayOptions *opts)
+>>        [QemuApplication sharedApplication];
+>>  -    create_initial_menus();
+>> -
+>> -    /*
+>> -     * Create the menu entries which depend on QEMU state (for =
+consoles
+>> -     * and removable devices). These make calls back into QEMU =
+functions,
+>> -     * which is OK because at this point we know that the second =
+thread
+>> -     * holds the iothread lock and is synchronously waiting for us =
+to
+>> -     * finish.
+>> -     */
+>> -    add_console_menu_entries();
+>> -    addRemovableDevicesMenuItems();
+>> -
+>>      // Create an Application controller
+>>      QemuCocoaAppController *controller =3D [[QemuCocoaAppController =
+alloc] init];
+>=20
+> QemuCocoaAppController also has code to initialize stretch_video; it's =
+not OK to have code to initialize a same variable in two different =
+places.
+
+Ok, I=E2=80=99ll take a look and tidy this up.
+
+>=20
+>>      [NSApp setDelegate:controller];
+>> @@ -2062,6 +2052,7 @@ static void cocoa_display_init(DisplayState =
+*ds, DisplayOptions *opts)
+>>          [NSApp activateIgnoringOtherApps: YES];
+>>          [controller toggleFullScreen: nil];
+>>      }
+>> +
+>=20
+> Don't add a blank line here. It's irrelevant from this change.
+
+Ok.
+
+I=E2=80=99ll aim to get this resubmitted as a V2 later today with the =
+appropriate CCs.
+
+Thanks again,
+Carwyn
 
 
