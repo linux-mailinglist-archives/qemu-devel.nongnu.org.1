@@ -2,89 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6257D8486
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 16:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39277D849D
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 16:25:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw1EH-0001Zp-IX; Thu, 26 Oct 2023 10:20:57 -0400
+	id 1qw1HK-00038x-Fl; Thu, 26 Oct 2023 10:24:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw1EC-0001ZX-Q4
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 10:20:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qw1HD-00038L-55; Thu, 26 Oct 2023 10:23:59 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw1E7-00077w-53
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 10:20:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698330045;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ka98h2gd5F+DNMJ4LfRkh78Q1sBIMpzJv6cliWgrMOQ=;
- b=YSfJ2BEBhv4N40Nu8unExJxkRcJ6nYsppKvWcduQ2XTRLv+R1G7VDc/kw/Ja+PMiWfjLwi
- THKdqJErOSxyxdOE7fJBQRmAIaMiqR4xQU3dAWLSj+bq1Q/nRN3KWUPJtKIDfjAAVMxjMX
- O9lEE5l7MeXqYUvFoDp1LnfDKB64ogU=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-BLuqhvdvPX-qbN9LCovjig-1; Thu, 26 Oct 2023 10:20:43 -0400
-X-MC-Unique: BLuqhvdvPX-qbN9LCovjig-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-41e1899175eso2503781cf.1
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 07:20:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698330043; x=1698934843;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ka98h2gd5F+DNMJ4LfRkh78Q1sBIMpzJv6cliWgrMOQ=;
- b=MXoLMWbJHfxJyoc/Wh/peJlyJW82TjBDbodD7EhvsmZjlsVbgQE+qmpmBTJ05qrPkQ
- Kty/ZMxTdXVo1YyywJRfIfv3tp4kl37bCy7S1rpZFhDNRxEkD+1XRy7hYxKJaz/ynbxU
- IhXTTPlUmhZvGuIrWOidOMabVvNEJbRdEv4/Getnis97wYYCPhmfDiysAwd7u2gd8+D1
- zAwUJrURa/fVbdTPgRaN7riJeFN9pxfKPuTbI3NRj5LzQ8se6fOMcU4m3zPRYAg5pflb
- FXFkyGGoQ3pw4KLvfTZ93AqNOJZ8Snce7HKdpkDeQzTxzYHM5bylX7pw/WEEyMnc9MlX
- jIRw==
-X-Gm-Message-State: AOJu0Yy1tBhgCcqPsqCoktQafy890rSVr+u5YipdxuRQLjHJx9etQgnG
- JqwixS8pDXizRSHp2d1G9mvsEQ62jHxPG+3KiodBWBqeHQQQh24aoZ/5LrZrUvr/zZ5j6qCE8yV
- NROngHuEgNstfyh8=
-X-Received: by 2002:a05:622a:1997:b0:41c:c83d:f82a with SMTP id
- u23-20020a05622a199700b0041cc83df82amr21875818qtc.3.1698330043063; 
- Thu, 26 Oct 2023 07:20:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7iW8pCkFDOYM1FV55DACEl/k47+40/iHg2TN69C9c1yD1Zucor97tXWHzjLzx0KhG2O+iXw==
-X-Received: by 2002:a05:622a:1997:b0:41c:c83d:f82a with SMTP id
- u23-20020a05622a199700b0041cc83df82amr21875796qtc.3.1698330042702; 
- Thu, 26 Oct 2023 07:20:42 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- l10-20020ac848ca000000b004108d49f391sm5027195qtr.48.2023.10.26.07.20.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 07:20:42 -0700 (PDT)
-Date: Thu, 26 Oct 2023 10:20:41 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Ethan Chen <ethan84@andestech.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 2/6] system/physmem: IOMMU: Invoke the translate_size
- function if it is implemented
-Message-ID: <ZTp1uWQ8c/t6BCBW@x1n>
-References: <20231025051430.493079-1-ethan84@andestech.com>
- <20231025051430.493079-3-ethan84@andestech.com>
- <ZTkw4itrYANXm4qR@x1n> <ZToLrlSX56GkeQQW@ethan84-VirtualBox>
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qw1HA-0000YZ-W6; Thu, 26 Oct 2023 10:23:58 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39QEK2Kt007904; Thu, 26 Oct 2023 14:23:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=GAGBLtgAJXpzXPMY0wHrOOWsUamAQ+ArzxT0hd4C0rk=;
+ b=JXmlRLXSsvjw3+NNoflnSBfQUFIq953yhEdj3YBdwT4E2Fve+B8PDZEtY4s2JtYPzBn2
+ F91M2keCnY/O/7DOoKqhMnvNf95HWxMtll0+TozHFzFuZf9yRVudpqWBoYvIq8jaiyun
+ MRJbN2t80PMtLW39MjzYVgWmiZnqJuxBWV7jYsCOipvPTYoo5yojgimoUWCFOWyW5Viu
+ IzT6/HLu9XaBFstCe6X2FZU1O0IN6a7As2jtsa6l3bj3Zkqs3C5boAP2LASt6QhSbEFX
+ J0Av+fL2XwHQkT4okE9jbjyMh+0PyAZMgc0R9f4/W7VRonCm/PGc6d/c32JedHBgviBe 4g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tysse82xk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Oct 2023 14:23:36 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QEKncv010188;
+ Thu, 26 Oct 2023 14:23:28 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tysse82ur-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Oct 2023 14:23:28 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39QDvnl5023782; Thu, 26 Oct 2023 14:23:21 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvrytewa0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Oct 2023 14:23:21 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39QENJGh48824814
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 26 Oct 2023 14:23:20 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFA2E5804B;
+ Thu, 26 Oct 2023 14:23:19 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6C44F58055;
+ Thu, 26 Oct 2023 14:23:17 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.13.38]) by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 26 Oct 2023 14:23:17 +0000 (GMT)
+Message-ID: <504f3e06f85c864a5019a01f9f4bb61cea092de1.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 01/37] vfio/container: Move IBM EEH related functions
+ into spapr_pci_vfio.c
+From: Eric Farman <farman@linux.ibm.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
+ peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
+ yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com, Nicholas
+ Piggin <npiggin@gmail.com>, Daniel Henrique Barboza
+ <danielhb413@gmail.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater
+ <clg@kaod.org>, David Gibson <david@gibson.dropbear.id.au>, Harsh Prateek
+ Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, Tony Krowiak
+ <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, Jason Herne
+ <jjherne@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, "open
+ list:sPAPR (pseries)" <qemu-ppc@nongnu.org>, "open list:S390 general
+ arch..." <qemu-s390x@nongnu.org>
+Date: Thu, 26 Oct 2023 10:23:16 -0400
+In-Reply-To: <20231026103104.1686921-2-zhenzhong.duan@intel.com>
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ <20231026103104.1686921-2-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZToLrlSX56GkeQQW@ethan84-VirtualBox>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0LjR_zeF-CxoKZrT04G2TSMf_MeQZMx3
+X-Proofpoint-GUID: M6doxcjptmOcuGttTWffzlLEFxmPKBs_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-26_12,2023-10-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 bulkscore=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=999 suspectscore=0 spamscore=0 impostorscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310260123
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,26 +124,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 26, 2023 at 02:48:14PM +0800, Ethan Chen wrote:
-> My target is to support IOPMP partially hit error. IOPMP checks whole memory 
-> access region is in the same entry. If not, reject the access instead of modify
-> the access size.
+On Thu, 2023-10-26 at 18:30 +0800, Zhenzhong Duan wrote:
+> With vfio_eeh_as_ok/vfio_eeh_as_op moved and made static,
+> vfio.h becomes empty and is deleted.
+>=20
+> No functional changes intended.
+>=20
+> Suggested-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+> =C2=A0include/hw/vfio/vfio.h=C2=A0 |=C2=A0=C2=A0 7 ---
+> =C2=A0hw/ppc/spapr_pci_vfio.c | 100
+> +++++++++++++++++++++++++++++++++++++++-
+> =C2=A0hw/vfio/ap.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0=C2=A0 1 -
+> =C2=A0hw/vfio/ccw.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0 1 -
+> =C2=A0hw/vfio/common.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+=C2=A0 1 -
+> =C2=A0hw/vfio/container.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 98 ------------=
+--------------------------
+> -
+> =C2=A0hw/vfio/helpers.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=
+ 1 -
+> =C2=A07 files changed, 99 insertions(+), 110 deletions(-)
+> =C2=A0delete mode 100644 include/hw/vfio/vfio.h
 
-Could you elaborate why is that important?  In what use case?
+Can't speak to the code movement, but removing the header file from
+those places where it's not used is fine.
 
-Consider IOVA mapped for address range iova=[0, 4K] only, here we have a
-DMA request with range=[0, 8K].  Now my understanding is what you want to
-achieve is don't trigger the DMA to [0, 4K] and fail the whole [0, 8K]
-request.
-
-Can we just fail at the latter DMA [4K, 8K] when it happens?  After all,
-IIUC a device can split the 0-8K DMA into two smaller DMAs, then the 1st
-chunk can succeed then if it falls in 0-4K.  Some further explanation of
-the failure use case could be helpful.
-
-Thanks,
-
--- 
-Peter Xu
-
+Acked-by: Eric Farman <farman@linux.ibm.com>
 
