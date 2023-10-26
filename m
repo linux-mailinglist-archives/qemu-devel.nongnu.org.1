@@ -2,51 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8140A7D861E
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9E97D8625
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:46:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw2Sm-0001GB-Ry; Thu, 26 Oct 2023 11:40:01 -0400
+	id 1qw2YC-00032X-AD; Thu, 26 Oct 2023 11:45:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+1fb9ca25523a2d41ea1b+7368+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qw2Sk-0001Ft-Jc
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:39:58 -0400
+ id 1qw2Y9-00032P-IH
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:45:34 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+1fb9ca25523a2d41ea1b+7368+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qw2Sg-0005HB-So
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:39:58 -0400
+ id 1qw2Y7-0006Or-9Q
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:45:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
- From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=UW56wepZGMtMASY31t+t9QjEPPwtgOzJf/u/En0rghk=; b=fLbX5BNZKq692M3i3B4aiDV6D4
- 4VtEaAmjhCWrWFSh1Nt5cLqrzwfVO0cEBW5OoUOjihyq/ZM54zkTo+/O3YAAxub/SKEEjWhVGhfDp
- bOXbTadHTx0Z5Wp0YWYE3n21iwE+NW5kJHGXJlVvUyyiJIvF0ivi90ECeAuXfCxl3ySo0iYz2LNdN
- 2T+tAxSa+gIFMaPAe05Eza4EZImNhvRdR3QqgG/EPRpV1A6i28m86dPixoRZTx18hvprh11CiFmLI
- nEC5LQQa/5NTgW+U+ZjKJw0JkMC3X7T5x/csP+0flNF9efiMumJuZjvAPMdteftMTH38JYhWjcZxP
- B41A94Ig==;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=Ob0ALOUwSkJvsjeQfue3SPsi0uVS5RJlogWBcJc0i5s=; b=qXgzwVZjUtJJqHdt99B24lZjvL
+ XiF3KdbkDbgiuPhhp6vPKHcr9tSrKEZiQjvXWVYxuxYiQZNNqFbAdygBJ3ZhERmNHzW1hzwviV5BS
+ lUOp/dRYCpKzHcc3E1bj0FkCYtbIc9tprbcllMVNaKsRCiUDCLNtp9d77GKqohJ2SSvo7KBzv7z3T
+ QL2drCJd3Sc3XFfNR55bbvSDovcuUDe8CA/7yLHtLRnwCeJiHcc1sacF7SkY7qM4b3Oeki2EWMeOZ
+ ohoBaWDF9s8SnvItdBEJyzpLA63Vac1gRuTeuCuGC+T3rzaJTezkWeB2ZloJik/dEHRU4MjyZx/av
+ b638CH0A==;
 Received: from [2001:8b0:10b:5:a059:f7a9:933a:2236]
  (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qw2Sd-00Foa6-Ki; Thu, 26 Oct 2023 15:39:51 +0000
-Message-ID: <870c998c450ba7e2bc2a72c12066f1af75e507d0.camel@infradead.org>
-Subject: [PATCH] target/i386/monitor: synchronize cpu before printing lapic
- state
+ id 1qw2Xy-00Fr28-EJ; Thu, 26 Oct 2023 15:45:22 +0000
+Message-ID: <9d7d7fc988fa06d77cb1eca739f82063608dfda6.camel@infradead.org>
+Subject: Re: [QEMU][PATCHv2 1/8] xen: when unplugging emulated devices skip
+ virtio devices
 From: David Woodhouse <dwmw2@infradead.org>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>,  kvm <kvm@vger.kernel.org>, Richard Henderson
- <richard.henderson@linaro.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>
-Date: Thu, 26 Oct 2023 16:39:51 +0100
+To: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Vikram Garhwal <vikram.garhwal@amd.com>, qemu-devel@nongnu.org, 
+ jgross@suse.com, Anthony Perard <anthony.perard@citrix.com>, Paul Durrant
+ <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, 
+ "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, "open
+ list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Date: Thu, 26 Oct 2023 16:45:21 +0100
+In-Reply-To: <alpine.DEB.2.22.394.2310251820510.271731@ubuntu-linux-20-04-desktop>
+References: <20231025212422.30371-1-vikram.garhwal@amd.com>
+ <20231025212422.30371-2-vikram.garhwal@amd.com>
+ <f8d6eaf9b5f57184a5f6ec5b6103189b77364e3a.camel@infradead.org>
+ <alpine.DEB.2.22.394.2310251820510.271731@ubuntu-linux-20-04-desktop>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-zlKms/nHaDLPHRU7SNph"
+ boundary="=-Zh8xFnrlW+/8oWRYErtc"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -77,48 +85,42 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-zlKms/nHaDLPHRU7SNph
+--=-Zh8xFnrlW+/8oWRYErtc
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Wed, 2023-10-25 at 18:23 -0700, Stefano Stabellini wrote:
+> On Thu, 26 Oct 2023, David Woodhouse wrote:
+> > On Wed, 2023-10-25 at 14:24 -0700, Vikram Garhwal wrote:
+> > > From: Juergen Gross <jgross@suse.com>
+> > >=20
+> > > Virtio devices should never be unplugged at boot time, as they are
+> > > similar to pci passthrough devices.
+> > >=20
+> > > Signed-off-by: Juergen Gross <jgross@suse.com>
+> > > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+> >=20
+> > Hm, do your virtio NICs still actually *work* after that? Or are they
+> > all disconnected from their netdev peers?=20
+> >=20
+> > I suspect you're going to want a variant of
+> > https://lore.kernel.org/qemu-devel/20231025145042.627381-19-dwmw2@infra=
+dead.org/T/#u
+> > which also leave the peers of your virtio devices intact?
+>=20
+> Hi David, device unplug is an x86-only thing (see the definition of
+> xen_emul_unplug in Linux under arch/x86/xen/platform-pci-unplug.c) I
+> suspect Vikram who is working on ARM hasn't tested it.
 
-Where the local APIC is emulated by KVM, we need kvm_get_apic() to pull
-the current state into userspace before it's printed. Otherwise we get
-stale values.
+Ah, I had assumed there was something else coming along later which
+would make it actually get used.=20
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- target/i386/monitor.c | 2 ++
- 1 file changed, 2 insertions(+)
+> Vikram, a simple option is to drop this patch if you don't need it.
 
-diff --git a/target/i386/monitor.c b/target/i386/monitor.c
-index 6512846327..0754d699ba 100644
---- a/target/i386/monitor.c
-+++ b/target/i386/monitor.c
-@@ -29,6 +29,7 @@
- #include "monitor/hmp.h"
- #include "qapi/qmp/qdict.h"
- #include "sysemu/kvm.h"
-+#include "sysemu/hw_accel.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-misc-target.h"
- #include "qapi/qapi-commands-misc.h"
-@@ -655,6 +656,7 @@ void hmp_info_local_apic(Monitor *mon, const QDict *qdi=
-ct)
-     if (qdict_haskey(qdict, "apic-id")) {
-         int id =3D qdict_get_try_int(qdict, "apic-id", 0);
-         cs =3D cpu_by_arch_id(id);
-+        cpu_synchronize_state(cs);
-     } else {
-         cs =3D mon_get_cpu(mon);
-     }
---=20
-2.34.1
+That works. Although I may revive it in that case.=20
 
 
-
---=-zlKms/nHaDLPHRU7SNph
+--=-Zh8xFnrlW+/8oWRYErtc
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -210,25 +212,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI2MTUzOTUxWjAvBgkqhkiG9w0BCQQxIgQgGbxEs2vM
-mp0It/ZADs2XUx52jsrHhrbL9/CDMRN4QQAwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI2MTU0NTIxWjAvBgkqhkiG9w0BCQQxIgQg/a6gD3oR
+29Ahlk3/f12OTgIuysJqEFXO64fwatk1Yxkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBXk6twxvYJHf6bOtMvAWkTME9A7WYUpNPi
-vKld1L1RaHPTaM2qxZAAYR/iBBMnJrD7IfnqTnbby8PlUsfullv8tS8Ob8g1iHvwdkKk58oZoCXQ
-Azg2Arq98hUad+N9msa1gfiELrq33w4LHveX8+Z8hYtEthO8ue1kM6BxygVaHLU0k0zFJg7l7wj+
-qzZRvvMBuDoU3Iqqo4pwe6W3jVBDu2sKT2i7loLAZEBrR/xu3ECT2qrMapPz33IMn+bRv2qmsz0R
-0gYGqsMf6awLpL5TUgnwWypf99Jmuq8wQDWs6hAsoM/Fp8Le8vECADsXrG9AwtKPcCs294JNeSKZ
-PVcQIJk2DCmI7Dp+93A0f5GHVFA/0Szn7HqO0W3Eo2cGYulntLa4okioXQAEi2r1awp3o0Svm7wr
-ANAfCSqzGccbY25vJw7DN7OpVY5Yr7F/y69jfiuGX5kft2pAf+YwQhOw7fUJ962XBbp2M2FNnHBW
-gB67H4HybV1YRv9IeILPsvAmKtkI3qh0CTIIafLJk3BWJTbZDb1GIEhaolbkT72w4Ps9hNy/Tg1n
-X4HyI2b+Qz2ybURAhP8c5S+00QGI65gdwOuGHIb2tsfx+SLoVYYLTARKHiCBSL4zBdhi5PcaePRl
-Ge7/txveVndh3iGFDCQNdUbyhCcXqsOQDelJhLjVEAAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgB1yYY0fHZ46Wo1+kUOAntA1QkcsOqKJb28
+P/v8wkSIndIvbM+gdOJv9ebbM6ugF49+AFuAOxhhImLlhgKNsg74h/49ixHLlhZCts0Mcg/dwLdb
+Xeu9p57Bydyr8jxQuINLDBybcOS6hiBkR9fWwV5FoJRKOQrCumTPcXtDMzC2hgqe0Uh7gvqPUh8h
+UeT/r3RsCoTuZRp/Os4sHQbvmWyuKHZlc6DnLSqQxKDpM0cxSQB2Hvakhlzx4QP4+V67NA/HxPbk
+XJkAAj4dCw5J8ExHXr3IdKmTvpi3MrFDXrLrLx5gok68EXgcxpsj7sHHu7Q9Fo+Fu+s84b7AGAVk
+B9LdOeXoUvEZAhDYwO1Vgx0M4LgvFY/zRZvOXv6eWrFhU3Wy5B3STccsuNkFwkls9+33oU6XekjI
+iqJuWrmpvYEmBpr9Igx98jPsbTmIaCWnWHJmRjPSY984P02aRbteljfjc5tb34HiZHyOc+ZT54WI
+LWIsf2y1mXIzkusPGFpncJCtKtfwDNR5HGak5rpmbPrX9Wjd8+X7HrQDs0jCtispX2ye95I8s5jh
+S8aOyM0jwRrvhwEqUVZUQOAuBhq0aoWm+caRGo6faJUxJVlF0aQtruUb1msVfeLw5n39mavltjow
+Xb6MLMpL7se5cDSnwQdW/xX/uWFVqOMNAPQ3vD1KvgAAAAAAAA==
 
 
---=-zlKms/nHaDLPHRU7SNph--
+--=-Zh8xFnrlW+/8oWRYErtc--
 
