@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DAC7D8653
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C8F7D8652
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:54:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw2gQ-0005sY-CJ; Thu, 26 Oct 2023 11:54:06 -0400
+	id 1qw2gG-0005ra-Ka; Thu, 26 Oct 2023 11:53:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw2gO-0005sO-D8
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:54:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw2gE-0005rC-AR
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:53:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw2gM-0000tF-Su
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:54:04 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw2gC-0000sQ-Np
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:53:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698335642;
+ s=mimecast20190719; t=1698335631;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pVnr5wFaay66KVUCJQ7STeYMkubTSR3EFWIQEUk4fwM=;
- b=ZS3h1aE7pbhdWdfdl/AAdhENaqpfTqrNeqq6CuNOcPFEkiv7osvTjTw9qBs87WfCbo3KZE
- PG0WENijEPIsuTP054188jLOphyL1/27A4dWHJXoh7pRKgHRepgfKqo8oxIcwPkS4GcX+r
- 9PsjJpmvUC4EB3ol+968994+VvJeQeo=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zSHyWtkUKU/y1HHFJ9tbynjlp9Czisd65damm2Zn+wQ=;
+ b=NEL0E/ZRQk+L0bpylzYB9POetb8Ez8dlbMVC9s9SJrKE1x56Fp9z/uev5k29/WJdhEQa07
+ 854zfAIM4eZ0zuhDtyGZBcZzs1C1GXm+N+7PVE1sxEhddH3T9Js78Fk+qvPfWxJh98ZnPJ
+ fN4tVep+VH+p3ypLzvd6QHt0Nqgnv/s=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-484-1HGANl37M8SPhnpOjweGmA-1; Thu, 26 Oct 2023 11:53:45 -0400
-X-MC-Unique: 1HGANl37M8SPhnpOjweGmA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-41e1ecf3350so2448031cf.1
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 08:53:45 -0700 (PDT)
+ us-mta-685-bjoFXTTfNnCpJE-3aQxKZw-1; Thu, 26 Oct 2023 11:53:49 -0400
+X-MC-Unique: bjoFXTTfNnCpJE-3aQxKZw-1
+Received: by mail-ua1-f72.google.com with SMTP id
+ a1e0cc1a2514c-7b9cc998f5fso40433241.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 08:53:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698335625; x=1698940425;
+ d=1e100.net; s=20230601; t=1698335629; x=1698940429;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pVnr5wFaay66KVUCJQ7STeYMkubTSR3EFWIQEUk4fwM=;
- b=RrImI0JvIGiwKhbkPQrYcKGiUzIwXY1XVBKXjsXqj04X19qoOiP4Vt1QoB9VGkTe45
- pO86fM2VzSFnhaqS3rnPjJFwiu2PiF7XyaSciS3BA9huTI/qeE6Cqos/Q5sDXaDiQjoB
- 4m7rBt+XP7dAFgZ0AQWNY+6opEKfrDlsdOnsglJcxlbDCykmDW6QiW/6ab+pY04UkjXj
- Lmh1VQ7RT1L6NqwaFE8V+NiZjUodhbw/6s7fgW/HF6o48nJb6t8UepTBqb81xTVBoRcV
- hR65cYgt8ERmJjyKbmEtq3SclvLO6HXT7UBWNVdHXz/2GPbQkpuu1DgSP7mx+y4mdJUf
- /71Q==
-X-Gm-Message-State: AOJu0Yw4KDz1C/JBAKigeGK7b71J0UUPZiCqGPfbUDih0WK0NAoUMjD1
- so1busghHZa5OOM9X7dymztd9GwdGiQLttLNHN18miF48QFHlQrMijHL+HvAHDnB4S6KY6yO4JT
- C68r6SNOR/O6UtBdtThQ5sxQj5+9sDKHMKb79WN4p/UIKM2U1D5Js5nVOaHV0/LR5mtdC811W
-X-Received: by 2002:a05:622a:1a05:b0:403:c2fa:83b with SMTP id
- f5-20020a05622a1a0500b00403c2fa083bmr20194647qtb.4.1698335625096; 
- Thu, 26 Oct 2023 08:53:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4zIbwUKNnmdkDLw7CYaroIPih/iPd9tlAom09vRlxkmDlBp3+fg+NcuDAVwuiDlUyLsRZ4A==
-X-Received: by 2002:a05:622a:1a05:b0:403:c2fa:83b with SMTP id
- f5-20020a05622a1a0500b00403c2fa083bmr20194623qtb.4.1698335624743; 
- Thu, 26 Oct 2023 08:53:44 -0700 (PDT)
+ bh=zSHyWtkUKU/y1HHFJ9tbynjlp9Czisd65damm2Zn+wQ=;
+ b=aF/dWg6KMKNaI/bD2cSUCDN/lWX3uI862ONV+tGImrEweKvSNyXQeOc/5JODgOMTP0
+ HQ/VOdhEZ5SfpOYZAKfEL7G6qM89xQoQMq3Mq9UpEdPQhaaE6h28JA2aPUlF1EYcFgxK
+ IxqvkeNeArSdtNMRFbCRSC6xYBvY+9VGpZ1rw2yuSvkNAykzDu8OR6loMvQ0nwzEclvr
+ 8G6YTwtPpJcGArJXhj/HL3Cqw22oJWAslhkQchHWHyZ/1JX7PR8U65B/ZTAJcAmT9nSF
+ 9ALadAJgqHV8gid7ClDhB8btyFhQslKRvLuA5frBnmoUruCwxgNba+Ov+4vXwMGV8vKD
+ 9D9g==
+X-Gm-Message-State: AOJu0YyUvYo9oZeTd1auVbk4+eCbftuhlSKLWQGAEU6mJ/KbyLjoLkZI
+ zbBvmQ3LdbMyj/HX5Vmx84eIwa4NNEH4n3FxcFRFKsH1pIHgLuTUspuVT9VtkIIL5OGBf5jPIP5
+ lTlsE4ZIsvQHd6onCmP9G3JSwJC/Q03vZ5jLhdWXw2zaRB75sLNONsEGq70zBtSg1FbClwS0J
+X-Received: by 2002:a05:6122:410a:b0:48f:cf1a:fd49 with SMTP id
+ ce10-20020a056122410a00b0048fcf1afd49mr249093vkb.0.1698335629056; 
+ Thu, 26 Oct 2023 08:53:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHaDFurITucUs8RENeoaOjXscYris+ls9zcVKgR7ZUGfKXVKKXPabFgmamDxkzQ4FpqzNJKaA==
+X-Received: by 2002:a05:6122:410a:b0:48f:cf1a:fd49 with SMTP id
+ ce10-20020a056122410a00b0048fcf1afd49mr249064vkb.0.1698335628644; 
+ Thu, 26 Oct 2023 08:53:48 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- f15-20020ac840cf000000b004181f542bcbsm5066580qtm.11.2023.10.26.08.53.39
+ f15-20020ac840cf000000b004181f542bcbsm5066580qtm.11.2023.10.26.08.53.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 08:53:41 -0700 (PDT)
+ Thu, 26 Oct 2023 08:53:46 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
  Juan Quintela <quintela@redhat.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH 1/3] migration: Set downtime_start even for postcopy
-Date: Thu, 26 Oct 2023 11:53:35 -0400
-Message-ID: <20231026155337.596281-2-peterx@redhat.com>
+Subject: [PATCH 2/3] migration: Add migration_downtime_start|end() helpers
+Date: Thu, 26 Oct 2023 11:53:36 -0400
+Message-ID: <20231026155337.596281-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231026155337.596281-1-peterx@redhat.com>
 References: <20231026155337.596281-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,47 +99,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Postcopy calculates its downtime separately.  It always sets
-MigrationState.downtime properly, but not MigrationState.downtime_start.
-
-Make postcopy do the same as other modes on properly recording the
-timestamp when the VM is going to be stopped.  Drop the temporary variable
-in postcopy_start() along the way.
+Unify the three users on recording downtimes with the same pair of helpers.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ migration/migration.c | 37 ++++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 67547eb6a1..f8a54ff4d1 100644
+index f8a54ff4d1..70d775942a 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2121,7 +2121,6 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     int ret;
-     QIOChannelBuffer *bioc;
-     QEMUFile *fb;
--    int64_t time_at_stop = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-     uint64_t bandwidth = migrate_max_postcopy_bandwidth();
-     bool restart_block = false;
-     int cur_state = MIGRATION_STATUS_ACTIVE;
-@@ -2143,6 +2142,8 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+@@ -101,6 +101,24 @@ static int migration_maybe_pause(MigrationState *s,
+ static void migrate_fd_cancel(MigrationState *s);
+ static int close_return_path_on_source(MigrationState *s);
+ 
++static void migration_downtime_start(MigrationState *s)
++{
++    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++}
++
++static void migration_downtime_end(MigrationState *s)
++{
++    int64_t now = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++
++    /*
++     * If downtime already set, should mean that postcopy already set it,
++     * then that should be the real downtime already.
++     */
++    if (!s->downtime) {
++        s->downtime = now - s->downtime_start;
++    }
++}
++
+ static bool migration_needs_multiple_sockets(void)
+ {
+     return migrate_multifd() || migrate_postcopy_preempt();
+@@ -2142,7 +2160,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
      qemu_mutex_lock_iothread();
      trace_postcopy_start_set_run();
  
-+    ms->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-+
+-    ms->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    migration_downtime_start(ms);
+ 
      qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
      global_state_store();
-     ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
-@@ -2245,7 +2246,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+@@ -2246,7 +2264,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
      ms->postcopy_after_devices = true;
      migration_call_notifiers(ms);
  
--    ms->downtime =  qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - time_at_stop;
-+    ms->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - ms->downtime_start;
+-    ms->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - ms->downtime_start;
++    migration_downtime_end(ms);
  
      qemu_mutex_unlock_iothread();
+ 
+@@ -2342,7 +2360,7 @@ static int migration_completion_precopy(MigrationState *s,
+     int ret;
+ 
+     qemu_mutex_lock_iothread();
+-    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    migration_downtime_start(s);
+     qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+ 
+     s->vm_old_state = runstate_get();
+@@ -2699,15 +2717,8 @@ static void migration_calculate_complete(MigrationState *s)
+     int64_t end_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+     int64_t transfer_time;
+ 
++    migration_downtime_end(s);
+     s->total_time = end_time - s->start_time;
+-    if (!s->downtime) {
+-        /*
+-         * It's still not set, so we are precopy migration.  For
+-         * postcopy, downtime is calculated during postcopy_start().
+-         */
+-        s->downtime = end_time - s->downtime_start;
+-    }
+-
+     transfer_time = s->total_time - s->setup_time;
+     if (transfer_time) {
+         s->mbps = ((double) bytes * 8.0) / transfer_time / 1000;
+@@ -3126,7 +3137,7 @@ static void bg_migration_vm_start_bh(void *opaque)
+     s->vm_start_bh = NULL;
+ 
+     vm_start();
+-    s->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - s->downtime_start;
++    migration_downtime_end(s);
+ }
+ 
+ /**
+@@ -3193,7 +3204,7 @@ static void *bg_migration_thread(void *opaque)
+     s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
+ 
+     trace_migration_thread_setup_complete();
+-    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    migration_downtime_start(s);
+ 
+     qemu_mutex_lock_iothread();
  
 -- 
 2.41.0
