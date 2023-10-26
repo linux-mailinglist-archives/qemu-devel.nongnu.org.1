@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398C97D7B73
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 06:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9F17D7B84
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 06:34:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvrrk-0007Ac-3n; Thu, 26 Oct 2023 00:21:04 -0400
+	id 1qvs2p-0000C7-58; Thu, 26 Oct 2023 00:32:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvrrg-0007AH-7p
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 00:21:00 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ (Exim 4.90_1) (envelope-from <philippe.mathieu.daude@gmail.com>)
+ id 1qvs2j-0000BO-2H; Thu, 26 Oct 2023 00:32:25 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvrrb-0005Hg-B2
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 00:20:59 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-27d18475ed4so382288a91.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 21:20:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philippe.mathieu.daude@gmail.com>)
+ id 1qvs2g-0007FK-59; Thu, 26 Oct 2023 00:32:24 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-99bdeae1d0aso72097766b.1; 
+ Wed, 25 Oct 2023 21:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698294049; x=1698898849; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:to:from
+ d=gmail.com; s=20230601; t=1698294739; x=1698899539; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dJIYL5eAPvSKXcy9LTY86iHBS7ZTqJBglQ7gQGUTuP4=;
- b=kkTxzE/bvSayePtYgKCZPMZDbN/cOcS+Tw6azShw62JFR+i5SujApR8nS0QUKIqPMZ
- YbdPYJFzBxl3LIszitNLtps5n7mbfWm94bDTTL6gPuu343c4wabgD8sr32Ht+mo2wjvI
- zUNqGNUG86k2jibRXWM7rgbynuJSz/3HupbHER7a8TyJYCu0rpnIKQ7n9zFLbmfHD07A
- OnhZZ328WX3b6PFzeSqAhg6zMc7gF6Iwec010xYMypjPnGTrXeSWgfxYjtKGKn5vkNTC
- 1tJqSPtJenAcgis7NLekho+SOXMiNWo3I2lwBlNAdl0th2/4wWI8R4G8j3MASfPf+HlI
- v2Sg==
+ :sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=oQeLLJX1SNl3fiduP6mhol3eLmwp6WdGHayJ5XYZBfw=;
+ b=CpeFUW9IFDcZzEMIqUfHq69YA2ri2OryEtCB/6brmpF5KI9G5prFtc1TN3i5+2Gs2b
+ m4QTiHfnE3EVM04Gy+B0KFL/GqqB2cwt+7Y4Dddquk07myHs3dEUfuALruWObdJfOyrU
+ Dbf0hCxuE7YOZxww9DmAAtCLk6SLGC1VNw3eJVs3Ol1BKSfjXjt7Xy1mukp03aiN7WKV
+ Wz98aWo6gEhl0pL4Yk2/X5CMwz7bIojcSLjyi+pQWCr6AXnMkb4ZtfbeAHmUQlHkaxqT
+ Gp0u9qQbfxRmWz7uwZOuJ5rVx9LbizWqfzhszkxRCErluknTUMKDpA2Tg8KEXq9nxII4
+ YKIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698294049; x=1698898849;
- h=content-transfer-encoding:in-reply-to:references:to:from
+ d=1e100.net; s=20230601; t=1698294739; x=1698899539;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dJIYL5eAPvSKXcy9LTY86iHBS7ZTqJBglQ7gQGUTuP4=;
- b=S/3NZIkRP2FeVq14qUJo5F3rjeWGmW54ZMMyqYyPfXfxrVIhxB764Kz9oPSQimi+wI
- QKPW0j0pDfQnLla3uyV4dQSdGHeWUooJYVbys8PUtrV3Zn3f32QY7cWmiAfA08E2h5gj
- UkRCyA9cQb1NTTuJnknH6AP4QsuHUR6/HEI1L3S875yVmpK4OXZAUggYIcmob/V6bpwe
- NiYy6zB+H/OtygPJwhlgISL0PPDl2jVzTF84XfeGuMm/iwGIop7HvBju2Rjsr7w/JznX
- WDbomF0va9zsuI/gnpn2gSWM7cWBDzhjL4QIdbdORz+DDdxhpAa3kwRKOJbhYbYVR0jd
- pKyg==
-X-Gm-Message-State: AOJu0Yxfokc4o2yW6Z+TYj2wNdXVR4TdljYHYOWuBkCn3iy/zDHIvK9/
- DcLtzTWOMl7cTylJjQmt0dNQ2DcRw04HTymsXk0=
-X-Google-Smtp-Source: AGHT+IEEnxELMlMGtfYB68Wa7oX2fMXPqtTMjAXVjUbRC9W7oZcNcPSibZ0bHfD1I+xSh5Q4qYLyAQ==
-X-Received: by 2002:a17:90a:7887:b0:274:6839:6a8c with SMTP id
- x7-20020a17090a788700b0027468396a8cmr14294226pjk.6.1698294049187; 
- Wed, 25 Oct 2023 21:20:49 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
+ :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oQeLLJX1SNl3fiduP6mhol3eLmwp6WdGHayJ5XYZBfw=;
+ b=TnAfLYIItmkK89tBZCo0qKpd408OHniVvZZD2cNDl6YUc62nfGR/NfMxJ5HqmrIfEK
+ c1IZalXllt/nN5/E3O2YliP1AuZE6oa5GE68SPlELPbxoYI1ZVQNDThgrFp2ww8C+LLm
+ ecoRpWj1HiKEWshanpHowIJl7YOamwcovz7YHLPCdqO5Joe3r9GArcn1Rl5gKMMuy9Ch
+ ZgLS4H5SZNEY8ck+7EM151NCHBW3KeBlFm+4nstwtiohZq/LjOrbF6AtpgS7H3WeMkQo
+ op3l8KTWOoOI7LovcnbYiSU0s77SHPEWvpNRqJVYb1G7uOV6xxRDeUInAj0EhxDRrK4O
+ 9QGA==
+X-Gm-Message-State: AOJu0YzGBhqa9JsSBZeRc5fqmVgKDyKcOsF4A3NYdd6LXq5MdtQvrK0l
+ nq0diwUF/X89QTJBGmC9h9cuL5ExwympcQ==
+X-Google-Smtp-Source: AGHT+IGGr2ehydQ1fnWrSM7J0ndrgQz/HW87Yv1wYxh73Uz6fBji7E/KGfxVTNRVLQmRjIRyLWlS+A==
+X-Received: by 2002:a17:907:7da7:b0:9a9:ef41:e5c7 with SMTP id
+ oz39-20020a1709077da700b009a9ef41e5c7mr13271742ejc.8.1698294738902; 
+ Wed, 25 Oct 2023 21:32:18 -0700 (PDT)
+Received: from [192.168.69.115]
+ (aif79-h01-176-172-114-150.dsl.sta.abo.bbox.fr. [176.172.114.150])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a17090a194c00b00279060a0fccsm759059pjh.9.2023.10.25.21.20.48
- for <qemu-devel@nongnu.org>
+ ga23-20020a170906b85700b009b65b2be80bsm10869958ejb.76.2023.10.25.21.32.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 21:20:48 -0700 (PDT)
-Message-ID: <aa715385-3508-473f-bc40-3cd6e2e0e87b@linaro.org>
-Date: Wed, 25 Oct 2023 21:20:47 -0700
+ Wed, 25 Oct 2023 21:32:17 -0700 (PDT)
+Message-ID: <fbc5f8a6-a5ae-c60e-272f-6c96d150308d@amsat.org>
+Date: Thu, 26 Oct 2023 06:32:15 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] tcg: Always implement neg and movcond
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 2/5] hw/arm: ast2600: Set AST2600_MAX_IRQ to value from
+ datasheet
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20231026041404.1229328-1-richard.henderson@linaro.org>
-In-Reply-To: <20231026041404.1229328-1-richard.henderson@linaro.org>
+To: Andrew Jeffery <andrew@aj.id.au>, qemu-arm@nongnu.org,
+ peter.maydell@linaro.org
+Cc: clg@kaod.org, joel@jms.id.au, minyard@acm.org, ryan_chen@aspeedtech.com,
+ qemu-devel@nongnu.org
+References: <20210301010610.355702-1-andrew@aj.id.au>
+ <20210301010610.355702-3-andrew@aj.id.au>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
+In-Reply-To: <20210301010610.355702-3-andrew@aj.id.au>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philippe.mathieu.daude@gmail.com; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,39 +99,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/25/23 21:13, Richard Henderson wrote:
-> Having opcodes always present means that we can remove some tests.
-> NOT and MOVCOND were *almost* always present anyway.
-> 
-> A close candidate is NOT.  The hiccup is s390x: except for the most
-> recent hardware revision, there is no single insn which can implement
-> the operation.
-> 
-> I experimented with replacements:
-> 
->      i32: xilf r,-1             (6 bytes, requires R=X)
->           lcr r,x; ahi r,-1     (6 bytes)
->      i64: lcgr r,x; aghi r,-1   (8 bytes)
-> 
-> But both don't compare well with the current
-> 
->           lghi tmp,-1           (4 bytes, shared)
->           xgrk r,x,tmp          (4 bytes)
-> 
-> With the constant -1 managed by register allocation, it gets loaded
-> once and then reused between operations.
-> 
-> An alternative might be to assume the presence of all opcodes during
-> initial expansion and lower them later, after optimization.  I'm close
-> to doing just that for the more complex opcodes like deposit anyway,
-> because the expansion is too complex for the optimizer to do anything
-> sensible after constant propagation.
+Hi Andrew,
 
-Oh, for the record,
+On 1/3/21 02:06, Andrew Jeffery wrote:
+> The datasheet says we have 197 IRQs allocated, and we need more than 128
+> to describe IRQs from LPC devices. Raise the value now to allow
+> modelling of the LPC devices.
+> 
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> ---
+>   hw/arm/aspeed_ast2600.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+> index bc0eeb058b24..22fcb5b0edbe 100644
+> --- a/hw/arm/aspeed_ast2600.c
+> +++ b/hw/arm/aspeed_ast2600.c
+> @@ -65,7 +65,7 @@ static const hwaddr aspeed_soc_ast2600_memmap[] = {
+>   
+>   #define ASPEED_A7MPCORE_ADDR 0x40460000
+>   
+> -#define AST2600_MAX_IRQ 128
+> +#define AST2600_MAX_IRQ 197
 
-Based-on: 20231025072707.833943-1-richard.henderson@linaro.org
-("tcg: Introduce TCG_COND_TST{EQ,NE}")
+Revisiting this patch (now commit b151de69f6), do we want 197 here or
+197 - GIC_INTERNAL = 197 - 32 = 165?
 
+Otherwise this ROUND line from commit 957ad79f73:
 
-r~
+   ROUND_UP(AST2600_MAX_IRQ + GIC_INTERNAL, 32),
+
+end requesting a GIC with 256 SPIs, but the A15MPCORE one is limited
+to 224...
+
+Hmm I see you name this as 'a7mpcore' but use the A15MPCORE...
+
+     object_initialize_child(obj, "a7mpcore", &a->a7mpcore,
+                             TYPE_A15MPCORE_PRIV);
+
+Per [*], A7MPCORE indeed can have up to 480 SPIs.
+
+Maybe we need to implement A7MPCORE along with A15MPCORE but
+relaxing the GIC SPIs limit?
+
+[*] 
+https://developer.arm.com/documentation/ddi0464/f/Introduction/Configurable-options?lang=en
+
+>   /* Shared Peripheral Interrupt values below are offset by -32 from datasheet */
+>   static const int aspeed_soc_ast2600_irqmap[] = {
+
 
