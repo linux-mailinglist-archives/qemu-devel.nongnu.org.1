@@ -2,177 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856CC7D8A6D
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 23:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CF57D8CB0
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 03:08:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw7ym-0003xw-GF; Thu, 26 Oct 2023 17:33:24 -0400
+	id 1qwBJE-0004Qi-DK; Thu, 26 Oct 2023 21:06:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1qw7yk-0003vT-JT
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 17:33:22 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1qw7yi-0006BA-Aw
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 17:33:22 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39QJsTj2023251; Thu, 26 Oct 2023 21:33:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : from : to : cc : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=TTIjonb82ipyb178dI/df25fSx/Ewk6TGBps3nLg1LQ=;
- b=bt8yk9RMJc7FhT5Ytv4xXrt47NCCk+9asJT1BFuRFD1ZJaOAj5mHeqrkbp9DNMoSNrIF
- cNgkCgfwdT9/mZY3CUc0c/afFLEOp2xm37IjTwyHVQ2hDnpBRE6R+XEtVqKk39+2S02V
- E8x0aSo23+CB6MCv48QhHLGn35dDUQ86tLXLuOA4+8mUqeCXUhWy7mQEvZyeg2pEeQf5
- biIf5JOg2PtncgfzzbZx122zEy8WxCD6ITycn3pR0dmd1XrfA6eIH8KbweZsgZpsM4dK
- otk3dD6uFnMOQIwUL1bXA86/pLUHstKF+LK2xxS7grmK5KiJE0yE90RoCd4vjxGiMXTh +w== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tywtb89ta-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Oct 2023 21:33:13 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 39QKmLWG038116; Thu, 26 Oct 2023 21:33:12 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3tywqs5cq2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Oct 2023 21:33:12 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c4qYbcEhvCMUsQ49lFjXUonmRjTFlzCsz7P0YXr9W8WqSMBInrZ3NaDe6YdE76f4kblPtnLU7vqDb94XgLzIveskkMcejNlsGj70x/ZxKuse/ibyJICL7xRMugZUy0OPu8ya5AQcKj2RNSlcNwkd/4mqszcqdC/nBOXhVUujC6yWMxxKjqNOencIdxg9I7d67G2A2WIVRCoRf4Lyq3Cq6N3dcWZebfj6FMFQ/Br1hzxLGO8eg8pE1tFZ8Pm9Wp1PNPBk6J7dVBbELVIgayv6mWSRcTx72itpaU9WTiTQdKTtdmCVCNqI0rDwM/g+ZiJaZIAMLi5KKQry1IvoZuxRjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TTIjonb82ipyb178dI/df25fSx/Ewk6TGBps3nLg1LQ=;
- b=Y6wri+mORgVD43ORjF2IiBGMHLFXuZtuVDL1h8Gb2G9jamUGKv/9rEZHEbBM1wxdqQpwBXtFqX0GKXq6z04MyjVu/gpZ/CvOwKtcoxSejjfpLrCwgqTc9JBWFi8FoLhvFoSvwNVLSPrsKB4OrjHyXLpS5xKLliL1qWJ0Ungkt2Ygey7MMzblfoSe6A1ooCMOPa3g6r4vTnIMp0mIBPqz5gduxDsDVZMkfGjncRTsECBZWcJdM8aZvb+3pNf3SV+eN3zSMZifPh8J4xTE/dz1SxtbwhFd7kmpknADoDD0gSWfLCq7bUeo+81mkVzO14QpPnZfktEnWvolC/zaUrrgug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <turtwig@utexas.edu>)
+ id 1qw9OH-00016L-Vy
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 19:03:50 -0400
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <turtwig@utexas.edu>)
+ id 1qw9OE-000214-SY
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 19:03:49 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-1d542f05b9aso226296fac.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 16:03:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TTIjonb82ipyb178dI/df25fSx/Ewk6TGBps3nLg1LQ=;
- b=VYS4If0W/YF0bzCwLoL38roPJqHoszkj/IVqH2t6pP4ESRljn1G+TZ2Yr+5e5ipO2gCRtkzKvehslhiVvIs/d4mY5+mJrxAqGVh7P9FKwNbIV2Ketm2T3rZVYtdSRrIhOpnJnY2OG0T/L+ehcqAD5Qg4VkWjy3fuoyAeZdyfkHo=
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com (2603:10b6:a02:a9::20)
- by CH3PR10MB7354.namprd10.prod.outlook.com (2603:10b6:610:12f::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Thu, 26 Oct
- 2023 21:33:11 +0000
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::afac:25ec:c0ba:643]) by BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::afac:25ec:c0ba:643%4]) with mapi id 15.20.6933.019; Thu, 26 Oct 2023
- 21:33:10 +0000
-Message-ID: <a474776b-74ac-07c3-95ab-8438aae7de4a@oracle.com>
-Date: Thu, 26 Oct 2023 14:33:11 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] target/i386/monitor: synchronize cpu before printing
- lapic state
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel <qemu-devel@nongnu.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, kvm <kvm@vger.kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-References: <870c998c450ba7e2bc2a72c12066f1af75e507d0.camel@infradead.org>
- <b6b24f07-e63b-cb07-ab74-f9a178bde91f@oracle.com>
-Content-Language: en-US
-In-Reply-To: <b6b24f07-e63b-cb07-ab74-f9a178bde91f@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR07CA0020.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::33) To BYAPR10MB2663.namprd10.prod.outlook.com
- (2603:10b6:a02:a9::20)
+ d=utexas.edu; s=google; t=1698361419; x=1698966219; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=NmwjGbIcZ/ghsW2/DzEo2a2qfsLm/XHOaENBUllfvb8=;
+ b=hwUoJXi8G+3RZAVe8zW9DlemEqJwn2w7SLvj56Q22dPgMeBJXQRNKKOn/kWorCavQG
+ ZvHe1pG3TXZ1NVfeG3P1MllDjI5txVd9fwq9d2k4CQDgiYvizuvaCHCzBq1v296Oa/HL
+ 2QIorqUPVICaoPhHUUln0jVPuDpT4152Ir6ICkwaVfHyBDKmgVUyqxH+z+sSWt5+DI7Z
+ B4MSIrP+7Cj0pzO9mXcuTECH7gxvLCEHyMs2r32LShymYwJGekmAL1k9oNG7m50Tz4o1
+ tTjoqkQN2qDYgbyKmP3MpxGR/1SaIsc94qA4ozFUBrCMAkQoaYRofCO2C2R2lGExmndX
+ Nyqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698361419; x=1698966219;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NmwjGbIcZ/ghsW2/DzEo2a2qfsLm/XHOaENBUllfvb8=;
+ b=tIIcamYGvIVVqaAtu5Dbrq3mQWWNHS1a+ReLis9moj9UCUWyG75J7ndYZs1VhwCnFg
+ 417DC5xj5h1miVJ90M/fOYMI4/rZfWG3nX4uL3E2NGKrkS1RPlKUxxobpc9US2pop7S/
+ aRdXkfM73JtrIhddCfoO8oORRqOyHMIhTTcBNS5VUJWaJNAm/Wg61p6c1XXO3UVzQ5m3
+ yFr9BJ+CPJyJQT28ZBxSd1RwZsg4GdPIlNptXXa2k5XcwRXwPs5BtgHVEcjsZQFTd/YL
+ 4o+dukmeCa4EcWqFUcsiaWnpgww+uRRtjWS8HAovGTjqzHw3D7+Zxw4RYUsuxMAllugn
+ nmzw==
+X-Gm-Message-State: AOJu0YwSuV4KTv+csX6k902OCxugn1Lo6CbM9G0IBSyDYbG5jpCsR8S8
+ WAQbvwAYBQpTk4kpk4CkQiYNlTZIEhRkwrWhRtIXAH60FeJTTEkbwhE=
+X-Google-Smtp-Source: AGHT+IFwNkIvE316Yl9mxoyBQ47Ge40FUPNYoaXxgt6Ay2NfnfQynuvADL/i8yQzgFujYyjW5iprIRaUU+i2eScUrPA=
+X-Received: by 2002:a05:6870:af44:b0:1e9:8ab9:11ca with SMTP id
+ uy4-20020a056870af4400b001e98ab911camr1116241oab.3.1698361419276; Thu, 26 Oct
+ 2023 16:03:39 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB2663:EE_|CH3PR10MB7354:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a82c237-69ad-498a-64ae-08dbd66b26f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bTdqY6Jbha9FOrJX5b7HDke5nsEQVqKvmGGlCHue1ydPZhFqUlmqXWVhtdi8UwhJJk8KxUsznI1zisKoBMZYFWmk/Dt77I24IsexQnxLOdmCeHEJMPsMjOfTOHcnzidpwZOq2YWOXBzsQACQBhr64WqM1TYptHM49+gREPD4zQXXctdF1VKcOKf5VHcamWQduzSM1Yf/lJMh7evNuSPqIVK6zhVsd+F8J55Be+/Q+HMFtAB8ZuphmlXzqYrZiGy9Dq1kJLcEPYpkgc4OuiZwqzFD/5zv0TpgnHWOTg6cCHzifDKyIgEjOd24EE8qdmaD3xlA9b3KeX/dahk47KpquIVvgGcHxtdmuiFIKAL4n0dpc/ZbsrhRw2hAKULh2xaB08b/QERHKfVHwE7zO5O4lpswq7tiP32tVK5sLfIo7NXc4jHjoz/Mi1jDc/CKmUCp231Bqqr/6DLPsGrzQcEFkViZN49dAM0aRPpS+u/p1P2+eyDhc92ryERmR4mu/ql/083V7+FfH9RlXYijUibiOTFBnNQJDx6YQr680zIGxg327yKdoiU55UA2ROaQ1ssyjSSxYNOQhed+85LCgF118/Q8hyxgfqr9AgpuExhASXPUtDIUusTaYVat213Jbsl4Xkv7zToqU3zU7obOkkcS5CjjKE6PRhEZ2uswflAfMUaH7tB3a9hFVV1O/S37DRPj
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR10MB2663.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(39860400002)(396003)(346002)(376002)(136003)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(31686004)(8936002)(44832011)(4326008)(8676002)(31696002)(5660300002)(26005)(86362001)(110136005)(6486002)(41300700001)(2616005)(2906002)(36756003)(316002)(66476007)(66556008)(66946007)(38100700002)(54906003)(478600001)(6512007)(6506007)(966005)(53546011)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M0pSeXFTWjRoVEVYTWl0ZmJFR24xbU9DMCs5ZWFsL3g0TGYwbFVMUGdRWWg4?=
- =?utf-8?B?Y1BvS0hHMURtaTRpbENUeElWN3lZSE9Bc3dXSExlNVI5YTF1MXF6TkJrcFJT?=
- =?utf-8?B?MWNyMzJ4VWpCTWo2SEkzVEpUS09LOEJBa3NCQWp2akdIRlVTK2poQSt2c2Fj?=
- =?utf-8?B?SW1HSVFUdUU5QnFkeEFUNXRQdXZBbFFQMk9PUHIydkd6aTRYclAzZ0c5cjB4?=
- =?utf-8?B?NVdCZVNtNG4xNmpJZi9uZVdZMEczM2VQMnF4ZkJxejQ3MmpFNHJkc2FlcDR6?=
- =?utf-8?B?bis5VlVDOE5rSHU0L1lGYkxuMUpqSXYwYTNDakpreG1FcEgycmZvWmVhK2g4?=
- =?utf-8?B?K1pOSTBUdHd6WDR6N3dlc2xIZHlnRGVHZ3JoNW9mOE1PZkRDdmVFeWpFZ25l?=
- =?utf-8?B?b1A5bm82N3k5WU9FOUZnMGtUS0NyTVJsaUl6bHdBKzhaNXVNYXFRUlBJREJz?=
- =?utf-8?B?a0ZBMFVSWmZ0RjhqODFDTFdhdjZXRGIybHZ3bXRQK0c3eXB6VHJYdThIVG5O?=
- =?utf-8?B?c2NNSGUwOGhVSzZJWE1ZdUtwL01VN2ZjZmlBQjVHaEQwRXZicm1ja2NaMVNo?=
- =?utf-8?B?ZTNvNnBwUTBhRngyVk1pbVpwTU05QS91SndGeUhLaENob3JIaU1leWdrV0w1?=
- =?utf-8?B?MUtZa242ektsd0xzQUdsUnI1bUNSWDBRb1pTUEhyS0JPMXpKdmNsYUkzTW8r?=
- =?utf-8?B?MndQRFRtR2xhMWVSYVBpSUZ6SURUM1QyemRwU2phRXhCenNTVXN0YU8xK3U5?=
- =?utf-8?B?LzFqNVFHd003TUwrY0pjdnh1TGJ6cEdTQVZ4eVM2RkFVSnBhTG5DRHdSYjBQ?=
- =?utf-8?B?cCtLWDcrT2JNeWFWS0RhQmpTOGtYN0E3K0NiTjdPQzM4dDRtTmROQU9JNjh2?=
- =?utf-8?B?WW5kYWNoZFZVbldwaEh4RngydGgxTDF2WnZheGZzZXU1NFdLZTVGOThzK3Nk?=
- =?utf-8?B?Nlo5OE1NRTJYNGhEa2RTMlo4dTNTSzNFYlRDM0VsUURiWXJzZ2RVUzZtM0Rh?=
- =?utf-8?B?aU5hdnVxaVBmQi9HVVpRZ0w2emJwYmpFZTcxNHQvRWF5bEFOeWNUTXdwcGNC?=
- =?utf-8?B?OTNLZkhrSnp5OFk1UUZCeHZwNndXZTZDVHhaQ0E3TkVQZy93d0doZCs3bnVv?=
- =?utf-8?B?bGoyQTMvWmdZUEIxa2VRU3hZMkJmdHF5V3h4Y0l0c0JpWlRDNEpPYWlNcVFL?=
- =?utf-8?B?ank4TkxHalB2NUMxb3lzVjJJWDRzRnJoRXVsNERkMFBoTmdiNG4xbkFJNUgz?=
- =?utf-8?B?U21TVzBqZmVBMVMxdWxVSHZjdWlaM1JEc0lXZ3FqNW1meUlRcjQ4U0IxcUxG?=
- =?utf-8?B?NWJxbllERTJ6VGE2T0ZyU1VTZXR2VWxMMCtsekhCbThNMnFLUTZxTnBBbmM2?=
- =?utf-8?B?SGxYN21wVUZ5Y0FXU1UwQXNWeHZVdFU3c1Q2RWMzZnpJa2R1cjRTd1QvZWxx?=
- =?utf-8?B?RHVuTzRIZVVYaFJXTTBkY2FjOWM5WFBkeUF2YUFiRWRVUGphV05FUnd0VUxt?=
- =?utf-8?B?Vm1FSDNLNnQ2Q2t4dllwMkJoMDBPNXR5VW5Vb3A4WnpwRURLbXRreVRILzVp?=
- =?utf-8?B?cU5SN2V5L0tkSTBmNjVzME1rZElRUXZzbnlWZ1Nacy9Rd0RSN25INDhFNDVO?=
- =?utf-8?B?V0ZiSUlMc0pYbE8zUUJmL3lLSWd2SU94YlZjZnB6d21SREZRVSs1alJIdkIv?=
- =?utf-8?B?dVFLWG1vMEhsaytmR0tOaDFCaVBHY3d0c2J1U3dVUTZ3cmhGZ3h3aWxONHl1?=
- =?utf-8?B?cGRUS1N0TGxMUExGRmNxcDNGVlJpVTFqbVF2YXNzNUM0NHFaV2gvNWR4VUpD?=
- =?utf-8?B?NHg3QmxuOFlLdm9xdmlYbnMvRVViOG1uczBhUmt2cytDN20vbExFODc4RHRM?=
- =?utf-8?B?cnZpeHN0L25idEZHQ3gwVDN0Tnk4b0tHaVFtNTU5UUdiSkpZSnpOVzJKWUVG?=
- =?utf-8?B?NjUyMXh3eFA4RlFnYk5CYzVWUGJDK2hBMGV3dzlqN2VXaEt3M0c4ZmR6NVVC?=
- =?utf-8?B?TTlwcTRJMEU1eVhXK1c0bnYrVUNrd01keTBpdWRab2xKY2kxOEpEeHkrMnUx?=
- =?utf-8?B?b09ZMElxd3luZ0hLTGZGNGZGU1psOU5CTURHektWcHRqUXV2eERtbDcvTEIr?=
- =?utf-8?Q?n3qGJSwxy8l8A2nEaW72QYroW?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 4VqLhypQ4AsD6Py6T7USwYxW6AFBRYVb3zDTiC3Eq0A6c7lth92zjOg+1O3XM15JYzTG3CMXsn1OiTl6BIbU0NrX6+geMyDTrS3P2JKOq8aclvi9cGMRgGCe0MXzHEgKjzBz/cvACHklCL5j63+bcXwCRRXBf/MrQDDy0l8jVESlFtAKJ6/RDkFq4nKDW/k5jteYeo9bFrf7j86pCkZpORDyuPVEpsEK85wNdQD/DJDyk1eio93xRWHTsFm/LNV1eCnMgT+Qk5ohWJkC0F7iXi0CQCFwP7NmLo/8c9dZUzZQXx1pJhZY4aoqjNGcdGppnZ0FOWX1XL1w776/Z0Qv3hWm/wzzBtUFGg6I4JY7guazGUBzuHyNzjo7cHHZQJ89sqhzBGx9cHj1T83cASm7wCBGySxogzJEFuxahdp4S6famfY6A58NWiQmF3YfGhH2vCxGZcrE+lBCfJNil3JcvqJpHKLkj0IGnqVXolN6X2OXeInD/2xSqmdqlmeWa3Fd85D9bfyRBkGGQLmOzl416b8opMY2Ep8HwNqQ7zd84OwdY55frf9HWpk4MptIZOaQz/EGnADifKmOfybRPrGueLaIG1JcK7VN8TPPGyUhDXR29BOY7QpnXpaNWx64s45Ock9EdBk5GruygH4B1KTM2gGf2U7EPaL1Hgs5EzFfAOVAi4q1HmFqHiBf3wbEmKJYAxNTRcSCnjAolYxiJfN4Jc5M3ZprBpRmIuQKVJE7L99dXgXj/5ZTVYF90933f0ugK96YzNYX5A8AXl18FxLbByy9Ni6/DKSjw075dA8RLCKQ6eaiNn3qhoMv9FOHQiDQ5vuGYO6RtruHlwUQvlH78DUuUjQaEdxQxYsnFr3zNLnW6OL/lhsl3kRLeCkDfim2Op6kCfHa2pGPMts1eidTSg==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a82c237-69ad-498a-64ae-08dbd66b26f2
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2663.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2023 21:33:10.7948 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tMSY6ay2HHXegtzuw13hIwHI6WieMz8zNrU/iMUJmL/hwuhtB9NXVu9C2EbNdzYEhCmm7IlBWhsGQh+1NUH/bg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7354
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-26_20,2023-10-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- mlxlogscore=999
- suspectscore=0 malwarescore=0 adultscore=0 phishscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2310260187
-X-Proofpoint-ORIG-GUID: YxYxhs3_kJTgN_CHwE8lhehCwo3zRG4U
-X-Proofpoint-GUID: YxYxhs3_kJTgN_CHwE8lhehCwo3zRG4U
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Brendan Sweeney <turtwig@utexas.edu>
+Date: Thu, 26 Oct 2023 18:03:28 -0500
+Message-ID: <CAGPSXwJEdtqW=nx71oufZp64nK6tK=0rytVEcz4F-gfvCOXk2w@mail.gmail.com>
+Subject: [PATCH] Support for the RISCV Zalasr extension
+To: qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, liweiwei@iscas.ac.cn
+Content-Type: multipart/alternative; boundary="00000000000018c2ec0608a695da"
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=turtwig@utexas.edu; helo=mail-oa1-x2d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 26 Oct 2023 21:06:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -187,68 +82,335 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi David,
+--00000000000018c2ec0608a695da
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you very much for the Reviewed-by in another thread.
+From 4af1fca6e5c99578a5b80b834c22b70f6419639f Mon Sep 17 00:00:00 2001
+From: Brendan Sweeney <turtwig@utexas.edu>
+Date: Thu, 26 Oct 2023 17:01:29 -0500
+Subject: [PATCH] Support for the RISCV Zalasr extension
 
-I have re-based the patch and sent again.
+Signed-off-by: Brendan Sweeney <turtwig@utexas.edu>
+---
+target/riscv/cpu.c | 2 +
+target/riscv/cpu_cfg.h | 1 +
+target/riscv/insn32.decode | 15 +++
+target/riscv/insn_trans/trans_rvzalasr.c.inc | 112 +++++++++++++++++++
+target/riscv/translate.c | 1 +
+5 files changed, 131 insertions(+)
+create mode 100644 target/riscv/insn_trans/trans_rvzalasr.c.inc
 
-https://lore.kernel.org/all/20231026211938.162815-1-dongli.zhang@oracle.com/
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ac4a6c7eec..a0414bd956 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -85,6 +85,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
+ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
++ ISA_EXT_DATA_ENTRY(zalasr, PRIV_VERSION_1_12_0, ext_zalasr),
+ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
+ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
+ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+@@ -1248,6 +1249,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] =
+{
+MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
+MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
++ MULTI_EXT_CFG_BOOL("zalasr", ext_zalasr, true),
+MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
+MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
+MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 0e6a0f245c..8e4f9282fd 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -76,6 +76,7 @@ struct RISCVCPUConfig {
+bool ext_svpbmt;
+bool ext_zdinx;
+bool ext_zawrs;
++ bool ext_zalasr;
+bool ext_zfa;
+bool ext_zfbfmin;
+bool ext_zfh;
+diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+index 33597fe2bb..ba95cdf964 100644
+--- a/target/riscv/insn32.decode
++++ b/target/riscv/insn32.decode
+@@ -70,6 +70,9 @@
+@atom_ld ..... aq:1 rl:1 ..... ........ ..... ....... &atomic rs2=0 %rs1 %rd
+@atom_st ..... aq:1 rl:1 ..... ........ ..... ....... &atomic %rs2 %rs1 %rd
++@l_aq ..... . rl:1 ..... ........ ..... ....... &atomic rs2=0 %rs1 %rd aq=1
++@s_rl ..... aq:1 . ..... ........ ..... ....... &atomic %rs2 %rs1 rd=0 rl=1
++
+@r4_rm ..... .. ..... ..... ... ..... ....... %rs3 %rs2 %rs1 %rm %rd
+@r_rm ....... ..... ..... ... ..... ....... %rs2 %rs1 %rm %rd
+@@ -739,6 +742,18 @@ vsetvl 1000000 ..... ..... 111 ..... 1010111 @r
+wrs_nto 000000001101 00000 000 00000 1110011
+wrs_sto 000000011101 00000 000 00000 1110011
++# *** RV32 Zalasr Standard Extension ***
++lb_aq 00110 1 . 00000 ..... 000 ..... 0101111 @l_aq
++lh_aq 00110 1 . 00000 ..... 001 ..... 0101111 @l_aq
++lw_aq 00110 1 . 00000 ..... 010 ..... 0101111 @l_aq
++sb_rl 00111 . 1 ..... ..... 000 00000 0101111 @s_rl
++sh_rl 00111 . 1 ..... ..... 001 00000 0101111 @s_rl
++sw_rl 00111 . 1 ..... ..... 010 00000 0101111 @s_rl
++
++# *** RV64 Zalasr Standard Extension (in addition to RV32 Zalasr) ***
++ld_aq 00110 1 . 00000 ..... 011 ..... 0101111 @l_aq
++sd_rl 00111 . 1 ..... ..... 011 00000 0101111 @s_rl
++
+# *** RV32 Zba Standard Extension ***
+sh1add 0010000 .......... 010 ..... 0110011 @r
+sh2add 0010000 .......... 100 ..... 0110011 @r
+diff --git a/target/riscv/insn_trans/trans_rvzalasr.c.inc
+b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+new file mode 100644
+index 0000000000..cee81ce8b8
+--- /dev/null
++++ b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+@@ -0,0 +1,112 @@
++/*
++ * RISC-V translation routines for the Zzlasr Standard Extension.
++ *
++ * Copyright (c) 2023 Brendan Sweeney, brs@berkeley.edu
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along
+with
++ * this program. If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#define REQUIRE_ZALASR(ctx) do { \
++ if (!ctx->cfg_ptr->ext_zalasr) { \
++ return false; \
++ } \
++} while (0)
++
++static bool gen_l_aq(DisasContext *ctx, arg_atomic *a, MemOp mop)
++{
++ TCGv src1;
++
++ decode_save_opc(ctx);
++ src1 = get_address(ctx, a->rs1, 0);
++ if (a->rl) {
++ tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
++ }
++ tcg_gen_qemu_ld_tl(load_val, src1, ctx->mem_idx, mop);
++ if (a->aq) {
++ tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
++ }
++ /* Put data in load_val. */
++ gen_set_gpr(ctx, a->rd, load_val);
++
++ return true;
++}
++
++static bool trans_lb_aq(DisasContext *ctx, arg_lb_aq *a)
++{
++ REQUIRE_ZALASR(ctx);
++ return gen_l_aq(ctx, a, (MO_ALIGN | MO_SB));
++}
++
++static bool trans_lh_aq(DisasContext *ctx, arg_lh_aq *a)
++{
++ REQUIRE_ZALASR(ctx);
++ return gen_l_aq(ctx, a, (MO_ALIGN | MO_TESW));
++}
++
++static bool trans_lw_aq(DisasContext *ctx, arg_lw_aq *a)
++{
++ REQUIRE_ZALASR(ctx);
++ return gen_l_aq(ctx, a, (MO_ALIGN | MO_TESL));
++}
++
++static bool trans_ld_aq(DisasContext *ctx, arg_lw_aq *a)
++{
++ REQUIRE_ZALASR(ctx);
++ REQUIRE_64_OR_128BIT(ctx);
++ return gen_l_aq(ctx, a, (MO_ALIGN | MO_TESQ));
++}
++
++static bool gen_s_rl(DisasContext *ctx, arg_atomic *a, MemOp mop)
++{
++ TCGv src1, src2;
++
++ decode_save_opc(ctx);
++ src1 = get_address(ctx, a->rs1, 0);
++
++ src2 = get_gpr(ctx, a->rs2, EXT_NONE);
++
++ if (a->rl) {
++ tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
++ }
++ tcg_gen_qemu_st_i64(src2, src1, ctx->mem_idx, mop);
++ if (a->aq) {
++ tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
++ }
++
++ return true;
++}
++
++static bool trans_sb_rl(DisasContext *ctx, arg_sb_rl *a)
++{
++ REQUIRE_ZALASR(ctx);
++ return gen_s_rl(ctx, a, (MO_ALIGN | MO_SB));
++}
++
++static bool trans_sh_rl(DisasContext *ctx, arg_sh_rl *a)
++{
++ REQUIRE_ZALASR(ctx);
++ return gen_s_rl(ctx, a, (MO_ALIGN | MO_TESW));
++}
++
++static bool trans_sw_rl(DisasContext *ctx, arg_sw_rl *a)
++{
++ REQUIRE_ZALASR(ctx);
++ return gen_s_rl(ctx, a, (MO_ALIGN | MO_TESL));
++}
++
++static bool trans_sd_rl(DisasContext *ctx, arg_sd_rl *a)
++{
++ REQUIRE_ZALASR(ctx);
++ REQUIRE_64_OR_128BIT(ctx);
++ return gen_s_rl(ctx, a, (MO_ALIGN | MO_TEUQ));
++}
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index f0be79bb16..bfcf1ff1d8 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -1091,6 +1091,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase,
+target_ulong pc)
+#include "insn_trans/trans_rvzicond.c.inc"
+#include "insn_trans/trans_rvzawrs.c.inc"
+#include "insn_trans/trans_rvzicbo.c.inc"
++#include "insn_trans/trans_rvzalasr.c.inc"
+#include "insn_trans/trans_rvzfa.c.inc"
+#include "insn_trans/trans_rvzfh.c.inc"
+#include "insn_trans/trans_rvk.c.inc"
+--
+2.32.1 (Apple Git-133)
 
-Dongli Zhang
+--00000000000018c2ec0608a695da
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/26/23 09:39, Dongli Zhang wrote:
-> Hi David,
-> 
-> On 10/26/23 08:39, David Woodhouse wrote:
->> From: David Woodhouse <dwmw@amazon.co.uk>
->>
->> Where the local APIC is emulated by KVM, we need kvm_get_apic() to pull
->> the current state into userspace before it's printed. Otherwise we get
->> stale values.
->>
->> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
->> ---
->>  target/i386/monitor.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/target/i386/monitor.c b/target/i386/monitor.c
->> index 6512846327..0754d699ba 100644
->> --- a/target/i386/monitor.c
->> +++ b/target/i386/monitor.c
->> @@ -29,6 +29,7 @@
->>  #include "monitor/hmp.h"
->>  #include "qapi/qmp/qdict.h"
->>  #include "sysemu/kvm.h"
->> +#include "sysemu/hw_accel.h"
->>  #include "qapi/error.h"
->>  #include "qapi/qapi-commands-misc-target.h"
->>  #include "qapi/qapi-commands-misc.h"
->> @@ -655,6 +656,7 @@ void hmp_info_local_apic(Monitor *mon, const QDict *qdict)
->>      if (qdict_haskey(qdict, "apic-id")) {
->>          int id = qdict_get_try_int(qdict, "apic-id", 0);
->>          cs = cpu_by_arch_id(id);
->> +        cpu_synchronize_state(cs);
-> 
-> AFAIR, there is a case that cs may be NULL here when I was sending the similar
-> bugfix long time ago.
-> 
-> https://lore.kernel.org/qemu-devel/20210701214051.1588-1-dongli.zhang@oracle.com/
-> 
-> ... and resend:
-> 
-> https://lore.kernel.org/qemu-devel/20210908143803.29191-1-dongli.zhang@oracle.com/
-> 
-> ... and resent by Daniel as part of another patchset (after review):
-> 
-> https://lore.kernel.org/qemu-devel/20211028155457.967291-19-berrange@redhat.com/
-> 
-> 
-> This utility is helpful for the diagnostic of loss of interrupt issue.
-> 
-> Dongli Zhang
-> 
->>      } else {
->>          cs = mon_get_cpu(mon);
->>      }
+<div dir=3D"ltr">From 4af1fca6e5c99578a5b80b834c22b70f6419639f Mon Sep 17 0=
+0:00:00 2001<br>From: Brendan Sweeney &lt;<a href=3D"mailto:turtwig@utexas.=
+edu">turtwig@utexas.edu</a>&gt;<br>Date: Thu, 26 Oct 2023 17:01:29 -0500<br=
+>Subject: [PATCH] Support for the RISCV Zalasr extension<br><br>Signed-off-=
+by: Brendan Sweeney &lt;<a href=3D"mailto:turtwig@utexas.edu">turtwig@utexa=
+s.edu</a>&gt;<br>---<br>target/riscv/cpu.c | 2 +<br>target/riscv/cpu_cfg.h =
+| 1 +<br>target/riscv/insn32.decode | 15 +++<br>target/riscv/insn_trans/tra=
+ns_rvzalasr.c.inc | 112 +++++++++++++++++++<br>target/riscv/translate.c | 1=
+ +<br>5 files changed, 131 insertions(+)<br>create mode 100644 target/riscv=
+/insn_trans/trans_rvzalasr.c.inc<br><br>diff --git a/target/riscv/cpu.c b/t=
+arget/riscv/cpu.c<br>index ac4a6c7eec..a0414bd956 100644<br>--- a/target/ri=
+scv/cpu.c<br>+++ b/target/riscv/cpu.c<br>@@ -85,6 +85,7 @@ const RISCVIsaEx=
+tData isa_edata_arr[] =3D {<br>ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION=
+_1_10_0, ext_zihintpause),<br>ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0=
+, ext_zmmul),<br>ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),=
+<br>+ ISA_EXT_DATA_ENTRY(zalasr, PRIV_VERSION_1_12_0, ext_zalasr),<br>ISA_E=
+XT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),<br>ISA_EXT_DATA_ENTRY(zfb=
+fmin, PRIV_VERSION_1_12_0, ext_zfbfmin),<br>ISA_EXT_DATA_ENTRY(zfh, PRIV_VE=
+RSION_1_11_0, ext_zfh),<br>@@ -1248,6 +1249,7 @@ const RISCVCPUMultiExtConf=
+ig riscv_cpu_extensions[] =3D {<br>MULTI_EXT_CFG_BOOL(&quot;zihintpause&quo=
+t;, ext_zihintpause, true),<br>MULTI_EXT_CFG_BOOL(&quot;zawrs&quot;, ext_za=
+wrs, true),<br>MULTI_EXT_CFG_BOOL(&quot;zfa&quot;, ext_zfa, true),<br>+ MUL=
+TI_EXT_CFG_BOOL(&quot;zalasr&quot;, ext_zalasr, true),<br>MULTI_EXT_CFG_BOO=
+L(&quot;zfh&quot;, ext_zfh, false),<br>MULTI_EXT_CFG_BOOL(&quot;zfhmin&quot=
+;, ext_zfhmin, false),<br>MULTI_EXT_CFG_BOOL(&quot;zve32f&quot;, ext_zve32f=
+, false),<br>diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h<b=
+r>index 0e6a0f245c..8e4f9282fd 100644<br>--- a/target/riscv/cpu_cfg.h<br>++=
++ b/target/riscv/cpu_cfg.h<br>@@ -76,6 +76,7 @@ struct RISCVCPUConfig {<br>=
+bool ext_svpbmt;<br>bool ext_zdinx;<br>bool ext_zawrs;<br>+ bool ext_zalasr=
+;<br>bool ext_zfa;<br>bool ext_zfbfmin;<br>bool ext_zfh;<br>diff --git a/ta=
+rget/riscv/insn32.decode b/target/riscv/insn32.decode<br>index 33597fe2bb..=
+ba95cdf964 100644<br>--- a/target/riscv/insn32.decode<br>+++ b/target/riscv=
+/insn32.decode<br>@@ -70,6 +70,9 @@<br>@atom_ld ..... aq:1 rl:1 ..... .....=
+... ..... ....... &amp;atomic rs2=3D0 %rs1 %rd<br>@atom_st ..... aq:1 rl:1 =
+..... ........ ..... ....... &amp;atomic %rs2 %rs1 %rd<br>+@l_aq ..... . rl=
+:1 ..... ........ ..... ....... &amp;atomic rs2=3D0 %rs1 %rd aq=3D1<br>+@s_=
+rl ..... aq:1 . ..... ........ ..... ....... &amp;atomic %rs2 %rs1 rd=3D0 r=
+l=3D1<br>+<br>@r4_rm ..... .. ..... ..... ... ..... ....... %rs3 %rs2 %rs1 =
+%rm %rd<br>@r_rm ....... ..... ..... ... ..... ....... %rs2 %rs1 %rm %rd<br=
+>@@ -739,6 +742,18 @@ vsetvl 1000000 ..... ..... 111 ..... 1010111 @r<br>wr=
+s_nto 000000001101 00000 000 00000 1110011<br>wrs_sto 000000011101 00000 00=
+0 00000 1110011<br>+# *** RV32 Zalasr Standard Extension ***<br>+lb_aq 0011=
+0 1 . 00000 ..... 000 ..... 0101111 @l_aq<br>+lh_aq 00110 1 . 00000 ..... 0=
+01 ..... 0101111 @l_aq<br>+lw_aq 00110 1 . 00000 ..... 010 ..... 0101111 @l=
+_aq<br>+sb_rl 00111 . 1 ..... ..... 000 00000 0101111 @s_rl<br>+sh_rl 00111=
+ . 1 ..... ..... 001 00000 0101111 @s_rl<br>+sw_rl 00111 . 1 ..... ..... 01=
+0 00000 0101111 @s_rl<br>+<br>+# *** RV64 Zalasr Standard Extension (in add=
+ition to RV32 Zalasr) ***<br>+ld_aq 00110 1 . 00000 ..... 011 ..... 0101111=
+ @l_aq<br>+sd_rl 00111 . 1 ..... ..... 011 00000 0101111 @s_rl<br>+<br># **=
+* RV32 Zba Standard Extension ***<br>sh1add 0010000 .......... 010 ..... 01=
+10011 @r<br>sh2add 0010000 .......... 100 ..... 0110011 @r<br>diff --git a/=
+target/riscv/insn_trans/trans_rvzalasr.c.inc b/target/riscv/insn_trans/tran=
+s_rvzalasr.c.inc<br>new file mode 100644<br>index 0000000000..cee81ce8b8<br=
+>--- /dev/null<br>+++ b/target/riscv/insn_trans/trans_rvzalasr.c.inc<br>@@ =
+-0,0 +1,112 @@<br>+/*<br>+ * RISC-V translation routines for the Zzlasr Sta=
+ndard Extension.<br>+ *<br>+ * Copyright (c) 2023 Brendan Sweeney, <a href=
+=3D"mailto:brs@berkeley.edu">brs@berkeley.edu</a><br>+ *<br>+ * This progra=
+m is free software; you can redistribute it and/or modify it<br>+ * under t=
+he terms and conditions of the GNU General Public License,<br>+ * version 2=
+ or later, as published by the Free Software Foundation.<br>+ *<br>+ * This=
+ program is distributed in the hope it will be useful, but WITHOUT<br>+ * A=
+NY WARRANTY; without even the implied warranty of MERCHANTABILITY or<br>+ *=
+ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for<b=
+r>+ * more details.<br>+ *<br>+ * You should have received a copy of the GN=
+U General Public License along with<br>+ * this program. If not, see &lt;<a=
+ href=3D"http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;=
+.<br>+ */<br>+<br>+#define REQUIRE_ZALASR(ctx) do { \<br>+ if (!ctx-&gt;cfg=
+_ptr-&gt;ext_zalasr) { \<br>+ return false; \<br>+ } \<br>+} while (0)<br>+=
+<br>+static bool gen_l_aq(DisasContext *ctx, arg_atomic *a, MemOp mop)<br>+=
+{<br>+ TCGv src1;<br>+<br>+ decode_save_opc(ctx);<br>+ src1 =3D get_address=
+(ctx, a-&gt;rs1, 0);<br>+ if (a-&gt;rl) {<br>+ tcg_gen_mb(TCG_MO_ALL | TCG_=
+BAR_STRL);<br>+ }<br>+ tcg_gen_qemu_ld_tl(load_val, src1, ctx-&gt;mem_idx, =
+mop);<br>+ if (a-&gt;aq) {<br>+ tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);<br>+=
+ }<br>+ /* Put data in load_val. */<br>+ gen_set_gpr(ctx, a-&gt;rd, load_va=
+l);<br>+<br>+ return true;<br>+}<br>+<br>+static bool trans_lb_aq(DisasCont=
+ext *ctx, arg_lb_aq *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<br>+ return gen_l_a=
+q(ctx, a, (MO_ALIGN | MO_SB));<br>+}<br>+<br>+static bool trans_lh_aq(Disas=
+Context *ctx, arg_lh_aq *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<br>+ return gen=
+_l_aq(ctx, a, (MO_ALIGN | MO_TESW));<br>+}<br>+<br>+static bool trans_lw_aq=
+(DisasContext *ctx, arg_lw_aq *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<br>+ retu=
+rn gen_l_aq(ctx, a, (MO_ALIGN | MO_TESL));<br>+}<br>+<br>+static bool trans=
+_ld_aq(DisasContext *ctx, arg_lw_aq *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<br>=
++ REQUIRE_64_OR_128BIT(ctx);<br>+ return gen_l_aq(ctx, a, (MO_ALIGN | MO_TE=
+SQ));<br>+}<br>+<br>+static bool gen_s_rl(DisasContext *ctx, arg_atomic *a,=
+ MemOp mop)<br>+{<br>+ TCGv src1, src2;<br>+<br>+ decode_save_opc(ctx);<br>=
++ src1 =3D get_address(ctx, a-&gt;rs1, 0);<br>+<br>+ src2 =3D get_gpr(ctx, =
+a-&gt;rs2, EXT_NONE);<br>+<br>+ if (a-&gt;rl) {<br>+ tcg_gen_mb(TCG_MO_ALL =
+| TCG_BAR_STRL);<br>+ }<br>+ tcg_gen_qemu_st_i64(src2, src1, ctx-&gt;mem_id=
+x, mop);<br>+ if (a-&gt;aq) {<br>+ tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);<b=
+r>+ }<br>+<br>+ return true;<br>+}<br>+<br>+static bool trans_sb_rl(DisasCo=
+ntext *ctx, arg_sb_rl *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<br>+ return gen_s=
+_rl(ctx, a, (MO_ALIGN | MO_SB));<br>+}<br>+<br>+static bool trans_sh_rl(Dis=
+asContext *ctx, arg_sh_rl *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<br>+ return g=
+en_s_rl(ctx, a, (MO_ALIGN | MO_TESW));<br>+}<br>+<br>+static bool trans_sw_=
+rl(DisasContext *ctx, arg_sw_rl *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<br>+ re=
+turn gen_s_rl(ctx, a, (MO_ALIGN | MO_TESL));<br>+}<br>+<br>+static bool tra=
+ns_sd_rl(DisasContext *ctx, arg_sd_rl *a)<br>+{<br>+ REQUIRE_ZALASR(ctx);<b=
+r>+ REQUIRE_64_OR_128BIT(ctx);<br>+ return gen_s_rl(ctx, a, (MO_ALIGN | MO_=
+TEUQ));<br>+}<br>diff --git a/target/riscv/translate.c b/target/riscv/trans=
+late.c<br>index f0be79bb16..bfcf1ff1d8 100644<br>--- a/target/riscv/transla=
+te.c<br>+++ b/target/riscv/translate.c<br>@@ -1091,6 +1091,7 @@ static uint=
+32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)<br>#include &quot=
+;insn_trans/trans_rvzicond.c.inc&quot;<br>#include &quot;insn_trans/trans_r=
+vzawrs.c.inc&quot;<br>#include &quot;insn_trans/trans_rvzicbo.c.inc&quot;<b=
+r>+#include &quot;insn_trans/trans_rvzalasr.c.inc&quot;<br>#include &quot;i=
+nsn_trans/trans_rvzfa.c.inc&quot;<br>#include &quot;insn_trans/trans_rvzfh.=
+c.inc&quot;<br>#include &quot;insn_trans/trans_rvk.c.inc&quot;<br>--<br>2.3=
+2.1 (Apple Git-133)<br><br><br></div>
+
+--00000000000018c2ec0608a695da--
 
