@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC85D7D793F
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C17F67D7946
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:22:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo6L-0001Gz-Dq; Wed, 25 Oct 2023 20:19:54 -0400
+	id 1qvo6F-0000tx-5X; Wed, 25 Oct 2023 20:19:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo65-0000rD-0i
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:38 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qvo5y-0000oN-BO
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:31 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo5t-0006bC-Bx
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:35 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c9bf22fe05so2121815ad.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:19:24 -0700 (PDT)
+ id 1qvo5s-0006bH-67
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:30 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1c434c33ec0so2284665ad.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279562; x=1698884362; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279563; x=1698884363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=y4JjGfXc1ZK0slmW0Mduo2FRxtvtvRQNj+3A0+w7cQs=;
- b=xvyihsaN/IL8J7P+zIMxfb6AwFMCQQ1iMFuLQtMNCS7b/cU7zP6ceLuQHnsw1d3WvX
- G2DaR9S41nAzrqnvh5mtZp9chOyco1x+IiRZosB63rONfe+LEX2D0QI7L2wTsy9IYfQM
- 2huZDanWtVsYleMmP4G0ezD4pJzsA9IU1bpKAmjwJZ1iKlvkD+KO04ts4GTZBy0HafwC
- 6D0WT3y+dS6HzlWvCZxcrztknSKclWTaS3/+/ocHeL5I6ahbyiQopiksLRrDLhh5nOps
- MwaZHDqmFYMMRe96g1Ozd+qjroTOteirTY6Q0+nSUrGy8lWU5Ry3VneR7Adx777pmBvJ
- /VYw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=1RxoerkT+NW6NNN31T+6nx4K1n73GgW/XA4Cu7hakcY=;
+ b=wU9LH+couZfWkzvfoVy4rXoiUqeBErKRRxNREIvmtqjLgc/TNYbS3qDJJzyufyAe1N
+ PDQjGzTBJsSH8xsswscGRv/FoBTYFn1DeJuFShVUe2zcauHYgV/kPVpXBZInZv+12MqO
+ wLJN7glcsBnnN8Uc3SDnBkCsBqRHvMPsmvF+4YFnO96iy6a4HqitBimuJnAp493eFd5s
+ w1mGjysgi8MYk/NjhqxJVJ65PrLas8VSss2taawE6TwV/jOqKjcAKsfy9Oh5KzQdtlTd
+ Sf/kKvwbSM9jWSUFqSMOPW9YviCUkJJPHGTfQSIyJmgedHzz7Bx1F07LhKMqKdtzTiaj
+ e1cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279562; x=1698884362;
+ d=1e100.net; s=20230601; t=1698279563; x=1698884363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y4JjGfXc1ZK0slmW0Mduo2FRxtvtvRQNj+3A0+w7cQs=;
- b=gjhUIqpoaGu2KFP0RfTWqPsHeiOToPxdELodY7VbKivzOgUywq7u2tczYEQ21lwNU3
- y05MwbwvcEQJO7A6rhPzWmn3wejor/4R0rqMgvxtknQxvcxzaf/QvGoK+j3NxDsYU/Hb
- +DVpk00X/XilbMV3YfALTTMsyLEoiiB8iKZ2qmMvP5LHishAYE+AqfTM+VCWNbo1Dkeq
- P5ApCDmT/DBD1/TWJBFSvjsws8Bal0DcigZ9ujHOKfavd+UrrJxcVe4eCynyYvfUiwI2
- MB08sOJO6MuSPgRCrZdM+NscItA06+ES3Ei0spXrH8REWqefUkHVzUhy0TJO7ro1imWu
- PRTg==
-X-Gm-Message-State: AOJu0Yxh5NyP2VJrX4AZvlteCSUSrEXyyWDttotrMfiA0EeSq8GLPCku
- FXiV0KC3CU2L2ZUY65sneH6IPbime1u7UEDDVXA=
-X-Google-Smtp-Source: AGHT+IGjPxVnXCor5bTesqG30xwM8Wk7zsAV8lSK+56Yi3Wwd700AwwXJn+RxVtuRgaf0KNMRuSBYQ==
-X-Received: by 2002:a17:903:493:b0:1ca:344f:46e6 with SMTP id
- jj19-20020a170903049300b001ca344f46e6mr12113594plb.33.1698279561777; 
- Wed, 25 Oct 2023 17:19:21 -0700 (PDT)
+ bh=1RxoerkT+NW6NNN31T+6nx4K1n73GgW/XA4Cu7hakcY=;
+ b=iZigFnxrqnP+7jUMRRURIP3HBU7ouZiveNsXvqCNGl15eU8yS59IdT3g8abPR6hUyv
+ Ayw/jbAOIbk1K+EcN2HvFMXuDDM+N2F74ACPtQGslzNwdQkTnDfzDxgQqKFNY7MklYGm
+ f/80Mtw3GA5Z+3Pv6RY8sRJQt62ButMR8f1p4JrYFbL53l+iU9elprgs5eEJU0NqRgaB
+ gJdeSJ9emGlLo2snqMoCOCDVmpJETTycuXnlUajx6++6U2AFVVyBY0YEGZ7AF2nG1QQa
+ KaDs0wLBOPqRGnA0ezL8QOmo5fwLjyq+dKTyW7LTxLGP5vzTHq/U44XLX7XE/N6pGP8A
+ 38/A==
+X-Gm-Message-State: AOJu0YwfjLyHwEE28sfBoCb6bBRCZ12/nhtExvxRbrpjTjSuvbmUnw7j
+ Hob8X2QcILvJpSfcmqC3vYWDs4GwlmWAUIOG8O8=
+X-Google-Smtp-Source: AGHT+IFDGKyl0sLRb1S4IjEkiXsDYS2HHiY82rE6ju0s5SjLNT0nZ851EXrOZzrKNc0x+Spj+O4szQ==
+X-Received: by 2002:a17:902:d48f:b0:1c9:dff6:58e8 with SMTP id
+ c15-20020a170902d48f00b001c9dff658e8mr14737692plg.54.1698279562675; 
+ Wed, 25 Oct 2023 17:19:22 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.21
+ jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.22
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:19:21 -0700 (PDT)
+ Wed, 25 Oct 2023 17:19:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 23/94] target/sparc: Move RDPSR, RDHPR to decodetree
-Date: Wed, 25 Oct 2023 17:14:24 -0700
-Message-Id: <20231026001542.1141412-46-richard.henderson@linaro.org>
+Subject: [PATCH 23/29] tcg/ppc: Create tcg_out_and_rc
+Date: Wed, 25 Oct 2023 17:14:25 -0700
+Message-Id: <20231026001542.1141412-47-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,203 +89,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement htstate in the obvious way.
+Merge tcg_out_andi32, tcg_out_andi64, and code to handle
+two register inputs.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/847
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  10 ++++
- target/sparc/translate.c  | 116 ++++++++++++++++++++++++--------------
- 2 files changed, 83 insertions(+), 43 deletions(-)
+ tcg/ppc/tcg-target.c.inc | 86 +++++++++++++++++++---------------------
+ 1 file changed, 40 insertions(+), 46 deletions(-)
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 1b084c5b97..a7d78eb6c6 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -44,6 +44,16 @@ CALL    01 i:s30
-   RDY               10 rd:5  101000 rs1:5 0 0000000000000
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 3c2ec4db4b..fe141a26f9 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -1363,44 +1363,44 @@ static bool mask64_operand(uint64_t c, int *mb, int *me)
+     return false;
  }
  
-+{
-+  RDPSR             10 rd:5  101001 00000 0 0000000000000
-+  RDHPR_hpstate     10 rd:5  101001 00000 0 0000000000000
-+}
-+RDHPR_htstate       10 rd:5  101001 00001 0 0000000000000
-+RDHPR_hintp         10 rd:5  101001 00011 0 0000000000000
-+RDHPR_htba          10 rd:5  101001 00101 0 0000000000000
-+RDHPR_hver          10 rd:5  101001 00110 0 0000000000000
-+RDHPR_hstick_cmpr   10 rd:5  101001 11111 0 0000000000000
-+
- Tcc_r       10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
+-static void tcg_out_andi32(TCGContext *s, TCGReg dst, TCGReg src, uint32_t c)
++static void tcg_out_and_rc(TCGContext *s, TCGType type, TCGReg dst,
++                           TCGReg arg1, TCGArg arg2, bool const_arg2, bool rc)
  {
-   # For v7, the entire simm13 field is present, but masked to 7 bits.
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 9af4578525..b58c2594ca 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -36,9 +36,12 @@
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
+-    int mb, me;
+-
+-    if (mask_operand(c, &mb, &me)) {
+-        tcg_out_rlw(s, RLWINM, dst, src, 0, mb, me);
+-    } else if ((c & 0xffff) == c) {
+-        tcg_out32(s, ANDI | SAI(src, dst, c));
++    if (!const_arg2) {
++        tcg_out32(s, AND | SAB(arg1, dst, arg2) | rc);
+         return;
+-    } else if ((c & 0xffff0000) == c) {
+-        tcg_out32(s, ANDIS | SAI(src, dst, c >> 16));
+-        return;
+-    } else {
+-        tcg_out_movi(s, TCG_TYPE_I32, TCG_REG_R0, c);
+-        tcg_out32(s, AND | SAB(src, dst, TCG_REG_R0));
+     }
+-}
  
--#ifndef TARGET_SPARC64
-+#ifdef TARGET_SPARC64
-+# define gen_helper_rdpsr(D, E)                 qemu_build_not_reached()
-+#else
- # define gen_helper_rdccr(D, E)                 qemu_build_not_reached()
- # define gen_helper_tick_get_count(D, E, T, C)  qemu_build_not_reached()
-+# define MAXTL_MASK                             0
- #endif
+-static void tcg_out_andi64(TCGContext *s, TCGReg dst, TCGReg src, uint64_t c)
+-{
+-    int mb, me;
++    if (!rc) {
++        int mb, me;
  
- /* Dynamic PC, must exit to main loop. */
-@@ -71,8 +74,12 @@ static TCGv cpu_hintp, cpu_htba, cpu_hver, cpu_ssr, cpu_ver;
- static TCGv cpu_wim;
- # define cpu_fprs               ({ qemu_build_not_reached(); (TCGv)NULL; })
- # define cpu_gsr                ({ qemu_build_not_reached(); (TCGv)NULL; })
--# define cpu_tick_cmpr          ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_hintp              ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_hstick_cmpr        ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_htba               ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_hver               ({ qemu_build_not_reached(); (TCGv)NULL; })
- # define cpu_stick_cmpr         ({ qemu_build_not_reached(); (TCGv)NULL; })
-+# define cpu_tick_cmpr          ({ qemu_build_not_reached(); (TCGv)NULL; })
- #endif
- /* Floating point registers */
- static TCGv_i64 cpu_fpr[TARGET_DPREGS];
-@@ -272,15 +279,14 @@ static void gen_move_Q(DisasContext *dc, unsigned int rd, unsigned int rs)
- /* moves */
- #ifdef CONFIG_USER_ONLY
- #define supervisor(dc) 0
--#ifdef TARGET_SPARC64
- #define hypervisor(dc) 0
--#endif
- #else
- #ifdef TARGET_SPARC64
- #define hypervisor(dc) (dc->hypervisor)
- #define supervisor(dc) (dc->supervisor | dc->hypervisor)
- #else
- #define supervisor(dc) (dc->supervisor)
-+#define hypervisor(dc) 0
- #endif
- #endif
+-    tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+-    if (mask64_operand(c, &mb, &me)) {
+-        if (mb == 0) {
+-            tcg_out_rld(s, RLDICR, dst, src, 0, me);
++        if (TCG_TARGET_REG_BITS == 32 || type == TCG_TYPE_I32) {
++            if (mask_operand(arg2, &mb, &me)) {
++                tcg_out_rlw(s, RLWINM, dst, arg1, 0, mb, me);
++                return;
++            }
+         } else {
+-            tcg_out_rld(s, RLDICL, dst, src, 0, mb);
++            if (mask64_operand(arg2, &mb, &me)) {
++                if (mb == 0) {
++                    tcg_out_rld(s, RLDICR, dst, arg1, 0, me);
++                } else {
++                    tcg_out_rld(s, RLDICL, dst, arg1, 0, mb);
++                }
++                return;
++            }
+         }
+-    } else if ((c & 0xffff) == c) {
+-        tcg_out32(s, ANDI | SAI(src, dst, c));
+-        return;
+-    } else if ((c & 0xffff0000) == c) {
+-        tcg_out32(s, ANDIS | SAI(src, dst, c >> 16));
+-        return;
++    }
++
++    if (type == TCG_TYPE_I32) {
++        arg2 = (uint32_t)arg2;
++    }
++    if ((arg2 & 0xffff) == arg2) {
++        tcg_out32(s, ANDI | SAI(arg1, dst, arg2));
++    } else if ((arg2 & 0xffff0000u) == arg2) {
++        tcg_out32(s, ANDIS | SAI(arg1, dst, arg2 >> 16));
+     } else {
+-        tcg_out_movi(s, TCG_TYPE_I64, TCG_REG_R0, c);
+-        tcg_out32(s, AND | SAB(src, dst, TCG_REG_R0));
++        tcg_out_movi(s, type, TCG_REG_R0, arg2);
++        tcg_out32(s, AND | SAB(arg1, dst, TCG_REG_R0) | rc);
+     }
+ }
  
-@@ -3320,6 +3326,69 @@ static TCGv do_rdstrand_status(DisasContext *dc, TCGv dst)
+@@ -2892,20 +2892,12 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         break;
  
- TRANS(RDSTRAND_STATUS, HYPV, do_rd_special, true, a->rd, do_rdstrand_status)
- 
-+static TCGv do_rdpsr(DisasContext *dc, TCGv dst)
-+{
-+    update_psr(dc);
-+    gen_helper_rdpsr(dst, tcg_env);
-+    return dst;
-+}
-+
-+TRANS(RDPSR, 32, do_rd_special, supervisor(dc), a->rd, do_rdpsr)
-+
-+static TCGv do_rdhpstate(DisasContext *dc, TCGv dst)
-+{
-+    tcg_gen_ld_tl(dst, tcg_env, env64_field_offsetof(hpstate));
-+    return dst;
-+}
-+
-+TRANS(RDHPR_hpstate, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhpstate)
-+
-+static TCGv do_rdhtstate(DisasContext *dc, TCGv dst)
-+{
-+    TCGv_i32 tl = tcg_temp_new_i32();
-+    TCGv_ptr tp = tcg_temp_new_ptr();
-+
-+    tcg_gen_ld_i32(tl, tcg_env, env64_field_offsetof(tl));
-+    tcg_gen_andi_i32(tl, tl, MAXTL_MASK);
-+    tcg_gen_shli_i32(tl, tl, 3);
-+    tcg_gen_ext_i32_ptr(tp, tl);
-+    tcg_gen_add_ptr(tp, tp, tcg_env);
-+
-+    tcg_gen_ld_tl(dst, tp, env64_field_offsetof(htstate));
-+    return dst;
-+}
-+
-+TRANS(RDHPR_htstate, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhtstate)
-+
-+static TCGv do_rdhintp(DisasContext *dc, TCGv dst)
-+{
-+    return cpu_hintp;
-+}
-+
-+TRANS(RDHPR_hintp, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhintp)
-+
-+static TCGv do_rdhtba(DisasContext *dc, TCGv dst)
-+{
-+    return cpu_htba;
-+}
-+
-+TRANS(RDHPR_htba, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhtba)
-+
-+static TCGv do_rdhver(DisasContext *dc, TCGv dst)
-+{
-+    return cpu_hver;
-+}
-+
-+TRANS(RDHPR_hver, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhver)
-+
-+static TCGv do_rdhstick_cmpr(DisasContext *dc, TCGv dst)
-+{
-+    return cpu_hstick_cmpr;
-+}
-+
-+TRANS(RDHPR_hstick_cmpr, HYPV, do_rd_special, hypervisor(dc), a->rd,
-+      do_rdhstick_cmpr)
-+
- #define CHECK_IU_FEATURE(dc, FEATURE)                      \
-     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
-         goto illegal_insn;
-@@ -3351,45 +3420,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-             TCGv cpu_tmp0 __attribute__((unused));
- 
- #if !defined(CONFIG_USER_ONLY)
--            if (xop == 0x29) { /* rdpsr / UA2005 rdhpr */
--#ifndef TARGET_SPARC64
--                if (!supervisor(dc)) {
--                    goto priv_insn;
--                }
--                update_psr(dc);
--                gen_helper_rdpsr(cpu_dst, tcg_env);
--#else
--                CHECK_IU_FEATURE(dc, HYPV);
--                if (!hypervisor(dc))
--                    goto priv_insn;
--                rs1 = GET_FIELD(insn, 13, 17);
--                switch (rs1) {
--                case 0: // hpstate
--                    tcg_gen_ld_i64(cpu_dst, tcg_env,
--                                   offsetof(CPUSPARCState, hpstate));
--                    break;
--                case 1: // htstate
--                    // gen_op_rdhtstate();
--                    break;
--                case 3: // hintp
--                    tcg_gen_mov_tl(cpu_dst, cpu_hintp);
--                    break;
--                case 5: // htba
--                    tcg_gen_mov_tl(cpu_dst, cpu_htba);
--                    break;
--                case 6: // hver
--                    tcg_gen_mov_tl(cpu_dst, cpu_hver);
--                    break;
--                case 31: // hstick_cmpr
--                    tcg_gen_mov_tl(cpu_dst, cpu_hstick_cmpr);
--                    break;
--                default:
--                    goto illegal_insn;
--                }
--#endif
--                gen_store_gpr(dc, rd, cpu_dst);
--                break;
--            }
-             if (xop == 0x2a) { /* rdwim / V9 rdpr */
-                 if (!supervisor(dc)) {
-                     goto priv_insn;
+     case INDEX_op_and_i32:
+-        a0 = args[0], a1 = args[1], a2 = args[2];
+-        if (const_args[2]) {
+-            tcg_out_andi32(s, a0, a1, a2);
+-        } else {
+-            tcg_out32(s, AND | SAB(a1, a0, a2));
+-        }
++        tcg_out_and_rc(s, TCG_TYPE_I32, args[0], args[1],
++                       args[2], const_args[2], false);
+         break;
+     case INDEX_op_and_i64:
+-        a0 = args[0], a1 = args[1], a2 = args[2];
+-        if (const_args[2]) {
+-            tcg_out_andi64(s, a0, a1, a2);
+-        } else {
+-            tcg_out32(s, AND | SAB(a1, a0, a2));
+-        }
++        tcg_out_and_rc(s, TCG_TYPE_I64, args[0], args[1],
++                       args[2], const_args[2], false);
+         break;
+     case INDEX_op_or_i64:
+     case INDEX_op_or_i32:
+@@ -2928,7 +2920,7 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_andc_i32:
+         a0 = args[0], a1 = args[1], a2 = args[2];
+         if (const_args[2]) {
+-            tcg_out_andi32(s, a0, a1, ~a2);
++            tcg_out_and_rc(s, TCG_TYPE_I32, a0, a1, ~a2, true, false);
+         } else {
+             tcg_out32(s, ANDC | SAB(a1, a0, a2));
+         }
+@@ -2936,7 +2928,7 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_andc_i64:
+         a0 = args[0], a1 = args[1], a2 = args[2];
+         if (const_args[2]) {
+-            tcg_out_andi64(s, a0, a1, ~a2);
++            tcg_out_and_rc(s, TCG_TYPE_I64, a0, a1, ~a2, true, false);
+         } else {
+             tcg_out32(s, ANDC | SAB(a1, a0, a2));
+         }
+@@ -3270,7 +3262,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_deposit_i32:
+         if (const_args[2]) {
+             uint32_t mask = ((2u << (args[4] - 1)) - 1) << args[3];
+-            tcg_out_andi32(s, args[0], args[0], ~mask);
++            tcg_out_and_rc(s, TCG_TYPE_I32, args[0], args[0],
++                           ~mask, true, false);
+         } else {
+             tcg_out_rlw(s, RLWIMI, args[0], args[2], args[3],
+                         32 - args[3] - args[4], 31 - args[3]);
+@@ -3279,7 +3272,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_deposit_i64:
+         if (const_args[2]) {
+             uint64_t mask = ((2ull << (args[4] - 1)) - 1) << args[3];
+-            tcg_out_andi64(s, args[0], args[0], ~mask);
++            tcg_out_and_rc(s, TCG_TYPE_I64, args[0], args[0],
++                           ~mask, true, false);
+         } else {
+             tcg_out_rld(s, RLDIMI, args[0], args[2], args[3],
+                         64 - args[3] - args[4]);
 -- 
 2.34.1
 
