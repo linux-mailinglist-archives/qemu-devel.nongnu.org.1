@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07847D7C37
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A9B7D7C3E
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:32:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvsvx-0007FI-Iv; Thu, 26 Oct 2023 01:29:29 -0400
+	id 1qvsxs-00083m-JI; Thu, 26 Oct 2023 01:31:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvsvs-0007Dz-TH
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:29:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvsxl-00082y-EP
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:31:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvsvr-0007C5-FQ
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:29:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvsxj-0001KV-Q1
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:31:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698298162;
+ s=mimecast20190719; t=1698298279;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ogvkYCilsHe/ekfvb3A3ST8Y97I0ntZS3tXu7WqCNsg=;
- b=eof+93Ba275Alc8t26wYgKAYx9xZbp+ezRys8vwhq3zq0ikyoCMD04G0Bkork957i7IX0U
- QR0zVXST2iynYjaD2xgrF8xuT9X2mgYbmiDr7H3h+93tQo7wY0H7+yLs6PgTCpHsyFLVHU
- kwY6wd1J+sbBnRbUm8OaWUREzcy4Lx0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dg7yJm/Ib0Twr2aw2U56EKleRPMMVl6176tDtWCmItA=;
+ b=OHvGFcPExyjVVH9bgfs1DaVJTHT3gJtiUBfzO1TRT7kISRjOiE1/ks8d4/+rve8R2iCeLX
+ H+HG59eYcyAmLZSpa/MDV0lQ5+iRwW45PvzXaHWFfdWDjF5maykiC2ca3ae9236HVWcPLP
+ 4wcB79b1TJsspal/h6qFlfjpg2U9tkg=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-Cwy6LHljMki5PxPgDWE2_A-1; Thu, 26 Oct 2023 01:29:21 -0400
-X-MC-Unique: Cwy6LHljMki5PxPgDWE2_A-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-54045f31f49so299531a12.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:29:21 -0700 (PDT)
+ us-mta-575-B3vOIgC-PEuq2I7DTVhjzw-1; Thu, 26 Oct 2023 01:31:17 -0400
+X-MC-Unique: B3vOIgC-PEuq2I7DTVhjzw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99c8bbc902eso34441066b.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:31:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698298160; x=1698902960;
+ d=1e100.net; s=20230601; t=1698298276; x=1698903076;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ogvkYCilsHe/ekfvb3A3ST8Y97I0ntZS3tXu7WqCNsg=;
- b=N35Nbm0xdNCqHm9P8Cbdl4racS/OCRs0hkRJ+0kfsO0BMZc/E/XP136tby8Z3JeGyQ
- BG3XZapsAhS7kEL5N+x1guEY1GjQKCLbyAY+ukCwZvEZSnyMguPgWwSNTfDs1oprsUbX
- 541a949+a96/sNXkGo7Gtcl0gYQfc1L2iRDQ4N5+PI/M8sqoJsw7f19zFKKdzSgVoAyC
- BNMXjounyYr3NFiuqlf72LgXf9L/XP8KoMGvTwAh80sXpdLFB2D6/34hup4QQWRKU6TS
- kSgXzpC+A5z+bltZBoDEB780sTlgV4nZVIlRMiY9yar0pecws+qJduV+Q5EuzYwA5dTj
- r1CA==
-X-Gm-Message-State: AOJu0YwMnb6SwADItktd/sLNjRVdtv0o70toGVl3T52RFEXbDw7j0Tgk
- AoCuOtlKqY5mWg3tRPvk9ZXGse6TqhedO2IPJIP1SSWM8W4YRXcbWY+x2IbaNGfn2zyO8FkomgN
- eUq9C7oOnMvrq4UVbxZVquxw=
-X-Received: by 2002:a05:6402:3593:b0:53d:983c:2672 with SMTP id
- y19-20020a056402359300b0053d983c2672mr14213166edc.38.1698298159810; 
- Wed, 25 Oct 2023 22:29:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXpnuQAULcPf3lsU0hRZ45M7FZAJj/NCYq6shyaHL0eVOvGcyufQp4bUeWiN4pXuTAGXc7yw==
-X-Received: by 2002:a05:6402:3593:b0:53d:983c:2672 with SMTP id
- y19-20020a056402359300b0053d983c2672mr14213144edc.38.1698298159481; 
- Wed, 25 Oct 2023 22:29:19 -0700 (PDT)
+ bh=dg7yJm/Ib0Twr2aw2U56EKleRPMMVl6176tDtWCmItA=;
+ b=PY+mBRlLxbKX7aZTeVIftxj0GKvtOr4+jsvG/wU40Bn2+QHkO5iWPjjbI4hpYcVdnc
+ 6fimZHOlaiU/j2CY5BI4NQ/MC6F/U7ZX0Une0OMoriCsAtV01wLmaOeIAJmFHx+VBi9H
+ cffY9CXcUYlHHkIAyFK4BEC0y1hyo+s+b3yiB91WJKZxVgdFiyl4tuSAwgC/lW3Buh6z
+ G31ETiAdVMYhSIz4Qfft3VMz59I8b3TzAwGxB7rmotxVWfj39jCwvoRGpObXfpd8QDmm
+ UsiwPy87YLNtVzFejOjiGKFbaH0jeo7oTg4EH1TQjMlBLxolZLT/Hxj2xS1Ng0trRNV/
+ Sk/Q==
+X-Gm-Message-State: AOJu0YyZz9pDI4HVr70vQzJTUzGOpX4E60DwltU4bDxJDGtfEY3IEol9
+ iv4gWRePI4WokpbZHX0lXdf1g9epihBjPMyFLShlE7ZNbH0sLGh4+yW9OnAeNaxHhRyeirYzUgw
+ iLHbgFTFRJWSoPUrT1yrAIxs=
+X-Received: by 2002:a17:907:7fa7:b0:9ae:701a:6efa with SMTP id
+ qk39-20020a1709077fa700b009ae701a6efamr16925973ejc.69.1698298276067; 
+ Wed, 25 Oct 2023 22:31:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMmpBrrxK0Jalgng95hoccrC5Fya8uKzCJdQ5a/8QhYWWBAC9NJue3jHKQ0e73R6UooJBr6A==
+X-Received: by 2002:a17:907:7fa7:b0:9ae:701a:6efa with SMTP id
+ qk39-20020a1709077fa700b009ae701a6efamr16925963ejc.69.1698298275816; 
+ Wed, 25 Oct 2023 22:31:15 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
  [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- a17-20020a50c311000000b0053dfd3519f4sm10803177edb.22.2023.10.25.22.29.18
+ m11-20020a170906234b00b00988e953a586sm10967937eja.61.2023.10.25.22.31.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 22:29:18 -0700 (PDT)
-Message-ID: <1470d93e-171e-4f92-aff9-bc6ae7d088ae@redhat.com>
-Date: Thu, 26 Oct 2023 07:29:17 +0200
+ Wed, 25 Oct 2023 22:31:15 -0700 (PDT)
+Message-ID: <da8c43c9-e8e0-47c9-a7a8-3abb3a2aa4ca@redhat.com>
+Date: Thu, 26 Oct 2023 07:31:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/23] vl: simplify display_remote logic
+Subject: Re: [PATCH v6 08/23] vl: move display early init before default
+ devices
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
@@ -77,7 +78,7 @@ Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
- <20231025190818.3278423-8-marcandre.lureau@redhat.com>
+ <20231025190818.3278423-9-marcandre.lureau@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,7 +122,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231025190818.3278423-8-marcandre.lureau@redhat.com>
+In-Reply-To: <20231025190818.3278423-9-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -151,39 +152,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 25/10/2023 21.08, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Bump the display_remote variable when the -vnc option is parsed, just
-> like -spice.
+> The next commit needs to have the display registered itself before
+> creating the default VCs.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   system/vl.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/system/vl.c b/system/vl.c
-> index de6df188da..b07805d476 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -1401,11 +1401,6 @@ static void qemu_create_default_devices(void)
->   #endif
->       }
->   
-> -#if defined(CONFIG_VNC)
-> -    if (!QTAILQ_EMPTY(&(qemu_find_opts("vnc")->head))) {
-> -        display_remote++;
-> -    }
-> -#endif
->       if (dpy.type == DISPLAY_TYPE_DEFAULT && !display_remote) {
->           if (!qemu_display_find_default(&dpy)) {
->               dpy.type = DISPLAY_TYPE_NONE;
-> @@ -3350,6 +3345,7 @@ void qemu_init(int argc, char **argv)
->   #ifdef CONFIG_VNC
->               case QEMU_OPTION_vnc:
->                   vnc_parse(optarg);
-> +                display_remote++;
->                   break;
->   #endif
->               case QEMU_OPTION_no_acpi:
+>   system/vl.c | 31 ++++++++++++++++++-------------
+>   1 file changed, 18 insertions(+), 13 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
