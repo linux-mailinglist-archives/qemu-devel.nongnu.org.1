@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585A87D7943
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7520C7D796F
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:28:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo6K-0001Dg-I2; Wed, 25 Oct 2023 20:19:52 -0400
+	id 1qvo6f-000261-RF; Wed, 25 Oct 2023 20:20:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo6B-0000yz-Mx
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:44 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qvo6E-00013a-A8
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:46 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo61-0006d3-KB
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:43 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1cbf47fa563so2294255ad.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:19:31 -0700 (PDT)
+ id 1qvo62-0006dP-6n
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:44 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1caad0bcc95so2219265ad.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:19:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279571; x=1698884371; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279572; x=1698884372; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jVGlwsfbm4sLINQJ1C25FK0LHbR26UwjjqtCg2xAyg8=;
- b=FeJMXiYGlpWU+R4zX53zg7iprgSjuBBAFS2uUI1P3LyrWoauPOkKSrgBHCvad3MUt4
- sBFqjzRKA0tVeUtj03z2HFky4k/cfibXmLhVcu2s4eFr9UFz6H0Qkl/Rv8zbo2cHWYF1
- FzxhPpoAwSlWmulFv5YpcRXNK2w2v0I5liK2hhZle1LBkrP8nTBm/FiFW23o3hM6o8mP
- Mgae4Valtq4JM6SxIeupEIw8raWsbEwQ4/ZXGz00kltWXyfbMwlkmChBh7uilo4eNLsu
- CS/kz6qQwqTjBrdHvmNCTl3i654XuwUjNnaYq3zYKOsLotKNFw009a3RCN6aLyobbTnR
- 7/4A==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IRKpWuzD73nLvUgHfXSktD82HmfIC39HF668MZpjq5M=;
+ b=a9okAxE7NNTwnJTd/84QZDiZsy4ar1bPwOIhM4LV86FVlgxNeyw2cf3Ti7fIll0+sc
+ EoF+k/mYSl0e2bCqZBwhikq33DupW693VOH5m1Wfs5HIzGKYN+CvCDGP2qO53aLmzOc4
+ //BYeuDJtq6Jh1U9kdGPwLfNSttw5E/mplAgJivvanl1KFEEaHmHbvpf9YBzQbvWSO4I
+ AjKm+SHX56CEMq7ga1qVTwQ6KHmGjpWoC0ElR0b9kVB7xNoHNhLl+UdIbopEGejOu7dH
+ sPszECaXR05b5mJCWEeforVEG+biBN5rTcZwqs1YYHdB7DguIEDfYVXgg/bWOsGhY5e+
+ +ngg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279571; x=1698884371;
+ d=1e100.net; s=20230601; t=1698279572; x=1698884372;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jVGlwsfbm4sLINQJ1C25FK0LHbR26UwjjqtCg2xAyg8=;
- b=XO8Jw/JnvlIjQwitRoDjNG3RY6Yw4IR0MyGRjcSOm7ANPdIPZK2aXmq6euh6l4YkOe
- vKcN0IJdsn44XeIGjG1izpZuYqRwXZCLQdtRnOZYVJMxrhokBxlE9ypzEvsudKQ8rT8B
- Rf51XE77iJENOgzQsEK0easc6fFbDRfZwV6Q2lH2P2k2DpwYCQGAmo7MqFLfA2/0t5tg
- TXXKW1zn3HPxvk8E3Kn/XY33Y6jiG1VnrTU7ouHcTsOGpATJRCm62geSTZBUQbamPmdk
- Y4NkhmuCJoR26NkkckN0nqvGNE7jBNLTVAY4UbBRxShXXe6z4iRadXlqzYXgbz9z/+Pb
- JOtQ==
-X-Gm-Message-State: AOJu0YyPXuHkcx8ruKseCJ+S0h1HZbZuDVDQBu6f9FlRMlavTZYJmY67
- 10HJpHpD+unvlcyeC0hM1sF6I1v6Vun0U66ZWwU=
-X-Google-Smtp-Source: AGHT+IEoe4rqU7bXUwPqYyYLqfs7FC5egsca0B+Yx7z+rfU2XtPuaErBwvkcUbkDs2f1JftVsc2O6g==
-X-Received: by 2002:a17:902:d2c1:b0:1c7:495c:87df with SMTP id
- n1-20020a170902d2c100b001c7495c87dfmr17741585plc.53.1698279571171; 
- Wed, 25 Oct 2023 17:19:31 -0700 (PDT)
+ bh=IRKpWuzD73nLvUgHfXSktD82HmfIC39HF668MZpjq5M=;
+ b=L7+EHZGNu+El8/KSaYrhRA/bYqozzkxR31euGH+Mf6sywQ6dBP6C21XXKj7C4dGTys
+ xe5NdZX/HpqN49RuFNLTJw8kQDy9u3+ifGY31L2FD0ZgByD/GUINQY2SDkWOgc09Xl6C
+ GnI84gIJxW5HjDja9rbbVyNMZe410J7vVjtEDYv6tp8cV5pmdv3PK4EaixATQR11DsY9
+ QIng79wTKCEHgY1ialZBxR7VXUef8NXy4w7FA11LLhb09cCl40gwy7KAhhP4r9y42+gF
+ nwRsnWMJw2rzTocSknd7fnVcAUzZHFOIK/oUnSqhUBNhkOvcm1EdN1Oi6Ht040glQcMr
+ WAuw==
+X-Gm-Message-State: AOJu0Yx9WTvZiwaWW1BjkuFjEBggOft+4ZkXopos23DyFfDYy7x0sBie
+ R2SbXlJMlIplhRHYS+wvOE2B2AjAFmpRnDqHFJU=
+X-Google-Smtp-Source: AGHT+IEby4tBSU132ovJd1L0V6L1/VsQA0yRhQFGl+zzItpKOUv8MZ5sbTX+6r3z1Xaos+RNpPAOMw==
+X-Received: by 2002:a17:903:2291:b0:1c0:a5c9:e072 with SMTP id
+ b17-20020a170903229100b001c0a5c9e072mr16183057plh.11.1698279572469; 
+ Wed, 25 Oct 2023 17:19:32 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.30
- for <qemu-devel@nongnu.org>
+ jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:19:30 -0700 (PDT)
+ Wed, 25 Oct 2023 17:19:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 29/29] target/alpha: Use TCG_COND_TSTNE for gen_fold_mzero
-Date: Wed, 25 Oct 2023 17:14:36 -0700
-Message-Id: <20231026001542.1141412-58-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 29/94] target/sparc: Move WRTBR, WRHPR to decodetree
+Date: Wed, 25 Oct 2023 17:14:37 -0700
+Message-Id: <20231026001542.1141412-59-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,95 +90,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Implement htstate in the obvious way.
+
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/alpha/translate.c | 49 +++++++++++++++++++---------------------
- 1 file changed, 23 insertions(+), 26 deletions(-)
+ target/sparc/insns.decode |   9 ++++
+ target/sparc/translate.c  | 111 +++++++++++++++++++-------------------
+ 2 files changed, 66 insertions(+), 54 deletions(-)
 
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index c7daf46de7..c68c2bcd21 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -490,56 +490,53 @@ static DisasJumpType gen_bcond(DisasContext *ctx, TCGCond cond, int ra,
- 
- /* Fold -0.0 for comparison with COND.  */
- 
--static void gen_fold_mzero(TCGCond cond, TCGv dest, TCGv src)
-+static TCGv_i64 gen_fold_mzero(TCGCond *pcond, uint64_t *pimm, TCGv_i64 src)
- {
--    uint64_t mzero = 1ull << 63;
-+    TCGv_i64 tmp;
- 
--    switch (cond) {
-+    *pimm = 0;
-+    switch (*pcond) {
-     case TCG_COND_LE:
-     case TCG_COND_GT:
-         /* For <= or >, the -0.0 value directly compares the way we want.  */
--        tcg_gen_mov_i64(dest, src);
--        break;
-+        return src;
- 
-     case TCG_COND_EQ:
-     case TCG_COND_NE:
--        /* For == or !=, we can simply mask off the sign bit and compare.  */
--        tcg_gen_andi_i64(dest, src, mzero - 1);
--        break;
-+        /* For == or !=, we can compare without the sign bit. */
-+        *pcond = *pcond == TCG_COND_EQ ? TCG_COND_TSTEQ : TCG_COND_TSTNE;
-+        *pimm = INT64_MAX;
-+        return src;
- 
-     case TCG_COND_GE:
-     case TCG_COND_LT:
-         /* For >= or <, map -0.0 to +0.0. */
--        tcg_gen_movcond_i64(TCG_COND_NE, dest, src, tcg_constant_i64(mzero),
--                            src, tcg_constant_i64(0));
--        break;
-+        tmp = tcg_temp_new_i64();
-+        tcg_gen_movcond_i64(TCG_COND_EQ, tmp,
-+                            src, tcg_constant_i64(INT64_MIN),
-+                            tcg_constant_i64(0), src);
-+        return tmp;
- 
-     default:
--        abort();
-+        g_assert_not_reached();
-     }
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index f478999ee1..eab737fdcc 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -143,6 +143,15 @@ WRPR_strand_status  10 11010 110010 ..... . .............  @n_r_ri
+   RDTBR     10 rd:5  101011 00000 0 0000000000000
  }
  
- static DisasJumpType gen_fbcond(DisasContext *ctx, TCGCond cond, int ra,
-                                 int32_t disp)
++{
++  WRTBR             10 00000 110011 ..... . .............  @n_r_ri
++  WRHPR_hpstate     10 00000 110011 ..... . .............  @n_r_ri
++}
++WRHPR_htstate       10 00001 110011 ..... . .............  @n_r_ri
++WRHPR_hintp         10 00011 110011 ..... . .............  @n_r_ri
++WRHPR_htba          10 00101 110011 ..... . .............  @n_r_ri
++WRHPR_hstick_cmpr   10 11111 110011 ..... . .............  @n_r_ri
++
+ Tcc_r       10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
  {
--    TCGv cmp_tmp = tcg_temp_new();
--    DisasJumpType ret;
--
--    gen_fold_mzero(cond, cmp_tmp, load_fpr(ctx, ra));
--    ret = gen_bcond_internal(ctx, cond, cmp_tmp, 0, disp);
--    return ret;
-+    uint64_t imm;
-+    TCGv_i64 tmp = gen_fold_mzero(&cond, &imm, load_fpr(ctx, ra));
-+    return gen_bcond_internal(ctx, cond, tmp, imm, disp);
- }
+   # For v7, the entire simm13 field is present, but masked to 7 bits.
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 9b82e2bf6f..d87c08c18c 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -50,6 +50,7 @@
+ # define gen_helper_set_softint(E, S)           qemu_build_not_reached()
+ # define gen_helper_tick_get_count(D, E, T, C)  qemu_build_not_reached()
+ # define gen_helper_tick_set_count(P, S)        qemu_build_not_reached()
++# define gen_helper_tick_set_limit(P, S)        qemu_build_not_reached()
+ # define gen_helper_wrccr(E, S)                 qemu_build_not_reached()
+ # define gen_helper_wrcwp(E, S)                 qemu_build_not_reached()
+ # define gen_helper_wrgl(E, S)                  qemu_build_not_reached()
+@@ -3935,6 +3936,61 @@ static void do_wrssr(DisasContext *dc, TCGv src)
  
- static void gen_fcmov(DisasContext *ctx, TCGCond cond, int ra, int rb, int rc)
+ TRANS(WRPR_strand_status, HYPV, do_wr_special, a, hypervisor(dc), do_wrssr)
+ 
++TRANS(WRTBR, 32, do_wr_special, a, supervisor(dc), do_wrtba)
++
++static void do_wrhpstate(DisasContext *dc, TCGv src)
++{
++    tcg_gen_st_tl(src, tcg_env, env64_field_offsetof(hpstate));
++    dc->base.is_jmp = DISAS_EXIT;
++}
++
++TRANS(WRHPR_hpstate, HYPV, do_wr_special, a, hypervisor(dc), do_wrhpstate)
++
++static void do_wrhtstate(DisasContext *dc, TCGv src)
++{
++    TCGv_i32 tl = tcg_temp_new_i32();
++    TCGv_ptr tp = tcg_temp_new_ptr();
++
++    tcg_gen_ld_i32(tl, tcg_env, env64_field_offsetof(tl));
++    tcg_gen_andi_i32(tl, tl, MAXTL_MASK);
++    tcg_gen_shli_i32(tl, tl, 3);
++    tcg_gen_ext_i32_ptr(tp, tl);
++    tcg_gen_add_ptr(tp, tp, tcg_env);
++
++    tcg_gen_st_tl(src, tp, env64_field_offsetof(htstate));
++}
++
++TRANS(WRHPR_htstate, HYPV, do_wr_special, a, hypervisor(dc), do_wrhtstate)
++
++static void do_wrhintp(DisasContext *dc, TCGv src)
++{
++    tcg_gen_mov_tl(cpu_hintp, src);
++}
++
++TRANS(WRHPR_hintp, HYPV, do_wr_special, a, hypervisor(dc), do_wrhintp)
++
++static void do_wrhtba(DisasContext *dc, TCGv src)
++{
++    tcg_gen_mov_tl(cpu_htba, src);
++}
++
++TRANS(WRHPR_htba, HYPV, do_wr_special, a, hypervisor(dc), do_wrhtba)
++
++static void do_wrhstick_cmpr(DisasContext *dc, TCGv src)
++{
++    TCGv_ptr r_tickptr = tcg_temp_new_ptr();
++
++    tcg_gen_mov_tl(cpu_hstick_cmpr, src);
++    tcg_gen_ld_ptr(r_tickptr, tcg_env, env64_field_offsetof(hstick));
++    translator_io_start(&dc->base);
++    gen_helper_tick_set_limit(r_tickptr, cpu_hstick_cmpr);
++    /* End TB to handle timer interrupt */
++    dc->base.is_jmp = DISAS_EXIT;
++}
++
++TRANS(WRHPR_hstick_cmpr, HYPV, do_wr_special, a, hypervisor(dc),
++      do_wrhstick_cmpr)
++
+ static bool do_saved_restored(DisasContext *dc, bool saved)
  {
--    TCGv_i64 va, vb, z;
+     if (!supervisor(dc)) {
+@@ -4624,63 +4680,10 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ #endif
+                     case 0x30:
+                         goto illegal_insn;  /* WRASR in decodetree */
+-#if !defined(CONFIG_USER_ONLY)
+                     case 0x32:
+                         goto illegal_insn;  /* WRPR in decodetree */
+                     case 0x33: /* wrtbr, UA2005 wrhpr */
+-                        {
+-#ifndef TARGET_SPARC64
+-                            if (!supervisor(dc))
+-                                goto priv_insn;
+-                            tcg_gen_xor_tl(cpu_tbr, cpu_src1, cpu_src2);
+-#else
+-                            CHECK_IU_FEATURE(dc, HYPV);
+-                            if (!hypervisor(dc))
+-                                goto priv_insn;
+-                            cpu_tmp0 = tcg_temp_new();
+-                            tcg_gen_xor_tl(cpu_tmp0, cpu_src1, cpu_src2);
+-                            switch (rd) {
+-                            case 0: // hpstate
+-                                tcg_gen_st_i64(cpu_tmp0, tcg_env,
+-                                               offsetof(CPUSPARCState,
+-                                                        hpstate));
+-                                save_state(dc);
+-                                gen_op_next_insn();
+-                                tcg_gen_exit_tb(NULL, 0);
+-                                dc->base.is_jmp = DISAS_NORETURN;
+-                                break;
+-                            case 1: // htstate
+-                                // XXX gen_op_wrhtstate();
+-                                break;
+-                            case 3: // hintp
+-                                tcg_gen_mov_tl(cpu_hintp, cpu_tmp0);
+-                                break;
+-                            case 5: // htba
+-                                tcg_gen_mov_tl(cpu_htba, cpu_tmp0);
+-                                break;
+-                            case 31: // hstick_cmpr
+-                                {
+-                                    TCGv_ptr r_tickptr;
 -
--    z = load_zero(ctx);
--    vb = load_fpr(ctx, rb);
--    va = tcg_temp_new();
--    gen_fold_mzero(cond, va, load_fpr(ctx, ra));
--
--    tcg_gen_movcond_i64(cond, dest_fpr(ctx, rc), va, z, vb, load_fpr(ctx, rc));
-+    uint64_t imm;
-+    TCGv_i64 tmp = gen_fold_mzero(&cond, &imm, load_fpr(ctx, ra));
-+    tcg_gen_movcond_i64(cond, dest_fpr(ctx, rc),
-+                        tmp, tcg_constant_i64(imm),
-+                        load_fpr(ctx, rb), load_fpr(ctx, rc));
- }
- 
- #define QUAL_RM_N       0x080   /* Round mode nearest even */
+-                                    tcg_gen_mov_tl(cpu_hstick_cmpr, cpu_tmp0);
+-                                    r_tickptr = tcg_temp_new_ptr();
+-                                    tcg_gen_ld_ptr(r_tickptr, tcg_env,
+-                                                   offsetof(CPUSPARCState, hstick));
+-                                    translator_io_start(&dc->base);
+-                                    gen_helper_tick_set_limit(r_tickptr,
+-                                                              cpu_hstick_cmpr);
+-                                    /* End TB to handle timer interrupt */
+-                                    dc->base.is_jmp = DISAS_EXIT;
+-                                }
+-                                break;
+-                            case 6: // hver readonly
+-                            default:
+-                                goto illegal_insn;
+-                            }
+-#endif
+-                        }
+-                        break;
+-#endif
++                        goto illegal_insn;  /* WRTBR, WRHPR in decodetree */
+ #ifdef TARGET_SPARC64
+                     case 0x2c: /* V9 movcc */
+                         {
 -- 
 2.34.1
 
