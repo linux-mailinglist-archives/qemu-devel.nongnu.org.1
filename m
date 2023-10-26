@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743507D792E
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1908E7D7940
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:21:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo3C-0007QF-L9; Wed, 25 Oct 2023 20:16:39 -0400
+	id 1qvo2t-00077K-16; Wed, 25 Oct 2023 20:16:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2w-0007HJ-BB
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:22 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qvo2k-00070k-W3
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:12 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2h-0004r1-LK
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:22 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1ca3a54d2c4so2278555ad.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:15:57 -0700 (PDT)
+ id 1qvo2g-0004r5-K8
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:09 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1cab2c24ecdso2241205ad.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:15:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698279357; x=1698884157; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=imDgEUum8PsXbQ/+Z4HhrVdRHwLKWjtXZ1f2ZH8WSQs=;
- b=Egqdm0bh4dL6SOd/hGqa0G5CSoXKcOibxWz3AAwEsvYBop9dig3Xj7obDkrM0UezXV
- t57TGEOZmuvI54YJGthF6CUKB8GydZtkjVxiKEsRO8ANrMG/dy6qQy691ib9RxF+R23l
- 69vf+AJzYG+OzUYWqNGYBv8Py8zvNoSttyNmqfBdsEXP52VxvVdo6EhN3asi01bX2Idh
- MejvYiEMZOrU5xw9zbm1MSBC0rR6qjUq6IPVoM73xaLzOVNkCgDXTx/zI7u0PB0Fib5T
- LEmdlKPa9rN+eyNHb8xuUvi8Tyi4ox4g4z3aVTCWbSX5sOgpuB54GToa0tGjMsCAusSy
- ljDQ==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=TM/KRrd2eN3gH2XezGt/xyNTAB3pmf+w8+Xiugmh0j8=;
+ b=bnZ+K/HU2vyv/jXoCms993r3lAslmTpDa61ludEN3Je88fislNbytASVpeFynI+ZhY
+ R71qppsYXL/vwGBfHp1VF2GV7Zryg4k5fniXK2uvFn8Sxyqr6WK68zs0KIVHingxA5nZ
+ rP7GZxyg/9wEzxNnGwOblMNB9ivLdOCsb+MxRfy82ggcGYQ76KLD7yGAk3RGCQtyjmy9
+ 5QaxTAjy7is1HCDD9LviSC8gCD500pggbCxeL/IW5ofUhaBz2zZIGv/MXErijn5Tu6n1
+ ektd99NVVrxp4X5mslelI+jYYq05gtCW/rnrhfyQgBnKk2FSkLL+pJhVKBlxSaLI9jpO
+ BZ4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698279357; x=1698884157;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=imDgEUum8PsXbQ/+Z4HhrVdRHwLKWjtXZ1f2ZH8WSQs=;
- b=MRu+0vVacmSa4vox4oL7U1/fAXTWif0dKTxNrIv6uueVWXnG/bMP5h5th6TpwGH21s
- EsDFVd+6p8FCMOYJ6yoryKTmykjdlX169jkz9BMNIsSuu0z4AlYSRVev5OkIfvA7O0Oh
- DAdZ6G3JHXqlbHgsv/7deOCLqPvG31y3FR59xpst0cFlL1lHHmQ8vMN8bEAXC/wPDS5e
- kPMgLLjeRBD+JsuUbVGOrf0CCcQTAFPUM9Yaw7GNcJPMu/wpM7b2SG92+lQaYjMh1EUk
- CWn2YWrG1x7XtsWNNQ2VBt6D1QMeWVrIPZVipMoLSp5sWNjbR/FTlmXbElaz5kp6pAi3
- HhIQ==
-X-Gm-Message-State: AOJu0YxgaxtbHwtA3U9wcVnIEygitlaWQgqKexVDTS1MsptbPhHFtZxM
- M66OW6ttMnEb6XcYxHsEIknUU/I4+ZUDXT1AQ70=
-X-Google-Smtp-Source: AGHT+IEJPYD1A8tHzIDEQ487Mrm1qYMnSKiiSDgt+9TEXniTeCdgKupuKdYrO133CNTR6lgyV8Q+LQ==
-X-Received: by 2002:a17:902:ea0e:b0:1c3:6d97:e89e with SMTP id
- s14-20020a170902ea0e00b001c36d97e89emr17428302plg.58.1698279356782; 
- Wed, 25 Oct 2023 17:15:56 -0700 (PDT)
+ bh=TM/KRrd2eN3gH2XezGt/xyNTAB3pmf+w8+Xiugmh0j8=;
+ b=WgSZcHMmpcICD+fAMIwKqcf21NJSz+UjkjFiKAM4PulmYmQDg+Qtp9QONlw3O8ejzQ
+ M8sYOw3ItIelL3gh32D3KqQbr9hW/DavmZDEC0t2TndKsPm17fgtZ7vSdLHq8KFoJh5X
+ e7x77A/yaLJZ73RAuIDfrATvQrsTZ8iEYoiPdaklN+V0CbTkvMbqgBxuJDDd8ynRqWpO
+ sSEVWwVCHEbV7I+K90dicNZ2alkTCcrFXcA71fzPCowC9gPc/s4Fzc43UoEgJlqoT1Oz
+ KlvvsJTLr8Dwj+QB0240opG08XC+FocOxkprVcqchlOQ/3m1YGgefhyprUNkfXcZbO0s
+ Qy5w==
+X-Gm-Message-State: AOJu0Yx95ENYag07Em5ensunowlOIyH3I7N07qQ4a2yPy7C9Ni483bSM
+ 9d8IK2n3w3c60lGXO3DZUgBiovS945hdfaaIsCA=
+X-Google-Smtp-Source: AGHT+IGhptrmxvre5L7xlygyulNw9b4isrZK76fFkFtDu/BdCrrAs0Q3oSfYGK/F05mgWMLz6vsXMA==
+X-Received: by 2002:a17:902:da83:b0:1c7:4973:7b34 with SMTP id
+ j3-20020a170902da8300b001c749737b34mr16822669plx.50.1698279357577; 
+ Wed, 25 Oct 2023 17:15:57 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.56
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:15:56 -0700 (PDT)
+ Wed, 25 Oct 2023 17:15:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 08/94] target/sparc: Remove sparcv7 cpu features
-Date: Wed, 25 Oct 2023 17:13:54 -0700
-Message-Id: <20231026001542.1141412-16-richard.henderson@linaro.org>
+Subject: [PATCH 08/29] tcg/aarch64: Generate TBZ, TBNZ
+Date: Wed, 25 Oct 2023 17:13:55 -0700
+Message-Id: <20231026001542.1141412-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,231 +89,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The oldest supported cpu is the microsparc 1; all other cpus
-use CPU_DEFAULT_FEATURES.  Remove the features that must always
-be present for sparcv7: FLOAT, SWAP, FLUSH, FSQRT, FMUL.
+Test the sign bit for LT/GE vs 0, and TSTNE/EQ vs a power of 2.
 
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/sparc/target_syscall.h |  6 +-----
- target/sparc/cpu.h                | 21 +++++++--------------
- target/sparc/cpu-feature.h.inc    |  5 -----
- target/sparc/cpu.c                | 24 +++---------------------
- target/sparc/translate.c          | 12 ------------
- 5 files changed, 11 insertions(+), 57 deletions(-)
+ tcg/aarch64/tcg-target.c.inc | 100 ++++++++++++++++++++++++++++-------
+ 1 file changed, 81 insertions(+), 19 deletions(-)
 
-diff --git a/linux-user/sparc/target_syscall.h b/linux-user/sparc/target_syscall.h
-index be77e44eb8..e421165357 100644
---- a/linux-user/sparc/target_syscall.h
-+++ b/linux-user/sparc/target_syscall.h
-@@ -50,11 +50,7 @@ static inline abi_ulong target_shmlba(CPUSPARCState *env)
- #ifdef TARGET_SPARC64
-     return MAX(TARGET_PAGE_SIZE, 16 * 1024);
- #else
--    if (!(env->def.features & CPU_FEATURE_FLUSH)) {
--        return 64 * 1024;
--    } else {
--        return 256 * 1024;
--    }
-+    return 256 * 1024;
- #endif
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index 2a748b3ee3..e65fc415d2 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -105,6 +105,18 @@ static bool reloc_pc19(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
+     return false;
  }
  
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index aaecbf0876..758a4e8aaa 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -306,17 +306,12 @@ enum {
- #undef FEATURE
- 
- #ifndef TARGET_SPARC64
--#define CPU_DEFAULT_FEATURES (CPU_FEATURE_FLOAT | CPU_FEATURE_SWAP |  \
--                              CPU_FEATURE_MUL | CPU_FEATURE_DIV |     \
--                              CPU_FEATURE_FLUSH | CPU_FEATURE_FSQRT | \
--                              CPU_FEATURE_FMUL | CPU_FEATURE_FSMULD)
-+#define CPU_DEFAULT_FEATURES (CPU_FEATURE_MUL | CPU_FEATURE_DIV | \
-+                              CPU_FEATURE_FSMULD)
- #else
--#define CPU_DEFAULT_FEATURES (CPU_FEATURE_FLOAT | CPU_FEATURE_SWAP |  \
--                              CPU_FEATURE_MUL | CPU_FEATURE_DIV |     \
--                              CPU_FEATURE_FLUSH | CPU_FEATURE_FSQRT | \
--                              CPU_FEATURE_FMUL | CPU_FEATURE_VIS1 |   \
--                              CPU_FEATURE_VIS2 | CPU_FEATURE_FSMULD | \
--                              CPU_FEATURE_CASA)
-+#define CPU_DEFAULT_FEATURES (CPU_FEATURE_MUL | CPU_FEATURE_DIV | \
-+                              CPU_FEATURE_FSMULD | CPU_FEATURE_CASA | \
-+                              CPU_FEATURE_VIS1 | CPU_FEATURE_VIS2)
- enum {
-     mmu_us_12, // Ultrasparc < III (64 entry TLB)
-     mmu_us_3,  // Ultrasparc III (512 entry TLB)
-@@ -799,14 +794,12 @@ static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
-     if (env->pstate & PS_AM) {
-         flags |= TB_FLAG_AM_ENABLED;
++static bool reloc_pc14(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
++{
++    const tcg_insn_unit *src_rx = tcg_splitwx_to_rx(src_rw);
++    ptrdiff_t offset = target - src_rx;
++
++    if (offset == sextract64(offset, 0, 14)) {
++        *src_rw = deposit32(*src_rw, 5, 14, offset);
++        return true;
++    }
++    return false;
++}
++
+ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
+                         intptr_t value, intptr_t addend)
+ {
+@@ -115,6 +127,8 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
+         return reloc_pc26(code_ptr, (const tcg_insn_unit *)value);
+     case R_AARCH64_CONDBR19:
+         return reloc_pc19(code_ptr, (const tcg_insn_unit *)value);
++    case R_AARCH64_TSTBR14:
++        return reloc_pc14(code_ptr, (const tcg_insn_unit *)value);
+     default:
+         g_assert_not_reached();
      }
--    if ((env->def.features & CPU_FEATURE_FLOAT)
--        && (env->pstate & PS_PEF)
--        && (env->fprs & FPRS_FEF)) {
-+    if ((env->pstate & PS_PEF) && (env->fprs & FPRS_FEF)) {
-         flags |= TB_FLAG_FPU_ENABLED;
-     }
-     flags |= env->asi << TB_FLAG_ASI_SHIFT;
- #else
--    if ((env->def.features & CPU_FEATURE_FLOAT) && env->psref) {
-+    if (env->psref) {
-         flags |= TB_FLAG_FPU_ENABLED;
-     }
- #endif
-diff --git a/target/sparc/cpu-feature.h.inc b/target/sparc/cpu-feature.h.inc
-index d35fe90c92..d800f18c4e 100644
---- a/target/sparc/cpu-feature.h.inc
-+++ b/target/sparc/cpu-feature.h.inc
-@@ -1,11 +1,6 @@
--FEATURE(FLOAT)
- FEATURE(FLOAT128)
--FEATURE(SWAP)
- FEATURE(MUL)
- FEATURE(DIV)
--FEATURE(FLUSH)
--FEATURE(FSQRT)
--FEATURE(FMUL)
- FEATURE(VIS1)
- FEATURE(VIS2)
- FEATURE(FSMULD)
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 330b7bead3..f527244aa4 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -403,9 +403,7 @@ static const sparc_def_t sparc_defs[] = {
-         .mmu_sfsr_mask = 0x00016fff,
-         .mmu_trcr_mask = 0x0000003f,
-         .nwindows = 7,
--        .features = CPU_FEATURE_FLOAT | CPU_FEATURE_SWAP | CPU_FEATURE_MUL |
--        CPU_FEATURE_DIV | CPU_FEATURE_FLUSH | CPU_FEATURE_FSQRT |
--        CPU_FEATURE_FMUL,
-+        .features = CPU_FEATURE_MUL | CPU_FEATURE_DIV,
-     },
-     {
-         .name = "TI MicroSparc II",
-@@ -547,14 +545,9 @@ static const sparc_def_t sparc_defs[] = {
+@@ -369,6 +383,10 @@ typedef enum {
+     /* Conditional branch (immediate).  */
+     I3202_B_C       = 0x54000000,
  
- /* This must match sparc_cpu_properties[]. */
- static const char * const feature_name[] = {
--    [CPU_FEATURE_BIT_FLOAT] = "float",
-     [CPU_FEATURE_BIT_FLOAT128] = "float128",
--    [CPU_FEATURE_BIT_SWAP] = "swap",
-     [CPU_FEATURE_BIT_MUL] = "mul",
-     [CPU_FEATURE_BIT_DIV] = "div",
--    [CPU_FEATURE_BIT_FLUSH] = "flush",
--    [CPU_FEATURE_BIT_FSQRT] = "fsqrt",
--    [CPU_FEATURE_BIT_FMUL] = "fmul",
-     [CPU_FEATURE_BIT_VIS1] = "vis1",
-     [CPU_FEATURE_BIT_VIS2] = "vis2",
-     [CPU_FEATURE_BIT_FSMULD] = "fsmuld",
-@@ -758,9 +751,8 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
-     CPUSPARCState *env = &cpu->env;
++    /* Test and branch (immediate).  */
++    I3205_TBZ       = 0x36000000,
++    I3205_TBNZ      = 0x37000000,
++
+     /* Unconditional branch (immediate).  */
+     I3206_B         = 0x14000000,
+     I3206_BL        = 0x94000000,
+@@ -649,6 +667,14 @@ static void tcg_out_insn_3202(TCGContext *s, AArch64Insn insn,
+     tcg_out32(s, insn | tcg_cond_to_aarch64[c] | (imm19 & 0x7ffff) << 5);
+ }
  
- #if defined(CONFIG_USER_ONLY)
--    if ((env->def.features & CPU_FEATURE_FLOAT)) {
--        env->def.features |= CPU_FEATURE_FLOAT128;
++static void tcg_out_insn_3205(TCGContext *s, AArch64Insn insn,
++                              TCGReg rt, int imm6, int imm14)
++{
++    insn |= (imm6 & 0x20) << (31 - 5);
++    insn |= (imm6 & 0x1f) << 19;
++    tcg_out32(s, insn | (imm14 & 0x3fff) << 5 | rt);
++}
++
+ static void tcg_out_insn_3206(TCGContext *s, AArch64Insn insn, int imm26)
+ {
+     tcg_out32(s, insn | (imm26 & 0x03ffffff));
+@@ -1412,30 +1438,66 @@ static inline void tcg_out_goto_label(TCGContext *s, TCGLabel *l)
+ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
+                            TCGArg b, bool b_const, TCGLabel *l)
+ {
+-    intptr_t offset;
+-    bool need_cmp;
++    int tbit = -1;
++    bool need_cmp = true;
+ 
+-    if (b_const && b == 0 && (c == TCG_COND_EQ || c == TCG_COND_NE)) {
+-        need_cmp = false;
+-    } else {
+-        need_cmp = true;
+-        tcg_out_cmp(s, ext, c, a, b, b_const);
 -    }
-+    /* We are emulating the kernel, which will trap and emulate float128. */
-+    env->def.features |= CPU_FEATURE_FLOAT128;
- #endif
+-
+-    if (!l->has_value) {
+-        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
+-        offset = tcg_in32(s) >> 5;
+-    } else {
+-        offset = tcg_pcrel_diff(s, l->u.value_ptr) >> 2;
+-        tcg_debug_assert(offset == sextract64(offset, 0, 19));
++    switch (c) {
++    case TCG_COND_EQ:
++    case TCG_COND_NE:
++        if (b_const && b == 0) {
++            need_cmp = false;
++        }
++        break;
++    case TCG_COND_LT:
++    case TCG_COND_GE:
++        if (b_const && b == 0) {
++            c = (c == TCG_COND_LT ? TCG_COND_TSTNE : TCG_COND_TSTEQ);
++            tbit = ext ? 63 : 31;
++            need_cmp = false;
++        }
++        break;
++    case TCG_COND_TSTEQ:
++    case TCG_COND_TSTNE:
++        if (b_const && is_power_of_2(b)) {
++            tbit = ctz64(b);
++            need_cmp = false;
++        }
++        break;
++    default:
++        break;
+     }
  
-     env->version = env->def.iu_version;
-@@ -838,22 +830,12 @@ static PropertyInfo qdev_prop_nwindows = {
+     if (need_cmp) {
+-        tcg_out_insn(s, 3202, B_C, c, offset);
+-    } else if (c == TCG_COND_EQ) {
+-        tcg_out_insn(s, 3201, CBZ, ext, a, offset);
++        tcg_out_cmp(s, ext, c, a, b, b_const);
++        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
++        tcg_out_insn(s, 3202, B_C, c, 0);
++        return;
++    }
++
++    if (tbit >= 0) {
++        tcg_out_reloc(s, s->code_ptr, R_AARCH64_TSTBR14, l, 0);
++        switch (c) {
++        case TCG_COND_TSTEQ:
++            tcg_out_insn(s, 3205, TBZ, a, tbit, 0);
++            break;
++        case TCG_COND_TSTNE:
++            tcg_out_insn(s, 3205, TBNZ, a, tbit, 0);
++            break;
++        default:
++            g_assert_not_reached();
++        }
+     } else {
+-        tcg_out_insn(s, 3201, CBNZ, ext, a, offset);
++        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
++        switch (c) {
++        case TCG_COND_EQ:
++            tcg_out_insn(s, 3201, CBZ, ext, a, 0);
++            break;
++        case TCG_COND_NE:
++            tcg_out_insn(s, 3201, CBNZ, ext, a, 0);
++            break;
++        default:
++            g_assert_not_reached();
++        }
+     }
+ }
  
- /* This must match feature_name[]. */
- static Property sparc_cpu_properties[] = {
--    DEFINE_PROP_BIT("float",    SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_FLOAT, false),
-     DEFINE_PROP_BIT("float128", SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_FLOAT128, false),
--    DEFINE_PROP_BIT("swap",     SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_SWAP, false),
-     DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_MUL, false),
-     DEFINE_PROP_BIT("div",      SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_DIV, false),
--    DEFINE_PROP_BIT("flush",    SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_FLUSH, false),
--    DEFINE_PROP_BIT("fsqrt",    SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_FSQRT, false),
--    DEFINE_PROP_BIT("fmul",     SPARCCPU, env.def.features,
--                    CPU_FEATURE_BIT_FMUL, false),
-     DEFINE_PROP_BIT("vis1",     SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_VIS1, false),
-     DEFINE_PROP_BIT("vis2",     SPARCCPU, env.def.features,
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 8f6fd453e7..cab9f13421 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -3527,11 +3527,9 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                     gen_ne_fop_FF(dc, rd, rs2, gen_helper_fabss);
-                     break;
-                 case 0x29: /* fsqrts */
--                    CHECK_FPU_FEATURE(dc, FSQRT);
-                     gen_fop_FF(dc, rd, rs2, gen_helper_fsqrts);
-                     break;
-                 case 0x2a: /* fsqrtd */
--                    CHECK_FPU_FEATURE(dc, FSQRT);
-                     gen_fop_DD(dc, rd, rs2, gen_helper_fsqrtd);
-                     break;
-                 case 0x2b: /* fsqrtq */
-@@ -3559,16 +3557,13 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                     gen_fop_QQQ(dc, rd, rs1, rs2, gen_helper_fsubq);
-                     break;
-                 case 0x49: /* fmuls */
--                    CHECK_FPU_FEATURE(dc, FMUL);
-                     gen_fop_FFF(dc, rd, rs1, rs2, gen_helper_fmuls);
-                     break;
-                 case 0x4a: /* fmuld */
--                    CHECK_FPU_FEATURE(dc, FMUL);
-                     gen_fop_DDD(dc, rd, rs1, rs2, gen_helper_fmuld);
-                     break;
-                 case 0x4b: /* fmulq */
-                     CHECK_FPU_FEATURE(dc, FLOAT128);
--                    CHECK_FPU_FEATURE(dc, FMUL);
-                     gen_fop_QQQ(dc, rd, rs1, rs2, gen_helper_fmulq);
-                     break;
-                 case 0x4d: /* fdivs */
-@@ -5105,8 +5100,6 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                     goto jmp_insn;
- #endif
-                 case 0x3b: /* flush */
--                    if (!((dc)->def->features & CPU_FEATURE_FLUSH))
--                        goto unimp_flush;
-                     /* nop */
-                     break;
-                 case 0x3c:      /* save */
-@@ -5224,7 +5217,6 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                     break;
-                 case 0x0f:
-                     /* swap, swap register with memory. Also atomically */
--                    CHECK_IU_FEATURE(dc, SWAP);
-                     cpu_src1 = gen_load_gpr(dc, rd);
-                     gen_swap(dc, cpu_val, cpu_src1, cpu_addr,
-                              dc->mem_idx, MO_TEUL);
-@@ -5256,7 +5248,6 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                     break;
-                 case 0x1f:      /* swapa, swap reg with alt. memory. Also
-                                    atomically */
--                    CHECK_IU_FEATURE(dc, SWAP);
-                     cpu_src1 = gen_load_gpr(dc, rd);
-                     gen_swap_asi(dc, cpu_val, cpu_src1, cpu_addr, insn);
-                     break;
-@@ -5578,9 +5569,6 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-  illegal_insn:
-     gen_exception(dc, TT_ILL_INSN);
-     return;
-- unimp_flush:
--    gen_exception(dc, TT_UNIMP_FLUSH);
--    return;
- #if !defined(CONFIG_USER_ONLY)
-  priv_insn:
-     gen_exception(dc, TT_PRIV_INSN);
 -- 
 2.34.1
 
