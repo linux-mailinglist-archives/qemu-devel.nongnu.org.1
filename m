@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AADD7D792F
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5767D794F
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:23:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo2o-00072Q-JY; Wed, 25 Oct 2023 20:16:14 -0400
+	id 1qvo2p-00073o-Pm; Wed, 25 Oct 2023 20:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2S-0006y1-AZ
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:06 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qvo2g-0006za-Ut
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:07 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2N-0004pO-SD
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:15:50 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1c77449a6daso2334705ad.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:15:47 -0700 (PDT)
+ id 1qvo2P-0004pT-Ua
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:04 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1c9d3a21f7aso2172795ad.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:15:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279346; x=1698884146; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279347; x=1698884147; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gYhvKxqYq5JV9In/R2ATIQpLZ14hQa9hieJVJfsIFqc=;
- b=c27mi1B5pvgTHcLemzGBuoJG9gf0taDvwrhe1Xj7FEoQ36hKnHP+EdbhJOlYVHbY8L
- F8kSipKrMaXihxM4B+3SQLB9B8/5sFAcT/c5JZSjyaRfEb96LAh19+vrnSG9f2eWfMtU
- /Tw23MAkLh2JeeIJAXnwEcLRbWbXTrbvgHWbbL+ehXo56eBddA0KzkV/jBlT8sR0zzYx
- e1CQ/U9EGtoFpKylxVr/pNM6kwo7gwfl56wr8BBv1bMfOlOmVpsS15iC9GRevfbVihvK
- 6sHJlB5NwGTL1Fetxi+QdQjzhnrZcx/0vGvfryh6WAUf87arhH+6a9t70JxatHy6iVaQ
- E0MQ==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Zh61DK1PDe6VrwXTSbb5OfrsTdylybfZGSWnmMjbkM0=;
+ b=zQ+n2q0U/wD9g6i3PsfXrc/GEApxL+LCOsqNAVliUCwKECAEwIy/Xte1fDsFCD/NEu
+ DVJoqk55g/rzDpd2Uv3laKgnKg846sFJE3D4mWxEtW6JMLcv00QWcZo2/emnndnVKQEL
+ MJ5EBtvmo4n+cs7+ljQoU4SRNLB5b9/5KwbmkOt3Vu41JpyyuI8um7KikkumnzcZsc7+
+ UXHPZ3wFaSTwP/phxXrdZUpEl6MznE1HrbIIh5L4B4YKJcmAT/YB3fdjJY/kl35/M8Xg
+ lQasHPm5nKuuW+kL2kw8PQC9NIgwSygZrjiWYclcHVQ63gwQjDr3/V3FlcfPV7pgjrMx
+ LelQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279346; x=1698884146;
+ d=1e100.net; s=20230601; t=1698279347; x=1698884147;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gYhvKxqYq5JV9In/R2ATIQpLZ14hQa9hieJVJfsIFqc=;
- b=tiAARDDXpFNALCrCxBaWXCOi1EOvH+pR+sHDKQiBPoT5BlZsR+yyWhwWEgePlKxp2J
- YEdTL0cybhlWVFyl3NdC/+UlhVka+7jJXYPE+5SjTD0q1f6TBYGEa0h0XdwbN0OH5pqE
- FETUmPeflBC1uOA0QraMBSAgs6zbgFP15xroVpfa862iddciCGOShyQOAtnjPB2rWcId
- EkQOvI0sXxCBFac6DKGS5hLQqvNsGE/ocj83w6NkSUOCl9BZen77brxY9ezWiULqv+E6
- vlIgj6uB4Tdx5sy+GXM0wBgUoOy+WZmmUyK06DXFi+hfCOnoSlJNmWfGrrH+mQ8zItOJ
- XN5w==
-X-Gm-Message-State: AOJu0YwcaK1y3Zx8fcrMw40tJ6Gw2Unj536keFk5IpaoKEQZLHiY/mGa
- s++mLImTZXLfPJQV5aInuH3jF9+5SFdB3NKAtT0=
-X-Google-Smtp-Source: AGHT+IFLcvsIy9JMlHjvnoYK9/x4PuzI3sjNddQ8Bm9QKUheqPq345IyQeJr6iIqSlT9r/JJr81pew==
+ bh=Zh61DK1PDe6VrwXTSbb5OfrsTdylybfZGSWnmMjbkM0=;
+ b=E1RMUkXl8LzsfptuPdERHQdOxqxb2h/AMEjXaDSjfj1nRSXC/VeEYeQc4u5Nr/+y9d
+ itE/nU+yN3kFv4rSbw3DxwhxJ7i/oEqtJdnO80PPL2ZfC3zA1YZIBEDMSxA28AeEHvHc
+ ZKPdEFuFyqsqA/JIZRiMdt0Q4EeIaIQQV2EcLZGygpiKuZWxss7x0bpJfwTwPCFaLS3N
+ d533VEzj7nscpYiwb53pVH+QrIew5xfDCVb9Wc3xIQpuhiy7TWzagqcW5WwI32TgVrEv
+ GjZ8C9h5aGlftHq4AU7a/uwpztS77R/44rHVnN4LXYX5bGJGCMIsDEdth5YDlrEsuoXm
+ r+2A==
+X-Gm-Message-State: AOJu0YwTzzdL8Jr0Mkgr0/ayU9wDClRou/O9X3j0qfCQh9lX4zEdWZDh
+ 0Ywk+vXWtsnwJqv9Xhv1LcT1cZqdynzzxwefa4Y=
+X-Google-Smtp-Source: AGHT+IGWgfenrIoCJp6T7iiRAX3aUy+IGLPwbyoayC9XT+tNoZOutwtnV4OkngdabLowJb52rw6QIQ==
 X-Received: by 2002:a17:902:ce8d:b0:1c7:4ab6:b3cc with SMTP id
- f13-20020a170902ce8d00b001c74ab6b3ccmr20340206plg.54.1698279346537; 
- Wed, 25 Oct 2023 17:15:46 -0700 (PDT)
+ f13-20020a170902ce8d00b001c74ab6b3ccmr20340249plg.54.1698279347548; 
+ Wed, 25 Oct 2023 17:15:47 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.45
+ ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.46
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:15:46 -0700 (PDT)
+ Wed, 25 Oct 2023 17:15:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 02/94] target/sparc: Implement check_align inline
-Date: Wed, 25 Oct 2023 17:13:42 -0700
-Message-Id: <20231026001542.1141412-4-richard.henderson@linaro.org>
+Subject: [PATCH 02/29] tcg/optimize: Split out arg_is_const_val
+Date: Wed, 25 Oct 2023 17:13:43 -0700
+Message-Id: <20231026001542.1141412-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,188 +89,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Emit the exception at the end of the translation block,
-so that the non-exception case can fall through.
-
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/helper.h      |  1 -
- target/sparc/ldst_helper.c |  7 ++--
- target/sparc/translate.c   | 68 +++++++++++++++++++++++++++++++++-----
- 3 files changed, 61 insertions(+), 15 deletions(-)
+ tcg/optimize.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index b8f1e78c75..b116ddcb29 100644
---- a/target/sparc/helper.h
-+++ b/target/sparc/helper.h
-@@ -24,7 +24,6 @@ DEF_HELPER_FLAGS_2(tick_set_count, TCG_CALL_NO_RWG, void, ptr, i64)
- DEF_HELPER_FLAGS_3(tick_get_count, TCG_CALL_NO_WG, i64, env, ptr, int)
- DEF_HELPER_FLAGS_2(tick_set_limit, TCG_CALL_NO_RWG, void, ptr, i64)
- #endif
--DEF_HELPER_FLAGS_3(check_align, TCG_CALL_NO_WG, void, env, tl, i32)
- DEF_HELPER_1(debug, void, env)
- DEF_HELPER_1(save, void, env)
- DEF_HELPER_1(restore, void, env)
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 78b03308ae..246de86c98 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -360,6 +360,7 @@ static inline void do_check_asi(CPUSPARCState *env, int asi, uintptr_t ra)
- #endif /* !CONFIG_USER_ONLY */
- #endif
- 
-+#if defined(TARGET_SPARC64) || !defined(CONFIG_USER_ONLY)
- static void do_check_align(CPUSPARCState *env, target_ulong addr,
-                            uint32_t align, uintptr_t ra)
- {
-@@ -367,11 +368,7 @@ static void do_check_align(CPUSPARCState *env, target_ulong addr,
-         cpu_raise_exception_ra(env, TT_UNALIGNED, ra);
-     }
- }
--
--void helper_check_align(CPUSPARCState *env, target_ulong addr, uint32_t align)
--{
--    do_check_align(env, addr, align, GETPC());
--}
-+#endif
- 
- #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY) &&   \
-     defined(DEBUG_MXCC)
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 8fabed28fd..8f6fd453e7 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -68,6 +68,15 @@ static TCGv cpu_wim;
- /* Floating point registers */
- static TCGv_i64 cpu_fpr[TARGET_DPREGS];
- 
-+typedef struct DisasDelayException {
-+    struct DisasDelayException *next;
-+    TCGLabel *lab;
-+    TCGv_i32 excp;
-+    /* Saved state at parent insn. */
-+    target_ulong pc;
-+    target_ulong npc;
-+} DisasDelayException;
-+
- typedef struct DisasContext {
-     DisasContextBase base;
-     target_ulong pc;    /* current Program Counter: integer or DYNAMIC_PC */
-@@ -89,6 +98,7 @@ typedef struct DisasContext {
-     int fprs_dirty;
-     int asi;
- #endif
-+    DisasDelayException *delay_excp_list;
- } DisasContext;
- 
- typedef struct {
-@@ -984,9 +994,38 @@ static void gen_exception(DisasContext *dc, int which)
-     dc->base.is_jmp = DISAS_NORETURN;
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 2db5177c32..e8a13fedb5 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -112,11 +112,22 @@ static inline bool ts_is_const(TCGTemp *ts)
+     return ts_info(ts)->is_const;
  }
  
--static void gen_check_align(TCGv addr, int mask)
-+static TCGLabel *delay_exceptionv(DisasContext *dc, TCGv_i32 excp)
- {
--    gen_helper_check_align(tcg_env, addr, tcg_constant_i32(mask));
-+    DisasDelayException *e = g_new0(DisasDelayException, 1);
-+
-+    e->next = dc->delay_excp_list;
-+    dc->delay_excp_list = e;
-+
-+    e->lab = gen_new_label();
-+    e->excp = excp;
-+    e->pc = dc->pc;
-+    /* Caller must have used flush_cond before branch. */
-+    assert(e->npc != JUMP_PC);
-+    e->npc = dc->npc;
-+
-+    return e->lab;
++static inline bool ts_is_const_val(TCGTemp *ts, uint64_t val)
++{
++    TempOptInfo *ti = ts_info(ts);
++    return ti->is_const && ti->val == val;
 +}
 +
-+static TCGLabel *delay_exception(DisasContext *dc, int excp)
+ static inline bool arg_is_const(TCGArg arg)
+ {
+     return ts_is_const(arg_temp(arg));
+ }
+ 
++static inline bool arg_is_const_val(TCGArg arg, uint64_t val)
 +{
-+    return delay_exceptionv(dc, tcg_constant_i32(excp));
++    return ts_is_const_val(arg_temp(arg), val);
 +}
 +
-+static void gen_check_align(DisasContext *dc, TCGv addr, int mask)
-+{
-+    TCGv t = tcg_temp_new();
-+    TCGLabel *lab;
-+
-+    tcg_gen_andi_tl(t, addr, mask);
-+
-+    flush_cond(dc);
-+    lab = delay_exception(dc, TT_UNALIGNED);
-+    tcg_gen_brcondi_tl(TCG_COND_NE, t, 0, lab);
- }
- 
- static void gen_mov_pc_npc(DisasContext *dc)
-@@ -5019,9 +5058,9 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                         tcg_gen_mov_tl(cpu_tmp0, cpu_src1);
-                     }
-                 }
-+                gen_check_align(dc, cpu_tmp0, 3);
-                 gen_helper_restore(tcg_env);
-                 gen_mov_pc_npc(dc);
--                gen_check_align(cpu_tmp0, 3);
-                 tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
-                 dc->npc = DYNAMIC_PC_LOOKUP;
-                 goto jmp_insn;
-@@ -5044,12 +5083,9 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                 switch (xop) {
-                 case 0x38:      /* jmpl */
-                     {
--                        TCGv t = gen_dest_gpr(dc, rd);
--                        tcg_gen_movi_tl(t, dc->pc);
--                        gen_store_gpr(dc, rd, t);
--
-+                        gen_check_align(dc, cpu_tmp0, 3);
-+                        gen_store_gpr(dc, rd, tcg_constant_tl(dc->pc));
-                         gen_mov_pc_npc(dc);
--                        gen_check_align(cpu_tmp0, 3);
-                         gen_address_mask(dc, cpu_tmp0);
-                         tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
-                         dc->npc = DYNAMIC_PC_LOOKUP;
-@@ -5060,8 +5096,8 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                     {
-                         if (!supervisor(dc))
-                             goto priv_insn;
-+                        gen_check_align(dc, cpu_tmp0, 3);
-                         gen_mov_pc_npc(dc);
--                        gen_check_align(cpu_tmp0, 3);
-                         tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
-                         dc->npc = DYNAMIC_PC;
-                         gen_helper_rett(tcg_env);
-@@ -5643,6 +5679,7 @@ static void sparc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+ static inline bool ts_is_copy(TCGTemp *ts)
  {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
-+    DisasDelayException *e, *e_next;
-     bool may_lookup;
- 
-     switch (dc->base.is_jmp) {
-@@ -5704,6 +5741,19 @@ static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
-     default:
-         g_assert_not_reached();
+     return ts_info(ts)->next_copy != ts;
+@@ -565,7 +576,7 @@ static int do_constant_folding_cond(TCGType type, TCGArg x,
+         }
+     } else if (args_are_copies(x, y)) {
+         return do_constant_folding_cond_eq(c);
+-    } else if (arg_is_const(y) && arg_info(y)->val == 0) {
++    } else if (arg_is_const_val(y, 0)) {
+         switch (c) {
+         case TCG_COND_LTU:
+             return 0;
+@@ -831,7 +842,7 @@ static bool fold_to_not(OptContext *ctx, TCGOp *op, int idx)
+ /* If the binary operation has first argument @i, fold to @i. */
+ static bool fold_ix_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[1]) && arg_info(op->args[1])->val == i) {
++    if (arg_is_const_val(op->args[1], i)) {
+         return tcg_opt_gen_movi(ctx, op, op->args[0], i);
      }
-+
-+    for (e = dc->delay_excp_list; e ; e = e_next) {
-+        gen_set_label(e->lab);
-+
-+        tcg_gen_movi_tl(cpu_pc, e->pc);
-+        if (e->npc % 4 == 0) {
-+            tcg_gen_movi_tl(cpu_npc, e->npc);
-+        }
-+        gen_helper_raise_exception(tcg_env, e->excp);
-+
-+        e_next = e->next;
-+        g_free(e);
-+    }
- }
+     return false;
+@@ -840,7 +851,7 @@ static bool fold_ix_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has first argument @i, fold to NOT. */
+ static bool fold_ix_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[1]) && arg_info(op->args[1])->val == i) {
++    if (arg_is_const_val(op->args[1], i)) {
+         return fold_to_not(ctx, op, 2);
+     }
+     return false;
+@@ -849,7 +860,7 @@ static bool fold_ix_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has second argument @i, fold to @i. */
+ static bool fold_xi_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
++    if (arg_is_const_val(op->args[2], i)) {
+         return tcg_opt_gen_movi(ctx, op, op->args[0], i);
+     }
+     return false;
+@@ -858,7 +869,7 @@ static bool fold_xi_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has second argument @i, fold to identity. */
+ static bool fold_xi_to_x(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
++    if (arg_is_const_val(op->args[2], i)) {
+         return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[1]);
+     }
+     return false;
+@@ -867,7 +878,7 @@ static bool fold_xi_to_x(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has second argument @i, fold to NOT. */
+ static bool fold_xi_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
++    if (arg_is_const_val(op->args[2], i)) {
+         return fold_to_not(ctx, op, 1);
+     }
+     return false;
+@@ -1083,8 +1094,8 @@ static bool fold_brcond2(OptContext *ctx, TCGOp *op)
+          * Simplify LT/GE comparisons vs zero to a single compare
+          * vs the high word of the input.
+          */
+-        if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == 0 &&
+-            arg_is_const(op->args[3]) && arg_info(op->args[3])->val == 0) {
++        if (arg_is_const_val(op->args[2], 0) &&
++            arg_is_const_val(op->args[3], 0)) {
+             goto do_brcond_high;
+         }
+         break;
+@@ -1303,9 +1314,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
+     }
  
- static void sparc_tr_disas_log(const DisasContextBase *dcbase,
+     /* Inserting a value into zero at offset 0. */
+-    if (arg_is_const(op->args[1])
+-        && arg_info(op->args[1])->val == 0
+-        && op->args[3] == 0) {
++    if (arg_is_const_val(op->args[1], 0) && op->args[3] == 0) {
+         uint64_t mask = MAKE_64BIT_MASK(0, op->args[4]);
+ 
+         op->opc = and_opc;
+@@ -1316,8 +1325,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
+     }
+ 
+     /* Inserting zero into a value. */
+-    if (arg_is_const(op->args[2])
+-        && arg_info(op->args[2])->val == 0) {
++    if (arg_is_const_val(op->args[2], 0)) {
+         uint64_t mask = deposit64(-1, op->args[3], op->args[4], 0);
+ 
+         op->opc = and_opc;
+@@ -1855,8 +1863,8 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
+          * Simplify LT/GE comparisons vs zero to a single compare
+          * vs the high word of the input.
+          */
+-        if (arg_is_const(op->args[3]) && arg_info(op->args[3])->val == 0 &&
+-            arg_is_const(op->args[4]) && arg_info(op->args[4])->val == 0) {
++        if (arg_is_const_val(op->args[3], 0) &&
++            arg_is_const_val(op->args[4], 0)) {
+             goto do_setcond_high;
+         }
+         break;
 -- 
 2.34.1
 
