@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6367D79A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC85D7D793F
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo66-0000pS-Gw; Wed, 25 Oct 2023 20:19:40 -0400
+	id 1qvo6L-0001Gz-Dq; Wed, 25 Oct 2023 20:19:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo5w-0000kJ-DW
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:28 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qvo65-0000rD-0i
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:38 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo5r-0006as-Iz
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:28 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bdf4752c3cso2057955ad.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:19:22 -0700 (PDT)
+ id 1qvo5t-0006bC-Bx
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:35 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1c9bf22fe05so2121815ad.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:19:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279561; x=1698884361; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279562; x=1698884362; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jvJ/P4HX7554nJIJGIM3vtxFYVYTJFcbVyfLPezXvC4=;
- b=SznyKQfwwDnqnQ8Uj7XTZo5CD5Fh8wljSmKbVEwCHMDjGP/DdIolk/Hfituf3JqdXc
- ylCMYkNrTS3TH+PEaeTSlyXyFy8+tvx84wZmjZRa+8E1yyiIQuLB2vEVZfxEZn2ezSZ8
- WmBw/K6spfxovNUH6m1VyxY18SoQq6U2T8MBhCbBtUFhCsSxRAOXUtcWm2dW6sO6gOnx
- +4Adi1zZpTeyn/lqRg+W1zLPiKaAcp/5SGZrKhkt1/f3B1+BL5HtsIG66MVpnZPmm4+U
- VgAbr9V3SG+QjcGYe1e4/ShWM6Nac3T2u7mdtrMBvpDXw3PwROaQV8siLV97Iu5qJ6eS
- grEQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=y4JjGfXc1ZK0slmW0Mduo2FRxtvtvRQNj+3A0+w7cQs=;
+ b=xvyihsaN/IL8J7P+zIMxfb6AwFMCQQ1iMFuLQtMNCS7b/cU7zP6ceLuQHnsw1d3WvX
+ G2DaR9S41nAzrqnvh5mtZp9chOyco1x+IiRZosB63rONfe+LEX2D0QI7L2wTsy9IYfQM
+ 2huZDanWtVsYleMmP4G0ezD4pJzsA9IU1bpKAmjwJZ1iKlvkD+KO04ts4GTZBy0HafwC
+ 6D0WT3y+dS6HzlWvCZxcrztknSKclWTaS3/+/ocHeL5I6ahbyiQopiksLRrDLhh5nOps
+ MwaZHDqmFYMMRe96g1Ozd+qjroTOteirTY6Q0+nSUrGy8lWU5Ry3VneR7Adx777pmBvJ
+ /VYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279561; x=1698884361;
+ d=1e100.net; s=20230601; t=1698279562; x=1698884362;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jvJ/P4HX7554nJIJGIM3vtxFYVYTJFcbVyfLPezXvC4=;
- b=nj7ZSnkemyyevW6N6yd5lPES3rOfGtqFrmYYfu2GW56b0QHLXvb8JMBbFfflnbZzcb
- yvhkFA0pE22wjFTK+bj5VcGrxxI+F6UTt/Ms27HmJg1wXzX6NoBtWRM76eY9R2fy7+zp
- OFr/9UZlilrrJ647N4YSvUwPAXuLfra5xxjw2oN3HVx6GA/brKf+3fkdqF4X/WbUMtNw
- /JnGv0kkQyXhZTRiNJPlGEovRGkL4h25TSrk96cmnMAO8PMzWx47lUzmPPszsC89M/pg
- 01hd0nhD4IcXv7+BvDBQj+Y9L+RMuKfZV9UM0ze1LAdXV47rUVKOpakaPmh515PBB6Fs
- Co1g==
-X-Gm-Message-State: AOJu0YxJMFBcSFxKRXiteUFl5Lcbhs4ZO2h6P/79Fjy21NXizlS+qkra
- 3rB9F7BAVfp+ZMH78+dhwGV9qDr9KSH7sRLQba4=
-X-Google-Smtp-Source: AGHT+IHJHseCxsnGDmJyh40a+nBOxs9igp7Dbu5OYOQMr5g9LfQNAZPJDFgZ2ppwmb9XczdTyhXPHQ==
-X-Received: by 2002:a17:902:d502:b0:1c4:4dbc:92bc with SMTP id
- b2-20020a170902d50200b001c44dbc92bcmr15605010plg.16.1698279560941; 
- Wed, 25 Oct 2023 17:19:20 -0700 (PDT)
+ bh=y4JjGfXc1ZK0slmW0Mduo2FRxtvtvRQNj+3A0+w7cQs=;
+ b=gjhUIqpoaGu2KFP0RfTWqPsHeiOToPxdELodY7VbKivzOgUywq7u2tczYEQ21lwNU3
+ y05MwbwvcEQJO7A6rhPzWmn3wejor/4R0rqMgvxtknQxvcxzaf/QvGoK+j3NxDsYU/Hb
+ +DVpk00X/XilbMV3YfALTTMsyLEoiiB8iKZ2qmMvP5LHishAYE+AqfTM+VCWNbo1Dkeq
+ P5ApCDmT/DBD1/TWJBFSvjsws8Bal0DcigZ9ujHOKfavd+UrrJxcVe4eCynyYvfUiwI2
+ MB08sOJO6MuSPgRCrZdM+NscItA06+ES3Ei0spXrH8REWqefUkHVzUhy0TJO7ro1imWu
+ PRTg==
+X-Gm-Message-State: AOJu0Yxh5NyP2VJrX4AZvlteCSUSrEXyyWDttotrMfiA0EeSq8GLPCku
+ FXiV0KC3CU2L2ZUY65sneH6IPbime1u7UEDDVXA=
+X-Google-Smtp-Source: AGHT+IGjPxVnXCor5bTesqG30xwM8Wk7zsAV8lSK+56Yi3Wwd700AwwXJn+RxVtuRgaf0KNMRuSBYQ==
+X-Received: by 2002:a17:903:493:b0:1ca:344f:46e6 with SMTP id
+ jj19-20020a170903049300b001ca344f46e6mr12113594plb.33.1698279561777; 
+ Wed, 25 Oct 2023 17:19:21 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.20
- for <qemu-devel@nongnu.org>
+ jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:19:20 -0700 (PDT)
+ Wed, 25 Oct 2023 17:19:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 22/29] tcg/ppc: Use cr0 in tcg_to_bc and tcg_to_isel
-Date: Wed, 25 Oct 2023 17:14:23 -0700
-Message-Id: <20231026001542.1141412-45-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 23/94] target/sparc: Move RDPSR, RDHPR to decodetree
+Date: Wed, 25 Oct 2023 17:14:24 -0700
+Message-Id: <20231026001542.1141412-46-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,162 +90,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using cr0 means we could choose to use rc=1 to compute the condition.
-Adjust the tables and tcg_out_cmp that feeds them.
+Implement htstate in the obvious way.
 
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/847
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target.c.inc | 68 ++++++++++++++++++++--------------------
- 1 file changed, 34 insertions(+), 34 deletions(-)
+ target/sparc/insns.decode |  10 ++++
+ target/sparc/translate.c  | 116 ++++++++++++++++++++++++--------------
+ 2 files changed, 83 insertions(+), 43 deletions(-)
 
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 666d480e86..3c2ec4db4b 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -670,30 +670,30 @@ enum {
- };
- 
- static const uint32_t tcg_to_bc[] = {
--    [TCG_COND_EQ]  = BC | BI(7, CR_EQ) | BO_COND_TRUE,
--    [TCG_COND_NE]  = BC | BI(7, CR_EQ) | BO_COND_FALSE,
--    [TCG_COND_LT]  = BC | BI(7, CR_LT) | BO_COND_TRUE,
--    [TCG_COND_GE]  = BC | BI(7, CR_LT) | BO_COND_FALSE,
--    [TCG_COND_LE]  = BC | BI(7, CR_GT) | BO_COND_FALSE,
--    [TCG_COND_GT]  = BC | BI(7, CR_GT) | BO_COND_TRUE,
--    [TCG_COND_LTU] = BC | BI(7, CR_LT) | BO_COND_TRUE,
--    [TCG_COND_GEU] = BC | BI(7, CR_LT) | BO_COND_FALSE,
--    [TCG_COND_LEU] = BC | BI(7, CR_GT) | BO_COND_FALSE,
--    [TCG_COND_GTU] = BC | BI(7, CR_GT) | BO_COND_TRUE,
-+    [TCG_COND_EQ]  = BC | BI(0, CR_EQ) | BO_COND_TRUE,
-+    [TCG_COND_NE]  = BC | BI(0, CR_EQ) | BO_COND_FALSE,
-+    [TCG_COND_LT]  = BC | BI(0, CR_LT) | BO_COND_TRUE,
-+    [TCG_COND_GE]  = BC | BI(0, CR_LT) | BO_COND_FALSE,
-+    [TCG_COND_LE]  = BC | BI(0, CR_GT) | BO_COND_FALSE,
-+    [TCG_COND_GT]  = BC | BI(0, CR_GT) | BO_COND_TRUE,
-+    [TCG_COND_LTU] = BC | BI(0, CR_LT) | BO_COND_TRUE,
-+    [TCG_COND_GEU] = BC | BI(0, CR_LT) | BO_COND_FALSE,
-+    [TCG_COND_LEU] = BC | BI(0, CR_GT) | BO_COND_FALSE,
-+    [TCG_COND_GTU] = BC | BI(0, CR_GT) | BO_COND_TRUE,
- };
- 
- /* The low bit here is set if the RA and RB fields must be inverted.  */
- static const uint32_t tcg_to_isel[] = {
--    [TCG_COND_EQ]  = ISEL | BC_(7, CR_EQ),
--    [TCG_COND_NE]  = ISEL | BC_(7, CR_EQ) | 1,
--    [TCG_COND_LT]  = ISEL | BC_(7, CR_LT),
--    [TCG_COND_GE]  = ISEL | BC_(7, CR_LT) | 1,
--    [TCG_COND_LE]  = ISEL | BC_(7, CR_GT) | 1,
--    [TCG_COND_GT]  = ISEL | BC_(7, CR_GT),
--    [TCG_COND_LTU] = ISEL | BC_(7, CR_LT),
--    [TCG_COND_GEU] = ISEL | BC_(7, CR_LT) | 1,
--    [TCG_COND_LEU] = ISEL | BC_(7, CR_GT) | 1,
--    [TCG_COND_GTU] = ISEL | BC_(7, CR_GT),
-+    [TCG_COND_EQ]  = ISEL | BC_(0, CR_EQ),
-+    [TCG_COND_NE]  = ISEL | BC_(0, CR_EQ) | 1,
-+    [TCG_COND_LT]  = ISEL | BC_(0, CR_LT),
-+    [TCG_COND_GE]  = ISEL | BC_(0, CR_LT) | 1,
-+    [TCG_COND_LE]  = ISEL | BC_(0, CR_GT) | 1,
-+    [TCG_COND_GT]  = ISEL | BC_(0, CR_GT),
-+    [TCG_COND_LTU] = ISEL | BC_(0, CR_LT),
-+    [TCG_COND_GEU] = ISEL | BC_(0, CR_LT) | 1,
-+    [TCG_COND_LEU] = ISEL | BC_(0, CR_GT) | 1,
-+    [TCG_COND_GTU] = ISEL | BC_(0, CR_GT),
- };
- 
- static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-@@ -1826,7 +1826,7 @@ static void tcg_out_setcond(TCGContext *s, TCGType type, TCGCond cond,
-     if (have_isa_3_10) {
-         tcg_insn_unit bi, opc;
- 
--        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
-+        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
- 
-         /* Re-use tcg_to_bc for BI and BO_COND_{TRUE,FALSE}. */
-         bi = tcg_to_bc[cond] & (0x1f << 16);
-@@ -1879,7 +1879,7 @@ static void tcg_out_setcond(TCGContext *s, TCGType type, TCGCond cond,
-     if (have_isel) {
-         int isel, tab;
- 
--        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
-+        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
- 
-         isel = tcg_to_isel[cond];
- 
-@@ -1965,7 +1965,7 @@ static void tcg_out_brcond(TCGContext *s, TCGCond cond,
-                            TCGArg arg1, TCGArg arg2, int const_arg2,
-                            TCGLabel *l, TCGType type)
- {
--    tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
-+    tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
-     tcg_out_bc_lab(s, cond, l);
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 1b084c5b97..a7d78eb6c6 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -44,6 +44,16 @@ CALL    01 i:s30
+   RDY               10 rd:5  101000 rs1:5 0 0000000000000
  }
  
-@@ -1979,7 +1979,7 @@ static void tcg_out_movcond(TCGContext *s, TCGType type, TCGCond cond,
-         return;
-     }
- 
--    tcg_out_cmp(s, cond, c1, c2, const_c2, 7, type);
-+    tcg_out_cmp(s, cond, c1, c2, const_c2, 0, type);
- 
-     if (have_isel) {
-         int isel = tcg_to_isel[cond];
-@@ -2023,7 +2023,7 @@ static void tcg_out_cntxz(TCGContext *s, TCGType type, uint32_t opc,
-     if (const_a2 && a2 == (type == TCG_TYPE_I32 ? 32 : 64)) {
-         tcg_out32(s, opc | RA(a0) | RS(a1));
-     } else {
--        tcg_out_cmp(s, TCG_COND_EQ, a1, 0, 1, 7, type);
-+        tcg_out_cmp(s, TCG_COND_EQ, a1, 0, 1, 0, type);
-         /* Note that the only other valid constant for a2 is 0.  */
-         if (have_isel) {
-             tcg_out32(s, opc | RA(TCG_REG_R0) | RS(a1));
-@@ -2078,7 +2078,7 @@ static void tcg_out_cmp2(TCGContext *s, const TCGArg *args,
-     do_equality:
-         tcg_out_cmp(s, cond, al, bl, blconst, 6, TCG_TYPE_I32);
-         tcg_out_cmp(s, cond, ah, bh, bhconst, 7, TCG_TYPE_I32);
--        tcg_out32(s, op | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-+        tcg_out32(s, op | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-         break;
- 
-     case TCG_COND_LT:
-@@ -2096,8 +2096,8 @@ static void tcg_out_cmp2(TCGContext *s, const TCGArg *args,
- 
-         tcg_out_cmp(s, cond, ah, bh, bhconst, 6, TCG_TYPE_I32);
-         tcg_out_cmp(s, cond2, al, bl, blconst, 7, TCG_TYPE_I32);
--        tcg_out32(s, op | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, bit2));
--        tcg_out32(s, CROR | BT(7, CR_EQ) | BA(6, bit1) | BB(7, CR_EQ));
-+        tcg_out32(s, op | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, bit2));
-+        tcg_out32(s, CROR | BT(0, CR_EQ) | BA(6, bit1) | BB(0, CR_EQ));
-         break;
- 
-     default:
-@@ -2109,8 +2109,8 @@ static void tcg_out_setcond2(TCGContext *s, const TCGArg *args,
-                              const int *const_args)
++{
++  RDPSR             10 rd:5  101001 00000 0 0000000000000
++  RDHPR_hpstate     10 rd:5  101001 00000 0 0000000000000
++}
++RDHPR_htstate       10 rd:5  101001 00001 0 0000000000000
++RDHPR_hintp         10 rd:5  101001 00011 0 0000000000000
++RDHPR_htba          10 rd:5  101001 00101 0 0000000000000
++RDHPR_hver          10 rd:5  101001 00110 0 0000000000000
++RDHPR_hstick_cmpr   10 rd:5  101001 11111 0 0000000000000
++
+ Tcc_r       10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
  {
-     tcg_out_cmp2(s, args + 1, const_args + 1);
--    tcg_out32(s, MFOCRF | RT(TCG_REG_R0) | FXM(7));
--    tcg_out_rlw(s, RLWINM, args[0], TCG_REG_R0, 31, 31, 31);
-+    tcg_out32(s, MFOCRF | RT(TCG_REG_R0) | FXM(0));
-+    tcg_out_rlw(s, RLWINM, args[0], TCG_REG_R0, CR_EQ + 0*4 + 1, 31, 31);
- }
+   # For v7, the entire simm13 field is present, but masked to 7 bits.
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 9af4578525..b58c2594ca 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -36,9 +36,12 @@
+ #include "exec/helper-info.c.inc"
+ #undef  HELPER_H
  
- static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
-@@ -2441,12 +2441,12 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-             tcg_out_cmp(s, TCG_COND_EQ, addrhi, TCG_REG_TMP2,
-                         0, 6, TCG_TYPE_I32);
+-#ifndef TARGET_SPARC64
++#ifdef TARGET_SPARC64
++# define gen_helper_rdpsr(D, E)                 qemu_build_not_reached()
++#else
+ # define gen_helper_rdccr(D, E)                 qemu_build_not_reached()
+ # define gen_helper_tick_get_count(D, E, T, C)  qemu_build_not_reached()
++# define MAXTL_MASK                             0
+ #endif
  
--            /* Combine comparisons into cr7. */
--            tcg_out32(s, CRAND | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-+            /* Combine comparisons into cr0. */
-+            tcg_out32(s, CRAND | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-         } else {
--            /* Full comparison into cr7. */
-+            /* Full comparison into cr0. */
-             tcg_out_cmp(s, TCG_COND_EQ, TCG_REG_R0, TCG_REG_TMP2,
--                        0, 7, addr_type);
-+                        0, 0, addr_type);
-         }
+ /* Dynamic PC, must exit to main loop. */
+@@ -71,8 +74,12 @@ static TCGv cpu_hintp, cpu_htba, cpu_hver, cpu_ssr, cpu_ver;
+ static TCGv cpu_wim;
+ # define cpu_fprs               ({ qemu_build_not_reached(); (TCGv)NULL; })
+ # define cpu_gsr                ({ qemu_build_not_reached(); (TCGv)NULL; })
+-# define cpu_tick_cmpr          ({ qemu_build_not_reached(); (TCGv)NULL; })
++# define cpu_hintp              ({ qemu_build_not_reached(); (TCGv)NULL; })
++# define cpu_hstick_cmpr        ({ qemu_build_not_reached(); (TCGv)NULL; })
++# define cpu_htba               ({ qemu_build_not_reached(); (TCGv)NULL; })
++# define cpu_hver               ({ qemu_build_not_reached(); (TCGv)NULL; })
+ # define cpu_stick_cmpr         ({ qemu_build_not_reached(); (TCGv)NULL; })
++# define cpu_tick_cmpr          ({ qemu_build_not_reached(); (TCGv)NULL; })
+ #endif
+ /* Floating point registers */
+ static TCGv_i64 cpu_fpr[TARGET_DPREGS];
+@@ -272,15 +279,14 @@ static void gen_move_Q(DisasContext *dc, unsigned int rd, unsigned int rs)
+ /* moves */
+ #ifdef CONFIG_USER_ONLY
+ #define supervisor(dc) 0
+-#ifdef TARGET_SPARC64
+ #define hypervisor(dc) 0
+-#endif
+ #else
+ #ifdef TARGET_SPARC64
+ #define hypervisor(dc) (dc->hypervisor)
+ #define supervisor(dc) (dc->supervisor | dc->hypervisor)
+ #else
+ #define supervisor(dc) (dc->supervisor)
++#define hypervisor(dc) 0
+ #endif
+ #endif
  
-         /* Load a pointer into the current opcode w/conditional branch-link. */
+@@ -3320,6 +3326,69 @@ static TCGv do_rdstrand_status(DisasContext *dc, TCGv dst)
+ 
+ TRANS(RDSTRAND_STATUS, HYPV, do_rd_special, true, a->rd, do_rdstrand_status)
+ 
++static TCGv do_rdpsr(DisasContext *dc, TCGv dst)
++{
++    update_psr(dc);
++    gen_helper_rdpsr(dst, tcg_env);
++    return dst;
++}
++
++TRANS(RDPSR, 32, do_rd_special, supervisor(dc), a->rd, do_rdpsr)
++
++static TCGv do_rdhpstate(DisasContext *dc, TCGv dst)
++{
++    tcg_gen_ld_tl(dst, tcg_env, env64_field_offsetof(hpstate));
++    return dst;
++}
++
++TRANS(RDHPR_hpstate, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhpstate)
++
++static TCGv do_rdhtstate(DisasContext *dc, TCGv dst)
++{
++    TCGv_i32 tl = tcg_temp_new_i32();
++    TCGv_ptr tp = tcg_temp_new_ptr();
++
++    tcg_gen_ld_i32(tl, tcg_env, env64_field_offsetof(tl));
++    tcg_gen_andi_i32(tl, tl, MAXTL_MASK);
++    tcg_gen_shli_i32(tl, tl, 3);
++    tcg_gen_ext_i32_ptr(tp, tl);
++    tcg_gen_add_ptr(tp, tp, tcg_env);
++
++    tcg_gen_ld_tl(dst, tp, env64_field_offsetof(htstate));
++    return dst;
++}
++
++TRANS(RDHPR_htstate, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhtstate)
++
++static TCGv do_rdhintp(DisasContext *dc, TCGv dst)
++{
++    return cpu_hintp;
++}
++
++TRANS(RDHPR_hintp, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhintp)
++
++static TCGv do_rdhtba(DisasContext *dc, TCGv dst)
++{
++    return cpu_htba;
++}
++
++TRANS(RDHPR_htba, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhtba)
++
++static TCGv do_rdhver(DisasContext *dc, TCGv dst)
++{
++    return cpu_hver;
++}
++
++TRANS(RDHPR_hver, HYPV, do_rd_special, hypervisor(dc), a->rd, do_rdhver)
++
++static TCGv do_rdhstick_cmpr(DisasContext *dc, TCGv dst)
++{
++    return cpu_hstick_cmpr;
++}
++
++TRANS(RDHPR_hstick_cmpr, HYPV, do_rd_special, hypervisor(dc), a->rd,
++      do_rdhstick_cmpr)
++
+ #define CHECK_IU_FEATURE(dc, FEATURE)                      \
+     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
+         goto illegal_insn;
+@@ -3351,45 +3420,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+             TCGv cpu_tmp0 __attribute__((unused));
+ 
+ #if !defined(CONFIG_USER_ONLY)
+-            if (xop == 0x29) { /* rdpsr / UA2005 rdhpr */
+-#ifndef TARGET_SPARC64
+-                if (!supervisor(dc)) {
+-                    goto priv_insn;
+-                }
+-                update_psr(dc);
+-                gen_helper_rdpsr(cpu_dst, tcg_env);
+-#else
+-                CHECK_IU_FEATURE(dc, HYPV);
+-                if (!hypervisor(dc))
+-                    goto priv_insn;
+-                rs1 = GET_FIELD(insn, 13, 17);
+-                switch (rs1) {
+-                case 0: // hpstate
+-                    tcg_gen_ld_i64(cpu_dst, tcg_env,
+-                                   offsetof(CPUSPARCState, hpstate));
+-                    break;
+-                case 1: // htstate
+-                    // gen_op_rdhtstate();
+-                    break;
+-                case 3: // hintp
+-                    tcg_gen_mov_tl(cpu_dst, cpu_hintp);
+-                    break;
+-                case 5: // htba
+-                    tcg_gen_mov_tl(cpu_dst, cpu_htba);
+-                    break;
+-                case 6: // hver
+-                    tcg_gen_mov_tl(cpu_dst, cpu_hver);
+-                    break;
+-                case 31: // hstick_cmpr
+-                    tcg_gen_mov_tl(cpu_dst, cpu_hstick_cmpr);
+-                    break;
+-                default:
+-                    goto illegal_insn;
+-                }
+-#endif
+-                gen_store_gpr(dc, rd, cpu_dst);
+-                break;
+-            }
+             if (xop == 0x2a) { /* rdwim / V9 rdpr */
+                 if (!supervisor(dc)) {
+                     goto priv_insn;
 -- 
 2.34.1
 
