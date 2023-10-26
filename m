@@ -2,78 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1BE7D7E1F
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A507E7D7E43
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:16:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvvSU-0003u4-NV; Thu, 26 Oct 2023 04:11:14 -0400
+	id 1qvvWN-0005n9-LP; Thu, 26 Oct 2023 04:15:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qvvSS-0003tK-4b
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:11:12 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qvvWE-0005lj-Om
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:15:06 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qvvSP-0001Mv-6I
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:11:11 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5b92b852390so321874a12.2
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 01:11:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qvvWC-0003DD-N7
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:15:06 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-53ed4688b9fso879113a12.0
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 01:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1698307865; x=1698912665; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9heys8O+7UDmNmpHMMq9AV55J0+mtTtsaokCB2U9UKk=;
- b=WLatK6x9JO2hMzdqUImJxzrX8RbK+cHLbZHvS/PHSjK32Os9UsdUIdKhVfFPWMH//x
- epF1/3BhpGcDuQ2t95kVar1KMLLoFTsDBOVmEG/m6XNdGdeHYcAgljY65ctu3yliO8Jy
- hlxZhxfMib2RSNaMuPvOAE+zCe/bTqkYdmU+4raN4jsIzm0CxGyl6NBnUEM11coLy2V8
- xEJSs4q22iKhRTtilTkCTMkJETkHey/N8lQdhljG45tGZU3dJOw9UAZ2cUN8rGYwL+7L
- Ag1+PTZQ8yQSWSjEufcTq16rFV2teXh1/fD0OIhzfyEqOJ8ee8io325Mz+XS3ijRWGaW
- CZng==
+ d=ventanamicro.com; s=google; t=1698308101; x=1698912901; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ql5Vy4pWQNjDcXY9mDI9mWkXrxMH6KemWvgXgYc24PY=;
+ b=b3jdnbWx4/2EgT625N5lzFuuCBdB1Q6Zw1OY5CxR4gbnXXyDMu3wyhk+cCXvJYquDp
+ f2aHbi1FenlPzx4leY6waVEZcl5Dv8GBQEzdvC8ZaigOQWvTE/6hAKArqJCG0yRRCcNz
+ Y0LtdaNOQUt+38QKb+OBkciTVcsmUh90u6cp7sx/Ua4otVtlJdzqn6CLeoahjyOIDQgV
+ 8bzOY2i0g+Bng65aBSAfna/gNAwJ0fRke8b2YsdJGZ15BlQc/hjU7uCeDZJti7VCHaVZ
+ tth5lJubUXikH6SO6u1rC9RWQmoGXNB3vd78a2RVNTuXGcqTBMPEJseXDpu+/N9Kogv7
+ 93Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698307865; x=1698912665;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9heys8O+7UDmNmpHMMq9AV55J0+mtTtsaokCB2U9UKk=;
- b=RofqPoMQh2lhy8s+3CUtX+TRDmcLm6ik+K7ubfSL52bidUV5SXbu7oSkLtbaMt30Mn
- Ib8ubvMV5OkA6IWrlggQrZMTinOefqpow3rcCUHZBFzBNSYuharF9AzxfQTdvOQDfaWg
- kIgNinV+cwhF71JoPMX4Crf3jRNr2eFxiWqifTs5N4nrTBVmu6fX3PEvx6FlC3IAo77C
- QXAuKPtdg89A+i2j/eQDAQhnBuFO4XjUj3nYuvY8DlpkyYScWJLOns5MpJEi4Pgt4oH/
- vfYbvFMGjuht9NXMmRlxHyTKUBVfZ6Atxd6fGWEwIT/orrtXDGYRH2ov+Zkl/0yZg/g0
- 07eg==
-X-Gm-Message-State: AOJu0Ywi4AXApPIcZ8O7iJCihGnMpoqvAIgVeIW6cc/t4a4/KdKKPJhZ
- XdzQsVTueFiull3mJG3CmsOMzGsjFJQSAmooA/U2dw==
-X-Google-Smtp-Source: AGHT+IFKWQ51SyRmyjOXKQn5hln57qewK+7wNGiCp0eiCbhNN4YDIzyqmsgFksuJ6sZnFsqQHeqOk/FQ+vmOtK/sMQY=
-X-Received: by 2002:a17:90a:f30d:b0:27d:427f:1bf4 with SMTP id
- ca13-20020a17090af30d00b0027d427f1bf4mr16144525pjb.19.1698307865392; Thu, 26
- Oct 2023 01:11:05 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698308101; x=1698912901;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ql5Vy4pWQNjDcXY9mDI9mWkXrxMH6KemWvgXgYc24PY=;
+ b=A1IXklO1h9eEOCjUhzrfRxlpHlv84jNEs0ccFR7BA8An1ksUemIbNTBhTDTfLG6cJh
+ bd9m4cgzCeWNULuOvy1caO2Gc8Mt/CoPC8yq9MNaue+Ssw1dD2ae/6vXKpD39CoXh2hL
+ ateTy8bzcYtGEyodVOFipPQKqUythR2CvCzMSjLVjQpSQGUcHYbcAqMqW1czW+TYOeP8
+ Z+VlHNvaRGMrb/kg7E3Fln3UAzt2kfqvNS0EX1O9zUNsvW/8cX2ZCgedyND3xhH2qb4S
+ KxTuzn/3Mbp+qGR6yVFnMMqDGIhNMHZtdzWaaHQLUHQ+EsDUjt4OBS7kQRO5cjBM3ybT
+ oImw==
+X-Gm-Message-State: AOJu0YzSxXfzyKbyYVAkGAkxWSOuSTtYeJmdv8xbDVbapMp2EBlf3rhY
+ zuRMQ05aJ9jfRXMDZDbSXfJbpg==
+X-Google-Smtp-Source: AGHT+IEeTLwsDxjdkFHpFKi4ZMLMdr0xFhgD4ScRFxrMambRF0ZbA4M3nqgjmLa+zghciBK9sWAe0A==
+X-Received: by 2002:a50:8e19:0:b0:53e:98c6:5100 with SMTP id
+ 25-20020a508e19000000b0053e98c65100mr11789231edw.30.1698308101376; 
+ Thu, 26 Oct 2023 01:15:01 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ q20-20020a056402033400b0053dd8898f75sm10706781edw.81.2023.10.26.01.15.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Oct 2023 01:15:00 -0700 (PDT)
+Date: Thu, 26 Oct 2023 10:15:00 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Anup Patel <apatel@ventanamicro.com>,
+ Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
+Subject: Re: [PATCH v4 01/13] hw/arm/virt-acpi-build.c: Migrate fw_cfg
+ creation to common location
+Message-ID: <20231026-6b31593481fe2476e49197e5@orel>
+References: <20231025200713.580814-1-sunilvl@ventanamicro.com>
+ <20231025200713.580814-2-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-References: <20230914174436.1597356-1-richard.henderson@linaro.org>
- <20230914174436.1597356-7-richard.henderson@linaro.org>
- <CAJ307EjR0oKs6W=7ZgsqeM1XrHbTYF4sXN2vV9jn1eiRsMewVA@mail.gmail.com>
- <79b3bf7e-71dc-4ac2-bbb0-eb27e6c70ae5@linaro.org>
-In-Reply-To: <79b3bf7e-71dc-4ac2-bbb0-eb27e6c70ae5@linaro.org>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Thu, 26 Oct 2023 10:10:54 +0200
-Message-ID: <CAJ307EhjPxBjX0dGGefA7Q0pBRrU7P_OwBK8YvYjsts-YC=UfQ@mail.gmail.com>
-Subject: Re: [PATCH 6/6] accel/tcg: Always require can_do_io
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=chigot@adacore.com; helo=mail-pg1-x52e.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231025200713.580814-2-sunilvl@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,158 +107,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 26, 2023 at 2:44=E2=80=AFAM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 10/24/23 02:50, Cl=C3=A9ment Chigot wrote:
-> > Hi Richard,
-> >
-> > This commit has broken some of our internal bareboard testing on
-> > Risc-V 64. At some point in our programs, there is an AMOSWAP (=3D
-> > atomic swap) instruction on I/O. But since this commit, can_do_io is
-> > set to false triggering an infinite loop.
-> > IIUC the doc (cf [1]), atomic operations on I/O are allowed.
-> >
-> > I think there is a CF_LAST_IO flag missing somewhere to allow it, but
-> > I'm not sure where this should be. Do you have any ideas ?
-> >
-> > Sadly I cannot provide a reproducer that easily, mainly because our
-> > microchip has a few patches not yet merged making our binaries not
-> > running on the upstream master.
-> > But here is a bit of the in_asm backtrace:
-> >
-> >    | IN: system__bb__riscv_plic__initialize
-> >    | Priv: 3; Virt: 0
-> >    | 0x80000eb4:  1141              addi                    sp,sp,-16
-> >    | 0x80000eb6:  0c0027b7          lui                     a5,49154
-> >    | 0x80000eba:  e406              sd                      ra,8(sp)
-> >    | 0x80000ebc:  00010597          auipc                   a1,16
-> >              # 0x80010ebc
-> >    | 0x80000ec0:  47458593          addi                    a1,a1,1140
-> >    | 0x80000ec4:  f3ffe637          lui                     a2,-49154
-> >    | 0x80000ec8:  01878693          addi                    a3,a5,24
-> >    | 0x80000ecc:  00f58733          add                     a4,a1,a5
-> >    | 0x80000ed0:  9732              add                     a4,a4,a2
-> >    | 0x80000ed2:  4318              lw                      a4,0(a4)
-> >    | 0x80000ed4:  2701              sext.w                  a4,a4
-> >    | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5=
-)
-> >    | 0x80000eda:  0791              addi                    a5,a5,4
-> >    | 0x80000edc:  fed798e3          bne                     a5,a3,-16
-> >              # 0x80000ecc
-> >    |
-> >    | ----------------
-> >    | IN: system__bb__riscv_plic__initialize
-> >    | Priv: 3; Virt: 0
-> >    | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5=
-)
-> >    |
-> >    | ----------------
-> >    | IN: system__bb__riscv_plic__initialize
-> >    | Priv: 3; Virt: 0
-> >    | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5=
-)
-> >    | * Freeze *
->
-> I would expect two translations:
->
-> (1) with the original TB, aborts execution on !can_do_io.
-> (2) with the second TB, we get further into the actual execution and abor=
-t execution on
-> TLB_MMIO.
-> (3) with the third TB, we clear CF_PARALLEL and execute under cpu_exec_st=
-ep_atomic.
->
-> Both 2 and 3 should have had CF_LAST_IO set.
-> You can verify this with '-d exec' output.
->
-> As a trivial example from qemu-system-alpha bios startup:
->
-> > Trace 0: 0x7f2584008380 [00000000/fffffc0000003ee4/01000000/ff000000] u=
-art_init_line
-> > cpu_io_recompile: rewound execution of TB to fffffc0000003ee4
-> > ----------------
-> > IN: uart_init_line
-> > 0xfffffc0000003f20:  stb        t8,0(t6)
-> >
-> > Trace 0: 0x7f2584008a00 [00000000/fffffc0000003f20/01000000/ff018001] u=
-art_init_line
->
-> Note that the final "/" field is cflags.  The first "Trace" corresponds t=
-o (1), where the
-> store is in the middle of the TB.  You can see the io_recompile abort, th=
-en the second
-> "Trace" contains {CF_COUNT=3D1, CF_LAST_IO, CF_MEMI_ONLY}.
+On Thu, Oct 26, 2023 at 01:37:01AM +0530, Sunil V L wrote:
+...
+> diff --git a/hw/nvram/fw_cfg-acpi.c b/hw/nvram/fw_cfg-acpi.c
+> new file mode 100644
+> index 0000000000..eddaffc09b
+> --- /dev/null
+> +++ b/hw/nvram/fw_cfg-acpi.c
+> @@ -0,0 +1,44 @@
+> +/*
+> + * Add fw_cfg device in DSDT
+> + *
+> + * Copyright (C) 2008-2010  Kevin O'Connor <kevin@koconnor.net>
+> + * Copyright (C) 2006 Fabrice Bellard
+> + * Copyright (C) 2013 Red Hat Inc
+> + *
+> + * Author: Michael S. Tsirkin <mst@redhat.com>
+> + *
+> + * Copyright (c) 2015 HUAWEI TECHNOLOGIES CO.,LTD.
+> + *
+> + * Author: Shannon Zhao <zhaoshenglong@huawei.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> +
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> +
+> + * You should have received a copy of the GNU General Public License along
+> + * with this program; if not, see <http://www.gnu.org/licenses/>.
 
-With the exec, it's indeed a bit clearer.
-I do have a new translation made by cpu_io_recompile which sets
-CF_LAST_IO (2). But afterward, it somehow loops back to the previous
-translation which doesn't have CF_LAST_IO which calls cpu_io_recompile
-again, etc. This triggers an infinite loop between these two
-translations
-  | ----------------
-  | IN: system__bb__riscv_plic__initialize
-  | 0x80000eb4:  1141              addi                    sp,sp,-16
-  | ...
-  | 0x80000ed4:  2701              sext.w                  a4,a4
-  | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5)
-  | 0x80000eda:  0791              addi                    a5,a5,4
-  | 0x80000edc:  fed798e3          bne                     a5,a3,-16
-            # 0x80000ecc
-  |
-  | Linking TBs 0x7f0d3199db40 index 0 -> 0x7f0d3199dd00
-  | Trace 1: 0x7f0d3199dd00
-[00000000/0000000080000eb4/0b02401b/ff280000]
-system__bb__riscv_plic__initialize
+I don't recommend creating new files with the long form GPL instead of an
+SPDX. I can't find a QEMU SPDX policy to point at, but pretty much every
+project I work on has been moving towards SPDX, and usually with a format
+policy. I presume QEMU will either slowly work its way there too or
+someday do a mass change. New files can participate in an unofficial slow
+transition now, rather than have to be touched again in a mass change.
 
-(1) First exec of amoswap without CF_LAST_IO.
-  | ----------------
-  | IN: system__bb__riscv_plic__initialize
-  | Priv: 3; Virt: 0
-  | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5)
-  |
-  | Trace 1: 0x7f0d3199df80
-[00000000/0000000080000ed6/0b02401b/ff200601]
-system__bb__riscv_plic__initialize
+...
+> diff --git a/include/hw/nvram/fw_cfg_acpi.h b/include/hw/nvram/fw_cfg_acpi.h
+> new file mode 100644
+> index 0000000000..1c863df329
+> --- /dev/null
+> +++ b/include/hw/nvram/fw_cfg_acpi.h
+> @@ -0,0 +1,15 @@
+> +/*
+> + * ACPI support for fw_cfg
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
 
-(2) Second exec with CF_LAST_IO.
-  | cpu_io_recompile: rewound execution of TB to 0000000080000ed6
-  | ----------------
-  | IN: system__bb__riscv_plic__initialize
-  | Priv: 3; Virt: 0
-  | 0x80000ed6:  08e7a02f          amoswap.w               zero,a4,(a5)
-  |
-  | Trace 1: 0x7f0d3199e140
-[00000000/0000000080000ed6/0b02401b/ff298001]
-system__bb__riscv_plic__initialize
+While QEMU doesn't appear to have an SPDX policy with formatting rules,
+I would format this as
 
-Loop back (1) and start the infinite loop between (1) and (2).
-  | Trace 1: 0x7f0d3199df80
-[00000000/0000000080000ed6/0b02401b/ff200601]
-system__bb__riscv_plic__initialize
-  | cpu_io_recompile: rewound execution of TB to 0000000080000ed6
-  | Trace 1: 0x7f0d3199e140
-[00000000/0000000080000ed6/0b02401b/ff298001]
-system__bb__riscv_plic__initialize
-  | Trace 1: 0x7f0d3199df80
-[00000000/0000000080000ed6/0b02401b/ff200601]
-system__bb__riscv_plic__initialize
-  | cpu_io_recompile: rewound execution of TB to 0000000080000ed6
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+/*
+ * ACPI support for fw_cfg
+ */
 
-I'll continue to investigate. Even if the workaround you provided
-works, there is something weird happening here.
+And the source file above as
 
-> In the short term, try adding CF_LAST_IO to cflags in cpu_exec_step_atomi=
-c.
-Thanks for that workaround.
+// SPDX-License-Identifier: GPL-2.0-or-later
+/*
+ * Add fw_cfg device in DSDT
+ *
+ * ...
+ */
+
+as that is the recommended format for many projects (I think starting
+with Linux which documents[1] it) and tools have already learned that
+formatting. QEMU's checkpatch will accept the C99 comment style[2].
+
+[1] https://www.kernel.org/doc/html/latest/process/license-rules.html#license-identifier-syntax
+[2] commit 8d061278d385 ("checkpatch: allow SPDX-License-Identifier")
 
 Thanks,
-Cl=C3=A9ment
-
-> I think probably the logic of CF_LAST_IO should always be applied now, si=
-nce can_do_io is
-> always live, and thus the flag itself should go away.
->
->
-> r~
+drew
 
