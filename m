@@ -2,64 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F0D7D7A34
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 03:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6ABB7D7A39
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 03:40:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvpEm-0008M4-7k; Wed, 25 Oct 2023 21:32:40 -0400
+	id 1qvpKt-0001bx-M1; Wed, 25 Oct 2023 21:38:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qvpEh-0008Lp-Rq
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:32:36 -0400
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qvpKr-0001bk-MS
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:38:57 -0400
+Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qvpEf-0001ge-HQ
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:32:35 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 509BFCE3C05;
- Thu, 26 Oct 2023 01:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F00EC433C8;
- Thu, 26 Oct 2023 01:32:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1698283949;
- bh=tpmV0jJcukeFv/+kyfO83cg9rK+oV80xWvwmxLTD/8c=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=AdHkdbhxSkqo3iuHgSv5JXFEKqU/2Nm8D1fs8XlLZE9vgdh/EpSQAo8xEjk+z1MPH
- nB2yUXzvNhEOgHh4Hm+FsF3ObgWDex4Z2cgqLmBcGBUG32M48jPpP2C4lOp5y5swJj
- DjmCa09KH1kv0DTMvaaUYlTMUAw3xP07yur4j4AAeGRo/p8YnWjLs9gR1JWim4h2i+
- AhhlB3kECzJHCTV5p1DHqcytJQZhwMZZIqZHqV/BpprqAhezj8ccPCgO6KbGgPYRzX
- w9VFDuv0t1XbDH2/cOTFYim0V2/WoqAQpzok5ewR8W9pPshACuAJ1PCIOLpJ+uVXBE
- OvClxuFefbZ+g==
-Date: Wed, 25 Oct 2023 18:32:26 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Vikram Garhwal <vikram.garhwal@amd.com>
-cc: qemu-devel@nongnu.org, sstabellini@kernel.org, jgross@suse.com, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
- David Hildenbrand <david@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [QEMU][PATCHv2 7/8] xen: add map and unmap callbacks for grant
- region
-In-Reply-To: <20231025212422.30371-8-vikram.garhwal@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2310251832100.271731@ubuntu-linux-20-04-desktop>
-References: <20231025212422.30371-1-vikram.garhwal@amd.com>
- <20231025212422.30371-8-vikram.garhwal@amd.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qvpKp-0002z4-Or
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:38:57 -0400
+Received: from [192.168.1.5] (unknown [223.72.62.34])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 158CD43DA4;
+ Thu, 26 Oct 2023 01:38:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1698284332; bh=nGA+fdnVbuT8+0M2eTwiQe3+SGjJ2Pt13f5q3oxDkhs=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=n5B/22wLsSL4rqE0NkqKmQuDGJKtrrtJi8sCinJwe5OhggRylQfLySw/H5EENCmGL
+ rX1gtqqZqRMZE0iTAM4P0dO8deJHQSthpB/ag7sqQ0fxyY/Flzu7p8QxftCzBEqDJm
+ nx9v3g6xL+fjLuCFL6TsJa+jP7PBKBOq0K9SN3BE=
+Message-ID: <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
+Date: Thu, 26 Oct 2023 09:38:46 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=sstabellini@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn, git@xen0n.name
+References: <20231023153029.269211-2-c@jia.je>
+ <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
+ <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
+ <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
+ <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
+From: Jiajie Chen <c@jia.je>
+In-Reply-To: <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,267 +69,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 25 Oct 2023, Vikram Garhwal wrote:
-> From: Juergen Gross <jgross@suse.com>
-> 
-> Add the callbacks for mapping/unmapping guest memory via grants to the
-> special grant memory region.
-> 
-> Signed-off-by: Juergen Gross <jgross@suse.com>
-> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> ---
->  hw/xen/xen-mapcache.c | 175 +++++++++++++++++++++++++++++++++++++++++-
->  system/physmem.c      |  11 ++-
->  2 files changed, 181 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-> index 8a61c7dde6..feb4a3b886 100644
-> --- a/hw/xen/xen-mapcache.c
-> +++ b/hw/xen/xen-mapcache.c
-> @@ -9,6 +9,8 @@
->   */
->  
->  #include "qemu/osdep.h"
-> +#include "qemu/queue.h"
-> +#include "qemu/thread.h"
->  #include "qemu/units.h"
->  #include "qemu/error-report.h"
->  
-> @@ -23,6 +25,8 @@
->  #include "sysemu/xen-mapcache.h"
->  #include "trace.h"
->  
-> +#include <xenevtchn.h>
-> +#include <xengnttab.h>
->  
->  //#define MAPCACHE_DEBUG
->  
-> @@ -385,7 +389,7 @@ uint8_t *xen_map_cache(hwaddr phys_addr, hwaddr size,
->      return p;
->  }
->  
-> -ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
-> +static ram_addr_t xen_ram_addr_from_mapcache_try(void *ptr)
->  {
->      MapCacheEntry *entry = NULL;
->      MapCacheRev *reventry;
-> @@ -594,10 +598,178 @@ uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
->      return p;
->  }
->  
-> +struct XENMappedGrantRegion {
-> +    void *addr;
-> +    unsigned int pages;
-> +    unsigned int refs;
-> +    unsigned int prot;
-> +    uint32_t idx;
-> +    QLIST_ENTRY(XENMappedGrantRegion) list;
-> +};
-> +
-> +static xengnttab_handle *xen_region_gnttabdev;
-> +static QLIST_HEAD(GrantRegionList, XENMappedGrantRegion) xen_grant_mappings =
-> +    QLIST_HEAD_INITIALIZER(xen_grant_mappings);
-> +static QemuMutex xen_map_mutex;
-> +
-> +static void *xen_map_grant_dyn(MemoryRegion **mr, hwaddr addr, hwaddr *plen,
-> +                               bool is_write, MemTxAttrs attrs)
-> +{
-> +    unsigned int page_off = addr & (XC_PAGE_SIZE - 1);
-> +    unsigned int i;
-> +    unsigned int total_grants = 0;
-> +    unsigned int nrefs = (page_off + *plen + XC_PAGE_SIZE - 1) >> XC_PAGE_SHIFT;
-> +    uint32_t ref = (addr - XEN_GRANT_ADDR_OFF) >> XC_PAGE_SHIFT;
-> +    uint32_t *refs = NULL;
-> +    unsigned int prot = PROT_READ;
-> +    struct XENMappedGrantRegion *mgr = NULL;
-> +
-> +    if (is_write) {
-> +        prot |= PROT_WRITE;
-> +    }
-> +
-> +    qemu_mutex_lock(&xen_map_mutex);
-> +
-> +    QLIST_FOREACH(mgr, &xen_grant_mappings, list) {
-> +        if (mgr->idx == ref &&
-> +            mgr->pages == nrefs &&
-> +            (mgr->prot & prot) == prot) {
-> +            break;
-> +        }
-> +
-> +        total_grants += mgr->pages;
-> +    }
-> +
-> +    if (!mgr) {
-> +        if (nrefs + total_grants >= XEN_MAX_VIRTIO_GRANTS) {
-> +            return NULL;
 
-missing qemu_mutex_unlock
+On 2023/10/26 03:04, Richard Henderson wrote:
+> On 10/25/23 10:13, Jiajie Chen wrote:
+>>> On 2023/10/24 07:26, Richard Henderson wrote:
+>>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, TCGv_i128 
+>>>> block.
+>>>> See target/ppc/translate.c, gen_stqcx_.
+>>>
+>>> The situation here is slightly different: aarch64 and ppc64 have 
+>>> both 128-bit ll and sc, however LoongArch v1.1 only has 64-bit ll 
+>>> and 128-bit sc.
+>
+> Ah, that does complicate things.
+>
+>> Possibly use the combination of ll.d and ld.d:
+>>
+>>
+>> ll.d lo, base, 0
+>> ld.d hi, base, 4
+>>
+>> # do some computation
+>>
+>> sc.q lo, hi, base
+>>
+>> # try again if sc failed
+>>
+>> Then a possible implementation of gen_ll() would be: align base to 
+>> 128-bit boundary, read 128-bit from memory, save 64-bit part to rd 
+>> and record whole 128-bit data in llval. Then, in gen_sc_q(), it uses 
+>> a 128-bit cmpxchg.
+>>
+>>
+>> But what about the reversed instruction pattern: ll.d hi, base, 4; 
+>> ld.d lo, base 0?
+>
+> It would be worth asking your hardware engineers about the bounds of 
+> legal behaviour. Ideally there would be some very explicit language, 
+> similar to
 
 
-> +        }
-> +
-> +        mgr = g_new(struct XENMappedGrantRegion, 1);
-> +
-> +        if (nrefs == 1) {
-> +            refs = &ref;
-> +        } else {
-> +            refs = g_new(uint32_t, nrefs);
-> +            for (i = 0; i < nrefs; i++) {
-> +                refs[i] = ref + i;
-> +            }
-> +        }
-> +        mgr->addr = xengnttab_map_domain_grant_refs(xen_region_gnttabdev, nrefs,
-> +                                                    xen_domid, refs, prot);
-> +        if (mgr->addr) {
-> +            mgr->pages = nrefs;
-> +            mgr->refs = 1;
-> +            mgr->prot = prot;
-> +            mgr->idx = ref;
-> +
-> +            QLIST_INSERT_HEAD(&xen_grant_mappings, mgr, list);
-> +        } else {
-> +            g_free(mgr);
-> +            mgr = NULL;
-> +        }
-> +    } else {
-> +        mgr->refs++;
-> +    }
-> +
-> +    qemu_mutex_unlock(&xen_map_mutex);
-> +
-> +    if (nrefs > 1) {
-> +        g_free(refs);
-> +    }
-> +
-> +    return mgr ? mgr->addr + page_off : NULL;
-> +}
-> +
-> +static void xen_unmap_grant_dyn(MemoryRegion *mr, void *buffer, ram_addr_t addr,
-> +                                hwaddr len, bool is_write, hwaddr access_len)
-> +{
-> +    unsigned int page_off = (unsigned long)buffer & (XC_PAGE_SIZE - 1);
-> +    unsigned int nrefs = (page_off + len + XC_PAGE_SIZE - 1) >> XC_PAGE_SHIFT;
-> +    unsigned int prot = PROT_READ;
-> +    struct XENMappedGrantRegion *mgr = NULL;
-> +
-> +    if (is_write) {
-> +        prot |= PROT_WRITE;
-> +    }
-> +
-> +    qemu_mutex_lock(&xen_map_mutex);
-> +
-> +    QLIST_FOREACH(mgr, &xen_grant_mappings, list) {
-> +        if (mgr->addr == buffer - page_off &&
-> +            mgr->pages == nrefs &&
-> +            (mgr->prot & prot) == prot) {
-> +            break;
-> +        }
-> +    }
-> +    if (mgr) {
-> +        mgr->refs--;
-> +        if (!mgr->refs) {
-> +            xengnttab_unmap(xen_region_gnttabdev, mgr->addr, nrefs);
-> +
-> +            QLIST_REMOVE(mgr, list);
-> +            g_free(mgr);
-> +        }
-> +    } else {
-> +        error_report("xen_unmap_grant_dyn() trying to unmap unknown buffer");
-> +    }
-> +
-> +    qemu_mutex_unlock(&xen_map_mutex);
-> +}
-> +
-> +static ram_addr_t xen_ram_addr_from_grant_cache(void *ptr)
-> +{
-> +    unsigned int page_off = (unsigned long)ptr & (XC_PAGE_SIZE - 1);
-> +    struct XENMappedGrantRegion *mgr = NULL;
-> +    ram_addr_t raddr = RAM_ADDR_INVALID;
-> +
-> +    qemu_mutex_lock(&xen_map_mutex);
-> +
-> +    QLIST_FOREACH(mgr, &xen_grant_mappings, list) {
-> +        if (mgr->addr == ptr - page_off) {
-> +            break;
-> +        }
-> +    }
-> +
-> +    if (mgr) {
-> +        raddr = (mgr->idx << XC_PAGE_SHIFT) + page_off + XEN_GRANT_ADDR_OFF;
-> +    }
-> +
-> +    qemu_mutex_unlock(&xen_map_mutex);
-> +
-> +    return raddr;
-> +}
-> +
-> +ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
-> +{
-> +    ram_addr_t raddr;
-> +
-> +    raddr = xen_ram_addr_from_mapcache_try(ptr);
-> +    if (raddr == RAM_ADDR_INVALID) {
-> +        raddr = xen_ram_addr_from_grant_cache(ptr);
-> +    }
-> +
-> +    return raddr;
-> +}
-> +
-> +static const struct MemoryRegionOps xen_grant_mr_ops = {
-> +    .map = xen_map_grant_dyn,
-> +    .unmap = xen_unmap_grant_dyn,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +};
-> +
->  MemoryRegion *xen_init_grant_ram(void)
->  {
->      RAMBlock *block;
->  
-> +    qemu_mutex_init(&xen_map_mutex);
-> +
-> +    xen_region_gnttabdev = xengnttab_open(NULL, 0);
-> +    if (xen_region_gnttabdev == NULL) {
-> +        fprintf(stderr, "can't open gnttab device\n");
-> +        return NULL;
-> +    }
-> +
->      memory_region_init(&ram_grants, NULL, "xen.grants",
->                         XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE);
->      block = g_malloc0(sizeof(*block));
-> @@ -612,6 +784,7 @@ MemoryRegion *xen_init_grant_ram(void)
->      ram_grants.ram_block = block;
->      ram_grants.ram = true;
->      ram_grants.terminates = true;
-> +    ram_grants.ops = &xen_grant_mr_ops;
->      ram_block_add_list(block);
->      memory_region_add_subregion(get_system_memory(), XEN_GRANT_ADDR_OFF,
->                                  &ram_grants);
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 5db1b32823..155a8c05fb 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -2233,13 +2233,16 @@ RAMBlock *qemu_ram_block_from_host(void *ptr, bool round_offset,
->  
->      if (xen_enabled()) {
->          ram_addr_t ram_addr;
-> +
->          RCU_READ_LOCK_GUARD();
->          ram_addr = xen_ram_addr_from_mapcache(ptr);
-> -        block = qemu_get_ram_block(ram_addr);
-> -        if (block) {
-> -            *offset = ram_addr - block->offset;
-> +        if (ram_addr != RAM_ADDR_INVALID) {
-> +            block = qemu_get_ram_block(ram_addr);
-> +            if (block) {
-> +                *offset = ram_addr - block->offset;
-> +            }
-> +            return block;
->          }
-> -        return block;
->      }
->  
->      RCU_READ_LOCK_GUARD();
-> -- 
-> 2.17.1
-> 
+I'm a community developer not affiliated with Loongson. Song Gao, could 
+you provide some detail from Loongson Inc.?
+
+
+>
+> https://developer.arm.com/documentation/ddi0487/latest/
+> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage restrictions
+>
+> But you could do the same thing, aligning and recording the entire 
+> 128-bit quantity, then extract the ll.d result based on address bit 
+> 6.  This would complicate the implementation of sc.d as well, but 
+> would perhaps bring us "close enough" to the actual architecture.
+>
+> Note that our Arm store-exclusive implementation isn't quite in spec 
+> either.  There is quite a large comment within translate-a64.c 
+> store_exclusive() about the ways things are not quite right.  But it 
+> seems to be close enough for actual usage to succeed.
+>
+>
+> r~
 
