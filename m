@@ -2,71 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A187D813B
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 12:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 636837D8168
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 12:59:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvxvr-0006BO-Ur; Thu, 26 Oct 2023 06:49:44 -0400
+	id 1qvy3e-0007uB-BI; Thu, 26 Oct 2023 06:57:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qvxvp-0005zG-Qr; Thu, 26 Oct 2023 06:49:41 -0400
-Received: from mgamail.intel.com ([134.134.136.126])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvy3b-0007ta-Lt
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 06:57:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qvxvo-0001Q0-3k; Thu, 26 Oct 2023 06:49:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698317380; x=1729853380;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=LCQxX27B9hAKu3fvfHgufolvqB8nmhm4GP+TjWb+FHI=;
- b=MhrKiyoA5n7L6Ugb7Vh4WThPmLJ7Oljh+Z71DHtGn+fgCdVZINiXJwso
- Mmf53aXh4o+nINCZ6M9I10QpSKdmmtF8WYP9WrRjdnzZMB7yOjKM8jxPR
- 0d3G0bpm2d5JhgDQ765huAaUJ+LFlW+992oBlvxJdYLDR3idjjJc+yE4O
- HRBZuhh0/U3V1YeFqodtdXBgMOjjg/Dg3bC6Ui4VTKRSW4zYgDHCTM8CN
- 9CDm7vJOSlLNoRBVZITE9MkjdpPShQXwRwKRoAhemt6KvFU9G/HKylJVY
- jKDtxniGuV+whgBZNhHWmahNmx65ZF6EN6wX8nxZpqrFCZVQeUQnHa6zD Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="372563902"
-X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; d="scan'208";a="372563902"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2023 03:48:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; 
-   d="scan'208";a="463903"
-Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2023 03:48:24 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Eric Farman <farman@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org (open list:vfio-ccw)
-Subject: [PATCH v3 37/37] vfio/ccw: Make vfio cdev pre-openable by passing a
- file handle
-Date: Thu, 26 Oct 2023 18:31:04 +0800
-Message-Id: <20231026103104.1686921-38-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qvy3W-0006JF-Tp
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 06:57:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698317856;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Oc+ch1Ml/yULSTa9Js6u428tBiLtzB0RoF1wSH5FYAA=;
+ b=hQ/TtIfrxYeq1H30Z20NnSA0XTvDrrtOdQPGHzySV5p2KOVM2MsWJWApe1its5jG35FfOQ
+ PryggiWBQrhnveYa4hgK3d+js4PQp4gg6+Jkx8QPeUYcHnYtLBqp+1okw0tQ3n3KWLt+DU
+ 1Km/4kJY2y2A5Yz7imwVyrEB5kfOSBc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-T_WOkDKnOSeXb_rzHyxYwA-1; Thu, 26 Oct 2023 06:57:35 -0400
+X-MC-Unique: T_WOkDKnOSeXb_rzHyxYwA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-402cd372b8bso6134145e9.2
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 03:57:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698317854; x=1698922654;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Oc+ch1Ml/yULSTa9Js6u428tBiLtzB0RoF1wSH5FYAA=;
+ b=oH0wg6AkkzkUG8qTnF347xNbxPeI0xFiCl6Ua0109z5MFsy4gozq7Dx0/IaU5sSQFb
+ 2RO7SciJVIwW+LM3fvnilItRtHPLBwkvLB+XvZPAQZxohfAgVX24wmAYtAj7xhXrjcXh
+ 0j0eswHYTpj5ZsrvBlwniSLEj3MFxNPVTlp6Z9FOiQw6neE+OgUJz73ggeCrGKo2sb1v
+ 0+XDqx2nzsERlC9oQk4df5MKHyan6VGsDWDaIDf0Gno5Ix/hEk1P+7KjY1dNHG3HRr16
+ G6Sbo7pMI5PRlPZFQL8t623EPvdYR9zTivYPYaCVP9pb7wbVYk9HTYdL8AIZZYWS0u9x
+ oUlw==
+X-Gm-Message-State: AOJu0YzrY9S/anafM0zK4yT+zMmWREvXLpDPqPd/Vl3v1tuaA/zADn8a
+ sZ/jJSZ1zpthc2vkd71fpJLPNeebi/XvueH8+Dl1OTOHmnaVovSPKfDa20AdqOCKWia57R+bE9I
+ /VAZXUT7VqqLIDmg=
+X-Received: by 2002:a05:6000:1f91:b0:32d:88f6:ec2f with SMTP id
+ bw17-20020a0560001f9100b0032d88f6ec2fmr17740590wrb.60.1698317854457; 
+ Thu, 26 Oct 2023 03:57:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8dSUyQX+oUF4Yh/3WCi1kfl1rr56RBg+ZKANH4r83kRhaeBOu+Kd+06fPCeHY8ciFZI/oFA==
+X-Received: by 2002:a05:6000:1f91:b0:32d:88f6:ec2f with SMTP id
+ bw17-20020a0560001f9100b0032d88f6ec2fmr17740577wrb.60.1698317854110; 
+ Thu, 26 Oct 2023 03:57:34 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ m21-20020a056000181500b003271be8440csm13991634wrh.101.2023.10.26.03.57.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Oct 2023 03:57:33 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  "Denis V
+ . Lunev" <den@openvz.org>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Stefan Weil <sw@weilnetz.de>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,  "Maciej S . Szmigiero"
+ <maciej.szmigiero@oracle.com>,  Fam Zheng <fam@euphon.net>,  Peter Xu
+ <peterx@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Leonardo Bras
+ <leobras@redhat.com>
+Subject: Re: [PATCH v2 3/3] util/uuid: Remove UUID_FMT_LEN
+In-Reply-To: <20231026070636.1165037-4-clg@redhat.com> (=?utf-8?Q?=22C?=
+ =?utf-8?Q?=C3=A9dric?= Le Goater"'s
+ message of "Thu, 26 Oct 2023 09:06:36 +0200")
+References: <20231026070636.1165037-1-clg@redhat.com>
+ <20231026070636.1165037-4-clg@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 26 Oct 2023 12:57:32 +0200
+Message-ID: <87r0lhejmr.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.126;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,96 +108,16 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This gives management tools like libvirt a chance to open the vfio
-cdev with privilege and pass FD to qemu. This way qemu never needs
-to have privilege to open a VFIO or iommu cdev node.
+C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+> Dangerous and now unused.
+>
+> Cc: Fam Zheng <fam@euphon.net>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
 
-Opportunisticly, remove a redundant definition of TYPE_VFIO_CCW.
-
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/vfio/ccw.c | 34 +++++++++++++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 3 deletions(-)
-
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 7695ede0fc..a674bd8d6d 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -30,6 +30,7 @@
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- #include "qemu/module.h"
-+#include "monitor/monitor.h"
- 
- struct VFIOCCWDevice {
-     S390CCWDevice cdev;
-@@ -589,11 +590,12 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
-         }
-     }
- 
-+    if (vfio_device_get_name(vbasedev, errp)) {
-+        return;
-+    }
-+
-     vbasedev->ops = &vfio_ccw_ops;
-     vbasedev->type = VFIO_DEVICE_TYPE_CCW;
--    vbasedev->name = g_strdup_printf("%x.%x.%04x", vcdev->cdev.hostid.cssid,
--                           vcdev->cdev.hostid.ssid,
--                           vcdev->cdev.hostid.devid);
-     vbasedev->dev = dev;
- 
-     /*
-@@ -690,12 +692,37 @@ static const VMStateDescription vfio_ccw_vmstate = {
-     .unmigratable = 1,
- };
- 
-+static void vfio_ccw_instance_init(Object *obj)
-+{
-+    VFIOCCWDevice *vcdev = VFIO_CCW(obj);
-+
-+    vcdev->vdev.fd = -1;
-+}
-+
-+#ifdef CONFIG_IOMMUFD
-+static void vfio_ccw_set_fd(Object *obj, const char *str, Error **errp)
-+{
-+    VFIOCCWDevice *vcdev = VFIO_CCW(obj);
-+    int fd = -1;
-+
-+    fd = monitor_fd_param(monitor_cur(), str, errp);
-+    if (fd == -1) {
-+        error_prepend(errp, "Could not parse remote object fd %s:", str);
-+        return;
-+    }
-+    vcdev->vdev.fd = fd;
-+}
-+#endif
-+
- static void vfio_ccw_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_CLASS(klass);
- 
-     device_class_set_props(dc, vfio_ccw_properties);
-+#ifdef CONFIG_IOMMUFD
-+    object_class_property_add_str(klass, "fd", NULL, vfio_ccw_set_fd);
-+#endif
-     dc->vmsd = &vfio_ccw_vmstate;
-     dc->desc = "VFIO-based subchannel assignment";
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-@@ -713,6 +740,7 @@ static const TypeInfo vfio_ccw_info = {
-     .name = TYPE_VFIO_CCW,
-     .parent = TYPE_S390_CCW,
-     .instance_size = sizeof(VFIOCCWDevice),
-+    .instance_init = vfio_ccw_instance_init,
-     .class_init = vfio_ccw_class_init,
- };
- 
--- 
-2.34.1
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 
