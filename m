@@ -2,50 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F0D7D7CC8
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 08:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 580887D7CCA
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 08:18:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvtgR-0006lc-GT; Thu, 26 Oct 2023 02:17:31 -0400
+	id 1qvth7-0007k0-Jv; Thu, 26 Oct 2023 02:18:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qvtgA-0006fW-Kj; Thu, 26 Oct 2023 02:17:16 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qvtg8-00055t-CW; Thu, 26 Oct 2023 02:17:13 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 949EC2D66E;
- Thu, 26 Oct 2023 09:17:44 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4499F31417;
- Thu, 26 Oct 2023 09:17:10 +0300 (MSK)
-Message-ID: <004b5574-b27d-4364-895c-36e2da278936@tls.msk.ru>
-Date: Thu, 26 Oct 2023 09:17:10 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvtgz-0007gQ-RC
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:18:06 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvtgv-00059F-6N
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:18:05 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40891d38e3fso3860215e9.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 23:18:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698301079; x=1698905879; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=izueQmn1+pj4TxeWtxbgQ4c4Hr6+8JnyLpG9TK8UQxQ=;
+ b=o4gtNqjQTa78e6AnZTi/eR0fmfNx2CBKxRg4ZIcptTvzruCNlz5ggRMt4UG9uirdth
+ hi6LG7ydVZPO5y58acwrDj3W18kY7XfeZ3BXK1D2DnICpj6tTIdjLIff3HL2VRJHVm76
+ aNcB26szwgHTWAQ1UmvT9zpjFDjQr3j+aw6MMwYdh7BfbcgdOM1RZ7WWKGd3uTfxOeUc
+ ybjsZKwxQQmMa0aU7SKZNpE1IhQrUO0xZA67G1hIOLZOT5vXmwdAfJlVNIhqO20U0Zwk
+ j27AUmzpE6LY8KvI0jujF8AD+sOpQLHGtdyUCVu5VS+HXvogv/kAmoUKLMWzzc8GgAq/
+ t5JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698301079; x=1698905879;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=izueQmn1+pj4TxeWtxbgQ4c4Hr6+8JnyLpG9TK8UQxQ=;
+ b=InhMKDnu2jF0aWYsJfhseCrLnWqZQGmzfRxnstiyT5NK8f3An0r8EXYMy5UdwssYnc
+ yOZdG3bHe6fRbBH2/0/9XGlyvtmV+pxqSshDpoCEfzHY/ULRT9BEu/5hsiWWtEbqiCZp
+ mwmeD908+1dhYn3TD3uCwLKQjZ+LFbACF2AEPW57WRlQopvIktpk1V6RePnaPvb0cbjP
+ R32MamIfoqcIpZPcahN6jiL76S2TDmhhn+pfKxKJm0W6V3kCa0nuBgshA4JfGxy1mBGU
+ 3JpJi3oSvUvlndDURX05QAMKVsYXEAHPxOfWN3T/S2Z6gdMkB5IIpGUWAdqdoNGEb011
+ 136g==
+X-Gm-Message-State: AOJu0YzUn0djrxPkuNBbi7WGo/wr5imOonKQPnCagSdWBlT09m0jUQ5S
+ icMxtSEH0grKyIF4649ADPRNiw==
+X-Google-Smtp-Source: AGHT+IGWXxgw0KokUWL7yoAJT9CrCPMib9Fr8fu3LUKTQNXgqbKQQYVfH85vW6dWTAss76KPwvGLGQ==
+X-Received: by 2002:a05:600c:1912:b0:401:b1c6:97dc with SMTP id
+ j18-20020a05600c191200b00401b1c697dcmr12579627wmq.23.1698301078905; 
+ Wed, 25 Oct 2023 23:17:58 -0700 (PDT)
+Received: from [192.168.69.115]
+ (aif79-h01-176-172-114-150.dsl.sta.abo.bbox.fr. [176.172.114.150])
+ by smtp.gmail.com with ESMTPSA id
+ c9-20020a7bc849000000b00405d9a950a2sm1568111wml.28.2023.10.25.23.17.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Oct 2023 23:17:58 -0700 (PDT)
+Message-ID: <5f330d44-6e42-3275-8be6-8b06cb40f093@linaro.org>
+Date: Thu, 26 Oct 2023 08:17:55 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] hw/ide: reset: cancel async DMA operation before
- resetting state
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/1] meson: Enable -Wshadow=local
 Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: jsnow@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, srowe@mose.org.uk, mike.maslenkin@gmail.com,
- qemu-block@nongnu.org, t.lamprecht@proxmox.com, a.lauterer@proxmox.com,
- philmd@linaro.org, kwolf@redhat.com
-References: <20230906130922.142845-1-f.ebner@proxmox.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230906130922.142845-1-f.ebner@proxmox.com>
+To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ bcain@quicinc.com, imp@bsdimp.com, stefanha@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20231026053115.2066744-1-armbru@redhat.com>
+ <20231026053115.2066744-2-armbru@redhat.com>
+ <148731e1-7734-6f87-5b7c-e91e0e121880@linaro.org>
+ <ad92f0db-7640-492d-a966-4cf883f46308@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ad92f0db-7640-492d-a966-4cf883f46308@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,69 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-06.09.2023 16:09, Fiona Ebner wrote:
-> If there is a pending DMA operation during ide_bus_reset(), the fact
-> that the IDEState is already reset before the operation is canceled
-> can be problematic. In particular, ide_dma_cb() might be called and
-> then use the reset IDEState which contains the signature after the
-> reset. When used to construct the IO operation this leads to
-> ide_get_sector() returning 0 and nsector being 1. This is particularly
-> bad, because a write command will thus destroy the first sector which
-> often contains a partition table or similar.
-> 
-> Traces showing the unsolicited write happening with IDEState
-> 0x5595af6949d0 being used after reset:
-> 
->> ahci_port_write ahci(0x5595af6923f0)[0]: port write [reg:PxSCTL] @ 0x2c: 0x00000300
->> ahci_reset_port ahci(0x5595af6923f0)[0]: reset port
->> ide_reset IDEstate 0x5595af6949d0
->> ide_reset IDEstate 0x5595af694da8
->> ide_bus_reset_aio aio_cancel
->> dma_aio_cancel dbs=0x7f64600089a0
->> dma_blk_cb dbs=0x7f64600089a0 ret=0
->> dma_complete dbs=0x7f64600089a0 ret=0 cb=0x5595acd40b30
->> ahci_populate_sglist ahci(0x5595af6923f0)[0]
->> ahci_dma_prepare_buf ahci(0x5595af6923f0)[0]: prepare buf limit=512 prepared=512
->> ide_dma_cb IDEState 0x5595af6949d0; sector_num=0 n=1 cmd=DMA WRITE
->> dma_blk_io dbs=0x7f6420802010 bs=0x5595ae2c6c30 offset=0 to_dev=1
->> dma_blk_cb dbs=0x7f6420802010 ret=0
-> 
->> (gdb) p *qiov
->> $11 = {iov = 0x7f647c76d840, niov = 1, {{nalloc = 1, local_iov = {iov_base = 0x0,
->>        iov_len = 512}}, {__pad = "\001\000\000\000\000\000\000\000\000\000\000",
->>        size = 512}}}
->> (gdb) bt
->> #0  blk_aio_pwritev (blk=0x5595ae2c6c30, offset=0, qiov=0x7f6420802070, flags=0,
->>      cb=0x5595ace6f0b0 <dma_blk_cb>, opaque=0x7f6420802010)
->>      at ../block/block-backend.c:1682
->> #1  0x00005595ace6f185 in dma_blk_cb (opaque=0x7f6420802010, ret=<optimized out>)
->>      at ../softmmu/dma-helpers.c:179
->> #2  0x00005595ace6f778 in dma_blk_io (ctx=0x5595ae0609f0,
->>      sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->>      io_func=io_func@entry=0x5595ace6ee30 <dma_blk_write_io_func>,
->>      io_func_opaque=io_func_opaque@entry=0x5595ae2c6c30,
->>      cb=0x5595acd40b30 <ide_dma_cb>, opaque=0x5595af6949d0,
->>      dir=DMA_DIRECTION_TO_DEVICE) at ../softmmu/dma-helpers.c:244
->> #3  0x00005595ace6f90a in dma_blk_write (blk=0x5595ae2c6c30,
->>      sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->>      cb=cb@entry=0x5595acd40b30 <ide_dma_cb>, opaque=opaque@entry=0x5595af6949d0)
->>      at ../softmmu/dma-helpers.c:280
->> #4  0x00005595acd40e18 in ide_dma_cb (opaque=0x5595af6949d0, ret=<optimized out>)
->>      at ../hw/ide/core.c:953
->> #5  0x00005595ace6f319 in dma_complete (ret=0, dbs=0x7f64600089a0)
->>      at ../softmmu/dma-helpers.c:107
->> #6  dma_blk_cb (opaque=0x7f64600089a0, ret=0) at ../softmmu/dma-helpers.c:127
->> #7  0x00005595ad12227d in blk_aio_complete (acb=0x7f6460005b10)
->>      at ../block/block-backend.c:1527
->> #8  blk_aio_complete (acb=0x7f6460005b10) at ../block/block-backend.c:1524
->> #9  blk_aio_write_entry (opaque=0x7f6460005b10) at ../block/block-backend.c:1594
->> #10 0x00005595ad258cfb in coroutine_trampoline (i0=<optimized out>,
->>      i1=<optimized out>) at ../util/coroutine-ucontext.c:177
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 26/10/23 08:12, Thomas Huth wrote:
+> On 26/10/2023 07.58, Philippe Mathieu-Daudé wrote:
+>> On 26/10/23 07:31, Markus Armbruster wrote:
+>>> Local variables shadowing other local variables or parameters make the
+>>> code needlessly hard to understand.  Bugs love to hide in such code.
+>>> Evidence: commit bbde656263d (migration/rdma: Fix save_page method to
+>>> fail on polling error).
+>>>
+>>> Enable -Wshadow=local to prevent such issues.  Possible thanks to
+>>> recent cleanups.  Enabling -Wshadow would prevent more issues, but
+>>> we're not yet ready for that.
+>>>
+>>> As usual, the warning is only enabled when the compiler recognizes it.
+>>> GCC does, Clang doesn't.
+>>>
+>>> Some shadowed locals remain in bsd-user.  Since BSD prefers Clang,
+>>> let's not wait for its cleanup.
+>>>
+>>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>>> ---
+>>>   meson.build | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/meson.build b/meson.build
+>>> index dcef8b1e79..89220443b8 100644
+>>> --- a/meson.build
+>>> +++ b/meson.build
+>>> @@ -462,6 +462,7 @@ warn_flags = [
+>>>     '-Wno-tautological-type-limit-compare',
+>>>     '-Wno-psabi',
+>>>     '-Wno-gnu-variable-sized-type-not-at-end',
+>>> +  '-Wshadow=local',
+>>>   ]
+>>>   if targetos != 'darwin'
+>>
+>> Using Clang on Darwin:
+>>
+>> $ ../configure
+>> The Meson build system
+>> Version: 1.2.1
+>> Build type: native build
+>> Project name: qemu
+>> Project version: 8.1.50
+>> C compiler for the host machine: cc (clang 15.0.0 "Apple clang version 
+>> 15.0.0 (clang-1500.0.40.1)")
+>> C linker for the host machine: cc ld64 1015.7
+>> Host machine cpu family: aarch64
+>> Host machine cpu: aarch64
+>> Program sh found: YES (/bin/sh)
+>> Objective-C compiler for the host machine: clang (clang 15.0.0)
+>> Objective-C linker for the host machine: clang ld64 1015.7
 
-Ping?  Has this bugfix been lost somehow?
 
-/mjt
+>> Compiler for Objective-C supports arguments -Wshadow=local: NO
+>>
+>> So:
+>>
+>> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>> Now don't blame me for posting patches with trigger shadow=local
+>> warnings because I am not testing that locally.
+>>
+>> I find it a bit unfair to force me rely on CI or other machines
+>> rather than my host machine to check for warnings. I'd have
+>> rather waited this option support lands first in Clang before
+>> enabling this flag.
+> 
+> Huh, that situation is already pre-existing, e.g. with 
+> -Wimplicit-fallthrough=2 ... and if you're too afraid, you can always 
+> install gcc via homebrew to check.
+
+OK, fine.
+
 
