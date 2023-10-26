@@ -2,135 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2CD7D7C9A
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3B27D7C9B
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:59:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvtL3-0006HO-JH; Thu, 26 Oct 2023 01:55:25 -0400
+	id 1qvtOP-0007br-U5; Thu, 26 Oct 2023 01:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvtL1-0006Gn-De
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:55:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvtKl-0002Nb-Bf
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:55:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698299706;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=SEO2gxRXUEWUsMC4sUTjU3pdool+J57zHy9vYVtdSUQ=;
- b=Eb3gJuRCWul+z0eC3pFR30WARmEnUSktUV1Io7lbxuQQY66xIT7UWLFoburBXwR9oouyqG
- nTlH88iLXuRDTpnun13ursqYhko985sghKdbSjEsLPHwLFIwKfdfj/dCCqrw0Bj7/M78x5
- UChgASBpSb3TzayfV6ScgznnSSk5+lg=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-SucWqqy_N86qcQ_806-PVg-1; Thu, 26 Oct 2023 01:55:04 -0400
-X-MC-Unique: SucWqqy_N86qcQ_806-PVg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9c7558b89ccso30834766b.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:55:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvtOL-0007bh-8H
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:58:49 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvtOJ-0003MG-3c
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:58:48 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-99c3d3c3db9so77218866b.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:58:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698299925; x=1698904725; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5BLxc+uC/1SFREJE2CnCJWQZVhRWxlay+w7gDM0bdlA=;
+ b=tUf9xNeMycU4vIIV9XVqhfb0zwJfY9qwykkEi2DxMJRFe+ZNgRINUW1hDBq1IfwVb6
+ YAR4TGa+TK0wkp+Q1YGdT7ci8saTTl/b1BEzAz+WhJqLsngjElgkhzg83FmsE0k9akHI
+ xy2pvZLyS0LzOqg5/cGMg1Z/aVFpnNBCA8SVYm87Sh+ainAlFV9PMnpzkIbV1US6gfZS
+ TFcpL1FlCCNawTQP3NEzteeNBu5xlsnDPivYLTYAjohHQz/4EgZvMPtiUTkOUHfhN0Ox
+ AyMMa73PUOPmt3JFUUcDMfoQWWQ1gvlvsDex0iRMqqgNkjy7dkw2j9hcJ3SA7QOEgut4
+ 0mpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698299703; x=1698904503;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698299925; x=1698904725;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SEO2gxRXUEWUsMC4sUTjU3pdool+J57zHy9vYVtdSUQ=;
- b=FdCsZ17z/z14MP+Z0ZwBURHteaR584flKi9c9WX9RWbysVcki8u8BKDW7Th/etGnxE
- v/233MclABthnBwnQ8rh+HXSWsBndXQqdICV4K7K809Acp0TivHJxpHs59MRKCwVLdik
- AontB5fu71kYeav/uOzbnkqthnj4TpeZoR9qDhe1ZmzlpB8+4RemDSFHpEACx+R5T6P2
- AKN0U1YBVqMrgBld43MtJNVrM/Kb1f+O65ItbhV7pl3ZJDP/NjrRj5TVJUex9g40yNmh
- DxsJD2Mei1zGa39RId+WSPu3bDTfM5yIhPEsFdybgFECmzzZ3iZ0VzyBGtSOkRL/f2k2
- w31Q==
-X-Gm-Message-State: AOJu0Ywf58HjkZiWpUfk36ZicpFa+Yl0s19MMK9Cg1m1pXIiXEA98m7T
- /flQXwK4aOCIcHHXZeKHrihMCI5MSR/KlRa5XDEF4kvFU7anr7r2JOkZQy47yHC+HnBQxr1FKaD
- kRo/9mabFXswWUIs=
-X-Received: by 2002:a17:907:1b0a:b0:9c7:5a01:ffe8 with SMTP id
- mp10-20020a1709071b0a00b009c75a01ffe8mr12255691ejc.29.1698299703774; 
- Wed, 25 Oct 2023 22:55:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHd0CLX5WAmPyGPF5LhaIrHikGIn2EL/0OfMZiNgtE9cDYbEDu2lAB/xFbhNPf2oFUyMvr5kw==
-X-Received: by 2002:a17:907:1b0a:b0:9c7:5a01:ffe8 with SMTP id
- mp10-20020a1709071b0a00b009c75a01ffe8mr12255673ejc.29.1698299703445; 
- Wed, 25 Oct 2023 22:55:03 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
- [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- w21-20020a170907271500b009ad81554c1bsm10965695ejk.55.2023.10.25.22.55.02
+ bh=5BLxc+uC/1SFREJE2CnCJWQZVhRWxlay+w7gDM0bdlA=;
+ b=WMA7UPDEtrDfTIT5blW76l/SXlvlMeIvb31kTZRhAhvW4HrEQBF83oh2nhTWpkiP/f
+ 2L5x5nEUiNpexck2jib8cAE6Br1IytR1VoDP5RX/pUUqk5uvSZE0cg9roLor+zTLOjWa
+ 9cAMBxy0o1MpfG/1KxgQsFhSUisAFGe5N3n9e9GosVk/3Pn+6kgJYcI1BYH2ZIDVnmI2
+ 73rqJpSND9tl7BZMESAag1i9FiVoOoTzFoDP+oSKLqFmB8CfQKf/XxFbSqCeWYb8bZh8
+ nLpch/BSLtRPvZcG1dUFAJ2eodnj7+4zz0rUFzJqIBQsE+Pt3T5nG221on/qw/53wj6F
+ 3nrA==
+X-Gm-Message-State: AOJu0YzzYfJmOdPbFRg6SowveptTRg2Z5JgLrcya7FZM3GUsoQvfu4dr
+ oAzM2tXw+rodZa2uGKKvFMYk6w==
+X-Google-Smtp-Source: AGHT+IG2mTvG2xqxU67CFW8BzObG5Ki5b8InNytWj855p1RS28eh8d3oaLRrXCYlF9cKDeEgYhta3Q==
+X-Received: by 2002:a17:907:318c:b0:9c3:97d7:2c5f with SMTP id
+ xe12-20020a170907318c00b009c397d72c5fmr14260047ejb.44.1698299925085; 
+ Wed, 25 Oct 2023 22:58:45 -0700 (PDT)
+Received: from [192.168.69.115]
+ (aif79-h01-176-172-114-150.dsl.sta.abo.bbox.fr. [176.172.114.150])
+ by smtp.gmail.com with ESMTPSA id
+ f16-20020a17090624d000b009c751e41ebasm11287082ejb.141.2023.10.25.22.58.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 22:55:02 -0700 (PDT)
-Message-ID: <520430a5-3e10-4503-9bb4-7360e1f5d8fe@redhat.com>
-Date: Thu, 26 Oct 2023 07:55:01 +0200
+ Wed, 25 Oct 2023 22:58:44 -0700 (PDT)
+Message-ID: <148731e1-7734-6f87-5b7c-e91e0e121880@linaro.org>
+Date: Thu, 26 Oct 2023 07:58:42 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
 Subject: Re: [PATCH 1/1] meson: Enable -Wshadow=local
 Content-Language: en-US
-To: Warner Losh <imp@bsdimp.com>, Markus Armbruster <armbru@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Brian Cain <bcain@quicinc.com>, Stefan Hajnoczi <stefanha@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, bcain@quicinc.com, imp@bsdimp.com, stefanha@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>
 References: <20231026053115.2066744-1-armbru@redhat.com>
  <20231026053115.2066744-2-armbru@redhat.com>
- <CANCZdfpVS0-AuobG0=BwZ+36QWkVSr_tQozn9m2ks7kKS9uXUQ@mail.gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <CANCZdfpVS0-AuobG0=BwZ+36QWkVSr_tQozn9m2ks7kKS9uXUQ@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231026053115.2066744-2-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,54 +96,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/10/2023 07.51, Warner Losh wrote:
+On 26/10/23 07:31, Markus Armbruster wrote:
+> Local variables shadowing other local variables or parameters make the
+> code needlessly hard to understand.  Bugs love to hide in such code.
+> Evidence: commit bbde656263d (migration/rdma: Fix save_page method to
+> fail on polling error).
 > 
+> Enable -Wshadow=local to prevent such issues.  Possible thanks to
+> recent cleanups.  Enabling -Wshadow would prevent more issues, but
+> we're not yet ready for that.
 > 
-> On Wed, Oct 25, 2023, 11:31 PM Markus Armbruster <armbru@redhat.com 
-> <mailto:armbru@redhat.com>> wrote:
+> As usual, the warning is only enabled when the compiler recognizes it.
+> GCC does, Clang doesn't.
 > 
->     Local variables shadowing other local variables or parameters make the
->     code needlessly hard to understand.  Bugs love to hide in such code.
->     Evidence: commit bbde656263d (migration/rdma: Fix save_page method to
->     fail on polling error).
+> Some shadowed locals remain in bsd-user.  Since BSD prefers Clang,
+> let's not wait for its cleanup.
 > 
->     Enable -Wshadow=local to prevent such issues.  Possible thanks to
->     recent cleanups.  Enabling -Wshadow would prevent more issues, but
->     we're not yet ready for that.
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   meson.build | 1 +
+>   1 file changed, 1 insertion(+)
 > 
->     As usual, the warning is only enabled when the compiler recognizes it.
->     GCC does, Clang doesn't.
-> 
->     Some shadowed locals remain in bsd-user.  Since BSD prefers Clang,
->     let's not wait for its cleanup.
-> 
->     Signed-off-by: Markus Armbruster <armbru@redhat.com
->     <mailto:armbru@redhat.com>>
->     ---
->       meson.build | 1 +
->       1 file changed, 1 insertion(+)
-> 
->     diff --git a/meson.build b/meson.build
->     index dcef8b1e79..89220443b8 100644
->     --- a/meson.build
->     +++ b/meson.build
->     @@ -462,6 +462,7 @@ warn_flags = [
->         '-Wno-tautological-type-limit-compare',
->         '-Wno-psabi',
->         '-Wno-gnu-variable-sized-type-not-at-end',
->     +  '-Wshadow=local',
-> 
-> 
-> Does this work with clang? I've not had good luck enabling it.
+> diff --git a/meson.build b/meson.build
+> index dcef8b1e79..89220443b8 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -462,6 +462,7 @@ warn_flags = [
+>     '-Wno-tautological-type-limit-compare',
+>     '-Wno-psabi',
+>     '-Wno-gnu-variable-sized-type-not-at-end',
+> +  '-Wshadow=local',
+>   ]
+>   
+>   if targetos != 'darwin'
 
-The flags are added via cc.get_supported_arguments(warn_flags), so meson 
-checks whether the compiler supports them before blindly adding them to the 
-list.
-That means it should get ignored with Clang, i.e. we should be ok for the 
-remaining spots in the bsd-user code, assuming that most FreeBSD users will 
-use Clang to compile QEMU.
+Using Clang on Darwin:
 
-  Thomas
+$ ../configure
+The Meson build system
+Version: 1.2.1
+Build type: native build
+Project name: qemu
+Project version: 8.1.50
+C compiler for the host machine: cc (clang 15.0.0 "Apple clang version 
+15.0.0 (clang-1500.0.40.1)")
+C linker for the host machine: cc ld64 1015.7
+Host machine cpu family: aarch64
+Host machine cpu: aarch64
+Program sh found: YES (/bin/sh)
+Objective-C compiler for the host machine: clang (clang 15.0.0)
+Objective-C linker for the host machine: clang ld64 1015.7
+Program bzip2 found: YES (/usr/bin/bzip2)
+Program iasl found: YES (/opt/homebrew/bin/iasl)
+Compiler for C supports arguments -fno-pie: YES
+Compiler for C supports arguments -no-pie: NO
+Compiler for C supports link arguments -Wl,-z,relro: NO
+Compiler for C supports link arguments -Wl,-z,now: NO
+Compiler for C supports link arguments -Wl,--warn-common: NO
+Compiler for C supports arguments -Wundef: YES
+Compiler for C supports arguments -Wwrite-strings: YES
+Compiler for C supports arguments -Wmissing-prototypes: YES
+Compiler for C supports arguments -Wstrict-prototypes: YES
+Compiler for C supports arguments -Wredundant-decls: YES
+Compiler for C supports arguments -Wold-style-declaration: NO
+Compiler for C supports arguments -Wold-style-definition: YES
+Compiler for C supports arguments -Wtype-limits: YES
+Compiler for C supports arguments -Wformat-security: YES
+Compiler for C supports arguments -Wformat-y2k: YES
+Compiler for C supports arguments -Winit-self: YES
+Compiler for C supports arguments -Wignored-qualifiers: YES
+Compiler for C supports arguments -Wempty-body: YES
+Compiler for C supports arguments -Wnested-externs: YES
+Compiler for C supports arguments -Wendif-labels: YES
+Compiler for C supports arguments -Wexpansion-to-defined: YES
+Compiler for C supports arguments -Wimplicit-fallthrough=2: NO
+Compiler for C supports arguments -Wmissing-format-attribute: YES
+Compiler for C supports arguments -Wno-initializer-overrides: YES
+Compiler for C supports arguments -Wno-missing-include-dirs: YES
+Compiler for C supports arguments -Wno-shift-negative-value: YES
+Compiler for C supports arguments -Wno-string-plus-int: YES
+Compiler for C supports arguments -Wno-typedef-redefinition: YES
+Compiler for C supports arguments -Wno-tautological-type-limit-compare: YES
+Compiler for C supports arguments -Wno-psabi: YES
+Compiler for C supports arguments 
+-Wno-gnu-variable-sized-type-not-at-end: YES
+Compiler for C supports arguments -Wshadow=local: NO
+Compiler for Objective-C supports arguments -Wundef: YES
+Compiler for Objective-C supports arguments -Wwrite-strings: YES
+Compiler for Objective-C supports arguments -Wmissing-prototypes: YES
+Compiler for Objective-C supports arguments -Wstrict-prototypes: YES
+Compiler for Objective-C supports arguments -Wredundant-decls: YES
+Compiler for Objective-C supports arguments -Wold-style-declaration: NO
+Compiler for Objective-C supports arguments -Wold-style-definition: YES
+Compiler for Objective-C supports arguments -Wtype-limits: YES
+Compiler for Objective-C supports arguments -Wformat-security: YES
+Compiler for Objective-C supports arguments -Wformat-y2k: YES
+Compiler for Objective-C supports arguments -Winit-self: YES
+Compiler for Objective-C supports arguments -Wignored-qualifiers: YES
+Compiler for Objective-C supports arguments -Wempty-body: YES
+Compiler for Objective-C supports arguments -Wnested-externs: YES
+Compiler for Objective-C supports arguments -Wendif-labels: YES
+Compiler for Objective-C supports arguments -Wexpansion-to-defined: YES
+Compiler for Objective-C supports arguments -Wimplicit-fallthrough=2: NO
+Compiler for Objective-C supports arguments -Wmissing-format-attribute: YES
+Compiler for Objective-C supports arguments -Wno-initializer-overrides: YES
+Compiler for Objective-C supports arguments -Wno-missing-include-dirs: YES
+Compiler for Objective-C supports arguments -Wno-shift-negative-value: YES
+Compiler for Objective-C supports arguments -Wno-string-plus-int: YES
+Compiler for Objective-C supports arguments -Wno-typedef-redefinition: YES
+Compiler for Objective-C supports arguments 
+-Wno-tautological-type-limit-compare: YES
+Compiler for Objective-C supports arguments -Wno-psabi: YES
+Compiler for Objective-C supports arguments 
+-Wno-gnu-variable-sized-type-not-at-end: YES
+Compiler for Objective-C supports arguments -Wshadow=local: NO
 
+So:
 
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Now don't blame me for posting patches with trigger shadow=local
+warnings because I am not testing that locally.
+
+I find it a bit unfair to force me rely on CI or other machines
+rather than my host machine to check for warnings. I'd have
+rather waited this option support lands first in Clang before
+enabling this flag.
+
+Regards,
+
+Phil.
 
