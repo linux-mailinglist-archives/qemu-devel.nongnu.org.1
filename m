@@ -2,57 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6ABB7D7A39
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 03:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DB17D7A3C
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 03:40:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvpKt-0001bx-M1; Wed, 25 Oct 2023 21:38:59 -0400
+	id 1qvpLl-0001sR-LV; Wed, 25 Oct 2023 21:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qvpKr-0001bk-MS
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:38:57 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qvpKp-0002z4-Or
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:38:57 -0400
-Received: from [192.168.1.5] (unknown [223.72.62.34])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 158CD43DA4;
- Thu, 26 Oct 2023 01:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1698284332; bh=nGA+fdnVbuT8+0M2eTwiQe3+SGjJ2Pt13f5q3oxDkhs=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=n5B/22wLsSL4rqE0NkqKmQuDGJKtrrtJi8sCinJwe5OhggRylQfLySw/H5EENCmGL
- rX1gtqqZqRMZE0iTAM4P0dO8deJHQSthpB/ag7sqQ0fxyY/Flzu7p8QxftCzBEqDJm
- nx9v3g6xL+fjLuCFL6TsJa+jP7PBKBOq0K9SN3BE=
-Message-ID: <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
-Date: Thu, 26 Oct 2023 09:38:46 +0800
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qvpLi-0001rH-54
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:39:50 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qvpLg-00033z-2T
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:39:49 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1c9b7c234a7so2757735ad.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 18:39:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698284386; x=1698889186; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3Ac4bKXSMeM5uVC6CTO1z9nXWFNWqWVCu3/+uN4eO3k=;
+ b=DzFNjuPUMbz0C3nEzorNxI4kK9c3OTBnDDfzdz5Vqie2dF+6UVBncDL774MH5fwgEW
+ 5nmuq/OIgbc+Y9WLi3RIG7zFyH99T99YXT3V027SGQZEaSNIzOyIWJUkmSfeFBT+0RWZ
+ RRvW+kdPt83eH0SIAqU8DVN7uFy4TSDO6ho4YFMw8s5rt0B4/yNfJa8iDsbRqs+7+AJs
+ /pRvoEtv5csIU6QYng5LZsPAyYZnnogB2G78X7XU/GnEIdEPGMNyfQ6S7WryIHHhNR+4
+ DYSYT6E4GV9NwKttd9BkCYz2p2DHLvPbaSivLzQC8qpeX1rspB4wNT77D2ihDcDmv5j5
+ mpcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698284386; x=1698889186;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3Ac4bKXSMeM5uVC6CTO1z9nXWFNWqWVCu3/+uN4eO3k=;
+ b=Bkh4srVEIhfVzly5jRfOwUVMJrUCtn1QYURbvCYfS8U5o63bFhFR43xLwDzHJtXzeD
+ lZSCS+wJVipHIBNMGlFvxvgs1H4WZmncJ02JF3BSFhd6LEVkMqX2S6hyn0fmCMsyQNkN
+ z/HkILos22MwrnZxVwGyo/7k+VuhqUY7hvas+Wmn2gWab1lJpe9ftshYNv373eW2ePCq
+ HnSjakSSfQbtzGnib9shY0Yz7SxEidQK6L0uRBENOlPDV+aYeW4TPXSavba3/8bo+SzA
+ tCgciumhh8FN/SBbLSR1dGWxBezdAJtz+B1lljC+j4svZg/qH+paY9yulOKBLyJUArqd
+ 6vuA==
+X-Gm-Message-State: AOJu0Yw6RYWORmaitKCI1rINiFdFpWA89lUMyZr/AoHK0Ei8Y1bNsNe5
+ I77pQsU9b/hjgznraSFaId6TUOFA9hY4Rl0+O8g=
+X-Google-Smtp-Source: AGHT+IEjzHuYkF4BR4oE7CReVUFlmo9WI2f3eQqh+D7RtAawUFhv937iu/EWbRXNtTxtzA3nu6ZY7g==
+X-Received: by 2002:a17:90a:d407:b0:27d:7ebe:2e8 with SMTP id
+ r7-20020a17090ad40700b0027d7ebe02e8mr17986103pju.9.1698284386512; 
+ Wed, 25 Oct 2023 18:39:46 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ y6-20020a170902864600b001c0c86a5415sm9817032plt.154.2023.10.25.18.39.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Oct 2023 18:39:46 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+Subject: [PATCH 0/4] tcg: Canonicalize SUBI to ANDI
+Date: Wed, 25 Oct 2023 18:39:41 -0700
+Message-Id: <20231026013945.1152174-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: gaosong@loongson.cn, git@xen0n.name
-References: <20231023153029.269211-2-c@jia.je>
- <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
- <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
- <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
- <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
-From: Jiajie Chen <c@jia.je>
-In-Reply-To: <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,64 +87,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Supercedes: 20231025185956.72677-1-pbonzini@redhat.com
+("tcg: allow a target to request canonicalization of SUBI to ADDI")
 
-On 2023/10/26 03:04, Richard Henderson wrote:
-> On 10/25/23 10:13, Jiajie Chen wrote:
->>> On 2023/10/24 07:26, Richard Henderson wrote:
->>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, TCGv_i128 
->>>> block.
->>>> See target/ppc/translate.c, gen_stqcx_.
->>>
->>> The situation here is slightly different: aarch64 and ppc64 have 
->>> both 128-bit ll and sc, however LoongArch v1.1 only has 64-bit ll 
->>> and 128-bit sc.
->
-> Ah, that does complicate things.
->
->> Possibly use the combination of ll.d and ld.d:
->>
->>
->> ll.d lo, base, 0
->> ld.d hi, base, 4
->>
->> # do some computation
->>
->> sc.q lo, hi, base
->>
->> # try again if sc failed
->>
->> Then a possible implementation of gen_ll() would be: align base to 
->> 128-bit boundary, read 128-bit from memory, save 64-bit part to rd 
->> and record whole 128-bit data in llval. Then, in gen_sc_q(), it uses 
->> a 128-bit cmpxchg.
->>
->>
->> But what about the reversed instruction pattern: ll.d hi, base, 4; 
->> ld.d lo, base 0?
->
-> It would be worth asking your hardware engineers about the bounds of 
-> legal behaviour. Ideally there would be some very explicit language, 
-> similar to
+Based-on: 20231025072707.833943-1-richard.henderson@linaro.org
+("tcg: Introduce TCG_COND_TST{EQ,NE}")
+There a couple of optimize.c routines introduced which I use here.
+
+The final NOTFORMERGE patch suggests that I've caught all of the
+cases, but I certainly wouldn't want to merge the assert without
+a lot more testing.
 
 
-I'm a community developer not affiliated with Loongson. Song Gao, could 
-you provide some detail from Loongson Inc.?
+r~
 
 
->
-> https://developer.arm.com/documentation/ddi0487/latest/
-> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage restrictions
->
-> But you could do the same thing, aligning and recording the entire 
-> 128-bit quantity, then extract the ll.d result based on address bit 
-> 6.  This would complicate the implementation of sc.d as well, but 
-> would perhaps bring us "close enough" to the actual architecture.
->
-> Note that our Arm store-exclusive implementation isn't quite in spec 
-> either.  There is quite a large comment within translate-a64.c 
-> store_exclusive() about the ways things are not quite right.  But it 
-> seems to be close enough for actual usage to succeed.
->
->
-> r~
+Richard Henderson (4):
+  tcg: Canonicalize subi to addi during opcode generation
+  tcg/optimize: Canonicalize subi to addi during optimization
+  tcg/optimize: Canonicalize sub2 with constants to add2
+  NOTFORMERGE tcg/i386: Assert sub of immediate has been folded
+
+ tcg/optimize.c            | 35 +++++++++++++++++++++++++---
+ tcg/tcg-op.c              | 25 +++++++-------------
+ tcg/tcg.c                 | 49 ++++++++++++++++++++++++++-------------
+ tcg/i386/tcg-target.c.inc | 13 ++++++++---
+ 4 files changed, 84 insertions(+), 38 deletions(-)
+
+-- 
+2.34.1
+
 
