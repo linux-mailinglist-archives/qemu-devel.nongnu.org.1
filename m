@@ -2,140 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C2C7D7EC6
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E60417D7EC5
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:47:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvw1D-0008Pe-44; Thu, 26 Oct 2023 04:47:07 -0400
+	id 1qvvzy-0007Si-UE; Thu, 26 Oct 2023 04:45:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>) id 1qvw1A-0008KT-NL
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:47:04 -0400
-Received: from mail-ve1eur01on2108.outbound.protection.outlook.com
- ([40.107.14.108] helo=EUR01-VE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvvzn-0007O6-Oe
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:45:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>) id 1qvw18-0001IV-4F
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:47:04 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ge0PXqfwYuO6GK1hNl5UIlTCGVDlzqz+0wgeL4tzciB2mgNPIM5L4xqeryluTbuYMc6puu1dVzznFAqe183I9thKnV886kUwQIjn0i2ID8G9PY2LbHUE5cBIShYR2s+klTjcmBPDeJ3V+vvLqooW/C8o7293bhOO8NlH6YR0vT/o3ZYqHyhOx79444bI7Nd/+YX3LGKmIruiRuBSfWf8+gdSTZ0qn4AqmLOR/qYzzHw58xDBJKJGgZ5grROU8W1tAwa0cJB8xcIeuRsNgufGPKYscDPsDbPgLobpZ89sOzVOz0CBbuHFoxd/vkL8YqJrHXxBTa6KbFmd8hxAzeJ0Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fAuxsLgup0/LldH4aqrIRT6n1u3G5BIoJkunXbpEI98=;
- b=Q94Ndn4+dxqlK5FCIKuXBKGPYw5Zho8vLmFIH4qwDE0pTzuzmQL7orkU5lpM5prOYzWZJnEQH74AqPSdfmmZ41JQwbgQypTVW5Co4xhwzcbkHk3kdKDXC2InK5LUJ7vdUol3ttF7p5AWGuzPLQuNI1dkWGwplrODP3I1OD6B2R8WLWN7/JUC8P6ZzXISI2cFV/ZxgJpNPoo6yHWfnPKXMhPu+ttxa55tFOl+F+C7GjMcW5Of4jJB7jdWzJMVByiaXka1JQfNMUzmd73o6km9F6bbvYaA5zEpB2ZHXx1oV9HJKOAD/8OYtc76y+qLFU5DAkJdWUrX8J2RAhrai3980A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fAuxsLgup0/LldH4aqrIRT6n1u3G5BIoJkunXbpEI98=;
- b=AiuYRT5gdNxdWgrhFfkeU3SHT3omre/hUh98N5DnsuURPq+ebU9OVfVhc9AeI880Zv7QO4DKa9V+c58wG2RbpS2vTM9xwBfmimAuLfiJs5w4sZxlcVfiuRQYGNyzGm+aGSxVOiVpG45H+ZW4MVP51WYjq1JyiztYWjg4yKFkj0uOL0HMfcbdJXiWZAj0Bd7dmTFR1msc6x4CIsIwXMldN6IHr537Dv19lJ7V8U6IS5Ookj36R7o1JUISckM/VCi6nzlc5oeBr8spwwZoiuoQlxG7C67lLAEe9kgpn0YLe40ZJ6Ud5R7eFxwiRMVb5ipXNs0HkTIjTRVR7S7Su1opAg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by DB5PR08MB10309.eurprd08.prod.outlook.com (2603:10a6:10:4a9::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Thu, 26 Oct
- 2023 08:41:56 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::c196:49d8:108c:2254]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::c196:49d8:108c:2254%6]) with mapi id 15.20.6907.032; Thu, 26 Oct 2023
- 08:41:56 +0000
-Message-ID: <5d9ab399-c5b2-41cd-9f2d-73d478e3c72a@virtuozzo.com>
-Date: Thu, 26 Oct 2023 10:41:53 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvvzl-00011J-1H
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:45:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698309935;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=D8yHzVlwxhOyUyZx/CNYzpSz7Sti9RHU5svhTzGIDjc=;
+ b=Q6BALuDS9RBihewJuiCEXdD0NLJSoj+DwS9bY6xVoZknuF4WzwI+kPFuziXy9weFtkuI+y
+ BIVQXWSypgkoxc4OcmQQcn9cgjK7doV8nm09IdB+rwg09xOFJnlL4Mg6u3LjQ9dML9yo/+
+ bKG/JdB8g2Ov7ul2HlRiRMpyzcXVsyo=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-bJoHPqBnNWed2ikKCwXdmA-1; Thu, 26 Oct 2023 04:45:27 -0400
+X-MC-Unique: bJoHPqBnNWed2ikKCwXdmA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41cdce61c6cso8868431cf.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 01:45:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698309927; x=1698914727;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=D8yHzVlwxhOyUyZx/CNYzpSz7Sti9RHU5svhTzGIDjc=;
+ b=adAAIS0rNrsxmIyXNy0var1GOe5TYJ6ED51R0wYlvYnrZvmPM72IRrWe1pYjg6BXS2
+ 2Gxkne9b8ZgfWAorUSE8p9z427q83hgDRXEScufMpWkDSefC+N8m6yrCOvbuDF07wKXA
+ gaoGzSvwlKoGHYQkc9VjdE+gjriOhAS03YE/zN8QZ0EOENE/K/Y7CiVz5V0eNqjM5cu7
+ j1D9x5+MZb0LCnBLNb5sQQLD5UdDawN+24qOOG/hSJoq1P7jugH8+CTvCTRyzbXtpXRp
+ Lv/ztaffGDFnhjPUGM/XDv8nid3zA5xE3FQ9y1aFVhcGrBDkWm+1QEiTAQOrBIYy+gLN
+ g+xQ==
+X-Gm-Message-State: AOJu0YytFv6e292HqVdb5aOX0n/IffzYZ+WI11MZJApesRxDDdGo7afi
+ TP8ze/QCbdUEO09mrzmYUs3QHxDfUr7E7+c7pO8Eoj7l+0LbDDthAIHIrlBoDSiCKM+qU5pXBsg
+ 5FWi/ie3J1Dnz+VU=
+X-Received: by 2002:a05:6214:5004:b0:66d:9d4d:683 with SMTP id
+ jo4-20020a056214500400b0066d9d4d0683mr19650691qvb.57.1698309927325; 
+ Thu, 26 Oct 2023 01:45:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOrTMzs7z59ZgFds7tfoCxRv5lbc28jdSbOKZDwvQT0MeKu1apGtw6CP8TRJPvRfaG6+WwDA==
+X-Received: by 2002:a05:6214:5004:b0:66d:9d4d:683 with SMTP id
+ jo4-20020a056214500400b0066d9d4d0683mr19650671qvb.57.1698309927085; 
+ Thu, 26 Oct 2023 01:45:27 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ jy12-20020a0562142b4c00b0065823d20381sm5062574qvb.8.2023.10.26.01.45.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Oct 2023 01:45:26 -0700 (PDT)
+Message-ID: <d41aa305-6d3d-478a-82c7-e9a8789bdfce@redhat.com>
+Date: Thu, 26 Oct 2023 10:45:23 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] vfio/pci: Fix buffer overrun when writing the VF
- token
+Subject: Re: [PATCH v6 15/23] ui/gl: opengl doesn't require PIXMAN
 Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Denis V . Lunev"
- <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
- Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Leonardo Bras <leobras@redhat.com>
-References: <20231026070636.1165037-1-clg@redhat.com>
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <20231026070636.1165037-1-clg@redhat.com>
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
+ <20231025190818.3278423-16-marcandre.lureau@redhat.com>
+ <4b2a7827-b0a0-4cd5-81a4-d4129a53ac82@redhat.com>
+ <CAJ+F1C+q1N0MWGHH=L82iyL-gCp__U+eELo9=y5fz0rexUFptQ@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAJ+F1C+q1N0MWGHH=L82iyL-gCp__U+eELo9=y5fz0rexUFptQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR04CA0091.eurprd04.prod.outlook.com
- (2603:10a6:803:64::26) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|DB5PR08MB10309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 01ef54e3-f076-4b2d-d264-08dbd5ff692a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: h5ojH7mhsGVvNAap6BMS0OKWOQqaTDR6dFWnKYM9ItGFa6TdwD2Gr51Wa2Vw6epsKgxdzIykctJ1nuBRe5/jaz6+pnbtvZO4qMVvJARMHHawph7RkQiQ3VylBwT816e9nT8q2O9Uu3uoTi8vBbmYaKw550wlN1TVFr5DG9I7KRNMs1b06tGsFw4e1RI+jHX0JXVYbtxdqx3QuPQFICWO1p+MTvfJHAlsPbU1bZamoIz5jnn5j5mMabnLQUhPiqmYnOWDsesz8GzHdOb4Sj8tb6JQdKrAJAH3gm7BNmCBRHvoriDDeCosAi6jb3zid6R2+JH5XEITcYlMAsogqoxfV8nUj4MTasN1eksW+48qPliUwpaRMXnnyARalnehuMoTPaw0UU6lKep3wz83hiWB60GzNCy9G2i4CciOD2Lk6Kp1aYY0iniJ7BVBK+NFy0ZX0LpF+Jnk1ku7Jx9Uy8yD2D/4GF2MA/2FYB4qizd/Qk0vH8bK7AlYkLNn+NfQDoZJDCWo5CHvrZ1mb2sWJRadE7tiFVeQ9VKC6dIOpuCjIUkMuFzBDyAUBgxzy24sQuCQWNWB1fnVgU/YGhzMCd942SqC2WZInlzOFjv0ymVcMQmkci22z7k2CdPQcllGuFAK0BBT+EFAsnBotAS9itNUHg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39840400004)(376002)(366004)(346002)(136003)(396003)(230922051799003)(64100799003)(451199024)(186009)(1800799009)(83380400001)(36756003)(54906003)(66476007)(66556008)(316002)(38100700002)(41300700001)(66946007)(4744005)(2906002)(7416002)(5660300002)(8676002)(8936002)(4326008)(478600001)(6486002)(31686004)(53546011)(6512007)(6666004)(6506007)(2616005)(26005)(31696002)(86362001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGZpeDMzL3AyLzBaWFNGY2J1RzFQcHhuTUJDTFBvZnRyMTBMY3pIYTJOMW9j?=
- =?utf-8?B?QnB0ZDdqK3ZoaHJYc3BRYlN6MXh6empvQlNvV0pVeHJ2VnpISEdMMUg3RGZm?=
- =?utf-8?B?U3Z0TVNtWXFtWXlJMnZhUlAvTEtoWnRrVHQrbzdZc0pxakxFN2UrZCtZVTFS?=
- =?utf-8?B?SkRvYTV6bjNSWW5pOG1vZGtDWm9RdGdJcUR2a3dDLzkrWk5yc0Z0MHdxQ0JE?=
- =?utf-8?B?TmlBc3VvOGhvOVVVelhJWWxTeVBOWUtOOXZjQUoySll0UldEUlZvd0ZHSkZo?=
- =?utf-8?B?bU1zc1M2MlozczBMVXgvcjAzc3FrYitod2g5NWF4SkRKRUhCVzZndFZLUHd3?=
- =?utf-8?B?Uy9TQmJCdkxCTGh3RldjMW9wbS9Xd3FvLys3ZnJzK3cxVnkxMWhXbHFYYTd6?=
- =?utf-8?B?WC9UUDZwMzVhMC81bnZlLzB4SS9TdmZBSDBPSXlUdmpDNTU1UG40QWdsdC9D?=
- =?utf-8?B?dW1NWmdRM3N2NXJVK2JXVS9hbTFiRmNXR3VQMHVKNDhkUmhWYUovK3lOdXVy?=
- =?utf-8?B?OWVSYTJjQUhmZkdOL2xaVVp4ZUgzazZheDF0WitkU216L3h5U0hXdzdTZmIr?=
- =?utf-8?B?eGNUZGVrWnBMK3FwVkg2S0JjNGVtSzdjMHFFdFE4TG9VUzV5NjliZjUzVG9n?=
- =?utf-8?B?RHJNOTFTYmlQUXRRdUNnVnBkWHpMRzB6YkVNRUN1d3RXZUYzUExwaFRGK2Fh?=
- =?utf-8?B?VklkV3lVSlkzZ01MRDhLc0lDVXcwTURaZTBIR2kxTGZLVzhSamlNdjBjK2FD?=
- =?utf-8?B?K0QzdWZRelo4Z3VjVDVXcjMrM3REa1l4T0ZsUTQwOWs1QkxPUnAzdGtlakk5?=
- =?utf-8?B?RktTRU9hcldiLzlqQWdQNTMxdlRJWWxDUEJhaFVSN0xYME81eTUzZkY1U3A5?=
- =?utf-8?B?STEzTDJDN1VhN2YyVW9tZjR1dmhJOUw0NENvMHlzZzJleVN6aXZ2RXFmLzVJ?=
- =?utf-8?B?b3MrVTh5TE5vSXlMWk80TytaSFRRSlc5QjRhcTNhM1RIM2ZEMjR0aU9Cd0F1?=
- =?utf-8?B?YkxBU1JLcmlGekJNTzdmK01ZK3hlclN4a0ZVYXFYL3RwVWJYMW9Sb2I0MFFD?=
- =?utf-8?B?eXV2bWpNNU1GMDIvQjVkbzl1cnVSLzA5VWxqcTV2MDZld3I0MmhRUWc5YnI5?=
- =?utf-8?B?M2hMQzQvbkZ2b2xYYkhBY2lVWENhdTk2MEZvWkk3NGhZNjF4QW5WbnVrcjQy?=
- =?utf-8?B?WmsrV2pOYmlEeFBOMXBoVEtxaE9ETFpmYnkwSTRSQkp1c0ZQVDJHYnhyUVRt?=
- =?utf-8?B?VTI1c293enYxbVNRYTE3cXAzdWlObTFjalRMT0JuZWlENVE3UlFKdUNxMncr?=
- =?utf-8?B?TWxPbEZpd0tGckhvY3VVOC9pblJnL2ZZdGZPYThub0FZNkRqSEVWay9NVU03?=
- =?utf-8?B?M0psSEVrc2hrc1o5Mmxzb2tJRkpSUW9TQ3Bxeno3NHNyUWlXL0VSNjBOQWRm?=
- =?utf-8?B?eVNQVmZZY1lnUnU1dklSdUtDNWt5ZS92Q1BiN3BWU2JiOWVRWHMzaHFQOWxn?=
- =?utf-8?B?WEl2eVlSSWVuOG1SQVRwc2JPY0xGSVhlWkRtL0crRkhXcFk5Y3YxQmZZaTZn?=
- =?utf-8?B?Vy9senZkWHVxWGtkU0ZkQ2RlSE9HalQxMWNyLzVXdUVXREZDWmRobGljYm12?=
- =?utf-8?B?UjhLaytpdFVPLzNXTlJ3dGRYMnF4TXRFMCt5aytRRGI2ZXo4UnhGUzZqNnFV?=
- =?utf-8?B?Q0svVThBRlcvVE1hMm8wOU9ncmp6RWZCRFc1bkdKR2FjMGFRVHdmOWZPTnJx?=
- =?utf-8?B?emFYYnJGejVoY29UbzBGb3VpKzJzUEZ2YStRTGhSUWt2YS9WdVlpWXBCV0Ev?=
- =?utf-8?B?eU95ZTV3T2lhR3M1Vk1YMkp2RUpuVXp6WGpMV1VGVlVGaWt2UFM2cWJWVFZU?=
- =?utf-8?B?WGZPblBkb3hOaytmVDFQSWxVenpVM0NSMjl1T1U1b1NaekhDUDR3TjJsdzVq?=
- =?utf-8?B?RmNKWWluOG1wM0JMSnNrMTNVUC9KYnltMkljMkxZMzhyN1I1V240em5jaG1V?=
- =?utf-8?B?Qm40M3RTaUhxalZJWjQ4Skg4MDZJUzNXbzk5MXhZY2VPd050TExZMUlHdlVD?=
- =?utf-8?B?WVRFT0MrMndUQi80Ujh4NDI3ME54RVZydjNpb2JpS0Z2UzYrWGp3RmFld0lR?=
- =?utf-8?Q?UAfc3kobexZdhHKCgAeSNik/i?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01ef54e3-f076-4b2d-d264-08dbd5ff692a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2023 08:41:56.2671 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XVjjpBxYx8JgfmUnAmG0zih0pdpgf5qVQGxx/fwqWe5qDydwGkO9Lp+4oWa2t/bJvbnInbe0qssIApLuSp9stg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB5PR08MB10309
-Received-SPF: pass client-ip=40.107.14.108; envelope-from=den@virtuozzo.com;
- helo=EUR01-VE1-obe.outbound.protection.outlook.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,38 +151,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 09:06, Cédric Le Goater wrote:
-> Hello,
->
-> This series fixes a buffer overrun in VFIO. The buffer used in
-> vfio_realize() by qemu_uuid_unparse() is too small, UUID_FMT_LEN lacks
-> one byte for the trailing NUL.
->
-> Instead of adding + 1, as done elsewhere, the changes introduce a
-> UUID_STR_LEN define for the correct size and use it where required.
->
-> Thanks,
->
-> C.
->
-> Changes in v2:
->   - removal of UUID_FMT_LEN
->
-> Cédric Le Goater (3):
->    util/uuid: Add UUID_STR_LEN definition
->    vfio/pci: Fix buffer overrun when writing the VF token
->    util/uuid: Remove UUID_FMT_LEN
->
->   include/qemu/uuid.h              | 2 +-
->   block/parallels-ext.c            | 2 +-
->   block/vdi.c                      | 2 +-
->   hw/core/qdev-properties-system.c | 2 +-
->   hw/hyperv/vmbus.c                | 4 ++--
->   hw/vfio/pci.c                    | 2 +-
->   migration/savevm.c               | 4 ++--
->   tests/unit/test-uuid.c           | 2 +-
->   util/uuid.c                      | 2 +-
->   9 files changed, 11 insertions(+), 11 deletions(-)
->
-Reviwed-by: Denis V. Lunev <den@openvz.org>
+On 26/10/2023 10.09, Marc-André Lureau wrote:
+> Hi
+> 
+> On Thu, Oct 26, 2023 at 10:44 AM Thomas Huth <thuth@redhat.com> wrote:
+>>
+>> On 25/10/2023 21.08, marcandre.lureau@redhat.com wrote:
+>>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>>
+>>> The QEMU fallback covers the requirements. We still need the flags of
+>>> header inclusion with CONFIG_PIXMAN.
+>>>
+>>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>> ---
+>>>    ui/meson.build | 4 ++--
+>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/ui/meson.build b/ui/meson.build
+>>> index 3085e10a72..7c99613950 100644
+>>> --- a/ui/meson.build
+>>> +++ b/ui/meson.build
+>>> @@ -60,8 +60,8 @@ endif
+>>>    system_ss.add(opengl)
+>>>    if opengl.found()
+>>>      opengl_ss = ss.source_set()
+>>> -  opengl_ss.add(gbm)
+>>> -  opengl_ss.add(when: [opengl, pixman],
+>>> +  opengl_ss.add(gbm, pixman)
+>>
+>> I don't quite get the above line (sorry, meson ignorant here) ... does
+>> "pixman" simply get ignored here if it has not been found?
+>>
+> 
+> Yes, when it is 'not_found", it's simply ignored. Essentially, this is
+> making pixman from required to optional to build the opengl source
+> set.
+
+All right, then I think the patch is fine:
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
+But one more cosmetic question:
+
++  opengl_ss.add(when: [opengl],
+                  if_true: files('shader.c', 'console-gl.c', 
+'egl-helpers.c', 'egl-context.c'))
+
+Do we still need the "when: [opengl]" part here? ... there is already the 
+"if opengl.found()" earlier in this file, so it looks like this is not 
+necessary anymore now?
+
+  Thomas
+
 
