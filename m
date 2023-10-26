@@ -2,80 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3286D7D7BFC
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 053EC7D7C21
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:18:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvsZl-0000Jl-2q; Thu, 26 Oct 2023 01:06:33 -0400
+	id 1qvskX-00018L-LE; Thu, 26 Oct 2023 01:17:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1qvsZj-0000JI-DM
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:06:31 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1qvsZg-0000Dq-QZ
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:06:31 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c9de3f66e5so3416145ad.3
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:06:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qvskK-00010Q-90
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:17:33 -0400
+Received: from pi.codeconstruct.com.au ([203.29.241.158]
+ helo=codeconstruct.com.au)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qvskH-0003Ca-Eu
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:17:27 -0400
+Received: from [192.168.13.88]
+ (ppp118-210-136-142.adl-adc-lon-bras33.tpg.internode.on.net
+ [118.210.136.142])
+ by mail.codeconstruct.com.au (Postfix) with ESMTPSA id C379220174;
+ Thu, 26 Oct 2023 13:17:09 +0800 (AWST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698296786; x=1698901586; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=RNM/CyI20wXyYGs9UTGgUz+tWRvyBskX9gAleyFmpiQ=;
- b=uudNw5brTt7VKWpfQhdbvLssGrqHowdqjGjTDHEn4EIPgUrs+h74Q6zs5RHsTueB5p
- LrTq7TWt3JliNKZKoICzvA3ybG1xcAwBbU5P5g6dlpE1Q4kp/ZHsIpkehxGYL+kqn8Z4
- zrkoqdgsgf3IH7FeB0oItN9W9p5TK4oS+szKNf9ochX4nyn9LxrPwN0KRLsZDBQXX06C
- GacOyefcLCjldxYCdb8jrMG91j5tWE7aYjNMCt+ueDhcqq7fST0MEr+oKvK41zQ/Owq/
- AlCtjRtuPpX17imsJ+kNPOgTe2L+eSc1NvR+8RyhnNwqOm9tv/GTomI86Ncpx6zHr6bf
- bfPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698296786; x=1698901586;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RNM/CyI20wXyYGs9UTGgUz+tWRvyBskX9gAleyFmpiQ=;
- b=WbFpflGumoM0Kvb8AGsUwqmnlDgaP+DVMuhnzOvGvEhDnKZ7Sk4afLD/opSk5I58aW
- W6O2mKRj/aZnPQN0RvfsmNs6W6tbtBsZelWujHAskbQUUFJhLwxwUosUrIynrjJs6UC4
- Fg8L9YqchbuzegFPQKjwADfG02o+DTwc5GsVcdk+KMrqc4Cym/Pw+M6xU1cGQp9CpF+1
- jiYKDXIPybCXDch4DmlfFWEhpi00IE9SCbDdL81JSSMc3B8PhGjDeJd4vUj6KvkNjMPY
- /9TZmq/WAiDj0vytZVL3GesDkJBgj1OPBY+OmpB19eN0TO4itwaeAqkW3dOs5cj9Ur/5
- yPoQ==
-X-Gm-Message-State: AOJu0YwcMc8TsJmBzpcEHRY1jU5jWNn5nXETnvMADtVpXboy8CuLLfl4
- QbiZmlVyzzAKFckvG7//6rqtKw==
-X-Google-Smtp-Source: AGHT+IE7beRwzcAkrjLeHPYSp80nZmAnCCTO/zKNDFobP9GLlzPorTrYXtDt8lP2eJGflFDII3QZhw==
-X-Received: by 2002:a17:902:e746:b0:1c9:fb8e:2c33 with SMTP id
- p6-20020a170902e74600b001c9fb8e2c33mr19311718plf.7.1698296785719; 
- Wed, 25 Oct 2023 22:06:25 -0700 (PDT)
-Received: from leoy-huanghe.lan (211-75-219-209.hinet-ip.hinet.net.
- [211.75.219.209]) by smtp.gmail.com with ESMTPSA id
- b7-20020a170902d50700b001c9ccbb8fdasm10002145plg.260.2023.10.25.22.06.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 22:06:25 -0700 (PDT)
-Date: Thu, 26 Oct 2023 13:06:21 +0800
-From: Leo Yan <leo.yan@linaro.org>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: mst@redhat.com, viresh.kumar@linaro.org, lulu@redhat.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] virtio: rng: Check notifier helpers for
- VIRTIO_CONFIG_IRQ_IDX
-Message-ID: <20231026050621.GA111564@leoy-huanghe.lan>
-References: <20231025171841.3379663-1-mathieu.poirier@linaro.org>
+ d=codeconstruct.com.au; s=2022a; t=1698297433;
+ bh=RxSHpIL9+GPsscpy12l/3v5ATdsE/2ye8USPTnJnKp0=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References;
+ b=ffdHQ0N+gGThJP9S2hW5hh1ij4P7DsDpKRJAcZZHn28689iEeJPupQfjRoE6LwUgK
+ VrRCwxrb1pWZL4fNPy0PlmXfqml01W1LfFbFRDmcHR85fQHTHjxATRP/gs7/0G37mK
+ c99JG5I4pUCWJ8qb4FXjZFszZbDhn5qN/fDjc+NGmZZUpXiwbaTcM55LnUTZYyQcx2
+ LJiw3rUVDLP9jpZnOP9RdOl5c4M8k2eR2v9IJveqE0SB8eeVNdMxKrAbvHjZL2lfnu
+ lm++Iww4EHIaOmIJuNlo3EzdhZLRZ9C61lTbVT8K2P8EM86GHqJRR/CNcwgHwmV35x
+ 2EIzu1PXejZIw==
+Message-ID: <184dad276f060c72db1227b7de6ae9368b078531.camel@codeconstruct.com.au>
+Subject: Re: [PATCH] eeprom_at24c: Model 8-bit data addressing for 16-bit
+ devices
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Klaus Jensen <its@irrelevant.dk>, =?ISO-8859-1?Q?C=E9dric?= Le Goater
+ <clg@kaod.org>
+Cc: qemu-devel@nongnu.org, peter@pjd.dev, joel@jms.id.au, cminyard@mvista.com
+Date: Thu, 26 Oct 2023 15:47:08 +1030
+In-Reply-To: <ZTjeZ6LB96yaiW3l@cormorant.local>
+References: <20230921034816.320655-1-andrew@codeconstruct.com.au>
+ <f5e6727c-887c-4533-a5df-db1a57318870@kaod.org>
+ <ZTjeZ6LB96yaiW3l@cormorant.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231025171841.3379663-1-mathieu.poirier@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=leo.yan@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=203.29.241.158;
+ envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,16 +73,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 11:18:41AM -0600, Mathieu Poirier wrote:
-> Since the driver doesn't support interrupts, we must return early when
-> index is set to VIRTIO_CONFIG_IRQ_IDX.  Basically the same thing Viresh
-> did for "91208dd297f2 virtio: i2c: Check notifier helpers for
-> VIRTIO_CONFIG_IRQ_IDX".
-> 
-> Fixes: 544f0278afca ("virtio: introduce macro VIRTIO_CONFIG_IRQ_IDX")
-> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+On Wed, 2023-10-25 at 11:22 +0200, Klaus Jensen wrote:
+> On Oct 25 11:14, C=C3=A9dric Le Goater wrote:
+> > It seems that the "at24c-eeprom" model doesn't have a maintainer. Until
+> > this is sorted out, may be this change could go through the NVMe queue
+> > since it is related.
+> >=20
+>=20
+> I can, but I'm not that confident on determining if we choose to
+> implement this behavior broadly. I have no qualms, but someone who works
+> more with embedded stuff might?
 
-Tested this patch and the vhost-user-i2c device works with it:
+What are the feelings on putting the behaviour behind a flag? We could
+add it as a property that we can set, e.g. when defining a machine.
 
-Tested-by: Leo Yan <leo.yan@linaro.org>
+Andrew
 
