@@ -2,107 +2,154 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBC57D8612
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD507D8614
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:36:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw2M2-000483-35; Thu, 26 Oct 2023 11:33:02 -0400
+	id 1qw2Ow-0006hi-IJ; Thu, 26 Oct 2023 11:36:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qw2Lu-000462-Es; Thu, 26 Oct 2023 11:32:57 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qw2Ou-0006h4-Ov
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:36:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qw2Lr-0002Mo-9C; Thu, 26 Oct 2023 11:32:54 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39QFUoq3016091; Thu, 26 Oct 2023 15:32:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=xvmOqf33Fjz2zBBHiGE4jSm8QNZQBVzV3eOXw+mLncw=;
- b=JaO5TKRFuBfLKbfqaIxkHIcsGMwJKKm6fVy9ghLKJ/vsaxJIKLINrmqn0fSHX/Qj4ICx
- SFl0NFXkS/PUImtrr3uYlESGhrpOfrdJ9tZCAoWmJiBhm+4yU9S9awgC5jAD5GZv3j5d
- h6DtmUOnqNISPQ3PX/6yD5WKwuuJvKBGQyCJvZ1OfhnW2tgoY2aaeQ3LV4wPffsBdym6
- 5s4M7tlWZ7M6A1WE2KBHaz5EwENXhtPCM+2k0XIUpt/91rIfV2PExLNugPs+4iM1hNNY
- 5q2gVsLsS/Wvbtxidgv/Xs0bOr5y4j3HI3r4cZyV929iNXkxRR/SzUzuOJlDQFOTnZXF vA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyt699ars-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Oct 2023 15:32:34 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QFVHrY019329;
- Thu, 26 Oct 2023 15:32:34 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyt699are-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Oct 2023 15:32:34 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39QEbIfb026847; Thu, 26 Oct 2023 15:32:33 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsyp6yhb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Oct 2023 15:32:33 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39QFWWYa56426790
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Oct 2023 15:32:32 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9BDCE58061;
- Thu, 26 Oct 2023 15:32:32 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE5C258069;
- Thu, 26 Oct 2023 15:32:31 +0000 (GMT)
-Received: from [9.24.12.86] (unknown [9.24.12.86])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 26 Oct 2023 15:32:31 +0000 (GMT)
-Message-ID: <fd4ca25e-a1b2-4ce1-828f-efbc88d00f3c@linux.ibm.com>
-Date: Thu, 26 Oct 2023 10:32:31 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 09/10] hw/fsi: Added FSI documentation
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20231021211720.3571082-1-ninad@linux.ibm.com>
- <20231021211720.3571082-10-ninad@linux.ibm.com>
- <ee85f3d0-7ec8-47d5-b157-60d103553502@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <ee85f3d0-7ec8-47d5-b157-60d103553502@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tg8_4xYFlZewRot2fjEe1SAwlbpJzJpz
-X-Proofpoint-ORIG-GUID: _Beyb2p0vNS0rpD44sfdO7Fh4S_Jsqj0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qw2Os-0004Rg-Fu
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:36:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698334556;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=5Qh35c9c5z9vLgTiIFfl9j6up82I/dDNDvBApoL3zmE=;
+ b=Eg/xdIReKOY3LP8+II13GmNDNRFijlkPrFoZVyQfsvQLv1uZqGzqbXh6AtTXrGm3KKUNNC
+ 5S5wARIHy2gmARvr1GVv9PgHNpEIlTn+n9X3xp2AgXZJOa3LRrkSuoIb9ZpSRYtfT/0uBu
+ /KBMSqyJKdepNLQkg98PZWuJD7Q28SI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-540-TvhQoftOPsSc5qpX0Y2Ndg-1; Thu, 26 Oct 2023 11:35:55 -0400
+X-MC-Unique: TvhQoftOPsSc5qpX0Y2Ndg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9b65c46bca8so73903766b.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 08:35:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698334554; x=1698939354;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5Qh35c9c5z9vLgTiIFfl9j6up82I/dDNDvBApoL3zmE=;
+ b=RBwJUHhsa4fdA2/oTrhbJAsHRwsOb4TQZfL/xpGCoc8h6ffoBBuSpBMarHI7bjExUU
+ hvEQwvqX+yIwD2aHqYQ/UR1YOoXVdYs49+xwGoytqispIL6oUJTe7nBiJFEED4Fw33B2
+ u0C0I1hwsAulK2ihsKkTvaZv0jts+KE0ctsTKXbVqcxOwZ+30Xb3XjlHQJlQS9la8o+7
+ wA34Y7xPDHsTWA21iCiQ7GpTlZ5GEPIqv/YAauJ6hdHG5gEFIhMybQMOM6QaW9LKZTM7
+ gZaGEOjq9cqtv0Ez7ikYu+TCMm19vyszeWheelgZ1HkhUptYXpKOAgXOIjOjvFNmVkWd
+ GONw==
+X-Gm-Message-State: AOJu0YwU9zbEBFPM9WhuyO/+KFX7gvGx7erchDpyTNzj6lySU0IWu/l3
+ A+WdQ34rop0mnF+7v33oCDgeYwl53GlQ4NXHxSvpAnU9d/GQmiMc6y9Pds2RgtHJVzSIzyaZBh2
+ J+pvtEe9FTFQg5FA=
+X-Received: by 2002:a17:906:c150:b0:9bf:63b2:b6f0 with SMTP id
+ dp16-20020a170906c15000b009bf63b2b6f0mr19070ejc.29.1698334554090; 
+ Thu, 26 Oct 2023 08:35:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENjKaRA1rML5KGXs5qGIasq0EWe/2kcUc1rJzPYXL1oKJ1ZRASxHVRWpV02H0yf5req3MWBg==
+X-Received: by 2002:a17:906:c150:b0:9bf:63b2:b6f0 with SMTP id
+ dp16-20020a170906c15000b009bf63b2b6f0mr19037ejc.29.1698334553715; 
+ Thu, 26 Oct 2023 08:35:53 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
+ [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
+ h11-20020a1709063b4b00b009b9aa8fffdasm11819659ejf.131.2023.10.26.08.35.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Oct 2023 08:35:53 -0700 (PDT)
+Message-ID: <8e83c7e4-f595-463b-91d1-f5112392461a@redhat.com>
+Date: Thu, 26 Oct 2023 17:35:50 +0200
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-26_13,2023-10-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 malwarescore=0 mlxlogscore=974 mlxscore=0
- lowpriorityscore=0 adultscore=0 bulkscore=0 suspectscore=0 impostorscore=0
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310260134
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 19/39] hw/s390x/s390-skeys: Don't call
+ register_savevm_live() during instance_init()
+Content-Language: en-US
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Fam Zheng <fam@euphon.net>, Peter Maydell <peter.maydell@linaro.org>,
+ Corey Minyard <cminyard@mvista.com>, libvir-list@redhat.com,
+ Jason Wang <jasowang@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Li Zhijian <lizhijian@fujitsu.com>, Peter Xu <peterx@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, qemu-block@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Corey Minyard <minyard@acm.org>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Stefan Weil <sw@weilnetz.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-s390x@nongnu.org,
+ qemu-arm@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ David Hildenbrand <david@redhat.com>, John Snow <jsnow@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Kevin Wolf <kwolf@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Hanna Reitz <hreitz@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ qemu-ppc@nongnu.org
+References: <20231024131305.87468-1-quintela@redhat.com>
+ <20231024131305.87468-20-quintela@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231024131305.87468-20-quintela@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,232 +165,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+On 24/10/2023 15.12, Juan Quintela wrote:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> Since the instance_init() function immediately tries to set the
+> property to "true", the s390_skeys_set_migration_enabled() tries
+> to register a savevm handler during instance_init(). However,
+> instance_init() functions can be called multiple times, e.g. for
+> introspection of devices. That means multiple instances of devices
+> can be created during runtime (which is fine as long as they all
+> don't get realized, too), so the "Prevent double registration of
+> savevm handler" check in the s390_skeys_set_migration_enabled()
+> function does not work at all as expected (since there could be
+> more than one instance).
+> 
+> Thus we must not call register_savevm_live() from an instance_init()
+> function at all. Move this to the realize() function instead. This
+> way we can also get rid of the property getter and setter functions
+> completely, simplifying the code along the way quite a bit.
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Eric Farman <farman@linux.ibm.com>
+> Acked-by: Juan Quintela <quintela@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Message-ID: <20231020150554.664422-2-thuth@redhat.com>
+> ---
+>   hw/s390x/s390-skeys.c | 35 ++++++++---------------------------
+>   1 file changed, 8 insertions(+), 27 deletions(-)
+> 
+> diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
+> index 5024faf411..8e9d9e41e8 100644
+> --- a/hw/s390x/s390-skeys.c
+> +++ b/hw/s390x/s390-skeys.c
+> @@ -12,6 +12,7 @@
+>   #include "qemu/osdep.h"
+>   #include "qemu/units.h"
+>   #include "hw/boards.h"
+> +#include "hw/qdev-properties.h"
+>   #include "hw/s390x/storage-keys.h"
+>   #include "qapi/error.h"
+>   #include "qapi/qapi-commands-misc-target.h"
+> @@ -432,58 +433,38 @@ static int s390_storage_keys_load(QEMUFile *f, void *opaque, int version_id)
+>       return ret;
+>   }
+>   
+> -static inline bool s390_skeys_get_migration_enabled(Object *obj, Error **errp)
+> -{
+> -    S390SKeysState *ss = S390_SKEYS(obj);
+> -
+> -    return ss->migration_enabled;
+> -}
+> -
+>   static SaveVMHandlers savevm_s390_storage_keys = {
+>       .save_state = s390_storage_keys_save,
+>       .load_state = s390_storage_keys_load,
+>   };
+>   
+> -static inline void s390_skeys_set_migration_enabled(Object *obj, bool value,
+> -                                            Error **errp)
+> +static void s390_skeys_realize(DeviceState *dev, Error **errp)
+>   {
+> -    S390SKeysState *ss = S390_SKEYS(obj);
+> -
+> -    /* Prevent double registration of savevm handler */
+> -    if (ss->migration_enabled == value) {
+> -        return;
+> -    }
+> -
+> -    ss->migration_enabled = value;
+> +    S390SKeysState *ss = S390_SKEYS(dev);
+>   
+>       if (ss->migration_enabled) {
+>           register_savevm_live(TYPE_S390_SKEYS, 0, 1,
+>                                &savevm_s390_storage_keys, ss);
+> -    } else {
+> -        unregister_savevm(VMSTATE_IF(ss), TYPE_S390_SKEYS, ss);
+>       }
+>   }
+>   
+> -static void s390_skeys_instance_init(Object *obj)
+> -{
+> -    object_property_add_bool(obj, "migration-enabled",
+> -                             s390_skeys_get_migration_enabled,
+> -                             s390_skeys_set_migration_enabled);
+> -    object_property_set_bool(obj, "migration-enabled", true, NULL);
+> -}
+> +static Property s390_skeys_props[] = {
+> +    DEFINE_PROP_BOOL("migration-enabled", S390SKeysState, migration_enabled, true),
+
+This needs a  DEFINE_PROP_END_OF_LIST() here ... mea culpa!
+
+  Thomas
 
 
-On 10/24/23 02:37, Cédric Le Goater wrote:
-> On 10/21/23 23:17, Ninad Palsule wrote:
->> Documentation for IBM FSI model.
->>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> ---
->> v4:
->>    - Added separate commit for documentation
->> ---
->>   docs/specs/fsi.rst | 141 +++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 141 insertions(+)
->>   create mode 100644 docs/specs/fsi.rst
->
->
-> Documentation build is broken.
->
-> a 'fsi" entry should be added in docs/specs/index.rst. More below.
-Sorry about that. Added entry in the index.rst
->
->
->
->> diff --git a/docs/specs/fsi.rst b/docs/specs/fsi.rst
->> new file mode 100644
->> index 0000000000..73b082afe1
->> --- /dev/null
->> +++ b/docs/specs/fsi.rst
->> @@ -0,0 +1,141 @@
->> +======================================
->> +IBM's Flexible Service Interface (FSI)
->> +======================================
->> +
->> +The QEMU FSI emulation implements hardware interfaces between ASPEED 
->> SOC, FSI
->> +master/slave and the end engine.
->> +
->> +FSI is a point-to-point two wire interface which is capable of 
->> supporting
->> +distances of up to 4 meters. FSI interfaces have been used 
->> successfully for
->> +many years in IBM servers to attach IBM Flexible Support 
->> Processors(FSP) to
->> +CPUs and IBM ASICs.
->> +
->> +FSI allows a service processor access to the internal buses of a 
->> host POWER
->> +processor to perform configuration or debugging. FSI has long 
->> existed in POWER
->> +processes and so comes with some baggage, including how it has been 
->> integrated
->> +into the ASPEED SoC.
->> +
->> +Working backwards from the POWER processor, the fundamental pieces 
->> of interest
->> +for the implementation are:
->> +
->> +1. The Common FRU Access Macro (CFAM), an address space containing 
->> various
->> +   "engines" that drive accesses on buses internal and external to 
->> the POWER
->> +   chip. Examples include the SBEFIFO and I2C masters. The engines 
->> hang off of
->> +   an internal Local Bus (LBUS) which is described by the CFAM 
->> configuration
->> +   block.
->> +
->> +2. The FSI slave: The slave is the terminal point of the FSI bus for 
->> FSI
->> +   symbols addressed to it. Slaves can be cascaded off of one 
->> another. The
->> +   slave's configuration registers appear in address space of the 
->> CFAM to
->> +   which it is attached.
->> +
->> +3. The FSI master: A controller in the platform service processor 
->> (e.g. BMC)
->> +   driving CFAM engine accesses into the POWER chip. At the hardware 
->> level
->> +   FSI is a bit-based protocol supporting synchronous and DMA-driven 
->> accesses
->> +   of engines in a CFAM.
->> +
->> +4. The On-Chip Peripheral Bus (OPB): A low-speed bus typically found 
->> in POWER
->> +   processors. This now makes an appearance in the ASPEED SoC due to 
->> tight
->> +   integration of the FSI master IP with the OPB, mainly the 
->> existence of an
->> +   MMIO-mapping of the CFAM address straight onto a sub-region of 
->> the OPB
->> +   address space.
->> +
->> +5. An APB-to-OPB bridge enabling access to the OPB from the ARM core 
->> in the
->> +   AST2600. Hardware limitations prevent the OPB from being directly 
->> mapped
->> +   into APB, so all accesses are indirect through the bridge.
->> +
->> +The LBUS is modelled to maintain the qdev bus hierarchy and to take 
->> advantages
->> +of the object model to automatically generate the CFAM configuration 
->> block.
->> +The configuration block presents engines in the order they are 
->> attached to the
->> +CFAM's LBUS. Engine implementations should subclass the LBusDevice 
->> and set the
->> +'config' member of LBusDeviceClass to match the engine's type.
->> +
->> +CFAM designs offer a lot of flexibility, for instance it is possible 
->> for a
->> +CFAM to be simultaneously driven from multiple FSI links. The 
->> modeling is not
->> +so complete; it's assumed that each CFAM is attached to a single FSI 
->> slave (as
->> +a consequence the CFAM subclasses the FSI slave).
->> +
->> +As for FSI, its symbols and wire-protocol are not modelled at all. 
->> This is not
->> +necessary to get FSI off the ground thanks to the mapping of the 
->> CFAM address
->> +space onto the OPB address space - the models follow this directly 
->> and map the
->> +CFAM memory region into the OPB's memory region.
->> +
->> +QEMU files related to FSI interface:
->> + - ``hw/fsi/aspeed-apb2opb.c``
->> + - ``include/hw/fsi/aspeed-apb2opb.h``
->> + - ``hw/fsi/opb.c``
->> + - ``include/hw/fsi/opb.h``
->> + - ``hw/fsi/fsi.c``
->> + - ``include/hw/fsi/fsi.h``
->> + - ``hw/fsi/fsi-master.c``
->> + - ``include/hw/fsi/fsi-master.h``
->> + - ``hw/fsi/fsi-slave.c``
->> + - ``include/hw/fsi/fsi-slave.h``
->> + - ``hw/fsi/cfam.c``
->> + - ``include/hw/fsi/cfam.h``
->> + - ``hw/fsi/engine-scratchpad.c``
->> + - ``include/hw/fsi/engine-scratchpad.h``
->> + - ``include/hw/fsi/lbus.h``
->> +
->> +The following commands start the rainier machine with built-in FSI 
->> model.
->> +There are no model specific arguments.
->> +
->> +.. code-block:: console
->> +
->> +  qemu-system-arm -M rainier-bmc -nographic \
->> +  -kernel fitImage-linux.bin \
->> +  -dtb aspeed-bmc-ibm-rainier.dtb \
->> +  -initrd obmc-phosphor-initramfs.rootfs.cpio.xz \
->> +  -drive file=obmc-phosphor-image.rootfs.wic.qcow2,if=sd,index=2 \
->> +  -append "rootwait console=ttyS4,115200n8 root=PARTLABEL=rofs-a"
->> +
->> +The implementation appears as following in the qemu device tree:
->> +
->> +.. code-block:: console
->> +
->> +  (qemu) info qtree
->> +  bus: main-system-bus
->> +    type System
->> +    ...
->> +    dev: aspeed.apb2opb, id ""
->> +      gpio-out "sysbus-irq" 1
->> +      mmio 000000001e79b000/0000000000001000
->> +      bus: opb.1
->> +        type opb
->> +        dev: fsi.master, id ""
->> +          bus: fsi.bus.1
->> +            type fsi.bus
->> +            dev: cfam.config, id ""
->> +            dev: cfam, id ""
->> +              bus: lbus.1
->> +                type lbus
->> +                dev: scratchpad, id ""
->> +                  address = 0 (0x0)
->> +      bus: opb.0
->> +        type opb
->> +        dev: fsi.master, id ""
->> +          bus: fsi.bus.0
->> +            type fsi.bus
->> +            dev: cfam.config, id ""
->> +            dev: cfam, id ""
->> +              bus: lbus.0
->> +                type lbus
->> +                dev: scratchpad, id ""
->> +                  address = 0 (0x0)
->> +
->> +pdbg is a simple application to allow debugging of the host POWER 
->> processors
->> +from the BMC. (see the `pdbg source repository` for more details)
->
-> + from the BMC. (see the  ``pdbg source repository`` for more details)
->
-> Please check before sending.
+> +};
+>   
+>   static void s390_skeys_class_init(ObjectClass *oc, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(oc);
+>   
+>       dc->hotpluggable = false;
+> +    dc->realize = s390_skeys_realize;
+> +    device_class_set_props(dc, s390_skeys_props);
+>       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+>   }
+>   
+>   static const TypeInfo s390_skeys_info = {
+>       .name          = TYPE_S390_SKEYS,
+>       .parent        = TYPE_DEVICE,
+> -    .instance_init = s390_skeys_instance_init,
+>       .instance_size = sizeof(S390SKeysState),
+>       .class_init    = s390_skeys_class_init,
+>       .class_size    = sizeof(S390SKeysClass),
 
-Sorry about that. Fixed it. Checked it using "rstcheck" tool and also 
-through web browser.
-
-Thanks for the review.
-
-Regards,
-
-Ninad
-
->
-> Thanks,
->
-> C.
->
->
->> +
->> +.. code-block:: console
->> +
->> +  root@p10bmc:~# pdbg -a getcfam 0x0
->> +  p0: 0x0 = 0xc0022d15
->> +
->> +Refer following documents for more details.
->> +
->> +.. _FSI specification:
->> +   https://openpowerfoundation.org/specifications/fsi/
->> + https://wiki.raptorcs.com/w/images/9/97/OpenFSI-spec-20161212.pdf
->> +
->> +.. _pdbg source repository:
->> +   https://github.com/open-power/pdbg
->
 
