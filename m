@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049867D84ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 16:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC987D84FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 16:43:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw1TZ-0000AG-4p; Thu, 26 Oct 2023 10:36:47 -0400
+	id 1qw1Y7-0001k4-Gp; Thu, 26 Oct 2023 10:41:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1qw1TK-00009z-07
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 10:36:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1qw1TF-0006Rq-CP
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 10:36:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698330984;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9NKnS1R0ipxCuX+GlOe6W7MOgkmBECREE3MMX2SBRzU=;
- b=NC77jNR5YUOrmiA06+xu6q2VYuUUX9llv8A5CFA1yYu/+AhPaTrU4/tGb2//ScYJiysCvH
- QqigSjH9FXJbT7FJt5ruyq3UPVCG3pTYM4Tdij880Cw6LJ5abHIyfj5huONnKuCLboXz4m
- Qh3jrnTM5vzT/O9KiyLe4Ioms4XLXvg=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-290-EKIftUHRNRahEFPmohiRig-1; Thu, 26 Oct 2023 10:36:23 -0400
-X-MC-Unique: EKIftUHRNRahEFPmohiRig-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41cbb2970f4so13419601cf.2
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 07:36:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qw1Y5-0001jj-PU; Thu, 26 Oct 2023 10:41:25 -0400
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qw1Y4-0007UE-0b; Thu, 26 Oct 2023 10:41:25 -0400
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-41e1921da84so6776291cf.1; 
+ Thu, 26 Oct 2023 07:41:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698331282; x=1698936082; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fCSN8nUInCVgzcv47Urswfs8EVHYc4O4rVQBVENV3SI=;
+ b=ilyVvAwv8KfPHI/0IzzH6Qh6VfT3JAliPQfGUSxlOMr9gI9EGoPMuyyygA90KAUWGA
+ X3bsEqATxF6Le0UwtyhbWPCKDWpanZJEgpkLRBNJB+XElME2gURWPir2koCE+UOHe6tz
+ NN1nEkfEO5B69ZaZt3Mva6ttz8qQ3az7R/hzLDwOV1VPEc74YJJNLLCT31dPHvjSQLML
+ Gq5PcvG4A8iu2RvpoIOWwBoFU7Q+jmAU6c46bzq8GFQcwiBEwK4DW3v91LVqkdK0ZwwO
+ s6QwcjwGeBBdaPPRjy7epM35PbOUGmW6KHQgGZqgf6+D4/QEToWi+JV5IzlxKia42q1j
+ qfPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698330983; x=1698935783;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9NKnS1R0ipxCuX+GlOe6W7MOgkmBECREE3MMX2SBRzU=;
- b=U6EBKaL0vPllnzxjBzUXI2ZWAFdMgWRBr5XSlKTrlyOqxkGEAqGYQ6ICC3AXZxVD6Y
- k2uueHMDiRxlFi+4OoWMff9GOjRAHH0YDB+WugbUs+iXcyw5BDaESDF9tGA6fy9e7wZn
- GEJRX2pEyQWWqRAAf+HDNdD7nGXpZThdAMcN3eZBrFKwHZE6ufbmMSajN/9aRH5XMBIe
- P0bQJ7kecQJJLvt+HH7zNrpD1Iw9ogc5wnv3LWYtPMtcGmoiMh/2T7VHqFofh8ux7sx+
- tcklx1lbVB0ptzRuD6haZMLZvyey2+EeH6CCC8UCHSgsvlq7mWGj+qbs3Mu5JRkT1Xz4
- KgqA==
-X-Gm-Message-State: AOJu0YxmdAoy2vn0ADwm4ogn1tL1RquVUhf4e1rH1Lcs9CbO9xHZo932
- kkehmr5jvFHEmBZtsUAK5FxYORcx6qxwMK4ZeqJv4eFXWH0aAGReGj0B832Y3OWpFlZhJdGvdty
- X6YbQbnHb9xOUFCeoOV1GbK1EWGv+d8o=
-X-Received: by 2002:ac8:5793:0:b0:405:3dcf:1182 with SMTP id
- v19-20020ac85793000000b004053dcf1182mr21752405qta.50.1698330982834; 
- Thu, 26 Oct 2023 07:36:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGaMn69lhb4x8rxQWi40nXAzNPjv/zhw1w8dLyAzimsT3VgthZB1BK1AbpSbL8Dhvso4RsQQYhwfyIfNHmGlF0=
-X-Received: by 2002:ac8:5793:0:b0:405:3dcf:1182 with SMTP id
- v19-20020ac85793000000b004053dcf1182mr21752385qta.50.1698330982569; Thu, 26
- Oct 2023 07:36:22 -0700 (PDT)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 26 Oct 2023 07:36:21 -0700
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
- <20231020223951.357513-4-dbarboza@ventanamicro.com>
- <20231023-2018025adea3ffaebbbefe23@orel>
- <0e66af36-bd36-4b42-b901-ed726af207b7@ventanamicro.com>
- <20231023-b0eb8f3478a61875a22de747@orel>
+ d=1e100.net; s=20230601; t=1698331282; x=1698936082;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fCSN8nUInCVgzcv47Urswfs8EVHYc4O4rVQBVENV3SI=;
+ b=hdHwsB+Rodf1kPvdWueGkqV4g40roG/lzWm71rlSseKhCniTH7SlZ6lEGtZuhh4FIJ
+ 2JxWPqMJqrFw7o6M3P1t8g+PAE2Kw/RIhyaLdjsA60Dc5do/twz1MgbMeOce8orqhmkb
+ 9pGQU9SvUhvu2jFf1EAKM1dR57CtwPqVpmr4jaMU6AGHddLZUCaZM4fqwm4GL3rw0DM/
+ ab9qRFf9Jzz3iMtxdgdBLHzUB/YlOu+T7uMWByAXHQD1Uo/q+Ix1jfFokDKOvJ01iEGc
+ +4C8sIlP5l0iRu/glDGLDYj/eyn1kgvQoBDYSKbrcVuAFtXajtwsre1/iN5wcHUtofQx
+ CQWg==
+X-Gm-Message-State: AOJu0YyOZoesfxKJg4qELhvFtpcmpauxFFPPd98PpjgOQyPciCtW/fS+
+ wmVrziJ5w8xBrkYSw0pwPlPv85iuObVsfUZ+zMc=
+X-Google-Smtp-Source: AGHT+IFwIslOYRe6DOrwSgI1/nCtwwlF7VZYs9RG49tEl98B9FUiFJXmdB5548JkpbY+eu3vbJM3MLXOdnGGzPJYOq0=
+X-Received: by 2002:a05:622a:408:b0:41e:2d40:5e64 with SMTP id
+ n8-20020a05622a040800b0041e2d405e64mr8411481qtx.51.1698331282115; Thu, 26 Oct
+ 2023 07:41:22 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20231023-b0eb8f3478a61875a22de747@orel>
-Date: Thu, 26 Oct 2023 07:36:21 -0700
-Message-ID: <CABJz62MN5ha-JH=i+PAu=7hZspV8g85jeAc=hRam0Z1f4fPDEg@mail.gmail.com>
-Subject: Re: [PATCH v3 3/6] target/riscv/tcg: add user flag for profile support
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
+ <20231025190818.3278423-23-marcandre.lureau@redhat.com>
+ <63e8196a-da54-83fa-0eea-ed9a4b669186@eik.bme.hu>
+In-Reply-To: <63e8196a-da54-83fa-0eea-ed9a4b669186@eik.bme.hu>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Thu, 26 Oct 2023 18:41:10 +0400
+Message-ID: <CAJ+F1CJaS_OOJPu+QF8Xv1zdU_1NUY0nZS1J5TFaDZbA64rx=g@mail.gmail.com>
+Subject: Re: [PATCH v6 22/23] hw/display: make ATI_VGA depend on PIXMAN
+To: BALATON Zoltan <balaton@eik.bme.hu>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ Eric Blake <eblake@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-arm@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x834.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,80 +94,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 07:35:16PM +0200, Andrew Jones wrote:
-> On Mon, Oct 23, 2023 at 02:00:00PM -0300, Daniel Henrique Barboza wrote:
-> > On 10/23/23 05:16, Andrew Jones wrote:
-> > > Hmm, I'm not sure I agree with special-casing profiles like this. I think
-> > > the left-to-right processing should be consistent for all. I'm also not
-> > > sure we should always warn when disabling a profile. For example, if a
-> > > user does
-> > >
-> > >   -cpu rv64,rva22u64=true,rva22u64=false
-> > >
-> > > then they'll get a warning, even though all they're doing is restoring the
-> > > cpu model. While that looks like an odd thing to do, a script may be
-> > > adding the rva22u64=true and the rva22u64=false is the user input which
-> > > undoes what the script did.
-> >
-> > QEMU options do not work with a "the user enabled then disabled the same option,
-> > thus it'll count as nothing happened" logic. The last instance of the option will
-> > overwrite all previous instances. In the example you mentioned above the user would
-> > disable all mandatory extensions of rva22u64 in the CPU, doesn't matter if the
-> > same profile was enabled beforehand.
+Hi
+
+On Thu, Oct 26, 2023 at 1:07=E2=80=AFAM BALATON Zoltan <balaton@eik.bme.hu>=
+ wrote:
 >
-> Yup, I'm aware, but I keep thinking that we'll only be using profiles with
-> a base cpu type. If you start with nothing (a base) and then add a profile
-> and take the same one away, you shouldn't be taking away anything else. I
-> agree that if you use a profile on some cpu type that already enabled a
-> bunch of stuff itself, then disabling a profile would potentially remove
-> some of those too, but mixing cpu types that have their own extensions and
-> profiles seems like a great way to confuse oneself as to what extensions
-> will be present.  IOW, we should be adding a base cpu type at the same
-> time we're adding these profiles.
+> On Wed, 25 Oct 2023, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
+> > ---
+> > configs/devices/mips64el-softmmu/default.mak | 2 +-
+> > hw/display/Kconfig                           | 2 +-
+> > hw/display/meson.build                       | 2 +-
+> > 3 files changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/dev=
+ices/mips64el-softmmu/default.mak
+> > index d5188f7ea5..8d85607571 100644
+> > --- a/configs/devices/mips64el-softmmu/default.mak
+> > +++ b/configs/devices/mips64el-softmmu/default.mak
+> > @@ -3,7 +3,7 @@
+> > include ../mips-softmmu/common.mak
+> > CONFIG_FULOONG=3Dy
+> > CONFIG_LOONGSON3V=3Dy
+> > -CONFIG_ATI_VGA=3Dy
+> > +# CONFIG_ATI_VGA=3Dn
+>
+> I think I've asked this before but forgot the answer... However fuloong2e
+> has an on board ati-vga so does this (or should it) disable CONFIG_FULOON=
+G
+> when !PIXMAN? Or that machine should omit the on board graphics in this
+> case?
+>
 
-The question that keep bouncing around my head is: why would we even
-allow disabling profiles?
+yes, it is not obvious to spot, because it's a run time error (the
+"ati-vga" device creation).
 
-It seems to me that it only makes things more complicated, and I
-really can't see the use case for it.
+I think we should express this like that, but it fails with:
+KconfigDataError: cycle found including PCI_BONITO
 
-Enabling additional features on top of a profile? There's obvious
-value in that, so that you can model hardware that implements
-optional and proprietary extensions. Enabling multiple profiles?
-You've convinced me that it's useful. But disabling profiles, I just
-don't see it. I believe Alistair was similarly unconvinced.
+And I have no idea why. Paolo, any idea?
 
-> > > As far as warnings go, it'd be nice to warn when mandatory profile
-> > > extensions are disabled from an enabled profile. Doing that might be
-> > > useful for debug, but users which do it without being aware they're
-> > > "breaking" the profile may learn from that warning. Note, the warning
-> > > should only come when the profile is actually enabled and when the
-> > > extension would actually be disabled, i.e.
-> > >
-> > >   -cpu rv64,rva22u64=true,c=off
-> > >
-> > > should warn
-> > >
-> > >   -cpu rv64,c=off,rva22u64=true
-> > >
-> > > should not warn (rva22u64 overrides c=off since it's to the right)
-> > >
-> > >   -cpu rv64,rva22u64=true,rva22u64=false,c=off
-> > >
-> > > should not warn (rva22u64 is not enabled)
+diff --git a/configs/devices/mips64el-softmmu/default.mak
+b/configs/devices/mips64el-softmmu/default.mak
+index 8d85607571..4d80d60511 100644
+--- a/configs/devices/mips64el-softmmu/default.mak
++++ b/configs/devices/mips64el-softmmu/default.mak
+@@ -1,9 +1,8 @@
+ # Default configuration for mips64el-softmmu
 
-I think these should be hard errors, not warnings.
+ include ../mips-softmmu/common.mak
+-CONFIG_FULOONG=3Dy
++#CONFIG_FULOONG=3Dy
+ CONFIG_LOONGSON3V=3Dy
+-# CONFIG_ATI_VGA=3Dn
+ CONFIG_RTL8139_PCI=3Dy
+ CONFIG_JAZZ=3Dy
+ CONFIG_VT82C686=3Dy
+diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+index ac1eb06a51..48bb15fdd3 100644
+--- a/hw/mips/Kconfig
++++ b/hw/mips/Kconfig
+@@ -32,7 +32,9 @@ config JAZZ
 
-If you're enabling a profile and then disabling an extension that's
-mandatory for that profile, you've invalidated the profile. You've
-asked for a configuration that doesn't make any sense: you can't have
-a CPU that both implements a profile and lacks one of its mandatory
-extensions.
+ config FULOONG
+     bool
++    default y if MIPS
+     select PCI_BONITO
++    depends on ATI_VGA
 
-QEMU users could easily miss the warning. libvirt users won't see it
-at all. It's a user error and it needs to be treated as such IMO.
 
--- 
-Andrea Bolognani / Red Hat / Virtualization
 
+> Regards,
+> BALATON Zoltan
+>
+> > CONFIG_RTL8139_PCI=3Dy
+> > CONFIG_JAZZ=3Dy
+> > CONFIG_VT82C686=3Dy
+> > diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+> > index 1aafe1923d..4d8a6c4af8 100644
+> > --- a/hw/display/Kconfig
+> > +++ b/hw/display/Kconfig
+> > @@ -125,7 +125,7 @@ config DPCD
+> > config ATI_VGA
+> >     bool
+> >     default y if PCI_DEVICES
+> > -    depends on PCI
+> > +    depends on PCI && PIXMAN
+> >     select VGA
+> >     select BITBANG_I2C
+> >     select DDC
+> > diff --git a/hw/display/meson.build b/hw/display/meson.build
+> > index 9c06aaee20..344dfe3d8c 100644
+> > --- a/hw/display/meson.build
+> > +++ b/hw/display/meson.build
+> > @@ -62,7 +62,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_tru=
+e: files('xlnx_dp.c'))
+> >
+> > system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
+> >
+> > -system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c'=
+, 'ati_2d.c', 'ati_dbg.c'))
+> > +system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d=
+.c', 'ati_dbg.c'), pixman])
+> >
+> >
+> > if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
+> >
+
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
