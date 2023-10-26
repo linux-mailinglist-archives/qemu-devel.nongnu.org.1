@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31F57D7C60
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E47B07D7C6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:44:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvt93-0001Ku-Qz; Thu, 26 Oct 2023 01:43:01 -0400
+	id 1qvtAQ-0002gm-GP; Thu, 26 Oct 2023 01:44:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvt8v-0001D7-R2
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:42:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvtAO-0002fp-6c
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:44:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvt8u-0006E4-7Z
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:42:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvtAM-00074u-Kf
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:44:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698298969;
+ s=mimecast20190719; t=1698299061;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=M62oP6RMWxo24vYvkkGivV8c/vOdV9qNohO+nUDSQtg=;
- b=U+lgpoGZt3cIuhI9vj4hsJeal3Nt5+gd+Fnz/7Oe4SySl0scvaW0t+IOa+aQ2wwP/4tZjI
- qz0sGdYSBd4eJrUTjTRhNFvpc1kFS1dbRtcaBjkZNPuY0vQfKfHRnwoKTlmfjC5QXE5jyp
- S3KLkFSIJgKjtOUWHB1iSysz2mdkvKU=
+ bh=6aUqIgBmsd7EixDvs5oh+BbZ/wooKw4untGXJqgHngg=;
+ b=eL3alS1x/qKDc6WNQPuUnbhl3zRwgw95UzDzGpXCIzfeAKLLvq9ZTJJxlUhGbrvQMmvsmr
+ rjC8e123d33HLGtzBldzoxI7fHVVW6W48zkZ4qDA8ooLN4PtLEVjZDQgEC0L7S+sp14Jnb
+ 8JClt4ulcdwpoxRnpcuaZcI/hL3gpZM=
 Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
  [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-169-VDA8SyysMw2rXLgSmmN_0Q-1; Thu, 26 Oct 2023 01:42:46 -0400
-X-MC-Unique: VDA8SyysMw2rXLgSmmN_0Q-1
+ us-mta-556-AjfIW4WHMhKj2b6RgTbNFg-1; Thu, 26 Oct 2023 01:44:20 -0400
+X-MC-Unique: AjfIW4WHMhKj2b6RgTbNFg-1
 Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-5079fe7cc7cso453731e87.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:42:46 -0700 (PDT)
+ 2adb3069b0e04-50483ed1172so471166e87.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:44:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698298965; x=1698903765;
+ d=1e100.net; s=20230601; t=1698299058; x=1698903858;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=M62oP6RMWxo24vYvkkGivV8c/vOdV9qNohO+nUDSQtg=;
- b=E7++hoNyJP8sOsvKONFzErTSz52SzGzRWqz2ppr3YvLok80JrFHUTCgjvvwV/gKJhK
- 5REJLPwE2pNUExIU1i+G1oQtQqVqE8VwSs+xUvwhuy0ame0+FKyMjdnNYOHo+5bkLn/i
- gmcS+yId7GySFYUKvngjxBB1njC7bNXUjO1IOweGBCti+SPnFfrhUfIPtr/CimQskfCQ
- 46AkMFx0tMBZFk3LFjwNPwoc2gV7+8l2CJeLkhmbv+RCae9zt3Lzvd5+U/jiWxjmsBg5
- f6Gt2ahK907/ILYHNBYkboptUuMho5L4NJrdw+IX8roIWWvtJZFIt8dJO9V8my3anSP7
- QW4A==
-X-Gm-Message-State: AOJu0Yx1oGgNVBCNIjGg5bX6PhcDQg0aEAz5s/QtIrNqJO5u3DtGwJJA
- /8Rc/tugz/5FdJvdsnlA2Co5KxLbWlmx3bS5gS6O1MhX0SV9MZe9d8+tkiFhh8AsJTok6W3qKrn
- QUWZkIP0U9VC/zuV8B7AsFyI=
-X-Received: by 2002:a05:6512:401d:b0:508:1a25:a194 with SMTP id
- br29-20020a056512401d00b005081a25a194mr2943359lfb.21.1698298964858; 
- Wed, 25 Oct 2023 22:42:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwB/qxtjBh6PglmAStdIOF9wVv1l8DdsTgOce6AoQfbh8F8tph2XWJCk733b1Hw7dROGWu2A==
-X-Received: by 2002:a05:6512:401d:b0:508:1a25:a194 with SMTP id
- br29-20020a056512401d00b005081a25a194mr2943343lfb.21.1698298964556; 
- Wed, 25 Oct 2023 22:42:44 -0700 (PDT)
+ bh=6aUqIgBmsd7EixDvs5oh+BbZ/wooKw4untGXJqgHngg=;
+ b=who0Ilwu63urvuW1DfcIdldRjo7l5WY1m16l4vhS7yZxC5H/PzlnuqJ5RvyedLZxWL
+ VZhdDhk2F+tJ77GcOWfp+cYl870WScVk0QtmGkpmmOet/xdTNkkqhGhLkI05eaOWevlb
+ 3FPotlURsiikQ5V2gxtupZPH7wKosX5QP7ncGXf0stNumYfp8rf2D73yzq2oHP2j0Zxo
+ WSZqRSPUHdtkXxXewjc9gL42Jty1okih/A/ZkjhdHnnyO0Xaihejzy8UnD6IEk92ntDR
+ yJPU4POQIQY1GvlVome7Qy7Cb2yrPKiskZLaj71xyQMK6m2VEDaQeZ4lkC5VVrtqWj2g
+ ADTA==
+X-Gm-Message-State: AOJu0YxYoKf4dnO4mZvcqiCyBDuK5jjImTzL/p532TGwAqRWA14uE1LW
+ 2i7UP6f+Xkbr96p9Hk43bwnk7m2C8ClnAeapS3RJa4dQW7TdlyrpV4Crqslyj+hfuL4YRIoS7/h
+ oyywKBMt2Jptm+ag=
+X-Received: by 2002:ac2:53bb:0:b0:507:9855:bc68 with SMTP id
+ j27-20020ac253bb000000b005079855bc68mr13142200lfh.37.1698299058585; 
+ Wed, 25 Oct 2023 22:44:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPs/rRHTMaldEg1w/g2IMgt5+IIc4yZUk6/NJHCLGoXdWBI1DY6NOK10k3EfOlmov3M33fLA==
+X-Received: by 2002:ac2:53bb:0:b0:507:9855:bc68 with SMTP id
+ j27-20020ac253bb000000b005079855bc68mr13142193lfh.37.1698299058284; 
+ Wed, 25 Oct 2023 22:44:18 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
  [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- if5-20020a0564025d8500b0053f10da1105sm10675390edb.87.2023.10.25.22.42.43
+ if5-20020a0564025d8500b0053f10da1105sm10675390edb.87.2023.10.25.22.44.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 22:42:44 -0700 (PDT)
-Message-ID: <f9849959-1b64-4d3c-9987-3b035949d9b1@redhat.com>
-Date: Thu, 26 Oct 2023 07:42:42 +0200
+ Wed, 25 Oct 2023 22:44:17 -0700 (PDT)
+Message-ID: <94d1688c-bc94-4d28-9f74-593f8343db03@redhat.com>
+Date: Thu, 26 Oct 2023 07:44:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 23/23] build-sys: make pixman actually optional
+Subject: Re: [PATCH 1/1] meson: Enable -Wshadow=local
 Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
- <20231025190818.3278423-24-marcandre.lureau@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ philmd@linaro.org, bcain@quicinc.com, imp@bsdimp.com, stefanha@redhat.com
+References: <20231026053115.2066744-1-armbru@redhat.com>
+ <20231026053115.2066744-2-armbru@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,18 +115,18 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231025190818.3278423-24-marcandre.lureau@redhat.com>
+In-Reply-To: <20231026053115.2066744-2-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,28 +142,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/10/2023 21.08, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On 26/10/2023 07.31, Markus Armbruster wrote:
+> Local variables shadowing other local variables or parameters make the
+> code needlessly hard to understand.  Bugs love to hide in such code.
+> Evidence: commit bbde656263d (migration/rdma: Fix save_page method to
+> fail on polling error).
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Enable -Wshadow=local to prevent such issues.  Possible thanks to
+> recent cleanups.  Enabling -Wshadow would prevent more issues, but
+> we're not yet ready for that.
+> 
+> As usual, the warning is only enabled when the compiler recognizes it.
+> GCC does, Clang doesn't.
+> 
+> Some shadowed locals remain in bsd-user.  Since BSD prefers Clang,
+> let's not wait for its cleanup.
+> 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->   meson.build | 3 ---
->   1 file changed, 3 deletions(-)
+>   meson.build | 1 +
+>   1 file changed, 1 insertion(+)
 > 
 > diff --git a/meson.build b/meson.build
-> index ad1e0155ee..a35cd860aa 100644
+> index dcef8b1e79..89220443b8 100644
 > --- a/meson.build
 > +++ b/meson.build
-> @@ -817,9 +817,6 @@ if not get_option('pixman').auto() or have_system or have_tools
->     pixman = dependency('pixman-1', required: get_option('pixman'), version:'>=0.21.8',
->                         method: 'pkg-config')
->   endif
-> -if not pixman.found() and (have_system or have_tools)
-> -  error('FIXME: pixman is currently required')
-> -endif
->   
->   zlib = dependency('zlib', required: true)
->   
+> @@ -462,6 +462,7 @@ warn_flags = [
+>     '-Wno-tautological-type-limit-compare',
+>     '-Wno-psabi',
+>     '-Wno-gnu-variable-sized-type-not-at-end',
+> +  '-Wshadow=local',
+>   ]
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
