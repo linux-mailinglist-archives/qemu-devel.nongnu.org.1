@@ -2,76 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C067D7C97
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2CD7D7C9A
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:55:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvtKY-0005z0-8i; Thu, 26 Oct 2023 01:54:54 -0400
+	id 1qvtL3-0006HO-JH; Thu, 26 Oct 2023 01:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qvtKW-0005ys-Ee
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:54:52 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qvtKU-0002M3-Qo
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:54:52 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-507e85ebf50so613856e87.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:54:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1698299689; x=1698904489;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nyCzLL/llvF68HgcFLBhILTQwvO5BpIHHJFA5CEUEtQ=;
- b=USEnRYBUdILqgmKq5/gU1TDIOuV4PMwu2kmv1Bv/t1EzHreT6mzoVKGxnLd4WWkHx6
- idHUy4j/SGKcefohsFI2LYNDlkwAFttrdOH6JH2R2Xey348sja1mYvciJx/Mvgtd3qZ1
- xj9hfjkmixqjF37DGNUmNlEWcNe/wGBaJDZwXFJzwRQABTQb2rKC+yiHDtBExHfntEGs
- XpyfpwQvvzbd69aRogDp6a5FZbCY9dE1KJ7Gtqqq/E5G5LIFe3Ri93utp8oWqxhUVfil
- kBwYuhDi0NxgKnn82XHqgKbxp6XzgZaYhXIs4wtye7iX7PRB/KtUQZQOW340CXMICOHK
- TqJg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvtL1-0006Gn-De
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:55:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvtKl-0002Nb-Bf
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:55:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698299706;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=SEO2gxRXUEWUsMC4sUTjU3pdool+J57zHy9vYVtdSUQ=;
+ b=Eb3gJuRCWul+z0eC3pFR30WARmEnUSktUV1Io7lbxuQQY66xIT7UWLFoburBXwR9oouyqG
+ nTlH88iLXuRDTpnun13ursqYhko985sghKdbSjEsLPHwLFIwKfdfj/dCCqrw0Bj7/M78x5
+ UChgASBpSb3TzayfV6ScgznnSSk5+lg=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-281-SucWqqy_N86qcQ_806-PVg-1; Thu, 26 Oct 2023 01:55:04 -0400
+X-MC-Unique: SucWqqy_N86qcQ_806-PVg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9c7558b89ccso30834766b.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:55:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698299689; x=1698904489;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=nyCzLL/llvF68HgcFLBhILTQwvO5BpIHHJFA5CEUEtQ=;
- b=FJUBvKfvOBGH4CTAhIZ1Xf/rwUh/2w5dpsdM3HGe4mscFoZWdKBKXVa4rHNQSsX9Tk
- 2bDW2uXpX1tn5mERgDalrWM4x+pAHoPEesEXNxynpbXq4Du8zJHqzjlnDRpITW7XjZoB
- aitA7KBnRgdVfuMu1JxbOmpFCDF9mRBpDvMVnZSwJpIS7OWbl7A/dLuQTQiVW8xZ4vc/
- sjUpyRZAilbJADVHt+Bn+TUyRjZeisctY88tOw6Ppq0Ln032mAo09XxQ16lgdLLfVXCv
- Dj1B43G1cKSgeqvJiI+Ju0pc4u/JKADYm1WUCt8M9/AYH0kNpFiH50irXcJQBrVfdVgD
- 7FpQ==
-X-Gm-Message-State: AOJu0YzhKXsopFZ4H/M6euJg8NwYC7W1xfwjJmfGFKUmXUJbXM0qC+ps
- mcnqEfsMFM7PvS1HdkC7KprnZRjszA4qCnyXtK6OsA==
-X-Google-Smtp-Source: AGHT+IEew9l7UVTmjBTcJzCEo8c6NRFkGPnMmncvsfCywVKW026zLM+dkR0sPjkq+YD8d31GxbG/CUlpMFkn4WWOJwg=
-X-Received: by 2002:a19:2d5d:0:b0:4f8:77db:1d9e with SMTP id
- t29-20020a192d5d000000b004f877db1d9emr12274673lft.12.1698299688603; Wed, 25
- Oct 2023 22:54:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698299703; x=1698904503;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SEO2gxRXUEWUsMC4sUTjU3pdool+J57zHy9vYVtdSUQ=;
+ b=FdCsZ17z/z14MP+Z0ZwBURHteaR584flKi9c9WX9RWbysVcki8u8BKDW7Th/etGnxE
+ v/233MclABthnBwnQ8rh+HXSWsBndXQqdICV4K7K809Acp0TivHJxpHs59MRKCwVLdik
+ AontB5fu71kYeav/uOzbnkqthnj4TpeZoR9qDhe1ZmzlpB8+4RemDSFHpEACx+R5T6P2
+ AKN0U1YBVqMrgBld43MtJNVrM/Kb1f+O65ItbhV7pl3ZJDP/NjrRj5TVJUex9g40yNmh
+ DxsJD2Mei1zGa39RId+WSPu3bDTfM5yIhPEsFdybgFECmzzZ3iZ0VzyBGtSOkRL/f2k2
+ w31Q==
+X-Gm-Message-State: AOJu0Ywf58HjkZiWpUfk36ZicpFa+Yl0s19MMK9Cg1m1pXIiXEA98m7T
+ /flQXwK4aOCIcHHXZeKHrihMCI5MSR/KlRa5XDEF4kvFU7anr7r2JOkZQy47yHC+HnBQxr1FKaD
+ kRo/9mabFXswWUIs=
+X-Received: by 2002:a17:907:1b0a:b0:9c7:5a01:ffe8 with SMTP id
+ mp10-20020a1709071b0a00b009c75a01ffe8mr12255691ejc.29.1698299703774; 
+ Wed, 25 Oct 2023 22:55:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHd0CLX5WAmPyGPF5LhaIrHikGIn2EL/0OfMZiNgtE9cDYbEDu2lAB/xFbhNPf2oFUyMvr5kw==
+X-Received: by 2002:a17:907:1b0a:b0:9c7:5a01:ffe8 with SMTP id
+ mp10-20020a1709071b0a00b009c75a01ffe8mr12255673ejc.29.1698299703445; 
+ Wed, 25 Oct 2023 22:55:03 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
+ [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
+ w21-20020a170907271500b009ad81554c1bsm10965695ejk.55.2023.10.25.22.55.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Oct 2023 22:55:02 -0700 (PDT)
+Message-ID: <520430a5-3e10-4503-9bb4-7360e1f5d8fe@redhat.com>
+Date: Thu, 26 Oct 2023 07:55:01 +0200
 MIME-Version: 1.0
-References: <20231026053115.2066744-1-armbru@redhat.com>
-In-Reply-To: <20231026053115.2066744-1-armbru@redhat.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 25 Oct 2023 23:54:37 -0600
-Message-ID: <CANCZdfrdZDY=ndd_RGdWMb5qtZ8+vQJUOQrA=We2X8gF6yzBOQ@mail.gmail.com>
-Subject: Re: [PATCH 0/1] Enable -Wshadow=local
-To: Markus Armbruster <armbru@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] meson: Enable -Wshadow=local
+Content-Language: en-US
+To: Warner Losh <imp@bsdimp.com>, Markus Armbruster <armbru@redhat.com>
 Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- "Daniel P. Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Brian Cain <bcain@quicinc.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000a9712a060898358d"
-Received-SPF: none client-ip=2a00:1450:4864:20::12b;
- envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20231026053115.2066744-1-armbru@redhat.com>
+ <20231026053115.2066744-2-armbru@redhat.com>
+ <CANCZdfpVS0-AuobG0=BwZ+36QWkVSr_tQozn9m2ks7kKS9uXUQ@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CANCZdfpVS0-AuobG0=BwZ+36QWkVSr_tQozn9m2ks7kKS9uXUQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,92 +146,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a9712a060898358d
-Content-Type: text/plain; charset="UTF-8"
+On 26/10/2023 07.51, Warner Losh wrote:
+> 
+> 
+> On Wed, Oct 25, 2023, 11:31 PM Markus Armbruster <armbru@redhat.com 
+> <mailto:armbru@redhat.com>> wrote:
+> 
+>     Local variables shadowing other local variables or parameters make the
+>     code needlessly hard to understand.  Bugs love to hide in such code.
+>     Evidence: commit bbde656263d (migration/rdma: Fix save_page method to
+>     fail on polling error).
+> 
+>     Enable -Wshadow=local to prevent such issues.  Possible thanks to
+>     recent cleanups.  Enabling -Wshadow would prevent more issues, but
+>     we're not yet ready for that.
+> 
+>     As usual, the warning is only enabled when the compiler recognizes it.
+>     GCC does, Clang doesn't.
+> 
+>     Some shadowed locals remain in bsd-user.  Since BSD prefers Clang,
+>     let's not wait for its cleanup.
+> 
+>     Signed-off-by: Markus Armbruster <armbru@redhat.com
+>     <mailto:armbru@redhat.com>>
+>     ---
+>       meson.build | 1 +
+>       1 file changed, 1 insertion(+)
+> 
+>     diff --git a/meson.build b/meson.build
+>     index dcef8b1e79..89220443b8 100644
+>     --- a/meson.build
+>     +++ b/meson.build
+>     @@ -462,6 +462,7 @@ warn_flags = [
+>         '-Wno-tautological-type-limit-compare',
+>         '-Wno-psabi',
+>         '-Wno-gnu-variable-sized-type-not-at-end',
+>     +  '-Wshadow=local',
+> 
+> 
+> Does this work with clang? I've not had good luck enabling it.
 
-On Wed, Oct 25, 2023, 11:31 PM Markus Armbruster <armbru@redhat.com> wrote:
+The flags are added via cc.get_supported_arguments(warn_flags), so meson 
+checks whether the compiler supports them before blindly adding them to the 
+list.
+That means it should get ignored with Clang, i.e. we should be ok for the 
+remaining spots in the bsd-user code, assuming that most FreeBSD users will 
+use Clang to compile QEMU.
 
-> Requires Brian's pull request and two patches from Thomas to compile:
->
->     [PULL 0/2] hex queue - GETPC() fixes, shadowing fixes
->     [PATCH v2] block/snapshot: Fix compiler warning with -Wshadow=local
->     [PATCH v2] migration/ram: Fix compilation with -Wshadow=local
->
-> Stefan, the PR was posted a week ago; anything blocking it?
->
-> Warner, I believe not waiting for your cleanup of bsd-user is fine.
-> Please holler if it isn't.
->
+  Thomas
 
-If it's not enabled by default for Clang, then sure. It's only one small
-change at this point, but i was ill for a few weeks (much longer than i
-thought I'd be) and am still catching up.
 
-Warner
-
- <20231019021733.2258592-1-bcain@quicinc.com>
-
-> Based-on: <20231023175038.111607-1-thuth@redhat.com>
-> Based-on: <20231024092220.55305-1-thuth@redhat.com>
->
-> Markus Armbruster (1):
->   meson: Enable -Wshadow=local
->
->  meson.build | 1 +
->  1 file changed, 1 insertion(+)
->
-> --
-> 2.41.0
->
->
-
---000000000000a9712a060898358d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Wed, Oct 25, 2023, 11:31 PM Markus Armbruster &lt;<=
-a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:<br></d=
-iv><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
-:1px #ccc solid;padding-left:1ex">Requires Brian&#39;s pull request and two=
- patches from Thomas to compile:<br>
-<br>
-=C2=A0 =C2=A0 [PULL 0/2] hex queue - GETPC() fixes, shadowing fixes<br>
-=C2=A0 =C2=A0 [PATCH v2] block/snapshot: Fix compiler warning with -Wshadow=
-=3Dlocal<br>
-=C2=A0 =C2=A0 [PATCH v2] migration/ram: Fix compilation with -Wshadow=3Dloc=
-al<br>
-<br>
-Stefan, the PR was posted a week ago; anything blocking it?<br>
-<br>
-Warner, I believe not waiting for your cleanup of bsd-user is fine.<br>
-Please holler if it isn&#39;t.<br></blockquote></div></div><div dir=3D"auto=
-"><br></div><div dir=3D"auto">If it&#39;s not enabled by default for Clang,=
- then sure. It&#39;s only one small change at this point, but i was ill for=
- a few weeks (much longer than i thought I&#39;d be) and am still catching =
-up.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Warner</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">=C2=A0&lt;<a href=3D"mailto:202310190=
-21733.2258592-1-bcain@quicinc.com" target=3D"_blank" rel=3D"noreferrer">202=
-31019021733.2258592-1-bcain@quicinc.com</a>&gt;</div><div dir=3D"auto"><div=
- class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 =
-0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-Based-on: &lt;<a href=3D"mailto:20231023175038.111607-1-thuth@redhat.com" t=
-arget=3D"_blank" rel=3D"noreferrer">20231023175038.111607-1-thuth@redhat.co=
-m</a>&gt;<br>
-Based-on: &lt;<a href=3D"mailto:20231024092220.55305-1-thuth@redhat.com" ta=
-rget=3D"_blank" rel=3D"noreferrer">20231024092220.55305-1-thuth@redhat.com<=
-/a>&gt;<br>
-<br>
-Markus Armbruster (1):<br>
-=C2=A0 meson: Enable -Wshadow=3Dlocal<br>
-<br>
-=C2=A0meson.build | 1 +<br>
-=C2=A01 file changed, 1 insertion(+)<br>
-<br>
--- <br>
-2.41.0<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000a9712a060898358d--
 
