@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB9B7D8704
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 18:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029447D8702
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 18:49:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw3YD-0003Cx-TU; Thu, 26 Oct 2023 12:49:41 -0400
+	id 1qw3YL-0004CW-3M; Thu, 26 Oct 2023 12:49:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qw3Wh-0000jO-T2; Thu, 26 Oct 2023 12:48:08 -0400
+ id 1qw3Wm-0000to-6H; Thu, 26 Oct 2023 12:48:16 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qw3Wc-0007ok-Uu; Thu, 26 Oct 2023 12:48:06 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ id 1qw3Wi-0007px-Qv; Thu, 26 Oct 2023 12:48:10 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39QGit6a011067; Thu, 26 Oct 2023 16:47:52 GMT
+ 39QGlGDr022273; Thu, 26 Oct 2023 16:47:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=c/8aZZvx8Kug6EpI0YpDu8xSUYl7gw4Uwb31dwrdMSA=;
- b=e/PqncfnHndz6wjz6CKlyyqvaObTE1FbhuKqTVAx10ZSPq/eC5OhBHwnUye4jTMRi0kA
- tTU8i/Re2p1VqcWQ0k53rUiMdKVKTNx7QYUGPGqH+U9F53o9ELqvRB09Bx06XaEYjTSW
- 3hd0cd97BnIyi01TFCMa6X9itE9VuXG0sQpBj4ANj4eCKGljRzzKlyLNonoPFRVMqxr3
- L04KJ+cF+9pHdm8kVvmv3HGZ3w89AqRUK4D9LfGl/mun/l1KhCB142J3JiAgfEmtCXT4
- ems5VItX+jhSWiPylttUJIYCjkypnS+vlYhS0uFQbNtm4uxB19ggG8ODZpcluLql+lwo Ag== 
+ content-type : content-transfer-encoding; s=pp1;
+ bh=nGbY609N9SvEa1xL7DWgs70+wsttUV3cKZJhVq33DbE=;
+ b=TcuolN1LTvdatLiOAs4lnjcDXANGLXHxQgravbdypfgKjM+jxvWJLLEexTmT/64NL7V1
+ zQLwojz/+HcApwxiNM8iXAAxaWovZF3L0dWZsdqqWW7dULVExXqRAVWWzcW8WprflnDQ
+ CaCeda34UfzmWPX9unR89f3broPRmF2eQRwi0Y5+KildbdCMYU+HCbJRDPfnc+8cUpvX
+ Oqbls58bfHOFa3j21ln1eCKODANYtPqquHPvfowjHqsU8Oy9Ii+BB4OHlti+PMOqwTxI
+ cbp6ObC3FWV+N9LYoaTY1zVOPwz6PwDu6NTRc1SNM6PIiPbgU57RSvaxK63626AFOmJ+ rw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyuw8g32d-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyuhfrmwg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Oct 2023 16:47:52 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QGjZc5015315;
+ Thu, 26 Oct 2023 16:47:53 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QGlUXx023964;
  Thu, 26 Oct 2023 16:47:52 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyuw8g31w-1
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyuhfrmw7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 26 Oct 2023 16:47:52 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39QFEOeP024365; Thu, 26 Oct 2023 16:47:51 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvu6kf3qk-1
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39QGYeZ2023789; Thu, 26 Oct 2023 16:47:52 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvrytfptg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Oct 2023 16:47:51 +0000
+ Thu, 26 Oct 2023 16:47:52 +0000
 Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
  [10.39.53.232])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39QGloll24838796
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39QGlp8D16056946
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Oct 2023 16:47:50 GMT
+ Thu, 26 Oct 2023 16:47:51 GMT
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 491BF58059;
+ by IMSVA (Postfix) with ESMTP id 409F958059;
+ Thu, 26 Oct 2023 16:47:51 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6377158043;
  Thu, 26 Oct 2023 16:47:50 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 58F4B58043;
- Thu, 26 Oct 2023 16:47:49 +0000 (GMT)
 Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
  by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 26 Oct 2023 16:47:49 +0000 (GMT)
+ Thu, 26 Oct 2023 16:47:50 +0000 (GMT)
 From: Ninad Palsule <ninad@linux.ibm.com>
 To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
  andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
@@ -70,25 +70,26 @@ To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
  philmd@linaro.org, lvivier@redhat.com
 Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org,
  Andrew Jeffery <andrew@aj.id.au>
-Subject: [PATCH v7 06/10] hw/fsi: Aspeed APB2OPB interface
-Date: Thu, 26 Oct 2023 11:47:37 -0500
-Message-Id: <20231026164741.1184058-7-ninad@linux.ibm.com>
+Subject: [PATCH v7 07/10] hw/arm: Hook up FSI module in AST2600
+Date: Thu, 26 Oct 2023 11:47:38 -0500
+Message-Id: <20231026164741.1184058-8-ninad@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231026164741.1184058-1-ninad@linux.ibm.com>
 References: <20231026164741.1184058-1-ninad@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RUjyw66tHMOgdCX_URFzOGvxSvUS5GSt
-X-Proofpoint-ORIG-GUID: z8JS_U0E-1S87wJFfHzWUjdU9-sgwOmS
+X-Proofpoint-ORIG-GUID: TG1AHBKKKvNKpG867i1GkqTku9VKM40i
+X-Proofpoint-GUID: H4A5euYT8TwNVoC4a8dxLiV9nPNxEjCN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-26_15,2023-10-26_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 malwarescore=0
- mlxlogscore=805 clxscore=1015 bulkscore=0 adultscore=0 spamscore=0
- suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ spamscore=0 bulkscore=0
+ mlxscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=721 malwarescore=0 lowpriorityscore=0 phishscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2310170001 definitions=main-2310260145
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -114,399 +115,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a part of patchset where IBM's Flexible Service Interface is
-introduced.
+This patchset introduces IBM's Flexible Service Interface(FSI).
 
-An APB-to-OPB bridge enabling access to the OPB from the ARM core in
-the AST2600. Hardware limitations prevent the OPB from being directly
-mapped into APB, so all accesses are indirect through the bridge.
+Time for some fun with inter-processor buses. FSI allows a service
+processor access to the internal buses of a host POWER processor to
+perform configuration or debugging.
+
+FSI has long existed in POWER processes and so comes with some baggage,
+including how it has been integrated into the ASPEED SoC.
+
+Working backwards from the POWER processor, the fundamental pieces of
+interest for the implementation are:
+
+1. The Common FRU Access Macro (CFAM), an address space containing
+   various "engines" that drive accesses on buses internal and external
+   to the POWER chip. Examples include the SBEFIFO and I2C masters. The
+   engines hang off of an internal Local Bus (LBUS) which is described
+   by the CFAM configuration block.
+
+2. The FSI slave: The slave is the terminal point of the FSI bus for
+   FSI symbols addressed to it. Slaves can be cascaded off of one
+   another. The slave's configuration registers appear in address space
+   of the CFAM to which it is attached.
+
+3. The FSI master: A controller in the platform service processor (e.g.
+   BMC) driving CFAM engine accesses into the POWER chip. At the
+   hardware level FSI is a bit-based protocol supporting synchronous and
+   DMA-driven accesses of engines in a CFAM.
+
+4. The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
+   POWER processors. This now makes an appearance in the ASPEED SoC due
+   to tight integration of the FSI master IP with the OPB, mainly the
+   existence of an MMIO-mapping of the CFAM address straight onto a
+   sub-region of the OPB address space.
+
+5. An APB-to-OPB bridge enabling access to the OPB from the ARM core in
+   the AST2600. Hardware limitations prevent the OPB from being directly
+   mapped into APB, so all accesses are indirect through the bridge.
+
+The implementation appears as following in the qemu device tree:
+
+    (qemu) info qtree
+    bus: main-system-bus
+      type System
+      ...
+      dev: aspeed.apb2opb, id ""
+        gpio-out "sysbus-irq" 1
+        mmio 000000001e79b000/0000000000001000
+        bus: opb.1
+          type opb
+          dev: fsi.master, id ""
+            bus: fsi.bus.1
+              type fsi.bus
+              dev: cfam.config, id ""
+              dev: cfam, id ""
+                bus: fsi.lbus.1
+                  type lbus
+                  dev: scratchpad, id ""
+                    address = 0 (0x0)
+        bus: opb.0
+          type opb
+          dev: fsi.master, id ""
+            bus: fsi.bus.0
+              type fsi.bus
+              dev: cfam.config, id ""
+              dev: cfam, id ""
+                bus: fsi.lbus.0
+                  type lbus
+                  dev: scratchpad, id ""
+                    address = 0 (0x0)
+
+The LBUS is modelled to maintain the qdev bus hierarchy and to take
+advantage of the object model to automatically generate the CFAM
+configuration block. The configuration block presents engines in the
+order they are attached to the CFAM's LBUS. Engine implementations
+should subclass the LBusDevice and set the 'config' member of
+LBusDeviceClass to match the engine's type.
+
+CFAM designs offer a lot of flexibility, for instance it is possible for
+a CFAM to be simultaneously driven from multiple FSI links. The modeling
+is not so complete; it's assumed that each CFAM is attached to a single
+FSI slave (as a consequence the CFAM subclasses the FSI slave).
+
+As for FSI, its symbols and wire-protocol are not modelled at all. This
+is not necessary to get FSI off the ground thanks to the mapping of the
+CFAM address space onto the OPB address space - the models follow this
+directly and map the CFAM memory region into the OPB's memory region.
+Future work includes supporting more advanced accesses that drive the
+FSI master directly rather than indirectly via the CFAM mapping, which
+will require implementing the FSI state machine and methods for each of
+the FSI symbols on the slave. Further down the track we can also look at
+supporting the bitbanged SoftFSI drivers in Linux by extending the FSI
+slave model to resolve sequences of GPIO IRQs into FSI symbols, and
+calling the associated symbol method on the slave to map the access onto
+the CFAM.
+
+Testing:
+    Tested by reading cfam config address 0 on rainier machine type.
+
+    root@p10bmc:~# pdbg -a getcfam 0x0
+    p0: 0x0 = 0xc0022d15
 
 Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
 Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-v2:
-- Incorporated review comments by Joel
-v3:
-- Incorporated review comments by Thomas Huth
-v4:
-  - Compile FSI with ASPEED_SOC only.
-v5:
-- Incorporated review comments by Cedric.
-v6:
-- Incorporated review comments by Cedric.
-v7:
-- Incorporated review comments by Cedric.
----
- include/hw/fsi/aspeed-apb2opb.h |  33 ++++
- hw/fsi/aspeed-apb2opb.c         | 272 ++++++++++++++++++++++++++++++++
- hw/arm/Kconfig                  |   1 +
- hw/fsi/Kconfig                  |   4 +
- hw/fsi/meson.build              |   1 +
- hw/fsi/trace-events             |   2 +
- 6 files changed, 313 insertions(+)
- create mode 100644 include/hw/fsi/aspeed-apb2opb.h
- create mode 100644 hw/fsi/aspeed-apb2opb.c
+ include/hw/arm/aspeed_soc.h |  4 ++++
+ hw/arm/aspeed_ast2600.c     | 19 +++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/include/hw/fsi/aspeed-apb2opb.h b/include/hw/fsi/aspeed-apb2opb.h
-new file mode 100644
-index 0000000000..a81ae67023
---- /dev/null
-+++ b/include/hw/fsi/aspeed-apb2opb.h
-@@ -0,0 +1,33 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2023 IBM Corp.
-+ *
-+ * ASPEED APB2OPB Bridge
-+ */
-+#ifndef FSI_ASPEED_APB2OPB_H
-+#define FSI_ASPEED_APB2OPB_H
-+
-+#include "hw/sysbus.h"
-+#include "hw/fsi/opb.h"
-+
-+#define TYPE_ASPEED_APB2OPB "aspeed.apb2opb"
-+OBJECT_DECLARE_SIMPLE_TYPE(AspeedAPB2OPBState, ASPEED_APB2OPB)
-+
-+#define ASPEED_APB2OPB_NR_REGS ((0xe8 >> 2) + 1)
-+
-+#define ASPEED_FSI_NUM 2
-+
-+typedef struct AspeedAPB2OPBState {
-+    /*< private >*/
-+    SysBusDevice parent_obj;
-+
-+    /*< public >*/
-+    MemoryRegion iomem;
-+
-+    uint32_t regs[ASPEED_APB2OPB_NR_REGS];
-+    qemu_irq irq;
-+
-+    OPBus opb[ASPEED_FSI_NUM];
-+} AspeedAPB2OPBState;
-+
-+#endif /* FSI_ASPEED_APB2OPB_H */
-diff --git a/hw/fsi/aspeed-apb2opb.c b/hw/fsi/aspeed-apb2opb.c
-new file mode 100644
-index 0000000000..4cac62a38f
---- /dev/null
-+++ b/hw/fsi/aspeed-apb2opb.c
-@@ -0,0 +1,272 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2023 IBM Corp.
-+ *
-+ * ASPEED APB-OPB FSI interface
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "qom/object.h"
-+#include "qapi/error.h"
-+#include "trace.h"
-+
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index 8adff70072..db3ba3abc7 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -36,6 +36,7 @@
+ #include "hw/misc/aspeed_lpc.h"
+ #include "hw/misc/unimp.h"
+ #include "hw/misc/aspeed_peci.h"
 +#include "hw/fsi/aspeed-apb2opb.h"
-+#include "hw/qdev-core.h"
-+
-+#define TO_REG(x) (x >> 2)
-+
-+#define APB2OPB_VERSION                    TO_REG(0x00)
-+#define APB2OPB_TRIGGER                    TO_REG(0x04)
-+
-+#define APB2OPB_CONTROL                    TO_REG(0x08)
-+#define   APB2OPB_CONTROL_OFF              BE_GENMASK(31, 13)
-+
-+#define APB2OPB_OPB2FSI                    TO_REG(0x0c)
-+#define   APB2OPB_OPB2FSI_OFF              BE_GENMASK(31, 22)
-+
-+#define APB2OPB_OPB0_SEL                   TO_REG(0x10)
-+#define APB2OPB_OPB1_SEL                   TO_REG(0x28)
-+#define   APB2OPB_OPB_SEL_EN               BIT(0)
-+
-+#define APB2OPB_OPB0_MODE                  TO_REG(0x14)
-+#define APB2OPB_OPB1_MODE                  TO_REG(0x2c)
-+#define   APB2OPB_OPB_MODE_RD              BIT(0)
-+
-+#define APB2OPB_OPB0_XFER                  TO_REG(0x18)
-+#define APB2OPB_OPB1_XFER                  TO_REG(0x30)
-+#define   APB2OPB_OPB_XFER_FULL            BIT(1)
-+#define   APB2OPB_OPB_XFER_HALF            BIT(0)
-+
-+#define APB2OPB_OPB0_ADDR                  TO_REG(0x1c)
-+#define APB2OPB_OPB0_WRITE_DATA            TO_REG(0x20)
-+
-+#define APB2OPB_OPB1_ADDR                  TO_REG(0x34)
-+#define APB2OPB_OPB1_WRITE_DATA                  TO_REG(0x38)
-+
-+#define APB2OPB_IRQ_STS                    TO_REG(0x48)
-+#define   APB2OPB_IRQ_STS_OPB1_TX_ACK      BIT(17)
-+#define   APB2OPB_IRQ_STS_OPB0_TX_ACK      BIT(16)
-+
-+#define APB2OPB_OPB0_WRITE_WORD_ENDIAN     TO_REG(0x4c)
-+#define   APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE 0x0011101b
-+#define APB2OPB_OPB0_WRITE_BYTE_ENDIAN     TO_REG(0x50)
-+#define   APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE 0x0c330f3f
-+#define APB2OPB_OPB1_WRITE_WORD_ENDIAN     TO_REG(0x54)
-+#define APB2OPB_OPB1_WRITE_BYTE_ENDIAN     TO_REG(0x58)
-+#define APB2OPB_OPB0_READ_BYTE_ENDIAN      TO_REG(0x5c)
-+#define APB2OPB_OPB1_READ_BYTE_ENDIAN      TO_REG(0x60)
-+#define   APB2OPB_OPB0_READ_WORD_ENDIAN_BE  0x00030b1b
-+
-+#define APB2OPB_OPB0_READ_DATA         TO_REG(0x84)
-+#define APB2OPB_OPB1_READ_DATA         TO_REG(0x90)
-+
-+/*
-+ * The following magic values came from AST2600 data sheet
-+ * The register values are defined under section "FSI controller"
-+ * as initial values.
-+ */
-+static const uint32_t aspeed_apb2opb_reset[ASPEED_APB2OPB_NR_REGS] = {
-+     [APB2OPB_VERSION]                = 0x000000a1,
-+     [APB2OPB_OPB0_WRITE_WORD_ENDIAN] = 0x0044eee4,
-+     [APB2OPB_OPB0_WRITE_BYTE_ENDIAN] = 0x0055aaff,
-+     [APB2OPB_OPB1_WRITE_WORD_ENDIAN] = 0x00117717,
-+     [APB2OPB_OPB1_WRITE_BYTE_ENDIAN] = 0xffaa5500,
-+     [APB2OPB_OPB0_READ_BYTE_ENDIAN]  = 0x0044eee4,
-+     [APB2OPB_OPB1_READ_BYTE_ENDIAN]  = 0x00117717
-+};
-+
-+static void fsi_opb_fsi_master_address(OPBus *opb, hwaddr addr)
-+{
-+    memory_region_transaction_begin();
-+    memory_region_set_address(&opb->fsi.iomem, addr);
-+    memory_region_transaction_commit();
-+}
-+
-+static void fsi_opb_opb2fsi_address(OPBus *opb, hwaddr addr)
-+{
-+    memory_region_transaction_begin();
-+    memory_region_set_address(&opb->fsi.opb2fsi, addr);
-+    memory_region_transaction_commit();
-+}
-+
-+static uint64_t fsi_aspeed_apb2opb_read(void *opaque, hwaddr addr,
-+                                        unsigned size)
-+{
-+    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
-+    unsigned int reg = TO_REG(addr);
-+
-+    trace_fsi_aspeed_apb2opb_read(addr, size);
-+
-+    if (reg >= ASPEED_APB2OPB_NR_REGS) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
-+                      __func__, addr, size);
-+        return 0;
-+    }
-+
-+    return s->regs[reg];
-+}
-+
-+static void fsi_aspeed_apb2opb_write(void *opaque, hwaddr addr, uint64_t data,
-+                                     unsigned size)
-+{
-+    AspeedAPB2OPBState *s = ASPEED_APB2OPB(opaque);
-+    unsigned int reg = TO_REG(addr);
-+
-+    trace_fsi_aspeed_apb2opb_write(addr, size, data);
-+
-+    if (reg >= ASPEED_APB2OPB_NR_REGS) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out of bounds write: %"HWADDR_PRIx" for %u\n",
-+                      __func__, addr, size);
-+        return;
-+    }
-+
-+    switch (reg) {
-+    case APB2OPB_CONTROL:
-+        fsi_opb_fsi_master_address(&s->opb[0], data & APB2OPB_CONTROL_OFF);
-+        break;
-+    case APB2OPB_OPB2FSI:
-+        fsi_opb_opb2fsi_address(&s->opb[0], data & APB2OPB_OPB2FSI_OFF);
-+        break;
-+    case APB2OPB_OPB0_WRITE_WORD_ENDIAN:
-+        if (data != APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Bridge needs to be driven as BE (0x%x)\n",
-+                          __func__, APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE);
-+        }
-+        break;
-+    case APB2OPB_OPB0_WRITE_BYTE_ENDIAN:
-+        if (data != APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Bridge needs to be driven as BE (0x%x)\n",
-+                          __func__, APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE);
-+        }
-+        break;
-+    case APB2OPB_OPB0_READ_BYTE_ENDIAN:
-+        if (data != APB2OPB_OPB0_READ_WORD_ENDIAN_BE) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Bridge needs to be driven as BE (0x%x)\n",
-+                          __func__, APB2OPB_OPB0_READ_WORD_ENDIAN_BE);
-+        }
-+        break;
-+    case APB2OPB_TRIGGER:
-+    {
-+        uint32_t opb, op_mode, op_size, op_addr, op_data;
-+        MemTxResult result;
-+        bool is_write;
-+        int index;
-+        AddressSpace *as;
-+
-+        assert((s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) ^
-+               (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN));
-+
-+        if (s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) {
-+            opb = 0;
-+            op_mode = s->regs[APB2OPB_OPB0_MODE];
-+            op_size = s->regs[APB2OPB_OPB0_XFER];
-+            op_addr = s->regs[APB2OPB_OPB0_ADDR];
-+            op_data = s->regs[APB2OPB_OPB0_WRITE_DATA];
-+        } else if (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN) {
-+            opb = 1;
-+            op_mode = s->regs[APB2OPB_OPB1_MODE];
-+            op_size = s->regs[APB2OPB_OPB1_XFER];
-+            op_addr = s->regs[APB2OPB_OPB1_ADDR];
-+            op_data = s->regs[APB2OPB_OPB1_WRITE_DATA];
-+        } else {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Invalid operation: 0x%"HWADDR_PRIx" for %u\n",
-+                          __func__, addr, size);
-+            return;
-+        }
-+
-+        if (op_size & ~(APB2OPB_OPB_XFER_HALF | APB2OPB_OPB_XFER_FULL)) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "OPB transaction failed: Unrecognized access width: %d\n",
-+                          op_size);
-+            return;
-+        }
-+
-+        op_size += 1;
-+        is_write = !(op_mode & APB2OPB_OPB_MODE_RD);
-+        index = opb ? APB2OPB_OPB1_READ_DATA : APB2OPB_OPB0_READ_DATA;
-+        as = &s->opb[opb].as;
-+
-+        result = address_space_rw(as, op_addr, MEMTXATTRS_UNSPECIFIED,
-+                                  &op_data, op_size, is_write);
-+        if (result != MEMTX_OK) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: OPB %s failed @%08x\n",
-+                          __func__, is_write ? "write" : "read", op_addr);
-+            return;
-+        }
-+
-+        if (!is_write) {
-+            s->regs[index] = op_data;
-+        }
-+
-+        s->regs[APB2OPB_IRQ_STS] |= opb ? APB2OPB_IRQ_STS_OPB1_TX_ACK
-+            : APB2OPB_IRQ_STS_OPB0_TX_ACK;
-+        break;
-+    }
-+    }
-+
-+    s->regs[reg] = data;
-+}
-+
-+static const struct MemoryRegionOps aspeed_apb2opb_ops = {
-+    .read = fsi_aspeed_apb2opb_read,
-+    .write = fsi_aspeed_apb2opb_write,
-+    .valid.max_access_size = 4,
-+    .valid.min_access_size = 4,
-+    .impl.max_access_size = 4,
-+    .impl.min_access_size = 4,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+};
-+
-+static void fsi_aspeed_apb2opb_realize(DeviceState *dev, Error **errp)
-+{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    AspeedAPB2OPBState *s = ASPEED_APB2OPB(dev);
-+
-+    qbus_init(&s->opb[0], sizeof(s->opb[0]), TYPE_OP_BUS,
-+                        DEVICE(s), NULL);
-+    qbus_init(&s->opb[1], sizeof(s->opb[1]), TYPE_OP_BUS,
-+                        DEVICE(s), NULL);
-+
-+    sysbus_init_irq(sbd, &s->irq);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_apb2opb_ops, s,
-+                          TYPE_ASPEED_APB2OPB, 0x1000);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+}
-+
-+static void fsi_aspeed_apb2opb_reset(DeviceState *dev)
-+{
-+    AspeedAPB2OPBState *s = ASPEED_APB2OPB(dev);
-+
-+    memcpy(s->regs, aspeed_apb2opb_reset, ASPEED_APB2OPB_NR_REGS);
-+}
-+
-+static void fsi_aspeed_apb2opb_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->desc = "ASPEED APB2OPB Bridge";
-+    dc->realize = fsi_aspeed_apb2opb_realize;
-+    dc->reset = fsi_aspeed_apb2opb_reset;
-+}
-+
-+static const TypeInfo aspeed_apb2opb_info = {
-+    .name = TYPE_ASPEED_APB2OPB,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(AspeedAPB2OPBState),
-+    .class_init = fsi_aspeed_apb2opb_class_init,
-+};
-+
-+static void aspeed_apb2opb_register_types(void)
-+{
-+    type_register_static(&aspeed_apb2opb_info);
-+}
-+
-+type_init(aspeed_apb2opb_register_types);
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 7e68348440..d963de74c9 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -555,6 +555,7 @@ config ASPEED_SOC
-     select LED
-     select PMBUS
-     select MAX31785
-+    select FSI_APB2OPB_ASPEED
+ #include "hw/char/serial.h"
  
- config MPS2
-     bool
-diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
-index 0f6e6d331a..6bbcb8f6ca 100644
---- a/hw/fsi/Kconfig
-+++ b/hw/fsi/Kconfig
-@@ -1,3 +1,7 @@
-+config FSI_APB2OPB_ASPEED
-+    bool
-+    select FSI_OPB
+ #define ASPEED_SPIS_NUM  2
+@@ -96,6 +97,7 @@ struct AspeedSoCState {
+     UnimplementedDeviceState udc;
+     UnimplementedDeviceState sgpiom;
+     UnimplementedDeviceState jtag[ASPEED_JTAG_NUM];
++    AspeedAPB2OPBState fsi[2];
+ };
+ 
+ #define TYPE_ASPEED_SOC "aspeed-soc"
+@@ -191,6 +193,8 @@ enum {
+     ASPEED_DEV_SGPIOM,
+     ASPEED_DEV_JTAG0,
+     ASPEED_DEV_JTAG1,
++    ASPEED_DEV_FSI1,
++    ASPEED_DEV_FSI2,
+ };
+ 
+ #define ASPEED_SOC_SPI_BOOT_ADDR 0x0
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index e122e1c32d..2ab6260955 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -75,6 +75,8 @@ static const hwaddr aspeed_soc_ast2600_memmap[] = {
+     [ASPEED_DEV_UART12]    = 0x1E790600,
+     [ASPEED_DEV_UART13]    = 0x1E790700,
+     [ASPEED_DEV_VUART]     = 0x1E787000,
++    [ASPEED_DEV_FSI1]      = 0x1E79B000,
++    [ASPEED_DEV_FSI2]      = 0x1E79B100,
+     [ASPEED_DEV_I3C]       = 0x1E7A0000,
+     [ASPEED_DEV_SDRAM]     = 0x80000000,
+ };
+@@ -132,6 +134,8 @@ static const int aspeed_soc_ast2600_irqmap[] = {
+     [ASPEED_DEV_ETH4]      = 33,
+     [ASPEED_DEV_KCS]       = 138,   /* 138 -> 142 */
+     [ASPEED_DEV_DP]        = 62,
++    [ASPEED_DEV_FSI1]      = 100,
++    [ASPEED_DEV_FSI2]      = 101,
+     [ASPEED_DEV_I3C]       = 102,   /* 102 -> 107 */
+ };
+ 
+@@ -262,6 +266,10 @@ static void aspeed_soc_ast2600_init(Object *obj)
+     object_initialize_child(obj, "emmc-boot-controller",
+                             &s->emmc_boot_controller,
+                             TYPE_UNIMPLEMENTED_DEVICE);
 +
- config FSI_OPB
-     bool
-     select FSI_CFAM
-diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
-index 407b8c2775..1bc6bb63cc 100644
---- a/hw/fsi/meson.build
-+++ b/hw/fsi/meson.build
-@@ -3,3 +3,4 @@ system_ss.add(when: 'CONFIG_FSI_SCRATCHPAD', if_true: files('engine-scratchpad.c
- system_ss.add(when: 'CONFIG_FSI_CFAM', if_true: files('cfam.c'))
- system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c','fsi-slave.c'))
- system_ss.add(when: 'CONFIG_FSI_OPB', if_true: files('opb.c'))
-+system_ss.add(when: 'CONFIG_FSI_APB2OPB_ASPEED', if_true: files('aspeed-apb2opb.c'))
-diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
-index 89d8cd62c8..3af4755995 100644
---- a/hw/fsi/trace-events
-+++ b/hw/fsi/trace-events
-@@ -9,3 +9,5 @@ fsi_slave_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
- fsi_slave_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
- fsi_master_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
- fsi_master_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
-+fsi_aspeed_apb2opb_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
-+fsi_aspeed_apb2opb_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
++    for (i = 0; i < ASPEED_FSI_NUM; i++) {
++        object_initialize_child(obj, "fsi[*]", &s->fsi[i], TYPE_ASPEED_APB2OPB);
++    }
+ }
+ 
+ /*
+@@ -622,6 +630,17 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+     aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sbc), 0, sc->memmap[ASPEED_DEV_SBC]);
++
++    /* FSI */
++    for (i = 0; i < ASPEED_FSI_NUM; i++) {
++        if (!sysbus_realize(SYS_BUS_DEVICE(&s->fsi[i]), errp)) {
++            return;
++        }
++        aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->fsi[i]), 0,
++                        sc->memmap[ASPEED_DEV_FSI1 + i]);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->fsi[i]), 0,
++                           aspeed_soc_get_irq(s, ASPEED_DEV_FSI1 + i));
++    }
+ }
+ 
+ static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
 -- 
 2.39.2
 
