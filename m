@@ -2,99 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A107D8706
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 18:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 665957D871C
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 19:00:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw3Z0-0007kE-LO; Thu, 26 Oct 2023 12:50:30 -0400
+	id 1qw3hh-0006ex-JR; Thu, 26 Oct 2023 12:59:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=6564aec80=dwmw@amazon.co.uk>)
- id 1qw3Yr-0007ZZ-L1; Thu, 26 Oct 2023 12:50:21 -0400
-Received: from smtp-fw-80006.amazon.com ([99.78.197.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=6564aec80=dwmw@amazon.co.uk>)
- id 1qw3Yo-0008OI-MZ; Thu, 26 Oct 2023 12:50:21 -0400
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qw3hd-0006eC-GO
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 12:59:26 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qw3hb-0003lo-Pi
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 12:59:25 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-68fb85afef4so1079317b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 09:59:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
- s=amazon201209; t=1698339018; x=1729875018;
- h=from:to:cc:subject:date:message-id:in-reply-to;
- bh=QM71Np5BRDwn0Ga9wGeia/UDFD7F3qTt4vWg2gywkkw=;
- b=kyLVvkbNf2WAr2tE9Nziug0NoE44c3Pv2kbX9nupN1/r81x/I7yT21Tc
- RTelyK9RT1E+fTfJ93+Yp+tZMYJusDhNaxF45aLfXZBdNW3V4Q4HEZKcG
- FIRR4HfvNOg0Sz1htlrmFDrE614PgKE2BPqaE2HL5kgamKvNj+9c37awc I=;
-X-Amazon-filename: smime.p7s
-X-IronPort-AV: E=Sophos;i="6.03,254,1694736000"; 
- d="p7s'?scan'208";a="247968970"
-Content-Type: multipart/mixed; boundary="===============1930202101333669342=="
+ d=linaro.org; s=google; t=1698339562; x=1698944362; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DBkj7xoCqFR+gs9+BLOzaL0PiwOF/bnHdJIhuJWVg4k=;
+ b=ABwtOBuJXyZsyHoRwPMySZFqA/MyPWm5SQaMUy0GMRwxY5Ravs5BGns9kBdPLhrX0y
+ cBYJ1ejdOlRI4yZ0abaa7C3VnU+HNHeUdSJGDvt8kkgga0RTA/Vf3AfQvTMAW6RSyW3v
+ VJPnahPHzqgOMPv2VBw63HcxCm4NOF0ZodsAy/o0ld5GaM71rxUuR5Elq3fASgXYTUFR
+ W4UZSb4LMliOTomHfqdr36CowwhXbsupWANnfZ3lh1mLXhEQhRao7frxM11FSK1iP//T
+ +W27KnD/U4MAeklNR0GHfPdMFQgmOsT1ffFalPLcPvm1ZaWwaa+v9AT631x0E9mGcRoA
+ Ezrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698339562; x=1698944362;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DBkj7xoCqFR+gs9+BLOzaL0PiwOF/bnHdJIhuJWVg4k=;
+ b=agRbvEBhtjMVaoUeH+DWGSfe3bgadqCPKlGPOIZo39PoS9u3DOn1FtrqorXuZaMrfG
+ Q94Tj1GkWmdF5ADvhXJ3orueCS/Qv1btjbq7gpBXX8bM4H184xDwTVhDrGlethNTmoSn
+ u61feBg/MjywaKTfEwPX63EcjbzXeqof/EgdxHgFqorPXJQ3m0LUnurL/Ne1DlECHxw3
+ wN6JqM2ZLmFkp6NuTuNpxmZEwa7eXaww10HcOCCknceXmmhIvl5v2mcJQIod9aWZhJfG
+ sQRFuSmcooUrIzE0IrWuR4+K1vwZt2rqKv44NzWbYL+1h0BBKTahn2QvSkwNWGui6iGr
+ RmCA==
+X-Gm-Message-State: AOJu0Yxkem5LjVU1A37HgPoc+tR8N6t3fehnfD6PCbDQrNByBaOSKfxI
+ 7H4Emq0W5TtjpZQpUlxNmuVDyA==
+X-Google-Smtp-Source: AGHT+IFOa8ex7lP2yvryb/M6KGp0qV+Rr05KZXQ7bA0fbFtk6frMrQBWKVWXK38Btj8DCXW5pSs21Q==
+X-Received: by 2002:a05:6a00:987:b0:6b1:704f:2078 with SMTP id
+ u7-20020a056a00098700b006b1704f2078mr49694pfg.33.1698339562134; 
+ Thu, 26 Oct 2023 09:59:22 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ e29-20020aa7981d000000b00690daae925bsm11378745pfl.51.2023.10.26.09.59.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Oct 2023 09:59:21 -0700 (PDT)
+Message-ID: <105dbb04-78d8-4a6d-a12a-d8aec1942034@linaro.org>
+Date: Thu, 26 Oct 2023 09:59:19 -0700
 MIME-Version: 1.0
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO
- email-inbound-relay-pdx-2a-m6i4x-af372327.us-west-2.amazon.com)
- ([10.25.36.214]) by smtp-border-fw-80006.pdx80.corp.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 16:50:12 +0000
-Received: from smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev
- (pdx2-ws-svc-p26-lb5-vlan2.pdx.amazon.com [10.39.38.66])
- by email-inbound-relay-pdx-2a-m6i4x-af372327.us-west-2.amazon.com (Postfix)
- with ESMTPS id AAEB660ADA; Thu, 26 Oct 2023 16:50:10 +0000 (UTC)
-Received: from EX19MTAUEC001.ant.amazon.com [10.0.29.78:15432]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.7.190:2525]
- with esmtp (Farcaster)
- id a5962145-1f06-4a55-a4f1-13765c5d89c2; Thu, 26 Oct 2023 16:50:10 +0000 (UTC)
-X-Farcaster-Flow-ID: a5962145-1f06-4a55-a4f1-13765c5d89c2
-Received: from EX19D008UEC002.ant.amazon.com (10.252.135.242) by
- EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Thu, 26 Oct 2023 16:50:10 +0000
-Received: from EX19D008UEC001.ant.amazon.com (10.252.135.232) by
- EX19D008UEC002.ant.amazon.com (10.252.135.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1118.39;
- Thu, 26 Oct 2023 16:50:09 +0000
-Received: from EX19D008UEC001.ant.amazon.com ([fe80::4702:5d1a:c556:797]) by
- EX19D008UEC001.ant.amazon.com ([fe80::4702:5d1a:c556:797%3]) with mapi id
- 15.02.1118.039; Thu, 26 Oct 2023 16:50:09 +0000
-To: "berrange@redhat.com" <berrange@redhat.com>
-CC: "armbru@redhat.com" <armbru@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "david@redhat.com" <david@redhat.com>,
- "pasic@linux.ibm.com" <pasic@linux.ibm.com>, "michael.roth@amd.com"
- <michael.roth@amd.com>, "ehabkost@redhat.com" <ehabkost@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "lvivier@redhat.com" <lvivier@redhat.com>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "qemu-s390x@nongnu.org" <qemu-s390x@nongnu.org>, "borntraeger@de.ibm.com"
- <borntraeger@de.ibm.com>, "kraxel@redhat.com" <kraxel@redhat.com>,
- "joe.jin@oracle.com" <joe.jin@oracle.com>, "eblake@redhat.com"
- <eblake@redhat.com>, "yuval.shaia.ml@gmail.com" <yuval.shaia.ml@gmail.com>,
- "cohuck@redhat.com" <cohuck@redhat.com>, "dongli.zhang@oracle.com"
- <dongli.zhang@oracle.com>, "thuth@redhat.com" <thuth@redhat.com>,
- "philmd@redhat.com" <philmd@redhat.com>, "dgilbert@redhat.com"
- <dgilbert@redhat.com>
-Subject: Re: [PATCH v4 18/22] hmp: synchronize cpu state for lapic info
-Thread-Topic: [PATCH v4 18/22] hmp: synchronize cpu state for lapic info
-Thread-Index: AQHaCCx618mx+NQe4UedgCIe/PsS0A==
-Date: Thu, 26 Oct 2023 16:50:09 +0000
-Message-ID: <36353c05fe63fdd4683065b33431b9e0bffb12b5.camel@amazon.co.uk>
-In-Reply-To: <20211028155457.967291-19-berrange@redhat.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.95.146.106]
-MIME-Version: 1.0
-Precedence: Bulk
-Received-SPF: pass client-ip=99.78.197.217;
- envelope-from=prvs=6564aec80=dwmw@amazon.co.uk; helo=smtp-fw-80006.amazon.com
-X-Spam_score_int: -118
-X-Spam_score: -11.9
-X-Spam_bar: -----------
-X-Spam_report: (-11.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 47/65] target/hppa: Remove TARGET_REGISTER_BITS
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: deller@gmx.de
+References: <20231020204331.139847-1-richard.henderson@linaro.org>
+ <20231020204331.139847-48-richard.henderson@linaro.org>
+ <c8b85257-01da-95c9-1622-909a67522437@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <c8b85257-01da-95c9-1622-909a67522437@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -103,188 +93,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Woodhouse, David" <dwmw@amazon.co.uk>
-From:  "Woodhouse, David" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---===============1930202101333669342==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=sha-256;
-	protocol="application/pkcs7-signature"; boundary="=-Ee3BJF6qZSNuK+A1OzPS"
+On 10/20/23 14:31, Philippe Mathieu-Daudé wrote:
+>> diff --git a/target/hppa/machine.c b/target/hppa/machine.c
+>> index 0c0bba68c0..ab34b72910 100644
+>> --- a/target/hppa/machine.c
+>> +++ b/target/hppa/machine.c
+>> @@ -21,21 +21,12 @@
+>>   #include "cpu.h"
+>>   #include "migration/cpu.h"
+>> -#if TARGET_REGISTER_BITS == 64
+>>   #define qemu_put_betr   qemu_put_be64
+>>   #define qemu_get_betr   qemu_get_be64
+>>   #define VMSTATE_UINTTR_V(_f, _s, _v) \
+>>       VMSTATE_UINT64_V(_f, _s, _v)
+>>   #define VMSTATE_UINTTR_ARRAY_V(_f, _s, _n, _v) \
+>>       VMSTATE_UINT64_ARRAY_V(_f, _s, _n, _v)
+> 
+> Total 6 uses, let's use in place, removing the
+> definitions.
 
---=-Ee3BJF6qZSNuK+A1OzPS
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I had meant to go back and remove these, thanks for the reminder.
+I didn't realize there were so few uses.  I will just fold this in.
 
-> From: Dongli Zhang <dongli.zhang@oracle.com>
->=20
-> While the default "info lapic" always synchronizes cpu state ...
->=20
-> mon_get_cpu()
-> -> mon_get_cpu_sync(mon, true)
->    -> cpu_synchronize_state(cpu)
->       -> ioctl KVM_GET_LAPIC (taking KVM as example)
->=20
-> ... the cpu state is not synchronized when the apic-id is available as
-> argument.
->=20
-> The cpu state should be synchronized when apic-id is available. Otherwise
-> the "info lapic <apic-id>" always returns stale data.
->=20
-> Cc: Joe Jin <joe.jin@oracle.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> IIUC for TARGET_REGISTER_BITS == 32 we need:
+> 
+> -- >8 --
+>   static const VMStateDescription vmstate_env = {
+>       .name = "env",
+> -    .version_id = 1,
+> -    .minimum_version_id = 1,
+> +    .version_id = 2,
+> +    .minimum_version_id = 2,
+>       .fields = vmstate_env_fields,
+>   };
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+You're right -- a version bump is required.  I will simply do this unconditionally, as the 
+effort of back-compat is not warranted for this target.
 
-I spent a while staring at stale data from 'info lapic 1' this week
-before realising. This fix would have been nice.
-
-
---=-Ee3BJF6qZSNuK+A1OzPS
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEjww
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhAwggT4oAMCAQICEQC/QgfpbUT3q2fHshU/ReqfMA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowIjEgMB4GCSqGSIb3DQEJARYRZHdtd0BhbWF6b24uY28udWsw
-ggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCZgnzd4h6STv/MQcUPixvDN/dNtp4yVSdc
-xz9mB1OcA7HXd4WdPyYagmkcH0WguDYaQnOszkSdElI+2XRFSlGXhY7U9tktvdWuY1zAY1UWES8e
-3BUHqSKbIKx4SX6GuctCcPnyagVZ9Hk21YUElx9cdmrqt0bGoydgxAspEx56J9Q5a48WfvFYjLBF
-NL1dw+P1eUeAljco30+Xggf5faawKfPArUX0cmU4VIh5DMUyv4d0xxfNN6cK1GMj/HGUg2T9OTHW
-nbTdq+OHJwHGi/37mCWx1O3uV0hbZzA1fNklaqlsr1Acg0elPeCFXLb8dSkMgQZHNJVjn+mBvG4d
-MG4FS3ntipApytA+a5IaMP3LNAo0EoBd5/xVy0M6TXbiYesYLq9rhnrLgO1qcw7+if0jH9YoEJ6a
-Je1m7omfEXh2XpospSLaohmAqaBKlyhXDXbTnUVnIf79zU5ohHZof0cP2amnnvYUVD72iuf9qe7X
-4L1Rj589qEWYROKiMil5X7l/smE1dAmxhKxx6YWvWkXH9u7JOcmLGdKST0voaY7j3Wk0lxK3NKsk
-q0G3BpqbPz3P8BYtn38BvbkFnwVW7F7Qzus3KZJgP62eN25QHxoFj44x3sppx4I5WlYG4lxdFZsY
-smQdj64c7MaJ7cp8RJN+eO32RKrkndEkihzxevl11wIDAQABo4IByjCCAcYwHwYDVR0jBBgwFoAU
-CcDy/AvalNtf/ivfqJlCz8ngrQAwHQYDVR0OBBYEFJ418HpIgZaPnwpWdCNSvm4XgH/lMA4GA1Ud
-DwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMEBggrBgEFBQcDAjBA
-BgNVHSAEOTA3MDUGDCsGAQQBsjEBAgEBATAlMCMGCCsGAQUFBwIBFhdodHRwczovL3NlY3RpZ28u
-Y29tL0NQUzBaBgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3JsLnNlY3RpZ28uY29tL1NlY3RpZ29S
-U0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3VyZUVtYWlsQ0EuY3JsMIGKBggrBgEFBQcBAQR+
-MHwwVQYIKwYBBQUHMAKGSWh0dHA6Ly9jcnQuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1
-dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcnQwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3Nw
-LnNlY3RpZ28uY29tMBwGA1UdEQQVMBOBEWR3bXdAYW1hem9uLmNvLnVrMA0GCSqGSIb3DQEBCwUA
-A4IBAQCSez7gtf1wlWJr568crX21nm6QFWRdJ/YxMOReeqYtGs8QZf2zm2vIEFab61MrgJFJcFJL
-sRhVHwnH/hvax3ZldDpUhM0ODpA9soUjYsvKJ0boFAHPtI1BL0yrZNCBdsUGxMv0t64Acj2ovxQ+
-OxPd5ngHu0MzYIKLDvTSehxkh/qW23X7Ey/fPR0sgnAK4IV7clidmuWBbrqX+WKEyEP2kaEvLsRg
-8plzYbVVFJl37rX2waKnGaWYnJ3BrvcMMgDSQCuoxMThWAOr7wxOh0ni0K3rW7CwDIAjUSk+fFmS
-2EacUvIv/0xUW1nXzGJ12/Qyi+Mw65m0qE776qfcftg3MIIGEDCCBPigAwIBAgIRAL9CB+ltRPer
-Z8eyFT9F6p8wDQYJKoZIhvcNAQELBQAwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVy
-IE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+
-MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1h
-aWwgQ0EwHhcNMjIwMTA3MDAwMDAwWhcNMjUwMTA2MjM1OTU5WjAiMSAwHgYJKoZIhvcNAQkBFhFk
-d213QGFtYXpvbi5jby51azCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAJmCfN3iHpJO
-/8xBxQ+LG8M39022njJVJ1zHP2YHU5wDsdd3hZ0/JhqCaRwfRaC4NhpCc6zORJ0SUj7ZdEVKUZeF
-jtT22S291a5jXMBjVRYRLx7cFQepIpsgrHhJfoa5y0Jw+fJqBVn0eTbVhQSXH1x2auq3RsajJ2DE
-CykTHnon1DlrjxZ+8ViMsEU0vV3D4/V5R4CWNyjfT5eCB/l9prAp88CtRfRyZThUiHkMxTK/h3TH
-F803pwrUYyP8cZSDZP05MdadtN2r44cnAcaL/fuYJbHU7e5XSFtnMDV82SVqqWyvUByDR6U94IVc
-tvx1KQyBBkc0lWOf6YG8bh0wbgVLee2KkCnK0D5rkhow/cs0CjQSgF3n/FXLQzpNduJh6xgur2uG
-esuA7WpzDv6J/SMf1igQnpol7WbuiZ8ReHZemiylItqiGYCpoEqXKFcNdtOdRWch/v3NTmiEdmh/
-Rw/Zqaee9hRUPvaK5/2p7tfgvVGPnz2oRZhE4qIyKXlfuX+yYTV0CbGErHHpha9aRcf27sk5yYsZ
-0pJPS+hpjuPdaTSXErc0qySrQbcGmps/Pc/wFi2ffwG9uQWfBVbsXtDO6zcpkmA/rZ43blAfGgWP
-jjHeymnHgjlaVgbiXF0VmxiyZB2PrhzsxontynxEk3547fZEquSd0SSKHPF6+XXXAgMBAAGjggHK
-MIIBxjAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUnjXwekiBlo+f
-ClZ0I1K+bheAf+UwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEW
-F2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2Vj
-dGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5j
-cmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9T
-ZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEF
-BQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHAYDVR0RBBUwE4ERZHdtd0BhbWF6b24uY28u
-dWswDQYJKoZIhvcNAQELBQADggEBAJJ7PuC1/XCVYmvnrxytfbWebpAVZF0n9jEw5F56pi0azxBl
-/bOba8gQVpvrUyuAkUlwUkuxGFUfCcf+G9rHdmV0OlSEzQ4OkD2yhSNiy8onRugUAc+0jUEvTKtk
-0IF2xQbEy/S3rgByPai/FD47E93meAe7QzNggosO9NJ6HGSH+pbbdfsTL989HSyCcArghXtyWJ2a
-5YFuupf5YoTIQ/aRoS8uxGDymXNhtVUUmXfutfbBoqcZpZicncGu9wwyANJAK6jExOFYA6vvDE6H
-SeLQretbsLAMgCNRKT58WZLYRpxS8i//TFRbWdfMYnXb9DKL4zDrmbSoTvvqp9x+2DcxggTHMIIE
-wwIBATCBrDCBljELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4G
-A1UEBxMHU2FsZm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdv
-IFJTQSBDbGllbnQgQXV0aGVudGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAL9CB+ltRPer
-Z8eyFT9F6p8wDQYJYIZIAWUDBAIBBQCgggHrMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJ
-KoZIhvcNAQkFMQ8XDTIzMTAyNjE2NTAwOFowLwYJKoZIhvcNAQkEMSIEIP3gXqnMQJRSUWp1g3z7
-uhZVNAklCXzl40Lg0t6TNG7XMIG9BgkrBgEEAYI3EAQxga8wgawwgZYxCzAJBgNVBAYTAkdCMRsw
-GQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1Nl
-Y3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9u
-IGFuZCBTZWN1cmUgRW1haWwgQ0ECEQC/QgfpbUT3q2fHshU/ReqfMIG/BgsqhkiG9w0BCRACCzGB
-r6CBrDCBljELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UE
-BxMHU2FsZm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJT
-QSBDbGllbnQgQXV0aGVudGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAL9CB+ltRPerZ8ey
-FT9F6p8wDQYJKoZIhvcNAQEBBQAEggIAl2SCwqeX8jneFRCOQGzHx+0roKXpOjTbfLdSjDUifeKE
-UwmMJEi4ESle7T8j9dxvreKyUeXQnKtIQA/QQKD7r/zoxB7dFOYBw227HRbHZ36WpRNWm31Sc2xP
-Pdy2GFw0T3sva2mdZ469RD4LgHeyBDQSwFS1s/o+YYTgnpfK/Aoepgv5zx/mR4C4Ts7CvaEYPBrV
-Bsp4wfKKzE8ebhBkbE81HJ0u7oQ0qiShnrw9bVBxSEBNslZxObfxyQudgnAU5NQOxMCt3QFArKag
-c2VapPDRDpXa3yHJwyqxDr0/Lcbn5dKJRrjB7KukM/hxOzKABe80pmuLLrzuir8S8Z7CdL5Uy7Ve
-8SWxHLo3qLuMLlTTzxhlhS6mI+tNPP44H9F0Er8c5l1Da/PhOlYaQUYIuPn2HgxNBNiY000/IVvR
-6nCZX506tvaNlxLf4Ibv1IS3bagK9OQaOta5MO1Ix1W7eQvJAdMkEBj/NJvtV+yc4ddX+iQ507DV
-HIXuq8f/WFNCHZ0UjlmS3+iRRVRJxchLxO/0bbOBg8oOw5wdGquWrowjJ/vxwtMM9cmJ6VvzoAzj
-KlAu10FWyBZf0BdeR7E6roLKsPi0qzzGFrlWrdd9wnJmn1Yqof40YzXTqCC0KnN79ATBY6BNxMbi
-716u6KDsi/v/2eAAevrrQT65npYWlesAAAAAAAA=
+I also need to handle the TLB format change for pa2.0.
+(There's an existing comment about that!)
 
 
---=-Ee3BJF6qZSNuK+A1OzPS--
-
---===============1930202101333669342==
-Content-Type: multipart/alternative; boundary="===============8248891216754196566=="
-MIME-Version: 1.0
-Content-Disposition: inline
-
---===============8248891216754196566==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-
-
-
-Amazon Development Centre (London) Ltd. Registered in England and Wales wit=
-h registration number 04543232 with its registered office at 1 Principal Pl=
-ace, Worship Street, London EC2A 2FA, United Kingdom.
-
-
-
---===============8248891216754196566==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-<br><br><br>Amazon Development Centre (London) Ltd.Registered in England an=
-d Wales with registration number 04543232 with its registered office at 1 P=
-rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
-
---===============8248891216754196566==--
-
---===============1930202101333669342==--
+r~
 
