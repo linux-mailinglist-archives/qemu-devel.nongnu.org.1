@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9E97D8625
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6867D8651
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 17:54:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw2YC-00032X-AD; Thu, 26 Oct 2023 11:45:36 -0400
+	id 1qw2g7-0005qi-Fy; Thu, 26 Oct 2023 11:53:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+1fb9ca25523a2d41ea1b+7368+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qw2Y9-00032P-IH
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:45:34 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw2g5-0005qZ-Po
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:53:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+1fb9ca25523a2d41ea1b+7368+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qw2Y7-0006Or-9Q
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:45:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=Ob0ALOUwSkJvsjeQfue3SPsi0uVS5RJlogWBcJc0i5s=; b=qXgzwVZjUtJJqHdt99B24lZjvL
- XiF3KdbkDbgiuPhhp6vPKHcr9tSrKEZiQjvXWVYxuxYiQZNNqFbAdygBJ3ZhERmNHzW1hzwviV5BS
- lUOp/dRYCpKzHcc3E1bj0FkCYtbIc9tprbcllMVNaKsRCiUDCLNtp9d77GKqohJ2SSvo7KBzv7z3T
- QL2drCJd3Sc3XFfNR55bbvSDovcuUDe8CA/7yLHtLRnwCeJiHcc1sacF7SkY7qM4b3Oeki2EWMeOZ
- ohoBaWDF9s8SnvItdBEJyzpLA63Vac1gRuTeuCuGC+T3rzaJTezkWeB2ZloJik/dEHRU4MjyZx/av
- b638CH0A==;
-Received: from [2001:8b0:10b:5:a059:f7a9:933a:2236]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qw2Xy-00Fr28-EJ; Thu, 26 Oct 2023 15:45:22 +0000
-Message-ID: <9d7d7fc988fa06d77cb1eca739f82063608dfda6.camel@infradead.org>
-Subject: Re: [QEMU][PATCHv2 1/8] xen: when unplugging emulated devices skip
- virtio devices
-From: David Woodhouse <dwmw2@infradead.org>
-To: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Vikram Garhwal <vikram.garhwal@amd.com>, qemu-devel@nongnu.org, 
- jgross@suse.com, Anthony Perard <anthony.perard@citrix.com>, Paul Durrant
- <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, 
- "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, "open
- list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Date: Thu, 26 Oct 2023 16:45:21 +0100
-In-Reply-To: <alpine.DEB.2.22.394.2310251820510.271731@ubuntu-linux-20-04-desktop>
-References: <20231025212422.30371-1-vikram.garhwal@amd.com>
- <20231025212422.30371-2-vikram.garhwal@amd.com>
- <f8d6eaf9b5f57184a5f6ec5b6103189b77364e3a.camel@infradead.org>
- <alpine.DEB.2.22.394.2310251820510.271731@ubuntu-linux-20-04-desktop>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-Zh8xFnrlW+/8oWRYErtc"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw2g4-0000s5-6f
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 11:53:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698335622;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=EubEjJYrW1JjPDOfUgKguHyI93IbKyXLpCXjzhLeAg8=;
+ b=KBrkIkUeYo1wIB/uN+7Mmzu134C77FOpBsAsRZ36c95rAkPDF++J0jHxkgnYCvkkG9Ih6W
+ S4IpjiOhmeOJzNvaSfIU+BoJfHtK1NkyLszEKbKTick6HH8HCZEbmD2dwdFlYemGBCSDzW
+ VUFLqTleZXJCS8uyk4VPIPuwxOpmGpY=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-591-B2J68L-BOOqrXGgw2X-tMw-1; Thu, 26 Oct 2023 11:53:41 -0400
+X-MC-Unique: B2J68L-BOOqrXGgw2X-tMw-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4197468d5caso2535681cf.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 08:53:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698335619; x=1698940419;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EubEjJYrW1JjPDOfUgKguHyI93IbKyXLpCXjzhLeAg8=;
+ b=McEcVsmBowZ2VZDfFm/tVwlIXCLIA008RZqi8Gblk1f+a7FWj3vrZDtG+VYmFgoID9
+ AI679dayeKlX0tKjty7VdEZjawDpPPijnHUW9Rf2xvVte06rkZW/Y+7swRJYRsPOYSNg
+ WLDhbLkvks0YtKEdK8Gt8/JJVbWDUltEEDtYpz71zTMMTCa0wLhFuWKIFQnSH5aElzbn
+ acSfnC/Iam6gXf/+CiE6CNxJ9JJ3msIlJqO2zmG/XnMDCBZihx+j0nYFFCY0fkYAeCT8
+ E8XSurP9f2/p8UTydFtpyB7HAF+3L1rDk7OGMM18Cld5Do155z63zsFGM2PpJf/E7VYl
+ +4LA==
+X-Gm-Message-State: AOJu0YwLIhMeAhA4/xg9J3UUHKvazbP9DSj1FRaxZn6JFxLBI18d1wwm
+ DjSOIp2YDNkqzB5K3QrE2UDVn44LqoP19GlrP+z7yr8+WE4LNYlyvxtlKn1gp+HGJteoGnGdYld
+ Cg+gFJoA6iN6T1cKwZS3kYeQSXlGQLvmcpwSKmqx5ePz4m2tbBiHIORqQmESP1QMk3uFiZJeR
+X-Received: by 2002:ad4:5382:0:b0:651:675b:37f9 with SMTP id
+ i2-20020ad45382000000b00651675b37f9mr24983qvv.1.1698335619489; 
+ Thu, 26 Oct 2023 08:53:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGlP0xaVmvA4BHsCkSeB+wqNig8Wz8Q14nz8NCgYz/GNoO1V0p4GojYB01rXaPTxkCfz00PsA==
+X-Received: by 2002:ad4:5382:0:b0:651:675b:37f9 with SMTP id
+ i2-20020ad45382000000b00651675b37f9mr24957qvv.1.1698335619063; 
+ Thu, 26 Oct 2023 08:53:39 -0700 (PDT)
+Received: from x1n.redhat.com
+ (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ f15-20020ac840cf000000b004181f542bcbsm5066580qtm.11.2023.10.26.08.53.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Oct 2023 08:53:38 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+Subject: [PATCH 0/3] migration: Downtime tracepoints
+Date: Thu, 26 Oct 2023 11:53:34 -0400
+Message-ID: <20231026155337.596281-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+1fb9ca25523a2d41ea1b+7368+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,153 +97,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This small series (actually only the last patch; first two are cleanups)
+wants to improve ability of QEMU downtime analysis similarly to what Joao
+used to propose here:
 
---=-Zh8xFnrlW+/8oWRYErtc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  https://lore.kernel.org/r/20230926161841.98464-1-joao.m.martins@oracle.com
 
-On Wed, 2023-10-25 at 18:23 -0700, Stefano Stabellini wrote:
-> On Thu, 26 Oct 2023, David Woodhouse wrote:
-> > On Wed, 2023-10-25 at 14:24 -0700, Vikram Garhwal wrote:
-> > > From: Juergen Gross <jgross@suse.com>
-> > >=20
-> > > Virtio devices should never be unplugged at boot time, as they are
-> > > similar to pci passthrough devices.
-> > >=20
-> > > Signed-off-by: Juergen Gross <jgross@suse.com>
-> > > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> >=20
-> > Hm, do your virtio NICs still actually *work* after that? Or are they
-> > all disconnected from their netdev peers?=20
-> >=20
-> > I suspect you're going to want a variant of
-> > https://lore.kernel.org/qemu-devel/20231025145042.627381-19-dwmw2@infra=
-dead.org/T/#u
-> > which also leave the peers of your virtio devices intact?
->=20
-> Hi David, device unplug is an x86-only thing (see the definition of
-> xen_emul_unplug in Linux under arch/x86/xen/platform-pci-unplug.c) I
-> suspect Vikram who is working on ARM hasn't tested it.
+But with a few differences:
 
-Ah, I had assumed there was something else coming along later which
-would make it actually get used.=20
+  - Nothing exported yet to qapi, all tracepoints so far
 
-> Vikram, a simple option is to drop this patch if you don't need it.
+  - Instead of major checkpoints (stop, iterable, non-iterable, resume-rp),
+    finer granule by providing downtime measurements for each vmstate (I
+    made microsecond to be the unit to be accurate).  So far it seems
+    iterable / non-iterable is the core of the problem, and I want to nail
+    it to per-device.
 
-That works. Although I may revive it in that case.=20
+  - Trace dest QEMU too
 
+For the last bullet: consider the case where a device save() can be super
+fast, while load() can actually be super slow.  Both of them will
+contribute to the ultimate downtime, but not a simple summary: when src
+QEMU is save()ing on device1, dst QEMU can be load()ing on device2.  So
+they can run in parallel.  However the only way to figure all components of
+the downtime is to record both.
 
---=-Zh8xFnrlW+/8oWRYErtc
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Please have a look, thanks.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDI2MTU0NTIxWjAvBgkqhkiG9w0BCQQxIgQg/a6gD3oR
-29Ahlk3/f12OTgIuysJqEFXO64fwatk1Yxkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgB1yYY0fHZ46Wo1+kUOAntA1QkcsOqKJb28
-P/v8wkSIndIvbM+gdOJv9ebbM6ugF49+AFuAOxhhImLlhgKNsg74h/49ixHLlhZCts0Mcg/dwLdb
-Xeu9p57Bydyr8jxQuINLDBybcOS6hiBkR9fWwV5FoJRKOQrCumTPcXtDMzC2hgqe0Uh7gvqPUh8h
-UeT/r3RsCoTuZRp/Os4sHQbvmWyuKHZlc6DnLSqQxKDpM0cxSQB2Hvakhlzx4QP4+V67NA/HxPbk
-XJkAAj4dCw5J8ExHXr3IdKmTvpi3MrFDXrLrLx5gok68EXgcxpsj7sHHu7Q9Fo+Fu+s84b7AGAVk
-B9LdOeXoUvEZAhDYwO1Vgx0M4LgvFY/zRZvOXv6eWrFhU3Wy5B3STccsuNkFwkls9+33oU6XekjI
-iqJuWrmpvYEmBpr9Igx98jPsbTmIaCWnWHJmRjPSY984P02aRbteljfjc5tb34HiZHyOc+ZT54WI
-LWIsf2y1mXIzkusPGFpncJCtKtfwDNR5HGak5rpmbPrX9Wjd8+X7HrQDs0jCtispX2ye95I8s5jh
-S8aOyM0jwRrvhwEqUVZUQOAuBhq0aoWm+caRGo6faJUxJVlF0aQtruUb1msVfeLw5n39mavltjow
-Xb6MLMpL7se5cDSnwQdW/xX/uWFVqOMNAPQ3vD1KvgAAAAAAAA==
+Peter Xu (3):
+  migration: Set downtime_start even for postcopy
+  migration: Add migration_downtime_start|end() helpers
+  migration: Add per vmstate downtime tracepoints
 
+ migration/migration.c  | 38 +++++++++++++++++++++-----------
+ migration/savevm.c     | 49 ++++++++++++++++++++++++++++++++++++++----
+ migration/trace-events |  2 ++
+ 3 files changed, 72 insertions(+), 17 deletions(-)
 
---=-Zh8xFnrlW+/8oWRYErtc--
+-- 
+2.41.0
+
 
