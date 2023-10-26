@@ -2,65 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C217D7DFB
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF037D7E05
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 10:04:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvvI5-0003aK-R0; Thu, 26 Oct 2023 04:00:29 -0400
+	id 1qvvL4-0005bA-VP; Thu, 26 Oct 2023 04:03:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvvI1-0003Zg-Mr
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:00:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvvI0-0005a9-2V
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 04:00:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698307220;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=heyoidThvWPi6Fetm1ml+n/uXte/d2NuG5l4uUcSFxw=;
- b=eHkpWAOVPDhPBfZFr6gIutH1Nn5JWGNO143T+gtSFog2NacEJ/YTOp3BbTRQQkXv9rL4t/
- vW5P8kkcwZVMoISDr/2dQxn+u8HcdrbzqqrgLFwgAtqWwepAUWo1thMbkLVTDMstrfrD4e
- 4tRJ8U3t3YBpSYn8bEVHXC3BZehGqj8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-o_AW6ai5PeiE8W5f1cMjxg-1; Thu, 26 Oct 2023 04:00:13 -0400
-X-MC-Unique: o_AW6ai5PeiE8W5f1cMjxg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EA95811E7E;
- Thu, 26 Oct 2023 08:00:13 +0000 (UTC)
-Received: from thuth-p1g4.str.redhat.com (dhcp-192-205.str.redhat.com
- [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1821D492BEF;
- Thu, 26 Oct 2023 08:00:11 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-Subject: [PATCH] MAINTAINERS: Add include/hw/timer/tmu012.h to the SH4 R2D
- section
-Date: Thu, 26 Oct 2023 10:00:11 +0200
-Message-ID: <20231026080011.156325-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qvvKm-0005Va-Vc; Thu, 26 Oct 2023 04:03:18 -0400
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qvvKl-0006LW-6R; Thu, 26 Oct 2023 04:03:16 -0400
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-41cd8bd5727so4433031cf.3; 
+ Thu, 26 Oct 2023 01:03:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698307393; x=1698912193; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=khtl84scTpSjIHQq6UYNUcz/DnzrlZyEL1AYEbkgclo=;
+ b=EBe40OHF5ozMYCdGYynD340w7ImoAbwGJL2zMt9xroO4+lkCDE5yGEFXSc3wPKCMnI
+ lUhE/BtYeui2GwTo5TljuRdaYPo3K90mUt7Gya26iRGVfZsfjuAUVLd7yxU4J/mANpJR
+ VetG/y1ms8+lyVASXCvnhZMJ0ENPmoA2uzCy3kRnJqs9kRK+/0xKOL8rZSP9R7WZeDvw
+ sceHgdtpqTAdsvbjQyj91iIQyKl1MmPcCkel2qLcDVGYinF9jqjaQFWvmNbAy9GF0Ks3
+ 21hQcuCv3LTnZuERh1Ff0RkwRoKFyhxhm/bNqvJNG9sMXF3Joh4z+tZ5nRBohIwWTN8N
+ bT9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698307393; x=1698912193;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=khtl84scTpSjIHQq6UYNUcz/DnzrlZyEL1AYEbkgclo=;
+ b=a4DtQjYjimKE2T7NrTp2+DXWPQ8xt5svYfaT0skpZD2g1dUzFs7924A2lZltDdIYu7
+ Anod+9hdHu6aGk7RAiaYNpGRSNj/+4lcOsl+4h2ckCXfn7Ge4KlqdYe09sfR9OO9fmkR
+ yD8ShOhz+ReZ7VeHzKAPwO1lDN/vggD4nELEoN09SAMlw1ahqLJtCW11i6dRXhCu1I79
+ VVlEZR105dPUS4I9GaJMcclxrXJyulLrnBHD6KG9qwLmS032+4+kbOydoNCg6jBvKFel
+ cYT6vGTsgsfll6vvAaI8hXjgJbCURh/JuW42YrvHJ+O9LVMdkXxGk9dfZ1bYtzB/bSv6
+ h0RQ==
+X-Gm-Message-State: AOJu0YzLihh1t1jpZ8T9rAWFRKnhZ9yHqaISAFvKCU4EgItWQGYQObFJ
+ DgOSb3IWr8gJlwOCchI1xEXCQWFu7VMIAmaNeJ8=
+X-Google-Smtp-Source: AGHT+IEYmQo91OknyW76upmBwMo88HT8UpAa8UpnPtNQhprjZqvE+RnGWmquEJp3GwQ+Vojh/FxVJWq7RZNSqOCFXG4=
+X-Received: by 2002:ac8:5886:0:b0:40f:f0e0:a008 with SMTP id
+ t6-20020ac85886000000b0040ff0e0a008mr21589887qta.53.1698307393094; Thu, 26
+ Oct 2023 01:03:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
+ <20231025190818.3278423-15-marcandre.lureau@redhat.com>
+ <bc6d4505-df80-8179-0201-7eb396a22547@eik.bme.hu>
+In-Reply-To: <bc6d4505-df80-8179-0201-7eb396a22547@eik.bme.hu>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Thu, 26 Oct 2023 12:03:00 +0400
+Message-ID: <CAJ+F1CK+FwTd=A1KncqQuO_gPsf+anwWYProiPchK_t04wpTcA@mail.gmail.com>
+Subject: Re: [PATCH v6 14/23] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
+ !PIXMAN
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ Eric Blake <eblake@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-arm@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,27 +95,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tmu012.h is the header that belongs to hw/timer/sh_timer.c, so we
-should list it in the same section as sh_timer.c.
+Hi
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+On Thu, Oct 26, 2023 at 12:58=E2=80=AFAM BALATON Zoltan <balaton@eik.bme.hu=
+> wrote:
+>
+> On Wed, 25 Oct 2023, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > This simply means that 2d drawing updates won't be handled, but 3d
+> > should work.
+>
+> Does this silently break guest display when !PIXMAN or I don't understand
+> what this means (I don't know how this device works). If it causes missin=
+g
+> display without PIXMAN should this need pixman or print a warning about
+> that?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 28895d9536..cce6feff35 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1632,6 +1632,7 @@ F: hw/intc/sh_intc.c
- F: hw/pci-host/sh_pci.c
- F: hw/timer/sh_timer.c
- F: include/hw/sh4/sh_intc.h
-+F: include/hw/timer/tmu012.h
- 
- Shix
- R: Yoshinori Sato <ysato@users.sourceforge.jp>
--- 
-2.41.0
+The 2D updates will not be displayed. There will be a warning of
+"unhandled message 8" for each update.
 
+3D updates are still handled, so you could skip the boot phase until
+the guest 3d driver is loaded, or you could have a vhost-user-gpu
+backend that only provides 3D updates (aka dmabuf)
+
+>
+> Regards,
+> BALATON Zoltan
+>
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> > hw/display/vhost-user-gpu.c | 2 ++
+> > 1 file changed, 2 insertions(+)
+> >
+> > diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+> > index 1150521d9d..709c8a02a1 100644
+> > --- a/hw/display/vhost-user-gpu.c
+> > +++ b/hw/display/vhost-user-gpu.c
+> > @@ -307,6 +307,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, Vhos=
+tUserGpuMsg *msg)
+> >         dpy_gl_update(con, m->x, m->y, m->width, m->height);
+> >         break;
+> >     }
+> > +#ifdef CONFIG_PIXMAN
+> >     case VHOST_USER_GPU_UPDATE: {
+> >         VhostUserGpuUpdate *m =3D &msg->payload.update;
+> >
+> > @@ -334,6 +335,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, Vhos=
+tUserGpuMsg *msg)
+> >         }
+> >         break;
+> >     }
+> > +#endif
+> >     default:
+> >         g_warning("unhandled message %d %d", msg->request, msg->size);
+> >     }
+> >
+
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
