@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE39E7D8830
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 20:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABAA7D88B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 21:03:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw4zB-000530-VK; Thu, 26 Oct 2023 14:21:37 -0400
+	id 1qw5cP-0004mh-4V; Thu, 26 Oct 2023 15:02:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tanmaynpatil105@gmail.com>)
- id 1qw4z8-00051p-1i
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 14:21:34 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tanmaynpatil105@gmail.com>)
- id 1qw4z6-0007MS-2y
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 14:21:33 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53df747cfe5so2056718a12.2
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 11:21:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698344490; x=1698949290; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UbKcKvdMHgwb1P1dFRNC5YPzHstM+FIyvk7RetDlF10=;
- b=kQe+4HIGu03JlTytO2Y2Ij2aeXKMr0E4Fjmk6pRxmnmdxHMF0lGAiUZiIJjMp2kvQ5
- 7UoHn6SJW4+EGmEaoUV07WALl9yibiZcbXX/2JBhPBahfyktSkmrd+mNag2bcyvt+ZgR
- Y2yZ1OS/rqsj6nz0zioJCZ1h4ba589SmR0cwDP+4faVRCPuXMvOONEJELQ1PILVEATmz
- HwebEbLhbDnLLdStGoqp6dZ9l0vTemO8zUp3GnddvVfmsp29UFGdfqfnsquhAfvZLzxm
- 5foMbbk8zzjWoNRJYeLEEWUfS0f2+71wm4Guxux3XuiBnbW3JSD3OgYy3bnSwhcDUgUD
- I2lg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw5cN-0004mY-Io
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 15:02:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw5cL-0000gt-MA
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 15:02:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698346924;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vFL1F7ghi7vCyEKRRGn2YTu0nWfrog5RK84AmBwWchE=;
+ b=OJxoro74aXNYvCtMlEDXEKYOHDaz4wtWSROjZY7CWmlD6wOjCCXf5HGJHwHAfbG43U+UzV
+ bgTaJaibiqvEhr5NWT5Cy59NUuUUDnmZGlzdcZ+0ZQuhYFi7He+gTuRqPbvulGe8u6lHwp
+ AS9zNg4r7Ae5Il4H/TZjrcoUABKeJZI=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-119-5AQYCzSJMX6GT-ZQ9eY9xg-1; Thu, 26 Oct 2023 15:02:03 -0400
+X-MC-Unique: 5AQYCzSJMX6GT-ZQ9eY9xg-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-65623d0075aso3841496d6.0
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 12:02:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698344490; x=1698949290;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UbKcKvdMHgwb1P1dFRNC5YPzHstM+FIyvk7RetDlF10=;
- b=VW/3DtB4wPWyJuYisXdx08jrdCTqyvuZ50eo74hhIsParywVDuvuWBXFiThKemIk17
- n0LmBTZ3fp/wteKSQWguUl0MXjeco7q5vShT3OXO4ayOi9TyOkYMCYwKB+i/29oGDN5J
- PtsvWyPxW68vxc2Ldtki78qrW0NFhtnx4MjPYoBlEafSjGdf1M3yPuptV6yx/vVUwH1N
- fmn/zKjWhXCfDWpAnP0/wbuw6O4a+X5JH6s72GeodE2E1WzAI1oqVjnwYxkrmIIl12x2
- QGNx6rWTjk4SfkraQMH+aFr/b0pJAcv6btw5sqMybnUphkNU2g7pIGpdo7zQyEmZF94Y
- T/pg==
-X-Gm-Message-State: AOJu0Yyrol13eJwh0j5NelPQzzX90yR1S8haaaOpssZZj4LHQBTp5SNw
- g95u3gn0/zudZldRFfR5Zkwf6T1WSEi8fovZ+Dc=
-X-Google-Smtp-Source: AGHT+IE1DmzrMtjMZwr8UYvIf9SL46TkVX3Jjzeh9MSO8YChrpEkKTqya/o3qQqygCFCPoHNedjDq4varfsmoZ7Htfw=
-X-Received: by 2002:a17:907:1c2a:b0:9b2:cf77:a105 with SMTP id
- nc42-20020a1709071c2a00b009b2cf77a105mr532999ejc.15.1698344489805; Thu, 26
- Oct 2023 11:21:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698346922; x=1698951722;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vFL1F7ghi7vCyEKRRGn2YTu0nWfrog5RK84AmBwWchE=;
+ b=A0YM/U55LZmReRZgkaBqRKcHNv30AhgoGpsP7fuBYMIfMBjSyrXTbDGZWPkUgsj2EB
+ /ra9cT2aZGPftMKEkf4/vEx3J7brlcNn9m6B64z9e95U1vnqP5n9XmJjI5sq/zSxf0lw
+ bV2X2U9QbigSpPBedOY18XK+ibvzx7rprZiLVmHj7kzWup4W562xja/YUAV4aIkxPeSI
+ YGhgf5LC3W5s1dMdEZEHU2osZmZe0dqdTgozQcYtJ0vh/BmZRFX7o7Cswdv/mJTTFVlW
+ Q7Fy41mmfyqABVwMv9Lw9UmAHdT/+S/UNXMcI2dLh9kiB+nnP4yLxcHBMfHi1A0pTuud
+ oUig==
+X-Gm-Message-State: AOJu0Yz1vpc2Xq/vLZbukCKdIOfC6AxBvdnu7i3vkKej6DFA3cw7my21
+ NaTTeTkugCyVLtj2sZzaD+RH/7jCHClLI+oDi98Tqub+EDPhAL6L5428muwGFBnYT73BYgyNWeR
+ 90beYRESsY3U039f//CxG0Du5C9/wvrUNofbZZTiQxv4vvR0tEEJZz9jMBqnep0ur0NfvYwhp
+X-Received: by 2002:a05:6214:5346:b0:66d:4994:b79a with SMTP id
+ kv6-20020a056214534600b0066d4994b79amr488308qvb.5.1698346922131; 
+ Thu, 26 Oct 2023 12:02:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhX/kZ1LDxh7gXGJ9/wnBuNyvFyZUrbpYDOe0GVFXvT1FrMLK9Uuf8PevcIS/xsotm7drC5A==
+X-Received: by 2002:a05:6214:5346:b0:66d:4994:b79a with SMTP id
+ kv6-20020a056214534600b0066d4994b79amr488248qvb.5.1698346921100; 
+ Thu, 26 Oct 2023 12:02:01 -0700 (PDT)
+Received: from x1n.redhat.com
+ (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ t11-20020a0cf98b000000b006655cc8f872sm16257qvn.99.2023.10.26.12.02.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Oct 2023 12:02:00 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, farosas@suse.de, quintela@redhat.com,
+ joao.m.martins@oracle.com
+Subject: [PATCH 4/3] migration: Add tracepoints for downtime checkpoints
+Date: Thu, 26 Oct 2023 15:01:59 -0400
+Message-ID: <20231026190159.608025-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231026155337.596281-1-peterx@redhat.com>
+References: <20231026155337.596281-1-peterx@redhat.com>
 MIME-Version: 1.0
-References: <CAHnsOnP-8PY=pZw3n2jPKeMmiFqsQwp-Dai+dADpe+hskO2kQA@mail.gmail.com>
- <CAFEAcA83xO3XxuWTK1vdqnH6PKaBpPfNL8A8EyBC1AaGcqhZcg@mail.gmail.com>
-In-Reply-To: <CAFEAcA83xO3XxuWTK1vdqnH6PKaBpPfNL8A8EyBC1AaGcqhZcg@mail.gmail.com>
-From: Tanmay <tanmaynpatil105@gmail.com>
-Date: Thu, 26 Oct 2023 23:51:18 +0530
-Message-ID: <CAHnsOnM1tuwbr7tkF6-jE7bGMPEJs+uXPW-JyA_5AoPe1miTnA@mail.gmail.com>
-Subject: Re: Replace calls to functions named cpu_physical_memory_* with
- address_space_*.
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, "jsnow@redhat.com" <jsnow@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000056d0c0608a2a4c2"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=tanmaynpatil105@gmail.com; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,144 +98,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000056d0c0608a2a4c2
-Content-Type: text/plain; charset="UTF-8"
+Add tracepoints for major downtime checkpoints on both src and dst.  They
+share the same tracepoint with a string showing its stage.
 
-Yeah, I felt that it may not be a cakewalk as it might sound.
+On src, we have these checkpoints added:
 
-You're right, trying to understand the whole code is overwhelming. I'll
-start with a small section instead.
+  - downtime-start: right before vm stops on src
+  - vm-stopped: after vm is fully stopped
+  - iterable-saved: after all iterables saved (END sections)
+  - non-iterable-saved: after all non-iterable saved (FULL sections)
+  - downtime-stop: migration fully completed
 
-I have interest in working on x86_64 and Aarch64 architectures within qemu.
-Please let me know if there are any specific tasks from where I can start
-exploring.
+On dst, we have these checkpoints added:
 
-Thanks,
-Tanmay
+  - precopy-loadvm-completes: after loadvm all done for precopy
+  - precopy-bh-*: record BH steps to resume VM for precopy
+  - postcopy-bh-*: record BH steps to resume VM for postcopy
 
-On Thu, 26 Oct 2023 at 22:16, Peter Maydell <peter.maydell@linaro.org>
-wrote:
+On dst side, we don't have a good way to trace total time consumed by
+iterable or non-iterable for now.  We can mark it by 1st time receiving a
+FULL / END section, but rather than that let's just rely on the other
+tracepoints added for vmstates to back up the information.
 
-> On Thu, 26 Oct 2023 at 13:48, Tanmay <tanmaynpatil105@gmail.com> wrote:
-> > I'm really interested in contributing to qemu. I wanted to
-> > work on the renaming API calls cpu_physical_memory_* to
-> > address_space_*. I couldn't find any related issues on the
-> > GItlab tracker. Can I work on this issue?
->
-> You're welcome to, but be aware that this is unfortunately
-> one of the items in the "BiteSizedTasks" list that is
-> not as simple as the one-line description makes it sound.
-> (I have a personal project to try to go through that page and
-> either expand entries into issues in gitlab that describe the
-> task in more detail, or else delete them if they don't really
-> seem to be "bite sized". But I haven't got very far with it yet,
-> so there are still quite a few unhelpful "landmine" tasks on it.
-> Sorry about that :-(  )
->
-> It also is something where the right thing to do is going to
-> depend on the call-site and what that particular device or piece
-> of code is trying to do -- it is not a mechanical conversion.
-> (This is partly why the conversion is not yet complete.)
->
-> Most of the devices which use these functions should indeed
-> use address_space_* functions instead, but the question then
-> is "what address space should they access?". That usually ought
-> to be one passed into them by the board code. (commit 112a829f8f0a
-> is an example of that kind of conversion.) Unfortunately many
-> of the remaining uses of cpu_physical_memory_* in hw/ are
-> in very old code which hasn't even been converted to the
-> kind of new device model coding style that would allow you to
-> provide an address space by a QOM property that way. So for
-> those devices this would be just one of a whole pile of
-> "modernizations" and refactorings that need to be done.
->
-> I think what I would suggest is that rather than starting
-> with this task in general, that you start with what part
-> of QEMU you're interested in working on in particular (eg
-> whether you're interested in a particular target architecture
-> or a particular subsystem like migration, etc), and then
-> we can probably find some tasks that relate to that specific
-> interest and help in starting to understand that part of the
-> code. (QEMU as a whole is too big for anybody to understand
-> all of it...) If what you want to work on turns out to
-> involve one of the bits of code which needs this API upgrade,
-> maybe we can help you work on that; but it might turn out that
-> the two don't overlap at all, or that there's a better starting
-> task.
->
-> thanks
-> -- PMM
->
+Until this patch, one can enable "vmstate_downtime*" and it'll enable all
+tracepoints for downtime measurements.
 
---000000000000056d0c0608a2a4c2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Since the downtime timestamp tracepoints will cover postcopy too, drop
+loadvm_postcopy_handle_run_bh() tracepoint alongside, because they service
+the same purpose, but that only for postcopy.  We then have unified prefix
+for all downtime relevant tracepoints.
 
-<div dir=3D"ltr">Yeah, I felt that it may not be a cakewalk as it might sou=
-nd.<br><br>You&#39;re right, trying to understand the whole=C2=A0code is ov=
-erwhelming. I&#39;ll start with a small section instead.<div><br>I have int=
-erest in working on x86_64 and Aarch64 architectures within qemu.<div><div>=
-Please let me know if there are any specific tasks from where I can start e=
-xploring.</div><div><br></div><div>Thanks,</div><div>Tanmay</div></div></di=
-v></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr=
-">On Thu, 26 Oct 2023 at 22:16, Peter Maydell &lt;<a href=3D"mailto:peter.m=
-aydell@linaro.org">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
-x solid rgb(204,204,204);padding-left:1ex">On Thu, 26 Oct 2023 at 13:48, Ta=
-nmay &lt;<a href=3D"mailto:tanmaynpatil105@gmail.com" target=3D"_blank">tan=
-maynpatil105@gmail.com</a>&gt; wrote:<br>
-&gt; I&#39;m really interested in contributing to qemu. I wanted to<br>
-&gt; work on the renaming API calls cpu_physical_memory_* to<br>
-&gt; address_space_*. I couldn&#39;t find any related issues on the<br>
-&gt; GItlab tracker. Can I work on this issue?<br>
-<br>
-You&#39;re welcome to, but be aware that this is unfortunately<br>
-one of the items in the &quot;BiteSizedTasks&quot; list that is<br>
-not as simple as the one-line description makes it sound.<br>
-(I have a personal project to try to go through that page and<br>
-either expand entries into issues in gitlab that describe the<br>
-task in more detail, or else delete them if they don&#39;t really<br>
-seem to be &quot;bite sized&quot;. But I haven&#39;t got very far with it y=
-et,<br>
-so there are still quite a few unhelpful &quot;landmine&quot; tasks on it.<=
-br>
-Sorry about that :-(=C2=A0 )<br>
-<br>
-It also is something where the right thing to do is going to<br>
-depend on the call-site and what that particular device or piece<br>
-of code is trying to do -- it is not a mechanical conversion.<br>
-(This is partly why the conversion is not yet complete.)<br>
-<br>
-Most of the devices which use these functions should indeed<br>
-use address_space_* functions instead, but the question then<br>
-is &quot;what address space should they access?&quot;. That usually ought<b=
-r>
-to be one passed into them by the board code. (commit 112a829f8f0a<br>
-is an example of that kind of conversion.) Unfortunately many<br>
-of the remaining uses of cpu_physical_memory_* in hw/ are<br>
-in very old code which hasn&#39;t even been converted to the<br>
-kind of new device model coding style that would allow you to<br>
-provide an address space by a QOM property that way. So for<br>
-those devices this would be just one of a whole pile of<br>
-&quot;modernizations&quot; and refactorings that need to be done.<br>
-<br>
-I think what I would suggest is that rather than starting<br>
-with this task in general, that you start with what part<br>
-of QEMU you&#39;re interested in working on in particular (eg<br>
-whether you&#39;re interested in a particular target architecture<br>
-or a particular subsystem like migration, etc), and then<br>
-we can probably find some tasks that relate to that specific<br>
-interest and help in starting to understand that part of the<br>
-code. (QEMU as a whole is too big for anybody to understand<br>
-all of it...) If what you want to work on turns out to<br>
-involve one of the bits of code which needs this API upgrade,<br>
-maybe we can help you work on that; but it might turn out that<br>
-the two don&#39;t overlap at all, or that there&#39;s a better starting<br>
-task.<br>
-<br>
-thanks<br>
--- PMM<br>
-</blockquote></div>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration.c  | 16 +++++++++++++++-
+ migration/savevm.c     | 14 +++++++++-----
+ migration/trace-events |  2 +-
+ 3 files changed, 25 insertions(+), 7 deletions(-)
 
---000000000000056d0c0608a2a4c2--
+diff --git a/migration/migration.c b/migration/migration.c
+index 9013c1b500..f1f1d2ae2b 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -103,6 +103,7 @@ static int close_return_path_on_source(MigrationState *s);
+ 
+ static void migration_downtime_start(MigrationState *s)
+ {
++    trace_vmstate_downtime_timestamp("downtime-start");
+     s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+ }
+ 
+@@ -117,6 +118,8 @@ static void migration_downtime_end(MigrationState *s)
+     if (!s->downtime) {
+         s->downtime = now - s->downtime_start;
+     }
++
++    trace_vmstate_downtime_timestamp("downtime-end");
+ }
+ 
+ static bool migration_needs_multiple_sockets(void)
+@@ -151,7 +154,11 @@ static gint page_request_addr_cmp(gconstpointer ap, gconstpointer bp)
+ 
+ int migration_stop_vm(RunState state)
+ {
+-    return vm_stop_force_state(state);
++    int ret = vm_stop_force_state(state);
++
++    trace_vmstate_downtime_timestamp("vm-stopped");
++
++    return ret;
+ }
+ 
+ void migration_object_init(void)
+@@ -500,6 +507,8 @@ static void process_incoming_migration_bh(void *opaque)
+     Error *local_err = NULL;
+     MigrationIncomingState *mis = opaque;
+ 
++    trace_vmstate_downtime_timestamp("precopy-bh-enter");
++
+     /* If capability late_block_activate is set:
+      * Only fire up the block code now if we're going to restart the
+      * VM, else 'cont' will do it.
+@@ -525,6 +534,8 @@ static void process_incoming_migration_bh(void *opaque)
+      */
+     qemu_announce_self(&mis->announce_timer, migrate_announce_params());
+ 
++    trace_vmstate_downtime_timestamp("precopy-bh-announced");
++
+     multifd_load_shutdown();
+ 
+     dirty_bitmap_mig_before_vm_start();
+@@ -542,6 +553,7 @@ static void process_incoming_migration_bh(void *opaque)
+     } else {
+         runstate_set(global_state_get_runstate());
+     }
++    trace_vmstate_downtime_timestamp("precopy-bh-vm-started");
+     /*
+      * This must happen after any state changes since as soon as an external
+      * observer sees this event they might start to prod at the VM assuming
+@@ -576,6 +588,8 @@ process_incoming_migration_co(void *opaque)
+     ret = qemu_loadvm_state(mis->from_src_file);
+     mis->loadvm_co = NULL;
+ 
++    trace_vmstate_downtime_timestamp("precopy-loadvm-completed");
++
+     ps = postcopy_state_get();
+     trace_process_incoming_migration_co_end(ret, ps);
+     if (ps != POSTCOPY_INCOMING_NONE) {
+diff --git a/migration/savevm.c b/migration/savevm.c
+index cd6d6ba493..49cbbd151c 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1494,6 +1494,8 @@ int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
+                                     end_ts_each - start_ts_each);
+     }
+ 
++    trace_vmstate_downtime_timestamp("iterable-saved");
++
+     return 0;
+ }
+ 
+@@ -1560,6 +1562,8 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+     json_writer_free(vmdesc);
+     ms->vmdesc = NULL;
+ 
++    trace_vmstate_downtime_timestamp("non-iterable-saved");
++
+     return 0;
+ }
+ 
+@@ -2102,18 +2106,18 @@ static void loadvm_postcopy_handle_run_bh(void *opaque)
+     Error *local_err = NULL;
+     MigrationIncomingState *mis = opaque;
+ 
+-    trace_loadvm_postcopy_handle_run_bh("enter");
++    trace_vmstate_downtime_timestamp("postcopy-bh-enter");
+ 
+     /* TODO we should move all of this lot into postcopy_ram.c or a shared code
+      * in migration.c
+      */
+     cpu_synchronize_all_post_init();
+ 
+-    trace_loadvm_postcopy_handle_run_bh("after cpu sync");
++    trace_vmstate_downtime_timestamp("postcopy-bh-cpu-synced");
+ 
+     qemu_announce_self(&mis->announce_timer, migrate_announce_params());
+ 
+-    trace_loadvm_postcopy_handle_run_bh("after announce");
++    trace_vmstate_downtime_timestamp("postcopy-bh-announced");
+ 
+     /* Make sure all file formats throw away their mutable metadata.
+      * If we get an error here, just don't restart the VM yet. */
+@@ -2124,7 +2128,7 @@ static void loadvm_postcopy_handle_run_bh(void *opaque)
+         autostart = false;
+     }
+ 
+-    trace_loadvm_postcopy_handle_run_bh("after invalidate cache");
++    trace_vmstate_downtime_timestamp("postcopy-bh-cache-invalidated");
+ 
+     dirty_bitmap_mig_before_vm_start();
+ 
+@@ -2138,7 +2142,7 @@ static void loadvm_postcopy_handle_run_bh(void *opaque)
+ 
+     qemu_bh_delete(mis->bh);
+ 
+-    trace_loadvm_postcopy_handle_run_bh("return");
++    trace_vmstate_downtime_timestamp("postcopy-bh-vm-started");
+ }
+ 
+ /* After all discards we can start running and asking for pages */
+diff --git a/migration/trace-events b/migration/trace-events
+index 5820add1f3..aebdd939b7 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -17,7 +17,6 @@ loadvm_handle_recv_bitmap(char *s) "%s"
+ loadvm_postcopy_handle_advise(void) ""
+ loadvm_postcopy_handle_listen(const char *str) "%s"
+ loadvm_postcopy_handle_run(void) ""
+-loadvm_postcopy_handle_run_bh(const char *str) "%s"
+ loadvm_postcopy_handle_resume(void) ""
+ loadvm_postcopy_ram_handle_discard(void) ""
+ loadvm_postcopy_ram_handle_discard_end(void) ""
+@@ -50,6 +49,7 @@ vmstate_save(const char *idstr, const char *vmsd_name) "%s, %s"
+ vmstate_load(const char *idstr, const char *vmsd_name) "%s, %s"
+ vmstate_downtime_save(const char *type, const char *idstr, uint32_t instance_id, int64_t downtime) "type=%s idstr=%s instance_id=%d downtime=%"PRIi64
+ vmstate_downtime_load(const char *type, const char *idstr, uint32_t instance_id, int64_t downtime) "type=%s idstr=%s instance_id=%d downtime=%"PRIi64
++vmstate_downtime_timestamp(const char *checkpoint) "%s"
+ postcopy_pause_incoming(void) ""
+ postcopy_pause_incoming_continued(void) ""
+ postcopy_page_req_sync(void *host_addr) "sync page req %p"
+-- 
+2.41.0
+
 
