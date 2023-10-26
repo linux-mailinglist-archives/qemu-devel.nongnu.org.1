@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74FD7D81C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 13:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D558D7D81C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 13:30:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvyXM-0001vQ-FV; Thu, 26 Oct 2023 07:28:28 -0400
+	id 1qvyYV-0002KH-SF; Thu, 26 Oct 2023 07:29:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qvyXK-0001v9-IR
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 07:28:26 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qvyXI-00022e-Un
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 07:28:26 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-53e3b8f906fso1173035a12.2
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 04:28:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698319703; x=1698924503; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=c1qJ4ud+KmfxnATbv4y8pIA3yMxTBDyTrPg5boLdT9Y=;
- b=khYc5WdY64tM/qomUnTm+BcsfhepK0dJl0H67bYQ8PeRW9OCLGJc0Byisgd9JcR2Fp
- gdfux3aF/3Jt0l/O5kC1s+e83tABAWK65gvqv5xYA5c18e3Dic4s3xmX7oAtw+1A0HuF
- J8d67MISLOuB10VnCqjrNkEhfLq0o+uWTS3+MclO4KNLjcQ45Lemv5xoWjqxPl/Z/dMJ
- QbSb/lXlBbMgP+0vRJA+gBaMb+dz0Mmj9NFkOAjh0I73yKQ65RKCyZTATCYO2/seGB39
- JcYsCGyy2YjU+LA4+p1gNEeqev37uZHglgUUF0IwQ49uYt0TgnSoCXS/YrUo0a15Qhdo
- Th4A==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qvyYS-0002Jx-RI
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 07:29:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qvyYP-0003kv-Gq
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 07:29:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698319772;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WAaJui/CXphMyWvZaot8sjnwdWrr9Dgagj4jF6uP0Ic=;
+ b=VIrJ4saix7Z0CBaWaZeTEyW229ODnS5zd7Rkt4PcTdvpGBGtk7cJ1ogpywa14GSxXuB3pn
+ aw+7OJKVtfoZd/N/ROjsIiMBeBRlIDGaD8JkUOlrRD5SL77zfT7QANgcnhyG3WxVRMIv3H
+ u869nx9Jxa6dOrF2pWzk379KIhQbAJw=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-503-SOEgtjwOMoCf453P155RJQ-1; Thu, 26 Oct 2023 07:29:31 -0400
+X-MC-Unique: SOEgtjwOMoCf453P155RJQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41cd638a4beso11168591cf.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 04:29:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698319703; x=1698924503;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c1qJ4ud+KmfxnATbv4y8pIA3yMxTBDyTrPg5boLdT9Y=;
- b=D1iHivD1hqCm71kVJ6d2o9nxA9eiFegzAZlTMH2E32RyvqmlCbsyHCLzLQjoS4zXiB
- izn1Y7TAsi5ED7V++XN3rEEea/K+Thu/x2TBvzHhffWuUCtWmJwYPaQCdFP7Sky3g5cK
- xJIbQqv/jREJzEdSeHIuBwutnFi+DrPtSvMSbcaRa0hdwX8y4JT1x4h0Z9eHD6WXfCQJ
- kV1IztSPyDb6cY+7Lzu/4uq2g9BmoY96OGBwD64OXeoW3UYknrTfrEk5QxwFouiNZXGF
- L4X0SdmLJaNroluwF4AHR5xzUQJuSq7vsX+RHOy4Y1aErbZZna54tKRc63LFlGNy6PH9
- n+gg==
-X-Gm-Message-State: AOJu0YzCU4RO1qu1BlDHffs0YhdocRNfYKtG8/aIZn17aQHKnwPJVEyn
- xCdYRaw2yX/9Nyu9TiGKpJYk62b7DZiCc82pEHQzFg==
-X-Google-Smtp-Source: AGHT+IEP19UHi39ahLiH/d6shd9nT8digpLG6r3ihPk3vrk0M7F8mc952vdo3Tt49qWENorDALmnvcg21U/nTKdl9sQ=
-X-Received: by 2002:a50:d09b:0:b0:53e:6da7:72b7 with SMTP id
- v27-20020a50d09b000000b0053e6da772b7mr12222841edd.20.1698319702758; Thu, 26
- Oct 2023 04:28:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698319770; x=1698924570;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WAaJui/CXphMyWvZaot8sjnwdWrr9Dgagj4jF6uP0Ic=;
+ b=INlyygwYhxBdnsLmuCEmVtEca0p4FfOztcGEacOginNRnuRKac0Ti9av6fcuEH68f0
+ ajxIxugcbLANj3VfWnUNuLT9qcY4h01SVq8c8LmYhM1syiK6DCL86Rz974IEBmMs4C11
+ 1MhSqWqUdtWDiLQFOLh+rBiBAKPTv0ZwoUPO4dN0U7IVQ+qGC61ITOC66q6AEhCPMS/2
+ NBaAdVUhSlZtGGAMHFZFEELQyBaN4f1yMrWWUkJPH8+ZqZ53Dv1Hyq5mBip4PHIitC2B
+ rNbQZZzppPXgbrirzigGgG4psdHHcwyYR+IRfJWCASptYnac6k1w3a5j7HNehEFzbN9Y
+ CncQ==
+X-Gm-Message-State: AOJu0Yw4V83aACryHY+Q3DVpIiMk5iWEg++YKAFg0wnQY/njKG9X2k41
+ LsBP8fKb8e1LofL/NAFueL3VZPFg+iiBmTAKJQZsCHQFl9KcXM/oRWZ0Oy1vMJyveZSWEdfhrob
+ I4SLXDbEFamMjPho=
+X-Received: by 2002:ac8:4b73:0:b0:41b:7737:d70f with SMTP id
+ g19-20020ac84b73000000b0041b7737d70fmr15790675qts.0.1698319770656; 
+ Thu, 26 Oct 2023 04:29:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFS86kUx2vItUYb96PGoltFneDcMOR+dPbaljagKyKlJn5PAPkSWTj7LbCqjL1Zl+/p90CEiA==
+X-Received: by 2002:ac8:4b73:0:b0:41b:7737:d70f with SMTP id
+ g19-20020ac84b73000000b0041b7737d70fmr15790661qts.0.1698319770258; 
+ Thu, 26 Oct 2023 04:29:30 -0700 (PDT)
+Received: from [172.19.0.201] ([192.80.84.35])
+ by smtp.googlemail.com with ESMTPSA id
+ cm26-20020a05622a251a00b0041519614354sm4980097qtb.7.2023.10.26.04.29.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Oct 2023 04:29:29 -0700 (PDT)
+Message-ID: <1189a017-7cad-45c8-9eb6-5ed6eb8425d2@redhat.com>
+Date: Thu, 26 Oct 2023 13:29:28 +0200
 MIME-Version: 1.0
-References: <20231026070636.1165037-1-clg@redhat.com>
- <20231026070636.1165037-3-clg@redhat.com>
-In-Reply-To: <20231026070636.1165037-3-clg@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 26 Oct 2023 12:28:11 +0100
-Message-ID: <CAFEAcA9jbb6MYOC8DHaPEiQsq9BZoLhfk7-vfOM1Gmi0amEM4g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] vfio/pci: Fix buffer overrun when writing the VF
- token
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Denis V . Lunev" <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, 
- Stefan Weil <sw@weilnetz.de>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>, 
- Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>, 
- Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/29] tcg/i386: Support TCG_COND_TST{EQ,NE}
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231026001542.1141412-1-richard.henderson@linaro.org>
+ <20231026001542.1141412-27-richard.henderson@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20231026001542.1141412-27-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,40 +100,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 26 Oct 2023 at 08:08, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
->
-> qemu_uuid_unparse() includes a trailing NUL when writing the uuid
-> string and the buffer size should be UUID_FMT_LEN + 1 bytes. Use the
-> recently added UUID_STR_LEN which defines the correct size.
->
-> Fixes: CID 1522913
-> Fixes: 2dca1b37a760 ("vfio/pci: add support for VF token")
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+On 10/26/23 02:14, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  hw/vfio/pci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 9bfa83aca1a87952e18743c9ca951b1bfc873507..c02a5d70f5e1b8e4d22051285=
-748f514f1b9f008 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3274,7 +3274,7 @@ static void vfio_realize(PCIDevice *pdev, Error **e=
-rrp)
->      Error *err =3D NULL;
->      int i, ret;
->      bool is_mdev;
-> -    char uuid[UUID_FMT_LEN];
-> +    char uuid[UUID_STR_LEN];
->      char *name;
->
->      if (vbasedev->fd < 0 && !vbasedev->sysfsdev) {
 
-This patch (and its dependency) should probably be cc qemu-stable ?
+Also, a TST{EQ,NE} with a one-bit immediate argument can be changed to:
 
-thanks
--- PMM
+- a TEST reg, reg + js/jns (or sets/setns, or cmovs/cmovns) when testing 
+bits 7, 15 or 31
+
+- a BT reg, imm + jc/jnc (or setc/setnc, or cmovc/cmovnc) when testing 
+other bits in the 8..63 range.
+
+I will take a look at using this to get rid of the mask field in 
+CCPrepare, but I would not mind if someone else took a look at these 
+code generation optimizations in tcg/i386.
+
+Paolo
+
+>   tcg/i386/tcg-target.c.inc | 43 +++++++++++++++++++++++++++------------
+>   1 file changed, 30 insertions(+), 13 deletions(-)
+> 
+> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+> index f4f456a2c0..0d97864174 100644
+> --- a/tcg/i386/tcg-target.c.inc
+> +++ b/tcg/i386/tcg-target.c.inc
+> @@ -504,6 +504,8 @@ static const uint8_t tcg_cond_to_jcc[] = {
+>       [TCG_COND_GEU] = JCC_JAE,
+>       [TCG_COND_LEU] = JCC_JBE,
+>       [TCG_COND_GTU] = JCC_JA,
+> +    [TCG_COND_TSTEQ] = JCC_JE,
+> +    [TCG_COND_TSTNE] = JCC_JNE,
+>   };
+>   
+>   #if TCG_TARGET_REG_BITS == 64
+> @@ -1419,12 +1421,14 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
+>   }
+>   
+>   /* Test register R vs immediate bits I, setting Z flag for EQ/NE. */
+> -static void __attribute__((unused))
+> -tcg_out_testi(TCGContext *s, TCGReg r, uint32_t i, int rexw)
+> +static void tcg_out_testi(TCGContext *s, TCGReg r, uint32_t i, int rexw)
+>   {
+>       if (i <= 0xff && (TCG_TARGET_REG_BITS == 64 || r < 4)) {
+>           tcg_out_modrm(s, OPC_GRP3_Eb | P_REXB_RM, EXT3_TESTi, r);
+>           tcg_out8(s, i);
+> +    } else if ((i & ~0xff00) == 0 && r < 4) {
+> +        tcg_out_modrm(s, OPC_GRP3_Eb, EXT3_TESTi, r);
+> +        tcg_out8(s, i >> 8);
+>       } else {
+>           tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_TESTi, r);
+>           tcg_out32(s, i);
+> @@ -1434,15 +1438,25 @@ tcg_out_testi(TCGContext *s, TCGReg r, uint32_t i, int rexw)
+>   static int tcg_out_cmp(TCGContext *s, TCGCond cond, TCGArg arg1,
+>                          TCGArg arg2, int const_arg2, int rexw)
+>   {
+> -    if (const_arg2) {
+> -        if (arg2 == 0) {
+> -            /* test r, r */
+> +    if (is_tst_cond(cond)) {
+> +        if (!const_arg2) {
+> +            tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg2);
+> +        } else {
+> +            if (!rexw) {
+> +                arg2 = (uint32_t)arg2;
+> +            } else if ((arg2 >> 31 >> 1) == 0) {
+> +                rexw = 0;
+> +            }
+> +            tcg_out_testi(s, arg1, arg2, rexw);
+> +        }
+> +    } else {
+> +        if (!const_arg2) {
+> +            tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
+> +        } else if (arg2 == 0) {
+>               tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
+>           } else {
+>               tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
+>           }
+> -    } else {
+> -        tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
+>       }
+>       return tcg_cond_to_jcc[cond];
+>   }
+> @@ -1461,18 +1475,21 @@ static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
+>   {
+>       TCGLabel *label_next = gen_new_label();
+>       TCGLabel *label_this = arg_label(args[5]);
+> +    TCGCond cond = args[4];
+>   
+> -    switch(args[4]) {
+> +    switch (cond) {
+>       case TCG_COND_EQ:
+> -        tcg_out_brcond(s, 0, TCG_COND_NE, args[0], args[2], const_args[2],
+> -                       label_next, 1);
+> -        tcg_out_brcond(s, 0, TCG_COND_EQ, args[1], args[3], const_args[3],
+> +    case TCG_COND_TSTEQ:
+> +        tcg_out_brcond(s, 0, tcg_invert_cond(cond),
+> +                       args[0], args[2], const_args[2], label_next, 1);
+> +        tcg_out_brcond(s, 0, cond, args[1], args[3], const_args[3],
+>                          label_this, small);
+>           break;
+>       case TCG_COND_NE:
+> -        tcg_out_brcond(s, 0, TCG_COND_NE, args[0], args[2], const_args[2],
+> +    case TCG_COND_TSTNE:
+> +        tcg_out_brcond(s, 0, cond, args[0], args[2], const_args[2],
+>                          label_this, small);
+> -        tcg_out_brcond(s, 0, TCG_COND_NE, args[1], args[3], const_args[3],
+> +        tcg_out_brcond(s, 0, cond, args[1], args[3], const_args[3],
+>                          label_this, small);
+>           break;
+>       case TCG_COND_LT:
+
 
