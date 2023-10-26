@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665957D871C
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 19:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4087D8733
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 19:05:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qw3hh-0006ex-JR; Thu, 26 Oct 2023 12:59:29 -0400
+	id 1qw3mK-0000DH-ER; Thu, 26 Oct 2023 13:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qw3hd-0006eC-GO
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 12:59:26 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qw3hb-0003lo-Pi
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 12:59:25 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-68fb85afef4so1079317b3a.1
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 09:59:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698339562; x=1698944362; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DBkj7xoCqFR+gs9+BLOzaL0PiwOF/bnHdJIhuJWVg4k=;
- b=ABwtOBuJXyZsyHoRwPMySZFqA/MyPWm5SQaMUy0GMRwxY5Ravs5BGns9kBdPLhrX0y
- cBYJ1ejdOlRI4yZ0abaa7C3VnU+HNHeUdSJGDvt8kkgga0RTA/Vf3AfQvTMAW6RSyW3v
- VJPnahPHzqgOMPv2VBw63HcxCm4NOF0ZodsAy/o0ld5GaM71rxUuR5Elq3fASgXYTUFR
- W4UZSb4LMliOTomHfqdr36CowwhXbsupWANnfZ3lh1mLXhEQhRao7frxM11FSK1iP//T
- +W27KnD/U4MAeklNR0GHfPdMFQgmOsT1ffFalPLcPvm1ZaWwaa+v9AT631x0E9mGcRoA
- Ezrg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw3mB-0000Cd-9T
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 13:04:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qw3m9-0004ZL-BR
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 13:04:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698339843;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pdJ0CskfvDQ5GdXLJaXJGRpIzhk0BcgUYB0GruAi3Oo=;
+ b=dKwYZY5uKmBep3H0OhRyjfkKYT0p86n5oLzXF7Mre3CXDR8MYrbInK9E6MGHHtxpm9y1VX
+ 4QMvyF/qH5BRmXZjVpcFa1cqUTIQdzVHTUzgAHC4NgA1S2kp//3l2yvKe3c+odTBJGE0RB
+ yWxwxNoHv+64JeVeHCtaQKMXvFTg2k0=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-331-0cuomjU9N8uIHcg5D1vi6w-1; Thu, 26 Oct 2023 13:04:01 -0400
+X-MC-Unique: 0cuomjU9N8uIHcg5D1vi6w-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-58165739b64so327212eaf.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 10:04:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698339562; x=1698944362;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DBkj7xoCqFR+gs9+BLOzaL0PiwOF/bnHdJIhuJWVg4k=;
- b=agRbvEBhtjMVaoUeH+DWGSfe3bgadqCPKlGPOIZo39PoS9u3DOn1FtrqorXuZaMrfG
- Q94Tj1GkWmdF5ADvhXJ3orueCS/Qv1btjbq7gpBXX8bM4H184xDwTVhDrGlethNTmoSn
- u61feBg/MjywaKTfEwPX63EcjbzXeqof/EgdxHgFqorPXJQ3m0LUnurL/Ne1DlECHxw3
- wN6JqM2ZLmFkp6NuTuNpxmZEwa7eXaww10HcOCCknceXmmhIvl5v2mcJQIod9aWZhJfG
- sQRFuSmcooUrIzE0IrWuR4+K1vwZt2rqKv44NzWbYL+1h0BBKTahn2QvSkwNWGui6iGr
- RmCA==
-X-Gm-Message-State: AOJu0Yxkem5LjVU1A37HgPoc+tR8N6t3fehnfD6PCbDQrNByBaOSKfxI
- 7H4Emq0W5TtjpZQpUlxNmuVDyA==
-X-Google-Smtp-Source: AGHT+IFOa8ex7lP2yvryb/M6KGp0qV+Rr05KZXQ7bA0fbFtk6frMrQBWKVWXK38Btj8DCXW5pSs21Q==
-X-Received: by 2002:a05:6a00:987:b0:6b1:704f:2078 with SMTP id
- u7-20020a056a00098700b006b1704f2078mr49694pfg.33.1698339562134; 
- Thu, 26 Oct 2023 09:59:22 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- e29-20020aa7981d000000b00690daae925bsm11378745pfl.51.2023.10.26.09.59.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 26 Oct 2023 09:59:21 -0700 (PDT)
-Message-ID: <105dbb04-78d8-4a6d-a12a-d8aec1942034@linaro.org>
-Date: Thu, 26 Oct 2023 09:59:19 -0700
+ d=1e100.net; s=20230601; t=1698339841; x=1698944641;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pdJ0CskfvDQ5GdXLJaXJGRpIzhk0BcgUYB0GruAi3Oo=;
+ b=GbNQZ372C67uZ72ETHx4SCz+txBIGyRg4c2Hv6q4EfxMMetzjg4J6HIbDW/ske6GfE
+ B2xACWtG07oc2RkUUKJMUJ+eTZObYCC348LPv3wRnJ6PJAk7UILK3jNrGmJPlgBerQv0
+ 5sDv5rhxPuYIOlF8OesISh14xjlysp9/VEA4OZxmckPMb0rAaGweu5LFI19DVPza9Ytz
+ /2Byr7ha6NOqNQuxLKghw3iyH5uz+BBqteUOukAi/HXLAJADx6IRZGVGklky5AKVbRC1
+ GHT4RjQXewVLmc1Yhpvz3jq0fRoqOvE14ziD2IEzPPEtKfJa3biVXL4mKwerqxZA/cfL
+ NlDA==
+X-Gm-Message-State: AOJu0Yzw8e3Ddz5vNl2wf34FJvqQUCM1T/SFV/nf9m1CTi14fJQbejjy
+ gsolrbqJlCwmfO7mC+OlFDvgK8UByeYHh1krw7/MgTIsNzgbg+2UgPJ0itt5haN2DAVVCKUvaV6
+ GJuZQM3sAxxJCor8=
+X-Received: by 2002:a05:6358:7e47:b0:168:ec61:c36 with SMTP id
+ p7-20020a0563587e4700b00168ec610c36mr237706rwm.2.1698339841141; 
+ Thu, 26 Oct 2023 10:04:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEfiZrOtPnqY7WC06swIOn+VpsRBMCiIE03lWOi+U7qHpCjP4LqoVGE4awOehzo32ITVVlhPw==
+X-Received: by 2002:a05:6358:7e47:b0:168:ec61:c36 with SMTP id
+ p7-20020a0563587e4700b00168ec610c36mr237677rwm.2.1698339840709; 
+ Thu, 26 Oct 2023 10:04:00 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ px9-20020a056214050900b0066db33eeeb7sm3395070qvb.131.2023.10.26.10.03.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Oct 2023 10:03:59 -0700 (PDT)
+Date: Thu, 26 Oct 2023 13:03:57 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Joao Martins <joao.m.martins@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH 0/3] migration: Downtime tracepoints
+Message-ID: <ZTqb/XDnwhkTUL3s@x1n>
+References: <20231026155337.596281-1-peterx@redhat.com>
+ <c8d16910-a496-410c-9c1c-68661b81f030@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 47/65] target/hppa: Remove TARGET_REGISTER_BITS
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: deller@gmx.de
-References: <20231020204331.139847-1-richard.henderson@linaro.org>
- <20231020204331.139847-48-richard.henderson@linaro.org>
- <c8b85257-01da-95c9-1622-909a67522437@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <c8b85257-01da-95c9-1622-909a67522437@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c8d16910-a496-410c-9c1c-68661b81f030@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,46 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/20/23 14:31, Philippe Mathieu-Daudé wrote:
->> diff --git a/target/hppa/machine.c b/target/hppa/machine.c
->> index 0c0bba68c0..ab34b72910 100644
->> --- a/target/hppa/machine.c
->> +++ b/target/hppa/machine.c
->> @@ -21,21 +21,12 @@
->>   #include "cpu.h"
->>   #include "migration/cpu.h"
->> -#if TARGET_REGISTER_BITS == 64
->>   #define qemu_put_betr   qemu_put_be64
->>   #define qemu_get_betr   qemu_get_be64
->>   #define VMSTATE_UINTTR_V(_f, _s, _v) \
->>       VMSTATE_UINT64_V(_f, _s, _v)
->>   #define VMSTATE_UINTTR_ARRAY_V(_f, _s, _n, _v) \
->>       VMSTATE_UINT64_ARRAY_V(_f, _s, _n, _v)
+On Thu, Oct 26, 2023 at 05:06:37PM +0100, Joao Martins wrote:
+> On 26/10/2023 16:53, Peter Xu wrote:
+> > This small series (actually only the last patch; first two are cleanups)
+> > wants to improve ability of QEMU downtime analysis similarly to what Joao
+> > used to propose here:
+> > 
+> >   https://lore.kernel.org/r/20230926161841.98464-1-joao.m.martins@oracle.com
+> > 
+> Thanks for following up on the idea; It's been hard to have enough bandwidth for
+> everything on the past set of weeks :(
+
+Yeah, totally understdood.  I think our QE team pushed me towards some
+series like this, while my plan was waiting for your new version. :)
+
+Then when I started I decided to go into per-device.  I was thinking of
+also persist that information, but then I remembered some ppc guest can
+have ~40,000 vmstates..  and memory to maintain that may or may not regress
+a ppc user.  So I figured I should first keep it simple with tracepoints.
+
 > 
-> Total 6 uses, let's use in place, removing the
-> definitions.
-
-I had meant to go back and remove these, thanks for the reminder.
-I didn't realize there were so few uses.  I will just fold this in.
-
-> IIUC for TARGET_REGISTER_BITS == 32 we need:
+> > But with a few differences:
+> > 
+> >   - Nothing exported yet to qapi, all tracepoints so far
+> > 
+> >   - Instead of major checkpoints (stop, iterable, non-iterable, resume-rp),
+> >     finer granule by providing downtime measurements for each vmstate (I
+> >     made microsecond to be the unit to be accurate).  So far it seems
+> >     iterable / non-iterable is the core of the problem, and I want to nail
+> >     it to per-device.
+> > 
+> >   - Trace dest QEMU too
+> > 
+> > For the last bullet: consider the case where a device save() can be super
+> > fast, while load() can actually be super slow.  Both of them will
+> > contribute to the ultimate downtime, but not a simple summary: when src
+> > QEMU is save()ing on device1, dst QEMU can be load()ing on device2.  So
+> > they can run in parallel.  However the only way to figure all components of
+> > the downtime is to record both.
+> > 
+> > Please have a look, thanks.
+> >
 > 
-> -- >8 --
->   static const VMStateDescription vmstate_env = {
->       .name = "env",
-> -    .version_id = 1,
-> -    .minimum_version_id = 1,
-> +    .version_id = 2,
-> +    .minimum_version_id = 2,
->       .fields = vmstate_env_fields,
->   };
+> I like your series, as it allows a user to pinpoint one particular bad device,
+> while covering the load side too. The checkpoints of migration on the other hand
+> were useful -- while also a bit ugly -- for the sort of big picture of how
+> downtime breaks down. Perhaps we could add that /also/ as tracepoitns without
+> specifically commiting to be exposed in QAPI.
+> 
+> More fundamentally, how can one capture the 'stop' part? There's also time spent
+> there like e.g. quiescing/stopping vhost-net workers, or suspending the VF
+> device. All likely as bad to those tracepoints pertaining device-state/ram
+> related stuff (iterable and non-iterable portions).
 
-You're right -- a version bump is required.  I will simply do this unconditionally, as the 
-effort of back-compat is not warranted for this target.
+Yeah that's a good point.  I didn't cover "stop" yet because I think it's
+just more tricky and I didn't think it all through, yet.
 
-I also need to handle the TLB format change for pa2.0.
-(There's an existing comment about that!)
+The first question is, when stopping some backends, the vCPUs are still
+running, so it's not 100% clear to me on which should be contributed as
+part of real downtime.
 
+Meanwhile that'll be another angle besides vmstates: need to keep some eye
+on the state change handlers, and that can be a device, or something else.
 
-r~
+Did you measure the stop process in some way before?  Do you have some
+rough number or anything surprising you already observed?
+
+Thanks,
+
+-- 
+Peter Xu
+
 
