@@ -2,97 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1F37D82D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 14:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DF67D82D8
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 14:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvzdt-0007pS-KX; Thu, 26 Oct 2023 08:39:17 -0400
+	id 1qvzg1-0000Pt-2Q; Thu, 26 Oct 2023 08:41:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qvzdr-0007ow-UE
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 08:39:15 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qvzdp-0003C4-VJ
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 08:39:15 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6be840283ceso800234b3a.3
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 05:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698323951; x=1698928751; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=Iy/9mK73VgJHKA7x6ZOHag2goOiZmcwGvUW8/QRF3QY=;
- b=KQWv2qENdv3guvQW+Wk8Nj8BMqbkPOD08gxHl52N5aBXVKDWwDa5PRdCiO67ODOmB+
- Ywlzep+Slxj0WbDPpVQgk3f/n2v8aBDMQva81R1lUAJMXGC2OH+Mg2l8VyfJnujYdvlv
- GH8oWWcwBXw7I2Ify+a33kzEYmlIY92U62Uhu5k5wBzCh2wJuX687DAZxdEayuUujeaF
- 6ePnUN9dUzf1+Xvfxs9r9MqCIjWCyXEoXP8M0GYCgejQzE19rCqjfktroTrq3ZKQvCP/
- M1CA9yomlkyRIihq7EbU6oRn3FrGQoxwhT7wzFeYOokoIRQz8lESYTpk0VgCbHL7s9lM
- CUZw==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qvzfz-0000Ou-7t
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 08:41:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qvzfx-0003ho-AC
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 08:41:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698324083;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rm7xHyPU7UrFKbHExCp3hETRS4Uo99zPiXo0roR67+8=;
+ b=QFjyIE5GZRM5Z1LrTDHmmsdFnHkn5esDKVa86igyjjkVFwytOBkpnrea9FAZcHHOJH+xX7
+ 5cRO1Tgcg42g0PkHQ12stZlNQQ5HTBEB5H2Mo+x5EaTShgvpjcF0w91jTs5UH7TMoT7+qk
+ QM558qFri/9PGDkC7Xk2dWB4Px74FWY=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-zdYIW5_GPyKXdkfuxbWH4A-1; Thu, 26 Oct 2023 08:41:18 -0400
+X-MC-Unique: zdYIW5_GPyKXdkfuxbWH4A-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9ae57d8b502so57750366b.2
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 05:41:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698323951; x=1698928751;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Iy/9mK73VgJHKA7x6ZOHag2goOiZmcwGvUW8/QRF3QY=;
- b=DrSt3i4R7fTuDOBkVahfT5PIda8NQhhkyqiQ+4PPVWchJSGEOGvMYId1PvfKMp0GR3
- UPLNLj3v/SujwH5HDbKT6U/8SDrz2cfgckcKoHuAXKILcKnlonPu+OXCuD7QWslwa+vC
- YZtM7ljjo2flI8CWL20ufZtrGv0MG3FQ6wE6hpKb/D7ZmcQGw2tiQH9x2oYlstr02ob/
- hnqwTZy51ITcZNZsCMxXhFODW7phjF+7X5LipFe8o5yqXND2p4V7Jm7pH9ESxDJ8rwQ5
- ozSUlXA9br2f1ejLdLt3mxKTm8aZJUscLP9GF1/HkmvppNCQYF5yX0Kn28E17EAJb/Is
- sGLg==
-X-Gm-Message-State: AOJu0YwYPnxf0kOpBad97u22DwocimuH8zjCDNYT+b8LepGZnMdx+/wv
- Vraf2t0g1NmX7YBm/adqZpBTFw==
-X-Google-Smtp-Source: AGHT+IG/AqJazkvK+bwGZFlkIMk6GVHEVVQypWY/YHoP0Ohtfly+wxkaBiv8Xkc4u4Cb5ohZ7BfwCA==
-X-Received: by 2002:a05:6a20:c19c:b0:16b:e89b:fb11 with SMTP id
- bg28-20020a056a20c19c00b0016be89bfb11mr7705923pzb.56.1698323950975; 
- Thu, 26 Oct 2023 05:39:10 -0700 (PDT)
-Received: from sunil-laptop ([106.51.188.78]) by smtp.gmail.com with ESMTPSA id
- nr12-20020a17090b240c00b0027d12b1e29dsm1594762pjb.25.2023.10.26.05.39.02
+ d=1e100.net; s=20230601; t=1698324066; x=1698928866;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rm7xHyPU7UrFKbHExCp3hETRS4Uo99zPiXo0roR67+8=;
+ b=hAtY438/c8Ayc0LxheLstW8Cad4Jy+clFotgDvUE6baR8L6+e7fYrKLizZwBoCvJ6d
+ DHjj8VxeACKr4oQ7zp27LfFZVe99x587INar1ot7rS5mWBpUlqwzXoGZ5bdWZXg0ho/M
+ pAYC5UZdQkuHadJlPh5YkEmrrNyuJLE7k7Tecu+aHINHLRV/0px9Tjh4ECyIY5j9Bq/l
+ Y2kt1GjyDxgPRIC+K/JzdmxAZDmo+M3jjib/JCQmSDbZEyAcRUXCmCcaP1aBri1tIbr/
+ YNQKbXfCxYv/TmMSIDwpfx3VByeA6EqJ8jQZwBescgeXnZ6QtKt3D+vTKfCsr0u3ob4X
+ oXNw==
+X-Gm-Message-State: AOJu0YzzgxWtJJ3KinFR4CbJTOk+RVfzkyEqbHUwqDNA4ihqg1F3Hc67
+ YdQ5J+voxNMuTH0Yu6/GxglIF3hKE0gwzTiiDg00Gii+C63dd4QH5Ba6WVsxYetWyktdOp7N1X0
+ j5m7TF9rHXKlFZoA=
+X-Received: by 2002:a17:907:60cd:b0:9be:466c:1824 with SMTP id
+ hv13-20020a17090760cd00b009be466c1824mr13930129ejc.11.1698324066277; 
+ Thu, 26 Oct 2023 05:41:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEd1kNJ+8iILLv3/Fkd8Bgd8X+xynvrLJFevhzZvdzUfnWFG5M+ino9hXRwPWzgdclmMTwWYQ==
+X-Received: by 2002:a17:907:60cd:b0:9be:466c:1824 with SMTP id
+ hv13-20020a17090760cd00b009be466c1824mr13930110ejc.11.1698324065904; 
+ Thu, 26 Oct 2023 05:41:05 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ lt13-20020a170906fa8d00b009c4cb1553edsm11620259ejb.95.2023.10.26.05.41.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 05:39:10 -0700 (PDT)
-Date: Thu, 26 Oct 2023 18:08:59 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Anup Patel <apatel@ventanamicro.com>,
- Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
-Subject: Re: [PATCH v4 05/13] hw/riscv/virt-acpi-build.c: Add AIA support in
- RINTC
-Message-ID: <ZTpd4+/zPtygPyls@sunil-laptop>
-References: <20231025200713.580814-1-sunilvl@ventanamicro.com>
- <20231025200713.580814-6-sunilvl@ventanamicro.com>
- <20231026-e3dba47934601608bc6a8cf8@orel>
+ Thu, 26 Oct 2023 05:41:04 -0700 (PDT)
+Date: Thu, 26 Oct 2023 14:41:03 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
+ <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
+ <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
+ <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
+ <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
+ <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
+ <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
+ <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
+ <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
+ <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
+ <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
+ <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
+ <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
+ <lixianglai@loongson.cn>, <linuxarm@huawei.com>
+Subject: Re: [PATCH V6 0/9] Add architecture agnostic code to support vCPU
+ Hotplug
+Message-ID: <20231026144103.565a9566@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231013105129.25648-1-salil.mehta@huawei.com>
+References: <20231013105129.25648-1-salil.mehta@huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231026-e3dba47934601608bc6a8cf8@orel>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x433.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,151 +113,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 26, 2023 at 10:46:56AM +0200, Andrew Jones wrote:
-> On Thu, Oct 26, 2023 at 01:37:05AM +0530, Sunil V L wrote:
-> > Update the RINTC structure in MADT with AIA related fields.
-> > 
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> > ---
-> >  hw/riscv/virt-acpi-build.c | 66 +++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 62 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-> > index d8772c2821..073c85f327 100644
-> > --- a/hw/riscv/virt-acpi-build.c
-> > +++ b/hw/riscv/virt-acpi-build.c
-> > @@ -38,6 +38,7 @@
-> >  #include "hw/intc/riscv_aclint.h"
-> >  
-> >  #define ACPI_BUILD_TABLE_SIZE             0x20000
-> > +#define ACPI_BUILD_INTC_ID(socket, index) ((socket << 24) | (index))
-> >  
-> >  typedef struct AcpiBuildState {
-> >      /* Copy of table in RAM (for patching) */
-> > @@ -58,18 +59,42 @@ static void acpi_align_size(GArray *blob, unsigned align)
-> >  }
-> >  
-> >  static void riscv_acpi_madt_add_rintc(uint32_t uid,
-> > +                                      uint32_t local_cpu_id,
-> >                                        const CPUArchIdList *arch_ids,
-> > -                                      GArray *entry)
-> > +                                      GArray *entry,
-> > +                                      RISCVVirtAIAType aia_type,
-> > +                                      uint64_t imsic_addr,
-> > +                                      uint32_t imsic_size)
-> >  {
-> >      uint64_t hart_id = arch_ids->cpus[uid].arch_id;
-> >  
-> >      build_append_int_noprefix(entry, 0x18, 1);       /* Type     */
-> > -    build_append_int_noprefix(entry, 20, 1);         /* Length   */
-> > +    build_append_int_noprefix(entry, 36, 1);         /* Length   */
-> >      build_append_int_noprefix(entry, 1, 1);          /* Version  */
-> >      build_append_int_noprefix(entry, 0, 1);          /* Reserved */
-> >      build_append_int_noprefix(entry, 0x1, 4);        /* Flags    */
-> >      build_append_int_noprefix(entry, hart_id, 8);    /* Hart ID  */
-> >      build_append_int_noprefix(entry, uid, 4);        /* ACPI Processor UID */
-> > +    /* External Interrupt Controller ID */
-> > +    if (aia_type == VIRT_AIA_TYPE_APLIC) {
-> > +        build_append_int_noprefix(entry,
-> > +                                  ACPI_BUILD_INTC_ID(
-> > +                                      arch_ids->cpus[uid].props.node_id,
-> > +                                      local_cpu_id),
-> > +                                  4);
-> > +    } else {
-> > +        build_append_int_noprefix(entry, 0, 4);
-> > +    }
-> > +
-> > +    if (aia_type == VIRT_AIA_TYPE_APLIC_IMSIC) {
-> > +        /* IMSIC Base address */
-> > +        build_append_int_noprefix(entry, imsic_addr, 8);
-> > +        /* IMSIC Size */
-> > +        build_append_int_noprefix(entry, imsic_size, 4);
-> > +    } else {
-> > +        build_append_int_noprefix(entry, 0, 8);
-> > +        build_append_int_noprefix(entry, 0, 4);
-> > +    }
-> >  }
-> >  
-> >  static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
-> > @@ -77,6 +102,11 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
-> >      MachineClass *mc = MACHINE_GET_CLASS(s);
-> >      MachineState *ms = MACHINE(s);
-> >      const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
-> > +    uint64_t imsic_socket_addr, imsic_addr;
-> > +    uint8_t  guest_index_bits;
-> > +    uint32_t imsic_size, local_cpu_id, socket_id;
-> > +
-> > +    guest_index_bits = imsic_num_bits(s->aia_guests + 1);
-> >  
-> >      for (int i = 0; i < arch_ids->len; i++) {
-> >              Aml *dev;
-> > @@ -87,8 +117,19 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
-> >              aml_append(dev, aml_name_decl("_UID",
-> >                         aml_int(arch_ids->cpus[i].arch_id)));
-> >  
-> > +            socket_id = arch_ids->cpus[i].props.node_id;
-> > +            local_cpu_id = (arch_ids->cpus[i].arch_id -
-> > +                            riscv_socket_first_hartid(ms, socket_id)) %
-> > +                            riscv_socket_hart_count(ms, socket_id);
-> >              /* build _MAT object */
-> > -            riscv_acpi_madt_add_rintc(i, arch_ids, madt_buf);
-> > +            imsic_socket_addr = s->memmap[VIRT_IMSIC_S].base +
-> > +                                (socket_id * VIRT_IMSIC_GROUP_MAX_SIZE);
-> > +            imsic_addr = imsic_socket_addr +
-> > +                         local_cpu_id * IMSIC_HART_SIZE(guest_index_bits);
-> > +            imsic_size = IMSIC_HART_SIZE(guest_index_bits);
-> > +
-> > +            riscv_acpi_madt_add_rintc(i, local_cpu_id, arch_ids, madt_buf,
-> > +                                      s->aia_type, imsic_addr, imsic_size);
-> >              aml_append(dev, aml_name_decl("_MAT",
-> >                                            aml_buffer(madt_buf->len,
-> >                                            (uint8_t *)madt_buf->data)));
-> > @@ -227,6 +268,7 @@ static void build_dsdt(GArray *table_data,
-> >   * 5.2.12 Multiple APIC Description Table (MADT)
-> >   * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/15
-> >   *      https://drive.google.com/file/d/1R6k4MshhN3WTT-hwqAquu5nX6xSEqK2l/view
-> > + *      https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view
-> >   */
-> >  static void build_madt(GArray *table_data,
-> >                         BIOSLinker *linker,
-> > @@ -235,6 +277,12 @@ static void build_madt(GArray *table_data,
-> >      MachineClass *mc = MACHINE_GET_CLASS(s);
-> >      MachineState *ms = MACHINE(s);
-> >      const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
-> > +    uint64_t imsic_socket_addr, imsic_addr;
-> > +    uint8_t  guest_index_bits;
-> > +    uint32_t imsic_size;
-> > +    uint32_t local_cpu_id, socket_id;
-> > +
-> > +    guest_index_bits = imsic_num_bits(s->aia_guests + 1);
-> >  
-> >      AcpiTable table = { .sig = "APIC", .rev = 6, .oem_id = s->oem_id,
-> >                          .oem_table_id = s->oem_table_id };
-> > @@ -246,7 +294,17 @@ static void build_madt(GArray *table_data,
-> >  
-> >      /* RISC-V Local INTC structures per HART */
-> >      for (int i = 0; i < arch_ids->len; i++) {
-> > -        riscv_acpi_madt_add_rintc(i, arch_ids, table_data);
-> > +        socket_id = arch_ids->cpus[i].props.node_id;
-> > +        local_cpu_id = (arch_ids->cpus[i].arch_id -
-> > +                       riscv_socket_first_hartid(ms, socket_id)) %
-> > +                       riscv_socket_hart_count(ms, socket_id);
-> > +        imsic_socket_addr = s->memmap[VIRT_IMSIC_S].base +
-> > +                            (socket_id * VIRT_IMSIC_GROUP_MAX_SIZE);
-> > +        imsic_addr = imsic_socket_addr +
-> > +                     local_cpu_id * IMSIC_HART_SIZE(guest_index_bits);
-> > +        imsic_size = IMSIC_HART_SIZE(guest_index_bits);
-> > +        riscv_acpi_madt_add_rintc(i, local_cpu_id, arch_ids, table_data,
-> > +                                  s->aia_type, imsic_addr, imsic_size);
-> 
-> All the above new lines identically match the new lines in
-> acpi_dsdt_add_cpus(), so I suggest creating a helper function rather
-> than duplicating them.
-> 
-Makes sense. Let me update in next revision.
+On Fri, 13 Oct 2023 11:51:20 +0100
+Salil Mehta <salil.mehta@huawei.com> wrote:
 
-Thanks,
-Sunil
+> Virtual CPU hotplug support is being added across various architectures[1=
+][3].
+> This series adds various code bits common across all architectures:
+>=20
+> 1. vCPU creation and Parking code refactor [Patch 1]
+> 2. Update ACPI GED framework to support vCPU Hotplug [Patch 4,6,7]
+> 3. ACPI CPUs AML code change [Patch 5]
+> 4. Helper functions to support unrealization of CPU objects [Patch 8,9]
+> 5. Misc [Patch 2,3]
+
+Thanks Salil!
+
+Overall series looks good to me (modulo some points, I'd like to be address=
+ed)
+I'll do some testing and follow with per patch review tomorrow.=20
+
+> Repository:
+>=20
+> [*] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2.commo=
+n.v6
+>=20
+>=20
+> Revision History:
+>=20
+> Patch-set  V5 -> V6
+> 1. Addressed Gavin Shan's comments
+>    - Fixed the assert() ranges of address spaces
+>    - Rebased the patch-set to latest changes in the qemu.git
+>    - Added Reviewed-by tags for patches {8,9}
+> 2. Addressed Jonathan Cameron's comments
+>    - Updated commit-log for [Patch V5 1/9] with mention of trace events
+>    - Added Reviewed-by tags for patches {1,5}
+> 3. Added Tested-by tags from Xianglai Li
+> 4. Fixed checkpatch.pl error "Qemu -> QEMU" in [Patch V5 1/9]=20
+> Link: https://lore.kernel.org/qemu-devel/20231011194355.15628-1-salil.meh=
+ta@huawei.com/
+>=20
+> Patch-set  V4 -> V5
+> 1. Addressed Gavin Shan's comments
+>    - Fixed the trace events print string for kvm_{create,get,park,destroy=
+}_vcpu
+>    - Added Reviewed-by tag for patch {1}
+> 2. Added Shaoqin Huang's Reviewed-by tags for Patches {2,3}
+> 3. Added Tested-by Tag from Vishnu Pajjuri to the patch-set
+> 4. Dropped the ARM specific [Patch V4 10/10]
+> Link: https://lore.kernel.org/qemu-devel/20231009203601.17584-1-salil.meh=
+ta@huawei.com/
+>=20
+> Patch-set  V3 -> V4
+> 1. Addressed David Hilderbrand's comments
+>    - Fixed the wrong doc comment of kvm_park_vcpu API prototype
+>    - Added Reviewed-by tags for patches {2,4}
+> Link: https://lore.kernel.org/qemu-devel/20231009112812.10612-1-salil.meh=
+ta@huawei.com/
+>=20
+> Patch-set  V2 -> V3
+> 1. Addressed Jonathan Cameron's comments
+>    - Fixed 'vcpu-id' type wrongly changed from 'unsigned long' to 'intege=
+r'
+>    - Removed unnecessary use of variable 'vcpu_id' in kvm_park_vcpu
+>    - Updated [Patch V2 3/10] commit-log with details of ACPI_CPU_SCAN_MET=
+HOD macro
+>    - Updated [Patch V2 5/10] commit-log with details of conditional event=
+ handler method
+>    - Added Reviewed-by tags for patches {2,3,4,6,7}
+> 2. Addressed Gavin Shan's comments
+>    - Remove unnecessary use of variable 'vcpu_id' in kvm_par_vcpu
+>    - Fixed return value in kvm_get_vcpu from -1 to -ENOENT
+>    - Reset the value of 'gdb_num_g_regs' in gdb_unregister_coprocessor_all
+>    - Fixed the kvm_{create,park}_vcpu prototypes docs
+>    - Added Reviewed-by tags for patches {2,3,4,5,6,7,9,10}
+> 3. Addressed one earlier missed comment by Alex Benn=C3=A9e in RFC V1
+>    - Added traces instead of DPRINTF in the newly added and some existing=
+ functions
+> Link: https://lore.kernel.org/qemu-devel/20230930001933.2660-1-salil.meht=
+a@huawei.com/
+>=20
+> Patch-set V1 -> V2
+> 1. Addressed Alex Benn=C3=A9e's comments
+>    - Refactored the kvm_create_vcpu logic to get rid of goto
+>    - Added the docs for kvm_{create,park}_vcpu prototypes
+>    - Splitted the gdbstub and AddressSpace destruction change into separa=
+te patches
+>    - Added Reviewed-by tags for patches {2,10}
+> Link: https://lore.kernel.org/qemu-devel/20230929124304.13672-1-salil.meh=
+ta@huawei.com/
+>=20
+> References:
+>=20
+> [1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta=
+@huawei.com/
+> [2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
+> [3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@lo=
+ongson.cn/
+>=20
+>=20
+> Salil Mehta (9):
+>   accel/kvm: Extract common KVM vCPU {creation,parking} code
+>   hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
+>   hw/acpi: Add ACPI CPU hotplug init stub
+>   hw/acpi: Init GED framework with CPU hotplug events
+>   hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+>   hw/acpi: Update GED _EVT method AML with CPU scan
+>   hw/acpi: Update ACPI GED framework to support vCPU Hotplug
+>   physmem: Add helper function to destroy CPU AddressSpace
+>   gdbstub: Add helper function to unregister GDB register space
+>=20
+>  accel/kvm/kvm-all.c                    | 64 ++++++++++++++++++++------
+>  accel/kvm/trace-events                 |  4 ++
+>  gdbstub/gdbstub.c                      | 12 +++++
+>  hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++
+>  hw/acpi/cpu.c                          | 27 +++++++----
+>  hw/acpi/generic_event_device.c         | 22 +++++++++
+>  hw/i386/acpi-build.c                   |  3 +-
+>  include/exec/cpu-common.h              |  8 ++++
+>  include/exec/gdbstub.h                 |  5 ++
+>  include/hw/acpi/cpu.h                  |  5 +-
+>  include/hw/acpi/cpu_hotplug.h          |  4 ++
+>  include/hw/acpi/generic_event_device.h |  5 ++
+>  include/hw/core/cpu.h                  |  1 +
+>  include/sysemu/kvm.h                   | 16 +++++++
+>  system/physmem.c                       | 29 ++++++++++++
+>  15 files changed, 184 insertions(+), 27 deletions(-)
+>=20
+
 
