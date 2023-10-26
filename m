@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BB17D8130
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 12:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F1C7D8123
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 12:50:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvxuu-0002dA-Vv; Thu, 26 Oct 2023 06:48:45 -0400
+	id 1qvxuv-0002le-Ny; Thu, 26 Oct 2023 06:48:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qvxuL-0002EB-Nw; Thu, 26 Oct 2023 06:48:16 -0400
+ id 1qvxuM-0002Et-Vs; Thu, 26 Oct 2023 06:48:17 -0400
 Received: from mgamail.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qvxu9-0001PR-Hs; Thu, 26 Oct 2023 06:48:01 -0400
+ id 1qvxuC-0001Q0-5E; Thu, 26 Oct 2023 06:48:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698317277; x=1729853277;
+ t=1698317280; x=1729853280;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Cgs1UlOu9KSvDtr3cTTJNPXjMQDSb8lNfbQ0g80dHeA=;
- b=SMg0b3+I3WpEqesLkb6Q9bYTdx8gVI0m+sqUe48xYaoz1z1JnXdSjnUa
- YSJeWXVvPnSvMW4bB091JiwEuHH5j9phjDnVVqjDYOcWp/OHpr4WtM9GL
- KMURxw9lSYkObV5Knb8EpZE1XkikVlnzooN7fELjNVGwNPNowru8Z1orR
- N4hdiPELfxXaMy/OYL7Fl7R+6FbQ4gwx5ClPLmxkVDYwFoKb0CL6vbZ8i
- cP7e3CfTlqB5Y7cyYYbTt9mhI4bEVXXEDAL4VSZOdqw9WssUjRd03vmLl
- 5ijVLyNvOy9rzv3syPdPfI4xcNZUR7ilU7TtFZBdtf7QBLZraOdtF1WBE w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="372563560"
-X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; d="scan'208";a="372563560"
+ bh=w5+kwyEFTNpXEaRbCnpjDpn9Oq8F5pci+Oh4DxWnBwQ=;
+ b=d0lPCVv7Aq2eiGNgAiHSCAxUO/YdGDYvnUh6F263jADf5Yo7LMseU2Uv
+ toDwpInTscSXLA2ILHuahd9aJE5H13Q+HJnipcx1DXemu2s+MMfR34xHH
+ lUY8leqW82QnLqGBb6O/+GCLjxYWhiSi97sRxf+uRe9Yaa9PdhET5Um4O
+ izld+jTcqAB93JluclstLcY+wSpULqVM8nVoVFHqmJJAdy/d4L7wdmys2
+ 7WauZhTf4DtSscYB/GEADmcGfA5ePSUeVB3X3gPbXWuihv2N2rEr+xhJa
+ 0Gradb5Ze8LJo75DlkdKESCelmVHYq3isxMAm+WSS/xXXY0vMnNOoDX+4 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="372563605"
+X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; d="scan'208";a="372563605"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2023 03:47:31 -0700
+ 26 Oct 2023 03:47:35 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; 
-   d="scan'208";a="463727"
+   d="scan'208";a="463737"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2023 03:47:15 -0700
+ 26 Oct 2023 03:47:20 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -51,10 +51,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  qemu-ppc@nongnu.org (open list:sPAPR (pseries))
-Subject: [PATCH v3 20/37] vfio/spapr: switch to spapr IOMMU BE
- add/del_section_window
-Date: Thu, 26 Oct 2023 18:30:47 +0800
-Message-Id: <20231026103104.1686921-21-zhenzhong.duan@intel.com>
+Subject: [PATCH v3 21/37] vfio/spapr: Move prereg_listener into spapr container
+Date: Thu, 26 Oct 2023 18:30:48 +0800
+Message-Id: <20231026103104.1686921-22-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
 References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
@@ -83,179 +82,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No fucntional change intended.
+No functional changes intended.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-common.h         |  5 -----
- include/hw/vfio/vfio-container-base.h |  5 +++++
- hw/vfio/common.c                      |  8 ++------
- hw/vfio/container-base.c              | 23 ++++++++++++++++++++++-
- hw/vfio/spapr.c                       | 22 ++++++++++++++++------
- 5 files changed, 45 insertions(+), 18 deletions(-)
+ include/hw/vfio/vfio-common.h |  1 -
+ hw/vfio/spapr.c               | 24 ++++++++++++++++--------
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index a74e60e677..1489b49d71 100644
+index 1489b49d71..913e9f5771 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -177,11 +177,6 @@ typedef struct VFIOIOMMUSpaprOps {
-                        MemoryRegionSection *section);
- } VFIOIOMMUSpaprOps;
- 
--int vfio_container_add_section_window(VFIOContainer *container,
--                                      MemoryRegionSection *section,
--                                      Error **errp);
--void vfio_container_del_section_window(VFIOContainer *container,
--                                       MemoryRegionSection *section);
- bool vfio_spapr_container_init(VFIOContainer *container, Error **errp);
- void vfio_spapr_container_deinit(VFIOContainer *container);
- 
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 1e1854d24f..88463bcf24 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -91,6 +91,11 @@ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
- int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-                              hwaddr iova, ram_addr_t size,
-                              IOMMUTLBEntry *iotlb);
-+int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
-+                                      MemoryRegionSection *section,
-+                                      Error **errp);
-+void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
-+                                       MemoryRegionSection *section);
- int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-                                            bool start);
- int vfio_container_query_dirty_bitmap(VFIOContainerBase *bcontainer,
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 64565b4ae9..41a5609e33 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -571,8 +571,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
- {
-     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
-                                                  listener);
--    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
--                                            bcontainer);
-     hwaddr iova, end;
-     Int128 llend, llsize;
-     void *vaddr;
-@@ -596,7 +594,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
-         return;
-     }
- 
--    if (vfio_container_add_section_window(container, section, &err)) {
-+    if (vfio_container_add_section_window(bcontainer, section, &err)) {
-         goto fail;
-     }
- 
-@@ -739,8 +737,6 @@ static void vfio_listener_region_del(MemoryListener *listener,
- {
-     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
-                                                  listener);
--    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
--                                            bcontainer);
-     hwaddr iova, end;
-     Int128 llend, llsize;
-     int ret;
-@@ -820,7 +816,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
- 
-     memory_region_unref(section->mr);
- 
--    vfio_container_del_section_window(container, section);
-+    vfio_container_del_section_window(bcontainer, section);
- }
- 
- typedef struct VFIODirtyRanges {
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 6363ed3552..2efb26cfe4 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -24,7 +24,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
--#include "hw/vfio/vfio-container-base.h"
-+#include "hw/vfio/vfio-common.h"
- 
- int vfio_container_dma_map(VFIOContainerBase *bcontainer,
-                            hwaddr iova, ram_addr_t size,
-@@ -48,6 +48,27 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-     return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
- }
- 
-+int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
-+                                      MemoryRegionSection *section,
-+                                      Error **errp)
-+{
-+    if (!bcontainer->spapr_ops || !bcontainer->spapr_ops->add_window) {
-+        return 0;
-+    }
-+
-+    return bcontainer->spapr_ops->add_window(bcontainer, section, errp);
-+}
-+
-+void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
-+                                       MemoryRegionSection *section)
-+{
-+    if (!bcontainer->spapr_ops || !bcontainer->spapr_ops->del_window) {
-+        return;
-+    }
-+
-+    return bcontainer->spapr_ops->del_window(bcontainer, section);
-+}
-+
- int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-                                            bool start)
- {
+@@ -78,7 +78,6 @@ struct VFIOGroup;
+ typedef struct VFIOContainer {
+     VFIOContainerBase bcontainer;
+     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+-    MemoryListener prereg_listener;
+     unsigned iommu_type;
+     QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
+     QLIST_HEAD(, VFIOGroup) group_list;
 diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 3739004151..43e32e544b 100644
+index 43e32e544b..566a79906c 100644
 --- a/hw/vfio/spapr.c
 +++ b/hw/vfio/spapr.c
-@@ -302,10 +302,13 @@ static int vfio_spapr_create_window(VFIOContainer *container,
-     return 0;
- }
+@@ -26,6 +26,7 @@
  
--int vfio_container_add_section_window(VFIOContainer *container,
--                                      MemoryRegionSection *section,
--                                      Error **errp)
-+static int
-+vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
-+                                        MemoryRegionSection *section,
-+                                        Error **errp)
+ typedef struct VFIOSpaprContainer {
+     VFIOContainer container;
++    MemoryListener prereg_listener;
+ } VFIOSpaprContainer;
+ 
+ static bool vfio_prereg_listener_skipped_section(MemoryRegionSection *section)
+@@ -48,8 +49,9 @@ static void *vfio_prereg_gpa_to_vaddr(MemoryRegionSection *section, hwaddr gpa)
+ static void vfio_prereg_listener_region_add(MemoryListener *listener,
+                                             MemoryRegionSection *section)
  {
-+    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-+                                            bcontainer);
-     VFIOHostDMAWindow *hostwin;
-     hwaddr pgsize = 0;
+-    VFIOContainer *container = container_of(listener, VFIOContainer,
+-                                            prereg_listener);
++    VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
++                                                  prereg_listener);
++    VFIOContainer *container = &scontainer->container;
+     VFIOContainerBase *bcontainer = &container->bcontainer;
+     const hwaddr gpa = section->offset_within_address_space;
+     hwaddr end;
+@@ -107,8 +109,9 @@ static void vfio_prereg_listener_region_add(MemoryListener *listener,
+ static void vfio_prereg_listener_region_del(MemoryListener *listener,
+                                             MemoryRegionSection *section)
+ {
+-    VFIOContainer *container = container_of(listener, VFIOContainer,
+-                                            prereg_listener);
++    VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
++                                                  prereg_listener);
++    VFIOContainer *container = &scontainer->container;
+     const hwaddr gpa = section->offset_within_address_space;
+     hwaddr end;
      int ret;
-@@ -370,9 +373,13 @@ int vfio_container_add_section_window(VFIOContainer *container,
-     return 0;
- }
- 
--void vfio_container_del_section_window(VFIOContainer *container,
--                                       MemoryRegionSection *section)
-+static void
-+vfio_spapr_container_del_section_window(VFIOContainerBase *bcontainer,
-+                                        MemoryRegionSection *section)
- {
-+    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-+                                            bcontainer);
-+
-     if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
-         return;
-     }
-@@ -388,7 +395,10 @@ void vfio_container_del_section_window(VFIOContainer *container,
-     }
- }
- 
--const VFIOIOMMUSpaprOps vfio_iommu_spapr_ops;
-+const VFIOIOMMUSpaprOps vfio_iommu_spapr_ops = {
-+    .add_window = vfio_spapr_container_add_section_window,
-+    .del_window = vfio_spapr_container_del_section_window,
-+};
- 
+@@ -403,6 +406,8 @@ const VFIOIOMMUSpaprOps vfio_iommu_spapr_ops = {
  bool vfio_spapr_container_init(VFIOContainer *container, Error **errp)
  {
+     VFIOContainerBase *bcontainer = &container->bcontainer;
++    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
++                                                  container);
+     struct vfio_iommu_spapr_tce_info info;
+     bool v2 = container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU;
+     int ret, fd = container->fd;
+@@ -419,9 +424,9 @@ bool vfio_spapr_container_init(VFIOContainer *container, Error **errp)
+             return -errno;
+         }
+     } else {
+-        container->prereg_listener = vfio_prereg_listener;
++        scontainer->prereg_listener = vfio_prereg_listener;
+ 
+-        memory_listener_register(&container->prereg_listener,
++        memory_listener_register(&scontainer->prereg_listener,
+                                  &address_space_memory);
+         if (bcontainer->error) {
+             ret = -1;
+@@ -467,7 +472,7 @@ bool vfio_spapr_container_init(VFIOContainer *container, Error **errp)
+ 
+ listener_unregister_exit:
+     if (v2) {
+-        memory_listener_unregister(&container->prereg_listener);
++        memory_listener_unregister(&scontainer->prereg_listener);
+     }
+     return ret;
+ }
+@@ -477,7 +482,10 @@ void vfio_spapr_container_deinit(VFIOContainer *container)
+     VFIOHostDMAWindow *hostwin, *next;
+ 
+     if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+-        memory_listener_unregister(&container->prereg_listener);
++        VFIOSpaprContainer *scontainer = container_of(container,
++                                                      VFIOSpaprContainer,
++                                                      container);
++        memory_listener_unregister(&scontainer->prereg_listener);
+     }
+     QLIST_FOREACH_SAFE(hostwin, &container->hostwin_list, hostwin_next,
+                        next) {
 -- 
 2.34.1
 
