@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6D17D7A84
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 03:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9927D7B0E
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 04:53:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvpYe-0005s8-4h; Wed, 25 Oct 2023 21:53:12 -0400
+	id 1qvqTh-00034i-QG; Wed, 25 Oct 2023 22:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvpYc-0005ri-6D
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:53:10 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qvqTZ-00034X-Rr
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 22:52:01 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvpYZ-0000WR-6m
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:53:09 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1caa7597af9so2594915ad.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 18:53:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qvqTY-0007s2-0B
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 22:52:01 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6c4a25f6390so260789a34.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 19:51:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698285185; x=1698889985; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698288718; x=1698893518;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=eUO8/mTEqJqbnOYPSTCdv2TDkSRrfMlSnYam1RVGXVU=;
- b=cHKB9Y5cY5aF6h0Rt3PxVauvlsNVdAk8ap33RIhcwMLC7Jadj7JfXuO42wGy6v+Hf7
- Rw8pHG2sBVUqeo8o23srLhSbwWu31z8Jcywpx8OuRqxUkuMxkT917Ku3DVVqioDmYuGj
- qxgbarouBx8gzh0SNBjwXAdCeuFIEMDudukEYz7VQC30H9pWJubkXepNIw2DJbWSuIWU
- mSsKevuYnMLq1Plw66WMmhVIOINKIStBNL11RN+qQKfoX9AR5CY9uZticLWRW7tFrr2k
- B4pRlizu/4UUGpiH+uujWL7b5li/FFlsjdhk10NeimT2LS5l2X+yRQYArrN/Oxv4XX2h
- o3fA==
+ bh=DTa1hWAss41rdi8M/7WpcSe6hTI05krwXDqPtBKgtQw=;
+ b=TKFnPrIv9nQSDWJzLujsexFnGE7Da2SfptOW8K/A7E3ldu+Om6TxOkrWDQ0FPK4Iy0
+ es+jBuOPqxA/hlI0aadYYy2l9a9YE2Es2jg1hNJlQIbhQIo1g6M57xojz3y94tTDKt66
+ NWRiuC23VVMmGiEMfiKy2uMjXImwzY61isVPxuJRnb17NG6gsBhpCTH1W76KF+b2Kt4e
+ Z84gyvBB7Jf5NnIiHvErP00d7Te/FqVSJ6ciOC5KhcYhDfjOyQy0vVgK50XZ+QQtTE8y
+ cCzN0lffPvwxuj/Rc1ah4HK5esPlpc+kEZOlnfWEQVN6jWamI3h18RjmA/piu0Zvh+My
+ hxyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698285185; x=1698889985;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698288718; x=1698893518;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eUO8/mTEqJqbnOYPSTCdv2TDkSRrfMlSnYam1RVGXVU=;
- b=gpeABLWR0S5MJhetyiv5qfJZPL5PrZhDtOACves1q/t3OF8YzMiYMAaqMfrFQa09PJ
- zmX8FPZhBHd3nTxPz3Vaz44CFq7K5uq+ZQ4C2gu10EHWMjQh3tQmKE3VnBcV0NgCGGGK
- J+vSBSVhPD1bAzsnjoF9o+b8TPRi29dnyTSggqt/1ltqBysQ4t4bevZluHFwuF/gSfMR
- D1+Aufs+tRfj8LtbCXvxc6HskkQ5lCICdzIr8uXCSlFuvrAkbwrYYtOfUK7EJ7Fvtl/e
- dOa6gK2F5KxRZFsy7RgdsGDb5WUd9ERCJXQiW0ecyTVp1/CZkQSaIIqAFiTlgEMu3s+i
- SloA==
-X-Gm-Message-State: AOJu0Yy0ClwyGLeXqosOH6foCo8Ks/O7s6naENC2LNyuH19htQOjBIOX
- ouS6sN1huLGyzig9M2EjeSZsAfB7I9Q1bapPs8o=
-X-Google-Smtp-Source: AGHT+IGUXBNIUX8qyRrLKQJ/dkgCXjEwp3EGmPRzlEEvKQ0HQlBNEN4lt66b3MB0VKRy0qDgavk0UA==
-X-Received: by 2002:a17:903:247:b0:1c3:64f9:45ad with SMTP id
- j7-20020a170903024700b001c364f945admr19243895plh.48.1698285185315; 
- Wed, 25 Oct 2023 18:53:05 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
+ bh=DTa1hWAss41rdi8M/7WpcSe6hTI05krwXDqPtBKgtQw=;
+ b=fG4RhS3myOtVuDVvilyqaN6Pq8jgRaGMNXIFHQ42QNF94JajxGksFuYvRb1OlRKO8d
+ vLNTEBe4cvjSNPNp0TON9n25e79WRF2kgF8RG66Uy3B0ZBn+lRANnyYpV7tyu9SrsIZd
+ PBIuAfMWvdlG/6YkPKkhcePTeSPnmZhPetZS/cqhi5XW8vak2pmyx2E2XQjinNF9vkuB
+ 2UTPfmq0ytoanNcN0tO5J8gmgMm6mY5WQFSu0GyGM8A9UXtbB+uEeR9FJD/V+6FSkuqW
+ fdn/29e+AU3azkkk4I4d6cKcAnBxqYTxLaFVVbC4SQyi4nmGXhUpbLSdvWgE43rgVZZG
+ Lqyw==
+X-Gm-Message-State: AOJu0Yyn6Q2/l/MkW4+mxH/G2hMlN0umWtL81oFQP6uTW8kkSJGerz5G
+ h8mLcje++2AwWOxvOqQlQ5vMKg==
+X-Google-Smtp-Source: AGHT+IEr2RS0SXPOB7aLGjhv82G5iCQmsUcFG8U0CWhJgjiBn9SvKKOIVYyQbSjaGy/jz9OJ7lU9hg==
+X-Received: by 2002:a9d:7d09:0:b0:6c4:c151:8ebe with SMTP id
+ v9-20020a9d7d09000000b006c4c1518ebemr14956933otn.22.1698288718697; 
+ Wed, 25 Oct 2023 19:51:58 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- q9-20020a170902dac900b001b9c960ffeasm9791580plx.47.2023.10.25.18.53.04
+ y15-20020aa79aef000000b0068883728c16sm10416368pfp.144.2023.10.25.19.51.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 18:53:04 -0700 (PDT)
-Message-ID: <81d1fa61-7d3d-40fc-822d-3253eb6236eb@linaro.org>
-Date: Wed, 25 Oct 2023 18:53:03 -0700
+ Wed, 25 Oct 2023 19:51:58 -0700 (PDT)
+Message-ID: <ef3994e1-6989-41c6-8648-f6c943d6fe64@daynix.com>
+Date: Thu, 26 Oct 2023 11:51:55 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] NOTFORMERGE tcg/i386: Assert sub of immediate has
- been folded
+Subject: Re: [PATCH 1/1] ui/cocoa: add full-screen-scaling display option
+To: carwynellis@gmail.com, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, peter.maydell@linaro.org, philmd@linaro.org
+References: <20231025140443.68520-1-carwynellis@gmail.com>
+ <20231025140443.68520-2-carwynellis@gmail.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20231026013945.1152174-1-richard.henderson@linaro.org>
- <20231026013945.1152174-5-richard.henderson@linaro.org>
-In-Reply-To: <20231026013945.1152174-5-richard.henderson@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20231025140443.68520-2-carwynellis@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,121 +95,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/25/23 18:39, Richard Henderson wrote:
-> A release build should simply accept and emit the subtract.
-> I'm not even sure if this is reasonable to keep for debug.
+On 2023/10/25 23:04, carwynellis@gmail.com wrote:
+> From: Carwyn Ellis <carwynellis@gmail.com>
 > 
-> Not-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Provides a display option, full-screen-scaling, that enables scaling of
+> the display when full-screen mode is enabled.
+> 
+> Also ensures that the corresponding menu item is marked as enabled when
+> the option is set to on.
+
+Hi,
+
+Thank you for your contribution.
+
+Please drop qemu-trivial@nongnu.org. This change is not that trivial.
+Instead add "Graphics maintainers" listed in MAINTAINERS file to CC.
+
+Please also add Signed-off-by tag. See docs/devel/submitting-a-patch.rst 
+to know what the tag means.
+
 > ---
->   tcg/tcg.c                 | 49 ++++++++++++++++++++++++++-------------
->   tcg/i386/tcg-target.c.inc | 13 ++++++++---
->   2 files changed, 43 insertions(+), 19 deletions(-)
-
-Oops, accidental merge of two patches.
-The tcg.c change *is* required.
-
-
-r~
-
+>   qapi/ui.json |  6 +++++-
+>   ui/cocoa.m   | 33 ++++++++++++++++++++-------------
+>   2 files changed, 25 insertions(+), 14 deletions(-)
 > 
-> diff --git a/tcg/tcg.c b/tcg/tcg.c
-> index a507c111cf..408647af7e 100644
-> --- a/tcg/tcg.c
-> +++ b/tcg/tcg.c
-> @@ -3618,23 +3618,40 @@ liveness_pass_1(TCGContext *s)
->           do_addsub2:
->               nb_iargs = 4;
->               nb_oargs = 2;
-> -            /* Test if the high part of the operation is dead, but not
-> -               the low part.  The result can be optimized to a simple
-> -               add or sub.  This happens often for x86_64 guest when the
-> -               cpu mode is set to 32 bit.  */
-> -            if (arg_temp(op->args[1])->state == TS_DEAD) {
-> -                if (arg_temp(op->args[0])->state == TS_DEAD) {
-> -                    goto do_remove;
-> -                }
-> -                /* Replace the opcode and adjust the args in place,
-> -                   leaving 3 unused args at the end.  */
-> -                op->opc = opc = opc_new;
-> -                op->args[1] = op->args[2];
-> -                op->args[2] = op->args[4];
-> -                /* Fall through and mark the single-word operation live.  */
-> -                nb_iargs = 2;
-> -                nb_oargs = 1;
-> +            /*
-> +             * Test if the high part of the operation is dead, but the low
-> +             * part is still live.  The result can be optimized to a simple
-> +             * add or sub.
-> +             */
-> +            if (arg_temp(op->args[1])->state != TS_DEAD) {
-> +                goto do_not_remove;
->               }
-> +            if (arg_temp(op->args[0])->state == TS_DEAD) {
-> +                goto do_remove;
-> +            }
-> +            /*
-> +             * Replace the opcode and adjust the args in place, leaving 3
-> +             * unused args at the end.  Canonicalize subi to andi.
-> +             */
-> +            op->args[1] = op->args[2];
-> +            {
-> +                TCGTemp *src2 = arg_temp(op->args[4]);
-> +                if (src2->kind == TEMP_CONST) {
-> +                    if (opc_new == INDEX_op_sub_i32) {
-> +                        src2 = tcg_constant_internal(TCG_TYPE_I32,
-> +                                                     (int32_t)-src2->val);
-> +                        opc_new = INDEX_op_add_i32;
-> +                    } else if (opc_new == INDEX_op_sub_i64) {
-> +                        src2 = tcg_constant_internal(TCG_TYPE_I64, -src2->val);
-> +                        opc_new = INDEX_op_add_i64;
-> +                    }
-> +                }
-> +                op->args[2] = temp_arg(src2);
-> +            }
-> +            op->opc = opc = opc_new;
-> +            /* Mark the single-word operation live.  */
-> +            nb_iargs = 2;
-> +            nb_oargs = 1;
->               goto do_not_remove;
->   
->           case INDEX_op_mulu2_i32:
-> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-> index 0d97864174..39d03fa698 100644
-> --- a/tcg/i386/tcg-target.c.inc
-> +++ b/tcg/i386/tcg-target.c.inc
-> @@ -2544,8 +2544,14 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
->           c = ARITH_ADD;
->           goto gen_arith;
->       OP_32_64(sub):
-> -        c = ARITH_SUB;
-> -        goto gen_arith;
-> +        /*
-> +         * Should have canonicalized all constants to add.
-> +         * Keep the constraint allowing any constant so that we catch this
-> +         * case without register allocation loading the constant first.
-> +         */
-> +        tcg_debug_assert(!const_a2);
-> +        tgen_arithr(s, ARITH_SUB + rexw, a0, a2);
-> +        break;
->       OP_32_64(and):
->           c = ARITH_AND;
->           goto gen_arith;
-> @@ -3325,7 +3331,6 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
->           return C_O1_I2(r, r, re);
->   
->       case INDEX_op_sub_i32:
-> -    case INDEX_op_sub_i64:
->       case INDEX_op_mul_i32:
->       case INDEX_op_mul_i64:
->       case INDEX_op_or_i32:
-> @@ -3333,6 +3338,8 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
->       case INDEX_op_xor_i32:
->       case INDEX_op_xor_i64:
->           return C_O1_I2(r, 0, re);
-> +    case INDEX_op_sub_i64:
-> +        return C_O1_I2(r, 0, ri);
->   
->       case INDEX_op_and_i32:
->       case INDEX_op_and_i64:
+> diff --git a/qapi/ui.json b/qapi/ui.json
+> index 006616aa77..9035b230ce 100644
+> --- a/qapi/ui.json
+> +++ b/qapi/ui.json
+> @@ -1409,13 +1409,17 @@
+>   #     codes match their position on non-Mac keyboards and you can use
+>   #     Meta/Super and Alt where you expect them.  (default: off)
+>   #
+> +# @full-screen-scaling: Scale display to fit when full-screen enabled.
+> +#     Defaults to "off".
+> +#
 
+I think it's better to name zoom-to-fit to align with DisplayGTK.
+It should also have "(Since 8.2)".
+
+>   # Since: 7.0
+>   ##
+>   { 'struct': 'DisplayCocoa',
+>     'data': {
+>         '*left-command-key': 'bool',
+>         '*full-grab': 'bool',
+> -      '*swap-opt-cmd': 'bool'
+> +      '*swap-opt-cmd': 'bool',
+> +      '*full-screen-scaling': 'bool'
+>     } }
+>   
+>   ##
+> diff --git a/ui/cocoa.m b/ui/cocoa.m
+> index d95276013c..7ddc4de174 100644
+> --- a/ui/cocoa.m
+> +++ b/ui/cocoa.m
+> @@ -1671,7 +1671,9 @@ static void create_initial_menus(void)
+>       // View menu
+>       menu = [[NSMenu alloc] initWithTitle:@"View"];
+>       [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] autorelease]]; // Fullscreen
+> -    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease]];
+> +    menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
+> +    [menuItem setState: (stretch_video) ? NSControlStateValueOn : NSControlStateValueOff];
+
+nit: You don't need parentheses around strech_video.
+
+> +    [menu addItem: menuItem];
+>       menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
+>       [menuItem setSubmenu:menu];
+>       [[NSApp mainMenu] addItem:menuItem];
+> @@ -2041,18 +2043,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+>   
+>       [QemuApplication sharedApplication];
+>   
+> -    create_initial_menus();
+> -
+> -    /*
+> -     * Create the menu entries which depend on QEMU state (for consoles
+> -     * and removable devices). These make calls back into QEMU functions,
+> -     * which is OK because at this point we know that the second thread
+> -     * holds the iothread lock and is synchronously waiting for us to
+> -     * finish.
+> -     */
+> -    add_console_menu_entries();
+> -    addRemovableDevicesMenuItems();
+> -
+>       // Create an Application controller
+>       QemuCocoaAppController *controller = [[QemuCocoaAppController alloc] init];
+
+QemuCocoaAppController also has code to initialize stretch_video; it's 
+not OK to have code to initialize a same variable in two different places.
+
+>       [NSApp setDelegate:controller];
+> @@ -2062,6 +2052,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+>           [NSApp activateIgnoringOtherApps: YES];
+>           [controller toggleFullScreen: nil];
+>       }
+> +
+
+Don't add a blank line here. It's irrelevant from this change.
 
