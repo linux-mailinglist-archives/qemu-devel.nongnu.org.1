@@ -2,84 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AE67D7D06
+	by mail.lfdr.de (Postfix) with ESMTPS id E37947D7D07
 	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 08:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvuA1-00043g-IW; Thu, 26 Oct 2023 02:48:05 -0400
+	id 1qvuAb-00049e-GQ; Thu, 26 Oct 2023 02:48:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvu9z-00043S-F1
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:48:03 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qvu9x-0000Eo-Nu
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:48:03 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-32db8924201so342732f8f.1
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 23:48:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698302880; x=1698907680; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RlfNyiKqhmHcIHhkwbbS7IpD8oeQxl8RhFknRZ1yB3I=;
- b=EedCG78fXyP3C06dCWqSN3INryf5JM38kYoM8M9TeR5fc3X6mYmO5wUIIwyf2nMlqL
- k0/DiYLhrMkovwpzNWpsCCq6YHxlW5bSfw5lPSQycIZp1BkYI/f3D0RzIa2PfGDoIoWg
- ZbRx4FUSAAzQFDcDxPCsyLSVcj4tLf0nj9EYa4Xlh6Oz1iuUvcMVgFg3i0O2EXoNYPGA
- zx365IrNW5Zd4t1Ipahsh3CRLbj4y64VzYySK32fg/71xWt9/ycPkvt+wVWNYv1RDw7j
- xSIXCKXtQutPImxjmD5RlJb89h3m698jq2M3qfCP3ohXKijMoZiWXizC8yKzG8xpyhYO
- myNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698302880; x=1698907680;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RlfNyiKqhmHcIHhkwbbS7IpD8oeQxl8RhFknRZ1yB3I=;
- b=QK5OItm36O9kdJD1m3JW6u5MgIQw1M4ED7s1OLMV+md9BipcGq6tHm+KSBGllYVu91
- e6RZRfbRzoufeuoycEFJI7JKRjKnv0/7PUUsV/s6wwun5KMnobw4rpmzsXTKNTc/KuOK
- eECZBvtxqu3hAaD5I4Qr62m9J0j7TZhlfUntMdHeQKnSym1vdhDyxmlCSj7yG4E9LbI6
- 3DyKH0uEk5M9CUzDG3i5YP96+aACDEhqkkerUcbdcC4C0em3Dg9+nEkd2gsQlaEuf8BA
- 2zYI83uYtmIL6nLwt/24QXtbdPwLCohKgBoejFec96S0c2nwhYSZbSZoLHzP1U93ir5r
- qSnw==
-X-Gm-Message-State: AOJu0Yx429J5V0AdnrkoQenePSa3DPTKj94fJ0X/+wBw+0ZBEH9da7+7
- eUFON9AnWdWAs2FLoV2dQaFTAQ==
-X-Google-Smtp-Source: AGHT+IEvW2eH/a+Z/J1N8DLg1j95Nmkb4DP5VCJNphuLdHZaqa7a8Zu3waLecb76EObit6rqZj9HfQ==
-X-Received: by 2002:adf:ef8b:0:b0:32d:96a7:9551 with SMTP id
- d11-20020adfef8b000000b0032d96a79551mr11856453wro.36.1698302879631; 
- Wed, 25 Oct 2023 23:47:59 -0700 (PDT)
-Received: from [192.168.69.115]
- (aif79-h01-176-172-114-150.dsl.sta.abo.bbox.fr. [176.172.114.150])
- by smtp.gmail.com with ESMTPSA id
- e16-20020adfe7d0000000b0032db8f7f378sm13598930wrn.71.2023.10.25.23.47.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 23:47:59 -0700 (PDT)
-Message-ID: <e2c1163d-087c-c2dd-31c4-a2bd970a95aa@linaro.org>
-Date: Thu, 26 Oct 2023 08:47:57 +0200
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qvuAY-00049C-FG
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:48:38 -0400
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qvuAV-0000G4-A9
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 02:48:38 -0400
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 39Q6mM6A016730;
+ Thu, 26 Oct 2023 14:48:22 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
+ (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Thu, 26 Oct 2023
+ 14:48:20 +0800
+Date: Thu, 26 Oct 2023 14:48:14 +0800
+To: Peter Xu <peterx@redhat.com>
+CC: <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, "David
+ Hildenbrand" <david@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH 2/6] system/physmem: IOMMU: Invoke the translate_size
+ function if it is implemented
+Message-ID: <ZToLrlSX56GkeQQW@ethan84-VirtualBox>
+References: <20231025051430.493079-1-ethan84@andestech.com>
+ <20231025051430.493079-3-ethan84@andestech.com>
+ <ZTkw4itrYANXm4qR@x1n>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] virtio: rng: Check notifier helpers for
- VIRTIO_CONFIG_IRQ_IDX
-Content-Language: en-US
-To: Mathieu Poirier <mathieu.poirier@linaro.org>, mst@redhat.com
-Cc: viresh.kumar@linaro.org, lulu@redhat.com, qemu-devel@nongnu.org,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20231025171841.3379663-1-mathieu.poirier@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231025171841.3379663-1-mathieu.poirier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZTkw4itrYANXm4qR@x1n>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 39Q6mM6A016730
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_RCVD_IP=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,65 +66,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Mathieu,
-
-On 25/10/23 19:18, Mathieu Poirier wrote:
-> Since the driver doesn't support interrupts, we must return early when
-> index is set to VIRTIO_CONFIG_IRQ_IDX.  Basically the same thing Viresh
-> did for "91208dd297f2 virtio: i2c: Check notifier helpers for
-> VIRTIO_CONFIG_IRQ_IDX".
+On Wed, Oct 25, 2023 at 11:14:42AM -0400, Peter Xu wrote:
+> On Wed, Oct 25, 2023 at 01:14:26PM +0800, Ethan Chen wrote:
+> > Signed-off-by: Ethan Chen <ethan84@andestech.com>
+> > ---
+> >  system/physmem.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/system/physmem.c b/system/physmem.c
+> > index fc2b0fee01..53b6ab735c 100644
+> > --- a/system/physmem.c
+> > +++ b/system/physmem.c
+> > @@ -432,8 +432,13 @@ static MemoryRegionSection address_space_translate_iommu(IOMMUMemoryRegion *iomm
+> >              iommu_idx = imrc->attrs_to_index(iommu_mr, attrs);
+> >          }
+> >  
+> > -        iotlb = imrc->translate(iommu_mr, addr, is_write ?
+> > -                                IOMMU_WO : IOMMU_RO, iommu_idx);
+> > +        if (imrc->translate_size) {
+> > +            iotlb = imrc->translate_size(iommu_mr, addr, *plen_out, is_write ?
+> > +                                         IOMMU_WO : IOMMU_RO, iommu_idx);
+> > +        } else {
+> > +            iotlb = imrc->translate(iommu_mr, addr, is_write ?
+> > +                                    IOMMU_WO : IOMMU_RO, iommu_idx);
+> > +        }
 > 
-> Fixes: 544f0278afca ("virtio: introduce macro VIRTIO_CONFIG_IRQ_IDX")
-> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> ---
->   hw/virtio/vhost-user-rng.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
+> Currently the translation size is encoded in iotlb.addr_mask.  Can riscv do
+> the same?
+Riscv do the same, so translation size may be reduced by iotlb.addr_mask.
+>
+> For example, lookup addr in match_entry_md() ranges, report size back into
+> iotlb.addr_mask, rather than enforcing *plen_out range always resides in
+> one translation only.
+>
+> IMHO it's actually legal if *plen_out covers more than one IOMMU
+> translations.  QEMU memory core should have taken care of that by
+> separately translate the ranges and apply RW on top.  With current proposal
+> of translate_size() I think it'll fail instead, which is not wanted.
+>
+My target is to support IOPMP partially hit error. IOPMP checks whole memory 
+access region is in the same entry. If not, reject the access instead of modify
+the access size.
+
+Because most of IOPMP permisson checking features can be implemented by 
+current IOMMU class, so I add this function in IOMMU class. There may be 
+other more suitable ways to support partially hit error.
+> Thanks,
 > 
-> diff --git a/hw/virtio/vhost-user-rng.c b/hw/virtio/vhost-user-rng.c
-> index 201a39e220c5..62142b717f73 100644
-> --- a/hw/virtio/vhost-user-rng.c
-> +++ b/hw/virtio/vhost-user-rng.c
-> @@ -129,6 +129,14 @@ static void vu_rng_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
->   {
->       VHostUserRNG *rng = VHOST_USER_RNG(vdev);
->   
-> +    /*
-> +     * We don't support interrupts, return early if index is set to
-> +     * VIRTIO_CONFIG_IRQ_IDX.
-> +     */
-> +    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
-> +        return;
-> +    }
-> +
->       vhost_virtqueue_mask(&rng->vhost_dev, vdev, idx, mask);
->   }
->   
-> @@ -136,6 +144,14 @@ static bool vu_rng_guest_notifier_pending(VirtIODevice *vdev, int idx)
->   {
->       VHostUserRNG *rng = VHOST_USER_RNG(vdev);
->   
-> +    /*
-> +     * We don't support interrupts, return early if index is set to
-> +     * VIRTIO_CONFIG_IRQ_IDX.
-> +     */
-> +    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
-> +        return false;
-> +    }
-> +
->       return vhost_virtqueue_pending(&rng->vhost_dev, idx);
->   }
-
-The patch looks fine, so:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Now I wonder if we shouldn't add that check one layer above in the
-caller, eventually checking a VirtioDeviceClass::irq_supported bool.
-This is out of the scope of this patch.
-
-Regards,
-
-Phil.
+> -- 
+> Peter Xu
+> 
+Thanks,
+Ethan Chen
 
