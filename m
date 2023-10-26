@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F09A7D797D
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B60007D7957
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:23:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo6n-0002DE-Dz; Wed, 25 Oct 2023 20:20:21 -0400
+	id 1qvo6w-0002Id-Ex; Wed, 25 Oct 2023 20:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo6K-0001N0-AR
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:52 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qvo6L-0001Rx-9d
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:53 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo6E-0006tK-Gf
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:52 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1caa371dcd8so2470715ad.0
+ id 1qvo6F-0006tk-DR
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:19:53 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1cbf47fa563so2295715ad.2
  for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:19:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279585; x=1698884385; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279586; x=1698884386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ohRPCpHejAizc95/5iNRUGKyBYgA+JY/mkKKy87OBpc=;
- b=vGmSKpy9zh6ZrrOoUOI0GX1d4PnYcXjqLQBxykTwEFT1TEAvSJTtCCJzFYcPS66T0F
- yOAv0Daoh7ZDRUCdo5qmQNJI7pjFJwvyxCKEhmC3KGEG8miPiyASiMB+r8rvZiezxSkh
- vNQn2/fDCppsfKXaig+gK/IaKFAWsiqFSAUeMFTcKSPF8qPexcApwjAnsFGEEvU+C+H6
- uAvmd9c3Gm7AHTXIT74n5PGSYk5UdFYRmB2etnLGZTTq64rBgdwb6zdSIILWwct6w3/1
- 4hmtJ5fzBqMavWv+6la8xcTuMfSlCZuVVR3pBocXtCD7Owdiw3owS71yUuSZFqRiQkcG
- 58hg==
+ bh=PvPbrl15JgqhGwk9JcRkjLrmHs6hD8F59ocp/OQFjPE=;
+ b=Ef613KobZB1+X34OVOYNv7+fQ0M0SLeCUoUBefglu36311oTL9aRT/iOfl9Vd9lZuL
+ gY1Lu4DGfWm+teMvPdvT7IMiMFovPHrq1SdiSsXU3W3reAt3pSF//xF4aY0UluxG4T/c
+ 6nRmUFczcPz+iErYuJWS+xsyH+XM2RlIBVUAWOXSWmUDNQ+S5txsOMDlcK33I8OWAuA3
+ 2gwRrm0DoqNpsV5d/S0BEI+0o99GrigYyQsV5STa9XwBGi5AqCGo8DBXBV0nMA/aDktX
+ O8B4ie/9CLM/h0QP79vNSdBV16PJ35cbJnrBCuSLgcNbU+cn93h/5RTyAa82XlAsNAJx
+ msSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279585; x=1698884385;
+ d=1e100.net; s=20230601; t=1698279586; x=1698884386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ohRPCpHejAizc95/5iNRUGKyBYgA+JY/mkKKy87OBpc=;
- b=XkRrlc0h0Iy9vzyahveRluFkmDRBINVXahJbc8VuyMfDKVXDG82qcsyl2mpa404c0D
- m8vwCKjXUpknkQMcbwEF7DOb53vD/0QFPW0ua7XTU4ynAz+/kK/TP4m3/8NWJ4IcZj/I
- P91BX47FwQzuzCp752MpANzhyZhZhMQwH6tg6KOzGUCCvcs6iCn5RCWCYJXQRrFIDrw3
- Cd0hcSzG0CN8cKMLrijEuNc+jzskw+One9i9sRzXpDnZMXFq+qpLAVyU8y7GVcwwX3nf
- jUXCygW0t8tNCMp/cL5OidlSdyYvycEMFhzD5JxXLpiv1OZmISvNbVh7AuJg4YTFpJfP
- rbHg==
-X-Gm-Message-State: AOJu0YwwySD5o+BKaxFs0XbkGBF9BXBIH/L3YI9d0j2LBzf57N16Rf6X
- TS2KUCxGWpnWUtcPWUxFjYbOMFU7sbzCETKCzvw=
-X-Google-Smtp-Source: AGHT+IFHDHYGUcv2O75vFQnaeQOS7Sh3WXPXcOKRfpiWccCyQApsFjs/JObnYWVBiBBOZl4+vmP7qw==
-X-Received: by 2002:a17:902:e5c1:b0:1c9:d667:4e4e with SMTP id
- u1-20020a170902e5c100b001c9d6674e4emr14369808plf.65.1698279585197; 
- Wed, 25 Oct 2023 17:19:45 -0700 (PDT)
+ bh=PvPbrl15JgqhGwk9JcRkjLrmHs6hD8F59ocp/OQFjPE=;
+ b=vOhns/EOQOTycR9/tagGW61fkgfSDZ9V1XQOcRbQUjbBAZ+jHT3lhmstYBOLiR37CE
+ f1Cl8vcM74ENi62PZmcRZ8UYUn8NB7VlkTQgPdPFdrQcWAGLoxGJcpeCu0vPLNh7o2e3
+ xJho1AbPq1N0TiR53tombiZ0Txo4NF640qZchH14WoI6lzwvx78WqtrcnDBotutVEALo
+ uxRetPVM+PsBG/AndRw59X4336Wf9zYIeSnJT0IuRbskxmgntgHtN5G4NKYwder2XetY
+ SWuVGJlahXFh1DYAjslYoqJPfe7i8PIv3ONrZ5xYFFN3pOE0/375QqqO27VcobO0x85p
+ FHMQ==
+X-Gm-Message-State: AOJu0YwA0iihpy9edirMrVVNirnkhmyktnklDBI27Ajdk7qR5qnL79D6
+ BHFkUbxewDxAnPM7S9/HVQRPXkGa/3ArOXX/cVk=
+X-Google-Smtp-Source: AGHT+IHMHXtvNvkza2uYKqvys5vCeUU5NSbS4D+OBplLics/UI4ZFMaELHX7UfkZqo8sbSNxXiqMcg==
+X-Received: by 2002:a17:902:ec8e:b0:1ca:82f0:131a with SMTP id
+ x14-20020a170902ec8e00b001ca82f0131amr19214169plg.19.1698279586024; 
+ Wed, 25 Oct 2023 17:19:46 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.44
+ jh1-20020a170903328100b001c5fc291ef9sm9754655plb.209.2023.10.25.17.19.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:19:44 -0700 (PDT)
+ Wed, 25 Oct 2023 17:19:45 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 45/94] target/sparc: Move JMPL, RETT, RETURN to decodetree
-Date: Wed, 25 Oct 2023 17:14:53 -0700
-Message-Id: <20231026001542.1141412-75-richard.henderson@linaro.org>
+Subject: [PULL 46/94] target/sparc: Move FLUSH, SAVE, RESTORE to decodetree
+Date: Wed, 25 Oct 2023 17:14:54 -0700
+Message-Id: <20231026001542.1141412-76-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,194 +94,87 @@ Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |   7 +++
- target/sparc/translate.c  | 126 ++++++++++++++++++++++++--------------
- 2 files changed, 88 insertions(+), 45 deletions(-)
+ target/sparc/insns.decode |  4 ++++
+ target/sparc/translate.c  | 35 +++++++++++++++++++++++++----------
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 8de986f0bb..271789ac13 100644
+index 271789ac13..aa90b5c5bb 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -28,6 +28,7 @@ CALL    01 i:s30
+@@ -223,6 +223,10 @@ JMPL        10 ..... 111000 ..... . .............          @r_r_ri
+   RETT      10 00000 111001 ..... . .............          @n_r_ri
+   RETURN    10 00000 111001 ..... . .............          @n_r_ri
+ }
++NOP         10 00000 111011 ----- 0 00000000-----          # FLUSH reg+reg
++NOP         10 00000 111011 ----- 1 -------------          # FLUSH reg+imm
++SAVE        10 ..... 111100 ..... . .............          @r_r_ri
++RESTORE     10 ..... 111101 ..... . .............          @r_r_ri
  
- &r_r_ri     rd rs1 rs2_or_imm imm:bool
- @n_r_ri     .. ..... ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri rd=0
-+@r_r_ri     .. rd:5  ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri
- 
- &r_r_ri_cc  rd rs1 rs2_or_imm imm:bool cc:bool
- @r_r_ri_cc  .. rd:5  . cc:1 .... rs1:5 imm:1 rs2_or_imm:s13    &r_r_ri_cc
-@@ -217,6 +218,12 @@ MOVcc       10 rd:5  101100 1 cond:4 imm:1 cc:1 0 rs2_or_imm:s11
- MOVfcc      10 rd:5  101100 0 cond:4 imm:1 cc:2   rs2_or_imm:s11
- MOVR        10 rd:5  101111 rs1:5    imm:1 cond:3 rs2_or_imm:s10
- 
-+JMPL        10 ..... 111000 ..... . .............          @r_r_ri
-+{
-+  RETT      10 00000 111001 ..... . .............          @n_r_ri
-+  RETURN    10 00000 111001 ..... . .............          @n_r_ri
-+}
-+
  NCP         10 ----- 110110 ----- --------- -----          # v8 CPop1
  NCP         10 ----- 110111 ----- --------- -----          # v8 CPop2
- 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 7cd1af1014..91de0b1206 100644
+index 91de0b1206..e0a13e5d29 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -38,6 +38,7 @@
+@@ -4077,6 +4077,11 @@ static bool do_saved_restored(DisasContext *dc, bool saved)
+ TRANS(SAVED, 64, do_saved_restored, true)
+ TRANS(RESTORED, 64, do_saved_restored, false)
  
- #ifdef TARGET_SPARC64
- # define gen_helper_rdpsr(D, E)                 qemu_build_not_reached()
-+# define gen_helper_rett(E)                     qemu_build_not_reached()
- # define gen_helper_power_down(E)               qemu_build_not_reached()
- # define gen_helper_wrpsr(E, S)                 qemu_build_not_reached()
- #else
-@@ -4377,6 +4378,85 @@ static bool trans_MOVR(DisasContext *dc, arg_MOVR *a)
-     return do_mov_cond(dc, &cmp, a->rd, src2);
- }
++static bool trans_NOP(DisasContext *dc, arg_NOP *a)
++{
++    return advance_pc(dc);
++}
++
+ static bool trans_NOP_v7(DisasContext *dc, arg_NOP_v7 *a)
+ {
+     /*
+@@ -4457,6 +4462,24 @@ static bool do_return(DisasContext *dc, int rd, TCGv src)
  
-+static bool do_add_special(DisasContext *dc, arg_r_r_ri *a,
-+                           bool (*func)(DisasContext *dc, int rd, TCGv src))
+ TRANS(RETURN, 64, do_add_special, a, do_return)
+ 
++static bool do_save(DisasContext *dc, int rd, TCGv src)
 +{
-+    TCGv src1, sum;
-+
-+    /* For simplicity, we under-decoded the rs2 form. */
-+    if (!a->imm && a->rs2_or_imm & ~0x1f) {
-+        return false;
-+    }
-+
-+    /*
-+     * Always load the sum into a new temporary.
-+     * This is required to capture the value across a window change,
-+     * e.g. SAVE and RESTORE, and may be optimized away otherwise.
-+     */
-+    sum = tcg_temp_new();
-+    src1 = gen_load_gpr(dc, a->rs1);
-+    if (a->imm || a->rs2_or_imm == 0) {
-+        tcg_gen_addi_tl(sum, src1, a->rs2_or_imm);
-+    } else {
-+        tcg_gen_add_tl(sum, src1, cpu_regs[a->rs2_or_imm]);
-+    }
-+    return func(dc, a->rd, sum);
++    gen_helper_save(tcg_env);
++    gen_store_gpr(dc, rd, src);
++    return advance_pc(dc);
 +}
 +
-+static bool do_jmpl(DisasContext *dc, int rd, TCGv src)
++TRANS(SAVE, ALL, do_add_special, a, do_save)
++
++static bool do_restore(DisasContext *dc, int rd, TCGv src)
 +{
-+    /*
-+     * Preserve pc across advance, so that we can delay
-+     * the writeback to rd until after src is consumed.
-+     */
-+    target_ulong cur_pc = dc->pc;
-+
-+    gen_check_align(dc, src, 3);
-+
-+    gen_mov_pc_npc(dc);
-+    tcg_gen_mov_tl(cpu_npc, src);
-+    gen_address_mask(dc, cpu_npc);
-+    gen_store_gpr(dc, rd, tcg_constant_tl(cur_pc));
-+
-+    dc->npc = DYNAMIC_PC_LOOKUP;
-+    return true;
-+}
-+
-+TRANS(JMPL, ALL, do_add_special, a, do_jmpl)
-+
-+static bool do_rett(DisasContext *dc, int rd, TCGv src)
-+{
-+    if (!supervisor(dc)) {
-+        return raise_priv(dc);
-+    }
-+
-+    gen_check_align(dc, src, 3);
-+
-+    gen_mov_pc_npc(dc);
-+    tcg_gen_mov_tl(cpu_npc, src);
-+    gen_helper_rett(tcg_env);
-+
-+    dc->npc = DYNAMIC_PC;
-+    return true;
-+}
-+
-+TRANS(RETT, 32, do_add_special, a, do_rett)
-+
-+static bool do_return(DisasContext *dc, int rd, TCGv src)
-+{
-+    gen_check_align(dc, src, 3);
-+
-+    gen_mov_pc_npc(dc);
-+    tcg_gen_mov_tl(cpu_npc, src);
-+    gen_address_mask(dc, cpu_npc);
-+
 +    gen_helper_restore(tcg_env);
-+    dc->npc = DYNAMIC_PC_LOOKUP;
-+    return true;
++    gen_store_gpr(dc, rd, src);
++    return advance_pc(dc);
 +}
 +
-+TRANS(RETURN, 64, do_add_special, a, do_return)
++TRANS(RESTORE, ALL, do_add_special, a, do_restore)
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -5174,30 +5254,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-             } else if (xop == 0x37) {
-                 /* V8 CPop2, V9 impdep2 */
-                 goto illegal_insn; /* in decodetree */
--#ifdef TARGET_SPARC64
--            } else if (xop == 0x39) { /* V9 return */
--                save_state(dc);
--                cpu_src1 = get_src1(dc, insn);
--                cpu_tmp0 = tcg_temp_new();
--                if (IS_IMM) {   /* immediate */
--                    simm = GET_FIELDs(insn, 19, 31);
--                    tcg_gen_addi_tl(cpu_tmp0, cpu_src1, simm);
--                } else {                /* register */
--                    rs2 = GET_FIELD(insn, 27, 31);
--                    if (rs2) {
--                        cpu_src2 = gen_load_gpr(dc, rs2);
--                        tcg_gen_add_tl(cpu_tmp0, cpu_src1, cpu_src2);
--                    } else {
--                        tcg_gen_mov_tl(cpu_tmp0, cpu_src1);
--                    }
--                }
--                gen_check_align(dc, cpu_tmp0, 3);
--                gen_helper_restore(tcg_env);
--                gen_mov_pc_npc(dc);
--                tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
--                dc->npc = DYNAMIC_PC_LOOKUP;
--                goto jmp_insn;
--#endif
-             } else {
-                 cpu_src1 = get_src1(dc, insn);
-                 cpu_tmp0 = tcg_temp_new();
-@@ -5215,28 +5271,8 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                 }
+@@ -5272,18 +5295,10 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                  switch (xop) {
                  case 0x38:      /* jmpl */
--                    {
--                        gen_check_align(dc, cpu_tmp0, 3);
--                        gen_store_gpr(dc, rd, tcg_constant_tl(dc->pc));
--                        gen_mov_pc_npc(dc);
--                        gen_address_mask(dc, cpu_tmp0);
--                        tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
--                        dc->npc = DYNAMIC_PC_LOOKUP;
--                    }
--                    goto jmp_insn;
--#if !defined(CONFIG_USER_ONLY) && !defined(TARGET_SPARC64)
                  case 0x39:      /* rett, V9 return */
--                    {
--                        if (!supervisor(dc))
--                            goto priv_insn;
--                        gen_check_align(dc, cpu_tmp0, 3);
--                        gen_mov_pc_npc(dc);
--                        tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
--                        dc->npc = DYNAMIC_PC;
--                        gen_helper_rett(tcg_env);
--                    }
--                    goto jmp_insn;
--#endif
+-                    g_assert_not_reached();  /* in decode tree */
+-                case 0x3b: /* flush */
+-                    /* nop */
+-                    break;
++                case 0x3b:      /* flush */
+                 case 0x3c:      /* save */
+-                    gen_helper_save(tcg_env);
+-                    gen_store_gpr(dc, rd, cpu_tmp0);
+-                    break;
+                 case 0x3d:      /* restore */
+-                    gen_helper_restore(tcg_env);
+-                    gen_store_gpr(dc, rd, cpu_tmp0);
+-                    break;
 +                    g_assert_not_reached();  /* in decode tree */
-                 case 0x3b: /* flush */
-                     /* nop */
-                     break;
+ #if !defined(CONFIG_USER_ONLY) && defined(TARGET_SPARC64)
+                 case 0x3e:      /* V9 done/retry */
+                     {
 -- 
 2.34.1
 
