@@ -2,84 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9927D7B0E
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 04:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5717D7B2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 05:10:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvqTh-00034i-QG; Wed, 25 Oct 2023 22:52:09 -0400
+	id 1qvqkN-0005oP-7A; Wed, 25 Oct 2023 23:09:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvqTZ-00034X-Rr
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 22:52:01 -0400
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qvqTY-0007s2-0B
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 22:52:01 -0400
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-6c4a25f6390so260789a34.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 19:51:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698288718; x=1698893518;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DTa1hWAss41rdi8M/7WpcSe6hTI05krwXDqPtBKgtQw=;
- b=TKFnPrIv9nQSDWJzLujsexFnGE7Da2SfptOW8K/A7E3ldu+Om6TxOkrWDQ0FPK4Iy0
- es+jBuOPqxA/hlI0aadYYy2l9a9YE2Es2jg1hNJlQIbhQIo1g6M57xojz3y94tTDKt66
- NWRiuC23VVMmGiEMfiKy2uMjXImwzY61isVPxuJRnb17NG6gsBhpCTH1W76KF+b2Kt4e
- Z84gyvBB7Jf5NnIiHvErP00d7Te/FqVSJ6ciOC5KhcYhDfjOyQy0vVgK50XZ+QQtTE8y
- cCzN0lffPvwxuj/Rc1ah4HK5esPlpc+kEZOlnfWEQVN6jWamI3h18RjmA/piu0Zvh+My
- hxyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698288718; x=1698893518;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DTa1hWAss41rdi8M/7WpcSe6hTI05krwXDqPtBKgtQw=;
- b=fG4RhS3myOtVuDVvilyqaN6Pq8jgRaGMNXIFHQ42QNF94JajxGksFuYvRb1OlRKO8d
- vLNTEBe4cvjSNPNp0TON9n25e79WRF2kgF8RG66Uy3B0ZBn+lRANnyYpV7tyu9SrsIZd
- PBIuAfMWvdlG/6YkPKkhcePTeSPnmZhPetZS/cqhi5XW8vak2pmyx2E2XQjinNF9vkuB
- 2UTPfmq0ytoanNcN0tO5J8gmgMm6mY5WQFSu0GyGM8A9UXtbB+uEeR9FJD/V+6FSkuqW
- fdn/29e+AU3azkkk4I4d6cKcAnBxqYTxLaFVVbC4SQyi4nmGXhUpbLSdvWgE43rgVZZG
- Lqyw==
-X-Gm-Message-State: AOJu0Yyn6Q2/l/MkW4+mxH/G2hMlN0umWtL81oFQP6uTW8kkSJGerz5G
- h8mLcje++2AwWOxvOqQlQ5vMKg==
-X-Google-Smtp-Source: AGHT+IEr2RS0SXPOB7aLGjhv82G5iCQmsUcFG8U0CWhJgjiBn9SvKKOIVYyQbSjaGy/jz9OJ7lU9hg==
-X-Received: by 2002:a9d:7d09:0:b0:6c4:c151:8ebe with SMTP id
- v9-20020a9d7d09000000b006c4c1518ebemr14956933otn.22.1698288718697; 
- Wed, 25 Oct 2023 19:51:58 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- y15-20020aa79aef000000b0068883728c16sm10416368pfp.144.2023.10.25.19.51.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 19:51:58 -0700 (PDT)
-Message-ID: <ef3994e1-6989-41c6-8648-f6c943d6fe64@daynix.com>
-Date: Thu, 26 Oct 2023 11:51:55 +0900
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qvqkL-0005oA-FZ
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 23:09:21 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qvqkI-0005FH-NN
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 23:09:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1698289758; x=1729825758;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=yWQDhRurLOH/L8IKsfUYl5qFYKHRqCxDZQmP6sNWFTk=;
+ b=DmzONRzeMuyNnHksQ9ykEjGqJPBS018tH7vaOhvo1k4wFFxKpbn6ye3s
+ Rq2tMdK5+2BV/wLPHpUWOQwGM0SBu8JZAa/eRsq+/c0i/XEMVZzMathqt
+ wIGEIPPBUSOiRTl3FOQ+rw4qxTWBLl9owrjt126DjgSsS5V0ABkR60S8t
+ Z/jfgsbn6DzrlZcyaoWYeSJ3byyKDdxVF7gJ8jDedDSyknxMdj9fVB0hr
+ 81jWSNrreorzoZc/01QPGtgapW7dH6dAaJlcImdlhbBRl2g6xudMVnOEy
+ Ob3UDBqRy7n67oQbXGck0c2oXdMKrWVPuxbG8ARg3NRMYHtYVUNrU+8x1 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="366797525"
+X-IronPort-AV: E=Sophos;i="6.03,252,1694761200"; d="scan'208";a="366797525"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Oct 2023 20:09:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="794043153"
+X-IronPort-AV: E=Sophos;i="6.03,252,1694761200"; d="scan'208";a="794043153"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga001.jf.intel.com with ESMTP; 25 Oct 2023 20:09:12 -0700
+Date: Thu, 26 Oct 2023 11:20:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: EwanHai <ewanhai-oc@zhaoxin.com>
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] target/i386/kvm: Refine VMX controls setting for
+ backward compatibility
+Message-ID: <ZTnbFJrHeKhoUA6F@intel.com>
+References: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] ui/cocoa: add full-screen-scaling display option
-To: carwynellis@gmail.com, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, peter.maydell@linaro.org, philmd@linaro.org
-References: <20231025140443.68520-1-carwynellis@gmail.com>
- <20231025140443.68520-2-carwynellis@gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231025140443.68520-2-carwynellis@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
+Received-SPF: pass client-ip=192.55.52.136; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,103 +79,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/25 23:04, carwynellis@gmail.com wrote:
-> From: Carwyn Ellis <carwynellis@gmail.com>
+On Mon, Sep 25, 2023 at 03:14:53AM -0400, EwanHai wrote:
+> Date: Mon, 25 Sep 2023 03:14:53 -0400
+> From: EwanHai <ewanhai-oc@zhaoxin.com>
+> Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for backward
+>  compatibility
+> X-Mailer: git-send-email 2.34.1
 > 
-> Provides a display option, full-screen-scaling, that enables scaling of
-> the display when full-screen mode is enabled.
+> Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+> execution controls") implemented a workaround for hosts that have
+> specific CPUID features but do not support the corresponding VMX
+> controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
 > 
-> Also ensures that the corresponding menu item is marked as enabled when
-> the option is set to on.
+> In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+> If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+> use KVM's settings, avoiding any modifications to this MSR.
+> 
+> However, this commit (4a910e1) didn’t account for cases in older Linux
 
-Hi,
+s/didn’t/didn't/
 
-Thank you for your contribution.
+> kernels(e.g., linux-4.19.90) where `MSR_IA32_VMX_PROCBASED_CTLS2` is
 
-Please drop qemu-trivial@nongnu.org. This change is not that trivial.
-Instead add "Graphics maintainers" listed in MAINTAINERS file to CC.
+For this old kernel, it's better to add the brief lifecycle note (e.g.,
+lts, EOL) to illustrate the value of considering such compatibility
+fixes.
 
-Please also add Signed-off-by tag. See docs/devel/submitting-a-patch.rst 
-to know what the tag means.
+> in `kvm_feature_msrs`—obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
 
+s/—obtained/-obtained/
+
+> but not in `kvm_msr_list`—obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+
+s/—obtained/-obtained/
+
+> As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+> on `kvm_msr_list` alone, even though KVM maintains the value of this MSR.
+> 
+> This patch supplements the above logic, ensuring that
+> `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+> lists, thus maintaining compatibility with older kernels.
+> 
+> Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
 > ---
->   qapi/ui.json |  6 +++++-
->   ui/cocoa.m   | 33 ++++++++++++++++++++-------------
->   2 files changed, 25 insertions(+), 14 deletions(-)
+>  target/i386/kvm/kvm.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/qapi/ui.json b/qapi/ui.json
-> index 006616aa77..9035b230ce 100644
-> --- a/qapi/ui.json
-> +++ b/qapi/ui.json
-> @@ -1409,13 +1409,17 @@
->   #     codes match their position on non-Mac keyboards and you can use
->   #     Meta/Super and Alt where you expect them.  (default: off)
->   #
-> +# @full-screen-scaling: Scale display to fit when full-screen enabled.
-> +#     Defaults to "off".
-> +#
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index af101fcdf6..6299284de4 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -2343,6 +2343,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+>  static int kvm_get_supported_feature_msrs(KVMState *s)
+>  {
+>      int ret = 0;
+> +    int i;
+>  
+>      if (kvm_feature_msrs != NULL) {
+>          return 0;
+> @@ -2377,6 +2378,11 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
+>          return ret;
+>      }
 
-I think it's better to name zoom-to-fit to align with DisplayGTK.
-It should also have "(Since 8.2)".
+It's worth adding a comment here to indicate that this is a
+compatibility fix.
 
->   # Since: 7.0
->   ##
->   { 'struct': 'DisplayCocoa',
->     'data': {
->         '*left-command-key': 'bool',
->         '*full-grab': 'bool',
-> -      '*swap-opt-cmd': 'bool'
-> +      '*swap-opt-cmd': 'bool',
-> +      '*full-screen-scaling': 'bool'
->     } }
->   
->   ##
-> diff --git a/ui/cocoa.m b/ui/cocoa.m
-> index d95276013c..7ddc4de174 100644
-> --- a/ui/cocoa.m
-> +++ b/ui/cocoa.m
-> @@ -1671,7 +1671,9 @@ static void create_initial_menus(void)
->       // View menu
->       menu = [[NSMenu alloc] initWithTitle:@"View"];
->       [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] autorelease]]; // Fullscreen
-> -    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease]];
-> +    menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
-> +    [menuItem setState: (stretch_video) ? NSControlStateValueOn : NSControlStateValueOff];
+-Zhao
 
-nit: You don't need parentheses around strech_video.
-
-> +    [menu addItem: menuItem];
->       menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
->       [menuItem setSubmenu:menu];
->       [[NSApp mainMenu] addItem:menuItem];
-> @@ -2041,18 +2043,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
->   
->       [QemuApplication sharedApplication];
->   
-> -    create_initial_menus();
-> -
-> -    /*
-> -     * Create the menu entries which depend on QEMU state (for consoles
-> -     * and removable devices). These make calls back into QEMU functions,
-> -     * which is OK because at this point we know that the second thread
-> -     * holds the iothread lock and is synchronously waiting for us to
-> -     * finish.
-> -     */
-> -    add_console_menu_entries();
-> -    addRemovableDevicesMenuItems();
-> -
->       // Create an Application controller
->       QemuCocoaAppController *controller = [[QemuCocoaAppController alloc] init];
-
-QemuCocoaAppController also has code to initialize stretch_video; it's 
-not OK to have code to initialize a same variable in two different places.
-
->       [NSApp setDelegate:controller];
-> @@ -2062,6 +2052,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
->           [NSApp activateIgnoringOtherApps: YES];
->           [controller toggleFullScreen: nil];
->       }
-> +
-
-Don't add a blank line here. It's irrelevant from this change.
+>  
+> +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
+> +        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
+> +            has_msr_vmx_procbased_ctls2 = true;
+> +        }
+> +    }
+>      return 0;
+>  }
+>  
+> -- 
+> 2.34.1
+> 
 
