@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3887D7C51
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE247D7C52
 	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 07:40:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvt62-00077P-6f; Thu, 26 Oct 2023 01:39:54 -0400
+	id 1qvt6k-0007Y6-8w; Thu, 26 Oct 2023 01:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvt5w-00076m-Uj
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:39:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvt6b-0007Tq-JT
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:40:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvt5q-0005e8-Qf
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:39:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qvt6Z-0005wi-1i
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 01:40:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698298782;
+ s=mimecast20190719; t=1698298825;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=WKC6VSyhoQgtZmNIF/6QVl6YJa1z+kbcOO1dX5uuVCs=;
- b=CKrSof9fsqevRjdmvVVcy5hZO9rOkmNyPwAq1aDsW0Oeg8AYU/6Um3mEcFXa1JzCd4rAPw
- Rzp29KwxIJUMLLszffUxfIl+kE2xskmCeGsOX94Wfi5zgGxNkVX1uf2jtG6ClrgradnkRJ
- wCowRjUgWQ4SjgaCY4p/PdiSn05xQRY=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7mHbrXxg9itLZ4Mk+3tlBIaUGwgfakt+/j2ZAc5eOPk=;
+ b=NaB0w+ptXxKn2ABTKw9cm/Davl5YoCR9rVjuWam+K8+mpPkS/u/bZI6+mWC3EHIlzCGHrx
+ yAQAWm6VxCxTbtQCP+ANffMOe7+mQ8VnRPiHrg9D1L7tiQLxMuSVeOuZEnVAFEuKcgjswY
+ G1ZOflXfdSZEPJIZ9E4LfgQm1NzY2pE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-uaaaKKXqMEuYmWqWVVy2uQ-1; Thu, 26 Oct 2023 01:39:40 -0400
-X-MC-Unique: uaaaKKXqMEuYmWqWVVy2uQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c503af866dso5073511fa.2
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:39:40 -0700 (PDT)
+ us-mta-613-7laKJOnVOmizwR5DBLNSuQ-1; Thu, 26 Oct 2023 01:40:23 -0400
+X-MC-Unique: 7laKJOnVOmizwR5DBLNSuQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9c983b42c3bso176055266b.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 22:40:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698298779; x=1698903579;
+ d=1e100.net; s=20230601; t=1698298822; x=1698903622;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WKC6VSyhoQgtZmNIF/6QVl6YJa1z+kbcOO1dX5uuVCs=;
- b=iTfzeXT10PnfhcB5nNGs5sPHkw4K9CuqiWn2chV/KjhQLStXHcrATkWf0A3/mTXuQt
- 0DaREGoIFeZtlPZ+f1dPTl6E06IvXRwuUQNFGnqkK7EkXhuzcHfXK7T/psP5r/SxhqPZ
- 853P/HpsLKVyGAlDua2iuH+tG8GsklzXXnQ4O7dDQI04tfqiNAy6yLEkOJ1Ib9Wi02m8
- 9ev+YgSKQGgTs6E3ByO/lX9lzntOzfbMr4vjtKW9/hE3sSBa9cMaw7pkELOQv3bs2DlB
- 2JBDTgvT1TZGq68Bukt5li1pQ6AljaYfXMSr3A49Bvb/AVntkfSnwHwvW0IYWQ/pxN4t
- RIVw==
-X-Gm-Message-State: AOJu0YwQHES91rC0GYYoLBJ7KrgBqlSL0qw6Y3L6Qem2TaXeG6ptgq+f
- 1aJxKh7SrAV3eyn3qTWyvGz060fMxkQ9gwoqFIPVSGKgjK62Eyak4r7Iu13J/x8p+xzufVTt5aG
- tjSewWqimpV+almQ=
-X-Received: by 2002:a05:6512:31c5:b0:508:15fb:d419 with SMTP id
- j5-20020a05651231c500b0050815fbd419mr4089674lfe.57.1698298779213; 
- Wed, 25 Oct 2023 22:39:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFG20vuLTLFUv0/Nul0UuYbFB8h/7hqkWHnvrv5bvdfVk4Fn67BKZJFYK2FeSilSxbAacNaBA==
-X-Received: by 2002:a05:6512:31c5:b0:508:15fb:d419 with SMTP id
- j5-20020a05651231c500b0050815fbd419mr4089657lfe.57.1698298778884; 
- Wed, 25 Oct 2023 22:39:38 -0700 (PDT)
+ bh=7mHbrXxg9itLZ4Mk+3tlBIaUGwgfakt+/j2ZAc5eOPk=;
+ b=iJ1HHngq/lo2mivVTVpXn1JhF2tYUwyIpQjqTRvUlfP6A9gBKMxiA5M7Qg1svFOH29
+ WxsHPyRWTa2ePx6E3C3tfLxqSuBZc6gdFP9ff+L9cQeU+/i4gC64VMsUx+84l8mQBTRx
+ GBMdLE84nTUzyvUeftaAZO+Pv3Qi3u0tfjVb7hst1uaD7EP31toRa6/omkBy9lPGdw0e
+ y4zgGuY83lkNBbDITNAseoC5shiaLidA+fEWt11fH+kYxX5KXZm2IjxQMKLdmQC1GZxe
+ RU0zSN8nvzuadKW+h2sP7kOVozjm8w9UJm1yIR19eI6Hgjuc3lsFOnQrz5DF+EenuzXC
+ F5oA==
+X-Gm-Message-State: AOJu0YwaOrHmo3yoLKCkKjie08svkKhljfTc5qHqFtzSqdnuOq7br2iB
+ 6UKoMhOFJO5Bh/AziBQwZYXNPRPVbCZgD5QFrPjrmsNw2uNEbtYQcqi17v58F/DKgkq775/Yr53
+ 1M8Q6L+QOUZCOQxM=
+X-Received: by 2002:aa7:de90:0:b0:53e:1207:5b69 with SMTP id
+ j16-20020aa7de90000000b0053e12075b69mr1422217edv.10.1698298822752; 
+ Wed, 25 Oct 2023 22:40:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCUmtV5Q7/ysbm3CIcQhaJ+OKfzZOjDZkRyGcHFuuvw6t/ZeYq55Jv8PrkKqUewf7zkBRDYw==
+X-Received: by 2002:aa7:de90:0:b0:53e:1207:5b69 with SMTP id
+ j16-20020aa7de90000000b0053e12075b69mr1422208edv.10.1698298822426; 
+ Wed, 25 Oct 2023 22:40:22 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
  [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- i18-20020a508712000000b00536ad96f867sm10845721edb.11.2023.10.25.22.39.37
+ i18-20020a508712000000b00536ad96f867sm10845721edb.11.2023.10.25.22.40.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Oct 2023 22:39:38 -0700 (PDT)
-Message-ID: <4b2a7827-b0a0-4cd5-81a4-d4129a53ac82@redhat.com>
-Date: Thu, 26 Oct 2023 07:39:36 +0200
+ Wed, 25 Oct 2023 22:40:22 -0700 (PDT)
+Message-ID: <0c782489-d4ae-4cde-9545-b0c8303b2751@redhat.com>
+Date: Thu, 26 Oct 2023 07:40:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 15/23] ui/gl: opengl doesn't require PIXMAN
+Subject: Re: [PATCH v6 16/23] ui/vnc: VNC requires PIXMAN
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
@@ -77,7 +77,7 @@ Cc: qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
- <20231025190818.3278423-16-marcandre.lureau@redhat.com>
+ <20231025190818.3278423-17-marcandre.lureau@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,7 +121,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231025190818.3278423-16-marcandre.lureau@redhat.com>
+In-Reply-To: <20231025190818.3278423-17-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -151,35 +151,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 25/10/2023 21.08, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> The QEMU fallback covers the requirements. We still need the flags of
-> header inclusion with CONFIG_PIXMAN.
-> 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   ui/meson.build | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/ui/meson.build b/ui/meson.build
-> index 3085e10a72..7c99613950 100644
-> --- a/ui/meson.build
-> +++ b/ui/meson.build
-> @@ -60,8 +60,8 @@ endif
->   system_ss.add(opengl)
->   if opengl.found()
->     opengl_ss = ss.source_set()
-> -  opengl_ss.add(gbm)
-> -  opengl_ss.add(when: [opengl, pixman],
-> +  opengl_ss.add(gbm, pixman)
+>   meson.build    | 6 +++++-
+>   ui/meson.build | 2 +-
+>   2 files changed, 6 insertions(+), 2 deletions(-)
 
-I don't quite get the above line (sorry, meson ignorant here) ... does 
-"pixman" simply get ignored here if it has not been found?
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-  Thomas
-
-
-> +  opengl_ss.add(when: [opengl],
->                  if_true: files('shader.c', 'console-gl.c', 'egl-helpers.c', 'egl-context.c'))
->     ui_modules += {'opengl' : opengl_ss}
->   endif
 
 
