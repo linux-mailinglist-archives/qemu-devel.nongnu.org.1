@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF847D799F
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F280F7D79BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:42:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo2u-0007B5-Gp; Wed, 25 Oct 2023 20:16:20 -0400
+	id 1qvo2x-0007Ho-8H; Wed, 25 Oct 2023 20:16:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2p-00073s-Ic
+ id 1qvo2p-000743-P0
  for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:15 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2i-0004rz-JI
+ id 1qvo2i-0004sS-Lg
  for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:15 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1bf55a81eeaso2376285ad.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:16:06 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1c9c5a1b87bso2037525ad.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:16:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279365; x=1698884165; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279366; x=1698884166; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KUL+P8NrKSp/2wsdRODDHeKdHM6SlkUdqF+vGMepqTA=;
- b=PQGsmS+03OmJLtFyQ/eE3XmOxzRV1op/pePko97hx87PGNY0Dp5xLMjc2baTCx99tY
- Kv0zJfREZl089d6ZsLx2pSybzYFUIkFGJN1IPkAoWoIbSd4V25dLJROumGYv8ndOKVwf
- zyoFRRwiB8qtqjELTuDtHJCe063esrYdkeZSnwZIXiUlEYzwQXSxKRMIvBweDSZGxSGq
- sARKRcnr6ZpX5Goii/xSwGy/DESoMjG+gVoQC9ZNX/gpdtYqieRWS9otIE2lSYBcz2TM
- tOg6UZH4zBdKHcW5YhS1Z2vB/bbOw9XzF9IgpuUmOBrzZI38b0b5YKW/Dqk4vNl2UGqM
- 42GQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CKN37OBBkB+L9M8Uud4wSltlqA9gDCBy4N29LWBC2UM=;
+ b=gb8OB9vd+OqAgyJ52POzt2CgjmEixh99F2rpkWmZwzl2RCesMU5yeNslCz4aRj+TYv
+ TMbQAYEG7Yn8PxYrcyxCgokWVRtAJBb8E3r1lLDNG3ceM/tfZgZRSfvvFWAa8wLpiMgR
+ rPNo00voahOsKWBebfWKV6let9l/Or8kfJJOaXwuygIdmyd3AtKCNGIY553YZ2/l83hm
+ fioYQNPhkjaNyH7E1BulAObj0VZVCTXua0guX+zCZFJLoFMDzSC+fExM6yfYmJBBqiYc
+ G+oPHmWMWe0O9DKLod+zA2l1NGsKNpZW6Bur25Q2FvHcUDY4jK3RamhZXSEhxfI9jDew
+ 22mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279365; x=1698884165;
+ d=1e100.net; s=20230601; t=1698279366; x=1698884166;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KUL+P8NrKSp/2wsdRODDHeKdHM6SlkUdqF+vGMepqTA=;
- b=EmLeHacPsLaA9cR0bBCikhpS9by/E+B5FtVu5yGEqgNThE0zbfzJFDKmVlO1yNXsCX
- xCoAkr/sVDr+L0fhlzklNlBPFCXQ2deXqzMiYAbDwxz8dPykU+WMTlkIL+nUJKWALVwb
- v6BzHdOaF2i9NAhrkjcyAPnGL0ok1Vax8m5mCmOmIy4pzZ5gJj3FsqpyXLCmq+BpmEJ5
- aAtidAerEHhpvU4B5kUx9UWSbGfI4g4G+ERoIrqhYpxLSG4iDdlzg4TJcydn1D7Od4Y+
- bK8XB95SqnUeF+wFLr+a6sV8GtS4cmOUYSG9VqzlOS4eFFkD2hD+9djUe668lxGu0kop
- FSRg==
-X-Gm-Message-State: AOJu0YzI6xIaFptESyDJZfumkQDqKcG8lfKM2Ew3EHfftmji1kMwE81y
- 3CUMvhHFi3CiUieop3kjGwOwiUcHQ4Jju5vkGac=
-X-Google-Smtp-Source: AGHT+IHxnT8vK4cblqFRyc8Yp8aIkAbLwUq+H7k3f2IGqx49u6D6tzOhTk5UmS2++gfcOrUCp4AnPA==
-X-Received: by 2002:a17:902:f0d2:b0:1c9:b785:bc50 with SMTP id
- v18-20020a170902f0d200b001c9b785bc50mr10998924pla.47.1698279365560; 
- Wed, 25 Oct 2023 17:16:05 -0700 (PDT)
+ bh=CKN37OBBkB+L9M8Uud4wSltlqA9gDCBy4N29LWBC2UM=;
+ b=mfdwOcoghu8ApA5qRjnBPYTFaJezLSWjThBVvtLycwgfnHXlVpRcPHBUybGPAgjt7y
+ E3tphL1fEFnIsd3pn4+Z5HejzRKWIjh9r3d+ITSjASXTOyD1RTHk1v3xh00yO/Ne3t5l
+ HvZg1C1LiKSjpp3p30OmeY5dVJ8eVsptloqzyvmgPmQ3H1BZpnbW8J+w4lXBBDMPeAhf
+ PTQJGfmy3x8epHRz4dM03vZ5zLQ5yyQL/QZLk1CfV0LO58Px6ut8Ku/bYWTJ840yzMax
+ 83VshH810nV64W8APQjecmgACXp1WP1h6d2VO5DtRYq3KjEwipBzdTbxyw6ldpm2FFi+
+ 6U9w==
+X-Gm-Message-State: AOJu0YwpI+nFYUvyOGtpM8Ki8LddflZ34+HHKdKWrVEZr0AVuLtKd1+5
+ nN2YKrwORaszIVqfCl/43SwWqqopp6EPBOwlwX8=
+X-Google-Smtp-Source: AGHT+IGFSBjgb0e9HeTFi96NeK+4yx1SrGeV96zggynyRV0JfoUmTZQfVsq/sKwlKgv45zHMA/BhWw==
+X-Received: by 2002:a17:902:eccb:b0:1c9:ba18:785c with SMTP id
+ a11-20020a170902eccb00b001c9ba18785cmr17910028plh.25.1698279366306; 
+ Wed, 25 Oct 2023 17:16:06 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.16.04
- for <qemu-devel@nongnu.org>
+ ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.16.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 25 Oct 2023 17:16:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 13/29] tcg/i386: Support TCG_COND_TST{EQ,NE}
-Date: Wed, 25 Oct 2023 17:14:05 -0700
-Message-Id: <20231026001542.1141412-27-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 14/94] target/sparc: Move BPr to decodetree
+Date: Wed, 25 Oct 2023 17:14:06 -0700
+Message-Id: <20231026001542.1141412-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,100 +90,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 43 +++++++++++++++++++++++++++------------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+ target/sparc/insns.decode |  3 ++
+ target/sparc/translate.c  | 63 ++++++++++++++-------------------------
+ 2 files changed, 25 insertions(+), 41 deletions(-)
 
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index f4f456a2c0..0d97864174 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -504,6 +504,8 @@ static const uint8_t tcg_cond_to_jcc[] = {
-     [TCG_COND_GEU] = JCC_JAE,
-     [TCG_COND_LEU] = JCC_JBE,
-     [TCG_COND_GTU] = JCC_JA,
-+    [TCG_COND_TSTEQ] = JCC_JE,
-+    [TCG_COND_TSTNE] = JCC_JNE,
- };
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 15cd975f4e..838f4cdb1d 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -7,4 +7,7 @@
+ BPcc    00 a:1 cond:4   001 cc:1 0 - i:s19                 &bcc
+ Bicc    00 a:1 cond:4   010          i:s22                 &bcc cc=0
  
- #if TCG_TARGET_REG_BITS == 64
-@@ -1419,12 +1421,14 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
- }
- 
- /* Test register R vs immediate bits I, setting Z flag for EQ/NE. */
--static void __attribute__((unused))
--tcg_out_testi(TCGContext *s, TCGReg r, uint32_t i, int rexw)
-+static void tcg_out_testi(TCGContext *s, TCGReg r, uint32_t i, int rexw)
- {
-     if (i <= 0xff && (TCG_TARGET_REG_BITS == 64 || r < 4)) {
-         tcg_out_modrm(s, OPC_GRP3_Eb | P_REXB_RM, EXT3_TESTi, r);
-         tcg_out8(s, i);
-+    } else if ((i & ~0xff00) == 0 && r < 4) {
-+        tcg_out_modrm(s, OPC_GRP3_Eb, EXT3_TESTi, r);
-+        tcg_out8(s, i >> 8);
-     } else {
-         tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_TESTi, r);
-         tcg_out32(s, i);
-@@ -1434,15 +1438,25 @@ tcg_out_testi(TCGContext *s, TCGReg r, uint32_t i, int rexw)
- static int tcg_out_cmp(TCGContext *s, TCGCond cond, TCGArg arg1,
-                        TCGArg arg2, int const_arg2, int rexw)
- {
--    if (const_arg2) {
--        if (arg2 == 0) {
--            /* test r, r */
-+    if (is_tst_cond(cond)) {
-+        if (!const_arg2) {
-+            tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg2);
-+        } else {
-+            if (!rexw) {
-+                arg2 = (uint32_t)arg2;
-+            } else if ((arg2 >> 31 >> 1) == 0) {
-+                rexw = 0;
-+            }
-+            tcg_out_testi(s, arg1, arg2, rexw);
-+        }
-+    } else {
-+        if (!const_arg2) {
-+            tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
-+        } else if (arg2 == 0) {
-             tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
-         } else {
-             tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
-         }
--    } else {
--        tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
++%d16    20:s2 0:14
++BPr     00 a:1 0 cond:3 011 ..     - rs1:5 ..............  i=%d16
++
+ CALL    01 i:s30
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 92ea6bab6b..2d08c81821 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -1336,14 +1336,13 @@ static void gen_fcond(TCGv r_dst, unsigned int cc, unsigned int cond)
      }
-     return tcg_cond_to_jcc[cond];
  }
-@@ -1461,18 +1475,21 @@ static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
- {
-     TCGLabel *label_next = gen_new_label();
-     TCGLabel *label_this = arg_label(args[5]);
-+    TCGCond cond = args[4];
  
--    switch(args[4]) {
-+    switch (cond) {
-     case TCG_COND_EQ:
--        tcg_out_brcond(s, 0, TCG_COND_NE, args[0], args[2], const_args[2],
--                       label_next, 1);
--        tcg_out_brcond(s, 0, TCG_COND_EQ, args[1], args[3], const_args[3],
-+    case TCG_COND_TSTEQ:
-+        tcg_out_brcond(s, 0, tcg_invert_cond(cond),
-+                       args[0], args[2], const_args[2], label_next, 1);
-+        tcg_out_brcond(s, 0, cond, args[1], args[3], const_args[3],
-                        label_this, small);
-         break;
-     case TCG_COND_NE:
--        tcg_out_brcond(s, 0, TCG_COND_NE, args[0], args[2], const_args[2],
-+    case TCG_COND_TSTNE:
-+        tcg_out_brcond(s, 0, cond, args[0], args[2], const_args[2],
-                        label_this, small);
--        tcg_out_brcond(s, 0, TCG_COND_NE, args[1], args[3], const_args[3],
-+        tcg_out_brcond(s, 0, cond, args[1], args[3], const_args[3],
-                        label_this, small);
-         break;
-     case TCG_COND_LT:
+-#ifdef TARGET_SPARC64
+ // Inverted logic
+-static const int gen_tcg_cond_reg[8] = {
+-    -1,
++static const TCGCond gen_tcg_cond_reg[8] = {
++    TCG_COND_NEVER,  /* reserved */
+     TCG_COND_NE,
+     TCG_COND_GT,
+     TCG_COND_GE,
+-    -1,
++    TCG_COND_NEVER,  /* reserved */
+     TCG_COND_EQ,
+     TCG_COND_LE,
+     TCG_COND_LT,
+@@ -1357,16 +1356,6 @@ static void gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
+     cmp->c2 = tcg_constant_tl(0);
+ }
+ 
+-static void gen_cond_reg(TCGv r_dst, int cond, TCGv r_src)
+-{
+-    DisasCompare cmp;
+-    gen_compare_reg(&cmp, cond, r_src);
+-
+-    /* The interface is to return a boolean in r_dst.  */
+-    tcg_gen_setcond_tl(cmp.cond, r_dst, cmp.c1, cmp.c2);
+-}
+-#endif
+-
+ static void do_fbranch(DisasContext *dc, int32_t offset, uint32_t insn, int cc)
+ {
+     unsigned int cond = GET_FIELD(insn, 3, 6), a = (insn & (1 << 29));
+@@ -1406,24 +1395,6 @@ static void do_fbranch(DisasContext *dc, int32_t offset, uint32_t insn, int cc)
+ }
+ 
+ #ifdef TARGET_SPARC64
+-static void do_branch_reg(DisasContext *dc, int32_t offset, uint32_t insn,
+-                          TCGv r_reg)
+-{
+-    unsigned int cond = GET_FIELD_SP(insn, 25, 27), a = (insn & (1 << 29));
+-    target_ulong target = dc->pc + offset;
+-
+-    if (unlikely(AM_CHECK(dc))) {
+-        target &= 0xffffffffULL;
+-    }
+-    flush_cond(dc);
+-    gen_cond_reg(cpu_cond, cond, r_reg);
+-    if (a) {
+-        gen_branch_a(dc, target);
+-    } else {
+-        gen_branch_n(dc, target);
+-    }
+-}
+-
+ static void gen_op_fcmps(int fccno, TCGv_i32 r_rs1, TCGv_i32 r_rs2)
+ {
+     switch (fccno) {
+@@ -3063,6 +3034,24 @@ static bool do_bpcc(DisasContext *dc, arg_bcc *a)
+ TRANS(Bicc, ALL, do_bpcc, a)
+ TRANS(BPcc,  64, do_bpcc, a)
+ 
++static bool trans_BPr(DisasContext *dc, arg_BPr *a)
++{
++    target_long target = address_mask_i(dc, dc->pc + a->i * 4);
++    DisasCompare cmp;
++
++    if (!avail_64(dc)) {
++        return false;
++    }
++    if (gen_tcg_cond_reg[a->cond] == TCG_COND_NEVER) {
++        return false;
++    }
++
++    flush_cond(dc);
++    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
++    tcg_gen_setcond_tl(cmp.cond, cpu_cond, cmp.c1, cmp.c2);
++    return advance_jump_cond(dc, a->a, target);
++}
++
+ static bool trans_CALL(DisasContext *dc, arg_CALL *a)
+ {
+     target_long target = address_mask_i(dc, dc->pc + a->i * 4);
+@@ -3102,15 +3091,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+             case 0x1:           /* V9 BPcc */
+                 g_assert_not_reached(); /* in decodetree */
+             case 0x3:           /* V9 BPr */
+-                {
+-                    target = GET_FIELD_SP(insn, 0, 13) |
+-                        (GET_FIELD_SP(insn, 20, 21) << 14);
+-                    target = sign_extend(target, 16);
+-                    target <<= 2;
+-                    cpu_src1 = get_src1(dc, insn);
+-                    do_branch_reg(dc, target, insn, cpu_src1);
+-                    goto jmp_insn;
+-                }
++                g_assert_not_reached(); /* in decodetree */
+             case 0x5:           /* V9 FBPcc */
+                 {
+                     int cc = GET_FIELD_SP(insn, 20, 21);
 -- 
 2.34.1
 
