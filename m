@@ -2,102 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DF67D82D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 14:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFBB7D8394
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 15:28:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvzg1-0000Pt-2Q; Thu, 26 Oct 2023 08:41:29 -0400
+	id 1qw0OL-0007IB-6y; Thu, 26 Oct 2023 09:27:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qvzfz-0000Ou-7t
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 08:41:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qw0OJ-0007HS-DI
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 09:27:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qvzfx-0003ho-AC
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 08:41:26 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qw0OD-0008O3-VR
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 09:27:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698324083;
+ s=mimecast20190719; t=1698326827;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rm7xHyPU7UrFKbHExCp3hETRS4Uo99zPiXo0roR67+8=;
- b=QFjyIE5GZRM5Z1LrTDHmmsdFnHkn5esDKVa86igyjjkVFwytOBkpnrea9FAZcHHOJH+xX7
- 5cRO1Tgcg42g0PkHQ12stZlNQQ5HTBEB5H2Mo+x5EaTShgvpjcF0w91jTs5UH7TMoT7+qk
- QM558qFri/9PGDkC7Xk2dWB4Px74FWY=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3dbYP/1YoZlgw4VErFzBf95J8CejPvJr73os9cC+MaY=;
+ b=FQaCrqykkpWciKUXg38R82jb3isNqXAyg2czHvCLimybD/UODCDx4z37+gm3qu8NqQ+H5r
+ +eZ4pevqs8Cmw6kzHsEgbNA/t0LFfEZKxyqmwlAxoMh158yZTNSX8nmniknA58EwdCrBMh
+ aD/zCWE+z5OPiUHWc3VNdVz9wuu921A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-zdYIW5_GPyKXdkfuxbWH4A-1; Thu, 26 Oct 2023 08:41:18 -0400
-X-MC-Unique: zdYIW5_GPyKXdkfuxbWH4A-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9ae57d8b502so57750366b.2
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 05:41:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698324066; x=1698928866;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rm7xHyPU7UrFKbHExCp3hETRS4Uo99zPiXo0roR67+8=;
- b=hAtY438/c8Ayc0LxheLstW8Cad4Jy+clFotgDvUE6baR8L6+e7fYrKLizZwBoCvJ6d
- DHjj8VxeACKr4oQ7zp27LfFZVe99x587INar1ot7rS5mWBpUlqwzXoGZ5bdWZXg0ho/M
- pAYC5UZdQkuHadJlPh5YkEmrrNyuJLE7k7Tecu+aHINHLRV/0px9Tjh4ECyIY5j9Bq/l
- Y2kt1GjyDxgPRIC+K/JzdmxAZDmo+M3jjib/JCQmSDbZEyAcRUXCmCcaP1aBri1tIbr/
- YNQKbXfCxYv/TmMSIDwpfx3VByeA6EqJ8jQZwBescgeXnZ6QtKt3D+vTKfCsr0u3ob4X
- oXNw==
-X-Gm-Message-State: AOJu0YzzgxWtJJ3KinFR4CbJTOk+RVfzkyEqbHUwqDNA4ihqg1F3Hc67
- YdQ5J+voxNMuTH0Yu6/GxglIF3hKE0gwzTiiDg00Gii+C63dd4QH5Ba6WVsxYetWyktdOp7N1X0
- j5m7TF9rHXKlFZoA=
-X-Received: by 2002:a17:907:60cd:b0:9be:466c:1824 with SMTP id
- hv13-20020a17090760cd00b009be466c1824mr13930129ejc.11.1698324066277; 
- Thu, 26 Oct 2023 05:41:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEd1kNJ+8iILLv3/Fkd8Bgd8X+xynvrLJFevhzZvdzUfnWFG5M+ino9hXRwPWzgdclmMTwWYQ==
-X-Received: by 2002:a17:907:60cd:b0:9be:466c:1824 with SMTP id
- hv13-20020a17090760cd00b009be466c1824mr13930110ejc.11.1698324065904; 
- Thu, 26 Oct 2023 05:41:05 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- lt13-20020a170906fa8d00b009c4cb1553edsm11620259ejb.95.2023.10.26.05.41.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Oct 2023 05:41:04 -0700 (PDT)
-Date: Thu, 26 Oct 2023 14:41:03 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
- <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
- <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
- <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
- <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
- <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
- <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
- <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
- <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
- <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
- <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
- <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
- <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
- <lixianglai@loongson.cn>, <linuxarm@huawei.com>
-Subject: Re: [PATCH V6 0/9] Add architecture agnostic code to support vCPU
- Hotplug
-Message-ID: <20231026144103.565a9566@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231013105129.25648-1-salil.mehta@huawei.com>
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ us-mta-396-Te0GfZ6OMQaiw7YqfytQRA-1; Thu, 26 Oct 2023 09:27:05 -0400
+X-MC-Unique: Te0GfZ6OMQaiw7YqfytQRA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD5F0101B04A;
+ Thu, 26 Oct 2023 13:27:04 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 72D3D1C060AE;
+ Thu, 26 Oct 2023 13:27:04 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6563521E6A1F; Thu, 26 Oct 2023 15:27:03 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: qemu-devel@nongnu.org,  alex.williamson@redhat.com,  clg@redhat.com,
+ jgg@nvidia.com,  nicolinc@nvidia.com,  joao.m.martins@oracle.com,
+ eric.auger@redhat.com,  peterx@redhat.com,  jasowang@redhat.com,
+ kevin.tian@intel.com,  yi.l.liu@intel.com,  yi.y.sun@intel.com,
+ chao.p.peng@intel.com
+Subject: Re: [PATCH v3 00/37] vfio: Adopt iommufd
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+Date: Thu, 26 Oct 2023 15:27:03 +0200
+In-Reply-To: <20231026103104.1686921-1-zhenzhong.duan@intel.com> (Zhenzhong
+ Duan's message of "Thu, 26 Oct 2023 18:30:27 +0800")
+Message-ID: <87o7gla508.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,132 +85,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 13 Oct 2023 11:51:20 +0100
-Salil Mehta <salil.mehta@huawei.com> wrote:
+Zhenzhong Duan <zhenzhong.duan@intel.com> writes:
 
-> Virtual CPU hotplug support is being added across various architectures[1=
-][3].
-> This series adds various code bits common across all architectures:
->=20
-> 1. vCPU creation and Parking code refactor [Patch 1]
-> 2. Update ACPI GED framework to support vCPU Hotplug [Patch 4,6,7]
-> 3. ACPI CPUs AML code change [Patch 5]
-> 4. Helper functions to support unrealization of CPU objects [Patch 8,9]
-> 5. Misc [Patch 2,3]
+> Hi,
+>
+> Thanks all for giving guides and comments on previous series, here is
+> the v3 of pure iommufd support part.
+>
+> Based on C=C3=A9dric's suggestion, this series includes an effort to remo=
+ve
+> spapr code from container.c, now all spapr functions are moved to spapr.c
+> or spapr_pci_vfio.c, but there are still a few trival check on
+> VFIO_SPAPR_TCE_*_IOMMU which I am not sure if deserved to introduce many
+> callbacks and duplicate code just to remove them. Some functions are moved
+> to spapr.c instead of spapr_pci_vfio.c to avoid compile issue because
+> spapr_pci_vfio.c is arch specific, or else we need to introduce stub
+> functions to those spapr functions moved.
 
-Thanks Salil!
+[...]
 
-Overall series looks good to me (modulo some points, I'd like to be address=
-ed)
-I'll do some testing and follow with per patch review tomorrow.=20
+> qemu code: https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cd=
+ev_v3
+> Based on vfio-next, commit id: fd0e1c8bc1
 
-> Repository:
->=20
-> [*] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2.commo=
-n.v6
->=20
->=20
-> Revision History:
->=20
-> Patch-set  V5 -> V6
-> 1. Addressed Gavin Shan's comments
->    - Fixed the assert() ranges of address spaces
->    - Rebased the patch-set to latest changes in the qemu.git
->    - Added Reviewed-by tags for patches {8,9}
-> 2. Addressed Jonathan Cameron's comments
->    - Updated commit-log for [Patch V5 1/9] with mention of trace events
->    - Added Reviewed-by tags for patches {1,5}
-> 3. Added Tested-by tags from Xianglai Li
-> 4. Fixed checkpatch.pl error "Qemu -> QEMU" in [Patch V5 1/9]=20
-> Link: https://lore.kernel.org/qemu-devel/20231011194355.15628-1-salil.meh=
-ta@huawei.com/
->=20
-> Patch-set  V4 -> V5
-> 1. Addressed Gavin Shan's comments
->    - Fixed the trace events print string for kvm_{create,get,park,destroy=
-}_vcpu
->    - Added Reviewed-by tag for patch {1}
-> 2. Added Shaoqin Huang's Reviewed-by tags for Patches {2,3}
-> 3. Added Tested-by Tag from Vishnu Pajjuri to the patch-set
-> 4. Dropped the ARM specific [Patch V4 10/10]
-> Link: https://lore.kernel.org/qemu-devel/20231009203601.17584-1-salil.meh=
-ta@huawei.com/
->=20
-> Patch-set  V3 -> V4
-> 1. Addressed David Hilderbrand's comments
->    - Fixed the wrong doc comment of kvm_park_vcpu API prototype
->    - Added Reviewed-by tags for patches {2,4}
-> Link: https://lore.kernel.org/qemu-devel/20231009112812.10612-1-salil.meh=
-ta@huawei.com/
->=20
-> Patch-set  V2 -> V3
-> 1. Addressed Jonathan Cameron's comments
->    - Fixed 'vcpu-id' type wrongly changed from 'unsigned long' to 'intege=
-r'
->    - Removed unnecessary use of variable 'vcpu_id' in kvm_park_vcpu
->    - Updated [Patch V2 3/10] commit-log with details of ACPI_CPU_SCAN_MET=
-HOD macro
->    - Updated [Patch V2 5/10] commit-log with details of conditional event=
- handler method
->    - Added Reviewed-by tags for patches {2,3,4,6,7}
-> 2. Addressed Gavin Shan's comments
->    - Remove unnecessary use of variable 'vcpu_id' in kvm_par_vcpu
->    - Fixed return value in kvm_get_vcpu from -1 to -ENOENT
->    - Reset the value of 'gdb_num_g_regs' in gdb_unregister_coprocessor_all
->    - Fixed the kvm_{create,park}_vcpu prototypes docs
->    - Added Reviewed-by tags for patches {2,3,4,5,6,7,9,10}
-> 3. Addressed one earlier missed comment by Alex Benn=C3=A9e in RFC V1
->    - Added traces instead of DPRINTF in the newly added and some existing=
- functions
-> Link: https://lore.kernel.org/qemu-devel/20230930001933.2660-1-salil.meht=
-a@huawei.com/
->=20
-> Patch-set V1 -> V2
-> 1. Addressed Alex Benn=C3=A9e's comments
->    - Refactored the kvm_create_vcpu logic to get rid of goto
->    - Added the docs for kvm_{create,park}_vcpu prototypes
->    - Splitted the gdbstub and AddressSpace destruction change into separa=
-te patches
->    - Added Reviewed-by tags for patches {2,10}
-> Link: https://lore.kernel.org/qemu-devel/20230929124304.13672-1-salil.meh=
-ta@huawei.com/
->=20
-> References:
->=20
-> [1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta=
-@huawei.com/
-> [2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
-> [3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@lo=
-ongson.cn/
->=20
->=20
-> Salil Mehta (9):
->   accel/kvm: Extract common KVM vCPU {creation,parking} code
->   hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
->   hw/acpi: Add ACPI CPU hotplug init stub
->   hw/acpi: Init GED framework with CPU hotplug events
->   hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
->   hw/acpi: Update GED _EVT method AML with CPU scan
->   hw/acpi: Update ACPI GED framework to support vCPU Hotplug
->   physmem: Add helper function to destroy CPU AddressSpace
->   gdbstub: Add helper function to unregister GDB register space
->=20
->  accel/kvm/kvm-all.c                    | 64 ++++++++++++++++++++------
->  accel/kvm/trace-events                 |  4 ++
->  gdbstub/gdbstub.c                      | 12 +++++
->  hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++
->  hw/acpi/cpu.c                          | 27 +++++++----
->  hw/acpi/generic_event_device.c         | 22 +++++++++
->  hw/i386/acpi-build.c                   |  3 +-
->  include/exec/cpu-common.h              |  8 ++++
->  include/exec/gdbstub.h                 |  5 ++
->  include/hw/acpi/cpu.h                  |  5 +-
->  include/hw/acpi/cpu_hotplug.h          |  4 ++
->  include/hw/acpi/generic_event_device.h |  5 ++
->  include/hw/core/cpu.h                  |  1 +
->  include/sysemu/kvm.h                   | 16 +++++++
->  system/physmem.c                       | 29 ++++++++++++
->  15 files changed, 184 insertions(+), 27 deletions(-)
->=20
+I fetched this, and get several compile errors with Clang (but not with
+GCC):
+
+    FAILED: libqemu-x86_64-softmmu.fa.p/hw_vfio_common.c.o=20
+    clang -m64 -mcx16 -Ilibqemu-x86_64-softmmu.fa.p -I. -I.. -Itarget/i386 =
+-I../target/i386 -Iqapi -Itrace -Iui -Iui/shader -I/usr/include/pixman-1 -I=
+/usr/include/capstone -I/usr/include/spice-server -I/usr/include/spice-1 -I=
+/usr/include/cacard -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -=
+I/usr/include/sysprof-4 -I/usr/include/nss3 -I/usr/include/nspr4 -I/usr/inc=
+lude/PCSC -fcolor-diagnostics -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 =
+-g -fstack-protector-strong -Wundef -Wwrite-strings -Wmissing-prototypes -W=
+strict-prototypes -Wredundant-decls -Wold-style-definition -Wtype-limits -W=
+format-security -Wformat-y2k -Winit-self -Wignored-qualifiers -Wempty-body =
+-Wnested-externs -Wendif-labels -Wexpansion-to-defined -Wmissing-format-att=
+ribute -Wno-initializer-overrides -Wno-missing-include-dirs -Wno-shift-nega=
+tive-value -Wno-string-plus-int -Wno-typedef-redefinition -Wno-tautological=
+-type-limit-compare -Wno-psabi -Wno-gnu-variable-sized-type-not-at-end -Wth=
+read-safety -isystem /work/armbru/qemu/linux-headers -isystem linux-headers=
+ -iquote . -iquote /work/armbru/qemu -iquote /work/armbru/qemu/include -iqu=
+ote /work/armbru/qemu/host/include/x86_64 -iquote /work/armbru/qemu/host/in=
+clude/generic -iquote /work/armbru/qemu/tcg/i386 -pthread -D_GNU_SOURCE -D_=
+FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing -fno-common =
+-fwrapv -fsanitize-coverage-allowlist=3Dinstrumentation-filter -fsanitize=
+=3Dfuzzer-no-link -fPIE -isystem../linux-headers -isystemlinux-headers -DNE=
+ED_CPU_H '-DCONFIG_TARGET=3D"x86_64-softmmu-config-target.h"' '-DCONFIG_DEV=
+ICES=3D"x86_64-softmmu-config-devices.h"' -MD -MQ libqemu-x86_64-softmmu.fa=
+.p/hw_vfio_common.c.o -MF libqemu-x86_64-softmmu.fa.p/hw_vfio_common.c.o.d =
+-o libqemu-x86_64-softmmu.fa.p/hw_vfio_common.c.o -c ../hw/vfio/common.c
+    ../hw/vfio/common.c:682:40: error: variable 'hostwin' is uninitialized =
+when used here [-Werror,-Wuninitialized]
+            hwaddr pgmask =3D (1ULL << ctz64(hostwin->iova_pgsizes)) - 1;
+                                           ^~~~~~~
+    ../hw/vfio/common.c:578:31: note: initialize the variable 'hostwin' to =
+silence this warning
+        VFIOHostDMAWindow *hostwin;
+                                  ^
+                                   =3D NULL
+    ../hw/vfio/common.c:785:33: error: variable 'hostwin' is uninitialized =
+when used here [-Werror,-Wuninitialized]
+            pgmask =3D (1ULL << ctz64(hostwin->iova_pgsizes)) - 1;
+                                    ^~~~~~~
+    ../hw/vfio/common.c:783:35: note: initialize the variable 'hostwin' to =
+silence this warning
+            VFIOHostDMAWindow *hostwin;
+                                      ^
+                                       =3D NULL
+    2 errors generated.
+    FAILED: tests/unit/test-resv-mem.p/test-resv-mem.c.o=20
+    clang -m64 -mcx16 -Itests/unit/test-resv-mem.p -Itests/unit -I../tests/=
+unit -I. -Iqapi -Itrace -Iui -Iui/shader -I/usr/include/glib-2.0 -I/usr/lib=
+64/glib-2.0/include -I/usr/include/sysprof-4 -fcolor-diagnostics -Wall -Win=
+valid-pch -Werror -std=3Dgnu11 -O2 -g -fstack-protector-strong -Wundef -Wwr=
+ite-strings -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wol=
+d-style-definition -Wtype-limits -Wformat-security -Wformat-y2k -Winit-self=
+ -Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels -Wexpans=
+ion-to-defined -Wmissing-format-attribute -Wno-initializer-overrides -Wno-m=
+issing-include-dirs -Wno-shift-negative-value -Wno-string-plus-int -Wno-typ=
+edef-redefinition -Wno-tautological-type-limit-compare -Wno-psabi -Wno-gnu-=
+variable-sized-type-not-at-end -Wthread-safety -isystem /work/armbru/qemu/l=
+inux-headers -isystem linux-headers -iquote . -iquote /work/armbru/qemu -iq=
+uote /work/armbru/qemu/include -iquote /work/armbru/qemu/host/include/x86_6=
+4 -iquote /work/armbru/qemu/host/include/generic -iquote /work/armbru/qemu/=
+tcg/i386 -pthread -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURC=
+E -fno-strict-aliasing -fno-common -fwrapv -fsanitize-coverage-allowlist=3D=
+instrumentation-filter -fsanitize=3Dfuzzer-no-link -fPIE -MD -MQ tests/unit=
+/test-resv-mem.p/test-resv-mem.c.o -MF tests/unit/test-resv-mem.p/test-resv=
+-mem.c.o.d -o tests/unit/test-resv-mem.p/test-resv-mem.c.o -c ../tests/unit=
+/test-resv-mem.c
+    ../tests/unit/test-resv-mem.c:42:9: error: variable 'i' set but not use=
+d [-Werror,-Wunused-but-set-variable]
+        int i =3D 0;
+            ^
+    1 error generated.
+
+Delete @i, please.
 
 
