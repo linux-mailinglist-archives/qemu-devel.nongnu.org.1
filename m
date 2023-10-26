@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1908E7D7940
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FB97D796E
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 02:28:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvo2t-00077K-16; Wed, 25 Oct 2023 20:16:19 -0400
+	id 1qvo2s-00077E-Q0; Wed, 25 Oct 2023 20:16:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2k-00070k-W3
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:12 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qvo2o-00072e-1B
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:14 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qvo2g-0004r5-K8
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:09 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1cab2c24ecdso2241205ad.0
- for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:15:58 -0700 (PDT)
+ id 1qvo2h-0004rA-Lb
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 20:16:13 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c87a85332bso2311445ad.2
+ for <qemu-devel@nongnu.org>; Wed, 25 Oct 2023 17:15:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698279357; x=1698884157; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698279358; x=1698884158; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TM/KRrd2eN3gH2XezGt/xyNTAB3pmf+w8+Xiugmh0j8=;
- b=bnZ+K/HU2vyv/jXoCms993r3lAslmTpDa61ludEN3Je88fislNbytASVpeFynI+ZhY
- R71qppsYXL/vwGBfHp1VF2GV7Zryg4k5fniXK2uvFn8Sxyqr6WK68zs0KIVHingxA5nZ
- rP7GZxyg/9wEzxNnGwOblMNB9ivLdOCsb+MxRfy82ggcGYQ76KLD7yGAk3RGCQtyjmy9
- 5QaxTAjy7is1HCDD9LviSC8gCD500pggbCxeL/IW5ofUhaBz2zZIGv/MXErijn5Tu6n1
- ektd99NVVrxp4X5mslelI+jYYq05gtCW/rnrhfyQgBnKk2FSkLL+pJhVKBlxSaLI9jpO
- BZ4w==
+ :reply-to; bh=lVqtOTdE26FeikcQeSUZ6gzaDd5J2ZKDmGo0pFRcFos=;
+ b=aQWOWJMpzZsMkg3EhGGeBZgGUQJwZox9rkIK6jjHVTyhdcXBo2zPLTYBSKuQJpTYNm
+ nFPrOdEBYmacHsdxjDmz1x5WMSebK89C7YMViBSX5bla28Icex98CbiAdK+acNFQJwip
+ o87xD4ZicZLpyfqcugYR6zqbg3uvWDs1WUlVgwXtdRSPZDeQZCHmBIg1X6PUGcOoPAOa
+ EVOgtyxlJC8gtBlNGbUDAPmFyKGhFGbxTKeEWSVwLSChuMepULvlJmji+hVmihIIsIpN
+ z4YATzl5pQmU3kv+S1s2Q6UKNdVvWs2DHvL0pDMXeA7hdMzWxdjTxSVasceuSdEWTs++
+ NtUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698279357; x=1698884157;
+ d=1e100.net; s=20230601; t=1698279358; x=1698884158;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TM/KRrd2eN3gH2XezGt/xyNTAB3pmf+w8+Xiugmh0j8=;
- b=WgSZcHMmpcICD+fAMIwKqcf21NJSz+UjkjFiKAM4PulmYmQDg+Qtp9QONlw3O8ejzQ
- M8sYOw3ItIelL3gh32D3KqQbr9hW/DavmZDEC0t2TndKsPm17fgtZ7vSdLHq8KFoJh5X
- e7x77A/yaLJZ73RAuIDfrATvQrsTZ8iEYoiPdaklN+V0CbTkvMbqgBxuJDDd8ynRqWpO
- sSEVWwVCHEbV7I+K90dicNZ2alkTCcrFXcA71fzPCowC9gPc/s4Fzc43UoEgJlqoT1Oz
- KlvvsJTLr8Dwj+QB0240opG08XC+FocOxkprVcqchlOQ/3m1YGgefhyprUNkfXcZbO0s
- Qy5w==
-X-Gm-Message-State: AOJu0Yx95ENYag07Em5ensunowlOIyH3I7N07qQ4a2yPy7C9Ni483bSM
- 9d8IK2n3w3c60lGXO3DZUgBiovS945hdfaaIsCA=
-X-Google-Smtp-Source: AGHT+IGhptrmxvre5L7xlygyulNw9b4isrZK76fFkFtDu/BdCrrAs0Q3oSfYGK/F05mgWMLz6vsXMA==
-X-Received: by 2002:a17:902:da83:b0:1c7:4973:7b34 with SMTP id
- j3-20020a170902da8300b001c749737b34mr16822669plx.50.1698279357577; 
- Wed, 25 Oct 2023 17:15:57 -0700 (PDT)
+ bh=lVqtOTdE26FeikcQeSUZ6gzaDd5J2ZKDmGo0pFRcFos=;
+ b=MQRVPv9uFJ2heaL6xBKoYIOVUvci14tx3r6qB2ivOodKVwddKLyu5rnYzZXJGYfrN/
+ 9CrDre5yqIoXAqcsZdh+jayOJ2TjN7GuCuwgWGm3Oi7XcUxN1eQKcJTqwwRPE3SusZWa
+ HOkrL2hUcu84ReZ09+SXsZlazbmh2IJssoNRmmolBEp7ul9HHh+AdMsUsgELEZFtm0/1
+ eIDIDE1pKOIwjRzgFxU0lrx+dFCPLsEEeg/XNYsnQ/iRUW3LbOZRIEG/JGTS7r/tBeKj
+ iXbcb/CKkJu//w95jCquoVlJBPhGdlgsEkmvxyFbDI/ig3nIOjvipXj6lSeQ7cvRSvXC
+ F/rQ==
+X-Gm-Message-State: AOJu0YxiyCKa8gT16jSr9WvKsLvTxdtaqyyzALY83prIpgZ1nB8W5G7D
+ ZY+d63rX6nKZrmYnsqR6Gzk0UDgLyEPjRPpCnD8=
+X-Google-Smtp-Source: AGHT+IH5oE+4QHtXH8Br62l2u3Uvj9FTE+MKvI5ULEq5Qje7Ytx19BynHScuRUN00xeTzeDcqAqUAg==
+X-Received: by 2002:a17:902:c602:b0:1c8:7822:e5c3 with SMTP id
+ r2-20020a170902c60200b001c87822e5c3mr14284444plr.47.1698279358399; 
+ Wed, 25 Oct 2023 17:15:58 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.56
+ ij23-20020a170902ab5700b001c582de968dsm10038433plb.72.2023.10.25.17.15.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Oct 2023 17:15:57 -0700 (PDT)
+ Wed, 25 Oct 2023 17:15:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 08/29] tcg/aarch64: Generate TBZ, TBNZ
-Date: Wed, 25 Oct 2023 17:13:55 -0700
-Message-Id: <20231026001542.1141412-17-richard.henderson@linaro.org>
+Subject: [PULL 09/94] target/sparc: Partition cpu features
+Date: Wed, 25 Oct 2023 17:13:56 -0700
+Message-Id: <20231026001542.1141412-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
 References: <20231026001542.1141412-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,157 +89,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test the sign bit for LT/GE vs 0, and TSTNE/EQ vs a power of 2.
+In the sparc32 binaries, do not advertise features only available
+to sparc64, so they cannot be enabled.  In the sparc64 binaries,
+do not advertise features mandatory in v9, so they cannot be disabled.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target.c.inc | 100 ++++++++++++++++++++++++++++-------
- 1 file changed, 81 insertions(+), 19 deletions(-)
+ target/sparc/cpu.c | 42 ++++++++++++++++++++++++------------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 2a748b3ee3..e65fc415d2 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -105,6 +105,18 @@ static bool reloc_pc19(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
-     return false;
- }
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index f527244aa4..bb1a155510 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -546,14 +546,17 @@ static const sparc_def_t sparc_defs[] = {
+ /* This must match sparc_cpu_properties[]. */
+ static const char * const feature_name[] = {
+     [CPU_FEATURE_BIT_FLOAT128] = "float128",
+-    [CPU_FEATURE_BIT_MUL] = "mul",
+-    [CPU_FEATURE_BIT_DIV] = "div",
+-    [CPU_FEATURE_BIT_VIS1] = "vis1",
+-    [CPU_FEATURE_BIT_VIS2] = "vis2",
+-    [CPU_FEATURE_BIT_FSMULD] = "fsmuld",
+-    [CPU_FEATURE_BIT_HYPV] = "hypv",
++#ifdef TARGET_SPARC64
+     [CPU_FEATURE_BIT_CMT] = "cmt",
+     [CPU_FEATURE_BIT_GL] = "gl",
++    [CPU_FEATURE_BIT_HYPV] = "hypv",
++    [CPU_FEATURE_BIT_VIS1] = "vis1",
++    [CPU_FEATURE_BIT_VIS2] = "vis2",
++#else
++    [CPU_FEATURE_BIT_MUL] = "mul",
++    [CPU_FEATURE_BIT_DIV] = "div",
++    [CPU_FEATURE_BIT_FSMULD] = "fsmuld",
++#endif
+ };
  
-+static bool reloc_pc14(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
-+{
-+    const tcg_insn_unit *src_rx = tcg_splitwx_to_rx(src_rw);
-+    ptrdiff_t offset = target - src_rx;
-+
-+    if (offset == sextract64(offset, 0, 14)) {
-+        *src_rw = deposit32(*src_rw, 5, 14, offset);
-+        return true;
-+    }
-+    return false;
-+}
-+
- static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-                         intptr_t value, intptr_t addend)
- {
-@@ -115,6 +127,8 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-         return reloc_pc26(code_ptr, (const tcg_insn_unit *)value);
-     case R_AARCH64_CONDBR19:
-         return reloc_pc19(code_ptr, (const tcg_insn_unit *)value);
-+    case R_AARCH64_TSTBR14:
-+        return reloc_pc14(code_ptr, (const tcg_insn_unit *)value);
-     default:
-         g_assert_not_reached();
-     }
-@@ -369,6 +383,10 @@ typedef enum {
-     /* Conditional branch (immediate).  */
-     I3202_B_C       = 0x54000000,
- 
-+    /* Test and branch (immediate).  */
-+    I3205_TBZ       = 0x36000000,
-+    I3205_TBNZ      = 0x37000000,
-+
-     /* Unconditional branch (immediate).  */
-     I3206_B         = 0x14000000,
-     I3206_BL        = 0x94000000,
-@@ -649,6 +667,14 @@ static void tcg_out_insn_3202(TCGContext *s, AArch64Insn insn,
-     tcg_out32(s, insn | tcg_cond_to_aarch64[c] | (imm19 & 0x7ffff) << 5);
- }
- 
-+static void tcg_out_insn_3205(TCGContext *s, AArch64Insn insn,
-+                              TCGReg rt, int imm6, int imm14)
-+{
-+    insn |= (imm6 & 0x20) << (31 - 5);
-+    insn |= (imm6 & 0x1f) << 19;
-+    tcg_out32(s, insn | (imm14 & 0x3fff) << 5 | rt);
-+}
-+
- static void tcg_out_insn_3206(TCGContext *s, AArch64Insn insn, int imm26)
- {
-     tcg_out32(s, insn | (imm26 & 0x03ffffff));
-@@ -1412,30 +1438,66 @@ static inline void tcg_out_goto_label(TCGContext *s, TCGLabel *l)
- static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
-                            TCGArg b, bool b_const, TCGLabel *l)
- {
--    intptr_t offset;
--    bool need_cmp;
-+    int tbit = -1;
-+    bool need_cmp = true;
- 
--    if (b_const && b == 0 && (c == TCG_COND_EQ || c == TCG_COND_NE)) {
--        need_cmp = false;
--    } else {
--        need_cmp = true;
--        tcg_out_cmp(s, ext, c, a, b, b_const);
--    }
--
--    if (!l->has_value) {
--        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
--        offset = tcg_in32(s) >> 5;
--    } else {
--        offset = tcg_pcrel_diff(s, l->u.value_ptr) >> 2;
--        tcg_debug_assert(offset == sextract64(offset, 0, 19));
-+    switch (c) {
-+    case TCG_COND_EQ:
-+    case TCG_COND_NE:
-+        if (b_const && b == 0) {
-+            need_cmp = false;
-+        }
-+        break;
-+    case TCG_COND_LT:
-+    case TCG_COND_GE:
-+        if (b_const && b == 0) {
-+            c = (c == TCG_COND_LT ? TCG_COND_TSTNE : TCG_COND_TSTEQ);
-+            tbit = ext ? 63 : 31;
-+            need_cmp = false;
-+        }
-+        break;
-+    case TCG_COND_TSTEQ:
-+    case TCG_COND_TSTNE:
-+        if (b_const && is_power_of_2(b)) {
-+            tbit = ctz64(b);
-+            need_cmp = false;
-+        }
-+        break;
-+    default:
-+        break;
-     }
- 
-     if (need_cmp) {
--        tcg_out_insn(s, 3202, B_C, c, offset);
--    } else if (c == TCG_COND_EQ) {
--        tcg_out_insn(s, 3201, CBZ, ext, a, offset);
-+        tcg_out_cmp(s, ext, c, a, b, b_const);
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
-+        tcg_out_insn(s, 3202, B_C, c, 0);
-+        return;
-+    }
-+
-+    if (tbit >= 0) {
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_TSTBR14, l, 0);
-+        switch (c) {
-+        case TCG_COND_TSTEQ:
-+            tcg_out_insn(s, 3205, TBZ, a, tbit, 0);
-+            break;
-+        case TCG_COND_TSTNE:
-+            tcg_out_insn(s, 3205, TBNZ, a, tbit, 0);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-     } else {
--        tcg_out_insn(s, 3201, CBNZ, ext, a, offset);
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
-+        switch (c) {
-+        case TCG_COND_EQ:
-+            tcg_out_insn(s, 3201, CBZ, ext, a, 0);
-+            break;
-+        case TCG_COND_NE:
-+            tcg_out_insn(s, 3201, CBNZ, ext, a, 0);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-     }
- }
- 
+ static void print_features(uint32_t features, const char *prefix)
+@@ -832,22 +835,25 @@ static PropertyInfo qdev_prop_nwindows = {
+ static Property sparc_cpu_properties[] = {
+     DEFINE_PROP_BIT("float128", SPARCCPU, env.def.features,
+                     CPU_FEATURE_BIT_FLOAT128, false),
+-    DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
+-                    CPU_FEATURE_BIT_MUL, false),
+-    DEFINE_PROP_BIT("div",      SPARCCPU, env.def.features,
+-                    CPU_FEATURE_BIT_DIV, false),
+-    DEFINE_PROP_BIT("vis1",     SPARCCPU, env.def.features,
+-                    CPU_FEATURE_BIT_VIS1, false),
+-    DEFINE_PROP_BIT("vis2",     SPARCCPU, env.def.features,
+-                    CPU_FEATURE_BIT_VIS2, false),
+-    DEFINE_PROP_BIT("fsmuld",   SPARCCPU, env.def.features,
+-                    CPU_FEATURE_BIT_FSMULD, false),
+-    DEFINE_PROP_BIT("hypv",     SPARCCPU, env.def.features,
+-                    CPU_FEATURE_BIT_HYPV, false),
++#ifdef TARGET_SPARC64
+     DEFINE_PROP_BIT("cmt",      SPARCCPU, env.def.features,
+                     CPU_FEATURE_BIT_CMT, false),
+     DEFINE_PROP_BIT("gl",       SPARCCPU, env.def.features,
+                     CPU_FEATURE_BIT_GL, false),
++    DEFINE_PROP_BIT("hypv",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_HYPV, false),
++    DEFINE_PROP_BIT("vis1",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_VIS1, false),
++    DEFINE_PROP_BIT("vis2",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_VIS2, false),
++#else
++    DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_MUL, false),
++    DEFINE_PROP_BIT("div",      SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_DIV, false),
++    DEFINE_PROP_BIT("fsmuld",   SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_FSMULD, false),
++#endif
+     DEFINE_PROP_UNSIGNED("iu-version", SPARCCPU, env.def.iu_version, 0,
+                          qdev_prop_uint64, target_ulong),
+     DEFINE_PROP_UINT32("fpu-version", SPARCCPU, env.def.fpu_version, 0),
 -- 
 2.34.1
 
