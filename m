@@ -2,50 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE9E7D7A23
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 03:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 749037D7A25
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Oct 2023 03:27:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qvp7t-0005sr-KH; Wed, 25 Oct 2023 21:25:33 -0400
+	id 1qvp9e-0006lG-PC; Wed, 25 Oct 2023 21:27:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qvp7p-0005nd-Bj
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:25:30 -0400
+ id 1qvp9c-0006kt-HW
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:27:20 -0400
 Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qvp7n-0006Mc-4p
- for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:25:29 -0400
+ id 1qvp9Z-0008Ct-TH
+ for qemu-devel@nongnu.org; Wed, 25 Oct 2023 21:27:20 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 205BACE3C7E;
- Thu, 26 Oct 2023 01:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDDCC433C7;
- Thu, 26 Oct 2023 01:25:20 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id 50CC6CE3C81;
+ Thu, 26 Oct 2023 01:27:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CE0C433C7;
+ Thu, 26 Oct 2023 01:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1698283522;
- bh=jdfrcJhpkrqS9FdZhZFoxKCUgKEap7xhVrmb9u0WZHg=;
+ s=k20201202; t=1698283634;
+ bh=Ii3W8WPXM+HaC7H23lkbyui90eXEuTIW1dNd/XtNoaw=;
  h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=mO5FiUFs35JfDyeoyjAheZJNoBFyN5hzg3n1JRAZsC9mEV3NgRvocZEwiycfPPl59
- ln7e1nFAxyYvIAnPTkV1yqR0O9+Ks3t01v+2/rb+enmqP4shGiqFtacZ/xAaZm/hze
- aLDLOqPjXy8rmvXM8uiVCh6BDxsM20YptpZEfVNfPnwTqBx5i0IC1SmIYp7ndtPyGz
- I3XRrcIM19cMnA84H6swTfsUCLCz+Bw1JqLBQQJUm1PlxsVvYH2/PrvXyc5jpv2Dcj
- FLiJEp36eTKlijPnHOHAodgyMjMTmuGK+xqcQoJeHmN994K+yxC/Ww3LUdxcqiUV5W
- AKAQAAz/fywOg==
-Date: Wed, 25 Oct 2023 18:25:19 -0700 (PDT)
+ b=UVcUJrsETKIvGaOKN6+h4LRyyW5MwynTcXdxGg1sFjPh0+NHnCz6Yec0TLSqT815t
+ BL5mRFd/7ttTQ1+cEMgRFYjs4HMpSo+W4GWBI+tk4OtaEfQOcbLbWuUwUuAsBafw6z
+ gRXLbxOjbM9bfPmEN0KQC5AefHKsdF6v5+tdoCsji2UgPybHLw5eiMGqp86kPnV30L
+ teNYSKI+i705sF0bnmTqyX2e9IVzkQ+sts1l1bqJftrhmndVi57dG1Smm4jRMuGT+8
+ FoVcNXzPRnzNOSLyltN9MGctXJTh4n1ILOyOonaa5swWyntFlLe/QP2H2HMLprJOFv
+ M3iIOxAe/WjWw==
+Date: Wed, 25 Oct 2023 18:27:11 -0700 (PDT)
 From: Stefano Stabellini <sstabellini@kernel.org>
 X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
 To: Vikram Garhwal <vikram.garhwal@amd.com>
 cc: qemu-devel@nongnu.org, sstabellini@kernel.org, jgross@suse.com, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
- David Hildenbrand <david@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [QEMU][PATCHv2 2/8] softmmu: physmem: Split ram_block_add()
-In-Reply-To: <20231025212422.30371-3-vikram.garhwal@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2310251825130.271731@ubuntu-linux-20-04-desktop>
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Subject: Re: [QEMU][PATCHv2 3/8] xen: add pseudo RAM region for grant mappings
+In-Reply-To: <20231025212422.30371-4-vikram.garhwal@amd.com>
+Message-ID: <alpine.DEB.2.22.394.2310251826500.271731@ubuntu-linux-20-04-desktop>
 References: <20231025212422.30371-1-vikram.garhwal@amd.com>
- <20231025212422.30371-3-vikram.garhwal@amd.com>
+ <20231025212422.30371-4-vikram.garhwal@amd.com>
 User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -74,9 +78,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, 25 Oct 2023, Vikram Garhwal wrote:
-> Extract ram block list update to a new function ram_block_add_list(). This is
-> done to support grant mappings which adds a memory region for granted memory and
-> updates the ram_block list.
+> From: Juergen Gross <jgross@suse.com>
+> 
+> Add a memory region which can be used to automatically map granted
+> memory. It is starting at 0x8000000000000000ULL in order to be able to
+> distinguish it from normal RAM.
+> 
+> For this reason the xen.ram memory region is expanded, which has no
+> further impact as it is used just as a container of the real RAM
+> regions and now the grant region.
 > 
 > Signed-off-by: Juergen Gross <jgross@suse.com>
 > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
@@ -85,107 +95,139 @@ Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 
 
 > ---
->  include/exec/ram_addr.h |  1 +
->  system/physmem.c        | 62 ++++++++++++++++++++++++++---------------
->  2 files changed, 40 insertions(+), 23 deletions(-)
+>  hw/i386/xen/xen-hvm.c           |  3 +++
+>  hw/xen/xen-hvm-common.c         |  4 ++--
+>  hw/xen/xen-mapcache.c           | 27 +++++++++++++++++++++++++++
+>  include/hw/xen/xen-hvm-common.h |  2 ++
+>  include/hw/xen/xen_pvdev.h      |  3 +++
+>  include/sysemu/xen-mapcache.h   |  3 +++
+>  6 files changed, 40 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-> index 90676093f5..c0b5f9a7d0 100644
-> --- a/include/exec/ram_addr.h
-> +++ b/include/exec/ram_addr.h
-> @@ -139,6 +139,7 @@ void qemu_ram_free(RAMBlock *block);
->  int qemu_ram_resize(RAMBlock *block, ram_addr_t newsize, Error **errp);
->  
->  void qemu_ram_msync(RAMBlock *block, ram_addr_t start, ram_addr_t length);
-> +void ram_block_add_list(RAMBlock *new_block);
->  
->  /* Clear whole block of mem */
->  static inline void qemu_ram_block_writeback(RAMBlock *block)
-> diff --git a/system/physmem.c b/system/physmem.c
-> index fc2b0fee01..7a7f95b8b9 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -1803,12 +1803,47 @@ static void dirty_memory_extend(ram_addr_t old_ram_size,
+> diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+> index f42621e674..67a55558a6 100644
+> --- a/hw/i386/xen/xen-hvm.c
+> +++ b/hw/i386/xen/xen-hvm.c
+> @@ -172,6 +172,9 @@ static void xen_ram_init(PCMachineState *pcms,
+>                                   x86ms->above_4g_mem_size);
+>          memory_region_add_subregion(sysmem, 0x100000000ULL, &ram_hi);
 >      }
+> +
+> +    /* Add grant mappings as a pseudo RAM region. */
+> +    ram_grants = *xen_init_grant_ram();
 >  }
 >  
-> +static void ram_block_add_list_locked(RAMBlock *new_block)
-> + {
-> +     RAMBlock *block;
-> +     RAMBlock *last_block = NULL;
-> +
-> +    /*
-> +     * Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
-> +     * QLIST (which has an RCU-friendly variant) does not have insertion at
-> +     * tail, so save the last element in last_block.
-> +     */
-> +    RAMBLOCK_FOREACH(block) {
-> +        last_block = block;
-> +        if (block->max_length < new_block->max_length) {
-> +            break;
-> +        }
-> +    }
-> +    if (block) {
-> +        QLIST_INSERT_BEFORE_RCU(block, new_block, next);
-> +    } else if (last_block) {
-> +        QLIST_INSERT_AFTER_RCU(last_block, new_block, next);
-> +    } else { /* list is empty */
-> +        QLIST_INSERT_HEAD_RCU(&ram_list.blocks, new_block, next);
-> +    }
-> +    ram_list.mru_block = NULL;
-> +
-> +    /* Write list before version */
-> +    smp_wmb();
-> +    ram_list.version++;
-> +}
-> +
-> +void ram_block_add_list(RAMBlock *new_block)
-> +{
-> +    qemu_mutex_lock_ramlist();
-> +    ram_block_add_list_locked(new_block);
-> +    qemu_mutex_unlock_ramlist();
-> +}
-> +
->  static void ram_block_add(RAMBlock *new_block, Error **errp)
->  {
->      const bool noreserve = qemu_ram_is_noreserve(new_block);
->      const bool shared = qemu_ram_is_shared(new_block);
-> -    RAMBlock *block;
-> -    RAMBlock *last_block = NULL;
->      ram_addr_t old_ram_size, new_ram_size;
->      Error *err = NULL;
+>  static XenPhysmap *get_physmapping(hwaddr start_addr, ram_addr_t size)
+> diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+> index 565dc39c8f..b7255977a5 100644
+> --- a/hw/xen/xen-hvm-common.c
+> +++ b/hw/xen/xen-hvm-common.c
+> @@ -9,7 +9,7 @@
+>  #include "hw/boards.h"
+>  #include "hw/xen/arch_hvm.h"
 >  
-> @@ -1846,28 +1881,9 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
->      if (new_ram_size > old_ram_size) {
->          dirty_memory_extend(old_ram_size, new_ram_size);
+> -MemoryRegion ram_memory;
+> +MemoryRegion ram_memory, ram_grants;
+>  
+>  void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+>                     Error **errp)
+> @@ -26,7 +26,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+>          return;
 >      }
-> -    /* Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
-> -     * QLIST (which has an RCU-friendly variant) does not have insertion at
-> -     * tail, so save the last element in last_block.
-> -     */
-> -    RAMBLOCK_FOREACH(block) {
-> -        last_block = block;
-> -        if (block->max_length < new_block->max_length) {
-> -            break;
-> -        }
-> -    }
-> -    if (block) {
-> -        QLIST_INSERT_BEFORE_RCU(block, new_block, next);
-> -    } else if (last_block) {
-> -        QLIST_INSERT_AFTER_RCU(last_block, new_block, next);
-> -    } else { /* list is empty */
-> -        QLIST_INSERT_HEAD_RCU(&ram_list.blocks, new_block, next);
-> -    }
-> -    ram_list.mru_block = NULL;
 >  
-> -    /* Write list before version */
-> -    smp_wmb();
-> -    ram_list.version++;
-> +    ram_block_add_list_locked(new_block);
+> -    if (mr == &ram_memory) {
+> +    if (mr == &ram_memory || mr == &ram_grants) {
+>          return;
+>      }
+>  
+> diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
+> index f7d974677d..8115c44c00 100644
+> --- a/hw/xen/xen-mapcache.c
+> +++ b/hw/xen/xen-mapcache.c
+> @@ -14,7 +14,9 @@
+>  
+>  #include <sys/resource.h>
+>  
+> +#include "hw/xen/xen-hvm-common.h"
+>  #include "hw/xen/xen_native.h"
+> +#include "hw/xen/xen_pvdev.h"
+>  #include "qemu/bitmap.h"
+>  
+>  #include "sysemu/runstate.h"
+> @@ -597,3 +599,28 @@ uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
+>      mapcache_unlock();
+>      return p;
+>  }
 > +
->      qemu_mutex_unlock_ramlist();
+> +MemoryRegion *xen_init_grant_ram(void)
+> +{
+> +    RAMBlock *block;
+> +
+> +    memory_region_init(&ram_grants, NULL, "xen.grants",
+> +                       XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE);
+> +    block = g_malloc0(sizeof(*block));
+> +    block->mr = &ram_grants;
+> +    block->used_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
+> +    block->max_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
+> +    block->fd = -1;
+> +    block->page_size = XC_PAGE_SIZE;
+> +    block->host = (void *)XEN_GRANT_ADDR_OFF;
+> +    block->offset = XEN_GRANT_ADDR_OFF;
+> +    block->flags = RAM_PREALLOC;
+> +    ram_grants.ram_block = block;
+> +    ram_grants.ram = true;
+> +    ram_grants.terminates = true;
+> +    ram_block_add_list(block);
+> +    memory_region_add_subregion(get_system_memory(), XEN_GRANT_ADDR_OFF,
+> +                                &ram_grants);
+> +
+> +    return &ram_grants;
+> +}
+> diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
+> index 4e9904f1a6..0d300ba898 100644
+> --- a/include/hw/xen/xen-hvm-common.h
+> +++ b/include/hw/xen/xen-hvm-common.h
+> @@ -17,6 +17,8 @@
+>  #include <xen/hvm/ioreq.h>
 >  
->      cpu_physical_memory_set_dirty_range(new_block->offset,
+>  extern MemoryRegion ram_memory;
+> +
+> +extern MemoryRegion ram_grants;
+>  extern MemoryListener xen_io_listener;
+>  extern DeviceListener xen_device_listener;
+>  
+> diff --git a/include/hw/xen/xen_pvdev.h b/include/hw/xen/xen_pvdev.h
+> index ddad4b9f36..0f1b5edfa9 100644
+> --- a/include/hw/xen/xen_pvdev.h
+> +++ b/include/hw/xen/xen_pvdev.h
+> @@ -80,4 +80,7 @@ int xen_pv_send_notify(struct XenLegacyDevice *xendev);
+>  void xen_pv_printf(struct XenLegacyDevice *xendev, int msg_level,
+>                     const char *fmt, ...)  G_GNUC_PRINTF(3, 4);
+>  
+> +#define XEN_GRANT_ADDR_OFF    0x8000000000000000ULL
+> +#define XEN_MAX_VIRTIO_GRANTS 65536
+> +
+>  #endif /* QEMU_HW_XEN_PVDEV_H */
+> diff --git a/include/sysemu/xen-mapcache.h b/include/sysemu/xen-mapcache.h
+> index c8e7c2f6cf..f4bedb1c11 100644
+> --- a/include/sysemu/xen-mapcache.h
+> +++ b/include/sysemu/xen-mapcache.h
+> @@ -10,6 +10,7 @@
+>  #define XEN_MAPCACHE_H
+>  
+>  #include "exec/cpu-common.h"
+> +#include "exec/ram_addr.h"
+>  
+>  typedef hwaddr (*phys_offset_to_gaddr_t)(hwaddr phys_offset,
+>                                           ram_addr_t size);
+> @@ -25,6 +26,8 @@ void xen_invalidate_map_cache(void);
+>  uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
+>                                   hwaddr new_phys_addr,
+>                                   hwaddr size);
+> +MemoryRegion *xen_init_grant_ram(void);
+> +
+>  #else
+>  
+>  static inline void xen_map_cache_init(phys_offset_to_gaddr_t f,
 > -- 
 > 2.17.1
 > 
