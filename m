@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12B07D8E98
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 08:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E8F7D8EEF
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 08:50:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwGDa-0004jk-St; Fri, 27 Oct 2023 02:21:14 -0400
+	id 1qwGen-0002a2-DH; Fri, 27 Oct 2023 02:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qwGDY-0004jI-NB
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 02:21:12 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qwGDX-0004kE-5o
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 02:21:12 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-507d1cc0538so2353692e87.2
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 23:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698387668; x=1698992468; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=fWiot1xxhS30niO6atC+EfWIbbTfv5hFa4dJhCJq2rs=;
- b=E13SNPQfCbhwBWuCwkyXjBHBkSo2UZ0i1+8QdnQtWEIWHtanIeqyirxx0auZR+PfRB
- P2kp1aKHmzuXFM72bVu/hA2hEwxTlIG4XvMZL7KRQE2JO1GjIyzffChtv6LkQkmPuSTT
- 7huZod/w9xYBFszWOIERvKcv54tEQQuKBKtfmtFvIxdAq4j8C2u/xKcHcy0bTCBbxNzo
- eFa0pw4iCOJZV9ADOT/5eKrYAPAv7xgdr9NBjrMDRbOYQZMNa5Flm3PukHN9M73eo4AE
- Axf91XDtyEm9jO7DTPUfyYk7OM5vj/ks/wEW6W83IlJLMaeTWtA3ccm/ovmidx/LfC39
- B8tA==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qwGel-0002Zc-3Y
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 02:49:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qwGej-0007OX-BN
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 02:49:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698389356;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=os44ixVTmyrsDJMhKpf7U1fxpwL3Ete0vheE0+mzWbk=;
+ b=XWq3GVzbQm/dS+mWCmaQv9WAk276iJA9Qa3T/5YavxsO8GMoj8WfLQr0aGXHdwD7FTX3Iz
+ PbFvrD65J4aQ+vy2edcBdRgfBiu1+k9gY1CM8ItbsAs1dHcaOS8FZ0Ra9aw9n9+Z7+YyzT
+ HpSI6pODtcouFrIvemlgbOQG6BKF1Uw=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-K_4Qz2OMPMS9V2nay4m0Ew-1; Fri, 27 Oct 2023 02:49:14 -0400
+X-MC-Unique: K_4Qz2OMPMS9V2nay4m0Ew-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2c512a53e82so19367791fa.0
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 23:49:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698387668; x=1698992468;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fWiot1xxhS30niO6atC+EfWIbbTfv5hFa4dJhCJq2rs=;
- b=fXywyperK/yQnvq87qy9WUFAvHshPAplYwUXqQG5SpHxF9w8yHeh9lCR3ISRaC3cyS
- 0MKpwTVdivLKxcDtXihPmewjrV1S+ZRm7m1eoJtWseeplZI128VnSjxcH3K0hjMlsq0U
- gubrrPCgudz11Z46I9D3uyEJhG1bNCXLRMgkm/XARE+J6wnF2JUzyOtYGWQpBoU23FDJ
- F/xbHjrJN74H4MZIzgOC1+IgDduSbpYj4xknS7mZyWhcAdXxObryBCIbORXhOS9DKgQt
- KxA5JQKX/1Q9HvxyDUMOCiD/dOfgx3+/dPovIPa3SjOFw7up0NBwfLMr0x+5hbjwIO74
- zwAA==
-X-Gm-Message-State: AOJu0YweWudBmqtUYfO16VVtkj/G463ToLn38ywD5QstK4QpGSonecab
- R6fpzriC7abZPjd7JgL/9Nxymok9/cNYTnf35I5FCw==
-X-Google-Smtp-Source: AGHT+IHAJe2ua7nhLWFRobxwuxA5Ea9jKVaWBpC0EOc6jpmifbw021zviHsn8lkN3Vbr5qsFENpxrg==
-X-Received: by 2002:ac2:4ac1:0:b0:507:a58f:79b0 with SMTP id
- m1-20020ac24ac1000000b00507a58f79b0mr935937lfp.9.1698387668144; 
- Thu, 26 Oct 2023 23:21:08 -0700 (PDT)
-Received: from meli.delivery (adsl-141.37.6.2.tellas.gr. [37.6.2.141])
- by smtp.gmail.com with ESMTPSA id
- z9-20020a5d44c9000000b0032d9caeab0fsm1013790wrr.77.2023.10.26.23.21.07
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 26 Oct 2023 23:21:07 -0700 (PDT)
-Date: Fri, 27 Oct 2023 09:20:36 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-trivial@nongnu.org
-Subject: Re: [PATCH] MAINTAINERS: Add the virtio-gpu documentation to the
- corresponding section
-User-Agent: meli 0.8.2
-References: <20231027060808.242442-1-thuth@redhat.com>
-In-Reply-To: <20231027060808.242442-1-thuth@redhat.com>
-Message-ID: <36cb5.zjk9zvxmauvb@linaro.org>
+ d=1e100.net; s=20230601; t=1698389353; x=1698994153;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=os44ixVTmyrsDJMhKpf7U1fxpwL3Ete0vheE0+mzWbk=;
+ b=MHQFQpQJKeEJJpxWYy51DK6P6wmztXn0ALIj/R6JTZ31SFWNAw7FuMhcnjyqNpcnKA
+ Pm/Ko01qBgiYfJ1cnIry9KE4z1eqfg+rbx6ayPC2DXgj/U5G9KKd7rAxsvR1fRv6EYsW
+ Td9MGIEn8jOaeZ1qqzqAWnEVeMl7034kLhz2u8j4xDsS7/Tp06SHYxPnhbM9Yp6AhXKl
+ u7P6itWlMAsp3TiHnxtwrYKVj5w6ix5qjbmYtcmIVac+BC8RLdxB7Xl4OdCL+EN+HeLF
+ zy1m0MCDXOLQYRndD94RBoMM6+QsuvCp3dGxkUsPJnjCkQfkpDozmCky81ZWhopCUgk5
+ Qq9w==
+X-Gm-Message-State: AOJu0Ywrlve17qpaTISRK8zWqT23aZmTAfYJRM9VCLRFB8a0rqEK64Qy
+ XWbzttag1xIrdna1to/+2x5ho7V4v7q+mdKh41T7jsbl/w+FoT+9iVsJDKtrl9qmeEKKi8ezWn6
+ 3xZI/xZZJnmgm3eGyi5Q+CEAnsQa0PU3KHeIckb4RAQ==
+X-Received: by 2002:a19:f608:0:b0:503:1913:ed8e with SMTP id
+ x8-20020a19f608000000b005031913ed8emr954365lfe.61.1698389352832; 
+ Thu, 26 Oct 2023 23:49:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5/Kn7x60vH6rxyk//Bl7jkslx7R+r3tkZL/WptribRph4Cyhfj7rHvj3BOvvGGUMnd63/u9egSXzucoYmKv8=
+X-Received: by 2002:a19:f608:0:b0:503:1913:ed8e with SMTP id
+ x8-20020a19f608000000b005031913ed8emr954353lfe.61.1698389352484; Thu, 26 Oct
+ 2023 23:49:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12b.google.com
+References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
+ <20231017040932.62997-5-akihiko.odaki@daynix.com>
+In-Reply-To: <20231017040932.62997-5-akihiko.odaki@daynix.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 27 Oct 2023 14:49:01 +0800
+Message-ID: <CACGkMEukvjmJ20pWSDsxtxo_UZAC33yEjWNsSqdNJRm8xL2O4w@mail.gmail.com>
+Subject: Re: [PATCH v5 04/21] net: Remove receive_raw()
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,12 +95,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 27 Oct 2023 09:08, Thomas Huth <thuth@redhat.com> wrote:
->Add virtio-gpu.rst to the corresponding section in MAINTAINERS, so that
->the maintainers gets CC:-ed on corresponding patches.
+On Tue, Oct 17, 2023 at 12:09=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
+x.com> wrote:
 >
->Signed-off-by: Thomas Huth <thuth@redhat.com>
->---
+> While netmap implements virtio-net header, it does not implement
+> receive_raw().
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+The only user for raw is the announcing. Netmap probably doesn't it at all.
+
+> Instead of implementing receive_raw for netmap, add
+> virtio-net headers in the common code and use receive_iov()/receive()
+> instead. This also fixes the buffer size for the virtio-net header.
+>
+> Fixes: fbbdbddec0 ("tap: allow extended virtio header with hash info")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  include/net/net.h   |  1 -
+>  include/net/queue.h |  1 -
+>  net/net.c           | 17 +++++++++--------
+>  net/queue.c         | 30 ++++++++++--------------------
+>  net/tap.c           |  1 -
+>  5 files changed, 19 insertions(+), 31 deletions(-)
+>
+> diff --git a/include/net/net.h b/include/net/net.h
+> index 011031ef77..971dc54897 100644
+> --- a/include/net/net.h
+> +++ b/include/net/net.h
+> @@ -71,7 +71,6 @@ typedef struct NetClientInfo {
+>      NetClientDriver type;
+>      size_t size;
+>      NetReceive *receive;
+> -    NetReceive *receive_raw;
+>      NetReceiveIOV *receive_iov;
+>      NetCanReceive *can_receive;
+>      NetStart *start;
+> diff --git a/include/net/queue.h b/include/net/queue.h
+> index 9f2f289d77..7a43863be2 100644
+> --- a/include/net/queue.h
+> +++ b/include/net/queue.h
+> @@ -31,7 +31,6 @@ typedef struct NetQueue NetQueue;
+>  typedef void (NetPacketSent) (NetClientState *sender, ssize_t ret);
+>
+>  #define QEMU_NET_PACKET_FLAG_NONE  0
+> -#define QEMU_NET_PACKET_FLAG_RAW  (1<<0)
+>
+>  /* Returns:
+>   *   >0 - success
+> diff --git a/net/net.c b/net/net.c
+> index 6d2fa8d40f..2d94d23c07 100644
+> --- a/net/net.c
+> +++ b/net/net.c
+> @@ -752,8 +752,13 @@ ssize_t qemu_receive_packet_iov(NetClientState *nc, =
+const struct iovec *iov,
+>
+>  ssize_t qemu_send_packet_raw(NetClientState *nc, const uint8_t *buf, int=
+ size)
+>  {
+> -    return qemu_send_packet_async_with_flags(nc, QEMU_NET_PACKET_FLAG_RA=
+W,
+> -                                             buf, size, NULL);
+> +    struct virtio_net_hdr_v1_hash vnet_hdr =3D { };
+> +    struct iovec iov[] =3D {
+> +        { .iov_base =3D &vnet_hdr, .iov_len =3D nc->vnet_hdr_len },
+> +        { .iov_base =3D (void *)buf, .iov_len =3D size }
+> +    };
+
+Having virtio-net specific code in the net layer is a layer violation.
+I'd leave it to tap.
+
+Thanks
+
 
