@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796027D9BC7
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 314717D9BC5
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:42:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO07-0007CF-PU; Fri, 27 Oct 2023 10:39:51 -0400
+	id 1qwO06-0007BL-Ll; Fri, 27 Oct 2023 10:39:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO05-0007Bc-Hb
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:49 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1qwO03-0007B4-RU
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:47 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO01-00086S-W2
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:49 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-32f760cbff3so215153f8f.0
+ id 1qwO02-00086T-05
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:47 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-32d9d8284abso1389249f8f.3
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698417584; x=1699022384; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=VCnb9R/BNoPKGhd7zm/zleKRa/0S5ZgjhrfWOlCX0jQ=;
- b=qLpto7ZP+KzhL0Baqk8JPY4wDs27W2WQKw72/+m2aawWWUiTkdNzUnQzHXTQhC8TA2
- fylWSLP4eyW4FUR8r9/+TUG5Ajzfs0Mz3ZO52xJkQ0RXlpbQODWYRA3DfSRvDfFFEQ8H
- QkN6cIcIxgwJE1ExXQKKfSgik4JuxQmpM00GfrFq0LsZOJwx2JPvZC/8eeEwk+K5ZF7C
- EKNVxVq3pNtnaNShhAYzg96imrSGLxRBPkk4GG7N+7QUppYpKnpC/r8uYAUFL9S73HF9
- TmC51TPv2FpxOhYZetiuv3iDiggyFXWPZhNrB2HlZsrE0BcaDT8lMDiuSGOBTLQEVt19
- 04eQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=3xRTp/BRadA7ZN58Un+Px0Mehec0HXObngq8aZKQDU8=;
+ b=PzJAnLdvntFYHU6zE5HHnu12yQ5+52PKFrqYuWVC5/4xCKZ6L96BclGNk7XIajPc76
+ MXmSc8HkDktgMMzY/yXChEVbO1UHD5yi5lh9cb9A+Xlx3vUMIDTs6RapU7BUJLinFTRV
+ nPs/Ov2zrI18V2oxY7Dp5YHr1jgMtnCTVl/hlhTSbGvsrrh2jX8H6HXVBetI0Ojo6Rbw
+ MpV4Ph0dSrkbJDIVnsyUQJKNVFGGRPtW80lIR3SRmxH4R+HxMrfccXNtA+IKT1bOQx35
+ LNtbfE28rbxmXU4n5TBLRP+HsMXmxrMiAFurmIQQb70lb865rqtgcSUu4aAMjglI0lyh
+ ET4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698417584; x=1699022384;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VCnb9R/BNoPKGhd7zm/zleKRa/0S5ZgjhrfWOlCX0jQ=;
- b=qM+I4saEa1anReV+E0VdreWvaV1rgxRI3acaorvGgzyuBv8N4mkTKfrqQavj2iqgY9
- tkoyGi/EUJsXYCJO05VikbeHzJKG2NVKC6m0xwpA/cygIrCJP09NjcYGbuVbC4v5jvCR
- tnYgDHHjNMvISlW75gmRbXSveYUdbTBXUm5FztG9vTr/KFN/JMSoaS+hMJWRUVFI5bgl
- iv8cd73R9QYZG1WgHth7rbYcOtAEBCQowLOs6JC1GmMjTVtaMwWSNH05hvGY1z2u7TVz
- xw9uHep8quUwX9ZEgMplOGFTgRClmPPw9iDN7HabYfCX2Qm26XXiKl6XnsWlT/sOTtq1
- Gz0Q==
-X-Gm-Message-State: AOJu0Ywj4Oe5RezCdTEaGY6jT4IAwXY7sYDY0a8QnpbOAlS73piw/SuV
- cvJA7e2a689zBLX4XsavkUGBuHuw8FnCpuznnAc=
-X-Google-Smtp-Source: AGHT+IFRgnErITfDQDtbC6MyrtSDDxbKhlF8dVRbcup10DOVtdtF5nha8q6MOwTn4OzcoBiL9kVNqA==
-X-Received: by 2002:adf:e411:0:b0:327:e073:d604 with SMTP id
- g17-20020adfe411000000b00327e073d604mr2263349wrm.45.1698417583740; 
- Fri, 27 Oct 2023 07:39:43 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3xRTp/BRadA7ZN58Un+Px0Mehec0HXObngq8aZKQDU8=;
+ b=bvzT9+sFDK9YccfdMQxfGEr/ywJjr4HzrMLFWwNv93cEarLUsw4YupTK04jCvuMFwb
+ H6GFhyMmdaQrezMdycGLnSxG0vVV4Ra+TDfSy+xDlrkbICOKv31LIdqUhTi5XtiNiK/A
+ 5IODmW7qw16TD4UrlXxLLE8PG0GIFuWVMGMrgbs8oA4e0wAbED1o1+nOKUmQ5X63a8+O
+ XyoFvKGw0UzPlzfRoUu8HudJClWmyTcKmsr7UbMIfd+T0ToPxNeMJT7of8uNKYEZlCeK
+ +ryl+qakAC2IUJV6DZXfbpCj9dzDfCIxnMJmM1IPA6Lo7iUjmdwmFZmPRnzogbKCGeow
+ 7rag==
+X-Gm-Message-State: AOJu0Yxj14RWCC+uGjjSwbaMgwnnxJQlvVadQ3PWzFuvLR+IEzr+cxuf
+ Y7323svlOUgi3FPTheRIhboItVBstEpTNZcLwbQ=
+X-Google-Smtp-Source: AGHT+IHTBqEud57WhQd9jidMP4tHr02SII/43v60BJPrHE1lgxGwbE1mfXICHZkqcFnc4tcgCJenyg==
+X-Received: by 2002:a5d:5381:0:b0:32d:939d:c7cf with SMTP id
+ d1-20020a5d5381000000b0032d939dc7cfmr1868786wrv.52.1698417584170; 
+ Fri, 27 Oct 2023 07:39:44 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.43
@@ -57,15 +58,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 27 Oct 2023 07:39:43 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/41] target-arm queue
-Date: Fri, 27 Oct 2023 15:39:01 +0100
-Message-Id: <20231027143942.3413881-1-peter.maydell@linaro.org>
+Subject: [PULL 01/41] target/arm: Correct minor errors in Cortex-A710
+ definition
+Date: Fri, 27 Oct 2023 15:39:02 +0100
+Message-Id: <20231027143942.3413881-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
+References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,151 +92,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here's the latest target-arm queue. Mostly this is refactoring
-and cleanup type patches.
+Correct a couple of minor errors in the Cortex-A710 definition:
+ * ID_AA64DFR0_EL1.DebugVer is 9 (indicating Armv8.4 debug architecture)
+ * ID_AA64ISAR1_EL1.APA is 5 (indicating more PAuth support)
+ * there is an IMPDEF CPUCFR_EL1, like that on the Neoverse-N1
 
-thanks
--- PMM
+Fixes: e3d45c0a89576 ("target/arm: Implement cortex-a710")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20230915185453.1871167-2-peter.maydell@linaro.org
+---
+ target/arm/tcg/cpu64.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-The following changes since commit c60be6e3e38cb36dc66129e757ec4b34152232be:
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index d978aa5f7ad..e2bcac48549 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -840,6 +840,13 @@ static const ARMCPRegInfo cortex_a710_cp_reginfo[] = {
+     { .name = "CPUPFR_EL3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 8, .opc2 = 6,
+       .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
++    /*
++     * Report CPUCFR_EL1.SCU as 1, as we do not implement the DSU
++     * (and in particular its system registers).
++     */
++    { .name = "CPUCFR_EL1", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 0, .opc2 = 0,
++      .access = PL1_R, .type = ARM_CP_CONST, .resetvalue = 4 },
+ 
+     /*
+      * Stub RAMINDEX, as we don't actually implement caches, BTB,
+@@ -909,12 +916,12 @@ static void aarch64_a710_initfn(Object *obj)
+     cpu->isar.id_aa64pfr0  = 0x1201111120111112ull; /* GIC filled in later */
+     cpu->isar.id_aa64pfr1  = 0x0000000000000221ull;
+     cpu->isar.id_aa64zfr0  = 0x0000110100110021ull; /* with Crypto */
+-    cpu->isar.id_aa64dfr0  = 0x000011f010305611ull;
++    cpu->isar.id_aa64dfr0  = 0x000011f010305619ull;
+     cpu->isar.id_aa64dfr1  = 0;
+     cpu->id_aa64afr0       = 0;
+     cpu->id_aa64afr1       = 0;
+     cpu->isar.id_aa64isar0 = 0x0221111110212120ull; /* with Crypto */
+-    cpu->isar.id_aa64isar1 = 0x0010111101211032ull;
++    cpu->isar.id_aa64isar1 = 0x0010111101211052ull;
+     cpu->isar.id_aa64mmfr0 = 0x0000022200101122ull;
+     cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
+     cpu->isar.id_aa64mmfr2 = 0x1221011110101011ull;
+-- 
+2.34.1
 
-  Merge tag 'pull-sp-20231025' of https://gitlab.com/rth7680/qemu into staging (2023-10-27 09:43:53 +0900)
-
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20231027
-
-for you to fetch changes up to df93de987f423a0ed918c425f5dbd9a25d3c6229:
-
-  hw/net/cadence_gem: enforce 32 bits variable size for CRC (2023-10-27 15:27:06 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * Correct minor errors in Cortex-A710 definition
- * Implement Neoverse N2 CPU model
- * Refactor feature test functions out into separate header
- * Fix syndrome for FGT traps on ERET
- * Remove 'hw/arm/boot.h' includes from various header files
- * pxa2xx: Refactoring/cleanup
- * Avoid using 'first_cpu' when first ARM CPU is reachable
- * misc/led: LED state is set opposite of what is expected
- * hw/net/cadence_gen: clean up to use FIELD macros
- * hw/net/cadence_gem: perform PHY access on write only
- * hw/net/cadence_gem: enforce 32 bits variable size for CRC
-
-----------------------------------------------------------------
-Glenn Miles (1):
-      misc/led: LED state is set opposite of what is expected
-
-Luc Michel (11):
-      hw/net/cadence_gem: use REG32 macro for register definitions
-      hw/net/cadence_gem: use FIELD for screening registers
-      hw/net/cadence_gem: use FIELD to describe NWCTRL register fields
-      hw/net/cadence_gem: use FIELD to describe NWCFG register fields
-      hw/net/cadence_gem: use FIELD to describe DMACFG register fields
-      hw/net/cadence_gem: use FIELD to describe [TX|RX]STATUS register fields
-      hw/net/cadence_gem: use FIELD to describe IRQ register fields
-      hw/net/cadence_gem: use FIELD to describe DESCONF6 register fields
-      hw/net/cadence_gem: use FIELD to describe PHYMNTNC register fields
-      hw/net/cadence_gem: perform PHY access on write only
-      hw/net/cadence_gem: enforce 32 bits variable size for CRC
-
-Peter Maydell (9):
-      target/arm: Correct minor errors in Cortex-A710 definition
-      target/arm: Implement Neoverse N2 CPU model
-      target/arm: Move feature test functions to their own header
-      target/arm: Move ID_AA64MMFR1 and ID_AA64MMFR2 tests together
-      target/arm: Move ID_AA64MMFR0 tests up to before MMFR1 and MMFR2
-      target/arm: Move ID_AA64ISAR* test functions together
-      target/arm: Move ID_AA64PFR* tests together
-      target/arm: Move ID_AA64DFR* feature tests together
-      target/arm: Fix syndrome for FGT traps on ERET
-
-Philippe Mathieu-Daudé (20):
-      hw/arm/allwinner-a10: Remove 'hw/arm/boot.h' from header
-      hw/arm/allwinner-h3: Remove 'hw/arm/boot.h' from header
-      hw/arm/allwinner-r40: Remove 'hw/arm/boot.h' from header
-      hw/arm/fsl-imx25: Remove 'hw/arm/boot.h' from header
-      hw/arm/fsl-imx31: Remove 'hw/arm/boot.h' from header
-      hw/arm/fsl-imx6: Remove 'hw/arm/boot.h' from header
-      hw/arm/fsl-imx6ul: Remove 'hw/arm/boot.h' from header
-      hw/arm/fsl-imx7: Remove 'hw/arm/boot.h' from header
-      hw/arm/xlnx-versal: Remove 'hw/arm/boot.h' from header
-      hw/arm/xlnx-zynqmp: Remove 'hw/arm/boot.h' from header
-      hw/sd/pxa2xx: Realize sysbus device before accessing it
-      hw/sd/pxa2xx: Do not open-code sysbus_create_simple()
-      hw/pcmcia/pxa2xx: Realize sysbus device before accessing it
-      hw/pcmcia/pxa2xx: Do not open-code sysbus_create_simple()
-      hw/pcmcia/pxa2xx: Inline pxa2xx_pcmcia_init()
-      hw/intc/pxa2xx: Convert to Resettable interface
-      hw/intc/pxa2xx: Pass CPU reference using QOM link property
-      hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of pxa2xx_pic_init()
-      hw/arm/pxa2xx: Realize PXA2XX_I2C device before accessing it
-      hw/arm: Avoid using 'first_cpu' when first ARM CPU is reachable
-
- docs/system/arm/virt.rst          |   1 +
- bsd-user/arm/target_arch.h        |   1 +
- include/hw/arm/allwinner-a10.h    |   1 -
- include/hw/arm/allwinner-h3.h     |   1 -
- include/hw/arm/allwinner-r40.h    |   1 -
- include/hw/arm/fsl-imx25.h        |   1 -
- include/hw/arm/fsl-imx31.h        |   1 -
- include/hw/arm/fsl-imx6.h         |   1 -
- include/hw/arm/fsl-imx6ul.h       |   1 -
- include/hw/arm/fsl-imx7.h         |   1 -
- include/hw/arm/pxa.h              |   2 -
- include/hw/arm/xlnx-versal.h      |   1 -
- include/hw/arm/xlnx-zynqmp.h      |   1 -
- linux-user/aarch64/target_prctl.h |   2 +
- target/arm/cpu-features.h         | 994 ++++++++++++++++++++++++++++++++++++++
- target/arm/cpu.h                  | 971 -------------------------------------
- target/arm/internals.h            |   1 +
- target/arm/tcg/translate.h        |   2 +-
- hw/arm/armv7m.c                   |   1 +
- hw/arm/bananapi_m2u.c             |   3 +-
- hw/arm/cubieboard.c               |   1 +
- hw/arm/exynos4_boards.c           |   7 +-
- hw/arm/imx25_pdk.c                |   1 +
- hw/arm/kzm.c                      |   1 +
- hw/arm/mcimx6ul-evk.c             |   1 +
- hw/arm/mcimx7d-sabre.c            |   1 +
- hw/arm/orangepi.c                 |   3 +-
- hw/arm/pxa2xx.c                   |  17 +-
- hw/arm/pxa2xx_pic.c               |  38 +-
- hw/arm/realview.c                 |   2 +-
- hw/arm/sabrelite.c                |   1 +
- hw/arm/sbsa-ref.c                 |   1 +
- hw/arm/virt.c                     |   1 +
- hw/arm/xilinx_zynq.c              |   2 +-
- hw/arm/xlnx-versal-virt.c         |   1 +
- hw/arm/xlnx-zcu102.c              |   1 +
- hw/intc/armv7m_nvic.c             |   1 +
- hw/misc/led.c                     |   2 +-
- hw/net/cadence_gem.c              | 884 ++++++++++++++++++---------------
- hw/pcmcia/pxa2xx.c                |  15 -
- hw/sd/pxa2xx_mmci.c               |   7 +-
- linux-user/aarch64/cpu_loop.c     |   1 +
- linux-user/aarch64/signal.c       |   1 +
- linux-user/arm/signal.c           |   1 +
- linux-user/elfload.c              |   4 +
- linux-user/mmap.c                 |   4 +
- target/arm/arch_dump.c            |   1 +
- target/arm/cpu.c                  |   1 +
- target/arm/cpu64.c                |   1 +
- target/arm/debug_helper.c         |   1 +
- target/arm/gdbstub.c              |   1 +
- target/arm/helper.c               |   1 +
- target/arm/kvm64.c                |   1 +
- target/arm/machine.c              |   1 +
- target/arm/ptw.c                  |   1 +
- target/arm/tcg/cpu64.c            | 115 ++++-
- target/arm/tcg/hflags.c           |   1 +
- target/arm/tcg/m_helper.c         |   1 +
- target/arm/tcg/op_helper.c        |   1 +
- target/arm/tcg/pauth_helper.c     |   1 +
- target/arm/tcg/tlb_helper.c       |   1 +
- target/arm/tcg/translate-a64.c    |   4 +-
- target/arm/vfp_helper.c           |   1 +
- 63 files changed, 1702 insertions(+), 1419 deletions(-)
- create mode 100644 target/arm/cpu-features.h
 
