@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4653C7D9C10
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCC97D9C1F
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:49:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO08-0007Cq-NW; Fri, 27 Oct 2023 10:39:52 -0400
+	id 1qwO08-0007CK-0B; Fri, 27 Oct 2023 10:39:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO07-0007CD-8b
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:51 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1qwO06-0007Bm-Dt
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:50 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO05-00087D-Dt
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:51 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-507b9408c61so3024250e87.0
+ id 1qwO04-00086y-Jj
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:50 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4083ac51d8aso16772105e9.2
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698417586; x=1699022386; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698417587; x=1699022387; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=a5UT81fbfzfhP+2DLCF06+YDd0SwIv4OzRvdR3APDic=;
- b=QGuVWTl/YoEmfdVRsG0nfJRLcIOoz1+VONurjgv6meXLHvFrq2fB9ocA/Ki2b0Sm0t
- Qqhb6QhCPob8YGGefbcNUb0FWhkaT4bJo5gc+6ykbvnrTGfp//PhClNu4K2V+/1M1K49
- 25a6OO+a6ExR4UuW6xFDxqqlGrYwjSEPQYdy3Es+nqKfSm5SjMwY6YPeI1T0oLiyY8iV
- Do6quncjkTuMJ21dLK0VnSV+tEik64b1U8TD07MgSWD/q3ycUkKWgmTaNuX46pd7Y6MB
- Vcwn+7ZmEBLACKsXahxg4y9/DO/Wz5QOLF0J3JgMZy0bsYYby1pnq80uOsYcElSIDmNA
- fg4Q==
+ :reply-to; bh=NEjtn4tYJYgyuJoAFl2Zq6orFVKNiTU3YlEdz7lzhAM=;
+ b=yNT7sVRq0fCscGduhZ9kbVjKZNKSk51Vi2eWTzOkL1IjYPpw8qhMYf4GeKiF0KUWgo
+ 40MPZjJV/AtdZ7yjRDPDDC/aeJXgKpkOqMoOHWd5C8k24wYKyf0d9qf31Vwx7xCl70m9
+ 9+zflSDqInEvch5sf+KY68LrCn12z4A5uRLf5kPJLQyHZsGN5KRd8YoPYChHl5TPeLPi
+ +KhdRRb9Sfw5+sZNkZOBJoUW/sWw1LcXuWbOfyoqoHBPaq/Ppp4tCgVSsYEvQiwK3VNv
+ Dt2lwSPqJKgbH5yG5yLVadDwM8myFU4M2/ezcEpg0S0Xclj0Q55Puc2qLl3hGUdlF3ce
+ ZE7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698417586; x=1699022386;
+ d=1e100.net; s=20230601; t=1698417587; x=1699022387;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a5UT81fbfzfhP+2DLCF06+YDd0SwIv4OzRvdR3APDic=;
- b=pSCgGIvy+u68LSCODY6RRVkmVtsogtbTwysTuMhUMcWbQHcUcmxlYML6f6uRBIhdQm
- W9YEqWvxV1EFtrrKa8aQuMcVDmsOcWY190Os+jVMmXhEL8I/OvIsCQ0hWnK6oDAdYcqy
- 2Lw1WtgFulkxHuPEh0NzScu0A3Huf8IXEtBdus6bVshN4R1hU5hlI4bB8NPYZiaxgGP1
- nhFffdkl/fVUJQw2YvNOfXey4w4rlcnE8cH4AmcI/UsHm236O2IrW1nOpzPo20nO0/xT
- eZUTP1Ijyf90pObLcxp/RDAXrL17tfj40RVNsTuMVtWpp+dV/f92O1hJKlRqnmHTDcdl
- NmPA==
-X-Gm-Message-State: AOJu0Ywi6d6I1Pthm3pyP3fxFlNPHZsR57/cLgFqQFRlMNzUpGff/r3f
- P5wjs1z4xYXOG9D4NUTVz3ZQX5gsS+N/2qCEFwY=
-X-Google-Smtp-Source: AGHT+IGxGXPpqQj342fPIngAUedB+Rl0k5w5XgG8jjbHI4QSEFOPMu1YJ0gVGHElCIAuaKhTkhfhgw==
-X-Received: by 2002:ac2:46d4:0:b0:508:1851:d29b with SMTP id
- p20-20020ac246d4000000b005081851d29bmr1959301lfo.17.1698417586521; 
- Fri, 27 Oct 2023 07:39:46 -0700 (PDT)
+ bh=NEjtn4tYJYgyuJoAFl2Zq6orFVKNiTU3YlEdz7lzhAM=;
+ b=peoqVzMC5MpPD8PaVEHbNS8O7nQDIQc4wd6MH28vJ43Cu7Rk4448nVm8zYqqBjYy9i
+ X2CFCCvdk7XC9RrVr/qfLpfRVj676brcr3Vp7ZDj9WeWU3cnL46Fnb+N9WTGW2mfjQu9
+ 3LJFkSBHDVPlln01MtvCIG+vj8e+809Umiy5q06cATJpe6DmH+YXJL9Qn9ICUfshCKjj
+ Jas6SLSSa50oKqHvE30g+6UBexyAQMfuTGmZk66Xuy5OSpm12Lkx7neVrflR7Dmu6A7E
+ ZvgBjXca+NacPmhlvj4ytshKEsL+8wbs+ZklwAu0CqNpDCM3BG3KdNsQc59+ScMi5NNA
+ cgJQ==
+X-Gm-Message-State: AOJu0Yy+Kdt7/nKCPA7OS+cytRmuSQ4Y+HW8lVjNavXwKYFWgdzmlAeD
+ zyc4i/Lh9Wm8/JQyJFCs2hWCrOmtQSO786LwqG0=
+X-Google-Smtp-Source: AGHT+IHjDqXBxOt0GZEccTctJ1P31Oopy6nHyA+YU+nw22997XfgdAiZ3vyi8f8JLiwA1QkjIQ14pQ==
+X-Received: by 2002:adf:f24a:0:b0:32d:a476:527a with SMTP id
+ b10-20020adff24a000000b0032da476527amr2346250wrp.50.1698417587009; 
+ Fri, 27 Oct 2023 07:39:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.46
@@ -58,18 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 27 Oct 2023 07:39:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/41] target/arm: Move ID_AA64MMFR0 tests up to before MMFR1
- and MMFR2
-Date: Fri, 27 Oct 2023 15:39:06 +0100
-Message-Id: <20231027143942.3413881-6-peter.maydell@linaro.org>
+Subject: [PULL 06/41] target/arm: Move ID_AA64ISAR* test functions together
+Date: Fri, 27 Oct 2023 15:39:07 +0100
+Message-Id: <20231027143942.3413881-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,155 +91,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the ID_AA64MMFR0 feature test functions up so they are
-before the ones for ID_AA64MMFR1 and ID_AA64MMFR2.
+Move the feature test functions that test ID_AA64ISAR* fields
+together.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231024163510.2972081-4-peter.maydell@linaro.org
+Message-id: 20231024163510.2972081-5-peter.maydell@linaro.org
 ---
- target/arm/cpu-features.h | 120 +++++++++++++++++++-------------------
- 1 file changed, 60 insertions(+), 60 deletions(-)
+ target/arm/cpu-features.h | 70 +++++++++++++++++++--------------------
+ 1 file changed, 35 insertions(+), 35 deletions(-)
 
 diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index fc85a8fe130..90200a4b98f 100644
+index 90200a4b98f..e73120ef974 100644
 --- a/target/arm/cpu-features.h
 +++ b/target/arm/cpu-features.h
-@@ -606,6 +606,66 @@ static inline bool isar_feature_aa64_rme(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64pfr0, ID_AA64PFR0, RME) != 0;
+@@ -451,6 +451,16 @@ static inline bool isar_feature_aa64_rndr(const ARMISARegisters *id)
+     return FIELD_EX64(id->id_aa64isar0, ID_AA64ISAR0, RNDR) != 0;
  }
  
-+static inline bool isar_feature_aa64_tgran4_lpa2(const ARMISARegisters *id)
++static inline bool isar_feature_aa64_tlbirange(const ARMISARegisters *id)
 +{
-+    return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4) >= 1;
++    return FIELD_EX64(id->id_aa64isar0, ID_AA64ISAR0, TLB) == 2;
 +}
 +
-+static inline bool isar_feature_aa64_tgran4_2_lpa2(const ARMISARegisters *id)
++static inline bool isar_feature_aa64_tlbios(const ARMISARegisters *id)
 +{
-+    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4_2);
-+    return t >= 3 || (t == 0 && isar_feature_aa64_tgran4_lpa2(id));
++    return FIELD_EX64(id->id_aa64isar0, ID_AA64ISAR0, TLB) != 0;
 +}
 +
-+static inline bool isar_feature_aa64_tgran16_lpa2(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16) >= 2;
-+}
-+
-+static inline bool isar_feature_aa64_tgran16_2_lpa2(const ARMISARegisters *id)
-+{
-+    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16_2);
-+    return t >= 3 || (t == 0 && isar_feature_aa64_tgran16_lpa2(id));
-+}
-+
-+static inline bool isar_feature_aa64_tgran4(const ARMISARegisters *id)
-+{
-+    return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4) >= 0;
-+}
-+
-+static inline bool isar_feature_aa64_tgran16(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16) >= 1;
-+}
-+
-+static inline bool isar_feature_aa64_tgran64(const ARMISARegisters *id)
-+{
-+    return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN64) >= 0;
-+}
-+
-+static inline bool isar_feature_aa64_tgran4_2(const ARMISARegisters *id)
-+{
-+    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4_2);
-+    return t >= 2 || (t == 0 && isar_feature_aa64_tgran4(id));
-+}
-+
-+static inline bool isar_feature_aa64_tgran16_2(const ARMISARegisters *id)
-+{
-+    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16_2);
-+    return t >= 2 || (t == 0 && isar_feature_aa64_tgran16(id));
-+}
-+
-+static inline bool isar_feature_aa64_tgran64_2(const ARMISARegisters *id)
-+{
-+    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN64_2);
-+    return t >= 2 || (t == 0 && isar_feature_aa64_tgran64(id));
-+}
-+
-+static inline bool isar_feature_aa64_fgt(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, FGT) != 0;
-+}
-+
- static inline bool isar_feature_aa64_vh(const ARMISARegisters *id)
+ static inline bool isar_feature_aa64_jscvt(const ARMISARegisters *id)
  {
-     return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, VH) != 0;
-@@ -764,66 +824,6 @@ static inline bool isar_feature_aa64_hbc(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, BC) != 0;
+     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, JSCVT) != 0;
+@@ -514,16 +524,6 @@ static inline bool isar_feature_aa64_pauth_qarma3(const ARMISARegisters *id)
+     return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, APA3) != 0;
  }
  
--static inline bool isar_feature_aa64_tgran4_lpa2(const ARMISARegisters *id)
+-static inline bool isar_feature_aa64_tlbirange(const ARMISARegisters *id)
 -{
--    return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4) >= 1;
+-    return FIELD_EX64(id->id_aa64isar0, ID_AA64ISAR0, TLB) == 2;
 -}
 -
--static inline bool isar_feature_aa64_tgran4_2_lpa2(const ARMISARegisters *id)
+-static inline bool isar_feature_aa64_tlbios(const ARMISARegisters *id)
 -{
--    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4_2);
--    return t >= 3 || (t == 0 && isar_feature_aa64_tgran4_lpa2(id));
+-    return FIELD_EX64(id->id_aa64isar0, ID_AA64ISAR0, TLB) != 0;
 -}
 -
--static inline bool isar_feature_aa64_tgran16_lpa2(const ARMISARegisters *id)
+ static inline bool isar_feature_aa64_sb(const ARMISARegisters *id)
+ {
+     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, SB) != 0;
+@@ -554,6 +554,31 @@ static inline bool isar_feature_aa64_bf16(const ARMISARegisters *id)
+     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, BF16) != 0;
+ }
+ 
++static inline bool isar_feature_aa64_rcpc_8_3(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, LRCPC) != 0;
++}
++
++static inline bool isar_feature_aa64_rcpc_8_4(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, LRCPC) >= 2;
++}
++
++static inline bool isar_feature_aa64_i8mm(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, I8MM) != 0;
++}
++
++static inline bool isar_feature_aa64_hbc(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, BC) != 0;
++}
++
++static inline bool isar_feature_aa64_mops(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, MOPS);
++}
++
+ static inline bool isar_feature_aa64_fp_simd(const ARMISARegisters *id)
+ {
+     /* We always set the AdvSIMD and FP fields identically.  */
+@@ -804,26 +829,6 @@ static inline bool isar_feature_aa64_pmuv3p5(const ARMISARegisters *id)
+         FIELD_EX64(id->id_aa64dfr0, ID_AA64DFR0, PMUVER) != 0xf;
+ }
+ 
+-static inline bool isar_feature_aa64_rcpc_8_3(const ARMISARegisters *id)
 -{
--    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16) >= 2;
+-    return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, LRCPC) != 0;
 -}
 -
--static inline bool isar_feature_aa64_tgran16_2_lpa2(const ARMISARegisters *id)
+-static inline bool isar_feature_aa64_rcpc_8_4(const ARMISARegisters *id)
 -{
--    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16_2);
--    return t >= 3 || (t == 0 && isar_feature_aa64_tgran16_lpa2(id));
+-    return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, LRCPC) >= 2;
 -}
 -
--static inline bool isar_feature_aa64_tgran4(const ARMISARegisters *id)
+-static inline bool isar_feature_aa64_i8mm(const ARMISARegisters *id)
 -{
--    return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4) >= 0;
+-    return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, I8MM) != 0;
 -}
 -
--static inline bool isar_feature_aa64_tgran16(const ARMISARegisters *id)
+-static inline bool isar_feature_aa64_hbc(const ARMISARegisters *id)
 -{
--    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16) >= 1;
--}
--
--static inline bool isar_feature_aa64_tgran64(const ARMISARegisters *id)
--{
--    return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN64) >= 0;
--}
--
--static inline bool isar_feature_aa64_tgran4_2(const ARMISARegisters *id)
--{
--    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4_2);
--    return t >= 2 || (t == 0 && isar_feature_aa64_tgran4(id));
--}
--
--static inline bool isar_feature_aa64_tgran16_2(const ARMISARegisters *id)
--{
--    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN16_2);
--    return t >= 2 || (t == 0 && isar_feature_aa64_tgran16(id));
--}
--
--static inline bool isar_feature_aa64_tgran64_2(const ARMISARegisters *id)
--{
--    unsigned t = FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN64_2);
--    return t >= 2 || (t == 0 && isar_feature_aa64_tgran64(id));
--}
--
--static inline bool isar_feature_aa64_fgt(const ARMISARegisters *id)
--{
--    return FIELD_EX64(id->id_aa64mmfr0, ID_AA64MMFR0, FGT) != 0;
+-    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, BC) != 0;
 -}
 -
  static inline bool isar_feature_aa64_dit(const ARMISARegisters *id)
  {
      return FIELD_EX64(id->id_aa64pfr0, ID_AA64PFR0, DIT) != 0;
+@@ -922,11 +927,6 @@ static inline bool isar_feature_aa64_doublelock(const ARMISARegisters *id)
+     return FIELD_SEX64(id->id_aa64dfr0, ID_AA64DFR0, DOUBLELOCK) >= 0;
+ }
+ 
+-static inline bool isar_feature_aa64_mops(const ARMISARegisters *id)
+-{
+-    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, MOPS);
+-}
+-
+ /*
+  * Feature tests for "does this exist in either 32-bit or 64-bit?"
+  */
 -- 
 2.34.1
 
