@@ -2,91 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832457D9901
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 14:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C79E7D9905
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 14:55:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwMLF-0001k2-FA; Fri, 27 Oct 2023 08:53:33 -0400
+	id 1qwMMJ-0002ES-Fp; Fri, 27 Oct 2023 08:54:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1qwMLB-0001id-Jv
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:53:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1qwML7-0001ga-G1
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:53:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698411202;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3I1XYbq/sNTvfydIMdXOLLOR5nGPnYyhmlipeJMWGPc=;
- b=I1SFi3hdRlkP7jBMSCwEVs0LRYPg/oTRpvTfdnaQ0GPIHjjy+DQ3YjpoAWw9vQnB3RIuRd
- Nywy/RypA3gmwr26B+OMMz1o7+4KKkWRJb0y57TcQ18ApB0/R61VZZ/AR4iMJnBp5P1qj3
- XcghlcF5GrlzkBB4jSmkAp9/v409/OQ=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-SQ7caK_vOCyTKOxEBaa8Qw-1; Fri, 27 Oct 2023 08:53:21 -0400
-X-MC-Unique: SQ7caK_vOCyTKOxEBaa8Qw-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41cb4d6744bso26210131cf.0
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 05:53:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qwMMF-0002BX-Pn
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:54:36 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qwMMD-0002ZG-Tg
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:54:35 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-53dd752685fso3159765a12.3
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 05:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698411271; x=1699016071; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Td/NqAshOfqLfxe0c3nHtrRLThvP4TOFDA4gLE6YDhY=;
+ b=fJI9HgeJap3IPiBBEU/c/d+q+ydaoFzFrDJdCeHQVluA1GWOlAixzbMX5EbTTBE2NT
+ XoCdO2iT+Zi2vdhVUwuRqmwtS8mDbuKpfYJ59cyCERlHyXJs8FXo5rHo5JNgsAQv8olz
+ BbUrn6Az4HNRqaLDC5wawbcuZq2EgnFJrL+VeZcMl0WbdUcy6hedDUsmGAlK8lI4CkUz
+ iifjJl22aLn/zbBihdML6MhIhEuszmlqrUlcaB0rnBOqdTlptr351PA6cNamb6GKNoqO
+ HdKImxUOhI1UxD9aT/oozcFOVVf9GbLpCmPK6CFhAXNOhnIHltVLk2TqBgMBHDhrTH+0
+ NqDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698411200; x=1699016000;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3I1XYbq/sNTvfydIMdXOLLOR5nGPnYyhmlipeJMWGPc=;
- b=McyZx04jACQTsf8bL56FDWF22tcgv/rHDEVE/5bVB6n2iaUqsqllm0oWFdMjYjysGr
- pFbKzWzYrYrBpJtBgb7jEyBKb3NfObjnNyPlSLDBqcUpMd/taAh0WV/rFsv3F0Y2Xn8q
- TnrQdW3dOU7fsrKVm+MUqpycxS/cf+FNgQeWFTrjzOQJS90D+8B2iAT/WeoG+Mq++9uF
- 5iKmzCZtkATDFbTwMJfEv+Q0jS9ZFNogcfn65Xf9H175U6QgGjnwCYiFfOGu9kB/DqDG
- BStkKqxjQaRB+gP2Med4rF7QmORFqvfo1mCNpc6CKCSyXZVA/DFOYqfcKh55tQPvmZN7
- g8Og==
-X-Gm-Message-State: AOJu0YwNyGMuSpQFHFKWRHFSqQ5j2dC+bxf+UbLdxsr6MCqBrf+6Ngds
- YdxV/gE4eihmMWloxmH3IG6dM5dlcN8z0E7bmy54j7wZiblMNQPXSNWgSqQUwxiBXYxHdVZjCii
- i9pFC+G8IDVJM3vRnn9A1MDOuVpDc9b0=
-X-Received: by 2002:a05:622a:b:b0:412:24e6:a485 with SMTP id
- x11-20020a05622a000b00b0041224e6a485mr2956602qtw.2.1698411200592; 
- Fri, 27 Oct 2023 05:53:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxH+Z1iO+oX4hJkC3vhSKxdyIf78anNzsL+nD6N+8L/G3WQIdXyveC0ErOjs3MmIhyK+cD8IOUaNu438Gcczk=
-X-Received: by 2002:a05:622a:b:b0:412:24e6:a485 with SMTP id
- x11-20020a05622a000b00b0041224e6a485mr2956583qtw.2.1698411200297; Fri, 27 Oct
- 2023 05:53:20 -0700 (PDT)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 27 Oct 2023 05:53:19 -0700
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20231025190818.3278423-1-marcandre.lureau@redhat.com>
- <20231025190818.3278423-10-marcandre.lureau@redhat.com>
+ d=1e100.net; s=20230601; t=1698411271; x=1699016071;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Td/NqAshOfqLfxe0c3nHtrRLThvP4TOFDA4gLE6YDhY=;
+ b=oDIYLtP1VjM89jZt1HTdf2oxuYrYnGf7N+JDP9H3VWf4M45Z1cIWJV6HhGChbBSk8a
+ fAT56g+9laYJ1f8wp8yKEYSh3uExaiY+ETqi1QW49jMDIiQRAAP+BZw/lzgVk/uw0xzn
+ v9WTDTMko997i5BFGTgSaTQYQBsIP4PJm76YNvSZM6E8ABIJ4dCqtDEb7CwwCf9NyVy4
+ 4Go2N2AMY0Qb3gA+UvU/5hapnP84vQMgwBkXsJLhHrnR8x+cKll67YLxJkCVEtRPHV4r
+ zrSFh4893Cc8zYfvc7IJgxFse+I9LPDMzUjWnsfLE7PrcbcTpeqkBSicGD3yKpu0mFbr
+ e3CA==
+X-Gm-Message-State: AOJu0Yy8ZjntfoGZfT9xFXJMs8/hY3wUUfWrc3lpBOk2801C0iAFQkX9
+ jlfPUYQgsw+pi8fF7DGMHKNCO9j0HLYMctVswr3j5A==
+X-Google-Smtp-Source: AGHT+IE5S0sdPvyCbUICcg9Jg0QvVb9IfVpvmKrEKkxFEiNkyuyMrrkOoMIQ3cvxwooSMrYEsQnZpvw6L3vTa5Zrm4s=
+X-Received: by 2002:a05:6402:1843:b0:533:c75a:6f6 with SMTP id
+ v3-20020a056402184300b00533c75a06f6mr2009357edy.12.1698411271423; Fri, 27 Oct
+ 2023 05:54:31 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20231025190818.3278423-10-marcandre.lureau@redhat.com>
-Date: Fri, 27 Oct 2023 05:53:19 -0700
-Message-ID: <CABJz62N7-Bo8j=Dopt960=q8Q+CnDQRDWjMLFLqsLMOq_aZxHg@mail.gmail.com>
-Subject: Re: [PATCH v6 09/23] ui/console: allow to override the default VC
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>,
- "Dr. David Alan Gilbert" <dave@treblig.org>, 
- Eric Blake <eblake@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-arm@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231017193217.1512868-1-tong.ho@amd.com>
+ <20231017193217.1512868-2-tong.ho@amd.com>
+In-Reply-To: <20231017193217.1512868-2-tong.ho@amd.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 27 Oct 2023 13:54:20 +0100
+Message-ID: <CAFEAcA-erj5szS7Z7cw3mrQhAR9L78JTf8JsVzMTDohWojybGw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] hw/misc: Introduce AMD/Xilix Versal TRNG device
+To: Tong Ho <tong.ho@amd.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, alistair@alistair23.me, 
+ edgar.iglesias@gmail.com, richard.henderson@linaro.org, 
+ frasse.iglesias@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,21 +87,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 11:08:03PM +0400, marcandre.lureau@redhat.com wrote:
-> If a display is backed by a specialized VC, allow to override the
-> default "vc:80Cx24C". For that, set the dpy.type just before creating
-> the default serial/parallel/monitor.
+On Tue, 17 Oct 2023 at 20:32, Tong Ho <tong.ho@amd.com> wrote:
 >
-> As suggested by Paolo, if the display doesn't implement a VC (get_vc()
-> returns NULL), use a fallback that will use a muxed console on stdio.
+> This adds a non-cryptographic grade implementation of the
+> model for the True Random Number Generator (TRNG) component
+> in AMD/Xilinx Versal device family.
 >
-> This changes the behaviour of "qemu -display none", to create a muxed
-> serial/monitor by default.
+> This implements all 3 modes defined by the actual hardware
+> specs, all of which selectable by guest software at will
+> at anytime:
+> 1) PRNG mode, in which the generated sequence is required to
+>    be reproducible after reseeded by the same 384-bit value
+>    as supplied by guest software.
+> 2) Test mode, in which the generated sequence is required to
+>    be reproducible ater reseeded by the same 128-bit test
+>    seed supplied by guest software.
+> 3) TRNG mode, in which non-reproducible sequence is generated
+>    based on periodic reseed by a suitable entropy source.
+>
+> This model is only intended for non-real world testing of
+> guest software, where cryptographically strong PRNG or TRNG
+> is not needed.
+>
+> This model supports versions 1 & 2 of the device, with
+> default to be version 2; the 'hw-version' uint32 property
+> can be set to 0x0100 to override the default.
+>
+> Other implemented properties:
+> - 'forced-prng', uint64
+>   When set to non-zero, mode 3's entropy source is implemented
+>   as a deterministic sequence based on the given value and other
+>   deterministic parameters.
+>   This option allows the emulation to test guest software using
+>   mode 3 and to reproduce data-dependent defects.
+>
+> - 'fips-fault-events', uint32, bit-mask
+>   bit 3: Triggers the SP800-90B entropy health test fault irq
+>   bit 1: Triggers the FIPS 140-2 continuous test fault irq
+>
+> Signed-off-by: Tong Ho <tong.ho@amd.com>
+> ---
 
-Have you verified that this doesn't break libvirt? We use '-display
-none' for every single VM we run.
+> +static void trng_le128(uint32_t *le128, uint64_t h00, uint64_t h64)
+> +{
+> +    le128[0] = cpu_to_le32(h00 & 0xffffffffU);
+> +    le128[1] = cpu_to_le32(h00 >> 32);
+> +    le128[2] = cpu_to_le32(h64 & 0xffffffffU);
+> +    le128[3] = cpu_to_le32(h64 >> 32);
 
--- 
-Andrea Bolognani / Red Hat / Virtualization
+Why are we using cpu_to_le32() here ? We have a host-order
+pair of uint64_t values, and we want a set of host-order
+uint32_t values (because we're passing a guint32 array
+to the glib g_rand_set_seed_array() function). So I
+think we want
 
+   seedarray[0] = extract64(h00, 0, 32);
+   seedarray[1] = extract64(h00, 32, 32);
+   seedarray[2] = extract64(h64, 0, 32);
+   seedarray[3] = extract64(h64, 32, 32);
+
+(I renamed the function argument because le128 is a
+red herring, and used extract64 because I find that clearer.
+The function itself could also use a different name now it
+isn't doing anything little-endian related.)
+
+> +}
+> +
+> +static void trng_le384(uint32_t *le384, const uint32_t *h384)
+> +{
+> +    size_t i;
+> +
+> +    for (i = 0; i < (384 / 32); i++) {
+> +        le384[i] = cpu_to_le32(h384[i]);
+> +    }
+
+Similarly here we have an array of host-order 32-bit values
+(from the s->regs[] array) and we want an array of host-order
+32-bit values for g_rand_set_seed_array(), so the cpu_to_le32()
+is unnecessary (and we're just doing a copy).
+
+> +}
+> +
+> +static void trng_reseed(XlnxVersalTRng *s)
+> +{
+> +    bool ext_seed = ARRAY_FIELD_EX32(s->regs, CTRL, PRNGXS);
+> +    bool pers_disabled = ARRAY_FIELD_EX32(s->regs, CTRL, PERSODISABLE);
+> +
+> +    enum {
+> +        U384_U32 = 384 / 32,
+> +    };
+> +
+> +    /*
+> +     * Maximum seed length is len(personalized string) + len(ext seed).
+> +     *
+> +     * Use little-endian to ensure guest sequence being indepedent of
+> +     * host endian.
+> +     */
+> +    guint32 gs[U384_U32 * 2], *seed = &gs[U384_U32];
+> +
+> +    /*
+> +     * A disabled personalized string is the same as
+> +     * a string with all zeros.
+> +     *
+> +     * The device's hardware spec defines 3 modes (all selectable
+> +     * by guest at will and at anytime):
+> +     * 1) External seeding
+> +     *    This is a PRNG mode, in which the produced sequence shall
+> +     *    be reproducible if reseeded by the same 384-bit seed, as
+> +     *    supplied by guest software.
+> +     * 2) Test seeding
+> +     *    This is a PRNG mode, in which the produced sequence shall
+> +     *    be reproducible if reseeded by a 128-bit test seed, as
+> +     *    supplied by guest software.
+> +     * 3) Truly-random seeding
+> +     *    This is the TRNG mode, in which the produced sequence is
+> +     *    periodically reseeded by a crypto-strength entropy source.
+> +     *
+> +     * To assist debugging of certain classes of software defects,
+> +     * this QEMU model implements a 4th mode,
+> +     * 4) Forced PRNG
+> +     *    When in this mode, a reproducible sequence is generated
+> +     *    if software has selected the TRNG mode (mode 2).
+> +     *
+> +     *    This emulation-only mode can only be selected by setting
+> +     *    the uint64 property 'forced-prng' to a non-zero value.
+> +     *    Guest software cannot select this mode.
+> +     */
+> +    memset(gs, 0, sizeof(gs));
+> +    stb_p((uint8_t *)gs + sizeof(gs) - 1, 1);
+
+This looks like it gives different results on big and little
+endian. The gs[] array is an array of g_uint32, not an
+array of bytes. What's the intention behind setting this
+byte to 1, anyway?
+
+> +
+> +    if (!pers_disabled) {
+> +        trng_le384(gs, &s->regs[R_PER_STRNG_0]);
+> +    }
+> +
+> +    if (ext_seed) {
+> +        trng_le384(seed, &s->regs[R_EXT_SEED_0]);
+> +    } else if (trng_test_enabled(s)) {
+> +        trng_le128(seed, s->tst_seed[0], s->tst_seed[1]);
+> +    } else if (s->forced_prng_seed) {
+> +        s->forced_prng_count++;
+> +        trng_le128(seed, s->forced_prng_count, s->forced_prng_seed);
+> +    } else {
+> +        qemu_guest_getrandom_nofail(seed, U384_U32 * 4);
+> +    }
+> +
+> +    g_rand_set_seed_array(s->prng, gs, ARRAY_SIZE(gs));
+> +
+> +    s->rand_count = 0;
+> +    s->rand_reseed = 1ULL << 48;
+> +}
+
+thanks
+-- PMM
 
