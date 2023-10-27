@@ -2,70 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABEBF7D9EED
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 19:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5B17D9F0C
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 19:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwQiQ-0000vc-UY; Fri, 27 Oct 2023 13:33:46 -0400
+	id 1qwR0r-0004mn-Gl; Fri, 27 Oct 2023 13:52:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qwQiL-0000v4-DV
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 13:33:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qwQiH-00025M-Oi
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 13:33:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698428015;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oMMnbF1+LcrBZ2XeGxip0fQN3VCr0JPbkyyuyBDZy4M=;
- b=MxzB5Ndldzq4XUee8ydblkkOVI36N82EItY4EKqcqtu7t6x/kl3b0oFFeSO5ZEvOMjXtNG
- 0ZSoVqJymarOfvVLo/6JyNHLwMK5WYvfacKnMuT4pgHy2QmgVb2hAjR7ApdJveGUKskWJV
- qshiZDl2rk+aFOVs/nl6+iYm4kWvMSE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-imMu03xGPHuPqbLaaaDSsw-1; Fri, 27 Oct 2023 13:33:33 -0400
-X-MC-Unique: imMu03xGPHuPqbLaaaDSsw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BC246101A52D
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 17:33:32 +0000 (UTC)
-Received: from localhost (unknown [10.45.224.244])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 467D41121314;
- Fri, 27 Oct 2023 17:33:31 +0000 (UTC)
-Date: Fri, 27 Oct 2023 19:33:30 +0200
-From: Victor Toso <victortoso@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>, 
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Andrea Bolognani <abologna@redhat.com>
-Subject: Re: [PATCH v2 00/11] qapi-go: add generator for Golang interface
-Message-ID: <5drfnt5rr5jmjl7xv65355squ2zzjra23mdrk5q3avnbue4kqx@7pmoj2zwfggx>
-References: <20231016152704.221611-1-victortoso@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qwR0p-0004lz-AW
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 13:52:47 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qwR0n-00078h-2i
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 13:52:47 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6b77ab73c6fso1715091b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 10:52:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698429163; x=1699033963; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QtsTmlbZGwD0fbWsNIdW/zI3E1/VLngJHIAuL0WE4e4=;
+ b=kL6z2E62KiEsaxFyYvaHizTVgv0x/wzwFjAqei+T1TI7UqI3gMY5KAjXztzIbVoR5Y
+ vgWrPLfSC+IAJxHzvlbasyuTVJ/ld/4CkCe/9fRnVpQg7gdMZbQ+dEWb66uaK56+pLWC
+ IKDab6vkHSHxWg6tcAE0coEX/RbGZ6fpPip9OxAqB6Jz3isq3oGNoBSk58DU1ZTMoOTN
+ bA7fJk1Jtkknm/uw81KGcc8c0ncD/vSW9I0ud1XUQ8dXsD+QcmQ53kzaQTd04mFArJhU
+ GUpQ+7oPIq3/+o6d1ktMAa3iXSGeOWORDlYnqcJNVwkAMxK1Z8D01Xr3rLApRKBc3ycW
+ MfJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698429163; x=1699033963;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QtsTmlbZGwD0fbWsNIdW/zI3E1/VLngJHIAuL0WE4e4=;
+ b=kj0m1Nrsux+URa/FACrmUvHEme5UfZ3+rmnElHZqY9uqw5lnI7AJLQBiTU9EO9luZo
+ KO53QFeeDOOLP3EZqcZJYgR5CKFmIOlnzkBxem0vEGGfylHV4HULh9XEZFledJckww+O
+ O3gbL8FXfcIWQbl7OoRehbnEUOdqBdjPRyWG0mI2rgTFId1J0qyofLnq0Vqo3Hc3G7W4
+ 1/8QHwfqMcZiaT5WsKv6vgOdV/eONsLbRsoxMIPRRU/C1kvYIXScth1fqAPX/AfVqh7r
+ O6X4yJxlEFGdy8CRhb0ey6wPOXrNcYbj0cv+Ahw06xUKuSkQAf2z9miFTDoiOHWbKDtI
+ rowQ==
+X-Gm-Message-State: AOJu0YykV5UCpmYvQ0TTYxOeQHaoN36S0fbZ8EMnm8maM8NpU0MKkrYL
+ T/NlQ4Oc7p3hgCs8ELwgxAuA8g==
+X-Google-Smtp-Source: AGHT+IF2UsDPF0ExRLyouSFBQnV2yGWxgYIvoDrHellsukLS0Mw+WJmIq3armmW7vw+rh2eJWhLoFQ==
+X-Received: by 2002:a05:6a00:2b8b:b0:68f:c1e0:a2c4 with SMTP id
+ dv11-20020a056a002b8b00b0068fc1e0a2c4mr7540220pfb.3.1698429162965; 
+ Fri, 27 Oct 2023 10:52:42 -0700 (PDT)
+Received: from [192.168.68.107] ([191.255.2.33])
+ by smtp.gmail.com with ESMTPSA id
+ c6-20020aa78806000000b00688965c5227sm1672821pfo.120.2023.10.27.10.52.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 27 Oct 2023 10:52:42 -0700 (PDT)
+Message-ID: <e3f53179-7f7e-42a9-8a13-a81bf1beeb89@ventanamicro.com>
+Date: Fri, 27 Oct 2023 14:52:38 -0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="rru5wego3yfwjdhp"
-Content-Disposition: inline
-In-Reply-To: <20231016152704.221611-1-victortoso@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] target/riscv/tcg: add user flag for profile support
+Content-Language: en-US
+To: Andrea Bolognani <abologna@redhat.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
+ <20231020223951.357513-4-dbarboza@ventanamicro.com>
+ <20231023-2018025adea3ffaebbbefe23@orel>
+ <0e66af36-bd36-4b42-b901-ed726af207b7@ventanamicro.com>
+ <20231023-b0eb8f3478a61875a22de747@orel>
+ <CABJz62MN5ha-JH=i+PAu=7hZspV8g85jeAc=hRam0Z1f4fPDEg@mail.gmail.com>
+ <20231026-c8c8065150673a1f48f41dd5@orel>
+ <CABJz62N0D2x1kP+sPi7xrDMMyG080BesyeAR+6HsnVt0-yi=TQ@mail.gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <CABJz62N0D2x1kP+sPi7xrDMMyG080BesyeAR+6HsnVt0-yi=TQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,118 +104,178 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---rru5wego3yfwjdhp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On 10/26/23 14:36, Andrea Bolognani wrote:
+> On Thu, Oct 26, 2023 at 05:14:49PM +0200, Andrew Jones wrote:
+>> On Thu, Oct 26, 2023 at 07:36:21AM -0700, Andrea Bolognani wrote:
+>>> On Mon, Oct 23, 2023 at 07:35:16PM +0200, Andrew Jones wrote:
+>>>> On Mon, Oct 23, 2023 at 02:00:00PM -0300, Daniel Henrique Barboza wrote:
+>>>>> On 10/23/23 05:16, Andrew Jones wrote:
+>>>>>> Hmm, I'm not sure I agree with special-casing profiles like this. I think
+>>>>>> the left-to-right processing should be consistent for all. I'm also not
+>>>>>> sure we should always warn when disabling a profile. For example, if a
+>>>>>> user does
+>>>>>>
+>>>>>>    -cpu rv64,rva22u64=true,rva22u64=false
+>>>>>>
+>>>>>> then they'll get a warning, even though all they're doing is restoring the
+>>>>>> cpu model. While that looks like an odd thing to do, a script may be
+>>>>>> adding the rva22u64=true and the rva22u64=false is the user input which
+>>>>>> undoes what the script did.
+>>>>>
+>>>>> QEMU options do not work with a "the user enabled then disabled the same option,
+>>>>> thus it'll count as nothing happened" logic. The last instance of the option will
+>>>>> overwrite all previous instances. In the example you mentioned above the user would
+>>>>> disable all mandatory extensions of rva22u64 in the CPU, doesn't matter if the
+>>>>> same profile was enabled beforehand.
+>>>>
+>>>> Yup, I'm aware, but I keep thinking that we'll only be using profiles with
+>>>> a base cpu type. If you start with nothing (a base) and then add a profile
+>>>> and take the same one away, you shouldn't be taking away anything else. I
+>>>> agree that if you use a profile on some cpu type that already enabled a
+>>>> bunch of stuff itself, then disabling a profile would potentially remove
+>>>> some of those too, but mixing cpu types that have their own extensions and
+>>>> profiles seems like a great way to confuse oneself as to what extensions
+>>>> will be present.  IOW, we should be adding a base cpu type at the same
+>>>> time we're adding these profiles.
+>>>
+>>> The question that keep bouncing around my head is: why would we even
+>>> allow disabling profiles?
+>>>
+>>> It seems to me that it only makes things more complicated, and I
+>>> really can't see the use case for it.
+>>>
+>>> Enabling additional features on top of a profile? There's obvious
+>>> value in that, so that you can model hardware that implements
+>>> optional and proprietary extensions. Enabling multiple profiles?
+>>> You've convinced me that it's useful. But disabling profiles, I just
+>>> don't see it. I believe Alistair was similarly unconvinced.
+>>
+>> The only value I see in allowing a profile to be disabled is to undo the
+>> enabling of the profile by specifying the profile as 'off' to the right of
+>> it being specified as 'on'. That may seem pointless, but scripts take
+>> advantage of being able to do that. Besides that one possible use case,
+>> there isn't much use in disabling profiles, but treating profile
+>> properties like every other boolean property makes the UI consistent and
+>> should actually simplify the code.
+> 
+> The code might be simpler, but the result is an additional burden on
+> the user, as the interactions between the various flags become much
+> more nuanced and less intuitive. I'm not convinced the trade-off is a
+> worthwhile one.
+> 
+> For the script override scenario, fair enough, but once again I feel
+> that we're making things much worse in the general case in order to
+> cater to a much narrower one. Script authors will naturally learn to
+> avoid hardcoding profile enablement once users have reported enough
+> failures resulting from that.
 
-Daniel & Andrea, it would be great to have your take on the Go
-side of this series. If we can agree with an acceptable
-'unstable' version of Go modules, we can start building on top of
-this:
- - libraries/tools in Go to interact with QEMU
- - qapi specs to fix limitations (e.g: Data type names)
- - scripts/qapi library wrt to generating interfaces in other
-   languages other than C
+I'm not thrilled about how we're able to disable profiles either. I'm
+coping with it because (1) it was a feedback from the first version of
+this work [1] and no one had strong opinions against it back then and
+(2) I believe that users won't find much use in doing "-cpu rv64,profileA=false"
+in a real world/common scenario, so we can get away with this kind of
+weird functionality.
 
-I would love to have this prior to 8.2 feature freeze if the
-idea and current code meet your expectations.
+The profile flag is set to 'false' by default for all current CPUs. If
+the user manually sets it to 'false', well, it doesn't change the internal
+state of the CPU, does it? But then I need to be creative and interpret it
+as 'it's not a default false, it's an user-set false, so I need to disable
+extensions'. I can't think of many qemu options that behave like that, if
+any.
 
-Cheers,
-Victor
+We also have the example of RVG, a bit that is default set to 'false' that,
+when enabled, causes IMAFD_zicsr_zifencei to be enabled. Today, if the user
+set RVG to 'false', nothing happens - we're not disabling IMAFD_zicsr_zifencei.
+In the latest version of this work there's a deliberate effort to make RVG
+behave like a profile [2], but perhaps I should make profiles behave like RVG.
 
-On Mon, Oct 16, 2023 at 05:26:53PM +0200, Victor Toso wrote:
-> This patch series intent is to introduce a generator that produces a Go
-> module for Go applications to interact over QMP with QEMU.
->=20
-> This is the second iteration:
->  v1: https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg06734.html
->=20
-> I've pushed this series in my gitlab fork:
-> https://gitlab.com/victortoso/qemu/-/tree/qapi-golang-v2
->=20
-> I've also generated the qapi-go module over QEMU tags: v7.0.0, v7.1.0,
-> v7.2.6, v8.0.0 and v8.1.0, see the commits history here:
-> https://gitlab.com/victortoso/qapi-go/-/commits/qapi-golang-v2-by-tags
->=20
-> I've also generated the qapi-go module over each commit of this series,
-> see the commits history here (using previous refered qapi-golang-v2)
-> https://gitlab.com/victortoso/qapi-go/-/commits/qapi-golang-v2-by-patch
->=20
-> Cheers,
-> Victor
->=20
-> * Changes:
->  - All patches were rebased using black python formatting tool, awesome.
->    (John) https://black.readthedocs.io/en/stable/
->  - All patches were tested with flake8 and pylint. Minor complains
->    remains. (John)
->  - All generated types are sorted in alphabetical order (Daniel)
->  - Using utf8 instead of ascii encoding of output files
->  - Improved commit logs
->  - renamed QapiError -> QAPIError (Daniel)
->  - QAPIError's Error() returns only the description (Daniel)
->  - Used more type hints (Where I could) (John)
->  - Removed typehint from self in the Class implementation (John)
->  - The Go code that is generated is now well formated. gofmt -w and
->    goimport -w don't change a thing.
->  - Added a fix from John
->    https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg01305.html
->  - Added a tangent fix suggestion to main.py "scripts: qapi: black
->    format main.py"
->=20
-> John Snow (1):
->   qapi: re-establish linting baseline
->=20
-> Victor Toso (10):
->   scripts: qapi: black format main.py
->   qapi: golang: Generate qapi's enum types in Go
->   qapi: golang: Generate qapi's alternate types in Go
->   qapi: golang: Generate qapi's struct types in Go
->   qapi: golang: structs: Address 'null' members
->   qapi: golang: Generate qapi's union types in Go
->   qapi: golang: Generate qapi's event types in Go
->   qapi: golang: Generate qapi's command types in Go
->   qapi: golang: Add CommandResult type to Go
->   docs: add notes on Golang code generator
->=20
->  docs/devel/index-build.rst          |    1 +
->  docs/devel/qapi-golang-code-gen.rst |  376 ++++++++
->  scripts/qapi/gen.py                 |    2 +-
->  scripts/qapi/golang.py              | 1349 +++++++++++++++++++++++++++
->  scripts/qapi/main.py                |   79 +-
->  scripts/qapi/parser.py              |    5 +-
->  6 files changed, 1781 insertions(+), 31 deletions(-)
->  create mode 100644 docs/devel/qapi-golang-code-gen.rst
->  create mode 100644 scripts/qapi/golang.py
->=20
-> --=20
-> 2.41.0
->=20
->=20
+Last but not the least, I'm planning to add a couple of bare-bones CPUs (rv64i
+and rv64e). Disabling profiles in these CPUs is a total waste of cycles since
+the CPUs are already bare.
 
---rru5wego3yfwjdhp
-Content-Type: application/pgp-signature; name="signature.asc"
+After writing all this stuff, and realizing that profile disablement creates a
+lot of confusion and has no vocal fans, I had a change of heart. Profiles will
+behave like RVG -> if set, mandatory extensions will be enabled (respecting user
+choice on disabled extensions, of course). If disabled, nothing happens. Fans
+of the current design are welcome to weight in the discussion, of course.
 
------BEGIN PGP SIGNATURE-----
+If we decide in the future that stripping extensions from a CPU model is desirable
+we can come up with a 'bare' option, e.g. "-cpu rv64,bare=true" will strip all
+extensions from rv64. This is a much cleaner way of doing what profile disablement
+is currently doing.
 
-iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmU79GoACgkQl9kSPeN6
-SE+grhAAqG/Ycez6IuGXcV+IvpkRhvEplejlhBf6iMu2+Gx0ZdVfiWVA9pc4indt
-und+lgFlqSNvZkU66zDzdQzRD20EgbzadyaiqW5MqVfa/QCh0ckuroDlJ1h7X3FT
-oPa/yLPsdCtdN017GsJOMo4eHpgOCikbpMS8vKJPCjEW2R2UNbTBPLor2mSi4Iq1
-eCPhF3v8sGLUNO5Qwi2HkTlny6qZtgG1JkxmKbycyc0c9TjdtcifKnpvBeFHURQx
-noJSYJ8oaYvzkxuw6BjJiAAsp/OnMpN6J1t7XmxmisUBSDByJXHTXEpFxeHmnObQ
-+1NlWbcSa7ufnE+/BWQyQqYLMwSrz5nPuHOUCl684AP9obKJVB/TRPjNfiiQ9yCs
-+OLuPgCtieTxsSArdzMA+tSikJ3JmPAqoMFrGZH0mrpnCl4cPGtdK/G9Y7uR30pI
-6fM6gdohz75KzHhhOSkDB3WTNLKzOqBb2Qz18JVQn3nTW3mJ/SSLdIBv+9jZ2tGA
-VtGIgcFCfOAldyTwKVEv42J7dVXYCnyvZ6bDqEl1y2Iv4bN4RaDqJfqUW8mBjp00
-UzBT8rpaI6Mo82MwgfU7x32AFQ1Ttdzy1lTwxJAfnGK7rB//pAs8H3IhKiGK6H6O
-JMaCOOGL9NuG+OKiqn/Cwu8UQR2nhuRNQIclbmlZCjQKsf9K5OQ=
-=kFk1
------END PGP SIGNATURE-----
 
---rru5wego3yfwjdhp--
+Thanks,
 
+
+Daniel
+
+
+[1] https://lore.kernel.org/qemu-riscv/ZRarBuEeBi7WkS6K@redhat.com/
+[2] https://lore.kernel.org/qemu-riscv/20231025234459.581697-10-dbarboza@ventanamicro.com/
+
+
+
+
+
+
+> 
+>>>>>> As far as warnings go, it'd be nice to warn when mandatory profile
+>>>>>> extensions are disabled from an enabled profile. Doing that might be
+>>>>>> useful for debug, but users which do it without being aware they're
+>>>>>> "breaking" the profile may learn from that warning. Note, the warning
+>>>>>> should only come when the profile is actually enabled and when the
+>>>>>> extension would actually be disabled, i.e.
+>>>>>>
+>>>>>>    -cpu rv64,rva22u64=true,c=off
+>>>>>>
+>>>>>> should warn
+>>>>>>
+>>>>>>    -cpu rv64,c=off,rva22u64=true
+>>>>>>
+>>>>>> should not warn (rva22u64 overrides c=off since it's to the right)
+>>>>>>
+>>>>>>    -cpu rv64,rva22u64=true,rva22u64=false,c=off
+>>>>>>
+>>>>>> should not warn (rva22u64 is not enabled)
+>>>
+>>> I think these should be hard errors, not warnings.
+>>>
+>>> If you're enabling a profile and then disabling an extension that's
+>>> mandatory for that profile, you've invalidated the profile. You've
+>>> asked for a configuration that doesn't make any sense: you can't have
+>>> a CPU that both implements a profile and lacks one of its mandatory
+>>> extensions.
+>>
+>> Given a platform which implements a profile which mandates extension E and
+>> a need to debug E or test behavior where E is [incorrectly] absent, you'll
+>> need to expand the profile first, listing each of the other extensions
+>> manually. It'd be much faster to specify the profile, take away the
+>> extension, and ignore the warning.
+> 
+> I understand the appeal, I just think that regular users should be
+> prevented from stumbling into this kind of expert-level,
+> intentionally-broken configuration by mistake.
+> 
+>>> QEMU users could easily miss the warning. libvirt users won't see it
+>>> at all. It's a user error and it needs to be treated as such IMO.
+>>
+>> I do agree with the concern that warnings will be missed/ignored. Maybe
+>> QEMU needs something like -Werror for stuff like this, i.e.
+>>
+>>   -cpu rv64,error-on-extension-warnings=on,profile-A=on,extension-of-A=off
+>>
+>> would error out, but, without the special property, just warn. Or, flip
+>> the default behavior around with
+>>
+>>   -cpu rv64,ignore-extension-errors=on,profile-A=on,extension-of-A=off
+>>
+>> which would either silently proceed or just warn, but, without the
+>> special property, error out. libvirt would default to the error out
+>> case, whichever that one is, but also provide an element to turn off
+>> erroring-out.
+> 
+> I would be okay with something along these lines.
+> 
 
