@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F95C7D93EB
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC7F7D93F5
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:39:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwJHS-0002NY-W3; Fri, 27 Oct 2023 05:37:27 -0400
+	id 1qwJHQ-0002MP-Ph; Fri, 27 Oct 2023 05:37:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHQ-0002MU-Do
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHO-0002Lf-6I
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHO-0002kt-TI
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHM-0002kB-Q0
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698399442;
+ s=mimecast20190719; t=1698399439;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PkDoNhXrEs6DDLniA7+cCqorQe2ZGbpgA9TWmT9RxzA=;
- b=Yhps1ZGZv1s26+fef83SpRofrMZly3iIKqsGrBIyCfW7N0EK38tMaNdCX7oO8+747ThXow
- w0MEpqgjCygSFQrgSl02OHFD/YCoRgxgPVyVmnVnCJRYpw2VMf6Fc/O/fWbgqAWw6xlyf4
- J6fASfGnn4L5GJQn2yk8GvWLdtPSB4g=
+ bh=hEgCgFnTAoeNOn2fWUZ+FE/CsbPbDRXUi3jBdNlv0VA=;
+ b=RIntQAYAV2aAcpJSrIKBkM4zNPqIfTClrxcbDSJ/FCrCM4gUMwYECnPjZe3BA9KXiTwlPw
+ 1ag7VE9DQDSJZHuX2CaLPzSAAuPbsOXgyaN4QjtV/E55pdPDImuA1L/rB0J/aIr6nkUeeW
+ ZFtq5bLvSgHa7ay65xk5zOO+8RcW/zY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-lyjEXZ2hOHm3E2pRISMDAg-1; Fri, 27 Oct 2023 05:37:13 -0400
-X-MC-Unique: lyjEXZ2hOHm3E2pRISMDAg-1
+ us-mta-357-8YFFD0jAP_uI2UGIATpykg-1; Fri, 27 Oct 2023 05:37:14 -0400
+X-MC-Unique: 8YFFD0jAP_uI2UGIATpykg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0889B88D711;
- Fri, 27 Oct 2023 09:37:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9366E88D70C;
+ Fri, 27 Oct 2023 09:37:14 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.196])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 25A551121319;
- Fri, 27 Oct 2023 09:37:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9081F1121319;
+ Fri, 27 Oct 2023 09:37:13 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/11] system/qtest: Clean up global variable shadowing in
- qtest_server_init()
-Date: Fri, 27 Oct 2023 11:37:00 +0200
-Message-ID: <20231027093710.273558-2-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alberto Garcia <berto@igalia.com>
+Subject: [PULL 02/11] tests/throttle: Clean up global variable shadowing
+Date: Fri, 27 Oct 2023 11:37:01 +0200
+Message-ID: <20231027093710.273558-3-thuth@redhat.com>
 In-Reply-To: <20231027093710.273558-1-thuth@redhat.com>
 References: <20231027093710.273558-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,62 +81,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Rename the variable to fix:
+Follow all other tests pattern from this file, use the
+global 'cfg' variable to fix:
 
-  softmmu/qtest.c:869:13: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      Object *qtest;
-              ^
-  softmmu/qtest.c:53:15: note: previous declaration is here
-  static QTest *qtest;
-                ^
+  tests/unit/test-throttle.c:621:20: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      ThrottleConfig cfg;
+                     ^
+  tests/unit/test-throttle.c:28:23: note: previous declaration is here
+  static ThrottleConfig cfg;
+                        ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20231009100251.56019-2-philmd@linaro.org>
+Acked-by: Alberto Garcia <berto@igalia.com>
+Message-ID: <20231009100251.56019-3-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- system/qtest.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tests/unit/test-throttle.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/system/qtest.c b/system/qtest.c
-index 35b643a274..7964f0b248 100644
---- a/system/qtest.c
-+++ b/system/qtest.c
-@@ -866,7 +866,7 @@ void qtest_server_init(const char *qtest_chrdev, const char *qtest_log, Error **
- {
-     ERRP_GUARD();
-     Chardev *chr;
--    Object *qtest;
-+    Object *qobj;
+diff --git a/tests/unit/test-throttle.c b/tests/unit/test-throttle.c
+index ac35d65d19..2146cfacd3 100644
+--- a/tests/unit/test-throttle.c
++++ b/tests/unit/test-throttle.c
+@@ -618,7 +618,6 @@ static bool do_test_accounting(bool is_ops, /* are we testing bps or ops */
+                                  { THROTTLE_OPS_TOTAL,
+                                    THROTTLE_OPS_READ,
+                                    THROTTLE_OPS_WRITE, } };
+-    ThrottleConfig cfg;
+     BucketType index;
+     int i;
  
-     chr = qemu_chr_new("qtest", qtest_chrdev, NULL);
-     if (chr == NULL) {
-@@ -875,18 +875,18 @@ void qtest_server_init(const char *qtest_chrdev, const char *qtest_log, Error **
-         return;
-     }
- 
--    qtest = object_new(TYPE_QTEST);
--    object_property_set_str(qtest, "chardev", chr->label, &error_abort);
-+    qobj = object_new(TYPE_QTEST);
-+    object_property_set_str(qobj, "chardev", chr->label, &error_abort);
-     if (qtest_log) {
--        object_property_set_str(qtest, "log", qtest_log, &error_abort);
-+        object_property_set_str(qobj, "log", qtest_log, &error_abort);
-     }
--    object_property_add_child(qdev_get_machine(), "qtest", qtest);
--    user_creatable_complete(USER_CREATABLE(qtest), errp);
-+    object_property_add_child(qdev_get_machine(), "qtest", qobj);
-+    user_creatable_complete(USER_CREATABLE(qobj), errp);
-     if (*errp) {
--        object_unparent(qtest);
-+        object_unparent(qobj);
-     }
-     object_unref(OBJECT(chr));
--    object_unref(qtest);
-+    object_unref(qobj);
- }
- 
- static bool qtest_server_start(QTest *q, Error **errp)
 -- 
 2.41.0
 
