@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82FD7D9BEC
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B458C7D9BC6
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:42:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0n-0007wB-FT; Fri, 27 Oct 2023 10:40:33 -0400
+	id 1qwO0h-0007lc-TV; Fri, 27 Oct 2023 10:40:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0L-0007Nd-UN
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:06 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1qwO0J-0007Lk-U2
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:04 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0G-0008BN-CP
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:05 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c50906f941so32202241fa.2
+ id 1qwO0G-0008Bb-CH
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:03 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40859dee28cso17021765e9.0
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698417598; x=1699022398; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698417599; x=1699022399; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1p9KVKDoDB453y9P2t06KEHsQm3HAkllfoNShv9eI/E=;
- b=ua2ibiCrlXYt1g9DGNEAZqgV69UukvbYIJc5fYIOvYG9U9U1+neMhsUr4ZxlGtjsZT
- veEHFYIVbD7v5GIcWP9BeRQJF7/bxO3m34X4o1RteZpTYVXcX9ZY6LPGjRz5Vn4AMsOH
- N+Dj1gH6o90+YjFzUyqonHYW+byTC1Cu3U+JXAY4KRuv7Tbp0wBWY+NRzNVAGKzP3ZFV
- WUjztUooWTVLNkE7l9+3n9AXoH1S2U0lSuDG10mzCMmp24ngSx7/pLaJEp5Hct+FjHtQ
- ltpTMfMh2RiZ3DOLuOXjlD08l35v1aUENAP28qYUJMikfjm0FtcGdBwiTVyr3mKMmfen
- aDjg==
+ :reply-to; bh=kurXcGyQg+iVSy8QLhx9etYA4XnqvmAMFyclbQPpsa4=;
+ b=Oydjx04eBMNEL+kVPQDzyw3JEXsBM6CwrkdzIkMQNJzHAZYnYf3mEGEDpSjGhOhCBa
+ kHr/shyJATHXGUxULhvR0tjfKa5Dt7Jjbg9IfbQBQL6jUMwcGjfzWkRGc9m4gngUXUtK
+ kJ/sugkw0O6YjrURKEHpc8zvfljrC/iuvKNwDxjEIZk6GshXAIKx0c2hOHTKtpHHsMjD
+ 0DXn5W+BGniWwkUkKWorQFhRGnGur/1GuwR1HhJem4rgsIaOs3bzlwTeyy0zGG3d8Vq7
+ TFNC5/oTN2/DgxPzm6w2oAhkr8r3ek6TtLaM8HRJxDpJ9yeCywfJI/ZuKFBjBzL7Nn90
+ 6mdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698417598; x=1699022398;
+ d=1e100.net; s=20230601; t=1698417599; x=1699022399;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1p9KVKDoDB453y9P2t06KEHsQm3HAkllfoNShv9eI/E=;
- b=FYUAdVycT0ubAniH7rb89/nUxcwzI5flMTbSAzUi0msCGHAsO9GwzrpiZk7SD2n5kB
- YIkXUsDPubWPOOMe20KBIRQI4YoztEeycgga7rdjIaZIE+z6NoCIHS5QI+vy97vLyaQj
- nGOprjxjCbk37wHBbP5xAlpwpwvIqaW9x4H7geQDarIvQXAz0340gFKSqHp8/3e4MrFy
- K5P6Bh1wWr5lzVXtr97XHdNhG3rCopeLmMePjqQggn21fUFZBkYDO+cyIL/iP7wGUneB
- 48xYarINUiGdFCJnUkf386FDvS9e2eFkUYQx1Xtmqc6ZndQJNYzRvVjsmdYYdlPLrKHt
- c8YQ==
-X-Gm-Message-State: AOJu0YysjB5Dy4fnisUZ/qL42FwRsilTyDMdHW7GKLozdK1IotngEOGq
- EXbsesDP8P4YX7ytd7Io89Cx20jxn6CCSgutWhk=
-X-Google-Smtp-Source: AGHT+IF4AVepCoQ/nlYOUP1tHs8mnKD2MX25PhfLVTHB/b7w7NQOQfzXaHNA8oeXNh8L1uDOakgQnw==
-X-Received: by 2002:ac2:4e65:0:b0:500:7efe:313c with SMTP id
- y5-20020ac24e65000000b005007efe313cmr1898119lfs.24.1698417598418; 
+ bh=kurXcGyQg+iVSy8QLhx9etYA4XnqvmAMFyclbQPpsa4=;
+ b=wLQHPypqMD5dB4fz+3PaEA4X+gM6w2bq0oSJv/TpDkaxrgacgqTD92Q/HIcynLSOHV
+ m3uRV2fthTKstoTVRuAS7iwetaM40bTGrb0k6diR02sUaw0P8h+bRq/tnFAGrqgKsOSB
+ Vo/gg0S6WKFvLoP9n1j9AyqtexQNHNwL+xPMH1MVRAw7xGIKueLKsra99DxuSPnyP28P
+ t700D8hb3OxPiAkv+pFu/p5Pvlx0uSJBsxfP66wpfFaqEZTnsM/CesgFcYuuBMO+3dJT
+ nWIAZOhy9UUhj4gYc4Snn3ITJUDFeuFv+GOcjPHJ8qMsMBL3fEmxUrKsHDpd/tC6BTGf
+ YRog==
+X-Gm-Message-State: AOJu0YyMNwn27S50OM2sfszCw0mEvg/OMPN69MAD5DtkmiaV8456lgQK
+ CavtOtLwi6VocIRWVsBb6tjL1U2JdKkFxH8hmBU=
+X-Google-Smtp-Source: AGHT+IF9mIO+7dTFl08EIkEdJFEINczrE4/HmBvO/ELKaGQe8aG5gFFWfbKfhOiw3Bi6xWM1Yue2yA==
+X-Received: by 2002:a05:600c:5119:b0:409:2f7:d771 with SMTP id
+ o25-20020a05600c511900b0040902f7d771mr2690915wms.4.1698417598859; 
  Fri, 27 Oct 2023 07:39:58 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.57
+ e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 27 Oct 2023 07:39:58 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/41] hw/arm: Avoid using 'first_cpu' when first ARM CPU is
- reachable
-Date: Fri, 27 Oct 2023 15:39:30 +0100
-Message-Id: <20231027143942.3413881-30-peter.maydell@linaro.org>
+Subject: [PULL 30/41] misc/led: LED state is set opposite of what is expected
+Date: Fri, 27 Oct 2023 15:39:31 +0100
+Message-Id: <20231027143942.3413881-31-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,100 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Prefer using a well known local first CPU rather than a global one.
+Testing of the LED state showed that when the LED polarity was
+set to GPIO_POLARITY_ACTIVE_LOW and a low logic value was set on
+the input GPIO of the LED, the LED was being turn off when it was
+expected to be turned on.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231025065909.57344-1-philmd@linaro.org
+Fixes: ddb67f6402 ("hw/misc/led: Allow connecting from GPIO output")
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Message-id: 20231024191945.4135036-1-milesg@linux.vnet.ibm.com
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/bananapi_m2u.c   | 2 +-
- hw/arm/exynos4_boards.c | 7 ++++---
- hw/arm/orangepi.c       | 2 +-
- hw/arm/realview.c       | 2 +-
- hw/arm/xilinx_zynq.c    | 2 +-
- 5 files changed, 8 insertions(+), 7 deletions(-)
+ hw/misc/led.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c
-index a7c7a9f96d7..8f24b18d8ca 100644
---- a/hw/arm/bananapi_m2u.c
-+++ b/hw/arm/bananapi_m2u.c
-@@ -128,7 +128,7 @@ static void bpim2u_init(MachineState *machine)
-     bpim2u_binfo.loader_start = r40->memmap[AW_R40_DEV_SDRAM];
-     bpim2u_binfo.ram_size = machine->ram_size;
-     bpim2u_binfo.psci_conduit = QEMU_PSCI_CONDUIT_SMC;
--    arm_load_kernel(ARM_CPU(first_cpu), machine, &bpim2u_binfo);
-+    arm_load_kernel(&r40->cpus[0], machine, &bpim2u_binfo);
+diff --git a/hw/misc/led.c b/hw/misc/led.c
+index f6d6d68bce5..42bb43a39a2 100644
+--- a/hw/misc/led.c
++++ b/hw/misc/led.c
+@@ -63,7 +63,7 @@ static void led_set_state_gpio_handler(void *opaque, int line, int new_state)
+     LEDState *s = LED(opaque);
+ 
+     assert(line == 0);
+-    led_set_state(s, !!new_state != s->gpio_active_high);
++    led_set_state(s, !!new_state == s->gpio_active_high);
  }
  
- static void bpim2u_machine_init(MachineClass *mc)
-diff --git a/hw/arm/exynos4_boards.c b/hw/arm/exynos4_boards.c
-index ef5bcbc212c..b0e13eb4f00 100644
---- a/hw/arm/exynos4_boards.c
-+++ b/hw/arm/exynos4_boards.c
-@@ -134,9 +134,10 @@ exynos4_boards_init_common(MachineState *machine,
- 
- static void nuri_init(MachineState *machine)
- {
--    exynos4_boards_init_common(machine, EXYNOS4_BOARD_NURI);
-+    Exynos4BoardState *s = exynos4_boards_init_common(machine,
-+                                                      EXYNOS4_BOARD_NURI);
- 
--    arm_load_kernel(ARM_CPU(first_cpu), machine, &exynos4_board_binfo);
-+    arm_load_kernel(s->soc.cpu[0], machine, &exynos4_board_binfo);
- }
- 
- static void smdkc210_init(MachineState *machine)
-@@ -146,7 +147,7 @@ static void smdkc210_init(MachineState *machine)
- 
-     lan9215_init(SMDK_LAN9118_BASE_ADDR,
-             qemu_irq_invert(s->soc.irq_table[exynos4210_get_irq(37, 1)]));
--    arm_load_kernel(ARM_CPU(first_cpu), machine, &exynos4_board_binfo);
-+    arm_load_kernel(s->soc.cpu[0], machine, &exynos4_board_binfo);
- }
- 
- static void nuri_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/arm/orangepi.c b/hw/arm/orangepi.c
-index d0eca54cd95..f3784d45caf 100644
---- a/hw/arm/orangepi.c
-+++ b/hw/arm/orangepi.c
-@@ -106,7 +106,7 @@ static void orangepi_init(MachineState *machine)
-     orangepi_binfo.loader_start = h3->memmap[AW_H3_DEV_SDRAM];
-     orangepi_binfo.ram_size = machine->ram_size;
-     orangepi_binfo.psci_conduit = QEMU_PSCI_CONDUIT_SMC;
--    arm_load_kernel(ARM_CPU(first_cpu), machine, &orangepi_binfo);
-+    arm_load_kernel(&h3->cpus[0], machine, &orangepi_binfo);
- }
- 
- static void orangepi_machine_init(MachineClass *mc)
-diff --git a/hw/arm/realview.c b/hw/arm/realview.c
-index 8f89526596c..132217b2edd 100644
---- a/hw/arm/realview.c
-+++ b/hw/arm/realview.c
-@@ -384,7 +384,7 @@ static void realview_init(MachineState *machine,
-     realview_binfo.ram_size = ram_size;
-     realview_binfo.board_id = realview_board_id[board_type];
-     realview_binfo.loader_start = (board_type == BOARD_PB_A8 ? 0x70000000 : 0);
--    arm_load_kernel(ARM_CPU(first_cpu), machine, &realview_binfo);
-+    arm_load_kernel(cpu, machine, &realview_binfo);
- }
- 
- static void realview_eb_init(MachineState *machine)
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 8dc2ea83a93..dbb9793aa13 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -349,7 +349,7 @@ static void zynq_init(MachineState *machine)
-     zynq_binfo.board_setup_addr = BOARD_SETUP_ADDR;
-     zynq_binfo.write_board_setup = zynq_write_board_setup;
- 
--    arm_load_kernel(ARM_CPU(first_cpu), machine, &zynq_binfo);
-+    arm_load_kernel(cpu, machine, &zynq_binfo);
- }
- 
- static void zynq_machine_class_init(ObjectClass *oc, void *data)
+ static void led_reset(DeviceState *dev)
 -- 
 2.34.1
 
