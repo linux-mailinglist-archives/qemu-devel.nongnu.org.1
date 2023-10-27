@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906087D9BBB
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFF77D9BF8
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:46:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0F-0007Gx-FU; Fri, 27 Oct 2023 10:39:59 -0400
+	id 1qwO0p-0008Ol-BH; Fri, 27 Oct 2023 10:40:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0A-0007FB-Rr
+ id 1qwO0A-0007FA-RZ
  for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:54 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO08-00088i-7n
+ id 1qwO08-00088w-A3
  for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:54 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-507a55302e0so2761494e87.0
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-32dff08bbdbso1472825f8f.2
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698417590; x=1699022390; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698417591; x=1699022391; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bz4quSw4XJYtn+zFkVNPcs33W3qafYQj8GznRVOZI7w=;
- b=d+PEMrMBea7jgrZf6WMZkecJUbo7KjN65Ksw1o7fF4JKgD1Pov7/y895TtVtA8for6
- gMX+MRAkXh/DHgCc3XuGqnozHxjacEbwW8xwoVuEqwjTBO7gDpw7/aLqmf4C6Qp2u+4m
- yTet+ajOnD9eKoU1DFZV4Rg5jxB52In7RUb+bzCWTuQwF2h3QrC9PwT+e+ngmkCIZ/bI
- sEc020hU2OAAbM75EQ5JGgQ93CiM1cAV0VeXl1eKkeu7TLCjAozqI4fdDlxWBw1t1Gtf
- HP98oSRg5YkaI959LOxJURqeiGafEc/ivL1knJdd1CAeqT6SKIgFMt0OgzhL3alzG02/
- uuzQ==
+ :reply-to; bh=1yXp5lXsBt0uFwWt6pWnQ2JZi5Tqj/E4wJ1aMNhTymc=;
+ b=Ab4JXCMkGc4hyCk1oRwzssVTDRJ19l7iowGYI+akFIGMZnSA0jEt+NAdT6BSlVdapI
+ /trlgSasPaXlG61fm9uhLz81S55slhdXRvro8OZ26WkOGEHhI5Xu+2GN3oRSA2/9EJPS
+ 7rAwSKkIQtO6Sk/iNq1qjAugN25VAXRoMeR0SXHGRqQg6u78kV+VqODqr58RxHqS/W4n
+ 4clDX5ABSNtoEZHy/nOGtjhsiNMw2iIO3G7euQrzHLWpSwN+5s0D7AwtNqKiKTm+iIzf
+ qYlaxWHNpoOVdGQmMOCHJSFheQ7IOchdMXqxVPgdinNWEUQ2lRPVEwEXww/Oi+ZjVRxF
+ SgQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698417590; x=1699022390;
+ d=1e100.net; s=20230601; t=1698417591; x=1699022391;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bz4quSw4XJYtn+zFkVNPcs33W3qafYQj8GznRVOZI7w=;
- b=nTC3/j2i6cbbZT9/L9zP1Q4OcyO6Qk2XkJJdE7ddPa4H/eTJBGT1itBHTKlco3iF7j
- hf0Twqfo1CvlmJRyV6isO8K1bfERSRudZBxR6O3Gc7yc+swm+2tIFSIh88R6Rxz4Fm9L
- boO32en3ci4OX2sEA9SebdcEpisVnYVKeWc2zKJynHFLa9GHG7nJdGOqm1hQ4HCKZYmB
- 9j9vyQLG/oQXjxKSSdMLiuK6UIrHSAatVZqysDTzgNDEckOCIcwuPPK+MFqZhbdk0I5t
- JElUVTFNpaUcuTTuBuvFPGEg9JJibgkYjLfgv4MkNZ05DWlqqaEr18TWbsTC0TXoLwq1
- sztQ==
-X-Gm-Message-State: AOJu0YzWvwvRLVJEePnZmYGbLLfVGqxsHcNk5LNV3lZ5ieg1nmMzknVY
- T1UUri/Q4G/VekyffkKjUM0CGfRsWzdZi8gtZUg=
-X-Google-Smtp-Source: AGHT+IHWPHTmV8sLR/oxZUV+Hz8b12aEKhVXQaaG1YYO3FNsO6TI218vmy8FyOh63trDI4+zMftiGQ==
-X-Received: by 2002:a05:6512:2349:b0:507:bc6b:38a6 with SMTP id
- p9-20020a056512234900b00507bc6b38a6mr2582107lfu.33.1698417590364; 
+ bh=1yXp5lXsBt0uFwWt6pWnQ2JZi5Tqj/E4wJ1aMNhTymc=;
+ b=Eze4YGeQlGKKsjxAbKK75KCq/WlZvKCjTEHWz8d1P4hO9LP/xD5CpmpPetn9MolV3f
+ yLXd4HUE084hdIQWs4PI1NeqbUOu8HJaIphR1rptR8ltXxoClaHtlTDAa9lhOY1ZA1fV
+ H+mWDzxEMCcoJ20JteOGj++VdasexQVdTB0E9TIBEuI+InRQTS/U2jKRn75Vz0EhSKqp
+ mJstXDOSrxv9I75aE7g9mbe3R6gsH86tFgCNaxSHwwD3YmmpFMCL4R9RS/RnxFzx/HQM
+ 9G93d1Eia/wPBiMn9GODQqAa1ulb0KNSVhyTshPEBDAv+SLBQdsRB7hWG9Udc8fLRmjM
+ jRNQ==
+X-Gm-Message-State: AOJu0Yx/AyTYZ30OI+upP3BvShw11bhm9XhJ0dndkn48m1Vfac0xajBx
+ pJ7GD0cE4fBUVNOdn+Wn1WI410QFmj7e8CF4j0s=
+X-Google-Smtp-Source: AGHT+IFXSf5+ulR+O94F1odPwA04QH8fKqLX8q85xPXqQKyPg1Jchsnq4gvYG5Led+QfIFeJ3jzDyA==
+X-Received: by 2002:a5d:6749:0:b0:31f:fa38:425f with SMTP id
+ l9-20020a5d6749000000b0031ffa38425fmr2568817wrw.9.1698417590933; 
  Fri, 27 Oct 2023 07:39:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.49
+ e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Oct 2023 07:39:49 -0700 (PDT)
+ Fri, 27 Oct 2023 07:39:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/41] hw/arm/fsl-imx25: Remove 'hw/arm/boot.h' from header
-Date: Fri, 27 Oct 2023 15:39:14 +0100
-Message-Id: <20231027143942.3413881-14-peter.maydell@linaro.org>
+Subject: [PULL 14/41] hw/arm/fsl-imx31: Remove 'hw/arm/boot.h' from header
+Date: Fri, 27 Oct 2023 15:39:15 +0100
+Message-Id: <20231027143942.3413881-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,37 +98,37 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
-Message-id: 20231025065316.56817-5-philmd@linaro.org
+Message-id: 20231025065316.56817-6-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/fsl-imx25.h | 1 -
- hw/arm/imx25_pdk.c         | 1 +
+ include/hw/arm/fsl-imx31.h | 1 -
+ hw/arm/kzm.c               | 1 +
  2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/arm/fsl-imx25.h b/include/hw/arm/fsl-imx25.h
-index 1b1086e9458..df2f83980f0 100644
---- a/include/hw/arm/fsl-imx25.h
-+++ b/include/hw/arm/fsl-imx25.h
+diff --git a/include/hw/arm/fsl-imx31.h b/include/hw/arm/fsl-imx31.h
+index c116a73e0b3..40c593a5cf3 100644
+--- a/include/hw/arm/fsl-imx31.h
++++ b/include/hw/arm/fsl-imx31.h
 @@ -17,7 +17,6 @@
- #ifndef FSL_IMX25_H
- #define FSL_IMX25_H
+ #ifndef FSL_IMX31_H
+ #define FSL_IMX31_H
  
 -#include "hw/arm/boot.h"
  #include "hw/intc/imx_avic.h"
- #include "hw/misc/imx25_ccm.h"
+ #include "hw/misc/imx31_ccm.h"
  #include "hw/char/imx_serial.h"
-diff --git a/hw/arm/imx25_pdk.c b/hw/arm/imx25_pdk.c
-index b4f7f4e8a7f..7dfddd49e23 100644
---- a/hw/arm/imx25_pdk.c
-+++ b/hw/arm/imx25_pdk.c
-@@ -27,6 +27,7 @@
+diff --git a/hw/arm/kzm.c b/hw/arm/kzm.c
+index b1b281c9acb..9be91ebeaaf 100644
+--- a/hw/arm/kzm.c
++++ b/hw/arm/kzm.c
+@@ -16,6 +16,7 @@
+ #include "qemu/osdep.h"
  #include "qapi/error.h"
- #include "hw/qdev-properties.h"
- #include "hw/arm/fsl-imx25.h"
+ #include "hw/arm/fsl-imx31.h"
 +#include "hw/arm/boot.h"
  #include "hw/boards.h"
  #include "qemu/error-report.h"
- #include "sysemu/qtest.h"
+ #include "exec/address-spaces.h"
 -- 
 2.34.1
 
