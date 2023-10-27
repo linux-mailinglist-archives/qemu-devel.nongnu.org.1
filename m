@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C58F7D8DF2
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 07:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6089C7D8DF7
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 07:06:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwEyV-0002cT-JU; Fri, 27 Oct 2023 01:01:36 -0400
+	id 1qwF2u-0004f6-0e; Fri, 27 Oct 2023 01:06:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwEyQ-0002bH-6m
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:01:31 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwF2r-0004e5-Mz
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:06:05 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwEyO-00066T-HQ
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:01:29 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40806e4106dso9402765e9.1
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 22:01:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwF2p-0006vk-RC
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:06:05 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2c501bd6ff1so23576771fa.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 22:06:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698382886; x=1698987686; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698383161; x=1698987961; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WPGwRBlQCh/G+BwS0q6D9PppWERqITp/FFC1pgEn2/8=;
- b=apSgPhGdHGK5Q8LHJk22oFmq3UGDTH4sCgZCst4G/cQ4/EW0jQkMi6MsTK4/khboyC
- XLkgzr4wgrXdsTp12y8xphP51SJ9jADeoo9AK1NnGhlp4osCuqO54pqF91VB1Wkle776
- Au+iF5jYu1JOKaFn1aOH23N7iAdRJnO8W9KLh7JLZRCgRGKwdRUeb2wkbh6+J5X/KqKE
- c4DVfej3pByrmPXcb775+TUUuCFRFAUPfP0XG3H67gF5JPv0Uokh6V6yH0QoGjmWkRdo
- wO8LEp49DSyKgwWm49KYi/W3+qpzrDYm3Sjsg0TjfEXbjCnwQsw6fUsrsdzMreNvtCbL
- 2zyg==
+ bh=TXUSomEWbEcOaPkhsIU+lDCvGM7PDobbEw2nkC8uckk=;
+ b=veM9Kznhd5nr6SyuJ367Q8O9yyUqUCJllEdjTd8bHCKDaouDazDOirlbNAFFbyw8V0
+ IURow+S4psJJ5kearLKPUd/Wqw7WYo0BiVuNgUPk5P7f6b3iwJTzjA+ytd6TmW2ACQwC
+ 2bm7u9H74oAe7N6NtZ777BMuCuxG0qW8o1SUHY3KSkyG8oGciq6685HOKPxoMt4MrpWl
+ 27niDFVxEjTDVSpRj4lnf1yC5dXynIuTXzoNZCc1XIfLwSkfsZRzoc6pC3/DBN0XFNBn
+ rK6CEV1HTzre4C7hDNJD40RJkm3vbMJJHMJa67REDZZo52k89VVyh/N0jAZ/JCyBTn8/
+ xcWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698382886; x=1698987686;
+ d=1e100.net; s=20230601; t=1698383161; x=1698987961;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WPGwRBlQCh/G+BwS0q6D9PppWERqITp/FFC1pgEn2/8=;
- b=jcBHFCiN22EKVZEfgj6xEQNAK/V+Mnj59JVXXvrdbcurMXEXhSAgR0xJ2s43LiMlFU
- Qe40EM/VfYM83I11Aj/nuCrVcW405qP+WYfcBTavR4fFBBNmfvuq3WWOuCy4wK4dD89b
- AAJlxHBEIE7rqiD515+kyGmz74rx0ubYb1om6zED2oTOB4dQojdjoWMv7/frE1tLcAWX
- sijk11viaSR+GoCsbDDPwJZ6RYz2bm7xYjOADD3LFf7xWznCc7pvVIHQpVTDk4Uk7iOI
- Iadm0n6iy2U3YVk/QUrICeHTGjqFxAXkB+K5hXVDUQhLMlyADcVmxlBsqb4JzxnXfCyl
- YomQ==
-X-Gm-Message-State: AOJu0YxwuzVyA+kV0yNYfE2PjofXdn4sTXpJmPpYfzf4y3Wq51aB20+6
- 8oxdxDJ0OH0PXJ1gJgyr+CS75g==
-X-Google-Smtp-Source: AGHT+IE2vWa8CgYbmrmal8BdAhSDOCQck6LPLKAUxSloFaBUO/ZkGcHsiLoKMJlmzLEpVrZMH8nG9Q==
-X-Received: by 2002:a05:600c:46cc:b0:402:ea8c:ea57 with SMTP id
- q12-20020a05600c46cc00b00402ea8cea57mr1860927wmo.7.1698382886551; 
- Thu, 26 Oct 2023 22:01:26 -0700 (PDT)
+ bh=TXUSomEWbEcOaPkhsIU+lDCvGM7PDobbEw2nkC8uckk=;
+ b=n7ka7oK8dAM9EjZcSDs9W2yLjj8MdDiFYGptssqWRZNF70hf3jLTztPoRl0p/6zoEx
+ nDOwITB9FHc8FvDUQ7TunevmxFscB7SVEeaoZQS58/b1qusqDSytnElhQ3WsL5FwkSdk
+ ytqVAaVcxrnYYf8kNIVA/Rcq2f51vd1dfBoS/5QknfdribnVt+6W5Sc+pT4ogSX2SAmi
+ IIdwQGrSSwU9V252okWHX1vg69OQFupvHXOsrqqx8DMMpuvyMJlp5KOBcWoIV5WVjx7N
+ jRBV6UBMT4sJ7DPYl8qpWMEUHFUFZI8rTe8DuyQWInKc4CF7CDhZe1g462bMQbLOFDji
+ kWtA==
+X-Gm-Message-State: AOJu0YwS4u9GV+HAGriHDeiOpQ9nVve44nPpKULtUtNF/nb5gtWBXZf2
+ oS1YVskflZztYcbJBbuaik53tg==
+X-Google-Smtp-Source: AGHT+IG84fQUbUuBLXKxfg7/tEYyJjGJakeuGOc2IXGuI2FJ8aABDoxSQzZuiLDLuGuvvVBFUFTfXw==
+X-Received: by 2002:a2e:b90f:0:b0:2c5:3a9:7467 with SMTP id
+ b15-20020a2eb90f000000b002c503a97467mr1096705ljb.8.1698383161006; 
+ Thu, 26 Oct 2023 22:06:01 -0700 (PDT)
 Received: from [192.168.69.115] ([176.171.220.131])
  by smtp.gmail.com with ESMTPSA id
- p8-20020a05600c358800b0040472ad9a3dsm662916wmq.14.2023.10.26.22.01.24
+ q3-20020adff503000000b0032d09f7a713sm909264wro.18.2023.10.26.22.05.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 26 Oct 2023 22:01:26 -0700 (PDT)
-Message-ID: <a66db343-9938-fee7-465b-59f7cad5e542@linaro.org>
-Date: Fri, 27 Oct 2023 07:01:23 +0200
+ Thu, 26 Oct 2023 22:06:00 -0700 (PDT)
+Message-ID: <7f6df257-21d2-531a-3bdd-684336200698@linaro.org>
+Date: Fri, 27 Oct 2023 07:05:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 0/3] vfio/pci: Fix buffer overrun when writing the VF
- token
+Subject: Re: [PATCH v2 RESEND] ppc/pnv: Fix number of I2C engines and ports
+ for power9/10
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Denis V . Lunev"
- <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
- Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Leonardo Bras <leobras@redhat.com>, qemu-stable@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-References: <20231026070636.1165037-1-clg@redhat.com>
- <8a9d26d0-ccb4-448b-9fc2-d7ce521646ae@redhat.com>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com, fbarrat@linux.ibm.com
+References: <20231024212944.34043-1-milesg@linux.vnet.ibm.com>
+ <8400292d-0098-432a-a49b-ac658264c3ff@kaod.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <8a9d26d0-ccb4-448b-9fc2-d7ce521646ae@redhat.com>
+In-Reply-To: <8400292d-0098-432a-a49b-ac658264c3ff@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -104,23 +95,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/10/23 16:00, Cédric Le Goater wrote:
-> On 10/26/23 09:06, Cédric Le Goater wrote:
->> Hello,
+On 25/10/23 08:56, Cédric Le Goater wrote:
+> On 10/24/23 23:29, Glenn Miles wrote:
+>> Power9 is supposed to have 4 PIB-connected I2C engines with the
+>> following number of ports on each engine:
 >>
->> This series fixes a buffer overrun in VFIO. The buffer used in
->> vfio_realize() by qemu_uuid_unparse() is too small, UUID_FMT_LEN lacks
->> one byte for the trailing NUL.
+>>      0: 2
+>>      1: 13
+>>      2: 2
+>>      3: 2
 >>
->> Instead of adding + 1, as done elsewhere, the changes introduce a
->> UUID_STR_LEN define for the correct size and use it where required.
+>> Power10 also has 4 engines but has the following number of ports
+>> on each engine:
+>>
+>>      0: 14
+>>      1: 14
+>>      2: 2
+>>      3: 16
+>>
+>> Current code assumes that they all have the same (maximum) number.
+>> This can be a problem if software expects to see a certain number
+>> of ports present (Power Hypervisor seems to care).
+>>
+>> Fixed this by adding separate tables for power9 and power10 that
+>> map the I2C controller number to the number of I2C buses that should
+>> be attached for that engine.
+>>
+>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 > 
-> Cc: qemu-stable@nongnu.org # 8.1+
-
-Hopefully 8.2 shouldn't be affected ;)
-
+> you could have kept :
 > 
-> I propose to take this series in vfio-next if no one objects.
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> 
+> one comment below,
+> 
+>> ---
+>> Based-on: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
+>> ([PATCH] ppc/pnv: Connect PNV I2C controller to powernv10)
+>>
+>> Changes from v1:
+>>      - Added i2c_ports_per_engine to PnvChipClass
+>>      - replaced the word "ctlr" with "engine"
+>>
+>>   hw/ppc/pnv.c              | 14 ++++++++++----
+>>   include/hw/ppc/pnv_chip.h |  6 ++----
+>>   2 files changed, 12 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+>> index 2655b6e506..f6dc84b869 100644
+>> --- a/hw/ppc/pnv.c
+>> +++ b/hw/ppc/pnv.c
+>> @@ -1507,6 +1507,8 @@ static void pnv_chip_power9_pec_realize(PnvChip 
+>> *chip, Error **errp)
+>>       }
+>>   }
+>> +static int pnv_power9_i2c_ports_per_engine[PNV9_CHIP_MAX_I2C] = {2, 
+>> 13, 2, 2};
+>> +
+> 
+> Generally, these class constants are located close to the class definitions
+> in the file.
+
+Either keep them close by for comparison, or, since there
+is a single use, declare it in the function using it here 
+pnv_chip_power9_class_init().
+
 > 
 > Thanks,
 > 
