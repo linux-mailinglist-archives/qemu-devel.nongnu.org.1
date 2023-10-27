@@ -2,130 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2287A7D9130
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 10:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9ED77D9191
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 10:31:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwI5L-0005TR-71; Fri, 27 Oct 2023 04:20:51 -0400
+	id 1qwIDu-0007wk-9F; Fri, 27 Oct 2023 04:29:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwI5J-0005TJ-F9
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 04:20:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwI5H-0001hx-R3
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 04:20:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698394846;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=RizXMLg0Ss4w1JUu+HBwx5fxV4Bciv2x/Y2xl7fTrJY=;
- b=aCjwGHzMsBppUfxuOyZD9G3TRV2k5hsS6VH4+9B3qomhnfzKWg7wea0jeTRjjIQr7fmlRj
- L+nQAXQgb2nSO1fWM7oKcqvIKBoSNFUwiLfp/L0H/O/HjB4yxNFHgURT49dEfaDZObMxUX
- QpRB7OwbHCB0s+VUZHj3L+WlOkfnzWg=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-GOI2u65uNtahac1-_usWXQ-1; Fri, 27 Oct 2023 04:20:34 -0400
-X-MC-Unique: GOI2u65uNtahac1-_usWXQ-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41cb6df5c7bso23466281cf.3
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 01:20:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qwIDs-0007wD-5E; Fri, 27 Oct 2023 04:29:40 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qwIDq-00054g-M3; Fri, 27 Oct 2023 04:29:39 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40850b244beso13914085e9.2; 
+ Fri, 27 Oct 2023 01:29:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698395376; x=1699000176; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=uawWEYvnU1I7SsFfXaVgl6JK99lbvsL15u5TMr7vQn8=;
+ b=LOGiVyYbDsKnTLra98DqiZukxE8TGdmb9xreQYRX++J0nDQPYPpvnZb8GdNRgq905x
+ RSIHYCOTp2xVnavsxyzXsxnrIkL7gwSvs8ja8LYnVtLLzpMbCz4IPVOCjQMWN40+bJvr
+ SCE9UOSDh58H9UmQfFo+GWy3d7GJvWZtXi3dE6+moYv3AgFCSODRskCR9oHRPK+NUhdw
+ nHZfXaXbqlzP4xPyl5pBKmN1EI9sht/wqED1TcuBrMaKEaTrz1PGQ6fK5FPOkABkb52G
+ HsR8K/ZBVLPdG8OyRMVnGVI/nissbgjuwN+igzkZoBMrK5Ah2K0vH0SdwVjrXUF1GdBm
+ u2Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698394834; x=1698999634;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RizXMLg0Ss4w1JUu+HBwx5fxV4Bciv2x/Y2xl7fTrJY=;
- b=uGSknCmB9dECgl8EaMUtioBmLv5w9nCoxn93kfyk7OimIORr6aHzt/JtmUbCKV05GC
- whyOJi8hAjl+yC/610DmeEsD0YbbTSIaTNx0lelNlcvGVujWyp1i8zY+w7DLD+I+O7EK
- fhCPhcrdd825owtd2nYgYZBAsAchtf3SNdr8W6wus+tNJ0InsJ7lBX3fhPCyx6/4NIKo
- GbqALk6dMX5ZyDZxjhKtDKBbyEiqo5VVzfA3U8XyC4/lDrp81NBEtii3QwYzfczNcAAi
- Oq3uMWUU77jaQ9NZ+6kUl+K+x6qS7ApzTohPulpyYzcs+zcdCsTvIB9NPRFBqaeHiu3w
- zlhQ==
-X-Gm-Message-State: AOJu0YxlSchpDI47K86vexHYCq5eALytIVgA+TVpNP9NXLGy4t6JfsVR
- QnJApREYr4soclIbSCvMx8SCIGmEBMXeY7cRROxT9bPqTACrNJ+NrBVIjQhqvRNtJU1/K1pmmiF
- f8q0QaKRc65u2Nx0=
-X-Received: by 2002:a05:6214:4019:b0:66d:bbfb:839b with SMTP id
- kd25-20020a056214401900b0066dbbfb839bmr2592329qvb.41.1698394834114; 
- Fri, 27 Oct 2023 01:20:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHo9y6GH/BepC7PhpsjCqCe9LjJysPCDGLTsfTUskVaa4ZMjD/oQ9qdZdyjuhLX5EeBw8c59A==
-X-Received: by 2002:a05:6214:4019:b0:66d:bbfb:839b with SMTP id
- kd25-20020a056214401900b0066dbbfb839bmr2592316qvb.41.1698394833872; 
- Fri, 27 Oct 2023 01:20:33 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
- [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
- y10-20020ad445aa000000b0066cf06339bcsm446391qvu.0.2023.10.27.01.20.32
+ d=1e100.net; s=20230601; t=1698395376; x=1699000176;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uawWEYvnU1I7SsFfXaVgl6JK99lbvsL15u5TMr7vQn8=;
+ b=adgUNq1Ie6PYFCFnTw8t+mMKwuIyTu4Yh52lQgmLet0p7CN4C6vv1YREiagyAMAexg
+ 7QhzC0+fNWHs59D2Vo9xLtLZcBKEDcLauTP5vplaJjWxcAqbc7cQhxyvZa0SqbKZXbpX
+ EPIRCfw40xniz7E0eVDtDYnrnpIkCu6F265515swoF7kW9rbbi0EwJz+5OuyLSB+hJ2w
+ VIznPW0RJqJ07LnD2P6kpdOeDhG5/BuwEph0ugopaYLjxk9Gpn3beQ3vwoKot9pz6MSF
+ 3lxej+4uLrhjx3K/2fWlLwZheQqx4hwC/YcOVLUGRfR1IlEHhoA5Cxek09oNwkhFg2UB
+ +u9A==
+X-Gm-Message-State: AOJu0YzaKyY2+yeuu2ntgz5wsLK+vYn9fVabYPqOW+vy6X+INYuQvfj8
+ 2+TDB7SrQIduImGw835fBQQ=
+X-Google-Smtp-Source: AGHT+IEhOFiWCBEfo+wHr0Pp7y4a5kzJHetZXB/E/pRI16RlTXShKDIVxn2mzdbzdHFgDhukzBbnCg==
+X-Received: by 2002:a05:600c:1c06:b0:404:4b6f:d70d with SMTP id
+ j6-20020a05600c1c0600b004044b6fd70dmr1726336wms.17.1698395376081; 
+ Fri, 27 Oct 2023 01:29:36 -0700 (PDT)
+Received: from [192.168.10.177] (54-240-197-235.amazon.com. [54.240.197.235])
+ by smtp.gmail.com with ESMTPSA id
+ h9-20020a05600c314900b0040849ce7116sm4519893wmo.43.2023.10.27.01.29.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 01:20:33 -0700 (PDT)
-Message-ID: <27bd1017-fd0a-4e90-ae54-6064b434b9aa@redhat.com>
-Date: Fri, 27 Oct 2023 10:20:30 +0200
+ Fri, 27 Oct 2023 01:29:35 -0700 (PDT)
+Message-ID: <0aabb787-eacf-48d9-83b6-3769c7436cf9@gmail.com>
+Date: Fri, 27 Oct 2023 09:29:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests: Fix printf format string in acpi-utils.c
+Subject: Re: [PATCH v3 18/28] hw/xen: only remove peers of PCI NICs on unplug
 Content-Language: en-US
-To: zhujun2 <zhujun2@cmss.chinamobile.com>, qemu-devel@nongnu.org
-Cc: mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
- lvivier@redhat.com
-References: <20231027030930.7739-1-zhujun2@cmss.chinamobile.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
- aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
- QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
- EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
- 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
- eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
- ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
- zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
- tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
- WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
- UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
- BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
- 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
- +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
- 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
- gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
- WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
- VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
- knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
- cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
- X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
- AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
- ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
- fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
- 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
- cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
- ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
- Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
- oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
- IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
- yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231027030930.7739-1-zhujun2@cmss.chinamobile.com>
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ Bernhard Beschow <shentey@gmail.com>, Joel Upham <jupham125@gmail.com>
+References: <20231025145042.627381-1-dwmw2@infradead.org>
+ <20231025145042.627381-19-dwmw2@infradead.org>
+From: "Durrant, Paul" <xadimgnik@gmail.com>
+In-Reply-To: <20231025145042.627381-19-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,23 +100,21 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/10/2023 05.09, zhujun2 wrote:
-> Inside of acpi_fetch_table() arguments are
-> printed via fprintf but '%d' is used to print @flags (of type
-> uint). Use '%u' instead.
+On 25/10/2023 15:50, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> Signed-off-by: zhujun2 <zhujun2@cmss.chinamobile.com>
+> When the Xen guest asks to unplug *emulated* NICs, it's kind of unhelpful
+> also to unplug the peer of the *Xen* PV NIC.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/i386/xen/xen_platform.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
 
-                    ^-- Could you please use the proper spelling of
-                        your name here?
-
-You might need to create a proper "name = ..." entry in the "[user]" section 
-of your ~/.gitconfig file.
-
-  Thanks,
-   Thomas
-
+Reviewed-by: Paul Durrant <paul@xen.org>
 
