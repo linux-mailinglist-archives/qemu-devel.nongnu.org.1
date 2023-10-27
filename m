@@ -2,92 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5B17D9F0C
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 19:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE99E7D9F0D
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 19:54:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwR0r-0004mn-Gl; Fri, 27 Oct 2023 13:52:49 -0400
+	id 1qwR1W-0004ug-Tv; Fri, 27 Oct 2023 13:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qwR0p-0004lz-AW
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 13:52:47 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qwR0n-00078h-2i
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 13:52:47 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6b77ab73c6fso1715091b3a.1
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 10:52:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698429163; x=1699033963; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QtsTmlbZGwD0fbWsNIdW/zI3E1/VLngJHIAuL0WE4e4=;
- b=kL6z2E62KiEsaxFyYvaHizTVgv0x/wzwFjAqei+T1TI7UqI3gMY5KAjXztzIbVoR5Y
- vgWrPLfSC+IAJxHzvlbasyuTVJ/ld/4CkCe/9fRnVpQg7gdMZbQ+dEWb66uaK56+pLWC
- IKDab6vkHSHxWg6tcAE0coEX/RbGZ6fpPip9OxAqB6Jz3isq3oGNoBSk58DU1ZTMoOTN
- bA7fJk1Jtkknm/uw81KGcc8c0ncD/vSW9I0ud1XUQ8dXsD+QcmQ53kzaQTd04mFArJhU
- GUpQ+7oPIq3/+o6d1ktMAa3iXSGeOWORDlYnqcJNVwkAMxK1Z8D01Xr3rLApRKBc3ycW
- MfJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698429163; x=1699033963;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QtsTmlbZGwD0fbWsNIdW/zI3E1/VLngJHIAuL0WE4e4=;
- b=kj0m1Nrsux+URa/FACrmUvHEme5UfZ3+rmnElHZqY9uqw5lnI7AJLQBiTU9EO9luZo
- KO53QFeeDOOLP3EZqcZJYgR5CKFmIOlnzkBxem0vEGGfylHV4HULh9XEZFledJckww+O
- O3gbL8FXfcIWQbl7OoRehbnEUOdqBdjPRyWG0mI2rgTFId1J0qyofLnq0Vqo3Hc3G7W4
- 1/8QHwfqMcZiaT5WsKv6vgOdV/eONsLbRsoxMIPRRU/C1kvYIXScth1fqAPX/AfVqh7r
- O6X4yJxlEFGdy8CRhb0ey6wPOXrNcYbj0cv+Ahw06xUKuSkQAf2z9miFTDoiOHWbKDtI
- rowQ==
-X-Gm-Message-State: AOJu0YykV5UCpmYvQ0TTYxOeQHaoN36S0fbZ8EMnm8maM8NpU0MKkrYL
- T/NlQ4Oc7p3hgCs8ELwgxAuA8g==
-X-Google-Smtp-Source: AGHT+IF2UsDPF0ExRLyouSFBQnV2yGWxgYIvoDrHellsukLS0Mw+WJmIq3armmW7vw+rh2eJWhLoFQ==
-X-Received: by 2002:a05:6a00:2b8b:b0:68f:c1e0:a2c4 with SMTP id
- dv11-20020a056a002b8b00b0068fc1e0a2c4mr7540220pfb.3.1698429162965; 
- Fri, 27 Oct 2023 10:52:42 -0700 (PDT)
-Received: from [192.168.68.107] ([191.255.2.33])
- by smtp.gmail.com with ESMTPSA id
- c6-20020aa78806000000b00688965c5227sm1672821pfo.120.2023.10.27.10.52.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 10:52:42 -0700 (PDT)
-Message-ID: <e3f53179-7f7e-42a9-8a13-a81bf1beeb89@ventanamicro.com>
-Date: Fri, 27 Oct 2023 14:52:38 -0300
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1qwR1Q-0004tE-5Z; Fri, 27 Oct 2023 13:53:24 -0400
+Received: from mail-mw2nam10on20613.outbound.protection.outlook.com
+ ([2a01:111:f400:7e89::613]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1qwR1M-0007CZ-RO; Fri, 27 Oct 2023 13:53:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aFpzU6j2Q++w/XdQWVo7nOnw4X2co8hxP2L0l+mtxQZMRNzqX6fH5NeSGtR6byTa1AAKoC2CGCprpcsx37xNfTcbTD053lMCj/lRYOcINUrnQomDII/7IKkNXMhEF32+mvjtXAtz6zd/IAR8BBQcOhwBgFJY2H9S4s3d7IeBBj9DpxZ4GMz9yJ7uN6ECeVZWMSrTi7bcI/L8oMuoCJbd/QYJhmtT4bgHUuj1+wGT6DEJV7J1/lQh2fmd/G89T5ITs4o2e9iLFlcIdocOQT+R+VB2guursf8OYJwvR9Gj3tfXoQ3m/wNWH75OB1D4Qyj+GaCexOVqht9DR6sa7YXxuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GGQQzQGvh9OkQJ830hgNOQZilgpDHlw7JFdOrIfgRns=;
+ b=TLe8kGKvEVX7f3+IiVv77OM1LNSQg4WZ8RwUL1iXf+ucyOdo8OVfCLhSzl1B5OZZMHCi4TYZ+Xv5sqM+tMtCi4GMFZrlt6HlVe3iSkXHqGEN+r2ymvy+e6SjwuVvRLZxKJokYOlO9l2OSowC3LbQab+T9iK0BPyZE0p+96eUVDABMCWVdE6dF5inH9J3RlQP4Rg9inh3VrgLYbr73n2p1J76RL3s+eyY3S89ADN5UrYKDLbjxiX8PazMqVSl/TTX6mUv04oLF0I70vQlz0fUDNpmQG1dMOMCxZKabP/EmvuolecQcvLGLI6CLs5GdbqosbKYtXzjeRv2fIhtNMwzQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GGQQzQGvh9OkQJ830hgNOQZilgpDHlw7JFdOrIfgRns=;
+ b=GNX10iCAA5Rsycnm5eEXi4pbqX9XT+Fw5BoZph0yjTUAg4o6ZRDg35HliyEz/waK1zdqsbVK0RYMrVHap4VMFPrBYmZp8iomp43eTeOD4xZX32zQQiZiGAqotsSs0D5fLeYUC4Gghc9qajZ2ub0fY1fq+cvuftm1soDN5dM4o3I=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4409.namprd12.prod.outlook.com (2603:10b6:303:2d::23)
+ by BY5PR12MB4869.namprd12.prod.outlook.com (2603:10b6:a03:1d9::23)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.22; Fri, 27 Oct
+ 2023 17:53:15 +0000
+Received: from MW3PR12MB4409.namprd12.prod.outlook.com
+ ([fe80::bc0e:2b8d:357c:675e]) by MW3PR12MB4409.namprd12.prod.outlook.com
+ ([fe80::bc0e:2b8d:357c:675e%7]) with mapi id 15.20.6933.024; Fri, 27 Oct 2023
+ 17:53:15 +0000
+Date: Fri, 27 Oct 2023 10:53:12 -0700
+From: Vikram Garhwal <vikram.garhwal@amd.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+ Vikram Garhwal <fnu.vikram@xilinx.com>, qemu-trivial@nongnu.org
+Subject: Re: [PATCH] MAINTAINERS: Add the can documenation file to the CAN
+ section
+Message-ID: <ZTv5CEOPsHEzDvAV@amd.com>
+References: <20231027060931.242491-1-thuth@redhat.com>
+ <76180120-130b-9a86-b86d-ba3bec43d9fc@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <76180120-130b-9a86-b86d-ba3bec43d9fc@linaro.org>
+X-ClientProxiedBy: SJ0PR03CA0344.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::19) To MW3PR12MB4409.namprd12.prod.outlook.com
+ (2603:10b6:303:2d::23)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] target/riscv/tcg: add user flag for profile support
-Content-Language: en-US
-To: Andrea Bolognani <abologna@redhat.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20231020223951.357513-1-dbarboza@ventanamicro.com>
- <20231020223951.357513-4-dbarboza@ventanamicro.com>
- <20231023-2018025adea3ffaebbbefe23@orel>
- <0e66af36-bd36-4b42-b901-ed726af207b7@ventanamicro.com>
- <20231023-b0eb8f3478a61875a22de747@orel>
- <CABJz62MN5ha-JH=i+PAu=7hZspV8g85jeAc=hRam0Z1f4fPDEg@mail.gmail.com>
- <20231026-c8c8065150673a1f48f41dd5@orel>
- <CABJz62N0D2x1kP+sPi7xrDMMyG080BesyeAR+6HsnVt0-yi=TQ@mail.gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CABJz62N0D2x1kP+sPi7xrDMMyG080BesyeAR+6HsnVt0-yi=TQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|BY5PR12MB4869:EE_
+X-MS-Office365-Filtering-Correlation-Id: 893cc9fc-ebd3-4528-b166-08dbd7159844
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: mdSF8KUKzQXt+2/EjStOg2Wy0RfWQmtWlJudXFBVbX/X7Ng68wVbw9Sarrp46lntFse7XG8t6ErUpxoUIXl0cfY5gvgU5P4YDGN25NpfbjzGOcSGSJoZUAhGXYlcjACH+4zYQadyGLfWQnM+hptRwAUySTeLM41P7tSiORlPsNPsZEPoRwiIN1V+a++ZnT2HiPy5RPW40LJ8Hopkd2O5E1S8DeCdN2+tFxB7HczMsa+XrjsWbYQR8qhmQjFaqE12CO7JBdApUWOadZ15w7diwejjphoiwpheMkulD8n6ZiyOiMRzGyEfBTflaAgyOzUMWkxAu1zfWGeU1iJCTndJUs7hAHpQPUXMAxmsR3MaVQ8vY9XvuA14+JUWdFE6P8PFF4UgMR+hgtkwm0EH6iHcBbmHuSx9gG91i8puVoy/kYZJPZosYC6bz0OheCxxOK603pxtGOD7I354HRkBN7qT058bfbaQ3SCkWziI2QJC9kSfcYF7HsmCqxSTnBDLnjODKUKdR30deWnWW6q9TsEYdYJuOF25f34CwaTxwPb9Bq1EIeH67WtAQXegN1Bh6VFAqvN88EezZs7BWFG6SUCPLBzOSSxYXfkCDyRJlWYLtWCXFBuuxRip8NfnNgsCPus5
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4409.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(366004)(136003)(396003)(376002)(346002)(230922051799003)(230273577357003)(230173577357003)(451199024)(186009)(1800799009)(64100799003)(38100700002)(83380400001)(53546011)(6506007)(6666004)(6512007)(66946007)(2616005)(6486002)(478600001)(316002)(26005)(66556008)(66476007)(6916009)(54906003)(41300700001)(5660300002)(2906002)(86362001)(4744005)(4326008)(36756003)(8936002)(44832011)(8676002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aWRTNDdYV1d3N24yVlUwZGZ0R2FBenJDeVBOWmtOZjBieXBObzk4SEMwUkZU?=
+ =?utf-8?B?Ti80eGdPUXFEZG1PL2tNY3VPZDBPL0FDUW51WjlLcWtYaXZoRnRQVGt0Q0Vo?=
+ =?utf-8?B?V2FOUHNXTkNLWHBDZ1krbWc4OFcrSU1BSlV2dnJGbE11aU1oanUyYXlNODZQ?=
+ =?utf-8?B?bEx3YUhxTTlTdXZRSWRuV21iblB0S3dLWjJwV3lFRzhTZmo5aDE2bytkN0Rs?=
+ =?utf-8?B?T1ZLN1dwalZvbjZWaWNYQVhZT1M3SVV4MGhTdUhJc1hueUUrbEh1MDFOZlZa?=
+ =?utf-8?B?OHRnR3pndlc4VEZPREFVWWNxVWMycTBSTWdUR0RIS2VuVVVFMTNiM1d6WUNh?=
+ =?utf-8?B?UnpHQk1pbWVmQ0lFblptRzhybjFUck9tRnhNRmZicUN1bVJzdi80SUtJcElp?=
+ =?utf-8?B?cVRLVnE2WE9SOUtsN1BWRFVoSWRUbGtsNHRDUDJPemFRaURvbHlJNU8wMXdY?=
+ =?utf-8?B?b09zamlFUGZ4enZVQ1Z2SS94Y2UvSXd4cEsrQVZDeiswRjZFalovTVlBbEs1?=
+ =?utf-8?B?OU5kcFRqODB1djZXaUU5Y1hpZVRESHhYdHZlRS9PNEQvN3BFc08xNnQ3Tmw1?=
+ =?utf-8?B?OUtwQmFrWDdHeGZ4cENJMjJadWJRREFsOUliTUVTNUJkUGtpaVdOZGxXcjJM?=
+ =?utf-8?B?Q0tDZTFVcHp0NGVxRW9zYUxjYmtyRjRFMUQ2a2VnNnY3QUg2eC9SNkZHK0FP?=
+ =?utf-8?B?d05PYkpWV203UUMyL0RuL2ZybTFzNG1YWkQxZk5mc1ZSUWtKZ25OZEo5OWpz?=
+ =?utf-8?B?bm5xc0Y5d2c5VU9TS0V6NlhUTm5TSGJkZXBRVEJkcUYyOStMNUVldDZlNWdm?=
+ =?utf-8?B?bVMyZ1A4LzNNSW9QRDN1Q3AzVXBYN2ZIRjR6RTh3OUo5bWNWN0dTUGx5bEhJ?=
+ =?utf-8?B?NHVveUM4RjR6SG9IMFQxVnEvV09RN0FXdWNkTzFVOHZVcTBmSW5OSGRpK2pI?=
+ =?utf-8?B?bkFWUTcySGRaeWUxVDZqS3BKOExKSTA2Q2xIQ1lUNllwR1ZjM2RNcWIwUGdQ?=
+ =?utf-8?B?MFJkRkZuUzlMMXNrd0ZQSE1yNnhTTlZ3VHNuUElvNTd2Qk5GdXBYT3FFUDNv?=
+ =?utf-8?B?M1ZKcHJPM3dydzdZTFdJazFaaDhZRE5QSkxXc2Jscko5VjEwQ0piSStsc3ZY?=
+ =?utf-8?B?Q2swTXVMVVpyYUErejU5L3R0WGRJZWxMTGhGRU41V2RweWR0cS9Rdkdnc2tu?=
+ =?utf-8?B?cEZuMm1RdEtpYVorTjFZMkpNYjU4R1ZZQi84YVRRcnBkNjgraUtaY1dTditQ?=
+ =?utf-8?B?NmluVnEvR283ZmZ3dUgxend3MmgrM1l5by9BRXY1M0RsUS83ejFoR1BvMnlY?=
+ =?utf-8?B?MHUvVC8rWXFSc3QxZEZaSitvYXJDMVdqSng1eE04NFJIK0RyU3l1Y2NueVZQ?=
+ =?utf-8?B?ZTl2V0ZUZlNQUlVEUmhtN082NjdQQ3JJdjVPR1FiL3V1NStWcWQ2M2o4cVBW?=
+ =?utf-8?B?TmZQR0kvaGZ6aEw5NnJxYm5XTnNPSnBVSFM2WENZT3dVdktqeTdKWFlOZUlm?=
+ =?utf-8?B?dzBtZ2s1RzlNMytUamdZdnRRbENtMVhTNkFjYzhJR3hPM2ZCd25iblRkc3FT?=
+ =?utf-8?B?M0Qxc1NWUVRjMzJURGMyYVFLK2szSWtsRDBCMnVKb2N2cHBQb2szTHFFNmhU?=
+ =?utf-8?B?ZndoVThXc0ZqNWpmaE9OQnh0Q1JTTGZSNEVaUnBEcmQ5eSsyRENpQ1JVbXdj?=
+ =?utf-8?B?c053WHAvUzBqQkNxblB4SFdjK2ZnTW9BM1dWcitHbmdLT1JmcUtOUWRRTmc2?=
+ =?utf-8?B?d09VV3d3SUh0aCtSbm82LzlPOHVzNlVtSDVQMWNLeWRidTZiZ2RtN25TMlBx?=
+ =?utf-8?B?TWowV2crSmp3ZDVIanVyNkVXV2IxeTQrWjlhM2czeStpbWVZRTVhTG5lbDNU?=
+ =?utf-8?B?N2NxdWtOYnZ3NnF0bC8wRFpsd1lRWUZRdStrWEV4VzJRd0REOW1qTzB4YXhk?=
+ =?utf-8?B?MkRCeDdHK3pZVm9JV04raHprb0ZnWEl5aGFZaFFidlNzZTA4TjhxanZvSm1l?=
+ =?utf-8?B?Vldybk9UNEc3V2RUV3MydXAyMlRndlpJTjZSNzJhOU56Ti9TMDUxanpZemJ4?=
+ =?utf-8?B?MWoxRHlYUWRydVdIWGxsOFNnK3hlck9kZEY0TktmdVlGbWxWQjhoaXFKU3lJ?=
+ =?utf-8?Q?zOTfCTSZu1CeKa5eoQrtsOtxs?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 893cc9fc-ebd3-4528-b166-08dbd7159844
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4409.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2023 17:53:15.3859 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8k6lrrGrOT0ENTaKzy3UjLf5SqkkH6KMX05TZ25aKd8aYAvXVssVM33a9IqbDlCUN7Uk8jGGJWo7kAyBzG7W1w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4869
+Received-SPF: softfail client-ip=2a01:111:f400:7e89::613;
+ envelope-from=vikram.garhwal@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,179 +144,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/26/23 14:36, Andrea Bolognani wrote:
-> On Thu, Oct 26, 2023 at 05:14:49PM +0200, Andrew Jones wrote:
->> On Thu, Oct 26, 2023 at 07:36:21AM -0700, Andrea Bolognani wrote:
->>> On Mon, Oct 23, 2023 at 07:35:16PM +0200, Andrew Jones wrote:
->>>> On Mon, Oct 23, 2023 at 02:00:00PM -0300, Daniel Henrique Barboza wrote:
->>>>> On 10/23/23 05:16, Andrew Jones wrote:
->>>>>> Hmm, I'm not sure I agree with special-casing profiles like this. I think
->>>>>> the left-to-right processing should be consistent for all. I'm also not
->>>>>> sure we should always warn when disabling a profile. For example, if a
->>>>>> user does
->>>>>>
->>>>>>    -cpu rv64,rva22u64=true,rva22u64=false
->>>>>>
->>>>>> then they'll get a warning, even though all they're doing is restoring the
->>>>>> cpu model. While that looks like an odd thing to do, a script may be
->>>>>> adding the rva22u64=true and the rva22u64=false is the user input which
->>>>>> undoes what the script did.
->>>>>
->>>>> QEMU options do not work with a "the user enabled then disabled the same option,
->>>>> thus it'll count as nothing happened" logic. The last instance of the option will
->>>>> overwrite all previous instances. In the example you mentioned above the user would
->>>>> disable all mandatory extensions of rva22u64 in the CPU, doesn't matter if the
->>>>> same profile was enabled beforehand.
->>>>
->>>> Yup, I'm aware, but I keep thinking that we'll only be using profiles with
->>>> a base cpu type. If you start with nothing (a base) and then add a profile
->>>> and take the same one away, you shouldn't be taking away anything else. I
->>>> agree that if you use a profile on some cpu type that already enabled a
->>>> bunch of stuff itself, then disabling a profile would potentially remove
->>>> some of those too, but mixing cpu types that have their own extensions and
->>>> profiles seems like a great way to confuse oneself as to what extensions
->>>> will be present.  IOW, we should be adding a base cpu type at the same
->>>> time we're adding these profiles.
->>>
->>> The question that keep bouncing around my head is: why would we even
->>> allow disabling profiles?
->>>
->>> It seems to me that it only makes things more complicated, and I
->>> really can't see the use case for it.
->>>
->>> Enabling additional features on top of a profile? There's obvious
->>> value in that, so that you can model hardware that implements
->>> optional and proprietary extensions. Enabling multiple profiles?
->>> You've convinced me that it's useful. But disabling profiles, I just
->>> don't see it. I believe Alistair was similarly unconvinced.
->>
->> The only value I see in allowing a profile to be disabled is to undo the
->> enabling of the profile by specifying the profile as 'off' to the right of
->> it being specified as 'on'. That may seem pointless, but scripts take
->> advantage of being able to do that. Besides that one possible use case,
->> there isn't much use in disabling profiles, but treating profile
->> properties like every other boolean property makes the UI consistent and
->> should actually simplify the code.
+On Fri, Oct 27, 2023 at 10:44:35AM +0200, Philippe Mathieu-Daudé wrote:
+> CAUTION: This message has originated from an External Source. Please use proper judgment and caution when opening attachments, clicking links, or responding to this email.
 > 
-> The code might be simpler, but the result is an additional burden on
-> the user, as the interactions between the various flags become much
-> more nuanced and less intuitive. I'm not convinced the trade-off is a
-> worthwhile one.
 > 
-> For the script override scenario, fair enough, but once again I feel
-> that we're making things much worse in the general case in order to
-> cater to a much narrower one. Script authors will naturally learn to
-> avoid hardcoding profile enablement once users have reported enough
-> failures resulting from that.
-
-I'm not thrilled about how we're able to disable profiles either. I'm
-coping with it because (1) it was a feedback from the first version of
-this work [1] and no one had strong opinions against it back then and
-(2) I believe that users won't find much use in doing "-cpu rv64,profileA=false"
-in a real world/common scenario, so we can get away with this kind of
-weird functionality.
-
-The profile flag is set to 'false' by default for all current CPUs. If
-the user manually sets it to 'false', well, it doesn't change the internal
-state of the CPU, does it? But then I need to be creative and interpret it
-as 'it's not a default false, it's an user-set false, so I need to disable
-extensions'. I can't think of many qemu options that behave like that, if
-any.
-
-We also have the example of RVG, a bit that is default set to 'false' that,
-when enabled, causes IMAFD_zicsr_zifencei to be enabled. Today, if the user
-set RVG to 'false', nothing happens - we're not disabling IMAFD_zicsr_zifencei.
-In the latest version of this work there's a deliberate effort to make RVG
-behave like a profile [2], but perhaps I should make profiles behave like RVG.
-
-Last but not the least, I'm planning to add a couple of bare-bones CPUs (rv64i
-and rv64e). Disabling profiles in these CPUs is a total waste of cycles since
-the CPUs are already bare.
-
-After writing all this stuff, and realizing that profile disablement creates a
-lot of confusion and has no vocal fans, I had a change of heart. Profiles will
-behave like RVG -> if set, mandatory extensions will be enabled (respecting user
-choice on disabled extensions, of course). If disabled, nothing happens. Fans
-of the current design are welcome to weight in the discussion, of course.
-
-If we decide in the future that stripping extensions from a CPU model is desirable
-we can come up with a 'bare' option, e.g. "-cpu rv64,bare=true" will strip all
-extensions from rv64. This is a much cleaner way of doing what profile disablement
-is currently doing.
-
-
-Thanks,
-
-
-Daniel
-
-
-[1] https://lore.kernel.org/qemu-riscv/ZRarBuEeBi7WkS6K@redhat.com/
-[2] https://lore.kernel.org/qemu-riscv/20231025234459.581697-10-dbarboza@ventanamicro.com/
-
-
-
-
-
-
+> On 27/10/23 08:09, Thomas Huth wrote:
+> > Add can.rst to the corresponding section in MAINTAINERS, so that
+> > the maintainers get CC:-ed on corresponding patches.
+> > 
+> > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > ---
+> >   MAINTAINERS | 1 +
+> >   1 file changed, 1 insertion(+)
 > 
->>>>>> As far as warnings go, it'd be nice to warn when mandatory profile
->>>>>> extensions are disabled from an enabled profile. Doing that might be
->>>>>> useful for debug, but users which do it without being aware they're
->>>>>> "breaking" the profile may learn from that warning. Note, the warning
->>>>>> should only come when the profile is actually enabled and when the
->>>>>> extension would actually be disabled, i.e.
->>>>>>
->>>>>>    -cpu rv64,rva22u64=true,c=off
->>>>>>
->>>>>> should warn
->>>>>>
->>>>>>    -cpu rv64,c=off,rva22u64=true
->>>>>>
->>>>>> should not warn (rva22u64 overrides c=off since it's to the right)
->>>>>>
->>>>>>    -cpu rv64,rva22u64=true,rva22u64=false,c=off
->>>>>>
->>>>>> should not warn (rva22u64 is not enabled)
->>>
->>> I think these should be hard errors, not warnings.
->>>
->>> If you're enabling a profile and then disabling an extension that's
->>> mandatory for that profile, you've invalidated the profile. You've
->>> asked for a configuration that doesn't make any sense: you can't have
->>> a CPU that both implements a profile and lacks one of its mandatory
->>> extensions.
->>
->> Given a platform which implements a profile which mandates extension E and
->> a need to debug E or test behavior where E is [incorrectly] absent, you'll
->> need to expand the profile first, listing each of the other extensions
->> manually. It'd be much faster to specify the profile, take away the
->> extension, and ignore the warning.
-> 
-> I understand the appeal, I just think that regular users should be
-> prevented from stumbling into this kind of expert-level,
-> intentionally-broken configuration by mistake.
-> 
->>> QEMU users could easily miss the warning. libvirt users won't see it
->>> at all. It's a user error and it needs to be treated as such IMO.
->>
->> I do agree with the concern that warnings will be missed/ignored. Maybe
->> QEMU needs something like -Werror for stuff like this, i.e.
->>
->>   -cpu rv64,error-on-extension-warnings=on,profile-A=on,extension-of-A=off
->>
->> would error out, but, without the special property, just warn. Or, flip
->> the default behavior around with
->>
->>   -cpu rv64,ignore-extension-errors=on,profile-A=on,extension-of-A=off
->>
->> which would either silently proceed or just warn, but, without the
->> special property, error out. libvirt would default to the error out
->> case, whichever that one is, but also provide an element to turn off
->> erroring-out.
-> 
-> I would be okay with something along these lines.
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Vikram Garhwal <vikram.garhwal@amd.com>
 > 
 
