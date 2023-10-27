@@ -2,100 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0CD7D9031
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D857D9037
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:47:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwHXS-0006QE-Rb; Fri, 27 Oct 2023 03:45:50 -0400
+	id 1qwHYp-00078r-KE; Fri, 27 Oct 2023 03:47:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwHXQ-0006Og-Ru
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:45:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qwHYW-00076w-LB; Fri, 27 Oct 2023 03:46:56 -0400
+Received: from mail-db5eur02on20701.outbound.protection.outlook.com
+ ([2a01:111:f400:fe12::701]
+ helo=EUR02-DB5-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwHXO-0003W9-Ot
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:45:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698392745;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W8x8QxrlpTuuxdYCw4K0l4sQ5Ew6OnYHsxurOjHZ0So=;
- b=UT17WJg3sWNejg1QThTZxHm5XU25s2EMy0lAAqj/mg57PTVGojOOlhG09PpGCnij9fWIq/
- a0iaw9UkQfM8nctg8erpFC/uvIdYNn1mS5w5qLAQ3iKiWYQZSoLE3taOLil8LAk9ZYsuJK
- IiQZOJHRVSC6Qsa1to03g+y8+G1MEok=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-KCag8uFOO1iYGlVkBjv2Gg-1; Fri, 27 Oct 2023 03:45:44 -0400
-X-MC-Unique: KCag8uFOO1iYGlVkBjv2Gg-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7740517a478so256257485a.3
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:45:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698392743; x=1698997543;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W8x8QxrlpTuuxdYCw4K0l4sQ5Ew6OnYHsxurOjHZ0So=;
- b=jEaJc5eaCFZaxtwMvO07J9uTKprBDKOk05wWfqPZF6vmeUMtHWJvvmCF+3luNzJYRK
- aZS9dzmvtM1xLN+pq/OdfV2UK4mxHwRUX+SN6srw9lN0cPgAfjPJcfgfwMfTNrD4f1nU
- N4M8Nec0MK8tRHghy2kT2qGvErmrUyMHHGvnpF8MDCqOywy96p3O41Et/YW9AzhlCktS
- coAcReT4irM6GjA2oxKinykuwL3lcAB98RYyghSAtet6EpjYZXsij6TlFu7ugq+jErt+
- 2PvjhlLPZ1uGVJAUhxL1tHjbhDAw1QX3Bp6z8x/CP6W+nfSH1i+BWUkvZXVF8hKakp9O
- OY8A==
-X-Gm-Message-State: AOJu0YxPlpNLoiMIKsVmWf0rTN4bft3mSwq7fVp5mQ91eutT4A1MUh2C
- WoDCY5wjHQEsiXM9lzf908XpMCWbtoVyLzGUc5kLDeugcq8iyT2aigBIqAkd4ZSqsNiHZde/sJ+
- NLHEilBvPqdtMgYk=
-X-Received: by 2002:a05:620a:4e:b0:775:9e9d:6186 with SMTP id
- t14-20020a05620a004e00b007759e9d6186mr1701493qkt.18.1698392743668; 
- Fri, 27 Oct 2023 00:45:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkgQP6M8QxrGoAI0C29j1Ztp8bNwQmAq+w3eBoZBVTUUGuYRAy4C0foKaMywyyNBWhrBdrww==
-X-Received: by 2002:a05:620a:4e:b0:775:9e9d:6186 with SMTP id
- t14-20020a05620a004e00b007759e9d6186mr1701467qkt.18.1698392743302; 
- Fri, 27 Oct 2023 00:45:43 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
- ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
- by smtp.gmail.com with ESMTPSA id
- de41-20020a05620a372900b0077891d2d12dsm353137qkb.43.2023.10.27.00.45.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 00:45:42 -0700 (PDT)
-Message-ID: <d4e5771e-08e4-46b5-97d4-570b4883e4f7@redhat.com>
-Date: Fri, 27 Oct 2023 09:45:38 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/37] vfio: Adopt iommufd
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- Markus Armbruster <armbru@redhat.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <87o7gla508.fsf@pond.sub.org>
- <SJ0PR11MB67444B3A1BE0FAE6934ABAD592DCA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB67444B3A1BE0FAE6934ABAD592DCA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qwHYU-0003ya-2r; Fri, 27 Oct 2023 03:46:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BP/LhFOuayRybVu6j2hgPUqlhREWqnGEpmuCBXWQf+xkcqqUdbR36Nw0rKa1G/034Eox3CG1HfS169mjwOwZB782kg5G+EgsCfbvC5qkd+61JAKpDszrxu7blwhwpmK6LGGr05mjq8Xv6q40ttF979UjC2Rqba4q1qhTzj5ZuJlOQ7dLbfD5vIq/G1zoFhmcwg2uz0y7ihm9rQIzi+IDhzQggeogfLdeeb+AZBPtPp6ARS4DdSiBVo5v9A/G43mnp6WV0hCzCn7FSJ0Oyi7M4s+tA7brI8tcPID8ua0RXTSwvC8MGeCole09QCVyTgtp9Eb/UXrriCaJHPKmIYcp+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l9vsxLKZlpMHgQIm0TR6UHeUnNhRWfDMmYA1/4O9rlA=;
+ b=KUasv8qwHnkEfhcGSW1u2+VbRzSOqdqSx5VRozxI7dT7pkAnKaWYD+Hjmp4SB/LkSRE5df4TH1WnpSbg1Pq0Gs+3uP+JlY3iGHXIXUPFlvhICQ2xeuSbGLsj+EpzSNPUNsGo/UCmW7N04d28ra7OUad4sJSHe6vRvuFDn4gJP9kS02ZNZMfWV2MJG4s5mYCb/3Vzbcn4pXyuCGdCYPf0U3r0LuGFBpUny9EiQjJ61ZT/HYLcilpI9wrJEv4RlKQA0omzdTP5YG+Wes38gWJiMl0N+FbABgKlzgZycUUMd3rHWfbJ/AW8C1s8i+AcIg4bHZYXxf4C1TWRHUyqeCy0dA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l9vsxLKZlpMHgQIm0TR6UHeUnNhRWfDMmYA1/4O9rlA=;
+ b=JvS6mjqkGFFNUr2J+wkKOZJf4c29Tcu44y13aUTh2/k8xGGW3oReZeGRnI1ZIaMrHXE01h5tDrCgSU/LjcevGDfxbNYKG+Sn6LtwsXBrUAUer6az4BM2WMqNW3myG9xMLmeTxMBr46OeIm0F7Li0ZTCRmmE50QtkGDqGmfdFnG7EDvvHDCNcixrhTKXlUSbvIysY9V/MB4+aUXkC0S0KFCH1gAfG2dQ0RKI3W29sVWYCYPwX5JtfzfHBX2xsTOPHwJOHH6vw03WwtLMoEF3Gsi0nzOA6CMZpHTEwvJjqoB6pexuI1ZQCUw1+mrmzmpqTg5zskgwqT1R9D2g0smFuXg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
+ (2603:10a6:800:205::19) by DB4PR08MB8056.eurprd08.prod.outlook.com
+ (2603:10a6:10:387::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Fri, 27 Oct
+ 2023 07:46:43 +0000
+Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
+ ([fe80::22f7:6498:de53:5371]) by VI0PR08MB10743.eurprd08.prod.outlook.com
+ ([fe80::22f7:6498:de53:5371%4]) with mapi id 15.20.6933.024; Fri, 27 Oct 2023
+ 07:46:43 +0000
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
+ vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
+Subject: [PATCH v3 00/21] parallels: Add full dirty bitmap support
+Date: Fri, 27 Oct 2023 09:46:15 +0200
+Message-Id: <20231027074636.430139-1-alexander.ivanov@virtuozzo.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR10CA0101.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:803:28::30) To VI0PR08MB10743.eurprd08.prod.outlook.com
+ (2603:10a6:800:205::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10743:EE_|DB4PR08MB8056:EE_
+X-MS-Office365-Filtering-Correlation-Id: d668da4c-048e-4451-2d33-08dbd6c0dcb0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VHHlx3P0O4D57ns7m1yU+H0ad+L1HwKtMWxav0bDJ7IRgmTcVbjL/470cTyK3qo3Gn3zzW/uFiT6y47DSIOozO7jQJPw4hSB9Re7m1UO6WKfNlxgiK/XVCU/+VDo4+D0O/cBFaQVWKY3JZ5/azKjwp6OSg3JQis3bLOfoIXb0v9IOTZgCcvf1r9SF4VOlmuCs5SXTfwMDxs+oIlRX8uX4y/x6KVyp/ELaTVBVS8Rpr4DvzgmRi7CPCjMuJpt/sKY7eybJ9hNFGdKqIzhIhtjynvlCHp4+tHS6aimh63H5G12jtvYpieSSB8mhR5/lxFjAwPCOBGzHniR55P2t5lowWBe4/E0UxbUauAk68ZZFNNmRelpsN1HZ+Hpfy3o9RxtWsZI2M6V9R2sKWf+u++6fVqwuii0xcnWLboUI/BLnh7SwNMU44lhE3HSxAFoMYOv7mLfs2V43st6uYbb9f8Era1HIsXTikViS5LtLFnG3qNK0qq4iqXCB59Wji0OipDF9eHOQ+PskaTmPen3YGQGtek+VvyIP5BPB+87SZd31mhQgsHVQla6sh75aRdd5WnrQRek7qCmXUmfXfyG4cS6sGPAO5HmMwTwg6StOBMPx8k+fzwtbxbzQQBIxEZD353/w468u0+esBCmSH/Dcce23XZ6+kbzhjR2+VwOki8KtOk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10743.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(366004)(376002)(136003)(346002)(39840400004)(230922051799003)(230173577357003)(230273577357003)(186009)(1800799009)(64100799003)(451199024)(38350700005)(6512007)(6666004)(52116002)(966005)(6486002)(6506007)(478600001)(38100700002)(86362001)(36756003)(2906002)(66556008)(2616005)(26005)(1076003)(4326008)(8936002)(316002)(66946007)(6916009)(44832011)(5660300002)(66476007)(41300700001)(8676002)(83380400001)(14143004);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QcvWonIxtDhrZatPTORohJX3ZtOUJVau+Kv99q0XGm9JGXy5wlOFHIW2fqno?=
+ =?us-ascii?Q?O7Ct9+8dtD0cREPyeB1mKEmo0o0bh5SQ93GFoOHOGUvMG9MlrA2XgWGDOKWn?=
+ =?us-ascii?Q?dpl48QS3ZV3zSvzWPM647+ZHZiKF7/S1YDLu0QbIyURh6CWfI1/8gSEPZkn3?=
+ =?us-ascii?Q?BG0Xm9yBWY/Oo9Fix8Z/jA10SGZMny1RjzqwozPOn728/ssDIXomNbXGviUi?=
+ =?us-ascii?Q?0ez6hzZoKoY+IRc4hMBba/XXOOCXKnUzXGCBuCFUyeMoPiDbSu8yx7EOMXqF?=
+ =?us-ascii?Q?PvHN3lYgf+ZFXQRw667H0Z8mleoyxLTYu0hAu+AiSwdyzKmk3YMhOdlB6pa2?=
+ =?us-ascii?Q?GHvmgSDMBRbPB9+4nrv/2G1yK8mxT8x0XW/u9iaMHpuQoa6s3HLCisYgMxXR?=
+ =?us-ascii?Q?Xm5cPXC0PvcEW90NE0O4PqzShwzRMMmE9zS6OCIPJRzp7zcDjKxQPNPbgAXP?=
+ =?us-ascii?Q?RYpGvsz8TWjFwbZ7H7wYMQP9qy/ekjV+I0eBnvl7URlahJHbFUJykahLaK7H?=
+ =?us-ascii?Q?eFfdT5tC2XLmcCk9iL3SSPqSFTmb/DJeBXwMlOnkShr4VOF/4jCxUB98Qnlt?=
+ =?us-ascii?Q?oUX+ruXi559mZDg5Qkzp50rFURP9ggFq4rMgdTc6Vmfxxjyevmt65NCSXrwa?=
+ =?us-ascii?Q?iGAEuDWuobbVoyhG9bWDoNClCZVe2qwTKnkSVdEds5a6xpdmoOkGI5WydukT?=
+ =?us-ascii?Q?PEzRzkpvqG4UYUjs4CG6V60zK0hQ26Td+VInFYVHLRKr2dDbrcD7RE4S9D7D?=
+ =?us-ascii?Q?ZSutgrI/C8Jvpp6SN4P3B4nZ07C9oOC3KANMONIXZjxEeTDzPupwwyYgqQSo?=
+ =?us-ascii?Q?m+/5MG09Om9JMwR8lTFqzgx2UdqOeuuulXiXAfF6xGv2byU00nvPo6J5RXFE?=
+ =?us-ascii?Q?JtCX9CaLHxBept6EenkkB1rtFLatkbulOkRwZF6F6i7zvUAylzN4hZyoH3Su?=
+ =?us-ascii?Q?F4q10ieKcTVrDks0EF/TL9VDg/U++p+ghLokrPe8mYPtGcTdfPk+Ey70yBKd?=
+ =?us-ascii?Q?WNwb+30cNR+wW4gNlLfPxe8sp6G+C04F2fCuRkPHo6qOVPzaoDP6Y+UbwHan?=
+ =?us-ascii?Q?f1Wt1GrtjzIqtsOBZdzn5R1ceRNSIZZ0MNmW8M9XE2CVzgXZ/3ZuZJulF49J?=
+ =?us-ascii?Q?tJCEkpcS4dMbHYff/3kUZ0Ar62czlNebGA1bMzAJGHfRtr+EVAq6BpJ8VVGg?=
+ =?us-ascii?Q?Ws5RO8aQriWwCa9kbB697Rf5kFNlVA3WbXoiB8hqqq3+TOX6g4X7RpuByeP+?=
+ =?us-ascii?Q?bJAsVsGWdADXhxAs5SLxW0k6BOjAaE3V2ziTpvAwEOMbQP7y9m5+2Z49ry/6?=
+ =?us-ascii?Q?nhoi3iOB8VgAY/Bz/JTTeWeGGDZgMN8cOcAjSjfnVUkcus19F98nscAwyIMn?=
+ =?us-ascii?Q?cPs8mtdz1mORxyhaHx+1g1DhtpTT3s8QAKnVGLOsyIeW1DJ3najC3dDIp4lh?=
+ =?us-ascii?Q?7FJyKPQn16qsS7+86N8NQi+3GGKN3sHLlC+6HU02gtw3EtvP/8NT3wSFHCy+?=
+ =?us-ascii?Q?aWtoENcsLE/32ZIhlp1xHEDmm7fQ+D5vXlPwJyG9VLOghG1XAdG4i4B0e5FA?=
+ =?us-ascii?Q?2lVFWa6gwtt1SLpY5VhX53w1OWGOZ5d+hBaWWR5Yr5Ivs8fxA6nDhPovidI4?=
+ =?us-ascii?Q?tcPJFQz0WUK3agaOd371bHU=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d668da4c-048e-4451-2d33-08dbd6c0dcb0
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10743.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2023 07:46:42.9502 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7omYQihqpHdkgOO4znNQhvJXiSmufcVb8dY0V7wD+fkKYS1jiN6PKN46WXq+v0lMeOdArbtBzGA3CQTXzDj30lDgIxvX6wUjfwcNTdVS3Vg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR08MB8056
+Received-SPF: pass client-ip=2a01:111:f400:fe12::701;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR02-DB5-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,153 +132,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/27/23 08:17, Duan, Zhenzhong wrote:
-> Hi Markus,
-> 
->> -----Original Message-----
->> From: Markus Armbruster <armbru@redhat.com>
->> Sent: Thursday, October 26, 2023 9:27 PM
->> Subject: Re: [PATCH v3 00/37] vfio: Adopt iommufd
->>
->> Zhenzhong Duan <zhenzhong.duan@intel.com> writes:
->>
->>> Hi,
->>>
->>> Thanks all for giving guides and comments on previous series, here is
->>> the v3 of pure iommufd support part.
->>>
->>> Based on Cédric's suggestion, this series includes an effort to remove
->>> spapr code from container.c, now all spapr functions are moved to spapr.c
->>> or spapr_pci_vfio.c, but there are still a few trival check on
->>> VFIO_SPAPR_TCE_*_IOMMU which I am not sure if deserved to introduce many
->>> callbacks and duplicate code just to remove them. Some functions are moved
->>> to spapr.c instead of spapr_pci_vfio.c to avoid compile issue because
->>> spapr_pci_vfio.c is arch specific, or else we need to introduce stub
->>> functions to those spapr functions moved.
->>
->> [...]
->>
->>> qemu code:
->> https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cdev_v3
->>> Based on vfio-next, commit id: fd0e1c8bc1
->>
->> I fetched this, and get several compile errors with Clang (but not with
->> GCC):
->>
->>     FAILED: libqemu-x86_64-softmmu.fa.p/hw_vfio_common.c.o
->>     clang -m64 -mcx16 -Ilibqemu-x86_64-softmmu.fa.p -I. -I.. -Itarget/i386 -
->> I../target/i386 -Iqapi -Itrace -Iui -Iui/shader -I/usr/include/pixman-1 -
->> I/usr/include/capstone -I/usr/include/spice-server -I/usr/include/spice-1 -
->> I/usr/include/cacard -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -
->> I/usr/include/sysprof-4 -I/usr/include/nss3 -I/usr/include/nspr4 -
->> I/usr/include/PCSC -fcolor-diagnostics -Wall -Winvalid-pch -Werror -std=gnu11 -
->> O2 -g -fstack-protector-strong -Wundef -Wwrite-strings -Wmissing-prototypes -
->> Wstrict-prototypes -Wredundant-decls -Wold-style-definition -Wtype-limits -
->> Wformat-security -Wformat-y2k -Winit-self -Wignored-qualifiers -Wempty-body
->> -Wnested-externs -Wendif-labels -Wexpansion-to-defined -Wmissing-format-
->> attribute -Wno-initializer-overrides -Wno-missing-include-dirs -Wno-shift-
->> negative-value -Wno-string-plus-int -Wno-typedef-redefinition -Wno-
->> tautological-type-limit-compare -Wno-psabi -Wno-gnu-variable-sized-type-not-
->> at-end -Wthread-safety -isystem /work/armbru/qemu/linux-headers -isystem
->> linux-headers -iquote . -iquote /work/armbru/qemu -iquote
->> /work/armbru/qemu/include -iquote /work/armbru/qemu/host/include/x86_64 -
->> iquote /work/armbru/qemu/host/include/generic -iquote
->> /work/armbru/qemu/tcg/i386 -pthread -D_GNU_SOURCE -
->> D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing -fno-
->> common -fwrapv -fsanitize-coverage-allowlist=instrumentation-filter -
->> fsanitize=fuzzer-no-link -fPIE -isystem../linux-headers -isystemlinux-headers -
->> DNEED_CPU_H '-DCONFIG_TARGET="x86_64-softmmu-config-target.h"' '-
->> DCONFIG_DEVICES="x86_64-softmmu-config-devices.h"' -MD -MQ libqemu-
->> x86_64-softmmu.fa.p/hw_vfio_common.c.o -MF libqemu-x86_64-
->> softmmu.fa.p/hw_vfio_common.c.o.d -o libqemu-x86_64-
->> softmmu.fa.p/hw_vfio_common.c.o -c ../hw/vfio/common.c
->>     ../hw/vfio/common.c:682:40: error: variable 'hostwin' is uninitialized when
->> used here [-Werror,-Wuninitialized]
->>             hwaddr pgmask = (1ULL << ctz64(hostwin->iova_pgsizes)) - 1;
->>                                            ^~~~~~~
->>     ../hw/vfio/common.c:578:31: note: initialize the variable 'hostwin' to silence
->> this warning
->>         VFIOHostDMAWindow *hostwin;
->>                                   ^
->>                                    = NULL
->>     ../hw/vfio/common.c:785:33: error: variable 'hostwin' is uninitialized when
->> used here [-Werror,-Wuninitialized]
->>             pgmask = (1ULL << ctz64(hostwin->iova_pgsizes)) - 1;
->>                                     ^~~~~~~
->>     ../hw/vfio/common.c:783:35: note: initialize the variable 'hostwin' to silence
->> this warning
->>             VFIOHostDMAWindow *hostwin;
->>                                       ^
->>                                        = NULL
->>     2 errors generated.
->>     FAILED: tests/unit/test-resv-mem.p/test-resv-mem.c.o
->>     clang -m64 -mcx16 -Itests/unit/test-resv-mem.p -Itests/unit -I../tests/unit -I. -
->> Iqapi -Itrace -Iui -Iui/shader -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -
->> I/usr/include/sysprof-4 -fcolor-diagnostics -Wall -Winvalid-pch -Werror -
->> std=gnu11 -O2 -g -fstack-protector-strong -Wundef -Wwrite-strings -Wmissing-
->> prototypes -Wstrict-prototypes -Wredundant-decls -Wold-style-definition -
->> Wtype-limits -Wformat-security -Wformat-y2k -Winit-self -Wignored-qualifiers -
->> Wempty-body -Wnested-externs -Wendif-labels -Wexpansion-to-defined -
->> Wmissing-format-attribute -Wno-initializer-overrides -Wno-missing-include-dirs -
->> Wno-shift-negative-value -Wno-string-plus-int -Wno-typedef-redefinition -Wno-
->> tautological-type-limit-compare -Wno-psabi -Wno-gnu-variable-sized-type-not-
->> at-end -Wthread-safety -isystem /work/armbru/qemu/linux-headers -isystem
->> linux-headers -iquote . -iquote /work/armbru/qemu -iquote
->> /work/armbru/qemu/include -iquote /work/armbru/qemu/host/include/x86_64 -
->> iquote /work/armbru/qemu/host/include/generic -iquote
->> /work/armbru/qemu/tcg/i386 -pthread -D_GNU_SOURCE -
->> D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing -fno-
->> common -fwrapv -fsanitize-coverage-allowlist=instrumentation-filter -
->> fsanitize=fuzzer-no-link -fPIE -MD -MQ tests/unit/test-resv-mem.p/test-resv-
->> mem.c.o -MF tests/unit/test-resv-mem.p/test-resv-mem.c.o.d -o tests/unit/test-
->> resv-mem.p/test-resv-mem.c.o -c ../tests/unit/test-resv-mem.c
->>     ../tests/unit/test-resv-mem.c:42:9: error: variable 'i' set but not used [-
->> Werror,-Wunused-but-set-variable]
->>         int i = 0;
->>             ^
->>     1 error generated.
->>
->> Delete @i, please.
-> 
-> Thanks for your report, I'll fix it and build with both compilers next time.
+Parallels format driver:
+* make some preparation
+* add dirty bitmap saving
+* make dirty bitmap RW
+* fix broken checks
+* refactor leak check
+* add parallels format support to several tests
 
-a compile on a fedora rawhide also reports :
+You could find these patches in my repo:
+https://github.com/AlexanderIvanov-Virtuozzo/qemu/tree/parallels-v3
 
-../hw/vfio/iommufd.c: In function ‘vfio_get_info_iova_range’:
-../hw/vfio/iommufd.c:370:27: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
-   370 |     info->allowed_iovas = (uint64_t)(info + 1);
-       |                           ^
-../hw/vfio/iommufd.c:377:19: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-   377 |     iova_ranges = (struct iommu_iova_range *)info->allowed_iovas;
-       |                   ^
-cc1: all warnings being treated as errors
+v3:
+1: Fixed the order of g_free() and s->used_bmap = NULL.
+3,4: Made mark_used() a global function before mark_unused() addition. In
+     this way we can avoid compilation warnings.
+5-9: Patches shifted.
+11: Added GRAPH_RDLOCK annotation to parallels_inactivate(). Guard
+    parallels_close() with GRAPH_RDLOCK_GUARD_MAINLOOP().
+12-21: Patches shifted.
+
+v2:
+1: New patch to fix double free error.
+4: Fixed clusters leaks.
+15: Fixed (end_off != s->used_bmap_size) handling in parallels_truncate_unused_clusters().
+16,17: Changed the sequence of the patches - in this way we have correct leaks check.
 
 
-> About second error, I'll send a separate patch as it's unrelated to this series.
+Alexander Ivanov (21):
+  parallels: Set s->used_bmap to NULL in parallels_free_used_bitmap()
+  parallels: Move inactivation code to a separate function
+  parallels: Make mark_used() a global function
+  parallels: Add parallels_mark_unused() helper
+  parallels: Move host clusters allocation to a separate function
+  parallels: Set data_end value in parallels_check_leak()
+  parallels: Recreate used bitmap in parallels_check_leak()
+  parallels: Add a note about used bitmap in parallels_check_duplicate()
+  parallels: Create used bitmap even if checks needed
+  parallels: Add dirty bitmaps saving
+  parallels: Mark parallels_inactivate GRAPH_RDLOCK, guard
+    parallels_close
+  parallels: Let image extensions work in RW mode
+  parallels: Handle L1 entries equal to one
+  parallels: Make a loaded dirty bitmap persistent
+  parallels: Reverse a conditional in parallels_check_leak() to reduce
+    indents
+  parallels: Truncate images on the last used cluster
+  parallels: Check unused clusters in parallels_check_leak()
+  parallels: Remove unnecessary data_end field
+  tests: Add parallels images support to test 165
+  tests: Turned on 256, 299, 304 and block-status-cache for parallels
+    format
+  tests: Add parallels format support to image-fleecing
 
+ block/parallels-ext.c                       | 182 +++++++++-
+ block/parallels.c                           | 366 ++++++++++++--------
+ block/parallels.h                           |  15 +-
+ tests/qemu-iotests/165                      |  40 ++-
+ tests/qemu-iotests/256                      |   2 +-
+ tests/qemu-iotests/299                      |   2 +-
+ tests/qemu-iotests/304                      |   2 +-
+ tests/qemu-iotests/tests/block-status-cache |   2 +-
+ tests/qemu-iotests/tests/image-fleecing     |  13 +-
+ 9 files changed, 451 insertions(+), 173 deletions(-)
 
-Since this is a big series, I suggest that you take this patch in your build
-environment,
-
-
-diff --git a/meson.build b/meson.build
-index 72a57288a026325d5ff753131c037e99f6f35c1a..c946cbef5b29e23475dc4cf345655e0466cbfade 100644
---- a/meson.build
-+++ b/meson.build
-@@ -462,6 +462,9 @@ warn_flags = [
-    '-Wno-tautological-type-limit-compare',
-    '-Wno-psabi',
-    '-Wno-gnu-variable-sized-type-not-at-end',
-+  '-Wshadow=local',
-+  '-Wno-error=shadow=local',
-+  '-Wno-error=shadow=compatible-local',
-  ]
-  
-  if targetos != 'darwin'
-
-
-Thanks,
-
-C.
+-- 
+2.34.1
 
 
