@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988337D9BB3
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DC77D9BB5
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:41:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0A-0007Do-1y; Fri, 27 Oct 2023 10:39:54 -0400
+	id 1qwO09-0007D7-E7; Fri, 27 Oct 2023 10:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO08-0007Cu-Hb
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:52 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qwO07-0007Ch-Qw
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:51 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO06-00087k-TD
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:52 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-407da05f05aso16210315e9.3
+ id 1qwO06-000881-37
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:51 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-32f5b83f254so1475540f8f.3
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698417588; x=1699022388; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698417589; x=1699022389; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ViyXdMoJwR5KQ6odO4W8+Pe+0fluwBTlAfwHWWB/LvM=;
- b=FAwMmTha8FnZqypx+CbrvV/UZscS1CktD0nuh1xGjCCUEV3gXbfnSk91D2OeRYZRWr
- 5PkaCuxypRYCo5aItk2NcDUc1m3+QRExslzoEaE5KFrzQyNITtPySlZeXq+x5MF6nfqn
- vE3LN0LP9wCKvroLUnzDr5me1bWzdPpbPhKpplHhmxKg4pLJ8bKypKfEzwEGXUq+UMXI
- jEwmWbhVWCk8WFj6wfKMQBpDepnvUwXQ7enE+gYNvu/0zX9aayukcnbnd+Ye0B1Br75X
- CNW20ZsfBGXnAfqacrDVbAMEOGAAEQhXHLanpga7OF/ytJ8ootR6Ry5eNMZ02yeEa8me
- Cmlg==
+ :reply-to; bh=eWOBdgQ7vK1VMcf/yXxF0qOWq66TWAm+9h+xR++3zSQ=;
+ b=EJy4Ll16TiMbgrrPFBiTntQy+0QH9qh6sV0wSPRK+Fd7Ovz9LkSIUt05oXWNC5ogPV
+ wEvsoZNHH+6vd1lM84cSMncq8ntmc1ik+2+lxKusHfIwvLnAnBl4Bw2mMWL8wOyxqfzm
+ sZb2WZ9oADCEO9QAFeLoX7UpKzASpOqALL4D7FCmCC6jzmAduDlkJzDvsUSpqM8Zfubq
+ 2kqoOPzQgL1uWtm8R0ioldVdlesYF7Yo52SQv1T4ntMsKcwDnVNq9bfZtX6WsBVrqZNR
+ Ll9xUl6jQbBJWrp7qGajeJqPF7nJeE9eVBKI74FIfN6wn5iIUUVVDkkjedl2Rr5iklP4
+ e2Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698417588; x=1699022388;
+ d=1e100.net; s=20230601; t=1698417589; x=1699022389;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ViyXdMoJwR5KQ6odO4W8+Pe+0fluwBTlAfwHWWB/LvM=;
- b=v8SkQTMCbkOMTqwxco2kyhxIV2aJf3XGCYOpyjQ0wCds8Q8IdQpVBfBZRWa7nXDO5/
- 0uqXtBU2oyx3QNYqbiRR2ojvGzSMGszu6KqknsAGA1zXAQbLun4KTJYR6nr3FSkSdFyx
- HORvTHFP98saCMnJGZLLvSmwJZxSfvWZQHlbdDzkdwKK8/arhusa1Pt3UKdiEFYdG3rK
- Ncbqmpkl8iaq/larbfuZQSkFv12IOWuM27Pea3KXdfHJGdbvpCSQT2Nbgvcp2+zWjUsZ
- /U+Ap3xE4/6rCZCYUtsIJNlUlQ+liGqMaP5m6ssjCsi9W/HeD+eQ1NBifdWxp93FGP3D
- 74Kg==
-X-Gm-Message-State: AOJu0YzR0sevfMIzpZB0LPuWvgbnLiEIsH0jqY1IoqbdjQFKjw8Cqwzx
- Yg5/v/e1/2NLWFsvJgqAey+geHjqRj1JoQ0zwxk=
-X-Google-Smtp-Source: AGHT+IFlw8bcnyCfM+zyhx2YDym24hzf/o+/z0w8XSngGeeM6J2knpC9pZ0TNNVk+6SR+4wpfpldxQ==
-X-Received: by 2002:a5d:5850:0:b0:32f:71e2:adfb with SMTP id
- i16-20020a5d5850000000b0032f71e2adfbmr1559294wrf.3.1698417588432; 
+ bh=eWOBdgQ7vK1VMcf/yXxF0qOWq66TWAm+9h+xR++3zSQ=;
+ b=O24uoJQ4MNMGiXFyQrmJqYLu5yyzBwkx+mgWAb5u1LUYE9hac/K9t5/frC6Ipgv1tO
+ 3FxElapFC+wp+6wS+8a5wXn2wedYsqr8BOF6C/vOjfX3hdU4EmFnnz2tN/IMsi+csfb9
+ c6s/8G0v2A6Y189KrZ3M5X2PNi/kupmOCQk+JKNhjFmDHtXzURcK5WKjjaV63pNusoG2
+ Q+dQvB1AP/oQKYJ/AvsQvBY5Iy5bwBwerpGCckPik30R8zwe2FT+KBXg5x+wD26c0jV0
+ YwCEu8MvONA7Xf3CVuAZCUFVAOuMnUilPe11xMn4OU5Z2mGIzbYGFhkXPkKlh8oqM7AC
+ bhog==
+X-Gm-Message-State: AOJu0YzgyOS3st9e04kOrnv8mqbMECj37Wtht2SDqav5pIm+6QBCUclO
+ 62P3LoPJmPQoihunr8dTCLYimgzEKL1ndaX5r34=
+X-Google-Smtp-Source: AGHT+IE35y/QOQf7Ok7UkN+recCFPW/tH60L7/MVaMP6/0uBO7pEC8OUlzFmNGlsVFQvVjCIpJ3TIQ==
+X-Received: by 2002:a5d:4d09:0:b0:32d:9d99:94e7 with SMTP id
+ z9-20020a5d4d09000000b0032d9d9994e7mr2473378wrt.49.1698417588857; 
  Fri, 27 Oct 2023 07:39:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 27 Oct 2023 07:39:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/41] target/arm: Fix syndrome for FGT traps on ERET
-Date: Fri, 27 Oct 2023 15:39:10 +0100
-Message-Id: <20231027143942.3413881-10-peter.maydell@linaro.org>
+Subject: [PULL 10/41] hw/arm/allwinner-a10: Remove 'hw/arm/boot.h' from header
+Date: Fri, 27 Oct 2023 15:39:11 +0100
+Message-Id: <20231027143942.3413881-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,48 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 442c9d682c94fc2 when we converted the ERET, ERETAA, ERETAB
-instructions to decodetree, the conversion accidentally lost the
-correct setting of the syndrome register when taking a trap because
-of the FEAT_FGT HFGITR_EL1.ERET bit.  Instead of reporting a correct
-full syndrome value with the EC and IL bits, we only reported the low
-two bits of the syndrome, because the call to syn_erettrap() got
-dropped.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Fix the syndrome values for these traps by reinstating the
-syn_erettrap() calls.
+"hw/arm/boot.h" is only required on the source file.
 
-Fixes: 442c9d682c94fc2 ("target/arm: Convert ERET, ERETAA, ERETAB to decodetree")
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231024172438.2990945-1-peter.maydell@linaro.org
+Reviewed-by: Luc Michel <luc.michel@amd.com>
+Message-id: 20231025065316.56817-2-philmd@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/arm/allwinner-a10.h | 1 -
+ hw/arm/cubieboard.c            | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index ad78b8b1202..41484d8ae54 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1606,7 +1606,7 @@ static bool trans_ERET(DisasContext *s, arg_ERET *a)
-         return false;
-     }
-     if (s->fgt_eret) {
--        gen_exception_insn_el(s, 0, EXCP_UDEF, 0, 2);
-+        gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(0), 2);
-         return true;
-     }
-     dst = tcg_temp_new_i64();
-@@ -1633,7 +1633,7 @@ static bool trans_ERETA(DisasContext *s, arg_reta *a)
-     }
-     /* The FGT trap takes precedence over an auth trap. */
-     if (s->fgt_eret) {
--        gen_exception_insn_el(s, 0, EXCP_UDEF, a->m ? 3 : 2, 2);
-+        gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(a->m ? 3 : 2), 2);
-         return true;
-     }
-     dst = tcg_temp_new_i64();
+diff --git a/include/hw/arm/allwinner-a10.h b/include/hw/arm/allwinner-a10.h
+index cd1465c6138..2eb83a17eae 100644
+--- a/include/hw/arm/allwinner-a10.h
++++ b/include/hw/arm/allwinner-a10.h
+@@ -1,7 +1,6 @@
+ #ifndef HW_ARM_ALLWINNER_A10_H
+ #define HW_ARM_ALLWINNER_A10_H
+ 
+-#include "hw/arm/boot.h"
+ #include "hw/timer/allwinner-a10-pit.h"
+ #include "hw/intc/allwinner-a10-pic.h"
+ #include "hw/net/allwinner_emac.h"
+diff --git a/hw/arm/cubieboard.c b/hw/arm/cubieboard.c
+index 8c7fa91529e..29146f50181 100644
+--- a/hw/arm/cubieboard.c
++++ b/hw/arm/cubieboard.c
+@@ -21,6 +21,7 @@
+ #include "hw/boards.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/arm/allwinner-a10.h"
++#include "hw/arm/boot.h"
+ #include "hw/i2c/i2c.h"
+ 
+ static struct arm_boot_info cubieboard_binfo = {
 -- 
 2.34.1
 
