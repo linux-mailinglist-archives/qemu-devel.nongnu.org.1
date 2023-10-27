@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6037D9C7B
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FF47D9C7C
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwOMh-0006VT-K9; Fri, 27 Oct 2023 11:03:12 -0400
+	id 1qwOMu-0006a6-1L; Fri, 27 Oct 2023 11:03:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qwOMT-0006SK-2v
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:02:57 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qwOMN-00061u-GR
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:02:56 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-27e0c1222d1so1753745a91.0
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 08:00:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1698418847; x=1699023647;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tVZ3TK8yfiNPw8kqjPbjoFhc82qOk50nQDwJrW5nkAM=;
- b=jfzlAXUXS+CFQVNUoiJcJZhlTFjYxCFWoGA4BYRpHlCmJe2pKpiAFviYaJa3/qES6S
- KaZ/obU22jbeEsz2afikhHh2sPyJQ4JaPd+kx5o4GTyX7WfXAxHyP1Pzvo1TPwM2VN9U
- DEGvOTuvH9OTxxljNztHKViz+LQFCoeelxw7GZmXdaVjj7P2nXyt2S73ON5QqIYiaGol
- e7xB+3xYlVA9LFB8tnnM5Hm0qP+D1YdVXehoX1iw78GHOGCbpbBk+aIxEN7CM+rLkpBG
- lgfJGqCLDVi3PkiCA3m7/N5tIOgWDmfa3c3fOX80vaA9FttPZaXIF1SgZaFWJSCD60DU
- BsSA==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwOMm-0006Xy-DU
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:03:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwOMk-0006X9-F2
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:03:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698418993;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9nTcTa7Y3BqC2xugGtfHKCxxytnXG3nlheXTLJV5t2U=;
+ b=D8MhI70ItRgU0nMrGLHLEnp2cSMDSguMFb09ShahaTjt1gPy20eFLqBIpSVRAGtL9d7z1g
+ sdWX6TC4MLnQZHm1uW0+458AJa0QRAyOFe1Y1jqtO4sbTc2qkPFdZbm4y9pJKkB1GJUTO8
+ uhKrJAE0VoJepbM/5wZEjJHVYAems8A=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-300-5tFTBpJ2O7K4A8f585EGNA-1; Fri, 27 Oct 2023 11:03:11 -0400
+X-MC-Unique: 5tFTBpJ2O7K4A8f585EGNA-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-41cd638a4beso27641821cf.3
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 08:03:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698418847; x=1699023647;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=tVZ3TK8yfiNPw8kqjPbjoFhc82qOk50nQDwJrW5nkAM=;
- b=YP+8FMj1YuK4d3MMNEBAw1krdh0saNRd0l1grscWvkTQ+DiFWo9UwO92pmeQzcS8mw
- xC/k9cXIIVo28BII/yBEjuJ/av20VQvWO0m94A7FY6Fd5gXAx5esprqSblkTnInz5Mb1
- ad8oTBundqt0zaZXZWMx9yV8L5mtz3WNa9qLmNaTmwQkOiA9vzXaVNnXqMGMmBk2eJti
- 1+i0hiTlkGDI6hnXBMzwc/FORK96nZeNaEaFYWmUS6jpR6/ZzwtKJLlKlIFxHRQeC2Ns
- wyACFEBNmgQRtyWWAhjw/L9ME/yTKQZbuM4zpt9j3RGnel1hYHJYV2ZO4tGJDr9ggzKd
- mQhQ==
-X-Gm-Message-State: AOJu0YxcIQLQYFcNid2cN6OKOZU1usnMhWGjdbvbYgKp5OP/5KNLZJqF
- QaveouEVYweCU3s9tixpFN2se636b9gbSl9flx/EXg==
-X-Google-Smtp-Source: AGHT+IF3d8a3Nt2et1cuzoOn/Q9osQBhpbIrRMcHXB9yg3jW+3Ir6JDWnPo0gpo4H5DgMU8s6ta7Ww==
-X-Received: by 2002:a17:90a:1a10:b0:27c:e826:5038 with SMTP id
- 16-20020a17090a1a1000b0027ce8265038mr2833526pjk.14.1698418846816; 
- Fri, 27 Oct 2023 08:00:46 -0700 (PDT)
-Received: from [26.26.26.1] ([45.158.180.111])
+ d=1e100.net; s=20230601; t=1698418990; x=1699023790;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9nTcTa7Y3BqC2xugGtfHKCxxytnXG3nlheXTLJV5t2U=;
+ b=V5DL+1jc1xyt7q2yk5vp+lSRISLYY5uZSLAYrOCJpBYEXxNIzRSb7YyeYnvuj12K3f
+ epXkMCwcMoWJ6b9p+ZvsTee1hUQUtcJeZjvy+3EtViB6z6RdCjkm9iZlSgRcTub7r4yJ
+ Brb18r31ACt/Lc6YXg+MJ7YHx0pIzqJlmJ4+YigoRQNk9i15+tWUCMNLOEoTSKjn2qUY
+ HWLvf8+iagDyjLIsNmrZ/QK4IvGgThOEydxTS7uN7HncIQBRTxO7WDCEElvgn3vn8oGL
+ DM/86dfWnb+JsmwVUKkIj4rPPCfKeM7gKN/8ufZgqvXtYXN92dqHc1QAWVeo7uTVMGTE
+ XILQ==
+X-Gm-Message-State: AOJu0Yz3Ac0ukoqJBqEnDSha5+VQkWUEoriYy856Jza48SecISIW6IEA
+ AB1VoCFQi0n3GOP6dHH7/M2l524D9dMGAQ9F5CbejdzsIMN8KvDPkOJ2BKUv/0fvqTHefjy3amo
+ Cv/o39M2IFAJph00=
+X-Received: by 2002:ac8:5a8f:0:b0:41e:37cf:8661 with SMTP id
+ c15-20020ac85a8f000000b0041e37cf8661mr3289093qtc.12.1698418990252; 
+ Fri, 27 Oct 2023 08:03:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWI8LD2MCDMB4EGzvXsuxh6i5JEBWfA6AbYVQPT61xbIM2NPSx9xef10G7JDDrjFs2F267IA==
+X-Received: by 2002:ac8:5a8f:0:b0:41e:37cf:8661 with SMTP id
+ c15-20020ac85a8f000000b0041e37cf8661mr3289049qtc.12.1698418989754; 
+ Fri, 27 Oct 2023 08:03:09 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
+ ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
  by smtp.gmail.com with ESMTPSA id
- z9-20020a17090a608900b0027d0de51454sm2578304pji.19.2023.10.27.08.00.44
+ d14-20020a05622a15ce00b00418189b689csm651915qty.10.2023.10.27.08.03.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 08:00:46 -0700 (PDT)
-Message-ID: <103c0b7e-b2e6-feab-1b77-0340640ddf34@smartx.com>
-Date: Fri, 27 Oct 2023 23:00:53 +0800
+ Fri, 27 Oct 2023 08:03:09 -0700 (PDT)
+Message-ID: <d4b331ba-593a-454a-bb34-1d30ae603eb8@redhat.com>
+Date: Fri, 27 Oct 2023 17:03:06 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [v2 4/6] tests/migration: Introduce dirty-ring-size option into
- guestperf
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>
-References: <cover.1697815117.git.yong.huang@smartx.com>
- <bd9f195883fb5081f67f680bd2972a4b0a5b3520.1697815117.git.yong.huang@smartx.com>
- <CAK9dgmYqBBFkLNWNsH4th7znTAOiGiYMg-SzNTWVPk=csZw_jw@mail.gmail.com>
-In-Reply-To: <CAK9dgmYqBBFkLNWNsH4th7znTAOiGiYMg-SzNTWVPk=csZw_jw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/37] vfio/container: Move per container device list
+ in base container
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ <20231026103104.1686921-13-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231026103104.1686921-13-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
- envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,136 +104,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping1
+On 10/26/23 12:30, Zhenzhong Duan wrote:
+> VFIO Device is also changed to point to base container instead of
+> legacy container.
+> 
+> No fucntional change intended.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> [ clg: context changes ]
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 
-在 2023/10/23 10:03, Yong Huang 写道:
-> ping.
->
-> Regarding the performance of the live migration, Guestperf could 
-> provide us
-> with a clear response. IMHO, by just adding a few metrics, it might be 
-> developed
-> into a more user-friendly metrics system in the future.
->
-> We may still enrich it prior to that.
->
-> On Fri, Oct 20, 2023 at 11:24 PM Hyman Huang <yong.huang@smartx.com> 
-> wrote:
->
->     Dirty ring size configuration is not supported by guestperf tool.
->
->     Introduce dirty-ring-size (ranges in [1024, 65536]) option so
->     developers can play with dirty-ring and dirty-limit feature easier.
->
->     To set dirty ring size with 4096 during migration test:
->     $ ./tests/migration/guestperf.py --dirty-ring-size 4096 xxx
->
->     Signed-off-by: Hyman Huang <yong.huang@smartx.com>
->     ---
->      tests/migration/guestperf/engine.py   | 6 +++++-
->      tests/migration/guestperf/hardware.py | 8 ++++++--
->      tests/migration/guestperf/shell.py    | 6 +++++-
->      3 files changed, 16 insertions(+), 4 deletions(-)
->
->     diff --git a/tests/migration/guestperf/engine.py
->     b/tests/migration/guestperf/engine.py
->     index da96ca034a..aabf6de4d9 100644
->     --- a/tests/migration/guestperf/engine.py
->     +++ b/tests/migration/guestperf/engine.py
->     @@ -325,7 +325,6 @@ def _get_common_args(self, hardware,
->     tunnelled=False):
->                  cmdline = "'" + cmdline + "'"
->
->              argv = [
->     -            "-accel", "kvm",
->                  "-cpu", "host",
->                  "-kernel", self._kernel,
->                  "-initrd", self._initrd,
->     @@ -333,6 +332,11 @@ def _get_common_args(self, hardware,
->     tunnelled=False):
->                  "-m", str((hardware._mem * 1024) + 512),
->                  "-smp", str(hardware._cpus),
->              ]
->     +        if hardware._dirty_ring_size:
->     +            argv.extend(["-accel", "kvm,dirty-ring-size=%s" %
->     +                         hardware._dirty_ring_size])
->     +        else:
->     +            argv.extend(["-accel", "kvm"])
->
->              argv.extend(self._get_qemu_serial_args())
->
->     diff --git a/tests/migration/guestperf/hardware.py
->     b/tests/migration/guestperf/hardware.py
->     index 3145785ffd..f779cc050b 100644
->     --- a/tests/migration/guestperf/hardware.py
->     +++ b/tests/migration/guestperf/hardware.py
->     @@ -23,7 +23,8 @@ def __init__(self, cpus=1, mem=1,
->                       src_cpu_bind=None, src_mem_bind=None,
->                       dst_cpu_bind=None, dst_mem_bind=None,
->                       prealloc_pages = False,
->     -                 huge_pages=False, locked_pages=False):
->     +                 huge_pages=False, locked_pages=False,
->     +                 dirty_ring_size=0):
->              self._cpus = cpus
->              self._mem = mem # GiB
->              self._src_mem_bind = src_mem_bind # List of NUMA nodes
->     @@ -33,6 +34,7 @@ def __init__(self, cpus=1, mem=1,
->              self._prealloc_pages = prealloc_pages
->              self._huge_pages = huge_pages
->              self._locked_pages = locked_pages
->     +        self._dirty_ring_size = dirty_ring_size
->
->
->          def serialize(self):
->     @@ -46,6 +48,7 @@ def serialize(self):
->                  "prealloc_pages": self._prealloc_pages,
->                  "huge_pages": self._huge_pages,
->                  "locked_pages": self._locked_pages,
->     +            "dirty_ring_size": self._dirty_ring_size,
->              }
->
->          @classmethod
->     @@ -59,4 +62,5 @@ def deserialize(cls, data):
->                  data["dst_mem_bind"],
->                  data["prealloc_pages"],
->                  data["huge_pages"],
->     -            data["locked_pages"])
->     +            data["locked_pages"],
->     +            data["dirty_ring_size"])
->     diff --git a/tests/migration/guestperf/shell.py
->     b/tests/migration/guestperf/shell.py
->     index 8a809e3dda..7d6b8cd7cf 100644
->     --- a/tests/migration/guestperf/shell.py
->     +++ b/tests/migration/guestperf/shell.py
->     @@ -60,6 +60,8 @@ def __init__(self):
->              parser.add_argument("--prealloc-pages",
->     dest="prealloc_pages", default=False)
->              parser.add_argument("--huge-pages", dest="huge_pages",
->     default=False)
->              parser.add_argument("--locked-pages",
->     dest="locked_pages", default=False)
->     +        parser.add_argument("--dirty-ring-size",
->     dest="dirty_ring_size",
->     +                            default=0, type=int)
->
->              self._parser = parser
->
->     @@ -89,7 +91,9 @@ def split_map(value):
->
->                              locked_pages=args.locked_pages,
->                              huge_pages=args.huge_pages,
->     -                        prealloc_pages=args.prealloc_pages)
->     +                        prealloc_pages=args.prealloc_pages,
->     +
->     +                        dirty_ring_size=args.dirty_ring_size)
->
->
->      class Shell(BaseShell):
->     -- 
->     2.39.1
->
->
->
-> -- 
-> Best regards
+Please drop my SoB.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
+> ---
+>   include/hw/vfio/vfio-common.h         |  3 +--
+>   include/hw/vfio/vfio-container-base.h |  1 +
+>   hw/vfio/common.c                      | 23 +++++++++++++++--------
+>   hw/vfio/container.c                   | 12 ++++++------
+>   4 files changed, 23 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index d053c61872..f7a84dc8d0 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -90,7 +90,6 @@ typedef struct VFIOContainer {
+>       QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
+>       QLIST_HEAD(, VFIOGroup) group_list;
+>       QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
+> -    QLIST_HEAD(, VFIODevice) device_list;
+>       GList *iova_ranges;
+>   } VFIOContainer;
+>   
+> @@ -118,7 +117,7 @@ typedef struct VFIODevice {
+>       QLIST_ENTRY(VFIODevice) container_next;
+>       QLIST_ENTRY(VFIODevice) global_next;
+>       struct VFIOGroup *group;
+> -    VFIOContainer *container;
+> +    VFIOContainerBase *bcontainer;
+>       char *sysfsdev;
+>       char *name;
+>       DeviceState *dev;
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> index ea8436a064..f1de1ef120 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -53,6 +53,7 @@ typedef struct VFIOContainerBase {
+>       bool dirty_pages_supported;
+>       QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+>       QLIST_ENTRY(VFIOContainerBase) next;
+> +    QLIST_HEAD(, VFIODevice) device_list;
+>   } VFIOContainerBase;
+>   
+>   typedef struct VFIOGuestIOMMU {
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 7d9b87fc67..f8475348ad 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -145,7 +145,7 @@ void vfio_unblock_multiple_devices_migration(void)
+>   
+>   bool vfio_viommu_preset(VFIODevice *vbasedev)
+>   {
+> -    return vbasedev->container->bcontainer.space->as != &address_space_memory;
+> +    return vbasedev->bcontainer->space->as != &address_space_memory;
+>   }
+>   
+>   static void vfio_set_migration_error(int err)
+> @@ -179,6 +179,7 @@ bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
+>   
+>   static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+>   {
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       VFIODevice *vbasedev;
+>       MigrationState *ms = migrate_get_current();
+>   
+> @@ -187,7 +188,7 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+>           return false;
+>       }
+>   
+> -    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
+> +    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+>           VFIOMigration *migration = vbasedev->migration;
+>   
+>           if (!migration) {
+> @@ -205,9 +206,10 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+>   
+>   bool vfio_devices_all_device_dirty_tracking(VFIOContainer *container)
+>   {
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       VFIODevice *vbasedev;
+>   
+> -    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
+> +    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+>           if (!vbasedev->dirty_pages_supported) {
+>               return false;
+>           }
+> @@ -222,13 +224,14 @@ bool vfio_devices_all_device_dirty_tracking(VFIOContainer *container)
+>    */
+>   bool vfio_devices_all_running_and_mig_active(VFIOContainer *container)
+>   {
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       VFIODevice *vbasedev;
+>   
+>       if (!migration_is_active(migrate_get_current())) {
+>           return false;
+>       }
+>   
+> -    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
+> +    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+>           VFIOMigration *migration = vbasedev->migration;
+>   
+>           if (!migration) {
+> @@ -835,12 +838,13 @@ static bool vfio_section_is_vfio_pci(MemoryRegionSection *section,
+>                                        VFIOContainer *container)
+>   {
+>       VFIOPCIDevice *pcidev;
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       VFIODevice *vbasedev;
+>       Object *owner;
+>   
+>       owner = memory_region_owner(section->mr);
+>   
+> -    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
+> +    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+>           if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
+>               continue;
+>           }
+> @@ -941,13 +945,14 @@ static void vfio_devices_dma_logging_stop(VFIOContainer *container)
+>       uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature),
+>                                 sizeof(uint64_t))] = {};
+>       struct vfio_device_feature *feature = (struct vfio_device_feature *)buf;
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       VFIODevice *vbasedev;
+>   
+>       feature->argsz = sizeof(buf);
+>       feature->flags = VFIO_DEVICE_FEATURE_SET |
+>                        VFIO_DEVICE_FEATURE_DMA_LOGGING_STOP;
+>   
+> -    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
+> +    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+>           if (!vbasedev->dirty_tracking) {
+>               continue;
+>           }
+> @@ -1038,6 +1043,7 @@ static int vfio_devices_dma_logging_start(VFIOContainer *container)
+>   {
+>       struct vfio_device_feature *feature;
+>       VFIODirtyRanges ranges;
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       VFIODevice *vbasedev;
+>       int ret = 0;
+>   
+> @@ -1048,7 +1054,7 @@ static int vfio_devices_dma_logging_start(VFIOContainer *container)
+>           return -errno;
+>       }
+>   
+> -    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
+> +    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+>           if (vbasedev->dirty_tracking) {
+>               continue;
+>           }
+> @@ -1141,10 +1147,11 @@ int vfio_devices_query_dirty_bitmap(VFIOContainer *container,
+>                                       VFIOBitmap *vbmap, hwaddr iova,
+>                                       hwaddr size)
+>   {
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       VFIODevice *vbasedev;
+>       int ret;
+>   
+> -    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
+> +    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+>           ret = vfio_device_dma_logging_report(vbasedev, iova, size,
+>                                                vbmap->bitmap);
+>           if (ret) {
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 6f02ca133e..3228dd2109 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -889,7 +889,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>       int groupid = vfio_device_groupid(vbasedev, errp);
+>       VFIODevice *vbasedev_iter;
+>       VFIOGroup *group;
+> -    VFIOContainer *container;
+> +    VFIOContainerBase *bcontainer;
+>       int ret;
+>   
+>       if (groupid < 0) {
+> @@ -916,9 +916,9 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>           return ret;
+>       }
+>   
+> -    container = group->container;
+> -    vbasedev->container = container;
+> -    QLIST_INSERT_HEAD(&container->device_list, vbasedev, container_next);
+> +    bcontainer = &group->container->bcontainer;
+> +    vbasedev->bcontainer = bcontainer;
+> +    QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
+>       QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
+>   
+>       return ret;
+> @@ -928,13 +928,13 @@ void vfio_detach_device(VFIODevice *vbasedev)
+>   {
+>       VFIOGroup *group = vbasedev->group;
+>   
+> -    if (!vbasedev->container) {
+> +    if (!vbasedev->bcontainer) {
+>           return;
+>       }
+>   
+>       QLIST_REMOVE(vbasedev, global_next);
+>       QLIST_REMOVE(vbasedev, container_next);
+> -    vbasedev->container = NULL;
+> +    vbasedev->bcontainer = NULL;
+>       trace_vfio_detach_device(vbasedev->name, group->groupid);
+>       vfio_put_base_device(vbasedev);
+>       vfio_put_group(group);
+
 
