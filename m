@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6362C7D9BBC
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9395F7D9BB8
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:41:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO09-0007Dn-Ti; Fri, 27 Oct 2023 10:39:53 -0400
+	id 1qwO0C-0007GP-Ff; Fri, 27 Oct 2023 10:39:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO08-0007Cs-Bv
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:52 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qwO0A-0007EA-2J
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:54 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO06-00088A-QC
+ id 1qwO06-00088G-Vb
  for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:52 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso1393834f8f.0
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so15697895e9.3
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698417589; x=1699022389; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HGUtiMRS0+Lv2+oiMjotQOi7uPWbvV9MFPbKTgd0KCU=;
- b=t9/xTuT40+GWo0Sto9I3G6do2vZsd3hqMZsRxw9L33SxSbvrfISqI0ddmuH6aSxhqQ
- rOnGZsPZ3Z8HWpf1gID0+y8sBaNHnLfBqwMsPfVk8mn5HTW6x/89Gaxu6R6hF5Rj9cKQ
- 1nVIYcm0X7VQJV6TxJdiL5sG8470A4qDg+hqI/oTZ6hsmjA4fa8HUwNAB/7Qlx/gWv3r
- DSBOvImrzPr8SnUIqmgqHL4zOc/xbQepHOMvtbhErTaprSPJad3DoJiF9pvjoYVLcOfV
- DBln9goGcAqewEpadIQ+oV8nBSXpmffaDIqZ5dczQ6M3qDkUx3BL4J1iEewNfmIY28t7
- gRXQ==
+ :reply-to; bh=5nN8931Ig5rZThrt4B3zV/ATHc+m9uFhmxFhGMca0VQ=;
+ b=b44j88mQgO7rZGMrEIYj4TZkVsFNyfu7EJritdJ6748mFPb1heoyaG5x1XPXf1pE8i
+ paFcer6foke6J2zNTtsCsiA+R+yk14zTSLMVgzA6ONBZVhA1W+vFvL5u2zh2ZhVMW6xt
+ 2LW73LKQa0U+uiYvJEPWOacTnIrweQxxSArlBQxV9NNWBi99hLVVOJriOE4g386aUPg7
+ Z8pXH6NQ8oezvnVsU9QQj86BpFE2e9xuT2Pmeh9ZZQwBJNPQwEv3JvvCU6Gbbc2vYR+Z
+ vWKtGVY+LKS2q48wB1RQyhXLBsO2HNq2R9UTFTu+QqK/HF6YU8eCBX3Zp41Wh/TKOOiE
+ OShA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698417589; x=1699022389;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HGUtiMRS0+Lv2+oiMjotQOi7uPWbvV9MFPbKTgd0KCU=;
- b=rUfcnw9LmgqmeGB15HWPE4C4ncH0UaUKj4crLT52klU4JfZvv+fN2KkMRQFDRTuKQ6
- JRz2J5rTvAvd3uGqsHEGRYmRaGxfFBpSca4OvRaMM/6ctsLzijcIQ4Vekhz1MLGM29TR
- ggg2wWo5RIl0tzKdCKztYyqYczATGWzodpjWJqW4p4gCGqkowj8/KrnHQApchvav7GC3
- 8T75DFtcZnySg+sHvxbZk20fipuLPOZINIZcRzUct7d+KKUU8fEPC8a6AI6xMcb3wvCW
- kYPUD9BMZE+PiXe+ZQRSvS6BrfNLufG4bWwOGkljEccsik7NkpKltJp0tIw7SJQZQj/R
- FEYw==
-X-Gm-Message-State: AOJu0Yw4uTYmj7MCj3s21dVC5g5IssZ7Ftcnn4wYDE7aK+scAGNa7eDJ
- Alydl9Iatd4bSLKWx59JfglCYp3/U8gWqnX1EDc=
-X-Google-Smtp-Source: AGHT+IHdUXF2HIsyodz4cV2yOftbjzDDKitiWroz0gCJfcHhYM6g+O8L7hbGi77tJ8wrLl2XR2FY8A==
-X-Received: by 2002:a05:6000:c8:b0:32d:90e6:c477 with SMTP id
- q8-20020a05600000c800b0032d90e6c477mr2212244wrx.26.1698417589242; 
+ bh=5nN8931Ig5rZThrt4B3zV/ATHc+m9uFhmxFhGMca0VQ=;
+ b=b9+g1Gmdf+rc1midgOcln8WXs5G38B7XO1sUgp8UN4Az1RB10+HyICRM3HjqOT4Z6g
+ OO5tku4Q4eUMV5xfmt7thH8sdXAYDV7TOlUOKqXsp15JWhqIuaygH6XEYczGZOY08toH
+ JRvYDLiefUz4pgwBtgHkkZQ8RgND5niN64ue/hOXo6liDUIL3gr3slAV6X/2OfDZR02t
+ WnREkh/f2KZ7qYZ59BDkv0kWJMlGw+owzh5DcY6zlOHx6V5zVPmKrRjnNG1jLr10gckk
+ eO/5t9MRhuw0jaXlHAv2+RuuOVXejYeZA0Hcr81ynLPtZDhLKNTy/Fcd0CgeOqh0BjeG
+ X8nQ==
+X-Gm-Message-State: AOJu0YztpJr+vYfLRUEYJuZ4cM+38F13wkm8SL91kdx3nmXPrsbtiagG
+ BEh51kxfQQUfRW0yGorBXdiCKfbRf61C0SSAtFs=
+X-Google-Smtp-Source: AGHT+IFS/tHcEiJobyH38BY47OwvkOtMrwAkGap3jW9yxLlV6TSdYKYeoZikzKRSD+PU7dcyhbP6AQ==
+X-Received: by 2002:a5d:6d85:0:b0:31f:f326:766b with SMTP id
+ l5-20020a5d6d85000000b0031ff326766bmr2602391wrs.6.1698417589747; 
  Fri, 27 Oct 2023 07:39:49 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.48
+ e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 27 Oct 2023 07:39:49 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/41] hw/arm/allwinner-h3: Remove 'hw/arm/boot.h' from header
-Date: Fri, 27 Oct 2023 15:39:12 +0100
-Message-Id: <20231027143942.3413881-12-peter.maydell@linaro.org>
+Subject: [PULL 12/41] hw/arm/allwinner-r40: Remove 'hw/arm/boot.h' from header
+Date: Fri, 27 Oct 2023 15:39:13 +0100
+Message-Id: <20231027143942.3413881-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +98,36 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
-Message-id: 20231025065316.56817-3-philmd@linaro.org
+Message-id: 20231025065316.56817-4-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/allwinner-h3.h | 1 -
- hw/arm/orangepi.c             | 1 +
+ include/hw/arm/allwinner-r40.h | 1 -
+ hw/arm/bananapi_m2u.c          | 1 +
  2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/arm/allwinner-h3.h b/include/hw/arm/allwinner-h3.h
-index f15d6d7cc7d..24ba4e1bf41 100644
---- a/include/hw/arm/allwinner-h3.h
-+++ b/include/hw/arm/allwinner-h3.h
-@@ -36,7 +36,6 @@
- #define HW_ARM_ALLWINNER_H3_H
+diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.h
+index 72710d3edce..6e1ac9d4c13 100644
+--- a/include/hw/arm/allwinner-r40.h
++++ b/include/hw/arm/allwinner-r40.h
+@@ -21,7 +21,6 @@
+ #define HW_ARM_ALLWINNER_R40_H
  
  #include "qom/object.h"
 -#include "hw/arm/boot.h"
  #include "hw/timer/allwinner-a10-pit.h"
  #include "hw/intc/arm_gic.h"
- #include "hw/misc/allwinner-h3-ccu.h"
-diff --git a/hw/arm/orangepi.c b/hw/arm/orangepi.c
-index 10653361ed5..d0eca54cd95 100644
---- a/hw/arm/orangepi.c
-+++ b/hw/arm/orangepi.c
-@@ -25,6 +25,7 @@
- #include "hw/boards.h"
+ #include "hw/sd/allwinner-sdhost.h"
+diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c
+index 74121d89660..a7c7a9f96d7 100644
+--- a/hw/arm/bananapi_m2u.c
++++ b/hw/arm/bananapi_m2u.c
+@@ -26,6 +26,7 @@
+ #include "hw/i2c/i2c.h"
  #include "hw/qdev-properties.h"
- #include "hw/arm/allwinner-h3.h"
+ #include "hw/arm/allwinner-r40.h"
 +#include "hw/arm/boot.h"
  
- static struct arm_boot_info orangepi_binfo;
+ static struct arm_boot_info bpim2u_binfo;
  
 -- 
 2.34.1
