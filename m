@@ -2,56 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3672F7D8E6A
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 08:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7977D8E6E
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 08:07:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwFx3-0002Rw-7p; Fri, 27 Oct 2023 02:04:09 -0400
+	id 1qwG05-0003VG-H0; Fri, 27 Oct 2023 02:07:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1qwFx0-0002Rb-Mk; Fri, 27 Oct 2023 02:04:07 -0400
-Received: from pi.codeconstruct.com.au ([203.29.241.158]
- helo=codeconstruct.com.au)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwG03-0003Uw-K0
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 02:07:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1qwFwy-0007RI-BG; Fri, 27 Oct 2023 02:04:06 -0400
-Received: from [192.168.68.112]
- (ppp118-210-136-142.adl-adc-lon-bras33.tpg.internode.on.net
- [118.210.136.142])
- by mail.codeconstruct.com.au (Postfix) with ESMTPSA id A8AAD20038;
- Fri, 27 Oct 2023 14:03:55 +0800 (AWST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=codeconstruct.com.au; s=2022a; t=1698386636;
- bh=j37K8FxIXu/gC4Ll3V0MQsq6GE3o5InyQ6X/EJ2m94A=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References;
- b=Xx2NDsX5k1SWeyYVoTJ7bSGMLnFjc+Fn4x5r6myB0FMW/wvwymx/Pcpica4eV9WGp
- qhH5tL52yYwl02LJ1p7QFheTklaxy3Nq/7dqFCLUkVZLSGAZZbHkMowRPTde3djXLH
- HdnWXD4Y64GfM9udjfaXcjrrziJeSQep690SGnuwFHaq2djHtzfd2zN81apYLNL+aE
- ZqG59g5UqlYCA/KjvZvc1xtmXSEW+IkMwiERI2YbNhI/IHyQ4fCjB28ZxMOWvOHsoA
- 3LArFlMkDyfleXGk7igo/dhhZqztjRyGOYpW1rNJyaQ0+i67By/QAUPgRsxYSnP9qs
- bGFt6BW/mv/GQ==
-Message-ID: <ba4267af6624c203322b88ac9228675c4d18eef0.camel@codeconstruct.com.au>
-Subject: Re: [PATCH v2] misc/led: LED state is set opposite of what is expected
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, clg@kaod.org, joel@jms.id.au, philmd@linaro.org
-Date: Fri, 27 Oct 2023 16:33:54 +1030
-In-Reply-To: <20231024191115.4134426-1-milesg@linux.vnet.ibm.com>
-References: <20231024191115.4134426-1-milesg@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwG02-00088F-6s
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 02:07:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698386833;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=vzLepVbCar0JkiTW9XVwgKL2r1EV7yOeGtAAEZPis0Q=;
+ b=VBh/5U3H05kxFgWbz0iOIvuu4gYfgK4RPYBk0SZHu1JG0rjxS/go4foHEwrkGpQjpx3jV2
+ VRnwHuHEDwS0lKCgx0XftAAEPStvJc7RTVZeDhzi+ZBBKX33oxk2aD+N3CyOlCz7MmpKAH
+ 5eWpcBF+1Dat2n/gcuKVnHZRT6JSs0M=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-tplu8pV3NviObdC7dTL7CQ-1; Fri,
+ 27 Oct 2023 02:07:11 -0400
+X-MC-Unique: tplu8pV3NviObdC7dTL7CQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 122253C0C899;
+ Fri, 27 Oct 2023 06:07:11 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.196])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 24C142166B26;
+ Fri, 27 Oct 2023 06:07:09 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org,
+	qemu-trivial@nongnu.org
+Subject: [PATCH] MAINTAINERS: Make sure that gicv3_internal.h is covered, too
+Date: Fri, 27 Oct 2023 08:07:09 +0200
+Message-ID: <20231027060709.242388-1-thuth@redhat.com>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=203.29.241.158;
- envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,13 +75,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-10-24 at 14:11 -0500, Glenn Miles wrote:
-> Testing of the LED state showed that when the LED polarity was
-> set to GPIO_POLARITY_ACTIVE_LOW and a low logic value was set on
-> the input GPIO of the LED, the LED was being turn off when it was
-> expected to be turned on.
->=20
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+gic_internal.h is already covered by the "ARM cores" section.
+Let's adapt the entry with a wildcard to cover gicv3_internal.h, too.
 
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4d54c6fc2b..2c4126b63d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -700,7 +700,7 @@ M: Peter Maydell <peter.maydell@linaro.org>
+ L: qemu-arm@nongnu.org
+ S: Maintained
+ F: hw/intc/arm*
+-F: hw/intc/gic_internal.h
++F: hw/intc/gic*_internal.h
+ F: hw/misc/a9scu.c
+ F: hw/misc/arm11scu.c
+ F: hw/misc/arm_l2x0.c
+-- 
+2.41.0
+
 
