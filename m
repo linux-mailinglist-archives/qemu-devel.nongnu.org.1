@@ -2,101 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60287D9AD5
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D66D7D9B3A
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwNVj-0005kO-Jf; Fri, 27 Oct 2023 10:08:27 -0400
+	id 1qwNhx-0001tt-Ok; Fri, 27 Oct 2023 10:21:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qwNVg-0005jm-6a
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:08:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNhw-0001tl-0j
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:21:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qwNVe-0008B6-61
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:08:23 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNhu-0003Cv-7Z
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:21:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698415699;
+ s=mimecast20190719; t=1698416460;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wTN7KSSZRiqxZF+BOn09UPcbaYB9WIihV9g9+3NAX/s=;
- b=JrxNAbwjW/MiaVK5j/l62fodJS0wIjmW9EjTe5FCjyE0EhDb4HpqdTqp/1qKW573QyVOKC
- RbVuz8yw3UX14w9cvfOlkdK+C2tjbd66EcMHPNas+Wtom/DEhL/kpva3Oob6iMZMUV4zjo
- EAGekxUxbrqwEu5B0ZvD29p8axyDwzg=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=j3bspq4khKVrw6ChzeDVR/Gs4s631/K8FvMmJ4rPY3Q=;
+ b=JBvKLdZIT/FunIJ9Ykz7RilGQoNPz6yLXtf4dX/yE/Q8EswJCAubmUDapSzKuhT+oxCdwt
+ vVRDpIYVKcLcx9RLmKnbId2RgOaNNmxzUPj07yBg4kgYiZMJS0JCyFz2ZhYIrdvIqZyaqF
+ YDCDNGUWG/lKyCMSUXbwGzWiRYEacZQ=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-G9fXGG4SOPGEWznBv7J7qA-1; Fri, 27 Oct 2023 10:08:18 -0400
-X-MC-Unique: G9fXGG4SOPGEWznBv7J7qA-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-54045f31f49so1582520a12.1
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:08:18 -0700 (PDT)
+ us-mta-22-K_sBJqTfPqKkDC_p0aMQEw-1; Fri, 27 Oct 2023 10:20:57 -0400
+X-MC-Unique: K_sBJqTfPqKkDC_p0aMQEw-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-66d03b02d16so47818536d6.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:20:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698415697; x=1699020497;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wTN7KSSZRiqxZF+BOn09UPcbaYB9WIihV9g9+3NAX/s=;
- b=ignytM5b+6Oc444Srml2hEgHbjiCGKmSNn5vgcwVpEaamPXJA7wSX0oJxOcFp25CsO
- nUtIhMBUVtr9h0CdYdUuAVw+OeYS4XbS+PRAamyt28UxYkguf3ket7yOpt/S/zWOskkl
- vc3pDxyAckpE3kcVDw9yTV9XW2UXnZvN7P6xHfAgzCSNJaQh2ns1s84qORCq5dYHc8Hs
- 2Wu3FKYVWcRF8nBA/Jed5zO4DvS1NijlcT+9b/IZtLXCH3RYVMZIifyOol3I4BDSl5sj
- JMKsSAXcuZ/MrA9CHso1kdty14oYN0KIs6oj9vWTvlC/+psF+bMfhC1Lkppz8sqsbVzs
- ZwAw==
-X-Gm-Message-State: AOJu0Yx16trmUeH3kcg7mw0AXNGg1Agzfum6fuZIoJtX6JBuWiL5W3FE
- Kizyi+8xD5+iFlIti0UUanAhYZ+Ma70B2srapSsAm5dF93swVC0JXYeYxx+7kyTnZbC9uZnuClG
- op+aAL+3V1VYjZAs=
-X-Received: by 2002:a05:6402:40c5:b0:53d:983c:2672 with SMTP id
- z5-20020a05640240c500b0053d983c2672mr2831781edb.38.1698415697268; 
- Fri, 27 Oct 2023 07:08:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHU9wPTk7qBhl0A81Dq8fzUM2rXak77Gffp1y2m3UU7jbZs3FlNDOlFDmw7XR+9h4bD1tTBLw==
-X-Received: by 2002:a05:6402:40c5:b0:53d:983c:2672 with SMTP id
- z5-20020a05640240c500b0053d983c2672mr2831724edb.38.1698415696923; 
- Fri, 27 Oct 2023 07:08:16 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- s20-20020a056402165400b0053e37d13f4fsm1273490edx.52.2023.10.27.07.08.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Oct 2023 07:08:16 -0700 (PDT)
-Date: Fri, 27 Oct 2023 16:08:14 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
- <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
- <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
- <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
- <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
- <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
- <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
- <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
- <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
- <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
- <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
- <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
- <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
- <lixianglai@loongson.cn>, <linuxarm@huawei.com>
-Subject: Re: [PATCH V6 4/9] hw/acpi: Init GED framework with CPU hotplug events
-Message-ID: <20231027160814.3f47ff70@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231013105129.25648-5-salil.mehta@huawei.com>
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
- <20231013105129.25648-5-salil.mehta@huawei.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1698416456; x=1699021256;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=j3bspq4khKVrw6ChzeDVR/Gs4s631/K8FvMmJ4rPY3Q=;
+ b=XmAy1DdYZ8WH3Sl2yhC7PtsO3dKLHH2toULS54NO0ptPXw0dPc5IrTA6q+YAtjK+31
+ McZSr/WOLmSypveFpffwN0o5Vkzx5HOx+zOLXsBP2w4iQSaOPKALHMscSkyjMGMLT35q
+ THJ5DKH3d7KOcvRvL9rtQyXoLDKBDUPFUnKs/nyCdJ2SWG0ac4S3BJgVL3wMinrpTbkX
+ kodqW7uVB8LctRETWUo25Q32jQgunEAXDl9TNwQLX4iDvokJzlNPLT8+OQe8pilQ9LSQ
+ o6ibYD7aoJfXUnxrsmci+SE8SDi8sM3kNGlCt0wthMIgyqmbeuThJTjvpoz6Ae2KikB8
+ B/Dg==
+X-Gm-Message-State: AOJu0Yzbe9NkvVyLw5remEDEDFdam1W9UWfB2MikuI+4emX/uEGyiiec
+ b3LdaE83+dxguNSRbYwDXKLu01jMiXpoN5bQhgCc0hvqnIRQv8qWhFMZ1dK6z4tFM5fhXOiPQsE
+ wi9m9d3NMzCPdAgA=
+X-Received: by 2002:a05:6214:300b:b0:65a:feb1:ec46 with SMTP id
+ ke11-20020a056214300b00b0065afeb1ec46mr8022949qvb.6.1698416456654; 
+ Fri, 27 Oct 2023 07:20:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeUO52QyX8jz9nV0MLO+9fhUxb9BZIebe9km9dhOSvQ9rNW+6vyAQmu7pmp/r5c37zbC0/Jg==
+X-Received: by 2002:a05:6214:300b:b0:65a:feb1:ec46 with SMTP id
+ ke11-20020a056214300b00b0065afeb1ec46mr8022929qvb.6.1698416456403; 
+ Fri, 27 Oct 2023 07:20:56 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
+ ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
+ by smtp.gmail.com with ESMTPSA id
+ d13-20020a056214184d00b006516780a0a5sm633835qvy.117.2023.10.27.07.20.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 27 Oct 2023 07:20:55 -0700 (PDT)
+Message-ID: <c475bb0c-02be-48d6-8219-0822189c9f2d@redhat.com>
+Date: Fri, 27 Oct 2023 16:20:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/37] vfio/container: Introduce a empty VFIOIOMMUOps
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ <20231026103104.1686921-8-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231026103104.1686921-8-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,99 +103,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 13 Oct 2023 11:51:24 +0100
-Salil Mehta <salil.mehta@huawei.com> wrote:
-
-> ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI events
-> when OSPM/guest receives an interrupt listed in the _CRS object of GED. OSPM
-> then maps or demultiplexes the event by evaluating _EVT method.
+On 10/26/23 12:30, Zhenzhong Duan wrote:
+> This empty VFIOIOMMUOps named vfio_legacy_ops will hold all general
+> IOMMU ops of legacy container.
 > 
-> This change adds the support of CPU hotplug event initialization in the
-> existing GED framework.
-> 
-> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> Tested-by: Xianglai Li <lixianglai@loongson.cn>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  hw/acpi/generic_event_device.c         | 8 ++++++++
->  include/hw/acpi/generic_event_device.h | 5 +++++
->  2 files changed, 13 insertions(+)
+>   include/hw/vfio/vfio-common.h | 2 +-
+>   hw/vfio/container.c           | 5 +++++
+>   2 files changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-> index a3d31631fe..d2fa1d0e4a 100644
-> --- a/hw/acpi/generic_event_device.c
-> +++ b/hw/acpi/generic_event_device.c
-> @@ -25,6 +25,7 @@ static const uint32_t ged_supported_events[] = {
->      ACPI_GED_MEM_HOTPLUG_EVT,
->      ACPI_GED_PWR_DOWN_EVT,
->      ACPI_GED_NVDIMM_HOTPLUG_EVT,
-> +    ACPI_GED_CPU_HOTPLUG_EVT,
->  };
->  
->  /*
-> @@ -400,6 +401,13 @@ static void acpi_ged_initfn(Object *obj)
->      memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
->                            TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
->      sysbus_init_mmio(sbd, &ged_st->regs);
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index d8f293cb57..8ded5cd8e4 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -255,7 +255,7 @@ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
+>   typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
+>   extern VFIOGroupList vfio_group_list;
+>   extern VFIODeviceList vfio_device_list;
+> -
+> +extern const VFIOIOMMUOps vfio_legacy_ops;
+
+
+why does it need to be external ?
+
+Thanks,
+
+C.
+
+
+>   extern const MemoryListener vfio_memory_listener;
+>   extern int vfio_kvm_device_fd;
+>   
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 242010036a..4bc43ddfa4 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -472,6 +472,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>                                     Error **errp)
+>   {
+>       VFIOContainer *container;
+> +    VFIOContainerBase *bcontainer;
+>       int ret, fd;
+>       VFIOAddressSpace *space;
+>   
+> @@ -552,6 +553,8 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>       container->iova_ranges = NULL;
+>       QLIST_INIT(&container->giommu_list);
+>       QLIST_INIT(&container->vrdl_list);
+> +    bcontainer = &container->bcontainer;
+> +    bcontainer->ops = &vfio_legacy_ops;
+>   
+>       ret = vfio_init_container(container, group->fd, errp);
+>       if (ret) {
+> @@ -933,3 +936,5 @@ void vfio_detach_device(VFIODevice *vbasedev)
+>       vfio_put_base_device(vbasedev);
+>       vfio_put_group(group);
+>   }
 > +
-> +    s->cpuhp.device = OBJECT(s);
-ain't OBJECT(s) == OBJECT(dev)m
-
-
-> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp container",
-> +                       ACPI_CPU_HOTPLUG_REG_LEN);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
-> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
-> +                        &s->cpuhp_state, 0);
-
-we really should refactor GED to initfn/realizefn pattern.
-then at create_acpi_ged() one would enable cpu_hotplug event
-and later realizefs would call cpu_hotplug_hw_init() if event is enabled.
-
->  }
->  
->  static void acpi_ged_class_init(ObjectClass *class, void *data)
-> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-> index ba84ce0214..a803ea818e 100644
-> --- a/include/hw/acpi/generic_event_device.h
-> +++ b/include/hw/acpi/generic_event_device.h
-> @@ -60,6 +60,7 @@
->  #define HW_ACPI_GENERIC_EVENT_DEVICE_H
->  
->  #include "hw/sysbus.h"
-> +#include "hw/acpi/cpu_hotplug.h"
->  #include "hw/acpi/memory_hotplug.h"
->  #include "hw/acpi/ghes.h"
->  #include "qom/object.h"
-> @@ -95,6 +96,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
->  #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
->  #define ACPI_GED_PWR_DOWN_EVT      0x2
->  #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
-> +#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
->  
->  typedef struct GEDState {
->      MemoryRegion evt;
-> @@ -106,6 +108,9 @@ struct AcpiGedState {
->      SysBusDevice parent_obj;
->      MemHotplugState memhp_state;
->      MemoryRegion container_memhp;
-> +    CPUHotplugState cpuhp_state;
-> +    MemoryRegion container_cpuhp;
-> +    AcpiCpuHotplug cpuhp;
-
-how about merging CPUHotplugState and AcpiCpuHotplug
-and isolating AcpiCpuHotplug::sts to x86 legacy hotplug code only?
-
-then you won't have to pull in 2 states (one of which includes
-GPE specific array that's not applicable to GED)
-
->      GEDState ged_state;
->      uint32_t ged_event_bitmap;
->      qemu_irq irq;
+> +const VFIOIOMMUOps vfio_legacy_ops;
 
 
