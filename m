@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547407D9CE1
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DA37D9D05
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:32:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwOhp-0007mR-Ds; Fri, 27 Oct 2023 11:25:01 -0400
+	id 1qwOoI-0001cK-UQ; Fri, 27 Oct 2023 11:31:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qwOhl-0007lo-89
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:24:57 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <carwynellis@gmail.com>)
+ id 1qwOoH-0001cA-Dl
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:31:41 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qwOhj-0003Yx-9N
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:24:56 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c9d407bb15so19940405ad.0
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 08:24:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <carwynellis@gmail.com>)
+ id 1qwOoF-00061c-Kt
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:31:41 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50802148be9so2812154e87.2
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 08:31:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698420294; x=1699025094;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sp8vvAg6/x8wzHPenADw0Ygsw3nKQTNfd1r3WaByQm4=;
- b=KRnvJ2Lw5kB8lWYrM02VccgJ6SwW/uirP8igDYEDkq3pwibut/6qc6b2cQvN4vUgCK
- CWVUzh37/3GGUcrhuoxkf4i1aV2sbUR7gt1zVyPK4ds5emAhjYBpp4TxBwURaMpSS2rJ
- 7tAu/rJ63Y6HTJZx3CXyO3U9HonvHDh2MQzKrXXPNy9E/fSV+334N/EPQVrTVIDJXWVX
- 13/DiYZF4IseGTY+SV8A8EOA7bAQpHATBCX0Ea3vMfNnbz8ucN+gYdEIHpGV2r9s9zVF
- eVFNgIs1U8Cr5HpVXQ5lppz4OmYrgEfMT9FU0s9c4eXBAnr4BFKGJNT0LWDls/RuC8qq
- t68A==
+ d=gmail.com; s=20230601; t=1698420697; x=1699025497; darn=nongnu.org;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tMWmMx+OCOVTcsEWdoeTjfnkOOrmJ9kUiqyCL7LyvPY=;
+ b=ZkVNaETmQzbX/qoI2VpYpSZt1qKhQagB3X77b6FZsRnrqZN3o7gOQLxMjMKxGIJBHC
+ AEps0OALzbZefzVfh5HbsNzfy50IBX7uXxLrColMv/T3DDpZ3i55A4dhTlLmFXe+uNxh
+ TozqmHm6IATpeNjRFEwY1bNB3j2wtSrQS5p6cx2dHJVPmRFmFuewSUCo8U5v8hW8qxjl
+ IGubuDmEqpZBzv1J3MiRHFwfVoVpS3znDYoSeoKH30D8rNvEfdUFzMeoZxAvd5zqMFax
+ qB4Kpc5CM0iw8UpWtAOdkbvwuVcJ0U9XiDAMICe+jTUnapMUVAGCZtebhM/+pCyC0uOV
+ T+NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698420294; x=1699025094;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sp8vvAg6/x8wzHPenADw0Ygsw3nKQTNfd1r3WaByQm4=;
- b=w6VTdOKxbi0AixC0Iq5HAWh9MKtemdJJp0fgdi7nNklFktPDNys8TY53l8DqaCOLIP
- y95IQ8SqXdazm7MMy94a0O+LzKzQwAdfI9MVXiCHGju9syNhVrNkUP+j8ReCBKdvINip
- VxL5jKKqUnwhZIHh3W7JIj+yuxGj97W2FiW/FGhRo3aOHie160awNQ6aaXwVepi8nn+N
- JuGeKGXCTCFD1grbdIR8DMNHhN0nKUyiABZb7EGtMfqjp6izc+ZVuNEfwnoQaYaUl6Vi
- ctEdwyh0L+x6qi85w6uiNMgaKl/7+19ilGz1sAOMqsUHLWVIIY94IQC96u1WLvD9uIJc
- gvaw==
-X-Gm-Message-State: AOJu0YxtCrwTe8df6WJFzMvWg1HSBesTrAdZQhiaQrInUaBnAisWDOJx
- Rinq/K6yxIHhnoO2EH5BSCzSgw==
-X-Google-Smtp-Source: AGHT+IELvT+HSgSU6d1iZJd0kunugmOrTYT/OtVr6TgVnsPwmiUXXhdNEEXDB6tjN8T7DJySUPj5Uw==
-X-Received: by 2002:a17:902:e84a:b0:1bf:4a1f:2b57 with SMTP id
- t10-20020a170902e84a00b001bf4a1f2b57mr3550735plg.13.1698420293866; 
- Fri, 27 Oct 2023 08:24:53 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20230601; t=1698420697; x=1699025497;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tMWmMx+OCOVTcsEWdoeTjfnkOOrmJ9kUiqyCL7LyvPY=;
+ b=G9jvYtw2pIgLGmyRTHlNZ526n6mEny2Yu+hsDkfglDKAU1BnKjmZdY8Wf01d/aCv2i
+ 7x9Z4lh7ZeI46VDVVsOgP+YEef5vhfrnX19VgE0hk7bPFC64naOqFTsOYcKz+X8pe62Y
+ kKUw8TVvc2sdZHRyzv1m/yR+uXb3TeRXT1a/AN8KUlSHdLYWUWjJXL+lSeFNL/GNmb4Q
+ Lm/9IgsC5m6zqJrXB0tavjBehBd0Fh3GoJ2m2KnYpCN2fyJt07G0rKvgN2kQPEKU5USc
+ cAqv97I2IUJQVWo3h16FGItAV0SCIXO/crt7KzmQXtPNpzLENCf5rhy0JmlVq9K+soF3
+ EUcg==
+X-Gm-Message-State: AOJu0Ywpa+jZje9Ai+WmqVacF+6fJkaFVB3jZ2FBg57qrf1Mluqp4/bG
+ OwyUNTvlxaTB5rpaD0aeLaE=
+X-Google-Smtp-Source: AGHT+IFu9LVJYd4g6+5z5z+P1jUSxZtrrROdIF8y5IU+O2q2YU3mdZPoS5AWZMeGnFU6eVZU7dPCzg==
+X-Received: by 2002:ac2:4c2d:0:b0:508:2022:773e with SMTP id
+ u13-20020ac24c2d000000b005082022773emr2124815lfq.15.1698420697324; 
+ Fri, 27 Oct 2023 08:31:37 -0700 (PDT)
+Received: from smtpclient.apple
+ (host86-185-6-213.range86-185.btcentralplus.com. [86.185.6.213])
  by smtp.gmail.com with ESMTPSA id
- f1-20020a170902684100b001c60ba709b7sm1723622pln.125.2023.10.27.08.24.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 08:24:53 -0700 (PDT)
-Message-ID: <e49bbe11-42e2-4251-843e-18b2d6bbca7c@daynix.com>
-Date: Sat, 28 Oct 2023 00:24:50 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+ r11-20020adfe68b000000b0032d9f32b96csm1961648wrm.62.2023.10.27.08.31.36
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 27 Oct 2023 08:31:36 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
 Subject: Re: [PATCH v2 1/1] ui/cocoa: add zoom-to-fit display option
-To: carwynellis@gmail.com, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, philmd@linaro.org, kraxel@redhat.com,
- marcandre.lureau@redhat.com
+From: Carwyn Ellis <carwynellis@gmail.com>
+In-Reply-To: <e49bbe11-42e2-4251-843e-18b2d6bbca7c@daynix.com>
+Date: Fri, 27 Oct 2023 16:31:26 +0100
+Cc: QEMU <qemu-devel@nongnu.org>, peter.maydell@linaro.org, philmd@linaro.org,
+ kraxel@redhat.com, marcandre.lureau@redhat.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B8E588D3-1A24-4F0C-BAEE-C02529D6EC58@gmail.com>
 References: <20231027150942.72357-1-carwynellis@gmail.com>
  <20231027150942.72357-2-carwynellis@gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231027150942.72357-2-carwynellis@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ <e49bbe11-42e2-4251-843e-18b2d6bbca7c@daynix.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=carwynellis@gmail.com; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,64 +97,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/28 0:09, carwynellis@gmail.com wrote:
-> From: Carwyn Ellis <carwynellis@gmail.com>
-> 
-> Provides a display option, zoom-to-fit, that enables scaling of the
-> display when full-screen mode is enabled.
-> 
-> Also ensures that the corresponding menu item is marked as enabled when
-> the option is set to on.
-> 
-> Signed-off-by: Carwyn Ellis <carwynellis@gmail.com>
-> ---
->   qapi/ui.json |  8 ++++++--
->   ui/cocoa.m   | 35 ++++++++++++++++++++---------------
->   2 files changed, 26 insertions(+), 17 deletions(-)
-> 
-> diff --git a/qapi/ui.json b/qapi/ui.json
-> index 006616aa77..fd12791ff9 100644
-> --- a/qapi/ui.json
-> +++ b/qapi/ui.json
-> @@ -1409,13 +1409,17 @@
->   #     codes match their position on non-Mac keyboards and you can use
->   #     Meta/Super and Alt where you expect them.  (default: off)
->   #
-> -# Since: 7.0
-> +# @zoom-to-fit: Scale display to fit when full-screen enabled.
-> +#     Defaults to "off".
-> +#
-> +# Since: 8.2
 
-I don't think this new option will affect only when full-screen enabled, 
-but probably it will affect also in a windowed mode. Perhaps you can 
-just copy the description for DisplayGTK except the statement regarding 
-virtio-gpu.
 
-Also don't replace "Since: 7.0". It denotes the version that introduced 
-the structure, not an individual member.
+> On 27 Oct 2023, at 16:24, Akihiko Odaki <akihiko.odaki@daynix.com> =
+wrote:
+>=20
+> On 2023/10/28 0:09, carwynellis@gmail.com wrote:
+>> From: Carwyn Ellis <carwynellis@gmail.com>
+>> Provides a display option, zoom-to-fit, that enables scaling of the
+>> display when full-screen mode is enabled.
+>> Also ensures that the corresponding menu item is marked as enabled =
+when
+>> the option is set to on.
+>> Signed-off-by: Carwyn Ellis <carwynellis@gmail.com>
+>> ---
+>>  qapi/ui.json |  8 ++++++--
+>>  ui/cocoa.m   | 35 ++++++++++++++++++++---------------
+>>  2 files changed, 26 insertions(+), 17 deletions(-)
+>> diff --git a/qapi/ui.json b/qapi/ui.json
+>> index 006616aa77..fd12791ff9 100644
+>> --- a/qapi/ui.json
+>> +++ b/qapi/ui.json
+>> @@ -1409,13 +1409,17 @@
+>>  #     codes match their position on non-Mac keyboards and you can =
+use
+>>  #     Meta/Super and Alt where you expect them.  (default: off)
+>>  #
+>> -# Since: 7.0
+>> +# @zoom-to-fit: Scale display to fit when full-screen enabled.
+>> +#     Defaults to "off".
+>> +#
+>> +# Since: 8.2
+>=20
+> I don't think this new option will affect only when full-screen =
+enabled, but probably it will affect also in a windowed mode. Perhaps =
+you can just copy the description for DisplayGTK except the statement =
+regarding virtio-gpu.
 
->   ##
->   { 'struct': 'DisplayCocoa',
->     'data': {
->         '*left-command-key': 'bool',
->         '*full-grab': 'bool',
-> -      '*swap-opt-cmd': 'bool'
-> +      '*swap-opt-cmd': 'bool',
-> +      '*zoom-to-fit': 'bool'
->     } }
->   
->   ##
-> diff --git a/ui/cocoa.m b/ui/cocoa.m
-> index d95276013c..903adb85a1 100644
-> --- a/ui/cocoa.m
-> +++ b/ui/cocoa.m
-> @@ -104,7 +104,7 @@ static void cocoa_switch(DisplayChangeListener *dcl,
->   static int left_command_key_enabled = 1;
->   static bool swap_opt_cmd;
->   
-> -static bool stretch_video;
-> +static bool stretch_video = false;
+Ok.
 
-You don't need to assign false here. C initializes it as false by default.
+>=20
+> Also don't replace "Since: 7.0". It denotes the version that =
+introduced the structure, not an individual member.
+
+Ok, I=E2=80=99ll flip it back to 7.0.
+
+>=20
+>>  ##
+>>  { 'struct': 'DisplayCocoa',
+>>    'data': {
+>>        '*left-command-key': 'bool',
+>>        '*full-grab': 'bool',
+>> -      '*swap-opt-cmd': 'bool'
+>> +      '*swap-opt-cmd': 'bool',
+>> +      '*zoom-to-fit': 'bool'
+>>    } }
+>>    ##
+>> diff --git a/ui/cocoa.m b/ui/cocoa.m
+>> index d95276013c..903adb85a1 100644
+>> --- a/ui/cocoa.m
+>> +++ b/ui/cocoa.m
+>> @@ -104,7 +104,7 @@ static void cocoa_switch(DisplayChangeListener =
+*dcl,
+>>  static int left_command_key_enabled =3D 1;
+>>  static bool swap_opt_cmd;
+>>  -static bool stretch_video;
+>> +static bool stretch_video =3D false;
+>=20
+> You don't need to assign false here. C initializes it as false by =
+default.
+
+Ahh of course.
+
+Thanks again for getting back to me so quickly! :)=20=
 
