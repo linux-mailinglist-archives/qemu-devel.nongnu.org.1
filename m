@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B117D9AA7
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D827D9AAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:03:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwNNg-0001oQ-Oh; Fri, 27 Oct 2023 10:00:08 -0400
+	id 1qwNQQ-0002yS-4T; Fri, 27 Oct 2023 10:02:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qwNNP-0001ns-Oc
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 09:59:53 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNQH-0002y8-2j
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:02:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qwNNN-00057D-Am
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 09:59:51 -0400
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39RCCXfP025571; Fri, 27 Oct 2023 13:59:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=aB7ORh98B+L9sy0/EKb/+ZilnQQYMepyyPK00H/HT8g=;
- b=PuzzK/0oANdzqE7xdLZIISJGDjDDhYhScjk1eLaMwp+1ot5MYrWo66oJ6d6TMR8v1HLM
- xCot2ZjirWx2fmg9xoQgoAdreGWcm6aMQxlY/JfTFCUhJszXAEGnwyedpCkojVnF7tXy
- JRpw4NmNoia7RKHLh1PPlOpoJCLRHr5M9lzB18qacwHTIcBWBFUcrO8DzsOgHl/SOweW
- s9OrWUYSaQXrLhQMgiadxl3enzrV3yHoexlZKwZVWB1Bog5Pf7SRTJP9gWGWpWfx+l/2
- hDnvyBCPJn4OPaAqsPj+RVhbYnYXDb96qhQ7JBQN9X7e55ccj9iZifl1XsyYKx1KCE4I Qw== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tywvta6hq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Oct 2023 13:59:44 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39RDxh5B027336
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Oct 2023 13:59:44 GMT
-Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Fri, 27 Oct 2023 06:59:43 -0700
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: Paolo Bonzini <pbonzini@redhat.com>, <bcain@quicinc.com>
-Subject: --prefix gets lost on config regen for cross Windows build
-Date: Fri, 27 Oct 2023 10:59:31 -0300
-Message-ID: <e379a2b44886b7d2b974191bf08aaf78a2488595.1698414087.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNQD-00062H-MJ
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:02:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698415364;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oP4YzODHqDCdTthV8F36N42zNW5IWyEUqtxm5JrlG7w=;
+ b=A11qf6yK+KaDkRY6iypopUSusdu+Di65TcUGc0Yl2pMf1w1Gu1yxN4tYc55QdpslaD00Gh
+ pAyOfOO6Q5sOfC6IXpqes+BbiPdDsmtjqp6IHIATsP+cDv+n6I5A9Ves3nz6/6URBAX8yw
+ EOy0b5WnOTLsvVIRa5t76U2k8ITTjGQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-414-KRATgKSqOZubpGPCO1gz_Q-1; Fri, 27 Oct 2023 10:02:41 -0400
+X-MC-Unique: KRATgKSqOZubpGPCO1gz_Q-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7788ce62d50so280369085a.3
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:02:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698415360; x=1699020160;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oP4YzODHqDCdTthV8F36N42zNW5IWyEUqtxm5JrlG7w=;
+ b=Q5dPrfZh0oKYJUweQ/C+7WZDTydW/gI/+8MwRRdgD6JARSKyXdvIQvfs/TreaEv+Kt
+ 7um4R5wAq89lIWC8XfW3hlG3u7TRl9hMYz0TGzhE17B91QuBuIY8GhkjClfoUB9nu69n
+ +5J3eqNM0VW9Fk9hBWUz9L8BrmJ8nPCjSORL4CVqGrezzL5kRm7vyTuyiK3UxJyLrtyn
+ LmVYg+D/4+Ci93lpWDXJ4O+xNiGno0ZKYsPA0lrMSO8FEAi/uPvp+XFXpVkujyE5p943
+ wCJoG4Lqqsyr3h0o2crLQncLl3rnj8KM+mPisXVX5W5288zs4pfqSgp9rkKfKIkogldM
+ kh9A==
+X-Gm-Message-State: AOJu0Yzlxn7finJnZYZTQQSKb1Lw6mXNsuGNtAAv8FsdO9uv2ZzCT5I7
+ 7bI+9BU0foyARJg1jL9aRNETpi4/BJvnw6WT+xwzoDsLqBLBYb38YOPV/HXdqIjLP4MxaAYau7V
+ ormSvBInhfJpdwPU=
+X-Received: by 2002:a05:620a:2a14:b0:778:9a18:68f6 with SMTP id
+ o20-20020a05620a2a1400b007789a1868f6mr2568975qkp.58.1698415360537; 
+ Fri, 27 Oct 2023 07:02:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLoSGY6/yi+IfkOU/tofeeqxeOKruxION6PXaTv09wFhypopPLd8bfv05vTGq4ozd5qDtI/A==
+X-Received: by 2002:a05:620a:2a14:b0:778:9a18:68f6 with SMTP id
+ o20-20020a05620a2a1400b007789a1868f6mr2568952qkp.58.1698415360282; 
+ Fri, 27 Oct 2023 07:02:40 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
+ ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
+ by smtp.gmail.com with ESMTPSA id
+ m12-20020ae9e70c000000b007770673e757sm558961qka.94.2023.10.27.07.02.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 27 Oct 2023 07:02:39 -0700 (PDT)
+Message-ID: <77cb4375-beb8-4d6e-ba9f-304d357e7e67@redhat.com>
+Date: Fri, 27 Oct 2023 16:02:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: cbPfTGqAfQ2LFnWoKf8cPfIvGshYzmoj
-X-Proofpoint-ORIG-GUID: cbPfTGqAfQ2LFnWoKf8cPfIvGshYzmoj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-27_12,2023-10-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- clxscore=1011 lowpriorityscore=0 mlxlogscore=600 adultscore=0
- impostorscore=0 malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2310270121
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/37] vfio: Introduce base object for VFIOContainer
+ and targetted interface
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ <20231026103104.1686921-7-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231026103104.1686921-7-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,34 +104,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On 10/26/23 12:30, Zhenzhong Duan wrote:
+> Introduce a dumb VFIOContainer base object and its targetted interface.
 
-It seems that we lose the install prefix option when regenerating config
-for a Windows cross-build. Looks like this behavior appeared with c36dd41ba2
-(configure: move target-specific defaults to an external machine file,
-2023-10-16), but I couldn't find the specific root cause yet.
+targeted
 
-To reproduce the issue, first run:
 
-    ../configure --prefix=/tmp/install --without-default-features \
-        --cross-prefix=x86_64-w64-mingw32- --target-list=aarch64-softmmu
+> This is willingly not a QOM object because we don't want it to be
+> visible from the user interface.  The VFIOContainer will be smoothly
+> populated in subsequent patches as well as interfaces.
+> 
+> No fucntional change intended.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   include/hw/vfio/vfio-common.h         |  8 +---
+>   include/hw/vfio/vfio-container-base.h | 64 +++++++++++++++++++++++++++
+>   2 files changed, 66 insertions(+), 6 deletions(-)
+>   create mode 100644 include/hw/vfio/vfio-container-base.h
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index b9c7a7e588..d8f293cb57 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -30,6 +30,7 @@
+>   #include <linux/vfio.h>
+>   #endif
+>   #include "sysemu/sysemu.h"
+> +#include "hw/vfio/vfio-container-base.h"
+>   
+>   #define VFIO_MSG_PREFIX "vfio %s: "
+>   
+> @@ -81,6 +82,7 @@ typedef struct VFIOAddressSpace {
+>   struct VFIOGroup;
+>   
+>   typedef struct VFIOContainer {
+> +    VFIOContainerBase bcontainer;
+>       VFIOAddressSpace *space;
+>       int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+>       MemoryListener listener;
+> @@ -201,12 +203,6 @@ typedef struct VFIODisplay {
+>       } dmabuf;
+>   } VFIODisplay;
+>   
+> -typedef struct {
+> -    unsigned long *bitmap;
+> -    hwaddr size;
+> -    hwaddr pages;
+> -} VFIOBitmap;
+> -
+>   VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+>   void vfio_put_address_space(VFIOAddressSpace *space);
+>   bool vfio_devices_all_running_and_saving(VFIOContainer *container);
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> new file mode 100644
+> index 0000000000..5becbd51a7
+> --- /dev/null
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -0,0 +1,64 @@
+> +/*
+> + * VFIO BASE CONTAINER
+> + *
+> + * Copyright (C) 2023 Intel Corporation.
+> + * Copyright Red Hat, Inc. 2023
+> + *
+> + * Authors: Yi Liu <yi.l.liu@intel.com>
+> + *          Eric Auger <eric.auger@redhat.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> +
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> +
+> + * You should have received a copy of the GNU General Public License along
+> + * with this program; if not, see <http://www.gnu.org/licenses/>.
 
-Which correctly prints:
+This should be enough :
 
-    Directories
-        [...]
-        Install prefix: /tmp/install
+   SPDX-License-Identifier: GPL-2.0-or-later
 
-But then if we run `touch ../meson.build && make`, we get:
+> + */
+> +
+> +#ifndef HW_VFIO_VFIO_BASE_CONTAINER_H
+> +#define HW_VFIO_VFIO_BASE_CONTAINER_H
 
-    Directories
-        [...]
-        Install prefix: /qemu
+HW_VFIO_VFIO_CONTAINER_BASE_H
 
-Reverting c36dd41ba2 does fix the issue, but I couldn't yet find what
-is causing this among the changes. Or even if it could be a meson bug
-itself. I'd appreciate any help.
+> +
+> +#include "exec/memory.h"
+> +#ifndef CONFIG_USER_ONLY
+> +#include "exec/hwaddr.h"
+> +#endif
 
-Thanks,
-Matheus
+including "exec/memory.h" should be enough.
+
+
+> +
+> +typedef struct VFIODevice VFIODevice;
+> +typedef struct VFIOIOMMUOps VFIOIOMMUOps;
+> +
+> +typedef struct {
+> +    unsigned long *bitmap;
+> +    hwaddr size;
+> +    hwaddr pages;
+> +} VFIOBitmap;
+> +
+> +/*
+> + * This is the base object for vfio container backends
+> + */
+> +typedef struct VFIOContainerBase {
+> +    const VFIOIOMMUOps *ops;
+> +} VFIOContainerBase;
+> +
+> +struct VFIOIOMMUOps {
+> +    /* basic feature */
+> +    int (*dma_map)(VFIOContainerBase *bcontainer,
+> +                   hwaddr iova, ram_addr_t size,
+> +                   void *vaddr, bool readonly);
+> +    int (*dma_unmap)(VFIOContainerBase *bcontainer,
+> +                     hwaddr iova, ram_addr_t size,
+> +                     IOMMUTLBEntry *iotlb);
+
+Could the VFIOContainerBase *parameter be const ?
+
+> +    int (*attach_device)(char *name, VFIODevice *vbasedev,
+
+cont char *name  ?
+
+The rest looks good to me.
+
+Thanks
+
+C.
+
+
+> +                         AddressSpace *as, Error **errp);
+> +    void (*detach_device)(VFIODevice *vbasedev);
+> +    /* migration feature */
+> +    int (*set_dirty_page_tracking)(VFIOContainerBase *bcontainer, bool start);
+> +    int (*query_dirty_bitmap)(VFIOContainerBase *bcontainer, VFIOBitmap *vbmap,
+> +                              hwaddr iova, hwaddr size);
+> +};
+> +#endif /* HW_VFIO_VFIO_BASE_CONTAINER_H */
+
 
