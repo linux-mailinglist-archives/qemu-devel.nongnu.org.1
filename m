@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297C07D8F44
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 879367D8F80
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:16:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwGyF-0008D3-Al; Fri, 27 Oct 2023 03:09:27 -0400
+	id 1qwH3u-0001wo-H3; Fri, 27 Oct 2023 03:15:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qwGy0-0008BM-SE
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:09:12 -0400
+ id 1qwH3p-0001wO-Jh
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:15:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qwGxx-0006DM-JS
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:09:11 -0400
+ id 1qwH3n-0008Al-RJ
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:15:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698390547;
+ s=mimecast20190719; t=1698390910;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pWwzYbs3UqDuln5EGSKSWBSrKSMW4LJ3igYnAopZuwE=;
- b=E65VALw2KW2rmUy99cald0Dze+VT6YxDcOx8ZeDttTt/SiVnbblLEnnUiNlrTRfL+ag0zD
- z63bNP8OAyy+z7atcVXunKlj4Rx5Sdu76Q/dg1H9h2rijDqWhqax0AQBm70gH23rd3ldgO
- UPEceM9eyWkvR52HarvHeNUnl0aFTv8=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=R+aEfsPEpoqSBYCeQVdFqNEVvDsq50Qdpd+0L20hLWQ=;
+ b=TctfLCvseCrCG9/HpPz2/a5k5Ac5Wqz5bzLkS7rxX7RS41okjO4nBRxLdMQioeDFIA7BLE
+ s00aG4KkF656b6KNSHG2URe3P4xu5ZQQAaNF+VG3nnFAjEfIdhboFLjczjdzFOCdE7PCZi
+ gH/F+LOqxU7RlKTsct8Keb+0DPxYPg8=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-gIs1_N7YN3uKAuIyQZSBTg-1; Fri, 27 Oct 2023 03:09:04 -0400
-X-MC-Unique: gIs1_N7YN3uKAuIyQZSBTg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-5079fe7cc7cso2121162e87.2
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:09:04 -0700 (PDT)
+ us-mta-138-bwWCcgsONyaS_IPUc8Y4mA-1; Fri, 27 Oct 2023 03:15:08 -0400
+X-MC-Unique: bwWCcgsONyaS_IPUc8Y4mA-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-5079630993dso1986143e87.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:15:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698390543; x=1698995343;
+ d=1e100.net; s=20230601; t=1698390907; x=1698995707;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pWwzYbs3UqDuln5EGSKSWBSrKSMW4LJ3igYnAopZuwE=;
- b=q6yeNknsXO8uzfrdecPfdMpTHxI1zHTlh5fzIfktEkQ820kSKo7EIGZjRGsqtjTHT7
- KJULDEKu9s+eqdF+Q5AlnWblg09inWUE8eXq2RlS+vhvpIL0JXI4gcLQgfwSQeu+mCgp
- tbjj2kJsYPhyDZV9vSVyG9JTn6brcBG8GiRa1bgpnx+UZgkFpu0RKtmHmvGCbDLy3aUe
- fCH6QOcKr3G+WczHd9Pb7lkHOX6OEVAEhCbDc7YqE2Hh5cRp91PBPT3z38HMx71QUzID
- 4aU6mCkCMTXe1Geb8505YCsqld8Yz85rpTL1xE7ll3BicJXrsTyRL0kDWh0ip12GoJP/
- MagQ==
-X-Gm-Message-State: AOJu0Yy4RFNgyqqFTfZ8jk7feTiDwtRTyJWhm2yjaXh4L1+W2bVeLRu6
- 2/S2tk5MLj+G85jPqMCYCR1PHeo+YAipW8phwDyB0Wi+IGzzyAkIWezgPQrEf2NANNeUp8RnzSY
- 9BRX8wme54NN9VRG0FGeWC/UxSOWIiAU=
-X-Received: by 2002:a19:550b:0:b0:507:cb04:59d4 with SMTP id
- n11-20020a19550b000000b00507cb0459d4mr1016898lfe.8.1698390543382; 
- Fri, 27 Oct 2023 00:09:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOYYrytXNqweJ/RJH3JJqtKnsWztc95LQZJUNfrovABnKy+Y/zxM+g7rnByupg7kQ56wtafc3O73gRezR0fk4=
-X-Received: by 2002:a19:550b:0:b0:507:cb04:59d4 with SMTP id
- n11-20020a19550b000000b00507cb0459d4mr1016882lfe.8.1698390543060; Fri, 27 Oct
- 2023 00:09:03 -0700 (PDT)
+ bh=R+aEfsPEpoqSBYCeQVdFqNEVvDsq50Qdpd+0L20hLWQ=;
+ b=wui3un26vGO+lpZhlR1WgDAfxGcQXB2wcem4XS9+Buq/a/nfK0MnM6sBc0nKhR/Chb
+ LuVqBZkyqmyOmHVf6/lu04FOeTbRoBt7L6ck8yOOCkZ0F/s0SyQjfAZwmSlHwXrmtFZr
+ kFatQJFCfwwQbQpXawDtc9m5sb1+nXyYQbj8k642Bcau9PIYB9JsLPxsuk2tmMNDxSEj
+ 9kizGrkFxhDLthyJDFNznJKHlUha9BTQbg21FqJwm6H/nuqkEVRCKlcux6s5xZah9IAe
+ Qs+7XSILWm9MuZO4qnC+wTiDPvaQDbjsV269gfmI2DSXu8yJ368wW+BgAkMPMxhLBeQ2
+ j8sw==
+X-Gm-Message-State: AOJu0Yz+ODRycrRTNFwSrihvYuMoqDqSX5oQ5AyGLK2ci1Z3LlYEDBt3
+ vj15g8guCtOLUAM+VWe/A1/R5pfT/fkz4+4HZUGu7k/8J0/oNv/Lbk8gh0UDvUpLxiGbDovlExb
+ hOz2COYKHvJj9KsqMu13pnmW2WQ0W6q8=
+X-Received: by 2002:a05:6512:36c9:b0:507:a671:3230 with SMTP id
+ e9-20020a05651236c900b00507a6713230mr981356lfs.16.1698390907491; 
+ Fri, 27 Oct 2023 00:15:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGOadWMjw/Zhk72bAnaXu2Ycq8UG5V8lYlbRENFYzvt0GDkywhDW9xdsaS1JR77lHae9iLU0CKSYHduGpzfkts=
+X-Received: by 2002:a05:6512:36c9:b0:507:a671:3230 with SMTP id
+ e9-20020a05651236c900b00507a6713230mr981346lfs.16.1698390907167; Fri, 27 Oct
+ 2023 00:15:07 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
- <20231017040932.62997-13-akihiko.odaki@daynix.com>
-In-Reply-To: <20231017040932.62997-13-akihiko.odaki@daynix.com>
+ <20231017040932.62997-16-akihiko.odaki@daynix.com>
+In-Reply-To: <20231017040932.62997-16-akihiko.odaki@daynix.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 27 Oct 2023 15:08:51 +0800
-Message-ID: <CACGkMEsKUnB8JhvCzsJ67==Jq=+S=xCFttXoaZsOd++4sBc-Uw@mail.gmail.com>
-Subject: Re: [PATCH v5 12/21] virtio-net: Always set populate_hash
+Date: Fri, 27 Oct 2023 15:14:56 +0800
+Message-ID: <CACGkMEuA5azGUQzyCe=4xq+YfV60PuiOajhJ=1HOXoG9Gege5g@mail.gmail.com>
+Subject: Re: [PATCH v5 15/21] virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
  Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin" <mst@redhat.com>
@@ -95,34 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 17, 2023 at 12:10=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
+On Tue, Oct 17, 2023 at 12:14=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
 x.com> wrote:
 >
-> The member is not cleared during reset so may have a stale value.
+> virtio-net can report hash values even if the peer does not have a
+> virtio-net header.
 
-Nit: I guess it should be "always unset populate_hash"?
+Do we need a compat flag for this?
 
 Thanks
 
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  hw/net/virtio-net.c | 1 +
->  1 file changed, 1 insertion(+)
+>  hw/net/virtio-net.c | 2 --
+>  1 file changed, 2 deletions(-)
 >
 > diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 20feb20bb1..6eb206f297 100644
+> index c6a92ba3db..dc2b7b8ee7 100644
 > --- a/hw/net/virtio-net.c
 > +++ b/hw/net/virtio-net.c
-> @@ -643,6 +643,7 @@ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, =
-int mergeable_rx_bufs,
->          n->guest_hdr_len =3D n->mergeable_rx_bufs ?
->              sizeof(struct virtio_net_hdr_mrg_rxbuf) :
->              sizeof(struct virtio_net_hdr);
-> +        n->rss_data.populate_hash =3D false;
+> @@ -763,8 +763,6 @@ static uint64_t virtio_net_get_features(VirtIODevice =
+*vdev, uint64_t features,
+>          virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO4);
+>          virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO6);
+>          virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ECN);
+> -
+> -        virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
 >      }
 >
->      for (i =3D 0; i < n->max_queue_pairs; i++) {
+>      if (!peer_has_vnet_hdr(n) || !peer_has_ufo(n)) {
 > --
 > 2.42.0
 >
