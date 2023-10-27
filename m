@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2AA7D9BF7
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C69DE7D9BF9
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:46:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0n-00080e-Tn; Fri, 27 Oct 2023 10:40:33 -0400
+	id 1qwO0p-0008Nv-AT; Fri, 27 Oct 2023 10:40:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0L-0007Nc-Th
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:06 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qwO0I-0007LV-Jw
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:04 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0E-0008B5-U1
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:05 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-32ddfb38c02so1494552f8f.3
+ id 1qwO0F-0008BB-2f
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:02 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2c50ec238aeso30426801fa.0
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698417597; x=1699022397; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=md/8boBzovKzRvF7b8BqZz7bG8/Ggz8MPHAVAdGqfbE=;
- b=QexAmBAZlRbpQQjWTTt2OBdf/ENwiFhEwYbiSVDRpUAVVOHshxik7tvwaZuehWm67h
- otiEzVwUwYvwhay3b5YJsdDs+pG94ypu5XaJb2YczFs6OBif3y8Lr9QAaurBzVj473SJ
- nn5M8spE5GdyFvtm62j8hCOeEZETMA3cWFt47JVIEQbGkC8hY+ulFUDdm3u9Fg9j+Tug
- 0IRg6X0dwQv3pMxg9OOvo/IQUR9hUVsp4ijbgt6dyfHTHM6o3GL4fUUAWwdsEARLfKNi
- CnIM39yPfL9AAoU3KZRL1x5ZhYv/kKj/7Mse+RPzUvc5c/DvTKT3+zVkfX4ROlVnPvlX
- veRQ==
+ :reply-to; bh=my7OnQbRaZ6vmyGLjZG5PCWu8hQo8B8j0gxAVZuRna4=;
+ b=ysaDrItfu3Qrmn7P71BGQAXv2R9aAyqI8CNyoJ3NWBCVBp6ez7iqMGJYRv0bga2Thz
+ a8/Ule2h9kKHzIajU9G1ee+lh2/3BIYtg/67IFwdfenyXMv5OV3uCbSU5PO0lZ5uZT3c
+ ZS0mFE+iLBbLttqt3CFqPp7/jxhckXCdadUKe+Bjbtvg94pHfGcyQj+RMQENIj2EaOaz
+ Id0p8rAAqTWPP+gWFMySLY4ZxjRN8y7NeSClK1BWXnLOg8RcIH7qmsWqsY/bxvlqXO2I
+ 2F3IA3WgdemrnZL97H2Ys4ltyFmqcN/Un2aHKIw8WWnalZTxAOQTuOscx0kJwkRk79/h
+ CfoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698417597; x=1699022397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=md/8boBzovKzRvF7b8BqZz7bG8/Ggz8MPHAVAdGqfbE=;
- b=GWSo4u1Z+fjQzoHiM5dUjzw9f3K2B8mp/4012THXTCEZ4aohKP7e0dSjRmLjF546U7
- IKaIJAF93m6n2WaGUmmAO4qaSh+wylud7AbVL+5BBvXUi1ZscKiXf2CVhwoEA5jGUf8N
- Jl2RwIHXePs3O0CB1sx2yxyQ6jvHg5WEtOKy4dAj+BBM3t4uPyglpbd24kpWc/9C5bLe
- +fmS9CN4GPCcyIqZ9Sl6qMswCXxvnHUD1cLYtxzbcQxNvS/CPVz3LceP0JGGndTogwSf
- eO8PUFWiGjL0wk+UhtaLbnHc/kataIQqmizalK5qsPCFsqmKBUzo6Jx8cBeBN76yNOJS
- hyug==
-X-Gm-Message-State: AOJu0YyeTD0rV49i/OHfxSBQVq+wKv/wVio+uj9uSrZCZat14SeH5v4h
- KHJHX9VD7nWdKW4pLBCQT624iGvJxQbxzrks7ME=
-X-Google-Smtp-Source: AGHT+IECC4DY/thr2qUjOLXcgRCqxdszEjDqXwes8Lyzck4ThCVRSKXc6E2wQcnwHXe3xEii1yll8w==
-X-Received: by 2002:a5d:6d81:0:b0:32d:14a4:ab3 with SMTP id
- l1-20020a5d6d81000000b0032d14a40ab3mr2802062wrs.24.1698417596868; 
- Fri, 27 Oct 2023 07:39:56 -0700 (PDT)
+ bh=my7OnQbRaZ6vmyGLjZG5PCWu8hQo8B8j0gxAVZuRna4=;
+ b=txoNj1H9KjbYQGmldZCQ0naH9OSWhpjZSZGULtNcMZknVhtjPy6G6uAx6mfJcyRM60
+ TdRKhreMCTGsj+3o64Bf+uPERkoBoviVRc/SYTXQvK6G8x1Ot0dgCWwwkzfivf0wQPw3
+ aKebcfpc19m+nFtBnFdpdiyBcEcYZWfazd85wgUh1akRLBG0iFi4CbuCLbyGyQYpKcBD
+ QhRFemaRdatLnP+2gXM6OH2bMXzDF959rDHgDjHfbbty6yPs7zW7EK8prrMxwz8DeR4k
+ E99+ubnkfRkqXBGx+v9mOTo6vALSKK2zvZXmJ0QHL3zQ5zXpSWEeUEOisdpIx5oByNjq
+ HuyQ==
+X-Gm-Message-State: AOJu0YyJ1h+WZ16ZkcHRSIxrrrLbxWVE99xosYOgfZzyOErUN/+JEnB2
+ jKQwPFCWebaHwQgsOYLfUeTUFwwhBrFjJRgsOzA=
+X-Google-Smtp-Source: AGHT+IGh0c4sw1HQJFfpH1Z/FQY7jod17HzV0NbU1j1+0ZmCqiaataY+yxRev3UKYqvOZxOkhxB+uQ==
+X-Received: by 2002:a2e:958e:0:b0:2c5:115c:2d33 with SMTP id
+ w14-20020a2e958e000000b002c5115c2d33mr2444580ljh.3.1698417597289; 
+ Fri, 27 Oct 2023 07:39:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Oct 2023 07:39:56 -0700 (PDT)
+ Fri, 27 Oct 2023 07:39:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/41] hw/intc/pxa2xx: Pass CPU reference using QOM link
- property
-Date: Fri, 27 Oct 2023 15:39:27 +0100
-Message-Id: <20231027143942.3413881-27-peter.maydell@linaro.org>
+Subject: [PULL 27/41] hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of
+ pxa2xx_pic_init()
+Date: Fri, 27 Oct 2023 15:39:28 +0100
+Message-Id: <20231027143942.3413881-28-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,56 +94,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-QOM objects shouldn't access each other internals fields
-except using the QOM API.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20231020130331.50048-8-philmd@linaro.org
+Message-id: 20231020130331.50048-9-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/pxa2xx_pic.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ hw/arm/pxa2xx_pic.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/hw/arm/pxa2xx_pic.c b/hw/arm/pxa2xx_pic.c
-index 2eb869a605a..7e180635c22 100644
+index 7e180635c22..1373a0d275f 100644
 --- a/hw/arm/pxa2xx_pic.c
 +++ b/hw/arm/pxa2xx_pic.c
-@@ -15,6 +15,7 @@
- #include "cpu.h"
- #include "hw/arm/pxa.h"
- #include "hw/sysbus.h"
-+#include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
- #include "qom/object.h"
- #include "target/arm/cpregs.h"
-@@ -288,7 +289,8 @@ DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
-     DeviceState *dev = qdev_new(TYPE_PXA2XX_PIC);
-     PXA2xxPICState *s = PXA2XX_PIC(dev);
- 
--    s->cpu = cpu;
-+    object_property_set_link(OBJECT(dev), "arm-cpu",
-+                             OBJECT(cpu), &error_abort);
- 
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-@@ -321,11 +323,18 @@ static const VMStateDescription vmstate_pxa2xx_pic_regs = {
-     },
- };
- 
-+static Property pxa2xx_pic_properties[] = {
-+    DEFINE_PROP_LINK("arm-cpu", PXA2xxPICState, cpu,
-+                     TYPE_ARM_CPU, ARMCPU *),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void pxa2xx_pic_class_init(ObjectClass *klass, void *data)
+@@ -287,12 +287,18 @@ static void pxa2xx_pic_reset_hold(Object *obj)
+ DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
+     DeviceState *dev = qdev_new(TYPE_PXA2XX_PIC);
+-    PXA2xxPICState *s = PXA2XX_PIC(dev);
+ 
+     object_property_set_link(OBJECT(dev), "arm-cpu",
+                              OBJECT(cpu), &error_abort);
+-
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
++
++    return dev;
++}
++
++static void pxa2xx_pic_realize(DeviceState *dev, Error **errp)
++{
++    PXA2xxPICState *s = PXA2XX_PIC(dev);
+ 
+     qdev_init_gpio_in(dev, pxa2xx_pic_set_irq, PXA2XX_PIC_SRCS);
+ 
+@@ -300,12 +306,9 @@ DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
+     memory_region_init_io(&s->iomem, OBJECT(s), &pxa2xx_pic_ops, s,
+                           "pxa2xx-pic", 0x00100000);
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+ 
+     /* Enable IC coprocessor access.  */
+-    define_arm_cp_regs_with_opaque(cpu, pxa_pic_cp_reginfo, s);
+-
+-    return dev;
++    define_arm_cp_regs_with_opaque(s->cpu, pxa_pic_cp_reginfo, s);
+ }
+ 
+ static const VMStateDescription vmstate_pxa2xx_pic_regs = {
+@@ -335,6 +338,7 @@ static void pxa2xx_pic_class_init(ObjectClass *klass, void *data)
      ResettableClass *rc = RESETTABLE_CLASS(klass);
  
-+    device_class_set_props(dc, pxa2xx_pic_properties);
+     device_class_set_props(dc, pxa2xx_pic_properties);
++    dc->realize = pxa2xx_pic_realize;
      dc->desc = "PXA2xx PIC";
      dc->vmsd = &vmstate_pxa2xx_pic_regs;
      rc->phases.hold = pxa2xx_pic_reset_hold;
