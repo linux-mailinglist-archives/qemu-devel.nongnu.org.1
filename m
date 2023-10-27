@@ -2,88 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C017D8DDE
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 06:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB59A7D8DEE
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 06:56:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwEhp-0008K5-Ui; Fri, 27 Oct 2023 00:44:22 -0400
+	id 1qwEs0-0001KN-3U; Fri, 27 Oct 2023 00:54:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qwEhn-0008Jf-FD
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 00:44:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qwEry-0001KD-59
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 00:54:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qwEhl-0001Ci-KW
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 00:44:18 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qwErw-0003MM-2d
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 00:54:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698381856;
+ s=mimecast20190719; t=1698382486;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=e/0ThB1f4EUHggG9SdzzN6yXqBONHcM8sgtv/weMHLY=;
- b=Xe/7uggWpNMAZFWGwOZJYPkD9+D3p8BTYhbUMYhiG2tYzq4STF34WuLS4AGrQex7z4GnJO
- Egu1t9WGCgXll8RiT0UzGnzc0LhVozSIRiy53pwXX39De4AIhdL2CgoKg0dTYHrY8JiAKP
- NkvFtQF24SUFsI23ceXUVuq1pl0ycss=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JXU12W74l0p2mPMfL7ENCLXIUzlfAykoAwVejTIauLA=;
+ b=G5D0UumMQJajNrzD9CF3U21iFQ1dQq4eVb/Lv4mYgErc03K5g7TJBs6HxzEVYR1TZym3zC
+ g5xMq3cIvKU++Htx7jD9lMbpUajSwzUYN7h3YTE3/Vi0THqh7xGzoWZ90A+et8/t5iqPp5
+ ou5GefveXU6qRZXOpC4q6sdOdiDBbdk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-Pjn0RlheOxy_BiMUSjU4Pg-1; Fri, 27 Oct 2023 00:44:12 -0400
-X-MC-Unique: Pjn0RlheOxy_BiMUSjU4Pg-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66d35dda745so20698046d6.0
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 21:44:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698381852; x=1698986652;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=e/0ThB1f4EUHggG9SdzzN6yXqBONHcM8sgtv/weMHLY=;
- b=D7iseq47Y6s1DbeSjOzKyP+H3Nf5ehoppjgmYa+DTgP5VaZvLP5JESfdmFAk+0Umdo
- z9q4Q9HyHox+htcfeaS7PzYdbjP1zV2aHtDbq1ICxR53rZRd+1O0c3RxKe1BEHKRf889
- LNOFcu8xTj7qXxY9+2QcxCjaTdyc1ta4zoN8+FUrFi/cOWDesuRuNt9P3EXurI+cC2u/
- hdSWCF1ORDN8vD2439JFKwe3/UGIIBcdFrrMtgefSkhdNUSIwgd/Rz8dSOQ6gREuh+Fu
- v0GAxP7n/uFAtR9XehZEQxlTC6f2arWTEJRQ2vLNDUBQ1VvHkGxrCViqLCMMy7G62jrl
- N10A==
-X-Gm-Message-State: AOJu0Yxor8j7dwjd7yS55suAO1HPFhxv7SWu2nRgioJDMnwtKdz7m+ZE
- l7KhIFjaLV+p7FbJvVLC7fADLZmpM9NtXS48NTWE08CH9uOH+lK8ucnONqkDEaaN3vjjhfbKRw5
- 6NLK8WyMQN3aH9ZM=
-X-Received: by 2002:ad4:5ca1:0:b0:66d:6af7:4571 with SMTP id
- q1-20020ad45ca1000000b0066d6af74571mr2074988qvh.17.1698381851835; 
- Thu, 26 Oct 2023 21:44:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHdXI3JWnP8HU7Mfcr20qPsHA80B1IlJb45PE6LAyDNyQgC8kvyi9C1Nh04eb6xExpOljLHFQ==
-X-Received: by 2002:ad4:5ca1:0:b0:66d:6af7:4571 with SMTP id
- q1-20020ad45ca1000000b0066d6af74571mr2074977qvh.17.1698381851497; 
- Thu, 26 Oct 2023 21:44:11 -0700 (PDT)
-Received: from [172.19.1.246] ([192.80.84.35])
- by smtp.googlemail.com with ESMTPSA id
- h25-20020a0cab19000000b0065b31dfdf70sm336558qvb.11.2023.10.26.21.44.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 26 Oct 2023 21:44:11 -0700 (PDT)
-Message-ID: <dce5be86-19c7-49e1-90af-acf2c94d05b8@redhat.com>
-Date: Fri, 27 Oct 2023 06:44:10 +0200
+ us-mta-462-a90SgPT1NJeNuDFsTI5z4Q-1; Fri, 27 Oct 2023 00:54:41 -0400
+X-MC-Unique: a90SgPT1NJeNuDFsTI5z4Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD9FF811760;
+ Fri, 27 Oct 2023 04:54:40 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 386711121314;
+ Fri, 27 Oct 2023 04:54:40 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2B61121E6A1F; Fri, 27 Oct 2023 06:54:39 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Ben
+ Widawsky <bwidawsk@kernel.org>,  <linux-cxl@vger.kernel.org>,
+ <linuxarm@huawei.com>,  Ira Weiny <ira.weiny@intel.com>,  Gregory Price
+ <gourry.memverge@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Mike Maslenkin <mike.maslenkin@gmail.com>,  Dave Jiang
+ <dave.jiang@intel.com>
+Subject: Re: [PATCH v5 8/8] hw/mem/cxl_type3: Add CXL RAS Error Injection
+ Support.
+References: <20230221152145.9736-1-Jonathan.Cameron@huawei.com>
+ <20230221152145.9736-9-Jonathan.Cameron@huawei.com>
+Date: Fri, 27 Oct 2023 06:54:39 +0200
+In-Reply-To: <20230221152145.9736-9-Jonathan.Cameron@huawei.com> (Jonathan
+ Cameron's message of "Tue, 21 Feb 2023 15:21:45 +0000")
+Message-ID: <87cyx04qcw.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/29] tcg/aarch64: Generate TBZ, TBNZ
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20231026001542.1141412-1-richard.henderson@linaro.org>
- <20231026001542.1141412-17-richard.henderson@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20231026001542.1141412-17-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,44 +86,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 02:13, Richard Henderson wrote:
-> +    case TCG_COND_TSTEQ:
-> +    case TCG_COND_TSTNE:
-> +        if (b_const && is_power_of_2(b)) {
-> +            tbit = ctz64(b);
-> +            need_cmp = false;
-> +        }
+I'm trying to fill in QMP documentation holes, and found one in commit
+415442a1b4a (this patch).  Details inline.
 
-I think another value that can be handled efficiently is 0xffffffff 
-which becomes a "cbz/cbnz wNN, LABEL" instruction.
+Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
 
-This could be interesting if the i386 frontend implemented JE/JNE and 
-JS/JNS (of sizes smaller than MO_TL) using masks like 0xffffffff and 
-0x80000000 respectively.  Like (for SF):
+> CXL uses PCI AER Internal errors to signal to the host that an error has
+> occurred. The host can then read more detailed status from the CXL RAS
+> capability.
+>
+> For uncorrectable errors: support multiple injection in one operation
+> as this is needed to reliably test multiple header logging support in an
+> OS. The equivalent feature doesn't exist for correctable errors, so only
+> one error need be injected at a time.
+>
+> Note:
+>  - Header content needs to be manually specified in a fashion that
+>    matches the specification for what can be in the header for each
+>    error type.
+>
+> Injection via QMP:
+> { "execute": "qmp_capabilities" }
+> ...
+> { "execute": "cxl-inject-uncorrectable-errors",
+>   "arguments": {
+>     "path": "/machine/peripheral/cxl-pmem0",
+>     "errors": [
+>         {
+>             "type": "cache-address-parity",
+>             "header": [ 3, 4]
+>         },
+>         {
+>             "type": "cache-data-parity",
+>             "header": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+>         },
+>         {
+>             "type": "internal",
+>             "header": [ 1, 2, 4]
+>         }
+>         ]
+>   }}
+> ...
+> { "execute": "cxl-inject-correctable-error",
+>     "arguments": {
+>         "path": "/machine/peripheral/cxl-pmem0",
+>         "type": "physical"
+>     } }
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-      MemOp size = (s->cc_op - CC_OP_ADDB) & 3;
-      if (size == MO_TL) {
-          return (CCPrepare) { .cond = TCG_COND_EQ, .reg = cpu_cc_dst,
-                               .mask = -1 };
-      } else {
-          return (CCPrepare) { .cond = TCG_COND_TSTEQ, .reg = cpu_cc_dst,
-                               .imm = (1ull << (8 << size)) - 1,
-                               .mask = -1 };
-     }
+[...]
 
-Then on aarch64, JE could become CBZ and JS could become TBNZ.
+> diff --git a/qapi/cxl.json b/qapi/cxl.json
+> new file mode 100644
+> index 0000000000..ac7e167fa2
+> --- /dev/null
+> +++ b/qapi/cxl.json
+> @@ -0,0 +1,118 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +
+> +##
+> +# = CXL devices
+> +##
+> +
+> +##
+> +# @CxlUncorErrorType:
+> +#
+> +# Type of uncorrectable CXL error to inject. These errors are reported via
+> +# an AER uncorrectable internal error with additional information logged at
+> +# the CXL device.
+> +#
+> +# @cache-data-parity: Data error such as data parity or data ECC error CXL.cache
+> +# @cache-address-parity: Address parity or other errors associated with the
+> +#                        address field on CXL.cache
+> +# @cache-be-parity: Byte enable parity or other byte enable errors on CXL.cache
+> +# @cache-data-ecc: ECC error on CXL.cache
+> +# @mem-data-parity: Data error such as data parity or data ECC error on CXL.mem
+> +# @mem-address-parity: Address parity or other errors associated with the
+> +#                      address field on CXL.mem
+> +# @mem-be-parity: Byte enable parity or other byte enable errors on CXL.mem.
+> +# @mem-data-ecc: Data ECC error on CXL.mem.
+> +# @reinit-threshold: REINIT threshold hit.
+> +# @rsvd-encoding: Received unrecognized encoding.
+> +# @poison-received: Received poison from the peer.
+> +# @receiver-overflow: Buffer overflows (first 3 bits of header log indicate which)
+> +# @internal: Component specific error
+> +# @cxl-ide-tx: Integrity and data encryption tx error.
+> +# @cxl-ide-rx: Integrity and data encryption rx error.
+> +##
+> +
+> +{ 'enum': 'CxlUncorErrorType',
+> +  'data': ['cache-data-parity',
+> +           'cache-address-parity',
+> +           'cache-be-parity',
+> +           'cache-data-ecc',
+> +           'mem-data-parity',
+> +           'mem-address-parity',
+> +           'mem-be-parity',
+> +           'mem-data-ecc',
+> +           'reinit-threshold',
+> +           'rsvd-encoding',
+> +           'poison-received',
+> +           'receiver-overflow',
+> +           'internal',
+> +           'cxl-ide-tx',
+> +           'cxl-ide-rx'
+> +           ]
+> + }
+> +
+> +##
+> +# @CXLUncorErrorRecord:
+> +#
+> +# Record of a single error including header log.
+> +#
+> +# @type: Type of error
+> +# @header: 16 DWORD of header.
+> +##
+> +{ 'struct': 'CXLUncorErrorRecord',
+> +  'data': {
+> +      'type': 'CxlUncorErrorType',
+> +      'header': [ 'uint32' ]
+> +  }
+> +}
+> +
+> +##
+> +# @cxl-inject-uncorrectable-errors:
+> +#
+> +# Command to allow injection of multiple errors in one go. This allows testing
+> +# of multiple header log handling in the OS.
+> +#
+> +# @path: CXL Type 3 device canonical QOM path
+> +# @errors: Errors to inject
+> +##
+> +{ 'command': 'cxl-inject-uncorrectable-errors',
+> +  'data': { 'path': 'str',
+> +             'errors': [ 'CXLUncorErrorRecord' ] }}
+> +
+> +##
+> +# @CxlCorErrorType:
+> +#
+> +# Type of CXL correctable error to inject
+> +#
+> +# @cache-data-ecc: Data ECC error on CXL.cache
+> +# @mem-data-ecc: Data ECC error on CXL.mem
 
-Unfortunately, the code produced on x86 is not awful but also not too 
-good; we discussed earlier how TST against 0xffffffff and 0x80000000 can 
-be computed efficiently using "testl reg, reg", but you don't get to 
-that point in tcg_out_testi because the other conditions require an S32 
-constraint.  Those constants don't satisfy it. :(  So you lose the sign 
-extension instructions, but you get a somewhat bulky MOV to load the 
-constant followed by "testl reg, reg_containing_imm".
+Missing:
 
-I guess in principle you could add 
-TCG_TARGET_{br,mov,set}condi_valid(cond, const) but it's pretty ugly.
+   # @retry-threshold: ...
 
-Paolo
+I need suitable description text.  Can you help me?
+
+> +# @crc-threshold: Component specific and applicable to 68 byte Flit mode only.
+> +# @cache-poison-received: Received poison from a peer on CXL.cache.
+> +# @mem-poison-received: Received poison from a peer on CXL.mem
+> +# @physical: Received error indication from the physical layer.
+> +##
+> +{ 'enum': 'CxlCorErrorType',
+> +  'data': ['cache-data-ecc',
+> +           'mem-data-ecc',
+> +           'crc-threshold',
+> +           'retry-threshold',
+> +           'cache-poison-received',
+> +           'mem-poison-received',
+> +           'physical']
+> +}
+> +
+> +##
+> +# @cxl-inject-correctable-error:
+> +#
+> +# Command to inject a single correctable error.  Multiple error injection
+> +# of this error type is not interesting as there is no associated header log.
+> +# These errors are reported via AER as a correctable internal error, with
+> +# additional detail available from the CXL device.
+> +#
+> +# @path: CXL Type 3 device canonical QOM path
+> +# @type: Type of error.
+> +##
+> +{ 'command': 'cxl-inject-correctable-error',
+> +  'data': { 'path': 'str',
+> +            'type': 'CxlCorErrorType'
+> +  }
+> +}
+
+[...]
 
 
