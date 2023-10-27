@@ -2,75 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003177D8CA1
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 02:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A2F7D8D06
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 04:07:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwB5l-0000SD-Oh; Thu, 26 Oct 2023 20:52:50 -0400
+	id 1qwCES-0003oB-C0; Thu, 26 Oct 2023 22:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qwB5h-0000Qw-2u
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 20:52:46 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qwB5b-0003bW-Hg
- for qemu-devel@nongnu.org; Thu, 26 Oct 2023 20:52:42 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-581b6b93bd1so879504eaf.1
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 17:52:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698367956; x=1698972756; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=iqQ+ZsFgXDppICSAqCIq+BnsMXEFO+fIjovTTFTyKVE=;
- b=jgwy+W2AgLZSoc10dAIfzOWryDkYmitYjYH8b38wiJjozz/nj6OuWWSDWuM1kofU94
- j+WrNYjabwljIQ8FE0drUoG4XhpGIh3/aDUG2LKdkMjFGGRZ+aHdXvv7suOtX1ygj7XN
- 1Rucb/tiS2TH3N9Xp1oTYOT+hlGYBOvrPyfiS1tWb/kU/05ZVW3HpJPa6ZaecZUuUZ0w
- 7/5ZGG4wEKvBQJq5wN+HbaZW8aUCgnSFfrwaTUSGTTpZMI2Pm/5GTG6CZ0u/wRepc4BW
- kniSWEtcW/9lfOBF4K10Ly/G4e7UogUGoTxAy1GDUU/0+pfzAjKsYFFBxHAlVRkujObv
- 1YAg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qwCEP-0003nz-O5
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 22:05:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qwCEN-0001jv-OW
+ for qemu-devel@nongnu.org; Thu, 26 Oct 2023 22:05:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698372345;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Njeno4RAtp0aahNDURBK2ND0sCIy0sOQlo84qVH1djU=;
+ b=h//Fl//JIFGGl8+p4R8KSBTQQwerAPK9RAir6Opb7Zr/4DHWraleLSpfDJJEv97KZsHWfv
+ AiRZqKsQaqd3kv2iYUH/4ECLFZAltPi2AnzpQGb8JfuAtH/gKjT/oUuBEZeEX5r9uE5B8Y
+ ZkX2j2jDpmT4XlzVtDI9aZfBbdrxrzo=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-159-RL9QaQ_xNjq-PUp6ttW7_g-1; Thu, 26 Oct 2023 22:05:43 -0400
+X-MC-Unique: RL9QaQ_xNjq-PUp6ttW7_g-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7789f06778aso390807485a.0
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 19:05:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698367956; x=1698972756;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iqQ+ZsFgXDppICSAqCIq+BnsMXEFO+fIjovTTFTyKVE=;
- b=REm5vD4YPlYSLsc+DCmUV7J3etWDO485KADXfVoFKodEMUj7vYjK/M08Arcg3uD7Z6
- jLE9oMMZ4xDEzYnb8RaRtNCtCWoGiyURAYF7YUPh6TJIy79x7Deq6MM2rvkj84syN3LY
- +ExdKogCx5wKzWhF2Ps+V5AwIw3/Y++ucS17bIuGDIYCGi2N09JSNjyTfbEDVAyUxCq0
- 1VxD9BpicdBBWiS2vL7cAv4vlRajyfaJRIgvoBIdKLBA5Qrt1IW9dm4A1SKRKVe6/sXb
- BMdtkg37KImCcRGsx1OhoKARvno4B5AM7qnXh+/XDxnhkmeiQg+mAIgBIoMmC2QUcF1W
- a5MQ==
-X-Gm-Message-State: AOJu0Ywn9arSylvPE+greJo4k+M0Q/G2Ph93ui6SjY08JHKoOGI4eOVh
- t9dMEBgrVJL+YEjP5H2E3cnPSGgjACuQws9zrYU=
-X-Google-Smtp-Source: AGHT+IHhrN0dKuRkOvvwcmQB2hLoe0+4ZLRFAFWYfDmG0C667HMIb57qIi48zWB0XuQE7U05l360Kk/sXJH/48fo0+8=
-X-Received: by 2002:a05:6820:1346:b0:583:7653:2712 with SMTP id
- b6-20020a056820134600b0058376532712mr1456995oow.7.1698367956070; Thu, 26 Oct
- 2023 17:52:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698372343; x=1698977143;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Njeno4RAtp0aahNDURBK2ND0sCIy0sOQlo84qVH1djU=;
+ b=iTCv/MJp4QXez5l6jwqb1rbIo9vhkLwyki9EYfzul8bHJP56DP5lbbNBrk+M1AGdfn
+ /9uIU0kb03PK/Hk0oqjtzmcYizHW9fIKsICp21OVFnPg8O3gZ546TyHegGeU2uKXCISw
+ eJcsdy1HQ/D+OLzo8PUpVV0IhAq7WOGEsdxv4DbHCo6NZvRpSndy6SvC/vSCMvxsrjsa
+ sw5Xi1UuedYdEgc3ZBwPnDj2v9hY+Y43C+992xaC7L5YGetRE2y4YJWGqybul+2ePhko
+ 2r4hqxWH3QDZ/wLhxjEkEdAoOuQjvJtFc6YPSRcXSVVdC+2sIIxSEpIagSe3IvVLVmQc
+ +uGw==
+X-Gm-Message-State: AOJu0YzicMm1smOps0V9QD55HFMFDQ+NKjlXjH/5yebDeQaF+mGx4cgI
+ nAyCEb4QXxq7PZGeIZzppKzdh5iW5Ms8E3+Rk4bdj6i67jNE2wIP2U8Bjb/b+tJddmrK45BvhDU
+ Ft9VheB2b7pv4ls4=
+X-Received: by 2002:a05:620a:31a5:b0:76e:f73d:65ae with SMTP id
+ bi37-20020a05620a31a500b0076ef73d65aemr5734900qkb.6.1698372343231; 
+ Thu, 26 Oct 2023 19:05:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUZcfilBcvQ+9roGRjW21hRyTptm/99Y4+On/e+9IKouFQUgMzcgRtgU/sB0zaX3/4tTywZQ==
+X-Received: by 2002:a05:620a:31a5:b0:76e:f73d:65ae with SMTP id
+ bi37-20020a05620a31a500b0076ef73d65aemr5734888qkb.6.1698372342966; 
+ Thu, 26 Oct 2023 19:05:42 -0700 (PDT)
+Received: from [172.19.1.246] ([192.80.84.35])
+ by smtp.googlemail.com with ESMTPSA id
+ px13-20020a056214050d00b0065d0a4262e0sm252016qvb.70.2023.10.26.19.05.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Oct 2023 19:05:42 -0700 (PDT)
+Message-ID: <15a0462e-bf20-4fdb-a59c-25da94882cd6@redhat.com>
+Date: Fri, 27 Oct 2023 04:05:41 +0200
 MIME-Version: 1.0
-References: <20231026053115.2066744-1-armbru@redhat.com>
-In-Reply-To: <20231026053115.2066744-1-armbru@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 27 Oct 2023 09:52:24 +0900
-Message-ID: <CAJSP0QW2uVv1s6JnNFj5HC13vO=yGsGB0wb_mRJvUQXoeCLvQA@mail.gmail.com>
-Subject: Re: [PATCH 0/1] Enable -Wshadow=local
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, marcandre.lureau@redhat.com, 
- berrange@redhat.com, thuth@redhat.com, philmd@linaro.org, bcain@quicinc.com,
- imp@bsdimp.com, stefanha@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc33.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/29] tcg/optimize: Handle TCG_COND_TST{EQ,NE}
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231026001542.1141412-1-richard.henderson@linaro.org>
+ <20231026001542.1141412-13-richard.henderson@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20231026001542.1141412-13-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,39 +100,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 26 Oct 2023 at 14:32, Markus Armbruster <armbru@redhat.com> wrote:
->
-> Requires Brian's pull request and two patches from Thomas to compile:
->
->     [PULL 0/2] hex queue - GETPC() fixes, shadowing fixes
->     [PATCH v2] block/snapshot: Fix compiler warning with -Wshadow=local
->     [PATCH v2] migration/ram: Fix compilation with -Wshadow=local
->
-> Stefan, the PR was posted a week ago; anything blocking it?
+On 10/26/23 02:13, Richard Henderson wrote:
+> +
+> +    sh = ctz64(val);
+> +    ret = op->args[0];
+> +    src1 = op->args[1];
+> +    inv = cond == TCG_COND_TSTEQ;
+> +
+> +    if (neg && !inv && sext_opc) {
+> +        op->opc = sext_opc;
+> +        op->args[1] = src1;
+> +        op->args[2] = sh;
+> +        op->args[3] = 1;
+> +        neg = false;
 
-It's not in a pull request, so I won't see it. I don't have tooling
-that can spot individual patch series that need to go into
-qemu.git/master, so I rely on being emailed about them.
+This needs to check the validity of (sh,1) as arguments to the extract 
+opcode (and perhaps the opposite transformation should be done in 
+tcg_gen_extract, when creating a 1-bit extract on a target that does not 
+support it).
 
-Would you like me to merge this patch series into qemu.git/master?
+Paolo
 
-Stefan
-
-> Warner, I believe not waiting for your cleanup of bsd-user is fine.
-> Please holler if it isn't.
->
-> Based-on: <20231019021733.2258592-1-bcain@quicinc.com>
-> Based-on: <20231023175038.111607-1-thuth@redhat.com>
-> Based-on: <20231024092220.55305-1-thuth@redhat.com>
->
-> Markus Armbruster (1):
->   meson: Enable -Wshadow=local
->
->  meson.build | 1 +
->  1 file changed, 1 insertion(+)
->
-> --
-> 2.41.0
->
->
 
