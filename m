@@ -2,83 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A108F7D9454
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4DB7D945D
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:57:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwJYp-0000co-Lh; Fri, 27 Oct 2023 05:55:23 -0400
+	id 1qwJaI-0001TS-J3; Fri, 27 Oct 2023 05:56:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwJYd-0000cT-BT
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:55:12 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwJYY-0007Tr-0F
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:55:11 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40838915cecso15014575e9.2
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 02:55:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698400503; x=1699005303; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lmrx3N8BQfY5cIOwVkYnGDdfaIk0C8Bhjm/IN+yamc0=;
- b=FqYD3kb1Rk5/hUkhjBEArqvARIT01mQjcNjQY8vo+c5iH+79+ClxAHHG8mHfspvnk8
- 1zM34V5AvKKBeORg6xV8ycTCn6rOQbo1mlwYwnSY0MuMvN3V3d6PwHikEychBKXkrBML
- 7DkjRBVYmSDApO54jUAL2SUzsjBOunEHjKOSEU8hjjj2+mzCfB7bUXYrLRr2CJb6HeEI
- BvfdQhgbl/2knx5BQsrrbUGZiXphurNq5ATL53jCJajeXjA2XB2wlw4okxx6BAE8FxoL
- 2ViABmo/OB0OaYh0WtbqwtPVnBj6PB4BHGIw3v2bidB/kz24hzQ6lJBTiW5YBKeLvp3m
- XZhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698400503; x=1699005303;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lmrx3N8BQfY5cIOwVkYnGDdfaIk0C8Bhjm/IN+yamc0=;
- b=ZIS3L+KQWh0sId7Ra1e06fK4mVT3rJ4JOlLcj1+1KmnSn2ZJYXFjdX2egVzUQWbXpL
- xVJc06HKS2GqXTsVGK4RgX71lvVo98OzWn2uEIOSwJVXlsNuPJIBXpU8huOE/SSWTDtc
- gJIS1MSTyMZ8z6V9NZ/tARqwZoGVzfp22eAddoenZtnz4pN6fGQmu+tbKsUYqEGmPVYm
- d7yX3MGj79he7559HTcUBFLZezKQl1yhj/N28frOufMSyZw0648jwScin7V0kzzRMn8q
- BxzbvrYdKsb/CHuBqtpP0MzVXOaWSF4SVNicFtpshwTOs1r0txPknEtmYhIUNv0CAzNv
- 4cNQ==
-X-Gm-Message-State: AOJu0YwjZ+kl80fpDxhN2bSx7lFW8vOCMw1XIvjzVvYPsO6P7ejwZIAn
- 8gxCm9CELKPHoi5ZUqP2XEs5z/+asXnMd3XqyBk=
-X-Google-Smtp-Source: AGHT+IGJYLOKle8Z13RfAI2jh8tIdAuO122bg+da/6JqPctvVFuSVTA6rKbuX/wnTkca283M6T5tyg==
-X-Received: by 2002:a05:600c:3c81:b0:401:bcd9:4871 with SMTP id
- bg1-20020a05600c3c8100b00401bcd94871mr2118505wmb.21.1698400503605; 
- Fri, 27 Oct 2023 02:55:03 -0700 (PDT)
-Received: from [192.168.69.115] ([176.171.220.131])
- by smtp.gmail.com with ESMTPSA id
- p21-20020a05600c431500b003fe61c33df5sm4636057wme.3.2023.10.27.02.55.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 02:55:03 -0700 (PDT)
-Message-ID: <ea963d50-b0a6-d973-6b66-bbb58068d3f8@linaro.org>
-Date: Fri, 27 Oct 2023 11:55:00 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qwJaF-0001T3-Ue
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:56:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qwJaE-0007uO-H0
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:56:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698400609;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=7Q2PZSz7kZRKbD5IrYw0ae/TQk/lLCpiiFxudTXOKmI=;
+ b=DlKJJIF/NRbHDowFp604FrzaenDL7ubK9iHAnW4hksuT3af5CkF3voWTbHi+cnMyelMhMR
+ 5tml8JAdrflWQQ10eLByS6drK3kNBQXECfpouYww2ZR7OXlJyqzjIaqaCKgGCuEty0RqFu
+ Geme/qznuplFF3qL+PG3LRJjO16Hs3c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251--78i2Y7rPke08tWRsqKdKA-1; Fri, 27 Oct 2023 05:56:45 -0400
+X-MC-Unique: -78i2Y7rPke08tWRsqKdKA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E1BFC802896
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 09:56:44 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.155])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 73FFB40C6F79;
+ Fri, 27 Oct 2023 09:56:44 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH] MAINTAINERS: update libvirt devel mailing list address
+Date: Fri, 27 Oct 2023 10:56:43 +0100
+Message-ID: <20231027095643.2842382-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add the can documenation file to the CAN
- section
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Pavel Pisa <pisa@cmp.felk.cvut.cz>, Vikram Garhwal <fnu.vikram@xilinx.com>
-Cc: qemu-trivial@nongnu.org
-References: <20231027060931.242491-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231027060931.242491-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,18 +76,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/10/23 08:09, Thomas Huth wrote:
-> Add can.rst to the corresponding section in MAINTAINERS, so that
-> the maintainers get CC:-ed on corresponding patches.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+Effective immediately, the libvirt project has moved its list off
+libvir-list@redhat.com, to devel@lists.libvirt.org
 
-Since I'm preparing a PR, I'm queuing this patch using
-"Add the CAN documentation file to the CAN section​" as
-subject.
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks!
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d36aa44661..a1324f393d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4039,7 +4039,7 @@ F: gitdm.config
+ F: contrib/gitdm/*
+ 
+ Incompatible changes
+-R: libvir-list@redhat.com
++R: devel@lists.libvirt.org
+ F: docs/about/deprecated.rst
+ 
+ Build System
+-- 
+2.41.0
+
 
