@@ -2,89 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81C47D9573
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 12:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A62297D960D
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 13:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwKIm-0008JS-TZ; Fri, 27 Oct 2023 06:42:52 -0400
+	id 1qwKjO-0006tX-59; Fri, 27 Oct 2023 07:10:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qwKIk-0008Ig-PQ
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 06:42:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1qwKjK-0006sN-Ci; Fri, 27 Oct 2023 07:10:18 -0400
+Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qwKIh-00036D-U2
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 06:42:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698403366;
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1qwKjG-0003GO-Iu; Fri, 27 Oct 2023 07:10:18 -0400
+Received: from [IPV6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b] (unknown
+ [IPv6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b])
+ by apollo.dupie.be (Postfix) with ESMTPSA id 7288D1520E7F;
+ Fri, 27 Oct 2023 13:10:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
+ t=1698405008;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=scdmRXEhmflRiIEVcQ1tB0CpGGSODn7Cz+FtlXseOA4=;
- b=DwoHvq3qhE6Ht+bn22OzW5dDSWcJJ6E0DnOnihJaKubKXirGjVQGirqlbROS4WjtxFrWCk
- ng0DQaDxSdP7RltJuJjZLUCB/08/qwWRK9Ns/6ShCJu3mgFnaMIIT/RqFBfX+gw8oNwAqh
- Cw0FFjwsNGE8ECQGe+H6aEC5UG0/Apc=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-8A1AaBeWMsmJLBvzPeYhZw-1; Fri, 27 Oct 2023 06:42:45 -0400
-X-MC-Unique: 8A1AaBeWMsmJLBvzPeYhZw-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5b7dfda133dso1649675a12.0
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 03:42:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698403364; x=1699008164;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=scdmRXEhmflRiIEVcQ1tB0CpGGSODn7Cz+FtlXseOA4=;
- b=Kx/o07bxCHulohWYmVee2YTspcz92OWhAEKmLC2tC1CGbVpN91kTENoBvLrKX3xgOo
- l/HOWFQDVLUaNOOK8CFIkInDPLiZvVpvkmINwicAjYRh5K0LFb+qmNh/oLkbAwTKyho2
- BXaG+NXSvZWGdkeoOGYswdOo2jnVNznfitQxGgJHQHnArnK/d2sLGSdppQoFmSqt3WhR
- LE+4al7xb+z8D0KuZh94Mf+XUEG31RPnZhwbRdQa94KhvSxqWZmnQCFgnWQsE1kXN8WL
- l/ITjKeN3hQ91aDsh/FCbbAW64xxdVbncg/X80NTKTWLgdW9XA/a7OV5MKtIbhN3zMwF
- Z1yw==
-X-Gm-Message-State: AOJu0YwMh62+X0mCYk25WT9TdSBKEjgKg83juhKvSTHXG9r6as3t22G6
- MPULk35Ik2xHiUm+V0Bf7O05SstsNhw0RJWN4H2XjNllwnKjGZSJFzkrIS2mbcdgRqW7JwadIK8
- U2u4GnMfWZWta5h4=
-X-Received: by 2002:a05:6a20:9189:b0:156:e1ce:d4a1 with SMTP id
- v9-20020a056a20918900b00156e1ced4a1mr2933657pzd.9.1698403364036; 
- Fri, 27 Oct 2023 03:42:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFoerb+D0RJm2pKx2TX8tRHMkHwY58T3veBuprdOnplg+dutaeCFFCbOFvhGK/G1wnyLyxOeA==
-X-Received: by 2002:a05:6a20:9189:b0:156:e1ce:d4a1 with SMTP id
- v9-20020a056a20918900b00156e1ced4a1mr2933631pzd.9.1698403363496; 
- Fri, 27 Oct 2023 03:42:43 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.30.106])
- by smtp.googlemail.com with ESMTPSA id
- g4-20020a056a001a0400b0068fe7e07190sm1074273pfv.3.2023.10.27.03.42.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Oct 2023 03:42:43 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, imammedo@redhat.com,
- David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3] tests/avocado: add test to exercize processor address
- space memory bound checks
-Date: Fri, 27 Oct 2023 16:12:18 +0530
-Message-ID: <20231027104219.36248-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Wu0AmSpliDQL0jXaBdDIXXbEuRFwuYt2HnhOUwg3eCk=;
+ b=j5i7afV6QjSOCjOXY7/uBeQkjap+kbDqozz/zuHMd+0by2q3c3QFwGvkGhK3OsQh+TJCgX
+ O/pjbU/rfHigbCB0G1fe8kkXlca0aoltpNAffRNl06R7NMzJuC21p5rVXla818K1GpNekY
+ 2CYet4u3I9ZOo/iXXghfEeLA7N3C6zF9QqojD/8VNeJTvWwz2zXVq3eYdsV05rV3WScF6j
+ FAiZLs1NbbKpCuzJEP14jHUatYorgbnj0DgpvkBtjGvuBpG6GP95ycFIidWK3iRX2FZtGT
+ jYqya8jzY20M1rQnHegmdis1/N1PMUcM4b/dG/7gwCAgDpGpstMrfxNsY2UMaQ==
+Message-ID: <b92c8ede-604f-4859-b3b8-7e2fd7824274@dupond.be>
+Date: Fri, 27 Oct 2023 13:10:08 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] qcow2: make subclusters discardable
+Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ eblake@redhat.com, berto@igalia.com, den@virtuozzo.com
+References: <20231020215622.789260-1-andrey.drobyshev@virtuozzo.com>
+ <20231020215622.789260-5-andrey.drobyshev@virtuozzo.com>
+From: Jean-Louis Dupond <jean-louis@dupond.be>
+In-Reply-To: <20231020215622.789260-5-andrey.drobyshev@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
+ envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,382 +70,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU has validations to make sure that a VM is not started with more memory
-(static and hotpluggable memory) than what the guest processor can address
-directly with its addressing bits. This change adds a test to make sure QEMU
-fails to start with a specific error message when an attempt is made to
-start a VM with more memory than what the processor can directly address.
-The test also checks for passing cases when the address space of the processor
-is capable of addressing all memory. Boundary cases are tested.
+On 20/10/2023 23:56, Andrey Drobyshev wrote:
+> This commit makes the discard operation work on the subcluster level
+> rather than cluster level.  It introduces discard_l2_subclusters()
+> function and makes use of it in qcow2 discard implementation, much like
+> it's done with zero_in_l2_slice() / zero_l2_subclusters().  It also
+> changes the qcow2 driver pdiscard_alignment to subcluster_size.  That
+> way subcluster-aligned discards lead to actual fallocate(PUNCH_HOLE)
+> operation and free host disk space.
+>
+> This feature will let us gain additional disk space on guest
+> TRIM/discard requests, especially when using large enough clusters
+> (1M, 2M) with subclusters enabled.
+>
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>   block/qcow2-cluster.c | 100 ++++++++++++++++++++++++++++++++++++++++--
+>   block/qcow2.c         |   8 ++--
+>   2 files changed, 101 insertions(+), 7 deletions(-)
+>
+> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
+> index 7c6fa5524c..cf40f2dc12 100644
+> --- a/block/qcow2-cluster.c
+> +++ b/block/qcow2-cluster.c
+> @@ -2042,6 +2042,74 @@ discard_in_l2_slice(BlockDriverState *bs, uint64_t offset, uint64_t nb_clusters,
+>       return nb_clusters;
+>   }
+>   
+> +static int coroutine_fn GRAPH_RDLOCK
+> +discard_l2_subclusters(BlockDriverState *bs, uint64_t offset,
+> +                       uint64_t nb_subclusters,
+> +                       enum qcow2_discard_type type,
+> +                       bool full_discard,
+> +                       SubClusterRangeInfo *pscri)
+> +{
+> +    BDRVQcow2State *s = bs->opaque;
+> +    uint64_t new_l2_bitmap, l2_bitmap_mask;
+> +    int ret, sc = offset_to_sc_index(s, offset);
+> +    SubClusterRangeInfo scri = { 0 };
+> +
+> +    if (!pscri) {
+> +        ret = get_sc_range_info(bs, offset, nb_subclusters, &scri);
+> +        if (ret < 0) {
+> +            goto out;
+> +        }
+> +    } else {
+> +        scri = *pscri;
+> +    }
+> +
+> +    l2_bitmap_mask = QCOW_OFLAG_SUB_ALLOC_RANGE(sc, sc + nb_subclusters);
+> +    new_l2_bitmap = scri.l2_bitmap;
+> +    new_l2_bitmap &= ~l2_bitmap_mask;
+> +
+> +    /*
+> +     * If there're no allocated subclusters left, we might as well discard
+> +     * the entire cluster.  That way we'd also update the refcount table.
+> +     */
+> +    if (!(new_l2_bitmap & QCOW_L2_BITMAP_ALL_ALLOC)) {
+> +        return discard_in_l2_slice(bs,
+> +                                   QEMU_ALIGN_DOWN(offset, s->cluster_size),
+> +                                   1, type, full_discard);
+> +    }
+> +
+> +    /*
+> +     * Full discard means we fall through to the backing file, thus we only
+> +     * need to mark the subclusters as deallocated.
+> +     *
+> +     * Non-full discard means subclusters should be explicitly marked as
+> +     * zeroes.  In this case QCOW2 specification requires the corresponding
+> +     * allocation status bits to be unset as well.  If the subclusters are
+> +     * deallocated in the first place and there's no backing, the operation
+> +     * can be skipped.
+> +     */
+> +    if (!full_discard &&
+> +        (bs->backing || scri.l2_bitmap & l2_bitmap_mask)) {
+> +        new_l2_bitmap |= QCOW_OFLAG_SUB_ZERO_RANGE(sc, sc + nb_subclusters);
+> +    }
+> +
+> +    if (scri.l2_bitmap != new_l2_bitmap) {
+> +        set_l2_bitmap(s, scri.l2_slice, scri.l2_index, new_l2_bitmap);
+> +        qcow2_cache_entry_mark_dirty(s->l2_table_cache, scri.l2_slice);
+> +    }
+> +
+> +    if (s->discard_passthrough[type]) {
+> +        qcow2_queue_discard(bs, (scri.l2_entry & L2E_OFFSET_MASK) +
+> +                            offset_into_cluster(s, offset),
+> +                            nb_subclusters * s->subcluster_size);
+> +    }
+> +
+> +    ret = 0;
+> +out:
+> +    qcow2_cache_put(s->l2_table_cache, (void **) &scri.l2_slice);
+> +
+> +    return ret;
+> +}
+> +
+>   int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
+>                             uint64_t bytes, enum qcow2_discard_type type,
+>                             bool full_discard)
+> @@ -2049,19 +2117,36 @@ int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
+>       BDRVQcow2State *s = bs->opaque;
+>       uint64_t end_offset = offset + bytes;
+>       uint64_t nb_clusters;
+> +    unsigned head, tail;
+>       int64_t cleared;
+>       int ret;
+>   
+>       /* Caller must pass aligned values, except at image end */
+> -    assert(QEMU_IS_ALIGNED(offset, s->cluster_size));
+> -    assert(QEMU_IS_ALIGNED(end_offset, s->cluster_size) ||
+> +    assert(QEMU_IS_ALIGNED(offset, s->subcluster_size));
+> +    assert(QEMU_IS_ALIGNED(end_offset, s->subcluster_size) ||
+>              end_offset == bs->total_sectors << BDRV_SECTOR_BITS);
+>   
+> -    nb_clusters = size_to_clusters(s, bytes);
+> +    head = MIN(end_offset, ROUND_UP(offset, s->cluster_size)) - offset;
+> +    offset += head;
+> +
+> +    tail = (end_offset >= bs->total_sectors << BDRV_SECTOR_BITS) ? 0 :
+> +           end_offset - MAX(offset, start_of_cluster(s, end_offset));
+> +    end_offset -= tail;
+>   
+>       s->cache_discards = true;
+>   
+> +    if (head) {
+> +        ret = discard_l2_subclusters(bs, offset - head,
+> +                                     size_to_subclusters(s, head), type,
+> +                                     full_discard, NULL);
+> +        if (ret < 0) {
+> +            goto fail;
+> +        }
+> +    }
+> +
+>       /* Each L2 slice is handled by its own loop iteration */
+> +    nb_clusters = size_to_clusters(s, end_offset - offset);
+> +
+>       while (nb_clusters > 0) {
+>           cleared = discard_in_l2_slice(bs, offset, nb_clusters, type,
+>                                         full_discard);
+> @@ -2074,6 +2159,15 @@ int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
+>           offset += (cleared * s->cluster_size);
+>       }
+>   
+> +    if (tail) {
+> +        ret = discard_l2_subclusters(bs, end_offset,
+> +                                     size_to_subclusters(s, tail), type,
+> +                                     full_discard, NULL);
+> +        if (ret < 0) {
+> +            goto fail;
+> +        }
+> +    }
+> +
+>       ret = 0;
+>   fail:
+>       s->cache_discards = false;
+> diff --git a/block/qcow2.c b/block/qcow2.c
+> index aa01d9e7b5..66961fa59e 100644
+> --- a/block/qcow2.c
+> +++ b/block/qcow2.c
+> @@ -1966,7 +1966,7 @@ static void qcow2_refresh_limits(BlockDriverState *bs, Error **errp)
+>           bs->bl.request_alignment = qcrypto_block_get_sector_size(s->crypto);
+>       }
+>       bs->bl.pwrite_zeroes_alignment = s->subcluster_size;
+> -    bs->bl.pdiscard_alignment = s->cluster_size;
+> +    bs->bl.pdiscard_alignment = s->subcluster_size;
+>   }
+>   
+>   static int GRAPH_UNLOCKED
+> @@ -4102,11 +4102,11 @@ qcow2_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
+>           return -ENOTSUP;
+>       }
+>   
+> -    if (!QEMU_IS_ALIGNED(offset | bytes, s->cluster_size)) {
+> -        assert(bytes < s->cluster_size);
+> +    if (!QEMU_IS_ALIGNED(offset | bytes, bs->bl.pdiscard_alignment)) {
+> +        assert(bytes < bs->bl.pdiscard_alignment);
+>           /* Ignore partial clusters, except for the special case of the
+>            * complete partial cluster at the end of an unaligned file */
+> -        if (!QEMU_IS_ALIGNED(offset, s->cluster_size) ||
+> +        if (!QEMU_IS_ALIGNED(offset, bs->bl.pdiscard_alignment) ||
+>               offset + bytes != bs->total_sectors * BDRV_SECTOR_SIZE) {
+>               return -ENOTSUP;
+>           }
 
-CC: imammedo@redhat.com
-CC: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- tests/avocado/mem-addr-space-check.py | 331 ++++++++++++++++++++++++++
- 1 file changed, 331 insertions(+)
- create mode 100644 tests/avocado/mem-addr-space-check.py
 
-Changelog:
-v3: added pae tests as well.
-v2: added 64-bit tests. Added cxl tests.
+I've checked all the code paths, and as far as I see it nowhere breaks 
+the discard_no_unref option.
+It's important that we don't introduce new code paths that can make 
+holes in the qcow2 image when this option is enabled :)
 
-Sample run:
-$ ./pyvenv/bin/avocado run tests/avocado/mem-addr-space-check.py --tap -
-1..14
-ok 1 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_pse36
-ok 2 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_pae
-ok 3 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium_pse36
-ok 4 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium_pae
-ok 5 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium2
-ok 6 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_nonpse36
-ok 7 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_70_amd
-ok 8 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_71_amd
-ok 9 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_70_amd
-ok 10 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_71_amd
-ok 11 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_71_intel
-ok 12 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_71_amd_41bits
-ok 13 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_intel_cxl
-ok 14 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_intel_cxl
+If you can confirm my conclusion, that would be great.
 
-diff --git a/tests/avocado/mem-addr-space-check.py b/tests/avocado/mem-addr-space-check.py
-new file mode 100644
-index 0000000000..6ded11d658
---- /dev/null
-+++ b/tests/avocado/mem-addr-space-check.py
-@@ -0,0 +1,331 @@
-+# Check for crash when using memory beyond the available guest processor
-+# address space.
-+#
-+# Copyright (c) 2023 Red Hat, Inc.
-+#
-+# Author:
-+#  Ani Sinha <anisinha@redhat.com>
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+
-+from avocado_qemu import QemuSystemTest
-+import signal
-+
-+class MemAddrCheck(QemuSystemTest):
-+    # first, lets test some 32-bit processors.
-+    # for all 32-bit cases, pci64_hole_size is 0.
-+    def test_phybits_low_pse36(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        With pse36 feature ON, a processor has 36 bits of addressing. So it can
-+        access up to a maximum of 64GiB of memory. Memory hotplug region begins
-+        at 4 GiB boundary when "above_4g_mem_size" is 0 (this would be true when
-+        we have 0.5 GiB of VM memory, see pc_q35_init()). This means total
-+        hotpluggable memory size is 60 GiB. Per slot, we reserve 1 GiB of memory
-+        for dimm alignment for all newer machines (see enforce_aligned_dimm
-+        property for pc machines and pc_get_device_memory_range()). That leaves
-+        total hotpluggable actual memory size of 59 GiB. If the VM is started
-+        with 0.5 GiB of memory, maxmem should be set to a maximum value of
-+        59.5 GiB to ensure that the processor can address all memory directly.
-+        Note that 64-bit pci hole size is 0 in this case. If maxmem is set to
-+        59.6G, QEMU should fail to start with a message "phy-bits are too low".
-+        If maxmem is set to 59.5G with all other QEMU parameters identical, QEMU
-+        should start fine.
-+        """
-+        self.vm.add_args('-S', '-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.6G',
-+                         '-cpu', 'pentium,pse36=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_pae(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        With pae feature ON, a processor has 36 bits of addressing. So it can
-+        access up to a maximum of 64GiB of memory. Rest is the same as the case
-+        with pse36 above.
-+        """
-+        self.vm.add_args('-S', '-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.6G',
-+                         '-cpu', 'pentium,pae=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_pentium_pse36(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Setting maxmem to 59.5G and making sure that QEMU can start with the
-+        same options as the failing case above with pse36 cpu feature.
-+        """
-+        self.vm.add_args('-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.5G',
-+                         '-cpu', 'pentium,pse36=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.shutdown()
-+        self.assertEquals(self.vm.exitcode(), -signal.SIGTERM,
-+                          "QEMU did not terminate gracefully upon SIGTERM")
-+
-+    def test_phybits_ok_pentium_pae(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Test is same as above but now with pae CPUID turned on. Setting
-+        maxmem to 59.5G and making sure that QEMU can start fine with the
-+        same options as the case above.
-+        """
-+        self.vm.add_args('-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.5G',
-+                         '-cpu', 'pentium,pae=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.shutdown()
-+        self.assertEquals(self.vm.exitcode(), -signal.SIGTERM,
-+                          "QEMU did not terminate gracefully upon SIGTERM")
-+
-+    def test_phybits_ok_pentium2(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Pentium2 has 36 bits of addressing, so its same as pentium
-+        with pse36 ON.
-+        """
-+        self.vm.add_args('-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.5G',
-+                         '-cpu', 'pentium2', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.shutdown()
-+        self.assertEquals(self.vm.exitcode(), -signal.SIGTERM,
-+                          "QEMU did not terminate gracefully upon SIGTERM")
-+
-+    def test_phybits_low_nonpse36(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Pentium processor has 32 bits of addressing without pse36 or pae
-+        so it can access up to 4 GiB of memory. Setting maxmem to 4GiB
-+        should make QEMU fail to start with "phys-bits too low" message.
-+        """
-+        self.vm.add_args('-S', '-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=4G',
-+                         '-cpu', 'pentium', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    # now lets test some 64-bit CPU cases.
-+    def test_phybits_low_tcg_q35_70_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        For q35 7.1 machines and above, "above_4G" memory starts at 1 TiB
-+        boundary for AMD cpus (default). Lets test without that case.
-+        For q35-7.0 machines, "above 4G" memory starts are 4G.
-+        pci64_hole size is 32 GiB. Since TCG_PHYS_ADDR_BITS is defined to
-+        be 40, TCG emulated CPUs have maximum of 1 TiB (1024 GiB) of
-+        directly addressible memory.
-+        Hence, maxmem value at most can be
-+        1024 GiB - 4 GiB - 1 GiB per slot for alignment - 32 GiB + 0.5 GiB
-+        which is equal to 987.5 GiB. Setting the value to 988 GiB should
-+        make QEMU fail with the error message.
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
-+                         '512,slots=1,maxmem=988G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_tcg_q35_71_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        AMD_HT_START is defined to be at 1012 GiB. So for q35 machines
-+        version > 7.0 and AMD cpus, instead of 1024 GiB limit for 40 bit
-+        processor address space, it has to be 1012 GiB , that is 12 GiB
-+        less than the case above.
-+        Make sure QEMU fails when maxmem size is 976 GiB (12 GiB less
-+        than 988 GiB).
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=976G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_tcg_q35_70_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same as q35-7.0 AMD case except that here we check that QEMU can
-+        successfully start when maxmem is < 988G.
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
-+                         '512,slots=1,maxmem=987.5G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.shutdown()
-+        self.assertEquals(self.vm.exitcode(), -signal.SIGTERM,
-+                          "QEMU did not terminate gracefully upon SIGTERM")
-+
-+    def test_phybits_ok_tcg_q35_71_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same as q35-7.1 AMD case except that here we check that QEMU can
-+        successfully start when maxmem is < 976G.
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=975.5G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.shutdown()
-+        self.assertEquals(self.vm.exitcode(), -signal.SIGTERM,
-+                          "QEMU did not terminate gracefully upon SIGTERM")
-+
-+    def test_phybits_ok_tcg_q35_71_intel(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same parameters as test_phybits_low_tcg_q35_71_amd() but use
-+        Intel cpu instead. QEMU should start fine in this case as
-+        "above_4G" memory starts at 4G.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'Skylake-Server',
-+                         '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=976G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.shutdown()
-+        self.assertEquals(self.vm.exitcode(), -signal.SIGTERM,
-+                          "QEMU did not terminate gracefully upon SIGTERM")
-+
-+    def test_phybits_low_tcg_q35_71_amd_41bits(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        AMD processor with 41 bits. Max cpu hw address = 2 TiB.
-+        "above_4G" memory starts at 1 TiB for q35-7.1 machines. So with
-+        pci_64_hole size at 32 GiB, maxmem should be 991.5 GiB with 1 GiB per
-+        slot for alignment and 0.5 GiB as static memory for the VM
-+        (1024 - 32 - 1 + 0.5). With 992 GiB, QEMU should fail to start.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
-+                         '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=992G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'virtio-mem-pci,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_tcg_q35_intel_cxl(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        cxl memory window starts after memory device range. Here, we use 1 GiB
-+        of cxl window memory. 4G_mem end aligns at 4G. pci64_hole is 32 GiB and
-+        starts after the cxl memory window.
-+        So maxmem here should be at most 986 GiB considering all memory boundary
-+        alignment constraints with 40 bits (1 TiB) of processor physical bits.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
-+                         '-machine', 'q35,cxl=on', '-m',
-+                         '512,slots=1,maxmem=987G',
-+                         '-display', 'none',
-+                         '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1',
-+                         '-M', 'cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=1G')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_tcg_q35_intel_cxl(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same as above but here we do not reserve any cxl memory window. Hence,
-+        with the exact same parameters as above, QEMU should start fine even
-+        with cxl enabled.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
-+                         '-machine', 'q35,cxl=on', '-m',
-+                         '512,slots=1,maxmem=987G',
-+                         '-display', 'none',
-+                         '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.shutdown()
-+        self.assertEquals(self.vm.exitcode(), -signal.SIGTERM,
-+                          "QEMU did not terminate gracefully upon SIGTERM")
--- 
-2.42.0
+
+Thanks
+Jean-Louis
 
 
