@@ -2,68 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD427D9747
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 14:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3577D97A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 14:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwLdO-0002jX-TE; Fri, 27 Oct 2023 08:08:15 -0400
+	id 1qwLlC-0004ag-Ge; Fri, 27 Oct 2023 08:16:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwLdL-0002jH-1w
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:08:11 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1qwLl9-0004a3-QA
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:16:16 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwLdE-00040h-LD
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:08:10 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-53dfc28a2afso3105385a12.1
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 05:08:04 -0700 (PDT)
+ id 1qwLl8-0006qZ-2E
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:16:15 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-53de0d1dc46so3382179a12.3
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 05:16:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698408483; x=1699013283; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698408972; x=1699013772; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=zH9tmyrWZkyUTZ5OsK8h2TLdeVdSWvEL8GnYHqnqql4=;
- b=c0a9isgm05RfQs9tRtvJ3QRQnOTHmrR3QkagngdPWOUw8LMXCez38jNHHkIm80JVxB
- eR1tBQzP35t7rGjsJbUg2SUYYJpl2ncPRGLivTF7l2pzA/dKSu1bkXesNDHY5QJnvU2R
- OVv3z7yqErYrBBUi5GHDdUhQn6dhtLRUK4m3iXDcZwV5z3a0nmoYAlvFHGNUOmWfyfoX
- 14mtOxeVL+9qUeAnM/i0+ce/b716UtNu/4MgF2D8tLZ/aFHpfzOW/zbzK+wUPZyIFdXn
- gAm79jkD1Hawf5ydCZhMKQ3V2IoVW4Xqh0/dg93/3Qgt6QtkXpvMJ/J3eRnV9DR7hyFt
- JgUw==
+ bh=+niAB94xkwrpIXtX89f78vV3+CT29Hlo7jQqkO4CSGY=;
+ b=LT7FDkJ1DeRGe9/hxpgpeclFa3PktcPDd6e6ogf+LMzsxRVoZ+3ZRCPJlwcxeeN2IM
+ KqW6IezXxY6aSc7V0p4Yl4wYQqhx9MYXEBNtslh02sbiySChXBtzeGN1z4JGzAAHYtbw
+ xpcmvcs4p5ZgSQDbDApRVt6Zg7OGUSVSoKYFYip3RGNxMoq9STLeH9A3vbIdPAuZhwg2
+ C0k56aVN2iauBw3vWwaHl89prg+KQqZ2yQ7Drar3DeLR/QdGQkRraofUe28E+EQ4MJ+R
+ p3RG1jiPUoCuix4du1cfcxO+QJZ70qFt9hpvM03pwA2XVrYElAVqotD4Q6jilMvQ4yv3
+ IVXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698408483; x=1699013283;
+ d=1e100.net; s=20230601; t=1698408972; x=1699013772;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zH9tmyrWZkyUTZ5OsK8h2TLdeVdSWvEL8GnYHqnqql4=;
- b=KOz2dWbYa3HIfZW9oRJ5h81MtTaDsIk0kD4dJQslJl/tzTejQr8LsE2gWH51R1U2yy
- mL/Ezs2Bv3vU9U/dRnd6Cc7fIF8cGtuvevTtZ/reY1nK37x6i39MzHeX/PChmnQT2Oup
- GU6YyCGmapeLLHH34zUcRTcH1voD29w6YVTJeUdxbe+CjrRcYbP7edhUihMWnIznI2gq
- jr9TcR9V9tEOVjSiVz2bnP/lHI5mWIsln8NU3zNpGUVV5JhWjNm5VsyThvB/D7G07PPC
- NS3RMGwL6Gyo8Vt02bZFHjnqACg1xL7MGfoQImXcnaAO2hfHvCPHkY8jjmTpv8hck0q9
- JMwQ==
-X-Gm-Message-State: AOJu0YyXOBrorSjZuwqR9hJDMs0xgICEILBYLmLM1luy0X8GCzEupklc
- /g7HVjmFM5pUf4LNIXvPMlC273RBx7ZWI5y0YzCn4g==
-X-Google-Smtp-Source: AGHT+IF7/p+MhJnPyWICtHZqUaium1yd5dGxQjAgFKHE6gk2EN2UqDw9Pxp+6PwGu5XBgefYlOstvD/m06Fd7zsfvgA=
-X-Received: by 2002:a50:bb08:0:b0:530:77e6:849f with SMTP id
- y8-20020a50bb08000000b0053077e6849fmr2333178ede.27.1698408482844; Fri, 27 Oct
- 2023 05:08:02 -0700 (PDT)
+ bh=+niAB94xkwrpIXtX89f78vV3+CT29Hlo7jQqkO4CSGY=;
+ b=cdIBhBxe1WmtEuHT5n8XbPz1XmIT37Kn+tgdqstFbonq6jNEbfLMcwUYYI1ewnDf4x
+ E5rsKsj24h4WGCby150zLVKC6n5SyzW8YpYSQ5hvvd51LywQi3uZ0eB/EQSL/0pNkCWv
+ Dknsuxst7Dzo0RlnuCm7evWP9XcemIw00zdYp7BMkyyg1Zx9KVSPf1mIsLHeXspMBiZF
+ 5WD+GdrPjR3j7xTm7atWSDV/cQ/rc673fgJk4qyb1iBkCQyiGxcP6dCvjpwpvxRgOYUl
+ Y9h3d+l4EcqdmhQl+7/sdb21HmCu/aofAFCjzczwRs7IuDAwIvh83q7FTuc3VDvCcYJk
+ TMCw==
+X-Gm-Message-State: AOJu0Yya3u6RR94iivYr3XvGu2yPB+9QGq87LIoYLK4uY/PnogegxzBW
+ qCLkLbQeJJhvrV2wAiqWgjwZ9vbZ+A72N1W7JkBYRQ==
+X-Google-Smtp-Source: AGHT+IHX8FSZM5xiqg9rFN/9iE9PFms6NQ7Dbe0ePouW2OVnOVgjIF11hXydnK3tCjF5WxlCx94UcbugTQTJg1HkHbk=
+X-Received: by 2002:a05:6402:8c1:b0:53e:afc0:ea43 with SMTP id
+ d1-20020a05640208c100b0053eafc0ea43mr2338947edz.4.1698408972054; Fri, 27 Oct
+ 2023 05:16:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231018181259.748819-1-nabihestefan@google.com>
-In-Reply-To: <20231018181259.748819-1-nabihestefan@google.com>
+References: <20231017194422.4124691-1-luc.michel@amd.com>
+In-Reply-To: <20231017194422.4124691-1-luc.michel@amd.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 27 Oct 2023 13:07:52 +0100
-Message-ID: <CAFEAcA8ihe-+c_NHC5BwYuaU7y9NpP=9-1aL2Brf6g+SfK6SMg@mail.gmail.com>
-Subject: Re: [PATCH v4 00/11] Implementation of NPI Mailbox and GMAC
- Networking Module
-To: Nabih Estefan <nabihestefan@google.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasonwang@redhat.com, avi.fishman@nuvoton.com
+Date: Fri, 27 Oct 2023 13:16:01 +0100
+Message-ID: <CAFEAcA94NgfP52=y0dxE+ao_--DsLU+2bBXtjKvK28q-biabNQ@mail.gmail.com>
+Subject: Re: [PATCH 00/11] Various updates for the Cadence GEM model
+To: Luc Michel <luc.michel@amd.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Frederic Konrad <frederic.konrad@amd.com>, 
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,55 +91,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 18 Oct 2023 at 19:13, Nabih Estefan <nabihestefan@google.com> wrote:
+On Tue, 17 Oct 2023 at 20:44, Luc Michel <luc.michel@amd.com> wrote:
 >
-> From: Nabih Estefan Diaz <nabihestefan@google.com>
+> Hi,
 >
-> [Changes since v3]
-> Fixed comments from Hao Wu (wuhaotsh@google.com)
+> This series brings small changes to the Cadence GEM Ethernet model.
+> There is (almost) no behaviour change.
 >
-> [Changes since v2]
-> Fixed bugs related to the RC functionality of the GMAC. Added and
-> squashed patches related to that.
-> [Changes since v1]
-> Fixed some errors in formatting.
-> Fixed a merge error that I didn't see in v1.
-> Removed Nuvoton 8xx references since that is a separate patch set.
+> Patches 1 to 9 replace handcrafted defines with the use of REG32 and
+> FIELDS macros for register and fields declarations.
 >
-> [Original Cover]
-> Creates NPI Mailbox Module with data verification for read and write (internal and external),
-> wiring to the Nuvoton SoC, and QTests.
+> Patch 10 fixes PHY accesses so that they are done only on a write to the
+> PHYMNTNC register (as the real hardware does).
 >
-> Also creates the GMAC Networking Module. Implements read and write functionalities with cooresponding descriptors
-> and registers. Also includes QTests for the different functionalities.
->
-> Hao Wu (5):
->   hw/misc: Add Nuvoton's PCI Mailbox Module
->   hw/arm: Add PCI mailbox module to Nuvoton SoC
->   hw/misc: Add qtest for NPCM7xx PCI Mailbox
->   hw/net: Add NPCMXXX GMAC device
->   hw/arm: Add GMAC devices to NPCM7XX SoC
->
-> Nabih Estefan Diaz (6):
->   tests/qtest: Creating qtest for GMAC Module
->   include/hw/net: Implemented Classes and Masks for GMAC Descriptors
->   hw/net: General GMAC Implementation
->   hw/net: GMAC Rx Implementation
->   hw/net: GMAC Tx Implementation
->   tests/qtest: Adding PCS Module test to GMAC Qtest
+> Patch 11 fixes a potential bug on hosts where unsigned would not be 32
+> bits.
 
-Hi; I'm afraid this is going to miss the 8.2 release,
-because it is still missing any review from Google
-or Nuvoton people.
+Applied to target-arm.next, thanks.
 
-PS: your patch 4 commit message seems to have got mangled
-somehow -- it appears to be multiple commit messages
-that have got concatenated. Was this intended to be
-more than one patch ?
-
-Also, for patches 1-5 which are by Hao Wu, you should
-add your Signed-off-by: after theirs, to indicate that
-their patch has come to QEMU via you.
+Note to Sai for the future: in Reviewed-by: tags, as with
+Signed-off-by: tags, the expected form is "Full Name <email@example.com>",
+not just a bare email address. (I would actively ask for a change
+on a signed-off-by line with an email alone, but for Reviewed-by
+it's less significant.)
 
 thanks
 -- PMM
