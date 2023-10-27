@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FB07D9C38
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6037D9C7B
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:04:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwODR-0003IU-PD; Fri, 27 Oct 2023 10:53:37 -0400
+	id 1qwOMh-0006VT-K9; Fri, 27 Oct 2023 11:03:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwODH-0003I1-Qm
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:53:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwODF-0003cd-Om
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:53:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698418404;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UkZXNiTiJU0NUKdhudLJe+WGHBwBiJ7p58gfIV6X9fk=;
- b=N4y2hn0lTd0PLb0JFufZ+9g7woECbxhTQjzVK8lEBhbfDcEq5ryjX1RsdOiMtw8evz7s9h
- T3QwuAT4XjkXCDFBWig68Ok5/tK8RXOtjsHUOAkSfz/nlK0eDDM5bg+xN+G79HV8HbzoPr
- TKtYrxIJ4Aj++Z+zUWcmcyReH3An+nA=
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
- [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-46AiSoatNVi3OagJBba2VQ-1; Fri, 27 Oct 2023 10:53:23 -0400
-X-MC-Unique: 46AiSoatNVi3OagJBba2VQ-1
-Received: by mail-vk1-f200.google.com with SMTP id
- 71dfb90a1353d-49a90eb1396so844977e0c.1
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:53:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qwOMT-0006SK-2v
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:02:57 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qwOMN-00061u-GR
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:02:56 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-27e0c1222d1so1753745a91.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 08:00:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1698418847; x=1699023647;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tVZ3TK8yfiNPw8kqjPbjoFhc82qOk50nQDwJrW5nkAM=;
+ b=jfzlAXUXS+CFQVNUoiJcJZhlTFjYxCFWoGA4BYRpHlCmJe2pKpiAFviYaJa3/qES6S
+ KaZ/obU22jbeEsz2afikhHh2sPyJQ4JaPd+kx5o4GTyX7WfXAxHyP1Pzvo1TPwM2VN9U
+ DEGvOTuvH9OTxxljNztHKViz+LQFCoeelxw7GZmXdaVjj7P2nXyt2S73ON5QqIYiaGol
+ e7xB+3xYlVA9LFB8tnnM5Hm0qP+D1YdVXehoX1iw78GHOGCbpbBk+aIxEN7CM+rLkpBG
+ lgfJGqCLDVi3PkiCA3m7/N5tIOgWDmfa3c3fOX80vaA9FttPZaXIF1SgZaFWJSCD60DU
+ BsSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698418403; x=1699023203;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UkZXNiTiJU0NUKdhudLJe+WGHBwBiJ7p58gfIV6X9fk=;
- b=YlCbzlqNLr0Jkgly8Z4tJzITEr5xqAnA4eT6enUOopWGYSUoVfRN8hkgWyX2GcbASi
- hyUsq6IcoyWxOdqpb/gooX7XGV3O91o16q9h6KYAo7dcHwAbO/Z2jk/0dMlN8iSD6zHW
- C8pM8j9x7Ctr53t8IiQnyyfl1ygIu6ouDglqmzsL9xggxEJoOKRICvhYCIj3U1fNne2Z
- a9QN/yPuqcAuc8PS6eXiHUftbUr7LU/AWbl1Fteqgh/S430ICfqq+t3GbDNcw6D5VAOd
- pL1szoY5kkYA5CeIJienXLuHbTCrowOZENNudOZF/MFEnDa5qHLwyfC1wipYwBU3Ylf0
- Ze8g==
-X-Gm-Message-State: AOJu0Yz+ER41hNfIS1LQSL0tgVpnj4eT0vRX9zxvm4+5m0JBbivhAOMe
- Vf0orUWf1T3a7UwqCf550ljiLJAFOpqmTkE55b0oinFVXJ/h3UK5bWN13m7NY3Epdvrp+uxpS/3
- k3YlZXxvOfmytEJw=
-X-Received: by 2002:a1f:fe42:0:b0:48d:13e5:1376 with SMTP id
- l63-20020a1ffe42000000b0048d13e51376mr3150873vki.10.1698418403118; 
- Fri, 27 Oct 2023 07:53:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWdYB9/1WGAn6c3yEM3RBV/rj2LjSgObrOMNhGSLJsVKqSzT6F/avfHUWJE4J5cgA6N3VfKA==
-X-Received: by 2002:a1f:fe42:0:b0:48d:13e5:1376 with SMTP id
- l63-20020a1ffe42000000b0048d13e51376mr3150853vki.10.1698418402782; 
- Fri, 27 Oct 2023 07:53:22 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
- ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
+ d=1e100.net; s=20230601; t=1698418847; x=1699023647;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=tVZ3TK8yfiNPw8kqjPbjoFhc82qOk50nQDwJrW5nkAM=;
+ b=YP+8FMj1YuK4d3MMNEBAw1krdh0saNRd0l1grscWvkTQ+DiFWo9UwO92pmeQzcS8mw
+ xC/k9cXIIVo28BII/yBEjuJ/av20VQvWO0m94A7FY6Fd5gXAx5esprqSblkTnInz5Mb1
+ ad8oTBundqt0zaZXZWMx9yV8L5mtz3WNa9qLmNaTmwQkOiA9vzXaVNnXqMGMmBk2eJti
+ 1+i0hiTlkGDI6hnXBMzwc/FORK96nZeNaEaFYWmUS6jpR6/ZzwtKJLlKlIFxHRQeC2Ns
+ wyACFEBNmgQRtyWWAhjw/L9ME/yTKQZbuM4zpt9j3RGnel1hYHJYV2ZO4tGJDr9ggzKd
+ mQhQ==
+X-Gm-Message-State: AOJu0YxcIQLQYFcNid2cN6OKOZU1usnMhWGjdbvbYgKp5OP/5KNLZJqF
+ QaveouEVYweCU3s9tixpFN2se636b9gbSl9flx/EXg==
+X-Google-Smtp-Source: AGHT+IF3d8a3Nt2et1cuzoOn/Q9osQBhpbIrRMcHXB9yg3jW+3Ir6JDWnPo0gpo4H5DgMU8s6ta7Ww==
+X-Received: by 2002:a17:90a:1a10:b0:27c:e826:5038 with SMTP id
+ 16-20020a17090a1a1000b0027ce8265038mr2833526pjk.14.1698418846816; 
+ Fri, 27 Oct 2023 08:00:46 -0700 (PDT)
+Received: from [26.26.26.1] ([45.158.180.111])
  by smtp.gmail.com with ESMTPSA id
- qh17-20020a0562144c1100b0065b17ec4b49sm672535qvb.46.2023.10.27.07.53.20
+ z9-20020a17090a608900b0027d0de51454sm2578304pji.19.2023.10.27.08.00.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 07:53:22 -0700 (PDT)
-Message-ID: <7d3f7715-8503-4ed5-8283-936cd23493db@redhat.com>
-Date: Fri, 27 Oct 2023 16:53:19 +0200
+ Fri, 27 Oct 2023 08:00:46 -0700 (PDT)
+Message-ID: <103c0b7e-b2e6-feab-1b77-0340640ddf34@smartx.com>
+Date: Fri, 27 Oct 2023 23:00:53 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/37] vfio/container: Switch to IOMMU BE
- set_dirty_page_tracking/query_dirty_bitmap API
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-12-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231026103104.1686921-12-zhenzhong.duan@intel.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [v2 4/6] tests/migration: Introduce dirty-ring-size option into
+ guestperf
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>
+References: <cover.1697815117.git.yong.huang@smartx.com>
+ <bd9f195883fb5081f67f680bd2972a4b0a5b3520.1697815117.git.yong.huang@smartx.com>
+ <CAK9dgmYqBBFkLNWNsH4th7znTAOiGiYMg-SzNTWVPk=csZw_jw@mail.gmail.com>
+In-Reply-To: <CAK9dgmYqBBFkLNWNsH4th7znTAOiGiYMg-SzNTWVPk=csZw_jw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,238 +98,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 12:30, Zhenzhong Duan wrote:
-> From: Eric Auger <eric.auger@redhat.com>
-> 
-> dirty_pages_supported field is also moved to the base container
-> 
-> No fucntional change intended.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   include/hw/vfio/vfio-common.h         |  6 ------
->   include/hw/vfio/vfio-container-base.h |  6 ++++++
->   hw/vfio/common.c                      | 12 ++++++++----
->   hw/vfio/container-base.c              | 23 +++++++++++++++++++++++
->   hw/vfio/container.c                   | 21 ++++++++++++++-------
->   5 files changed, 51 insertions(+), 17 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 857d2b8076..d053c61872 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -83,7 +83,6 @@ typedef struct VFIOContainer {
->       unsigned iommu_type;
->       Error *error;
->       bool initialized;
-> -    bool dirty_pages_supported;
->       uint64_t dirty_pgsizes;
->       uint64_t max_dirty_bitmap_size;
->       unsigned long pgsizes;
-> @@ -190,11 +189,6 @@ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
->   void vfio_put_address_space(VFIOAddressSpace *space);
->   bool vfio_devices_all_running_and_saving(VFIOContainer *container);
->   
-> -/* container->fd */
-> -int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start);
-> -int vfio_query_dirty_bitmap(VFIOContainer *container, VFIOBitmap *vbmap,
-> -                            hwaddr iova, hwaddr size);
-> -
->   /* SPAPR specific */
->   int vfio_container_add_section_window(VFIOContainer *container,
->                                         MemoryRegionSection *section,
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index a5fef3e6a8..ea8436a064 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -50,6 +50,7 @@ typedef struct VFIOAddressSpace {
->   typedef struct VFIOContainerBase {
->       const VFIOIOMMUOps *ops;
->       VFIOAddressSpace *space;
-> +    bool dirty_pages_supported;
->       QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
->       QLIST_ENTRY(VFIOContainerBase) next;
->   } VFIOContainerBase;
-> @@ -68,6 +69,11 @@ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
->   int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
->                                hwaddr iova, ram_addr_t size,
->                                IOMMUTLBEntry *iotlb);
-> +int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-> +                                           bool start);
-> +int vfio_container_query_dirty_bitmap(VFIOContainerBase *bcontainer,
-> +                                      VFIOBitmap *vbmap,
-> +                                      hwaddr iova, hwaddr size);
->   
->   void vfio_container_init(VFIOContainerBase *bcontainer,
->                            VFIOAddressSpace *space,
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index f87a0dcec3..7d9b87fc67 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -1081,7 +1081,8 @@ static void vfio_listener_log_global_start(MemoryListener *listener)
->       if (vfio_devices_all_device_dirty_tracking(container)) {
->           ret = vfio_devices_dma_logging_start(container);
->       } else {
-> -        ret = vfio_set_dirty_page_tracking(container, true);
-> +        ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
-> +                                                     true);
->       }
->   
->       if (ret) {
-> @@ -1099,7 +1100,8 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
->       if (vfio_devices_all_device_dirty_tracking(container)) {
->           vfio_devices_dma_logging_stop(container);
->       } else {
-> -        ret = vfio_set_dirty_page_tracking(container, false);
-> +        ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
-> +                                                     false);
->       }
->   
->       if (ret) {
-> @@ -1167,7 +1169,8 @@ int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
->       VFIOBitmap vbmap;
->       int ret;
->   
-> -    if (!container->dirty_pages_supported && !all_device_dirty_tracking) {
-> +    if (!container->bcontainer.dirty_pages_supported &&
-> +        !all_device_dirty_tracking) {
->           cpu_physical_memory_set_dirty_range(ram_addr, size,
->                                               tcg_enabled() ? DIRTY_CLIENTS_ALL :
->                                               DIRTY_CLIENTS_NOCODE);
-> @@ -1182,7 +1185,8 @@ int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
->       if (all_device_dirty_tracking) {
->           ret = vfio_devices_query_dirty_bitmap(container, &vbmap, iova, size);
->       } else {
-> -        ret = vfio_query_dirty_bitmap(container, &vbmap, iova, size);
-> +        ret = vfio_container_query_dirty_bitmap(&container->bcontainer, &vbmap,
-> +                                                iova, size);
->       }
->   
->       if (ret) {
-> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-> index 99b2957d7b..a7cf517dd2 100644
-> --- a/hw/vfio/container-base.c
-> +++ b/hw/vfio/container-base.c
-> @@ -48,11 +48,34 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
->       return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
->   }
->   
-> +int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-> +                                           bool start)
-> +{
-> +    /* Fallback to all pages dirty if dirty page sync isn't supported */
-> +    if (!bcontainer->ops->set_dirty_page_tracking) {
-> +        return 0;
-> +    }
+ping1
 
-
-I would start with an assert and relax the check later on, if needed and
-in its own patch.
-
-> +    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
-> +}
-> +
-> +int vfio_container_query_dirty_bitmap(VFIOContainerBase *bcontainer,
-> +                                      VFIOBitmap *vbmap,
-> +                                      hwaddr iova, hwaddr size)
-> +{
-> +    if (!bcontainer->ops->query_dirty_bitmap) {
-> +        return -EINVAL;
-> +    }
-
-Same comment.
-
-Thanks,
-
-C.
-
-> +    return bcontainer->ops->query_dirty_bitmap(bcontainer, vbmap, iova, size);
-> +}
-> +
->   void vfio_container_init(VFIOContainerBase *bcontainer, VFIOAddressSpace *space,
->                            const VFIOIOMMUOps *ops)
->   {
->       bcontainer->ops = ops;
->       bcontainer->space = space;
-> +    bcontainer->dirty_pages_supported = false;
->       QLIST_INIT(&bcontainer->giommu_list);
->   }
->   
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 761310fa51..6f02ca133e 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -131,7 +131,7 @@ static int vfio_legacy_dma_unmap(VFIOContainerBase *bcontainer, hwaddr iova,
->   
->       if (iotlb && vfio_devices_all_running_and_mig_active(container)) {
->           if (!vfio_devices_all_device_dirty_tracking(container) &&
-> -            container->dirty_pages_supported) {
-> +            container->bcontainer.dirty_pages_supported) {
->               return vfio_dma_unmap_bitmap(container, iova, size, iotlb);
->           }
->   
-> @@ -205,14 +205,17 @@ static int vfio_legacy_dma_map(VFIOContainerBase *bcontainer, hwaddr iova,
->       return -errno;
->   }
->   
-> -int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
-> +static int vfio_legacy_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-> +                                               bool start)
->   {
-> +    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> +                                            bcontainer);
->       int ret;
->       struct vfio_iommu_type1_dirty_bitmap dirty = {
->           .argsz = sizeof(dirty),
->       };
->   
-> -    if (!container->dirty_pages_supported) {
-> +    if (!bcontainer->dirty_pages_supported) {
->           return 0;
->       }
->   
-> @@ -232,9 +235,12 @@ int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
->       return ret;
->   }
->   
-> -int vfio_query_dirty_bitmap(VFIOContainer *container, VFIOBitmap *vbmap,
-> -                            hwaddr iova, hwaddr size)
-> +static int vfio_legacy_query_dirty_bitmap(VFIOContainerBase *bcontainer,
-> +                                          VFIOBitmap *vbmap,
-> +                                          hwaddr iova, hwaddr size)
->   {
-> +    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> +                                            bcontainer);
->       struct vfio_iommu_type1_dirty_bitmap *dbitmap;
->       struct vfio_iommu_type1_dirty_bitmap_get *range;
->       int ret;
-> @@ -461,7 +467,7 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
->        * qemu_real_host_page_size to mark those dirty.
->        */
->       if (cap_mig->pgsize_bitmap & qemu_real_host_page_size()) {
-> -        container->dirty_pages_supported = true;
-> +        container->bcontainer.dirty_pages_supported = true;
->           container->max_dirty_bitmap_size = cap_mig->max_dirty_bitmap_size;
->           container->dirty_pgsizes = cap_mig->pgsize_bitmap;
->       }
-> @@ -553,7 +559,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
->       container = g_malloc0(sizeof(*container));
->       container->fd = fd;
->       container->error = NULL;
-> -    container->dirty_pages_supported = false;
->       container->dma_max_mappings = 0;
->       container->iova_ranges = NULL;
->       QLIST_INIT(&container->vrdl_list);
-> @@ -938,4 +943,6 @@ void vfio_detach_device(VFIODevice *vbasedev)
->   const VFIOIOMMUOps vfio_legacy_ops = {
->       .dma_map = vfio_legacy_dma_map,
->       .dma_unmap = vfio_legacy_dma_unmap,
-> +    .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
-> +    .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
->   };
-
+在 2023/10/23 10:03, Yong Huang 写道:
+> ping.
+>
+> Regarding the performance of the live migration, Guestperf could 
+> provide us
+> with a clear response. IMHO, by just adding a few metrics, it might be 
+> developed
+> into a more user-friendly metrics system in the future.
+>
+> We may still enrich it prior to that.
+>
+> On Fri, Oct 20, 2023 at 11:24 PM Hyman Huang <yong.huang@smartx.com> 
+> wrote:
+>
+>     Dirty ring size configuration is not supported by guestperf tool.
+>
+>     Introduce dirty-ring-size (ranges in [1024, 65536]) option so
+>     developers can play with dirty-ring and dirty-limit feature easier.
+>
+>     To set dirty ring size with 4096 during migration test:
+>     $ ./tests/migration/guestperf.py --dirty-ring-size 4096 xxx
+>
+>     Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+>     ---
+>      tests/migration/guestperf/engine.py   | 6 +++++-
+>      tests/migration/guestperf/hardware.py | 8 ++++++--
+>      tests/migration/guestperf/shell.py    | 6 +++++-
+>      3 files changed, 16 insertions(+), 4 deletions(-)
+>
+>     diff --git a/tests/migration/guestperf/engine.py
+>     b/tests/migration/guestperf/engine.py
+>     index da96ca034a..aabf6de4d9 100644
+>     --- a/tests/migration/guestperf/engine.py
+>     +++ b/tests/migration/guestperf/engine.py
+>     @@ -325,7 +325,6 @@ def _get_common_args(self, hardware,
+>     tunnelled=False):
+>                  cmdline = "'" + cmdline + "'"
+>
+>              argv = [
+>     -            "-accel", "kvm",
+>                  "-cpu", "host",
+>                  "-kernel", self._kernel,
+>                  "-initrd", self._initrd,
+>     @@ -333,6 +332,11 @@ def _get_common_args(self, hardware,
+>     tunnelled=False):
+>                  "-m", str((hardware._mem * 1024) + 512),
+>                  "-smp", str(hardware._cpus),
+>              ]
+>     +        if hardware._dirty_ring_size:
+>     +            argv.extend(["-accel", "kvm,dirty-ring-size=%s" %
+>     +                         hardware._dirty_ring_size])
+>     +        else:
+>     +            argv.extend(["-accel", "kvm"])
+>
+>              argv.extend(self._get_qemu_serial_args())
+>
+>     diff --git a/tests/migration/guestperf/hardware.py
+>     b/tests/migration/guestperf/hardware.py
+>     index 3145785ffd..f779cc050b 100644
+>     --- a/tests/migration/guestperf/hardware.py
+>     +++ b/tests/migration/guestperf/hardware.py
+>     @@ -23,7 +23,8 @@ def __init__(self, cpus=1, mem=1,
+>                       src_cpu_bind=None, src_mem_bind=None,
+>                       dst_cpu_bind=None, dst_mem_bind=None,
+>                       prealloc_pages = False,
+>     -                 huge_pages=False, locked_pages=False):
+>     +                 huge_pages=False, locked_pages=False,
+>     +                 dirty_ring_size=0):
+>              self._cpus = cpus
+>              self._mem = mem # GiB
+>              self._src_mem_bind = src_mem_bind # List of NUMA nodes
+>     @@ -33,6 +34,7 @@ def __init__(self, cpus=1, mem=1,
+>              self._prealloc_pages = prealloc_pages
+>              self._huge_pages = huge_pages
+>              self._locked_pages = locked_pages
+>     +        self._dirty_ring_size = dirty_ring_size
+>
+>
+>          def serialize(self):
+>     @@ -46,6 +48,7 @@ def serialize(self):
+>                  "prealloc_pages": self._prealloc_pages,
+>                  "huge_pages": self._huge_pages,
+>                  "locked_pages": self._locked_pages,
+>     +            "dirty_ring_size": self._dirty_ring_size,
+>              }
+>
+>          @classmethod
+>     @@ -59,4 +62,5 @@ def deserialize(cls, data):
+>                  data["dst_mem_bind"],
+>                  data["prealloc_pages"],
+>                  data["huge_pages"],
+>     -            data["locked_pages"])
+>     +            data["locked_pages"],
+>     +            data["dirty_ring_size"])
+>     diff --git a/tests/migration/guestperf/shell.py
+>     b/tests/migration/guestperf/shell.py
+>     index 8a809e3dda..7d6b8cd7cf 100644
+>     --- a/tests/migration/guestperf/shell.py
+>     +++ b/tests/migration/guestperf/shell.py
+>     @@ -60,6 +60,8 @@ def __init__(self):
+>              parser.add_argument("--prealloc-pages",
+>     dest="prealloc_pages", default=False)
+>              parser.add_argument("--huge-pages", dest="huge_pages",
+>     default=False)
+>              parser.add_argument("--locked-pages",
+>     dest="locked_pages", default=False)
+>     +        parser.add_argument("--dirty-ring-size",
+>     dest="dirty_ring_size",
+>     +                            default=0, type=int)
+>
+>              self._parser = parser
+>
+>     @@ -89,7 +91,9 @@ def split_map(value):
+>
+>                              locked_pages=args.locked_pages,
+>                              huge_pages=args.huge_pages,
+>     -                        prealloc_pages=args.prealloc_pages)
+>     +                        prealloc_pages=args.prealloc_pages,
+>     +
+>     +                        dirty_ring_size=args.dirty_ring_size)
+>
+>
+>      class Shell(BaseShell):
+>     -- 
+>     2.39.1
+>
+>
+>
+> -- 
+> Best regards
 
