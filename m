@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E807D93F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 942C77D93EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:38:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwJHQ-0002MM-OL; Fri, 27 Oct 2023 05:37:24 -0400
+	id 1qwJHV-0002Os-Hv; Fri, 27 Oct 2023 05:37:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHP-0002Lp-3p
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHT-0002O7-7b
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHN-0002kU-Ha
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHR-0002lZ-6f
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698399441;
+ s=mimecast20190719; t=1698399444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UHFVGbN3Z5J3QkZ+IMc8CUg9xV8BBIbMridlp9wflug=;
- b=UGvBHPbxUswiQIKwcc8NQkhDlGLnbI0euZGb5mO7+NQ/btZO2YUCmEUFn1kr1Nugk3LV8A
- JwyGRDmZUA9IihtpuF0oetdf0q0V0fOm3MKf/vRv3UpTaw0RYNUmNpmniPRt3yBtwaIqWc
- VhZ08fz5FcPd7djXoVUYRmAK//jkTn8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-BVhm_uibNY6tOtLMnTWTlg-1; Fri,
- 27 Oct 2023 05:37:19 -0400
-X-MC-Unique: BVhm_uibNY6tOtLMnTWTlg-1
+ bh=oxWl9KC5kTvsQct/HyKKr/qVl12ZnY8mw3Eg5JythuE=;
+ b=YPZHyz9hZnoup5fd0KrYOF/BoiKwvCoJLFA9fk417KU8ICFnobg+mYXP5gxvF/NDyPbMyS
+ KJ42xAcDoZcxksAn/CNomCxKjhOi6tU3PWu9GHpcpc+Kq70CISj5RQoWytZW6RlZklU4Mv
+ xt9VsG6bvH1eWDI29CF2zCDZNG9FxZQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-206-jFgwyM0HMeyr9RMnxkQzxg-1; Fri, 27 Oct 2023 05:37:21 -0400
+X-MC-Unique: jFgwyM0HMeyr9RMnxkQzxg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F32673813BC6;
- Fri, 27 Oct 2023 09:37:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A3689101A529;
+ Fri, 27 Oct 2023 09:37:20 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.196])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EA7DA1121319;
- Fri, 27 Oct 2023 09:37:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 758111121320;
+ Fri, 27 Oct 2023 09:37:19 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/11] tests/rtl8139: Clean up global variable shadowing
-Date: Fri, 27 Oct 2023 11:37:04 +0200
-Message-ID: <20231027093710.273558-6-thuth@redhat.com>
+Subject: [PULL 06/11] tests/npcm7xx_adc: Clean up global variable shadowing
+Date: Fri, 27 Oct 2023 11:37:05 +0200
+Message-ID: <20231027093710.273558-7-thuth@redhat.com>
 In-Reply-To: <20231027093710.273558-1-thuth@redhat.com>
 References: <20231027093710.273558-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -80,71 +80,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Rename the variable to fix:
+Rename the global 'adc' variable in order to avoid:
 
-  tests/qtest/rtl8139-test.c:28:33: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static void save_fn(QPCIDevice *dev, int devfn, void *data)
-                                  ^
-  tests/qtest/rtl8139-test.c:37:17: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      QPCIDevice *dev;
-                  ^
-  tests/qtest/rtl8139-test.c:25:20: note: previous declaration is here
-  static QPCIDevice *dev;
-                     ^
+  tests/qtest/npcm7xx_adc-test.c:98:58: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static uint32_t adc_read_con(QTestState *qts, const ADC *adc)
+                                                           ^
+  tests/qtest/npcm7xx_adc-test.c:103:55: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static void adc_write_con(QTestState *qts, const ADC *adc, uint32_t value)
+                                                        ^
+  tests/qtest/npcm7xx_adc-test.c:108:59: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static uint32_t adc_read_data(QTestState *qts, const ADC *adc)
+                                                            ^
+  tests/qtest/npcm7xx_adc-test.c:119:53: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static void adc_qom_set(QTestState *qts, const ADC *adc,
+                                                      ^
+  tests/qtest/npcm7xx_adc-test.c:135:57: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static void adc_write_input(QTestState *qts, const ADC *adc,
+                                                          ^
+  tests/qtest/npcm7xx_adc-test.c:144:56: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static void adc_write_vref(QTestState *qts, const ADC *adc, uint32_t value)
+                                                         ^
+  tests/qtest/npcm7xx_adc-test.c:162:59: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static uint32_t adc_prescaler(QTestState *qts, const ADC *adc)
+                                                            ^
+  tests/qtest/npcm7xx_adc-test.c:175:64: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static void adc_wait_conv_finished(QTestState *qts, const ADC *adc,
+                                                                 ^
+  tests/qtest/npcm7xx_adc-test.c:196:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+    const ADC *adc = adc_p;
+               ^
+  tests/qtest/npcm7xx_adc-test.c:207:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+    const ADC *adc = adc_p;
+               ^
+  tests/qtest/npcm7xx_adc-test.c:235:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+    const ADC *adc = adc_p;
+               ^
+  tests/qtest/npcm7xx_adc-test.c:267:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+    const ADC *adc = adc_p;
+               ^
+  tests/qtest/npcm7xx_adc-test.c:293:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+    const ADC *adc = adc_p;
+               ^
+  tests/qtest/npcm7xx_adc-test.c:311:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+    const ADC *adc = adc_p;
+               ^
+  tests/qtest/npcm7xx_adc-test.c:93:5: note: previous declaration is here
+  ADC adc = {
+      ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20231009100251.56019-7-philmd@linaro.org>
+Message-ID: <20231009100251.56019-8-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/rtl8139-test.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/qtest/npcm7xx_adc-test.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/qtest/rtl8139-test.c b/tests/qtest/rtl8139-test.c
-index 4dc0a0d22e..eedf90f65a 100644
---- a/tests/qtest/rtl8139-test.c
-+++ b/tests/qtest/rtl8139-test.c
-@@ -22,7 +22,7 @@ static void nop(void)
- #define CLK 33333333
+diff --git a/tests/qtest/npcm7xx_adc-test.c b/tests/qtest/npcm7xx_adc-test.c
+index 8048044d28..e751a72e36 100644
+--- a/tests/qtest/npcm7xx_adc-test.c
++++ b/tests/qtest/npcm7xx_adc-test.c
+@@ -90,7 +90,7 @@ typedef struct ADC {
+     uint64_t base_addr;
+ } ADC;
  
- static QPCIBus *pcibus;
--static QPCIDevice *dev;
-+static QPCIDevice *pcidev;
- static QPCIBar dev_bar;
- 
- static void save_fn(QPCIDevice *dev, int devfn, void *data)
-@@ -46,7 +46,7 @@ static QPCIDevice *get_device(void)
- #define PORT(name, len, val) \
- static unsigned __attribute__((unused)) in_##name(void) \
- { \
--    unsigned res = qpci_io_read##len(dev, dev_bar, (val));     \
-+    unsigned res = qpci_io_read##len(pcidev, dev_bar, (val));     \
-     if (verbosity_level >= 2) { \
-         g_test_message("*%s -> %x", #name, res); \
-     } \
-@@ -57,7 +57,7 @@ static void out_##name(unsigned v) \
-     if (verbosity_level >= 2) { \
-         g_test_message("%x -> *%s", v, #name); \
-     } \
--    qpci_io_write##len(dev, dev_bar, (val), v);        \
-+    qpci_io_write##len(pcidev, dev_bar, (val), v);        \
- }
- 
- PORT(Timer, l, 0x48)
-@@ -189,11 +189,11 @@ static void test_init(void)
+-ADC adc = {
++ADC adc_defs = {
+     .irq        = 0,
+     .base_addr  = 0xf000c000
+ };
+@@ -367,12 +367,12 @@ int main(int argc, char **argv)
  {
-     uint64_t barsize;
+     g_test_init(&argc, &argv, NULL);
  
--    dev = get_device();
-+    pcidev = get_device();
+-    add_test(init, &adc);
+-    add_test(convert_internal, &adc);
+-    add_test(convert_external, &adc);
+-    add_test(interrupt, &adc);
+-    add_test(reset, &adc);
+-    add_test(calibrate, &adc);
++    add_test(init, &adc_defs);
++    add_test(convert_internal, &adc_defs);
++    add_test(convert_external, &adc_defs);
++    add_test(interrupt, &adc_defs);
++    add_test(reset, &adc_defs);
++    add_test(calibrate, &adc_defs);
  
--    dev_bar = qpci_iomap(dev, 0, &barsize);
-+    dev_bar = qpci_iomap(pcidev, 0, &barsize);
- 
--    qpci_device_enable(dev);
-+    qpci_device_enable(pcidev);
- 
-     test_timer();
+     return g_test_run();
  }
 -- 
 2.41.0
