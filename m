@@ -2,92 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D827D9AAF
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60287D9AD5
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:09:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwNQQ-0002yS-4T; Fri, 27 Oct 2023 10:02:59 -0400
+	id 1qwNVj-0005kO-Jf; Fri, 27 Oct 2023 10:08:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNQH-0002y8-2j
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:02:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qwNVg-0005jm-6a
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:08:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNQD-00062H-MJ
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:02:48 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qwNVe-0008B6-61
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:08:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698415364;
+ s=mimecast20190719; t=1698415699;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oP4YzODHqDCdTthV8F36N42zNW5IWyEUqtxm5JrlG7w=;
- b=A11qf6yK+KaDkRY6iypopUSusdu+Di65TcUGc0Yl2pMf1w1Gu1yxN4tYc55QdpslaD00Gh
- pAyOfOO6Q5sOfC6IXpqes+BbiPdDsmtjqp6IHIATsP+cDv+n6I5A9Ves3nz6/6URBAX8yw
- EOy0b5WnOTLsvVIRa5t76U2k8ITTjGQ=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wTN7KSSZRiqxZF+BOn09UPcbaYB9WIihV9g9+3NAX/s=;
+ b=JrxNAbwjW/MiaVK5j/l62fodJS0wIjmW9EjTe5FCjyE0EhDb4HpqdTqp/1qKW573QyVOKC
+ RbVuz8yw3UX14w9cvfOlkdK+C2tjbd66EcMHPNas+Wtom/DEhL/kpva3Oob6iMZMUV4zjo
+ EAGekxUxbrqwEu5B0ZvD29p8axyDwzg=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-KRATgKSqOZubpGPCO1gz_Q-1; Fri, 27 Oct 2023 10:02:41 -0400
-X-MC-Unique: KRATgKSqOZubpGPCO1gz_Q-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7788ce62d50so280369085a.3
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:02:41 -0700 (PDT)
+ us-mta-515-G9fXGG4SOPGEWznBv7J7qA-1; Fri, 27 Oct 2023 10:08:18 -0400
+X-MC-Unique: G9fXGG4SOPGEWznBv7J7qA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-54045f31f49so1582520a12.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:08:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698415360; x=1699020160;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oP4YzODHqDCdTthV8F36N42zNW5IWyEUqtxm5JrlG7w=;
- b=Q5dPrfZh0oKYJUweQ/C+7WZDTydW/gI/+8MwRRdgD6JARSKyXdvIQvfs/TreaEv+Kt
- 7um4R5wAq89lIWC8XfW3hlG3u7TRl9hMYz0TGzhE17B91QuBuIY8GhkjClfoUB9nu69n
- +5J3eqNM0VW9Fk9hBWUz9L8BrmJ8nPCjSORL4CVqGrezzL5kRm7vyTuyiK3UxJyLrtyn
- LmVYg+D/4+Ci93lpWDXJ4O+xNiGno0ZKYsPA0lrMSO8FEAi/uPvp+XFXpVkujyE5p943
- wCJoG4Lqqsyr3h0o2crLQncLl3rnj8KM+mPisXVX5W5288zs4pfqSgp9rkKfKIkogldM
- kh9A==
-X-Gm-Message-State: AOJu0Yzlxn7finJnZYZTQQSKb1Lw6mXNsuGNtAAv8FsdO9uv2ZzCT5I7
- 7bI+9BU0foyARJg1jL9aRNETpi4/BJvnw6WT+xwzoDsLqBLBYb38YOPV/HXdqIjLP4MxaAYau7V
- ormSvBInhfJpdwPU=
-X-Received: by 2002:a05:620a:2a14:b0:778:9a18:68f6 with SMTP id
- o20-20020a05620a2a1400b007789a1868f6mr2568975qkp.58.1698415360537; 
- Fri, 27 Oct 2023 07:02:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLoSGY6/yi+IfkOU/tofeeqxeOKruxION6PXaTv09wFhypopPLd8bfv05vTGq4ozd5qDtI/A==
-X-Received: by 2002:a05:620a:2a14:b0:778:9a18:68f6 with SMTP id
- o20-20020a05620a2a1400b007789a1868f6mr2568952qkp.58.1698415360282; 
- Fri, 27 Oct 2023 07:02:40 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
- ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
- by smtp.gmail.com with ESMTPSA id
- m12-20020ae9e70c000000b007770673e757sm558961qka.94.2023.10.27.07.02.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 07:02:39 -0700 (PDT)
-Message-ID: <77cb4375-beb8-4d6e-ba9f-304d357e7e67@redhat.com>
-Date: Fri, 27 Oct 2023 16:02:36 +0200
+ d=1e100.net; s=20230601; t=1698415697; x=1699020497;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wTN7KSSZRiqxZF+BOn09UPcbaYB9WIihV9g9+3NAX/s=;
+ b=ignytM5b+6Oc444Srml2hEgHbjiCGKmSNn5vgcwVpEaamPXJA7wSX0oJxOcFp25CsO
+ nUtIhMBUVtr9h0CdYdUuAVw+OeYS4XbS+PRAamyt28UxYkguf3ket7yOpt/S/zWOskkl
+ vc3pDxyAckpE3kcVDw9yTV9XW2UXnZvN7P6xHfAgzCSNJaQh2ns1s84qORCq5dYHc8Hs
+ 2Wu3FKYVWcRF8nBA/Jed5zO4DvS1NijlcT+9b/IZtLXCH3RYVMZIifyOol3I4BDSl5sj
+ JMKsSAXcuZ/MrA9CHso1kdty14oYN0KIs6oj9vWTvlC/+psF+bMfhC1Lkppz8sqsbVzs
+ ZwAw==
+X-Gm-Message-State: AOJu0Yx16trmUeH3kcg7mw0AXNGg1Agzfum6fuZIoJtX6JBuWiL5W3FE
+ Kizyi+8xD5+iFlIti0UUanAhYZ+Ma70B2srapSsAm5dF93swVC0JXYeYxx+7kyTnZbC9uZnuClG
+ op+aAL+3V1VYjZAs=
+X-Received: by 2002:a05:6402:40c5:b0:53d:983c:2672 with SMTP id
+ z5-20020a05640240c500b0053d983c2672mr2831781edb.38.1698415697268; 
+ Fri, 27 Oct 2023 07:08:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHU9wPTk7qBhl0A81Dq8fzUM2rXak77Gffp1y2m3UU7jbZs3FlNDOlFDmw7XR+9h4bD1tTBLw==
+X-Received: by 2002:a05:6402:40c5:b0:53d:983c:2672 with SMTP id
+ z5-20020a05640240c500b0053d983c2672mr2831724edb.38.1698415696923; 
+ Fri, 27 Oct 2023 07:08:16 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ s20-20020a056402165400b0053e37d13f4fsm1273490edx.52.2023.10.27.07.08.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 27 Oct 2023 07:08:16 -0700 (PDT)
+Date: Fri, 27 Oct 2023 16:08:14 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
+ <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
+ <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
+ <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
+ <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
+ <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
+ <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
+ <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
+ <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
+ <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
+ <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
+ <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
+ <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
+ <lixianglai@loongson.cn>, <linuxarm@huawei.com>
+Subject: Re: [PATCH V6 4/9] hw/acpi: Init GED framework with CPU hotplug events
+Message-ID: <20231027160814.3f47ff70@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231013105129.25648-5-salil.mehta@huawei.com>
+References: <20231013105129.25648-1-salil.mehta@huawei.com>
+ <20231013105129.25648-5-salil.mehta@huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/37] vfio: Introduce base object for VFIOContainer
- and targetted interface
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-7-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231026103104.1686921-7-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,155 +113,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 12:30, Zhenzhong Duan wrote:
-> Introduce a dumb VFIOContainer base object and its targetted interface.
+On Fri, 13 Oct 2023 11:51:24 +0100
+Salil Mehta <salil.mehta@huawei.com> wrote:
 
-targeted
-
-
-> This is willingly not a QOM object because we don't want it to be
-> visible from the user interface.  The VFIOContainer will be smoothly
-> populated in subsequent patches as well as interfaces.
+> ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI events
+> when OSPM/guest receives an interrupt listed in the _CRS object of GED. OSPM
+> then maps or demultiplexes the event by evaluating _EVT method.
 > 
-> No fucntional change intended.
+> This change adds the support of CPU hotplug event initialization in the
+> existing GED framework.
 > 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> Tested-by: Xianglai Li <lixianglai@loongson.cn>
 > ---
->   include/hw/vfio/vfio-common.h         |  8 +---
->   include/hw/vfio/vfio-container-base.h | 64 +++++++++++++++++++++++++++
->   2 files changed, 66 insertions(+), 6 deletions(-)
->   create mode 100644 include/hw/vfio/vfio-container-base.h
+>  hw/acpi/generic_event_device.c         | 8 ++++++++
+>  include/hw/acpi/generic_event_device.h | 5 +++++
+>  2 files changed, 13 insertions(+)
 > 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index b9c7a7e588..d8f293cb57 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -30,6 +30,7 @@
->   #include <linux/vfio.h>
->   #endif
->   #include "sysemu/sysemu.h"
-> +#include "hw/vfio/vfio-container-base.h"
->   
->   #define VFIO_MSG_PREFIX "vfio %s: "
->   
-> @@ -81,6 +82,7 @@ typedef struct VFIOAddressSpace {
->   struct VFIOGroup;
->   
->   typedef struct VFIOContainer {
-> +    VFIOContainerBase bcontainer;
->       VFIOAddressSpace *space;
->       int fd; /* /dev/vfio/vfio, empowered by the attached groups */
->       MemoryListener listener;
-> @@ -201,12 +203,6 @@ typedef struct VFIODisplay {
->       } dmabuf;
->   } VFIODisplay;
->   
-> -typedef struct {
-> -    unsigned long *bitmap;
-> -    hwaddr size;
-> -    hwaddr pages;
-> -} VFIOBitmap;
-> -
->   VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
->   void vfio_put_address_space(VFIOAddressSpace *space);
->   bool vfio_devices_all_running_and_saving(VFIOContainer *container);
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> new file mode 100644
-> index 0000000000..5becbd51a7
-> --- /dev/null
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -0,0 +1,64 @@
-> +/*
-> + * VFIO BASE CONTAINER
-> + *
-> + * Copyright (C) 2023 Intel Corporation.
-> + * Copyright Red Hat, Inc. 2023
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *          Eric Auger <eric.auger@redhat.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
+> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+> index a3d31631fe..d2fa1d0e4a 100644
+> --- a/hw/acpi/generic_event_device.c
+> +++ b/hw/acpi/generic_event_device.c
+> @@ -25,6 +25,7 @@ static const uint32_t ged_supported_events[] = {
+>      ACPI_GED_MEM_HOTPLUG_EVT,
+>      ACPI_GED_PWR_DOWN_EVT,
+>      ACPI_GED_NVDIMM_HOTPLUG_EVT,
+> +    ACPI_GED_CPU_HOTPLUG_EVT,
+>  };
+>  
+>  /*
+> @@ -400,6 +401,13 @@ static void acpi_ged_initfn(Object *obj)
+>      memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
+>                            TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
+>      sysbus_init_mmio(sbd, &ged_st->regs);
 > +
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> +
-> + * You should have received a copy of the GNU General Public License along
-> + * with this program; if not, see <http://www.gnu.org/licenses/>.
-
-This should be enough :
-
-   SPDX-License-Identifier: GPL-2.0-or-later
-
-> + */
-> +
-> +#ifndef HW_VFIO_VFIO_BASE_CONTAINER_H
-> +#define HW_VFIO_VFIO_BASE_CONTAINER_H
-
-HW_VFIO_VFIO_CONTAINER_BASE_H
-
-> +
-> +#include "exec/memory.h"
-> +#ifndef CONFIG_USER_ONLY
-> +#include "exec/hwaddr.h"
-> +#endif
-
-including "exec/memory.h" should be enough.
+> +    s->cpuhp.device = OBJECT(s);
+ain't OBJECT(s) == OBJECT(dev)m
 
 
-> +
-> +typedef struct VFIODevice VFIODevice;
-> +typedef struct VFIOIOMMUOps VFIOIOMMUOps;
-> +
-> +typedef struct {
-> +    unsigned long *bitmap;
-> +    hwaddr size;
-> +    hwaddr pages;
-> +} VFIOBitmap;
-> +
-> +/*
-> + * This is the base object for vfio container backends
-> + */
-> +typedef struct VFIOContainerBase {
-> +    const VFIOIOMMUOps *ops;
-> +} VFIOContainerBase;
-> +
-> +struct VFIOIOMMUOps {
-> +    /* basic feature */
-> +    int (*dma_map)(VFIOContainerBase *bcontainer,
-> +                   hwaddr iova, ram_addr_t size,
-> +                   void *vaddr, bool readonly);
-> +    int (*dma_unmap)(VFIOContainerBase *bcontainer,
-> +                     hwaddr iova, ram_addr_t size,
-> +                     IOMMUTLBEntry *iotlb);
+> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp container",
+> +                       ACPI_CPU_HOTPLUG_REG_LEN);
+> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
+> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
+> +                        &s->cpuhp_state, 0);
 
-Could the VFIOContainerBase *parameter be const ?
+we really should refactor GED to initfn/realizefn pattern.
+then at create_acpi_ged() one would enable cpu_hotplug event
+and later realizefs would call cpu_hotplug_hw_init() if event is enabled.
 
-> +    int (*attach_device)(char *name, VFIODevice *vbasedev,
+>  }
+>  
+>  static void acpi_ged_class_init(ObjectClass *class, void *data)
+> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+> index ba84ce0214..a803ea818e 100644
+> --- a/include/hw/acpi/generic_event_device.h
+> +++ b/include/hw/acpi/generic_event_device.h
+> @@ -60,6 +60,7 @@
+>  #define HW_ACPI_GENERIC_EVENT_DEVICE_H
+>  
+>  #include "hw/sysbus.h"
+> +#include "hw/acpi/cpu_hotplug.h"
+>  #include "hw/acpi/memory_hotplug.h"
+>  #include "hw/acpi/ghes.h"
+>  #include "qom/object.h"
+> @@ -95,6 +96,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>  #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
+>  #define ACPI_GED_PWR_DOWN_EVT      0x2
+>  #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+> +#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
+>  
+>  typedef struct GEDState {
+>      MemoryRegion evt;
+> @@ -106,6 +108,9 @@ struct AcpiGedState {
+>      SysBusDevice parent_obj;
+>      MemHotplugState memhp_state;
+>      MemoryRegion container_memhp;
+> +    CPUHotplugState cpuhp_state;
+> +    MemoryRegion container_cpuhp;
+> +    AcpiCpuHotplug cpuhp;
 
-cont char *name  ?
+how about merging CPUHotplugState and AcpiCpuHotplug
+and isolating AcpiCpuHotplug::sts to x86 legacy hotplug code only?
 
-The rest looks good to me.
+then you won't have to pull in 2 states (one of which includes
+GPE specific array that's not applicable to GED)
 
-Thanks
-
-C.
-
-
-> +                         AddressSpace *as, Error **errp);
-> +    void (*detach_device)(VFIODevice *vbasedev);
-> +    /* migration feature */
-> +    int (*set_dirty_page_tracking)(VFIOContainerBase *bcontainer, bool start);
-> +    int (*query_dirty_bitmap)(VFIOContainerBase *bcontainer, VFIOBitmap *vbmap,
-> +                              hwaddr iova, hwaddr size);
-> +};
-> +#endif /* HW_VFIO_VFIO_BASE_CONTAINER_H */
+>      GEDState ged_state;
+>      uint32_t ged_event_bitmap;
+>      qemu_irq irq;
 
 
