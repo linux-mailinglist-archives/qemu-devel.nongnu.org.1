@@ -2,59 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62297D960D
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 13:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B744A7D9681
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 13:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwKjO-0006tX-59; Fri, 27 Oct 2023 07:10:22 -0400
+	id 1qwKvl-00023E-29; Fri, 27 Oct 2023 07:23:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1qwKjK-0006sN-Ci; Fri, 27 Oct 2023 07:10:18 -0400
-Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qwKvh-000231-Vd
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 07:23:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1qwKjG-0003GO-Iu; Fri, 27 Oct 2023 07:10:18 -0400
-Received: from [IPV6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b] (unknown
- [IPv6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b])
- by apollo.dupie.be (Postfix) with ESMTPSA id 7288D1520E7F;
- Fri, 27 Oct 2023 13:10:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1698405008;
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qwKve-0007WU-4t
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 07:23:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698405779;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Wu0AmSpliDQL0jXaBdDIXXbEuRFwuYt2HnhOUwg3eCk=;
- b=j5i7afV6QjSOCjOXY7/uBeQkjap+kbDqozz/zuHMd+0by2q3c3QFwGvkGhK3OsQh+TJCgX
- O/pjbU/rfHigbCB0G1fe8kkXlca0aoltpNAffRNl06R7NMzJuC21p5rVXla818K1GpNekY
- 2CYet4u3I9ZOo/iXXghfEeLA7N3C6zF9QqojD/8VNeJTvWwz2zXVq3eYdsV05rV3WScF6j
- FAiZLs1NbbKpCuzJEP14jHUatYorgbnj0DgpvkBtjGvuBpG6GP95ycFIidWK3iRX2FZtGT
- jYqya8jzY20M1rQnHegmdis1/N1PMUcM4b/dG/7gwCAgDpGpstMrfxNsY2UMaQ==
-Message-ID: <b92c8ede-604f-4859-b3b8-7e2fd7824274@dupond.be>
-Date: Fri, 27 Oct 2023 13:10:08 +0200
+ bh=XtkO8WZjjyZXrZBboXWbOr7YFljGQLk6lQtL97ynhDY=;
+ b=Vld9/37ncdxrYBoZgHEXDWX/z03wWvRiROyzNJUzp2F55H3Gh2mjs5a0kXZIPRBzJz5Ca8
+ jmF+JypHTnMYs49jxTQB9IS2I06aRlC5k2bKXkIl7aVKiCoB40yNJbVDhiIaAvNclOfvIB
+ Mkiwu/uqE7GUsxmdVyrwNKrQyhuoTTc=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-X475vmoSM8qHvvWg5KaxeQ-1; Fri, 27 Oct 2023 07:22:42 -0400
+X-MC-Unique: X475vmoSM8qHvvWg5KaxeQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-53e3bfec5bdso1445167a12.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 04:22:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698405761; x=1699010561;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XtkO8WZjjyZXrZBboXWbOr7YFljGQLk6lQtL97ynhDY=;
+ b=WFhscPnlGzmAodQ109iiAQPnApyivlnzNc7x7Byq9DzSRIk19Lsc5tSAi4TJZgyEod
+ F2Rpl/iXI0X8xi/Gn6SNJ/AJNyF7Y72DE+S2XERHPaouGuEYvVXVczjYwd8wWN0aanS9
+ 2SaT+NjHpd6yrHEfntQw4J1g2sShvw3KdgPfU0PTDth2sYewgBhffovjtgt9np0+Ru//
+ 9hyRZyqWwJlyuEk6Kcp2EfmHYtUTQadDjhZOp3969kytSrG+VQa7FzKp+pQRubMykNDv
+ nRRcbjrKJmoKGrAwh2JXPWUQcMwgGCt2OJzvmnZFvQQHWny/GI3w+E+Tb05Ni23tHGHp
+ G8Hg==
+X-Gm-Message-State: AOJu0YzGbAbfC5jzZgWekRWAKQAkJuNQC0KoxZHGDFmZR2Yy6dvMT73j
+ +55lC/ynlspA4JDNJYx8i2qaTK8aN5nlmtIVUqGUv0FOmrz44KJgqFPOOgUowSJBj6YzS4NoK+G
+ TSA2KK0d8jBqPgNA=
+X-Received: by 2002:a50:d7cb:0:b0:53e:46b0:32be with SMTP id
+ m11-20020a50d7cb000000b0053e46b032bemr1948867edj.34.1698405761093; 
+ Fri, 27 Oct 2023 04:22:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtUtwrWTcRV4iIANNmMz+bZnyYLI9/mPg9MMysZkrjI9Bta8pedphMgyIeH8d+jI5xGUbrag==
+X-Received: by 2002:a50:d7cb:0:b0:53e:46b0:32be with SMTP id
+ m11-20020a50d7cb000000b0053e46b032bemr1948844edj.34.1698405760704; 
+ Fri, 27 Oct 2023 04:22:40 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ eg25-20020a056402289900b0053dab756073sm1061150edb.84.2023.10.27.04.22.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 27 Oct 2023 04:22:40 -0700 (PDT)
+Date: Fri, 27 Oct 2023 13:22:38 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Salil Mehta <salil.mehta@opnsrc.net>
+Cc: Bernhard Beschow <shentey@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, qemu-devel@nongnu.org, Peter Maydell
+ <peter.maydell@linaro.org>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Sergio Lopez <slp@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: Re: [PULL v2 29/53] hw/i386: Remove now redundant TYPE_ACPI_GED_X86
+Message-ID: <20231027132238.26e14722@imammedo.users.ipa.redhat.com>
+In-Reply-To: <7234ffe0-d617-1b0f-b61a-986724ffd20a@opnsrc.net>
+References: <cover.1696477105.git.mst@redhat.com>
+ <c9c8ba69d5dbe5c1c6370e1f09ebd7531509d075.1696477105.git.mst@redhat.com>
+ <15e70616-6abb-63a4-17d0-820f4a254607@opnsrc.net>
+ <BE6564AF-6317-49CB-91AF-C88F1D31DF4E@gmail.com>
+ <7234ffe0-d617-1b0f-b61a-986724ffd20a@opnsrc.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] qcow2: make subclusters discardable
-Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- eblake@redhat.com, berto@igalia.com, den@virtuozzo.com
-References: <20231020215622.789260-1-andrey.drobyshev@virtuozzo.com>
- <20231020215622.789260-5-andrey.drobyshev@virtuozzo.com>
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <20231020215622.789260-5-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
- envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,199 +109,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/10/2023 23:56, Andrey Drobyshev wrote:
-> This commit makes the discard operation work on the subcluster level
-> rather than cluster level.  It introduces discard_l2_subclusters()
-> function and makes use of it in qcow2 discard implementation, much like
-> it's done with zero_in_l2_slice() / zero_l2_subclusters().  It also
-> changes the qcow2 driver pdiscard_alignment to subcluster_size.  That
-> way subcluster-aligned discards lead to actual fallocate(PUNCH_HOLE)
-> operation and free host disk space.
->
-> This feature will let us gain additional disk space on guest
-> TRIM/discard requests, especially when using large enough clusters
-> (1M, 2M) with subclusters enabled.
->
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   block/qcow2-cluster.c | 100 ++++++++++++++++++++++++++++++++++++++++--
->   block/qcow2.c         |   8 ++--
->   2 files changed, 101 insertions(+), 7 deletions(-)
->
-> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
-> index 7c6fa5524c..cf40f2dc12 100644
-> --- a/block/qcow2-cluster.c
-> +++ b/block/qcow2-cluster.c
-> @@ -2042,6 +2042,74 @@ discard_in_l2_slice(BlockDriverState *bs, uint64_t offset, uint64_t nb_clusters,
->       return nb_clusters;
->   }
->   
-> +static int coroutine_fn GRAPH_RDLOCK
-> +discard_l2_subclusters(BlockDriverState *bs, uint64_t offset,
-> +                       uint64_t nb_subclusters,
-> +                       enum qcow2_discard_type type,
-> +                       bool full_discard,
-> +                       SubClusterRangeInfo *pscri)
-> +{
-> +    BDRVQcow2State *s = bs->opaque;
-> +    uint64_t new_l2_bitmap, l2_bitmap_mask;
-> +    int ret, sc = offset_to_sc_index(s, offset);
-> +    SubClusterRangeInfo scri = { 0 };
-> +
-> +    if (!pscri) {
-> +        ret = get_sc_range_info(bs, offset, nb_subclusters, &scri);
-> +        if (ret < 0) {
-> +            goto out;
-> +        }
-> +    } else {
-> +        scri = *pscri;
-> +    }
-> +
-> +    l2_bitmap_mask = QCOW_OFLAG_SUB_ALLOC_RANGE(sc, sc + nb_subclusters);
-> +    new_l2_bitmap = scri.l2_bitmap;
-> +    new_l2_bitmap &= ~l2_bitmap_mask;
-> +
-> +    /*
-> +     * If there're no allocated subclusters left, we might as well discard
-> +     * the entire cluster.  That way we'd also update the refcount table.
-> +     */
-> +    if (!(new_l2_bitmap & QCOW_L2_BITMAP_ALL_ALLOC)) {
-> +        return discard_in_l2_slice(bs,
-> +                                   QEMU_ALIGN_DOWN(offset, s->cluster_size),
-> +                                   1, type, full_discard);
-> +    }
-> +
-> +    /*
-> +     * Full discard means we fall through to the backing file, thus we only
-> +     * need to mark the subclusters as deallocated.
-> +     *
-> +     * Non-full discard means subclusters should be explicitly marked as
-> +     * zeroes.  In this case QCOW2 specification requires the corresponding
-> +     * allocation status bits to be unset as well.  If the subclusters are
-> +     * deallocated in the first place and there's no backing, the operation
-> +     * can be skipped.
-> +     */
-> +    if (!full_discard &&
-> +        (bs->backing || scri.l2_bitmap & l2_bitmap_mask)) {
-> +        new_l2_bitmap |= QCOW_OFLAG_SUB_ZERO_RANGE(sc, sc + nb_subclusters);
-> +    }
-> +
-> +    if (scri.l2_bitmap != new_l2_bitmap) {
-> +        set_l2_bitmap(s, scri.l2_slice, scri.l2_index, new_l2_bitmap);
-> +        qcow2_cache_entry_mark_dirty(s->l2_table_cache, scri.l2_slice);
-> +    }
-> +
-> +    if (s->discard_passthrough[type]) {
-> +        qcow2_queue_discard(bs, (scri.l2_entry & L2E_OFFSET_MASK) +
-> +                            offset_into_cluster(s, offset),
-> +                            nb_subclusters * s->subcluster_size);
-> +    }
-> +
-> +    ret = 0;
-> +out:
-> +    qcow2_cache_put(s->l2_table_cache, (void **) &scri.l2_slice);
-> +
-> +    return ret;
-> +}
-> +
->   int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
->                             uint64_t bytes, enum qcow2_discard_type type,
->                             bool full_discard)
-> @@ -2049,19 +2117,36 @@ int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
->       BDRVQcow2State *s = bs->opaque;
->       uint64_t end_offset = offset + bytes;
->       uint64_t nb_clusters;
-> +    unsigned head, tail;
->       int64_t cleared;
->       int ret;
->   
->       /* Caller must pass aligned values, except at image end */
-> -    assert(QEMU_IS_ALIGNED(offset, s->cluster_size));
-> -    assert(QEMU_IS_ALIGNED(end_offset, s->cluster_size) ||
-> +    assert(QEMU_IS_ALIGNED(offset, s->subcluster_size));
-> +    assert(QEMU_IS_ALIGNED(end_offset, s->subcluster_size) ||
->              end_offset == bs->total_sectors << BDRV_SECTOR_BITS);
->   
-> -    nb_clusters = size_to_clusters(s, bytes);
-> +    head = MIN(end_offset, ROUND_UP(offset, s->cluster_size)) - offset;
-> +    offset += head;
-> +
-> +    tail = (end_offset >= bs->total_sectors << BDRV_SECTOR_BITS) ? 0 :
-> +           end_offset - MAX(offset, start_of_cluster(s, end_offset));
-> +    end_offset -= tail;
->   
->       s->cache_discards = true;
->   
-> +    if (head) {
-> +        ret = discard_l2_subclusters(bs, offset - head,
-> +                                     size_to_subclusters(s, head), type,
-> +                                     full_discard, NULL);
-> +        if (ret < 0) {
-> +            goto fail;
-> +        }
-> +    }
-> +
->       /* Each L2 slice is handled by its own loop iteration */
-> +    nb_clusters = size_to_clusters(s, end_offset - offset);
-> +
->       while (nb_clusters > 0) {
->           cleared = discard_in_l2_slice(bs, offset, nb_clusters, type,
->                                         full_discard);
-> @@ -2074,6 +2159,15 @@ int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
->           offset += (cleared * s->cluster_size);
->       }
->   
-> +    if (tail) {
-> +        ret = discard_l2_subclusters(bs, end_offset,
-> +                                     size_to_subclusters(s, tail), type,
-> +                                     full_discard, NULL);
-> +        if (ret < 0) {
-> +            goto fail;
-> +        }
-> +    }
-> +
->       ret = 0;
->   fail:
->       s->cache_discards = false;
-> diff --git a/block/qcow2.c b/block/qcow2.c
-> index aa01d9e7b5..66961fa59e 100644
-> --- a/block/qcow2.c
-> +++ b/block/qcow2.c
-> @@ -1966,7 +1966,7 @@ static void qcow2_refresh_limits(BlockDriverState *bs, Error **errp)
->           bs->bl.request_alignment = qcrypto_block_get_sector_size(s->crypto);
->       }
->       bs->bl.pwrite_zeroes_alignment = s->subcluster_size;
-> -    bs->bl.pdiscard_alignment = s->cluster_size;
-> +    bs->bl.pdiscard_alignment = s->subcluster_size;
->   }
->   
->   static int GRAPH_UNLOCKED
-> @@ -4102,11 +4102,11 @@ qcow2_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
->           return -ENOTSUP;
->       }
->   
-> -    if (!QEMU_IS_ALIGNED(offset | bytes, s->cluster_size)) {
-> -        assert(bytes < s->cluster_size);
-> +    if (!QEMU_IS_ALIGNED(offset | bytes, bs->bl.pdiscard_alignment)) {
-> +        assert(bytes < bs->bl.pdiscard_alignment);
->           /* Ignore partial clusters, except for the special case of the
->            * complete partial cluster at the end of an unaligned file */
-> -        if (!QEMU_IS_ALIGNED(offset, s->cluster_size) ||
-> +        if (!QEMU_IS_ALIGNED(offset, bs->bl.pdiscard_alignment) ||
->               offset + bytes != bs->total_sectors * BDRV_SECTOR_SIZE) {
->               return -ENOTSUP;
->           }
+On Sat, 21 Oct 2023 00:54:56 +0100
+Salil Mehta <salil.mehta@opnsrc.net> wrote:
 
+> Hi Bernhard,
+>=20
+> On 19/10/2023 11:33, Bernhard Beschow wrote:
+> >=20
+> >=20
+> > Am 18. Oktober 2023 17:38:33 UTC schrieb Salil Mehta <salil.mehta@opnsr=
+c.net>: =20
+> >> Hello, =20
+> >=20
+> > Hi Salil,
+> >  =20
+> >> Can we assume that every machine type will have all the features which=
+ a GED Device can multiplex present together? like will Memory and CPU Hotp=
+lug makes sense for all the type of machines? =20
 
-I've checked all the code paths, and as far as I see it nowhere breaks 
-the discard_no_unref option.
-It's important that we don't introduce new code paths that can make 
-holes in the qcow2 image when this option is enabled :)
+user (board) were supposed to opt-in by setting the events property
+so only enabled events would be handled. =20
 
-If you can confirm my conclusion, that would be great.
+> > I can't really answer these questions -- I'm by no means an ACPI expert=
+. My idea about removing TYPE_ACPI_GED_X86 really was not more than the com=
+mit message says: To remove unneeded code. =20
+>=20
+>=20
+> Sure, cleanup is not an issue.
+>=20
+> In fact, question is whether every machine type would be interested in=20
+> initializing other code like hot-plug related initialization in the=20
+> acpi_get_intfn() especially when that machine type does not supports it.
+>=20
+> Another question is whether every machine can without breaking other=20
+> architecture or features?
+>=20
+>=20
+> Even in your case as well some unnecessary code legs will get=20
+> initialized so cleanup is not complete either - isn't it?
+>=20
+>=20
+> For now, I will proceed with changing this for ARM and then if x86 needs=
+=20
+> it can either revert this patch or re-implement it as also suggested by=20
+> Michael?
+>=20
+>=20
+> >=20
+> > That said, I wonder myself if the GED device could be uniformly impleme=
+nted across architectures and if -- in theory -- it could be used in the pc=
+-i440fx machine instead of the Frankenstein hotplug implementation in PIIX4=
+. =20
+>=20
+>=20
+> I will leave it up to x86 maintainers to answer that.
+>=20
+> But superficially, it looks there are some historical reasons (maybe=20
+> related to legacy firmware?) because of which the switch from legacy to=20
+> modern type of CPU Hotplug interface happens.
 
+x86 can theoretically use GED as well but that will prevent
+hotplug working with old guests that don't know about new-ish GED.
+Hence it's not likely for pc/q35 to switch to new GED.
 
-Thanks
-Jean-Louis
+>=20
+>=20
+> Thanks
+> Salil.
+>=20
+> >=20
+> > Best regards,
+> > Bernhard
+> >  =20
+> >>
+> >> If answer is no, then shouldn't every machine type override the base G=
+ED type and define it own versions of instance_init() function? AFAICS, GED=
+ can multiplex non-hotplug events as well.
+> >>
+> >> To support CPU Htoplug on ARM platforms we are using GED but x86/micro=
+vm does not supports hot-plugging and while creating TYPE_GED_DEVICE it wil=
+l end up initializing CPU Hotplug regions and code as well. This is far fro=
+m clean.
+> >>
+> >> Beside 'qtest' fails for x86/microvm machine type because 'possible_cp=
+us_arch_ids' is not defined for x86/microvm so we get errors like below:
+> >>
+> >> stderr:
+> >> qemu-system-x86_64: ../hw/acpi/cpu.c:224: cpu_hotplug_hw_init: Asserti=
+on `mc->possible_cpu_arch_ids' failed.
+> >> Broken pipe
+> >> ../tests/qtest/libqtest.c:200: kill_qemu() detected QEMU death from si=
+gnal 6 (Aborted) (core dumped)
+> >>
+> >> Above can be avoided if cpu_hotplug_hw_init() does not gets called for=
+ x86/microvm machine.
+> >>
+> >> ARM can have its own version of generic_event_device_arm64.c with its =
+own version of instance_init() having a call to cpu_hotplug_hw_init().
+> >>
+> >> Maybe I have missed something here?
+> >>
+> >>
+> >> Many thanks
+> >> Salil.
+> >>
+> >>
+> >> On 05/10/2023 04:44, Michael S. Tsirkin wrote: =20
+> >>> From: Bernhard Beschow <shentey@gmail.com>
+> >>>
+> >>> Now that TYPE_ACPI_GED_X86 doesn't assign AcpiDeviceIfClass::madt_cpu=
+ any more
+> >>> it is the same as TYPE_ACPI_GED.
+> >>>
+> >>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> >>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >>> Message-Id: <20230908084234.17642-6-shentey@gmail.com>
+> >>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> >>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> >>> ---
+> >>>    include/hw/acpi/generic_event_device.h |  2 --
+> >>>    hw/i386/generic_event_device_x86.c     | 27 ----------------------=
+----
+> >>>    hw/i386/microvm.c                      |  2 +-
+> >>>    hw/i386/meson.build                    |  1 -
+> >>>    4 files changed, 1 insertion(+), 31 deletions(-)
+> >>>    delete mode 100644 hw/i386/generic_event_device_x86.c
+> >>>
+> >>> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi=
+/generic_event_device.h
+> >>> index d831bbd889..ba84ce0214 100644
+> >>> --- a/include/hw/acpi/generic_event_device.h
+> >>> +++ b/include/hw/acpi/generic_event_device.h
+> >>> @@ -69,8 +69,6 @@
+> >>>    #define TYPE_ACPI_GED "acpi-ged"
+> >>>    OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+> >>>    -#define TYPE_ACPI_GED_X86 "acpi-ged-x86"
+> >>> -
+> >>>    #define ACPI_GED_EVT_SEL_OFFSET    0x0
+> >>>    #define ACPI_GED_EVT_SEL_LEN       0x4
+> >>>    diff --git a/hw/i386/generic_event_device_x86.c b/hw/i386/generic_=
+event_device_x86.c
+> >>> deleted file mode 100644
+> >>> index 8fc233e1f1..0000000000
+> >>> --- a/hw/i386/generic_event_device_x86.c
+> >>> +++ /dev/null
+> >>> @@ -1,27 +0,0 @@
+> >>> -/*
+> >>> - * x86 variant of the generic event device for hw reduced acpi
+> >>> - *
+> >>> - * This program is free software; you can redistribute it and/or mod=
+ify it
+> >>> - * under the terms and conditions of the GNU General Public License,
+> >>> - * version 2 or later, as published by the Free Software Foundation.
+> >>> - */
+> >>> -
+> >>> -#include "qemu/osdep.h"
+> >>> -#include "hw/acpi/generic_event_device.h"
+> >>> -
+> >>> -static const TypeInfo acpi_ged_x86_info =3D {
+> >>> -    .name          =3D TYPE_ACPI_GED_X86,
+> >>> -    .parent        =3D TYPE_ACPI_GED,
+> >>> -    .interfaces =3D (InterfaceInfo[]) {
+> >>> -        { TYPE_HOTPLUG_HANDLER },
+> >>> -        { TYPE_ACPI_DEVICE_IF },
+> >>> -        { }
+> >>> -    }
+> >>> -};
+> >>> -
+> >>> -static void acpi_ged_x86_register_types(void)
+> >>> -{
+> >>> -    type_register_static(&acpi_ged_x86_info);
+> >>> -}
+> >>> -
+> >>> -type_init(acpi_ged_x86_register_types)
+> >>> diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+> >>> index 8deeb62774..b9c93039e2 100644
+> >>> --- a/hw/i386/microvm.c
+> >>> +++ b/hw/i386/microvm.c
+> >>> @@ -204,7 +204,7 @@ static void microvm_devices_init(MicrovmMachineSt=
+ate *mms)
+> >>>          /* Optional and legacy devices */
+> >>>        if (x86_machine_is_acpi_enabled(x86ms)) {
+> >>> -        DeviceState *dev =3D qdev_new(TYPE_ACPI_GED_X86);
+> >>> +        DeviceState *dev =3D qdev_new(TYPE_ACPI_GED);
+> >>>            qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_E=
+VT);
+> >>>            sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
+> >>>            /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_M=
+EMHP); */
+> >>> diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+> >>> index cfdbfdcbcb..ff879069c9 100644
+> >>> --- a/hw/i386/meson.build
+> >>> +++ b/hw/i386/meson.build
+> >>> @@ -20,7 +20,6 @@ i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx=
+-epc.c','sgx.c'),
+> >>>                                    if_false: files('sgx-stub.c'))
+> >>>      i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
+> >>> -i386_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_=
+event_device_x86.c'))
+> >>>    i386_ss.add(when: 'CONFIG_PC', if_true: files(
+> >>>      'pc.c',
+> >>>      'pc_sysfw.c',
+> >>> =20
+>=20
 
 
