@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CBA7DA215
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 22:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A9B7DA222
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 23:02:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwTop-0005EP-In; Fri, 27 Oct 2023 16:52:35 -0400
+	id 1qwTwM-0006ao-0W; Fri, 27 Oct 2023 17:00:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qwTon-0005Ds-Gs
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 16:52:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qwTwK-0006aQ-7P
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 17:00:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qwTol-00051Y-W7
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 16:52:33 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qwTwI-0006Pp-KF
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 17:00:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698439950;
+ s=mimecast20190719; t=1698440417;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=n9bjimocBZOwQb9cAeyLHKLj3DNsGVeTikLVS/H/e1w=;
- b=FrgA13JabgsdGULUK6fYaqii58Z3TFbyYwNuSVFz9MHz3ahLpCeYPoJYviBIl1lEHXUv6l
- AVcYRVyCv6UEfgoC9SdPKDqxqx+diTWE2/3aDh/0nEN6LcB13TQgbHXGgWidfE6BayOEXu
- v+pSDifap1ZLQkT/3p8Dolu28x7OGNQ=
+ bh=t9NBTPDfEm/RR4215rNQey8ZsgZoA1wxnLkhdy3Cg8k=;
+ b=STgBXitv9+ikOuK6i/NSrEgzx2ItglXMRAsQOM5m2FGkRw4A/seC6/eR2nSgGd1MmEdhJU
+ fKC7WDKI5D6T74uQGSHZ/fVYGtkCLYgvB7RssQGf6xxI+b2oF8YP3bIeP8D0wFgbwZXdbG
+ b1zkoJ9qOY63mkllEqhDyiuXiHpC67s=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-CEG-kVemMXSjqiB2Iu3vuw-1; Fri, 27 Oct 2023 16:52:19 -0400
-X-MC-Unique: CEG-kVemMXSjqiB2Iu3vuw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-270-DMZVIGxlOj-AVaBVtLydHQ-1; Fri, 27 Oct 2023 17:00:13 -0400
+X-MC-Unique: DMZVIGxlOj-AVaBVtLydHQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C3744836F80;
- Fri, 27 Oct 2023 20:52:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4CE6B801944;
+ Fri, 27 Oct 2023 21:00:13 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.114])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 990BD492BE0;
- Fri, 27 Oct 2023 20:52:17 +0000 (UTC)
-Date: Fri, 27 Oct 2023 15:52:15 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CC12B2026D4C;
+ Fri, 27 Oct 2023 21:00:11 +0000 (UTC)
+Date: Fri, 27 Oct 2023 16:00:10 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Kevin Wolf <kwolf@redhat.com>
 Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
  pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 08/24] block: Mark bdrv_skip_filters() and callers
- GRAPH_RDLOCK
-Message-ID: <ouwiakzbahrjbgtvffpe3e4r3bp6msfepjef7gxvv6ac6hh34t@p2w5mo2k55y5>
+Subject: Re: [PATCH 09/24] block: Mark bdrv_(un)freeze_backing_chain() and
+ callers GRAPH_RDLOCK
+Message-ID: <eqtsucwg72w4lstprikpxve4oocw6od5zywsxth74zfrwszb6i@rxmwm5zu56mq>
 References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-9-kwolf@redhat.com>
+ <20231027155333.420094-10-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231027155333.420094-9-kwolf@redhat.com>
+In-Reply-To: <20231027155333.420094-10-kwolf@redhat.com>
 User-Agent: NeoMutt/20231023
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,45 +80,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 27, 2023 at 05:53:17PM +0200, Kevin Wolf wrote:
+On Fri, Oct 27, 2023 at 05:53:18PM +0200, Kevin Wolf wrote:
 > This adds GRAPH_RDLOCK annotations to declare that callers of
-> bdrv_skip_filters() need to hold a reader lock for the graph because it
-> calls bdrv_filter_child(), which accesses bs->file/backing.
+> bdrv_(un)freeze_backing_chain() need to hold a reader lock for the
+> graph because it calls bdrv_filter_or_cow_child(), which accesses
+> bs->file/backing.
+> 
+> Use the opportunity to make bdrv_is_backing_chain_frozen() static, it
+> has no external callers.
 > 
 > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 > ---
->  include/block/block-global-state.h |  8 ++++---
->  include/block/block_int-io.h       |  4 ++--
->  block/block-backend.c              |  1 +
->  block/block-copy.c                 |  9 +++++++-
->  block/commit.c                     |  5 ++++-
->  block/mirror.c                     | 34 +++++++++++++++++++++---------
->  block/stream.c                     | 22 ++++++++++++-------
->  blockdev.c                         |  7 +++---
->  qemu-img.c                         | 18 +++++++++++++---
->  9 files changed, 77 insertions(+), 31 deletions(-)
-> 
-> diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-> index 3ae468ea15..b6860ae43b 100644
-> --- a/include/block/block-global-state.h
-> +++ b/include/block/block-global-state.h
-> @@ -144,9 +144,11 @@ int bdrv_change_backing_file(BlockDriverState *bs, const char *backing_file,
->  void bdrv_register(BlockDriver *bdrv);
->  int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
->                             const char *backing_file_str);
-> -BlockDriverState *bdrv_find_overlay(BlockDriverState *active,
-> -                                    BlockDriverState *bs);
-> -BlockDriverState *bdrv_find_base(BlockDriverState *bs);
+>  block/copy-on-read.h               |  3 ++-
+>  include/block/block-global-state.h | 11 ++++++-----
+>  block.c                            |  5 +++--
+>  block/commit.c                     |  6 ++++++
+>  block/copy-on-read.c               | 19 +++++++++++++++----
+>  block/mirror.c                     |  3 +++
+>  block/stream.c                     | 16 +++++++++++-----
+>  7 files changed, 46 insertions(+), 17 deletions(-)
+>
+...
+> +++ b/block/copy-on-read.c
+...
+> -static void cor_close(BlockDriverState *bs)
+> +static void GRAPH_UNLOCKED cor_close(BlockDriverState *bs)
+>  {
+>      BDRVStateCOR *s = bs->opaque;
+>  
+> +    GLOBAL_STATE_CODE();
 > +
-> +BlockDriverState * GRAPH_RDLOCK
-> +bdrv_find_overlay(BlockDriverState *active, BlockDriverState *bs);
-> +
-> +BlockDriverState * GRAPH_RDLOCK bdrv_find_base(BlockDriverState *bs);
+>      if (s->chain_frozen) {
+> +        bdrv_graph_rdlock_main_loop();
+>          s->chain_frozen = false;
+>          bdrv_unfreeze_backing_chain(bs, s->bottom_bs);
+> +        bdrv_graph_rdunlock_main_loop();
 
-Similar story to 3/24 earlier in the series - these are callers of
-bdrv_skip_filters(), which in turn have callers that are already
-locked, or which are touched to lock in this patch.  May be worth
-tweaking the commit message to mention them by name.
+Why the two-line addition here...
+
+>      }
+>  
+>      bdrv_unref(s->bottom_bs);
+> @@ -263,12 +271,15 @@ static BlockDriver bdrv_copy_on_read = {
+>  };
+>  
+>  
+> -void bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
+> +void no_coroutine_fn bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
+>  {
+>      BDRVStateCOR *s = cor_filter_bs->opaque;
+>  
+> +    GLOBAL_STATE_CODE();
+> +
+>      /* unfreeze, as otherwise bdrv_replace_node() will fail */
+>      if (s->chain_frozen) {
+> +        GRAPH_RDLOCK_GUARD_MAINLOOP();
+>          s->chain_frozen = false;
+>          bdrv_unfreeze_backing_chain(cor_filter_bs, s->bottom_bs);
+>      }
+
+...vs. the magic one-line per-scope change here?  Both work, so I
+don't see any problems, but it does seem odd to mix styles in the same
+patch.  (I can see other places where you have intentionally picked
+the version that required the least reindenting; adding a scope just
+to use GRAPH_RDLOCK_GUARD_MAINLOOP() without having to carefully pair
+an unlock on every early exit path is fewer lines of code overall, but
+more lines of churn in the patch itself.)
 
 Reviewed-by: Eric Blake <eblake@redhat.com>
 
