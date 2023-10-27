@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575637D8F3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 297C07D8F44
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:10:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwGwC-0007BD-83; Fri, 27 Oct 2023 03:07:20 -0400
+	id 1qwGyF-0008D3-Al; Fri, 27 Oct 2023 03:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qwGw9-0007Ao-Vf
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:07:18 -0400
+ id 1qwGy0-0008BM-SE
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:09:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qwGw8-0004qf-4m
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:07:17 -0400
+ id 1qwGxx-0006DM-JS
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:09:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698390434;
+ s=mimecast20190719; t=1698390547;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2unHgdsW3ogKSGp5Gjo62UTq45Yff+3C64I/AkUvlXI=;
- b=ZlD7SRhZcwiE9A7uqEWZ77PQ2Z82zSppB8bS+3kjJZ+cCJNbQEqPh0n9KF6Gat7tTvPKAN
- g778eaPMlUJvzCI2MxsgawwGTGuW0e3teCINDnhxXuXJzSfOKEDqZ/2iN695oKmjIyEW3v
- HnnfMeTkz6lLLFGmjIX0u6/hk5f91Jk=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pWwzYbs3UqDuln5EGSKSWBSrKSMW4LJ3igYnAopZuwE=;
+ b=E65VALw2KW2rmUy99cald0Dze+VT6YxDcOx8ZeDttTt/SiVnbblLEnnUiNlrTRfL+ag0zD
+ z63bNP8OAyy+z7atcVXunKlj4Rx5Sdu76Q/dg1H9h2rijDqWhqax0AQBm70gH23rd3ldgO
+ UPEceM9eyWkvR52HarvHeNUnl0aFTv8=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-08f0_B-4P4ONDQQGoO839g-1; Fri, 27 Oct 2023 03:07:12 -0400
-X-MC-Unique: 08f0_B-4P4ONDQQGoO839g-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-507a3ae32b2so1976375e87.2
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:07:12 -0700 (PDT)
+ us-mta-376-gIs1_N7YN3uKAuIyQZSBTg-1; Fri, 27 Oct 2023 03:09:04 -0400
+X-MC-Unique: gIs1_N7YN3uKAuIyQZSBTg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-5079fe7cc7cso2121162e87.2
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:09:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698390431; x=1698995231;
+ d=1e100.net; s=20230601; t=1698390543; x=1698995343;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2unHgdsW3ogKSGp5Gjo62UTq45Yff+3C64I/AkUvlXI=;
- b=es0UgDX0gPdWMTRVzm+R1rrtAO70yC8s2tODOzD+3JuSldcNZXCsWzlxjSAprbld00
- Ti2H2Gg8t3TgMaEVTGiwlPuGIjAmWXKq1xBh9uEEdFeJl+Tv+4dPTcSRVMhsMl1D5d8D
- ESy66A84nPOWvLpb3F27jkuZJLjOVuGik/TS558nvKVW7jYVOzB9HKauTc7DN8zJccTW
- SK9KhoJz9nflthQcDSjnxr8BEtSlRGt+vU6f95VQcI3VnXSW8YWUV9MeIteUZMhuQoyG
- QKTbBZAzeb2I0n9bVmMOCLmjjWL9eIs8hdyMakHVDGwjGg9eDIHGcsTgcul/vDrx9V+0
- D4pQ==
-X-Gm-Message-State: AOJu0Yy1/epJS5dw6Qz9gs1u2WznbPUoQgT3B3Cvo1xfJuT6j1K2MxKZ
- liNPo3w1zdSHVBuuaagO6EtSMeR03pxjEnKOAD6I53ofLHaIDOY3jOefKzdbDffeverQpmWbkZW
- zKuVfl3MM1oUmz8hQ9NsU+pcdX5i1zho=
-X-Received: by 2002:ac2:4105:0:b0:4fb:bef0:948e with SMTP id
- b5-20020ac24105000000b004fbbef0948emr1010357lfi.5.1698390431351; 
- Fri, 27 Oct 2023 00:07:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPPAmkKKQevgLg3+xi5hDJ0XzRVpLKzRnQ20gZb9H42rd5k3RYPReH5+lt9kfcWX7s7cbjIDmS2AJ2wj1zfeI=
-X-Received: by 2002:ac2:4105:0:b0:4fb:bef0:948e with SMTP id
- b5-20020ac24105000000b004fbbef0948emr1010346lfi.5.1698390430983; Fri, 27 Oct
- 2023 00:07:10 -0700 (PDT)
+ bh=pWwzYbs3UqDuln5EGSKSWBSrKSMW4LJ3igYnAopZuwE=;
+ b=q6yeNknsXO8uzfrdecPfdMpTHxI1zHTlh5fzIfktEkQ820kSKo7EIGZjRGsqtjTHT7
+ KJULDEKu9s+eqdF+Q5AlnWblg09inWUE8eXq2RlS+vhvpIL0JXI4gcLQgfwSQeu+mCgp
+ tbjj2kJsYPhyDZV9vSVyG9JTn6brcBG8GiRa1bgpnx+UZgkFpu0RKtmHmvGCbDLy3aUe
+ fCH6QOcKr3G+WczHd9Pb7lkHOX6OEVAEhCbDc7YqE2Hh5cRp91PBPT3z38HMx71QUzID
+ 4aU6mCkCMTXe1Geb8505YCsqld8Yz85rpTL1xE7ll3BicJXrsTyRL0kDWh0ip12GoJP/
+ MagQ==
+X-Gm-Message-State: AOJu0Yy4RFNgyqqFTfZ8jk7feTiDwtRTyJWhm2yjaXh4L1+W2bVeLRu6
+ 2/S2tk5MLj+G85jPqMCYCR1PHeo+YAipW8phwDyB0Wi+IGzzyAkIWezgPQrEf2NANNeUp8RnzSY
+ 9BRX8wme54NN9VRG0FGeWC/UxSOWIiAU=
+X-Received: by 2002:a19:550b:0:b0:507:cb04:59d4 with SMTP id
+ n11-20020a19550b000000b00507cb0459d4mr1016898lfe.8.1698390543382; 
+ Fri, 27 Oct 2023 00:09:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOYYrytXNqweJ/RJH3JJqtKnsWztc95LQZJUNfrovABnKy+Y/zxM+g7rnByupg7kQ56wtafc3O73gRezR0fk4=
+X-Received: by 2002:a19:550b:0:b0:507:cb04:59d4 with SMTP id
+ n11-20020a19550b000000b00507cb0459d4mr1016882lfe.8.1698390543060; Fri, 27 Oct
+ 2023 00:09:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
- <20231017040932.62997-12-akihiko.odaki@daynix.com>
-In-Reply-To: <20231017040932.62997-12-akihiko.odaki@daynix.com>
+ <20231017040932.62997-13-akihiko.odaki@daynix.com>
+In-Reply-To: <20231017040932.62997-13-akihiko.odaki@daynix.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 27 Oct 2023 15:07:00 +0800
-Message-ID: <CACGkMEvY4fjrBgjLMFRNN0LmJ+iQaC=z3KTumwB=+d1Ofz0yzg@mail.gmail.com>
-Subject: Re: [PATCH v5 11/21] virtio-net: Return an error when vhost cannot
- enable RSS
+Date: Fri, 27 Oct 2023 15:08:51 +0800
+Message-ID: <CACGkMEsKUnB8JhvCzsJ67==Jq=+S=xCFttXoaZsOd++4sBc-Uw@mail.gmail.com>
+Subject: Re: [PATCH v5 12/21] virtio-net: Always set populate_hash
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
  Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin" <mst@redhat.com>
@@ -99,87 +98,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Tue, Oct 17, 2023 at 12:10=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
 x.com> wrote:
 >
-> vhost requires eBPF for RSS. Even when eBPF is not available, virtio-net
-> reported RSS availability, and raised a warning only after the
-> guest requested RSS, and the guest could not know that RSS is not
-> available.
->
-> Check RSS availability during device realization and return an error
-> if RSS is requested but not available. Assert RSS availability when
-> the guest actually requests the feature.
+> The member is not cleared during reset so may have a stale value.
+
+Nit: I guess it should be "always unset populate_hash"?
+
+Thanks
+
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  ebpf/ebpf_rss.h      |   2 +-
->  ebpf/ebpf_rss-stub.c |   4 +-
->  ebpf/ebpf_rss.c      |  68 +++++++++-----------------
->  hw/net/virtio-net.c  | 114 +++++++++++++++++++++----------------------
->  4 files changed, 82 insertions(+), 106 deletions(-)
+>  hw/net/virtio-net.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
-> index bf3f2572c7..1128173572 100644
-> --- a/ebpf/ebpf_rss.h
-> +++ b/ebpf/ebpf_rss.h
-> @@ -36,7 +36,7 @@ bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx);
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index 20feb20bb1..6eb206f297 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -643,6 +643,7 @@ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, =
+int mergeable_rx_bufs,
+>          n->guest_hdr_len =3D n->mergeable_rx_bufs ?
+>              sizeof(struct virtio_net_hdr_mrg_rxbuf) :
+>              sizeof(struct virtio_net_hdr);
+> +        n->rss_data.populate_hash =3D false;
+>      }
 >
->  bool ebpf_rss_load(struct EBPFRSSContext *ctx);
+>      for (i =3D 0; i < n->max_queue_pairs; i++) {
+> --
+> 2.42.0
 >
-> -bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *=
-config,
-> +void ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *=
-config,
->                        uint16_t *indirections_table, uint8_t *toeplitz_ke=
-y);
->
->  void ebpf_rss_unload(struct EBPFRSSContext *ctx);
-> diff --git a/ebpf/ebpf_rss-stub.c b/ebpf/ebpf_rss-stub.c
-> index e71e229190..525b358597 100644
-> --- a/ebpf/ebpf_rss-stub.c
-> +++ b/ebpf/ebpf_rss-stub.c
-> @@ -28,10 +28,10 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
->      return false;
->  }
->
-> -bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *=
-config,
-> +void ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *=
-config,
->                        uint16_t *indirections_table, uint8_t *toeplitz_ke=
-y)
->  {
-> -    return false;
-> +    g_assert_not_reached();
->  }
->
->  void ebpf_rss_unload(struct EBPFRSSContext *ctx)
-> diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-> index cee658c158..6cdf82d059 100644
-> --- a/ebpf/ebpf_rss.c
-> +++ b/ebpf/ebpf_rss.c
-> @@ -74,42 +74,32 @@ error:
->      return false;
->  }
->
-> -static bool ebpf_rss_set_config(struct EBPFRSSContext *ctx,
-> +static void ebpf_rss_set_config(struct EBPFRSSContext *ctx,
->                                  struct EBPFRSSConfig *config)
->  {
->      uint32_t map_key =3D 0;
->
-> -    if (!ebpf_rss_is_loaded(ctx)) {
-> -        return false;
-> -    }
-> -    if (bpf_map_update_elem(ctx->map_configuration,
-> -                            &map_key, config, 0) < 0) {
-> -        return false;
-> -    }
-> -    return true;
-> +    assert(ebpf_rss_is_loaded(ctx));
-> +    assert(!bpf_map_update_elem(ctx->map_configuration, &map_key, config=
-, 0));
-
-Guest trigger-rable assertion should be avoided as much as possible.
-
-Thanks
 
 
