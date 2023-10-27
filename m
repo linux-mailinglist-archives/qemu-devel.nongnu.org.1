@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69DE7D9BF9
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B397D9BCA
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:43:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0p-0008Nv-AT; Fri, 27 Oct 2023 10:40:35 -0400
+	id 1qwO0r-0000CW-NQ; Fri, 27 Oct 2023 10:40:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0I-0007LV-Jw
+ id 1qwO0J-0007Li-RV
  for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:04 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0F-0008BB-2f
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:02 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2c50ec238aeso30426801fa.0
+ id 1qwO0G-0008BE-Bo
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:03 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-32dd70c5401so1403892f8f.0
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698417597; x=1699022397; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698417598; x=1699022398; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=my7OnQbRaZ6vmyGLjZG5PCWu8hQo8B8j0gxAVZuRna4=;
- b=ysaDrItfu3Qrmn7P71BGQAXv2R9aAyqI8CNyoJ3NWBCVBp6ez7iqMGJYRv0bga2Thz
- a8/Ule2h9kKHzIajU9G1ee+lh2/3BIYtg/67IFwdfenyXMv5OV3uCbSU5PO0lZ5uZT3c
- ZS0mFE+iLBbLttqt3CFqPp7/jxhckXCdadUKe+Bjbtvg94pHfGcyQj+RMQENIj2EaOaz
- Id0p8rAAqTWPP+gWFMySLY4ZxjRN8y7NeSClK1BWXnLOg8RcIH7qmsWqsY/bxvlqXO2I
- 2F3IA3WgdemrnZL97H2Ys4ltyFmqcN/Un2aHKIw8WWnalZTxAOQTuOscx0kJwkRk79/h
- CfoA==
+ :reply-to; bh=y5AUijSrfVsWwd+101EJqdvIevP5G6afFX1UVrgLj5Y=;
+ b=kYpYi7uDv8b+7oYW73UShHPoLIVdNlaLlgNBNl6qM58K+ZwuPYYdTnsp6KANyvdXuh
+ 3JiqumBJM5PNe922ClZN5SR1uRkIcO+6weqM8kHFamTpX17lS8q29bpX2UOzT7h7XdYk
+ 45Gby+z9yt4WgpoZ4mGNc8Mqr5WRFhJWL+UxnWeOA3F0W8az0ANoZKFdcBuKm5p9twO9
+ MqcpvZDQrPd+Ze/GX4dm4pShXTcH+/qDcm16ivnLlNafJKezRAyeYCoq0Gt3y0ydNq9o
+ SA9qjYo1AVFG6RMHRAawILcBbZy1HLvhWSnAZulK6ITKt+AsPz/X7JzWccN9Z0SXevY/
+ 0eZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698417597; x=1699022397;
+ d=1e100.net; s=20230601; t=1698417598; x=1699022398;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=my7OnQbRaZ6vmyGLjZG5PCWu8hQo8B8j0gxAVZuRna4=;
- b=txoNj1H9KjbYQGmldZCQ0naH9OSWhpjZSZGULtNcMZknVhtjPy6G6uAx6mfJcyRM60
- TdRKhreMCTGsj+3o64Bf+uPERkoBoviVRc/SYTXQvK6G8x1Ot0dgCWwwkzfivf0wQPw3
- aKebcfpc19m+nFtBnFdpdiyBcEcYZWfazd85wgUh1akRLBG0iFi4CbuCLbyGyQYpKcBD
- QhRFemaRdatLnP+2gXM6OH2bMXzDF959rDHgDjHfbbty6yPs7zW7EK8prrMxwz8DeR4k
- E99+ubnkfRkqXBGx+v9mOTo6vALSKK2zvZXmJ0QHL3zQ5zXpSWEeUEOisdpIx5oByNjq
- HuyQ==
-X-Gm-Message-State: AOJu0YyJ1h+WZ16ZkcHRSIxrrrLbxWVE99xosYOgfZzyOErUN/+JEnB2
- jKQwPFCWebaHwQgsOYLfUeTUFwwhBrFjJRgsOzA=
-X-Google-Smtp-Source: AGHT+IGh0c4sw1HQJFfpH1Z/FQY7jod17HzV0NbU1j1+0ZmCqiaataY+yxRev3UKYqvOZxOkhxB+uQ==
-X-Received: by 2002:a2e:958e:0:b0:2c5:115c:2d33 with SMTP id
- w14-20020a2e958e000000b002c5115c2d33mr2444580ljh.3.1698417597289; 
+ bh=y5AUijSrfVsWwd+101EJqdvIevP5G6afFX1UVrgLj5Y=;
+ b=VQbbo+h0bFwZ1M70d/ZG90uV4Xm3GC3QvB9A4TcWItYP5uDlSgNkJsIKnj4+cMfoRg
+ z1vLvgskJ6JmX1VSpV/M421xKTk24t78rRDMW2zIKihp0cOkBojN6H6pIWo63WURRRQe
+ PgwTa8H+ZWUuIex0ZsaBB2rY1n8NDmXpVqpV33LhIWOTsh8O9E60YTVFjtKhkkfdmKK6
+ Wmv5VKO3KHgglbL/tTNAQ12Pb+IbajVR6TuCdBspPFTSt0NSi8krp5mnYeO+89a/f17T
+ zKDwto7TdREjKj81qMEBzQB7JgisPYRse2s3xKVR1vpR9o78O1OgY+Wusy/+fSWktk2T
+ vV1Q==
+X-Gm-Message-State: AOJu0YyRLIeeiO0FNVhqJJu6xE5dW5uV/S6NjNqO8+YATLQ/nqL0lizW
+ VjhJfgMZRkOXE3ffu488RRV8PPSk9VdVMbzZ3LY=
+X-Google-Smtp-Source: AGHT+IGr3+4AMeGqEbyqR13e5cFnZI1bOF5x2T1sUctdquALuapc6altwL8cDx9+wSFNkSD7mTJ2Ng==
+X-Received: by 2002:adf:fe05:0:b0:320:920:42b1 with SMTP id
+ n5-20020adffe05000000b00320092042b1mr1976078wrr.53.1698417597878; 
  Fri, 27 Oct 2023 07:39:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.56
+ e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 27 Oct 2023 07:39:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 27/41] hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of
- pxa2xx_pic_init()
-Date: Fri, 27 Oct 2023 15:39:28 +0100
-Message-Id: <20231027143942.3413881-28-peter.maydell@linaro.org>
+Subject: [PULL 28/41] hw/arm/pxa2xx: Realize PXA2XX_I2C device before
+ accessing it
+Date: Fri, 27 Oct 2023 15:39:29 +0100
+Message-Id: <20231027143942.3413881-29-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,62 +94,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+qbus_new(), called in i2c_init_bus(), should not be called
+on unrealized device.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20231020130331.50048-9-philmd@linaro.org
+Message-id: 20231020130331.50048-10-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/pxa2xx_pic.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ hw/arm/pxa2xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/pxa2xx_pic.c b/hw/arm/pxa2xx_pic.c
-index 7e180635c22..1373a0d275f 100644
---- a/hw/arm/pxa2xx_pic.c
-+++ b/hw/arm/pxa2xx_pic.c
-@@ -287,12 +287,18 @@ static void pxa2xx_pic_reset_hold(Object *obj)
- DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
- {
-     DeviceState *dev = qdev_new(TYPE_PXA2XX_PIC);
--    PXA2xxPICState *s = PXA2XX_PIC(dev);
+diff --git a/hw/arm/pxa2xx.c b/hw/arm/pxa2xx.c
+index 601ddd87666..f0bf407e664 100644
+--- a/hw/arm/pxa2xx.c
++++ b/hw/arm/pxa2xx.c
+@@ -1513,14 +1513,15 @@ PXA2xxI2CState *pxa2xx_i2c_init(hwaddr base,
+     qdev_prop_set_uint32(dev, "size", region_size + 1);
+     qdev_prop_set_uint32(dev, "offset", base & region_size);
  
-     object_property_set_link(OBJECT(dev), "arm-cpu",
-                              OBJECT(cpu), &error_abort);
--
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
++    /* FIXME: Should the slave device really be on a separate bus?  */
++    i2cbus = i2c_init_bus(dev, "dummy");
 +
-+    return dev;
-+}
-+
-+static void pxa2xx_pic_realize(DeviceState *dev, Error **errp)
-+{
-+    PXA2xxPICState *s = PXA2XX_PIC(dev);
+     i2c_dev = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(i2c_dev, &error_fatal);
+     sysbus_mmio_map(i2c_dev, 0, base & ~region_size);
+     sysbus_connect_irq(i2c_dev, 0, irq);
  
-     qdev_init_gpio_in(dev, pxa2xx_pic_set_irq, PXA2XX_PIC_SRCS);
- 
-@@ -300,12 +306,9 @@ DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
-     memory_region_init_io(&s->iomem, OBJECT(s), &pxa2xx_pic_ops, s,
-                           "pxa2xx-pic", 0x00100000);
-     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
--    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
- 
-     /* Enable IC coprocessor access.  */
--    define_arm_cp_regs_with_opaque(cpu, pxa_pic_cp_reginfo, s);
--
--    return dev;
-+    define_arm_cp_regs_with_opaque(s->cpu, pxa_pic_cp_reginfo, s);
- }
- 
- static const VMStateDescription vmstate_pxa2xx_pic_regs = {
-@@ -335,6 +338,7 @@ static void pxa2xx_pic_class_init(ObjectClass *klass, void *data)
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-     device_class_set_props(dc, pxa2xx_pic_properties);
-+    dc->realize = pxa2xx_pic_realize;
-     dc->desc = "PXA2xx PIC";
-     dc->vmsd = &vmstate_pxa2xx_pic_regs;
-     rc->phases.hold = pxa2xx_pic_reset_hold;
+     s = PXA2XX_I2C(i2c_dev);
+-    /* FIXME: Should the slave device really be on a separate bus?  */
+-    i2cbus = i2c_init_bus(dev, "dummy");
+     s->slave = PXA2XX_I2C_SLAVE(i2c_slave_create_simple(i2cbus,
+                                                         TYPE_PXA2XX_I2C_SLAVE,
+                                                         0));
 -- 
 2.34.1
 
