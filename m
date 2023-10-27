@@ -2,73 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6EC7D9842
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 14:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 840B97D9851
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 14:33:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwLzQ-0001Pk-W6; Fri, 27 Oct 2023 08:31:01 -0400
+	id 1qwM0g-0001qI-NK; Fri, 27 Oct 2023 08:32:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qwLzG-0001P0-II
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:30:50 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <ysato@users.sourceforge.jp>)
+ id 1qwM0W-0001jh-BH
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:32:12 -0400
+Received: from hsmtpd-def.xspmail.jp ([202.238.198.238])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qwLz9-00031K-6t
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:30:47 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 3B8E31FEFB;
- Fri, 27 Oct 2023 12:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698409840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Jx2S+2an/vkeUL6YZw3Q2sQa1vMecrjdwfeKqH/HV/4=;
- b=JPz4Ein1JBaKG1tzVzREAbMOgZZr5qYjIed7TmpBrm/zlWql7gF/lGb4ABKzLRQSQ2VQAT
- +VaOpHBWFoDvRHJDiK16A+vq5/0ooBzE2631krMV04Q3giK6F8C1k9UAXInz3afUWJvz9d
- +BPx8qTE8uVGmnKzqNT0wBnXQTxJJVk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698409840;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Jx2S+2an/vkeUL6YZw3Q2sQa1vMecrjdwfeKqH/HV/4=;
- b=BK8Eo5VZ0KJtTKNGsCShqgPBV34ZW7aAva1OqKb3vG1+PQ1/WcToRrNRxeDx0F2FNj2xdZ
- 8wWKRfBbXntPWlCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C1EE11358C;
- Fri, 27 Oct 2023 12:30:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id oC8nI2+tO2VxPgAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 27 Oct 2023 12:30:39 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Hao Xiang <hao.xiang@bytedance.com>, quintela@redhat.com,
- peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
- qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: Re: [PATCH 01/16] Cherry pick a set of patches that enables multifd
- zero page feature.
-In-Reply-To: <20231025193822.2813204-2-hao.xiang@bytedance.com>
-References: <20231025193822.2813204-1-hao.xiang@bytedance.com>
- <20231025193822.2813204-2-hao.xiang@bytedance.com>
-Date: Fri, 27 Oct 2023 09:30:37 -0300
-Message-ID: <87zg041c42.fsf@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <ysato@users.sourceforge.jp>)
+ id 1qwM0O-0003l9-1m
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 08:32:06 -0400
+X-Country-Code: JP
+Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp
+ [153.127.30.23])
+ by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
+ id cf9071da-cfc2-430a-aae8-d12cacb28888;
+ Fri, 27 Oct 2023 21:31:54 +0900 (JST)
+Received: from SIOS1075.ysato.ml (ZM005235.ppp.dion.ne.jp [222.8.5.235])
+ by sakura.ysato.name (Postfix) with ESMTPSA id 755761C0037;
+ Fri, 27 Oct 2023 21:31:45 +0900 (JST)
+Date: Fri, 27 Oct 2023 21:31:44 +0900
+Message-ID: <87sf5wi6vj.wl-ysato@users.sourceforge.jp>
+From: Yoshinori Sato <ysato@users.sourceforge.jp>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: qemu-devel@nongnu.org,	Richard Henderson <richard.henderson@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,	Peter Maydell
+ <peter.maydell@linaro.org>,	Strahinja Jankovic
+ <strahinja.p.jankovic@gmail.com>,	Niek Linnenbank
+ <nieklinnenbank@gmail.com>,	=?ISO-8859-1?Q?C=E9dric?= Le Goater
+ <clg@kaod.org>,	Andrew Jeffery <andrew@aj.id.au>,	Joel Stanley
+ <joel@jms.id.au>,	Igor Mitsyanko <i.mitsyanko@gmail.com>,	Jean-Christophe
+ Dubois <jcd@tribudubois.net>,	Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,	Rob Herring
+ <robh@kernel.org>,	Subbaraya Sundeep <sundeep.lkml@gmail.com>,	Jan Kiszka
+ <jan.kiszka@web.de>,	Tyrone Ting <kfting@nuvoton.com>,	Hao Wu
+ <wuhaotsh@google.com>,	Radoslaw Biernacki <rad@semihalf.com>,	Leif Lindholm
+ <quic_llindhol@quicinc.com>,	Marcin Juszkiewicz
+ <marcin.juszkiewicz@linaro.org>,	"Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,	Alistair Francis <alistair@alistair23.me>,
+ Helge Deller <deller@gmx.de>,	Paolo Bonzini <pbonzini@redhat.com>,	Eduardo
+ Habkost <eduardo@habkost.net>,	"Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,	Song Gao
+ <gaosong@loongson.cn>,	Thomas Huth <huth@tuxfamily.org>,	Laurent Vivier
+ <laurent@vivier.eu>,	Huacai Chen <chenhuacai@kernel.org>,	Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,	=?ISO-8859-1?Q?Herv=E9?= Poussineau
+ <hpoussin@reactos.org>,	Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,	Jason Wang <jasowang@redhat.com>,
+ Jia Liu <proljc@gmail.com>,	Stafford Horne <shorne@gmail.com>,	Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,	Nicholas Piggin
+ <npiggin@gmail.com>,	Daniel Henrique Barboza <danielhb413@gmail.com>,	David
+ Gibson <david@gibson.dropbear.id.au>,	Harsh Prateek Bora
+ <harshpb@linux.ibm.com>,	Bin Meng <bin.meng@windriver.com>,	Palmer Dabbelt
+ <palmer@dabbelt.com>,	Weiwei Li <liweiwei@iscas.ac.cn>,	Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,	David Hildenbrand <david@redhat.com>,	Ilya
+ Leoshkevich <iii@linux.ibm.com>,	Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,	Eric Farman
+ <farman@linux.ibm.com>,	Magnus Damm <magnus.damm@gmail.com>,	Artyom
+ Tarasenko <atar4qemu@gmail.com>,	Stefano Stabellini
+ <sstabellini@kernel.org>,	Anthony Perard <anthony.perard@citrix.com>,	Paul
+ Durrant <paul@xen.org>,	Max Filippov <jcmvbkbc@gmail.com>,
+ qemu-arm@nongnu.org,	qemu-ppc@nongnu.org,	qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org,	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 18/45] hw/sh4/r2d: use pci_init_nic_devices()
+In-Reply-To: <20231022155200.436340-19-dwmw2@infradead.org>
+References: <20231022155200.436340-1-dwmw2@infradead.org>
+ <20231022155200.436340-19-dwmw2@infradead.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: softfail client-ip=202.238.198.238;
+ envelope-from=ysato@users.sourceforge.jp; helo=hsmtpd-def.xspmail.jp
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,29 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+On Mon, 23 Oct 2023 00:51:33 +0900,
+David Woodhouse wrote:
+> 
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Previously, the first PCI NIC would be assigned to slot 2 even if the
+> user override the model and made it something other than an rtl8139
+> which is the default. Everything else would be dynamically assigned.
+> 
+> Now, the first rtl8139 gets slot 2 and everything else is dynamic.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 
-> Juan Quintela had a patchset enabling zero page checking in multifd
-> threads.
->
-> https://lore.kernel.org/all/20220802063907.18882-13-quintela@redhat.com/
+> ---
+>  hw/sh4/r2d.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
+> index 4944994e9c..e9f316a6ce 100644
+> --- a/hw/sh4/r2d.c
+> +++ b/hw/sh4/r2d.c
+> @@ -240,7 +240,6 @@ static void r2d_init(MachineState *machine)
+>      MemoryRegion *sdram = g_new(MemoryRegion, 1);
+>      qemu_irq *irq;
+>      DriveInfo *dinfo;
+> -    int i;
+>      DeviceState *dev;
+>      SysBusDevice *busdev;
+>      MemoryRegion *address_space_mem = get_system_memory();
+> @@ -309,9 +308,8 @@ static void r2d_init(MachineState *machine)
+>                            0x555, 0x2aa, 0);
+>  
+>      /* NIC: rtl8139 on-board, and 2 slots. */
+> -    for (i = 0; i < nb_nics; i++)
+> -        pci_nic_init_nofail(&nd_table[i], pci_bus,
+> -                            mc->default_nic, i == 0 ? "2" : NULL);
+> +    pci_init_nic_in_slot(pci_bus, mc->default_nic, NULL, "2");
+> +    pci_init_nic_devices(pci_bus, mc->default_nic);
+>  
+>      /* USB keyboard */
+>      usb_create_simple(usb_bus_find(-1), "usb-kbd");
+> -- 
+> 2.40.1
+> 
 
-Hmm, risky to base your series on code more than an year old. We should
-bother Juan so he sends an updated version for review.
-
-I have concerns about that series. First is why are we doing payload
-processing (i.e. zero page detection) in the multifd thread. And that
-affects your series directly, because AFAICS we're now doing more
-processing still.
-
-Second is more abstract but the multifd packet header is becoming just
-about small details about pages. We should probably take the time now
-and split that into a multifd header and a payload specific header. With
-some versioning stuck to them for migration compatibility.
-
-Now, I don't want to block this series due to my idealistic views on the
-code base, so I'll keep those aside while reviewing this, but I
-definitely think we should look at the big picture before we get too
-tangled up.
-
+-- 
+Yosinori Sato
 
