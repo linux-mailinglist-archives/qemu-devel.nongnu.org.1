@@ -2,70 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77047D99E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 15:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24EC47D99E8
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 15:34:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwMxT-00010u-D4; Fri, 27 Oct 2023 09:33:03 -0400
+	id 1qwMyB-000169-Hv; Fri, 27 Oct 2023 09:33:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qwMxQ-0000yR-CZ
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 09:33:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qwMxO-0005pN-Qc
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 09:33:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698413575;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=450b3mr6yOYDLMxgbf0t6LptV89FMDyj6ALWop66s74=;
- b=f2g/wZvOx1uYiLygF4B25i4E+zIQkdh7dvmrnr8SPAMI2JSh6jgrc3Y23k8GG4Yy4hvz+Q
- X6ISxJV/gTR9qR9I97RveGjo++I6lx6qvhoIOlMBYiKPkW+q8WK3x9IIH4/v0sllm9L0oG
- j4j5Y+l/61xR8SWGkpb66tC88lDwPIc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-170-XNWwzqJnPs61kAncDvHCGQ-1; Fri,
- 27 Oct 2023 09:32:54 -0400
-X-MC-Unique: XNWwzqJnPs61kAncDvHCGQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 184DD28237E0;
- Fri, 27 Oct 2023 13:32:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EBCBBC1596D;
- Fri, 27 Oct 2023 13:32:51 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DFB5B21E6A1F; Fri, 27 Oct 2023 15:32:50 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: zhujun2 <zhujun2@cmss.chinamobile.com>
-Cc: qemu-devel@nongnu.org,  mst@redhat.com,  imammedo@redhat.com,
- anisinha@redhat.com,  thuth@redhat.com,  lvivier@redhat.com
-Subject: Re: [PATCH] tests: Fix printf format string in acpi-utils.c
-References: <20231027030930.7739-1-zhujun2@cmss.chinamobile.com>
-Date: Fri, 27 Oct 2023 15:32:50 +0200
-In-Reply-To: <20231027030930.7739-1-zhujun2@cmss.chinamobile.com>
- (zhujun2@cmss.chinamobile.com's message of "Thu, 26 Oct 2023 20:09:30
- -0700")
-Message-ID: <87sf5w198d.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwMy7-000158-ON
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 09:33:43 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qwMy6-0005us-8C
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 09:33:43 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-9c2a0725825so335116166b.2
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 06:33:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698413620; x=1699018420; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Bt1hJxIpz0b4+/7Z1+AD1h+KdMZIZu3N9EF51ynddmY=;
+ b=GNAnCLSmrobe53gYOVSwSnbPYK0HcsZ9z7AgcYQOP+7rn5mdnfaqfUJvyJXPElAtqh
+ 5qQLMmgYv+oJgtANYIywKrS0yN+5yXbApPXm7eT/Z/XC6LiPbGu7zW0wwHyGJYyWlJsm
+ DsnJyjvjZb81FPIhXZPM9Mk8BDM/7a2y8GPMGC4UZFtzcL0KtgVJ9xx8xe5dixl17Gcb
+ /fR7Tv1nuzXro0CjTyjpLIquBR4EnjVyr+7/R+nzn5O/tYrfSvO/V6BO60rEiPjDZCtJ
+ pEwHAUY9p8WmTnSx19qgkegf+wII9Ks6BROy3a+yMyzl0cr3InaxDEljcDsjBi8afPOb
+ llOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698413620; x=1699018420;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bt1hJxIpz0b4+/7Z1+AD1h+KdMZIZu3N9EF51ynddmY=;
+ b=rzvu5zNlXoMEP9g8AzwIzpDMCzuEh4IUMeNxdwhcrCNMDX3/19HiVoIFmJJ7nWMGMI
+ eiPDm9zZEZUh1gtRIk2MlRBd3maslPsso9M8EmI2NBeqPS3KQrkr6ojgON2FW1BWMoBU
+ bQ40+98108wKyXYFDYyIKb2J187yguNeIv657wvoxHvOngOkUH36nKcJhtJDIOUFW5nT
+ hi+6tHt8GPy5zwyI1mAuTbIHqUJkIc5GVDhQXNmnSd33YthxpYaD4V6Rj/Z76KoLl9n7
+ zExTwqXJG2rLoATXf/XxMUhOE4Hs/5GoKobGjLqqdwu2WI4sE+Iwl2BtE1dFJZ715SsE
+ oMcw==
+X-Gm-Message-State: AOJu0YxKUORRXSuJm56hgi1LeO79IeBrO0fZW/NLZCUcw2XDD0cVcVE1
+ q6ALbDeo+S9MB3SoKEVCB9MHOw==
+X-Google-Smtp-Source: AGHT+IGJNVbBJ3Kr3OydVspWa3XdUwAWSeQGQyTbeRkveHae8m8sj2dY6CgqJPKEAXI6BqaKvNJA8w==
+X-Received: by 2002:a17:907:d19:b0:9bf:5df1:38d2 with SMTP id
+ gn25-20020a1709070d1900b009bf5df138d2mr2044776ejc.3.1698413620412; 
+ Fri, 27 Oct 2023 06:33:40 -0700 (PDT)
+Received: from [192.168.69.115] ([176.171.220.131])
+ by smtp.gmail.com with ESMTPSA id
+ p7-20020a170906228700b0099bd5d28dc4sm1205406eja.195.2023.10.27.06.33.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 27 Oct 2023 06:33:40 -0700 (PDT)
+Message-ID: <7f20a803-db3a-fd4a-bd43-04b21db1c14e@linaro.org>
+Date: Fri, 27 Oct 2023 15:33:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 RESEND] misc/led: LED state is set opposite of what is
+ expected
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Glenn Miles <milesg@linux.vnet.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, clg@kaod.org,
+ andrew@codeconstruct.com.au, joel@jms.id.au
+References: <20231024191945.4135036-1-milesg@linux.vnet.ibm.com>
+ <CAFEAcA8N7nUmoQHkhSFdVG+3amkW6N=jsVq8BqkfQAzygY_4yQ@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA8N7nUmoQHkhSFdVG+3amkW6N=jsVq8BqkfQAzygY_4yQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,22 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-zhujun2 <zhujun2@cmss.chinamobile.com> writes:
+On 27/10/23 13:51, Peter Maydell wrote:
+> On Tue, 24 Oct 2023 at 20:20, Glenn Miles <milesg@linux.vnet.ibm.com> wrote:
+>>
+>> Testing of the LED state showed that when the LED polarity was
+>> set to GPIO_POLARITY_ACTIVE_LOW and a low logic value was set on
+>> the input GPIO of the LED, the LED was being turn off when it was
+>> expected to be turned on.
+>>
+>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+>> ---
+> 
+> 
+> 
+> Applied to target-arm.next, thanks.
 
-> Inside of acpi_fetch_table() arguments are
-> printed via fprintf but '%d' is used to print @flags (of type
-> uint). Use '%u' instead.
->
-> Signed-off-by: zhujun2 <zhujun2@cmss.chinamobile.com>
+Sorry I'm still catching up.
 
-Please sign off with your real name.
-
-You should be able to automate this by putting
-
-    [user]
-            email = armbru@redhat.com
-            name = Markus Armbruster
-
-into ~/.gitconfig or git/config.
+Fixes: ddb67f6402 ("hw/misc/led: Allow connecting from GPIO output")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
