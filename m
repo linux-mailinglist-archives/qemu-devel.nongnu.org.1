@@ -2,54 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9856A7D9D7E
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD58B7D9D8F
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:55:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwP9X-0003Lp-8f; Fri, 27 Oct 2023 11:53:39 -0400
+	id 1qwPA9-0003k6-UV; Fri, 27 Oct 2023 11:54:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=tFIR=GJ=kaod.org=clg@ozlabs.org>)
- id 1qwP9S-0003J0-TD; Fri, 27 Oct 2023 11:53:34 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qwP9s-0003X2-45
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:54:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=tFIR=GJ=kaod.org=clg@ozlabs.org>)
- id 1qwP9Q-0002Mx-Fu; Fri, 27 Oct 2023 11:53:34 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SH6db73WQz4xQd;
- Sat, 28 Oct 2023 02:53:23 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qwP9p-0002hA-RC
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:53:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698422035;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YJixdduL9wkJySlcO//9WNDhqlP8t6g/aFoESpJs4m4=;
+ b=cZvmsJiUtH+ZjxfB3F1kyS0pKMFIZxRQWejknU1HPQyfVwb4F9/PQYM0Ff8N0t3EeWSXdj
+ qcPFIgNv0ifiP6Tahs0OCPYMEL0pUFU1p/IqF6jiIxX9Wxx+MHI7IM9dfE/qw5iCjzyH/n
+ HRDfWrLx31MNRFUFcIkyO8u0YUgDjUc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-3Qu7_-3zNMqYno3SBgQwZg-1; Fri,
+ 27 Oct 2023 11:53:51 -0400
+X-MC-Unique: 3Qu7_-3zNMqYno3SBgQwZg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SH6dY2KZ3z4xQW;
- Sat, 28 Oct 2023 02:53:21 +1100 (AEDT)
-Message-ID: <9fb8d22e-feb2-4186-8da4-b44c1bf7e358@kaod.org>
-Date: Fri, 27 Oct 2023 17:53:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/watchdog/wdt_aspeed: Remove unused
- 'hw/misc/aspeed_scu.h' header
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B1853821355;
+ Fri, 27 Oct 2023 15:53:51 +0000 (UTC)
+Received: from merkur.fritz.box (unknown [10.39.194.78])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3E0C85027;
+ Fri, 27 Oct 2023 15:53:50 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, stefanha@redhat.com, eesposit@redhat.com,
+ eblake@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
  qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>, qemu-trivial@nongnu.org,
- Andrew Jeffery <andrew@aj.id.au>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org
-References: <20231027134200.29906-1-philmd@linaro.org>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231027134200.29906-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [PATCH 07/24] block: Mark bdrv_skip_implicit_filters() and callers
+ GRAPH_RDLOCK
+Date: Fri, 27 Oct 2023 17:53:16 +0200
+Message-ID: <20231027155333.420094-8-kwolf@redhat.com>
+In-Reply-To: <20231027155333.420094-1-kwolf@redhat.com>
+References: <20231027155333.420094-1-kwolf@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=tFIR=GJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,34 +79,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/27/23 15:42, Philippe Mathieu-Daudé wrote:
-> Aspeed watchdog doesn't use anything from the System Control Unit.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This adds GRAPH_RDLOCK annotations to declare that callers of
+bdrv_skip_implicit_filters() need to hold a reader lock for the graph
+because it calls bdrv_filter_child(), which accesses bs->file/backing.
 
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ include/block/block_int-global-state.h |  3 ++-
+ block.c                                | 28 +++++++++++++++++---------
+ block/monitor/block-hmp-cmds.c         |  3 +++
+ blockdev.c                             | 14 +++++++------
+ 4 files changed, 32 insertions(+), 16 deletions(-)
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-> ---
->   hw/watchdog/wdt_aspeed.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/hw/watchdog/wdt_aspeed.c b/hw/watchdog/wdt_aspeed.c
-> index d267aa185c..273a49d360 100644
-> --- a/hw/watchdog/wdt_aspeed.c
-> +++ b/hw/watchdog/wdt_aspeed.c
-> @@ -14,7 +14,6 @@
->   #include "qemu/module.h"
->   #include "qemu/timer.h"
->   #include "sysemu/watchdog.h"
-> -#include "hw/misc/aspeed_scu.h"
->   #include "hw/qdev-properties.h"
->   #include "hw/sysbus.h"
->   #include "hw/watchdog/wdt_aspeed.h"
+diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
+index afce6c4416..ef31c58bb3 100644
+--- a/include/block/block_int-global-state.h
++++ b/include/block/block_int-global-state.h
+@@ -277,7 +277,8 @@ BdrvDirtyBitmap *block_dirty_bitmap_remove(const char *node, const char *name,
+                                            Error **errp);
+ 
+ 
+-BlockDriverState *bdrv_skip_implicit_filters(BlockDriverState *bs);
++BlockDriverState * GRAPH_RDLOCK
++bdrv_skip_implicit_filters(BlockDriverState *bs);
+ 
+ /**
+  * bdrv_add_aio_context_notifier:
+diff --git a/block.c b/block.c
+index a6060eddbc..7e8b39711b 100644
+--- a/block.c
++++ b/block.c
+@@ -4778,6 +4778,8 @@ bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
+         return 0;
+     }
+ 
++    bdrv_graph_rdlock_main_loop();
++
+     switch (qobject_type(value)) {
+     case QTYPE_QNULL:
+         assert(is_backing); /* The 'file' option does not allow a null value */
+@@ -4787,17 +4789,16 @@ bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
+         str = qstring_get_str(qobject_to(QString, value));
+         new_child_bs = bdrv_lookup_bs(NULL, str, errp);
+         if (new_child_bs == NULL) {
+-            return -EINVAL;
++            ret = -EINVAL;
++            goto out_rdlock;
+         }
+ 
+-        bdrv_graph_rdlock_main_loop();
+         has_child = bdrv_recurse_has_child(new_child_bs, bs);
+-        bdrv_graph_rdunlock_main_loop();
+-
+         if (has_child) {
+             error_setg(errp, "Making '%s' a %s child of '%s' would create a "
+                        "cycle", str, child_name, bs->node_name);
+-            return -EINVAL;
++            ret = -EINVAL;
++            goto out_rdlock;
+         }
+         break;
+     default:
+@@ -4809,18 +4810,21 @@ bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
+     }
+ 
+     if (old_child_bs == new_child_bs) {
+-        return 0;
++        ret = 0;
++        goto out_rdlock;
+     }
+ 
+     if (old_child_bs) {
+         if (bdrv_skip_implicit_filters(old_child_bs) == new_child_bs) {
+-            return 0;
++            ret = 0;
++            goto out_rdlock;
+         }
+ 
+         if (old_child_bs->implicit) {
+             error_setg(errp, "Cannot replace implicit %s child of %s",
+                        child_name, bs->node_name);
+-            return -EPERM;
++            ret = -EPERM;
++            goto out_rdlock;
+         }
+     }
+ 
+@@ -4831,7 +4835,8 @@ bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
+          */
+         error_setg(errp, "'%s' is a %s filter node that does not support a "
+                    "%s child", bs->node_name, bs->drv->format_name, child_name);
+-        return -EINVAL;
++        ret = -EINVAL;
++        goto out_rdlock;
+     }
+ 
+     if (is_backing) {
+@@ -4852,6 +4857,7 @@ bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
+         aio_context_acquire(ctx);
+     }
+ 
++    bdrv_graph_rdunlock_main_loop();
+     bdrv_graph_wrlock(new_child_bs);
+ 
+     ret = bdrv_set_file_or_backing_noperm(bs, new_child_bs, is_backing,
+@@ -4870,6 +4876,10 @@ bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
+     }
+ 
+     return ret;
++
++out_rdlock:
++    bdrv_graph_rdunlock_main_loop();
++    return ret;
+ }
+ 
+ /*
+diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
+index 7645c7e5fb..d55278099d 100644
+--- a/block/monitor/block-hmp-cmds.c
++++ b/block/monitor/block-hmp-cmds.c
+@@ -206,6 +206,9 @@ void hmp_commit(Monitor *mon, const QDict *qdict)
+     BlockBackend *blk;
+     int ret;
+ 
++    GLOBAL_STATE_CODE();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
++
+     if (!strcmp(device, "all")) {
+         ret = blk_commit_all();
+     } else {
+diff --git a/blockdev.c b/blockdev.c
+index 240834b6d4..52236f2639 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1737,10 +1737,10 @@ static void drive_backup_action(DriveBackup *backup,
+         assert(format);
+         if (source) {
+             /* Implicit filters should not appear in the filename */
+-            BlockDriverState *explicit_backing =
+-                bdrv_skip_implicit_filters(source);
++            BlockDriverState *explicit_backing;
+ 
+             bdrv_graph_rdlock_main_loop();
++            explicit_backing = bdrv_skip_implicit_filters(source);
+             bdrv_refresh_filename(explicit_backing);
+             bdrv_graph_rdunlock_main_loop();
+ 
+@@ -3099,16 +3099,18 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
+         bdrv_img_create(arg->target, format,
+                         NULL, NULL, NULL, size, flags, false, &local_err);
+     } else {
+-        /* Implicit filters should not appear in the filename */
+-        BlockDriverState *explicit_backing =
+-            bdrv_skip_implicit_filters(target_backing_bs);
++        BlockDriverState *explicit_backing;
+ 
+         switch (arg->mode) {
+         case NEW_IMAGE_MODE_EXISTING:
+             break;
+         case NEW_IMAGE_MODE_ABSOLUTE_PATHS:
+-            /* create new image with backing file */
++            /*
++             * Create new image with backing file.
++             * Implicit filters should not appear in the filename.
++             */
+             bdrv_graph_rdlock_main_loop();
++            explicit_backing = bdrv_skip_implicit_filters(target_backing_bs);
+             bdrv_refresh_filename(explicit_backing);
+             bdrv_graph_rdunlock_main_loop();
+ 
+-- 
+2.41.0
 
 
