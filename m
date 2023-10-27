@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C637D9BFE
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC6C7D9C0E
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:48:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0e-0007US-4K; Fri, 27 Oct 2023 10:40:24 -0400
+	id 1qwO0n-0007wI-Fj; Fri, 27 Oct 2023 10:40:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0I-0007LN-5V
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:02 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1qwO0L-0007Na-S4
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:06 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0D-0008Ad-5G
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:01 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-32d9effe314so1475451f8f.3
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:56 -0700 (PDT)
+ id 1qwO0G-0008Aq-DT
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:04 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2c50906f941so32201711fa.2
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698417595; x=1699022395; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698417596; x=1699022396; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UAIcFE1AWWGCfMMgeYKVUiHoLIBp/JRpwlxRycBVAB0=;
- b=JjVkiWpysoVI1kCaHOCrveKYkCtVrxm27BY1NX+iqTraD/RH3nASBWVGDXLJGbM3rh
- 0A+SOOykdxvDgVIyr/l7RuB0x0gv2D4aVEP70+AjjppAD4pK52DwOu6NMiEr/GONzXpt
- kNa0o4nPG4UY9i0SJFqvhNP8Le+bLzhgQFYKvui8j0DHr+XyfLKQsHljg8Z1B2oivTev
- pQnxumcP6ZZe61EForscSGsFaAHojA+OJaGsfTTdvinlEsJV8ehdG095SdxnFW/uhS45
- 2m+rIRoAIqmu5evo33iTqtaAXsmZcN8xMcclRPdk5ahsIxQtYe8rzs/pLBo8jTicjVva
- /TRg==
+ :reply-to; bh=V07Wudk4DGe/lbQGSeT1AObsafhup4QVV7ySJocl1eo=;
+ b=KcM3i+tjTi+wChVxrsttcKkjyjdLWN0eFVMI2oWs/z7E9c/5ENIIHxl3o0YZEZPTj7
+ vO9+uSTKhcrKgjuEAeNcmmcNcLrh5qGDzmDcJ80eCHV4pM9rcxSrbsdHNI69Mt5gcEOS
+ V1nG0kW0Ej4K4p1VarcKCtRK1fjYeIICoQRGDncqw+Iy67uXeCU0Nhr1z7lLBxgaBmi7
+ EGPgLZ1MAKTK3Fx59Ikd5l67jRCeR/L0fq/GuQ/fq1rNUYzK14EmyOKeD/1uCfRxu8n4
+ /mJLHbIRDQcmC7ZeRDB+aYrZGjC1EtzSf65M5odG7JrQKfvohnSoWPTs0oyqpmdZl5IG
+ u+JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698417595; x=1699022395;
+ d=1e100.net; s=20230601; t=1698417596; x=1699022396;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UAIcFE1AWWGCfMMgeYKVUiHoLIBp/JRpwlxRycBVAB0=;
- b=Htsl5R64GEFJ3BQ19/iuvc6wXrkH1N7vrHsqNLkvJhinzKQ77F9ZKWtzu6qTackDqP
- BsDr+XFnz4YfmOCNiySHST2xGuEu9yg9uenEMzWrPrPLwDSlaMx93zWsvcGUYkdlURtV
- agWjrZqJHvW/Q6nSTHcIRWltwCOTZWskv19btJ7+a4OCgdOq8X/yhCQo0nbhU0wkSlYc
- 875dBHVggKFasjyVaY9NxQCM5fLhj8TtcSgCwLbWwjM8ICv8DWO23tu0eK8SDMlOReIq
- OeQ6+xx82zZ1QWgw52ZedrvLPf2h39yttg5Ul859rFKw401/3/0IAQ9c1kf5YLPCPrjR
- 7YHQ==
-X-Gm-Message-State: AOJu0YxToLJ+Du3HoYXDhPr0pVLRkeNAXNMl+e0WeaCws+AnjmLTyy81
- 6ugZbf2I/7tJrGN+T+6TDk/uXjKB/wJWua1VJ6E=
-X-Google-Smtp-Source: AGHT+IEONGXZ8oj3l/2uafkx1pkEa/s+BzNEQpLXSJeBl0D8RVD8XyXURw5C/TXiG8Bkp0CUOeYTLA==
-X-Received: by 2002:adf:f645:0:b0:32d:84c7:2f56 with SMTP id
- x5-20020adff645000000b0032d84c72f56mr1958002wrp.21.1698417595670; 
- Fri, 27 Oct 2023 07:39:55 -0700 (PDT)
+ bh=V07Wudk4DGe/lbQGSeT1AObsafhup4QVV7ySJocl1eo=;
+ b=ldCww5N2sFoOVxLNJyqJxydqT8pOjorqMH84P4Djl2kD3zQfHWRmyZA47qIkWrGdWf
+ SRMCDgg33oxj2+xFePYoxnEILXrbeWmNGJZSAZcsbfczHwZLc1Zwle9vGH3Ikim+Cio2
+ UxW26TM/i8e9cNURyiMKa1l/tXyrid2OPLtqbtpmezeVLl6Fn5AfLOl98Gvh5C2mhXEt
+ HmD0svIZn2YPxE7xPu3eP7mXt1PkHg+7scYYg7nEkkIZJXCW98J02tFv4zbEZtNvSEkn
+ HhMf7sqieHTwU8MfhfL75Yh5XaZ32znl3okOCcs6f7CgjeAEkrGbYNYoCTlIyTMOTXyF
+ wgxw==
+X-Gm-Message-State: AOJu0YzraHWfvH7S/POwmecO45MHH23fE4UV4T9l5XJ/7e5p8n4ZSiDr
+ XzeUDOYwGMO6h87c8pnvKcXqeyQhjGPqX6+eCOQ=
+X-Google-Smtp-Source: AGHT+IFE+KGCqGEeE0YWvJQAeQvly/KRZ9NRZme1wt3jtKQAoP/M8ckmxxNGKmtM3OcVTndo3LTVFg==
+X-Received: by 2002:a2e:3816:0:b0:2c5:8a0:b502 with SMTP id
+ f22-20020a2e3816000000b002c508a0b502mr2204795lja.48.1698417596366; 
+ Fri, 27 Oct 2023 07:39:56 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.55
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Oct 2023 07:39:55 -0700 (PDT)
+ Fri, 27 Oct 2023 07:39:56 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/41] hw/pcmcia/pxa2xx: Inline pxa2xx_pcmcia_init()
-Date: Fri, 27 Oct 2023 15:39:25 +0100
-Message-Id: <20231027143942.3413881-25-peter.maydell@linaro.org>
+Subject: [PULL 25/41] hw/intc/pxa2xx: Convert to Resettable interface
+Date: Fri, 27 Oct 2023 15:39:26 +0100
+Message-Id: <20231027143942.3413881-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,81 +93,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Factor reset code out of the DeviceRealize() handler.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231020130331.50048-6-philmd@linaro.org
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-id: 20231020130331.50048-7-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/pxa.h |  2 --
- hw/arm/pxa2xx.c      | 12 ++++++++----
- hw/pcmcia/pxa2xx.c   | 10 ----------
- 3 files changed, 8 insertions(+), 16 deletions(-)
+ hw/arm/pxa2xx_pic.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/arm/pxa.h b/include/hw/arm/pxa.h
-index 54eb895e42a..4c6caee1134 100644
---- a/include/hw/arm/pxa.h
-+++ b/include/hw/arm/pxa.h
-@@ -100,8 +100,6 @@ void pxa2xx_mmci_handlers(PXA2xxMMCIState *s, qemu_irq readonly,
- #define TYPE_PXA2XX_PCMCIA "pxa2xx-pcmcia"
- OBJECT_DECLARE_SIMPLE_TYPE(PXA2xxPCMCIAState, PXA2XX_PCMCIA)
- 
--PXA2xxPCMCIAState *pxa2xx_pcmcia_init(MemoryRegion *sysmem,
--                                      hwaddr base);
- int pxa2xx_pcmcia_attach(void *opaque, PCMCIACardState *card);
- int pxa2xx_pcmcia_detach(void *opaque);
- void pxa2xx_pcmcia_set_irq_cb(void *opaque, qemu_irq irq, qemu_irq cd_irq);
-diff --git a/hw/arm/pxa2xx.c b/hw/arm/pxa2xx.c
-index 07d5dd8691f..601ddd87666 100644
---- a/hw/arm/pxa2xx.c
-+++ b/hw/arm/pxa2xx.c
-@@ -2205,8 +2205,10 @@ PXA2xxState *pxa270_init(unsigned int sdram_size, const char *cpu_type)
-     sysbus_create_simple("sysbus-ohci", 0x4c000000,
-                          qdev_get_gpio_in(s->pic, PXA2XX_PIC_USBH1));
- 
--    s->pcmcia[0] = pxa2xx_pcmcia_init(address_space, 0x20000000);
--    s->pcmcia[1] = pxa2xx_pcmcia_init(address_space, 0x30000000);
-+    s->pcmcia[0] = PXA2XX_PCMCIA(sysbus_create_simple(TYPE_PXA2XX_PCMCIA,
-+                                                      0x20000000, NULL));
-+    s->pcmcia[1] = PXA2XX_PCMCIA(sysbus_create_simple(TYPE_PXA2XX_PCMCIA,
-+                                                      0x30000000, NULL));
- 
-     sysbus_create_simple(TYPE_PXA2XX_RTC, 0x40900000,
-                     qdev_get_gpio_in(s->pic, PXA2XX_PIC_RTCALARM));
-@@ -2338,8 +2340,10 @@ PXA2xxState *pxa255_init(unsigned int sdram_size)
-         s->ssp[i] = (SSIBus *)qdev_get_child_bus(dev, "ssi");
-     }
- 
--    s->pcmcia[0] = pxa2xx_pcmcia_init(address_space, 0x20000000);
--    s->pcmcia[1] = pxa2xx_pcmcia_init(address_space, 0x30000000);
-+    s->pcmcia[0] = PXA2XX_PCMCIA(sysbus_create_simple(TYPE_PXA2XX_PCMCIA,
-+                                                      0x20000000, NULL));
-+    s->pcmcia[1] = PXA2XX_PCMCIA(sysbus_create_simple(TYPE_PXA2XX_PCMCIA,
-+                                                      0x30000000, NULL));
- 
-     sysbus_create_simple(TYPE_PXA2XX_RTC, 0x40900000,
-                     qdev_get_gpio_in(s->pic, PXA2XX_PIC_RTCALARM));
-diff --git a/hw/pcmcia/pxa2xx.c b/hw/pcmcia/pxa2xx.c
-index 3d512a292c7..e3111fdf1a1 100644
---- a/hw/pcmcia/pxa2xx.c
-+++ b/hw/pcmcia/pxa2xx.c
-@@ -138,16 +138,6 @@ static void pxa2xx_pcmcia_set_irq(void *opaque, int line, int level)
-     qemu_set_irq(s->irq, level);
+diff --git a/hw/arm/pxa2xx_pic.c b/hw/arm/pxa2xx_pic.c
+index 47132ab982b..2eb869a605a 100644
+--- a/hw/arm/pxa2xx_pic.c
++++ b/hw/arm/pxa2xx_pic.c
+@@ -271,12 +271,9 @@ static int pxa2xx_pic_post_load(void *opaque, int version_id)
+     return 0;
  }
  
--PXA2xxPCMCIAState *pxa2xx_pcmcia_init(MemoryRegion *sysmem,
--                                      hwaddr base)
--{
--    DeviceState *dev;
--
--    dev = sysbus_create_simple(TYPE_PXA2XX_PCMCIA, base, NULL);
--
--    return PXA2XX_PCMCIA(dev);
--}
--
- static void pxa2xx_pcmcia_initfn(Object *obj)
+-DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
++static void pxa2xx_pic_reset_hold(Object *obj)
  {
-     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+-    DeviceState *dev = qdev_new(TYPE_PXA2XX_PIC);
+-    PXA2xxPICState *s = PXA2XX_PIC(dev);
+-
+-    s->cpu = cpu;
++    PXA2xxPICState *s = PXA2XX_PIC(obj);
+ 
+     s->int_pending[0] = 0;
+     s->int_pending[1] = 0;
+@@ -284,6 +281,14 @@ DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
+     s->int_enabled[1] = 0;
+     s->is_fiq[0] = 0;
+     s->is_fiq[1] = 0;
++}
++
++DeviceState *pxa2xx_pic_init(hwaddr base, ARMCPU *cpu)
++{
++    DeviceState *dev = qdev_new(TYPE_PXA2XX_PIC);
++    PXA2xxPICState *s = PXA2XX_PIC(dev);
++
++    s->cpu = cpu;
+ 
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+@@ -319,9 +324,11 @@ static const VMStateDescription vmstate_pxa2xx_pic_regs = {
+ static void pxa2xx_pic_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     dc->desc = "PXA2xx PIC";
+     dc->vmsd = &vmstate_pxa2xx_pic_regs;
++    rc->phases.hold = pxa2xx_pic_reset_hold;
+ }
+ 
+ static const TypeInfo pxa2xx_pic_info = {
 -- 
 2.34.1
 
