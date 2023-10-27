@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2757D905F
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEF67D9066
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:55:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwHe4-0004M0-VQ; Fri, 27 Oct 2023 03:52:41 -0400
+	id 1qwHgH-0005wk-D4; Fri, 27 Oct 2023 03:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qwHdk-0004Hb-0I
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:52:21 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1qwHgF-0005wa-DO
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:54:55 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qwHdi-0005oD-0d
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:52:19 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1c9fa869a63so14150935ad.0
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:52:16 -0700 (PDT)
+ id 1qwHgD-0006Ra-Pp
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:54:55 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1ca74e77aecso21471745ad.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:54:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698393135; x=1698997935;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698393291; x=1698998091;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FnSa+DpWc0K/rO72kGfukEievl64M0E8SDSPTOKg21U=;
- b=G0uUJvazMC/NmFki/A7eYbLJ9RlAwZD78UAhq1epPWqut7XzRypylTO26sfkrtDNZE
- XQiCKCtX5qibbo6/Go5xHFY/ASpVpdKJYMOr7wn/tyWKeW/6odX958ZT8GIk5paoyjVr
- bdjPm3391Loh9YhN1fc7fb6jeuGcGOESXC4OI9+LXG1xkG5LR/oiwKuEENlutv+QmJX/
- uuNx3VWb4kaWubGjgLjc1gsAuWFB4blyy4A119Sn/GKUTlFQLPlTBxh+b9a62dij3ISf
- WuQi162rs7ixmjM2uReE8TfnMbm8ggx4IhkENvZaUEY8sx8IktlC23PQS80dJd6EmqCS
- FCWg==
+ bh=eT6OP/30WH7zVaUtrNgXPoamkRTWd4vmaDI1Zjdk4GQ=;
+ b=2aWpeiw2cSTpy/Ki9TT9oafUZxu99ceqTBhYLKt8gHEBreoQH/V+oE/FVyZoDph+T9
+ UMjIImICtB2meK+pivueZCBgE1+YsW0jb3qFqBx7msmHLMWuZMBhFsZz58Wc0oG6TQGk
+ QOQzvE8ukaRs7fnj7xd8eydkUOsjSo9OU0lmEOeAwMAZmPrzm9BrHqiSa2pP/YTfX9nN
+ DwAfogBiTbc4M/xfB53c83E6Yp0PuZRQGUBGq95KxtkAeEvKCXukIjAO0gZ45JxQGQCL
+ tSC5TLgU6rKsCRKVYUvBPwgWcUH32cYsyCqZTpLsErJRksfhrtDeKfdSLeimXe6HqxQN
+ kvUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698393135; x=1698997935;
+ d=1e100.net; s=20230601; t=1698393291; x=1698998091;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FnSa+DpWc0K/rO72kGfukEievl64M0E8SDSPTOKg21U=;
- b=aMIn+sDl9dhmEw3PwbEABSw60QGcAbADttaSHBljcZ4wMe8xMUNkrIjJvLhCVVzIwV
- NoYnt6qHKLNC8vHH+Ef6tACRKHlKZav2DMNSIXArNR6KE+LajRf2UDUoXBFVvP5ImMf/
- CI7Ofd8kxBEeoiuv/6ktKq4YojMYHVqDn3O58pkVO0SrQpBan+aUZU2zatD2fOM168CL
- P1HwiqsyYuX0VmduSdE7I8ABd3hg5uekEeJ0jngV34eT2jEt9B1+ivGrv/7+N6CvoHpn
- 6nOGw1nS+kk+5cuNatJe7HOO1gHOX+ItPaRhU6xBNiosgGR8WBvnc5nZ4EMkdvKweCDV
- 3XWA==
-X-Gm-Message-State: AOJu0YxoZrl5+cXFlJ34rgHIbg7tDIHJTprimoDm203cGNr919OhR5Tv
- O7XT8pRyYaUClnQgR20VdWy71A==
-X-Google-Smtp-Source: AGHT+IG+VYW6HAe8IifJZY2BlQsJPYaOD1Oxo+NVPGQu2WJHCsjmSAT6Uo9SQSnlc6/wueSIO4jLqg==
-X-Received: by 2002:a17:902:c7c2:b0:1c0:bcbc:d64 with SMTP id
- r2-20020a170902c7c200b001c0bcbc0d64mr1558227pla.51.1698393135524; 
- Fri, 27 Oct 2023 00:52:15 -0700 (PDT)
+ bh=eT6OP/30WH7zVaUtrNgXPoamkRTWd4vmaDI1Zjdk4GQ=;
+ b=bHoA2TuyLwrAuEzyX2QTOzTlZZJgI8W9Hk1B0pB7r55kbXlAMJ88uAmH/rSxsiAlTL
+ v/l/9rqCV1GDL/d8DtfdOI8TFR2Va6uwA5Bfqp+NM/JH3JTrDqrdqY1QAruZgErF2sXi
+ 5otDlqU4XlMO72d2CXSPwY3H7Y1isUJbD9EzRFEst2MhsPCzF75vaUphMie72yMTEcwi
+ fFsKOevfCpP2ok3kpJijksr2pnQvbhY88mtkGKDsAHPzXSt2lWOP0cu2AHWmnIShNTAg
+ PLog1Dp18gK0MPrSDESboJgR+tbBVKwfGVRPH6Rk4kA+3wZcIuQ8pn10rdOFcFshEs7D
+ usZg==
+X-Gm-Message-State: AOJu0YxpK1qLBPm8GWIkVD5pBdZdje3umXf9xXOObPhx+K6QFZTukpfb
+ USOyt+IYnhwhmuR+0y+nTaWYvK6q/nY22YyqtwI=
+X-Google-Smtp-Source: AGHT+IH3ZaiDzOr2AAqViXD+bNclfVCi9n8v4Nw7EOTVb5l+7Q5Hns638Rrj4onamM1z5yXu6JfUyQ==
+X-Received: by 2002:a17:902:f684:b0:1c7:7c2c:f828 with SMTP id
+ l4-20020a170902f68400b001c77c2cf828mr2481104plg.8.1698393290627; 
+ Fri, 27 Oct 2023 00:54:50 -0700 (PDT)
 Received: from [157.82.205.15] ([157.82.205.15])
  by smtp.gmail.com with ESMTPSA id
- iw6-20020a170903044600b001b896d0eb3dsm925445plb.8.2023.10.27.00.52.13
+ ij27-20020a170902ab5b00b001ca4c20003dsm941329plb.69.2023.10.27.00.54.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 00:52:15 -0700 (PDT)
-Message-ID: <ef82309f-ca89-4850-acf6-94ffa7726c2f@daynix.com>
-Date: Fri, 27 Oct 2023 16:52:12 +0900
+ Fri, 27 Oct 2023 00:54:50 -0700 (PDT)
+Message-ID: <9340bcd6-af03-45ce-a147-bac4a493ecc5@daynix.com>
+Date: Fri, 27 Oct 2023 16:54:47 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/21] net: Remove receive_raw()
+Subject: Re: [PATCH v5 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
 Content-Language: en-US
 To: Jason Wang <jasowang@redhat.com>
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
  <mst@redhat.com>
 References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
- <20231017040932.62997-5-akihiko.odaki@daynix.com>
- <CACGkMEukvjmJ20pWSDsxtxo_UZAC33yEjWNsSqdNJRm8xL2O4w@mail.gmail.com>
+ <20231017040932.62997-12-akihiko.odaki@daynix.com>
+ <CACGkMEvY4fjrBgjLMFRNN0LmJ+iQaC=z3KTumwB=+d1Ofz0yzg@mail.gmail.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CACGkMEukvjmJ20pWSDsxtxo_UZAC33yEjWNsSqdNJRm8xL2O4w@mail.gmail.com>
+In-Reply-To: <CACGkMEvY4fjrBgjLMFRNN0LmJ+iQaC=z3KTumwB=+d1Ofz0yzg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,16 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/27 15:49, Jason Wang wrote:
-> On Tue, Oct 17, 2023 at 12:09 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+On 2023/10/27 16:07, Jason Wang wrote:
+> On Tue, Oct 17, 2023 at 12:10 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >>
->> While netmap implements virtio-net header, it does not implement
->> receive_raw().
+>> vhost requires eBPF for RSS. Even when eBPF is not available, virtio-net
+>> reported RSS availability, and raised a warning only after the
+>> guest requested RSS, and the guest could not know that RSS is not
+>> available.
+>>
+>> Check RSS availability during device realization and return an error
+>> if RSS is requested but not available. Assert RSS availability when
+>> the guest actually requests the feature.
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   ebpf/ebpf_rss.h      |   2 +-
+>>   ebpf/ebpf_rss-stub.c |   4 +-
+>>   ebpf/ebpf_rss.c      |  68 +++++++++-----------------
+>>   hw/net/virtio-net.c  | 114 +++++++++++++++++++++----------------------
+>>   4 files changed, 82 insertions(+), 106 deletions(-)
+>>
+>> diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
+>> index bf3f2572c7..1128173572 100644
+>> --- a/ebpf/ebpf_rss.h
+>> +++ b/ebpf/ebpf_rss.h
+>> @@ -36,7 +36,7 @@ bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx);
+>>
+>>   bool ebpf_rss_load(struct EBPFRSSContext *ctx);
+>>
+>> -bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
+>> +void ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
+>>                         uint16_t *indirections_table, uint8_t *toeplitz_key);
+>>
+>>   void ebpf_rss_unload(struct EBPFRSSContext *ctx);
+>> diff --git a/ebpf/ebpf_rss-stub.c b/ebpf/ebpf_rss-stub.c
+>> index e71e229190..525b358597 100644
+>> --- a/ebpf/ebpf_rss-stub.c
+>> +++ b/ebpf/ebpf_rss-stub.c
+>> @@ -28,10 +28,10 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
+>>       return false;
+>>   }
+>>
+>> -bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
+>> +void ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
+>>                         uint16_t *indirections_table, uint8_t *toeplitz_key)
+>>   {
+>> -    return false;
+>> +    g_assert_not_reached();
+>>   }
+>>
+>>   void ebpf_rss_unload(struct EBPFRSSContext *ctx)
+>> diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+>> index cee658c158..6cdf82d059 100644
+>> --- a/ebpf/ebpf_rss.c
+>> +++ b/ebpf/ebpf_rss.c
+>> @@ -74,42 +74,32 @@ error:
+>>       return false;
+>>   }
+>>
+>> -static bool ebpf_rss_set_config(struct EBPFRSSContext *ctx,
+>> +static void ebpf_rss_set_config(struct EBPFRSSContext *ctx,
+>>                                   struct EBPFRSSConfig *config)
+>>   {
+>>       uint32_t map_key = 0;
+>>
+>> -    if (!ebpf_rss_is_loaded(ctx)) {
+>> -        return false;
+>> -    }
+>> -    if (bpf_map_update_elem(ctx->map_configuration,
+>> -                            &map_key, config, 0) < 0) {
+>> -        return false;
+>> -    }
+>> -    return true;
+>> +    assert(ebpf_rss_is_loaded(ctx));
+>> +    assert(!bpf_map_update_elem(ctx->map_configuration, &map_key, config, 0));
 > 
-> The only user for raw is the announcing. Netmap probably doesn't it at all.
+> Guest trigger-rable assertion should be avoided as much as possible.
 
-In my understanding, the announcing *sends* a raw packet. Both of tap 
-and netmap *receive* packets with virtio-net headers.
+These assertions should never be triggered by the guest as the feature 
+availability is checked at the device realization. Are these assertions 
+still problematic?
 
 Regards,
 Akihiko Odaki
