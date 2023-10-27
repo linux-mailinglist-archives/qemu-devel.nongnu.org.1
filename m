@@ -2,77 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B5D7D8E3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 07:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE537D8E55
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 08:00:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwFZz-0005PL-IH; Fri, 27 Oct 2023 01:40:20 -0400
+	id 1qwFsJ-0001Jb-6l; Fri, 27 Oct 2023 01:59:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qwFZm-0005O0-Ft
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:40:06 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwFs3-0001JE-UC
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:59:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qwFZk-00008F-DC
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:40:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwFs2-00060s-5g
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 01:58:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698385198;
+ s=mimecast20190719; t=1698386337;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wjtZTG2Rnmx2hFIhfrtgcIu95XQXZ3W9J6Io7uqCACU=;
- b=dLXtfZUIJt+mObRs9ukuDvzzKfo2D7CNpJEnSRV8d/Om4ZjIFdoCCggu7OF/KJtq/CC6BZ
- WtAqj2rFb3TZPM4uaHBO0icRbO1+RW2LVDEYREbcFTNC8mONI/AiSrjJSzVGh2DXNYzrna
- yJbpxFS500EQmV/BT/Zx6ZWBRMVNIf4=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=qg1/XMPeeK5UgGwhWEAI80qHiRmMpbTvmp8MTHfIXGE=;
+ b=PcbxtKz5JlIndZTEbbQcAroUXAIgv1Rzda9GDmuGa6qd/GxjzlkldwTzspu7I4ec2wF//9
+ p6tC+TkvVq/Y5y5PN6P5pEo+5RRqFM9oX9SyAycrxZeBpdJzxLdXindb440ynbOVj5ahYq
+ 3oQJk2RMyLnkWU6qPcGp/Qr75x3eoK0=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-lPeMqCRdN8uv0r7TGblqiA-1; Fri, 27 Oct 2023 01:39:56 -0400
-X-MC-Unique: lPeMqCRdN8uv0r7TGblqiA-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-507d208be33so1688543e87.3
- for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 22:39:56 -0700 (PDT)
+ us-mta-57-4CP_m13tNLWLaaOFFZ7IQg-1; Fri, 27 Oct 2023 01:58:45 -0400
+X-MC-Unique: 4CP_m13tNLWLaaOFFZ7IQg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-54045f31f49so1205422a12.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Oct 2023 22:58:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698385195; x=1698989995;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wjtZTG2Rnmx2hFIhfrtgcIu95XQXZ3W9J6Io7uqCACU=;
- b=F7qZEeLi5odZELMXZKx7ftB3Ja6TRTJnTv/cR9wcaUAhww68qCGshMBgGRNJDL5O0I
- izr+0YZv3iEO+/tZohOwwexSlRxA9WnDFzD38osUGwbZeReDUSrA25PJQAt0e3f//GYw
- +70noSEO+sCMrhCLMFpLaA44B1a6xU4XVkj9uPWj+gRQqtJ/Bq9CFXmBQqjEbIqmys0q
- 9rUmxdHF6XU1goOcSToquQ1oCHx/CviFkqOqTgV7wC8yM7a7fgeOMhpb+ox/Snj5jiz6
- P4JZzxH4od6JZ9Wp3LUTWv4I3BA8q8O+ZC7rJZDz2F+jVK3Bae2UohvDV0OMSIGAZICA
- gXfw==
-X-Gm-Message-State: AOJu0Yw1C8NQM952mDp5f9yqlqnInSPr+CrK5MLUd3YX9JOcjK4XWvKW
- Qt6VJP6Mc2Gv6UU/0q8gKA1+6PCvHbNY5Qo3ePkPPvllRu+CNOaocl9b7ZRlcqE32kBsmjPf/xq
- fUos7g5z4SH6ZwGNz5M4skxLSG6+PNKY=
-X-Received: by 2002:a05:6512:238c:b0:503:261d:eab8 with SMTP id
- c12-20020a056512238c00b00503261deab8mr1258475lfv.28.1698385195264; 
- Thu, 26 Oct 2023 22:39:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGEVes61MpduCrCDUmBKwpOT9wvQ97FunnizFW+n6dtYz27XgcD/g4DFn2RwV1ZUe04ab+2dC9TeoBOxehiXT0=
-X-Received: by 2002:a05:6512:238c:b0:503:261d:eab8 with SMTP id
- c12-20020a056512238c00b00503261deab8mr1258472lfv.28.1698385194917; Thu, 26
- Oct 2023 22:39:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698386324; x=1698991124;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qg1/XMPeeK5UgGwhWEAI80qHiRmMpbTvmp8MTHfIXGE=;
+ b=PUiYFblJZYs/seDk9h7eHrQ8MJ9g1nwzYosZAmz+19mlKuNuAUxo2Fgpi7MQzK4bdE
+ MTaGfcbDsDC4PskeiAl9sN0z0CTIsmYBEF12waKJAzMuBC17YpmnMa6SH4/Xnf3yc7of
+ J5BiYaPKDDjmlM46RGDvig9A3QykJErKl6O4p2v1kBdGmNlKos6U8J7X46NurqXjE4TR
+ OpSKdZYBN86Yx+LbNLyy6ZWfxRXosAF1CN0oNXGWHkccH9gd4NvrPUW+Awew0lmljR1d
+ 4i6ufbaqFbQ1juQ0hRmvCtkryAPPn6f9ZN9tCqaxNaEHGBdOnIC03s4Tz0+Sl608tn3h
+ 8Nbw==
+X-Gm-Message-State: AOJu0Yxdlgd8ocwz8COXo4i56tF1JUVDScOpY7HQ4w3wgsnqOJUAHx61
+ gkgdU9xVwasM3C+BG+Kb4kQhrrk5IETP6h892wGgDGpDy7DkDwQOnl4ETYQmYjDy52jZnr60hNp
+ PTk4fCajLh03Kbqo=
+X-Received: by 2002:aa7:c393:0:b0:530:d8df:afaa with SMTP id
+ k19-20020aa7c393000000b00530d8dfafaamr1361670edq.41.1698386324104; 
+ Thu, 26 Oct 2023 22:58:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHvq4N4AYJc+5WRoXPLE/MObPcSsQgEcJ0fAdy2F4g5rLDN8qMWnuQyyJ2EZ4ufV7MKa9v+g==
+X-Received: by 2002:aa7:c393:0:b0:530:d8df:afaa with SMTP id
+ k19-20020aa7c393000000b00530d8dfafaamr1361664edq.41.1698386323841; 
+ Thu, 26 Oct 2023 22:58:43 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-176-238.web.vodafone.de.
+ [109.43.176.238]) by smtp.gmail.com with ESMTPSA id
+ q8-20020a50cc88000000b0053d9cb67248sm683654edi.18.2023.10.26.22.58.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Oct 2023 22:58:43 -0700 (PDT)
+Message-ID: <8cde73ba-bc5a-47fd-a595-34e94a0a7149@redhat.com>
+Date: Fri, 27 Oct 2023 07:58:41 +0200
 MIME-Version: 1.0
-References: <20231023154507.253641-1-clg@kaod.org>
- <7ce1c530-1ba3-4b9c-84ef-2fae5e217cb0@daynix.com>
-In-Reply-To: <7ce1c530-1ba3-4b9c-84ef-2fae5e217cb0@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 27 Oct 2023 13:39:43 +0800
-Message-ID: <CACGkMEuEo1vb401S99LdFN1_LWM=QhCDRBHnZ4YHFSqLfj+H=g@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] igb: Add FLR support
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org, 
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: Replace calls to functions named cpu_physical_memory_* with
+ address_space_*.
+To: Tanmay <tanmaynpatil105@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, "jsnow@redhat.com" <jsnow@redhat.com>
+References: <CAHnsOnP-8PY=pZw3n2jPKeMmiFqsQwp-Dai+dADpe+hskO2kQA@mail.gmail.com>
+ <CAFEAcA83xO3XxuWTK1vdqnH6PKaBpPfNL8A8EyBC1AaGcqhZcg@mail.gmail.com>
+ <CAHnsOnM1tuwbr7tkF6-jE7bGMPEJs+uXPW-JyA_5AoPe1miTnA@mail.gmail.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAHnsOnM1tuwbr7tkF6-jE7bGMPEJs+uXPW-JyA_5AoPe1miTnA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,44 +145,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 24, 2023 at 11:30=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
-x.com> wrote:
->
-> On 2023/10/24 0:45, C=C3=A9dric Le Goater wrote:
-> > From: C=C3=A9dric Le Goater <clg@redhat.com>
-> >
-> > Hello,
-> >
-> > Here is a little series adding FLR to the new IGB models.
-> >
-> > Thanks,
-> >
-> > C.
-> >
-> > Changes in v2:
-> >
-> > - add a "x-pcie-flr-init" compat property for pre 8.2 machines
-> >
-> > C=C3=A9dric Le Goater (2):
-> >    igb: Add a VF reset handler
-> >    igb: Add Function Level Reset to PF and VF
-> >
-> >   hw/net/igb_common.h |  1 +
-> >   hw/net/igb_core.h   |  3 +++
-> >   hw/core/machine.c   |  3 ++-
-> >   hw/net/igb.c        | 15 +++++++++++++++
-> >   hw/net/igb_core.c   |  6 ++++--
-> >   hw/net/igbvf.c      | 19 +++++++++++++++++++
-> >   hw/net/trace-events |  1 +
-> >   7 files changed, 45 insertions(+), 3 deletions(-)
-> >
->
-> For the whole series:
-> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->
+On 26/10/2023 20.21, Tanmay wrote:
+> Yeah, I felt that it may not be a cakewalk as it might sound.
+> 
+> You're right, trying to understand the whole code is overwhelming. I'll 
+> start with a small section instead.
+> 
+> I have interest in working on x86_64 and Aarch64 architectures within qemu.
+> Please let me know if there are any specific tasks from where I can start 
+> exploring.
 
-Queued.
+If you want to get a basic understanding for the QEMU patch workflow, one of 
+these should be easy enough for a start:
 
-Thanks
+  https://gitlab.com/qemu-project/qemu/-/issues/373
+
+  https://gitlab.com/qemu-project/qemu/-/issues/1827
+
+(of course the work can also be limited to some few files, it doesn't have 
+to be the full set in one go)
+
+  HTH,
+   Thomas
 
 
