@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69627D9C00
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD68D7D9BDA
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:43:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0p-0008Px-DB; Fri, 27 Oct 2023 10:40:35 -0400
+	id 1qwO0N-0007LX-Tw; Fri, 27 Oct 2023 10:40:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0F-0007IV-9c
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:59 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1qwO0D-0007Gq-27
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:57 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO09-00089V-Or
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:59 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-507c8316abcso2744684e87.1
+ id 1qwO0A-00089e-4n
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:56 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9c773ac9b15so317375666b.2
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698417592; x=1699022392; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=STyU82hPIUpYks6uiomyW9R8nlE5SYdJeoBHFM04RVg=;
- b=bQBp8D6WbaMwHpTTfABoK3YIei+kNUJqyPuhEtviSq2E4gjnzNJ8IVFXyn/UE9Iwvw
- rCiFZDeZiR0+/5/OjidBqgpKDDvQxUjWN69/wW4BpNkSRCUO1gabnLFnnBbgL7Buo9fi
- 9ca9OqVMTKT4tTG2F0cLrETchFdFVRq8dXdsTW48vCnacc8yRumpw42otUEh4nQ9cETr
- Ycw10oQ4ycMS560e3adLLm0fT63sHDse6gpJkoTrnLCjHkuIgV1luh3W30nSJiGn66WF
- oUNTUkk26pOEPgYrT4pOHEpYICEcbMtqSrHpu4xlRBA/W/fy+A3O9UqkK3HjbO5iONNS
- NSBA==
+ :reply-to; bh=q1/21Qej9F0ur5kxVcfbwd5gynXPn44FfuU8/fDsIJg=;
+ b=GCtir2hobDjveU1ba5SMDRUzP0mCz7hh1BKmq8a57QbT1ImjFjF3QeekhcI+n6sBpx
+ AVAmMdFkkYaJh6u/T52mwbLZpCeFmt6BGbo4NvMiZouq43zo0/JEYXvrGD4CMnhESJ+Z
+ 6LHo+3ajRtzqfqKdG/jJ2xK2KqTX3PuNK3URYyvd251C403vP11Kysf/1UImgoaZ/tG/
+ uheK77ViJEdzYPy7eVw+qcm+Kn6Z88Wrqb5B0la/bPicSIy/WLkwWoYCee5IMrqkzT9C
+ ovQCkCflnEMYmV7OD2RbR+xW+DYRFFquaTW7trKFnHNJvK1LwQvVTC15nDe6yjBiH5Yn
+ Dsiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698417592; x=1699022392;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=STyU82hPIUpYks6uiomyW9R8nlE5SYdJeoBHFM04RVg=;
- b=gdxMZ0j52Y3CxFAQvsWh61YK3VwECyE4L0B38xJZAQCeX0+uMfMilXvR6B7ZdOBFNY
- XpRHGjugMtjMkLZlJ1emAcVDW6YM7NWmUc/w/yKgvj6F8SlQUmSCVy7ICGbRn4vdpODr
- jcpJJInwxHVigwjiToB9RYXiUPzBqzakzhyn1uUHoQdI4r6MePWMxPV3jsLcc/fjHo4h
- Rylj8ZeeQwCJKKVaUus5O4BlZpbcnePwFNryIhU5IgdqY/SWDzl/BgStwLFMtAqnkLE7
- wtx1zkBR3oc9K937wlHVe4Y0SMAY8U5XW5JwIPa/L9olfqUWlQYnuDFoxkA/2uMjBGzv
- LA3g==
-X-Gm-Message-State: AOJu0YwP6AYBtmEY0EGqj0QMTTzko3H7533ZxM2zL2r3NVjBc5tQxkIm
- 6ohFGE+AcnB1KjVp+RIAtdtsx8N4qDnBPXhkSg0=
-X-Google-Smtp-Source: AGHT+IE5S1FoXcWFQdSHx8aNP79zdUJh6BZYv8VEQ5HQUahOPXlfMM8O93PcxCWBQBRrqTEAzqPfTA==
-X-Received: by 2002:a19:4f5d:0:b0:500:8022:3dc7 with SMTP id
- a29-20020a194f5d000000b0050080223dc7mr2095416lfk.10.1698417592273; 
+ bh=q1/21Qej9F0ur5kxVcfbwd5gynXPn44FfuU8/fDsIJg=;
+ b=PxdbzFOo0G2qJubJrO9i9M1ML0HhdDlxKDqqFf3i5Ded/JnQS+8+R/mNnCNS+Ic6Im
+ len1nRJjaTMQ5fdC7Pfe9LuF5yuQdZbT+zTnSqNYCIOMedeEOeKHJyLKIoO67o7mLyRZ
+ wB+opew43d8boihzK2cip2qWa5AyRD+wYTuaSH+GX31kFATAIkfnp+chW6tXG4h1CyLw
+ WA+AWWz4DcaGf3s9C/YAjH35mg/wdwXS0z6KQORshUs1r8dIAGb3lonkC3myqn93kM5C
+ BlenFh8r0SJG4SF76S2FkckknW6sfd6kB133yl8KY+X/Doy+qsDNLY5YAJwViVIHLM6L
+ XFpQ==
+X-Gm-Message-State: AOJu0Yxr3WxG/pD+szi/mC8CJQTIPCewQRScEdh3nHsz6Gm+nD+EevYM
+ cJEx6ixSYiJLing1FOdNF4e3gya88BSQgq4mL6U=
+X-Google-Smtp-Source: AGHT+IEHKmpZdgtXO9/lDDsRrrLDKaCTcFY0Vfv7wl/IfP91uE/CJ3/cK12BPvr8kdR6HvvY26DVvQ==
+X-Received: by 2002:a17:907:3603:b0:9be:40ba:5f1 with SMTP id
+ bk3-20020a170907360300b009be40ba05f1mr2637804ejc.60.1698417592757; 
  Fri, 27 Oct 2023 07:39:52 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.51
+ e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 27 Oct 2023 07:39:52 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/41] hw/arm/fsl-imx7: Remove 'hw/arm/boot.h' from header
-Date: Fri, 27 Oct 2023 15:39:18 +0100
-Message-Id: <20231027143942.3413881-18-peter.maydell@linaro.org>
+Subject: [PULL 18/41] hw/arm/xlnx-versal: Remove 'hw/arm/boot.h' from header
+Date: Fri, 27 Oct 2023 15:39:19 +0100
+Message-Id: <20231027143942.3413881-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,37 +98,37 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Luc Michel <luc.michel@amd.com>
-Message-id: 20231025065316.56817-9-philmd@linaro.org
+Message-id: 20231025065316.56817-10-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/fsl-imx7.h | 1 -
- hw/arm/mcimx7d-sabre.c    | 1 +
+ include/hw/arm/xlnx-versal.h | 1 -
+ hw/arm/xlnx-versal-virt.c    | 1 +
  2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/arm/fsl-imx7.h b/include/hw/arm/fsl-imx7.h
-index 2cbfc6b2b2c..411fa1c2e37 100644
---- a/include/hw/arm/fsl-imx7.h
-+++ b/include/hw/arm/fsl-imx7.h
-@@ -19,7 +19,6 @@
- #ifndef FSL_IMX7_H
- #define FSL_IMX7_H
+diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
+index 7b419f88c2c..b710d71fb08 100644
+--- a/include/hw/arm/xlnx-versal.h
++++ b/include/hw/arm/xlnx-versal.h
+@@ -13,7 +13,6 @@
+ #define XLNX_VERSAL_H
  
+ #include "hw/sysbus.h"
 -#include "hw/arm/boot.h"
- #include "hw/cpu/a15mpcore.h"
- #include "hw/intc/imx_gpcv2.h"
- #include "hw/misc/imx7_ccm.h"
-diff --git a/hw/arm/mcimx7d-sabre.c b/hw/arm/mcimx7d-sabre.c
-index d1778122b64..693a1023b6c 100644
---- a/hw/arm/mcimx7d-sabre.c
-+++ b/hw/arm/mcimx7d-sabre.c
-@@ -15,6 +15,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/arm/fsl-imx7.h"
-+#include "hw/arm/boot.h"
- #include "hw/boards.h"
+ #include "hw/cpu/cluster.h"
+ #include "hw/or-irq.h"
+ #include "hw/sd/sdhci.h"
+diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+index 88c561ff632..537118224fb 100644
+--- a/hw/arm/xlnx-versal-virt.c
++++ b/hw/arm/xlnx-versal-virt.c
+@@ -19,6 +19,7 @@
+ #include "cpu.h"
  #include "hw/qdev-properties.h"
- #include "qemu/error-report.h"
+ #include "hw/arm/xlnx-versal.h"
++#include "hw/arm/boot.h"
+ #include "qom/object.h"
+ 
+ #define TYPE_XLNX_VERSAL_VIRT_MACHINE MACHINE_TYPE_NAME("xlnx-versal-virt")
 -- 
 2.34.1
 
