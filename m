@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741CE7D9D86
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941AA7D9D8C
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:54:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwPA9-0003cd-S4; Fri, 27 Oct 2023 11:54:17 -0400
+	id 1qwPAB-0003v5-T6; Fri, 27 Oct 2023 11:54:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qwP9m-0003Uc-3a
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:53:55 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qwP9q-0003Wr-S0
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:53:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qwP9i-0002d3-Jb
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:53:52 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qwP9l-0002eg-Qg
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 11:53:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698422030;
+ s=mimecast20190719; t=1698422032;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cMnf6vzuysy5ioqXVCVbl7/7Pel46hF1j1R6afga9Qw=;
- b=PxLATIKWn8bQZ69UVVjCla3xBS7p9289yLYGEAVp00UY1dDduhvabrOBcvAYaQnfbAIDsN
- ixwb96VUHxXdrfiDIh0Vlapiv5YYGzKF7K+PmTCghDkt0Fd1aRPsyV1pFasqj9kDV/AyCE
- hk/qrdk4+kvIYTo3vi39OTOyhR68d2g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-IVkGc78HMay-NP3zeiHKhQ-1; Fri,
- 27 Oct 2023 11:53:48 -0400
-X-MC-Unique: IVkGc78HMay-NP3zeiHKhQ-1
+ bh=BR9QUUGdhAAxg3GK1bTg935xvmOqd5Yhf7t1CpbJhcs=;
+ b=Lbo8NVZx39UzK/x/Uh6h/LdG4+QrpyLQY3X4mJpzkAfUCCuCwGP3zSV9gqCBKxyGX8cNWS
+ eC/5JGZGs9p+CeMe+uGKZdjXaSemc7GMhgzUANpJMyRAXyP9pCVEqVy09c056lJK2/igiL
+ 9pD85P7mpcPxIJ/qdhLqt2XH/qc6PTo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-ATozQVssPiCkidLXe3ISbg-1; Fri, 27 Oct 2023 11:53:50 -0400
+X-MC-Unique: ATozQVssPiCkidLXe3ISbg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9655D2800B43;
- Fri, 27 Oct 2023 15:53:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06A1C101A54C;
+ Fri, 27 Oct 2023 15:53:50 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.78])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 699195027;
- Fri, 27 Oct 2023 15:53:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CDB65502A;
+ Fri, 27 Oct 2023 15:53:48 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, eesposit@redhat.com,
  eblake@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
  qemu-devel@nongnu.org
-Subject: [PATCH 05/24] block: Mark block_job_add_bdrv() GRAPH_WRLOCK
-Date: Fri, 27 Oct 2023 17:53:14 +0200
-Message-ID: <20231027155333.420094-6-kwolf@redhat.com>
+Subject: [PATCH 06/24] block: Mark bdrv_filter_or_cow_bs() and callers
+ GRAPH_RDLOCK
+Date: Fri, 27 Oct 2023 17:53:15 +0200
+Message-ID: <20231027155333.420094-7-kwolf@redhat.com>
 In-Reply-To: <20231027155333.420094-1-kwolf@redhat.com>
 References: <20231027155333.420094-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -78,302 +79,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of taking the writer lock internally, require callers to already
-hold it when calling block_job_add_bdrv(). These callers will typically
-already hold the graph lock once the locking work is completed, which
-means that they can't call functions that take it internally.
+This adds GRAPH_RDLOCK annotations to declare that callers of
+bdrv_filter_or_cow_bs() need to hold a reader lock for the graph because
+it calls bdrv_filter_or_cow_child(), which accesses bs->file/backing.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/blockjob.h     |  5 +++--
- include/block/blockjob_int.h |  9 +++++----
- block/backup.c               | 21 +++++++++++++++------
- block/commit.c               |  5 +++++
- block/mirror.c               |  5 +++++
+ include/block/block_int-io.h |  3 ++-
+ block.c                      | 31 ++++++++++++++++++-------------
  block/stream.c               |  4 ++++
- blockjob.c                   |  8 +++++---
- tests/unit/test-bdrv-drain.c |  3 +++
- 8 files changed, 45 insertions(+), 15 deletions(-)
+ blockdev.c                   |  2 +-
+ nbd/server.c                 |  6 ++++++
+ 5 files changed, 31 insertions(+), 15 deletions(-)
 
-diff --git a/include/block/blockjob.h b/include/block/blockjob.h
-index 058b0c824c..059138aa27 100644
---- a/include/block/blockjob.h
-+++ b/include/block/blockjob.h
-@@ -138,8 +138,9 @@ BlockJob *block_job_get_locked(const char *id);
-  * @job. This means that all operations will be blocked on @bs while
-  * @job exists.
-  */
--int block_job_add_bdrv(BlockJob *job, const char *name, BlockDriverState *bs,
--                       uint64_t perm, uint64_t shared_perm, Error **errp);
-+int GRAPH_WRLOCK
-+block_job_add_bdrv(BlockJob *job, const char *name, BlockDriverState *bs,
-+                   uint64_t perm, uint64_t shared_perm, Error **errp);
+diff --git a/include/block/block_int-io.h b/include/block/block_int-io.h
+index 26bff94e4e..6800af7590 100644
+--- a/include/block/block_int-io.h
++++ b/include/block/block_int-io.h
+@@ -150,7 +150,8 @@ bdrv_filter_bs(BlockDriverState *bs)
+     return child_bs(bdrv_filter_child(bs));
+ }
  
- /**
-  * block_job_remove_all_bdrv:
-diff --git a/include/block/blockjob_int.h b/include/block/blockjob_int.h
-index 104824040c..e80bb5c33e 100644
---- a/include/block/blockjob_int.h
-+++ b/include/block/blockjob_int.h
-@@ -99,10 +99,11 @@ struct BlockJobDriver {
-  * This function is not part of the public job interface; it should be
-  * called from a wrapper that is specific to the job type.
-  */
--void *block_job_create(const char *job_id, const BlockJobDriver *driver,
--                       JobTxn *txn, BlockDriverState *bs, uint64_t perm,
--                       uint64_t shared_perm, int64_t speed, int flags,
--                       BlockCompletionFunc *cb, void *opaque, Error **errp);
-+void * GRAPH_UNLOCKED
-+block_job_create(const char *job_id, const BlockJobDriver *driver,
-+                 JobTxn *txn, BlockDriverState *bs, uint64_t perm,
-+                 uint64_t shared_perm, int64_t speed, int flags,
-+                 BlockCompletionFunc *cb, void *opaque, Error **errp);
+-static inline BlockDriverState *bdrv_filter_or_cow_bs(BlockDriverState *bs)
++static inline BlockDriverState * GRAPH_RDLOCK
++bdrv_filter_or_cow_bs(BlockDriverState *bs)
+ {
+     IO_CODE();
+     return child_bs(bdrv_filter_or_cow_child(bs));
+diff --git a/block.c b/block.c
+index 5f92eb4950..a6060eddbc 100644
+--- a/block.c
++++ b/block.c
+@@ -5435,17 +5435,6 @@ static int bdrv_replace_node_common(BlockDriverState *from,
  
- /**
-  * block_job_free:
-diff --git a/block/backup.c b/block/backup.c
-index 9a3c4bdc82..5bad7d116f 100644
---- a/block/backup.c
-+++ b/block/backup.c
-@@ -374,7 +374,6 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
-     assert(bs);
-     assert(target);
      GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
  
-     /* QMP interface protects us from these cases */
-     assert(sync_mode != MIRROR_SYNC_MODE_INCREMENTAL);
-@@ -385,31 +384,33 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
-         return NULL;
+-    if (detach_subchain) {
+-        assert(bdrv_chain_contains(from, to));
+-        assert(from != to);
+-        for (to_cow_parent = from;
+-             bdrv_filter_or_cow_bs(to_cow_parent) != to;
+-             to_cow_parent = bdrv_filter_or_cow_bs(to_cow_parent))
+-        {
+-            ;
+-        }
+-    }
+-
+     /* Make sure that @from doesn't go away until we have successfully attached
+      * all of its parents to @to. */
+     bdrv_ref(from);
+@@ -5457,6 +5446,17 @@ static int bdrv_replace_node_common(BlockDriverState *from,
+ 
+     bdrv_graph_wrlock(to);
+ 
++    if (detach_subchain) {
++        assert(bdrv_chain_contains(from, to));
++        assert(from != to);
++        for (to_cow_parent = from;
++             bdrv_filter_or_cow_bs(to_cow_parent) != to;
++             to_cow_parent = bdrv_filter_or_cow_bs(to_cow_parent))
++        {
++            ;
++        }
++    }
++
+     /*
+      * Do the replacement without permission update.
+      * Replacement may influence the permissions, we should calculate new
+@@ -5504,10 +5504,14 @@ int bdrv_replace_node(BlockDriverState *from, BlockDriverState *to,
+ 
+ int bdrv_drop_filter(BlockDriverState *bs, Error **errp)
+ {
++    BlockDriverState *child_bs;
++
+     GLOBAL_STATE_CODE();
++    bdrv_graph_rdlock_main_loop();
++    child_bs = bdrv_filter_or_cow_bs(bs);
++    bdrv_graph_rdunlock_main_loop();
+ 
+-    return bdrv_replace_node_common(bs, bdrv_filter_or_cow_bs(bs), true, true,
+-                                    errp);
++    return bdrv_replace_node_common(bs, child_bs, true, true, errp);
+ }
+ 
+ /*
+@@ -6509,6 +6513,7 @@ bool bdrv_chain_contains(BlockDriverState *top, BlockDriverState *base)
+ {
+ 
+     GLOBAL_STATE_CODE();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
+     while (top && top != base) {
+         top = bdrv_filter_or_cow_bs(top);
+diff --git a/block/stream.c b/block/stream.c
+index 51333e460b..2781441191 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -60,6 +60,8 @@ static int stream_prepare(Job *job)
+     Error *local_err = NULL;
+     int ret = 0;
+ 
++    GLOBAL_STATE_CODE();
++
+     /* We should drop filter at this point, as filter hold the backing chain */
+     bdrv_cor_filter_drop(s->cor_filter_bs);
+     s->cor_filter_bs = NULL;
+@@ -78,8 +80,10 @@ static int stream_prepare(Job *job)
+         bdrv_drained_begin(unfiltered_bs_cow);
      }
  
 +    bdrv_graph_rdlock_main_loop();
-     if (!bdrv_is_inserted(bs)) {
-         error_setg(errp, "Device is not inserted: %s",
-                    bdrv_get_device_name(bs));
--        return NULL;
-+        goto error_rdlock;
-     }
- 
-     if (!bdrv_is_inserted(target)) {
-         error_setg(errp, "Device is not inserted: %s",
-                    bdrv_get_device_name(target));
--        return NULL;
-+        goto error_rdlock;
-     }
- 
-     if (compress && !bdrv_supports_compressed_writes(target)) {
-         error_setg(errp, "Compression is not supported for this drive %s",
-                    bdrv_get_device_name(target));
--        return NULL;
-+        goto error_rdlock;
-     }
- 
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_BACKUP_SOURCE, errp)) {
--        return NULL;
-+        goto error_rdlock;
-     }
- 
-     if (bdrv_op_is_blocked(target, BLOCK_OP_TYPE_BACKUP_TARGET, errp)) {
--        return NULL;
-+        goto error_rdlock;
-     }
+     base = bdrv_filter_or_cow_bs(s->above_base);
+     unfiltered_base = bdrv_skip_filters(base);
 +    bdrv_graph_rdunlock_main_loop();
  
-     if (perf->max_workers < 1 || perf->max_workers > INT_MAX) {
-         error_setg(errp, "max-workers must be between 1 and %d", INT_MAX);
-@@ -437,6 +438,7 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
- 
-     len = bdrv_getlength(bs);
-     if (len < 0) {
-+        GRAPH_RDLOCK_GUARD_MAINLOOP();
-         error_setg_errno(errp, -len, "Unable to get length for '%s'",
-                          bdrv_get_device_or_node_name(bs));
-         goto error;
-@@ -444,6 +446,7 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
- 
-     target_len = bdrv_getlength(target);
-     if (target_len < 0) {
-+        GRAPH_RDLOCK_GUARD_MAINLOOP();
-         error_setg_errno(errp, -target_len, "Unable to get length for '%s'",
-                          bdrv_get_device_or_node_name(bs));
-         goto error;
-@@ -493,8 +496,10 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
-     block_copy_set_speed(bcs, speed);
- 
-     /* Required permissions are taken by copy-before-write filter target */
-+    bdrv_graph_wrlock(target);
-     block_job_add_bdrv(&job->common, "target", target, 0, BLK_PERM_ALL,
-                        &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     return &job->common;
- 
-@@ -507,4 +512,8 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
-     }
- 
-     return NULL;
-+
-+error_rdlock:
-+    bdrv_graph_rdunlock_main_loop();
-+    return NULL;
- }
-diff --git a/block/commit.c b/block/commit.c
-index 43d1de7577..fc3ad79749 100644
---- a/block/commit.c
-+++ b/block/commit.c
-@@ -342,6 +342,7 @@ void commit_start(const char *job_id, BlockDriverState *bs,
+     if (bdrv_cow_child(unfiltered_bs)) {
+         const char *base_id = NULL, *base_fmt = NULL;
+diff --git a/blockdev.c b/blockdev.c
+index 25c6c6e8d3..240834b6d4 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -2492,8 +2492,8 @@ void qmp_block_stream(const char *job_id, const char *device,
+     /*
+      * Check for op blockers in the whole chain between bs and base (or bottom)
       */
-     iter_shared_perms = BLK_PERM_WRITE_UNCHANGED | BLK_PERM_WRITE;
- 
-+    bdrv_graph_wrlock(top);
-     for (iter = top; iter != base; iter = bdrv_filter_or_cow_bs(iter)) {
-         if (iter == filtered_base) {
-             /*
-@@ -354,16 +355,20 @@ void commit_start(const char *job_id, BlockDriverState *bs,
-         ret = block_job_add_bdrv(&s->common, "intermediate node", iter, 0,
-                                  iter_shared_perms, errp);
-         if (ret < 0) {
-+            bdrv_graph_wrunlock();
-             goto fail;
-         }
-     }
- 
-     if (bdrv_freeze_backing_chain(commit_top_bs, base, errp) < 0) {
-+        bdrv_graph_wrunlock();
-         goto fail;
-     }
-     s->chain_frozen = true;
- 
-     ret = block_job_add_bdrv(&s->common, "base", base, 0, BLK_PERM_ALL, errp);
-+    bdrv_graph_wrunlock();
-+
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/mirror.c b/block/mirror.c
-index dcd88de2e3..b1d2a5268a 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -1831,11 +1831,13 @@ static BlockJob *mirror_start_job(
-         bdrv_disable_dirty_bitmap(s->dirty_bitmap);
-     }
- 
-+    bdrv_graph_wrlock(bs);
-     ret = block_job_add_bdrv(&s->common, "source", bs, 0,
-                              BLK_PERM_WRITE_UNCHANGED | BLK_PERM_WRITE |
-                              BLK_PERM_CONSISTENT_READ,
-                              errp);
-     if (ret < 0) {
-+        bdrv_graph_wrunlock();
-         goto fail;
-     }
- 
-@@ -1880,14 +1882,17 @@ static BlockJob *mirror_start_job(
-             ret = block_job_add_bdrv(&s->common, "intermediate node", iter, 0,
-                                      iter_shared_perms, errp);
-             if (ret < 0) {
-+                bdrv_graph_wrunlock();
-                 goto fail;
-             }
-         }
- 
-         if (bdrv_freeze_backing_chain(mirror_top_bs, target, errp) < 0) {
-+            bdrv_graph_wrunlock();
-             goto fail;
-         }
-     }
-+    bdrv_graph_wrunlock();
- 
-     QTAILQ_INIT(&s->ops_in_flight);
- 
-diff --git a/block/stream.c b/block/stream.c
-index b22d9c236b..51333e460b 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -352,8 +352,10 @@ void stream_start(const char *job_id, BlockDriverState *bs,
-      * already have our own plans. Also don't allow resize as the image size is
-      * queried only at the job start and then cached.
-      */
-+    bdrv_graph_wrlock(bs);
-     if (block_job_add_bdrv(&s->common, "active node", bs, 0,
-                            basic_flags | BLK_PERM_WRITE, errp)) {
-+        bdrv_graph_wrunlock();
-         goto fail;
-     }
- 
-@@ -373,9 +375,11 @@ void stream_start(const char *job_id, BlockDriverState *bs,
-         ret = block_job_add_bdrv(&s->common, "intermediate node", iter, 0,
-                                  basic_flags, errp);
-         if (ret < 0) {
-+            bdrv_graph_wrunlock();
-             goto fail;
-         }
-     }
-+    bdrv_graph_wrunlock();
- 
-     s->base_overlay = base_overlay;
-     s->above_base = above_base;
-diff --git a/blockjob.c b/blockjob.c
-index 48559fc154..910c4200e6 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -248,10 +248,8 @@ int block_job_add_bdrv(BlockJob *job, const char *name, BlockDriverState *bs,
-         }
-         aio_context_acquire(ctx);
-     }
--    bdrv_graph_wrlock(bs);
-     c = bdrv_root_attach_child(bs, name, &child_job, 0, perm, shared_perm, job,
-                                errp);
--    bdrv_graph_wrunlock();
-     if (need_context_ops) {
-         aio_context_release(ctx);
-         if (job->job.aio_context != qemu_get_aio_context()) {
-@@ -489,7 +487,8 @@ void *block_job_create(const char *job_id, const BlockJobDriver *driver,
-     BlockJob *job;
+-    iter_end = bottom ? bdrv_filter_or_cow_bs(bottom_bs) : base_bs;
+     bdrv_graph_rdlock_main_loop();
++    iter_end = bottom ? bdrv_filter_or_cow_bs(bottom_bs) : base_bs;
+     for (iter = bs; iter && iter != iter_end;
+          iter = bdrv_filter_or_cow_bs(iter))
+     {
+diff --git a/nbd/server.c b/nbd/server.c
+index 859c163d19..895cf0a752 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -1689,6 +1689,7 @@ static int nbd_export_create(BlockExport *blk_exp, BlockExportOptions *exp_args,
+     size_t i;
      int ret;
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
++    GLOBAL_STATE_CODE();
+     assert(exp_args->type == BLOCK_EXPORT_TYPE_NBD);
+ 
+     if (!nbd_server_is_running()) {
+@@ -1743,6 +1744,8 @@ static int nbd_export_create(BlockExport *blk_exp, BlockExportOptions *exp_args,
+     }
+     exp->size = QEMU_ALIGN_DOWN(size, BDRV_SECTOR_SIZE);
+ 
++    bdrv_graph_rdlock_main_loop();
 +
-+    bdrv_graph_wrlock(bs);
- 
-     if (job_id == NULL && !(flags & JOB_INTERNAL)) {
-         job_id = bdrv_get_device_name(bs);
-@@ -498,6 +497,7 @@ void *block_job_create(const char *job_id, const BlockJobDriver *driver,
-     job = job_create(job_id, &driver->job_driver, txn, bdrv_get_aio_context(bs),
-                      flags, cb, opaque, errp);
-     if (job == NULL) {
-+        bdrv_graph_wrunlock();
-         return NULL;
+     for (bitmaps = arg->bitmaps; bitmaps; bitmaps = bitmaps->next) {
+         exp->nr_export_bitmaps++;
      }
+@@ -1825,9 +1828,12 @@ static int nbd_export_create(BlockExport *blk_exp, BlockExportOptions *exp_args,
  
-@@ -537,9 +537,11 @@ void *block_job_create(const char *job_id, const BlockJobDriver *driver,
-         goto fail;
-     }
+     QTAILQ_INSERT_TAIL(&exports, exp, next);
  
-+    bdrv_graph_wrunlock();
-     return job;
++    bdrv_graph_rdunlock_main_loop();
++
+     return 0;
  
  fail:
-+    bdrv_graph_wrunlock();
-     job_early_fail(&job->job);
-     return NULL;
- }
-diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
-index f67e9df01c..40d17b4c5a 100644
---- a/tests/unit/test-bdrv-drain.c
-+++ b/tests/unit/test-bdrv-drain.c
-@@ -794,7 +794,10 @@ static void test_blockjob_common_drain_node(enum drain_type drain_type,
-                             0, 0, NULL, NULL, &error_abort);
-     tjob->bs = src;
-     job = &tjob->common;
-+
-+    bdrv_graph_wrlock(target);
-     block_job_add_bdrv(job, "target", target, 0, BLK_PERM_ALL, &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     switch (result) {
-     case TEST_JOB_SUCCESS:
++    bdrv_graph_rdunlock_main_loop();
+     g_free(exp->export_bitmaps);
+     g_free(exp->name);
+     g_free(exp->description);
 -- 
 2.41.0
 
