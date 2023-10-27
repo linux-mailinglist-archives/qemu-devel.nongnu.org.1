@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FED37D9BB6
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDBB7D9BE2
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:44:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwO0S-0007Mq-9b; Fri, 27 Oct 2023 10:40:14 -0400
+	id 1qwO0i-0007o7-Lm; Fri, 27 Oct 2023 10:40:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0D-0007Gp-1l
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:57 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1qwO0I-0007LW-Jv
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:04 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qwO0A-00089k-Lu
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:39:56 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-32f5b83f254so1475582f8f.3
+ id 1qwO0E-00089q-Gz
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:40:02 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5082a874098so948818e87.3
  for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:39:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698417593; x=1699022393; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ujFzQLltW2Suocxr+GhD/2DbHmU0GTzQwzP5CygPT38=;
- b=HE77PfqFvLGJVdVTcymwZK+DLweHIe6Wg/Jc0Lfv5z62vTJmlMSgQRPCLBz32v0jdR
- +2WuDAD5GQvpSCTnqn1gZQ1noK+5yrp9Hvc46LGq1eZJl9qZt8vY8hMzA5oZ98iueuRm
- bBA2jSMKcaUInRySgyeFjNJJMNAAqiUgcjMSark/PJSXt4PUB4zUDfMalRCcXQa4z0mG
- EyKFdgv6pwkP61boPDpuiWmfzXrjmkmyxwQhz5Gihcm34GOoE2MH2n5q3pBMAErHqC+A
- YV7hLbH3JfOfLxh3mnL/DEwFxx5I7ZXW2301gY2n5grhGN4WJIKMb529+L4X89CSsqMl
- ALxA==
+ :reply-to; bh=zos/YT3JrRjqByZMNLI9yBeVZvxMZhI5gX49arsEv1w=;
+ b=B1hmGppgQP++MJAF06zQ39dgzLrIEVj2ZK5bmCAe/WLIiA00f4fACnv0l0CBaIe5TI
+ FNCWAn4/io0P43QswoylqKID4ClY3KGFRQAfKYAEBN4qiWPAcQFCcCKXqPf43TkKx6Kf
+ 77djS2oib7liEIkp1zCzYkdKJincDvNFtZ+Wg8RL8IuFDdQVRRHuF8ZNv9IXWbrQCv2E
+ WBnJ9lR1c4FXUyxpcqvWn9fPkklOTmxJGDEYCtxCoXLFHJq+LSFmry7jd+MwXhqgiHWh
+ xSHUGfNj/wfmfUFFlUhIgw0Fg40k2biTooHDjt1Uq+k6gEjqnZJAvtinvTNB/7cXppxy
+ uEGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698417593; x=1699022393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ujFzQLltW2Suocxr+GhD/2DbHmU0GTzQwzP5CygPT38=;
- b=rk1VpksCK9q6ysnT0jAjHLLOq/bPwwjk6TH0QXIQKy/R94Xw6JfKFZkxIosEwQMiGq
- 2Xj8CcL0P0cfaK2th4tQSqqm+bHIvuRUQNxnD63AhwbsSpHAglzTRpNx2Zh1l23fcQ6s
- mbR9GtnJ8frdzm+x8Gm9L9zuylUhxoJDQl66cKrpzOACIMiahyzvICuqdQKrvyLY9duT
- x+JraEpuGbIDNNDPW7AjlRY1aoAA22cQmgdab50xC8I9XhauxrM8Sn6dM/lUT79Ip1Fk
- bfFKjlmG18DTcwzMKRylG8vye01y79VB7PkU4MOXVf4aGxefZev/Cqw2Yb2ci2IGVJn5
- QqaA==
-X-Gm-Message-State: AOJu0YzPe8DjSfOR337JS6Jzgo5JPpuLDpOYpqV8y2bC1NAoykmXuk/t
- y7WwUcRMdGutbaU9+BPaJ+FWvpPQoZJCShszGHc=
-X-Google-Smtp-Source: AGHT+IG99Ci7wIvi9k4Fgmu3DtpsB1Fnj7c2fgNKWWyY6Qg8rCgzbhRrxPb7gBUQ91y+iyzPsFk2lQ==
-X-Received: by 2002:a05:6000:c8:b0:32d:9cf2:f82 with SMTP id
- q8-20020a05600000c800b0032d9cf20f82mr2254960wrx.45.1698417593177; 
+ bh=zos/YT3JrRjqByZMNLI9yBeVZvxMZhI5gX49arsEv1w=;
+ b=Al2vzDR/ckleabk+CoLbvYPrO2n2gA69io28K0/ozN5EIeN/lpeh6s6Vwk7i0uj2vT
+ kJ6CHX+AMFW0rhMgWREcTLZYi/nKIUoNo3lWtZf/DpSHEdIzbGEGqX6zp8VJL17vDZMI
+ CnLlgM4d+iRzR9sgwY5u2P59RDmtMrVeHF/C8eyivhZ9VqeR+PKMQUnJgSk+fFX5zMJy
+ MsA84wWhN2WNV6Msfex4u8vAilcf/tfj3hvdoHmkD0LyjxCVZ90wN/6zKAAChGtdk3nf
+ Ssnnr6Rpwcmf6SvsceEKsmN6wSRHvJTlJzS+hMhQYEv0Cyn2yKCNEAecaVq1V6qXPulS
+ vopw==
+X-Gm-Message-State: AOJu0YyYB4yTGxeSxkvipNQM8pF3W0FN3/uSHwI2rBDdKyawT3xwPAaz
+ //6IERhmh8x16HTlISjokhTgss4+qxZ79DvdO24=
+X-Google-Smtp-Source: AGHT+IF6ijecQTcAwkYNipV9DNsU+/5QyF3PTFb8vmlmNjiqNegBNGplPBcL35/WOzU8rR1cQmOGbQ==
+X-Received: by 2002:a05:6512:3b87:b0:508:2b98:d6ce with SMTP id
+ g7-20020a0565123b8700b005082b98d6cemr1597359lfv.45.1698417593679; 
  Fri, 27 Oct 2023 07:39:53 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.52
+ e2-20020a5d5002000000b0031c6581d55esm1874123wrt.91.2023.10.27.07.39.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Oct 2023 07:39:52 -0700 (PDT)
+ Fri, 27 Oct 2023 07:39:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/41] hw/arm/xlnx-zynqmp: Remove 'hw/arm/boot.h' from header
-Date: Fri, 27 Oct 2023 15:39:20 +0100
-Message-Id: <20231027143942.3413881-20-peter.maydell@linaro.org>
+Subject: [PULL 20/41] hw/sd/pxa2xx: Realize sysbus device before accessing it
+Date: Fri, 27 Oct 2023 15:39:21 +0100
+Message-Id: <20231027143942.3413881-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027143942.3413881-1-peter.maydell@linaro.org>
 References: <20231027143942.3413881-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,42 +93,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-"hw/arm/boot.h" is only required on the source file.
+sysbus_mmio_map() and sysbus_connect_irq() should not be
+called on unrealized device.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Luc Michel <luc.michel@amd.com>
-Message-id: 20231025065316.56817-11-philmd@linaro.org
+Message-id: 20231020130331.50048-2-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/xlnx-zynqmp.h | 1 -
- hw/arm/xlnx-zcu102.c         | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ hw/sd/pxa2xx_mmci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/arm/xlnx-zynqmp.h b/include/hw/arm/xlnx-zynqmp.h
-index 687c75e3b03..96358d51ebb 100644
---- a/include/hw/arm/xlnx-zynqmp.h
-+++ b/include/hw/arm/xlnx-zynqmp.h
-@@ -18,7 +18,6 @@
- #ifndef XLNX_ZYNQMP_H
- #define XLNX_ZYNQMP_H
+diff --git a/hw/sd/pxa2xx_mmci.c b/hw/sd/pxa2xx_mmci.c
+index 124fbf8bbd4..9f7a880bac2 100644
+--- a/hw/sd/pxa2xx_mmci.c
++++ b/hw/sd/pxa2xx_mmci.c
+@@ -483,11 +483,11 @@ PXA2xxMMCIState *pxa2xx_mmci_init(MemoryRegion *sysmem,
  
--#include "hw/arm/boot.h"
- #include "hw/intc/arm_gic.h"
- #include "hw/net/cadence_gem.h"
- #include "hw/char/cadence_uart.h"
-diff --git a/hw/arm/xlnx-zcu102.c b/hw/arm/xlnx-zcu102.c
-index c5a07cfe195..4667cb333ca 100644
---- a/hw/arm/xlnx-zcu102.c
-+++ b/hw/arm/xlnx-zcu102.c
-@@ -18,6 +18,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/arm/xlnx-zynqmp.h"
-+#include "hw/arm/boot.h"
- #include "hw/boards.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
+     dev = qdev_new(TYPE_PXA2XX_MMCI);
+     sbd = SYS_BUS_DEVICE(dev);
++    sysbus_realize_and_unref(sbd, &error_fatal);
+     sysbus_mmio_map(sbd, 0, base);
+     sysbus_connect_irq(sbd, 0, irq);
+     qdev_connect_gpio_out_named(dev, "rx-dma", 0, rx_dma);
+     qdev_connect_gpio_out_named(dev, "tx-dma", 0, tx_dma);
+-    sysbus_realize_and_unref(sbd, &error_fatal);
+ 
+     return PXA2XX_MMCI(dev);
+ }
 -- 
 2.34.1
 
