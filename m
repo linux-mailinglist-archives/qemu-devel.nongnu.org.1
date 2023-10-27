@@ -2,93 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5087D9B5A
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 16:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A88C7D9CD2
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 17:22:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwNmx-0003Zd-FL; Fri, 27 Oct 2023 10:26:15 -0400
+	id 1qwOde-00066s-2H; Fri, 27 Oct 2023 11:20:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNmv-0003ZV-Qe
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:26:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwNmt-00047V-6E
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:26:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698416770;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sE74aWiY25rEBjP6zS30qfxRTGbm6V35DcrvyaU6u8k=;
- b=cB+flAEqxUNwZZOBrEMIcagOh9aiy+7GwdIWG53bRuDNkdmteQXvfcpl/oNG7eDqUb8j3l
- wq27OKmlKy2BltajRQqxFvFQDdF2JCEEaN3e4UaOt0vLMVRA4A3tW3IVvMDJmfZFBfy/yl
- 1/gqZuX67okT3QxYshETIbL+SyEY/Kk=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-10-nnr0_tA4Mmy2cNOsY7Iewg-1; Fri, 27 Oct 2023 10:26:09 -0400
-X-MC-Unique: nnr0_tA4Mmy2cNOsY7Iewg-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d7b90c8ecso27718456d6.3
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 07:26:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698416768; x=1699021568;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sE74aWiY25rEBjP6zS30qfxRTGbm6V35DcrvyaU6u8k=;
- b=qhy3DnvPjW5MZ68Oesl44mvwYwf0PZ/Nn9VxHADxkxhRhH3eUobfKmxZdMIMeKl1MH
- JGdUr66oyvx/s/gl0zJBJ4L4YXazu4vNeiELQWcS9Ow63EJW9kzMpzovpkR8lISkMpyA
- j+SjtHQSSmPL8z9XD9f+AMf+7qJeL0vG/DRe9XskZfEVZBCkW166f5MZpcvqVngvnpof
- WkZpGW53mCAxNZtEpbCyt/pGikVX/wmYEDd7YYU0B/dKDGGzY3XAPUingEkgVi53emIG
- EDOiMjVuU5Y3iDVNG0zeob6q2YEMFhQGHMje/9WOukx2N4a2SgxyksYlND8TI4EypLVJ
- UE8Q==
-X-Gm-Message-State: AOJu0YwQ5SAAERhqoEGoxpfYPBUtZJd+DbshWS/2maAu1kKJ2vq2ABkH
- Gt5xnlUXkIEJrsrHEz3nL3/ZXJYTTKG8KdXSs1EirxSCwpctpKeBNCbs91FHL345I/vyPW3xYZS
- vsu00pWPSnUGaV8Y=
-X-Received: by 2002:a05:6214:29cd:b0:66d:8524:ec07 with SMTP id
- gh13-20020a05621429cd00b0066d8524ec07mr2777320qvb.49.1698416768594; 
- Fri, 27 Oct 2023 07:26:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFExgAploPDyLkl6VSLL8IiIrwpTYhEspdJOBs73aq9zVhz49bkIR31QZHsFWXA5cSLuJf+Ow==
-X-Received: by 2002:a05:6214:29cd:b0:66d:8524:ec07 with SMTP id
- gh13-20020a05621429cd00b0066d8524ec07mr2777300qvb.49.1698416768285; 
- Fri, 27 Oct 2023 07:26:08 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
- ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
- by smtp.gmail.com with ESMTPSA id
- l20-20020a0ce514000000b0065b17b925d0sm658644qvm.38.2023.10.27.07.26.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 07:26:07 -0700 (PDT)
-Message-ID: <1e5db685-0d49-43f0-8ff6-bc9f88d05131@redhat.com>
-Date: Fri, 27 Oct 2023 16:26:05 +0200
+ (Exim 4.90_1) (envelope-from <mmromanov@ispras.ru>)
+ id 1qwNy2-0006N9-Vj
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:37:49 -0400
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mmromanov@ispras.ru>)
+ id 1qwNxz-0007Gg-Qp
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 10:37:42 -0400
+Received: from localhost.intra.ispras.ru (unknown [10.10.3.121])
+ by mail.ispras.ru (Postfix) with ESMTP id E4E7D40737D5;
+ Fri, 27 Oct 2023 14:37:13 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru E4E7D40737D5
+From: Mikhail Romanov <mmromanov@ispras.ru>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alexander Monakov <amonakov@ispras.ru>,
+ Mikhail Romanov <mmromanov@ispras.ru>
+Subject: [PATCH v2] Optimize buffer_is_zero
+Date: Fri, 27 Oct 2023 17:37:04 +0300
+Message-Id: <20231027143704.7060-1-mmromanov@ispras.ru>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/37] vfio/container: Switch to dma_map|unmap API
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-9-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231026103104.1686921-9-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=83.149.199.84; envelope-from=mmromanov@ispras.ru;
+ helo=mail.ispras.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 27 Oct 2023 11:20:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,312 +57,464 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 12:30, Zhenzhong Duan wrote:
-> From: Eric Auger <eric.auger@redhat.com>
-> 
-> No fucntional change intended.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->   include/hw/vfio/vfio-common.h         |  4 ---
->   include/hw/vfio/vfio-container-base.h |  7 ++++
->   hw/vfio/common.c                      | 45 +++++++++++++-----------
->   hw/vfio/container-base.c              | 49 +++++++++++++++++++++++++++
->   hw/vfio/container.c                   | 22 ++++++++----
->   hw/vfio/meson.build                   |  1 +
->   hw/vfio/trace-events                  |  2 +-
->   7 files changed, 98 insertions(+), 32 deletions(-)
->   create mode 100644 hw/vfio/container-base.c
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 8ded5cd8e4..97056224f4 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -208,10 +208,6 @@ void vfio_put_address_space(VFIOAddressSpace *space);
->   bool vfio_devices_all_running_and_saving(VFIOContainer *container);
->   
->   /* container->fd */
-> -int vfio_dma_unmap(VFIOContainer *container, hwaddr iova,
-> -                   ram_addr_t size, IOMMUTLBEntry *iotlb);
-> -int vfio_dma_map(VFIOContainer *container, hwaddr iova,
-> -                 ram_addr_t size, void *vaddr, bool readonly);
->   int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start);
->   int vfio_query_dirty_bitmap(VFIOContainer *container, VFIOBitmap *vbmap,
->                               hwaddr iova, hwaddr size);
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index 5becbd51a7..077e638ee8 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -45,6 +45,13 @@ typedef struct VFIOContainerBase {
->       const VFIOIOMMUOps *ops;
->   } VFIOContainerBase;
->   
-> +int vfio_container_dma_map(VFIOContainerBase *bcontainer,
-> +                           hwaddr iova, ram_addr_t size,
-> +                           void *vaddr, bool readonly);
-> +int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-> +                             hwaddr iova, ram_addr_t size,
-> +                             IOMMUTLBEntry *iotlb);
-> +
->   struct VFIOIOMMUOps {
->       /* basic feature */
->       int (*dma_map)(VFIOContainerBase *bcontainer,
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 0ebf4d9256..141f2b54a4 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -292,7 +292,7 @@ static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
->   static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
->   {
->       VFIOGuestIOMMU *giommu = container_of(n, VFIOGuestIOMMU, n);
-> -    VFIOContainer *container = giommu->container;
-> +    VFIOContainerBase *bcontainer = &giommu->container->bcontainer;
->       hwaddr iova = iotlb->iova + giommu->iommu_offset;
->       void *vaddr;
->       int ret;
-> @@ -322,21 +322,22 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
->            * of vaddr will always be there, even if the memory object is
->            * destroyed and its backing memory munmap-ed.
->            */
-> -        ret = vfio_dma_map(container, iova,
-> -                           iotlb->addr_mask + 1, vaddr,
-> -                           read_only);
-> +        ret = vfio_container_dma_map(bcontainer, iova,
-> +                                     iotlb->addr_mask + 1, vaddr,
-> +                                     read_only);
->           if (ret) {
-> -            error_report("vfio_dma_map(%p, 0x%"HWADDR_PRIx", "
-> +            error_report("vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
->                            "0x%"HWADDR_PRIx", %p) = %d (%s)",
-> -                         container, iova,
-> +                         bcontainer, iova,
->                            iotlb->addr_mask + 1, vaddr, ret, strerror(-ret));
->           }
->       } else {
-> -        ret = vfio_dma_unmap(container, iova, iotlb->addr_mask + 1, iotlb);
-> +        ret = vfio_container_dma_unmap(bcontainer, iova,
-> +                                       iotlb->addr_mask + 1, iotlb);
->           if (ret) {
-> -            error_report("vfio_dma_unmap(%p, 0x%"HWADDR_PRIx", "
-> +            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
->                            "0x%"HWADDR_PRIx") = %d (%s)",
-> -                         container, iova,
-> +                         bcontainer, iova,
->                            iotlb->addr_mask + 1, ret, strerror(-ret));
->               vfio_set_migration_error(ret);
->           }
-> @@ -355,9 +356,10 @@ static void vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
->       int ret;
->   
->       /* Unmap with a single call. */
-> -    ret = vfio_dma_unmap(vrdl->container, iova, size , NULL);
-> +    ret = vfio_container_dma_unmap(&vrdl->container->bcontainer,
-> +                                   iova, size , NULL);
->       if (ret) {
-> -        error_report("%s: vfio_dma_unmap() failed: %s", __func__,
-> +        error_report("%s: vfio_container_dma_unmap() failed: %s", __func__,
->                        strerror(-ret));
->       }
->   }
-> @@ -385,8 +387,8 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
->                  section->offset_within_address_space;
->           vaddr = memory_region_get_ram_ptr(section->mr) + start;
->   
-> -        ret = vfio_dma_map(vrdl->container, iova, next - start,
-> -                           vaddr, section->readonly);
-> +        ret = vfio_container_dma_map(&vrdl->container->bcontainer, iova,
-> +                                     next - start, vaddr, section->readonly);
->           if (ret) {
->               /* Rollback */
->               vfio_ram_discard_notify_discard(rdl, section);
-> @@ -685,10 +687,11 @@ static void vfio_listener_region_add(MemoryListener *listener,
->           }
->       }
->   
-> -    ret = vfio_dma_map(container, iova, int128_get64(llsize),
-> -                       vaddr, section->readonly);
-> +    ret = vfio_container_dma_map(&container->bcontainer,
-> +                                 iova, int128_get64(llsize), vaddr,
-> +                                 section->readonly);
->       if (ret) {
-> -        error_setg(&err, "vfio_dma_map(%p, 0x%"HWADDR_PRIx", "
-> +        error_setg(&err, "vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
->                      "0x%"HWADDR_PRIx", %p) = %d (%s)",
->                      container, iova, int128_get64(llsize), vaddr, ret,
->                      strerror(-ret));
-> @@ -786,18 +789,20 @@ static void vfio_listener_region_del(MemoryListener *listener,
->           if (int128_eq(llsize, int128_2_64())) {
->               /* The unmap ioctl doesn't accept a full 64-bit span. */
->               llsize = int128_rshift(llsize, 1);
-> -            ret = vfio_dma_unmap(container, iova, int128_get64(llsize), NULL);
-> +            ret = vfio_container_dma_unmap(&container->bcontainer, iova,
-> +                                           int128_get64(llsize), NULL);
->               if (ret) {
-> -                error_report("vfio_dma_unmap(%p, 0x%"HWADDR_PRIx", "
-> +                error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
->                                "0x%"HWADDR_PRIx") = %d (%s)",
->                                container, iova, int128_get64(llsize), ret,
->                                strerror(-ret));
->               }
->               iova += int128_get64(llsize);
->           }
-> -        ret = vfio_dma_unmap(container, iova, int128_get64(llsize), NULL);
-> +        ret = vfio_container_dma_unmap(&container->bcontainer, iova,
-> +                                       int128_get64(llsize), NULL);
->           if (ret) {
-> -            error_report("vfio_dma_unmap(%p, 0x%"HWADDR_PRIx", "
-> +            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
->                            "0x%"HWADDR_PRIx") = %d (%s)",
->                            container, iova, int128_get64(llsize), ret,
->                            strerror(-ret));
-> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-> new file mode 100644
-> index 0000000000..9db8b89b2f
-> --- /dev/null
-> +++ b/hw/vfio/container-base.c
-> @@ -0,0 +1,49 @@
-> +/*
-> + * VFIO BASE CONTAINER
-> + *
-> + * Copyright (C) 2023 Intel Corporation.
-> + * Copyright Red Hat, Inc. 2023
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *          Eric Auger <eric.auger@redhat.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> +
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> +
-> + * You should have received a copy of the GNU General Public License along
-> + * with this program; if not, see <http://www.gnu.org/licenses/>.
-> + */
+Improve buffer_is_zero function which is often used in qemu-img utility.
+For instance, when converting a 4.4 GiB Windows 10 image to qcow2 it
+takes around 40% of qemu-img run time (measured with 'perf record').
 
-Please reduce the header with an SPDX identifier.
+* The main improvements:
 
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "qemu/error-report.h"
-> +#include "hw/vfio/vfio-container-base.h"
-> +
-> +int vfio_container_dma_map(VFIOContainerBase *bcontainer,
-> +                           hwaddr iova, ram_addr_t size,
-> +                           void *vaddr, bool readonly)
-> +{
-> +    if (!bcontainer->ops->dma_map) {
+1) Define an inline wrapper for this function in include/qemu/cutils.h.
+It checks three bytes from the buffer, avoiding call overhead when
+any of those is non-zero.
 
-I think this could be an assert instead ?
+2) Move the decision between accelerators to the inline wrapper so it
+can be optimized out when buffer size is known at compile time.
 
-> +        return -EINVAL;
-> +    }
-> +
-> +    return bcontainer->ops->dma_map(bcontainer, iova, size, vaddr, readonly);
-> +}
-> +
-> +int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-> +                             hwaddr iova, ram_addr_t size,
-> +                             IOMMUTLBEntry *iotlb)
-> +{
-> +    if (!bcontainer->ops->dma_unmap) {
-> +        return -EINVAL;
-> +    }
-> +
-> +    return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
-> +}
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 4bc43ddfa4..c04df26323 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -115,9 +115,11 @@ unmap_exit:
->   /*
->    * DMA - Mapping and unmapping for the "type1" IOMMU interface used on x86
->    */
-> -int vfio_dma_unmap(VFIOContainer *container, hwaddr iova,
-> -                   ram_addr_t size, IOMMUTLBEntry *iotlb)
-> +static int vfio_legacy_dma_unmap(VFIOContainerBase *bcontainer, hwaddr iova,
-> +                                 ram_addr_t size, IOMMUTLBEntry *iotlb)
->   {
-> +    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> +                                            bcontainer);
->       struct vfio_iommu_type1_dma_unmap unmap = {
->           .argsz = sizeof(unmap),
->           .flags = 0,
-> @@ -151,7 +153,7 @@ int vfio_dma_unmap(VFIOContainer *container, hwaddr iova,
->            */
->           if (errno == EINVAL && unmap.size && !(unmap.iova + unmap.size) &&
->               container->iommu_type == VFIO_TYPE1v2_IOMMU) {
-> -            trace_vfio_dma_unmap_overflow_workaround();
-> +            trace_vfio_legacy_dma_unmap_overflow_workaround();
->               unmap.size -= 1ULL << ctz64(container->pgsizes);
->               continue;
->           }
-> @@ -170,9 +172,11 @@ int vfio_dma_unmap(VFIOContainer *container, hwaddr iova,
->       return 0;
->   }
->   
-> -int vfio_dma_map(VFIOContainer *container, hwaddr iova,
-> -                 ram_addr_t size, void *vaddr, bool readonly)
-> +static int vfio_legacy_dma_map(VFIOContainerBase *bcontainer, hwaddr iova,
-> +                               ram_addr_t size, void *vaddr, bool readonly)
->   {
-> +    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-> +                                            bcontainer);
->       struct vfio_iommu_type1_dma_map map = {
->           .argsz = sizeof(map),
->           .flags = VFIO_DMA_MAP_FLAG_READ,
-> @@ -191,7 +195,8 @@ int vfio_dma_map(VFIOContainer *container, hwaddr iova,
->        * the VGA ROM space.
->        */
->       if (ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map) == 0 ||
-> -        (errno == EBUSY && vfio_dma_unmap(container, iova, size, NULL) == 0 &&
-> +        (errno == EBUSY &&
-> +         vfio_legacy_dma_unmap(bcontainer, iova, size, NULL) == 0 &&
->            ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map) == 0)) {
->           return 0;
->       }
-> @@ -937,4 +942,7 @@ void vfio_detach_device(VFIODevice *vbasedev)
->       vfio_put_group(group);
->   }
->   
-> -const VFIOIOMMUOps vfio_legacy_ops;
-> +const VFIOIOMMUOps vfio_legacy_ops = {
-> +    .dma_map = vfio_legacy_dma_map,
-> +    .dma_unmap = vfio_legacy_dma_unmap,
-> +};
-> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-> index 2a6912c940..eb6ce6229d 100644
-> --- a/hw/vfio/meson.build
-> +++ b/hw/vfio/meson.build
-> @@ -2,6 +2,7 @@ vfio_ss = ss.source_set()
->   vfio_ss.add(files(
->     'helpers.c',
->     'common.c',
-> +  'container-base.c',
->     'container.c',
->     'spapr.c',
->     'migration.c',
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index 0eb2387cf2..9f7fedee98 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -116,7 +116,7 @@ vfio_region_unmap(const char *name, unsigned long offset, unsigned long end) "Re
->   vfio_region_sparse_mmap_header(const char *name, int index, int nr_areas) "Device %s region %d: %d sparse mmap entries"
->   vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end) "sparse entry %d [0x%lx - 0x%lx]"
->   vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
-> -vfio_dma_unmap_overflow_workaround(void) ""
-> +vfio_legacy_dma_unmap_overflow_workaround(void) ""
->   vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
->   vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
->   
+* Cleanups:
+
+3) Delete AVX-512 accelerator, which is now invoked rarely thanks to
+inline wrapper, so its speed benefit is neutralized by processor
+frequency and voltage transition periods, as described in
+https://travisdowns.github.io/blog/2020/01/17/avxfreq1.html
+
+4) Delete SSE4 accelerator because its only difference with the SSE2 one
+is using ptest instead of pcmpeq+pmovmsk to compare a vector with 0, but
+it gives no perfomance benefit (according to uops.info data).
+
+5) Remove all prefetches because they are done just a few processor
+cycles before their target would be loaded.
+
+* Improvements for SIMD variants:
+
+6) Double amount of bytes checked in an iteration of the main loop in
+both SSE2 and AVX2 accelerators, moving the bottleneck from ALU port
+contention to load ports (two loads per cycle on popular x86
+implementations). The improvement can be seen on real CPUs as well as
+uiCA simulation.
+
+7) Replace unaligned tail checking in AVX2 accelerator with aligned tail
+checking similar to SSE2's one because reading unaligned tail gives no
+benefit.
+
+8) Move tail checking in both SSE2 and AVX2 accelerators before the main
+loop so pcmpeq+pmovmsk checks are spread out more evenly.
+
+* Correctness fixes:
+
+9) Add uint64_a type for pointers in integer version so they can alias
+with any other type used in the buffer.
+
+10) Adjust loop iterators to avoid incrementing a pointer past the end of
+the buffer.
+
+* Other improvements:
+
+11) Improve checking buffers with len < 8 in internal integer function
+because inline wrapper ensures len >= 4.
+
+After these improvements buffer_is_zero works ~40% faster and takes 28%
+of qemu-img run time (measured the same way as initial version, inline
+wrapper execution included).
+
+The test-bufferiszero.c unit test still passes.
+
+Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
+---
+
+v2: reworded the commit message and comments; use casts via 'void *'
+
+As buffer_is_zero is now a static inline function, should it be moved into its
+own header file?
+
+ include/qemu/cutils.h |  25 ++++-
+ util/bufferiszero.c   | 249 +++++++++++++++++-------------------------
+ 2 files changed, 122 insertions(+), 152 deletions(-)
+
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index 92c927a6a3..6e35802b5e 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -187,7 +187,30 @@ char *freq_to_str(uint64_t freq_hz);
+ /* used to print char* safely */
+ #define STR_OR_NULL(str) ((str) ? (str) : "null")
+ 
+-bool buffer_is_zero(const void *buf, size_t len);
++bool buffer_is_zero_len_4_plus(const void *buf, size_t len);
++extern bool (*buffer_is_zero_len_256_plus)(const void *, size_t);
++static inline bool buffer_is_zero(const void *vbuf, size_t len)
++{
++    const char *buf = vbuf;
++
++    if (len == 0) {
++        return true;
++    }
++    if (buf[0] || buf[len - 1] || buf[len / 2]) {
++        return false;
++    }
++    /* For len <= 3, all bytes are already tested.  */
++    if (len <= 3) {
++        return true;
++    }
++
++    if (len >= 256) {
++        return buffer_is_zero_len_256_plus(vbuf, len);
++    } else {
++        return buffer_is_zero_len_4_plus(vbuf, len);
++    }
++}
++
+ bool test_buffer_is_zero_next_accel(void);
+ 
+ /*
+diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+index 3e6a5dfd63..3e5a014368 100644
+--- a/util/bufferiszero.c
++++ b/util/bufferiszero.c
+@@ -26,30 +26,23 @@
+ #include "qemu/bswap.h"
+ #include "host/cpuinfo.h"
+ 
+-static bool
+-buffer_zero_int(const void *buf, size_t len)
++typedef uint64_t uint64_a __attribute__((may_alias));
++
++bool
++buffer_is_zero_len_4_plus(const void *buf, size_t len)
+ {
+     if (unlikely(len < 8)) {
+-        /* For a very small buffer, simply accumulate all the bytes.  */
+-        const unsigned char *p = buf;
+-        const unsigned char *e = buf + len;
+-        unsigned char t = 0;
+-
+-        do {
+-            t |= *p++;
+-        } while (p < e);
+-
+-        return t == 0;
++        /* Inline wrapper ensures len >= 4.  */
++        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
+     } else {
+-        /* Otherwise, use the unaligned memory access functions to
+-           handle the beginning and end of the buffer, with a couple
++        /* Use unaligned memory access functions to handle
++           the beginning and end of the buffer, with a couple
+            of loops handling the middle aligned section.  */
+-        uint64_t t = ldq_he_p(buf);
+-        const uint64_t *p = (uint64_t *)(((uintptr_t)buf + 8) & -8);
+-        const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
++        uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
++        const uint64_a *p = (void *)(((uintptr_t)buf + 8) & -8);
++        const uint64_a *e = (void *)(((uintptr_t)buf + len) & -8);
+ 
+-        for (; p + 8 <= e; p += 8) {
+-            __builtin_prefetch(p + 8);
++        for (; p < e - 7; p += 8) {
+             if (t) {
+                 return false;
+             }
+@@ -58,7 +51,6 @@ buffer_zero_int(const void *buf, size_t len)
+         while (p < e) {
+             t |= *p++;
+         }
+-        t |= ldq_he_p(buf + len - 8);
+ 
+         return t == 0;
+     }
+@@ -67,124 +59,112 @@ buffer_zero_int(const void *buf, size_t len)
+ #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
+ #include <immintrin.h>
+ 
+-/* Note that each of these vectorized functions require len >= 64.  */
++/* Prevent the compiler from reassociating
++   a chain of similar operations.  */
++#define SSE_REASSOC_BARRIER(a, b) asm("" : "+x"(a), "+x"(b))
++
++/* Note that each of these vectorized functions assume len >= 256.  */
+ 
+ static bool __attribute__((target("sse2")))
+ buffer_zero_sse2(const void *buf, size_t len)
+ {
+-    __m128i t = _mm_loadu_si128(buf);
+-    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
+-    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
+-    __m128i zero = _mm_setzero_si128();
++    /* Begin with an unaligned head and tail of 16 bytes.  */
++    __m128i t = *(__m128i_u *)buf;
++    __m128i t2 = *(__m128i_u *)(buf + len - 16);
++    const __m128i *p = (void *)(((uintptr_t)buf + 16) & -16);
++    const __m128i *e = (void *)(((uintptr_t)buf + len) & -16);
++    __m128i zero = { 0 };
+ 
+-    /* Loop over 16-byte aligned blocks of 64.  */
+-    while (likely(p <= e)) {
+-        __builtin_prefetch(p);
++    /* Proceed with an aligned tail.  */
++    t2 |= e[-7];
++    t |= e[-6];
++    /* Use the barrier to ensure two independent chains.  */
++    SSE_REASSOC_BARRIER(t, t2);
++    t2 |= e[-5];
++    t |= e[-4];
++    SSE_REASSOC_BARRIER(t, t2);
++    t2 |= e[-3];
++    t |= e[-2];
++    SSE_REASSOC_BARRIER(t, t2);
++    t2 |= e[-1];
++    t |= t2;
++
++    /* Loop over 16-byte aligned blocks of 128.  */
++    while (likely(p < e - 7)) {
+         t = _mm_cmpeq_epi8(t, zero);
+         if (unlikely(_mm_movemask_epi8(t) != 0xFFFF)) {
+             return false;
+         }
+-        t = p[-4] | p[-3] | p[-2] | p[-1];
+-        p += 4;
++        t = p[0];
++        t2 = p[1];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= p[2];
++        t2 |= p[3];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= p[4];
++        t2 |= p[5];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= p[6];
++        t2 |= p[7];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= t2;
++        p += 8;
+     }
+ 
+-    /* Finish the aligned tail.  */
+-    t |= e[-3];
+-    t |= e[-2];
+-    t |= e[-1];
+-
+-    /* Finish the unaligned tail.  */
+-    t |= _mm_loadu_si128(buf + len - 16);
+-
+     return _mm_movemask_epi8(_mm_cmpeq_epi8(t, zero)) == 0xFFFF;
+ }
+ 
+ #ifdef CONFIG_AVX2_OPT
+-static bool __attribute__((target("sse4")))
+-buffer_zero_sse4(const void *buf, size_t len)
+-{
+-    __m128i t = _mm_loadu_si128(buf);
+-    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
+-    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
+-
+-    /* Loop over 16-byte aligned blocks of 64.  */
+-    while (likely(p <= e)) {
+-        __builtin_prefetch(p);
+-        if (unlikely(!_mm_testz_si128(t, t))) {
+-            return false;
+-        }
+-        t = p[-4] | p[-3] | p[-2] | p[-1];
+-        p += 4;
+-    }
+-
+-    /* Finish the aligned tail.  */
+-    t |= e[-3];
+-    t |= e[-2];
+-    t |= e[-1];
+-
+-    /* Finish the unaligned tail.  */
+-    t |= _mm_loadu_si128(buf + len - 16);
+-
+-    return _mm_testz_si128(t, t);
+-}
+ 
+ static bool __attribute__((target("avx2")))
+ buffer_zero_avx2(const void *buf, size_t len)
+ {
+     /* Begin with an unaligned head of 32 bytes.  */
+-    __m256i t = _mm256_loadu_si256(buf);
+-    __m256i *p = (__m256i *)(((uintptr_t)buf + 5 * 32) & -32);
+-    __m256i *e = (__m256i *)(((uintptr_t)buf + len) & -32);
++    __m256i t = *(__m256i_u *)buf;
++    __m256i t2 = *(__m256i_u *)(buf + len - 32);
++    const __m256i *p = (void *)(((uintptr_t)buf + 32) & -32);
++    const __m256i *e = (void *)(((uintptr_t)buf + len) & -32);
++    __m256i zero = { 0 };
+ 
+-    /* Loop over 32-byte aligned blocks of 128.  */
+-    while (p <= e) {
+-        __builtin_prefetch(p);
+-        if (unlikely(!_mm256_testz_si256(t, t))) {
++    /* Proceed with an aligned tail.  */
++    t2 |= e[-7];
++    t |= e[-6];
++    SSE_REASSOC_BARRIER(t, t2);
++    t2 |= e[-5];
++    t |= e[-4];
++    SSE_REASSOC_BARRIER(t, t2);
++    t2 |= e[-3];
++    t |= e[-2];
++    SSE_REASSOC_BARRIER(t, t2);
++    t2 |= e[-1];
++    t |= t2;
++
++    /* Loop over 32-byte aligned blocks of 256.  */
++    while (likely(p < e - 7)) {
++        t = _mm256_cmpeq_epi8(t, zero);
++        if (unlikely(_mm256_movemask_epi8(t) != 0xFFFFFFFF)) {
+             return false;
+         }
+-        t = p[-4] | p[-3] | p[-2] | p[-1];
+-        p += 4;
+-    } ;
++        t = p[0];
++        t2 = p[1];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= p[2];
++        t2 |= p[3];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= p[4];
++        t2 |= p[5];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= p[6];
++        t2 |= p[7];
++        SSE_REASSOC_BARRIER(t, t2);
++        t |= t2;
++        p += 8;
++    }
+ 
+-    /* Finish the last block of 128 unaligned.  */
+-    t |= _mm256_loadu_si256(buf + len - 4 * 32);
+-    t |= _mm256_loadu_si256(buf + len - 3 * 32);
+-    t |= _mm256_loadu_si256(buf + len - 2 * 32);
+-    t |= _mm256_loadu_si256(buf + len - 1 * 32);
+-
+-    return _mm256_testz_si256(t, t);
++    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(t, zero)) == 0xFFFFFFFF;
+ }
+ #endif /* CONFIG_AVX2_OPT */
+ 
+-#ifdef CONFIG_AVX512F_OPT
+-static bool __attribute__((target("avx512f")))
+-buffer_zero_avx512(const void *buf, size_t len)
+-{
+-    /* Begin with an unaligned head of 64 bytes.  */
+-    __m512i t = _mm512_loadu_si512(buf);
+-    __m512i *p = (__m512i *)(((uintptr_t)buf + 5 * 64) & -64);
+-    __m512i *e = (__m512i *)(((uintptr_t)buf + len) & -64);
+-
+-    /* Loop over 64-byte aligned blocks of 256.  */
+-    while (p <= e) {
+-        __builtin_prefetch(p);
+-        if (unlikely(_mm512_test_epi64_mask(t, t))) {
+-            return false;
+-        }
+-        t = p[-4] | p[-3] | p[-2] | p[-1];
+-        p += 4;
+-    }
+-
+-    t |= _mm512_loadu_si512(buf + len - 4 * 64);
+-    t |= _mm512_loadu_si512(buf + len - 3 * 64);
+-    t |= _mm512_loadu_si512(buf + len - 2 * 64);
+-    t |= _mm512_loadu_si512(buf + len - 1 * 64);
+-
+-    return !_mm512_test_epi64_mask(t, t);
+-
+-}
+-#endif /* CONFIG_AVX512F_OPT */
+-
+ /*
+  * Make sure that these variables are appropriately initialized when
+  * SSE2 is enabled on the compiler command-line, but the compiler is
+@@ -192,20 +172,17 @@ buffer_zero_avx512(const void *buf, size_t len)
+  */
+ #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
+ # define INIT_USED     0
+-# define INIT_LENGTH   0
+-# define INIT_ACCEL    buffer_zero_int
++# define INIT_ACCEL    buffer_is_zero_len_4_plus
+ #else
+ # ifndef __SSE2__
+ #  error "ISA selection confusion"
+ # endif
+ # define INIT_USED     CPUINFO_SSE2
+-# define INIT_LENGTH   64
+ # define INIT_ACCEL    buffer_zero_sse2
+ #endif
+ 
+ static unsigned used_accel = INIT_USED;
+-static unsigned length_to_accel = INIT_LENGTH;
+-static bool (*buffer_accel)(const void *, size_t) = INIT_ACCEL;
++bool (*buffer_is_zero_len_256_plus)(const void *, size_t) = INIT_ACCEL;
+ 
+ static unsigned __attribute__((noinline))
+ select_accel_cpuinfo(unsigned info)
+@@ -213,24 +190,18 @@ select_accel_cpuinfo(unsigned info)
+     /* Array is sorted in order of algorithm preference. */
+     static const struct {
+         unsigned bit;
+-        unsigned len;
+         bool (*fn)(const void *, size_t);
+     } all[] = {
+-#ifdef CONFIG_AVX512F_OPT
+-        { CPUINFO_AVX512F, 256, buffer_zero_avx512 },
+-#endif
+ #ifdef CONFIG_AVX2_OPT
+-        { CPUINFO_AVX2,    128, buffer_zero_avx2 },
+-        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
++        { CPUINFO_AVX2,   buffer_zero_avx2 },
+ #endif
+-        { CPUINFO_SSE2,     64, buffer_zero_sse2 },
+-        { CPUINFO_ALWAYS,    0, buffer_zero_int },
++        { CPUINFO_SSE2,   buffer_zero_sse2 },
++        { CPUINFO_ALWAYS, buffer_is_zero_len_4_plus },
+     };
+ 
+     for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
+         if (info & all[i].bit) {
+-            length_to_accel = all[i].len;
+-            buffer_accel = all[i].fn;
++            buffer_is_zero_len_256_plus = all[i].fn;
+             return all[i].bit;
+         }
+     }
+@@ -256,35 +227,11 @@ bool test_buffer_is_zero_next_accel(void)
+     return used;
+ }
+ 
+-static bool select_accel_fn(const void *buf, size_t len)
+-{
+-    if (likely(len >= length_to_accel)) {
+-        return buffer_accel(buf, len);
+-    }
+-    return buffer_zero_int(buf, len);
+-}
+-
+ #else
+-#define select_accel_fn  buffer_zero_int
++#define select_accel_fn  buffer_is_zero_len_4_plus
+ bool test_buffer_is_zero_next_accel(void)
+ {
+     return false;
+ }
+ #endif
+ 
+-/*
+- * Checks if a buffer is all zeroes
+- */
+-bool buffer_is_zero(const void *buf, size_t len)
+-{
+-    if (unlikely(len == 0)) {
+-        return true;
+-    }
+-
+-    /* Fetch the beginning of the buffer while we select the accelerator.  */
+-    __builtin_prefetch(buf);
+-
+-    /* Use an optimized zero check if possible.  Note that this also
+-       includes a check for an unrolled loop over 64-bit integers.  */
+-    return select_accel_fn(buf, len);
+-}
+-- 
+2.32.0
 
 
