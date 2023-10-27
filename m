@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339D37D9DC5
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 18:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BF07D9DD5
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 18:15:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwPMg-0002FH-BN; Fri, 27 Oct 2023 12:07:14 -0400
+	id 1qwPSs-0004Pq-3M; Fri, 27 Oct 2023 12:13:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwPMY-0002F5-4c
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 12:07:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qwPMV-0006f1-RC
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 12:07:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698422823;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nSRXS0x85/cHJydcxSQrR+/OlDbWP4rqLdavrM+Q1oQ=;
- b=eXyS88/VHo/koOQSBzPtjeOk4OlDN8eQQheMPNHVn8Bar0yFi9gNH8oOHrob4MbDoeHJ0D
- 5lpCLsgaQGFVwpLWcqGobFub6uqyl9IpJYpogTEVlN0euEdD+GiexhyfRuUWlGOtCArEqi
- cQdIdyBciN4eQfQcTSTnZDj1Ad195qg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-QyatkoiaMVSahGbdeIdmWA-1; Fri, 27 Oct 2023 12:07:01 -0400
-X-MC-Unique: QyatkoiaMVSahGbdeIdmWA-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7789f06778aso476488185a.0
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 09:07:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qwPSp-0004PP-Cp
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 12:13:35 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qwPSn-0007n7-Sj
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 12:13:35 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6bd0e1b1890so2119760b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 09:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698423212; x=1699028012;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yC5na/iyYU6LeLavWOfsx7F5qrkJyOMOjh7da4gf6WU=;
+ b=A+WTIQlg8ZG44Pnj9hB4SuqNLkL3kabUlDhIQTqFvKhFXdXntUf+isW4IFS6Jz6/N1
+ O13aNSW3PQWzaYTJYnphssvxMY+dhs8Hnu1lFCXyaPIo3hzJnU5At24mUlhvNH6xshkH
+ n+WOHifNHjRQ9Tw7y7RGdRroFvS3MXKPMyYycN3LduPX7xKI0HlW8cxRYdJokYpFu2pl
+ /TtliqOmmq+SBW91AMMVKR0eexttnXm4piHCeaE8Ccss0VUIF+gDOKimcVMBEIvEoOvU
+ dh3kpfq+6P9RQDg1fBDMbInljAA7/oU7vieXs7UVeRWNEMm5gp//PuHtf3eCWh6UJ01i
+ IXzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698422821; x=1699027621;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:subject:from:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698423212; x=1699028012;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nSRXS0x85/cHJydcxSQrR+/OlDbWP4rqLdavrM+Q1oQ=;
- b=Cb8NaBWRhVDMZuQMu6K3jxeZ8LjFEn6vSegUZRACHDXLFKReZde75IfBJmY640edNW
- /IVq88EkTwAv940UlRi4WeE3f9IrWjOZtA3yo2S76cDb5/3oV48VitALSpiU9zK7r3sZ
- D8OgurSjz0qBpC/NgbjdEjLQudn9MgDFxmgSZY/+MQb0c1Y1dBSN26I/N+hhW3s0hfLM
- 8advc00ENQqnoyBs19hN/vw8UhuWNgQo2ieg0ivlUdDFHDbbig1FOu1z3G0Da7Uv0p/P
- m3VL72wwI2BqvxeF0n0S80jNU5UZsRD2ThtjbFKPtQLJooRJp9kwF0g1JPyCYRHN11zg
- FdYQ==
-X-Gm-Message-State: AOJu0YyVG7K6M6LJRRTVbgLo7XBswVFIbJ5os+XqdxhrtV2cJMLwFGnz
- dtpb8pNp1tNlsLofX1zgBKRq2SZzarft9H+6eOiKqajypnU27pLuWx7aQPM8rlhha7XigRdxGI8
- ExGVKNPGpiyLqzmQ=
-X-Received: by 2002:a05:620a:3954:b0:779:ef44:4e8b with SMTP id
- qs20-20020a05620a395400b00779ef444e8bmr4235918qkn.30.1698422820743; 
- Fri, 27 Oct 2023 09:07:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHm07rL2h46JFst4fzow9VyUKlxg9FqIIrJLne2l6rWbasZtxOpS4PHK1NNCgakzQlsTWXAlQ==
-X-Received: by 2002:a05:620a:3954:b0:779:ef44:4e8b with SMTP id
- qs20-20020a05620a395400b00779ef444e8bmr4235883qkn.30.1698422820489; 
- Fri, 27 Oct 2023 09:07:00 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:b215:e40:e078:4b27?
- ([2a01:e0a:9e2:9000:b215:e40:e078:4b27])
+ bh=yC5na/iyYU6LeLavWOfsx7F5qrkJyOMOjh7da4gf6WU=;
+ b=S/NlhQ10D4SXwbL319hSFWUs2aKRDhxqUAo3XLF3CsBOPw+zh0X2wErHKhI/95o87c
+ YNsm1ot8vEC5vdp1yhdeJ8hbauJ49fgv7QzjMu7dd1QeXlQSmXowvd1T7ktTmD00tlIr
+ CY+80sp3movacNqL/EZX89s+o4YM3zRYI+fBvrEeNE2JDrOcYVaC2xg4/JJAD6jmDpPr
+ MdPT6SZMezw8qyTM6+pgg3dueDTfYc1OFnyd36+FHWJVrFKPiVWIq9n6S93Z8IXFYQyP
+ TCQB2mlJFmoCrYrHcz2QDquq5yspPVSMkFW3jjoLhORL7tB+VrrWJeUmL9lHcM8bl7x9
+ OQNw==
+X-Gm-Message-State: AOJu0YxZQW1pXv/XfjJz/nCcLBKySuBVwR7Xc/HNDLrWDuSadXNowBAb
+ w5IyzYtlGm2F4ytuVfo+eJ1jYw==
+X-Google-Smtp-Source: AGHT+IHjHkRvcaGKYKbVeNeQpMtcFj40dGwOXe+eP6Z2edHmUIc2m8EPJCIMYp9AFdyNR33aKuS9jQ==
+X-Received: by 2002:a05:6a20:2694:b0:161:2df0:eadf with SMTP id
+ h20-20020a056a20269400b001612df0eadfmr2320720pze.24.1698423212403; 
+ Fri, 27 Oct 2023 09:13:32 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- y27-20020a05620a09db00b007742ad3047asm651072qky.54.2023.10.27.09.06.58
+ c24-20020aa78818000000b006934350c3absm1566937pfo.109.2023.10.27.09.13.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 09:07:00 -0700 (PDT)
-Message-ID: <1edb9511-da25-4582-bf9f-b28aad5fc8cf@redhat.com>
-Date: Fri, 27 Oct 2023 18:06:57 +0200
+ Fri, 27 Oct 2023 09:13:31 -0700 (PDT)
+Message-ID: <09a6752e-5dcf-44d9-ad01-03e4863ade6a@daynix.com>
+Date: Sat, 28 Oct 2023 01:13:29 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Subject: Re: [PATCH v3 18/37] vfio/container: Implement attach/detach_device
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-19-zhenzhong.duan@intel.com>
+Subject: Re: [PATCH v3 1/1] ui/cocoa: add zoom-to-fit display option
+To: carwynellis@gmail.com, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, philmd@linaro.org, kraxel@redhat.com,
+ marcandre.lureau@redhat.com
+References: <20231027154920.80626-1-carwynellis@gmail.com>
+ <20231027154920.80626-2-carwynellis@gmail.com>
 Content-Language: en-US
-In-Reply-To: <20231026103104.1686921-19-zhenzhong.duan@intel.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20231027154920.80626-2-carwynellis@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,93 +96,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry, previous email was empty. Friday effect !
-
-On 10/26/23 12:30, Zhenzhong Duan wrote:
-> From: Eric Auger <eric.auger@redhat.com>
+On 2023/10/28 0:49, carwynellis@gmail.com wrote:
+> From: Carwyn Ellis <carwynellis@gmail.com>
 > 
-> No fucntional change intended.
+> Provides a display option, zoom-to-fit, that enables scaling of the
+> display when full-screen mode is enabled.
 > 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   hw/vfio/common.c    | 16 ++++++++++++++++
->   hw/vfio/container.c | 12 +++++-------
->   2 files changed, 21 insertions(+), 7 deletions(-)
+> Also ensures that the corresponding menu item is marked as enabled when
+> the option is set to on.
 > 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index d62c815d7f..64565b4ae9 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -1500,3 +1500,19 @@ retry:
->   
->       return info;
->   }
-> +
-> +int vfio_attach_device(char *name, VFIODevice *vbasedev,
-> +                       AddressSpace *as, Error **errp)
-> +{
-> +    const VFIOIOMMUOps *ops = &vfio_legacy_ops;
+> Signed-off-by: Carwyn Ellis <carwynellis@gmail.com>
 
-hmm, this looks wrong. please explain.
+Thank you for contribution.
 
-Thanks,
-
-C.
-
-> +
-> +    return ops->attach_device(name, vbasedev, as, errp);
-> +}
-> +
-> +void vfio_detach_device(VFIODevice *vbasedev)
-> +{
-> +    if (!vbasedev->bcontainer) {
-> +        return;
-> +    }
-> +    vbasedev->bcontainer->ops->detach_device(vbasedev);
-> +}
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 36c34683ad..c8ff0f2037 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -874,8 +874,8 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
->    * @name and @vbasedev->name are likely to be different depending
->    * on the type of the device, hence the need for passing @name
->    */
-> -int vfio_attach_device(char *name, VFIODevice *vbasedev,
-> -                       AddressSpace *as, Error **errp)
-> +static int vfio_legacy_attach_device(char *name, VFIODevice *vbasedev,
-> +                                     AddressSpace *as, Error **errp)
->   {
->       int groupid = vfio_device_groupid(vbasedev, errp);
->       VFIODevice *vbasedev_iter;
-> @@ -915,14 +915,10 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
->       return ret;
->   }
->   
-> -void vfio_detach_device(VFIODevice *vbasedev)
-> +static void vfio_legacy_detach_device(VFIODevice *vbasedev)
->   {
->       VFIOGroup *group = vbasedev->group;
->   
-> -    if (!vbasedev->bcontainer) {
-> -        return;
-> -    }
-> -
->       QLIST_REMOVE(vbasedev, global_next);
->       QLIST_REMOVE(vbasedev, container_next);
->       vbasedev->bcontainer = NULL;
-> @@ -934,6 +930,8 @@ void vfio_detach_device(VFIODevice *vbasedev)
->   const VFIOIOMMUOps vfio_legacy_ops = {
->       .dma_map = vfio_legacy_dma_map,
->       .dma_unmap = vfio_legacy_dma_unmap,
-> +    .attach_device = vfio_legacy_attach_device,
-> +    .detach_device = vfio_legacy_detach_device,
->       .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
->       .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
->   };
-
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
