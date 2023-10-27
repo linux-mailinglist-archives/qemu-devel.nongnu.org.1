@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F4B7D93F3
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5997D93F1
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 11:39:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwJHZ-0002QF-EN; Fri, 27 Oct 2023 05:37:33 -0400
+	id 1qwJHs-0002ao-Et; Fri, 27 Oct 2023 05:37:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHX-0002PO-5u
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHo-0002aJ-FI
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHV-0002ml-Q1
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qwJHn-0002o0-3B
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 05:37:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698399449;
+ s=mimecast20190719; t=1698399466;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rFxWit6EDQpvXX0oJXBrbwgFI/2IOtss+8l+4gM0hgw=;
- b=LON5irjr7tyOYwiMiLMzvBUkq3RYEiE9Cb079wtgXuvqliZi9+AHIaSQ09kPY4Y8TiRPtF
- 67WzEzqJSo71g1IF0hEmBKC/zt//7UWKcXRa0kjUNyQn2b9XZV70mopKLUnFVDPqoh5SmX
- qLraxFXjOHwNZ2CAA2lv2Poc6pyvXto=
+ bh=/kEW7BnJKaXli1N5Bzt3ZR13DvDGsRuqgH9ZXI6swEQ=;
+ b=EApWM0QMTRc+eAWajHLVauYhbmcqoboQ1j99stUQvZPKVvWxK1tD+VmOyHqla3SteEHx8A
+ og/SovYj8twvzD8c4UDOJXM6QMe19bHuD/1wB5/s/PyaYQIqMw05sz3nPTLxyzdYekQ18V
+ VbO5XZa5XzM2wO8nqaKSH3WYV9KBKfE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-59-BtFGnl9dOiaD5Usl6BK81A-1; Fri, 27 Oct 2023 05:37:27 -0400
-X-MC-Unique: BtFGnl9dOiaD5Usl6BK81A-1
+ us-mta-171-Gg8vosjeMNO0DN4B-tpqwQ-1; Fri, 27 Oct 2023 05:37:29 -0400
+X-MC-Unique: Gg8vosjeMNO0DN4B-tpqwQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D6DD84B102;
- Fri, 27 Oct 2023 09:37:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97672185A781;
+ Fri, 27 Oct 2023 09:37:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.196])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 21FC01121320;
- Fri, 27 Oct 2023 09:37:25 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E9C111121319;
+ Fri, 27 Oct 2023 09:37:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Warner Losh <imp@bsdimp.com>
-Subject: [PULL 10/11] tests/vm/freebsd: Add additional library paths for libfdt
-Date: Fri, 27 Oct 2023 11:37:09 +0200
-Message-ID: <20231027093710.273558-11-thuth@redhat.com>
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Corey Minyard <cminyard@mvista.com>
+Subject: [PULL 11/11] ipmi-bt-test: force ipv4
+Date: Fri, 27 Oct 2023 11:37:10 +0200
+Message-ID: <20231027093710.273558-12-thuth@redhat.com>
 In-Reply-To: <20231027093710.273558-1-thuth@redhat.com>
 References: <20231027093710.273558-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -77,34 +78,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-libfdt is installed in /usr/local on FreeBSD, and since this
-library does not have a pkg-config file, we have to specify the
-paths manually. This way we can avoid that Meson has to recompile
-the dtc subproject each time.
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Message-ID: <20231016161053.39150-1-thuth@redhat.com>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
+We open ipv4 listening socket. But "localhost" in qemu parameters may
+load to Qemu trying to connect with ipv6 and fail with "Connection
+refused". Force ipv4 by using ipv4 ip address.
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <20231018191123.1176602-1-vsementsov@yandex-team.ru>
+Acked-by: Corey Minyard <cminyard@mvista.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/vm/freebsd | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/qtest/ipmi-bt-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/vm/freebsd b/tests/vm/freebsd
-index ac51376c82..b581bd17fb 100755
---- a/tests/vm/freebsd
-+++ b/tests/vm/freebsd
-@@ -38,8 +38,9 @@ class FreeBSDVM(basevm.BaseVM):
-         cd $(mktemp -d /home/qemu/qemu-test.XXXXXX);
-         mkdir src build; cd src;
-         tar -xf /dev/vtbd1;
--        cd ../build
--        ../src/configure --python=python3.9 {configure_opts};
-+        cd ../build;
-+        ../src/configure --python=python3.9  --extra-ldflags=-L/usr/local/lib \
-+                         --extra-cflags=-I/usr/local/include {configure_opts};
-         gmake --output-sync -j{jobs} {target} {verbose};
-     """
+diff --git a/tests/qtest/ipmi-bt-test.c b/tests/qtest/ipmi-bt-test.c
+index ed431e34e6..383239bcd4 100644
+--- a/tests/qtest/ipmi-bt-test.c
++++ b/tests/qtest/ipmi-bt-test.c
+@@ -411,7 +411,7 @@ int main(int argc, char **argv)
+     g_test_init(&argc, &argv, NULL);
  
+     global_qtest = qtest_initf(
+-        " -chardev socket,id=ipmi0,host=localhost,port=%d,reconnect=10"
++        " -chardev socket,id=ipmi0,host=127.0.0.1,port=%d,reconnect=10"
+         " -device ipmi-bmc-extern,chardev=ipmi0,id=bmc0"
+         " -device isa-ipmi-bt,bmc=bmc0", emu_port);
+     qtest_irq_intercept_in(global_qtest, "ioapic");
 -- 
 2.41.0
 
