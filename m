@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6966E7D9073
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 09:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9917D90B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Oct 2023 10:09:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwHj9-0006k9-3t; Fri, 27 Oct 2023 03:57:55 -0400
+	id 1qwHsV-0000jH-S3; Fri, 27 Oct 2023 04:07:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qwHj7-0006iZ-NQ
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:57:53 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1qwHsS-0000hv-RP
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 04:07:32 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qwHj6-0000Ti-AQ
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 03:57:53 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5b92b852442so1215451a12.2
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 00:57:51 -0700 (PDT)
+ id 1qwHsM-0003Dw-UL
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 04:07:32 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-280011e94ddso1030478a91.3
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 01:07:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698393471; x=1698998271;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698394045; x=1698998845;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qsx6BMk+2xEBbyimCZsuizMAUkGirkJbhbs/cJk68mg=;
- b=EUFyyrxmrxh+mm5slkiiaxklq0/LlF3rgttgJHl3WlGzp0SbrhnJqBx6oUTvEvDmMq
- +UeTSGps/pFVd+3Ux1+P1TCeTiSalsFEVpzfq+GqyE1gAuZWa+cWzBNhTCnz3gglkOYL
- aKM/reVwWHi9QSv/76/f9qQ6CK6eaL7aZ62yKlkIfPSkfyijrDD/GD/qWKc3j6C/73eH
- Z+kgwmOkLGyB2Fu6UpDEi7bk7tG/rEf1ty6Xd52r1JvwIB6JKUX21NsAuCFC1LfjObhM
- Wl/BSi8Ddjs0jhgC9LDWlMORyF9Mtd2h3HblNTbCgPpfuDbg8q8POo/RUf/PnVH2shkY
- JUcg==
+ bh=lFGOxRvp86pFFhgzmrint86sZnXr0mAeWAFFTj6s0cE=;
+ b=wLYdYVjuwPtHhlPpnjhfZgMEpJHCaDhAoIcH2PyBWGCjsehCI7rVFVft5r3fqdAVSE
+ NjeVyX/6UjbeglLjsbHNAjLeY2HcNVpwG+HChRs7QIw8Qt2mCvUpzIXiEpeLUdZVbAlR
+ fydF+r8PO0hHS0z0UeUWhpydwWtjfufE5I4d/sWF3kWPYbFXaferiIahHlwcUND9T6RJ
+ V17p0TfTbVh52LAGfLWCpariyiEo4AwhOhmeA+NHWhlqmibudBo9p1FyfyIb/6sXv7U7
+ gAqqUvqBSTqlMHL8I+RcsMOwXK8ldQpy6SFQ75hPFQTcYEuZacgRB/Dawu94x6ARfPs1
+ 4MPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698393471; x=1698998271;
+ d=1e100.net; s=20230601; t=1698394045; x=1698998845;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qsx6BMk+2xEBbyimCZsuizMAUkGirkJbhbs/cJk68mg=;
- b=QaGFhnP8OtiHgHglU1SWPd5c7Z6bRqtIDkxboAQnpidn5hUyZKlrCql0Rn6t6xeaKV
- 3wXMszERb9tJqtmXgQMxX6wmcj/aZh8qH+ducvCMFcNkBxwTerJQw0T3J7Kn2hSCo72D
- ASOasoyvJ8tYytqtWQwAMzJQ5otkSH9hBANhENmKRHS1cNLTfJqneWMX+l1eI7RwOhoE
- D4yW9HYxqJGJCNlA4mdTqomy1hv/zhl4SIhsaPcdQDzLBBZ/zlMrSZSEXacPhXZcZakl
- 79BLu3ytw/k4g9ijWkpl9Rg4JfjAOkL2M7N6e9R98WZaRO2VV/IAgUdgLlnzYcyuPnK1
- CtJw==
-X-Gm-Message-State: AOJu0Yxlqc6shS6K/c9vqiuGb7rlZhgO2TpA4/Lq+pYC1nvXBGkVEFpx
- LruuWXazkUtgCVGgpBbGSNCGcA==
-X-Google-Smtp-Source: AGHT+IHO8lyYms8BkgQiBTEcfbbA5r5F0L6dISyIylIgISZC2QmcULlueyP3t1+RbuqsSWDCU/83GQ==
-X-Received: by 2002:a05:6a21:3290:b0:17b:129b:1817 with SMTP id
- yt16-20020a056a21329000b0017b129b1817mr2619171pzb.45.1698393470744; 
- Fri, 27 Oct 2023 00:57:50 -0700 (PDT)
+ bh=lFGOxRvp86pFFhgzmrint86sZnXr0mAeWAFFTj6s0cE=;
+ b=lth/jotXh1m9TpqgjF7p5e7Dsl6R8Mh5hq46TGX+OqJjSyqLX5yi6wjWkbXDmqE1gY
+ neg1EBBcU6tzpm0bCKLyMkr+YtV82+CUck71vMKiJiSI+P6sHT9kgSmhwanCEOmmHZqp
+ z11vJ3yQlX0jQXeiZgzXGOjo9gvRTz1FSbnyKbGVvKrlUtJI8lmXQndZIBMSkpSJ5j0X
+ 3UgRfJfgZ+UCkf05qyrAUgakZAlRsFcCmCqGlR7SEm4EgFnjNLWHCIeFXCpFph7i2ccX
+ FNb9wkM+Umq0bEbsgpn74roT8pXG1ZW4+Yom3Ik5bY+aH8XmNMHHA2xskHanygwSiFYn
+ dDMw==
+X-Gm-Message-State: AOJu0YwLTnvIv1MQen4FoBEg1SWdx50EZhMLicTDvztMVUMkEb4XvWq4
+ a4bXu2ONc5VP1MWDXCb5gSB8JQ==
+X-Google-Smtp-Source: AGHT+IH5o3hmI9GbLBBlntfP9gr3/puo7lVjFBmp6KgbA+px0TOx3BXC61z01JgpkoeMhPOn5R437w==
+X-Received: by 2002:a17:90a:69e4:b0:27d:98f3:21a7 with SMTP id
+ s91-20020a17090a69e400b0027d98f321a7mr1966591pjj.8.1698394045220; 
+ Fri, 27 Oct 2023 01:07:25 -0700 (PDT)
 Received: from [157.82.205.15] ([157.82.205.15])
  by smtp.gmail.com with ESMTPSA id
- o5-20020a62cd05000000b006926d199fdcsm814805pfg.190.2023.10.27.00.57.49
+ 10-20020a17090a1a0a00b00274922d4b38sm799781pjk.27.2023.10.27.01.07.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Oct 2023 00:57:50 -0700 (PDT)
-Message-ID: <04f5ab84-b0d9-4f1b-8433-21f94f10f0d7@daynix.com>
-Date: Fri, 27 Oct 2023 16:57:47 +0900
+ Fri, 27 Oct 2023 01:07:24 -0700 (PDT)
+Message-ID: <8247b828-fc57-4f40-8320-a1e2c494f216@daynix.com>
+Date: Fri, 27 Oct 2023 17:07:22 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/21] virtio-net: Always set populate_hash
+Subject: Re: [PATCH v5 15/21] virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT
 Content-Language: en-US
 To: Jason Wang <jasowang@redhat.com>
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
  <mst@redhat.com>
 References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
- <20231017040932.62997-13-akihiko.odaki@daynix.com>
- <CACGkMEsKUnB8JhvCzsJ67==Jq=+S=xCFttXoaZsOd++4sBc-Uw@mail.gmail.com>
+ <20231017040932.62997-16-akihiko.odaki@daynix.com>
+ <CACGkMEuA5azGUQzyCe=4xq+YfV60PuiOajhJ=1HOXoG9Gege5g@mail.gmail.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CACGkMEsKUnB8JhvCzsJ67==Jq=+S=xCFttXoaZsOd++4sBc-Uw@mail.gmail.com>
+In-Reply-To: <CACGkMEuA5azGUQzyCe=4xq+YfV60PuiOajhJ=1HOXoG9Gege5g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::532;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x532.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,15 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/27 16:08, Jason Wang wrote:
-> On Tue, Oct 17, 2023 at 12:10 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+On 2023/10/27 16:14, Jason Wang wrote:
+> On Tue, Oct 17, 2023 at 12:14 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 >>
->> The member is not cleared during reset so may have a stale value.
+>> virtio-net can report hash values even if the peer does not have a
+>> virtio-net header.
 > 
-> Nit: I guess it should be "always unset populate_hash"?
+> Do we need a compat flag for this?
 
-I meant populate_hash should be always set to either of true or false in 
-virtio_net_set_mrg_rx_bufs(), but I agree it's confusing.
+I don't think so. This change actually fixes the migration from a system 
+with tap devices that support virtio-net headers to a system with tap 
+devices that do not support virtio-net headers. Such a compatibility 
+flag will revert the fix.
 
 Regards,
 Akihiko Odaki
