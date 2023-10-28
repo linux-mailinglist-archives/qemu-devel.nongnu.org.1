@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0187DA7DE
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 17:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBC97DA823
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 18:51:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwlUj-0002MV-3q; Sat, 28 Oct 2023 11:45:01 -0400
+	id 1qwmVc-0002Ww-HZ; Sat, 28 Oct 2023 12:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwlUg-0002ME-U5
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 11:44:58 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qwmVa-0002WQ-53
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 12:49:58 -0400
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwlUe-00071h-Ve
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 11:44:58 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9c773ac9b15so451129466b.2
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 08:44:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qwmVY-0002GP-BE
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 12:49:57 -0400
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-5ae143e08b1so24908877b3.1
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 09:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698507895; x=1699112695; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=S4tz98nv3wAnex/tjbVWYAyAd3IpouF1Z9Yl2y8VZ6w=;
- b=TkbA71LmGGE/qtyKwqvJzjtGoVbWmeKEttvRcFXtZp+v7QIsNUNRP4rZk4kPVMfuKT
- g/noDf/xYlWsT6pQs/7hW7sbED7fjEIP+KlEzuqFg5IeL9p2Tw6eqm86cYPOP/GK2VcC
- 4Ebzwhr9Izi7+bnKt3L9cUwoLUaXg1eD9mufJa4V4OcbDnWDupvljEGEJhU/xw2wdL93
- Ejtc8Q5UHMhcwwGsdhwFZqct8cDX2NQ8U3UeE8w8BVhLwV19cT7fjifr6L88QyWx1PBj
- 0xIyD24ScEAkoh393Z8ZGxNAl3MrZXDuL2Oc9dWDSTE94CF4b0kz3LEVYfWiT9rG55Xn
- tzag==
+ d=ventanamicro.com; s=google; t=1698511795; x=1699116595; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pa+ON5pL+NgtxcukseN0fY2hcyKaMYo4qiZJBEgwv3k=;
+ b=kUSzvBVVGbcoYT8bv4ZxMTJ2gFiPF1MN87AdjTXAdQPmz7ghZQHxkHa60WTFcGtB40
+ 6qzO0KxFim+WgbIInqjhxQLYlc/BCmK2KZUbvNLxjMMTjRRMlwiBav8qgv1ZlBnQvJUC
+ axikcggPpFmbD/nUu2dbq5PUfMUjpEQbgO+t8kmbI6FyOmhaQooxCI9R4yexWjGdTeKV
+ p1vAW4b2z1wOP+r9QaU8bySsWkbePIHsaGokSEaU19bldFFZAwtgDf05Bq7CwCGNirB8
+ Gbjd9RjY9mxbPIecEjYWzI9oXgHNzhJt/iBnsH8K0cOqwL5zmrbyI1ME8aeIYkBa4QEP
+ eu3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698507895; x=1699112695;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=S4tz98nv3wAnex/tjbVWYAyAd3IpouF1Z9Yl2y8VZ6w=;
- b=AIJ6t1eupjKBNZIOLZITNiKVpooJpmuFPZL+WQWu7LUcgFZiAGh4B9bJ0MWepsbIFl
- no3doRGow5UKk3U5J05hcwavHdUS9pgRctU0YiZsRC+0+RBBprF8sM5iYNIFLh+Vy3Gr
- wgJnBF6ote7Bs1FzowaPBaXj5FBPC8FqRMA8NuQgvPo+Mz1tNkJG6xPlEpcY7WoZodL4
- G29H1scwHTGGgcNShFnP2JX6vwX/jNVaARZWZZ7lpCWqsJ/YEpnFWJw0cFLwpibpAzQc
- Xk0EIj8xXKYxDDFDJLfJ7WKbEBTMVEGihjSOMBWL/KZWrzlfwCFS5P3bV7QjcuVcLSJN
- 3nag==
-X-Gm-Message-State: AOJu0YyqpW7AXOSrTni78nglXghqA+dU6Fu5w710O4JsR4u3ASPyKS9h
- KGb13i3yU5VYKHEQbG3R4f8=
-X-Google-Smtp-Source: AGHT+IHwRsPCH9y/09G1aCLcZx6Z24E5ts7bRDERsxhqUj4BMxeYUYLOGf+rdg3Crhf0QpZ/qAGpWQ==
-X-Received: by 2002:a17:907:7251:b0:9ad:e298:a5d with SMTP id
- ds17-20020a170907725100b009ade2980a5dmr5433661ejc.19.1698507895308; 
- Sat, 28 Oct 2023 08:44:55 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-089-012-044-170.89.12.pool.telefonica.de.
- [89.12.44.170]) by smtp.gmail.com with ESMTPSA id
- i19-20020a1709063c5300b0098884f86e41sm2884316ejg.123.2023.10.28.08.44.54
+ d=1e100.net; s=20230601; t=1698511795; x=1699116595;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pa+ON5pL+NgtxcukseN0fY2hcyKaMYo4qiZJBEgwv3k=;
+ b=mT0ktnDV757LrgmoKxzXaAQYqL1JETosNnIOPRKyJkwqQyvx/HkREEC/gsp/Y/wmYI
+ tTCzeJucen+g3STGtg5/KmFFc7M/6WL8OEDeZ5JivtDNk87DFbjykHm9J/Kgm509WUkE
+ aQWI8UN0WT5iGhPoiQpyfGgSoskOJOUotAAE4GlXcg+aDkYFz4HnpS7OjVphMeSkZbfi
+ Ln3el6F+wzVKWd+1yIzljtfFfekQT3I6TfHfHnyGtc+nHQOBcoiNSZo5Q9lzon6mBuuR
+ cBL3xGwElEvgGlZ7pWyru3i3u0CbX6wxsTL9GiMnxPwYcmTUQ29EhO8SytksdIsUSwlE
+ L6RA==
+X-Gm-Message-State: AOJu0YynXW8yCCOxrkDD5d82LkvYsDJCn66ABQv4UaEnEDkgVjgn/1In
+ kX9Kf0aIaNcsi1tP5WNlh2kNLQ==
+X-Google-Smtp-Source: AGHT+IEYHX4GPU/14/kMtl3KZ7Vb2sCdFoFGHejJDlLqWBseI0IooxsDrru2Epf5pCUPmn7zu5p/Qw==
+X-Received: by 2002:a25:2588:0:b0:d80:68d1:b826 with SMTP id
+ l130-20020a252588000000b00d8068d1b826mr5258924ybl.6.1698511794959; 
+ Sat, 28 Oct 2023 09:49:54 -0700 (PDT)
+Received: from [192.168.68.107] ([191.255.2.33])
+ by smtp.gmail.com with ESMTPSA id
+ ew19-20020a0562140ab300b0066d1e20455bsm1734973qvb.96.2023.10.28.09.49.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 28 Oct 2023 08:44:54 -0700 (PDT)
-Date: Sat, 28 Oct 2023 15:44:20 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_5/5=5D_hw/isa/vt82c686=3A_I?=
- =?US-ASCII?Q?mplement_software-based_SMI_triggering?=
-In-Reply-To: <95144ce6-b340-11bf-354b-e73c2fbc795e@eik.bme.hu>
-References: <20231028091606.23700-1-shentey@gmail.com>
- <20231028091606.23700-6-shentey@gmail.com>
- <95144ce6-b340-11bf-354b-e73c2fbc795e@eik.bme.hu>
-Message-ID: <02D892F2-0778-40EF-A583-A4728B119EF8@gmail.com>
+ Sat, 28 Oct 2023 09:49:54 -0700 (PDT)
+Message-ID: <a63a7d4a-2954-4ada-b7ca-fe03bb50d1a2@ventanamicro.com>
+Date: Sat, 28 Oct 2023 13:49:51 -0300
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/12] target/riscv: add zicbop extension flag
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20231028085427.707060-1-dbarboza@ventanamicro.com>
+ <20231028085427.707060-2-dbarboza@ventanamicro.com>
+ <20231028-2d6bf00dddc7bc4a25b32663@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231028-2d6bf00dddc7bc4a25b32663@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,228 +99,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 28=2E Oktober 2023 13:03:41 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
-me=2Ehu>:
->On Sat, 28 Oct 2023, Bernhard Beschow wrote:
->> If enabled, SMIs can be triggered via software by writing to an IO-mapp=
-ed port=2E
->> SMIs usually trigger execution of BIOS code=2E If appropriate values ar=
-e written
->> to the port, the BIOS transitions the system into or out of ACPI mode=
-=2E
->>=20
->> Note that APMState implements Intel-specific behavior where there are t=
-wo IO
->> ports which are mapped at fixed addresses=2E In VIA, there is only one =
-such port
->> which is located inside a relocatable IO-mapped region=2E Hence, there =
-is no point
->> in reusing APMState=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+On 10/28/23 06:49, Andrew Jones wrote:
+> On Sat, Oct 28, 2023 at 05:54:16AM -0300, Daniel Henrique Barboza wrote:
+>> QEMU already implements zicbom (Cache Block Management Operations) and
+>> zicboz (Cache Block Zero Operations). Commit 59cb29d6a5 ("target/riscv:
+>> add Zicbop cbo.prefetch{i, r, m} placeholder") added placeholders for
+>> what would be the instructions for zicbop (Cache Block Prefetch
+>> Operations), which are now no-ops.
+>>
+>> The RVA22U64 profile mandates zicbop, which means that applications that
+>> run with this profile might expect zicbop to be present in the riscv,isa
+>> DT and might behave badly if it's absent.
+>>
+>> Adding zicbop as an extension will make our future RVA22U64
+>> implementation more in line with what userspace expects and, if/when
+>> cache block prefetch operations became relevant to QEMU, we already have
+>> the extension flag to turn then on/off as needed.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 >> ---
->> hw/isa/vt82c686=2Ec | 95 +++++++++++++++++++++++++++++++++++++++++++---=
--
->> 1 file changed, 87 insertions(+), 8 deletions(-)
->>=20
->> diff --git a/hw/isa/vt82c686=2Ec b/hw/isa/vt82c686=2Ec
->> index e8ec63dea9=2E=2E361b3bed0a 100644
->> --- a/hw/isa/vt82c686=2Ec
->> +++ b/hw/isa/vt82c686=2Ec
->> @@ -27,7 +27,6 @@
->> #include "hw/timer/i8254=2Eh"
->> #include "hw/rtc/mc146818rtc=2Eh"
->> #include "migration/vmstate=2Eh"
->> -#include "hw/isa/apm=2Eh"
->> #include "hw/acpi/acpi=2Eh"
->> #include "hw/i2c/pm_smbus=2Eh"
->> #include "qapi/error=2Eh"
->> @@ -42,6 +41,16 @@
->> #define TYPE_VIA_PM "via-pm"
->> OBJECT_DECLARE_SIMPLE_TYPE(ViaPMState, VIA_PM)
->>=20
->> +#define VIA_PM_IO_GBLEN 0x2a
->> +#define VIA_PM_IO_GBLEN_SW_SMI_EN (1 << 6)
->> +
->> +#define VIA_PM_IO_GBLCTL 0x2c
->> +#define VIA_PM_IO_GBLCTL_SMI_EN 1
->> +#define VIA_PM_IO_GBLCTL_SMIIG (1 << 4)
->> +#define VIA_PM_IO_GBLCTL_INSMI (1 << 8)
->> +
->> +#define VIA_PM_IO_SMI_CMD 0x2f
->> +
->> #define VIA_PM_GPE_LEN 4
->>=20
->> #define VIA_PM_SCI_SELECT_OFS 0x42
->
->If we'll make a copy of the data sheet in form of #defines could these be=
- in the header to less clutter the source?
+>>   hw/riscv/virt.c        | 5 +++++
+>>   target/riscv/cpu.c     | 3 +++
+>>   target/riscv/cpu_cfg.h | 2 ++
+>>   3 files changed, 10 insertions(+)
+>>
+>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+>> index 1732c42915..99c087240f 100644
+>> --- a/hw/riscv/virt.c
+>> +++ b/hw/riscv/virt.c
+>> @@ -273,6 +273,11 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
+>>                                     cpu_ptr->cfg.cboz_blocksize);
+>>           }
+>>   
+>> +        if (cpu_ptr->cfg.ext_zicbop) {
+>> +            qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbop-block-size",
+> 
+> I think we need to get this node approved by devicetree@vger.kernel.org
+> and merged into [1] first.
+> 
+> [1] Linux repo: Documentation/devicetree/bindings/riscv/cpus.yaml
 
-Last time I did that I was asked to move the defines back into the source =
-file=2E I can't find the link right now, otherwise I'd have placed it here=
-=2E
+Ouch ... I wasn't expecting that :(
 
-Best regards,
-Bernhard
+We can't add zicbop without the blocksize DT and then claim that we're
+implement rva22u64. It'll be an 'almost implementation' of the profile
+because Zicbop is 'almost supported'.
 
->
->Regards,
->BALATON Zoltan
->
->> @@ -49,14 +58,19 @@ OBJECT_DECLARE_SIMPLE_TYPE(ViaPMState, VIA_PM)
->>=20
->> struct ViaPMState {
->>     PCIDevice dev;
->> +
->>     MemoryRegion io;
->>     ACPIREGS ar;
->> -    APMState apm;
->> +    uint16_t gbl_en;
->> +    uint16_t gbl_ctl;
->> +    uint8_t smi_cmd;
->> +
->>     PMSMBus smb;
->>=20
->>     Notifier powerdown_notifier;
->>=20
->>     qemu_irq sci_irq;
->> +    qemu_irq smi_irq;
->> };
->>=20
->> static void pm_io_space_update(ViaPMState *s)
->> @@ -90,7 +104,7 @@ static int vmstate_acpi_post_load(void *opaque, int =
-version_id)
->>=20
->> static const VMStateDescription vmstate_acpi =3D {
->>     =2Ename =3D "vt82c686b_pm",
->> -    =2Eversion_id =3D 1,
->> +    =2Eversion_id =3D 2,
->>     =2Eminimum_version_id =3D 1,
->>     =2Epost_load =3D vmstate_acpi_post_load,
->>     =2Efields =3D (VMStateField[]) {
->> @@ -98,9 +112,11 @@ static const VMStateDescription vmstate_acpi =3D {
->>         VMSTATE_UINT16(ar=2Epm1=2Eevt=2Ests, ViaPMState),
->>         VMSTATE_UINT16(ar=2Epm1=2Eevt=2Een, ViaPMState),
->>         VMSTATE_UINT16(ar=2Epm1=2Ecnt=2Ecnt, ViaPMState),
->> -        VMSTATE_STRUCT(apm, ViaPMState, 0, vmstate_apm, APMState),
->>         VMSTATE_TIMER_PTR(ar=2Etmr=2Etimer, ViaPMState),
->>         VMSTATE_INT64(ar=2Etmr=2Eoverflow_time, ViaPMState),
->> +        VMSTATE_UINT16(gbl_en, ViaPMState),
->> +        VMSTATE_UINT16(gbl_ctl, ViaPMState),
->> +        VMSTATE_UINT8(smi_cmd, ViaPMState),
->>         VMSTATE_END_OF_LIST()
->>     }
->> };
->> @@ -128,15 +144,75 @@ static void pm_write_config(PCIDevice *d, uint32_=
-t addr, uint32_t val, int len)
->>     }
->> }
->>=20
->> +static void via_pm_apm_ctrl_changed(ViaPMState *s, uint8_t val)
->> +{
->> +    s->smi_cmd =3D val;
->> +
->> +    if (s->gbl_en & VIA_PM_IO_GBLEN_SW_SMI_EN
->> +        && s->gbl_ctl & VIA_PM_IO_GBLCTL_SMI_EN
->> +        && !(s->gbl_ctl & VIA_PM_IO_GBLCTL_SMIIG
->> +             && s->gbl_ctl & VIA_PM_IO_GBLCTL_INSMI)) {
->> +        s->gbl_ctl |=3D VIA_PM_IO_GBLCTL_INSMI;
->> +
->> +        if (s->smi_irq) {
->> +            qemu_irq_raise(s->smi_irq);
+I'll send a DT patch for cbop-block-size and see how that goes. We would
+need an ack for the DT folks that we're not adding the wrong attribute
+for cbop. If we can't have an ack in time we should just postpone profile
+support for next release.
+
+I'll send a v7 to keep reviews rolling on our side but now it seems like
+we have a kernel dependency to merge this. Thanks,
+
+
+Daniel
+
+
+> 
+>> +                                  cpu_ptr->cfg.cbop_blocksize);
 >> +        }
->> +    }
->> +}
 >> +
->> static void pm_io_write(void *op, hwaddr addr, uint64_t data, unsigned =
-size)
->> {
->> +    ViaPMState *s =3D op;
->> +
->>     trace_via_pm_io_write(addr, data, size);
->> +
->> +    switch (addr) {
->> +    case VIA_PM_IO_GBLEN:
->> +        s->gbl_en =3D (s->gbl_en & 0xff00) | data;
->> +        break;
->> +    case VIA_PM_IO_GBLEN + 1:
->> +        s->gbl_en =3D (s->gbl_en & 0x00ff) | (data << 8);
->> +        break;
->> +    case VIA_PM_IO_GBLCTL:
->> +        s->gbl_ctl =3D (s->gbl_ctl & 0xff00) | data;
->> +        break;
->> +    case VIA_PM_IO_GBLCTL + 1:
->> +        data <<=3D 8;
->> +        data &=3D ~(s->gbl_ctl & VIA_PM_IO_GBLCTL_INSMI);
->> +        s->gbl_ctl =3D (s->gbl_ctl & 0x00ff) | data;
->> +        break;
->> +    case VIA_PM_IO_SMI_CMD:
->> +        via_pm_apm_ctrl_changed(s, data);
->> +        break;
->> +    }
->> }
->>=20
->> static uint64_t pm_io_read(void *op, hwaddr addr, unsigned size)
->> {
->> -    trace_via_pm_io_read(addr, 0, size);
->> -    return 0;
->> +    ViaPMState *s =3D op;
->> +    uint64_t data =3D 0;
->> +
->> +    switch (addr) {
->> +    case VIA_PM_IO_GBLEN:
->> +        data =3D s->gbl_en & 0xff;
->> +        break;
->> +    case VIA_PM_IO_GBLEN + 1:
->> +        data =3D s->gbl_en >> 8;
->> +        break;
->> +    case VIA_PM_IO_GBLCTL:
->> +        data =3D s->gbl_ctl & 0xff;
->> +        break;
->> +    case VIA_PM_IO_GBLCTL + 1:
->> +        data =3D (s->gbl_ctl >> 8) & 0xd;
->> +        break;
->> +    case VIA_PM_IO_SMI_CMD:
->> +        data =3D s->smi_cmd;
->> +        break;
->> +    }
->> +
->> +    trace_via_pm_io_read(addr, data, size);
->> +
->> +    return data;
->> }
->>=20
->> static const MemoryRegionOps pm_io_ops =3D {
->> @@ -166,6 +242,10 @@ static void via_pm_reset(DeviceState *d)
->>     /* SMBus IO base */
->>     pci_set_long(s->dev=2Econfig + 0x90, 1);
->>=20
->> +    s->gbl_en =3D 0;
->> +    s->gbl_ctl =3D VIA_PM_IO_GBLCTL_SMIIG;
->> +    s->smi_cmd =3D 0;
->> +
->>     acpi_pm1_evt_reset(&s->ar);
->>     acpi_pm1_cnt_reset(&s->ar);
->>     acpi_pm_tmr_reset(&s->ar);
->> @@ -194,8 +274,6 @@ static void via_pm_realize(PCIDevice *dev, Error **=
-errp)
->>     memory_region_add_subregion(pci_address_space_io(dev), 0, &s->smb=
-=2Eio);
->>     memory_region_set_enabled(&s->smb=2Eio, false);
->>=20
->> -    apm_init(dev, &s->apm, NULL, s);
->> -
->>     memory_region_init_io(&s->io, OBJECT(dev), &pm_io_ops, s, "via-pm",=
- 128);
->>     memory_region_add_subregion(pci_address_space_io(dev), 0, &s->io);
->>     memory_region_set_enabled(&s->io, false);
->> @@ -214,6 +292,7 @@ static void via_pm_init(Object *obj)
->>     ViaPMState *s =3D VIA_PM(obj);
->>=20
->>     qdev_init_gpio_out_named(DEVICE(obj), &s->sci_irq, "sci", 1);
->> +    qdev_init_gpio_out_named(DEVICE(obj), &s->smi_irq, "smi-irq", 1);
->> }
->>=20
->> typedef struct via_pm_init_info {
->>=20
+>>           qemu_fdt_setprop_string(ms->fdt, cpu_name, "compatible", "riscv");
+>>           qemu_fdt_setprop_string(ms->fdt, cpu_name, "status", "okay");
+>>           qemu_fdt_setprop_cell(ms->fdt, cpu_name, "reg",
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index f40da4c661..6c0050988f 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -78,6 +78,7 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
+>>    */
+>>   const RISCVIsaExtData isa_edata_arr[] = {
+>>       ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
+>> +    ISA_EXT_DATA_ENTRY(zicbop, PRIV_VERSION_1_12_0, ext_zicbop),
+>>       ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_zicboz),
+>>       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+>>       ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_zicntr),
+>> @@ -1336,6 +1337,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+>>       MULTI_EXT_CFG_BOOL("zhinxmin", ext_zhinxmin, false),
+>>   
+>>       MULTI_EXT_CFG_BOOL("zicbom", ext_zicbom, true),
+>> +    MULTI_EXT_CFG_BOOL("zicbop", ext_zicbop, true),
+>>       MULTI_EXT_CFG_BOOL("zicboz", ext_zicboz, true),
+>>   
+>>       MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
+>> @@ -1424,6 +1426,7 @@ Property riscv_cpu_options[] = {
+>>       DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
+>>   
+>>       DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
+>> +    DEFINE_PROP_UINT16("cbop_blocksize", RISCVCPU, cfg.cbop_blocksize, 64),
+>>       DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
+>>   
+>>       DEFINE_PROP_END_OF_LIST(),
+>> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+>> index 6eef4a51ea..2203b4c45b 100644
+>> --- a/target/riscv/cpu_cfg.h
+>> +++ b/target/riscv/cpu_cfg.h
+>> @@ -65,6 +65,7 @@ struct RISCVCPUConfig {
+>>       bool ext_zicntr;
+>>       bool ext_zicsr;
+>>       bool ext_zicbom;
+>> +    bool ext_zicbop;
+>>       bool ext_zicboz;
+>>       bool ext_zicond;
+>>       bool ext_zihintntl;
+>> @@ -134,6 +135,7 @@ struct RISCVCPUConfig {
+>>       uint16_t vlen;
+>>       uint16_t elen;
+>>       uint16_t cbom_blocksize;
+>> +    uint16_t cbop_blocksize;
+>>       uint16_t cboz_blocksize;
+>>       bool mmu;
+>>       bool pmp;
+>> -- 
+>> 2.41.0
+>>
+> 
+> Otherwise,
+> 
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> 
+> Thanks,
+> drew
 
