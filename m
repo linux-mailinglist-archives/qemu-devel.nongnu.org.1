@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379177DA6F3
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 14:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 590B67DA6EF
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 14:25:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwiMh-0006Jb-V8; Sat, 28 Oct 2023 08:24:31 -0400
+	id 1qwiMk-0006Kk-9Q; Sat, 28 Oct 2023 08:24:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qwiMg-0006Ix-Gb; Sat, 28 Oct 2023 08:24:30 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1qwiMi-0006Jw-2C; Sat, 28 Oct 2023 08:24:32 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qwiMe-0006lH-P0; Sat, 28 Oct 2023 08:24:30 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-99bdeae1d0aso462779566b.1; 
- Sat, 28 Oct 2023 05:24:27 -0700 (PDT)
+ id 1qwiMg-0006lP-CW; Sat, 28 Oct 2023 08:24:31 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5409bc907edso4520477a12.0; 
+ Sat, 28 Oct 2023 05:24:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698495866; x=1699100666; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=YiyCcN/ucib3SSeMOWbQOQVhpMOluzA0hVagTF6ISfc=;
- b=dWLVTucQ+nO36PGKtvl+sqRBZWeeP4k3SPnP9Yr4LIN8d1frurGOS3+JSXlwBi2lsV
- nGzxsjnWSsD3iK6W7X80U9JLqZKQRpuES/Uc5CPCxuBna1ia1+0FZ8qcwDHF1HjDrHPh
- 6GTde86q+Vxgf5PrHwnj5Bka7XAPy0hINxip8SpvdAXFlopnHrZdykQNcGhA2MvxtWIT
- N2bx614FJvqjtX+bw1fbJ9+tWuQj/7kD+hKFPXeaFx8QbZy+GPMZaxN/0ptd3skps7N6
- S//QrBYxYYWvvJ84IJD79U2JOIdZmdAGT8AfN8JU5eAXYEeggfgX5n3UAHb7QlmVMQ3A
- cQIw==
+ d=gmail.com; s=20230601; t=1698495867; x=1699100667; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Z+50/O4PNCKQH2UPmRwpwa8C3hjwmP+3AadueA5nS0w=;
+ b=PapyUXBeuUVf0POH/6KHuqPs+IigD3SggaKDpbhME/1n8E+il45JauEHKciIhLvH1u
+ tF0t7yA+1gwXmdv+cEM3E0UPoJVxRbiJQWZ88ZuxQQjoeRyWkunq3UGxtBNMqYcVkolk
+ snfk2AdZxdy9E+NmYxH/TQ0hG2jqfJ2KVPlrwlyCC1+7xZuDzxVJsoOEHpNLeAD9fqEC
+ lM5ZSZqqhGGvKBHe5BGt9KQWFzbXacITsr9lYC7BZ+Mcz00hDNHQPncWyge6DNkar91L
+ W7+h+iU97G7SMAXeNeEKg+p1yZ/AlueQrT6Y8T3Vx7HYZj6FcL5EFSd1ifsKPxxdFiM4
+ DYUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698495866; x=1699100666;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YiyCcN/ucib3SSeMOWbQOQVhpMOluzA0hVagTF6ISfc=;
- b=wAR6mqOOoJ9ua0mkXxMC/s+pyvRnmh6NRqXKvgnMxjI+5IX4inhrvRtKIC8XajCWYL
- R2FlXGA//mYshnKKbiQpseEwq0xu3RF3s3cEIfOEdBO/NThaxfH7FAOC5ploUI7HsMIn
- K4G5BeckavXkED2ywr7t41+vyeYhynUtgv/MhhiamIWqs/mXn/oImt/m/Y0kWvmPBeoW
- 9XxCn/bD7zHx49z6F2GYRS//eee8ZfJjkRJi+Jn3N5lE7Xy5kGQRUFJ4i6GeTEUp3dRZ
- WHun1mp3o5D5zwpxzMtR1ZCR9iR+ReMHUIUItXcOgQpJUkkqsKJU4Oc8l/67wqjvhRdC
- 2oZg==
-X-Gm-Message-State: AOJu0YzWknJn2ysFhtu6hn8mpMEYctQ4DvjwWH3XlWayaoepYz/uXWVw
- 8KeYh4Egyi0cVqqKddL/Uyi+RCHS0yQ=
-X-Google-Smtp-Source: AGHT+IFDwcgbz7VIzpg2MbcoN2kxlzeSulJeE65nndvylyb8XnDwMA9ecrJJitkjHbt5LTUPOQkmOA==
-X-Received: by 2002:a17:907:a4b:b0:9c7:4d51:af08 with SMTP id
- be11-20020a1709070a4b00b009c74d51af08mr4464727ejc.43.1698495865996; 
- Sat, 28 Oct 2023 05:24:25 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698495867; x=1699100667;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Z+50/O4PNCKQH2UPmRwpwa8C3hjwmP+3AadueA5nS0w=;
+ b=vw4T+S89qaLjWEZNg6pPUetl+HtZRhSlrLIO89DT2Yp7xAfHLG3HyB39nqr2ztxTPo
+ 0yXsz3u7pbmxwUXhR7NDGX6B5EWJBLiDzP/FIQ02WawR7KZdl3dHioC4W1Z8cs3G0pZl
+ TelOgX/qr4pnaZhPUfewMfSXy9SyAHnuP+u7Ueq+znQGq9Cq6lqBib/QmkD95qL6H+bm
+ wVPz+BIUzeN0wXuymFtkvfciQZqn3GmrzhNu+AUVE17R4nqxcxARoqAImKmlAHYtXWGp
+ SWtAhHVs15V9dWO0xQp2+pFp4H9cMACt7uV7k3axF1px5yvBxqqDu2rN32HnrcsXQLgA
+ Ee/Q==
+X-Gm-Message-State: AOJu0Yy3c5S0YqO6fv3MTpu1EVDvNWD3j6N1xgC98lbTIW0R6JVkmfwZ
+ efWyMh4JrIXpgFmJc9XbV19trtszWXI=
+X-Google-Smtp-Source: AGHT+IHIR2UQG2nOuLJaEjyq58WcbmQMiSnqzJ/4RIgRu0TcMxoS+um9nfeVHV5+dhhOmWHuwFYR6w==
+X-Received: by 2002:a17:907:1c25:b0:9ae:50e3:7e40 with SMTP id
+ nc37-20020a1709071c2500b009ae50e37e40mr4172825ejc.52.1698495867279; 
+ Sat, 28 Oct 2023 05:24:27 -0700 (PDT)
 Received: from archlinux.. (dynamic-089-012-044-170.89.12.pool.telefonica.de.
  [89.12.44.170]) by smtp.gmail.com with ESMTPSA id
- a13-20020a170906190d00b009ae3d711fd9sm2706687eje.69.2023.10.28.05.24.24
+ a13-20020a170906190d00b009ae3d711fd9sm2706687eje.69.2023.10.28.05.24.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Oct 2023 05:24:25 -0700 (PDT)
+ Sat, 28 Oct 2023 05:24:26 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
@@ -64,15 +65,16 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 0/6] Various tracing patches
-Date: Sat, 28 Oct 2023 14:24:09 +0200
-Message-ID: <20231028122415.14869-1-shentey@gmail.com>
+Subject: [PATCH 1/6] hw/watchdog/wdt_imx2: Trace MMIO access
+Date: Sat, 28 Oct 2023 14:24:10 +0200
+Message-ID: <20231028122415.14869-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.42.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20231028122415.14869-1-shentey@gmail.com>
+References: <20231028122415.14869-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,37 +97,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series enhances the tracing experience of some i.MX devices by adding =
-new=0D
-trace events and by converting from DPRINTF. SMBus gets also converted from=
-=0D
-DPRINTF to trace events. Finally, when tracing memory region operations, ho=
-st=0D
-pointers aren't traced any longer and are substituted by their memory regio=
-n=0D
-names.=0D
-=0D
-Bernhard Beschow (6):=0D
-  hw/watchdog/wdt_imx2: Trace MMIO access=0D
-  hw/watchdog/wdt_imx2: Trace timer activity=0D
-  hw/misc/imx7_snvs: Trace MMIO access=0D
-  hw/misc/imx6_ccm: Convert DPRINTF to trace events=0D
-  hw/i2c/pm_smbus: Convert DPRINTF to trace events=0D
-  system/memory: Trace names of MemoryRegions rather than host pointers=0D
-=0D
- docs/devel/tracing.rst   |  4 ++--=0D
- hw/i2c/pm_smbus.c        | 18 ++++--------------=0D
- hw/misc/imx6_ccm.c       | 41 ++++++++++++++--------------------------=0D
- hw/misc/imx7_snvs.c      |  5 +++++=0D
- hw/watchdog/wdt_imx2.c   | 28 +++++++++++++++++++++------=0D
- system/memory.c          | 26 +++++++++++++++----------=0D
- hw/i2c/trace-events      |  6 ++++++=0D
- hw/misc/trace-events     | 19 +++++++++++++++++++=0D
- hw/watchdog/trace-events |  6 ++++++=0D
- system/trace-events      | 12 ++++++------=0D
- 10 files changed, 100 insertions(+), 65 deletions(-)=0D
-=0D
--- =0D
-2.42.0=0D
-=0D
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/watchdog/wdt_imx2.c   | 24 ++++++++++++++++++------
+ hw/watchdog/trace-events |  4 ++++
+ 2 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/hw/watchdog/wdt_imx2.c b/hw/watchdog/wdt_imx2.c
+index e776a2fbd4..885ebd3978 100644
+--- a/hw/watchdog/wdt_imx2.c
++++ b/hw/watchdog/wdt_imx2.c
+@@ -17,6 +17,7 @@
+ #include "hw/qdev-properties.h"
+ 
+ #include "hw/watchdog/wdt_imx2.h"
++#include "trace.h"
+ 
+ static void imx2_wdt_interrupt(void *opaque)
+ {
+@@ -67,20 +68,29 @@ static void imx2_wdt_reset(DeviceState *dev)
+ static uint64_t imx2_wdt_read(void *opaque, hwaddr addr, unsigned int size)
+ {
+     IMX2WdtState *s = IMX2_WDT(opaque);
++    uint16_t value = 0;
+ 
+     switch (addr) {
+     case IMX2_WDT_WCR:
+-        return s->wcr;
++        value = s->wcr;
++        break;
+     case IMX2_WDT_WSR:
+-        return s->wsr;
++        value = s->wsr;
++        break;
+     case IMX2_WDT_WRSR:
+-        return s->wrsr;
++        value = s->wrsr;
++        break;
+     case IMX2_WDT_WICR:
+-        return s->wicr;
++        value = s->wicr;
++        break;
+     case IMX2_WDT_WMCR:
+-        return s->wmcr;
++        value = s->wmcr;
++        break;
+     }
+-    return 0;
++
++    trace_imx2_wdt_read(addr, value);
++
++    return value;
+ }
+ 
+ static void imx_wdt2_update_itimer(IMX2WdtState *s, bool start)
+@@ -137,6 +147,8 @@ static void imx2_wdt_write(void *opaque, hwaddr addr,
+ {
+     IMX2WdtState *s = IMX2_WDT(opaque);
+ 
++    trace_imx2_wdt_write(addr, value);
++
+     switch (addr) {
+     case IMX2_WDT_WCR:
+         if (s->wcr_locked) {
+diff --git a/hw/watchdog/trace-events b/hw/watchdog/trace-events
+index 2739570652..874968cc06 100644
+--- a/hw/watchdog/trace-events
++++ b/hw/watchdog/trace-events
+@@ -17,6 +17,10 @@ cmsdk_apb_watchdog_lock(uint32_t lock) "CMSDK APB watchdog: lock %" PRIu32
+ aspeed_wdt_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
+ aspeed_wdt_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+ 
++# wdt_imx2.c
++imx2_wdt_read(uint32_t addr, uint16_t data) "[0x%" PRIx32 "] -> 0x%" PRIx16
++imx2_wdt_write(uint32_t addr, uint16_t data) "[0x%" PRIx32 "] <- 0x%" PRIx16
++
+ # spapr_watchdog.c
+ spapr_watchdog_start(uint64_t flags, uint64_t num, uint64_t timeout) "Flags 0x%" PRIx64 " num=%" PRId64 " %" PRIu64 "ms"
+ spapr_watchdog_stop(uint64_t num, uint64_t ret) "num=%" PRIu64 " ret=%" PRId64
+-- 
+2.42.0
+
 
