@@ -2,82 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A92E7DA851
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 19:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55BB77DA888
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 20:21:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwnWA-000835-0y; Sat, 28 Oct 2023 13:54:38 -0400
+	id 1qwnus-0004YJ-5w; Sat, 28 Oct 2023 14:20:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwnW7-00082f-L0
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 13:54:35 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwnW6-0003wV-1N
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 13:54:35 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3b3f6f330d4so1928285b6e.2
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 10:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698515672; x=1699120472; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vR5M0m0h/jiGUkx291Zf8e+K4ustSOjpAfq6ie//RW4=;
- b=K3Z73WEMh3fFvSxY3mad9CttXYjvHuHmgfCq39XPR/86Y9bK+1dKxU6NFrfYKXpsxl
- sJCpVV6M9J8mqEpNHKZmVHypxSGutuwYoDHMKRX4xhKcGm3J3cb2V7nA5cw9SyAHrJWl
- o2Pw7mLLpSwtfSlKaHlLpQHIqWQHdjQcd9jgKdVCeOMquaCTPd3GE4LK0dY2xmOZ6fHp
- s1VII4k/U63FHwIL8o7icgf4cGG4JauCFIitnT3SXtI24qdREKYkMMpXpLwPSfR/WIwJ
- lZVr0jOGPQ+nepu6Jtr19T8T7Hs7SoPx0wE/Vp+4cQ+aX+yxU+elNMdgvjVEKTLYog6s
- sx/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698515672; x=1699120472;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vR5M0m0h/jiGUkx291Zf8e+K4ustSOjpAfq6ie//RW4=;
- b=vrJ3YKkoYFf2tPd3Sm8CUEvuKZPNoR9YbTd3GZknqsvIZViltVzrQpKfYTb3mVNvNz
- MvHcm0Nh9HWBkajf7NChdTL4pJBYR0ddgwh0J9exzbQO37YDvk8SOrIMN2mD/gUoF2rJ
- Fr6t8FU6bwLpIcSUYbTNmWad6U+fHsqH4LMRci1tS5BnielZPSYIWwWeZ36vqFpVT6Xo
- dJo9Og2UF0rilUH/G08HOimsZTCD/fqwlXU3Ss2kZgxy1qfrPM0ngugoSW4Z/kAw1Fgu
- bPUIm/BhXmViDzePPX3apqxo5xKGPyWafNSGuIlcbRidGYEK8HTuAAD1lYuEKroyWASq
- oCqw==
-X-Gm-Message-State: AOJu0YxwnHgb1xVAgixMM2XDGM2eSkAfdhkswenCu2oPVvFMxyd7zZ4Y
- buwBAgFmsl01xZ3mWV8jbxEQ5w==
-X-Google-Smtp-Source: AGHT+IHWS/jIIyM3vEJpdsdXyx/cnzryI3XCBHXyAaX0wXxawhMW3jLNL75BLPG6OqCzGkDjNNCvfQ==
-X-Received: by 2002:a05:6808:1281:b0:3a8:80ea:f0c6 with SMTP id
- a1-20020a056808128100b003a880eaf0c6mr6716217oiw.29.1698515672632; 
- Sat, 28 Oct 2023 10:54:32 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- fn4-20020a056a002fc400b006b4ac8885b4sm3328907pfb.14.2023.10.28.10.54.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 28 Oct 2023 10:54:32 -0700 (PDT)
-Message-ID: <6d234b91-ff03-4558-815e-ceb1823957c2@linaro.org>
-Date: Sat, 28 Oct 2023 10:54:30 -0700
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qwnuq-0004Y4-Hu; Sat, 28 Oct 2023 14:20:08 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qwnuo-0007Vx-1S; Sat, 28 Oct 2023 14:20:08 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id AD33D756078;
+ Sat, 28 Oct 2023 20:20:02 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 62B377456A7; Sat, 28 Oct 2023 20:20:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 5E032745681;
+ Sat, 28 Oct 2023 20:20:02 +0200 (CEST)
+Date: Sat, 28 Oct 2023 20:20:02 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
+In-Reply-To: <AB7A22F3-8EDF-4E46-965A-6194201EAC98@gmail.com>
+Message-ID: <dafc407d-3749-e6f4-3a66-750fde8965f9@eik.bme.hu>
+References: <cover.1698406922.git.balaton@eik.bme.hu>
+ <AB7A22F3-8EDF-4E46-965A-6194201EAC98@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/17] plugins: Remove an extra parameter
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-References: <20231028103311.347104-1-alex.bennee@linaro.org>
- <20231028103311.347104-17-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231028103311.347104-17-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,16 +62,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/28/23 03:33, Alex Bennée wrote:
-> From: Akihiko Odaki <akihiko.odaki@daynix.com>
-> 
-> copy_call() has an unused parameter so remove it.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Message-Id: <20231019101030.128431-7-akihiko.odaki@daynix.com>
+On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+> Am 27. Oktober 2023 11:54:48 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> Changes in v7:
+>> - Increase default memory size to 512m to match pegasos2 and sam460ex
+>> and it's a better default for AmigaOS
+>>
+>> Changes in v6:
+>> - Dropped patch 1, now it's
+>>
+>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+>>
+>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI IDE controllers)
+>> - Added Tested-by from Rene
+>>
+>> Changes in v5:
+>> - Fixed avocado test
+>>
+>> Changes in v4:
+>> - Found typo in comment in patch 1 so ended up rewording it again
+>> trying to make it more concise. Also take the idea of using
+>> range_covers_byte from Mark's patch
+>> - Added RFC patch for avocado test (untested, I don't have Avocado)
+>>
+>> Changes in v3:
+>> - Update values, comment and commit message in patch 1 again
+>>
+>> Changes in v2:
+>> - Update comment and commit message in patch 1 (Mark)
+>> - Fix irq mapping in patch 2 (Volker)
+>>
+>> Regards,
+>> BALATON Zoltan
+>>
+>> BALATON Zoltan (3):
+>>  hw/pci-host: Add emulation of Mai Logic Articia S
+>>  hw/ppc: Add emulation of AmigaOne XE board
+>>  tests/avocado: Add test for amigaone board
+>
+> Hi Zoltan,
+>
+> Could you please provide some documentation on how to run Linux or some 
+> other free (as in free beer) OS on this machine?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+There are some Linux images here that should work on amigaone:
 
+https://sourceforge.net/projects/amigaone-linux/files/debian-installer/
 
-r~
+To boot it get the firmware as described in the comment in amigaone.c or 
+in the avocado test then run:
+
+qemu-system-ppc -M amigaone -bios u-boot-amigaone.bin \
+-cdrom "A1 Linux Net Installer.iso" -serial stdio \
+-device ati-vga,model=rv100,romfile=VGABIOS-lgpl-latest.bin
+
+Then from the firmware menu select Boot sequence, Amiga Multiboot Options 
+and set Boot device 1 to VIA CDROM then escape back to top level and from 
+the exit menu that appears with escape on the main screen select either 
+save settings or use settings for current boot. It takes a long time at 
+Loading kernel... but eventually boots and you should see the installer 
+(or select rescue from the Linux boot menu then at language selection 
+Tab to Back button then run shell to get a prompt).
+
+> Can you provide an 
+> Avocado test booting e.g. Linux as a quality gate for the VIA south 
+> bridges?
+
+I don't know how to automate the above with avocado which seems to run 
+with -display none but the Linux iso has hard coded radeonfb so I could 
+only do a basic test with the firmware.
+
+> As you know I'm trying to bring these south bridges to the PC machine 
+> and relying on hard to get proprietary blobs or OSes makes this very 
+> difficult.
+
+I know that the machines and guests I work with are a bit obscure but I 
+can't change that. These machines also run Linux and some MorphOS too 
+which can be a test case that's available, unfortunately amigaone is not 
+supported by MorphOS so only Linux and AmigaOS is available there.
+
+> Whenever the VIA south bridges are changed we end up having 
+> endless discussions due to this situation. We need a solution that works 
+> for everybody woking on these south bridges.
+
+I afree with that and I think I wasn't the one who started endless 
+discussions about every little change to the via model so I think we can 
+find a solution that works for all. I'd just like to keep pegasos2 and 
+amigaone working with AmigaOS which is my main goal and also keep the 
+device model simple and managable.
+
+Regards,
+BALATON Zoltan
 
