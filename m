@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCECB7DA61B
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 11:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66B07DA616
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 11:17:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwfQm-0004bY-NR; Sat, 28 Oct 2023 05:16:32 -0400
+	id 1qwfQm-0004bS-FH; Sat, 28 Oct 2023 05:16:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwfQc-0004Y0-6H
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwfQd-0004YD-Os
  for qemu-devel@nongnu.org; Sat, 28 Oct 2023 05:16:24 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwfQa-0007LL-Jc
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 05:16:21 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-542d3e47fd5so658182a12.0
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 02:16:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwfQc-0007LV-7X
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 05:16:23 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-538e8eca9c1so4437183a12.3
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 02:16:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1698484578; x=1699089378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wi4p1sAuChlWfUU4ra+G274cuGU0HLuvHEq0YGgvFkE=;
- b=amrrpOXYDq0e44g/PPgWQSsRKR4om9awERmTA9EtZg/iMAm71yskBLzO8kk4wxT9BP
- dJnN7JiV0ANpYUpKnzMNypUZ38cdfS21wfCPJI50n/zHLHvSAM3DWm9qdrYv8f0LonT8
- 8QzXjE5JzJPR8tNZGS1YSK1kUV2H6EA6FNNvI2xglhSzGIQde3uTDykTzICJrk29c3i4
- yYMJiYir0VDEa5m92r3+UaX+LlvIQqlCgvD04x2wau/Uk5Skp9XzE5yJA5pN7JQ129S/
- 1FAf9kMA7ZG7nt+uTBuXYgvbbUDDkOPQwT//A4LM+sKRQx6miDraO//sws8qNrzSDyXw
- 5qqQ==
+ bh=H5vrwRUQXmhV2FmE/eFche3gCK9KU8MjSPmr8QXRFCg=;
+ b=Oeoqa0YMxc/LRQQTcTD82K+uHAEbtiXkbKNxQm7/SdqvJGfS1tUgJJeNh0shiyFYwl
+ xexKnVJhV4p3/4RVP89YoSNl1AMDqamtg0ojluoz7a6nzgZhbuPtJJgzMDw96zXp66dd
+ Tx1j8K/NTN9rgFcY+M1H6/+13AjUDRDv9z4qk5fIdch+b/41A+kahN0UlRU5+sU/Wiui
+ XGbWHYR0+npACXvax8nqHt1HiIyGuTx7Hu6FkHSHw0Mdu289oAHVukInrMpYDY1p0M+V
+ 2Y/Jhm6Cy7+IUzgTK2MFbVrFp7e7EOurkFBUIJSYqJQECY/jHhWH0EvPzHw9JiU0dpGs
+ Jcgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698484578; x=1699089378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wi4p1sAuChlWfUU4ra+G274cuGU0HLuvHEq0YGgvFkE=;
- b=eNnuD7brTBGDkky/xKYeT7FdVAZzt1wyhM81cZc2reMG8KKiCAsncXZoFb8EfDnB8R
- OTlpBR2vuOSqjxsMwoeCSv+FN9BtuU+dqQZ9HXA02yYUtv8RZshaKPiy1crjghogcSM1
- 1HT4Ap+ODJZtoFQF4gqfZB955DvNn8Ep+1Gij8z/70q62Ja61e0Nop2q1KvQ2u0ry22a
- KLtJIz+3wrctpU9MLR0cuiE8i4NF8vmlOqa7ZjbdrDpfrHhkH8Y/2/pmIv+LdqME5adx
- X7pURVfkf3zOsaoALJDWnret6FZBiro+TAlfRRGzxzzo6yqdhzmLfQzG0+yoiIiyZtwU
- grrQ==
-X-Gm-Message-State: AOJu0YxP3CYhtmmmx7GTFz8/GPi5FE/HTVJk+5tD3Zxhtyx0MmhpVCp9
- SUeG9KSZ8sQGhzBZM/8QMyp5OU/GCHE=
-X-Google-Smtp-Source: AGHT+IG0CIwc3IYLrssR3ntG503WjKwg/WI1LDPgOCHA78sutJDtZScVM7bvaKAMse+n3KpIwdmnbg==
-X-Received: by 2002:a50:fa93:0:b0:533:4c15:c337 with SMTP id
- w19-20020a50fa93000000b005334c15c337mr4217563edr.16.1698484577507; 
- Sat, 28 Oct 2023 02:16:17 -0700 (PDT)
+ bh=H5vrwRUQXmhV2FmE/eFche3gCK9KU8MjSPmr8QXRFCg=;
+ b=R8JPDcxId9fxvX6E9EFMnptJ8PyTA5Q3LSF047Zu1ulUET/b8QqQFFDljFjYaCmSX6
+ 2GjEx7Ym55hcCgKQymFUMsh9FNQoINGqOJCMGNOOuSQ5l6hjUutAiNc9woveMQugaKgj
+ 9JVNxmTqkTINL6FPhBVkz1BngyB8ssGzgv2JqPvmAMLjoDToscLgAqRAOihLeCHl+lxF
+ 68k3aq3XPUvtJ0FOcaURQ2A9ZLSCEm6D55RUmmImWSBg725CmiZHgvvyT2lf7e4mDNzi
+ Q/BtHjzD4ESf4DDXu36nRXQzI1cxEMZcVtBSZRSCJLW2wLDgsGYKRgfDU31zBZWzsW4H
+ GJdQ==
+X-Gm-Message-State: AOJu0YyVvF517vkh3w7Xb3dS2erqPdpPxpglYwXba+TJiP1hkI4man1I
+ redIkJVDEVQtiD6snlVwdSGqNXHv51M=
+X-Google-Smtp-Source: AGHT+IF7MNWU013FdkEnNBUZodOv8taTLn0gFDC/KtngOEhe4HzY3yMbbyLvtEXD5tzBEfZgCizgxA==
+X-Received: by 2002:a05:6402:b52:b0:53d:b71d:34a7 with SMTP id
+ bx18-20020a0564020b5200b0053db71d34a7mr3746082edb.6.1698484578368; 
+ Sat, 28 Oct 2023 02:16:18 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-089-012-044-170.89.12.pool.telefonica.de. [89.12.44.170])
  by smtp.gmail.com with ESMTPSA id
- q23-20020a50c357000000b00542df4a03d0sm571444edb.16.2023.10.28.02.16.16
+ q23-20020a50c357000000b00542df4a03d0sm571444edb.16.2023.10.28.02.16.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Oct 2023 02:16:16 -0700 (PDT)
+ Sat, 28 Oct 2023 02:16:18 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v5 3/5] hw/isa/vt82c686: Reuse acpi_update_sci()
-Date: Sat, 28 Oct 2023 11:16:04 +0200
-Message-ID: <20231028091606.23700-4-shentey@gmail.com>
+Subject: [PATCH v5 4/5] hw/isa/vt82c686: Implement ACPI powerdown
+Date: Sat, 28 Oct 2023 11:16:05 +0200
+Message-ID: <20231028091606.23700-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231028091606.23700-1-shentey@gmail.com>
 References: <20231028091606.23700-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,58 +92,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-acpi_update_sci() covers everything pm_update_sci() does. It implements common
-ACPI funtionality in a generic fashion. Note that it agnostic to any
-Frankenstein usage of the general purpose event registers in other device
-models. It just implements a generic mechanism which can be wired to arbitrary
-functionality.
+Allows guests to be powered off via an ACPI power button event which can be
+triggered e.g. through the GTK GUI.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/isa/vt82c686.c | 20 ++------------------
- 1 file changed, 2 insertions(+), 18 deletions(-)
+ hw/isa/vt82c686.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 60ca781e03..7b44ad9485 100644
+index 7b44ad9485..e8ec63dea9 100644
 --- a/hw/isa/vt82c686.c
 +++ b/hw/isa/vt82c686.c
-@@ -145,26 +145,10 @@ static const MemoryRegionOps pm_io_ops = {
-     },
+@@ -33,8 +33,10 @@
+ #include "qapi/error.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
++#include "qemu/notify.h"
+ #include "qemu/range.h"
+ #include "qemu/timer.h"
++#include "sysemu/runstate.h"
+ #include "trace.h"
+ 
+ #define TYPE_VIA_PM "via-pm"
+@@ -52,6 +54,8 @@ struct ViaPMState {
+     APMState apm;
+     PMSMBus smb;
+ 
++    Notifier powerdown_notifier;
++
+     qemu_irq sci_irq;
  };
  
--static void pm_update_sci(ViaPMState *s)
--{
--    int sci_level, pmsts;
--
--    pmsts = acpi_pm1_evt_get_sts(&s->ar);
--    sci_level = (((pmsts & s->ar.pm1.evt.en) &
--                  (ACPI_BITMASK_RT_CLOCK_ENABLE |
--                   ACPI_BITMASK_POWER_BUTTON_ENABLE |
--                   ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
--                   ACPI_BITMASK_TIMER_ENABLE)) != 0);
--    qemu_set_irq(s->sci_irq, sci_level);
--    /* schedule a timer interruption if needed */
--    acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
--                       !(pmsts & ACPI_BITMASK_TIMER_STATUS));
--}
--
- static void pm_tmr_timer(ACPIREGS *ar)
- {
-     ViaPMState *s = container_of(ar, ViaPMState, ar);
--    pm_update_sci(s);
-+    acpi_update_sci(&s->ar, s->sci_irq);
+@@ -172,6 +176,13 @@ static void via_pm_reset(DeviceState *d)
+     smb_io_space_update(s);
  }
  
- static void via_pm_reset(DeviceState *d)
-@@ -182,7 +166,7 @@ static void via_pm_reset(DeviceState *d)
-     acpi_pm1_cnt_reset(&s->ar);
-     acpi_pm_tmr_reset(&s->ar);
-     acpi_gpe_reset(&s->ar);
--    pm_update_sci(s);
-+    acpi_update_sci(&s->ar, s->sci_irq);
++static void via_pm_powerdown_req(Notifier *n, void *opaque)
++{
++    ViaPMState *s = container_of(n, ViaPMState, powerdown_notifier);
++
++    acpi_pm1_evt_power_down(&s->ar);
++}
++
+ static void via_pm_realize(PCIDevice *dev, Error **errp)
+ {
+     ViaPMState *s = VIA_PM(dev);
+@@ -193,6 +204,9 @@ static void via_pm_realize(PCIDevice *dev, Error **errp)
+     acpi_pm1_evt_init(&s->ar, pm_tmr_timer, &s->io);
+     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
+     acpi_gpe_init(&s->ar, VIA_PM_GPE_LEN);
++
++    s->powerdown_notifier.notify = via_pm_powerdown_req;
++    qemu_register_powerdown_notifier(&s->powerdown_notifier);
+ }
  
-     pm_io_space_update(s);
-     smb_io_space_update(s);
+ static void via_pm_init(Object *obj)
 -- 
 2.42.0
 
