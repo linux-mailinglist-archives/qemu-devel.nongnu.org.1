@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6F37DA8E5
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF79D7DA8E6
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:24:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwouj-0005Ii-VD; Sat, 28 Oct 2023 15:24:05 -0400
+	id 1qwov8-0005rE-Hr; Sat, 28 Oct 2023 15:24:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwoui-0005Hn-5r
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:24:04 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1qwov6-0005qS-Hh
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:24:28 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwoug-0000Nz-6l
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:24:03 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6b36e1fcee9so2852869b3a.3
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:24:01 -0700 (PDT)
+ id 1qwov4-0000SB-P7
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:24:28 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6b5af4662b7so2903133b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:24:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698521041; x=1699125841; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698521065; x=1699125865; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oyJ9k1/PB8GZaB8IE3AlvR+iYEpDp+07SL1X0Jt8FXs=;
- b=GqNEkb+D9PpoIpQ4uyw5M3RzaOaHBd+nuBllXF6zYYZJ6kgkgxna2nY7zFTo3iVPYt
- 2XJOJ7n4mlIWNVdBN3vCK1RpYUXfiqPJmBaqTHoXqNEFYbL9V5z7O6WmAhjikieJHt3p
- ac0EPUInyW2FGc3lcZfVPOspJ5x9FbqYetR/9w7v7TVKZ4lKw/y3+dH+mcJUp8yBu9ND
- Oe0aBE/b+u2tVBMUbp0T1ph7ew/YN+cxHRC81LUY6oONKgmufKPN0dgps5t9P7Zk41RJ
- GKWcGnusxyP73BC/NvZ7Q1l6hUx/TqLoBppXEVt6IonGidk3TxWnIA1LQ+X+qz6Gvs3u
- KUVw==
+ bh=0qvHpKjhNSfo4UiZfn0DBQYkFCaaq8Bylt9PuFDoF4U=;
+ b=R/2jmwoKt+E+6HPgCVpWDLz6qTlnnAxH8U2VlbAzbEcrIJGExlBd1PAh0c1hW1gtRd
+ sFxAQGMUyfjbZQQ92E/02Mn1FO8vdLogKqBt9PrFvUTmoJp9a/mSaZWOqt+cAgLPnuOo
+ +6tKFdC/9AYdzyN9Il11+QL44AtX59RTOh6L0XTEd2akuVrpDfUK7mIZdMnnt28BDvch
+ zmN2/NasBTzVlrDMjV+Y2jd3YSpTeFfWoBFJf8Pi0rqkM4R2imS1enNjFofqOvkXIxEc
+ CevBZyF3Yt1SuV+/hCNu/wPFVWzuXxm5lTifGs9zlxEhKHSbR1Q5NCNh+kxvqMum2hFV
+ TCBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698521041; x=1699125841;
+ d=1e100.net; s=20230601; t=1698521065; x=1699125865;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oyJ9k1/PB8GZaB8IE3AlvR+iYEpDp+07SL1X0Jt8FXs=;
- b=gIU0ab/QARvyJYtsYFVbxcRxDm5vkWDxDiw+fRdBB8GWru1zLh5BxASKEBMbzvFZgp
- 9IBMA11qbe9sQ7BdrqtdHf2tDakauDhcaEqI0m8h+onVHFIAXO2ua1BH74bwSRTrYS+m
- +ZKlopcLYWuRPyy57lJAZJia76OcfgHbPQXDL8l0ehORx2MoAL843pd/3PbldOWjhgB1
- 73iHdbT4mKPWioUNqsHf/IwwG1S+jUqoW9EuAGDHsU/68K3pgUAMbj1rLxbqANKE0dq7
- GeuDxY9MZeNcMk7IcQjsLIZDVSlaF/YzLsF0REEmt2X9JE28Y2KfoCCZ+k8V26V/lD3Y
- GkwA==
-X-Gm-Message-State: AOJu0Yyk40seobCa9f1X/zCmsXoc9oUvhCKC6BHMeiiwYcEr0vV7lObr
- PjJyO1o2Bu5tyJksQIa8gz/Aicce4TkMIagk6lk=
-X-Google-Smtp-Source: AGHT+IHnF4x6lEhgPqAGPQJ8/daMfbqB6tzfeHsrRmUdcRsd+H6d/fE+YtpJHFMLaKm/wUjhMfsntA==
-X-Received: by 2002:a05:6a00:a0a:b0:6be:2ace:deb8 with SMTP id
- p10-20020a056a000a0a00b006be2acedeb8mr5841073pfh.20.1698521040712; 
- Sat, 28 Oct 2023 12:24:00 -0700 (PDT)
+ bh=0qvHpKjhNSfo4UiZfn0DBQYkFCaaq8Bylt9PuFDoF4U=;
+ b=EbfbC3cmgc+8uOJcKKYAj5rDVy/HwzUjeT7KL3PlpoldY4JYDj07znWgl4axFowm3v
+ Y/4nchlBvxQ4THsqiRchvvz0PLl2uYaVMzH0VgW4SdBFN+xLG7RG9KSaC90AYTQaEtFp
+ Aq6VeW1EqOjHbD7Wy8H7KQPeErWfc5gEjoH/T1lG6aQqw6WKcpuTMyZG4ntgecV9yhzA
+ fOytq7iqmeqlxrW9rhzRbXuseCS/tbNIo6OxReYv0L44jNg1w6DaNfyX6cGNNYzQn7xc
+ arGLkgZZNLGuY7+cxycUonvnFwla/Yxs6u/roVIYJjEvKe87yuF65mvGp6uMWA/qqj+C
+ Iczg==
+X-Gm-Message-State: AOJu0YzrZdQpODNpJoWtz6Or5JimEKpEfCSh9hG52ko7sqo7oxX+sCeH
+ XYKSO5sJc5Om6KSxPAEmP6776YuIFgZbJoDKF4g=
+X-Google-Smtp-Source: AGHT+IEXvshvYbk7y5S3gsZrVb7tTmHwFpo795k36EDkufckRSx4FDPIVVl4ok2eakQ9mSwuhbAdbA==
+X-Received: by 2002:a05:6a21:4847:b0:172:83b8:67f7 with SMTP id
+ au7-20020a056a21484700b0017283b867f7mr4980644pzc.44.1698521065517; 
+ Sat, 28 Oct 2023 12:24:25 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- fn4-20020a056a002fc400b006b4ac8885b4sm3390045pfb.14.2023.10.28.12.24.00
+ fn4-20020a056a002fc400b006b4ac8885b4sm3390045pfb.14.2023.10.28.12.24.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 28 Oct 2023 12:24:00 -0700 (PDT)
-Message-ID: <91c1d19c-cea5-4582-88df-0d3d1a09940f@linaro.org>
-Date: Sat, 28 Oct 2023 12:23:59 -0700
+ Sat, 28 Oct 2023 12:24:25 -0700 (PDT)
+Message-ID: <4295ffe4-ad5d-4636-8e05-d9d3d33dfe38@linaro.org>
+Date: Sat, 28 Oct 2023 12:24:23 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/17] tests/docker: use debian-all-test-cross for hppa
+Subject: Re: [PATCH 08/17] tests/docker: use debian-all-test-cross for m68k
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 References: <20231028103311.347104-1-alex.bennee@linaro.org>
- <20231028103311.347104-8-alex.bennee@linaro.org>
+ <20231028103311.347104-9-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231028103311.347104-8-alex.bennee@linaro.org>
+In-Reply-To: <20231028103311.347104-9-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,10 +104,10 @@ On 10/28/23 03:33, Alex Bennée wrote:
 > ---
 >   configure                                     |  5 +++++
 >   .gitlab-ci.d/container-cross.yml              |  6 ------
->   tests/docker/Makefile.include                 |  1 -
->   .../dockerfiles/debian-hppa-cross.docker      | 19 -------------------
->   4 files changed, 5 insertions(+), 26 deletions(-)
->   delete mode 100644 tests/docker/dockerfiles/debian-hppa-cross.docker
+>   tests/docker/Makefile.include                 |  2 +-
+>   .../dockerfiles/debian-m68k-cross.docker      | 19 -------------------
+>   4 files changed, 6 insertions(+), 26 deletions(-)
+>   delete mode 100644 tests/docker/dockerfiles/debian-m68k-cross.docker
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
