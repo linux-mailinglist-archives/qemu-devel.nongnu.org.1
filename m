@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158807DA907
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A847DA8FD
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:47:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwpFw-0004qK-Pd; Sat, 28 Oct 2023 15:46:00 -0400
+	id 1qwpFw-0004pz-M5; Sat, 28 Oct 2023 15:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwpFl-0004l9-6w
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:50 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1qwpFl-0004lI-NY
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:51 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwpFj-00049m-Ce
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:48 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-1e0ee4e777bso2117959fac.3
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:45:46 -0700 (PDT)
+ id 1qwpFk-00049w-2D
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:49 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1e9ac336589so2124010fac.1
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698522346; x=1699127146; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698522347; x=1699127147; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XWynlm/jnWba87671dZ3jT3T3Pz1rJpw/GEtPhdBxeA=;
- b=gMKwFBnS30D9z859HPNrbUM6qEfVK+TnB7zGMZx8Rk94EGZM1UeambTamJCprLJ5T3
- MlQWoqskXopizQ0h9Rv65klHpwvMmSqe9d+CcrIzyviZdemWK6rjsrzcKczmPk3OJEB+
- y1LICGivKtrh4bAsGXxzAtd/nagXRo+77amfvRCIO4FTn5f4auz00IEs/rqUpzuTDQ0V
- KDHFh+JOk/7d1KIJIBjYzvBh1N4/xLjStm6n6akcMGFA2nXKOTbxw9Yov3rH+m0EB+7X
- 6CS9dO13k7Fxh8umufg+tfr3oIvTkC+jtgzjv43NJyfARtGju/h/isJTM5/Zjnm65YQk
- IQSw==
+ bh=Ajiz1bDFNjKojGZgG2uqP1JdM6uHPJtL3w2kXcO5r5w=;
+ b=lXo5BSW03gu389XMTcBHm7o2qbDjmCURDS+yww+VfOliizxBkIcEtZ+jrECJY41Eap
+ u9mCg6Ky3p0jU4bAGtbus28rgDgPoNv060zf5fyiDHZP2z+UFVWGc4rPL0atJixAtWyg
+ +AH6ILJnXpA9DTcBWP0+mTajJ8oaYWWekdiYu4ox6T6a9GriocykPx4rCpWe3+qxtdqz
+ 4wEbYR0vGGZ7GgTuouCuVPH96we9TcJV6YvTxKEY5L9sY+Z4s4dj+mq8LHYvncy9cwo1
+ Yg1FkCbdKT8n9ZAU2Bc/UkM7kR2RUmSLurgl2t3DM5EpDKajUiEtKNnV181BLWdhIOQf
+ MQgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698522346; x=1699127146;
+ d=1e100.net; s=20230601; t=1698522347; x=1699127147;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XWynlm/jnWba87671dZ3jT3T3Pz1rJpw/GEtPhdBxeA=;
- b=qZEzfY/VOgdL5UDG70w/042QyIybSb1CyF/k+svycF/PbNR/8fCWnwg7F7oYXGJYoC
- zR7uo8v5fOwr/Kz2VHG04QMBRm+0SeVlhGRBds/uuviB4OeW1R8aDGDBfwWSzhKdny/f
- tQ/0S5liBiKa8K6gkwNO5AARcs+YyoMFF0z2RhC8DvAQIVpGlk1942/2MroePU0Z6VjY
- bMkxKaFvbNAeJ3tuqpgRvn1OB+VmH+urTM+4WQPSZ/kknHjVx/l56XfstScb7hI+yO3a
- /oQgghlv9gh5INRElcWz0j3oFPmNZXXtkXKe0zRoMQ6FRIhBQm32QVU9j+W6cFKWFz15
- B9aQ==
-X-Gm-Message-State: AOJu0YwsagAE6nLrxOtXp38ALaZzqLMeCMDaRp32O8xVYM9Uu8O+mROU
- mCC3AmL4sMNROvXTCmy2QiP7lhECtUVBQNiz2+g=
-X-Google-Smtp-Source: AGHT+IF/MhrPqERbqvkCe2O0yvsbJk+zvTLj0F6ST7SJ1Js8NZW7P28F6LKK6DKj2zgDNh//Q7R+zg==
-X-Received: by 2002:a05:6358:2806:b0:168:e48a:8b25 with SMTP id
- k6-20020a056358280600b00168e48a8b25mr6960551rwb.0.1698522345874; 
- Sat, 28 Oct 2023 12:45:45 -0700 (PDT)
+ bh=Ajiz1bDFNjKojGZgG2uqP1JdM6uHPJtL3w2kXcO5r5w=;
+ b=ZpXIXFd115nPXplefZpLeGD29vGFjzyjNrk7AUmZPSQkTcGJ62oUnUbyj+SvdxaMtv
+ 0LGKcmo7rtKaM5MVMDpzF6c7jeUoZ3H0VnqFMTwIc8TJxIbBaMUSe8+EpkHSBDz+Qdr7
+ AXzsuqm6+9ZZmfORM7J9o9b49orgJTvvLpjKHjZQT5DlrpOe8BABFeMLI4omFl12uPgp
+ PdYromiuRrzw5EGBA1KCyfHwpQOBOfyzYWMwY8MxU0ixkP68GpB0GYv6D/utu6mlj4iO
+ T1BrZwZIiSFvhf4GA8QCjhiUC+NbMLXA6XAknywXWAnR5t2wdcfZLPKrIKMtlbmSoDg6
+ 3vtA==
+X-Gm-Message-State: AOJu0YztXtj1UdyKf9io1l7P9yf2PkFOfOls/c4KkC7TiphpxnwIxHhN
+ OFtNBN0Gfapyqu9P4ayTrvZQqo68dRlo8+4Nz38=
+X-Google-Smtp-Source: AGHT+IGY9nA3kzAV4qvh9tMrla85xGPo2cIuXmmyEf0JZQtUHA0lDWVLk1w8MjYSxor5L6Iy6hujZg==
+X-Received: by 2002:a05:6358:e497:b0:168:e887:2646 with SMTP id
+ by23-20020a056358e49700b00168e8872646mr7273805rwb.29.1698522346735; 
+ Sat, 28 Oct 2023 12:45:46 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- h9-20020a170902f7c900b001b8a3e2c241sm3600096plw.14.2023.10.28.12.45.45
+ h9-20020a170902f7c900b001b8a3e2c241sm3600096plw.14.2023.10.28.12.45.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Oct 2023 12:45:45 -0700 (PDT)
+ Sat, 28 Oct 2023 12:45:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	pbonzini@redhat.com
-Subject: [PATCH v2 24/35] tcg/ppc: Use cr0 in tcg_to_bc and tcg_to_isel
-Date: Sat, 28 Oct 2023 12:45:11 -0700
-Message-Id: <20231028194522.245170-25-richard.henderson@linaro.org>
+Subject: [PATCH v2 25/35] tcg/ppc: Tidy up tcg_target_const_match
+Date: Sat, 28 Oct 2023 12:45:12 -0700
+Message-Id: <20231028194522.245170-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231028194522.245170-1-richard.henderson@linaro.org>
 References: <20231028194522.245170-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,162 +91,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using cr0 means we could choose to use rc=1 to compute the condition.
-Adjust the tables and tcg_out_cmp that feeds them.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target.c.inc | 68 ++++++++++++++++++++--------------------
- 1 file changed, 34 insertions(+), 34 deletions(-)
+ tcg/ppc/tcg-target.c.inc | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
 diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index ca281dd33e..1ac11acc7c 100644
+index 1ac11acc7c..13d43ef9ba 100644
 --- a/tcg/ppc/tcg-target.c.inc
 +++ b/tcg/ppc/tcg-target.c.inc
-@@ -671,30 +671,30 @@ enum {
- };
- 
- static const uint32_t tcg_to_bc[] = {
--    [TCG_COND_EQ]  = BC | BI(7, CR_EQ) | BO_COND_TRUE,
--    [TCG_COND_NE]  = BC | BI(7, CR_EQ) | BO_COND_FALSE,
--    [TCG_COND_LT]  = BC | BI(7, CR_LT) | BO_COND_TRUE,
--    [TCG_COND_GE]  = BC | BI(7, CR_LT) | BO_COND_FALSE,
--    [TCG_COND_LE]  = BC | BI(7, CR_GT) | BO_COND_FALSE,
--    [TCG_COND_GT]  = BC | BI(7, CR_GT) | BO_COND_TRUE,
--    [TCG_COND_LTU] = BC | BI(7, CR_LT) | BO_COND_TRUE,
--    [TCG_COND_GEU] = BC | BI(7, CR_LT) | BO_COND_FALSE,
--    [TCG_COND_LEU] = BC | BI(7, CR_GT) | BO_COND_FALSE,
--    [TCG_COND_GTU] = BC | BI(7, CR_GT) | BO_COND_TRUE,
-+    [TCG_COND_EQ]  = BC | BI(0, CR_EQ) | BO_COND_TRUE,
-+    [TCG_COND_NE]  = BC | BI(0, CR_EQ) | BO_COND_FALSE,
-+    [TCG_COND_LT]  = BC | BI(0, CR_LT) | BO_COND_TRUE,
-+    [TCG_COND_GE]  = BC | BI(0, CR_LT) | BO_COND_FALSE,
-+    [TCG_COND_LE]  = BC | BI(0, CR_GT) | BO_COND_FALSE,
-+    [TCG_COND_GT]  = BC | BI(0, CR_GT) | BO_COND_TRUE,
-+    [TCG_COND_LTU] = BC | BI(0, CR_LT) | BO_COND_TRUE,
-+    [TCG_COND_GEU] = BC | BI(0, CR_LT) | BO_COND_FALSE,
-+    [TCG_COND_LEU] = BC | BI(0, CR_GT) | BO_COND_FALSE,
-+    [TCG_COND_GTU] = BC | BI(0, CR_GT) | BO_COND_TRUE,
- };
- 
- /* The low bit here is set if the RA and RB fields must be inverted.  */
- static const uint32_t tcg_to_isel[] = {
--    [TCG_COND_EQ]  = ISEL | BC_(7, CR_EQ),
--    [TCG_COND_NE]  = ISEL | BC_(7, CR_EQ) | 1,
--    [TCG_COND_LT]  = ISEL | BC_(7, CR_LT),
--    [TCG_COND_GE]  = ISEL | BC_(7, CR_LT) | 1,
--    [TCG_COND_LE]  = ISEL | BC_(7, CR_GT) | 1,
--    [TCG_COND_GT]  = ISEL | BC_(7, CR_GT),
--    [TCG_COND_LTU] = ISEL | BC_(7, CR_LT),
--    [TCG_COND_GEU] = ISEL | BC_(7, CR_LT) | 1,
--    [TCG_COND_LEU] = ISEL | BC_(7, CR_GT) | 1,
--    [TCG_COND_GTU] = ISEL | BC_(7, CR_GT),
-+    [TCG_COND_EQ]  = ISEL | BC_(0, CR_EQ),
-+    [TCG_COND_NE]  = ISEL | BC_(0, CR_EQ) | 1,
-+    [TCG_COND_LT]  = ISEL | BC_(0, CR_LT),
-+    [TCG_COND_GE]  = ISEL | BC_(0, CR_LT) | 1,
-+    [TCG_COND_LE]  = ISEL | BC_(0, CR_GT) | 1,
-+    [TCG_COND_GT]  = ISEL | BC_(0, CR_GT),
-+    [TCG_COND_LTU] = ISEL | BC_(0, CR_LT),
-+    [TCG_COND_GEU] = ISEL | BC_(0, CR_LT) | 1,
-+    [TCG_COND_LEU] = ISEL | BC_(0, CR_GT) | 1,
-+    [TCG_COND_GTU] = ISEL | BC_(0, CR_GT),
- };
- 
- static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-@@ -1827,7 +1827,7 @@ static void tcg_out_setcond(TCGContext *s, TCGType type, TCGCond cond,
-     if (have_isa_3_10) {
-         tcg_insn_unit bi, opc;
- 
--        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
-+        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
- 
-         /* Re-use tcg_to_bc for BI and BO_COND_{TRUE,FALSE}. */
-         bi = tcg_to_bc[cond] & (0x1f << 16);
-@@ -1880,7 +1880,7 @@ static void tcg_out_setcond(TCGContext *s, TCGType type, TCGCond cond,
-     if (have_isel) {
-         int isel, tab;
- 
--        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
-+        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
- 
-         isel = tcg_to_isel[cond];
- 
-@@ -1966,7 +1966,7 @@ static void tcg_out_brcond(TCGContext *s, TCGCond cond,
-                            TCGArg arg1, TCGArg arg2, int const_arg2,
-                            TCGLabel *l, TCGType type)
- {
--    tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
-+    tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
-     tcg_out_bc_lab(s, cond, l);
+@@ -282,31 +282,36 @@ static bool reloc_pc34(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
  }
  
-@@ -1980,7 +1980,7 @@ static void tcg_out_movcond(TCGContext *s, TCGType type, TCGCond cond,
-         return;
+ /* test if a constant matches the constraint */
+-static bool tcg_target_const_match(int64_t val, int ct,
++static bool tcg_target_const_match(int64_t sval, int ct,
+                                    TCGType type, TCGCond cond, int vece)
+ {
++    uint64_t uval = sval;
++
+     if (ct & TCG_CT_CONST) {
+         return 1;
      }
  
--    tcg_out_cmp(s, cond, c1, c2, const_c2, 7, type);
-+    tcg_out_cmp(s, cond, c1, c2, const_c2, 0, type);
+-    /* The only 32-bit constraint we use aside from
+-       TCG_CT_CONST is TCG_CT_CONST_S16.  */
+     if (type == TCG_TYPE_I32) {
+-        val = (int32_t)val;
++        uval = (uint32_t)sval;
++        sval = (int32_t)sval;
+     }
  
-     if (have_isel) {
-         int isel = tcg_to_isel[cond];
-@@ -2024,7 +2024,7 @@ static void tcg_out_cntxz(TCGContext *s, TCGType type, uint32_t opc,
-     if (const_a2 && a2 == (type == TCG_TYPE_I32 ? 32 : 64)) {
-         tcg_out32(s, opc | RA(a0) | RS(a1));
-     } else {
--        tcg_out_cmp(s, TCG_COND_EQ, a1, 0, 1, 7, type);
-+        tcg_out_cmp(s, TCG_COND_EQ, a1, 0, 1, 0, type);
-         /* Note that the only other valid constant for a2 is 0.  */
-         if (have_isel) {
-             tcg_out32(s, opc | RA(TCG_REG_R0) | RS(a1));
-@@ -2079,7 +2079,7 @@ static void tcg_out_cmp2(TCGContext *s, const TCGArg *args,
-     do_equality:
-         tcg_out_cmp(s, cond, al, bl, blconst, 6, TCG_TYPE_I32);
-         tcg_out_cmp(s, cond, ah, bh, bhconst, 7, TCG_TYPE_I32);
--        tcg_out32(s, op | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-+        tcg_out32(s, op | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-         break;
- 
-     case TCG_COND_LT:
-@@ -2097,8 +2097,8 @@ static void tcg_out_cmp2(TCGContext *s, const TCGArg *args,
- 
-         tcg_out_cmp(s, cond, ah, bh, bhconst, 6, TCG_TYPE_I32);
-         tcg_out_cmp(s, cond2, al, bl, blconst, 7, TCG_TYPE_I32);
--        tcg_out32(s, op | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, bit2));
--        tcg_out32(s, CROR | BT(7, CR_EQ) | BA(6, bit1) | BB(7, CR_EQ));
-+        tcg_out32(s, op | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, bit2));
-+        tcg_out32(s, CROR | BT(0, CR_EQ) | BA(6, bit1) | BB(0, CR_EQ));
-         break;
- 
-     default:
-@@ -2110,8 +2110,8 @@ static void tcg_out_setcond2(TCGContext *s, const TCGArg *args,
-                              const int *const_args)
- {
-     tcg_out_cmp2(s, args + 1, const_args + 1);
--    tcg_out32(s, MFOCRF | RT(TCG_REG_R0) | FXM(7));
--    tcg_out_rlw(s, RLWINM, args[0], TCG_REG_R0, 31, 31, 31);
-+    tcg_out32(s, MFOCRF | RT(TCG_REG_R0) | FXM(0));
-+    tcg_out_rlw(s, RLWINM, args[0], TCG_REG_R0, CR_EQ + 0*4 + 1, 31, 31);
- }
- 
- static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
-@@ -2442,12 +2442,12 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-             tcg_out_cmp(s, TCG_COND_EQ, addrhi, TCG_REG_TMP2,
-                         0, 6, TCG_TYPE_I32);
- 
--            /* Combine comparisons into cr7. */
--            tcg_out32(s, CRAND | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-+            /* Combine comparisons into cr0. */
-+            tcg_out32(s, CRAND | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
-         } else {
--            /* Full comparison into cr7. */
-+            /* Full comparison into cr0. */
-             tcg_out_cmp(s, TCG_COND_EQ, TCG_REG_R0, TCG_REG_TMP2,
--                        0, 7, addr_type);
-+                        0, 0, addr_type);
-         }
- 
-         /* Load a pointer into the current opcode w/conditional branch-link. */
+-    if ((ct & TCG_CT_CONST_S16) && val == (int16_t)val) {
++    if ((ct & TCG_CT_CONST_S16) && sval == (int16_t)sval) {
+         return 1;
+-    } else if ((ct & TCG_CT_CONST_S32) && val == (int32_t)val) {
++    }
++    if ((ct & TCG_CT_CONST_S32) && sval == (int32_t)sval) {
+         return 1;
+-    } else if ((ct & TCG_CT_CONST_U32) && val == (uint32_t)val) {
++    }
++    if ((ct & TCG_CT_CONST_U32) && uval == (uint32_t)uval) {
+         return 1;
+-    } else if ((ct & TCG_CT_CONST_ZERO) && val == 0) {
++    }
++    if ((ct & TCG_CT_CONST_ZERO) && sval == 0) {
+         return 1;
+-    } else if ((ct & TCG_CT_CONST_MONE) && val == -1) {
++    }
++    if ((ct & TCG_CT_CONST_MONE) && sval == -1) {
+         return 1;
+-    } else if ((ct & TCG_CT_CONST_WSZ)
+-               && val == (type == TCG_TYPE_I32 ? 32 : 64)) {
++    }
++    if ((ct & TCG_CT_CONST_WSZ) && sval == (type == TCG_TYPE_I32 ? 32 : 64)) {
+         return 1;
+     }
+     return 0;
 -- 
 2.34.1
 
