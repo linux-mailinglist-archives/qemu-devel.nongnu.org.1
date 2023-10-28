@@ -2,97 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1E27DA68E
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 12:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625447DA690
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 12:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwgkn-0003eX-FH; Sat, 28 Oct 2023 06:41:17 -0400
+	id 1qwgn0-0005OQ-1c; Sat, 28 Oct 2023 06:43:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qwgki-0003cB-8v
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:41:12 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qwgms-0005Nk-84
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:43:26 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qwgkg-00057p-MO
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:41:11 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-408382da7f0so21539655e9.0
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 03:41:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qwgme-0005H3-1X
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:43:26 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso5975566a12.0
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 03:43:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698489669; x=1699094469; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7CFsfj+V7ArZMzvtMSrBkmxzQkTGIb36bEletW4AhPo=;
- b=VALZNGwsqUvf9PLGZ+SQAblV4T/mnAd6d4Kk0Jr3eT2uv8ZUls9qjl1sIw6UWOck8U
- Bw1o/BlDrXtC+tlLg4kcLP5hq2AHaeBNVjvx+xV75vCxbaoc3/2uPkw7q6NVRplca72q
- d8R1wwqBKZgCLFmOd61vr9pkkGKyZvxIk1Itmk9o+u5OYcOFcwHLNt+PDRmri8rzW7n5
- 9YbucKN8VCSXsv49LtFPG7q9YQ453mW0GJGnoAckdTqpCsbwTL8dx6dYSXXPMTr9Ue9S
- zzWEOo0NjY1mkRzEZS8oPQb7TZbU4sD5dTU75u8VOgW50EtP3P2zlj8bMEi1uxr9fEIK
- MUVw==
+ d=ventanamicro.com; s=google; t=1698489789; x=1699094589; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=mYiqLiUF9aM2ExPiFa/fXFQHFZi7c0D8136uFI509/0=;
+ b=ZwL+Pqy+vTcYJj5z8JYrtDfuWze8QELPYKKHD06x8zSZefbLYyx6h14RGC9oseCZ4c
+ X5IIjgZP48zmoPg6wUGedEVdQwB0VnHxNkSqLKYSmKhNgUUp2s3NV+Z/asaSaWO/KVrV
+ 8fY7KSp85ioODNt1QQ9blsS8MphBfdYg5dJSsZw5SU74AFT+UIZ40oy8y8d8jlrlOmwY
+ o4rajmb0cuBCnjFOIGnZoCbfnjt/Dg5E7Qb7RfVrpjciyI/ghM2xc1Dkn1r9KsJd0oKm
+ g5EtXPG3oPLDOkqnVZf+3skVitWaZ+gulO753LpnXP9H8Ii+lkoBd4N83VRMoqA0WEkl
+ ESAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698489669; x=1699094469;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7CFsfj+V7ArZMzvtMSrBkmxzQkTGIb36bEletW4AhPo=;
- b=H1VyEaTUvOr+cRhHIukX08ReLX+uCh17gbo8T7JneV3wUP9cLVRnET0eJ22BwyQPdP
- Bgth6aGy+9vNeCTeKj/MBsvfp3C1Uxrcp22zABpULEM/39DvLujMpCx9IE4pgIarSJ+d
- lxqEDwI2rskRE5291u5Be16Fyo+jcGmM0Hqg0bZwIkDCul276HtzhL1UmSRoRqLqFxRp
- GKBJLunNkgDYTqDf3bfLDS/crysdJRI/ceZIFZ3l4ddH0juEiklZ9NLPfh4Fm8EAFes/
- HBVXWvdAiu0rTAa1HA4InAS8PKc87ih4O4P+ybkaFIkZ7vgan5DKsLFVnGO3gQWbJ9ry
- VkXg==
-X-Gm-Message-State: AOJu0YwDk7K77GhpdHDUKHhWQRTGDR2HC3w2MKw6K5oBacus7oAwut2N
- 3gWQP8qya/gTzGTrU5kivVY6LQ==
-X-Google-Smtp-Source: AGHT+IGc1gBbFYvddSNkbfN6IG72wUPWquV1/pLl8iHTHmnXUXaq5/7jgFeKefqoWvC9Huppwk3Kgg==
-X-Received: by 2002:a05:600c:d6:b0:3fe:1232:93fa with SMTP id
- u22-20020a05600c00d600b003fe123293famr4115956wmm.22.1698489668805; 
- Sat, 28 Oct 2023 03:41:08 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- j7-20020a05600c1c0700b003fefb94ccc9sm3752213wms.11.2023.10.28.03.41.08
+ d=1e100.net; s=20230601; t=1698489789; x=1699094589;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mYiqLiUF9aM2ExPiFa/fXFQHFZi7c0D8136uFI509/0=;
+ b=Em5MLenIph2r5RCNjdKSAZ45HlXaEVkxCJY1A7YpQH6R8WWW363JmFUjR4qTKC/y0X
+ HbQz4dkAqdQpCFG2Kf3tasUUDpkbVJ/WZK1frKs5jKMzr/tE2V4DLR+h+j7mfNikC5mV
+ cvDaGcki7uqNYNM6WVr2soMgKSmT/gT2mw/72/GYqLHjGEXlvp4sFHLQo2i9VT1q1Ydp
+ aMQgS140K4HG0R0R5gwHtjaNHR3YSIB5lMsVUfOGAAY74ZN2mbt0ar6AeK1q6IFtlfCz
+ iMjtmW56SUXuAlWiX8wIaRKIJtYahHvgAGjS4nBS+d3dF6nzrJozuoBn5xFDNu8pxg7C
+ n5MA==
+X-Gm-Message-State: AOJu0YwCHl3aQsSIrAZ5PHydvYXYqIxzf66+9UNuXp6EwgqmQ0J7P3lT
+ lA8ieWf8poOfm8B9CaFJXOrY8g==
+X-Google-Smtp-Source: AGHT+IGB3ib5saRyLWm+VxaAjzJmApYBOABzx1kd/mBScYGInEwAnRHkHuQpLJYNZIjPdc5YzypQKQ==
+X-Received: by 2002:a05:6402:31e7:b0:53d:a18d:73b4 with SMTP id
+ dy7-20020a05640231e700b0053da18d73b4mr4986710edb.12.1698489788869; 
+ Sat, 28 Oct 2023 03:43:08 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ k19-20020a508ad3000000b0053e0395059csm2708705edk.21.2023.10.28.03.43.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Oct 2023 03:41:08 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A74A25F839;
- Sat, 28 Oct 2023 11:33:13 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Beraldo Leal <bleal@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Warner Losh <imp@bsdimp.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alexandre Iooss <erdnaxe@crans.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Kyle Evans <kevans@freebsd.org>, qemu-arm@nongnu.org,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Brad Smith <brad@comstyle.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>,
- Cong Liu <liucong2@kylinos.cn>
-Subject: [PATCH 17/17] contrib/plugins: Close file descriptor on error return
-Date: Sat, 28 Oct 2023 11:33:11 +0100
-Message-Id: <20231028103311.347104-18-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231028103311.347104-1-alex.bennee@linaro.org>
-References: <20231028103311.347104-1-alex.bennee@linaro.org>
+ Sat, 28 Oct 2023 03:43:08 -0700 (PDT)
+Date: Sat, 28 Oct 2023 12:43:07 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v6 06/12] target/riscv/tcg: add user flag for profile
+ support
+Message-ID: <20231028-588cc5e3969c1962985c2f69@orel>
+References: <20231028085427.707060-1-dbarboza@ventanamicro.com>
+ <20231028085427.707060-7-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231028085427.707060-7-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,40 +94,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cong Liu <liucong2@kylinos.cn>
+On Sat, Oct 28, 2023 at 05:54:21AM -0300, Daniel Henrique Barboza wrote:
+> The TCG emulation implements all the extensions described in the
+> RVA22U64 profile, both mandatory and optional. The mandatory extensions
+> will be enabled via the profile flag. We'll leave the optional
+> extensions to be enabled by hand.
+> 
+> Given that this is the first profile we're implementing in TCG we'll
+> need some ground work first:
+> 
+> - all profiles declared in riscv_profiles[] will be exposed to users.
+> TCG is the main accelerator we're considering when adding profile
+> support in QEMU, so for now it's safe to assume that all profiles in
+> riscv_profiles[] will be relevant to TCG;
+> 
+> - we'll not support user profile settings for vendor CPUs. The flags
+> will still be exposed but users won't be able to change them. The idea
+> is that vendor CPUs in the future can enable profiles internally in
+> their cpu_init() functions, showing to the external world that the CPU
+> supports a certain profile. But users won't be able to enable/disable
+> it;
+> 
+> - Setting a profile to 'true' means 'enable all mandatory extensions of
+> this profile, setting it to 'false' means 'do not enable all mandatory
+> extensions for this profile'.
 
-This patch closes the file descriptor fd on error return to avoid
-resource leak.
+While this definition of profile=off looks appealing at first, it's really
+just saying 'do not do anything', which means it's limiting the potential
+of the property. But, I'll stop talking about this now, as I have another
+design suggestion instead:
 
-Fixes: ec7ee95db909 ("contrib/plugins: fix coverity warning in lockstep")
-Signed-off-by: Cong Liu <liucong2@kylinos.cn>
-Message-Id: <20231018025225.1640122-1-liucong2@kylinos.cn>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- contrib/plugins/lockstep.c | 2 ++
- 1 file changed, 2 insertions(+)
+Since profiles are like G, and other shorthand extensions (just without an
+official shorthand extension name), then I believe they should behave like
+shorthand extensions. Also, since shorthand extensions can be derived from
+their parts, then I think shorthand extensions should behave like
+synthetic extensions. For example, zic64b starts 'false', but, at realize
+time, if all its conditions are present, then it turns 'true'. Shorthand
+extensions should be able to do that too by detecting that each of the
+extensions they represent is present.
 
-diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index f0cb8792c6..237543b43a 100644
---- a/contrib/plugins/lockstep.c
-+++ b/contrib/plugins/lockstep.c
-@@ -257,6 +257,7 @@ static bool setup_socket(const char *path)
-     sockaddr.sun_family = AF_UNIX;
-     if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
-         perror("bad path");
-+        close(fd);
-         return false;
-     }
- 
-@@ -303,6 +304,7 @@ static bool connect_socket(const char *path)
-     sockaddr.sun_family = AF_UNIX;
-     if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
-         perror("bad path");
-+        close(fd);
-         return false;
-     }
- 
--- 
-2.39.2
+So, I think we should automatically turn G and profiles (and future
+shorthand extensions) on when all their respective extensions are present.
 
+Thanks,
+drew
 
