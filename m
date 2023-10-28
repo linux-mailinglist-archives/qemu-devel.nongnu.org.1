@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E067DA8E2
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EC77DA8E4
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:23:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwotZ-00046V-PR; Sat, 28 Oct 2023 15:22:53 -0400
+	id 1qwouK-0004hR-89; Sat, 28 Oct 2023 15:23:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwotX-00044e-Tj
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:22:51 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qwouA-0004ep-Om
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:23:32 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwotW-0000F6-I1
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:22:51 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6b497c8575aso3167764b3a.1
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:22:50 -0700 (PDT)
+ id 1qwou9-0000Mm-7I
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:23:30 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6bd0e1b1890so2759438b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:23:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698520969; x=1699125769; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698521008; x=1699125808; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=SLgl6QyBft2qTJ4ava7WRgfCmZtLPP/0i1sHdbD6lu8=;
- b=uxp4e30C0sMJG3otMJ0xu4gG3d7ws7A6KdV3hKUwjtNA+Rp7Jv0Qm5C7IldgMMT+Cz
- vqfdPR77dM7drm98NCP/rOqWJYWrXtZ6iV+kPF9QxXKeZldNpEmsHNHfHet02Q9ibhys
- lfrDSCoLYY35IiV4ZqZVbQQWILoFePWg1pH0nVqgcJcPguGSOoc+q0WgkMUdted92gzs
- pRbuzXC7gt9apMzv4hNeSo66+P5Q0XmuQsLudPIzId3A3RKWLrguGrvjm3VilaKZKpAk
- +FhOeRk1cDNMeUJUYOPKCfH6xaJeXCtYYnhWwIrLt1RMalhSpBskW3WwLjs2CV7kwrPt
- oMNw==
+ bh=NmQCo4Ze/JxdoHJaWpQY+Fmizs/6gYSFsG1kanyMQfM=;
+ b=rZh0s6NI7ctCo7tX1I66pDNTLSujhnnu/wmL2Fiq7m7ZyUQaf2y7oEteaBwUcRTjKF
+ ewjpQt/OeIGozXYWcqCaPvCp8wKvujHHewp1nqjJlMT/jKZTaX887sD6j7NJQb291ahu
+ CN5UDtok13QJTJTEQN4q6Yn+9qKcucCgZUOj2HIh8ycJHbZ2zOFM7MSezEltXEX5M1sA
+ JDmVipL9frGY4R4t5VAgkfv+3upWRut9PRDfULBbOURebWjBgrAS4z+TPE1e37Eb3Cw9
+ NWWYTyD+Ubfa7EbpJycB0ONIW+hmnKyPq1pqGS+TaJ7twgs/5Dhy+nMS64z0vZ/XZ6uh
+ nEHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698520969; x=1699125769;
+ d=1e100.net; s=20230601; t=1698521008; x=1699125808;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SLgl6QyBft2qTJ4ava7WRgfCmZtLPP/0i1sHdbD6lu8=;
- b=PJQBaxj1mNl07v6tLYvmWr1/euTNQkZHacbnPpPhgHEVb8k1ZMcdWxD+XoE9/BS3jC
- YyVPj0CX9liYA4gWZX7fcHjJ//xz6fC2iRdtRrL7+nRnbCPLPwPQDtow7YHK0neTd4iH
- 8dr/Z0dihmwUXwWlpP+VCADjzTBQ1b/GE4Sie/U3RG5whvMdnZnBvRkC8r4NXtQ8IRzY
- /501jXN9BkSDe04W5DCHSKtYyYAtPpmNxp4RZv3QcVeH0VY7c8vzI+J7PCNXmZL84h0j
- C5hEdIA/GIhjhaSa5jQAdGsMHIHMOe3EZccfHFmhb9x8U23YVmmahgGOLTiZ5rs/rpvv
- r1Og==
-X-Gm-Message-State: AOJu0Yzj6FidMsLf3EWi5R/LhC839EtVkaRWOce1uwZsL1TixOatCkq5
- LUSps87H7D0lnmJ2K+qjM/3FRw==
-X-Google-Smtp-Source: AGHT+IF3iZqZgx/R743+nXl9WpYrhukOEYX3s+ChH942hqzLRkwmxt4k+z23ckUGZfwx5HGGjQPBBQ==
-X-Received: by 2002:a05:6a00:14d6:b0:6be:4e6e:2a85 with SMTP id
- w22-20020a056a0014d600b006be4e6e2a85mr8328372pfu.30.1698520969069; 
- Sat, 28 Oct 2023 12:22:49 -0700 (PDT)
+ bh=NmQCo4Ze/JxdoHJaWpQY+Fmizs/6gYSFsG1kanyMQfM=;
+ b=vHsmsE+FVAyjKuh/mNfY+WJBHbsbl1AFjSsL6crGaiSy7iGMfbsv0jy4DOt3b9c2gh
+ CiWPDYk94sgd/Ytbrul5fv/K061Tdc88WQ7SeTOa2RXLOlX0yrOjU1MMVQt1CwvOZTAM
+ D3Xy3BX9OiiSzM0Z+YxXLw2jWwIMq5OfYYN7U2tZy7GV9bkGRCVC+Cxwg/3scYBpb4Na
+ IujoC7jdF/K1gNvGn/gLlHeIS1fYZXP7k+aqXn1S1eYCtRMDNSzGw+LqN6GbZQJm7etA
+ enZqH8F0oAU8Ldz/IQZM3L4VUhzuHx+cFRl5lGlgLdi5nFbwclfYbrAx4ruq+tmH/sxi
+ PEYg==
+X-Gm-Message-State: AOJu0Yyvg6cITCFcCL3oj5NUhZJHbFQWfRpyKZzmnv87bazlpbSBe0Ez
+ E72AHFUtsrQsv+y5yPpSj4NE9PXPqInZCBwZcJo=
+X-Google-Smtp-Source: AGHT+IHGJr0RrsuRFAT0vXTf4TOGp2WwNEMuz58dYdNQS2dbFCmOIBdasscCwO0H/VEGjWUIU3yIng==
+X-Received: by 2002:a05:6a00:150e:b0:68c:4e22:8f78 with SMTP id
+ q14-20020a056a00150e00b0068c4e228f78mr6133643pfu.25.1698521007759; 
+ Sat, 28 Oct 2023 12:23:27 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- fn4-20020a056a002fc400b006b4ac8885b4sm3390045pfb.14.2023.10.28.12.22.48
+ fn4-20020a056a002fc400b006b4ac8885b4sm3390045pfb.14.2023.10.28.12.23.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 28 Oct 2023 12:22:48 -0700 (PDT)
-Message-ID: <777f5351-e819-4818-a874-b6281f6691ea@linaro.org>
-Date: Sat, 28 Oct 2023 12:22:47 -0700
+ Sat, 28 Oct 2023 12:23:27 -0700 (PDT)
+Message-ID: <0b429a5a-8c5d-40de-b53c-65110d65a5b0@linaro.org>
+Date: Sat, 28 Oct 2023 12:23:26 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/17] tests/docker: move sh4 to use
- debian-legacy-test-cross
+Subject: Re: [PATCH 06/17] tests/docker: use debian-all-test-cross for power
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 References: <20231028103311.347104-1-alex.bennee@linaro.org>
- <20231028103311.347104-6-alex.bennee@linaro.org>
+ <20231028103311.347104-7-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231028103311.347104-6-alex.bennee@linaro.org>
+In-Reply-To: <20231028103311.347104-7-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,21 +94,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/28/23 03:32, Alex Bennée wrote:
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index d670fb42b9..983c95e785 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -276,7 +276,7 @@ build-user-legacy:
->       job: amd64-debian-legacy-cross-container
->     variables:
->       IMAGE: debian-legacy-test-cross
-> -    TARGETS: alpha-linux-user
-> +    TARGETS: alpha-linux-user sh4-linux-user
->       CONFIGURE_ARGS: --disable-tools --disable-system --static
->       MAKE_CHECK_ARGS: check-tcg
+On 10/28/23 03:33, Alex Bennée wrote:
+> Maintaining two sets of containers for test building is silly. While
+> it makes sense for the QEMU cross-compile targets to have their own
+> fat containers built by lcitool we might as well merge the other
+> random debian based compilers into the same one used on gitlab.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   configure                                     |  4 ++--
+>   .gitlab-ci.d/container-cross.yml              |  6 -----
+>   tests/docker/Makefile.include                 |  1 -
+>   .../debian-powerpc-test-cross.docker          | 23 -------------------
+>   4 files changed, 2 insertions(+), 32 deletions(-)
+>   delete mode 100644 tests/docker/dockerfiles/debian-powerpc-test-cross.docker
 
-Missing exclude from build-user, like alpha.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
