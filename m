@@ -2,83 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625447DA690
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 12:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C427DA6BD
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 13:32:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwgn0-0005OQ-1c; Sat, 28 Oct 2023 06:43:34 -0400
+	id 1qwhWl-0000bM-Pj; Sat, 28 Oct 2023 07:30:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qwgms-0005Nk-84
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:43:26 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qwgme-0005H3-1X
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:43:26 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-53b32dca0bfso5975566a12.0
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 03:43:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698489789; x=1699094589; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=mYiqLiUF9aM2ExPiFa/fXFQHFZi7c0D8136uFI509/0=;
- b=ZwL+Pqy+vTcYJj5z8JYrtDfuWze8QELPYKKHD06x8zSZefbLYyx6h14RGC9oseCZ4c
- X5IIjgZP48zmoPg6wUGedEVdQwB0VnHxNkSqLKYSmKhNgUUp2s3NV+Z/asaSaWO/KVrV
- 8fY7KSp85ioODNt1QQ9blsS8MphBfdYg5dJSsZw5SU74AFT+UIZ40oy8y8d8jlrlOmwY
- o4rajmb0cuBCnjFOIGnZoCbfnjt/Dg5E7Qb7RfVrpjciyI/ghM2xc1Dkn1r9KsJd0oKm
- g5EtXPG3oPLDOkqnVZf+3skVitWaZ+gulO753LpnXP9H8Ii+lkoBd4N83VRMoqA0WEkl
- ESAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698489789; x=1699094589;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mYiqLiUF9aM2ExPiFa/fXFQHFZi7c0D8136uFI509/0=;
- b=Em5MLenIph2r5RCNjdKSAZ45HlXaEVkxCJY1A7YpQH6R8WWW363JmFUjR4qTKC/y0X
- HbQz4dkAqdQpCFG2Kf3tasUUDpkbVJ/WZK1frKs5jKMzr/tE2V4DLR+h+j7mfNikC5mV
- cvDaGcki7uqNYNM6WVr2soMgKSmT/gT2mw/72/GYqLHjGEXlvp4sFHLQo2i9VT1q1Ydp
- aMQgS140K4HG0R0R5gwHtjaNHR3YSIB5lMsVUfOGAAY74ZN2mbt0ar6AeK1q6IFtlfCz
- iMjtmW56SUXuAlWiX8wIaRKIJtYahHvgAGjS4nBS+d3dF6nzrJozuoBn5xFDNu8pxg7C
- n5MA==
-X-Gm-Message-State: AOJu0YwCHl3aQsSIrAZ5PHydvYXYqIxzf66+9UNuXp6EwgqmQ0J7P3lT
- lA8ieWf8poOfm8B9CaFJXOrY8g==
-X-Google-Smtp-Source: AGHT+IGB3ib5saRyLWm+VxaAjzJmApYBOABzx1kd/mBScYGInEwAnRHkHuQpLJYNZIjPdc5YzypQKQ==
-X-Received: by 2002:a05:6402:31e7:b0:53d:a18d:73b4 with SMTP id
- dy7-20020a05640231e700b0053da18d73b4mr4986710edb.12.1698489788869; 
- Sat, 28 Oct 2023 03:43:08 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- k19-20020a508ad3000000b0053e0395059csm2708705edk.21.2023.10.28.03.43.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Oct 2023 03:43:08 -0700 (PDT)
-Date: Sat, 28 Oct 2023 12:43:07 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v6 06/12] target/riscv/tcg: add user flag for profile
- support
-Message-ID: <20231028-588cc5e3969c1962985c2f69@orel>
-References: <20231028085427.707060-1-dbarboza@ventanamicro.com>
- <20231028085427.707060-7-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1qwhWj-0000b3-CK; Sat, 28 Oct 2023 07:30:49 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1qwhWg-0005Sa-Pq; Sat, 28 Oct 2023 07:30:49 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39SBLJLe030244; Sat, 28 Oct 2023 11:30:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=T+GwO2d+sjIa5Hdi/z4yBgBO2rds7t7LFUsNhK9zM5w=;
+ b=XoQTQOUKtPkLVxgLjyRsGx9oOH3nNsRdaqpGBdW5+d3fea9MJ/2O7GS8wSSG/2kRywaX
+ VG5L9FJ6QylbmLYT3hemqy/sm45/4mhC/iPNY0tYSqetQS2cpD/ZdJZtpIAFyvkk/9it
+ Gwc6ZhjqDLWjXbiKrbUprjI+jVmD9p7QtwInpB52gtI0Htv9fZgnyGJ6kSxeE02I+LPB
+ dwwD1cYg6xv5KvUWZx1o9bL1pVbJ/0zDwRIQdGoECJJT3PB0+qZYkAQ7Dy8aznqpBACK
+ vWrdGjyg4+qh7NTve15P06MKzboKFo4xPsR+MbGZXn5bV2ECVlycAnoicfXy12Jj1Mzz PQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u10bbh1cr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 28 Oct 2023 11:30:34 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39SBUOaE017628;
+ Sat, 28 Oct 2023 11:30:34 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u10bbh1ce-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 28 Oct 2023 11:30:34 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39SB4K1W021754; Sat, 28 Oct 2023 11:30:33 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tywqskj1r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 28 Oct 2023 11:30:33 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39SBUVfw44892472
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 28 Oct 2023 11:30:31 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 24A3D20040;
+ Sat, 28 Oct 2023 11:30:31 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9C22B2004F;
+ Sat, 28 Oct 2023 11:30:29 +0000 (GMT)
+Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Sat, 28 Oct 2023 11:30:29 +0000 (GMT)
+From: Chalapathi V <chalapathi.v@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
+ saif.abrar@linux.vnet.ibm.com
+Subject: [PATCH v3 0/3] pnv nest1 chiplet model
+Date: Sat, 28 Oct 2023 06:30:23 -0500
+Message-Id: <20231028113026.23510-1-chalapathi.v@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231028085427.707060-7-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 2cK0m3JP-HFzOPqLpJHPUXlN8uqH2pT_
+X-Proofpoint-ORIG-GUID: bQ9AqDuq-tIdozIQuMFpMivRHST1eKpy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-28_09,2023-10-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=489
+ priorityscore=1501 impostorscore=0 mlxscore=0 adultscore=0 bulkscore=0
+ spamscore=0 suspectscore=0 clxscore=1011 malwarescore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
+ definitions=main-2310280088
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,48 +109,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 28, 2023 at 05:54:21AM -0300, Daniel Henrique Barboza wrote:
-> The TCG emulation implements all the extensions described in the
-> RVA22U64 profile, both mandatory and optional. The mandatory extensions
-> will be enabled via the profile flag. We'll leave the optional
-> extensions to be enabled by hand.
-> 
-> Given that this is the first profile we're implementing in TCG we'll
-> need some ground work first:
-> 
-> - all profiles declared in riscv_profiles[] will be exposed to users.
-> TCG is the main accelerator we're considering when adding profile
-> support in QEMU, so for now it's safe to assume that all profiles in
-> riscv_profiles[] will be relevant to TCG;
-> 
-> - we'll not support user profile settings for vendor CPUs. The flags
-> will still be exposed but users won't be able to change them. The idea
-> is that vendor CPUs in the future can enable profiles internally in
-> their cpu_init() functions, showing to the external world that the CPU
-> supports a certain profile. But users won't be able to enable/disable
-> it;
-> 
-> - Setting a profile to 'true' means 'enable all mandatory extensions of
-> this profile, setting it to 'false' means 'do not enable all mandatory
-> extensions for this profile'.
+Hello,
 
-While this definition of profile=off looks appealing at first, it's really
-just saying 'do not do anything', which means it's limiting the potential
-of the property. But, I'll stop talking about this now, as I have another
-design suggestion instead:
+For modularity reasons the P10 processor chip is split into multiple
+chiplets individually controlled and managed by the pervasive logic.
+The boundaries of these chiplets are defined based on physical design
+parameters like clock grids, the nature of the functional units as well
+as their pervasive requirements (e.g. clock domains). Examples of chiplet
+in the P10 chip are processor cores and caches, memory controllers or IO
+interfaces like PCIe. Partitioning the processor chip into these chiplets
+allows the pervasive logic to test, initialize, control and manage these
+chip partitions individually.
 
-Since profiles are like G, and other shorthand extensions (just without an
-official shorthand extension name), then I believe they should behave like
-shorthand extensions. Also, since shorthand extensions can be derived from
-their parts, then I think shorthand extensions should behave like
-synthetic extensions. For example, zic64b starts 'false', but, at realize
-time, if all its conditions are present, then it turns 'true'. Shorthand
-extensions should be able to do that too by detecting that each of the
-extensions they represent is present.
+In this series, we create a nest1 chiplet model and implements the chiplet
+control scom registers on nest1 chiplet. The chiplet control registers does
+the initialization and configuration of a chiplet.
 
-So, I think we should automatically turn G and profiles (and future
-shorthand extensions) on when all their respective extensions are present.
+In this PATCH Cedric's review comments has been addressed to add a new QOM
+model for pervasive chiplet and initialize and realize in nest1 chiplet model.
 
-Thanks,
-drew
+/nest1_chiplet (pnv-nest1-chiplet)
+      /perv_chiplet (pnv-pervasive-chiplet)
+        /xscom-chiplet-control-regs[0] (memory-region)
+
+Chalapathi V (3):
+  hw/ppc: Add pnv pervasive common chiplet units
+  hw/ppc: Add nest1 chiplet model
+  hw/ppc: Nest1 chiplet wiring
+
+ hw/ppc/meson.build                |   2 +
+ hw/ppc/pnv.c                      |  11 ++
+ hw/ppc/pnv_nest1_chiplet.c        | 104 +++++++++++++
+ hw/ppc/pnv_pervasive.c            | 237 ++++++++++++++++++++++++++++++
+ include/hw/ppc/pnv_chip.h         |   2 +
+ include/hw/ppc/pnv_nest_chiplet.h |  39 +++++
+ include/hw/ppc/pnv_pervasive.h    |  47 ++++++
+ include/hw/ppc/pnv_xscom.h        |   3 +
+ 8 files changed, 445 insertions(+)
+ create mode 100644 hw/ppc/pnv_nest1_chiplet.c
+ create mode 100644 hw/ppc/pnv_pervasive.c
+ create mode 100644 include/hw/ppc/pnv_nest_chiplet.h
+ create mode 100644 include/hw/ppc/pnv_pervasive.h
+
+-- 
+2.31.1
+
 
