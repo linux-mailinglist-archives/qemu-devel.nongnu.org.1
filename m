@@ -2,100 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5C27DA6BC
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 13:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5B67DA6D9
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 14:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwhWs-0000dU-EX; Sat, 28 Oct 2023 07:30:58 -0400
+	id 1qwi69-0002X6-4H; Sat, 28 Oct 2023 08:07:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1qwhWn-0000cC-9N; Sat, 28 Oct 2023 07:30:53 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1qwhWl-0005VD-Pt; Sat, 28 Oct 2023 07:30:53 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39SBFE8L031636; Sat, 28 Oct 2023 11:30:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=q7P7aRnlpESXy63pGHtOprsVL0ZIV7bRi0QoawX605E=;
- b=bswoRnHCnKJbbMKdCT/iobyEEe+SyocP5t5D6lUPEqTvjns4l9XnqV3R+vATLAbOWXsB
- 00JKXHeT66cKIayj7Et7ldEiyUeC1N8LIlaTLI0kGnpkvfvvTPzv+0ZUaSyofw/YUnac
- Weo8fVtAnZk2PerbEClkYKXuIG/DP1qMdL9XTaCjkblgALAa2f+EX2hyQIA9Sqjc6tZ4
- ccmx6OfflPCsXWdLbIvuvsZBStncIKEap8ielt8Wted/efFJNbHHTsp9l7wNk54rOagc
- HavY+mHlXC8eYYw4YufbHfF3Op9z3+7Yj8xYm+98tNi79lGMMUHhHV7paujnI/jaybra dA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u118pg7q0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 28 Oct 2023 11:30:49 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39SBOnn9021285;
- Sat, 28 Oct 2023 11:30:48 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u118pg7pv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 28 Oct 2023 11:30:48 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39SAhWRU021478; Sat, 28 Oct 2023 11:30:48 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tywqrkj7b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 28 Oct 2023 11:30:47 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39SBUjSa41943784
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 28 Oct 2023 11:30:45 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF6D72004E;
- Sat, 28 Oct 2023 11:30:45 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 43ACA20063;
- Sat, 28 Oct 2023 11:30:44 +0000 (GMT)
-Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sat, 28 Oct 2023 11:30:43 +0000 (GMT)
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
- saif.abrar@linux.vnet.ibm.com
-Subject: [PATCH v3 3/3] hw/ppc: Nest1 chiplet wiring
-Date: Sat, 28 Oct 2023 06:30:26 -0500
-Message-Id: <20231028113026.23510-4-chalapathi.v@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231028113026.23510-1-chalapathi.v@linux.ibm.com>
-References: <20231028113026.23510-1-chalapathi.v@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <daan.j.demeyer@gmail.com>)
+ id 1qwi65-0002Wg-TB
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 08:07:21 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <daan.j.demeyer@gmail.com>)
+ id 1qwi62-0003Vu-W7
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 08:07:20 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6be1bc5aa1cso2925897b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 05:07:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698494837; x=1699099637; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SKJvKcyb2RWdDk274b6iPkQC86bAjXYUlIA5aUdbkBo=;
+ b=ARuBsZ0d0nhWX2zhty77t2uJsG0v2yDswbIMeNXgQP1NO+h6tSu4qov9ZR+j36INPH
+ SI5Tccvy1siLGgimGWxu2TK6FlUnF6qur5RNEcfOYQsdwp+TekLFtSamxzGIaDanneqC
+ wgVxhKQ/Vl+M37jpb0d0uCp7mUUztScDbMlz1K4Ywf1Un75j/rrpQdvbujaMLH1IkJ9f
+ CFjLgugb5t8jEf2QlN8vrStnpIv8h0H/v2gRk54v3JH7rknHiOLfciv/P26+/P8dWQg+
+ OfbXwzBnSZdeYuI+BKbISbBmoxkWxKmYei+59bB4TjMfbQQvb4hqdWVsZZJtv2oXEfdG
+ /l5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698494837; x=1699099637;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SKJvKcyb2RWdDk274b6iPkQC86bAjXYUlIA5aUdbkBo=;
+ b=Zu/2p8rx75gpa6670zYrPXxC2PsuoNe1XREpO++fMUiKnSi3XyT5ziLmuBwwKuASbG
+ KtylJCVpUKfDLXRP8LEydcruv4zKpF3V9TXPFOBAg324UdZ6OOpCXIuUDmQ0RTZYy2N/
+ RQtZcjUbVZLmn/3UPmxPosHRM736O+KLGUd/ehYJrsuekYdu96shjJcvIp3kCWh8SU9I
+ Wj/mNtZ6YCUxXnmqElAD9fthvp1aklfiHkuofp32esfihvLkzgtcQzMKCDUGwvQQdh4p
+ FfMUDIhX9lAoatn4RyHpjfCdOlKqbUqYvLSjeWiZtx+CjhdHS4oDwCLBFj955QpYc6oA
+ kSlg==
+X-Gm-Message-State: AOJu0YyzSKqOFOnvGj1vNa+YO+VKzcYjA6TUOyTdwXBAaV0ruKZErPeD
+ bTpjMLcfewLm8mXI/irN+pL2JS/Qba9kuwaH/g4=
+X-Google-Smtp-Source: AGHT+IEdj5XrMmmITiaCJ/1atu+NuwxiM/2j4rW1PnubHu13oZ74aiFbiLTK1fmTX+M9Q6PFdb17tO0twOE44XNBHk4=
+X-Received: by 2002:a05:6a20:748b:b0:17a:de5d:1d7e with SMTP id
+ p11-20020a056a20748b00b0017ade5d1d7emr6720018pzd.55.1698494836794; Sat, 28
+ Oct 2023 05:07:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7F9BbMozeu36XklKNu-IsA25EpIBTzMz
-X-Proofpoint-ORIG-GUID: yvspbwiIcXiWFdl9iQDZOCVtiSm2qNW-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-28_09,2023-10-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- spamscore=0 suspectscore=0 adultscore=0 bulkscore=0 phishscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 mlxlogscore=631
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2310280088
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20231021134015.1119597-1-daan.j.demeyer@gmail.com>
+ <ZTlSPbh2GnhOKExO@redhat.com>
+In-Reply-To: <ZTlSPbh2GnhOKExO@redhat.com>
+From: Daan De Meyer <daan.j.demeyer@gmail.com>
+Date: Sat, 28 Oct 2023 14:07:05 +0200
+Message-ID: <CAO8sHcnh1mqaEchGSwYaFr7+LTau9yQRt_4zVJGrFsroWik3ew@mail.gmail.com>
+Subject: Re: [PATCH] Add class property to configure KVM device node to use
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=daan.j.demeyer@gmail.com; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,64 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This part of the patchset connects the nest1 chiplet model to p10 chip.
+Anything else needed before this patch can be merged?
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
----
- hw/ppc/pnv.c              | 11 +++++++++++
- include/hw/ppc/pnv_chip.h |  2 ++
- 2 files changed, 13 insertions(+)
+Cheers,
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index eb54f93986..a5abaf5608 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1660,6 +1660,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
-     object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
-     object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
-     object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-+    object_initialize_child(obj, "nest1_chiplet", &chip10->nest1_chiplet,
-+                            TYPE_PNV_NEST1_CHIPLET);
- 
-     chip->num_pecs = pcc->num_pecs;
- 
-@@ -1829,6 +1831,15 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
-                                 &chip10->homer.regs);
- 
-+    /* nest1 chiplet control regs */
-+    object_property_set_link(OBJECT(&chip10->nest1_chiplet), "chip",
-+                             OBJECT(chip), &error_abort);
-+    if (!qdev_realize(DEVICE(&chip10->nest1_chiplet), NULL, errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_NEST1_CTRL_CHIPLET_BASE,
-+                           &chip10->nest1_chiplet.perv_chiplet.xscom_perv_ctrl_regs);
-+
-     /* PHBs */
-     pnv_chip_power10_phb_realize(chip, &local_err);
-     if (local_err) {
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 53e1d921d7..4bcb92595a 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -4,6 +4,7 @@
- #include "hw/pci-host/pnv_phb4.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/ppc/pnv_homer.h"
-+#include "hw/ppc/pnv_nest_chiplet.h"
- #include "hw/ppc/pnv_lpc.h"
- #include "hw/ppc/pnv_occ.h"
- #include "hw/ppc/pnv_psi.h"
-@@ -109,6 +110,7 @@ struct Pnv10Chip {
-     PnvOCC       occ;
-     PnvSBE       sbe;
-     PnvHomer     homer;
-+    PnvNest1Chiplet nest1_chiplet;
- 
-     uint32_t     nr_quads;
-     PnvQuad      *quads;
--- 
-2.31.1
+Daan
 
+On Wed, 25 Oct 2023 at 19:37, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
+>
+> On Sat, Oct 21, 2023 at 03:40:15PM +0200, Daan De Meyer wrote:
+> > This allows passing the KVM device node to use as a file
+> > descriptor via /dev/fdset/XX. Passing the device node to
+> > use as a file descriptor allows running qemu unprivileged
+> > even when the user running qemu is not in the kvm group
+> > on distributions where access to /dev/kvm is gated behind
+> > membership of the kvm group (as long as the process invoking
+> > qemu is able to open /dev/kvm and passes the file descriptor
+> > to qemu).
+> >
+> > Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+> > ---
+> >  accel/kvm/kvm-all.c      | 25 ++++++++++++++++++++++++-
+> >  include/sysemu/kvm_int.h |  1 +
+> >  qemu-options.hx          |  8 +++++++-
+> >  3 files changed, 32 insertions(+), 2 deletions(-)
+>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
 
