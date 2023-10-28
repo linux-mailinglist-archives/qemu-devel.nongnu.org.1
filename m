@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150607DA677
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 12:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2B17DA66F
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 12:34:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwgdB-00069i-4d; Sat, 28 Oct 2023 06:33:25 -0400
+	id 1qwgdC-0006Ag-2G; Sat, 28 Oct 2023 06:33:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qwgd8-00068Y-NC
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:22 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qwgd9-000694-Tg
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:23 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qwgd5-00038p-R3
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:22 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-407c3adef8eso23561825e9.2
+ id 1qwgd5-00038n-Tu
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:23 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-408002b5b9fso21420015e9.3
  for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 03:33:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698489193; x=1699093993; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ckA759hPSyt8nZwNqXR0bAUlw3vk+6GLbJPhTNDJqv8=;
- b=UEre3YtKaOoEHg4Hi0Qi86zptXkALutRSlyzVE6TXhT87eCjpadqaIqp+1mcEVPFQT
- Z0maMfcwB7Qtohy28//UPjGKCutib6niQ65a6U+3LMeNQE+NMB7Pltqod/+sizqPtXLQ
- qA34drYkYY5pxIuaBkV3sw0+WjPum6u7/1KJcGcPRmMQrvjlZub/tI5nKS5OLvJCM/f1
- 9MnEqTegL7Tw3jppUncIY7dJIW+vHPccgiBwz2x/4DQtBOJ1MkHjgFCZV6qWHGIQDCo3
- 8iujh2YqvH1OdbluDcd8vXd30L2VP6DVPI2utA3ah0Uu5htDDbewbHIWu3Add40aSu89
- rmSA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t+wjfKtC3t92gnbhw0BVnIQd/2GtTprk8NcwGcBfDuk=;
+ b=KDoWTs3kx54w1GxP4wBNjXtT1BN1wgxbyAokjSxTmEwuRXVOLD5rAgf9EeVh27ubhJ
+ /Kzfb3acSgPOH3laX3xsboRoyKyBbvLn4kesTHeXZd0WVRyomX4W1s2aAvPHXZWFAv6d
+ Z+5+4gB7Vn0P4f7rM/eNVpoTXDaBkIppJYWzIwpREbkDD74IqNh+aj8YXJt6lxsBZ6DF
+ YBZLMwJbJdfRy5f22ItRGJm+fHxNHd1fYo6B/wDqncHOuAxRmhDTNhYtvdsn8uoIQTlW
+ drvkoQD6HWX9D4d5AccC1R51ixT9pSx1DwAJfZ+RMqvPW+2gEZtiwbD+n6RN9WdIDqd6
+ NnIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698489193; x=1699093993;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ckA759hPSyt8nZwNqXR0bAUlw3vk+6GLbJPhTNDJqv8=;
- b=gD0PgnMiF/fOcrsZihMd84Obcs1MUwaY4ew9k5G1h2HNoKKcnMYXC4aJkAMhKWuiBQ
- j96RoVqrCsw6hDj6BDX9mdOc7CS3/TYlYiBPuks4pITzf79v5bxfhCYcsxusQtxkZI2D
- uc0vNVLzae3lS+rPWzN071Kf/FYkJqfVSn+szWDtDmYpaoqrFa0jR0UW8e6nvF5JO6FU
- oK24zXgnGg0qlpT/8fFpryXwRuEdgKf5sp+Lo3c4Kle3AoboedpnKLJGIBJdGPTioX77
- KLRekoVYRS+TuvCt4aUZR11X6pnaAKZ43f0bbOJMFhcrMo7klwmOFbyDUsrbLlxExaar
- IV0Q==
-X-Gm-Message-State: AOJu0YyNIxcjWZC/tj24n3k4Y9Ag8DvcEzTOx2t0jUlekPDI3+twBb3V
- 3gxiWRwiwAtPIvqLh9yPie/KRQ==
-X-Google-Smtp-Source: AGHT+IG555RWuAU0LKVdzaLPLrnoSRVlq2p33MjezFSo645LMCBaHYpC7hBs1ZY5bHKE3ryFMhPTzA==
-X-Received: by 2002:a05:600c:2990:b0:402:ee71:29 with SMTP id
- r16-20020a05600c299000b00402ee710029mr4115486wmd.10.1698489193017; 
- Sat, 28 Oct 2023 03:33:13 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=t+wjfKtC3t92gnbhw0BVnIQd/2GtTprk8NcwGcBfDuk=;
+ b=lko57Z9Md8GxsFCmW8rAnRVnPkp14lMOJvqH6rMkQB+xtNtCR9hYTSJ/nDMV6n8tsW
+ jOPmMUFrMXZWGbE7p8LBR/Xdeo2HEzOuWQT9B/4jVAgdF7ovbG7clrX/kC4gxJDET2Qp
+ ox6HUzpX39smxxG1jYAVCemskYGcFYE/IWIdGUCGF+RoB2jQvwUFFFE5dnk8LqYXrocI
+ elQHwj1BGzD7XadQe8dbIipz1lleLP0WAYCQo73fOXc8tIaiVTDsSZ4uht+zNFCpQlvX
+ AH+uQVW//aq4pdbzTRRSsuj6UIIz2EiP2n8qrkD2U/obn/E5q7Youk+Pxev/Vyph3Eil
+ G7qQ==
+X-Gm-Message-State: AOJu0YxN6HBpTr9AiJ+mCwK4qBIEEAsAgrlx83K9jkPkV7qID9QVCxqM
+ +JlX8F4wVNWk5KW97FbvX+ipsw==
+X-Google-Smtp-Source: AGHT+IHmAMEph9EaBAYR+VxUH6+EItCcs7rC6ICMNzqz6EjxFNyrdTizqRw/gtFS8CC8aGvWawwtYQ==
+X-Received: by 2002:a05:6000:2aa:b0:32f:7cfc:68ab with SMTP id
+ l10-20020a05600002aa00b0032f7cfc68abmr882512wry.8.1698489192796; 
+ Sat, 28 Oct 2023 03:33:12 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 3-20020a05600c248300b00406408dc788sm7135731wms.44.2023.10.28.03.33.12
+ h6-20020a5d4fc6000000b00327de0173f6sm3539309wrw.115.2023.10.28.03.33.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sat, 28 Oct 2023 03:33:12 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id ECE225F76C;
- Sat, 28 Oct 2023 11:33:11 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 0F02D5F797;
+ Sat, 28 Oct 2023 11:33:12 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Beraldo Leal <bleal@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
@@ -73,16 +74,17 @@ Cc: Beraldo Leal <bleal@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Brad Smith <brad@comstyle.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 00/17] Maintainer updates for testing, gdb,
- semihosting and plugins
-Date: Sat, 28 Oct 2023 11:32:54 +0100
-Message-Id: <20231028103311.347104-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/17] tests/vm/openbsd: Use the system dtc package
+Date: Sat, 28 Oct 2023 11:32:55 +0100
+Message-Id: <20231028103311.347104-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231028103311.347104-1-alex.bennee@linaro.org>
+References: <20231028103311.347104-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,98 +107,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This collects up a number of fixes across my various maintainer trees.
-There will be a longer plugins related one coming later but I wanted
-to turn these around first. The update to bookworm was delayed from
-the last release but I've now "solved" that by moving sh4 and alpha
-into a legacy container stuck on bullseye.
+From: Thomas Huth <thuth@redhat.com>
 
-I've also taken the opportunity to rationalise our zoo of containers
-to better sync up with what we actually use on gitlab.
+We can use the pre-packaged libfdt from the dtc package to avoid
+that we have to compile this code each time again and again.
 
-The following still need review:
+While we're at it, the "--python=python3" does not seemt to be
+necessary anymore, so we can drop it.
 
-  plugins: Remove an extra parameter
-  tests/docker: upgrade debian-all-test-cross to bookworm
-  tests/docker: use debian-all-test-cross for sparc64
-  tests/docker: use debian-all-test-cross for riscv64
-  tests/docker: use debian-all-test-cross for mips
-  tests/docker: use debian-all-test-cross for mips64
-  tests/docker: use debian-all-test-cross for m68k
-  tests/docker: use debian-all-test-cross for hppa
-  tests/docker: use debian-all-test-cross for power
-  tests/docker: move sh4 to use debian-legacy-test-cross
-  tests/docker: use debian-legacy-test-cross for alpha
-  gitlab: split alpha testing into a legacy container
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20231016154049.37147-1-thuth@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ tests/vm/openbsd | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Akihiko Odaki (3):
-  tests/tcg: Add -fno-stack-protector
-  gdbstub: Check if gdb_regs is NULL
-  plugins: Remove an extra parameter
-
-Alex Bennée (11):
-  gitlab: split alpha testing into a legacy container
-  tests/docker: use debian-legacy-test-cross for alpha
-  tests/docker: move sh4 to use debian-legacy-test-cross
-  tests/docker: use debian-all-test-cross for power
-  tests/docker: use debian-all-test-cross for hppa
-  tests/docker: use debian-all-test-cross for m68k
-  tests/docker: use debian-all-test-cross for mips64
-  tests/docker: use debian-all-test-cross for mips
-  tests/docker: use debian-all-test-cross for riscv64
-  tests/docker: use debian-all-test-cross for sparc64
-  tests/docker: upgrade debian-all-test-cross to bookworm
-
-Cong Liu (1):
-  contrib/plugins: Close file descriptor on error return
-
-Matheus Tavares Bernardino (1):
-  semihosting: fix memleak at semihosting_arg_fallback
-
-Thomas Huth (1):
-  tests/vm/openbsd: Use the system dtc package
-
- configure                                     | 37 ++++++++++-
- accel/tcg/plugin-gen.c                        |  9 +--
- contrib/plugins/lockstep.c                    |  2 +
- gdbstub/gdbstub.c                             | 34 ++++++-----
- semihosting/config.c                          |  3 +-
- tests/tcg/mips/hello-mips.c                   |  4 +-
- .gitlab-ci.d/buildtest.yml                    | 20 +++++-
- .gitlab-ci.d/container-cross.yml              | 61 ++-----------------
- tests/docker/Makefile.include                 |  7 ---
- .../dockerfiles/debian-all-test-cross.docker  | 26 ++++----
- .../dockerfiles/debian-alpha-cross.docker     | 19 ------
- .../dockerfiles/debian-hppa-cross.docker      | 19 ------
- .../debian-legacy-test-cross.docker           | 47 ++++++++++++++
- .../dockerfiles/debian-m68k-cross.docker      | 19 ------
- .../dockerfiles/debian-mips-cross.docker      | 19 ------
- .../dockerfiles/debian-mips64-cross.docker    | 19 ------
- .../debian-powerpc-test-cross.docker          | 23 -------
- .../debian-riscv64-test-cross.docker          | 19 ------
- .../dockerfiles/debian-sh4-cross.docker       | 19 ------
- .../dockerfiles/debian-sparc64-cross.docker   | 19 ------
- tests/tcg/Makefile.target                     |  2 +-
- tests/tcg/aarch64/Makefile.target             |  2 +-
- tests/tcg/arm/Makefile.target                 |  2 +-
- tests/tcg/cris/Makefile.target                |  2 +-
- tests/tcg/hexagon/Makefile.target             |  2 +-
- tests/tcg/i386/Makefile.target                |  2 +-
- tests/tcg/minilib/Makefile.target             |  2 +-
- tests/tcg/mips/Makefile.target                |  2 +-
- tests/vm/openbsd                              |  6 +-
- 29 files changed, 158 insertions(+), 289 deletions(-)
- delete mode 100644 tests/docker/dockerfiles/debian-alpha-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-hppa-cross.docker
- create mode 100644 tests/docker/dockerfiles/debian-legacy-test-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-m68k-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-mips-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-mips64-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-powerpc-test-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-riscv64-test-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-sh4-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-sparc64-cross.docker
-
+diff --git a/tests/vm/openbsd b/tests/vm/openbsd
+index 6b4fc29793..85c5bb3536 100755
+--- a/tests/vm/openbsd
++++ b/tests/vm/openbsd
+@@ -27,6 +27,7 @@ class OpenBSDVM(basevm.BaseVM):
+     size = "20G"
+     pkgs = [
+         # tools
++        "dtc",
+         "git",
+         "pkgconf",
+         "bzip2", "xz",
+@@ -67,8 +68,9 @@ class OpenBSDVM(basevm.BaseVM):
+         cd $(mktemp -d /home/qemu/qemu-test.XXXXXX);
+         mkdir src build; cd src;
+         tar -xf /dev/rsd1c;
+-        cd ../build
+-        ../src/configure --cc=cc --python=python3 {configure_opts};
++        cd ../build;
++        ../src/configure --cc=cc  --extra-cflags=-I/usr/local/include \
++                         --extra-ldflags=-L/usr/local/lib {configure_opts};
+         gmake --output-sync -j{jobs} {target} {verbose};
+     """
+     poweroff = "halt -p"
 -- 
 2.39.2
 
