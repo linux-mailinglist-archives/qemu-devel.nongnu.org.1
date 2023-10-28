@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD967DA79B
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 16:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9557DA7C1
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 17:22:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwkgO-00008p-TH; Sat, 28 Oct 2023 10:53:00 -0400
+	id 1qwl7N-0005HK-Gt; Sat, 28 Oct 2023 11:20:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qwkgM-00008W-Pm; Sat, 28 Oct 2023 10:52:58 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwl79-0005FN-Em
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 11:20:40 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qwkgL-0007bV-5v; Sat, 28 Oct 2023 10:52:58 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-538e8eca9c1so4739079a12.3; 
- Sat, 28 Oct 2023 07:52:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qwl75-0003OX-NV
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 11:20:38 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-9d10972e63eso142364566b.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 08:20:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698504775; x=1699109575; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698506433; x=1699111233; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MpkMwE5qEVSJPCRgQ8HrHIGNBg3wmqYX7j23cmSH+WI=;
- b=Dng0c3O5z94RaDaVtDFpHHvzQHpYmtA+bVnpF041O7acwvCUicEP+Zcl/QW+j6CckX
- Hb+mwCsj4wQojradkrC+FQii84j3sbb00bYB38WDt5GwnKT6RVQxKrV1i4dPEAseC+sA
- MKaapKq22XfoZ/oRrQ6B99YZswXgKD3h2Tjuz0dDDf9PSgnJon9FfQwqsfqbitQZ3Nw4
- 25QulhJlCReY4mtwZF8JmQq7Ve233qGXWxMjX7OVq6p1uYU9uZxY0o4ONmV+bDdbcTEz
- PcbwND8NxI29wcY1ZslvUW3b6BtwgjEnPoyzkFVPBtcw+QMYk3aG9nkVKtudJulWlWDp
- f3+w==
+ bh=tB83i6lsSrX6pEaIHqwEBC8yDcbkKhWEi3oU3gemnRc=;
+ b=e4hwldoqAQkiZGCHxi5xIyb5sAbT2J3YLfRNh10cwGTPLfZXLXtKLIMUA42HmJYkPh
+ vjoxd9snJPobxjybFU0515pmJcrICUeGOdgtdbNf7WhzPx9qeMzg2vFrBi9jcpbevwoc
+ VcceZZvDcMFHrxKI0M1d/YdDQksELHW6GvvY6802XKOsXqaIDNRfsjATJGehXVgHn57+
+ JfBpXLXA10hvijJxJzcipTYyoPKydFs1P2A3f7PuaI07ie6iErdl4EHn8bDSK+poQfNh
+ HZ5kUtAbapPb//ZWBjwzjTHspRZsR3gv/GdJ3TbAYQe7HDCpBBw45XBQsIWi8/nOxM8F
+ Mk0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698504775; x=1699109575;
+ d=1e100.net; s=20230601; t=1698506433; x=1699111233;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MpkMwE5qEVSJPCRgQ8HrHIGNBg3wmqYX7j23cmSH+WI=;
- b=FI6ISNSyXZQ48OsyqMejDqr4McURHC2jXQDacApXpOFnNInTDCZwUbtLU/WNH+t4hJ
- zHxMYG8Ksx35bWL2cfRlxv5okMtzbLhmuOfQ+wF2D8q5v9f94J5xvMb+nVgkmI0QzzXE
- vWjQ3ki6z2fyFnpzgDJSBwL4E8BBiCjMY6CYuf1fHcCOs7oH6pT5z/8Fct+4L18Nb1CH
- Op9eqt3xj09w/+BLOx57qB2Ta7ITXG6OyQn7K9VzOjTE2Pajb2pzFMLDrJbSrrirCt3r
- cuq2tXeV37rfbMfa4obhXXK4tuJ6+DXxHLU3pjoh0/QVT6A99Hn1985SROoapM3gtAdQ
- /5PA==
-X-Gm-Message-State: AOJu0YyD7Aquyf+Ny9racnd4BqV/6rdVzMpzRqKX1rmE8Lk4RJ+FIRbr
- t7wbhN48WrGyNt9r6Bt+rUc=
-X-Google-Smtp-Source: AGHT+IH4upiOLnOSzY9/MtGUotZ5fVVyLgh9Ux7NugFcOfTwkcaUZX07L8w+8QpH1aFaTbw0JcqdxQ==
-X-Received: by 2002:a17:906:6a24:b0:9c5:ea33:7bf9 with SMTP id
- qw36-20020a1709066a2400b009c5ea337bf9mr4273957ejc.51.1698504774552; 
- Sat, 28 Oct 2023 07:52:54 -0700 (PDT)
+ bh=tB83i6lsSrX6pEaIHqwEBC8yDcbkKhWEi3oU3gemnRc=;
+ b=pNsfoy4wRrhG3E0G4CjrFqz6Nwz4SGG+r6UdukcljdqJxfSY/cRX0oQesiCfsFIrYG
+ Feva/LFs2KNMcJX7puEtJxDpQ+9BcTJbwlqRAfFO2McmmY/CZUNIpziC1qfJp0yu8XA8
+ WgEVX6jEdKp+qnOxFXrtMFPIUz5NcLsNXkPJXhPST1wEXEv7t19e6F/hmzxsWeePCU1R
+ 9Ko2gqC/oWeMYO1t+Dz6GoLwwtDo2QsU8WYjtl9EgQ+K/iJpS33/X4VqAvOJw6GdFAfS
+ e4ExSgqm4DCN5L1sfinn5ixHgmJ2FJyI22saksvGae+RysUXGgWFfbDwsUSlj3f3XfLF
+ deMw==
+X-Gm-Message-State: AOJu0YwTRzNh0uKrMWsW8mRFgaAyt4D7sM4XDA7r+3XQSuOTt+4hXYoZ
+ WgK8twi7W2/zDPYG3QimmSQ=
+X-Google-Smtp-Source: AGHT+IGm0XkAct2b9THO9UtshmLhh75DXiSlftQMQNeh5F/8PFoWt09AMbNRSPBLljg7NIa97ZBFww==
+X-Received: by 2002:a17:907:9602:b0:9bf:77ae:3aa9 with SMTP id
+ gb2-20020a170907960200b009bf77ae3aa9mr4449409ejc.24.1698506432828; 
+ Sat, 28 Oct 2023 08:20:32 -0700 (PDT)
 Received: from [127.0.0.1] (dynamic-089-012-044-170.89.12.pool.telefonica.de.
  [89.12.44.170]) by smtp.gmail.com with ESMTPSA id
- v22-20020a170906339600b009bf94de8971sm2876456eja.70.2023.10.28.07.52.53
+ a2-20020a170906244200b0099cb0a7098dsm2947532ejb.19.2023.10.28.08.20.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 28 Oct 2023 07:52:54 -0700 (PDT)
-Date: Sat, 28 Oct 2023 14:52:48 +0000
+ Sat, 28 Oct 2023 08:20:32 -0700 (PDT)
+Date: Sat, 28 Oct 2023 15:20:26 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-CC: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
- philmd@linaro.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
-In-Reply-To: <cover.1698406922.git.balaton@eik.bme.hu>
-References: <cover.1698406922.git.balaton@eik.bme.hu>
-Message-ID: <AB7A22F3-8EDF-4E46-965A-6194201EAC98@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+CC: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v5 0/5] VIA PM: Implement basic ACPI support
+In-Reply-To: <999122a1-7790-f77c-8826-cd143191f6fb@eik.bme.hu>
+References: <20231028091606.23700-1-shentey@gmail.com>
+ <999122a1-7790-f77c-8826-cd143191f6fb@eik.bme.hu>
+Message-ID: <FE0C5B55-83DE-466F-B555-124B3936E3DE@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,76 +94,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 27=2E Oktober 2023 11:54:48 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
+Am 28=2E Oktober 2023 12:58:32 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
 me=2Ehu>:
->Changes in v7:
->- Increase default memory size to 512m to match pegasos2 and sam460ex
->and it's a better default for AmigaOS
+>Hello,
 >
->Changes in v6:
->- Dropped patch 1, now it's
+>On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+>> This series is part of my work to bring the VIA south bridges to the PC=
+ machine
+>> [1]=2E It implements missing ACPI functionality which ACPI-aware x86 gu=
+ests
+>> expect for a smooth experience=2E The implementation is heavily inspire=
+d by PIIX4=2E
 >
->Based-on: <20231024224056=2E842607-1-mark=2Ecave-ayland@ilande=2Eco=2Euk>
+>I think first the interrupt routing should be fixed because that may chan=
+ge a few things in this series so that should be the next step and then reb=
+ase this series on top of that=2E
 >
->([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PC=
-I IDE controllers)
->- Added Tested-by from Rene
+>What I mean by fixing interrupt routing? You may remember this discussion=
+:
 >
->Changes in v5:
->- Fixed avocado test
+>https://patchew=2Eorg/QEMU/cover=2E1677004414=2Egit=2Ebalaton@eik=2Ebme=
+=2Ehu/
 >
->Changes in v4:
->- Found typo in comment in patch 1 so ended up rewording it again
->trying to make it more concise=2E Also take the idea of using
->range_covers_byte from Mark's patch
->- Added RFC patch for avocado test (untested, I don't have Avocado)
+>With pegasos2 your (over)simplification worked only because the firmware =
+of that machine maps everythnig to one ISA IRQ and guests were happy with t=
+hat=2E I told you that back then but could not convince you and Mark about =
+that=2E Now with the amigaone machine the firmware maps VIA devices and PCI=
+ interuupt pins to different ISA IRQs so we need to go back either to my ot=
+iginal implementation or something else you come up with=2E You can test th=
+is trying to use USB devices with amigaone machine which only works after r=
+everting 4e5a20b6da9b1 and 422a6e8075752=2E So please either propose someth=
+ing to fix that first or wait with this series until I can update my pathch=
+es to solve interrupt routing=2E I think this series should wait until afte=
+r that because it adds more interrupt handling which should follow whatever=
+ way we come up with for that so it's too early fir this series yet=2E (If =
+you want to try fixing it keep in mind that in both amigaone and pegasos2 t=
+he PCI buses are in the north bridge not in the VIA south bridge so don't t=
+ry to force the IRQ mapping into the PCI bus=2E All the VIA chip needs to d=
+o is mapping its PIRQ/PINT pins to ISA IRQs as the VIA is only handling ISA=
+ IRQs and all other pci stuff is handled in the north bridge=2E So I think =
+we need a via_set_isa_irq function but we could change it according to Mark=
+'s idea to pass the PCI device and use its function number to select itq so=
+urce instead of the enum I had in my original series=2E)
 >
->Changes in v3:
->- Update values, comment and commit message in patch 1 again
->
->Changes in v2:
->- Update comment and commit message in patch 1 (Mark)
->- Fix irq mapping in patch 2 (Volker)
->
->Regards,
->BALATON Zoltan
->
->BALATON Zoltan (3):
->  hw/pci-host: Add emulation of Mai Logic Articia S
->  hw/ppc: Add emulation of AmigaOne XE board
->  tests/avocado: Add test for amigaone board
+>I have some other comments that I'll add in reply to individual patches f=
+or the future/
 
 Hi Zoltan,
 
-Could you please provide some documentation on how to run Linux or some ot=
-her free (as in free beer) OS on this machine? Can you provide an Avocado t=
-est booting e=2Eg=2E Linux as a quality gate for the VIA south bridges?
+The interrupt handling introduced in this series is not related to PCI int=
+errupt routing: The SMI is a dedicated pin on the device and the SCI is map=
+ped internally to an ISA interrupt (note how the power management function =
+lacks the registers for PCI interrupt information)=2E Hence, PCI interrupt =
+routing isn't changed in this series and therefore seems off-topic to me=2E
 
-As you know I'm trying to bring these south bridges to the PC machine and =
-relying on hard to get proprietary blobs or OSes makes this very difficult=
-=2E Whenever the VIA south bridges are changed we end up having endless dis=
-cussions due to this situation=2E We need a solution that works for everybo=
-dy woking on these south bridges=2E
+Moreover, the SMI is a new interrupt which is therefore not used in any ma=
+chine yet=2E The SCI is deactivated if set to IRQ 0 which is the default ev=
+en=2E If a guest configures it, it shall be aware to receive an *ISA* inter=
+rupt=2E
+
+So I think this series shouldn't conflict with any previous work and shoul=
+d not be blocked by the PCI IRQ routing topic=2E
 
 Best regards,
 Bernhard
 
-
 >
-> MAINTAINERS                             |   8 +
-> configs/devices/ppc-softmmu/default=2Emak |   1 +
-> hw/pci-host/Kconfig                     |   5 +
-> hw/pci-host/articia=2Ec                   | 293 ++++++++++++++++++++++++
-> hw/pci-host/meson=2Ebuild                 |   2 +
-> hw/ppc/Kconfig                          |   7 +
-> hw/ppc/amigaone=2Ec                       | 164 +++++++++++++
-> hw/ppc/meson=2Ebuild                      |   2 +
-> include/hw/pci-host/articia=2Eh           |  17 ++
-> tests/avocado/ppc_amiga=2Epy              |  38 +++
-> 10 files changed, 537 insertions(+)
-> create mode 100644 hw/pci-host/articia=2Ec
-> create mode 100644 hw/ppc/amigaone=2Ec
-> create mode 100644 include/hw/pci-host/articia=2Eh
-> create mode 100644 tests/avocado/ppc_amiga=2Epy
+>Regards,
+>BALATON Zoltan
 >
+>> Further quirks are needed in order to use the VIA south bridges in the =
+PC
+>> machine=2E These were deliberately left out for a future series=2E The =
+idea for now
+>> is to get the device model in shape for adding support for it in SeaBIO=
+S=2E
+>>=20
+>> The series is structured as follows: The first patch fixes ACPI events =
+to be
+>> signalled by SCI interrupts=2E The next three patches implement typical=
+ ACPI
+>> event handling=2E The last patch adds software-based SMI triggering whi=
+ch is the
+>> mechanism used in ACPI to transition the system into ACPI mode=2E
+>>=20
+>> Testing done:
+>> * `make check`
+>> * `make check-avocado`
+>> * `qemu-system-ppc -M pegasos2 \
+>>                   -device ati-vga,romfile=3D"" \
+>>                   -cdrom morphos-3=2E18=2Eiso \
+>>                   -bios pegasos2=2Erom`
+>>=20
+>> [1] https://github=2Ecom/shentok/qemu/tree/pc-via
+>>=20
+>> v5:
+>> * Implement software-based SMI triggering and handling of ACPI events b=
+ased on
+>>  v3
+>>=20
+>> v4:
+>> * Alternative proposal (Zoltan)
+>>=20
+>> v3: https://patchew=2Eorg/QEMU/20231005115159=2E81202-1-shentey@gmail=
+=2Ecom/
+>> * Rename SCI irq attribute to sci_irq (Zoltan)
+>> * Fix confusion about location of ACPI interrupt select register (Zolta=
+n)
+>> * Model SCI as named GPIO (Bernhard)
+>> * Perform upcast via macro rather than sub structure selection (Bernhar=
+d)
+>>=20
+>> v2:
+>> * Introduce named constants for the ACPI interrupt select register at o=
+ffset
+>>  0x42 (Phil)
+>>=20
+>> Bernhard Beschow (5):
+>>  hw/isa/vt82c686: Respect SCI interrupt assignment
+>>  hw/isa/vt82c686: Add missing initialization of ACPI general purpose
+>>    event registers
+>>  hw/isa/vt82c686: Reuse acpi_update_sci()
+>>  hw/isa/vt82c686: Implement ACPI powerdown
+>>  hw/isa/vt82c686: Implement software-based SMI triggering
+>>=20
+>> hw/isa/vt82c686=2Ec | 179 ++++++++++++++++++++++++++++++++++++---------=
+-
+>> 1 file changed, 142 insertions(+), 37 deletions(-)
+>>=20
+>> --
+>> 2=2E42=2E0
+>>=20
+>>=20
+>>=20
 
