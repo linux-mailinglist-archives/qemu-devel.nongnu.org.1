@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481557DA90D
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACF27DA8FF
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 21:47:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwpFU-0004h6-4p; Sat, 28 Oct 2023 15:45:32 -0400
+	id 1qwpFW-0004iF-9w; Sat, 28 Oct 2023 15:45:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwpFR-0004gG-Hu
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:29 -0400
-Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
+ id 1qwpFU-0004hQ-2n
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:32 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwpFP-00045p-Gc
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:29 -0400
-Received: by mail-il1-x12d.google.com with SMTP id
- e9e14a558f8ab-3573fa82923so11404445ab.1
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:45:27 -0700 (PDT)
+ id 1qwpFR-00045u-Do
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 15:45:31 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1cc329ce84cso5535385ad.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 12:45:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698522326; x=1699127126; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698522327; x=1699127127; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Zh61DK1PDe6VrwXTSbb5OfrsTdylybfZGSWnmMjbkM0=;
- b=sh1IIEQSYSZwlu9XypfslMUdTWqB91iPeO38RFhTEubAaa6862sDZ/qSuLnAxXEM9i
- /0dsLX1Y/LpeiJvcm6ufdjpSrMRwCca7+XdaJsLvHedo4cQax7s4y7rG/sOIVNXyCQHg
- Der6CCawFVzmIScLbK2QqxazTycs7Vf71luUd8y/06DifC39MhzvnB24xXMZYx8UAjsj
- Yz9rEiildMix1/HViA8yG4MxIcNKN1vMDZmvQwHxNF9EH8JFKTTHUyFEVRyVnxkaOLZo
- YoV5SdHzJ6nGesbLGrGOaE5HnX9/0JkrGyRQ2ZvcladPrmMSmr8sW/t7/q4DVH59vGe8
- amBA==
+ bh=9eXocbu34bghBLrSPFKvIsugn7thygfTREC245booiE=;
+ b=rBhhkWQxpF2oT1zxDz5F8C4hPHo14o7GLjmOrhyne6qJvLQ9gFlJPrQsO4tSowAFCS
+ rCmZaWM1Adn6xpjoQO8YE7K0eDGkkK9K1ZZS6g1lUReWCnxvfVhtAXaOsJl3+VADMYZo
+ d11HQOHqaMtOoigW2sV8CFrXdHTEykdpAvaODVUvBNrIkj94J/vnHbyT1Z/U4es0Elq3
+ qEmX0+zBNa0hdGFISiqqaQucpiG7yEeiznzcG5vzMp9Z8WbImbi950xYzG/B5Q5BPHLx
+ TXeBvbKhHg/Fl38VPAx8w3BzWrsDFVBajoZVuy0vdClYrbfpZ/PuRoQumi+B5mR1tf/z
+ enVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698522326; x=1699127126;
+ d=1e100.net; s=20230601; t=1698522327; x=1699127127;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zh61DK1PDe6VrwXTSbb5OfrsTdylybfZGSWnmMjbkM0=;
- b=ernf/J4YcEr33PrsFDaQmmo1bhO1NEIN3y3/9U8OsB0VMPyy6FvcQxFayhypmb1EDx
- QYoHhOYI2uzORv+eli48qD2mqPuDxJcc02IdJqaRSCj21Oky3nEBgxMd+IBiABPPLBbO
- kYS79+HKLEJAU4HK5kZYpNZCH4nqKZHdK9babOMYdEVfCpkb4tKY3T02UxcvBRk8nGyM
- oZQj/2g5lvvyDeWhYfy9BmZEyyeuC/bSf+zSaSFfia10JH6eSBi/hYjERh6QZb/RxwvK
- 3Gt7JBCppdLkITKkP3vbsOqaU2j36paRdw1Xzf7t8/kBKXqffzMpdJVBj4HyDjItI9O5
- N+dw==
-X-Gm-Message-State: AOJu0YwywOPf5ickakpQnOIo/8jF5J3SLO8opOdxutRitI3R60wSEQOV
- vlue9kY21rGPnwveb9nNrG2agIilOHBSh42T1JU=
-X-Google-Smtp-Source: AGHT+IGL5WrE0TRiMjl+P2ffVVuDHAFG/EIBuL8f0Q1ido0QjjmrImnRMrDPqUsz1TCEPa+zWQZm0w==
-X-Received: by 2002:a92:c26f:0:b0:357:a01f:35f0 with SMTP id
- h15-20020a92c26f000000b00357a01f35f0mr8837116ild.19.1698522326232; 
- Sat, 28 Oct 2023 12:45:26 -0700 (PDT)
+ bh=9eXocbu34bghBLrSPFKvIsugn7thygfTREC245booiE=;
+ b=klhcRdtZXppz4v+HgvZp5gxPmIeW+AS12PEDz4YSK0fNYzJ5lw5JQVtBTrIf44Z/eE
+ auo7P6BXovNOxSBtFMYOxd0y7Gw5gzV3riVuvhfIBxhHL/oYIwhSPB1P9iC1RQX30BE+
+ v1LM8E6Diy4WNMm1lPxxSgOL4nvsbsykk20QiTP2H6ZGm1qt5NmdFvTJwx0H7665GmeO
+ lnvwjX6K46h4U8fRHewEKw9gqEJa6jIyKeVsEOfA2dBAQOUFzm5UQZzR55QBJAc6kFrW
+ r4oDwh+33W61ARMg2HLKI8T62wDIY7z+dsFdCKLEgc/Q3OBvxUlvgM/ZVre9cI/3armv
+ dDXQ==
+X-Gm-Message-State: AOJu0YwF3XeX6o145zQfn6McG7rAuJbEmhBLFEdDT5Fo6F6EEHv06n3n
+ /AB+T/9I8aM2E9g3kJfd9SK2LkDOArY9o06W8XY=
+X-Google-Smtp-Source: AGHT+IErm9bRzlS9SU4a8GvEQOlWDnORwYyUOQbS91PuWs9WFbhLq8NonqrEqN4vpNtDt4eKloOgqw==
+X-Received: by 2002:a17:902:e5c2:b0:1cc:3fc9:7d09 with SMTP id
+ u2-20020a170902e5c200b001cc3fc97d09mr523622plf.15.1698522327098; 
+ Sat, 28 Oct 2023 12:45:27 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- h9-20020a170902f7c900b001b8a3e2c241sm3600096plw.14.2023.10.28.12.45.25
+ h9-20020a170902f7c900b001b8a3e2c241sm3600096plw.14.2023.10.28.12.45.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Oct 2023 12:45:25 -0700 (PDT)
+ Sat, 28 Oct 2023 12:45:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	pbonzini@redhat.com
-Subject: [PATCH v2 02/35] tcg/optimize: Split out arg_is_const_val
-Date: Sat, 28 Oct 2023 12:44:49 -0700
-Message-Id: <20231028194522.245170-3-richard.henderson@linaro.org>
+Subject: [PATCH v2 03/35] tcg/optimize: Split out do_constant_folding_cond1
+Date: Sat, 28 Oct 2023 12:44:50 -0700
+Message-Id: <20231028194522.245170-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231028194522.245170-1-richard.henderson@linaro.org>
 References: <20231028194522.245170-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,135 +91,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Handle modifications to the arguments and condition
+in a single place.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+ tcg/optimize.c | 57 ++++++++++++++++++++++++--------------------------
+ 1 file changed, 27 insertions(+), 30 deletions(-)
 
 diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 2db5177c32..e8a13fedb5 100644
+index e8a13fedb5..89cc794d24 100644
 --- a/tcg/optimize.c
 +++ b/tcg/optimize.c
-@@ -112,11 +112,22 @@ static inline bool ts_is_const(TCGTemp *ts)
-     return ts_info(ts)->is_const;
+@@ -672,6 +672,23 @@ static bool swap_commutative2(TCGArg *p1, TCGArg *p2)
+     return false;
  }
  
-+static inline bool ts_is_const_val(TCGTemp *ts, uint64_t val)
++static int do_constant_folding_cond1(OptContext *ctx, TCGArg dest,
++                                     TCGArg *p1, TCGArg *p2, TCGArg *pcond)
 +{
-+    TempOptInfo *ti = ts_info(ts);
-+    return ti->is_const && ti->val == val;
++    TCGCond cond;
++    bool swap;
++    int r;
++
++    swap = swap_commutative(dest, p1, p2);
++    cond = *pcond;
++    if (swap) {
++        *pcond = cond = tcg_swap_cond(cond);
++    }
++
++    r = do_constant_folding_cond(ctx->type, *p1, *p2, cond);
++    return r;
 +}
 +
- static inline bool arg_is_const(TCGArg arg)
+ static void init_arguments(OptContext *ctx, TCGOp *op, int nb_args)
  {
-     return ts_is_const(arg_temp(arg));
- }
+     for (int i = 0; i < nb_args; i++) {
+@@ -1053,14 +1070,8 @@ static bool fold_andc(OptContext *ctx, TCGOp *op)
  
-+static inline bool arg_is_const_val(TCGArg arg, uint64_t val)
-+{
-+    return ts_is_const_val(arg_temp(arg), val);
-+}
-+
- static inline bool ts_is_copy(TCGTemp *ts)
+ static bool fold_brcond(OptContext *ctx, TCGOp *op)
  {
-     return ts_info(ts)->next_copy != ts;
-@@ -565,7 +576,7 @@ static int do_constant_folding_cond(TCGType type, TCGArg x,
-         }
-     } else if (args_are_copies(x, y)) {
-         return do_constant_folding_cond_eq(c);
--    } else if (arg_is_const(y) && arg_info(y)->val == 0) {
-+    } else if (arg_is_const_val(y, 0)) {
-         switch (c) {
-         case TCG_COND_LTU:
-             return 0;
-@@ -831,7 +842,7 @@ static bool fold_to_not(OptContext *ctx, TCGOp *op, int idx)
- /* If the binary operation has first argument @i, fold to @i. */
- static bool fold_ix_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+-    TCGCond cond = op->args[2];
+-    int i;
+-
+-    if (swap_commutative(NO_DEST, &op->args[0], &op->args[1])) {
+-        op->args[2] = cond = tcg_swap_cond(cond);
+-    }
+-
+-    i = do_constant_folding_cond(ctx->type, op->args[0], op->args[1], cond);
++    int i = do_constant_folding_cond1(ctx, NO_DEST, &op->args[0],
++                                      &op->args[1], &op->args[2]);
+     if (i == 0) {
+         tcg_op_remove(ctx->tcg, op);
+         return true;
+@@ -1550,21 +1561,18 @@ static bool fold_mov(OptContext *ctx, TCGOp *op)
+ 
+ static bool fold_movcond(OptContext *ctx, TCGOp *op)
  {
--    if (arg_is_const(op->args[1]) && arg_info(op->args[1])->val == i) {
-+    if (arg_is_const_val(op->args[1], i)) {
+-    TCGCond cond = op->args[5];
+     int i;
+ 
+-    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
+-        op->args[5] = cond = tcg_swap_cond(cond);
+-    }
+     /*
+      * Canonicalize the "false" input reg to match the destination reg so
+      * that the tcg backend can implement a "move if true" operation.
+      */
+     if (swap_commutative(op->args[0], &op->args[4], &op->args[3])) {
+-        op->args[5] = cond = tcg_invert_cond(cond);
++        op->args[5] = tcg_invert_cond(op->args[5]);
+     }
+ 
+-    i = do_constant_folding_cond(ctx->type, op->args[1], op->args[2], cond);
++    i = do_constant_folding_cond1(ctx, NO_DEST, &op->args[1],
++                                  &op->args[2], &op->args[5]);
+     if (i >= 0) {
+         return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[4 - i]);
+     }
+@@ -1578,6 +1586,7 @@ static bool fold_movcond(OptContext *ctx, TCGOp *op)
+         uint64_t tv = arg_info(op->args[3])->val;
+         uint64_t fv = arg_info(op->args[4])->val;
+         TCGOpcode opc, negopc = 0;
++        TCGCond cond = op->args[5];
+ 
+         switch (ctx->type) {
+         case TCG_TYPE_I32:
+@@ -1805,14 +1814,8 @@ static bool fold_remainder(OptContext *ctx, TCGOp *op)
+ 
+ static bool fold_setcond(OptContext *ctx, TCGOp *op)
+ {
+-    TCGCond cond = op->args[3];
+-    int i;
+-
+-    if (swap_commutative(op->args[0], &op->args[1], &op->args[2])) {
+-        op->args[3] = cond = tcg_swap_cond(cond);
+-    }
+-
+-    i = do_constant_folding_cond(ctx->type, op->args[1], op->args[2], cond);
++    int i = do_constant_folding_cond1(ctx, op->args[0], &op->args[1],
++                                      &op->args[2], &op->args[3]);
+     if (i >= 0) {
          return tcg_opt_gen_movi(ctx, op, op->args[0], i);
      }
-     return false;
-@@ -840,7 +851,7 @@ static bool fold_ix_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
- /* If the binary operation has first argument @i, fold to NOT. */
- static bool fold_ix_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
- {
--    if (arg_is_const(op->args[1]) && arg_info(op->args[1])->val == i) {
-+    if (arg_is_const_val(op->args[1], i)) {
-         return fold_to_not(ctx, op, 2);
-     }
-     return false;
-@@ -849,7 +860,7 @@ static bool fold_ix_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
- /* If the binary operation has second argument @i, fold to @i. */
- static bool fold_xi_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
- {
--    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
-+    if (arg_is_const_val(op->args[2], i)) {
-         return tcg_opt_gen_movi(ctx, op, op->args[0], i);
-     }
-     return false;
-@@ -858,7 +869,7 @@ static bool fold_xi_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
- /* If the binary operation has second argument @i, fold to identity. */
- static bool fold_xi_to_x(OptContext *ctx, TCGOp *op, uint64_t i)
- {
--    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
-+    if (arg_is_const_val(op->args[2], i)) {
-         return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[1]);
-     }
-     return false;
-@@ -867,7 +878,7 @@ static bool fold_xi_to_x(OptContext *ctx, TCGOp *op, uint64_t i)
- /* If the binary operation has second argument @i, fold to NOT. */
- static bool fold_xi_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
- {
--    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
-+    if (arg_is_const_val(op->args[2], i)) {
-         return fold_to_not(ctx, op, 1);
-     }
-     return false;
-@@ -1083,8 +1094,8 @@ static bool fold_brcond2(OptContext *ctx, TCGOp *op)
-          * Simplify LT/GE comparisons vs zero to a single compare
-          * vs the high word of the input.
-          */
--        if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == 0 &&
--            arg_is_const(op->args[3]) && arg_info(op->args[3])->val == 0) {
-+        if (arg_is_const_val(op->args[2], 0) &&
-+            arg_is_const_val(op->args[3], 0)) {
-             goto do_brcond_high;
-         }
-         break;
-@@ -1303,9 +1314,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
-     }
+@@ -1824,14 +1827,8 @@ static bool fold_setcond(OptContext *ctx, TCGOp *op)
  
-     /* Inserting a value into zero at offset 0. */
--    if (arg_is_const(op->args[1])
--        && arg_info(op->args[1])->val == 0
--        && op->args[3] == 0) {
-+    if (arg_is_const_val(op->args[1], 0) && op->args[3] == 0) {
-         uint64_t mask = MAKE_64BIT_MASK(0, op->args[4]);
- 
-         op->opc = and_opc;
-@@ -1316,8 +1325,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
+ static bool fold_negsetcond(OptContext *ctx, TCGOp *op)
+ {
+-    TCGCond cond = op->args[3];
+-    int i;
+-
+-    if (swap_commutative(op->args[0], &op->args[1], &op->args[2])) {
+-        op->args[3] = cond = tcg_swap_cond(cond);
+-    }
+-
+-    i = do_constant_folding_cond(ctx->type, op->args[1], op->args[2], cond);
++    int i = do_constant_folding_cond1(ctx, op->args[0], &op->args[1],
++                                      &op->args[2], &op->args[3]);
+     if (i >= 0) {
+         return tcg_opt_gen_movi(ctx, op, op->args[0], -i);
      }
- 
-     /* Inserting zero into a value. */
--    if (arg_is_const(op->args[2])
--        && arg_info(op->args[2])->val == 0) {
-+    if (arg_is_const_val(op->args[2], 0)) {
-         uint64_t mask = deposit64(-1, op->args[3], op->args[4], 0);
- 
-         op->opc = and_opc;
-@@ -1855,8 +1863,8 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
-          * Simplify LT/GE comparisons vs zero to a single compare
-          * vs the high word of the input.
-          */
--        if (arg_is_const(op->args[3]) && arg_info(op->args[3])->val == 0 &&
--            arg_is_const(op->args[4]) && arg_info(op->args[4])->val == 0) {
-+        if (arg_is_const_val(op->args[3], 0) &&
-+            arg_is_const_val(op->args[4], 0)) {
-             goto do_setcond_high;
-         }
-         break;
 -- 
 2.34.1
 
