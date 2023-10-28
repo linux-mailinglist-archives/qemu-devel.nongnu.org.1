@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AEF7DA9A4
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 23:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54C97DA9A7
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 23:40:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwqxv-0007Q9-Ho; Sat, 28 Oct 2023 17:35:31 -0400
+	id 1qwr2X-0008ND-0R; Sat, 28 Oct 2023 17:40:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwqxt-0007Ph-2U
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 17:35:29 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ id 1qwr2T-0008Mq-Rd
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 17:40:14 -0400
+Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qwqxr-0005pe-Hv
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 17:35:28 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-58441865ffaso2021691eaf.1
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 14:35:26 -0700 (PDT)
+ id 1qwr2S-0006Ki-8j
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 17:40:13 -0400
+Received: by mail-il1-x133.google.com with SMTP id
+ e9e14a558f8ab-351574aca7bso9915065ab.3
+ for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 14:40:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698528926; x=1699133726; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698529211; x=1699134011; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9iXhMbCiHxK3QdcH0kQKI7uQZBa18kBJkZ66k3iJeJA=;
- b=Yi4hyCVRm5XmWbmEV/jfybmydmYRYYl1L12sFbdzWSfl7stI7SQf1QQ/Kn+MdNFB0l
- 1CqQVyIegAGowOvJ6hxShi/WNxYDE5u4IjfqmN4pZRaNaBPq88KoUGshvK81bVTRgb3D
- YyUn/VxM/AS7lPQ/EFDiFnkI8DA9Khvk/gJWSUbFAFrmczVS5vKlk1f0rUE1fWBG4ff9
- ccOSaSdXvX8iihjSYrvVZK7Ny3iV+MPJavuVFy4MXsA87N0zLuoAH/YJaJ86kAPQQRXT
- QBRLvtpP78Bo9p+L+AX+xez2Jzu3uzq5cD7/za/Uw7drZ2sPeaQi9u71Rd6Liklohjq2
- 88kg==
+ bh=BdV3YadZuViCj2QFPCIJHJ4csisPwpXufeLqjPQWktc=;
+ b=P0pJcTJ1s3c0ojggdjImRpnPGV6V8FKb3NRMqAYIOflEmOHfLnlhpphY3gv7b3l6xW
+ eJvqGzWx4b+hV4pJ5v2aWmzYnfK+UP0ZPjhyRemGphR71YnTAPEI8hP4tQME1twcDvtM
+ UCOEBZHcxW9mJk/zIvgKyS1CFsMdOZ4opRYGbkzmP1dRZGXXDKTM4iEfdVYUaITCaaLz
+ oOBRLKoG5Ln/euaOHCq0Feo7UBjGqWjvTDWUYUcGwTwpJaNZu8LtZlAeEo4/k1sneDBR
+ T3KPagVl/Y4djTBU9npF6dtVHmkOlI06r9MpEhExFxBIEQrf1aj18gHv53gD53b5KubZ
+ PWXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698528926; x=1699133726;
+ d=1e100.net; s=20230601; t=1698529211; x=1699134011;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9iXhMbCiHxK3QdcH0kQKI7uQZBa18kBJkZ66k3iJeJA=;
- b=Cc6gW/V5Kw+3W3peaBXbYlJxFyZ8cZeIjhdSq+ax5oV4fZ6AVc7WtdEtp+xR7XInwk
- T8QgNkBCLQJ2A0bafuZgv6TWfBqjV8Z4xsZiB05/bmHXMG+LwcDenrXD5MDA6xSjTT2M
- CQfokJv9d9i+X+K7ctK4ogsi0YQtC8Lz+tXnxIP/9BNx9TSxAC1MDtOIob7wcjFiIuua
- giag/3a/pOZrTL+4yN8DWSenoGPOqwQv7s4q3PDvtlk5DqdcUuJpV0i8wXBKd+zOzg0h
- OkLVTi9wc1IKvaTuacw/3I8FVYph9k/7UTRZ5JljgWp4Z7F6TyqM3rH0NWdwsgfkGA13
- 85NA==
-X-Gm-Message-State: AOJu0YxUQJaBSbcq2hlwLa0mh2EfdPbzREd52YqakhMkGNN4PO2aPxuK
- o/ggyDAF+wZorDMR8RIC5zj89g==
-X-Google-Smtp-Source: AGHT+IGPUde5o7V7M8Zxa6CeUMImklK++Zak6F1UVxp7EKfhvrbdfMSXIgo/0/8/ybvCUlrsGo4pjw==
-X-Received: by 2002:a05:6359:1a09:b0:168:e8e6:b91f with SMTP id
- rt9-20020a0563591a0900b00168e8e6b91fmr4922692rwb.18.1698528925565; 
- Sat, 28 Oct 2023 14:35:25 -0700 (PDT)
+ bh=BdV3YadZuViCj2QFPCIJHJ4csisPwpXufeLqjPQWktc=;
+ b=cIgiWdzBwOm9ckaidnH+N4eqGngXzCyzyp4C+xrzqSVbm8JUWrjVp8I5gm1/M4FFxo
+ Ylj2/rVDVypyjFdeGlhbIsLVDpcKIoKTa5yDAzHmMDOUcBQltFJLb7+22UtKf0z5Qqwl
+ eZbGlL6ertFmxE6ru5/28FIKRcVjaoYsH9PCY1nvBw0oTeznBTQsZqEJgPr+CKIuPil8
+ Yq4tG8K27MzpL6PV3HAdh/itxerlbmXqjZKrtBnlZao0t3l67goh1/Inunb977cSfMRp
+ aIswuQmPVxXye+1Z9BqJQyF9ob+Ft7oOot/JiOym2ZdGdLhu6ufXXoo+v0zaSAxpoG/v
+ jpCA==
+X-Gm-Message-State: AOJu0YxSqOaZneDDAFIwcSyVLOBPf3HstxYHWO2IGCYVxLRaPcabW2mG
+ JQpzUZ4VQymrYnhs5J+hj4h1Rg==
+X-Google-Smtp-Source: AGHT+IGPzsk45xd03ON5Ny94gYt0R+KLyc+ujA+4xSiOMKEw51dq+FwpUAghXZZvK7LTlR3P4kmTiQ==
+X-Received: by 2002:a05:6e02:1c2c:b0:351:1647:5f7e with SMTP id
+ m12-20020a056e021c2c00b0035116475f7emr8773481ilh.15.1698529210964; 
+ Sat, 28 Oct 2023 14:40:10 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a170902ee4c00b001bc18e579aesm861350plo.101.2023.10.28.14.35.24
+ x3-20020a170902ea8300b001c3267ae317sm2153242plb.165.2023.10.28.14.40.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 28 Oct 2023 14:35:25 -0700 (PDT)
-Message-ID: <b2335b60-b2f5-4ece-ab75-079fac4f7f9b@linaro.org>
-Date: Sat, 28 Oct 2023 14:35:23 -0700
+ Sat, 28 Oct 2023 14:40:10 -0700 (PDT)
+Message-ID: <1c4c0856-337e-4c5e-b2af-6caf35060b0a@linaro.org>
+Date: Sat, 28 Oct 2023 14:40:08 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 5/6] linux-user/loongarch64: Add LSX sigcontext
- save/restore
+Subject: Re: [PATCH v1 2/6] target/loongarch: Add set_vec_extctx to set
+ LSX/LASX instructions extctx_flags
 Content-Language: en-US
 To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
 Cc: philmd@redhat.com, laurent@vivier.e, maobibo@loongson.cn,
  yangxiaojuan@loongson.cn, laurent@vivier.eu
 References: <20231010033701.385725-1-gaosong@loongson.cn>
- <20231010033701.385725-6-gaosong@loongson.cn>
+ <20231010033701.385725-3-gaosong@loongson.cn>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231010033701.385725-6-gaosong@loongson.cn>
+In-Reply-To: <20231010033701.385725-3-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,54 +96,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/9/23 20:37, Song Gao wrote:
+On 10/9/23 20:36, Song Gao wrote:
 > Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->   linux-user/loongarch64/signal.c | 107 ++++++++++++++++++++++++++------
->   1 file changed, 87 insertions(+), 20 deletions(-)
+>   target/loongarch/insn_trans/trans_vec.c.inc | 12 ++++++++++++
+>   target/loongarch/internals.h                |  2 ++
+>   2 files changed, 14 insertions(+)
 > 
-> diff --git a/linux-user/loongarch64/signal.c b/linux-user/loongarch64/signal.c
-> index 277e9f5757..4b09e50a5f 100644
-> --- a/linux-user/loongarch64/signal.c
-> +++ b/linux-user/loongarch64/signal.c
-> @@ -33,6 +33,14 @@ struct target_fpu_context {
->       uint32_t fcsr;
->   } QEMU_ALIGNED(FPU_CTX_ALIGN);
+> diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
+> index 98f856bb29..aef16ef44a 100644
+> --- a/target/loongarch/insn_trans/trans_vec.c.inc
+> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
+> @@ -23,8 +23,20 @@ static bool check_vec(DisasContext *ctx, uint32_t oprsz)
 >   
-> +#define LSX_CTX_MAGIC           0x53580001
-> +#define LSX_CTX_ALIGN           16
-> +struct target_lsx_context {
-> +    uint64_t regs[2 * 32];
-> +    uint64_t fcc;
-> +    uint32_t fcsr;
-> +} QEMU_ALIGNED(LSX_CTX_ALIGN);
-
-It probably doesn't matter here because fo the alignment, but all types within target 
-structures should be using abi_{ullong,uint} etc.
-
-
-> @@ -99,8 +109,15 @@ static abi_ptr setup_extcontext(struct extctx_layout *extctx, abi_ptr sp)
+>   #else
 >   
->       /* For qemu, there is no lazy fp context switch, so fp always present. */
->       extctx->flags = SC_USED_FP;
-> -    sp = extframe_alloc(extctx, &extctx->fpu,
-> +
-> +    if (env->extctx_flags & EXTCTX_FLAGS_LSX) {
-> +        sp = extframe_alloc(extctx, &extctx->lsx,
-> +                        sizeof(struct target_lsx_context), LSX_CTX_ALIGN, sp);
-> +
-> +    } else if (env->extctx_flags & EXTCTX_FLAGS_FPU) {
-> +        sp = extframe_alloc(extctx, &extctx->fpu,
->                           sizeof(struct target_fpu_context), FPU_CTX_ALIGN, sp);
+> +static void set_vec_extctx(DisasContext *ctx, uint32_t oprsz)
+> +{
+> +    if (oprsz == 16) {
+> +        ctx->extctx_flags |= EXTCTX_FLAGS_LSX;
 > +    }
+> +
+> +    if (oprsz == 32) {
+> +        ctx->extctx_flags |= EXTCTX_FLAGS_LASX;
+> +    }
+> +}
+> +
+>   static bool check_vec(DisasContext *ctx, uint32_t oprsz)
+>   {
+> +    set_vec_extctx(ctx, oprsz);
+>       return true;
+>   }
 
-I think this is overly complicated.  (1) The fpu is always present, and (2) you don't need 
-a special flag on env, you can check the same CSR bits as for system mode.
+This doesn't do anything.  Nothing copies the changed value back to env.
+Anyway, I think this is the wrong way to go about it.
 
-I'll note that while this layout matches the kernel, it is an unfortunate set of data 
-structures.  Any program has to look for all of {FPU,LSX,LASX}_CTX_MAGIC in order to find 
-the basic fp registers.
+If you want to track what the program is using, you should do it exactly like the real 
+kernel: disable the execution unit, have the program trap, and the enable the execution 
+unit when the trap occurs.  At this point, CSR_EUEN enable bits contain exactly which 
+units have been used by the program.
 
 
 r~
+
 
