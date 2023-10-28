@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829257DA488
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 03:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5517DA48E
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 03:14:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwXmX-0007ib-9o; Fri, 27 Oct 2023 21:06:29 -0400
+	id 1qwXtq-0000h8-VF; Fri, 27 Oct 2023 21:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1qwXmU-0007i9-J2
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 21:06:26 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1qwXto-0000gv-Vv
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 21:14:01 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1qwXmS-0002hk-2t
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 21:06:26 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-538e8eca9c1so4121865a12.3
- for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 18:06:17 -0700 (PDT)
+ id 1qwXtk-0003rm-Br
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 21:14:00 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-52bd9ddb741so4545076a12.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 18:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1698455176; x=1699059976; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1698455633; x=1699060433; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HC0/J9R5dPcHKhJkQ+n534eAHeWevT0sM8y1fWrSa9w=;
- b=WA+NVVBpEnt1VzCTi82OYlPpqDXbcziEY0eGem1V43KHh8a7XPEc8xLdzJuIeniG2G
- TWU+QSPlxBAoFy8JsqOgIv7cuiUn/rghjYKbJVRXVE/6EZc7IXB+a7KEQ5vLoHFCdGmi
- VKlxcBYv1CHey+5blSAOH4eAjWnp11l5IVGZ3E1rhpSE8mGxzcyA6zbkmOUUaya+paHb
- ggEMgKxG/OkygT1ceQ7R/7kuZs9gGQ6Z+EE8ONU5TRM5w17Qr+YO6fmcqvEGfqMzwNi2
- US9gM6ctc0j7V4hOTS5dGkq3vcyp2hgeLtAqgDigv884nzmik42/LjqfyZgWsxk8Rqg9
- h9bw==
+ bh=YX4U5Lujy/hV8pr08DM6Ye8U7VjXa35QkzG+WibeFGw=;
+ b=ZS/LdcXSH3GgaKTrE0R445YLmSZmG0t+ykBSpMrrVZbqX4hCFruik25I7L852EViBk
+ XPbSN7nBP3Mpo7oLa/itT4CgaAmveNx39UTMHaVT2Gsg8bTWpY0AHgo01Cg/JdYtt6jK
+ ajueqVbtPJ+EMqfnzvP+q3yCD+9K9GPUblh/ydwaNcx4ohZB0V+8BnTqRCmoEyqtOsbd
+ hM20KkgtioyyiYEkpQcUFf+lkzP8HznQc2qVjqiLE66lYmN9fB9DJOfWY/COQ5C4vA++
+ jFkL1RJh0ktIEgrLSSJCJNDCNHcyE5o4PmnyxBk1ZBeDpptRJeaaoaOJLVQgJ3lUYGMU
+ NzMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698455176; x=1699059976;
+ d=1e100.net; s=20230601; t=1698455633; x=1699060433;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HC0/J9R5dPcHKhJkQ+n534eAHeWevT0sM8y1fWrSa9w=;
- b=Ffvy+4DK+7Agf40tTfgThL5+ABYseG0wspm1n3pOjXoEte8NPgXdH1G3t8eADRdL4/
- P3724bJUj1LDt2L8xG74JCTsN/b40nyq4Bmf2wVJDyiMcLXOWbH6H0aV1Bk5fsYlHZVT
- yxyZ6jXfCY+qyM1J6DE19KpqeGNG+xoM5QU1XJn5cuVfrILj9lJqqGtLyuIqaMRhd5Y9
- RsLAHSfm7+lxAwDQzosUAQzpx8v4ytTdeb2sPrYS9aRhkUB7ojpp++E6Z3VTQCcxCVmz
- I3KubRns5U94vul8CdVahlRjnvSzeGeAzfUQ+qR4YTJjXiiyVV74B/a5Fo1OEWHpf/Sh
- 5b8A==
-X-Gm-Message-State: AOJu0YzyXZ4pR718emjCCS3FsQpxy2/JXS1BGnQWuy/WBDUG4lDRubSh
- k4SXEN4+Rm294rgb+IFNWT20jx5tymg511/B7DdL2g==
-X-Google-Smtp-Source: AGHT+IEoW0CwG9THnXaiEjhnQulvO2rKAVRaD8nuqZ0Jlqf4IXQNBjObo8hpgHA4KkAlf++Td0iafoqT+yasH+b3Co4=
-X-Received: by 2002:a17:907:9688:b0:9c3:b3cb:29b8 with SMTP id
- hd8-20020a170907968800b009c3b3cb29b8mr3143470ejc.0.1698455176365; Fri, 27 Oct
- 2023 18:06:16 -0700 (PDT)
+ bh=YX4U5Lujy/hV8pr08DM6Ye8U7VjXa35QkzG+WibeFGw=;
+ b=whuaQuh2v3AEZbjF1S+HyBHYTR2P8KtiC5DAeN3XIqafbNkNc3v5h/xysRjrtVXn5x
+ pUOThci+RfZgl5tYIOpS1oV83BTEJyqycx833E2MqqeU4yjp2Sv/RqnH36cvgeBUHlhM
+ JSAy5IcUUXkev6WeFoqFFqlrjaRbtOC76SSbfuJc+5oY8i3UPmPiWBEZOVUJPhplAOlI
+ 1XDedI36P3uaQKSMihzXUikXFevOH0hGxZ6gDWUH1QQX6nWBwE0CnnlR4BtborpV5LVj
+ lmVT5Plr2oCpQ+/MOVIR5tQqVRbHaWg7BXSnrjniMzf8AH18hvdDlDyCzQ+5n6MYJ3mb
+ Dxwg==
+X-Gm-Message-State: AOJu0Yz5ofnKf5dVgjczHW/PpPY8CHavQKChcjqDIuyaKQCU3Hf2on44
+ VY7Gxttbnzb+ZuiGpgasfgthX4l95+4aCcsr7hni/g==
+X-Google-Smtp-Source: AGHT+IHsXSZWijuZGeMf6ok7Y3pNmBSVlBAcUiuQBGeWDaL4kAOmdNAmW7wc5KXW407OnGyP+JaxyexaxC1+DYepEzU=
+X-Received: by 2002:a17:906:490c:b0:9d0:4b8f:3d65 with SMTP id
+ b12-20020a170906490c00b009d04b8f3d65mr2287807ejq.23.1698455632932; Fri, 27
+ Oct 2023 18:13:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231025193822.2813204-1-hao.xiang@bytedance.com>
  <20231025193822.2813204-2-hao.xiang@bytedance.com> <87zg041c42.fsf@suse.de>
-In-Reply-To: <87zg041c42.fsf@suse.de>
+ <CAFEAcA_2PP1AqqOWz8phfJ7e4s5_fMqCyCdhd0m9OvJHwjVeug@mail.gmail.com>
+In-Reply-To: <CAFEAcA_2PP1AqqOWz8phfJ7e4s5_fMqCyCdhd0m9OvJHwjVeug@mail.gmail.com>
 From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Fri, 27 Oct 2023 18:06:05 -0700
-Message-ID: <CAAYibXh+E-ZJ7SKMJie=NG8x8_hP9B5AxYZMXxXY2cK9QuuPrw@mail.gmail.com>
+Date: Fri, 27 Oct 2023 18:13:40 -0700
+Message-ID: <CAAYibXg98Y1+EWdjA5Ldqk6npg50LJuj91U4aULscj=Yy1AOjw@mail.gmail.com>
 Subject: Re: [External] Re: [PATCH 01/16] Cherry pick a set of patches that
  enables multifd zero page feature.
-To: Fabiano Rosas <farosas@suse.de>
-Cc: quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com, 
- bryan.zhang@bytedance.com, qemu-devel@nongnu.org
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Fabiano Rosas <farosas@suse.de>, quintela@redhat.com, peterx@redhat.com, 
+ marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
+ qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,70 +91,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 27, 2023 at 5:30=E2=80=AFAM Fabiano Rosas <farosas@suse.de> wro=
-te:
+On Fri, Oct 27, 2023 at 6:22=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
 >
-> Hao Xiang <hao.xiang@bytedance.com> writes:
->
-> > Juan Quintela had a patchset enabling zero page checking in multifd
-> > threads.
+> On Fri, 27 Oct 2023 at 13:32, Fabiano Rosas <farosas@suse.de> wrote:
 > >
-> > https://lore.kernel.org/all/20220802063907.18882-13-quintela@redhat.com=
-/
+> > Hao Xiang <hao.xiang@bytedance.com> writes:
+> >
+> > > Juan Quintela had a patchset enabling zero page checking in multifd
+> > > threads.
+> > >
+> > > https://lore.kernel.org/all/20220802063907.18882-13-quintela@redhat.c=
+om/
+> >
+> > Hmm, risky to base your series on code more than an year old. We should
+> > bother Juan so he sends an updated version for review.
 >
-> Hmm, risky to base your series on code more than an year old. We should
-> bother Juan so he sends an updated version for review.
+> Also, if we do need to base another series on some older
+> patches, the usual way to do this is to include those
+> patches in the series in a suitably split-up manner, not
+> to squash them all together into a single patch (with no
+> signed-off-by tag).
+
+Thanks for the suggestion. I didn't think that through earlier but I
+will make sure I
+send the next patchset version with Juan's changes in its original
+commits format.
+
 >
-> I have concerns about that series. First is why are we doing payload
-> processing (i.e. zero page detection) in the multifd thread. And that
-> affects your series directly, because AFAICS we're now doing more
-> processing still.
+> For "assume this as a baseline, please review the other
+> patches but this patch is not fit to go in", that should make
+> the whole patchset into an RFC patch so wo don't accidentally
+> apply this patch.
 >
 
-I am pretty new to QEMU so my take could be wrong. We can wait for Juan
-to comment here. My understanding is that the migration main loop was origi=
-nally
-designed to handle single sender thread (before multifd feature). Zero
-page checking
-is a pretty CPU intensive operation. So in case of multifd, we scaled
-up the number
-of sender threads in order to saturate network traffic. Doing zero
-page checking in the
-main loop is not going to scale with this new design. In fact, we
-(Bytedance) has merged
-Juan's change into our internal QEMU and we have been using this
-feature since last
-year. I was told that it improved performance pretty significantly.
-Ideally, I would love to
-see zero page checking be done in a separate thread pool so we can
-scale it independently
-from the sender threads but doing it in the sender thread is an
-inexpensive way to scale.
+Doing zero page checking in the sender threads improves performance. I
+would like to see that change getting in sooner. But if that is not
+likely the case, I can either make this an RFC or just rebase the
+changes to the current implementation (zero page checking in the main
+loop).
 
-
-> Second is more abstract but the multifd packet header is becoming just
-> about small details about pages. We should probably take the time now
-> and split that into a multifd header and a payload specific header. With
-> some versioning stuck to them for migration compatibility.
->
-> Now, I don't want to block this series due to my idealistic views on the
-> code base, so I'll keep those aside while reviewing this, but I
-> definitely think we should look at the big picture before we get too
-> tangled up.
->
-
-Totally agree. I actually have an implementation of this locally to do
-exactly that.
-The problem I see is that we use a fixed size page count in a payload but t=
-he
-payload size varies depending on how many zero pages are actually detected.
-The sender/receive pair has a synchronous loop on payload transfer and
-if we have
-a long fat pipe, the current behavior is not optimal for network
-bandwidth utilization.
-We can make sure we accumulate enough normal pages and we send a large pack=
-et.
-And when we send zero pages, we can accumulate them until we have a very la=
-rge
-page count and we send them all at once.
+> thanks
+> -- PMM
 
