@@ -2,69 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E9C7DA446
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 02:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 829257DA488
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 03:07:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwWvi-0007Fz-CR; Fri, 27 Oct 2023 20:11:54 -0400
+	id 1qwXmX-0007ib-9o; Fri, 27 Oct 2023 21:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qwWvV-0007Ef-Gs
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 20:11:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qwWvS-0001RX-8T
- for qemu-devel@nongnu.org; Fri, 27 Oct 2023 20:11:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698451897;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RrkCoXcSa0rUzKD6G+a85ER2YAsUV7EnXd8AG0vhhow=;
- b=Q/FafoZgszJsjnUtLi8xJOIg8TFVeg/pXmf4K90uJcQ/XqjZqIGNdZkKo8XvyALWzRMUp2
- OKwH3uhCY1g2w5s9X5y1jKsudfyxkiu3PP6AeZlIEIVQDxu7wXmkFOw/xPLRegHvo1uCqh
- EUYPVwa5ycp1HDjpED95wVRKquBsqdY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-d2ToBfd8NsqsXaZDrT6ZvQ-1; Fri, 27 Oct 2023 20:11:35 -0400
-X-MC-Unique: d2ToBfd8NsqsXaZDrT6ZvQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD438101A529;
- Sat, 28 Oct 2023 00:11:34 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.3])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 27C5C1C060AE;
- Sat, 28 Oct 2023 00:11:33 +0000 (UTC)
-Date: Fri, 27 Oct 2023 19:08:39 +0900
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/94] target/sparc: Convert to decodetree
-Message-ID: <20231027100839.GA554424@172-11-0-127.lightspeed.jcvlfl.sbcglobal.net>
-References: <20231026001542.1141412-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1qwXmU-0007i9-J2
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 21:06:26 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1qwXmS-0002hk-2t
+ for qemu-devel@nongnu.org; Fri, 27 Oct 2023 21:06:26 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-538e8eca9c1so4121865a12.3
+ for <qemu-devel@nongnu.org>; Fri, 27 Oct 2023 18:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1698455176; x=1699059976; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HC0/J9R5dPcHKhJkQ+n534eAHeWevT0sM8y1fWrSa9w=;
+ b=WA+NVVBpEnt1VzCTi82OYlPpqDXbcziEY0eGem1V43KHh8a7XPEc8xLdzJuIeniG2G
+ TWU+QSPlxBAoFy8JsqOgIv7cuiUn/rghjYKbJVRXVE/6EZc7IXB+a7KEQ5vLoHFCdGmi
+ VKlxcBYv1CHey+5blSAOH4eAjWnp11l5IVGZ3E1rhpSE8mGxzcyA6zbkmOUUaya+paHb
+ ggEMgKxG/OkygT1ceQ7R/7kuZs9gGQ6Z+EE8ONU5TRM5w17Qr+YO6fmcqvEGfqMzwNi2
+ US9gM6ctc0j7V4hOTS5dGkq3vcyp2hgeLtAqgDigv884nzmik42/LjqfyZgWsxk8Rqg9
+ h9bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698455176; x=1699059976;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HC0/J9R5dPcHKhJkQ+n534eAHeWevT0sM8y1fWrSa9w=;
+ b=Ffvy+4DK+7Agf40tTfgThL5+ABYseG0wspm1n3pOjXoEte8NPgXdH1G3t8eADRdL4/
+ P3724bJUj1LDt2L8xG74JCTsN/b40nyq4Bmf2wVJDyiMcLXOWbH6H0aV1Bk5fsYlHZVT
+ yxyZ6jXfCY+qyM1J6DE19KpqeGNG+xoM5QU1XJn5cuVfrILj9lJqqGtLyuIqaMRhd5Y9
+ RsLAHSfm7+lxAwDQzosUAQzpx8v4ytTdeb2sPrYS9aRhkUB7ojpp++E6Z3VTQCcxCVmz
+ I3KubRns5U94vul8CdVahlRjnvSzeGeAzfUQ+qR4YTJjXiiyVV74B/a5Fo1OEWHpf/Sh
+ 5b8A==
+X-Gm-Message-State: AOJu0YzyXZ4pR718emjCCS3FsQpxy2/JXS1BGnQWuy/WBDUG4lDRubSh
+ k4SXEN4+Rm294rgb+IFNWT20jx5tymg511/B7DdL2g==
+X-Google-Smtp-Source: AGHT+IEoW0CwG9THnXaiEjhnQulvO2rKAVRaD8nuqZ0Jlqf4IXQNBjObo8hpgHA4KkAlf++Td0iafoqT+yasH+b3Co4=
+X-Received: by 2002:a17:907:9688:b0:9c3:b3cb:29b8 with SMTP id
+ hd8-20020a170907968800b009c3b3cb29b8mr3143470ejc.0.1698455176365; Fri, 27 Oct
+ 2023 18:06:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="154KQpKJhtKECim5"
-Content-Disposition: inline
-In-Reply-To: <20231026001542.1141412-1-richard.henderson@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20231025193822.2813204-1-hao.xiang@bytedance.com>
+ <20231025193822.2813204-2-hao.xiang@bytedance.com> <87zg041c42.fsf@suse.de>
+In-Reply-To: <87zg041c42.fsf@suse.de>
+From: Hao Xiang <hao.xiang@bytedance.com>
+Date: Fri, 27 Oct 2023 18:06:05 -0700
+Message-ID: <CAAYibXh+E-ZJ7SKMJie=NG8x8_hP9B5AxYZMXxXY2cK9QuuPrw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH 01/16] Cherry pick a set of patches that
+ enables multifd zero page feature.
+To: Fabiano Rosas <farosas@suse.de>
+Cc: quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com, 
+ bryan.zhang@bytedance.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,30 +89,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Oct 27, 2023 at 5:30=E2=80=AFAM Fabiano Rosas <farosas@suse.de> wro=
+te:
+>
+> Hao Xiang <hao.xiang@bytedance.com> writes:
+>
+> > Juan Quintela had a patchset enabling zero page checking in multifd
+> > threads.
+> >
+> > https://lore.kernel.org/all/20220802063907.18882-13-quintela@redhat.com=
+/
+>
+> Hmm, risky to base your series on code more than an year old. We should
+> bother Juan so he sends an updated version for review.
+>
+> I have concerns about that series. First is why are we doing payload
+> processing (i.e. zero page detection) in the multifd thread. And that
+> affects your series directly, because AFAICS we're now doing more
+> processing still.
+>
 
---154KQpKJhtKECim5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I am pretty new to QEMU so my take could be wrong. We can wait for Juan
+to comment here. My understanding is that the migration main loop was origi=
+nally
+designed to handle single sender thread (before multifd feature). Zero
+page checking
+is a pretty CPU intensive operation. So in case of multifd, we scaled
+up the number
+of sender threads in order to saturate network traffic. Doing zero
+page checking in the
+main loop is not going to scale with this new design. In fact, we
+(Bytedance) has merged
+Juan's change into our internal QEMU and we have been using this
+feature since last
+year. I was told that it improved performance pretty significantly.
+Ideally, I would love to
+see zero page checking be done in a separate thread pool so we can
+scale it independently
+from the sender threads but doing it in the sender thread is an
+inexpensive way to scale.
 
-Applied, thanks.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+> Second is more abstract but the multifd packet header is becoming just
+> about small details about pages. We should probably take the time now
+> and split that into a multifd header and a payload specific header. With
+> some versioning stuck to them for migration compatibility.
+>
+> Now, I don't want to block this series due to my idealistic views on the
+> code base, so I'll keep those aside while reviewing this, but I
+> definitely think we should look at the big picture before we get too
+> tangled up.
+>
 
---154KQpKJhtKECim5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmU7jCcACgkQnKSrs4Gr
-c8hm/Af+JDkt/t8czeRjXzoQgnFj1TfabG+Ir4UQfVZiki4gPE+tW8tBqVbeRERj
-GfCdl0m3i5xtKZpePAJSy7rUubghZmNvcoBebWaN83Kt5/cunmRTUS59z9FcDvei
-FKRvELjazKKVGXmDFFkUrENDnfNiXbRLFHn6vr4LskBNudkz4W4ONl/6ZgL/tD+d
-sJAgq14fQdDItFM46ggx3R1oh4vrC+MKARW52xKhpAkWPJh1riNhQmgfoOi4jJgm
-YI61p5+LYvr1S65yNgEsuT39fFWkwLYHsyp/L8J5pn7cI4ZDUVOpDUQSdU8hPXUa
-jXCdq1AM7gYyxNjiSzIFIkVz6J9vHg==
-=ZC2f
------END PGP SIGNATURE-----
-
---154KQpKJhtKECim5--
-
+Totally agree. I actually have an implementation of this locally to do
+exactly that.
+The problem I see is that we use a fixed size page count in a payload but t=
+he
+payload size varies depending on how many zero pages are actually detected.
+The sender/receive pair has a synchronous loop on payload transfer and
+if we have
+a long fat pipe, the current behavior is not optimal for network
+bandwidth utilization.
+We can make sure we accumulate enough normal pages and we send a large pack=
+et.
+And when we send zero pages, we can accumulate them until we have a very la=
+rge
+page count and we send them all at once.
 
