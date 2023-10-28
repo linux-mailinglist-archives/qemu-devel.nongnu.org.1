@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2B17DA66F
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 12:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7D87DA673
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 12:35:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwgdC-0006Ag-2G; Sat, 28 Oct 2023 06:33:26 -0400
+	id 1qwgdM-0006L5-H0; Sat, 28 Oct 2023 06:33:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qwgd9-000694-Tg
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:23 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qwgdF-0006El-FX
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:29 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qwgd5-00038n-Tu
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:23 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-408002b5b9fso21420015e9.3
+ id 1qwgd6-00038s-7f
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 06:33:29 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4083740f92dso22744745e9.3
  for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 03:33:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698489193; x=1699093993; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t+wjfKtC3t92gnbhw0BVnIQd/2GtTprk8NcwGcBfDuk=;
- b=KDoWTs3kx54w1GxP4wBNjXtT1BN1wgxbyAokjSxTmEwuRXVOLD5rAgf9EeVh27ubhJ
- /Kzfb3acSgPOH3laX3xsboRoyKyBbvLn4kesTHeXZd0WVRyomX4W1s2aAvPHXZWFAv6d
- Z+5+4gB7Vn0P4f7rM/eNVpoTXDaBkIppJYWzIwpREbkDD74IqNh+aj8YXJt6lxsBZ6DF
- YBZLMwJbJdfRy5f22ItRGJm+fHxNHd1fYo6B/wDqncHOuAxRmhDTNhYtvdsn8uoIQTlW
- drvkoQD6HWX9D4d5AccC1R51ixT9pSx1DwAJfZ+RMqvPW+2gEZtiwbD+n6RN9WdIDqd6
- NnIg==
+ bh=maGo4SQ2Nh/uMnXYztWkxCmfjY3u1YXmSOVeK9kBr3c=;
+ b=BvCtYU81hoRd6YnGZtDkgSxAwQ6Qjd7EEKG16HQTINlyaALDCW0AeU+0pdPH/s+oG3
+ 4ePw2bjVBYdLp/TLC3HELS6C0wPNIqn/SvMRClMt8I1IMj0JdpiH7btIGyCYD5gYVOca
+ fAL3rHn4mYa35tmPs1B7Iw/JsVfbD5+geomBFtAFq0MNeLo+xmp4LD77QdEIEAUUziSq
+ cKLnI1z/SVDoJRubaIdLjeodi1sUeVeSBQVe+xYUyZUDMy5FFdq4/J9btfA63o7r4YOf
+ f4rpOBTPh5mBdCVNiXbgIt0Z1eiK31bTrcLd6CbjS4q1go3bWqo4XqED1N5e3PQvItIG
+ 2jDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698489193; x=1699093993;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t+wjfKtC3t92gnbhw0BVnIQd/2GtTprk8NcwGcBfDuk=;
- b=lko57Z9Md8GxsFCmW8rAnRVnPkp14lMOJvqH6rMkQB+xtNtCR9hYTSJ/nDMV6n8tsW
- jOPmMUFrMXZWGbE7p8LBR/Xdeo2HEzOuWQT9B/4jVAgdF7ovbG7clrX/kC4gxJDET2Qp
- ox6HUzpX39smxxG1jYAVCemskYGcFYE/IWIdGUCGF+RoB2jQvwUFFFE5dnk8LqYXrocI
- elQHwj1BGzD7XadQe8dbIipz1lleLP0WAYCQo73fOXc8tIaiVTDsSZ4uht+zNFCpQlvX
- AH+uQVW//aq4pdbzTRRSsuj6UIIz2EiP2n8qrkD2U/obn/E5q7Youk+Pxev/Vyph3Eil
- G7qQ==
-X-Gm-Message-State: AOJu0YxN6HBpTr9AiJ+mCwK4qBIEEAsAgrlx83K9jkPkV7qID9QVCxqM
- +JlX8F4wVNWk5KW97FbvX+ipsw==
-X-Google-Smtp-Source: AGHT+IHmAMEph9EaBAYR+VxUH6+EItCcs7rC6ICMNzqz6EjxFNyrdTizqRw/gtFS8CC8aGvWawwtYQ==
-X-Received: by 2002:a05:6000:2aa:b0:32f:7cfc:68ab with SMTP id
- l10-20020a05600002aa00b0032f7cfc68abmr882512wry.8.1698489192796; 
- Sat, 28 Oct 2023 03:33:12 -0700 (PDT)
+ bh=maGo4SQ2Nh/uMnXYztWkxCmfjY3u1YXmSOVeK9kBr3c=;
+ b=I/Fbo31A+nX0o/ZqQ8Bvapzn9K2GL0FkS1tSNmMu3JVHkj07MbUy6R/G6i7x4LUj4n
+ 5pSTyTcn+RtfhnaM4hBfXAI0lymwtnKHwhArreYVrnERbaFA3NtfAxWrb9L7dZNCfvEZ
+ TIYXXHKgiFKXWED3Ol0eEYpzKWIP8HDQwdt3Yl+WxoQAsIlH4jeSZJswgvkN+amkDvuO
+ ttF1p+49hT82b7T18Labu8UXQHUXm6Obabd5KHOdLSq09KPbAF+dYKIyGBBJS5uAhU3T
+ vQqETD8WrKm/LnudHoeh9yMxcgHWf4MZdwSy3Ayqmy4hNusQe8TPw9wBjN1jkj3hHqUT
+ v/HA==
+X-Gm-Message-State: AOJu0YwRJcEWuVPmAN6akrf9oS71s0evmyvU1Nw9tuGL5OLKYYaw3hMw
+ aMNdDfXqMaRpoq51Z6nBFDaLUQ==
+X-Google-Smtp-Source: AGHT+IHVH7/HpmcT43Xx6v23xY/KY74bDdGKTB01AdWue0o0TBQm3NfGPmbiWoKutecEt9iWDYxSGw==
+X-Received: by 2002:a05:600c:4f55:b0:408:3707:b199 with SMTP id
+ m21-20020a05600c4f5500b004083707b199mr4073665wmq.3.1698489193301; 
+ Sat, 28 Oct 2023 03:33:13 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- h6-20020a5d4fc6000000b00327de0173f6sm3539309wrw.115.2023.10.28.03.33.12
+ y20-20020a1c4b14000000b0040588d85b3asm7021327wma.15.2023.10.28.03.33.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Oct 2023 03:33:12 -0700 (PDT)
+ Sat, 28 Oct 2023 03:33:13 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0F02D5F797;
+ by draig.lan (Postfix) with ESMTP id 2E37F5F798;
  Sat, 28 Oct 2023 11:33:12 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,25 +73,26 @@ Cc: Beraldo Leal <bleal@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Brad Smith <brad@comstyle.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 01/17] tests/vm/openbsd: Use the system dtc package
-Date: Sat, 28 Oct 2023 11:32:55 +0100
-Message-Id: <20231028103311.347104-2-alex.bennee@linaro.org>
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 02/17] tests/tcg: Add -fno-stack-protector
+Date: Sat, 28 Oct 2023 11:32:56 +0100
+Message-Id: <20231028103311.347104-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231028103311.347104-1-alex.bennee@linaro.org>
 References: <20231028103311.347104-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,45 +108,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-We can use the pre-packaged libfdt from the dtc package to avoid
-that we have to compile this code each time again and again.
+A build of GCC 13.2 will have stack protector enabled by default if it
+was configured with --enable-default-ssp option. For such a compiler,
+it is necessary to explicitly disable stack protector when linking
+without standard libraries.
 
-While we're at it, the "--python=python3" does not seemt to be
-necessary anymore, so we can drop it.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231016154049.37147-1-thuth@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20230731091042.139159-3-akihiko.odaki@daynix.com>
+[AJB: fix comment string typo]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/vm/openbsd | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/tcg/mips/hello-mips.c       | 4 ++--
+ tests/tcg/Makefile.target         | 2 +-
+ tests/tcg/aarch64/Makefile.target | 2 +-
+ tests/tcg/arm/Makefile.target     | 2 +-
+ tests/tcg/cris/Makefile.target    | 2 +-
+ tests/tcg/hexagon/Makefile.target | 2 +-
+ tests/tcg/i386/Makefile.target    | 2 +-
+ tests/tcg/minilib/Makefile.target | 2 +-
+ tests/tcg/mips/Makefile.target    | 2 +-
+ 9 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/tests/vm/openbsd b/tests/vm/openbsd
-index 6b4fc29793..85c5bb3536 100755
---- a/tests/vm/openbsd
-+++ b/tests/vm/openbsd
-@@ -27,6 +27,7 @@ class OpenBSDVM(basevm.BaseVM):
-     size = "20G"
-     pkgs = [
-         # tools
-+        "dtc",
-         "git",
-         "pkgconf",
-         "bzip2", "xz",
-@@ -67,8 +68,9 @@ class OpenBSDVM(basevm.BaseVM):
-         cd $(mktemp -d /home/qemu/qemu-test.XXXXXX);
-         mkdir src build; cd src;
-         tar -xf /dev/rsd1c;
--        cd ../build
--        ../src/configure --cc=cc --python=python3 {configure_opts};
-+        cd ../build;
-+        ../src/configure --cc=cc  --extra-cflags=-I/usr/local/include \
-+                         --extra-ldflags=-L/usr/local/lib {configure_opts};
-         gmake --output-sync -j{jobs} {target} {verbose};
-     """
-     poweroff = "halt -p"
+diff --git a/tests/tcg/mips/hello-mips.c b/tests/tcg/mips/hello-mips.c
+index 4e1cf501af..38e22d00e3 100644
+--- a/tests/tcg/mips/hello-mips.c
++++ b/tests/tcg/mips/hello-mips.c
+@@ -5,8 +5,8 @@
+ * http://www.linux-mips.org/wiki/MIPSABIHistory
+ * http://www.linux.com/howtos/Assembly-HOWTO/mips.shtml
+ *
+-* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -mabi=32 \
+-*                  -O2 -static -o hello-mips hello-mips.c
++* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -fno-stack-protector \
++*                  -mabi=32 -O2 -static -o hello-mips hello-mips.c
+ *
+ */
+ #define __NR_SYSCALL_BASE	4000
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index f3a189c9d4..8cf65f68dd 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -123,7 +123,7 @@ else
+ # For system targets we include a different Makefile fragment as the
+ # build options for bare programs are usually pretty different. They
+ # are expected to provide their own build recipes.
+-EXTRA_CFLAGS += -ffreestanding
++EXTRA_CFLAGS += -ffreestanding -fno-stack-protector
+ -include $(SRC_PATH)/tests/tcg/minilib/Makefile.target
+ -include $(SRC_PATH)/tests/tcg/multiarch/system/Makefile.softmmu-target
+ -include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.softmmu-target
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 62b38c792f..0c84b61ae0 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -53,7 +53,7 @@ endif
+ # bti-1 tests the elf notes, so we require special compiler support.
+ ifneq ($(CROSS_CC_HAS_ARMV8_BTI),)
+ AARCH64_TESTS += bti-1 bti-3
+-bti-1 bti-3: CFLAGS += -mbranch-protection=standard
++bti-1 bti-3: CFLAGS += -fno-stack-protector -mbranch-protection=standard
+ bti-1 bti-3: LDFLAGS += -nostdlib
+ endif
+ # bti-2 tests PROT_BTI, so no special compiler support required.
+diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
+index 0038cef02c..3473f4619e 100644
+--- a/tests/tcg/arm/Makefile.target
++++ b/tests/tcg/arm/Makefile.target
+@@ -12,7 +12,7 @@ float_madds: CFLAGS+=-mfpu=neon-vfpv4
+ 
+ # Basic Hello World
+ ARM_TESTS = hello-arm
+-hello-arm: CFLAGS+=-marm -ffreestanding
++hello-arm: CFLAGS+=-marm -ffreestanding -fno-stack-protector
+ hello-arm: LDFLAGS+=-nostdlib
+ 
+ # IWMXT floating point extensions
+diff --git a/tests/tcg/cris/Makefile.target b/tests/tcg/cris/Makefile.target
+index 43587d2769..713e2a5b6c 100644
+--- a/tests/tcg/cris/Makefile.target
++++ b/tests/tcg/cris/Makefile.target
+@@ -30,7 +30,7 @@ AS	= $(CC) -x assembler-with-cpp
+ LD      = $(CC)
+ 
+ # we rely on GCC inline:ing the stuff we tell it to in many places here.
+-CFLAGS  = -Winline -Wall -g -O2 -static
++CFLAGS  = -Winline -Wall -g -O2 -static -fno-stack-protector
+ NOSTDFLAGS = -nostartfiles -nostdlib
+ ASFLAGS += -mcpu=v10 -g -Wa,-I,$(SRC_PATH)/tests/tcg/cris/bare
+ CRT_FILES = crt.o sys.o
+diff --git a/tests/tcg/hexagon/Makefile.target b/tests/tcg/hexagon/Makefile.target
+index 87ed2c90b9..f839b2c0d5 100644
+--- a/tests/tcg/hexagon/Makefile.target
++++ b/tests/tcg/hexagon/Makefile.target
+@@ -19,7 +19,7 @@
+ EXTRA_RUNS =
+ 
+ CFLAGS += -Wno-incompatible-pointer-types -Wno-undefined-internal
+-CFLAGS += -fno-unroll-loops
++CFLAGS += -fno-unroll-loops -fno-stack-protector
+ 
+ HEX_SRC=$(SRC_PATH)/tests/tcg/hexagon
+ VPATH += $(HEX_SRC)
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index fdf757c6ce..3dec7c6c42 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -35,7 +35,7 @@ run-test-aes: QEMU_OPTS += -cpu max
+ #
+ # hello-i386 is a barebones app
+ #
+-hello-i386: CFLAGS+=-ffreestanding
++hello-i386: CFLAGS+=-ffreestanding -fno-stack-protector
+ hello-i386: LDFLAGS+=-nostdlib
+ 
+ # test-386 includes a couple of additional objects that need to be
+diff --git a/tests/tcg/minilib/Makefile.target b/tests/tcg/minilib/Makefile.target
+index c821d2806a..af0bf54be9 100644
+--- a/tests/tcg/minilib/Makefile.target
++++ b/tests/tcg/minilib/Makefile.target
+@@ -12,7 +12,7 @@ SYSTEM_MINILIB_SRC=$(SRC_PATH)/tests/tcg/minilib
+ MINILIB_SRCS=$(wildcard $(SYSTEM_MINILIB_SRC)/*.c)
+ MINILIB_OBJS=$(patsubst $(SYSTEM_MINILIB_SRC)/%.c, %.o, $(MINILIB_SRCS))
+ 
+-MINILIB_CFLAGS+=-nostdlib -ggdb -O0
++MINILIB_CFLAGS+=-nostdlib -fno-stack-protector -ggdb -O0
+ MINILIB_INC=-isystem $(SYSTEM_MINILIB_SRC)
+ 
+ .PRECIOUS: $(MINILIB_OBJS)
+diff --git a/tests/tcg/mips/Makefile.target b/tests/tcg/mips/Makefile.target
+index 1a994d5525..5d17c1706e 100644
+--- a/tests/tcg/mips/Makefile.target
++++ b/tests/tcg/mips/Makefile.target
+@@ -14,6 +14,6 @@ MIPS_TESTS=hello-mips
+ 
+ TESTS += $(MIPS_TESTS)
+ 
+-hello-mips: CFLAGS+=-mno-abicalls -fno-PIC -mabi=32
++hello-mips: CFLAGS+=-mno-abicalls -fno-PIC -fno-stack-protector -mabi=32
+ hello-mips: LDFLAGS+=-nostdlib
+ endif
 -- 
 2.39.2
 
