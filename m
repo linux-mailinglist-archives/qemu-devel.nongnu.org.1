@@ -2,85 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBC97DA823
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 18:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A6D7DA846
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Oct 2023 19:43:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwmVc-0002Ww-HZ; Sat, 28 Oct 2023 12:50:00 -0400
+	id 1qwnJr-0004LU-Js; Sat, 28 Oct 2023 13:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qwmVa-0002WQ-53
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 12:49:58 -0400
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qwmVY-0002GP-BE
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 12:49:57 -0400
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-5ae143e08b1so24908877b3.1
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 09:49:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698511795; x=1699116595; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pa+ON5pL+NgtxcukseN0fY2hcyKaMYo4qiZJBEgwv3k=;
- b=kUSzvBVVGbcoYT8bv4ZxMTJ2gFiPF1MN87AdjTXAdQPmz7ghZQHxkHa60WTFcGtB40
- 6qzO0KxFim+WgbIInqjhxQLYlc/BCmK2KZUbvNLxjMMTjRRMlwiBav8qgv1ZlBnQvJUC
- axikcggPpFmbD/nUu2dbq5PUfMUjpEQbgO+t8kmbI6FyOmhaQooxCI9R4yexWjGdTeKV
- p1vAW4b2z1wOP+r9QaU8bySsWkbePIHsaGokSEaU19bldFFZAwtgDf05Bq7CwCGNirB8
- Gbjd9RjY9mxbPIecEjYWzI9oXgHNzhJt/iBnsH8K0cOqwL5zmrbyI1ME8aeIYkBa4QEP
- eu3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698511795; x=1699116595;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pa+ON5pL+NgtxcukseN0fY2hcyKaMYo4qiZJBEgwv3k=;
- b=mT0ktnDV757LrgmoKxzXaAQYqL1JETosNnIOPRKyJkwqQyvx/HkREEC/gsp/Y/wmYI
- tTCzeJucen+g3STGtg5/KmFFc7M/6WL8OEDeZ5JivtDNk87DFbjykHm9J/Kgm509WUkE
- aQWI8UN0WT5iGhPoiQpyfGgSoskOJOUotAAE4GlXcg+aDkYFz4HnpS7OjVphMeSkZbfi
- Ln3el6F+wzVKWd+1yIzljtfFfekQT3I6TfHfHnyGtc+nHQOBcoiNSZo5Q9lzon6mBuuR
- cBL3xGwElEvgGlZ7pWyru3i3u0CbX6wxsTL9GiMnxPwYcmTUQ29EhO8SytksdIsUSwlE
- L6RA==
-X-Gm-Message-State: AOJu0YynXW8yCCOxrkDD5d82LkvYsDJCn66ABQv4UaEnEDkgVjgn/1In
- kX9Kf0aIaNcsi1tP5WNlh2kNLQ==
-X-Google-Smtp-Source: AGHT+IEYHX4GPU/14/kMtl3KZ7Vb2sCdFoFGHejJDlLqWBseI0IooxsDrru2Epf5pCUPmn7zu5p/Qw==
-X-Received: by 2002:a25:2588:0:b0:d80:68d1:b826 with SMTP id
- l130-20020a252588000000b00d8068d1b826mr5258924ybl.6.1698511794959; 
- Sat, 28 Oct 2023 09:49:54 -0700 (PDT)
-Received: from [192.168.68.107] ([191.255.2.33])
- by smtp.gmail.com with ESMTPSA id
- ew19-20020a0562140ab300b0066d1e20455bsm1734973qvb.96.2023.10.28.09.49.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 28 Oct 2023 09:49:54 -0700 (PDT)
-Message-ID: <a63a7d4a-2954-4ada-b7ca-fe03bb50d1a2@ventanamicro.com>
-Date: Sat, 28 Oct 2023 13:49:51 -0300
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qwnJm-0004LF-Kf
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 13:41:50 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qwnJk-0001ov-4H
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 13:41:50 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 212A3756078;
+ Sat, 28 Oct 2023 19:41:46 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 16D897456A7; Sat, 28 Oct 2023 19:41:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 13162745681;
+ Sat, 28 Oct 2023 19:41:45 +0200 (CEST)
+Date: Sat, 28 Oct 2023 19:41:45 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v5 5/5] hw/isa/vt82c686: Implement software-based SMI
+ triggering
+In-Reply-To: <02D892F2-0778-40EF-A583-A4728B119EF8@gmail.com>
+Message-ID: <ac277c44-7910-1a6b-49ea-afb2b03274ff@eik.bme.hu>
+References: <20231028091606.23700-1-shentey@gmail.com>
+ <20231028091606.23700-6-shentey@gmail.com>
+ <95144ce6-b340-11bf-354b-e73c2fbc795e@eik.bme.hu>
+ <02D892F2-0778-40EF-A583-A4728B119EF8@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/12] target/riscv: add zicbop extension flag
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20231028085427.707060-1-dbarboza@ventanamicro.com>
- <20231028085427.707060-2-dbarboza@ventanamicro.com>
- <20231028-2d6bf00dddc7bc4a25b32663@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231028-2d6bf00dddc7bc4a25b32663@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,129 +64,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/28/23 06:49, Andrew Jones wrote:
-> On Sat, Oct 28, 2023 at 05:54:16AM -0300, Daniel Henrique Barboza wrote:
->> QEMU already implements zicbom (Cache Block Management Operations) and
->> zicboz (Cache Block Zero Operations). Commit 59cb29d6a5 ("target/riscv:
->> add Zicbop cbo.prefetch{i, r, m} placeholder") added placeholders for
->> what would be the instructions for zicbop (Cache Block Prefetch
->> Operations), which are now no-ops.
+On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+> Am 28. Oktober 2023 13:03:41 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+>>> If enabled, SMIs can be triggered via software by writing to an IO-mapped port.
+>>> SMIs usually trigger execution of BIOS code. If appropriate values are written
+>>> to the port, the BIOS transitions the system into or out of ACPI mode.
+>>>
+>>> Note that APMState implements Intel-specific behavior where there are two IO
+>>> ports which are mapped at fixed addresses. In VIA, there is only one such port
+>>> which is located inside a relocatable IO-mapped region. Hence, there is no point
+>>> in reusing APMState.
+>>>
+>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>>> ---
+>>> hw/isa/vt82c686.c | 95 +++++++++++++++++++++++++++++++++++++++++++----
+>>> 1 file changed, 87 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+>>> index e8ec63dea9..361b3bed0a 100644
+>>> --- a/hw/isa/vt82c686.c
+>>> +++ b/hw/isa/vt82c686.c
+>>> @@ -27,7 +27,6 @@
+>>> #include "hw/timer/i8254.h"
+>>> #include "hw/rtc/mc146818rtc.h"
+>>> #include "migration/vmstate.h"
+>>> -#include "hw/isa/apm.h"
+>>> #include "hw/acpi/acpi.h"
+>>> #include "hw/i2c/pm_smbus.h"
+>>> #include "qapi/error.h"
+>>> @@ -42,6 +41,16 @@
+>>> #define TYPE_VIA_PM "via-pm"
+>>> OBJECT_DECLARE_SIMPLE_TYPE(ViaPMState, VIA_PM)
+>>>
+>>> +#define VIA_PM_IO_GBLEN 0x2a
+>>> +#define VIA_PM_IO_GBLEN_SW_SMI_EN (1 << 6)
+>>> +
+>>> +#define VIA_PM_IO_GBLCTL 0x2c
+>>> +#define VIA_PM_IO_GBLCTL_SMI_EN 1
+>>> +#define VIA_PM_IO_GBLCTL_SMIIG (1 << 4)
+>>> +#define VIA_PM_IO_GBLCTL_INSMI (1 << 8)
+>>> +
+>>> +#define VIA_PM_IO_SMI_CMD 0x2f
+>>> +
+>>> #define VIA_PM_GPE_LEN 4
+>>>
+>>> #define VIA_PM_SCI_SELECT_OFS 0x42
 >>
->> The RVA22U64 profile mandates zicbop, which means that applications that
->> run with this profile might expect zicbop to be present in the riscv,isa
->> DT and might behave badly if it's absent.
->>
->> Adding zicbop as an extension will make our future RVA22U64
->> implementation more in line with what userspace expects and, if/when
->> cache block prefetch operations became relevant to QEMU, we already have
->> the extension flag to turn then on/off as needed.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   hw/riscv/virt.c        | 5 +++++
->>   target/riscv/cpu.c     | 3 +++
->>   target/riscv/cpu_cfg.h | 2 ++
->>   3 files changed, 10 insertions(+)
->>
->> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
->> index 1732c42915..99c087240f 100644
->> --- a/hw/riscv/virt.c
->> +++ b/hw/riscv/virt.c
->> @@ -273,6 +273,11 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
->>                                     cpu_ptr->cfg.cboz_blocksize);
->>           }
->>   
->> +        if (cpu_ptr->cfg.ext_zicbop) {
->> +            qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbop-block-size",
-> 
-> I think we need to get this node approved by devicetree@vger.kernel.org
-> and merged into [1] first.
-> 
-> [1] Linux repo: Documentation/devicetree/bindings/riscv/cpus.yaml
+>> If we'll make a copy of the data sheet in form of #defines could these be in the header to less clutter the source?
+>
+> Last time I did that I was asked to move the defines back into the 
+> source file. I can't find the link right now, otherwise I'd have placed 
+> it here.
 
-Ouch ... I wasn't expecting that :(
+Yeah, the public header is probably not a good place for these either. 
+Maybe add a local vt82c686_regs,h or similar private header in hw/isa next 
+to the .c file for these? I'd just say we could use the constant values 
+directly as reviewing them will need to look up the data sheet anyway but 
+Philippe was in favour of adding defines for constants. This isn't a big 
+deal though.
 
-We can't add zicbop without the blocksize DT and then claim that we're
-implement rva22u64. It'll be an 'almost implementation' of the profile
-because Zicbop is 'almost supported'.
-
-I'll send a DT patch for cbop-block-size and see how that goes. We would
-need an ack for the DT folks that we're not adding the wrong attribute
-for cbop. If we can't have an ack in time we should just postpone profile
-support for next release.
-
-I'll send a v7 to keep reviews rolling on our side but now it seems like
-we have a kernel dependency to merge this. Thanks,
-
-
-Daniel
-
-
-> 
->> +                                  cpu_ptr->cfg.cbop_blocksize);
->> +        }
->> +
->>           qemu_fdt_setprop_string(ms->fdt, cpu_name, "compatible", "riscv");
->>           qemu_fdt_setprop_string(ms->fdt, cpu_name, "status", "okay");
->>           qemu_fdt_setprop_cell(ms->fdt, cpu_name, "reg",
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index f40da4c661..6c0050988f 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -78,6 +78,7 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
->>    */
->>   const RISCVIsaExtData isa_edata_arr[] = {
->>       ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
->> +    ISA_EXT_DATA_ENTRY(zicbop, PRIV_VERSION_1_12_0, ext_zicbop),
->>       ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_zicboz),
->>       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
->>       ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_zicntr),
->> @@ -1336,6 +1337,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
->>       MULTI_EXT_CFG_BOOL("zhinxmin", ext_zhinxmin, false),
->>   
->>       MULTI_EXT_CFG_BOOL("zicbom", ext_zicbom, true),
->> +    MULTI_EXT_CFG_BOOL("zicbop", ext_zicbop, true),
->>       MULTI_EXT_CFG_BOOL("zicboz", ext_zicboz, true),
->>   
->>       MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
->> @@ -1424,6 +1426,7 @@ Property riscv_cpu_options[] = {
->>       DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
->>   
->>       DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
->> +    DEFINE_PROP_UINT16("cbop_blocksize", RISCVCPU, cfg.cbop_blocksize, 64),
->>       DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
->>   
->>       DEFINE_PROP_END_OF_LIST(),
->> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
->> index 6eef4a51ea..2203b4c45b 100644
->> --- a/target/riscv/cpu_cfg.h
->> +++ b/target/riscv/cpu_cfg.h
->> @@ -65,6 +65,7 @@ struct RISCVCPUConfig {
->>       bool ext_zicntr;
->>       bool ext_zicsr;
->>       bool ext_zicbom;
->> +    bool ext_zicbop;
->>       bool ext_zicboz;
->>       bool ext_zicond;
->>       bool ext_zihintntl;
->> @@ -134,6 +135,7 @@ struct RISCVCPUConfig {
->>       uint16_t vlen;
->>       uint16_t elen;
->>       uint16_t cbom_blocksize;
->> +    uint16_t cbop_blocksize;
->>       uint16_t cboz_blocksize;
->>       bool mmu;
->>       bool pmp;
->> -- 
->> 2.41.0
->>
-> 
-> Otherwise,
-> 
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> 
-> Thanks,
-> drew
+Regards,
+BALATON Zoltan
 
