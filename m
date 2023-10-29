@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2697DACD9
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 15:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C07547DACD6
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 15:52:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qx77p-0007WI-2A; Sun, 29 Oct 2023 10:50:49 -0400
+	id 1qx77o-0007VP-D4; Sun, 29 Oct 2023 10:50:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qx77l-0007Se-FH
+ id 1qx77l-0007TO-VM
  for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:50:45 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qx77g-000570-Fz
+ id 1qx77g-000578-Vj
  for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:50:45 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-409299277bbso21437695e9.2
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-32d834ec222so2307843f8f.0
  for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 07:50:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698591039; x=1699195839; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SNNScLl2EnYnhjzXY3DyEkkpccU8fcT69NItdWwEwog=;
- b=AzDbS9VxqZqpXvb5tRQHy2HOshdlQKKqsugc4uX60zbkP51g2lv95bFQixWKtu7gfc
- nDTbX6BJLZL5jjHbwXRYheM/eK1i/Bufs4ayhuVnE1DnLn1zY0KG6mCh28Tqcimb1+yL
- titTozq+Ylfy1Rfg+AwEm11VGD3ek042ja6T/Fs7lRQBkOeqTOmTB9Zb7xnMtTS8qQPW
- fvWBaBeW+/Nr+0wNRVQ8q5/QTf567y/cM0BUBeRPfz7liMaIpk/grA1oHYX92dZWtAFC
- CFkH4CKYTN/rnFtxkC3BBt45V/nYFFwdt96ZciniTlhbPNdxJyhhaKurW2KCCQwW25Xx
- /9TQ==
+ bh=VT+BsD/K1uC8UO+MXugaV+aFFXSnXyb2jJK5zOOiOAg=;
+ b=y93cRbGGWJlAhaYU+vr1O/mYEjADUhkwfnWjmR79Z00vMB5lYqfG5IPoaqMGw7GAEa
+ OiIPZp1bVAp+yigEot/qMquvKpqGvtJUAFNNJdNw5JspDXwzqwr46TO2ZhXbVsHYO+Tz
+ SsLIXpwtieQ2dBlg9dVHCxRSr3/urUuoOCOoIo5saknVurKDNtOPjQOvmwaZo5nin82A
+ gNRtFP2pEJIBKoiyqiZzuxkhWIOwU5vFpm734Re+ZZfzCsFd2wIwU1oXWP8Ar3vxMP+Y
+ grj/fTAgvcI3IJLZF1almlqJhBiiPBNLhbtRV22QK1YqgfMO7gltMX/zzhARFctv7Es/
+ hPtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698591039; x=1699195839;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SNNScLl2EnYnhjzXY3DyEkkpccU8fcT69NItdWwEwog=;
- b=fqhxes+N1NAX6NKqNAYnDW49YU0UfUoYET6u9pHgedIQXJMFzHfSLFf1YhocW4TlnN
- EDIoPNeEp1dtrtGSih045NTkk0xWX463eGQFSMAnG+X3ZDtVnu4GlGWXZx/kmdkZWmxx
- W2qDpzm5LWQR4zRw59GEHg7AVE01Njuo74BKF6Kr8hJOqq4f2QglgwxCYBrFqJEITpNE
- pz5IfcSPUfwkFHhlTpIATL3DHJgfigrLJPHMpajih1ccIHlgDHzkRtEjVyMOi2I/kQJg
- By8UzMDJN0pUo/j+C/dlyPuwZZDA95RbeA4qUvdD2KW7lFTb9YKcOygmRH+QhGXo8Fat
- ucBQ==
-X-Gm-Message-State: AOJu0Yy7eYofnccH07Dt5k9bdNXQeeYkkcsjFJKTHlcXmKRpbFwJ/lqP
- x6eAb8SdRYrDn0PzbmVHC2sPOQ==
-X-Google-Smtp-Source: AGHT+IHmKWtHw3GJtbbrnpOPhDi0YVDwJv7rQYv0enKEFt346OmNLJVlGOsm8lgM7/AU5BlyBJErzw==
-X-Received: by 2002:a05:600c:3c9a:b0:408:41b4:7fe0 with SMTP id
- bg26-20020a05600c3c9a00b0040841b47fe0mr6402277wmb.6.1698591039111; 
+ bh=VT+BsD/K1uC8UO+MXugaV+aFFXSnXyb2jJK5zOOiOAg=;
+ b=uVrfs6p0zGaEbdvqlCMP5yMR1N1Rct9mkkjP8+UkVjib9WzyypHGdHRgVw28JAYBee
+ PLCueQnyDlQh2p8mNc/77wVlsi/4l0davTUfGB75DQngyeI7sSQlde81uYo/LtTJtsIA
+ TBRTMus9dIc6S/DyQZZ3xBNOTbfKsgQK4IK3JRj69ndGaBcjAPvOJkCJlyfJP4LLVFES
+ wp9ZlH0PoX9EE9iQ5O86FD6kVO3yON7fGK12MdEcc6KsdSdzdCfnHSTNCc4aFGluCfoE
+ Sl6hO9wwUbjJcyb39WV4zylBxskgJYh6MNkyYcegzgjafMTeHcWfQAZAacCKGws51BcS
+ 8o9Q==
+X-Gm-Message-State: AOJu0Yz0yf26mXjDSB+lnZMtgsoM9sP3aCAJ6YIHmeRg6LwxyeWCmAfg
+ RwhDBQmrGxNbtFpIP8sqDsQmCw==
+X-Google-Smtp-Source: AGHT+IGuuUROeiC/JsEmnfDEm7O3yFmM0VdMLUxn54O/GgVW62Wlsy76FJH7joqqBR/xWEgHR/JBTA==
+X-Received: by 2002:adf:d1e8:0:b0:32f:7d50:267e with SMTP id
+ g8-20020adfd1e8000000b0032f7d50267emr2958463wrd.9.1698591039565; 
  Sun, 29 Oct 2023 07:50:39 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o42-20020a05600c33aa00b0040303a9965asm10141054wmp.40.2023.10.29.07.50.35
+ j13-20020a5d564d000000b00327bf4f2f14sm6103485wrw.88.2023.10.29.07.50.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 29 Oct 2023 07:50:36 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9CA7E5F839;
+ by draig.lan (Postfix) with ESMTP id B94445F83F;
  Sun, 29 Oct 2023 14:50:34 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -76,17 +76,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, Brian Cain <bcain@quicinc.com>,
  Alexandre Iooss <erdnaxe@crans.org>
-Subject: [PATCH v2 06/19] tests/docker: use debian-legacy-test-cross for alpha
-Date: Sun, 29 Oct 2023 14:50:20 +0000
-Message-Id: <20231029145033.592566-7-alex.bennee@linaro.org>
+Subject: [PATCH v2 07/19] tests/docker: move sh4 to use
+ debian-legacy-test-cross
+Date: Sun, 29 Oct 2023 14:50:21 +0000
+Message-Id: <20231029145033.592566-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231029145033.592566-1-alex.bennee@linaro.org>
 References: <20231029145033.592566-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,68 +110,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Maintaining two sets of containers for test building is silly. While
-it makes sense for the QEMU cross-compile targets to have their own
-fat containers built by lcitool we might as well merge the other
-random debian based compilers into the same one used on gitlab.
+sh4 is another target which doesn't work with bookworm compilers. To
+keep on buster move across to the debian-legacy-test-cross image and
+update accordingly.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231028103311.347104-5-alex.bennee@linaro.org>
+Message-Id: <20231028103311.347104-6-alex.bennee@linaro.org>
+
 ---
- configure                                     |  5 +++++
+v2
+  - fix missing exclude from build-user
+  - merge fixes
+---
+ configure                                     |  4 ++++
+ .gitlab-ci.d/buildtest.yml                    |  4 ++--
  .gitlab-ci.d/container-cross.yml              |  6 ------
- tests/docker/Makefile.include                 |  1 -
- .../dockerfiles/debian-alpha-cross.docker     | 19 -------------------
- 4 files changed, 5 insertions(+), 26 deletions(-)
- delete mode 100644 tests/docker/dockerfiles/debian-alpha-cross.docker
+ tests/docker/Makefile.include                 |  2 +-
+ .../dockerfiles/debian-all-test-cross.docker  |  4 +---
+ .../debian-legacy-test-cross.docker           |  3 ++-
+ .../dockerfiles/debian-sh4-cross.docker       | 19 -------------------
+ 7 files changed, 10 insertions(+), 32 deletions(-)
+ delete mode 100644 tests/docker/dockerfiles/debian-sh4-cross.docker
 
 diff --git a/configure b/configure
-index b4ea78c77d..c8d0d4f7cb 100755
+index c8d0d4f7cb..37d1b10b87 100755
 --- a/configure
 +++ b/configure
-@@ -1281,6 +1281,11 @@ probe_target_compiler() {
-         container_cross_prefix=aarch64-linux-gnu-
-         container_cross_cc=${container_cross_prefix}gcc
+@@ -1334,6 +1334,10 @@ probe_target_compiler() {
+         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+         container_cross_cc=${container_cross_prefix}gcc-10
          ;;
-+      alpha)
++      sh4)
 +        container_image=debian-legacy-test-cross
-+        container_cross_prefix=alpha-linux-gnu-
-+        container_cross_cc=${container_cross_prefix}gcc
++        container_cross_prefix=sh4-linux-gnu-
 +        ;;
-       arm)
-         # We don't have any bigendian build tools so we only use this for ARM
-         container_image=debian-armhf-cross
+       tricore)
+         container_image=debian-tricore-cross
+         container_cross_prefix=tricore-
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 9500ea6e2c..b66d05038f 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -266,7 +266,7 @@ build-user-static:
+   variables:
+     IMAGE: debian-all-test-cross
+     CONFIGURE_ARGS: --disable-tools --disable-system --static
+-      --target-list-exclude=alpha-linux-user
++      --target-list-exclude=alpha-linux-user,sh4-linux-user
+     MAKE_CHECK_ARGS: check-tcg
+ 
+ # targets stuck on older compilers
+@@ -276,7 +276,7 @@ build-legacy:
+     job: amd64-debian-legacy-cross-container
+   variables:
+     IMAGE: debian-legacy-test-cross
+-    TARGETS: alpha-linux-user alpha-softmmu
++    TARGETS: alpha-linux-user alpha-softmmu sh4-linux-user
+     CONFIGURE_ARGS: --disable-tools
+     MAKE_CHECK_ARGS: check-tcg
+ 
 diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index d200f3e00d..0de1929e74 100644
+index 0de1929e74..3e6d741f62 100644
 --- a/.gitlab-ci.d/container-cross.yml
 +++ b/.gitlab-ci.d/container-cross.yml
-@@ -1,9 +1,3 @@
--alpha-debian-cross-container:
+@@ -116,12 +116,6 @@ s390x-debian-cross-container:
+   variables:
+     NAME: debian-s390x-cross
+ 
+-sh4-debian-cross-container:
 -  extends: .container_job_template
 -  stage: containers
 -  variables:
--    NAME: debian-alpha-cross
+-    NAME: debian-sh4-cross
 -
- amd64-debian-cross-container:
+ sparc64-debian-cross-container:
    extends: .container_job_template
    stage: containers
 diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index 5635d1537f..8270bdff6c 100644
+index 8270bdff6c..f61d97102f 100644
 --- a/tests/docker/Makefile.include
 +++ b/tests/docker/Makefile.include
-@@ -122,7 +122,6 @@ docker-image-debian-nios2-cross: $(DOCKER_FILES_DIR)/debian-toolchain.docker \
- 	$(call debian-toolchain, $@)
+@@ -129,7 +129,7 @@ DOCKER_PARTIAL_IMAGES += debian-microblaze-cross
+ DOCKER_PARTIAL_IMAGES += debian-mips-cross
+ DOCKER_PARTIAL_IMAGES += debian-nios2-cross
+ DOCKER_PARTIAL_IMAGES += debian-riscv64-test-cross
+-DOCKER_PARTIAL_IMAGES += debian-sh4-cross debian-sparc64-cross
++DOCKER_PARTIAL_IMAGES += debian-sparc64-cross
+ DOCKER_PARTIAL_IMAGES += debian-xtensa-cross
+ DOCKER_PARTIAL_IMAGES += fedora-cris-cross
  
- # These images may be good enough for building tests but not for test builds
--DOCKER_PARTIAL_IMAGES += debian-alpha-cross
- DOCKER_PARTIAL_IMAGES += debian-powerpc-test-cross
- DOCKER_PARTIAL_IMAGES += debian-hppa-cross
- DOCKER_PARTIAL_IMAGES += debian-m68k-cross debian-mips64-cross
-diff --git a/tests/docker/dockerfiles/debian-alpha-cross.docker b/tests/docker/dockerfiles/debian-alpha-cross.docker
+diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
+index 205173b0a5..43cc083318 100644
+--- a/tests/docker/dockerfiles/debian-all-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+@@ -52,8 +52,6 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+         libc6-dev-riscv64-cross \
+         gcc-s390x-linux-gnu \
+         libc6-dev-s390x-cross \
+-        gcc-sh4-linux-gnu \
+-        libc6-dev-sh4-cross \
+         gcc-sparc64-linux-gnu \
+         libc6-dev-sparc64-cross \
+         python3-pip \
+@@ -64,7 +62,7 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+ RUN /usr/bin/pip3 install tomli
+ 
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+-ENV DEF_TARGET_LIST aarch64-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sh4-linux-user,sparc64-linux-user
++ENV DEF_TARGET_LIST aarch64-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sparc64-linux-user
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-legacy-test-cross.docker b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
+index 763d36dfe3..d9b37995a2 100644
+--- a/tests/docker/dockerfiles/debian-legacy-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
+@@ -4,6 +4,7 @@
+ # upgrade. Currently:
+ #
+ #   libc6.1-dev-alpha-cross: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054412
++#   sh4-linux-user: binaries don't run with bookworm compiler
+ #
+ # As we are targeting check-tcg here we only need minimal qemu
+ # dependencies and the relevant cross compilers.
+@@ -38,7 +39,7 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+ RUN /usr/bin/pip3 install tomli
+ 
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+-ENV DEF_TARGET_LIST alpha-linux-user
++ENV DEF_TARGET_LIST alpha-linux-user,sh4-linux-user
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-sh4-cross.docker b/tests/docker/dockerfiles/debian-sh4-cross.docker
 deleted file mode 100644
-index 7fa7bf1bde..0000000000
---- a/tests/docker/dockerfiles/debian-alpha-cross.docker
+index 6bd8171d33..0000000000
+--- a/tests/docker/dockerfiles/debian-sh4-cross.docker
 +++ /dev/null
 @@ -1,19 +0,0 @@
 -#
@@ -185,8 +260,8 @@ index 7fa7bf1bde..0000000000
 -    apt-get install -y eatmydata && \
 -    eatmydata apt-get dist-upgrade -y && \
 -    eatmydata apt-get install --no-install-recommends -y \
--        gcc-alpha-linux-gnu \
--        libc6.1-dev-alpha-cross
+-        gcc-sh4-linux-gnu \
+-        libc6-dev-sh4-cross
 -# As a final step configure the user (if env is defined)
 -ARG USER
 -ARG UID
