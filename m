@@ -2,74 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336457DAB07
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 07:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E13727DABEA
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 10:48:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwyuo-0002LF-2V; Sun, 29 Oct 2023 02:04:50 -0400
+	id 1qx2NK-0004hu-JK; Sun, 29 Oct 2023 05:46:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qwyuf-0002Jb-9l
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 02:04:41 -0400
-Received: from mail-pf1-f177.google.com ([209.85.210.177])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qwyuc-0001tW-G6
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 02:04:41 -0400
-Received: by mail-pf1-f177.google.com with SMTP id
- d2e1a72fcca58-6be0277c05bso2977328b3a.0
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 23:04:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698559477; x=1699164277;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cFBKtoEcKUMOYHSMLFAIsLL4AHCBFnIuRPcTZq6xV4M=;
- b=mN9nF31hTI8vbadM8yWsfo9jT+okdrGAgRl/vaRHRfe5Hdtfvr2kmpcnhtwuJlCApn
- Ewy+q1e0dXmK9JzQIwtL40EZljGTvvrZbmPiFcY0qGU9NZez5qPwPU9XKjnYeytshCiT
- qtUfEQ7YirQbtmsvgShF89HKtNrNmucnnZSmprJBNR1reoFrTJwO56kKIOcZ5RiWorAG
- hE1/2ITo4F4nowtUlXxepZDgd0aoqJYEn2ymtGigrbr59mVCgSt1SX8zGl68kmExQ2xL
- sqFv6xuzDPi3L8g8Dvxa3xr2LrnFtTCwRa2EL7GW0L9oeXqLmUv8MIFvTawNBOqicSlN
- sLDQ==
-X-Gm-Message-State: AOJu0YzHCkwtJ0sOK7Ew1gfmjVVkN2SOSdVwKixk3zrMnMn3GP97UKLC
- LqqNNQq/ZdckWFUW3RZpNne4vg9WtBv/PQ==
-X-Google-Smtp-Source: AGHT+IFxPiC7wRKl+NOUqWJlKoPspTRIrlmDRO9gzJljw569BfOZRZpkQAv0t5/ESeZwOuy8h1/ThA==
-X-Received: by 2002:a05:6a20:160b:b0:159:c24f:5fa4 with SMTP id
- l11-20020a056a20160b00b00159c24f5fa4mr7028433pzj.1.1698559476846; 
- Sat, 28 Oct 2023 23:04:36 -0700 (PDT)
-Received: from localhost.localdomain ([2601:642:4c02:6ead:344e:2b1:f5a5:58c6])
- by smtp.gmail.com with ESMTPSA id
- u12-20020a17090341cc00b001b8943b37a5sm4019518ple.24.2023.10.28.23.04.34
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 28 Oct 2023 23:04:34 -0700 (PDT)
-From: Joelle van Dyne <j@getutm.app>
-To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Subject: [PATCH v3 14/14] tests: add TPM-CRB sysbus tests for aarch64
-Date: Sat, 28 Oct 2023 23:03:27 -0700
-Message-ID: <20231029060404.71196-15-j@getutm.app>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231029060404.71196-1-j@getutm.app>
-References: <20231029060404.71196-1-j@getutm.app>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qx2NG-0004hb-0N
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 05:46:26 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qx2NC-0005he-3d
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 05:46:25 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id A06597560A7;
+ Sun, 29 Oct 2023 10:46:21 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 2D2507560A3; Sun, 29 Oct 2023 10:46:21 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2AB88756088;
+ Sun, 29 Oct 2023 10:46:21 +0100 (CET)
+Date: Sun, 29 Oct 2023 10:46:21 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v5 0/5] VIA PM: Implement basic ACPI support
+In-Reply-To: <9317ABD0-0C39-492C-8408-2EF5580AD7EF@gmail.com>
+Message-ID: <91fa957b-0d66-228f-942d-ca3e3b94a1ff@eik.bme.hu>
+References: <20231028091606.23700-1-shentey@gmail.com>
+ <999122a1-7790-f77c-8826-cd143191f6fb@eik.bme.hu>
+ <FE0C5B55-83DE-466F-B555-124B3936E3DE@gmail.com>
+ <56ec4e09-9c81-7d9c-69bf-16a23a0969bd@eik.bme.hu>
+ <9317ABD0-0C39-492C-8408-2EF5580AD7EF@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.210.177; envelope-from=osy86dev@gmail.com;
- helo=mail-pf1-f177.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Content-Type: multipart/mixed;
+ BOUNDARY="3866299591-417117679-1698572310=:31155"
+Content-ID: <036e735a-77e9-13d1-a781-2e0b3baa0dca@eik.bme.hu>
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,657 +66,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Factor out common test code from tpm-crb-test.c -> tpm-tests.c
-- Store device addr in `tpm_device_base_addr` (unify with TIS tests)
-- Add new tests for aarch64
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Signed-off-by: Joelle van Dyne <j@getutm.app>
----
- tests/qtest/tpm-tests.h                 |   2 +
- tests/qtest/tpm-util.h                  |   4 +-
- tests/qtest/bios-tables-test.c          |   4 +-
- tests/qtest/tpm-crb-device-swtpm-test.c |  72 ++++++++++++++
- tests/qtest/tpm-crb-device-test.c       |  71 ++++++++++++++
- tests/qtest/tpm-crb-swtpm-test.c        |   2 +
- tests/qtest/tpm-crb-test.c              | 121 +-----------------------
- tests/qtest/tpm-tests.c                 | 121 ++++++++++++++++++++++++
- tests/qtest/tpm-tis-device-swtpm-test.c |   2 +-
- tests/qtest/tpm-tis-device-test.c       |   2 +-
- tests/qtest/tpm-tis-i2c-test.c          |   3 +
- tests/qtest/tpm-tis-swtpm-test.c        |   2 +-
- tests/qtest/tpm-tis-test.c              |   2 +-
- tests/qtest/tpm-util.c                  |  16 ++--
- tests/qtest/meson.build                 |   4 +
- 15 files changed, 295 insertions(+), 133 deletions(-)
- create mode 100644 tests/qtest/tpm-crb-device-swtpm-test.c
- create mode 100644 tests/qtest/tpm-crb-device-test.c
+--3866299591-417117679-1698572310=:31155
+Content-Type: text/plain; CHARSET=US-ASCII; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <62c45b7d-1e80-0af7-6f1d-1ea49cb01e9f@eik.bme.hu>
 
-diff --git a/tests/qtest/tpm-tests.h b/tests/qtest/tpm-tests.h
-index 07ba60d26e..c1bfb2f914 100644
---- a/tests/qtest/tpm-tests.h
-+++ b/tests/qtest/tpm-tests.h
-@@ -24,4 +24,6 @@ void tpm_test_swtpm_migration_test(const char *src_tpm_path,
-                                    const char *ifmodel,
-                                    const char *machine_options);
- 
-+void tpm_test_crb(const void *data);
-+
- #endif /* TESTS_TPM_TESTS_H */
-diff --git a/tests/qtest/tpm-util.h b/tests/qtest/tpm-util.h
-index 0cb28dd6e5..c99380684e 100644
---- a/tests/qtest/tpm-util.h
-+++ b/tests/qtest/tpm-util.h
-@@ -15,10 +15,10 @@
- 
- #include "io/channel-socket.h"
- 
--extern uint64_t tpm_tis_base_addr;
-+extern uint64_t tpm_device_base_addr;
- 
- #define TIS_REG(LOCTY, REG) \
--    (tpm_tis_base_addr + ((LOCTY) << 12) + REG)
-+    (tpm_device_base_addr + ((LOCTY) << 12) + REG)
- 
- typedef void (tx_func)(QTestState *s,
-                        const unsigned char *req, size_t req_size,
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index c63bad0205..dea2a18158 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -1343,7 +1343,7 @@ static void test_acpi_piix4_tcg_numamem(void)
-     free_test_data(&data);
- }
- 
--uint64_t tpm_tis_base_addr;
-+uint64_t tpm_device_base_addr;
- 
- static test_data tcg_tpm_test_data(const char *machine)
- {
-@@ -1379,7 +1379,7 @@ static void test_acpi_tcg_tpm(const char *machine, const char *tpm_if,
-     const char *suffix = tpm_version == TPM_VERSION_2_0 ? "tpm2" : "tpm12";
-     char *args, *variant = g_strdup_printf(".%s.%s", tpm_if, suffix);
- 
--    tpm_tis_base_addr = base;
-+    tpm_device_base_addr = base;
- 
-     module_call_init(MODULE_INIT_QOM);
- 
-diff --git a/tests/qtest/tpm-crb-device-swtpm-test.c b/tests/qtest/tpm-crb-device-swtpm-test.c
-new file mode 100644
-index 0000000000..332add5ca6
---- /dev/null
-+++ b/tests/qtest/tpm-crb-device-swtpm-test.c
-@@ -0,0 +1,72 @@
-+/*
-+ * QTest testcase for TPM CRB talking to external swtpm and swtpm migration
-+ *
-+ * Copyright (c) 2018 IBM Corporation
-+ *  with parts borrowed from migration-test.c that is:
-+ *     Copyright (c) 2016-2018 Red Hat, Inc. and/or its affiliates
-+ *
-+ * Authors:
-+ *   Stefan Berger <stefanb@linux.vnet.ibm.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+
-+#include "libqtest.h"
-+#include "qemu/module.h"
-+#include "tpm-tests.h"
-+#include "hw/acpi/tpm.h"
-+
-+uint64_t tpm_device_base_addr = 0xc000000;
-+#define MACHINE_OPTIONS "-machine virt,gic-version=max -accel tcg"
-+
-+typedef struct TestState {
-+    char *src_tpm_path;
-+    char *dst_tpm_path;
-+    char *uri;
-+} TestState;
-+
-+static void tpm_crb_swtpm_test(const void *data)
-+{
-+    const TestState *ts = data;
-+
-+    tpm_test_swtpm_test(ts->src_tpm_path, tpm_util_crb_transfer,
-+                        "tpm-crb-device", MACHINE_OPTIONS);
-+}
-+
-+static void tpm_crb_swtpm_migration_test(const void *data)
-+{
-+    const TestState *ts = data;
-+
-+    tpm_test_swtpm_migration_test(ts->src_tpm_path, ts->dst_tpm_path, ts->uri,
-+                                  tpm_util_crb_transfer, "tpm-crb-device",
-+                                  MACHINE_OPTIONS);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    int ret;
-+    TestState ts = { 0 };
-+
-+    ts.src_tpm_path = g_dir_make_tmp("qemu-tpm-crb-swtpm-test.XXXXXX", NULL);
-+    ts.dst_tpm_path = g_dir_make_tmp("qemu-tpm-crb-swtpm-test.XXXXXX", NULL);
-+    ts.uri = g_strdup_printf("unix:%s/migsocket", ts.src_tpm_path);
-+
-+    module_call_init(MODULE_INIT_QOM);
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_data_func("/tpm/crb-swtpm/test", &ts, tpm_crb_swtpm_test);
-+    qtest_add_data_func("/tpm/crb-swtpm-migration/test", &ts,
-+                        tpm_crb_swtpm_migration_test);
-+    ret = g_test_run();
-+
-+    tpm_util_rmdir(ts.dst_tpm_path);
-+    g_free(ts.dst_tpm_path);
-+    tpm_util_rmdir(ts.src_tpm_path);
-+    g_free(ts.src_tpm_path);
-+    g_free(ts.uri);
-+
-+    return ret;
-+}
-diff --git a/tests/qtest/tpm-crb-device-test.c b/tests/qtest/tpm-crb-device-test.c
-new file mode 100644
-index 0000000000..17d09a57fd
---- /dev/null
-+++ b/tests/qtest/tpm-crb-device-test.c
-@@ -0,0 +1,71 @@
-+/*
-+ * QTest testcase for TPM CRB
-+ *
-+ * Copyright (c) 2018 Red Hat, Inc.
-+ *
-+ * Authors:
-+ *   Marc-André Lureau <marcandre.lureau@redhat.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include <glib/gstdio.h>
-+
-+#include "hw/acpi/tpm.h"
-+#include "io/channel-socket.h"
-+#include "libqtest-single.h"
-+#include "qemu/module.h"
-+#include "tpm-emu.h"
-+#include "tpm-tests.h"
-+
-+/*
-+ * As the Sysbus tpm-crb-device is instantiated on the ARM virt
-+ * platform bus and it is the only sysbus device dynamically
-+ * instantiated, it gets plugged at its base address
-+ */
-+uint64_t tpm_device_base_addr = 0xc000000;
-+
-+int main(int argc, char **argv)
-+{
-+    int ret;
-+    char *args, *tmp_path = g_dir_make_tmp("qemu-tpm-crb-test.XXXXXX", NULL);
-+    GThread *thread;
-+    TPMTestState test;
-+
-+    module_call_init(MODULE_INIT_QOM);
-+    g_test_init(&argc, &argv, NULL);
-+
-+    test.addr = g_new0(SocketAddress, 1);
-+    test.addr->type = SOCKET_ADDRESS_TYPE_UNIX;
-+    test.addr->u.q_unix.path = g_build_filename(tmp_path, "sock", NULL);
-+    g_mutex_init(&test.data_mutex);
-+    g_cond_init(&test.data_cond);
-+    test.data_cond_signal = false;
-+    test.tpm_version = TPM_VERSION_2_0;
-+
-+    thread = g_thread_new(NULL, tpm_emu_ctrl_thread, &test);
-+    tpm_emu_test_wait_cond(&test);
-+
-+    args = g_strdup_printf(
-+        "-machine virt,gic-version=max -accel tcg "
-+        "-chardev socket,id=chr,path=%s "
-+        "-tpmdev emulator,id=dev,chardev=chr "
-+        "-device tpm-crb-device,tpmdev=dev",
-+        test.addr->u.q_unix.path);
-+    qtest_start(args);
-+
-+    qtest_add_data_func("/tpm-crb/test", &test, tpm_test_crb);
-+    ret = g_test_run();
-+
-+    qtest_end();
-+
-+    g_thread_join(thread);
-+    g_unlink(test.addr->u.q_unix.path);
-+    qapi_free_SocketAddress(test.addr);
-+    g_rmdir(tmp_path);
-+    g_free(tmp_path);
-+    g_free(args);
-+    return ret;
-+}
-diff --git a/tests/qtest/tpm-crb-swtpm-test.c b/tests/qtest/tpm-crb-swtpm-test.c
-index ffeb1c396b..08862210a4 100644
---- a/tests/qtest/tpm-crb-swtpm-test.c
-+++ b/tests/qtest/tpm-crb-swtpm-test.c
-@@ -19,6 +19,8 @@
- #include "tpm-tests.h"
- #include "hw/acpi/tpm.h"
- 
-+uint64_t tpm_device_base_addr = TPM_CRB_ADDR_BASE;
-+
- typedef struct TestState {
-     char *src_tpm_path;
-     char *dst_tpm_path;
-diff --git a/tests/qtest/tpm-crb-test.c b/tests/qtest/tpm-crb-test.c
-index 9d30fe8293..51614abc70 100644
---- a/tests/qtest/tpm-crb-test.c
-+++ b/tests/qtest/tpm-crb-test.c
-@@ -18,124 +18,9 @@
- #include "libqtest-single.h"
- #include "qemu/module.h"
- #include "tpm-emu.h"
-+#include "tpm-tests.h"
- 
--#define TPM_CMD "\x80\x01\x00\x00\x00\x0c\x00\x00\x01\x44\x00\x00"
--
--static void tpm_crb_test(const void *data)
--{
--    const TPMTestState *s = data;
--    uint32_t intfid = readl(TPM_CRB_ADDR_BASE + A_CRB_INTF_ID);
--    uint32_t csize = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_SIZE);
--    uint64_t caddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_LADDR);
--    uint32_t rsize = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_SIZE);
--    uint64_t raddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_LADDR);
--    uint8_t locstate = readb(TPM_CRB_ADDR_BASE + A_CRB_LOC_STATE);
--    uint32_t locctrl = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL);
--    uint32_t locsts = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_STS);
--    uint32_t sts = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_STS);
--
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, InterfaceType), ==, 1);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, InterfaceVersion), ==, 1);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapLocality), ==, 0);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapCRBIdleBypass), ==, 0);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapDataXferSizeSupport),
--                    ==, 3);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapFIFO), ==, 0);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapCRB), ==, 1);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, InterfaceSelector), ==, 1);
--    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, RID), ==, 0);
--
--    g_assert_cmpint(csize, >=, 128);
--    g_assert_cmpint(rsize, >=, 128);
--    g_assert_cmpint(caddr, >, TPM_CRB_ADDR_BASE);
--    g_assert_cmpint(raddr, >, TPM_CRB_ADDR_BASE);
--
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmEstablished), ==, 1);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, locAssigned), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, activeLocality), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, reserved), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmRegValidSts), ==, 1);
--
--    g_assert_cmpint(locctrl, ==, 0);
--
--    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, Granted), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, beenSeized), ==, 0);
--
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 1);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
--
--    /* request access to locality 0 */
--    writeb(TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL, 1);
--
--    /* granted bit must be set now */
--    locsts = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_STS);
--    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, Granted), ==, 1);
--    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, beenSeized), ==, 0);
--
--    /* we must have an assigned locality */
--    locstate = readb(TPM_CRB_ADDR_BASE + A_CRB_LOC_STATE);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmEstablished), ==, 1);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, locAssigned), ==, 1);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, activeLocality), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, reserved), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmRegValidSts), ==, 1);
--
--    /* set into ready state */
--    writel(TPM_CRB_ADDR_BASE + A_CRB_CTRL_REQ, 1);
--
--    /* TPM must not be in the idle state */
--    sts = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_STS);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 0);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
--
--    memwrite(caddr, TPM_CMD, sizeof(TPM_CMD));
--
--    uint32_t start = 1;
--    uint64_t end_time = g_get_monotonic_time() + 5 * G_TIME_SPAN_SECOND;
--    writel(TPM_CRB_ADDR_BASE + A_CRB_CTRL_START, start);
--    do {
--        start = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_START);
--        if ((start & 1) == 0) {
--            break;
--        }
--    } while (g_get_monotonic_time() < end_time);
--    start = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_START);
--    g_assert_cmpint(start & 1, ==, 0);
--
--    /* TPM must still not be in the idle state */
--    sts = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_STS);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 0);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
--
--    struct tpm_hdr tpm_msg;
--    memread(raddr, &tpm_msg, sizeof(tpm_msg));
--    g_assert_cmpmem(&tpm_msg, sizeof(tpm_msg), s->tpm_msg, sizeof(*s->tpm_msg));
--
--    /* set TPM into idle state */
--    writel(TPM_CRB_ADDR_BASE + A_CRB_CTRL_REQ, 2);
--
--    /* idle state must be indicated now */
--    sts = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_STS);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 1);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
--
--    /* relinquish locality */
--    writel(TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL, 2);
--
--    /* Granted flag must be cleared */
--    sts = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_STS);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_LOC_STS, Granted), ==, 0);
--    g_assert_cmpint(FIELD_EX32(sts, CRB_LOC_STS, beenSeized), ==, 0);
--
--    /* no locality may be assigned */
--    locstate = readb(TPM_CRB_ADDR_BASE + A_CRB_LOC_STATE);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmEstablished), ==, 1);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, locAssigned), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, activeLocality), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, reserved), ==, 0);
--    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmRegValidSts), ==, 1);
--
--}
-+uint64_t tpm_device_base_addr = TPM_CRB_ADDR_BASE;
- 
- int main(int argc, char **argv)
- {
-@@ -165,7 +50,7 @@ int main(int argc, char **argv)
-         test.addr->u.q_unix.path);
-     qtest_start(args);
- 
--    qtest_add_data_func("/tpm-crb/test", &test, tpm_crb_test);
-+    qtest_add_data_func("/tpm-crb/test", &test, tpm_test_crb);
-     ret = g_test_run();
- 
-     qtest_end();
-diff --git a/tests/qtest/tpm-tests.c b/tests/qtest/tpm-tests.c
-index fb94496bbd..83c5536136 100644
---- a/tests/qtest/tpm-tests.c
-+++ b/tests/qtest/tpm-tests.c
-@@ -15,7 +15,10 @@
- #include "qemu/osdep.h"
- #include <glib/gstdio.h>
- 
-+#include "hw/registerfields.h"
-+#include "hw/acpi/tpm.h"
- #include "libqtest-single.h"
-+#include "tpm-emu.h"
- #include "tpm-tests.h"
- 
- static bool
-@@ -130,3 +133,121 @@ void tpm_test_swtpm_migration_test(const char *src_tpm_path,
-     g_unlink(src_tpm_addr->u.q_unix.path);
-     qapi_free_SocketAddress(src_tpm_addr);
- }
-+
-+#define TPM_CMD "\x80\x01\x00\x00\x00\x0c\x00\x00\x01\x44\x00\x00"
-+
-+void tpm_test_crb(const void *data)
-+{
-+    const TPMTestState *s = data;
-+    uint32_t intfid = readl(tpm_device_base_addr + A_CRB_INTF_ID);
-+    uint32_t csize = readl(tpm_device_base_addr + A_CRB_CTRL_CMD_SIZE);
-+    uint64_t caddr = readq(tpm_device_base_addr + A_CRB_CTRL_CMD_LADDR);
-+    uint32_t rsize = readl(tpm_device_base_addr + A_CRB_CTRL_RSP_SIZE);
-+    uint64_t raddr = readq(tpm_device_base_addr + A_CRB_CTRL_RSP_LADDR);
-+    uint8_t locstate = readb(tpm_device_base_addr + A_CRB_LOC_STATE);
-+    uint32_t locctrl = readl(tpm_device_base_addr + A_CRB_LOC_CTRL);
-+    uint32_t locsts = readl(tpm_device_base_addr + A_CRB_LOC_STS);
-+    uint32_t sts = readl(tpm_device_base_addr + A_CRB_CTRL_STS);
-+
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, InterfaceType), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, InterfaceVersion), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapLocality), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapCRBIdleBypass), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapDataXferSizeSupport),
-+                    ==, 3);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapFIFO), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, CapCRB), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, InterfaceSelector), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(intfid, CRB_INTF_ID, RID), ==, 0);
-+
-+    g_assert_cmpint(csize, >=, 128);
-+    g_assert_cmpint(rsize, >=, 128);
-+    g_assert_cmpint(caddr, >, tpm_device_base_addr);
-+    g_assert_cmpint(raddr, >, tpm_device_base_addr);
-+
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmEstablished), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, locAssigned), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, activeLocality), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, reserved), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmRegValidSts), ==, 1);
-+
-+    g_assert_cmpint(locctrl, ==, 0);
-+
-+    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, Granted), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, beenSeized), ==, 0);
-+
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
-+
-+    /* request access to locality 0 */
-+    writeb(tpm_device_base_addr + A_CRB_LOC_CTRL, 1);
-+
-+    /* granted bit must be set now */
-+    locsts = readl(tpm_device_base_addr + A_CRB_LOC_STS);
-+    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, Granted), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(locsts, CRB_LOC_STS, beenSeized), ==, 0);
-+
-+    /* we must have an assigned locality */
-+    locstate = readb(tpm_device_base_addr + A_CRB_LOC_STATE);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmEstablished), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, locAssigned), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, activeLocality), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, reserved), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmRegValidSts), ==, 1);
-+
-+    /* set into ready state */
-+    writel(tpm_device_base_addr + A_CRB_CTRL_REQ, 1);
-+
-+    /* TPM must not be in the idle state */
-+    sts = readl(tpm_device_base_addr + A_CRB_CTRL_STS);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
-+
-+    memwrite(caddr, TPM_CMD, sizeof(TPM_CMD));
-+
-+    uint32_t start = 1;
-+    uint64_t end_time = g_get_monotonic_time() + 5 * G_TIME_SPAN_SECOND;
-+    writel(tpm_device_base_addr + A_CRB_CTRL_START, start);
-+    do {
-+        start = readl(tpm_device_base_addr + A_CRB_CTRL_START);
-+        if ((start & 1) == 0) {
-+            break;
-+        }
-+    } while (g_get_monotonic_time() < end_time);
-+    start = readl(tpm_device_base_addr + A_CRB_CTRL_START);
-+    g_assert_cmpint(start & 1, ==, 0);
-+
-+    /* TPM must still not be in the idle state */
-+    sts = readl(tpm_device_base_addr + A_CRB_CTRL_STS);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
-+
-+    struct tpm_hdr tpm_msg;
-+    memread(raddr, &tpm_msg, sizeof(tpm_msg));
-+    g_assert_cmpmem(&tpm_msg, sizeof(tpm_msg), s->tpm_msg, sizeof(*s->tpm_msg));
-+
-+    /* set TPM into idle state */
-+    writel(tpm_device_base_addr + A_CRB_CTRL_REQ, 2);
-+
-+    /* idle state must be indicated now */
-+    sts = readl(tpm_device_base_addr + A_CRB_CTRL_STS);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmIdle), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_CTRL_STS, tpmSts), ==, 0);
-+
-+    /* relinquish locality */
-+    writel(tpm_device_base_addr + A_CRB_LOC_CTRL, 2);
-+
-+    /* Granted flag must be cleared */
-+    sts = readl(tpm_device_base_addr + A_CRB_LOC_STS);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_LOC_STS, Granted), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(sts, CRB_LOC_STS, beenSeized), ==, 0);
-+
-+    /* no locality may be assigned */
-+    locstate = readb(tpm_device_base_addr + A_CRB_LOC_STATE);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmEstablished), ==, 1);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, locAssigned), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, activeLocality), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, reserved), ==, 0);
-+    g_assert_cmpint(FIELD_EX32(locstate, CRB_LOC_STATE, tpmRegValidSts), ==, 1);
-+
-+}
-diff --git a/tests/qtest/tpm-tis-device-swtpm-test.c b/tests/qtest/tpm-tis-device-swtpm-test.c
-index 517a077005..54d1cedc6f 100644
---- a/tests/qtest/tpm-tis-device-swtpm-test.c
-+++ b/tests/qtest/tpm-tis-device-swtpm-test.c
-@@ -21,7 +21,7 @@
- #include "tpm-tis-util.h"
- #include "hw/acpi/tpm.h"
- 
--uint64_t tpm_tis_base_addr = 0xc000000;
-+uint64_t tpm_device_base_addr = 0xc000000;
- #define MACHINE_OPTIONS "-machine virt,gic-version=max -accel tcg"
- 
- typedef struct TestState {
-diff --git a/tests/qtest/tpm-tis-device-test.c b/tests/qtest/tpm-tis-device-test.c
-index 3ddefb51ec..4f6609ae98 100644
---- a/tests/qtest/tpm-tis-device-test.c
-+++ b/tests/qtest/tpm-tis-device-test.c
-@@ -27,7 +27,7 @@
-  * platform bus and it is the only sysbus device dynamically
-  * instantiated, it gets plugged at its base address
-  */
--uint64_t tpm_tis_base_addr = 0xc000000;
-+uint64_t tpm_device_base_addr = 0xc000000;
- 
- int main(int argc, char **argv)
- {
-diff --git a/tests/qtest/tpm-tis-i2c-test.c b/tests/qtest/tpm-tis-i2c-test.c
-index 3a1af026f2..9495cc1739 100644
---- a/tests/qtest/tpm-tis-i2c-test.c
-+++ b/tests/qtest/tpm-tis-i2c-test.c
-@@ -39,6 +39,9 @@
- #define I2C_SLAVE_ADDR   0x2e
- #define I2C_DEV_BUS_NUM  10
- 
-+/* unused but needed for tpm-util.c to link */
-+uint64_t tpm_device_base_addr;
-+
- static const uint8_t TPM_CMD[12] =
-     "\x80\x01\x00\x00\x00\x0c\x00\x00\x01\x44\x00\x00";
- 
-diff --git a/tests/qtest/tpm-tis-swtpm-test.c b/tests/qtest/tpm-tis-swtpm-test.c
-index 105e42e21d..5bfbbc0a67 100644
---- a/tests/qtest/tpm-tis-swtpm-test.c
-+++ b/tests/qtest/tpm-tis-swtpm-test.c
-@@ -20,7 +20,7 @@
- #include "tpm-tis-util.h"
- #include "hw/acpi/tpm.h"
- 
--uint64_t tpm_tis_base_addr = TPM_TIS_ADDR_BASE;
-+uint64_t tpm_device_base_addr = TPM_TIS_ADDR_BASE;
- 
- typedef struct TestState {
-     char *src_tpm_path;
-diff --git a/tests/qtest/tpm-tis-test.c b/tests/qtest/tpm-tis-test.c
-index a4a25ba745..7661568aa8 100644
---- a/tests/qtest/tpm-tis-test.c
-+++ b/tests/qtest/tpm-tis-test.c
-@@ -22,7 +22,7 @@
- #include "tpm-emu.h"
- #include "tpm-tis-util.h"
- 
--uint64_t tpm_tis_base_addr = TPM_TIS_ADDR_BASE;
-+uint64_t tpm_device_base_addr = TPM_TIS_ADDR_BASE;
- 
- int main(int argc, char **argv)
- {
-diff --git a/tests/qtest/tpm-util.c b/tests/qtest/tpm-util.c
-index dd02057fc0..1608901a76 100644
---- a/tests/qtest/tpm-util.c
-+++ b/tests/qtest/tpm-util.c
-@@ -24,18 +24,20 @@ void tpm_util_crb_transfer(QTestState *s,
-                            const unsigned char *req, size_t req_size,
-                            unsigned char *rsp, size_t rsp_size)
- {
--    uint64_t caddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_LADDR);
--    uint64_t raddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_LADDR);
-+    uint64_t caddr = qtest_readq(s, tpm_device_base_addr +
-+                                    A_CRB_CTRL_CMD_LADDR);
-+    uint64_t raddr = qtest_readq(s, tpm_device_base_addr +
-+                                    A_CRB_CTRL_RSP_LADDR);
- 
--    qtest_writeb(s, TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL, 1);
-+    qtest_writeb(s, tpm_device_base_addr + A_CRB_LOC_CTRL, 1);
- 
-     qtest_memwrite(s, caddr, req, req_size);
- 
-     uint32_t sts, start = 1;
-     uint64_t end_time = g_get_monotonic_time() + 5 * G_TIME_SPAN_SECOND;
--    qtest_writel(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_START, start);
-+    qtest_writel(s, tpm_device_base_addr + A_CRB_CTRL_START, start);
-     while (true) {
--        start = qtest_readl(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_START);
-+        start = qtest_readl(s, tpm_device_base_addr + A_CRB_CTRL_START);
-         if ((start & 1) == 0) {
-             break;
-         }
-@@ -43,9 +45,9 @@ void tpm_util_crb_transfer(QTestState *s,
-             break;
-         }
-     };
--    start = qtest_readl(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_START);
-+    start = qtest_readl(s, tpm_device_base_addr + A_CRB_CTRL_START);
-     g_assert_cmpint(start & 1, ==, 0);
--    sts = qtest_readl(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_STS);
-+    sts = qtest_readl(s, tpm_device_base_addr + A_CRB_CTRL_STS);
-     g_assert_cmpint(sts & 1, ==, 0);
- 
-     qtest_memread(s, raddr, rsp, rsp_size);
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index d6022ebd64..0e6ef6aebf 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -215,6 +215,8 @@ qtests_aarch64 = \
-   (cpu != 'arm' and unpack_edk2_blobs ? ['bios-tables-test'] : []) +                            \
-   (config_all.has_key('CONFIG_TCG') and config_all_devices.has_key('CONFIG_TPM_TIS_SYSBUS') ?            \
-     ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
-+  (config_all.has_key('CONFIG_TCG') and config_all_devices.has_key('CONFIG_TPM_CRB_SYSBUS') ?            \
-+    ['tpm-crb-device-test', 'tpm-crb-device-swtpm-test'] : []) +                                         \
-   (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
-@@ -312,6 +314,8 @@ qtests = {
-   'qos-test': [chardev, io, qos_test_ss.apply(config_targetos, strict: false).sources()],
-   'tpm-crb-swtpm-test': [io, tpmemu_files],
-   'tpm-crb-test': [io, tpmemu_files],
-+  'tpm-crb-device-swtpm-test': [io, tpmemu_files],
-+  'tpm-crb-device-test': [io, tpmemu_files],
-   'tpm-tis-swtpm-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-   'tpm-tis-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-   'tpm-tis-i2c-test': [io, tpmemu_files, 'qtest_aspeed.c'],
--- 
-2.41.0
+On Sun, 29 Oct 2023, Bernhard Beschow wrote:
+> Am 28. Oktober 2023 17:47:15 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+>>> Am 28. Oktober 2023 12:58:32 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>>>> Hello,
+>>>>
+>>>> On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+>>>>> This series is part of my work to bring the VIA south bridges to the PC machine
+>>>>> [1]. It implements missing ACPI functionality which ACPI-aware x86 guests
+>>>>> expect for a smooth experience. The implementation is heavily inspired by PIIX4.
+>>>>
+>>>> I think first the interrupt routing should be fixed because that may change a few things in this series so that should be the next step and then rebase this series on top of that.
+>>>>
+>>>> What I mean by fixing interrupt routing? You may remember this discussion:
+>>>>
+>>>> https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/
+>>>>
+>>>> With pegasos2 your (over)simplification worked only because the firmware of that machine maps everythnig to one ISA IRQ and guests were happy with that. I told you that back then but could not convince you and Mark about that. Now with the amigaone machine the firmware maps VIA devices and PCI interuupt pins to different ISA IRQs so we need to go back either to my otiginal implementation or something else you come up with. You can test this trying to use USB devices with amigaone machine which only works after reverting 4e5a20b6da9b1 and 422a6e8075752. So please either propose something to fix that first or wait with this series until I can update my pathches to solve interrupt routing. I think this series should wait until after that because it adds more interrupt handling which should follow whatever way we come up with for that so it's too early fir this series yet. (If you want to try fixing it keep in mind that in both amigaone and pegasos2 the PCI buses are in the north br
+ id
+>> ge not in the VIA south bridge so don't try to force the IRQ mapping into the PCI bus. All the VIA chip needs to do is mapping its PIRQ/PINT pins to ISA IRQs as the VIA is only handling ISA IRQs and all other pci stuff is handled in the north bridge. So I think we need a via_set_isa_irq function but we could change it according to Mark's idea to pass the PCI device and use its function number to select itq source instead of the enum I had in my original series.)
+>>>>
+>>>> I have some other comments that I'll add in reply to individual patches for the future/
+>>>
+>>> Hi Zoltan,
+>>>
+>>> The interrupt handling introduced in this series is not related to PCI interrupt routing: The SMI is a dedicated pin on the device and the SCI is mapped internally to an ISA interrupt (note how the power management function lacks the registers for PCI interrupt information). Hence, PCI interrupt routing isn't changed in this series and therefore seems off-topic to me.
+>>>
+>>> Moreover, the SMI is a new interrupt which is therefore not used in any machine yet. The SCI is deactivated if set to IRQ 0 which is the default even. If a guest configures it, it shall be aware to receive an *ISA* interrupt.
+>>>
+>>> So I think this series shouldn't conflict with any previous work and should not be blocked by the PCI IRQ routing topic.
+>>
+>> The topic I've raised is not about routing PCI interrupts but routing different IRQ sources in VIA chip (such as different functions plus the PIRQ/PINT pins) to ISA interrupts so that would conflict with how the PM func interrupts are routed. I think only the isa function should have qemu_irqs and it should handle mapping of the different sources to the appropriate ISA IRQ so the different sources (functions) should not have their own qemu_irqs or gpios but they would just call via_isa_set_irq with their PCIDevice, pun and level and then the isa model would do the routing. I plan to do this eventually but it you're adding more things that would need to be reverted then it becomes more difficult.
+>
+> We've had lenghty discussions about this topic before and we -- together 
+> -- ended up with the current solution.
 
+Which does not work as demonstrated by the amigaone machine now. I've told 
+you that before but you did not accept my arguments so for the sake of 
+being able to merge pegasos2 in time for release I've accepted your 
+alternative that was still OK for pegasos2 and let this be fixed later 
+when we need it. That is about now that we have the amigaone machine. The 
+amigaone still boots and usable without fixing this IRQ mapping but some 
+devices like USB does not work due to not getting the expected interrupt 
+correctly. But if you want to change the via device further I'd like to 
+fix it before that to avoid having to rewrtite what you add now.
+
+> This series adds the last missing 
+> feature to the VIA south bridges before they can be integrated into the 
+> PC machine. Delaying progress by reopening the same topics over and over 
+> again really seems unfair to me. Instead, let's be optimistic that we'll 
+> end up with a solution that suits all needs well.
+
+I'm sorry if it seems unfair to you but I did not bring this up tp delay 
+your work but to avoid more work in the future and fix something that is 
+broken to improve the device model. If you PC machine wants to map 
+internal functions to different IRQs then you will also get this problem 
+so it will need to be fixed and fixing it will also simplify your ACPI 
+patches. To help with this I've spent some time now to do the fix I think 
+would work so you could just rebase your series on top of that.
+
+> That said, I've ran both the pegasos2.rom and the u-boot.bin for 
+> amigaone that is used in the Avocado test. I've traced both with '-trace 
+> "pci_cfg_*"'. The result is that neither BIOS pokes the SCI routing 
+> register in the ISA function which means that the interrupt stays 
+> deactivated. Hence, it is very unlikely that the changes introduced in 
+> this series would interfer with guests on these machines.
+
+It does not interfere with guests, it inteferes with fixing probelms with 
+interrupt routing that amigaone (and liekly your PC machine) has so it 
+makes sense to fix that first because it changes the way SMI should be 
+added.
+
+> In summary, I don't see any blockers so far for merging this series for 
+> the upcoming release.
+
+I hope I could explain above.
+
+Regards,
+BALATON Zoltan
+--3866299591-417117679-1698572310=:31155--
 
