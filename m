@@ -2,49 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9745F7DAA41
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 02:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 310957DAA4B
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 02:47:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwtKt-0003d9-6K; Sat, 28 Oct 2023 20:07:23 -0400
+	id 1qwtwc-0008JN-9K; Sat, 28 Oct 2023 20:46:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qwtKo-0003cn-SB
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 20:07:18 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1qwtvw-0008Gd-MG; Sat, 28 Oct 2023 20:45:51 -0400
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qwtKY-0008JH-Jj
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 20:07:17 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 01B4C756078;
- Sun, 29 Oct 2023 02:07:01 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C09887456A7; Sun, 29 Oct 2023 02:07:00 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BE504745681;
- Sun, 29 Oct 2023 02:07:00 +0200 (CEST)
-Date: Sun, 29 Oct 2023 02:07:00 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v5 3/5] hw/isa/vt82c686: Reuse acpi_update_sci()
-In-Reply-To: <20231028091606.23700-4-shentey@gmail.com>
-Message-ID: <4d959097-0c53-c0fd-b1a0-3d8250e1a314@eik.bme.hu>
-References: <20231028091606.23700-1-shentey@gmail.com>
- <20231028091606.23700-4-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1qwtvu-0005J1-Lk; Sat, 28 Oct 2023 20:45:40 -0400
+Received: from LT2ubnt.fritz.box (ip-178-202-040-247.um47.pools.vodafone-ip.de
+ [178.202.40.247])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 9CD013F6C3; 
+ Sun, 29 Oct 2023 00:45:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1698540331;
+ bh=1KO0+EesrUry2uIn5zxpVo15Dx/knQ2PZoaGu1sXa8c=;
+ h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+ b=YqJVUU7nayO3FXeUSIqqrvVs0ovOwK+ITshW4J8Xj+Cas8AnDacB0Avlpxz9k9t8I
+ Kw4K8I1tchcjv8hEVXkaWGJQvOaBRotjTFhAu2bkEe5bBJe/gqpV09R9tKJCHBGw59
+ KlY57j1wK5IHiMYrpycnnIBJQJFJ0vWuF0AgdxXkEXrzd3UdpmRSlAT0kdi/a9y7Dq
+ JpCK/55v2tDQyQ7vSOG9IoXqSIviXY2qYh5OMqhgyVRHzu8lFxQRNbbcaWYQlvDsLK
+ UEniM2Y5d17R0VvGepI/KVSynJQUFlFvy+PBmzZl5FPFaJtKoNxurVO28NlOTYWDMG
+ S26RHnXWakbTQ==
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>
+Cc: Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH 1/1] target/riscv: correct csr_ops[CSR_MSECCFG]
+Date: Sun, 29 Oct 2023 02:42:47 +0200
+Message-Id: <20231029004247.21217-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=185.125.188.120;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-canonical-0.canonical.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,66 +73,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 28 Oct 2023, Bernhard Beschow wrote:
-> acpi_update_sci() covers everything pm_update_sci() does. It implements common
-> ACPI funtionality in a generic fashion. Note that it agnostic to any
-> Frankenstein usage of the general purpose event registers in other device
-> models. It just implements a generic mechanism which can be wired to arbitrary
-> functionality.
->
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
-> hw/isa/vt82c686.c | 20 ++------------------
-> 1 file changed, 2 insertions(+), 18 deletions(-)
->
-> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-> index 60ca781e03..7b44ad9485 100644
-> --- a/hw/isa/vt82c686.c
-> +++ b/hw/isa/vt82c686.c
-> @@ -145,26 +145,10 @@ static const MemoryRegionOps pm_io_ops = {
->     },
-> };
->
-> -static void pm_update_sci(ViaPMState *s)
-> -{
-> -    int sci_level, pmsts;
-> -
-> -    pmsts = acpi_pm1_evt_get_sts(&s->ar);
-> -    sci_level = (((pmsts & s->ar.pm1.evt.en) &
-> -                  (ACPI_BITMASK_RT_CLOCK_ENABLE |
-> -                   ACPI_BITMASK_POWER_BUTTON_ENABLE |
-> -                   ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
-> -                   ACPI_BITMASK_TIMER_ENABLE)) != 0);
-> -    qemu_set_irq(s->sci_irq, sci_level);
-> -    /* schedule a timer interruption if needed */
-> -    acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
-> -                       !(pmsts & ACPI_BITMASK_TIMER_STATUS));
-> -}
-> -
-> static void pm_tmr_timer(ACPIREGS *ar)
-> {
->     ViaPMState *s = container_of(ar, ViaPMState, ar);
-> -    pm_update_sci(s);
-> +    acpi_update_sci(&s->ar, s->sci_irq);
+The CSR register mseccfg is used by multiple extensions: Smepm and Zkr.
 
-To avoid needing an interrupt here maybe you could modify 
-acpi_update_sci() to allow NULL irq then call via_isa_set_irq here so the 
-interrupt routing can be done within the ISA bridge.
+Consider this when checking the existence of the register.
 
-Regards,
-BALATON Zoltan
+Fixes: 77442380ecbe ("target/riscv: rvk: add CSR support for Zkr")
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+---
+ target/riscv/csr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-> }
->
-> static void via_pm_reset(DeviceState *d)
-> @@ -182,7 +166,7 @@ static void via_pm_reset(DeviceState *d)
->     acpi_pm1_cnt_reset(&s->ar);
->     acpi_pm_tmr_reset(&s->ar);
->     acpi_gpe_reset(&s->ar);
-> -    pm_update_sci(s);
-> +    acpi_update_sci(&s->ar, s->sci_irq);
->
->     pm_io_space_update(s);
->     smb_io_space_update(s);
->
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 4b4ab56c40..07c0cfb7d8 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -523,11 +523,14 @@ static RISCVException pmp(CPURISCVState *env, int csrno)
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
+ 
+-static RISCVException epmp(CPURISCVState *env, int csrno)
++static RISCVException have_mseccfg(CPURISCVState *env, int csrno)
+ {
+     if (riscv_cpu_cfg(env)->epmp) {
+         return RISCV_EXCP_NONE;
+     }
++    if (riscv_cpu_cfg(env)->ext_zkr) {
++        return RISCV_EXCP_NONE;
++    }
+ 
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
+@@ -4379,7 +4382,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_VSIPH]       = { "vsiph",       aia_hmode32, NULL, NULL, rmw_vsiph },
+ 
+     /* Physical Memory Protection */
+-    [CSR_MSECCFG]    = { "mseccfg",  epmp, read_mseccfg, write_mseccfg,
++    [CSR_MSECCFG]    = { "mseccfg",   have_mseccfg, read_mseccfg, write_mseccfg,
+                          .min_priv_ver = PRIV_VERSION_1_11_0           },
+     [CSR_PMPCFG0]    = { "pmpcfg0",   pmp, read_pmpcfg,  write_pmpcfg  },
+     [CSR_PMPCFG1]    = { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg  },
+-- 
+2.40.1
+
 
