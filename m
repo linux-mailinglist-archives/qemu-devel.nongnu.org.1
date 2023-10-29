@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50CA7DAAFE
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 07:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3627DAB0B
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 07:07:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwyuU-0002GB-1A; Sun, 29 Oct 2023 02:04:30 -0400
+	id 1qwyuV-0002Gj-G4; Sun, 29 Oct 2023 02:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qwyuS-0002FX-8U
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 02:04:28 -0400
-Received: from mail-pg1-f179.google.com ([209.85.215.179])
+ id 1qwyuT-0002GG-PY; Sun, 29 Oct 2023 02:04:29 -0400
+Received: from mail-pf1-f182.google.com ([209.85.210.182])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qwyuP-0001pP-Qt
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 02:04:28 -0400
-Received: by mail-pg1-f179.google.com with SMTP id
- 41be03b00d2f7-577e62e2adfso2353324a12.2
- for <qemu-devel@nongnu.org>; Sat, 28 Oct 2023 23:04:25 -0700 (PDT)
+ id 1qwyuR-0001pt-WB; Sun, 29 Oct 2023 02:04:29 -0400
+Received: by mail-pf1-f182.google.com with SMTP id
+ d2e1a72fcca58-6b20a48522fso3145292b3a.1; 
+ Sat, 28 Oct 2023 23:04:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698559464; x=1699164264;
+ d=1e100.net; s=20230601; t=1698559466; x=1699164266;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RsCUo6FYIwj5uKTqrDxQQU+6CCkuwUVskMEosAm0UDs=;
- b=X8HBTKhWg9kPTE1XyMLJkmfdC1hSy7RAYGOxvVoiXktNGxx6lqZMe+AXxhR78z0FRn
- mDMblPs95oJ3AExlyMYmlJve/HqJQE+G7Y76wi5CkBNmtN5KFFCQJkCgRadiRuRKqUUd
- u7C9NEusGgGwk/EVcZr+hrCERq4IaC2s/w3R7K8zI3oF86oEWWHld4essS2+WEGl/OAh
- cvgOmFAcEie0PvjVBptRpPLntHR5oSSA53R5qc5fLnww5r0NfCNGuwUxwi28UGbHFtuN
- 07Z2COInBrbKuamU1rnhTFGBuQqQrpBhXS7usah/m4rvhEIHoLxqUaKAQDaGdHuRABE0
- hrWQ==
-X-Gm-Message-State: AOJu0YyBGgmNvi/0ZVDDbW2M0xnkqwx0SNwUkZS8UA+KnHhAyiT8YygO
- Ah9kn4pNjya4dvRY34yCWOzz+3NABYnXvw==
-X-Google-Smtp-Source: AGHT+IEPXqORc+ppyLIp/O7NVkhtgvDn6nmOHo0kclH5E/sRoCzXq6ArWuDsgubME5UhKVLc/5lntw==
-X-Received: by 2002:a05:6a21:3395:b0:17a:cfce:5a30 with SMTP id
- yy21-20020a056a21339500b0017acfce5a30mr6475433pzb.16.1698559464321; 
- Sat, 28 Oct 2023 23:04:24 -0700 (PDT)
+ bh=zrq82TLCFypqxKyT1z+K/brbjgrCC84E4FF6pseKFjc=;
+ b=SmQ3YJavOJwIE5S27jSye5Tr4S7FgmFeNWouY64IlX8I9bG0swgtIkx1LaCep/bnHO
+ vvV5EFWXbk3sCeZvcvMbq0ELDVB88VU8IYNou4Xkkkfm0cZBQwKObrQK2IzvpP2MoyU+
+ Gru4MvAC8GACcnaRzKvU6+4QVA5y9DTr8WlBgheDSy498g3s41ynGQIcjhGi0jA2GKrn
+ tZ4kRdbEXM9abt63kCC3oyymQLd2y+Jxq8g2zz5+a1rH/2QADDOrDIZQ7o7yv45KQJv+
+ SHbQsAK1iFSj7DL7GTrvtuRbKCLKRHbN+JYi4j7G2LMVEcewdpqqrQjjlMhI7J1uykBj
+ wfNw==
+X-Gm-Message-State: AOJu0Yx386ODzNtvO7ZeV8tkuN4aCCA0SXl899bUpZDdjFO4OcjeNdrR
+ S9AkvB37juH/Rz5W7Rj61Mr3eIIkI7QEHg==
+X-Google-Smtp-Source: AGHT+IGU+4oTosQqoxQVtTVa2ChKWl/fj4KZhAINwmpmj3Z8RDLVcuiZnr0rui5FzaC4PikqK439fw==
+X-Received: by 2002:a17:903:88e:b0:1b8:94e9:e7cb with SMTP id
+ kt14-20020a170903088e00b001b894e9e7cbmr4423775plb.21.1698559465935; 
+ Sat, 28 Oct 2023 23:04:25 -0700 (PDT)
 Received: from localhost.localdomain ([2601:642:4c02:6ead:344e:2b1:f5a5:58c6])
  by smtp.gmail.com with ESMTPSA id
- u12-20020a17090341cc00b001b8943b37a5sm4019518ple.24.2023.10.28.23.04.23
+ u12-20020a17090341cc00b001b8943b37a5sm4019518ple.24.2023.10.28.23.04.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 28 Oct 2023 23:04:23 -0700 (PDT)
+ Sat, 28 Oct 2023 23:04:25 -0700 (PDT)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, Paolo Bonzini <pbonzini@redhat.com>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PATCH v3 08/14] hw/loongarch/virt: connect TPM to platform bus
-Date: Sat, 28 Oct 2023 23:03:21 -0700
-Message-ID: <20231029060404.71196-9-j@getutm.app>
+Cc: Joelle van Dyne <j@getutm.app>, Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Song Gao <gaosong@loongson.cn>, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ qemu-arm@nongnu.org (open list:Virt)
+Subject: [PATCH v3 09/14] tpm_tis_sysbus: move DSDT AML generation to device
+Date: Sat, 28 Oct 2023 23:03:22 -0700
+Message-ID: <20231029060404.71196-10-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231029060404.71196-1-j@getutm.app>
 References: <20231029060404.71196-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.215.179; envelope-from=osy86dev@gmail.com;
- helo=mail-pg1-f179.google.com
+Received-SPF: pass client-ip=209.85.210.182; envelope-from=osy86dev@gmail.com;
+ helo=mail-pf1-f182.google.com
 X-Spam_score_int: -13
 X-Spam_score: -1.4
 X-Spam_bar: -
@@ -81,42 +82,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This reduces redundent code in different machine types with ACPI table
+generation. Additionally, this will allow us to support different TPM
+interfaces with the same AML logic. Finally, this matches up with the
+TPM TIS ISA implementation.
+
+Ideally, we would be able to call `qbus_build_aml` and avoid any TPM
+specific code in the ACPI table generation. However, currently we
+still have to call `build_tpm2` anyways and it does not look like
+most other ACPI devices support the `ACPI_DEV_AML_IF` interface.
+
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 ---
- hw/loongarch/virt.c  | 7 +++++++
- hw/loongarch/Kconfig | 1 +
- 2 files changed, 8 insertions(+)
+ hw/arm/virt-acpi-build.c  | 38 ++------------------------------------
+ hw/loongarch/acpi-build.c | 38 ++------------------------------------
+ hw/tpm/tpm_tis_sysbus.c   | 37 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+), 72 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 4b7dc67a2d..feed0f8bbf 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -1004,6 +1004,13 @@ static void loongarch_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-     } else if (memhp_type_supported(dev)) {
-         virt_mem_plug(hotplug_dev, dev, errp);
-     }
-+
-+#ifdef CONFIG_TPM
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_TPM_IF)) {
-+        tpm_sysbus_plug(TPM_IF(dev), OBJECT(lams->platform_bus_dev),
-+                        VIRT_PLATFORM_BUS_BASEADDRESS);
-+    }
-+#endif
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 9ce136cd88..3efbe6bd09 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -35,6 +35,7 @@
+ #include "target/arm/cpu.h"
+ #include "hw/acpi/acpi-defs.h"
+ #include "hw/acpi/acpi.h"
++#include "hw/acpi/acpi_aml_interface.h"
+ #include "hw/nvram/fw_cfg.h"
+ #include "hw/acpi/bios-linker-loader.h"
+ #include "hw/acpi/aml-build.h"
+@@ -208,41 +209,6 @@ static void acpi_dsdt_add_gpio(Aml *scope, const MemMapEntry *gpio_memmap,
+     aml_append(scope, dev);
  }
  
- static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
-diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
-index 5727efed6d..25da190ffc 100644
---- a/hw/loongarch/Kconfig
-+++ b/hw/loongarch/Kconfig
-@@ -5,6 +5,7 @@ config LOONGARCH_VIRT
-     imply VIRTIO_VGA
-     imply PCI_DEVICES
-     imply NVDIMM
-+    imply TPM_TIS_SYSBUS
-     select SERIAL
-     select VIRTIO_PCI
-     select PLATFORM_BUS
+-#ifdef CONFIG_TPM
+-static void acpi_dsdt_add_tpm(Aml *scope, VirtMachineState *vms)
+-{
+-    PlatformBusDevice *pbus = PLATFORM_BUS_DEVICE(vms->platform_bus_dev);
+-    hwaddr pbus_base = vms->memmap[VIRT_PLATFORM_BUS].base;
+-    SysBusDevice *sbdev = SYS_BUS_DEVICE(tpm_find());
+-    MemoryRegion *sbdev_mr;
+-    hwaddr tpm_base;
+-
+-    if (!sbdev) {
+-        return;
+-    }
+-
+-    tpm_base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
+-    assert(tpm_base != -1);
+-
+-    tpm_base += pbus_base;
+-
+-    sbdev_mr = sysbus_mmio_get_region(sbdev, 0);
+-
+-    Aml *dev = aml_device("TPM0");
+-    aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
+-    aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")));
+-    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
+-
+-    Aml *crs = aml_resource_template();
+-    aml_append(crs,
+-               aml_memory32_fixed(tpm_base,
+-                                  (uint32_t)memory_region_size(sbdev_mr),
+-                                  AML_READ_WRITE));
+-    aml_append(dev, aml_name_decl("_CRS", crs));
+-    aml_append(scope, dev);
+-}
+-#endif
+-
+ #define ID_MAPPING_ENTRY_SIZE 20
+ #define SMMU_V3_ENTRY_SIZE 68
+ #define ROOT_COMPLEX_ENTRY_SIZE 36
+@@ -891,7 +857,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+ 
+     acpi_dsdt_add_power_button(scope);
+ #ifdef CONFIG_TPM
+-    acpi_dsdt_add_tpm(scope, vms);
++    call_dev_aml_func(DEVICE(tpm_find()), scope);
+ #endif
+ 
+     aml_append(dsdt, scope);
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index ae292fc543..1969bfc8f9 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -14,6 +14,7 @@
+ #include "target/loongarch/cpu.h"
+ #include "hw/acpi/acpi-defs.h"
+ #include "hw/acpi/acpi.h"
++#include "hw/acpi/acpi_aml_interface.h"
+ #include "hw/nvram/fw_cfg.h"
+ #include "hw/acpi/bios-linker-loader.h"
+ #include "migration/vmstate.h"
+@@ -328,41 +329,6 @@ static void build_flash_aml(Aml *scope, LoongArchMachineState *lams)
+     aml_append(scope, dev);
+ }
+ 
+-#ifdef CONFIG_TPM
+-static void acpi_dsdt_add_tpm(Aml *scope, LoongArchMachineState *vms)
+-{
+-    PlatformBusDevice *pbus = PLATFORM_BUS_DEVICE(vms->platform_bus_dev);
+-    hwaddr pbus_base = VIRT_PLATFORM_BUS_BASEADDRESS;
+-    SysBusDevice *sbdev = SYS_BUS_DEVICE(tpm_find());
+-    MemoryRegion *sbdev_mr;
+-    hwaddr tpm_base;
+-
+-    if (!sbdev) {
+-        return;
+-    }
+-
+-    tpm_base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
+-    assert(tpm_base != -1);
+-
+-    tpm_base += pbus_base;
+-
+-    sbdev_mr = sysbus_mmio_get_region(sbdev, 0);
+-
+-    Aml *dev = aml_device("TPM0");
+-    aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
+-    aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")));
+-    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
+-
+-    Aml *crs = aml_resource_template();
+-    aml_append(crs,
+-               aml_memory32_fixed(tpm_base,
+-                                  (uint32_t)memory_region_size(sbdev_mr),
+-                                  AML_READ_WRITE));
+-    aml_append(dev, aml_name_decl("_CRS", crs));
+-    aml_append(scope, dev);
+-}
+-#endif
+-
+ /* build DSDT */
+ static void
+ build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+@@ -379,7 +345,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+     build_la_ged_aml(dsdt, machine);
+     build_flash_aml(dsdt, lams);
+ #ifdef CONFIG_TPM
+-    acpi_dsdt_add_tpm(dsdt, lams);
++    call_dev_aml_func(DEVICE(tpm_find()), dsdt);
+ #endif
+     /* System State Package */
+     scope = aml_scope("\\");
+diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
+index 2fc550f119..462b0e1571 100644
+--- a/hw/tpm/tpm_tis_sysbus.c
++++ b/hw/tpm/tpm_tis_sysbus.c
+@@ -30,6 +30,7 @@
+ #include "hw/sysbus.h"
+ #include "tpm_tis.h"
+ #include "qom/object.h"
++#include "hw/acpi/acpi_aml_interface.h"
+ 
+ struct TPMStateSysBus {
+     /*< private >*/
+@@ -37,6 +38,8 @@ struct TPMStateSysBus {
+ 
+     /*< public >*/
+     TPMState state; /* not a QOM object */
++    uint64_t baseaddr;
++    uint64_t size;
+ };
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(TPMStateSysBus, TPM_TIS_SYSBUS)
+@@ -93,6 +96,10 @@ static void tpm_tis_sysbus_reset(DeviceState *dev)
+ static Property tpm_tis_sysbus_properties[] = {
+     DEFINE_PROP_UINT32("irq", TPMStateSysBus, state.irq_num, TPM_TIS_IRQ),
+     DEFINE_PROP_TPMBE("tpmdev", TPMStateSysBus, state.be_driver),
++    DEFINE_PROP_UINT64("x-baseaddr", TPMStateSysBus, baseaddr,
++                       TPM_TIS_ADDR_BASE),
++    DEFINE_PROP_UINT64("x-size", TPMStateSysBus, size,
++                       TPM_TIS_ADDR_SIZE),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+@@ -125,10 +132,38 @@ static void tpm_tis_sysbus_realizefn(DeviceState *dev, Error **errp)
+     }
+ }
+ 
++static void build_tpm_tis_sysbus_aml(AcpiDevAmlIf *adev, Aml *scope)
++{
++    Aml *dev, *crs;
++    TPMStateSysBus *sbdev = TPM_TIS_SYSBUS(adev);
++    TPMIf *ti = TPM_IF(sbdev);
++
++    dev = aml_device("TPM");
++    if (tpm_tis_sysbus_get_tpm_version(ti) == TPM_VERSION_2_0) {
++        aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
++        aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")));
++    } else {
++        aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0C31")));
++    }
++    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
++    aml_append(dev, aml_name_decl("_STA", aml_int(0xF)));
++    crs = aml_resource_template();
++    aml_append(crs, aml_memory32_fixed(sbdev->baseaddr, sbdev->size,
++                                      AML_READ_WRITE));
++    /*
++     * FIXME: TPM_TIS_IRQ=5 conflicts with PNP0C0F irqs,
++     * fix default TPM_TIS_IRQ value there to use some unused IRQ
++     */
++    /* aml_append(crs, aml_irq_no_flags(sbdev->state.irq_num)); */
++    aml_append(dev, aml_name_decl("_CRS", crs));
++    aml_append(scope, dev);
++}
++
+ static void tpm_tis_sysbus_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     TPMIfClass *tc = TPM_IF_CLASS(klass);
++    AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
+ 
+     device_class_set_props(dc, tpm_tis_sysbus_properties);
+     dc->vmsd  = &vmstate_tpm_tis_sysbus;
+@@ -139,6 +174,7 @@ static void tpm_tis_sysbus_class_init(ObjectClass *klass, void *data)
+     tc->request_completed = tpm_tis_sysbus_request_completed;
+     tc->get_version = tpm_tis_sysbus_get_tpm_version;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    adevc->build_dev_aml = build_tpm_tis_sysbus_aml;
+ }
+ 
+ static const TypeInfo tpm_tis_sysbus_info = {
+@@ -149,6 +185,7 @@ static const TypeInfo tpm_tis_sysbus_info = {
+     .class_init  = tpm_tis_sysbus_class_init,
+     .interfaces = (InterfaceInfo[]) {
+         { TYPE_TPM_IF },
++        { TYPE_ACPI_DEV_AML_IF },
+         { }
+     }
+ };
 -- 
 2.41.0
 
