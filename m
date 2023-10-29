@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C697DACE5
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 15:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75147DACE3
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 15:56:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qx7DH-00036y-8J; Sun, 29 Oct 2023 10:56:27 -0400
+	id 1qx7DF-00035e-QX; Sun, 29 Oct 2023 10:56:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qx7DC-00035L-1q
+ id 1qx7DC-00035K-1M
  for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:56:23 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qx7D9-0006GW-9s
+ id 1qx7D9-0006GZ-9s
  for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:56:21 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-50910346557so1376177e87.1
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40891d38e3fso28086045e9.1
  for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 07:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698591376; x=1699196176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gHsqkB0IASk68fTXpXP2OAO5XJadiYMzafZ5IwzftpE=;
- b=JieZsGbGevS6gKt0ikfIn6TTNzH9l+czU94/RJOEE4xmkqXMTgXViK0bh0sjWKJqg0
- 98In06fiUfE4ZOapyVC7QppBdEWONSDuRve2QV61dkB/N7b7v5X7HeyJzRsxLMkTa+p/
- DRxrdMQhbKRlVuCYHYeQpYXMnILPbkY6537QvKbdQLXRcC1nTRb0eIcgvoSdw4dybQ3D
- Sbyv2C52iQh/YGOJgDG/9dqJgwHNoCUjKo8F5JfuY+21sRqqqFhzKC8zXJ50CIKehGDl
- bYjIVPfWMOxrtwRt9dx29IUSt2xVYnW0w5yQ/EvhG7NmrVjLWMaX/15+B4BTCZq/UnmD
- /IKg==
+ bh=1006xl+XCGNGi7Tb1Isf2iUCQhcI8DLGEFBLylxGtCw=;
+ b=tYmqkBRNKNU+EPrBRL/O7XtsEeuaKdFWyE0fF1Q5Jk9SHFdJCt6VTPCIVtMOxaosMV
+ X1nqxuomjwSazg/ybHF3YamtxD//V2YOKxEp4/3dDpPWfDnGOrOzgOb7yhZU36+MO7IH
+ lhHVyD0NFXWzzuyQb2y0K6EiMzRdY/+vNthSCtjwJtGDkowa1cXhcZs1R/8Oh2h9itLr
+ v3Dz9VYDa4tHJoldRCeHSs8WmMX4XGbZLaLoD06G3Hb9PgxBvQ90luQJiNxE2Bi/blFf
+ qh1ipsmlpGgstXjToXyIrXODcMMcJicEBzD+HKL4a7Ok/W1XBj3A8DpJ7oG5YRSawGz9
+ d3Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698591376; x=1699196176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gHsqkB0IASk68fTXpXP2OAO5XJadiYMzafZ5IwzftpE=;
- b=nR9sUK++STLTEdnZj4fnnrd/JC25PpDe3efx7RxkmEk6D8KhgmV1WLkB84R0md2mUd
- KYFx1mPeweGeluUOGTT9qthtVmmGlTMgqeT+tzHvKgW9YaWJ7n6fbYg3SvA/sG5sbSgb
- pOMvJTj7L6uJQ6qgyp2sytRSYRBluQwE0wDu1YZZ81OkmShHgEpTh75cTi+wdCowFsuo
- 663/GE1aqZ//0U8lNo+WzJwQldc/nays3FEHDLU+dY4XG6sAEsoxnbvArZfT30i1nV89
- zVH3uT/vVLjprSn77jrV3Zj6i2gYpTjYl0Ox7OHP0dyzeybc/HBpFSrRxrso31nciXBA
- 4pfg==
-X-Gm-Message-State: AOJu0YzPKGfYr/cf4I8EycWl2J1vKHy6UFLBCWa0AEnd0IagDyagSz6L
- /xYW2mrDtYuoLGfF1VuyAMA1/w==
-X-Google-Smtp-Source: AGHT+IGO2VZsprgaC871t+Q+aNvNkO0buR9RWn/ao7FwMO/UR2x2eyeujob15Cz4MpzxlOeV3jSseA==
-X-Received: by 2002:a05:6512:234f:b0:509:b3f:8a7c with SMTP id
- p15-20020a056512234f00b005090b3f8a7cmr3572562lfu.7.1698591376453; 
+ bh=1006xl+XCGNGi7Tb1Isf2iUCQhcI8DLGEFBLylxGtCw=;
+ b=mnV42DN7+bhB+Hq3syQRUF8KaDsUktgrKU0OkFe4UncRB32IVokTNshiwEi3XfJamx
+ wVRa4OXFY3D3hqaYDtleAkuyZJsKjmEZzM9G2K+PBefqFeSw6ndKzXGXmwckDh0RCsf+
+ gjkzo9tSeiIkPu82pkJKKAlC0bZwvb+7QBQ8hybFyXAJrzfJ8qwMnB/b8u3YUWp0kBqp
+ lwWuofO0goLR+faYe0u+T0R9YufzMblQ6acuOtBX+l3KlwHhm6b4xEr53MG2XOhPD7HS
+ tavRsxGgHgBL9bBFfBw5MUDooElZhvw9ZPSYi9g8Q6e8OoFCXYeckp2M1AKBa4Wc7JPs
+ ZFlg==
+X-Gm-Message-State: AOJu0YypSWJdYF0+RyQX9Jk86Ulg1Cz9iQBJ+wuSvDu/rX0c+IjRGSXB
+ WgGcOyHEpzVcqoLbAkxhCxPtnQ==
+X-Google-Smtp-Source: AGHT+IHuhjQ66A/l9ALcatjT4odQZXhiD2esM6eeUF0gI7MHWAwCLr4C4Vy0382nPyYdsIH89Nc1bA==
+X-Received: by 2002:a05:600c:1c29:b0:401:eb0:a974 with SMTP id
+ j41-20020a05600c1c2900b004010eb0a974mr6281873wms.3.1698591376630; 
  Sun, 29 Oct 2023 07:56:16 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o8-20020a056000010800b0032d8354fb43sm2271548wrx.76.2023.10.29.07.56.16
+ p14-20020adfce0e000000b0032f7e2f4457sm3067938wrn.66.2023.10.29.07.56.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 29 Oct 2023 07:56:16 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C59406570A;
+ by draig.lan (Postfix) with ESMTP id D8D456570C;
  Sun, 29 Oct 2023 14:50:35 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -75,18 +75,19 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, Brian Cain <bcain@quicinc.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 18/19] plugins: Remove an extra parameter
-Date: Sun, 29 Oct 2023 14:50:32 +0000
-Message-Id: <20231029145033.592566-19-alex.bennee@linaro.org>
+ Alexandre Iooss <erdnaxe@crans.org>, Cong Liu <liucong2@kylinos.cn>
+Subject: [PATCH v2 19/19] contrib/plugins: Close file descriptor on error
+ return
+Date: Sun, 29 Oct 2023 14:50:33 +0000
+Message-Id: <20231029145033.592566-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231029145033.592566-1-alex.bennee@linaro.org>
 References: <20231029145033.592566-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,52 +110,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Cong Liu <liucong2@kylinos.cn>
 
-copy_call() has an unused parameter so remove it.
+This patch closes the file descriptor fd on error return to avoid
+resource leak.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20231019101030.128431-7-akihiko.odaki@daynix.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231028103311.347104-17-alex.bennee@linaro.org>
+Fixes: ec7ee95db909 ("contrib/plugins: fix coverity warning in lockstep")
+Signed-off-by: Cong Liu <liucong2@kylinos.cn>
+Message-Id: <20231018025225.1640122-1-liucong2@kylinos.cn>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20231028103311.347104-18-alex.bennee@linaro.org>
 ---
- accel/tcg/plugin-gen.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ contrib/plugins/lockstep.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 39b3c9351f..78b331b251 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -327,8 +327,7 @@ static TCGOp *copy_st_ptr(TCGOp **begin_op, TCGOp *op)
-     return op;
- }
- 
--static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *empty_func,
--                        void *func, int *cb_idx)
-+static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *func, int *cb_idx)
- {
-     TCGOp *old_op;
-     int func_idx;
-@@ -372,8 +371,7 @@ static TCGOp *append_udata_cb(const struct qemu_plugin_dyn_cb *cb,
+diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
+index f0cb8792c6..237543b43a 100644
+--- a/contrib/plugins/lockstep.c
++++ b/contrib/plugins/lockstep.c
+@@ -257,6 +257,7 @@ static bool setup_socket(const char *path)
+     sockaddr.sun_family = AF_UNIX;
+     if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
+         perror("bad path");
++        close(fd);
+         return false;
      }
  
-     /* call */
--    op = copy_call(&begin_op, op, HELPER(plugin_vcpu_udata_cb),
--                   cb->f.vcpu_udata, cb_idx);
-+    op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
- 
-     return op;
- }
-@@ -420,8 +418,7 @@ static TCGOp *append_mem_cb(const struct qemu_plugin_dyn_cb *cb,
- 
-     if (type == PLUGIN_GEN_CB_MEM) {
-         /* call */
--        op = copy_call(&begin_op, op, HELPER(plugin_vcpu_mem_cb),
--                       cb->f.vcpu_udata, cb_idx);
-+        op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+@@ -303,6 +304,7 @@ static bool connect_socket(const char *path)
+     sockaddr.sun_family = AF_UNIX;
+     if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
+         perror("bad path");
++        close(fd);
+         return false;
      }
  
-     return op;
 -- 
 2.39.2
 
