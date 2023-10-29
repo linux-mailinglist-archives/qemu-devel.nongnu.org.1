@@ -2,57 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62B37DAE98
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 22:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F01F77DAE6A
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 22:10:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxDJf-0003TD-52; Sun, 29 Oct 2023 17:27:27 -0400
+	id 1qxD1m-0002eb-PR; Sun, 29 Oct 2023 17:08:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marielle@novastrider.com>)
- id 1qxCux-0001uS-PF
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 17:01:55 -0400
-Received: from out-170.mta1.migadu.com ([95.215.58.170])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marielle@novastrider.com>)
- id 1qxCuv-00046K-Kr
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 17:01:55 -0400
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=novastrider.com;
- s=key1; t=1698613301;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=GFoIeXJ41GUo62f6dyhb4xjXazYAtreCSXuwN4KhqZo=;
- b=YH4wOi/OpVNaFsFXxGLryJN1YpZH5azNwMpunwz16vJQp47jKYn9Ilh+xnQmnuZkDFBseh
- GTzmixsAu199dma50qAItQN0KYlZaiKozSP0Ff63u0BLwuA8lPYZP7FFa9x26P31pJKrHY
- wOhS8GFDCAddQluQP2yYMvvV1EkxIH8MIQyrHrudLhvze4eTirc/Zb1014AggEFstE5Eco
- XttlHUg+vlgqDN2tbkSiOKd+TuACOKsbGYWiVeYWd00xXvFQBCLZmKKSfArKEWFP2diz+e
- 2dKImrjIVCYp5g/bzb2GqW3qPjb2of3Hzworl5GYIld54bDdcXYiBJVDf3k/Ug==
-From: Marielle Novastrider <marielle@novastrider.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxD1k-0002eC-Ez
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 17:08:56 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxD1g-0005DM-LT
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 17:08:56 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6b7f0170d7bso3777539b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 14:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698613731; x=1699218531; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eXLlwLlC9PpEdWbXFK0w6D6ZLA5syZW+CHn2NQVmR6k=;
+ b=OZt5SdTh1ODS+51jGnLBHWmyPv/xdpDfZSRwtuS6S2n1IYxBKhf71l+HqZ1V6Mellb
+ lgjXpLuJvdXIKHa+981L0OhlmhV3ilflkMCNMjgKAaN2phYJRgpLlszbLpU1HdEaVANu
+ AlNqbI7DZsBLon6pUditQzh3n49Y8TiG0q/xzv/606BF/IrLIjjuehoUt1yd60Ic4adJ
+ 06u5DLMUUMEK8F1noYZfUw2gj4iGNWtXDLYRdGZHKLCf/f7cWDsRMzI+YsYaCXtrTsN1
+ e69PDabVIzLdQu3/GdZD2DNEB2HNJ53mXxyAzqv+VVfrD35gD8LNA1nYm+6KyevIHmZT
+ awVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698613731; x=1699218531;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eXLlwLlC9PpEdWbXFK0w6D6ZLA5syZW+CHn2NQVmR6k=;
+ b=IF9zW/mxB6AyZJ9I1kbe4vlGVhabUvlwocY64OHviODdAtgrUrhiOvdxc3M9v9/83G
+ 4vhkMz+A9rg3Gf6kPTquiryQBQDHF3opviT8h833+sLNeORrwk1bS4xxm78T1Ccli7lx
+ h2XJMaCMIVQtc4uF24Y5rlt0a3Flcxzh+KBASMJpEd22k5EkCU98HtTkw1cpscMN2bdC
+ PX+iQvzbbUS3LoDaBEzc7KaQbRnGcdu0OM4kZAO7jLpoyXp+qNTi2jaJorLe8GC4p6xK
+ p3Umj4qcfCoNX8Z2LH6ZuGQyPLvoKSBghHXTvgBTj3TOCR+oWD4HopUHGCMmqSGiV38K
+ f21A==
+X-Gm-Message-State: AOJu0YyZWL6r9widJomyKoejQD9qsy1HnqZoyeeaSbKw3CGSunnA/XDB
+ zD39nEsXY5DatQoz2RB2dL9+szlGtJSVTXgHXcw=
+X-Google-Smtp-Source: AGHT+IFO8LSq4IcWvVI4KbqXjz3cW0CUI+vezCe8The2M5NDrow5yRvOHVireRni3rXBipUeZ5KP/Q==
+X-Received: by 2002:a05:6a00:b42:b0:6be:30f1:45f8 with SMTP id
+ p2-20020a056a000b4200b006be30f145f8mr10676184pfo.20.1698613730638; 
+ Sun, 29 Oct 2023 14:08:50 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ z11-20020aa785cb000000b006c0685422e0sm4622847pfn.214.2023.10.29.14.08.49
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 29 Oct 2023 14:08:50 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Marielle Novastrider <marielle@novastrider.com>,
- Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PATCH] linux-user/elfload: Add missing arm64 hwcap values
-Date: Sun, 29 Oct 2023 21:00:58 +0000
-Message-Id: <20231029210058.38986-1-marielle@novastrider.com>
+Subject: [PATCH 00/11] tcg: Move tcg expanders out of line
+Date: Sun, 29 Oct 2023 14:08:37 -0700
+Message-Id: <20231029210848.78234-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=95.215.58.170;
- envelope-from=marielle@novastrider.com; helo=out-170.mta1.migadu.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 29 Oct 2023 17:27:26 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,61 +86,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Specifically DIT, LSE2, and MTE3.
+This reduces the amount of code within tcg-op-common.h, and the amount
+of code in the code segment full stop.
 
-We already expose detection of these via the CPUID interface, but
-missed these from ELF hwcaps.
+With many translators these days, we're putting the expander function
+addresses into tables, or pass them to other general target-specific
+expansion helpers.  At present that means we get out-of-line copies of 
+these functions anyway.  If the target is implemented with multiple
+translation units, we can get multiple out-of-line copies.
 
-Signed-off-by: Marielle Novastrider <marielle@novastrider.com>
----
- linux-user/elfload.c | 3 +++
- target/arm/cpu.h     | 5 +++++
- 2 files changed, 8 insertions(+)
+This is also a necessary step in making tcg/arch/tcg-target.h private.
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 2e3809f03c..d9683809a1 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -768,12 +768,14 @@ uint32_t get_elf_hwcap(void)
-     GET_FEATURE_ID(aa64_sm4, ARM_HWCAP_A64_SM4);
-     GET_FEATURE_ID(aa64_fp16, ARM_HWCAP_A64_FPHP | ARM_HWCAP_A64_ASIMDHP);
-     GET_FEATURE_ID(aa64_atomics, ARM_HWCAP_A64_ATOMICS);
-+    GET_FEATURE_ID(aa64_lse2, ARM_HWCAP_A64_USCAT);
-     GET_FEATURE_ID(aa64_rdm, ARM_HWCAP_A64_ASIMDRDM);
-     GET_FEATURE_ID(aa64_dp, ARM_HWCAP_A64_ASIMDDP);
-     GET_FEATURE_ID(aa64_fcma, ARM_HWCAP_A64_FCMA);
-     GET_FEATURE_ID(aa64_sve, ARM_HWCAP_A64_SVE);
-     GET_FEATURE_ID(aa64_pauth, ARM_HWCAP_A64_PACA | ARM_HWCAP_A64_PACG);
-     GET_FEATURE_ID(aa64_fhm, ARM_HWCAP_A64_ASIMDFHM);
-+    GET_FEATURE_ID(aa64_dit, ARM_HWCAP_A64_DIT);
-     GET_FEATURE_ID(aa64_jscvt, ARM_HWCAP_A64_JSCVT);
-     GET_FEATURE_ID(aa64_sb, ARM_HWCAP_A64_SB);
-     GET_FEATURE_ID(aa64_condm_4, ARM_HWCAP_A64_FLAGM);
-@@ -807,6 +809,7 @@ uint32_t get_elf_hwcap2(void)
-     GET_FEATURE_ID(aa64_rndr, ARM_HWCAP2_A64_RNG);
-     GET_FEATURE_ID(aa64_bti, ARM_HWCAP2_A64_BTI);
-     GET_FEATURE_ID(aa64_mte, ARM_HWCAP2_A64_MTE);
-+    GET_FEATURE_ID(aa64_mte3, ARM_HWCAP2_A64_MTE3);
-     GET_FEATURE_ID(aa64_sme, (ARM_HWCAP2_A64_SME |
-                               ARM_HWCAP2_A64_SME_F32F32 |
-                               ARM_HWCAP2_A64_SME_B16F32 |
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 76d4cef9e3..7605d6ee3a 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -4073,6 +4073,11 @@ static inline bool isar_feature_aa64_mte(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 2;
- }
- 
-+static inline bool isar_feature_aa64_mte3(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 3;
-+}
-+
- static inline bool isar_feature_aa64_sme(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SME) != 0;
+Top few code size reductions:
+
+	-89k	qemu-system-ppc64
+	-88k	qemu-system-aarch64
+	-60k	qemu-system-mipsel
+	-50k	qemu-system-arm
+	-42k	qemu-system-riscv64
+	-33k	qemu-system-i386
+	-33k	qemu-system-m68k
+	-32k	qemu-system-tricore
+
+
+r~
+
+
+Richard Henderson (11):
+  tcg: Mark tcg_gen_op* as noinline
+  tcg: Move tcg_gen_op* out of line
+  tcg: Move generic expanders out of line
+  tcg: Move 32-bit expanders out of line
+  tcg: Move 64-bit expanders out of line
+  tcg: Move vec_gen_* declarations to tcg-internal.h
+  tcg: Move tcg_gen_opN declarations to tcg-internal.h
+  tcg: Unexport tcg_gen_op*_{i32,i64}
+  tcg: Move tcg_constant_* out of line
+  tcg: Move tcg_temp_new_*, tcg_global_mem_new_* out of line
+  tcg: Move tcg_temp_free_* out of line
+
+ include/tcg/tcg-op-common.h     | 538 +++---------------------------
+ include/tcg/tcg-temp-internal.h |  56 +---
+ include/tcg/tcg.h               |  77 -----
+ tcg/tcg-internal.h              |  18 +
+ tcg/tcg-op.c                    | 566 +++++++++++++++++++++++++++-----
+ tcg/tcg.c                       | 104 +++++-
+ 6 files changed, 664 insertions(+), 695 deletions(-)
+
 -- 
-2.39.3 (Apple Git-145)
+2.34.1
 
 
