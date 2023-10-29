@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDA17DAC0F
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 12:08:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF48D7DAC0B
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 12:08:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qx3dr-0007Vy-8N; Sun, 29 Oct 2023 07:07:39 -0400
+	id 1qx3ds-0007Wc-8E; Sun, 29 Oct 2023 07:07:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qx3do-0007Oa-Sj
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 07:07:36 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1qx3dm-0007Nr-Ga
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 07:07:35 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qx3dk-0000Hu-Nd
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 07:07:36 -0400
+ id 1qx3dk-0000I5-Mp
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 07:07:34 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 24AA4756082;
- Sun, 29 Oct 2023 12:07:33 +0100 (CET)
+ by localhost (Postfix) with SMTP id 34E527560AC;
+ Sun, 29 Oct 2023 12:07:34 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id F0B1C7560A3; Sun, 29 Oct 2023 12:07:32 +0100 (CET)
-Message-Id: <ef1706650a60d7f88f8e00035daffc83592d15f9.1698577151.git.balaton@eik.bme.hu>
+ id 1634E7560A8; Sun, 29 Oct 2023 12:07:34 +0100 (CET)
+Message-Id: <4e128244cae4960c4ba7094c6fba6d8a5b3b3ad8.1698577151.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1698577151.git.balaton@eik.bme.hu>
 References: <cover.1698577151.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 1/4] hw/isa/vt82c686: Bring back via_isa_set_irq()
+Subject: [PATCH v2 2/4] hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI
+ interrupts
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Bernhard Beschow <shentey@gmail.com>, vr_qemu@t-online.de
-Date: Sun, 29 Oct 2023 12:07:32 +0100 (CET)
+Date: Sun, 29 Oct 2023 12:07:34 +0100 (CET)
 X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -55,97 +56,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VIA intergrated south bridge chips combine several functions and
-allow routing their interrupts to any of the ISA IRQs (also allowing
-multiple components to share the same ISA IRQ, e.g. pegasos2 firmware
-configures USB, sound and PCI to all use IRQ 9). Bring back
-via_isa_set_irq() and change it to take the PCIDevice that wants to
-change an IRQ and keep track of the interrupt status of each source
-separately and do the mapping to ISA IRQ within the ISA bridge to
-allow different sources to control the same ISA IRQ lines.
+This device is part of a superio/ISA bridge chip and IRQs from it are
+routed to an ISA interrupt. Use via_isa_set_irq() function to implement
+this in a vt82c686-uhci-pci specific irq handler.
 
-This may not handle cases when the ISA IRQ is also controlled by
-devices directly, not going through via_isa_set_irq() such as serial,
-parallel or keyboard but these IRQs being conventionally fixed are not
-likely for guests to change or share with other devices so hopefully
-this does not cause a problem in practice.
-
-This reverts commit 4e5a20b6da9b1f6d2e9621ed7eb8b239560104ae.
+This reverts commit 422a6e8075752bc5342afd3eace23a4990dd7d98.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/isa/vt82c686.c         | 39 +++++++++++++++++++++++++++++++++++++++
- include/hw/isa/vt82c686.h |  2 ++
- 2 files changed, 41 insertions(+)
+ hw/usb/vt82c686-uhci-pci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 57bdfb4e78..c1826c77eb 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -549,6 +549,7 @@ struct ViaISAState {
-     PCIDevice dev;
-     qemu_irq cpu_intr;
-     qemu_irq *isa_irqs_in;
-+    uint16_t isa_irq_state[ISA_NUM_IRQS];
-     ViaSuperIOState via_sio;
-     MC146818RtcState rtc;
-     PCIIDEState ide;
-@@ -592,6 +593,44 @@ static const TypeInfo via_isa_info = {
-     },
- };
+diff --git a/hw/usb/vt82c686-uhci-pci.c b/hw/usb/vt82c686-uhci-pci.c
+index b4884c9011..6162806172 100644
+--- a/hw/usb/vt82c686-uhci-pci.c
++++ b/hw/usb/vt82c686-uhci-pci.c
+@@ -1,7 +1,14 @@
+ #include "qemu/osdep.h"
++#include "hw/irq.h"
+ #include "hw/isa/vt82c686.h"
+ #include "hcd-uhci.h"
  
-+void via_isa_set_irq(PCIDevice *d, int pin, int level)
++static void uhci_isa_set_irq(void *opaque, int irq_num, int level)
 +{
-+    ViaISAState *s = VIA_ISA(pci_get_function_0(d));
-+    int n = PCI_FUNC(d->devfn);
-+    uint8_t isa_irq = d->config[PCI_INTERRUPT_LINE], max_irq = 15;
-+
-+    switch (n) {
-+    case 2: /* USB ports 0-1 */
-+    case 3: /* USB ports 2-3 */
-+        max_irq = 14;
-+        break;
-+    }
-+
-+    if (unlikely(isa_irq > max_irq || isa_irq == 2)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "Invalid ISA IRQ routing %d for %d",
-+                      isa_irq, n);
-+        return;
-+    }
-+    if (isa_irq == 0) {
-+        return; /* disabled */
-+    }
-+
-+    /*
-+     * In addition to recording status of sources mapped to each isa_irq we
-+     * keep track of all sources in IRQ 0 and use that as a mask to avoid stuck
-+     * interrupts in case mapping of a source is changed while IRQ is raised.
-+     */
-+    if (level) {
-+        s->isa_irq_state[isa_irq] |= BIT(n);
-+        s->isa_irq_state[0] |= BIT(n);
-+    } else {
-+        s->isa_irq_state[isa_irq] &= ~BIT(n);
-+        s->isa_irq_state[0] &= ~BIT(n);
-+    }
-+    s->isa_irq_state[isa_irq] &= s->isa_irq_state[0];
-+    qemu_set_irq(s->isa_irqs_in[isa_irq], !!s->isa_irq_state[isa_irq]);
++    UHCIState *s = opaque;
++    via_isa_set_irq(&s->dev, 0, level);
 +}
 +
- static void via_isa_request_i8259_irq(void *opaque, int irq, int level)
+ static void usb_uhci_vt82c686b_realize(PCIDevice *dev, Error **errp)
  {
-     ViaISAState *s = opaque;
-diff --git a/include/hw/isa/vt82c686.h b/include/hw/isa/vt82c686.h
-index b6e95b2851..da1722daf2 100644
---- a/include/hw/isa/vt82c686.h
-+++ b/include/hw/isa/vt82c686.h
-@@ -34,4 +34,6 @@ struct ViaAC97State {
-     uint32_t ac97_cmd;
- };
+     UHCIState *s = UHCI(dev);
+@@ -15,6 +22,8 @@ static void usb_uhci_vt82c686b_realize(PCIDevice *dev, Error **errp)
+     pci_set_long(pci_conf + 0xc0, 0x00002000);
  
-+void via_isa_set_irq(PCIDevice *d, int n, int level);
-+
- #endif
+     usb_uhci_common_realize(dev, errp);
++    object_unref(s->irq);
++    s->irq = qemu_allocate_irq(uhci_isa_set_irq, s, 0);
+ }
+ 
+ static UHCIInfo uhci_info[] = {
 -- 
 2.30.9
 
