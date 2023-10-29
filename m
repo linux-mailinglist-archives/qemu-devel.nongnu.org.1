@@ -2,38 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41B77DAA38
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 01:57:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AC37DAA3D
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 02:05:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qwtAK-0007cX-Ib; Sat, 28 Oct 2023 19:56:28 -0400
+	id 1qwtHg-0002jP-Dl; Sat, 28 Oct 2023 20:04:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qwtAJ-0007bZ-49
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 19:56:27 -0400
+ id 1qwtHa-0002iN-Bw
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 20:03:59 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qwtAH-0006Jo-LC
- for qemu-devel@nongnu.org; Sat, 28 Oct 2023 19:56:26 -0400
+ id 1qwtHX-0007ot-En
+ for qemu-devel@nongnu.org; Sat, 28 Oct 2023 20:03:58 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 57AD07560AF;
- Sun, 29 Oct 2023 01:56:26 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 2E208756078;
+ Sun, 29 Oct 2023 02:03:52 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 38760756082; Sun, 29 Oct 2023 01:56:26 +0200 (CEST)
-Message-Id: <94c8fd2a10450a3c8418d84f75a937ecae497c2f.1698536342.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1698536342.git.balaton@eik.bme.hu>
-References: <cover.1698536342.git.balaton@eik.bme.hu>
+ id 9FAB67456A7; Sun, 29 Oct 2023 02:03:51 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9DC92745681;
+ Sun, 29 Oct 2023 02:03:51 +0200 (CEST)
+Date: Sun, 29 Oct 2023 02:03:51 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 4/4] hw/audio/via-ac97: Route interrupts using
- via_isa_set_irq()
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Bernhard Beschow <shentey@gmail.com>, vr_qemu@t-online.de
-Date: Sun, 29 Oct 2023 01:56:26 +0200 (CEST)
-X-Spam-Probability: 8%
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v5 0/5] VIA PM: Implement basic ACPI support
+In-Reply-To: <56ec4e09-9c81-7d9c-69bf-16a23a0969bd@eik.bme.hu>
+Message-ID: <d7d71813-de45-e2c1-c4ea-ec10699aa76f@eik.bme.hu>
+References: <20231028091606.23700-1-shentey@gmail.com>
+ <999122a1-7790-f77c-8826-cd143191f6fb@eik.bme.hu>
+ <FE0C5B55-83DE-466F-B555-124B3936E3DE@gmail.com>
+ <56ec4e09-9c81-7d9c-69bf-16a23a0969bd@eik.bme.hu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -56,62 +63,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/audio/via-ac97.c | 8 ++++----
- hw/isa/vt82c686.c   | 1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+On Sat, 28 Oct 2023, BALATON Zoltan wrote:
+> On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+>> Am 28. Oktober 2023 12:58:32 UTC schrieb BALATON Zoltan 
+>> <balaton@eik.bme.hu>:
+>>> Hello,
+>>> 
+>>> On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+>>>> This series is part of my work to bring the VIA south bridges to the PC 
+>>>> machine
+>>>> [1]. It implements missing ACPI functionality which ACPI-aware x86 guests
+>>>> expect for a smooth experience. The implementation is heavily inspired by 
+>>>> PIIX4.
+>>> 
+>>> I think first the interrupt routing should be fixed because that may 
+>>> change a few things in this series so that should be the next step and 
+>>> then rebase this series on top of that.
+>>> 
+>>> What I mean by fixing interrupt routing? You may remember this discussion:
+>>> 
+>>> https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/
+>>> 
+>>> With pegasos2 your (over)simplification worked only because the firmware 
+>>> of that machine maps everythnig to one ISA IRQ and guests were happy with 
+>>> that. I told you that back then but could not convince you and Mark about 
+>>> that. Now with the amigaone machine the firmware maps VIA devices and PCI 
+>>> interuupt pins to different ISA IRQs so we need to go back either to my 
+>>> otiginal implementation or something else you come up with. You can test 
+>>> this trying to use USB devices with amigaone machine which only works 
+>>> after reverting 4e5a20b6da9b1 and 422a6e8075752. So please either propose 
+>>> something to fix that first or wait with this series until I can update my 
+>>> pathches to solve interrupt routing. I think this series should wait until 
+>>> after that because it adds more interrupt handling which should follow 
+>>> whatever way we come up with for that so it's too early fir this series 
+>>> yet. (If you want to try fixing it keep in mind that in both amigaone and 
+>>> pegasos2 the PCI buses are in the north brid
+> ge not in the VIA south bridge so don't try to force the IRQ mapping into the 
+> PCI bus. All the VIA chip needs to do is mapping its PIRQ/PINT pins to ISA 
+> IRQs as the VIA is only handling ISA IRQs and all other pci stuff is handled 
+> in the north bridge. So I think we need a via_set_isa_irq function but we 
+> could change it according to Mark's idea to pass the PCI device and use its 
+> function number to select itq source instead of the enum I had in my original 
+> series.)
+>>> 
+>>> I have some other comments that I'll add in reply to individual patches 
+>>> for the future/
+>> 
+>> Hi Zoltan,
+>> 
+>> The interrupt handling introduced in this series is not related to PCI 
+>> interrupt routing: The SMI is a dedicated pin on the device and the SCI is 
+>> mapped internally to an ISA interrupt (note how the power management 
+>> function lacks the registers for PCI interrupt information). Hence, PCI 
+>> interrupt routing isn't changed in this series and therefore seems 
+>> off-topic to me.
+>> 
+>> Moreover, the SMI is a new interrupt which is therefore not used in any 
+>> machine yet. The SCI is deactivated if set to IRQ 0 which is the default 
+>> even. If a guest configures it, it shall be aware to receive an *ISA* 
+>> interrupt.
+>> 
+>> So I think this series shouldn't conflict with any previous work and should 
+>> not be blocked by the PCI IRQ routing topic.
+>
+> The topic I've raised is not about routing PCI interrupts but routing 
+> different IRQ sources in VIA chip (such as different functions plus the 
+> PIRQ/PINT pins) to ISA interrupts so that would conflict with how the PM func 
+> interrupts are routed. I think only the isa function should have qemu_irqs 
+> and it should handle mapping of the different sources to the appropriate ISA 
+> IRQ so the different sources (functions) should not have their own qemu_irqs 
+> or gpios but they would just call via_isa_set_irq with their PCIDevice, pun 
+> and level and then the isa model would do the routing. I plan to do this 
+> eventually but it you're adding more things that would need to be reverted 
+> then it becomes more difficult.
 
-diff --git a/hw/audio/via-ac97.c b/hw/audio/via-ac97.c
-index 30095a4c7a..4c127a1def 100644
---- a/hw/audio/via-ac97.c
-+++ b/hw/audio/via-ac97.c
-@@ -211,14 +211,14 @@ static void out_cb(void *opaque, int avail)
-                     AUD_set_active_out(s->vo, 0);
-                 }
-                 if (c->type & STAT_EOL) {
--                    pci_set_irq(&s->dev, 1);
-+                    via_isa_set_irq(&s->dev, 0, 1);
-                 }
-             }
-             if (CLEN_IS_FLAG(c)) {
-                 c->stat |= STAT_FLAG;
-                 c->stat |= STAT_PAUSED;
-                 if (c->type & STAT_FLAG) {
--                    pci_set_irq(&s->dev, 1);
-+                    via_isa_set_irq(&s->dev, 0, 1);
-                 }
-             }
-             if (CLEN_IS_STOP(c)) {
-@@ -305,13 +305,13 @@ static void sgd_write(void *opaque, hwaddr addr, uint64_t val, unsigned size)
-         if (val & STAT_EOL) {
-             s->aur.stat &= ~(STAT_EOL | STAT_PAUSED);
-             if (s->aur.type & STAT_EOL) {
--                pci_set_irq(&s->dev, 0);
-+                via_isa_set_irq(&s->dev, 0, 0);
-             }
-         }
-         if (val & STAT_FLAG) {
-             s->aur.stat &= ~(STAT_FLAG | STAT_PAUSED);
-             if (s->aur.type & STAT_FLAG) {
--                pci_set_irq(&s->dev, 0);
-+                via_isa_set_irq(&s->dev, 0, 0);
-             }
-         }
-         break;
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 18cc2f653d..830aac7670 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -621,6 +621,7 @@ void via_isa_set_irq(PCIDevice *d, int pin, int level)
-         break;
-     case 2: /* USB ports 0-1 */
-     case 3: /* USB ports 2-3 */
-+    case 5: /* AC97 audio */
-         max_irq = 14;
-         break;
-     }
--- 
-2.30.9
+I've submitted a series with these changes that I think should be the way 
+to go. The PM device could then do what I've proposed before and the 
+routing of sci to ISA or SMI can be done in the switch in via_isa_set_irq. 
+I've left the via-ide device alone for now to avoid conflicting with 
+Mark's series but maybe in the future that could also be converted back at 
+some point. It's not important at the moment as that's using separate 
+interrupts on all machines so should work either way for now so can be 
+done any time later.
 
+Regards,
+BALATON Zoltan
 
