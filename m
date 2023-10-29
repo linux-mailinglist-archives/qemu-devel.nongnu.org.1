@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57D37DACE0
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 15:53:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C697DACE5
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 15:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qx77s-0007bS-Ec; Sun, 29 Oct 2023 10:50:52 -0400
+	id 1qx7DH-00036y-8J; Sun, 29 Oct 2023 10:56:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qx77p-0007Yb-Po
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:50:49 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qx7DC-00035L-1q
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:56:23 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qx77j-00058d-VX
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:50:49 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4083f61312eso28756635e9.3
- for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 07:50:43 -0700 (PDT)
+ id 1qx7D9-0006GW-9s
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 10:56:21 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-50910346557so1376177e87.1
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 07:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698591042; x=1699195842; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698591376; x=1699196176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L7mkLliNPzNXB/MT8B2nzmAQfKs62ilya+P57Y1l0Y4=;
- b=X63nzoope1lqBtmKUIradv/fto8GCmQHWr3Ft6jvfemAcJMyFjmQqhvExSQpOwt5W6
- n+529jkrpNLU/mRi28AKIvP+Ck5AQepnb4Ct2/u3FE3HXZ2ePXkbsnPHWz6BmPN8M5nw
- +VJO4Y6GAdsHatgwvzY43IV/FBjBsIXs7QMxUSUuSKs7JjCI2GOJSXgmiDBJFOrhvwAe
- UyIia5V99fn9yMNuiAoa8zY04iBcxqcddrOwqmL8VMhA6pLTYldaK14F9hisaLKZuWPd
- reezKRy5nf5VTpulgOIn8W1WkArm5lnTIarozSi8+ZJBC2Szs3/fe5MZCaH4GMLL/JBa
- 6Omw==
+ bh=gHsqkB0IASk68fTXpXP2OAO5XJadiYMzafZ5IwzftpE=;
+ b=JieZsGbGevS6gKt0ikfIn6TTNzH9l+czU94/RJOEE4xmkqXMTgXViK0bh0sjWKJqg0
+ 98In06fiUfE4ZOapyVC7QppBdEWONSDuRve2QV61dkB/N7b7v5X7HeyJzRsxLMkTa+p/
+ DRxrdMQhbKRlVuCYHYeQpYXMnILPbkY6537QvKbdQLXRcC1nTRb0eIcgvoSdw4dybQ3D
+ Sbyv2C52iQh/YGOJgDG/9dqJgwHNoCUjKo8F5JfuY+21sRqqqFhzKC8zXJ50CIKehGDl
+ bYjIVPfWMOxrtwRt9dx29IUSt2xVYnW0w5yQ/EvhG7NmrVjLWMaX/15+B4BTCZq/UnmD
+ /IKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698591042; x=1699195842;
+ d=1e100.net; s=20230601; t=1698591376; x=1699196176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L7mkLliNPzNXB/MT8B2nzmAQfKs62ilya+P57Y1l0Y4=;
- b=L1zVfmq/fLww+4Ljm9o/DXKZcr2kQ6/CNJZXgD5NqO2gX15de8sRBnzOk7NDWpbaf1
- 6hvS01o7ZmwcVGG+uFjkRs2CTfn4sJRjwXKzIkHwUAXM+cqaH+NN15/JdCL5Y9/3lL4k
- cdmxpV/CYQ3htUApB+VQKDytIDMelwhJTZr4vIVRrhHNGxw7y0I6iLavswFoU53UjZsg
- DQUOdwHHjKGlQXGqxqpBz49HLVKnaM9ePSiAe2m0dANkmc1mO3rU+wNkRlr6HueoJ5iM
- bVgLHKlW3XAfFyo6dA9yM3wXdgtizPNwnWLoo1AsNHMBGvXxG+2VCDZda5+rlW2+3Nq2
- SlYg==
-X-Gm-Message-State: AOJu0YxIIKZ8V+It3S12t2bxYDMdAd0a5l1Npw2Yh+R0qtdFDzVXpuXF
- ttiJwc1xlG5bGAsHyvN7dmosmA==
-X-Google-Smtp-Source: AGHT+IE33yHYPLNXFtROCifo+mrCmgJ7jsRKmHLIHKjrAnBGcZqGA63eoSdLhz/YNZrIfx9BfBUlAQ==
-X-Received: by 2002:a5d:6851:0:b0:321:4c58:7722 with SMTP id
- o17-20020a5d6851000000b003214c587722mr6759021wrw.69.1698591042147; 
- Sun, 29 Oct 2023 07:50:42 -0700 (PDT)
+ bh=gHsqkB0IASk68fTXpXP2OAO5XJadiYMzafZ5IwzftpE=;
+ b=nR9sUK++STLTEdnZj4fnnrd/JC25PpDe3efx7RxkmEk6D8KhgmV1WLkB84R0md2mUd
+ KYFx1mPeweGeluUOGTT9qthtVmmGlTMgqeT+tzHvKgW9YaWJ7n6fbYg3SvA/sG5sbSgb
+ pOMvJTj7L6uJQ6qgyp2sytRSYRBluQwE0wDu1YZZ81OkmShHgEpTh75cTi+wdCowFsuo
+ 663/GE1aqZ//0U8lNo+WzJwQldc/nays3FEHDLU+dY4XG6sAEsoxnbvArZfT30i1nV89
+ zVH3uT/vVLjprSn77jrV3Zj6i2gYpTjYl0Ox7OHP0dyzeybc/HBpFSrRxrso31nciXBA
+ 4pfg==
+X-Gm-Message-State: AOJu0YzPKGfYr/cf4I8EycWl2J1vKHy6UFLBCWa0AEnd0IagDyagSz6L
+ /xYW2mrDtYuoLGfF1VuyAMA1/w==
+X-Google-Smtp-Source: AGHT+IGO2VZsprgaC871t+Q+aNvNkO0buR9RWn/ao7FwMO/UR2x2eyeujob15Cz4MpzxlOeV3jSseA==
+X-Received: by 2002:a05:6512:234f:b0:509:b3f:8a7c with SMTP id
+ p15-20020a056512234f00b005090b3f8a7cmr3572562lfu.7.1698591376453; 
+ Sun, 29 Oct 2023 07:56:16 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- w7-20020a5d6807000000b0032008f99216sm6044787wru.96.2023.10.29.07.50.38
+ o8-20020a056000010800b0032d8354fb43sm2271548wrx.76.2023.10.29.07.56.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Oct 2023 07:50:40 -0700 (PDT)
+ Sun, 29 Oct 2023 07:56:16 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B100865709;
+ by draig.lan (Postfix) with ESMTP id C59406570A;
  Sun, 29 Oct 2023 14:50:35 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -76,18 +76,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, Brian Cain <bcain@quicinc.com>,
  Alexandre Iooss <erdnaxe@crans.org>,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Subject: [PATCH v2 17/19] semihosting: fix memleak at semihosting_arg_fallback
-Date: Sun, 29 Oct 2023 14:50:31 +0000
-Message-Id: <20231029145033.592566-18-alex.bennee@linaro.org>
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2 18/19] plugins: Remove an extra parameter
+Date: Sun, 29 Oct 2023 14:50:32 +0000
+Message-Id: <20231029145033.592566-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231029145033.592566-1-alex.bennee@linaro.org>
 References: <20231029145033.592566-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,41 +109,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-We duplicate "cmd" as strtok may modify its argument, but we forgot
-to free it later. Furthermore, add_semihosting_arg doesn't take
-responsibility for this memory either (it strdup's the argument).
+copy_call() has an unused parameter so remove it.
 
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <03d81c56bfc3d08224e4106efca5949d8894cfa5.1697801632.git.quic_mathbern@quicinc.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20231019101030.128431-7-akihiko.odaki@daynix.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231028103311.347104-16-alex.bennee@linaro.org>
+Message-Id: <20231028103311.347104-17-alex.bennee@linaro.org>
 ---
- semihosting/config.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ accel/tcg/plugin-gen.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/semihosting/config.c b/semihosting/config.c
-index 249a377ae8..56283b5c3c 100644
---- a/semihosting/config.c
-+++ b/semihosting/config.c
-@@ -113,12 +113,13 @@ static int add_semihosting_arg(void *opaque,
- void semihosting_arg_fallback(const char *file, const char *cmd)
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 39b3c9351f..78b331b251 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -327,8 +327,7 @@ static TCGOp *copy_st_ptr(TCGOp **begin_op, TCGOp *op)
+     return op;
+ }
+ 
+-static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *empty_func,
+-                        void *func, int *cb_idx)
++static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *func, int *cb_idx)
  {
-     char *cmd_token;
-+    g_autofree char *cmd_dup = g_strdup(cmd);
+     TCGOp *old_op;
+     int func_idx;
+@@ -372,8 +371,7 @@ static TCGOp *append_udata_cb(const struct qemu_plugin_dyn_cb *cb,
+     }
  
-     /* argv[0] */
-     add_semihosting_arg(&semihosting, "arg", file, NULL);
+     /* call */
+-    op = copy_call(&begin_op, op, HELPER(plugin_vcpu_udata_cb),
+-                   cb->f.vcpu_udata, cb_idx);
++    op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
  
-     /* split -append and initialize argv[1..n] */
--    cmd_token = strtok(g_strdup(cmd), " ");
-+    cmd_token = strtok(cmd_dup, " ");
-     while (cmd_token) {
-         add_semihosting_arg(&semihosting, "arg", cmd_token, NULL);
-         cmd_token = strtok(NULL, " ");
+     return op;
+ }
+@@ -420,8 +418,7 @@ static TCGOp *append_mem_cb(const struct qemu_plugin_dyn_cb *cb,
+ 
+     if (type == PLUGIN_GEN_CB_MEM) {
+         /* call */
+-        op = copy_call(&begin_op, op, HELPER(plugin_vcpu_mem_cb),
+-                       cb->f.vcpu_udata, cb_idx);
++        op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+     }
+ 
+     return op;
 -- 
 2.39.2
 
