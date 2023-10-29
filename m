@@ -2,49 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB627DAC41
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 12:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 445137DAC7C
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Oct 2023 13:45:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qx48p-0007ik-Ds; Sun, 29 Oct 2023 07:39:39 -0400
+	id 1qx598-0001GW-Ik; Sun, 29 Oct 2023 08:44:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qx48k-0007iU-9L
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 07:39:34 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qx595-0001G1-V3
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 08:44:00 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qx48h-0007rj-V7
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 07:39:33 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 87B15756082;
- Sun, 29 Oct 2023 12:39:33 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 47A5D756078; Sun, 29 Oct 2023 12:39:33 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 45A34756072;
- Sun, 29 Oct 2023 12:39:33 +0100 (CET)
-Date: Sun, 29 Oct 2023 12:39:33 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org
-cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Bernhard Beschow <shentey@gmail.com>, vr_qemu@t-online.de
-Subject: Re: [PATCH v2 1/4] hw/isa/vt82c686: Bring back via_isa_set_irq()
-In-Reply-To: <ef1706650a60d7f88f8e00035daffc83592d15f9.1698577151.git.balaton@eik.bme.hu>
-Message-ID: <2c3f5fe5-957a-6f79-79fa-3f44909365e4@eik.bme.hu>
-References: <cover.1698577151.git.balaton@eik.bme.hu>
- <ef1706650a60d7f88f8e00035daffc83592d15f9.1698577151.git.balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qx594-0003Hh-3o
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 08:43:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=RL3LPmfde4RruY2Gy+cHATarxPM1hGW3WFgNxSPYI28=; b=ODBvBuLq5wn6PFDaiuXuKosP7D
+ aakJssUbLzwHQXCpVAa6wKeqVoj50+HomleENFtTPGmaog3ZlfcCbWHbR8baG2R46Kw4EMtsBzF+g
+ qD1yOjy9iCXFRvbUhBiDg6d0e8L2io/ZMYpcG9DRUMznwwKb/5TQGhHMvwW+6BXZBE6xnKVKyVB8m
+ 9m1X+VkeZOAKKhvT7f1tTxTOXNJweD4eir6/JgmOm8hu0lh8tmWO0B8p1Lr5THSNorfcZMdMa8Kv+
+ t6K7sBFL7gfp/6p89C5UiQaYrJkwqtKnYJy7udcg6LbYO+VXEIGv2Lo/82UUasYjhR3biWvJoiD2m
+ QeC+6BO8hfLxWdHcZ6QABkS1xJmKqOYLtykYokxVfN3kDcAkfGEiyeWcL201VVZ8Bed24EKqsYkZC
+ B1zs4kLgRFRqdCK2qeHOeeSxgrbr7LA8BF+oN/0p03OaywlDYyWlU+tOFgTJPCpvWbNDwrdzVuj4r
+ wL6jO4zt6zhTsAcjt+TccSbvE+B5psBn97jNVM/iigNXH747JzO9FAvdrrom95r+Qc9cSJSffVnWf
+ nJiJG21/1avE3MEgFlhuWAuAuWbqOuYGg9dQ9H2Ht/+yGoHt1TX5T45LOsWk0JgEcQDLC+qRWqnNK
+ mZMDxTYQtwkoHZcpbHlMQ1CuA5nDIGMnF/+ZsZUdw=;
+Received: from [2a00:23c4:8bb0:5400:ad26:a874:94a:370e]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qx58o-0001Mt-5D; Sun, 29 Oct 2023 12:43:45 +0000
+Message-ID: <03f52ea1-7436-4129-bd53-e14104a9e74e@ilande.co.uk>
+Date: Sun, 29 Oct 2023 12:43:45 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Bernhard Beschow <shentey@gmail.com>, vr_qemu@t-online.de
+References: <cover.1698536342.git.balaton@eik.bme.hu>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <cover.1698536342.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:5400:ad26:a874:94a:370e
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 0/4] Fix IRQ routing in via south bridge
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,112 +103,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 29 Oct 2023, BALATON Zoltan wrote:
-> The VIA intergrated south bridge chips combine several functions and
-> allow routing their interrupts to any of the ISA IRQs (also allowing
-> multiple components to share the same ISA IRQ, e.g. pegasos2 firmware
-> configures USB, sound and PCI to all use IRQ 9). Bring back
-> via_isa_set_irq() and change it to take the PCIDevice that wants to
-> change an IRQ and keep track of the interrupt status of each source
-> separately and do the mapping to ISA IRQ within the ISA bridge to
-> allow different sources to control the same ISA IRQ lines.
->
-> This may not handle cases when the ISA IRQ is also controlled by
-> devices directly, not going through via_isa_set_irq() such as serial,
-> parallel or keyboard but these IRQs being conventionally fixed are not
-> likely for guests to change or share with other devices so hopefully
-> this does not cause a problem in practice.
->
-> This reverts commit 4e5a20b6da9b1f6d2e9621ed7eb8b239560104ae.
->
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-> hw/isa/vt82c686.c         | 39 +++++++++++++++++++++++++++++++++++++++
-> include/hw/isa/vt82c686.h |  2 ++
-> 2 files changed, 41 insertions(+)
->
-> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-> index 57bdfb4e78..c1826c77eb 100644
-> --- a/hw/isa/vt82c686.c
-> +++ b/hw/isa/vt82c686.c
-> @@ -549,6 +549,7 @@ struct ViaISAState {
->     PCIDevice dev;
->     qemu_irq cpu_intr;
->     qemu_irq *isa_irqs_in;
-> +    uint16_t isa_irq_state[ISA_NUM_IRQS];
->     ViaSuperIOState via_sio;
->     MC146818RtcState rtc;
->     PCIIDEState ide;
-> @@ -592,6 +593,44 @@ static const TypeInfo via_isa_info = {
->     },
-> };
->
-> +void via_isa_set_irq(PCIDevice *d, int pin, int level)
-> +{
-> +    ViaISAState *s = VIA_ISA(pci_get_function_0(d));
-> +    int n = PCI_FUNC(d->devfn);
-> +    uint8_t isa_irq = d->config[PCI_INTERRUPT_LINE], max_irq = 15;
-> +
-> +    switch (n) {
-> +    case 2: /* USB ports 0-1 */
-> +    case 3: /* USB ports 2-3 */
-> +        max_irq = 14;
-> +        break;
-> +    }
-> +
-> +    if (unlikely(isa_irq > max_irq || isa_irq == 2)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "Invalid ISA IRQ routing %d for %d",
-> +                      isa_irq, n);
-> +        return;
-> +    }
-> +    if (isa_irq == 0) {
-> +        return; /* disabled */
-> +    }
-> +
-> +    /*
-> +     * In addition to recording status of sources mapped to each isa_irq we
-> +     * keep track of all sources in IRQ 0 and use that as a mask to avoid stuck
-> +     * interrupts in case mapping of a source is changed while IRQ is raised.
-> +     */
-> +    if (level) {
-> +        s->isa_irq_state[isa_irq] |= BIT(n);
-> +        s->isa_irq_state[0] |= BIT(n);
-> +    } else {
-> +        s->isa_irq_state[isa_irq] &= ~BIT(n);
-> +        s->isa_irq_state[0] &= ~BIT(n);
-> +    }
-> +    s->isa_irq_state[isa_irq] &= s->isa_irq_state[0];
+On 29/10/2023 00:56, BALATON Zoltan wrote:
 
-Thinking about it some more it still does not catch the case when IRQ is 
-still raised so this could temporarly raise the old IRQ as well so maybe 
-we can just drop this and go with the v1 of the series. That works well 
-enough becuase in practice guests don't change these often, only at boot 
-so probably there are no pending interrupts yet so this may not be an 
-issue. If we find it is then the proper fix should be adding a PCI config 
-write func to every source and clear the old interrupt with 
-via_isa_set_irq before changing the PCI_INTERRUPT_LINE value but I don't 
-think it's worth implementing that now until we find something that 
-it would fix. So ignore this v2 and take the v1 instead.
+> This is going back to my otiginal proposal in
+> https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/
+> implementing routing of interrupts from device functions and PCI
+> devices to ISA interrupts. On pegasos2 the firmware sets evertyhing to
+> share IRQ 9 so the current simpified version worked for taht but with
+> the amigaone machine its firmware makes use of this feature and
+> assigns different interrupts to functions and PCI devices so we need
+> to properly impelent this.
 
-Regards,
-BALATON Zoltan
+<quote>
+> Since any ISA interrupt can be controlled
+> by any interrupt source (different functions of the multifunction
+> device plus the 4 input pins from PCI devices) there are more than 4
+> possible sources so this can't be handled by just the 4 PCI interrupt
+> lines. We need to keep track of the state of each interrupt source to
+> be able to determine the level of the ISA interrupt and avoid one
+> device clearing it while other still has an interrupt.
+</quote>
 
-> +    qemu_set_irq(s->isa_irqs_in[isa_irq], !!s->isa_irq_state[isa_irq]);
-> +}
-> +
-> static void via_isa_request_i8259_irq(void *opaque, int irq, int level)
-> {
->     ViaISAState *s = opaque;
-> diff --git a/include/hw/isa/vt82c686.h b/include/hw/isa/vt82c686.h
-> index b6e95b2851..da1722daf2 100644
-> --- a/include/hw/isa/vt82c686.h
-> +++ b/include/hw/isa/vt82c686.h
-> @@ -34,4 +34,6 @@ struct ViaAC97State {
->     uint32_t ac97_cmd;
-> };
->
-> +void via_isa_set_irq(PCIDevice *d, int n, int level);
-> +
-> #endif
->
+This here is the important bit, since what you're describing here is exactly how PCI 
+interrupts in QEMU work, and so is already handled by the existing PCI IRQ routing 
+code. It seems to me that what you're doing here is creating an incomplete 
+re-implementation of part of the PCI interrupt logic in isa_irq_state, which is a 
+strong hint that this is the wrong approach and that you should be making use of PCI 
+IRQ routing.
+
+> This fixes USB on amigaone and maybe other bugs not discovered yet.
+
+Given that the AmigaOne machine is new, can you explain in a bit more detail what the 
+difference is between the Pegasos2 and AmigaOne machines, particularly with respect 
+to where the existing IRQ routing logic is getting this wrong?
+
+
+ATB,
+
+Mark.
+
 
