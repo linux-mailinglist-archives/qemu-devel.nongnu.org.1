@@ -2,139 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D987DB67A
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603947DB7D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:19:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxOr8-0008RU-Sn; Mon, 30 Oct 2023 05:46:46 -0400
+	id 1qxPMU-00080C-D7; Mon, 30 Oct 2023 06:19:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qxOr5-0008RC-Tt
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:46:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qxOr4-00082b-0a
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:46:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698659200;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vR82vHILNOcai/qADg9yfZWiNv3HY2SYn0V93iEAaIk=;
- b=Ob+yZSRKFfhNciOltg/niuX0eeO1y+dzjWRxbf4YKlkQzY2iqEln9KXDJ3uWQVNUTuhxfU
- 1YeSoENbOOV/48MnRBrNlh4K8qEZrZACD0xJ/R+zKdII/XnoMzqD2aHpIOfCHkPgv+V0r5
- PCL9N1Mxv3WKKfCCFJ76OvbXX0rpfHo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-Ya6QEtnfN4alF8jNcdeM0w-1; Mon, 30 Oct 2023 05:46:38 -0400
-X-MC-Unique: Ya6QEtnfN4alF8jNcdeM0w-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-408534c3ec7so30960205e9.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 02:46:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698659198; x=1699263998;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qxPMR-0007zr-Uq
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:19:08 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qxPMP-00059q-Uu
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:19:07 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-99357737980so670449566b.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 03:19:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698661144; x=1699265944; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vR82vHILNOcai/qADg9yfZWiNv3HY2SYn0V93iEAaIk=;
- b=ZQGEd9jgDFYZsI+37MnVcY3Tpd4fYJ1Czxj5ZY4pHnnUeBydmS2au3XgEAvJAD0vG5
- ca6kay1y+NrsMjUV45do8PltS4YYgPXjcM4URmukVpzocSVarndSyxWRxogYrslBP++J
- ZLW8kY5Q21gb9bIOCppIAv1K66CYwXybWPKd9ltzfhnwNfSxndaehZHMivXD31psjS2k
- lwJeQQ6oGsaBHAVc75SKgXWQS5EZQf2ss8yK4MJ0gH/7kn/M1MR7kZl6nY8agBUVsgYB
- g/ukxWcDoxW+7mU/7ZitqOtMB81TEdD5Lah0Hxw3ewHJNeE9JQW9XKAkQeYSln7ETl9m
- XMSQ==
-X-Gm-Message-State: AOJu0YxeWGCNigXcJufABbaCwzDAGV62UbWuBqXr7GLRyvyU2O6Iaxxi
- WmU1Wn3urmSQrXDZ4sTEWXNCj1WkOF1ttUJkfFtWrYiEQpPnAPG1CL259KFHdAQcHF+wmIfBCtw
- 8KiH9yLueeAxBS6o=
-X-Received: by 2002:a05:600c:1387:b0:405:348e:aa43 with SMTP id
- u7-20020a05600c138700b00405348eaa43mr8306442wmf.12.1698659197676; 
- Mon, 30 Oct 2023 02:46:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7Ka4OcX9Wqg4Z3w9VieH0pIIEURNsqtL8b5rPOiO3oT3RP+fdtakOYt+HDuwsUN3y27gaUQ==
-X-Received: by 2002:a05:600c:1387:b0:405:348e:aa43 with SMTP id
- u7-20020a05600c138700b00405348eaa43mr8306425wmf.12.1698659197231; 
- Mon, 30 Oct 2023 02:46:37 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c73c:f800:7df6:a2c9:652e:c799?
- (p200300cbc73cf8007df6a2c9652ec799.dip0.t-ipconnect.de.
- [2003:cb:c73c:f800:7df6:a2c9:652e:c799])
- by smtp.gmail.com with ESMTPSA id
- r5-20020a05600c458500b004060f0a0fd5sm8672655wmo.13.2023.10.30.02.46.36
+ bh=4H56HG89T29ghmmWKSoPhsQCUMzeu+1s1b9HPPz+Hwo=;
+ b=QS0TRUwqtwtnwGAE9AvVgfr1kG+IlgWElylcTMK2vYF89YAfjX+Fn+YZFthsMDWIYJ
+ Cai9keMUaj8wiDaDKmSzgDM8NCj8DOt/T9dMfdYPGp/pWKtsojfrLj/SZycX6CNDOXVI
+ NoE2j14oVGbQwlk6qzm0bmPsrRR+DN8qVOIqSdRKFkquW/gihC8JgwEQn+c2q7JyazMl
+ xuORr94Hj7KnGdHwQC/5Hy8qtZIttBteXbi/EeBgekPxQcJ1ePvqqFMhAN29bO7I4Wgo
+ dgABL85FwLmlWum18IhZuSqjw4oY3zLVy63NISWHGhY+rCHFpzaQTMT7Wu8Fyvq7aIB4
+ cfYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698661144; x=1699265944;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4H56HG89T29ghmmWKSoPhsQCUMzeu+1s1b9HPPz+Hwo=;
+ b=cL+OsDPz/OVlpkdY4p0nQSdinRj1EToIviwxM9IPhhT1aoZl5e9CaLb6piThiRmO6e
+ KQvtu5Aqvy3aJINZdVeaB+AZB6Hsy7QyBJY7xfm15IMWoYD7BUa8GdmqObmLUvBUWNSr
+ YN4CxyGXJj8isPmQ/6C5SpNENTy5Gu8PWFKuC7nEBH6q3tP0YT4NKbqswixftiVVavzu
+ WArv5SfLHoW6LS+bZ7nDE1QqGpJu5jYyfsbVo1wA01hlnWW56ruBzzU7+jaznf2SDhBB
+ ykfz4Nky4GksNgG3ECWS5rVf2coJsnYOEkdhRNUxxc5Wjtss7U/P1AmXMcbyai1QnIjU
+ 7mDg==
+X-Gm-Message-State: AOJu0YzFnn057pF0IdB8wEfr4QlJi+/yvcXjPmtgwYa9onEKFPPA2ft2
+ MjuffM8LUNMXqYzJN804xGI=
+X-Google-Smtp-Source: AGHT+IFBgmJi+ZumZ4NeZSmboeHsAVH7aEEbHfKabXuIig+lJ5lqyjGZ5MmavhmXqVWb/HIJUPp1oQ==
+X-Received: by 2002:a17:907:7245:b0:9b2:b152:b0f2 with SMTP id
+ ds5-20020a170907724500b009b2b152b0f2mr8943578ejc.10.1698661144088; 
+ Mon, 30 Oct 2023 03:19:04 -0700 (PDT)
+Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ l17-20020a170906415100b009adc77fe165sm5719265ejk.118.2023.10.30.03.19.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 02:46:36 -0700 (PDT)
-Message-ID: <3a7a534b-75c5-44ad-95f6-d58eb3966978@redhat.com>
-Date: Mon, 30 Oct 2023 10:46:35 +0100
+ Mon, 30 Oct 2023 03:19:03 -0700 (PDT)
+Date: Mon, 30 Oct 2023 09:49:09 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+CC: qemu-devel@nongnu.org, philmd@linaro.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, vr_qemu@t-online.de
+Subject: Re: [PATCH 0/4] Fix IRQ routing in via south bridge
+In-Reply-To: <e1cc0b8e-56be-8199-7499-9838904a97ac@eik.bme.hu>
+References: <cover.1698536342.git.balaton@eik.bme.hu>
+ <9FF920F3-146A-4A20-8D2E-256E58501ADB@gmail.com>
+ <e1cc0b8e-56be-8199-7499-9838904a97ac@eik.bme.hu>
+Message-ID: <DBA5D8E4-1903-4852-8E5A-2A84DDB54399@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/s390x/cpu_models: Use 'first_cpu' in
- s390_get_feat_block()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
-References: <20231030093150.65297-1-philmd@linaro.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20231030093150.65297-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.478,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,38 +92,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.10.23 10:31, Philippe Mathieu-Daudé wrote:
-> We already have a global 'first_cpu' variable storing a pointer
-> to the first CPU, no need to use a static one.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/s390x/cpu_models.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-> index 4dead48650..540d445023 100644
-> --- a/target/s390x/cpu_models.c
-> +++ b/target/s390x/cpu_models.c
-> @@ -196,11 +196,7 @@ uint32_t s390_get_ibc_val(void)
->   
->   void s390_get_feat_block(S390FeatType type, uint8_t *data)
->   {
-> -    static S390CPU *cpu;
-> -
-> -    if (!cpu) {
-> -        cpu = S390_CPU(qemu_get_cpu(0));
-> -    }
-> +    S390CPU *cpu = S390_CPU(first_cpu);
->   
->       if (!cpu || !cpu->model) {
->           return;
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
 
--- 
-Cheers,
+Am 29=2E Oktober 2023 11:35:27 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
+me=2Ehu>:
+>On Sun, 29 Oct 2023, Bernhard Beschow wrote:
+>> Am 28=2E Oktober 2023 23:56:21 UTC schrieb BALATON Zoltan <balaton@eik=
+=2Ebme=2Ehu>:
+>>> This is going back to my otiginal proposal in
+>>> https://patchew=2Eorg/QEMU/cover=2E1677004414=2Egit=2Ebalaton@eik=2Ebm=
+e=2Ehu/
+>>> implementing routing of interrupts from device functions and PCI
+>>> devices to ISA interrupts=2E On pegasos2 the firmware sets evertyhing =
+to
+>>> share IRQ 9 so the current simpified version worked for taht but with
+>>> the amigaone machine its firmware makes use of this feature and
+>>> assigns different interrupts to functions and PCI devices so we need
+>>> to properly impelent this=2E Since any ISA interrupt can be controlled
+>>> by any interrupt source (different functions of the multifunction
+>>> device plus the 4 input pins from PCI devices) there are more than 4
+>>> possible sources so this can't be handled by just the 4 PCI interrupt
+>>> lines=2E We need to keep track of the state of each interrupt source t=
+o
+>>> be able to determine the level of the ISA interrupt and avoid one
+>>> device clearing it while other still has an interrupt=2E
+>>>=20
+>>> This fixes USB on amigaone and maybe other bugs not discovered yet=2E
+>>=20
+>> Amigaone's U-Boot maps the PCI IRQ pins to PIC IRQs 7,9,10,11=2E IRQ 7 =
+seems to be the parallel port on ISA machines=2E The VIA hardware disables =
+it by default (see index e2 in superio configuration registers) while it is=
+ enabled by default in our device models=2E Does this maybe cause an IRQ co=
+nflict, making the USB function unusable?
+>
+>Not likely because parellel port is not used and does not generate interr=
+upts=2E It's just your current patch in master only maps PCI interrupts and=
+ does not correctly route interrupts from chip functions so the USB interru=
+pts end up at the wrong ISA IRQ=2E
 
-David / dhildenb
+Indeed=2E Even booting into a Linux guest doesn't generate "parallel*" tra=
+ce logs=2E
 
+Best regards,
+Bernhard
+
+>
+>> Best regards,
+>> Bernhard
+>>=20
+>>>=20
+>>> Regards,
+>>> BALATON Zoltan
+>>>=20
+>>> BALATON Zoltan (4):
+>>>  hw/isa/vt82c686: Bring back via_isa_set_irq()
+>>>  hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI interrupts
+>>>  hw/isa/vt82c686: Route PIRQ inputs using via_isa_set_irq()
+>>>  hw/audio/via-ac97: Route interrupts using via_isa_set_irq()
+>>>=20
+>>> hw/audio/via-ac97=2Ec        |  8 ++---
+>>> hw/isa/vt82c686=2Ec          | 67 +++++++++++++++++++++++-------------=
+--
+>>> hw/usb/vt82c686-uhci-pci=2Ec |  9 +++++
+>>> include/hw/isa/vt82c686=2Eh  |  2 ++
+>>> 4 files changed, 56 insertions(+), 30 deletions(-)
+>>>=20
+>>=20
+>>=20
 
