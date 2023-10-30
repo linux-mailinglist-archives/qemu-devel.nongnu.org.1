@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABC57DBBC5
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5767DBBC2
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:28:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxTEm-0006SR-40; Mon, 30 Oct 2023 10:27:28 -0400
+	id 1qxTEi-0006RU-Ti; Mon, 30 Oct 2023 10:27:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEi-0006RG-3K
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:24 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEh-0006Qp-3e
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEg-0007RP-LS
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:23 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEf-0007RE-Hv
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698676042;
+ s=mimecast20190719; t=1698676040;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6oukEQynlH7BlRx8yX7T3FjaA2rs5RzSQk4YXaTzuUg=;
- b=Y2f0XNGzEmkJvGw9ggesgOGVIolNbmR5R+V20xvTErRFz2/LUTYFOkaVtM1zznWPmt4I4C
- yJvfEHJdBnUDmQH5l6vyVBcevGSq5ebNVUQTvPH9kwNTeuQLa2FpifF/2RCug328yLehNL
- WmYXkow0w250JoOb5AxWbnTptNS20Q8=
+ bh=QY5dLJXsgNO5P0wwnaI4UOYfqJtjYgcLNxs80LoSaOM=;
+ b=ijaddaPI1Vg2fiB/lDfHZ013EBAi9axhTcOZpTLtmrnhBiJ5hnIo2DVZcKUnNEKaIJstiq
+ bv9Wug0EO+lxfTpAWPiaza7GbsRaFX2XeN9mxoyS+okt0SQdTIeFXZZxiob1rXR5Mr/sfx
+ 0FX3fDzEz1T5vkdt6d6Jr58jtCA5Ql8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-540-n8AzMvEMM6u3A0hZiAa6tQ-1; Mon, 30 Oct 2023 10:27:18 -0400
-X-MC-Unique: n8AzMvEMM6u3A0hZiAa6tQ-1
+ us-mta-586-whP4PUG7MEys-tGVg07DBw-1; Mon, 30 Oct 2023 10:27:19 -0400
+X-MC-Unique: whP4PUG7MEys-tGVg07DBw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AF5D98D3B9;
- Mon, 30 Oct 2023 14:27:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC12998D3BA;
+ Mon, 30 Oct 2023 14:27:18 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 794AE492BE0;
- Mon, 30 Oct 2023 14:27:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D2142492BE0;
+ Mon, 30 Oct 2023 14:27:17 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, armbru@redhat.com, berrange@redhat.com,
  peter.maydell@linaro.org, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 09/12] hw/rx/rx62n: Use qdev_prop_set_array()
-Date: Mon, 30 Oct 2023 15:26:55 +0100
-Message-ID: <20231030142658.182193-10-kwolf@redhat.com>
+Subject: [PATCH v2 10/12] qom: Add object_property_set_default_list()
+Date: Mon, 30 Oct 2023 15:26:56 +0100
+Message-ID: <20231030142658.182193-11-kwolf@redhat.com>
 In-Reply-To: <20231030142658.182193-1-kwolf@redhat.com>
 References: <20231030142658.182193-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
@@ -78,61 +77,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of manually setting "foo-len" and "foo[i]" properties, build a
-QList and use the new qdev_prop_set_array() helper to set the whole
-array property with a single call.
+This function provides a default for properties that are accessed using
+the list visitor interface. The default is always an empty list.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/rx/rx62n.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ include/qom/object.h | 8 ++++++++
+ qom/object.c         | 6 ++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/hw/rx/rx62n.c b/hw/rx/rx62n.c
-index d00fcb0ef0..4dc44afd9d 100644
---- a/hw/rx/rx62n.c
-+++ b/hw/rx/rx62n.c
-@@ -28,6 +28,7 @@
- #include "hw/sysbus.h"
- #include "hw/qdev-properties.h"
- #include "sysemu/sysemu.h"
+diff --git a/include/qom/object.h b/include/qom/object.h
+index ef7258a5e1..afccd24ca7 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -1093,6 +1093,14 @@ void object_property_set_default_bool(ObjectProperty *prop, bool value);
+  */
+ void object_property_set_default_str(ObjectProperty *prop, const char *value);
+ 
++/**
++ * object_property_set_default_list:
++ * @prop: the property to set
++ *
++ * Set the property default value to be an empty list.
++ */
++void object_property_set_default_list(ObjectProperty *prop);
++
+ /**
+  * object_property_set_default_int:
+  * @prop: the property to set
+diff --git a/qom/object.c b/qom/object.c
+index 8557fe8e4e..95c0dc8285 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -31,6 +31,7 @@
+  * of the QOM core on QObject?  */
+ #include "qom/qom-qobject.h"
+ #include "qapi/qmp/qbool.h"
 +#include "qapi/qmp/qlist.h"
- #include "qom/object.h"
+ #include "qapi/qmp/qnum.h"
+ #include "qapi/qmp/qstring.h"
+ #include "qemu/error-report.h"
+@@ -1588,6 +1589,11 @@ void object_property_set_default_str(ObjectProperty *prop, const char *value)
+     object_property_set_default(prop, QOBJECT(qstring_from_str(value)));
+ }
  
- /*
-@@ -130,22 +131,22 @@ static void register_icu(RX62NState *s)
++void object_property_set_default_list(ObjectProperty *prop)
++{
++    object_property_set_default(prop, QOBJECT(qlist_new()));
++}
++
+ void object_property_set_default_int(ObjectProperty *prop, int64_t value)
  {
-     int i;
-     SysBusDevice *icu;
-+    QList *ipr_map, *trigger_level;
- 
-     object_initialize_child(OBJECT(s), "icu", &s->icu, TYPE_RX_ICU);
-     icu = SYS_BUS_DEVICE(&s->icu);
--    qdev_prop_set_uint32(DEVICE(icu), "len-ipr-map", NR_IRQS);
-+
-+    ipr_map = qlist_new();
-     for (i = 0; i < NR_IRQS; i++) {
--        char propname[32];
--        snprintf(propname, sizeof(propname), "ipr-map[%d]", i);
--        qdev_prop_set_uint32(DEVICE(icu), propname, ipr_table[i]);
-+        qlist_append_int(ipr_map, ipr_table[i]);
-     }
--    qdev_prop_set_uint32(DEVICE(icu), "len-trigger-level",
--                         ARRAY_SIZE(levelirq));
-+    qdev_prop_set_array(DEVICE(icu), "ipr-map", ipr_map);
-+
-+    trigger_level = qlist_new();
-     for (i = 0; i < ARRAY_SIZE(levelirq); i++) {
--        char propname[32];
--        snprintf(propname, sizeof(propname), "trigger-level[%d]", i);
--        qdev_prop_set_uint32(DEVICE(icu), propname, levelirq[i]);
-+        qlist_append_int(trigger_level, levelirq[i]);
-     }
-+    qdev_prop_set_array(DEVICE(icu), "trigger-level", trigger_level);
- 
-     for (i = 0; i < NR_IRQS; i++) {
-         s->irq[i] = qdev_get_gpio_in(DEVICE(icu), i);
+     object_property_set_default(prop, QOBJECT(qnum_from_int(value)));
 -- 
 2.41.0
 
