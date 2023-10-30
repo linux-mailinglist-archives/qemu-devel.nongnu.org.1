@@ -2,107 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9E27DB598
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF2A7DB5A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:03:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxO8h-00044O-B6; Mon, 30 Oct 2023 05:00:51 -0400
+	id 1qxOAa-0005dL-TV; Mon, 30 Oct 2023 05:02:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO8d-000446-1c
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:00:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxOAX-0005cX-Cw; Mon, 30 Oct 2023 05:02:45 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO8b-0000nl-Dy
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:00:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698656443;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mIvlXeKAfordDFurZYpq0zI1no6TDdEFWSvQlA90vmo=;
- b=Qh9sDlVcOBUNoxHeSEC59cQNvusLVymZscc0LOo8VifvwxxIHx8JQ4kWkaaiCr5GiskDxg
- xOzTqqdMaW6rWvvOUNHhG0FmUIdR9w2/vyHDlE+njW7nw3PSvW2oGQoCurbQvw2FloahX3
- 6UYPKDlrft7reZY0YmZOm/dkhTVnWnc=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-118-rdZyv80tOy2DWV1reW2phA-1; Mon, 30 Oct 2023 05:00:41 -0400
-X-MC-Unique: rdZyv80tOy2DWV1reW2phA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-778964b7c8bso539729285a.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 02:00:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698656441; x=1699261241;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mIvlXeKAfordDFurZYpq0zI1no6TDdEFWSvQlA90vmo=;
- b=sV34WU0IYydVQSXdSw8IwH5cQFVnBSmPJHtqX00em3Std68BJZ5RXBY1qCROocdi9C
- KD9tvGUhtE87riJaOBr0pahxIEP35KZz0msK9xC0gdKmuaEiEFHyqk+Ho8AiDiHd3Xnp
- O9vKlzt6g0rs5/w1nFvEtdTDVF5Cd94+z1MS8JyNWd4TPF/O2tLQxZN179l0RVtveyn9
- Js8gzBh5jJYVRn5eP7ecJUrySmNK4J4SDurVP5IumSdjzntDf78ydvIPaEsLCnU6mwiU
- E61DkAU9zXFMKbkzUpBAfMmltvIxBYNUtawjhbXZburvg2V2qD/0JjBLd9KL1KHNlBYd
- NXrQ==
-X-Gm-Message-State: AOJu0YzXnchBE0VjQMUMSlFqg8o3vlAU3AT2LWQC2kU+3bzt+9VKvbfu
- zLjQAxwn+uAdBG0YR/5tlZecqB1QqFgFq9PGAYIeVL+AL6xznVNpcQ0yqY+7hb87wtjyV3xMPim
- ZE5DmCN9jTWfSAzyuw8m1f6m+wu2tZWV+cM0TbWHfD+xnboKDQ/OW0qxqFicSeJPUlPhm1N0=
-X-Received: by 2002:a05:6214:2687:b0:66f:bb11:2475 with SMTP id
- gm7-20020a056214268700b0066fbb112475mr11113597qvb.6.1698656440771; 
- Mon, 30 Oct 2023 02:00:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE4IULm3sEpNeDgLTENSiFjsxjk2xRNAThLNUSKQ67j/qSZHu5/rTQR23rH5UPgFfjdi4xP0w==
-X-Received: by 2002:a05:6214:2687:b0:66f:bb11:2475 with SMTP id
- gm7-20020a056214268700b0066fbb112475mr11113552qvb.6.1698656440459; 
- Mon, 30 Oct 2023 02:00:40 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- c11-20020a0ce14b000000b0065823d20381sm3241993qvl.8.2023.10.30.02.00.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 02:00:39 -0700 (PDT)
-Message-ID: <e0946db3-75b0-4d20-bfbf-a827cbb68ae9@redhat.com>
-Date: Mon, 30 Oct 2023 10:00:35 +0100
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxOAV-00014L-8G; Mon, 30 Oct 2023 05:02:45 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 1C784757202;
+ Mon, 30 Oct 2023 10:02:44 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id DA4F275728C; Mon, 30 Oct 2023 10:02:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D795E75724F;
+ Mon, 30 Oct 2023 10:02:43 +0100 (CET)
+Date: Mon, 30 Oct 2023 10:02:43 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Bernhard Beschow <shentey@gmail.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, ReneEngel80@emailn.de
+Subject: Re: [PATCH v9 4/7] hw/isa/vt82c686: Implement PCI IRQ routing
+In-Reply-To: <cf4b1c2f-dde1-738e-1e5d-329b9074e58d@linaro.org>
+Message-ID: <38729153-8636-f530-4f5f-b63b10e406a8@eik.bme.hu>
+References: <cover.1678188711.git.balaton@eik.bme.hu>
+ <fbb016c7d0e19093335c237e15f5f6c62c4393b4.1678188711.git.balaton@eik.bme.hu>
+ <cf4b1c2f-dde1-738e-1e5d-329b9074e58d@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] hw/pci: modify pci_setup_iommu() to set PCIIOMMUOps
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Joao Martins <joao.m.martins@oracle.com>, Yi Liu <yi.l.liu@intel.com>,
- Kevin Tian <kevin.tian@intel.com>, Jacob Pan
- <jacob.jun.pan@linux.intel.com>, Peter Xu <peterx@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Yi Sun <yi.y.sun@linux.intel.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Helge Deller <deller@gmx.de>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20231023082416.180262-1-clg@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231023082416.180262-1-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
+Content-Type: multipart/mixed;
+ boundary="3866299591-1628928238-1698656563=:78133"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.478,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,76 +64,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/23/23 10:24, Cédric Le Goater wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
-> 
-> This patch modifies pci_setup_iommu() to set PCIIOMMUOps
-> instead of setting PCIIOMMUFunc. PCIIOMMUFunc is used to
-> get an address space for a PCI device in vendor specific
-> way. The PCIIOMMUOps still offers this functionality. But
-> using PCIIOMMUOps leaves space to add more iommu related
-> vendor specific operations.
-> 
-> Cc: Kevin Tian <kevin.tian@intel.com>
-> Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Eric Auger <eric.auger@redhat.com>
-> Cc: Yi Sun <yi.y.sun@linux.intel.com>
-> Cc: David Gibson <david@gibson.dropbear.id.au>
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Eric Auger <eric.auger@redhat.com>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Hervé Poussineau <hpoussin@reactos.org>
-> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Cc: BALATON Zoltan <balaton@eik.bme.hu>
-> Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>
-> Cc: Jagannathan Raman <jag.raman@oracle.com>
-> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-> Cc: Eric Farman <farman@linux.ibm.com>
-> Cc: Halil Pasic <pasic@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Eric Auger <eric.auger@redhat.com>
-> [ clg: - refreshed on latest QEMU
->         - included hw/remote/iommu.c
->         - documentation update
->         - asserts in pci_setup_iommu()
->         - removed checks on iommu_bus->iommu_ops->get_address_space
->         - included Elroy PCI host (PA-RISC) ]
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
-> 
->   Hello,
-> 
->   Initially sent by Yi Liu as part of series "intel_iommu: expose
->   Shared Virtual Addressing to VMs" [1], this patch would also simplify
->   the changes Joao wants to introduce in "vfio: VFIO migration support
->   with vIOMMU" [2].
-> 
->   Has anyone objections ?
-> 
->   Thanks,
-> 
->   C.
-> 
->   [1] https://lore.kernel.org/qemu-devel/20210302203827.437645-5-yi.l.liu@intel.com/
->   [2] https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-1628928238-1698656563=:78133
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Applied to vfio-next.
+On Mon, 30 Oct 2023, Philippe Mathieu-Daudé wrote:
+> On 7/3/23 12:42, BALATON Zoltan wrote:
+>> The real VIA south bridges implement a PCI IRQ router which is configured
+>> by the BIOS or the OS. In order to respect these configurations, QEMU
+>> needs to implement it as well. The real chip may allow routing IRQs from
+>> internal functions independently of PCI interrupts but since guests
+>> usually configute it to a single shared interrupt we don't model that
+>> here for simplicity.
+>> 
+>> Note: The implementation was taken from piix4_set_irq() in hw/isa/piix4.
+>> 
+>> Suggested-by: Bernhard Beschow <shentey@gmail.com>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+>> Tested-by: Rene Engel <ReneEngel80@emailn.de>
+>> ---
+>>   hw/isa/vt82c686.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 42 insertions(+)
+>
+>
+>> +static int via_isa_get_pci_irq(const ViaISAState *s, int irq_num)
+>> +{
+>> +    switch (irq_num) {
+>> +    case 0:
+>> +        return s->dev.config[0x55] >> 4;
+>> +    case 1:
+>> +        return s->dev.config[0x56] & 0xf;
+>> +    case 2:
+>> +        return s->dev.config[0x56] >> 4;
+>> +    case 3:
+>> +        return s->dev.config[0x57] >> 4;
+>
+> Shouldn't this be & 0xf?
 
-Thanks,
+No, the INTD value is actually in the high byte of reg 0x57. See e.g. page 
+73 in the VT8231 doc Revision 2.32.
 
-C.
+> (This is why I prefer extract8() over manual bits extraction)
 
+(I have two problems with deposit/extract. Have to remember which operand 
+is what so it's less obvious to me and they have an assert which is not a 
+good idea in an interrupt handlet that could be called millinos of times.)
+
+Regards,
+BALATON Zoltan
+--3866299591-1628928238-1698656563=:78133--
 
