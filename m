@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152C07DBA14
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 13:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14327DBA2C
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 13:53:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxRbZ-0003ci-Pg; Mon, 30 Oct 2023 08:42:53 -0400
+	id 1qxRkX-0006dC-NQ; Mon, 30 Oct 2023 08:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qxRbX-0003bl-Bu
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 08:42:51 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ id 1qxRkV-0006c9-UL
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 08:52:07 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qxRbU-0002On-VR
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 08:42:51 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2c503dbe50dso63857121fa.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 05:42:46 -0700 (PDT)
+ id 1qxRkT-0004w0-Ra
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 08:52:07 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2c594196344so64428541fa.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 05:52:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698669765; x=1699274565;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698670324; x=1699275124;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=K5AIUcYccCMNHr2WYNIM+JPx6kzWvOoF5rDmypX3KrM=;
- b=e6PsPXE39n6hyWC0Iw72kukXxjJoic6Vq22D31C7Ik9dJiDNhGMNVOfmj89AXUjHrd
- JXfkq1VVsNosghpcQRQjuSpNd4HVEyR5Oqy38KHiqn99Zc+r2L47apForb7CHVF5k6hJ
- LEP1lhPMcejhCQ/PYJIeD5uzehx2Es5UuxqAH/IDQNQ3N71lGClszAVH9HtyyUNCidM0
- 5TsV9dtLCRXWN0jXyClVZ0eBwtTMkgS2NCxy/zB5H0b7MhSYABNcwMX2rfHmroBPp/U/
- spWJxo8rWvGBJNP2P5gCZw7Nic8O4tBTzWxkji+ymindvlqgy/Ur6FTj90gP4Fa8TC/x
- MgkA==
+ bh=4ng2ChuYM/Z2YnskJMQA0+GcGB0Da/VKWSu82n4elek=;
+ b=eNCIcRhZa3dPSrQ20kx9M+EBc/jkkTteDcc0+15FZNY71NyPGpoXBe7NxRonrYVPcO
+ nlNr8teZaceFhYxGdBhJlxJXlMzThTMQQbaoCokI2ucVv2l3J/GArAdbWdFmFAJ6w83k
+ x5V7yLiY7qMa9qYWvBTKZACYyBs0ByyXe0BFUPaFnXVZyRj9a4ztNsnp3qZYgUBzivSc
+ LOLKx/BZ4ONADtMir4O0i+PSr3VKJYkeNXJI3YHsiWolYLy8zeEsBFlunUNS2xK4q6GF
+ D0K5JOpNzXq73A89jZBtY3VbfcXGbr6kVu9ts8Z5OVD8i/rD189UU62exh3Xkyjiux/+
+ PrrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698669765; x=1699274565;
+ d=1e100.net; s=20230601; t=1698670324; x=1699275124;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=K5AIUcYccCMNHr2WYNIM+JPx6kzWvOoF5rDmypX3KrM=;
- b=LqnZ6CqF9HEEjcuJLROcc7dhYHCQQ5xbkx6CbBrB3hmpe+P/ZFbqIDah7O1fmXZTM9
- LkPImQYjdjjjbjG83xylZs+BM4wwhk+kL9w2MrlNLxLXVQDYSGhMyWtf33plRL2NX8fM
- ASiTGIZav9VDH9RUarg6vJsIcuhFjjpp/U3IzRn4zPY4NWgbfHOnBtu9qeCkXCrPqNKD
- bli+jnpAdLfimcH4abFeDCrLqOrDifLhQcU4Iy9Xoub1VXGiGs2LeP0CtCdmzJuaddN8
- GVg7Q5oXDyQtL7TW1F8yHrdRcOO2sky6GVv1x1LHcnRmAYQ91QjA3diq5G/eGT7o9y6Z
- qhwA==
-X-Gm-Message-State: AOJu0YxFBG8/DSKGhWy2v4IqQXt/oj+vwkHcRl2tq+yWtculr3d/YAm0
- BzFY9ZQ0nxh74bFfv1iFgpsEQRjWjlQDAKxY+KJ0JQ==
-X-Google-Smtp-Source: AGHT+IGXWrH52bUx9rZYsOrz4aTDCylEcSHCzLmZUgzwJvQMP8k123huV6epvfnONp2ZYHFzurdBX919r7PZp+7EXLo=
-X-Received: by 2002:a2e:965a:0:b0:2c5:130c:d41e with SMTP id
- z26-20020a2e965a000000b002c5130cd41emr7995089ljh.29.1698669764883; Mon, 30
- Oct 2023 05:42:44 -0700 (PDT)
+ bh=4ng2ChuYM/Z2YnskJMQA0+GcGB0Da/VKWSu82n4elek=;
+ b=ISAEYc9um9E1AZ3bcMlPz3JRLn4VZy4Y1MsB6Jk0PXszzoNVL+RLpWYv5P6+ywkoiO
+ sfAMy95BjuHlHSv3c2hBKrghZ/JjTo9Yp9SEnB/kNpVLkuHZauss9WS3p7Aym30wkMjB
+ QGrapwjdN8yv2YZmPn/zv2UAfAMCq94yXVi1C3vbgZPwewaokkc78E+0yv8gRB77QW7D
+ FOqm2zc1bF5dQMupKVSfVQJ4Y3mcTX7ULgyYLaUg2dsdSXSEuWoLmUjloZVQ72eWC8It
+ +d3odoAbLMuNxiQzzNqE+O3vaJq5joHSEr+zEP0ENodQeMUtIw1dMhMe1ZyZHdMFLsy2
+ GP9A==
+X-Gm-Message-State: AOJu0YxLL7cQyfzoo/fAQ37mSPjw3+kpmDGpYytZaZpRILxaN3DNzrrn
+ s0A35yQxQAMv4L8z6UqNPyUsjbClwE4fYJi9gu/lXw==
+X-Google-Smtp-Source: AGHT+IGLeSfgnYcPx5EhVNej308zXVuBgGU4IIwyzPzz1UV29t2KpuZd4CJzl5MjpiZ4ezgXyPxRaMmrw0k4Rt0kBwc=
+X-Received: by 2002:a05:651c:119b:b0:2c5:14d1:a303 with SMTP id
+ w27-20020a05651c119b00b002c514d1a303mr6570309ljo.25.1698670323811; Mon, 30
+ Oct 2023 05:52:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
- <20231030051356.33123-13-akihiko.odaki@daynix.com>
-In-Reply-To: <20231030051356.33123-13-akihiko.odaki@daynix.com>
+ <20231030051356.33123-12-akihiko.odaki@daynix.com>
+ <CAOEp5OdEEVcojjwCOU+9Z5yBKN+e5iNbAMOA5d-97D81N4Y0tw@mail.gmail.com>
+ <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
+In-Reply-To: <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
 From: Yuri Benditovich <yuri.benditovich@daynix.com>
-Date: Mon, 30 Oct 2023 14:42:32 +0200
-Message-ID: <CAOEp5OfL_cJyhbwqhBXfiwAP3pybsxEbiLmmNtpPuJYqLGPWTg@mail.gmail.com>
-Subject: Re: [PATCH v6 12/21] virtio-net: Enable software RSS
+Date: Mon, 30 Oct 2023 14:51:51 +0200
+Message-ID: <CAOEp5Oern10jW8Pi-_mceU_ZJVD=a1f3tW8rB2O4efLX45-nvw@mail.gmail.com>
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>, 
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000ed4f700608ee5f3d"
-Received-SPF: none client-ip=2a00:1450:4864:20::235;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x235.google.com
+Content-Type: multipart/alternative; boundary="0000000000003ddc1b0608ee810d"
+Received-SPF: none client-ip=2a00:1450:4864:20::230;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -86,228 +89,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ed4f700608ee5f3d
+--0000000000003ddc1b0608ee810d
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 30, 2023 at 7:14=E2=80=AFAM Akihiko Odaki <akihiko.odaki@daynix=
+On Mon, Oct 30, 2023 at 2:21=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
 .com>
 wrote:
 
-> virtio-net implements software RSS but does not enable it. Enable it
-> when RSS is requested, but the eBPF implementation is not available.
-> We also check if vhost is in use in such a case since software RSS is
-> incompatible with vhost. A warning will be emitted when falling back to
-> software RSS since it provides no performance benefit.
+> On 2023/10/30 21:14, Yuri Benditovich wrote:
+> >
+> >
+> > On Mon, Oct 30, 2023 at 7:14=E2=80=AFAM Akihiko Odaki <akihiko.odaki@da=
+ynix.com
+> > <mailto:akihiko.odaki@daynix.com>> wrote:
+> >
+> >     vhost requires eBPF for RSS. When eBPF is not available, virtio-net
+> >     implicitly disables RSS even if the user explicitly requests it.
+> Return
+> >     an error instead of implicitly disabling RSS if RSS is requested bu=
+t
+> not
+> >     available.
+> >
+> >
+> > I think that suggesting RSS feature when in fact it is not available is
+> > not a good idea, this rather desinforms the guest.
+> > Existing behavior (IMHO) makes more sense.
+> > We can extend this discussion if needed, of course.
 >
+> This change is not to advertise RSS when it's not available; it instead
+> reports an error to the user.
 >
-Can you please elaborate what is wrong from your point of view in the
-existing implementation?
-In general it does (IMO) what you describe.
-I'd like to note several things:
-- The "vhost=3Doff" is in fact the fallback mode (libvirt default is vhost=
-=3Don)
-- The main goal of software RSS was to provide a reference for RSS
-implementation for future virtio-net hardware
-- Performance benefit of software RSS (as well as implementation in EBPF)
-is delivery of each packet to proper virtqueue/CPU and avoiding packet
-rescheduling in the guest
-- The best thing (IMO) would be to implement hash delivery with vhost=3Don,
-i.e. in EBPF and as soon as this is possible - rely on the hardware/host
-capabilities and stop calculating the hash in the guest driver (as we do
-today in Windows)
-
-
-
-
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  hw/net/virtio-net.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
+> For example, think of the following command line:
+> qemu-system-x86_64 -device virtio-net,rss=3Don,netdev=3Dn -netdev user,id=
+=3Dn
 >
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 7bb91617d0..1fa020d905 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -1260,10 +1260,12 @@ static bool virtio_net_attach_epbf_rss(VirtIONet
-> *n)
->
->      if (!ebpf_rss_set_all(&n->ebpf_rss, &config,
->                            n->rss_data.indirections_table,
-> n->rss_data.key)) {
-> +        warn_report("Failed to configure eBPF RSS");
->          return false;
->      }
->
->      if (!virtio_net_attach_ebpf_to_backend(n->nic,
-> n->ebpf_rss.program_fd)) {
-> +        warn_report("Failed to attach eBPF to backend");
->          return false;
->      }
->
-> @@ -1278,16 +1280,10 @@ static void virtio_net_detach_epbf_rss(VirtIONet
-> *n)
->  static void virtio_net_commit_rss_config(VirtIONet *n)
->  {
->      if (n->rss_data.enabled) {
-> -        n->rss_data.enabled_software_rss =3D n->rss_data.populate_hash;
-> +        n->rss_data.enabled_software_rss =3D n->rss_data.populate_hash |=
-|
-> +                                           !virtio_net_attach_epbf_rss(n=
-);
->          if (n->rss_data.populate_hash) {
->              virtio_net_detach_epbf_rss(n);
-> -        } else if (!virtio_net_attach_epbf_rss(n)) {
-> -            if (get_vhost_net(qemu_get_queue(n->nic)->peer)) {
-> -                warn_report("Can't load eBPF RSS for vhost");
-> -            } else {
-> -                warn_report("Can't load eBPF RSS - fallback to software
-> RSS");
-> -                n->rss_data.enabled_software_rss =3D true;
-> -            }
->          }
->
->          trace_virtio_net_rss_enable(n->rss_data.hash_types,
-> @@ -3747,8 +3743,13 @@ static void virtio_net_device_realize(DeviceState
-> *dev, Error **errp)
->
->      if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS) &&
->          !virtio_net_load_ebpf(n)) {
-> -        error_setg(errp, "Can't load eBPF RSS");
-> -        virtio_net_device_unrealize(dev);
-> +        if (get_vhost_net(nc->peer)) {
-> +            error_setg(errp, "Can't load eBPF RSS for vhost");
-> +            virtio_net_device_unrealize(dev);
-> +            return;
-> +        }
-> +
-> +        warn_report_once("Can't load eBPF RSS - fallback to software
-> RSS");
->      }
->  }
->
-> --
-> 2.42.0
->
+> Before this change, it gives no error and the user will not know RSS is
+> not available. With this change it now gives an error as follows:
+> qemu-system-x86_64: -device virtio-net,rss=3Don,netdev=3Dn: Can't load eB=
+PF RSS
 >
 
---000000000000ed4f700608ee5f3d
+Does this mean failure to run QEMU if the RSS required in the command line
+and EBPF can't be loaded?
+(for example if we run the system with kernel < 5.8)?
+I'm not sure this is user-friendly behavior...
+
+--0000000000003ddc1b0608ee810d
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 30, 2023 at 7:14=E2=80=AF=
-AM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.od=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 30, 2023 at 2:21=E2=80=AF=
+PM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.od=
 aki@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
 yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">virtio-net implements software RSS but does not enable it. En=
-able it<br>
-when RSS is requested, but the eBPF implementation is not available.<br>
-We also check if vhost is in use in such a case since software RSS is<br>
-incompatible with vhost. A warning will be emitted when falling back to<br>
-software RSS since it provides no performance benefit.<br>
-<br></blockquote><div><br></div><div>Can you please elaborate what is wrong=
- from your point of view in the existing implementation?</div><div>In gener=
-al it does (IMO) what you describe.</div><div>I&#39;d like to note several =
-things:</div><div>- The &quot;vhost=3Doff&quot; is in fact the fallback mod=
-e (libvirt default is vhost=3Don)</div><div>- The main goal of software RSS=
- was to provide a reference for RSS implementation for future virtio-net ha=
-rdware<br></div><div>- Performance benefit of software RSS (as well as impl=
-ementation in EBPF) is delivery of each packet to proper virtqueue/CPU and =
-avoiding packet rescheduling=C2=A0in the guest</div><div>- The best thing (=
-IMO) would be to implement hash delivery with vhost=3Don, i.e. in EBPF and =
-as soon as this is possible - rely on the hardware/host capabilities and st=
-op calculating the hash in the guest driver (as we do today in Windows)</di=
-v><div><br></div><div><br></div><div>=C2=A0</div><blockquote class=3D"gmail=
-_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
-,204);padding-left:1ex">
-Signed-off-by: Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com=
-" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
----<br>
-=C2=A0hw/net/virtio-net.c | 21 +++++++++++----------<br>
-=C2=A01 file changed, 11 insertions(+), 10 deletions(-)<br>
+ing-left:1ex">On 2023/10/30 21:14, Yuri Benditovich wrote:<br>
+&gt; <br>
+&gt; <br>
+&gt; On Mon, Oct 30, 2023 at 7:14=E2=80=AFAM Akihiko Odaki &lt;<a href=3D"m=
+ailto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com<=
+/a> <br>
+&gt; &lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blan=
+k">akihiko.odaki@daynix.com</a>&gt;&gt; wrote:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0vhost requires eBPF for RSS. When eBPF is not avail=
+able, virtio-net<br>
+&gt;=C2=A0 =C2=A0 =C2=A0implicitly disables RSS even if the user explicitly=
+ requests it. Return<br>
+&gt;=C2=A0 =C2=A0 =C2=A0an error instead of implicitly disabling RSS if RSS=
+ is requested but not<br>
+&gt;=C2=A0 =C2=A0 =C2=A0available.<br>
+&gt; <br>
+&gt; <br>
+&gt; I think that suggesting RSS feature when in fact it is not available i=
+s <br>
+&gt; not a good idea, this rather desinforms the guest.<br>
+&gt; Existing behavior (IMHO) makes more sense.<br>
+&gt; We can extend this discussion if needed, of course.<br>
 <br>
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c<br>
-index 7bb91617d0..1fa020d905 100644<br>
---- a/hw/net/virtio-net.c<br>
-+++ b/hw/net/virtio-net.c<br>
-@@ -1260,10 +1260,12 @@ static bool virtio_net_attach_epbf_rss(VirtIONet *n=
-)<br>
+This change is not to advertise RSS when it&#39;s not available; it instead=
+ <br>
+reports an error to the user.<br>
 <br>
-=C2=A0 =C2=A0 =C2=A0if (!ebpf_rss_set_all(&amp;n-&gt;ebpf_rss, &amp;config,=
+For example, think of the following command line:<br>
+qemu-system-x86_64 -device virtio-net,rss=3Don,netdev=3Dn -netdev user,id=
+=3Dn<br>
 <br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0n-&gt;rss_data.indirections_table, n-&gt;rss_data.k=
-ey)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 warn_report(&quot;Failed to configure eBPF RSS=
-&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0if (!virtio_net_attach_ebpf_to_backend(n-&gt;nic, n-&gt=
-;ebpf_rss.program_fd)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 warn_report(&quot;Failed to attach eBPF to bac=
-kend&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-@@ -1278,16 +1280,10 @@ static void virtio_net_detach_epbf_rss(VirtIONet *n=
-)<br>
-=C2=A0static void virtio_net_commit_rss_config(VirtIONet *n)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0if (n-&gt;rss_data.enabled) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 n-&gt;rss_data.enabled_software_rss =3D n-&gt;=
-rss_data.populate_hash;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 n-&gt;rss_data.enabled_software_rss =3D n-&gt;=
-rss_data.populate_hash ||<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0!virtio_net_attach_epbf_rss(n);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (n-&gt;rss_data.populate_hash) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_net_detach_epbf_rss(=
-n);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else if (!virtio_net_attach_epbf_rss(n)) {<b=
-r>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (get_vhost_net(qemu_get_queue=
-(n-&gt;nic)-&gt;peer)) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 warn_report(&quot;=
-Can&#39;t load eBPF RSS for vhost&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 warn_report(&quot;=
-Can&#39;t load eBPF RSS - fallback to software RSS&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 n-&gt;rss_data.ena=
-bled_software_rss =3D true;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0trace_virtio_net_rss_enable(n-&gt;rss_dat=
-a.hash_types,<br>
-@@ -3747,8 +3743,13 @@ static void virtio_net_device_realize(DeviceState *d=
-ev, Error **errp)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0if (virtio_has_feature(n-&gt;host_features, VIRTIO_NET_=
-F_RSS) &amp;&amp;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0!virtio_net_load_ebpf(n)) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;Can&#39;t load eBPF RSS=
-&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_device_unrealize(dev);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (get_vhost_net(nc-&gt;peer)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;Can&#39;t=
- load eBPF RSS for vhost&quot;);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_device_unrealize(dev)=
-;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 warn_report_once(&quot;Can&#39;t load eBPF RSS=
- - fallback to software RSS&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0}<br>
-<br>
--- <br>
-2.42.0<br>
-<br>
-</blockquote></div></div>
+Before this change, it gives no error and the user will not know RSS is <br=
+>
+not available. With this change it now gives an error as follows:<br>
+qemu-system-x86_64: -device virtio-net,rss=3Don,netdev=3Dn: Can&#39;t load =
+eBPF RSS<br></blockquote><div><br></div><div>Does this mean failure to run =
+QEMU if the RSS required in the command line and EBPF can&#39;t be loaded?<=
+/div><div>(for example if we run the system with kernel &lt; 5.8)?</div><di=
+v>I&#39;m not sure this is user-friendly behavior...</div></div></div>
 
---000000000000ed4f700608ee5f3d--
+--0000000000003ddc1b0608ee810d--
 
