@@ -2,54 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0797DC136
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 21:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303A27DC15B
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 21:39:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxYuB-0005Xx-JX; Mon, 30 Oct 2023 16:30:35 -0400
+	id 1qxZ1W-0008EF-Mo; Mon, 30 Oct 2023 16:38:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qxYu3-0005XG-0p
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 16:30:28 -0400
+ id 1qxZ1U-0008DJ-Tw; Mon, 30 Oct 2023 16:38:08 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qxYu0-00068b-Vz
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 16:30:26 -0400
+ id 1qxZ1S-0007J2-L0; Mon, 30 Oct 2023 16:38:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lrhvQydU4gI1WI2CFHVpegGwGYJ0vV/OL1fr0ofwbNU=; b=Hv0vK/3OuUh+Q9NxwmGMHBxyO5
- JSr+onpYHYCf+t3fr5T2kRm6O7QyRCfEBIqs+6/nXEHE2qNs2Bzp1KQzCDde5ia54ZJvYO681+oSV
- 3I5IErICn+Koo4X6t44kUwZ4AwXY4+X4xVUciK7RVtSsd7Hsurkfi6eo6VGDu+C7IeveG5VMRZycs
- WSyhpPVbK7jIWtzZn4eMTUGydjXvQohUcAHIM0eW80TAsb2XVL2zWTmIkTOzSpYcCOIw6zrTcT+EA
- iytLz9TUuuc+bnmzWSMlvDP2g9xvZ+eS/mt+Sj9C1iJMw8oi0aNsyYFT6XU0uLUWc9P/5Zwny+lGA
- Tz0hN31wuYXkFHhRiMMdgLigG+3MRvZ17IuZtDqDfEgUTPMYSYyNvNs73wmBULnG74fAfnEu/XS8L
- Nlh/HPiSUUMlzB2+udoIP/r1kdZbbmZsWeQZ2ILB+uJfizfJhiFQ9Dses9CAvvhSDkg6PtYSyCjpb
- S2PfV9S7cvUp3WeyPOV7Xi2cZIIb6w9BVJfNtNh4tb5pYxlxfGqoQcXAEhrExmwVz9tDzTK6luhFG
- IjN/Jzw+UyLme3jAQ4b2kqtAGKJ7QeM9c9c8oFEU8AkV8jb/O7A62jaHzt/ClzZRAcEpEWUe/dZ1y
- t5/mGkidjA5q91hNaEYXbrcc7DVNyaNNK0WWkUghE=;
+ bh=SyF+WfYOcafPUzfohavt56YZ1a8og4MVEmfTcVo57eU=; b=j9GS/cReygmQpkNsVKhntow3NQ
+ uShnzdW4zzF/eDojFIHEl9oY2wls4JHR/WJSOmGU3h4i4mQs0P9E6nwRgAaoDhMMN/wnyjctkXCk4
+ MZkK/cfcEd6OqqN2H661JGLnR4xT3QYJ0so2+6g+cYQAGGpdz4UrENmNicEZkIEpwg/SCh0KmLKba
+ +wurJEqgrHF4hsBzlr/VlD/zQaSmii0NtLYPP45gyVpTPUAbJMwbJLuKP5Epi1IqljXRY2dfQGGNr
+ w27jZFvLHRaL531HsVgVJbmWHKL5qRkiQxfIGhAYoiDTULn6l5l8mBEUNPmm3g1esbyLZNGLT0i+Z
+ YkNxWGBLyi/f17lzJ5yU0ftHq+J5vXdWL2Ex/gZeFH1DyQtXl6ay8cXkClkWwLA/V/MYd/fEqbhfS
+ RLovp99/0AHAnFrU0YPCObQKjFajS0DYCNqLKESSkmJufQnXcV0Ly4yan66yaM1NWPsqX5upnXANq
+ 4r8cEJb/Qq53JxDI7Ct+ZXrVfu0Z0xCZCoGgOZLO6G8zBX26tgVvhl1FO8J1VtzGh+SUipfXdOibJ
+ KNMZmpmYK2WU6VwQrv1SeZIFZn256Ety+lmuQVn8rGzx1ZXf6asLMrM3XJfiCHUN/ONtc4FV1psg1
+ aK5LvmArEpKHZJFa5ZOMLvyECmq5ugEmUaxEM95PA=;
 Received: from [2a00:23c4:8bb0:5400:5ff2:9176:6cc5:bf69]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qxYtk-000Cjk-O6; Mon, 30 Oct 2023 20:30:12 +0000
-Message-ID: <e8a8425a-d824-44da-a2b1-3187f01d59cd@ilande.co.uk>
-Date: Mon, 30 Oct 2023 20:30:11 +0000
+ id 1qxZ1E-000Clj-TE; Mon, 30 Oct 2023 20:37:56 +0000
+Message-ID: <9ea5c9b8-d740-4cec-9896-568babeca9aa@ilande.co.uk>
+Date: Mon, 30 Oct 2023 20:37:57 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Bernhard Beschow <shentey@gmail.com>,
- vr_qemu@t-online.de
-References: <cover.1698536342.git.balaton@eik.bme.hu>
- <03f52ea1-7436-4129-bd53-e14104a9e74e@ilande.co.uk>
- <0f4b0c4b-9229-dcc5-d12a-3f423c316f80@eik.bme.hu>
 Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20231030114802.3671871-1-peter.maydell@linaro.org>
+ <20231030114802.3671871-6-peter.maydell@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -75,12 +72,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <0f4b0c4b-9229-dcc5-d12a-3f423c316f80@eik.bme.hu>
+In-Reply-To: <20231030114802.3671871-6-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:5400:5ff2:9176:6cc5:bf69
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 0/4] Fix IRQ routing in via south bridge
+Subject: Re: [PATCH v2 5/6] hw/input/stellaris_input: Convert to qdev
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -106,78 +103,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/10/2023 13:45, BALATON Zoltan wrote:
+On 30/10/2023 11:48, Peter Maydell wrote:
 
-> On Sun, 29 Oct 2023, Mark Cave-Ayland wrote:
->> On 29/10/2023 00:56, BALATON Zoltan wrote:
->>
->>> This is going back to my otiginal proposal in
->>> https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/
->>> implementing routing of interrupts from device functions and PCI
->>> devices to ISA interrupts. On pegasos2 the firmware sets evertyhing to
->>> share IRQ 9 so the current simpified version worked for taht but with
->>> the amigaone machine its firmware makes use of this feature and
->>> assigns different interrupts to functions and PCI devices so we need
->>> to properly impelent this.
->>
->> <quote>
->>> Since any ISA interrupt can be controlled
->>> by any interrupt source (different functions of the multifunction
->>> device plus the 4 input pins from PCI devices) there are more than 4
->>> possible sources so this can't be handled by just the 4 PCI interrupt
->>> lines. We need to keep track of the state of each interrupt source to
->>> be able to determine the level of the ISA interrupt and avoid one
->>> device clearing it while other still has an interrupt.
->> </quote>
->>
->> This here is the important bit, since what you're describing here is exactly how 
->> PCI interrupts in QEMU work, and so is already handled by the existing PCI IRQ 
->> routing code. It seems to me that what you're doing here is creating an incomplete 
->> re-implementation of part of the PCI interrupt logic in isa_irq_state, which is a 
->> strong hint that this is the wrong approach and that you should be making use of 
->> PCI IRQ routing.
+> Convert the hw/input/stellaris_input device to qdev.
 > 
-> I don't see how this can be handled by the PCI interrupt routing which only considers 
-> 4 lines while in VIA we have more sources than that which are the chip functions 
-> (some even with more than one IRQ like IDE) and the 4 PCI interrupt inputs and these 
-> can be routed to any of the ISA IRQs independently (there's a register for each of 
-> them, the funcs use thi interrupt line config reg and the PCI pins the regs in the 
-> ISA func). So how would PCI handle this when it only sees the 4 PCI interrupt lines 
-> but not the chip functions as separate sources? You've assumed that those functions 
-> must be PCI devices too but their interrupts are routable separately from the PCI 
-> interrupts so you can have PCI INTA-D mapped to IRQ 7,8,9,10 and USB func mapped to 
-> IRQ 5 (like amigaone does) so you can't use PCI interrupt for the USB too but have to 
-> consider all of these separately and route them in the ISA bridge.
-
-Ah so the restriction here is the number of PCI interrupt lines? That can be done by 
-increasing the number of PCI bus IRQs to 4 + N, where 0-3 represent INTA-D and the N 
-others represent individual functions on the in-built devices. You can then determine 
-the slot/function in the PCI map IRQ function to route to the appropriate N IRQ.
-
->>> This fixes USB on amigaone and maybe other bugs not discovered yet.
->>
->> Given that the AmigaOne machine is new, can you explain in a bit more detail what 
->> the difference is between the Pegasos2 and AmigaOne machines, particularly with 
->> respect to where the existing IRQ routing logic is getting this wrong?
+> The interface uses an array property for the board to specify the
+> keycodes to use, so the s->keycodes memory is now allocated by the
+> array-property machinery.
 > 
-> The pegasos2 firmware sets all chip functions and PCI devices (except IDE which is 
-> hard coded to legacy interrupts) to IRQ 9 so it worked with mixing PCI interrupts 
-> with chip functions but the amigaone does not do that and sets different ISA 
-> interrupts to chip functions and PCI interrupts so the current simplified version 
-> cannot work with that any more and we need to allow separate routing of all the 
-> interrupt sources. (Additionally we need to keep interrupt state for each source to 
-> allow multiple sources to control the same ISA interrupt.) I could not think of any 
-> simpler way than my patch to correctly implement this.
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> v1->v2: drop private/public comment lines
+> ---
+>   include/hw/input/stellaris_gamepad.h | 22 ++++++++-
+>   hw/arm/stellaris.c                   | 26 +++++++---
+>   hw/input/stellaris_gamepad.c         | 73 +++++++++++++++++++---------
+>   3 files changed, 89 insertions(+), 32 deletions(-)
+> 
+> diff --git a/include/hw/input/stellaris_gamepad.h b/include/hw/input/stellaris_gamepad.h
+> index 23cfd3c95f3..6140b889a28 100644
+> --- a/include/hw/input/stellaris_gamepad.h
+> +++ b/include/hw/input/stellaris_gamepad.h
+> @@ -11,8 +11,26 @@
+>   #ifndef HW_INPUT_STELLARIS_GAMEPAD_H
+>   #define HW_INPUT_STELLARIS_GAMEPAD_H
+>   
+> +#include "hw/sysbus.h"
+> +#include "qom/object.h"
+>   
+> -/* stellaris_gamepad.c */
+> -void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode);
+> +/*
+> + * QEMU interface:
+> + *  + QOM array property "keycodes": uint32_t QEMU keycodes to handle
+> + *  + unnamed GPIO outputs: one per keycode, in the same order as the
+> + *    "keycodes" array property entries; asserted when key is down
+> + */
+> +
+> +#define TYPE_STELLARIS_GAMEPAD "stellaris-gamepad"
+> +OBJECT_DECLARE_SIMPLE_TYPE(StellarisGamepad, STELLARIS_GAMEPAD)
+> +
+> +struct StellarisGamepad {
+> +    SysBusDevice parent_obj;
 
-The key point of interest is that we have PIIX that basically already works using the 
-existing PCI IRQ routing APIs: the aim is to do something similar with VIA, or to 
-tweak the existing APIs if needed to make it possible. Otherwise you end up with the 
-situation in this series in which you're effectively inventing a parallel form of PCI 
-IRQ routing just for the VIA ISA bridge and hardcoding it into the in-built VIA devices.
+Minor style comment: for QOM types there should be an empty line after parent_obj to 
+aid identification (as per 
+https://qemu.readthedocs.io/en/master/devel/style.html#qemu-object-model-declarations).
 
-The benefit of using the PCI IRQ routing APIs is that it is also possible to plug in 
-the individual PCI device/functions using -device into any PCI bus for testing, which 
-is something that is already done with PIIX-IDE.
+> +    uint32_t num_buttons;
+> +    qemu_irq *irqs;
+> +    uint32_t *keycodes;
+> +    uint8_t *pressed;
+> +    int extension;
+> +};
+>   
+>   #endif
+> diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+> index 96585dd7106..707b0dae375 100644
+> --- a/hw/arm/stellaris.c
+> +++ b/hw/arm/stellaris.c
+> @@ -31,6 +31,7 @@
+>   #include "hw/timer/stellaris-gptm.h"
+>   #include "hw/qdev-clock.h"
+>   #include "qom/object.h"
+> +#include "qapi/qmp/qlist.h"
+>   
+>   #define GPIO_A 0
+>   #define GPIO_B 1
+> @@ -1274,16 +1275,27 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+>           sysbus_connect_irq(SYS_BUS_DEVICE(enet), 0, qdev_get_gpio_in(nvic, 42));
+>       }
+>       if (board->peripherals & BP_GAMEPAD) {
+> -        qemu_irq gpad_irq[5];
+> +        QList *gpad_keycode_list = qlist_new();
+>           static const int gpad_keycode[5] = { 0xc8, 0xd0, 0xcb, 0xcd, 0x1d };
+> +        DeviceState *gpad;
+>   
+> -        gpad_irq[0] = qemu_irq_invert(gpio_in[GPIO_E][0]); /* up */
+> -        gpad_irq[1] = qemu_irq_invert(gpio_in[GPIO_E][1]); /* down */
+> -        gpad_irq[2] = qemu_irq_invert(gpio_in[GPIO_E][2]); /* left */
+> -        gpad_irq[3] = qemu_irq_invert(gpio_in[GPIO_E][3]); /* right */
+> -        gpad_irq[4] = qemu_irq_invert(gpio_in[GPIO_F][1]); /* select */
+> +        gpad = qdev_new(TYPE_STELLARIS_GAMEPAD);
+> +        for (i = 0; i < ARRAY_SIZE(gpad_keycode); i++) {
+> +            qlist_append_int(gpad_keycode_list, gpad_keycode[i]);
+> +        }
+> +        qdev_prop_set_array(gpad, "keycodes", gpad_keycode_list);
+> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(gpad), &error_fatal);
+>   
+> -        stellaris_gamepad_init(5, gpad_irq, gpad_keycode);
+> +        qdev_connect_gpio_out(gpad, 0,
+> +                              qemu_irq_invert(gpio_in[GPIO_E][0])); /* up */
+> +        qdev_connect_gpio_out(gpad, 1,
+> +                              qemu_irq_invert(gpio_in[GPIO_E][1])); /* down */
+> +        qdev_connect_gpio_out(gpad, 2,
+> +                              qemu_irq_invert(gpio_in[GPIO_E][2])); /* left */
+> +        qdev_connect_gpio_out(gpad, 3,
+> +                              qemu_irq_invert(gpio_in[GPIO_E][3])); /* right */
+> +        qdev_connect_gpio_out(gpad, 4,
+> +                              qemu_irq_invert(gpio_in[GPIO_F][1])); /* select */
+>       }
+>       for (i = 0; i < 7; i++) {
+>           if (board->dc4 & (1 << i)) {
+> diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
+> index 82ddc47a26d..6ccf0e80adc 100644
+> --- a/hw/input/stellaris_gamepad.c
+> +++ b/hw/input/stellaris_gamepad.c
+> @@ -8,19 +8,13 @@
+>    */
+>   
+>   #include "qemu/osdep.h"
+> +#include "qapi/error.h"
+>   #include "hw/input/stellaris_gamepad.h"
+>   #include "hw/irq.h"
+> +#include "hw/qdev-properties.h"
+>   #include "migration/vmstate.h"
+>   #include "ui/console.h"
+>   
+> -typedef struct {
+> -    uint32_t num_buttons;
+> -    int extension;
+> -    qemu_irq *irqs;
+> -    uint32_t *keycodes;
+> -    uint8_t *pressed;
+> -} StellarisGamepad;
+> -
+>   static void stellaris_gamepad_put_key(void * opaque, int keycode)
+>   {
+>       StellarisGamepad *s = (StellarisGamepad *)opaque;
+> @@ -57,22 +51,55 @@ static const VMStateDescription vmstate_stellaris_gamepad = {
+>       }
+>   };
+>   
+> -/* Returns an array of 5 output slots.  */
+> -void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode)
+> +static void stellaris_gamepad_realize(DeviceState *dev, Error **errp)
+>   {
+> -    StellarisGamepad *s;
+> -    int i;
+> +    StellarisGamepad *s = STELLARIS_GAMEPAD(dev);
+>   
+> -    s = g_new0(StellarisGamepad, 1);
+> -    s->irqs = g_new0(qemu_irq, n);
+> -    s->keycodes = g_new0(uint32_t, n);
+> -    s->pressed = g_new0(uint8_t, n);
+> -    for (i = 0; i < n; i++) {
+> -        s->irqs[i] = irq[i];
+> -        s->keycodes[i] = keycode[i];
+> +    if (s->num_buttons == 0) {
+> +        error_setg(errp, "keycodes property array must be set");
+> +        return;
+>       }
+> -    s->num_buttons = n;
+> -    qemu_add_kbd_event_handler(stellaris_gamepad_put_key, s);
+> -    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
+> -                     &vmstate_stellaris_gamepad, s);
+> +
+> +    s->irqs = g_new0(qemu_irq, s->num_buttons);
+> +    s->pressed = g_new0(uint8_t, s->num_buttons);
+> +    qdev_init_gpio_out(dev, s->irqs, s->num_buttons);
+> +    qemu_add_kbd_event_handler(stellaris_gamepad_put_key, dev);
+>   }
+> +
+> +static void stellaris_gamepad_reset_enter(Object *obj, ResetType type)
+> +{
+> +    StellarisGamepad *s = STELLARIS_GAMEPAD(obj);
+> +
+> +    memset(s->pressed, 0, s->num_buttons * sizeof(uint8_t));
+> +}
+> +
+> +static Property stellaris_gamepad_properties[] = {
+> +    DEFINE_PROP_ARRAY("keycodes", StellarisGamepad, num_buttons,
+> +                      keycodes, qdev_prop_uint32, uint32_t),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void stellaris_gamepad_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    ResettableClass *rc = RESETTABLE_CLASS(klass);
+> +
+> +    rc->phases.enter = stellaris_gamepad_reset_enter;
+> +    dc->realize = stellaris_gamepad_realize;
+> +    dc->vmsd = &vmstate_stellaris_gamepad;
+> +    device_class_set_props(dc, stellaris_gamepad_properties);
+> +}
+> +
+> +static const TypeInfo stellaris_gamepad_info = {
+> +    .name = TYPE_STELLARIS_GAMEPAD,
+> +    .parent = TYPE_SYS_BUS_DEVICE,
+> +    .instance_size = sizeof(StellarisGamepad),
+> +    .class_init = stellaris_gamepad_class_init,
+> +};
+> +
+> +static void stellaris_gamepad_register_types(void)
+> +{
+> +    type_register_static(&stellaris_gamepad_info);
+> +}
+> +
+> +type_init(stellaris_gamepad_register_types);
+
+Is it worth converting this to use DEFINE_TYPES() during the conversion? I know Phil 
+has considered some automation to remove the type_init() boilerplate for the majority 
+of cases.
 
 
 ATB,
