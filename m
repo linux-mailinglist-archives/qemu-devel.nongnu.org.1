@@ -2,68 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1E27DC202
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9947B7DC234
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:58:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxZy2-0004er-3D; Mon, 30 Oct 2023 17:38:38 -0400
+	id 1qxaGR-0001kc-4t; Mon, 30 Oct 2023 17:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxZxe-0004YN-IF
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:38:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxaGI-0001kL-SY
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:57:30 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxZxY-0001o5-RN
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:38:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698701882;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XeRjszol/1t+00ejALfArrZY4Q2ar3HjlZvqNyiUzdI=;
- b=UqRZ5bUR1wbhg0tQdiBue/ZfkWf/ZmzPMNM7UEQ/5CMIjssEYMUvEQWAXUPFTMfDYeM5Z4
- XZey+Zm/CRDt70Gr7jouNCwQGFm7Cze7SHbXesIQJzjYBGLWNMdrvQdT4ZY5/u0Ecw54/R
- E6m1tZymt7tUJwBzUYmen4Xukoy3mLU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-Hv4aJSU5NeGHkzPkyGC0ug-1; Mon,
- 30 Oct 2023 17:37:57 -0400
-X-MC-Unique: Hv4aJSU5NeGHkzPkyGC0ug-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D5A71C18CC0;
- Mon, 30 Oct 2023 21:37:57 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6EAB9492BE0;
- Mon, 30 Oct 2023 21:37:56 +0000 (UTC)
-Date: Mon, 30 Oct 2023 16:37:54 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
- pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 24/24] block: Protect bs->file with graph_lock
-Message-ID: <udc7v4ty532le4ijdwjr7ja3lu6bnnlp5to6hurebc2gbsqvwu@omhkwiwpc6hc>
-References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-25-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxaGG-0006XA-9W
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:57:30 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 77DFD756082;
+ Mon, 30 Oct 2023 22:57:29 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 0448C756072; Mon, 30 Oct 2023 22:57:29 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 02722756062;
+ Mon, 30 Oct 2023 22:57:29 +0100 (CET)
+Date: Mon, 30 Oct 2023 22:57:28 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: qemu-devel@nongnu.org, philmd@linaro.org, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Bernhard Beschow <shentey@gmail.com>, vr_qemu@t-online.de
+Subject: Re: [PATCH 0/4] Fix IRQ routing in via south bridge
+In-Reply-To: <e8a8425a-d824-44da-a2b1-3187f01d59cd@ilande.co.uk>
+Message-ID: <942b8c93-f6d1-60a8-3dca-3506523de394@eik.bme.hu>
+References: <cover.1698536342.git.balaton@eik.bme.hu>
+ <03f52ea1-7436-4129-bd53-e14104a9e74e@ilande.co.uk>
+ <0f4b0c4b-9229-dcc5-d12a-3f423c316f80@eik.bme.hu>
+ <e8a8425a-d824-44da-a2b1-3187f01d59cd@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231027155333.420094-25-kwolf@redhat.com>
-User-Agent: NeoMutt/20231023
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,36 +64,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 27, 2023 at 05:53:33PM +0200, Kevin Wolf wrote:
-> Almost all functions that access bs->file already take the graph
-> lock now. Add locking to the remaining users and finally annotate the
-> struct field itself as protected by the graph lock.
-> 
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  block/parallels.h                |  5 +++--
->  block/qed.h                      |  2 +-
->  include/block/block_int-common.h |  2 +-
->  block.c                          | 11 ++++++++---
->  block/blkreplay.c                |  8 +++++++-
->  block/copy-before-write.c        |  2 +-
->  block/crypto.c                   |  6 ++++++
->  block/dmg.c                      | 16 ++++++++++------
->  block/parallels-ext.c            | 21 ++++++++++-----------
->  block/parallels.c                |  6 ++++--
->  block/preallocate.c              | 19 ++++++++++++++-----
->  block/qed.c                      | 12 ++++++++++--
->  block/raw-format.c               |  9 ++++++---
->  block/replication.c              |  5 ++++-
->  block/vmdk.c                     | 14 ++++++++++++--
->  15 files changed, 97 insertions(+), 41 deletions(-)
-> 
+On Mon, 30 Oct 2023, Mark Cave-Ayland wrote:
+> On 29/10/2023 13:45, BALATON Zoltan wrote:
+>> On Sun, 29 Oct 2023, Mark Cave-Ayland wrote:
+>>> On 29/10/2023 00:56, BALATON Zoltan wrote:
+>>> 
+>>>> This is going back to my otiginal proposal in
+>>>> https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/
+>>>> implementing routing of interrupts from device functions and PCI
+>>>> devices to ISA interrupts. On pegasos2 the firmware sets evertyhing to
+>>>> share IRQ 9 so the current simpified version worked for taht but with
+>>>> the amigaone machine its firmware makes use of this feature and
+>>>> assigns different interrupts to functions and PCI devices so we need
+>>>> to properly impelent this.
+>>> 
+>>> <quote>
+>>>> Since any ISA interrupt can be controlled
+>>>> by any interrupt source (different functions of the multifunction
+>>>> device plus the 4 input pins from PCI devices) there are more than 4
+>>>> possible sources so this can't be handled by just the 4 PCI interrupt
+>>>> lines. We need to keep track of the state of each interrupt source to
+>>>> be able to determine the level of the ISA interrupt and avoid one
+>>>> device clearing it while other still has an interrupt.
+>>> </quote>
+>>> 
+>>> This here is the important bit, since what you're describing here is 
+>>> exactly how PCI interrupts in QEMU work, and so is already handled by the 
+>>> existing PCI IRQ routing code. It seems to me that what you're doing here 
+>>> is creating an incomplete re-implementation of part of the PCI interrupt 
+>>> logic in isa_irq_state, which is a strong hint that this is the wrong 
+>>> approach and that you should be making use of PCI IRQ routing.
+>> 
+>> I don't see how this can be handled by the PCI interrupt routing which only 
+>> considers 4 lines while in VIA we have more sources than that which are the 
+>> chip functions (some even with more than one IRQ like IDE) and the 4 PCI 
+>> interrupt inputs and these can be routed to any of the ISA IRQs 
+>> independently (there's a register for each of them, the funcs use thi 
+>> interrupt line config reg and the PCI pins the regs in the ISA func). So 
+>> how would PCI handle this when it only sees the 4 PCI interrupt lines but 
+>> not the chip functions as separate sources? You've assumed that those 
+>> functions must be PCI devices too but their interrupts are routable 
+>> separately from the PCI interrupts so you can have PCI INTA-D mapped to IRQ 
+>> 7,8,9,10 and USB func mapped to IRQ 5 (like amigaone does) so you can't use 
+>> PCI interrupt for the USB too but have to consider all of these separately 
+>> and route them in the ISA bridge.
+>
+> Ah so the restriction here is the number of PCI interrupt lines? That can be 
+> done by increasing the number of PCI bus IRQs to 4 + N, where 0-3 represent 
+> INTA-D and the N others represent individual functions on the in-built 
+> devices. You can then determine the slot/function in the PCI map IRQ function 
+> to route to the appropriate N IRQ.
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+I can't because the PCI bus is in the north bridge. This VIA south bridge 
+is just a PCIDevice connected to a bus so it should not take over 
+interrupt handling of that bus which it does not own like the piix seems 
+to do. That seems much more hacky than my solution to model what the chip 
+does and map internal interrupt sources to ISA interrupts. The PCI 
+interrupts are just additional input pins on this chip it does not handle 
+the PCI bus itself, that's in the north bridge outside of this device.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+>>>> This fixes USB on amigaone and maybe other bugs not discovered yet.
+>>> 
+>>> Given that the AmigaOne machine is new, can you explain in a bit more 
+>>> detail what the difference is between the Pegasos2 and AmigaOne machines, 
+>>> particularly with respect to where the existing IRQ routing logic is 
+>>> getting this wrong?
+>> 
+>> The pegasos2 firmware sets all chip functions and PCI devices (except IDE 
+>> which is hard coded to legacy interrupts) to IRQ 9 so it worked with mixing 
+>> PCI interrupts with chip functions but the amigaone does not do that and 
+>> sets different ISA interrupts to chip functions and PCI interrupts so the 
+>> current simplified version cannot work with that any more and we need to 
+>> allow separate routing of all the interrupt sources. (Additionally we need 
+>> to keep interrupt state for each source to allow multiple sources to 
+>> control the same ISA interrupt.) I could not think of any simpler way than 
+>> my patch to correctly implement this.
+>
+> The key point of interest is that we have PIIX that basically already works 
+> using the existing PCI IRQ routing APIs: the aim is to do something similar 
+> with VIA, or to tweak the existing APIs if needed to make it possible. 
+> Otherwise you end up with the situation in this series in which you're 
+> effectively inventing a parallel form of PCI IRQ routing just for the VIA ISA 
+> bridge and hardcoding it into the in-built VIA devices.
 
+I've looked at piix now but that seems to have less functions and those 
+are probably PCI devices that only use PCI interrutps so you can just use 
+PCI intrrupts there. It srill needs to keep track of interrupt state 
+separately so piix also has code for that and piix replaces the interrupt 
+callbacks of the bus the chip is connected to so it takes over that from 
+the north bridge or whatever the pci bus is part of. That does not seem 
+right to me and this may break the bus piix is connected to. A PCIDevice 
+should not call pci_bus_irqs() IMO, only the part that owns the PCI bus or 
+board code should set this but not a device. The pegasos2 already uses it 
+to connect to PCI interrupts so VIA can't do that and should not do that. 
+What I have is self contained and models the chip correctly. Why not 
+change piix to do similarly or why do you insist these have to be the same 
+when they are different chips with different quirks of their own?
+
+> The benefit of using the PCI IRQ routing APIs is that it is also possible to 
+> plug in the individual PCI device/functions using -device into any PCI bus 
+> for testing, which is something that is already done with PIIX-IDE.
+
+That does not seem like a useful goal to me. These VIA ide, usb and ac97 
+parts are functions of the same chip so their models are part of the chip 
+model. They may be different QOM objects to separate them but they aren't 
+user creatable and should not be as these are part of the chip so it does 
+not make sense to instantiate them separately. Then it's also not a 
+problem to use VIA specific irq routing in these as they are part of the 
+same model.
+
+I think trying to force using the PCI irq mapping and setting code from 
+PCIBus would not make the via model any better just make it more complex 
+for no gain so I don't think that's a goal that should be followed. 
+Besides not being possible to cleanly do that it would also make it more 
+difficult to understand and debug interrupt routing later so I don't see 
+what advantage would that have over having a self contained model of the 
+chip even if piix manages to do it with PCIBus. But piix has only 4 
+interrupt lines and I don't think what it does taking over PCI interrupts 
+is a good idea so I don't want to go that direction. Having via and piix 
+models work slightly differently is not a problem IMO as long as both are 
+working and correct in themselves. There are other device models which 
+implement similar devices yet do it differently and in this case piix and 
+via are different in that via has more functions and their interrupts are 
+routed separately so it does not fit well with what we have in PCIBus. 
+Forcing it in that would just make it more complicated. These chips are 
+also from different vendors so while it may make sense to model piix3 and 
+piix4 similarly and sharing code (like vt82c686b and vt8231 are sharing 
+code) it may not make that much sense to try to make piix and via similar 
+when they may not be in reality other than both are collecting similar 
+functions but their inner working may be different. The via chips seem 
+more like an ISA superio chip that has some PCI support added while piix 
+may more like a collection of separate PCI functions so their models may 
+also be different in that.
+
+Regards,
+BALATON Zoltan
 
