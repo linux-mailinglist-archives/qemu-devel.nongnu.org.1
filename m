@@ -2,91 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0719B7DB279
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 05:17:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B40BA7DB27D
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 05:19:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxJha-00012V-Br; Mon, 30 Oct 2023 00:16:34 -0400
+	id 1qxJjk-0001vh-Jj; Mon, 30 Oct 2023 00:18:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxJhU-00012F-S7
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:16:30 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxJji-0001vV-8U
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:18:46 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxJhT-0006nw-5m
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:16:28 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c77449a6daso34493745ad.0
- for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 21:16:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxJjf-0006y2-O0
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:18:45 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40837ebba42so27058335e9.0
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 21:18:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698639385; x=1699244185;
- darn=nongnu.org; 
+ d=linaro.org; s=google; t=1698639520; x=1699244320; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lSwo3xUWVOMnUGi/WSyGqFMK1YEvx8fq30WrVLb1o/o=;
- b=lpC5ltgQcInnK0iMy7+xPD82HwNZcz5w5BqSkxbv+hewb0ac4j+lNBpJpRCnqlQ9Ie
- bGiVXwqvtL10qSuHqXnfz9z7y6ubbdZuq59YQrYBE19yWHvoqV7spL3lnEgbUZ4T//ny
- n5RoEaeOy9L4PqOJt4Ngc0/j/8w6bcfaf3ZLkH3pR+6t17OpKPtYIDsAvzsgGu071yXF
- EvLAvmxZV6ZA1yGez2Vsj4CXLqroZZ6uaoeLkNDfhRN0yrocJLs7YTYYDS9gD5gjWUka
- Y33AVV4YZtCpCGU8pacY0P6HF3dIMmqY5IqQJn8uUV0r50OxIw74D0Z7Jm+Kc/tWdAeW
- RVuA==
+ bh=uV9BbOAwN+ExyoHqMUozGLxSieM73JeIzBDBnSn5RuI=;
+ b=GAUBMOfENnOkcnFHeCBy7+bKRxLb6eLEc6stTQq9kL1Q4RkkjKBxYlu99jMt3ioDh3
+ B76FO+ogXQYoJ04nxA2A8UuokMkxLPHO1ETTHVm2IQoHIr7Tqlbqe2QmVtb11rvxyP1Q
+ UrC+qAh5Wd56vKnlwd0cWwTWdiBLd3Vb8C03H/fEaLyQfFkLF6WWZRh4swKWIGrAlcUe
+ 2rrZD59/LFJMyNo0pLnJv1dOP3bjb/lVrcw1JRxJLlZMaGYrwzU+OHc6n5X/sGUrmHsJ
+ fOt1vYl4NGrmci/enbgOAeKqND6EgwOxHK38eUUhU2iLhMNk2mzDFDNsfvBVPuf/E4W6
+ ttAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698639385; x=1699244185;
+ d=1e100.net; s=20230601; t=1698639520; x=1699244320;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lSwo3xUWVOMnUGi/WSyGqFMK1YEvx8fq30WrVLb1o/o=;
- b=soZCSBXzEC8TVh0jKFO1zFzskPs4rawm6LavYpb8hxLkIjMzMWUSDADF6fOC/ky6W8
- r9kX2xChS1E6mN/MTYcoW2Wxwq9uQcEVGR0o0s6EO1AiWglh+TNEl+aQ6amruinn7aLW
- 4uoxbkWd+tfW92eyPnQl7RTMGROIYla9NXpDTfAPD/HHvOAXD1XMvvRaCcnzsTR7XP9n
- P+LwarBKtdxQWJhYLxUeVZbxHByp3xCelD2fCnsLcd0Vq4Y0lqHe4/gv5UeJSjKm79dg
- FyYb7LXOGlM7vXBFWhImIeSK4+UMQ/oMN2pvh2yAZbqKplT9yEqk4hG8AoTcz74K8rA+
- XA1w==
-X-Gm-Message-State: AOJu0YyIPWzSFo94zRVayB1jgH2o3R+kEba0gdwYipfqCs5Io0TyRQ3X
- +0LLCx00CNZqsfhYZ99l6kSjchVkh8Bq9Hy++GlqYw==
-X-Google-Smtp-Source: AGHT+IE5wOVAJqj+m/KMX7A63VlAtKdXu7wWBQG6JrfkWuTxm/zK9Ajr38sCkSV3wAsDQROk8xofeA==
-X-Received: by 2002:a17:903:1c7:b0:1c9:bf02:6638 with SMTP id
- e7-20020a17090301c700b001c9bf026638mr10060384plh.51.1698639385095; 
- Sun, 29 Oct 2023 21:16:25 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ bh=uV9BbOAwN+ExyoHqMUozGLxSieM73JeIzBDBnSn5RuI=;
+ b=T3A4PBfRvm7ylYoZlpjXLR6F4ZBpYm5+0BNDxegjRENUdXjoEC3XyjB1LqXH//jN6/
+ kKIxxBssStjcdkfxM1FiG+Zo+/KKNOaRui54RChxOaUX4qjjauxk5uYSeDfkCQJHUKrd
+ 2KDobdBKaAGNQwun5D8rfWGR/keLrpoh3Jxid0FPledh0qKyZi07P5G0CyxtGuGSqmAY
+ svnNKAQ094cBiFoiVJX03lvB7hcfHKE5XK87337H/UlKVUOlL7yt4JH+XkHTSYIRJQKI
+ tS3JeEeI1gHrvz78WhLUjk2wMVIzvmS5MLZD6mXLwkkYTlFNFdi/fHZp+kM/LSdfIzQO
+ gq8g==
+X-Gm-Message-State: AOJu0YxFrudLjXEdDg4K8HY2+LRmEul8txe2xaQixziG4JtiHguJs8/P
+ /OAaUVENY61t1OlTZ6djzttsqFjmTC3KPGmGNsk=
+X-Google-Smtp-Source: AGHT+IEw1ftR8kpnu0ku0Z7NumCz+Wd5CRw0O76kaglKwEvkbLilSoEYjZKSSPV6oD4WMP9L0gR3bg==
+X-Received: by 2002:a05:600c:4514:b0:408:53d6:10b3 with SMTP id
+ t20-20020a05600c451400b0040853d610b3mr7112804wmo.22.1698639520527; 
+ Sun, 29 Oct 2023 21:18:40 -0700 (PDT)
+Received: from [192.168.69.115] ([176.170.212.50])
  by smtp.gmail.com with ESMTPSA id
- ja17-20020a170902efd100b001c3f7fd1ef7sm3324031plb.12.2023.10.29.21.16.23
+ er14-20020a05600c84ce00b004064cd71aa8sm8066730wmb.34.2023.10.29.21.18.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 29 Oct 2023 21:16:24 -0700 (PDT)
-Message-ID: <b4c24738-e502-4e69-8d6d-1a3ef6a1614b@daynix.com>
-Date: Mon, 30 Oct 2023 13:16:22 +0900
+ Sun, 29 Oct 2023 21:18:40 -0700 (PDT)
+Message-ID: <856b918d-ea32-8b88-f366-76ef81f121f9@linaro.org>
+Date: Mon, 30 Oct 2023 05:18:38 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/21] net: Remove receive_raw()
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: Patch to fix malfunctioning of T2-T5 timers on the STM32 platform
 Content-Language: en-US
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
- <mst@redhat.com>
-References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
- <20231017040932.62997-5-akihiko.odaki@daynix.com>
- <CACGkMEukvjmJ20pWSDsxtxo_UZAC33yEjWNsSqdNJRm8xL2O4w@mail.gmail.com>
- <ef82309f-ca89-4850-acf6-94ffa7726c2f@daynix.com>
- <9204e711-0eb9-01da-54dd-c67ae9e05c3b@redhat.com>
- <13dc8043-cf30-4fe7-9e1d-1c69f4e26b1a@daynix.com>
- <CACGkMEsYTMuS+okKi7-e-F_JDqB2P3BEO6DLJSBc_eS1TaXe0A@mail.gmail.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CACGkMEsYTMuS+okKi7-e-F_JDqB2P3BEO6DLJSBc_eS1TaXe0A@mail.gmail.com>
+To: Lucjan Bryndza <lbryndza.oss@icloud.com>, qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <04E66FC8-A5DC-469B-B23E-8FF9E4757915@icloud.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <04E66FC8-A5DC-469B-B23E-8FF9E4757915@icloud.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,43 +93,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/30 13:08, Jason Wang wrote:
-> On Mon, Oct 30, 2023 at 12:03 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2023/10/30 12:06, Jason Wang wrote:
->>>
->>> 在 2023/10/27 15:52, Akihiko Odaki 写道:
->>>> On 2023/10/27 15:49, Jason Wang wrote:
->>>>> On Tue, Oct 17, 2023 at 12:09 PM Akihiko Odaki
->>>>> <akihiko.odaki@daynix.com> wrote:
->>>>>>
->>>>>> While netmap implements virtio-net header, it does not implement
->>>>>> receive_raw().
->>>>>
->>>>> The only user for raw is the announcing. Netmap probably doesn't it
->>>>> at all.
->>>>
->>>> In my understanding, the announcing *sends* a raw packet.
->>>
->>>
->>> It's send via NIC and receive by its peer which is the TAP
->>>
->>> qemu_send_packet_raw() -> nc -> nc->peer -> peer->receive_raw()?
->>>
->>> Anything I miss?
->>
->> The problem is that the peer can be netmap and netmap also requires a
->> virtio-net header.
-> 
-> Right, but I don't know whether netmap can migrate.
+Hi Lucjan,
 
-Thinking of the condition that announcement can happen, I'm not aware 
-anything that prevents migration with netamp. It also is apparently 
-possible to make an announcement with HMP/QMP.
-In any case, I think it's better to fix qemu_send_packet_raw() for 
-netmap to prevent potential breakage especially if it costs nothing 
-(actually it saves some code).
+On 27/10/23 21:37, Lucjan Bryndza wrote:
+> 
+> Current implementation of T2 - T5 times on the STM32 platform does not 
+> work properly.
+> After configuring the timer-counter circuit to report interrupts every 
+> 10ms, in reality the first interrupt is reported
+> only once after a few seconds, while subsequent interrupts do not come.
+> The current code also does not properly emulate the operation of even 
+> the basic functions of the TIME-BASE unit.
+> This patch contains fixes that reimplements the basic functionality
+> of the time base unit such as up-counting down-counting , and 
+> alternate-mode up-down counting.
+> The ptimer() API is used to emulate timers.
+> After applying the patch, STM32 timer works correctly in its basic 
+> functionality.
+> The ISIX-RTOS test unit was used to test the patch.
+> Links and instructions can be found below:
+> 
+> https://github.com/lucckb/isixrtos/blob/master/tests/libisix/01_basic_primitives.cpp <https://github.com/lucckb/isixrtos/blob/master/tests/libisix/01_basic_primitives.cpp>
+> https://github.com/lucckb/isixrtos/blob/master/extras/doc/unit_test_qemu.md <https://github.com/lucckb/isixrtos/blob/master/extras/doc/unit_test_qemu.md>
+> 
+> 
+> qemu-system-arm -M olimex-stm32-h405  -kernel 
+> build/tests/libisix/isixunittests.binary -nographic
+> unittests_entry.cpp:146|ISIX VERSION pub/ep0319-157-gb239b35f-dirty
+> unittests_entry.cpp:83|Exceptions pretest. OK
+> 51 selected tests
+> [   RUN    ] 01_base_00 TimeBase timer vs systick
+> [  1001ms  ] ...
+> [   RUN    ] 01_base_01 Basic heap allocator
+> [   1ms    ] ...
+> 
+> 
+> Best Regards
+> Lucjan Bryndza
+> 
+> 
+>  From 3ccfe70979d1b263d4fa22104ecf42ac5a628554 Mon Sep 17 00:00:00 2001
+> From: Lucjan Bryndza <lbryndza.oss@icloud.com>
+> Date: Thu, 26 Oct 2023 22:45:26 +0200
+> Subject: [PATCH] Fixing the basic functionality of STM32 timers
+> 
+> The current implementation of timers does not work properly
+> even in the basic functionality. A counter configured to report
+> an interrupt 10ms every reports the first interrupts after a
+> few seconds.   Count up and
+> count down modes are also not properly implemented. This commit fixes 
+> bugs with interrupt
+> reporting and implements the basic modes of the counter's
+> time-base block.
+> 
+> Signed-off-by: Lucjan Bryndza <lbryndza.oss@icloud.com>
+> ---
+>   hw/arm/stm32f405_soc.c             |   2 +-
+>   hw/timer/stm32f2xx_timer.c         | 291 ++++++++++++++++++-----------
+>   include/hw/timer/stm32f2xx_timer.h |  23 ++-
+>   3 files changed, 202 insertions(+), 114 deletions(-)
+> 
+> diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
+> index cef23d7ee4..69316181b3 100644
+> --- a/hw/arm/stm32f405_soc.c
+> +++ b/hw/arm/stm32f405_soc.c
+> @@ -183,7 +183,7 @@ static void stm32f405_soc_realize(DeviceState 
+> *dev_soc, Error **errp)
+>       /* Timer 2 to 5 */
+>       for (i = 0; i < STM_NUM_TIMERS; i++) {
+>           dev = DEVICE(&(s->timer[i]));
+> -        qdev_prop_set_uint64(dev, "clock-frequency", 1000000000);
+> +       qdev_prop_set_uint64(dev, "clock-frequency", 48000000);
+
+Correct, this is for the 405 SoC.
+
+>           if (!sysbus_realize(SYS_BUS_DEVICE(&s->timer[i]), errp)) {
+>               return;
+>           }
+> diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
+> index ba8694dcd3..65f3287125 100644
+> --- a/hw/timer/stm32f2xx_timer.c
+> +++ b/hw/timer/stm32f2xx_timer.c
+> @@ -29,11 +29,18 @@
+>   #include "migration/vmstate.h"
+>   #include "qemu/log.h"
+>   #include "qemu/module.h"
+> +#include "qemu/typedefs.h"
+> +#include "qemu/timer.h"
+> +#include "qemu/main-loop.h"
+> +#include "sysemu/dma.h"
+>   #ifndef STM_TIMER_ERR_DEBUG
+>   #define STM_TIMER_ERR_DEBUG 0
+>   #endif
+> +/* PCLK /4 */
+> +#define CLOCK_FREQUENCY 48000000ULL
+
+This timer is generic, we shouldn't enforce a frequency from a
+particular SoC.
+
+
+>   static const MemoryRegionOps stm32f2xx_timer_ops = {
+> @@ -275,7 +353,7 @@ static const VMStateDescription 
+> vmstate_stm32f2xx_timer = {
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+>       .fields = (VMStateField[]) {
+> -        VMSTATE_INT64(tick_offset, STM32F2XXTimerState),
+> +        VMSTATE_INT32(count_mode, STM32F2XXTimerState),
+>           VMSTATE_UINT32(tim_cr1, STM32F2XXTimerState),
+>           VMSTATE_UINT32(tim_cr2, STM32F2XXTimerState),
+>           VMSTATE_UINT32(tim_smcr, STM32F2XXTimerState),
+> @@ -300,25 +378,24 @@ static const VMStateDescription 
+> vmstate_stm32f2xx_timer = {
+>   static Property stm32f2xx_timer_properties[] = {
+>       DEFINE_PROP_UINT64("clock-frequency", struct STM32F2XXTimerState,
+> -                       freq_hz, 1000000000),
+> +                       freq_hz, CLOCK_FREQUENCY),
+
+So here I suggest using '0', and in stm32f2xx_timer_realize() propagate
+an error if the frequency is still 0.
+
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
 
 Regards,
-Akihiko Odaki
+
+Phil.
 
