@@ -2,80 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA14B7DB7D6
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A83AA7DB7DA
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:21:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxPNP-0000BU-UB; Mon, 30 Oct 2023 06:20:10 -0400
+	id 1qxPOe-0001Ii-6W; Mon, 30 Oct 2023 06:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxPNI-00006R-UP
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:20:01 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxPNH-0005EF-E3
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:20:00 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40891d38e3fso32788695e9.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 03:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698661197; x=1699265997; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5ri9gI+9BLZStDY8YQ7Jf6dBJZJYvFZ/KkRcVvDJ1fU=;
- b=AxnaUWYCtcGTJ89E+zRF24FUEj6eJWHPloNK84QcVtVd5hxZJF+XTwZQIbHslaARfS
- EtdhMJU/i04ZkRJfuu5dM/SDYNkXU3Fpw2hjupxm/LJuhEhJoAAP0bVgbTqggR95uQyS
- /IH/onnuzbEHv07g5zTD5zI9LUpaqZLxAnzhQm1ouwSPgDNe4GSlvHLuQKtHMvIwI6hK
- V5bmCfG3x0sKPSK3EKjfNGzB0MF2p8k9IEjVTUt7VRq1LUv0AUlnniXg9jnJZdUwSq0+
- IhJ2Apx65fxREhKGu07/LC1Lwd8sAG/oYTuTIrrzyYTQQApObAQPDXhVivrHuVkRc+NB
- 7ikQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698661197; x=1699265997;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5ri9gI+9BLZStDY8YQ7Jf6dBJZJYvFZ/KkRcVvDJ1fU=;
- b=jSDU1SmeKtD9A3ETS6ZVYPmxdLI5r3g4w3hSbtjYxbeN4XeusYrrGfXfWUMOuPNRB9
- slrqDy+EJSCnX9NyyGx6CZA5yBK6bptxMCGzOxUZQW0Gc/eX1Bc81Zpi/oWScpy6/j6T
- 9NaKe+Xycs642eTOlE3VbM7a2yoeqapizERnfJ5GOP6osKb1qh6e+juKJftpPaqw92PK
- tHmdwK80yKMsaqzE6ATA8tA/MHLSJY0lZX5Idk9tVgLJ9NegZ86/yo7ibVhx33qhggIw
- 5L6RBck+1JZIPZw6wMs996kLiKlTv2nYoe7gsBiP5fwGkl6RhP5aydjEJESKpoh8zCAH
- CpSw==
-X-Gm-Message-State: AOJu0YxzYRoexX8e6NrysUvOwo+noZz7g6ooWvNt4syFJ8H7EuB2o2DF
- 8pendoWa+c4W8+G7pSsq1+LWPQ==
-X-Google-Smtp-Source: AGHT+IEmubai3GURhwwHog0vvZAZr7c19cWXp/07bRzI9Ne1hSNdV9ZklzAWPkotAS2JyfDOSp8csw==
-X-Received: by 2002:a7b:c7c6:0:b0:409:255:5e05 with SMTP id
- z6-20020a7bc7c6000000b0040902555e05mr7748229wmk.20.1698661197495; 
- Mon, 30 Oct 2023 03:19:57 -0700 (PDT)
-Received: from [192.168.69.115] ([176.170.212.50])
- by smtp.gmail.com with ESMTPSA id
- u18-20020a05600c19d200b00401b242e2e6sm12339167wmq.47.2023.10.30.03.19.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 03:19:57 -0700 (PDT)
-Message-ID: <9d80aef7-084a-b9ee-832f-4e4b7549713e@linaro.org>
-Date: Mon, 30 Oct 2023 11:19:55 +0100
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1qxPOX-0000v7-R1; Mon, 30 Oct 2023 06:21:20 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1qxPOU-0005ja-Qo; Mon, 30 Oct 2023 06:21:17 -0400
+Received: from LT2ubnt.. (unknown [159.148.28.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id F3A483FBA1; 
+ Mon, 30 Oct 2023 10:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1698661270;
+ bh=3GCehRoUQTTLHwBehjbOAMyNSUQP7XzEyuivE4Adaf0=;
+ h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+ b=SShQPQ7JImQZ/z2dnxsd8YLYHKVxN4/e4BfduajtmTFF6QUGKhE11fWXTmvvW97hl
+ t5bwX7segOulBY8AdbLEWgtd030neD+VwoHmpMpgJf4m6cuvNejBn5sE5f3OHEkLWR
+ J/xSnGQVS/hZB+Y1vICkCVkoBaqEMMf3x9lHwKR4/Zxnh5BvxomyDFTOjMtKA/8Cp5
+ KuGRNVKg5cPHEWT8U30fUL5hoXHXqKqu+1iE7MEPhDwZWvvS+GabpotzFvanSSItr5
+ nQdxgt6seJ9q1T7t0K3Evowdb+QnYNLyWTwPKpD6fyM9dT6TluOg2a/aYZNOAFdTqk
+ p11FU3SmdOhCw==
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>
+Cc: Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH v2 1/1] target/riscv: correct csr_ops[CSR_MSECCFG]
+Date: Mon, 30 Oct 2023 12:21:05 +0200
+Message-Id: <20231030102105.19501-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] vl: constify default_list
-Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-References: <20231030101529.105266-1-marcandre.lureau@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231030101529.105266-1-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=185.125.188.121;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-canonical-1.canonical.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.478,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,16 +72,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/10/23 11:15, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> It's not modified, let's make it const.
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->   system/vl.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+The CSR register mseccfg is used by multiple extensions: Smepm and Zkr.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Consider this when checking the existence of the register.
+
+Fixes: 77442380ecbe ("target/riscv: rvk: add CSR support for Zkr")
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+---
+v2:
+	rebase on alistair23/riscv-to-apply-next
+---
+ target/riscv/csr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 4ca96ddd1d..fc26b52c88 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -528,11 +528,14 @@ static RISCVException pmp(CPURISCVState *env, int csrno)
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
+ 
+-static RISCVException smepmp(CPURISCVState *env, int csrno)
++static RISCVException have_mseccfg(CPURISCVState *env, int csrno)
+ {
+     if (riscv_cpu_cfg(env)->ext_smepmp) {
+         return RISCV_EXCP_NONE;
+     }
++    if (riscv_cpu_cfg(env)->ext_zkr) {
++        return RISCV_EXCP_NONE;
++    }
+ 
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
+@@ -4766,7 +4769,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_VSIPH]       = { "vsiph",       aia_hmode32, NULL, NULL, rmw_vsiph },
+ 
+     /* Physical Memory Protection */
+-    [CSR_MSECCFG]    = { "mseccfg", smepmp, read_mseccfg, write_mseccfg,
++    [CSR_MSECCFG]    = { "mseccfg",   have_mseccfg, read_mseccfg, write_mseccfg,
+                          .min_priv_ver = PRIV_VERSION_1_11_0           },
+     [CSR_PMPCFG0]    = { "pmpcfg0",   pmp, read_pmpcfg,  write_pmpcfg  },
+     [CSR_PMPCFG1]    = { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg  },
+-- 
+2.40.1
 
 
