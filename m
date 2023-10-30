@@ -2,92 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546627DBB3D
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7110B7DBB61
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:06:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSoE-0001Hv-Tf; Mon, 30 Oct 2023 10:00:02 -0400
+	id 1qxStP-0002x0-0h; Mon, 30 Oct 2023 10:05:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxSoC-0001EX-56
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:00:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxStG-0002vZ-AX
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:05:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxSoA-00023G-DV
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:59:59 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxStC-0003ZH-Gl
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:05:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698674397;
+ s=mimecast20190719; t=1698674709;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ae68IDfv1Q1Z7BFqiiwzvpF++Xiza49F+kR4rCwOmvA=;
- b=c52n8GcZ5rIQ2HVW9bFYsunbBZmORij9MKc0Yl+1LJ2IqmUIqGlkgjnE7PDKzWilsRrM/4
- EhrmxZ4oV+Ui1uXS1cEpm+LXWMz2pYuuxAUTf9+RdGp5kMj9hDdCBds+2wVRxeOkM5fsz3
- NdITEa65omEnlIEp6z1vEz/lItNrRrs=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=E5PcIDhmb+D2sLvlJknE43LmyteuDysh6SQrsI1dT2c=;
+ b=DroT945TpJhqyI5DeWOX4EikWw2niykAfhrnD2612Ryg/W1MWE+B2XUw26sOlUMDoUUK3d
+ pXh7iuB2lFfLA9qPWoP2GByD1q36lNc8wkfKwHZYI8mUWsXOJfq8X/r99FJ2lNWpq/NAZ1
+ iC/ALKIiAu2652OVKCZSOBlvAdPGPV4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-MlNOkaiwPOapP-y9Ine2Ow-1; Mon, 30 Oct 2023 09:59:55 -0400
-X-MC-Unique: MlNOkaiwPOapP-y9Ine2Ow-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-778964b7c8bso561077785a.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 06:59:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698674395; x=1699279195;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ae68IDfv1Q1Z7BFqiiwzvpF++Xiza49F+kR4rCwOmvA=;
- b=Ut6pOmI8XNfaURAfVsKmFkT3d0ldr95498W5oScVFW3uXdU9nyxZuBpFhNeiSKHNdt
- 8eCF3RGmfN2B4xf/c+JsDN6EGzIDxWsdWxlyDZPtLGnsQRO2BI5GQSBBf0f2jBVKaFV8
- NXDDzumZoRG7Os6XY6avKbur4wWLAqh5tJ/+7s2o54aKKEJEndKm+wJ/uMaK893JZExY
- 1J54seIG46h83LXoW42y3+P2vtrp2qXtTFDTxXWejGSnl+Rsz3HeGp7eQuSLex6EoCLF
- Rz5j36jy/gWbZlph1Tkt9jvi/3gQsvgnz6vw+BfTRRMV/EdKm8ZvcGnSmXr2al/OjZW0
- yI1A==
-X-Gm-Message-State: AOJu0Yw8vcAAbgvxeDdTzp7agvCNeSBTYOkDePVFdOHTWyjfa+nflzy/
- m9Qlh1oO6U8Dsk7sid84mvyZVAZdggp9K2IIDQwI0rVX2PUFY8oYTgObPw4heIdn41HrrjshxX/
- RcIt4+OG0pWZ6ReY=
-X-Received: by 2002:a05:620a:6649:b0:773:c19f:9b9 with SMTP id
- qg9-20020a05620a664900b00773c19f09b9mr8504629qkn.46.1698674395331; 
- Mon, 30 Oct 2023 06:59:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXMa+izLKdNDeVWdH4s09veKlCpbNQDlvxfTv9SeAKVm1ghashHQnFcjRE2xO0bvrQpn6/9Q==
-X-Received: by 2002:a05:620a:6649:b0:773:c19f:9b9 with SMTP id
- qg9-20020a05620a664900b00773c19f09b9mr8504617qkn.46.1698674395101; 
- Mon, 30 Oct 2023 06:59:55 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- o1-20020a05620a110100b0076d25b11b62sm3325505qkk.38.2023.10.30.06.59.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 06:59:54 -0700 (PDT)
-Message-ID: <8127aa87-c946-4db1-b4ae-cdfced09d157@redhat.com>
-Date: Mon, 30 Oct 2023 14:59:51 +0100
+ us-mta-253-LQGqv8q4Mpu5MU2QMmAbcQ-1; Mon, 30 Oct 2023 10:05:05 -0400
+X-MC-Unique: LQGqv8q4Mpu5MU2QMmAbcQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20B7D101B04F;
+ Mon, 30 Oct 2023 14:04:44 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B00855027;
+ Mon, 30 Oct 2023 14:04:42 +0000 (UTC)
+Date: Mon, 30 Oct 2023 09:04:41 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Sam Li <faithilikerun@gmail.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, dlemoal@kernel.org, hare@suse.de,
+ dmitry.fomichev@wdc.com, stefanha@redhat.com, qemu-block@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v5 1/4] docs/qcow2: add the zoned format feature
+Message-ID: <j5lohqj57qcsjjgqv3n3tm5jv7bjnqlaogg3yvi5ieoto537tk@h5nhmixdnh6p>
+References: <20231030121847.4522-1-faithilikerun@gmail.com>
+ <20231030121847.4522-2-faithilikerun@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 30/37] vfio/pci: Extract out a helper
- vfio_pci_get_pci_hot_reset_info
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-31-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231026103104.1686921-31-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231030121847.4522-2-faithilikerun@gmail.com>
+User-Agent: NeoMutt/20231023
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,112 +81,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 12:30, Zhenzhong Duan wrote:
-> This helper will be used by both legacy and iommufd backends.
+On Mon, Oct 30, 2023 at 08:18:44PM +0800, Sam Li wrote:
+> Add the specs for the zoned format feature of the qcow2 driver.
+> The qcow2 file can be taken as zoned device and passed through by
+> virtio-blk device or NVMe ZNS device to the guest given zoned
+> information.
 > 
-> No functional changes intended.
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-
-I think we can merge this change before hand.
-
-Thanks,
-
-C.
-
-
+> Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
->   hw/vfio/pci.c | 54 +++++++++++++++++++++++++++++++++++----------------
->   1 file changed, 37 insertions(+), 17 deletions(-)
+>  docs/system/qemu-block-drivers.rst.inc | 33 ++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
 > 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 5cbc771e55..c17e1f4376 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2459,22 +2459,13 @@ static bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
->       return (strcmp(tmp, name) == 0);
->   }
->   
-> -static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
-> +static int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
-> +                                       struct vfio_pci_hot_reset_info **info_p)
->   {
-> -    VFIOGroup *group;
->       struct vfio_pci_hot_reset_info *info;
-> -    struct vfio_pci_dependent_device *devices;
-> -    struct vfio_pci_hot_reset *reset;
-> -    int32_t *fds;
-> -    int ret, i, count;
-> -    bool multi = false;
-> +    int ret, count;
->   
-> -    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
-> -
-> -    if (!single) {
-> -        vfio_pci_pre_reset(vdev);
-> -    }
-> -    vdev->vbasedev.needs_reset = false;
-> +    assert(info_p && !*info_p);
->   
->       info = g_malloc0(sizeof(*info));
->       info->argsz = sizeof(*info);
-> @@ -2482,24 +2473,53 @@ static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
->       ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_PCI_HOT_RESET_INFO, info);
->       if (ret && errno != ENOSPC) {
->           ret = -errno;
-> +        g_free(info);
->           if (!vdev->has_pm_reset) {
->               error_report("vfio: Cannot reset device %s, "
->                            "no available reset mechanism.", vdev->vbasedev.name);
->           }
-> -        goto out_single;
-> +        return ret;
->       }
->   
->       count = info->count;
-> -    info = g_realloc(info, sizeof(*info) + (count * sizeof(*devices)));
-> -    info->argsz = sizeof(*info) + (count * sizeof(*devices));
-> -    devices = &info->devices[0];
-> +    info = g_realloc(info, sizeof(*info) + (count * sizeof(info->devices[0])));
-> +    info->argsz = sizeof(*info) + (count * sizeof(info->devices[0]));
->   
->       ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_PCI_HOT_RESET_INFO, info);
->       if (ret) {
->           ret = -errno;
-> +        g_free(info);
->           error_report("vfio: hot reset info failed: %m");
-> +        return ret;
-> +    }
+> diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-block-drivers.rst.inc
+> index 105cb9679c..4647c5fa29 100644
+> --- a/docs/system/qemu-block-drivers.rst.inc
+> +++ b/docs/system/qemu-block-drivers.rst.inc
+> @@ -172,6 +172,39 @@ This section describes each format and the options that are supported for it.
+>      filename`` to check if the NOCOW flag is set or not (Capital 'C' is
+>      NOCOW flag).
+>  
+> +  .. option:: zoned
+> +    1 for host-managed zoned device and 0 for a non-zoned device.
+
+Should this be a bool or enum type, instead of requiring the user to
+know magic numbers?  Is there a potential to add yet another type in
+the future?
+
 > +
-> +    *info_p = info;
-> +    return 0;
-> +}
+> +  .. option:: zone_size
 > +
-> +static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
-> +{
-> +    VFIOGroup *group;
-> +    struct vfio_pci_hot_reset_info *info = NULL;
-> +    struct vfio_pci_dependent_device *devices;
-> +    struct vfio_pci_hot_reset *reset;
-> +    int32_t *fds;
-> +    int ret, i, count;
-> +    bool multi = false;
+> +    The size of a zone in bytes. The device is divided into zones of this
+> +    size with the exception of the last zone, which may be smaller.
 > +
-> +    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
+> +  .. option:: zone_capacity
 > +
-> +    if (!single) {
-> +        vfio_pci_pre_reset(vdev);
-> +    }
-> +    vdev->vbasedev.needs_reset = false;
+> +    The initial capacity value, in bytes, for all zones. The capacity must
+> +    be less than or equal to zone size. If the last zone is smaller, then
+> +    its capacity is capped.
 > +
-> +    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
+> +    The zone capacity is per zone and may be different between zones in real
+> +    devices. For simplicity, QCow2 sets all zones to the same capacity.
+
+Just making sure I understand: One possible setup would be to describe
+a block device with zones of size 1024M but with capacity 1000M (that
+is, the zone reserves 24M capacity for other purposes)?
+
+Otherwise, I'm having a hard time seeing when you would ever set a
+capacity different from size.
+
+Are there requirements that one (or both) of these values must be
+powers of 2?  Or is the requirement merely that they must be a
+multiple of 512 bytes (because sub-sector operations are not
+permitted)?  Is there any implicit requirement based on qcow2
+implementation that a zone size/capacity must be a multiple of cluster
+size (other than possibly for the last zone)?
+
 > +
-> +    if (ret) {
->           goto out_single;
->       }
-> +    devices = &info->devices[0];
->   
->       trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
->   
+> +  .. option:: zone_nr_conv
+> +
+> +    The number of conventional zones of the zoned device.
+> +
+> +  .. option:: max_open_zones
+> +
+> +    The maximal allowed open zones.
+> +
+> +  .. option:: max_active_zones
+> +
+> +    The limit of the zones with implicit open, explicit open or closed state.
+> +
+> +  .. option:: max_append_sectors
+> +
+> +    The maximal number of 512-byte sectors in a zone append request.
+
+Why is this value in sectors instead of bytes?  I understand that
+drivers may be written with sectors in mind, but any time we mix units
+in the public interface, it gets awkward.  I'd lean towards having
+bytes here, with a requirement that it be a multiple of 512.
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
