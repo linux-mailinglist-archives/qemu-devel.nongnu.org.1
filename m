@@ -2,72 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E887DB247
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 04:29:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EEB7DB24C
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 04:38:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxIxB-000260-Nc; Sun, 29 Oct 2023 23:28:37 -0400
+	id 1qxJ5B-0004FM-FS; Sun, 29 Oct 2023 23:36:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qxIx7-00025e-5f
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 23:28:33 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qxIx4-0007k1-Qx
- for qemu-devel@nongnu.org; Sun, 29 Oct 2023 23:28:32 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxyOjZIj9lrKk1AA--.3552S3;
- Mon, 30 Oct 2023 11:28:25 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Ax3tzWIj9lz8o2AA--.51384S3; 
- Mon, 30 Oct 2023 11:28:22 +0800 (CST)
-Subject: Re: [PATCH v1 2/6] target/loongarch: Add set_vec_extctx to set
- LSX/LASX instructions extctx_flags
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: philmd@redhat.com, laurent@vivier.e, maobibo@loongson.cn,
- yangxiaojuan@loongson.cn, laurent@vivier.eu
-References: <20231010033701.385725-1-gaosong@loongson.cn>
- <20231010033701.385725-3-gaosong@loongson.cn>
- <1c4c0856-337e-4c5e-b2af-6caf35060b0a@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <24981f5e-3397-427e-a552-635887d581cd@loongson.cn>
-Date: Mon, 30 Oct 2023 11:28:21 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxJ59-0004Ex-Qc
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 23:36:51 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxJ57-0000Ll-IE
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 23:36:51 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4083f613275so29520355e9.2
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 20:36:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698637008; x=1699241808; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mf4/7UVRiLpRnuSKTdGQjFO3fn80t7w58PQBuFU5/TM=;
+ b=zP5UmK9vruggYD5JOKnFxOUjwxmtBBeTZRXBKRgKLNegGdRTi88LC4sWER4nj1IKRB
+ g/CEvTOZIeg9LaR4JK3c/M2zioXeBKWtwlky8waJlg/+jDW6gqXURZD+natdfXN2Gx1X
+ 0aEwnj9y/YKysWEa1N8jdoKuNsSduw6hYLGP8CnRnWuBerrctx3D3gRldFh6GCZdBHnq
+ uthVC41e6juq24eMwpnVyE+hGhoQD8pTw6QdTB2YBcFW+zxylFxyjEC2AvO69x/ZsBV2
+ XsINL2qXbz4qdhp9v/p9VDdpXBGSPF0CRTrnynh4zEII440qomYeOjaOYhSuSMn1Pjc8
+ qM+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698637008; x=1699241808;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mf4/7UVRiLpRnuSKTdGQjFO3fn80t7w58PQBuFU5/TM=;
+ b=cibxeBB3klRH9nBSGRS5sg7wW0s3cyP0QKWjrRBgA7O+NCUia0ra9IojBNHnk2fHJm
+ uM0rsx6y6hVKVpndhHpZMa2PsrKzhMpdwydDWVRR83X4I+VTEeLEgIHVEn7YnlLXh7GQ
+ zO2qKYo+lyG4hPiqHUfLAxFvJWoo/Mf9zdi/V4NnyhuSYZPJtWdoTI3iWvleQbpCNSKN
+ N9qLb2QpNQCCLTqXnkAAaSTiG5P+x4PMF2t0G8FNy6r+2JhelhnKHsAQxGGR2Bn8BiV6
+ aHMhrylCkjQHzQ9dU7h4qbUMz4X8ZzY56UZhaq0f3yqH9tAViTvP0hXXwJKhKOnkmd8Z
+ /aCg==
+X-Gm-Message-State: AOJu0YyT/wyf6NO6nGDp5IWtnNd7CPpRquSP5oDHdJuUZdnQXZsUFpAm
+ 3hsdeeA/MSFMVQO4h5QPuVmFhQ==
+X-Google-Smtp-Source: AGHT+IHsda1F7DhuUVCxt75nE0w6EOx9pXP+FV0GRWsc2gySdJdTYHwj3dLpEFXW8ODMjOmGX9bqlQ==
+X-Received: by 2002:a05:600c:164a:b0:409:1841:3f42 with SMTP id
+ o10-20020a05600c164a00b0040918413f42mr6954044wmn.13.1698637007884; 
+ Sun, 29 Oct 2023 20:36:47 -0700 (PDT)
+Received: from [192.168.69.115] ([176.170.212.50])
+ by smtp.gmail.com with ESMTPSA id
+ gy14-20020a05600c880e00b004064741f855sm7947914wmb.47.2023.10.29.20.36.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 29 Oct 2023 20:36:47 -0700 (PDT)
+Message-ID: <fd799a65-8dbd-4206-241b-6b9a300caf8c@linaro.org>
+Date: Mon, 30 Oct 2023 04:36:44 +0100
 MIME-Version: 1.0
-In-Reply-To: <1c4c0856-337e-4c5e-b2af-6caf35060b0a@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 6/6] system/memory: Trace names of MemoryRegions rather
+ than host pointers
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8Ax3tzWIj9lz8o2AA--.51384S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7AF1UWFW8Kr4UAryDGFWrtFc_yoW8Zr1fpr
- 1xCFWjkFyUGFZ3JFnxX34UXFyUXr48Jw4UWFnaq3Z5JrW5XryjqrWjqrWqgFyUJw4kuFyj
- vF45Zw13ZF48Z3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU82g
- 43UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.972,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20231028122415.14869-1-shentey@gmail.com>
+ <20231028122415.14869-7-shentey@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231028122415.14869-7-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,62 +100,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/10/29 上午5:40, Richard Henderson 写道:
-> On 10/9/23 20:36, Song Gao wrote:
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   target/loongarch/insn_trans/trans_vec.c.inc | 12 ++++++++++++
->>   target/loongarch/internals.h                |  2 ++
->>   2 files changed, 14 insertions(+)
->>
->> diff --git a/target/loongarch/insn_trans/trans_vec.c.inc 
->> b/target/loongarch/insn_trans/trans_vec.c.inc
->> index 98f856bb29..aef16ef44a 100644
->> --- a/target/loongarch/insn_trans/trans_vec.c.inc
->> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
->> @@ -23,8 +23,20 @@ static bool check_vec(DisasContext *ctx, uint32_t 
->> oprsz)
->>     #else
->>   +static void set_vec_extctx(DisasContext *ctx, uint32_t oprsz)
->> +{
->> +    if (oprsz == 16) {
->> +        ctx->extctx_flags |= EXTCTX_FLAGS_LSX;
->> +    }
->> +
->> +    if (oprsz == 32) {
->> +        ctx->extctx_flags |= EXTCTX_FLAGS_LASX;
->> +    }
->> +}
->> +
->>   static bool check_vec(DisasContext *ctx, uint32_t oprsz)
->>   {
->> +    set_vec_extctx(ctx, oprsz);
->>       return true;
->>   }
->
-> This doesn't do anything.  Nothing copies the changed value back to env.
-> Anyway, I think this is the wrong way to go about it.
->
-Oh, It is on patch1.
+Hi Bernhard,
 
-@@ -294,6 +296,7 @@ static void 
-loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-          generate_exception(ctx, EXCCODE_INE);
-      }
+On 28/10/23 14:24, Bernhard Beschow wrote:
+> Tracing the host pointer of the accessed MemoryRegion seems to be a debug
+> feature for developing QEMU itself. When analyzing guest behavior by comparing
+> traces, these pointers generate a lot of noise since the pointers differ between
+> QEMU invocations, making this task harder than it needs to be. Moreover, the
+> pointers seem to be redundant to the names already assigned to MemoryRegions.
 
-+    env->extctx_flags |= ctx->extctx_flags;
-      ctx->base.pc_next += 4;
+I tried that few years ago but this got lost:
+https://lore.kernel.org/qemu-devel/20210307074833.143106-1-f4bug@amsat.org/
 
+> Remove the pointers from the traces and trace the names where missing. When
+> developing QEMU, developers could just add the host pointer tracing for
+> themselves.
 
-Thanks.
-Song Gao
-> If you want to track what the program is using, you should do it 
-> exactly like the real kernel: disable the execution unit, have the 
-> program trap, and the enable the execution unit when the trap occurs.  
-> At this point, CSR_EUEN enable bits contain exactly which units have 
-> been used by the program.
->
->
-> r~
+But sometimes an object exposing a MR is instantiated multiple times,
+each time, and now you can not distinct which object is accessed.
+
+IIRC a suggestion was to cache the QOM parent path and display that,
+which should be constant to diff tracing logs. But then IIRC again the
+issue was the QOM path is resolved once the object is realized, which
+happens *after* we initialize the MR within the object. Maybe the
+solution is to add a memory_region_qom_pathname() getter and do lazy
+initialization?
+
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   docs/devel/tracing.rst |  4 ++--
+>   system/memory.c        | 26 ++++++++++++++++----------
+>   system/trace-events    | 12 ++++++------
+>   3 files changed, 24 insertions(+), 18 deletions(-)
+> 
+> diff --git a/docs/devel/tracing.rst b/docs/devel/tracing.rst
+> index d288480db1..8c31d5f76e 100644
+> --- a/docs/devel/tracing.rst
+> +++ b/docs/devel/tracing.rst
+> @@ -18,8 +18,8 @@ events::
+>   
+>       $ qemu --trace "memory_region_ops_*" ...
+>       ...
+> -    719585@1608130130.441188:memory_region_ops_read cpu 0 mr 0x562fdfbb3820 addr 0x3cc value 0x67 size 1
+> -    719585@1608130130.441190:memory_region_ops_write cpu 0 mr 0x562fdfbd2f00 addr 0x3d4 value 0x70e size 2
+> +    719585@1608130130.441188:memory_region_ops_read cpu 0 addr 0x3cc value 0x67 size 1
+> +    719585@1608130130.441190:memory_region_ops_write cpu 0 addr 0x3d4 value 0x70e size 2
+
+Is this example missing the MR name?
+
+>   
+>   This output comes from the "log" trace backend that is enabled by default when
+>   ``./configure --enable-trace-backends=BACKENDS`` was not explicitly specified.
+> diff --git a/system/memory.c b/system/memory.c
+> index 4928f2525d..076a992b74 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -444,10 +444,11 @@ static MemTxResult  memory_region_read_accessor(MemoryRegion *mr,
+>   
+>       tmp = mr->ops->read(mr->opaque, addr, size);
+>       if (mr->subpage) {
+> -        trace_memory_region_subpage_read(get_cpu_index(), mr, addr, tmp, size);
+> +        trace_memory_region_subpage_read(get_cpu_index(), addr, tmp, size,
+> +                                         memory_region_name(mr));
+>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS_READ)) {
+>           hwaddr abs_addr = memory_region_to_absolute_addr(mr, addr);
+> -        trace_memory_region_ops_read(get_cpu_index(), mr, abs_addr, tmp, size,
+> +        trace_memory_region_ops_read(get_cpu_index(), abs_addr, tmp, size,
+>                                        memory_region_name(mr));
+>       }
+>       memory_region_shift_read_access(value, shift, mask, tmp);
+> @@ -467,10 +468,11 @@ static MemTxResult memory_region_read_with_attrs_accessor(MemoryRegion *mr,
+>   
+>       r = mr->ops->read_with_attrs(mr->opaque, addr, &tmp, size, attrs);
+>       if (mr->subpage) {
+> -        trace_memory_region_subpage_read(get_cpu_index(), mr, addr, tmp, size);
+> +        trace_memory_region_subpage_read(get_cpu_index(), addr, tmp, size,
+> +                                         memory_region_name(mr));
+>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS_READ)) {
+>           hwaddr abs_addr = memory_region_to_absolute_addr(mr, addr);
+> -        trace_memory_region_ops_read(get_cpu_index(), mr, abs_addr, tmp, size,
+> +        trace_memory_region_ops_read(get_cpu_index(), abs_addr, tmp, size,
+>                                        memory_region_name(mr));
+>       }
+>       memory_region_shift_read_access(value, shift, mask, tmp);
+> @@ -488,10 +490,11 @@ static MemTxResult memory_region_write_accessor(MemoryRegion *mr,
+>       uint64_t tmp = memory_region_shift_write_access(value, shift, mask);
+>   
+>       if (mr->subpage) {
+> -        trace_memory_region_subpage_write(get_cpu_index(), mr, addr, tmp, size);
+> +        trace_memory_region_subpage_write(get_cpu_index(), addr, tmp, size,
+> +                                          memory_region_name(mr));
+>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS_WRITE)) {
+>           hwaddr abs_addr = memory_region_to_absolute_addr(mr, addr);
+> -        trace_memory_region_ops_write(get_cpu_index(), mr, abs_addr, tmp, size,
+> +        trace_memory_region_ops_write(get_cpu_index(), abs_addr, tmp, size,
+>                                         memory_region_name(mr));
+>       }
+>       mr->ops->write(mr->opaque, addr, tmp, size);
+> @@ -509,10 +512,11 @@ static MemTxResult memory_region_write_with_attrs_accessor(MemoryRegion *mr,
+>       uint64_t tmp = memory_region_shift_write_access(value, shift, mask);
+>   
+>       if (mr->subpage) {
+> -        trace_memory_region_subpage_write(get_cpu_index(), mr, addr, tmp, size);
+> +        trace_memory_region_subpage_write(get_cpu_index(), addr, tmp, size,
+> +                                          memory_region_name(mr));
+>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS_WRITE)) {
+>           hwaddr abs_addr = memory_region_to_absolute_addr(mr, addr);
+> -        trace_memory_region_ops_write(get_cpu_index(), mr, abs_addr, tmp, size,
+> +        trace_memory_region_ops_write(get_cpu_index(), abs_addr, tmp, size,
+>                                         memory_region_name(mr));
+>       }
+>       return mr->ops->write_with_attrs(mr->opaque, addr, tmp, size, attrs);
+> @@ -1356,7 +1360,8 @@ static uint64_t memory_region_ram_device_read(void *opaque,
+>           break;
+>       }
+>   
+> -    trace_memory_region_ram_device_read(get_cpu_index(), mr, addr, data, size);
+> +    trace_memory_region_ram_device_read(get_cpu_index(), addr, data, size,
+> +                                        memory_region_name(mr));
+>   
+>       return data;
+>   }
+> @@ -1366,7 +1371,8 @@ static void memory_region_ram_device_write(void *opaque, hwaddr addr,
+>   {
+>       MemoryRegion *mr = opaque;
+>   
+> -    trace_memory_region_ram_device_write(get_cpu_index(), mr, addr, data, size);
+> +    trace_memory_region_ram_device_write(get_cpu_index(), addr, data, size,
+> +                                         memory_region_name(mr));
+>   
+>       switch (size) {
+>       case 1:
+> diff --git a/system/trace-events b/system/trace-events
+> index 69c9044151..21f1c005e0 100644
+> --- a/system/trace-events
+> +++ b/system/trace-events
+> @@ -9,12 +9,12 @@ cpu_in(unsigned int addr, char size, unsigned int val) "addr 0x%x(%c) value %u"
+>   cpu_out(unsigned int addr, char size, unsigned int val) "addr 0x%x(%c) value %u"
+>   
+>   # memory.c
+> -memory_region_ops_read(int cpu_index, void *mr, uint64_t addr, uint64_t value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+> -memory_region_ops_write(int cpu_index, void *mr, uint64_t addr, uint64_t value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+> -memory_region_subpage_read(int cpu_index, void *mr, uint64_t offset, uint64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"PRIx64" size %u"
+> -memory_region_subpage_write(int cpu_index, void *mr, uint64_t offset, uint64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"PRIx64" size %u"
+> -memory_region_ram_device_read(int cpu_index, void *mr, uint64_t addr, uint64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRIx64" size %u"
+> -memory_region_ram_device_write(int cpu_index, void *mr, uint64_t addr, uint64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRIx64" size %u"
+> +memory_region_ops_read(int cpu_index, uint64_t addr, uint64_t value, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+> +memory_region_ops_write(int cpu_index, uint64_t addr, uint64_t value, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+> +memory_region_subpage_read(int cpu_index, uint64_t offset, uint64_t value, unsigned size, const char *name) "cpu %d offset 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+> +memory_region_subpage_write(int cpu_index, uint64_t offset, uint64_t value, unsigned size, const char *name) "cpu %d offset 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+> +memory_region_ram_device_read(int cpu_index, uint64_t addr, uint64_t value, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+> +memory_region_ram_device_write(int cpu_index, uint64_t addr, uint64_t value, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64" size %u name '%s'"
+>   memory_region_sync_dirty(const char *mr, const char *listener, int global) "mr '%s' listener '%s' synced (global=%d)"
+>   flatview_new(void *view, void *root) "%p (root %p)"
+>   flatview_destroy(void *view, void *root) "%p (root %p)"
 
 
