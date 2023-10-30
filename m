@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8947DBBD0
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABC57DBBC5
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:28:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxTF2-0006g2-Tk; Mon, 30 Oct 2023 10:27:44 -0400
+	id 1qxTEm-0006SR-40; Mon, 30 Oct 2023 10:27:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTF1-0006ey-4r
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:43 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEi-0006RG-3K
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEz-0007T5-N8
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:42 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEg-0007RP-LS
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698676061;
+ s=mimecast20190719; t=1698676042;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Kauf56gKhhGQOPxh/hOUPnSQ+Nmj1rjCyhwGalKsxHk=;
- b=bBtWOcZ7FFMO15NQjTETuov++DcYRr4nFmLjTvmZG6GhYXBk8gnIFV0e1o/cpGBdEu65YP
- 7XQXaXKtN08dxXCKgD5xRIqSMi9VGCohYvutAgRo9KPeq9seCGKSVpT/y+jXIuzbm1bwyd
- NiIjlrxqmzs0GNehU3rjFaaQ7RYRXOQ=
+ bh=6oukEQynlH7BlRx8yX7T3FjaA2rs5RzSQk4YXaTzuUg=;
+ b=Y2f0XNGzEmkJvGw9ggesgOGVIolNbmR5R+V20xvTErRFz2/LUTYFOkaVtM1zznWPmt4I4C
+ yJvfEHJdBnUDmQH5l6vyVBcevGSq5ebNVUQTvPH9kwNTeuQLa2FpifF/2RCug328yLehNL
+ WmYXkow0w250JoOb5AxWbnTptNS20Q8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-0PWm2fSvOfmosIjGk9JcKQ-1; Mon, 30 Oct 2023 10:27:31 -0400
-X-MC-Unique: 0PWm2fSvOfmosIjGk9JcKQ-1
+ us-mta-540-n8AzMvEMM6u3A0hZiAa6tQ-1; Mon, 30 Oct 2023 10:27:18 -0400
+X-MC-Unique: n8AzMvEMM6u3A0hZiAa6tQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 42969830968;
- Mon, 30 Oct 2023 14:27:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AF5D98D3B9;
+ Mon, 30 Oct 2023 14:27:17 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 379F2492BE7;
- Mon, 30 Oct 2023 14:27:15 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 794AE492BE0;
+ Mon, 30 Oct 2023 14:27:16 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, armbru@redhat.com, berrange@redhat.com,
  peter.maydell@linaro.org, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 08/12] hw/arm/xlnx-versal: Use qdev_prop_set_array()
-Date: Mon, 30 Oct 2023 15:26:54 +0100
-Message-ID: <20231030142658.182193-9-kwolf@redhat.com>
+Subject: [PATCH v2 09/12] hw/rx/rx62n: Use qdev_prop_set_array()
+Date: Mon, 30 Oct 2023 15:26:55 +0100
+Message-ID: <20231030142658.182193-10-kwolf@redhat.com>
 In-Reply-To: <20231030142658.182193-1-kwolf@redhat.com>
 References: <20231030142658.182193-1-kwolf@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
@@ -83,44 +84,55 @@ array property with a single call.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/xlnx-versal.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ hw/rx/rx62n.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-index fa556d8764..d0f6235d4f 100644
---- a/hw/arm/xlnx-versal.c
-+++ b/hw/arm/xlnx-versal.c
-@@ -12,6 +12,7 @@
- #include "qemu/osdep.h"
- #include "qemu/units.h"
- #include "qapi/error.h"
-+#include "qapi/qmp/qlist.h"
- #include "qemu/module.h"
+diff --git a/hw/rx/rx62n.c b/hw/rx/rx62n.c
+index d00fcb0ef0..4dc44afd9d 100644
+--- a/hw/rx/rx62n.c
++++ b/hw/rx/rx62n.c
+@@ -28,6 +28,7 @@
  #include "hw/sysbus.h"
- #include "net/net.h"
-@@ -69,6 +70,7 @@ static void versal_create_apu_gic(Versal *s, qemu_irq *pic)
-     };
-     SysBusDevice *gicbusdev;
-     DeviceState *gicdev;
-+    QList *redist_region_count;
-     int nr_apu_cpus = ARRAY_SIZE(s->fpd.apu.cpu);
+ #include "hw/qdev-properties.h"
+ #include "sysemu/sysemu.h"
++#include "qapi/qmp/qlist.h"
+ #include "qom/object.h"
+ 
+ /*
+@@ -130,22 +131,22 @@ static void register_icu(RX62NState *s)
+ {
      int i;
+     SysBusDevice *icu;
++    QList *ipr_map, *trigger_level;
  
-@@ -79,8 +81,11 @@ static void versal_create_apu_gic(Versal *s, qemu_irq *pic)
-     qdev_prop_set_uint32(gicdev, "revision", 3);
-     qdev_prop_set_uint32(gicdev, "num-cpu", nr_apu_cpus);
-     qdev_prop_set_uint32(gicdev, "num-irq", XLNX_VERSAL_NR_IRQS + 32);
--    qdev_prop_set_uint32(gicdev, "len-redist-region-count", 1);
--    qdev_prop_set_uint32(gicdev, "redist-region-count[0]", nr_apu_cpus);
+     object_initialize_child(OBJECT(s), "icu", &s->icu, TYPE_RX_ICU);
+     icu = SYS_BUS_DEVICE(&s->icu);
+-    qdev_prop_set_uint32(DEVICE(icu), "len-ipr-map", NR_IRQS);
 +
-+    redist_region_count = qlist_new();
-+    qlist_append_int(redist_region_count, nr_apu_cpus);
-+    qdev_prop_set_array(gicdev, "redist-region-count", redist_region_count);
++    ipr_map = qlist_new();
+     for (i = 0; i < NR_IRQS; i++) {
+-        char propname[32];
+-        snprintf(propname, sizeof(propname), "ipr-map[%d]", i);
+-        qdev_prop_set_uint32(DEVICE(icu), propname, ipr_table[i]);
++        qlist_append_int(ipr_map, ipr_table[i]);
+     }
+-    qdev_prop_set_uint32(DEVICE(icu), "len-trigger-level",
+-                         ARRAY_SIZE(levelirq));
++    qdev_prop_set_array(DEVICE(icu), "ipr-map", ipr_map);
 +
-     qdev_prop_set_bit(gicdev, "has-security-extensions", true);
++    trigger_level = qlist_new();
+     for (i = 0; i < ARRAY_SIZE(levelirq); i++) {
+-        char propname[32];
+-        snprintf(propname, sizeof(propname), "trigger-level[%d]", i);
+-        qdev_prop_set_uint32(DEVICE(icu), propname, levelirq[i]);
++        qlist_append_int(trigger_level, levelirq[i]);
+     }
++    qdev_prop_set_array(DEVICE(icu), "trigger-level", trigger_level);
  
-     sysbus_realize(SYS_BUS_DEVICE(&s->fpd.apu.gic), &error_fatal);
+     for (i = 0; i < NR_IRQS; i++) {
+         s->irq[i] = qdev_get_gpio_in(DEVICE(icu), i);
 -- 
 2.41.0
 
