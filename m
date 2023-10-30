@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EEE67DC1B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 988BD7DC1D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:22:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxZdy-00010x-FM; Mon, 30 Oct 2023 17:17:54 -0400
+	id 1qxZe5-00015c-PI; Mon, 30 Oct 2023 17:18:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxZdf-0000yo-Mw
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:37 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qxZdj-0000z2-MY
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:43 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxZdb-0006Te-Ty
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:34 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1cc3bb4c307so11455875ad.0
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 14:17:30 -0700 (PDT)
+ id 1qxZde-0006Tn-5L
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:37 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1cc2f17ab26so18676805ad.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 14:17:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698700650; x=1699305450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698700651; x=1699305451; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yzz2vrun9ZHolGGbK5hlMNaXrSfdtOTmji9iHcf/zms=;
- b=ZUyARYYZhZIEXBcQtRYoYz7BMknWUpaIeHPmVEXoOHFg6WDxABhQS0KdqbuYTH7reB
- waKhsYYcA1ZjirgIFaXNVj/hwHu3/20IT74JXgByUi9mFeN2fstATPDNODtiAKGnP+g0
- XQlvSJpHiJDGt/RG2pdMCCAwnwzP0oCuvTeQTpTQNRSyYGLnYqUzmw0ve33r2DmZLbd4
- 8nt54jHe4XNFLTf4Yr7VoPOKe7K4Xy7qEbAHXXAj6ZSkydn3rxX/L+ZlYclkXKfMbWER
- eaUJgb/DlvqfTs3nUQl2PmFkRE0rWVUbaCGWAAGeQ5BjBtBv6U1huTHbqeO6cI8jzQKB
- w6Mg==
+ bh=RLZnYG6gB4JjRwsSZMPasIhTWijR/jDuID0FZ6WSuAE=;
+ b=njytOOws06NJGKXzL2npjNOWR5Md0KE+QBFC/Mfgegqr1eFWZGMuIxlbLHm0odGWMv
+ N2pKduU39uiWKq1DFu2qKyrkHQRGmEsHbDurW5988U8FaHMubW6ZWxQT1FSPL7AUMo+F
+ Zduqq1mvFzi6O9Lh5QnsWDY2fJ45LcfCDZaLijkSr7sBtt3faI3vhAPwYJbnv07WUa8d
+ FrKQA+XZezTLzcnU2I76bbD9Um2yOAQHxotF0AOgljLL6BbE1HTtB46r/xwrn892YH1T
+ ZvE3j2r3SW5ieuQGyW510GkDudnOng0EPAWwHUMP4xj/ZdZys85oF1Q4Evui/jeJ2kE/
+ TlkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698700650; x=1699305450;
+ d=1e100.net; s=20230601; t=1698700651; x=1699305451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yzz2vrun9ZHolGGbK5hlMNaXrSfdtOTmji9iHcf/zms=;
- b=IWMH3n51roHpgT6Lj4q1XgR1B4SWTEbB84XKTj5fkLGM4NbW8maeDybNmNeHXBhVmm
- vU5eR+hUz4kxZgW1b/kCDw1ZLdjteU65c+SQ+njyImWvNm+SbE/6feSiomWk3Y10Mmmq
- L38wysjs5JtsluzcocH7KVTa2KcHNWs2B5B8o013vFOYUj5YfeIvErYQ6uKlx9SwXKcZ
- gsMA+LxHY+wc2nOBl6ja6pDo4G4gnhqwegB2MMfKwjalIwJZvVIenAWTN8p1gJHQ0Hc6
- K04mHFoboMuBt3aSaA8588R6rYtlr3bdc3egYRKgc1qirl/gdy2b0o+YtO+Yy5cOMQTD
- 1Bqw==
-X-Gm-Message-State: AOJu0YzXYypPvPaAx4cDQEZ+BiEG1ZM7cuN2Ib28O/WXFlsAp0HsLpwK
- 0X3p7iDWvpMkWD6/uU5gOjrsBhlckvzEv07kVvQ=
-X-Google-Smtp-Source: AGHT+IFv0qxogegFSuXnxqBNJqh0HT7vCQXkWOUaLi0DCDF2ch4q5JT5g0JY8WFCnPwhul8chPaB0w==
-X-Received: by 2002:a17:903:32d1:b0:1cc:3bc9:b924 with SMTP id
- i17-20020a17090332d100b001cc3bc9b924mr4169483plr.25.1698700649894; 
- Mon, 30 Oct 2023 14:17:29 -0700 (PDT)
+ bh=RLZnYG6gB4JjRwsSZMPasIhTWijR/jDuID0FZ6WSuAE=;
+ b=CuLovq88fxdc29adpSTdF+oT7HOF14PVpg7Y2cmdXczrW8aGvkWj22NecogA027rTF
+ DrRD6l3r82i98PxNmjcHaEPyTmodLDvk9jAJLCDJvzSZRh2M7Hd3zXvbN0VlsHGq9opH
+ CU0XgTF5+cpsRmvaGRf3mG9flt2M9hnPSnPnOxLjls6MPZCpLPomL2h4tUJ8qIDqv0S9
+ yRA1BrcE8oEd8JA2NrVp67ys2fMesuVpbXHm+bj/fHyvMYQHL31m7UAWyernMCBDkAt3
+ Z93554MmZmmWQjjfI1s9tZpKLk+CPOCiQdNFweIEAv47QBQ1cEO3ij61SQR5xMoRB2Kt
+ 8pRA==
+X-Gm-Message-State: AOJu0YzG1BcOb/9DKwKRcfFe/IfHsQIQnfiVaeEvBoPMSiO4DXd74Rhj
+ HerhWhiDR1LjZtC4Ilo3jfawNXAb9EsijqZ7sHM=
+X-Google-Smtp-Source: AGHT+IGMr3VzfUkSkMbE8I6SnAzkK5v8haNinkeS944kju1v9nnWxRm6s7BUiy0MKV4x/AqAFF8yyg==
+X-Received: by 2002:a17:902:6b0c:b0:1ca:2ec4:7f38 with SMTP id
+ o12-20020a1709026b0c00b001ca2ec47f38mr7698634plk.17.1698700651016; 
+ Mon, 30 Oct 2023 14:17:31 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jf2-20020a170903268200b001cc32261bdfsm4670350plb.38.2023.10.30.14.17.29
+ jf2-20020a170903268200b001cc32261bdfsm4670350plb.38.2023.10.30.14.17.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Oct 2023 14:17:29 -0700 (PDT)
+ Mon, 30 Oct 2023 14:17:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/21] linux-user: Introduce imgsrc_read, imgsrc_read_alloc
-Date: Mon, 30 Oct 2023 14:17:08 -0700
-Message-Id: <20231030211727.165090-3-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [PULL 03/21] linux-user: Tidy loader_exec
+Date: Mon, 30 Oct 2023 14:17:09 -0700
+Message-Id: <20231030211727.165090-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231030211727.165090-1-richard.henderson@linaro.org>
 References: <20231030211727.165090-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,216 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduced and initialized, but not yet really used.
-These will tidy the current tests vs BPRM_BUF_SIZE.
+Reorg the if cases to reduce indentation.
+Test for 4 bytes in the file before checking the signatures.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loader.h    | 61 +++++++++++++++++++++++-----
- linux-user/linuxload.c | 90 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 142 insertions(+), 9 deletions(-)
+ linux-user/linuxload.c | 42 +++++++++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index 324e5c872a..da6591fff0 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -18,6 +18,48 @@
- #ifndef LINUX_USER_LOADER_H
- #define LINUX_USER_LOADER_H
- 
-+typedef struct {
-+    const void *cache;
-+    unsigned int cache_size;
-+    int fd;
-+} ImageSource;
-+
-+/**
-+ * imgsrc_read: Read from ImageSource
-+ * @dst: destination for read
-+ * @offset: offset within file for read
-+ * @len: size of the read
-+ * @img: ImageSource to read from
-+ * @errp: Error details.
-+ *
-+ * Read into @dst, using the cache when possible.
-+ */
-+bool imgsrc_read(void *dst, off_t offset, size_t len,
-+                 const ImageSource *img, Error **errp);
-+
-+/**
-+ * imgsrc_read_alloc: Read from ImageSource
-+ * @offset: offset within file for read
-+ * @size: size of the read
-+ * @img: ImageSource to read from
-+ * @errp: Error details.
-+ *
-+ * Read into newly allocated memory, using the cache when possible.
-+ */
-+void *imgsrc_read_alloc(off_t offset, size_t len,
-+                        const ImageSource *img, Error **errp);
-+
-+/**
-+ * imgsrc_mmap: Map from ImageSource
-+ *
-+ * If @src has a file descriptor, pass on to target_mmap.  Otherwise,
-+ * this is "mapping" from a host buffer, which resolves to memcpy.
-+ * Therefore, flags must be MAP_PRIVATE | MAP_FIXED; the argument is
-+ * retained for clarity.
-+ */
-+abi_long imgsrc_mmap(abi_ulong start, abi_ulong len, int prot,
-+                     int flags, const ImageSource *src, abi_ulong offset);
-+
- /*
-  * Read a good amount of data initially, to hopefully get all the
-  * program headers loaded.
-@@ -29,15 +71,16 @@
-  * used when loading binaries.
-  */
- struct linux_binprm {
--        char buf[BPRM_BUF_SIZE] __attribute__((aligned));
--        abi_ulong p;
--        int fd;
--        int e_uid, e_gid;
--        int argc, envc;
--        char **argv;
--        char **envp;
--        char *filename;        /* Name of binary */
--        int (*core_dump)(int, const CPUArchState *); /* coredump routine */
-+    char buf[BPRM_BUF_SIZE] __attribute__((aligned));
-+    ImageSource src;
-+    abi_ulong p;
-+    int fd;
-+    int e_uid, e_gid;
-+    int argc, envc;
-+    char **argv;
-+    char **envp;
-+    char *filename;        /* Name of binary */
-+    int (*core_dump)(int, const CPUArchState *); /* coredump routine */
- };
- 
- void do_init_thread(struct target_pt_regs *regs, struct image_info *infop);
 diff --git a/linux-user/linuxload.c b/linux-user/linuxload.c
-index 745cce70ab..3536dd8104 100644
+index 3536dd8104..5b7e9ab983 100644
 --- a/linux-user/linuxload.c
 +++ b/linux-user/linuxload.c
-@@ -3,7 +3,9 @@
- #include "qemu/osdep.h"
- #include "qemu.h"
- #include "user-internals.h"
-+#include "user-mmap.h"
- #include "loader.h"
-+#include "qapi/error.h"
+@@ -154,31 +154,31 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
  
- #define NGROUPS 32
+     retval = prepare_binprm(bprm);
  
-@@ -76,6 +78,10 @@ static int prepare_binprm(struct linux_binprm *bprm)
-         /* Make sure the rest of the loader won't read garbage.  */
-         memset(bprm->buf + retval, 0, BPRM_BUF_SIZE - retval);
+-    if (retval >= 0) {
+-        if (bprm->buf[0] == 0x7f
+-                && bprm->buf[1] == 'E'
+-                && bprm->buf[2] == 'L'
+-                && bprm->buf[3] == 'F') {
+-            retval = load_elf_binary(bprm, infop);
+-#if defined(TARGET_HAS_BFLT)
+-        } else if (bprm->buf[0] == 'b'
+-                && bprm->buf[1] == 'F'
+-                && bprm->buf[2] == 'L'
+-                && bprm->buf[3] == 'T') {
+-            retval = load_flt_binary(bprm, infop);
+-#endif
+-        } else {
+-            return -ENOEXEC;
+-        }
++    if (retval < 4) {
++        return -ENOEXEC;
      }
-+
-+    bprm->src.cache = bprm->buf;
-+    bprm->src.cache_size = retval;
-+
-     return retval;
+-
+-    if (retval >= 0) {
+-        /* success.  Initialize important registers */
+-        do_init_thread(regs, infop);
++    if (bprm->buf[0] == 0x7f
++        && bprm->buf[1] == 'E'
++        && bprm->buf[2] == 'L'
++        && bprm->buf[3] == 'F') {
++        retval = load_elf_binary(bprm, infop);
++#if defined(TARGET_HAS_BFLT)
++    } else if (bprm->buf[0] == 'b'
++               && bprm->buf[1] == 'F'
++               && bprm->buf[2] == 'L'
++               && bprm->buf[3] == 'T') {
++        retval = load_flt_binary(bprm, infop);
++#endif
++    } else {
++        return -ENOEXEC;
++    }
++    if (retval < 0) {
+         return retval;
+     }
+ 
+-    return retval;
++    /* Success.  Initialize important registers. */
++    do_init_thread(regs, infop);
++    return 0;
  }
  
-@@ -139,6 +145,7 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
-     int retval;
- 
-     bprm->fd = fdexec;
-+    bprm->src.fd = fdexec;
-     bprm->filename = (char *)filename;
-     bprm->argc = count(argv);
-     bprm->argv = argv;
-@@ -173,3 +180,86 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
- 
-     return retval;
- }
-+
-+bool imgsrc_read(void *dst, off_t offset, size_t len,
-+                 const ImageSource *img, Error **errp)
-+{
-+    ssize_t ret;
-+
-+    if (offset + len <= img->cache_size) {
-+        memcpy(dst, img->cache + offset, len);
-+        return true;
-+    }
-+
-+    if (img->fd < 0) {
-+        error_setg(errp, "read past end of buffer");
-+        return false;
-+    }
-+
-+    ret = pread(img->fd, dst, len, offset);
-+    if (ret == len) {
-+        return true;
-+    }
-+    if (ret < 0) {
-+        error_setg_errno(errp, errno, "Error reading file header");
-+    } else {
-+        error_setg(errp, "Incomplete read of file header");
-+    }
-+    return false;
-+}
-+
-+void *imgsrc_read_alloc(off_t offset, size_t len,
-+                        const ImageSource *img, Error **errp)
-+{
-+    void *alloc = g_malloc(len);
-+    bool ok = imgsrc_read(alloc, offset, len, img, errp);
-+
-+    if (!ok) {
-+        g_free(alloc);
-+        alloc = NULL;
-+    }
-+    return alloc;
-+}
-+
-+abi_long imgsrc_mmap(abi_ulong start, abi_ulong len, int prot,
-+                     int flags, const ImageSource *src, abi_ulong offset)
-+{
-+    const int prot_write = PROT_READ | PROT_WRITE;
-+    abi_long ret;
-+    void *haddr;
-+
-+    assert(flags == (MAP_PRIVATE | MAP_FIXED));
-+
-+    if (src->fd >= 0) {
-+        return target_mmap(start, len, prot, flags, src->fd, offset);
-+    }
-+
-+    /*
-+     * This case is for the vdso; we don't expect bad images.
-+     * The mmap may extend beyond the end of the image, especially
-+     * to the end of the page.  Zero fill.
-+     */
-+    assert(offset < src->cache_size);
-+
-+    ret = target_mmap(start, len, prot_write, flags | MAP_ANON, -1, 0);
-+    if (ret == -1) {
-+        return ret;
-+    }
-+
-+    haddr = lock_user(VERIFY_WRITE, start, len, 0);
-+    assert(haddr != NULL);
-+    if (offset + len <= src->cache_size) {
-+        memcpy(haddr, src->cache + offset, len);
-+    } else {
-+        size_t rest = src->cache_size - offset;
-+        memcpy(haddr, src->cache + offset, rest);
-+        memset(haddr + rest, 0, len - rest);
-+    }
-+    unlock_user(haddr, start, len);
-+
-+    if (prot != prot_write) {
-+        target_mprotect(start, len, prot);
-+    }
-+
-+    return ret;
-+}
+ bool imgsrc_read(void *dst, off_t offset, size_t len,
 -- 
 2.34.1
 
