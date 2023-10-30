@@ -2,98 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6159B7DBB02
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6999D7DBB0D
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:43:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSUS-0007Pt-Bp; Mon, 30 Oct 2023 09:39:36 -0400
+	id 1qxSY3-0000jv-A7; Mon, 30 Oct 2023 09:43:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxSUQ-0007GG-IN
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:39:34 -0400
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxSUO-0006Ba-BI
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:39:33 -0400
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-5a7e5dc8573so40605077b3.0
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 06:39:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698673170; x=1699277970; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sh575YTqSBhHY0AMttM9gvgH/IMyWeXli3dQG9PmFx0=;
- b=EhK7bb1it/57ZdKMvOx2LcFHL5V1wmin+5wjUaQlWY2vOJmQTim2jE8CzUlWm8Pppq
- fSoE7j4b2xKW6WmYsKAqmgC0huxRXNBKu+OgzhbjPkD9TkOtJNotgOdxBSXCJsa3gcjU
- 029ZSFHXQT88lR27CzWKxT9H/VA/nFC0MrOhKgMpmvXUnIKZgo5F6SBFah/MQg0CaoL6
- 0Kl5/e//QDEK8p4qancKOWHPofOypXt8gJPa+jv2ZFJZIFppiYjHtp2dH1Ih5ckV0E1W
- 1PXfAzGQWz38e+KZ+3e6Qx2DICaARcPhhfVVV+XpGx7vj9aSP+T5i61URf2wuZ3plqkE
- UvOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698673170; x=1699277970;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sh575YTqSBhHY0AMttM9gvgH/IMyWeXli3dQG9PmFx0=;
- b=VV2w3wzSfvIEvvkzWqANq2GEepGxeipvOdoT3RAbeKtCjWpKGuELM2M60moAvVaY9U
- BN0mAFT19TduayFhiTT4npO7z5ebu+7fz3ds5CbQeUTFtO+GhWl8PqF4wU0K4OxmXh8K
- TJuYkccRNGAWTwUD3rI7bhuAyjumlokh1YPcBs+B8sizMUuJdDqK5CvwWfSrMTmc+DeL
- 6ZeqNP91fXkBoO5hByO0P7TgOjMOXsRP6xsHAm2Xl0nF94U9b6OHW4hHTPFpac2AzT0t
- tKSlBYZA/iprLYhL57iWBsXs2S+qx3KDhAR6do3xe5+u96MKMRdoLYjmVExuhbR6+lvC
- O0kQ==
-X-Gm-Message-State: AOJu0Ywn1Zx7x/LIGAAtIU5nwbU06K4pbzd7pzVuxZBU+5pQXexcRKq1
- vvpgRLkLtgnxhSBvHn2iSBKTkA==
-X-Google-Smtp-Source: AGHT+IE6fYLZvfNxxgngEaUp7hcZo5dYF+Mgxswy5n4mE8lRDlWbb2NbyTDGhcXAdJTsExgj3eAvYg==
-X-Received: by 2002:a81:e249:0:b0:59b:cfe1:bcf1 with SMTP id
- z9-20020a81e249000000b0059bcfe1bcf1mr9305349ywl.44.1698673170389; 
- Mon, 30 Oct 2023 06:39:30 -0700 (PDT)
-Received: from [192.168.68.107] ([179.193.10.161])
- by smtp.gmail.com with ESMTPSA id
- w185-20020a8162c2000000b0059b20231f1dsm4319262ywb.121.2023.10.30.06.39.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 06:39:30 -0700 (PDT)
-Message-ID: <5968ce1b-8342-4251-8bc0-e8200388336c@ventanamicro.com>
-Date: Mon, 30 Oct 2023 10:39:24 -0300
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxSY0-0000in-EF
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:43:16 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxSXv-0006y0-66
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:43:16 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 7A029756088;
+ Mon, 30 Oct 2023 14:43:14 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 4C6B0756082; Mon, 30 Oct 2023 14:43:14 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4A66C756078;
+ Mon, 30 Oct 2023 14:43:14 +0100 (CET)
+Date: Mon, 30 Oct 2023 14:43:14 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
+cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH 1/3] ati-vga: Fix aperture sizes
+In-Reply-To: <CAJ+F1C+iOpJWtQrHkJeq5bGxeK3nnvheE9_AKq1X703EsJD4DQ@mail.gmail.com>
+Message-ID: <b592fef8-f0d1-2b5d-44c1-1d4638bcc7d7@eik.bme.hu>
+References: <cover.1696942148.git.balaton@eik.bme.hu>
+ <b768c6506526caea0da8cd4025dbb05e109da4c5.1696942148.git.balaton@eik.bme.hu>
+ <CAJ+F1C+iOpJWtQrHkJeq5bGxeK3nnvheE9_AKq1X703EsJD4DQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/13] hw/pci-host/gpex: Define properties for MMIO
- ranges
-Content-Language: en-US
-To: Sunil V L <sunilvl@ventanamicro.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Anup Patel <apatel@ventanamicro.com>, Atish Kumar Patra
- <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
-References: <20231030132058.763556-1-sunilvl@ventanamicro.com>
- <20231030132058.763556-11-sunilvl@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231030132058.763556-11-sunilvl@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-1300865702-1698673394=:33934"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,133 +62,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-1300865702-1698673394=:33934
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-On 10/30/23 10:20, Sunil V L wrote:
-> ACPI DSDT generator needs information like ECAM range, PIO range, 32-bit
-> and 64-bit PCI MMIO range etc related to the PCI host bridge. Instead of
-> making these values machine specific, create properties for the GPEX
-> host bridge with default value 0. During initialization, the firmware
-> can initialize these properties with correct values for the platform.
-> This basically allows DSDT generator code independent of the machine
-> specific memory map accesses.
-> 
-> Suggested-by: Igor Mammedov <imammedo@redhat.com>
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
+On Mon, 30 Oct 2023, Marc-André Lureau wrote:
+> Hi
+>
+> On Tue, Oct 10, 2023 at 5:03 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
+>>
+>> Apparently these should be half the memory region sizes confirmed at
+>> least by Radeon drivers while Rage 128 Pro drivers don't seem to use
+>> these.
+>
+> There doesn't seem to be adjustments for the kernel PPC driver
+> https://github.com/torvalds/linux/blob/master/drivers/video/fbdev/aty/radeon_base.c#L2037
+>
+> Do you have any other pointers?
 
-There's nothing too fancy happening here, just a good old QOM sauce, so I
-feel comfortable throwing a:
+There was some discussion back whan this was added:
 
+https://patchew.org/QEMU/99bb800cba3596e47d2681642116756330dc6f63.1562320946.git.balaton@eik.bme.hu/
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+and this was also in a patch Gerd sent once around that time but I don't 
+find that patch now. I've found this while trying to get some RV100 ROMs 
+from real card running which did multiply this by 2 while the Rage128Pro 
+ROMs and drivers did not access it and used the BAR sizes I think. 
+According to the discussion above maybe this also depends on some other 
+bit but I don't have detailed enough docs to know.
 
+Regards,
+BALATON Zoltan
 
-
-Thanks,
-
-Daniel
-
-
->   hw/pci-host/gpex-acpi.c    | 13 +++++++++++++
->   hw/pci-host/gpex.c         | 12 ++++++++++++
->   include/hw/pci-host/gpex.h | 28 ++++++++++++++++++++--------
->   3 files changed, 45 insertions(+), 8 deletions(-)
-> 
-> diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-> index 1092dc3b70..f69413ea2c 100644
-> --- a/hw/pci-host/gpex-acpi.c
-> +++ b/hw/pci-host/gpex-acpi.c
-> @@ -281,3 +281,16 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
->   
->       crs_range_set_free(&crs_range_set);
->   }
-> +
-> +void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq)
-> +{
-> +    bool ambig;
-> +    Object *obj = object_resolve_path_type("", TYPE_GPEX_HOST, &ambig);
-> +
-> +    if (!obj || ambig) {
-> +        return;
-> +    }
-> +
-> +    GPEX_HOST(obj)->gpex_cfg.irq = irq;
-> +    acpi_dsdt_add_gpex(scope, &GPEX_HOST(obj)->gpex_cfg);
-> +}
-> diff --git a/hw/pci-host/gpex.c b/hw/pci-host/gpex.c
-> index a6752fac5e..41f4e73f6e 100644
-> --- a/hw/pci-host/gpex.c
-> +++ b/hw/pci-host/gpex.c
-> @@ -154,6 +154,18 @@ static Property gpex_host_properties[] = {
->        */
->       DEFINE_PROP_BOOL("allow-unmapped-accesses", GPEXHost,
->                        allow_unmapped_accesses, true),
-> +    DEFINE_PROP_UINT64(PCI_HOST_ECAM_BASE, GPEXHost, gpex_cfg.ecam.base, 0),
-> +    DEFINE_PROP_SIZE(PCI_HOST_ECAM_SIZE, GPEXHost, gpex_cfg.ecam.size, 0),
-> +    DEFINE_PROP_UINT64(PCI_HOST_PIO_BASE, GPEXHost, gpex_cfg.pio.base, 0),
-> +    DEFINE_PROP_SIZE(PCI_HOST_PIO_SIZE, GPEXHost, gpex_cfg.pio.size, 0),
-> +    DEFINE_PROP_UINT64(PCI_HOST_BELOW_4G_MMIO_BASE, GPEXHost,
-> +                       gpex_cfg.mmio32.base, 0),
-> +    DEFINE_PROP_SIZE(PCI_HOST_BELOW_4G_MMIO_SIZE, GPEXHost,
-> +                     gpex_cfg.mmio32.size, 0),
-> +    DEFINE_PROP_UINT64(PCI_HOST_ABOVE_4G_MMIO_BASE, GPEXHost,
-> +                       gpex_cfg.mmio64.base, 0),
-> +    DEFINE_PROP_SIZE(PCI_HOST_ABOVE_4G_MMIO_SIZE, GPEXHost,
-> +                     gpex_cfg.mmio64.size, 0),
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
-> diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
-> index b0240bd768..441c6b8b20 100644
-> --- a/include/hw/pci-host/gpex.h
-> +++ b/include/hw/pci-host/gpex.h
-> @@ -40,6 +40,15 @@ struct GPEXRootState {
->       /*< public >*/
->   };
->   
-> +struct GPEXConfig {
-> +    MemMapEntry ecam;
-> +    MemMapEntry mmio32;
-> +    MemMapEntry mmio64;
-> +    MemMapEntry pio;
-> +    int         irq;
-> +    PCIBus      *bus;
-> +};
-> +
->   struct GPEXHost {
->       /*< private >*/
->       PCIExpressHost parent_obj;
-> @@ -55,19 +64,22 @@ struct GPEXHost {
->       int irq_num[GPEX_NUM_IRQS];
->   
->       bool allow_unmapped_accesses;
-> -};
->   
-> -struct GPEXConfig {
-> -    MemMapEntry ecam;
-> -    MemMapEntry mmio32;
-> -    MemMapEntry mmio64;
-> -    MemMapEntry pio;
-> -    int         irq;
-> -    PCIBus      *bus;
-> +    struct GPEXConfig gpex_cfg;
->   };
->   
->   int gpex_set_irq_num(GPEXHost *s, int index, int gsi);
->   
->   void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg);
-> +void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq);
-> +
-> +#define PCI_HOST_PIO_BASE               "pio-base"
-> +#define PCI_HOST_PIO_SIZE               "pio-size"
-> +#define PCI_HOST_ECAM_BASE              "ecam-base"
-> +#define PCI_HOST_ECAM_SIZE              "ecam-size"
-> +#define PCI_HOST_BELOW_4G_MMIO_BASE     "below-4g-mmio-base"
-> +#define PCI_HOST_BELOW_4G_MMIO_SIZE     "below-4g-mmio-size"
-> +#define PCI_HOST_ABOVE_4G_MMIO_BASE     "above-4g-mmio-base"
-> +#define PCI_HOST_ABOVE_4G_MMIO_SIZE     "above-4g-mmio-size"
->   
->   #endif /* HW_GPEX_H */
+> thanks
+>
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>  hw/display/ati.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/display/ati.c b/hw/display/ati.c
+>> index c36282c343..f0bf1d7493 100644
+>> --- a/hw/display/ati.c
+>> +++ b/hw/display/ati.c
+>> @@ -349,14 +349,14 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
+>>                                        PCI_BASE_ADDRESS_0, size) & 0xfffffff0;
+>>          break;
+>>      case CONFIG_APER_SIZE:
+>> -        val = s->vga.vram_size;
+>> +        val = s->vga.vram_size / 2;
+>>          break;
+>>      case CONFIG_REG_1_BASE:
+>>          val = pci_default_read_config(&s->dev,
+>>                                        PCI_BASE_ADDRESS_2, size) & 0xfffffff0;
+>>          break;
+>>      case CONFIG_REG_APER_SIZE:
+>> -        val = memory_region_size(&s->mm);
+>> +        val = memory_region_size(&s->mm) / 2;
+>>          break;
+>>      case MC_STATUS:
+>>          val = 5;
+>> --
+>> 2.30.9
+>>
+>>
+>
+>
+>
+--3866299591-1300865702-1698673394=:33934--
 
