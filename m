@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2559A7DBF36
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 18:40:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303857DBFA8
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 19:20:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxWFL-0000X3-Sq; Mon, 30 Oct 2023 13:40:15 -0400
+	id 1qxWqn-00044Z-6z; Mon, 30 Oct 2023 14:18:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxWFG-0000Vv-Qp
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:40:10 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxWqk-00044A-QU
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 14:18:54 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxWFC-0000Hk-HZ
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:40:10 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-32dd70c5401so3044553f8f.0
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 10:40:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxWqY-00084g-46
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 14:18:54 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1cc5916d578so6772015ad.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 11:18:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698687605; x=1699292405; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WqVvp3csTiPZFAuQuKekKYsYC9+/xgQvvKPTLe74R7I=;
- b=XlKyM7t6WfRjbYuviamnM9u/Yydkdmc+jIB+bJeW4pVxWQK99TdQeEcLMjKLADSJq6
- bK4ojJPxnzIi1oSi+LTGAtm47ukDOiNXzSCYJ/znulSAqYJn+MDKBshA7NhkRzd2kQKs
- fXPruDPBQLkQaLjnMR8yBaShavWTAZFhpCkhKWDh7JkH6TxjDAserIBLNm2a56eF5ax6
- U+BOvkrV4xwTtID03mk2DE2zcIskW9RBtLgtpgnVgVcQw+OkxeuuOHGprjeJnFn27TQ2
- Kq+/6WCSjc47siaZUdfhslFbIDHQkVAq6srxg40ZArLsna+uIs3XQ4MhqcPw8D7Zfs+q
- ol9Q==
+ d=linaro.org; s=google; t=1698689920; x=1699294720; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3STRVTSVCOhgbkwxhLG3kFaxkLA5LyYTVzlAT2QFOso=;
+ b=AvhTjh/lEvWCwIbd4oLvz5rvyecYPO9cvel4o5K6+6im/IqcgxSKYi07zBDrcA1Yqd
+ cl/AyOyBY1PCdBBMhtEgSz1Pt6S9V//BUhQyfXOPr6q+elPQnvTS7lM6yGsC/uVjGV87
+ vci5y36jzWCPYX+HJ91cmcLl5qOqEp/P9oGtCVYvMV8tjMHuq3KoKLOFoFqeLWjld1W4
+ +ZurANeWLzzfQo+gUshYeRO07DVHky+pBqXBRBpmBSWGeoaZCNCHJSpuy06ymNkIIe+8
+ mOAUi+HUdAZNIh/HNzrIC0LW9UbtbKnNiuPZVAc99mCh3lcQOA0ZDJH7GMPhfR81rS0T
+ l0RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698687605; x=1699292405;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WqVvp3csTiPZFAuQuKekKYsYC9+/xgQvvKPTLe74R7I=;
- b=j/1wsWzYALNMOWKbJwjSbmLCYMoArpeHXK+u+vwkWiMHWu0nLamYkUYDbREeL5vbqi
- oMTjFbOOThFSc/anSyKH9dbCpq46AxgIjndBoQ2yXHzbIJD3siEIVi9lpj9hQSCHQ1A3
- ytc+JTVLt1nt3VWiQKN+kUyLMOMG4cMzT6nX3qWM5sjH3ksMXVcIEqoe6x8Ude7OQ/F0
- 08K2gxDXVCAgDuqOScoRBEwysJixriQL7P8cWfu5lT5CnuQTQS88kN/tIC9mc4b5vmLK
- bBtLpIIDXkUvS4qU/dZggi6DEJn7jCAENDEl3r0/YxH3C3KEzU5g29/jYbnO2vv+jWpt
- s0RQ==
-X-Gm-Message-State: AOJu0YxCuTdltcwSMvjTAk2K2NQwq6fjNOv9nnM210dVOVY16OFCOnpL
- q+QchZiezhkCG1mhNcFZKUdYrA==
-X-Google-Smtp-Source: AGHT+IHjSGG/lSAnmnoWVDhjWma3hJol5/4oEm/8AYXLMi+dxBXvkyMYWwcEc/eLuZXsBZ4OYnTztQ==
-X-Received: by 2002:a05:6000:1447:b0:32f:7f6c:72a6 with SMTP id
- v7-20020a056000144700b0032f7f6c72a6mr4689766wrx.16.1698687605019; 
- Mon, 30 Oct 2023 10:40:05 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1698689920; x=1699294720;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3STRVTSVCOhgbkwxhLG3kFaxkLA5LyYTVzlAT2QFOso=;
+ b=wtIj96jL+Yxt0LZ/LigxREi8+1NUPJN6dWBRGTmlkBP9Ux4pt7LyqGuyWxMI/NYAco
+ db8BN0nO8ZVzOiMi8nvjgLWimVUHGNVHKxp8KSCKrw2kqgDGcGKKuCA1mznomRkptkg3
+ isE78REJYV5F97kv0n/m3rWhIkEoj3J58Y/J5sqRSHh2wprfuJMmTaSL5E08D2Rf5cVS
+ F6+zQzUosTD4REzLja11TID5tmOe2j51KLBwzTJSwgrAp8EvTMF21gF+F1iwGXjfhAov
+ EM9VoPTWRKu0z1UZtp3FYGfuoS4816HbKx05QKs0r1WIvH99dTwHJwznh855aY8uy4Da
+ SL0g==
+X-Gm-Message-State: AOJu0YxUyyDnBieosdqsy/8UOwgODqsqIX6nBlFaP38GqgMh2fPbYOD4
+ z8mTsf2xtNu65m8GkOMvksV5BZyWwNXao4nSfGo=
+X-Google-Smtp-Source: AGHT+IFUO8xX8szD9PtFpQn3VRg0/TE5ErmvTTAgDfbKUWW3Wkt3gTo+OEo4a4CsfzyWS5+3iP3gsQ==
+X-Received: by 2002:a17:902:d48a:b0:1cc:5168:688 with SMTP id
+ c10-20020a170902d48a00b001cc51680688mr3374453plg.60.1698689919789; 
+ Mon, 30 Oct 2023 11:18:39 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- e16-20020a5d5950000000b0032f7d1e2c7csm5912914wri.95.2023.10.30.10.40.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Oct 2023 10:40:04 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 3/3] target/arm: Make FEAT_MOPS SET* insns handle Xs == XZR
- correctly
-Date: Mon, 30 Oct 2023 17:40:00 +0000
-Message-Id: <20231030174000.3792225-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231030174000.3792225-1-peter.maydell@linaro.org>
-References: <20231030174000.3792225-1-peter.maydell@linaro.org>
+ b1-20020a170902d30100b001c73f3a9b7fsm6539695plc.185.2023.10.30.11.18.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 11:18:39 -0700 (PDT)
+Message-ID: <1f06e3b0-1531-4f9c-9a66-1811bbba37fa@linaro.org>
+Date: Mon, 30 Oct 2023 11:18:37 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: Getting qemu plugins working on windows
+Content-Language: en-US
+To: Greg Manning <gmanning@rapitasystems.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "luoyonggang@gmail.com" <luoyonggang@gmail.com>
+References: <CWXP123MB43418A508D8E101ABC58A523D7A1A@CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CWXP123MB43418A508D8E101ABC58A523D7A1A@CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,70 +93,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of the registers used by the FEAT_MOPS instructions cannot use
-31 as a register field value; this is CONSTRAINED UNPREDICTABLE to
-NOP or UNDEF (we UNDEF).  However, it is permitted for the "source
-value" register for the memset insns SET* to be 31, which (as usual
-for most data-processing insns) means it should be the zero register
-XZR. We forgot to handle this case, with the effect that trying to
-set memory to zero with a "SET* Xd, Xn, XZR" sets the memory to
-the value that happens to be in the low byte of SP.
+On 10/30/23 09:48, Greg Manning wrote:
+> Hello,
+> 
+> Currently, qemu plugin support only works in Linux and I would like to get qemu plugins working on
+> Windows. I have had some success experimenting with this locally (based on some previous work by
+> Yonggang Luo, see below), but would like to gauge opinion before I commit to suggesting a solution.
+> 
+> The overall structure of how plugins work is this:
+> 
+> 1. qemu executable loads plugin.so.
+> 2. plugin.so defines a function qemu_plugin_install, which qemu looks up, and calls.
+> during that function call plugin.so might call some of the qemu_plugin_* functions that the host
+> executable has implementations of. plugin.so is compiled with unresolved references to these functions,
+> and they get linked up at dll load time.
+> 
+> Windows doesn't let you do such on-the-fly load time linking. You need a dll import library, which is
+> specific to a particular host executable. The qemu project, however, has many executables, any
+> of which might want to load a given plugin.
+> 
+> Possible ways to get things working on Windows:
+> 
+> 1. Make the dll import library. Possibly refactor the qemu plugin code into a single qemu_plugin.{so,dll},
+>     and then make the import library for that. I don't fully understand this system, and I'm still concerned
+>     it would be fragile (if qemu is recompiled, do I need to recompile all my plugins against the new
+>     version of the import library?)
 
-Handle XZR when getting the SET* data value from the register file.
+As we work toward a single qemu executable, I expect that we will need to build most of 
+qemu as a dll, and then you'd have exactly the image against which plugins could be linked.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/tcg/helper-a64.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+This is probably still a couple of releases away from daylight, but I wouldn't want too 
+much work to be done on an alternate method for Windows in the meantime.
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 84f54750fc2..ce4800b8d13 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -1206,6 +1206,15 @@ static void check_setg_alignment(CPUARMState *env, uint64_t ptr, uint64_t size,
-     }
- }
- 
-+static uint64_t arm_reg_or_xzr(CPUARMState *env, int reg)
-+{
-+    /*
-+     * Runtime equivalent of cpu_reg() -- return the CPU register value,
-+     * for contexts when index 31 means XZR (not SP).
-+     */
-+    return reg == 31 ? 0 : env->xregs[reg];
-+}
-+
- /*
-  * For the Memory Set operation, our implementation chooses
-  * always to use "option A", where we update Xd to the final
-@@ -1226,7 +1235,7 @@ static void do_setp(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-     int rd = mops_destreg(syndrome);
-     int rs = mops_srcreg(syndrome);
-     int rn = mops_sizereg(syndrome);
--    uint8_t data = env->xregs[rs];
-+    uint8_t data = arm_reg_or_xzr(env, rs);
-     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
-     uint64_t toaddr = env->xregs[rd];
-     uint64_t setsize = env->xregs[rn];
-@@ -1286,7 +1295,7 @@ static void do_setm(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-     int rd = mops_destreg(syndrome);
-     int rs = mops_srcreg(syndrome);
-     int rn = mops_sizereg(syndrome);
--    uint8_t data = env->xregs[rs];
-+    uint8_t data = arm_reg_or_xzr(env, rs);
-     uint64_t toaddr = env->xregs[rd] + env->xregs[rn];
-     uint64_t setsize = -env->xregs[rn];
-     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
-@@ -1349,7 +1358,7 @@ static void do_sete(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-     int rd = mops_destreg(syndrome);
-     int rs = mops_srcreg(syndrome);
-     int rn = mops_sizereg(syndrome);
--    uint8_t data = env->xregs[rs];
-+    uint8_t data = arm_reg_or_xzr(env, rs);
-     uint64_t toaddr = env->xregs[rd] + env->xregs[rn];
-     uint64_t setsize = -env->xregs[rn];
-     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
--- 
-2.34.1
 
+r~
 
