@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70FB7DB59A
+	by mail.lfdr.de (Postfix) with ESMTPS id A55467DB599
 	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:01:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxO7l-0003ec-6o; Mon, 30 Oct 2023 04:59:53 -0400
+	id 1qxO82-0003i4-4Z; Mon, 30 Oct 2023 05:00:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO7h-0003eG-Gb
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:59:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO7x-0003hk-27
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:00:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO7e-0000O9-BU
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:59:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO7v-0000SL-DW
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:00:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698656384;
+ s=mimecast20190719; t=1698656402;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t2FO3yKkYhDy4ghACNW2SPWw9q777/slTUEns7gVko8=;
- b=DBH9Rrg2hCWPVbdiqu4NGL/0W7KZcD+FKRsGLP9RxhQWRdEHco8YbY8iy4UBXKa45b12+8
- 2Uj+KBsjLGFc72yz/KPVSv2JY0BRAOVn607+yeWYn6HmixmUYS6BjIOnNYqa8sQfqqHBQ9
- kljV1xThiCQFRJqHYD3PfcW92qnhyuo=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Xmt6Vbi8/f2MxwxYBQdoxn+u7EVbvygfr9wDg4tnFSk=;
+ b=JjDm6d22dOkbzMO4enz6+r4ybDOhQkPfJPFtILK8aQNkWZvJlGKCEKA8IqR8Uhc+/7JnzM
+ T1fxMQrWmljbIRovlYOk/Gv0AuKN0uWcnK+FOUyPkztXF2QbkrybKQNZtQTHQAhUA6B5Wc
+ 2jpqzXM6jqPJCxdJSrtwzZaA94jITnA=
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
+ [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-KMNRGa7cPxGZnJ8j8mBqmQ-1; Mon, 30 Oct 2023 04:59:43 -0400
-X-MC-Unique: KMNRGa7cPxGZnJ8j8mBqmQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6712bdfe06dso14098206d6.0
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 01:59:43 -0700 (PDT)
+ us-mta-434-_XQT9QRDP0Coz_ZT_73umQ-1; Mon, 30 Oct 2023 05:00:00 -0400
+X-MC-Unique: _XQT9QRDP0Coz_ZT_73umQ-1
+Received: by mail-vk1-f197.google.com with SMTP id
+ 71dfb90a1353d-4ab9d742f96so65565e0c.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 02:00:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698656382; x=1699261182;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1698656400; x=1699261200;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t2FO3yKkYhDy4ghACNW2SPWw9q777/slTUEns7gVko8=;
- b=XPBNyBPXEeFaKVOhInTIxCW1d/TUHF/+ylqc0uhSFncxuGrWJQy/yYU3VJFN/OMtVO
- W8d6uNMYLbFODqvP/v+eKXy+o+kT/uSGsfKN/eZaaPMy/u6IDg41W4JKFb3SER/DoQt6
- ZjS3xhoqSQWt4d2olctt0QFKVu4p5Y9/3lxgKQOSmcEaE9tMSdS6J4cmQpaK6IMwgGYV
- mzROJZn6i5tvoL8mjR8Crfd2eqR/hg6jRFgVNtRtoBGX7Did7C9QvGvlIlWcIJ9yZRfZ
- RheX+lH2R2+pHL58UGF2hK1wbePh/mRC21qmW6hwBNb9El08owA3abjTsdKv074nxNPj
- 3RBA==
-X-Gm-Message-State: AOJu0Yy0hflRmJQ6gkFfcQbB8BzJeZNWFKFlWvsuSun5VA4KXqOvHW2h
- t4wxJFN+hla4vtc1GldAZlWbJEqyPD3vjTuP1xkExsPsOy9KoDDD7hUXMP10PYh7TE6ESxoQzdd
- M7gb4G5wluu6tBhzE/Rb0ZuoCG1q6VBwRGZl1ZETHWBFEsaYeua1g7V9w3TnVxDeQ7bL7
-X-Received: by 2002:ad4:5c6f:0:b0:66d:57ca:fa59 with SMTP id
- i15-20020ad45c6f000000b0066d57cafa59mr10616437qvh.37.1698656382665; 
- Mon, 30 Oct 2023 01:59:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE24v3DU9BTcQi6FuWy1uaRppNEsjVmrbhqj+IA5pRvIt0bzMNJ6BJ1wTvhtOAA6nobhq0oPg==
-X-Received: by 2002:ad4:5c6f:0:b0:66d:57ca:fa59 with SMTP id
- i15-20020ad45c6f000000b0066d57cafa59mr10616413qvh.37.1698656382292; 
- Mon, 30 Oct 2023 01:59:42 -0700 (PDT)
+ bh=Xmt6Vbi8/f2MxwxYBQdoxn+u7EVbvygfr9wDg4tnFSk=;
+ b=IG1iWrKfIYTjUQ+Fq4xLYTBXEF+hpo0xMpWli3RHQgdbqAz0izMDgOpGuaoPDxekFO
+ 2Z6UnVVqxmb5/5kJOhT5p25ZAl77ZxG3/w12pTb4EkAGaj7ml6LLBoSfCPhnNqRuf+Rc
+ ZCj3ebWTfQR3FV5dxknniQHYoJytNYrFodCERnSMRj5XHDFh6GWtb+hTf/i2aApu733t
+ NzRhaT5Gdo9LGFsoX1IMel5kTVRZiUw4Gnvf+v8feS3bK6NA3rX99qAKdDK9T9XGdjEm
+ W2PfIPmGZHNifjdepJp/7+x8V31RyGERoWai3YB4K3Yl2AcWcXiE2/RkOC8bF5/F/BQi
+ WWaA==
+X-Gm-Message-State: AOJu0YxwcLJHy5+zp6H29pxLt268Dug8/FL9T8Glj5bk8S8VKfybhBGs
+ PzfSvcqh0m4oMy6dXpYXpLn+cKIEo9+YkWzyg83OmUi0AssORLeAsV6+nHdFHao9eDfCAC0ZCj8
+ NOvzNlmwJyi+u3nDh04o071lSlAfvDY9J64aJzy46Gj/oHXl7+Gd7t+aB60Fqt9sO0BHJ
+X-Received: by 2002:a1f:b201:0:b0:493:3491:ce89 with SMTP id
+ b1-20020a1fb201000000b004933491ce89mr5120626vkf.14.1698656399987; 
+ Mon, 30 Oct 2023 01:59:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgKDkI12+j6YxDEjIqCqrv7kwsDFvrsyiSZAQOudky0k+gmZtPsOz4d7FhiW8R21uZr3sCtg==
+X-Received: by 2002:a1f:b201:0:b0:493:3491:ce89 with SMTP id
+ b1-20020a1fb201000000b004933491ce89mr5120616vkf.14.1698656399548; 
+ Mon, 30 Oct 2023 01:59:59 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
  ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
  by smtp.gmail.com with ESMTPSA id
- c11-20020a0ce14b000000b0065823d20381sm3241993qvl.8.2023.10.30.01.59.39
+ c11-20020a0ce14b000000b0065823d20381sm3241993qvl.8.2023.10.30.01.59.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 01:59:41 -0700 (PDT)
-Message-ID: <235fbfa2-82c3-48f1-bd4d-cc84b20fa1e5@redhat.com>
-Date: Mon, 30 Oct 2023 09:59:37 +0100
+ Mon, 30 Oct 2023 01:59:59 -0700 (PDT)
+Message-ID: <1d97bad3-e529-4cf1-a3e4-f3b684b07223@redhat.com>
+Date: Mon, 30 Oct 2023 09:59:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] vfio/pci: Fix buffer overrun when writing the VF
- token
+Subject: Re: [PATCH] util/uuid: Define UUID_STR_LEN from UUID_NONE string
 Content-Language: en-US
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Denis V . Lunev"
- <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
- Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Leonardo Bras <leobras@redhat.com>, qemu-stable@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-References: <20231026070636.1165037-1-clg@redhat.com>
- <8a9d26d0-ccb4-448b-9fc2-d7ce521646ae@redhat.com>
-In-Reply-To: <8a9d26d0-ccb4-448b-9fc2-d7ce521646ae@redhat.com>
+Cc: Fam Zheng <fam@euphon.net>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20231027065443.1305431-1-clg@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231027065443.1305431-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -111,21 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 16:00, Cédric Le Goater wrote:
-> On 10/26/23 09:06, Cédric Le Goater wrote:
->> Hello,
->>
->> This series fixes a buffer overrun in VFIO. The buffer used in
->> vfio_realize() by qemu_uuid_unparse() is too small, UUID_FMT_LEN lacks
->> one byte for the trailing NUL.
->>
->> Instead of adding + 1, as done elsewhere, the changes introduce a
->> UUID_STR_LEN define for the correct size and use it where required.
+On 10/27/23 08:54, Cédric Le Goater wrote:
+> Cc: Fam Zheng <fam@euphon.net>
+> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
 > 
-> Cc: qemu-stable@nongnu.org # 8.1+
+>   Follow up on :
+>   
+>   https://lore.kernel.org/qemu-devel/20231026070636.1165037-1-clg@redhat.com/
 > 
-> I propose to take this series in vfio-next if no one objects.
-
+>   include/qemu/uuid.h | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
+> index 356efe7b5797911640ed347fc08f4ef5ebbd0476..869f84af09ddc4aa80d53e133c323781ade4d190 100644
+> --- a/include/qemu/uuid.h
+> +++ b/include/qemu/uuid.h
+> @@ -78,9 +78,10 @@ typedef struct {
+>                    "%02hhx%02hhx-" \
+>                    "%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx"
+>   
+> -#define UUID_STR_LEN (36 + 1)
+> -
+>   #define UUID_NONE "00000000-0000-0000-0000-000000000000"
+> +QEMU_BUILD_BUG_ON(sizeof(UUID_NONE) - 1 != 36);
+> +
+> +#define UUID_STR_LEN sizeof(UUID_NONE)
+>   
+>   void qemu_uuid_generate(QemuUUID *out);
+>   
 
 Applied to vfio-next.
 
