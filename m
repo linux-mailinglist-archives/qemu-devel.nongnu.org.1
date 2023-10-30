@@ -2,79 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603947DB7D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CABA37DB6BF
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:54:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxPMU-00080C-D7; Mon, 30 Oct 2023 06:19:10 -0400
+	id 1qxOww-0001s1-3C; Mon, 30 Oct 2023 05:52:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qxPMR-0007zr-Uq
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:19:08 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxOwu-0001rt-GI
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:52:44 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qxPMP-00059q-Uu
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:19:07 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-99357737980so670449566b.2
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 03:19:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxOws-0000mq-RM
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:52:44 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso8787661a12.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 02:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698661144; x=1699265944; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4H56HG89T29ghmmWKSoPhsQCUMzeu+1s1b9HPPz+Hwo=;
- b=QS0TRUwqtwtnwGAE9AvVgfr1kG+IlgWElylcTMK2vYF89YAfjX+Fn+YZFthsMDWIYJ
- Cai9keMUaj8wiDaDKmSzgDM8NCj8DOt/T9dMfdYPGp/pWKtsojfrLj/SZycX6CNDOXVI
- NoE2j14oVGbQwlk6qzm0bmPsrRR+DN8qVOIqSdRKFkquW/gihC8JgwEQn+c2q7JyazMl
- xuORr94Hj7KnGdHwQC/5Hy8qtZIttBteXbi/EeBgekPxQcJ1ePvqqFMhAN29bO7I4Wgo
- dgABL85FwLmlWum18IhZuSqjw4oY3zLVy63NISWHGhY+rCHFpzaQTMT7Wu8Fyvq7aIB4
- cfYg==
+ d=linaro.org; s=google; t=1698659561; x=1699264361; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=GBupKdDYd7/M7+TcrdF896J+H3uMDigsIgVmdFb1wSM=;
+ b=jcTTBruAF0arex2XJFhh8UQMQC4v/urhkXVp6fqyv1fHbCNbpaKx3u4GcPulUHUYFD
+ JibujI4yekyw2+j2n/bpj5FgK2FSKkKycqwe/WUXbK+u/RYUqq3wIVh8r7Hw/KfQ/5HL
+ QU+kHLj/X/+OghNGQdcBfOI63zUKncHyavT3cuoqfgJ9hs/L3OCxKnPUcb3hUuAq7S08
+ PWQUwQU/n93rKOiTq4Q+I5tqExXnbias1+tnxLUzR8L5a4y+FYH+ewTwp2RmHpEGlVii
+ 7RN5ovCYplm4dQFF5cQaiRt0NVZMkYPuxW4C/G3FbmglNmkdUigLIxbqGxLzEs3HQVVB
+ JPFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698661144; x=1699265944;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4H56HG89T29ghmmWKSoPhsQCUMzeu+1s1b9HPPz+Hwo=;
- b=cL+OsDPz/OVlpkdY4p0nQSdinRj1EToIviwxM9IPhhT1aoZl5e9CaLb6piThiRmO6e
- KQvtu5Aqvy3aJINZdVeaB+AZB6Hsy7QyBJY7xfm15IMWoYD7BUa8GdmqObmLUvBUWNSr
- YN4CxyGXJj8isPmQ/6C5SpNENTy5Gu8PWFKuC7nEBH6q3tP0YT4NKbqswixftiVVavzu
- WArv5SfLHoW6LS+bZ7nDE1QqGpJu5jYyfsbVo1wA01hlnWW56ruBzzU7+jaznf2SDhBB
- ykfz4Nky4GksNgG3ECWS5rVf2coJsnYOEkdhRNUxxc5Wjtss7U/P1AmXMcbyai1QnIjU
- 7mDg==
-X-Gm-Message-State: AOJu0YzFnn057pF0IdB8wEfr4QlJi+/yvcXjPmtgwYa9onEKFPPA2ft2
- MjuffM8LUNMXqYzJN804xGI=
-X-Google-Smtp-Source: AGHT+IFBgmJi+ZumZ4NeZSmboeHsAVH7aEEbHfKabXuIig+lJ5lqyjGZ5MmavhmXqVWb/HIJUPp1oQ==
-X-Received: by 2002:a17:907:7245:b0:9b2:b152:b0f2 with SMTP id
- ds5-20020a170907724500b009b2b152b0f2mr8943578ejc.10.1698661144088; 
- Mon, 30 Oct 2023 03:19:04 -0700 (PDT)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- l17-20020a170906415100b009adc77fe165sm5719265ejk.118.2023.10.30.03.19.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 03:19:03 -0700 (PDT)
-Date: Mon, 30 Oct 2023 09:49:09 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, philmd@linaro.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, vr_qemu@t-online.de
-Subject: Re: [PATCH 0/4] Fix IRQ routing in via south bridge
-In-Reply-To: <e1cc0b8e-56be-8199-7499-9838904a97ac@eik.bme.hu>
-References: <cover.1698536342.git.balaton@eik.bme.hu>
- <9FF920F3-146A-4A20-8D2E-256E58501ADB@gmail.com>
- <e1cc0b8e-56be-8199-7499-9838904a97ac@eik.bme.hu>
-Message-ID: <DBA5D8E4-1903-4852-8E5A-2A84DDB54399@gmail.com>
+ d=1e100.net; s=20230601; t=1698659561; x=1699264361;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GBupKdDYd7/M7+TcrdF896J+H3uMDigsIgVmdFb1wSM=;
+ b=ungF0GY0XQCTcveFuR6Mt1Mxnaw5i4QAsqSA8B83NVygn+eWr2gcckKyqk/0qgsA6K
+ DHaoPtQVCve9/zbVxCUhHtNRjV08S/ITM2FOaTCKvTC8avg1kXspapjaz0gGGYcAaui+
+ yzaTkszjZGElipbOzWi5qt69rkwX/O76Ac8i78xVnmohKjIz5hWRs9GCNBQYeN1SgYrQ
+ 3kqT8AOEFxdm5u9/hGNuzlHm5s9mT5AXsJDe8xe2GA/VTXoWFc9VR2yJZcFGfBqBnlGX
+ ixddzsjrGPCnFQKu0r8l1uDs13vGAuxK2Hov/70bJqWoYGWiZfdU/u2fQIPDnLIj1snM
+ FYMw==
+X-Gm-Message-State: AOJu0YyUCyGoD9tlFlrD9PrdDDeX+VDZcHah9VsjkHofjFCrjB/uXtr9
+ h7dXMhJBTWo4fuWmdla2dH/DJ0dXuxpyZcw1zno9VA==
+X-Google-Smtp-Source: AGHT+IGTllja0ukEXtmPeEUcNM9RMDF6n0e7YUmmANqW6W5a2UfKacBAntYnF8nzKDXJyI4/qNwnkYTLbw2nRJ+JpmU=
+X-Received: by 2002:a05:6402:1d95:b0:540:911b:72b1 with SMTP id
+ dk21-20020a0564021d9500b00540911b72b1mr8221943edb.7.1698659560920; Mon, 30
+ Oct 2023 02:52:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+References: <20231029210058.38986-1-marielle@novastrider.com>
+In-Reply-To: <20231029210058.38986-1-marielle@novastrider.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 30 Oct 2023 09:52:30 +0000
+Message-ID: <CAFEAcA8ELCiGy3jDKjJhAd9Zn7Sse9ZSoJ6uQ=u4ROvV3rNcyQ@mail.gmail.com>
+Subject: Re: [PATCH] linux-user/elfload: Add missing arm64 hwcap values
+To: Marielle Novastrider <marielle@novastrider.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,71 +85,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 29=2E Oktober 2023 11:35:27 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
-me=2Ehu>:
->On Sun, 29 Oct 2023, Bernhard Beschow wrote:
->> Am 28=2E Oktober 2023 23:56:21 UTC schrieb BALATON Zoltan <balaton@eik=
-=2Ebme=2Ehu>:
->>> This is going back to my otiginal proposal in
->>> https://patchew=2Eorg/QEMU/cover=2E1677004414=2Egit=2Ebalaton@eik=2Ebm=
-e=2Ehu/
->>> implementing routing of interrupts from device functions and PCI
->>> devices to ISA interrupts=2E On pegasos2 the firmware sets evertyhing =
-to
->>> share IRQ 9 so the current simpified version worked for taht but with
->>> the amigaone machine its firmware makes use of this feature and
->>> assigns different interrupts to functions and PCI devices so we need
->>> to properly impelent this=2E Since any ISA interrupt can be controlled
->>> by any interrupt source (different functions of the multifunction
->>> device plus the 4 input pins from PCI devices) there are more than 4
->>> possible sources so this can't be handled by just the 4 PCI interrupt
->>> lines=2E We need to keep track of the state of each interrupt source t=
-o
->>> be able to determine the level of the ISA interrupt and avoid one
->>> device clearing it while other still has an interrupt=2E
->>>=20
->>> This fixes USB on amigaone and maybe other bugs not discovered yet=2E
->>=20
->> Amigaone's U-Boot maps the PCI IRQ pins to PIC IRQs 7,9,10,11=2E IRQ 7 =
-seems to be the parallel port on ISA machines=2E The VIA hardware disables =
-it by default (see index e2 in superio configuration registers) while it is=
- enabled by default in our device models=2E Does this maybe cause an IRQ co=
-nflict, making the USB function unusable?
+On Sun, 29 Oct 2023 at 21:01, Marielle Novastrider
+<marielle@novastrider.com> wrote:
 >
->Not likely because parellel port is not used and does not generate interr=
-upts=2E It's just your current patch in master only maps PCI interrupts and=
- does not correctly route interrupts from chip functions so the USB interru=
-pts end up at the wrong ISA IRQ=2E
-
-Indeed=2E Even booting into a Linux guest doesn't generate "parallel*" tra=
-ce logs=2E
-
-Best regards,
-Bernhard
-
+> Specifically DIT, LSE2, and MTE3.
 >
->> Best regards,
->> Bernhard
->>=20
->>>=20
->>> Regards,
->>> BALATON Zoltan
->>>=20
->>> BALATON Zoltan (4):
->>>  hw/isa/vt82c686: Bring back via_isa_set_irq()
->>>  hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI interrupts
->>>  hw/isa/vt82c686: Route PIRQ inputs using via_isa_set_irq()
->>>  hw/audio/via-ac97: Route interrupts using via_isa_set_irq()
->>>=20
->>> hw/audio/via-ac97=2Ec        |  8 ++---
->>> hw/isa/vt82c686=2Ec          | 67 +++++++++++++++++++++++-------------=
---
->>> hw/usb/vt82c686-uhci-pci=2Ec |  9 +++++
->>> include/hw/isa/vt82c686=2Eh  |  2 ++
->>> 4 files changed, 56 insertions(+), 30 deletions(-)
->>>=20
->>=20
->>=20
+> We already expose detection of these via the CPUID interface, but
+> missed these from ELF hwcaps.
+>
+> Signed-off-by: Marielle Novastrider <marielle@novastrider.com>
+> ---
+>  linux-user/elfload.c | 3 +++
+>  target/arm/cpu.h     | 5 +++++
+>  2 files changed, 8 insertions(+)
+>
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index 2e3809f03c..d9683809a1 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -768,12 +768,14 @@ uint32_t get_elf_hwcap(void)
+>      GET_FEATURE_ID(aa64_sm4, ARM_HWCAP_A64_SM4);
+>      GET_FEATURE_ID(aa64_fp16, ARM_HWCAP_A64_FPHP | ARM_HWCAP_A64_ASIMDHP);
+>      GET_FEATURE_ID(aa64_atomics, ARM_HWCAP_A64_ATOMICS);
+> +    GET_FEATURE_ID(aa64_lse2, ARM_HWCAP_A64_USCAT);
+>      GET_FEATURE_ID(aa64_rdm, ARM_HWCAP_A64_ASIMDRDM);
+>      GET_FEATURE_ID(aa64_dp, ARM_HWCAP_A64_ASIMDDP);
+>      GET_FEATURE_ID(aa64_fcma, ARM_HWCAP_A64_FCMA);
+>      GET_FEATURE_ID(aa64_sve, ARM_HWCAP_A64_SVE);
+>      GET_FEATURE_ID(aa64_pauth, ARM_HWCAP_A64_PACA | ARM_HWCAP_A64_PACG);
+>      GET_FEATURE_ID(aa64_fhm, ARM_HWCAP_A64_ASIMDFHM);
+> +    GET_FEATURE_ID(aa64_dit, ARM_HWCAP_A64_DIT);
+>      GET_FEATURE_ID(aa64_jscvt, ARM_HWCAP_A64_JSCVT);
+>      GET_FEATURE_ID(aa64_sb, ARM_HWCAP_A64_SB);
+>      GET_FEATURE_ID(aa64_condm_4, ARM_HWCAP_A64_FLAGM);
+> @@ -807,6 +809,7 @@ uint32_t get_elf_hwcap2(void)
+
+These two are correct...
+
+>      GET_FEATURE_ID(aa64_rndr, ARM_HWCAP2_A64_RNG);
+>      GET_FEATURE_ID(aa64_bti, ARM_HWCAP2_A64_BTI);
+>      GET_FEATURE_ID(aa64_mte, ARM_HWCAP2_A64_MTE);
+> +    GET_FEATURE_ID(aa64_mte3, ARM_HWCAP2_A64_MTE3);
+>      GET_FEATURE_ID(aa64_sme, (ARM_HWCAP2_A64_SME |
+>                                ARM_HWCAP2_A64_SME_F32F32 |
+>                                ARM_HWCAP2_A64_SME_B16F32 |
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 76d4cef9e3..7605d6ee3a 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -4073,6 +4073,11 @@ static inline bool isar_feature_aa64_mte(const ARMISARegisters *id)
+>      return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 2;
+>  }
+>
+> +static inline bool isar_feature_aa64_mte3(const ARMISARegisters *id)
+> +{
+> +    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 3;
+> +}
+
+...but we don't implement FEAT_MTE3 yet. We would add this feature test
+function, and the GET_FEATURE_ID() line, when we do, but we don't
+need it until then.
+
+>  static inline bool isar_feature_aa64_sme(const ARMISARegisters *id)
+>  {
+>      return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SME) != 0;
+> --
+> 2.39.3 (Apple Git-145)
+
+thanks
+-- PMM
 
