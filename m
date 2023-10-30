@@ -2,86 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960F57DBAB7
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:29:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E86A77DBAFA
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:38:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSJp-0001NL-K3; Mon, 30 Oct 2023 09:28:37 -0400
+	id 1qxSSM-0003a8-Hf; Mon, 30 Oct 2023 09:37:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxSJn-0001N8-Q2
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:28:35 -0400
-Received: from mail-qk1-x72c.google.com ([2607:f8b0:4864:20::72c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxSJm-0004NT-2s
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:28:35 -0400
-Received: by mail-qk1-x72c.google.com with SMTP id
- af79cd13be357-77063481352so441897485a.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 06:28:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698672512; x=1699277312; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MeztH+UGydQ1qR/jNKL9BJqTaescrUKmKGiDkNWA1L0=;
- b=Z25fchMjGzhf+t/w4afi93jfpZ7qQoHTaESzhALyR9Obvubv6QCNmOexKYz51Ed3Vi
- GHPSjUrqtVtTi8eN7Yef9mBa9+Bp63UOqzO75vIN5ySPcjT5sqnWAVxa0RdRE0n0XmwH
- GjdipBAHKiGxoSI4rWztad8f9NNyrvqcbIZ/GcixOi7LOM/5tOSuR5lFTv1Qh08QUADl
- GB2sZv7peUaeAqxpxFNu+wfCRdb3BjuweK5TckiI9tiRdwLGuP7VR+tj8ZlExQD6xNoD
- dvjiq9JEScvMl0n122ujnYjkS7RPKZzprQxyPhA8SYa1Idis08TT5qpdbMsABVwU+FHM
- dKuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698672512; x=1699277312;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MeztH+UGydQ1qR/jNKL9BJqTaescrUKmKGiDkNWA1L0=;
- b=H8hOkCaxk/tkh7WPsFYVmmaqU4cQEvRk4Lv27jGtqDlP+7IjhdnreKq77wlOL9Tg8T
- UjtnULbm307xL10zp6by4NYGkZXjb2GKt+L8Dvm0YPZrHvzr12Xbdopozz8wJp93TIOP
- oNlQdVzwXqhX+PyjRcNrjdlE8sDOQZgLat+xD4+U34INRJpX8RWzl+4icnAk1IiunKnG
- f+VzUcDV23Ijgdo7xvBDpo5D9UR27YLUMfkflFsEPdfm/XemzD7LT8cJG6S4S4bnDlGp
- wkBuuTta86VglxyI9aSof6Qp1ZH873RVnM6Czey/wS4y+FReRj5KZGMci9PnDrofdNBh
- ij0w==
-X-Gm-Message-State: AOJu0YzG9jOPMXoMaSB+k4uCuXhdjgH3CSkE3NTTRoMLnHpct8S1HRBs
- rcbDF1fTMYiZFn/wSTSxKGnXgb5SOQ3uZ+AAMAE=
-X-Google-Smtp-Source: AGHT+IHQr5yZOJ3S3BqaTN1oId1xF22plVOF27/oZ8yFyHypJAdp1wQCiRLUlhM7IpCs5fs4gcajLQ==
-X-Received: by 2002:a05:620a:bcc:b0:778:a456:778e with SMTP id
- s12-20020a05620a0bcc00b00778a456778emr11132369qki.39.1698672512248; 
- Mon, 30 Oct 2023 06:28:32 -0700 (PDT)
-Received: from [192.168.68.107] ([179.193.10.161])
- by smtp.gmail.com with ESMTPSA id
- t9-20020a05620a034900b007758ffab58asm3310281qkm.8.2023.10.30.06.28.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 06:28:31 -0700 (PDT)
-Message-ID: <17601513-f256-4179-bab8-1fec38f9cdc6@ventanamicro.com>
-Date: Mon, 30 Oct 2023 10:28:28 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/12] target/riscv/tcg: add user flag for profile
- support
-Content-Language: en-US
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSH-0003ZO-On
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:37:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSD-0005pL-DV
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:37:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698673036;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mCW+5GQjXzNKljGCJqNqvKtC2mCm4UTM6Zoj8RGo3XQ=;
+ b=OjC2sdPDXenCjvIoFJQiYa9fOO4sD//3A7N64PeedDdRYZzRFwUw8cW0zzPQUh34iER399
+ IUyu1Nqnbq8vOdFT31z1iDNWM8GsnUDMDgkJF8dtHIiJqdrSdrmw3LH1wrd+laM0RVL3H1
+ nNQeIbRlRoaJnJEokiSHCSTRrF/cZNA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-306-6fUstvpIMcCZl2PaNfrJ-A-1; Mon, 30 Oct 2023 09:37:14 -0400
+X-MC-Unique: 6fUstvpIMcCZl2PaNfrJ-A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 12E348A5DC2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 13:37:14 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E65BB1121306
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 13:37:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C464021E6A1F; Mon, 30 Oct 2023 14:37:12 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <20231028085427.707060-1-dbarboza@ventanamicro.com>
- <20231028085427.707060-7-dbarboza@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231028085427.707060-7-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-qk1-x72c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Cc: marcandre.lureau@redhat.com
+Subject: [PATCH 0/5] dump: Minor fixes & improvements
+Date: Mon, 30 Oct 2023 14:37:07 +0100
+Message-ID: <20231030133712.2822276-1-armbru@redhat.com>
+MIME-Version: 1.0
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,158 +76,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Markus Armbruster (5):
+  dump: Rename qmp_dump_guest_memory() parameter to match QAPI schema
+  dump: Fix g_array_unref(NULL) in dump-guest-memory
+  dump: Recognize "fd:" protocols on Windows hosts
+  dump: Improve some dump-guest-memory error messages
+  dump: Drop redundant check for empty dump
 
+ dump/dump.c | 59 +++++++++++++++--------------------------------------
+ 1 file changed, 16 insertions(+), 43 deletions(-)
 
-On 10/28/23 05:54, Daniel Henrique Barboza wrote:
-> The TCG emulation implements all the extensions described in the
-> RVA22U64 profile, both mandatory and optional. The mandatory extensions
-> will be enabled via the profile flag. We'll leave the optional
-> extensions to be enabled by hand.
-> 
-> Given that this is the first profile we're implementing in TCG we'll
-> need some ground work first:
-> 
-> - all profiles declared in riscv_profiles[] will be exposed to users.
-> TCG is the main accelerator we're considering when adding profile
-> support in QEMU, so for now it's safe to assume that all profiles in
-> riscv_profiles[] will be relevant to TCG;
-> 
-> - we'll not support user profile settings for vendor CPUs. The flags
-> will still be exposed but users won't be able to change them. The idea
-> is that vendor CPUs in the future can enable profiles internally in
-> their cpu_init() functions, showing to the external world that the CPU
-> supports a certain profile. But users won't be able to enable/disable
-> it;
-> 
-> - Setting a profile to 'true' means 'enable all mandatory extensions of
-> this profile, setting it to 'false' means 'do not enable all mandatory
-> extensions for this profile'. This is the same semantics used by RVG.
-> Regular left-to-right option order will determine the resulting CPU
-> configuration, i.e. the following QEMU command line:
-> 
-> -cpu rv64,zicbom=false,zifencei=false,rva22u64=true
-> 
-> Enables all rva22u64 mandatory extensions, including 'zicbom' and
-> 'zifencei', while this other command line:
-> 
-> -cpu rv64,rva22u64=true,zicbom=false,zifencei=false
-> 
-> Enables all mandatory rva22u64 extensions, and then disable both zicbom
-> and zifencei.
-> 
-> For now we'll handle multi-letter extensions only. MISA extensions need
-> additional steps that we'll take care later.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> ---
->   target/riscv/tcg/tcg-cpu.c | 63 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 63 insertions(+)
-> 
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 65d59bc984..5fdec8f04e 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -783,6 +783,67 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->       }
->   }
->   
-> +static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
-> +                            void *opaque, Error **errp)
-> +{
-> +    RISCVCPUProfile *profile = opaque;
-> +    RISCVCPU *cpu = RISCV_CPU(obj);
-> +    bool value;
-> +    int i, ext_offset;
-> +
-> +    if (object_dynamic_cast(obj, TYPE_RISCV_DYNAMIC_CPU) == NULL) {
-> +        error_setg(errp, "Profile %s only available for generic CPUs",
-> +                   profile->name);
-> +        return;
-> +    }
-> +
-> +    if (cpu->env.misa_mxl != MXL_RV64) {
-> +        error_setg(errp, "Profile %s only available for 64 bit CPUs",
-> +                   profile->name);
-> +        return;
-> +    }
-> +
-> +    if (!visit_type_bool(v, name, &value, errp)) {
-> +        return;
-> +    }
-> +
-> +    profile->user_set = true;
-> +    profile->enabled = value;
-> +
-> +    if (!profile->enabled) {
-> +        return;
-> +    }
+-- 
+2.41.0
 
-My idea here was to prevent the following from disabling default rv64
-extensions:
-
--cpu rv64,rva22u64=false
-
-And yeah, this is a niche (I'll refrain from using the word I really wanted) use
-of the profile extension, but we should keep in mind that setting a default 'false'
-option to 'false' shouldn't make changes in the CPU.
-
-But now if I do this:
-
--cpu rv64,rva22u64=true (...) -cpu rv64,rva22u64=false
-
-This will enable the profile in rv64 regardless of setting it to 'false' later
-on. Which is also a weird mechanic. One way of solving this would be to postpone
-profile enable/disable to realize()/finalize(), but then we're back to the problem
-we had in v2 where, for multiple profiles, we can't tell the order in which the
-user enabled/disabled them in the command line during realize().
-
-Let me think a bit about it.
-
-
-Daniel
-
-> +
-> +    for (i = 0; profile->ext_offsets[i] != RISCV_PROFILE_EXT_LIST_END; i++) {
-> +        ext_offset = profile->ext_offsets[i];
-> +
-> +        g_hash_table_insert(multi_ext_user_opts,
-> +                            GUINT_TO_POINTER(ext_offset),
-> +                            (gpointer)profile->enabled);
-> +        isa_ext_update_enabled(cpu, ext_offset, profile->enabled);
-> +    }
-> +}
-> +
-> +static void cpu_get_profile(Object *obj, Visitor *v, const char *name,
-> +                            void *opaque, Error **errp)
-> +{
-> +    RISCVCPUProfile *profile = opaque;
-> +    bool value = profile->enabled;
-> +
-> +    visit_type_bool(v, name, &value, errp);
-> +}
-> +
-> +static void riscv_cpu_add_profiles(Object *cpu_obj)
-> +{
-> +    for (int i = 0; riscv_profiles[i] != NULL; i++) {
-> +        const RISCVCPUProfile *profile = riscv_profiles[i];
-> +
-> +        object_property_add(cpu_obj, profile->name, "bool",
-> +                            cpu_get_profile, cpu_set_profile,
-> +                            NULL, (void *)profile);
-> +    }
-> +}
-> +
->   static bool cpu_ext_is_deprecated(const char *ext_name)
->   {
->       return isupper(ext_name[0]);
-> @@ -906,6 +967,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
->   
->       riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
->   
-> +    riscv_cpu_add_profiles(obj);
-> +
->       for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
->           qdev_property_add_static(DEVICE(obj), prop);
->       }
 
