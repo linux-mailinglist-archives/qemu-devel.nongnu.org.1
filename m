@@ -2,99 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB267DBE74
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 18:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D13037DBE79
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 18:04:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxVeV-0008Ep-R1; Mon, 30 Oct 2023 13:02:11 -0400
+	id 1qxVfu-0000cs-Is; Mon, 30 Oct 2023 13:03:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qxVeT-0008Ed-3T
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:02:09 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxVfs-0000cb-So
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:03:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qxVeP-0000V7-Pf
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:02:07 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39UGe9fr015309; Mon, 30 Oct 2023 17:02:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=VVIWU49Mty54DRqf0tSQ9Pia2esWS9T8d1BTjTOJR1M=;
- b=Mn3zaVHVc0ZN4Vcwco7S7eneE4gto43c8s4uiWGVyBgy94+ox4qEEykp8kfwx05UdrET
- bU5UCcsla0fsTifjEF77sB1KCQNzTxVfefhEH3nmxN5wtuKz4wTHsXZ87/l2tjYjnqug
- iDSCLLi1WQRAaPSKsQDNt1ULjrQZslUXWdzi6npj5bbKuy+WBdqUDni1Fk87HyvFo/GA
- Z6vYygI+XrofUzF4P/V+FMQsYZu7OiqIF1fmK8vrVOPKqSdvKNrHhgkSvoJgOHst2RVl
- s4OCBbyIosjsqYPKYChDgFsRlHqfmFbBaci8e9i2hNMDf8BS+R+DoFNA/HLUffuyzX2Q vA== 
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2g7191cu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Oct 2023 17:02:03 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39UGN36S000597; Mon, 30 Oct 2023 17:02:02 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u1cmsttqa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Oct 2023 17:02:02 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39UH21oW9503416
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Oct 2023 17:02:01 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D933558065;
- Mon, 30 Oct 2023 17:02:00 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A68C45805D;
- Mon, 30 Oct 2023 17:02:00 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 30 Oct 2023 17:02:00 +0000 (GMT)
-Message-ID: <848ea63a-69f2-4f47-a849-5c81019e5115@linux.ibm.com>
-Date: Mon, 30 Oct 2023 13:01:59 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxVfq-00015V-MA
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:03:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698685411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BRDj9tqHxeQiugstX1kkDqexdRk+VlscXIKnpZGwkgs=;
+ b=i3aVT4hjzIf/klLeaYue9gfL2x5LS90qeF9sxSI91Fi7ZRe/RGAz08BcqFEZVM1hxTSk76
+ 5cslh6EzDuT/lAM9l6qaIo64RI4ljvZ9UGe1fee1hg8XypKXCz4S08yXwS2hNgayXkYrv7
+ Mm8wA2fz34U7bwyHtTeENC0X9XhFoUE=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-33-mRSrAqt6PfqL71-AJc6ofw-1; Mon, 30 Oct 2023 13:03:28 -0400
+X-MC-Unique: mRSrAqt6PfqL71-AJc6ofw-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c515541a25so47522421fa.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 10:03:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698685407; x=1699290207;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BRDj9tqHxeQiugstX1kkDqexdRk+VlscXIKnpZGwkgs=;
+ b=w23wmu2kHU1nT91jsWtVSUR8pSW0z8VXB/hNkPXhDLmcq0LvufxbWessOm7KVdZ1M+
+ EjC6rmL72rvho78Pc4bfaYac6ba6wPer0rJORXALPeZ47KS7XqBk2ae9slxAW3VeJ1Mc
+ JjJ9z4K5GBC94K4Jt8pWDp00pQMCDBkv3hNCY5hIGc9uiluPEgcYipZ2y0c4QGhYq6Te
+ T8YUZxGvKeNER/yK7ckjFiapqlvYxsWwwTe7YBe4pRU/11Qcrf0g492YN39dGsQ4OIDn
+ JtNE71C/3pWnLz7gb+bJ6/S9Sr6v2d7Jmex5mCtHizQbmYipzg5Aq7kBxWZlZlaxOVmO
+ N2bg==
+X-Gm-Message-State: AOJu0YxPXzllzULqABRhxSxTfU8lwUcOQGZVD8YMi4zIYlNyVgmxuZKp
+ LXnIR1XFdNFf5sBhRgPra/RQJcH/Gmr4FtyKz7e7GmbgkFfRdJT4zDdUzbVVTXsHVBZfZbMgu08
+ cPvq4Jo2ljYEsiH3nbBTXTqw=
+X-Received: by 2002:a2e:9f08:0:b0:2bc:dab2:c7dc with SMTP id
+ u8-20020a2e9f08000000b002bcdab2c7dcmr7890118ljk.47.1698685406884; 
+ Mon, 30 Oct 2023 10:03:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGdVWuNhKrrKOdgu8AoSP0DdcP+s8isIMBnseHtsQXeTicuBQuQBFoZkKGRyJwPPhmRG1etA==
+X-Received: by 2002:a2e:9f08:0:b0:2bc:dab2:c7dc with SMTP id
+ u8-20020a2e9f08000000b002bcdab2c7dcmr7890103ljk.47.1698685406547; 
+ Mon, 30 Oct 2023 10:03:26 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d746:c551:3d67:278e:c0a1:87a2?
+ (p200300cfd746c5513d67278ec0a187a2.dip0.t-ipconnect.de.
+ [2003:cf:d746:c551:3d67:278e:c0a1:87a2])
+ by smtp.gmail.com with ESMTPSA id
+ e16-20020a5d5950000000b0032f7d1e2c7csm5845020wri.95.2023.10.30.10.03.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 10:03:25 -0700 (PDT)
+Message-ID: <69296a7b-5a65-4ae6-a021-eab3361fbe35@redhat.com>
+Date: Mon, 30 Oct 2023 18:03:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/14] tpm-sysbus: add plug handler for TPM on SysBus
+Subject: Re: [PATCH v3] qcow2: keep reference on zeroize with discard-no-unref
+ enabled
+To: Jean-Louis Dupond <jean-louis@dupond.be>, qemu-devel@nongnu.org,
+ kwolf@redhat.com
+References: <20231003125236.216473-2-jean-louis@dupond.be>
 Content-Language: en-US
-To: Joelle van Dyne <j@getutm.app>
-Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>
-References: <20231029060404.71196-1-j@getutm.app>
- <20231029060404.71196-7-j@getutm.app>
- <998ed878-6cf2-42e3-a764-a2d222bf914c@linux.ibm.com>
- <CA+E+eSDTNt2SQGoGkQVOfcVWswhOqio95vSROGj1JH6Y0M0EaQ@mail.gmail.com>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CA+E+eSDTNt2SQGoGkQVOfcVWswhOqio95vSROGj1JH6Y0M0EaQ@mail.gmail.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20231003125236.216473-2-jean-louis@dupond.be>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gA0j_xUDMNgzGCiWcsavLNxj_UiZD4OP
-X-Proofpoint-GUID: gA0j_xUDMNgzGCiWcsavLNxj_UiZD4OP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-30_10,2023-10-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- phishscore=0 spamscore=0 priorityscore=1501 adultscore=0 suspectscore=0
- lowpriorityscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2310300133
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,77 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 10/30/23 12:55, Joelle van Dyne wrote:
-> I was debating what to add. I couldn't find a project-wide template
-> for what the header should be and I couldn't copy/paste from where I
-> copied the code from (virt.c) because it names a specific author that
-> I'm not sure wrote this code... Any advice?
-
-I would follow the files in hw/tpm/*.c and use those as templates with
-
-- name of file and short description
-
-- Copyright
-
-- Author(s)
-
-- 2 sentences about the license
-
-- Maybe a longer description.
-
-
+On 03.10.23 14:52, Jean-Louis Dupond wrote:
+> When the discard-no-unref flag is enabled, we keep the reference for
+> normal discard requests.
+> But when a discard is executed on a snapshot/qcow2 image with backing,
+> the discards are saved as zero clusters in the snapshot image.
 >
-> On Mon, Oct 30, 2023 at 9:52 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
->>
->> On 10/29/23 02:03, Joelle van Dyne wrote:
->>> TPM needs to know its own base address in order to generate its DSDT
->>> device entry.
->>>
->>> Signed-off-by: Joelle van Dyne <j@getutm.app>
->>> ---
->>>    include/sysemu/tpm.h |  4 ++++
->>>    hw/tpm/tpm-sysbus.c  | 33 +++++++++++++++++++++++++++++++++
->>>    hw/tpm/meson.build   |  1 +
->>>    3 files changed, 38 insertions(+)
->>>    create mode 100644 hw/tpm/tpm-sysbus.c
->>>
->>> diff --git a/include/sysemu/tpm.h b/include/sysemu/tpm.h
->>> index 1ee568b3b6..ffd300e607 100644
->>> --- a/include/sysemu/tpm.h
->>> +++ b/include/sysemu/tpm.h
->>> @@ -12,6 +12,8 @@
->>>    #ifndef QEMU_TPM_H
->>>    #define QEMU_TPM_H
->>>
->>> +#include "qemu/osdep.h"
->>> +#include "exec/hwaddr.h"
->>>    #include "qapi/qapi-types-tpm.h"
->>>    #include "qom/object.h"
->>>
->>> @@ -78,6 +80,8 @@ static inline TPMVersion tpm_get_version(TPMIf *ti)
->>>        return TPM_IF_GET_CLASS(ti)->get_version(ti);
->>>    }
->>>
->>> +void tpm_sysbus_plug(TPMIf *tpmif, Object *pbus, hwaddr pbus_base);
->>> +
->>>    #else /* CONFIG_TPM */
->>>
->>>    #define tpm_init()  (0)
->>> diff --git a/hw/tpm/tpm-sysbus.c b/hw/tpm/tpm-sysbus.c
->>> new file mode 100644
->>> index 0000000000..ef0592b837
->>> --- /dev/null
->>> +++ b/hw/tpm/tpm-sysbus.c
->>> @@ -0,0 +1,33 @@
->> A header in this new file would be good. Otherwise LGTM.
->>
->>     Stefan
->>
->>> +#include "sysemu/tpm.h"
->>> +#include "hw/platform-bus.h"
->>> +#include "hw/sysbus.h"
->>> +#include "qapi/error.h"
->>
->>
+> When committing the snapshot to the backing file, not
+> discard_in_l2_slice is called but zero_in_l2_slice. Which did not had
+> any logic to keep the reference when discard-no-unref is enabled.
+>
+> Therefor we add logic in the zero_in_l2_slice call to keep the reference
+> on commit.
+>
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
+> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+> ---
+>   block/qcow2-cluster.c | 22 ++++++++++++++++++----
+>   qapi/block-core.json  |  7 ++++---
+>   qemu-options.hx       |  3 ++-
+>   3 files changed, 24 insertions(+), 8 deletions(-)
+
+Thanks, applied to my block branch:
+
+https://gitlab.com/hreitz/qemu/-/commits/block
+
+Hanna
+
 
