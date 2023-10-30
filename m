@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A917DBB1D
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FAB7DBB1C
 	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:52:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSfx-00030J-2W; Mon, 30 Oct 2023 09:51:29 -0400
+	id 1qxSfr-0002zJ-Cj; Mon, 30 Oct 2023 09:51:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxSfv-0002zl-8q
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:51:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxSfs-0000HJ-3W
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:51:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698673880;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1qxSfp-0002yx-5U
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:51:21 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1qxSfn-0000FH-5I
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:51:20 -0400
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 2C3841FE71;
+ Mon, 30 Oct 2023 13:51:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698673875; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=PlAnFItAhsa9hj3syPEBh5J/YcsldQ8SAsDYPFy/j9E=;
- b=IXMBKk+QomTuzp0frnu6JIbmRJt4SXrItY8sy4M4bVnd+mxA2FrNaPiz0JTj4zdxXdHdz7
- PBhaFjRpkxNMma30p9UPahsfY8Nl5bS6iPP/HirBsh9H5DhZPsRQy0D670SWbA3B2FllJy
- gmMQ70cjICHARS2FDo8RNkyJaWv8kV4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-hkgNTVICP86G9CJBqJ20wQ-1; Mon, 30 Oct 2023 09:51:16 -0400
-X-MC-Unique: hkgNTVICP86G9CJBqJ20wQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61392101A594;
- Mon, 30 Oct 2023 13:51:16 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7D8222166B26;
+ bh=pkpU+X21FVvS4NHs7RUoqE3zEoT5Bp0SlUAkteTqemg=;
+ b=gr5gn1rl0Vxg3WigN4gHstUVRJxk/x4LniiHbvMU5vYh0q473Q8MVgvU8GMo8+7LdWcP6D
+ GXtvKQgX6BS0FV0EayibTuWCz7mkCi/YQ58y3bDqMgqqSd5UlLoKlOaoEdrRhqGtPPNTAK
+ eSJsmF8ThVgbtkAHVQX0a0FxqOrSKnw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698673875;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pkpU+X21FVvS4NHs7RUoqE3zEoT5Bp0SlUAkteTqemg=;
+ b=27nJs239FCA/iaM1GaDPbBBDtg577VnYv+l9tNDjbSvvxHdqJ7Bdfmygf7uXTPugaZyuTn
+ 3SCUWkNeLsZZYbCw==
+Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
+ by relay2.suse.de (Postfix) with ESMTP id A829B2C188;
  Mon, 30 Oct 2023 13:51:14 +0000 (UTC)
-Date: Mon, 30 Oct 2023 08:51:12 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
- pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 18/24] blkverify: Add locking for request_fn
-Message-ID: <imukjgumgahhfqmvd7eiya5zdr2lbhysrgdsxxdtzkbnghwdbv@3hh6c435fuya>
-References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-19-kwolf@redhat.com>
+Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
+ id D9B0E4A0396; Mon, 30 Oct 2023 14:51:14 +0100 (CET)
+From: Andreas Schwab <schwab@suse.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [RFC PATCH] target/m68k: Use i128 for 128-bit load/store in
+ m68k_copy_line()
+In-Reply-To: <8c85fc54-3933-4330-a378-c1b444b0771f@linaro.org> (Richard
+ Henderson's message of "Tue, 17 Oct 2023 06:52:50 -0700")
+References: <20231017122702.39311-1-philmd@linaro.org>
+ <8c85fc54-3933-4330-a378-c1b444b0771f@linaro.org>
+X-Yow: America!!  I saw it all!!  Vomiting!  Waving!  JERRY FALWELLING into
+ your void tube of UHF oblivion!!  SAFEWAY of the mind --
+Date: Mon, 30 Oct 2023 14:51:14 +0100
+Message-ID: <mvmbkcg6wx9.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231027155333.420094-19-kwolf@redhat.com>
-User-Agent: NeoMutt/20231023
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=schwab@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,26 +81,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 27, 2023 at 05:53:27PM +0200, Kevin Wolf wrote:
-> This is either bdrv_co_preadv() or bdrv_co_pwritev() which both need to
-> have the graph locked. Annotate the function pointer accordingly and add
-> locking to its callers.
-> 
-> This shouldn't actually have resulted in a bug because the graph lock is
-> already held by blkverify_co_prwv(), which waits for the coroutines to
-> terminate. Annotate with GRAPH_RDLOCK as well to make this clearer.
-> 
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  block/blkverify.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
+On Okt 17 2023, Richard Henderson wrote:
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+> The manual says "burst reads and writes" without defining those terms.
+
+Burst transfers are explained in the M68040UM (7.4.2 Line Read Transfer
+and 7.4.4 Line Write Transfers).
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+Andreas Schwab, SUSE Labs, schwab@suse.de
+GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
+"And now for something completely different."
 
