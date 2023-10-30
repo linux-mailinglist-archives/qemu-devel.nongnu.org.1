@@ -2,74 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3CD7DC252
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 23:11:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 328027DC25F
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 23:19:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxaSM-0004sR-Qz; Mon, 30 Oct 2023 18:09:58 -0400
+	id 1qxaac-0006mx-J1; Mon, 30 Oct 2023 18:18:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qxaSE-0004re-V4
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 18:09:55 -0400
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qxaSC-0008L2-UZ
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 18:09:50 -0400
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6ce2fc858feso2915276a34.3
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 15:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698703787; x=1699308587; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BcSnbTQoO8unJtSFsVxX2n+uMY5Wz496Rurn25E5NF8=;
- b=d9nQp3yF/nmFvkhebLwLSEARkJhnmZVpYqbgtLXzcSk4YxpsEGlQPwS3hPMTDUbhbM
- wNVXiTMBOZKY5xmTKOGFc0QCzbyQcMUY1mjVXFQQVR4Jdq4GDpCgYpDWjVo+dzl6SMrQ
- xf1aN75uNxI6bSw9auE0wr590qBI0fd4KNJ2b7klvPcbVrdw7oNan4heARihag1juU2c
- +H6ypA6y+YOZyj4mJu8cyLmO7bBk0U3X4BVdRtqi28LQpPY2Ao277/u4Fi5KqQjvpSjK
- kgynhQ9JCnVAquu0g+lVbQ1sfosgHWDZglYProBX+ZTgBH3RN1SiMLf/ORvUGeKR4yKu
- kevw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698703787; x=1699308587;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BcSnbTQoO8unJtSFsVxX2n+uMY5Wz496Rurn25E5NF8=;
- b=PKSkge+IZUhk1TXt6uuMJeSIbGqYy+3zyrqL8mXutz7nBpSF/5S+8BHOnahk1VHL3z
- PMfA46FcJXvB0gGtYS0cyle3IJQWzmtOZm85Oz30JrwUo2XfFDtSDzJJXKN9HzViMgGP
- DxNupaMB8rs9H3qADBlKF9pZSWJkfNsQZBKbqsPotCZ/pB/XRZj1jQw7OeZ4VJ4tUWiK
- ZbPyrFqSXSxgbCCBjbbOU1IcvbRE9teF+kurAZ4QH3snNuCvBPbYYmbJv6amXErqzb3l
- ENqU2omWADN5U/a/pJhEmUykxP8gIJAMRSFmrvA8qxj0Cx11W9eEwE1RnUvk7vr4D9GQ
- PVOw==
-X-Gm-Message-State: AOJu0YzeLOmc1/hHTQb2UD+N9mkmu7wNoEMsPPkdCK7qQXAs+scUC1WQ
- bPn4uHsRr5s7wWWDT4UDGExphVMD6nClJGW5Wlk=
-X-Google-Smtp-Source: AGHT+IHKkOtQamXsWbtTAiTOSfCdtzfGOFyf34ZY05Q5BBnbn/fxv5xjaaGXJ44tv1zwbkRtK2Br4fUPH5MKEe3kyrg=
-X-Received: by 2002:a05:6830:4d6:b0:6cd:896:e363 with SMTP id
- s22-20020a05683004d600b006cd0896e363mr8661725otd.37.1698703787113; Mon, 30
- Oct 2023 15:09:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qxaaX-0006mZ-6B
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 18:18:25 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qxaaJ-0001fm-7p
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 18:18:24 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39ULlltY003692; Mon, 30 Oct 2023 22:18:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=LaOUvLuWXDksWqG3sVk4bR3K3p89j9w3SgtsMTHCsCY=;
+ b=XTs3FWiTLC8Pc+vHcLFw+nUdHY880fVI/ddCshhMd3NY9kiABOfX3E9BovCuGkGmBeMz
+ TKmrYI3YPxoMUfAA1aTLLrdqBoZs9nbaU4FIFtpnInTo3Pbjm0UaKSwHS30F3jZOW5zx
+ 0/9K+mcYpQlQgOdIeeeY7EAYECD3NWy/klEgfMAkhWuOqNAlV8txAW8ljKjuZPa/E0Ix
+ TDJrTo8ttMRVmzSUq6xlyIUYS5qAtlrN3z3dd1VStZPAh3bNoSVSq7uIlFQr/VdTJyLn
+ CS8sI4x4Bdscfley8dqOZmn7byAmcOX3piOFLNgQZj1I56H9DElr/UyuFF5H81DGMmfr zA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2mq6rmrm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 30 Oct 2023 22:18:08 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39UMBAHH030478;
+ Mon, 30 Oct 2023 22:18:08 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2mq6rmqy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 30 Oct 2023 22:18:08 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39UKhj7x011268; Mon, 30 Oct 2023 22:18:07 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u1eujuryk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 30 Oct 2023 22:18:07 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39UMI6Wv4391636
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 30 Oct 2023 22:18:06 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 72E5658062;
+ Mon, 30 Oct 2023 22:18:06 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 022DC58054;
+ Mon, 30 Oct 2023 22:18:06 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 30 Oct 2023 22:18:05 +0000 (GMT)
+Message-ID: <8bd11592-0adc-4495-a0d4-81be298fa9e8@linux.ibm.com>
+Date: Mon, 30 Oct 2023 18:18:05 -0400
 MIME-Version: 1.0
-References: <20231027143942.3413881-1-peter.maydell@linaro.org>
- <CAJSP0QU1SUqdTbzNT9_fgCyZ1pGDUk47_T2B-JzjnBXFicEWBA@mail.gmail.com>
- <CAFEAcA_na1NB3nFRmc9MRRr92VunxPJUG3SHmE2HkXAGx6RPUw@mail.gmail.com>
-In-Reply-To: <CAFEAcA_na1NB3nFRmc9MRRr92VunxPJUG3SHmE2HkXAGx6RPUw@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 31 Oct 2023 07:09:35 +0900
-Message-ID: <CAJSP0QW=7f3k35DjBwsnbnj79HmqwSH3hWRE1Fur8x4pyOGs7w@mail.gmail.com>
-Subject: Re: [PULL 00/41] target-arm queue
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=stefanha@gmail.com; helo=mail-ot1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/14] tests: acpi: prepare for TPM CRB tests
+Content-Language: en-US
+To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+References: <20231029060404.71196-1-j@getutm.app>
+ <20231029060404.71196-11-j@getutm.app>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20231029060404.71196-11-j@getutm.app>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: vvqncw1DrmAJPGhg8HxRj1Q31ENbCR--
+X-Proofpoint-GUID: 4FOyfvmK5N_Ywc-b30a9Om-956OHDpSI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-30_13,2023-10-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 mlxscore=0 clxscore=1015
+ bulkscore=0 phishscore=0 impostorscore=0 mlxlogscore=956
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2310300175
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,53 +115,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 30 Oct 2023 at 19:09, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Sun, 29 Oct 2023 at 23:15, Stefan Hajnoczi <stefanha@gmail.com> wrote:
-> >
-> > On Fri, 27 Oct 2023 at 23:41, Peter Maydell <peter.maydell@linaro.org> wrote:
-> > >
-> > > Hi; here's the latest target-arm queue. Mostly this is refactoring
-> > > and cleanup type patches.
->
-> > Hi Peter,
-> > I can't find this email thread on lore.kernel.org and your git repo
-> > doesn't let me fetch the tag:
-> >
-> >   $ git fetch https://git.linaro.org/people/pmaydell/qemu-arm.git
-> > tags/pull-target-arm-20231027
-> >   fatal: couldn't find remote ref tags/pull-target-arm-20231027
->
-> This works for me:
->
-> $ git fetch https://git.linaro.org/people/pmaydell/qemu-arm.git
-> tags/pull-target-arm-20231027
-> remote: Enumerating objects: 16753, done.
-> remote: Counting objects: 100% (16753/16753), done.
-> remote: Compressing objects: 100% (3181/3181), done.
-> remote: Total 17529 (delta 14031), reused 16255 (delta 13541), pack-reused 776
-> Receiving objects: 100% (17529/17529), 22.87 MiB | 10.44 MiB/s, done.
-> Resolving deltas: 100% (14498/14498), completed with 1672 local objects.
-> From https://git.linaro.org/people/pmaydell/qemu-arm
->  * tag                       pull-target-arm-20231027 -> FETCH_HEAD
->
-> > cgit shows the tag though, for some reason:
-> > https://git.linaro.org/people/pmaydell/qemu-arm.git/tag/?h=pull-target-arm-20231027
-> >
-> > Any idea what's up with this pull request? Thanks!
->
-> 'git.linaro.org' has several geolocated servers and pushes to
-> it should get mirrored across to all of them. Maybe the
-> syncing between them went wrong? You could try using one
-> specific one:
->  https://git-us.linaro.org/people/pmaydell/qemu-arm.git
-> tags/pull-target-arm-20231027
->
-> git-ie.linaro.org also seems to have the tag.
 
-Yes, that solves the problem. DNS was resolving to git-ap.linaro.org
-for me and it doesn't have the tag.
-
-Thanks,
-Stefan
+On 10/29/23 02:03, Joelle van Dyne wrote:
+> Signed-off-by: Joelle van Dyne <j@getutm.app>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>   tests/qtest/bios-tables-test-allowed-diff.h | 4 ++++
+>   tests/data/acpi/q35/DSDT.crb.tpm2           | 0
+>   tests/data/acpi/q35/TPM2.crb.tpm2           | 0
+>   tests/data/acpi/virt/DSDT.crb-device.tpm2   | 0
+>   tests/data/acpi/virt/TPM2.crb-device.tpm2   | 0
+>   5 files changed, 4 insertions(+)
+>   create mode 100644 tests/data/acpi/q35/DSDT.crb.tpm2
+>   create mode 100644 tests/data/acpi/q35/TPM2.crb.tpm2
+>   create mode 100644 tests/data/acpi/virt/DSDT.crb-device.tpm2
+>   create mode 100644 tests/data/acpi/virt/TPM2.crb-device.tpm2
+>
+> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> index dfb8523c8b..c2d1924c2f 100644
+> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> @@ -1 +1,5 @@
+>   /* List of comma-separated changed AML files to ignore */
+> +"tests/data/acpi/q35/DSDT.crb.tpm2",
+> +"tests/data/acpi/q35/TPM2.crb.tpm2",
+> +"tests/data/acpi/virt/DSDT.crb.tpm2",
+> +"tests/data/acpi/virt/TPM2.crb.tpm2",
+> diff --git a/tests/data/acpi/q35/DSDT.crb.tpm2 b/tests/data/acpi/q35/DSDT.crb.tpm2
+> new file mode 100644
+> index 0000000000..e69de29bb2
+> diff --git a/tests/data/acpi/q35/TPM2.crb.tpm2 b/tests/data/acpi/q35/TPM2.crb.tpm2
+> new file mode 100644
+> index 0000000000..e69de29bb2
+> diff --git a/tests/data/acpi/virt/DSDT.crb-device.tpm2 b/tests/data/acpi/virt/DSDT.crb-device.tpm2
+> new file mode 100644
+> index 0000000000..e69de29bb2
+> diff --git a/tests/data/acpi/virt/TPM2.crb-device.tpm2 b/tests/data/acpi/virt/TPM2.crb-device.tpm2
+> new file mode 100644
+> index 0000000000..e69de29bb2
 
