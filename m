@@ -2,62 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7110B7DBB61
+	by mail.lfdr.de (Postfix) with ESMTPS id 701DB7DBB60
 	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:06:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxStP-0002x0-0h; Mon, 30 Oct 2023 10:05:23 -0400
+	id 1qxStM-0002wQ-5d; Mon, 30 Oct 2023 10:05:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxStG-0002vZ-AX
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:05:15 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxStC-0002u1-NR
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:05:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxStC-0003ZH-Gl
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:05:12 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxSt8-0003Yg-D8
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:05:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698674709;
+ s=mimecast20190719; t=1698674704;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E5PcIDhmb+D2sLvlJknE43LmyteuDysh6SQrsI1dT2c=;
- b=DroT945TpJhqyI5DeWOX4EikWw2niykAfhrnD2612Ryg/W1MWE+B2XUw26sOlUMDoUUK3d
- pXh7iuB2lFfLA9qPWoP2GByD1q36lNc8wkfKwHZYI8mUWsXOJfq8X/r99FJ2lNWpq/NAZ1
- iC/ALKIiAu2652OVKCZSOBlvAdPGPV4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uT1BK3r2QeqGwi7QBObBkrFAiRhzWsWYvdaEev5D+gA=;
+ b=QGrIEmcGCy/MmHdOJMdcPqwsywUmpBVLKpjwu9rAqEZZLstGuZyaMvhFGRXB/Zb94MpMQX
+ +LB/iyv/EqMDN1u5DHcFVGy333sgoCQm0CVOuMotHHyC3lI9p7qIGlDyP9VTUVOtUT3omJ
+ rKzoxfM95k6u28nw4/nhldtmRNHsB0E=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-253-LQGqv8q4Mpu5MU2QMmAbcQ-1; Mon, 30 Oct 2023 10:05:05 -0400
-X-MC-Unique: LQGqv8q4Mpu5MU2QMmAbcQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20B7D101B04F;
- Mon, 30 Oct 2023 14:04:44 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B00855027;
- Mon, 30 Oct 2023 14:04:42 +0000 (UTC)
-Date: Mon, 30 Oct 2023 09:04:41 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, dlemoal@kernel.org, hare@suse.de,
- dmitry.fomichev@wdc.com, stefanha@redhat.com, qemu-block@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v5 1/4] docs/qcow2: add the zoned format feature
-Message-ID: <j5lohqj57qcsjjgqv3n3tm5jv7bjnqlaogg3yvi5ieoto537tk@h5nhmixdnh6p>
-References: <20231030121847.4522-1-faithilikerun@gmail.com>
- <20231030121847.4522-2-faithilikerun@gmail.com>
+ us-mta-35-vw-vakzeOjajt5AA825pGw-1; Mon, 30 Oct 2023 10:05:03 -0400
+X-MC-Unique: vw-vakzeOjajt5AA825pGw-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7789577b4e0so582784885a.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:05:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698674702; x=1699279502;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uT1BK3r2QeqGwi7QBObBkrFAiRhzWsWYvdaEev5D+gA=;
+ b=CZe2Z/oUjS8F1vsKq0+8sIrP1OgKzliFsXY00QXOX0gVNoha9Z5FU/Ymlwex59QqZk
+ TvhDITeZmPrVA3PRC3iHJBEHrzNtLIsUTIj9HGwdtt9Jl+yezI+qZ9WSFy+t9ce/XjhS
+ zXXf9Fj/GBSaMRPYmmCcJrSsOFu99kq3dI+6clzKzXEO7KVVm1UenlM4kYD09U3FUCow
+ 1VtzrHAEdq1FfnwXWfJsQuTImN9PdQxvodq95GVMoI7eghfaf6PPcpN1nAim3ZhclHLO
+ 4OjeIgiNUmBbwG/SLuJlkurVMO5m0UQjbqt4T5hBhx87h0BlSiX0A4ATai5axq62PY+r
+ J0lQ==
+X-Gm-Message-State: AOJu0YwRSKZOWVfQ6T3p73zlhhEDdM1gVRfPI+8R4ov+dJZwEBj9p1lW
+ bCuslwp/ajfiNPZEMHwZViFSQ4DFhkmDnMno5Jml1s/s++RZ+JuQiqppPrsPZUHovQXuOR1Lphg
+ dyUTH2TJPUHMVDA4=
+X-Received: by 2002:a05:620a:6584:b0:778:9692:f20b with SMTP id
+ qd4-20020a05620a658400b007789692f20bmr8853592qkn.72.1698674701778; 
+ Mon, 30 Oct 2023 07:05:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBAPzVsCmmrSB+7rn2wnu+0kXHOP/wFYUS3ZYMdUgFvKHC5BOlQa99xpCsMUoOp7n/aM4KuA==
+X-Received: by 2002:a05:620a:6584:b0:778:9692:f20b with SMTP id
+ qd4-20020a05620a658400b007789692f20bmr8853565qkn.72.1698674701487; 
+ Mon, 30 Oct 2023 07:05:01 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ m12-20020ae9e70c000000b007770673e757sm3338314qka.94.2023.10.30.07.04.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 07:05:01 -0700 (PDT)
+Message-ID: <c249da92-ddb4-432c-b4db-66ed1de3f498@redhat.com>
+Date: Mon, 30 Oct 2023 15:04:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231030121847.4522-2-faithilikerun@gmail.com>
-User-Agent: NeoMutt/20231023
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 31/37] vfio/pci: Adapt vfio pci hot reset support with
+ iommufd BE
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ <20231026103104.1686921-32-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231026103104.1686921-32-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -81,87 +104,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 08:18:44PM +0800, Sam Li wrote:
-> Add the specs for the zoned format feature of the qcow2 driver.
-> The qcow2 file can be taken as zoned device and passed through by
-> virtio-blk device or NVMe ZNS device to the guest given zoned
-> information.
+On 10/26/23 12:30, Zhenzhong Duan wrote:
+> As pci hot reset path need to reference pci specific functions
+> and data structures, adding container level callback functions
+> for legacy and iommufd BE and referencing those pci specific
+> func/data is no better than implementing reset support with
+> iommufd BE directly in pci.c
+
+yes but it includes a large section of IOMMUFD code in pci.c
+which is ugly. Please make this an VFIOIOMMUOps handler instead.
+
+Thanks,
+
+C.
+
 > 
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> This way we can also share the common bus reset and system reset
+> path for both BEs.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  docs/system/qemu-block-drivers.rst.inc | 33 ++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
+>   hw/vfio/pci.c        | 156 ++++++++++++++++++++++++++++++++++++++++++-
+>   hw/vfio/trace-events |   1 +
+>   2 files changed, 156 insertions(+), 1 deletion(-)
 > 
-> diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-block-drivers.rst.inc
-> index 105cb9679c..4647c5fa29 100644
-> --- a/docs/system/qemu-block-drivers.rst.inc
-> +++ b/docs/system/qemu-block-drivers.rst.inc
-> @@ -172,6 +172,39 @@ This section describes each format and the options that are supported for it.
->      filename`` to check if the NOCOW flag is set or not (Capital 'C' is
->      NOCOW flag).
->  
-> +  .. option:: zoned
-> +    1 for host-managed zoned device and 0 for a non-zoned device.
-
-Should this be a bool or enum type, instead of requiring the user to
-know magic numbers?  Is there a potential to add yet another type in
-the future?
-
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index c17e1f4376..d7a41c8def 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -42,6 +42,7 @@
+>   #include "qapi/error.h"
+>   #include "migration/blocker.h"
+>   #include "migration/qemu-file.h"
+> +#include "linux/iommufd.h"
+>   
+>   #define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
+>   
+> @@ -2497,7 +2498,7 @@ static int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+>       return 0;
+>   }
+>   
+> -static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
+> +static int vfio_pci_hot_reset_legacy(VFIOPCIDevice *vdev, bool single)
+>   {
+>       VFIOGroup *group;
+>       struct vfio_pci_hot_reset_info *info = NULL;
+> @@ -2661,6 +2662,159 @@ out_single:
+>       return ret;
+>   }
+>   
+> +#ifdef CONFIG_IOMMUFD
+> +static VFIODevice *vfio_pci_find_by_iommufd_devid(__u32 devid)
+> +{
+> +    VFIODevice *vbasedev_iter;
 > +
-> +  .. option:: zone_size
+> +    QLIST_FOREACH(vbasedev_iter, &vfio_device_list, global_next) {
+> +        if (vbasedev_iter->bcontainer->ops != &vfio_iommufd_ops) {
+> +            continue;
+> +        }
+> +        if (devid == vbasedev_iter->devid) {
+> +            return vbasedev_iter;
+> +        }
+> +    }
+> +    return NULL;
+> +}
 > +
-> +    The size of a zone in bytes. The device is divided into zones of this
-> +    size with the exception of the last zone, which may be smaller.
+> +static int vfio_pci_hot_reset_iommufd(VFIOPCIDevice *vdev, bool single)
+> +{
+> +    struct vfio_pci_hot_reset_info *info = NULL;
+> +    struct vfio_pci_dependent_device *devices;
+> +    struct vfio_pci_hot_reset *reset;
+> +    int ret, i;
+> +    bool multi = false;
 > +
-> +  .. option:: zone_capacity
+> +    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
 > +
-> +    The initial capacity value, in bytes, for all zones. The capacity must
-> +    be less than or equal to zone size. If the last zone is smaller, then
-> +    its capacity is capped.
+> +    if (!single) {
+> +        vfio_pci_pre_reset(vdev);
+> +    }
+> +    vdev->vbasedev.needs_reset = false;
 > +
-> +    The zone capacity is per zone and may be different between zones in real
-> +    devices. For simplicity, QCow2 sets all zones to the same capacity.
-
-Just making sure I understand: One possible setup would be to describe
-a block device with zones of size 1024M but with capacity 1000M (that
-is, the zone reserves 24M capacity for other purposes)?
-
-Otherwise, I'm having a hard time seeing when you would ever set a
-capacity different from size.
-
-Are there requirements that one (or both) of these values must be
-powers of 2?  Or is the requirement merely that they must be a
-multiple of 512 bytes (because sub-sector operations are not
-permitted)?  Is there any implicit requirement based on qcow2
-implementation that a zone size/capacity must be a multiple of cluster
-size (other than possibly for the last zone)?
-
+> +    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
 > +
-> +  .. option:: zone_nr_conv
+> +    if (ret) {
+> +        goto out_single;
+> +    }
 > +
-> +    The number of conventional zones of the zoned device.
+> +    assert(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID);
 > +
-> +  .. option:: max_open_zones
+> +    devices = &info->devices[0];
 > +
-> +    The maximal allowed open zones.
+> +    if (!(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID_OWNED)) {
+> +        if (!vdev->has_pm_reset) {
+> +            for (i = 0; i < info->count; i++) {
+> +                if (devices[i].devid == VFIO_PCI_DEVID_NOT_OWNED) {
+> +                    error_report("vfio: Cannot reset device %s, "
+> +                                 "depends on device %04x:%02x:%02x.%x "
+> +                                 "which is not owned.",
+> +                                 vdev->vbasedev.name, devices[i].segment,
+> +                                 devices[i].bus, PCI_SLOT(devices[i].devfn),
+> +                                 PCI_FUNC(devices[i].devfn));
+> +                }
+> +            }
+> +        }
+> +        ret = -EPERM;
+> +        goto out_single;
+> +    }
 > +
-> +  .. option:: max_active_zones
+> +    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
 > +
-> +    The limit of the zones with implicit open, explicit open or closed state.
+> +    for (i = 0; i < info->count; i++) {
+> +        VFIOPCIDevice *tmp;
+> +        VFIODevice *vbasedev_iter;
 > +
-> +  .. option:: max_append_sectors
+> +        trace_vfio_pci_hot_reset_dep_devices_iommufd(devices[i].segment,
+> +                                             devices[i].bus,
+> +                                             PCI_SLOT(devices[i].devfn),
+> +                                             PCI_FUNC(devices[i].devfn),
+> +                                             devices[i].devid);
 > +
-> +    The maximal number of 512-byte sectors in a zone append request.
-
-Why is this value in sectors instead of bytes?  I understand that
-drivers may be written with sectors in mind, but any time we mix units
-in the public interface, it gets awkward.  I'd lean towards having
-bytes here, with a requirement that it be a multiple of 512.
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+> +        /*
+> +         * If a VFIO cdev device is resettable, all the dependent devices
+> +         * are either bound to same iommufd or within same iommu_groups as
+> +         * one of the iommufd bound devices.
+> +         */
+> +        assert(devices[i].devid != VFIO_PCI_DEVID_NOT_OWNED);
+> +
+> +        if (devices[i].devid == vdev->vbasedev.devid ||
+> +            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
+> +            continue;
+> +        }
+> +
+> +        vbasedev_iter = vfio_pci_find_by_iommufd_devid(devices[i].devid);
+> +        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
+> +            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> +            continue;
+> +        }
+> +        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+> +        if (single) {
+> +            ret = -EINVAL;
+> +            goto out_single;
+> +        }
+> +        vfio_pci_pre_reset(tmp);
+> +        tmp->vbasedev.needs_reset = false;
+> +        multi = true;
+> +    }
+> +
+> +    if (!single && !multi) {
+> +        ret = -EINVAL;
+> +        goto out_single;
+> +    }
+> +
+> +    /* Use zero length array for hot reset with iommufd backend */
+> +    reset = g_malloc0(sizeof(*reset));
+> +    reset->argsz = sizeof(*reset);
+> +
+> +     /* Bus reset! */
+> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
+> +    g_free(reset);
+> +
+> +    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
+> +                                    ret ? strerror(errno) : "Success");
+> +
+> +    /* Re-enable INTx on affected devices */
+> +    for (i = 0; i < info->count; i++) {
+> +        VFIOPCIDevice *tmp;
+> +        VFIODevice *vbasedev_iter;
+> +
+> +        if (devices[i].devid == vdev->vbasedev.devid ||
+> +            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
+> +            continue;
+> +        }
+> +
+> +        vbasedev_iter = vfio_pci_find_by_iommufd_devid(devices[i].devid);
+> +        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
+> +            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> +            continue;
+> +        }
+> +        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+> +        vfio_pci_post_reset(tmp);
+> +    }
+> +out_single:
+> +    if (!single) {
+> +        vfio_pci_post_reset(vdev);
+> +    }
+> +    g_free(info);
+> +
+> +    return ret;
+> +}
+> +#endif
+> +
+> +static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
+> +{
+> +#ifdef CONFIG_IOMMUFD
+> +    if (vdev->vbasedev.iommufd) {
+> +        return vfio_pci_hot_reset_iommufd(vdev, single);
+> +    } else
+> +#endif
+> +    {
+> +        return vfio_pci_hot_reset_legacy(vdev, single);
+> +    }
+> +}> +
+>   /*
+>    * We want to differentiate hot reset of multiple in-use devices vs hot reset
+>    * of a single in-use device.  VFIO_DEVICE_RESET will already handle the case
+> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+> index 9b180cf77c..71c5840636 100644
+> --- a/hw/vfio/trace-events
+> +++ b/hw/vfio/trace-events
+> @@ -34,6 +34,7 @@ vfio_check_af_flr(const char *name) "%s Supports FLR via AF cap"
+>   vfio_pci_hot_reset(const char *name, const char *type) " (%s) %s"
+>   vfio_pci_hot_reset_has_dep_devices(const char *name) "%s: hot reset dependent devices:"
+>   vfio_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int group_id) "\t%04x:%02x:%02x.%x group %d"
+> +vfio_pci_hot_reset_dep_devices_iommufd(int domain, int bus, int slot, int function, int dev_id) "\t%04x:%02x:%02x.%x devid %d"
+>   vfio_pci_hot_reset_result(const char *name, const char *result) "%s hot reset: %s"
+>   vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device %s config:\n  size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
+>   vfio_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
 
 
