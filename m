@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DB67DB705
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:59:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEA37DB77D
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:11:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxP2C-0003uK-Ui; Mon, 30 Oct 2023 05:58:12 -0400
+	id 1qxPDS-0005mL-RK; Mon, 30 Oct 2023 06:09:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxP2B-0003u0-PN
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:58:11 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1qxPDR-0005m9-45
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:09:49 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxP2A-0001gf-66
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 05:58:11 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-53d9f001b35so6760566a12.2
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 02:58:08 -0700 (PDT)
+ id 1qxPDP-0003RN-5h
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:09:48 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5401bab7525so7166156a12.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 03:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698659887; x=1699264687; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698660585; x=1699265385; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kjiqMpBbuo18cY+BKm3RZowLigXwjatDzWQIVgU/F3E=;
- b=dindWcgawCUPE9i/8masgHsNZhi5PhtDDt9vfkfZfHhRDPEERx6l81H1c9owWJaI2v
- /+nwWL8YucnObKcFb6LDOt1Ulzs+xmHJWOac9THZRm3yg8qxvtSUixCtHmHw9UyyrOCZ
- rp06J84T4kYNVIpcW4VNSIF9/zreQLlQaOeTpIwE7U3ZNU1qMnrkFjz/IqIlrG3sY0ye
- F0JCd3e24aSGxR4PZMgRpfgYNg+azMG099dNTLtxsrb59N1xG1EoYkOZs1WOX8cO0A/a
- clvqLz1uM8iWQ4QoyxpVZlDoPX6kqdYvZATzktaYwqHDfoVtNJxbnQ7j3EW5A3RC0dWT
- mD7g==
+ bh=WJE0aQ2lPpQ7XLCh4XmM4xcA3ffiEXhcCLE4K6YyCP4=;
+ b=uMkjIHJYGJjpp0o6F+cnAY8GeRNz9lm1sWmVMuUapYktn4e6T6+KZC8qHXHaGTAr+y
+ N5gXCLBqrOatSvytWxVsda728WU/mb6Xtpk7gzljWPD729LuPzXd3yq9tOY6lhNEUaBr
+ VN5K0SAEbXNcAcUwOmp5Tm6P8bMrWvtcFg7cshHb0ExTZkReaajMKTgcOGAVDMoT3RUD
+ SGhHKwY/v+7xCnb2wfuMPDZoyZZEtu5QrHxTuARlBeJgMltUi2EkXKSfEmbGBxxKuKCE
+ 0uqQqZDQaaNg58DjCqt/s3jzwxKDThksBplRCZ2h8dSMoL2hR48K3fKI8oD6G/xwCtDZ
+ u8OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698659887; x=1699264687;
+ d=1e100.net; s=20230601; t=1698660585; x=1699265385;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=kjiqMpBbuo18cY+BKm3RZowLigXwjatDzWQIVgU/F3E=;
- b=DYa7KeFSPofid30hiQbq4kcO+XEipWavPgheeZjEFGjX1O6eGsU7+ueWnVl8+dxvox
- twWL4EYGW8K8rGOYaDBqLc7lMtfbkXsb+utQghEYkU80X0lge39c3AOFREtVFOHxpTgD
- Ox61WJStyJloEUb3y/DRnUNkoom263AdES/6t3YD2PLTFm+UdUnom89mg/0D/yMfSQdc
- zIPtxukZg0w26Fyc8CQ+u8vujLVSSsIMswHph+pcfRRgFupf5yLa7kea+G3mJRvgPAwb
- 2qJgloR8arHM/W68p9I/oMH+n2WMsQ9iZ92Mid792e3jQdSgO1htSjb03KOVdthQL8xH
- D1lw==
-X-Gm-Message-State: AOJu0YxHZ6qNO0B+d9jblasMz4PKAotK6rAbu4zV2e/WxbqM4DPQVZG9
- EyCo3LAt2hF3NJvAzgVnagxkV8sDDF/eEy8585Yqyg==
-X-Google-Smtp-Source: AGHT+IEBywkE572qs667feU8eZolgzZA6hIZR0MLvQyziAE5Z/kH4iLH+eUl6mAuGyMotPT4JtgfBbFjvu6CJlgIaTI=
-X-Received: by 2002:a05:6402:70b:b0:53d:f072:7b0a with SMTP id
- w11-20020a056402070b00b0053df0727b0amr6863423edx.39.1698659887328; Mon, 30
- Oct 2023 02:58:07 -0700 (PDT)
+ bh=WJE0aQ2lPpQ7XLCh4XmM4xcA3ffiEXhcCLE4K6YyCP4=;
+ b=XS/wpnQg35tFQ7H93Qvi8I1SoJAErPF6/ZNW8b8pUd1csHpcNdKWrufBdEwZdafmZP
+ 00NZtveFps8W56kO1tmi9joKc43CYMGVjUs4TGQE82w42+f4O9iPBikfIJXuiAkfu7rP
+ JZ9NEKCw7EFNR1nHmi7VXfRf3bEw7rA+1iGZT8lIr2Bf43HJUJkB3iv8MwUl/yhdmol4
+ oyicTjUFxuvektP079uVYDLlBYVqTomsGLN7voD+rEkYspBs5xxwPgJJJ/sfIbed3RRJ
+ m5bAs7xFTr8oACsmtiT4Iudrg1yDD0mClJ7DmnCppf2XNoUr0bNsEPgF5syuHlbm/IAk
+ 4Bvg==
+X-Gm-Message-State: AOJu0YzrzOA1oYKtbgaLx5KRctU50bStGt+Dx3P/eA5+2vOzzh/GSWT4
+ d6C3yPpguEe3/zYRhvevkUkPHx3scrbXbYU8nscxyoYAjbC85jhL
+X-Google-Smtp-Source: AGHT+IFQzgnphmReJxJKMnM8D6Iftw1KMspP0a+rwnwjZxlrx8donvcjdLM3LkPE4BYBIs8Wqza2MEOauQiBY5P3Mmg=
+X-Received: by 2002:a05:6402:8c1:b0:53e:afc0:ea43 with SMTP id
+ d1-20020a05640208c100b0053eafc0ea43mr8058405edz.4.1698660585134; Mon, 30 Oct
+ 2023 03:09:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231017193217.1512868-1-tong.ho@amd.com>
- <20231017193217.1512868-4-tong.ho@amd.com>
- <CAFEAcA_yCEtDkW6R43LGNjWGH323HuSWPFibgaRSZ=+DqfrZ_g@mail.gmail.com>
- <BL0PR12MB48827D764A414B476C261C45E6A1A@BL0PR12MB4882.namprd12.prod.outlook.com>
-In-Reply-To: <BL0PR12MB48827D764A414B476C261C45E6A1A@BL0PR12MB4882.namprd12.prod.outlook.com>
+References: <20231027143942.3413881-1-peter.maydell@linaro.org>
+ <CAJSP0QU1SUqdTbzNT9_fgCyZ1pGDUk47_T2B-JzjnBXFicEWBA@mail.gmail.com>
+In-Reply-To: <CAJSP0QU1SUqdTbzNT9_fgCyZ1pGDUk47_T2B-JzjnBXFicEWBA@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 30 Oct 2023 09:57:56 +0000
-Message-ID: <CAFEAcA9P2en-D4jam1VXMu_8E-w-OiKDPGvBRZHAb_buNBo5bw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] tests/qtest: Introduce tests for AMD/Xilinx Versal
- TRNG device
-To: "Ho, Tong" <tong.ho@amd.com>
-Cc: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "alistair@alistair23.me" <alistair@alistair23.me>, 
- "edgar.iglesias@gmail.com" <edgar.iglesias@gmail.com>, 
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>, 
- "frasse.iglesias@gmail.com" <frasse.iglesias@gmail.com>
+Date: Mon, 30 Oct 2023 10:09:34 +0000
+Message-ID: <CAFEAcA_na1NB3nFRmc9MRRr92VunxPJUG3SHmE2HkXAGx6RPUw@mail.gmail.com>
+Subject: Re: [PULL 00/41] target-arm queue
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,40 +85,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 30 Oct 2023 at 06:25, Ho, Tong <tong.ho@amd.com> wrote:
+On Sun, 29 Oct 2023 at 23:15, Stefan Hajnoczi <stefanha@gmail.com> wrote:
 >
+> On Fri, 27 Oct 2023 at 23:41, Peter Maydell <peter.maydell@linaro.org> wrote:
+> >
+> > Hi; here's the latest target-arm queue. Mostly this is refactoring
+> > and cleanup type patches.
+
 > Hi Peter,
+> I can't find this email thread on lore.kernel.org and your git repo
+> doesn't let me fetch the tag:
 >
-> This is in regard to your comment on the use of g_usleep() in waiting for
-> an event-bit update from the device under test.
->
-> The TRNG device model presented in patch #1 does not have any asynchronous behavior.
->
-> So, do you mean that, although the qtest process and the qemu-system-* process
-> are running as 2 separate processes, qtest infrastructure already has the necessary
-> mechanism to ensure that:
->
-> 1. After qtest test sets a register that has the correct deterministic behavior to update an event bit,
->
-> 2. The same qtest test subsequently issuing a register read will be guaranteed to observe the updated bit?
+>   $ git fetch https://git.linaro.org/people/pmaydell/qemu-arm.git
+> tags/pull-target-arm-20231027
+>   fatal: couldn't find remote ref tags/pull-target-arm-20231027
 
-Yes. With a qtest test, there is no guest CPU inside QEMU. Instead
-when the test says "write a register" there's a protocol between
-the QEMU-under-test and the test process that says "write this
-value to this address". Time within the simulation only advances
-if the test specifically asks for it.
+This works for me:
 
-So if your device under test has the usual property of "we just
-immediately update the state on register write" you're guarenteed
-to see things on a subsequent read. If you are attempting a more
-exact simulation and do things like "when this register is written
-we set up a QEMU timer so that we only report the device ready
-after a certain time" then your test needs to manually advance
-the simulation clock with clock_step() to the point when the
-device would report ready. (Usually we don't care about that
-level of simulation accuracy, so clock_step() is used largely
-in tests of timer devices.) Either way, this is unrelated to
-wall-clock time.
+$ git fetch https://git.linaro.org/people/pmaydell/qemu-arm.git
+tags/pull-target-arm-20231027
+remote: Enumerating objects: 16753, done.
+remote: Counting objects: 100% (16753/16753), done.
+remote: Compressing objects: 100% (3181/3181), done.
+remote: Total 17529 (delta 14031), reused 16255 (delta 13541), pack-reused 776
+Receiving objects: 100% (17529/17529), 22.87 MiB | 10.44 MiB/s, done.
+Resolving deltas: 100% (14498/14498), completed with 1672 local objects.
+From https://git.linaro.org/people/pmaydell/qemu-arm
+ * tag                       pull-target-arm-20231027 -> FETCH_HEAD
+
+> cgit shows the tag though, for some reason:
+> https://git.linaro.org/people/pmaydell/qemu-arm.git/tag/?h=pull-target-arm-20231027
+>
+> Any idea what's up with this pull request? Thanks!
+
+'git.linaro.org' has several geolocated servers and pushes to
+it should get mirrored across to all of them. Maybe the
+syncing between them went wrong? You could try using one
+specific one:
+ https://git-us.linaro.org/people/pmaydell/qemu-arm.git
+tags/pull-target-arm-20231027
+
+git-ie.linaro.org also seems to have the tag.
+
+If you let me know what 'git.linaro.org' resolves to for you
+I can check with our IT whether the syncing has broken.
+
+I don't know why the email hasn't hit lore.kernel.org, but
+that seems likely to be a problem with lore, because the
+series did reach patchew, the lists.gnu.org archive, and you:
+
+https://patchew.org/QEMU/20231027143942.3413881-1-peter.maydell@linaro.org/
+https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg09548.html
 
 thanks
 -- PMM
