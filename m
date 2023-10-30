@@ -2,85 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F81B7DB2F5
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 06:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE7F7DB311
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 07:02:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxL9O-0002hT-Ja; Mon, 30 Oct 2023 01:49:22 -0400
+	id 1qxLL8-0008Et-Vi; Mon, 30 Oct 2023 02:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxL9F-0002eV-6m
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:49:14 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxL9D-0006z7-4v
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:49:12 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6c0b8f42409so2893144a34.0
- for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 22:49:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698644950; x=1699249750;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k/NWG403wJIbU9ivTT7Mi0lMuYA38XHvHBvWDVRsrhE=;
- b=fPsH7iaecIU6faG1QIsPeSWVT+N68BtxI3HEllIqZUR7cS2IWLgyT1FidIgRYM9XJt
- 8ai+H+kWIHWzPbFBk7ntndJ5v7OpD54uJUQhQ8S1KFd6dyV4kj+3KdqAwmBgvkWxJUOA
- mqhhbYRSnZGIPgkQjK3qagUSBbxXX1ObZZgx+zwbhcmATsGO9WA0J3zlPqCgG7knt2aX
- xucZJZUYyiVwlsN6cb1/7vFNdPG3q6b8YqYwkpFjY1aFOfctRWY8BpJxMRfYzojUF6KE
- ZsriNIE1UJaJiGO/9lAW87DVH5cjI6hMLXl2Q57c7yDTFYe7zEroxYp7eSjC2cjK1Jtx
- 3Btw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698644950; x=1699249750;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=k/NWG403wJIbU9ivTT7Mi0lMuYA38XHvHBvWDVRsrhE=;
- b=R/viH2Z1DxVXiT5bAqJcKW0D4QwNUGWX10T9NHutaurfpH7ihs6uJJeNlIG4Dqyvih
- K4iidj+ww9ThMlCUcQUg/4j9Khbt5HcJe8WFww6eIRScQttbJDpDvLT9wMj91OsLqkU/
- uO1hcXOBTvZozmo3m56smXhkapktip141gTBwYcKSLYLuCEBfG+pFmO7zVdNIQR5eNn7
- dWFtiIxYKwo2yHlFIK6yDPIlck8w2V563YL/K+cDRNj5NNEiVyx3v6eWtC5zSTjldNt7
- s5ctMNGcidt+jxq5rtue2tlhWWLH+kQvloQy8zHc0G2pAzFCvo5GQP11rlHdr08zoQ2u
- jIjw==
-X-Gm-Message-State: AOJu0YxegL1oJM5T3CfUIA/J0jNvFNuLj0/A27isRhvadUn4SasFw/QS
- RUFJZH0qJT268GQBuK4qD9Y5Ig==
-X-Google-Smtp-Source: AGHT+IG0ZDO20nUxrhQVm28/8m3uYMn1Ryibp0Um91unWKx/vdyHAcklq8vK5Mk7bbs453Hcpyg3Uw==
-X-Received: by 2002:a9d:7499:0:b0:6cd:942:25c5 with SMTP id
- t25-20020a9d7499000000b006cd094225c5mr10613783otk.22.1698644950123; 
- Sun, 29 Oct 2023 22:49:10 -0700 (PDT)
-Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with UTF8SMTPSA id
- it8-20020a056a00458800b00672ea40b8a9sm5282473pfb.170.2023.10.29.22.49.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 29 Oct 2023 22:49:09 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v6 5/5] default-configs: Add TARGET_XML_FILES definition
-Date: Mon, 30 Oct 2023 14:46:39 +0900
-Message-ID: <20231030054834.39145-6-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231030054834.39145-1-akihiko.odaki@daynix.com>
-References: <20231030054834.39145-1-akihiko.odaki@daynix.com>
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qxLL5-0008Cd-SW
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 02:01:27 -0400
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qxLL2-0000WW-LJ
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 02:01:27 -0400
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 39U612Yg005028;
+ Mon, 30 Oct 2023 14:01:02 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
+ (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Mon, 30 Oct 2023
+ 14:01:02 +0800
+Date: Mon, 30 Oct 2023 14:00:54 +0800
+To: Peter Xu <peterx@redhat.com>
+CC: <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, "David
+ Hildenbrand" <david@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>
+Subject: Re: [PATCH 2/6] system/physmem: IOMMU: Invoke the translate_size
+ function if it is implemented
+Message-ID: <ZT9GlTLtTOT3WUif@ethan84-VirtualBox>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZTvfECmO4JFZ/aIp@x1n>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 39U612Yg005028
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: 6
+X-Spam_score: 0.6
+X-Spam_bar: /
+X-Spam_report: (0.6 / 5.0 requ) BAYES_00=-1.9, FAKE_REPLY_C=1.486,
+ RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_RCVD_IP=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,27 +64,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-loongarch64-linux-user has references to XML files so include them.
+On Fri, Oct 27, 2023 at 12:13:50PM -0400, Peter Xu wrote:
+> Add cc list.
+> 
+> On Fri, Oct 27, 2023 at 12:02:24PM -0400, Peter Xu wrote:
+> > On Fri, Oct 27, 2023 at 11:28:36AM +0800, Ethan Chen wrote:
+> > > On Thu, Oct 26, 2023 at 10:20:41AM -0400, Peter Xu wrote:
+> > > > Could you elaborate why is that important?  In what use case?
+> > > I was not involved in the formulation of the IOPMP specification, but I'll try
+> > > to explain my perspective. IOPMP use the same the idea as PMP. "The matching 
+> > > PMP entry must match all bytes of an access, or the access fails."
+> > > 
+> > > > 
+> > > > Consider IOVA mapped for address range iova=[0, 4K] only, here we have a
+> > > > DMA request with range=[0, 8K].  Now my understanding is what you want to
+> > > > achieve is don't trigger the DMA to [0, 4K] and fail the whole [0, 8K]
+> > > > request.
+> > > > 
+> > > > Can we just fail at the latter DMA [4K, 8K] when it happens?  After all,
+> > > > IIUC a device can split the 0-8K DMA into two smaller DMAs, then the 1st
+> > > > chunk can succeed then if it falls in 0-4K.  Some further explanation of
+> > > > the failure use case could be helpful.
+> > > 
+> > > IOPMP can only detect partially hit in an access. DMA device will split a 
+> > > large DMA transfer to small DMA transfers base on target and DMA transfer 
+> > > width, so partially hit error only happens when an access cross the boundary.
+> > > But to ensure that an access is only within one entry is still important. 
+> > > For example, an entry may mean permission of a device memory region. We do 
+> > > not want to see one DMA transfer can access mutilple devices, although DMA 
+> > > have permissions from multiple entries.
+> > 
+> > I was expecting a DMA request can be fulfilled successfully as long as the
+> > DMA translations are valid for the whole range of the request, even if the
+> > requested range may include two separate translated targets or more, each
+> > point to different places (either RAM, or other devicie's MMIO regions).
 
-Fixes: d32688ecdb ("default-configs: Add loongarch linux-user support")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- configs/targets/loongarch64-linux-user.mak | 1 +
- 1 file changed, 1 insertion(+)
+IOPMP is used to check DMA translation is vaild or not. In IOPMP specification
+, a translation access more than one entry is not invalid.
+Though it is not recommand, user can create an IOPMP entry contains mutiple
+places to make this kind translations valid.
 
-diff --git a/configs/targets/loongarch64-linux-user.mak b/configs/targets/loongarch64-linux-user.mak
-index 7d1b964020..43b8a2160f 100644
---- a/configs/targets/loongarch64-linux-user.mak
-+++ b/configs/targets/loongarch64-linux-user.mak
-@@ -1,3 +1,4 @@
- # Default configuration for loongarch64-linux-user
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
-+TARGET_XML_FILES=gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
--- 
-2.42.0
+> > 
+> > AFAIK currently QEMU memory model will automatically split that large
+> > request into two or more smaller requests, and fulfill them separately by
+> > two/more IOMMU translations, with its memory access dispatched to the
+> > specific memory regions.
+
+Because of requests may be split, I need a method to take the original request
+information to IOPMP.
+
+> > 
+> > The example you provided doesn't seem to be RISCV specific.  Do you mean it
+> > is a generic requirement from PCI/PCIe POV, or is it only a restriction of
+> > IOPMP?  If it's a valid PCI restriction, does it mean that all the rest
+> > IOMMU implementations in QEMU currently are broken?
+> > 
+
+It only a restriction of IOPMP.
+
+Thanks,
+Ethan Chen
 
 
