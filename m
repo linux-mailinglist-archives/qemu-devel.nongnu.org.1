@@ -2,85 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014457DB571
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 09:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC1397DB585
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 09:55:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxNx8-0001Fi-LF; Mon, 30 Oct 2023 04:48:54 -0400
+	id 1qxO1v-0002Wm-Co; Mon, 30 Oct 2023 04:53:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxNx4-0001F1-O8
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:48:51 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxNx3-0006Op-7G
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:48:50 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2c4fe37f166so57872531fa.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 01:48:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698655726; x=1699260526; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BxotMTA7zgaoJrf2veaoR7Z33I7QPF8c1mSn2VHKSOk=;
- b=c+5dvKovfiD6eCciPimYG18wowUTOe1SF4LMAv2/S00VhIgVRhUhKsZiL+DnObGv1I
- 56c65iT8JioreoSARq9kt5NL7YiV8IJ5TBBKg3ODPJoMRvkN0RGVS9mitCggXpZ7s8uA
- tmdDWuznmKDrLz4vHOuVldUCFhLhDC1a64tBAo9KenzItNo9Ul0TsuWRMFaJgZnWt2b6
- IXaeok5huxie67raBAweCw8MgPmVGE2rdMagAp88X9bAIcFCk17jxHPxeLXko8t+tUkv
- eOJWEoRGSj34miAMAmQS+ZGK72M06BKrlYRYafSsM86iUU2VLmDH3sJ+FE+01l/7lGfE
- QXsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698655726; x=1699260526;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BxotMTA7zgaoJrf2veaoR7Z33I7QPF8c1mSn2VHKSOk=;
- b=XIssIvzJrAdJoBUCbx2R/B4Ohd9MptInQ3THge/PgdrParmlXPgJ65AHwyK3X8uXZO
- pheQ+gl06461CsZJ4fsZw5yPBnB51IjkBo67As/c9zdhV5ihwRD/g6+yOCVtPQgD+uLB
- YpCr9ft0S/uuT9j8BQDW5eyK36YRVmfT+mk4R3miawvD9mnCFD8jkhfyE6+Do/PU8GXg
- EEXo7D9twOODH9k1nXVBp9WNylvGRk9qyTcAMgj6jso1EW7ixbNrvEerMdmimKUTr8KW
- +yqQeD2yBBw4CGmUmu8oYH/3ly2/kkvhYnkObPIBuxD8u8mvUMMrUV+vlMZTD6IDflRu
- k0Dw==
-X-Gm-Message-State: AOJu0YzXy9tLHOLofvfviD96HGqBsgZmANErUKOzmc1/qQ5exEh/Kdjn
- Bn30DRniJG6i3HMyzOF76xdLyg==
-X-Google-Smtp-Source: AGHT+IEYRBxYq89PQveDuqA39ajKsFfBoDrAWvQ9p/N4QrW+1nn/++fBrRFO+fqOcVXVHIP7rs4rzA==
-X-Received: by 2002:a2e:9510:0:b0:2bc:d5f1:b9cf with SMTP id
- f16-20020a2e9510000000b002bcd5f1b9cfmr7103612ljh.27.1698655726480; 
- Mon, 30 Oct 2023 01:48:46 -0700 (PDT)
-Received: from [192.168.69.115] ([176.170.212.50])
- by smtp.gmail.com with ESMTPSA id
- b10-20020a05600c4e0a00b00402d34ea099sm11993865wmq.29.2023.10.30.01.48.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 01:48:46 -0700 (PDT)
-Message-ID: <9570da29-881e-7e6d-40ec-5cdd2177e664@linaro.org>
-Date: Mon, 30 Oct 2023 09:48:44 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxO1q-0002WV-Ag
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:53:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxO1n-0007mB-L8
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:53:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698656021;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gISEnm6WYjJfz9gSzH2VPnBYqH+lQr4ujRBvlecC/+Q=;
+ b=UClB5Y78fs4VIW+9rr1o4rU5LmPyq39TMNOK4oF+TZG7G4/GQUHc/pB+XQ++VFe0XCuUq5
+ ocIUUR+Td9tmGO4G2rpnQYVBRQM2xO8BVLutdRDMIwvWXlQmnhY/oI9/+qC2e3o6osOGAF
+ BbMcHtjarQIVLrVjsoKU6/34ipFVK/8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-346-VM3c3chBP4yEYGXZDfElmA-1; Mon, 30 Oct 2023 04:53:38 -0400
+X-MC-Unique: VM3c3chBP4yEYGXZDfElmA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A922D85A59D;
+ Mon, 30 Oct 2023 08:53:37 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 64716492BFD;
+ Mon, 30 Oct 2023 08:53:37 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6814D21E6A1F; Mon, 30 Oct 2023 09:53:36 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+	richard.henderson@linaro.org,
+	eduardo@habkost.net
+Subject: [PATCH] MAINTAINERS: Fully cover target/i386/*
+Date: Mon, 30 Oct 2023 09:53:36 +0100
+Message-ID: <20231030085336.2681386-1-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 1/1] MAINTAINERS: update mail address for Weiwei Li
-Content-Language: en-US
-To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- lazyparser@gmail.com, Weiwei Li <liwei1518@gmail.com>
-References: <20231030081607.115118-1-liweiwei@iscas.ac.cn>
- <20231030081607.115118-2-liweiwei@iscas.ac.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231030081607.115118-2-liweiwei@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.478,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,14 +78,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/10/23 09:16, Weiwei Li wrote:
-> My Iscas mail account will be disabled soon, change to my personal
-> gmail account.
-> 
-> Signed-off-by: Weiwei Li <liwei1518@gmail.com>
-> ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Many files in target/i386/ are not covered:
+
+    target/i386/arch_dump.c
+    target/i386/arch_memory_mapping.c
+    target/i386/cpu-dump.c
+    target/i386/cpu-internal.h
+    target/i386/cpu-param.h
+    target/i386/cpu-qom.h
+    target/i386/cpu-sysemu.c
+    target/i386/cpu.c
+    target/i386/cpu.h
+    target/i386/cpuid_register
+    target/i386/gdbstub.c
+    target/i386/helper.c
+    target/i386/helper.h
+    target/i386/host-cpu.c
+    target/i386/host-cpu.h
+    target/i386/machine.c
+    target/i386/meson.build
+    target/i386/monitor.c
+    target/i386/ops_sse.h
+    target/i386/svm.h
+    target/i386/trace-events
+    target/i386/trace.h
+    target/i386/xsave_helper.c
+
+Similar files in other target/$t/ are covered by "$t TCG CPUs".  Do
+the same here, taking care not to hijack files that are already
+covered by other sections.
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cd8d6b140f..60020ac734 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -396,6 +396,8 @@ M: Paolo Bonzini <pbonzini@redhat.com>
+ M: Richard Henderson <richard.henderson@linaro.org>
+ M: Eduardo Habkost <eduardo@habkost.net>
+ S: Maintained
++F: target/i386/*
++X: target/i386/sev*
+ F: target/i386/tcg/
+ F: tests/tcg/i386/
+ F: tests/tcg/x86_64/
+-- 
+2.41.0
 
 
