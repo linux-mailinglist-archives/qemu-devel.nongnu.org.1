@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E983B7DC1C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 503E47DC1B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:18:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxZeY-0001nW-Np; Mon, 30 Oct 2023 17:18:30 -0400
+	id 1qxZeW-0001hz-R5; Mon, 30 Oct 2023 17:18:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxZdy-00011f-DF
+ id 1qxZdy-00011d-CE
  for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:54 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxZdt-0006WQ-8B
+ id 1qxZdt-0006WX-8K
  for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:54 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1cc3bc5df96so13191425ad.2
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1cc3216b2a1so13095195ad.2
  for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 14:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698700666; x=1699305466; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698700667; x=1699305467; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8pyDCZsxNfETKywVTX+e7wkZvY5QpmtSHCpOlxwyOrU=;
- b=p+VxXUF4Zf48YmGCH4w9p5Gp3jkrteP0WW112jRI0rx7pue9vdEE8NL7fWO9lAAVwO
- mRhgj34mZrusSN4ZHNsF5PwlDPehHK6B7SK9yFm1Fpp6gpjCNBWgLYU9wroz1nQNG7Ey
- W7lgAkPk5sr7kR+9Fw0FkbpkgD8axJha2mbor1fCPbFiYWcLStypiLrCRI9T5C8IjGHy
- phqIH91+bZqIWT2L0X3kx727+Y3EHTKQvDJHhfyQPas3f/GDm+MmFReg86JfMNszRRwI
- 11SKkecahKYJuKNaqrI4b4FxGqEroJ/oHItNd+tMJt4fPovJzRY47N1I9XtMh4B3zbSn
- q9YA==
+ bh=yzOKgXKNazfyfA2z+XajHEvJf0Lhv9Mg5pIKTCDChLE=;
+ b=eoK05KaYsuuASKPFVrffE/XMDupUEytnQwOYFHpfFFDCODOtwzV7tKUfV424DuUB4Y
+ 0+A54cOMfT2NJK2jLf0BXH3IBo/Dx6DGLbcdwwwIeAvviEeV7ju+i57U0LxY12GcAvu8
+ O6gbv0flNQmieA786VoPyVK0GjBVK1b0nr1VRYUKFjB979JLu+Xq2YhWEk+9tXOWPrD9
+ wHFf+Pg9HAu9rZOnIFY+U75HyjZDyD0dcvL/yH7jakQVAZwBFEM6ao7nVmzt7qx5vOIq
+ G+HZ+eoP+42xpjIDIOiDiFeCum9CIX3rFzwMgh+yK0ZfkINhGceS++4UVyuwffpaIaW5
+ dwAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698700666; x=1699305466;
+ d=1e100.net; s=20230601; t=1698700667; x=1699305467;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8pyDCZsxNfETKywVTX+e7wkZvY5QpmtSHCpOlxwyOrU=;
- b=OSGnQ3ZB341LdEYA6YZUFysSbKkagr/wRy5oQ68Y/tEgC+/clXbcmlHCpmJ1G0R7lh
- mdfsBrFfmATeQkeVFKspJjaA0kj0Erg9CkU6NKMznLuLza4uaZx+fVbq4fc7Mk0/en0B
- zhc0jtu0lF6IY0l1DuqPU/dfOwU+uzDLGJlVud5yn3BkNI01hM5Dyxj9obtsdPOBs7pz
- hWtcTH/HUqL1h4lL7lU0wkS+uBkfpULcMx8/Zw+wXNzO7BfqEoqzWH0QA4PITQeVHjUh
- CqZ5wLyriZrPpPTlMzVtgw8DeS74JSfw1lSt/ff+E9Xf8yxAugzIyPgk28kE9od2+Kae
- QZew==
-X-Gm-Message-State: AOJu0YyvEPwSqJOANYc21ZwxLWGOCHmDX5h0+vkA5YMWNgb7kI+wuXvI
- 4+1E816kj4lM6VQzYBTjUvWB2RPovP+OwBaDV3s=
-X-Google-Smtp-Source: AGHT+IHe0Zy5sDzydwv75V6+UQVlO0Zn4WpzOeVuicLjJ46jJUSljg99hS2+CtqFF+n7yKCdSpZPFQ==
-X-Received: by 2002:a17:902:d30c:b0:1ca:b820:74ed with SMTP id
- b12-20020a170902d30c00b001cab82074edmr5633668plc.14.1698700666380; 
- Mon, 30 Oct 2023 14:17:46 -0700 (PDT)
+ bh=yzOKgXKNazfyfA2z+XajHEvJf0Lhv9Mg5pIKTCDChLE=;
+ b=WOt7zxPtU9IttLXPH5LuXhbBPrk/rZNC3qDq4fM4VLiN4G0xLZOq1m55xRFq0HcQC4
+ wB5iaBOEAM24e6SSdK9DybLnKaeqIcRfdkFQHHUbU/r49jEzzwaSx79dx4Ysbx5KBEwK
+ BmeGeC3d/ci4oYWotdxa3DOcCdohOhRdIhyEQWW8msz1RxoGRShyuzTXiIsRliIIYWxj
+ CCxFTlq70JxxdfxOZ2ttQKyYLWrWKLXq+1N9PrAvCx4yVp8s0E4RHgM/Pt8AQ0k5XA1K
+ B527xx2ewcmr9eSUJBpGdz9zXbPTjIWMwAGftxYnniW25GDAMmVCW8rYOttU083dUG4+
+ gyaQ==
+X-Gm-Message-State: AOJu0YzNgM+knfiOH1pytwFAsNT1+RyaD8UI+WfUSuFYqr0CTiKHeun0
+ a/WRuzme+J1O6O4ANUdjq/NQ5jYx0/ahaG64tTc=
+X-Google-Smtp-Source: AGHT+IGLwe/8TNQKY9c5C8DbCsxrRd5X55Uxk6/j7YSZGnaoJ1v3ciSIgoal3x9XIc3J4nJ/8nsBpg==
+X-Received: by 2002:a17:903:30c9:b0:1cc:373b:f0e6 with SMTP id
+ s9-20020a17090330c900b001cc373bf0e6mr3776430plc.67.1698700667087; 
+ Mon, 30 Oct 2023 14:17:47 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jf2-20020a170903268200b001cc32261bdfsm4670350plb.38.2023.10.30.14.17.45
+ jf2-20020a170903268200b001cc32261bdfsm4670350plb.38.2023.10.30.14.17.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 30 Oct 2023 14:17:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
-	Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 20/21] linux-user: Show vdso address in /proc/pid/maps
-Date: Mon, 30 Oct 2023 14:17:26 -0700
-Message-Id: <20231030211727.165090-21-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 21/21] build: Add update-linux-vdso makefile rule
+Date: Mon, 30 Oct 2023 14:17:27 -0700
+Message-Id: <20231030211727.165090-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231030211727.165090-1-richard.henderson@linaro.org>
 References: <20231030211727.165090-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,52 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+This is not ideal, since it requires all cross-compilers
+to be present rather than a simple subset.  But since it
+is only run manually, should be good enough for now.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/qemu.h    | 1 +
- linux-user/elfload.c | 1 +
- linux-user/syscall.c | 2 ++
- 3 files changed, 4 insertions(+)
+ Makefile | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 12f638336a..4de9ec783f 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -32,6 +32,7 @@ struct image_info {
-         abi_ulong       brk;
-         abi_ulong       start_stack;
-         abi_ulong       stack_limit;
-+        abi_ulong       vdso;
-         abi_ulong       entry;
-         abi_ulong       code_offset;
-         abi_ulong       data_offset;
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a1583883fa..46832358b0 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3919,6 +3919,7 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
-     const VdsoImageInfo *vdso = vdso_image_info();
-     if (vdso) {
-         load_elf_vdso(&vdso_info, vdso);
-+        info->vdso = vdso_info.load_bias;
-     } else if (TARGET_ARCH_HAS_SIGTRAMP_PAGE) {
-         abi_long tramp_page = target_mmap(0, TARGET_PAGE_SIZE,
-                                           PROT_READ | PROT_WRITE,
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index d49cd314a2..65ac3ac796 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7992,6 +7992,8 @@ static void open_self_maps_4(const struct open_self_maps_data *d,
-         path = "[stack]";
-     } else if (start == info->brk) {
-         path = "[heap]";
-+    } else if (start == info->vdso) {
-+        path = "[vdso]";
-     }
+diff --git a/Makefile b/Makefile
+index bfc4b2c8e9..676a4a54f4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -283,6 +283,13 @@ include $(SRC_PATH)/tests/vm/Makefile.include
+ print-help-run = printf "  %-30s - %s\\n" "$1" "$2"
+ print-help = @$(call print-help-run,$1,$2)
  
-     /* Except null device (MAP_ANON), adjust offset for this fragment. */
++.PHONY: update-linux-vdso
++update-linux-vdso:
++	@for m in $(SRC_PATH)/linux-user/*/Makefile.vdso; do \
++	  $(MAKE) $(SUBDIR_MAKEFLAGS) -C $$(dirname $$m) -f Makefile.vdso \
++		SRC_PATH=$(SRC_PATH) BUILD_DIR=$(BUILD_DIR); \
++	done
++
+ .PHONY: help
+ help:
+ 	@echo  'Generic targets:'
+@@ -303,6 +310,9 @@ endif
+ 	$(call print-help,distclean,Remove all generated files)
+ 	$(call print-help,dist,Build a distributable tarball)
+ 	@echo  ''
++	@echo  'Linux-user targets:'
++	$(call print-help,update-linux-vdso,Build linux-user vdso images)
++	@echo  ''
+ 	@echo  'Test targets:'
+ 	$(call print-help,check,Run all tests (check-help for details))
+ 	$(call print-help,bench,Run all benchmarks)
 -- 
 2.34.1
 
