@@ -2,76 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAB97DB5E8
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D527DB60D
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:24:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxOKO-0000DH-Il; Mon, 30 Oct 2023 05:12:56 -0400
+	id 1qxOTg-0002AF-Ku; Mon, 30 Oct 2023 05:22:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1qxOKI-0000Cf-Cc; Mon, 30 Oct 2023 05:12:50 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1qxOKG-0003SJ-OW; Mon, 30 Oct 2023 05:12:50 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9c5b313b3ffso626347266b.0; 
- Mon, 30 Oct 2023 02:12:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698657166; x=1699261966; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VP+R3Q+TYgZJQr2tiX1ZibcvIpQauSNa+wcCC0xO0gU=;
- b=nIr5n5yQr4Eno6jPpvjJqO7BjIHc/9jwt1J2kzuyT2WD4Tz1VfcNoIUv3XZpHCTBvF
- 1Pwq2HEYB/WQrc7OTEJG3/4uhj2tCk3VGIlQLgDQBnpNYnrBtaXx5kot6yFAsAw0E3Zu
- tK8yYUYyz57jaFZDdDoWYp9Kw2l22xjSm6ka7PMJu7ktknSK2n+zZzALOAyge1WdFcca
- EeePxvlTi7MnIxizA6cAfv5pYjPTfVyPd1ImleahsOOdQclJsoOqYfvS5qD0aZUS8Wa5
- bZKI4BVjqYt97Zjj+jkm2+mxw33ZKIdkk/elfNY/nhxi5lrSLWbaphJTa59XiISb35Ks
- VYXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698657166; x=1699261966;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VP+R3Q+TYgZJQr2tiX1ZibcvIpQauSNa+wcCC0xO0gU=;
- b=IwC7Kz/O5VGARfiSiYA5ZD14tJ4AgaNLuuF/CM7K0bnr7+qGRZ91CiDtbzaJcXoLLt
- SHNPGmfD9qXUk47snZkogJLCvE02DghF3QUYn3GboqbV9bsbaL6NZ1e3793LthJTpoFD
- JQxhvAne3s59z7rn5Te+KSKcU80GL1EmCxC/jvg7UpdFMVD/TkG1ieuwgYNu+EkQW9JW
- BA0z4mpm1fQSjJCxj9Szv5iEittVEuJB8aIzrQKSPc5ifNGP7ZRNj06W9z8br1wUT4a/
- C1LcQnN1UiYlQIrCTdTOLEGYeSco6LAjyzmuzqEz58PK85tq6jtZV88n+F4tX0b1erWO
- xllg==
-X-Gm-Message-State: AOJu0Yzrt/RsBvjKUGpHUddEyZQ+M96LAQVbO+qn/EirHwmy5Vbfbq24
- dbQhWp3RKAlRZi+VJZMyV0jRsFgCrgosDucDKf4=
-X-Google-Smtp-Source: AGHT+IEXCspb3Tj2W/7pGFZowzzrOqKehz/xX+E0RPubUbh4/WWPgGqE4YiW/iuzW+h7gLlbpUgz2m+VQvp0MCQrV4w=
-X-Received: by 2002:a17:907:2d0f:b0:9bf:d65d:dc0f with SMTP id
- gs15-20020a1709072d0f00b009bfd65ddc0fmr8962516ejc.4.1698657166133; Mon, 30
- Oct 2023 02:12:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxOTe-0002A3-A8; Mon, 30 Oct 2023 05:22:30 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxOTO-0006Ap-Qf; Mon, 30 Oct 2023 05:22:30 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 5E651757244;
+ Mon, 30 Oct 2023 10:22:16 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 24CDF757239; Mon, 30 Oct 2023 10:22:16 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 22084757202;
+ Mon, 30 Oct 2023 10:22:16 +0100 (CET)
+Date: Mon, 30 Oct 2023 10:22:16 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Bernhard Beschow <shentey@gmail.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, ReneEngel80@emailn.de
+Subject: Re: [PATCH v9 4/7] hw/isa/vt82c686: Implement PCI IRQ routing
+In-Reply-To: <38729153-8636-f530-4f5f-b63b10e406a8@eik.bme.hu>
+Message-ID: <2bbfef18-53a1-0bdd-4018-9c357dcb6b61@eik.bme.hu>
+References: <cover.1678188711.git.balaton@eik.bme.hu>
+ <fbb016c7d0e19093335c237e15f5f6c62c4393b4.1678188711.git.balaton@eik.bme.hu>
+ <cf4b1c2f-dde1-738e-1e5d-329b9074e58d@linaro.org>
+ <38729153-8636-f530-4f5f-b63b10e406a8@eik.bme.hu>
 MIME-Version: 1.0
-References: <20231030081607.115118-1-liweiwei@iscas.ac.cn>
- <20231030081607.115118-2-liweiwei@iscas.ac.cn>
-In-Reply-To: <20231030081607.115118-2-liweiwei@iscas.ac.cn>
-From: Bin Meng <bmeng.cn@gmail.com>
-Date: Mon, 30 Oct 2023 17:12:36 +0800
-Message-ID: <CAEUhbmX4uV8eymdM4iEEUcRFJwt0C+j_xjCG7cVxJk+HH_NozA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] MAINTAINERS: update mail address for Weiwei Li
-To: Weiwei Li <liweiwei@iscas.ac.cn>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com, lazyparser@gmail.com, 
- Weiwei Li <liwei1518@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=bmeng.cn@gmail.com; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-2094859216-1698657736=:84378"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,19 +65,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 4:17=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> wr=
-ote:
->
-> My Iscas mail account will be disabled soon, change to my personal
-> gmail account.
->
-> Signed-off-by: Weiwei Li <liwei1518@gmail.com>
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Wish you best of luck on your new journey!
+--3866299591-2094859216-1698657736=:84378
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+On Mon, 30 Oct 2023, BALATON Zoltan wrote:
+> On Mon, 30 Oct 2023, Philippe Mathieu-Daudé wrote:
+>> On 7/3/23 12:42, BALATON Zoltan wrote:
+>>> The real VIA south bridges implement a PCI IRQ router which is configured
+>>> by the BIOS or the OS. In order to respect these configurations, QEMU
+>>> needs to implement it as well. The real chip may allow routing IRQs from
+>>> internal functions independently of PCI interrupts but since guests
+>>> usually configute it to a single shared interrupt we don't model that
+>>> here for simplicity.
+>>> 
+>>> Note: The implementation was taken from piix4_set_irq() in hw/isa/piix4.
+>>> 
+>>> Suggested-by: Bernhard Beschow <shentey@gmail.com>
+>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>> Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+>>> Tested-by: Rene Engel <ReneEngel80@emailn.de>
+>>> ---
+>>>   hw/isa/vt82c686.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 42 insertions(+)
+>> 
+>> 
+>>> +static int via_isa_get_pci_irq(const ViaISAState *s, int irq_num)
+>>> +{
+>>> +    switch (irq_num) {
+>>> +    case 0:
+>>> +        return s->dev.config[0x55] >> 4;
+>>> +    case 1:
+>>> +        return s->dev.config[0x56] & 0xf;
+>>> +    case 2:
+>>> +        return s->dev.config[0x56] >> 4;
+>>> +    case 3:
+>>> +        return s->dev.config[0x57] >> 4;
+>> 
+>> Shouldn't this be & 0xf?
+>
+> No, the INTD value is actually in the high byte of reg 0x57. See e.g. page 73
+
+I mean high bits or nibble but you get what I mean.
+
+> in the VT8231 doc Revision 2.32.
+>
+>> (This is why I prefer extract8() over manual bits extraction)
+>
+> (I have two problems with deposit/extract. Have to remember which operand is 
+> what so it's less obvious to me and they have an assert which is not a good 
+> idea in an interrupt handlet that could be called millinos of times.)
+
+Also "handler" above...
+
+This is a very old message from when it was added, the current series just 
+moves this unchanged.
+
+Regards,
+BALATON Zoltan
+--3866299591-2094859216-1698657736=:84378--
 
