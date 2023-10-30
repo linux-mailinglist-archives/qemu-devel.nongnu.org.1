@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9198C7DB2BD
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 06:17:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1B67DB2A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 06:15:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxKc4-00029f-He; Mon, 30 Oct 2023 01:14:56 -0400
+	id 1qxKc8-0002AQ-Vs; Mon, 30 Oct 2023 01:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxKc1-00029C-FS
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:14:53 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qxKc4-00029v-Om
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:14:56 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxKbz-0001me-Uc
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:14:53 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1cc330e8f58so5980235ad.3
- for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 22:14:51 -0700 (PDT)
+ id 1qxKc3-0001nN-8d
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:14:56 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6b3c2607d9bso3445412b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 22:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698642890; x=1699247690;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698642893; x=1699247693;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GRzviBK8mXMBEC7IZo660+bUdOfJtuca+lJaFgU90mc=;
- b=dYJP9AoZvASa/tA4BokLXjEdcD4//0/q9pWsr2Ku50q7R/rjmohHTWTxlVLePGiEEN
- m7OvKjVzZk3dZNz/Ry/z4uAM31XD1xnl2DQ5/I8zgCjJVrD5iNttxTuzz5c9aI4QU3uj
- 34FKonVPlazGJlOgF8+R1SGu15wD25bXT3a+0JzlMGHyteoALtfYvrqrn+ITW5eD0xB8
- qkd1oxsnZpodpF5QxPsjoTbsjyb3xtpnH9ReYTas7XrTOo+uIQ77AolVjoiKd7kYOMCp
- 2JdYO81zVZ1Zm8ytmtiugpp7GzrtXnPIHNpKg01mYYzwqTZ+SVi+get3dDiYJXKsktsd
- NBeA==
+ bh=33eHcWs5bVTl2Yl+vAjf/syz7nAHZ1f9UgWZDxn4ISw=;
+ b=vpnZm75iENPIuN3EA/CZDKAMQC7LiLkaXP7fxxdzrRMcTveULeGQE8bE25OxVoMMDC
+ TtEtbj8b6ksVWzJwj8cCGx1YSckNnTt4NlktuLwkWUUHlBgsNHt0eWvFRoQt8O5JfTzx
+ XXXNdPwD4Kth6tWIVs/QFAwhbpFPNjj03ATwRFJkvCRhIbEF6MdAR/+cShevvU+hVKt/
+ CiVQogt6ZKs/EMh68n0biD81+9OU7VSRQe/yclrg8NhQAIyZsnLBavOHb6K9KfPyxUt5
+ fYwUWOTKhZL6Fn7wCSP/WntR3mzJP8bndpm2PqiEm6CbQaxnNxQU0i5I/qvC556FTWQs
+ r81w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698642890; x=1699247690;
+ d=1e100.net; s=20230601; t=1698642893; x=1699247693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GRzviBK8mXMBEC7IZo660+bUdOfJtuca+lJaFgU90mc=;
- b=axoAg/ZlRYcrydagC7QlS9g9KWQAl7PHJdjhGcMOTt4EoEGCfCSK5LEHSg3yRmQGy+
- b4/O7yYdTXKsSoyPjzTKRmPqcVXL9zscGEr0vdlb0oEhaKGM7iRgLETbfVVbyX6+6ILw
- 398Tm0nktiZLwHwVhbMjMrkKQZK02Rfj6BHAsUIHjCzV0oPKMyvrlziGYUFRC8iIJgOB
- cOkLE7t0Q+0yg3M49Q0im/Eqe7twkOtY9FKQoFonupM8oanlu9GEuvM8/Qjhqz4mPUCo
- rvs+k7tCGYSRqyFbUDen+U0JTgOeRZcReoFaU73uhKgi5m1y+B2BVuS3HFr7ICvwXmcm
- eggg==
-X-Gm-Message-State: AOJu0Yzds33bcNR6+/wjJsFppgnLTBb4WKOI+ENe/3EwlGYAaEW7BMDx
- Bz5NlumtOBa1rxZJFEL6+T+53MrTplix0C+4tEluUA==
-X-Google-Smtp-Source: AGHT+IEGnJ6YO8GB3x6l1Hz2jD++b4nGgKBUx0dADC2Jz4r07CxP0ivmp8aH+q117LuY3+kkn1W1Pw==
-X-Received: by 2002:a17:902:db0a:b0:1cc:492c:2918 with SMTP id
- m10-20020a170902db0a00b001cc492c2918mr1400376plx.69.1698642890448; 
- Sun, 29 Oct 2023 22:14:50 -0700 (PDT)
+ bh=33eHcWs5bVTl2Yl+vAjf/syz7nAHZ1f9UgWZDxn4ISw=;
+ b=kiVTord0Qf8/SxEiwO0wuws8PdH7wsgN51FLXLQ5Y09oWWK6aFlPSDaAg7XwFcbC29
+ 2d5gC6hWgHaM6wbZ4g13/t4tX0b0q3Z0OhZCqwMgpnC1l08Dij2zYrrwXv9cPcv8duli
+ IuIvG8wLS0ZIOlQ9GOlMfPuaWjP3/ikRlnmZVqqoc8CDpHS9dNBekMVk4XMW5WYyD1PP
+ xnihHS5agGYS7TUjAoDC33B+ktIVY8czTqoM1kmcsI6x35CTesk6ee73ELpG/qYgTytN
+ Mvm9PopGWms9Bu3lcAb4KexUEXNf0ev3UEtKcToi/YZ9xyHC/ZXOygLKZ2UyK+P4ybSX
+ OD8A==
+X-Gm-Message-State: AOJu0Yya25emkGnhQ5I059QKhd1G00KEHJQYQbZxp+h54Oql9fejQ77T
+ TmV56bJzklva2OwhzXTZck60uyhnCnnw3BaBHjaO+g==
+X-Google-Smtp-Source: AGHT+IEH9atTe1+5rwrTgNbVqeGYCt+uVulRu63HAucdJCqx0tfsyK/bXHwUUjOAQn3xGRL2lHfdAA==
+X-Received: by 2002:a05:6a00:c8d:b0:6be:b92b:e5fe with SMTP id
+ a13-20020a056a000c8d00b006beb92be5femr7185692pfv.34.1698642893654; 
+ Sun, 29 Oct 2023 22:14:53 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- l3-20020a170902f68300b001c61921d4d2sm5287576plg.302.2023.10.29.22.14.48
+ a15-20020a63704f000000b00563590be25esm3963531pgn.29.2023.10.29.22.14.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 29 Oct 2023 22:14:50 -0700 (PDT)
+ Sun, 29 Oct 2023 22:14:53 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot enable
- RSS
-Date: Mon, 30 Oct 2023 14:12:32 +0900
-Message-ID: <20231030051356.33123-12-akihiko.odaki@daynix.com>
+Subject: [PATCH v6 12/21] virtio-net: Enable software RSS
+Date: Mon, 30 Oct 2023 14:12:33 +0900
+Message-ID: <20231030051356.33123-13-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231030051356.33123-1-akihiko.odaki@daynix.com>
 References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,139 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost requires eBPF for RSS. When eBPF is not available, virtio-net
-implicitly disables RSS even if the user explicitly requests it. Return
-an error instead of implicitly disabling RSS if RSS is requested but not
-available.
+virtio-net implements software RSS but does not enable it. Enable it
+when RSS is requested, but the eBPF implementation is not available.
+We also check if vhost is in use in such a case since software RSS is
+incompatible with vhost. A warning will be emitted when falling back to
+software RSS since it provides no performance benefit.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 97 ++++++++++++++++++++++-----------------------
- 1 file changed, 48 insertions(+), 49 deletions(-)
+ hw/net/virtio-net.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 5d4afd12b2..7bb91617d0 100644
+index 7bb91617d0..1fa020d905 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -792,9 +792,6 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-         return features;
+@@ -1260,10 +1260,12 @@ static bool virtio_net_attach_epbf_rss(VirtIONet *n)
+ 
+     if (!ebpf_rss_set_all(&n->ebpf_rss, &config,
+                           n->rss_data.indirections_table, n->rss_data.key)) {
++        warn_report("Failed to configure eBPF RSS");
+         return false;
      }
  
--    if (!ebpf_rss_is_loaded(&n->ebpf_rss)) {
--        virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
--    }
-     features = vhost_net_get_features(get_vhost_net(nc->peer), features);
-     vdev->backend_features = features;
+     if (!virtio_net_attach_ebpf_to_backend(n->nic, n->ebpf_rss.program_fd)) {
++        warn_report("Failed to attach eBPF to backend");
+         return false;
+     }
  
-@@ -3533,6 +3530,50 @@ static bool failover_hide_primary_device(DeviceListener *listener,
-     return qatomic_read(&n->failover_primary_hidden);
- }
- 
-+static void virtio_net_device_unrealize(DeviceState *dev)
-+{
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VirtIONet *n = VIRTIO_NET(dev);
-+    int i, max_queue_pairs;
-+
-+    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
-+        virtio_net_unload_ebpf(n);
-+    }
-+
-+    /* This will stop vhost backend if appropriate. */
-+    virtio_net_set_status(vdev, 0);
-+
-+    g_free(n->netclient_name);
-+    n->netclient_name = NULL;
-+    g_free(n->netclient_type);
-+    n->netclient_type = NULL;
-+
-+    g_free(n->mac_table.macs);
-+    g_free(n->vlans);
-+
-+    if (n->failover) {
-+        qobject_unref(n->primary_opts);
-+        device_listener_unregister(&n->primary_listener);
-+        migration_remove_notifier(&n->migration_state);
-+    } else {
-+        assert(n->primary_opts == NULL);
-+    }
-+
-+    max_queue_pairs = n->multiqueue ? n->max_queue_pairs : 1;
-+    for (i = 0; i < max_queue_pairs; i++) {
-+        virtio_net_del_queue(n, i);
-+    }
-+    /* delete also control vq */
-+    virtio_del_queue(vdev, max_queue_pairs * 2);
-+    qemu_announce_timer_del(&n->announce_timer, false);
-+    g_free(n->vqs);
-+    qemu_del_nic(n->nic);
-+    virtio_net_rsc_cleanup(n);
-+    g_free(n->rss_data.indirections_table);
-+    net_rx_pkt_uninit(n->rx_pkt);
-+    virtio_cleanup(vdev);
-+}
-+
- static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+@@ -1278,16 +1280,10 @@ static void virtio_net_detach_epbf_rss(VirtIONet *n)
+ static void virtio_net_commit_rss_config(VirtIONet *n)
  {
-     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-@@ -3704,53 +3745,11 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     if (n->rss_data.enabled) {
+-        n->rss_data.enabled_software_rss = n->rss_data.populate_hash;
++        n->rss_data.enabled_software_rss = n->rss_data.populate_hash ||
++                                           !virtio_net_attach_epbf_rss(n);
+         if (n->rss_data.populate_hash) {
+             virtio_net_detach_epbf_rss(n);
+-        } else if (!virtio_net_attach_epbf_rss(n)) {
+-            if (get_vhost_net(qemu_get_queue(n->nic)->peer)) {
+-                warn_report("Can't load eBPF RSS for vhost");
+-            } else {
+-                warn_report("Can't load eBPF RSS - fallback to software RSS");
+-                n->rss_data.enabled_software_rss = true;
+-            }
+         }
  
-     net_rx_pkt_init(&n->rx_pkt);
+         trace_virtio_net_rss_enable(n->rss_data.hash_types,
+@@ -3747,8 +3743,13 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
  
--    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
--        virtio_net_load_ebpf(n);
--    }
--}
--
--static void virtio_net_device_unrealize(DeviceState *dev)
--{
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--    VirtIONet *n = VIRTIO_NET(dev);
--    int i, max_queue_pairs;
--
--    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
--        virtio_net_unload_ebpf(n);
-+    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS) &&
-+        !virtio_net_load_ebpf(n)) {
-+        error_setg(errp, "Can't load eBPF RSS");
-+        virtio_net_device_unrealize(dev);
+     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS) &&
+         !virtio_net_load_ebpf(n)) {
+-        error_setg(errp, "Can't load eBPF RSS");
+-        virtio_net_device_unrealize(dev);
++        if (get_vhost_net(nc->peer)) {
++            error_setg(errp, "Can't load eBPF RSS for vhost");
++            virtio_net_device_unrealize(dev);
++            return;
++        }
++
++        warn_report_once("Can't load eBPF RSS - fallback to software RSS");
      }
--
--    /* This will stop vhost backend if appropriate. */
--    virtio_net_set_status(vdev, 0);
--
--    g_free(n->netclient_name);
--    n->netclient_name = NULL;
--    g_free(n->netclient_type);
--    n->netclient_type = NULL;
--
--    g_free(n->mac_table.macs);
--    g_free(n->vlans);
--
--    if (n->failover) {
--        qobject_unref(n->primary_opts);
--        device_listener_unregister(&n->primary_listener);
--        migration_remove_notifier(&n->migration_state);
--    } else {
--        assert(n->primary_opts == NULL);
--    }
--
--    max_queue_pairs = n->multiqueue ? n->max_queue_pairs : 1;
--    for (i = 0; i < max_queue_pairs; i++) {
--        virtio_net_del_queue(n, i);
--    }
--    /* delete also control vq */
--    virtio_del_queue(vdev, max_queue_pairs * 2);
--    qemu_announce_timer_del(&n->announce_timer, false);
--    g_free(n->vqs);
--    qemu_del_nic(n->nic);
--    virtio_net_rsc_cleanup(n);
--    g_free(n->rss_data.indirections_table);
--    net_rx_pkt_uninit(n->rx_pkt);
--    virtio_cleanup(vdev);
  }
  
- static void virtio_net_reset(VirtIODevice *vdev)
 -- 
 2.42.0
 
