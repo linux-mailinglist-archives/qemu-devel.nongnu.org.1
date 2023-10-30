@@ -2,98 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F5D7DBB8D
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB257DBB9E
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxT26-0001bD-QL; Mon, 30 Oct 2023 10:14:22 -0400
+	id 1qxT7a-0003Pm-Qf; Mon, 30 Oct 2023 10:20:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxT25-0001Zr-3I
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:14:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxT1p-0004xR-T2
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:14:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698675244;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WpgIXu9F0YZoR6UhZGb6IiyYms/3VLhSFs02Fgz0SuM=;
- b=Q47m3O8ciSpnoOu5kwsH/LXGOwuJkwneF7tlCjSPmtQOfZZvAdnljRJYXIpV2qvHGQc55n
- +wxpQIHOCviurnNxI5VVH50rUxblO6LmfpMSEmUmO2NBixCVPhT0REf6r4Z1SvegFKy+Mp
- ARFrRiqqIJoFhYTRJGtrRDxCpO9BjPI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-KpkS3QK6Pra8Rfn-8cpZSQ-1; Mon, 30 Oct 2023 10:13:59 -0400
-X-MC-Unique: KpkS3QK6Pra8Rfn-8cpZSQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4084e263ec4so33305475e9.2
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:13:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698675233; x=1699280033;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qxT7Y-0003Ng-HY; Mon, 30 Oct 2023 10:20:00 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qxT7W-0005jw-ND; Mon, 30 Oct 2023 10:20:00 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-507cee17b00so6497946e87.2; 
+ Mon, 30 Oct 2023 07:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698675596; x=1699280396; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WpgIXu9F0YZoR6UhZGb6IiyYms/3VLhSFs02Fgz0SuM=;
- b=NqP1KOhZKAFXyIL8aFykAqff0oVRW1lX8FHPKMPGsibhg9Q5aXTTa/mOHbURNtFZ9V
- IcX+/L8U97vhzijSokdNa0g0OLGW7k9xQwXCg090/v9H6VafWwySurSXSMZBJgeW6z6I
- YK/WeHelX+ek/WpDdwQK2Ptuzkd2XWV2vBaOfLTs/0l7xgtPzKhee/2EbhitpvC8b26C
- KZfvdLUH56Rvdb89vh48n7GthEfrhGCSjU7LL5s7ybt03T1bwAMZ5u7ACNl/UnDUhcYB
- JMGm+UwD15OECjfnzMWI7t2C5VmSk67vKGIqP1F/SIZCUDmlSQcM7wQE0DP3Oktfc88N
- tSeQ==
-X-Gm-Message-State: AOJu0Yx8pK1Y3xzG+jnsGn3/dKmAT7FUKBUzgX97dlhNCCJxxO72BCic
- hI5NAyHsDeGq1ay/pgJ833+/fMXvvHrs/Yox4wzXmDAX6vfhSu11Sgp1UJlGK3fW8+cbYtHgwEK
- uOc6buHVvmwoNQSg=
-X-Received: by 2002:a5d:48c8:0:b0:32d:aa62:a8c3 with SMTP id
- p8-20020a5d48c8000000b0032daa62a8c3mr6295967wrs.41.1698675233055; 
- Mon, 30 Oct 2023 07:13:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrmlmnk9n4jFmd72NEXmi8JjvmLS6o8UCcXjicoAdXzsfSmcUZhesSUyhmf0sVJL7XQIPrgQ==
-X-Received: by 2002:a5d:48c8:0:b0:32d:aa62:a8c3 with SMTP id
- p8-20020a5d48c8000000b0032daa62a8c3mr6295942wrs.41.1698675232490; 
- Mon, 30 Oct 2023 07:13:52 -0700 (PDT)
-Received: from redhat.com ([31.187.78.246]) by smtp.gmail.com with ESMTPSA id
- q12-20020adffecc000000b0032dc1fc84f2sm8443927wrs.46.2023.10.30.07.13.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Oct 2023 07:13:51 -0700 (PDT)
-Date: Mon, 30 Oct 2023 10:13:46 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Anup Patel <apatel@ventanamicro.com>,
- Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
-Subject: Re: [PATCH v5 00/13] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
-Message-ID: <20231030101332-mutt-send-email-mst@kernel.org>
-References: <20231030132058.763556-1-sunilvl@ventanamicro.com>
+ bh=Ch/M8kkwMlcnuI6pWMJi3G4kNx7x20Bb0jbmSmyArSI=;
+ b=C6oQ+NDNIwbYUgm8EIRZBrnKr+e6IVgNEOuP/Gzd5KSuh+yA4hSrD5MS5lHpt3qFDg
+ K8verGNEiS6sp0Qeb6Yro7Stet2Zkrtc7JRPEjO9YnEBYcHvx5sAqNh8Sn6JYdXIn8wI
+ O7H384gwihHil93GOpAHEY6pToe/z9KRE3H6FKUjlLvuqyqEu8V0xZI2qscXRrDUGfH3
+ ZIbnU2Ie8P+emhKII/7DKSnUREFpU5YAFDpOrF23T+AAGX9QyvRyjUdSrD0hLBahF8IR
+ DSxQHU9iBkhLYkFp8kg9JJvXJTAEuz35daAtzDSosuUcuP8T958gBvq9PW27qacv61xL
+ dYVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698675596; x=1699280396;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ch/M8kkwMlcnuI6pWMJi3G4kNx7x20Bb0jbmSmyArSI=;
+ b=IZivjAwj6AEUgnfXAvCqnFxO4LYqIM04ddZatbPpCYa6Ny4TQYfnnslw4HKgbbQDsM
+ e2jsyDmKNoRYIkgryJyleSj+AMOKkPnes+pt2gLzIv7Uxgj3626yhzymnaahy5esYWur
+ l8I6u16ixQPAPi199KAQYlFUF5dNGoL9TlfMAW1bWJI5taWvyZtOwTDgdmyR07RPqrr0
+ AthJ6Hl+W9PKQ71QfPNpKi6nSRTqjE6znu71ogRNDThSrXfpJS1vt57k8KjQVO2+ilAm
+ kXRtowpTkvAjE5tqnGLJrjHTW4N0H2Y2lqiOwDiXXEFiafM9y/+7Rj9Kt5RiZGADC6Rl
+ Pf9Q==
+X-Gm-Message-State: AOJu0Yzk/PdTRFgUMXLmZycyHk2eEZoh7wfo2QxUY907V8HUVyqYywJY
+ zjXo35cyYQsJhj9nDYg5oqL2QQuDF70lj1yR9V8=
+X-Google-Smtp-Source: AGHT+IFJPWf7znv8irbmlcC+8Yp1Qy64yMb0JZ8cNrOs7VfTIO4tRmZ8fOjGgsTdYTHt6wwwuk30PlHqU6bm/154BP8=
+X-Received: by 2002:a05:6512:3b97:b0:507:9777:a34a with SMTP id
+ g23-20020a0565123b9700b005079777a34amr10156151lfv.39.1698675595535; Mon, 30
+ Oct 2023 07:19:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231030132058.763556-1-sunilvl@ventanamicro.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+References: <20231030121847.4522-1-faithilikerun@gmail.com>
+ <20231030121847.4522-2-faithilikerun@gmail.com>
+ <j5lohqj57qcsjjgqv3n3tm5jv7bjnqlaogg3yvi5ieoto537tk@h5nhmixdnh6p>
+In-Reply-To: <j5lohqj57qcsjjgqv3n3tm5jv7bjnqlaogg3yvi5ieoto537tk@h5nhmixdnh6p>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Mon, 30 Oct 2023 22:19:29 +0800
+Message-ID: <CAAAx-8JZsAGQgV9ao05CS2-jVuDHeEbkT1GWe78+nUDe3OCRMA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] docs/qcow2: add the zoned format feature
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, dlemoal@kernel.org, hare@suse.de, 
+ dmitry.fomichev@wdc.com, stefanha@redhat.com, qemu-block@nongnu.org, 
+ Markus Armbruster <armbru@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=faithilikerun@gmail.com; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,99 +89,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 06:50:45PM +0530, Sunil V L wrote:
-> This series primarily enables external interrupt controllers (AIA and PLIC)
-> in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO and
-> MMU related information.
-> 
-> Below ECRs for these changes are approved by ASWG and will be
-> available in next ACPI spec release.
+Eric Blake <eblake@redhat.com> =E4=BA=8E2023=E5=B9=B410=E6=9C=8830=E6=97=A5=
+=E5=91=A8=E4=B8=80 22:05=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Mon, Oct 30, 2023 at 08:18:44PM +0800, Sam Li wrote:
+> > Add the specs for the zoned format feature of the qcow2 driver.
+> > The qcow2 file can be taken as zoned device and passed through by
+> > virtio-blk device or NVMe ZNS device to the guest given zoned
+> > information.
+> >
+> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > ---
+> >  docs/system/qemu-block-drivers.rst.inc | 33 ++++++++++++++++++++++++++
+> >  1 file changed, 33 insertions(+)
+> >
+> > diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-=
+block-drivers.rst.inc
+> > index 105cb9679c..4647c5fa29 100644
+> > --- a/docs/system/qemu-block-drivers.rst.inc
+> > +++ b/docs/system/qemu-block-drivers.rst.inc
+> > @@ -172,6 +172,39 @@ This section describes each format and the options=
+ that are supported for it.
+> >      filename`` to check if the NOCOW flag is set or not (Capital 'C' i=
+s
+> >      NOCOW flag).
+> >
+> > +  .. option:: zoned
+> > +    1 for host-managed zoned device and 0 for a non-zoned device.
+>
+> Should this be a bool or enum type, instead of requiring the user to
+> know magic numbers?  Is there a potential to add yet another type in
+> the future?
 
+Mistake, sorry. Forgot to document this change but the configurations
+in the subsequent patch uses enum type.
 
-pci, acpi things look ok
+>
+> > +
+> > +  .. option:: zone_size
+> > +
+> > +    The size of a zone in bytes. The device is divided into zones of t=
+his
+> > +    size with the exception of the last zone, which may be smaller.
+> > +
+> > +  .. option:: zone_capacity
+> > +
+> > +    The initial capacity value, in bytes, for all zones. The capacity =
+must
+> > +    be less than or equal to zone size. If the last zone is smaller, t=
+hen
+> > +    its capacity is capped.
+> > +
+> > +    The zone capacity is per zone and may be different between zones i=
+n real
+> > +    devices. For simplicity, QCow2 sets all zones to the same capacity=
+.
+>
+> Just making sure I understand: One possible setup would be to describe
+> a block device with zones of size 1024M but with capacity 1000M (that
+> is, the zone reserves 24M capacity for other purposes)?
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Yes, it is. The NVMe ZNS drive allows that.
 
-> 1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
-> 2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
-> 
-> First two patches in this series are to migrate a couple of functions from
-> ARM architecture to common code so that RISC-V doesn't need to duplicate
-> the same.
-> 
-> The patch set is based on Alistair's riscv-to-apply.next branch.
-> 
-> These changes are also available in  riscv_acpi_b2_v5 branch at:
-> https://github.com/vlsunil/qemu/
-> 
-> Changes since v4:
-> 	1) Updated copyright for new files as per SPDX format suggested by Drew.
-> 	2) Updated RINTC patch to avoid code duplication as suggested by Drew.
-> 	3) Moved mmu offset below cmo in MMU patch as suggested by Drew.
-> 	4) Updated tags.
-> 
-> Changes since v3:
-> 	1) Addressed comments from Daniel and Drew.
-> 	2) Added a new patch in microvm to use common function for virtio in DSDT.
-> 	3) Rebased to latest riscv-to-apply.next branch and added tags.
-> 
-> Changes since v2:
->         1) Rebased to latest riscv-to-apply.next branch which needed
->            changing ext_icboz to ext_zicboz in CMO patch.
->         2) Fixed node type in MMU node.
->         3) Added latest tags.
-> 
-> Changes since v1:
->         1) As per Igor's suggestion, migrated fw_cfg and virtio creation
->            functions to device specific file instead of generic aml-build.c.
->            Since ACPI is optional, new files are created and enabled for
->            build only when CONFIG_ACPI is enabled.
->         2) As per Igor's suggestion, properties are added to the GPEX PCI
->            host to indicate MMIO ranges. The platform fw can initialize
->            these to appropriate values and the DSDT generator can fetch
->            the information from the host bus itself. This makes the code
->            generic instead of machine specific.
->         3) Added PLIC patch from Haibo.
->         4) Rebased to latest riscv-to-apply.next and added RB tags as
->            appropriate.
-> 
-> Sunil V L (13):
->   hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
->   hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
->   hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
->   hw/riscv: virt: Make few IMSIC macros and functions public
->   hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
->   hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
->   hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
->   hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
->   hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
->   hw/pci-host/gpex: Define properties for MMIO ranges
->   hw/riscv/virt: Update GPEX MMIO related properties
->   hw/riscv/virt-acpi-build.c: Add IO controllers and devices
->   hw/riscv/virt-acpi-build.c: Add PLIC in MADT
-> 
->  hw/arm/virt-acpi-build.c        |  51 +----
->  hw/i386/acpi-microvm.c          |  15 +-
->  hw/nvram/fw_cfg-acpi.c          |  23 +++
->  hw/nvram/meson.build            |   1 +
->  hw/pci-host/gpex-acpi.c         |  13 ++
->  hw/pci-host/gpex.c              |  12 ++
->  hw/riscv/Kconfig                |   1 +
->  hw/riscv/virt-acpi-build.c      | 323 +++++++++++++++++++++++++++++---
->  hw/riscv/virt.c                 |  72 ++++---
->  hw/virtio/meson.build           |   1 +
->  hw/virtio/virtio-acpi.c         |  32 ++++
->  include/hw/nvram/fw_cfg_acpi.h  |  15 ++
->  include/hw/pci-host/gpex.h      |  28 ++-
->  include/hw/riscv/virt.h         |  26 +++
->  include/hw/virtio/virtio-acpi.h |  16 ++
->  15 files changed, 498 insertions(+), 131 deletions(-)
->  create mode 100644 hw/nvram/fw_cfg-acpi.c
->  create mode 100644 hw/virtio/virtio-acpi.c
->  create mode 100644 include/hw/nvram/fw_cfg_acpi.h
->  create mode 100644 include/hw/virtio/virtio-acpi.h
-> 
-> -- 
-> 2.39.2
+>
+> Otherwise, I'm having a hard time seeing when you would ever set a
+> capacity different from size.
+>
+> Are there requirements that one (or both) of these values must be
+> powers of 2?  Or is the requirement merely that they must be a
+> multiple of 512 bytes (because sub-sector operations are not
+> permitted)?  Is there any implicit requirement based on qcow2
+> implementation that a zone size/capacity must be a multiple of cluster
+> size (other than possibly for the last zone)?
 
+Yes. Linux will only expose zoned devices that have a zone size
+that is a power of 2 number of LBAs.
+
+No, the zone size/capacity is not necessarily a multiple of the cluster siz=
+e.
+
+>
+> > +
+> > +  .. option:: zone_nr_conv
+> > +
+> > +    The number of conventional zones of the zoned device.
+> > +
+> > +  .. option:: max_open_zones
+> > +
+> > +    The maximal allowed open zones.
+> > +
+> > +  .. option:: max_active_zones
+> > +
+> > +    The limit of the zones with implicit open, explicit open or closed=
+ state.
+> > +
+> > +  .. option:: max_append_sectors
+> > +
+> > +    The maximal number of 512-byte sectors in a zone append request.
+>
+> Why is this value in sectors instead of bytes?  I understand that
+> drivers may be written with sectors in mind, but any time we mix units
+> in the public interface, it gets awkward.  I'd lean towards having
+> bytes here, with a requirement that it be a multiple of 512.
+
+Sorry. Same, already changed this in the following patches.
+
+>
+> --
+> Eric Blake, Principal Software Engineer
+> Red Hat, Inc.
+> Virtualization:  qemu.org | libguestfs.org
+>
 
