@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F9A7DB8DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 12:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E937DB8E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 12:22:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxQI7-0000dG-E9; Mon, 30 Oct 2023 07:18:43 -0400
+	id 1qxQKd-0001vF-OZ; Mon, 30 Oct 2023 07:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qxQI4-0000cq-Cw
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:18:40 -0400
+ id 1qxQK6-0001jC-DE
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:20:50 -0400
 Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qxQI2-00017a-Py
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:18:40 -0400
+ id 1qxQK3-0001YS-Gn
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:20:46 -0400
 Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-41cb76f3cf0so28604301cf.2
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 04:18:38 -0700 (PDT)
+ d75a77b69052e-41cd4cc515fso33055831cf.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 04:20:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698664717; x=1699269517; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698664837; x=1699269637; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z7ge0+SRqEvtmZFHThRXF8vNChbSLG96kEb/yJk2gwU=;
- b=JF08GGI96joGLlE/HPhiJAXfyv1rK7MpCXvWbeJNOrKZh1rBvGrGjFxXajiayNdwbo
- b0d44o4Fvb8dpAHhbPRssO870FYIfPZndHG3RkJjFSWhktIV2ETzzhnOtN0ZKZfrFaC4
- 7CGm2bRkdz6RIpSkt1120AE68CSKHwr3Jy58daG3/0Sap/5SyjzbGVtjftP45Tq7/vl1
- fqFF2aD7y8MpmuwrvENUhZPvouTd0RKElGEn8ShxY2jIM4pMTavNw7QDnW1x1dGAuH0U
- VZD9AA4kqEdFB/SJ3+67oc4IjtK0r4mVUIt54DA33mN0VdFIK835xWiBVdkSUoQYgt//
- 9OtQ==
+ bh=aLh6LysX7RhZ0+isTi8inVI1XjtbJcJXHMAXI6qKpvc=;
+ b=ROyK68grt4CM6N1j6zEPRcgmQF1w7zKQebAAtVWcsGDoRbyGsgq6z8n2Gkkn8ctz6E
+ UZOoSFxCTy+GrJ2bGfTbf+MHXQPk4gVapwalDcP0AcqK7pmlhrlicveR9dpbfouGwuqs
+ ss+FPL/r1hyHPFZcTwao9Y5CnHfXhQq9GcgJuqzh+qy/jJ2Tgvu/wyOPPIqiYAy5/7qi
+ 2gpe4hARWoqDFycB1N4dXX7mhnMVgPm/gSYKo1x2+Bb9dtwF8Js4ejXxrXfCeZwX0+Wp
+ XCbISPw7pk8G7PsCa4ZOdouMgUtEj+3pfQ3rcX4PQ0AHHgdqq72FQFMsRddZJVq5/dBf
+ 9A0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698664717; x=1699269517;
+ d=1e100.net; s=20230601; t=1698664837; x=1699269637;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z7ge0+SRqEvtmZFHThRXF8vNChbSLG96kEb/yJk2gwU=;
- b=I8zGr3bnx9u/7VKm9Hv6dPSONn07H3NPcAU1DyJiZZi9PThUoZwncHqMU6gixgoeRq
- xL3WAMY3B7qAyly0Bjbn6pbHpYWz6sva957Fl//dahr342Jd2rAzUFYNBxuFsVcjVora
- 90A1OFkgM30vcvBn/1JIOin2GPYK0IdYNe3sjeYj9IjEkWsY3Q7JsC4rrY+1ZbNCQexx
- chu3GW2UV+EITLgN27rFjCXfbA0fLdo5S9kJ6RHLSzGptnWIFHpao+Khonkb15JDgnRe
- Zx31KRDhlrSGica6pecmw+jt+n3MtgOx6MrRovHbyvGbdSB0Qen/T00AeVFXh7nYi5o1
- oJYg==
-X-Gm-Message-State: AOJu0YzJUJEVcjc3/SG5QjTG5zS7tpkwLMYF0KefvjKC6FpUCC6/w+Aq
- H75bUCPpL6VKJOBtlU5vgnNFYqmNcJRvKiOdjDdZwC5UwCyDXw==
-X-Google-Smtp-Source: AGHT+IFZkSDwCQUxsUG+61pbCnUmmbuqF8g0KhdoVhpvYOa5w6rKIpuq/bDYvirkywrWTsxbR7iCylaKK6ZuS/+nxcc=
-X-Received: by 2002:a05:622a:18a4:b0:41e:2423:f0be with SMTP id
- v36-20020a05622a18a400b0041e2423f0bemr13553778qtc.40.1698664717636; Mon, 30
- Oct 2023 04:18:37 -0700 (PDT)
+ bh=aLh6LysX7RhZ0+isTi8inVI1XjtbJcJXHMAXI6qKpvc=;
+ b=QR0ptACYQtFVa6050FW+Oc0SLsKI9fMY5lenLZrvDBOqp9Fg0lZuYporyxQPyoCZjq
+ CiRnsNdM3mo3lQ+GrPl6Cs6SavAKCzAZK82j68eXc/tGTcubm2UpmxFPtsGoKE6GYnVv
+ 0hPJ13oixe2GTlVx5te4JtIWcZbqgfqEtOICd+6Vj2/BqevkuTYDDKYVhBzK29fiPsgv
+ ZbZDBr2yFrvba1ZF8vaxoRaWzkZzoAz8xE0qB/5R2yyEfFf9+ZnA6tveitjPknXXkzzE
+ 2ro/r9/vpnafzlWFISxFWTpfJbqDJO+/N36/JeUThHt6ACk3IAINTwkp0GzU3LJupPRo
+ BgXA==
+X-Gm-Message-State: AOJu0Yxrihxo7794q6sGH3Q4ppDV7RHRyzv3lInGRoTasTekqD2d9qMO
+ FchjVBKoIkPuYiGNm2xzspI8pF27ohNjw73x9cY=
+X-Google-Smtp-Source: AGHT+IFK7J34vfVGk4yPd2YUcOhjwsPewQFAZA1BLk5A0T0LSubOOSLSEjTrqBAJMCbBBTN4RLdMZjy2AcIcLR+RKqs=
+X-Received: by 2002:a05:622a:214:b0:418:134f:17f4 with SMTP id
+ b20-20020a05622a021400b00418134f17f4mr12915356qtx.22.1698664837375; Mon, 30
+ Oct 2023 04:20:37 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1696942148.git.balaton@eik.bme.hu>
- <b768c6506526caea0da8cd4025dbb05e109da4c5.1696942148.git.balaton@eik.bme.hu>
-In-Reply-To: <b768c6506526caea0da8cd4025dbb05e109da4c5.1696942148.git.balaton@eik.bme.hu>
+ <fc668399935df877fe7f140d97c5e955dbe2574f.1696942148.git.balaton@eik.bme.hu>
+In-Reply-To: <fc668399935df877fe7f140d97c5e955dbe2574f.1696942148.git.balaton@eik.bme.hu>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 30 Oct 2023 15:18:25 +0400
-Message-ID: <CAJ+F1C+iOpJWtQrHkJeq5bGxeK3nnvheE9_AKq1X703EsJD4DQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ati-vga: Fix aperture sizes
+Date: Mon, 30 Oct 2023 15:20:25 +0400
+Message-ID: <CAJ+F1CK2B45S7ySjJejBcHRuJotmi3tb4v62=0EYE7FbgctB=Q@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ati-vga: Support unaligned access to GPIO DDC
+ registers
 To: BALATON Zoltan <balaton@eik.bme.hu>
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -87,53 +88,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
 On Tue, Oct 10, 2023 at 5:03=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.hu>=
  wrote:
 >
-> Apparently these should be half the memory region sizes confirmed at
-> least by Radeon drivers while Rage 128 Pro drivers don't seem to use
-> these.
-
-There doesn't seem to be adjustments for the kernel PPC driver
-https://github.com/torvalds/linux/blob/master/drivers/video/fbdev/aty/radeo=
-n_base.c#L2037
-
-Do you have any other pointers?
-
-thanks
-
+> The GPIO_VGA_DDC and GPIO_DVI_DDC registers are used on Radeon for DDC
+> access. Some drivers like the PPC Mac FCode ROM uses unaligned writes
+> to these registers so implement this the same way as already done for
+> GPIO_MONID which is used the same way for the Rage 128 Pro.
 >
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+Acked-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
 > ---
->  hw/display/ati.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  hw/display/ati.c | 37 ++++++++++++++++++++++---------------
+>  1 file changed, 22 insertions(+), 15 deletions(-)
 >
 > diff --git a/hw/display/ati.c b/hw/display/ati.c
-> index c36282c343..f0bf1d7493 100644
+> index f0bf1d7493..ce63935ead 100644
 > --- a/hw/display/ati.c
 > +++ b/hw/display/ati.c
-> @@ -349,14 +349,14 @@ static uint64_t ati_mm_read(void *opaque, hwaddr ad=
+> @@ -319,11 +319,13 @@ static uint64_t ati_mm_read(void *opaque, hwaddr ad=
 dr, unsigned int size)
->                                        PCI_BASE_ADDRESS_0, size) & 0xffff=
-fff0;
+>      case DAC_CNTL:
+>          val =3D s->regs.dac_cntl;
 >          break;
->      case CONFIG_APER_SIZE:
-> -        val =3D s->vga.vram_size;
-> +        val =3D s->vga.vram_size / 2;
+> -    case GPIO_VGA_DDC:
+> -        val =3D s->regs.gpio_vga_ddc;
+> +    case GPIO_VGA_DDC ... GPIO_VGA_DDC + 3:
+> +        val =3D ati_reg_read_offs(s->regs.gpio_vga_ddc,
+> +                                addr - GPIO_VGA_DDC, size);
 >          break;
->      case CONFIG_REG_1_BASE:
->          val =3D pci_default_read_config(&s->dev,
->                                        PCI_BASE_ADDRESS_2, size) & 0xffff=
-fff0;
+> -    case GPIO_DVI_DDC:
+> -        val =3D s->regs.gpio_dvi_ddc;
+> +    case GPIO_DVI_DDC ... GPIO_DVI_DDC + 3:
+> +        val =3D ati_reg_read_offs(s->regs.gpio_dvi_ddc,
+> +                                addr - GPIO_DVI_DDC, size);
 >          break;
->      case CONFIG_REG_APER_SIZE:
-> -        val =3D memory_region_size(&s->mm);
-> +        val =3D memory_region_size(&s->mm) / 2;
+>      case GPIO_MONID ... GPIO_MONID + 3:
+>          val =3D ati_reg_read_offs(s->regs.gpio_monid,
+> @@ -626,29 +628,34 @@ static void ati_mm_write(void *opaque, hwaddr addr,
+>          s->regs.dac_cntl =3D data & 0xffffe3ff;
+>          s->vga.dac_8bit =3D !!(data & DAC_8BIT_EN);
 >          break;
->      case MC_STATUS:
->          val =3D 5;
+> -    case GPIO_VGA_DDC:
+> +    /*
+> +     * GPIO regs for DDC access. Because some drivers access these via
+> +     * multiple byte writes we have to be careful when we send bits to
+> +     * avoid spurious changes in bitbang_i2c state. Only do it when eith=
+er
+> +     * the enable bits are changed or output bits changed while enabled.
+> +     */
+> +    case GPIO_VGA_DDC ... GPIO_VGA_DDC + 3:
+>          if (s->dev_id !=3D PCI_DEVICE_ID_ATI_RAGE128_PF) {
+>              /* FIXME: Maybe add a property to select VGA or DVI port? */
+>          }
+>          break;
+> -    case GPIO_DVI_DDC:
+> +    case GPIO_DVI_DDC ... GPIO_DVI_DDC + 3:
+>          if (s->dev_id !=3D PCI_DEVICE_ID_ATI_RAGE128_PF) {
+> -            s->regs.gpio_dvi_ddc =3D ati_i2c(&s->bbi2c, data, 0);
+> +            ati_reg_write_offs(&s->regs.gpio_dvi_ddc,
+> +                               addr - GPIO_DVI_DDC, data, size);
+> +            if ((addr <=3D GPIO_DVI_DDC + 2 && addr + size > GPIO_DVI_DD=
+C + 2) ||
+> +                (addr =3D=3D GPIO_DVI_DDC && (s->regs.gpio_dvi_ddc & 0x3=
+0000))) {
+> +                s->regs.gpio_dvi_ddc =3D ati_i2c(&s->bbi2c,
+> +                                               s->regs.gpio_dvi_ddc, 0);
+> +            }
+>          }
+>          break;
+>      case GPIO_MONID ... GPIO_MONID + 3:
+>          /* FIXME What does Radeon have here? */
+>          if (s->dev_id =3D=3D PCI_DEVICE_ID_ATI_RAGE128_PF) {
+> +            /* Rage128p accesses DDC via MONID(1-2) with additional mask=
+ bit */
+>              ati_reg_write_offs(&s->regs.gpio_monid,
+>                                 addr - GPIO_MONID, data, size);
+> -            /*
+> -             * Rage128p accesses DDC used to get EDID via these bits.
+> -             * Because some drivers access this via multiple byte writes
+> -             * we have to be careful when we send bits to avoid spurious
+> -             * changes in bitbang_i2c state. So only do it when mask is =
+set
+> -             * and either the enable bits are changed or output bits cha=
+nged
+> -             * while enabled.
+> -             */
+>              if ((s->regs.gpio_monid & BIT(25)) &&
+>                  ((addr <=3D GPIO_MONID + 2 && addr + size > GPIO_MONID +=
+ 2) ||
+>                   (addr =3D=3D GPIO_MONID && (s->regs.gpio_monid & 0x6000=
+0)))) {
 > --
 > 2.30.9
 >
