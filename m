@@ -2,68 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB1D7DBAFF
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:39:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6159B7DBB02
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:40:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSSN-0003av-3g; Mon, 30 Oct 2023 09:37:27 -0400
+	id 1qxSUS-0007Pt-Bp; Mon, 30 Oct 2023 09:39:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSI-0003ZS-GL
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:37:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSF-0005pW-M0
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:37:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698673036;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=T/VC6LFBhHfm5THr4OjgMFRd03zwzqEsi7Och3+eKuU=;
- b=Znoe/Xc2HZqI0DoFweitS9f1x8y7OT4O7zb4DZv84EQhzRZ10pNkGtUEEd9IqIsxuKoBb3
- VBeabmRcMO8kqhJyiABAfKbuQQIWwxNiWYSXV5aqOCqm9DIlepgxvV2E3M3YYFQMOfhgy7
- bPE4+XDQ0ikxkGUjoCTcT1yxEZUTRr8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-DEYcwUYdPY-pJbWQRI6dCg-1; Mon, 30 Oct 2023 09:37:15 -0400
-X-MC-Unique: DEYcwUYdPY-pJbWQRI6dCg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D273811E82
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 13:37:15 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F022E1C060AE
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 13:37:14 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D1B7921E6921; Mon, 30 Oct 2023 14:37:12 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com
-Subject: [PATCH 5/5] dump: Drop redundant check for empty dump
-Date: Mon, 30 Oct 2023 14:37:12 +0100
-Message-ID: <20231030133712.2822276-6-armbru@redhat.com>
-In-Reply-To: <20231030133712.2822276-1-armbru@redhat.com>
-References: <20231030133712.2822276-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxSUQ-0007GG-IN
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:39:34 -0400
+Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxSUO-0006Ba-BI
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:39:33 -0400
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-5a7e5dc8573so40605077b3.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 06:39:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698673170; x=1699277970; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sh575YTqSBhHY0AMttM9gvgH/IMyWeXli3dQG9PmFx0=;
+ b=EhK7bb1it/57ZdKMvOx2LcFHL5V1wmin+5wjUaQlWY2vOJmQTim2jE8CzUlWm8Pppq
+ fSoE7j4b2xKW6WmYsKAqmgC0huxRXNBKu+OgzhbjPkD9TkOtJNotgOdxBSXCJsa3gcjU
+ 029ZSFHXQT88lR27CzWKxT9H/VA/nFC0MrOhKgMpmvXUnIKZgo5F6SBFah/MQg0CaoL6
+ 0Kl5/e//QDEK8p4qancKOWHPofOypXt8gJPa+jv2ZFJZIFppiYjHtp2dH1Ih5ckV0E1W
+ 1PXfAzGQWz38e+KZ+3e6Qx2DICaARcPhhfVVV+XpGx7vj9aSP+T5i61URf2wuZ3plqkE
+ UvOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698673170; x=1699277970;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sh575YTqSBhHY0AMttM9gvgH/IMyWeXli3dQG9PmFx0=;
+ b=VV2w3wzSfvIEvvkzWqANq2GEepGxeipvOdoT3RAbeKtCjWpKGuELM2M60moAvVaY9U
+ BN0mAFT19TduayFhiTT4npO7z5ebu+7fz3ds5CbQeUTFtO+GhWl8PqF4wU0K4OxmXh8K
+ TJuYkccRNGAWTwUD3rI7bhuAyjumlokh1YPcBs+B8sizMUuJdDqK5CvwWfSrMTmc+DeL
+ 6ZeqNP91fXkBoO5hByO0P7TgOjMOXsRP6xsHAm2Xl0nF94U9b6OHW4hHTPFpac2AzT0t
+ tKSlBYZA/iprLYhL57iWBsXs2S+qx3KDhAR6do3xe5+u96MKMRdoLYjmVExuhbR6+lvC
+ O0kQ==
+X-Gm-Message-State: AOJu0Ywn1Zx7x/LIGAAtIU5nwbU06K4pbzd7pzVuxZBU+5pQXexcRKq1
+ vvpgRLkLtgnxhSBvHn2iSBKTkA==
+X-Google-Smtp-Source: AGHT+IE6fYLZvfNxxgngEaUp7hcZo5dYF+Mgxswy5n4mE8lRDlWbb2NbyTDGhcXAdJTsExgj3eAvYg==
+X-Received: by 2002:a81:e249:0:b0:59b:cfe1:bcf1 with SMTP id
+ z9-20020a81e249000000b0059bcfe1bcf1mr9305349ywl.44.1698673170389; 
+ Mon, 30 Oct 2023 06:39:30 -0700 (PDT)
+Received: from [192.168.68.107] ([179.193.10.161])
+ by smtp.gmail.com with ESMTPSA id
+ w185-20020a8162c2000000b0059b20231f1dsm4319262ywb.121.2023.10.30.06.39.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 06:39:30 -0700 (PDT)
+Message-ID: <5968ce1b-8342-4251-8bc0-e8200388336c@ventanamicro.com>
+Date: Mon, 30 Oct 2023 10:39:24 -0300
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/13] hw/pci-host/gpex: Define properties for MMIO
+ ranges
+Content-Language: en-US
+To: Sunil V L <sunilvl@ventanamicro.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Anup Patel <apatel@ventanamicro.com>, Atish Kumar Patra
+ <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
+References: <20231030132058.763556-1-sunilvl@ventanamicro.com>
+ <20231030132058.763556-11-sunilvl@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231030132058.763556-11-sunilvl@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,63 +110,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-dump_init() first computes the size of the dump, taking the filter
-area into account, and fails if its zero.  It then looks for memory in
-the filter area, and fails if there is none.
 
-This is redundant: if the size of the dump is zero, there is no
-memory, and vice versa.  Delete this check.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- dump/dump.c | 26 --------------------------
- 1 file changed, 26 deletions(-)
+On 10/30/23 10:20, Sunil V L wrote:
+> ACPI DSDT generator needs information like ECAM range, PIO range, 32-bit
+> and 64-bit PCI MMIO range etc related to the PCI host bridge. Instead of
+> making these values machine specific, create properties for the GPEX
+> host bridge with default value 0. During initialization, the firmware
+> can initialize these properties with correct values for the platform.
+> This basically allows DSDT generator code independent of the machine
+> specific memory map accesses.
+> 
+> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Acked-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
 
-diff --git a/dump/dump.c b/dump/dump.c
-index d888e4bd3c..03627a4c17 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -1674,26 +1674,6 @@ static void create_kdump_vmcore(DumpState *s, Error **errp)
-     }
- }
- 
--static int validate_start_block(DumpState *s)
--{
--    GuestPhysBlock *block;
--
--    if (!dump_has_filter(s)) {
--        return 0;
--    }
--
--    QTAILQ_FOREACH(block, &s->guest_phys_blocks.head, next) {
--        /* This block is out of the range */
--        if (block->target_start >= s->filter_area_begin + s->filter_area_length ||
--            block->target_end <= s->filter_area_begin) {
--            continue;
--        }
--        return 0;
--   }
--
--    return -1;
--}
--
- static void get_max_mapnr(DumpState *s)
- {
-     GuestPhysBlock *last_block;
-@@ -1842,12 +1822,6 @@ static void dump_init(DumpState *s, int fd, bool has_format,
-         goto cleanup;
-     }
- 
--    /* Is the filter filtering everything? */
--    if (validate_start_block(s) == -1) {
--        error_setg(errp, QERR_INVALID_PARAMETER, "begin");
--        goto cleanup;
--    }
--
-     /* get dump info: endian, class and architecture.
-      * If the target architecture is not supported, cpu_get_dump_info() will
-      * return -1.
--- 
-2.41.0
+There's nothing too fancy happening here, just a good old QOM sauce, so I
+feel comfortable throwing a:
 
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+
+
+Thanks,
+
+Daniel
+
+
+>   hw/pci-host/gpex-acpi.c    | 13 +++++++++++++
+>   hw/pci-host/gpex.c         | 12 ++++++++++++
+>   include/hw/pci-host/gpex.h | 28 ++++++++++++++++++++--------
+>   3 files changed, 45 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
+> index 1092dc3b70..f69413ea2c 100644
+> --- a/hw/pci-host/gpex-acpi.c
+> +++ b/hw/pci-host/gpex-acpi.c
+> @@ -281,3 +281,16 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+>   
+>       crs_range_set_free(&crs_range_set);
+>   }
+> +
+> +void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq)
+> +{
+> +    bool ambig;
+> +    Object *obj = object_resolve_path_type("", TYPE_GPEX_HOST, &ambig);
+> +
+> +    if (!obj || ambig) {
+> +        return;
+> +    }
+> +
+> +    GPEX_HOST(obj)->gpex_cfg.irq = irq;
+> +    acpi_dsdt_add_gpex(scope, &GPEX_HOST(obj)->gpex_cfg);
+> +}
+> diff --git a/hw/pci-host/gpex.c b/hw/pci-host/gpex.c
+> index a6752fac5e..41f4e73f6e 100644
+> --- a/hw/pci-host/gpex.c
+> +++ b/hw/pci-host/gpex.c
+> @@ -154,6 +154,18 @@ static Property gpex_host_properties[] = {
+>        */
+>       DEFINE_PROP_BOOL("allow-unmapped-accesses", GPEXHost,
+>                        allow_unmapped_accesses, true),
+> +    DEFINE_PROP_UINT64(PCI_HOST_ECAM_BASE, GPEXHost, gpex_cfg.ecam.base, 0),
+> +    DEFINE_PROP_SIZE(PCI_HOST_ECAM_SIZE, GPEXHost, gpex_cfg.ecam.size, 0),
+> +    DEFINE_PROP_UINT64(PCI_HOST_PIO_BASE, GPEXHost, gpex_cfg.pio.base, 0),
+> +    DEFINE_PROP_SIZE(PCI_HOST_PIO_SIZE, GPEXHost, gpex_cfg.pio.size, 0),
+> +    DEFINE_PROP_UINT64(PCI_HOST_BELOW_4G_MMIO_BASE, GPEXHost,
+> +                       gpex_cfg.mmio32.base, 0),
+> +    DEFINE_PROP_SIZE(PCI_HOST_BELOW_4G_MMIO_SIZE, GPEXHost,
+> +                     gpex_cfg.mmio32.size, 0),
+> +    DEFINE_PROP_UINT64(PCI_HOST_ABOVE_4G_MMIO_BASE, GPEXHost,
+> +                       gpex_cfg.mmio64.base, 0),
+> +    DEFINE_PROP_SIZE(PCI_HOST_ABOVE_4G_MMIO_SIZE, GPEXHost,
+> +                     gpex_cfg.mmio64.size, 0),
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
+> index b0240bd768..441c6b8b20 100644
+> --- a/include/hw/pci-host/gpex.h
+> +++ b/include/hw/pci-host/gpex.h
+> @@ -40,6 +40,15 @@ struct GPEXRootState {
+>       /*< public >*/
+>   };
+>   
+> +struct GPEXConfig {
+> +    MemMapEntry ecam;
+> +    MemMapEntry mmio32;
+> +    MemMapEntry mmio64;
+> +    MemMapEntry pio;
+> +    int         irq;
+> +    PCIBus      *bus;
+> +};
+> +
+>   struct GPEXHost {
+>       /*< private >*/
+>       PCIExpressHost parent_obj;
+> @@ -55,19 +64,22 @@ struct GPEXHost {
+>       int irq_num[GPEX_NUM_IRQS];
+>   
+>       bool allow_unmapped_accesses;
+> -};
+>   
+> -struct GPEXConfig {
+> -    MemMapEntry ecam;
+> -    MemMapEntry mmio32;
+> -    MemMapEntry mmio64;
+> -    MemMapEntry pio;
+> -    int         irq;
+> -    PCIBus      *bus;
+> +    struct GPEXConfig gpex_cfg;
+>   };
+>   
+>   int gpex_set_irq_num(GPEXHost *s, int index, int gsi);
+>   
+>   void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg);
+> +void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq);
+> +
+> +#define PCI_HOST_PIO_BASE               "pio-base"
+> +#define PCI_HOST_PIO_SIZE               "pio-size"
+> +#define PCI_HOST_ECAM_BASE              "ecam-base"
+> +#define PCI_HOST_ECAM_SIZE              "ecam-size"
+> +#define PCI_HOST_BELOW_4G_MMIO_BASE     "below-4g-mmio-base"
+> +#define PCI_HOST_BELOW_4G_MMIO_SIZE     "below-4g-mmio-size"
+> +#define PCI_HOST_ABOVE_4G_MMIO_BASE     "above-4g-mmio-base"
+> +#define PCI_HOST_ABOVE_4G_MMIO_SIZE     "above-4g-mmio-size"
+>   
+>   #endif /* HW_GPEX_H */
 
