@@ -2,59 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1397DB585
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 09:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A70FB7DB59A
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 10:01:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxO1v-0002Wm-Co; Mon, 30 Oct 2023 04:53:51 -0400
+	id 1qxO7l-0003ec-6o; Mon, 30 Oct 2023 04:59:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxO1q-0002WV-Ag
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:53:46 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO7h-0003eG-Gb
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:59:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxO1n-0007mB-L8
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:53:45 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxO7e-0000O9-BU
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:59:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698656021;
+ s=mimecast20190719; t=1698656384;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=gISEnm6WYjJfz9gSzH2VPnBYqH+lQr4ujRBvlecC/+Q=;
- b=UClB5Y78fs4VIW+9rr1o4rU5LmPyq39TMNOK4oF+TZG7G4/GQUHc/pB+XQ++VFe0XCuUq5
- ocIUUR+Td9tmGO4G2rpnQYVBRQM2xO8BVLutdRDMIwvWXlQmnhY/oI9/+qC2e3o6osOGAF
- BbMcHtjarQIVLrVjsoKU6/34ipFVK/8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=t2FO3yKkYhDy4ghACNW2SPWw9q777/slTUEns7gVko8=;
+ b=DBH9Rrg2hCWPVbdiqu4NGL/0W7KZcD+FKRsGLP9RxhQWRdEHco8YbY8iy4UBXKa45b12+8
+ 2Uj+KBsjLGFc72yz/KPVSv2JY0BRAOVn607+yeWYn6HmixmUYS6BjIOnNYqa8sQfqqHBQ9
+ kljV1xThiCQFRJqHYD3PfcW92qnhyuo=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-346-VM3c3chBP4yEYGXZDfElmA-1; Mon, 30 Oct 2023 04:53:38 -0400
-X-MC-Unique: VM3c3chBP4yEYGXZDfElmA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A922D85A59D;
- Mon, 30 Oct 2023 08:53:37 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 64716492BFD;
- Mon, 30 Oct 2023 08:53:37 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6814D21E6A1F; Mon, 30 Oct 2023 09:53:36 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	richard.henderson@linaro.org,
-	eduardo@habkost.net
-Subject: [PATCH] MAINTAINERS: Fully cover target/i386/*
-Date: Mon, 30 Oct 2023 09:53:36 +0100
-Message-ID: <20231030085336.2681386-1-armbru@redhat.com>
+ us-mta-498-KMNRGa7cPxGZnJ8j8mBqmQ-1; Mon, 30 Oct 2023 04:59:43 -0400
+X-MC-Unique: KMNRGa7cPxGZnJ8j8mBqmQ-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6712bdfe06dso14098206d6.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 01:59:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698656382; x=1699261182;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t2FO3yKkYhDy4ghACNW2SPWw9q777/slTUEns7gVko8=;
+ b=XPBNyBPXEeFaKVOhInTIxCW1d/TUHF/+ylqc0uhSFncxuGrWJQy/yYU3VJFN/OMtVO
+ W8d6uNMYLbFODqvP/v+eKXy+o+kT/uSGsfKN/eZaaPMy/u6IDg41W4JKFb3SER/DoQt6
+ ZjS3xhoqSQWt4d2olctt0QFKVu4p5Y9/3lxgKQOSmcEaE9tMSdS6J4cmQpaK6IMwgGYV
+ mzROJZn6i5tvoL8mjR8Crfd2eqR/hg6jRFgVNtRtoBGX7Did7C9QvGvlIlWcIJ9yZRfZ
+ RheX+lH2R2+pHL58UGF2hK1wbePh/mRC21qmW6hwBNb9El08owA3abjTsdKv074nxNPj
+ 3RBA==
+X-Gm-Message-State: AOJu0Yy0hflRmJQ6gkFfcQbB8BzJeZNWFKFlWvsuSun5VA4KXqOvHW2h
+ t4wxJFN+hla4vtc1GldAZlWbJEqyPD3vjTuP1xkExsPsOy9KoDDD7hUXMP10PYh7TE6ESxoQzdd
+ M7gb4G5wluu6tBhzE/Rb0ZuoCG1q6VBwRGZl1ZETHWBFEsaYeua1g7V9w3TnVxDeQ7bL7
+X-Received: by 2002:ad4:5c6f:0:b0:66d:57ca:fa59 with SMTP id
+ i15-20020ad45c6f000000b0066d57cafa59mr10616437qvh.37.1698656382665; 
+ Mon, 30 Oct 2023 01:59:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE24v3DU9BTcQi6FuWy1uaRppNEsjVmrbhqj+IA5pRvIt0bzMNJ6BJ1wTvhtOAA6nobhq0oPg==
+X-Received: by 2002:ad4:5c6f:0:b0:66d:57ca:fa59 with SMTP id
+ i15-20020ad45c6f000000b0066d57cafa59mr10616413qvh.37.1698656382292; 
+ Mon, 30 Oct 2023 01:59:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ c11-20020a0ce14b000000b0065823d20381sm3241993qvl.8.2023.10.30.01.59.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 01:59:41 -0700 (PDT)
+Message-ID: <235fbfa2-82c3-48f1-bd4d-cc84b20fa1e5@redhat.com>
+Date: Mon, 30 Oct 2023 09:59:37 +0100
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] vfio/pci: Fix buffer overrun when writing the VF
+ token
+Content-Language: en-US
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Denis V . Lunev"
+ <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
+ Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras <leobras@redhat.com>, qemu-stable@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+References: <20231026070636.1165037-1-clg@redhat.com>
+ <8a9d26d0-ccb4-448b-9fc2-d7ce521646ae@redhat.com>
+In-Reply-To: <8a9d26d0-ccb4-448b-9fc2-d7ce521646ae@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -78,55 +111,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Many files in target/i386/ are not covered:
+On 10/26/23 16:00, Cédric Le Goater wrote:
+> On 10/26/23 09:06, Cédric Le Goater wrote:
+>> Hello,
+>>
+>> This series fixes a buffer overrun in VFIO. The buffer used in
+>> vfio_realize() by qemu_uuid_unparse() is too small, UUID_FMT_LEN lacks
+>> one byte for the trailing NUL.
+>>
+>> Instead of adding + 1, as done elsewhere, the changes introduce a
+>> UUID_STR_LEN define for the correct size and use it where required.
+> 
+> Cc: qemu-stable@nongnu.org # 8.1+
+> 
+> I propose to take this series in vfio-next if no one objects.
 
-    target/i386/arch_dump.c
-    target/i386/arch_memory_mapping.c
-    target/i386/cpu-dump.c
-    target/i386/cpu-internal.h
-    target/i386/cpu-param.h
-    target/i386/cpu-qom.h
-    target/i386/cpu-sysemu.c
-    target/i386/cpu.c
-    target/i386/cpu.h
-    target/i386/cpuid_register
-    target/i386/gdbstub.c
-    target/i386/helper.c
-    target/i386/helper.h
-    target/i386/host-cpu.c
-    target/i386/host-cpu.h
-    target/i386/machine.c
-    target/i386/meson.build
-    target/i386/monitor.c
-    target/i386/ops_sse.h
-    target/i386/svm.h
-    target/i386/trace-events
-    target/i386/trace.h
-    target/i386/xsave_helper.c
 
-Similar files in other target/$t/ are covered by "$t TCG CPUs".  Do
-the same here, taking care not to hijack files that are already
-covered by other sections.
+Applied to vfio-next.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cd8d6b140f..60020ac734 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -396,6 +396,8 @@ M: Paolo Bonzini <pbonzini@redhat.com>
- M: Richard Henderson <richard.henderson@linaro.org>
- M: Eduardo Habkost <eduardo@habkost.net>
- S: Maintained
-+F: target/i386/*
-+X: target/i386/sev*
- F: target/i386/tcg/
- F: tests/tcg/i386/
- F: tests/tcg/x86_64/
--- 
-2.41.0
+C.
 
 
