@@ -2,56 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86A77DBAFA
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6057DBAFB
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:38:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSSM-0003a8-Hf; Mon, 30 Oct 2023 09:37:26 -0400
+	id 1qxSSN-0003ai-53; Mon, 30 Oct 2023 09:37:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSH-0003ZO-On
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSI-0003ZT-Gm
  for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:37:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSD-0005pL-DV
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:37:20 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxSSD-0005pO-F0
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:37:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1698673036;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mCW+5GQjXzNKljGCJqNqvKtC2mCm4UTM6Zoj8RGo3XQ=;
- b=OjC2sdPDXenCjvIoFJQiYa9fOO4sD//3A7N64PeedDdRYZzRFwUw8cW0zzPQUh34iER399
- IUyu1Nqnbq8vOdFT31z1iDNWM8GsnUDMDgkJF8dtHIiJqdrSdrmw3LH1wrd+laM0RVL3H1
- nNQeIbRlRoaJnJEokiSHCSTRrF/cZNA=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=C+YBsynf1oU3pnbEOavTdyJdTLRXwDqD9ZyGyLinOUc=;
+ b=afloCx/HVCXjjZ/tSnsm+Iiq6ap+HwSCasoo4/XbsuXF0lCVWyrAksmPWxj/AXrycGgA9P
+ ObNsk1jaoTizDTsFxhQRwP/YvGuAZfjCHurfDgmdYkS/1ktdyKYklQgJ+3Gjq2hYJIMr1i
+ 5wT11pGzsQW0Vz5gVb8EMF+mmM6o8Us=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-6fUstvpIMcCZl2PaNfrJ-A-1; Mon, 30 Oct 2023 09:37:14 -0400
-X-MC-Unique: 6fUstvpIMcCZl2PaNfrJ-A-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-592-ZGwGNsFoPlm4usJP-2C7uQ-1; Mon, 30 Oct 2023 09:37:14 -0400
+X-MC-Unique: ZGwGNsFoPlm4usJP-2C7uQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 12E348A5DC2
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 10C4985A5BD
  for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 13:37:14 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E65BB1121306
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E4973C1596D
  for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 13:37:13 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C464021E6A1F; Mon, 30 Oct 2023 14:37:12 +0100 (CET)
+ id C623421E6A26; Mon, 30 Oct 2023 14:37:12 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com
-Subject: [PATCH 0/5] dump: Minor fixes & improvements
-Date: Mon, 30 Oct 2023 14:37:07 +0100
-Message-ID: <20231030133712.2822276-1-armbru@redhat.com>
+Subject: [PATCH 1/5] dump: Rename qmp_dump_guest_memory() parameter to match
+ QAPI schema
+Date: Mon, 30 Oct 2023 14:37:08 +0100
+Message-ID: <20231030133712.2822276-2-armbru@redhat.com>
+In-Reply-To: <20231030133712.2822276-1-armbru@redhat.com>
+References: <20231030133712.2822276-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -76,16 +80,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster (5):
-  dump: Rename qmp_dump_guest_memory() parameter to match QAPI schema
-  dump: Fix g_array_unref(NULL) in dump-guest-memory
-  dump: Recognize "fd:" protocols on Windows hosts
-  dump: Improve some dump-guest-memory error messages
-  dump: Drop redundant check for empty dump
+The name of the second parameter differs between QAPI schema and C
+implementation: it's @protocol in the former and @file in the latter.
+Potentially confusing.  Change the C implementation to match the QAPI
+schema.
 
- dump/dump.c | 59 +++++++++++++++--------------------------------------
- 1 file changed, 16 insertions(+), 43 deletions(-)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ dump/dump.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
+diff --git a/dump/dump.c b/dump/dump.c
+index d355ada62e..a1fad17f9c 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -2061,11 +2061,12 @@ DumpQueryResult *qmp_query_dump(Error **errp)
+     return result;
+ }
+ 
+-void qmp_dump_guest_memory(bool paging, const char *file,
++void qmp_dump_guest_memory(bool paging, const char *protocol,
+                            bool has_detach, bool detach,
+-                           bool has_begin, int64_t begin, bool has_length,
+-                           int64_t length, bool has_format,
+-                           DumpGuestMemoryFormat format, Error **errp)
++                           bool has_begin, int64_t begin,
++                           bool has_length, int64_t length,
++                           bool has_format, DumpGuestMemoryFormat format,
++                           Error **errp)
+ {
+     ERRP_GUARD();
+     const char *p;
+@@ -2128,7 +2129,7 @@ void qmp_dump_guest_memory(bool paging, const char *file,
+     }
+ 
+ #if !defined(WIN32)
+-    if (strstart(file, "fd:", &p)) {
++    if (strstart(protocol, "fd:", &p)) {
+         fd = monitor_get_fd(monitor_cur(), p, errp);
+         if (fd == -1) {
+             return;
+@@ -2136,7 +2137,7 @@ void qmp_dump_guest_memory(bool paging, const char *file,
+     }
+ #endif
+ 
+-    if  (strstart(file, "file:", &p)) {
++    if  (strstart(protocol, "file:", &p)) {
+         fd = qemu_open_old(p, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, S_IRUSR);
+         if (fd < 0) {
+             error_setg_file_open(errp, errno, p);
 -- 
 2.41.0
 
