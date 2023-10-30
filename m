@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E13717DBBCF
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:29:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F31FB7DBBC6
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:28:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxTEa-0006O5-GD; Mon, 30 Oct 2023 10:27:16 -0400
+	id 1qxTEe-0006QD-NK; Mon, 30 Oct 2023 10:27:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEY-0006Ne-Ku
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEd-0006Pt-Du
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEV-0007Pp-MX
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:14 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEb-0007Qy-TF
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698676031;
+ s=mimecast20190719; t=1698676037;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z3NTscS2hGzca+zo+2gLCmeXhJH7N0kO3sH429qPOGc=;
- b=JydlKAPsRfRY93ASZVilCprIJNQZTSCKFzuwLqfce9sPqFWptr/Xmp9bFJhvxlxRa79r9O
- uTOMXc3/7rlAAxsssgdCJiMBWhJeGx6SVGDYdDNgdLbi7a2dyYZHgqc+wLQ420fLZJZh0j
- 7DNZINOQ7B5YEP11raInkPrd0P2vvHw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-rrYCVf_6MSqC0ZCDHX5d_Q-1; Mon,
- 30 Oct 2023 10:27:07 -0400
-X-MC-Unique: rrYCVf_6MSqC0ZCDHX5d_Q-1
+ bh=i5+Yaq+2/JqIJVvQAUiWQ0SmaioOozI2ldCfO9uPJTc=;
+ b=VV2Xcy0ePIo9+VZE1ycB1Zj6o53QHXcFXvRAxhf6i9saNk8sojjh0vG8puzujdHVjXMp+t
+ ZZ7f+ER65j6CgBlC8qyVMvXqObbB6LxPpOAGyI/TyczEZU2S17vMtWIXgYC4WfoIYsMXN+
+ hFfHHItiE9ktAO6nEbaCed5jiieD8yg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-424-eRyeWopGOp6vFsbQmrHUyg-1; Mon, 30 Oct 2023 10:27:08 -0400
+X-MC-Unique: eRyeWopGOp6vFsbQmrHUyg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 57A212808FCA;
- Mon, 30 Oct 2023 14:27:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94FF3811E7E;
+ Mon, 30 Oct 2023 14:27:08 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4CBEA492BE0;
- Mon, 30 Oct 2023 14:27:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8C6A2492BE0;
+ Mon, 30 Oct 2023 14:27:07 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, armbru@redhat.com, berrange@redhat.com,
  peter.maydell@linaro.org, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 01/12] qdev: Add qdev_prop_set_array()
-Date: Mon, 30 Oct 2023 15:26:47 +0100
-Message-ID: <20231030142658.182193-2-kwolf@redhat.com>
+Subject: [PATCH v2 02/12] hw/i386/pc: Use qdev_prop_set_array()
+Date: Mon, 30 Oct 2023 15:26:48 +0100
+Message-ID: <20231030142658.182193-3-kwolf@redhat.com>
 In-Reply-To: <20231030142658.182193-1-kwolf@redhat.com>
 References: <20231030142658.182193-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,82 +77,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of exposing the ugly hack of how we represent arrays in qdev (a
-static "foo-len" property and after it is set, dynamically created
-"foo[i]" properties) to boards, add an interface that allows setting the
-whole array at once.
-
-Once all internal users of devices with array properties have been
-converted to use this function, we can change the implementation to move
-away from this hack.
+Instead of manually setting "foo-len" and "foo[i]" properties, build a
+QList and use the new qdev_prop_set_array() helper to set the whole
+array property with a single call.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/qdev-properties.h |  3 +++
- hw/core/qdev-properties.c    | 21 +++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+ hw/i386/pc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index e1df08876c..7fa2fdb7c9 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -206,6 +206,9 @@ void qdev_prop_set_macaddr(DeviceState *dev, const char *name,
-                            const uint8_t *value);
- void qdev_prop_set_enum(DeviceState *dev, const char *name, int value);
- 
-+/* Takes ownership of @values */
-+void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values);
-+
- void *object_field_prop_ptr(Object *obj, Property *prop);
- 
- void qdev_prop_register_global(GlobalProperty *prop);
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 357b8761b5..fb4daba799 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -3,12 +3,14 @@
- #include "qapi/error.h"
- #include "qapi/qapi-types-misc.h"
- #include "qapi/qmp/qerror.h"
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 6031234a73..5be6a78491 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -43,6 +43,7 @@
+ #include "sysemu/reset.h"
+ #include "kvm/kvm_i386.h"
+ #include "hw/xen/xen.h"
 +#include "qapi/qmp/qlist.h"
- #include "qemu/ctype.h"
  #include "qemu/error-report.h"
- #include "qapi/visitor.h"
- #include "qemu/units.h"
- #include "qemu/cutils.h"
- #include "qdev-prop-internal.h"
-+#include "qom/qom-qobject.h"
+ #include "hw/acpi/cpu_hotplug.h"
+ #include "acpi-build.h"
+@@ -1435,10 +1436,11 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+         /* Declare the APIC range as the reserved MSI region */
+         char *resv_prop_str = g_strdup_printf("0xfee00000:0xfeefffff:%d",
+                                               VIRTIO_IOMMU_RESV_MEM_T_MSI);
++        QList *reserved_regions = qlist_new();
++
++        qlist_append_str(reserved_regions, resv_prop_str);
++        qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
  
- void qdev_prop_set_after_realize(DeviceState *dev, const char *name,
-                                   Error **errp)
-@@ -739,6 +741,25 @@ void qdev_prop_set_enum(DeviceState *dev, const char *name, int value)
-                             &error_abort);
- }
+-        object_property_set_uint(OBJECT(dev), "len-reserved-regions", 1, errp);
+-        object_property_set_str(OBJECT(dev), "reserved-regions[0]",
+-                                resv_prop_str, errp);
+         g_free(resv_prop_str);
+     }
  
-+void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values)
-+{
-+    const QListEntry *entry;
-+    g_autofree char *prop_len = g_strdup_printf("len-%s", name);
-+    unsigned i = 0;
-+
-+    object_property_set_int(OBJECT(dev), prop_len, qlist_size(values),
-+                            &error_abort);
-+
-+    QLIST_FOREACH_ENTRY(values, entry) {
-+        g_autofree char *prop_idx = g_strdup_printf("%s[%u]", name, i);
-+        object_property_set_qobject(OBJECT(dev), prop_idx, entry->value,
-+                                    &error_abort);
-+        i++;
-+    }
-+
-+    qobject_unref(values);
-+}
-+
- static GPtrArray *global_props(void)
- {
-     static GPtrArray *gp;
 -- 
 2.41.0
 
