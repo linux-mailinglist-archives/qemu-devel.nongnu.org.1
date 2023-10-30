@@ -2,80 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE5D7DB864
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 521137DB86A
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:44:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxPgI-0007tS-BS; Mon, 30 Oct 2023 06:39:38 -0400
+	id 1qxPkM-0000ZD-Sg; Mon, 30 Oct 2023 06:43:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxPgG-0007t1-3G
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:39:36 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxPgD-0000tF-Mm
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:39:35 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso2715385f8f.0
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 03:39:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698662372; x=1699267172; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=e+TwgWDLl4AnJbMcoL85lD0Wr2asiN+tI27UKxrQI5c=;
- b=SK6wkuUkqYo9ox6MKXU5j9rEv5UbIZUOTpjAZ2HFOZOTl/r1eW8ODY18b3XBP4KO+d
- Y3VLsZEElerJg6dOIK2twik1+j2nL75L22SW+zFo2QANRqmCm5r7Gg46FpHlYXA1ixhX
- F3yFon5eulGR8N/goOlrdXkplGRkPCACQ0kaXi0bsXAjL8AvR5KQEvRJu4s+u/9C4Pbu
- 5L5kM49Mhe0q5y6AqKZ0ok2DgNQEikbCJKgupn5o88GI8nJ5+fyKF/iXnrfpBR+HZKin
- Utvsa39s+yr93thYYBYCsVyxsgsxIrFCGL67IosPRpgFF1yujgIVGvjNitQdM/L5lEdh
- eWZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698662372; x=1699267172;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=e+TwgWDLl4AnJbMcoL85lD0Wr2asiN+tI27UKxrQI5c=;
- b=npgWMyfEFcmtS88y0BLmR69Ec8YD/jN6qCD0bQjfW3X8p6Ic5cvxYaRTQwW7KiQ35c
- GPHSYEPZ65+BT80bsn5a4CPbQVR8AwMEOuD1KWOonJmaQ8ppXdWWZ3E/tvV2ACuTNrAH
- cx2x6cFQRF3BzxzUy51P3sasjN3gt7RIEwuWPR+1cHOPpIQlYL8rIJ3GHtnIB4Px/Yyk
- 18xzHYAWgFRWrLUqfNYGN2jDLTi+nH+yaXERAgVt2RFiIpPB+WRD769jnDy7KCCLdkiz
- LAvjaqWdr1ezEqqXFKVa+1u1wDOyX95XYhGF+u2U0o+je67Y6Xwl+vC22yiiLVxUZaV8
- 6I8w==
-X-Gm-Message-State: AOJu0Yyp7cw1spVvtOSLzvn27zVr1uJKqreTDwqlVwBwcL0MD/MGZ4NJ
- Wxlu+Ex/TeMTxnPF1tBWvOHvvw==
-X-Google-Smtp-Source: AGHT+IEthVCgGR7bFr77PinqbzW0LCmRlm0+kozqq/7pi0Dza1dK8wEPGhe2IzjrLCxNaXdiKze35w==
-X-Received: by 2002:a05:6000:1205:b0:313:f463:9d40 with SMTP id
- e5-20020a056000120500b00313f4639d40mr5274739wrx.65.1698662371742; 
- Mon, 30 Oct 2023 03:39:31 -0700 (PDT)
-Received: from [192.168.69.115] ([176.170.212.50])
- by smtp.gmail.com with ESMTPSA id
- d5-20020a5d6445000000b0032da4f70756sm7950613wrw.5.2023.10.30.03.39.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 03:39:31 -0700 (PDT)
-Message-ID: <f9bdd29e-208c-3df1-d377-ce2619655d68@linaro.org>
-Date: Mon, 30 Oct 2023 11:39:29 +0100
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxPkJ-0000Yv-Hm
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:43:47 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qxPkH-0001dS-BZ
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:43:47 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id CFEE07560A3;
+ Mon, 30 Oct 2023 11:43:47 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 976AF756094; Mon, 30 Oct 2023 11:43:47 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 95DC0756088;
+ Mon, 30 Oct 2023 11:43:47 +0100 (CET)
+Date: Mon, 30 Oct 2023 11:43:47 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v5 3/5] hw/isa/vt82c686: Reuse acpi_update_sci()
+In-Reply-To: <8F8EE81A-9153-4DB9-ADE3-C24B64CD4D1E@gmail.com>
+Message-ID: <3b2023fd-8d8d-c926-5a47-a430c9353a45@eik.bme.hu>
+References: <20231028091606.23700-1-shentey@gmail.com>
+ <20231028091606.23700-4-shentey@gmail.com>
+ <4d959097-0c53-c0fd-b1a0-3d8250e1a314@eik.bme.hu>
+ <8F8EE81A-9153-4DB9-ADE3-C24B64CD4D1E@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 0/6] arm/stellaris: convert gamepad input device to qdev
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20231017122302.1692902-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231017122302.1692902-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,35 +63,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/23 14:22, Peter Maydell wrote:
-> (I had this all ready to go before I went off on holiday two
-> weeks ago, except I forgot to actually *send* the emails...)
-> 
-> This patchseries converts the stellaris board's gamepad input device
-> to qdev. This isn't a very important bit of conversion (I was just
-> looking for a small tail-end-of-the-week task), but it does reduce by
-> one the number of users of a couple of legacy APIs: vmstate_register()
-> and qemu_add_kbd_event_handler().
-> 
-> I've included Kevin's qdev_prop_set_array() patch here, because I
-> wanted an array property and it doesn't seem sensible to write it the
-> old way and have another thing that needs converting. I'm assuming
-> that by the time this patchset gets reviewed and committed that
-> one will already be upstream.
-> 
-> thanks
-> -- PMM
-> 
-> Kevin Wolf (1):
->    qdev: Add qdev_prop_set_array()
-> 
-> Peter Maydell (5):
->    hw/input/stellaris_input: Rename to stellaris_gamepad
->    hw/input/stellaris_gamepad: Rename structs to our usual convention
->    hw/input/stellaris_gamepad: Remove StellarisGamepadButton struct
->    hw/input/stellaris_input: Convert to qdev
->    hw/input/stellaris_gamepad: Convert to qemu_input_handler_register()
+On Mon, 30 Oct 2023, Bernhard Beschow wrote:
+> Am 29. Oktober 2023 00:07:00 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sat, 28 Oct 2023, Bernhard Beschow wrote:
+>>> acpi_update_sci() covers everything pm_update_sci() does. It implements common
+>>> ACPI funtionality in a generic fashion. Note that it agnostic to any
+>>> Frankenstein usage of the general purpose event registers in other device
+>>> models. It just implements a generic mechanism which can be wired to arbitrary
+>>> functionality.
+>>>
+>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>>> ---
+>>> hw/isa/vt82c686.c | 20 ++------------------
+>>> 1 file changed, 2 insertions(+), 18 deletions(-)
+>>>
+>>> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+>>> index 60ca781e03..7b44ad9485 100644
+>>> --- a/hw/isa/vt82c686.c
+>>> +++ b/hw/isa/vt82c686.c
+>>> @@ -145,26 +145,10 @@ static const MemoryRegionOps pm_io_ops = {
+>>>     },
+>>> };
+>>>
+>>> -static void pm_update_sci(ViaPMState *s)
+>>> -{
+>>> -    int sci_level, pmsts;
+>>> -
+>>> -    pmsts = acpi_pm1_evt_get_sts(&s->ar);
+>>> -    sci_level = (((pmsts & s->ar.pm1.evt.en) &
+>>> -                  (ACPI_BITMASK_RT_CLOCK_ENABLE |
+>>> -                   ACPI_BITMASK_POWER_BUTTON_ENABLE |
+>>> -                   ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
+>>> -                   ACPI_BITMASK_TIMER_ENABLE)) != 0);
+>>> -    qemu_set_irq(s->sci_irq, sci_level);
+>>> -    /* schedule a timer interruption if needed */
+>>> -    acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
+>>> -                       !(pmsts & ACPI_BITMASK_TIMER_STATUS));
+>>> -}
+>>> -
+>>> static void pm_tmr_timer(ACPIREGS *ar)
+>>> {
+>>>     ViaPMState *s = container_of(ar, ViaPMState, ar);
+>>> -    pm_update_sci(s);
+>>> +    acpi_update_sci(&s->ar, s->sci_irq);
+>>
+>> To avoid needing an interrupt here maybe you could modify acpi_update_sci() to allow NULL irq then call via_isa_set_irq here so the interrupt routing can be done within the ISA bridge.
+>
+> Given the interesting behavior of the amigaone boot loader I'd respin this series with the last two patches only.
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I guess you could do that just modeling the register and leave out SMI for 
+now until we resolve the IRQ routing so then it should not conflict. I 
+think you said that nothing uses the interrupt and you just need to be 
+able to trigger poweroff with register write?
 
+If you add SMI I think the qemu_irq for that should be in VIAISAState 
+where the other irqs are and PM func should call via_isa_set_irq where it 
+decides to route the SCI to ISA or SMI based on reg values. You can do 
+this in the swich under case PCI_FUNC(of PM device) but if you don't need 
+the IRQ this can be added later in a follow up I think.
+
+Regards,
+BALATON Zoltan
 
