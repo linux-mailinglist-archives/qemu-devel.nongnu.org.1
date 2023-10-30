@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096A87DB272
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 05:12:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0719B7DB279
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 05:17:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxJcb-00081U-28; Mon, 30 Oct 2023 00:11:25 -0400
+	id 1qxJha-00012V-Br; Mon, 30 Oct 2023 00:16:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxJcQ-0007xo-1t
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:11:15 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qxJhU-00012F-S7
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:16:30 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxJcL-0005p1-Ab
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:11:12 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-507f1c29f25so5545621e87.1
- for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 21:11:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qxJhT-0006nw-5m
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 00:16:28 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c77449a6daso34493745ad.0
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 21:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698639066; x=1699243866; darn=nongnu.org;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698639385; x=1699244185;
+ darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=uCAF7+5h2JNv9jDIOphTA/+PoR3E+57mMmsuZ8hwwkU=;
- b=kYhdvSuTqlynOz9efePUuIFVdszrp4XMVP6MjS7PYZEGI75DVY9x0QGb2AcJt/KIrR
- bJtDJ3Jg5rfJa+U6keFGWSTXvrvTjPo4eEEb3qqtfERleoqywy7BO9D1zKp/+oAWMBuQ
- vFKtBs2OiXTTLp0+eGy+ZLI4tJVNXAc4K0yeArYKP2TA+Cnm4jJxmsHywcXkSvZfi+9e
- 0HI/94SW9mcEG5ZaTCkmUoOB9HsSP6KTKiyKxPtODtHkJs+/kZasULp6w6PhChxI2WLv
- vY8z38YWo+5BopC6mwfuDEZGtRW+IxD3zD1Jv51E2C8xsqxqHQE9dK/O5E00r4UWrP/7
- YPbg==
+ bh=lSwo3xUWVOMnUGi/WSyGqFMK1YEvx8fq30WrVLb1o/o=;
+ b=lpC5ltgQcInnK0iMy7+xPD82HwNZcz5w5BqSkxbv+hewb0ac4j+lNBpJpRCnqlQ9Ie
+ bGiVXwqvtL10qSuHqXnfz9z7y6ubbdZuq59YQrYBE19yWHvoqV7spL3lnEgbUZ4T//ny
+ n5RoEaeOy9L4PqOJt4Ngc0/j/8w6bcfaf3ZLkH3pR+6t17OpKPtYIDsAvzsgGu071yXF
+ EvLAvmxZV6ZA1yGez2Vsj4CXLqroZZ6uaoeLkNDfhRN0yrocJLs7YTYYDS9gD5gjWUka
+ Y33AVV4YZtCpCGU8pacY0P6HF3dIMmqY5IqQJn8uUV0r50OxIw74D0Z7Jm+Kc/tWdAeW
+ RVuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698639066; x=1699243866;
+ d=1e100.net; s=20230601; t=1698639385; x=1699244185;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uCAF7+5h2JNv9jDIOphTA/+PoR3E+57mMmsuZ8hwwkU=;
- b=sEg6y+Vh93yepM/x7R/zd6QobpgoR4m0AhXCdCTugQlpqdVZvtm4xqZ+T2QjkfZdRE
- 2UbjcTS4gmI2GKcWfZF/evM0eXrbQxUDOeKPm6Cqi/x9C8dtowJV9WPNAiwsTqU4GD6s
- +uOvvoChM8CwLYGEXpWFldtdwGdfH9mqMTTBbTwAZ1nQXlQdu0fVsnCMqidXuh1EJ6Yl
- lEc1sKti4oEMb1jnmFc/j2GSYvfTVU6tguw6mEuorhtSvw8bThfoc4U/ShrRkZtAIWEA
- 0O5/nGpvwxxPyBn+vbtxAufFK7NNaDsk652FBJNx0RDnaCBLq+D2ql5++xYvh6/zNriW
- jDgQ==
-X-Gm-Message-State: AOJu0YzXlq9cWNc3Hj/ukc+USmpwVDu+YWaIfx9F62QDCPkPWZp/vsI6
- RRy3951zow4XG0HwvTQ8CXRKaQ==
-X-Google-Smtp-Source: AGHT+IEf+NrQRIp69gqL7w1wVhrFh0VtK70ZKXc4QtYn4va/drqob/pjM1TXVvngLSi7G1fE1gdxGQ==
-X-Received: by 2002:a05:6512:2256:b0:503:1aae:eca0 with SMTP id
- i22-20020a056512225600b005031aaeeca0mr7874230lfu.44.1698639066470; 
- Sun, 29 Oct 2023 21:11:06 -0700 (PDT)
-Received: from [192.168.69.115] ([176.170.212.50])
+ bh=lSwo3xUWVOMnUGi/WSyGqFMK1YEvx8fq30WrVLb1o/o=;
+ b=soZCSBXzEC8TVh0jKFO1zFzskPs4rawm6LavYpb8hxLkIjMzMWUSDADF6fOC/ky6W8
+ r9kX2xChS1E6mN/MTYcoW2Wxwq9uQcEVGR0o0s6EO1AiWglh+TNEl+aQ6amruinn7aLW
+ 4uoxbkWd+tfW92eyPnQl7RTMGROIYla9NXpDTfAPD/HHvOAXD1XMvvRaCcnzsTR7XP9n
+ P+LwarBKtdxQWJhYLxUeVZbxHByp3xCelD2fCnsLcd0Vq4Y0lqHe4/gv5UeJSjKm79dg
+ FyYb7LXOGlM7vXBFWhImIeSK4+UMQ/oMN2pvh2yAZbqKplT9yEqk4hG8AoTcz74K8rA+
+ XA1w==
+X-Gm-Message-State: AOJu0YyIPWzSFo94zRVayB1jgH2o3R+kEba0gdwYipfqCs5Io0TyRQ3X
+ +0LLCx00CNZqsfhYZ99l6kSjchVkh8Bq9Hy++GlqYw==
+X-Google-Smtp-Source: AGHT+IE5wOVAJqj+m/KMX7A63VlAtKdXu7wWBQG6JrfkWuTxm/zK9Ajr38sCkSV3wAsDQROk8xofeA==
+X-Received: by 2002:a17:903:1c7:b0:1c9:bf02:6638 with SMTP id
+ e7-20020a17090301c700b001c9bf026638mr10060384plh.51.1698639385095; 
+ Sun, 29 Oct 2023 21:16:25 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a1709063b4a00b009adcb6c0f0esm5279033ejf.193.2023.10.29.21.11.04
+ ja17-20020a170902efd100b001c3f7fd1ef7sm3324031plb.12.2023.10.29.21.16.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 29 Oct 2023 21:11:06 -0700 (PDT)
-Message-ID: <53a87de9-6586-5a66-de53-152dc4cb4d1d@linaro.org>
-Date: Mon, 30 Oct 2023 05:11:04 +0100
+ Sun, 29 Oct 2023 21:16:24 -0700 (PDT)
+Message-ID: <b4c24738-e502-4e69-8d6d-1a3ef6a1614b@daynix.com>
+Date: Mon, 30 Oct 2023 13:16:22 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] hw/ufs: Modify lu.c to share codes with SCSI subsystem
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 04/21] net: Remove receive_raw()
 Content-Language: en-US
-To: Jeuk Kim <jeuk20.kim@gmail.com>, qemu-devel@nongnu.org
-Cc: jeuk20.kim@samsung.com, kwolf@redhat.com, hreitz@redhat.com,
- thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com, fam@euphon.net,
- qemu-block@nongnu.org
-References: <9fd0dc1f55724fa79011be231cc27bf4aab11157.1697764912.git.jeuk20.kim@samsung.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <9fd0dc1f55724fa79011be231cc27bf4aab11157.1697764912.git.jeuk20.kim@samsung.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>
+References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
+ <20231017040932.62997-5-akihiko.odaki@daynix.com>
+ <CACGkMEukvjmJ20pWSDsxtxo_UZAC33yEjWNsSqdNJRm8xL2O4w@mail.gmail.com>
+ <ef82309f-ca89-4850-acf6-94ffa7726c2f@daynix.com>
+ <9204e711-0eb9-01da-54dd-c67ae9e05c3b@redhat.com>
+ <13dc8043-cf30-4fe7-9e1d-1c69f4e26b1a@daynix.com>
+ <CACGkMEsYTMuS+okKi7-e-F_JDqB2P3BEO6DLJSBc_eS1TaXe0A@mail.gmail.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CACGkMEsYTMuS+okKi7-e-F_JDqB2P3BEO6DLJSBc_eS1TaXe0A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,37 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jeuk,
+On 2023/10/30 13:08, Jason Wang wrote:
+> On Mon, Oct 30, 2023 at 12:03 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> On 2023/10/30 12:06, Jason Wang wrote:
+>>>
+>>> 在 2023/10/27 15:52, Akihiko Odaki 写道:
+>>>> On 2023/10/27 15:49, Jason Wang wrote:
+>>>>> On Tue, Oct 17, 2023 at 12:09 PM Akihiko Odaki
+>>>>> <akihiko.odaki@daynix.com> wrote:
+>>>>>>
+>>>>>> While netmap implements virtio-net header, it does not implement
+>>>>>> receive_raw().
+>>>>>
+>>>>> The only user for raw is the announcing. Netmap probably doesn't it
+>>>>> at all.
+>>>>
+>>>> In my understanding, the announcing *sends* a raw packet.
+>>>
+>>>
+>>> It's send via NIC and receive by its peer which is the TAP
+>>>
+>>> qemu_send_packet_raw() -> nc -> nc->peer -> peer->receive_raw()?
+>>>
+>>> Anything I miss?
+>>
+>> The problem is that the peer can be netmap and netmap also requires a
+>> virtio-net header.
+> 
+> Right, but I don't know whether netmap can migrate.
 
-On 20/10/23 03:51, Jeuk Kim wrote:
-> This patch removes the code that ufs-lu was duplicating from
-> scsi-hd and allows them to share code.
-> 
-> It makes ufs-lu have a virtual scsi-bus and scsi-hd internally.
-> This allows scsi related commands to be passed thorugh to the scsi-hd.
-> The query request and nop command work the same as the existing logic.
-> 
-> Well-known lus do not have a virtual scsi-bus and scsi-hd, and
-> handle the necessary scsi commands by emulating them directly.
-> 
-> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
-> ---
->   hw/ufs/lu.c            | 1473 +++++++---------------------------------
-
-I liked this patch intent, but almost 1500 lines changed in a single
-patch make it impossible to review. Ideally each patch shouldn't modify
-more than 100 lines, otherwise reviewers are either exhausted or can't
-be careful enough and miss possible bugs or design issues.
+Thinking of the condition that announcement can happen, I'm not aware 
+anything that prevents migration with netamp. It also is apparently 
+possible to make an announcement with HMP/QMP.
+In any case, I think it's better to fix qemu_send_packet_raw() for 
+netmap to prevent potential breakage especially if it costs nothing 
+(actually it saves some code).
 
 Regards,
-
-Phil.
-
->   hw/ufs/trace-events    |   25 -
->   hw/ufs/ufs.c           |  202 +-----
->   hw/ufs/ufs.h           |   36 +-
->   include/block/ufs.h    |    2 +-
->   tests/qtest/ufs-test.c |   37 +-
->   6 files changed, 315 insertions(+), 1460 deletions(-)
-
+Akihiko Odaki
 
