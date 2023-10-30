@@ -2,105 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994BD7DB959
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 12:53:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B543F7DB95E
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 12:56:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxQpQ-0005np-Ur; Mon, 30 Oct 2023 07:53:08 -0400
+	id 1qxQre-0006ch-4c; Mon, 30 Oct 2023 07:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxQpN-0005nb-Pe
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:53:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qxQrb-0006cV-2d
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:55:23 -0400
+Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxQpL-0008O7-TQ
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:53:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698666782;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+qW+r5eKRgIdo9gXwmYcgPabaX9heEeVDrYn2lJHYDk=;
- b=TdczmB/fLMa9OyBtVER8ycaQSWF3XK5I6h7sicg3FG6nwXgqjDklv/DtkYN0RImiroRTa3
- a19lrsyVHXecd8zSxKEH1BNzTi7JEEB4a6dxz8RBMZhzznt6GIs3T5ZjaxR5HUtPA3KG6a
- 91y3tIH+p6c/xOqnoMGc5+P7MPjcAcM=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-7HLZRYJ-MeuIQtAKpKbn_g-1; Mon, 30 Oct 2023 07:53:00 -0400
-X-MC-Unique: 7HLZRYJ-MeuIQtAKpKbn_g-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2c5032ab59eso45395191fa.3
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 04:53:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698666779; x=1699271579;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+qW+r5eKRgIdo9gXwmYcgPabaX9heEeVDrYn2lJHYDk=;
- b=xVNnlXjHUFxkZXDNA/ZfimDlTisH/xWtENuTreaq9E9CzxnE7VjerMb1FNOe1fruiV
- Iq0ZzIGNLn4RehIuDktpr3JfTqv3vJi3iVWOoaiQq5Lyf4cUT/4pyBkqtvyG0kafk8Nq
- GfvaUdGGh6s45AcuCJCc6TamiysWnlHolDz+KtUDQsBoym6UtcLlUV1H6F9G8FUGUeOT
- FgLKNJGhYG02drSxYG2iS/fForshwjezwbPf2CSh02jxz+B9vwuE9r0vpacU2HLgDGj+
- idNIwCzSIALgxomQrygAeJgega6Y9Tsv9wMpaMV44K+L7khAxV/IXak1WHi5iPUzWwP+
- f9Zg==
-X-Gm-Message-State: AOJu0YybAOKz0+IV8siWgT3aoSSSjbnp9nf1WrJ/vjW0l4XUziyOmHkO
- R45RTZwpzxzZCaBOM1+QYNlrV9PpnMXXtb3jjBMyQ0hhNf0+oH/4VLbhXXuOn3fXLfPL5Mf2K8E
- JW4V3kEn/Q1AcPnw=
-X-Received: by 2002:a2e:82c5:0:b0:2c5:23ac:3672 with SMTP id
- n5-20020a2e82c5000000b002c523ac3672mr6859858ljh.45.1698666779065; 
- Mon, 30 Oct 2023 04:52:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF3cZSAf8ceUfSelT/xsTQf42bZkhZJ3mlUp6+KaS+Z5km9fnoXFbfydAox8UkVbWTAoBh4g==
-X-Received: by 2002:a2e:82c5:0:b0:2c5:23ac:3672 with SMTP id
- n5-20020a2e82c5000000b002c523ac3672mr6859825ljh.45.1698666778729; 
- Mon, 30 Oct 2023 04:52:58 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f9:8d1f:b988:36e1:2445:bb0d])
- by smtp.gmail.com with ESMTPSA id
- ew11-20020a05600c808b00b004063c9f68f2sm8836655wmb.26.2023.10.30.04.52.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Oct 2023 04:52:58 -0700 (PDT)
-Date: Mon, 30 Oct 2023 07:52:52 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Joao Martins <joao.m.martins@oracle.com>,
- Yi Liu <yi.l.liu@intel.com>, Kevin Tian <kevin.tian@intel.com>,
- Jacob Pan <jacob.jun.pan@linux.intel.com>,
- Peter Xu <peterx@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Yi Sun <yi.y.sun@linux.intel.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Helge Deller <deller@gmx.de>,
- =?iso-8859-1?Q?Herv=E9?= Poussineau <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v5] hw/pci: modify pci_setup_iommu() to set PCIIOMMUOps
-Message-ID: <20231030075246-mutt-send-email-mst@kernel.org>
-References: <20231023082416.180262-1-clg@redhat.com>
- <e0946db3-75b0-4d20-bfbf-a827cbb68ae9@redhat.com>
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qxQrN-0000Yi-3o
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:55:22 -0400
+Received: from [192.168.111.82] (unknown [124.65.131.38])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 53CB744547;
+ Mon, 30 Oct 2023 11:54:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1698666897; bh=6mEnQn+YnG5tn4AF4Ga3PaoWSFA0lzRP7wJolGMN6C0=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=cjzMNpZtJqdmUqQkzhsI//VBkdNCesux4dE97ZBUvC2Sw0wpph3FMpgdLHLbz6Gmd
+ nyfMLYg+iD4J0S/gZU2Srkf612jIvtbQg1AMMOwo2hGUcxGq482DvT3pqC0z/CtRVN
+ mZH+lYx/f9XXyr7Lum2fXuQSDl5tVXyH4vIMQzOE=
+Message-ID: <603b8709-4288-4268-abd4-642366b0b7e2@jia.je>
+Date: Mon, 30 Oct 2023 19:54:51 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
+To: gaosong <gaosong@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: git@xen0n.name, bibo mao <maobibo@loongson.cn>
+References: <20231023153029.269211-2-c@jia.je>
+ <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
+ <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
+ <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
+ <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
+ <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
+ <6482c6cf-1f4b-a7b9-d106-4c687360e810@loongson.cn>
+ <ae3088b6-f472-4dd2-a5bc-9effb61ffaa0@jia.je>
+ <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
+Content-Language: en-US
+From: Jiajie Chen <c@jia.je>
+In-Reply-To: <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e0946db3-75b0-4d20-bfbf-a827cbb68ae9@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,81 +73,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 10:00:35AM +0100, C�dric Le Goater wrote:
-> On 10/23/23 10:24, C�dric Le Goater wrote:
-> > From: Yi Liu <yi.l.liu@intel.com>
-> > 
-> > This patch modifies pci_setup_iommu() to set PCIIOMMUOps
-> > instead of setting PCIIOMMUFunc. PCIIOMMUFunc is used to
-> > get an address space for a PCI device in vendor specific
-> > way. The PCIIOMMUOps still offers this functionality. But
-> > using PCIIOMMUOps leaves space to add more iommu related
-> > vendor specific operations.
-> > 
-> > Cc: Kevin Tian <kevin.tian@intel.com>
-> > Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Cc: Eric Auger <eric.auger@redhat.com>
-> > Cc: Yi Sun <yi.y.sun@linux.intel.com>
-> > Cc: David Gibson <david@gibson.dropbear.id.au>
-> > Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> > Cc: Eric Auger <eric.auger@redhat.com>
-> > Cc: Peter Maydell <peter.maydell@linaro.org>
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Cc: Jason Wang <jasowang@redhat.com>
-> > Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > Cc: Helge Deller <deller@gmx.de>
-> > Cc: Herv� Poussineau <hpoussin@reactos.org>
-> > Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > Cc: BALATON Zoltan <balaton@eik.bme.hu>
-> > Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>
-> > Cc: Jagannathan Raman <jag.raman@oracle.com>
-> > Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-> > Cc: Eric Farman <farman@linux.ibm.com>
-> > Cc: Halil Pasic <pasic@linux.ibm.com>
-> > Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> > Cc: Thomas Huth <thuth@redhat.com>
-> > Cc: Helge Deller <deller@gmx.de>
-> > Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-> > Reviewed-by: Peter Xu <peterx@redhat.com>
-> > Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> > Reviewed-by: Philippe Mathieu-Daud� <philmd@linaro.org>
-> > Reviewed-by: Eric Auger <eric.auger@redhat.com>
-> > [ clg: - refreshed on latest QEMU
-> >         - included hw/remote/iommu.c
-> >         - documentation update
-> >         - asserts in pci_setup_iommu()
-> >         - removed checks on iommu_bus->iommu_ops->get_address_space
-> >         - included Elroy PCI host (PA-RISC) ]
-> > Signed-off-by: C�dric Le Goater <clg@redhat.com>
-> > ---
-> > 
-> >   Hello,
-> > 
-> >   Initially sent by Yi Liu as part of series "intel_iommu: expose
-> >   Shared Virtual Addressing to VMs" [1], this patch would also simplify
-> >   the changes Joao wants to introduce in "vfio: VFIO migration support
-> >   with vIOMMU" [2].
-> > 
-> >   Has anyone objections ?
-> > 
-> >   Thanks,
-> > 
-> >   C.
-> > 
-> >   [1] https://lore.kernel.org/qemu-devel/20210302203827.437645-5-yi.l.liu@intel.com/
-> >   [2] https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
-> 
-> 
-> Applied to vfio-next.
-> 
-> Thanks,
-> 
-> C.
+
+On 2023/10/30 16:23, gaosong wrote:
+> 在 2023/10/28 下午9:09, Jiajie Chen 写道:
+>>
+>> On 2023/10/26 14:54, gaosong wrote:
+>>> 在 2023/10/26 上午9:38, Jiajie Chen 写道:
+>>>>
+>>>> On 2023/10/26 03:04, Richard Henderson wrote:
+>>>>> On 10/25/23 10:13, Jiajie Chen wrote:
+>>>>>>> On 2023/10/24 07:26, Richard Henderson wrote:
+>>>>>>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, 
+>>>>>>>> TCGv_i128 block.
+>>>>>>>> See target/ppc/translate.c, gen_stqcx_.
+>>>>>>>
+>>>>>>> The situation here is slightly different: aarch64 and ppc64 have 
+>>>>>>> both 128-bit ll and sc, however LoongArch v1.1 only has 64-bit 
+>>>>>>> ll and 128-bit sc.
+>>>>>
+>>>>> Ah, that does complicate things.
+>>>>>
+>>>>>> Possibly use the combination of ll.d and ld.d:
+>>>>>>
+>>>>>>
+>>>>>> ll.d lo, base, 0
+>>>>>> ld.d hi, base, 4
+>>>>>>
+>>>>>> # do some computation
+>>>>>>
+>>>>>> sc.q lo, hi, base
+>>>>>>
+>>>>>> # try again if sc failed
+>>>>>>
+>>>>>> Then a possible implementation of gen_ll() would be: align base 
+>>>>>> to 128-bit boundary, read 128-bit from memory, save 64-bit part 
+>>>>>> to rd and record whole 128-bit data in llval. Then, in 
+>>>>>> gen_sc_q(), it uses a 128-bit cmpxchg.
+>>>>>>
+>>>>>>
+>>>>>> But what about the reversed instruction pattern: ll.d hi, base, 
+>>>>>> 4; ld.d lo, base 0?
+>>>>>
+>>>>> It would be worth asking your hardware engineers about the bounds 
+>>>>> of legal behaviour. Ideally there would be some very explicit 
+>>>>> language, similar to
+>>>>
+>>>>
+>>>> I'm a community developer not affiliated with Loongson. Song Gao, 
+>>>> could you provide some detail from Loongson Inc.?
+>>>>
+>>>>
+>>>
+>>> ll.d   r1, base, 0
+>>> dbar 0x700          ==> see 2.2.8.1
+>>> ld.d  r2, base,  8
+>>> ...
+>>> sc.q r1, r2, base
+>>
+>>
+>> Thanks! I think we may need to detect the ll.d-dbar-ld.d sequence and 
+>> translate the sequence into one tcg_gen_qemu_ld_i128 and split the 
+>> result into two 64-bit parts. Can do this in QEMU?
+>>
+>>
+> Oh, I'm not sure.
+>
+> I think we just need to implement sc.q. We don't need to care about 
+> 'll.d-dbar-ld.d'. It's just like 'll.q'.
+> It needs the user to ensure that .
+>
+> ll.q' is
+> 1) ll.d r1 base, 0 ==> set LLbit, load the low 64 bits into r1
+> 2) dbar 0x700　
+> 3) ld.d r2 base, 8 ==> load the high 64 bits to r2
+>
+> sc.q needs to
+> 1) Use 64-bit cmpxchg.
+> 2) Write 128 bits to memory.
+
+Consider the following code:
 
 
-Okay.
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+ll.d r1, base, 0
 
+dbar 0x700
+
+ld.d r2, base, 8
+
+addi.d r2, r2, 1
+
+sc.q r1, r2, base
+
+
+We translate them into native code:
+
+
+ld.d r1, base, 0
+
+mv LLbit, 1
+
+mv LLaddr, base
+
+mv LLval, r1
+
+dbar 0x700
+
+ld.d r2, base, 8
+
+addi.d r2, r2, 1
+
+if (LLbit == 1 && LLaddr == base) {
+
+     cmpxchg addr=base compare=LLval new=r1
+
+     128-bit write {r2, r1} to base if cmpxchg succeeded
+
+}
+
+set r1 if sc.q succeeded
+
+
+
+If the memory content of base+8 has changed between ld.d r2 and addi.d 
+r2, the atomicity is not guaranteed, i.e. only the high part has 
+changed, the low part hasn't.
+
+
+
+>
+> Thanks.
+> Song Gao
+>>>
+>>>
+>>> For this series,
+>>> I think we need set the new config bits to the 'max cpu', and change 
+>>> linux-user/target_elf.h ''any' to 'max', so that we can use these 
+>>> new instructions on linux-user mode.
+>>
+>> I will work on it.
+>>
+>>
+>>>
+>>> Thanks
+>>> Song Gao
+>>>>>
+>>>>> https://developer.arm.com/documentation/ddi0487/latest/
+>>>>> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage 
+>>>>> restrictions
+>>>>>
+>>>>> But you could do the same thing, aligning and recording the entire 
+>>>>> 128-bit quantity, then extract the ll.d result based on address 
+>>>>> bit 6.  This would complicate the implementation of sc.d as well, 
+>>>>> but would perhaps bring us "close enough" to the actual architecture.
+>>>>>
+>>>>> Note that our Arm store-exclusive implementation isn't quite in 
+>>>>> spec either.  There is quite a large comment within 
+>>>>> translate-a64.c store_exclusive() about the ways things are not 
+>>>>> quite right.  But it seems to be close enough for actual usage to 
+>>>>> succeed.
+>>>>>
+>>>>>
+>>>>> r~
+>>>
+>
 
