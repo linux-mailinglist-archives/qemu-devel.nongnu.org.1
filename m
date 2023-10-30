@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF9AA7DBC25
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BAF7DBC36
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:57:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxTeR-0002cY-Ar; Mon, 30 Oct 2023 10:53:59 -0400
+	id 1qxThS-0004e1-3h; Mon, 30 Oct 2023 10:57:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxTeP-0002by-Fz
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:53:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxTeN-0004zy-MV
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:53:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698677635;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GZowNvlmXlsisEqXBO8RXO+9eb/Oy+hUieUqca3EPOU=;
- b=ZJQhdf+2pQt1nceZHVT1TbNdO0Nwq87nccd7Zs/tbdxtXaXYcK1hw0K9OWelg614Epe3Pb
- 7yUOQKZC5jPEZLdbRgzgafgVDLbsfOgzHaNpgUy9J2CzZtk8Y9mBBQC3s3sBM72HIa0U71
- FwK+s7mr2EIJWHpcCrzMXGFnXYM6RKs=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-LwyP8sX4NOqutqOAFCFALg-1; Mon, 30 Oct 2023 10:53:53 -0400
-X-MC-Unique: LwyP8sX4NOqutqOAFCFALg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-77892f2ee51so589323085a.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:53:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxThG-0004dl-UH
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:56:55 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxThD-00068x-Rr
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:56:53 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-99de884ad25so702345666b.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:56:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698677810; x=1699282610; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pQMRtWxsI4t+NcNx7UGjR4E6aFEp3nrV+4mdFZI7m9I=;
+ b=QEfqMSK9uEYBQRMwTE+z6Pu4NB6HD2sOE9ZpCfYUvs41zD9qkPyeQ01kbqpAcoTic0
+ gh2ytONVxOKjMLXeFsmbYPJxoqSCg8GLjeaVV/Z3d1xIVIkcGgDsFdcMPHk71aLy+XEy
+ 1ZyMgZ11Ik+zGicm+CkNn2Re0KUC14jqKm5OJY8dpNeueWB/xg/TIAWk2rgmgH4V9mL5
+ eQrMncBoVBKVgscNrCuHV49Kgi1R0glvACgvjNw47S7Um+rGCj2v0rXQK7HxLrq7H75v
+ dIV+gMV63Sno3DEUIa6JgIiTT86bQsKA21nQRVp1BN/S2Nj/eGqWsxIxZa7ULjMkqvDQ
+ Vrhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698677633; x=1699282433;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1698677810; x=1699282610;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GZowNvlmXlsisEqXBO8RXO+9eb/Oy+hUieUqca3EPOU=;
- b=qzIceH30Yqls5rTRUblzc6swuu8xz/kAVoNUGLyC7nn0yUnXmgI+FZxROPvhp2zLX0
- PBFqSnyu5nB58jlYEXuiM+z9YBBiNttxJWHl26eRFuToSvJYDhtAiz3WyQ+mn+57PK5B
- BmziTp7MWJt2QE7oTHouqHapb+59TZjTQPMUaBYES6xU8T6afC6nv3DKUubvZL+V4rWj
- GieTZFEuumu6Wki2ZF5wtf1eAwDWdwPM5vHD2D35VQCTYfS64yAl5iBKpI9E0KiZ1/H/
- gyGKXR1UvoBOVRaXrjd6afxHIWUIb1rd1ekk412MslGidyOrruKRCX92DM01ov3EJpZ3
- AglA==
-X-Gm-Message-State: AOJu0Yxe8Qmp03pQ674lG//V6syr6+j8teztPCcvTjD1Ptvkip42tu1S
- pQivSvvKYGrpRAyA3hCExuShqIkSvOF4En+W3rzgR48Q//qxhpIW7uw0O1YanP5Z5Oji//qcL+X
- bHOl1KObId/rzEb0=
-X-Received: by 2002:a05:620a:1d05:b0:778:8bad:662d with SMTP id
- dl5-20020a05620a1d0500b007788bad662dmr10779011qkb.18.1698677633159; 
- Mon, 30 Oct 2023 07:53:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1F9pi68r+jyWcwnP5dpk5Rw+p+MOGam5/hn3fLO2stASy4Qx3dkOwDWrM7Aso3iuwvsaivA==
-X-Received: by 2002:a05:620a:1d05:b0:778:8bad:662d with SMTP id
- dl5-20020a05620a1d0500b007788bad662dmr10778988qkb.18.1698677632841; 
- Mon, 30 Oct 2023 07:53:52 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ bh=pQMRtWxsI4t+NcNx7UGjR4E6aFEp3nrV+4mdFZI7m9I=;
+ b=ZKwPON9O5rCtVInazL5Rge1MDwTDf7LyMHWBnSpbna9/AxWcOmgnFm2dWzh9efLn/n
+ Nq4aRURK0H2zmIGynYyJNSJOLqIIMeM5KKIUM1dFwkjCRVKGIuSFehaIFmTMnst4+S/k
+ wo0kdQAJbJGWwvhhAqFMqqMKj6CLE7oBQmTUNy1tAb3WDJqCYmAdL/etJuTpEFu8sr7P
+ wpcLkEmwgDT/o/e7HeGecdZBOdM9+NdIUguRkMOTmKbPp9VNHoGl3zRqB/TzqmWP0weV
+ 08mDtY9fACji8niR0154SRZEbBR1JrAdPpnzLUqQsGuEMEiWPiKJbis+LUpT4nUa0Wfc
+ edFw==
+X-Gm-Message-State: AOJu0Yw4ieFU3Rigcrq4jy9GRGfnEovLEADQVSplS5DxO+EBnQyRsQOj
+ mtb/2WT++jwa6jROsNxHrBqeDA==
+X-Google-Smtp-Source: AGHT+IEonnQ+hpMIUhzHXc+dozXmHvtTL1ycIt8M39P6Xjpwtggotcy4daAZk5ybEvmEDCV0909rrQ==
+X-Received: by 2002:a17:906:da84:b0:9be:30c2:b8fd with SMTP id
+ xh4-20020a170906da8400b009be30c2b8fdmr8520043ejb.66.1698677809867; 
+ Mon, 30 Oct 2023 07:56:49 -0700 (PDT)
+Received: from [192.168.69.115] ([176.170.212.50])
  by smtp.gmail.com with ESMTPSA id
- o14-20020a05620a22ce00b007776c520488sm3378131qki.9.2023.10.30.07.53.49
+ gj22-20020a170907741600b009d152059ad7sm4695098ejc.39.2023.10.30.07.56.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 07:53:51 -0700 (PDT)
-Message-ID: <50827527-ff82-434f-ab95-770572b0d81c@redhat.com>
-Date: Mon, 30 Oct 2023 15:53:47 +0100
+ Mon, 30 Oct 2023 07:56:49 -0700 (PDT)
+Message-ID: <597d5991-97c5-9e2e-0660-fe5c75b3b1b7@linaro.org>
+Date: Mon, 30 Oct 2023 15:56:44 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 25/37] util/char_dev: Add open_cdev()
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: QEMU developers fortnightly conference call for 2023-10-31
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-26-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231026103104.1686921-26-zhenzhong.duan@intel.com>
+To: Juan Quintela <juan.quintela@gmail.com>, afaerber@suse.de, ale@rev.ng,
+ anjo@rev.ng, bazulay@redhat.com, bbauman@redhat.com,
+ chao.p.peng@linux.intel.com, cjia@nvidia.com, cw@f00f.org,
+ david.edmondson@oracle.com, dustin.kirkland@canonical.com,
+ eblake@redhat.com, edgar.iglesias@gmail.com, elena.ufimtseva@oracle.com,
+ eric.auger@redhat.com, f4bug@amsat.org,
+ "felipe@nutanix.com" <felipe.franciosi@nutanix.com>,
+ "iggy@theiggy.com" <iggy@kws1.com>, "imp@bsdimp.com" <wlosh@bsdimp.com>,
+ jan.kiszka@web.de, jgg@nvidia.com, jidong.xiao@gmail.com,
+ jjherne@linux.vnet.ibm.com, joao.m.martins@oracle.com,
+ konrad.wilk@oracle.com, mburton@qti.qualcomm.com, mdean@redhat.com,
+ mimu@linux.vnet.ibm.com, peter.maydell@linaro.org, qemu-devel@nongnu.org,
+ quintela@redhat.com, richard.henderson@linaro.org,
+ shameerali.kolothum.thodi@huawei.com, stefanha@gmail.com,
+ wei.w.wang@intel.com, z.huo@139.com, zwu.kernel@gmail.com
+References: <calendar-1ad16449-09cc-40fb-ab4a-24eafcc62d2a@google.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <calendar-1ad16449-09cc-40fb-ab4a-24eafcc62d2a@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -64
+X-Spam_score: -6.5
+X-Spam_bar: ------
+X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.441,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,172 +105,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 12:30, Zhenzhong Duan wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
+Hi Juan,
+
+On 30/10/23 12:04, Juan Quintela wrote:
+> QEMU developers fortnightly conference call
 > 
-> /dev/vfio/devices/vfioX may not exist. In that case it is still possible
-> to open /dev/char/$major:$minor instead. Add helper function to abstract
-> the cdev open.
+> Hi
 > 
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   MAINTAINERS                 |  6 +++
->   include/qemu/chardev_open.h | 16 ++++++++
->   util/chardev_open.c         | 81 +++++++++++++++++++++++++++++++++++++
->   util/meson.build            |  1 +
->   4 files changed, 104 insertions(+)
->   create mode 100644 include/qemu/chardev_open.h
->   create mode 100644 util/chardev_open.c
+> If you have any topics for this week Conference call, please answer to 
+> this email.
+
+I don't have anything planned but I can take 30min to briefly
+describe the problems I'm encountering, and present the vision /
+roadmap prepared, which I'll post as RFC soon (right know I'm
+focusing on getting my last PRs ready for soft freeze).
+
+> Thanks, Juan.
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7aa57ab16f..123e999bee 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3447,6 +3447,12 @@ S: Maintained
->   F: include/qemu/iova-tree.h
->   F: util/iova-tree.c
->   
-> +cdev Open
-> +M: Yi Liu <yi.l.liu@intel.com>
-> +S: Maintained
-> +F: include/qemu/chardev_open.h
-> +F: util/chardev_open.c
-> +
->   elf2dmp
->   M: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
->   S: Maintained
-> diff --git a/include/qemu/chardev_open.h b/include/qemu/chardev_open.h
-> new file mode 100644
-> index 0000000000..6580d351c6
-> --- /dev/null
-> +++ b/include/qemu/chardev_open.h
-> @@ -0,0 +1,16 @@
-> +/*
-> + * QEMU Chardev Helper
-> + *
-> + * Copyright (C) 2023 Intel Corporation.
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2.  See
-> + * the COPYING file in the top-level directory.
-> + */
-> +
-> +#ifndef QEMU_CHARDEV_HELPERS_H
-> +#define QEMU_CHARDEV_HELPERS_H
-> +
-> +int open_cdev(const char *devpath, dev_t cdev);
-> +#endif
-> diff --git a/util/chardev_open.c b/util/chardev_open.c
-> new file mode 100644
-> index 0000000000..005d2b81bd
-> --- /dev/null
-> +++ b/util/chardev_open.c
-> @@ -0,0 +1,81 @@
-> +/*
-> + * Copyright (c) 2019, Mellanox Technologies. All rights reserved.
-> + * Copyright (C) 2023 Intel Corporation.
-> + *
-> + * This software is available to you under a choice of one of two
-> + * licenses.  You may choose to be licensed under the terms of the GNU
-> + * General Public License (GPL) Version 2, available from the file
-> + * COPYING in the main directory of this source tree, or the
-> + * OpenIB.org BSD license below:
-> + *
-> + *      Redistribution and use in source and binary forms, with or
-> + *      without modification, are permitted provided that the following
-> + *      conditions are met:
-> + *
-> + *      - Redistributions of source code must retain the above
-> + *        copyright notice, this list of conditions and the following
-> + *        disclaimer.
-> + *
-> + *      - Redistributions in binary form must reproduce the above
-> + *        copyright notice, this list of conditions and the following
-> + *        disclaimer in the documentation and/or other materials
-> + *        provided with the distribution.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-> + * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-> + * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-> + * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-> + * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-> + * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-> + * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-> + * SOFTWARE.
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *
-> + * Copied from
-> + * https://github.com/linux-rdma/rdma-core/blob/master/util/open_cdev.c
-> + *
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/chardev_open.h"
-> +
-> +static int open_cdev_internal(const char *path, dev_t cdev)
-> +{
-> +    struct stat st;
-> +    int fd;
-> +
-> +    fd = qemu_open_old(path, O_RDWR);
-> +    if (fd == -1) {
-> +        return -1;
-> +    }
-> +    if (fstat(fd, &st) || !S_ISCHR(st.st_mode) ||
-> +        (cdev != 0 && st.st_rdev != cdev)) {
-> +        close(fd);
-> +        return -1;
-> +    }
-> +    return fd;
-> +}
-> +
-> +static int open_cdev_robust(dev_t cdev)
-> +{
-> +    g_autofree char *devpath;
+> QEMU developers fortnightly conference call
+> Tuesday 2023-10-31 ⋅ 14:00 – 15:00 (Central European Time - Madrid)
+> If you need call details, please contact me: quintela@redhat.com 
+> <mailto:quintela@redhat.com>
+> 
+> 
+>     Location
+> 
+> https://meet.jit.si/kvmcallmeeting
+> View map 
+> <https://www.google.com/url?q=https%3A%2F%2Fmeet.jit.si%2Fkvmcallmeeting&sa=D&ust=1699095840000000&usg=AOvVaw2MfLnjN20yFq03yus22z_j>
 
-Please initialize g_autofree variables ( = NULL)
-
-
-Thanks,
-
-C.
-
-
-> +
-> +    /*
-> +     * This assumes that udev is being used and is creating the /dev/char/
-> +     * symlinks.
-> +     */
-> +    devpath = g_strdup_printf("/dev/char/%u:%u", major(cdev), minor(cdev));
-> +    return open_cdev_internal(devpath, cdev);
-> +}
-> +
-> +int open_cdev(const char *devpath, dev_t cdev)
-> +{
-> +    int fd;
-> +
-> +    fd = open_cdev_internal(devpath, cdev);
-> +    if (fd == -1 && cdev != 0) {
-> +        return open_cdev_robust(cdev);
-> +    }
-> +    return fd;
-> +}
-> diff --git a/util/meson.build b/util/meson.build
-> index eb677b40c2..eda0b06062 100644
-> --- a/util/meson.build
-> +++ b/util/meson.build
-> @@ -107,6 +107,7 @@ if have_block
->       util_ss.add(files('filemonitor-stub.c'))
->     endif
->     util_ss.add(when: 'CONFIG_LINUX', if_true: files('vfio-helpers.c'))
-> +  util_ss.add(when: 'CONFIG_LINUX', if_true: files('chardev_open.c'))
->   endif
->   
->   if cpu == 'aarch64'
 
 
