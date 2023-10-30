@@ -2,82 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A571D7DBB62
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F5D7DBB8D
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:15:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSu5-0003gq-H6; Mon, 30 Oct 2023 10:06:05 -0400
+	id 1qxT26-0001bD-QL; Mon, 30 Oct 2023 10:14:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxSu3-0003gR-BA
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:06:03 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxSu1-0003dJ-QQ
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:06:03 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9adca291f99so674650166b.2
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698674760; x=1699279560; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IkXEWEGJQZpyBOgODpAT/RhgAmFnMM2kcNoD2lbHv0Y=;
- b=NQygav9q+Uoj3FZHLN3mJrRFt6+JTPoCRAKu27uCtCueL8FIBpRgGWjhVOmDQfv6Lg
- MEFEgcQmL+kL3MAGZkJEzo8FB+vYUFlIR8Nro5mNJ37dZioBL6kFb0En6XtXVLcYr3Ri
- 7IHhRqZ1mghumh19kHoMJeTGlE61859MA8XemMCilcmDcjaHB5GMgF1TmhGqX8gAOG5X
- vbsDMvjOnX4FdUDRd0ipfjkeEHWL4Ovp8vrIYo9xpaXDl7lENHi448bPSqRBi1ze4LJq
- OsgkZYnJq8hbw0z3XOIBMsZcjCvH3Wxsdo6AaFjBsH3U7ns7FAokFyVn/BlbK+g5atQE
- Ww3g==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxT25-0001Zr-3I
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:14:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxT1p-0004xR-T2
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:14:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698675244;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WpgIXu9F0YZoR6UhZGb6IiyYms/3VLhSFs02Fgz0SuM=;
+ b=Q47m3O8ciSpnoOu5kwsH/LXGOwuJkwneF7tlCjSPmtQOfZZvAdnljRJYXIpV2qvHGQc55n
+ +wxpQIHOCviurnNxI5VVH50rUxblO6LmfpMSEmUmO2NBixCVPhT0REf6r4Z1SvegFKy+Mp
+ ARFrRiqqIJoFhYTRJGtrRDxCpO9BjPI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-306-KpkS3QK6Pra8Rfn-8cpZSQ-1; Mon, 30 Oct 2023 10:13:59 -0400
+X-MC-Unique: KpkS3QK6Pra8Rfn-8cpZSQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4084e263ec4so33305475e9.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:13:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698674760; x=1699279560;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IkXEWEGJQZpyBOgODpAT/RhgAmFnMM2kcNoD2lbHv0Y=;
- b=LxBwV3BOV72Wh2ZUJMl6SYWjs6yxWrNqu5+aLoE9n7ZGp6OmH49JZ0JuOZW3WjVS53
- J4e7uAxshjkPex8AbrJsFklZgd6L7lMgizLL/CB5KZefOYhq9toScT4+TvSeEqL1mF7y
- pAPL1Hey7HZYSSZdCbswS+fKurD10cxtjOfOkNJTsxNx7nrOJ4Smc1S1rbwWdB/THlwZ
- /zzyiBAe7WxjRomgzq40CudiRFdREIVumr3lHzJsHUYYNKascbDJMkOkLqGg+jKiCQuF
- LL6tUs1QHx0tkmrZkyc2i1+sC6bQwyc09Zg9X3ZbwUko4g26sUH7AeqILNQ8Jb9cKqDO
- VnLA==
-X-Gm-Message-State: AOJu0YwIUx2MsPagjeduLXRh019ofp3wQGgyyHmvdIRNRfkmlwPz0enC
- QK/Hr8dnSUNvmxQdCqtthKW+mQ==
-X-Google-Smtp-Source: AGHT+IFRpjmqni5Zb4C2eWqoOmrlC5Oy7hIMwXUGZlOCsJkjpF9QSJijYSjlPuLYl73Ghvu61igwiA==
-X-Received: by 2002:a17:907:3fa3:b0:9c5:1100:9b8c with SMTP id
- hr35-20020a1709073fa300b009c511009b8cmr7964992ejc.56.1698674759831; 
- Mon, 30 Oct 2023 07:05:59 -0700 (PDT)
-Received: from [192.168.69.115] ([176.170.212.50])
- by smtp.gmail.com with ESMTPSA id
- p7-20020a170906228700b0099bd5d28dc4sm6093345eja.195.2023.10.30.07.05.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 07:05:59 -0700 (PDT)
-Message-ID: <473f2bd5-ebd4-00be-b8dd-c046505da9d8@linaro.org>
-Date: Mon, 30 Oct 2023 15:05:57 +0100
+ d=1e100.net; s=20230601; t=1698675233; x=1699280033;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WpgIXu9F0YZoR6UhZGb6IiyYms/3VLhSFs02Fgz0SuM=;
+ b=NqP1KOhZKAFXyIL8aFykAqff0oVRW1lX8FHPKMPGsibhg9Q5aXTTa/mOHbURNtFZ9V
+ IcX+/L8U97vhzijSokdNa0g0OLGW7k9xQwXCg090/v9H6VafWwySurSXSMZBJgeW6z6I
+ YK/WeHelX+ek/WpDdwQK2Ptuzkd2XWV2vBaOfLTs/0l7xgtPzKhee/2EbhitpvC8b26C
+ KZfvdLUH56Rvdb89vh48n7GthEfrhGCSjU7LL5s7ybt03T1bwAMZ5u7ACNl/UnDUhcYB
+ JMGm+UwD15OECjfnzMWI7t2C5VmSk67vKGIqP1F/SIZCUDmlSQcM7wQE0DP3Oktfc88N
+ tSeQ==
+X-Gm-Message-State: AOJu0Yx8pK1Y3xzG+jnsGn3/dKmAT7FUKBUzgX97dlhNCCJxxO72BCic
+ hI5NAyHsDeGq1ay/pgJ833+/fMXvvHrs/Yox4wzXmDAX6vfhSu11Sgp1UJlGK3fW8+cbYtHgwEK
+ uOc6buHVvmwoNQSg=
+X-Received: by 2002:a5d:48c8:0:b0:32d:aa62:a8c3 with SMTP id
+ p8-20020a5d48c8000000b0032daa62a8c3mr6295967wrs.41.1698675233055; 
+ Mon, 30 Oct 2023 07:13:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrmlmnk9n4jFmd72NEXmi8JjvmLS6o8UCcXjicoAdXzsfSmcUZhesSUyhmf0sVJL7XQIPrgQ==
+X-Received: by 2002:a5d:48c8:0:b0:32d:aa62:a8c3 with SMTP id
+ p8-20020a5d48c8000000b0032daa62a8c3mr6295942wrs.41.1698675232490; 
+ Mon, 30 Oct 2023 07:13:52 -0700 (PDT)
+Received: from redhat.com ([31.187.78.246]) by smtp.gmail.com with ESMTPSA id
+ q12-20020adffecc000000b0032dc1fc84f2sm8443927wrs.46.2023.10.30.07.13.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Oct 2023 07:13:51 -0700 (PDT)
+Date: Mon, 30 Oct 2023 10:13:46 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Anup Patel <apatel@ventanamicro.com>,
+ Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
+Subject: Re: [PATCH v5 00/13] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
+Message-ID: <20231030101332-mutt-send-email-mst@kernel.org>
+References: <20231030132058.763556-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 4/5] dump: Improve some dump-guest-memory error messages
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com
-References: <20231030133712.2822276-1-armbru@redhat.com>
- <20231030133712.2822276-5-armbru@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231030133712.2822276-5-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -64
-X-Spam_score: -6.5
-X-Spam_bar: ------
-X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.441,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231030132058.763556-1-sunilvl@ventanamicro.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,46 +109,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
-
-On 30/10/23 14:37, Markus Armbruster wrote:
-> Zero @length is rejected with "Invalid parameter 'length'".  Improve
-> to "Parameter 'length' expects a non-zero length".
+On Mon, Oct 30, 2023 at 06:50:45PM +0530, Sunil V L wrote:
+> This series primarily enables external interrupt controllers (AIA and PLIC)
+> in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO and
+> MMU related information.
 > 
-> @protocol values not starting with "fd:" or "file:" are rejected with
-> "Invalid parameter 'protocol'".  Improve to "parameter 'protocol' must
-> start with 'file:' or 'fd:'".
+> Below ECRs for these changes are approved by ASWG and will be
+> available in next ACPI spec release.
+
+
+pci, acpi things look ok
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+> 1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
+> 2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
 > 
-> While there, make the conditional checking @protocol a little more
-> obvious.
+> First two patches in this series are to migrate a couple of functions from
+> ARM architecture to common code so that RISC-V doesn't need to duplicate
+> the same.
 > 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   dump/dump.c | 16 +++++++---------
->   1 file changed, 7 insertions(+), 9 deletions(-)
+> The patch set is based on Alistair's riscv-to-apply.next branch.
 > 
-> diff --git a/dump/dump.c b/dump/dump.c
-> index a5e9a06ef1..d888e4bd3c 100644
-> --- a/dump/dump.c
-> +++ b/dump/dump.c
-> @@ -1812,7 +1812,8 @@ static void dump_init(DumpState *s, int fd, bool has_format,
->   
->       s->fd = fd;
->       if (has_filter && !length) {
-> -        error_setg(errp, QERR_INVALID_PARAMETER, "length");
-> +        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "length",
-
-Per commit 4629ed1e98 ("qerror: Finally unused, clean up", 2015):
-
-  /*
-   * These macros will go away, please don't use in new code, ...
-
-Instead we can use:
-
-            error_setg(errp, "Parameter '%s' expects %s", "length",
-
-> +                   "a non-zero size");
->           goto cleanup;
->       }
+> These changes are also available in  riscv_acpi_b2_v5 branch at:
+> https://github.com/vlsunil/qemu/
+> 
+> Changes since v4:
+> 	1) Updated copyright for new files as per SPDX format suggested by Drew.
+> 	2) Updated RINTC patch to avoid code duplication as suggested by Drew.
+> 	3) Moved mmu offset below cmo in MMU patch as suggested by Drew.
+> 	4) Updated tags.
+> 
+> Changes since v3:
+> 	1) Addressed comments from Daniel and Drew.
+> 	2) Added a new patch in microvm to use common function for virtio in DSDT.
+> 	3) Rebased to latest riscv-to-apply.next branch and added tags.
+> 
+> Changes since v2:
+>         1) Rebased to latest riscv-to-apply.next branch which needed
+>            changing ext_icboz to ext_zicboz in CMO patch.
+>         2) Fixed node type in MMU node.
+>         3) Added latest tags.
+> 
+> Changes since v1:
+>         1) As per Igor's suggestion, migrated fw_cfg and virtio creation
+>            functions to device specific file instead of generic aml-build.c.
+>            Since ACPI is optional, new files are created and enabled for
+>            build only when CONFIG_ACPI is enabled.
+>         2) As per Igor's suggestion, properties are added to the GPEX PCI
+>            host to indicate MMIO ranges. The platform fw can initialize
+>            these to appropriate values and the DSDT generator can fetch
+>            the information from the host bus itself. This makes the code
+>            generic instead of machine specific.
+>         3) Added PLIC patch from Haibo.
+>         4) Rebased to latest riscv-to-apply.next and added RB tags as
+>            appropriate.
+> 
+> Sunil V L (13):
+>   hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
+>   hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
+>   hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
+>   hw/riscv: virt: Make few IMSIC macros and functions public
+>   hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
+>   hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
+>   hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
+>   hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
+>   hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
+>   hw/pci-host/gpex: Define properties for MMIO ranges
+>   hw/riscv/virt: Update GPEX MMIO related properties
+>   hw/riscv/virt-acpi-build.c: Add IO controllers and devices
+>   hw/riscv/virt-acpi-build.c: Add PLIC in MADT
+> 
+>  hw/arm/virt-acpi-build.c        |  51 +----
+>  hw/i386/acpi-microvm.c          |  15 +-
+>  hw/nvram/fw_cfg-acpi.c          |  23 +++
+>  hw/nvram/meson.build            |   1 +
+>  hw/pci-host/gpex-acpi.c         |  13 ++
+>  hw/pci-host/gpex.c              |  12 ++
+>  hw/riscv/Kconfig                |   1 +
+>  hw/riscv/virt-acpi-build.c      | 323 +++++++++++++++++++++++++++++---
+>  hw/riscv/virt.c                 |  72 ++++---
+>  hw/virtio/meson.build           |   1 +
+>  hw/virtio/virtio-acpi.c         |  32 ++++
+>  include/hw/nvram/fw_cfg_acpi.h  |  15 ++
+>  include/hw/pci-host/gpex.h      |  28 ++-
+>  include/hw/riscv/virt.h         |  26 +++
+>  include/hw/virtio/virtio-acpi.h |  16 ++
+>  15 files changed, 498 insertions(+), 131 deletions(-)
+>  create mode 100644 hw/nvram/fw_cfg-acpi.c
+>  create mode 100644 hw/virtio/virtio-acpi.c
+>  create mode 100644 include/hw/nvram/fw_cfg_acpi.h
+>  create mode 100644 include/hw/virtio/virtio-acpi.h
+> 
+> -- 
+> 2.39.2
 
 
