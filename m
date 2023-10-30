@@ -2,66 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E2E7DBBC8
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:28:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A497DBBE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:36:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxTEq-0006T2-AC; Mon, 30 Oct 2023 10:27:32 -0400
+	id 1qxTLz-0007Hx-QT; Mon, 30 Oct 2023 10:34:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEl-0006ST-SM
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxTEj-0007Rv-Fu
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:27:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698676045;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Yli6ZS5C1oiy8Gx1g3DCCS+3zq/ApUSzav8kJZVVK5A=;
- b=LjA4r89hlo4XHGmQYKjIKckkAg9Adu6Rk6E+xGZuENHryLsRZ2ITDY1/DQ44KeNVaX3P8T
- Oo8du00WidgXKmZipduS0pO9fPWhzjNn2vdSLLWWbnDhcFZNzwS3E8zQ4Nl3mtl9vZBWdS
- 1XZ0VZa75/M4vGCoDbgTFGhB6i0NIC0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-LgI0EaIUMVWOxQE9sqcUpQ-1; Mon,
- 30 Oct 2023 10:27:21 -0400
-X-MC-Unique: LgI0EaIUMVWOxQE9sqcUpQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D53D381CC09;
- Mon, 30 Oct 2023 14:27:21 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.194.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 62DDC492BE0;
- Mon, 30 Oct 2023 14:27:20 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: kwolf@redhat.com, armbru@redhat.com, berrange@redhat.com,
- peter.maydell@linaro.org, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v2 12/12] qdev: Rework array properties based on list visitor
-Date: Mon, 30 Oct 2023 15:26:58 +0100
-Message-ID: <20231030142658.182193-13-kwolf@redhat.com>
-In-Reply-To: <20231030142658.182193-1-kwolf@redhat.com>
-References: <20231030142658.182193-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxTLr-0007Hp-DH
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:34:47 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxTLp-0000Pi-Qe
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:34:47 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-1e9c9d181d6so2962058fac.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:34:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698676484; x=1699281284; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IPun/K2D1V/RGkeXLxVA9Yld/QwxiBptJkAqsjBFkhI=;
+ b=kzXuyD9WVCrfRNYRfIhCHnK2OLF0eUm9uvHOfth/iGeB04Rkiy4sNk8UoSsCy2KShO
+ 2mEzxP8gUtcXaPl/LDNyG+b010JzcwvPvT9L3I29NHHzluPP54KRrqJv9W5kk8CyWY0q
+ RbjulKX8h+mRRk8EQGlwOfO2CGTFzhe1FlZPnFJxbzJL88jpYVig8/bjcRQYBGWkYJFS
+ aFBDd40VjLObFVmbhXLR6sWvtg5dpQE6iZ5eWksEePG18+ZGVtYrBNIQM33ckO63EEAU
+ cC85U1WlO9K0MYbov5c7hBuSOAGtwGtLTxJ9XqTnDP1xELg+Dx+k2pn4kKuYgyMFwPPz
+ MNRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698676484; x=1699281284;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IPun/K2D1V/RGkeXLxVA9Yld/QwxiBptJkAqsjBFkhI=;
+ b=kRBW+ScpgqaTMzjtBv3IUtyeTuDITiqY4Yxh0hE4Ku4qhunvpfmgUmA2weYmq3GEZh
+ abwVuU6izZxTFocZbvTb1rwSV79zdcKw9qFu7clFxPGGMIEsZrCQFJYKn9SQq7kJFL31
+ ksk1KlvlXkiAJihBZ8hQ/NRvZ2p8aBOy7Iok0jHQRj0EtbDq1pVbU2qOGPYe6UHG//CI
+ 1j8qUYXpALT0n8BkS4glufUhTX292ETKsgLMJ1pN+EmJsBa58aGdFWLlbuWlafD6hIMs
+ aKblxVMDgXBdaYQrldLmMXaSc5tGkY9JT8As/vWDApmnuSgzhV/GW7DLj89g22gEifHa
+ Oq5Q==
+X-Gm-Message-State: AOJu0YwDnL6hRiNnQq6BvrRg9rzftJARZhBu18r0ZBiSdC02GHJgEUp1
+ 1Fy2Uz6x8rjW3a+8m/GU78e35Q==
+X-Google-Smtp-Source: AGHT+IH/yr9qLyMzOaGWEqcWKHgyCR9LtBuwcbJBd/j4o4d8PoY5Mjs6+DisPl8mydT2B5QLNUAJ9A==
+X-Received: by 2002:a05:6870:164e:b0:1ea:6a7b:e40a with SMTP id
+ c14-20020a056870164e00b001ea6a7be40amr12884211oae.59.1698676484444; 
+ Mon, 30 Oct 2023 07:34:44 -0700 (PDT)
+Received: from [192.168.68.107] ([179.193.10.161])
+ by smtp.gmail.com with ESMTPSA id
+ j205-20020a2523d6000000b00da05d771097sm3922150ybj.22.2023.10.30.07.34.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 07:34:44 -0700 (PDT)
+Message-ID: <345e6083-206a-4bf2-8522-ee99fedc012d@ventanamicro.com>
+Date: Mon, 30 Oct 2023 11:34:40 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/14] target/riscv: Add cfg property for Zvkt extension
+Content-Language: en-US
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+References: <20231026151828.754279-1-max.chou@sifive.com>
+ <20231026151828.754279-2-max.chou@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231026151828.754279-2-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,411 +99,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Until now, array properties are actually implemented with a hack that
-uses multiple properties on the QOM level: a static "foo-len" property
-and after it is set, dynamically created "foo[i]" properties.
 
-In external interfaces (-device on the command line and device_add in
-QMP), this interface was broken by commit f3558b1b ('qdev: Base object
-creation on QDict rather than QemuOpts') because QDicts are unordered
-and therefore it could happen that QEMU tried to set the indexed
-properties before setting the length, which fails and effectively makes
-array properties inaccessible. In particular, this affects the 'ports'
-property of the 'rocker' device, which used to be configured like this:
 
--device rocker,len-ports=2,ports[0]=dev0,ports[1]=dev1
+On 10/26/23 12:18, Max Chou wrote:
+> Vector crypto spec defines the Zvkt extension that included all of the
+> instructions of Zvbb & Zvbc extensions and some vector instructions.
+> 
+> Signed-off-by: Max Chou <max.chou@sifive.com>
+> ---
 
-This patch reworks the external interface so that instead of using a
-separate top-level property for the length and for each element, we use
-a single true array property that accepts a list value. In the external
-interfaces, this is naturally expressed as a JSON list and makes array
-properties accessible again. The new syntax looks like this:
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
--device '{"driver":"rocker","ports":["dev0","dev1"]}'
-
-Creating an array property on the command line without using JSON format
-is currently not possible. This could be fixed by switching from
-QemuOpts to a keyval parser, which however requires consideration of the
-compatibility implications.
-
-All internal users of devices with array properties go through
-qdev_prop_set_array() at this point, so updating it takes care of all of
-them.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1090
-Fixes: f3558b1b763683bb877f7dd5b282469cdadc65c3
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- include/hw/qdev-properties.h |  59 +++++----
- hw/core/qdev-properties.c    | 224 ++++++++++++++++++++++-------------
- 2 files changed, 183 insertions(+), 100 deletions(-)
-
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index 7fa2fdb7c9..cac752bade 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -1,7 +1,10 @@
- #ifndef QEMU_QDEV_PROPERTIES_H
- #define QEMU_QDEV_PROPERTIES_H
- 
-+#include <stdalign.h>
-+
- #include "hw/qdev-core.h"
-+#include "qapi/visitor.h"
- 
- /**
-  * Property:
-@@ -61,7 +64,7 @@ extern const PropertyInfo qdev_prop_size;
- extern const PropertyInfo qdev_prop_string;
- extern const PropertyInfo qdev_prop_on_off_auto;
- extern const PropertyInfo qdev_prop_size32;
--extern const PropertyInfo qdev_prop_arraylen;
-+extern const PropertyInfo qdev_prop_array;
- extern const PropertyInfo qdev_prop_link;
- 
- #define DEFINE_PROP(_name, _state, _field, _prop, _type, ...) {  \
-@@ -115,8 +118,6 @@ extern const PropertyInfo qdev_prop_link;
-                 .bitmask    = (_bitmask),                     \
-                 .set_default = false)
- 
--#define PROP_ARRAY_LEN_PREFIX "len-"
--
- /**
-  * DEFINE_PROP_ARRAY:
-  * @_name: name of the array
-@@ -127,28 +128,46 @@ extern const PropertyInfo qdev_prop_link;
-  * @_arrayprop: PropertyInfo defining what property the array elements have
-  * @_arraytype: C type of the array elements
-  *
-- * Define device properties for a variable-length array _name.  A
-- * static property "len-arrayname" is defined. When the device creator
-- * sets this property to the desired length of array, further dynamic
-- * properties "arrayname[0]", "arrayname[1]", ...  are defined so the
-- * device creator can set the array element values. Setting the
-- * "len-arrayname" property more than once is an error.
-+ * Define device properties for a variable-length array _name.  The array is
-+ * represented as a list in the visitor interface.
-  *
-- * When the array length is set, the @_field member of the device
-+ * @_arraytype is required to be movable with memcpy() and to have an alignment
-+ * such that it can be stored at GenericList.padding.
-+ *
-+ * When the array property is set, the @_field member of the device
-  * struct is set to the array length, and @_arrayfield is set to point
-- * to (zero-initialised) memory allocated for the array.  For a zero
-- * length array, @_field will be set to 0 and @_arrayfield to NULL.
-+ * to the memory allocated for the array.
-+ *
-  * It is the responsibility of the device deinit code to free the
-  * @_arrayfield memory.
-  */
--#define DEFINE_PROP_ARRAY(_name, _state, _field,               \
--                          _arrayfield, _arrayprop, _arraytype) \
--    DEFINE_PROP((PROP_ARRAY_LEN_PREFIX _name),                 \
--                _state, _field, qdev_prop_arraylen, uint32_t,  \
--                .set_default = true,                           \
--                .defval.u = 0,                                 \
--                .arrayinfo = &(_arrayprop),                    \
--                .arrayfieldsize = sizeof(_arraytype),          \
-+#define DEFINE_PROP_ARRAY(_name, _state, _field,                        \
-+                          _arrayfield, _arrayprop, _arraytype)          \
-+    DEFINE_PROP(_name, _state, _field, qdev_prop_array, uint32_t,       \
-+                .set_default = true,                                    \
-+                .defval.u = 0,                                          \
-+                .arrayinfo = &(_arrayprop),                             \
-+                /*                                                      \
-+                 * set_prop_array() temporarily stores elements at      \
-+                 * GenericList.padding. Make sure that this has the     \
-+                 * right alignment for @_arraytype.                     \
-+                 *                                                      \
-+                 * Hack: In this place, neither static assertions work  \
-+                 * nor is a statement expression allowed. This          \
-+                 * abomination of an expression works because inside    \
-+                 * the declaration of a dummy struct, static assertions \
-+                 * are possible. Using the comma operator causes        \
-+                 * warnings about an unused value and casting to void   \
-+                 * makes the expression not constant in gcc, so instead \
-+                 * of ignoring the first part, make it evaluate to 0    \
-+                 * and add it to the actual result.                     \
-+                 */                                                     \
-+                .arrayfieldsize = (!sizeof(struct {                     \
-+                    QEMU_BUILD_BUG_ON(                                  \
-+                        !QEMU_IS_ALIGNED(sizeof(GenericList),           \
-+                                         alignof(_arraytype)));         \
-+                    int dummy;                                          \
-+                }) + sizeof(_arraytype)),                               \
-                 .arrayoffset = offsetof(_state, _arrayfield))
- 
- #define DEFINE_PROP_LINK(_name, _state, _field, _type, _ptr_type)     \
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index fb4daba799..4f3e1152be 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -546,98 +546,174 @@ const PropertyInfo qdev_prop_size32 = {
- 
- /* --- support for array properties --- */
- 
--/* Used as an opaque for the object properties we add for each
-- * array element. Note that the struct Property must be first
-- * in the struct so that a pointer to this works as the opaque
-- * for the underlying element's property hooks as well as for
-- * our own release callback.
-+/*
-+ * Given an array property @parent_prop in @obj, return a Property for a
-+ * specific element of the array. Arrays are backed by an uint32_t length field
-+ * and an element array. @elem points at an element in this element array.
-  */
--typedef struct {
--    struct Property prop;
--    char *propname;
--    ObjectPropertyRelease *release;
--} ArrayElementProperty;
--
--/* object property release callback for array element properties:
-- * we call the underlying element's property release hook, and
-- * then free the memory we allocated when we added the property.
-+static Property array_elem_prop(Object *obj, Property *parent_prop,
-+                                const char *name, char *elem)
-+{
-+    return (Property) {
-+        .info = parent_prop->arrayinfo,
-+        .name = name,
-+        /*
-+         * This ugly piece of pointer arithmetic sets up the offset so
-+         * that when the underlying release hook calls qdev_get_prop_ptr
-+         * they get the right answer despite the array element not actually
-+         * being inside the device struct.
-+         */
-+        .offset = (uintptr_t)elem - (uintptr_t)obj,
-+    };
-+}
-+
-+/*
-+ * Object property release callback for array properties: We call the
-+ * underlying element's property release hook for each element.
-+ *
-+ * Note that it is the responsibility of the individual device's deinit
-+ * to free the array proper.
-  */
--static void array_element_release(Object *obj, const char *name, void *opaque)
-+static void release_prop_array(Object *obj, const char *name, void *opaque)
- {
--    ArrayElementProperty *p = opaque;
--    if (p->release) {
--        p->release(obj, name, opaque);
-+    Property *prop = opaque;
-+    uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-+    void **arrayptr = (void *)obj + prop->arrayoffset;
-+    char *elem = *arrayptr;
-+    int i;
-+
-+    if (!prop->arrayinfo->release) {
-+        return;
-+    }
-+
-+    for (i = 0; i < *alenptr; i++) {
-+        Property elem_prop = array_elem_prop(obj, prop, name, elem);
-+        prop->arrayinfo->release(obj, NULL, &elem_prop);
-+        elem += prop->arrayfieldsize;
-     }
--    g_free(p->propname);
--    g_free(p);
- }
- 
--static void set_prop_arraylen(Object *obj, Visitor *v, const char *name,
--                              void *opaque, Error **errp)
-+/*
-+ * Setter for an array property. This sets both the array length (which
-+ * is technically the property field in the object) and the array itself
-+ * (a pointer to which is stored in the additional field described by
-+ * prop->arrayoffset).
-+ */
-+static void set_prop_array(Object *obj, Visitor *v, const char *name,
-+                           void *opaque, Error **errp)
- {
--    /* Setter for the property which defines the length of a
--     * variable-sized property array. As well as actually setting the
--     * array-length field in the device struct, we have to create the
--     * array itself and dynamically add the corresponding properties.
--     */
-+    ERRP_GUARD();
-     Property *prop = opaque;
-     uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-     void **arrayptr = (void *)obj + prop->arrayoffset;
--    void *eltptr;
--    const char *arrayname;
--    int i;
-+    GenericList *list, *elem, *next;
-+    const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
-+    char *elemptr;
-+    bool ok = true;
- 
-     if (*alenptr) {
-         error_setg(errp, "array size property %s may not be set more than once",
-                    name);
-         return;
-     }
--    if (!visit_type_uint32(v, name, alenptr, errp)) {
-+
-+    if (!visit_start_list(v, name, &list, list_elem_size, errp)) {
-         return;
-     }
--    if (!*alenptr) {
-+
-+    /* Read the whole input into a temporary list */
-+    elem = list;
-+    while (elem) {
-+        Property elem_prop = array_elem_prop(obj, prop, name, elem->padding);
-+        prop->arrayinfo->set(obj, v, NULL, &elem_prop, errp);
-+        if (*errp) {
-+            ok = false;
-+            goto out_obj;
-+        }
-+        if (*alenptr == INT_MAX) {
-+            error_setg(errp, "array is too big");
-+            return;
-+        }
-+        (*alenptr)++;
-+        elem = visit_next_list(v, elem, list_elem_size);
-+    }
-+
-+    ok = visit_check_list(v, errp);
-+out_obj:
-+    visit_end_list(v, (void**) &list);
-+
-+    if (!ok) {
-+        for (elem = list; elem; elem = next) {
-+            Property elem_prop = array_elem_prop(obj, prop, name,
-+                                                 elem->padding);
-+            if (prop->arrayinfo->release) {
-+                prop->arrayinfo->release(obj, NULL, &elem_prop);
-+            }
-+            next = elem->next;
-+            g_free(elem);
-+        }
-         return;
-     }
- 
--    /* DEFINE_PROP_ARRAY guarantees that name should start with this prefix;
--     * strip it off so we can get the name of the array itself.
-+    /*
-+     * Now that we know how big the array has to be, move the data over to a
-+     * linear array and free the temporary list.
-      */
--    assert(strncmp(name, PROP_ARRAY_LEN_PREFIX,
--                   strlen(PROP_ARRAY_LEN_PREFIX)) == 0);
--    arrayname = name + strlen(PROP_ARRAY_LEN_PREFIX);
-+    *arrayptr = g_malloc_n(*alenptr, prop->arrayfieldsize);
-+    elemptr = *arrayptr;
-+    for (elem = list; elem; elem = next) {
-+        memcpy(elemptr, elem->padding, prop->arrayfieldsize);
-+        elemptr += prop->arrayfieldsize;
-+        next = elem->next;
-+        g_free(elem);
-+    }
-+}
- 
--    /* Note that it is the responsibility of the individual device's deinit
--     * to free the array proper.
--     */
--    *arrayptr = eltptr = g_malloc0(*alenptr * prop->arrayfieldsize);
--    for (i = 0; i < *alenptr; i++, eltptr += prop->arrayfieldsize) {
--        char *propname = g_strdup_printf("%s[%d]", arrayname, i);
--        ArrayElementProperty *arrayprop = g_new0(ArrayElementProperty, 1);
--        arrayprop->release = prop->arrayinfo->release;
--        arrayprop->propname = propname;
--        arrayprop->prop.info = prop->arrayinfo;
--        arrayprop->prop.name = propname;
--        /* This ugly piece of pointer arithmetic sets up the offset so
--         * that when the underlying get/set hooks call qdev_get_prop_ptr
--         * they get the right answer despite the array element not actually
--         * being inside the device struct.
--         */
--        arrayprop->prop.offset = eltptr - (void *)obj;
--        assert(object_field_prop_ptr(obj, &arrayprop->prop) == eltptr);
--        object_property_add(obj, propname,
--                            arrayprop->prop.info->name,
--                            field_prop_getter(arrayprop->prop.info),
--                            field_prop_setter(arrayprop->prop.info),
--                            array_element_release,
--                            arrayprop);
-+static void get_prop_array(Object *obj, Visitor *v, const char *name,
-+                           void *opaque, Error **errp)
-+{
-+    ERRP_GUARD();
-+    Property *prop = opaque;
-+    uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-+    void **arrayptr = (void *)obj + prop->arrayoffset;
-+    char *elem = *arrayptr;
-+    GenericList *list;
-+    const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
-+    int i;
-+    bool ok;
-+
-+    if (!visit_start_list(v, name, &list, list_elem_size, errp)) {
-+        return;
-     }
-+
-+    for (i = 0; i < *alenptr; i++) {
-+        Property elem_prop = array_elem_prop(obj, prop, name, elem);
-+        prop->arrayinfo->get(obj, v, NULL, &elem_prop, errp);
-+        if (*errp) {
-+            goto out_obj;
-+        }
-+        elem += prop->arrayfieldsize;
-+    }
-+
-+    /* visit_check_list() can only fail for input visitors */
-+    ok = visit_check_list(v, errp);
-+    assert(ok);
-+
-+out_obj:
-+    visit_end_list(v, (void**) &list);
- }
- 
--const PropertyInfo qdev_prop_arraylen = {
--    .name = "uint32",
--    .get = get_uint32,
--    .set = set_prop_arraylen,
--    .set_default_value = qdev_propinfo_set_default_value_uint,
-+static void default_prop_array(ObjectProperty *op, const Property *prop)
-+{
-+    object_property_set_default_list(op);
-+}
-+
-+const PropertyInfo qdev_prop_array = {
-+    .name = "list",
-+    .get = get_prop_array,
-+    .set = set_prop_array,
-+    .release = release_prop_array,
-+    .set_default_value = default_prop_array,
- };
- 
- /* --- public helpers --- */
-@@ -743,20 +819,8 @@ void qdev_prop_set_enum(DeviceState *dev, const char *name, int value)
- 
- void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values)
- {
--    const QListEntry *entry;
--    g_autofree char *prop_len = g_strdup_printf("len-%s", name);
--    unsigned i = 0;
--
--    object_property_set_int(OBJECT(dev), prop_len, qlist_size(values),
--                            &error_abort);
--
--    QLIST_FOREACH_ENTRY(values, entry) {
--        g_autofree char *prop_idx = g_strdup_printf("%s[%u]", name, i);
--        object_property_set_qobject(OBJECT(dev), prop_idx, entry->value,
--                                    &error_abort);
--        i++;
--    }
--
-+    object_property_set_qobject(OBJECT(dev), name, QOBJECT(values),
-+                                &error_abort);
-     qobject_unref(values);
- }
- 
--- 
-2.41.0
-
+>   target/riscv/cpu_cfg.h     | 1 +
+>   target/riscv/tcg/tcg-cpu.c | 5 +++++
+>   2 files changed, 6 insertions(+)
+> 
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index e7ce977189c..d8d17dedeed 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -94,6 +94,7 @@ struct RISCVCPUConfig {
+>       bool ext_zvknhb;
+>       bool ext_zvksed;
+>       bool ext_zvksh;
+> +    bool ext_zvkt;
+>       bool ext_zmmul;
+>       bool ext_zvfbfmin;
+>       bool ext_zvfbfwma;
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index c5ff03efce9..b9eaecb699c 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -499,6 +499,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+>           return;
+>       }
+>   
+> +    if (cpu->cfg.ext_zvkt) {
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvbb), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvbc), true);
+> +    }
+> +
+>       /*
+>        * In principle Zve*x would also suffice here, were they supported
+>        * in qemu
 
