@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AE47DB238
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 04:16:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7017DB23A
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 04:18:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxIkv-0004VL-JW; Sun, 29 Oct 2023 23:15:57 -0400
+	id 1qxImr-0005RF-N7; Sun, 29 Oct 2023 23:17:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qxIkt-0004Tz-IF; Sun, 29 Oct 2023 23:15:55 -0400
-Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxImk-0005Qo-UU
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 23:17:53 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qxIkr-0005mz-14; Sun, 29 Oct 2023 23:15:55 -0400
-Received: by mail-vs1-xe2d.google.com with SMTP id
- ada2fe7eead31-457e9088d7aso1562905137.1; 
- Sun, 29 Oct 2023 20:15:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxImi-00067v-5q
+ for qemu-devel@nongnu.org; Sun, 29 Oct 2023 23:17:50 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c5056059e0so58022461fa.3
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 20:17:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698635751; x=1699240551; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rmYJp9F5tamAALlEoG9pOxZJ21dbz0BKNaEjgebt4EY=;
- b=VgwkpnG24qldVwc6dD45D7yeahYsx+yJx1QQcA/ZpY3BhDF+rj+uUBWWPc5qFlHwpu
- BBS6+tcU1UbfGdr10Wywz9h8iu+dNtIS6WLGo2PYUDI8j3Yp9De7ngSFruhIMDOwMCeG
- XAPD/YwC4O5G9I0cJCfdXO3dsG78LY/U8z84Rg6cMo9debDdZD9vEawRgifWZTlEeqpC
- CfiKeCEj8Wfxw2ASWIl5N/nrnSIjMVEqL8xg10AMP1jMh5lcG9eBbzJav4GzGKe+tRsn
- YzCNsvXJEgWV2LUdqtfYB13oa4s02djBQJK9HvuUpJx8CLfNrrN+fojbuMF0/20n+qsC
- radA==
+ d=linaro.org; s=google; t=1698635864; x=1699240664; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EZDWAj1ykkJn4R5/rp3f1Fz3f3ygHodsmieKmcp466M=;
+ b=zmIiWTzD8gWWWFWNxjeQ/ZypjDUCDodRCTDY8nKLHBiSWJ1erJncw8LUPkVR3eijC/
+ 2JnjdorEqTUoaP3KZEK/DkrA8h5MomO87YBUs8DhzN4Nq9Xw3mmUDMbcaRUMQTM+dMsg
+ 1gGiRtCPSHhmentt/AcOPUR+IFmYXspmYI0wFT5rSbeyJHJbdYq9ixl9nQ3fnsz58KT7
+ q08HsCYHfMHo1A7EGhWIO3yPJrPxU/nvC9NOxFzCVDF28m2oyvv0NSVbiFlPMzNR6e9n
+ +xRDVbCKr96beN0EIJdNxP4A+27Zs5D4eaLKOQkSLbREu8YuV2VX6FccwCpJcwfghV1l
+ Bgsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698635751; x=1699240551;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rmYJp9F5tamAALlEoG9pOxZJ21dbz0BKNaEjgebt4EY=;
- b=olnKIh1A0TkdsgXtD8Cj/r/R8qL/znJJdxYOkByl7wVI/1+Gq+vURgzGJrXkWvhuMj
- J8IUVJmTLI8F/3/qUn/qy+pi0xTKl0XxFZRbBcv/apwDK+skZGQsykxTYiPH60j/frWy
- PChQeQX9RSX6cFSAma8sW7LTcuMFlVclxAIOf0Zv60xsWi0GKlfKIsKFUv7KPRzt5uUd
- JcubLhtkZo6a8I4JWW9L+Xpcgw2rhj8uGKBtDdX+1EkbRPPDIIzHhC0oViwACckJaCai
- af/JmdDseHjMcKpBLiJ68kgWMKYUYeG8+3ixB/cypDclkupwraFiRY/BM75vfB2nR36d
- Mvcg==
-X-Gm-Message-State: AOJu0YzgnCcXbcrKMZiMZVH60gcUyw44sYV8BxY3WRyg0aKSWxwf3LAH
- dBTrBZNYZVc3NEqBNntytwRpTE9jBUq+etjhBFI=
-X-Google-Smtp-Source: AGHT+IF3pGri1z3k60q376dH6ytNHF2sHtgNCM6oP5yA/f34hc/+eYCSxKeT115v7SjoMLWoMMSXNzvnvRBeHahu8ak=
-X-Received: by 2002:a67:e09e:0:b0:458:23f2:62e2 with SMTP id
- f30-20020a67e09e000000b0045823f262e2mr6791433vsl.10.1698635750307; Sun, 29
- Oct 2023 20:15:50 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698635864; x=1699240664;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EZDWAj1ykkJn4R5/rp3f1Fz3f3ygHodsmieKmcp466M=;
+ b=V2RzhSFs9FtYowCIXZB9AJ36CFqD+sXl/NRQeOeybPhmYiKLwJlRelaL0TNFmFCAdx
+ DTn4d/TckjG6UTDyBZP28wk8wrmxGudDXXMwa8SdenLNTsZzKpMhaOTPL9lu6duLLsvn
+ eT/pjPwY9DijiOQ2xE0BKIuRjq3/pSRt5xMugdqy7Q+SlUaMRlH5O25BNy5G/KQFzXxj
+ O63b3/m8h0QB/Uwoan/6ecDqvmQcxuh0uBSKucTEYZ3/VeSXUVIiLB0dzU6IuU0ZuOSg
+ jqODWygOU/LsCx2PVNonHh/xwZK5G7QIE0F1hXgjP1SGCsnAbZpB08i+wrNPPZZJzaBD
+ JwOw==
+X-Gm-Message-State: AOJu0YyHNv/hpS3QJj4aFVjd6icAetPG4Z6A0ZiwosFQGjZwOhl2IZo8
+ TfzYOj8rXI8N4feOaSAiF7SILg==
+X-Google-Smtp-Source: AGHT+IEOpLAOzm7qSabmM28Vo5aaKS60C5sH2RgBNpS1Fm6uCguOrTMCS610koiYqVQ1a2x08Rzogw==
+X-Received: by 2002:a2e:bc83:0:b0:2c3:3c0b:d747 with SMTP id
+ h3-20020a2ebc83000000b002c33c0bd747mr7670151ljf.17.1698635864024; 
+ Sun, 29 Oct 2023 20:17:44 -0700 (PDT)
+Received: from [192.168.69.115] ([176.170.212.50])
+ by smtp.gmail.com with ESMTPSA id
+ t10-20020a1c770a000000b00405bbfd5d16sm8002419wmi.7.2023.10.29.20.17.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 29 Oct 2023 20:17:43 -0700 (PDT)
+Message-ID: <2fe346f1-c76f-7b37-32cf-b9118037b235@linaro.org>
+Date: Mon, 30 Oct 2023 04:17:40 +0100
 MIME-Version: 1.0
-References: <20231023153927.435083-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20231023153927.435083-1-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 30 Oct 2023 13:15:23 +1000
-Message-ID: <CAKmqyKM8Ed+9UiztaVTFk1Bz-qhFmHyuGSXn8B0D5ygQJDXCHA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] riscv: zicntr/zihpm flags and disable support
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2d.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/6] hw/watchdog/wdt_imx2: Trace MMIO access
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231028122415.14869-1-shentey@gmail.com>
+ <20231028122415.14869-2-shentey@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231028122415.14869-2-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,47 +98,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 24, 2023 at 1:40=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Hi,
->
-> In this v3 the patches that added the extensions flags were squashed
-> with the patches that handled the disablement of the extensions in TCG,
-> as suggested by Alistair in v2.
->
-> No other change made. Patches based on Alistair's riscv-to-apply.next.
->
-> Patches missing acks: patch 3
->
-> Changes from v2:
-> - patch 2: squashed with patch 1
-> - patch 5: squashed with patch 4
-> - v2 link: https://lore.kernel.org/qemu-riscv/20231017221226.136764-1-dba=
-rboza@ventanamicro.com/
->
-> Daniel Henrique Barboza (4):
->   target/riscv: add zicntr extension flag for TCG
->   target/riscv/kvm: add zicntr reg
->   target/riscv: add zihpm extension flag for TCG
->   target/riscv/kvm: add zihpm reg
+On 28/10/23 14:24, Bernhard Beschow wrote:
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   hw/watchdog/wdt_imx2.c   | 24 ++++++++++++++++++------
+>   hw/watchdog/trace-events |  4 ++++
+>   2 files changed, 22 insertions(+), 6 deletions(-)
 
-Thanks!
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Applied to riscv-to-apply.next
-
-Alistair
-
->
->  target/riscv/cpu.c         | 15 +++++++++++++++
->  target/riscv/cpu_cfg.h     |  2 ++
->  target/riscv/csr.c         |  4 ++++
->  target/riscv/kvm/kvm-cpu.c |  2 ++
->  target/riscv/tcg/tcg-cpu.c | 21 +++++++++++++++++++++
->  5 files changed, 44 insertions(+)
->
-> --
-> 2.41.0
->
->
 
