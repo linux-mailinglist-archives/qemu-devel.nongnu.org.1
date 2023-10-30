@@ -2,52 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9947B7DC234
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F3CD7DC252
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 23:11:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxaGR-0001kc-4t; Mon, 30 Oct 2023 17:57:39 -0400
+	id 1qxaSM-0004sR-Qz; Mon, 30 Oct 2023 18:09:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qxaGI-0001kL-SY
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:57:30 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qxaGG-0006XA-9W
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:57:30 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 77DFD756082;
- Mon, 30 Oct 2023 22:57:29 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0448C756072; Mon, 30 Oct 2023 22:57:29 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 02722756062;
- Mon, 30 Oct 2023 22:57:29 +0100 (CET)
-Date: Mon, 30 Oct 2023 22:57:28 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: qemu-devel@nongnu.org, philmd@linaro.org, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Bernhard Beschow <shentey@gmail.com>, vr_qemu@t-online.de
-Subject: Re: [PATCH 0/4] Fix IRQ routing in via south bridge
-In-Reply-To: <e8a8425a-d824-44da-a2b1-3187f01d59cd@ilande.co.uk>
-Message-ID: <942b8c93-f6d1-60a8-3dca-3506523de394@eik.bme.hu>
-References: <cover.1698536342.git.balaton@eik.bme.hu>
- <03f52ea1-7436-4129-bd53-e14104a9e74e@ilande.co.uk>
- <0f4b0c4b-9229-dcc5-d12a-3f423c316f80@eik.bme.hu>
- <e8a8425a-d824-44da-a2b1-3187f01d59cd@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qxaSE-0004re-V4
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 18:09:55 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qxaSC-0008L2-UZ
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 18:09:50 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6ce2fc858feso2915276a34.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 15:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698703787; x=1699308587; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BcSnbTQoO8unJtSFsVxX2n+uMY5Wz496Rurn25E5NF8=;
+ b=d9nQp3yF/nmFvkhebLwLSEARkJhnmZVpYqbgtLXzcSk4YxpsEGlQPwS3hPMTDUbhbM
+ wNVXiTMBOZKY5xmTKOGFc0QCzbyQcMUY1mjVXFQQVR4Jdq4GDpCgYpDWjVo+dzl6SMrQ
+ xf1aN75uNxI6bSw9auE0wr590qBI0fd4KNJ2b7klvPcbVrdw7oNan4heARihag1juU2c
+ +H6ypA6y+YOZyj4mJu8cyLmO7bBk0U3X4BVdRtqi28LQpPY2Ao277/u4Fi5KqQjvpSjK
+ kgynhQ9JCnVAquu0g+lVbQ1sfosgHWDZglYProBX+ZTgBH3RN1SiMLf/ORvUGeKR4yKu
+ kevw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698703787; x=1699308587;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BcSnbTQoO8unJtSFsVxX2n+uMY5Wz496Rurn25E5NF8=;
+ b=PKSkge+IZUhk1TXt6uuMJeSIbGqYy+3zyrqL8mXutz7nBpSF/5S+8BHOnahk1VHL3z
+ PMfA46FcJXvB0gGtYS0cyle3IJQWzmtOZm85Oz30JrwUo2XfFDtSDzJJXKN9HzViMgGP
+ DxNupaMB8rs9H3qADBlKF9pZSWJkfNsQZBKbqsPotCZ/pB/XRZj1jQw7OeZ4VJ4tUWiK
+ ZbPyrFqSXSxgbCCBjbbOU1IcvbRE9teF+kurAZ4QH3snNuCvBPbYYmbJv6amXErqzb3l
+ ENqU2omWADN5U/a/pJhEmUykxP8gIJAMRSFmrvA8qxj0Cx11W9eEwE1RnUvk7vr4D9GQ
+ PVOw==
+X-Gm-Message-State: AOJu0YzeLOmc1/hHTQb2UD+N9mkmu7wNoEMsPPkdCK7qQXAs+scUC1WQ
+ bPn4uHsRr5s7wWWDT4UDGExphVMD6nClJGW5Wlk=
+X-Google-Smtp-Source: AGHT+IHKkOtQamXsWbtTAiTOSfCdtzfGOFyf34ZY05Q5BBnbn/fxv5xjaaGXJ44tv1zwbkRtK2Br4fUPH5MKEe3kyrg=
+X-Received: by 2002:a05:6830:4d6:b0:6cd:896:e363 with SMTP id
+ s22-20020a05683004d600b006cd0896e363mr8661725otd.37.1698703787113; Mon, 30
+ Oct 2023 15:09:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+References: <20231027143942.3413881-1-peter.maydell@linaro.org>
+ <CAJSP0QU1SUqdTbzNT9_fgCyZ1pGDUk47_T2B-JzjnBXFicEWBA@mail.gmail.com>
+ <CAFEAcA_na1NB3nFRmc9MRRr92VunxPJUG3SHmE2HkXAGx6RPUw@mail.gmail.com>
+In-Reply-To: <CAFEAcA_na1NB3nFRmc9MRRr92VunxPJUG3SHmE2HkXAGx6RPUw@mail.gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 31 Oct 2023 07:09:35 +0900
+Message-ID: <CAJSP0QW=7f3k35DjBwsnbnj79HmqwSH3hWRE1Fur8x4pyOGs7w@mail.gmail.com>
+Subject: Re: [PULL 00/41] target-arm queue
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,139 +86,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 30 Oct 2023, Mark Cave-Ayland wrote:
-> On 29/10/2023 13:45, BALATON Zoltan wrote:
->> On Sun, 29 Oct 2023, Mark Cave-Ayland wrote:
->>> On 29/10/2023 00:56, BALATON Zoltan wrote:
->>> 
->>>> This is going back to my otiginal proposal in
->>>> https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/
->>>> implementing routing of interrupts from device functions and PCI
->>>> devices to ISA interrupts. On pegasos2 the firmware sets evertyhing to
->>>> share IRQ 9 so the current simpified version worked for taht but with
->>>> the amigaone machine its firmware makes use of this feature and
->>>> assigns different interrupts to functions and PCI devices so we need
->>>> to properly impelent this.
->>> 
->>> <quote>
->>>> Since any ISA interrupt can be controlled
->>>> by any interrupt source (different functions of the multifunction
->>>> device plus the 4 input pins from PCI devices) there are more than 4
->>>> possible sources so this can't be handled by just the 4 PCI interrupt
->>>> lines. We need to keep track of the state of each interrupt source to
->>>> be able to determine the level of the ISA interrupt and avoid one
->>>> device clearing it while other still has an interrupt.
->>> </quote>
->>> 
->>> This here is the important bit, since what you're describing here is 
->>> exactly how PCI interrupts in QEMU work, and so is already handled by the 
->>> existing PCI IRQ routing code. It seems to me that what you're doing here 
->>> is creating an incomplete re-implementation of part of the PCI interrupt 
->>> logic in isa_irq_state, which is a strong hint that this is the wrong 
->>> approach and that you should be making use of PCI IRQ routing.
->> 
->> I don't see how this can be handled by the PCI interrupt routing which only 
->> considers 4 lines while in VIA we have more sources than that which are the 
->> chip functions (some even with more than one IRQ like IDE) and the 4 PCI 
->> interrupt inputs and these can be routed to any of the ISA IRQs 
->> independently (there's a register for each of them, the funcs use thi 
->> interrupt line config reg and the PCI pins the regs in the ISA func). So 
->> how would PCI handle this when it only sees the 4 PCI interrupt lines but 
->> not the chip functions as separate sources? You've assumed that those 
->> functions must be PCI devices too but their interrupts are routable 
->> separately from the PCI interrupts so you can have PCI INTA-D mapped to IRQ 
->> 7,8,9,10 and USB func mapped to IRQ 5 (like amigaone does) so you can't use 
->> PCI interrupt for the USB too but have to consider all of these separately 
->> and route them in the ISA bridge.
+On Mon, 30 Oct 2023 at 19:09, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> Ah so the restriction here is the number of PCI interrupt lines? That can be 
-> done by increasing the number of PCI bus IRQs to 4 + N, where 0-3 represent 
-> INTA-D and the N others represent individual functions on the in-built 
-> devices. You can then determine the slot/function in the PCI map IRQ function 
-> to route to the appropriate N IRQ.
-
-I can't because the PCI bus is in the north bridge. This VIA south bridge 
-is just a PCIDevice connected to a bus so it should not take over 
-interrupt handling of that bus which it does not own like the piix seems 
-to do. That seems much more hacky than my solution to model what the chip 
-does and map internal interrupt sources to ISA interrupts. The PCI 
-interrupts are just additional input pins on this chip it does not handle 
-the PCI bus itself, that's in the north bridge outside of this device.
-
->>>> This fixes USB on amigaone and maybe other bugs not discovered yet.
->>> 
->>> Given that the AmigaOne machine is new, can you explain in a bit more 
->>> detail what the difference is between the Pegasos2 and AmigaOne machines, 
->>> particularly with respect to where the existing IRQ routing logic is 
->>> getting this wrong?
->> 
->> The pegasos2 firmware sets all chip functions and PCI devices (except IDE 
->> which is hard coded to legacy interrupts) to IRQ 9 so it worked with mixing 
->> PCI interrupts with chip functions but the amigaone does not do that and 
->> sets different ISA interrupts to chip functions and PCI interrupts so the 
->> current simplified version cannot work with that any more and we need to 
->> allow separate routing of all the interrupt sources. (Additionally we need 
->> to keep interrupt state for each source to allow multiple sources to 
->> control the same ISA interrupt.) I could not think of any simpler way than 
->> my patch to correctly implement this.
+> On Sun, 29 Oct 2023 at 23:15, Stefan Hajnoczi <stefanha@gmail.com> wrote:
+> >
+> > On Fri, 27 Oct 2023 at 23:41, Peter Maydell <peter.maydell@linaro.org> wrote:
+> > >
+> > > Hi; here's the latest target-arm queue. Mostly this is refactoring
+> > > and cleanup type patches.
 >
-> The key point of interest is that we have PIIX that basically already works 
-> using the existing PCI IRQ routing APIs: the aim is to do something similar 
-> with VIA, or to tweak the existing APIs if needed to make it possible. 
-> Otherwise you end up with the situation in this series in which you're 
-> effectively inventing a parallel form of PCI IRQ routing just for the VIA ISA 
-> bridge and hardcoding it into the in-built VIA devices.
+> > Hi Peter,
+> > I can't find this email thread on lore.kernel.org and your git repo
+> > doesn't let me fetch the tag:
+> >
+> >   $ git fetch https://git.linaro.org/people/pmaydell/qemu-arm.git
+> > tags/pull-target-arm-20231027
+> >   fatal: couldn't find remote ref tags/pull-target-arm-20231027
+>
+> This works for me:
+>
+> $ git fetch https://git.linaro.org/people/pmaydell/qemu-arm.git
+> tags/pull-target-arm-20231027
+> remote: Enumerating objects: 16753, done.
+> remote: Counting objects: 100% (16753/16753), done.
+> remote: Compressing objects: 100% (3181/3181), done.
+> remote: Total 17529 (delta 14031), reused 16255 (delta 13541), pack-reused 776
+> Receiving objects: 100% (17529/17529), 22.87 MiB | 10.44 MiB/s, done.
+> Resolving deltas: 100% (14498/14498), completed with 1672 local objects.
+> From https://git.linaro.org/people/pmaydell/qemu-arm
+>  * tag                       pull-target-arm-20231027 -> FETCH_HEAD
+>
+> > cgit shows the tag though, for some reason:
+> > https://git.linaro.org/people/pmaydell/qemu-arm.git/tag/?h=pull-target-arm-20231027
+> >
+> > Any idea what's up with this pull request? Thanks!
+>
+> 'git.linaro.org' has several geolocated servers and pushes to
+> it should get mirrored across to all of them. Maybe the
+> syncing between them went wrong? You could try using one
+> specific one:
+>  https://git-us.linaro.org/people/pmaydell/qemu-arm.git
+> tags/pull-target-arm-20231027
+>
+> git-ie.linaro.org also seems to have the tag.
 
-I've looked at piix now but that seems to have less functions and those 
-are probably PCI devices that only use PCI interrutps so you can just use 
-PCI intrrupts there. It srill needs to keep track of interrupt state 
-separately so piix also has code for that and piix replaces the interrupt 
-callbacks of the bus the chip is connected to so it takes over that from 
-the north bridge or whatever the pci bus is part of. That does not seem 
-right to me and this may break the bus piix is connected to. A PCIDevice 
-should not call pci_bus_irqs() IMO, only the part that owns the PCI bus or 
-board code should set this but not a device. The pegasos2 already uses it 
-to connect to PCI interrupts so VIA can't do that and should not do that. 
-What I have is self contained and models the chip correctly. Why not 
-change piix to do similarly or why do you insist these have to be the same 
-when they are different chips with different quirks of their own?
+Yes, that solves the problem. DNS was resolving to git-ap.linaro.org
+for me and it doesn't have the tag.
 
-> The benefit of using the PCI IRQ routing APIs is that it is also possible to 
-> plug in the individual PCI device/functions using -device into any PCI bus 
-> for testing, which is something that is already done with PIIX-IDE.
-
-That does not seem like a useful goal to me. These VIA ide, usb and ac97 
-parts are functions of the same chip so their models are part of the chip 
-model. They may be different QOM objects to separate them but they aren't 
-user creatable and should not be as these are part of the chip so it does 
-not make sense to instantiate them separately. Then it's also not a 
-problem to use VIA specific irq routing in these as they are part of the 
-same model.
-
-I think trying to force using the PCI irq mapping and setting code from 
-PCIBus would not make the via model any better just make it more complex 
-for no gain so I don't think that's a goal that should be followed. 
-Besides not being possible to cleanly do that it would also make it more 
-difficult to understand and debug interrupt routing later so I don't see 
-what advantage would that have over having a self contained model of the 
-chip even if piix manages to do it with PCIBus. But piix has only 4 
-interrupt lines and I don't think what it does taking over PCI interrupts 
-is a good idea so I don't want to go that direction. Having via and piix 
-models work slightly differently is not a problem IMO as long as both are 
-working and correct in themselves. There are other device models which 
-implement similar devices yet do it differently and in this case piix and 
-via are different in that via has more functions and their interrupts are 
-routed separately so it does not fit well with what we have in PCIBus. 
-Forcing it in that would just make it more complicated. These chips are 
-also from different vendors so while it may make sense to model piix3 and 
-piix4 similarly and sharing code (like vt82c686b and vt8231 are sharing 
-code) it may not make that much sense to try to make piix and via similar 
-when they may not be in reality other than both are collecting similar 
-functions but their inner working may be different. The via chips seem 
-more like an ISA superio chip that has some PCI support added while piix 
-may more like a collection of separate PCI functions so their models may 
-also be different in that.
-
-Regards,
-BALATON Zoltan
+Thanks,
+Stefan
 
