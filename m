@@ -2,51 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6999D7DBB0D
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A917DBB1D
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 14:52:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxSY3-0000jv-A7; Mon, 30 Oct 2023 09:43:19 -0400
+	id 1qxSfx-00030J-2W; Mon, 30 Oct 2023 09:51:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qxSY0-0000in-EF
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:43:16 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxSfv-0002zl-8q
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:51:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qxSXv-0006y0-66
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:43:16 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 7A029756088;
- Mon, 30 Oct 2023 14:43:14 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4C6B0756082; Mon, 30 Oct 2023 14:43:14 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4A66C756078;
- Mon, 30 Oct 2023 14:43:14 +0100 (CET)
-Date: Mon, 30 Oct 2023 14:43:14 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
-cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 1/3] ati-vga: Fix aperture sizes
-In-Reply-To: <CAJ+F1C+iOpJWtQrHkJeq5bGxeK3nnvheE9_AKq1X703EsJD4DQ@mail.gmail.com>
-Message-ID: <b592fef8-f0d1-2b5d-44c1-1d4638bcc7d7@eik.bme.hu>
-References: <cover.1696942148.git.balaton@eik.bme.hu>
- <b768c6506526caea0da8cd4025dbb05e109da4c5.1696942148.git.balaton@eik.bme.hu>
- <CAJ+F1C+iOpJWtQrHkJeq5bGxeK3nnvheE9_AKq1X703EsJD4DQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxSfs-0000HJ-3W
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 09:51:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698673880;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PlAnFItAhsa9hj3syPEBh5J/YcsldQ8SAsDYPFy/j9E=;
+ b=IXMBKk+QomTuzp0frnu6JIbmRJt4SXrItY8sy4M4bVnd+mxA2FrNaPiz0JTj4zdxXdHdz7
+ PBhaFjRpkxNMma30p9UPahsfY8Nl5bS6iPP/HirBsh9H5DhZPsRQy0D670SWbA3B2FllJy
+ gmMQ70cjICHARS2FDo8RNkyJaWv8kV4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-691-hkgNTVICP86G9CJBqJ20wQ-1; Mon, 30 Oct 2023 09:51:16 -0400
+X-MC-Unique: hkgNTVICP86G9CJBqJ20wQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61392101A594;
+ Mon, 30 Oct 2023 13:51:16 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7D8222166B26;
+ Mon, 30 Oct 2023 13:51:14 +0000 (UTC)
+Date: Mon, 30 Oct 2023 08:51:12 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
+ pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
+Subject: Re: [PATCH 18/24] blkverify: Add locking for request_fn
+Message-ID: <imukjgumgahhfqmvd7eiya5zdr2lbhysrgdsxxdtzkbnghwdbv@3hh6c435fuya>
+References: <20231027155333.420094-1-kwolf@redhat.com>
+ <20231027155333.420094-19-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1300865702-1698673394=:33934"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231027155333.420094-19-kwolf@redhat.com>
+User-Agent: NeoMutt/20231023
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,76 +79,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Fri, Oct 27, 2023 at 05:53:27PM +0200, Kevin Wolf wrote:
+> This is either bdrv_co_preadv() or bdrv_co_pwritev() which both need to
+> have the graph locked. Annotate the function pointer accordingly and add
+> locking to its callers.
+> 
+> This shouldn't actually have resulted in a bug because the graph lock is
+> already held by blkverify_co_prwv(), which waits for the coroutines to
+> terminate. Annotate with GRAPH_RDLOCK as well to make this clearer.
+> 
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/blkverify.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+> 
 
---3866299591-1300865702-1698673394=:33934
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-On Mon, 30 Oct 2023, Marc-André Lureau wrote:
-> Hi
->
-> On Tue, Oct 10, 2023 at 5:03 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
->>
->> Apparently these should be half the memory region sizes confirmed at
->> least by Radeon drivers while Rage 128 Pro drivers don't seem to use
->> these.
->
-> There doesn't seem to be adjustments for the kernel PPC driver
-> https://github.com/torvalds/linux/blob/master/drivers/video/fbdev/aty/radeon_base.c#L2037
->
-> Do you have any other pointers?
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
-There was some discussion back whan this was added:
-
-https://patchew.org/QEMU/99bb800cba3596e47d2681642116756330dc6f63.1562320946.git.balaton@eik.bme.hu/
-
-and this was also in a patch Gerd sent once around that time but I don't 
-find that patch now. I've found this while trying to get some RV100 ROMs 
-from real card running which did multiply this by 2 while the Rage128Pro 
-ROMs and drivers did not access it and used the BAR sizes I think. 
-According to the discussion above maybe this also depends on some other 
-bit but I don't have detailed enough docs to know.
-
-Regards,
-BALATON Zoltan
-
-> thanks
->
->>
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>  hw/display/ati.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/display/ati.c b/hw/display/ati.c
->> index c36282c343..f0bf1d7493 100644
->> --- a/hw/display/ati.c
->> +++ b/hw/display/ati.c
->> @@ -349,14 +349,14 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
->>                                        PCI_BASE_ADDRESS_0, size) & 0xfffffff0;
->>          break;
->>      case CONFIG_APER_SIZE:
->> -        val = s->vga.vram_size;
->> +        val = s->vga.vram_size / 2;
->>          break;
->>      case CONFIG_REG_1_BASE:
->>          val = pci_default_read_config(&s->dev,
->>                                        PCI_BASE_ADDRESS_2, size) & 0xfffffff0;
->>          break;
->>      case CONFIG_REG_APER_SIZE:
->> -        val = memory_region_size(&s->mm);
->> +        val = memory_region_size(&s->mm) / 2;
->>          break;
->>      case MC_STATUS:
->>          val = 5;
->> --
->> 2.30.9
->>
->>
->
->
->
---3866299591-1300865702-1698673394=:33934--
 
