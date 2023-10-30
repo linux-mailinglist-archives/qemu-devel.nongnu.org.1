@@ -2,62 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B543F7DB95E
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 12:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF6D7DB9B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 13:16:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxQre-0006ch-4c; Mon, 30 Oct 2023 07:55:26 -0400
+	id 1qxRAU-0004K2-VV; Mon, 30 Oct 2023 08:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qxQrb-0006cV-2d
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:55:23 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qxQrN-0000Yi-3o
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:55:22 -0400
-Received: from [192.168.111.82] (unknown [124.65.131.38])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 53CB744547;
- Mon, 30 Oct 2023 11:54:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1698666897; bh=6mEnQn+YnG5tn4AF4Ga3PaoWSFA0lzRP7wJolGMN6C0=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=cjzMNpZtJqdmUqQkzhsI//VBkdNCesux4dE97ZBUvC2Sw0wpph3FMpgdLHLbz6Gmd
- nyfMLYg+iD4J0S/gZU2Srkf612jIvtbQg1AMMOwo2hGUcxGq482DvT3pqC0z/CtRVN
- mZH+lYx/f9XXyr7Lum2fXuQSDl5tVXyH4vIMQzOE=
-Message-ID: <603b8709-4288-4268-abd4-642366b0b7e2@jia.je>
-Date: Mon, 30 Oct 2023 19:54:51 +0800
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qxRAS-0004Jf-0x
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 08:14:52 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qxRAO-0004yw-VK
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 08:14:51 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-507d1cc0538so6060555e87.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 05:14:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698668087; x=1699272887;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=IK7p+CAjtsCaUih1o1GHjGUf8j6Z304GXnxq6PVy3zs=;
+ b=KBSAUNLesUUHPtRgAijdG+H/MsVBx4G4c8JsgCKyzfDLFHFUkXiWO6ppCKOWNDn1sY
+ AkO8PKRj0OsHpDle/jbblaKAJEaJaPA8a22XYdGUxhraG9Zebe3TZuJq915P6j9pp+HW
+ OXGUdmhs700t1GZ5GVMGdqpFOAKl/AptgZm73jd7PtNhJFflMrMBqpkznroRn4gczLR5
+ mjyTzRWTIFfZbsFoNppi2mX6n0tfq+9Q81lf0yk2x2awPmfMyKDYHP2d60AAduKv4TX+
+ q+quwpDi0674AhxIv5p466UU35daRSjyfGePSU0HZvmKbD0t/w5K4Oc7+vVXnAU+PTUt
+ fonA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698668087; x=1699272887;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IK7p+CAjtsCaUih1o1GHjGUf8j6Z304GXnxq6PVy3zs=;
+ b=vlGYN4sYoUWf4lIqKaqfn/c8acTr6g+fyjuOm5s+y4zCtqlfqpgTCQlRa2v9UHGvtB
+ bYAYf+vYpUXokhJFGPC3FixTR82C0wqm6gZs1VWRjiao23xRfChGTelRP9Q6MyyWYXqW
+ sFj5lIKjBZ/WABZyvspYdB3RRu1JgJQ864xLgk5AB6GxVnCg3hS44w+v8J9rBV4sscLF
+ 87b18gO3HfIucRlryUgmj3qCwQ3WIUGQqfis4LEVyqUnvgmoBpsHbsLzsKRAFM9mFBUd
+ 7grrsdQPDyn6IDenaR41NN1HS5XacpYvixTfIojizzB+7aODSZwWuGsVgfm+Dp2AXX+F
+ WeCg==
+X-Gm-Message-State: AOJu0YzPIFrQF4SPfz7W0tB1wxUz27ZaIwmt2iZSmPAUfiXfNOeodd1b
+ q7SyKbbepduBoTftSSJvB5O6/2gwA1a0EQYsJauUFA==
+X-Google-Smtp-Source: AGHT+IHToSsbYvjs7vGIC7HjOl1fhi59NnMQHdksOBzmMeUL6OvbfMTE+Hs7wcE0Miwl99IfWFXF6YpIcwUCCTwDNdA=
+X-Received: by 2002:a19:6d1b:0:b0:507:95ea:1e72 with SMTP id
+ i27-20020a196d1b000000b0050795ea1e72mr6131634lfc.22.1698668086692; Mon, 30
+ Oct 2023 05:14:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
-To: gaosong <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: git@xen0n.name, bibo mao <maobibo@loongson.cn>
-References: <20231023153029.269211-2-c@jia.je>
- <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
- <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
- <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
- <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
- <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
- <6482c6cf-1f4b-a7b9-d106-4c687360e810@loongson.cn>
- <ae3088b6-f472-4dd2-a5bc-9effb61ffaa0@jia.je>
- <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
-Content-Language: en-US
-From: Jiajie Chen <c@jia.je>
-In-Reply-To: <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
+ <20231030051356.33123-12-akihiko.odaki@daynix.com>
+In-Reply-To: <20231030051356.33123-12-akihiko.odaki@daynix.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Mon, 30 Oct 2023 14:14:34 +0200
+Message-ID: <CAOEp5OdEEVcojjwCOU+9Z5yBKN+e5iNbAMOA5d-97D81N4Y0tw@mail.gmail.com>
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000e626040608edfbb9"
+Received-SPF: none client-ip=2a00:1450:4864:20::130;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,167 +87,338 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000e626040608edfbb9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2023/10/30 16:23, gaosong wrote:
-> 在 2023/10/28 下午9:09, Jiajie Chen 写道:
->>
->> On 2023/10/26 14:54, gaosong wrote:
->>> 在 2023/10/26 上午9:38, Jiajie Chen 写道:
->>>>
->>>> On 2023/10/26 03:04, Richard Henderson wrote:
->>>>> On 10/25/23 10:13, Jiajie Chen wrote:
->>>>>>> On 2023/10/24 07:26, Richard Henderson wrote:
->>>>>>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, 
->>>>>>>> TCGv_i128 block.
->>>>>>>> See target/ppc/translate.c, gen_stqcx_.
->>>>>>>
->>>>>>> The situation here is slightly different: aarch64 and ppc64 have 
->>>>>>> both 128-bit ll and sc, however LoongArch v1.1 only has 64-bit 
->>>>>>> ll and 128-bit sc.
->>>>>
->>>>> Ah, that does complicate things.
->>>>>
->>>>>> Possibly use the combination of ll.d and ld.d:
->>>>>>
->>>>>>
->>>>>> ll.d lo, base, 0
->>>>>> ld.d hi, base, 4
->>>>>>
->>>>>> # do some computation
->>>>>>
->>>>>> sc.q lo, hi, base
->>>>>>
->>>>>> # try again if sc failed
->>>>>>
->>>>>> Then a possible implementation of gen_ll() would be: align base 
->>>>>> to 128-bit boundary, read 128-bit from memory, save 64-bit part 
->>>>>> to rd and record whole 128-bit data in llval. Then, in 
->>>>>> gen_sc_q(), it uses a 128-bit cmpxchg.
->>>>>>
->>>>>>
->>>>>> But what about the reversed instruction pattern: ll.d hi, base, 
->>>>>> 4; ld.d lo, base 0?
->>>>>
->>>>> It would be worth asking your hardware engineers about the bounds 
->>>>> of legal behaviour. Ideally there would be some very explicit 
->>>>> language, similar to
->>>>
->>>>
->>>> I'm a community developer not affiliated with Loongson. Song Gao, 
->>>> could you provide some detail from Loongson Inc.?
->>>>
->>>>
->>>
->>> ll.d   r1, base, 0
->>> dbar 0x700          ==> see 2.2.8.1
->>> ld.d  r2, base,  8
->>> ...
->>> sc.q r1, r2, base
->>
->>
->> Thanks! I think we may need to detect the ll.d-dbar-ld.d sequence and 
->> translate the sequence into one tcg_gen_qemu_ld_i128 and split the 
->> result into two 64-bit parts. Can do this in QEMU?
->>
->>
-> Oh, I'm not sure.
+On Mon, Oct 30, 2023 at 7:14=E2=80=AFAM Akihiko Odaki <akihiko.odaki@daynix=
+.com>
+wrote:
+
+> vhost requires eBPF for RSS. When eBPF is not available, virtio-net
+> implicitly disables RSS even if the user explicitly requests it. Return
+> an error instead of implicitly disabling RSS if RSS is requested but not
+> available.
 >
-> I think we just need to implement sc.q. We don't need to care about 
-> 'll.d-dbar-ld.d'. It's just like 'll.q'.
-> It needs the user to ensure that .
+
+I think that suggesting RSS feature when in fact it is not available is not
+a good idea, this rather desinforms the guest.
+Existing behavior (IMHO) makes more sense.
+We can extend this discussion if needed, of course.
+
+
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  hw/net/virtio-net.c | 97 ++++++++++++++++++++++-----------------------
+>  1 file changed, 48 insertions(+), 49 deletions(-)
 >
-> ll.q' is
-> 1) ll.d r1 base, 0 ==> set LLbit, load the low 64 bits into r1
-> 2) dbar 0x700　
-> 3) ld.d r2 base, 8 ==> load the high 64 bits to r2
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index 5d4afd12b2..7bb91617d0 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -792,9 +792,6 @@ static uint64_t virtio_net_get_features(VirtIODevice
+> *vdev, uint64_t features,
+>          return features;
+>      }
 >
-> sc.q needs to
-> 1) Use 64-bit cmpxchg.
-> 2) Write 128 bits to memory.
-
-Consider the following code:
-
-
-ll.d r1, base, 0
-
-dbar 0x700
-
-ld.d r2, base, 8
-
-addi.d r2, r2, 1
-
-sc.q r1, r2, base
-
-
-We translate them into native code:
-
-
-ld.d r1, base, 0
-
-mv LLbit, 1
-
-mv LLaddr, base
-
-mv LLval, r1
-
-dbar 0x700
-
-ld.d r2, base, 8
-
-addi.d r2, r2, 1
-
-if (LLbit == 1 && LLaddr == base) {
-
-     cmpxchg addr=base compare=LLval new=r1
-
-     128-bit write {r2, r1} to base if cmpxchg succeeded
-
-}
-
-set r1 if sc.q succeeded
-
-
-
-If the memory content of base+8 has changed between ld.d r2 and addi.d 
-r2, the atomicity is not guaranteed, i.e. only the high part has 
-changed, the low part hasn't.
-
-
-
+> -    if (!ebpf_rss_is_loaded(&n->ebpf_rss)) {
+> -        virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
+> -    }
+>      features =3D vhost_net_get_features(get_vhost_net(nc->peer), feature=
+s);
+>      vdev->backend_features =3D features;
 >
-> Thanks.
-> Song Gao
->>>
->>>
->>> For this series,
->>> I think we need set the new config bits to the 'max cpu', and change 
->>> linux-user/target_elf.h ''any' to 'max', so that we can use these 
->>> new instructions on linux-user mode.
->>
->> I will work on it.
->>
->>
->>>
->>> Thanks
->>> Song Gao
->>>>>
->>>>> https://developer.arm.com/documentation/ddi0487/latest/
->>>>> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage 
->>>>> restrictions
->>>>>
->>>>> But you could do the same thing, aligning and recording the entire 
->>>>> 128-bit quantity, then extract the ll.d result based on address 
->>>>> bit 6.  This would complicate the implementation of sc.d as well, 
->>>>> but would perhaps bring us "close enough" to the actual architecture.
->>>>>
->>>>> Note that our Arm store-exclusive implementation isn't quite in 
->>>>> spec either.  There is quite a large comment within 
->>>>> translate-a64.c store_exclusive() about the ways things are not 
->>>>> quite right.  But it seems to be close enough for actual usage to 
->>>>> succeed.
->>>>>
->>>>>
->>>>> r~
->>>
+> @@ -3533,6 +3530,50 @@ static bool
+> failover_hide_primary_device(DeviceListener *listener,
+>      return qatomic_read(&n->failover_primary_hidden);
+>  }
 >
+> +static void virtio_net_device_unrealize(DeviceState *dev)
+> +{
+> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+> +    VirtIONet *n =3D VIRTIO_NET(dev);
+> +    int i, max_queue_pairs;
+> +
+> +    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
+> +        virtio_net_unload_ebpf(n);
+> +    }
+> +
+> +    /* This will stop vhost backend if appropriate. */
+> +    virtio_net_set_status(vdev, 0);
+> +
+> +    g_free(n->netclient_name);
+> +    n->netclient_name =3D NULL;
+> +    g_free(n->netclient_type);
+> +    n->netclient_type =3D NULL;
+> +
+> +    g_free(n->mac_table.macs);
+> +    g_free(n->vlans);
+> +
+> +    if (n->failover) {
+> +        qobject_unref(n->primary_opts);
+> +        device_listener_unregister(&n->primary_listener);
+> +        migration_remove_notifier(&n->migration_state);
+> +    } else {
+> +        assert(n->primary_opts =3D=3D NULL);
+> +    }
+> +
+> +    max_queue_pairs =3D n->multiqueue ? n->max_queue_pairs : 1;
+> +    for (i =3D 0; i < max_queue_pairs; i++) {
+> +        virtio_net_del_queue(n, i);
+> +    }
+> +    /* delete also control vq */
+> +    virtio_del_queue(vdev, max_queue_pairs * 2);
+> +    qemu_announce_timer_del(&n->announce_timer, false);
+> +    g_free(n->vqs);
+> +    qemu_del_nic(n->nic);
+> +    virtio_net_rsc_cleanup(n);
+> +    g_free(n->rss_data.indirections_table);
+> +    net_rx_pkt_uninit(n->rx_pkt);
+> +    virtio_cleanup(vdev);
+> +}
+> +
+>  static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+>  {
+>      VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+> @@ -3704,53 +3745,11 @@ static void virtio_net_device_realize(DeviceState
+> *dev, Error **errp)
+>
+>      net_rx_pkt_init(&n->rx_pkt);
+>
+> -    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
+> -        virtio_net_load_ebpf(n);
+> -    }
+> -}
+> -
+> -static void virtio_net_device_unrealize(DeviceState *dev)
+> -{
+> -    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+> -    VirtIONet *n =3D VIRTIO_NET(dev);
+> -    int i, max_queue_pairs;
+> -
+> -    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
+> -        virtio_net_unload_ebpf(n);
+> +    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS) &&
+> +        !virtio_net_load_ebpf(n)) {
+> +        error_setg(errp, "Can't load eBPF RSS");
+> +        virtio_net_device_unrealize(dev);
+>      }
+> -
+> -    /* This will stop vhost backend if appropriate. */
+> -    virtio_net_set_status(vdev, 0);
+> -
+> -    g_free(n->netclient_name);
+> -    n->netclient_name =3D NULL;
+> -    g_free(n->netclient_type);
+> -    n->netclient_type =3D NULL;
+> -
+> -    g_free(n->mac_table.macs);
+> -    g_free(n->vlans);
+> -
+> -    if (n->failover) {
+> -        qobject_unref(n->primary_opts);
+> -        device_listener_unregister(&n->primary_listener);
+> -        migration_remove_notifier(&n->migration_state);
+> -    } else {
+> -        assert(n->primary_opts =3D=3D NULL);
+> -    }
+> -
+> -    max_queue_pairs =3D n->multiqueue ? n->max_queue_pairs : 1;
+> -    for (i =3D 0; i < max_queue_pairs; i++) {
+> -        virtio_net_del_queue(n, i);
+> -    }
+> -    /* delete also control vq */
+> -    virtio_del_queue(vdev, max_queue_pairs * 2);
+> -    qemu_announce_timer_del(&n->announce_timer, false);
+> -    g_free(n->vqs);
+> -    qemu_del_nic(n->nic);
+> -    virtio_net_rsc_cleanup(n);
+> -    g_free(n->rss_data.indirections_table);
+> -    net_rx_pkt_uninit(n->rx_pkt);
+> -    virtio_cleanup(vdev);
+>  }
+>
+>  static void virtio_net_reset(VirtIODevice *vdev)
+> --
+> 2.42.0
+>
+>
+
+--000000000000e626040608edfbb9
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 30, 2023 at 7:14=E2=80=AF=
+AM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.od=
+aki@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">vhost requires eBPF for RSS. When eBPF is not available, virt=
+io-net<br>
+implicitly disables RSS even if the user explicitly requests it. Return<br>
+an error instead of implicitly disabling RSS if RSS is requested but not<br=
+>
+available.<br></blockquote><div><br></div><div>I think that suggesting RSS =
+feature when in fact it is not available is not a good idea, this rather de=
+sinforms the guest.</div><div>Existing behavior (IMHO) makes more sense.<br=
+></div><div>We can extend this discussion if needed, of course.</div><div><=
+br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+Signed-off-by: Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com=
+" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
+---<br>
+=C2=A0hw/net/virtio-net.c | 97 ++++++++++++++++++++++----------------------=
+-<br>
+=C2=A01 file changed, 48 insertions(+), 49 deletions(-)<br>
+<br>
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c<br>
+index 5d4afd12b2..7bb91617d0 100644<br>
+--- a/hw/net/virtio-net.c<br>
++++ b/hw/net/virtio-net.c<br>
+@@ -792,9 +792,6 @@ static uint64_t virtio_net_get_features(VirtIODevice *v=
+dev, uint64_t features,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return features;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+-=C2=A0 =C2=A0 if (!ebpf_rss_is_loaded(&amp;n-&gt;ebpf_rss)) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_clear_feature(&amp;features, VIRTIO_NET=
+_F_RSS);<br>
+-=C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0features =3D vhost_net_get_features(get_vhost_net(nc-&g=
+t;peer), features);<br>
+=C2=A0 =C2=A0 =C2=A0vdev-&gt;backend_features =3D features;<br>
+<br>
+@@ -3533,6 +3530,50 @@ static bool failover_hide_primary_device(DeviceListe=
+ner *listener,<br>
+=C2=A0 =C2=A0 =C2=A0return qatomic_read(&amp;n-&gt;failover_primary_hidden)=
+;<br>
+=C2=A0}<br>
+<br>
++static void virtio_net_device_unrealize(DeviceState *dev)<br>
++{<br>
++=C2=A0 =C2=A0 VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);<br>
++=C2=A0 =C2=A0 VirtIONet *n =3D VIRTIO_NET(dev);<br>
++=C2=A0 =C2=A0 int i, max_queue_pairs;<br>
++<br>
++=C2=A0 =C2=A0 if (virtio_has_feature(n-&gt;host_features, VIRTIO_NET_F_RSS=
+)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_unload_ebpf(n);<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 /* This will stop vhost backend if appropriate. */<br>
++=C2=A0 =C2=A0 virtio_net_set_status(vdev, 0);<br>
++<br>
++=C2=A0 =C2=A0 g_free(n-&gt;netclient_name);<br>
++=C2=A0 =C2=A0 n-&gt;netclient_name =3D NULL;<br>
++=C2=A0 =C2=A0 g_free(n-&gt;netclient_type);<br>
++=C2=A0 =C2=A0 n-&gt;netclient_type =3D NULL;<br>
++<br>
++=C2=A0 =C2=A0 g_free(n-&gt;mac_table.macs);<br>
++=C2=A0 =C2=A0 g_free(n-&gt;vlans);<br>
++<br>
++=C2=A0 =C2=A0 if (n-&gt;failover) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qobject_unref(n-&gt;primary_opts);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 device_listener_unregister(&amp;n-&gt;primary_=
+listener);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 migration_remove_notifier(&amp;n-&gt;migration=
+_state);<br>
++=C2=A0 =C2=A0 } else {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(n-&gt;primary_opts =3D=3D NULL);<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 max_queue_pairs =3D n-&gt;multiqueue ? n-&gt;max_queue_pairs=
+ : 1;<br>
++=C2=A0 =C2=A0 for (i =3D 0; i &lt; max_queue_pairs; i++) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_del_queue(n, i);<br>
++=C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 /* delete also control vq */<br>
++=C2=A0 =C2=A0 virtio_del_queue(vdev, max_queue_pairs * 2);<br>
++=C2=A0 =C2=A0 qemu_announce_timer_del(&amp;n-&gt;announce_timer, false);<b=
+r>
++=C2=A0 =C2=A0 g_free(n-&gt;vqs);<br>
++=C2=A0 =C2=A0 qemu_del_nic(n-&gt;nic);<br>
++=C2=A0 =C2=A0 virtio_net_rsc_cleanup(n);<br>
++=C2=A0 =C2=A0 g_free(n-&gt;rss_data.indirections_table);<br>
++=C2=A0 =C2=A0 net_rx_pkt_uninit(n-&gt;rx_pkt);<br>
++=C2=A0 =C2=A0 virtio_cleanup(vdev);<br>
++}<br>
++<br>
+=C2=A0static void virtio_net_device_realize(DeviceState *dev, Error **errp)=
+<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);<br>
+@@ -3704,53 +3745,11 @@ static void virtio_net_device_realize(DeviceState *=
+dev, Error **errp)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0net_rx_pkt_init(&amp;n-&gt;rx_pkt);<br>
+<br>
+-=C2=A0 =C2=A0 if (virtio_has_feature(n-&gt;host_features, VIRTIO_NET_F_RSS=
+)) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_load_ebpf(n);<br>
+-=C2=A0 =C2=A0 }<br>
+-}<br>
+-<br>
+-static void virtio_net_device_unrealize(DeviceState *dev)<br>
+-{<br>
+-=C2=A0 =C2=A0 VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);<br>
+-=C2=A0 =C2=A0 VirtIONet *n =3D VIRTIO_NET(dev);<br>
+-=C2=A0 =C2=A0 int i, max_queue_pairs;<br>
+-<br>
+-=C2=A0 =C2=A0 if (virtio_has_feature(n-&gt;host_features, VIRTIO_NET_F_RSS=
+)) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_unload_ebpf(n);<br>
++=C2=A0 =C2=A0 if (virtio_has_feature(n-&gt;host_features, VIRTIO_NET_F_RSS=
+) &amp;&amp;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 !virtio_net_load_ebpf(n)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;Can&#39;t load eBPF RSS=
+&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_device_unrealize(dev);<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+-<br>
+-=C2=A0 =C2=A0 /* This will stop vhost backend if appropriate. */<br>
+-=C2=A0 =C2=A0 virtio_net_set_status(vdev, 0);<br>
+-<br>
+-=C2=A0 =C2=A0 g_free(n-&gt;netclient_name);<br>
+-=C2=A0 =C2=A0 n-&gt;netclient_name =3D NULL;<br>
+-=C2=A0 =C2=A0 g_free(n-&gt;netclient_type);<br>
+-=C2=A0 =C2=A0 n-&gt;netclient_type =3D NULL;<br>
+-<br>
+-=C2=A0 =C2=A0 g_free(n-&gt;mac_table.macs);<br>
+-=C2=A0 =C2=A0 g_free(n-&gt;vlans);<br>
+-<br>
+-=C2=A0 =C2=A0 if (n-&gt;failover) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 qobject_unref(n-&gt;primary_opts);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 device_listener_unregister(&amp;n-&gt;primary_=
+listener);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 migration_remove_notifier(&amp;n-&gt;migration=
+_state);<br>
+-=C2=A0 =C2=A0 } else {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(n-&gt;primary_opts =3D=3D NULL);<br>
+-=C2=A0 =C2=A0 }<br>
+-<br>
+-=C2=A0 =C2=A0 max_queue_pairs =3D n-&gt;multiqueue ? n-&gt;max_queue_pairs=
+ : 1;<br>
+-=C2=A0 =C2=A0 for (i =3D 0; i &lt; max_queue_pairs; i++) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_net_del_queue(n, i);<br>
+-=C2=A0 =C2=A0 }<br>
+-=C2=A0 =C2=A0 /* delete also control vq */<br>
+-=C2=A0 =C2=A0 virtio_del_queue(vdev, max_queue_pairs * 2);<br>
+-=C2=A0 =C2=A0 qemu_announce_timer_del(&amp;n-&gt;announce_timer, false);<b=
+r>
+-=C2=A0 =C2=A0 g_free(n-&gt;vqs);<br>
+-=C2=A0 =C2=A0 qemu_del_nic(n-&gt;nic);<br>
+-=C2=A0 =C2=A0 virtio_net_rsc_cleanup(n);<br>
+-=C2=A0 =C2=A0 g_free(n-&gt;rss_data.indirections_table);<br>
+-=C2=A0 =C2=A0 net_rx_pkt_uninit(n-&gt;rx_pkt);<br>
+-=C2=A0 =C2=A0 virtio_cleanup(vdev);<br>
+=C2=A0}<br>
+<br>
+=C2=A0static void virtio_net_reset(VirtIODevice *vdev)<br>
+-- <br>
+2.42.0<br>
+<br>
+</blockquote></div></div>
+
+--000000000000e626040608edfbb9--
 
