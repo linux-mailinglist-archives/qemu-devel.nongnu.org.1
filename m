@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13037DBE79
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 18:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C007DC437
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 03:17:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxVfu-0000cs-Is; Mon, 30 Oct 2023 13:03:38 -0400
+	id 1qxeIM-0008LX-Ed; Mon, 30 Oct 2023 22:15:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxVfs-0000cb-So
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:03:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxVfq-00015V-MA
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 13:03:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698685411;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BRDj9tqHxeQiugstX1kkDqexdRk+VlscXIKnpZGwkgs=;
- b=i3aVT4hjzIf/klLeaYue9gfL2x5LS90qeF9sxSI91Fi7ZRe/RGAz08BcqFEZVM1hxTSk76
- 5cslh6EzDuT/lAM9l6qaIo64RI4ljvZ9UGe1fee1hg8XypKXCz4S08yXwS2hNgayXkYrv7
- Mm8wA2fz34U7bwyHtTeENC0X9XhFoUE=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-33-mRSrAqt6PfqL71-AJc6ofw-1; Mon, 30 Oct 2023 13:03:28 -0400
-X-MC-Unique: mRSrAqt6PfqL71-AJc6ofw-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2c515541a25so47522421fa.0
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 10:03:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qxeII-0008LE-Qu; Mon, 30 Oct 2023 22:15:50 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qxeI8-0002dl-BF; Mon, 30 Oct 2023 22:15:50 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1c9e072472bso36449425ad.2; 
+ Mon, 30 Oct 2023 19:15:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698718538; x=1699323338; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=e1JvKf8hEVdxPwWKTl+gtzbPVC6CZv82gIivlP5wkio=;
+ b=EMLOPmOQ7NxINj4wD6eqdipmzN9vygwk2M6yef6OGUd2uLqoSha3EjXaqaHv1T282F
+ tmG3D8jH4jtJLMbzfUeCxlGzKtD/tiWDMqmmotYhOa1qzlZY9l23I3l+VoDkVoA9Xf3Q
+ 9yThkjW08XOxdhpuAESrHETJtgzcoBraC6V4hUqMQLFhkd0xaVG4F3K1SwF4CxkYBBOL
+ Ht+IPdwGEE7LlqILCplgJHX10IzGl9M7uFyU36MUeEOxkxc6j48Joi5BbWKX+31NZleW
+ lAGbO74LRwLWzGaSJ4slXyTss1QLlcxj0NI2oDDUaxk7j3wGyS5uB1rynI0VpClf54k2
+ Q2wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698685407; x=1699290207;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698718538; x=1699323338;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BRDj9tqHxeQiugstX1kkDqexdRk+VlscXIKnpZGwkgs=;
- b=w23wmu2kHU1nT91jsWtVSUR8pSW0z8VXB/hNkPXhDLmcq0LvufxbWessOm7KVdZ1M+
- EjC6rmL72rvho78Pc4bfaYac6ba6wPer0rJORXALPeZ47KS7XqBk2ae9slxAW3VeJ1Mc
- JjJ9z4K5GBC94K4Jt8pWDp00pQMCDBkv3hNCY5hIGc9uiluPEgcYipZ2y0c4QGhYq6Te
- T8YUZxGvKeNER/yK7ckjFiapqlvYxsWwwTe7YBe4pRU/11Qcrf0g492YN39dGsQ4OIDn
- JtNE71C/3pWnLz7gb+bJ6/S9Sr6v2d7Jmex5mCtHizQbmYipzg5Aq7kBxWZlZlaxOVmO
- N2bg==
-X-Gm-Message-State: AOJu0YxPXzllzULqABRhxSxTfU8lwUcOQGZVD8YMi4zIYlNyVgmxuZKp
- LXnIR1XFdNFf5sBhRgPra/RQJcH/Gmr4FtyKz7e7GmbgkFfRdJT4zDdUzbVVTXsHVBZfZbMgu08
- cPvq4Jo2ljYEsiH3nbBTXTqw=
-X-Received: by 2002:a2e:9f08:0:b0:2bc:dab2:c7dc with SMTP id
- u8-20020a2e9f08000000b002bcdab2c7dcmr7890118ljk.47.1698685406884; 
- Mon, 30 Oct 2023 10:03:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHGdVWuNhKrrKOdgu8AoSP0DdcP+s8isIMBnseHtsQXeTicuBQuQBFoZkKGRyJwPPhmRG1etA==
-X-Received: by 2002:a2e:9f08:0:b0:2bc:dab2:c7dc with SMTP id
- u8-20020a2e9f08000000b002bcdab2c7dcmr7890103ljk.47.1698685406547; 
- Mon, 30 Oct 2023 10:03:26 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d746:c551:3d67:278e:c0a1:87a2?
- (p200300cfd746c5513d67278ec0a187a2.dip0.t-ipconnect.de.
- [2003:cf:d746:c551:3d67:278e:c0a1:87a2])
+ bh=e1JvKf8hEVdxPwWKTl+gtzbPVC6CZv82gIivlP5wkio=;
+ b=o4ekRJ7ikLfpu6OCaDVArgJOb3q1BGTO7B1tkReihfyZevJd50fU+5aN0iGxcBF1vL
+ 4yvFi8t1P86MOHvzSHR772BnldBhxH0HOy6z694RUdkF3Rco2hucNof4vPYMRnkWIMap
+ AqdwbwrnrPzC2UobZcrDLCGPUtfBMQkw7ptIuG7qRJXNuF231+VAdObwLy/srNTOkqT/
+ YCcGB6N4IAwDWvNtLqeN6l+ZplYYrHfxaqymRIOCVijnmC4AixohpTrrVrTml9jzUrMg
+ MImp0mveJbSNrLJ73xtofVxwX7tBw3iuRLMu558EuJh28BYEPiPlSkWHPNH2kHX8ey+Z
+ NBTw==
+X-Gm-Message-State: AOJu0Yzm+rSoOxIUd584sLTBf4vk4X4IE7lFKsWDrjg2CJWGETaMsniH
+ DD+bn/xEXoGtE7L3/EsJOpw=
+X-Google-Smtp-Source: AGHT+IEyyS6XDlv+Q6CUBMfFUzNP0qekTCrrWsQL4n+rpdjJzGUVx+3vJ0G01I0efYp1BTY5PXECxA==
+X-Received: by 2002:a17:902:d502:b0:1cc:924:e0b5 with SMTP id
+ b2-20020a170902d50200b001cc0924e0b5mr10505259plg.50.1698718538411; 
+ Mon, 30 Oct 2023 19:15:38 -0700 (PDT)
+Received: from [192.168.0.19] ([218.147.112.168])
  by smtp.gmail.com with ESMTPSA id
- e16-20020a5d5950000000b0032f7d1e2c7csm5845020wri.95.2023.10.30.10.03.25
+ q12-20020a170902dacc00b001c60c3f9508sm161463plx.230.2023.10.30.19.15.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 10:03:25 -0700 (PDT)
-Message-ID: <69296a7b-5a65-4ae6-a021-eab3361fbe35@redhat.com>
-Date: Mon, 30 Oct 2023 18:03:24 +0100
+ Mon, 30 Oct 2023 19:15:38 -0700 (PDT)
+Message-ID: <d33de324-dc12-41e5-96eb-4a7b8c85d439@gmail.com>
+Date: Tue, 31 Oct 2023 02:15:33 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] qcow2: keep reference on zeroize with discard-no-unref
- enabled
-To: Jean-Louis Dupond <jean-louis@dupond.be>, qemu-devel@nongnu.org,
- kwolf@redhat.com
-References: <20231003125236.216473-2-jean-louis@dupond.be>
-Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20231003125236.216473-2-jean-louis@dupond.be>
+Subject: Re: [PATCH] hw/ufs: Modify lu.c to share codes with SCSI subsystem
+Content-Language: ko
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: jeuk20.kim@samsung.com, kwolf@redhat.com, hreitz@redhat.com,
+ thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ qemu-block@nongnu.org
+References: <9fd0dc1f55724fa79011be231cc27bf4aab11157.1697764912.git.jeuk20.kim@samsung.com>
+ <53a87de9-6586-5a66-de53-152dc4cb4d1d@linaro.org>
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+In-Reply-To: <53a87de9-6586-5a66-de53-152dc4cb4d1d@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,31 +95,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03.10.23 14:52, Jean-Louis Dupond wrote:
-> When the discard-no-unref flag is enabled, we keep the reference for
-> normal discard requests.
-> But when a discard is executed on a snapshot/qcow2 image with backing,
-> the discards are saved as zero clusters in the snapshot image.
+
+On 10/30/2023 1:11 PM, Philippe Mathieu-Daudé wrote:
+> Hi Jeuk,
 >
-> When committing the snapshot to the backing file, not
-> discard_in_l2_slice is called but zero_in_l2_slice. Which did not had
-> any logic to keep the reference when discard-no-unref is enabled.
+> On 20/10/23 03:51, Jeuk Kim wrote:
+>> This patch removes the code that ufs-lu was duplicating from
+>> scsi-hd and allows them to share code.
+>>
+>> It makes ufs-lu have a virtual scsi-bus and scsi-hd internally.
+>> This allows scsi related commands to be passed thorugh to the scsi-hd.
+>> The query request and nop command work the same as the existing logic.
+>>
+>> Well-known lus do not have a virtual scsi-bus and scsi-hd, and
+>> handle the necessary scsi commands by emulating them directly.
+>>
+>> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
+>> ---
+>>   hw/ufs/lu.c            | 1473 +++++++---------------------------------
 >
-> Therefor we add logic in the zero_in_l2_slice call to keep the reference
-> on commit.
+> I liked this patch intent, but almost 1500 lines changed in a single
+> patch make it impossible to review. Ideally each patch shouldn't modify
+> more than 100 lines, otherwise reviewers are either exhausted or can't
+> be careful enough and miss possible bugs or design issues.
 >
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
-> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
-> ---
->   block/qcow2-cluster.c | 22 ++++++++++++++++++----
->   qapi/block-core.json  |  7 ++++---
->   qemu-options.hx       |  3 ++-
->   3 files changed, 24 insertions(+), 8 deletions(-)
+> Regards,
+>
+> Phil.
+>
+Hi Phil,
 
-Thanks, applied to my block branch:
+Thanks for the comment.
+I thought that since most of the code fixes were code removals and
+were functionally bundled together, it was right to submit them as a 
+single patch.
 
-https://gitlab.com/hreitz/qemu/-/commits/block
+However, I agree that it was inconsiderate of the reviewers, and I 
+apologize for that.
 
-Hanna
+Next time, I'll size the patch appropriately as you suggest.
 
+Thanks,
+Jeuk
 
