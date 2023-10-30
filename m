@@ -2,67 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4416A7DB7A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA14B7DB7D6
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 11:20:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxPJ8-00077o-DO; Mon, 30 Oct 2023 06:15:42 -0400
+	id 1qxPNP-0000BU-UB; Mon, 30 Oct 2023 06:20:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qxPJ6-00077g-IY
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:15:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qxPJ4-0004a1-S6
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:15:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698660936;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=EpLwuk3Lu1aZYht/gbJwT6w96gG9U1OGCNGkPeub+JE=;
- b=e4RCpsfDoYIfsyipJVeA3cYq3EE9sYvpFUB0eEcAgZ1jzPl0cP1lZOyhIS/8rDm+XgT+pc
- cXUwL5kLOrzxFQ1SgZfQd5CDkY/Du2MdCmis7OlQFlLqk0AmrVAm+0JN4YxRQJ5h1AIdV8
- LGgdtL2L0W6L2rNXYfXwwGbFlK3YQis=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-q0q13OP2NniVE5sFXQ0k7w-1; Mon, 30 Oct 2023 06:15:34 -0400
-X-MC-Unique: q0q13OP2NniVE5sFXQ0k7w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 89DCD811E7D
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 10:15:34 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.13])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5C43E492BE0;
- Mon, 30 Oct 2023 10:15:32 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH] vl: constify default_list
-Date: Mon, 30 Oct 2023 14:15:29 +0400
-Message-ID: <20231030101529.105266-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxPNI-00006R-UP
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:20:01 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxPNH-0005EF-E3
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 06:20:00 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40891d38e3fso32788695e9.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 03:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698661197; x=1699265997; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5ri9gI+9BLZStDY8YQ7Jf6dBJZJYvFZ/KkRcVvDJ1fU=;
+ b=AxnaUWYCtcGTJ89E+zRF24FUEj6eJWHPloNK84QcVtVd5hxZJF+XTwZQIbHslaARfS
+ EtdhMJU/i04ZkRJfuu5dM/SDYNkXU3Fpw2hjupxm/LJuhEhJoAAP0bVgbTqggR95uQyS
+ /IH/onnuzbEHv07g5zTD5zI9LUpaqZLxAnzhQm1ouwSPgDNe4GSlvHLuQKtHMvIwI6hK
+ V5bmCfG3x0sKPSK3EKjfNGzB0MF2p8k9IEjVTUt7VRq1LUv0AUlnniXg9jnJZdUwSq0+
+ IhJ2Apx65fxREhKGu07/LC1Lwd8sAG/oYTuTIrrzyYTQQApObAQPDXhVivrHuVkRc+NB
+ 7ikQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698661197; x=1699265997;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5ri9gI+9BLZStDY8YQ7Jf6dBJZJYvFZ/KkRcVvDJ1fU=;
+ b=jSDU1SmeKtD9A3ETS6ZVYPmxdLI5r3g4w3hSbtjYxbeN4XeusYrrGfXfWUMOuPNRB9
+ slrqDy+EJSCnX9NyyGx6CZA5yBK6bptxMCGzOxUZQW0Gc/eX1Bc81Zpi/oWScpy6/j6T
+ 9NaKe+Xycs642eTOlE3VbM7a2yoeqapizERnfJ5GOP6osKb1qh6e+juKJftpPaqw92PK
+ tHmdwK80yKMsaqzE6ATA8tA/MHLSJY0lZX5Idk9tVgLJ9NegZ86/yo7ibVhx33qhggIw
+ 5L6RBck+1JZIPZw6wMs996kLiKlTv2nYoe7gsBiP5fwGkl6RhP5aydjEJESKpoh8zCAH
+ CpSw==
+X-Gm-Message-State: AOJu0YxzYRoexX8e6NrysUvOwo+noZz7g6ooWvNt4syFJ8H7EuB2o2DF
+ 8pendoWa+c4W8+G7pSsq1+LWPQ==
+X-Google-Smtp-Source: AGHT+IEmubai3GURhwwHog0vvZAZr7c19cWXp/07bRzI9Ne1hSNdV9ZklzAWPkotAS2JyfDOSp8csw==
+X-Received: by 2002:a7b:c7c6:0:b0:409:255:5e05 with SMTP id
+ z6-20020a7bc7c6000000b0040902555e05mr7748229wmk.20.1698661197495; 
+ Mon, 30 Oct 2023 03:19:57 -0700 (PDT)
+Received: from [192.168.69.115] ([176.170.212.50])
+ by smtp.gmail.com with ESMTPSA id
+ u18-20020a05600c19d200b00401b242e2e6sm12339167wmq.47.2023.10.30.03.19.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 03:19:57 -0700 (PDT)
+Message-ID: <9d80aef7-084a-b9ee-832f-4e4b7549713e@linaro.org>
+Date: Mon, 30 Oct 2023 11:19:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] vl: constify default_list
+Content-Language: en-US
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20231030101529.105266-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231030101529.105266-1-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.478,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.972,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,29 +92,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On 30/10/23 11:15, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> It's not modified, let's make it const.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   system/vl.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-It's not modified, let's make it const.
-
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- system/vl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/system/vl.c b/system/vl.c
-index 86dd2dce28..f42ccfa216 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -194,7 +194,7 @@ static int default_sdcard = 1;
- static int default_vga = 1;
- static int default_net = 1;
- 
--static struct {
-+static const struct {
-     const char *driver;
-     int *flag;
- } default_list[] = {
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
