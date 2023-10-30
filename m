@@ -2,114 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039827DC1D7
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DB17DC1E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:26:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxZhd-0002Zn-Tz; Mon, 30 Oct 2023 17:21:42 -0400
+	id 1qxZlk-0008Qa-By; Mon, 30 Oct 2023 17:25:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qxZha-0002JC-Dp; Mon, 30 Oct 2023 17:21:38 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxZlh-0008LL-UG
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:25:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qxZhY-0006xw-K9; Mon, 30 Oct 2023 17:21:38 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39UJsI7e027187; Mon, 30 Oct 2023 21:21:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=kTpptsJNUdZqwcKScBKMqEw80CPTt7/EVFJ2ZCfMGnw=;
- b=nuUo1CgvBQfC0xEiBH4PXCctaQat+5bI6atgNfNLVbcfnpMkhMGtTgFnyTbgueO3w11/
- 75ZccxtmV/TL1+gCR9934gFQhtboG78kcdakNr8RZiVa0i0FIiq+kttdtUrIeoh8Jt2c
- E0gglrmAeQOiZm7xHbqUPLXs3KBt+Tk2P15jMjRMapsy7mE+BZEKjtVO17924ewBGA9+
- NcpVzVKmJkVpbFoiQ/At2cemoky60TcvMtsB05KjLpxjfF54VOIs53rLJ7QssvxFXU7x
- UWiNS85nh1Vq4b5lAKGau+YDEJV1U0elPg1FbrF5VC07KLLt6jfpW+yjbcueIpSO+sst Sw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2k2320f4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Oct 2023 21:21:20 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39UKml2j019367;
- Mon, 30 Oct 2023 21:21:19 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2k2320eg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Oct 2023 21:21:19 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39UIVra6000595; Mon, 30 Oct 2023 21:21:18 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u1cmsv5sh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Oct 2023 21:21:18 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39ULLItb29819288
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Oct 2023 21:21:18 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 107B35805D;
- Mon, 30 Oct 2023 21:21:18 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E87F58054;
- Mon, 30 Oct 2023 21:21:16 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 30 Oct 2023 21:21:16 +0000 (GMT)
-Message-ID: <01a8060f-e106-440c-8213-3633fcfbbc69@linux.ibm.com>
-Date: Mon, 30 Oct 2023 17:21:15 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxZlg-0007fq-Ds
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:25:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698701151;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kRRxTVoZjttyISvifkVJyqWj27CnkjBAzlCkyFDDRoE=;
+ b=izYiSKGwe7rwOGkDKBpqSwgv8RIAMxY+TIduxItFGvn1qu6JiTOu2ub2d/GPBSUcmwRizv
+ k7TR1VuIbHTOXTXRleOQwOqTaA7EQZKOG1w5xg+uSxEHcyT4ldGmm4M+lGDcPOQCbdrZzu
+ +ZwT4f+TdyuwFZKI9XH10pUDVujEjvo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-21CsfZBLPc6iRfRwHQrjow-1; Mon,
+ 30 Oct 2023 17:25:23 -0400
+X-MC-Unique: 21CsfZBLPc6iRfRwHQrjow-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7ECD72803024;
+ Mon, 30 Oct 2023 21:25:22 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2238EC1596C;
+ Mon, 30 Oct 2023 21:25:20 +0000 (UTC)
+Date: Mon, 30 Oct 2023 16:25:18 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
+ pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
+Subject: Re: [PATCH 21/24] qcow2: Take locks for accessing bs->file
+Message-ID: <4dlvkpafbcyghymqmwirpftsmseiomday2oegjjro2b3m2b5rs@32puclvwwl5v>
+References: <20231027155333.420094-1-kwolf@redhat.com>
+ <20231027155333.420094-22-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/14] tpm_crb_sysbus: introduce TPM CRB SysBus device
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
-Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20231029060404.71196-1-j@getutm.app>
- <20231029060404.71196-12-j@getutm.app>
- <d203aee9-f319-4ce4-9fc4-1f29440817bc@linux.ibm.com>
-In-Reply-To: <d203aee9-f319-4ce4-9fc4-1f29440817bc@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dWFVokMeo5InFzorQ9DPauW90vuxI_aU
-X-Proofpoint-ORIG-GUID: qMk5Ok62WNWpZhDrKWNb0PZg-4xwir_3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-30_13,2023-10-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 mlxscore=0 mlxlogscore=894 adultscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2310300167
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231027155333.420094-22-kwolf@redhat.com>
+User-Agent: NeoMutt/20231023
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,26 +79,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Oct 27, 2023 at 05:53:30PM +0200, Kevin Wolf wrote:
+> This updates the qcow2 code to add GRAPH_RDLOCK annotations for all
+> places that read bs->file.
+> 
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/qcow2.h         | 48 ++++++++++++++++++++++++++-----------------
+>  block/qcow2-bitmap.c  | 14 +++++++------
+>  block/qcow2-cluster.c | 25 +++++++++++-----------
+>  block/qcow2.c         | 13 ++++++++----
+>  4 files changed, 59 insertions(+), 41 deletions(-)
+> 
 
-On 10/30/23 17:08, Stefan Berger wrote:
+> @@ -834,9 +834,9 @@ int64_t qcow2_refcount_metadata_size(int64_t clusters, size_t cluster_size,
+>                                       int refcount_order, bool generous_increase,
+>                                       uint64_t *refblock_count);
+>  
+> -int qcow2_mark_dirty(BlockDriverState *bs);
+> -int qcow2_mark_corrupt(BlockDriverState *bs);
+> -int qcow2_update_header(BlockDriverState *bs);
+> +int GRAPH_RDLOCK qcow2_mark_dirty(BlockDriverState *bs);
+> +int GRAPH_RDLOCK qcow2_mark_corrupt(BlockDriverState *bs);
+> +int GRAPH_RDLOCK qcow2_update_header(BlockDriverState *bs);
 >
-> On 10/29/23 02:03, Joelle van Dyne wrote:
->> diff --git a/hw/tpm/tpm_crb_sysbus.c b/hw/tpm/tpm_crb_sysbus.c
->> new file mode 100644
->> index 0000000000..c10a8b5639
->> --- /dev/null
->> +++ b/hw/tpm/tpm_crb_sysbus.c
->> @@ -0,0 +1,161 @@
->> +/*
->> + * tpm_crb_sysbus.c - QEMU's TPM CRB interface emulator
->> + *
->> + * Copyright (c) 2018 Red Hat, Inc.
->> + *
->> + * Authors:
->> + *   Marc-André Lureau <marcandre.lureau@redhat.com>
 
+My first thought was "why is this a read lock when these functions are
+modifying the qcow2 headers?  Isn't that a write operation?"  But in
+thinking further - they are reading the graph structure, not modifing
+it (bs->file is not being changed; we may be modifying the contents to
+be stored in bs->file, but whether or not that change is done now or
+queued for the next flush, we still keep the same bs->file), so it
+looks right after all - these really are operations where we don't
+want the graph changed out from underneath us while we are modifying
+the qcow2 header.
 
-You can add your name here...
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
