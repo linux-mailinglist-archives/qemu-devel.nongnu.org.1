@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A585B7DB2BB
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 06:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF8D7DB2AC
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 06:16:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxKcN-0002JQ-Ep; Mon, 30 Oct 2023 01:15:15 -0400
+	id 1qxKcQ-0002Oh-47; Mon, 30 Oct 2023 01:15:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxKcJ-0002Fq-9c
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:15:12 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1qxKcN-0002KR-22
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:15:15 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxKcF-0001tT-92
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:15:09 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1cc58219376so747145ad.1
- for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 22:15:05 -0700 (PDT)
+ id 1qxKcK-0001uu-Fu
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 01:15:13 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-694ed847889so3393397b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 29 Oct 2023 22:15:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698642904; x=1699247704;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698642908; x=1699247708;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i0s5ogiHyPJYbyi6vNgHDA+W42ocPKN8ApgLgHmHQU4=;
- b=usmj+gBfYanYOUrM1z0sv2aIGkSGLA7K+cvvF8FSJjrF3xORsufZatl44BUea66Tgm
- o4VWx7Gb8j8nrZRE/FdRN2OnPWMR0BFIUMaL3HzPkcXaexOgg4krErFWnfZz75VMxq59
- Y6TaEzMeSLlT+CxGbiIq7Pu6+BbmFo7aqOT021QCZca6cF+rV+9TeINKUxY2Yr4z2x4r
- LZygLcssWO7zKs080DIK/dzcCtItq3g0aGMe8Aqzxy+5RafVzuof2xOABMggX985cHJ0
- IVjcVfke+UaYs7IEzmiuwGJcmbCGh4zUbhBbWNg33g8lpKB+J15AJEkDi81RdHUjKNzP
- 0lwQ==
+ bh=4suv/BvTtFCyaarl96M7QPK/UCb253pLYJ0sJd7urgg=;
+ b=szA2uYGagyLXtW5f0cyumVJbMnU6kaFJ6nTzUnS9PVwrW31G0mJx2YHh/auM8qcen1
+ R8ZZaLM89HF/LJ61IMuLVuP6EZKfo47bQ3N1vfZfn3W2RNZgAywhB5VyjMBDbwAWvQLc
+ Ks15Z8mXwMQGFfm7KBDjJJhvzkonju2T2qhEOj3Q0Q/sXJuPRlMUcEQ+JgvyzZDD+z5w
+ KRktGZKJLee14BpUSv/yKCl/cTRCPDP5j9W+XmLhkUzoQFtyKxg7VqWcR72e8BKcNmlQ
+ FH/+NU7GNQbbRg6NKJK8gI5e3pTydS4sjNS6MQqYL8jb6T0iJ2i/GmrFS1YzcNS4t7ej
+ X9+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698642904; x=1699247704;
+ d=1e100.net; s=20230601; t=1698642908; x=1699247708;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i0s5ogiHyPJYbyi6vNgHDA+W42ocPKN8ApgLgHmHQU4=;
- b=Xnxl45SD8SmvpWtPLEZH6fdFMSugWO9JCLreE+Dlepj8HNlLDA+KCmXuC4iXsXw/t9
- W6LRAQ+945MXhc7aflI9NCOi/EMrZ9suizRxYLmO5ednuxOtjZGz6S56ZigKKux34gM7
- SnT9rkwHCrgq+xoId5DSaOIux9UWuvj5G3EUNoaPj7mCji8pwRMU341/Vjf4WlKG7K4e
- cWjE+KyNXH3LgwobQgQLjqVXjPYhYfn0fWOWRhzFy/PDYcMcbSD9dpZxLUQwKB3qcgiY
- ROpb0QfJRlmKt8sluFXzSAhq2MQWLqHt0T/6wv2kkl+L3464p9Q9qaq5KJ96QoN0dELa
- fziA==
-X-Gm-Message-State: AOJu0YzNIfWjgzy1893vkoIbBt6V7SeSbVCWscaU2E4WxFlEkH8ettsF
- ZbDZ824l0qGPq0knzDiOz0Sk9D+oiOqMhWOQUjIiMw==
-X-Google-Smtp-Source: AGHT+IFWJKAAYvNS9mkyWaRMTz7yhCG02DBQ05DjKK0mFHUAX+o7nt45K8wqQYsSvc6oGzLmjOCBsg==
-X-Received: by 2002:a17:902:fa87:b0:1cc:3773:3d7f with SMTP id
- lc7-20020a170902fa8700b001cc37733d7fmr3486409plb.21.1698642904742; 
- Sun, 29 Oct 2023 22:15:04 -0700 (PDT)
+ bh=4suv/BvTtFCyaarl96M7QPK/UCb253pLYJ0sJd7urgg=;
+ b=NKUrclavh1VssA4gdg+OrjMh3mBZMLUIVXBLLVP6OtZfwJJyhUcWYmSHqo+Hw+SMm2
+ QNwl+EfsaFBBCm8UPUOtvCLUQ7Y8Na0jaL+Pgp9mxvBZ2Q5HREkMOD/lipVHDlF9ZUxm
+ E1K7veyBYFZuhgTN0l+aJHU7Y6sgynBFitFjf9zq0PRQNgqB5vmHpofeFx27it5bzbQI
+ XfRyrK1WjCWYefGjGlGmgcpy/aPtg32BDrVSX+H8nMDgAE7e+NAmlQcPU9W6hG09V4WO
+ kYFzHqDaRBM2quy/rn3Z1ZwMRk/HSOoM3oROXoqJvFG4/qH9Vn9vXQZ1dHZpKgEd84hU
+ 4txA==
+X-Gm-Message-State: AOJu0YwuNu7NJlTlw72cLDX6Rvo7tUAs/1fVEMBBm7ehU2kKT8y6266B
+ GdjO/eoas4DHiBOHMLhT4OF65v1ZCAcC4VbMvC4oBw==
+X-Google-Smtp-Source: AGHT+IG+MjQ4VSEwcJfdhxH75Blwcw01DTYRN8GyWVizZwmlMDhewWuUvwX/b0oBhr1DfbGuNxiZfg==
+X-Received: by 2002:a05:6a20:2447:b0:134:2b31:e2a9 with SMTP id
+ t7-20020a056a20244700b001342b31e2a9mr7958892pzc.0.1698642908641; 
+ Sun, 29 Oct 2023 22:15:08 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- ji12-20020a170903324c00b001c9b35287aesm5401990plb.88.2023.10.29.22.15.02
+ u8-20020a170902b28800b001cc2c7a30f2sm3978339plr.155.2023.10.29.22.15.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 29 Oct 2023 22:15:04 -0700 (PDT)
+ Sun, 29 Oct 2023 22:15:08 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v6 15/21] virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT
-Date: Mon, 30 Oct 2023 14:12:36 +0900
-Message-ID: <20231030051356.33123-16-akihiko.odaki@daynix.com>
+Subject: [PATCH v6 16/21] ebpf: Fix RSS error handling
+Date: Mon, 30 Oct 2023 14:12:37 +0900
+Message-ID: <20231030051356.33123-17-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231030051356.33123-1-akihiko.odaki@daynix.com>
 References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::436;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,27 +94,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio-net can report hash values even if the peer does not have a
-virtio-net header.
+calculate_rss_hash() was using hash value 0 to tell if it calculated
+a hash, but the hash value may be 0 on a rare occasion. Have a
+distinct bool value for correctness.
 
+Fixes: f3fa412de2 ("ebpf: Added eBPF RSS program.")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 2 --
- 1 file changed, 2 deletions(-)
+ tools/ebpf/rss.bpf.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index e30105884c..bdb4579f98 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -774,8 +774,6 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-         virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
-         virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
-         virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
--
--        virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
+diff --git a/tools/ebpf/rss.bpf.c b/tools/ebpf/rss.bpf.c
+index 20f227e2ac..667ea6899e 100644
+--- a/tools/ebpf/rss.bpf.c
++++ b/tools/ebpf/rss.bpf.c
+@@ -377,18 +377,19 @@ error:
+     return err;
+ }
+ 
+-static inline __u32 calculate_rss_hash(struct __sk_buff *skb,
+-        struct rss_config_t *config, struct toeplitz_key_data_t *toe)
++static inline bool calculate_rss_hash(struct __sk_buff *skb,
++                                      struct rss_config_t *config,
++                                      struct toeplitz_key_data_t *toe,
++                                      __u32 *result)
+ {
+     __u8 rss_input[HASH_CALCULATION_BUFFER_SIZE] = {};
+     size_t bytes_written = 0;
+-    __u32 result = 0;
+     int err = 0;
+     struct packet_hash_info_t packet_info = {};
+ 
+     err = parse_packet(skb, &packet_info);
+     if (err) {
+-        return 0;
++        return false;
      }
  
-     if (!peer_has_vnet_hdr(n) || !peer_has_ufo(n)) {
+     if (packet_info.is_ipv4) {
+@@ -521,11 +522,13 @@ static inline __u32 calculate_rss_hash(struct __sk_buff *skb,
+         }
+     }
+ 
+-    if (bytes_written) {
+-        net_toeplitz_add(&result, rss_input, bytes_written, toe);
++    if (!bytes_written) {
++        return false;
+     }
+ 
+-    return result;
++    net_toeplitz_add(result, rss_input, bytes_written, toe);
++
++    return true;
+ }
+ 
+ SEC("tun_rss_steering")
+@@ -546,8 +549,7 @@ int tun_rss_steering_prog(struct __sk_buff *skb)
+             return config->default_queue;
+         }
+ 
+-        hash = calculate_rss_hash(skb, config, toe);
+-        if (hash) {
++        if (calculate_rss_hash(skb, config, toe, &hash)) {
+             __u32 table_idx = hash % config->indirections_len;
+             __u16 *queue = 0;
+ 
 -- 
 2.42.0
 
