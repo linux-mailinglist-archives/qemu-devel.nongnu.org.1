@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F467DC1BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:19:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F336B7DC1C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 22:19:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxZeU-0001Xo-OE; Mon, 30 Oct 2023 17:18:26 -0400
+	id 1qxZe4-00014l-3B; Mon, 30 Oct 2023 17:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxZdp-000102-Oi
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:51 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1qxZdp-000100-OJ
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:49 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxZdj-0006Uf-Ea
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:42 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-5ab94fc098cso3157490a12.1
+ id 1qxZdj-0006Ul-Eb
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 17:17:41 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c9c5a1b87bso35034345ad.3
  for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 14:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698700657; x=1699305457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QUbTkt+bHKCfFZB4ZVLzwdrSKYldCzNwa+BNdD8suqc=;
- b=SddCGK5docu2PHXJXMuFcKlafnQxywt3i0VKE7uYHHQ5QHpVqExSlBInFmhUk7SiDL
- rfN/C2ezeTdHL5csntPGbAWN0E3DeQBNCQrPxO4Dh9b5UD9g20x1Z3LK8f/HXCaZobRN
- oA8kQkkL6LURHwrhWPGwMMg8N7gPkA1k+Bkq4ksKwYzbqMdVtTv9F2gWZeyb5RzHdDxf
- WXAbTi8ST6SjdLZB0vF6PNRPJUyPK1c2FpEYx6veV+7aBtdl0VacyrtjqcAQY28UqJ8U
- s7Om+znRrUYHACJ7FC+V429r8OOOPT+JEBy2mqV3bT2WGDsNowq6HBGtj/A6gHGsDEwE
- BTdA==
+ bh=JfYuDIRqxMfLfLgP1NKQpppnMNn5znqvhpuixH3Tu3U=;
+ b=OrzLXtJh0UtT0c0MBGZki8dkYc1E5vQKwy2no8oB31I4rgFct5yTTZb34m2RvwElfr
+ nrFCVLNQ2M8xHmlf21B/bQnN2m6aUncft1PUI7akSKh8h2GCfurRd7zZ9d8A6ZJLh8qF
+ ZlVEuHWfMbS+2VP6pCsU4UHul0YwbKHqEEseLNSV0XJ3ZEH1GJMeAkmu+9eOs9u3ecZA
+ VEX6uzkrNu00ByqoxjHyBDvpLXNk2cncK/sb32S3MF0ta9kkuhAy+EHjMQhUuKEwB22x
+ mmDBugyvJg4v2vPrLMqFcoWGyV8SUahSbxO3TBs6Zyf2ZxePo78heLMWyBR3tw3DaRhE
+ kV8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698700657; x=1699305457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QUbTkt+bHKCfFZB4ZVLzwdrSKYldCzNwa+BNdD8suqc=;
- b=KLj1soD8B6TED7HG3hw7z8Bqc9/Kx4BayuQKDXbyZA5uh+LPrvvWJYn4AcD+48DJSB
- cvcyy64zOs4sF9LkWyXvsffr5z9GjfPiE08J7R92IprxRTj6W4ztu42B3mpneziXTqil
- A9zYKMRz5R4jPR+wA9uggUmgdAK4I7m98tjrXdQoPVM4WbqQhy2oDGfnzIeU0GUZIc0J
- oBALEiozKWfInzp/3g3HStA6isbYoqIikYjTvqcsZ6rE8jBJPG8qvlsYohwTBaSILCSz
- 9Z15ivzsECTUPTX0Iypb5zRRPKMexnFPAj1dhk78Bte4L62dcujKWpF9JU9BgjX6HUqo
- LhLQ==
-X-Gm-Message-State: AOJu0YwoIxi0FBilVSnXYPZOlgRanNBWc+KhPux2sfvKXjmu2LlhSoWv
- H+bafhDa3yeSfXxLOA98DrgEmdcRYRuXJEoxEgI=
-X-Google-Smtp-Source: AGHT+IF0QKrm8odu9BJ4AOapStGue1j5AJyBEKdppbIVDKU/hCK6SenU+0JydLmQF5xFPC6zTzE05A==
-X-Received: by 2002:a17:903:68d:b0:1c9:e0f9:a676 with SMTP id
- ki13-20020a170903068d00b001c9e0f9a676mr7164836plb.6.1698700656783; 
- Mon, 30 Oct 2023 14:17:36 -0700 (PDT)
+ bh=JfYuDIRqxMfLfLgP1NKQpppnMNn5znqvhpuixH3Tu3U=;
+ b=ajnuG7huQehmGUlb02mxYdLTyRXhZuRCMBtZdrRMLtbTWIld08irL21tCqQDjUZLzt
+ /lSsXSU4WJ2fBh7fTZsGt/pLTF9+sfig1CZdUKRc4wfH7LVPnc8VZ0GMVXshLCbqs2GX
+ cFTiARGCaSZOX/Yuy0IwxAziceZ3xquDfxgtulRKjwumPxPKBxBk96VkNBhxQC+3uVa9
+ odNYAvrFWNp4q1SYV7wHdSF3ynrSdYKD6b1Clt59DIJSOML47/eudE5u8whq/axbU1gv
+ BLhbUfhDYwaBfBJ8fj/v3dFhLV7QB6YN92rdNn94vvJnuYXkMZMtcGxcIplfI0uSAGsO
+ 3rfA==
+X-Gm-Message-State: AOJu0YxbwJ14ySRsZnac3nZ8MznPu4iixnXSWHeEaOd5yhCdhnZYsyny
+ +92kq9ihdsMtBuvYVZw+964jrPt0I5fPnk60Lfk=
+X-Google-Smtp-Source: AGHT+IENweZ5BsAPfPnF83kZn0Mwq9ykNUjUL4DIDPzUqngyShNRjb4URl/7hGQeC57xShB6JOXRgg==
+X-Received: by 2002:a17:902:fb45:b0:1cc:379b:3505 with SMTP id
+ lf5-20020a170902fb4500b001cc379b3505mr3682655plb.49.1698700657585; 
+ Mon, 30 Oct 2023 14:17:37 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  jf2-20020a170903268200b001cc32261bdfsm4670350plb.38.2023.10.30.14.17.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Oct 2023 14:17:36 -0700 (PDT)
+ Mon, 30 Oct 2023 14:17:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/21] linux-user: Add gen-vdso tool
-Date: Mon, 30 Oct 2023 14:17:15 -0700
-Message-Id: <20231030211727.165090-10-richard.henderson@linaro.org>
+Subject: [PULL 10/21] linux-user/i386: Add vdso
+Date: Mon, 30 Oct 2023 14:17:16 -0700
+Message-Id: <20231030211727.165090-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231030211727.165090-1-richard.henderson@linaro.org>
 References: <20231030211727.165090-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,580 +91,389 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This tool will be used for post-processing the linked vdso image,
-turning it into something that is easy to include into elfload.c.
-
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1267
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/gen-vdso.c          | 223 ++++++++++++++++++++++++
- linux-user/gen-vdso-elfn.c.inc | 307 +++++++++++++++++++++++++++++++++
- linux-user/meson.build         |   6 +-
- 3 files changed, 535 insertions(+), 1 deletion(-)
- create mode 100644 linux-user/gen-vdso.c
- create mode 100644 linux-user/gen-vdso-elfn.c.inc
+ linux-user/i386/vdso-asmoffset.h |   6 ++
+ linux-user/elfload.c             |  19 +++-
+ linux-user/i386/signal.c         |  11 +++
+ linux-user/i386/Makefile.vdso    |  11 +++
+ linux-user/i386/meson.build      |   7 ++
+ linux-user/i386/vdso.S           | 143 +++++++++++++++++++++++++++++++
+ linux-user/i386/vdso.ld          |  76 ++++++++++++++++
+ linux-user/i386/vdso.so          | Bin 0 -> 2672 bytes
+ 8 files changed, 271 insertions(+), 2 deletions(-)
+ create mode 100644 linux-user/i386/vdso-asmoffset.h
+ create mode 100644 linux-user/i386/Makefile.vdso
+ create mode 100644 linux-user/i386/vdso.S
+ create mode 100644 linux-user/i386/vdso.ld
+ create mode 100755 linux-user/i386/vdso.so
 
-diff --git a/linux-user/gen-vdso.c b/linux-user/gen-vdso.c
+diff --git a/linux-user/i386/vdso-asmoffset.h b/linux-user/i386/vdso-asmoffset.h
 new file mode 100644
-index 0000000000..31e333be80
+index 0000000000..4e5ee0dd49
 --- /dev/null
-+++ b/linux-user/gen-vdso.c
-@@ -0,0 +1,223 @@
++++ b/linux-user/i386/vdso-asmoffset.h
+@@ -0,0 +1,6 @@
 +/*
-+ * Post-process a vdso elf image for inclusion into qemu.
++ * offsetof(struct sigframe, sc.eip)
++ * offsetof(struct rt_sigframe, uc.tuc_mcontext.eip)
++ */
++#define SIGFRAME_SIGCONTEXT_eip      64
++#define RT_SIGFRAME_SIGCONTEXT_eip  220
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index b0723071e2..46f73a4166 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -305,12 +305,27 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
+     (*regs)[15] = tswapreg(env->regs[R_ESP]);
+     (*regs)[16] = tswapreg(env->segs[R_SS].selector & 0xffff);
+ }
+-#endif
++
++/*
++ * i386 is the only target which supplies AT_SYSINFO for the vdso.
++ * All others only supply AT_SYSINFO_EHDR.
++ */
++#define DLINFO_ARCH_ITEMS (vdso_info != NULL)
++#define ARCH_DLINFO                                     \
++    do {                                                \
++        if (vdso_info) {                                \
++            NEW_AUX_ENT(AT_SYSINFO, vdso_info->entry);  \
++        }                                               \
++    } while (0)
++
++#define VDSO_HEADER "vdso.c.inc"
++
++#endif /* TARGET_X86_64 */
+ 
+ #define USE_ELF_CORE_DUMP
+ #define ELF_EXEC_PAGESIZE       4096
+ 
+-#endif
++#endif /* TARGET_I386 */
+ 
+ #ifdef TARGET_ARM
+ 
+diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
+index 60fa07d6f9..bc5d45302e 100644
+--- a/linux-user/i386/signal.c
++++ b/linux-user/i386/signal.c
+@@ -214,6 +214,17 @@ struct rt_sigframe {
+ };
+ #define TARGET_RT_SIGFRAME_FXSAVE_OFFSET (                                 \
+     offsetof(struct rt_sigframe, fpstate) + TARGET_FPSTATE_FXSAVE_OFFSET)
++
++/*
++ * Verify that vdso-asmoffset.h constants match.
++ */
++#include "i386/vdso-asmoffset.h"
++
++QEMU_BUILD_BUG_ON(offsetof(struct sigframe, sc.eip)
++                  != SIGFRAME_SIGCONTEXT_eip);
++QEMU_BUILD_BUG_ON(offsetof(struct rt_sigframe, uc.tuc_mcontext.eip)
++                  != RT_SIGFRAME_SIGCONTEXT_eip);
++
+ #else
+ 
+ struct rt_sigframe {
+diff --git a/linux-user/i386/Makefile.vdso b/linux-user/i386/Makefile.vdso
+new file mode 100644
+index 0000000000..95bc616f6d
+--- /dev/null
++++ b/linux-user/i386/Makefile.vdso
+@@ -0,0 +1,11 @@
++include $(BUILD_DIR)/tests/tcg/i386-linux-user/config-target.mak
++
++SUBDIR = $(SRC_PATH)/linux-user/i386
++VPATH += $(SUBDIR)
++
++all: $(SUBDIR)/vdso.so
++
++$(SUBDIR)/vdso.so: vdso.S vdso.ld vdso-asmoffset.h
++	$(CC) -o $@ -m32 -nostdlib -shared -Wl,-h,linux-gate.so.1 \
++	  -Wl,--build-id=sha1 -Wl,--hash-style=both \
++	  -Wl,-T,$(SUBDIR)/vdso.ld $<
+diff --git a/linux-user/i386/meson.build b/linux-user/i386/meson.build
+index ee523019a5..d42fc6cbc9 100644
+--- a/linux-user/i386/meson.build
++++ b/linux-user/i386/meson.build
+@@ -3,3 +3,10 @@ syscall_nr_generators += {
+                     arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
+                     output: '@BASENAME@_nr.h')
+ }
++
++vdso_inc = gen_vdso.process('vdso.so', extra_args: [
++                                '-s', '__kernel_sigreturn',
++                                '-r', '__kernel_rt_sigreturn'
++                            ])
++
++linux_user_ss.add(when: 'TARGET_I386', if_true: vdso_inc)
+diff --git a/linux-user/i386/vdso.S b/linux-user/i386/vdso.S
+new file mode 100644
+index 0000000000..e7a1f333a1
+--- /dev/null
++++ b/linux-user/i386/vdso.S
+@@ -0,0 +1,143 @@
++/*
++ * i386 linux replacement vdso.
 + *
 + * Copyright 2023 Linaro, Ltd.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#include <stdlib.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <errno.h>
-+#include <endian.h>
-+#include <unistd.h>
-+#include "elf.h"
++#include <asm/unistd.h>
++#include "vdso-asmoffset.h"
 +
++.macro endf name
++	.globl	\name
++	.type	\name, @function
++	.size	\name, . - \name
++.endm
 +
-+#define bswap_(p)  _Generic(*(p), \
-+                            uint16_t: __builtin_bswap16,       \
-+                            uint32_t: __builtin_bswap32,       \
-+                            uint64_t: __builtin_bswap64,       \
-+                            int16_t: __builtin_bswap16,        \
-+                            int32_t: __builtin_bswap32,        \
-+                            int64_t: __builtin_bswap64)
-+#define bswaps(p) (*(p) = bswap_(p)(*(p)))
++.macro vdso_syscall1 name, nr
++\name:
++	.cfi_startproc
++	mov	%ebx, %edx
++	.cfi_register %ebx, %edx
++	mov	4(%esp), %ebx
++	mov	$\nr, %eax
++	int	$0x80
++	mov	%edx, %ebx
++	ret
++	.cfi_endproc
++endf	\name
++.endm
 +
-+static void output_reloc(FILE *outf, void *buf, void *loc)
-+{
-+    fprintf(outf, "    0x%08tx,\n", loc - buf);
-+}
++.macro vdso_syscall2 name, nr
++\name:
++	.cfi_startproc
++	mov	%ebx, %edx
++	.cfi_register %ebx, %edx
++	mov	4(%esp), %ebx
++	mov	8(%esp), %ecx
++	mov	$\nr, %eax
++	int	$0x80
++	mov	%edx, %ebx
++	ret
++	.cfi_endproc
++endf	\name
++.endm
 +
-+static const char *sigreturn_sym;
-+static const char *rt_sigreturn_sym;
++.macro vdso_syscall3 name, nr
++\name:
++	.cfi_startproc
++	push	%ebx
++	.cfi_adjust_cfa_offset 4
++	.cfi_rel_offset %ebx, 0
++	mov	8(%esp), %ebx
++	mov	12(%esp), %ecx
++	mov	16(%esp), %edx
++	mov	$\nr, %eax
++	int	$0x80
++	pop	%ebx
++	.cfi_adjust_cfa_offset -4
++	.cfi_restore %ebx
++	ret
++	.cfi_endproc
++endf	\name
++.endm
 +
-+static unsigned sigreturn_addr;
-+static unsigned rt_sigreturn_addr;
++__kernel_vsyscall:
++	.cfi_startproc
++	int	$0x80
++	ret
++	.cfi_endproc
++endf	__kernel_vsyscall
 +
-+#define N 32
-+#define elfN(x)  elf32_##x
-+#define ElfN(x)  Elf32_##x
-+#include "gen-vdso-elfn.c.inc"
-+#undef N
-+#undef elfN
-+#undef ElfN
++vdso_syscall2 __vdso_clock_gettime, __NR_clock_gettime
++vdso_syscall2 __vdso_clock_gettime64, __NR_clock_gettime64
++vdso_syscall2 __vdso_clock_getres, __NR_clock_getres
++vdso_syscall2 __vdso_gettimeofday, __NR_gettimeofday
++vdso_syscall1 __vdso_time, __NR_time
++vdso_syscall3 __vdso_getcpu, __NR_gettimeofday
 +
-+#define N 64
-+#define elfN(x)  elf64_##x
-+#define ElfN(x)  Elf64_##x
-+#include "gen-vdso-elfn.c.inc"
-+#undef N
-+#undef elfN
-+#undef ElfN
-+
-+
-+int main(int argc, char **argv)
-+{
-+    FILE *inf, *outf;
-+    long total_len;
-+    const char *prefix = "vdso";
-+    const char *inf_name;
-+    const char *outf_name = NULL;
-+    unsigned char *buf;
-+    bool need_bswap;
-+
-+    while (1) {
-+        int opt = getopt(argc, argv, "o:p:r:s:");
-+        if (opt < 0) {
-+            break;
-+        }
-+        switch (opt) {
-+        case 'o':
-+            outf_name = optarg;
-+            break;
-+        case 'p':
-+            prefix = optarg;
-+            break;
-+        case 'r':
-+            rt_sigreturn_sym = optarg;
-+            break;
-+        case 's':
-+            sigreturn_sym = optarg;
-+            break;
-+        default:
-+        usage:
-+            fprintf(stderr, "usage: [-p prefix] [-r rt-sigreturn-name] "
-+                    "[-s sigreturn-name] -o output-file input-file\n");
-+            return EXIT_FAILURE;
-+        }
-+    }
-+
-+    if (optind >= argc || outf_name == NULL) {
-+        goto usage;
-+    }
-+    inf_name = argv[optind];
-+
-+    /*
-+     * Open the input and output files.
-+     */
-+    inf = fopen(inf_name, "rb");
-+    if (inf == NULL) {
-+        goto perror_inf;
-+    }
-+    outf = fopen(outf_name, "w");
-+    if (outf == NULL) {
-+        goto perror_outf;
-+    }
-+
-+    /*
-+     * Read the input file into a buffer.
-+     * We expect the vdso to be small, on the order of one page,
-+     * therefore we do not expect a partial read.
-+     */
-+    fseek(inf, 0, SEEK_END);
-+    total_len = ftell(inf);
-+    fseek(inf, 0, SEEK_SET);
-+
-+    buf = malloc(total_len);
-+    if (buf == NULL) {
-+        goto perror_inf;
-+    }
-+
-+    errno = 0;
-+    if (fread(buf, 1, total_len, inf) != total_len) {
-+        if (errno) {
-+            goto perror_inf;
-+        }
-+        fprintf(stderr, "%s: incomplete read\n", inf_name);
-+        return EXIT_FAILURE;
-+    }
-+    fclose(inf);
-+
-+    /*
-+     * Write out the vdso image now, before we make local changes.
-+     */
-+
-+    fprintf(outf,
-+            "/* Automatically generated from linux-user/gen-vdso.c. */\n"
-+            "\n"
-+            "static const uint8_t %s_image[] = {",
-+            prefix);
-+    for (long i = 0; i < total_len; ++i) {
-+        if (i % 12 == 0) {
-+            fputs("\n   ", outf);
-+        }
-+        fprintf(outf, " 0x%02x,", buf[i]);
-+    }
-+    fprintf(outf, "\n};\n\n");
-+
-+    /*
-+     * Identify which elf flavor we're processing.
-+     * The first 16 bytes of the file are e_ident.
-+     */
-+
-+    if (buf[EI_MAG0] != ELFMAG0 || buf[EI_MAG1] != ELFMAG1 ||
-+        buf[EI_MAG2] != ELFMAG2 || buf[EI_MAG3] != ELFMAG3) {
-+        fprintf(stderr, "%s: not an elf file\n", inf_name);
-+        return EXIT_FAILURE;
-+    }
-+    switch (buf[EI_DATA]) {
-+    case ELFDATA2LSB:
-+        need_bswap = BYTE_ORDER != LITTLE_ENDIAN;
-+        break;
-+    case ELFDATA2MSB:
-+        need_bswap = BYTE_ORDER != BIG_ENDIAN;
-+        break;
-+    default:
-+        fprintf(stderr, "%s: invalid elf EI_DATA (%u)\n",
-+                inf_name, buf[EI_DATA]);
-+        return EXIT_FAILURE;
-+    }
-+
-+    /*
-+     * We need to relocate the VDSO image.  The one built into the kernel
-+     * is built for a fixed address.  The one we built for QEMU is not,
-+     * since that requires close control of the guest address space.
-+     *
-+     * Output relocation addresses as we go.
-+     */
-+
-+    fprintf(outf, "static const unsigned %s_relocs[] = {\n", prefix);
-+
-+    switch (buf[EI_CLASS]) {
-+    case ELFCLASS32:
-+        elf32_process(outf, buf, need_bswap);
-+        break;
-+    case ELFCLASS64:
-+        elf64_process(outf, buf, need_bswap);
-+        break;
-+    default:
-+        fprintf(stderr, "%s: invalid elf EI_CLASS (%u)\n",
-+                inf_name, buf[EI_CLASS]);
-+        return EXIT_FAILURE;
-+    }
-+
-+    fprintf(outf, "};\n\n");   /* end vdso_relocs. */
-+
-+    fprintf(outf, "static const VdsoImageInfo %s_image_info = {\n", prefix);
-+    fprintf(outf, "    .image = %s_image,\n", prefix);
-+    fprintf(outf, "    .relocs = %s_relocs,\n", prefix);
-+    fprintf(outf, "    .image_size = sizeof(%s_image),\n", prefix);
-+    fprintf(outf, "    .reloc_count = ARRAY_SIZE(%s_relocs),\n", prefix);
-+    fprintf(outf, "    .sigreturn_ofs = 0x%x,\n", sigreturn_addr);
-+    fprintf(outf, "    .rt_sigreturn_ofs = 0x%x,\n", rt_sigreturn_addr);
-+    fprintf(outf, "};\n");
-+
-+    /*
-+     * Everything should have gone well.
-+     */
-+    if (fclose(outf)) {
-+        goto perror_outf;
-+    }
-+    return EXIT_SUCCESS;
-+
-+ perror_inf:
-+    perror(inf_name);
-+    return EXIT_FAILURE;
-+
-+ perror_outf:
-+    perror(outf_name);
-+    return EXIT_FAILURE;
-+}
-diff --git a/linux-user/gen-vdso-elfn.c.inc b/linux-user/gen-vdso-elfn.c.inc
-new file mode 100644
-index 0000000000..7034c36d5e
---- /dev/null
-+++ b/linux-user/gen-vdso-elfn.c.inc
-@@ -0,0 +1,307 @@
 +/*
-+ * Post-process a vdso elf image for inclusion into qemu.
-+ * Elf size specialization.
++ * Signal return handlers.
++ */
++
++	.cfi_startproc simple
++	.cfi_signal_frame
++
++/*
++ * For convenience, put the cfa just above eip in sigcontext, and count
++ * offsets backward from there.  Re-compute the cfa in the two contexts
++ * we have for signal unwinding.  This is far simpler than the
++ * DW_CFA_expression form that the kernel uses, and is equally correct.
++ */
++
++	.cfi_def_cfa	%esp, SIGFRAME_SIGCONTEXT_eip + 4
++
++	.cfi_offset	%eip, -4
++			/* err, -8 */
++			/* trapno, -12 */
++	.cfi_offset	%eax, -16
++	.cfi_offset	%ecx, -20
++	.cfi_offset	%edx, -24
++	.cfi_offset	%ebx, -28
++	.cfi_offset	%esp, -32
++	.cfi_offset	%ebp, -36
++	.cfi_offset	%esi, -40
++	.cfi_offset	%edi, -44
++
++/*
++ * While this frame is marked as a signal frame, that only applies to how
++ * the return address is handled for the outer frame.  The return address
++ * that arrived here, from the inner frame, is not marked as a signal frame
++ * and so the unwinder still tries to subtract 1 to examine the presumed
++ * call insn.  Thus we must extend the unwind info to a nop before the start.
++ */
++	nop
++
++__kernel_sigreturn:
++	popl	%eax	/* pop sig */
++	.cfi_adjust_cfa_offset -4
++	movl	$__NR_sigreturn, %eax
++	int	$0x80
++endf	__kernel_sigreturn
++
++	.cfi_def_cfa_offset RT_SIGFRAME_SIGCONTEXT_eip + 4
++	nop
++
++__kernel_rt_sigreturn:
++	movl	$__NR_rt_sigreturn, %eax
++	int	$0x80
++endf	__kernel_rt_sigreturn
++
++	.cfi_endproc
++
++/*
++ * TODO: Add elf notes.  E.g.
++ *
++ * #include <linux/elfnote.h>
++ * ELFNOTE_START(Linux, 0, "a")
++ *   .long LINUX_VERSION_CODE
++ * ELFNOTE_END
++ *
++ * but what version number would we set for QEMU?
++ */
+diff --git a/linux-user/i386/vdso.ld b/linux-user/i386/vdso.ld
+new file mode 100644
+index 0000000000..326b7a8f98
+--- /dev/null
++++ b/linux-user/i386/vdso.ld
+@@ -0,0 +1,76 @@
++/*
++ * Linker script for linux i386 replacement vdso.
 + *
 + * Copyright 2023 Linaro, Ltd.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+static void elfN(bswap_ehdr)(ElfN(Ehdr) *ehdr)
-+{
-+    bswaps(&ehdr->e_type);            /* Object file type */
-+    bswaps(&ehdr->e_machine);         /* Architecture */
-+    bswaps(&ehdr->e_version);         /* Object file version */
-+    bswaps(&ehdr->e_entry);           /* Entry point virtual address */
-+    bswaps(&ehdr->e_phoff);           /* Program header table file offset */
-+    bswaps(&ehdr->e_shoff);           /* Section header table file offset */
-+    bswaps(&ehdr->e_flags);           /* Processor-specific flags */
-+    bswaps(&ehdr->e_ehsize);          /* ELF header size in bytes */
-+    bswaps(&ehdr->e_phentsize);       /* Program header table entry size */
-+    bswaps(&ehdr->e_phnum);           /* Program header table entry count */
-+    bswaps(&ehdr->e_shentsize);       /* Section header table entry size */
-+    bswaps(&ehdr->e_shnum);           /* Section header table entry count */
-+    bswaps(&ehdr->e_shstrndx);        /* Section header string table index */
++ENTRY(__kernel_vsyscall)
++
++VERSION {
++        LINUX_2.6 {
++        global:
++                __vdso_clock_gettime;
++                __vdso_gettimeofday;
++                __vdso_time;
++                __vdso_clock_getres;
++                __vdso_clock_gettime64;
++                __vdso_getcpu;
++        };
++
++        LINUX_2.5 {
++        global:
++                __kernel_vsyscall;
++                __kernel_sigreturn;
++                __kernel_rt_sigreturn;
++        local: *;
++        };
 +}
 +
-+static void elfN(bswap_phdr)(ElfN(Phdr) *phdr)
-+{
-+    bswaps(&phdr->p_type);            /* Segment type */
-+    bswaps(&phdr->p_flags);           /* Segment flags */
-+    bswaps(&phdr->p_offset);          /* Segment file offset */
-+    bswaps(&phdr->p_vaddr);           /* Segment virtual address */
-+    bswaps(&phdr->p_paddr);           /* Segment physical address */
-+    bswaps(&phdr->p_filesz);          /* Segment size in file */
-+    bswaps(&phdr->p_memsz);           /* Segment size in memory */
-+    bswaps(&phdr->p_align);           /* Segment alignment */
++PHDRS {
++        phdr            PT_PHDR         FLAGS(4) PHDRS;
++        load            PT_LOAD         FLAGS(7) FILEHDR PHDRS; /* FLAGS=RWX */
++        dynamic         PT_DYNAMIC      FLAGS(4);
++        eh_frame_hdr    PT_GNU_EH_FRAME;
++        note            PT_NOTE         FLAGS(4);
 +}
 +
-+static void elfN(bswap_shdr)(ElfN(Shdr) *shdr)
-+{
-+    bswaps(&shdr->sh_name);
-+    bswaps(&shdr->sh_type);
-+    bswaps(&shdr->sh_flags);
-+    bswaps(&shdr->sh_addr);
-+    bswaps(&shdr->sh_offset);
-+    bswaps(&shdr->sh_size);
-+    bswaps(&shdr->sh_link);
-+    bswaps(&shdr->sh_info);
-+    bswaps(&shdr->sh_addralign);
-+    bswaps(&shdr->sh_entsize);
-+}
++SECTIONS {
++        . = SIZEOF_HEADERS;
 +
-+static void elfN(bswap_sym)(ElfN(Sym) *sym)
-+{
-+    bswaps(&sym->st_name);
-+    bswaps(&sym->st_value);
-+    bswaps(&sym->st_size);
-+    bswaps(&sym->st_shndx);
-+}
-+
-+static void elfN(bswap_dyn)(ElfN(Dyn) *dyn)
-+{
-+    bswaps(&dyn->d_tag);              /* Dynamic type tag */
-+    bswaps(&dyn->d_un.d_ptr);         /* Dynamic ptr or val, in union */
-+}
-+
-+static void elfN(search_symtab)(ElfN(Shdr) *shdr, unsigned sym_idx,
-+                                void *buf, bool need_bswap)
-+{
-+    unsigned str_idx = shdr[sym_idx].sh_link;
-+    ElfN(Sym) *sym = buf + shdr[sym_idx].sh_offset;
-+    unsigned sym_n = shdr[sym_idx].sh_size / sizeof(*sym);
-+    const char *str = buf + shdr[str_idx].sh_offset;
-+
-+    for (unsigned i = 0; i < sym_n; ++i) {
-+        const char *name;
-+
-+        if (need_bswap) {
-+            elfN(bswap_sym)(sym + i);
-+        }
-+        name = str + sym[i].st_name;
-+
-+        if (sigreturn_sym && strcmp(sigreturn_sym, name) == 0) {
-+            sigreturn_addr = sym[i].st_value;
-+        }
-+        if (rt_sigreturn_sym && strcmp(rt_sigreturn_sym, name) == 0) {
-+            rt_sigreturn_addr = sym[i].st_value;
-+        }
-+    }
-+}
-+
-+static void elfN(process)(FILE *outf, void *buf, bool need_bswap)
-+{
-+    ElfN(Ehdr) *ehdr = buf;
-+    ElfN(Phdr) *phdr;
-+    ElfN(Shdr) *shdr;
-+    unsigned phnum, shnum;
-+    unsigned dynamic_ofs = 0;
-+    unsigned dynamic_addr = 0;
-+    unsigned symtab_idx = 0;
-+    unsigned dynsym_idx = 0;
-+    unsigned first_segsz = 0;
-+    int errors = 0;
-+
-+    if (need_bswap) {
-+        elfN(bswap_ehdr)(ehdr);
-+    }
-+
-+    phnum = ehdr->e_phnum;
-+    phdr = buf + ehdr->e_phoff;
-+    if (need_bswap) {
-+        for (unsigned i = 0; i < phnum; ++i) {
-+            elfN(bswap_phdr)(phdr + i);
-+        }
-+    }
-+
-+    shnum = ehdr->e_shnum;
-+    shdr = buf + ehdr->e_shoff;
-+    if (need_bswap) {
-+        for (unsigned i = 0; i < shnum; ++i) {
-+            elfN(bswap_shdr)(shdr + i);
-+        }
-+    }
-+    for (unsigned i = 0; i < shnum; ++i) {
-+        switch (shdr[i].sh_type) {
-+        case SHT_SYMTAB:
-+            symtab_idx = i;
-+            break;
-+        case SHT_DYNSYM:
-+            dynsym_idx = i;
-+            break;
-+        }
-+    }
-+
-+    /*
-+     * Validate the VDSO is created as we expect: that PT_PHDR,
-+     * PT_DYNAMIC, and PT_NOTE located in a writable data segment.
-+     * PHDR and DYNAMIC require relocation, and NOTE will get the
-+     * linux version number.
-+     */
-+    for (unsigned i = 0; i < phnum; ++i) {
-+        if (phdr[i].p_type != PT_LOAD) {
-+            continue;
-+        }
-+        if (first_segsz != 0) {
-+            fprintf(stderr, "Multiple LOAD segments\n");
-+            errors++;
-+        }
-+        if (phdr[i].p_offset != 0) {
-+            fprintf(stderr, "LOAD segment does not cover EHDR\n");
-+            errors++;
-+        }
-+        if (phdr[i].p_vaddr != 0) {
-+            fprintf(stderr, "LOAD segment not loaded at address 0\n");
-+            errors++;
-+        }
-+        first_segsz = phdr[i].p_filesz;
-+        if (first_segsz < ehdr->e_phoff + phnum * sizeof(*phdr)) {
-+            fprintf(stderr, "LOAD segment does not cover PHDRs\n");
-+            errors++;
-+        }
-+        if ((phdr[i].p_flags & (PF_R | PF_W)) != (PF_R | PF_W)) {
-+            fprintf(stderr, "LOAD segment is not read-write\n");
-+            errors++;
-+        }
-+    }
-+    for (unsigned i = 0; i < phnum; ++i) {
-+        const char *which;
-+
-+        switch (phdr[i].p_type) {
-+        case PT_PHDR:
-+            which = "PT_PHDR";
-+            break;
-+        case PT_NOTE:
-+            which = "PT_NOTE";
-+            break;
-+        case PT_DYNAMIC:
-+            dynamic_ofs = phdr[i].p_offset;
-+            dynamic_addr = phdr[i].p_vaddr;
-+            which = "PT_DYNAMIC";
-+            break;
-+        default:
-+            continue;
-+        }
-+        if (first_segsz < phdr[i].p_vaddr + phdr[i].p_filesz) {
-+            fprintf(stderr, "LOAD segment does not cover %s\n", which);
-+            errors++;
-+        }
-+    }
-+    if (errors) {
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    /* Relocate the program headers. */
-+    for (unsigned i = 0; i < phnum; ++i) {
-+        output_reloc(outf, buf, &phdr[i].p_vaddr);
-+        output_reloc(outf, buf, &phdr[i].p_paddr);
-+    }
-+
-+    /* Relocate the DYNAMIC entries. */
-+    if (dynamic_addr) {
-+        ElfN(Dyn) *dyn = buf + dynamic_ofs;
-+        __typeof(dyn->d_tag) tag;
-+
-+        do {
-+
-+            if (need_bswap) {
-+                elfN(bswap_dyn)(dyn);
-+            }
-+            tag = dyn->d_tag;
-+
-+            switch (tag) {
-+            case DT_HASH:
-+            case DT_SYMTAB:
-+            case DT_STRTAB:
-+            case DT_VERDEF:
-+            case DT_VERSYM:
-+            case DT_PLTGOT:
-+            case DT_ADDRRNGLO ... DT_ADDRRNGHI:
-+                /* These entries store an address in the entry. */
-+                output_reloc(outf, buf, &dyn->d_un.d_val);
-+                break;
-+
-+            case DT_NULL:
-+            case DT_STRSZ:
-+            case DT_SONAME:
-+            case DT_DEBUG:
-+            case DT_FLAGS:
-+            case DT_FLAGS_1:
-+            case DT_SYMBOLIC:
-+            case DT_BIND_NOW:
-+            case DT_VERDEFNUM:
-+            case DT_VALRNGLO ... DT_VALRNGHI:
-+                /* These entries store an integer in the entry. */
-+                break;
-+
-+            case DT_SYMENT:
-+                if (dyn->d_un.d_val != sizeof(ElfN(Sym))) {
-+                    fprintf(stderr, "VDSO has incorrect dynamic symbol size\n");
-+                    errors++;
-+                }
-+                break;
-+
-+            case DT_REL:
-+            case DT_RELSZ:
-+            case DT_RELA:
-+            case DT_RELASZ:
++        /*
++         * The following, including the FILEHDRS and PHDRS, are modified
++         * when we relocate the binary.  We want them to be initially
++         * writable for the relocation; we'll force them read-only after.
++         */
++        .note           : { *(.note*) }         :load :note
++        .dynamic        : { *(.dynamic) }       :load :dynamic
++        .dynsym         : { *(.dynsym) }        :load
++        .data           : {
 +                /*
-+                 * These entries indicate that the VDSO was built incorrectly.
-+                 * It should not have any real relocations.
-+                 * ??? The RISC-V toolchain will emit these even when there
-+                 * are no relocations.  Validate zeros.
++                 * There ought not be any real read-write data.
++                 * But since we manipulated the segment layout,
++                 * we have to put these sections somewhere.
 +                 */
-+                if (dyn->d_un.d_val != 0) {
-+                    fprintf(stderr, "VDSO has dynamic relocations\n");
-+                    errors++;
-+                }
-+                break;
-+            case DT_RELENT:
-+            case DT_RELAENT:
-+            case DT_TEXTREL:
-+                /* These entries store an integer in the entry. */
-+                /* Should not be required; see above. */
-+                break;
-+
-+            case DT_NEEDED:
-+            case DT_VERNEED:
-+            case DT_PLTREL:
-+            case DT_JMPREL:
-+            case DT_RPATH:
-+            case DT_RUNPATH:
-+                fprintf(stderr, "VDSO has external dependencies\n");
-+                errors++;
-+                break;
-+
-+            default:
-+                /* This is probably something target specific. */
-+                fprintf(stderr, "VDSO has unknown DYNAMIC entry (%lx)\n",
-+                        (unsigned long)tag);
-+                errors++;
-+                break;
-+            }
-+            dyn++;
-+        } while (tag != DT_NULL);
-+        if (errors) {
-+            exit(EXIT_FAILURE);
++                *(.data*)
++                *(.sdata*)
++                *(.got.plt) *(.got)
++                *(.gnu.linkonce.d.*)
++                *(.bss*)
++                *(.dynbss*)
++                *(.gnu.linkonce.b.*)
 +        }
-+    }
 +
-+    /* Relocate the dynamic symbol table. */
-+    if (dynsym_idx) {
-+        ElfN(Sym) *sym = buf + shdr[dynsym_idx].sh_offset;
-+        unsigned sym_n = shdr[dynsym_idx].sh_size / sizeof(*sym);
++        .rodata         : { *(.rodata*) }
++        .hash           : { *(.hash) }
++        .gnu.hash       : { *(.gnu.hash) }
++        .dynstr         : { *(.dynstr) }
++        .gnu.version    : { *(.gnu.version) }
++        .gnu.version_d  : { *(.gnu.version_d) }
++        .gnu.version_r  : { *(.gnu.version_r) }
++        .eh_frame_hdr   : { *(.eh_frame_hdr) }  :load :eh_frame_hdr
++        .eh_frame       : { *(.eh_frame) }      :load
 +
-+        for (unsigned i = 0; i < sym_n; ++i) {
-+            output_reloc(outf, buf, &sym[i].st_value);
-+        }
-+    }
-+
-+    /* Search both dynsym and symtab for the signal return symbols. */
-+    if (dynsym_idx) {
-+        elfN(search_symtab)(shdr, dynsym_idx, buf, need_bswap);
-+    }
-+    if (symtab_idx) {
-+        elfN(search_symtab)(shdr, symtab_idx, buf, need_bswap);
-+    }
++        .text           : { *(.text*) }         :load   =0x90909090
 +}
-diff --git a/linux-user/meson.build b/linux-user/meson.build
-index 7171dc60be..e4cb70ed2d 100644
---- a/linux-user/meson.build
-+++ b/linux-user/meson.build
-@@ -28,9 +28,13 @@ linux_user_ss.add(when: 'TARGET_HAS_BFLT', if_true: files('flatload.c'))
- linux_user_ss.add(when: 'TARGET_I386', if_true: files('vm86.c'))
- linux_user_ss.add(when: 'CONFIG_ARM_COMPATIBLE_SEMIHOSTING', if_true: files('semihost.c'))
- 
--
- syscall_nr_generators = {}
- 
-+gen_vdso_exe = executable('gen-vdso', 'gen-vdso.c',
-+                          native: true, build_by_default: false)
-+gen_vdso = generator(gen_vdso_exe, output: '@BASENAME@.c.inc',
-+                     arguments: ['-o', '@OUTPUT@', '@EXTRA_ARGS@', '@INPUT@'])
-+
- subdir('alpha')
- subdir('arm')
- subdir('hppa')
+diff --git a/linux-user/i386/vdso.so b/linux-user/i386/vdso.so
+new file mode 100755
+index 0000000000000000000000000000000000000000..bdece5dfcf8da036d013262d4e37208350283cfa
+GIT binary patch
+literal 2672
+zcmbtWU1%It6u#5lG_z^4ZB?X_C>9o5sxCF8QBlyONt?nZ)?|y73e)ZGba%;SR(597
+zjTXE8QIiHtY6YPbDhO>6s(mPS(FX(Z2Q`g?1xp_^KInr_=|f8&)b;yj=5}w=eGok1
+z%XiMX=brmB_ny0ldSlx(O%qZAA|PnR8-(ZpuhYGj4)L&P5F5p65f&@qVw=PV(21ar
+zS~fT!zaSUUNMnr<D?qmul%W%{|IXi?lnz58hBiXBldmd>Kqu7p`(Ouv?E|~S#J4vR
+z?eBj&+ji~rg~eZ!zf~VSJr_pXM}D8DFrl0ORPzVHn5LKmbB!e|qzOC^tO77~@mIB)
+zzl6kpgPDI3e2U8d6uIY2bq_`x0-wZWxDMLSfe$J6M%crOeHivUY<@1rr@`l7bI!EC
+z1WQ>fZdBic@iW@_P1t@f_$4LZXEGSfcpH2f?e~Kj&v`Zj+$T!NBlkb|jQhnHeiL+a
+z&lJb<kCS@_*v@tHJTOn=lluBDy{$|iW0~jDvC(tlyVi??Q=2p0KUP})m@B{A^3Fp?
+z#y5Ta$e&ZC6Ayg2)jAG+!^M53FpOcdV3|2%)E={wiChkz(UhGxlDT|x*hrg>lO18$
+z-OkRAyW9oSmOj5{et#-4CVgruv?pIJqQxKI&ZY~dQ!H3DSHUrA-dxrymL5+h95ZU?
+zqfdy~j)7gfjrM5g9c>HN9>C7<kIZ}NS==-4@5JK#YMzfafM=QF?WZPg6+aHhHu){t
+z#@l_<Z)3bX7g}rJnLgP3J~0HQz%PJH;3Rk&d;okNJPDowp8;P3e*#_ve+BLUI4(td
+zZBS?jb*;5I7#xS6XOVMV0Ql`GjNJ_U;OnA06ySNFpY!>?j(;zF-_-GQuCsOgock95
+z$CvrnLFHO513c5BE36+~5f2BEAVM30`47nj^o(oe;NgZND~~oF)87oe)%5l%caD!C
+zZUR`#4&CABw}%(BE9KdV>yxiUf|Id`UI}64SIQGVslJnSd`)$H14yd$t+Ysc2<dgC
+zZ=Q@t)>OQ(J+srhD+k<&>B<F{@o$-65V!Wyt>HxRj<L>q5)uze70i3T0nE36-;4MD
+zX|P(C`eCbeVGnF6>~F$Q>&)x0)jBo>TdiYfVXJlMbJ%KKV=Y$enlO4^9_Z@du@yHB
+zwchCMGqw$O_4gWmJ%e{HQ)lfOF0TyrZnl4$<)z$G>%HU>FE1lXy;xFj>Xa70cGRgB
+zZe?<tMbsV}aT5E$PQl}h)U3Q?ifC%gN{nQau7X$*O<ToiCShkhk5lkGqh`U*=B*`$
+zkrGieW9%;^Moc4<LZq}r)G<pAcKN?aE5cZ-d1tTskoO0sTmQ-H0oHh)quV~pVEQOL
+zf~-B80KOf}$M=_*fzCLdUB>YqcLID@7{~XU=z-4s6vh$lz%9JdjN|)G?1a8N?pfc*
+zIKKY`&zcmDP2m_-KOf(Hg0)2EV}IgBfWHx_^Y;P~hc5SkbEE79n459x?;V(~$T$m@
+zjElobxDGGOT`N`AK*n(#-do~0bSZKjGMDr(AZ`H$D-74d^xS8@>$IiJAn|o+fMq_`
+OKQ-<Y4#gXF;{FA}h_Ctp
+
+literal 0
+HcmV?d00001
+
 -- 
 2.34.1
 
