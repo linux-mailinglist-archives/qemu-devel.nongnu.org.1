@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C52A7DBBEE
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891327DBBF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:41:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxTP4-0000YQ-G3; Mon, 30 Oct 2023 10:38:06 -0400
+	id 1qxTRC-0001NF-8q; Mon, 30 Oct 2023 10:40:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxTP3-0000YI-Cw
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:38:05 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxTR9-0001Mz-KE
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:40:16 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxTP0-0000yX-F9
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:38:05 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E575A1F38C;
- Mon, 30 Oct 2023 14:38:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698676680; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=G8IF9m6OlzcjiQBqXsoAAfrxQtL3rX0xnbMgPNuF9lY=;
- b=YafGJ+7J6FPTtYWL3i/cS/822LaJOafsEl4qI8Kj9VoBeNGxHzdJ13wNCt9K0L5sbGfHKJ
- geuJAoHrHsVfb72K93buC511uW/Vy0ZjT7O4C+tpER3Hkv9BjsuciRK/WxJ6XFR0Q1XS79
- x+obKM/FC0wXh7WQD+NCio4HuVrWNFY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698676680;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=G8IF9m6OlzcjiQBqXsoAAfrxQtL3rX0xnbMgPNuF9lY=;
- b=glSMrgl0mbueQnzClUmP/ywBQjkLg0FZ6COxSACxQUXShVrdQXHJmMaCas8+ThB/TGuPtI
- doaAtI6gDKGi1NBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 77F3F138F8;
- Mon, 30 Oct 2023 14:38:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id SvnTEMi/P2VuSQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 30 Oct 2023 14:38:00 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Hao Xiang <hao.xiang@bytedance.com>, quintela@redhat.com,
- peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
- qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: Re: [PATCH 10/16] migration/multifd: Enable DSA offloading in
- multifd sender path.
-In-Reply-To: <20231025193822.2813204-11-hao.xiang@bytedance.com>
-References: <20231025193822.2813204-1-hao.xiang@bytedance.com>
- <20231025193822.2813204-11-hao.xiang@bytedance.com>
-Date: Mon, 30 Oct 2023 11:37:58 -0300
-Message-ID: <87il6onpkp.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxTQz-0001bh-NH
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:40:13 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-408382da7f0so33348025e9.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698676802; x=1699281602; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=niBNf+TyWYzsuNRRJa73BCYeP8vLtDybQJD3Qrkr9Dg=;
+ b=jX2YcC4PdnWAWgu3x58Rkdq1VbdTlEyPEtZ3jKLCvgsk9bJfA4va/5oCCq8sssNVcr
+ Y+dDu0mUpLZ9ImnZapcIKQ0JuZxFkdHd6eXovEc5Ad/POPmlxX6nbKCe0Kuq0ksmtA/d
+ G8CUmW/sthG1Kb4kJ12Ah4FgplXf8sx2nqLVJD4XFus5re36/nO4rtJ9AzwUPlQwFYS1
+ abKoRZULdAgmU7RQeOUWmOrH4zEbxT7jq0A4BuczfpnhpPWBX1X/b77pagvduUVGqI+V
+ srE+j5kxkjRkSMVNkHFe0dDDnfWkIiCclltjx0UL7VtdQSWyrQenr9SCT2MjcOEqYeHP
+ S9OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698676802; x=1699281602;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=niBNf+TyWYzsuNRRJa73BCYeP8vLtDybQJD3Qrkr9Dg=;
+ b=Dm38+jEidSZjvw64LYEloLoGIKq42vNlDMvBeJu0BUv2m4a2N8hhIErWtPzuLztLdY
+ YIrLqgmOSqryPWujZRJ8B2VEIDXQId61FjyOc3QxK26omfywdIWiM9b0jUwK6OznFkpp
+ UNMF8OhHE4kVx/m5mROoeZ1oTDlSRszTb3PhpmBJuvz1lD8bxmwRvnJ+urJvttcQQLRW
+ xbOY9BP2QpFbLA1OqfrolVycDc+5RUSzagO4sh4znQwcnrFPDS1TFLj9TXP2is7vuRvp
+ EdDNBw76m9CAhVRvhhakGJbMQVz840NaApFDKEh9m4owcVryjjdV4NoVLgDM8B0cBLr8
+ gXlA==
+X-Gm-Message-State: AOJu0YwJMdbuURM3mdZnPkvZeiHUvE5aWuQXKfgQeUz6tPsK3AUkalwb
+ AzEXEN3owIRr2XoZJNVDZeqRd6A1ZSpqfTHhodQ=
+X-Google-Smtp-Source: AGHT+IH/E9TzuBtqXEDhpX6K6nTL/AY8Ajp6zVHe75+jCc7Of+LXy0IkkQ9wFGFjaWBaETqp+PnuPg==
+X-Received: by 2002:a05:600c:46cd:b0:405:3dbc:8823 with SMTP id
+ q13-20020a05600c46cd00b004053dbc8823mr9051179wmo.12.1698676801546; 
+ Mon, 30 Oct 2023 07:40:01 -0700 (PDT)
+Received: from m1x-phil.lan ([176.170.212.50])
+ by smtp.gmail.com with ESMTPSA id
+ h10-20020a05600c314a00b003fe1fe56202sm9423258wmo.33.2023.10.30.07.39.59
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 30 Oct 2023 07:40:01 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: Luc Michel <luc.michel@amd.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Bernhard Beschow <shentey@gmail.com>, qemu-ppc@nongnu.org,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH 0/5] hw/ppc/e500: Pass array of CPUs as array of canonical
+ QOM paths
+Date: Mon, 30 Oct 2023 15:39:51 +0100
+Message-ID: <20231030143957.82988-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,123 +98,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+Following the discussion with Peter on my "cpus: Step toward
+removing global 'first_cpu'" series [*], we now pass the array
+of CPUs via property. Since we can not pass array of "link"
+properties, we pass the QOM path of each CPU as a QList(String).
 
-> Multifd sender path gets an array of pages queued by the migration
-> thread. It performs zero page checking on every page in the array.
-> The pages are classfied as either a zero page or a normal page. This
-> change uses Intel DSA to offload the zero page checking from CPU to
-> the DSA accelerator. The sender thread submits a batch of pages to DSA
-> hardware and waits for the DSA completion thread to signal for work
-> completion.
->
-> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-> ---
->  migration/multifd.c | 101 +++++++++++++++++++++++++++++++++++++-------
->  migration/multifd.h |   3 ++
->  2 files changed, 89 insertions(+), 15 deletions(-)
->
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index 452fb158b8..79fecbd3ae 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -13,6 +13,8 @@
->  #include "qemu/osdep.h"
->  #include "qemu/rcu.h"
->  #include "qemu/cutils.h"
-> +#include "qemu/dsa.h"
-> +#include "qemu/memalign.h"
->  #include "exec/target_page.h"
->  #include "sysemu/sysemu.h"
->  #include "exec/ramblock.h"
-> @@ -555,6 +557,8 @@ void multifd_save_cleanup(void)
->              qemu_thread_join(&p->thread);
->          }
->      }
-> +    dsa_stop();
-> +    dsa_cleanup();
->      for (i = 0; i < migrate_multifd_channels(); i++) {
->          MultiFDSendParams *p = &multifd_send_state->params[i];
->          Error *local_err = NULL;
-> @@ -571,6 +575,11 @@ void multifd_save_cleanup(void)
->          p->name = NULL;
->          multifd_pages_clear(p->pages);
->          p->pages = NULL;
-> +        g_free(p->addr);
-> +        p->addr = NULL;
-> +        buffer_zero_batch_task_destroy(p->dsa_batch_task);
-> +        qemu_vfree(p->dsa_batch_task);
-> +        p->dsa_batch_task = NULL;
->          p->packet_len = 0;
->          g_free(p->packet);
->          p->packet = NULL;
-> @@ -675,13 +684,71 @@ int multifd_send_sync_main(QEMUFile *f)
->      return 0;
->  }
->  
-> +static void set_page(MultiFDSendParams *p, bool zero_page, uint64_t offset)
-> +{
-> +    RAMBlock *rb = p->pages->block;
-> +    if (zero_page) {
-> +        p->zero[p->zero_num] = offset;
-> +        p->zero_num++;
-> +        ram_release_page(rb->idstr, offset);
-> +    } else {
-> +        p->normal[p->normal_num] = offset;
-> +        p->normal_num++;
-> +    }
-> +}
-> +
-> +static void buffer_is_zero_use_cpu(MultiFDSendParams *p)
-> +{
-> +    const void **buf = (const void **)p->addr;
-> +    assert(!migrate_use_main_zero_page());
-> +    assert(!dsa_is_running());
-> +
-> +    for (int i = 0; i < p->pages->num; i++) {
-> +        p->dsa_batch_task->results[i] = buffer_is_zero(buf[i], p->page_size);
-> +    }
-> +}
-> +
-> +static void buffer_is_zero_use_dsa(MultiFDSendParams *p)
-> +{
-> +    assert(!migrate_use_main_zero_page());
-> +    assert(dsa_is_running());
-> +
-> +    buffer_is_zero_dsa_batch_async(p->dsa_batch_task,
-> +                                   (const void **)p->addr,
-> +                                   p->pages->num,
-> +                                   p->page_size);
-> +}
-> +
-> +static void multifd_zero_page_check(MultiFDSendParams *p)
-> +{
-> +    /* older qemu don't understand zero page on multifd channel */
-> +    bool use_multifd_zero_page = !migrate_use_main_zero_page();
-> +    bool use_multifd_dsa_accel = dsa_is_running();
-> +
-> +    RAMBlock *rb = p->pages->block;
-> +
-> +    for (int i = 0; i < p->pages->num; i++) {
-> +        p->addr[i] = (ram_addr_t)(rb->host + p->pages->offset[i]);
-> +    }
-> +
-> +    if (!use_multifd_zero_page || !use_multifd_dsa_accel) {
-> +        buffer_is_zero_use_cpu(p);
-> +    } else {
-> +        buffer_is_zero_use_dsa(p);
-> +    }
-> +
-> +    for (int i = 0; i < p->pages->num; i++) {
-> +        uint64_t offset = p->pages->offset[i];
-> +        bool zero_page = p->dsa_batch_task->results[i];
-> +        set_page(p, zero_page, offset);
-> +    }
-> +}
+Tagged as RFC to discuss the idea of using qdev_prop_set_array
+with qlist_append_str(object_get_canonical_path). Personally I
+find it super simple.
 
-You're moving existing (not really, but ok) code and adding dsa support
-at the same time. The introduction of this function needs to be in a
-separate patch. That would be a preliminary patch that isolates all of
-the use_cpu code and a subsequent one that adds the use_dsa part.
+Regards,
+
+Phil.
+
+[*] https://lore.kernel.org/qemu-devel/CAFEAcA9FT+QMyQSLCeLjd7tEfaoS9JazmkYWQE++s1AmF7Nfvw@mail.gmail.com/
+
+Kevin Wolf (1):
+  qdev: Add qdev_prop_set_array()
+
+Philippe Mathieu-Daudé (4):
+  hw/ppc/e500: Declare CPU QOM types using DEFINE_TYPES() macro
+  hw/ppc/e500: QOM-attach CPUs to the machine container
+  hw/ppc/e500: Inline sysbus_create_simple(E500_SPIN)
+  hw/ppc/e500: Pass array of CPUs as array of canonical QOM paths
+
+ include/hw/qdev-properties.h |  3 ++
+ hw/core/qdev-properties.c    | 21 +++++++++++
+ hw/ppc/e500.c                | 11 +++++-
+ hw/ppc/ppce500_spin.c        | 69 ++++++++++++++++++++++++++----------
+ 4 files changed, 84 insertions(+), 20 deletions(-)
+
+-- 
+2.41.0
 
 
