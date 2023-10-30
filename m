@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6B97DB568
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 09:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014457DB571
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 09:49:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxNvv-0008ME-GE; Mon, 30 Oct 2023 04:47:39 -0400
+	id 1qxNx8-0001Fi-LF; Mon, 30 Oct 2023 04:48:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxNvt-0008Lo-A9
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:47:37 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxNx4-0001F1-O8
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:48:51 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxNvr-0006EW-Qd
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:47:37 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-313e742a787so2370365f8f.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 01:47:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxNx3-0006Op-7G
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 04:48:50 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c4fe37f166so57872531fa.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 01:48:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698655651; x=1699260451; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698655726; x=1699260526; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=uZFt+iX/VdIt8zF1JJDuvkFPjV9LsKLkjBi1n3iR7fc=;
- b=EZVMgnNLrJ7C22x3m9Bzzwzwu9/qLUsdAZO5BzNeNcsV20m6/M6i5Nha2k3sxqax5u
- 7KkOiDJNDGnxDdn5YFE2VRN6vQ/rYUMU7SkL3WMFUcBBkawI7oYms5k4MHEPiSyL8hT+
- M5nIlbSDRxyjLycMrrP38IrovXn5jFUqxzWuROcoqkxWU2h6n/N1p3I5RKQz8XkGmaZe
- uP5YsOBTRAgr1ThISKSTrF9+e8xm+mjZOrIL1XH0BIaXSaFnomNrIbkU+mpOIWfcrckX
- NZ5fyOeOtT1En6HLgYuOI3iUu7SL77lukezMW1f0UgD7ygOEqyCmq+kF302tM5ISN2m6
- PZ5g==
+ bh=BxotMTA7zgaoJrf2veaoR7Z33I7QPF8c1mSn2VHKSOk=;
+ b=c+5dvKovfiD6eCciPimYG18wowUTOe1SF4LMAv2/S00VhIgVRhUhKsZiL+DnObGv1I
+ 56c65iT8JioreoSARq9kt5NL7YiV8IJ5TBBKg3ODPJoMRvkN0RGVS9mitCggXpZ7s8uA
+ tmdDWuznmKDrLz4vHOuVldUCFhLhDC1a64tBAo9KenzItNo9Ul0TsuWRMFaJgZnWt2b6
+ IXaeok5huxie67raBAweCw8MgPmVGE2rdMagAp88X9bAIcFCk17jxHPxeLXko8t+tUkv
+ eOJWEoRGSj34miAMAmQS+ZGK72M06BKrlYRYafSsM86iUU2VLmDH3sJ+FE+01l/7lGfE
+ QXsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698655651; x=1699260451;
+ d=1e100.net; s=20230601; t=1698655726; x=1699260526;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uZFt+iX/VdIt8zF1JJDuvkFPjV9LsKLkjBi1n3iR7fc=;
- b=HmisFrEaxGEdtgwahOT6jyKokMXGZ3AMNlYFJ/lc4MaflIyVRjFgxtKy5LcvLgwQiQ
- CNc/zKhQiyWcjfE7Iic2OKZqcSSdfMM9ZQZ+1881WqZmWLO321IkOVE9uqNo/ZA8s1fN
- RF/bAGpjptkA/g6LwhMLzh1fI4BYi0pjkxqpYg1tqXSYLl1Df76/zpMGavqzhgq9twvV
- T+pieOTMoijap9iRPXkhoxDhtbIdgkxVu6BkHcfDXpJ7l1F13s0fVFURQVgJuWOsH2lU
- IyuVSLcVZW6YaoN0qlwhaxbXMrdNN9LeFdHknQ3i+BSVudquela4uLomdG3RA68rdBDg
- 3ITw==
-X-Gm-Message-State: AOJu0Yw3sWNQFKKxv9kGMJaNm248clXDhg1jGTpjwb51o9os/rxKNB70
- 4qSlAkLf+I+yqf89o2GHPUA04w==
-X-Google-Smtp-Source: AGHT+IE1huV5Ma28JuGOrz3MQtM141X04sTllvV6zEJ3vB/CrhZ7biZ72OjabUn8IBcOebyHBtxnSQ==
-X-Received: by 2002:a05:6000:178e:b0:32f:8c9a:67 with SMTP id
- e14-20020a056000178e00b0032f8c9a0067mr562627wrg.0.1698655651169; 
- Mon, 30 Oct 2023 01:47:31 -0700 (PDT)
+ bh=BxotMTA7zgaoJrf2veaoR7Z33I7QPF8c1mSn2VHKSOk=;
+ b=XIssIvzJrAdJoBUCbx2R/B4Ohd9MptInQ3THge/PgdrParmlXPgJ65AHwyK3X8uXZO
+ pheQ+gl06461CsZJ4fsZw5yPBnB51IjkBo67As/c9zdhV5ihwRD/g6+yOCVtPQgD+uLB
+ YpCr9ft0S/uuT9j8BQDW5eyK36YRVmfT+mk4R3miawvD9mnCFD8jkhfyE6+Do/PU8GXg
+ EEXo7D9twOODH9k1nXVBp9WNylvGRk9qyTcAMgj6jso1EW7ixbNrvEerMdmimKUTr8KW
+ +yqQeD2yBBw4CGmUmu8oYH/3ly2/kkvhYnkObPIBuxD8u8mvUMMrUV+vlMZTD6IDflRu
+ k0Dw==
+X-Gm-Message-State: AOJu0YzXy9tLHOLofvfviD96HGqBsgZmANErUKOzmc1/qQ5exEh/Kdjn
+ Bn30DRniJG6i3HMyzOF76xdLyg==
+X-Google-Smtp-Source: AGHT+IEYRBxYq89PQveDuqA39ajKsFfBoDrAWvQ9p/N4QrW+1nn/++fBrRFO+fqOcVXVHIP7rs4rzA==
+X-Received: by 2002:a2e:9510:0:b0:2bc:d5f1:b9cf with SMTP id
+ f16-20020a2e9510000000b002bcd5f1b9cfmr7103612ljh.27.1698655726480; 
+ Mon, 30 Oct 2023 01:48:46 -0700 (PDT)
 Received: from [192.168.69.115] ([176.170.212.50])
  by smtp.gmail.com with ESMTPSA id
- x14-20020a5d444e000000b0031980294e9fsm7738786wrr.116.2023.10.30.01.47.30
+ b10-20020a05600c4e0a00b00402d34ea099sm11993865wmq.29.2023.10.30.01.48.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 01:47:30 -0700 (PDT)
-Message-ID: <96d26981-a0e7-fdfa-844e-18ddabba79cf@linaro.org>
-Date: Mon, 30 Oct 2023 09:47:29 +0100
+ Mon, 30 Oct 2023 01:48:46 -0700 (PDT)
+Message-ID: <9570da29-881e-7e6d-40ec-5cdd2177e664@linaro.org>
+Date: Mon, 30 Oct 2023 09:48:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v6 5/5] default-configs: Add TARGET_XML_FILES definition
+Subject: Re: [PATCH 1/1] MAINTAINERS: update mail address for Weiwei Li
 Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Fabiano Rosas
- <farosas@suse.de>, Laurent Vivier <laurent@vivier.eu>
-References: <20231030054834.39145-1-akihiko.odaki@daynix.com>
- <20231030054834.39145-6-akihiko.odaki@daynix.com>
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ lazyparser@gmail.com, Weiwei Li <liwei1518@gmail.com>
+References: <20231030081607.115118-1-liweiwei@iscas.ac.cn>
+ <20231030081607.115118-2-liweiwei@iscas.ac.cn>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231030054834.39145-6-akihiko.odaki@daynix.com>
+In-Reply-To: <20231030081607.115118-2-liweiwei@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
@@ -96,15 +96,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/10/23 06:46, Akihiko Odaki wrote:
-> loongarch64-linux-user has references to XML files so include them.
+On 30/10/23 09:16, Weiwei Li wrote:
+> My Iscas mail account will be disabled soon, change to my personal
+> gmail account.
 > 
-> Fixes: d32688ecdb ("default-configs: Add loongarch linux-user support")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Signed-off-by: Weiwei Li <liwei1518@gmail.com>
 > ---
->   configs/targets/loongarch64-linux-user.mak | 1 +
->   1 file changed, 1 insertion(+)
-
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
