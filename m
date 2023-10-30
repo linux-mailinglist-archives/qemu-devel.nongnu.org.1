@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188AF7DBBF5
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C317DBBF7
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 15:41:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxTRJ-0001Oq-DO; Mon, 30 Oct 2023 10:40:25 -0400
+	id 1qxTRL-0001PY-U7; Mon, 30 Oct 2023 10:40:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxTRG-0001OC-O9
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:40:22 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxTRK-0001PH-3I
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:40:26 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxTR9-0001mf-G7
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:40:22 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4079ed65582so33318535e9.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:40:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxTRC-0001nc-3g
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 10:40:25 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4083cd3917eso35863205e9.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 07:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698676808; x=1699281608; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698676815; x=1699281615; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k6siaLDPN7rSUcCidjmSdujoZ1Clu6ak+uuvWhAfvmw=;
- b=AL6U92Kutol4J+wa3wAIFluDUGyz6apXLR542dFacd/PZZJOOixnspwIBfGo2AjB5V
- PurkAjC4HIFtigzycQz0QslPyOEZKzXorsvn4kWq8bRH14mXrcTqe0KURmLFI14/oPsP
- hFGkRR6ukWPRDAxVsEzx62G8pdlsB2liDsDa15yUTriCVbH7zHtsL/xPczZAJSGJ5waO
- CCIojWqsozvSm8XS+q3feDDJUcVq9eSdTT7kAdOERmQ3PxTjLttpRHhC4ltxi1TaTl2h
- jESlYgVl47RrVrjRh3R+ZSm5Fzpj1FU6nXxyhe9a9MGYsQU6zOi8KTYmN6q1fr1ro6fZ
- sCaQ==
+ bh=I7ToXfUjeHh4GxTtDabuQxd+6LNHtLDODSscY/4+OEc=;
+ b=m94c3oL4/LntiFxMjuRMRaKE0tv/HEIqFav9i8c8rEzauMy5d8tsoC3Gl8MdBTBy6J
+ 1Fcyv+/5UuL3E1g027oIuUW4vK4i7i4J68bYk3JHuhSzhLQX0BA7OrkYybGbEis07rB6
+ cVckVawLIa+TOMLhI9EiuNF/5s1TwqmBkUnbTuBjlH/uCvuEl8HBStcT6HKYqH0LqAt6
+ W76TvXzUip4PvsSFoQkhqz4I+e8n2UihDP8/Jr7TNeG8ij19aT+I4xp9bFS76i/MAxBu
+ 7NH5fFQmpTKI/EgTJKvo3UxtcLPMdfz+TKMyGxL6YixUThNceNbhWa79Kh8FpWg4vfm3
+ Z8AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698676808; x=1699281608;
+ d=1e100.net; s=20230601; t=1698676815; x=1699281615;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k6siaLDPN7rSUcCidjmSdujoZ1Clu6ak+uuvWhAfvmw=;
- b=eb7txxUt/VDapPSllYi8TnNn2h77QUxD4J4mzz+ZI7q83T47CUzdWf6cNYGVe/QwD9
- t2VqHy75/E3aZav/zABjo3pA9z2ZU8jGjETCzHPPXxbQB581RSD1No0XT2qTuDggTY8w
- qgpMDyB4onx1vHz3xsiYSOdaZl7WB7VVowByNbkdFul/9ArhbNRRIrhFpMyMUApqDaRq
- 2Huw6TPnJ8qIsOVMgwWfvDckSux99Ei9elQqt0a06r0/7lJ49FX/DM6MW7EkJ7e/b9X8
- LfPTqdWnFoOgOix6M/FHImbQUMxXZg47MWmaOoV5joAJpwGNzpCU6lZrRB3y7K7/TdEY
- QFfA==
-X-Gm-Message-State: AOJu0YyQkgvTdyVwofvFM75xnhXVJWlfvXAhYbPiIZIOcTnqjH3Cn2DS
- 8nJibboPr4VlYkscxpi54nINOW/gK521UNbeCs4=
-X-Google-Smtp-Source: AGHT+IEN1tC7QqL+vvg0htfcj01AzEW/xTlNdfksFtZAlrrQUX0XcOeSfEcP/xGD7BuUuisxF7KARw==
-X-Received: by 2002:a05:600c:3b20:b0:407:612b:91fb with SMTP id
- m32-20020a05600c3b2000b00407612b91fbmr8013575wms.30.1698676808504; 
- Mon, 30 Oct 2023 07:40:08 -0700 (PDT)
+ bh=I7ToXfUjeHh4GxTtDabuQxd+6LNHtLDODSscY/4+OEc=;
+ b=AMZT6VR/a0X/UejeANTHWKHptS4V+ZJKo0Rxwhb1sqMLDkH7lDjsUwyKHAKdBLVt+J
+ fV6taoYyPQLCn/PfFp/Ulx6nIPf5DgwzAIm8rkDBJw3MWTIEGHU9EZ81twrm1tom8VSD
+ ar6zP8AG86Q1OYRmQbq2K9WFbOzcLTTOrWLEN3UyAqYYcFCKq1WmugiHiAvJI8N3DgyL
+ 7dIahskcpYCD4E6Lz5pRGTKwwyJQ6SJ04ngwes4RYv7aMhm81hpJ9g88D/deLUaOM7K/
+ KRJgVElMU3McEN/cskgaAGCyKw+gaWLrl6HnItydfvLzFdTvrWWDkksky9zscffkLXjh
+ bwxw==
+X-Gm-Message-State: AOJu0YydtPoHzC5/gDUs0u7L7OFXJHNuTg0bAnPDfuu26ltw5PiZ86OE
+ oZdRfHu+APX0YtSKWxqeskB8ZN2lH2yjo3p9/To=
+X-Google-Smtp-Source: AGHT+IEGTxn+ensEM5LebpXAKGauCyjliAphk7/jKhc8hoeQI2t3NWapb2OBWjZXSXdLqxGDCfjKCQ==
+X-Received: by 2002:a05:600c:3ba5:b0:408:cd96:7179 with SMTP id
+ n37-20020a05600c3ba500b00408cd967179mr8734464wms.9.1698676815397; 
+ Mon, 30 Oct 2023 07:40:15 -0700 (PDT)
 Received: from m1x-phil.lan ([176.170.212.50])
  by smtp.gmail.com with ESMTPSA id
- bg9-20020a05600c3c8900b004063cd8105csm13009491wmb.22.2023.10.30.07.40.06
+ n41-20020a05600c3ba900b004060f0a0fdbsm13029498wms.41.2023.10.30.07.40.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Oct 2023 07:40:08 -0700 (PDT)
+ Mon, 30 Oct 2023 07:40:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
@@ -65,19 +65,20 @@ Cc: Luc Michel <luc.michel@amd.com>,
  Bernhard Beschow <shentey@gmail.com>, qemu-ppc@nongnu.org,
  "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
  "Daniel P . Berrange" <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/5] qdev: Add qdev_prop_set_array()
-Date: Mon, 30 Oct 2023 15:39:52 +0100
-Message-ID: <20231030143957.82988-2-philmd@linaro.org>
+Subject: [PATCH 2/5] hw/ppc/e500: Declare CPU QOM types using DEFINE_TYPES()
+ macro
+Date: Mon, 30 Oct 2023 15:39:53 +0100
+Message-ID: <20231030143957.82988-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231030143957.82988-1-philmd@linaro.org>
 References: <20231030143957.82988-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,88 +101,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+When multiple QOM types are registered in the same file,
+it is simpler to use the the DEFINE_TYPES() macro. In
+particular because type array declared with such macro
+are easier to review.
 
-Instead of exposing the ugly hack of how we represent arrays in qdev (a
-static "foo-len" property and after it is set, dynamically created
-"foo[i]" properties) to boards, add an interface that allows setting the
-whole array at once.
-
-Once all internal users of devices with array properties have been
-converted to use this function, we can change the implementation to move
-away from this hack.
-
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231030114802.3671871-4-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/qdev-properties.h |  3 +++
- hw/core/qdev-properties.c    | 21 +++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+I'm going to do that for each file I modify, so eventually
+we'll get all converted.
+---
+ hw/ppc/ppce500_spin.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index e1df08876c..7fa2fdb7c9 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -206,6 +206,9 @@ void qdev_prop_set_macaddr(DeviceState *dev, const char *name,
-                            const uint8_t *value);
- void qdev_prop_set_enum(DeviceState *dev, const char *name, int value);
- 
-+/* Takes ownership of @values */
-+void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values);
-+
- void *object_field_prop_ptr(Object *obj, Property *prop);
- 
- void qdev_prop_register_global(GlobalProperty *prop);
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 357b8761b5..950ef48e01 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -3,12 +3,14 @@
- #include "qapi/error.h"
- #include "qapi/qapi-types-misc.h"
- #include "qapi/qmp/qerror.h"
-+#include "qapi/qmp/qlist.h"
- #include "qemu/ctype.h"
- #include "qemu/error-report.h"
- #include "qapi/visitor.h"
- #include "qemu/units.h"
- #include "qemu/cutils.h"
- #include "qdev-prop-internal.h"
-+#include "qom/qom-qobject.h"
- 
- void qdev_prop_set_after_realize(DeviceState *dev, const char *name,
-                                   Error **errp)
-@@ -739,6 +741,25 @@ void qdev_prop_set_enum(DeviceState *dev, const char *name, int value)
-                             &error_abort);
+diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
+index bbce63e8a4..e3608d8c16 100644
+--- a/hw/ppc/ppce500_spin.c
++++ b/hw/ppc/ppce500_spin.c
+@@ -195,17 +195,14 @@ static void ppce500_spin_class_init(ObjectClass *klass, void *data)
+     dc->reset = spin_reset;
  }
  
-+void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values)
-+{
-+    const QListEntry *entry;
-+    g_autofree char *prop_len = g_strdup_printf("len-%s", name);
-+    uint32_t i = 0;
-+
-+    object_property_set_int(OBJECT(dev), prop_len, qlist_size(values),
-+                            &error_abort);
-+
-+    QLIST_FOREACH_ENTRY(values, entry) {
-+        g_autofree char *prop_idx = g_strdup_printf("%s[%u]", name, i);
-+        object_property_set_qobject(OBJECT(dev), prop_idx, entry->value,
-+                                    &error_abort);
-+        i++;
-+    }
-+
-+    qobject_unref(values);
-+}
-+
- static GPtrArray *global_props(void)
- {
-     static GPtrArray *gp;
+-static const TypeInfo ppce500_spin_info = {
+-    .name          = TYPE_E500_SPIN,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(SpinState),
+-    .instance_init = ppce500_spin_initfn,
+-    .class_init    = ppce500_spin_class_init,
++static const TypeInfo ppce500_spin_types[] = {
++    {
++        .name           = TYPE_E500_SPIN,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(SpinState),
++        .instance_init  = ppce500_spin_initfn,
++        .class_init     = ppce500_spin_class_init,
++    },
+ };
+ 
+-static void ppce500_spin_register_types(void)
+-{
+-    type_register_static(&ppce500_spin_info);
+-}
+-
+-type_init(ppce500_spin_register_types)
++DEFINE_TYPES(ppce500_spin_types)
 -- 
 2.41.0
 
