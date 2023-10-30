@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A357DB93E
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 12:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A8F7DB943
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Oct 2023 12:50:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxQkj-0007yC-Al; Mon, 30 Oct 2023 07:48:17 -0400
+	id 1qxQmp-0003Mm-Jz; Mon, 30 Oct 2023 07:50:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxQkf-0007ue-NM
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:48:13 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxQmP-0002uE-4e
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:50:01 -0400
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxQka-0007Il-UF
- for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:48:13 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-32ded3eb835so3295829f8f.0
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 04:48:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxQmJ-0007UC-RZ
+ for qemu-devel@nongnu.org; Mon, 30 Oct 2023 07:50:00 -0400
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-5a7e5dc8573so39157617b3.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 04:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698666487; x=1699271287; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=m6c0EQlNr2g65vGjJ/P+58VUOTVyE8PAYRu0/EcOt8c=;
- b=I6m2kbS/IYypfIqt/ni5t94khWZMBhgNyY5TT0/qjH/0l6xnZ+CKW3x2uiAvgYi9EK
- wa/dVc8PtR1sRdIFMClxs6uPuZ24/mM71CzLa51wu/KE8EeZjC9uN+SvCNI/nWOKEc8Y
- acQmDN4VvPkK3Eu3caqGXMNFNNkMlQaUxB2OBTpCPsbWO22MBaS7XmTS74+q9mrJIq8Q
- flT57waeRa6LAhfmNQOgY4K/s5KyFyuVITORm1VwI2Dp7xTj6yEgKq3/EWfIuRzEKdwa
- spq7Zi+VSwQY8XBnnuaiTKbyaiC39ze0PngjigxILU5R2VJcQ5bn6TzL4yRkAvnz8Lxp
- 23jA==
+ d=ventanamicro.com; s=google; t=1698666594; x=1699271394; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RubRBpkDYN+zgt1HhJWUW3+Y5mAhtpEvoOUadZhhyf8=;
+ b=F9u454B3pHbF0noe0gVO640JKkCKCKaYTVI8Y/v66ITf//SMr/IYv/ZDD4h7Q/mhj5
+ TTdgEHXO+2PncKFpkQg/Ml72DtGAANhCpw91gcXhna6mSg9arrSES/VMOqNLt0tSmNQA
+ HNTtBecUeB3cI0Bo6xl2W60KNOmmoSAxLc7pJ+Ha0cIBmmeWac+TFbVMDFJym7wMejuZ
+ jYPP4QtxrsHVcFqhHgwAPgDsCriuDy979NCLm8QxZ/4V+UJi5iQLitRwWoQ0ElzJBr2o
+ Sk3Fp0PlF6ZQkcqCJ7VFJS1iO4zfSuzUOqj2llT5ocojvKXXE3lZroo3QqYyCgaHuV5c
+ DkmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698666487; x=1699271287;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=m6c0EQlNr2g65vGjJ/P+58VUOTVyE8PAYRu0/EcOt8c=;
- b=SXNqbYVfRpha0OHjz6YOAa0xZaS8fUZGp1VNuEBMhwg98LxqkAmipVWQpc221VpwX2
- NdiThO1kEmMZ5GLAscZz9uUo+fDj8GzpC8o4qJ0FjZA01zGKKbope7deq1AZLqyKYmkQ
- aHUqJmoi0od1O0K3sLpQ4mIW5RPEkVvxdxmLs7GZb15LeeO/27HMlD89EMwRH7cU0xlz
- n7L/87a1+KQxSh2vjDnkJTt/QzaLzuMyUbiD/vh3bcj9QlKsEwei5SbUeW0UZde87C+M
- qi6hgAxX0ANCrt1wAKYGGiy0AD2ZXQUWGO1Hc9GXoFeQn57oxbTB3eIhh+VyoKOV6+f5
- NrvQ==
-X-Gm-Message-State: AOJu0YxZosEaxN1G+C3n3rhfC9ep/MzmpPUxF7yIMQWzQb/ewCxnwXhP
- 7HWT+3CD+4VPe2kj7VV0Wqa1JsI/i9ScfC1nlyQ=
-X-Google-Smtp-Source: AGHT+IE2//xMXZ7trVN9HveUpcOKyjwjqypaVt53SJP2wTYCuOAjCoX8qL8DJp4QGAb8mJq+1hlsrg==
-X-Received: by 2002:a05:6000:186c:b0:32f:7b59:c3a4 with SMTP id
- d12-20020a056000186c00b0032f7b59c3a4mr6220607wri.32.1698666487143; 
- Mon, 30 Oct 2023 04:48:07 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1698666594; x=1699271394;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RubRBpkDYN+zgt1HhJWUW3+Y5mAhtpEvoOUadZhhyf8=;
+ b=c670NhiWzJtxrNC70o8yQVvlR/e3sAnqkpHhNJG2NDeFFcU7lm5peDjCinUNvgJa7/
+ XkqTCEh6/PNDbMSINKRc+t2cd2FJQ+I/m4ssv8olGL91RAbM1L75r1pmNOihdREK75dy
+ wskv0Qw6dgM1pyAlOjdeajR6YfK0tk7kuqMmFKlRgcRnymzITS++D9rgLBqssI5IIklX
+ R5zYn5IWstv5AxsnMzFnKCqrsmQ64QM8Xr+ygouT8Ovtf4SRBj+/pdLcZEfBYeZLCH3F
+ 0nGiZu6KNfYhwhM3SfmAFi8h4kzUkeL3sJ1xSqMta/2L1KXxv2eguzYJ49id1J79mwmg
+ tO3g==
+X-Gm-Message-State: AOJu0Ywcslfb7nrKtxmTGynCibKq+9Z01WLsYT73RvAvPgrWRV0oEn0h
+ f76KPqsYyxDRlZYUMaM2hBa/wn/X9NtgkLJopUk=
+X-Google-Smtp-Source: AGHT+IHfkZA299R5UO6LjBw0RPNGyeuyX62tLCq11FB0E5nEJgYiKg522a9Ppk+n0AecxDY0tf/blw==
+X-Received: by 2002:a05:690c:fd5:b0:5a8:7ce7:a35e with SMTP id
+ dg21-20020a05690c0fd500b005a87ce7a35emr10270487ywb.40.1698666594139; 
+ Mon, 30 Oct 2023 04:49:54 -0700 (PDT)
+Received: from [192.168.68.107] ([179.193.10.161])
  by smtp.gmail.com with ESMTPSA id
- az30-20020adfe19e000000b0032f7d7ec4adsm5262268wrb.92.2023.10.30.04.48.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Oct 2023 04:48:06 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH v2 6/6] hw/input/stellaris_gamepad: Convert to
- qemu_input_handler_register()
-Date: Mon, 30 Oct 2023 11:48:02 +0000
-Message-Id: <20231030114802.3671871-7-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231030114802.3671871-1-peter.maydell@linaro.org>
-References: <20231030114802.3671871-1-peter.maydell@linaro.org>
+ j205-20020a8192d6000000b005afa4b9b049sm4210929ywg.42.2023.10.30.04.49.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Oct 2023 04:49:53 -0700 (PDT)
+Message-ID: <865593f0-03a1-48db-b634-bf9aca12c445@ventanamicro.com>
+Date: Mon, 30 Oct 2023 08:49:50 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/12] target/riscv: add zicbop extension flag
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20231028085427.707060-1-dbarboza@ventanamicro.com>
+ <20231028085427.707060-2-dbarboza@ventanamicro.com>
+ <20231028-2d6bf00dddc7bc4a25b32663@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231028-2d6bf00dddc7bc4a25b32663@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,147 +97,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have converted to qdev, we can use the newer
-qemu_input_handler_register() API rather than the legacy
-qemu_add_kbd_event_handler().
 
-Since we only have one user, take the opportunity to convert
-from scancodes to QCodes, rather than using
-qemu_input_key_value_to_scancode() (which adds an 0xe0
-prefix and encodes up/down indication in the scancode,
-which our old handler function then had to reverse). That
-lets us drop the old state field which was tracking whether
-we were halfway through a two-byte scancode.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-v1->v2: bump vmstate version number again
-        mark QemuInputHandler struct as const
----
- include/hw/input/stellaris_gamepad.h |  2 +-
- hw/arm/stellaris.c                   |  6 ++++-
- hw/input/stellaris_gamepad.c         | 37 +++++++++++++---------------
- 3 files changed, 23 insertions(+), 22 deletions(-)
+On 10/28/23 06:49, Andrew Jones wrote:
+> On Sat, Oct 28, 2023 at 05:54:16AM -0300, Daniel Henrique Barboza wrote:
+>> QEMU already implements zicbom (Cache Block Management Operations) and
+>> zicboz (Cache Block Zero Operations). Commit 59cb29d6a5 ("target/riscv:
+>> add Zicbop cbo.prefetch{i, r, m} placeholder") added placeholders for
+>> what would be the instructions for zicbop (Cache Block Prefetch
+>> Operations), which are now no-ops.
+>>
+>> The RVA22U64 profile mandates zicbop, which means that applications that
+>> run with this profile might expect zicbop to be present in the riscv,isa
+>> DT and might behave badly if it's absent.
+>>
+>> Adding zicbop as an extension will make our future RVA22U64
+>> implementation more in line with what userspace expects and, if/when
+>> cache block prefetch operations became relevant to QEMU, we already have
+>> the extension flag to turn then on/off as needed.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   hw/riscv/virt.c        | 5 +++++
+>>   target/riscv/cpu.c     | 3 +++
+>>   target/riscv/cpu_cfg.h | 2 ++
+>>   3 files changed, 10 insertions(+)
+>>
+>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+>> index 1732c42915..99c087240f 100644
+>> --- a/hw/riscv/virt.c
+>> +++ b/hw/riscv/virt.c
+>> @@ -273,6 +273,11 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
+>>                                     cpu_ptr->cfg.cboz_blocksize);
+>>           }
+>>   
+>> +        if (cpu_ptr->cfg.ext_zicbop) {
+>> +            qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbop-block-size",
+> 
+> I think we need to get this node approved by devicetree@vger.kernel.org
+> and merged into [1] first.
+> 
+> [1] Linux repo: Documentation/devicetree/bindings/riscv/cpus.yaml
 
-diff --git a/include/hw/input/stellaris_gamepad.h b/include/hw/input/stellaris_gamepad.h
-index 6140b889a28..b0c66a35531 100644
---- a/include/hw/input/stellaris_gamepad.h
-+++ b/include/hw/input/stellaris_gamepad.h
-@@ -17,6 +17,7 @@
- /*
-  * QEMU interface:
-  *  + QOM array property "keycodes": uint32_t QEMU keycodes to handle
-+ *    (these are QCodes, ie the Q_KEY_* values)
-  *  + unnamed GPIO outputs: one per keycode, in the same order as the
-  *    "keycodes" array property entries; asserted when key is down
-  */
-@@ -30,7 +31,6 @@ struct StellarisGamepad {
-     qemu_irq *irqs;
-     uint32_t *keycodes;
-     uint8_t *pressed;
--    int extension;
- };
- 
- #endif
-diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 707b0dae375..dd90f686bfa 100644
---- a/hw/arm/stellaris.c
-+++ b/hw/arm/stellaris.c
-@@ -32,6 +32,7 @@
- #include "hw/qdev-clock.h"
- #include "qom/object.h"
- #include "qapi/qmp/qlist.h"
-+#include "ui/input.h"
- 
- #define GPIO_A 0
- #define GPIO_B 1
-@@ -1276,7 +1277,10 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-     }
-     if (board->peripherals & BP_GAMEPAD) {
-         QList *gpad_keycode_list = qlist_new();
--        static const int gpad_keycode[5] = { 0xc8, 0xd0, 0xcb, 0xcd, 0x1d };
-+        static const int gpad_keycode[5] = {
-+            Q_KEY_CODE_UP, Q_KEY_CODE_DOWN, Q_KEY_CODE_LEFT,
-+            Q_KEY_CODE_RIGHT, Q_KEY_CODE_CTRL,
-+        };
-         DeviceState *gpad;
- 
-         gpad = qdev_new(TYPE_STELLARIS_GAMEPAD);
-diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
-index 6ccf0e80adc..3533becff5d 100644
---- a/hw/input/stellaris_gamepad.c
-+++ b/hw/input/stellaris_gamepad.c
-@@ -15,42 +15,39 @@
- #include "migration/vmstate.h"
- #include "ui/console.h"
- 
--static void stellaris_gamepad_put_key(void * opaque, int keycode)
-+static void stellaris_gamepad_event(DeviceState *dev, QemuConsole *src,
-+                                    InputEvent *evt)
- {
--    StellarisGamepad *s = (StellarisGamepad *)opaque;
-+    StellarisGamepad *s = STELLARIS_GAMEPAD(dev);
-+    InputKeyEvent *key = evt->u.key.data;
-+    int qcode = qemu_input_key_value_to_qcode(key->key);
-     int i;
--    int down;
--
--    if (keycode == 0xe0 && !s->extension) {
--        s->extension = 0x80;
--        return;
--    }
--
--    down = (keycode & 0x80) == 0;
--    keycode = (keycode & 0x7f) | s->extension;
- 
-     for (i = 0; i < s->num_buttons; i++) {
--        if (s->keycodes[i] == keycode && s->pressed[i] != down) {
--            s->pressed[i] = down;
--            qemu_set_irq(s->irqs[i], down);
-+        if (s->keycodes[i] == qcode && s->pressed[i] != key->down) {
-+            s->pressed[i] = key->down;
-+            qemu_set_irq(s->irqs[i], key->down);
-         }
-     }
--
--    s->extension = 0;
- }
- 
- static const VMStateDescription vmstate_stellaris_gamepad = {
-     .name = "stellaris_gamepad",
--    .version_id = 3,
--    .minimum_version_id = 3,
-+    .version_id = 4,
-+    .minimum_version_id = 4,
-     .fields = (VMStateField[]) {
--        VMSTATE_INT32(extension, StellarisGamepad),
-         VMSTATE_VARRAY_UINT32(pressed, StellarisGamepad, num_buttons,
-                               0, vmstate_info_uint8, uint8_t),
-         VMSTATE_END_OF_LIST()
-     }
- };
- 
-+static const QemuInputHandler stellaris_gamepad_handler = {
-+    .name = "Stellaris Gamepad",
-+    .mask = INPUT_EVENT_MASK_KEY,
-+    .event = stellaris_gamepad_event,
-+};
-+
- static void stellaris_gamepad_realize(DeviceState *dev, Error **errp)
- {
-     StellarisGamepad *s = STELLARIS_GAMEPAD(dev);
-@@ -63,7 +60,7 @@ static void stellaris_gamepad_realize(DeviceState *dev, Error **errp)
-     s->irqs = g_new0(qemu_irq, s->num_buttons);
-     s->pressed = g_new0(uint8_t, s->num_buttons);
-     qdev_init_gpio_out(dev, s->irqs, s->num_buttons);
--    qemu_add_kbd_event_handler(stellaris_gamepad_put_key, dev);
-+    qemu_input_handler_register(dev, &stellaris_gamepad_handler);
- }
- 
- static void stellaris_gamepad_reset_enter(Object *obj, ResetType type)
--- 
-2.34.1
+We got an ack from the devicetree folks to add the "riscv,cbop-block-size"
+DT node:
 
+https://lore.kernel.org/linux-devicetree/20231030-attest-unchain-ab99981a5738@spud/
+
+
+I believe we don't have blockers to proceed with this change then. Thanks,
+
+
+Daniel
+
+> 
+>> +                                  cpu_ptr->cfg.cbop_blocksize);
+>> +        }
+>> +
+>>           qemu_fdt_setprop_string(ms->fdt, cpu_name, "compatible", "riscv");
+>>           qemu_fdt_setprop_string(ms->fdt, cpu_name, "status", "okay");
+>>           qemu_fdt_setprop_cell(ms->fdt, cpu_name, "reg",
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index f40da4c661..6c0050988f 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -78,6 +78,7 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
+>>    */
+>>   const RISCVIsaExtData isa_edata_arr[] = {
+>>       ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
+>> +    ISA_EXT_DATA_ENTRY(zicbop, PRIV_VERSION_1_12_0, ext_zicbop),
+>>       ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_zicboz),
+>>       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+>>       ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_zicntr),
+>> @@ -1336,6 +1337,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+>>       MULTI_EXT_CFG_BOOL("zhinxmin", ext_zhinxmin, false),
+>>   
+>>       MULTI_EXT_CFG_BOOL("zicbom", ext_zicbom, true),
+>> +    MULTI_EXT_CFG_BOOL("zicbop", ext_zicbop, true),
+>>       MULTI_EXT_CFG_BOOL("zicboz", ext_zicboz, true),
+>>   
+>>       MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
+>> @@ -1424,6 +1426,7 @@ Property riscv_cpu_options[] = {
+>>       DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
+>>   
+>>       DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
+>> +    DEFINE_PROP_UINT16("cbop_blocksize", RISCVCPU, cfg.cbop_blocksize, 64),
+>>       DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
+>>   
+>>       DEFINE_PROP_END_OF_LIST(),
+>> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+>> index 6eef4a51ea..2203b4c45b 100644
+>> --- a/target/riscv/cpu_cfg.h
+>> +++ b/target/riscv/cpu_cfg.h
+>> @@ -65,6 +65,7 @@ struct RISCVCPUConfig {
+>>       bool ext_zicntr;
+>>       bool ext_zicsr;
+>>       bool ext_zicbom;
+>> +    bool ext_zicbop;
+>>       bool ext_zicboz;
+>>       bool ext_zicond;
+>>       bool ext_zihintntl;
+>> @@ -134,6 +135,7 @@ struct RISCVCPUConfig {
+>>       uint16_t vlen;
+>>       uint16_t elen;
+>>       uint16_t cbom_blocksize;
+>> +    uint16_t cbop_blocksize;
+>>       uint16_t cboz_blocksize;
+>>       bool mmu;
+>>       bool pmp;
+>> -- 
+>> 2.41.0
+>>
+> 
+> Otherwise,
+> 
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> 
+> Thanks,
+> drew
 
