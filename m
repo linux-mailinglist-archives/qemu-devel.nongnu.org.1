@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79F47DCF42
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:33:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D10AD7DCF45
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:34:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpna-0007u5-Nf; Tue, 31 Oct 2023 10:32:55 -0400
+	id 1qxpoR-0000Z5-KC; Tue, 31 Oct 2023 10:33:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxpnE-0007ld-As
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:32:35 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxpoE-0000Qy-Ca
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:33:35 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxpn1-0008C5-WB
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:32:32 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6b709048d8eso5056099b3a.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698762738; x=1699367538; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2CYGRwQkn3vBbegQZVV/vYVzIasu5qHXxrirxpdWc8M=;
- b=YZvFShhCceI3SC6Itlt4rHgOejRuQKSiFiiKZ6gfX7Oe/ChQo0H4MC2m7Ksux+VVa2
- +3cifE1MVr4mGuk79J5tvMJn19HaethCjm/Fg124r9rALJRbBWe2cxZGjWnhK5i5g3sb
- WTwo4E5MXoPQlCIB30T4t8s7aPhEhRXMfCMbCAz2s97Nz/hFNSgM9g0kbYK0PWIv0/L2
- hkZ0+7/5Vw8QYtAsAfQS0qUGoblRWKLSYHuE2KWx+YCYc/pJwL9kTTAWuAzrHUr/hyCs
- lW2XnwHQ+naEttTjUeRnRtAx0/OzzphXc3sRR5GqIXgt89OfgBNW+DhQ3xa6SNP2Bvlp
- TzJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698762738; x=1699367538;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2CYGRwQkn3vBbegQZVV/vYVzIasu5qHXxrirxpdWc8M=;
- b=WFTNHH0Sa4Gs9ifOl7u8bjQRcwPJb2J43QmcHmhqakrvUwW0nK01jPA+/lI+PpgP58
- KhSxb55ejx/U0laxjr8JYnTPQOdo5kQwo2kityLGTl2YchV/Tg8Su32plunjE9lg7jeS
- OZzZzOnRTgOcjHOe8tlL5TQkZKh/JEib5CcwAMO2nIn+NK7mhfXa3gUgH7TMRE+wKmgt
- aAi7vCW66j6ZYKnYzRXO5RMM7I7BDWIGY67CkWp50XS5v89dsw4V+RZ6GZ61RFGmKj6t
- Gf9fI08Q8EV0Bf/ilwEQ5Ajpi/vJFpLWQW9tf+iZpQJ6JBJjFLKq5hkQyS9I74XZJmGQ
- XEAg==
-X-Gm-Message-State: AOJu0YxoV2ftZ+XiDjwRCqayHdMIkry4ZEhR6+ZLt6qm+9majHQAL3yz
- 6Jd7Q4e9mx/R+UhabkPPI7by3CPfsbWphhtDOkQ=
-X-Google-Smtp-Source: AGHT+IHHwNf2G5J8S5Tr/Dy60jOB7AdDwWZzhC+XbdsFc0IgmbFwg/ObHYYw70c2iI0GPnI2swOhVg==
-X-Received: by 2002:a05:6a00:1a93:b0:6b6:7a04:6f9 with SMTP id
- e19-20020a056a001a9300b006b67a0406f9mr11771745pfv.28.1698762737685; 
- Tue, 31 Oct 2023 07:32:17 -0700 (PDT)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- e19-20020a056a001a9300b006be484e5b9asm1321847pfv.188.2023.10.31.07.32.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 07:32:17 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	qemu-stable@nongnu.org
-Subject: [PATCH v2] target/arm: Fix SVE STR increment
-Date: Tue, 31 Oct 2023 07:32:15 -0700
-Message-Id: <20231031143215.29764-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxpoB-0008Ot-KH
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:33:33 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C7A5121AD7;
+ Tue, 31 Oct 2023 14:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698762806; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GEkuDzSjRmO+QDQshVX2CEQANLKyTTX0Euo/GxC+pvA=;
+ b=IURV6RGhWoqMngoBkGu9QNwmNivvLKX5ujx/7xz+W1jA+xIlgWv8ZOfncU4GChQ64FNVV0
+ qlahCR7c//hGlu+VCHdvSI4hvcXIPaYr4acz/jJtGOHF3yUCh55lQOP3V+OrVGwHwnw0Cz
+ oXBk/TQOCtEI3sxbc76XNjvcsNCirLc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698762806;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GEkuDzSjRmO+QDQshVX2CEQANLKyTTX0Euo/GxC+pvA=;
+ b=wmj8VJ41Zbue29rcL8CXv3wZe1FDZ6XvYVrhbwLguRwfCQNRWb0V/IYRnzjxv4wQQWKEtd
+ CYdtUYeeMEnfTnCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5A56C1391B;
+ Tue, 31 Oct 2023 14:33:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id RcHECTYQQWVdFQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 31 Oct 2023 14:33:26 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, Juan
+ Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo
+ Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>, Eric Blake
+ <eblake@redhat.com>
+Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
+In-Reply-To: <ZUEE9XP4YTJkZTv7@redhat.com>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-29-farosas@suse.de> <878r7svapt.fsf@pond.sub.org>
+ <87msw7ddfp.fsf@suse.de> <ZTjVg9NVTd0MT6mW@redhat.com>
+ <87cyx2epsv.fsf@suse.de> <ZTkpllWQdLSMw3pP@redhat.com>
+ <87cywvenbd.fsf@suse.de> <ZUDC4aoPZZQAF6JU@redhat.com>
+ <878r7jdjrf.fsf@suse.de> <ZUEE9XP4YTJkZTv7@redhat.com>
+Date: Tue, 31 Oct 2023 11:33:24 -0300
+Message-ID: <875y2meua3.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,115 +92,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous change missed updating one of the increments and
-one of the MemOps.  Add a test case for all vector lengths.
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Cc: qemu-stable@nongnu.org
-Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate-sve.c    |  5 ++--
- tests/tcg/aarch64/sve-str.c       | 49 +++++++++++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target |  6 +++-
- 3 files changed, 57 insertions(+), 3 deletions(-)
- create mode 100644 tests/tcg/aarch64/sve-str.c
+> On Tue, Oct 31, 2023 at 10:05:56AM -0300, Fabiano Rosas wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>> > On Mon, Oct 30, 2023 at 07:51:34PM -0300, Fabiano Rosas wrote:
+>> >> I could use some advice on how to solve this situation. The fdset code
+>> >> at monitor/fds.c and the add-fd command don't seem to be usable outsi=
+de
+>> >> the original use-case of passing fds with different open flags.
+>> >>=20
+>> >> There are several problems, the biggest one being that there's no way=
+ to
+>> >> manipulate the set of file descriptors aside from asking for duplicat=
+ion
+>> >> of an fd that matches a particular set of flags.
+>> >>=20
+>> >> That doesn't work for us because the two fds we need (one for main
+>> >> channel, other for secondary channels) will have the same open flags.=
+ So
+>> >> the fdset code will always return the first one it finds in the set.
+>> >
+>> > QEMU may want multiple FDs *internally*, but IMHO that fact should
+>> > not be exposed to mgmt applications. It would be valid for a QEMU
+>> > impl to share the same FD across multiple threads, or have a different
+>> > FD for each thread. All threads are using pread/pwrite, so it is safe
+>> > for them to use the same FD if they desire. It is a private impl choice
+>> > for QEMU at any given point in time and could change over time.
+>> >
+>>=20
+>> Sure, I don't disagree. However up until last week we had a seemingly
+>> usable "add-fd" command that allows the user to provide a *set of file
+>> descriptors* to QEMU. It's just now that we're learning that interface
+>> serves only a special use-case.
+>
+> AFAICT though we don't need add-fd to support passing many files
+> for our needs. Saving only requires a single FD. All others can
+> be opened by dup(), so the limitation of add-fd is irrelevant
+> surely ?
 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 7b39962f20..296e7d1ce2 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -4294,7 +4294,7 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
-         t0 = tcg_temp_new_i64();
-         t1 = tcg_temp_new_i64();
-         t16 = tcg_temp_new_i128();
--        for (i = 0; i < len_align; i += 8) {
-+        for (i = 0; i < len_align; i += 16) {
-             tcg_gen_ld_i64(t0, base, vofs + i);
-             tcg_gen_ld_i64(t1, base, vofs + i + 8);
-             tcg_gen_concat_i64_i128(t16, t0, t1);
-@@ -4320,7 +4320,8 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
-         t16 = tcg_temp_new_i128();
-         tcg_gen_concat_i64_i128(t16, t0, t1);
- 
--        tcg_gen_qemu_st_i128(t16, clean_addr, midx, MO_LEUQ);
-+        tcg_gen_qemu_st_i128(t16, clean_addr, midx,
-+                             MO_LE | MO_128 | MO_ATOM_NONE);
-         tcg_gen_addi_i64(clean_addr, clean_addr, 16);
- 
-         tcg_gen_brcondi_ptr(TCG_COND_LTU, i, len_align, loop);
-diff --git a/tests/tcg/aarch64/sve-str.c b/tests/tcg/aarch64/sve-str.c
-new file mode 100644
-index 0000000000..551f0d6f18
---- /dev/null
-+++ b/tests/tcg/aarch64/sve-str.c
-@@ -0,0 +1,49 @@
-+#include <stdio.h>
-+#include <sys/prctl.h>
-+
-+#define N  (256+16)
-+
-+static int __attribute__((noinline)) test(int vl)
-+{
-+    unsigned char buf[N];
-+    int err = 0;
-+
-+    for (int i = 0; i < N; ++i) {
-+        buf[i] = (unsigned char)i;
-+    }
-+
-+    asm volatile (
-+        "mov z0.b, #255\n\t"
-+        "str z0, %0"
-+        : : "m" (buf) : "z0", "memory");
-+
-+    for (int i = 0; i < vl; ++i) {
-+        if (buf[i] != 0xff) {
-+            fprintf(stderr, "vl %d, index %d, expected 255, got %d\n",
-+                    vl, i, buf[i]);
-+            err = 1;
-+        }
-+    }
-+
-+    for (int i = vl; i < N; ++i) {
-+        if (buf[i] != (unsigned char)i) {
-+            fprintf(stderr, "vl %d, index %d, expected %d, got %d\n",
-+                    vl, i, (unsigned char)i, buf[i]);
-+            err = 1;
-+        }
-+    }
-+
-+    return err;
-+}
-+
-+int main()
-+{
-+    int err = 0;
-+
-+    for (int i = 16; i <= 256; i += 16) {
-+        if (prctl(PR_SVE_SET_VL, i, 0, 0, 0, 0) == i) {
-+            err |= test(i);
-+        }
-+    }
-+    return err;
-+}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 62b38c792f..c6542b5f1b 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -103,7 +103,11 @@ sha512-sve: CFLAGS=-O3 -march=armv8.1-a+sve
- sha512-sve: sha512.c
- 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
- 
--TESTS += sha512-sve
-+sve-str: CFLAGS=-O1 -march=armv8.1-a+sve
-+sve-str: sve-str.c
-+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
-+
-+TESTS += sha512-sve sve-str
- 
- ifneq ($(GDB),)
- GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
--- 
-2.34.1
+Only once we decide to use one FD. If we had a generic add-fd backend,
+then that's already a user-facing API, so the "implementation detail"
+argument becomes weaker.
 
+With a single FD we'll need to be very careful about what code is
+allowed to run while the multifd channels are doing IO. Since O_DIRECT
+is not widely supported, now we have to also be careful about someone
+using that QEMUFile handle to do unaligned writes and not even noticing
+that it breaks direct IO. None of this in unworkable, of course, I just
+find the design way clearer with just the file name + offset.
+
+>> > Thus from the POV of the mgmt app, QEMU is writing to a single file, no
+>> > matter how many threads are involved & thus it should only need to sup=
+ply
+>> > a single FD for thta file. QEMU can then call 'dup()' on that FD as ma=
+ny
+>> > times as it desires, and use fcntl() to toggle O_DIRECT if and when
+>> > it needs to.
+>>=20
+>> Ok, so I think the way to go here is for QEMU to receive a file + offset
+>> instead of an FD. That way QEMU can have adequate control of the
+>> resources for the migration. I don't remember why we went on the FD
+>> tangent. Is it not acceptable for libvirt to provide the file name +
+>> offset?
+>
+> FD passing means QEMU does not need privileges to open the file
+> which could be useful.
+
+Ok, let me give this a try. Let's see how bad it is to juggle the flag
+around the main channel.
 
