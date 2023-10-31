@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387F17DCF93
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFA97DCF9A
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:49:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxq1M-0002on-Gk; Tue, 31 Oct 2023 10:47:11 -0400
+	id 1qxq3D-0008OQ-Ot; Tue, 31 Oct 2023 10:49:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxq1C-0002XL-Fy
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:47:00 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxq1A-0002dH-Vg
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:46:58 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-9be3b66f254so856942066b.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:46:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698763615; x=1699368415; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=P5p4cIP5s3u9B2uqswrz/SwpLmirqCCcLd9UNYHt+d0=;
- b=sa5aJqLKWM3S1PckGprpQYPBDby37T7b23X7Us36k5AwaDETwwD9ZjTH8kj3hmZzoU
- 415F2XexyGBYXOwKYvH6jCQ6qb9PE5a20KHvkXzCInRRY90CcePzl9lZeVnURN1jF0ab
- ZloAmAZPn4lp9FmN5Nc1wdCAi6Ns5km6YOOJoYhIfjruvaNqRExVRC3gB7MXZK8IbWu0
- HFSrY93sXZrKbDFM9GON+xTWb258ZETjtd2J5btj5wDp8QtKI2wcFR27kXETv7gTo+GW
- 1RN9/hf+eBdALbhfuuvlVc/Jsmjgo6i0MfcFbbngGScmPmVy+CGio4GkMCJWoiO+Z2sh
- fh2g==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qxq31-0008IX-SL
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:48:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qxq2z-0002tq-Fb
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:48:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698763728;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w7toTcC9ZtynQDA63QCIxGfaKsnak6Wz7YLuOt8i5o8=;
+ b=NjGwy8TFuSrGxVcFDGNmadTOBm7JHxK9aRESP4//ggBrc79omfKYkBhUW76P1u7lYwpLZc
+ iSko313UyRApAIopihuCEfEZcwaknAKtX/sCBuPpym2UaFsvTA5bTX+9jOqbvOrzbcYjti
+ PEAkBtf8OF1pR/s/6eQtgrTvSvUdMk4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-FiXmNbcdOX60T4WDT7s3kQ-1; Tue, 31 Oct 2023 10:48:37 -0400
+X-MC-Unique: FiXmNbcdOX60T4WDT7s3kQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4083fec2c30so40686815e9.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:48:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698763615; x=1699368415;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698763715; x=1699368515;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P5p4cIP5s3u9B2uqswrz/SwpLmirqCCcLd9UNYHt+d0=;
- b=iQOyyCzBS+1mSNWl93oFc7QcxTeBRckzTz5y0wYYV9847UKr1Z3i62EWwCrMH32AXS
- MaBivrirV9ObbcyqRLMlqlEbPmSC+OvdiFqmGAeoPd0+HW5nl89KDj+XWjcESCJ0kGMk
- BXosZa3rMCO+1qC6Yw/wM3CtqB5rG1BrszUnhDIVaVeh0AjsMb73ze3H6vs/Wcy0Df3y
- C0C42U7ThmaBJm5iORGwF/pdR2jVEeERE668FX5EVzw4OhEAXa6TQQkOUtg8M5Jst/uQ
- t4fWITBInuR9X/FBnlV2esqzd3bnNBPYBOdYvgEVwSKt8Cd79kYG8xADB28O8lDK190V
- YcOA==
-X-Gm-Message-State: AOJu0YyIoRzXx8QMt9HBzrIfd3KbVrw6PHjd5aRtUiYmbiEE32LgKBE3
- 3OGSlzyMmZJDZOJfdVK+PEag3g==
-X-Google-Smtp-Source: AGHT+IH6/EHbbeLjNmjLlrqP+86U0C9YvDlHzq+sBmq45OJ6PBXD1RueMEYmpVjd7YRhbRAR7ajguA==
-X-Received: by 2002:a17:907:8690:b0:9c7:5c46:3987 with SMTP id
- qa16-20020a170907869000b009c75c463987mr11947373ejc.63.1698763615172; 
- Tue, 31 Oct 2023 07:46:55 -0700 (PDT)
-Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
- [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
- u19-20020a170906c41300b009b2cc87b8c3sm1067125ejz.52.2023.10.31.07.46.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 07:46:54 -0700 (PDT)
-Message-ID: <62b7af6c-8091-2ee1-cc4d-01cf7c9ebfcb@linaro.org>
-Date: Tue, 31 Oct 2023 15:46:52 +0100
+ bh=w7toTcC9ZtynQDA63QCIxGfaKsnak6Wz7YLuOt8i5o8=;
+ b=YJdG/WwUvme4TqCOvEPRhUlk5X/t653d03mRg50wMUM2qhOqLFMRJr7nP/9GaVM53g
+ Q7jstZYDNyrYJ7ppLfCz8V4LHWiDMCuQYvK1nfMCn1q26fKxweEpdFAbV2PjYRQTf1Ng
+ kDf7fpAxXd4dyOV3EIVYOPJSdKcv78ohKjG3AOdkcvTZp57T+0BYOIhCgvv0PSH0PC4O
+ ZDGkb0AiZG1Sa0wiq9qQ52zYJdlRG4LsRI42SwhUWOLKeCkq8DTcAa+OX9WgYjkSSzk/
+ 0OLFiPWLfCjYzOvpu/93fcTUi3fkRiuIu9ggCB2tmOgTYroEDS9IilbMyYQJMDYB/T2c
+ WaJA==
+X-Gm-Message-State: AOJu0YxuncRqxCqrNj20MQ4HSeu6rGwbODmorJcrZXmRieS2WW/bp/7A
+ 0R8gDw3fDmo8Mbk0gnF/+wORkYyR+KeDdxFN9zoQYmS8Qvdt539z9sHMBIh7oYQx7DNsKIW7mEn
+ bK591S3cJSZtkZF6aCk5VF+S+lA==
+X-Received: by 2002:a05:600c:1d08:b0:408:4d0e:68ac with SMTP id
+ l8-20020a05600c1d0800b004084d0e68acmr10437306wms.32.1698763714880; 
+ Tue, 31 Oct 2023 07:48:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGaXaAKvD9llNaBJovARGKufRSKNk4NK3xqwExbLToMNE56rj4UNKedyQdbqMQ5/kRS5V2ixA==
+X-Received: by 2002:a05:600c:1d08:b0:408:4d0e:68ac with SMTP id
+ l8-20020a05600c1d0800b004084d0e68acmr10437289wms.32.1698763714577; 
+ Tue, 31 Oct 2023 07:48:34 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ l26-20020a05600c1d1a00b0040839fcb217sm2037073wms.8.2023.10.31.07.48.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 07:48:33 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  dgilbert@redhat.com,
+ pbonzini@redhat.com,  berrange@redhat.com,  armbru@redhat.com,
+ eblake@redhat.com,  manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com,  Het Gala <het.gala@nutanix.com>,  Peter
+ Xu <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v15 02/14] fixup! migration: New QAPI type 'MigrateAddress'
+In-Reply-To: <20231023182053.8711-3-farosas@suse.de> (Fabiano Rosas's message
+ of "Mon, 23 Oct 2023 15:20:41 -0300")
+References: <20231023182053.8711-1-farosas@suse.de>
+ <20231023182053.8711-3-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 31 Oct 2023 15:48:33 +0100
+Message-ID: <875y2m7sqm.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 4/7] ui/qmp-cmds: Improve two error messages
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org,
- david@gibson.dropbear.id.au, harshpb@linux.ibm.com, dave@treblig.org,
- jasowang@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
- mst@redhat.com, david@redhat.com, kraxel@redhat.com,
- marcandre.lureau@redhat.com, qemu-ppc@nongnu.org
-References: <20231031111059.3407803-1-armbru@redhat.com>
- <20231031111059.3407803-5-armbru@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231031111059.3407803-5-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,33 +104,16 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/10/23 12:10, Markus Armbruster wrote:
-> set_password with "protocol": "vnc" supports only "connected": "keep".
-> Any other value is rejected with
-> 
->      Invalid parameter 'connected'
-> 
-> Improve this to
-> 
->      parameter 'connected' must be 'keep' when 'protocol' is 'vnc'
-> 
-> client_migrate_info requires "port" or "tls-port".  When both are
-> missing, it fails with
-> 
->      Parameter 'port/tls-port' is missing
-> 
-> Improve this to
-> 
->      parameter 'port' or 'tls-port' is required
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   ui/ui-qmp-cmds.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+Fabiano Rosas <farosas@suse.de> wrote:
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+
+Merging with previous one.
 
 
