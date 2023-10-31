@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C977DCB7D
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C447DCB86
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:13:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxmeS-0004Re-74; Tue, 31 Oct 2023 07:11:16 -0400
+	id 1qxmeR-0004Ke-03; Tue, 31 Oct 2023 07:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeQ-0004Nd-6T
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeM-00043R-C0
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeN-0006zR-GU
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:13 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeJ-0006xm-S0
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698750670;
+ s=mimecast20190719; t=1698750667;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LQCgrIYKTPXGuFD9c+YZAZ+xUtgJlLfCEQiQ9SuG0BE=;
- b=bKhZUgP7g995PSd8ueLsJ4YpbWhl7K7QKs/9zmJQ/81VHbat7kbOaagJLt3ExiP/N77rvu
- e/PQKVxM8KXQEgQ5Sur/qWHHb37IIvPzRQSUsgr5ef8N/nzzdwfz2/xp2YLATMcrvv8bbT
- bBos/zUbi13LHR/52h5rzPZ8NpFtXpY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-J0pcYw20NYmtXiSd8psJbw-1; Tue, 31 Oct 2023 07:11:02 -0400
-X-MC-Unique: J0pcYw20NYmtXiSd8psJbw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=pQbfsF7CGATAVMrtrNb3IySMF3mUpQa+LtSkkxRplvs=;
+ b=SdzIteM2LS8ZILLeuH+2E6DVTLJD4tGYmueqYBA14c2/SG+N6sPQMbpZdmiC+tvVaOA/Y2
+ XD4bGYi9mnKU3vs689u18mb8SHG54ulx5tGx60yeYRt3kYeEpO8N101e8eBSvuHGmANLIM
+ X9sRHjA/SUl1I36Hsy7krSoDucjPxKw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-w0zAfFy9NAivmNx07UTXAQ-1; Tue,
+ 31 Oct 2023 07:11:03 -0400
+X-MC-Unique: w0zAfFy9NAivmNx07UTXAQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B14A816F27;
- Tue, 31 Oct 2023 11:11:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 559FF2808FCB;
+ Tue, 31 Oct 2023 11:11:02 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F1FCD2026D4C;
- Tue, 31 Oct 2023 11:11:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3252140C6EB9;
+ Tue, 31 Oct 2023 11:11:02 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EABB121E691F; Tue, 31 Oct 2023 12:10:59 +0100 (CET)
+ id EDE8F21E6921; Tue, 31 Oct 2023 12:10:59 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org,
@@ -50,23 +50,23 @@ Cc: philmd@linaro.org, npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org,
  jasowang@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
  mst@redhat.com, david@redhat.com, kraxel@redhat.com,
  marcandre.lureau@redhat.com, qemu-ppc@nongnu.org
-Subject: [PATCH 4/7] ui/qmp-cmds: Improve two error messages
-Date: Tue, 31 Oct 2023 12:10:56 +0100
-Message-ID: <20231031111059.3407803-5-armbru@redhat.com>
+Subject: [PATCH 5/7] net: Fix a misleading error message
+Date: Tue, 31 Oct 2023 12:10:57 +0100
+Message-ID: <20231031111059.3407803-6-armbru@redhat.com>
 In-Reply-To: <20231031111059.3407803-1-armbru@redhat.com>
 References: <20231031111059.3407803-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -84,50 +84,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-set_password with "protocol": "vnc" supports only "connected": "keep".
-Any other value is rejected with
+The error message
 
-    Invalid parameter 'connected'
+    $ qemu-system-x86_64 -netdev user,id=net0,ipv6-net=fec0::0/
+    qemu-system-x86_64: -netdev user,id=net0,ipv6-net=fec0::0/: Parameter 'ipv6-prefixlen' expects a number
 
-Improve this to
+points to ipv6-prefixlen instead of ipv6-net.  Fix:
 
-    parameter 'connected' must be 'keep' when 'protocol' is 'vnc'
-
-client_migrate_info requires "port" or "tls-port".  When both are
-missing, it fails with
-
-    Parameter 'port/tls-port' is missing
-
-Improve this to
-
-    parameter 'port' or 'tls-port' is required
+    qemu-system-x86_64: -netdev user,id=net0,ipv6-net=fec0::0/: parameter 'ipv6-net' expects a number after '/'
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- ui/ui-qmp-cmds.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/net.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
-index debc07d678..8880691f92 100644
---- a/ui/ui-qmp-cmds.c
-+++ b/ui/ui-qmp-cmds.c
-@@ -44,7 +44,8 @@ void qmp_set_password(SetPasswordOptions *opts, Error **errp)
-         assert(opts->protocol == DISPLAY_PROTOCOL_VNC);
-         if (opts->connected != SET_PASSWORD_ACTION_KEEP) {
-             /* vnc supports "connected=keep" only */
--            error_setg(errp, QERR_INVALID_PARAMETER, "connected");
-+            error_setg(errp, "parameter 'connected' must be 'keep'"
-+                       " when 'protocol' is 'vnc'");
-             return;
-         }
-         /*
-@@ -195,7 +196,7 @@ void qmp_client_migrate_info(const char *protocol, const char *hostname,
-         }
+diff --git a/net/net.c b/net/net.c
+index c0c0cbe99e..8e67a20abc 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -1227,7 +1227,7 @@ static int net_client_init(QemuOpts *opts, bool is_netdev, Error **errp)
+     int ret = -1;
+     Visitor *v = opts_visitor_new(opts);
  
-         if (!has_port && !has_tls_port) {
--            error_setg(errp, QERR_MISSING_PARAMETER, "port/tls-port");
-+            error_setg(errp, "parameter 'port' or 'tls-port' is required");
-             return;
+-    /* Parse convenience option format ip6-net=fec0::0[/64] */
++    /* Parse convenience option format ipv6-net=fec0::0[/64] */
+     const char *ip6_net = qemu_opt_get(opts, "ipv6-net");
+ 
+     if (ip6_net) {
+@@ -1247,8 +1247,8 @@ static int net_client_init(QemuOpts *opts, bool is_netdev, Error **errp)
+         if (substrings[1] &&
+             qemu_strtoul(substrings[1], NULL, 10, &prefix_len))
+         {
+-            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+-                       "ipv6-prefixlen", "a number");
++            error_setg(errp,
++                       "parameter 'ipv6-net' expects a number after '/'");
+             goto out;
          }
  
 -- 
