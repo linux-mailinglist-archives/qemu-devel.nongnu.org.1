@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD877DCF90
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C7E7DCF8D
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:46:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpyg-0004tT-88; Tue, 31 Oct 2023 10:44:22 -0400
+	id 1qxpyf-0004tS-VS; Tue, 31 Oct 2023 10:44:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyd-0004sn-M8
+ id 1qxpyd-0004sN-Cc
  for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:19 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyb-0002D1-TK
+ id 1qxpyb-0002Cx-O7
  for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:19 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4084e49a5e5so47188915e9.3
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-32f8441dfb5so1691756f8f.0
  for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:44:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698763456; x=1699368256; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LVt32BVhuMD6mZN5AcPveEcpa9SvvyPpVXag3OAT//A=;
- b=cITNaC7pCBNqLeY0DcyGQyEPB2xSoGUt4KH94Yk4qvZH+tL13oIX6K7PlGGVMC/EBs
- xVh0aHO73yfCcDjE663gVuBoz40QYEt2So/O6BYDLlgHXwjdZFJCX/fLG42b6auB4w4k
- 8ei6czSde7FXcEXjBYXObKJcvVcqDJnCgUj71FMAIN+f4Bz/7UFqn+zyZtNEGEN452MZ
- dkGFdozX/xEt5Gs96QMOojsZZ4npFBVu7RVjZRW6qoLBepYu2wpfn+Eb94KGcFsAsfMw
- Ht2XFDC522oW5Alc8IHNJrVIoDDqbwyS10GoRPt4svmGz2ZNYWs949y84mT0Au3qwAFR
- Xk6g==
+ bh=1qbOhazxvRm+dj6LmIpa3iG/xAEISl7lgrvcn9urKP4=;
+ b=MKJItzplfXKlre/AAi14zwIUHJWWfDYieklHmTVLk7TEGgU74llGPnGsr7dYAtHkV8
+ v0SK+6hPB8MHVAhbTQtMtU5xO3cAEn9+V+pE0+oNjN2zSq+CHjQ3TqOuJG8r3+0MgpKQ
+ ARiDRETpFqApPgXeBSmaZ0DxES1m0BYn18qp7KK6uZbAVG+SIieN6iObvmlNJZ0rJTWF
+ 6LqX6ITudMRrNuE+bI4HSHr+6HMSdUk3jXt/+ZbH7CGT0f10R1oTu+ahrel0Wj450upM
+ NRiJqWW+BcuEX57ycKYWpYhJsuIrzYL2eYze1ujheAZPlWa/dZMA+qEUxMxWDnOozust
+ yRsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698763456; x=1699368256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LVt32BVhuMD6mZN5AcPveEcpa9SvvyPpVXag3OAT//A=;
- b=n2UrqPi8ml4+YUd4Yb/O66hMVabfbL92/xvkkI2fSOZUMyhdO0/xAQTkdRy6MKrf2s
- V/OgJo9s+kyOPNzu8w6JdRVBXosQ431wEm48HmYKyl8ovxK5JtCYBkRwvKILiCZRqHud
- Z0Qe6wDc6qzq0buyfWtGDe6W8c8b/iqzuC4+mBMnf8Yvw9QQCVsjqsOIdksegOQXJ3I5
- b1w4sAPGLK39y61Ee/XQlZUsGcq93AI99GKQvTZaJZstt2hvTZT9qqRnCAD3GdtrERHA
- uCgDwfW0vaJJyBzKU2VupQjSzdjmfXt7TFYgKoZXHiNXx4tDMGIGSjPiDAgnPr0b0O3H
- lEVw==
-X-Gm-Message-State: AOJu0YxlXwEkKZyeqXozqGUonRfX2DXfiRbQgRpf81e6/Rtjxhns1mO0
- 1g8kbJp2Wr4V3DN8mwrN7Iuyzg==
-X-Google-Smtp-Source: AGHT+IGURU9YjJ9ij/0p9VJ1ofiTyRufn1kYpWi2rtTEPZVbtOxghy9P1gNlmOtD4XFi6shyZci2qg==
-X-Received: by 2002:adf:f7c3:0:b0:329:6dbc:e9a8 with SMTP id
- a3-20020adff7c3000000b003296dbce9a8mr10352317wrq.8.1698763456591; 
+ bh=1qbOhazxvRm+dj6LmIpa3iG/xAEISl7lgrvcn9urKP4=;
+ b=nx95+v17e4fga53EUKRS7Mwlz2ElmGvHT7hTvE2Mn+oZBVWNOydPgBjpAuntYUHUbe
+ RQFMLOGKgJrZPVl1WxnGH7xv6HAvfKPHatXE6+TfY+tvuJdE04jP68RbU0Si3Yj7OuTG
+ MHgnHO5831vm00deUR6DIa7zD5SM98H/Uk5N6KsCvR1Fg9Iy4XN9jXwNkMNp4xrkQx1r
+ UdGnRc3c+2ppjWK2g/q1RHu9gYIY5uX7JLkjYCbzLWzSKnyANSn59axZ4Dw9pEV5xHXM
+ qsjAvQKjTSamiS7SU6DdAGYAqxRdM1o7Olz1qo9W5SsXhE3paLNI+fVNTESHXm41EKwS
+ Bmpw==
+X-Gm-Message-State: AOJu0Yy+Qmm6aIZzgUnyQrBFtZkzDaUGvcVVFK2fwQv9HX75/3dBUTEt
+ niQ8/QPRLOsWPTsRzxtIWbw1dQ==
+X-Google-Smtp-Source: AGHT+IFW4FFqehSm9FBQmkD/9dWL84YgQFsfKzWa5wvsDzLdWtyAuVZj3wQW4Op4QotXnB/hRk9dZg==
+X-Received: by 2002:a05:6000:2a9:b0:32f:7cea:2ea2 with SMTP id
+ l9-20020a05600002a900b0032f7cea2ea2mr9626642wry.17.1698763456291; 
  Tue, 31 Oct 2023 07:44:16 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o8-20020adfe808000000b0031980294e9fsm1647761wrm.116.2023.10.31.07.44.08
+ g9-20020adffc89000000b0032da8fb0d05sm1649917wrr.110.2023.10.31.07.44.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 31 Oct 2023 07:44:12 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 532346572F;
+ by draig.lan (Postfix) with ESMTP id 68AFC65730;
  Tue, 31 Oct 2023 14:44:03 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Fabiano Rosas <farosas@suse.de>,
+Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/19] gdbstub: Check if gdb_regs is NULL
-Date: Tue, 31 Oct 2023 14:43:58 +0000
-Message-Id: <20231031144401.1238210-17-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 17/19] semihosting: fix memleak at semihosting_arg_fallback
+Date: Tue, 31 Oct 2023 14:43:59 +0000
+Message-Id: <20231031144401.1238210-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231031144401.1238210-1-alex.bennee@linaro.org>
 References: <20231031144401.1238210-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,78 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 
-cpu->gdb_regs may be NULL if no coprocessor is registered.
+We duplicate "cmd" as strtok may modify its argument, but we forgot
+to free it later. Furthermore, add_semihosting_arg doesn't take
+responsibility for this memory either (it strdup's the argument).
 
-Fixes: 73c392c26b ("gdbstub: Replace gdb_regs with an array")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20231029145033.592566-17-alex.bennee@linaro.org>
-Message-Id: <20231019101030.128431-2-akihiko.odaki@daynix.com>
-Tested-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <03d81c56bfc3d08224e4106efca5949d8894cfa5.1697801632.git.quic_mathbern@quicinc.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20231029145033.592566-18-alex.bennee@linaro.org>
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 1e96a71c0c..29540a0284 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -385,12 +385,14 @@ static const char *get_feature_xml(const char *p, const char **newp,
-                 xml,
-                 g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-                                         cc->gdb_core_xml_file));
--            for (guint i = 0; i < cpu->gdb_regs->len; i++) {
--                r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
--                g_ptr_array_add(
--                    xml,
--                    g_markup_printf_escaped("<xi:include href=\"%s\"/>",
--                                            r->xml));
-+            if (cpu->gdb_regs) {
-+                for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+                    r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+                    g_ptr_array_add(
-+                        xml,
-+                        g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-+                                                r->xml));
-+                }
-             }
-             g_ptr_array_add(xml, g_strdup("</target>"));
-             g_ptr_array_add(xml, NULL);
-@@ -430,10 +432,12 @@ static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-         return cc->gdb_read_register(cpu, buf, reg);
-     }
+diff --git a/semihosting/config.c b/semihosting/config.c
+index 249a377ae8..56283b5c3c 100644
+--- a/semihosting/config.c
++++ b/semihosting/config.c
+@@ -113,12 +113,13 @@ static int add_semihosting_arg(void *opaque,
+ void semihosting_arg_fallback(const char *file, const char *cmd)
+ {
+     char *cmd_token;
++    g_autofree char *cmd_dup = g_strdup(cmd);
  
--    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
--        r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
--        if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
--            return r->get_reg(env, buf, reg - r->base_reg);
-+    if (cpu->gdb_regs) {
-+        for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+            r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+            if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-+                return r->get_reg(env, buf, reg - r->base_reg);
-+            }
-         }
-     }
-     return 0;
-@@ -449,10 +453,12 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-         return cc->gdb_write_register(cpu, mem_buf, reg);
-     }
+     /* argv[0] */
+     add_semihosting_arg(&semihosting, "arg", file, NULL);
  
--    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
--        r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
--        if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
--            return r->set_reg(env, mem_buf, reg - r->base_reg);
-+    if (cpu->gdb_regs) {
-+        for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+            r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+            if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-+                return r->set_reg(env, mem_buf, reg - r->base_reg);
-+            }
-         }
-     }
-     return 0;
+     /* split -append and initialize argv[1..n] */
+-    cmd_token = strtok(g_strdup(cmd), " ");
++    cmd_token = strtok(cmd_dup, " ");
+     while (cmd_token) {
+         add_semihosting_arg(&semihosting, "arg", cmd_token, NULL);
+         cmd_token = strtok(NULL, " ");
 -- 
 2.39.2
 
