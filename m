@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7837DCC6C
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8697DCC75
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 13:03:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxnLG-0006WZ-3y; Tue, 31 Oct 2023 07:55:30 -0400
+	id 1qxnRj-0000Nz-Mm; Tue, 31 Oct 2023 08:02:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxnL0-0006UZ-8o
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:55:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxnKv-0008JV-Dp
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:55:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698753307;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WNDyl2aHaNYxiZuRoBCjY7hYuQgAuvWvLWJd2rLrsc0=;
- b=N8/MXdeFnvdaMimyl9D1K49SR4lj63SZ9L78eE6c7hyQL0ldqHbMe5blHQKokZtJZtkpJ4
- ZyJlVGg2+OJeMXFaz2uITQFzhwhHv2TceckMyBg8aiwKbVOp0JyJDaHyV4MkW9o0NQMntq
- v/wUqFHE2NwgReu3l7uuPvqWyOc9w6c=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-q_0jr2eGNDeMxvGVp1ibNA-1; Tue, 31 Oct 2023 07:55:06 -0400
-X-MC-Unique: q_0jr2eGNDeMxvGVp1ibNA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4084e4ce543so41461135e9.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 04:55:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qxnRg-0000N7-AJ
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 08:02:08 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qxnRe-0001DB-GY
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 08:02:08 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-409299277bbso35596495e9.2
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 05:02:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698753725; x=1699358525; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lNUoIdPBJxuDoALCe2GHz10b5kQPCQgDLFtrF/CEZes=;
+ b=dPX71m1NaIHNR2+4WSMFW0Tv9S9Bucj5iorbvchq71u05wfTOPIB30jNxRtPWfsk5V
+ B1zlOVw7J6gkMB3sRG22vd3bK8nZiGd2cKJB8jLP8h8Eaa7QZfpuSlQAZm/zYQ7A/zTL
+ 9F3OWUMjSEKACBg0vLqjL51zmXhUw4v+zpTFRHi8bJeBSCTyiB8J2CAPaw9fu/Zn8g93
+ JiukaGRIAXFcbcyafS+U63RkwNyo+FmcPtwrECNYTZovsuFJ04GY6OJCI17M4XzL4OlR
+ mklcGo9HkmCpZo9rSyeRD+yrI4A8ye3ORVCAr/SKkHsjP4eK6SKaP/vN29HG6jLZYa/h
+ pzzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698753304; x=1699358104;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WNDyl2aHaNYxiZuRoBCjY7hYuQgAuvWvLWJd2rLrsc0=;
- b=vX1khMh3TZ62mfICB+plkLOa+o89+Xtzx191t9sLxxsQKTUpQyl0rk2n3CkyB+oRmG
- NpbO0/Bu8zxvyB0aema37TEWOeZ5/s7ThK4jvXtqr0KsvW4Mf8dXa2xRwjnTypLMOO48
- CwfzepplzQr1CRg8YFSianHO2+YEqkf3yYPkxLTnknuGeXvR+aOyrikpfjps/jlbjXRA
- F2DsU9dPFV50AedcmAjh5w1K9KJeJqlCaAbsz09MM2HHR8gGzXVHRtZr81gjHPQb7k/3
- PNQJO2ikBbnizkfC2RsIW85JXU1NMIAHO0++2wSkUURKx4B6dlkuv4Way28clkWmTAuS
- xEfg==
-X-Gm-Message-State: AOJu0YxOgZzDWiLiJw6sG3rTq+bm9qK4+tC+yY1fYgayOdWzbyMDLqYN
- lI4nUnUXHNVE0XTPKOiwSAFx1+qGCn7kzA7wKBSWtOG0Z8hT8yXurE8lYsmTMAH/kTpRwKvCR6s
- +WcxGOZ8NU1QoNQdsX6KJPZY=
-X-Received: by 2002:a05:600c:548e:b0:408:fe93:a2f7 with SMTP id
- iv14-20020a05600c548e00b00408fe93a2f7mr10459654wmb.37.1698753304603; 
- Tue, 31 Oct 2023 04:55:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGA5PBw5lZLbzp/RcJvYk5n4O879gDpzYkhuMdMrQARgepC58ro4ZalZ4zmJl6v8WLvMBIiqg==
-X-Received: by 2002:a05:600c:548e:b0:408:fe93:a2f7 with SMTP id
- iv14-20020a05600c548e00b00408fe93a2f7mr10459643wmb.37.1698753304332; 
- Tue, 31 Oct 2023 04:55:04 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d746:c551:3d67:278e:c0a1:87a2?
- (p200300cfd746c5513d67278ec0a187a2.dip0.t-ipconnect.de.
- [2003:cf:d746:c551:3d67:278e:c0a1:87a2])
- by smtp.gmail.com with ESMTPSA id
- g12-20020a05600c310c00b003fe1fe56202sm1540446wmo.33.2023.10.31.04.55.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 04:55:03 -0700 (PDT)
-Message-ID: <f5209ab8-6868-47f6-89b0-023e41406680@redhat.com>
-Date: Tue, 31 Oct 2023 12:55:02 +0100
+ d=1e100.net; s=20230601; t=1698753725; x=1699358525;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lNUoIdPBJxuDoALCe2GHz10b5kQPCQgDLFtrF/CEZes=;
+ b=MI1Y75Qk0RFpi5ghW7Z1hACpPn2y4dFGQ/tq5Y9Ls3yYhBezBPfRpY3xCgr8OGGF+k
+ dId8oe3YdTuSBzTF+Oo48q88d1bxWRanBbV/3erzVyXASIC7cc7CtHjf9hTDTW9ogWag
+ VSS7PplrUFja3eXnwJrPt2MppGF201N76lL38AKoYcJ+x8KNyg6qG1j8v7S55/DM9M86
+ ofSmWuFWYFNxoynDfW/DasrBe9p7H8s+zvgQQMlEz9j+08sNBZw3uMkG0Mirq8cmDm86
+ A4qOa2h4UqYH3uXtO7J4zA2ESohbQlPBaJEiKHX51HYCLE1QM24vKocM1F1lPXdsNKAF
+ 9gnQ==
+X-Gm-Message-State: AOJu0YzHBFdnc6M39+RFcruu0tksUat1XrwsuCZTDaqaB5oiDENBb+FQ
+ +PcNuHPEtAARO3VS3akdZr/CLQ==
+X-Google-Smtp-Source: AGHT+IFZqjymnAFwIVoDafoiuOTRIaYOwmeMPWJ3Z7GiTDaV0Jtsi7hP5xEc0onrhOCMoGa1jvX5Ag==
+X-Received: by 2002:a05:600c:539b:b0:408:3cdf:32c with SMTP id
+ hg27-20020a05600c539b00b004083cdf032cmr10622738wmb.41.1698753724002; 
+ Tue, 31 Oct 2023 05:02:04 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ x4-20020a1c7c04000000b003fe61c33df5sm1567917wmc.3.2023.10.31.05.02.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 05:02:03 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 44A4D5F78A;
+ Tue, 31 Oct 2023 12:02:03 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Eric Auger <eric.auger@redhat.com>, Mostafa Saleh <smostafa@google.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>, Jason Wang
+ <jasowang@redhat.com>, Kunkun Jiang <jiangkunkun@huawei.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, Simon Veith <sveith@amazon.de>
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, QEMU
+ Developers <qemu-devel@nongnu.org>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Joe Komlodi <joe.komlodi@xilinx.com>, Prem Mallappa
+ <prem.mallappa@broadcom.com>, Leonardo Garcia
+ <leonardo.garcia@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Alistair Francis <alistair@alistair23.me>
+Subject: Any plans to implement more ARM SMMUv3 features?
+User-Agent: mu4e 1.11.23; emacs 29.1
+Date: Tue, 31 Oct 2023 12:02:03 +0000
+Message-ID: <87il6n0zlw.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iotests: Test media change with iothreads
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: stefanha@redhat.com, qemu-devel@nongnu.org
-References: <20231013153302.39234-1-kwolf@redhat.com>
- <20231013153302.39234-3-kwolf@redhat.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20231013153302.39234-3-kwolf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,16 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13.10.23 17:33, Kevin Wolf wrote:
-> iotests case 118 already tests all relevant operations for media change
-> with multiple devices, however never with iothreads. This changes the
-> test so that the virtio-scsi tests run with an iothread.
->
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->   tests/qemu-iotests/118 | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Hi All,
 
+Since 8.1 we enabled the FEAT_RME CPU feature to allow for Arm CCA
+guests to be run under QEMU's Arm emulation. While this is enough for
+pure software guests eventually we would want to support modelling
+systems with "real" hardware. One part of that is updating the SMMU
+emulation to make it RME aware.
+
+The recently published F.a spec is available on the Arm site:
+
+  https://developer.arm.com/documentation/ihi0070/latest/
+
+As we have a keen interest on tracking (and implementing!) Arm features
+we have coded up the various sub-features as stories under an EPIC for
+each level of SMMU feature on our public JIRA:
+
+  https://linaro.atlassian.net/browse/QEMU-533 (SMMUv3.0)
+  https://linaro.atlassian.net/browse/QEMU-553 (SMMUv3.1)
+  https://linaro.atlassian.net/browse/QEMU-558 (SMMUv3.2)
+  https://linaro.atlassian.net/browse/QEMU-566 (SMMUv3.3)
+=20=20
+I think the state of the cards currently represents what has been
+implemented and what is left to do. As you can see it adds up to a fair
+bit of stuff. As a lot of people have been hacking on the SMMU code over
+the last few years I thought it would be useful to reach out and see who
+else is interested in further enhancing the SMMU emulation support?
+
+If anyone has any patches/branches cooking or is intending to implement
+any particular bits please do let me know and I can update the cards to
+reflect the current state of work. As ever we will do our best to help
+review and smooth the up-streaming process for all Arm related feature
+enhancements.
+
+Thanks,
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
