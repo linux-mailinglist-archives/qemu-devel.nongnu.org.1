@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495CB7DC51B
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BEF7DC51A
 	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 05:02:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxfw0-0001OY-Lw; Tue, 31 Oct 2023 00:00:56 -0400
+	id 1qxfvz-0001Nt-UE; Tue, 31 Oct 2023 00:00:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qxfvn-0001LS-1D; Tue, 31 Oct 2023 00:00:46 -0400
-Received: from mail-pg1-f181.google.com ([209.85.215.181])
+ id 1qxfvn-0001LT-2g
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:00:46 -0400
+Received: from mail-pg1-f180.google.com ([209.85.215.180])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qxfvj-0005Fb-16; Tue, 31 Oct 2023 00:00:41 -0400
-Received: by mail-pg1-f181.google.com with SMTP id
- 41be03b00d2f7-5b92b670f2aso3963928a12.2; 
- Mon, 30 Oct 2023 21:00:36 -0700 (PDT)
+ id 1qxfvj-0005Fu-GQ
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:00:41 -0400
+Received: by mail-pg1-f180.google.com with SMTP id
+ 41be03b00d2f7-5b92b852390so3981077a12.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 21:00:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698724835; x=1699329635;
+ d=1e100.net; s=20230601; t=1698724837; x=1699329637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5MLsZ1r4XhrrLbocK2W7a6pjx8rz0UhGgNKUhHQkvE4=;
- b=QCEBr1gaeKmpDsrhG6hSKcEIjp5qdh1Lv/CRvt6MVYgtUyrbqSiGtQweFZK+Q57a1p
- O+D+C7wKLn51iLLNWD+alnruv82r+sHrHAOjvacX+iHAo8eZkdor2+iBpUOyjkLzgamH
- +Nq4xpWDSHZped0qyQBtG7nDFI0s+SLPQ4Lj3oLiX5m+pDjfhJUsnX+Mdqh1U1KV1kk0
- ZgkolmRb0+k4Tx/A7JKNnKTXpzOCJkZ6EHzvDX8tJu6kXRHiJ+E6e/SAu2jx4rE41lrf
- sqj4XW7GPBm8VMGw1nZsNhxSI9KcZmmbeSo8Z5Thgaa2oA0tyXfQdTZRt+qtELZhyYeY
- J/Bg==
-X-Gm-Message-State: AOJu0YxNVsd1V0maK+WteHQ4Rxw2PGLR8vjrAuxF4G3hG5vGRpJXAabS
- pCKax9OSBO4Mlzx4sgEvIqKBl1bWthRqTQ==
-X-Google-Smtp-Source: AGHT+IEfpvZ7ahCvuU1S8t2T1asQT5PU0IF+9K+5N85DAgm8vC3dUtYXJE0TpVJRKJVeGZ8G87uHhQ==
-X-Received: by 2002:a05:6300:8083:b0:16b:d137:dfb3 with SMTP id
- ap3-20020a056300808300b0016bd137dfb3mr15130337pzc.59.1698724835729; 
- Mon, 30 Oct 2023 21:00:35 -0700 (PDT)
+ bh=7QEdUJS68W5mzt9ORxKLrBXJOs881kVxhlYUSB2HGuY=;
+ b=QwYdSpNM14KStfY19neZj4AaDYkBiDItD5eH1oGLRnrpt3OLgKb2KiDLJilWd9Ai8C
+ xMh9hVdetjfJyKa94AdT3vIXKGFPd83Syizy9QgusKW67ZMYQbnfwlzbX7lnJioeL86Z
+ L8gOpFm8aONWk2eavM8N54OKTazsGHhUx69OMM7AEdrdF6enOHBcNvuDdp896Wr8sD9x
+ yWpSy4tgBvPp6fHSZa0uXEdi1lvXCEqblY1PRlfFSwUkW2S82tbN1fltHd8PjT2X3LXT
+ /8reO3GTYmiAAOLBmQkQmVkTGpVyZpJzFCxGhGP6JKFYOsWuBycz8Px7NOPUZ+5GgR5+
+ gCuw==
+X-Gm-Message-State: AOJu0YxoLVYFCDxasZTJD0dpLrpDFTr9qUtxQnfFrwTLgE7BHHIJDe9L
+ fqKTwaX1QeuOI+f6i8j5Sfp7GaxF+XCxMw==
+X-Google-Smtp-Source: AGHT+IFPlL0lcZ2aDDBj8UPtNmvZys8vqzJ1rOczLWBy5Okqgfmf5CwgVoYrUH8+C2DBXUK4UyVweQ==
+X-Received: by 2002:a05:6a20:918d:b0:133:d17d:193a with SMTP id
+ v13-20020a056a20918d00b00133d17d193amr14306530pzd.59.1698724837322; 
+ Mon, 30 Oct 2023 21:00:37 -0700 (PDT)
 Received: from localhost.localdomain ([2601:642:4c02:7b37:49a8:6e6e:cee6:cee7])
  by smtp.gmail.com with ESMTPSA id
- h4-20020a170902f54400b001bbfa86ca3bsm257975plf.78.2023.10.30.21.00.34
+ h4-20020a170902f54400b001bbfa86ca3bsm257975plf.78.2023.10.30.21.00.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Oct 2023 21:00:35 -0700 (PDT)
+ Mon, 30 Oct 2023 21:00:36 -0700 (PDT)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
 Cc: Joelle van Dyne <j@getutm.app>, Stefan Berger <stefanb@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:Virt)
-Subject: [PATCH v4 07/14] hw/arm/virt: connect TPM to platform bus
-Date: Mon, 30 Oct 2023 21:00:10 -0700
-Message-ID: <20231031040021.65582-8-j@getutm.app>
+ Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>
+Subject: [PATCH v4 08/14] hw/loongarch/virt: connect TPM to platform bus
+Date: Mon, 30 Oct 2023 21:00:11 -0700
+Message-ID: <20231031040021.65582-9-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231031040021.65582-1-j@getutm.app>
 References: <20231031040021.65582-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.215.181; envelope-from=osy86dev@gmail.com;
- helo=mail-pg1-f181.google.com
+Received-SPF: pass client-ip=209.85.215.180; envelope-from=osy86dev@gmail.com;
+ helo=mail-pg1-f180.google.com
 X-Spam_score_int: -13
 X-Spam_score: -1.4
 X-Spam_bar: -
@@ -83,27 +84,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 ---
- hw/arm/virt.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/loongarch/virt.c  | 7 +++++++
+ hw/loongarch/Kconfig | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 529f1c089c..f1a161b0ea 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2806,6 +2806,13 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-         vms->virtio_iommu_bdf = pci_get_bdf(pdev);
-         create_virtio_iommu_dt_bindings(vms);
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 4b7dc67a2d..feed0f8bbf 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -1004,6 +1004,13 @@ static void loongarch_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+     } else if (memhp_type_supported(dev)) {
+         virt_mem_plug(hotplug_dev, dev, errp);
      }
 +
 +#ifdef CONFIG_TPM
 +    if (object_dynamic_cast(OBJECT(dev), TYPE_TPM_IF)) {
-+        tpm_sysbus_plug(TPM_IF(dev), OBJECT(vms->platform_bus_dev),
-+                        vms->memmap[VIRT_PLATFORM_BUS].base);
++        tpm_sysbus_plug(TPM_IF(dev), OBJECT(lams->platform_bus_dev),
++                        VIRT_PLATFORM_BUS_BASEADDRESS);
 +    }
 +#endif
  }
  
- static void virt_dimm_unplug_request(HotplugHandler *hotplug_dev,
+ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
+diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
+index 5727efed6d..25da190ffc 100644
+--- a/hw/loongarch/Kconfig
++++ b/hw/loongarch/Kconfig
+@@ -5,6 +5,7 @@ config LOONGARCH_VIRT
+     imply VIRTIO_VGA
+     imply PCI_DEVICES
+     imply NVDIMM
++    imply TPM_TIS_SYSBUS
+     select SERIAL
+     select VIRTIO_PCI
+     select PLATFORM_BUS
 -- 
 2.41.0
 
