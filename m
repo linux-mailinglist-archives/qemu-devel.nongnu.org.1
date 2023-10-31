@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F427DD0B9
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8777DD0B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:40:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxqrV-0002aY-DJ; Tue, 31 Oct 2023 11:41:04 -0400
+	id 1qxqqR-0001tn-Rf; Tue, 31 Oct 2023 11:39:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qxqr3-0002Tv-Az
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:40:33 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqqP-0001tC-VH
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:39:53 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qxqqy-0003kg-0A
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:40:33 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2c515527310so80933971fa.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:40:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqqO-0003Ry-1H
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:39:53 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40906fc54fdso45717835e9.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1698766819; x=1699371619;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KcXuK+xbqaqkrK6n/T3qmlROjWXVHk5ofR1FJH6tFRg=;
- b=iNx3Ktxqrjm9zEBaAdN3d870TA08+hu7hgOBtq8c2GuVfE0v5rg/EUw0KEuVZoGla1
- tSdgW8TGt6c0RVyf0BDoBeygzDAocSmomCxFtkP3Aeg+6L8DbKrvSRDS9ZnZ92daEJVc
- WcvJPdWf3D9YU9D3B9ZFwakB8BcSQmG511VRCodEGYOHmb7JCtXOuTcjnzN8aFkAcTkg
- DypsUWHun/hMEhEFoRl0tKwhpAglYddx3qmvFYPv0UwZDDTZYjsrFfD5Rp/QLttIMvUE
- pWjb2Q8WV17N/6iDXMSb0ikgEd1Ht5lwWrsbSLNFrd//L0AwdRkMqsPPXBx9u9anxs0L
- 2eug==
+ d=linaro.org; s=google; t=1698766790; x=1699371590; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MF7a/BRW4kCGoykaPKCqsh6VW4a6BvXL1sD91Ivk96Y=;
+ b=V1YiYy2bGP0BYuMXCf1cKnCbyVA7bprL7s95sXwcgKw5lZIhlSdmgm4OXjmO2Y2o33
+ yHECzRuLBNkEY2BGIc2ItPRUzKzHyPJo5dNpQ3udNxgjStddRKQUYkpCEg1CQ3rtQs8/
+ SQhFnmyD1yRC5Jg4Gj7CRVCZl6EFNSiKZSBSQiLHAKE1gVeDT0O9bc1CKgJdfqbBBNg7
+ DQ1XlDdV1iN6QB0Q3AoqPKjTvsP0b0Zggi95dBbFhPxmpTdnIupG8IP9il3S/E4ghoZ1
+ QBjSP14FSgRFe8m/luvvOyD0uGVNQd2lwtpN1RTLZpvmBuYbOeXs8Bbc9wVljuXxbM/a
+ BI8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698766819; x=1699371619;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KcXuK+xbqaqkrK6n/T3qmlROjWXVHk5ofR1FJH6tFRg=;
- b=IutpZTaIvmi1v6rDmqOWCH0LWsJWVZ5rsq67uBoJQ3/ZtXlQbMgRxady8MRqvEzWsg
- f09QAKcQwvDrXATKtymoUyPp/w9ROMgSzyFEO5c+knjdAAP9fVdytcsQ4xQAfgeDlfa0
- DiPvLZaE4q1YQhDaqXHOfDYxwqLpR/bh6nHAwk8IE66A1dXUP+7DNpPOftMM3nDmDdjy
- xUI01EZjwCgaxCy6fiRt+SlReLQYhhEpFxx22zBRljKguYyAireaeYPdUgGIXwPqVnzy
- AcCW2zMFd3xHc0Z2xC3g2Rcifoj3/ONFqmQdxdX/HynR+fjno0u/+gDflb6G6lfvYSnu
- wJPg==
-X-Gm-Message-State: AOJu0Yzb9gUuDhDs/MNEdnKIHxeV4hnxki+3aa58sjbQt4b2BGFj7XDE
- mGadMiwrQfDkEIUciiNrTRcggB1vSN8B8SQL2czjow==
-X-Google-Smtp-Source: AGHT+IFpkVdVL3nPs4chOd3trlZ8EBbQDQ6z1+3laBuHbYwPtNv8shl6jendNgy1YuRuT0kkVh5E7w==
-X-Received: by 2002:a2e:be0c:0:b0:2c5:1bd9:f95c with SMTP id
- z12-20020a2ebe0c000000b002c51bd9f95cmr12373849ljq.53.1698766819463; 
- Tue, 31 Oct 2023 08:40:19 -0700 (PDT)
-Received: from rockhopper.. (214.11.169.217.in-addr.arpa. [217.169.11.214])
- by smtp.gmail.com with ESMTPSA id
- r12-20020a05600c458c00b003fbe4cecc3bsm2094613wmo.16.2023.10.31.08.40.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 08:40:19 -0700 (PDT)
-From: Rob Bradford <rbradford@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- Rob Bradford <rbradford@rivosinc.com>,
- libvir-list@redhat.com (reviewer:Incompatible changes)
-Subject: [PATCH v5 5/5] docs/about/deprecated: Document RISC-V "pmu-num"
- deprecation
-Date: Tue, 31 Oct 2023 15:37:17 +0000
-Message-ID: <20231031154000.18134-6-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231031154000.18134-1-rbradford@rivosinc.com>
-References: <20231031154000.18134-1-rbradford@rivosinc.com>
+ d=1e100.net; s=20230601; t=1698766790; x=1699371590;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MF7a/BRW4kCGoykaPKCqsh6VW4a6BvXL1sD91Ivk96Y=;
+ b=xEQqS6g3Uja7aWhLyxFNR8BTRd8KEuBuhw0Mwnav1+BIZdzbYF28OWNW9AZhAWieEP
+ r3YOn0pxhM81p8eDuw3kO3/kTWWWqzaYZCLb71Xd79UwtMKIiU2ZfY2MCdwCOMVMu/vI
+ SX5OVfSmmMr6JBi1RoE+qmzw4wNzcrXa+a8358QEJak5z0ejq9jmLA9hEnEl+d8snaZe
+ MUIy2LvcfxEjzp03oKfYs+Qbel8svAumYdXAvFd61hj5dtNv72rGgRq7NFBZBtgi7ZmS
+ ItmKddjBJDZZxVGFWEEqC0f/PoJJ2q9YvJfzWReUBu5NNIeHi4wu8p/eq6r7BikEDoAJ
+ tbYg==
+X-Gm-Message-State: AOJu0YyOQ4hcJsO9l72QfRritiPqiNMiwMYpwGUdyQCnsiH0UTcm7oJS
+ 05CeI+W5ftAxr5WCuaUZhbnychH0VN3EVhxNNjw=
+X-Google-Smtp-Source: AGHT+IEsVoBL7F6FqgigYfsAPvM7/4ZM9J3Dh7hlHKhxej9HFkTOj8edNGQbq2W51OH7votA7DW0Sg==
+X-Received: by 2002:a05:600c:a44:b0:3fc:dd9:91fd with SMTP id
+ c4-20020a05600c0a4400b003fc0dd991fdmr10782581wmq.40.1698766790392; 
+ Tue, 31 Oct 2023 08:39:50 -0700 (PDT)
+Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
+ [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
+ h10-20020a05600c350a00b004064cd71aa8sm2092243wmq.34.2023.10.31.08.39.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 08:39:50 -0700 (PDT)
+Message-ID: <9994c0ae-57af-d3b3-520d-7cbbee543778@linaro.org>
+Date: Tue, 31 Oct 2023 16:39:48 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 6/8] docs/specs/virt-ctlr: Convert to rST
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230927151205.70930-1-peter.maydell@linaro.org>
+ <20230927151205.70930-7-peter.maydell@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230927151205.70930-7-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=rbradford@rivosinc.com; helo=mail-lj1-x22e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,41 +93,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This has been replaced by a "pmu-mask" property that provides much more
-flexibility.
+On 27/9/23 17:12, Peter Maydell wrote:
+> Convert docs/specs/virt-ctlr.txt to rST format.
+> 
+> I added the name of the device to give readers a bit more idea
+> of which device we're actually documenting here.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/specs/index.rst                        |  1 +
+>   docs/specs/{virt-ctlr.txt => virt-ctlr.rst} | 12 +++++-------
+>   2 files changed, 6 insertions(+), 7 deletions(-)
+>   rename docs/specs/{virt-ctlr.txt => virt-ctlr.rst} (70%)
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
+
+$ ./scripts/get_maintainer.pl -f docs/specs/virt-ctlr.txt
+get_maintainer.pl: No maintainers found, printing recent contributors.
+get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
+
+$ ./scripts/get_maintainer.pl -f hw/misc/virt_ctrl.c
+Laurent Vivier <laurent@vivier.eu> (maintainer:virt)
+qemu-devel@nongnu.org (open list:All patches CC here)
+
+Cc'ing Laurent.
+
+Maybe worth squashing:
+
+-- >8 --
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cd8d6b140f..2fe435ea9e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1283,6 +1283,7 @@ F: include/hw/char/goldfish_tty.h
+  F: include/hw/intc/goldfish_pic.h
+  F: include/hw/intc/m68k_irqc.h
+  F: include/hw/misc/virt_ctrl.h
++F: docs/specs/virt-ctlr.rst
+
 ---
- docs/about/deprecated.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 4e0eb2fe02..60c26bc410 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -413,6 +413,18 @@ Specifying the iSCSI password in plain text on the command line using the
- used instead, to refer to a ``--object secret...`` instance that provides
- a password via a file, or encrypted.
- 
-+CPU device properties
-+'''''''''''''''''''''
-+
-+``pmu-num=n`` on RISC-V CPUs (since 8.2)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+In order to support more flexible counter configurations this has been replaced
-+by a ``pmu-mask`` property. If set of counters is continuous then the mask can
-+be calculated with ``((2 ^ n) - 1) << 3``. The least significant three bits
-+must be left clear.
-+
-+
- Backwards compatibility
- -----------------------
- 
--- 
-2.41.0
+> diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+> index ee84b8109d6..8d30968650b 100644
+> --- a/docs/specs/index.rst
+> +++ b/docs/specs/index.rst
+> @@ -29,3 +29,4 @@ guest hardware that is specific to QEMU.
+>      ivshmem-spec
+>      pvpanic
+>      standard-vga
+> +   virt-ctlr
+> diff --git a/docs/specs/virt-ctlr.txt b/docs/specs/virt-ctlr.rst
+> similarity index 70%
+> rename from docs/specs/virt-ctlr.txt
+> rename to docs/specs/virt-ctlr.rst
+> index 24d38084f7f..ad3edde82d2 100644
+> --- a/docs/specs/virt-ctlr.txt
+> +++ b/docs/specs/virt-ctlr.rst
+> @@ -1,9 +1,9 @@
+>   Virtual System Controller
+>   =========================
+>   
+> -This device is a simple interface defined for the pure virtual machine with no
+> -hardware reference implementation to allow the guest kernel to send command
+> -to the host hypervisor.
+> +The ``virt-ctrl`` device is a simple interface defined for the pure
+
+Clearer.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +virtual machine with no hardware reference implementation to allow the
+> +guest kernel to send command to the host hypervisor.
+>   
+>   The specification can evolve, the current state is defined as below.
+>   
+> @@ -11,14 +11,12 @@ This is a MMIO mapped device using 256 bytes.
+>   
+>   Two 32bit registers are defined:
+>   
+> -1- the features register (read-only, address 0x00)
+> -
+> +the features register (read-only, address 0x00)
+>      This register allows the device to report features supported by the
+>      controller.
+>      The only feature supported for the moment is power control (0x01).
+>   
+> -2- the command register (write-only, address 0x04)
+> -
+> +the command register (write-only, address 0x04)
+>      This register allows the kernel to send the commands to the hypervisor.
+>      The implemented commands are part of the power control feature and
+>      are reset (1), halt (2) and panic (3).
 
 
