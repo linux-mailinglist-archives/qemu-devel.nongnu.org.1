@@ -2,90 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AD27DD1AC
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 17:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA497DD23C
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 17:36:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxrgT-0003yV-3I; Tue, 31 Oct 2023 12:33:41 -0400
+	id 1qxriZ-0005hv-52; Tue, 31 Oct 2023 12:35:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxrgQ-0003xh-Nz
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:33:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxriN-0005h3-In
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:35:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxrgO-0005B6-UA
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:33:38 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxriL-0005bW-1u
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:35:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698770016;
+ s=mimecast20190719; t=1698770136;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RflxAKJ/xjhoi4uscHkfanIrJ4da3AfEw+g+UJ9ESbE=;
- b=NeMPLPy39zljAyN0GDCOAZModVPMuhWpECM3Ks/JXIhCK2sn7FEvbyP2OpbH8YeLCurDQ7
- /9vDhFYe9ylo+/Gt/jkCZzyA2WFeKR1/1aNGKllm+jyzK32Ua8M6jHEt9LPrw5IZkirQCa
- KISCfo7lLJ0YgZRZncA1F9r0t44fHuY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=k4ZF1UTa9qdNfscev5lQn0lR4MtyWewhlRWny12iEco=;
+ b=JCIEu78SZZJaflz+Gu7NOGHdEowpvuMPhuaW/5YOLQoKgy61fcHVC//Au2chz+HJYGz4SQ
+ kc+58Dqi6Z5Vub1/JKhfDkNwUOuuiBS8s+5a5EOV0X6uhoZjGI8ZX9gWwux7XraBXakflj
+ eQdAp/DkLbKpSdiAbbhHIRtEUfOsqDI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-qhxIu0VRPYq_QAotVUOXGQ-1; Tue, 31 Oct 2023 12:33:32 -0400
-X-MC-Unique: qhxIu0VRPYq_QAotVUOXGQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-408695c377dso42238875e9.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 09:33:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698770011; x=1699374811;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RflxAKJ/xjhoi4uscHkfanIrJ4da3AfEw+g+UJ9ESbE=;
- b=fxTNEoynn6B8K7mcJ3zllo/jrfY0OE2pujBhqzIlNO0Ti8xwMkcydLNZ2InVjmTWC1
- RBjyMSN6AMa25T11yL98EHDN8qWu34sI3AaYCGlYiVh+qqcqkq7Vhq6NC3CKwCjsOK0+
- AjfUgyHgtovTbbgZuLagzkCCwk6hO+JiB9h4vi/OjQp5p+O2E4WX1NF09GIzDKDFMEyv
- uJvCrC+ubxDugaALpAP9PS7NnEDFnQ+MjcuJbABA4q+ootip4G7bQR6qrwb45w7JQ14j
- 1wUNfCHr2N21zHZnSOmI3bsHSDjvJLNzj0iO5pKlS7SHJoagGE5tfPI9YNcz6bFpwnss
- X6iw==
-X-Gm-Message-State: AOJu0YwokmkapAPdxg2Iz2ztsaBYB+J5Bz2Nkn6uzM+TOjeP6JdnWkZg
- K0xz7clVlDNHzpjI3BwpEKr1JTwJn9ob/gwpwrRdaiI9Lzczs7j0QUXa62OGLydN3jNEUb8IuGB
- kbNxGx1gWy4FyFOU=
-X-Received: by 2002:a05:600c:45d3:b0:405:3dd0:6ee9 with SMTP id
- s19-20020a05600c45d300b004053dd06ee9mr10719639wmo.34.1698770011209; 
- Tue, 31 Oct 2023 09:33:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEX5MCROxuBETVSMtk0v0XgZsqoD+FnovPim18sNoOFxt1/fzg3sBKUq+hk+fnqFjUkrvMLRA==
-X-Received: by 2002:a05:600c:45d3:b0:405:3dd0:6ee9 with SMTP id
- s19-20020a05600c45d300b004053dd06ee9mr10719625wmo.34.1698770010853; 
- Tue, 31 Oct 2023 09:33:30 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d746:c551:3d67:278e:c0a1:87a2?
- (p200300cfd746c5513d67278ec0a187a2.dip0.t-ipconnect.de.
- [2003:cf:d746:c551:3d67:278e:c0a1:87a2])
- by smtp.gmail.com with ESMTPSA id
- h19-20020a05600c30d300b003fefaf299b6sm2083441wmn.38.2023.10.31.09.33.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 09:33:30 -0700 (PDT)
-Message-ID: <6ecd944b-0b8d-46b4-8906-3a9cb5511863@redhat.com>
-Date: Tue, 31 Oct 2023 17:33:29 +0100
+ us-mta-650-paTs2_ZQPTeH95vxiHPInA-1; Tue, 31 Oct 2023 12:35:33 -0400
+X-MC-Unique: paTs2_ZQPTeH95vxiHPInA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55515828AC1;
+ Tue, 31 Oct 2023 16:35:32 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.218])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 47B5C10F4C;
+ Tue, 31 Oct 2023 16:35:30 +0000 (UTC)
+Date: Tue, 31 Oct 2023 17:35:29 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: "Richard W.M. Jones" <rjones@redhat.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-arm@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH 4/7] hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
+Message-ID: <ZUEs0eoqmwUY6x6H@redhat.com>
+References: <20231017140150.44995-1-philmd@linaro.org>
+ <20231017140150.44995-5-philmd@linaro.org>
+ <ZUD+hMTWf9DidzDb@redhat.com> <20231031134856.GL7636@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] qcow2: make subclusters discardable
-Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
- berto@igalia.com, den@virtuozzo.com
-References: <20231020215622.789260-1-andrey.drobyshev@virtuozzo.com>
- <20231020215622.789260-5-andrey.drobyshev@virtuozzo.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20231020215622.789260-5-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+In-Reply-To: <20231031134856.GL7636@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,97 +90,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(Sorry, opened another reply window, forgot I already had one open...)
+Am 31.10.2023 um 14:48 hat Richard W.M. Jones geschrieben:
+> On Tue, Oct 31, 2023 at 02:17:56PM +0100, Kevin Wolf wrote:
+> > Am 17.10.2023 um 16:01 hat Philippe Mathieu-Daudé geschrieben:
+> > > Access QOM parent with the proper QOM VIRTIO_SCSI_COMMON() macro.
+> > > 
+> > > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > > ---
+> > >  hw/scsi/virtio-scsi.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+> > > index 45b95ea070..fa53f0902c 100644
+> > > --- a/hw/scsi/virtio-scsi.c
+> > > +++ b/hw/scsi/virtio-scsi.c
+> > > @@ -761,7 +761,7 @@ static void virtio_scsi_fail_cmd_req(VirtIOSCSIReq *req)
+> > >  
+> > >  static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCSIReq *req)
+> > >  {
+> > > -    VirtIOSCSICommon *vs = &s->parent_obj;
+> > > +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(s);
+> > >      SCSIDevice *d;
+> > >      int rc;
+> > 
+> > Why is a dynamic cast more "proper" than a static type-safe access, even
+> > more so in a hot I/O path?
+> > 
+> > Rich Jones posted a flamegraph the other day that surprised me because
+> > object_class_dynamic_class_assert() and object_dynamic_cast_assert()
+> > were shown to be a big part of scsi_req_new(). In the overall
+> > performance, it's probably dwarved by other issues, but unnecessary
+> > little things can add up, too.
+> 
+> I think Kevin is referring to one of these flamegraphs:
+> 
+>   http://oirase.annexia.org/tmp/2023-kvm-build-on-device.svg
+>   http://oirase.annexia.org/tmp/2023-kvm-build.svg
+> 
+> Here's a zoom showing scsi_req_new (hopefully this URL is stable ...):
+> 
+>   http://oirase.annexia.org/tmp/2023-kvm-build-on-device.svg?s=scsi_req_new&x=512.9&y=501
+> 
+> Note that qemu has been compiled with QOM cast debug.  This is the
+> default for Fedora (not RHEL) because we'd like to get early detection
+> of bugs from Fedora users.
 
-On 20.10.23 23:56, Andrey Drobyshev wrote:
-> This commit makes the discard operation work on the subcluster level
-> rather than cluster level.  It introduces discard_l2_subclusters()
-> function and makes use of it in qcow2 discard implementation, much like
-> it's done with zero_in_l2_slice() / zero_l2_subclusters().  It also
-> changes the qcow2 driver pdiscard_alignment to subcluster_size.  That
-> way subcluster-aligned discards lead to actual fallocate(PUNCH_HOLE)
-> operation and free host disk space.
->
-> This feature will let us gain additional disk space on guest
-> TRIM/discard requests, especially when using large enough clusters
-> (1M, 2M) with subclusters enabled.
->
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   block/qcow2-cluster.c | 100 ++++++++++++++++++++++++++++++++++++++++--
->   block/qcow2.c         |   8 ++--
->   2 files changed, 101 insertions(+), 7 deletions(-)
->
-> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
-> index 7c6fa5524c..cf40f2dc12 100644
-> --- a/block/qcow2-cluster.c
-> +++ b/block/qcow2-cluster.c
-> @@ -2042,6 +2042,74 @@ discard_in_l2_slice(BlockDriverState *bs, uint64_t offset, uint64_t nb_clusters,
->       return nb_clusters;
->   }
->   
-> +static int coroutine_fn GRAPH_RDLOCK
-> +discard_l2_subclusters(BlockDriverState *bs, uint64_t offset,
-> +                       uint64_t nb_subclusters,
-> +                       enum qcow2_discard_type type,
-> +                       bool full_discard,
-> +                       SubClusterRangeInfo *pscri)
-> +{
-> +    BDRVQcow2State *s = bs->opaque;
-> +    uint64_t new_l2_bitmap, l2_bitmap_mask;
-> +    int ret, sc = offset_to_sc_index(s, offset);
-> +    SubClusterRangeInfo scri = { 0 };
-> +
-> +    if (!pscri) {
-> +        ret = get_sc_range_info(bs, offset, nb_subclusters, &scri);
-> +        if (ret < 0) {
-> +            goto out;
-> +        }
-> +    } else {
-> +        scri = *pscri;
+Indeed, object_dynamic_cast_assert() probably wouldn't show up any more
+if you disabled QOM cast debugging. But we enable it by default, so
+that's an explicit setting users have to make, and as you say, at least
+Fedora doesn't.
 
-Allowing to takes this from the caller sounds dangerous, considering we 
-need to track who takes care of freeing scri.l2_slice.
+The other one, object_class_dynamic_cast_assert() isn't even affected
+by the debug setting because it does more than just asserting a plain
+cast. Working around it isn't as trivial either, but I did think about
+caching it in the object to avoid a string based class lookup for every
+single request.
 
-> +    }
-> +
-> +    l2_bitmap_mask = QCOW_OFLAG_SUB_ALLOC_RANGE(sc, sc + nb_subclusters);
-> +    new_l2_bitmap = scri.l2_bitmap;
-> +    new_l2_bitmap &= ~l2_bitmap_mask;
-> +
-> +    /*
-> +     * If there're no allocated subclusters left, we might as well discard
-> +     * the entire cluster.  That way we'd also update the refcount table.
-> +     */
-> +    if (!(new_l2_bitmap & QCOW_L2_BITMAP_ALL_ALLOC)) {
+Looking at it again, strangely CONFIG_QOM_CAST_DEBUG enables a cache in
+object_class_dynamic_cast_assert() that isn't used otherwise. Why don't
+we want this optimisation without the debug flag?
 
-What if there are subclusters in the cluster that are marked as zero, 
-outside of the discarded range?Â  It sounds wrong to apply a discard with 
-either full_discard set or cleared to them.
-
-> +        return discard_in_l2_slice(bs,
-> +                                   QEMU_ALIGN_DOWN(offset, s->cluster_size),
-> +                                   1, type, full_discard);
-> +    }
-> +
-> +    /*
-> +     * Full discard means we fall through to the backing file, thus we only
-> +     * need to mark the subclusters as deallocated.
-
-I think it also means we need to clear the zero bits.
-
-Hanna
-
-> +     *
-> +     * Non-full discard means subclusters should be explicitly marked as
-> +     * zeroes.  In this case QCOW2 specification requires the corresponding
-> +     * allocation status bits to be unset as well.  If the subclusters are
-> +     * deallocated in the first place and there's no backing, the operation
-> +     * can be skipped.
-> +     */
-> +    if (!full_discard &&
-> +        (bs->backing || scri.l2_bitmap & l2_bitmap_mask)) {
-> +        new_l2_bitmap |= QCOW_OFLAG_SUB_ZERO_RANGE(sc, sc + nb_subclusters);
-> +    }
+Kevin
 
 
