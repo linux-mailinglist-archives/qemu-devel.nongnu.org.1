@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656137DCF89
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0A47DCF85
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:45:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpyW-0004oC-Bz; Tue, 31 Oct 2023 10:44:12 -0400
+	id 1qxpyV-0004nq-Dc; Tue, 31 Oct 2023 10:44:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyU-0004nc-EH
+ id 1qxpyU-0004nV-5P
  for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:10 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyR-000299-6S
+ id 1qxpyR-00029C-F5
  for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:09 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-507a55302e0so8157794e87.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:44:06 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4083cd3917eso45083485e9.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698763445; x=1699368245; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698763446; x=1699368246; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XDwhAtHS+d6WUGQVUolnjo7slYgF5qy8hsz+yP82M5I=;
- b=Tpx3QEfZW7ZkiQhMorV4ACcpTmjXs05m/Be2IUktZVerW/vl1KhTv1kGOGspJFgbWh
- R/oRe+3fDiDSHGXzOaLaNnpOeuvlAIcS/GZUwtzgypBJPCzNI/PhTLdRg0Ts00LVJItl
- x92FqJSoLma97jEbSvP58zxkCnEMjb5VW9fWecx/xAGEF2AZVIGwUd5zx2ZHIrmuCT2p
- hajqh6Qvg7A6SC2YoFMUUVwqwIq2Z0qeexM9sXxb3kIlJ+hZa58OGJqhXjLWqtl2GAro
- Dw+TivcrtSmOMGDc+9cxMdm1ew7z7gvyihjKnIuwiP8s2HtCyW42ozitW5hgp+giV7pi
- K5cw==
+ bh=ImR5F0hSRNXtIQCqeTGtlhuroRWrhdD1r/ZlguXGn6k=;
+ b=doLZq1OLUnbo6rGs6xL0cs5G0bsLnV9tqkZcUXykXk2onpRtKhPfQOOyVgeEkx+nhv
+ nX62JIYWVmkonLYb+AMpLoPMoQnAAhk2Q8bSbM9PmSt0wUF4bE0GPSn0EEEykAMyGtDQ
+ Seb+r5V+OGCCKSIsdMjT2c9szxiW9y2l00FKCCEpe/walVFzZkxCP3Wviee4NK3If70B
+ DHZ+FZHljs2FDZQSvTPK/sjwVeb22BEPA1/dpru1JHMlEflR9gU0jx40D8QpRHE/TgmI
+ QOgq260kALPA6UKSj8ALawo7Cf6ywmlw/Rvpn7bQIpj7eoia9U/FeT9wUPF0ELEBHuTg
+ hIqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698763445; x=1699368245;
+ d=1e100.net; s=20230601; t=1698763446; x=1699368246;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XDwhAtHS+d6WUGQVUolnjo7slYgF5qy8hsz+yP82M5I=;
- b=GJy3hpXNaOk/qlC5DXypIZd4XuG6/4LgKmQte296Bo8AKplZixbZ1Vj3lvt2R16Jgd
- 2HgJtHNui4RAygYl/pBLQ6vnsF9kkdntIuElM/+ik1p9lHzItU1caaDZbZaq1p3E4xqT
- IduA8/2iDBH+SUg1LiwKaSqAENd64gPZqEzluKmYtN4DFoFp7kFWRIHNcKnw7sr/bNoo
- /UTHbtMbzZs5CsEVpDGN8fui8yRKK6XThgEDezvCmsUtBi4bOAjKaM5xScufRr5vo6xH
- OaGtz87Dd2T80XWACxD+DaiHDmZ1fEoDPVA3s9+Ou3woXt92Gu3MqKqaXmKXIQmNlQLT
- sMEg==
-X-Gm-Message-State: AOJu0YwE7D0JXgcxgwICYyl2r3RgewjbQN2s4SKj0zTsukpdda7icT04
- wv7SldmJUQnbOEqASrYzP/SWbw==
-X-Google-Smtp-Source: AGHT+IGckidljawGozS67yHP4gRmV1qZ01bTFNM67Bg0zQ7hkxKQtPuCcMonmgYh7gwjmt8W5ds5pg==
-X-Received: by 2002:ac2:4d17:0:b0:509:fc0:9267 with SMTP id
- r23-20020ac24d17000000b005090fc09267mr6230097lfi.15.1698763445599; 
+ bh=ImR5F0hSRNXtIQCqeTGtlhuroRWrhdD1r/ZlguXGn6k=;
+ b=PAdO128EUwLwKDqjqTLmZgqijmAYxUXGmIFqw10cqhwtjf2bWnU4rByGVKoZkGiTVu
+ h6lDjPCFPwSksEubgKKX+LjfDgbled52u911YGCBr2fgRVHxC0sEI+lS2rEVgIsrSYXN
+ 91HlNU4EeuXIeS3xGXDJHCUI2Tt4Ro8bjdiUcUMtTJaPvRiURhEOrvQFpSfbyBN+91Bf
+ YO2wx7sx67uSmSvtecXqdBQvg5ZKZKMYtkhisVtSac4PKkUxLuV2Zr+qTwBhQ/A1kbrM
+ 5kK5S2FHy9UqdQCuSDJqcSJl2V05X4ugqiixLS1+geOjtOlqrsKjJQQVarua7CnlUVKu
+ 2g5Q==
+X-Gm-Message-State: AOJu0YwWy4GfMScUIyQd8DAKY3AGwHIdL0HVPVIXYotNoW+VoibqGDrJ
+ 1EC/M0xqkc4qIse1wz5oMdrV4Q==
+X-Google-Smtp-Source: AGHT+IF0rmYRO/mTUEzU0YIxuSSPNaGJ15UtWeKcmJy668F076nGS50Bk5zOBBkkU4wtVyKUMe+ORQ==
+X-Received: by 2002:a5d:6d0d:0:b0:32f:7d5a:87ab with SMTP id
+ e13-20020a5d6d0d000000b0032f7d5a87abmr9094101wrq.53.1698763445827; 
  Tue, 31 Oct 2023 07:44:05 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- t4-20020adff604000000b0032db4e660d9sm1670110wrp.56.2023.10.31.07.44.02
+ c3-20020a5d4cc3000000b0032d886039easm1664306wrt.14.2023.10.31.07.44.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 31 Oct 2023 07:44:02 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1938B65723;
+ by draig.lan (Postfix) with ESMTP id 2CE5B65724;
  Tue, 31 Oct 2023 14:44:02 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -66,17 +66,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 03/19] gitlab: split alpha testing into a legacy container
-Date: Tue, 31 Oct 2023 14:43:45 +0000
-Message-Id: <20231031144401.1238210-4-alex.bennee@linaro.org>
+Subject: [PULL 04/19] gitlab: clean-up build-soft-softmmu job
+Date: Tue, 31 Oct 2023 14:43:46 +0000
+Message-Id: <20231031144401.1238210-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231031144401.1238210-1-alex.bennee@linaro.org>
 References: <20231031144401.1238210-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,165 +99,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current bookworm compiler doesn't build the static binaries due to
-bug #1054412 and it might be awhile before it gets fixed. The problem
-of keeping older architecture compilers running isn't going to go away
-so lets prepare the ground. Create a legacy container and move some
-tests around so the others can get upgraded.
+Having dropped alpha we also now drop xtensa as we don't have the
+compiler in this image. It's not all doom and gloom though as a number
+of other targets have gained softmmu TCG tests so we can add them. We
+will take care of the other targets with their own containers in
+future commits.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231029145033.592566-4-alex.bennee@linaro.org>
+Message-Id: <20231029145033.592566-5-alex.bennee@linaro.org>
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 25af1bc41e..bb24e052f6 100644
+index bb24e052f6..5e9cbf9385 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -256,6 +256,7 @@ build-user:
-   variables:
-     IMAGE: debian-all-test-cross
-     CONFIGURE_ARGS: --disable-tools --disable-system
-+      --target-list-exclude=alpha-linux-user
+@@ -290,7 +290,9 @@ build-user-hexagon:
+     CONFIGURE_ARGS: --disable-tools --disable-docs --enable-debug-tcg
      MAKE_CHECK_ARGS: check-tcg
  
- build-user-static:
-@@ -265,6 +266,18 @@ build-user-static:
-   variables:
-     IMAGE: debian-all-test-cross
-     CONFIGURE_ARGS: --disable-tools --disable-system --static
-+      --target-list-exclude=alpha-linux-user
-+    MAKE_CHECK_ARGS: check-tcg
-+
-+# targets stuck on older compilers
-+build-legacy:
-+  extends: .native_build_job_template
-+  needs:
-+    job: amd64-debian-legacy-cross-container
-+  variables:
-+    IMAGE: debian-legacy-test-cross
-+    TARGETS: alpha-linux-user alpha-softmmu
-+    CONFIGURE_ARGS: --disable-tools
-     MAKE_CHECK_ARGS: check-tcg
- 
- build-user-hexagon:
-@@ -285,7 +298,7 @@ build-some-softmmu:
+-# Only build the softmmu targets we have check-tcg tests for
++# Build the softmmu targets we have check-tcg tests and compilers in
++# our omnibus all-test-cross container. Those targets that haven't got
++# Debian cross compiler support need to use special containers.
+ build-some-softmmu:
+   extends: .native_build_job_template
+   needs:
+@@ -298,7 +300,9 @@ build-some-softmmu:
    variables:
      IMAGE: debian-all-test-cross
      CONFIGURE_ARGS: --disable-tools --enable-debug
--    TARGETS: xtensa-softmmu arm-softmmu aarch64-softmmu alpha-softmmu
-+    TARGETS: xtensa-softmmu arm-softmmu aarch64-softmmu
+-    TARGETS: xtensa-softmmu arm-softmmu aarch64-softmmu
++    TARGETS: arm-softmmu aarch64-softmmu i386-softmmu riscv64-softmmu
++      s390x-softmmu x86_64-softmmu
++    MAKE_CHECK_ARGS: check-tcg
      MAKE_CHECK_ARGS: check-tcg
  
  # We build tricore in a very minimal tricore only container
-@@ -318,7 +331,7 @@ clang-user:
-   variables:
-     IMAGE: debian-all-test-cross
-     CONFIGURE_ARGS: --cc=clang --cxx=clang++ --disable-system
--      --target-list-exclude=microblazeel-linux-user,aarch64_be-linux-user,i386-linux-user,m68k-linux-user,mipsn32el-linux-user,xtensaeb-linux-user
-+      --target-list-exclude=alpha-linux-user,microblazeel-linux-user,aarch64_be-linux-user,i386-linux-user,m68k-linux-user,mipsn32el-linux-user,xtensaeb-linux-user
-       --extra-cflags=-fsanitize=undefined --extra-cflags=-fno-sanitize-recover=undefined
-     MAKE_CHECK_ARGS: check-unit check-tcg
- 
-@@ -505,7 +518,7 @@ build-tci:
-   variables:
-     IMAGE: debian-all-test-cross
-   script:
--    - TARGETS="aarch64 alpha arm hppa m68k microblaze ppc64 s390x x86_64"
-+    - TARGETS="aarch64 arm hppa m68k microblaze ppc64 s390x x86_64"
-     - mkdir build
-     - cd build
-     - ../configure --enable-tcg-interpreter --disable-docs --disable-gtk --disable-vnc
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 2848166ba3..80c540230a 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -16,6 +16,12 @@ amd64-debian-user-cross-container:
-   variables:
-     NAME: debian-all-test-cross
- 
-+amd64-debian-legacy-cross-container:
-+  extends: .container_job_template
-+  stage: containers
-+  variables:
-+    NAME: debian-legacy-test-cross
-+
- arm64-debian-cross-container:
-   extends: .container_job_template
-   stage: containers
-diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
-index 54e957d5e7..205173b0a5 100644
---- a/tests/docker/dockerfiles/debian-all-test-cross.docker
-+++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
-@@ -28,8 +28,6 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         ninja-build \
-         gcc-aarch64-linux-gnu \
-         libc6-dev-arm64-cross \
--        gcc-alpha-linux-gnu \
--        libc6.1-dev-alpha-cross \
-         gcc-arm-linux-gnueabihf \
-         libc6-dev-armhf-cross \
-         gcc-hppa-linux-gnu \
-@@ -66,7 +64,7 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
- RUN /usr/bin/pip3 install tomli
- 
- ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
--ENV DEF_TARGET_LIST aarch64-linux-user,alpha-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sh4-linux-user,sparc64-linux-user
-+ENV DEF_TARGET_LIST aarch64-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sh4-linux-user,sparc64-linux-user
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/docker/dockerfiles/debian-legacy-test-cross.docker b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-new file mode 100644
-index 0000000000..763d36dfe3
---- /dev/null
-+++ b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-@@ -0,0 +1,46 @@
-+# Docker legacy cross-compiler target (tests and minimal qemu)
-+#
-+# Compilers for some of our older targets which we cant currently
-+# upgrade. Currently:
-+#
-+#   libc6.1-dev-alpha-cross: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054412
-+#
-+# As we are targeting check-tcg here we only need minimal qemu
-+# dependencies and the relevant cross compilers.
-+
-+FROM docker.io/library/debian:11-slim
-+
-+# Duplicate deb line as deb-src
-+RUN cat /etc/apt/sources.list | sed "s/^deb\ /deb-src /" >> /etc/apt/sources.list
-+
-+RUN export DEBIAN_FRONTEND=noninteractive && \
-+    apt-get update && \
-+    apt-get install -y eatmydata && \
-+    eatmydata apt-get dist-upgrade -y && \
-+    apt build-dep -yy qemu
-+
-+# Add extra build tools and as many cross compilers as we can for testing
-+RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-+        apt install -y --no-install-recommends \
-+        bison \
-+        ccache \
-+        clang  \
-+        flex \
-+        git \
-+        ninja-build \
-+        gcc-alpha-linux-gnu \
-+        libc6.1-dev-alpha-cross \
-+        python3-pip \
-+        python3-setuptools \
-+        python3-venv \
-+        python3-wheel
-+
-+RUN /usr/bin/pip3 install tomli
-+
-+ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
-+ENV DEF_TARGET_LIST alpha-linux-user
-+# As a final step configure the user (if env is defined)
-+ARG USER
-+ARG UID
-+RUN if [ "${USER}" ]; then \
-+  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
 -- 
 2.39.2
 
