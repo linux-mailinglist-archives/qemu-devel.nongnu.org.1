@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B51E7DCB23
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400BB7DCB2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:53:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxmJU-0002cZ-5q; Tue, 31 Oct 2023 06:49:36 -0400
+	id 1qxmMC-0003ol-LX; Tue, 31 Oct 2023 06:52:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qxmJS-0002cR-J3
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:49:34 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qxmJO-0001N3-DW
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:49:34 -0400
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39VAARVO026239; Tue, 31 Oct 2023 10:49:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=BpRvg2U8QHOiPxI0rYz8NQThnViJIGDBr/xHtweTXwA=;
- b=f05D0/zxaDDTZD+yME3w3MHbkGXvMx3rFxIA9181bTRwSkmGLLdOsgcn5r95IFe9Cmsy
- mFQlg5dR5YE9T2uoBEyiBBGyVyshWEyQigi3U5BshJC3OWOIGN9TanEth9ritxS2Bavv
- vMFhhIfxV4kcKSrCXjW3MCxqmAruZhs5aAWx6f0TzvhO56rlPRncrBTY1Vi9fzMKWg/2
- z1SjEFmT7QvN/vvuI9jVpILP5M2bV9VyuIDBcUGqPzJEPSpgN6H5p1K3AxpHXkhNxYxk
- AHFA8tZnh+5KO/Wkc4/J73100Kob4vBWqhjL6GVVebcpAvqBrFCfPwWq3sd9y8/+ItRZ HA== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u2c4rtsc0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 31 Oct 2023 10:49:26 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39VAmvP8003432
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 31 Oct 2023 10:48:57 GMT
-Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Tue, 31 Oct 2023 03:48:57 -0700
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: Paolo Bonzini <pbonzini@redhat.com>, <bcain@quicinc.com>
-Subject: prefix gets lost on config regen for cross Windows build
-Date: Tue, 31 Oct 2023 07:48:47 -0300
-Message-ID: <89aa49de4aaf27664d998b4f0697cd67fe584f39.1698748890.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxmMA-0003oH-AN
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:52:22 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxmM8-0002Or-Mk
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:52:21 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-53d9f001b35so8921999a12.2
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 03:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698749537; x=1699354337; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=RI+K7+Ec0wKr9LBm4qXj86Wdkj40B89dPJBLeuP1HuU=;
+ b=EAwXq8slE9VNzSZsgeULxp/8yJAz8U5eZ5gLQTaRKmjIaO21MVSGe56pNVZLrnCqHf
+ cn/rsFvtviEQB4f8FL0v9zsFv5AaYHjGwhz35gpaT5GFzWJ9kqauULzJvK8jG70dtkcx
+ TZ3qSoWr//WhkUg6QwUtichbQ76onncdIyXmxGYVNxikrZ7GsgHyMBfrEvRsMhfEPmh5
+ Xz/aVJMt6ZgyfjRuvMAnh2kl2q7J69use+6M1LtBu+3yhLo4LOzczglJx9F1RXDF943g
+ XJsXNUNv0UCpbTgUD9q+/PWq9GQ0dq9tQ7+mPz7Fy6gJBY6aYFr5mvjmz5WvGD7AgXSD
+ 91nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698749537; x=1699354337;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RI+K7+Ec0wKr9LBm4qXj86Wdkj40B89dPJBLeuP1HuU=;
+ b=mieQLKCWJtUxHrFFXpaA/Rv8jQUXakEfLjsctDvHpXTORx2Nrba9JaR9br2wqibxWG
+ hWgyFDZXpJfbgs3KvqKevzix6JWBbm+O537Md4spyziCVcTF/lbD1VIy2rb+mi1POxih
+ z+9Nk7XOj+wrn4oe7jYaOIzCAacNIsZzzdubYrP0Uj1MQS5NMhYVMvrKO9fl+XcTUbBO
+ 2gR2yP09RfnHqqYxfn2SsxsHh1dCVnzHetrUhUJGk6D5SY4KXUCY0y9nzT+4GpFeSVgG
+ fBXpihioByeL8+ePfAaTMhgihGNKFGb6sYyt5VJq3cHDe80yxrrpL1cpNMjshwoTHcU5
+ 2FBQ==
+X-Gm-Message-State: AOJu0YxIC3OgFqKukedIRx3yU3Spkl6h1Gja9cS/vHrnmUjIhtpmBx7k
+ +OihHCt+3NXMywc7/zY7mcrUpbpltZFSa4lTuQthvw==
+X-Google-Smtp-Source: AGHT+IG6wBFK+VrqiEcCXCr8u84/SS6CzI5wIDBZlmGfuI/excwW+ovFjYCOMDn6a9AK4E++gvBDmHxWRK2JIbyF4y8=
+X-Received: by 2002:a05:6402:4305:b0:540:a5a1:745e with SMTP id
+ m5-20020a056402430500b00540a5a1745emr11681231edc.14.1698749537553; Tue, 31
+ Oct 2023 03:52:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: 76tAPkaZCc37Te0TYX-XOE2L7KSujX1L
-X-Proofpoint-GUID: 76tAPkaZCc37Te0TYX-XOE2L7KSujX1L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-31_01,2023-10-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxlogscore=598
- malwarescore=0 mlxscore=0 suspectscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2310310084
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20231030190354.94671-1-richard.henderson@linaro.org>
+In-Reply-To: <20231030190354.94671-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 31 Oct 2023 10:52:06 +0000
+Message-ID: <CAFEAcA_kG-yE9sYDx+QBxCoAMySjc57oXx+UtSo=p=nCqAwKfQ@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Fix SVE STR increment
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,38 +84,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[resending as it looks like there was some delivery issue with the first
-msg]
+On Mon, 30 Oct 2023 at 19:04, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> The previous change missed updating one of the increments.
+>
+> Cc: qemu-stable@nongnu.org
+> Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/translate-sve.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+> index 7b39962f20..fc4220114d 100644
+> --- a/target/arm/tcg/translate-sve.c
+> +++ b/target/arm/tcg/translate-sve.c
+> @@ -4294,7 +4294,7 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
+>          t0 = tcg_temp_new_i64();
+>          t1 = tcg_temp_new_i64();
+>          t16 = tcg_temp_new_i128();
+> -        for (i = 0; i < len_align; i += 8) {
+> +        for (i = 0; i < len_align; i += 16) {
+>              tcg_gen_ld_i64(t0, base, vofs + i);
+>              tcg_gen_ld_i64(t1, base, vofs + i + 8);
+>              tcg_gen_concat_i64_i128(t16, t0, t1);
+> --
 
-Hi,
+This fixes the test case I have for vector lengths of 64 bytes
+and below, but vector lengths above that (eg 128 bytes) still
+misbehave in a different way (only every other set of 8 bytes
+gets stored). Presumably that's a different bug somewhere else?
 
-It seems that we lose the install prefix option when regenerating config
-for a Windows cross-build. Looks like this behavior appeared with c36dd41ba2
-(configure: move target-specific defaults to an external machine file,
-2023-10-16), but I couldn't find the specific root cause yet.
-
-To reproduce the issue, first run:
-
-    ../configure --prefix=/tmp/install --without-default-features \
-        --cross-prefix=x86_64-w64-mingw32- --target-list=aarch64-softmmu
-
-Which correctly prints:
-
-    Directories
-        [...]
-        Install prefix: /tmp/install
-
-But then if we run `touch ../meson.build && make`, we get:
-
-    Directories
-        [...]
-        Install prefix: /qemu
-
-Removing the `prefix = '/qemu'` line from configs/meson/windows.txt does
-fix the issue, but I don't understand why the CLI option is not taking
-precedence over it.... Or even if this could be a meson bug itself. I'd
-appreciate any help.
-
-Thanks,
-Matheus
+thanks
+-- PMM
 
