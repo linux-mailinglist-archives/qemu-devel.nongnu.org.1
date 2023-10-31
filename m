@@ -2,97 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420527DC8DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500ED7DC90E
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:08:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxkac-00075u-MP; Tue, 31 Oct 2023 04:59:10 -0400
+	id 1qxkde-00086m-6J; Tue, 31 Oct 2023 05:02:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxkaa-00075C-2y
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:59:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qxkdW-00082W-EL
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:02:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxkaQ-0006IU-B2
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:59:07 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qxkdT-0006pO-BD
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:02:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698742736;
+ s=mimecast20190719; t=1698742926;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=E0eY7eceaYG8U+7n93E2h1BsUArG2RXygVaGBgfn5nQ=;
- b=XTwK/SromycRZ+XDT6eyVP/2pHQPfuOSwxvAAKuhMMEHKik3IKFRpWELzpmQEDWIHVfw4N
- xvFR9/Z7ZGf07pPos/uvOpg/LV+DW367IGHQUecfUmvFqhliWu9zABFcYiNNDb1v5XfGjn
- X1CE05et65AixwJP9mhBKeirAsVXgqc=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-tEUcPyGOMG2xXJ9SrwW72A-1; Tue, 31 Oct 2023 04:58:54 -0400
-X-MC-Unique: tEUcPyGOMG2xXJ9SrwW72A-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-5afbcffe454so70615177b3.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 01:58:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698742734; x=1699347534;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E0eY7eceaYG8U+7n93E2h1BsUArG2RXygVaGBgfn5nQ=;
- b=xE9elKxKO9HF5IRBVIgr4ISBtBHSvdF1J//0+KMTZ3fRY/IXa4srhEabWz0uSpxqtm
- 9Dqp4jxAf3XQnSQR48lONC3M68je6G9/a/uTfDUHitDBkuuZccFpGotYAKKJbSD9q2BU
- xcZKJFUCCLJykCbGPqr6tGYyEqt5IQzIc2IF7rv/oMB2laJj9zRPhJnFCsYjU757TV1w
- yZ0cO4H2Eio+XS5sfMPWke2/I8rXjrkIEV7BjEwVrpG/+N4lNSwzSsr0B4T7iooJ8VtV
- gIQYfM/77a35SmkhRiaE+jwkTztg57YVauXXeCD4+TpJD2QngvRIMWdMe9we0yzgxRAl
- fLpw==
-X-Gm-Message-State: AOJu0YyA8YxPDJaNwtCFcsFQgmqmJqYLaX3tAH4W6X+zg+T9Qu2WydS/
- RhtBxh6y04Z6P7ijHCmq5To43HgMU46ZTtFaTY6gNiw0qZmCk2mnZnqNqd1UScO79L2Gq8I8RNq
- 5zUoUf8kHhq5yGtc=
-X-Received: by 2002:a81:b603:0:b0:5a7:c777:2be1 with SMTP id
- u3-20020a81b603000000b005a7c7772be1mr11826686ywh.11.1698742733890; 
- Tue, 31 Oct 2023 01:58:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLZf+73QleXoEf55AQKHvaAnJ5DreOaXsrLPfXJakfiGXXT2SF/PL+7ppR6FuEUHYWFIjw2g==
-X-Received: by 2002:a81:b603:0:b0:5a7:c777:2be1 with SMTP id
- u3-20020a81b603000000b005a7c7772be1mr11826657ywh.11.1698742733475; 
- Tue, 31 Oct 2023 01:58:53 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- s4-20020ad45244000000b0066cf4fa7b47sm359519qvq.4.2023.10.31.01.58.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 01:58:53 -0700 (PDT)
-Message-ID: <2400c9be-8c0b-415f-90c5-3a04fbdf6744@redhat.com>
-Date: Tue, 31 Oct 2023 09:58:48 +0100
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Uwpj1IUuifUQJMxYK6SY/uhElh+t5cWtF2u18KRBa/Y=;
+ b=KLAjaBi3RjOiPHZyDc3ZxUhIqJQqGWT1pW+3bMknIUhgM9BqS8Zm26oklVVkQAIEqs3zXE
+ EtYlsUSQ5aVxuxYLsFd8ZrKBsAj/44lbt9skCUUDoDU2i+nHIPmSCWfApigmAsny0Zj3ku
+ bN6b0129tlmXk3iHouGUXplxMEo45sI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-BqI4EyJrPkCXPNS6urOpaQ-1; Tue,
+ 31 Oct 2023 05:01:47 -0400
+X-MC-Unique: BqI4EyJrPkCXPNS6urOpaQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C982E3C100A7;
+ Tue, 31 Oct 2023 09:01:46 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.195.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E64531C060B0;
+ Tue, 31 Oct 2023 09:01:43 +0000 (UTC)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, libvir-list@redhat.com,
+ Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Hanna Reitz <hreitz@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>, qemu-block@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 00/38] Migration 20231031 patches
+Date: Tue, 31 Oct 2023 10:01:04 +0100
+Message-ID: <20231031090142.13122-1-quintela@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 23/37] Add iommufd configure option
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-24-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231026103104.1686921-24-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,90 +83,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 12:30, Zhenzhong Duan wrote:
-> This adds "--enable-iommufd/--disable-iommufd" to enable or disable
-> iommufd support, enabled by default.
+The following changes since commit fd9a38fd437c4c31705071c240f4be11394ca1f8:
 
-It should be disabled by default for PPC.
+  Merge tag 'pull-hex-20231018' of https://github.com/quic/qemu into staging (2023-10-30 13:42:29 +0900)
 
-Thanks,
+are available in the Git repository at:
 
-C.
+  https://gitlab.com/juan.quintela/qemu.git tags/migration-20231031-pull-request
 
+for you to fetch changes up to be07a0ed22cf10ede7330efbb4818f5896cd6fe3:
 
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   meson.build                   | 6 ++++++
->   meson_options.txt             | 2 ++
->   scripts/meson-buildoptions.sh | 3 +++
->   3 files changed, 11 insertions(+)
-> 
-> diff --git a/meson.build b/meson.build
-> index 4961c82a6b..a8b0edf7b1 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -560,6 +560,10 @@ have_tpm = get_option('tpm') \
->     .require(targetos != 'windows', error_message: 'TPM emulation only available on POSIX systems') \
->     .allowed()
->   
-> +have_iommufd = get_option('iommufd') \
-> +  .require(targetos == 'linux', error_message: 'iommufd is supported only on Linux') \
-> +  .allowed()
-> +
->   # vhost
->   have_vhost_user = get_option('vhost_user') \
->     .disable_auto_if(targetos != 'linux') \
-> @@ -2133,6 +2137,7 @@ if get_option('tcg').allowed()
->   endif
->   config_host_data.set('CONFIG_TPM', have_tpm)
->   config_host_data.set('CONFIG_TSAN', get_option('tsan'))
-> +config_host_data.set('CONFIG_IOMMUFD', have_iommufd)
->   config_host_data.set('CONFIG_USB_LIBUSB', libusb.found())
->   config_host_data.set('CONFIG_VDE', vde.found())
->   config_host_data.set('CONFIG_VHOST_NET', have_vhost_net)
-> @@ -4074,6 +4079,7 @@ summary_info += {'vhost-user-crypto support': have_vhost_user_crypto}
->   summary_info += {'vhost-user-blk server support': have_vhost_user_blk_server}
->   summary_info += {'vhost-vdpa support': have_vhost_vdpa}
->   summary_info += {'build guest agent': have_ga}
-> +summary_info += {'iommufd support': have_iommufd}
->   summary(summary_info, bool_yn: true, section: 'Configurable features')
->   
->   # Compilation information
-> diff --git a/meson_options.txt b/meson_options.txt
-> index 3c7398f3c6..91bb958cae 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -109,6 +109,8 @@ option('dbus_display', type: 'feature', value: 'auto',
->          description: '-display dbus support')
->   option('tpm', type : 'feature', value : 'auto',
->          description: 'TPM support')
-> +option('iommufd', type : 'feature', value : 'auto',
-> +       description: 'iommufd support')
->   
->   # Do not enable it by default even for Mingw32, because it doesn't
->   # work on Wine.
-> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> index 7ca4b77eae..1effc46f7d 100644
-> --- a/scripts/meson-buildoptions.sh
-> +++ b/scripts/meson-buildoptions.sh
-> @@ -125,6 +125,7 @@ meson_options_help() {
->     printf "%s\n" '  guest-agent-msi Build MSI package for the QEMU Guest Agent'
->     printf "%s\n" '  hvf             HVF acceleration support'
->     printf "%s\n" '  iconv           Font glyph conversion support'
-> +  printf "%s\n" '  iommufd         iommufd support'
->     printf "%s\n" '  jack            JACK sound support'
->     printf "%s\n" '  keyring         Linux keyring support'
->     printf "%s\n" '  kvm             KVM acceleration support'
-> @@ -342,6 +343,8 @@ _meson_option_parse() {
->       --enable-install-blobs) printf "%s" -Dinstall_blobs=true ;;
->       --disable-install-blobs) printf "%s" -Dinstall_blobs=false ;;
->       --interp-prefix=*) quote_sh "-Dinterp_prefix=$2" ;;
-> +    --enable-iommufd) printf "%s" -Diommufd=enabled ;;
-> +    --disable-iommufd) printf "%s" -Diommufd=disabled ;;
->       --enable-jack) printf "%s" -Djack=enabled ;;
->       --disable-jack) printf "%s" -Djack=disabled ;;
->       --enable-keyring) printf "%s" -Dkeyring=enabled ;;
+  qemu-file: Make qemu_fflush() return errors (2023-10-31 08:44:33 +0100)
+
+----------------------------------------------------------------
+Migration Pull request (20231031)
+
+Hi
+
+This is repeat of the Migration PULL for 20231020.
+- I removed vmstate_register(big problems with s390x)
+- I added yet more countes (juan)
+
+CI: https://gitlab.com/juan.quintela/qemu/-/pipelines/1055797950
+
+Please apply.
+
+Thanks, Juan.
+
+----------------------------------------------------------------
+
+Juan Quintela (34):
+  migration/doc: Add contents
+  migration/doc: Add documentation for backwards compatiblity
+  migration/doc: How to migrate when hosts have different features
+  migration/doc: We broke backwards compatibility
+  migration: Receiving a zero page non zero is an error
+  migration: Rename ram_handle_compressed() to ram_handle_zero()
+  migration: Give one error if trying to set MULTIFD and XBZRLE
+  migration: Give one error if trying to set COMPRESSION and XBZRLE
+  migration: Remove save_page_use_compression()
+  migration: Make compress_data_with_multithreads return bool
+  migration: Simplify compress_page_with_multithread()
+  migration: Move busy++ to migrate_with_multithread
+  migration: Create compress_update_rates()
+  migration: Export send_queued_data()
+  migration: Move ram_flush_compressed_data() to ram-compress.c
+  migration: Merge flush_compressed_data() and compress_flush_data()
+  migration: Rename ram_compressed_pages() to compress_ram_pages()
+  qemu-iotests: Filter warnings about block migration being deprecated
+  migration: migrate 'inc' command option is deprecated.
+  migration: migrate 'blk' command option is deprecated.
+  migration: Deprecate block migration
+  migration: Deprecate old compression method
+  qemu-file: Don't increment qemu_file_transferred at
+    qemu_file_fill_buffer
+  qemu_file: Use a stat64 for qemu_file_transferred
+  qemu_file: total_transferred is not used anymore
+  migration: Use the number of transferred bytes directly
+  qemu_file: Remove unused qemu_file_transferred()
+  qemu-file: Remove _noflush from qemu_file_transferred_noflush()
+  migration: migration_transferred_bytes() don't need the QEMUFile
+  migration: migration_rate_limit_reset() don't need the QEMUFile
+  qemu-file: Simplify qemu_file_get_error()
+  migration: Use migration_transferred_bytes()
+  migration: Remove transferred atomic counter
+  qemu-file: Make qemu_fflush() return errors
+
+Marc-André Lureau (2):
+  migration: rename vmstate_save_needed->vmstate_section_needed
+  migration: set file error on subsection loading
+
+Peter Xu (1):
+  migration: Stop migration immediately in RDMA error paths
+
+Thomas Huth (1):
+  migration/ram: Fix compilation with -Wshadow=local
+
+ docs/about/deprecated.rst        |  35 +++
+ docs/devel/migration.rst         | 520 +++++++++++++++++++++++++++++++
+ qapi/migration.json              |  93 ++++--
+ include/migration/vmstate.h      |   2 +-
+ migration/migration-stats.h      |  16 +-
+ migration/qemu-file.h            |  27 +-
+ migration/ram-compress.h         |  10 +-
+ migration/ram.h                  |   3 +-
+ migration/block.c                |   7 +-
+ migration/colo.c                 |  11 +-
+ migration/migration-hmp-cmds.c   |  10 +
+ migration/migration-stats.c      |  10 +-
+ migration/migration.c            |  27 +-
+ migration/multifd.c              |   3 -
+ migration/options.c              |  36 ++-
+ migration/qemu-file.c            |  43 +--
+ migration/ram-compress.c         | 112 +++++--
+ migration/ram.c                  | 150 +++------
+ migration/rdma.c                 |  12 +-
+ migration/savevm.c               |  11 +-
+ migration/vmstate.c              |   9 +-
+ tests/qemu-iotests/183           |   2 +-
+ tests/qemu-iotests/common.filter |   7 +
+ 23 files changed, 880 insertions(+), 276 deletions(-)
+
+-- 
+2.41.0
 
 
