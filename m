@@ -2,86 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6FD7DCE3A
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:52:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D407DCE5E
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxp9x-0006xf-6x; Tue, 31 Oct 2023 09:51:57 -0400
+	id 1qxpEe-0001FR-19; Tue, 31 Oct 2023 09:56:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxp9u-0006xL-Es
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:51:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qxpE0-0000W2-Rs; Tue, 31 Oct 2023 09:56:11 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qxp9s-0008Bg-V9
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:51:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698760312;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=s+sdcpZNMUnAap9z/iWf/KN0SHeP/0M99pAOHq5Vj5o=;
- b=QOo5aFiO0+E6z02iYWzehmvblGzKWw9/SiXfJ6VkGVlSFZ36KeKJKzosKAQ4aulDcW5u06
- NwBr0e6cOcXdkEiTmLdbkJpCc1RvfV/pyPKDhAUR02+HPFY5d/2rkNu7PCtBQJdWX0S7bh
- vNV3AljGHd1kGFi7lMNmxnOrWAfUUNg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-00Dv6SDyPkCIZddCDwlqCA-1; Tue, 31 Oct 2023 09:51:35 -0400
-X-MC-Unique: 00Dv6SDyPkCIZddCDwlqCA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32f8c4e9b88so1104929f8f.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:51:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698760294; x=1699365094;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s+sdcpZNMUnAap9z/iWf/KN0SHeP/0M99pAOHq5Vj5o=;
- b=VbQRaq6yuJjXJXkgI9OhDMn1vocSULzu1pEMeDTKbVDag2aLrThzjibPqQ9i9WbfXD
- jhsgH8e2qEWpz1QFBsO0ctqroiIGC9hZB9RO+Kuxc/Dcn9SSbryfWMUh+99V2XmX/mrm
- j3W7wykHL7KVboqhS6s3FHCE1YlzFQL8hEvWD2dv6f7NGjepzRPLjfx1W5TZBSaepV2k
- RIqmmB/l3TtGxJZKbB1kAiLCzQiogTJzYOkm/ZVbGTUn1Mj0Ezcegt2LTYzs/tWGnquA
- Hspwu/yyDFlA0v5mw4WmC3JcuZetaaia3VC1xabB+JgpJ94HiQ++NCBw019YXGAmYOUi
- 4kiA==
-X-Gm-Message-State: AOJu0YyVaKZGAap6keO567qChDaSmXjCABv2DigAIevR0SjuJxLhtJAI
- B/QBNrzaK1T0wM4MAfslITfLPNJw4ehkPSE3UAbCdQ2hvvWw0f13ZHzOvXBWvH4pHtAKBdmTDyy
- BUZ8a3AtRogCVbPY=
-X-Received: by 2002:a5d:5985:0:b0:32f:8853:78df with SMTP id
- n5-20020a5d5985000000b0032f885378dfmr3158399wri.11.1698760294344; 
- Tue, 31 Oct 2023 06:51:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGNt0gXuOfOjNn4GddNcQJwPjv36Htr10lC7OeRUTJFdTywHoCykWONUrQbSblmPkc/a3KQjQ==
-X-Received: by 2002:a5d:5985:0:b0:32f:8853:78df with SMTP id
- n5-20020a5d5985000000b0032f885378dfmr3158376wri.11.1698760294015; 
- Tue, 31 Oct 2023 06:51:34 -0700 (PDT)
-Received: from redhat.com ([2.52.26.150]) by smtp.gmail.com with ESMTPSA id
- t10-20020a1c770a000000b0040641a9d49bsm1780758wmi.17.2023.10.31.06.51.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 06:51:33 -0700 (PDT)
-Date: Tue, 31 Oct 2023 09:51:21 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: tests/data/acpi/rebuild-expected-aml.sh creates files for arm
- virt that don't exist in git
-Message-ID: <20231031094948-mutt-send-email-mst@kernel.org>
-References: <CAFEAcA_qBLXdeB7aQLcjcfMdEf9hpJu4ZhZZdHbF4SOSyZZXdw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qxpDw-0000lQ-Uv; Tue, 31 Oct 2023 09:56:08 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id BD63A42A70;
+ Tue, 31 Oct 2023 14:55:50 +0100 (CET)
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
+ jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
+ alexander.ivanov@virtuozzo.com
+Subject: [PATCH v4 00/10] mirror: allow switching from background to active
+ mode
+Date: Tue, 31 Oct 2023 14:54:21 +0100
+Message-Id: <20231031135431.393137-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA_qBLXdeB7aQLcjcfMdEf9hpJu4ZhZZdHbF4SOSyZZXdw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,61 +54,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 01:08:01PM +0000, Peter Maydell wrote:
-> I'm doing a patchset that requires rebuilding the bios-tables-test
-> expected-data files for the arm virt board. The instructions in
-> bios-tables-test.c say that you should run rebuild-expected-aml.sh
-> to update the data files. But running that script generates a lot
-> of new data files that don't exist in git at all and are unrelated
-> to the change I'm making:
-> 
->         tests/data/acpi/virt/APIC.memhp
->         tests/data/acpi/virt/APIC.numamem
->         tests/data/acpi/virt/APIC.pxb
->         tests/data/acpi/virt/DBG2.acpihmatvirt
->         tests/data/acpi/virt/DBG2.memhp
->         tests/data/acpi/virt/DBG2.numamem
->         tests/data/acpi/virt/DBG2.pxb
->         tests/data/acpi/virt/DBG2.topology
->         tests/data/acpi/virt/DSDT.numamem
->         tests/data/acpi/virt/FACP.acpihmatvirt
->         tests/data/acpi/virt/FACP.memhp
->         tests/data/acpi/virt/FACP.numamem
->         tests/data/acpi/virt/FACP.pxb
->         tests/data/acpi/virt/FACP.topology
->         tests/data/acpi/virt/GTDT.acpihmatvirt
->         tests/data/acpi/virt/GTDT.memhp
->         tests/data/acpi/virt/GTDT.numamem
->         tests/data/acpi/virt/GTDT.pxb
->         tests/data/acpi/virt/GTDT.topology
->         tests/data/acpi/virt/IORT.acpihmatvirt
->         tests/data/acpi/virt/IORT.memhp
->         tests/data/acpi/virt/IORT.numamem
->         tests/data/acpi/virt/IORT.pxb
->         tests/data/acpi/virt/IORT.topology
->         tests/data/acpi/virt/MCFG.acpihmatvirt
->         tests/data/acpi/virt/MCFG.memhp
->         tests/data/acpi/virt/MCFG.numamem
->         tests/data/acpi/virt/MCFG.pxb
->         tests/data/acpi/virt/MCFG.topology
->         tests/data/acpi/virt/PPTT.memhp
->         tests/data/acpi/virt/PPTT.numamem
->         tests/data/acpi/virt/PPTT.pxb
->         tests/data/acpi/virt/SPCR.acpihmatvirt
->         tests/data/acpi/virt/SPCR.memhp
->         tests/data/acpi/virt/SPCR.numamem
->         tests/data/acpi/virt/SPCR.pxb
->         tests/data/acpi/virt/SPCR.topology
-> 
-> Does the script need fixing to not generate these files, or should
-> they exist in the git repo?
+Changes in v4:
+    * add an iotest for the new functionality
+    * set actively_synced to false when setting dirty bitmap in
+      bdrv_mirror_top_do_write
+    * add comments describing requirements for accessing copy_mode and
+      actively_synced field
+    * add global state code annotation and comment about assumptions
+      in mirror_change method
+    * add comment that change callback can be called before the job
+      coroutine is running
+    * fix typo in QAPI description
 
-The script is not smart enough to notice that files are identical - e.g.
-tests/data/acpi/virt/PPTT are all the same so we just have one of these
-- and so all the copies don't need to be there. Just check and then blow
-away the unnecessary files.
+Changes in v3:
+    * unlock the job mutex when calling the new block job driver
+      'query' handler
+    * squash patch adapting iotest output into patch that changes the
+      output
+    * turn accesses to copy_mode and actively_synced atomic
+    * slightly rework error handling in mirror_change
+
+Changes in v2:
+    * move bitmap to filter which allows to avoid draining when
+      changing the copy mode
+    * add patch to determine copy_to_target only once
+    * drop patches returning redundant information upon query
+    * update QEMU version in QAPI
+    * update indentation in QAPI
+    * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
+      doc comments to conform to current conventions"))
+    * add patch to adapt iotest output
+
+Discussion of v3:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg04026.html
+
+Discussion of v2:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg02290.html
+
+Discussion of v1:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-02/msg07216.html
+
+With active mode, the guest write speed is limited by the synchronous
+writes to the mirror target. For this reason, management applications
+might want to start out in background mode and only switch to active
+mode later, when certain conditions are met. This series adds a
+block-job-change QMP command to achieve that, as well as
+job-type-specific information when querying block jobs, which
+can be used to decide when the switch should happen.
+
+For now, only the direction background -> active is supported.
+
+The information added upon querying is whether the target is actively
+synced, the total data sent, and the remaining dirty bytes.
+
+Initially, I tried to go for a more general 'job-change' command, but
+to avoid mutual inclusion of block-core.json and job.json, more
+preparation would be required. More details described here:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg02993.html
+
+Fiona Ebner (10):
+  blockjob: introduce block-job-change QMP command
+  block/mirror: set actively_synced even after the job is ready
+  block/mirror: move dirty bitmap to filter
+  block/mirror: determine copy_to_target only once
+  mirror: implement mirror_change method
+  qapi/block-core: use JobType for BlockJobInfo's type
+  qapi/block-core: turn BlockJobInfo into a union
+  blockjob: query driver-specific info via a new 'query' driver method
+  mirror: return mirror-specific information upon query
+  iotests: add test for changing mirror's copy_mode
+
+ block/mirror.c                                | 131 ++++++++----
+ block/monitor/block-hmp-cmds.c                |   4 +-
+ blockdev.c                                    |  14 ++
+ blockjob.c                                    |  28 ++-
+ include/block/blockjob.h                      |  11 +
+ include/block/blockjob_int.h                  |  12 ++
+ job.c                                         |   1 +
+ qapi/block-core.json                          |  59 +++++-
+ qapi/job.json                                 |   4 +-
+ tests/qemu-iotests/109.out                    |  24 +--
+ .../tests/mirror-change-copy-mode             | 192 ++++++++++++++++++
+ .../tests/mirror-change-copy-mode.out         |   5 +
+ 12 files changed, 429 insertions(+), 56 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/mirror-change-copy-mode
+ create mode 100644 tests/qemu-iotests/tests/mirror-change-copy-mode.out
 
 -- 
-MST
+2.39.2
+
 
 
