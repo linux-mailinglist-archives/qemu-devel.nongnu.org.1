@@ -2,69 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B818B7DCB1C
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B51E7DCB23
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:49:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxmFg-0007Kd-A9; Tue, 31 Oct 2023 06:45:40 -0400
+	id 1qxmJU-0002cZ-5q; Tue, 31 Oct 2023 06:49:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmFe-0007Jy-J2
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:45:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qxmJS-0002cR-J3
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:49:34 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmFc-0000xJ-IT
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:45:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698749135;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RR2f6kNKNB8BsIq7NE6xEzIcdIs8Qp1OPAV4jNj7xfs=;
- b=ahYG81ODHTiCgxLKw6u2dWNhL+cy9rjfHO25cvY8LUNGk6zDRoK66H3qHBFiyhPWfFSc2Q
- ojmWzgIxx2Pnb6BDkaOyuP17ydjvU7avUQn3tIU64Xhni9ZahPk+GeNG1ue5CIsYYxFL8Q
- 6zz89B7z5HWavhFsLebbmILyzAHuzP8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-DE_ys_tlO4aDguhJLLB2iQ-1; Tue,
- 31 Oct 2023 06:45:33 -0400
-X-MC-Unique: DE_ys_tlO4aDguhJLLB2iQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 71C8C2812942;
- Tue, 31 Oct 2023 10:45:33 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4FF9F2166B26;
- Tue, 31 Oct 2023 10:45:33 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 33B6F21E6922; Tue, 31 Oct 2023 11:45:31 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com,
-	philmd@linaro.org
-Subject: [PATCH v2 5/5] dump: Drop redundant check for empty dump
-Date: Tue, 31 Oct 2023 11:45:31 +0100
-Message-ID: <20231031104531.3169721-6-armbru@redhat.com>
-In-Reply-To: <20231031104531.3169721-1-armbru@redhat.com>
-References: <20231031104531.3169721-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qxmJO-0001N3-DW
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:49:34 -0400
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39VAARVO026239; Tue, 31 Oct 2023 10:49:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=BpRvg2U8QHOiPxI0rYz8NQThnViJIGDBr/xHtweTXwA=;
+ b=f05D0/zxaDDTZD+yME3w3MHbkGXvMx3rFxIA9181bTRwSkmGLLdOsgcn5r95IFe9Cmsy
+ mFQlg5dR5YE9T2uoBEyiBBGyVyshWEyQigi3U5BshJC3OWOIGN9TanEth9ritxS2Bavv
+ vMFhhIfxV4kcKSrCXjW3MCxqmAruZhs5aAWx6f0TzvhO56rlPRncrBTY1Vi9fzMKWg/2
+ z1SjEFmT7QvN/vvuI9jVpILP5M2bV9VyuIDBcUGqPzJEPSpgN6H5p1K3AxpHXkhNxYxk
+ AHFA8tZnh+5KO/Wkc4/J73100Kob4vBWqhjL6GVVebcpAvqBrFCfPwWq3sd9y8/+ItRZ HA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u2c4rtsc0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Oct 2023 10:49:26 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39VAmvP8003432
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Oct 2023 10:48:57 GMT
+Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Tue, 31 Oct 2023 03:48:57 -0700
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, <bcain@quicinc.com>
+Subject: prefix gets lost on config regen for cross Windows build
+Date: Tue, 31 Oct 2023 07:48:47 -0300
+Message-ID: <89aa49de4aaf27664d998b4f0697cd67fe584f39.1698748890.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: 76tAPkaZCc37Te0TYX-XOE2L7KSujX1L
+X-Proofpoint-GUID: 76tAPkaZCc37Te0TYX-XOE2L7KSujX1L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-31_01,2023-10-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0
+ phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxlogscore=598
+ malwarescore=0 mlxscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2310310084
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,64 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-dump_init() first computes the size of the dump, taking the filter
-area into account, and fails if its zero.  It then looks for memory in
-the filter area, and fails if there is none.
+[resending as it looks like there was some delivery issue with the first
+msg]
 
-This is redundant: if the size of the dump is zero, there is no
-memory, and vice versa.  Delete this check.
+Hi,
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- dump/dump.c | 26 --------------------------
- 1 file changed, 26 deletions(-)
+It seems that we lose the install prefix option when regenerating config
+for a Windows cross-build. Looks like this behavior appeared with c36dd41ba2
+(configure: move target-specific defaults to an external machine file,
+2023-10-16), but I couldn't find the specific root cause yet.
 
-diff --git a/dump/dump.c b/dump/dump.c
-index 66f62d0891..ea15c5d221 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -1672,26 +1672,6 @@ static void create_kdump_vmcore(DumpState *s, Error **errp)
-     }
- }
- 
--static int validate_start_block(DumpState *s)
--{
--    GuestPhysBlock *block;
--
--    if (!dump_has_filter(s)) {
--        return 0;
--    }
--
--    QTAILQ_FOREACH(block, &s->guest_phys_blocks.head, next) {
--        /* This block is out of the range */
--        if (block->target_start >= s->filter_area_begin + s->filter_area_length ||
--            block->target_end <= s->filter_area_begin) {
--            continue;
--        }
--        return 0;
--   }
--
--    return -1;
--}
--
- static void get_max_mapnr(DumpState *s)
- {
-     GuestPhysBlock *last_block;
-@@ -1839,12 +1819,6 @@ static void dump_init(DumpState *s, int fd, bool has_format,
-         goto cleanup;
-     }
- 
--    /* Is the filter filtering everything? */
--    if (validate_start_block(s) == -1) {
--        error_setg(errp, QERR_INVALID_PARAMETER, "begin");
--        goto cleanup;
--    }
--
-     /* get dump info: endian, class and architecture.
-      * If the target architecture is not supported, cpu_get_dump_info() will
-      * return -1.
--- 
-2.41.0
+To reproduce the issue, first run:
 
+    ../configure --prefix=/tmp/install --without-default-features \
+        --cross-prefix=x86_64-w64-mingw32- --target-list=aarch64-softmmu
+
+Which correctly prints:
+
+    Directories
+        [...]
+        Install prefix: /tmp/install
+
+But then if we run `touch ../meson.build && make`, we get:
+
+    Directories
+        [...]
+        Install prefix: /qemu
+
+Removing the `prefix = '/qemu'` line from configs/meson/windows.txt does
+fix the issue, but I don't understand why the CLI option is not taking
+precedence over it.... Or even if this could be a meson bug itself. I'd
+appreciate any help.
+
+Thanks,
+Matheus
 
