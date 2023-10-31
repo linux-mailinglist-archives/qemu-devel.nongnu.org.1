@@ -2,91 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4957DCE49
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 438787DCE5D
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpCx-0008Ki-N1; Tue, 31 Oct 2023 09:55:03 -0400
+	id 1qxpEN-0000VB-6Q; Tue, 31 Oct 2023 09:56:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qxpCt-0008K0-VI
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:55:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qxpCs-0000Fh-Ea
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:54:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698760496;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lfAvgAPnrzvaI4kSqRtE04puSgeDSmo60c4Jkre92t0=;
- b=UnU0IvgbPucJnN/8i3/OZpvqRlUtcWzW21ZS7rRY8CPN5YoqskVYEI4pdFrxNzY29UuCW3
- uYT9x2AlEsCoqyhzi7vD0DJkBguuK1pfPkz3ZFRGsutfk+E7RupVRqNpghcM7RHsVv/wd2
- YaHvDUdfCgSYy/SA8ErInHQ8XeYNsOE=
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
- [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-214-mf2rJRUhNEK2jATp7WyTkQ-1; Tue, 31 Oct 2023 09:54:54 -0400
-X-MC-Unique: mf2rJRUhNEK2jATp7WyTkQ-1
-Received: by mail-oa1-f70.google.com with SMTP id
- 586e51a60fabf-1e9bc53c828so7875882fac.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:54:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxpDk-0000Ny-VA
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:55:53 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxpDh-0000kU-U4
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:55:52 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-53ed4688b9fso8855422a12.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:55:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698760546; x=1699365346; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mS2UNgnPcFMlj8ETZ/dlqbFi7v/mKjcFcXiUAGOAbsU=;
+ b=iyO8vy1Pbok0edip3S2waHly70mjUQqeiypsDqctJB/qWx1+zgvCgKPxkoXbeYKjPJ
+ Dch1I/lrKhhXrNDhGzeNNZbjyEx37722+Q/7a+g1jIganSihRQW5NsurmxqofuSi1dMk
+ KtG6cHRBkXQoeQ+ITuBPgUmb0tlYaqKQVytqxySL0JrxCyLH/Ps70GUo3+e9dLbsl1U2
+ XKzegEIW2FITsN0HdlZdTINoqpy+nGBnu6GC/GX4Qfa3ylrxPs5Qz86foX2dYOZHyAXW
+ gbzS/zrDMRD2ejTZUv/jAeP70eqD8Cx/lJYQZ2S4CM4p8SQDNYFQsdHV5N/nTcltdnCh
+ KCZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698760494; x=1699365294;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1698760546; x=1699365346;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lfAvgAPnrzvaI4kSqRtE04puSgeDSmo60c4Jkre92t0=;
- b=rMvTnwIZ/9iXxOev1bUHIBSRKCCX8S6SQraYPDzx7jC63avCGfAJj/RS34PJP0UB9r
- su7mbIM7iBcyL9//gSirCsieqETQtFSlHjCUuCv7r6WqjDo6DiWCELh9mseGjrzzvBYN
- hVRyVhUmQaVnori7YsmFsQanHkVpOjsRaQRhRpVJjd9vdWlA7/jZuxu7EyB47nMHhTDq
- KY3qPDOTRYFKXEBgYksZVQupW/HEUtelYRwXSn247J6zCt/7HWknFH9QeKaeehsC8QyN
- 9yRM2Oty3lyHbh4K//Uxad4mDoVZedgWRDnQP+CTbHpPVSv/jRDdusk23zn6NoAZJq3X
- sMYg==
-X-Gm-Message-State: AOJu0YzjW423POIbJzmO6nk2s/eMONkexl6Ape+WNW1B6Op2pLB6R3HU
- Ur9whqOc6mkTUYTlR5IJk48AGEHEjIfjL2mrULZWwpuEiqgj0pilngYab+1d/itvbJjfp1FX1jH
- ove3sVJ5Rjz7VsDs=
-X-Received: by 2002:a05:6870:a548:b0:1ef:b669:ba1f with SMTP id
- p8-20020a056870a54800b001efb669ba1fmr10061441oal.8.1698760494215; 
- Tue, 31 Oct 2023 06:54:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVYVhnxP86RSekAQEC8JsDe6hHqUjMUB7aVGXtX9S678QlArx+WDUW1ptrdfOgk7MFpaEl/w==
-X-Received: by 2002:a05:6870:a548:b0:1ef:b669:ba1f with SMTP id
- p8-20020a056870a54800b001efb669ba1fmr10061432oal.8.1698760493943; 
- Tue, 31 Oct 2023 06:54:53 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.129.243])
- by smtp.gmail.com with ESMTPSA id
- v12-20020a63b64c000000b005b8f3293bf2sm978393pgt.88.2023.10.31.06.54.51
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 31 Oct 2023 06:54:53 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: tests/data/acpi/rebuild-expected-aml.sh creates files for arm
- virt that don't exist in git
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <CAFEAcA_qBLXdeB7aQLcjcfMdEf9hpJu4ZhZZdHbF4SOSyZZXdw@mail.gmail.com>
-Date: Tue, 31 Oct 2023 19:24:50 +0530
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+ bh=mS2UNgnPcFMlj8ETZ/dlqbFi7v/mKjcFcXiUAGOAbsU=;
+ b=vKxMmrBkA4DM7fedA4mrxUnfWLbzSPUfl4fMaT1bTH8jG578w80dfyKlKyI6dXatio
+ 8kEX8kfpUHu74FLEH32KaFiL+Adz90zgj3VC8yqaErfj+y3OlDoHmu7M0dq/XcqNwtiK
+ sVkJF9Y2YIBRjT/A19DALCVDt8dUpx2MAHgTShkD+ET3i9julKHXreteBrJizSpvYGj5
+ 7ytcpjVZEvek/2NL+Ajs2yWDiIftvjfEG/oVhUpuVZdTS4RUI3g3RBUbl7ioTGq/qrla
+ 258umzqsPz8fM4P6M2uwGbq7b3oqY+v+tFJnKYCRGKKN80fTgT5h5Lp5D3/WgNnFvQqw
+ lKHw==
+X-Gm-Message-State: AOJu0YxvzpVCmDL7cOp27UTjY1iCwtPE5+/3oGDqcZWL5goJblQnGUGQ
+ UAo9pj/S6+dm2ih6RvPofL7IojuKkZjI7ZLRq64Now==
+X-Google-Smtp-Source: AGHT+IEcnp2gNjoI60C+IeiIhHTucBlrnv+vcnQeov0wTqussOpaPASzpjouSr6Qwn/Wd9paY+jzVA9NIem0fWT0DDQ=
+X-Received: by 2002:aa7:d74f:0:b0:53e:3b8f:8a5a with SMTP id
+ a15-20020aa7d74f000000b0053e3b8f8a5amr9099063eds.39.1698760545910; Tue, 31
+ Oct 2023 06:55:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <20231030114802.3671871-1-peter.maydell@linaro.org>
+ <20231030114802.3671871-6-peter.maydell@linaro.org>
+ <9ea5c9b8-d740-4cec-9896-568babeca9aa@ilande.co.uk>
+In-Reply-To: <9ea5c9b8-d740-4cec-9896-568babeca9aa@ilande.co.uk>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 31 Oct 2023 13:55:34 +0000
+Message-ID: <CAFEAcA9dJnp0CVOzVWV+Q-U4ji9c8=14ggztKGktCSsDDp_F0g@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] hw/input/stellaris_input: Convert to qdev
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Kevin Wolf <kwolf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <04BA3ED8-5BD9-4E78-BCAF-DB8FCF6775FB@redhat.com>
-References: <CAFEAcA_qBLXdeB7aQLcjcfMdEf9hpJu4ZhZZdHbF4SOSyZZXdw@mail.gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,65 +90,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 30 Oct 2023 at 20:38, Mark Cave-Ayland
+<mark.cave-ayland@ilande.co.uk> wrote:
+>
+> On 30/10/2023 11:48, Peter Maydell wrote:
+>
+> > Convert the hw/input/stellaris_input device to qdev.
+> >
+> > The interface uses an array property for the board to specify the
+> > keycodes to use, so the s->keycodes memory is now allocated by the
+> > array-property machinery.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > Tested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > ---
+> > v1->v2: drop private/public comment lines
+> > ---
+> >   include/hw/input/stellaris_gamepad.h | 22 ++++++++-
+> >   hw/arm/stellaris.c                   | 26 +++++++---
+> >   hw/input/stellaris_gamepad.c         | 73 +++++++++++++++++++--------=
+-
+> >   3 files changed, 89 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/include/hw/input/stellaris_gamepad.h b/include/hw/input/st=
+ellaris_gamepad.h
+> > index 23cfd3c95f3..6140b889a28 100644
+> > --- a/include/hw/input/stellaris_gamepad.h
+> > +++ b/include/hw/input/stellaris_gamepad.h
+> > @@ -11,8 +11,26 @@
+> >   #ifndef HW_INPUT_STELLARIS_GAMEPAD_H
+> >   #define HW_INPUT_STELLARIS_GAMEPAD_H
+> >
+> > +#include "hw/sysbus.h"
+> > +#include "qom/object.h"
+> >
+> > -/* stellaris_gamepad.c */
+> > -void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode);
+> > +/*
+> > + * QEMU interface:
+> > + *  + QOM array property "keycodes": uint32_t QEMU keycodes to handle
+> > + *  + unnamed GPIO outputs: one per keycode, in the same order as the
+> > + *    "keycodes" array property entries; asserted when key is down
+> > + */
+> > +
+> > +#define TYPE_STELLARIS_GAMEPAD "stellaris-gamepad"
+> > +OBJECT_DECLARE_SIMPLE_TYPE(StellarisGamepad, STELLARIS_GAMEPAD)
+> > +
+> > +struct StellarisGamepad {
+> > +    SysBusDevice parent_obj;
+>
+> Minor style comment: for QOM types there should be an empty line after pa=
+rent_obj to
+> aid identification (as per
+> https://qemu.readthedocs.io/en/master/devel/style.html#qemu-object-model-=
+declarations).
 
+Fixed.
 
-> On 31-Oct-2023, at 6:38 PM, Peter Maydell <peter.maydell@linaro.org> =
-wrote:
->=20
-> I'm doing a patchset that requires rebuilding the bios-tables-test
-> expected-data files for the arm virt board. The instructions in
-> bios-tables-test.c say that you should run rebuild-expected-aml.sh
+> > +static const TypeInfo stellaris_gamepad_info =3D {
+> > +    .name =3D TYPE_STELLARIS_GAMEPAD,
+> > +    .parent =3D TYPE_SYS_BUS_DEVICE,
+> > +    .instance_size =3D sizeof(StellarisGamepad),
+> > +    .class_init =3D stellaris_gamepad_class_init,
+> > +};
+> > +
+> > +static void stellaris_gamepad_register_types(void)
+> > +{
+> > +    type_register_static(&stellaris_gamepad_info);
+> > +}
+> > +
+> > +type_init(stellaris_gamepad_register_types);
+>
+> Is it worth converting this to use DEFINE_TYPES() during the conversion? =
+I know Phil
+> has considered some automation to remove the type_init() boilerplate for =
+the majority
+> of cases.
 
-This script seems to be only rebuilding the blobs for x86 and aarch64 =
-not arm? So is it at all needed to run this?
+I could, I guess. It seems a bit awkward that DEFINE_TYPES()
+wants you to pass it an array even when you only have one type,
+though, which is going to be a very common use case.
 
-> to update the data files. But running that script generates a lot
-> of new data files that don't exist in git at all and are unrelated
-> to the change I'm making:
->=20
->        tests/data/acpi/virt/APIC.memhp
->        tests/data/acpi/virt/APIC.numamem
->        tests/data/acpi/virt/APIC.pxb
->        tests/data/acpi/virt/DBG2.acpihmatvirt
->        tests/data/acpi/virt/DBG2.memhp
->        tests/data/acpi/virt/DBG2.numamem
->        tests/data/acpi/virt/DBG2.pxb
->        tests/data/acpi/virt/DBG2.topology
->        tests/data/acpi/virt/DSDT.numamem
->        tests/data/acpi/virt/FACP.acpihmatvirt
->        tests/data/acpi/virt/FACP.memhp
->        tests/data/acpi/virt/FACP.numamem
->        tests/data/acpi/virt/FACP.pxb
->        tests/data/acpi/virt/FACP.topology
->        tests/data/acpi/virt/GTDT.acpihmatvirt
->        tests/data/acpi/virt/GTDT.memhp
->        tests/data/acpi/virt/GTDT.numamem
->        tests/data/acpi/virt/GTDT.pxb
->        tests/data/acpi/virt/GTDT.topology
->        tests/data/acpi/virt/IORT.acpihmatvirt
->        tests/data/acpi/virt/IORT.memhp
->        tests/data/acpi/virt/IORT.numamem
->        tests/data/acpi/virt/IORT.pxb
->        tests/data/acpi/virt/IORT.topology
->        tests/data/acpi/virt/MCFG.acpihmatvirt
->        tests/data/acpi/virt/MCFG.memhp
->        tests/data/acpi/virt/MCFG.numamem
->        tests/data/acpi/virt/MCFG.pxb
->        tests/data/acpi/virt/MCFG.topology
->        tests/data/acpi/virt/PPTT.memhp
->        tests/data/acpi/virt/PPTT.numamem
->        tests/data/acpi/virt/PPTT.pxb
->        tests/data/acpi/virt/SPCR.acpihmatvirt
->        tests/data/acpi/virt/SPCR.memhp
->        tests/data/acpi/virt/SPCR.numamem
->        tests/data/acpi/virt/SPCR.pxb
->        tests/data/acpi/virt/SPCR.topology
->=20
-> Does the script need fixing to not generate these files, or should
-> they exist in the git repo?
->=20
-> thanks
-> -- PMM
->=20
-
+-- PMM
 
