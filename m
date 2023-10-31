@@ -2,88 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0F97DC593
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 05:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB437DC5FD
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 06:38:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxgoZ-00086L-8e; Tue, 31 Oct 2023 00:57:19 -0400
+	id 1qxhRl-0003dC-73; Tue, 31 Oct 2023 01:37:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxgoW-000867-7N
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:57:16 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxgoU-0006Bs-4m
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:57:15 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-586f68b78ddso1289082eaf.2
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 21:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698728232; x=1699333032;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=x6Lc+5sz46UlDIYc0iwPAVa5urjJ86FK47hpcl478Qc=;
- b=tcW080+/wCAOhPJ7VMkZ8Wg9rW5owwq9oV4+Uqy/DqlrHUSt9sNXdXuxOw80pJU+UP
- OqiwUcpciAt4AmIy/3zYFwmt58fyGwltVRbeEfLA5UCbfaOcNuQO3VEF23y3xlfTS8wF
- Y3pvedz+eLyX/4EFQJtETh3iLZs/IhiMm7nZpjJKRpVYoMstjwixll6xW0ObyJ841saA
- BqHyL6WP441K/F7Y3DlLNXA2Dqy4z/HXjIMouXZc0dEenDRweS4JjeyKXSJtXRjn758j
- qtnN24Slx50lFI36o0X4jdZ0k54Rqc/v2UzpNhBdOLCBA7i0+1yXdmZVv10CirLE7WZq
- OJoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698728232; x=1699333032;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=x6Lc+5sz46UlDIYc0iwPAVa5urjJ86FK47hpcl478Qc=;
- b=mtnJbF81o33vQBdktS6zNS8K1Mupi8lHQ49XbSNotq5Mc3KEYjP8OCXDsmy1jcUJ9F
- iZH+O97RVeJifGmlaVaEOnGs8ZTUEVD/AYmaNlZh733/VHQ+IBcBJqseVk0pHXr/0X+j
- Ao4jkUZk2jsVDwWdn7ACqP8vz/wJl1PS0QF91L447h2rDDwIcGhsMyAj9W4SK36QRum5
- fZOchb0zZUEgI1UEazXncrcMX9E7awSyrDutoUzi+Iy1BCsb17iAo52Zutb7cqfMp9qX
- kqoUt3mWVWnGj6V2QhT96iE2J4zyyzJDT81MIpfy1KNuvqvvlamaW2Di9Gfus4952odH
- 8UKA==
-X-Gm-Message-State: AOJu0Ywl73QybvYzAENwkR/EeOW9SwydrLpq6saE0q6H7YciiRWrFQDB
- M9mKmYOnwe7t8VuROgxtfCtXZw==
-X-Google-Smtp-Source: AGHT+IHyFnveaajbA4oPJv+QxfZRdjvrJBj4E/fWVX4yXmOMp0nDW0XMYbl9IH1nE1ZXSrYekKFi7g==
-X-Received: by 2002:a05:6358:720a:b0:168:dc41:b7b0 with SMTP id
- h10-20020a056358720a00b00168dc41b7b0mr15197856rwa.0.1698728231649; 
- Mon, 30 Oct 2023 21:57:11 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- a18-20020a63bd12000000b005b9373f574csm314496pgf.74.2023.10.30.21.57.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 21:57:11 -0700 (PDT)
-Message-ID: <d2ac8914-58bc-4860-8c3c-65f2aeef8ac6@daynix.com>
-Date: Tue, 31 Oct 2023 13:57:08 +0900
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qxhRf-0003br-2D; Tue, 31 Oct 2023 01:37:43 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qxhRb-00047V-Qw; Tue, 31 Oct 2023 01:37:42 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39V5EhFt024348; Tue, 31 Oct 2023 05:37:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=ne9riZN3XOR9GoBVo5Md/Nvn0McIv3jhGoa0bR7B5lk=;
+ b=c2M8NIqb4H3fZ0UHXtJ2RZhF6cMa/CCvPpNhi3Ek2FS7RYhhGj2fK/DxHMt2eZET2vR1
+ HR/VISYzdG7btJ2flRpB2otTxcKn+eSstB5lWUY3weH6pCR87qEItAgSQrYqQmYA3/v8
+ PEot3IsWIf8aVq+0rf1QuMM0L7n6Sv/PJXEHDvDY6CIlcVcxIJ1oyBmWQXnqBlGNuh7J
+ AkGySTBVOwhZrPg/472C2PNbYpJsWPeRB8aFua9ncUfNnZ5G/mIKZrv7Qu9DGO7ilFPw
+ EZbW2boRbEqdpO9HJtyRQUqUYh0oPYaEDMD9dVnVz2ZY9On5nLgoSg9ZsnVO09Z7+Pqy Mw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2u8sgwx2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Oct 2023 05:37:37 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39V5UgZ6015822;
+ Tue, 31 Oct 2023 05:37:28 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2u8sgwng-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Oct 2023 05:37:28 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39V5CBNw007726; Tue, 31 Oct 2023 05:37:24 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u1dmne7y4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Oct 2023 05:37:23 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39V5bLZu6292118
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 31 Oct 2023 05:37:22 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DDA7C20043;
+ Tue, 31 Oct 2023 05:37:21 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D3352004B;
+ Tue, 31 Oct 2023 05:37:21 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.47.192])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 31 Oct 2023 05:37:21 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 0/4] target/s390x: CC fixes
+Date: Tue, 31 Oct 2023 06:32:26 +0100
+Message-ID: <20231031053718.347100-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6g9dEht2UbYLT-FI1ry7D_1q3rkIdb07
+X-Proofpoint-ORIG-GUID: wsXepmlZvxbO6kErs1B1OV7AvMYSp39e
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/21] tap: Remove tap_receive()
-Content-Language: en-US
-To: "Zhang, Chen" <chen.zhang@intel.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
- <20231030051356.33123-6-akihiko.odaki@daynix.com>
- <CYYPR11MB8432F991FBE071C91C4CCB179BA1A@CYYPR11MB8432.namprd11.prod.outlook.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CYYPR11MB8432F991FBE071C91C4CCB179BA1A@CYYPR11MB8432.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c30;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-30_13,2023-10-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ lowpriorityscore=0 suspectscore=0 spamscore=0 impostorscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 mlxscore=0 bulkscore=0 clxscore=1015
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2310310042
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,31 +111,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/31 3:52, Zhang, Chen wrote:
-> 
-> 
->> -----Original Message-----
->> From: qemu-devel-bounces+chen.zhang=intel.com@nongnu.org <qemu-
->> devel-bounces+chen.zhang=intel.com@nongnu.org> On Behalf Of Akihiko
->> Odaki
->> Sent: Monday, October 30, 2023 1:12 PM
->> Cc: qemu-devel@nongnu.org; Yuri Benditovich
->> <yuri.benditovich@daynix.com>; Andrew Melnychenko
->> <andrew@daynix.com>; Michael S . Tsirkin <mst@redhat.com>; Jason Wang
->> <jasowang@redhat.com>; Akihiko Odaki <akihiko.odaki@daynix.com>
->> Subject: [PATCH v6 05/21] tap: Remove tap_receive()
->>
->> The receive member of NetClientInfo is only for legacy clients and the
->> receive_iov member is always used when it is set.
-> 
-> Under normal circumstances we still need to maintain compatibility.
-> It seems that there is no need to remove the tap_receive here.
-> You just need to optimize the tap_receive to call the tap_receive_iov.
-> In the history, we can see a large number of devices still keep this interface,
-> For example, e1000_receive can directly call the e1000_receive_iov.
+Hi,
 
-That sounds a good idea. I'll do so in the next version.
+This series fixes two issues with updating CC. David was suggesting a
+bigger rewrite [1], but I did not dare do this (yet). Instead, these
+are targeted fixes: patch 1 helps with installing Fedora, and patch 3
+addresses something I noticed when reviewing the code. Patches 2 and 4
+are tests.
 
-Regards,
-Akihiko Odaki
+Best regards,
+Ilya
+
+[1] https://gitlab.com/qemu-project/qemu/-/issues/1865#note_1545060658
+
+Ilya Leoshkevich (4):
+  target/s390x: Fix CLC corrupting cc_src
+  tests/tcg/s390x: Test CLC with inaccessible second operand
+  target/s390x: Fix LAALG not updating cc_src
+  tests/tcg/s390x: Test LAALG with negative cc_src
+
+ target/s390x/tcg/translate.c    | 10 ++++---
+ tests/tcg/s390x/Makefile.target |  2 ++
+ tests/tcg/s390x/clc.c           | 48 +++++++++++++++++++++++++++++++++
+ tests/tcg/s390x/laalg.c         | 27 +++++++++++++++++++
+ 4 files changed, 84 insertions(+), 3 deletions(-)
+ create mode 100644 tests/tcg/s390x/clc.c
+ create mode 100644 tests/tcg/s390x/laalg.c
+
+-- 
+2.41.0
+
 
