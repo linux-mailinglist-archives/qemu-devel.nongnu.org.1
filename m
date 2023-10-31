@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC8E7DCF9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3447DCF9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpya-0004pq-3L; Tue, 31 Oct 2023 10:44:16 -0400
+	id 1qxpyZ-0004pV-Mi; Tue, 31 Oct 2023 10:44:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyY-0004pK-FM
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:14 -0400
+ id 1qxpyX-0004or-RI
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:13 -0400
 Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyW-0002Ao-Jd
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:14 -0400
+ id 1qxpyV-00029y-6K
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:13 -0400
 Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-407c3adef8eso47171715e9.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:44:12 -0700 (PDT)
+ 5b1f17b1804b1-40853c639abso44758205e9.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698763451; x=1699368251; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698763448; x=1699368248; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U30BBgxZL0E6bzjBTiHhMCHKRVxI3F7Um9iUKr2Sfcw=;
- b=xNQwTzYF79eXfiA90NirFxigbdmmtdvTlXXe98Fvg6LZXPtVtpU9at8SC6cimkMfR5
- axeaT6A07AFRj1+HPVwCHbJWGTu4Wk18HpPQhF+xyMX6ze/E8Atp2x9KInBnM25n45uR
- UO6B3AlebPV0L50hwJ4h/heesiNtRHJh82iSbJdjZGhsB9uQFxeRi5vIXXjq2FH3sQLw
- F77JDov1vX9uL61UZhYvdd3i2TDgq2VfkMFH8LxGyWNnh7PvMsUPITHH8cnrVy2dXkI+
- uDbwSgHW317EB9LQNpIHlMBJ6Fw3fY+Nqme0mJ9h+3X3EXv2z1c0EXDwvOaJ+dn6AeH2
- uNzg==
+ bh=ndIjKuvnqGHRvHRZNJZiZGvMt1TC/HbwEzRPVDvch8c=;
+ b=PD9YTCVTH/Q6MC+s7LGhcKuMOvaLV+HHqRxxlPYKuUjaG6RTxLC1bf//hmehw4uI+Y
+ dQRqKMlyfMQQ8osMOuDytkOdRxlgQVX6K85vWEpST3vA4zs30uPP0yvemntxb02/e9Qg
+ Sn2FAo3w9Mt4uvAxopngOk0I0EqUbsaH0JzrvqvMNb/Y+4TtshV4h+EtwUGW5Y3U7PxD
+ jeFkwZdkB5aYhEQt30qEapeYDFcZO3Jsx+piE6wCPtghjOt9I0JEvJ26q1UkCE0LzQPJ
+ 4CQHDw6vsNioVWallsCKB7Kse/O99SMqdpCCl3yT+hlp2f3wrkPhQFeZHtq3tRj85sMj
+ QBUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698763451; x=1699368251;
+ d=1e100.net; s=20230601; t=1698763448; x=1699368248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U30BBgxZL0E6bzjBTiHhMCHKRVxI3F7Um9iUKr2Sfcw=;
- b=ahH3ZeJXCe+DHSXOG3NL0pOV2ouPEFMp0pRuGI2BOXsjf3+5uHzp091QH+/xyQNtej
- RKKIf7I0DWFrevFXmvBne6vtY4XawJ8IUHILnriLlpoZwj6mALFnJSVT+VmItoCCglR7
- 6iHI/l7dEHQgkTvtqA2sicJzKc+1YcA4I7yKJduYarRb8MHPsVq5Z0EUh8Lk9vFF0wjY
- 3XGequYDmYetMYkzys9BYJvf2+e2SDZ4b05L01bE5diBAkYTjX451UJitqenb6+c9p3M
- S4dLSI94vhTx61iz7krJTqoGJy29LYybR35bNauNEHsucARlLIQF90gQYfnDEalN+SM1
- 7qug==
-X-Gm-Message-State: AOJu0Ywz0+SqmExABB4xqR3t1IfU1NV+pEYU9G9RN3nYfCpG3+lQBAE+
- PNKoADclZiOLYqAfxIAKzXTY6A==
-X-Google-Smtp-Source: AGHT+IE1rVXXhbX4Rod+uuTA1LG5VqpzIO5Vvzi6dGQhqt+ihvZrIKHng+PKFn6RNENKiZsts8Akhw==
-X-Received: by 2002:a5d:4390:0:b0:32d:81b5:82d0 with SMTP id
- i16-20020a5d4390000000b0032d81b582d0mr8624104wrq.33.1698763451078; 
- Tue, 31 Oct 2023 07:44:11 -0700 (PDT)
+ bh=ndIjKuvnqGHRvHRZNJZiZGvMt1TC/HbwEzRPVDvch8c=;
+ b=tr0bZpX7CV8yfM2P/+qLcX/y0bkMUOLkUpQ6FGG3vXuSRqrgbsbp51CzU7uxzS/0bD
+ tTU47c80okCj4a7HE38sh33m3otLOaYL90MqhVqHmomQvJySAwOL/7i8u5cZ1yNb/+hc
+ rXXtNWnTmf/xxmz5CJ2oFBKxsp/5R0brQ6PupkpfSDykwingASNlgHfvY9z78BOhKx0i
+ LDX1dZHCxKP7ANSMz1X2OjW2Fn+O0F4dQTZkYIL/tcRDRKRuPmvaWjrV2x7JWUCtuvNj
+ ckNHpmGgjjEi4f44Yp4sJ/oO6JargFBQDEGxlpXqpBSDRMgmbwHeiEDBHVhl74g63ntF
+ prCw==
+X-Gm-Message-State: AOJu0Yw8pERP6g9U2+oKSPEiGi4sMl9+YjHc7QBoUDZv1P/tjPHIcukX
+ FIHi0yzJz+2MF+C1KRGZEODT9g==
+X-Google-Smtp-Source: AGHT+IGo6/2fWiIt4bs2DT07gnf4KMkjpevkVPpw7EeNERWQtdDGtu+FLwBdUJ3+XEoCZMsAhHnwTQ==
+X-Received: by 2002:a05:600c:1ca9:b0:403:9b7:a720 with SMTP id
+ k41-20020a05600c1ca900b0040309b7a720mr11482656wms.1.1698763448125; 
+ Tue, 31 Oct 2023 07:44:08 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- f7-20020a056000128700b003232f167df5sm1639943wrx.108.2023.10.31.07.44.06
+ h10-20020a05600c350a00b004064cd71aa8sm1964851wmq.34.2023.10.31.07.44.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 07:44:10 -0700 (PDT)
+ Tue, 31 Oct 2023 07:44:05 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A87E36572B;
+ by draig.lan (Postfix) with ESMTP id BF1EF65711;
  Tue, 31 Oct 2023 14:44:02 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -66,9 +66,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 09/19] tests/docker: use debian-all-test-cross for hppa
-Date: Tue, 31 Oct 2023 14:43:51 +0000
-Message-Id: <20231031144401.1238210-10-alex.bennee@linaro.org>
+Subject: [PULL 10/19] tests/docker: use debian-all-test-cross for m68k
+Date: Tue, 31 Oct 2023 14:43:52 +0000
+Message-Id: <20231031144401.1238210-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231031144401.1238210-1-alex.bennee@linaro.org>
 References: <20231031144401.1238210-1-alex.bennee@linaro.org>
@@ -106,57 +106,58 @@ random debian based compilers into the same one used on gitlab.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231029145033.592566-10-alex.bennee@linaro.org>
+Message-Id: <20231029145033.592566-11-alex.bennee@linaro.org>
 
 diff --git a/configure b/configure
-index 96b01a280c..be7cfeddc0 100755
+index be7cfeddc0..aa29cfb797 100755
 --- a/configure
 +++ b/configure
-@@ -1300,6 +1300,11 @@ probe_target_compiler() {
-         container_cross_prefix=hexagon-unknown-linux-musl-
-         container_cross_cc=${container_cross_prefix}clang
+@@ -1313,6 +1313,11 @@ probe_target_compiler() {
+         container_image=debian-loongarch-cross
+         container_cross_prefix=loongarch64-unknown-linux-gnu-
          ;;
-+      hppa)
++      m68k)
 +        container_image=debian-all-test-cross
-+        container_cross_prefix=hppa-linux-gnu-
++        container_cross_prefix=m68k-linux-gnu-
 +        container_cross_cc=${container_cross_prefix}gcc
 +        ;;
-       i386)
-         container_image=fedora-i386-cross
-         container_cross_prefix=
+       microblaze)
+         container_image=debian-microblaze-cross
+         container_cross_prefix=microblaze-linux-musl-
 diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index a1dac0a45f..66b8844246 100644
+index 66b8844246..d42d89b26e 100644
 --- a/.gitlab-ci.d/container-cross.yml
 +++ b/.gitlab-ci.d/container-cross.yml
-@@ -40,12 +40,6 @@ hexagon-cross-container:
+@@ -46,12 +46,6 @@ loongarch-debian-cross-container:
    variables:
-     NAME: debian-hexagon-cross
+     NAME: debian-loongarch-cross
  
--hppa-debian-cross-container:
+-m68k-debian-cross-container:
 -  extends: .container_job_template
 -  stage: containers
 -  variables:
--    NAME: debian-hppa-cross
+-    NAME: debian-m68k-cross
 -
- loongarch-debian-cross-container:
+ mips64-debian-cross-container:
    extends: .container_job_template
    stage: containers
 diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index 82e06d84b3..47e58a248e 100644
+index 47e58a248e..fb93eca537 100644
 --- a/tests/docker/Makefile.include
 +++ b/tests/docker/Makefile.include
-@@ -122,7 +122,6 @@ docker-image-debian-nios2-cross: $(DOCKER_FILES_DIR)/debian-toolchain.docker \
+@@ -122,7 +122,7 @@ docker-image-debian-nios2-cross: $(DOCKER_FILES_DIR)/debian-toolchain.docker \
  	$(call debian-toolchain, $@)
  
  # These images may be good enough for building tests but not for test builds
--DOCKER_PARTIAL_IMAGES += debian-hppa-cross
- DOCKER_PARTIAL_IMAGES += debian-m68k-cross debian-mips64-cross
+-DOCKER_PARTIAL_IMAGES += debian-m68k-cross debian-mips64-cross
++DOCKER_PARTIAL_IMAGES += debian-mips64-cross
  DOCKER_PARTIAL_IMAGES += debian-microblaze-cross
  DOCKER_PARTIAL_IMAGES += debian-mips-cross
-diff --git a/tests/docker/dockerfiles/debian-hppa-cross.docker b/tests/docker/dockerfiles/debian-hppa-cross.docker
+ DOCKER_PARTIAL_IMAGES += debian-nios2-cross
+diff --git a/tests/docker/dockerfiles/debian-m68k-cross.docker b/tests/docker/dockerfiles/debian-m68k-cross.docker
 deleted file mode 100644
-index dd47ffdfa4..0000000000
---- a/tests/docker/dockerfiles/debian-hppa-cross.docker
+index 25dd1c1e68..0000000000
+--- a/tests/docker/dockerfiles/debian-m68k-cross.docker
 +++ /dev/null
 @@ -1,19 +0,0 @@
 -#
@@ -171,8 +172,8 @@ index dd47ffdfa4..0000000000
 -    apt-get install -y eatmydata && \
 -    eatmydata apt-get dist-upgrade -y && \
 -    eatmydata apt-get install --no-install-recommends -y \
--        gcc-hppa-linux-gnu \
--        libc6-dev-hppa-cross
+-        gcc-m68k-linux-gnu \
+-        libc6-dev-m68k-cross
 -# As a final step configure the user (if env is defined)
 -ARG USER
 -ARG UID
