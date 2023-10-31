@@ -2,74 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734417DC972
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3AA7DCA6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:11:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxl00-0002UP-T8; Tue, 31 Oct 2023 05:25:24 -0400
+	id 1qxlh6-0004xI-Nc; Tue, 31 Oct 2023 06:09:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qxkzy-0002Ta-Vg; Tue, 31 Oct 2023 05:25:23 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qxkzx-0002u2-6I; Tue, 31 Oct 2023 05:25:22 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5409bc907edso8424911a12.0; 
- Tue, 31 Oct 2023 02:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698744318; x=1699349118; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gzEZSFmVnJjd1dq4g2w3IjSukfJRXU3CgyhMASuj36k=;
- b=Bw03e5Lbzu/snYcMWcxBtqddSwKoUO8O+AmZ+J6kzg9UCRsvxtcRXpFXllEKCSPGI/
- GA3PL6b14xy+sHopMo7EBbt8LJLu0TrnFsJJsx5YMRe0ul0jAKuHBoh3CtfXi74u++cF
- o8ezz+ki4xLux3GhsCM4ME0OdNiVyso6h68FGMMBmNMuv3p/r4PnWRSndsKTDMhprc9t
- J76IEJD25dG16B10uRIrYzmFyjvFQUCArW5pzfreMhDG5KHIpcCslHpcl2VIYyUO/spw
- zpyzSNUe1Nl/0CN0PFA4LTGvWv6Q75aA6KsdNGywMCGqlxtnL7QKcaSwZf6qtlGVdyXb
- ZDNw==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qxlh4-0004x9-Iu
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:09:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qxlh3-0002QG-3P
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:09:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698746991;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T3sQeuCcas9ze6vO7TADdW4h1CkIunW9RiOYbakl8cA=;
+ b=OjGkwtR7u1GrQOD8B2lCI7IX5GvO92HVDG18ac8h6ZLZK8PboPY3DtIhYBrFjpfvG8Cnq4
+ 3843FsLFy8EXjg6ue258sviUH7EFqsaaZQZ5saApzmoxxmY+HA/5cX8YFPcFReWEoi+yFe
+ zCO9K2UaIbqMGa5YDSB4GCRfBqzWkvE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-w7ZBhAB5NkKy9FdZgSTbSw-1; Tue, 31 Oct 2023 06:09:50 -0400
+X-MC-Unique: w7ZBhAB5NkKy9FdZgSTbSw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-53e2acda9d6so4088128a12.2
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 03:09:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698744318; x=1699349118;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gzEZSFmVnJjd1dq4g2w3IjSukfJRXU3CgyhMASuj36k=;
- b=SArpYAT5EkIF6Bg6TOt9++DnO/XyfTKqAiYBZva9MhmwEoRam+WM9MjJJeb9y5TiH5
- fGXZbOa4685j3GhqcwzAapJDGrBhgC5wgwLu/R5490IsVkHyP0hol7h+rZge8VK/CdzV
- h9Futf5oLWQDmaB+B83OHPITHSLsBppT8EfSRK1Ix6rjVhIDdLmrPTRKqJvCvRLvxUmZ
- cVO5/0caVryJC8S8IH1vloD/wOjjkNXI/0SilE3Nb4GdoK/5X0EwuPumUXnLKS9BrqOJ
- mD/yc4z1Ulz8TVtUTUq4q6nhlYGLh7CuFxfVItgj8hwVQBL1vBa1NhUSrVPLUGhQhFdo
- f9dQ==
-X-Gm-Message-State: AOJu0Yxq+SKPY6AhAWzugX1Qmq/A+1cU52BL8BU7+ru6F/c0YSMNZ08g
- L6cjeHDsqVPKAV2at6sPYZ/NNtwhBwrq2Y9DyiM=
-X-Google-Smtp-Source: AGHT+IGsbsK4XKExctlPkS6emIi7hzHZUHc+dQ5t6zmv54w2U6tr3FMYv+r4mYNlRGqn4BdwR/KNf6Fm+a7v1BtRDD8=
-X-Received: by 2002:a05:6402:1646:b0:53d:fde3:a99 with SMTP id
- s6-20020a056402164600b0053dfde30a99mr10032433edx.17.1698744317204; Tue, 31
- Oct 2023 02:25:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698746989; x=1699351789;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T3sQeuCcas9ze6vO7TADdW4h1CkIunW9RiOYbakl8cA=;
+ b=VYFdU9pshdrntRkRQ223BmQgv9PVYimme5WrvOgKvTV8uHd2lOTImnIgMx+oA+fV0A
+ qjzXPbPi51UPTZw9wAWNwGHfJrkiCSM+zeNnyb2EtkHpgiC5ubGNkDVrlATYTXmHh5cP
+ ZW/yBvniM5EGLq6hqOpHZytwb5fRHt3geIIE2AsKx0Sr59EL19nG8yuOsEX+jBOZ5kgO
+ if5Wm6ZHyme+vL9Y9RlCYjZALMdMrR+UVBr063Jt/Gb3my1TkHqjKN5cYa3ScGZ+5UP0
+ ZLMEeE0pRzRY8WpPWQbhIInCxqAcVHVhl/DiZma1GEKgMk3i0RWivEZANx324dCCE1La
+ U6oA==
+X-Gm-Message-State: AOJu0Yytx5KwNVbLwyzSy202D8kQ5nk9F9sWHTsgGHwVphLffI/0EAZ9
+ wSLN/chEBWrSRaBmeTdom1+SSLTU47QDMnZvKjRsnoZndzSB/JdBLkm0BRRgSBoh7XjLi0G5GPN
+ smvRuPqcvZiq4XD+q84CxVhj1mQP1M5M=
+X-Received: by 2002:a05:6402:12ca:b0:540:b1fb:b630 with SMTP id
+ k10-20020a05640212ca00b00540b1fbb630mr10525304edx.27.1698746989011; 
+ Tue, 31 Oct 2023 03:09:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHA77lQLtPiKFIt9B3lEdxJnRdIJytyyZGSqJwGapc01KkNdKX3bwSVbFSHd8EQrMet99ay2pwzWiqgQvz2NDU=
+X-Received: by 2002:a05:6402:12ca:b0:540:b1fb:b630 with SMTP id
+ k10-20020a05640212ca00b00540b1fbb630mr10525287edx.27.1698746988704; Tue, 31
+ Oct 2023 03:09:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230825040556.4217-1-faithilikerun@gmail.com>
- <56a64662-ce50-4ab0-92e5-d23abdcb7358@redhat.com>
-In-Reply-To: <56a64662-ce50-4ab0-92e5-d23abdcb7358@redhat.com>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Tue, 31 Oct 2023 17:25:06 +0800
-Message-ID: <CAAAx-8+_t+uRbYORZw+AjqJ2R1pTe2vsfpJYjhM6=L=YQe6BZQ@mail.gmail.com>
-Subject: Re: [PATCH v2] block/file-posix: fix update_zones_wp() caller
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org, dmitry.fomichev@wdc.com,
- hare@suse.de, qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- stefanha@redhat.com
-Content-Type: multipart/alternative; boundary="000000000000975c780608ffbbc8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20231030133712.2822276-1-armbru@redhat.com>
+ <20231030133712.2822276-3-armbru@redhat.com>
+ <CAMxuvaxy_mwut2rH0cAOaOgiRTTeBBBCKprTS4bmetHqb7C8Ww@mail.gmail.com>
+ <87zfzzkvv5.fsf@pond.sub.org> <87lebjkvol.fsf@pond.sub.org>
+In-Reply-To: <87lebjkvol.fsf@pond.sub.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 31 Oct 2023 14:09:36 +0400
+Message-ID: <CAMxuvayaiB2O_=FOCY8vGQXjmHUFA4Fj2vbMFqgGp9e7KZmihw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] dump: Fix g_array_unref(NULL) in dump-guest-memory
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,88 +96,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000975c780608ffbbc8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi
 
-Looks good, thanks!
+On Tue, Oct 31, 2023 at 1:06=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+>
+> Markus Armbruster <armbru@redhat.com> writes:
+>
+> > Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+> >
+> >> Hi
+> >>
+> >> On Mon, Oct 30, 2023 at 5:37=E2=80=AFPM Markus Armbruster <armbru@redh=
+at.com> wrote:
+> >>>
+> >>> When dump_init()'s check for non-zero @length fails, dump_cleanup()
+> >>> passes null s->string_table_buf to g_array_unref(), which spews "GLib=
+:
+> >>> g_array_unref: assertion 'array' failed" to stderr.
+> >>>
+> >>> Guard the g_array_unref().
+> >>>
+> >>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> >>
+> >> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >>
+> >>> ---
+> >>>  dump/dump.c | 4 +++-
+> >>>  1 file changed, 3 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/dump/dump.c b/dump/dump.c
+> >>> index a1fad17f9c..d8ea364af2 100644
+> >>> --- a/dump/dump.c
+> >>> +++ b/dump/dump.c
+> >>> @@ -100,7 +100,9 @@ static int dump_cleanup(DumpState *s)
+> >>>      memory_mapping_list_free(&s->list);
+> >>>      close(s->fd);
+> >>>      g_free(s->guest_note);
+> >>> -    g_array_unref(s->string_table_buf);
+> >>> +    if (s->string_table_buf) {
+> >>> +        g_array_unref(s->string_table_buf);
+> >>> +    }
+> >>
+> >> or:
+> >> g_clear_pointer(&s->string_table_buf, g_array_unref)
+> >
+> > Since dump_cleanup() doesn't clear any of the other members of @s, I'll
+> > stick to g_array_unref() for consistency and simplicity.
+>
+> Wait!  You suggest *unconditional*
+>
+>          g_clear_pointer(&s->string_table_buf, g_array_unref)
+>
+> don't you?
+>
+> Got a preference?
 
-Hanna Czenczek <hreitz@redhat.com>=E4=BA=8E2023=E5=B9=B410=E6=9C=8831=E6=97=
-=A5 =E5=91=A8=E4=BA=8C17:24=E5=86=99=E9=81=93=EF=BC=9A
+Yes, I think it's safe and more future proof in general. Up to you if
+you respin.
 
-> On 25.08.23 06:05, Sam Li wrote:
+thanks
+
 >
-> When the zoned request fail, it needs to update only the wp of
-> the target zones for not disrupting the in-flight writes on
-> these other zones. The wp is updated successfully after the
-> request completes.
->
-> Fixed the callers with right offset and nr_zones.
->
-> Signed-off-by: Sam Li <faithilikerun@gmail.com> <faithilikerun@gmail.com>
-> ---
->  block/file-posix.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
->
-> Thanks, applied to my block branch:
->
-> https://gitlab.com/hreitz/qemu/-/commits/block
->
-> (Rebased on master, and I=E2=80=99ve also fixed the comment to read =E2=
-=80=9Cboundaries=E2=80=9D
-> instead of =E2=80=9Cbounaries=E2=80=9D.  Hope that=E2=80=99s OK!)
->
->
-> Hanna
+> >>>      s->guest_note =3D NULL;
+> >>>      if (s->resume) {
+> >>>          if (s->detached) {
+> >>> --
+> >>> 2.41.0
+> >>>
+> >
+> > Thanks!
 >
 
---000000000000975c780608ffbbc8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div>Looks good, thanks!</div><div><br><div class=3D"gmail_quote"><div dir=
-=3D"ltr" class=3D"gmail_attr">Hanna Czenczek &lt;<a href=3D"mailto:hreitz@r=
-edhat.com">hreitz@redhat.com</a>&gt;=E4=BA=8E2023=E5=B9=B410=E6=9C=8831=E6=
-=97=A5 =E5=91=A8=E4=BA=8C17:24=E5=86=99=E9=81=93=EF=BC=9A<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
-olid;padding-left:1ex"><u></u>
-
- =20
-   =20
- =20
-  <div>
-    <div>On 25.08.23 06:05, Sam Li wrote:<br>
-    </div>
-    <blockquote type=3D"cite">
-      <pre>When the zoned request fail, it needs to update only the wp of
-the target zones for not disrupting the in-flight writes on
-these other zones. The wp is updated successfully after the
-request completes.
-
-Fixed the callers with right offset and nr_zones.
-
-Signed-off-by: Sam Li <a href=3D"mailto:faithilikerun@gmail.com" target=3D"=
-_blank">&lt;faithilikerun@gmail.com&gt;</a>
----
- block/file-posix.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-</pre>
-    </blockquote>
-    <br>
-    Thanks, applied to my block branch:<br>
-    <br>
-    <a href=3D"https://gitlab.com/hreitz/qemu/-/commits/block" target=3D"_b=
-lank">https://gitlab.com/hreitz/qemu/-/commits/block</a><br>
-    <br>
-    (Rebased on master, and I=E2=80=99ve also fixed the comment to read
-    =E2=80=9Cboundaries=E2=80=9D instead of =E2=80=9Cbounaries=E2=80=9D.=C2=
-=A0 Hope that=E2=80=99s OK!)</div><div><br>
-    <br>
-    Hanna<br>
-  </div>
-
-</blockquote></div></div>
-
---000000000000975c780608ffbbc8--
 
