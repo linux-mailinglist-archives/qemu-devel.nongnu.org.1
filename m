@@ -2,69 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950B27DC8EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 366BC7DC8E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:02:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxkeF-0001FD-8B; Tue, 31 Oct 2023 05:02:56 -0400
+	id 1qxkd6-0007ti-Tt; Tue, 31 Oct 2023 05:01:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxkeA-00016r-V1
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:02:50 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxkd5-0007tV-HI
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:01:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxke8-0006yW-Fb
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:02:50 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxkd4-0006nX-13
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:01:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698742967;
+ s=mimecast20190719; t=1698742900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/NRSpUIijsQTQV6/Ab+Fo4l/3wg2rU3H4n9wtIAj/fI=;
- b=g1+WPvkNLnMSKyX+UMCV7C9WDltifAAlJKhmQEcYiG/qafU6Da2o3j/U4mUFjRkaYG49EF
- HOEuzLdzFe2rD6hFwXzfeA3jiNY76lWibzgYkFetjpCcV1Y6zCCbYHtXO546Ot4JKo/6PO
- 7Yly64IC0uFlyJ5Semkb36ca6HFKSd4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IrnTTC4sbhWTq5eiFFX4YiwVoPDnXe1yJuzqYGKWYUg=;
+ b=T77FPrgpNctYfhuQAKFG/Mdn7WBciMmJ++qlrkD+x33tE+Veh0ENZydVgofpjDUIo08ak1
+ M6wk5MNWycn9nWr1+Yw1fH/m9r3UWGmXjQfPvt63UwFPTx5wWzWwQStYab3zIlW1yvBSVl
+ DjTd4RkeDugg/FH0K9n4cqnEfKlhZ+A=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-H24PkZb7O5qhnhgxTm9hFA-1; Tue, 31 Oct 2023 05:02:40 -0400
-X-MC-Unique: H24PkZb7O5qhnhgxTm9hFA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F90685A5B5;
- Tue, 31 Oct 2023 09:02:39 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 099CA1C060AE;
- Tue, 31 Oct 2023 09:02:36 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, libvir-list@redhat.com,
- Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- Hanna Reitz <hreitz@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>, qemu-block@nongnu.org,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 19/38] migration: rename
- vmstate_save_needed->vmstate_section_needed
+ us-mta-344-A4Jb1h5gMlC-jyp1kkrOaw-1; Tue, 31 Oct 2023 05:01:28 -0400
+X-MC-Unique: A4Jb1h5gMlC-jyp1kkrOaw-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-1e987fa0d87so7392437fac.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 02:01:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698742888; x=1699347688;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IrnTTC4sbhWTq5eiFFX4YiwVoPDnXe1yJuzqYGKWYUg=;
+ b=pmFuYMgh2uUbq/MfWfYtdCpn1+k6lBL1ODu2I6bTlb7x2+JQJ1QFOCao+w3C2eTXtP
+ 0ce9j1pT0WuOSNmxsNZsqjw4ZypRbkIWfVctllkF957RxhO62/rk1kONQDCrbS6tBmU+
+ Jqq/WFqTWyaoOmin+d+2DnXMjQptqDTBemwU748iJkEWlQMhr1RtDxikuuM9TCWp44NC
+ DwtNzXc1mbF0upWURKN6tnvpYt484Jb5f0Eom/3jMb1nteX8cUkcXNDzOWOg1WwEYHt4
+ j0KvXd/EttcuJ5fwcTEvF6l/YUONz/hVYkJ3YWyETfezOF/h0Avkd6G1cDKIzcYADiuG
+ T0CQ==
+X-Gm-Message-State: AOJu0YwPLAq1oYq2O2FYx2kOg001nFbdNRzAxApVHldwwpfEAwWgKs4U
+ 45ET0lWmMkf4uU0dh/jXezce0nHH8/oN+ZPmtJ23VcVYqWKsToICm70lb6ihAhe6Ei1Fp5f99SU
+ pFvCcFECIRYt2BHA=
+X-Received: by 2002:a05:6870:10d1:b0:1dc:d8c6:39f with SMTP id
+ 17-20020a05687010d100b001dcd8c6039fmr13029324oar.14.1698742888167; 
+ Tue, 31 Oct 2023 02:01:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGJ9p4wCzvYYCNvTB077BCs7+AKhCi1BvZKvedjSQlofnoPqk7bCjgITFdq1wsFstAJRKmSlw==
+X-Received: by 2002:a05:6870:10d1:b0:1dc:d8c6:39f with SMTP id
+ 17-20020a05687010d100b001dcd8c6039fmr13029291oar.14.1698742887673; 
+ Tue, 31 Oct 2023 02:01:27 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ w15-20020a056214012f00b0065d1380dd17sm353368qvs.61.2023.10.31.02.01.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 02:01:27 -0700 (PDT)
+Message-ID: <183a9b3f-bc01-4feb-8663-f3777de62288@redhat.com>
 Date: Tue, 31 Oct 2023 10:01:23 +0100
-Message-ID: <20231031090142.13122-20-quintela@redhat.com>
-In-Reply-To: <20231031090142.13122-1-quintela@redhat.com>
-References: <20231031090142.13122-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 29/37] vfio/iommufd: Bypass EEH if iommufd backend
+Content-Language: en-US
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ <20231026103104.1686921-30-zhenzhong.duan@intel.com>
+ <9e5a2eaf-4703-4797-8305-05baee9d7de4@redhat.com>
+ <SJ0PR11MB67448F476F129A500E2F623D92A0A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <SJ0PR11MB67448F476F129A500E2F623D92A0A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -88,70 +116,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On 10/31/23 03:26, Duan, Zhenzhong wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Sent: Monday, October 30, 2023 9:57 PM
+>> Subject: Re: [PATCH v3 29/37] vfio/iommufd: Bypass EEH if iommufd backend
+>>
+>> On 10/26/23 12:30, Zhenzhong Duan wrote:
+>>> IBM EEH is only supported by legacy backend currently, bypass it
+>>> for IOMMUFD backend.
+>>>
+>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>> ---
+>>>    hw/ppc/spapr_pci_vfio.c | 4 ++--
+>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
+>>> index d1d07bec46..a2518838a1 100644
+>>> --- a/hw/ppc/spapr_pci_vfio.c
+>>> +++ b/hw/ppc/spapr_pci_vfio.c
+>>> @@ -93,10 +93,10 @@ static VFIOContainer
+>> *vfio_eeh_as_container(AddressSpace *as)
+>>>
+>>>        bcontainer = QLIST_FIRST(&space->containers);
+>>>
+>>> -    if (QLIST_NEXT(bcontainer, next)) {
+>>> +    if (QLIST_NEXT(bcontainer, next) || bcontainer->ops != &vfio_legacy_ops) {
+>>
+>> It's curious that a test on the VFIOIOMMUOps is needed so deep in
+>> the software stack, and spapr should have its own VFIOIOMMUOps, which
+>> de facto doesn't support iommufd.
+> 
+> Yes, in this series, spapr shares same ops vfio_legacy_ops, in next series I should
+> check with vfio_iommu_spapr_ops.
 
-The function is used on save at this point. The following commits will
-use it on load.
+Well, since PPC doesn't support IOMMUFD it should be tested before or compile
+out as suggested on patch 23 "Add iommufd configure option"
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231024084043.2926316-5-marcandre.lureau@redhat.com>
----
- include/migration/vmstate.h | 2 +-
- migration/savevm.c          | 2 +-
- migration/vmstate.c         | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+Thanks,
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 1a31fb7293..1af181877c 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -1202,7 +1202,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                          void *opaque, JSONWriter *vmdesc,
-                          int version_id, Error **errp);
- 
--bool vmstate_save_needed(const VMStateDescription *vmsd, void *opaque);
-+bool vmstate_section_needed(const VMStateDescription *vmsd, void *opaque);
- 
- #define  VMSTATE_INSTANCE_ID_ANY  -1
- 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 8622f229e5..ca5c7cebe0 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -985,7 +985,7 @@ static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmdesc)
-     if ((!se->ops || !se->ops->save_state) && !se->vmsd) {
-         return 0;
-     }
--    if (se->vmsd && !vmstate_save_needed(se->vmsd, se->opaque)) {
-+    if (se->vmsd && !vmstate_section_needed(se->vmsd, se->opaque)) {
-         trace_savevm_section_skip(se->idstr, se->section_id);
-         return 0;
-     }
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 1cf9e45b85..16e33a5d34 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -324,7 +324,7 @@ static void vmsd_desc_field_end(const VMStateDescription *vmsd,
- }
- 
- 
--bool vmstate_save_needed(const VMStateDescription *vmsd, void *opaque)
-+bool vmstate_section_needed(const VMStateDescription *vmsd, void *opaque)
- {
-     if (vmsd->needed && !vmsd->needed(opaque)) {
-         /* optional section not needed */
-@@ -522,7 +522,7 @@ static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
- 
-     trace_vmstate_subsection_save_top(vmsd->name);
-     while (sub && *sub) {
--        if (vmstate_save_needed(*sub, opaque)) {
-+        if (vmstate_section_needed(*sub, opaque)) {
-             const VMStateDescription *vmsdsub = *sub;
-             uint8_t len;
- 
--- 
-2.41.0
+C.
+
+
+> The general vfio-pci device supports iommu property, if we pass a vfio device
+> with iommufd backend, I guess we will crash Qemu if there is no check here.
+> 
+> Thanks
+> Zhenzhong
+> 
 
 
