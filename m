@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8027DCEB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CB07DCEA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:06:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpNe-0004DO-Lb; Tue, 31 Oct 2023 10:06:06 -0400
+	id 1qxpNc-000490-IU; Tue, 31 Oct 2023 10:06:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxpNZ-00046R-O4
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:06:02 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxpNV-00045J-Ak
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:05:58 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxpNY-0002wc-5r
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:06:01 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-540c54944c4so11692796a12.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:05:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxpNT-0002uD-PY
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:05:57 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c51388ccebso79535231fa.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:05:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698761159; x=1699365959; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wjCMcA/rkPwrWrJSmXS+BPgdntcg4zSUfSsGxc/Pk7s=;
- b=fwmEQpS6B6cpZl12B6V5H52VRh3hZ4ZNcZTwEf4rBr0mIhgnfGwI9d7fwC9LxyKYv/
- BU58zRpJcOCiM7i8/VBjhRj7HQGBXKKr+HwhOuqRbnAbgL4W6Uov/DZjqOURYyFiMvF/
- xkI25oSA3rCTDLRQc9FlCNYURgguzbVXB92FBmse7F+Sulu//3jdAUk0qBE1+zPP/LK4
- OeLn9gvF1iWmh+vcKKoDxByS9rPYPuKuWgz3suRO/c9yo6GyKcL9qErx3c/lZoGe2odp
- lILQqDEbH2h+rnzLCv9kyWXPszmpLXxWivgEi/1isA0R51hleaGwKHylv+0KPy3qRemg
- KyYA==
+ d=linaro.org; s=google; t=1698761152; x=1699365952; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UL7zP/wNaTdy7yDKTxDGR5Mn/76KccS/EQ2Eb8zCbnQ=;
+ b=rpNIif7nlRDYtBd2vzciVC4hyGKMV+u4X76mDUslICEJJ0FXEo3JXIx8QwzDQx+6hO
+ o+wRB/KDbNkhMKKk0z2KN2RAs44q9CZ/RPWOGiJsmey2TVhHFWHSBcvn3r//7CP9pPb2
+ QU8qBlVE6KV2QMIEo6CA5HkRdAing//hwMV+wwYDCkzohy/KTMfOwuXs+JcL6cyE1CjR
+ zY6vSqcwOLZ5KAxe2HpO1s3E14TqIidRTeJjzikb3OU94zFdRqHAxve7CTkQV9KxZ/rv
+ mVSX9PZsvBeC5n5A2ubVhl9LwOPkAkQLI7WwbwjwxBkqGBbJ6ftu3vFCPD3aoMeifhKg
+ auTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698761159; x=1699365959;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wjCMcA/rkPwrWrJSmXS+BPgdntcg4zSUfSsGxc/Pk7s=;
- b=oRCTi/LCStRyUyY/zB5GDoWdaNZd1i0VOdNlKA89o7kDCBUiB98gBOiSf4sb/6gGpC
- +808L74jGnKL50z1FvpSn2bDdo2i4+wtFfbbzZ27Uiwu5dtRCAYZx7tSe3goQWVk/d7v
- 9i7lJBJiOd3hlvsr1C39/2iTFbiyrHzrUgO8hUKGg8AvpbOtRgJgpBRPGHG1dng6KnCt
- pV14rObwgPSNlTXg8TzQq4ubmzwYj1Q6nckL/pjBV1UygFY6ACQxayW28kxm3FYzB1Yn
- fxepGaoUtfiKW1RvkOehx47zd72yhv9FYO8op2ibckGMMIAYA4at6+tlBiNlpEiHQSFx
- RFdg==
-X-Gm-Message-State: AOJu0YyHw++ME9iUEg9mcQ6D77k1OgNyyp29Mtu1NNxlW5mNXKk+8Yfg
- HIk4AfZrchhd5T3zGHYqrUy3Qg0Lm1qvIsZonagf8DKGzQg6ZMDV
-X-Google-Smtp-Source: AGHT+IHSsJLLpFc1jGSpdRrbzeymHVTr0Gn+5nRi3fhZ2nIqiCRsqJyyDZX2Tm8wurvfmxpXxv33hyE+9f6X6474gOs=
-X-Received: by 2002:aa7:ce03:0:b0:543:42ac:c9f3 with SMTP id
- d3-20020aa7ce03000000b0054342acc9f3mr2376948edv.19.1698761158802; Tue, 31 Oct
- 2023 07:05:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698761152; x=1699365952;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UL7zP/wNaTdy7yDKTxDGR5Mn/76KccS/EQ2Eb8zCbnQ=;
+ b=vFYqKHKcBAKB9XqKqHNzV7ZPltc4QJvZ9EXSrfEJTgl3N3FJ/54/BnwiQYgWV7OP/H
+ R//go1bAV3gj0iJ9KGuzfwgheNGl89rWUlR1aVUvQEoBoAklf2vUPq+qCzYSjk+uI1So
+ LqnNjaE0oOpOY7ntRSlZj58Mbn2GOgU5SSCuImArmgrViMatwBNkbJZ3LjRtMb50AW2q
+ tmwGBSNxibWzoai9EKNC324Xy9T2/CJHNg586bPK36c8JKz8TrEruDUQWz54l27vPqEB
+ e2NjE4taphZeR4wm6wg4HU1aHkxylED29oQ3Xmo4LkxTk963qWhlnU5Y5QCTGKnw0YUH
+ O32g==
+X-Gm-Message-State: AOJu0Yy8a2LTpB4uSSO/SP7+wYUThjIwNrv0qEwz657REJIvOGlpt7wb
+ st7v6xPpVqx6QUwFlm7nSsZd1fKSQnG49uNPubo=
+X-Google-Smtp-Source: AGHT+IHO41wdQplnRcgg1UVO+6rGIe+1sNObNZxKwDSTO/PNDH1BqSBMWm6uWKPLlSdttLEA7Relng==
+X-Received: by 2002:a2e:731a:0:b0:2c5:6d8:8dfc with SMTP id
+ o26-20020a2e731a000000b002c506d88dfcmr9381294ljc.13.1698761152405; 
+ Tue, 31 Oct 2023 07:05:52 -0700 (PDT)
+Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
+ [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
+ dl19-20020a05600c669300b004080f0376a0sm1789889wmb.42.2023.10.31.07.05.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 07:05:52 -0700 (PDT)
+Message-ID: <3e33fbb3-b42f-b525-f987-ccd6e8dcba33@linaro.org>
+Date: Tue, 31 Oct 2023 15:05:49 +0100
 MIME-Version: 1.0
-References: <20231030114802.3671871-1-peter.maydell@linaro.org>
- <20231030114802.3671871-6-peter.maydell@linaro.org>
- <9ea5c9b8-d740-4cec-9896-568babeca9aa@ilande.co.uk>
- <CAFEAcA9dJnp0CVOzVWV+Q-U4ji9c8=14ggztKGktCSsDDp_F0g@mail.gmail.com>
-In-Reply-To: <CAFEAcA9dJnp0CVOzVWV+Q-U4ji9c8=14ggztKGktCSsDDp_F0g@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 31 Oct 2023 14:05:47 +0000
-Message-ID: <CAFEAcA_4wqP7G+gXnunJx85OTvUr-3kx6HGABGb6Kt3y=b_Nvw@mail.gmail.com>
-Subject: Re: [PATCH v2 5/6] hw/input/stellaris_input: Convert to qdev
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Kevin Wolf <kwolf@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 3/7] qga: Improve guest-exec-status error message
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org,
+ david@gibson.dropbear.id.au, harshpb@linux.ibm.com, dave@treblig.org,
+ jasowang@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
+ mst@redhat.com, david@redhat.com, kraxel@redhat.com,
+ marcandre.lureau@redhat.com, qemu-ppc@nongnu.org
+References: <20231031111059.3407803-1-armbru@redhat.com>
+ <20231031111059.3407803-4-armbru@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231031111059.3407803-4-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,56 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 31 Oct 2023 at 13:55, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Mon, 30 Oct 2023 at 20:38, Mark Cave-Ayland
-> <mark.cave-ayland@ilande.co.uk> wrote:
-> >
-> > On 30/10/2023 11:48, Peter Maydell wrote:
-> > Is it worth converting this to use DEFINE_TYPES() during the conversion? I know Phil
-> > has considered some automation to remove the type_init() boilerplate for the majority
-> > of cases.
->
-> I could, I guess. It seems a bit awkward that DEFINE_TYPES()
-> wants you to pass it an array even when you only have one type,
-> though, which is going to be a very common use case.
+On 31/10/23 12:10, Markus Armbruster wrote:
+> When the PID passed to guest-exec-status does not exist, we report
+> 
+>      "Invalid parameter 'pid'"
+> 
+> Improve this to
+> 
+>      "PID 1234 does not exist"
+> 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   qga/commands.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm going to squash this into this patch:
-diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
-index 6ccf0e80adc..d42ba4f0582 100644
---- a/hw/input/stellaris_gamepad.c
-+++ b/hw/input/stellaris_gamepad.c
-@@ -90,16 +90,13 @@ static void
-stellaris_gamepad_class_init(ObjectClass *klass, void *data)
-     device_class_set_props(dc, stellaris_gamepad_properties);
- }
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
--static const TypeInfo stellaris_gamepad_info = {
--    .name = TYPE_STELLARIS_GAMEPAD,
--    .parent = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(StellarisGamepad),
--    .class_init = stellaris_gamepad_class_init,
-+static const TypeInfo stellaris_gamepad_info[] = {
-+    {
-+        .name = TYPE_STELLARIS_GAMEPAD,
-+        .parent = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(StellarisGamepad),
-+        .class_init = stellaris_gamepad_class_init,
-+    },
- };
-
--static void stellaris_gamepad_register_types(void)
--{
--    type_register_static(&stellaris_gamepad_info);
--}
--
--type_init(stellaris_gamepad_register_types);
-+DEFINE_TYPES(stellaris_gamepad_info);
-
-
-The array is a bit awkward, but it's overall better than having
-to define the register-types function.
-
-thanks
--- PMM
 
