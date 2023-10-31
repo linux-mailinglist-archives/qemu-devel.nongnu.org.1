@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004B87DD4BB
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 18:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 125E47DD4C6
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 18:38:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxscC-0007QG-0O; Tue, 31 Oct 2023 13:33:20 -0400
+	id 1qxsgI-0001Gh-LT; Tue, 31 Oct 2023 13:37:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxsc3-0007Mq-D5
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:33:11 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxsgG-0001Eu-0j
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:37:32 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxsc1-0007T4-2V
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:33:11 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8EA5221860;
- Tue, 31 Oct 2023 17:33:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698773587; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Cvll5GTO4AbGGAbEz9bmtDak+3k2PB8nFuOFhphtn2I=;
- b=T+00n6JUCyaWZ6V2FDqh0b5Py1JI4yPdNy3A05J+YNKsDwN6a1qD8hbqyNJGW3TSm+8CYq
- DTn0ArnfRtO4DEEi8Oixcj9p0CIguCVt64Pz3+tS3zxx6z2I1nUoNaDgtNZDidO12biFT5
- uwlNMh9tbfeDy+xzFrNt78jc5gnMRak=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698773587;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Cvll5GTO4AbGGAbEz9bmtDak+3k2PB8nFuOFhphtn2I=;
- b=O7y79zVcNCjjaxYwuUEiEx0/e0YBbHgaR5l7URR5iKDy4U3nxufZu2FtaFpXsfuEaIMhlD
- dg6ZdLP9jE9tm2Cg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1B89D1391B;
- Tue, 31 Oct 2023 17:33:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id kZIWNlI6QWW4dQAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 31 Oct 2023 17:33:06 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Juan
- Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 15/29] migration/ram: Add support for 'fixed-ram'
- outgoing migration
-In-Reply-To: <ZUEw5OW1D585tud9@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-16-farosas@suse.de> <ZUEw5OW1D585tud9@x1n>
-Date: Tue, 31 Oct 2023 14:33:04 -0300
-Message-ID: <87zfzyd7e7.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxsgC-0008CZ-OF
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:37:31 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2c4fdf94666so76918631fa.2
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 10:37:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698773845; x=1699378645; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PdV1GeFlfaLHBKbxsOWgoRO1D00OQ9VZbqz3Qac7I2E=;
+ b=ixf1gyabE4xUIUrUZceSsTbd9o5VwF1hYKjHpiZonLqG4T8gHPMguWrOzZsZAIj2mj
+ PPO3a98G6KZmk31TyYxR+f9CylbOnCmddSsr7mKSezOv0I5kRfqXVH7GlwCfQ/Oh50Mn
+ +9KEVW76t1uXeLj6QcN+J+SRCSK83yOCLRv8eMIQ1XJlfu05nwrrElhsdIQylZn8efY7
+ cii7R05nxUeKjDGrq99rEteQOE+qDmytW8WpWsR4rK8rRqsgttwUvja+UUuRzwME8t3l
+ ZpsOJMDFxR1OvSF6z7VMCHGyZQ59FxR5pd/w5rZrQiZQe/l2A8hmZbP32Gv8wWVg2ttd
+ BU+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698773845; x=1699378645;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PdV1GeFlfaLHBKbxsOWgoRO1D00OQ9VZbqz3Qac7I2E=;
+ b=FGsU/aCvOhHebc8KFTJ1AE8NpnWKwvSPp22xkn9sASH7Ch+LTsW1V186AIdljjZm4j
+ YSYajuDb/h1PbqcHFvVYxg4WvwNh141RmOhN87G/mBP2qXVhx61b1JktD0ZvM/PFVutC
+ /ZUMSlXoCflNdRZH6HF7loLmZ95iUZ/KEVQ94lzuKkukwzKhFUZ5MnKSsIrUdBrIcMK0
+ CrGrrjvmKByFBSVCC/O8K12OYoSdXX+Wg9FySRm4lutCLD7Yc3LKbl6Fnsbn8na4qpXX
+ l3isytd7deHHO0RJ+xH32EaF0JAnnJ7/H4nZa4f4KwFJRT1wfeTOcCbaj0tgoYYOb49O
+ 4Kig==
+X-Gm-Message-State: AOJu0Yy2d92PY/J1rbgj9H69Tz2+YwHrcKXlbC+qIG8kGOA4xKJzHO85
+ XQjbzY/M0y1ZsiKHpD28yop5qwjlClaarfxvzQg=
+X-Google-Smtp-Source: AGHT+IEEEYat+Co0UQxKgbbN6z0Tg1moYWRZ6VZUDDGdU8Ng0eOL5AtNx91OMCQuyzgl4Iqil6dr2w==
+X-Received: by 2002:a2e:3e1a:0:b0:2bf:ab17:d48b with SMTP id
+ l26-20020a2e3e1a000000b002bfab17d48bmr11174988lja.34.1698773845272; 
+ Tue, 31 Oct 2023 10:37:25 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ c9-20020a05600c0a4900b00407460234f9sm2415161wmq.21.2023.10.31.10.37.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 10:37:24 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Subject: [PATCH] target/arm: Correctly propagate stage 1 BTI guarded bit in a
+ two-stage walk
+Date: Tue, 31 Oct 2023 17:37:23 +0000
+Message-Id: <20231031173723.26582-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,281 +90,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+In a two-stage translation, the result of the BTI guarded bit should
+be the guarded bit from the first stage of translation, as there is
+no BTI guard information in stage two.  Our code tried to do this,
+but got it wrong, because we currently have two fields where the GP
+bit information might live (ARMCacheAttrs::guarded and
+CPUTLBEntryFull::extra::arm::guarded), and we were storing the GP bit
+in the latter during the stage 1 walk but trying to copy the former
+in combine_cacheattrs().
 
-> On Mon, Oct 23, 2023 at 05:35:54PM -0300, Fabiano Rosas wrote:
->> From: Nikolay Borisov <nborisov@suse.com>
->> 
->> Implement the outgoing migration side for the 'fixed-ram' capability.
->> 
->> A bitmap is introduced to track which pages have been written in the
->> migration file. Pages are written at a fixed location for every
->> ramblock. Zero pages are ignored as they'd be zero in the destination
->> migration as well.
->> 
->> The migration stream is altered to put the dirty pages for a ramblock
->> after its header instead of having a sequential stream of pages that
->> follow the ramblock headers. Since all pages have a fixed location,
->> RAM_SAVE_FLAG_EOS is no longer generated on every migration iteration.
->> 
->> Without fixed-ram (current):
->> 
->> ramblock 1 header|ramblock 2 header|...|RAM_SAVE_FLAG_EOS|stream of
->>  pages (iter 1)|RAM_SAVE_FLAG_EOS|stream of pages (iter 2)|...
->> 
->> With fixed-ram (new):
->> 
->> ramblock 1 header|ramblock 1 fixed-ram header|ramblock 1 pages (fixed
->>  offsets)|ramblock 2 header|ramblock 2 fixed-ram header|ramblock 2
->>  pages (fixed offsets)|...|RAM_SAVE_FLAG_EOS
->> 
->> where:
->>  - ramblock header: the generic information for a ramblock, such as
->>    idstr, used_len, etc.
->> 
->>  - ramblock fixed-ram header: the new information added by this
->>    feature: bitmap of pages written, bitmap size and offset of pages
->>    in the migration file.
->> 
->> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  include/exec/ramblock.h |  8 ++++
->>  migration/options.c     |  3 --
->>  migration/ram.c         | 98 ++++++++++++++++++++++++++++++++++++-----
->>  3 files changed, 96 insertions(+), 13 deletions(-)
->> 
->> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
->> index 69c6a53902..e0e3f16852 100644
->> --- a/include/exec/ramblock.h
->> +++ b/include/exec/ramblock.h
->> @@ -44,6 +44,14 @@ struct RAMBlock {
->>      size_t page_size;
->>      /* dirty bitmap used during migration */
->>      unsigned long *bmap;
->> +    /* shadow dirty bitmap used when migrating to a file */
->> +    unsigned long *shadow_bmap;
->> +    /*
->> +     * offset in the file pages belonging to this ramblock are saved,
->> +     * used only during migration to a file.
->> +     */
->> +    off_t bitmap_offset;
->> +    uint64_t pages_offset;
->>      /* bitmap of already received pages in postcopy */
->>      unsigned long *receivedmap;
->>  
->> diff --git a/migration/options.c b/migration/options.c
->> index 2622d8c483..9f693d909f 100644
->> --- a/migration/options.c
->> +++ b/migration/options.c
->> @@ -271,12 +271,9 @@ bool migrate_events(void)
->>  
->>  bool migrate_fixed_ram(void)
->>  {
->> -/*
->>      MigrationState *s = migrate_get_current();
->>  
->>      return s->capabilities[MIGRATION_CAPABILITY_FIXED_RAM];
->> -*/
->> -    return false;
->>  }
->>  
->>  bool migrate_ignore_shared(void)
->> diff --git a/migration/ram.c b/migration/ram.c
->> index 92769902bb..152a03604f 100644
->> --- a/migration/ram.c
->> +++ b/migration/ram.c
->> @@ -1157,12 +1157,18 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss,
->>          return 0;
->>      }
->>  
->> +    stat64_add(&mig_stats.zero_pages, 1);
->
-> Here we keep zero page accounting, but..
->
->> +
->> +    if (migrate_fixed_ram()) {
->> +        /* zero pages are not transferred with fixed-ram */
->> +        clear_bit(offset >> TARGET_PAGE_BITS, pss->block->shadow_bmap);
->> +        return 1;
->> +    }
->> +
->>      len += save_page_header(pss, file, pss->block, offset | RAM_SAVE_FLAG_ZERO);
->>      qemu_put_byte(file, 0);
->>      len += 1;
->>      ram_release_page(pss->block->idstr, offset);
->> -
->> -    stat64_add(&mig_stats.zero_pages, 1);
->>      ram_transferred_add(len);
->>  
->>      /*
->> @@ -1220,14 +1226,20 @@ static int save_normal_page(PageSearchStatus *pss, RAMBlock *block,
->>  {
->>      QEMUFile *file = pss->pss_channel;
->>  
->> -    ram_transferred_add(save_page_header(pss, pss->pss_channel, block,
->> -                                         offset | RAM_SAVE_FLAG_PAGE));
->> -    if (async) {
->> -        qemu_put_buffer_async(file, buf, TARGET_PAGE_SIZE,
->> -                              migrate_release_ram() &&
->> -                              migration_in_postcopy());
->> +    if (migrate_fixed_ram()) {
->> +        qemu_put_buffer_at(file, buf, TARGET_PAGE_SIZE,
->> +                           block->pages_offset + offset);
->> +        set_bit(offset >> TARGET_PAGE_BITS, block->shadow_bmap);
->>      } else {
->> -        qemu_put_buffer(file, buf, TARGET_PAGE_SIZE);
->> +        ram_transferred_add(save_page_header(pss, pss->pss_channel, block,
->> +                                             offset | RAM_SAVE_FLAG_PAGE));
->
-> .. here we ignored normal page accounting.
->
-> I think we should have the same behavior on both, perhaps keep them always?
->
+Remove the duplicated storage, and always use the field in
+CPUTLBEntryFull; correctly propagate the stage 1 value to the output
+in get_phys_addr_twostage().
 
-This is the accounting for the header only if I'm not mistaken.
+Note for stable backports: in v8.0 and earlier the field is named
+result->f.guarded, not result->f.extra.arm.guarded.
 
->> +        if (async) {
->> +            qemu_put_buffer_async(file, buf, TARGET_PAGE_SIZE,
->> +                                  migrate_release_ram() &&
->> +                                  migration_in_postcopy());
->> +        } else {
->> +            qemu_put_buffer(file, buf, TARGET_PAGE_SIZE);
->> +        }
->>      }
->>      ram_transferred_add(TARGET_PAGE_SIZE);
->>      stat64_add(&mig_stats.normal_pages, 1);
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1950
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/internals.h | 1 -
+ target/arm/ptw.c       | 7 +++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-Here's the page accounting.
-
->> @@ -2475,6 +2487,8 @@ static void ram_save_cleanup(void *opaque)
->>          block->clear_bmap = NULL;
->>          g_free(block->bmap);
->>          block->bmap = NULL;
->> +        g_free(block->shadow_bmap);
->> +        block->shadow_bmap = NULL;
->>      }
->>  
->>      xbzrle_cleanup();
->> @@ -2842,6 +2856,7 @@ static void ram_list_init_bitmaps(void)
->>               */
->>              block->bmap = bitmap_new(pages);
->>              bitmap_set(block->bmap, 0, pages);
->> +            block->shadow_bmap = bitmap_new(block->used_length >> TARGET_PAGE_BITS);
->
-> AFAICT bmap should also use used_length.  How about adding one more patch
-> to change that, then you can use "pages" here?
-
-It uses max_length. I don't know what are the effects of that
-change. I'll look into it.
-
-> See ram_mig_ram_block_resized() where we call migration_cancel() if resized.
->
->>              block->clear_bmap_shift = shift;
->>              block->clear_bmap = bitmap_new(clear_bmap_size(pages, shift));
->>          }
->> @@ -2979,6 +2994,44 @@ void qemu_guest_free_page_hint(void *addr, size_t len)
->>      }
->>  }
->>  
->> +#define FIXED_RAM_HDR_VERSION 1
->> +struct FixedRamHeader {
->> +    uint32_t version;
->> +    uint64_t page_size;
->> +    uint64_t bitmap_offset;
->> +    uint64_t pages_offset;
->> +    /* end of v1 */
->> +} QEMU_PACKED;
->> +
->> +static void fixed_ram_insert_header(QEMUFile *file, RAMBlock *block)
->> +{
->> +    g_autofree struct FixedRamHeader *header;
->> +    size_t header_size, bitmap_size;
->> +    long num_pages;
->> +
->> +    header = g_new0(struct FixedRamHeader, 1);
->> +    header_size = sizeof(struct FixedRamHeader);
->> +
->> +    num_pages = block->used_length >> TARGET_PAGE_BITS;
->> +    bitmap_size = BITS_TO_LONGS(num_pages) * sizeof(unsigned long);
->> +
->> +    /*
->> +     * Save the file offsets of where the bitmap and the pages should
->> +     * go as they are written at the end of migration and during the
->> +     * iterative phase, respectively.
->> +     */
->> +    block->bitmap_offset = qemu_get_offset(file) + header_size;
->> +    block->pages_offset = ROUND_UP(block->bitmap_offset +
->> +                                   bitmap_size, 0x100000);
->> +
->> +    header->version = cpu_to_be32(FIXED_RAM_HDR_VERSION);
->> +    header->page_size = cpu_to_be64(TARGET_PAGE_SIZE);
->
-> This is the "page size" for the shadow bitmap, right?  Shall we state it
-> somewhere (e.g. explaining why it's not block->page_size)?
-
-Ok.
-
-> It's unfortunate that we already have things like:
->
->             if (migrate_postcopy_ram() && block->page_size !=
->                                           qemu_host_page_size) {
->                 qemu_put_be64(f, block->page_size);
->             }
->
-> But indeed we can't merge them because they seem to service different
-> purpose.
->
->> +    header->bitmap_offset = cpu_to_be64(block->bitmap_offset);
->> +    header->pages_offset = cpu_to_be64(block->pages_offset);
->> +
->> +    qemu_put_buffer(file, (uint8_t *) header, header_size);
->> +}
->> +
->>  /*
->>   * Each of ram_save_setup, ram_save_iterate and ram_save_complete has
->>   * long-running RCU critical section.  When rcu-reclaims in the code
->> @@ -3028,6 +3081,12 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
->>              if (migrate_ignore_shared()) {
->>                  qemu_put_be64(f, block->mr->addr);
->>              }
->> +
->> +            if (migrate_fixed_ram()) {
->> +                fixed_ram_insert_header(f, block);
->> +                /* prepare offset for next ramblock */
->> +                qemu_set_offset(f, block->pages_offset + block->used_length, SEEK_SET);
->> +            }
->>          }
->>      }
->>  
->> @@ -3061,6 +3120,20 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
->>      return 0;
->>  }
->>  
->> +static void ram_save_shadow_bmap(QEMUFile *f)
->> +{
->> +    RAMBlock *block;
->> +
->> +    RAMBLOCK_FOREACH_MIGRATABLE(block) {
->> +        long num_pages = block->used_length >> TARGET_PAGE_BITS;
->> +        long bitmap_size = BITS_TO_LONGS(num_pages) * sizeof(unsigned long);
->> +        qemu_put_buffer_at(f, (uint8_t *)block->shadow_bmap, bitmap_size,
->> +                           block->bitmap_offset);
->> +        /* to catch any thread late sending pages */
->> +        block->shadow_bmap = NULL;
->
-> What is this for?  Wouldn't this leak the buffer already?
->
-
-Ah this is debug code. It's because of multifd. In this series I don't
-use sem_sync because there's no packets. But doing so causes
-multifd_send_sync_main() to return before the multifd channel has sent
-all its pages. This is here so the channel crashes when writing the
-bitmap.
-
-I think it's worth it to keep it but I'd have to move it to the multifd
-patch and free the bitmap properly.
-
-Thanks!
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f7224e6f4d9..c837506e448 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1181,7 +1181,6 @@ typedef struct ARMCacheAttrs {
+     unsigned int attrs:8;
+     unsigned int shareability:2; /* as in the SH field of the VMSAv8-64 PTEs */
+     bool is_s2_format:1;
+-    bool guarded:1;              /* guarded bit of the v8-64 PTE */
+ } ARMCacheAttrs;
+ 
+ /* Fields that are valid upon success. */
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 53713e03006..1762b058aec 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3032,7 +3032,6 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
+ 
+     assert(!s1.is_s2_format);
+     ret.is_s2_format = false;
+-    ret.guarded = s1.guarded;
+ 
+     if (s1.attrs == 0xf0) {
+         tagged = true;
+@@ -3175,7 +3174,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     hwaddr ipa;
+     int s1_prot, s1_lgpgsz;
+     ARMSecuritySpace in_space = ptw->in_space;
+-    bool ret, ipa_secure;
++    bool ret, ipa_secure, s1_guarded;
+     ARMCacheAttrs cacheattrs1;
+     ARMSecuritySpace ipa_space;
+     uint64_t hcr;
+@@ -3202,6 +3201,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+      */
+     s1_prot = result->f.prot;
+     s1_lgpgsz = result->f.lg_page_size;
++    s1_guarded = result->f.extra.arm.guarded;
+     cacheattrs1 = result->cacheattrs;
+     memset(result, 0, sizeof(*result));
+ 
+@@ -3252,6 +3252,9 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     result->cacheattrs = combine_cacheattrs(hcr, cacheattrs1,
+                                             result->cacheattrs);
+ 
++    /* No BTI GP information in stage 2, we just use the S1 value */
++    result->f.extra.arm.guarded = s1_guarded;
++
+     /*
+      * Check if IPA translates to secure or non-secure PA space.
+      * Note that VSTCR overrides VTCR and {N}SW overrides {N}SA.
+-- 
+2.34.1
 
 
