@@ -2,83 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B887A7DD67A
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:03:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F7A7DD67E
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:04:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxtyy-0005BO-9F; Tue, 31 Oct 2023 15:00:56 -0400
+	id 1qxu1z-0004BG-Ae; Tue, 31 Oct 2023 15:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxtys-0004t5-Ux
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:00:51 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxtyD-0006Cp-Hb
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:00:49 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1cc5fa0e4d5so16263595ad.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 11:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698778795; x=1699383595; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Aen/Wq6t6Uqky7PRziuag420pllaMNiYFb9lBfAknxM=;
- b=CvUxaHvDO+aGq91zyJEJVyZWKKHtCjB2ToSdnQ9yjZNxEcs+eCS9c3zpC9jWEBUdTv
- BbApKNP4n4nJ9i/dsy69tNdL8T2BWODjK3OXs8cvEVIR6whsn8AQXc22GTVf938f+b5w
- ODKN1nvXRttTyzDY0HMUuV+2+HZ3I87dBHuedQREwM/nvMJiE+E4vlxZzyLWZMMxh+48
- ooppYWuNG47HM0UzyzHvVVbzdcVxvSyyjJos+vxaPvP2SNfvt+pqg8eh1iSzYifv135+
- 5p5E5/+kNFbD/Ln7sxIfx8Sla+lwO68pUoSHPCm6FD75mYAbFWPzLJ+xN6gXfsRDLR87
- JqVg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxu1w-00041p-HM
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:04:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxu1t-0006zj-9h
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:03:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698779034;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2wj7CWIceOKXeNvxsiWqZKr/WPVpo6gS+cdtnjJkqao=;
+ b=JxrHosh7R+UfxGHUIHQXFxgRONwFJ9fYe/KtMyVYN5fxoU+sDkQhQ8mjmgIVCfzt16PX/K
+ s4W9RfuGtrU9uOzvYytM5f/UP8fL6K0ne2gxDsgbmqw7s0E6F5YV+RW0dk6Mdj671pKfI2
+ j7s77CFgOxkkjySFg4kKPW4tm2sCR9M=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-497-z83DZo8eOqWnskO-6f93VA-1; Tue, 31 Oct 2023 15:03:53 -0400
+X-MC-Unique: z83DZo8eOqWnskO-6f93VA-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-41e1899175eso14221641cf.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 12:03:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698778795; x=1699383595;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Aen/Wq6t6Uqky7PRziuag420pllaMNiYFb9lBfAknxM=;
- b=lfso6YzPWAslYwXg1QC52s03KS51dpGqpkd65F7fDVHNtKYlXI6FEaIDLq58j36ssu
- KV5bLqwXzLI3Esss6i0hT4MSsn9ZaB8tI7GCGDcsQBefmx6XVgCDaeQChbxk0b+9c90k
- 74AU+d71K6rK38sCoQrGL6/5GeTFXTTGEEvRv3b2EZbduagP7djAbP+D6wP8dqFDRvcP
- 7vBgosGIYOsORZgQEJRYMxvBKV9SylaFgaiqf5DuX21lJengZjemrzyhG1lL8QsHxXzx
- 2Vy9SZKLfDkiAj4Jm55VQH/z0PIwj5ZsqVtRDy34jJMPyuMPNh77tbQ9RelcoQpawiY1
- LE5Q==
-X-Gm-Message-State: AOJu0YyrWSSXyr0++17xd5I880n7NXiSNdCaG5LcgdDbx2gdmuu6pNFH
- ZPWFOPCmjeM4D+BFhfbxn5YmXg==
-X-Google-Smtp-Source: AGHT+IHIXIM9DOEG6eDn4uxynlLIUtHzYlr9EbLcyQglsNTovD9jNacyEtVHTkpqP7TmN4gfejdkQg==
-X-Received: by 2002:a17:903:246:b0:1ca:2743:bf79 with SMTP id
- j6-20020a170903024600b001ca2743bf79mr17502836plh.39.1698778795097; 
- Tue, 31 Oct 2023 11:59:55 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- p6-20020a170902eac600b001cc50146b43sm1641825pld.202.2023.10.31.11.59.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 11:59:54 -0700 (PDT)
-Message-ID: <1c4e36a3-8092-4cec-a2fd-aea4a84a1ed6@linaro.org>
-Date: Tue, 31 Oct 2023 11:59:52 -0700
+ d=1e100.net; s=20230601; t=1698779033; x=1699383833;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2wj7CWIceOKXeNvxsiWqZKr/WPVpo6gS+cdtnjJkqao=;
+ b=ONe+74Tv8bwqUWRNGxEqZm41skxJFBpQMWBp5rBRUy0bSTJoMIqFEifmsXWn8cv5pi
+ 3dPd7GBWd5dSD8myBbpcH1BW/aUe/DSNvT+ELWrrf2OV0lm+FyrMaEZJG0Gwk6unqt2C
+ 7TU1im0J9SXpdyID5jIF5P0cSHBQlbZ6Wurf6+h0fyWMD7lfP2txgyuNmdM6vF0Ua38q
+ Ls2NBJjFriWbBavhL/CloR6lJ3stUIB4nhjoOeQk8K7ALaR+3ueKzO/UA2Y2XzxSLeIe
+ vGmzSkjF4ww9Lgvwc6evENb1Xz9XvS80L0G8dEcPawmukSdYVv+FizdisZENrJontFVh
+ NDyg==
+X-Gm-Message-State: AOJu0YxsDVlpZ4dcBiJIab1KhSp5FToV3UTTxC9Y3OL4ivNvzLrH0Jwy
+ 9WzNtqmm1ZpJJSxuROAGmVBB169vyG739E5zyrutmvBOZ+D+Hzret7qjjkrLGSBZiM6gufTvz4V
+ S7GRwOIvGWgFLmVs=
+X-Received: by 2002:ac8:6652:0:b0:41e:531f:1abf with SMTP id
+ j18-20020ac86652000000b0041e531f1abfmr11476289qtp.6.1698779032943; 
+ Tue, 31 Oct 2023 12:03:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEoFTiE8XpBA6uZck2cRWWT0zJMFgYY6psWvIUByaANtsrNTWb0wZYx3YK+P1g84iP7pEA/Q==
+X-Received: by 2002:ac8:6652:0:b0:41e:531f:1abf with SMTP id
+ j18-20020ac86652000000b0041e531f1abfmr11476272qtp.6.1698779032666; 
+ Tue, 31 Oct 2023 12:03:52 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ k22-20020ac84796000000b0041b016faf7esm736613qtq.58.2023.10.31.12.03.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 12:03:52 -0700 (PDT)
+Date: Tue, 31 Oct 2023 15:03:50 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
+Subject: Re: [PATCH v2 16/29] migration/ram: Add support for 'fixed-ram'
+ migration restore
+Message-ID: <ZUFPlqgFx/2MeCj8@x1n>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-17-farosas@suse.de>
+ <ZTjjMiMkmnPMccjq@redhat.com> <87r0lieqxm.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm: Correctly propagate stage 1 BTI guarded bit
- in a two-stage walk
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20231031173723.26582-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231031173723.26582-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87r0lieqxm.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,33 +102,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/31/23 10:37, Peter Maydell wrote:
-> In a two-stage translation, the result of the BTI guarded bit should
-> be the guarded bit from the first stage of translation, as there is
-> no BTI guard information in stage two.  Our code tried to do this,
-> but got it wrong, because we currently have two fields where the GP
-> bit information might live (ARMCacheAttrs::guarded and
-> CPUTLBEntryFull::extra::arm::guarded), and we were storing the GP bit
-> in the latter during the stage 1 walk but trying to copy the former
-> in combine_cacheattrs().
+On Wed, Oct 25, 2023 at 11:07:33AM -0300, Fabiano Rosas wrote:
+> >> +static int parse_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+> >> +{
+> >> +    g_autofree unsigned long *bitmap = NULL;
+> >> +    struct FixedRamHeader header;
+> >> +    size_t bitmap_size;
+> >> +    long num_pages;
+> >> +    int ret = 0;
+> >> +
+> >> +    ret = fixed_ram_read_header(f, &header);
+> >> +    if (ret < 0) {
+> >> +        error_report("Error reading fixed-ram header");
+> >> +        return -EINVAL;
+> >> +    }
+> >> +
+> >> +    block->pages_offset = header.pages_offset;
+> >
+> > Do you think it is worth sanity checking that 'pages_offset' is aligned
+> > in some way.
+> >
+> > It is nice that we have flexibility to change the alignment in future
+> > if we find 1 MB is not optimal, so I wouldn't want to force 1MB align
+> > check htere. Perhaps we could at least sanity check for alignment at
+> > TARGET_PAGE_SIZE, to detect a gross data corruption problem ?
+> >
 > 
-> Remove the duplicated storage, and always use the field in
-> CPUTLBEntryFull; correctly propagate the stage 1 value to the output
-> in get_phys_addr_twostage().
-> 
-> Note for stable backports: in v8.0 and earlier the field is named
-> result->f.guarded, not result->f.extra.arm.guarded.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1950
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   target/arm/internals.h | 1 -
->   target/arm/ptw.c       | 7 +++++--
->   2 files changed, 5 insertions(+), 3 deletions(-)
+> I don't see why not. I'll add it.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Is there any explanation on why that 1MB offset, and how the number is
+chosen?  Thanks,
 
+-- 
+Peter Xu
 
-r~
 
