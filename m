@@ -2,89 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9FE7DC96E
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734417DC972
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:25:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxkz7-0001L3-Pa; Tue, 31 Oct 2023 05:24:29 -0400
+	id 1qxl00-0002UP-T8; Tue, 31 Oct 2023 05:25:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxkz5-0001KA-M0
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:24:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxkz3-0002cz-VZ
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:24:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698744264;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=woKrOysrOrC1SWStiNpxdwatfSSjIfIlJruyK1fc/60=;
- b=eOtKw4G/E6zJ+5Ks/aMYfrvws5kkowq2MSLFKGopDciu4kzp9wlsurr5lRdbAfBcz5y1Va
- Z5Sg9OIvIId6+BMagqouKd3J/slXzy9OeIehwrbMEC+hovylIBWxT0agSSOSUGnmdKHZBk
- 8tB7CQfjBwk3PvfGqWr0TUraT71mtPU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-mkb9a3BnOV6SRPZMMOxaMQ-1; Tue, 31 Oct 2023 05:24:22 -0400
-X-MC-Unique: mkb9a3BnOV6SRPZMMOxaMQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30932d15a30so2783334f8f.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 02:24:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qxkzy-0002Ta-Vg; Tue, 31 Oct 2023 05:25:23 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qxkzx-0002u2-6I; Tue, 31 Oct 2023 05:25:22 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5409bc907edso8424911a12.0; 
+ Tue, 31 Oct 2023 02:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698744318; x=1699349118; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=gzEZSFmVnJjd1dq4g2w3IjSukfJRXU3CgyhMASuj36k=;
+ b=Bw03e5Lbzu/snYcMWcxBtqddSwKoUO8O+AmZ+J6kzg9UCRsvxtcRXpFXllEKCSPGI/
+ GA3PL6b14xy+sHopMo7EBbt8LJLu0TrnFsJJsx5YMRe0ul0jAKuHBoh3CtfXi74u++cF
+ o8ezz+ki4xLux3GhsCM4ME0OdNiVyso6h68FGMMBmNMuv3p/r4PnWRSndsKTDMhprc9t
+ J76IEJD25dG16B10uRIrYzmFyjvFQUCArW5pzfreMhDG5KHIpcCslHpcl2VIYyUO/spw
+ zpyzSNUe1Nl/0CN0PFA4LTGvWv6Q75aA6KsdNGywMCGqlxtnL7QKcaSwZf6qtlGVdyXb
+ ZDNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698744261; x=1699349061;
- h=in-reply-to:from:references:cc:to:content-language:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=woKrOysrOrC1SWStiNpxdwatfSSjIfIlJruyK1fc/60=;
- b=JjARQOEOlLOGLrNjd3YeiqFxpz3bbgf6M21HI/wbq433YtPrks2HLGP5ChrqP3Tj6g
- sT4BmfprD5iSIIGCtm2hq2b5TXWlgNy6KlC80JLjWVppdBXJ/lAXivgZY/KqGwn6JhBo
- HBhivLRErbLy900lsE4IDPhElJC8PIVQmtwQxXb5rvw+vKHMWpLJdbfspVi3Od8IjlJB
- nsO4ydIhccvD2FV519Q5VYP72m9PEJLiAfxJS3M3BZXbUvowOTSd7rBZmV8nUCwUnGB+
- RGF2B+TFO7Az+GJp/j5s6vRjU7zJyJHv/eyMRMcE+IQe5hAJnrYuWerMcIMGw9dAGi7F
- HCWQ==
-X-Gm-Message-State: AOJu0YwsFdnCma5xyv3NBadv8S8Aa9Tyl/xP6YzCqwrt7TpqxCOTDhFy
- sBljDv0EROFcOGfvwk2kuyRoyDevdLKj0pD7VI6kDPJhr7NNoxp8tZyY7ZpMuaad5u4VpPuriVf
- wBQkEdjFGvCoCybA=
-X-Received: by 2002:a05:6000:70b:b0:32d:8b1a:31ad with SMTP id
- bs11-20020a056000070b00b0032d8b1a31admr12739398wrb.24.1698744261225; 
- Tue, 31 Oct 2023 02:24:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHZ7Ew+69odUXGI98eYjnj+nJldNy0h5yRX30mB+BY2HtznIzyM93PYlskqaB6by8XE5VWHPw==
-X-Received: by 2002:a05:6000:70b:b0:32d:8b1a:31ad with SMTP id
- bs11-20020a056000070b00b0032d8b1a31admr12739380wrb.24.1698744260814; 
- Tue, 31 Oct 2023 02:24:20 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d746:c551:3d67:278e:c0a1:87a2?
- (p200300cfd746c5513d67278ec0a187a2.dip0.t-ipconnect.de.
- [2003:cf:d746:c551:3d67:278e:c0a1:87a2])
- by smtp.gmail.com with ESMTPSA id
- dh17-20020a0560000a9100b00318147fd2d3sm904350wrb.41.2023.10.31.02.24.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 02:24:20 -0700 (PDT)
-Content-Type: multipart/alternative;
- boundary="------------3cXnwnGCc0XsOclLpiI1Apfy"
-Message-ID: <56a64662-ce50-4ab0-92e5-d23abdcb7358@redhat.com>
-Date: Tue, 31 Oct 2023 10:24:18 +0100
+ d=1e100.net; s=20230601; t=1698744318; x=1699349118;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gzEZSFmVnJjd1dq4g2w3IjSukfJRXU3CgyhMASuj36k=;
+ b=SArpYAT5EkIF6Bg6TOt9++DnO/XyfTKqAiYBZva9MhmwEoRam+WM9MjJJeb9y5TiH5
+ fGXZbOa4685j3GhqcwzAapJDGrBhgC5wgwLu/R5490IsVkHyP0hol7h+rZge8VK/CdzV
+ h9Futf5oLWQDmaB+B83OHPITHSLsBppT8EfSRK1Ix6rjVhIDdLmrPTRKqJvCvRLvxUmZ
+ cVO5/0caVryJC8S8IH1vloD/wOjjkNXI/0SilE3Nb4GdoK/5X0EwuPumUXnLKS9BrqOJ
+ mD/yc4z1Ulz8TVtUTUq4q6nhlYGLh7CuFxfVItgj8hwVQBL1vBa1NhUSrVPLUGhQhFdo
+ f9dQ==
+X-Gm-Message-State: AOJu0Yxq+SKPY6AhAWzugX1Qmq/A+1cU52BL8BU7+ru6F/c0YSMNZ08g
+ L6cjeHDsqVPKAV2at6sPYZ/NNtwhBwrq2Y9DyiM=
+X-Google-Smtp-Source: AGHT+IGsbsK4XKExctlPkS6emIi7hzHZUHc+dQ5t6zmv54w2U6tr3FMYv+r4mYNlRGqn4BdwR/KNf6Fm+a7v1BtRDD8=
+X-Received: by 2002:a05:6402:1646:b0:53d:fde3:a99 with SMTP id
+ s6-20020a056402164600b0053dfde30a99mr10032433edx.17.1698744317204; Tue, 31
+ Oct 2023 02:25:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] block/file-posix: fix update_zones_wp() caller
-Content-Language: en-US
-To: Sam Li <faithilikerun@gmail.com>, qemu-devel@nongnu.org
-Cc: hare@suse.de, Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org,
- stefanha@redhat.com, qemu-block@nongnu.org, dmitry.fomichev@wdc.com
 References: <20230825040556.4217-1-faithilikerun@gmail.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230825040556.4217-1-faithilikerun@gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+ <56a64662-ce50-4ab0-92e5-d23abdcb7358@redhat.com>
+In-Reply-To: <56a64662-ce50-4ab0-92e5-d23abdcb7358@redhat.com>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Tue, 31 Oct 2023 17:25:06 +0800
+Message-ID: <CAAAx-8+_t+uRbYORZw+AjqJ2R1pTe2vsfpJYjhM6=L=YQe6BZQ@mail.gmail.com>
+Subject: Re: [PATCH v2] block/file-posix: fix update_zones_wp() caller
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org, dmitry.fomichev@wdc.com,
+ hare@suse.de, qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ stefanha@redhat.com
+Content-Type: multipart/alternative; boundary="000000000000975c780608ffbbc8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,12 +85,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------3cXnwnGCc0XsOclLpiI1Apfy
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+--000000000000975c780608ffbbc8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25.08.23 06:05, Sam Li wrote:
+Looks good, thanks!
+
+Hanna Czenczek <hreitz@redhat.com>=E4=BA=8E2023=E5=B9=B410=E6=9C=8831=E6=97=
+=A5 =E5=91=A8=E4=BA=8C17:24=E5=86=99=E9=81=93=EF=BC=9A
+
+> On 25.08.23 06:05, Sam Li wrote:
+>
 > When the zoned request fail, it needs to update only the wp of
 > the target zones for not disrupting the in-flight writes on
 > these other zones. The wp is updated successfully after the
@@ -114,41 +103,51 @@ On 25.08.23 06:05, Sam Li wrote:
 >
 > Fixed the callers with right offset and nr_zones.
 >
-> Signed-off-by: Sam Li<faithilikerun@gmail.com>
+> Signed-off-by: Sam Li <faithilikerun@gmail.com> <faithilikerun@gmail.com>
 > ---
->   block/file-posix.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>  block/file-posix.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+>
+> Thanks, applied to my block branch:
+>
+> https://gitlab.com/hreitz/qemu/-/commits/block
+>
+> (Rebased on master, and I=E2=80=99ve also fixed the comment to read =E2=
+=80=9Cboundaries=E2=80=9D
+> instead of =E2=80=9Cbounaries=E2=80=9D.  Hope that=E2=80=99s OK!)
+>
+>
+> Hanna
+>
 
-Thanks, applied to my block branch:
+--000000000000975c780608ffbbc8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-https://gitlab.com/hreitz/qemu/-/commits/block
+<div>Looks good, thanks!</div><div><br><div class=3D"gmail_quote"><div dir=
+=3D"ltr" class=3D"gmail_attr">Hanna Czenczek &lt;<a href=3D"mailto:hreitz@r=
+edhat.com">hreitz@redhat.com</a>&gt;=E4=BA=8E2023=E5=B9=B410=E6=9C=8831=E6=
+=97=A5 =E5=91=A8=E4=BA=8C17:24=E5=86=99=E9=81=93=EF=BC=9A<br></div><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
+olid;padding-left:1ex"><u></u>
 
-(Rebased on master, and I’ve also fixed the comment to read “boundaries” 
-instead of “bounaries”.  Hope that’s OK!)
-
-Hanna
---------------3cXnwnGCc0XsOclLpiI1Apfy
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">On 25.08.23 06:05, Sam Li wrote:<br>
+ =20
+   =20
+ =20
+  <div>
+    <div>On 25.08.23 06:05, Sam Li wrote:<br>
     </div>
-    <blockquote type="cite"
-      cite="mid:20230825040556.4217-1-faithilikerun@gmail.com">
-      <pre class="moz-quote-pre" wrap="">When the zoned request fail, it needs to update only the wp of
+    <blockquote type=3D"cite">
+      <pre>When the zoned request fail, it needs to update only the wp of
 the target zones for not disrupting the in-flight writes on
 these other zones. The wp is updated successfully after the
 request completes.
 
 Fixed the callers with right offset and nr_zones.
 
-Signed-off-by: Sam Li <a class="moz-txt-link-rfc2396E" href="mailto:faithilikerun@gmail.com">&lt;faithilikerun@gmail.com&gt;</a>
+Signed-off-by: Sam Li <a href=3D"mailto:faithilikerun@gmail.com" target=3D"=
+_blank">&lt;faithilikerun@gmail.com&gt;</a>
 ---
  block/file-posix.c | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
@@ -157,15 +156,17 @@ Signed-off-by: Sam Li <a class="moz-txt-link-rfc2396E" href="mailto:faithilikeru
     <br>
     Thanks, applied to my block branch:<br>
     <br>
-    <a class="moz-txt-link-freetext" href="https://gitlab.com/hreitz/qemu/-/commits/block">https://gitlab.com/hreitz/qemu/-/commits/block</a><br>
+    <a href=3D"https://gitlab.com/hreitz/qemu/-/commits/block" target=3D"_b=
+lank">https://gitlab.com/hreitz/qemu/-/commits/block</a><br>
     <br>
-    (Rebased on master, and I’ve also fixed the comment to read
-    “boundaries” instead of “bounaries”.  Hope that’s OK!)<br>
+    (Rebased on master, and I=E2=80=99ve also fixed the comment to read
+    =E2=80=9Cboundaries=E2=80=9D instead of =E2=80=9Cbounaries=E2=80=9D.=C2=
+=A0 Hope that=E2=80=99s OK!)</div><div><br>
     <br>
     Hanna<br>
-  </body>
-</html>
+  </div>
 
---------------3cXnwnGCc0XsOclLpiI1Apfy--
+</blockquote></div></div>
 
+--000000000000975c780608ffbbc8--
 
