@@ -2,55 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAAF7DCAAD
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 999557DCAB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:24:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxltn-00021B-0z; Tue, 31 Oct 2023 06:23:03 -0400
+	id 1qxlug-0002oV-1w; Tue, 31 Oct 2023 06:23:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=0CP7=GN=kaod.org=clg@ozlabs.org>)
- id 1qxltl-00020N-5U; Tue, 31 Oct 2023 06:23:01 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=0CP7=GN=kaod.org=clg@ozlabs.org>)
- id 1qxlth-0004f8-V3; Tue, 31 Oct 2023 06:23:00 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SKR6M1zgmz4xSX;
- Tue, 31 Oct 2023 21:22:51 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SKR6J1bVdz4xS7;
- Tue, 31 Oct 2023 21:22:47 +1100 (AEDT)
-Message-ID: <6a2950a9-53b4-4306-a8ea-21250ca00e9d@kaod.org>
-Date: Tue, 31 Oct 2023 11:22:42 +0100
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qxlue-0002oC-Jd
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:23:56 -0400
+Received: from mail-qv1-xf2e.google.com ([2607:f8b0:4864:20::f2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qxlud-0004nB-3l
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:23:56 -0400
+Received: by mail-qv1-xf2e.google.com with SMTP id
+ 6a1803df08f44-66d24ccc6f2so54438006d6.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 03:23:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698747834; x=1699352634; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MKcc/kOqO0R/o/OAUFULcmidUnlZdUnkz5giafdFtA8=;
+ b=QA38vd3jKjWUNifILN6F3KpaYzK3Ap2cQlkRbpcRwy7fbPzuvvAKXzmRGD7XEsFm0L
+ 959243+8EkbWz8c2xwISpt/berDolPMXmf2reEbiIm+Y1WzOHeF6PMjpMzKK+A6DE0/k
+ ul+nElq/MrQLIxiioPfOt34cjCQm8BjQKZJdpBuAhErYUdAfq4KKDx2mXKLIEGPsUuZy
+ 9o1E2bEtdXpWTqBUgbTXTaPlZsOuSmc2T2lcUaLz7DdWWRZ617GvuQ5hj3Zvk3yuVqj8
+ E22UTcmkO0C8h2mf5OxAGsNOsilXwvMNcavvjbLEHiKtWPZUaw34Hsr8YvOe1PmPmUv+
+ /q0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698747834; x=1699352634;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MKcc/kOqO0R/o/OAUFULcmidUnlZdUnkz5giafdFtA8=;
+ b=U9JozPFYVfhlNcgDQI8H+I5MwU5wlohRF4tBE5z+LbO3hKlcK4W9BerP4IO4JYknvB
+ 3n+pBuqLO9lhFmjb+mDAooNpIeTJSsqzv5r8zeTQXDIQmShHwC9xXzWz41euvf2AXBir
+ cMHhahwiGQf5dnCNdgLNKSUJ8kqoFtQg4+ipH10CNtQx/2/fwwbsPHpmW8mpbNHHa3bl
+ fC8PAohbZ7I2MGKsxq5PDQJYgHT2goUy4jzp6Xdtap+NJfpHXdPd7voWMHO0cP/8253G
+ jsh1cYNXQZQ9O2j844iqOVk/DPwEmw3prqH+GmaTE/bNf9xlRw3SOprRKaNEwEJ0eTWl
+ r0ZQ==
+X-Gm-Message-State: AOJu0YzqTIaJV+zdZQKxcSIL8Q6RiOW9p1ZFtPJ31SmloPV4F/OeoRn2
+ 6QZSwp5r4aEEo8qakC1nWRvqlRtG1RSowjwqHWQ/wl6EFGMDaw==
+X-Google-Smtp-Source: AGHT+IHss0ThvqElsO+V9MA0oYVk87QNjIM/A0RcaQGcoBdABlIne0GDm7qwh6znUKBXpDwBPrUQBqkvytrbTEleMMs=
+X-Received: by 2002:ad4:5a54:0:b0:66d:670:d425 with SMTP id
+ ej20-20020ad45a54000000b0066d0670d425mr2931969qvb.31.1698747833819; Tue, 31
+ Oct 2023 03:23:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ppc: qtest already exports qtest_rtas_call()
-Content-Language: en-US
-To: quintela@redhat.com, David Gibson <david@gibson.dropbear.id.au>
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>
-References: <20231030163834.4638-1-quintela@redhat.com>
- <6257f025-a000-4f89-88ae-704f51afdb73@kaod.org> <ZUBUqpn26N/hc34x@zatzit>
- <878r7j9jyl.fsf@secure.mitica>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <878r7j9jyl.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=0CP7=GN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20231030133712.2822276-1-armbru@redhat.com>
+ <20231030133712.2822276-6-armbru@redhat.com>
+In-Reply-To: <20231030133712.2822276-6-armbru@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 31 Oct 2023 14:23:41 +0400
+Message-ID: <CAJ+F1CKEeBS85GYNNtbNaa9wZejWPvy8icK66XmVyORTvohb2Q@mail.gmail.com>
+Subject: Re: [PATCH 5/5] dump: Drop redundant check for empty dump
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2e;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qv1-xf2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,54 +87,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/31/23 11:15, Juan Quintela wrote:
-> David Gibson <david@gibson.dropbear.id.au> wrote:
->> On Mon, Oct 30, 2023 at 05:41:36PM +0100, Cédric le Goater wrote:
->>> On 10/30/23 17:38, Juan Quintela wrote:
->>>> Having two functions with the same name is a bad idea.  As spapr only
->>>> uses the function locally, made it static.
->>>>
->>>> When you compile with clang, you get this compilation error:
->>>>
->>>> /usr/bin/ld: tests/qtest/libqos/libqos.fa.p/.._libqtest.c.o: in function `qtest_rtas_call':
->>>> /scratch/qemu/clang/full/all/../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:1195:
->>>> multiple definition of `qtest_rtas_call';
->>>> libqemu-ppc64-softmmu.fa.p/hw_ppc_spapr_rtas.c.o:/scratch/qemu/clang/full/all/../../../../../mnt/code/qemu/full/hw/ppc/spapr_rtas.c:536:
->>>> first defined here
->>>> clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
->>>> ninja: build stopped: subcommand failed.
->>>> make: *** [Makefile:162: run-ninja] Error 1
->>>>
->>>> Signed-off-by: Juan Quintela <quintela@redhat.com>
->>>
->>>
->>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
->>
->> I think changing the name of one of the functions would be even
->> better.  Making it static means it won't confuse the compiler, but it
->> can still confuse people.
+On Mon, Oct 30, 2023 at 5:37=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+>
+> dump_init() first computes the size of the dump, taking the filter
+> area into account, and fails if its zero.  It then looks for memory in
+> the filter area, and fails if there is none.
+>
+> This is redundant: if the size of the dump is zero, there is no
+> memory, and vice versa.  Delete this check.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Since it is a spapr file, something like :
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-   static uint64_t spapr_qtest_rtas_call(...)
+> ---
+>  dump/dump.c | 26 --------------------------
+>  1 file changed, 26 deletions(-)
+>
+> diff --git a/dump/dump.c b/dump/dump.c
+> index d888e4bd3c..03627a4c17 100644
+> --- a/dump/dump.c
+> +++ b/dump/dump.c
+> @@ -1674,26 +1674,6 @@ static void create_kdump_vmcore(DumpState *s, Erro=
+r **errp)
+>      }
+>  }
+>
+> -static int validate_start_block(DumpState *s)
+> -{
+> -    GuestPhysBlock *block;
+> -
+> -    if (!dump_has_filter(s)) {
+> -        return 0;
+> -    }
+> -
+> -    QTAILQ_FOREACH(block, &s->guest_phys_blocks.head, next) {
+> -        /* This block is out of the range */
+> -        if (block->target_start >=3D s->filter_area_begin + s->filter_ar=
+ea_length ||
+> -            block->target_end <=3D s->filter_area_begin) {
+> -            continue;
+> -        }
+> -        return 0;
+> -   }
+> -
+> -    return -1;
+> -}
+> -
+>  static void get_max_mapnr(DumpState *s)
+>  {
+>      GuestPhysBlock *last_block;
+> @@ -1842,12 +1822,6 @@ static void dump_init(DumpState *s, int fd, bool h=
+as_format,
+>          goto cleanup;
+>      }
+>
+> -    /* Is the filter filtering everything? */
+> -    if (validate_start_block(s) =3D=3D -1) {
+> -        error_setg(errp, QERR_INVALID_PARAMETER, "begin");
+> -        goto cleanup;
+> -    }
+> -
+>      /* get dump info: endian, class and architecture.
+>       * If the target architecture is not supported, cpu_get_dump_info() =
+will
+>       * return -1.
+> --
+> 2.41.0
+>
+>
 
-?
 
-Thanks,
-
-C.
-
-
-> I think that made it static when it is not used anywhere else is a good
-> idea.
-> 
-> After that, I don't understand it enough to make a rename that makes
-> sense.
-> 
-> This patch is the typical fix for "make all" with clang fails here.
-> I let ppc maintainers to do anything more sensible.
-> 
-> Later, Juan.
-> 
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
