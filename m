@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3C07DC6C6
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 07:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9127DC6E5
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 08:06:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxifj-0003cC-Vm; Tue, 31 Oct 2023 02:56:20 -0400
+	id 1qxio7-0005Ap-NS; Tue, 31 Oct 2023 03:04:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qxifh-0003bn-MC
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 02:56:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qxifg-00012f-5j
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 02:56:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698735375;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=TzrfrgA7fJcvJKS9N60Gep7PhGhJ3NE4YcDO0CiNs7g=;
- b=UuclcsLQY/ouPE7Phel0hD7zgq+0Qh7NWVwaEo8HKD1A3crDQXKBHvL9vtO5kEd7M2ZEVK
- tkcoK7NKCNceEL3Z1TUn8TtyxU73Y78wPNB+Q6S6F2Q91v58C8wg0Dd3/dLF3GoSiKK+wT
- P/JPO7UhnpPgk3EBwL90zLGZ2xLaEYc=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-436-XyJzyGU8NN6UR-Q5CQYtVw-1; Tue, 31 Oct 2023 02:56:13 -0400
-X-MC-Unique: XyJzyGU8NN6UR-Q5CQYtVw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-53e305a5a1bso3891348a12.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 23:56:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qxio6-0005Ah-Ef
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 03:04:58 -0400
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qxinu-0002Ac-4t
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 03:04:58 -0400
+Received: by mail-qt1-x829.google.com with SMTP id
+ d75a77b69052e-41cc44736f2so39094581cf.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 00:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698735885; x=1699340685; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ucltFnCXkeFj7YLsU4TC5x/GxybTsoXKv0SH/ZgzoKU=;
+ b=nXLE+VGbl2LNUYAL8zqYzYp4XTgQx05OQFeAq3Ba0eOgGz6SfCPbNOkaWkm4bLP2Im
+ rkVgwsPHXW6QcWN6Y+3ju3fEutTW7qzuKkOmsQExeKp13jRt2iW5Ao14NgVl+rNxIqrS
+ RGtQVrN3XkYIC8GDo0SObGGrySODAvbaOEZoTOEEamhhhphG1CsgdgkTMoU2S7+Nzd/C
+ T9h8nFynvcGEldxU7o+7jGHFHeEQhYx0jE7t3SREPl36iaE/emC4NaZ5Wb+RZwJnpkv2
+ i7TLH8ZDTXOIOtGmAn9/8eW4hAYviwhXujbPhIjtjfeZqz4qHtXEP+M6TXeAmJhYwfa9
+ AHDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698735371; x=1699340171;
+ d=1e100.net; s=20230601; t=1698735885; x=1699340685;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TzrfrgA7fJcvJKS9N60Gep7PhGhJ3NE4YcDO0CiNs7g=;
- b=xCMb7zJYGYuGMoBqpBR7Vw4qh3dij8tJY0yA3gMVWC4QxkQP6dOzV2ch7o6jlpmkXC
- PFC5N4R1fndQLfTfJwWiNggS+WcPWeMPDTNdUvZHnWF4V5foJp1C1rQeGc0ZGi4T1I95
- uH0JQrW52hYu4BmA4OOLSGuLOU1DMvxsJstDEcjjJNjHv8aoAio5j5wT3TfZQulAlGYc
- 5mefUJpERen1ni26cxURm/eX9SeLuz+Nj7t027FCGJsu4P8Zdr/MOhFYIwkUCgItR7WK
- lFzx87DQOOZ9rlNJ4Hx9PuaCBO9ZlycGFk1ZtV2wuJPO1Of10SGIliunPlzVFVAi+qZc
- AstQ==
-X-Gm-Message-State: AOJu0Yx5HakE4hfoWDpdiu4LHw4vRy15OgwRK/onUl846NFf8W09MEZ0
- m4+WY5kIn6LPCOcg/9ZBo9y5HyV9BWeEhj1jS9NNkNZBL4by4SOXhXEvBUO0WHL6GkpeTlyDJA2
- ffqi4JtmiLrbqmKFw/G5n+mPRJSfKiGuopAZIXgnBAg==
-X-Received: by 2002:a50:8e58:0:b0:543:4fdb:de84 with SMTP id
- 24-20020a508e58000000b005434fdbde84mr2566635edx.7.1698735371628; 
- Mon, 30 Oct 2023 23:56:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHZkjyo659LNIE2LbGkjURpJJb0HOBBts1uGTrqdVVHBZk8kmqJFTWaYgv25CVTFHtCAeO77JKTC1swM7jquGE=
-X-Received: by 2002:a50:8e58:0:b0:543:4fdb:de84 with SMTP id
- 24-20020a508e58000000b005434fdbde84mr2566628edx.7.1698735371357; Mon, 30 Oct
- 2023 23:56:11 -0700 (PDT)
+ bh=ucltFnCXkeFj7YLsU4TC5x/GxybTsoXKv0SH/ZgzoKU=;
+ b=euCLchNLjKdanQs+nLRaFoKQU1628085oASB9PvAaq5doAHavHDOK/YR1Hwqcozi20
+ k1VLPf8gnpH29eh7E8CgqFczy6pXDXKWy085k9qDxYmJUaz4+RXqeewh6DQs0wOKBpux
+ BigOVnXg6n8jGQW0or7aU2XGPHPvLoS+6cht4QvVqerrWhWm9LOxrLAgyVr1Dvw/jAkv
+ +7X0QAb9HGEhRLNlyBGSxZBgS8C/IoOSgNw9MB0Z2cj66NaeQM/tc3BMn2mjIojgmn3p
+ UQe/Y8BA3GM4MRiWwq/v3OBOh/C5KxdaOTTu9jfVHNMn9xnUhlLyCY7DWjDDhwkIeiVC
+ bASw==
+X-Gm-Message-State: AOJu0YyySpzWczjkZoEf5tmFP96hctuP3RQN0H+1ZDpi28aqha7kpODw
+ NM0NXGmx1wHVyzcSs7Fiuggi1AwN5SIX3iHmgHA=
+X-Google-Smtp-Source: AGHT+IF89MwDRV1Jy+BxlF6KJPb97nlP9If7q5emtQs4VCiv0BiWqBS1DMvIRg48bK+fR/luESc6Wp1TgRsMG4b2M8U=
+X-Received: by 2002:ac8:5846:0:b0:41c:bf67:37bb with SMTP id
+ h6-20020ac85846000000b0041cbf6737bbmr17660837qth.59.1698735884835; Tue, 31
+ Oct 2023 00:04:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231030133712.2822276-1-armbru@redhat.com>
- <20231030133712.2822276-4-armbru@redhat.com>
-In-Reply-To: <20231030133712.2822276-4-armbru@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 31 Oct 2023 10:55:59 +0400
-Message-ID: <CAMxuvaw9s0oiL=h8z2GH_d-a=SKRNwnFjJaT0qz4LGDQxSWKFQ@mail.gmail.com>
-Subject: Re: [PATCH 3/5] dump: Recognize "fd:" protocols on Windows hosts
-To: Markus Armbruster <armbru@redhat.com>
+References: <20231030104755.124188-1-marcandre.lureau@redhat.com>
+ <e1b841d3-9423-4257-b45d-9a5f269813f2@tls.msk.ru>
+In-Reply-To: <e1b841d3-9423-4257-b45d-9a5f269813f2@tls.msk.ru>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 31 Oct 2023 11:04:33 +0400
+Message-ID: <CAJ+F1CLgPEPoT-5KbZvzyBhQBWX6iZcRVi7ZnXRTeUgus2HMQA@mail.gmail.com>
+Subject: Re: [PATCH v7 00/23] Make Pixman an optional dependency
+To: Michael Tokarev <mjt@tls.msk.ru>, Anton Kochkov <anton.kochkov@proton.me>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,55 +86,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 5:37=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> A few QMP command can work with named file descriptors.
->
-> The only way to create a named file descriptor used to be QMP command
-> getfd, which only works on POSIX hosts.  Thus, named file descriptors
-> were actually usable only there.
->
-> They became usable on Windows hosts when we added QMP command
-> get-win32-socket (commit 4cda177c601 "qmp: add 'get-win32-socket'").
->
-> Except in dump-guest-memory, because qmp_dump_guest_memory() compiles
-> its named file descriptor code only #if !defined(WIN32).
->
-> Compile it unconditionally, like we do for the other commands
-> supporting them.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Hi
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+On Mon, Oct 30, 2023 at 9:29=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
+ote:
+>
+> (Trim Cc: list)
+>
+> 30.10.2023 13:47, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > Hi,
+> >
+> > QEMU system emulators can be made to compile and work without Pixman.
+>
+> Out of curiocity (not opposing to this in any way), - why pixman is such =
+a
+> big dependency to require quite a lot of code refactoring?
 
-> ---
->  dump/dump.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/dump/dump.c b/dump/dump.c
-> index d8ea364af2..a5e9a06ef1 100644
-> --- a/dump/dump.c
-> +++ b/dump/dump.c
-> @@ -2130,14 +2130,12 @@ void qmp_dump_guest_memory(bool paging, const cha=
-r *protocol,
->          return;
->      }
->
-> -#if !defined(WIN32)
->      if (strstart(protocol, "fd:", &p)) {
->          fd =3D monitor_get_fd(monitor_cur(), p, errp);
->          if (fd =3D=3D -1) {
->              return;
->          }
->      }
-> -#endif
->
->      if  (strstart(protocol, "file:", &p)) {
->          fd =3D qemu_open_old(p, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY,=
- S_IRUSR);
-> --
-> 2.41.0
->
+It's not a big dependency (70k loc), but it's one we can drop to a
+have smaller UI-less qemu. The changes to accomodate an optional
+pixman are imho fairly small.
 
+Anton, are there other reasons?
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
