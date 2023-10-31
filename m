@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE337DC524
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 05:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5DA87DC525
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 05:03:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxfvx-0001MO-Dw; Tue, 31 Oct 2023 00:00:53 -0400
+	id 1qxfvx-0001MQ-DQ; Tue, 31 Oct 2023 00:00:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qxfvg-0001KZ-Te
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:00:38 -0400
-Received: from mail-pg1-f175.google.com ([209.85.215.175])
+ id 1qxfvg-0001KM-Fb
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:00:36 -0400
+Received: from mail-pl1-f178.google.com ([209.85.214.178])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qxfva-0005D5-SJ
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:00:36 -0400
-Received: by mail-pg1-f175.google.com with SMTP id
- 41be03b00d2f7-5ab94fc098cso3376555a12.1
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 21:00:29 -0700 (PDT)
+ id 1qxfvc-0005Df-OD
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:00:34 -0400
+Received: by mail-pl1-f178.google.com with SMTP id
+ d9443c01a7336-1cc3bb32b5dso21342545ad.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 21:00:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698724828; x=1699329628;
+ d=1e100.net; s=20230601; t=1698724829; x=1699329629;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NYf3Mp/7wpNrEOrqYg1zrC2cEXg6lKB+hhoqy9GgIhw=;
- b=NVkPYeRDXqSg22sOmK8x6ymHsWzUTsBMez7KyWb/77t8dMI0os5GjTraptKEEM/Qj+
- aAfurARZsiRNyZWxBtZzeWVwmEMvYkh3vb4RPIH8In3eXx8VsZ0fvyFR2lUIZXCjS9lk
- 2QMgNV2JLq2ARxa289BsputX97FR8aH8PM4KxssxgIhVdlhcsCAGluP2Xo58uNAOrrc8
- 9NZon8G2krFmYYLVLs1RsJ0+jkMcuMl6g1h8jeAyg4l26utEkxO9RXiLRf8Uf3m/3F4W
- vIOvJL99RQs+ljkvZ7TwCO1mqjavFGMT1sroDcFRsIrqWeD+fJsgGoQwtC5b0ngcWDFF
- VOHA==
-X-Gm-Message-State: AOJu0YxzgoxKCGhPAUDaCKp3uuiGz9bi9+jrzzlZDSO+tRWhPuLBT8kZ
- kReQCNhM6cwE1KXrJYu9As9fGDqQqPWzPQ==
-X-Google-Smtp-Source: AGHT+IG46eA50iSqcPKCEsnlDAhhmKxBH0TUINvjwTLrEsUTq4KXn0J97DHknv0JFkzwLX/agkztkw==
-X-Received: by 2002:a05:6a20:e114:b0:14d:abc:73dc with SMTP id
- kr20-20020a056a20e11400b0014d0abc73dcmr11777455pzb.32.1698724827828; 
- Mon, 30 Oct 2023 21:00:27 -0700 (PDT)
+ bh=CnroBZ0wk45t3A1wwABp8NCUEpsFnTDAcOrQjgGFhUQ=;
+ b=WIoK9KI/lTOGb8pxRPFrWCsnyZSUYL1ZzFuvFe5U3ofEeiWSfrl8+pP9l0yRUe/Jkt
+ 0Tnr88Zsu+0JFnrIMOpqu+dTTR7T3qcpShMCyX0rE/oA2Mk1f2t6JTn2N+KlmdBz4SbN
+ UYiSzZJJOl3Kf98Xc2vlHXYJ4I76beFDZ/q48DEip0CuTCUrLb+VSbEF9QQvjOSi/N2o
+ N6DA7JtRdVAm1F+reMhZkaVv9GURfxAysBAVCHX7uRSAhohlDK6JkmOpejz1C52dlpGD
+ fBAJmRYBY7opun4iuLsvdqZZgZkm2rLGJTajXBocfFPzqqmfUEFkNxy7wgGUKVlwOiXP
+ 3xgw==
+X-Gm-Message-State: AOJu0YxvoGad7KOLaG5Kp9l9upvWC7rkt78D+Kv5BwZXrp+S0oLySH1u
+ 3H7307Gv4SJPP1LeXXqQmcRqSIRGVo0FOA==
+X-Google-Smtp-Source: AGHT+IEquqAV+Tu86Z+EPl2OAANes0c8dItwboUTP1F9wLTP06/TCTFAhTFxm8IZm8r2B/tTTEz7Mg==
+X-Received: by 2002:a17:902:ea0d:b0:1cc:4f55:db72 with SMTP id
+ s13-20020a170902ea0d00b001cc4f55db72mr5298181plg.0.1698724829165; 
+ Mon, 30 Oct 2023 21:00:29 -0700 (PDT)
 Received: from localhost.localdomain ([2601:642:4c02:7b37:49a8:6e6e:cee6:cee7])
  by smtp.gmail.com with ESMTPSA id
- h4-20020a170902f54400b001bbfa86ca3bsm257975plf.78.2023.10.30.21.00.25
+ h4-20020a170902f54400b001bbfa86ca3bsm257975plf.78.2023.10.30.21.00.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Oct 2023 21:00:27 -0700 (PDT)
+ Mon, 30 Oct 2023 21:00:28 -0700 (PDT)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
 Cc: Joelle van Dyne <j@getutm.app>, Stefan Berger <stefanb@linux.ibm.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 02/14] tpm_crb: CTRL_RSP_ADDR is 64-bits wide
-Date: Mon, 30 Oct 2023 21:00:05 -0700
-Message-ID: <20231031040021.65582-3-j@getutm.app>
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Subject: [PATCH v4 03/14] tpm_ppi: refactor memory space initialization
+Date: Mon, 30 Oct 2023 21:00:06 -0700
+Message-ID: <20231031040021.65582-4-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231031040021.65582-1-j@getutm.app>
 References: <20231031040021.65582-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.215.175; envelope-from=osy86dev@gmail.com;
- helo=mail-pg1-f175.google.com
+Received-SPF: pass client-ip=209.85.214.178; envelope-from=osy86dev@gmail.com;
+ helo=mail-pl1-f178.google.com
 X-Spam_score_int: -13
 X-Spam_score: -1.4
 X-Spam_bar: -
 X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
  FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
  HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,77 +81,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The register is actually 64-bits but in order to make this more clear
-than the specification, we define two 32-bit registers:
-CTRL_RSP_LADDR and CTRL_RSP_HADDR to match the CTRL_CMD_* naming. This
-deviates from the specs but is way more clear.
-
-Previously, the only CRB device uses a fixed system address so this
-was not an issue. However, once we support SysBus CRB device, the
-address can be anywhere in 64-bit space.
+Instead of calling `memory_region_add_subregion` directly, we defer to
+the caller to do it. This allows us to re-use the code for a SysBus
+device.
 
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 ---
- include/hw/acpi/tpm.h      | 3 ++-
- hw/tpm/tpm_crb_common.c    | 3 ++-
- tests/qtest/tpm-crb-test.c | 2 +-
- tests/qtest/tpm-util.c     | 2 +-
- 4 files changed, 6 insertions(+), 4 deletions(-)
+ hw/tpm/tpm_ppi.h        | 10 +++-------
+ hw/tpm/tpm_crb.c        |  4 ++--
+ hw/tpm/tpm_crb_common.c |  3 +++
+ hw/tpm/tpm_ppi.c        |  5 +----
+ hw/tpm/tpm_tis_isa.c    |  5 +++--
+ 5 files changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/include/hw/acpi/tpm.h b/include/hw/acpi/tpm.h
-index 579c45f5ba..f60bfe2789 100644
---- a/include/hw/acpi/tpm.h
-+++ b/include/hw/acpi/tpm.h
-@@ -174,7 +174,8 @@ REG32(CRB_CTRL_CMD_SIZE, 0x58)
- REG32(CRB_CTRL_CMD_LADDR, 0x5C)
- REG32(CRB_CTRL_CMD_HADDR, 0x60)
- REG32(CRB_CTRL_RSP_SIZE, 0x64)
--REG32(CRB_CTRL_RSP_ADDR, 0x68)
-+REG32(CRB_CTRL_RSP_LADDR, 0x68)
-+REG32(CRB_CTRL_RSP_HADDR, 0x6C)
- REG32(CRB_DATA_BUFFER, 0x80)
+diff --git a/hw/tpm/tpm_ppi.h b/hw/tpm/tpm_ppi.h
+index bf5d4a300f..30863c6438 100644
+--- a/hw/tpm/tpm_ppi.h
++++ b/hw/tpm/tpm_ppi.h
+@@ -20,17 +20,13 @@ typedef struct TPMPPI {
+ } TPMPPI;
  
- #define TPM_CRB_ADDR_BASE           0xFED40000
+ /**
+- * tpm_ppi_init:
++ * tpm_ppi_init_memory:
+  * @tpmppi: a TPMPPI
+- * @m: the address-space / MemoryRegion to use
+- * @addr: the address of the PPI region
+  * @obj: the owner object
+  *
+- * Register the TPM PPI memory region at @addr on the given address
+- * space for the object @obj.
++ * Creates the TPM PPI memory region.
+  **/
+-void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
+-                  hwaddr addr, Object *obj);
++void tpm_ppi_init_memory(TPMPPI *tpmppi, Object *obj);
+ 
+ /**
+  * tpm_ppi_reset:
+diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
+index 3ef4977fb5..598c3e0161 100644
+--- a/hw/tpm/tpm_crb.c
++++ b/hw/tpm/tpm_crb.c
+@@ -107,8 +107,8 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
+         TPM_CRB_ADDR_BASE + sizeof(s->state.regs), &s->state.cmdmem);
+ 
+     if (s->state.ppi_enabled) {
+-        tpm_ppi_init(&s->state.ppi, get_system_memory(),
+-                     TPM_PPI_ADDR_BASE, OBJECT(s));
++        memory_region_add_subregion(get_system_memory(),
++            TPM_PPI_ADDR_BASE, &s->state.ppi.ram);
+     }
+ 
+     if (xen_enabled()) {
 diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
-index fa463f295f..01b35808f6 100644
+index 01b35808f6..bee0b71fee 100644
 --- a/hw/tpm/tpm_crb_common.c
 +++ b/hw/tpm/tpm_crb_common.c
-@@ -197,7 +197,8 @@ void tpm_crb_reset(TPMCRBState *s, uint64_t baseaddr)
-     s->regs[R_CRB_CTRL_CMD_LADDR] = (uint32_t)baseaddr;
-     s->regs[R_CRB_CTRL_CMD_HADDR] = (uint32_t)(baseaddr >> 32);
-     s->regs[R_CRB_CTRL_RSP_SIZE] = CRB_CTRL_CMD_SIZE;
--    s->regs[R_CRB_CTRL_RSP_ADDR] = (uint32_t)baseaddr;
-+    s->regs[R_CRB_CTRL_RSP_LADDR] = (uint32_t)baseaddr;
-+    s->regs[R_CRB_CTRL_RSP_HADDR] = (uint32_t)(baseaddr >> 32);
+@@ -214,4 +214,7 @@ void tpm_crb_init_memory(Object *obj, TPMCRBState *s, Error **errp)
+         "tpm-crb-mmio", sizeof(s->regs));
+     memory_region_init_ram(&s->cmdmem, obj,
+         "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
++    if (s->ppi_enabled) {
++        tpm_ppi_init_memory(&s->ppi, obj);
++    }
+ }
+diff --git a/hw/tpm/tpm_ppi.c b/hw/tpm/tpm_ppi.c
+index 7f74e26ec6..40cab59afa 100644
+--- a/hw/tpm/tpm_ppi.c
++++ b/hw/tpm/tpm_ppi.c
+@@ -44,14 +44,11 @@ void tpm_ppi_reset(TPMPPI *tpmppi)
+     }
+ }
  
-     s->be_buffer_size = MIN(tpm_backend_get_buffer_size(s->tpmbe),
-                             CRB_CTRL_CMD_SIZE);
-diff --git a/tests/qtest/tpm-crb-test.c b/tests/qtest/tpm-crb-test.c
-index 396ae3f91c..9d30fe8293 100644
---- a/tests/qtest/tpm-crb-test.c
-+++ b/tests/qtest/tpm-crb-test.c
-@@ -28,7 +28,7 @@ static void tpm_crb_test(const void *data)
-     uint32_t csize = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_SIZE);
-     uint64_t caddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_LADDR);
-     uint32_t rsize = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_SIZE);
--    uint64_t raddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_ADDR);
-+    uint64_t raddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_LADDR);
-     uint8_t locstate = readb(TPM_CRB_ADDR_BASE + A_CRB_LOC_STATE);
-     uint32_t locctrl = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL);
-     uint32_t locsts = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_STS);
-diff --git a/tests/qtest/tpm-util.c b/tests/qtest/tpm-util.c
-index 1c0319e6e7..dd02057fc0 100644
---- a/tests/qtest/tpm-util.c
-+++ b/tests/qtest/tpm-util.c
-@@ -25,7 +25,7 @@ void tpm_util_crb_transfer(QTestState *s,
-                            unsigned char *rsp, size_t rsp_size)
+-void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
+-                  hwaddr addr, Object *obj)
++void tpm_ppi_init_memory(TPMPPI *tpmppi, Object *obj)
  {
-     uint64_t caddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_LADDR);
--    uint64_t raddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_ADDR);
-+    uint64_t raddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_LADDR);
+     tpmppi->buf = qemu_memalign(qemu_real_host_page_size(),
+                                 HOST_PAGE_ALIGN(TPM_PPI_ADDR_SIZE));
+     memory_region_init_ram_device_ptr(&tpmppi->ram, obj, "tpm-ppi",
+                                       TPM_PPI_ADDR_SIZE, tpmppi->buf);
+     vmstate_register_ram(&tpmppi->ram, DEVICE(obj));
+-
+-    memory_region_add_subregion(m, addr, &tpmppi->ram);
+ }
+diff --git a/hw/tpm/tpm_tis_isa.c b/hw/tpm/tpm_tis_isa.c
+index 0367401586..d596f38c0f 100644
+--- a/hw/tpm/tpm_tis_isa.c
++++ b/hw/tpm/tpm_tis_isa.c
+@@ -134,8 +134,9 @@ static void tpm_tis_isa_realizefn(DeviceState *dev, Error **errp)
+                                 TPM_TIS_ADDR_BASE, &s->mmio);
  
-     qtest_writeb(s, TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL, 1);
+     if (s->ppi_enabled) {
+-        tpm_ppi_init(&s->ppi, isa_address_space(ISA_DEVICE(dev)),
+-                     TPM_PPI_ADDR_BASE, OBJECT(dev));
++        tpm_ppi_init_memory(&s->ppi, OBJECT(dev));
++        memory_region_add_subregion(isa_address_space(ISA_DEVICE(dev)),
++                                    TPM_PPI_ADDR_BASE, &s->ppi.ram);
+     }
+ }
  
 -- 
 2.41.0
