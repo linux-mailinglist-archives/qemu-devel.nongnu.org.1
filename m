@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BBC7DCEC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B94497DCEC8
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:09:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpQ7-0007ng-C3; Tue, 31 Oct 2023 10:08:39 -0400
+	id 1qxpQo-00005O-Tr; Tue, 31 Oct 2023 10:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxpQ3-0007mF-70
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:08:37 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxpQm-0008Qw-Dq
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:09:20 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxpPz-0003Hq-Jd
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:08:33 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6bf03b98b9bso4915149b3a.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:08:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxpQk-0003Pm-S5
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:09:20 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5431614d90eso3985087a12.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:09:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698761310; x=1699366110; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1698761357; x=1699366157; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DRjBWf6bHMPR3RkpPgDb61jJ3A0hzo0if24G0b5t9UI=;
- b=GvqIOVjMDVH2AIGt9Rk6HqBTmRg7ANtx6/olk+ktR6XoszyaDEjcyEq8zQHBe6RFAm
- MKzyU6pnJnHmZfdjTBERmGNSBto7xRJS5BDOfnMk/layjxLsyMgWGVbntQwGyvcz3ync
- 17jEIPE5niFmhxmPyKWbNBQhJUrAvKb4XVe4b3Y5kXtnhg1SYqrKmCN50zWh1RIGRiql
- BjE3/0lhGjYiyZ5JBEwQwxTUuVkHUrQOmflbTn/lGt/PnjA7xr1bwz67T3v4vm9OHUFG
- HqjJnDCT3G5SFSmrL5z//idlE4rgG2Tnf5f8AhKzXS6QQQedMolB0YGyIb7XtTC8sJOL
- v/dA==
+ bh=tCy6zYKycowf25avNSeyDM1CyW/gm/wqCwZqBTXuArk=;
+ b=JIEsP0BpaIxQoyjHsSpIrhT2FGkRa6H+BHsAdtvfvBXIKRZAIaXSLXXhXDdh33d+KX
+ 7bdmwoC+0aGjngD1DH93YkOYvXOeeXaXjpBjV8sBNkTCLvWAqhlh+T/WP6aMIQRrQaJ6
+ Ed+R7aAyEyxAHspiLII7D2/scEQCYCt5xZ1SUXJZEDCRCWDhTIDkBFFk90F3NWuxVvG6
+ d1BlINsdhe1kXVqua4fXp9izRFzZS8BEzz4qS+DA5vZWPWcaEUxz98xvDGxvGQvELhz4
+ vIbgQM4hfmN6Z3IYqrw0SPySe8FUeiv+lvodZVFgLxdA0n7QVlzkdwVjDLLXzK/lUPii
+ Gozw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698761310; x=1699366110;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698761357; x=1699366157;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DRjBWf6bHMPR3RkpPgDb61jJ3A0hzo0if24G0b5t9UI=;
- b=ClEn66YDE65leggr/mW6yX406HCWnZKVllULrvjpx6fFg+34PMeb4iRT44Aozn0IVv
- upmf2Kkjqsgr7es8jQL1hF92OIDAP/f5YrQ0NQ4OGN3lTFxoEB46oCadNGFjjPjPIPjp
- GC8XvGGZdpHbussaTUGkRUTWqbFBMUa3prczUtX2hFwyLeqR65bTR1lXjFKgxmr6UvvK
- S4GLtCyGKpknmhZwD3O4v9mvG/bgnPej6atuzm2EDEHFKNziB9l1YP4QMiMCFDAeyvjY
- l6XdzA6GkmmNbnjWeiz0H6J+lerZ0nJmBICD96dbucogE0nJFP02/IEZEPt1srRIY/72
- eeew==
-X-Gm-Message-State: AOJu0Ywi2yDycCurwnFIEppVMtDa+Cau1jzTrXoTpYcVyoHKEnsIXiI4
- KCbkc4Ui8XObXlMHnz3hspG9eg==
-X-Google-Smtp-Source: AGHT+IGqx1xcyUF8USIgs5eULlguwBcu3Uoz8bYdUHARYr13j271uzkZJEmjIfkR/kdLllvjmYvpmw==
-X-Received: by 2002:a05:6a20:e106:b0:128:ffb7:dcfe with SMTP id
- kr6-20020a056a20e10600b00128ffb7dcfemr3711831pzb.1.1698761309908; 
- Tue, 31 Oct 2023 07:08:29 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- k20-20020aa788d4000000b0068fbaea118esm1293772pff.45.2023.10.31.07.08.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 07:08:29 -0700 (PDT)
-Message-ID: <c0479a28-1e95-480a-abaf-faf8ee12743e@linaro.org>
-Date: Tue, 31 Oct 2023 07:08:27 -0700
+ bh=tCy6zYKycowf25avNSeyDM1CyW/gm/wqCwZqBTXuArk=;
+ b=NzEc/ZXWPQsEcz0FqvfKm/Yg2TQGLAQ38k+YeK9aaMvAUNoanCcnWJHEPgyGsVZP9G
+ siYKKjo1PQ4iAurrfxCAiG6jb0chGRYvLhpM1etGRtkwDj2fOuDZ1erwzQd66RQyPQ8e
+ Et1ZDJYes5zyx5aGnSVrUYzw1CKrnTTbLzw/6nbMUJBz8U4e6Z9eLMhx3F6xBUB0AzUo
+ LhOyIg7zOYjQ77KZNYGLy7aps/aEXCgaVBdl7X+MC0Nmoudw7E3HcQ2VjwqgQhXlSHTr
+ mP19pLSpCybEYMSH6pyKzmcXWdsPtdueFjk8dvZtn5h3nu7GQ/Ovnl2NlY4pAz1CefcQ
+ 6Trg==
+X-Gm-Message-State: AOJu0YwBCFv3NUHlS4I+9VWgOvWAa4/Sg69qTAQKbxPREFDusboiNVz/
+ FZj57es6EQ8cysIlf1rUIHhgx80CHJ2FbTpPiXNKX4U1kpDus6rA
+X-Google-Smtp-Source: AGHT+IGsZcyK5e98yjAyW/VjFb4A1UW7ewGk0AGD6sHy6wNYidvbPKXVtYTVRv0nHOv6wMyGs2n6JALAgl0slQHbwDg=
+X-Received: by 2002:a05:6402:3586:b0:53d:d879:34f3 with SMTP id
+ y6-20020a056402358600b0053dd87934f3mr12452566edc.1.1698761356960; Tue, 31 Oct
+ 2023 07:09:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm: Fix SVE STR increment
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-stable@nongnu.org
-References: <20231030190354.94671-1-richard.henderson@linaro.org>
- <CAFEAcA_kG-yE9sYDx+QBxCoAMySjc57oXx+UtSo=p=nCqAwKfQ@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA_kG-yE9sYDx+QBxCoAMySjc57oXx+UtSo=p=nCqAwKfQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+References: <20230927151205.70930-1-peter.maydell@linaro.org>
+In-Reply-To: <20230927151205.70930-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 31 Oct 2023 14:09:06 +0000
+Message-ID: <CAFEAcA-JUMX+mdjg_Yzcih4LjF_d1AkR0Q=YcYdz5Fi5GxYx4g@mail.gmail.com>
+Subject: Re: [PATCH 0/8] docs/specs: Convert txt files to rST
+To: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,45 +82,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/31/23 03:52, Peter Maydell wrote:
-> On Mon, 30 Oct 2023 at 19:04, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> The previous change missed updating one of the increments.
->>
->> Cc: qemu-stable@nongnu.org
->> Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r")
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/arm/tcg/translate-sve.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
->> index 7b39962f20..fc4220114d 100644
->> --- a/target/arm/tcg/translate-sve.c
->> +++ b/target/arm/tcg/translate-sve.c
->> @@ -4294,7 +4294,7 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
->>           t0 = tcg_temp_new_i64();
->>           t1 = tcg_temp_new_i64();
->>           t16 = tcg_temp_new_i128();
->> -        for (i = 0; i < len_align; i += 8) {
->> +        for (i = 0; i < len_align; i += 16) {
->>               tcg_gen_ld_i64(t0, base, vofs + i);
->>               tcg_gen_ld_i64(t1, base, vofs + i + 8);
->>               tcg_gen_concat_i64_i128(t16, t0, t1);
->> --
-> 
-> This fixes the test case I have for vector lengths of 64 bytes
-> and below, but vector lengths above that (eg 128 bytes) still
-> misbehave in a different way (only every other set of 8 bytes
-> gets stored). Presumably that's a different bug somewhere else?
+On Wed, 27 Sept 2023 at 16:12, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> This patchseries converts most of the remaining .txt files in
+> docs/specs to rST format and integrates tem with our documentation.
+> (The one remaining .txt file is rocker.txt, which I left to do
+> later because at over 1000 lines it is much bigger than these.)
+>
+> These are mostly simple conversions with not too much effort
+> put into the formatting/markup. In a few cases I dropped
+> parts of the text already covered elsewhere or made light
+> fixes for grammar/spelling; see individual patch commit
+> messages for more detail.
+>
+> thanks
+> -- PMM
+>
+> Peter Maydell (8):
+>   docs/specs/vmw_pvscsi-spec: Convert to rST
+>   docs/specs/edu: Convert to rST
+>   docs/specs/ivshmem-spec: Convert to rST
+>   docs/specs/pvpanic: Convert to rST
+>   docs/specs/standard-vga: Convert to rST
+>   docs/specs/virt-ctlr: Convert to rST
+>   docs/specs/vmcoreinfo: Convert to rST
+>   docs/specs/vmgenid: Convert to rST
 
-Oh yes -- enable-debug yields
+In the absence of further review I'm going to apply these via
+target-arm.next, since they're only docs format conversions;
+let me know if you'd like more time.
 
-qemu-aarch64: ../src/tcg/tcg-op-ldst.c:712: tcg_gen_qemu_st_i128_chk: Assertion `(memop & 
-MO_SIZE) == MO_128' failed.
-
-
-r~
-
+thanks
+-- PMM
 
