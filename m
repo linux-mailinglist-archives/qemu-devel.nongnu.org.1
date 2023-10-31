@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B047DD09A
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:34:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F657DD09B
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:34:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxqkW-0006af-O9; Tue, 31 Oct 2023 11:33:48 -0400
+	id 1qxqkd-0006bq-BG; Tue, 31 Oct 2023 11:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxqkV-0006aW-Aj
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:33:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxqkT-0002WO-Iq
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:33:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698766412;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8fc08W56wClcev0nZ53BYcD7B6+gun/WoeQFe6FmXkE=;
- b=DcWxxEVkRv9gb14HViGpKUESghOSFAGRvDqaiaNqiLf8sgqM+FE4qwX324sHYLIQs83ZKT
- JOAL02FRplSdmUOflodFwVzTaxgus2svFGLUd7iSxfCLBaElQXNEeHRI1RbQhSp2xr+BUw
- P2nseJHIyJZRTpXRnroTYARW1nHYedk=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-480-IPDJexRSPX-wSLLBuS9aSw-1; Tue, 31 Oct 2023 11:33:29 -0400
-X-MC-Unique: IPDJexRSPX-wSLLBuS9aSw-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66ffa15d354so12357506d6.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:33:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqkb-0006bJ-Da
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:33:53 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqkZ-0002dF-Up
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:33:53 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4083f61312eso44906475e9.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698766430; x=1699371230; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZkVb990c2uHYawsLtRTnBlt1hfWy9tZjcq9JDaZNum4=;
+ b=KwUQzYpYiDesXxtS8uylhwVmGaBLdvntJ7Mx+8WOFDIymS0937cSJCThvLUP+6bprk
+ 0xuthnqOFlvoiDH3jGDi6MLiez0/IaDiBRmXOwIar36qfD4H/YoFNd0Yiia/qoMCFwLb
+ hPRpuxXifYJ9U+7gIg4P6YniMEzCyUgsWopSTP2cyLvDYVThA7upKMt26YfEmONN029f
+ uFIJDflbaqp08fUT6h+e73Eo/2v8d+tE8bPskrHK/7FswZIrCVRi30cGJ7OWUiWZ7xes
+ W10/Y3suo1p2bdztCpZPn/X+X7umds6nG6jDaD++4aNjLtHfbz4I6MFS8a15qC0Ks2n7
+ 8c2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698766381; x=1699371181;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8fc08W56wClcev0nZ53BYcD7B6+gun/WoeQFe6FmXkE=;
- b=US/70NWFixVQfDi0ZwYNjKuJmjvaPtt+lyzbPab8W1qSOBrpm2wTBFUnVP+p8ppB7x
- XOUNyASBFNRNbtHROAlESYHKZURyINcqtp7HQIDrSbDzhvD1CwONhEOj04cmyeqmpO4k
- Tf7Oo6sqinf+DxKCIGDee8WDq2vPeQxtwz73Gna9jkiXKXdSw3BIwyqws4q6vk+SZdEF
- /DL9xnFnvmoFY4LHv2V7aA9L6f4jmC6Bx8ixLZ4dlgxiEbOXCa+2g1Hn+nIpFondolbD
- by6BFg+c+0nXIr398v0haRjd4CHtJkmLWua2EPPH9s5dDnQ9tFHt+eO8YsV8+zNWD11T
- VVWw==
-X-Gm-Message-State: AOJu0YzZMzcxT41UFWUJ6cDOajM8uBqIZtrk0UUcBSVL1+33MoRbALBM
- sujMuhaqpc3RsfR3P+IFW0D0RTrSQwsuDPM0k1Q0kDw+Lcw7CT980LNHWpreuY2zAOE934dUsy8
- 1fNY4SneMWJFk+/I=
-X-Received: by 2002:a05:6214:398f:b0:66d:264c:450f with SMTP id
- ny15-20020a056214398f00b0066d264c450fmr13606227qvb.0.1698766380740; 
- Tue, 31 Oct 2023 08:33:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxERGfA/PPrCoSU5SBYXCdKLsPH/sP4R+whcepvMC4/6nGv5wYUxBJVfCg4eU6ilKpdTqlyA==
-X-Received: by 2002:a05:6214:398f:b0:66d:264c:450f with SMTP id
- ny15-20020a056214398f00b0066d264c450fmr13606205qvb.0.1698766380401; 
- Tue, 31 Oct 2023 08:33:00 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- l3-20020ad44443000000b00674a45499dcsm615485qvt.88.2023.10.31.08.32.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 08:32:59 -0700 (PDT)
-Date: Tue, 31 Oct 2023 11:32:56 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Xiaohui Li <xiaohli@redhat.com>
-Subject: Re: [PATCH v4 2/5] migration: Allow network to fail even during
- recovery
-Message-ID: <ZUEeKDXMuSKaGY7q@x1n>
-References: <20231017202633.296756-1-peterx@redhat.com>
- <20231017202633.296756-3-peterx@redhat.com>
- <87il6m7tr1.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1698766430; x=1699371230;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZkVb990c2uHYawsLtRTnBlt1hfWy9tZjcq9JDaZNum4=;
+ b=nRdFZCokuU4em9m5AWsvEnUBJBBjsgUGDU41bPQzoU4+3l+dokwXSgJX7Nk+8eL7ZA
+ 7UZnLfzsqhL+tTKa5sZ5FPInDKs9M3GCo6ovAb3+0B4uoFeUlbfC640AbkE9Y+FRmHum
+ aW518OT9J2T4vxpf7KxB7ANyNBDLbLuiQMRvg/bNfBeUyc3Dyx+e6Br6joSylbfU3wa9
+ lU1wd3GdjwN98rfZMcBoRGtocDnMuyZKIiS1n+qY5lwqxNbWx74WYSa293lxD1bhXKzE
+ GhwvEqMkoNdLdgjU4brAtYjWWafTZ1h2bD26LmSa0A/Z2eOjqoL+UwqVB3gyB0nKSKMa
+ C5qg==
+X-Gm-Message-State: AOJu0YwcpGTVgBG/wknlxbIrLirBBIgk68i9+t2kxvmhW3oCj9QljixK
+ 3RH7c+PhNctCixxZn26XjQOqhA==
+X-Google-Smtp-Source: AGHT+IFFxRVRYVIpPVj6CW8LNHFwaoxaY4OdRHlmuOfy9LzUjwKjAQEm6uPLTHvnHrnXzxcWJ7bF5Q==
+X-Received: by 2002:a5d:458e:0:b0:31f:ef77:67ee with SMTP id
+ p14-20020a5d458e000000b0031fef7767eemr10134108wrq.40.1698766429978; 
+ Tue, 31 Oct 2023 08:33:49 -0700 (PDT)
+Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
+ [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
+ z6-20020adfec86000000b0032f7fab0712sm1778275wrn.52.2023.10.31.08.33.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 08:33:49 -0700 (PDT)
+Message-ID: <bfb1b83c-53e2-73b2-bbc9-3cc0c448ab17@linaro.org>
+Date: Tue, 31 Oct 2023 16:33:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87il6m7tr1.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 4/8] docs/specs/pvpanic: Convert to rST
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230927151205.70930-1-peter.maydell@linaro.org>
+ <20230927151205.70930-5-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230927151205.70930-5-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,35 +92,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 03:26:42PM +0100, Juan Quintela wrote:
-> > -void migration_rp_wait(MigrationState *s)
-> > +int migration_rp_wait(MigrationState *s)
-> >  {
-> > +    /* If migration has failure already, ignore the wait */
-> > +    if (migrate_has_error(s)) {
-> > +        return -1;
-> > +    }
-> > +
-> >      qemu_sem_wait(&s->rp_state.rp_sem);
-> > +
-> > +    /* After wait, double check that there's no failure */
-> > +    if (migrate_has_error(s)) {
-> > +        return -1;
-> > +    }
-> > +
-> > +    return 0;
-> >  }
+On 27/9/23 17:12, Peter Maydell wrote:
+> Convert docs/specs/pvpanic.txt to rST format.
 > 
-> Shouldn't this be bool?
-> 
-> We have (too many) functions in migration that returns 0/-1 and set an
-> error, I think we should change them to return bool.  Or even just test
-> if err is set.
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/specs/index.rst                    |  1 +
+>   docs/specs/{pvpanic.txt => pvpanic.rst} | 41 ++++++++++++++++---------
+>   2 files changed, 28 insertions(+), 14 deletions(-)
+>   rename docs/specs/{pvpanic.txt => pvpanic.rst} (64%)
 
-Yeah this patch comes earlier than "switching to bools".  I can make them
-bool after I rebase to the new pulls and see what's leftover.  Thanks.
+$ ./scripts/get_maintainer.pl -f hw/misc/pvpanic.c
+get_maintainer.pl: No maintainers found, printing recent contributors.
+get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
 
--- 
-Peter Xu
+$ ./scripts/get_maintainer.pl -f docs/specs/pvpanic.txt
+get_maintainer.pl: No maintainers found, printing recent contributors.
+get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
+
+No clue who should maintain that.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
