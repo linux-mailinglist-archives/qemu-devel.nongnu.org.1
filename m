@@ -2,92 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088187DD7AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 22:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EAF17DD7C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 22:29:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxw6Q-0003Jg-PU; Tue, 31 Oct 2023 17:16:46 -0400
+	id 1qxwHn-0007ZZ-Nd; Tue, 31 Oct 2023 17:28:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxw6N-0003IP-MM
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 17:16:43 -0400
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxw6K-0006HR-R3
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 17:16:43 -0400
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-5a8ee23f043so59698317b3.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 14:16:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698786998; x=1699391798; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JiXdrzlK1M6pyRvpDlbcVP7At9aNJ3CDNJoKKO0qtZY=;
- b=OsvTyS3Y6xnMAT7EIld++1Ue1JwPpI3oAMw8nbpFvCkhYRpIBFfn2xp6bCjGYtUmud
- yRjq5cNmc6q45msy11v9IdOIjwglQ8/2GDeeIqmsN5X9+ImdHm4PEzwj26+jR6VK+6vK
- q99Om8l7mnkB8P6GzFfzzZyISwjz4HaXM0Tgy77ty0np5No3cU2G0z2L0+rbddM+fIgY
- s05W7L0TTFKplfewXB2P4pnpgFzvL3/+DBrmp6rCQZ3XjVn0GO5AS7dQFdgyngQnl9KI
- spNUW1aXiK7Ln/rPvRW04n4yBk53QH3uO0D1+b1N+HH355IKy3wY8bJcmSRUAtA58NXv
- /5rg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxwHd-0007Xh-OZ
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 17:28:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxwHb-0007y3-Tf
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 17:28:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698787698;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Y1x9xHSmWTCJdct9wnUSjFgYZc9gnX6ULnfTmtwJOeY=;
+ b=WK6hS35ujYDf5WO75K8iM9tNOjgRCL8/uEwmmOIrsUknfGMx8P0ViNOOPBuKE+iJZtg7nC
+ zMUPdaX0I+eKx3pDAetxX4tPUfCQU579hyIPtu1t4lMaTkNPkgFVhjnPN7eKiFX84yPX6t
+ eqzOK9EYELCoE7DN1fIDVlhmcDPvji8=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-K9eZgNRDPIOFvK4QdRyuvg-1; Tue, 31 Oct 2023 17:28:11 -0400
+X-MC-Unique: K9eZgNRDPIOFvK4QdRyuvg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7789cde7421so63738885a.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 14:28:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698786998; x=1699391798;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JiXdrzlK1M6pyRvpDlbcVP7At9aNJ3CDNJoKKO0qtZY=;
- b=kr0TGAmogjZVilr2+vyMigx8voZQzAztFHhQGPunLQvPKPiaYm7utcfVFd9fzoTPlw
- Zhu/lpAhJsumq03bdOmHS0iqlaM6nRLYRKVr8KggOGMlUXiDXllVCzuRi3mvsfexBEUs
- IX6aoMuK6MrjBYSXqcipBfLFvsysNhmYR0PS5GHVEInV8igqFZAashYFctw42abC/pBB
- Vfa+qFGwWCYw+FaHIT0EvDcWqAchrCmOmBCOnX0esZDBZ8V/Hi9gZUxbQFLe9NIwZfod
- CMWG5Gt1CXdA3Wc3Uhe6U/HVUhwj3Xp/8+SLf959/rxGdQXiPl0DgU3AGJgdp3u3Nnf/
- zVjQ==
-X-Gm-Message-State: AOJu0YyAf92mPcibGyM45kuxT+TRDZX3XOkqbDCZK6DRP3gyPnbrS9Oi
- yK9ypKTcirQsfrfzcqsU9+hH5g==
-X-Google-Smtp-Source: AGHT+IEde+3aahzTyXify9h8H0O3JIilp7PWTmK24QxO/L9ABIwxpJOiE9GaCTWAmYyyWLR7A6UsoQ==
-X-Received: by 2002:a81:e50c:0:b0:5b0:6326:75a4 with SMTP id
- s12-20020a81e50c000000b005b0632675a4mr9131393ywl.7.1698786997939; 
- Tue, 31 Oct 2023 14:16:37 -0700 (PDT)
-Received: from [192.168.68.107] ([179.193.10.161])
- by smtp.gmail.com with ESMTPSA id
- e130-20020a816988000000b0059adc0c4392sm1314261ywc.140.2023.10.31.14.16.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 14:16:37 -0700 (PDT)
-Message-ID: <711ebdc8-7088-4e27-8d84-d29a7884f2dd@ventanamicro.com>
-Date: Tue, 31 Oct 2023 18:16:33 -0300
+ d=1e100.net; s=20230601; t=1698787691; x=1699392491;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Y1x9xHSmWTCJdct9wnUSjFgYZc9gnX6ULnfTmtwJOeY=;
+ b=flX3HE8tSoYZ7RPhMLtUEiXuWSnygoUF6qpY/UTEiS73liEn3YnuVH90cNFGwrJCyx
+ YHYlhC9VEuAqoowaPWsXs+b5We81a1v+yVMNSP9jcUc9xruS/JEuqFhrlPoLpuame4px
+ 4BvcIWMsrxiXBUlkhBUQRy3kKFYKf4C9TwmId0D1sNPv7BIbbGtKLbTA1Qiiv9EO5WL5
+ /GbmY9M1bSTOvqokOakh2Ok9A455yXFlrz4RiebCE+XYGW6cJefwkkV7lr5fIYewVTte
+ ggXi57e8rKPNZ08zweBJ4UnwM7tis47Q3Bx1H4kdak4Ipufs/+X8LdVPKEcTLrOQYfeL
+ /GXQ==
+X-Gm-Message-State: AOJu0Yy/tJsDzesgTJ3wANlYdx8R+738Q8cXuODGR2VS9xDaWhq3FucJ
+ Izflm2zYVWlGnWtEvqoNuVUAKodK7tcP8wBef6XHN8pfpwRI4Ih7cI6ApNIGMvM6z2em1ITDcq7
+ xKkWFpPvy9bgOEzo=
+X-Received: by 2002:a05:620a:1910:b0:76f:1118:9b62 with SMTP id
+ bj16-20020a05620a191000b0076f11189b62mr16372312qkb.3.1698787691151; 
+ Tue, 31 Oct 2023 14:28:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnxJ6/oqBxdmyjs+JaIxrh82G73bypfq8iDT38xevDGmOI2DC1hQhymNbZJQYnBPhfI+ruVw==
+X-Received: by 2002:a05:620a:1910:b0:76f:1118:9b62 with SMTP id
+ bj16-20020a05620a191000b0076f11189b62mr16372299qkb.3.1698787690759; 
+ Tue, 31 Oct 2023 14:28:10 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ w15-20020a05620a148f00b007757f6558b3sm841244qkj.95.2023.10.31.14.28.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 14:28:10 -0700 (PDT)
+Date: Tue, 31 Oct 2023 17:28:08 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v2 20/29] migration/multifd: Add incoming QIOChannelFile
+ support
+Message-ID: <ZUFxaFzT+DiYBzPV@x1n>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-21-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 5/5] hw/ppc/e500: Pass array of CPUs as array of
- canonical QOM paths
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Cc: Luc Michel <luc.michel@amd.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Bernhard Beschow <shentey@gmail.com>, qemu-ppc@nongnu.org,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- "Daniel P . Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>
-References: <20231030143957.82988-1-philmd@linaro.org>
- <20231030143957.82988-6-philmd@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231030143957.82988-6-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231023203608.26370-21-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,186 +100,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/30/23 11:39, Philippe Mathieu-Daudé wrote:
-> Devices should avoid calling qemu_get_cpu() because this call
-> doesn't work as expected with heterogeneous machines. Such
-> devices often iterate over a cluster of CPUs, which the device's
-> parent has direct access (when creating the child device).
+On Mon, Oct 23, 2023 at 05:35:59PM -0300, Fabiano Rosas wrote:
+> On the receiving side we don't need to differentiate between main
+> channel and threads, so whichever channel is defined first gets to be
+> the main one. And since there are no packets, use the atomic channel
+> count to index into the params array.
 > 
-> We can pass QOM as 'link' between objects, but we can't pass an
-> array of links. Here we exploits QAPI simplicity, by using
-> DEFINE_PROP_ARRAY and a list of strings, each string being the
-> CPU canonical path in QOM tree (which is constant and unique).
-> When the device realizes itself, the original CPU pointer is
-> recovered via a object_resolve_path() call.
-> 
-> Inspired-by: Peter Maydell <peter.maydell@linaro.org>
-> Inspired-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
-> Tested with:
-> $ make check-qtest-ppc{,64}
-> $ make check-avocado AVOCADO_TAGS='machine:ppce500 machine:mpc8544ds'
+>  migration/file.c      | 39 +++++++++++++++++++++++++++++----------
+>  migration/migration.c |  2 ++
+>  migration/multifd.c   |  7 ++++++-
+>  migration/multifd.h   |  1 +
+>  4 files changed, 38 insertions(+), 11 deletions(-)
 > 
-> RFC: See cover
-> 
-> FIXME: Should we free spin_cpu_list using g_autoptr(QList)?
-
-By looking at how object_property_set_qobject() works I *think* we can free it.
-Perhaps try using g_autofree and see if something explodes, hehe
-
-Thanks,
-
-Daniel
-
-> ---
->   hw/ppc/e500.c         |  6 ++++++
->   hw/ppc/ppce500_spin.c | 48 ++++++++++++++++++++++++++++++++++++-------
->   2 files changed, 47 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-> index e38f46df38..8b31143dca 100644
-> --- a/hw/ppc/e500.c
-> +++ b/hw/ppc/e500.c
-> @@ -18,6 +18,7 @@
->   #include "qemu/datadir.h"
->   #include "qemu/units.h"
->   #include "qemu/guest-random.h"
-> +#include "qapi/qmp/qlist.h"
->   #include "qapi/error.h"
->   #include "e500.h"
->   #include "e500-ccsr.h"
-> @@ -930,11 +931,13 @@ void ppce500_init(MachineState *machine)
->       SysBusDevice *s;
->       PPCE500CCSRState *ccsr;
->       I2CBus *i2c;
-> +    QList *spin_cpu_list = qlist_new();
->   
->       irqs = g_new0(IrqLines, smp_cpus);
->       for (i = 0; i < smp_cpus; i++) {
->           PowerPCCPU *cpu;
->           CPUState *cs;
-> +        g_autofree char *cpu_qompath;
->   
->           cpu = POWERPC_CPU(object_new(machine->cpu_type));
->           env = &cpu->env;
-> @@ -954,6 +957,8 @@ void ppce500_init(MachineState *machine)
->           object_property_set_bool(OBJECT(cs), "start-powered-off", i != 0,
->                                    &error_fatal);
->           qdev_realize_and_unref(DEVICE(cs), NULL, &error_fatal);
-> +        cpu_qompath = object_get_canonical_path(OBJECT(cs));
-> +        qlist_append_str(spin_cpu_list, cpu_qompath);
->   
->           if (!firstenv) {
->               firstenv = env;
-> @@ -1083,6 +1088,7 @@ void ppce500_init(MachineState *machine)
->   
->       /* Register spinning region */
->       dev = qdev_new("e500-spin");
-> +    qdev_prop_set_array(dev, "cpus-qom-path", spin_cpu_list);
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->       sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, pmc->spin_base);
->   
-> diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
-> index e3608d8c16..a67046b2ea 100644
-> --- a/hw/ppc/ppce500_spin.c
-> +++ b/hw/ppc/ppce500_spin.c
-> @@ -30,11 +30,13 @@
->   #include "qemu/osdep.h"
->   #include "qemu/module.h"
->   #include "qemu/units.h"
-> +#include "qapi/error.h"
->   #include "hw/hw.h"
->   #include "hw/sysbus.h"
->   #include "sysemu/hw_accel.h"
->   #include "e500.h"
->   #include "qom/object.h"
-> +#include "hw/qdev-properties.h"
->   
->   #define MAX_CPUS 32
->   
-> @@ -46,6 +48,10 @@ typedef struct spin_info {
->       uint64_t reserved;
->   } QEMU_PACKED SpinInfo;
->   
-> +/*
-> + * QEMU interface:
-> + *  + QOM array property "cpus-qom-path": QOM canonical path of each CPU.
-> + */
->   #define TYPE_E500_SPIN "e500-spin"
->   OBJECT_DECLARE_SIMPLE_TYPE(SpinState, E500_SPIN)
->   
-> @@ -54,6 +60,9 @@ struct SpinState {
->   
->       MemoryRegion iomem;
->       SpinInfo spin[MAX_CPUS];
-> +    uint32_t cpu_count;
-> +    char **cpu_canonical_path;
-> +    CPUState **cpu;
->   };
->   
->   static void spin_reset(DeviceState *dev)
-> @@ -121,16 +130,10 @@ static void spin_write(void *opaque, hwaddr addr, uint64_t value,
->   {
->       SpinState *s = opaque;
->       int env_idx = addr / sizeof(SpinInfo);
-> -    CPUState *cpu;
-> +    CPUState *cpu = s->cpu[env_idx];
->       SpinInfo *curspin = &s->spin[env_idx];
->       uint8_t *curspin_p = (uint8_t*)curspin;
->   
-> -    cpu = qemu_get_cpu(env_idx);
-> -    if (cpu == NULL) {
-> -        /* Unknown CPU */
+> diff --git a/migration/file.c b/migration/file.c
+> index 93b9b7bf5d..ad75225f43 100644
+> --- a/migration/file.c
+> +++ b/migration/file.c
+> @@ -6,13 +6,15 @@
+>   */
+>  
+>  #include "qemu/osdep.h"
+> -#include "qemu/cutils.h"
+>  #include "qapi/error.h"
+> +#include "qemu/cutils.h"
+> +#include "qemu/error-report.h"
+>  #include "channel.h"
+>  #include "file.h"
+>  #include "migration.h"
+>  #include "io/channel-file.h"
+>  #include "io/channel-util.h"
+> +#include "options.h"
+>  #include "trace.h"
+>  
+>  #define OFFSET_OPTION ",offset="
+> @@ -136,7 +138,8 @@ void file_start_incoming_migration(const char *filespec, Error **errp)
+>      g_autofree char *filename = g_strdup(filespec);
+>      QIOChannelFile *fioc = NULL;
+>      uint64_t offset = 0;
+> -    QIOChannel *ioc;
+> +    int channels = 1;
+> +    int i = 0, fd;
+>  
+>      trace_migration_file_incoming(filename);
+>  
+> @@ -146,16 +149,32 @@ void file_start_incoming_migration(const char *filespec, Error **errp)
+>  
+>      fioc = qio_channel_file_new_path(filename, O_RDONLY, 0, errp);
+>      if (!fioc) {
 > -        return;
-> -    }
-> -
->       if (cpu->cpu_index == 0) {
->           /* primary CPU doesn't spin */
->           return;
-> @@ -188,11 +191,42 @@ static void ppce500_spin_initfn(Object *obj)
->       sysbus_init_mmio(dev, &s->iomem);
->   }
->   
-> +static void ppce500_spin_realize(DeviceState *dev, Error **errp)
+> +        goto out;
+
+Can we already return with *errp set?  Why still need the error_report()?
+
+> +    }
+> +
+> +    if (migrate_multifd()) {
+> +        channels += migrate_multifd_channels();
+>      }
+>  
+> -    ioc = QIO_CHANNEL(fioc);
+> -    if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
+> +    fd = fioc->fd;
+> +
+> +    do {
+> +        QIOChannel *ioc = QIO_CHANNEL(fioc);
+> +
+> +        if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
+> +            return;
+> +        }
+> +
+> +        qio_channel_set_name(ioc, "migration-file-incoming");
+> +        qio_channel_add_watch_full(ioc, G_IO_IN,
+> +                                   file_accept_incoming_migration,
+> +                                   NULL, NULL,
+> +                                   g_main_context_get_thread_default());
+> +    } while (++i < channels && (fioc = qio_channel_file_new_fd(fd)));
+> +
+> +out:
+> +    if (!fioc) {
+> +        error_report("Error creating migration incoming channel");
+>          return;
+>      }
+> -    qio_channel_set_name(QIO_CHANNEL(ioc), "migration-file-incoming");
+> -    qio_channel_add_watch_full(ioc, G_IO_IN,
+> -                               file_accept_incoming_migration,
+> -                               NULL, NULL,
+> -                               g_main_context_get_thread_default());
+>  }
+> diff --git a/migration/migration.c b/migration/migration.c
+> index ba806cea55..5fa726f6d4 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -756,6 +756,8 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+>          }
+>  
+>          default_channel = (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC));
+> +    } else if (migrate_multifd() && migrate_fixed_ram()) {
+> +        default_channel = multifd_recv_first_channel();
+
+Is this check required?  IIUC you wanted to set default_channel only when
+the 1st time trigger this function, but then IIUC that's exactly what:
+
+        default_channel = !mis->from_src_file;
+
+is about?
+
+I think it may be clearer to add "migrate_multifd_packets()" too in the
+previous "if" check to make sure fixed-ram won't peak it.
+
+IIUC now it won't fall into that now only because file URI doesn't yet
+support QIO_CHANNEL_FEATURE_READ_MSG_PEEK, however AFAIU it'll be fairly
+easy to add it, and even more reasonable than a socket, when adding.
+
+Fundamentally that trick can only work with multifd init packets, that
+matches with what migrate_multifd_packets() means.
+
+>      } else {
+>          default_channel = !mis->from_src_file;
+>      }
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 75a17ea8ab..ad51210f13 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -1242,6 +1242,11 @@ int multifd_load_setup(Error **errp)
+>      return 0;
+>  }
+>  
+> +bool multifd_recv_first_channel(void)
 > +{
-> +    SpinState *s = E500_SPIN(dev);
-> +
-> +    if (s->cpu_count == 0) {
-> +        error_setg(errp, "'cpus-qom-path' property array must be set");
-> +        return;
-> +    } else if (s->cpu_count > MAX_CPUS) {
-> +        error_setg(errp, "at most %d CPUs are supported", MAX_CPUS);
-> +        return;
-> +    }
-> +
-> +    s->cpu = g_new(CPUState *, s->cpu_count);
-> +    for (unsigned i = 0; i < s->cpu_count; i++) {
-> +        bool ambiguous;
-> +        Object *obj;
-> +
-> +        obj = object_resolve_path(s->cpu_canonical_path[i], &ambiguous);
-> +        assert(!ambiguous);
-> +        s->cpu[i] = CPU(obj);
-> +    }
+> +    return !multifd_recv_state;
 > +}
 > +
-> +static Property ppce500_spin_properties[] = {
-> +    DEFINE_PROP_ARRAY("cpus-qom-path", SpinState, cpu_count,
-> +                      cpu_canonical_path, qdev_prop_string, char *),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
->   static void ppce500_spin_class_init(ObjectClass *klass, void *data)
->   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
->   
->       dc->reset = spin_reset;
-> +    dc->realize = ppce500_spin_realize;
-> +    device_class_set_props(dc, ppce500_spin_properties);
->   }
->   
->   static const TypeInfo ppce500_spin_types[] = {
+>  bool multifd_recv_all_channels_created(void)
+>  {
+>      int thread_count = migrate_multifd_channels();
+> @@ -1284,7 +1289,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
+>          /* initial packet */
+>          num_packets = 1;
+>      } else {
+> -        id = 0;
+> +        id = qatomic_read(&multifd_recv_state->count);
+
+I was quite confused on the previous "id=0" and now it answers..
+
+Can we merge the two patches somehow?
+
+>      }
+>  
+>      p = &multifd_recv_state->params[id];
+> diff --git a/migration/multifd.h b/migration/multifd.h
+> index a835643b48..a112ec7ac6 100644
+> --- a/migration/multifd.h
+> +++ b/migration/multifd.h
+> @@ -18,6 +18,7 @@ void multifd_save_cleanup(void);
+>  int multifd_load_setup(Error **errp);
+>  void multifd_load_cleanup(void);
+>  void multifd_load_shutdown(void);
+> +bool multifd_recv_first_channel(void);
+>  bool multifd_recv_all_channels_created(void);
+>  void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
+>  void multifd_recv_sync_main(void);
+> -- 
+> 2.35.3
+> 
+
+-- 
+Peter Xu
+
 
