@@ -2,88 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B067DCFEA
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A03D7DD074
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:24:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxqPx-0005Wi-KM; Tue, 31 Oct 2023 11:12:33 -0400
+	id 1qxqaL-0001OZ-B7; Tue, 31 Oct 2023 11:23:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxqPu-0005WX-2X
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:12:30 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qxqaJ-0001O0-1J
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:23:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxqPs-0007HB-Og
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:12:29 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qxqaH-0000Ya-64
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:23:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698765148;
+ s=mimecast20190719; t=1698765790;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y2RekfC+nb55ZBRy+00AdZfPFmtdwS52OeMj0i+nMCs=;
- b=IaL+V21jVclw3qJdbEllrba8xhg/FKtmiiM2I1XRwl76HNRg/2/YR6OH8wN3IotWSgJbxk
- /M/7ALzavi0Crmb1ggr53s5NbHj6FsY3/Yx/HpWlt7i4mIRM9ew/V2F+zaOpQ0skHiHwaL
- BfG5VuNWwVAo0d9hMvLhM1X2ENWldUU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-GdqFPPo1OdmmcvLuQ84b2A-1; Tue, 31 Oct 2023 11:12:16 -0400
-X-MC-Unique: GdqFPPo1OdmmcvLuQ84b2A-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-407f9d07b41so42963695e9.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:12:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698765136; x=1699369936;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y2RekfC+nb55ZBRy+00AdZfPFmtdwS52OeMj0i+nMCs=;
- b=GZl64HYFbSXBfBCp7qAPKVtfkbE4e7yg/WiFYkau7TXN6N0oAmVXYqSZv9G2ZwcadK
- MCGGJJUq1I+0VTHAef+20RCvNFMf3O2eCuyuimxiS7I/EBI1xktmZ5C8EixaD376CuZi
- yW/aPKNxaZ9ssXAU83faxT2Am89vvPnyJsP7/vXAtHzeKWzWaj6PxVoMXlm384oXRiDh
- w2HpBc2C2NS4b5ZyBHizkZ2Kt7b4+DZgTma23rQwkuhr6FTi+by51qxQwiYD1ns0y0Hz
- NCkUgsAMkK0bhWlwDxf7TxMUrxamV6pITNTCWKyZVm0aQILqOjgL2Im8nsJQyhhvPyAq
- sJiQ==
-X-Gm-Message-State: AOJu0Yx6v88ebxmPXWk3y4Bzpg7+9rOPhnojG61/Q1eL6CYpIF1o/6Hf
- V1T/Ph1fZu9/7xpdA7AoG8rN1sJcWlErabJbqmCcD2ZJ54CELGTNp6STNNQxPievhZjl5zECJ6h
- iqhvwd6+PreL0LV0=
-X-Received: by 2002:a05:600c:4f0f:b0:401:d803:624f with SMTP id
- l15-20020a05600c4f0f00b00401d803624fmr10569604wmq.4.1698765135787; 
- Tue, 31 Oct 2023 08:12:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGFDK+kzRjzj9XFhjaGV3H6j8iJJ6IyW2KxWPLjxg9wedx/yB57j7y0tFA6gTRRBBi7thQ0cQ==
-X-Received: by 2002:a05:600c:4f0f:b0:401:d803:624f with SMTP id
- l15-20020a05600c4f0f00b00401d803624fmr10569577wmq.4.1698765135419; 
- Tue, 31 Oct 2023 08:12:15 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- d8-20020a05600c3ac800b00401d8181f8bsm1999995wms.25.2023.10.31.08.12.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 08:12:14 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
+ bh=V0LeFM5hxhBXUCYD++t+ECZ0OntMAcqB16zdfe7y99o=;
+ b=Evk6x9gtydg/8vbGgo2OzWkM0r8DIcoKNkZ/enh7PGpO8Kg+rIpa5quwYD3LxgXmmfs/7B
+ QYRnFTtMo2Ru96uIeqorUS0OZmMoDP2ADEnqmj401ezxyeuuqW027EDrAAro2TdYVu2Nwq
+ APQMneyF4g9UAetml0+m6KQb92yITSQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-46-CtOkN51UN_-JGvkigN97wQ-1; Tue,
+ 31 Oct 2023 11:23:07 -0400
+X-MC-Unique: CtOkN51UN_-JGvkigN97wQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 905FF3C1E9DB;
+ Tue, 31 Oct 2023 15:22:57 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5D67B2026D4C;
+ Tue, 31 Oct 2023 15:22:56 +0000 (UTC)
+Date: Tue, 31 Oct 2023 15:22:54 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  dgilbert@redhat.com,
- pbonzini@redhat.com,  berrange@redhat.com,  armbru@redhat.com,
- eblake@redhat.com,  manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com,  Het Gala <het.gala@nutanix.com>,  Peter
- Xu <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v15 05/14] migration: convert socket backend to accept
- MigrateAddress
-In-Reply-To: <20231023182053.8711-6-farosas@suse.de> (Fabiano Rosas's message
- of "Mon, 23 Oct 2023 15:20:44 -0300")
-References: <20231023182053.8711-1-farosas@suse.de>
- <20231023182053.8711-6-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 31 Oct 2023 16:12:14 +0100
-Message-ID: <87o7ge6d2p.fsf@secure.mitica>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
+Message-ID: <ZUEbzvRLdGjl4gl+@redhat.com>
+References: <878r7svapt.fsf@pond.sub.org> <87msw7ddfp.fsf@suse.de>
+ <ZTjVg9NVTd0MT6mW@redhat.com> <87cyx2epsv.fsf@suse.de>
+ <ZTkpllWQdLSMw3pP@redhat.com> <87cywvenbd.fsf@suse.de>
+ <ZUDC4aoPZZQAF6JU@redhat.com> <878r7jdjrf.fsf@suse.de>
+ <ZUEE9XP4YTJkZTv7@redhat.com> <875y2meua3.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <875y2meua3.fsf@suse.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -105,24 +87,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> From: Het Gala <het.gala@nutanix.com>
->
-> Socket transport backend for 'migrate'/'migrate-incoming' QAPIs accept
-> new wire protocol of MigrateAddress struct.
->
-> It is achived by parsing 'uri' string and storing migration parameters
-> required for socket connection into well defined SocketAddress struct.
->
-> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Tue, Oct 31, 2023 at 11:33:24AM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Tue, Oct 31, 2023 at 10:05:56AM -0300, Fabiano Rosas wrote:
+> >> Daniel P. Berrangé <berrange@redhat.com> writes:
+> >> 
+> >> > On Mon, Oct 30, 2023 at 07:51:34PM -0300, Fabiano Rosas wrote:
+> >> >> I could use some advice on how to solve this situation. The fdset code
+> >> >> at monitor/fds.c and the add-fd command don't seem to be usable outside
+> >> >> the original use-case of passing fds with different open flags.
+> >> >> 
+> >> >> There are several problems, the biggest one being that there's no way to
+> >> >> manipulate the set of file descriptors aside from asking for duplication
+> >> >> of an fd that matches a particular set of flags.
+> >> >> 
+> >> >> That doesn't work for us because the two fds we need (one for main
+> >> >> channel, other for secondary channels) will have the same open flags. So
+> >> >> the fdset code will always return the first one it finds in the set.
+> >> >
+> >> > QEMU may want multiple FDs *internally*, but IMHO that fact should
+> >> > not be exposed to mgmt applications. It would be valid for a QEMU
+> >> > impl to share the same FD across multiple threads, or have a different
+> >> > FD for each thread. All threads are using pread/pwrite, so it is safe
+> >> > for them to use the same FD if they desire. It is a private impl choice
+> >> > for QEMU at any given point in time and could change over time.
+> >> >
+> >> 
+> >> Sure, I don't disagree. However up until last week we had a seemingly
+> >> usable "add-fd" command that allows the user to provide a *set of file
+> >> descriptors* to QEMU. It's just now that we're learning that interface
+> >> serves only a special use-case.
+> >
+> > AFAICT though we don't need add-fd to support passing many files
+> > for our needs. Saving only requires a single FD. All others can
+> > be opened by dup(), so the limitation of add-fd is irrelevant
+> > surely ?
+> 
+> Only once we decide to use one FD. If we had a generic add-fd backend,
+> then that's already a user-facing API, so the "implementation detail"
+> argument becomes weaker.
+> 
+> With a single FD we'll need to be very careful about what code is
+> allowed to run while the multifd channels are doing IO. Since O_DIRECT
+> is not widely supported, now we have to also be careful about someone
+> using that QEMUFile handle to do unaligned writes and not even noticing
+> that it breaks direct IO. None of this in unworkable, of course, I just
+> find the design way clearer with just the file name + offset.
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+I guess I'm not seeing the problem still.  A single FD is passed across
+from libvirt, but QEMU is free to turn that into *many* FDs for its
+internal use, using dup() and then setting O_DIRECT on as many/few of
+the dup()d FDs as its wants to.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
