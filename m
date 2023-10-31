@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303827DCEA4
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8027DCEB5
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:06:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpNF-0003vt-8P; Tue, 31 Oct 2023 10:05:41 -0400
+	id 1qxpNe-0004DO-Lb; Tue, 31 Oct 2023 10:06:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxpN9-0003uu-He
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:05:36 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxpNZ-00046R-O4
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:06:02 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxpN4-0002ly-A8
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:05:35 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40790b0a224so41381875e9.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:05:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxpNY-0002wc-5r
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:06:01 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-540c54944c4so11692796a12.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698761128; x=1699365928; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TfMz5n3Vxh7B0MJrNZ6xvhtzQOeC2+R2YNl9WSwp91w=;
- b=iV+vKunHUvpdJb36ROnJXgrUdjh0nMLPH1tQiUNiqWexD5VclYmQ43K3y87inCJxs5
- 5sfP9e0auYMPykqSdGpKpNVnJS9sZ+iaTaiCCETIrkB/6xpgsCkxOHa3Q+36N2l3Ktno
- S0odg0+IIz6Vi0xaGc8MAXjyJfT2VcTU12RP/To622EWmS9vmpv400sfgCsr/8BeF/G+
- N9Uq7U0wkjwfLo+ODef9BLojgdW2jP1563rjHvHxSVbiok1vGOGsMOY3Ea49NMveGN1V
- WC6oW+hZul0Wy9ZBU9paYftol2g+QT+tbfn+rQqFonyHbvfsRxzSGgIVPjtxQpJOp6SC
- RNdw==
+ d=linaro.org; s=google; t=1698761159; x=1699365959; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=wjCMcA/rkPwrWrJSmXS+BPgdntcg4zSUfSsGxc/Pk7s=;
+ b=fwmEQpS6B6cpZl12B6V5H52VRh3hZ4ZNcZTwEf4rBr0mIhgnfGwI9d7fwC9LxyKYv/
+ BU58zRpJcOCiM7i8/VBjhRj7HQGBXKKr+HwhOuqRbnAbgL4W6Uov/DZjqOURYyFiMvF/
+ xkI25oSA3rCTDLRQc9FlCNYURgguzbVXB92FBmse7F+Sulu//3jdAUk0qBE1+zPP/LK4
+ OeLn9gvF1iWmh+vcKKoDxByS9rPYPuKuWgz3suRO/c9yo6GyKcL9qErx3c/lZoGe2odp
+ lILQqDEbH2h+rnzLCv9kyWXPszmpLXxWivgEi/1isA0R51hleaGwKHylv+0KPy3qRemg
+ KyYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698761128; x=1699365928;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TfMz5n3Vxh7B0MJrNZ6xvhtzQOeC2+R2YNl9WSwp91w=;
- b=lVAiVFJxdMzfYSR1rjVj8DswdzS4zFTpYdHC4dLDf41BEDcxtAxoaxsSazWTD19xAT
- myY0LvcRZz7H456oKNU+4v4o1nprE/d1sYunOsJdd/bd6Cx5CAlZlcN6e/vghGeO8C5F
- 2WUY0xdNxVYL33jRRsyXCh1AYBzyc+fYtZzpbp5aFSIru3+Z7iUXDVat0z2qZcalsxrH
- gbhKiMElkYPgaLTNoUmjM1rm3CejEG00OPvnhzyDkU/igOtJ5yonEleUehg20Dxx8Is1
- Gvf5309k7vTzVQnOaH7pqzFDdvN86zdscDCWmuZlGPVWfWfRvPWTlzg/qiJ1IiuanK8Q
- uOtw==
-X-Gm-Message-State: AOJu0Yzz8EU3+AflMGu7Sfqbdjira+/V1JcJvf2yjH4E6oyQ73+dY8Gx
- kBTKt3h9W51nRJTDmDOVyq19XA==
-X-Google-Smtp-Source: AGHT+IHyZq4s/sA4pxTlY9pnxeQuJQgntQN3EUDP7DIzRJA8SrdhRc1V5LjnI8z+35iwnMX2LddqcA==
-X-Received: by 2002:a05:600c:3b20:b0:407:612b:91fb with SMTP id
- m32-20020a05600c3b2000b00407612b91fbmr10230008wms.30.1698761128267; 
- Tue, 31 Oct 2023 07:05:28 -0700 (PDT)
-Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
- [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
- p15-20020a05600c468f00b003fe1c332810sm1857196wmo.33.2023.10.31.07.05.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 07:05:27 -0700 (PDT)
-Message-ID: <6778fb84-9731-7fce-a6f5-d93cb83270ea@linaro.org>
-Date: Tue, 31 Oct 2023 15:05:25 +0100
+ d=1e100.net; s=20230601; t=1698761159; x=1699365959;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wjCMcA/rkPwrWrJSmXS+BPgdntcg4zSUfSsGxc/Pk7s=;
+ b=oRCTi/LCStRyUyY/zB5GDoWdaNZd1i0VOdNlKA89o7kDCBUiB98gBOiSf4sb/6gGpC
+ +808L74jGnKL50z1FvpSn2bDdo2i4+wtFfbbzZ27Uiwu5dtRCAYZx7tSe3goQWVk/d7v
+ 9i7lJBJiOd3hlvsr1C39/2iTFbiyrHzrUgO8hUKGg8AvpbOtRgJgpBRPGHG1dng6KnCt
+ pV14rObwgPSNlTXg8TzQq4ubmzwYj1Q6nckL/pjBV1UygFY6ACQxayW28kxm3FYzB1Yn
+ fxepGaoUtfiKW1RvkOehx47zd72yhv9FYO8op2ibckGMMIAYA4at6+tlBiNlpEiHQSFx
+ RFdg==
+X-Gm-Message-State: AOJu0YyHw++ME9iUEg9mcQ6D77k1OgNyyp29Mtu1NNxlW5mNXKk+8Yfg
+ HIk4AfZrchhd5T3zGHYqrUy3Qg0Lm1qvIsZonagf8DKGzQg6ZMDV
+X-Google-Smtp-Source: AGHT+IHSsJLLpFc1jGSpdRrbzeymHVTr0Gn+5nRi3fhZ2nIqiCRsqJyyDZX2Tm8wurvfmxpXxv33hyE+9f6X6474gOs=
+X-Received: by 2002:aa7:ce03:0:b0:543:42ac:c9f3 with SMTP id
+ d3-20020aa7ce03000000b0054342acc9f3mr2376948edv.19.1698761158802; Tue, 31 Oct
+ 2023 07:05:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 2/7] hmp: Improve sync-profile error message
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org,
- david@gibson.dropbear.id.au, harshpb@linux.ibm.com, dave@treblig.org,
- jasowang@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
- mst@redhat.com, david@redhat.com, kraxel@redhat.com,
- marcandre.lureau@redhat.com, qemu-ppc@nongnu.org
-References: <20231031111059.3407803-1-armbru@redhat.com>
- <20231031111059.3407803-3-armbru@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231031111059.3407803-3-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
+References: <20231030114802.3671871-1-peter.maydell@linaro.org>
+ <20231030114802.3671871-6-peter.maydell@linaro.org>
+ <9ea5c9b8-d740-4cec-9896-568babeca9aa@ilande.co.uk>
+ <CAFEAcA9dJnp0CVOzVWV+Q-U4ji9c8=14ggztKGktCSsDDp_F0g@mail.gmail.com>
+In-Reply-To: <CAFEAcA9dJnp0CVOzVWV+Q-U4ji9c8=14ggztKGktCSsDDp_F0g@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 31 Oct 2023 14:05:47 +0000
+Message-ID: <CAFEAcA_4wqP7G+gXnunJx85OTvUr-3kx6HGABGb6Kt3y=b_Nvw@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] hw/input/stellaris_input: Convert to qdev
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Kevin Wolf <kwolf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,21 +89,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/10/23 12:10, Markus Armbruster wrote:
-> Improve
-> 
->      (qemu) sync-profile of
->      Error: Invalid parameter 'of'
-> 
-> to
-> 
->      Error: invalid parameter 'of', expecting 'on', 'off', or 'reset'
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   monitor/hmp-cmds.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+On Tue, 31 Oct 2023 at 13:55, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Mon, 30 Oct 2023 at 20:38, Mark Cave-Ayland
+> <mark.cave-ayland@ilande.co.uk> wrote:
+> >
+> > On 30/10/2023 11:48, Peter Maydell wrote:
+> > Is it worth converting this to use DEFINE_TYPES() during the conversion? I know Phil
+> > has considered some automation to remove the type_init() boilerplate for the majority
+> > of cases.
+>
+> I could, I guess. It seems a bit awkward that DEFINE_TYPES()
+> wants you to pass it an array even when you only have one type,
+> though, which is going to be a very common use case.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I'm going to squash this into this patch:
+diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
+index 6ccf0e80adc..d42ba4f0582 100644
+--- a/hw/input/stellaris_gamepad.c
++++ b/hw/input/stellaris_gamepad.c
+@@ -90,16 +90,13 @@ static void
+stellaris_gamepad_class_init(ObjectClass *klass, void *data)
+     device_class_set_props(dc, stellaris_gamepad_properties);
+ }
 
+-static const TypeInfo stellaris_gamepad_info = {
+-    .name = TYPE_STELLARIS_GAMEPAD,
+-    .parent = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(StellarisGamepad),
+-    .class_init = stellaris_gamepad_class_init,
++static const TypeInfo stellaris_gamepad_info[] = {
++    {
++        .name = TYPE_STELLARIS_GAMEPAD,
++        .parent = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(StellarisGamepad),
++        .class_init = stellaris_gamepad_class_init,
++    },
+ };
+
+-static void stellaris_gamepad_register_types(void)
+-{
+-    type_register_static(&stellaris_gamepad_info);
+-}
+-
+-type_init(stellaris_gamepad_register_types);
++DEFINE_TYPES(stellaris_gamepad_info);
+
+
+The array is a bit awkward, but it's overall better than having
+to define the register-types function.
+
+thanks
+-- PMM
 
