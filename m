@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C4D7DD0A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A5D7DD0B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:41:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxqnq-0000rC-7c; Tue, 31 Oct 2023 11:37:14 -0400
+	id 1qxqr9-0002YM-72; Tue, 31 Oct 2023 11:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxqnl-0000m4-0T
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:37:09 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qxqr2-0002QG-0x
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:40:32 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxqnj-0003AO-F2
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:37:08 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-9a58dbd5daeso893224566b.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:37:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qxqqx-0003hY-S9
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:40:31 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-50939d39d0fso238843e87.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:40:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698766626; x=1699371426; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=J94TLVmxpl0XnRjKblCQ373JUKXqYHNbMQKHGSlFu3c=;
- b=TbovjNLebta0uJG+EHLa1Ndze5oDKC6v64hoWVbhJEVhpF9SUE5DtSckjNDAQv2Hck
- Veu5F1KS4ipjETO7f5vMt0JX5swkh8jztfKChYWREvSGIyruDoKfmV725QC2xs+pF2P+
- 5ASJe5Rd+FHfUCWdFesLCUmS0Hnf3rBDzSNPkSG5vmHykZxKw3K6GYRW1deiaTIrqA0M
- CvUz0g+XgrkN+Nj/yAs9Wq0njtD1E2GyrMMvP+/AmriNXukGhQPWjM8x18moesaw785a
- /85imbKF01QqFuNg6TeNKcvIC235SYrAQvG+ye5tmw8Nzdm/KzL7yPJXAld7SRwgYwh9
- JFnA==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1698766814; x=1699371614;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=sooZYBsZY9M2ZoGuBReyumQl0pKaz5JVreKdWYqqkKI=;
+ b=wRei2EWRnjrujWZF/5zHfj3Z3ZT2TkqtB2QEXcgDjCPP2zXrwP+wSY0g3ZUPUF+vzE
+ 02S4LG5ExSoZMDTGCLXneA0itX8VsvQ65pK1StVMsI3NSTIHXu9F1OmK5aSZbVTSICG5
+ xdrvl+oMwPU8Wan3bvguoaDxFERo/10/O1tG2FL+tHVrBWiN6/IW4rkcIMnNJAVagmVQ
+ FURhywExzyohWruyPV+B37jZuq6w10nxVssLqj5v5r9bKmFqqt+CanejDQ7iLdB1BJ9B
+ TSA9OCG0d1QwsX4LG0gDaQHFAaF4kZq/Q60K/kkP7gWr/tCJY/CppeF6XGO+2jYV21/6
+ Vjkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698766626; x=1699371426;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=J94TLVmxpl0XnRjKblCQ373JUKXqYHNbMQKHGSlFu3c=;
- b=tJnw2FGYH+mqow6nQAfgDji5+DbHYoso7Tq5q03/0GS5ACSI5kZiG/u9hiN8nkJtiL
- S52x8fAibZPeuZNP3iNJJcApJu6xoUhUYOVHkcNWUxxjSCqWTDoavYh3dZ78KjCiGt0f
- 5GiBHZFtAXID/MB9nY2GVtvl5dcB381d2Gmc/zkndWXq9IYEUYOIlIveobdzKScKQJay
- 8r+fVIjfE4UmWQ7zRWAJUoKPXefYaEInCHKgMKiNE7gp4rt5QgiPz2Ch8T/RoTsd8tOF
- G2aZGceJdqg+kVJxrOnj/nj+rGxYJsPCMj1TczLC7F2SSkHqGFo8oDmDBXJifkjacPZm
- y9Fg==
-X-Gm-Message-State: AOJu0YzNLub9DCKVfQTKIeypBZNi4Wir2NAKnjZPN9FOCkrbGf94s/5o
- SfOPS3LCFnC+9r6PVOHOg8M5bmGBkcBps8DmWy+tng==
-X-Google-Smtp-Source: AGHT+IGNFc8+3HLyZ82uAu0OXqWgI+jqDlbkn7G/uVkKA0csr/1Br3/+eo1eZzC/EL6wBlmGdOzguuYjzM7f+t/bTvA=
-X-Received: by 2002:a17:907:318a:b0:9be:21dc:8a9a with SMTP id
- xe10-20020a170907318a00b009be21dc8a9amr10630988ejb.39.1698766625947; Tue, 31
- Oct 2023 08:37:05 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698766814; x=1699371614;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sooZYBsZY9M2ZoGuBReyumQl0pKaz5JVreKdWYqqkKI=;
+ b=P/k8JRfYcgrq9fxmNU7XlhYNAh2uvcd9aa9osPl7ms1j+nbBXGj3AzSfM4Z9c6zNpd
+ GhLihkKkufbrdv8RMitSGDwpuH+i2OHlrGnOdhGcBDNMHevVP3FlCgLA3qn5cOcHE0ti
+ vHqY6pkPfLUalGoh9ckyo16yiT1F7iOgnGYOXdmH5JgKlAinhn7Hwgla8lKVGDcU5Rfx
+ 6TYVLM3GL8dW02Y6AcvKWT9MVAZZLz7u2zR+v6tGTZMnlEnbYy0V3XslNPejM+d/9mbn
+ Cv9cxYOMm9N22JgvBsTawNNQl7Od4x4i1mGYU6WUAFEy1no0vCxnXfVZUnkoH53YGEVI
+ 2Ghg==
+X-Gm-Message-State: AOJu0YyUZonSflgl9kiHdM5IuYdxfFKU4UDAY+R5xYs0SUpeNTfGc0cg
+ GnlhN63hK714WIZUgWmdMQcxpLXs+++Iu/m4V387QA==
+X-Google-Smtp-Source: AGHT+IF4GDp0r+kkVnA1KZE0IHIcasPX64Me7Az+Pw/c9TnKrailNhdNs4jnWlOV2ZvEsTvHzVg0uQ==
+X-Received: by 2002:a05:6512:401d:b0:505:783f:bc65 with SMTP id
+ br29-20020a056512401d00b00505783fbc65mr12005010lfb.66.1698766813847; 
+ Tue, 31 Oct 2023 08:40:13 -0700 (PDT)
+Received: from rockhopper.. (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ by smtp.gmail.com with ESMTPSA id
+ r12-20020a05600c458c00b003fbe4cecc3bsm2094613wmo.16.2023.10.31.08.40.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 08:40:13 -0700 (PDT)
+From: Rob Bradford <rbradford@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ Rob Bradford <rbradford@rivosinc.com>
+Subject: [PATCH v5 0/5] Support discontinuous PMU counters
+Date: Tue, 31 Oct 2023 15:37:12 +0000
+Message-ID: <20231031154000.18134-1-rbradford@rivosinc.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20231030114802.3671871-1-peter.maydell@linaro.org>
- <20231030114802.3671871-6-peter.maydell@linaro.org>
- <9ea5c9b8-d740-4cec-9896-568babeca9aa@ilande.co.uk>
- <CAFEAcA9dJnp0CVOzVWV+Q-U4ji9c8=14ggztKGktCSsDDp_F0g@mail.gmail.com>
- <CAFEAcA_4wqP7G+gXnunJx85OTvUr-3kx6HGABGb6Kt3y=b_Nvw@mail.gmail.com>
- <59d6df3c-95ee-4ac4-9ac4-3f4ed49708fa@linaro.org>
-In-Reply-To: <59d6df3c-95ee-4ac4-9ac4-3f4ed49708fa@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 31 Oct 2023 15:36:54 +0000
-Message-ID: <CAFEAcA9tipCFVfnR0Z9P8rvmtFdvzsn7dkz3FUAkTEuH+35d2g@mail.gmail.com>
-Subject: Re: [PATCH v2 5/6] hw/input/stellaris_input: Convert to qdev
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=rbradford@rivosinc.com; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,39 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 31 Oct 2023 at 14:55, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> On 31/10/23 15:05, Peter Maydell wrote:
-> > On Tue, 31 Oct 2023 at 13:55, Peter Maydell <peter.maydell@linaro.org> =
-wrote:
-> >>
-> >> On Mon, 30 Oct 2023 at 20:38, Mark Cave-Ayland
-> >> <mark.cave-ayland@ilande.co.uk> wrote:
-> >>>
-> >>> On 30/10/2023 11:48, Peter Maydell wrote:
-> >>> Is it worth converting this to use DEFINE_TYPES() during the conversi=
-on? I know Phil
-> >>> has considered some automation to remove the type_init() boilerplate =
-for the majority
-> >>> of cases.
-> >>
-> >> I could, I guess. It seems a bit awkward that DEFINE_TYPES()
-> >> wants you to pass it an array even when you only have one type,
-> >> though, which is going to be a very common use case.
->
-> For single type, there is no point beside enforcing a QOM style.
->
-> I'll update docs/devel/qom.rst...
+Currently the available PMU counters start at HPM3 and run through to
+the number specified by the "pmu-num" property. There is no
+requirement in the specification that the available counters be
+continously numbered. This series add suppport for specifying a
+discountinuous range of counters though a "pmu-mask" property.
 
-I do like that the macro means you're not writing an actual
-function for the registration.
+v5:
 
-We could I guess have a DEFINE_TYPE() macro that was similar
-to DEFINE_TYPES but emitted a function that called
-type_register_static() instead of type_register_static_array().
-Is that worth having? I'm not sure.
+* Added more R-B tags
+* Make "pmu-num" property directly update "pmu-mask" removing the need
+  to store that value.
 
-thanks
--- PMM
+v4:
+
+* Added more R-B tags (just missing from 4 & 5)
+* Added details on how to calculate mask
+* Use custom property for "pmu-num" in order to give deprecation warning 
+* Special case a zero value for "pmu-num"
+
+v3:
+
+* Use env_archcpu() in csr.c
+* Re-added check to enforce deprectated "pmu-num" below limit
+* Check that standard counters are not included in mask
+* Remove use of MAKE_32BIT_MASK()
+
+v2:
+
+* Use cfg.pmu_mask wherever cfg.pmu_num was used previously
+* Deprecate pmu_num property (warning, comment & updated documentation)
+* Override default pmu_mask value iff pmu_num changed from default
+
+Rob Bradford (5):
+  target/riscv: Propagate error from PMU setup
+  target/riscv: Don't assume PMU counters are continuous
+  target/riscv: Use existing PMU counter mask in FDT generation
+  target/riscv: Add "pmu-mask" property to replace "pmu-num"
+  docs/about/deprecated: Document RISC-V "pmu-num" deprecation
+
+ docs/about/deprecated.rst  | 12 ++++++++++++
+ hw/riscv/virt.c            |  2 +-
+ target/riscv/cpu.c         | 40 +++++++++++++++++++++++++++++++++++++-
+ target/riscv/cpu_cfg.h     |  2 +-
+ target/riscv/csr.c         |  5 +++--
+ target/riscv/machine.c     |  2 +-
+ target/riscv/pmu.c         | 34 ++++++++++++++------------------
+ target/riscv/pmu.h         |  5 +++--
+ target/riscv/tcg/tcg-cpu.c | 10 ++++++++--
+ 9 files changed, 83 insertions(+), 29 deletions(-)
+
+-- 
+2.41.0
+
 
