@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEE07DD727
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D52F7DD737
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:42:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxvWN-0005CZ-Dq; Tue, 31 Oct 2023 16:39:31 -0400
+	id 1qxvWO-0005Cj-WA; Tue, 31 Oct 2023 16:39:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxvWK-0005B1-9f
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:39:29 -0400
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
+ id 1qxvWM-0005CR-O4
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:39:30 -0400
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxvWI-0007L2-7m
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:39:28 -0400
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-5a81ab75f21so60047867b3.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:39:25 -0700 (PDT)
+ id 1qxvWL-0007NT-1F
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:39:30 -0400
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-5a877e0f0d8so2251217b3.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:39:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698784764; x=1699389564; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1698784767; x=1699389567; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GXQtI2B9G3nhczqYegoo/KwYaGV7r/b2JbeXhp07Lz8=;
- b=Xe2gIssAHKZiyFPYLUA+8V1UVL3DJsLyYY/5l8mJ2cr2b2B1+4NvAce7afdOg9G2CZ
- eWiKewTgp58EC/lcj/NagQpiq1jadiudZFxG+yS/JhmyLIJk8qBbQt2DMagLJSJSLKJ9
- sOj0iHftq7LS3KTlia5X8BcxGryebMqKjbQWwIYjpOeKSpVnjZhuiDjPWgYZeaNjfGh9
- y5IZ0uCWGTi3es3V+bHPW45u8MOqV4hxpn0xbTaTEKPsE9eNTvmMLbU8TUQS195+KKJb
- pmlHUo71LhyROdvbTGNBevH+nd+SJwJ88QAU/lRapDAdJnaQ48UYdZijXtk8IlQwVfac
- uiUw==
+ bh=V1MvU569TfyRcOoCjwIeubl+080lzR/Jo8V+JDyz6CU=;
+ b=llYElSCPrBBgSAabOtGKXXM0QyqYQV+Zv8DhfL3bioIhYjGpCv/EZMxNaSwkGYtHV+
+ gnQmo6d+jv9IfWKcgev3tDbQmSo8iP/C9x81X3+C6VR7rD9rLZv0LtZMMsa7w20ZGQ6n
+ Nfvys3fVGv5g96yOKKjPecSg9V2gaQTqmncGs2sRcCAD+94vgfhbmHKujkP/rs2CABU1
+ tYMLTR+9N3Bvo8iumMi66CHUHPK/MYK8ztTr3CRqllOb9hiEJ02Fdw7cKRc+RARrBz5l
+ 3CpqQwvsigktOq71lFAwT6nTyTlegSA3jPTxBeerl+zGcLRQ1emMq+2hgACNG0zUoIF5
+ KGpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698784764; x=1699389564;
+ d=1e100.net; s=20230601; t=1698784767; x=1699389567;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GXQtI2B9G3nhczqYegoo/KwYaGV7r/b2JbeXhp07Lz8=;
- b=YvyQlPztLN0zseR770FBe/T/0GsO5ahx8lVo0uYV20D7cBVRHE8O1Bsw8oxIIihBkj
- fJV4QJzQayia5SbExODYCcMOAUq/uQ9Wffd6MvO1oa7WSER97jDmFgvyC7yfUF2d276a
- YawLd6kBzjS7su70vLNcK6UhzYoXl7nPC0ICrDCuwTlSJxTsF+RZr3Zf3E3Kr+rQsg93
- ZwoijB07/tsJI64Rryv8qGHutLO3ds2r7TzryfExFx8hlk4IEkXGzKcoXSlK+B8oc7L5
- 37IG5ZmSB6xGbA+5XC3dD/z6a/1l5aHOLQEeSgpHWdHdHyFEcFFj0QFIIGfCxj16/xSC
- cN1w==
-X-Gm-Message-State: AOJu0Yze59Rcc6QMbwrR89iv4Sd/S3DO/LexGaBIvC6NkivvV2/p41la
- cnx8VYkrIwbKN16pHpdb57OelcW3wVVPxJuTFmU=
-X-Google-Smtp-Source: AGHT+IGSQt/h2Qo4M/XZeSaXf5NLt+oFhGzsRLDw74EdGUBjMzLqt4E8lXrzNZb4cJbBVBM5RoYqmg==
-X-Received: by 2002:a81:c60a:0:b0:5a8:e6f4:4b6c with SMTP id
- l10-20020a81c60a000000b005a8e6f44b6cmr11705146ywi.25.1698784764467; 
- Tue, 31 Oct 2023 13:39:24 -0700 (PDT)
+ bh=V1MvU569TfyRcOoCjwIeubl+080lzR/Jo8V+JDyz6CU=;
+ b=iJz33iRCcR39d/to0c6x48mROExGjVehswnEJk74UImbzEXrpNSrTCn431qfG3MeSY
+ wEiRAZqPjm5izhSNZUSUo8k0GiVozplKnapX3dpNSVHKuZyf1znCq+98qybhXzVri4DJ
+ qwZtjSuQ5Az5B2pHk307J7CeQxaBN2NYs7Cp1jvJsHkmyIeksj+0NKteJpsNFzauD1q6
+ ZCmvg7VTDswFE0POTk/DrC9cSyn04vIrSHe+e+5fklXEvkR9bXbXDHrb9qF4/ThNafis
+ PZL/2wCvgin/BLd8AL8WfkM2GtY5rkbKe8gEqt+Els3zxDw26D7EpbDcwhvoyWgxohSe
+ aOUQ==
+X-Gm-Message-State: AOJu0YxL9CsiUrpBRNKBaUkMUrv3dpUCdr+gCKVPxw3D/VYvr7pl99eS
+ Xoz6QXV34NTDSEjQjpheuX5fhkAPCPUXkO+J4Xc=
+X-Google-Smtp-Source: AGHT+IGHcWpudfJdHHSSFn3qk9iISAjuChS9T5w4EUt8/eVCc78xm03FAPrsRZcdc1/+tQH3Qd5IhA==
+X-Received: by 2002:a81:7807:0:b0:5b1:df82:9983 with SMTP id
+ t7-20020a817807000000b005b1df829983mr2738428ywc.25.1698784767037; 
+ Tue, 31 Oct 2023 13:39:27 -0700 (PDT)
 Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- k1-20020a81ff01000000b005add997ae53sm1272802ywn.81.2023.10.31.13.39.21
+ k1-20020a81ff01000000b005add997ae53sm1272802ywn.81.2023.10.31.13.39.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 13:39:24 -0700 (PDT)
+ Tue, 31 Oct 2023 13:39:26 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v7 01/16] target/riscv: create TYPE_RISCV_VENDOR_CPU
-Date: Tue, 31 Oct 2023 17:39:01 -0300
-Message-ID: <20231031203916.197332-2-dbarboza@ventanamicro.com>
+Subject: [PATCH v7 02/16] target/riscv/tcg: do not use "!generic" CPU checks
+Date: Tue, 31 Oct 2023 17:39:02 -0300
+Message-ID: <20231031203916.197332-3-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231031203916.197332-1-dbarboza@ventanamicro.com>
 References: <20231031203916.197332-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1130.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,92 +93,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to add a new CPU type for bare CPUs that will inherit specific
-traits of the 2 existing types:
+Our current logic in get/setters of MISA and multi-letter extensions
+works because we have only 2 CPU types, generic and vendor, and by using
+"!generic" we're implying that we're talking about vendor CPUs. When adding
+a third CPU type this logic will break so let's handle it beforehand.
 
-- it will allow for extensions to be enabled/disabled, like generic
-  CPUs;
+In set_misa_ext_cfg() and set_multi_ext_cfg(), check for "vendor" cpu instead
+of "not generic". The "generic CPU" checks remaining are from
+riscv_cpu_add_misa_properties() and cpu_add_multi_ext_prop() before
+applying default values for the extensions.
 
-- it will NOT inherit defaults, like vendor CPUs.
+This leaves us with:
 
-We can make this conditions met by adding an explicit type for the
-existing vendor CPUs and change the existing logic to not imply that
-"not generic" means vendor CPUs.
+- vendor CPUs will not allow extension enablement, all other CPUs will;
 
-Let's add the "vendor" CPU type first.
+- generic CPUs will inherit default values for extensions, all others
+  won't.
+
+And now we can add a new, third CPU type, that will allow extensions to
+be enabled and will not inherit defaults, without changing the existing
+logic.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu-qom.h |  1 +
- target/riscv/cpu.c     | 30 +++++++++++++++++++++---------
- 2 files changed, 22 insertions(+), 9 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index f3fbe37a2c..7831e86d37 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -24,6 +24,7 @@
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 093bda2e75..f54069d06f 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -612,6 +612,11 @@ static bool riscv_cpu_is_generic(Object *cpu_obj)
+     return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+ }
  
- #define TYPE_RISCV_CPU "riscv-cpu"
- #define TYPE_RISCV_DYNAMIC_CPU "riscv-dynamic-cpu"
-+#define TYPE_RISCV_VENDOR_CPU "riscv-vendor-cpu"
++static bool riscv_cpu_is_vendor(Object *cpu_obj)
++{
++    return object_dynamic_cast(cpu_obj, TYPE_RISCV_VENDOR_CPU) != NULL;
++}
++
+ /*
+  * We'll get here via the following path:
+  *
+@@ -674,7 +679,7 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+     target_ulong misa_bit = misa_ext_cfg->misa_bit;
+     RISCVCPU *cpu = RISCV_CPU(obj);
+     CPURISCVState *env = &cpu->env;
+-    bool generic_cpu = riscv_cpu_is_generic(obj);
++    bool vendor_cpu = riscv_cpu_is_vendor(obj);
+     bool prev_val, value;
  
- #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
- #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f40da4c661..822970345c 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1725,6 +1725,13 @@ void riscv_cpu_list(void)
-         .instance_init = initfn               \
+     if (!visit_type_bool(v, name, &value, errp)) {
+@@ -688,7 +693,7 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
      }
  
-+#define DEFINE_VENDOR_CPU(type_name, initfn) \
-+    {                                        \
-+        .name = type_name,                   \
-+        .parent = TYPE_RISCV_VENDOR_CPU,     \
-+        .instance_init = initfn              \
-+    }
-+
- static const TypeInfo riscv_cpu_type_infos[] = {
-     {
-         .name = TYPE_RISCV_CPU,
-@@ -1742,21 +1749,26 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .parent = TYPE_RISCV_CPU,
-         .abstract = true,
-     },
-+    {
-+        .name = TYPE_RISCV_VENDOR_CPU,
-+        .parent = TYPE_RISCV_CPU,
-+        .abstract = true,
-+    },
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
- #if defined(TARGET_RISCV32)
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,   rv32_base_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_IBEX,             rv32_ibex_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E31,       rv32_sifive_e_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E34,       rv32_imafcu_nommu_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U34,       rv32_sifive_u_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_IBEX,        rv32_ibex_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E31,  rv32_sifive_e_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E34,  rv32_imafcu_nommu_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U34,  rv32_sifive_u_cpu_init),
- #elif defined(TARGET_RISCV64)
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE64,   rv64_base_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E51,       rv64_sifive_e_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U54,       rv64_sifive_u_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_SHAKTI_C,         rv64_sifive_u_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_THEAD_C906,       rv64_thead_c906_cpu_init),
--    DEFINE_CPU(TYPE_RISCV_CPU_VEYRON_V1,        rv64_veyron_v1_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E51,  rv64_sifive_e_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U54,  rv64_sifive_u_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SHAKTI_C,    rv64_sifive_u_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906,  rv64_thead_c906_cpu_init),
-+    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_init),
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
- #endif
- };
+     if (value) {
+-        if (!generic_cpu) {
++        if (vendor_cpu) {
+             g_autofree char *cpuname = riscv_cpu_get_name(cpu);
+             error_setg(errp, "'%s' CPU does not allow enabling extensions",
+                        cpuname);
+@@ -793,7 +798,7 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+ {
+     const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
+     RISCVCPU *cpu = RISCV_CPU(obj);
+-    bool generic_cpu = riscv_cpu_is_generic(obj);
++    bool vendor_cpu = riscv_cpu_is_vendor(obj);
+     bool prev_val, value;
+ 
+     if (!visit_type_bool(v, name, &value, errp)) {
+@@ -817,7 +822,7 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+         return;
+     }
+ 
+-    if (value && !generic_cpu) {
++    if (value && vendor_cpu) {
+         g_autofree char *cpuname = riscv_cpu_get_name(cpu);
+         error_setg(errp, "'%s' CPU does not allow enabling extensions",
+                    cpuname);
 -- 
 2.41.0
 
