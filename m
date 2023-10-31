@@ -2,63 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1E17DCD8B
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:09:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DFCD7DCD8C
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:09:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxoTj-00065H-D8; Tue, 31 Oct 2023 09:08:19 -0400
+	id 1qxoUs-0006nB-B6; Tue, 31 Oct 2023 09:09:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxoTh-000640-8k
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:08:17 -0400
+ id 1qxoUq-0006n0-OU
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:09:28 -0400
 Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxoTf-0007Pu-Ay
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:08:16 -0400
+ id 1qxoUp-0007d0-4e
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:09:28 -0400
 Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5437d60fb7aso778070a12.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:08:14 -0700 (PDT)
+ 4fb4d7f45d1cf-53e751aeb3cso9216828a12.2
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:09:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698757693; x=1699362493; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=viszFUCE+2ibmVdD6nlfpGUOUa3/Tkf2gB/B/8KIeJA=;
- b=QIuAAPOX/BFb2/qQHMosxxrkgRhcOiVLvFkDlcxMCyfNCzAHM4PEcsnnnzOARs9jDh
- 0wW0/Rzcj3IAazB1dlr0B2L+wO1FTi7WBFKG0wZkL6wfLqtqaEO2Qla0iXaHTAwkTSJv
- O00aZO5awaoI89ueslY3DuhEbpzjxyKgNNbJywzjZsimI/dlozjlyWeuhczmXqNigUrJ
- V+Z4ZLD66ZMkwtNEyXG6aeaQe91Hs2hAxXMp9InVSoyW3Utc/njvlk7haO99sIo5YoUc
- JAxmO6EuEwyogQQShIWzzxxgkvxNoylChI0ROXnXQnpl2Ylio40OMo30/Q+kGwbKlzh9
- YVGQ==
+ d=linaro.org; s=google; t=1698757765; x=1699362565; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AhHN4ID3mL9x6F/VrSEK0l9VtzLlBTfPIT4aymTT+U0=;
+ b=qY5ZECtorULf3nPdsVN/kBjEXerWAJgZirNf27OqwVWBa1hO0+ZgsD6EdQiG9raAAy
+ uSv4E6+CPOWoxj2C1H46pWGkO4YG3L3+Fh0vysqGUIdV6B6espBdHId8M4TwDmvjVxgg
+ J4bfcyswkzB5GcOA8IQGT0rd8oHzWAEJ2xgLFjz49WicYVGWDu83d24AUAO7GTukE7gW
+ eWYK2lerawNK9PP6Q0VdChtMR3qFKaZTDjJqgzzCy+TKwoGB9Jrt87QJwprdAyvUrMRG
+ WlDCKdJJm6HhPuZxwEoOW5z67LSfMG8NBCAX++U1dmQSUF2YPRcS1I5hrPX184Im5JxW
+ VWvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698757693; x=1699362493;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=viszFUCE+2ibmVdD6nlfpGUOUa3/Tkf2gB/B/8KIeJA=;
- b=EiYxY2JeJOYlptpzazkCiAIyrOGhUKWhnr1yWB9i6iwptLCvNUsAJipr1wKpWhxNk1
- Cbb5Go9L39GY0usy4I7CSlPYH1W6Sc3lOXOoqzV7qRGGoWyUlY8PBLwNFGH9dwDyyYcP
- Sl/Z5sLTj+4GUJXZ8wRYqbSgW8jktCfhn8YiwgGhBuMSezA4gRBKbPXIBAr2Xhey+p6a
- r8zOkbXmfp5QK9lGq+XuOtc5aLQkg9DjD9qm34oAu8MLJvjH5RQn9NQLeQKqzrB7jh5i
- ht33TutxJblrGyeAgiq3oPUWJ3q9sqEdvsxZtY/IQHHWOwPPFT/agwRKi25TZnzmb0G/
- dRIA==
-X-Gm-Message-State: AOJu0Yzi+EK+q6DGj6UbQTtPi0BAfZ0W0Efpw0LJrW4hGMSj1vCPmh7S
- Zg1kdPk2Z8xzAnKqsIUK5Y/95gTf7GzcZu0aj2HysRibsp3zCuwg
-X-Google-Smtp-Source: AGHT+IGRef5v17807lpZR30bNGRKnQ2jeiO4wf6Vc9Xs4wjaBzWgDlLRVZSmt7fq4/ajVYeDpVj4fDSaVMCnlblTYrg=
-X-Received: by 2002:a50:fc15:0:b0:540:2c48:7913 with SMTP id
- i21-20020a50fc15000000b005402c487913mr10562064edr.38.1698757693094; Tue, 31
- Oct 2023 06:08:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698757765; x=1699362565;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AhHN4ID3mL9x6F/VrSEK0l9VtzLlBTfPIT4aymTT+U0=;
+ b=bFIhLeYLEdWW5zRQASHJieThWBDAvsP1cqTgbYm5Jvvycyd15XjtiAb5r9IKM2fNLh
+ JUM4Tzw7mz/r6KVF47Dg4WeU0yRMh9+ZR8anddyZhcgm9qJnE9j33Z+t9nZgtZ98U4TW
+ Si4tvg93RaT1IErFoV3hqg4AqR71y67oeH/aV1rAGNhxHGOTSZPRnrramjLqwbMwpWDh
+ DnxAQQF7t74EnRX65B9TOZvz74j9yv4snh5GmD5Mu7TsmMkxOpVwXhSK9XeNbKQRXWWm
+ ToVAJ64+PAU2Zk29X4VOeBrRbN7M7Mtmb/mLl/cHWxRwkgFt+CIH+qTL4wFpfy40l7wu
+ lYdw==
+X-Gm-Message-State: AOJu0YyicSu52u4a/WchcJywAYFs+/GzwAGtoa50zPkuc2fm5D7XlLmY
+ 2V+MZHA1IyqdkehkR9MbzPyBYAQyEffOrl67QOCywA==
+X-Google-Smtp-Source: AGHT+IE2WwANpf582XP3Y75t2QCOPTUOrT+jL13zw3lNmw5B+jUBmZg9BKXBsv9KTqfEsC9i815Zfb9hXZ2wAkB2ud8=
+X-Received: by 2002:aa7:d3d7:0:b0:53f:381a:a25f with SMTP id
+ o23-20020aa7d3d7000000b0053f381aa25fmr10392937edr.23.1698757765618; Tue, 31
+ Oct 2023 06:09:25 -0700 (PDT)
 MIME-Version: 1.0
+References: <87cfa6e91ba9608c5f4cd0841987925d@mail.emailn.de>
+In-Reply-To: <87cfa6e91ba9608c5f4cd0841987925d@mail.emailn.de>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 31 Oct 2023 13:08:01 +0000
-Message-ID: <CAFEAcA_qBLXdeB7aQLcjcfMdEf9hpJu4ZhZZdHbF4SOSyZZXdw@mail.gmail.com>
-Subject: tests/data/acpi/rebuild-expected-aml.sh creates files for arm virt
- that don't exist in git
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
+Date: Tue, 31 Oct 2023 13:09:14 +0000
+Message-ID: <CAFEAcA_XHAzghLNgoKnUvJR97KQQk=QHFKQ3fNBLJHt5EC19gg@mail.gmail.com>
+Subject: Re: qemu master git source can not compile under macOS Sonoma 14.1
+To: Rene Engel <ReneEngel80@emailn.de>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
  envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
@@ -83,53 +86,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm doing a patchset that requires rebuilding the bios-tables-test
-expected-data files for the arm virt board. The instructions in
-bios-tables-test.c say that you should run rebuild-expected-aml.sh
-to update the data files. But running that script generates a lot
-of new data files that don't exist in git at all and are unrelated
-to the change I'm making:
+On Tue, 31 Oct 2023 at 12:49, Rene Engel <ReneEngel80@emailn.de> wrote:
+> For days I've been trying to compile qemu master git 8.1.50 from the curr=
+ent qemu sources under MacOs Sonoma, which fails. Older sources can be comp=
+iled without any problems, there seems to be a problem with Meson in the la=
+st source, version 0.63.3 is always tried to be used. Meson 1.2.3 is instal=
+led on my system via Homebrew.
+>
+> I have already described the problem here:
+>
+> https://gitlab.com/qemu-project/qemu/-/issues/1939
 
-        tests/data/acpi/virt/APIC.memhp
-        tests/data/acpi/virt/APIC.numamem
-        tests/data/acpi/virt/APIC.pxb
-        tests/data/acpi/virt/DBG2.acpihmatvirt
-        tests/data/acpi/virt/DBG2.memhp
-        tests/data/acpi/virt/DBG2.numamem
-        tests/data/acpi/virt/DBG2.pxb
-        tests/data/acpi/virt/DBG2.topology
-        tests/data/acpi/virt/DSDT.numamem
-        tests/data/acpi/virt/FACP.acpihmatvirt
-        tests/data/acpi/virt/FACP.memhp
-        tests/data/acpi/virt/FACP.numamem
-        tests/data/acpi/virt/FACP.pxb
-        tests/data/acpi/virt/FACP.topology
-        tests/data/acpi/virt/GTDT.acpihmatvirt
-        tests/data/acpi/virt/GTDT.memhp
-        tests/data/acpi/virt/GTDT.numamem
-        tests/data/acpi/virt/GTDT.pxb
-        tests/data/acpi/virt/GTDT.topology
-        tests/data/acpi/virt/IORT.acpihmatvirt
-        tests/data/acpi/virt/IORT.memhp
-        tests/data/acpi/virt/IORT.numamem
-        tests/data/acpi/virt/IORT.pxb
-        tests/data/acpi/virt/IORT.topology
-        tests/data/acpi/virt/MCFG.acpihmatvirt
-        tests/data/acpi/virt/MCFG.memhp
-        tests/data/acpi/virt/MCFG.numamem
-        tests/data/acpi/virt/MCFG.pxb
-        tests/data/acpi/virt/MCFG.topology
-        tests/data/acpi/virt/PPTT.memhp
-        tests/data/acpi/virt/PPTT.numamem
-        tests/data/acpi/virt/PPTT.pxb
-        tests/data/acpi/virt/SPCR.acpihmatvirt
-        tests/data/acpi/virt/SPCR.memhp
-        tests/data/acpi/virt/SPCR.numamem
-        tests/data/acpi/virt/SPCR.pxb
-        tests/data/acpi/virt/SPCR.topology
-
-Does the script need fixing to not generate these files, or should
-they exist in the git repo?
+Paolo, this looks like one for you ? Should we really be
+using some older version of meson than the system one?
+Do we need to fix this by saying "on macos $whatever,
+minimum meson requirement is XYZ?".
 
 thanks
 -- PMM
