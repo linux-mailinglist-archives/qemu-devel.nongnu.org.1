@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D31C7DD66C
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6D37DD684
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:05:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxty8-000468-Ky; Tue, 31 Oct 2023 15:00:06 -0400
+	id 1qxtyP-0004Jd-Bj; Tue, 31 Oct 2023 15:00:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxty0-000427-6z
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 14:59:56 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxty5-00047d-GT
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:00:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtxj-00068B-Oj
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 14:59:55 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtxk-00068H-9j
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:00:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1698778778;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hioIPexfOSH6Bi2dSbBnsJo9dGl0M5qWY/GIjefAp8Q=;
- b=bCpSejYrvuCOAnObP5CwYNY55y+iELR2X7gWd0mFtJSPWy/eEv7aiLRbk/pn1Oymlhs/Qy
- ZfGeY6Ga/kHEWHCGj5OtwgDlUBicwOZyDFUIWvw2hVyejzXwVMIHrFGqMRKH8rUu2mXlsl
- 2fbuE5hRiZc2fZDpeFtnirtLL4iSwlg=
+ bh=4CuwuVHIzzuQHItZTvM9/+Limg0335MhIuSQTwYUEIM=;
+ b=ICkuCHqhdlR3lX8zanLjlQqfFYRbVlv6c5MpXX8rN2BrRtYy2eUBsuSBQtKmwquH3PeC9Y
+ MAua123Yez9v3nuYTQuKYQexWLFk6r3BVSngd/kaYsQ4N053whGB01IPOucyccc4N6RkE9
+ 8Ya0jWqApxUqqna2+l8fpgG+bOJ7wsg=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-fcqFK1ipOUOpKCdKv2XLsQ-1; Tue,
- 31 Oct 2023 14:59:36 -0400
-X-MC-Unique: fcqFK1ipOUOpKCdKv2XLsQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-oADW7jDpOmqv_xn17SBbrg-1; Tue,
+ 31 Oct 2023 14:59:37 -0400
+X-MC-Unique: oADW7jDpOmqv_xn17SBbrg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F3A11C06E1D;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA7173C0BE54;
  Tue, 31 Oct 2023 18:59:36 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.218])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 844133DB;
- Tue, 31 Oct 2023 18:59:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5697D2E0;
+ Tue, 31 Oct 2023 18:59:36 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 19/27] block/mirror: set actively_synced even after the job is
- ready
-Date: Tue, 31 Oct 2023 19:59:10 +0100
-Message-ID: <20231031185918.346940-20-kwolf@redhat.com>
+Subject: [PULL 20/27] block/mirror: move dirty bitmap to filter
+Date: Tue, 31 Oct 2023 19:59:11 +0100
+Message-ID: <20231031185918.346940-21-kwolf@redhat.com>
 In-Reply-To: <20231031185918.346940-1-kwolf@redhat.com>
 References: <20231031185918.346940-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -81,36 +80,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-In preparation to allow switching from background to active mode. This
-ensures that setting actively_synced will not be missed when the
-switch happens after the job is ready.
+In preparation to allow switching to active mode without draining.
+Initialization of the bitmap in mirror_dirty_init() still happens with
+the original/backing BlockDriverState, which should be fine, because
+the mirror top has the same length.
 
+Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-ID: <20231031135431.393137-3-f.ebner@proxmox.com>
+Message-ID: <20231031135431.393137-4-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/mirror.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ block/mirror.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/block/mirror.c b/block/mirror.c
-index dcd88de2e3..1c2c00ee1d 100644
+index 1c2c00ee1d..914d723446 100644
 --- a/block/mirror.c
 +++ b/block/mirror.c
-@@ -1074,9 +1074,9 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
-                  * the target in a consistent state.
-                  */
-                 job_transition_to_ready(&s->common.job);
--                if (s->copy_mode != MIRROR_COPY_MODE_BACKGROUND) {
--                    s->actively_synced = true;
--                }
-+            }
-+            if (s->copy_mode != MIRROR_COPY_MODE_BACKGROUND) {
-+                s->actively_synced = true;
-             }
+@@ -1500,6 +1500,11 @@ bdrv_mirror_top_do_write(BlockDriverState *bs, MirrorMethod method,
+         abort();
+     }
  
-             should_complete = s->should_complete ||
++    if (!copy_to_target && s->job && s->job->dirty_bitmap) {
++        s->job->actively_synced = false;
++        bdrv_set_dirty_bitmap(s->job->dirty_bitmap, offset, bytes);
++    }
++
+     if (ret < 0) {
+         goto out;
+     }
+@@ -1823,13 +1828,17 @@ static BlockJob *mirror_start_job(
+         s->should_complete = true;
+     }
+ 
+-    s->dirty_bitmap = bdrv_create_dirty_bitmap(bs, granularity, NULL, errp);
++    s->dirty_bitmap = bdrv_create_dirty_bitmap(s->mirror_top_bs, granularity,
++                                               NULL, errp);
+     if (!s->dirty_bitmap) {
+         goto fail;
+     }
+-    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
+-        bdrv_disable_dirty_bitmap(s->dirty_bitmap);
+-    }
++
++    /*
++     * The dirty bitmap is set by bdrv_mirror_top_do_write() when not in active
++     * mode.
++     */
++    bdrv_disable_dirty_bitmap(s->dirty_bitmap);
+ 
+     ret = block_job_add_bdrv(&s->common, "source", bs, 0,
+                              BLK_PERM_WRITE_UNCHANGED | BLK_PERM_WRITE |
 -- 
 2.41.0
 
