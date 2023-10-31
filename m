@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF717DD67C
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:04:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 426447DD681
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:04:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxtzD-0006pd-C3; Tue, 31 Oct 2023 15:01:11 -0400
+	id 1qxtyc-0004Ph-M8; Tue, 31 Oct 2023 15:00:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtzB-0006hc-Aw
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:01:09 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtyO-0004Jl-LK
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:00:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtz3-0006iX-Ln
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:01:07 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtxk-00068Q-02
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:00:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698778859;
+ s=mimecast20190719; t=1698778779;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=56TCXCzBBWstKMVRPA3qKbRs/WUbnneU2E3cFW9pfsM=;
- b=Da4M+uieq4Gfaobvj1oi0NkO4iL2sWtfsfAL+ejkobNyEUgbfm5lYKLki3xI2/vJLM0Alr
- TN+pmSDrhQfibEZAM7SWimFU+/y7yOavVTxXZGL32CcpJbUfay1XwB2c7voOTJ6EryIO2u
- NigH7OZ88QKCl++E3P4KzAMpQXYsh0Y=
+ bh=byv0+w1mnnRBl6h60GOGF4/WzdTryQ3xYIFbjWyku1I=;
+ b=dB0e3efvsPpN1Q65pcq9zsHt+r5ph2p4MAbI7BToJSdmfZkaEWuE4Fv/UpTeHUIlhxYwL1
+ 5NIutfaVACp66RwqeXSBIR/B5kOXnvczjvLL8dYlvQr3vdd7H/kIL+akRfnroab8oksLwq
+ oe1aG8csjNxe1sL81Qjh4fCtXDCSSPA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-H6DgV25zOLeV411UfFMSTQ-1; Tue,
- 31 Oct 2023 14:59:54 -0400
-X-MC-Unique: H6DgV25zOLeV411UfFMSTQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-tqozEThhOKuB3fwVdTQrEA-1; Tue,
+ 31 Oct 2023 14:59:28 -0400
+X-MC-Unique: tqozEThhOKuB3fwVdTQrEA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2CFE61C06E0D;
- Tue, 31 Oct 2023 18:59:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0189E3C02B62;
+ Tue, 31 Oct 2023 18:59:28 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.218])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8D39D2BB;
- Tue, 31 Oct 2023 18:59:26 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 643E325C0;
+ Tue, 31 Oct 2023 18:59:27 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 08/27] iotests: add tests for "qemu-img rebase" with compression
-Date: Tue, 31 Oct 2023 19:58:59 +0100
-Message-ID: <20231031185918.346940-9-kwolf@redhat.com>
+Subject: [PULL 09/27] block: Fix locking in media change monitor commands
+Date: Tue, 31 Oct 2023 19:59:00 +0100
+Message-ID: <20231031185918.346940-10-kwolf@redhat.com>
 In-Reply-To: <20231031185918.346940-1-kwolf@redhat.com>
 References: <20231031185918.346940-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -60,7 +60,6 @@ X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -78,422 +77,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+blk_insert_bs() requires that the caller holds the AioContext lock for
+the node to be inserted. Since commit c066e808e11, neglecting to do so
+causes a crash when the child has to be moved to a different AioContext
+to attach it to the BlockBackend.
 
-The test cases considered so far:
+This fixes qmp_blockdev_insert_anon_medium(), which is called for the
+QMP commands 'blockdev-insert-medium' and 'blockdev-change-medium', to
+correctly take the lock.
 
-314 (new test suite):
-
-1. Check that compression mode isn't compatible with "-f raw" (raw
-   format doesn't support compression).
-2. Check that rebasing an image onto no backing file preserves the data
-   and writes the copied clusters actually compressed.
-3. Same as 2, but with a raw backing file (i.e. the clusters copied from the
-   backing are originally uncompressed -- we check they end up compressed
-   after being merged).
-4. Remove a single delta from a backing chain, perform the same checks
-   as in 2.
-5. Check that even when backing and overlay are initially uncompressed,
-   copied clusters end up compressed when rebase with compression is
-   performed.
-
-271:
-
-1. Check that when target image has subclusters, rebase with compression
-   will make an entire cluster containing the written subcluster
-   compressed.
-
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: qemu-stable@nongnu.org
+Fixes: https://issues.redhat.com/browse/RHEL-3922
+Fixes: c066e808e11a5c181b625537b6c78e0de27a4801
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20231013153302.39234-2-kwolf@redhat.com>
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-Message-ID: <20230919165804.439110-9-andrey.drobyshev@virtuozzo.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- tests/qemu-iotests/271     |  65 +++++++++++++++
- tests/qemu-iotests/271.out |  40 +++++++++
- tests/qemu-iotests/314     | 165 +++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/314.out |  75 +++++++++++++++++
- 4 files changed, 345 insertions(+)
- create mode 100755 tests/qemu-iotests/314
- create mode 100644 tests/qemu-iotests/314.out
+ block/qapi-sysemu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/qemu-iotests/271 b/tests/qemu-iotests/271
-index e243f57ba7..59a6fafa2f 100755
---- a/tests/qemu-iotests/271
-+++ b/tests/qemu-iotests/271
-@@ -965,6 +965,71 @@ echo
+diff --git a/block/qapi-sysemu.c b/block/qapi-sysemu.c
+index 3f614cbc04..1618cd225a 100644
+--- a/block/qapi-sysemu.c
++++ b/block/qapi-sysemu.c
+@@ -237,6 +237,7 @@ static void qmp_blockdev_insert_anon_medium(BlockBackend *blk,
+                                             BlockDriverState *bs, Error **errp)
+ {
+     Error *local_err = NULL;
++    AioContext *ctx;
+     bool has_device;
+     int ret;
  
- TEST_IMG="$TEST_IMG.top" alloc="1 30" zero="" _verify_l2_bitmap 0
+@@ -258,7 +259,11 @@ static void qmp_blockdev_insert_anon_medium(BlockBackend *blk,
+         return;
+     }
  
-+# Check that rebase with compression works correctly with images containing
-+# subclusters.  When compression is enabled and we allocate a new
-+# subcluster within the target (overlay) image, we expect the entire cluster
-+# containing that subcluster to become compressed.
-+#
-+# Here we expect 1st and 3rd clusters of the top (overlay) image to become
-+# compressed after the rebase, while cluster 2 to remain unallocated and
-+# be read from the base (new backing) image.
-+#
-+# Base (new backing): |-- -- .. -- --|11 11 .. 11 11|-- -- .. -- --|
-+# Mid (old backing):  |-- -- .. -- 22|-- -- .. -- --|33 -- .. -- --|
-+# Top:                |-- -- .. -- --|-- -- -- -- --|-- -- .. -- --|
-+
-+echo
-+echo "### Rebase with compression for images with subclusters ###"
-+echo
-+
-+echo "# create backing chain"
-+echo
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img -o cluster_size=1M,extended_l2=on 3M
-+TEST_IMG="$TEST_IMG.mid" _make_test_img -o cluster_size=1M,extended_l2=on \
-+    -b "$TEST_IMG.base" -F qcow2 3M
-+TEST_IMG="$TEST_IMG.top" _make_test_img -o cluster_size=1M,extended_l2=on \
-+    -b "$TEST_IMG.mid" -F qcow2 3M
-+
-+echo
-+echo "# fill old and new backing with data"
-+echo
-+
-+$QEMU_IO -c "write -P 0x11 1M 1M" "$TEST_IMG.base" | _filter_qemu_io
-+$QEMU_IO -c "write -P 0x22 $(( 31 * 32 ))k 32k" \
-+         -c "write -P 0x33 $(( 64 * 32 ))k 32k" \
-+         "$TEST_IMG.mid" | _filter_qemu_io
-+
-+echo
-+echo "# rebase topmost image onto the new backing, with compression"
-+echo
-+
-+$QEMU_IMG rebase -c -b "$TEST_IMG.base" -F qcow2 "$TEST_IMG.top"
-+
-+echo "# verify that the 1st and 3rd clusters've become compressed"
-+echo
-+
-+$QEMU_IMG map --output=json "$TEST_IMG.top" | _filter_testdir
-+
-+echo
-+echo "# verify that data is read the same before and after rebase"
-+echo
-+
-+$QEMU_IO -c "read -P 0x22 $(( 31 * 32 ))k 32k" \
-+         -c "read -P 0x11 1M 1M" \
-+         -c "read -P 0x33 $(( 64 * 32 ))k 32k" \
-+         "$TEST_IMG.top" | _filter_qemu_io
-+
-+echo
-+echo "# verify image bitmap"
-+echo
-+
-+# For compressed clusters bitmap is always 0.  For unallocated cluster
-+# there should be no entry at all, thus bitmap is also 0.
-+TEST_IMG="$TEST_IMG.top" alloc="" zero="" _verify_l2_bitmap 0
-+TEST_IMG="$TEST_IMG.top" alloc="" zero="" _verify_l2_bitmap 1
-+TEST_IMG="$TEST_IMG.top" alloc="" zero="" _verify_l2_bitmap 2
-+
- # success, all done
- echo "*** done"
- rm -f $seq.full
-diff --git a/tests/qemu-iotests/271.out b/tests/qemu-iotests/271.out
-index c335a6c608..0b24d50159 100644
---- a/tests/qemu-iotests/271.out
-+++ b/tests/qemu-iotests/271.out
-@@ -765,4 +765,44 @@ Offset          Length          Mapped to       File
- # verify image bitmap
- 
- L2 entry #0: 0x8000000000500000 0000000040000002
-+
-+### Rebase with compression for images with subclusters ###
-+
-+# create backing chain
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=3145728
-+Formatting 'TEST_DIR/t.IMGFMT.mid', fmt=IMGFMT size=3145728 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/t.IMGFMT.top', fmt=IMGFMT size=3145728 backing_file=TEST_DIR/t.IMGFMT.mid backing_fmt=IMGFMT
-+
-+# fill old and new backing with data
-+
-+wrote 1048576/1048576 bytes at offset 1048576
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 32768/32768 bytes at offset 1015808
-+32 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 32768/32768 bytes at offset 2097152
-+32 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+# rebase topmost image onto the new backing, with compression
-+
-+# verify that the 1st and 3rd clusters've become compressed
-+
-+[{ "start": 0, "length": 1048576, "depth": 0, "present": true, "zero": false, "data": true, "compressed": true},
-+{ "start": 1048576, "length": 1048576, "depth": 1, "present": true, "zero": false, "data": true, "compressed": false, "offset": 5242880},
-+{ "start": 2097152, "length": 1048576, "depth": 0, "present": true, "zero": false, "data": true, "compressed": true}]
-+
-+# verify that data is read the same before and after rebase
-+
-+read 32768/32768 bytes at offset 1015808
-+32 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 1048576/1048576 bytes at offset 1048576
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 32768/32768 bytes at offset 2097152
-+32 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+# verify image bitmap
-+
-+L2 entry #0: 0x4008000000500000 0000000000000000
-+L2 entry #1: 0x0000000000000000 0000000000000000
-+L2 entry #2: 0x400800000050040b 0000000000000000
- *** done
-diff --git a/tests/qemu-iotests/314 b/tests/qemu-iotests/314
-new file mode 100755
-index 0000000000..96d7b4d258
---- /dev/null
-+++ b/tests/qemu-iotests/314
-@@ -0,0 +1,165 @@
-+#!/usr/bin/env bash
-+# group: rw backing auto quick
-+#
-+# Test qemu-img rebase with compression
-+#
-+# Copyright (c) 2023 Virtuozzo International GmbH.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+# creator
-+owner=andrey.drobyshev@virtuozzo.com
-+
-+seq=`basename $0`
-+echo "QA output created by $seq"
-+
-+status=1	# failure is the default!
-+
-+_cleanup()
-+{
-+    _cleanup_test_img
-+    _rm_test_img "$TEST_IMG.base"
-+    _rm_test_img "$TEST_IMG.itmd"
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ./common.rc
-+. ./common.filter
-+
-+_supported_fmt qcow2
-+_supported_proto file
-+_supported_os Linux
-+
-+# Want the size divisible by 2 and 3
-+size=$(( 48 * 1024 * 1024 ))
-+half_size=$(( size / 2 ))
-+third_size=$(( size / 3 ))
-+
-+# 1. "qemu-img rebase -c" should refuse working with any format which doesn't
-+# support compression.  We only check "-f raw" here.
-+echo
-+echo "=== Testing compressed rebase format compatibility ==="
-+echo
-+
-+$QEMU_IMG create -f raw "$TEST_IMG" "$size" | _filter_img_create
-+$QEMU_IMG rebase -c -f raw -b "" "$TEST_IMG"
-+
-+# 2. Write the 1st half of $size to backing file (compressed), 2nd half -- to
-+# the top image (also compressed).  Rebase the top image onto no backing file,
-+# with compression (i.e. "qemu-img -c -b ''").  Check that the resulting image
-+# has the written data preserved, and "qemu-img check" reports 100% clusters
-+# as compressed.
-+echo
-+echo "=== Testing rebase with compression onto no backing file ==="
-+echo
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img $size
-+_make_test_img -b "$TEST_IMG.base" -F $IMGFMT $size
-+
-+$QEMU_IO -c "write -c -P 0xaa 0 $half_size" "$TEST_IMG.base" | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xbb $half_size $half_size" "$TEST_IMG" \
-+    | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "" "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $half_size" "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xbb $half_size $half_size" "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# 3. Same as the previous one, but with raw backing file (hence write to
-+# the backing is uncompressed).
-+echo
-+echo "=== Testing rebase with compression with raw backing file ==="
-+echo
-+
-+$QEMU_IMG create -f raw "$TEST_IMG.base" "$half_size" | _filter_img_create
-+_make_test_img -b "$TEST_IMG.base" -F raw $size
-+
-+$QEMU_IO -f raw -c "write -P 0xaa 0 $half_size" "$TEST_IMG.base" \
-+    | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xbb $half_size $half_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "" "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $half_size" "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xbb $half_size $half_size" "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# 4. Create a backing chain base<--itmd<--img, filling 1st, 2nd and 3rd
-+# thirds of them, respectively (with compression).  Rebase img onto base,
-+# effectively deleting itmd from the chain, and check that written data is
-+# preserved in the resulting image.  Also check that "qemu-img check" reports
-+# 100% clusters as compressed.
-+echo
-+echo "=== Testing compressed rebase removing single delta from the chain ==="
-+echo
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img $size
-+TEST_IMG="$TEST_IMG.itmd" _make_test_img -b "$TEST_IMG.base" -F $IMGFMT $size
-+_make_test_img -b "$TEST_IMG.itmd" -F $IMGFMT $size
-+
-+$QEMU_IO -c "write -c -P 0xaa 0 $third_size" \
-+    "$TEST_IMG.base" | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xbb $third_size $third_size" \
-+    "$TEST_IMG.itmd" | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xcc $((third_size * 2 )) $third_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "$TEST_IMG.base" -F $IMGFMT "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $third_size" "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xbb $third_size $third_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xcc $(( third_size * 2 )) $third_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# 5. Create one-cluster backing and overlay images, and fill only the first
-+# (half - 1) bytes of the backing with data (uncompressed).  Rebase the
-+# overlay onto no backing file with compression.  Check that data is still
-+# read correctly, and that cluster is now really compressed ("qemu-img check"
-+# reports 100% clusters as compressed.
-+echo
-+echo "=== Testing compressed rebase with unaligned unmerged data ==="
-+echo
-+
-+CLUSTER_SIZE=65536
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img $CLUSTER_SIZE
-+_make_test_img -b "$TEST_IMG.base" -F $IMGFMT $CLUSTER_SIZE
-+
-+$QEMU_IO -c "write -P 0xaa 0 $(( CLUSTER_SIZE / 2 - 1 ))" $TEST_IMG.base \
-+    | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "" "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $(( CLUSTER_SIZE / 2 - 1 ))" "$TEST_IMG" \
-+    | _filter_qemu_io
-+$QEMU_IO -c \
-+    "read -P 0x00 $(( CLUSTER_SIZE / 2 - 1 )) $(( CLUSTER_SIZE / 2 + 1 ))" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# success, all done
-+echo
-+echo '*** done'
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/314.out b/tests/qemu-iotests/314.out
-new file mode 100644
-index 0000000000..ac9337a543
---- /dev/null
-+++ b/tests/qemu-iotests/314.out
-@@ -0,0 +1,75 @@
-+QA output created by 314
-+
-+=== Testing compressed rebase format compatibility ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=raw size=50331648
-+qemu-img: Compression not supported for this file format
-+
-+=== Testing rebase with compression onto no backing file ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=50331648
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+wrote 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+768/768 = 100.00% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 458752
-+
-+=== Testing rebase with compression with raw backing file ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=raw size=25165824
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=raw
-+wrote 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+768/768 = 100.00% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 458752
-+
-+=== Testing compressed rebase removing single delta from the chain ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=50331648
-+Formatting 'TEST_DIR/t.IMGFMT.itmd', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.itmd backing_fmt=IMGFMT
-+wrote 16777216/16777216 bytes at offset 0
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 16777216/16777216 bytes at offset 16777216
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 16777216/16777216 bytes at offset 33554432
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 16777216/16777216 bytes at offset 0
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 16777216/16777216 bytes at offset 16777216
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 16777216/16777216 bytes at offset 33554432
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+512/768 = 66.67% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 458752
-+
-+=== Testing compressed rebase with unaligned unmerged data ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=65536
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=65536 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+wrote 32767/32767 bytes at offset 0
-+31.999 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 32767/32767 bytes at offset 0
-+31.999 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 32769/32769 bytes at offset 32767
-+32.001 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+1/1 = 100.00% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 393216
-+
-+*** done
++    ctx = bdrv_get_aio_context(bs);
++    aio_context_acquire(ctx);
+     ret = blk_insert_bs(blk, bs, errp);
++    aio_context_release(ctx);
++
+     if (ret < 0) {
+         return;
+     }
 -- 
 2.41.0
 
