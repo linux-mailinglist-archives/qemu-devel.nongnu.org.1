@@ -2,94 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C02A7DD594
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 18:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8087DD5A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 18:56:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxsw1-0007SC-Hl; Tue, 31 Oct 2023 13:53:49 -0400
+	id 1qxsxp-0008AW-IK; Tue, 31 Oct 2023 13:55:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxsvz-0007S2-TS
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:53:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qxsxm-0008A2-MF
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:55:38 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxsvy-0002SC-6v
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:53:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698774825;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=cFfMoYK2y+vhqNcmhlIo+Hzsw922AAwrVDDImGGjBmI=;
- b=EIbpYGxbDdFcoXCzCQSf7f769jQ/GNTGUP4UseXsYbhf2DYAF9JI3JzFYLHRxWD9lGFyNM
- q5knAz5VqYPeiV6DHi+Xp5m5Tb04GueA1tMRYfIFyPKBkJBDeKbZIZusa4YCusZrf0lEU5
- RP4zF54joqaX9nXNG6jDELlh0BvQ9fE=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-448-dgDxItAqOICbcOgWJVBbHg-1; Tue, 31 Oct 2023 13:53:33 -0400
-X-MC-Unique: dgDxItAqOICbcOgWJVBbHg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c6b30acbaeso32775951fa.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 10:53:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698774811; x=1699379611;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cFfMoYK2y+vhqNcmhlIo+Hzsw922AAwrVDDImGGjBmI=;
- b=ND5lARFe0pWuLlroGG1rSvcTJxlxmZuQKrskz4gDhXH8QI/ID42z3DGjy2dSN9PW60
- iSps+yA4P0WZpmMKrHF8Qn3jdwZB/q9cu7yrUghCpPEBumAvkHY90YR0Y1+djF/f1Voc
- KGYVY+im0F25nFi4KyM2eVheGAyylZvSxlNfceYjEOLIcDuDfQaMoaqVVUc9kpOC+bvV
- Df7pc3BMlxG+DdA7RJsYXzhY4uPe9a2BCS6/wSkAGPqin+Bpm9u6+Rq/yjgWM3RxVWEr
- fBmdSsDZe0Qc0Y38Cz8lX79Xm11/sQ3Ca9wzLLKGxSS8kTX5Jlkb0asCAqraGVphASkY
- /f9Q==
-X-Gm-Message-State: AOJu0Yw6DmQCArt5TogHVrY1EjBxnfuOE0l7n5g8yzkEMfCThbImte9S
- A7Q4TSZFXO65RnKfypPjtuLJqQxLW/YHR/djE9DfhYJU20oco0HhnAsyRW5FAjFT01E+26ThLwd
- 52CvcZa6y67MVcUU=
-X-Received: by 2002:a05:651c:2109:b0:2c2:c1f6:3097 with SMTP id
- a9-20020a05651c210900b002c2c1f63097mr13469022ljq.22.1698774811625; 
- Tue, 31 Oct 2023 10:53:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF9aMACKeqZj1TQjsGoqVtTDng9BazJJzmAVQ4d6t8kFenggQ5AiiIU7dCURoeN4spFnrhWiw==
-X-Received: by 2002:a05:651c:2109:b0:2c2:c1f6:3097 with SMTP id
- a9-20020a05651c210900b002c2c1f63097mr13469001ljq.22.1698774811287; 
- Tue, 31 Oct 2023 10:53:31 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- t16-20020a05600c199000b003fc0505be19sm2368342wmq.37.2023.10.31.10.53.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 10:53:29 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  dgilbert@redhat.com,
- pbonzini@redhat.com,  berrange@redhat.com,  armbru@redhat.com,
- eblake@redhat.com,  manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com,  Het Gala <het.gala@nutanix.com>,  Peter
- Xu <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v15 12/14] migration: Implement MigrateChannelList to
- qmp migration flow.
-In-Reply-To: <20231023182053.8711-13-farosas@suse.de> (Fabiano Rosas's message
- of "Mon, 23 Oct 2023 15:20:51 -0300")
-References: <20231023182053.8711-1-farosas@suse.de>
- <20231023182053.8711-13-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 31 Oct 2023 18:53:29 +0100
-Message-ID: <87il6m4r1i.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qxsxj-0002w6-DF
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 13:55:38 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SKd5174Wsz67byx;
+ Wed,  1 Nov 2023 01:52:21 +0800 (CST)
+Received: from localhost (10.195.246.117) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 31 Oct
+ 2023 17:55:25 +0000
+Date: Tue, 31 Oct 2023 17:55:22 +0000
+To: Markus Armbruster <armbru@redhat.com>
+CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Ben Widawsky
+ <bwidawsk@kernel.org>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>,
+ Ira Weiny <ira.weiny@intel.com>, Gregory Price <gourry.memverge@gmail.com>,
+ Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, "Mike
+ Maslenkin" <mike.maslenkin@gmail.com>, Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH v5 8/8] hw/mem/cxl_type3: Add CXL RAS Error Injection
+ Support.
+Message-ID: <20231031175522.00006073@Huawei.com>
+In-Reply-To: <87cyx04qcw.fsf@pond.sub.org>
+References: <20230221152145.9736-1-Jonathan.Cameron@huawei.com>
+ <20230221152145.9736-9-Jonathan.Cameron@huawei.com>
+ <87cyx04qcw.fsf@pond.sub.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.195.246.117]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,24 +68,226 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> From: Het Gala <het.gala@nutanix.com>
->
-> Integrate MigrateChannelList with all transport backends
-> (socket, exec and rdma) for both src and dest migration
-> endpoints for qmp migration.
->
-> For current series, limit the size of MigrateChannelList
-> to single element (single interface) as runtime check.
->
-> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Fri, 27 Oct 2023 06:54:39 +0200
+Markus Armbruster <armbru@redhat.com> wrote:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+> I'm trying to fill in QMP documentation holes, and found one in commit
+> 415442a1b4a (this patch).  Details inline.
+> 
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
+> 
+> > CXL uses PCI AER Internal errors to signal to the host that an error has
+> > occurred. The host can then read more detailed status from the CXL RAS
+> > capability.
+> >
+> > For uncorrectable errors: support multiple injection in one operation
+> > as this is needed to reliably test multiple header logging support in an
+> > OS. The equivalent feature doesn't exist for correctable errors, so only
+> > one error need be injected at a time.
+> >
+> > Note:
+> >  - Header content needs to be manually specified in a fashion that
+> >    matches the specification for what can be in the header for each
+> >    error type.
+> >
+> > Injection via QMP:
+> > { "execute": "qmp_capabilities" }
+> > ...
+> > { "execute": "cxl-inject-uncorrectable-errors",
+> >   "arguments": {
+> >     "path": "/machine/peripheral/cxl-pmem0",
+> >     "errors": [
+> >         {
+> >             "type": "cache-address-parity",
+> >             "header": [ 3, 4]
+> >         },
+> >         {
+> >             "type": "cache-data-parity",
+> >             "header": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+> >         },
+> >         {
+> >             "type": "internal",
+> >             "header": [ 1, 2, 4]
+> >         }
+> >         ]
+> >   }}
+> > ...
+> > { "execute": "cxl-inject-correctable-error",
+> >     "arguments": {
+> >         "path": "/machine/peripheral/cxl-pmem0",
+> >         "type": "physical"
+> >     } }
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> 
+> [...]
+> 
+> > diff --git a/qapi/cxl.json b/qapi/cxl.json
+> > new file mode 100644
+> > index 0000000000..ac7e167fa2
+> > --- /dev/null
+> > +++ b/qapi/cxl.json
+> > @@ -0,0 +1,118 @@
+> > +# -*- Mode: Python -*-
+> > +# vim: filetype=python
+> > +
+> > +##
+> > +# = CXL devices
+> > +##
+> > +
+> > +##
+> > +# @CxlUncorErrorType:
+> > +#
+> > +# Type of uncorrectable CXL error to inject. These errors are reported via
+> > +# an AER uncorrectable internal error with additional information logged at
+> > +# the CXL device.
+> > +#
+> > +# @cache-data-parity: Data error such as data parity or data ECC error CXL.cache
+> > +# @cache-address-parity: Address parity or other errors associated with the
+> > +#                        address field on CXL.cache
+> > +# @cache-be-parity: Byte enable parity or other byte enable errors on CXL.cache
+> > +# @cache-data-ecc: ECC error on CXL.cache
+> > +# @mem-data-parity: Data error such as data parity or data ECC error on CXL.mem
+> > +# @mem-address-parity: Address parity or other errors associated with the
+> > +#                      address field on CXL.mem
+> > +# @mem-be-parity: Byte enable parity or other byte enable errors on CXL.mem.
+> > +# @mem-data-ecc: Data ECC error on CXL.mem.
+> > +# @reinit-threshold: REINIT threshold hit.
+> > +# @rsvd-encoding: Received unrecognized encoding.
+> > +# @poison-received: Received poison from the peer.
+> > +# @receiver-overflow: Buffer overflows (first 3 bits of header log indicate which)
+> > +# @internal: Component specific error
+> > +# @cxl-ide-tx: Integrity and data encryption tx error.
+> > +# @cxl-ide-rx: Integrity and data encryption rx error.
+> > +##
+> > +
+> > +{ 'enum': 'CxlUncorErrorType',
+> > +  'data': ['cache-data-parity',
+> > +           'cache-address-parity',
+> > +           'cache-be-parity',
+> > +           'cache-data-ecc',
+> > +           'mem-data-parity',
+> > +           'mem-address-parity',
+> > +           'mem-be-parity',
+> > +           'mem-data-ecc',
+> > +           'reinit-threshold',
+> > +           'rsvd-encoding',
+> > +           'poison-received',
+> > +           'receiver-overflow',
+> > +           'internal',
+> > +           'cxl-ide-tx',
+> > +           'cxl-ide-rx'
+> > +           ]
+> > + }
+> > +
+> > +##
+> > +# @CXLUncorErrorRecord:
+> > +#
+> > +# Record of a single error including header log.
+> > +#
+> > +# @type: Type of error
+> > +# @header: 16 DWORD of header.
+> > +##
+> > +{ 'struct': 'CXLUncorErrorRecord',
+> > +  'data': {
+> > +      'type': 'CxlUncorErrorType',
+> > +      'header': [ 'uint32' ]
+> > +  }
+> > +}
+> > +
+> > +##
+> > +# @cxl-inject-uncorrectable-errors:
+> > +#
+> > +# Command to allow injection of multiple errors in one go. This allows testing
+> > +# of multiple header log handling in the OS.
+> > +#
+> > +# @path: CXL Type 3 device canonical QOM path
+> > +# @errors: Errors to inject
+> > +##
+> > +{ 'command': 'cxl-inject-uncorrectable-errors',
+> > +  'data': { 'path': 'str',
+> > +             'errors': [ 'CXLUncorErrorRecord' ] }}
+> > +
+> > +##
+> > +# @CxlCorErrorType:
+> > +#
+> > +# Type of CXL correctable error to inject
+> > +#
+> > +# @cache-data-ecc: Data ECC error on CXL.cache
+> > +# @mem-data-ecc: Data ECC error on CXL.mem  
+> 
+> Missing:
+> 
+>    # @retry-threshold: ...
+> 
+> I need suitable description text.  Can you help me?
+
+Spec says:
+"Retry Threshold Hit. (NUM_RETRY>=MAX_NUM_RETRY).
+See Section 4.2.8.5.1 for the definitions of NUM_RETRY and MAX_NUM_RETRY."
+
+Following the reference:
+"NUM_RETRY: This counter is used to count the number of RETRY.Req requests
+sent to retry the same flit. The counter remains enabled during the whole retry
+sequence (state is not RETRY_LOCAL_NORMAL). It is reset to 0 at initialization. It is
+also reset to 0 when a RETRY.Ack sequence is received with the Empty bit set or
+whenever the LRSM state is RETRY_LOCAL_NORMAL and an error-free retryable flit
+is received. The counter is incremented whenever the LRSM state changes from
+RETRY_LLRREQ to RETRY_LOCAL_IDLE. If the counter reaches a threshold (called
+MAX_NUM_RETRY), then the local retry state machine transitions to the
+RETRY_PHY_REINIT. The NUM_RETRY counter is also reset when the Physical layer
+exits from LTSSM recovery state (the LRSM transition through RETRY_PHY_REINIT
+to RETRY_LLRREQ)."
+
+So based on my failure to understand much of that beyond it has something
+to do with low level retries, maybe just
+
+"Number of times the retry threshold was hit."
+
+Thanks for tidying this up!
+?
+
+
+> 
+> > +# @crc-threshold: Component specific and applicable to 68 byte Flit mode only.
+> > +# @cache-poison-received: Received poison from a peer on CXL.cache.
+> > +# @mem-poison-received: Received poison from a peer on CXL.mem
+> > +# @physical: Received error indication from the physical layer.
+> > +##
+> > +{ 'enum': 'CxlCorErrorType',
+> > +  'data': ['cache-data-ecc',
+> > +           'mem-data-ecc',
+> > +           'crc-threshold',
+> > +           'retry-threshold',
+> > +           'cache-poison-received',
+> > +           'mem-poison-received',
+> > +           'physical']
+> > +}
+> > +
+> > +##
+> > +# @cxl-inject-correctable-error:
+> > +#
+> > +# Command to inject a single correctable error.  Multiple error injection
+> > +# of this error type is not interesting as there is no associated header log.
+> > +# These errors are reported via AER as a correctable internal error, with
+> > +# additional detail available from the CXL device.
+> > +#
+> > +# @path: CXL Type 3 device canonical QOM path
+> > +# @type: Type of error.
+> > +##
+> > +{ 'command': 'cxl-inject-correctable-error',
+> > +  'data': { 'path': 'str',
+> > +            'type': 'CxlCorErrorType'
+> > +  }
+> > +}  
+> 
+> [...]
+> 
+> 
 
 
