@@ -2,91 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478C17DCDB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A74E7DCDB8
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:22:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxogi-0004EC-Th; Tue, 31 Oct 2023 09:21:44 -0400
+	id 1qxogy-0004Hw-41; Tue, 31 Oct 2023 09:22:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxogg-0004DB-Nz
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:21:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxogf-0001b9-AD
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:21:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698758500;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=dS48wXQh+L87Gyw4OjE32B3EEntBWQ40KlyGRSVzsc0=;
- b=DLuu/qBUFXvSmTM5YBq1MPoc4OeIz4uWlIdv4C0AsKrKCqc4d78tyFX8o0dKjg5JC72q5b
- EAphoKC4UvuWgc6ZnYQ9pyN4Chaz6RsIWa3LYUVCu9/nGfCQcZJUzwNytHh6Y0wVgWhiAI
- txyxbG2/eC12yPhZFJ8etVv0Lkvl5rk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-iSgqTb98PdWcwe2f73Myng-1; Tue, 31 Oct 2023 09:21:29 -0400
-X-MC-Unique: iSgqTb98PdWcwe2f73Myng-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4094e5664a3so6431495e9.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:21:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxogw-0004Hg-HP
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:21:58 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxogu-0001dQ-UM
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:21:58 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-540c54944c4so11594059a12.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:21:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698758515; x=1699363315; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RQxVKBmXI/ZE3gBYcAjlgwU3wKhcXGIVfMtzLQSBWKY=;
+ b=f4JC79MMjXP1DQJ9EJBMHVjj6Thmn535iGT9J467PoFhGPHCK1kmHt7w+/AvBVYWBg
+ yW65Ze+4wl+/Riw62kaAgn12/MWfvU/JKuZyf/7fUsaW3GHqGdsP9r0hpYOjx6kfCTR9
+ GCAsMNruA0rdK3pftb1JGScG0ymaLQqMcxaoMn1bWTpt/q4cxwP5Jh8Xpa58K1WhTUAp
+ +dWa3wma+gN6MhgxEx3lPzbZVfV+poHn8Yh1LEphLSaAv7zYISi7ULjEhZV7iSwpqxg3
+ EiSkY7iI9SFAF/s+AoC3kFLNYuqa16n6MOexR2GRCCMf5NH+TuFPVGyUy/8n76h3euoz
+ FsDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698758487; x=1699363287;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1698758515; x=1699363315;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dS48wXQh+L87Gyw4OjE32B3EEntBWQ40KlyGRSVzsc0=;
- b=GEjBWq9Sx+CLipttk2qextDP5JPZqgr8DlSHWvh3wC6Tu6nPV3SdhnFdJP45JDSqtu
- 1ETz4MSzlWPdNoU5a/TkHB/tDvvmNbn8WkODfqGIKoFTDMYttXNhyQ5nasyiGaG77/cV
- ia23zV6BfqgaW0D4RX7ADdMacrF7gT6Vssjp1VzW4Iev8SnJ2oxE7HnneGl2EuAtAh5I
- uzByQkg6uTgF4VLM5ywINtaeOfBkziQtfBGGHoz8lMq4K0w32Vo5F0lTOS+4Szud+7GS
- uxC54WyKCzFM2cYlUYm23uSgvQUIqB+/YJXksoJ+wBN7Cn7QcfPILgPGcg+otmiESPR4
- +0PA==
-X-Gm-Message-State: AOJu0YzijQRzl07wvMoSQiprC2IR9vZ3ZBe8OHK4jLMpkNxi28TUOQ32
- TOxQbJAe3aHh6OyDBbCnyWI8Fxc0IdKhaZ0KISOctMUEtLdbzzwXbam0RxJbNb6l7HggjReIXG6
- ZlrupD9CubiMyIS8=
-X-Received: by 2002:a05:600c:3146:b0:3f6:58ad:ed85 with SMTP id
- h6-20020a05600c314600b003f658aded85mr10440715wmo.10.1698758487696; 
- Tue, 31 Oct 2023 06:21:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTwWW3dP0r3Q+vrzvYVGUxoo37sGDzBALN/45NoRwOxMlJU1+GpUZZ/4qzqW9qMA3j5kFpRA==
-X-Received: by 2002:a05:600c:3146:b0:3f6:58ad:ed85 with SMTP id
- h6-20020a05600c314600b003f658aded85mr10440694wmo.10.1698758487277; 
- Tue, 31 Oct 2023 06:21:27 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- u24-20020a05600c00d800b004068de50c64sm1703063wmm.46.2023.10.31.06.21.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 06:21:26 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>,  "Daniel P.
- Berrange" <berrange@redhat.com>
-Subject: Re: [PATCH V2 5/6] cpr: reboot mode
-In-Reply-To: <1698263069-406971-6-git-send-email-steven.sistare@oracle.com>
- (Steve Sistare's message of "Wed, 25 Oct 2023 12:44:28 -0700")
-References: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
- <1698263069-406971-6-git-send-email-steven.sistare@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 31 Oct 2023 14:21:25 +0100
-Message-ID: <87ttq76i7e.fsf@secure.mitica>
+ bh=RQxVKBmXI/ZE3gBYcAjlgwU3wKhcXGIVfMtzLQSBWKY=;
+ b=ZQBT5Gr29gGy1ibnaFaAdSTZkt9I9gxEtCwV3zeE/irIWB0A+oMKJxYNimzirf3LsA
+ OE2Fx8xfHoSSTPA1PpqTmoc29VyqMiEhgV0FxrBAN1bqVHjP9bGcGGZCyuxf970p2dca
+ fr4mX7JrzJem3D/VKsKnTgQ04i7Tr5sShc39fwKGn7B26M7XBXEUVJS6yO0/A9GQ+FL1
+ UDTKv4fMjvdbUkgjhwKxbDsw/OZ7Eee9Nlseqdu8F2pi/ZP399aqzwXUUehJ6n9yZkUL
+ LEldfze+wMtOU55Nctx2C73IT3f9bitpeaxFvJlmVISMPDJKV6LNyQ3JrdQe4aZohHc7
+ XAtA==
+X-Gm-Message-State: AOJu0YwGLxpy+bgxej/chaLkNHM5Awi46U4kiq6ezuURZnF1/5tM5MBP
+ 0xZOa9FN5xa1DwQg4YI3rSi5io6zW1kfla/rS+4TXg==
+X-Google-Smtp-Source: AGHT+IEPk6nh99voZSVDiKULgRdxliyICGeGVXs1P4GSYr3pEiloC1r6T2TzeOl0pxTWAnqBOGGVNpZZ1+yNPX9Xvs8=
+X-Received: by 2002:a50:9519:0:b0:53e:ad97:82d3 with SMTP id
+ u25-20020a509519000000b0053ead9782d3mr2619991eda.13.1698758515213; Tue, 31
+ Oct 2023 06:21:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+References: <20231017140150.44995-1-philmd@linaro.org>
+ <20231017140150.44995-5-philmd@linaro.org>
+ <ZUD+hMTWf9DidzDb@redhat.com>
+In-Reply-To: <ZUD+hMTWf9DidzDb@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 31 Oct 2023 13:21:44 +0000
+Message-ID: <CAFEAcA9471_b2AT9wpwxaoH0PkQ+6HFw_zFTHjgSvXQ9UD-akQ@mail.gmail.com>
+Subject: Re: [PATCH 4/7] hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-arm@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Jason Wang <jasowang@redhat.com>, 
+ Raphael Norwitz <raphael.norwitz@nutanix.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Gerd Hoffmann <kraxel@redhat.com>, rjones@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,44 +94,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> wrote:
-> Add the cpr-reboot migration mode.  Usage:
+On Tue, 31 Oct 2023 at 13:18, Kevin Wolf <kwolf@redhat.com> wrote:
 >
-> $ qemu-system-$arch -monitor stdio ...
-> QEMU 8.1.50 monitor - type 'help' for more information
-> (qemu) migrate_set_capability x-ignore-shared on
-> (qemu) migrate_set_parameter mode cpr-reboot
-> (qemu) migrate -d file:vm.state
-> (qemu) info status
-> VM status: paused (postmigrate)
-> (qemu) quit
+> Am 17.10.2023 um 16:01 hat Philippe Mathieu-Daud=C3=A9 geschrieben:
+> > Access QOM parent with the proper QOM VIRTIO_SCSI_COMMON() macro.
+> >
+> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > ---
+> >  hw/scsi/virtio-scsi.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+> > index 45b95ea070..fa53f0902c 100644
+> > --- a/hw/scsi/virtio-scsi.c
+> > +++ b/hw/scsi/virtio-scsi.c
+> > @@ -761,7 +761,7 @@ static void virtio_scsi_fail_cmd_req(VirtIOSCSIReq =
+*req)
+> >
+> >  static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCS=
+IReq *req)
+> >  {
+> > -    VirtIOSCSICommon *vs =3D &s->parent_obj;
+> > +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(s);
+> >      SCSIDevice *d;
+> >      int rc;
 >
-> $ qemu-system-$arch -monitor stdio -incoming defer ...
-> QEMU 8.1.50 monitor - type 'help' for more information
-> (qemu) migrate_set_capability x-ignore-shared on
-> (qemu) migrate_set_parameter mode cpr-reboot
-> (qemu) migrate_incoming file:vm.state
-> (qemu) info status
-> VM status: running
->
-> In this mode, the migrate command saves state to a file, allowing one
-> to quit qemu, reboot to an updated kernel, and restart an updated version
-> of qemu.  The caller must specify a migration URI that writes to and reads
-> from a file.  Unlike normal mode, the use of certain local storage options
-> does not block the migration, but the caller must not modify guest block
-> devices between the quit and restart.  To avoid saving guest RAM to the
-> file, the memory backend must be shared, and the @x-ignore-shared migration
-> capability must be set.  Guest RAM must be non-volatile across reboot, such
-> as by backing it with a dax device, but this is not enforced.  The restarted
-> qemu arguments must match those used to initially start qemu, plus the
-> -incoming option.
->
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Why is a dynamic cast more "proper" than a static type-safe access, even
+> more so in a hot I/O path?
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+I dunno, but it is absolutely the standard QOM style to use
+the cast macro to do the downcast, rather than fishing about in
+the struct for the parent_obj field. If QOM casts are getting
+too expensive we should ideally fix them rather than adding
+more and more code that takes some side route around them...
 
+thanks
+-- PMM
 
