@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A417DCEF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF347DCEF4
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:26:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpeB-0003bz-Il; Tue, 31 Oct 2023 10:23:11 -0400
+	id 1qxpgo-00054i-K6; Tue, 31 Oct 2023 10:25:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxpe9-0003as-CM
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:23:09 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1qxpgi-00053j-57
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:25:50 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qxpe4-0006Ob-Fp
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:23:09 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-507962561adso8276556e87.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:23:03 -0700 (PDT)
+ id 1qxpgf-0006zw-Tt
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:25:47 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53de8fc1ad8so9383860a12.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:25:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698762182; x=1699366982; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=/8Nilxmvy1oMbEpx2HDo0XnG9uQmJ/Z0DBhjyvb4FL0=;
- b=g+WzPBv5TB7gUtEiKDytTMiYgdrtgeCdn2So1G7Yu77GY+PQEeIQy0nWXWL3kKEQ5z
- PpDtKdDE34Hag8bUSV0LHLSr3azcrMSNFAlQp0xr9Slg/WJd7yolHXEp6kGawiv4yUGR
- K5UH5MiWO0oVxlGysVkvhWiS04HUFYXFszg3rGn4iJT/BU1xnLe4SqAtM4A2R6F94tTn
- atMdj05Z3yau9HQlG0Pc1+uvhRLCeFPE2kAE8TWaNCrrADnKU6XMdFlvftyHJDd2Qd22
- 4Ua+Rthewsd5p8WoJ4weOTFiZVaiWqUtm0oZ8JFao309uBDX8QlmweHVolN/SotCmIhB
- lkeQ==
+ d=linaro.org; s=google; t=1698762342; x=1699367142; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PV3LzPc7PL1PiTxwDU3XSSZS8OxNMaMVGyaMfMydExI=;
+ b=TDEg1fiZ8XVfFtY5NVNljvmvZ60/hKxCR/0tebGzBGIy3L3lj0LDp8hYHermWXhcjo
+ 9vxLmZgm5XkeOf3pC7DNwqLQZqTTH5JyuOrMgP1W86rUDJ1xyvqKmegMq8BQjVaZYfkn
+ STb1Ld4K0E7qPpTW30KWR5kCMH1bkGdKIZbXM7axEbv+x4soQpSMsbOVxac8/TSiQ68i
+ foViaCwqfsFkLZGthsFIWyd3a2u/Q++D/CMf3lUNdeZ0Y7CGh/4+5QxDeHMoaAOlOF7t
+ hlHHtaaDgVK9KUFHJhh4MgVC9zAgQwNlLCTX5Al8Gp1k55xSj6OLmomZQ/wCbJ9hridH
+ jFMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698762182; x=1699366982;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/8Nilxmvy1oMbEpx2HDo0XnG9uQmJ/Z0DBhjyvb4FL0=;
- b=CABSue+JO0dIfbaXymO+bD5edrW5a3nzOGdKl7u5vugFO+kvM+O0Kx1pDBhAdm7omf
- q7CAfoulJLtX5KQNNvm83HthYVv7/fpvez2SUDYhc7RzNXJibZbPazHgjp+ZBoGvBPzB
- HdNNeN54QJxwYMBZnfal8GyrmnhIz0/oYRMpsJqjQMQhb0UGoHYt8voSoHBJWB275SRK
- +0lTrbGmj3fu0T+3PuLVOO7Y4JBvtDFXs4nRqpcCz97ehObZnnwoOyhSjbgdplMk4jV7
- qKb9Un9jN+iZS6uB5LuKHEfQXb56TrmkIJZ/PzkAuaEPtuD7fEZQYIKfpexijVEeuSNv
- Jarg==
-X-Gm-Message-State: AOJu0YyfW5Q9iTYk40sh2DhprqzkEXDRuT884WG8p/B7wXvzwBWKn5SS
- MLe38//051daPlpXNpd7W6aovHb3SrAAnWOpT7nw4A==
-X-Google-Smtp-Source: AGHT+IEjcThKR972kE/2R+UK10KPtJx/gIokcQLfyR0Wz8wBC7N0KX6dpU/CAPu+NcqM3RnXIMDRlLj+FHXBwBBX/KA=
-X-Received: by 2002:ac2:4d81:0:b0:503:388f:30a3 with SMTP id
- g1-20020ac24d81000000b00503388f30a3mr9191715lfe.26.1698762181949; Tue, 31 Oct
- 2023 07:23:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698762342; x=1699367142;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PV3LzPc7PL1PiTxwDU3XSSZS8OxNMaMVGyaMfMydExI=;
+ b=Cxwo5PSCQNa9JvOXmIBHmCclWblDmtfGVFb5sZPnu5sZFQoLhg+vkKlmwz5dEz8n1U
+ v1GYKp+MELFUMaloDVVUeqdArjFB04idtikP7nmXJhUhDMmN6CXpa9veOegbWqrsc5Rv
+ Qbb/DFlojtbGOeyPKNryvvXANMfbr9B1ZAxT6ID+HFY+KPcEjuLLvSyFymc7wmWybSop
+ lP9cSISQgyH+SY8MeAtkL9XqA8TLnMIQA8Au1Y27MVCmRuSdOj5xsJa0+dz3foeVbuZg
+ ZVRpmLidjw0bZobhSSnmXry7zSO0CzqzJHFlNX/XZu6C/ak/Crep6QBtEs7lCushwJhi
+ Cq7w==
+X-Gm-Message-State: AOJu0YyH/PQ1NsWXaZTBe5wWLHsom4Y2D0Dsl4LTAnrn/Tmn01Q2LvVb
+ ujAzwqm1L9FRnuPGY7cg9gvvaeyJoS2hTjilLCMHYA==
+X-Google-Smtp-Source: AGHT+IG34RqoXFVlgq51h1rW3huKmnZHK0eONrGu+poXLH8B07hlQN/gFEP4ZHrG1KOWpwfMcAi7WfqETz6NmzQ3DKg=
+X-Received: by 2002:a05:6402:17d2:b0:53b:9948:cc1f with SMTP id
+ s18-20020a05640217d200b0053b9948cc1fmr9723959edy.12.1698762341897; Tue, 31
+ Oct 2023 07:25:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231027060709.242388-1-thuth@redhat.com>
-In-Reply-To: <20231027060709.242388-1-thuth@redhat.com>
+References: <20231030083706.63685-1-philmd@linaro.org>
+In-Reply-To: <20231030083706.63685-1-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 31 Oct 2023 14:22:51 +0000
-Message-ID: <CAFEAcA_299ZdoWs2kb9mUJc_thzEztuP_ou_uHs+p-z7Kf1y6Q@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Make sure that gicv3_internal.h is covered,
- too
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-trivial@nongnu.org
+Date: Tue, 31 Oct 2023 14:25:31 +0000
+Message-ID: <CAFEAcA-PZtTEAT2KtY=5=A-yCwS8rD9OgmnGjrYpBMXzpTV4QQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/pxa2xx_gpio: Pass CPU using QOM link property
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,20 +86,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 27 Oct 2023 at 07:07, Thomas Huth <thuth@redhat.com> wrote:
+On Mon, 30 Oct 2023 at 08:37, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> gic_internal.h is already covered by the "ARM cores" section.
-> Let's adapt the entry with a wildcard to cover gicv3_internal.h, too.
+> Instead of passing the CPU index and resolving it,
+> use a QOM link to directly pass the CPU.
 >
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied to target-arm.next, thanks. (Let me know if you'd rather
-take it via some other route to avoid possible conflicts with
-other MAINTAINERS updates you've been doing, though it looks to
-me like this is probably not going to run into conflicts.)
+
+
+Applied to target-arm.next, thanks.
 
 -- PMM
 
