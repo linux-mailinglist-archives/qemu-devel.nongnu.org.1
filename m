@@ -2,90 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919F07DD0CB
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:44:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 852E27DD0D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:46:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxqv9-0001X8-2j; Tue, 31 Oct 2023 11:44:47 -0400
+	id 1qxqwW-0002jU-1h; Tue, 31 Oct 2023 11:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxqv7-0001Wd-6H
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:44:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxqv2-0004Yj-Ax
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:44:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698767078;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vFMxO+D0OQrOVPSmF6alxRjV7AdXmijM8SRnRVWICXI=;
- b=fxweM5WEFCBppOOEbdvOI8El3GIkw9Ww8B8TNNAWfnXAkaN6q7YG9ZqcTTFBMlDIZwS4qK
- wl3ov8uDMguWVmYEgeVYiKkgcXmxM/q5wTml6W5H2/FoAU466ONrxl7KvcgQ5JAFEOxRni
- /NiKhnbsA0xetueXLavQmx8HWU7jWNM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-Q5VwRE91OzepvjCWCR8f9g-1; Tue, 31 Oct 2023 11:44:36 -0400
-X-MC-Unique: Q5VwRE91OzepvjCWCR8f9g-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d7b75c854so13482186d6.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:44:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqwU-0002j7-NV
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:46:10 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqwS-0004sQ-Uu
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:46:10 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-507bd64814fso7995479e87.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:46:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698767167; x=1699371967; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=g38K/x2M5ougUm2rAdcaGFaHTq202+OYzgtIrGUcmlA=;
+ b=DqKt0Ous6C7oJNFSQOL4XM5fNvfpb/8gr3xfwkFi8gLrDjPvMmiz/elLxCF/vcDI4u
+ GOI7Z482GUubIP41SfdPwZ8AJF83vG70CB+ISBC6AoV/3Hf7ycyIcf/+oHSN+vJzYwnE
+ /FxdPuXUCIMQU2GKKDDnc+xW90pO7u810DJZkZx6N9jBVqHLLZtgwsjHmzmytdj8O2mQ
+ 4d/9jRqdLeLiOMc35fFDEmPeL5NvWbgGJcIRR/KsHKuIkXUA2qugqcaq5ABH0ds+4l6L
+ dqX/TPm1H4TbHG8Etvn7g5aFi7cCl7p3V2ToNDZQCId9dabBeNowNFnO+Y4oqRV7e9eY
+ SI1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698767076; x=1699371876;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vFMxO+D0OQrOVPSmF6alxRjV7AdXmijM8SRnRVWICXI=;
- b=WxH4f64j6xMRLnWr2pqRsMDD3KllygQmL2iEgJ5PEUA7dis8HHSg0+qlgqqWOVSxZ7
- UZjLe/xaNoLQLy+QWoPg+LdsteHPkQpux1GdCRg+BsneETcwskmP7wHT4ndTpq+JR0pK
- luhQF05WcUod3u8kFlstKAbPhDMF3yKyD2L/IBrKOSRu0st0biJEUMvOyUnTvLEsuM+r
- 8ntvCsoPHeQ8ICaqoDJaWv5UZBWYtFcyxSjXCcsm6anTVTmvCVp0gbuQotZI98NXENlE
- ikArdoAA/8VAXVOM6hFHEZhUu3nXbn3JbNzYDnj8EzPZUbiCrj9KRm/jV33rg4DIro1h
- JMMg==
-X-Gm-Message-State: AOJu0Yy6hADjKBVL9MrhBaOr79+7tdGNekTJU7LA/NuL2MSQdR9Lttvf
- 1G+ITkJk+5bhi8LfV7h8+nvC7MAA4zK47ctVHuWGlwTqpWkbE6QtKppY1KcVqpneknnzojw+6el
- 6pH1eTJM9x5ylOps=
-X-Received: by 2002:ad4:4aea:0:b0:66d:169a:a661 with SMTP id
- cp10-20020ad44aea000000b0066d169aa661mr13109387qvb.4.1698767076349; 
- Tue, 31 Oct 2023 08:44:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsRG/iTqQ6ZORgVVLCOwjFGXNFXHjJFUXFaOMRO80d/6dHJIGrqKMNLm3I9pTUnJ7pLrI/MQ==
-X-Received: by 2002:ad4:4aea:0:b0:66d:169a:a661 with SMTP id
- cp10-20020ad44aea000000b0066d169aa661mr13109368qvb.4.1698767076091; 
- Tue, 31 Oct 2023 08:44:36 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- ev10-20020a0562140a8a00b0066cfd398ab5sm618956qvb.146.2023.10.31.08.44.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 08:44:35 -0700 (PDT)
-Date: Tue, 31 Oct 2023 11:44:33 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>
-Subject: Re: [PATCH V2 4/6] cpr: relax vhost migration blockers
-Message-ID: <ZUEg4e9JIQdW+b0D@x1n>
-References: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
- <1698263069-406971-5-git-send-email-steven.sistare@oracle.com>
+ d=1e100.net; s=20230601; t=1698767167; x=1699371967;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=g38K/x2M5ougUm2rAdcaGFaHTq202+OYzgtIrGUcmlA=;
+ b=SN3EF74taF4ovIyEfFxvyxQbcsm883JyvgtbVKy5z2mUshjLi6dPC3eVW8RAz8m4Mj
+ 8tMR/zxAzF/2JzsfLa/7JC0XYBGhNUH4dY5OYX6TmSsf5b1n3Ldgn4J0M6R92SOdiQiw
+ F44rBwHWVFetVBdWzoD2auyy7HpjVjJdJyjrtjWVtHcd7YHLsGafBnXpD3cOve7J1kl5
+ ZgQWcylu9WMcW1LIpALC2o+e5NAEK/95ogXm8S1as8z+Kj27lO+OvhL59cmQ9zVSLQDA
+ EeI+DoHvC+VsC5hu6/roj99dF3TW3kkA2Kr9MeOxzYG7ddkLOo8ZgORRbAAiIRcDENoh
+ /Jog==
+X-Gm-Message-State: AOJu0YyLaviruK8gRY5008kvZPfjzxiZNCKnq4QP2A+OjnF9xrNzI8Bv
+ WcE8GivDtPPBM48yojdoEnqRWw==
+X-Google-Smtp-Source: AGHT+IHvxUVPEmBB9Od4Mx/ZyQMCT1TYglrTzSmKj/U5Tn6Qx0PUjlxJH8TY4HLFS+qIqxZhKILDwQ==
+X-Received: by 2002:ac2:4a71:0:b0:509:fc7:884a with SMTP id
+ q17-20020ac24a71000000b005090fc7884amr6397985lfp.19.1698767167024; 
+ Tue, 31 Oct 2023 08:46:07 -0700 (PDT)
+Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
+ [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
+ t4-20020adff044000000b0032dbf99bf4fsm1752814wro.89.2023.10.31.08.46.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 08:46:06 -0700 (PDT)
+Message-ID: <04e5c555-1860-1e95-64c6-b9a83f5151df@linaro.org>
+Date: Tue, 31 Oct 2023 16:46:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1698263069-406971-5-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 3/8] docs/specs/ivshmem-spec: Convert to rST
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230927151205.70930-1-peter.maydell@linaro.org>
+ <20230927151205.70930-4-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230927151205.70930-4-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,65 +92,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Copy qemu-block, virtio
-
-On Wed, Oct 25, 2023 at 12:44:27PM -0700, Steve Sistare wrote:
-> vhost blocks migration if logging is not supported to track dirty
-> memory, and vhost-user blocks it if the log cannot be saved to a shm fd.
+On 27/9/23 17:12, Peter Maydell wrote:
+> Convert docs/specs/ivshmem-spec.txt to rST format.
 > 
-> vhost-vdpa blocks migration if both hosts do not support all the device's
-> features using a shadow VQ, for tracking requests and dirty memory.
+> In converting, I have dropped the sections on the device's command
+> line interface and usage, as they are already covered by the
+> user-facing docs in system/devices/ivshmem.rst.
 > 
-> vhost-scsi blocks migration if storage cannot be shared across hosts,
-> or if state cannot be migrated.
+> I have also removed the reference to Memnic, because the URL is dead
+> and a web search suggests that whatever this was it's pretty much
+> sunk without trace.
 > 
-> None of these conditions apply if the old and new qemu processes do
-> not run concurrently, and if new qemu starts on the same host as old,
-> which is the case for cpr.
-> 
-> Narrow the scope of these blockers so they only apply to normal mode.
-> They will not block cpr modes when they are added in subsequent patches.
-> 
-> No functional change until a new mode is added.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  hw/scsi/vhost-scsi.c | 2 +-
->  hw/virtio/vhost.c    | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-> index 14e23cc..bf528d5 100644
-> --- a/hw/scsi/vhost-scsi.c
-> +++ b/hw/scsi/vhost-scsi.c
-> @@ -208,7 +208,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
->                  "When external environment supports it (Orchestrator migrates "
->                  "target SCSI device state or use shared storage over network), "
->                  "set 'migratable' property to true to enable migration.");
-> -        if (migrate_add_blocker(&vsc->migration_blocker, errp) < 0) {
-> +        if (migrate_add_blocker_normal(&vsc->migration_blocker, errp) < 0) {
->              goto free_virtio;
->          }
->      }
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index d737671..f5e9625 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -1527,7 +1527,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
->      }
->  
->      if (hdev->migration_blocker != NULL) {
-> -        r = migrate_add_blocker(&hdev->migration_blocker, errp);
-> +        r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
->          if (r < 0) {
->              goto fail_busyloop;
->          }
-> -- 
-> 1.8.3.1
-> 
+>   docs/specs/index.rst                          |  1 +
+>   .../{ivshmem-spec.txt => ivshmem-spec.rst}    | 63 +++++++------------
+>   docs/specs/pci-ids.rst                        |  2 +-
+>   docs/system/devices/ivshmem.rst               |  2 +-
+>   4 files changed, 26 insertions(+), 42 deletions(-)
+>   rename docs/specs/{ivshmem-spec.txt => ivshmem-spec.rst} (88%)
 
--- 
-Peter Xu
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
