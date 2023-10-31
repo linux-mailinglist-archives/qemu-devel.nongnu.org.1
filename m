@@ -2,88 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0AB37DD692
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A2C7DD6C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 20:47:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxu81-0008E8-7t; Tue, 31 Oct 2023 15:10:17 -0400
+	id 1qxugM-0005Bu-KX; Tue, 31 Oct 2023 15:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxu7z-0008Ah-Pn
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:10:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qxugK-0005BK-HB
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:45:44 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxu7u-00089c-CK
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:10:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698779408;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mUWpt9yw9KRqs+DA1PXjT9+U4zq/exq81q09+dacIGg=;
- b=VE4oNR/9ZyhbcAGbsd7vJvb5tqAiX7m3iHUoxivuOEKp5XtT2JvSz4cFYFX/iXQ0z/dt1D
- IrI/4OPpZ0YlGaj/iDjXax5zWNQMQei8v5l5vuJ9Mwi4bfx8nzQrLFxNVhG5NcXa4HOpYc
- z98UADTih8IRdrRaxHweg87CjgfaYLE=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-aM7SOxX5OX6xKbZwKBp9vA-1; Tue, 31 Oct 2023 15:10:01 -0400
-X-MC-Unique: aM7SOxX5OX6xKbZwKBp9vA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d48cfd295so21609196d6.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 12:10:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698779400; x=1699384200;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mUWpt9yw9KRqs+DA1PXjT9+U4zq/exq81q09+dacIGg=;
- b=U2buR/LJpZHpFClUVu3M1kO3Lw93VOAVMCxpHAVWWWH9dWaP++iTOen+OCGTUMj1Vx
- OjZk+2fnI1wviq/oObupqh7kg5Mavp426Q8Eu5a3DF2HcJO9pZEze6Zzb9vWRyiMsg5e
- gg44XVcYOAorSCojOLeFdg1PJPAo2Bw8lVTTg5FS2b5fFe/h9diVM7az+m5z9BYAWFwO
- ZnfZsRTxOjjJn3Udl/+bA/en/UqdRX4a2vHScPuEZVC+juGSPFHLxOpYFHjPRJdRZ/vJ
- 01ljt+rMY5zYd0Nk8dGUQu9WPTmQBLllmaZ0YYDKzT0OsZBlrFMXIadQqS0Q+p0c3q0l
- 8ppA==
-X-Gm-Message-State: AOJu0YwsqtMYjZsGaWrjhWm9Ju2de5VcTAqTUdZw8KZUAkuOO1t1vNCo
- +xEcVfMDBDG0/KYv5xMqZgneM9IGQQKyHj+8ydyIIjYS67uDBo1Ckvr4VTAQRV6gjz2v8Lxtmmz
- YwMFUD3FZH9PW1dA=
-X-Received: by 2002:a05:6214:2b98:b0:65d:486:25c6 with SMTP id
- kr24-20020a0562142b9800b0065d048625c6mr14272918qvb.3.1698779400720; 
- Tue, 31 Oct 2023 12:10:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQa4NlknX7vTN6SE4iEw+7yBTOgshIE57WxdxhHWQqVIzInJ/qMpYZ53rX6MBLYtmLwy876Q==
-X-Received: by 2002:a05:6214:2b98:b0:65d:486:25c6 with SMTP id
- kr24-20020a0562142b9800b0065d048625c6mr14272897qvb.3.1698779400208; 
- Tue, 31 Oct 2023 12:10:00 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- g14-20020a0cd7ce000000b00647386a3234sm772918qvj.85.2023.10.31.12.09.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 12:09:59 -0700 (PDT)
-Date: Tue, 31 Oct 2023 15:09:57 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [PATCH v2 16/29] migration/ram: Add support for 'fixed-ram'
- migration restore
-Message-ID: <ZUFRBeFV8yF2SVLy@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-17-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qxugI-0006LH-4N
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 15:45:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=BsBW3HMFUIklZfgZJDoNndSqt0XrmCb+56HMUQr9aVM=; b=fU64T2uTxXEUV18PaoBkUNsuwu
+ ZnE/8eBqvCr9AngEbWwoZmLtCWmIBvp77gkyZiagsgOd6m2v09Vj761OIOzqpsjVtiQ8lo9oD8YiO
+ NOFLK5742ShoYLDPKLV9JTxxJMr390Ew48yqICs5EBXO6tEW6HVqIkffFFGuc/sExtbx+ZRB8/Qh6
+ +l3IVqIgpTje0DR+HW9i1nlSZAJhTNy8Um9a/vVLfVytn6DqZ3QPhLitgqEU9Nhsn4RkXF27ikRHI
+ Ue+kd8QjaAy1CyIiSR5V6BJvaOg7MGf+Tc4DvyycyrUxU2ThSJ0Syh25rNm1N7MRxrIA+CrNuEJ4N
+ 9PJGbhfWGdzzwb6zs8ZMaXP8CIrX3nJfJNXtl1PVo8z4P9/+O+yKx11shXONvqWXZ001dpWPl/Grt
+ pZPoPf7rjOv7JCEiahWTsnem6N6UG0O8ifCgdXk1ZGSTrJ6TWOST56eQB9L/eoaT/Y6Rs/OlE9Elx
+ +GkCZ9laStx0QAd3bSO83TRF1b1m/DcBCEyglX9KTlfSqrvQq5FRXgGvrPwNjkIjaf3VhU0Ww8LY5
+ bgDD1uqQoYDEMA91fsZnbVoq+c7g5e6qxCGWDoHhuggidQgwAPB1+nJ1xiVhInvCKwLz1xBsHSvRG
+ xQBGr84Ljy3yfJH14O7onO+BQ+NIdMc0CZZb6N+rE=;
+Received: from [2a00:23c4:8bb0:5400:cc59:10c5:2c74:638b]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qxug2-0009Bw-OV; Tue, 31 Oct 2023 19:45:30 +0000
+Message-ID: <74bad1b1-3291-41b3-85ee-998d6ba8bfff@ilande.co.uk>
+Date: Tue, 31 Oct 2023 19:45:30 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231023203608.26370-17-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Bernhard Beschow <shentey@gmail.com>,
+ vr_qemu@t-online.de, mst@redhat.com,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <cover.1698536342.git.balaton@eik.bme.hu>
+ <03f52ea1-7436-4129-bd53-e14104a9e74e@ilande.co.uk>
+ <0f4b0c4b-9229-dcc5-d12a-3f423c316f80@eik.bme.hu>
+ <e8a8425a-d824-44da-a2b1-3187f01d59cd@ilande.co.uk>
+ <942b8c93-f6d1-60a8-3dca-3506523de394@eik.bme.hu>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <942b8c93-f6d1-60a8-3dca-3506523de394@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:5400:cc59:10c5:2c74:638b
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 0/4] Fix IRQ routing in via south bridge
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,167 +110,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 05:35:55PM -0300, Fabiano Rosas wrote:
-> From: Nikolay Borisov <nborisov@suse.com>
+On 30/10/2023 21:57, BALATON Zoltan wrote:
+
+> On Mon, 30 Oct 2023, Mark Cave-Ayland wrote:
+>> On 29/10/2023 13:45, BALATON Zoltan wrote:
+>>> On Sun, 29 Oct 2023, Mark Cave-Ayland wrote:
+>>>> On 29/10/2023 00:56, BALATON Zoltan wrote:
+>>>>
+>>>>> This is going back to my otiginal proposal in
+>>>>> https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/
+>>>>> implementing routing of interrupts from device functions and PCI
+>>>>> devices to ISA interrupts. On pegasos2 the firmware sets evertyhing to
+>>>>> share IRQ 9 so the current simpified version worked for taht but with
+>>>>> the amigaone machine its firmware makes use of this feature and
+>>>>> assigns different interrupts to functions and PCI devices so we need
+>>>>> to properly impelent this.
+>>>>
+>>>> <quote>
+>>>>> Since any ISA interrupt can be controlled
+>>>>> by any interrupt source (different functions of the multifunction
+>>>>> device plus the 4 input pins from PCI devices) there are more than 4
+>>>>> possible sources so this can't be handled by just the 4 PCI interrupt
+>>>>> lines. We need to keep track of the state of each interrupt source to
+>>>>> be able to determine the level of the ISA interrupt and avoid one
+>>>>> device clearing it while other still has an interrupt.
+>>>> </quote>
+>>>>
+>>>> This here is the important bit, since what you're describing here is exactly how 
+>>>> PCI interrupts in QEMU work, and so is already handled by the existing PCI IRQ 
+>>>> routing code. It seems to me that what you're doing here is creating an 
+>>>> incomplete re-implementation of part of the PCI interrupt logic in isa_irq_state, 
+>>>> which is a strong hint that this is the wrong approach and that you should be 
+>>>> making use of PCI IRQ routing.
+>>>
+>>> I don't see how this can be handled by the PCI interrupt routing which only 
+>>> considers 4 lines while in VIA we have more sources than that which are the chip 
+>>> functions (some even with more than one IRQ like IDE) and the 4 PCI interrupt 
+>>> inputs and these can be routed to any of the ISA IRQs independently (there's a 
+>>> register for each of them, the funcs use thi interrupt line config reg and the PCI 
+>>> pins the regs in the ISA func). So how would PCI handle this when it only sees the 
+>>> 4 PCI interrupt lines but not the chip functions as separate sources? You've 
+>>> assumed that those functions must be PCI devices too but their interrupts are 
+>>> routable separately from the PCI interrupts so you can have PCI INTA-D mapped to 
+>>> IRQ 7,8,9,10 and USB func mapped to IRQ 5 (like amigaone does) so you can't use 
+>>> PCI interrupt for the USB too but have to consider all of these separately and 
+>>> route them in the ISA bridge.
+>>
+>> Ah so the restriction here is the number of PCI interrupt lines? That can be done 
+>> by increasing the number of PCI bus IRQs to 4 + N, where 0-3 represent INTA-D and 
+>> the N others represent individual functions on the in-built devices. You can then 
+>> determine the slot/function in the PCI map IRQ function to route to the appropriate 
+>> N IRQ.
 > 
-> Add the necessary code to parse the format changes for the 'fixed-ram'
-> capability.
+> I can't because the PCI bus is in the north bridge. This VIA south bridge is just a 
+> PCIDevice connected to a bus so it should not take over interrupt handling of that 
+> bus which it does not own like the piix seems to do. That seems much more hacky than 
+> my solution to model what the chip does and map internal interrupt sources to ISA 
+> interrupts. The PCI interrupts are just additional input pins on this chip it does 
+> not handle the PCI bus itself, that's in the north bridge outside of this device.
+
+The PCI bus is only in the north bridge in your particular machine because you felt 
+in your opinion it should be there, no? Certainly PIIX and ICH9 both use the south 
+bridge because it allows PCI IRQ routing with existing APIs. Maybe that is the main 
+reason why it is done this way?
+
+I've added both the PCI and x86 maintainers to this email, since it clear we need 
+input from developers with a deeper understanding of the PCI IRQ routing API and how 
+it should work on x86. I'll attempt to summarise for them below:
+
+   - Normally a PCIDevice uses pci_set_irq() to set its IRQ, and the routing is
+     handled by a pci_map_irq_fn() with the ISA interrupt controller being driven
+     through pci_route_irq_fn() e.g. piix_route_intx_pin_to_irq(). That is to say
+     that the PCIDevice is simply responsible for asserting its own IRQ, and does
+     not involve itself with IRQ routing.
+
+   - The VIA PCI-ISA bridge needs a way to implement routing of PCI pins to ISA IRQs
+     based upon the PCI devfn of the integrated device that raises its PCI IRQ. It
+     doesn't appear there is currently an obvious way to do this.
+
+   - Zoltan has a series that attempts to implement this, but it bypasses the
+     existing PCI IRQ routing mechanism and uses a custom routing function that
+     needs to added to each integrated VIA device. This instinctively feels
+     wrong to me because it bypasses the existing PCI routing infrastructure, requires
+     the VIA PCIDevices to be aware of their own routing, and prevents e.g.
+     instantiating via-ide as a separate -device on the command line for testing, as
+     already works with piix3-ide.
+
+Questions for PCI and x86 maintainers:
+
+    1) Is there a way to implement routing of PCI pins to ISA IRQs based upon the PCI
+       devfn of the PCIDevice that asserts its IRQ?
+
+    2) If not, how can it be implemented in a way that best complements/integrates
+       with the existing PCI IRQ routing infrastructure? PIIX and ICH9 implementations
+       show how it is possible to get very close to what is needed by VIA, but there
+       may be maintainers with better ideas for implementing this in modern QEMU.
+
+Zoltan: I suggest that you discuss this with the PCI/x86 maintainers in order to 
+determine a suitable way forward.
+
+>>>>> This fixes USB on amigaone and maybe other bugs not discovered yet.
+>>>>
+>>>> Given that the AmigaOne machine is new, can you explain in a bit more detail what 
+>>>> the difference is between the Pegasos2 and AmigaOne machines, particularly with 
+>>>> respect to where the existing IRQ routing logic is getting this wrong?
+>>>
+>>> The pegasos2 firmware sets all chip functions and PCI devices (except IDE which is 
+>>> hard coded to legacy interrupts) to IRQ 9 so it worked with mixing PCI interrupts 
+>>> with chip functions but the amigaone does not do that and sets different ISA 
+>>> interrupts to chip functions and PCI interrupts so the current simplified version 
+>>> cannot work with that any more and we need to allow separate routing of all the 
+>>> interrupt sources. (Additionally we need to keep interrupt state for each source 
+>>> to allow multiple sources to control the same ISA interrupt.) I could not think of 
+>>> any simpler way than my patch to correctly implement this.
+>>
+>> The key point of interest is that we have PIIX that basically already works using 
+>> the existing PCI IRQ routing APIs: the aim is to do something similar with VIA, or 
+>> to tweak the existing APIs if needed to make it possible. Otherwise you end up with 
+>> the situation in this series in which you're effectively inventing a parallel form 
+>> of PCI IRQ routing just for the VIA ISA bridge and hardcoding it into the in-built 
+>> VIA devices.
 > 
-> One of the more notable changes in behavior is that in the 'fixed-ram'
-> case ram pages are restored in one go rather than constantly looping
-> through the migration stream.
+> I've looked at piix now but that seems to have less functions and those are probably 
+> PCI devices that only use PCI interrutps so you can just use PCI intrrupts there. It 
+> srill needs to keep track of interrupt state separately so piix also has code for 
+> that and piix replaces the interrupt callbacks of the bus the chip is connected to so 
+> it takes over that from the north bridge or whatever the pci bus is part of. That 
+> does not seem right to me and this may break the bus piix is connected to. A 
+> PCIDevice should not call pci_bus_irqs() IMO, only the part that owns the PCI bus or 
+> board code should set this but not a device. The pegasos2 already uses it to connect 
+> to PCI interrupts so VIA can't do that and should not do that. What I have is self 
+> contained and models the chip correctly. Why not change piix to do similarly or why 
+> do you insist these have to be the same when they are different chips with different 
+> quirks of their own?
 > 
-> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
-> (farosas) reused more of the common code by making the fixed-ram
-> function take only one ramblock and calling it from inside
-> parse_ramblock.
-> ---
->  migration/ram.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 93 insertions(+)
+>> The benefit of using the PCI IRQ routing APIs is that it is also possible to plug 
+>> in the individual PCI device/functions using -device into any PCI bus for testing, 
+>> which is something that is already done with PIIX-IDE.
 > 
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 152a03604f..cea6971ab2 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -3032,6 +3032,32 @@ static void fixed_ram_insert_header(QEMUFile *file, RAMBlock *block)
->      qemu_put_buffer(file, (uint8_t *) header, header_size);
->  }
->  
-> +static int fixed_ram_read_header(QEMUFile *file, struct FixedRamHeader *header)
-> +{
-> +    size_t ret, header_size = sizeof(struct FixedRamHeader);
-> +
-> +    ret = qemu_get_buffer(file, (uint8_t *)header, header_size);
-> +    if (ret != header_size) {
-> +        return -1;
-> +    }
-> +
-> +    /* migration stream is big-endian */
-> +    be32_to_cpus(&header->version);
-> +
-> +    if (header->version > FIXED_RAM_HDR_VERSION) {
-> +        error_report("Migration fixed-ram capability version mismatch (expected %d, got %d)",
-> +                     FIXED_RAM_HDR_VERSION, header->version);
-
-I know it doesn't matter a lot for now, but it'll be good to start using
-Error** in new codes?
-
-> +        return -1;
-> +    }
-> +
-> +    be64_to_cpus(&header->page_size);
-> +    be64_to_cpus(&header->bitmap_offset);
-> +    be64_to_cpus(&header->pages_offset);
-> +
-> +
-> +    return 0;
-> +}
-> +
->  /*
->   * Each of ram_save_setup, ram_save_iterate and ram_save_complete has
->   * long-running RCU critical section.  When rcu-reclaims in the code
-> @@ -3932,6 +3958,68 @@ void colo_flush_ram_cache(void)
->      trace_colo_flush_ram_cache_end();
->  }
->  
-> +static void read_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block,
-> +                                    long num_pages, unsigned long *bitmap)
-> +{
-> +    unsigned long set_bit_idx, clear_bit_idx;
-> +    unsigned long len;
-> +    ram_addr_t offset;
-> +    void *host;
-> +    size_t read, completed, read_len;
-> +
-> +    for (set_bit_idx = find_first_bit(bitmap, num_pages);
-> +         set_bit_idx < num_pages;
-> +         set_bit_idx = find_next_bit(bitmap, num_pages, clear_bit_idx + 1)) {
-> +
-> +        clear_bit_idx = find_next_zero_bit(bitmap, num_pages, set_bit_idx + 1);
-> +
-> +        len = TARGET_PAGE_SIZE * (clear_bit_idx - set_bit_idx);
-> +        offset = set_bit_idx << TARGET_PAGE_BITS;
-> +
-> +        for (read = 0, completed = 0; completed < len; offset += read) {
-> +            host = host_from_ram_block_offset(block, offset);
-> +            read_len = MIN(len, TARGET_PAGE_SIZE);
-
-Why MIN()?  I didn't read qemu_get_buffer_at() yet, but shouldn't len
-always be multiple of target page size or zero?
-
-> +
-> +            read = qemu_get_buffer_at(f, host, read_len,
-> +                                      block->pages_offset + offset);
-> +            completed += read;
-> +        }
-> +    }
-> +}
-> +
-> +static int parse_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block, ram_addr_t length)
-> +{
-> +    g_autofree unsigned long *bitmap = NULL;
-> +    struct FixedRamHeader header;
-> +    size_t bitmap_size;
-> +    long num_pages;
-> +    int ret = 0;
-> +
-> +    ret = fixed_ram_read_header(f, &header);
-> +    if (ret < 0) {
-> +        error_report("Error reading fixed-ram header");
-
-Same here on error handling; suggest to use Error** from the start.
-
-> +        return -EINVAL;
-> +    }
-> +
-> +    block->pages_offset = header.pages_offset;
-> +    num_pages = length / header.page_size;
-> +    bitmap_size = BITS_TO_LONGS(num_pages) * sizeof(unsigned long);
-> +
-> +    bitmap = g_malloc0(bitmap_size);
-> +    if (qemu_get_buffer_at(f, (uint8_t *)bitmap, bitmap_size,
-> +                           header.bitmap_offset) != bitmap_size) {
-> +        error_report("Error parsing dirty bitmap");
-> +        return -EINVAL;
-> +    }
-> +
-> +    read_ramblock_fixed_ram(f, block, num_pages, bitmap);
-> +
-> +    /* Skip pages array */
-> +    qemu_set_offset(f, block->pages_offset + length, SEEK_SET);
-> +
-> +    return ret;
-> +}
-> +
->  static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
->  {
->      int ret = 0;
-> @@ -3940,6 +4028,10 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
->  
->      assert(block);
->  
-> +    if (migrate_fixed_ram()) {
-> +        return parse_ramblock_fixed_ram(f, block, length);
-> +    }
-> +
->      if (!qemu_ram_is_migratable(block)) {
->          error_report("block %s should not be migrated !", block->idstr);
->          return -EINVAL;
-> @@ -4142,6 +4234,7 @@ static int ram_load_precopy(QEMUFile *f)
->                  migrate_multifd_flush_after_each_section()) {
->                  multifd_recv_sync_main();
->              }
-> +
->              break;
->          case RAM_SAVE_FLAG_HOOK:
->              ret = rdma_registration_handle(f);
-> -- 
-> 2.35.3
+> That does not seem like a useful goal to me. These VIA ide, usb and ac97 parts are 
+> functions of the same chip so their models are part of the chip model. They may be 
+> different QOM objects to separate them but they aren't user creatable and should not 
+> be as these are part of the chip so it does not make sense to instantiate them 
+> separately. Then it's also not a problem to use VIA specific irq routing in these as 
+> they are part of the same model.
 > 
+> I think trying to force using the PCI irq mapping and setting code from PCIBus would 
+> not make the via model any better just make it more complex for no gain so I don't 
+> think that's a goal that should be followed. Besides not being possible to cleanly do 
+> that it would also make it more difficult to understand and debug interrupt routing 
+> later so I don't see what advantage would that have over having a self contained 
+> model of the chip even if piix manages to do it with PCIBus. But piix has only 4 
+> interrupt lines and I don't think what it does taking over PCI interrupts is a good 
+> idea so I don't want to go that direction. Having via and piix models work slightly 
+> differently is not a problem IMO as long as both are working and correct in 
+> themselves. There are other device models which implement similar devices yet do it 
+> differently and in this case piix and via are different in that via has more 
+> functions and their interrupts are routed separately so it does not fit well with 
+> what we have in PCIBus. Forcing it in that would just make it more complicated. These 
+> chips are also from different vendors so while it may make sense to model piix3 and 
+> piix4 similarly and sharing code (like vt82c686b and vt8231 are sharing code) it may 
+> not make that much sense to try to make piix and via similar when they may not be in 
+> reality other than both are collecting similar functions but their inner working may 
+> be different. The via chips seem more like an ISA superio chip that has some PCI 
+> support added while piix may more like a collection of separate PCI functions so 
+> their models may also be different in that.
 
--- 
-Peter Xu
+
+ATB,
+
+Mark.
 
 
