@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0987DCF92
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:47:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD877DCF90
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:46:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpyd-0004s8-BP; Tue, 31 Oct 2023 10:44:19 -0400
+	id 1qxpyg-0004tT-88; Tue, 31 Oct 2023 10:44:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyc-0004rd-1J
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:18 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ id 1qxpyd-0004sn-M8
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:19 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qxpyZ-0002CN-S9
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:17 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2c50906f941so82257431fa.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:44:15 -0700 (PDT)
+ id 1qxpyb-0002D1-TK
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:44:19 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4084e49a5e5so47188915e9.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:44:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698763454; x=1699368254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698763456; x=1699368256; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UcNQcZ23IH2l6ThOjQB5817AinZo/599nsQ8ogdvZxs=;
- b=VeD5eYBxMMFDpdQkHtd26wnvOQDAAsgE2cJCr7EUFZJLR4UOYRFKNN/IHnQTHkXpGv
- 4XHtIVlgTVzJHO/d/GujeQaokGWa1f+SKiNCQVT+kL5tipNLWglH34tfG62QLoOb74ve
- AFU1tsPSbNRfK0b4sHdTD/xvOJLpwa0iwwUPGvSVPurYqCqBCPN5x/dIg0vyxne7Pk7p
- oL8aX9xqLVTsLW/5vcPs9m++YrKEa5z31oJWBCZr6p1CF74j2dgDLGo5jCgSQbup1l7J
- TaM9U8fnKd3vidQyEzYXenkiiGej50aLTpEbNw/ux49KPDEWARHjoXvi5j8h+AbH8VPI
- MMPw==
+ bh=LVt32BVhuMD6mZN5AcPveEcpa9SvvyPpVXag3OAT//A=;
+ b=cITNaC7pCBNqLeY0DcyGQyEPB2xSoGUt4KH94Yk4qvZH+tL13oIX6K7PlGGVMC/EBs
+ xVh0aHO73yfCcDjE663gVuBoz40QYEt2So/O6BYDLlgHXwjdZFJCX/fLG42b6auB4w4k
+ 8ei6czSde7FXcEXjBYXObKJcvVcqDJnCgUj71FMAIN+f4Bz/7UFqn+zyZtNEGEN452MZ
+ dkGFdozX/xEt5Gs96QMOojsZZ4npFBVu7RVjZRW6qoLBepYu2wpfn+Eb94KGcFsAsfMw
+ Ht2XFDC522oW5Alc8IHNJrVIoDDqbwyS10GoRPt4svmGz2ZNYWs949y84mT0Au3qwAFR
+ Xk6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698763454; x=1699368254;
+ d=1e100.net; s=20230601; t=1698763456; x=1699368256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UcNQcZ23IH2l6ThOjQB5817AinZo/599nsQ8ogdvZxs=;
- b=Y3AeQBFnUcyKlDwPvhX3IfCptJq5JsM6jVjXI5xnpuO2LLEB4lTf1Wd2GiEAWuyo+F
- Jks26dRt0DSmmodtjrN+2NcmxHGlT3Ca/xiy8gv7b2yiH9iJML/DL/wAXPUDYVSvc6hr
- q65wir14n9nV1VZQn7tD5jdIM8EzxavCNqVYe9MK+4SvAVT2P/BNuytPZaaovpHQRx2V
- /yGyZJvnoXcjl+Wq/JUXdWSeDgextA4ILfHSgToJzzz6ahFHXriZ65T53wMONLpoOuBj
- 5kSKyU1NIH7WUUWN3nNS21pUXsecDR0x3HmIelARcrt2x04/bS4kV2z8z0o/Zu0QQXGs
- TqMg==
-X-Gm-Message-State: AOJu0YwoAz3FPTrKc1RqqqJ3SuUZ2IH3jfV0a/MVUEuCDRcd8Xn0YY4+
- JcwBYb8cZqfropT817slAtwrgg==
-X-Google-Smtp-Source: AGHT+IF1yXXVufKRnY5gPYtKI1PoprzD18CA0sFxGdjt4Jf0sdjQ1nKxbH0bngEZnvBURIhzUBz3IQ==
-X-Received: by 2002:a2e:9086:0:b0:2c5:1d11:5688 with SMTP id
- l6-20020a2e9086000000b002c51d115688mr9890672ljg.14.1698763454133; 
- Tue, 31 Oct 2023 07:44:14 -0700 (PDT)
+ bh=LVt32BVhuMD6mZN5AcPveEcpa9SvvyPpVXag3OAT//A=;
+ b=n2UrqPi8ml4+YUd4Yb/O66hMVabfbL92/xvkkI2fSOZUMyhdO0/xAQTkdRy6MKrf2s
+ V/OgJo9s+kyOPNzu8w6JdRVBXosQ431wEm48HmYKyl8ovxK5JtCYBkRwvKILiCZRqHud
+ Z0Qe6wDc6qzq0buyfWtGDe6W8c8b/iqzuC4+mBMnf8Yvw9QQCVsjqsOIdksegOQXJ3I5
+ b1w4sAPGLK39y61Ee/XQlZUsGcq93AI99GKQvTZaJZstt2hvTZT9qqRnCAD3GdtrERHA
+ uCgDwfW0vaJJyBzKU2VupQjSzdjmfXt7TFYgKoZXHiNXx4tDMGIGSjPiDAgnPr0b0O3H
+ lEVw==
+X-Gm-Message-State: AOJu0YxlXwEkKZyeqXozqGUonRfX2DXfiRbQgRpf81e6/Rtjxhns1mO0
+ 1g8kbJp2Wr4V3DN8mwrN7Iuyzg==
+X-Google-Smtp-Source: AGHT+IGURU9YjJ9ij/0p9VJ1ofiTyRufn1kYpWi2rtTEPZVbtOxghy9P1gNlmOtD4XFi6shyZci2qg==
+X-Received: by 2002:adf:f7c3:0:b0:329:6dbc:e9a8 with SMTP id
+ a3-20020adff7c3000000b003296dbce9a8mr10352317wrq.8.1698763456591; 
+ Tue, 31 Oct 2023 07:44:16 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- v21-20020a05600c471500b0040836519dd9sm1974949wmo.25.2023.10.31.07.44.08
+ o8-20020adfe808000000b0031980294e9fsm1647761wrm.116.2023.10.31.07.44.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 07:44:10 -0700 (PDT)
+ Tue, 31 Oct 2023 07:44:12 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 406D165722;
+ by draig.lan (Postfix) with ESMTP id 532346572F;
  Tue, 31 Oct 2023 14:44:03 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Fabiano Rosas <farosas@suse.de>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 15/19] tests/docker: upgrade debian-all-test-cross to bookworm
-Date: Tue, 31 Oct 2023 14:43:57 +0000
-Message-Id: <20231031144401.1238210-16-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 16/19] gdbstub: Check if gdb_regs is NULL
+Date: Tue, 31 Oct 2023 14:43:58 +0000
+Message-Id: <20231031144401.1238210-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231031144401.1238210-1-alex.bennee@linaro.org>
 References: <20231031144401.1238210-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,66 +97,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This requires a few more tweaks than usual as:
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-  - the default sources format has changed
-  - bring in python3-tomli from the repos
-  - split base install from cross compilers
-  - also include libclang-rt-dev for sanitiser builds
+cpu->gdb_regs may be NULL if no coprocessor is registered.
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: 73c392c26b ("gdbstub: Replace gdb_regs with an array")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20231029145033.592566-17-alex.bennee@linaro.org>
+Message-Id: <20231019101030.128431-2-akihiko.odaki@daynix.com>
+Tested-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231029145033.592566-16-alex.bennee@linaro.org>
 
-diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
-index 43cc083318..2cc7a24d4d 100644
---- a/tests/docker/dockerfiles/debian-all-test-cross.docker
-+++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
-@@ -6,10 +6,10 @@
- # basic compilers for as many targets as possible. We shall use this
- # to build and run linux-user tests on GitLab
- #
--FROM docker.io/library/debian:11-slim
-+FROM docker.io/library/debian:12-slim
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 1e96a71c0c..29540a0284 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -385,12 +385,14 @@ static const char *get_feature_xml(const char *p, const char **newp,
+                 xml,
+                 g_markup_printf_escaped("<xi:include href=\"%s\"/>",
+                                         cc->gdb_core_xml_file));
+-            for (guint i = 0; i < cpu->gdb_regs->len; i++) {
+-                r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
+-                g_ptr_array_add(
+-                    xml,
+-                    g_markup_printf_escaped("<xi:include href=\"%s\"/>",
+-                                            r->xml));
++            if (cpu->gdb_regs) {
++                for (guint i = 0; i < cpu->gdb_regs->len; i++) {
++                    r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
++                    g_ptr_array_add(
++                        xml,
++                        g_markup_printf_escaped("<xi:include href=\"%s\"/>",
++                                                r->xml));
++                }
+             }
+             g_ptr_array_add(xml, g_strdup("</target>"));
+             g_ptr_array_add(xml, NULL);
+@@ -430,10 +432,12 @@ static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+         return cc->gdb_read_register(cpu, buf, reg);
+     }
  
- # Duplicate deb line as deb-src
--RUN cat /etc/apt/sources.list | sed "s/^deb\ /deb-src /" >> /etc/apt/sources.list
-+RUN sed -in "s/Types: deb/Types: deb deb-src/g" /etc/apt/sources.list.d/debian.sources
+-    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
+-        r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
+-        if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
+-            return r->get_reg(env, buf, reg - r->base_reg);
++    if (cpu->gdb_regs) {
++        for (guint i = 0; i < cpu->gdb_regs->len; i++) {
++            r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
++            if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
++                return r->get_reg(env, buf, reg - r->base_reg);
++            }
+         }
+     }
+     return 0;
+@@ -449,10 +453,12 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
+         return cc->gdb_write_register(cpu, mem_buf, reg);
+     }
  
- RUN export DEBIAN_FRONTEND=noninteractive && \
-     apt-get update && \
-@@ -25,7 +25,16 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         clang  \
-         flex \
-         git \
-+        libclang-rt-dev \
-         ninja-build \
-+        python3-pip \
-+        python3-setuptools \
-+        python3-tomli \
-+        python3-venv \
-+        python3-wheel
-+
-+RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-+        apt install -y --no-install-recommends \
-         gcc-aarch64-linux-gnu \
-         libc6-dev-arm64-cross \
-         gcc-arm-linux-gnueabihf \
-@@ -53,13 +62,8 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         gcc-s390x-linux-gnu \
-         libc6-dev-s390x-cross \
-         gcc-sparc64-linux-gnu \
--        libc6-dev-sparc64-cross \
--        python3-pip \
--        python3-setuptools \
--        python3-venv \
--        python3-wheel
-+        libc6-dev-sparc64-cross
- 
--RUN /usr/bin/pip3 install tomli
- 
- ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
- ENV DEF_TARGET_LIST aarch64-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sparc64-linux-user
+-    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
+-        r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
+-        if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
+-            return r->set_reg(env, mem_buf, reg - r->base_reg);
++    if (cpu->gdb_regs) {
++        for (guint i = 0; i < cpu->gdb_regs->len; i++) {
++            r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
++            if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
++                return r->set_reg(env, mem_buf, reg - r->base_reg);
++            }
+         }
+     }
+     return 0;
 -- 
 2.39.2
 
