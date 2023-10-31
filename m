@@ -2,74 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9127DC6E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 08:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 133AD7DC7BB
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 08:56:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxio7-0005Ap-NS; Tue, 31 Oct 2023 03:04:59 -0400
+	id 1qxjbp-0004jQ-5a; Tue, 31 Oct 2023 03:56:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qxio6-0005Ah-Ef
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 03:04:58 -0400
-Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qxinu-0002Ac-4t
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 03:04:58 -0400
-Received: by mail-qt1-x829.google.com with SMTP id
- d75a77b69052e-41cc44736f2so39094581cf.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 00:04:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698735885; x=1699340685; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ucltFnCXkeFj7YLsU4TC5x/GxybTsoXKv0SH/ZgzoKU=;
- b=nXLE+VGbl2LNUYAL8zqYzYp4XTgQx05OQFeAq3Ba0eOgGz6SfCPbNOkaWkm4bLP2Im
- rkVgwsPHXW6QcWN6Y+3ju3fEutTW7qzuKkOmsQExeKp13jRt2iW5Ao14NgVl+rNxIqrS
- RGtQVrN3XkYIC8GDo0SObGGrySODAvbaOEZoTOEEamhhhphG1CsgdgkTMoU2S7+Nzd/C
- T9h8nFynvcGEldxU7o+7jGHFHeEQhYx0jE7t3SREPl36iaE/emC4NaZ5Wb+RZwJnpkv2
- i7TLH8ZDTXOIOtGmAn9/8eW4hAYviwhXujbPhIjtjfeZqz4qHtXEP+M6TXeAmJhYwfa9
- AHDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698735885; x=1699340685;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ucltFnCXkeFj7YLsU4TC5x/GxybTsoXKv0SH/ZgzoKU=;
- b=euCLchNLjKdanQs+nLRaFoKQU1628085oASB9PvAaq5doAHavHDOK/YR1Hwqcozi20
- k1VLPf8gnpH29eh7E8CgqFczy6pXDXKWy085k9qDxYmJUaz4+RXqeewh6DQs0wOKBpux
- BigOVnXg6n8jGQW0or7aU2XGPHPvLoS+6cht4QvVqerrWhWm9LOxrLAgyVr1Dvw/jAkv
- +7X0QAb9HGEhRLNlyBGSxZBgS8C/IoOSgNw9MB0Z2cj66NaeQM/tc3BMn2mjIojgmn3p
- UQe/Y8BA3GM4MRiWwq/v3OBOh/C5KxdaOTTu9jfVHNMn9xnUhlLyCY7DWjDDhwkIeiVC
- bASw==
-X-Gm-Message-State: AOJu0YyySpzWczjkZoEf5tmFP96hctuP3RQN0H+1ZDpi28aqha7kpODw
- NM0NXGmx1wHVyzcSs7Fiuggi1AwN5SIX3iHmgHA=
-X-Google-Smtp-Source: AGHT+IF89MwDRV1Jy+BxlF6KJPb97nlP9If7q5emtQs4VCiv0BiWqBS1DMvIRg48bK+fR/luESc6Wp1TgRsMG4b2M8U=
-X-Received: by 2002:ac8:5846:0:b0:41c:bf67:37bb with SMTP id
- h6-20020ac85846000000b0041cbf6737bbmr17660837qth.59.1698735884835; Tue, 31
- Oct 2023 00:04:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qxjbm-0004im-Ib
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 03:56:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qxjbk-00031A-JP
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 03:56:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698738974;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5tOS7bRsYUD6wRB2KYk79Y4xiCwLuy63OeWqGzlH09M=;
+ b=BYyxPOQQr6vFc/FYahhYbsj+inbSCKrXoYiUxApuPosebA6VHnG8UrcrYhtVqUSKm+Za+a
+ TJ1Q7Ft3gfrQPq9z3mymZF/bO1eSVDKbZmdkFkblZaT0aRwQlXz7mGvn0oKE7kgVlTlAHt
+ xUJM+agAfy3xWe60GY8NHWJ4efBe7+I=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-weyF7kOJPM-HPy0Sum6d4A-1; Tue,
+ 31 Oct 2023 03:56:10 -0400
+X-MC-Unique: weyF7kOJPM-HPy0Sum6d4A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 849C61C113E8;
+ Tue, 31 Oct 2023 07:56:10 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.165])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 709A72166B26;
+ Tue, 31 Oct 2023 07:56:09 +0000 (UTC)
+Date: Tue, 31 Oct 2023 16:50:50 +0900
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Jeuk Kim <jeuk20.kim@gmail.com>
+Cc: qemu-devel@nongnu.org, stefanha@redhat.com, jeuk20.kim@samsung.com,
+ pbonzini@redhat.com, fam@euphon.net, qemu-block@nongnu.org
+Subject: Re: [PULL 0/1] ufs queue
+Message-ID: <20231031075050.GA644043@fedora>
+References: <cover.1698631179.git.jeuk20.kim@samsung.com>
 MIME-Version: 1.0
-References: <20231030104755.124188-1-marcandre.lureau@redhat.com>
- <e1b841d3-9423-4257-b45d-9a5f269813f2@tls.msk.ru>
-In-Reply-To: <e1b841d3-9423-4257-b45d-9a5f269813f2@tls.msk.ru>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 31 Oct 2023 11:04:33 +0400
-Message-ID: <CAJ+F1CLgPEPoT-5KbZvzyBhQBWX6iZcRVi7ZnXRTeUgus2HMQA@mail.gmail.com>
-Subject: Re: [PATCH v7 00/23] Make Pixman an optional dependency
-To: Michael Tokarev <mjt@tls.msk.ru>, Anton Kochkov <anton.kochkov@proton.me>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="37hZVJFxlTknIOGY"
+Content-Disposition: inline
+In-Reply-To: <cover.1698631179.git.jeuk20.kim@samsung.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,30 +80,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
 
-On Mon, Oct 30, 2023 at 9:29=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
-ote:
->
-> (Trim Cc: list)
->
-> 30.10.2023 13:47, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > Hi,
-> >
-> > QEMU system emulators can be made to compile and work without Pixman.
->
-> Out of curiocity (not opposing to this in any way), - why pixman is such =
-a
-> big dependency to require quite a lot of code refactoring?
+--37hZVJFxlTknIOGY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It's not a big dependency (70k loc), but it's one we can drop to a
-have smaller UI-less qemu. The changes to accomodate an optional
-pixman are imho fairly small.
+Applied, thanks.
 
-Anton, are there other reasons?
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
 
---=20
-Marc-Andr=C3=A9 Lureau
+--37hZVJFxlTknIOGY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVAsdoACgkQnKSrs4Gr
+c8iZ0wgAtPYUDCMvGpMQGlx2hAxJw4cbXE3tPe50zNth0LhgyaRi+8In9wI+3xAl
+YWZ2eD3MLXvQZrgIcviTFapXaH9r3g6yDxOmBUQJDchq4jn87UePZ1DwR5zYAWcn
+N/hS0fNjXT8TPdYCp08Rh6TMjv5/hIVFQzXrs9tLnfHg1njEgSVrAcgp//avF3fr
+w6eJntGmcUQxrF4sUlZIg5ffeoa/fTtvoY95kxMztNRdt4RBAAQU73sut09KwqPt
+7tba4VUWX7y2QThktoSIZGeoVZjoJbG6fcJFNt4Hv2YXzBWHCKPnf97hChl8RVmZ
+yIRF2XOyKlxzAS2KFkiMr8uBUkK2jg==
+=lxBM
+-----END PGP SIGNATURE-----
+
+--37hZVJFxlTknIOGY--
+
 
