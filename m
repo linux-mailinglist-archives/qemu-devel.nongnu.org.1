@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B739B7DC906
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767717DC92B
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:11:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxkhz-0005RG-6Y; Tue, 31 Oct 2023 05:06:47 -0400
+	id 1qxkmc-00057D-Ll; Tue, 31 Oct 2023 05:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxkhw-0005LC-KX
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:06:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxkhv-0007xy-0Q
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:06:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698743202;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tLFG3ctul/fwPAzgAHHYanagP70hz72z3RbShxU7kw4=;
- b=cIz6/BhzWNfaDTKsghH37fb2u0IJ/3Ji5h35MmYH2pf5np2nsPhrhyCqZww2xOzrBMi37b
- dykaCehDJib+rPN74xwiMb3wFfEWrr0hJz9PfuwLvY0cBs0o2xegRCw8ooqebL+UwSd7uP
- +ltqr0b0x0HsYm1ffimOEnfSx2vsphg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-602-6-dMqu2ANRO70_JmB37Hcg-1; Tue,
- 31 Oct 2023 05:06:35 -0400
-X-MC-Unique: 6-dMqu2ANRO70_JmB37Hcg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 768F71C07828
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 09:06:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 561091121306
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 09:06:35 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 56A8621E6A1F; Tue, 31 Oct 2023 10:06:34 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/5] dump: Fix g_array_unref(NULL) in dump-guest-memory
-References: <20231030133712.2822276-1-armbru@redhat.com>
- <20231030133712.2822276-3-armbru@redhat.com>
- <CAMxuvaxy_mwut2rH0cAOaOgiRTTeBBBCKprTS4bmetHqb7C8Ww@mail.gmail.com>
- <87zfzzkvv5.fsf@pond.sub.org>
-Date: Tue, 31 Oct 2023 10:06:34 +0100
-In-Reply-To: <87zfzzkvv5.fsf@pond.sub.org> (Markus Armbruster's message of
- "Tue, 31 Oct 2023 10:02:38 +0100")
-Message-ID: <87lebjkvol.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qxkmX-00055c-Fa
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:11:29 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qxkmS-0000aN-0p
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:11:28 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxIvC1xEBlMeo1AA--.39197S3;
+ Tue, 31 Oct 2023 17:11:18 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxL92xxEBlNGM3AA--.56627S3; 
+ Tue, 31 Oct 2023 17:11:15 +0800 (CST)
+Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
+To: Jiajie Chen <c@jia.je>, Richard Henderson <richard.henderson@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: git@xen0n.name, bibo mao <maobibo@loongson.cn>
+References: <20231023153029.269211-2-c@jia.je>
+ <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
+ <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
+ <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
+ <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
+ <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
+ <6482c6cf-1f4b-a7b9-d106-4c687360e810@loongson.cn>
+ <ae3088b6-f472-4dd2-a5bc-9effb61ffaa0@jia.je>
+ <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
+ <603b8709-4288-4268-abd4-642366b0b7e2@jia.je>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <798c78df-cc9d-78dd-5bbd-0de2ead0eb1f@loongson.cn>
+Date: Tue, 31 Oct 2023 17:11:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+In-Reply-To: <603b8709-4288-4268-abd4-642366b0b7e2@jia.je>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8BxL92xxEBlNGM3AA--.56627S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3JrWfKw1rKw4xGr4kXr17twc_yoW7WryDpF
+ y8J3W7KrWUJr4kAr4Iqr1UZry5trWxJ345Xr1DKFyxGryqvr1vqr18Jr4Y9Fyqqw48Wr1U
+ JryUAry7ZF15JagCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+ AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+ XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+ 8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+ Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+ xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+ cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+ AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+ 14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jjwZcUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.441,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,64 +89,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
-
-> Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+在 2023/10/30 下午7:54, Jiajie Chen 写道:
 >
->> Hi
->>
->> On Mon, Oct 30, 2023 at 5:37=E2=80=AFPM Markus Armbruster <armbru@redhat=
-.com> wrote:
+> On 2023/10/30 16:23, gaosong wrote:
+>> 在 2023/10/28 下午9:09, Jiajie Chen 写道:
 >>>
->>> When dump_init()'s check for non-zero @length fails, dump_cleanup()
->>> passes null s->string_table_buf to g_array_unref(), which spews "GLib:
->>> g_array_unref: assertion 'array' failed" to stderr.
+>>> On 2023/10/26 14:54, gaosong wrote:
+>>>> 在 2023/10/26 上午9:38, Jiajie Chen 写道:
+>>>>>
+>>>>> On 2023/10/26 03:04, Richard Henderson wrote:
+>>>>>> On 10/25/23 10:13, Jiajie Chen wrote:
+>>>>>>>> On 2023/10/24 07:26, Richard Henderson wrote:
+>>>>>>>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, 
+>>>>>>>>> TCGv_i128 block.
+>>>>>>>>> See target/ppc/translate.c, gen_stqcx_.
+>>>>>>>>
+>>>>>>>> The situation here is slightly different: aarch64 and ppc64 
+>>>>>>>> have both 128-bit ll and sc, however LoongArch v1.1 only has 
+>>>>>>>> 64-bit ll and 128-bit sc.
+>>>>>>
+>>>>>> Ah, that does complicate things.
+>>>>>>
+>>>>>>> Possibly use the combination of ll.d and ld.d:
+>>>>>>>
+>>>>>>>
+>>>>>>> ll.d lo, base, 0
+>>>>>>> ld.d hi, base, 4
+>>>>>>>
+>>>>>>> # do some computation
+>>>>>>>
+>>>>>>> sc.q lo, hi, base
+>>>>>>>
+>>>>>>> # try again if sc failed
+>>>>>>>
+>>>>>>> Then a possible implementation of gen_ll() would be: align base 
+>>>>>>> to 128-bit boundary, read 128-bit from memory, save 64-bit part 
+>>>>>>> to rd and record whole 128-bit data in llval. Then, in 
+>>>>>>> gen_sc_q(), it uses a 128-bit cmpxchg.
+>>>>>>>
+>>>>>>>
+>>>>>>> But what about the reversed instruction pattern: ll.d hi, base, 
+>>>>>>> 4; ld.d lo, base 0?
+>>>>>>
+>>>>>> It would be worth asking your hardware engineers about the bounds 
+>>>>>> of legal behaviour. Ideally there would be some very explicit 
+>>>>>> language, similar to
+>>>>>
+>>>>>
+>>>>> I'm a community developer not affiliated with Loongson. Song Gao, 
+>>>>> could you provide some detail from Loongson Inc.?
+>>>>>
+>>>>>
+>>>>
+>>>> ll.d   r1, base, 0
+>>>> dbar 0x700          ==> see 2.2.8.1
+>>>> ld.d  r2, base,  8
+>>>> ...
+>>>> sc.q r1, r2, base
 >>>
->>> Guard the g_array_unref().
 >>>
->>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->>
->> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->>
->>> ---
->>>  dump/dump.c | 4 +++-
->>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>> Thanks! I think we may need to detect the ll.d-dbar-ld.d sequence 
+>>> and translate the sequence into one tcg_gen_qemu_ld_i128 and split 
+>>> the result into two 64-bit parts. Can do this in QEMU?
 >>>
->>> diff --git a/dump/dump.c b/dump/dump.c
->>> index a1fad17f9c..d8ea364af2 100644
->>> --- a/dump/dump.c
->>> +++ b/dump/dump.c
->>> @@ -100,7 +100,9 @@ static int dump_cleanup(DumpState *s)
->>>      memory_mapping_list_free(&s->list);
->>>      close(s->fd);
->>>      g_free(s->guest_note);
->>> -    g_array_unref(s->string_table_buf);
->>> +    if (s->string_table_buf) {
->>> +        g_array_unref(s->string_table_buf);
->>> +    }
+>>>
+>> Oh, I'm not sure.
 >>
->> or:
->> g_clear_pointer(&s->string_table_buf, g_array_unref)
+>> I think we just need to implement sc.q. We don't need to care about 
+>> 'll.d-dbar-ld.d'. It's just like 'll.q'.
+>> It needs the user to ensure that .
+>>
+>> ll.q' is
+>> 1) ll.d r1 base, 0 ==> set LLbit, load the low 64 bits into r1
+>> 2) dbar 0x700　
+>> 3) ld.d r2 base, 8 ==> load the high 64 bits to r2
+>>
+>> sc.q needs to
+>> 1) Use 64-bit cmpxchg.
+>> 2) Write 128 bits to memory.
 >
-> Since dump_cleanup() doesn't clear any of the other members of @s, I'll
-> stick to g_array_unref() for consistency and simplicity.
-
-Wait!  You suggest *unconditional*
-
-         g_clear_pointer(&s->string_table_buf, g_array_unref)=20=20=20=20=
-=20=20=20=20=20
-
-don't you?
-
-Got a preference?
-
->>>      s->guest_note =3D NULL;
->>>      if (s->resume) {
->>>          if (s->detached) {
->>> --
->>> 2.41.0
->>>
+> Consider the following code:
 >
-> Thanks!
+>
+> ll.d r1, base, 0
+>
+> dbar 0x700
+>
+> ld.d r2, base, 8
+>
+> addi.d r2, r2, 1
+>
+> sc.q r1, r2, base
+>
+>
+> We translate them into native code:
+>
+>
+> ld.d r1, base, 0
+>
+> mv LLbit, 1
+>
+> mv LLaddr, base
+>
+> mv LLval, r1
+>
+> dbar 0x700
+>
+> ld.d r2, base, 8
+>
+> addi.d r2, r2, 1
+>
+> if (LLbit == 1 && LLaddr == base) {
+>
+>     cmpxchg addr=base compare=LLval new=r1
+>
+>     128-bit write {r2, r1} to base if cmpxchg succeeded
+>
+> }
+>
+> set r1 if sc.q succeeded
+>
+>
+>
+> If the memory content of base+8 has changed between ld.d r2 and addi.d 
+> r2, the atomicity is not guaranteed, i.e. only the high part has 
+> changed, the low part hasn't.
+>
+>
+Sorry,  my mistake.  need use cmpxchg_i128.   See 
+target/arm/tcg/translate-a64.c   gen_store_exclusive().
+
+gen_scq(rd, rk, rj)
+{
+      ...
+     TCGv_i128 t16 = tcg_temp_new_i128();
+     TCGv_i128 c16 = tcg_temp_new_i128();
+     TCGv_i64 low = tcg_temp_new_i64();
+     TCGv_i64 high= tcg_temp_new_i64();
+     TCGv_i64 temp = tcg_temp_new_i64();
+
+     tcg_gen_concat_i64_i128(t16, cpu_gpr[rd],  cpu_gpr[rk]));
+
+     tcg_gen_qemu_ld(low, cpu_lladdr, ctx->mem_idx,  MO_TEUQ);
+     tcg_gen_addi_tl(temp, cpu_lladdr, 8);
+     tcg_gen_mb(TCG_BAR_SC | TCG_MO_LD_LD);
+     tcg_gen_qemu_ld(high, temp, ctx->mem_idx, MO_TEUQ);
+     tcg_gen_concat_i64_i128(c16, low,  high);
+
+     tcg_gen_atomic_cmpxchg_i128(t16, cpu_lladdr, c16, t16, 
+ctx->mem_idx, MO_128);
+
+     ...
+}
+
+I am not sure this is right.
+
+I think Richard can give you more suggestions. @Richard
+
+Thanks.
+Song Gao
+>
+>> Thanks.
+>> Song Gao
+>>>>
+>>>>
+>>>> For this series,
+>>>> I think we need set the new config bits to the 'max cpu', and 
+>>>> change linux-user/target_elf.h ''any' to 'max', so that we can use 
+>>>> these new instructions on linux-user mode.
+>>>
+>>> I will work on it.
+>>>
+>>>
+>>>>
+>>>> Thanks
+>>>> Song Gao
+>>>>>>
+>>>>>> https://developer.arm.com/documentation/ddi0487/latest/
+>>>>>> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage 
+>>>>>> restrictions
+>>>>>>
+>>>>>> But you could do the same thing, aligning and recording the 
+>>>>>> entire 128-bit quantity, then extract the ll.d result based on 
+>>>>>> address bit 6.  This would complicate the implementation of sc.d 
+>>>>>> as well, but would perhaps bring us "close enough" to the actual 
+>>>>>> architecture.
+>>>>>>
+>>>>>> Note that our Arm store-exclusive implementation isn't quite in 
+>>>>>> spec either.  There is quite a large comment within 
+>>>>>> translate-a64.c store_exclusive() about the ways things are not 
+>>>>>> quite right.  But it seems to be close enough for actual usage to 
+>>>>>> succeed.
+>>>>>>
+>>>>>>
+>>>>>> r~
+>>>>
+>>
 
 
