@@ -2,73 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CC37DD6DD
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F577DD6DC
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxuv1-0001Kw-Ii; Tue, 31 Oct 2023 16:00:55 -0400
+	id 1qxuvk-0001dw-3A; Tue, 31 Oct 2023 16:01:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxuuv-0001KT-Ae
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:00:49 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxuvg-0001c1-Q2
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:01:36 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qxuut-0000M1-0A
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:00:48 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 9C16E215D5;
- Tue, 31 Oct 2023 20:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698782444; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vuiTvZzKieQXaQeBQbgcgBkHYseaw/GY09394/qbLZM=;
- b=F2RsFN4NBvzqWskKpf3YPlEBE09iBCqAqW598ME7nEpNcUpt8AJ00tQEyLMDIhYqwIfzS+
- lgJ5/UAotMHnVqUzSfF4H6XlYNAc3WPXRYNrrfXK52sp8TmSk2cJfrmI5cT+YYZwHiwf8K
- Vp27RKsz0PEBpQGKOU6TwOUOzela5G4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698782444;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vuiTvZzKieQXaQeBQbgcgBkHYseaw/GY09394/qbLZM=;
- b=EUeSPqgsgBTrAxiXOL5BJg7f4NjBxZ0q93HeUeNqjwrRDwekAy0fLChneKJ3hR9EItkuiB
- um8cqrDZbvx23nDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2CC851391B;
- Tue, 31 Oct 2023 20:00:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 8JNGOutcQWVrOwAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 31 Oct 2023 20:00:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Juan
- Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [PATCH v2 16/29] migration/ram: Add support for 'fixed-ram'
- migration restore
-In-Reply-To: <ZUFRBeFV8yF2SVLy@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-17-farosas@suse.de> <ZUFRBeFV8yF2SVLy@x1n>
-Date: Tue, 31 Oct 2023 17:00:41 -0300
-Message-ID: <87ttq6d0k6.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxuvf-0000Vv-8D
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:01:36 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1cac80292aeso41819475ad.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:01:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698782493; x=1699387293; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dyHW+IzvVO/X8u8bLfdCHecuwVEMEMcJx3Qp6+W4j+M=;
+ b=gY5EuEkb+gOJYQWiyihDKhKWd1LFr8Jzc1OM+Y7vuEGczKq2jjZRQFDiFY4zukwJTu
+ 26HdiTMzNyBStq3lvPzTncZG9KeGQZJhiBjp6oxcyndbicstqLOpB3Q9pDvfa6FQmE+q
+ zYdNKIT1KCiD3ukQNbPwRB/qdBsbs1KmpisiWsKovIImjhRBssPcmBjJZy+UuabOxEsa
+ 7OA10/1KE/TVIvvyoEpIDWHn+SgpLQhacoVtM4iP7Bhxo4eJz1iJON2e7QQNGWs+Btoe
+ JL/gxO7O1EjYW1bOEUTYLp928ClDP9o5A1tWDQkNauT2A42lpuSh+zpXzGDOBshol7yz
+ Gcew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698782493; x=1699387293;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dyHW+IzvVO/X8u8bLfdCHecuwVEMEMcJx3Qp6+W4j+M=;
+ b=p5IWxqjnZa4faGAjLIc2Meht+l23NWMbFC/2AY/TKXa3ORuvCT7s3MKx4cSaeFzUVe
+ 1YeQ/By7LRDrridS+uulXtbJrT3vzDRcUU86XwZ8cpL1admuxiYK8TkcZqAwSJPQ3gI4
+ Kuq9XHzo6lrQKnza6ecKWUEugJolIIDkoYrrm/S56b5UZPjXL4pZN66ddnEq/rJRi7IG
+ rb2UaxiYLWUvlpuNd6zdYn+OtTv//OL7o81jOwuNmLEorFaizYlxSjzMwTXF2m/e5bne
+ 30Tn8S93kdA5W+RebDxzif5Aa0jZ111zjKJIIBDtP6ufTSA2Lk5yGSvOAFthCoNYn6Ee
+ uWMw==
+X-Gm-Message-State: AOJu0YyglNL8OinkIUTCt4qBVmd+ob6YdLYIw3oBmGMSIcLSAngKT2Rw
+ 4ncO3+0ph6DhLJ5KFqX3eCHkyDw/b1tqtD4zUVo=
+X-Google-Smtp-Source: AGHT+IEeScQgXqHaRZO++zj5bw4RLX4m3PJHvvlpiG4VzogPZury57siW4tUG/heDLHtKiJA2jwWYA==
+X-Received: by 2002:a17:903:1053:b0:1cc:31a7:88cf with SMTP id
+ f19-20020a170903105300b001cc31a788cfmr6782682plc.40.1698782492863; 
+ Tue, 31 Oct 2023 13:01:32 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ w15-20020a1709027b8f00b001c73701bd17sm1685236pll.4.2023.10.31.13.01.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 13:01:32 -0700 (PDT)
+Message-ID: <0f79c025-25db-48a1-a16e-b3fd5e07d98e@linaro.org>
+Date: Tue, 31 Oct 2023 13:01:30 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Missing CASA instruction handling for SPARC qemu-user
+Content-Language: en-US
+To: Luca Bonissi <qemu@bonslack.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+References: <4a785697-de37-3a3e-bf38-b20044cb56af@bonslack.org>
+ <b542dcc6-8e74-4790-d8a2-d6c6e60a3a57@bonslack.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <b542dcc6-8e74-4790-d8a2-d6c6e60a3a57@bonslack.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,108 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 7/18/23 09:09, Luca Bonissi wrote:
+> On qemu-sparc (user-space), the CASA instruction is not handled for SPARC32 even if the 
+> selected cpu (e.g. LEON3) supports it.
 
-> On Mon, Oct 23, 2023 at 05:35:55PM -0300, Fabiano Rosas wrote:
->> From: Nikolay Borisov <nborisov@suse.com>
->> 
->> Add the necessary code to parse the format changes for the 'fixed-ram'
->> capability.
->> 
->> One of the more notable changes in behavior is that in the 'fixed-ram'
->> case ram pages are restored in one go rather than constantly looping
->> through the migration stream.
->> 
->> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->> (farosas) reused more of the common code by making the fixed-ram
->> function take only one ramblock and calling it from inside
->> parse_ramblock.
->> ---
->>  migration/ram.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 93 insertions(+)
->> 
->> diff --git a/migration/ram.c b/migration/ram.c
->> index 152a03604f..cea6971ab2 100644
->> --- a/migration/ram.c
->> +++ b/migration/ram.c
->> @@ -3032,6 +3032,32 @@ static void fixed_ram_insert_header(QEMUFile *file, RAMBlock *block)
->>      qemu_put_buffer(file, (uint8_t *) header, header_size);
->>  }
->>  
->> +static int fixed_ram_read_header(QEMUFile *file, struct FixedRamHeader *header)
->> +{
->> +    size_t ret, header_size = sizeof(struct FixedRamHeader);
->> +
->> +    ret = qemu_get_buffer(file, (uint8_t *)header, header_size);
->> +    if (ret != header_size) {
->> +        return -1;
->> +    }
->> +
->> +    /* migration stream is big-endian */
->> +    be32_to_cpus(&header->version);
->> +
->> +    if (header->version > FIXED_RAM_HDR_VERSION) {
->> +        error_report("Migration fixed-ram capability version mismatch (expected %d, got %d)",
->> +                     FIXED_RAM_HDR_VERSION, header->version);
->
-> I know it doesn't matter a lot for now, but it'll be good to start using
-> Error** in new codes?
+This should be fixed now, with
 
-This whole series was written before the many discussions we had about
-error handling. Thanks for pointing that out, I'll revise and change
-where appropriate.
+commit d0a11d25f0332dbaeb3a4f733a5cfb23ed40413d
+Author: Richard Henderson <richard.henderson@linaro.org>
+Date:   Thu Oct 5 00:09:36 2023 -0700
 
->> +        return -1;
->> +    }
->> +
->> +    be64_to_cpus(&header->page_size);
->> +    be64_to_cpus(&header->bitmap_offset);
->> +    be64_to_cpus(&header->pages_offset);
->> +
->> +
->> +    return 0;
->> +}
->> +
->>  /*
->>   * Each of ram_save_setup, ram_save_iterate and ram_save_complete has
->>   * long-running RCU critical section.  When rcu-reclaims in the code
->> @@ -3932,6 +3958,68 @@ void colo_flush_ram_cache(void)
->>      trace_colo_flush_ram_cache_end();
->>  }
->>  
->> +static void read_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block,
->> +                                    long num_pages, unsigned long *bitmap)
->> +{
->> +    unsigned long set_bit_idx, clear_bit_idx;
->> +    unsigned long len;
->> +    ram_addr_t offset;
->> +    void *host;
->> +    size_t read, completed, read_len;
->> +
->> +    for (set_bit_idx = find_first_bit(bitmap, num_pages);
->> +         set_bit_idx < num_pages;
->> +         set_bit_idx = find_next_bit(bitmap, num_pages, clear_bit_idx + 1)) {
->> +
->> +        clear_bit_idx = find_next_zero_bit(bitmap, num_pages, set_bit_idx + 1);
->> +
->> +        len = TARGET_PAGE_SIZE * (clear_bit_idx - set_bit_idx);
->> +        offset = set_bit_idx << TARGET_PAGE_BITS;
->> +
->> +        for (read = 0, completed = 0; completed < len; offset += read) {
->> +            host = host_from_ram_block_offset(block, offset);
->> +            read_len = MIN(len, TARGET_PAGE_SIZE);
->
-> Why MIN()?  I didn't read qemu_get_buffer_at() yet, but shouldn't len
-> always be multiple of target page size or zero?
->
+     target/sparc: Move CASA, CASXA to decodetree
 
-Hmm, this is not my code. The original code had MIN(len, BUFSIZE) with
-BUFSIZE being defined at 4M. I think the idea might have been to cap the
-amount of pages read.
+     Remove gen_cas_asi, gen_casx_asi.
+     Rename gen_cas_asi0 to gen_cas_asi.
 
-So it seems I have made a mistake here and this could be reading more
-pages at a time.
+     Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+     Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+     Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
+
+r~
 
