@@ -2,47 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8107DCD32
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 13:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 420527DC8DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:00:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxoAX-00048T-KR; Tue, 31 Oct 2023 08:48:29 -0400
+	id 1qxkac-00075u-MP; Tue, 31 Oct 2023 04:59:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ReneEngel80@emailn.de>)
- id 1qxkWF-0006DC-3O
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:54:39 -0400
-Received: from mail.emailn.de ([46.182.21.2])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxkaa-00075C-2y
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:59:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ReneEngel80@emailn.de>)
- id 1qxkWD-0005Ud-4t
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:54:38 -0400
-Received: from mail.emailn.de (192.168.0.32 [192.168.0.32])
- by mail.emailn.de (b1gMailServer) with ESMTP id 71332AF4
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 09:54:32 +0100 (CET)
-Date: Tue, 31 Oct 2023 09:54:32 +0100
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qxkaQ-0006IU-B2
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:59:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698742736;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=E0eY7eceaYG8U+7n93E2h1BsUArG2RXygVaGBgfn5nQ=;
+ b=XTwK/SromycRZ+XDT6eyVP/2pHQPfuOSwxvAAKuhMMEHKik3IKFRpWELzpmQEDWIHVfw4N
+ xvFR9/Z7ZGf07pPos/uvOpg/LV+DW367IGHQUecfUmvFqhliWu9zABFcYiNNDb1v5XfGjn
+ X1CE05et65AixwJP9mhBKeirAsVXgqc=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-30-tEUcPyGOMG2xXJ9SrwW72A-1; Tue, 31 Oct 2023 04:58:54 -0400
+X-MC-Unique: tEUcPyGOMG2xXJ9SrwW72A-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-5afbcffe454so70615177b3.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 01:58:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698742734; x=1699347534;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=E0eY7eceaYG8U+7n93E2h1BsUArG2RXygVaGBgfn5nQ=;
+ b=xE9elKxKO9HF5IRBVIgr4ISBtBHSvdF1J//0+KMTZ3fRY/IXa4srhEabWz0uSpxqtm
+ 9Dqp4jxAf3XQnSQR48lONC3M68je6G9/a/uTfDUHitDBkuuZccFpGotYAKKJbSD9q2BU
+ xcZKJFUCCLJykCbGPqr6tGYyEqt5IQzIc2IF7rv/oMB2laJj9zRPhJnFCsYjU757TV1w
+ yZ0cO4H2Eio+XS5sfMPWke2/I8rXjrkIEV7BjEwVrpG/+N4lNSwzSsr0B4T7iooJ8VtV
+ gIQYfM/77a35SmkhRiaE+jwkTztg57YVauXXeCD4+TpJD2QngvRIMWdMe9we0yzgxRAl
+ fLpw==
+X-Gm-Message-State: AOJu0YyA8YxPDJaNwtCFcsFQgmqmJqYLaX3tAH4W6X+zg+T9Qu2WydS/
+ RhtBxh6y04Z6P7ijHCmq5To43HgMU46ZTtFaTY6gNiw0qZmCk2mnZnqNqd1UScO79L2Gq8I8RNq
+ 5zUoUf8kHhq5yGtc=
+X-Received: by 2002:a81:b603:0:b0:5a7:c777:2be1 with SMTP id
+ u3-20020a81b603000000b005a7c7772be1mr11826686ywh.11.1698742733890; 
+ Tue, 31 Oct 2023 01:58:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLZf+73QleXoEf55AQKHvaAnJ5DreOaXsrLPfXJakfiGXXT2SF/PL+7ppR6FuEUHYWFIjw2g==
+X-Received: by 2002:a81:b603:0:b0:5a7:c777:2be1 with SMTP id
+ u3-20020a81b603000000b005a7c7772be1mr11826657ywh.11.1698742733475; 
+ Tue, 31 Oct 2023 01:58:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ s4-20020ad45244000000b0066cf4fa7b47sm359519qvq.4.2023.10.31.01.58.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 01:58:53 -0700 (PDT)
+Message-ID: <2400c9be-8c0b-415f-90c5-3a04fbdf6744@redhat.com>
+Date: Tue, 31 Oct 2023 09:58:48 +0100
 MIME-Version: 1.0
-Message-ID: <87cfa6e91ba9608c5f4cd0841987925d@mail.emailn.de>
-X-Mailer: b1gMail/7.2.0
-X-Sender-IP: 79.233.215.135
-From: "Rene Engel" <ReneEngel80@emailn.de>
-Subject: qemu master git source can not compile under macOS Sonoma 14.1
-To: qemu-devel@nongnu.org
-Content-Type: text/html; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 23/37] Add iommufd configure option
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
+ <20231026103104.1686921-24-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231026103104.1686921-24-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Disposition: inline
-Received-SPF: pass client-ip=46.182.21.2; envelope-from=ReneEngel80@emailn.de;
- helo=mail.emailn.de
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FROM=0.001, FREEMAIL_REPLYTO_END_DIGIT=0.25, HTML_MESSAGE=0.001,
- MIME_HTML_ONLY=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 31 Oct 2023 08:48:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,21 +105,93 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Rene Engel <ReneEngel80@emailn.de>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-<html><div>Hello,</div><div><br></div><div>For days I've been trying to compile qemu master git 8.1.50 from the current qemu sources under MacOs Sonoma, which fails. Older sources can be compiled without any problems, there seems to be a problem with Meson in the last source, version 0.63.3 is always tried to be used. Meson 1.2.3 is installed on my system via Homebrew.</div><div><br></div><div>I have already described the problem here:</div><div><br></div><div>https://gitlab.com/qemu-project/qemu/-/issues/1939</div><div><br></div><div>But unfortunately there has been no solution to the problem so far and so I ask for further help with the problem. Meson log:</div><div><br></div><div><div>Build started at 2023-10-31T09:29:38.493540</div><div>Main binary: /Users/reneengel/qemu/build/pyvenv/bin/python3</div><div>Build Options: -Db_pie=false -Ddocs=disabled -Dplugins=true '--native-file config-meson.cross'</div><div>Python
-system: Darwin</div><div>The Meson build system</div><div>Version: 0.63.3</div><div>Source dir: /Users/reneengel/qemu</div><div>Build dir: /Users/reneengel/qemu/build</div><div>Build type: native build</div><div>Project name: qemu</div><div>Project version: 8.1.50</div><div>-----</div><div>Detecting compiler via: cc --version</div><div>compiler returned &lt;Popen: returncode: 0 args: ['cc', '--version']&gt;</div><div>compiler stdout:</div><div>Apple clang version 15.0.0 (clang-1500.0.40.1)</div><div>Target: arm64-apple-darwin23.1.0</div><div>Thread model: posix</div><div>InstalledDir: /Library/Developer/CommandLineTools/usr/bin</div><div><br></div><div>compiler stderr:</div><div><br></div><div>Running command: cc -E -dM -</div><div>-----</div><div>Detecting linker via: cc -Wl,--version</div><div>linker returned &lt;Popen: returncode: 1 args: ['cc', '-Wl,--version']&gt;</div><div>linker stdout:</div><div><br></div><div>linker
-stderr:</div><div>ld: unknown options: --version&nbsp;</div><div>clang: error: linker command failed with exit code 1 (use -v to see invocation)</div><div><br></div><div>-----</div><div>Detecting Apple linker via: cc -Wl,-v</div><div>linker stdout:</div><div><br></div><div>linker stderr:</div><div>@(#)PROGRAM:ld &nbsp;PROJECT:dyld-1015.7</div><div>BUILD 18:48:48 Aug 22 2023</div><div>configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em</div><div>will use ld-classic for: armv6 armv7 armv7s arm64_32 i386 armv6m armv7k armv7m armv7em</div><div>LTO support using: LLVM version 15.0.0 (static support for 29, runtime is 29)</div><div>TAPI support using: Apple TAPI version 15.0.0 (tapi-1500.0.12.3)</div><div>Library search paths:</div><div><span class="Apple-tab-span" style="white-space:pre">	</span>/usr/local/lib</div><div>Framework
-search paths:</div><div>ld: Undefined symbols:</div><div>&nbsp; _main, referenced from:</div><div>&nbsp; &nbsp; &nbsp; &lt;initial-undefines&gt;</div><div>clang: error: linker command failed with exit code 1 (use -v to see invocation)</div><div><br></div><div><br></div><div>../meson.build:1:0: ERROR: Unable to detect linker for compiler `cc -Wl,--version`</div><div>stdout:&nbsp;</div><div>stderr: ld: unknown options: --version&nbsp;</div><div>clang: error: linker command failed with exit code 1 (use -v to see invocation)</div><div><br></div></div><div><br></div><div>lg Rene&nbsp;</div><br /><br />
-<hr /><br />
-Versendet mit <a href="https://www.emailn.de/">Emailn.de</a> - Freemail
-<br /><br />
-* Unbegrenzt Speicherplatz<br />
-* Eigenes Online-Büro<br />
-* 24h besten Mailempfang<br />
-* Spamschutz, Adressbuch <br /><br /></html>
+On 10/26/23 12:30, Zhenzhong Duan wrote:
+> This adds "--enable-iommufd/--disable-iommufd" to enable or disable
+> iommufd support, enabled by default.
 
+It should be disabled by default for PPC.
+
+Thanks,
+
+C.
+
+
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   meson.build                   | 6 ++++++
+>   meson_options.txt             | 2 ++
+>   scripts/meson-buildoptions.sh | 3 +++
+>   3 files changed, 11 insertions(+)
+> 
+> diff --git a/meson.build b/meson.build
+> index 4961c82a6b..a8b0edf7b1 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -560,6 +560,10 @@ have_tpm = get_option('tpm') \
+>     .require(targetos != 'windows', error_message: 'TPM emulation only available on POSIX systems') \
+>     .allowed()
+>   
+> +have_iommufd = get_option('iommufd') \
+> +  .require(targetos == 'linux', error_message: 'iommufd is supported only on Linux') \
+> +  .allowed()
+> +
+>   # vhost
+>   have_vhost_user = get_option('vhost_user') \
+>     .disable_auto_if(targetos != 'linux') \
+> @@ -2133,6 +2137,7 @@ if get_option('tcg').allowed()
+>   endif
+>   config_host_data.set('CONFIG_TPM', have_tpm)
+>   config_host_data.set('CONFIG_TSAN', get_option('tsan'))
+> +config_host_data.set('CONFIG_IOMMUFD', have_iommufd)
+>   config_host_data.set('CONFIG_USB_LIBUSB', libusb.found())
+>   config_host_data.set('CONFIG_VDE', vde.found())
+>   config_host_data.set('CONFIG_VHOST_NET', have_vhost_net)
+> @@ -4074,6 +4079,7 @@ summary_info += {'vhost-user-crypto support': have_vhost_user_crypto}
+>   summary_info += {'vhost-user-blk server support': have_vhost_user_blk_server}
+>   summary_info += {'vhost-vdpa support': have_vhost_vdpa}
+>   summary_info += {'build guest agent': have_ga}
+> +summary_info += {'iommufd support': have_iommufd}
+>   summary(summary_info, bool_yn: true, section: 'Configurable features')
+>   
+>   # Compilation information
+> diff --git a/meson_options.txt b/meson_options.txt
+> index 3c7398f3c6..91bb958cae 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -109,6 +109,8 @@ option('dbus_display', type: 'feature', value: 'auto',
+>          description: '-display dbus support')
+>   option('tpm', type : 'feature', value : 'auto',
+>          description: 'TPM support')
+> +option('iommufd', type : 'feature', value : 'auto',
+> +       description: 'iommufd support')
+>   
+>   # Do not enable it by default even for Mingw32, because it doesn't
+>   # work on Wine.
+> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+> index 7ca4b77eae..1effc46f7d 100644
+> --- a/scripts/meson-buildoptions.sh
+> +++ b/scripts/meson-buildoptions.sh
+> @@ -125,6 +125,7 @@ meson_options_help() {
+>     printf "%s\n" '  guest-agent-msi Build MSI package for the QEMU Guest Agent'
+>     printf "%s\n" '  hvf             HVF acceleration support'
+>     printf "%s\n" '  iconv           Font glyph conversion support'
+> +  printf "%s\n" '  iommufd         iommufd support'
+>     printf "%s\n" '  jack            JACK sound support'
+>     printf "%s\n" '  keyring         Linux keyring support'
+>     printf "%s\n" '  kvm             KVM acceleration support'
+> @@ -342,6 +343,8 @@ _meson_option_parse() {
+>       --enable-install-blobs) printf "%s" -Dinstall_blobs=true ;;
+>       --disable-install-blobs) printf "%s" -Dinstall_blobs=false ;;
+>       --interp-prefix=*) quote_sh "-Dinterp_prefix=$2" ;;
+> +    --enable-iommufd) printf "%s" -Diommufd=enabled ;;
+> +    --disable-iommufd) printf "%s" -Diommufd=disabled ;;
+>       --enable-jack) printf "%s" -Djack=enabled ;;
+>       --disable-jack) printf "%s" -Djack=disabled ;;
+>       --enable-keyring) printf "%s" -Dkeyring=enabled ;;
 
 
