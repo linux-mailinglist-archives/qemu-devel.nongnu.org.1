@@ -2,83 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283567DCCA4
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 13:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC94F7DCCF2
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 13:27:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxncF-0003O7-1U; Tue, 31 Oct 2023 08:13:03 -0400
+	id 1qxnog-0006p8-S5; Tue, 31 Oct 2023 08:25:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qxncA-0003Nu-Vc
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 08:12:58 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qxnc7-0003dJ-7j
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 08:12:58 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8AxEvBA70Bl1PA1AA--.39389S3;
- Tue, 31 Oct 2023 20:12:48 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxvi8970BlinI3AA--.54424S3; 
- Tue, 31 Oct 2023 20:12:47 +0800 (CST)
-Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
-To: Jiajie Chen <c@jia.je>, Richard Henderson <richard.henderson@linaro.org>, 
- qemu-devel@nongnu.org
-Cc: git@xen0n.name, bibo mao <maobibo@loongson.cn>
-References: <20231023153029.269211-2-c@jia.je>
- <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
- <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
- <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
- <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
- <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
- <6482c6cf-1f4b-a7b9-d106-4c687360e810@loongson.cn>
- <ae3088b6-f472-4dd2-a5bc-9effb61ffaa0@jia.je>
- <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
- <603b8709-4288-4268-abd4-642366b0b7e2@jia.je>
- <798c78df-cc9d-78dd-5bbd-0de2ead0eb1f@loongson.cn>
- <5cffe61f-6aac-4765-a39b-68f1c90daa09@jia.je>
- <cd422828-dce0-f54e-5c05-e6afd7c850a6@loongson.cn>
- <4f03d60c-cea4-4576-be1f-758c46706087@jia.je>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <3eabc8cb-1ad2-01dc-6632-35886ce77baa@loongson.cn>
-Date: Tue, 31 Oct 2023 20:12:45 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qxnoe-0006mT-EY
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 08:25:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qxnoc-0006TB-Sw
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 08:25:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698755150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=7+kBySAk44unfASEg0iPhCELuBvEajHzx7Y2ddSsUAA=;
+ b=OvmprEzvN6pZMGEJVM1j5chYXa/rsE2DGeouAHkMwdyPcEyYC+Q7sV5v1RLDZ8ufmlClqs
+ HQ/XUwhD7MVbET+2E8vDl/7Zu5MJiOP+5ApDIq/HtZXb0qOSphpJTNhO2sndkmzqag3Rz/
+ hU4vZ7TyaoaYMUud2HVpczV3cshma1g=
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
+ [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-97-5OqfxQMMPRG5-DiS0FV96A-1; Tue, 31 Oct 2023 08:25:33 -0400
+X-MC-Unique: 5OqfxQMMPRG5-DiS0FV96A-1
+Received: by mail-vk1-f198.google.com with SMTP id
+ 71dfb90a1353d-4a92ec4ded3so577283e0c.2
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 05:25:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698755133; x=1699359933;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7+kBySAk44unfASEg0iPhCELuBvEajHzx7Y2ddSsUAA=;
+ b=ptRNeJ2Xc04FU6xrCDYhz767a9beBQagFR3l1OGX6CGG0rTrgXD51SoEBVfg5Zk3fj
+ B1tw/f2ov084hLx85egvy9G2RF1a5WFbLk4jfaHjTuQIEjvOjb7Xs32SRXcsH/LKoR+/
+ lwP/YCPmmu9MwwckO9d8P19ZGki5Bhm8N2PBqvg0GHxM8f0TghikEY5Dp4Ydq1kQZjH0
+ cUaEeOnSLC4OjdbtajnWCHoi3VN1CgAmSBsGdUMRsC/YegAXElzCVLnEGmoFrUxPmS6E
+ /p9s5O6QP26oSGAWEVJR23lKfo9HwQBbaBZpAI0E3VS/Muc2j8hZ+QKZljsrxVKSSr48
+ ZxhA==
+X-Gm-Message-State: AOJu0Yy8a/5h8gc24jxuU7GPA0ZsZthSoDGQY9Y5nx3CqqfnwPpMJp0g
+ bgUAIDN7o4oaSiqt5z9eRDdmw6t5M3N28+kEtZYI+ETX2EgqkYfHXxHbl7fDMhwxPmTx7wn6Qgw
+ tkPpUpDxm/sfN8YM=
+X-Received: by 2002:a1f:a243:0:b0:4a0:8a35:6686 with SMTP id
+ l64-20020a1fa243000000b004a08a356686mr7733630vke.11.1698755133274; 
+ Tue, 31 Oct 2023 05:25:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdn2VbQbp2tSlF1j1XNNediZwz748qnBxG+7Ggy8NSdPawwClaynNSNYSn8SUxdGFWqrnwkg==
+X-Received: by 2002:a1f:a243:0:b0:4a0:8a35:6686 with SMTP id
+ l64-20020a1fa243000000b004a08a356686mr7733605vke.11.1698755132898; 
+ Tue, 31 Oct 2023 05:25:32 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c707:8f00:43b0:1107:57d2:28ee?
+ (p200300cbc7078f0043b0110757d228ee.dip0.t-ipconnect.de.
+ [2003:cb:c707:8f00:43b0:1107:57d2:28ee])
+ by smtp.gmail.com with ESMTPSA id
+ e194-20020a1f1ecb000000b0049d1de0fa44sm142285vke.28.2023.10.31.05.25.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 05:25:32 -0700 (PDT)
+Message-ID: <016db1b3-5d02-401d-8171-78f8cff0b525@redhat.com>
+Date: Tue, 31 Oct 2023 13:25:28 +0100
 MIME-Version: 1.0
-In-Reply-To: <4f03d60c-cea4-4576-be1f-758c46706087@jia.je>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/7] balloon: Fix a misleading error message
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8Dxvi8970BlinI3AA--.54424S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxKFy3uF4fZrW8uryDKF4rWFX_yoW3Jw4UpF
- ykJF1Utr4UJr18Jr1Utr1UJryUtr4UJw1UXr1UJr18Jr1Dtr1jqr1UJr1Y9F1UXr48Wr1U
- Jr1UJry7Zr1UJwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
- 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
- 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8PC
- zJUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.053,
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, npiggin@gmail.com, danielhb413@gmail.com,
+ clg@kaod.org, david@gibson.dropbear.id.au, harshpb@linux.ibm.com,
+ dave@treblig.org, jasowang@redhat.com, michael.roth@amd.com,
+ kkostiuk@redhat.com, mst@redhat.com, kraxel@redhat.com,
+ marcandre.lureau@redhat.com, qemu-ppc@nongnu.org
+References: <20231031111059.3407803-1-armbru@redhat.com>
+ <20231031111059.3407803-7-armbru@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20231031111059.3407803-7-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,257 +152,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/10/31 下午7:10, Jiajie Chen 写道:
->
-> On 2023/10/31 19:06, gaosong wrote:
->> 在 2023/10/31 下午5:13, Jiajie Chen 写道:
->>>
->>> On 2023/10/31 17:11, gaosong wrote:
->>>> 在 2023/10/30 下午7:54, Jiajie Chen 写道:
->>>>>
->>>>> On 2023/10/30 16:23, gaosong wrote:
->>>>>> 在 2023/10/28 下午9:09, Jiajie Chen 写道:
->>>>>>>
->>>>>>> On 2023/10/26 14:54, gaosong wrote:
->>>>>>>> 在 2023/10/26 上午9:38, Jiajie Chen 写道:
->>>>>>>>>
->>>>>>>>> On 2023/10/26 03:04, Richard Henderson wrote:
->>>>>>>>>> On 10/25/23 10:13, Jiajie Chen wrote:
->>>>>>>>>>>> On 2023/10/24 07:26, Richard Henderson wrote:
->>>>>>>>>>>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, 
->>>>>>>>>>>>> TCGv_i128 block.
->>>>>>>>>>>>> See target/ppc/translate.c, gen_stqcx_.
->>>>>>>>>>>>
->>>>>>>>>>>> The situation here is slightly different: aarch64 and ppc64 
->>>>>>>>>>>> have both 128-bit ll and sc, however LoongArch v1.1 only 
->>>>>>>>>>>> has 64-bit ll and 128-bit sc.
->>>>>>>>>>
->>>>>>>>>> Ah, that does complicate things.
->>>>>>>>>>
->>>>>>>>>>> Possibly use the combination of ll.d and ld.d:
->>>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>> ll.d lo, base, 0
->>>>>>>>>>> ld.d hi, base, 4
->>>>>>>>>>>
->>>>>>>>>>> # do some computation
->>>>>>>>>>>
->>>>>>>>>>> sc.q lo, hi, base
->>>>>>>>>>>
->>>>>>>>>>> # try again if sc failed
->>>>>>>>>>>
->>>>>>>>>>> Then a possible implementation of gen_ll() would be: align 
->>>>>>>>>>> base to 128-bit boundary, read 128-bit from memory, save 
->>>>>>>>>>> 64-bit part to rd and record whole 128-bit data in llval. 
->>>>>>>>>>> Then, in gen_sc_q(), it uses a 128-bit cmpxchg.
->>>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>> But what about the reversed instruction pattern: ll.d hi, 
->>>>>>>>>>> base, 4; ld.d lo, base 0?
->>>>>>>>>>
->>>>>>>>>> It would be worth asking your hardware engineers about the 
->>>>>>>>>> bounds of legal behaviour. Ideally there would be some very 
->>>>>>>>>> explicit language, similar to
->>>>>>>>>
->>>>>>>>>
->>>>>>>>> I'm a community developer not affiliated with Loongson. Song 
->>>>>>>>> Gao, could you provide some detail from Loongson Inc.?
->>>>>>>>>
->>>>>>>>>
->>>>>>>>
->>>>>>>> ll.d   r1, base, 0
->>>>>>>> dbar 0x700          ==> see 2.2.8.1
->>>>>>>> ld.d  r2, base,  8
->>>>>>>> ...
->>>>>>>> sc.q r1, r2, base
->>>>>>>
->>>>>>>
->>>>>>> Thanks! I think we may need to detect the ll.d-dbar-ld.d 
->>>>>>> sequence and translate the sequence into one 
->>>>>>> tcg_gen_qemu_ld_i128 and split the result into two 64-bit parts. 
->>>>>>> Can do this in QEMU?
->>>>>>>
->>>>>>>
->>>>>> Oh, I'm not sure.
->>>>>>
->>>>>> I think we just need to implement sc.q. We don't need to care 
->>>>>> about 'll.d-dbar-ld.d'. It's just like 'll.q'.
->>>>>> It needs the user to ensure that .
->>>>>>
->>>>>> ll.q' is
->>>>>> 1) ll.d r1 base, 0 ==> set LLbit, load the low 64 bits into r1
->>>>>> 2) dbar 0x700　
->>>>>> 3) ld.d r2 base, 8 ==> load the high 64 bits to r2
->>>>>>
->>>>>> sc.q needs to
->>>>>> 1) Use 64-bit cmpxchg.
->>>>>> 2) Write 128 bits to memory.
->>>>>
->>>>> Consider the following code:
->>>>>
->>>>>
->>>>> ll.d r1, base, 0
->>>>>
->>>>> dbar 0x700
->>>>>
->>>>> ld.d r2, base, 8
->>>>>
->>>>> addi.d r2, r2, 1
->>>>>
->>>>> sc.q r1, r2, base
->>>>>
->>>>>
->>>>> We translate them into native code:
->>>>>
->>>>>
->>>>> ld.d r1, base, 0
->>>>>
->>>>> mv LLbit, 1
->>>>>
->>>>> mv LLaddr, base
->>>>>
->>>>> mv LLval, r1
->>>>>
->>>>> dbar 0x700
->>>>>
->>>>> ld.d r2, base, 8
->>>>>
->>>>> addi.d r2, r2, 1
->>>>>
->>>>> if (LLbit == 1 && LLaddr == base) {
->>>>>
->>>>>     cmpxchg addr=base compare=LLval new=r1
->>>>>
->>>>>     128-bit write {r2, r1} to base if cmpxchg succeeded
->>>>>
->>>>> }
->>>>>
->>>>> set r1 if sc.q succeeded
->>>>>
->>>>>
->>>>>
->>>>> If the memory content of base+8 has changed between ld.d r2 and 
->>>>> addi.d r2, the atomicity is not guaranteed, i.e. only the high 
->>>>> part has changed, the low part hasn't.
->>>>>
->>>>>
->>>> Sorry,  my mistake.  need use cmpxchg_i128.   See 
->>>> target/arm/tcg/translate-a64.c   gen_store_exclusive().
->>>>
->>>> gen_scq(rd, rk, rj)
->>>> {
->>>>      ...
->>>>     TCGv_i128 t16 = tcg_temp_new_i128();
->>>>     TCGv_i128 c16 = tcg_temp_new_i128();
->>>>     TCGv_i64 low = tcg_temp_new_i64();
->>>>     TCGv_i64 high= tcg_temp_new_i64();
->>>>     TCGv_i64 temp = tcg_temp_new_i64();
->>>>
->>>>     tcg_gen_concat_i64_i128(t16, cpu_gpr[rd], cpu_gpr[rk]));
->>>>
->>>>     tcg_gen_qemu_ld(low, cpu_lladdr, ctx->mem_idx, MO_TEUQ);
->>>>     tcg_gen_addi_tl(temp, cpu_lladdr, 8);
->>>>     tcg_gen_mb(TCG_BAR_SC | TCG_MO_LD_LD);
->>>>     tcg_gen_qemu_ld(high, temp, ctx->mem_idx, MO_TEUQ);
->>>
->>>
->>> The problem is that, the high value read here might not equal to the 
->>> previously read one in ll.d r2, base 8 instruction.
->> I think dbar 0x7000 ensures that the 2 loads in 'll.q' are a 128bit 
->> atomic operation.
->
->
-> The code does work in real LoongArch machine. However, we are 
-> emulating LoongArch in qemu, we have to make it atomic, yet it isn't now.
->
->
-yes, I know,  As i said before,  we need't care about 'll.q', it needs 
-the user to ensure that.
+On 31.10.23 12:10, Markus Armbruster wrote:
+> The error message
+> 
+>      {"execute": "balloon", "arguments":{"value": -1}}
+>      {"error": {"class": "GenericError", "desc": "Parameter 'target' expects a size"}}
+> 
+> points to 'target' instead of 'value'.  Fix:
+> 
+>      {"error": {"class": "GenericError", "desc": "Parameter 'value' expects a size"}}
+> 
+> Root cause: qmp_balloon()'s parameter is named @target.  Rename it to
+> @value to match the QAPI schema.
+> 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   system/balloon.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/system/balloon.c b/system/balloon.c
+> index e0e8969a4b..fda7af832e 100644
+> --- a/system/balloon.c
+> +++ b/system/balloon.c
+> @@ -90,17 +90,17 @@ BalloonInfo *qmp_query_balloon(Error **errp)
+>       return info;
+>   }
+>   
+> -void qmp_balloon(int64_t target, Error **errp)
+> +void qmp_balloon(int64_t value, Error **errp)
+>   {
+>       if (!have_balloon(errp)) {
+>           return;
+>       }
+>   
+> -    if (target <= 0) {
+> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "target", "a size");
+> +    if (value <= 0) {
+> +        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "value", "a size");
+>           return;
+>       }
+>   
+> -    trace_balloon_event(balloon_opaque, target);
+> -    balloon_event_fn(balloon_opaque, target);
+> +    trace_balloon_event(balloon_opaque, value);
+> +    balloon_event_fn(balloon_opaque, value);
+>   }
 
-In QEMU,   I think  the instruction dbar can make it atomic.  but I am 
-not sure  this is right.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-static bool trans_dbar()
-{
-         tcg_gen_mb(TCG_BAR_SC | TCG_MO_ALL);
-         return;
-}
+-- 
+Cheers,
 
-may be this is already enough.
-
-or
-
-like this:
-static bool trans_dbar()
-{
-     TCGBar bar;
-     if (a->hint == 0x700)
-         bar = TCG_BAR_SC |  TCG_MO_LD_LD;
-     } else {
-         bar = TCG_BAR_SC | TCG_MO_ALL;
-     }
-
-     tcg_gen_mb(bar);
-     return true;
-}
-
-Thanks.
-Song Gao
->>
->> Thanks.
->> Song Gao
->>>> tcg_gen_concat_i64_i128(c16, low, high);
->>>>
->>>>     tcg_gen_atomic_cmpxchg_i128(t16, cpu_lladdr, c16, t16, 
->>>> ctx->mem_idx, MO_128);
->>>>
->>>>     ...
->>>> }
->>>>
->>>> I am not sure this is right.
->>>>
->>>> I think Richard can give you more suggestions. @Richard
->>>>
->>>> Thanks.
->>>> Song Gao
->>>>>
->>>>>> Thanks.
->>>>>> Song Gao
->>>>>>>>
->>>>>>>>
->>>>>>>> For this series,
->>>>>>>> I think we need set the new config bits to the 'max cpu', and 
->>>>>>>> change linux-user/target_elf.h ''any' to 'max', so that we can 
->>>>>>>> use these new instructions on linux-user mode.
->>>>>>>
->>>>>>> I will work on it.
->>>>>>>
->>>>>>>
->>>>>>>>
->>>>>>>> Thanks
->>>>>>>> Song Gao
->>>>>>>>>>
->>>>>>>>>> https://developer.arm.com/documentation/ddi0487/latest/
->>>>>>>>>> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage 
->>>>>>>>>> restrictions
->>>>>>>>>>
->>>>>>>>>> But you could do the same thing, aligning and recording the 
->>>>>>>>>> entire 128-bit quantity, then extract the ll.d result based 
->>>>>>>>>> on address bit 6. This would complicate the implementation of 
->>>>>>>>>> sc.d as well, but would perhaps bring us "close enough" to 
->>>>>>>>>> the actual architecture.
->>>>>>>>>>
->>>>>>>>>> Note that our Arm store-exclusive implementation isn't quite 
->>>>>>>>>> in spec either.  There is quite a large comment within 
->>>>>>>>>> translate-a64.c store_exclusive() about the ways things are 
->>>>>>>>>> not quite right.  But it seems to be close enough for actual 
->>>>>>>>>> usage to succeed.
->>>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> r~
->>>>>>>>
->>>>>>
->>>>
->>
+David / dhildenb
 
 
