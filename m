@@ -2,94 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3453D7DCF3B
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D79F47DCF42
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:33:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxpln-0007AL-O5; Tue, 31 Oct 2023 10:31:03 -0400
+	id 1qxpna-0007u5-Nf; Tue, 31 Oct 2023 10:32:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxplj-00079Z-Vr
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:31:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxpli-00084S-6m
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:30:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698762657;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5OZpPuVO4/32cTw3pkafLzYKzgpV4rvvB/L0ZOlTcvE=;
- b=bASMDhCMt0utrZa3f0ljwlD0cw3OIUfX/2HZl0t/zHu3QkWXS9yha57dpPFE7dN1M8725o
- 3+z6H0kCJFs/TYU9MbfMHcIM1WHfLqu22losEk8L97Sv1FSjLG2qS4aQywMpGYfRpHdcHz
- qdQR99KyXbFIENvs1fbYusaB87Vif1s=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-172-fkc5sNsXNEiNRE5-z-VjhQ-1; Tue, 31 Oct 2023 10:30:55 -0400
-X-MC-Unique: fkc5sNsXNEiNRE5-z-VjhQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c50ef18b04so57049741fa.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:30:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxpnE-0007ld-As
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:32:35 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qxpn1-0008C5-WB
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:32:32 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6b709048d8eso5056099b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698762738; x=1699367538; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2CYGRwQkn3vBbegQZVV/vYVzIasu5qHXxrirxpdWc8M=;
+ b=YZvFShhCceI3SC6Itlt4rHgOejRuQKSiFiiKZ6gfX7Oe/ChQo0H4MC2m7Ksux+VVa2
+ +3cifE1MVr4mGuk79J5tvMJn19HaethCjm/Fg124r9rALJRbBWe2cxZGjWnhK5i5g3sb
+ WTwo4E5MXoPQlCIB30T4t8s7aPhEhRXMfCMbCAz2s97Nz/hFNSgM9g0kbYK0PWIv0/L2
+ hkZ0+7/5Vw8QYtAsAfQS0qUGoblRWKLSYHuE2KWx+YCYc/pJwL9kTTAWuAzrHUr/hyCs
+ lW2XnwHQ+naEttTjUeRnRtAx0/OzzphXc3sRR5GqIXgt89OfgBNW+DhQ3xa6SNP2Bvlp
+ TzJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698762654; x=1699367454;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5OZpPuVO4/32cTw3pkafLzYKzgpV4rvvB/L0ZOlTcvE=;
- b=ShSP0Xs/gtn5RnvtycccaRwfdTprSjMxURdm7XxIvpLHK3p8lzwqKyD0NptfNZLxok
- OiNoScPkmmxq5KM7Mxks0QBIJnByXn72agBFZrHEZUrUgAwdQMpieeh+QPBbsDwGAgeq
- mX+uApA5ZKK902lpyLJtotlDqwBrklQuGJkeAQZf3dQ9D5285FpRsbi+z/rfSSjhdeSN
- hug2saYBjGeW3eYg1lVcMaJpz+D5y3Lmr5RfbXDrIc8Ju9nyEBqaDPHGRVFCSEfAhSCQ
- AAdP7QB6AfcGKLcGYBZKxKVItqwSztGw5TTil+IDvSPSR8Ax/T2NDZAs0Q/FLNFmHNmF
- 5z5w==
-X-Gm-Message-State: AOJu0Yx0GosQNuhzfjWq6in632X2Vspg9/Zo1rpU6LqwK2kwWLMoWDQc
- Af+Pvk3yrT3wTAjQlP/zD29UcAJRA9rVBaQlmDgY2K7oqrl9RjjMqBSaEJxGmXlIMHMf8ip1vPs
- D5+4cgOV6Nvjva9A=
-X-Received: by 2002:a2e:2c11:0:b0:2c5:6df:8b2c with SMTP id
- s17-20020a2e2c11000000b002c506df8b2cmr10109155ljs.45.1698762654176; 
- Tue, 31 Oct 2023 07:30:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHoySZ+MpzfJUa4udDrXyivTugMKaEbTm5P+FkoO843ma3he8LCplYRlpv3WGlRTtG3sy28lA==
-X-Received: by 2002:a2e:2c11:0:b0:2c5:6df:8b2c with SMTP id
- s17-20020a2e2c11000000b002c506df8b2cmr10109139ljs.45.1698762653878; 
- Tue, 31 Oct 2023 07:30:53 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- o4-20020a05600c510400b0040849ce7116sm1900920wms.43.2023.10.31.07.30.52
+ d=1e100.net; s=20230601; t=1698762738; x=1699367538;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2CYGRwQkn3vBbegQZVV/vYVzIasu5qHXxrirxpdWc8M=;
+ b=WFTNHH0Sa4Gs9ifOl7u8bjQRcwPJb2J43QmcHmhqakrvUwW0nK01jPA+/lI+PpgP58
+ KhSxb55ejx/U0laxjr8JYnTPQOdo5kQwo2kityLGTl2YchV/Tg8Su32plunjE9lg7jeS
+ OZzZzOnRTgOcjHOe8tlL5TQkZKh/JEib5CcwAMO2nIn+NK7mhfXa3gUgH7TMRE+wKmgt
+ aAi7vCW66j6ZYKnYzRXO5RMM7I7BDWIGY67CkWp50XS5v89dsw4V+RZ6GZ61RFGmKj6t
+ Gf9fI08Q8EV0Bf/ilwEQ5Ajpi/vJFpLWQW9tf+iZpQJ6JBJjFLKq5hkQyS9I74XZJmGQ
+ XEAg==
+X-Gm-Message-State: AOJu0YxoV2ftZ+XiDjwRCqayHdMIkry4ZEhR6+ZLt6qm+9majHQAL3yz
+ 6Jd7Q4e9mx/R+UhabkPPI7by3CPfsbWphhtDOkQ=
+X-Google-Smtp-Source: AGHT+IHHwNf2G5J8S5Tr/Dy60jOB7AdDwWZzhC+XbdsFc0IgmbFwg/ObHYYw70c2iI0GPnI2swOhVg==
+X-Received: by 2002:a05:6a00:1a93:b0:6b6:7a04:6f9 with SMTP id
+ e19-20020a056a001a9300b006b67a0406f9mr11771745pfv.28.1698762737685; 
+ Tue, 31 Oct 2023 07:32:17 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ e19-20020a056a001a9300b006be484e5b9asm1321847pfv.188.2023.10.31.07.32.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 07:30:53 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v4 4/5] migration: Change ram_dirty_bitmap_reload()
- retval to bool
-In-Reply-To: <20231017202633.296756-5-peterx@redhat.com> (Peter Xu's message
- of "Tue, 17 Oct 2023 16:26:32 -0400")
-References: <20231017202633.296756-1-peterx@redhat.com>
- <20231017202633.296756-5-peterx@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 31 Oct 2023 15:30:52 +0100
-Message-ID: <87edha7tk3.fsf@secure.mitica>
+ Tue, 31 Oct 2023 07:32:17 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+	qemu-stable@nongnu.org
+Subject: [PATCH v2] target/arm: Fix SVE STR increment
+Date: Tue, 31 Oct 2023 07:32:15 -0700
+Message-Id: <20231031143215.29764-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,18 +85,118 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> wrote:
-> Now we have a Error** passed into the return path thread stack, which is
-> even clearer than an int retval.  Change ram_dirty_bitmap_reload() and the
-> callers to use a bool instead to replace errnos.
->
-> Suggested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+The previous change missed updating one of the increments and
+one of the MemOps.  Add a test case for all vector lengths.
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Cc: qemu-stable@nongnu.org
+Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/translate-sve.c    |  5 ++--
+ tests/tcg/aarch64/sve-str.c       | 49 +++++++++++++++++++++++++++++++
+ tests/tcg/aarch64/Makefile.target |  6 +++-
+ 3 files changed, 57 insertions(+), 3 deletions(-)
+ create mode 100644 tests/tcg/aarch64/sve-str.c
+
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 7b39962f20..296e7d1ce2 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -4294,7 +4294,7 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
+         t0 = tcg_temp_new_i64();
+         t1 = tcg_temp_new_i64();
+         t16 = tcg_temp_new_i128();
+-        for (i = 0; i < len_align; i += 8) {
++        for (i = 0; i < len_align; i += 16) {
+             tcg_gen_ld_i64(t0, base, vofs + i);
+             tcg_gen_ld_i64(t1, base, vofs + i + 8);
+             tcg_gen_concat_i64_i128(t16, t0, t1);
+@@ -4320,7 +4320,8 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
+         t16 = tcg_temp_new_i128();
+         tcg_gen_concat_i64_i128(t16, t0, t1);
+ 
+-        tcg_gen_qemu_st_i128(t16, clean_addr, midx, MO_LEUQ);
++        tcg_gen_qemu_st_i128(t16, clean_addr, midx,
++                             MO_LE | MO_128 | MO_ATOM_NONE);
+         tcg_gen_addi_i64(clean_addr, clean_addr, 16);
+ 
+         tcg_gen_brcondi_ptr(TCG_COND_LTU, i, len_align, loop);
+diff --git a/tests/tcg/aarch64/sve-str.c b/tests/tcg/aarch64/sve-str.c
+new file mode 100644
+index 0000000000..551f0d6f18
+--- /dev/null
++++ b/tests/tcg/aarch64/sve-str.c
+@@ -0,0 +1,49 @@
++#include <stdio.h>
++#include <sys/prctl.h>
++
++#define N  (256+16)
++
++static int __attribute__((noinline)) test(int vl)
++{
++    unsigned char buf[N];
++    int err = 0;
++
++    for (int i = 0; i < N; ++i) {
++        buf[i] = (unsigned char)i;
++    }
++
++    asm volatile (
++        "mov z0.b, #255\n\t"
++        "str z0, %0"
++        : : "m" (buf) : "z0", "memory");
++
++    for (int i = 0; i < vl; ++i) {
++        if (buf[i] != 0xff) {
++            fprintf(stderr, "vl %d, index %d, expected 255, got %d\n",
++                    vl, i, buf[i]);
++            err = 1;
++        }
++    }
++
++    for (int i = vl; i < N; ++i) {
++        if (buf[i] != (unsigned char)i) {
++            fprintf(stderr, "vl %d, index %d, expected %d, got %d\n",
++                    vl, i, (unsigned char)i, buf[i]);
++            err = 1;
++        }
++    }
++
++    return err;
++}
++
++int main()
++{
++    int err = 0;
++
++    for (int i = 16; i <= 256; i += 16) {
++        if (prctl(PR_SVE_SET_VL, i, 0, 0, 0, 0) == i) {
++            err |= test(i);
++        }
++    }
++    return err;
++}
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 62b38c792f..c6542b5f1b 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -103,7 +103,11 @@ sha512-sve: CFLAGS=-O3 -march=armv8.1-a+sve
+ sha512-sve: sha512.c
+ 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+ 
+-TESTS += sha512-sve
++sve-str: CFLAGS=-O1 -march=armv8.1-a+sve
++sve-str: sve-str.c
++	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
++
++TESTS += sha512-sve sve-str
+ 
+ ifneq ($(GDB),)
+ GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
+-- 
+2.34.1
 
 
