@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8777DD0B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE3A7DD0C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:42:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxqqR-0001tn-Rf; Tue, 31 Oct 2023 11:39:55 -0400
+	id 1qxqsd-0006BD-KR; Tue, 31 Oct 2023 11:42:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqqP-0001tC-VH
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:39:53 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxqqO-0003Ry-1H
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:39:53 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40906fc54fdso45717835e9.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:39:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698766790; x=1699371590; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MF7a/BRW4kCGoykaPKCqsh6VW4a6BvXL1sD91Ivk96Y=;
- b=V1YiYy2bGP0BYuMXCf1cKnCbyVA7bprL7s95sXwcgKw5lZIhlSdmgm4OXjmO2Y2o33
- yHECzRuLBNkEY2BGIc2ItPRUzKzHyPJo5dNpQ3udNxgjStddRKQUYkpCEg1CQ3rtQs8/
- SQhFnmyD1yRC5Jg4Gj7CRVCZl6EFNSiKZSBSQiLHAKE1gVeDT0O9bc1CKgJdfqbBBNg7
- DQ1XlDdV1iN6QB0Q3AoqPKjTvsP0b0Zggi95dBbFhPxmpTdnIupG8IP9il3S/E4ghoZ1
- QBjSP14FSgRFe8m/luvvOyD0uGVNQd2lwtpN1RTLZpvmBuYbOeXs8Bbc9wVljuXxbM/a
- BI8g==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxqsb-00066N-C3
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:42:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxqsZ-000437-3h
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:42:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698766924;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Tprj/Havtt/UFOMVmR+tMFeB4UD2p0f4XF4YXGRTTSY=;
+ b=faw8hDDV5Or6A2s7oqpa+FNYRXfogWBNhYV4HmRXmNAGP2+N9Jxe7e+8kv+uYxppYnrQLE
+ iwuDViPlEaMMF0bB0TLZfM4BTnwlcp5Q4neHqSqh8vlKewusCVeY8ZQziLO6C/kXjGBBMR
+ xP63HWrZTV7sGkhZY0ZzAsUWbZ3Vjug=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-439-M4GOWq2RNSSf2TJivzappg-1; Tue, 31 Oct 2023 11:42:03 -0400
+X-MC-Unique: M4GOWq2RNSSf2TJivzappg-1
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-3b40deadcb7so1921701b6e.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:42:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698766790; x=1699371590;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MF7a/BRW4kCGoykaPKCqsh6VW4a6BvXL1sD91Ivk96Y=;
- b=xEQqS6g3Uja7aWhLyxFNR8BTRd8KEuBuhw0Mwnav1+BIZdzbYF28OWNW9AZhAWieEP
- r3YOn0pxhM81p8eDuw3kO3/kTWWWqzaYZCLb71Xd79UwtMKIiU2ZfY2MCdwCOMVMu/vI
- SX5OVfSmmMr6JBi1RoE+qmzw4wNzcrXa+a8358QEJak5z0ejq9jmLA9hEnEl+d8snaZe
- MUIy2LvcfxEjzp03oKfYs+Qbel8svAumYdXAvFd61hj5dtNv72rGgRq7NFBZBtgi7ZmS
- ItmKddjBJDZZxVGFWEEqC0f/PoJJ2q9YvJfzWReUBu5NNIeHi4wu8p/eq6r7BikEDoAJ
- tbYg==
-X-Gm-Message-State: AOJu0YyOQ4hcJsO9l72QfRritiPqiNMiwMYpwGUdyQCnsiH0UTcm7oJS
- 05CeI+W5ftAxr5WCuaUZhbnychH0VN3EVhxNNjw=
-X-Google-Smtp-Source: AGHT+IEsVoBL7F6FqgigYfsAPvM7/4ZM9J3Dh7hlHKhxej9HFkTOj8edNGQbq2W51OH7votA7DW0Sg==
-X-Received: by 2002:a05:600c:a44:b0:3fc:dd9:91fd with SMTP id
- c4-20020a05600c0a4400b003fc0dd991fdmr10782581wmq.40.1698766790392; 
- Tue, 31 Oct 2023 08:39:50 -0700 (PDT)
-Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
- [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
- h10-20020a05600c350a00b004064cd71aa8sm2092243wmq.34.2023.10.31.08.39.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 08:39:50 -0700 (PDT)
-Message-ID: <9994c0ae-57af-d3b3-520d-7cbbee543778@linaro.org>
-Date: Tue, 31 Oct 2023 16:39:48 +0100
+ d=1e100.net; s=20230601; t=1698766922; x=1699371722;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Tprj/Havtt/UFOMVmR+tMFeB4UD2p0f4XF4YXGRTTSY=;
+ b=eMeaUf1dANYe3XsxzWCmZE2iKTjuneOslo6ClyIswdiZMBCEa9zS94tKj7FjR+ICaK
+ 0DvozFpK2pROF7WEZPMldWU3ZQEwyIH6qUVF6uZ8DI02l8psrOg1JAR/fJkJL1YqMxrd
+ JrJZNtgiQwsiy/ZZUredkC44qPFid8YokEMmpHoGtA5A3nisvvlUXJxhooySVS9EFfJf
+ 2fJaqAskT3nNHqyK+VyzvrVkELzbH9N+iA+4yPw6V1coEPV4XOC2Fz7bPf2OfFABuuGg
+ Udy8jKGL/KbysULUM0XvcibZ+E1SkbFlihSlSLEmEhipcpDjCq+8s5qwwYuxZg2VCG+s
+ 7CXg==
+X-Gm-Message-State: AOJu0Yxcr8Ps+4un+LRJFc8X/0cZsWMMh/yrOAeouxeOM22eOcICXg5g
+ 6sce8YpOSc4FEawRoY9JIbd5kW8NtDGOwIObQ1n2j03+vmC0D48AiimuCZ6LOBZTZ7uGFVNN5fq
+ R+XVqgUFbkV2UD3Y=
+X-Received: by 2002:a05:6808:158c:b0:3b2:db33:e301 with SMTP id
+ t12-20020a056808158c00b003b2db33e301mr15571348oiw.0.1698766922318; 
+ Tue, 31 Oct 2023 08:42:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/liCaq3lhPOZfAtGA4PWyBoc84VEId932P6pUsizGxCCCYMWi9vL+Ilh3YpiWew0iAiMm7A==
+X-Received: by 2002:a05:6808:158c:b0:3b2:db33:e301 with SMTP id
+ t12-20020a056808158c00b003b2db33e301mr15571327oiw.0.1698766922002; 
+ Tue, 31 Oct 2023 08:42:02 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ de43-20020a05620a372b00b007788d2f3d4asm602176qkb.39.2023.10.31.08.42.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 08:42:01 -0700 (PDT)
+Date: Tue, 31 Oct 2023 11:41:59 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>
+Subject: Re: [PATCH V2 3/6] cpr: relax blockdev migration blockers
+Message-ID: <ZUEgRy0l8XRVuQNo@x1n>
+References: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
+ <1698263069-406971-4-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 6/8] docs/specs/virt-ctlr: Convert to rST
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230927151205.70930-1-peter.maydell@linaro.org>
- <20230927151205.70930-7-peter.maydell@linaro.org>
-Cc: Laurent Vivier <laurent@vivier.eu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230927151205.70930-7-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1698263069-406971-4-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,95 +100,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/9/23 17:12, Peter Maydell wrote:
-> Convert docs/specs/virt-ctlr.txt to rST format.
+Copy qemu-block and maintainers.
+
+On Wed, Oct 25, 2023 at 12:44:26PM -0700, Steve Sistare wrote:
+> Some blockdevs block migration because they do not support sharing across
+> hosts and/or do not support dirty bitmaps.  These prohibitions do not apply
+> if the old and new qemu processes do not run concurrently, and if new qemu
+> starts on the same host as old, which is the case for cpr.  Narrow the scope
+> of these blockers so they only apply to normal mode.  They will not block
+> cpr modes when they are added in subsequent patches.
 > 
-> I added the name of the device to give readers a bit more idea
-> of which device we're actually documenting here.
+> No functional change until a new mode is added.
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 > ---
->   docs/specs/index.rst                        |  1 +
->   docs/specs/{virt-ctlr.txt => virt-ctlr.rst} | 12 +++++-------
->   2 files changed, 6 insertions(+), 7 deletions(-)
->   rename docs/specs/{virt-ctlr.txt => virt-ctlr.rst} (70%)
+>  block/parallels.c | 2 +-
+>  block/qcow.c      | 2 +-
+>  block/vdi.c       | 2 +-
+>  block/vhdx.c      | 2 +-
+>  block/vmdk.c      | 2 +-
+>  block/vpc.c       | 2 +-
+>  block/vvfat.c     | 2 +-
+>  7 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/block/parallels.c b/block/parallels.c
+> index 1697a2e..8a520db 100644
+> --- a/block/parallels.c
+> +++ b/block/parallels.c
+> @@ -1369,7 +1369,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          error_setg(errp, "Migration blocker error");
+>          goto fail;
+> diff --git a/block/qcow.c b/block/qcow.c
+> index fdd4c83..eab68e3 100644
+> --- a/block/qcow.c
+> +++ b/block/qcow.c
+> @@ -307,7 +307,7 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vdi.c b/block/vdi.c
+> index fd7e365..c647d72 100644
+> --- a/block/vdi.c
+> +++ b/block/vdi.c
+> @@ -498,7 +498,7 @@ static int vdi_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail_free_bmap;
+>      }
+> diff --git a/block/vhdx.c b/block/vhdx.c
+> index e37f8c0..a9d0874 100644
+> --- a/block/vhdx.c
+> +++ b/block/vhdx.c
+> @@ -1096,7 +1096,7 @@ static int vhdx_open(BlockDriverState *bs, QDict *options, int flags,
+>      error_setg(&s->migration_blocker, "The vhdx format used by node '%s' "
+>                 "does not support live migration",
+>                 bdrv_get_device_or_node_name(bs));
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vmdk.c b/block/vmdk.c
+> index 1335d39..85864b8 100644
+> --- a/block/vmdk.c
+> +++ b/block/vmdk.c
+> @@ -1386,7 +1386,7 @@ static int vmdk_open(BlockDriverState *bs, QDict *options, int flags,
+>      error_setg(&s->migration_blocker, "The vmdk format used by node '%s' "
+>                 "does not support live migration",
+>                 bdrv_get_device_or_node_name(bs));
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vpc.c b/block/vpc.c
+> index c30cf86..aa1a48a 100644
+> --- a/block/vpc.c
+> +++ b/block/vpc.c
+> @@ -452,7 +452,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
+>                 bdrv_get_device_or_node_name(bs));
+>      bdrv_graph_rdunlock_main_loop();
+>  
+> -    ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>      if (ret < 0) {
+>          goto fail;
+>      }
+> diff --git a/block/vvfat.c b/block/vvfat.c
+> index 266e036..9d050ba 100644
+> --- a/block/vvfat.c
+> +++ b/block/vvfat.c
+> @@ -1268,7 +1268,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+>                     "The vvfat (rw) format used by node '%s' "
+>                     "does not support live migration",
+>                     bdrv_get_device_or_node_name(bs));
+> -        ret = migrate_add_blocker(&s->migration_blocker, errp);
+> +        ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+>          if (ret < 0) {
+>              goto fail;
+>          }
+> -- 
+> 1.8.3.1
+> 
 
-
-$ ./scripts/get_maintainer.pl -f docs/specs/virt-ctlr.txt
-get_maintainer.pl: No maintainers found, printing recent contributors.
-get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
-
-$ ./scripts/get_maintainer.pl -f hw/misc/virt_ctrl.c
-Laurent Vivier <laurent@vivier.eu> (maintainer:virt)
-qemu-devel@nongnu.org (open list:All patches CC here)
-
-Cc'ing Laurent.
-
-Maybe worth squashing:
-
--- >8 --
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cd8d6b140f..2fe435ea9e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1283,6 +1283,7 @@ F: include/hw/char/goldfish_tty.h
-  F: include/hw/intc/goldfish_pic.h
-  F: include/hw/intc/m68k_irqc.h
-  F: include/hw/misc/virt_ctrl.h
-+F: docs/specs/virt-ctlr.rst
-
----
-
-> diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-> index ee84b8109d6..8d30968650b 100644
-> --- a/docs/specs/index.rst
-> +++ b/docs/specs/index.rst
-> @@ -29,3 +29,4 @@ guest hardware that is specific to QEMU.
->      ivshmem-spec
->      pvpanic
->      standard-vga
-> +   virt-ctlr
-> diff --git a/docs/specs/virt-ctlr.txt b/docs/specs/virt-ctlr.rst
-> similarity index 70%
-> rename from docs/specs/virt-ctlr.txt
-> rename to docs/specs/virt-ctlr.rst
-> index 24d38084f7f..ad3edde82d2 100644
-> --- a/docs/specs/virt-ctlr.txt
-> +++ b/docs/specs/virt-ctlr.rst
-> @@ -1,9 +1,9 @@
->   Virtual System Controller
->   =========================
->   
-> -This device is a simple interface defined for the pure virtual machine with no
-> -hardware reference implementation to allow the guest kernel to send command
-> -to the host hypervisor.
-> +The ``virt-ctrl`` device is a simple interface defined for the pure
-
-Clearer.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +virtual machine with no hardware reference implementation to allow the
-> +guest kernel to send command to the host hypervisor.
->   
->   The specification can evolve, the current state is defined as below.
->   
-> @@ -11,14 +11,12 @@ This is a MMIO mapped device using 256 bytes.
->   
->   Two 32bit registers are defined:
->   
-> -1- the features register (read-only, address 0x00)
-> -
-> +the features register (read-only, address 0x00)
->      This register allows the device to report features supported by the
->      controller.
->      The only feature supported for the moment is power control (0x01).
->   
-> -2- the command register (write-only, address 0x04)
-> -
-> +the command register (write-only, address 0x04)
->      This register allows the kernel to send the commands to the hypervisor.
->      The implemented commands are part of the power control feature and
->      are reset (1), halt (2) and panic (3).
+-- 
+Peter Xu
 
 
