@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307EF7DC7DF
+	by mail.lfdr.de (Postfix) with ESMTPS id 4063D7DC7E0
 	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 09:07:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxjlQ-0008I9-2Q; Tue, 31 Oct 2023 04:06:16 -0400
+	id 1qxjlc-0008KN-2R; Tue, 31 Oct 2023 04:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxjlN-0008Hn-1J
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:06:13 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxjlU-0008Iq-8c
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:06:22 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxjlJ-00051i-1G
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:06:11 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40842752c6eso41933435e9.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 01:06:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxjlQ-00052V-F9
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 04:06:20 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53e07db272cso8457199a12.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 01:06:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698739567; x=1699344367; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3SW/PuCJjF1Wl8Zlj1bHJrgw+5U8P31218lo5xwDp6A=;
- b=lq9Q8dzy9hUeP4rQVFVUkMU1puU0pd1mHi2UsrzMIgn4+ERns/3jywUxi95SC69fdK
- yZQg0SL3irRv72IRcjfXIayIFE2kRIywAuwhGWCv1t3L4H9RtgulDPtQJKz64T3aLbg9
- ikS0KooZcj0Iqov+rYD7QQCBvFBhepcH9k+flp7YjmfhSChYUAUG/vzv9kyvtSfht3iS
- 2PNi+UJrUHz+7Y7k12pXPbKreT7/sjnxBYZFOGA92hGKwDHW8Pv/SbTEWcLe7O4OQC8J
- GzQgcCVT8xxDyFIf6FZJgQT6he1EjgMa7aWr+E9Puhyn4ZHVWwqZ8S1GoOz9k56Oz6DT
- YwIA==
+ d=linaro.org; s=google; t=1698739574; x=1699344374; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ha8dKFtw42TsNomh687LpbxdL60bRbWiCDY5i3DR55Y=;
+ b=uhyS39ogcwAeIpSsEpOHuF8uYoCh/+TOzyVjItp9u3LDOmdK2DmMMImvQob8v1SVIT
+ KwJJXPK5PSs2ZtfyXWlkCJHYe+8/nIZwGAfpbqf55wE0kksBwi5WJQcN7WmKE6znXi/y
+ H0Tp7uRP9udvqaJMpN7wwDzPac3O41NnDtB3k5M8fD6XBu4qwaRodUhm21Yn5ydu55Ax
+ v2yzvM6okeUod8Tl4gZ3vLKJU8Y6lRHdlRAOPNhvTRLRJREGoMp/fkW9a8i5U+xfzilM
+ wFfOZFal/UCESE80MMK+xGZMD9ua86bBly92IJeI2vIzyFolVMQoZe+7rBCRTlU0QP6y
+ dbhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698739567; x=1699344367;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3SW/PuCJjF1Wl8Zlj1bHJrgw+5U8P31218lo5xwDp6A=;
- b=NNLf0np9e26qVOKaPL+RaEom3iRD44DHM2Z286rLFjU+r4xzsTn8QFb2kEyXvSAKf5
- T8lnVRt8p62XVtBIxuM5KXJwpPnFWP1kFIM2rnI8y8OUcYQVvSJwjlibOK8I94fmAUgP
- xwg1wLdd6F4i55ahDxMCQH4x4EDTcABXxI60Lfh4Mx8yup83xfQEay8CGziLiC5g4wS7
- +eZCu7+Z9zpkCcUHd/MuIIRTr0mq+y7RKbu325rJCpMb96hFOiRbPVCKZalfvXSk2cAt
- qDkBO1z0Eq1DdEYARNJ2BcmTxp/J4V0SzNRmwGT8MEo0RL+2dLitIrj8aPTtKg9HFpAv
- TAMw==
-X-Gm-Message-State: AOJu0Yx1P++XdJ036hklYh7rwdzWH93hAz7WMVlpQ/H6xtDuJL4jgO+H
- Ovwft6kOaY0KqLqz+VOMdE/V3Ayv5ad19CuBVV0=
-X-Google-Smtp-Source: AGHT+IEM4DwWk50uzYMS2MU10bmV24dZu4OdRvWj025GheqZiAcdC6B809R0aEk36VMjK1lKl3UivA==
-X-Received: by 2002:a05:6000:c8:b0:32d:90e6:c477 with SMTP id
- q8-20020a05600000c800b0032d90e6c477mr8686887wrx.26.1698739566966; 
- Tue, 31 Oct 2023 01:06:06 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698739574; x=1699344374;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ha8dKFtw42TsNomh687LpbxdL60bRbWiCDY5i3DR55Y=;
+ b=uvNJiyh6LHdO4vWue0Gyi0ikkdXDBnexH4El2pX30SXWJg1PDuBfudUg2xxxhYj/D/
+ TARdwW1OHd2+QaRW1gI16UQ5Hv2SA9T7YYXXd+GoiDzCedU+b29zXkGtQo6dDTo1bvWu
+ f3g+I5YvMszQJw9UkAYgLB0gSd9yKXQLPkoLToQggufRscY5bP+oG6zX2xocFDH50/TW
+ cqoU/AFWNe4pJN6/1uWIF++B1A8TKjSy0USgSgFHYaF1WsmQE3E17RyvBKKalEF+VPgi
+ YGu/qLb1VGyHXZFt5LIk2D6m9H51wo1CAoY3cnJraXn9fmSqkbOxSVvPPeUmzC/7Fume
+ tTXA==
+X-Gm-Message-State: AOJu0YyCdRq0UnSDIkiJ/vxR3FpQtSmPUvhOiCVyGG6PKixUzpALjfQa
+ 9nos0JdbJi6iXb/njvuPigkIMgiPtTRCdbon2xE=
+X-Google-Smtp-Source: AGHT+IEzRTjBbrARun/JDTrwZ7yQZFcBF/4N7b7Hc9Gp+GeHygUObsGlfAUnnim6qISBN6z/Rf3x1w==
+X-Received: by 2002:a17:906:55c5:b0:9d2:b968:9ddf with SMTP id
+ z5-20020a17090655c500b009d2b9689ddfmr4383293ejp.25.1698739574192; 
+ Tue, 31 Oct 2023 01:06:14 -0700 (PDT)
 Received: from m1x-phil.lan (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
  [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
- b1-20020a5d6341000000b0032dc1fc84f2sm878303wrw.46.2023.10.31.01.06.05
+ 3-20020a05600c234300b0040586360a36sm995126wmq.17.2023.10.31.01.06.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Oct 2023 01:06:06 -0700 (PDT)
+ Tue, 31 Oct 2023 01:06:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
@@ -60,23 +61,31 @@ Cc: Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH 0/1] hw/sd: Declare CPU QOM types using DEFINE_TYPES() macro
-Date: Tue, 31 Oct 2023 09:06:02 +0100
-Message-ID: <20231031080603.86889-1-philmd@linaro.org>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Bin Meng <bin.meng@windriver.com>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, qemu-block@nongnu.org
+Subject: [PATCH 1/1] hw/sd: Declare CPU QOM types using DEFINE_TYPES() macro
+Date: Tue, 31 Oct 2023 09:06:03 +0100
+Message-ID: <20231031080603.86889-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231031080603.86889-1-philmd@linaro.org>
+References: <20231031080603.86889-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,49 +101,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+When multiple QOM types are registered in the same file,
+it is simpler to use the the DEFINE_TYPES() macro. In
+particular because type array declared with such macro
+are easier to review.
 
-This is an intent to automatically convert to DEFINE_TYPES().
+Mechanical transformation using the following comby script:
 
-I used a Comby script, see https://comby.dev/.
+  [pattern-x1]
+  match='''
+  static const TypeInfo :[i1~.*_info] = {
+      :[body]
+  };
+  static void :[rt1~.*_register_type.](void)
+  {
+      type_register_static(&:[i2~.*_info]);
+  }
+  type_init(:[rt2~.*_register_type.])
+  '''
+  rewrite='''
+  static const TypeInfo :[i1][] = {
+      {
+      :[body]
+      },
+  };
 
-Example in Comby playground:
-https://comby.live/#%7B%22source%22%3A%22static%20const%20TypeInfo%20pl181_=
-info%20%3D%20%7B%5Cn%20%20%20%20.name%20%20%20%20%20%20%20%20%20%20%3D%20TY=
-PE_PL181%2C%5Cn%20%20%20%20.parent%20%20%20%20%20%20%20%20%3D%20TYPE_SYS_BU=
-S_DEVICE%2C%5Cn%20%20%20%20.instance_size%20%3D%20sizeof(PL181State)%2C%5Cn=
-%20%20%20%20.instance_init%20%3D%20pl181_init%2C%5Cn%20%20%20%20.class_init=
-%20%20%20%20%3D%20pl181_class_init%2C%5Cn%7D%3B%5Cn%5Cnstatic%20void%20pl18=
-1_bus_class_init(ObjectClass%20*klass%2C%20void%20*data)%5Cn%7B%5Cn%20%20%2=
-0%20SDBusClass%20*sbc%20%3D%20SD_BUS_CLASS(klass)%3B%5Cn%5Cn%20%20%20%20sbc=
--%3Eset_inserted%20%3D%20pl181_set_inserted%3B%5Cn%20%20%20%20sbc-%3Eset_re=
-adonly%20%3D%20pl181_set_readonly%3B%5Cn%7D%5Cn%5Cnstatic%20const%20TypeInf=
-o%20pl181_bus_info%20%3D%20%7B%5Cn%20%20%20%20.name%20%3D%20TYPE_PL181_BUS%=
-2C%5Cn%20%20%20%20.parent%20%3D%20TYPE_SD_BUS%2C%5Cn%20%20%20%20.instance_s=
-ize%20%3D%20sizeof(SDBus)%2C%5Cn%20%20%20%20.class_init%20%3D%20pl181_bus_c=
-lass_init%2C%5Cn%7D%3B%5Cn%5Cnstatic%20void%20pl181_register_types(void)%5C=
-n%7B%5Cn%20%20%20%20type_register_static(%26pl181_info)%3B%5Cn%20%20%20%20t=
-ype_register_static(%26pl181_bus_info)%3B%5Cn%7D%5Cn%5Cntype_init(pl181_reg=
-ister_types)%5Cn%22%2C%22match%22%3A%22static%20const%20TypeInfo%20%3A%5Bi1=
-a~.*_info%5D%20%3D%20%7B%5Cn%20%20%20%20%3A%5Bbody1%5D%5Cn%7D%3B%5Cn...%5Cn=
-static%20const%20TypeInfo%20%3A%5Bi2a~.*_info%5D%20%3D%20%7B%5Cn%20%20%20%2=
-0%3A%5Bbody2%5D%5Cn%7D%3B%5Cnstatic%20void%20%3A%5Brt1~.*_register_type.%5D=
-(void)%5Cn%7B%5Cn%20%20%20%20type_register_static(%26%3A%5Bi1b~.*_info%5D)%=
-3B%5Cn%20%20%20%20type_register_static(%26%3A%5Bi2b~.*_info%5D)%3B%5Cn%7D%5=
-Cntype_init(%3A%5Brt2~.*_register_type.%5D)%22%2C%22rule%22%3A%22where%20tr=
-ue%22%2C%22rewrite%22%3A%22static%20const%20TypeInfo%20%3A%5Bi1a%5D%5B%5D%2=
-0%3D%20%7B%5Cn%20%20%20%20%7B%5Cn%20%20%20%20%3A%5Bbody1%5D%5Cn%20%20%20%20=
-%7D%2C%5Cn%20%20%20%20%7B%5Cn%20%20%20%20%3A%5Bbody2%5D%5Cn%20%20%20%20%7D%=
-2C%5Cn%7D%3B%5Cn%5CnDEFINE_TYPES(%3A%5Bi1a%5D)%5Cn%22%2C%22language%22%3A%2=
-2.generic%22%2C%22substitution_kind%22%3A%22in_place%22%2C%22id%22%3A0%7D
+  DEFINE_TYPES(:[i1])
+  '''
+  rule='where :[i1] == :[i2], :[rt1] == :[rt2]'
 
-Regards,
+  [pattern-x2]
+  match='''
+  static const TypeInfo :[i1a~.*_info] = {
+      :[body1]
+  };
+  ...
+  static const TypeInfo :[i2a~.*_info] = {
+      :[body2]
+  };
+  static void :[rt1~.*_register_type.](void)
+  {
+      type_register_static(&:[i1b~.*_info]);
+      type_register_static(&:[i2b~.*_info]);
+  }
+  type_init(:[rt2~.*_register_type.])
+  '''
+  rewrite='''
+  static const TypeInfo :[i1a][] = {
+      {
+      :[body1]
+      },
+      {
+      :[body2]
+      },
+  };
 
-Phil.
+  DEFINE_TYPES(:[i1a])
+  '''
+  rule='''
+  where
+  :[i1a] == :[i1b],
+  :[i2a] == :[i2b],
+  :[rt1] == :[rt2]
+  '''
 
-Philippe Mathieu-Daud=C3=A9 (1):
-  hw/sd: Declare CPU QOM types using DEFINE_TYPES() macro
+and re-indented manually.
 
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
  hw/sd/aspeed_sdhci.c   | 19 ++++++++-----------
  hw/sd/bcm2835_sdhost.c | 33 ++++++++++++++-------------------
  hw/sd/cadence_sdhci.c  | 21 +++++++++------------
@@ -147,7 +181,386 @@ Philippe Mathieu-Daud=C3=A9 (1):
  hw/sd/ssi-sd.c         | 19 ++++++++-----------
  10 files changed, 113 insertions(+), 151 deletions(-)
 
---=20
+diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
+index be8cafd65f..e53206d959 100644
+--- a/hw/sd/aspeed_sdhci.c
++++ b/hw/sd/aspeed_sdhci.c
+@@ -198,16 +198,13 @@ static void aspeed_sdhci_class_init(ObjectClass *classp, void *data)
+     device_class_set_props(dc, aspeed_sdhci_properties);
+ }
+ 
+-static const TypeInfo aspeed_sdhci_info = {
+-    .name          = TYPE_ASPEED_SDHCI,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(AspeedSDHCIState),
+-    .class_init    = aspeed_sdhci_class_init,
++static const TypeInfo aspeed_sdhci_types[] = {
++    {
++        .name           = TYPE_ASPEED_SDHCI,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(AspeedSDHCIState),
++        .class_init     = aspeed_sdhci_class_init,
++    },
+ };
+ 
+-static void aspeed_sdhci_register_types(void)
+-{
+-    type_register_static(&aspeed_sdhci_info);
+-}
+-
+-type_init(aspeed_sdhci_register_types)
++DEFINE_TYPES(aspeed_sdhci_types)
+diff --git a/hw/sd/bcm2835_sdhost.c b/hw/sd/bcm2835_sdhost.c
+index 9431c35914..a600cf39e2 100644
+--- a/hw/sd/bcm2835_sdhost.c
++++ b/hw/sd/bcm2835_sdhost.c
+@@ -436,24 +436,19 @@ static void bcm2835_sdhost_class_init(ObjectClass *klass, void *data)
+     dc->vmsd = &vmstate_bcm2835_sdhost;
+ }
+ 
+-static const TypeInfo bcm2835_sdhost_info = {
+-    .name          = TYPE_BCM2835_SDHOST,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(BCM2835SDHostState),
+-    .class_init    = bcm2835_sdhost_class_init,
+-    .instance_init = bcm2835_sdhost_init,
++static const TypeInfo bcm2835_sdhost_types[] = {
++    {
++        .name           = TYPE_BCM2835_SDHOST,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(BCM2835SDHostState),
++        .class_init     = bcm2835_sdhost_class_init,
++        .instance_init  = bcm2835_sdhost_init,
++    },
++    {
++        .name           = TYPE_BCM2835_SDHOST_BUS,
++        .parent         = TYPE_SD_BUS,
++        .instance_size  = sizeof(SDBus),
++    },
+ };
+ 
+-static const TypeInfo bcm2835_sdhost_bus_info = {
+-    .name = TYPE_BCM2835_SDHOST_BUS,
+-    .parent = TYPE_SD_BUS,
+-    .instance_size = sizeof(SDBus),
+-};
+-
+-static void bcm2835_sdhost_register_types(void)
+-{
+-    type_register_static(&bcm2835_sdhost_info);
+-    type_register_static(&bcm2835_sdhost_bus_info);
+-}
+-
+-type_init(bcm2835_sdhost_register_types)
++DEFINE_TYPES(bcm2835_sdhost_types)
+diff --git a/hw/sd/cadence_sdhci.c b/hw/sd/cadence_sdhci.c
+index 75db34befe..ef4e0d74e3 100644
+--- a/hw/sd/cadence_sdhci.c
++++ b/hw/sd/cadence_sdhci.c
+@@ -175,17 +175,14 @@ static void cadence_sdhci_class_init(ObjectClass *classp, void *data)
+     dc->vmsd = &vmstate_cadence_sdhci;
+ }
+ 
+-static const TypeInfo cadence_sdhci_info = {
+-    .name          = TYPE_CADENCE_SDHCI,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(CadenceSDHCIState),
+-    .instance_init = cadence_sdhci_instance_init,
+-    .class_init    = cadence_sdhci_class_init,
++static const TypeInfo cadence_sdhci_types[] = {
++    {
++        .name           = TYPE_CADENCE_SDHCI,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(CadenceSDHCIState),
++        .instance_init  = cadence_sdhci_instance_init,
++        .class_init     = cadence_sdhci_class_init,
++    },
+ };
+ 
+-static void cadence_sdhci_register_types(void)
+-{
+-    type_register_static(&cadence_sdhci_info);
+-}
+-
+-type_init(cadence_sdhci_register_types)
++DEFINE_TYPES(cadence_sdhci_types)
+diff --git a/hw/sd/core.c b/hw/sd/core.c
+index 30ee62c510..52d5d90045 100644
+--- a/hw/sd/core.c
++++ b/hw/sd/core.c
+@@ -259,16 +259,13 @@ void sdbus_reparent_card(SDBus *from, SDBus *to)
+     sdbus_set_readonly(to, readonly);
+ }
+ 
+-static const TypeInfo sd_bus_info = {
+-    .name = TYPE_SD_BUS,
+-    .parent = TYPE_BUS,
+-    .instance_size = sizeof(SDBus),
+-    .class_size = sizeof(SDBusClass),
++static const TypeInfo sd_bus_types[] = {
++    {
++        .name           = TYPE_SD_BUS,
++        .parent         = TYPE_BUS,
++        .instance_size  = sizeof(SDBus),
++        .class_size     = sizeof(SDBusClass),
++    },
+ };
+ 
+-static void sd_bus_register_types(void)
+-{
+-    type_register_static(&sd_bus_info);
+-}
+-
+-type_init(sd_bus_register_types)
++DEFINE_TYPES(sd_bus_types)
+diff --git a/hw/sd/npcm7xx_sdhci.c b/hw/sd/npcm7xx_sdhci.c
+index b2f5b4a542..9958680090 100644
+--- a/hw/sd/npcm7xx_sdhci.c
++++ b/hw/sd/npcm7xx_sdhci.c
+@@ -166,17 +166,14 @@ static void npcm7xx_sdhci_instance_init(Object *obj)
+                             TYPE_SYSBUS_SDHCI);
+ }
+ 
+-static const TypeInfo npcm7xx_sdhci_info = {
+-    .name = TYPE_NPCM7XX_SDHCI,
+-    .parent = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(NPCM7xxSDHCIState),
+-    .instance_init = npcm7xx_sdhci_instance_init,
+-    .class_init = npcm7xx_sdhci_class_init,
++static const TypeInfo npcm7xx_sdhci_types[] = {
++    {
++        .name           = TYPE_NPCM7XX_SDHCI,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(NPCM7xxSDHCIState),
++        .instance_init  = npcm7xx_sdhci_instance_init,
++        .class_init     = npcm7xx_sdhci_class_init,
++    },
+ };
+ 
+-static void npcm7xx_sdhci_register_types(void)
+-{
+-    type_register_static(&npcm7xx_sdhci_info);
+-}
+-
+-type_init(npcm7xx_sdhci_register_types)
++DEFINE_TYPES(npcm7xx_sdhci_types)
+diff --git a/hw/sd/pl181.c b/hw/sd/pl181.c
+index 5e554bd467..2b33814d83 100644
+--- a/hw/sd/pl181.c
++++ b/hw/sd/pl181.c
+@@ -519,14 +519,6 @@ static void pl181_class_init(ObjectClass *klass, void *data)
+     k->user_creatable = false;
+ }
+ 
+-static const TypeInfo pl181_info = {
+-    .name          = TYPE_PL181,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(PL181State),
+-    .instance_init = pl181_init,
+-    .class_init    = pl181_class_init,
+-};
+-
+ static void pl181_bus_class_init(ObjectClass *klass, void *data)
+ {
+     SDBusClass *sbc = SD_BUS_CLASS(klass);
+@@ -535,17 +527,20 @@ static void pl181_bus_class_init(ObjectClass *klass, void *data)
+     sbc->set_readonly = pl181_set_readonly;
+ }
+ 
+-static const TypeInfo pl181_bus_info = {
+-    .name = TYPE_PL181_BUS,
+-    .parent = TYPE_SD_BUS,
+-    .instance_size = sizeof(SDBus),
+-    .class_init = pl181_bus_class_init,
++static const TypeInfo pl181_info[] = {
++    {
++        .name           = TYPE_PL181,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(PL181State),
++        .instance_init  = pl181_init,
++        .class_init     = pl181_class_init,
++    },
++    {
++        .name           = TYPE_PL181_BUS,
++        .parent         = TYPE_SD_BUS,
++        .instance_size  = sizeof(SDBus),
++        .class_init     = pl181_bus_class_init,
++    },
+ };
+ 
+-static void pl181_register_types(void)
+-{
+-    type_register_static(&pl181_info);
+-    type_register_static(&pl181_bus_info);
+-}
+-
+-type_init(pl181_register_types)
++DEFINE_TYPES(pl181_info)
+diff --git a/hw/sd/pxa2xx_mmci.c b/hw/sd/pxa2xx_mmci.c
+index 124fbf8bbd..d785a3d80f 100644
+--- a/hw/sd/pxa2xx_mmci.c
++++ b/hw/sd/pxa2xx_mmci.c
+@@ -580,25 +580,20 @@ static void pxa2xx_mmci_bus_class_init(ObjectClass *klass, void *data)
+     sbc->set_readonly = pxa2xx_mmci_set_readonly;
+ }
+ 
+-static const TypeInfo pxa2xx_mmci_info = {
+-    .name = TYPE_PXA2XX_MMCI,
+-    .parent = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(PXA2xxMMCIState),
+-    .instance_init = pxa2xx_mmci_instance_init,
+-    .class_init = pxa2xx_mmci_class_init,
++static const TypeInfo pxa2xx_mmci_types[] = {
++    {
++        .name           = TYPE_PXA2XX_MMCI,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(PXA2xxMMCIState),
++        .instance_init  = pxa2xx_mmci_instance_init,
++        .class_init     = pxa2xx_mmci_class_init,
++    },
++    {
++        .name           = TYPE_PXA2XX_MMCI_BUS,
++        .parent         = TYPE_SD_BUS,
++        .instance_size  = sizeof(SDBus),
++        .class_init     = pxa2xx_mmci_bus_class_init,
++    },
+ };
+ 
+-static const TypeInfo pxa2xx_mmci_bus_info = {
+-    .name = TYPE_PXA2XX_MMCI_BUS,
+-    .parent = TYPE_SD_BUS,
+-    .instance_size = sizeof(SDBus),
+-    .class_init = pxa2xx_mmci_bus_class_init,
+-};
+-
+-static void pxa2xx_mmci_register_types(void)
+-{
+-    type_register_static(&pxa2xx_mmci_info);
+-    type_register_static(&pxa2xx_mmci_bus_info);
+-}
+-
+-type_init(pxa2xx_mmci_register_types)
++DEFINE_TYPES(pxa2xx_mmci_types)
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 4823befdef..1106ff7d78 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -2278,16 +2278,6 @@ static void sd_class_init(ObjectClass *klass, void *data)
+     sc->proto = &sd_proto_sd;
+ }
+ 
+-static const TypeInfo sd_info = {
+-    .name = TYPE_SD_CARD,
+-    .parent = TYPE_DEVICE,
+-    .instance_size = sizeof(SDState),
+-    .class_size = sizeof(SDCardClass),
+-    .class_init = sd_class_init,
+-    .instance_init = sd_instance_init,
+-    .instance_finalize = sd_instance_finalize,
+-};
+-
+ /*
+  * We do not model the chip select pin, so allow the board to select
+  * whether card should be in SSI or MMC/SD mode.  It is also up to the
+@@ -2303,16 +2293,21 @@ static void sd_spi_class_init(ObjectClass *klass, void *data)
+     sc->proto = &sd_proto_spi;
+ }
+ 
+-static const TypeInfo sd_spi_info = {
+-    .name = TYPE_SD_CARD_SPI,
+-    .parent = TYPE_SD_CARD,
+-    .class_init = sd_spi_class_init,
++static const TypeInfo sd_types[] = {
++    {
++        .name           = TYPE_SD_CARD,
++        .parent         = TYPE_DEVICE,
++        .instance_size  = sizeof(SDState),
++        .class_size     = sizeof(SDCardClass),
++        .class_init     = sd_class_init,
++        .instance_init  = sd_instance_init,
++        .instance_finalize = sd_instance_finalize,
++    },
++    {
++        .name           = TYPE_SD_CARD_SPI,
++        .parent         = TYPE_SD_CARD,
++        .class_init     = sd_spi_class_init,
++    },
+ };
+ 
+-static void sd_register_types(void)
+-{
+-    type_register_static(&sd_info);
+-    type_register_static(&sd_spi_info);
+-}
+-
+-type_init(sd_register_types)
++DEFINE_TYPES(sd_types)
+diff --git a/hw/sd/sdhci-pci.c b/hw/sd/sdhci-pci.c
+index c737c8b930..9b7bee8b3f 100644
+--- a/hw/sd/sdhci-pci.c
++++ b/hw/sd/sdhci-pci.c
+@@ -68,20 +68,17 @@ static void sdhci_pci_class_init(ObjectClass *klass, void *data)
+     sdhci_common_class_init(klass, data);
+ }
+ 
+-static const TypeInfo sdhci_pci_info = {
+-    .name = TYPE_PCI_SDHCI,
+-    .parent = TYPE_PCI_DEVICE,
+-    .instance_size = sizeof(SDHCIState),
+-    .class_init = sdhci_pci_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+-        { },
++static const TypeInfo sdhci_pci_types[] = {
++    {
++        .name           = TYPE_PCI_SDHCI,
++        .parent         = TYPE_PCI_DEVICE,
++        .instance_size  = sizeof(SDHCIState),
++        .class_init     = sdhci_pci_class_init,
++        .interfaces     = (InterfaceInfo[]) {
++            { INTERFACE_CONVENTIONAL_PCI_DEVICE },
++            { },
++        },
+     },
+ };
+ 
+-static void sdhci_pci_register_type(void)
+-{
+-    type_register_static(&sdhci_pci_info);
+-}
+-
+-type_init(sdhci_pci_register_type)
++DEFINE_TYPES(sdhci_pci_types)
+diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
+index 167c03b780..a6cc1ad6c8 100644
+--- a/hw/sd/ssi-sd.c
++++ b/hw/sd/ssi-sd.c
+@@ -403,16 +403,13 @@ static void ssi_sd_class_init(ObjectClass *klass, void *data)
+     dc->user_creatable = false;
+ }
+ 
+-static const TypeInfo ssi_sd_info = {
+-    .name          = TYPE_SSI_SD,
+-    .parent        = TYPE_SSI_PERIPHERAL,
+-    .instance_size = sizeof(ssi_sd_state),
+-    .class_init    = ssi_sd_class_init,
++static const TypeInfo ssi_sd_types[] = {
++    {
++        .name           = TYPE_SSI_SD,
++        .parent         = TYPE_SSI_PERIPHERAL,
++        .instance_size  = sizeof(ssi_sd_state),
++        .class_init     = ssi_sd_class_init,
++    },
+ };
+ 
+-static void ssi_sd_register_types(void)
+-{
+-    type_register_static(&ssi_sd_info);
+-}
+-
+-type_init(ssi_sd_register_types)
++DEFINE_TYPES(ssi_sd_types)
+-- 
 2.41.0
 
 
