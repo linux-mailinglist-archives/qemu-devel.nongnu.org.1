@@ -2,88 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155F37DC64B
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 07:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617FF7DC661
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 07:18:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxhxc-00026w-3F; Tue, 31 Oct 2023 02:10:44 -0400
+	id 1qxi3f-0004c3-A0; Tue, 31 Oct 2023 02:16:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qxhxa-00026l-Dh
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 02:10:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qxhxX-0001LB-DA
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 02:10:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698732637;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/MB7dRT/6ac4dI1QwmgLsJB1CwM66dzPMSZl4+Qaq70=;
- b=EZ/eJoSQln2e0zsgZ86kgEHHGwOUbkl4xdap/XIqSvz7lIDdbtF9rdGXaqf6vpHyhB8kki
- 8KdsdlR0/MVIwtGHNqKJj1lvSE8qQ6d17+cs4E5hKlvLAspPW4laDXlpZ6H7zNzMxfKlLH
- 5/fvv4JgFZlgzDUPA477tgXSJ+mMTBw=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-Urzg7YjVNLSVBPV5ffnTmg-1; Tue, 31 Oct 2023 02:10:25 -0400
-X-MC-Unique: Urzg7YjVNLSVBPV5ffnTmg-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-54061ad6600so4062269a12.3
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 23:10:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698732624; x=1699337424;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/MB7dRT/6ac4dI1QwmgLsJB1CwM66dzPMSZl4+Qaq70=;
- b=gmTsqozyZ05E31iqjg+8IxLKC4budvfII+MkEcAUxIArOsuYnbJEQkJ6c+YCSm5RmS
- MQjfT7+8F2FIiRcnTD8aRdHQpN82oizRJJRJMPccz1+QAKu1KYd30N6PesVTQiZdnLRy
- 7P3udqbn27G4mIgo+G6nfeiXmu9MbHRwhVh0cOGxV1CmkTl6dsfaAEMvH0CGTGzZDHsU
- 1QNQtougg0D2Zkrwg5vK4lyllRcB+OjY9VQ403Xgoven2jKkt96LGYDdnwp5HMp3enop
- eGkpOKZRZO7PjcBTL9Wyz8HMSG8FSl6rhBcRIy+9G9tNWne1Dla5M56YvQiDVfZ55quu
- BCMA==
-X-Gm-Message-State: AOJu0YyNI4S57R1kr9h9iQ18LsKLAGZGvAIwmsLiwIndp+4R+jlb6Cvw
- 6eG+Zndip6h8ADX7YGHkgL7ELSENDZaQkGoIXcakBOktgSsyqymW9d4bcmz0kOrXd6l2xI0u+4g
- 0KNTDZALKVXAKbdz4PDZwRnd+b3iarAg=
-X-Received: by 2002:a05:6402:b2f:b0:531:2b0b:9b8 with SMTP id
- bo15-20020a0564020b2f00b005312b0b09b8mr9026073edb.7.1698732624415; 
- Mon, 30 Oct 2023 23:10:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHc9pHMpKVjTWgegHS1f+yzyCBQvFpd0cJiZ11DcEsMWWvgwc8I72k1BlBnxK/rpy+txzEbofKONopbUe/0SQ0=
-X-Received: by 2002:a05:6402:b2f:b0:531:2b0b:9b8 with SMTP id
- bo15-20020a0564020b2f00b005312b0b09b8mr9026056edb.7.1698732624115; Mon, 30
- Oct 2023 23:10:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qxi3b-0004aw-2r
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 02:16:55 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qxi3X-0002Tw-MV
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 02:16:54 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Dxg_DIm0BlzuM1AA--.40222S3;
+ Tue, 31 Oct 2023 14:16:40 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxK9zGm0BlplM3AA--.53261S3; 
+ Tue, 31 Oct 2023 14:16:40 +0800 (CST)
+Subject: Re: [PATCH v1 2/6] target/loongarch: Add set_vec_extctx to set
+ LSX/LASX instructions extctx_flags
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: philmd@redhat.com, laurent@vivier.e, maobibo@loongson.cn,
+ yangxiaojuan@loongson.cn, laurent@vivier.eu
+References: <20231010033701.385725-1-gaosong@loongson.cn>
+ <20231010033701.385725-3-gaosong@loongson.cn>
+ <1c4c0856-337e-4c5e-b2af-6caf35060b0a@linaro.org>
+ <24981f5e-3397-427e-a552-635887d581cd@loongson.cn>
+ <c43b9404-fd99-4f8a-9e35-62f5a4e50b5b@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <4f952bcc-61c9-b3b6-d858-00c64167c292@loongson.cn>
+Date: Tue, 31 Oct 2023 14:16:38 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20231006010835.444-7-gurchetansingh@chromium.org>
- <20231031012515.15504-1-liucong2@kylinos.cn>
-In-Reply-To: <20231031012515.15504-1-liucong2@kylinos.cn>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 31 Oct 2023 10:10:11 +0400
-Message-ID: <CAMxuvaxvUeOp=N8BveYFCny2vUDN8eTS_2mq+qugs-RHkM_6TQ@mail.gmail.com>
-Subject: Re: [PATCH] virtio-gpu-rutabaga: Add empty interface to fix arm64
- crash
-To: Cong Liu <liucong2@kylinos.cn>
-Cc: gurchetansingh@chromium.org, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, akihiko.odaki@gmail.com,
- alex.bennee@linaro.org, 
- ernunes@redhat.com, hi@alyssa.is, manos.pitsidianakis@linaro.org, 
- mark.cave-ayland@ilande.co.uk, qemu-devel@nongnu.org, ray.huang@amd.com, 
- shentey@gmail.com, thuth@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+In-Reply-To: <c43b9404-fd99-4f8a-9e35-62f5a4e50b5b@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8BxK9zGm0BlplM3AA--.53261S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ArWrZw13tFWkCF45Ar4UZFc_yoW5JrWUpr
+ 1kAFWjkFW5JFZ3JF12g34qqF9rtr4xJa1UWFnaq3Z5JrZxXr9Fqr1jqFyq9FyUJw48uFyj
+ vF45Zw13ZF4Yv3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
+ VUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.441,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,60 +85,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 5:31=E2=80=AFAM Cong Liu <liucong2@kylinos.cn> wrot=
-e:
+在 2023/10/30 下午11:30, Richard Henderson 写道:
+> On 10/29/23 20:28, gaosong wrote:
+>> 在 2023/10/29 上午5:40, Richard Henderson 写道:
+>>> On 10/9/23 20:36, Song Gao wrote:
+>>>> Signed-off-by: Song Gao <gaosong@loongson.cn>
+>>>> ---
+>>>>   target/loongarch/insn_trans/trans_vec.c.inc | 12 ++++++++++++
+>>>>   target/loongarch/internals.h                |  2 ++
+>>>>   2 files changed, 14 insertions(+)
+>>>>
+>>>> diff --git a/target/loongarch/insn_trans/trans_vec.c.inc 
+>>>> b/target/loongarch/insn_trans/trans_vec.c.inc
+>>>> index 98f856bb29..aef16ef44a 100644
+>>>> --- a/target/loongarch/insn_trans/trans_vec.c.inc
+>>>> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
+>>>> @@ -23,8 +23,20 @@ static bool check_vec(DisasContext *ctx, 
+>>>> uint32_t oprsz)
+>>>>     #else
+>>>>   +static void set_vec_extctx(DisasContext *ctx, uint32_t oprsz)
+>>>> +{
+>>>> +    if (oprsz == 16) {
+>>>> +        ctx->extctx_flags |= EXTCTX_FLAGS_LSX;
+>>>> +    }
+>>>> +
+>>>> +    if (oprsz == 32) {
+>>>> +        ctx->extctx_flags |= EXTCTX_FLAGS_LASX;
+>>>> +    }
+>>>> +}
+>>>> +
+>>>>   static bool check_vec(DisasContext *ctx, uint32_t oprsz)
+>>>>   {
+>>>> +    set_vec_extctx(ctx, oprsz);
+>>>>       return true;
+>>>>   }
+>>>
+>>> This doesn't do anything.  Nothing copies the changed value back to 
+>>> env.
+>>> Anyway, I think this is the wrong way to go about it.
+>>>
+>> Oh, It is on patch1.
+>>
+>> @@ -294,6 +296,7 @@ static void 
+>> loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+>>           generate_exception(ctx, EXCCODE_INE);
+>>       }
+>>
+>> +    env->extctx_flags |= ctx->extctx_flags;
 >
-> Add an empty element to the interfaces array, which is consistent with
-> the behavior of other devices in qemu and fixes the crash on arm64.
+> Ah, well, this is also incorrect.
 >
-> 0  0x0000fffff5c18550 in  () at /usr/lib64/libc.so.6
-> 1  0x0000fffff6c9cd6c in g_strdup () at /usr/lib64/libglib-2.0.so.0
-> 2  0x0000aaaaab4945d8 in g_strdup_inline (str=3D<optimized out>) at /usr/=
-include/glib-2.0/glib/gstrfuncs.h:321
-> 3  type_new (info=3Dinfo@entry=3D0xaaaaabc1b2c8 <virtio_gpu_rutabaga_pci_=
-info>) at ../qom/object.c:133
-> 4  0x0000aaaaab494f14 in type_register_internal (info=3D0xaaaaabc1b2c8 <v=
-irtio_gpu_rutabaga_pci_info>) at ../qom/object.c:143
-> 5  type_register (info=3D0xaaaaabc1b2c8 <virtio_gpu_rutabaga_pci_info>) a=
-t ../qom/object.c:152
-> 6  type_register_static (info=3D0xaaaaabc1b2c8 <virtio_gpu_rutabaga_pci_i=
-nfo>) at ../qom/object.c:157
-> 7  type_register_static_array (infos=3D<optimized out>, nr_infos=3D<optim=
-ized out>) at ../qom/object.c:165
-> 8  0x0000aaaaab6147e8 in module_call_init (type=3Dtype@entry=3DMODULE_INI=
-T_QOM) at ../util/module.c:109
-> 9  0x0000aaaaab10a0ec in qemu_init_subsystems () at ../system/runstate.c:=
-817
-> 10 0x0000aaaaab10d334 in qemu_init (argc=3D13, argv=3D0xfffffffff198) at =
-../system/vl.c:2760
-> 11 0x0000aaaaaae4da6c in main (argc=3D<optimized out>, argv=3D<optimized =
-out>) at ../system/main.c:47
+> This copy only happens at translation time, not at execution time.
 >
-> Signed-off-by: Cong Liu <liucong2@kylinos.cn>
-> Reviewed-by: Gurchetan Singh <gurchetansingh@chromium.org>
+> Anyway, I think my previous suggestion is better:
+>
+Oh,  Could you  show more details?  I think I didn't get you point.
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>>> If you want to track what the program is using, you should do it 
+>>> exactly like the real kernel: disable the execution unit, have the 
+>>> program trap, and the enable the execution unit when the trap 
+>>> occurs. At this point, CSR_EUEN enable bits contain exactly which 
+>>> units have been used by the program.
+>
+we always enabled LSX/LASX exception,  This is mean that we always use 
+target_lasx_context.
 
-> ---
->  hw/display/virtio-gpu-pci-rutabaga.c | 1 +
->  1 file changed, 1 insertion(+)
+Thanks.
+Song Gao
 >
-> diff --git a/hw/display/virtio-gpu-pci-rutabaga.c b/hw/display/virtio-gpu=
--pci-rutabaga.c
-> index c96729e19834..abbb898c65dc 100644
-> --- a/hw/display/virtio-gpu-pci-rutabaga.c
-> +++ b/hw/display/virtio-gpu-pci-rutabaga.c
-> @@ -36,6 +36,7 @@ static const TypeInfo virtio_gpu_rutabaga_pci_info[] =
-=3D {
->          .instance_init =3D virtio_gpu_rutabaga_initfn,
->          .interfaces =3D (InterfaceInfo[]) {
->              { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-> +            { },
->          }
->      },
->  };
-> --
-> 2.34.1
->
+> r~
 
 
