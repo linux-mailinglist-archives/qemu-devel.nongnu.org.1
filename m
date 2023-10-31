@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB3B7DCF96
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:48:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACB87DCFA2
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:50:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxq2J-0006Ja-Dj; Tue, 31 Oct 2023 10:48:07 -0400
+	id 1qxq23-0004tf-IO; Tue, 31 Oct 2023 10:47:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
- id 1qxq2H-0006G2-N3
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:48:05 -0400
+ id 1qxq1o-00046w-RM
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:47:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
- id 1qxq2F-0002qc-QD
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:48:05 -0400
+ id 1qxq1n-0002mK-6L
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:47:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698763681;
+ s=mimecast20190719; t=1698763653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=EKvXdVJCPAevUzJp7/69hur5m+pIRFpp/konyGDQ600=;
- b=JN0hVNic0lnNaL0MaLLvZ0JVsP0j9b4KB/Rf/5JX2nv4DJezcip5SStcdTfZCCsIXSnksu
- cE6/ztdWyuNmsMXnzrMXMLuDSn76qbSHleSQCzoVJupe7W2se2+OEugTR+bPXyfvLAKbas
- 6D08QFMjmM2aOAcTnsd1C4aGDkohWko=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-xXQLbCgqPpaOcVqzcBZ_AA-1; Tue, 31 Oct 2023 10:46:17 -0400
-X-MC-Unique: xXQLbCgqPpaOcVqzcBZ_AA-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nxnwGEmoi14X38yZcEvCDLHVDrHMqJx0/TasZ7cKxxo=;
+ b=f1+xp7FFzgtaZJwi+EYadfH9Ac2AKOwKsxQ0vxnxPjPEt1PB5g6gVxxGTeFKC3vBRatLOa
+ jL7do2uPTTtugkGji+w6oXCaKoFVIOVMgVaKD5+yjsQSZlM4HvbOpsFmkiSmaSQ7A52kPD
+ nNyzfRdgU98HsUbC+XnG9HodRXx5JL4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-567-5R7s9x1nP_e-saoQ4NyBcw-1; Tue,
+ 31 Oct 2023 10:46:22 -0400
+X-MC-Unique: 5R7s9x1nP_e-saoQ4NyBcw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7289310B7AA9
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 14:46:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 078D93C1476E
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 14:46:22 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.39.208.15])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4A765C1290F;
- Tue, 31 Oct 2023 14:46:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D394EC1290F;
+ Tue, 31 Oct 2023 14:46:20 +0000 (UTC)
 From: Anthony Harivel <aharivel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, berrange@redhat.com,
  Anthony Harivel <aharivel@redhat.com>
-Subject: [PATCH v2 0/3] Add support for RAPL MSRs series
-Date: Tue, 31 Oct 2023 15:46:00 +0100
-Message-ID: <20231031144605.64822-1-aharivel@redhat.com>
+Subject: [PATCH v2 1/3] qio: add support for SO_PEERCRED for socket channel
+Date: Tue, 31 Oct 2023 15:46:01 +0100
+Message-ID: <20231031144605.64822-2-aharivel@redhat.com>
+In-Reply-To: <20231031144605.64822-1-aharivel@redhat.com>
+References: <20231031144605.64822-1-aharivel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
@@ -77,89 +80,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The function qio_channel_get_peercred() returns a pointer to the
+credentials of the peer process connected to this socket.
 
-This v2 patch series tries to overcome the issue of the CVE 2020-8694
-[1] while trying to read the RAPL MSR for populating the vitrual one on
-KVM/QEMU virtual machine.
+This credentials structure is defined in <sys/socket.h> as follows:
 
-The solution proposed here is to create a helper daemon that would run
-as a priviliged process and able to communicate via a socket to the QEMU
-thread that deals with the ratio calculation of the energy counter.
+struct ucred {
+	pid_t pid;    /* Process ID of the sending process */
+	uid_t uid;    /* User ID of the sending process */
+	gid_t gid;    /* Group ID of the sending process */
+};
 
-So first it adds the SO_PEERCRED socket option in QIO CHANNEL so that
-the helper daemon can check the PID of the peer (QEMU) to validate the
-TID that is in the message. 
+The use of this function is possible only for connected AF_UNIX stream
+sockets and for AF_UNIX stream and datagram socket pairs.
 
-Then the daemon, called qemu-vmsr-helper, is added in the tools folder.
-The daemon is very similar to the qemu-pr-helper in terms of operation.
-However comminucation protocol is simplier and requires only one
-coroutine to handle the peer request. Only the RAPL MSRs are allowed to
-be read via the helper.
+Signed-off-by: Anthony Harivel <aharivel@redhat.com>
+---
+ include/io/channel.h | 20 ++++++++++++++++++++
+ io/channel-socket.c  | 17 +++++++++++++++++
+ io/channel.c         | 12 ++++++++++++
+ 3 files changed, 49 insertions(+)
 
-And to finish the last commit adds all the RAPL MSR in KVM/QEMU like the
-v1 but, instead of reading directly the MSR via readmsr(), reads the
-value through a socket comminucation. 
-
-This is a follow-up of the V1 sent mid-june [2].
-
-v1 -> v2
---------
-
-- To overcome the CVE-2020-8694 a socket communication is created
-  to a priviliged helper
-
-- Add the priviliged helper (qemu-vmsr-helper)
-
-- Add SO_PEERCRED in qio channel socket
-
-RFC -> v1
----------
-
-- Add vmsr_* in front of all vmsr specific function
-
-- Change malloc()/calloc()... with all glib equivalent
-
-- Pre-allocate all dynamic memories when possible
-
-- Add a Documentation of implementation, limitation and usage
-
-Regards,
-Anthony
-
-[1]: https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/advisory-guidance/running-average-power-limit-energy-reporting.html#cve-2020-8694
-[2]: https://lore.kernel.org/qemu-devel/20230616140830.316655-1-aharivel@redhat.com/
-
-Anthony Harivel (3):
-  qio: add support for SO_PEERCRED for socket channel
-  tools: build qemu-vmsr-helper
-  Add support for RAPL MSRs in KVM/Qemu
-
- accel/kvm/kvm-all.c             |  26 ++
- docs/specs/index.rst            |   1 +
- docs/specs/rapl-msr.rst         | 131 +++++++++
- docs/tools/index.rst            |   1 +
- docs/tools/qemu-vmsr-helper.rst |  89 ++++++
- include/io/channel.h            |  20 ++
- include/sysemu/kvm_int.h        |  12 +
- io/channel-socket.c             |  17 ++
- io/channel.c                    |  12 +
- meson.build                     |   5 +
- target/i386/cpu.h               |   8 +
- target/i386/kvm/kvm.c           | 308 +++++++++++++++++++
- target/i386/kvm/meson.build     |   1 +
- target/i386/kvm/vmsr_energy.c   | 278 +++++++++++++++++
- target/i386/kvm/vmsr_energy.h   |  82 ++++++
- tools/i386/qemu-vmsr-helper.c   | 507 ++++++++++++++++++++++++++++++++
- tools/i386/rapl-msr-index.h     |  28 ++
- 17 files changed, 1526 insertions(+)
- create mode 100644 docs/specs/rapl-msr.rst
- create mode 100644 docs/tools/qemu-vmsr-helper.rst
- create mode 100644 target/i386/kvm/vmsr_energy.c
- create mode 100644 target/i386/kvm/vmsr_energy.h
- create mode 100644 tools/i386/qemu-vmsr-helper.c
- create mode 100644 tools/i386/rapl-msr-index.h
-
+diff --git a/include/io/channel.h b/include/io/channel.h
+index 5f9dbaab65b0..99c02d61c3d9 100644
+--- a/include/io/channel.h
++++ b/include/io/channel.h
+@@ -149,6 +149,9 @@ struct QIOChannelClass {
+                                   void *opaque);
+     int (*io_flush)(QIOChannel *ioc,
+                     Error **errp);
++    void (*io_peercred)(QIOChannel *ioc,
++                        struct ucred *cred,
++                        Error **errp);
+ };
+ 
+ /* General I/O handling functions */
+@@ -898,4 +901,21 @@ int coroutine_mixed_fn qio_channel_writev_full_all(QIOChannel *ioc,
+ int qio_channel_flush(QIOChannel *ioc,
+                       Error **errp);
+ 
++/**
++ * qio_channel_get_peercred:
++ * @ioc: the channel object
++ * @cred: pointer to ucred struct
++ * @errp: pointer to a NULL-initialized error object
++ *
++ * Returns the credentials of the peer process connected to this socket.
++ *
++ * The use of this function is possible only for connected
++ * AF_UNIX stream sockets and for AF_UNIX stream and datagra
++ * socket pairs.
++ *
++ */
++void qio_channel_get_peercred(QIOChannel *ioc,
++                              struct ucred *cred,
++                              Error **errp);
++
+ #endif /* QIO_CHANNEL_H */
+diff --git a/io/channel-socket.c b/io/channel-socket.c
+index 02ffb51e9957..b8285eb8ae49 100644
+--- a/io/channel-socket.c
++++ b/io/channel-socket.c
+@@ -836,6 +836,22 @@ qio_channel_socket_set_cork(QIOChannel *ioc,
+     socket_set_cork(sioc->fd, v);
+ }
+ 
++static void
++qio_channel_socket_get_peercred(QIOChannel *ioc,
++                                struct ucred *cred,
++                                Error **errp)
++{
++    QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
++    socklen_t len = sizeof(struct ucred);
++    Error *err = NULL;
++
++    if (getsockopt(sioc->fd,
++               SOL_SOCKET, SO_PEERCRED,
++               cred, &len) == -1) {
++        error_setg_errno(&err, errno, "Unable to get peer credentials");
++        error_propagate(errp, err);
++    }
++}
+ 
+ static int
+ qio_channel_socket_close(QIOChannel *ioc,
+@@ -933,6 +949,7 @@ static void qio_channel_socket_class_init(ObjectClass *klass,
+ #ifdef QEMU_MSG_ZEROCOPY
+     ioc_klass->io_flush = qio_channel_socket_flush;
+ #endif
++    ioc_klass->io_peercred = qio_channel_socket_get_peercred;
+ }
+ 
+ static const TypeInfo qio_channel_socket_info = {
+diff --git a/io/channel.c b/io/channel.c
+index 86c5834510ff..6dccccba5242 100644
+--- a/io/channel.c
++++ b/io/channel.c
+@@ -490,6 +490,18 @@ void qio_channel_set_cork(QIOChannel *ioc,
+     }
+ }
+ 
++void qio_channel_get_peercred(QIOChannel *ioc,
++                              struct ucred *cred,
++                              Error **errp)
++{
++    QIOChannelClass *klass = QIO_CHANNEL_GET_CLASS(ioc);
++
++    if (!klass->io_peercred) {
++        error_setg(errp, "Channel does not support random access");
++        return;
++    }
++    klass->io_peercred(ioc, cred, errp);
++}
+ 
+ off_t qio_channel_io_seek(QIOChannel *ioc,
+                           off_t offset,
 -- 
 2.41.0
 
