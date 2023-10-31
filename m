@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F577DD6DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:02:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D1C7DD6FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:17:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxuvk-0001dw-3A; Tue, 31 Oct 2023 16:01:40 -0400
+	id 1qxvAK-0006jh-7i; Tue, 31 Oct 2023 16:16:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxuvg-0001c1-Q2
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:01:36 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxuvf-0000Vv-8D
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:01:36 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1cac80292aeso41819475ad.1
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698782493; x=1699387293; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dyHW+IzvVO/X8u8bLfdCHecuwVEMEMcJx3Qp6+W4j+M=;
- b=gY5EuEkb+gOJYQWiyihDKhKWd1LFr8Jzc1OM+Y7vuEGczKq2jjZRQFDiFY4zukwJTu
- 26HdiTMzNyBStq3lvPzTncZG9KeGQZJhiBjp6oxcyndbicstqLOpB3Q9pDvfa6FQmE+q
- zYdNKIT1KCiD3ukQNbPwRB/qdBsbs1KmpisiWsKovIImjhRBssPcmBjJZy+UuabOxEsa
- 7OA10/1KE/TVIvvyoEpIDWHn+SgpLQhacoVtM4iP7Bhxo4eJz1iJON2e7QQNGWs+Btoe
- JL/gxO7O1EjYW1bOEUTYLp928ClDP9o5A1tWDQkNauT2A42lpuSh+zpXzGDOBshol7yz
- Gcew==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxvAI-0006jW-WF
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:16:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qxvAH-00030E-BQ
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:16:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698783399;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yOgoBxE4nsw317C6pSx6aqlazhPisf2NS0K6nEMNNbI=;
+ b=IRijgHIvFkhbBC+gvGHvAq0dNB+jGWv4eGuuWKhPclaDtDFpZ/ZQz/O2/mOIJw9dJABi90
+ F8JpWkGnZ7dKCFyDEcC1BUmJeRPxSP2mNO3tjRx6L33sA3d/yC8Ad47Q7J1cCMZomIojAI
+ ZQglfKvdhF0u1lEhBNyZM/i21cH5+pk=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-9MeUIar8OKym-QI1SZdZFg-1; Tue, 31 Oct 2023 16:16:38 -0400
+X-MC-Unique: 9MeUIar8OKym-QI1SZdZFg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7789cde7421so63041585a.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:16:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698782493; x=1699387293;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dyHW+IzvVO/X8u8bLfdCHecuwVEMEMcJx3Qp6+W4j+M=;
- b=p5IWxqjnZa4faGAjLIc2Meht+l23NWMbFC/2AY/TKXa3ORuvCT7s3MKx4cSaeFzUVe
- 1YeQ/By7LRDrridS+uulXtbJrT3vzDRcUU86XwZ8cpL1admuxiYK8TkcZqAwSJPQ3gI4
- Kuq9XHzo6lrQKnza6ecKWUEugJolIIDkoYrrm/S56b5UZPjXL4pZN66ddnEq/rJRi7IG
- rb2UaxiYLWUvlpuNd6zdYn+OtTv//OL7o81jOwuNmLEorFaizYlxSjzMwTXF2m/e5bne
- 30Tn8S93kdA5W+RebDxzif5Aa0jZ111zjKJIIBDtP6ufTSA2Lk5yGSvOAFthCoNYn6Ee
- uWMw==
-X-Gm-Message-State: AOJu0YyglNL8OinkIUTCt4qBVmd+ob6YdLYIw3oBmGMSIcLSAngKT2Rw
- 4ncO3+0ph6DhLJ5KFqX3eCHkyDw/b1tqtD4zUVo=
-X-Google-Smtp-Source: AGHT+IEeScQgXqHaRZO++zj5bw4RLX4m3PJHvvlpiG4VzogPZury57siW4tUG/heDLHtKiJA2jwWYA==
-X-Received: by 2002:a17:903:1053:b0:1cc:31a7:88cf with SMTP id
- f19-20020a170903105300b001cc31a788cfmr6782682plc.40.1698782492863; 
- Tue, 31 Oct 2023 13:01:32 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- w15-20020a1709027b8f00b001c73701bd17sm1685236pll.4.2023.10.31.13.01.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 13:01:32 -0700 (PDT)
-Message-ID: <0f79c025-25db-48a1-a16e-b3fd5e07d98e@linaro.org>
-Date: Tue, 31 Oct 2023 13:01:30 -0700
+ d=1e100.net; s=20230601; t=1698783098; x=1699387898;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yOgoBxE4nsw317C6pSx6aqlazhPisf2NS0K6nEMNNbI=;
+ b=r5Dedsx5uV/y7cKd3wSfIF1jqM3nTCyLPUyWUvgTmKIFeRhJft6IxxJcIV5Nhef59y
+ jhMCwi2D+iqpMI2lDULh3ApOsncQTJv+4easrED7g78uAbePVwpHeqCK6MaVDPCeGm11
+ 9A1+PjA1TvYX8eKJmO7N5cJwUS3hrzBmoy3NdCIEXVWOz2y5LkWGNXf+Yx8fk7QjUxkP
+ xDvP5o8FURCMb5OqRHV9AAMNZWnMRTedMHmH8TOX2zu1whrrmcOuuwaEAtkx/B+D+xcr
+ mpKJZJNzqG0G8ecuUED3HLgKLGSjKeubnkuWOxEfqmWi7wyrSpkC1gSVdkiPsyzS4Sby
+ /bJg==
+X-Gm-Message-State: AOJu0Yz2DVA0IDuxCy0hZVp3JRKnsUqCZSms89X3gApxcXxDoG/5GbbC
+ YVoWGLF5w8Vah7lI66BBchGPGdRKSwrnPjGErt4c0GBKv+VTLv9FwiVbE/lRVHSXDO4tv3a4GRH
+ hbgR5tXXct0hDzn8=
+X-Received: by 2002:a05:620a:26a4:b0:773:ad1f:3d5b with SMTP id
+ c36-20020a05620a26a400b00773ad1f3d5bmr13158431qkp.0.1698783098070; 
+ Tue, 31 Oct 2023 13:11:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGY+TJTKB2Dea77tZ34iog8QiMAzdY/yXuYbr4uuMT0cwCu11ymNeEJec3iwOwIqpxLzkAmgg==
+X-Received: by 2002:a05:620a:26a4:b0:773:ad1f:3d5b with SMTP id
+ c36-20020a05620a26a400b00773ad1f3d5bmr13158418qkp.0.1698783097734; 
+ Tue, 31 Oct 2023 13:11:37 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ a14-20020a05620a02ee00b0076f21383b6csm786754qko.112.2023.10.31.13.11.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 13:11:37 -0700 (PDT)
+Date: Tue, 31 Oct 2023 16:11:35 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v2 19/29] migration/multifd: Add outgoing QIOChannelFile
+ support
+Message-ID: <ZUFfd8GmSY3XilZv@x1n>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-20-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Missing CASA instruction handling for SPARC qemu-user
-Content-Language: en-US
-To: Luca Bonissi <qemu@bonslack.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-References: <4a785697-de37-3a3e-bf38-b20044cb56af@bonslack.org>
- <b542dcc6-8e74-4790-d8a2-d6c6e60a3a57@bonslack.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b542dcc6-8e74-4790-d8a2-d6c6e60a3a57@bonslack.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231023203608.26370-20-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,25 +100,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/18/23 09:09, Luca Bonissi wrote:
-> On qemu-sparc (user-space), the CASA instruction is not handled for SPARC32 even if the 
-> selected cpu (e.g. LEON3) supports it.
+On Mon, Oct 23, 2023 at 05:35:58PM -0300, Fabiano Rosas wrote:
+> Allow multifd to open file-backed channels. This will be used when
+> enabling the fixed-ram migration stream format which expects a
+> seekable transport.
+> 
+> The QIOChannel read and write methods will use the preadv/pwritev
+> versions which don't update the file offset at each call so we can
+> reuse the fd without re-opening for every channel.
+> 
+> Note that this is just setup code and multifd cannot yet make use of
+> the file channels.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  migration/file.c      | 64 +++++++++++++++++++++++++++++++++++++++++--
+>  migration/file.h      | 10 +++++--
+>  migration/migration.c |  2 +-
+>  migration/multifd.c   | 14 ++++++++--
+>  migration/options.c   |  7 +++++
+>  migration/options.h   |  1 +
+>  6 files changed, 90 insertions(+), 8 deletions(-)
+> 
+> diff --git a/migration/file.c b/migration/file.c
+> index cf5b1bf365..93b9b7bf5d 100644
+> --- a/migration/file.c
+> +++ b/migration/file.c
+> @@ -17,6 +17,12 @@
+>  
+>  #define OFFSET_OPTION ",offset="
+>  
+> +static struct FileOutgoingArgs {
+> +    char *fname;
+> +    int flags;
+> +    int mode;
+> +} outgoing_args;
+> +
+>  /* Remove the offset option from @filespec and return it in @offsetp. */
+>  
+>  static int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
+> @@ -36,13 +42,62 @@ static int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
+>      return 0;
+>  }
+>  
+> +static void qio_channel_file_connect_worker(QIOTask *task, gpointer opaque)
+> +{
+> +    /* noop */
+> +}
+> +
+> +static void file_migration_cancel(Error *errp)
+> +{
+> +    MigrationState *s;
+> +
+> +    s = migrate_get_current();
+> +
+> +    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
+> +                      MIGRATION_STATUS_FAILED);
 
-This should be fixed now, with
+This doesn't sound right to set FAILED here, then call cancel() afterwards
+(which will try to set it to CANCELLING).
 
-commit d0a11d25f0332dbaeb3a4f733a5cfb23ed40413d
-Author: Richard Henderson <richard.henderson@linaro.org>
-Date:   Thu Oct 5 00:09:36 2023 -0700
+For socket based, multifd sets error and kick main in
+multifd_new_send_channel_cleanup().  Can it be done similarly, rather than
+calling migration_cancel()?
 
-     target/sparc: Move CASA, CASXA to decodetree
+> +    migration_cancel(errp);
+> +}
 
-     Remove gen_cas_asi, gen_casx_asi.
-     Rename gen_cas_asi0 to gen_cas_asi.
+-- 
+Peter Xu
 
-     Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-     Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-     Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
 
