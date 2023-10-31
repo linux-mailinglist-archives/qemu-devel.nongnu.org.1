@@ -2,176 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5897DCB2C
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 11:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D35F47DCB69
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:08:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxmMp-00041P-MG; Tue, 31 Oct 2023 06:53:04 -0400
+	id 1qxma5-0000cB-Bi; Tue, 31 Oct 2023 07:06:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qxmMn-00040i-5K
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:53:01 -0400
-Received: from mgamail.intel.com ([192.55.52.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qxmMk-0002V2-VS
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 06:53:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698749579; x=1730285579;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=RH+ThCM85wAhryIccwKiPNaMKTYAoGfW1aYEzQ5kDH0=;
- b=HNuHA2tDILJLv6FyIdXo8mnjCLSSnoBfzc+y6eXW834/vi5AyVlhTGsR
- tTo/P1UXmZxOzpHAvAaii06tkZckKv17bOvDHE4O0fnicVKF1GIxFcSs+
- Q0Rq7GuRg50pHDCP7gh9cjk8vuJX0lz5rHQDpicWa9KroHP3p9/YfldLL
- 3Xe3+OkSZkOA89LG/nFC3xpiQ2ak2dNcgucgU9RetwVjRFBWU3bv5IzqA
- hFIjx7m4FSzQMw/BKqWwGu0HyjTFMMZywZhsv7FcD++1OFuHOE/kDNft+
- Pnl/SKXIH9wfH8AM6H1rpnFbiZqqFqZV+S6fRKjKI/hjG6NU9ZBKG9I9Z A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10879"; a="368468507"
-X-IronPort-AV: E=Sophos;i="6.03,265,1694761200"; d="scan'208";a="368468507"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2023 03:52:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10879"; a="826372349"
-X-IronPort-AV: E=Sophos;i="6.03,265,1694761200"; d="scan'208";a="826372349"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 31 Oct 2023 03:52:53 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 31 Oct 2023 03:52:52 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Tue, 31 Oct 2023 03:52:52 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Tue, 31 Oct 2023 03:52:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UZIe4hyGiJE3WmJd7TMnQUGNQr3jWIU0cHDQ6XuIW76UGWrQ4EijgCB6TbH+YQsJ3HZe6dhvhc8L6jFUfUgfuLx6MZkAUh/n4sINMYVXs9hC8O0gA+Co6l9VFCzF1pSsrJTzlwsVCErE87p4vFZAhiWeiLxlQNXOJcXJccUk6f3JFS7GPF/srs/r0Cjrju20KBjaMaDWk583iUwgURMU2Cqz3iFFrrGpWcJLI8PTLhSEqZOLJcpDGlUFGmrgUZ4r5CEQkssgvMsusVuYI0fa1lnZVuSzNFm1W6cK3Ito+pJAQ1Xgk3gCWo1TQxycrNXhJ/wvVpbrDBoQT3B0KEPNdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RH+ThCM85wAhryIccwKiPNaMKTYAoGfW1aYEzQ5kDH0=;
- b=VtmqwKr2RuUw1h8UddNKSOhOFmFGHpWNti4Vt1HF9zdr7JtVLlCTA5mxKiv3f8mzzCMQ2HgVzqvmGaGdnve8K4899wvbvZWPZI82uxdse6NQkgMEPrEGaxxIFUbXKR/4GmcZh1fhGAwpbMLB7k0kcb8EqLy1u2HqdyHc+BRdhlPN0dhzFygwL26mJRGqWD/djdUrDsj348L2U81gkCk2eJS/CwcuWwW6Mygan1wO3WWrJPknDx7bDrS2mXbiQkywUESruVj19VWqS1m228h9o3AIhpdSaTPxCexhG+pysuLGop/c1HU1T51i5BnbLdWw9rJAitHEhOVQLUX5C3LPzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by DM8PR11MB5606.namprd11.prod.outlook.com (2603:10b6:8:3c::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.29; Tue, 31 Oct
- 2023 10:52:45 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.6933.028; Tue, 31 Oct 2023
- 10:52:45 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>, "Tian,
- Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
- <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?=
- <marcandre.lureau@redhat.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
- <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Subject: RE: [PATCH v3 23/37] Add iommufd configure option
-Thread-Topic: [PATCH v3 23/37] Add iommufd configure option
-Thread-Index: AQHaB/neVoQG9JjiXEaDeKcK7L7ymrBjoPgAgAAeaaA=
-Date: Tue, 31 Oct 2023 10:52:45 +0000
-Message-ID: <SJ0PR11MB67443A43303B9A570DFB216A92A0A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231026103104.1686921-1-zhenzhong.duan@intel.com>
- <20231026103104.1686921-24-zhenzhong.duan@intel.com>
- <2400c9be-8c0b-415f-90c5-3a04fbdf6744@redhat.com>
-In-Reply-To: <2400c9be-8c0b-415f-90c5-3a04fbdf6744@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|DM8PR11MB5606:EE_
-x-ms-office365-filtering-correlation-id: 2751647d-9562-43a5-9e5b-08dbd9ff83be
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MiFzMzyHnGZ1v3YpBegNf08ReyFpCiNsVr3O4913WS/1b0jRcDpfpuYVMQjB/ceu0NruzNDdY33d7eGkWIvWJUjr7PeASjA3jCavvPJVh3c1ksjkULPNDb4WGZv7+FUrlICwi1CSMHNXAkjXwbvtw9nDglN4VrcyjB8aZ8964LvQjCQM3DUAvhXwRNSVrFa8GGLqOA4aahEpxqzaM1suufJpRhpjn5JNmjsWP6tD6GTPGNPSKh1nx+BYlFJ0uDAPXz/OIppM0Iy03XnQd8SdSoUxEIsfE5aZMDPr15wOeuMOuKvwdpdviN+7LYiRP9r98smp7/+RQ42dLfHMMhmIh5DmfJ2Ee0mp1DR1WZNYxjGgjTmXXjVkf66oFKR0fi7ChTJ1LleqVi0LJB3Mvqfa0nFYEeFpXzeEmkVNlBHoT7LSctbqyfQBRXQa7qwP4SR12qM3etrBEO+zM6N6RTu3UXUbyxo+OyUtp4Cr+dBfFCmPqV/kIHVC526Gzse0wNFz8DDcI0iaNgIomn6E9vYwilHQSG119Sb4L0JKIpULJZYj0/w+TlbAa4cmhrN/uVI62bO1Y56dIS7aaVqoICRlYhqX8GhaZPffTPPoPvoBS4JnHSJGjcWwXEqBmy65meSF
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(366004)(396003)(346002)(39860400002)(376002)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(71200400001)(478600001)(966005)(55016003)(66574015)(26005)(38070700009)(86362001)(122000001)(82960400001)(38100700002)(83380400001)(33656002)(9686003)(7696005)(6506007)(76116006)(41300700001)(64756008)(54906003)(316002)(66556008)(110136005)(66946007)(66446008)(66476007)(7416002)(5660300002)(8936002)(4326008)(8676002)(52536014)(4744005)(2906002)(13296009);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aFkvZEFuWGhoTzRxZWhPcXhpV3JKUTFyc3prdldvNjNZbmpzU2ZWb2dOdTRu?=
- =?utf-8?B?UjUxWkNjWDJJVzdFQXFSVlJ2M0dYN0FPMWxHb3JBaURrZUpoVjZyNmlUVGJW?=
- =?utf-8?B?RGh3aVkxdnl1eWFWZzRDdmNzSDRuNU1qbzVYZU5icFdFbkNwdS9sNnIxODRZ?=
- =?utf-8?B?Wko0Mmx5RmtTSWRycndCWVBkamNGeC92UUJqYVUxMGF0bEU5Q2ZZTzNkSW1J?=
- =?utf-8?B?N00xamVyUDgwZGgrTTN5bEVueUFORGladk5VK1k1cDk5T3hYNURsZm5iNzJV?=
- =?utf-8?B?Ykw0d2VydHBua1NRRFRFeFEwWkRVWUlONTg2bHRXVHRZc05WUnlBVTROMTlQ?=
- =?utf-8?B?SS85TFdZTENTUVpEc0Rnb0xtRGN0NXN0WTBoQjM4ZDd2ejQxcDRoMEFXYTY2?=
- =?utf-8?B?aUlLV0U5L0JYdER6VW9YNEIvbkpQeXdydCtBUjRudXJHV0ZXeGdkK05EU21u?=
- =?utf-8?B?UENQQVNxRGRneVpqcFBLZkhVeVlQNXJxS0xtWXJ3VnBleEdPRjViTkR4eTJM?=
- =?utf-8?B?dDFTZXVmWGRRNlNMK1FHNDk3bFlseVdxL2h2TWZ1K1V4UHkvRlZUYTJmcTNl?=
- =?utf-8?B?OGJKa0cyazNic3NRczRXYmlVZXlkNUFHUjZkOFBtaSs1a1Z5akpDMnFNREVq?=
- =?utf-8?B?Y0JFTm5oMXJ3VjJyZDl6K1hlMVB4bU9mZ1RhVVpEam11MzF6TU96ZGx1b1dX?=
- =?utf-8?B?WTI0MExXQWVtY2liTWNiSjB5REltd2xtakVlRmFEbk1vdlcyNFRjQkhmbmR1?=
- =?utf-8?B?Q2crWU5FbCsrWUxPZGovNmtOeGg5a1RiRjFRUDBVTjRONTJRMWZBZ3g3SGNR?=
- =?utf-8?B?K3B4aGx5dVlRa2lvNm5wSEo4aWxUQm5Ea3BCbjJXaE9FZkVXY0VFMTJ3MWhk?=
- =?utf-8?B?WXhjTXhMSGVmQlNYenJwY2FHd20vM2w1eldiOS9FdlArejRMdENpZDFsaE80?=
- =?utf-8?B?OGgwWjdFb2VGOWU1VFFnWUF5M3FubnhyRHdkREJSblZjTEpYN0VrUEhLaE5M?=
- =?utf-8?B?WHA0YzNhL1BKb2ZkNUwrNDBheXFjbzd2a3RGSGxpT1VReDFwNmFURXJWMzQr?=
- =?utf-8?B?bHl1b1o0NnFuZ3h0bjhiN3FYTFpCNUFrM0ZVT1g0WG13VG5uZkFHQUJwYW5O?=
- =?utf-8?B?RU8xWGJHQzFqeTh2eXVPeFpmR2V0aUFIYWJOS0dBWGxGYlRQUGZnUVNobnhC?=
- =?utf-8?B?eFlQaEY3OHlheldWUTlTWU5Rck1BRzlqbTlISWRhY2VXRHB1QzBKa1Jya092?=
- =?utf-8?B?RC9yUSthMWpmSDB4RUpnVWU3c0dKMHdEMnd5MmVpdlZMbUxHSENLL2Z6RzNw?=
- =?utf-8?B?TG8yNWh6anlaSlNSZXc4QkpXbERRQmhUS3NJQ1lCL2hhYWxQUVpxQ3IyZENj?=
- =?utf-8?B?NWo3TnRuOVdNVlF0MytrZlAwa2p3TkxFREVNa29MWDVJcEU1dW9BQ2locE5S?=
- =?utf-8?B?dU1kLzNadjdhNFZHVDdrYUYwbWhUejdtT0llK1VXRVRsZlJwMDJGaUxvWHdM?=
- =?utf-8?B?YjNpdGYrajRhd01WZTdTdFNueEhjSTM0bU4wbkJoQ1A4QTBCWjR4Mk03cmlx?=
- =?utf-8?B?M1FDZEdmVHRYM3ppZ3lBc2dvdXVoQVJEMVh3TEg4NGcybWQ4TVpBczkwOXp5?=
- =?utf-8?B?S2FHT3dUR1pJOE4wVmtvOUNScG9nQXBHbFo4dU1ldlZkcndXZG55TWVQUkFl?=
- =?utf-8?B?SmFYelBFbHJKZWljNzJINWNmUHU1ZkFOL2M0Y1FCb05abGI5TTNHR29UY004?=
- =?utf-8?B?TkRmRDBGc2FNY0trZE9RU3FUVm16emtjdnExRGlnNlAzVXMwUWRVNmdiNS91?=
- =?utf-8?B?WjBUOUJVSkhOcXIwZjNnbkF2eVNtU0FkYU14RjhHek5vc3M4azJVVmtpUE1m?=
- =?utf-8?B?a1hUcm9WQTBxUWdib3NRTUJ0RzdDTHovbXJEdFpNYUVBRm9ROC9EZi9ET1RD?=
- =?utf-8?B?b3FZVFJGdHBzUzhKNnIxZS94bndZYVExNElNVG9JN05TQUorTlNFclNOODkw?=
- =?utf-8?B?a0pnemxRU3ZQS0JONWFpR25DT21hVEtRVG9NbW1LU1pUOTZjdjFiTHRTaytn?=
- =?utf-8?B?eHpEQzg5VTBIekd3SGx0elBtcWYzNHpNaFMvYnBZMHg0MnZMQmhiM3o5U1Bi?=
- =?utf-8?Q?KGnUmaQKhsXQKoL0yxT/EOFRz?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qxma1-0000XQ-LQ
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:06:42 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qxmZr-0005ty-MH
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:06:40 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8AxXOqv30Bll+41AA--.12701S3;
+ Tue, 31 Oct 2023 19:06:23 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cxjd6r30BlRG03AA--.56453S3; 
+ Tue, 31 Oct 2023 19:06:21 +0800 (CST)
+Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
+To: Jiajie Chen <c@jia.je>, Richard Henderson <richard.henderson@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: git@xen0n.name, bibo mao <maobibo@loongson.cn>
+References: <20231023153029.269211-2-c@jia.je>
+ <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
+ <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
+ <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
+ <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
+ <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
+ <6482c6cf-1f4b-a7b9-d106-4c687360e810@loongson.cn>
+ <ae3088b6-f472-4dd2-a5bc-9effb61ffaa0@jia.je>
+ <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
+ <603b8709-4288-4268-abd4-642366b0b7e2@jia.je>
+ <798c78df-cc9d-78dd-5bbd-0de2ead0eb1f@loongson.cn>
+ <5cffe61f-6aac-4765-a39b-68f1c90daa09@jia.je>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <cd422828-dce0-f54e-5c05-e6afd7c850a6@loongson.cn>
+Date: Tue, 31 Oct 2023 19:06:19 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2751647d-9562-43a5-9e5b-08dbd9ff83be
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2023 10:52:45.2777 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZWMGPDOQqsxzQ6TXU2JZ7bP8xefO7rewb/aRMjV37C2/nBUuGqd2O1gkchO/BKfzoh37GnNi9/mkAk18PThp3zQqzYuIsUirtmxgBHr3bhY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR11MB5606
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.151;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <5cffe61f-6aac-4765-a39b-68f1c90daa09@jia.je>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Cxjd6r30BlRG03AA--.56453S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3WF4xGr1xGrWDKr1DGr1fXwc_yoW7KFW3pF
+ ykJF17tr4UJr1kJr4jqr1UJry5tr47Jr1UXr1UtFy8Gr1qvr1Utr1UJr1Y9FyUXw48Wr1U
+ JryUJry7ZF15JabCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
+ 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcyxR
+ UUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.441,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -187,15 +91,214 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQWxsLA0KDQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBDw6lkcmljIExl
-IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+DQo+U2VudDogVHVlc2RheSwgT2N0b2JlciAzMSwgMjAy
-MyA0OjU5IFBNDQo+U3ViamVjdDogUmU6IFtQQVRDSCB2MyAyMy8zN10gQWRkIGlvbW11ZmQgY29u
-ZmlndXJlIG9wdGlvbg0KPg0KPk9uIDEwLzI2LzIzIDEyOjMwLCBaaGVuemhvbmcgRHVhbiB3cm90
-ZToNCj4+IFRoaXMgYWRkcyAiLS1lbmFibGUtaW9tbXVmZC8tLWRpc2FibGUtaW9tbXVmZCIgdG8g
-ZW5hYmxlIG9yIGRpc2FibGUNCj4+IGlvbW11ZmQgc3VwcG9ydCwgZW5hYmxlZCBieSBkZWZhdWx0
-Lg0KPg0KPkl0IHNob3VsZCBiZSBkaXNhYmxlZCBieSBkZWZhdWx0IGZvciBQUEMuDQoNCkkgZGlk
-bid0IGZpbmQgaG93IHRvIGRpc2FibGUgaW9tbXVmZCBmb3IgUFBDIGFmdGVyIGRpZ2dpbmcgaW4g
-aHR0cHM6Ly93d3cucWVtdS5vcmcvZG9jcy9tYXN0ZXIvZGV2ZWwva2NvbmZpZy5odG1sDQoNCkFw
-cHJlY2lhdGUgYW55IGd1aWRlIG9yIGhlbHAhIFRoYW5rcyBpbiBhZHZhbmNlLg0KDQpCUnMuDQpa
-aGVuemhvbmcgDQo=
+在 2023/10/31 下午5:13, Jiajie Chen 写道:
+>
+> On 2023/10/31 17:11, gaosong wrote:
+>> 在 2023/10/30 下午7:54, Jiajie Chen 写道:
+>>>
+>>> On 2023/10/30 16:23, gaosong wrote:
+>>>> 在 2023/10/28 下午9:09, Jiajie Chen 写道:
+>>>>>
+>>>>> On 2023/10/26 14:54, gaosong wrote:
+>>>>>> 在 2023/10/26 上午9:38, Jiajie Chen 写道:
+>>>>>>>
+>>>>>>> On 2023/10/26 03:04, Richard Henderson wrote:
+>>>>>>>> On 10/25/23 10:13, Jiajie Chen wrote:
+>>>>>>>>>> On 2023/10/24 07:26, Richard Henderson wrote:
+>>>>>>>>>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, 
+>>>>>>>>>>> TCGv_i128 block.
+>>>>>>>>>>> See target/ppc/translate.c, gen_stqcx_.
+>>>>>>>>>>
+>>>>>>>>>> The situation here is slightly different: aarch64 and ppc64 
+>>>>>>>>>> have both 128-bit ll and sc, however LoongArch v1.1 only has 
+>>>>>>>>>> 64-bit ll and 128-bit sc.
+>>>>>>>>
+>>>>>>>> Ah, that does complicate things.
+>>>>>>>>
+>>>>>>>>> Possibly use the combination of ll.d and ld.d:
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> ll.d lo, base, 0
+>>>>>>>>> ld.d hi, base, 4
+>>>>>>>>>
+>>>>>>>>> # do some computation
+>>>>>>>>>
+>>>>>>>>> sc.q lo, hi, base
+>>>>>>>>>
+>>>>>>>>> # try again if sc failed
+>>>>>>>>>
+>>>>>>>>> Then a possible implementation of gen_ll() would be: align 
+>>>>>>>>> base to 128-bit boundary, read 128-bit from memory, save 
+>>>>>>>>> 64-bit part to rd and record whole 128-bit data in llval. 
+>>>>>>>>> Then, in gen_sc_q(), it uses a 128-bit cmpxchg.
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> But what about the reversed instruction pattern: ll.d hi, 
+>>>>>>>>> base, 4; ld.d lo, base 0?
+>>>>>>>>
+>>>>>>>> It would be worth asking your hardware engineers about the 
+>>>>>>>> bounds of legal behaviour. Ideally there would be some very 
+>>>>>>>> explicit language, similar to
+>>>>>>>
+>>>>>>>
+>>>>>>> I'm a community developer not affiliated with Loongson. Song 
+>>>>>>> Gao, could you provide some detail from Loongson Inc.?
+>>>>>>>
+>>>>>>>
+>>>>>>
+>>>>>> ll.d   r1, base, 0
+>>>>>> dbar 0x700          ==> see 2.2.8.1
+>>>>>> ld.d  r2, base,  8
+>>>>>> ...
+>>>>>> sc.q r1, r2, base
+>>>>>
+>>>>>
+>>>>> Thanks! I think we may need to detect the ll.d-dbar-ld.d sequence 
+>>>>> and translate the sequence into one tcg_gen_qemu_ld_i128 and split 
+>>>>> the result into two 64-bit parts. Can do this in QEMU?
+>>>>>
+>>>>>
+>>>> Oh, I'm not sure.
+>>>>
+>>>> I think we just need to implement sc.q. We don't need to care about 
+>>>> 'll.d-dbar-ld.d'. It's just like 'll.q'.
+>>>> It needs the user to ensure that .
+>>>>
+>>>> ll.q' is
+>>>> 1) ll.d r1 base, 0 ==> set LLbit, load the low 64 bits into r1
+>>>> 2) dbar 0x700　
+>>>> 3) ld.d r2 base, 8 ==> load the high 64 bits to r2
+>>>>
+>>>> sc.q needs to
+>>>> 1) Use 64-bit cmpxchg.
+>>>> 2) Write 128 bits to memory.
+>>>
+>>> Consider the following code:
+>>>
+>>>
+>>> ll.d r1, base, 0
+>>>
+>>> dbar 0x700
+>>>
+>>> ld.d r2, base, 8
+>>>
+>>> addi.d r2, r2, 1
+>>>
+>>> sc.q r1, r2, base
+>>>
+>>>
+>>> We translate them into native code:
+>>>
+>>>
+>>> ld.d r1, base, 0
+>>>
+>>> mv LLbit, 1
+>>>
+>>> mv LLaddr, base
+>>>
+>>> mv LLval, r1
+>>>
+>>> dbar 0x700
+>>>
+>>> ld.d r2, base, 8
+>>>
+>>> addi.d r2, r2, 1
+>>>
+>>> if (LLbit == 1 && LLaddr == base) {
+>>>
+>>>     cmpxchg addr=base compare=LLval new=r1
+>>>
+>>>     128-bit write {r2, r1} to base if cmpxchg succeeded
+>>>
+>>> }
+>>>
+>>> set r1 if sc.q succeeded
+>>>
+>>>
+>>>
+>>> If the memory content of base+8 has changed between ld.d r2 and 
+>>> addi.d r2, the atomicity is not guaranteed, i.e. only the high part 
+>>> has changed, the low part hasn't.
+>>>
+>>>
+>> Sorry,  my mistake.  need use cmpxchg_i128.   See 
+>> target/arm/tcg/translate-a64.c   gen_store_exclusive().
+>>
+>> gen_scq(rd, rk, rj)
+>> {
+>>      ...
+>>     TCGv_i128 t16 = tcg_temp_new_i128();
+>>     TCGv_i128 c16 = tcg_temp_new_i128();
+>>     TCGv_i64 low = tcg_temp_new_i64();
+>>     TCGv_i64 high= tcg_temp_new_i64();
+>>     TCGv_i64 temp = tcg_temp_new_i64();
+>>
+>>     tcg_gen_concat_i64_i128(t16, cpu_gpr[rd],  cpu_gpr[rk]));
+>>
+>>     tcg_gen_qemu_ld(low, cpu_lladdr, ctx->mem_idx,  MO_TEUQ);
+>>     tcg_gen_addi_tl(temp, cpu_lladdr, 8);
+>>     tcg_gen_mb(TCG_BAR_SC | TCG_MO_LD_LD);
+>>     tcg_gen_qemu_ld(high, temp, ctx->mem_idx, MO_TEUQ);
+>
+>
+> The problem is that, the high value read here might not equal to the 
+> previously read one in ll.d r2, base 8 instruction.
+I think dbar 0x7000 ensures that the 2 loads in 'll.q' are a 128bit 
+atomic operation.
+
+Thanks.
+Song Gao
+>> tcg_gen_concat_i64_i128(c16, low,  high);
+>>
+>>     tcg_gen_atomic_cmpxchg_i128(t16, cpu_lladdr, c16, t16, 
+>> ctx->mem_idx, MO_128);
+>>
+>>     ...
+>> }
+>>
+>> I am not sure this is right.
+>>
+>> I think Richard can give you more suggestions. @Richard
+>>
+>> Thanks.
+>> Song Gao
+>>>
+>>>> Thanks.
+>>>> Song Gao
+>>>>>>
+>>>>>>
+>>>>>> For this series,
+>>>>>> I think we need set the new config bits to the 'max cpu', and 
+>>>>>> change linux-user/target_elf.h ''any' to 'max', so that we can 
+>>>>>> use these new instructions on linux-user mode.
+>>>>>
+>>>>> I will work on it.
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> Thanks
+>>>>>> Song Gao
+>>>>>>>>
+>>>>>>>> https://developer.arm.com/documentation/ddi0487/latest/
+>>>>>>>> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage 
+>>>>>>>> restrictions
+>>>>>>>>
+>>>>>>>> But you could do the same thing, aligning and recording the 
+>>>>>>>> entire 128-bit quantity, then extract the ll.d result based on 
+>>>>>>>> address bit 6.  This would complicate the implementation of 
+>>>>>>>> sc.d as well, but would perhaps bring us "close enough" to the 
+>>>>>>>> actual architecture.
+>>>>>>>>
+>>>>>>>> Note that our Arm store-exclusive implementation isn't quite in 
+>>>>>>>> spec either.  There is quite a large comment within 
+>>>>>>>> translate-a64.c store_exclusive() about the ways things are not 
+>>>>>>>> quite right.  But it seems to be close enough for actual usage 
+>>>>>>>> to succeed.
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> r~
+>>>>>>
+>>>>
+>>
+
 
