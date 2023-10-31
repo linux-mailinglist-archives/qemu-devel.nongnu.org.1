@@ -2,82 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7767D7DCD98
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 860717DCDA7
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 14:18:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxocX-0001E4-AT; Tue, 31 Oct 2023 09:17:25 -0400
+	id 1qxodQ-0001wy-VZ; Tue, 31 Oct 2023 09:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxocW-0001Dt-3s
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:17:24 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxodP-0001wW-8L
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:18:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxocU-0000kV-IR
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:17:23 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxodN-0000vq-Vx
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 09:18:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698758240;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=beC5BLJKM1nBI5lf8dQOEPojvyyVi7ui2FAWrkjKJ7g=;
- b=VVLW7hIo65Okfznar/VT8CXyWEVQpomw7ioIfFLC7+BvHJEAlp3ft4aNn0pVBHnQ5t8iAn
- kFSecTUnSRTOGKTAKUOk4ocVk04JQZ4n0MZA1SpiWo2v0cdZodqREVQ9Pp+D64vTbxZi4i
- Xfv6AIGdypmEHDm3JchkU372hcVk6ro=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-BPykqNriP5SjJVClwTRybQ-1; Tue, 31 Oct 2023 09:17:14 -0400
-X-MC-Unique: BPykqNriP5SjJVClwTRybQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-507b9078aaaso6588154e87.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 06:17:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698758233; x=1699363033;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=beC5BLJKM1nBI5lf8dQOEPojvyyVi7ui2FAWrkjKJ7g=;
- b=uY7vveLMo5Wn9yTZ66vAAGjrb57jPgin81XfWVEUi3BdvMwii0W8ZGMHGizJMIEooe
- F+0aL8TtAlQ/k+r9t+l/bfFpCBLC+47aJ9vNsGeFVgVsqFu483L8nz5OuBN4FiZ0Cvgg
- SSqNyAz3OUHXx+DY87SYSasKXCl+zubh5YheU4e8tPwKSGAVmXY2Uv6FKPIuY/YymJJ0
- SZ6B1XmN8ngRxcGg2YGCB7D1F99fBLAlGYC6HIW4IOsnKDfuYpON5xvG3jOI1ddDerH9
- MUgx6z1DuOBE8ZGCU/eQp5WGIzu27evPU0JLDh43tVhxg9UelY5W5nY31rmP7j/h5S5L
- CV0A==
-X-Gm-Message-State: AOJu0Yzq2fFcbQOMopkyBK8KRKi/WFrxYUWSCdfMXDYTiuVsYfNgxi7Z
- WJEX46kQWq82Efr/ndrcZvyEIoutbdgMXBvJJXETsYO3TEcn+3E1d7jd30k2IqhFj9CwVxz07Gp
- HJfLhnGqey9fPvZU=
-X-Received: by 2002:a05:6512:3b97:b0:507:9777:a34a with SMTP id
- g23-20020a0565123b9700b005079777a34amr13109999lfv.39.1698758233040; 
- Tue, 31 Oct 2023 06:17:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjzC+GVbXWMzOb1SfaSNVvEXACukP1HirACvndl1Un2Y40exM+cJTCnMSt5C4JghTJJ5I1ng==
-X-Received: by 2002:a05:6512:3b97:b0:507:9777:a34a with SMTP id
- g23-20020a0565123b9700b005079777a34amr13109981lfv.39.1698758232717; 
- Tue, 31 Oct 2023 06:17:12 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- p15-20020a05600c468f00b0040472ad9a3dsm1728861wmo.14.2023.10.31.06.17.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 06:17:11 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>,  "Daniel P.
- Berrange" <berrange@redhat.com>
-Subject: Re: [PATCH V2 1/6] migration: mode parameter
-In-Reply-To: <1698263069-406971-2-git-send-email-steven.sistare@oracle.com>
- (Steve Sistare's message of "Wed, 25 Oct 2023 12:44:24 -0700")
-References: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
- <1698263069-406971-2-git-send-email-steven.sistare@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 31 Oct 2023 14:17:11 +0100
-Message-ID: <8734xr7wyw.fsf@secure.mitica>
+ s=mimecast20190719; t=1698758297;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RQgbpbhe06eH1hJLCzobEgsuAcsHm4lCj9WiyDgKUrE=;
+ b=hE7O+NQ5yNNmEXhbQtBaQwgp3uk2EuPdIgAVQPhXYX1yX7xFmQHsfOmlEhjV46WsmOdiM2
+ 7fTEwrefm8kKNDor6v5YFIc4B41eryPdfANCyVPdTElzioB+I1IHmktgFGYSAsepEv+8jk
+ EX2OPmXb8iE4eE36m638qR73zQTYIGE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-VTdWBVAZPYi4QUxakUH6Mw-1; Tue,
+ 31 Oct 2023 09:18:01 -0400
+X-MC-Unique: VTdWBVAZPYi4QUxakUH6Mw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13B571C0BA5B;
+ Tue, 31 Oct 2023 13:18:00 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.218])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 08BD5492BFC;
+ Tue, 31 Oct 2023 13:17:57 +0000 (UTC)
+Date: Tue, 31 Oct 2023 14:17:56 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-arm@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Gerd Hoffmann <kraxel@redhat.com>, rjones@redhat.com
+Subject: Re: [PATCH 4/7] hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
+Message-ID: <ZUD+hMTWf9DidzDb@redhat.com>
+References: <20231017140150.44995-1-philmd@linaro.org>
+ <20231017140150.44995-5-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231017140150.44995-5-philmd@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -99,22 +85,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> wrote:
-> Create a mode migration parameter that can be used to select alternate
-> migration algorithms.  The default mode is normal, representing the
-> current migration algorithm, and does not need to be explicitly set.
->
-> No functional change until a new mode is added, except that the mode is
-> shown by the 'info migrate' command.
->
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Am 17.10.2023 um 16:01 hat Philippe Mathieu-Daudé geschrieben:
+> Access QOM parent with the proper QOM VIRTIO_SCSI_COMMON() macro.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  hw/scsi/virtio-scsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+> index 45b95ea070..fa53f0902c 100644
+> --- a/hw/scsi/virtio-scsi.c
+> +++ b/hw/scsi/virtio-scsi.c
+> @@ -761,7 +761,7 @@ static void virtio_scsi_fail_cmd_req(VirtIOSCSIReq *req)
+>  
+>  static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCSIReq *req)
+>  {
+> -    VirtIOSCSICommon *vs = &s->parent_obj;
+> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(s);
+>      SCSIDevice *d;
+>      int rc;
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Why is a dynamic cast more "proper" than a static type-safe access, even
+more so in a hot I/O path?
 
-As nobody complained for this on v1, I will consider it done.
+Rich Jones posted a flamegraph the other day that surprised me because
+object_class_dynamic_class_assert() and object_dynamic_cast_assert()
+were shown to be a big part of scsi_req_new(). In the overall
+performance, it's probably dwarved by other issues, but unnecessary
+little things can add up, too.
+
+Kevin
 
 
