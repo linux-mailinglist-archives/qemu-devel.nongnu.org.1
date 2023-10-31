@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FCF7DD0C6
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 386047DD0C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 16:44:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxqtp-0007aL-Im; Tue, 31 Oct 2023 11:43:26 -0400
+	id 1qxquO-0008Dq-GL; Tue, 31 Oct 2023 11:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qxqtd-0007X2-Fx
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:43:13 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxqu5-00081g-Mz
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:43:49 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qxqtb-000489-9y
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:43:13 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4084de32db5so47805545e9.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:43:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qxqtt-0004E0-53
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 11:43:41 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-53db360294fso9964911a12.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 08:43:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1698766990; x=1699371790;
- darn=nongnu.org; 
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=jD1SQvU+oUO4G8UkIikjK8SU39oU8JVk+TRoBXSEiK0=;
- b=c3jtWaOEGZ8MTesQv1eEZ0/o1MYDvuEcPxmR6Ex5SpbrZVrSq/lp6mzkq6k8Mk9PWa
- mf3xm4+yM2j/INKI9TAelnIkMxOacjjqLcF8+Na2wAKfyObeP3J2PQXEX2S05NvNureH
- HV9y3VOkOXUd/zzKcPn9rEvHIuyhBLJx4acFW+FRlWWdV8txtvwFVyqluz7QFGXQ+AtK
- pf8ReE0b9bn3DqyNq0TsLKtL+ThAOyJqtv37FPQCtzcatowsKpq1E1hjOMe4Js9MhuKw
- oLcRtf010c/cyTF7rCDKsyakEDUd11TpI91KMMEQlXeuotdtgPqJSTZ5ogOtW98HBxS6
- MCNA==
+ d=linaro.org; s=google; t=1698767007; x=1699371807; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oe7J9q5uDTSryL7saiupMFIi1MTfsnCHy28PzXMcyxw=;
+ b=KZyZ9jjP9mQlf5CnidH2w5NYnX0o/c25sShhTp7e/3ru4MN+yFJtPhtHcWnwrWXhwf
+ OWpHkr152AhMbomJRh3pw8v1Dg9HG5R2MH0BZfCW2Y9DXyPQ+39leSEz7gQgNgo1nRi1
+ ELjvieXuYu0zcezRLoyAvnKDUpTHexf5nnrC1HGFKagPRMcv4qPsE+npn62Iyns3nq3/
+ 3Fbqof8XGv/mmpF93TwDlE0heOMDVbyXEx4w8hWGc2ZpJG/eM4WVF+56ZMgrk0UouFug
+ c4DqiJ/J5fGRepU0igvICvK8TffhUY/+mOfsKu/LxamJz/R3hcKYv1y7zTuVGvVNTG+d
+ 90bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698766990; x=1699371790;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jD1SQvU+oUO4G8UkIikjK8SU39oU8JVk+TRoBXSEiK0=;
- b=mRF70bQve23fuGTIOfooSQRcfrtaczIK8mBu4Xau93CY4HHL+t/kqnALzO9341ilKi
- EjHVcw23Yme9A8RThMUURKjApsKakkwOVybA4tRgNdp6UEyPOLyUbJ/57XlYhuZ4WAse
- DnisBnrA1oOVlmw/rpC+0nDqr0sxvS9zm2RJi3+iw3zZFcQ6LPZBfAEt61rigD17Jl/2
- nhCyQJLP2CTV4mKRBEBlgdMyHKwUz0iXq673GtIqwrOFna4SGUc7FFNcz1TWjod3H+sP
- aJS6ZZawFYfCXzAuNEZM2QvM/sG8jt9B6v/RHLi37jHbor/kUiTDvYUreDnmES37aJuf
- NZlw==
-X-Gm-Message-State: AOJu0YyGcMnQps/bNT/+RvrHG/bcf59XU7+o4FI57UJJKz3OUhjhWX4k
- nBKOFu5OzE7QTOiBUmYMk/eNfw==
-X-Google-Smtp-Source: AGHT+IEsLi2JjrZ7IerplO12cbknzxQq0FqdtyYkQuR4vc6RgvHNZvn6OIVktmvuTrHHmydVKxF1Mw==
-X-Received: by 2002:a5d:47cf:0:b0:32f:7db1:22f0 with SMTP id
- o15-20020a5d47cf000000b0032f7db122f0mr7970199wrc.20.1698766989635; 
- Tue, 31 Oct 2023 08:43:09 -0700 (PDT)
-Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
- by smtp.gmail.com with ESMTPSA id
- g8-20020a056000118800b0032db8cccd3asm1762956wrx.114.2023.10.31.08.43.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 08:43:09 -0700 (PDT)
-Message-ID: <36a487d77bcf477f2d550318b6aefa0b1d331968.camel@rivosinc.com>
-Subject: Re: [PATCH v4 4/6] target/riscv: Add "pmu-mask" property to replace
- "pmu-num"
-From: Rob Bradford <rbradford@rivosinc.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com
-Date: Tue, 31 Oct 2023 15:43:08 +0000
-In-Reply-To: <CAKmqyKOEwa2soJNP9KkhoPxxJaEAsKFAnLQYtpo5+DgBi1XoLg@mail.gmail.com>
-References: <20231018154434.17367-1-rbradford@rivosinc.com>
- <20231018154434.17367-5-rbradford@rivosinc.com>
- <CAKmqyKOEwa2soJNP9KkhoPxxJaEAsKFAnLQYtpo5+DgBi1XoLg@mail.gmail.com>
+ d=1e100.net; s=20230601; t=1698767007; x=1699371807;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oe7J9q5uDTSryL7saiupMFIi1MTfsnCHy28PzXMcyxw=;
+ b=btSblNMka0sdkktslCP2IuMIiCX43lm8/jT0JFXp77UpfyppkdMMTwqx4blQx8Js2K
+ x+HwRzp6YgZwdbDg82s73zPm5eQF+Mos5e0datVMTifShPUnqCnR/xNl1yqOCi+q0zOA
+ ZqbgdCZEWrGh+OUhsokyXgtdce1HHoCGHpum1WRXhjGviz5tKJSjCl5GoYr6Xh0patpK
+ L1kOxoSYgEkEo5Jh1Wgo6fhxVAqz0VOeTHo+h7SfS03OZPQtKFEIGL1jWtEweBK2x6WC
+ vb56Tp8OlIV7eEvFcBvpo+wnqijuRx2M1VPYMctNEpiNzv8zstRp2EX1nUBFwcyDZ/CH
+ VFUw==
+X-Gm-Message-State: AOJu0YxdIUDK+PnaS5A8LvNDmEPSw1ptF1lZ4kOFpwtO1/VFVH0juMs6
+ b8o5OMCYd+Hmp4uKKcC133Tk2FdTnyQcUQtbXeh90/UwnOVS/3PP
+X-Google-Smtp-Source: AGHT+IGIeZATh4anzIkz5pqx8yzhyLGvnwffh+2srG8EZfLIMMEOx6QPvWA6IB0w/iTTpjEW9N98LlkzrlZ+6Uv68xg=
+X-Received: by 2002:aa7:c2cb:0:b0:53d:fe98:fd48 with SMTP id
+ m11-20020aa7c2cb000000b0053dfe98fd48mr10409901edp.3.1698767007480; Tue, 31
+ Oct 2023 08:43:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230927151205.70930-1-peter.maydell@linaro.org>
+ <20230927151205.70930-7-peter.maydell@linaro.org>
+ <9994c0ae-57af-d3b3-520d-7cbbee543778@linaro.org>
+In-Reply-To: <9994c0ae-57af-d3b3-520d-7cbbee543778@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 31 Oct 2023 15:43:16 +0000
+Message-ID: <CAFEAcA8mQ_r+RJZsDr42Vi88rMT=cRtEVNziKNCkB1AsZXujtg@mail.gmail.com>
+Subject: Re: [PATCH 6/8] docs/specs/virt-ctlr: Convert to rST
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.module_f38+16987+774193ea) 
-MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,253 +87,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-10-23 at 12:02 +1000, Alistair Francis wrote:
-> On Thu, Oct 19, 2023 at 1:45=E2=80=AFAM Rob Bradford <rbradford@rivosinc.=
-com>
-> wrote:
-> >=20
-> > Using a mask instead of the number of PMU devices supports the
-> > accurate
-> > emulation of platforms that have a discontinuous set of PMU
-> > counters.
-> >=20
-> > The "pmu-num" property now generates a warning when used by the
-> > user on
-> > the command line. In order to avoid warning for the default value
-> > when
-> > the property is not explicitly by the user the property default
-> > value
-> > cannot be used so the default value must be set during the CPU
-> > object
-> > initialisation.
-> >=20
-> > If the "pmu-num" value is changed from the default then the mask
-> > will be
-> > generated from that to support the transition to "pmu-mask".
-> >=20
-> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+On Tue, 31 Oct 2023 at 15:39, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> On 27/9/23 17:12, Peter Maydell wrote:
+> > Convert docs/specs/virt-ctlr.txt to rST format.
+> >
+> > I added the name of the device to give readers a bit more idea
+> > of which device we're actually documenting here.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > > ---
-> > =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 31 ++++++++++++++++++++++++++++++-
-> > =C2=A0target/riscv/cpu_cfg.h=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 ++-
-> > =C2=A0target/riscv/machine.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > =C2=A0target/riscv/pmu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 20 ++++++++++++++++----
-> > =C2=A0target/riscv/tcg/tcg-cpu.c |=C2=A0 2 +-
-> > =C2=A05 files changed, 50 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > index ac4a6c7eec..1b734d1dde 100644
-> > --- a/target/riscv/cpu.c
-> > +++ b/target/riscv/cpu.c
-> > @@ -1169,6 +1169,11 @@ static void riscv_cpu_post_init(Object *obj)
-> >=20
-> > =C2=A0static void riscv_cpu_init(Object *obj)
-> > =C2=A0{
-> > +=C2=A0=C2=A0=C2=A0 RISCVCPU *cpu =3D RISCV_CPU(obj);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /* Using property default value would spam deprecat=
-ion warning
-> > */
-> > +=C2=A0=C2=A0=C2=A0 cpu->cfg.pmu_num =3D 16;
-> > +
-> > =C2=A0#ifndef CONFIG_USER_ONLY
-> > =C2=A0=C2=A0=C2=A0=C2=A0 qdev_init_gpio_in(DEVICE(obj), riscv_cpu_set_i=
-rq,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IRQ_LOCAL_M=
-AX + IRQ_LOCAL_GUEST_MAX);
-> > @@ -1362,8 +1367,32 @@ const RISCVCPUMultiExtConfig
-> > riscv_cpu_deprecated_exts[] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_END_OF_LIST(),
-> > =C2=A0};
-> >=20
-> > +static void prop_pmu_num_set(Object *obj, Visitor *v, const char
-> > *name,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 void *opaque, Error **errp)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 RISCVCPU *cpu =3D RISCV_CPU(obj);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 visit_type_uint8(v, name, &cpu->cfg.pmu_num, errp);
-> > +=C2=A0=C2=A0=C2=A0 warn_report("\"pmu-num\" property is deprecated; us=
-e \"pmu-
-> > mask\"");
-> > +}
-> > +
-> > +static void prop_pmu_num_get(Object *obj, Visitor *v, const char
-> > *name,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 void *opaque, Error **errp)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 RISCVCPU *cpu =3D RISCV_CPU(obj);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 visit_type_uint8(v, name, &cpu->cfg.pmu_num, errp);
-> > +}
-> > +
-> > +const PropertyInfo prop_pmu_num =3D {
-> > +=C2=A0=C2=A0=C2=A0 .name =3D "pmu-num",
-> > +=C2=A0=C2=A0=C2=A0 .get =3D prop_pmu_num_get,
-> > +=C2=A0=C2=A0=C2=A0 .set =3D prop_pmu_num_set,
-> > +};
-> > +
-> > =C2=A0Property riscv_cpu_options[] =3D {
-> > -=C2=A0=C2=A0=C2=A0 DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num,=
- 16),
-> > +=C2=A0=C2=A0=C2=A0 DEFINE_PROP("pmu-num", RISCVCPU, cfg.pmu_num, prop_=
-pmu_num,
-> > uint8_t), /* Deprecated */
-> > +=C2=A0=C2=A0=C2=A0 DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_ma=
-sk,
-> > MAKE_64BIT_MASK(3, 16)),
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("mmu", RISCVCPU, cfg.mmu, tru=
-e),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("pmp", RISCVCPU, cfg.pmp, tru=
-e),
-> > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> > index 0e6a0f245c..d273487040 100644
-> > --- a/target/riscv/cpu_cfg.h
-> > +++ b/target/riscv/cpu_cfg.h
-> > @@ -123,7 +123,8 @@ struct RISCVCPUConfig {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_xtheadsync;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_XVentanaCondOps;
-> >=20
-> > -=C2=A0=C2=A0=C2=A0 uint8_t pmu_num;
-> > +=C2=A0=C2=A0=C2=A0 uint8_t pmu_num; /* Deprecated */
-> > +=C2=A0=C2=A0=C2=A0 uint32_t pmu_mask;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 char *priv_spec;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 char *user_spec;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 char *bext_spec;
-> > diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> > index c7c862cdd3..9f6e3f7a6d 100644
-> > --- a/target/riscv/machine.c
-> > +++ b/target/riscv/machine.c
-> > @@ -313,7 +313,7 @@ static bool pmu_needed(void *opaque)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0 RISCVCPU *cpu =3D opaque;
-> >=20
-> > -=C2=A0=C2=A0=C2=A0 return cpu->cfg.pmu_num;
-> > +=C2=A0=C2=A0=C2=A0 return (cpu->cfg.pmu_mask > 0);
-> > =C2=A0}
-> >=20
-> > =C2=A0static const VMStateDescription vmstate_pmu_ctr_state =3D {
-> > diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-> > index 7ddf4977b1..5e89354bb9 100644
-> > --- a/target/riscv/pmu.c
-> > +++ b/target/riscv/pmu.c
-> > @@ -18,6 +18,7 @@
-> >=20
-> > =C2=A0#include "qemu/osdep.h"
-> > =C2=A0#include "qemu/log.h"
-> > +#include "qemu/error-report.h"
-> > =C2=A0#include "cpu.h"
-> > =C2=A0#include "pmu.h"
-> > =C2=A0#include "sysemu/cpu-timers.h"
-> > @@ -184,7 +185,7 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum
-> > riscv_pmu_event_idx event_idx)
-> > =C2=A0=C2=A0=C2=A0=C2=A0 CPURISCVState *env =3D &cpu->env;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 gpointer value;
-> >=20
-> > -=C2=A0=C2=A0=C2=A0 if (!cpu->cfg.pmu_num) {
-> > +=C2=A0=C2=A0=C2=A0 if (!cpu->cfg.pmu_mask) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> > =C2=A0=C2=A0=C2=A0=C2=A0 value =3D g_hash_table_lookup(cpu->pmu_event_c=
-tr_map,
-> > @@ -434,7 +435,13 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
-> > **errp)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0 uint8_t pmu_num =3D cpu->cfg.pmu_num;
-> >=20
-> > -=C2=A0=C2=A0=C2=A0 if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-> > +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.pmu_mask & (COUNTEREN_CY | COUNTEREN_T=
-M |
-> > COUNTEREN_IR)) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "\"pmu-mas=
-k\" contains invalid bits (0-2)
-> > set");
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 if (ctpop32(cpu->cfg.pmu_mask) > (RV_MAX_MHPMCOUNTE=
-RS - 3) ||
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (pmu_num > RV_MAX_MHPMCOUNT=
-ERS - 3)) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Numb=
-er of counters exceeds maximum
-> > available");
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> > @@ -445,6 +452,11 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
-> > **errp)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> >=20
-> > -=C2=A0=C2=A0=C2=A0 /* Create a bitmask of available programmable count=
-ers */
-> > -=C2=A0=C2=A0=C2=A0 cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num)=
-;
-> > +=C2=A0=C2=A0=C2=A0 if (pmu_num =3D=3D 0) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu->cfg.pmu_mask =3D 0;
-> > +=C2=A0=C2=A0=C2=A0 } else if (pmu_num !=3D 16) {
->=20
-> I think it's clearer if this is just an else instead of if not 16
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu->cfg.pmu_mask =3D MAKE_=
-32BIT_MASK(3, pmu_num);
-> > +=C2=A0=C2=A0=C2=A0 }
->=20
+> >   docs/specs/index.rst                        |  1 +
+> >   docs/specs/{virt-ctlr.txt =3D> virt-ctlr.rst} | 12 +++++-------
+> >   2 files changed, 6 insertions(+), 7 deletions(-)
+> >   rename docs/specs/{virt-ctlr.txt =3D> virt-ctlr.rst} (70%)
+>
+>
+> $ ./scripts/get_maintainer.pl -f docs/specs/virt-ctlr.txt
+> get_maintainer.pl: No maintainers found, printing recent contributors.
+> get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
+>
+> $ ./scripts/get_maintainer.pl -f hw/misc/virt_ctrl.c
+> Laurent Vivier <laurent@vivier.eu> (maintainer:virt)
+> qemu-devel@nongnu.org (open list:All patches CC here)
+>
+> Cc'ing Laurent.
 
-Hi Alistair,
+That raises the question, is it intentional that the doc
+is virt-ctlr but the source file is virt-ctrl ? Should we
+rename one of them (looks like the doc, so easy enough to
+do as part of this patch)?
 
-> Also doesn't think mean that the pmu-num prop will override the
-> pmu-mask prop? We probably want to do it the other way around.
-
-For transition it is necessary to override the "pmu-mask" value if the
-user specifies "pmu-num" on the command line as the "pmu-mask" has a
-default value set.
-
-> Does setting pmu_mask directly in prop_pmu_num_set() work? Then we
-> can
-> drop pmu_num completely.
->=20
-
-This was a great suggestion and simplified the code somewhat - i've
-done this in the latest version sent to the list.
-
-Cheers,
-
-Rob
-
-> Alistair
->=20
-> > +
-> > +=C2=A0=C2=A0=C2=A0 cpu->pmu_avail_ctrs =3D cpu->cfg.pmu_mask;
-> > =C2=A0}
-> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-
-> > cpu.c
-> > index ed3eb991c0..53c52389b9 100644
-> > --- a/target/riscv/tcg/tcg-cpu.c
-> > +++ b/target/riscv/tcg/tcg-cpu.c
-> > @@ -613,7 +613,7 @@ static bool tcg_cpu_realize(CPUState *cs, Error
-> > **errp)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 riscv_timer_init(cpu);
-> > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> >=20
-> > -=C2=A0=C2=A0=C2=A0 if (cpu->cfg.pmu_num) {
-> > +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.pmu_mask) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 riscv_pmu_init(cpu, &l=
-ocal_err);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (local_err !=3D NUL=
-L) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 error_propagate(errp, local_err);
-> > --
-> > 2.41.0
-> >=20
-> >=20
-
+thanks
+-- PMM
 
