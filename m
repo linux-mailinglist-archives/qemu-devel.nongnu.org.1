@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3821A7DD739
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D457DD765
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:53:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxvXJ-0005m9-ME; Tue, 31 Oct 2023 16:40:29 -0400
+	id 1qxviX-0001cW-Og; Tue, 31 Oct 2023 16:52:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxvXH-0005kT-6z
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:40:27 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
+ id 1qxviW-0001b6-0E
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:52:04 -0400
+Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qxvXF-0007sM-0X
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:40:26 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-5b3b17d36d5so2460697b3.0
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:40:10 -0700 (PDT)
+ id 1qxviU-0001FG-D0
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:52:03 -0400
+Received: by mail-vk1-xa31.google.com with SMTP id
+ 71dfb90a1353d-49dc95be8c3so2531463e0c.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:52:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698784809; x=1699389609; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pwGCY0qynbo3cP6hReMJsDHlt98HHGr0zsLvnBxeHmw=;
- b=DVtcK1wnMqlFZR/Zftl4CsdmPj5Gtkgc3M6TuCzl0p2QTrIIHev4JGKnI/7mNwMKRQ
- X+IgU3muGT0n0jXjFXRlvnWLjUE3bDBK8XBeAqiY1KdQWDzm3gI0XYy6J1J4vBDyghKg
- iywsd4PAfGNiSR2+cLcHiWm6W5BdEzOyyM2y2O9mto9VFaWT7ilktTJU8ISifUmmRVDO
- HMz6tmsCwTWBQ/g3JT7/FQBRPYG/XnKOghNU5je9R2cfwOm4+Lih03oRhkPRk032m8qx
- ZHSwNqASall10zhhq9Pw9ISOAmqVhk0xKvLQ1zkY9DmoN3wn0mD94FwdPqDOdLJD4X2E
- uq4w==
+ d=ventanamicro.com; s=google; t=1698785519; x=1699390319; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FR3ujDYIpjULyW/1KYJG1hqQjepS6FGdNIe2vE+WeLg=;
+ b=meUJP7DMclhMIw7D+BZ9y43jiDv2mDljPoAOTiuljZV0TRhzy71zm15Z+rgP+CUO+X
+ f20TrQcV8qsBXlUFphmFZ0eykZJzNN2i4uE5ygUeWU16VWk4mU0bBX0PUG9t0XUHX1dZ
+ bcywNwtlLP9oMwpXrOnmVZIU5DjklOQxoW9wK0x+SyCKg0a5fnRpOES83Dzxb5vwU4Tf
+ iatxYLj5DbHwha3K2LL6yExXcDq7a3ITS8kxDLLMwAFXUQhh+22H4MTQfOLsV8HRW6Pp
+ g1rMYENBvU2xshWi4hQlS5FrKdZmTyZyq1twMD9arFgYw6dxY0wEhXOFuah2arl2ZzLP
+ EzWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698784809; x=1699389609;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pwGCY0qynbo3cP6hReMJsDHlt98HHGr0zsLvnBxeHmw=;
- b=REWFgAwisA55tgoU8OnetAsbUCSpFySXUgdj0O1zWoTINC6kverm7SKjT4TvnNVmWI
- 1GIiISjcjtU3zLwpu8l7VZER2jHPKu4DZunH0uYD/qk2R4nvs/Nc3T4rDANeWMQ/XwHE
- AezvNwS8bFWjH4hV49SxiEfmsPStNi4V/MtksBlRGmF63MHEEoAHZJNrTeMoNd0uwiZD
- 3rTDDcm78u7XpPYQuzEY80UxZAf6m3zPM60YxaS8NxyUO8yIrkhSR3yDJ3KOH8jIoUXu
- +li6FuIw+Butw3Yadu4MkZ08bxS2YS0ZOzyTLiSt0C/c+2oAOXVO8+ukLWX0kRP8YPim
- ObHw==
-X-Gm-Message-State: AOJu0YyldULKLGTfoAzQTXbeotFNccThVWXyySQZMPlYwRXaKFR6jihB
- WrKNyowGxiA0FU+udUAwC6aw2FxbF3WJ2Od5keI=
-X-Google-Smtp-Source: AGHT+IG8AEuezmfztrgA4mv4MSs/52+J5eOxwAg4I8oIbt0FpaKAbgZB7H+IKNgrMnA1XHOcgqZwtA==
-X-Received: by 2002:a05:690c:15:b0:5ae:15bb:466a with SMTP id
- bc21-20020a05690c001500b005ae15bb466amr3969785ywb.14.1698784809068; 
- Tue, 31 Oct 2023 13:40:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698785519; x=1699390319;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FR3ujDYIpjULyW/1KYJG1hqQjepS6FGdNIe2vE+WeLg=;
+ b=jPgYhmRg6IMWWVZYowF3b8Bkeac3S5QNXy3u+uhjRyHyUnmSn0vkQCxVoFAAEmXPMr
+ FgMepNy9I9Efb9buj78hPw9PvH/k9m8RUkXpfLm58JrTlTiENVYmaYUB+xe6ycv0K22J
+ n2s0I9MVruHInGRdVhtyz8PDhfAtsu//cmoO9P1D/8CIk9oJtFPvcDQ+1hYBIzXRLCn+
+ hriMq52EPanXuery8YbqrTxI1s8t9eAf0TuUuSyGI+sAtMtUKqj+pkmKdKvh731vbox9
+ q5geIk8QaLXevPt5yk/HPoU7N+LwiQ/xmKUCsbjSv2mc0NBdnLDdASsQv+gVDbKWAXhe
+ Ujeg==
+X-Gm-Message-State: AOJu0Yz4T3CvzqRC//1/hCnYdLxLTm66D9K6Pt1dg4QTjRRx+9pxLzBM
+ XkU1ZT5gpVOrftYuKKnF9uyKYL0Jb1GKgUKSTBo=
+X-Google-Smtp-Source: AGHT+IH8XUwnA0miDHEaQBSrPQ9PjnzdPtl4bMXmHrlSlRZHBLV/y/Gy1L9+XQV2MTHfYyBk9Tdjlg==
+X-Received: by 2002:a1f:b201:0:b0:493:3491:ce89 with SMTP id
+ b1-20020a1fb201000000b004933491ce89mr9419667vkf.14.1698785519468; 
+ Tue, 31 Oct 2023 13:51:59 -0700 (PDT)
 Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- k1-20020a81ff01000000b005add997ae53sm1272802ywn.81.2023.10.31.13.40.06
+ t8-20020a0cef48000000b00671ab3da5d0sm826408qvs.105.2023.10.31.13.51.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 13:40:08 -0700 (PDT)
+ Tue, 31 Oct 2023 13:51:59 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v7 16/16] riscv-qmp-cmds.c: add profile flags in
- cpu-model-expansion
-Date: Tue, 31 Oct 2023 17:39:16 -0300
-Message-ID: <20231031203916.197332-17-dbarboza@ventanamicro.com>
+Subject: [PATCH] target/riscv/kvm: add zicsr, zifencei, zba, zbs, svnapot
+Date: Tue, 31 Oct 2023 17:51:50 -0300
+Message-ID: <20231031205150.208405-1-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231031203916.197332-1-dbarboza@ventanamicro.com>
-References: <20231031203916.197332-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1136.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-vk1-xa31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,82 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose all profile flags for all CPUs when executing
-query-cpu-model-expansion. This will allow callers to quickly determine
-if a certain profile is implemented by a given CPU. This includes
-vendor CPUs - the fact that they don't have profile user flags doesn't
-mean that they don't implement the profile.
-
-After this change it's possible to quickly determine if our stock CPUs
-implement the existing rva22u64 profile. Here's a few examples:
-
- $ ./build/qemu-system-riscv64 -S -M virt -display none
--qmp tcp:localhost:1234,server,wait=off
-
- $ ./scripts/qmp/qmp-shell localhost:1234
-Welcome to the QMP low-level shell!
-Connected to QEMU 8.1.50
-
-- As expected, the 'max' CPU implements the rva22u64 profile.
-
-(QEMU) query-cpu-model-expansion type=full model={"name":"max"}
-    {"return": {"model":
-        {"name": "rv64", "props": {... "rva22u64": true, ...}}}}
-
-- rv64 is missing "zba", "zbb", "zbs", "zkt" and "zfhmin":
-
-query-cpu-model-expansion type=full model={"name":"rv64"}
-    {"return": {"model":
-        {"name": "rv64", "props": {... "rva22u64": false, ...}}}}
-
-query-cpu-model-expansion type=full model={"name":"rv64",
-    "props":{"zba":true,"zbb":true,"zbs":true,"zkt":true,"zfhmin":true}}
-    {"return": {"model":
-        {"name": "rv64", "props": {... "rva22u64": true, ...}}}}
-
-We have no vendor CPUs that supports rva22u64 (veyron-v1 is the closest
-- it is missing just 'zkt').
-
-In short, aside from the 'max' CPU, we have no CPUs that supports
-rva22u64 by default.
+These regs were added in Linux 6.6.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/riscv-qmp-cmds.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ target/riscv/kvm/kvm-cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
-index 5ada279776..205aaabeb9 100644
---- a/target/riscv/riscv-qmp-cmds.c
-+++ b/target/riscv/riscv-qmp-cmds.c
-@@ -116,6 +116,19 @@ static void riscv_obj_add_named_feats_qdict(Object *obj, QDict *qdict_out)
-     }
- }
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index a11c0e4a99..78fa1fa162 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -229,12 +229,17 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+     KVM_EXT_CFG("zicbom", ext_zicbom, KVM_RISCV_ISA_EXT_ZICBOM),
+     KVM_EXT_CFG("zicboz", ext_zicboz, KVM_RISCV_ISA_EXT_ZICBOZ),
+     KVM_EXT_CFG("zicntr", ext_zicntr, KVM_RISCV_ISA_EXT_ZICNTR),
++    KVM_EXT_CFG("zicsr", ext_zicsr, KVM_RISCV_ISA_EXT_ZICSR),
++    KVM_EXT_CFG("zifencei", ext_zifencei, KVM_RISCV_ISA_EXT_ZIFENCEI),
+     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
+     KVM_EXT_CFG("zihpm", ext_zihpm, KVM_RISCV_ISA_EXT_ZIHPM),
++    KVM_EXT_CFG("zba", ext_zba, KVM_RISCV_ISA_EXT_ZBA),
+     KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
++    KVM_EXT_CFG("zbs", ext_zbs, KVM_RISCV_ISA_EXT_ZBS),
+     KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
+     KVM_EXT_CFG("sstc", ext_sstc, KVM_RISCV_ISA_EXT_SSTC),
+     KVM_EXT_CFG("svinval", ext_svinval, KVM_RISCV_ISA_EXT_SVINVAL),
++    KVM_EXT_CFG("svnapot", ext_svnapot, KVM_RISCV_ISA_EXT_SVNAPOT),
+     KVM_EXT_CFG("svpbmt", ext_svpbmt, KVM_RISCV_ISA_EXT_SVPBMT),
+ };
  
-+static void riscv_obj_add_profiles_qdict(Object *obj, QDict *qdict_out)
-+{
-+    RISCVCPUProfile *profile;
-+    QObject *value;
-+
-+    for (int i = 0; riscv_profiles[i] != NULL; i++) {
-+        profile = riscv_profiles[i];
-+        value = QOBJECT(qbool_from_bool(profile->enabled));
-+
-+        qdict_put_obj(qdict_out, profile->name, value);
-+    }
-+}
-+
- static void riscv_cpuobj_validate_qdict_in(Object *obj, QObject *props,
-                                            const QDict *qdict_in,
-                                            Error **errp)
-@@ -220,6 +233,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-     riscv_obj_add_multiext_props(obj, qdict_out, riscv_cpu_experimental_exts);
-     riscv_obj_add_multiext_props(obj, qdict_out, riscv_cpu_vendor_exts);
-     riscv_obj_add_named_feats_qdict(obj, qdict_out);
-+    riscv_obj_add_profiles_qdict(obj, qdict_out);
- 
-     /* Add our CPU boolean options too */
-     riscv_obj_add_qdict_prop(obj, qdict_out, "mmu");
 -- 
 2.41.0
 
