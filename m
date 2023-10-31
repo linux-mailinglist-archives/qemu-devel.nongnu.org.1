@@ -2,62 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2337DD12C
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFC07DD12D
 	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 17:07:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxrFS-00036Y-TA; Tue, 31 Oct 2023 12:05:46 -0400
+	id 1qxrG9-0003Df-8W; Tue, 31 Oct 2023 12:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxrFN-00035n-Tg
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:05:42 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxrG6-0003DJ-Fn
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:06:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qxrFL-00005f-QA
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:05:41 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qxrG4-0000DY-Mu
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 12:06:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698768338;
+ s=mimecast20190719; t=1698768384;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kXhAPBjlS50dq8v+TBsuXWNEN1TwnS7HaTR1XFdqDIw=;
- b=Z0zpf6oljZZNQ0NF1ZSgZ8rIq3TiPe2Q6UuZ8S9TwPzhqHbKHc4IwKpCJBolsKdGmMNVO1
- I3aw6jwRtMS+o9KgQdS5LA/hMqPEXwVXXyBI0B/Ls6TW14jU8krc2ZrN6Jfv6jfoVcLogK
- UuzUeJ0ADfbhHZnEDAx2a1rHbGDm4GY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-FTDBeiovOYeYj303xZjSQA-1; Tue,
- 31 Oct 2023 12:05:24 -0400
-X-MC-Unique: FTDBeiovOYeYj303xZjSQA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60F4A3C16DCC;
- Tue, 31 Oct 2023 16:05:24 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BFC4010F4C;
- Tue, 31 Oct 2023 16:05:22 +0000 (UTC)
-Date: Tue, 31 Oct 2023 11:05:20 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com, 
- hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
- jsnow@redhat.com, 
- den@virtuozzo.com, t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v4 01/10] blockjob: introduce block-job-change QMP command
-Message-ID: <okhs3xcnfd3aajdasdkz3yqcirvd6bftdk76l4xpkt62mwrttl@tb52nh3wc2le>
-References: <20231031135431.393137-1-f.ebner@proxmox.com>
- <20231031135431.393137-2-f.ebner@proxmox.com>
+ bh=D7eXWuNNPoImNG/HqQ+oR0JqFPP2JFUM14sk/Ou++iI=;
+ b=Lvq3YyVw3BAngGl/zKilATeljzbMPIs7UBRT4fzY0H89prskTGMExAS2wzfkVZD/xoGTBe
+ /3N8rookoF53g8lc/dHujdf4Sz1kSILoJGzqaZk0CjffUEQqBpl3t01P5Id7gA6AOHIE5I
+ 2k46OgKQOXAO1SG/2dM8YMmPy8SGVEw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-Lt2U5_0CONqlPuJriPzqjw-1; Tue, 31 Oct 2023 12:06:22 -0400
+X-MC-Unique: Lt2U5_0CONqlPuJriPzqjw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4094e5664a3so7577205e9.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 09:06:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698768381; x=1699373181;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=D7eXWuNNPoImNG/HqQ+oR0JqFPP2JFUM14sk/Ou++iI=;
+ b=nIGlrTns+Q/IpcOx4mt3YasMiK97U2SV9SmfTKzOqed01HQ2/Pef7ksrxt/TmxiV2t
+ U7J9CGk4kmZozumQab3f8UdhPl4pTgU+/496nKSiatj6VWYFIrF0bkha1uaAlHgXrygB
+ ea/ceoPeoXufKdtE25o01RYh3JRrAvkfqOnq60J1YoOpmD4BherBthXNJOcjxraQxFHv
+ goD4VNG0cgTFQkZi71SOsDSvTNpun7jhzYXK88X7O0Ihi+nxflfnloAgD8th/TWxfF5b
+ qK5IvuiZSBcTfq3upkIxyxuVtrOwHzHHetRI6X/Ar84xoB9NcRY9aL8YLX9pIElTQmqa
+ VuLg==
+X-Gm-Message-State: AOJu0YwTBirgnAUo5zu+54Etb/8gB4qleYdpqAL3f0dJSeT4tpouoohu
+ RgFHrk5M22xMrfGr6a7HmO0ueQc93QAT24WpJOh+yQysX5Z+Si6vkh5iFltB4wZlXL18y9YmiEe
+ lRmKuyz6WhZREqco=
+X-Received: by 2002:a05:600c:154a:b0:401:73b2:f043 with SMTP id
+ f10-20020a05600c154a00b0040173b2f043mr11933716wmg.1.1698768380837; 
+ Tue, 31 Oct 2023 09:06:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6kW+SeS3t6ftDXumpNPByBemBudrKDMJquc0Z78vGvALZJ34VUQego4XaI/PwNdTFJ5LZ0g==
+X-Received: by 2002:a05:600c:154a:b0:401:73b2:f043 with SMTP id
+ f10-20020a05600c154a00b0040173b2f043mr11933696wmg.1.1698768380500; 
+ Tue, 31 Oct 2023 09:06:20 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d746:c551:3d67:278e:c0a1:87a2?
+ (p200300cfd746c5513d67278ec0a187a2.dip0.t-ipconnect.de.
+ [2003:cf:d746:c551:3d67:278e:c0a1:87a2])
+ by smtp.gmail.com with ESMTPSA id
+ m7-20020a05600c4f4700b0040651505684sm2155329wmq.29.2023.10.31.09.06.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 31 Oct 2023 09:06:19 -0700 (PDT)
+Message-ID: <9a0ff38b-69b6-4d12-b8e0-4fc3d11807b9@redhat.com>
+Date: Tue, 31 Oct 2023 17:06:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231031135431.393137-2-f.ebner@proxmox.com>
-User-Agent: NeoMutt/20231023
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/7] qcow2: zeroize the entire cluster when there're no
+ non-zero subclusters
+Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
+ berto@igalia.com, den@virtuozzo.com
+References: <20231020215622.789260-1-andrey.drobyshev@virtuozzo.com>
+ <20231020215622.789260-4-andrey.drobyshev@virtuozzo.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20231020215622.789260-4-andrey.drobyshev@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -82,36 +104,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 02:54:22PM +0100, Fiona Ebner wrote:
-> which will allow changing job-type-specific options after job
-> creation.
-> 
-> In the JobVerbTable, the same allow bits as for set-speed are used,
-> because set-speed can be considered an existing change command.
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
-> 
-> Changes in v4:
->     * Add note that change callback can be invoked before job coroutine
->       is running.
-> 
->  blockdev.c                   | 14 ++++++++++++++
->  blockjob.c                   | 20 ++++++++++++++++++++
->  include/block/blockjob.h     | 11 +++++++++++
->  include/block/blockjob_int.h |  7 +++++++
->  job.c                        |  1 +
->  qapi/block-core.json         | 26 ++++++++++++++++++++++++++
->  qapi/job.json                |  4 +++-
->  7 files changed, 82 insertions(+), 1 deletion(-)
+On 20.10.23 23:56, Andrey Drobyshev wrote:
+> When zeroizing the last non-zero subclusters within single cluster, it
+> makes sense to go zeroize the entire cluster and go down zero_in_l2_slice()
+> path right away.  That way we'd also update the corresponding refcount
+> table.
 >
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>   block/qcow2-cluster.c | 18 +++++++++++++++---
+>   1 file changed, 15 insertions(+), 3 deletions(-)
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
 
