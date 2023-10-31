@@ -2,69 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16F47DCB76
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D157DCB7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:11:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxmct-00033X-K4; Tue, 31 Oct 2023 07:09:39 -0400
+	id 1qxme5-0003l0-7o; Tue, 31 Oct 2023 07:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxmck-000335-EV
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:09:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qxme2-0003ks-Uo
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:10:50 -0400
+Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxmch-0006bs-8L
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:09:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698750566;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7Ux/KlONsR+ZS4HYjEGLuMXJ8Q8t6BYdfy5tRSAQOzc=;
- b=QBUfagWAwV6h2SwDxIPNvHPA52n3Opu8zlKHEgvazfu9W1/sKwHZ1MMG76WTMdPXbdNgoK
- GjbRBM+lQRh6FRWr1QadAEPXzct1zDMSX7jBz3jqQbHlUe/2zLKvn5VHMFZsPKZBbKLaxL
- AONtrLRjjLSHQLjLZVvTx+mfMrmqMfU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-tBWwur25NDWjbTUv1V3fvA-1; Tue, 31 Oct 2023 07:09:22 -0400
-X-MC-Unique: tBWwur25NDWjbTUv1V3fvA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E3C1185A781;
- Tue, 31 Oct 2023 11:09:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.218])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6450E1C060AE;
- Tue, 31 Oct 2023 11:09:21 +0000 (UTC)
-Date: Tue, 31 Oct 2023 12:09:20 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, berrange@redhat.com,
- peter.maydell@linaro.org, pbonzini@redhat.com, philmd@linaro.org
-Subject: Re: [PATCH v2 12/12] qdev: Rework array properties based on list
- visitor
-Message-ID: <ZUDgYFuGiqImrbOP@redhat.com>
-References: <20231030142658.182193-1-kwolf@redhat.com>
- <20231030142658.182193-13-kwolf@redhat.com>
- <92dce7a5-6a1c-41bd-8ac0-3884e4ad9ab3@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qxme0-0006w9-Oh
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:10:50 -0400
+Received: from [192.168.1.5] (unknown [223.72.62.34])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 589EF41DFB;
+ Tue, 31 Oct 2023 11:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1698750646; bh=oC2LudlWoH9FvHFe32FtSMrAlJb6a0RH1PPNi+Fhmj8=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=nAwvxV9T5SiEah01WMBLsSNDQU0DSU7vIvZVgCPR4TdVmCX2MzRdBNmMoTEyLRmfM
+ OiueBu/XIzs5RuNeIBDF5sRTCFqLtjFqMTRegOV34XCXoJ60X7WHMYESYlGLLuoPqS
+ hzcY9LI3RVesc0wK2VzcW/bbAket7nG0PL6Sv5KI=
+Message-ID: <4f03d60c-cea4-4576-be1f-758c46706087@jia.je>
+Date: Tue, 31 Oct 2023 19:10:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <92dce7a5-6a1c-41bd-8ac0-3884e4ad9ab3@ilande.co.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] Add LoongArch v1.1 instructions
+Content-Language: en-US
+To: gaosong <gaosong@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: git@xen0n.name, bibo mao <maobibo@loongson.cn>
+References: <20231023153029.269211-2-c@jia.je>
+ <bce33bc2-60f9-41ee-856c-d76682c185f0@linaro.org>
+ <1af667c0-f1ba-4538-9aec-8232397dd3c5@jia.je>
+ <a1784c3c-b00e-4cb6-a262-96e6cbaa5c30@jia.je>
+ <70260625-5981-40f3-a189-afddac2a6dfa@linaro.org>
+ <062ee798-c112-46d4-82b8-983e85ffe2ed@jia.je>
+ <6482c6cf-1f4b-a7b9-d106-4c687360e810@loongson.cn>
+ <ae3088b6-f472-4dd2-a5bc-9effb61ffaa0@jia.je>
+ <b03d1fa3-b553-734b-7adf-839dc67a2dd5@loongson.cn>
+ <603b8709-4288-4268-abd4-642366b0b7e2@jia.je>
+ <798c78df-cc9d-78dd-5bbd-0de2ead0eb1f@loongson.cn>
+ <5cffe61f-6aac-4765-a39b-68f1c90daa09@jia.je>
+ <cd422828-dce0-f54e-5c05-e6afd7c850a6@loongson.cn>
+From: Jiajie Chen <c@jia.je>
+In-Reply-To: <cd422828-dce0-f54e-5c05-e6afd7c850a6@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,73 +78,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 30.10.2023 um 21:48 hat Mark Cave-Ayland geschrieben:
-> On 30/10/2023 14:26, Kevin Wolf wrote:
-> 
-> > Until now, array properties are actually implemented with a hack that
-> > uses multiple properties on the QOM level: a static "foo-len" property
-> > and after it is set, dynamically created "foo[i]" properties.
-> > 
-> > In external interfaces (-device on the command line and device_add in
-> > QMP), this interface was broken by commit f3558b1b ('qdev: Base object
-> > creation on QDict rather than QemuOpts') because QDicts are unordered
-> > and therefore it could happen that QEMU tried to set the indexed
-> > properties before setting the length, which fails and effectively makes
-> > array properties inaccessible. In particular, this affects the 'ports'
-> > property of the 'rocker' device, which used to be configured like this:
-> > 
-> > -device rocker,len-ports=2,ports[0]=dev0,ports[1]=dev1
-> > 
-> > This patch reworks the external interface so that instead of using a
-> > separate top-level property for the length and for each element, we use
-> > a single true array property that accepts a list value. In the external
-> > interfaces, this is naturally expressed as a JSON list and makes array
-> > properties accessible again. The new syntax looks like this:
-> > 
-> > -device '{"driver":"rocker","ports":["dev0","dev1"]}'
-> > 
-> > Creating an array property on the command line without using JSON format
-> > is currently not possible. This could be fixed by switching from
-> > QemuOpts to a keyval parser, which however requires consideration of the
-> > compatibility implications.
-> > 
-> > All internal users of devices with array properties go through
-> > qdev_prop_set_array() at this point, so updating it takes care of all of
-> > them.
-> 
-> Is it possible to find a suitable place in the documentation to show
-> how the new array syntax is used with -device on the command line? The
-> description above is really useful, but I can see this being quite
-> hard for users to find if it is only documented in the commit message.
 
-Actually, it seems that the documentation doesn't explicitly mention
-JSON syntax for command line options anywhere. Support for it is quite
-widespread meanwhile. I can see it for at least:
+On 2023/10/31 19:06, gaosong wrote:
+> 在 2023/10/31 下午5:13, Jiajie Chen 写道:
+>>
+>> On 2023/10/31 17:11, gaosong wrote:
+>>> 在 2023/10/30 下午7:54, Jiajie Chen 写道:
+>>>>
+>>>> On 2023/10/30 16:23, gaosong wrote:
+>>>>> 在 2023/10/28 下午9:09, Jiajie Chen 写道:
+>>>>>>
+>>>>>> On 2023/10/26 14:54, gaosong wrote:
+>>>>>>> 在 2023/10/26 上午9:38, Jiajie Chen 写道:
+>>>>>>>>
+>>>>>>>> On 2023/10/26 03:04, Richard Henderson wrote:
+>>>>>>>>> On 10/25/23 10:13, Jiajie Chen wrote:
+>>>>>>>>>>> On 2023/10/24 07:26, Richard Henderson wrote:
+>>>>>>>>>>>> See target/arm/tcg/translate-a64.c, gen_store_exclusive, 
+>>>>>>>>>>>> TCGv_i128 block.
+>>>>>>>>>>>> See target/ppc/translate.c, gen_stqcx_.
+>>>>>>>>>>>
+>>>>>>>>>>> The situation here is slightly different: aarch64 and ppc64 
+>>>>>>>>>>> have both 128-bit ll and sc, however LoongArch v1.1 only has 
+>>>>>>>>>>> 64-bit ll and 128-bit sc.
+>>>>>>>>>
+>>>>>>>>> Ah, that does complicate things.
+>>>>>>>>>
+>>>>>>>>>> Possibly use the combination of ll.d and ld.d:
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> ll.d lo, base, 0
+>>>>>>>>>> ld.d hi, base, 4
+>>>>>>>>>>
+>>>>>>>>>> # do some computation
+>>>>>>>>>>
+>>>>>>>>>> sc.q lo, hi, base
+>>>>>>>>>>
+>>>>>>>>>> # try again if sc failed
+>>>>>>>>>>
+>>>>>>>>>> Then a possible implementation of gen_ll() would be: align 
+>>>>>>>>>> base to 128-bit boundary, read 128-bit from memory, save 
+>>>>>>>>>> 64-bit part to rd and record whole 128-bit data in llval. 
+>>>>>>>>>> Then, in gen_sc_q(), it uses a 128-bit cmpxchg.
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> But what about the reversed instruction pattern: ll.d hi, 
+>>>>>>>>>> base, 4; ld.d lo, base 0?
+>>>>>>>>>
+>>>>>>>>> It would be worth asking your hardware engineers about the 
+>>>>>>>>> bounds of legal behaviour. Ideally there would be some very 
+>>>>>>>>> explicit language, similar to
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> I'm a community developer not affiliated with Loongson. Song 
+>>>>>>>> Gao, could you provide some detail from Loongson Inc.?
+>>>>>>>>
+>>>>>>>>
+>>>>>>>
+>>>>>>> ll.d   r1, base, 0
+>>>>>>> dbar 0x700          ==> see 2.2.8.1
+>>>>>>> ld.d  r2, base,  8
+>>>>>>> ...
+>>>>>>> sc.q r1, r2, base
+>>>>>>
+>>>>>>
+>>>>>> Thanks! I think we may need to detect the ll.d-dbar-ld.d sequence 
+>>>>>> and translate the sequence into one tcg_gen_qemu_ld_i128 and 
+>>>>>> split the result into two 64-bit parts. Can do this in QEMU?
+>>>>>>
+>>>>>>
+>>>>> Oh, I'm not sure.
+>>>>>
+>>>>> I think we just need to implement sc.q. We don't need to care 
+>>>>> about 'll.d-dbar-ld.d'. It's just like 'll.q'.
+>>>>> It needs the user to ensure that .
+>>>>>
+>>>>> ll.q' is
+>>>>> 1) ll.d r1 base, 0 ==> set LLbit, load the low 64 bits into r1
+>>>>> 2) dbar 0x700　
+>>>>> 3) ld.d r2 base, 8 ==> load the high 64 bits to r2
+>>>>>
+>>>>> sc.q needs to
+>>>>> 1) Use 64-bit cmpxchg.
+>>>>> 2) Write 128 bits to memory.
+>>>>
+>>>> Consider the following code:
+>>>>
+>>>>
+>>>> ll.d r1, base, 0
+>>>>
+>>>> dbar 0x700
+>>>>
+>>>> ld.d r2, base, 8
+>>>>
+>>>> addi.d r2, r2, 1
+>>>>
+>>>> sc.q r1, r2, base
+>>>>
+>>>>
+>>>> We translate them into native code:
+>>>>
+>>>>
+>>>> ld.d r1, base, 0
+>>>>
+>>>> mv LLbit, 1
+>>>>
+>>>> mv LLaddr, base
+>>>>
+>>>> mv LLval, r1
+>>>>
+>>>> dbar 0x700
+>>>>
+>>>> ld.d r2, base, 8
+>>>>
+>>>> addi.d r2, r2, 1
+>>>>
+>>>> if (LLbit == 1 && LLaddr == base) {
+>>>>
+>>>>     cmpxchg addr=base compare=LLval new=r1
+>>>>
+>>>>     128-bit write {r2, r1} to base if cmpxchg succeeded
+>>>>
+>>>> }
+>>>>
+>>>> set r1 if sc.q succeeded
+>>>>
+>>>>
+>>>>
+>>>> If the memory content of base+8 has changed between ld.d r2 and 
+>>>> addi.d r2, the atomicity is not guaranteed, i.e. only the high part 
+>>>> has changed, the low part hasn't.
+>>>>
+>>>>
+>>> Sorry,  my mistake.  need use cmpxchg_i128.   See 
+>>> target/arm/tcg/translate-a64.c   gen_store_exclusive().
+>>>
+>>> gen_scq(rd, rk, rj)
+>>> {
+>>>      ...
+>>>     TCGv_i128 t16 = tcg_temp_new_i128();
+>>>     TCGv_i128 c16 = tcg_temp_new_i128();
+>>>     TCGv_i64 low = tcg_temp_new_i64();
+>>>     TCGv_i64 high= tcg_temp_new_i64();
+>>>     TCGv_i64 temp = tcg_temp_new_i64();
+>>>
+>>>     tcg_gen_concat_i64_i128(t16, cpu_gpr[rd],  cpu_gpr[rk]));
+>>>
+>>>     tcg_gen_qemu_ld(low, cpu_lladdr, ctx->mem_idx, MO_TEUQ);
+>>>     tcg_gen_addi_tl(temp, cpu_lladdr, 8);
+>>>     tcg_gen_mb(TCG_BAR_SC | TCG_MO_LD_LD);
+>>>     tcg_gen_qemu_ld(high, temp, ctx->mem_idx, MO_TEUQ);
+>>
+>>
+>> The problem is that, the high value read here might not equal to the 
+>> previously read one in ll.d r2, base 8 instruction.
+> I think dbar 0x7000 ensures that the 2 loads in 'll.q' are a 128bit 
+> atomic operation.
 
--audiodev
--blockdev
--compat
--device
--display
--netdev
--object
 
-In qemu-storage-daemon, it's additionally supported for:
+The code does work in real LoongArch machine. However, we are emulating 
+LoongArch in qemu, we have to make it atomic, yet it isn't now.
 
---export
---monitor
---nbd-server
 
-I think the manpage should at least mention for each of these options
-that they support JSON.
-
-Ideally, we'd then have a generic section that describes the mapping
-between JSON and human syntax, but unfortunately, the human oriented
-parsers differ quite a lot between these options, so there is nothing we
-can describe and that is valid for all options. So maybe things like
-"Specifying values for list properties is only possible with JSON
-syntax" must be specified for each option where it applies.
-
-Kevin
-
+>
+> Thanks.
+> Song Gao
+>>> tcg_gen_concat_i64_i128(c16, low, high);
+>>>
+>>>     tcg_gen_atomic_cmpxchg_i128(t16, cpu_lladdr, c16, t16, 
+>>> ctx->mem_idx, MO_128);
+>>>
+>>>     ...
+>>> }
+>>>
+>>> I am not sure this is right.
+>>>
+>>> I think Richard can give you more suggestions. @Richard
+>>>
+>>> Thanks.
+>>> Song Gao
+>>>>
+>>>>> Thanks.
+>>>>> Song Gao
+>>>>>>>
+>>>>>>>
+>>>>>>> For this series,
+>>>>>>> I think we need set the new config bits to the 'max cpu', and 
+>>>>>>> change linux-user/target_elf.h ''any' to 'max', so that we can 
+>>>>>>> use these new instructions on linux-user mode.
+>>>>>>
+>>>>>> I will work on it.
+>>>>>>
+>>>>>>
+>>>>>>>
+>>>>>>> Thanks
+>>>>>>> Song Gao
+>>>>>>>>>
+>>>>>>>>> https://developer.arm.com/documentation/ddi0487/latest/
+>>>>>>>>> B2.9.5 Load-Exclusive and Store-Exclusive instruction usage 
+>>>>>>>>> restrictions
+>>>>>>>>>
+>>>>>>>>> But you could do the same thing, aligning and recording the 
+>>>>>>>>> entire 128-bit quantity, then extract the ll.d result based on 
+>>>>>>>>> address bit 6. This would complicate the implementation of 
+>>>>>>>>> sc.d as well, but would perhaps bring us "close enough" to the 
+>>>>>>>>> actual architecture.
+>>>>>>>>>
+>>>>>>>>> Note that our Arm store-exclusive implementation isn't quite 
+>>>>>>>>> in spec either.  There is quite a large comment within 
+>>>>>>>>> translate-a64.c store_exclusive() about the ways things are 
+>>>>>>>>> not quite right.  But it seems to be close enough for actual 
+>>>>>>>>> usage to succeed.
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> r~
+>>>>>>>
+>>>>>
+>>>
+>
 
