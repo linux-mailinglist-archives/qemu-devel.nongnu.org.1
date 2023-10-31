@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4967C7DC586
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 05:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0F97DC593
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 05:58:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxgeq-0006XM-HT; Tue, 31 Oct 2023 00:47:16 -0400
+	id 1qxgoZ-00086L-8e; Tue, 31 Oct 2023 00:57:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxgen-0006X9-IM
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:47:13 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qxgoW-000867-7N
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:57:16 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qxgel-0004SD-C1
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:47:12 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1cbf47fa563so40448145ad.2
- for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 21:47:10 -0700 (PDT)
+ id 1qxgoU-0006Bs-4m
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 00:57:15 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-586f68b78ddso1289082eaf.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Oct 2023 21:57:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698727629; x=1699332429;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698728232; x=1699333032;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gdd20c42AmSckn1VV6IUgL4wr6tPqE4KgX2vLyJ5oTE=;
- b=jLGk7lr1T4Z+/Mzn9DXtWuuK7sfhULHYSZxUUutva+IneFDmZcyjEsxmj8NmHVuMTt
- Nulx+P0WMEATe/qu+kRKHw9tdTXx/ZSCVI9fAL9rUpsm0bw4B1dv/RfHRx/fx+UlqZWN
- glsYE2a/zeBigzA2uMMjwiWGGwQFMB46VbHFWq+YjKtui845nV2VAvlh6xTu+Ejlbn7z
- AtgLeD0BujiE+vYAo/UVDdml1Ojnq4JjnjDPcKHzJumByGpG94C3NYqGUCRUXv8TvbyE
- brhZGyVA7+iLUk8he+Q4sE1/JEDvt7Hd8TiGM6AtcoInu+gVXSCCV9DwWa/xLk/NlI6F
- Mcwg==
+ bh=x6Lc+5sz46UlDIYc0iwPAVa5urjJ86FK47hpcl478Qc=;
+ b=tcW080+/wCAOhPJ7VMkZ8Wg9rW5owwq9oV4+Uqy/DqlrHUSt9sNXdXuxOw80pJU+UP
+ OqiwUcpciAt4AmIy/3zYFwmt58fyGwltVRbeEfLA5UCbfaOcNuQO3VEF23y3xlfTS8wF
+ Y3pvedz+eLyX/4EFQJtETh3iLZs/IhiMm7nZpjJKRpVYoMstjwixll6xW0ObyJ841saA
+ BqHyL6WP441K/F7Y3DlLNXA2Dqy4z/HXjIMouXZc0dEenDRweS4JjeyKXSJtXRjn758j
+ qtnN24Slx50lFI36o0X4jdZ0k54Rqc/v2UzpNhBdOLCBA7i0+1yXdmZVv10CirLE7WZq
+ OJoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698727629; x=1699332429;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1698728232; x=1699333032;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gdd20c42AmSckn1VV6IUgL4wr6tPqE4KgX2vLyJ5oTE=;
- b=IRtZhELlWOfjkhjxrryC2LT/jTWeRFnAlVS36biuxZXrKcDxv926DZCYIUslTdN+N2
- GQfmPmhC5RUTFJmp2SArrGsQuRorjHhmZLHeinoGCRy2iI55ytnPWHDt6Zv/gfaYbahP
- Hal/EsBWJj9lQvQsXnESA5PeHTvFotObydql8DCewJy2ND6wz1N6Eau1CYSWOM6a5MXH
- WeF2UGySoH1VTqscCMoPHNZQujT0bxPy++ag1/9Jq3upYce66fV9icVRIn3cpkv+fsNd
- OWV52kFngSwBAyXD53X6jCtlnrj8Tm3a7LbDuv+eVZ/EohpDJ7q5R9XtX02s2pLoyAAN
- eN2g==
-X-Gm-Message-State: AOJu0YxPIA5uOtraf2oXjg9AViuWTs4rwjCG6Y6IlP27aNEgXabnbmTB
- splyUiMMutsdyLagfpK5MehKNXkD8Z+k0aA2NkoxwQ==
-X-Google-Smtp-Source: AGHT+IF88Bn6/nBbYs3++F8NS1UL4Ll3l3WZtGQLGzjy1paOHQnWCIe9dqKxuLjaYU7LD6RdWwBYJA==
-X-Received: by 2002:a17:902:cec1:b0:1cc:345b:c7f5 with SMTP id
- d1-20020a170902cec100b001cc345bc7f5mr5202603plg.23.1698727629235; 
- Mon, 30 Oct 2023 21:47:09 -0700 (PDT)
+ bh=x6Lc+5sz46UlDIYc0iwPAVa5urjJ86FK47hpcl478Qc=;
+ b=mtnJbF81o33vQBdktS6zNS8K1Mupi8lHQ49XbSNotq5Mc3KEYjP8OCXDsmy1jcUJ9F
+ iZH+O97RVeJifGmlaVaEOnGs8ZTUEVD/AYmaNlZh733/VHQ+IBcBJqseVk0pHXr/0X+j
+ Ao4jkUZk2jsVDwWdn7ACqP8vz/wJl1PS0QF91L447h2rDDwIcGhsMyAj9W4SK36QRum5
+ fZOchb0zZUEgI1UEazXncrcMX9E7awSyrDutoUzi+Iy1BCsb17iAo52Zutb7cqfMp9qX
+ kqoUt3mWVWnGj6V2QhT96iE2J4zyyzJDT81MIpfy1KNuvqvvlamaW2Di9Gfus4952odH
+ 8UKA==
+X-Gm-Message-State: AOJu0Ywl73QybvYzAENwkR/EeOW9SwydrLpq6saE0q6H7YciiRWrFQDB
+ M9mKmYOnwe7t8VuROgxtfCtXZw==
+X-Google-Smtp-Source: AGHT+IHyFnveaajbA4oPJv+QxfZRdjvrJBj4E/fWVX4yXmOMp0nDW0XMYbl9IH1nE1ZXSrYekKFi7g==
+X-Received: by 2002:a05:6358:720a:b0:168:dc41:b7b0 with SMTP id
+ h10-20020a056358720a00b00168dc41b7b0mr15197856rwa.0.1698728231649; 
+ Mon, 30 Oct 2023 21:57:11 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- iw15-20020a170903044f00b001c74718f2f3sm325900plb.119.2023.10.30.21.47.07
+ a18-20020a63bd12000000b005b9373f574csm314496pgf.74.2023.10.30.21.57.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Oct 2023 21:47:08 -0700 (PDT)
-Message-ID: <bdd6584a-2d58-4224-a5b4-57ece7a7a859@daynix.com>
-Date: Tue, 31 Oct 2023 13:47:06 +0900
+ Mon, 30 Oct 2023 21:57:11 -0700 (PDT)
+Message-ID: <d2ac8914-58bc-4860-8c3c-65f2aeef8ac6@daynix.com>
+Date: Tue, 31 Oct 2023 13:57:08 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 13/21] virtio-net: Always set populate_hash
+Subject: Re: [PATCH v6 05/21] tap: Remove tap_receive()
+Content-Language: en-US
 To: "Zhang, Chen" <chen.zhang@intel.com>
 Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
  Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
  <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
 References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
- <20231030051356.33123-14-akihiko.odaki@daynix.com>
- <CYYPR11MB8432DFE20351884E5BBA27669BA1A@CYYPR11MB8432.namprd11.prod.outlook.com>
-Content-Language: en-US
+ <20231030051356.33123-6-akihiko.odaki@daynix.com>
+ <CYYPR11MB8432F991FBE071C91C4CCB179BA1A@CYYPR11MB8432.namprd11.prod.outlook.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CYYPR11MB8432DFE20351884E5BBA27669BA1A@CYYPR11MB8432.namprd11.prod.outlook.com>
+In-Reply-To: <CYYPR11MB8432F991FBE071C91C4CCB179BA1A@CYYPR11MB8432.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,32 +99,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/31 4:02, Zhang, Chen wrote:
+On 2023/10/31 3:52, Zhang, Chen wrote:
 > 
 > 
 >> -----Original Message-----
 >> From: qemu-devel-bounces+chen.zhang=intel.com@nongnu.org <qemu-
 >> devel-bounces+chen.zhang=intel.com@nongnu.org> On Behalf Of Akihiko
 >> Odaki
->> Sent: Monday, October 30, 2023 1:13 PM
+>> Sent: Monday, October 30, 2023 1:12 PM
 >> Cc: qemu-devel@nongnu.org; Yuri Benditovich
 >> <yuri.benditovich@daynix.com>; Andrew Melnychenko
 >> <andrew@daynix.com>; Michael S . Tsirkin <mst@redhat.com>; Jason Wang
 >> <jasowang@redhat.com>; Akihiko Odaki <akihiko.odaki@daynix.com>
->> Subject: [PATCH v6 13/21] virtio-net: Always set populate_hash
+>> Subject: [PATCH v6 05/21] tap: Remove tap_receive()
 >>
->> The member is not cleared during reset so may have a stale value.
->>
+>> The receive member of NetClientInfo is only for legacy clients and the
+>> receive_iov member is always used when it is set.
 > 
-> /docs/devel/ebpf_rss.rst:
-> populate_hash - for now, not used. eBPF RSS doesn't support hash reporting.
-> 
-> We need update docs?
-> And why not clear it in virtio_net_reset function?
+> Under normal circumstances we still need to maintain compatibility.
+> It seems that there is no need to remove the tap_receive here.
+> You just need to optimize the tap_receive to call the tap_receive_iov.
+> In the history, we can see a large number of devices still keep this interface,
+> For example, e1000_receive can directly call the e1000_receive_iov.
 
-Certainly the documentation needs to be updated.
-Either of clearing it in virtio_net_reset() or 
-virtio_net_set_mrg_rx_bufs() is fine.
+That sounds a good idea. I'll do so in the next version.
 
 Regards,
 Akihiko Odaki
