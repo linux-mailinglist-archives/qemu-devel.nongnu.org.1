@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E14E7DCFA5
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:51:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4287DCFCA
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 15:57:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxq51-0003Gi-5G; Tue, 31 Oct 2023 10:50:55 -0400
+	id 1qxq9N-0006Sl-Kb; Tue, 31 Oct 2023 10:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxq4y-0003GE-Vi
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:50:52 -0400
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxq9J-0006S6-LG
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:55:22 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qxq4x-0003Qb-BX
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:50:52 -0400
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-5849fc56c62so3502095eaf.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:50:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxq9H-0004KG-1A
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 10:55:20 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5409bc907edso9036095a12.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 07:55:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698763849; x=1699368649; darn=nongnu.org;
- h=in-reply-to:from:references:cc:to:content-language:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t3iZKrU7Oej7wmXltUZOVesZb5zGcjOYJH7wiQDorDU=;
- b=DfyqYjibOPsNAIKh+5AteLQJSFgkeDdXBU45LqfzC/Q/F9c7Ry63Lpk7Ts/HUz1rxW
- eiqdZhPFp7mirvwWhafsVj7Ct9aAS7+4GW25kBqld3fwXKDdYMV9sCy8CNuEbyuM2/Y1
- Agkca6ytjj21EckM0ecJG0Ir5vtWbApGuUc/Fqz4shNTJi0stK/QVCLUCdVhBpI39Ivj
- h3HFwAvy438ihgHP92+1V7wXCbxVWI8PR6faAM0ouRoFZ2yU8BbSycVbyEYFCAAfKijj
- suBu6iav63WxlZTUny73kFmtb8rjICPq0yWFcvHB+I9UHhkYpfRPVBzyVbwtEPgbMIso
- 7DbQ==
+ d=linaro.org; s=google; t=1698764116; x=1699368916; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EPzPxgh4+vgatR/kHX2mvS74B1bEtBc65368Obyyd2o=;
+ b=v+rzdIOtrn0KR3tK7GCHnHvwAoiXTgr4ofnNVciMv7m9wMneXd8I16fTx6fQ0JPnJE
+ GbLtU06bjvaL7/PflsLH+y/NbIy8NU4xczjHTeKc0xWQgZ7uGMLv5VjvOwV7SkN4vnAJ
+ 9GqN6xlmx7OTRtCJNQI8M5TTPVvzyEo0E7YBS4PTJhUrag8UNhMjjt7MNBAgOuZ2Y3mn
+ MbfOmjn03C/YK3d3iU1Q031U6ttp4+BbhNXwfXJkZSHKDwRB5jiTg0pHhQjnDqCEKIQ7
+ Z9s9lp3ILJsYcugDaQdrVWAoRsSbbhUZ4SF4tkKOk93LPTIxlfIp6f5uTTaY+EoJCuGB
+ KLpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698763849; x=1699368649;
- h=in-reply-to:from:references:cc:to:content-language:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=t3iZKrU7Oej7wmXltUZOVesZb5zGcjOYJH7wiQDorDU=;
- b=DTN5nlOICZp0G6aK41zKGDc9AQVRXlXSDnlv4ZMiTHz/vtknkPZafZAa8r6mWjXAj5
- 6oZa0Lov9v27eQJdfMfTI9tH3AwME1605z47AgEbsZmRYNXqtEYjmBssdIOI+e5UxVlp
- 0w3ARCoai1XFdpic8cmEILZWJZHIaoEmpQWUrG5C+6WQmiRo+6olPu+8TCZ+87WvNmPk
- gV5ThoEiy5oOMaDg8Ce4fy9SKQFh99WDhownOZAXNKL3V2AAlO+lHFmSlryC3qNBZw7q
- FfGAuPNpchxODHR2oFZJ951Usc4J9PLk3bvQ9pX+uhtLZx4KPY1OSkLCTw3/ADkpLhAz
- JAQg==
-X-Gm-Message-State: AOJu0YzMbkWGmisX6+1OpXj9hDDzrgWBawH8PMee+ZX1t5K256Df5Dez
- GCC3hYCYwqngeInnn5row7mpEA==
-X-Google-Smtp-Source: AGHT+IE9QLiyyWc9l97XM/7DhGBU9uvIvmshDw+jkIsNqpsZR8h5Zuk0MMLKPibogOHeebQugVjXMg==
-X-Received: by 2002:a05:6358:52c5:b0:168:ec27:47a1 with SMTP id
- z5-20020a05635852c500b00168ec2747a1mr17625202rwz.26.1698763849279; 
- Tue, 31 Oct 2023 07:50:49 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- f23-20020a633817000000b005b1bf3a200fsm1152261pga.1.2023.10.31.07.50.48
+ d=1e100.net; s=20230601; t=1698764116; x=1699368916;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EPzPxgh4+vgatR/kHX2mvS74B1bEtBc65368Obyyd2o=;
+ b=Zto/+A8wMskXmtWOTtUZ0cc5w9gMgDLL+E5wKR/kc8sIMNexQ4ci7mhhfIRqr9iPR7
+ K9RiyqwnVYWO2GgpCZ79+9ISv+xantR38sX1JUGsc1RVcBXQYDhlFCLkvSkVUfzy06rv
+ U8gW5ZWeF8AigIpJ6Duo2vZO0+iylvIFAILOzNzSd0Nu6Jw3wj+HBoc4187VbEh+i+re
+ 7KoNkGB2ByEUZQv5gkIfrJyNpKiVZufEhn115XJJPVQl9bEzMIOFIbjH2uvhTSF5Hw0d
+ v4eDAbr4mx6Yxf5pJfqDlo+1EW10dMB58t9PcQpKbIfRb0iDagfH53DsTY+yuKeuSaho
+ rYEw==
+X-Gm-Message-State: AOJu0YyhbZ2jnP4lFCKhIfW/xPu7+LwWmUR7+r2eVUs5hkvKYUcoPEzh
+ 71mtrrdgn3hjFHM/6jqjiVabQQ==
+X-Google-Smtp-Source: AGHT+IH8LhyLOoU+UK8lFc3J+boSvk9QcR2UwwebcNaONl2usEcvmaODmOh29MVJNecKu70Jk/B1KA==
+X-Received: by 2002:a50:d7dd:0:b0:543:72cd:e14c with SMTP id
+ m29-20020a50d7dd000000b0054372cde14cmr1615142edj.36.1698764116289; 
+ Tue, 31 Oct 2023 07:55:16 -0700 (PDT)
+Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
+ [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
+ u9-20020aa7db89000000b005401a4184ddsm1254099edt.27.2023.10.31.07.55.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 07:50:48 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------A0vvdnXNkH1Fre90xckkCxaN"
-Message-ID: <0d60c6d4-a785-4abd-a16a-279b50abf09d@linaro.org>
-Date: Tue, 31 Oct 2023 07:50:46 -0700
+ Tue, 31 Oct 2023 07:55:15 -0700 (PDT)
+Message-ID: <59d6df3c-95ee-4ac4-9ac4-3f4ed49708fa@linaro.org>
+Date: Tue, 31 Oct 2023 15:55:14 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/6] target/loongarch: Add set_vec_extctx to set
- LSX/LASX instructions extctx_flags
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 5/6] hw/input/stellaris_input: Convert to qdev
 Content-Language: en-US
-To: gaosong <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: philmd@redhat.com, laurent@vivier.e, maobibo@loongson.cn,
- yangxiaojuan@loongson.cn, laurent@vivier.eu
-References: <20231010033701.385725-1-gaosong@loongson.cn>
- <20231010033701.385725-3-gaosong@loongson.cn>
- <1c4c0856-337e-4c5e-b2af-6caf35060b0a@linaro.org>
- <24981f5e-3397-427e-a552-635887d581cd@loongson.cn>
- <c43b9404-fd99-4f8a-9e35-62f5a4e50b5b@linaro.org>
- <4f952bcc-61c9-b3b6-d858-00c64167c292@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <4f952bcc-61c9-b3b6-d858-00c64167c292@loongson.cn>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>
+References: <20231030114802.3671871-1-peter.maydell@linaro.org>
+ <20231030114802.3671871-6-peter.maydell@linaro.org>
+ <9ea5c9b8-d740-4cec-9896-568babeca9aa@ilande.co.uk>
+ <CAFEAcA9dJnp0CVOzVWV+Q-U4ji9c8=14ggztKGktCSsDDp_F0g@mail.gmail.com>
+ <CAFEAcA_4wqP7G+gXnunJx85OTvUr-3kx6HGABGb6Kt3y=b_Nvw@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA_4wqP7G+gXnunJx85OTvUr-3kx6HGABGb6Kt3y=b_Nvw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,76 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------A0vvdnXNkH1Fre90xckkCxaN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 10/30/23 23:16, gaosong wrote:
->> Anyway, I think my previous suggestion is better:
+On 31/10/23 15:05, Peter Maydell wrote:
+> On Tue, 31 Oct 2023 at 13:55, Peter Maydell <peter.maydell@linaro.org> wrote:
 >>
-> Oh,  Could you  show more details?  I think I didn't get you point.
+>> On Mon, 30 Oct 2023 at 20:38, Mark Cave-Ayland
+>> <mark.cave-ayland@ilande.co.uk> wrote:
+>>>
+>>> On 30/10/2023 11:48, Peter Maydell wrote:
+>>> Is it worth converting this to use DEFINE_TYPES() during the conversion? I know Phil
+>>> has considered some automation to remove the type_init() boilerplate for the majority
+>>> of cases.
+>>
+>> I could, I guess. It seems a bit awkward that DEFINE_TYPES()
+>> wants you to pass it an array even when you only have one type,
+>> though, which is going to be a very common use case.
+
+For single type, there is no point beside enforcing a QOM style.
+
+I'll update docs/devel/qom.rst...
+
+> I'm going to squash this into this patch:
+> diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
+> index 6ccf0e80adc..d42ba4f0582 100644
+> --- a/hw/input/stellaris_gamepad.c
+> +++ b/hw/input/stellaris_gamepad.c
+> @@ -90,16 +90,13 @@ static void
+> stellaris_gamepad_class_init(ObjectClass *klass, void *data)
+>       device_class_set_props(dc, stellaris_gamepad_properties);
+>   }
 > 
->>>> If you want to track what the program is using, you should do it exactly like the real 
->>>> kernel: disable the execution unit, have the program trap, and the enable the 
->>>> execution unit when the trap occurs. At this point, CSR_EUEN enable bits contain 
+> -static const TypeInfo stellaris_gamepad_info = {
+> -    .name = TYPE_STELLARIS_GAMEPAD,
+> -    .parent = TYPE_SYS_BUS_DEVICE,
+> -    .instance_size = sizeof(StellarisGamepad),
+> -    .class_init = stellaris_gamepad_class_init,
+> +static const TypeInfo stellaris_gamepad_info[] = {
+> +    {
+> +        .name = TYPE_STELLARIS_GAMEPAD,
+> +        .parent = TYPE_SYS_BUS_DEVICE,
+> +        .instance_size = sizeof(StellarisGamepad),
+> +        .class_init = stellaris_gamepad_class_init,
+> +    },
+>   };
+> 
+> -static void stellaris_gamepad_register_types(void)
+> -{
+> -    type_register_static(&stellaris_gamepad_info);
+> -}
+> -
+> -type_init(stellaris_gamepad_register_types);
+> +DEFINE_TYPES(stellaris_gamepad_info);
+> 
+> 
+> The array is a bit awkward, but it's overall better than having
+> to define the register-types function.
 
-Untested, but something like this.
-
-
-r~
-
-
---------------A0vvdnXNkH1Fre90xckkCxaN
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-linux-user-loongarch64-Use-traps-to-track-LSX-LASX-u.patch"
-Content-Disposition: attachment;
- filename*0="0001-linux-user-loongarch64-Use-traps-to-track-LSX-LASX-u.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
-
-RnJvbSAyYTViNTVhMzNiYzYxMzNjZDMxODg1NmI5NWI4NDQxNjI3NzliZWFmIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBSaWNoYXJkIEhlbmRlcnNvbiA8cmljaGFyZC5oZW5k
-ZXJzb25AbGluYXJvLm9yZz4KRGF0ZTogVHVlLCAzMSBPY3QgMjAyMyAwNzo0Njo1NCAtMDcw
-MApTdWJqZWN0OiBbUEFUQ0hdIGxpbnV4LXVzZXIvbG9vbmdhcmNoNjQ6IFVzZSB0cmFwcyB0
-byB0cmFjayBMU1gvTEFTWCB1c2FnZQoKU2lnbmVkLW9mZi1ieTogUmljaGFyZCBIZW5kZXJz
-b24gPHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc+Ci0tLQogbGludXgtdXNlci9sb29u
-Z2FyY2g2NC9jcHVfbG9vcC5jICAgICAgICAgICB8IDEzICsrKysrKysrKysrKysKIHRhcmdl
-dC9sb29uZ2FyY2gvaW5zbl90cmFucy90cmFuc192ZWMuYy5pbmMgfCAxMSAtLS0tLS0tLS0t
-LQogMiBmaWxlcyBjaGFuZ2VkLCAxMyBpbnNlcnRpb25zKCspLCAxMSBkZWxldGlvbnMoLSkK
-CmRpZmYgLS1naXQgYS9saW51eC11c2VyL2xvb25nYXJjaDY0L2NwdV9sb29wLmMgYi9saW51
-eC11c2VyL2xvb25nYXJjaDY0L2NwdV9sb29wLmMKaW5kZXggODk0ZmRkMTExYS4uNzNkN2I2
-Nzk2YSAxMDA2NDQKLS0tIGEvbGludXgtdXNlci9sb29uZ2FyY2g2NC9jcHVfbG9vcC5jCisr
-KyBiL2xpbnV4LXVzZXIvbG9vbmdhcmNoNjQvY3B1X2xvb3AuYwpAQCAtNzIsNiArNzIsMTkg
-QEAgdm9pZCBjcHVfbG9vcChDUFVMb29uZ0FyY2hTdGF0ZSAqZW52KQogICAgICAgICBjYXNl
-IEVYQ0NPREVfQkNFOgogICAgICAgICAgICAgZm9yY2Vfc2lnX2ZhdWx0KFRBUkdFVF9TSUdT
-WVMsIFRBUkdFVF9TSV9LRVJORUwsIGVudi0+cGMpOwogICAgICAgICAgICAgYnJlYWs7CisK
-KyAgICAgICAgLyoKKyAgICAgICAgICogQmVnaW4gd2l0aCBMU1ggYW5kIExBU1ggZGlzYWJs
-ZWQsIHRoZW4gZW5hYmxlIG9uIHRoZSBmaXJzdCB0cmFwLgorICAgICAgICAgKiBJbiB0aGlz
-IHdheSB3ZSBjYW4gdGVsbCBpZiB0aGUgdW5pdCBpcyBpbiB1c2UuICBUaGlzIGlzIHVzZWQg
-dG8KKyAgICAgICAgICogY2hvb3NlIHRoZSBsYXlvdXQgb2YgYW55IHNpZ25hbCBmcmFtZS4K
-KyAgICAgICAgICovCisgICAgICAgIGNhc2UgRVhDQ09ERV9TWEQ6CisgICAgICAgICAgICBl
-bnYtPkNTUl9FVUVOIHw9IFJfQ1NSX0VVRU5fU1hFX01BU0s7CisgICAgICAgICAgICBicmVh
-azsKKyAgICAgICAgY2FzZSBFWENDT0RFX0FTWEQ6CisgICAgICAgICAgICBlbnYtPkNTUl9F
-VUVOIHw9IFJfQ1NSX0VVRU5fQVNYRV9NQVNLOworICAgICAgICAgICAgYnJlYWs7CisKICAg
-ICAgICAgY2FzZSBFWENQX0FUT01JQzoKICAgICAgICAgICAgIGNwdV9leGVjX3N0ZXBfYXRv
-bWljKGNzKTsKICAgICAgICAgICAgIGJyZWFrOwpkaWZmIC0tZ2l0IGEvdGFyZ2V0L2xvb25n
-YXJjaC9pbnNuX3RyYW5zL3RyYW5zX3ZlYy5jLmluYyBiL3RhcmdldC9sb29uZ2FyY2gvaW5z
-bl90cmFucy90cmFuc192ZWMuYy5pbmMKaW5kZXggOThmODU2YmIyOS4uOTJiMWQyMmUyOCAx
-MDA2NDQKLS0tIGEvdGFyZ2V0L2xvb25nYXJjaC9pbnNuX3RyYW5zL3RyYW5zX3ZlYy5jLmlu
-YworKysgYi90YXJnZXQvbG9vbmdhcmNoL2luc25fdHJhbnMvdHJhbnNfdmVjLmMuaW5jCkBA
-IC00LDggKzQsNiBAQAogICogQ29weXJpZ2h0IChjKSAyMDIyLTIwMjMgTG9vbmdzb24gVGVj
-aG5vbG9neSBDb3Jwb3JhdGlvbiBMaW1pdGVkCiAgKi8KIAotI2lmbmRlZiBDT05GSUdfVVNF
-Ul9PTkxZCi0KIHN0YXRpYyBib29sIGNoZWNrX3ZlYyhEaXNhc0NvbnRleHQgKmN0eCwgdWlu
-dDMyX3Qgb3Byc3opCiB7CiAgICAgaWYgKChvcHJzeiA9PSAxNikgJiYgKChjdHgtPmJhc2Uu
-dGItPmZsYWdzICYgSFdfRkxBR1NfRVVFTl9TWEUpID09IDApKSB7CkBAIC0yMSwxNSArMTks
-NiBAQCBzdGF0aWMgYm9vbCBjaGVja192ZWMoRGlzYXNDb250ZXh0ICpjdHgsIHVpbnQzMl90
-IG9wcnN6KQogICAgIHJldHVybiB0cnVlOwogfQogCi0jZWxzZQotCi1zdGF0aWMgYm9vbCBj
-aGVja192ZWMoRGlzYXNDb250ZXh0ICpjdHgsIHVpbnQzMl90IG9wcnN6KQotewotICAgIHJl
-dHVybiB0cnVlOwotfQotCi0jZW5kaWYKLQogc3RhdGljIGJvb2wgZ2VuX3Z2dnZfcHRyX3Zs
-KERpc2FzQ29udGV4dCAqY3R4LCBhcmdfdnZ2diAqYSwgdWludDMyX3Qgb3Byc3osCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgZ2VuX2hlbHBlcl9ndmVjXzRfcHRyICpmbikKIHsK
-LS0gCjIuMzQuMQoK
-
---------------A0vvdnXNkH1Fre90xckkCxaN--
+Thank you!
 
