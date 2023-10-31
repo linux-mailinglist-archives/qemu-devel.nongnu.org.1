@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF437DCB80
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:12:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C977DCB7D
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 12:11:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxmeR-0004RJ-Tw; Tue, 31 Oct 2023 07:11:15 -0400
+	id 1qxmeS-0004Re-74; Tue, 31 Oct 2023 07:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeM-000429-60
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:10 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeQ-0004Nd-6T
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeJ-0006xC-HX
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:09 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qxmeN-0006zR-GU
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 07:11:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698750665;
+ s=mimecast20190719; t=1698750670;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YnV/MF4qAi1QQyQb7iC9ZrxV75Aer0b2qcwhSszOsho=;
- b=MSis3Q7lvt8houz1pNcNIMuxCQq0z7wmn3Fu/kWAh11g+dhm25//KPv3xwwNDpCLy/X6FE
- 1ZSuG6PyKL4BEjrDHPCKu32Z20UqlqZFUAGXQV7Px/PWx4ZcQCyLMrDkKHgYD7Ele1wkUp
- aeEyVFSP28RQR1sehH2OhnzSbdxiCxc=
+ bh=LQCgrIYKTPXGuFD9c+YZAZ+xUtgJlLfCEQiQ9SuG0BE=;
+ b=bKhZUgP7g995PSd8ueLsJ4YpbWhl7K7QKs/9zmJQ/81VHbat7kbOaagJLt3ExiP/N77rvu
+ e/PQKVxM8KXQEgQ5Sur/qWHHb37IIvPzRQSUsgr5ef8N/nzzdwfz2/xp2YLATMcrvv8bbT
+ bBos/zUbi13LHR/52h5rzPZ8NpFtXpY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-3Xsv7jgiMISjJT1wVm1ZOA-1; Tue, 31 Oct 2023 07:11:02 -0400
-X-MC-Unique: 3Xsv7jgiMISjJT1wVm1ZOA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-269-J0pcYw20NYmtXiSd8psJbw-1; Tue, 31 Oct 2023 07:11:02 -0400
+X-MC-Unique: J0pcYw20NYmtXiSd8psJbw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A6D6101A529;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B14A816F27;
  Tue, 31 Oct 2023 11:11:01 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E959C1C060AE;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F1FCD2026D4C;
  Tue, 31 Oct 2023 11:11:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E77E021E6A37; Tue, 31 Oct 2023 12:10:59 +0100 (CET)
+ id EABB121E691F; Tue, 31 Oct 2023 12:10:59 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org,
@@ -50,15 +50,15 @@ Cc: philmd@linaro.org, npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org,
  jasowang@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
  mst@redhat.com, david@redhat.com, kraxel@redhat.com,
  marcandre.lureau@redhat.com, qemu-ppc@nongnu.org
-Subject: [PATCH 3/7] qga: Improve guest-exec-status error message
-Date: Tue, 31 Oct 2023 12:10:55 +0100
-Message-ID: <20231031111059.3407803-4-armbru@redhat.com>
+Subject: [PATCH 4/7] ui/qmp-cmds: Improve two error messages
+Date: Tue, 31 Oct 2023 12:10:56 +0100
+Message-ID: <20231031111059.3407803-5-armbru@redhat.com>
 In-Reply-To: <20231031111059.3407803-1-armbru@redhat.com>
 References: <20231031111059.3407803-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -84,31 +84,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the PID passed to guest-exec-status does not exist, we report
+set_password with "protocol": "vnc" supports only "connected": "keep".
+Any other value is rejected with
 
-    "Invalid parameter 'pid'"
+    Invalid parameter 'connected'
 
 Improve this to
 
-    "PID 1234 does not exist"
+    parameter 'connected' must be 'keep' when 'protocol' is 'vnc'
+
+client_migrate_info requires "port" or "tls-port".  When both are
+missing, it fails with
+
+    Parameter 'port/tls-port' is missing
+
+Improve this to
+
+    parameter 'port' or 'tls-port' is required
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qga/commands.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ui/ui-qmp-cmds.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/qga/commands.c b/qga/commands.c
-index ce172edd2d..88c1c99fe5 100644
---- a/qga/commands.c
-+++ b/qga/commands.c
-@@ -154,7 +154,7 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
+diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
+index debc07d678..8880691f92 100644
+--- a/ui/ui-qmp-cmds.c
++++ b/ui/ui-qmp-cmds.c
+@@ -44,7 +44,8 @@ void qmp_set_password(SetPasswordOptions *opts, Error **errp)
+         assert(opts->protocol == DISPLAY_PROTOCOL_VNC);
+         if (opts->connected != SET_PASSWORD_ACTION_KEEP) {
+             /* vnc supports "connected=keep" only */
+-            error_setg(errp, QERR_INVALID_PARAMETER, "connected");
++            error_setg(errp, "parameter 'connected' must be 'keep'"
++                       " when 'protocol' is 'vnc'");
+             return;
+         }
+         /*
+@@ -195,7 +196,7 @@ void qmp_client_migrate_info(const char *protocol, const char *hostname,
+         }
  
-     gei = guest_exec_info_find(pid);
-     if (gei == NULL) {
--        error_setg(errp, QERR_INVALID_PARAMETER, "pid");
-+        error_setg(errp, "PID " PRId64 " does not exist");
-         return NULL;
-     }
+         if (!has_port && !has_tls_port) {
+-            error_setg(errp, QERR_MISSING_PARAMETER, "port/tls-port");
++            error_setg(errp, "parameter 'port' or 'tls-port' is required");
+             return;
+         }
  
 -- 
 2.41.0
