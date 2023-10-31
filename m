@@ -2,98 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D6D7DD60A
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 19:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6457DD643
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 19:45:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxtST-0008TP-Lj; Tue, 31 Oct 2023 14:27:22 -0400
+	id 1qxtiy-0004Pl-Va; Tue, 31 Oct 2023 14:44:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxtSP-0008T6-Q3
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 14:27:18 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qxtSI-0000GG-Mz
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 14:27:17 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-407c3adef8eso48940095e9.2
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 11:27:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698776821; x=1699381621; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KtVZ0fTu7Jqtp+BqxrV+eWoXuf5dljVjACIPmSE8jho=;
- b=CLzxmPGEJXPDOYobblNDUxUupiT3xnfbeveEfX/+iwcrvQkn2jm2rfSgRw+WjzIM3e
- Hui+DQFdl9sajbUn9sO2ByykO9ZqdJZYZibHuv8STgJN0t+R9jD9DlJVFRjgDuw4rMQi
- OaUezNlyEnBDba/FVbHg6dxyJ3/aMpLmw/AtoG0+7u12H3BG4XGIT4femlrvxAsjdMEe
- apWNgrHfV38E50ehd9v4FzsNzoPgCXuYSiIbm078qcbDseJJJQhrHBxY4z2Nwv1fkDCC
- Y5IaLL+ZPv5nFF9S7CiYzCx9NFY847GjVzv4Fadji25jkG2k3PNhC7DmXndW1m6rPjcW
- kQow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698776821; x=1699381621;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KtVZ0fTu7Jqtp+BqxrV+eWoXuf5dljVjACIPmSE8jho=;
- b=QC79HpKJMRrC/+KCcBRHIE4wxzMGS6VlZJq1fO/co1bNUm+WhcF7cn9Pz2FUnLp8IZ
- 3HXCPxRBSb7xgHCovGJancujSvuJ7O4v0K2da1NsfQRBklEhLYiSWjD/BFsUDJrPFV1A
- N9l1uqlSmfHlieSwOGZvtC1tAKKln1ma4wODkoi7wMQgzTPfES1Xdkuc4gKtmH32qDRj
- oN9Ei6SC9VjUxFmGEOg7ffwqjDm/sQCzcE17hSgFTjUUV008XCZHnp40Pv/BK8bETp0c
- sByIsxUGbWR0NSWv4/elhuPJ9BCgRv1rWqpdOAICNLp598F6J7frsy4dvV4CJaAYNSg2
- b0ew==
-X-Gm-Message-State: AOJu0Yxh20ToAalFjZWC/cmwRFKNFTpXKBxJLRVLjlRTfbQedENPQOU8
- sesNDbHxOCAcsn/FtGMQEXkrKQ==
-X-Google-Smtp-Source: AGHT+IG1QYpOrQbefkV+eubYPBI+qiAUICBQgr0rriskh/2B1kqkyfFjuLw1AN6X28zpa7ZLuhS55Q==
-X-Received: by 2002:adf:fb90:0:b0:32d:bc6e:7f0e with SMTP id
- a16-20020adffb90000000b0032dbc6e7f0emr10733941wrr.3.1698776820919; 
- Tue, 31 Oct 2023 11:27:00 -0700 (PDT)
-Received: from [192.168.69.115] (gjh33-h01-176-171-208-14.dsl.sta.abo.bbox.fr.
- [176.171.208.14]) by smtp.gmail.com with ESMTPSA id
- 12-20020a5d47ac000000b0032ddc3b88e9sm2184887wrb.0.2023.10.31.11.26.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 31 Oct 2023 11:27:00 -0700 (PDT)
-Message-ID: <0cb317d6-3941-ff03-23c3-2034f39ddc78@linaro.org>
-Date: Tue, 31 Oct 2023 19:26:56 +0100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtix-0004PE-Eq
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 14:44:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qxtiv-0003M1-En
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 14:44:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698777860;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UjS5fhVfmjwrYA5hiqIOKQ/kGKfc3sWo8fSCrZ2b8sk=;
+ b=h7XFDVNdCl2fr6rozDjcGMP5QS030yVybjVub0u72C2NR4Eoa8+z33re8PXdcznolMO208
+ FeERBDsn5LwT/q+qjUJMCXV9TZriFurSUCw+yI2pklMYwRa+jtZEWJpstafPuAOBKaP6ub
+ 4dL4rgAljsPfWiH1mxQ4kDsgMUW/Ll8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-8hl5LysdOlqwGsLizwlSzg-1; Tue, 31 Oct 2023 14:44:15 -0400
+X-MC-Unique: 8hl5LysdOlqwGsLizwlSzg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 453FC88FC2E;
+ Tue, 31 Oct 2023 18:44:15 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.218])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C80142166B26;
+ Tue, 31 Oct 2023 18:44:13 +0000 (UTC)
+Date: Tue, 31 Oct 2023 19:44:12 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: -drive if=none: can't we make this the default?
+Message-ID: <ZUFK/BHG2WMhAiWG@redhat.com>
+References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+ <e3bb64a2-fb72-4e8d-a0b2-89ee35365fb3@tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: QEMU developers fortnightly conference call for 2023-10-31
-Content-Language: en-US
-To: Juan Quintela <juan.quintela@gmail.com>, afaerber@suse.de, ale@rev.ng,
- anjo@rev.ng, bazulay@redhat.com, bbauman@redhat.com,
- chao.p.peng@linux.intel.com, cjia@nvidia.com, cw@f00f.org,
- david.edmondson@oracle.com, dustin.kirkland@canonical.com,
- eblake@redhat.com, edgar.iglesias@gmail.com, elena.ufimtseva@oracle.com,
- eric.auger@redhat.com, f4bug@amsat.org,
- "felipe@nutanix.com" <felipe.franciosi@nutanix.com>,
- "iggy@theiggy.com" <iggy@kws1.com>, "imp@bsdimp.com" <wlosh@bsdimp.com>,
- jan.kiszka@web.de, jgg@nvidia.com, jidong.xiao@gmail.com,
- jjherne@linux.vnet.ibm.com, joao.m.martins@oracle.com,
- konrad.wilk@oracle.com, mburton@qti.qualcomm.com, mdean@redhat.com,
- mimu@linux.vnet.ibm.com, peter.maydell@linaro.org, qemu-devel@nongnu.org,
- quintela@redhat.com, richard.henderson@linaro.org,
- shameerali.kolothum.thodi@huawei.com, stefanha@gmail.com,
- wei.w.wang@intel.com, z.huo@139.com, zwu.kernel@gmail.com,
- Leo Hou <leohou163@163.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <calendar-1ad16449-09cc-40fb-ab4a-24eafcc62d2a@google.com>
- <597d5991-97c5-9e2e-0660-fe5c75b3b1b7@linaro.org>
- <4f825a30-6414-8e3c-2101-057f6bfae6b2@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <4f825a30-6414-8e3c-2101-057f6bfae6b2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.053,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e3bb64a2-fb72-4e8d-a0b2-89ee35365fb3@tls.msk.ru>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,30 +82,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/10/23 13:53, Philippe Mathieu-Daudé wrote:
-> On 30/10/23 15:56, Philippe Mathieu-Daudé wrote:
->> Hi Juan,
->>
->> On 30/10/23 12:04, Juan Quintela wrote:
->>> QEMU developers fortnightly conference call
->>>
->>> Hi
->>>
->>> If you have any topics for this week Conference call, please answer 
->>> to this email.
->>
->> I don't have anything planned but I can take 30min to briefly
->> describe the problems I'm encountering, and present the vision /
->> roadmap prepared, which I'll post as RFC soon (right know I'm
->> focusing on getting my last PRs ready for soft freeze).
+Hi Michael,
+
+I didn't see this thread when you posted it, sorry for being a bit late.
+
+Am 16.10.2023 um 13:58 hat Michael Tokarev geschrieben:
+> Almost everyone mentions -blockdev as a replacement for -drive.
+
+More specifically for -drive if=none. I honestly don't know many common
+use cases for that one.
+
+For management tools, -blockdev is indeed what should be used, and that
+things are more explicit there is actually a feature, not a bug, for
+management tools.
+
+As a human user, in the common case where I don't care about the
+details, I don't want to type up an explicit -device. if=virtio gives me
+more directly what I want.
+
+So you only need it when you want to specify one of the more exotic
+-device options, which shouldn't happen that often. Well, it doesn't for
+me anyway, other people may have other use cases. Is that your case? If
+so, which options do you usually want to give to -device?
+
+> But I have to remind several issues with it:
 > 
-> I took some notes here:
-> https://etherpad.opendev.org/p/qemu-kvm-call-2023-10-31
+> 1. While documentation has improved a lot, -blockdev is still mostly unknown
+>    to the masses.
 
-Today's call recording is available here:
-https://fileserver.linaro.org/s/C4F7rF9KBgZsdWD
-Enjoy my French!
+And for manual human use, that's okay anyway - you probably don't want
+to use it. But if you're writing scripts or even advanced management
+software, then you should use it.
 
-Phil.
+(Of course, in complex cases you may have to use it manually anyway
+because -drive has some limitations, but that should be the absolute
+exception.)
+
+> 2. -blockdev is just too verbose, one have to specify a lot of parameters just to
+>    do a simple thing which is solved with an extra parameter with -drive.
+>    Including various backing stores/chains for qcow2 files - this is terrible for
+>    using things manually from command line
+
+You don't have to specify the backing chain explicitly if you're happy
+with the default options with which the backing files are opened.
+
+-blockdev options are typically a bit longer than -drive ones, but not
+extremely. The separate -device that if=none gives you is already a
+similar amount of extra typing.
+
+-drive if=virtio,file=test.qcow2
+-drive if=none,file=test.qcow2,id=disk -device virtio-blk,drive=disk
+-blockdev qcow2,file.driver=file,file.filename=test.qcow2,node-name=disk -device virtio-blk,drive=disk
+
+> 3. -blockdev does not work with -snapshot
+> 
+> 4. Something else I forgot while typing all the above :)
+> 
+> In my view, -blockdev is not a substitute for -drive, not at all, and it is
+> very user-unfriendly.  This is why -drive seems to be a good trade-off between
+> things like -hda (which is just too simplistic) and -blockdev which which is
+> way too verbose and lacks some automatic sugar like -snapshot.
+
+I would agree with that, but if=none already feels a bit unfriendly.
+
+Honestly, I would like to throw away the existing -drive and replace it
+with one that has a simpler implementation (as a wrapper around
+-blockdev) and I would be happy if it gained some additional options for
+passing through things to -device so that you don't have to bother with
+if=none even in the more complex cases any more.
+
+It would be pure syntactic sugar with a similar compatibility promise as
+in HMP (we won't break it just for fun, but we'll also not stop making
+sensible changes just because they make things look a bit different).
+
+Kevin
 
 
