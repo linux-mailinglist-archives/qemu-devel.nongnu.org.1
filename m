@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0867DC8EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7377DC8FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 10:06:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxkeW-0001jJ-9m; Tue, 31 Oct 2023 05:03:12 -0400
+	id 1qxkew-0002rO-AE; Tue, 31 Oct 2023 05:03:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxkeL-0001VP-T5
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:03:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qxkeZ-00020s-QF
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:03:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qxkeK-00072I-7f
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:03:01 -0400
+ id 1qxkeX-00079G-T5
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 05:03:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698742979;
+ s=mimecast20190719; t=1698742993;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=10JfSxom2lk2mbOjj76bRdexz5YSQtyyggKlwWnHJ6E=;
- b=LFVN5zdlDokmG1jZ9YmQWY2Wu/ki6EwODPFMzlUGKtC05DK4ijvBiJ3aw0Z6pt8M9Dq9yw
- LHj+HTDhUnkQD/VQI+NqBEISARGftaR3+pdf+Ax6Zq5NlHbme2YWHJu+n0BkxZkNtt9i2m
- z/uM12G6JdSPaV53/DCpNEcnm/pPpdA=
+ bh=cgY98SFPwcTkFT1EcyY0UJrzdGnE86XwuN/qvH01nOg=;
+ b=WPDJRBiP+Q6LhNOBvAW/cxV3eADXcLOsoJfkr1kI4yebLvLV+RANaPJG35sCZZeRZuEOU/
+ D+5N/JVA00bl1axKkz9/JrbiIqow0ZmTwVj/Jq9dpVjNABTjcx1AGQDXA7n7kt0LdU/y7n
+ dSTl2HQIn8h4Be1zCA4NmU8mZxQDg4Q=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-410-OgGxdt4oOOmwWC_iKjl4NQ-1; Tue, 31 Oct 2023 05:02:51 -0400
-X-MC-Unique: OgGxdt4oOOmwWC_iKjl4NQ-1
+ us-mta-219-3bHIKcz_MDeEczM95KsXnA-1; Tue, 31 Oct 2023 05:02:54 -0400
+X-MC-Unique: 3bHIKcz_MDeEczM95KsXnA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADAC2185A786;
- Tue, 31 Oct 2023 09:02:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 122348A5DDB;
+ Tue, 31 Oct 2023 09:02:54 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 300BE1C060AE;
- Tue, 31 Oct 2023 09:02:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F20D11C060AE;
+ Tue, 31 Oct 2023 09:02:50 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, libvir-list@redhat.com,
@@ -52,24 +52,24 @@ Cc: Kevin Wolf <kwolf@redhat.com>, libvir-list@redhat.com,
  Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Hailiang Zhang <zhanghailiang@xfusion.com>, qemu-block@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 23/38] migration: migrate 'blk' command option is deprecated.
-Date: Tue, 31 Oct 2023 10:01:27 +0100
-Message-ID: <20231031090142.13122-24-quintela@redhat.com>
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 24/38] migration: Deprecate block migration
+Date: Tue, 31 Oct 2023 10:01:28 +0100
+Message-ID: <20231031090142.13122-25-quintela@redhat.com>
 In-Reply-To: <20231031090142.13122-1-quintela@redhat.com>
 References: <20231031090142.13122-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,94 +85,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use blocked-mirror with NBD instead.
+It is obsolete.  It is better to use driver-mirror with NBD instead.
+
+CC: Kevin Wolf <kwolf@redhat.com>
+CC: Eric Blake <eblake@redhat.com>
+CC: Stefan Hajnoczi <stefanha@redhat.com>
+CC: Hanna Czenczek <hreitz@redhat.com>
 
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231018115513.2163-4-quintela@redhat.com>
+Message-ID: <20231018115513.2163-5-quintela@redhat.com>
 ---
- docs/about/deprecated.rst      | 9 +++++++++
- qapi/migration.json            | 7 ++++---
- migration/migration-hmp-cmds.c | 5 +++++
- migration/migration.c          | 5 +++++
- 4 files changed, 23 insertions(+), 3 deletions(-)
+ docs/about/deprecated.rst | 10 ++++++++++
+ qapi/migration.json       | 29 ++++++++++++++++++++++++-----
+ migration/block.c         |  3 +++
+ migration/options.c       |  9 ++++++++-
+ 4 files changed, 45 insertions(+), 6 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 1c8c8c34c4..c1613468e6 100644
+index c1613468e6..35c8d7d1d4 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -477,3 +477,12 @@ Use blockdev-mirror with NBD instead.
- As an intermediate step the ``inc`` functionality can be achieved by
- setting the ``block-incremental`` migration parameter to ``true``.
- But this parameter is also deprecated.
+@@ -486,3 +486,13 @@ Use blockdev-mirror with NBD instead.
+ As an intermediate step the ``blk`` functionality can be achieved by
+ setting the ``block`` migration capability to ``true``.  But this
+ capability is also deprecated.
 +
-+``blk`` migrate command option (since 8.2)
-+''''''''''''''''''''''''''''''''''''''''''
++block migration (since 8.2)
++'''''''''''''''''''''''''''
 +
-+Use blockdev-mirror with NBD instead.
++Block migration is too inflexible.  It needs to migrate all block
++devices or none.
 +
-+As an intermediate step the ``blk`` functionality can be achieved by
-+setting the ``block`` migration capability to ``true``.  But this
-+capability is also deprecated.
++Please see "QMP invocation for live storage migration with
++``blockdev-mirror`` + NBD" in docs/interop/live-block-operations.rst
++for a detailed explanation.
 diff --git a/qapi/migration.json b/qapi/migration.json
-index fa7f4f2575..3765c2b662 100644
+index 3765c2b662..e3b00a215b 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -1526,8 +1526,8 @@
+@@ -269,11 +269,15 @@
+ #     average memory load of the virtual CPU indirectly.  Note that
+ #     zero means guest doesn't dirty memory.  (Since 8.1)
+ #
++# Features:
++#
++# @deprecated: Member @disk is deprecated because block migration is.
++#
+ # Since: 0.14
+ ##
+ { 'struct': 'MigrationInfo',
+   'data': {'*status': 'MigrationStatus', '*ram': 'MigrationStats',
+-           '*disk': 'MigrationStats',
++           '*disk': { 'type': 'MigrationStats', 'features': [ 'deprecated' ] },
+            '*vfio': 'VfioStats',
+            '*xbzrle-cache': 'XBZRLECacheStats',
+            '*total-time': 'int',
+@@ -525,6 +529,9 @@
  #
  # Features:
  #
--# @deprecated: Member @inc is deprecated.  Use blockdev-mirror with
--#     NBD instead.
-+# @deprecated: Members @inc and @blk are deprecated.  Use
++# @deprecated: Member @block is deprecated.  Use blockdev-mirror with
++#     NBD instead.
++#
+ # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+ #
+ # Since: 1.2
+@@ -534,7 +541,8 @@
+            'compress', 'events', 'postcopy-ram',
+            { 'name': 'x-colo', 'features': [ 'unstable' ] },
+            'release-ram',
+-           'block', 'return-path', 'pause-before-switchover', 'multifd',
++           { 'name': 'block', 'features': [ 'deprecated' ] },
++           'return-path', 'pause-before-switchover', 'multifd',
+            'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
+            { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+            'validate-uuid', 'background-snapshot',
+@@ -835,6 +843,9 @@
+ #
+ # Features:
+ #
++# @deprecated: Member @block-incremental is deprecated.  Use
 +#     blockdev-mirror with NBD instead.
++#
+ # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+ #     are experimental.
  #
- # Returns: nothing on success
+@@ -850,7 +861,7 @@
+            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+            'avail-switchover-bandwidth', 'downtime-limit',
+            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
+-           'block-incremental',
++           { 'name': 'block-incremental', 'features': [ 'deprecated' ] },
+            'multifd-channels',
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+            'max-cpu-throttle', 'multifd-compression',
+@@ -1011,6 +1022,9 @@
  #
-@@ -1550,7 +1550,8 @@
- # <- { "return": {} }
- ##
- { 'command': 'migrate',
--  'data': {'uri': 'str', '*blk': 'bool',
-+  'data': {'uri': 'str',
-+           '*blk': { 'type': 'bool', 'features': [ 'deprecated' ] },
-            '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
-            '*detach': 'bool', '*resume': 'bool' } }
+ # Features:
+ #
++# @deprecated: Member @block-incremental is deprecated.  Use
++#     blockdev-mirror with NBD instead.
++#
+ # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+ #     are experimental.
+ #
+@@ -1040,7 +1054,8 @@
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+-            '*block-incremental': 'bool',
++            '*block-incremental': { 'type': 'bool',
++                                    'features': [ 'deprecated' ] },
+             '*multifd-channels': 'uint8',
+             '*xbzrle-cache-size': 'size',
+             '*max-postcopy-bandwidth': 'size',
+@@ -1225,6 +1240,9 @@
+ #
+ # Features:
+ #
++# @deprecated: Member @block-incremental is deprecated.  Use
++#     blockdev-mirror with NBD instead.
++#
+ # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+ #     are experimental.
+ #
+@@ -1251,7 +1269,8 @@
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+-            '*block-incremental': 'bool',
++            '*block-incremental': { 'type': 'bool',
++                                    'features': [ 'deprecated' ] },
+             '*multifd-channels': 'uint8',
+             '*xbzrle-cache-size': 'size',
+             '*max-postcopy-bandwidth': 'size',
+diff --git a/migration/block.c b/migration/block.c
+index b60698d6e2..acffe88f84 100644
+--- a/migration/block.c
++++ b/migration/block.c
+@@ -731,6 +731,9 @@ static int block_save_setup(QEMUFile *f, void *opaque)
+     trace_migration_block_save("setup", block_mig_state.submitted,
+                                block_mig_state.transferred);
  
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 83176f5bae..dfe98da355 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -750,6 +750,11 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
-                     " use blockdev-mirror with NBD instead");
++    warn_report("block migration is deprecated;"
++                " use blockdev-mirror with NBD instead");
++
+     ret = init_blk_migration(f);
+     if (ret < 0) {
+         return ret;
+diff --git a/migration/options.c b/migration/options.c
+index 37fa1cfe74..ae8ab47e32 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -12,6 +12,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/error-report.h"
+ #include "exec/target_page.h"
+ #include "qapi/clone-visitor.h"
+ #include "qapi/error.h"
+@@ -473,10 +474,14 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
+         error_setg(errp, "QEMU compiled without old-style (blk/-b, inc/-i) "
+                    "block migration");
+-        error_append_hint(errp, "Use drive_mirror+NBD instead.\n");
++        error_append_hint(errp, "Use blockdev-mirror with NBD instead.\n");
+         return false;
      }
- 
-+    if (blk) {
-+        warn_report("option '-b' is deprecated;"
+ #endif
++    if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
++        warn_report("block migration is deprecated;"
 +                    " use blockdev-mirror with NBD instead");
 +    }
-+
-     qmp_migrate(uri, !!blk, blk, !!inc, inc,
-                 false, false, true, resume, &err);
-     if (hmp_handle_error(mon, err)) {
-diff --git a/migration/migration.c b/migration/migration.c
-index 06a706ad90..cb2d7161b5 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1625,6 +1625,11 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
-                     " use blockdev-mirror with NBD instead");
+ 
+ #ifndef CONFIG_REPLICATION
+     if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
+@@ -1400,6 +1405,8 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
      }
  
-+    if (blk) {
-+        warn_report("parameter 'blk' is deprecated;"
+     if (params->has_block_incremental) {
++        warn_report("block migration is deprecated;"
 +                    " use blockdev-mirror with NBD instead");
-+    }
-+
-     if (resume) {
-         if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
-             error_setg(errp, "Cannot resume if there is no "
+         s->parameters.block_incremental = params->block_incremental;
+     }
+     if (params->has_multifd_channels) {
 -- 
 2.41.0
 
