@@ -2,134 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613837DD708
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 210187DD728
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Oct 2023 21:40:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qxvHp-0001Gk-Fr; Tue, 31 Oct 2023 16:24:29 -0400
+	id 1qxvWS-0005ED-Kr; Tue, 31 Oct 2023 16:39:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qxvHn-0001Ga-Hm
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:24:27 -0400
-Received: from mail-sn1nam02on2043.outbound.protection.outlook.com
- ([40.107.96.43] helo=NAM02-SN1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qxvHl-0004Jn-Cv
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:24:27 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c4Jz5NECU3GIrNhsHA2g/pns5TF5EUFAuKWdN+XdoM7+hwxRgGNxcU1ga87Oh+16MNZPfPcwtlJVd5ToRS1AvwTAb/XegE42es2gg1okxSjcuwjrtys4cPYMHT0VdfFXs+LKVwH4dPZi7yi3R0b4+6h8IjquVD3sChUCe7hNTpV0OaJbxcBfln9aJrX/De9Mr5Tf3NIwcH1zbRxPrK5LBzhKCQonHuGEXeTnogqGw37K+S6epvFi5LNaJWcXhKGuDw9UMmk1idhkKRm7FaxnhbvPmyWoQByWwy+NusssHP1Xjn62C8iuVg1VulSzDpTdiPenxcerfcnAosWDUPJT9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KL9t877ZDfBnNIxdxSj8WnU1DGDOizjY74SPgWm2zaE=;
- b=gE7mxyaj8YfuF7aoprwUB3AD71i03bU/l+ZsckrM6JXWe7lzc8rAWw2SC27st/j8m0mW1XEy2Spig0wHa1S2jlzKmZEP0WdlER5rFiKMFEBBXe1ffdSLmiudr3KPKbf+3j7eC00PndP57WuvhiMu3juR5dwagPzrv7oFmpzMmZ2qaKjCi+PcE4nBWw89/MXxlMsknZNFJarUiCOQ8Vxsd92II+0X6bZWJpFT9Y70tB3vfKxdN3bZkATINKb1eylrSrcXz785TXFA/49OPrNF0MWCZZvdOEOHnicywb/5d7KPsHvt8UVPzAgVOcvgqxOU+aNCZMckCaFNgaj8ua1G6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KL9t877ZDfBnNIxdxSj8WnU1DGDOizjY74SPgWm2zaE=;
- b=byQGAQOV3FNZZ1XG6WlLojTXwgdrjBz/3ygiXD5D8e/ES50BRPpHq8Xm05F5BVRI6qMgPN+TYk8sGux8tzGwZy/g1pXBgfdImrVMVjDNo9ncHFOsD5Y/uOj0EONpkvIu6Up1fXPh+qaY0OBMnNucPQN2cRtCYHc2grJJe6E652Q=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com (2603:10b6:303:2d::23)
- by DS0PR12MB7533.namprd12.prod.outlook.com (2603:10b6:8:132::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.28; Tue, 31 Oct
- 2023 20:19:18 +0000
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::bc0e:2b8d:357c:675e]) by MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::bc0e:2b8d:357c:675e%7]) with mapi id 15.20.6933.028; Tue, 31 Oct 2023
- 20:19:17 +0000
-Date: Tue, 31 Oct 2023 13:19:06 -0700
-From: Vikram Garhwal <vikram.garhwal@amd.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clegoate@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: intermittent qtest-aarch64/xlnx-canfd-test test failure
-Message-ID: <ZUFhOhQpj6UVawyZ@amd.com>
-References: <fd2b7868-2ac5-64a1-d66f-3025c1da6bd1@tls.msk.ru>
- <76165393-f7ef-40fb-883f-ba8654856467@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <76165393-f7ef-40fb-883f-ba8654856467@redhat.com>
-X-ClientProxiedBy: SJ0PR13CA0165.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::20) To MW3PR12MB4409.namprd12.prod.outlook.com
- (2603:10b6:303:2d::23)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxvWQ-0005DH-M0
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:39:34 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qxvWF-0007K5-IC
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 16:39:34 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-5ae143e08b1so59113387b3.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 13:39:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698784762; x=1699389562; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y9f6UBOfFYhoxaLW4bNV81fgl1x5hThdYpOBUgpw5uw=;
+ b=DvaC/eeZZCx/54+eSasWg9UMOf7ecOGn8+OGMJ/3yyJDuYNGy4WKY68QcLLoncOA9J
+ sq1iMzDi37qJGLPJSNFY1RP0derxes+zWbHui4gi8ZX5G1L/JFG+0Cg8bhPWcrUnqWv4
+ 09CSThyOJOZLCm7IH4j+IvKIiHk24spAQMQmIiPUpA7uvw2pS/Kr/3OLgO0nGbXfskYG
+ mAasopumw7fcqB2wqyKUb2KhQD0C0JPUcmtxG8z5qlciShLzVOqHdnCobFlRlV1LZY+p
+ TZU611N92YnNoQj5zpAtMKvMHN+5FqfNDb4yw40r4f057W3tXJpESZnWukFDOKDiqPfi
+ ggqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698784762; x=1699389562;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y9f6UBOfFYhoxaLW4bNV81fgl1x5hThdYpOBUgpw5uw=;
+ b=I57MVjxfkgK/DV8pMgLXgFcGTKae4tOGcdrZm7NGA9V2fEkTzQURwoMWpMB0PRZrl8
+ lxPfpIFttSUel4ZjoovM1RM+phTeAl3OcRaZwt8ObL0TcSDYCTlCGTPrZ4nFjdIAs3WQ
+ MT6fX2jE06n9EjxkypLDFPbnr7a3jXG5iQT3+zTx5Iwem4ozl32wl3UaA/WOl6IjjsQJ
+ 293PXpSJwO43xsd1qyyBG9dvN85BgsIzWwGUQL27DYWwCHpamFU16R2e+40acvYOOHOE
+ lNPyhkxzQZf5kC24qssJrJbZKRyqtWxtsvVlL+sWeEL97Jbn/jItrUi+Qy+7l+EVUuuJ
+ fn0Q==
+X-Gm-Message-State: AOJu0YxCSKBPYK3Y1mAp6xWQy0Zi9e2zbqGEo1rErLi2qMp3Jepf9WB9
+ WCw3SI/HOQ0qR20ZHXfz+dTSX3gqNnI3e0fGpwM=
+X-Google-Smtp-Source: AGHT+IFAQwBqPXcA9CFGNl2JRX+cJ7G8d0j0UZUYd1NzhYAAXswgKTV19i8L5/kUoAff/FMnRO34Kw==
+X-Received: by 2002:a81:ae62:0:b0:5a7:a959:337 with SMTP id
+ g34-20020a81ae62000000b005a7a9590337mr14664042ywk.27.1698784761733; 
+ Tue, 31 Oct 2023 13:39:21 -0700 (PDT)
+Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
+ k1-20020a81ff01000000b005add997ae53sm1272802ywn.81.2023.10.31.13.39.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Oct 2023 13:39:21 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v7 00/16] rv64i CPU, RVA22U64 profile support
+Date: Tue, 31 Oct 2023 17:39:00 -0300
+Message-ID: <20231031203916.197332-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|DS0PR12MB7533:EE_
-X-MS-Office365-Filtering-Correlation-Id: c65ee22a-5eed-4558-5c9e-08dbda4ea87b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yEEbDHo/tChzrOtk5dXoTsOBW6xJYHcmLzlsqfSjFifqe/aOpzP3FCCcsC4aiMvnC3ZLBUNoXamriAdwtuVCLBNpnCVL1S/5hP6d+1MNYXamf2covF74dxOQi8qiSImRGlD4Un+lCU5YFNjBl4tzqSa0pCMG5h/jl1cGHywH9h3sKoIue8nV/+EPiinwW6P110YNJmC/+TgKnNA3ML2yklvjw/hKgJrBBuyRbYK8jcWiWvSjxbMFEcsBDw+FBUUxERKmODg6xafPfRvSzyZrfFNIK+lIuQvt9ys8um3HVYV2UGpqHWa3wZftRFVp/qVfKSsmqgnD3BIRi1zORKP9rGBpPf5I7yN+z5KkZXEA9DNPIhYjTOV2FWGsyIOCaMDjPyUW5lTxeuJuVRRRGdvkzuhlas0TdjpGuIfRhzJhz0GiuQU5ZOinb61X98GbK9ucBNILKMUSuTsppS+B91rXOBbGK5hlBi8ddtRzpKRBBtRvf1kJCr9iFMhHqs1+tv39WNapelJUyQviFVSQewJ/S0VNWOFxQTlEmzT2ldYlrTZKRr5C7oAM4F3j71odYhF9zzxaECW+9kBsx44jMoEa1w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR12MB4409.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(136003)(366004)(346002)(396003)(39860400002)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(84970400001)(2906002)(5660300002)(44832011)(41300700001)(38100700002)(36756003)(8676002)(8936002)(4326008)(316002)(54906003)(26005)(6512007)(6666004)(66556008)(66476007)(66946007)(6916009)(2616005)(66574015)(86362001)(6506007)(966005)(53546011)(83380400001)(478600001)(6486002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bGRTMlB5YW9tbzJYcU91UWczQ25wSkdybVlpaXQ3L25EOW43dktJd0ZFQnNS?=
- =?utf-8?B?MlZGNllKS0FkRjdIRkRuZzhHdFRGSC9pRWVWZlUraFg0SXVFSGVHcW1sNjRU?=
- =?utf-8?B?Z0grZ3JnQS9Sd1lFSE84TmRsN2dpSlIxeUFsY0ppU1VEeEdSNldPSS9ZRndK?=
- =?utf-8?B?d252NEVvWngrYnc5TFh6bEp5Q2dmbUpjanE5N3cyVXJlRTZDbW5vM2FSbEZr?=
- =?utf-8?B?R1VFWFZTRzJMZU9idW9JVjVHc2pFZWcwWGkySHBVUTAya1BMOFJUYS9Mc1Vq?=
- =?utf-8?B?NUYxVVFjSlFtOXFlRzkraGl5dGd6ZTdjMWRjNnNiOXpKUkxsYTlEUTZkQkFL?=
- =?utf-8?B?S1Nwa2NWNVlXSnBhaEx3Nkgxbm1hSmNLdFBCMXZQUHl0anNyTWpza2FFZW9P?=
- =?utf-8?B?RStmelRySzRVRFMwS243SERCcTFWVEg5ai9OTWVMMkl6ZFFtd2E2TWR0Q2xY?=
- =?utf-8?B?MmpCb1hmS0FXSVZESWRSOEp0bFFkaDBnRko0amxobUgxckdlYWM1cnFZWENY?=
- =?utf-8?B?UUFTckhBNWYzT2tVbHQ0bkhWUTlxamRjTmU5OEVRTkZZL1prYWMvZmJ0ZThy?=
- =?utf-8?B?MW5oNVhlazV5RDdDbXluNGUyUVhrRlArelpKd2UwWG1LWGF0NndmalpWaU0z?=
- =?utf-8?B?V0ZwMmFMYkVFaWp4aXFZQnJmSlZHNSt1TzJlcmNTMUY2dWJrT3NiZ2FQaTlE?=
- =?utf-8?B?bnNvdzlWdWJGRnpmRWRrODhrS3p3UDYrOGtkK3VoeUttQm02eTVjUHRHbk5O?=
- =?utf-8?B?aHpHZmdTOGk5eTFYUXNvaTd2MnI5TzdBdjlrcUxNMUdEZUlUN0pjU0NVbkhR?=
- =?utf-8?B?K1V5YkJ2S2M0UWdGNjVtYWlFNlBBR25SUHN5MFRJdVRzSnV3b0lKUEdGWHFH?=
- =?utf-8?B?MWhMYm13bFU2MjljV1F4RmxBTWNYc1hvRFREeHZuUGIvWVMza0ZkYmlDZ0Vz?=
- =?utf-8?B?UitJdVo4RkYrUTdvZWk4ckZEVjBZSGRyY1l2TUgxZVhQTWpOYjEwTnlTclFJ?=
- =?utf-8?B?U0VzSnF4Sk81QnI5YThxdjRLbG1LQmNTUllGaWYvcUVQTHFIcmZ4UVk4YXR6?=
- =?utf-8?B?WFg3d3JxcSt0Ym5mcGdyN3phbVdGbWxWbDdVYW44bHVhOGxBcDJub3pzc1Vl?=
- =?utf-8?B?VkRsNFR2czlZMmZFV2JiK1lHaFc1K2NuSTh4bkFocU5uaS96aTRFdm1PMUJP?=
- =?utf-8?B?TGNSNWROc0FxVmlPV0FxeWlrZ2xFRHdqNCtoNjE2bTlIVjFvY2JVZzVOWDYw?=
- =?utf-8?B?UGFXWHFWUTliUnpobElWV01HNVowKzVRMGdYM2xiVEJ5RU13NWRiVWZXYkhE?=
- =?utf-8?B?cGxUaUN0d2lEd083OER3QWRHR2llU3o2VnB2YVBIb0owVncvbSt2UlpzWS9l?=
- =?utf-8?B?ZEVlSDJPbzhXZXhzdVBLdUNXTGYzeGtOMWlvSzJQNURpWkhTN08zcFFNUlV3?=
- =?utf-8?B?cnpKNk42dGhmNThJT1FjZ2MxTFZzVml5cjI1M3FicjdRZnhKMGU1RkcvR1RG?=
- =?utf-8?B?aE9vUkpEVnVYQUI4cTFFem1GSGdzdkEzOURSbC82S014S0wzdmNIQ2lkTzJx?=
- =?utf-8?B?bFJGWVVYbDV0SkVBTkdCVkdrbW5ndk5GeDR0blZXd0ZISUdEcjRSOHBSTHZt?=
- =?utf-8?B?ck5aSE91SVRKSUxRa2MvWW5yODlrTU5IQWRBY1lUQTBIb2xoM25nTndyczd5?=
- =?utf-8?B?ZWt5VExheWg2SWRnZnlIQlYyL056cFlCd1d1MXBrM1djNzdSSldBb3hwWW9Z?=
- =?utf-8?B?Y20rVVhqcGQxNVhxRERaSm5JcElva3oybXZvTll5cGdOOExHdzNkNDVEWk1m?=
- =?utf-8?B?a2M4dGhaUmhXS0hPMmpqblYvS0hJQXFuL2tjbm5BbFF6b2xCeXVraEF3QjlO?=
- =?utf-8?B?WWFVMVIyaFF3TTIwNVduZ2Y4cjJpWEUwS3pPdkdBZWhsZ0R4VXRyNTc3U2o4?=
- =?utf-8?B?Qi9LR2NMWTl0eUl6UXVrUWNkQ1BEcnJMYktKb0tINTF2TzhkMVlmeDVvN1NB?=
- =?utf-8?B?ajI3cFNMUElFZ2N4dXJvMERmamVNZUIydUVDVFZFSlAxRkVIMzBNa2ZSQUJx?=
- =?utf-8?B?TG9tbzdZZmFPZm82VnRjWWNIQU51OUVkdUxSQXlBTURLSXRBUXp1ZzNodlZ1?=
- =?utf-8?Q?u2FBcXBnxmX44QZABDUQUUWsi?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c65ee22a-5eed-4558-5c9e-08dbda4ea87b
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4409.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2023 20:19:17.4105 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v2mWo9NHzxNYt5Lr4iYngtphHZBG377bfQYEEc4OREBR2SlSgw5otaR8uoRlEM0MHBuqQlVDhEqns+VccvdwUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7533
-Received-SPF: softfail client-ip=40.107.96.43;
- envelope-from=vikram.garhwal@amd.com;
- helo=NAM02-SN1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,54 +90,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael & Cedric,
-On Mon, Oct 30, 2023 at 05:19:38PM +0100, Cédric Le Goater wrote:
-> On 9/21/23 09:51, Michael Tokarev wrote:
-> > Hi!
-> > 
-> > While doing stable-8.1.1 preparation, I've a CI failure of ubuntu-20.04-s390x-all here:
-> > 
-> > https://gitlab.com/qemu-project/qemu/-/jobs/5132720046
-> > 
-> > ▶ ERROR:../tests/qtest/xlnx-canfd-test.c:265:match_rx_tx_data: \
-> >    assertion failed ((buf_rx[size] & DLC_FD_BIT_MASK) == (buf_tx[size] & DLC_FD_BIT_MASK)): (2281701376 == 2147483648)
-> > 
-> >   qemu:qtest+qtest-aarch64 / qtest-aarch64/xlnx-canfd-test  \
-> >             ERROR           0.77s   killed by signal 6 SIGABRT
-> > 
-> > Re-run of this test went successfully.  However, the assert looks
-> > a bit scary, and the fact that it does not fail in a reliable way
-> > is a bit troubling too.  Is it a flaky test or there's something
-> > else in qemu with concurrent threads?
-> > 
-> > I don't see this assert in previous test runs.  But ubuntu-20.04-s390x-all
-> > test fails quite often due to other reasons, so it isn't conclusive.
-> > 
-> > Should something be done with this?
-> > 
-> > The testing is done for commit f2fc49c302036315db6e8c9f74592decc3be0476,
-> > which is in staging-8.1 branch only temporarily.
-> > 
-I tried with staging-8.1 and didn't see this error. I ran it with registry.gitlab.com/legoater/qemu/qemu/fedora-i386-cross:latest on a x86 host machine. Can you please share more about how you are running
-the testes? It will be greatly helpful to me in reproducing the issue and fixing
-it.
-> > Thanks,
-> > 
-> > /mjt
-> > 
-> 
-> I had the same CI error in job https://gitlab.com/legoater/qemu/-/jobs/5416150239
-> ▶ 170/258 ERROR:../tests/qtest/xlnx-canfd-test.c:265:match_rx_tx_data: assertion failed ((buf_rx[size] & DLC_FD_BIT_MASK) == (buf_tx[size] & DLC_FD_BIT_MASK)): (2281701376 == 2147483648) ERROR
-> 170/258 qemu:qtest+qtest-aarch64 / qtest-aarch64/xlnx-canfd-test           ERROR           0.49s   killed by signal 6 SIGABRT
-> > > > QTEST_QEMU_BINARY=./qemu-system-aarch64 PYTHON=/builds/legoater/qemu/build/pyvenv/bin/python3 MALLOC_PERTURB_=60 G_TEST_DBUS_DAEMON=/builds/legoater/qemu/tests/dbus-vmstate-daemon.sh /builds/legoater/qemu/build/tests/qtest/xlnx-canfd-test --tap -k
-> ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
-> stderr:
-> **
-> ERROR:../tests/qtest/xlnx-canfd-test.c:265:match_rx_tx_data: assertion failed ((buf_rx[size] & DLC_FD_BIT_MASK) == (buf_tx[size] & DLC_FD_BIT_MASK)): (2281701376 == 2147483648)
-> (test program exited with status code -6)
-> 
-> I could reproduce on PPC64 and s390x systems.
-> 
-> C.
-> 
+Hi,
+
+As discussed in v6, all our problems with the profile implementation
+cames from the rv64 CPU and how to deal with its defaults. Enabling a
+profile on top of it is straightforward, but disabling it (either via a
+script trying to undo a profile enablement, or users doing something
+silly) makes things complicated - disabling all the mandatory extensions
+will overwrite the CPU defaults, but doing nothing is weird considering
+how QEMU options work. And therein lies the rub: we didn't have any
+other way of consuming profiles, so we were stuck dancing around rv64
+defaults and what to do with them.
+
+In this v7 we're adding a new CPU called 'rv64i'. This is a new type of
+CPUs, called 'bare', that doesn't inherit any defaults and allows users
+to enable/disable extensions at will. This CPU is implementing bare
+RV64I for a reason: this is the mandatory ISA for profiles support.
+
+All the design around profile support is now made on top of how rv64i
+works.  Other non-vendor CPUs (like rv64) can still use profiles, but
+now we're not concerned about what happens if an user does '-cpu
+rv64,rva22u64=false'. In short, we recommend using profiles with rv64i
+but we won't forbid using it with rv64 (in particular because stock rv64
+does not implement rva22u64, which is surprising giving it has a lot of
+defaults ...). Patches 1, 2 and 3 implements rv64i. 
+
+Another noticeable change was made in patches 15 and 16. We're now
+exposing the profile flag to all CPUs. In the end a profile is just a
+set of mandatory extensions and conditions that must be met. If the
+conditions are met we should enable the flag, regardless of user input.
+This is done by changes in patch 15. Patch 16 changes
+query-cpu-model-expansion to show profile flags.
+
+Patches based on top of Alistair's riscv-to-apply.next.
+
+Patches missing acks: 1, 2, 3, 5, 15, 16
+
+Changes from v6:
+- patch 1 (new):
+  - create vendor CPU type
+- patch 2 (new):
+  - check for 'if vendorCPU' instead of 'if !genericCPU'
+- patch 3 (new):
+  - add rv64i CPU
+- patch 5 (former patch 2 from v6):
+  - drop the CB_DEF_VALUE define
+- patch 6 (fomer patch 3 from v6):
+  - mention cbop block size in commit msg
+- patch 9 (former patch 6 from v6):
+  - removed the "no-op" when disabling a profile
+  - rewrote the commit msg to reflect that the design is made on top of the rv64i CPU
+- patch 12 (fomer patch 9 from v6):
+  - do not disable RVI when disabling a profile
+- patch 15 (patch 12 from v6):
+  - previous acks revoked due to the amount of changes made
+  - disable profile flags if there are missing mandatory extensions during finalize()
+  - enable profile flags if all its preconditions are met during
+    finalize()
+- patch 16 (new):
+  - add profile flags to query-cpu-model-expansion
+- v6 link: https://lore.kernel.org/qemu-riscv/20231028085427.707060-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (16):
+  target/riscv: create TYPE_RISCV_VENDOR_CPU
+  target/riscv/tcg: do not use "!generic" CPU checks
+  target/riscv: add rv64i CPU
+  target/riscv: add zicbop extension flag
+  target/riscv/tcg: add 'zic64b' support
+  riscv-qmp-cmds.c: expose named features in cpu_model_expansion
+  target/riscv: add rva22u64 profile definition
+  target/riscv/kvm: add 'rva22u64' flag as unavailable
+  target/riscv/tcg: add user flag for profile support
+  target/riscv/tcg: add MISA user options hash
+  target/riscv/tcg: add riscv_cpu_write_misa_bit()
+  target/riscv/tcg: handle profile MISA bits
+  target/riscv/tcg: add hash table insert helpers
+  target/riscv/tcg: honor user choice for G MISA bits
+  target/riscv/tcg: validate profiles during finalize
+  riscv-qmp-cmds.c: add profile flags in cpu-model-expansion
+
+ hw/riscv/virt.c               |   5 +
+ target/riscv/cpu-qom.h        |   3 +
+ target/riscv/cpu.c            |  96 ++++++++++-
+ target/riscv/cpu.h            |  13 ++
+ target/riscv/cpu_cfg.h        |   3 +
+ target/riscv/kvm/kvm-cpu.c    |   7 +-
+ target/riscv/riscv-qmp-cmds.c |  44 ++++-
+ target/riscv/tcg/tcg-cpu.c    | 301 +++++++++++++++++++++++++++++-----
+ 8 files changed, 412 insertions(+), 60 deletions(-)
+
+-- 
+2.41.0
+
 
