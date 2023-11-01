@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3404D7DDE55
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:20:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9F27DDE62
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:28:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy7OZ-000081-5b; Wed, 01 Nov 2023 05:20:15 -0400
+	id 1qy7V3-0003QI-JJ; Wed, 01 Nov 2023 05:26:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qy7OX-00007P-HM
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:20:13 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qy7OR-00027a-7b
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:20:13 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4094301d505so22172805e9.2
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 02:20:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698830405; x=1699435205; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=xBjhJ5h56RysEJavvjefa4FFMqiMf0Olmr+Ynb5EgOk=;
- b=d25o8Rnbu8fjGKazQl6XmXd8sS1irglqq6Es+RrE2jpwakH9uqce1M9fq8u56D2Aty
- azNCZ+cJWPtbtjUy3J9u0vRbiZSNiP3O18gSmGsHgQhePWqUvUaEqpSNAnKE8Ne7Y9pM
- 4dQsENgvZKI7R0MZ9aoUGX49Mvqf5CV8u0hxGi0r12wsnz0B/uoz5WPt8ejJP/YFo+7U
- U1eusaaFTl67PUqduRDeoyNO4eAZeFajbreDCQoWECW/XuZU9SI9oJSOSL2E5UGMIpel
- 6woTNFCF5EZFol4CiQZhf7M5LDV5IKwdEN0ylTrRVhWjmQgiknB/IsF2lojVCmt0V65E
- uaLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698830405; x=1699435205;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xBjhJ5h56RysEJavvjefa4FFMqiMf0Olmr+Ynb5EgOk=;
- b=Bv1c9DqIY2M9o17fM4xt9iMkB11vWwVAa7biNIVcDRdw8wQ4Azmc8t30zufeq74Fkn
- CbHX4clbbPcIpRC5q8CzFLNbP7lyh9bxgKjr60VCApd5ioSnW7/BHZGj43o0stK65cpr
- hVA9IPXNvY8EP2e/mW952uYrjBm7Z/UagmucTXntIA02dNF01J1GlQCJVpF7P9HSiv7z
- HlSW6vmGIBacYOckArWagVp9oUyagJ643C8au8c9cUS3vNYPXGsTTFiR2iP1i49JSt02
- G3ceo2q8FpXrC9X85ECROgqtGP3qBGYEDMOfGKFek3/fNERu/3A/7rsUOV2LUbhQE9Zw
- T5Ug==
-X-Gm-Message-State: AOJu0YyljsFjliP8DeERWPwq5sfta3Zh9h9C5x+OSDRjXIOVGhgyonIq
- uGmq2pfrj6Dnh1dou+wnoDABcw==
-X-Google-Smtp-Source: AGHT+IG4GeJ0/INF8AFnrSQgEUfhPwgwUkZaUoccIFuT76bP5/XrDK91exdtyTU8pz5LhzwDJjfXQw==
-X-Received: by 2002:a05:600c:198a:b0:406:8496:bd8b with SMTP id
- t10-20020a05600c198a00b004068496bd8bmr12993942wmq.9.1698830405650; 
- Wed, 01 Nov 2023 02:20:05 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- v12-20020a05600c444c00b0040641a9d49bsm886889wmn.17.2023.11.01.02.20.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 02:20:03 -0700 (PDT)
-Date: Wed, 1 Nov 2023 10:20:03 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v7 02/16] target/riscv/tcg: do not use "!generic" CPU
- checks
-Message-ID: <20231101-ec7856944e5893c9ce4c536b@orel>
-References: <20231031203916.197332-1-dbarboza@ventanamicro.com>
- <20231031203916.197332-3-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qy7V1-0003Q9-9G
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:26:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qy7Uz-0003H4-Df
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:26:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698830811;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=LPq5yD+ijPCVp7YSiiKKU2rLz6dLz5cn4zujG/wdHOg=;
+ b=VuoZfN4QtRsbR3sHUU8PGJalcF144VZzx8lE1selz4s44VL0AbaiepLHzU/iEe51Or0iHe
+ EwxJiNetTcdGJjPISYwLiUZV/wdRJIUth+ab3vlCY5IQkGrt3xDFoQYvhRlgi2lgn2Ee83
+ 2HXERMcBgxZn+i6VUFygNF60iqAIU8U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-369-CkCSctp5ObeyLEVW0YmNkg-1; Wed, 01 Nov 2023 05:26:49 -0400
+X-MC-Unique: CkCSctp5ObeyLEVW0YmNkg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B96585A58B;
+ Wed,  1 Nov 2023 09:26:49 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.47])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5721C1C060BA;
+ Wed,  1 Nov 2023 09:26:48 +0000 (UTC)
+Date: Wed, 1 Nov 2023 09:26:46 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ Nikolay Borisov <nborisov@suse.com>
+Subject: Re: [PATCH v2 16/29] migration/ram: Add support for 'fixed-ram'
+ migration restore
+Message-ID: <ZUIZ1g5UahLu4pXh@redhat.com>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-17-farosas@suse.de>
+ <ZTjjMiMkmnPMccjq@redhat.com> <87r0lieqxm.fsf@suse.de>
+ <ZUFPlqgFx/2MeCj8@x1n>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231031203916.197332-3-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <ZUFPlqgFx/2MeCj8@x1n>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,36 +84,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 05:39:02PM -0300, Daniel Henrique Barboza wrote:
-> Our current logic in get/setters of MISA and multi-letter extensions
-> works because we have only 2 CPU types, generic and vendor, and by using
-> "!generic" we're implying that we're talking about vendor CPUs. When adding
-> a third CPU type this logic will break so let's handle it beforehand.
+On Tue, Oct 31, 2023 at 03:03:50PM -0400, Peter Xu wrote:
+> On Wed, Oct 25, 2023 at 11:07:33AM -0300, Fabiano Rosas wrote:
+> > >> +static int parse_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+> > >> +{
+> > >> +    g_autofree unsigned long *bitmap = NULL;
+> > >> +    struct FixedRamHeader header;
+> > >> +    size_t bitmap_size;
+> > >> +    long num_pages;
+> > >> +    int ret = 0;
+> > >> +
+> > >> +    ret = fixed_ram_read_header(f, &header);
+> > >> +    if (ret < 0) {
+> > >> +        error_report("Error reading fixed-ram header");
+> > >> +        return -EINVAL;
+> > >> +    }
+> > >> +
+> > >> +    block->pages_offset = header.pages_offset;
+> > >
+> > > Do you think it is worth sanity checking that 'pages_offset' is aligned
+> > > in some way.
+> > >
+> > > It is nice that we have flexibility to change the alignment in future
+> > > if we find 1 MB is not optimal, so I wouldn't want to force 1MB align
+> > > check htere. Perhaps we could at least sanity check for alignment at
+> > > TARGET_PAGE_SIZE, to detect a gross data corruption problem ?
+> > >
+> > 
+> > I don't see why not. I'll add it.
 > 
-> In set_misa_ext_cfg() and set_multi_ext_cfg(), check for "vendor" cpu instead
-> of "not generic". The "generic CPU" checks remaining are from
-> riscv_cpu_add_misa_properties() and cpu_add_multi_ext_prop() before
-> applying default values for the extensions.
-> 
-> This leaves us with:
-> 
-> - vendor CPUs will not allow extension enablement, all other CPUs will;
-> 
-> - generic CPUs will inherit default values for extensions, all others
->   won't.
-> 
-> And now we can add a new, third CPU type, that will allow extensions to
-> be enabled and will not inherit defaults, without changing the existing
-> logic.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/tcg/tcg-cpu.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
->
+> Is there any explanation on why that 1MB offset, and how the number is
+> chosen?  Thanks,
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+The fixed-ram format is anticipating the use of O_DIRECT.
+
+With O_DIRECT both the buffers in memory, and the file handle offset
+have alignment requirements. The buffer alignments are usually page
+sized, and QEMU RAM blocks will trivially satisfy those.
+
+The file handle offset alignment varies per filesystem. While you can
+query the alignment for the FS holding the file with statx(), that is
+not appropriate todo. If a user saves/restores QEMU state to file, we
+must assume there is a chance the user will copy the saved state to a
+different filesystem.
+
+IOW, we want alignment to satisfy the likely worst case.
+
+Picking 1 MB is a nice round number that is large enough that it is
+almost certainly going to satisfy any filesystem alignment. In fact
+it is likely massive overkill. None the less 1 MB is also still tiny
+in the context of guest RAM sizes, so no one is going to notice the
+padding holes in the file from this.
+
+IOW, the 1 MB choice is an arbitrary, but somewhat informed choice.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
