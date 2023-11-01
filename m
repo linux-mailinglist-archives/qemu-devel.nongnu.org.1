@@ -2,66 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332037DE6DA
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 21:45:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 342217DE6E8
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 21:46:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyI4Y-0004DZ-BI; Wed, 01 Nov 2023 16:44:19 -0400
+	id 1qyI5x-0002cx-U7; Wed, 01 Nov 2023 16:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyI3w-00041d-Sr
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:43:41 -0400
-Received: from mail-ed1-f46.google.com ([209.85.208.46])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyI3t-0000t2-QF
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:43:40 -0400
-Received: by mail-ed1-f46.google.com with SMTP id
- 4fb4d7f45d1cf-533d31a8523so322233a12.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 13:43:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698871410; x=1699476210;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zWE9lKzNbrNWCnNTSJAjEsSbfNnQcvmJYhS05d+itcs=;
- b=Dvym3UNu8UsX7fS9U0qJZL2/ulfQ+AWjdQ3YbIGJdKDSE8mXCFDctdIi5DWaTv1/Z5
- l8mDn42HYH7W/gnH1Ja26Q0Lt7sM1cbdAlfcwYYSQSj86cqP5SbHy5sQvN37/HACsAJu
- S+QeLPeTNoNczs74S3sFcE+fbmPYvXSRC2w03PrIcrPOKhlE0gzXqh2jtlZSXwRAys6H
- YkcgCvQy0fUIPguqkM+P44FGcMXeBo1qDD+HpOM2GPvYH/7rwVh/rdMEvnXHHgLhlH5x
- kp9BL1ck5lvDlzssqjKEESlWkKw2l1lXHqJn7DKAki7DkYZ4JEpyaMJHH561Tbl/E618
- tS+A==
-X-Gm-Message-State: AOJu0YwUKQloVwzbX+/BItp7Tqmo5Mec66hPv9FDoSb6G1LBJ03PYTqC
- qIiDOd9MM1aOl6BaSb/gZu4sX1zlHic=
-X-Google-Smtp-Source: AGHT+IE84Hm7O4oyJdvwBaSz79X37dz71y6het5lVLn2dya4VSRUNSdrg13nQNZNnD1obPuVSVsUUw==
-X-Received: by 2002:a50:9f4e:0:b0:543:6e4f:37b with SMTP id
- b72-20020a509f4e000000b005436e4f037bmr5461749edf.36.1698871409654; 
- Wed, 01 Nov 2023 13:43:29 -0700 (PDT)
-Received: from localhost.localdomain (ip-109-42-115-39.web.vodafone.de.
- [109.42.115.39]) by smtp.gmail.com with ESMTPSA id
- x16-20020a50d610000000b0053dff5568acsm1484033edi.58.2023.11.01.13.43.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 13:43:29 -0700 (PDT)
-From: Thomas Huth <huth@tuxfamily.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qyI5n-0001yA-BI
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:45:35 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qyI5i-0001R9-NQ
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:45:34 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id BCEAF756088;
+ Wed,  1 Nov 2023 21:45:35 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 8CFE3756062; Wed,  1 Nov 2023 21:45:35 +0100 (CET)
+Message-Id: <cover.1698871239.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v2 0/4] Misc ati-vga patches
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] tests/avocado: Allow newer versions of tesseract in the
- nextcube test
-Date: Wed,  1 Nov 2023 21:43:22 +0100
-Message-ID: <20231101204323.35533-1-huth@tuxfamily.org>
-X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.208.46; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f46.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+    marcandre.lureau@redhat.com
+Date: Wed,  1 Nov 2023 21:45:35 +0100 (CET)
+X-Spam-Probability: 8%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,71 +53,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current Linux distros ship version 5 of the tesseract OCR software,
-so the nextcube screen test is ignored there. Let's make the check
-more flexible to allow newer versions, too, and remove the old v3
-test since most Linux distros don't ship this version anymore.
+Changes in v2:
+- Add HOST_PATH_CNTL reg in patch 1 to match Linux vram size calculation
+- Add a new patch to implement pixman fallbacks for ati-vga that
+should help with the series that make pixman optional.
 
-Signed-off-by: Thomas Huth <huth@tuxfamily.org>
----
- tests/avocado/machine_m68k_nextcube.py | 15 +++------------
- tests/avocado/tesseract_utils.py       |  4 ++--
- 2 files changed, 5 insertions(+), 14 deletions(-)
+Some misc patches I had laying around that could be upstreamed just to
+clean up my tree a bit.
 
-diff --git a/tests/avocado/machine_m68k_nextcube.py b/tests/avocado/machine_m68k_nextcube.py
-index f1205d7fc0..1f3c883910 100644
---- a/tests/avocado/machine_m68k_nextcube.py
-+++ b/tests/avocado/machine_m68k_nextcube.py
-@@ -55,25 +55,16 @@ def test_bootrom_framebuffer_size(self):
-         self.assertEqual(width, 1120)
-         self.assertEqual(height, 832)
- 
--    @skipUnless(tesseract_available(3), 'tesseract v3 OCR tool not available')
--    def test_bootrom_framebuffer_ocr_with_tesseract_v3(self):
--        screenshot_path = os.path.join(self.workdir, "dump.ppm")
--        self.check_bootrom_framebuffer(screenshot_path)
--        lines = tesseract_ocr(screenshot_path, tesseract_version=3)
--        text = '\n'.join(lines)
--        self.assertIn('Backplane', text)
--        self.assertIn('Ethernet address', text)
--
-     # Tesseract 4 adds a new OCR engine based on LSTM neural networks. The
-     # new version is faster and more accurate than version 3. The drawback is
-     # that it is still alpha-level software.
--    @skipUnless(tesseract_available(4), 'tesseract v4 OCR tool not available')
--    def test_bootrom_framebuffer_ocr_with_tesseract_v4(self):
-+    @skipUnless(tesseract_available(4), 'tesseract OCR tool not available')
-+    def test_bootrom_framebuffer_ocr_with_tesseract(self):
-         screenshot_path = os.path.join(self.workdir, "dump.ppm")
-         self.check_bootrom_framebuffer(screenshot_path)
-         lines = tesseract_ocr(screenshot_path, tesseract_version=4)
-         text = '\n'.join(lines)
--        self.assertIn('Testing the FPU, SCC', text)
-+        self.assertIn('Testing the FPU', text)
-         self.assertIn('System test failed. Error code', text)
-         self.assertIn('Boot command', text)
-         self.assertIn('Next>', text)
-diff --git a/tests/avocado/tesseract_utils.py b/tests/avocado/tesseract_utils.py
-index 72cd9ab798..476f528147 100644
---- a/tests/avocado/tesseract_utils.py
-+++ b/tests/avocado/tesseract_utils.py
-@@ -21,13 +21,13 @@ def tesseract_available(expected_version):
-         version = res.stdout_text.split()[1]
-     except IndexError:
-         version = res.stderr_text.split()[1]
--    return int(version.split('.')[0]) == expected_version
-+    return int(version.split('.')[0]) >= expected_version
- 
-     match = re.match(r'tesseract\s(\d)', res)
-     if match is None:
-         return False
-     # now this is guaranteed to be a digit
--    return int(match.groups()[0]) == expected_version
-+    return int(match.groups()[0]) >= expected_version
- 
- 
- def tesseract_ocr(image_path, tesseract_args='', tesseract_version=3):
+BALATON Zoltan (4):
+  ati-vga: Fix aperture sizes
+  ati-vga: Support unaligned access to GPIO DDC registers
+  ati-vga: Add 30 bit palette access register
+  ati-vga: Implement fallback for pixman routines
+
+ hw/display/ati.c      | 61 +++++++++++++++++++++++++----------
+ hw/display/ati_2d.c   | 75 ++++++++++++++++++++++++++++++-------------
+ hw/display/ati_dbg.c  |  2 ++
+ hw/display/ati_int.h  |  2 ++
+ hw/display/ati_regs.h |  2 ++
+ 5 files changed, 103 insertions(+), 39 deletions(-)
+
 -- 
-2.41.0
+2.30.9
 
 
