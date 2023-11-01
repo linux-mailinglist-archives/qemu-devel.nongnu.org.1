@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93557DE6D9
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 21:45:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 332037DE6DA
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 21:45:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyI3O-0002xH-R9; Wed, 01 Nov 2023 16:43:06 -0400
+	id 1qyI4Y-0004DZ-BI; Wed, 01 Nov 2023 16:44:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyI3N-0002wy-7D
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:43:05 -0400
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyI3w-00041d-Sr
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:43:41 -0400
+Received: from mail-ed1-f46.google.com ([209.85.208.46])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyI3K-0000oh-O7
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:43:04 -0400
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-5a7c95b8d14so2974687b3.3
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 13:43:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698871381; x=1699476181; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=52R6Eg8XXxFu2Bm2dvauXbc+AXEa1/gdYft/MoiQmhc=;
- b=deuqh4ds8EmyaJZGvskb+JRBTJhj2mRwNkJeOqyVR2pSI7P6moAWA3rm7IG5YiVPV1
- LG2ntVDcx1HUttO0/peD6TrpcCLnksIkDTd2PUMDP/ZsnR9ioZYvfYtxjCMjEUHEbvAu
- GU/JaSsNJQhHjAjW9/Dqre5M+NNRI6Rbb6Wm0PR8UiXwxvBMkx44+DFmyy91nnXplH6E
- 5YEYmUdijsUv8FcbNJN4bDCcYvPfO7pQ78ouZic+aNmxLqqVKx4DJP9J1NSQ2wcjmuBN
- 6uiinTIwxzAGvU+WpLE9Yrr6bV58WiJvAc0wCB6lbpa9ou/qNf7L2A4Crf7zK3KtCAKs
- Twvw==
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyI3t-0000t2-QF
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 16:43:40 -0400
+Received: by mail-ed1-f46.google.com with SMTP id
+ 4fb4d7f45d1cf-533d31a8523so322233a12.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 13:43:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698871381; x=1699476181;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=52R6Eg8XXxFu2Bm2dvauXbc+AXEa1/gdYft/MoiQmhc=;
- b=VNVgr8AQANLzZKd5N1HflxsaYxVRF445DYw3c3Pf93Mg8a7aNupwjuudXaKj5RemG3
- FXBc5/uhPjFGOQC1HXG03VGnN7Z1xmOGD8DBHPA+EgqkS1bgQ3pjdYi//tPLVr0F2QHX
- e6a5gSR7oFjPuv8CrqQla4XGtniq1uEUkjCskAdu0whog8ZuqXFuLgPjtdcts84YXJB4
- WL+BG9kJM76RTVlV/RVxy8xHOnED1oAJuJiwDFpRp89WzoPqIjo/UVhxvDw7l46R+SpX
- cDfxrC4hNoB7IMML1UklFsid+mk2xd5X7ay9H+Zdv8sWJC1qwOPUag5NBtjR8mtbJyhQ
- M4iQ==
-X-Gm-Message-State: AOJu0Yxu0g6v0cIK6+GR1PHtIn4GpVzWRHVZRrLbkFCfuyaw6WsTN7Lk
- zeyER+9DrO/oMccq+w4yOQEA/kuVFsNo0Op0BUA=
-X-Google-Smtp-Source: AGHT+IEWhffg4w8FZhoTovVRS1DmqqawUqlKQgWuX7ZmyV6nWKmf8aUAvTvi6XItcPZ1va+MN8Mgxw==
-X-Received: by 2002:a05:6902:1892:b0:d9c:cc27:cc4a with SMTP id
- cj18-20020a056902189200b00d9ccc27cc4amr15324195ybb.32.1698871380888; 
- Wed, 01 Nov 2023 13:43:00 -0700 (PDT)
-Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- z187-20020a2533c4000000b00d9cc49edae9sm329724ybz.63.2023.11.01.13.42.58
+ d=1e100.net; s=20230601; t=1698871410; x=1699476210;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zWE9lKzNbrNWCnNTSJAjEsSbfNnQcvmJYhS05d+itcs=;
+ b=Dvym3UNu8UsX7fS9U0qJZL2/ulfQ+AWjdQ3YbIGJdKDSE8mXCFDctdIi5DWaTv1/Z5
+ l8mDn42HYH7W/gnH1Ja26Q0Lt7sM1cbdAlfcwYYSQSj86cqP5SbHy5sQvN37/HACsAJu
+ S+QeLPeTNoNczs74S3sFcE+fbmPYvXSRC2w03PrIcrPOKhlE0gzXqh2jtlZSXwRAys6H
+ YkcgCvQy0fUIPguqkM+P44FGcMXeBo1qDD+HpOM2GPvYH/7rwVh/rdMEvnXHHgLhlH5x
+ kp9BL1ck5lvDlzssqjKEESlWkKw2l1lXHqJn7DKAki7DkYZ4JEpyaMJHH561Tbl/E618
+ tS+A==
+X-Gm-Message-State: AOJu0YwUKQloVwzbX+/BItp7Tqmo5Mec66hPv9FDoSb6G1LBJ03PYTqC
+ qIiDOd9MM1aOl6BaSb/gZu4sX1zlHic=
+X-Google-Smtp-Source: AGHT+IE84Hm7O4oyJdvwBaSz79X37dz71y6het5lVLn2dya4VSRUNSdrg13nQNZNnD1obPuVSVsUUw==
+X-Received: by 2002:a50:9f4e:0:b0:543:6e4f:37b with SMTP id
+ b72-20020a509f4e000000b005436e4f037bmr5461749edf.36.1698871409654; 
+ Wed, 01 Nov 2023 13:43:29 -0700 (PDT)
+Received: from localhost.localdomain (ip-109-42-115-39.web.vodafone.de.
+ [109.42.115.39]) by smtp.gmail.com with ESMTPSA id
+ x16-20020a50d610000000b0053dff5568acsm1484033edi.58.2023.11.01.13.43.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 13:43:00 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ Wed, 01 Nov 2023 13:43:29 -0700 (PDT)
+From: Thomas Huth <huth@tuxfamily.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v8 19/19] riscv-qmp-cmds.c: add profile flags in
- cpu-model-expansion
-Date: Wed,  1 Nov 2023 17:42:04 -0300
-Message-ID: <20231101204204.345470-20-dbarboza@ventanamicro.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] tests/avocado: Allow newer versions of tesseract in the
+ nextcube test
+Date: Wed,  1 Nov 2023 21:43:22 +0100
+Message-ID: <20231101204323.35533-1-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231101204204.345470-1-dbarboza@ventanamicro.com>
-References: <20231101204204.345470-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=209.85.208.46; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f46.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,83 +77,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose all profile flags for all CPUs when executing
-query-cpu-model-expansion. This will allow callers to quickly determine
-if a certain profile is implemented by a given CPU. This includes
-vendor CPUs - the fact that they don't have profile user flags doesn't
-mean that they don't implement the profile.
+Current Linux distros ship version 5 of the tesseract OCR software,
+so the nextcube screen test is ignored there. Let's make the check
+more flexible to allow newer versions, too, and remove the old v3
+test since most Linux distros don't ship this version anymore.
 
-After this change it's possible to quickly determine if our stock CPUs
-implement the existing rva22u64 profile. Here's a few examples:
-
- $ ./build/qemu-system-riscv64 -S -M virt -display none
--qmp tcp:localhost:1234,server,wait=off
-
- $ ./scripts/qmp/qmp-shell localhost:1234
-Welcome to the QMP low-level shell!
-Connected to QEMU 8.1.50
-
-- As expected, the 'max' CPU implements the rva22u64 profile.
-
-(QEMU) query-cpu-model-expansion type=full model={"name":"max"}
-    {"return": {"model":
-        {"name": "rv64", "props": {... "rva22u64": true, ...}}}}
-
-- rv64 is missing "zba", "zbb", "zbs", "zkt" and "zfhmin":
-
-query-cpu-model-expansion type=full model={"name":"rv64"}
-    {"return": {"model":
-        {"name": "rv64", "props": {... "rva22u64": false, ...}}}}
-
-query-cpu-model-expansion type=full model={"name":"rv64",
-    "props":{"zba":true,"zbb":true,"zbs":true,"zkt":true,"zfhmin":true}}
-    {"return": {"model":
-        {"name": "rv64", "props": {... "rva22u64": true, ...}}}}
-
-We have no vendor CPUs that supports rva22u64 (veyron-v1 is the closest
-- it is missing just 'zkt').
-
-In short, aside from the 'max' CPU, we have no CPUs that supports
-rva22u64 by default.
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- target/riscv/riscv-qmp-cmds.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tests/avocado/machine_m68k_nextcube.py | 15 +++------------
+ tests/avocado/tesseract_utils.py       |  4 ++--
+ 2 files changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
-index 5ada279776..205aaabeb9 100644
---- a/target/riscv/riscv-qmp-cmds.c
-+++ b/target/riscv/riscv-qmp-cmds.c
-@@ -116,6 +116,19 @@ static void riscv_obj_add_named_feats_qdict(Object *obj, QDict *qdict_out)
-     }
- }
+diff --git a/tests/avocado/machine_m68k_nextcube.py b/tests/avocado/machine_m68k_nextcube.py
+index f1205d7fc0..1f3c883910 100644
+--- a/tests/avocado/machine_m68k_nextcube.py
++++ b/tests/avocado/machine_m68k_nextcube.py
+@@ -55,25 +55,16 @@ def test_bootrom_framebuffer_size(self):
+         self.assertEqual(width, 1120)
+         self.assertEqual(height, 832)
  
-+static void riscv_obj_add_profiles_qdict(Object *obj, QDict *qdict_out)
-+{
-+    RISCVCPUProfile *profile;
-+    QObject *value;
-+
-+    for (int i = 0; riscv_profiles[i] != NULL; i++) {
-+        profile = riscv_profiles[i];
-+        value = QOBJECT(qbool_from_bool(profile->enabled));
-+
-+        qdict_put_obj(qdict_out, profile->name, value);
-+    }
-+}
-+
- static void riscv_cpuobj_validate_qdict_in(Object *obj, QObject *props,
-                                            const QDict *qdict_in,
-                                            Error **errp)
-@@ -220,6 +233,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-     riscv_obj_add_multiext_props(obj, qdict_out, riscv_cpu_experimental_exts);
-     riscv_obj_add_multiext_props(obj, qdict_out, riscv_cpu_vendor_exts);
-     riscv_obj_add_named_feats_qdict(obj, qdict_out);
-+    riscv_obj_add_profiles_qdict(obj, qdict_out);
+-    @skipUnless(tesseract_available(3), 'tesseract v3 OCR tool not available')
+-    def test_bootrom_framebuffer_ocr_with_tesseract_v3(self):
+-        screenshot_path = os.path.join(self.workdir, "dump.ppm")
+-        self.check_bootrom_framebuffer(screenshot_path)
+-        lines = tesseract_ocr(screenshot_path, tesseract_version=3)
+-        text = '\n'.join(lines)
+-        self.assertIn('Backplane', text)
+-        self.assertIn('Ethernet address', text)
+-
+     # Tesseract 4 adds a new OCR engine based on LSTM neural networks. The
+     # new version is faster and more accurate than version 3. The drawback is
+     # that it is still alpha-level software.
+-    @skipUnless(tesseract_available(4), 'tesseract v4 OCR tool not available')
+-    def test_bootrom_framebuffer_ocr_with_tesseract_v4(self):
++    @skipUnless(tesseract_available(4), 'tesseract OCR tool not available')
++    def test_bootrom_framebuffer_ocr_with_tesseract(self):
+         screenshot_path = os.path.join(self.workdir, "dump.ppm")
+         self.check_bootrom_framebuffer(screenshot_path)
+         lines = tesseract_ocr(screenshot_path, tesseract_version=4)
+         text = '\n'.join(lines)
+-        self.assertIn('Testing the FPU, SCC', text)
++        self.assertIn('Testing the FPU', text)
+         self.assertIn('System test failed. Error code', text)
+         self.assertIn('Boot command', text)
+         self.assertIn('Next>', text)
+diff --git a/tests/avocado/tesseract_utils.py b/tests/avocado/tesseract_utils.py
+index 72cd9ab798..476f528147 100644
+--- a/tests/avocado/tesseract_utils.py
++++ b/tests/avocado/tesseract_utils.py
+@@ -21,13 +21,13 @@ def tesseract_available(expected_version):
+         version = res.stdout_text.split()[1]
+     except IndexError:
+         version = res.stderr_text.split()[1]
+-    return int(version.split('.')[0]) == expected_version
++    return int(version.split('.')[0]) >= expected_version
  
-     /* Add our CPU boolean options too */
-     riscv_obj_add_qdict_prop(obj, qdict_out, "mmu");
+     match = re.match(r'tesseract\s(\d)', res)
+     if match is None:
+         return False
+     # now this is guaranteed to be a digit
+-    return int(match.groups()[0]) == expected_version
++    return int(match.groups()[0]) >= expected_version
+ 
+ 
+ def tesseract_ocr(image_path, tesseract_args='', tesseract_version=3):
 -- 
 2.41.0
 
