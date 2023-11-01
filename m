@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DBD7DE1DE
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2407DE24F
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:22:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyBpx-0005jW-Uf; Wed, 01 Nov 2023 10:04:49 -0400
+	id 1qyC6E-00071b-MB; Wed, 01 Nov 2023 10:21:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1qyBpu-0005j3-Sj
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:04:46 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyC6C-000715-MP
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:21:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1qyBpr-0004nc-0g
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:04:45 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyC6A-00006J-Vh
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:21:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698847478;
+ s=mimecast20190719; t=1698848493;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KU8sdn3CDmnUGLVhZ2woY8ZKBPjZCE6EPlmsSYG4PRQ=;
- b=IgDcKRvCQiQWSkNvTOd+YX4wlpmBcKu0HSxJuYYGyX2go0GYq6DGsf3hDfFJgFIIxMQyAF
- my+rPogONnOFgqWNIxiaXbopkHSAVd2i3lXTc5T7sAY+NC99bJknActHdsC62jb/8P1qXh
- cPSSKCX56IT/9yvzX3husaAYq0hKmjk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7pT7S5cVZeHm6sOpL+y463PuBWeps4cRVSy5AWsxe88=;
+ b=DGHmRyDD3qJKUGAbpHER8LY8VRDf3Cr3MHjF9mitBvsFLRqfYKym3ZC1GhPCzf/ZCRaVk8
+ fELeHAownH5yF1uyxpOPYaEcOz1JuJn9UZTBLaXYrozkk8sEcMUh7wLVBQNfXlUihGOYSi
+ 3lYXTAlKBxeVxe++Rv8J9l+0x5oS+6Q=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-496-IdZyG5LXNbqy8KCDGj6z_A-1; Wed, 01 Nov 2023 10:04:36 -0400
-X-MC-Unique: IdZyG5LXNbqy8KCDGj6z_A-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4090fa518bbso47886945e9.2
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:04:33 -0700 (PDT)
+ us-mta-10-9iqPbXueOuurSRLQZTc8_Q-1; Wed, 01 Nov 2023 10:21:32 -0400
+X-MC-Unique: 9iqPbXueOuurSRLQZTc8_Q-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6716c2696c7so14622816d6.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:21:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698847473; x=1699452273;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KU8sdn3CDmnUGLVhZ2woY8ZKBPjZCE6EPlmsSYG4PRQ=;
- b=J85sSioAiuiPT4RmOYKHoaMPJr2oS+w+bClZSVE6DEs7i9PwAv2nPxUBw0+SEGebRi
- DmVJ6jXGnJcdlIguazyjV85t61/81sSMZ1IW8GByEcP3B8BkSujW+/CCACReW7zgbm37
- 1vCoB+cygfUWVgvbFU1uxlzh59Ugfy/ds7wS7LsN0AR3DNgwmyepPQgUMcr2SKXiy5ot
- GJVfAZp6bzod8On9Cr+/i5l8BuqbjVSRjX9NXwW2+5V8KTn7lerh6yehftU23gmLHBDW
- uWIJI1DOgMz2LPMGxgHRwDX521tBWWCNPMClCJs0RRsH+jfc52bbomogu+vs6bGxfA/c
- fJrg==
-X-Gm-Message-State: AOJu0YxLxea47kENFnBBrvn3MvXMXKv+fK7MpCn97HC6ZR4I2WbOkqPY
- XZSpQbZWHRSqRkoQBJ80ei8uuYz2Oymt1yCGkSH2cENNv6+RCKT5M8rlW8MjvdUl5l7WMxGV9Sh
- IkWTUgg95dogs0cSynDUs5MoPMnK3pdESECgxhBu7/mc7BGchXw9r7hm5EoT8Xfk6prpn2tnl3C
- E=
-X-Received: by 2002:a5d:64af:0:b0:32f:a3fb:8357 with SMTP id
- m15-20020a5d64af000000b0032fa3fb8357mr936595wrp.6.1698847472821; 
- Wed, 01 Nov 2023 07:04:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHV0V8FtHtZfHv9dKvRDGy3JkUIh64RgV7hXzJdY6A1SEodVe+DYhpOWtVd22PSTWKR91uu3A==
-X-Received: by 2002:a5d:64af:0:b0:32f:a3fb:8357 with SMTP id
- m15-20020a5d64af000000b0032fa3fb8357mr936564wrp.6.1698847472461; 
- Wed, 01 Nov 2023 07:04:32 -0700 (PDT)
-Received: from fedora (g2.ign.cz. [91.219.240.8])
- by smtp.gmail.com with ESMTPSA id
- w17-20020a5d6811000000b0032d2f09d991sm4267660wru.33.2023.11.01.07.04.31
+ d=1e100.net; s=20230601; t=1698848492; x=1699453292;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7pT7S5cVZeHm6sOpL+y463PuBWeps4cRVSy5AWsxe88=;
+ b=aZsMzhK4aor3YIilGatteWq8Y4u6OPMU+vJ7O6EeUqBjYMti2Ho+ktpgIG2zOZTVna
+ mcJB0RzbhT0sV6APs7eqX3wVAiErJMWVBhn3SUNlAsf2KODuSFCTdWfWUP1UqhcXmlkk
+ CaHDiY/ZENhPL/XyyENOG7PnP3MKo56NapQ9RbC6/cK9v+OJQqe55oOYZMJVth9MXR37
+ F8fnrUNPW5Pg5Jn7hzyWJPKAyM2Acy91rkeU4vKae0kgZLcfzWbpR+hukhY4Be9n81U+
+ gyl9YVm2p2MURNYLJUavonuUj218jD0oaJdLj5GCVPkTdf/jGnZRuSxxt11iNIBesIoF
+ Ve0w==
+X-Gm-Message-State: AOJu0Yw0hgcfXruIrTbsbBcsHlgDntDcOYTjPojcYojkrojOQSuW/xad
+ nLi6QhrimXAv4fJ3bzwT8AZLg3v9p6xo92i+pPmS5ugJ8BR/jkIJkN5hPe4uXpLJbT6hXLNXjib
+ f7QwYZpolKj5tfig=
+X-Received: by 2002:a0c:c707:0:b0:66a:d2d2:59b6 with SMTP id
+ w7-20020a0cc707000000b0066ad2d259b6mr16458837qvi.5.1698848491788; 
+ Wed, 01 Nov 2023 07:21:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7quVaau5q56wHFBn0/BJksQElEYKf45eFbvfnsUpLsePFsFMCQFVUKA//SgTvBLBMppmVbg==
+X-Received: by 2002:a0c:c707:0:b0:66a:d2d2:59b6 with SMTP id
+ w7-20020a0cc707000000b0066ad2d259b6mr16458818qvi.5.1698848491471; 
+ Wed, 01 Nov 2023 07:21:31 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ j18-20020ac84412000000b003f6ac526568sm1425240qtn.39.2023.11.01.07.21.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 07:04:31 -0700 (PDT)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Eiichi Tsukata <eiichi.tsukata@nutanix.com>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, Maxim Levitsky <mlevitsk@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "mtosatti@redhat.com"
- <mtosatti@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] target/i386/kvm: call kvm_put_vcpu_events() before
- kvm_put_nested_state()
-In-Reply-To: <D3D6327A-CFF0-43F2-BA39-B48EE2A53041@nutanix.com>
-References: <20231026054201.87845-1-eiichi.tsukata@nutanix.com>
- <D761458A-9296-492B-85B9-F196C7D11CDA@nutanix.com>
- <78ddc3c3-6cfa-b48c-5d73-903adec6ac4a@linaro.org>
- <87wmv93gv5.fsf@redhat.com>
- <D3D6327A-CFF0-43F2-BA39-B48EE2A53041@nutanix.com>
-Date: Wed, 01 Nov 2023 15:04:31 +0100
-Message-ID: <87edh9h8nk.fsf@redhat.com>
+ Wed, 01 Nov 2023 07:21:31 -0700 (PDT)
+Date: Wed, 1 Nov 2023 10:21:07 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ Nikolay Borisov <nborisov@suse.com>
+Subject: Re: [PATCH v2 16/29] migration/ram: Add support for 'fixed-ram'
+ migration restore
+Message-ID: <ZUJe0xb2Q0HgzBX+@x1n>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-17-farosas@suse.de>
+ <ZTjjMiMkmnPMccjq@redhat.com> <87r0lieqxm.fsf@suse.de>
+ <ZUFPlqgFx/2MeCj8@x1n> <ZUIZ1g5UahLu4pXh@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZUIZ1g5UahLu4pXh@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -106,29 +105,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Eiichi Tsukata <eiichi.tsukata@nutanix.com> writes:
+On Wed, Nov 01, 2023 at 09:26:46AM +0000, Daniel P. Berrangé wrote:
+> On Tue, Oct 31, 2023 at 03:03:50PM -0400, Peter Xu wrote:
+> > On Wed, Oct 25, 2023 at 11:07:33AM -0300, Fabiano Rosas wrote:
+> > > >> +static int parse_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+> > > >> +{
+> > > >> +    g_autofree unsigned long *bitmap = NULL;
+> > > >> +    struct FixedRamHeader header;
+> > > >> +    size_t bitmap_size;
+> > > >> +    long num_pages;
+> > > >> +    int ret = 0;
+> > > >> +
+> > > >> +    ret = fixed_ram_read_header(f, &header);
+> > > >> +    if (ret < 0) {
+> > > >> +        error_report("Error reading fixed-ram header");
+> > > >> +        return -EINVAL;
+> > > >> +    }
+> > > >> +
+> > > >> +    block->pages_offset = header.pages_offset;
+> > > >
+> > > > Do you think it is worth sanity checking that 'pages_offset' is aligned
+> > > > in some way.
+> > > >
+> > > > It is nice that we have flexibility to change the alignment in future
+> > > > if we find 1 MB is not optimal, so I wouldn't want to force 1MB align
+> > > > check htere. Perhaps we could at least sanity check for alignment at
+> > > > TARGET_PAGE_SIZE, to detect a gross data corruption problem ?
+> > > >
+> > > 
+> > > I don't see why not. I'll add it.
+> > 
+> > Is there any explanation on why that 1MB offset, and how the number is
+> > chosen?  Thanks,
+> 
+> The fixed-ram format is anticipating the use of O_DIRECT.
+> 
+> With O_DIRECT both the buffers in memory, and the file handle offset
+> have alignment requirements. The buffer alignments are usually page
+> sized, and QEMU RAM blocks will trivially satisfy those.
+> 
+> The file handle offset alignment varies per filesystem. While you can
+> query the alignment for the FS holding the file with statx(), that is
+> not appropriate todo. If a user saves/restores QEMU state to file, we
+> must assume there is a chance the user will copy the saved state to a
+> different filesystem.
+> 
+> IOW, we want alignment to satisfy the likely worst case.
+> 
+> Picking 1 MB is a nice round number that is large enough that it is
+> almost certainly going to satisfy any filesystem alignment. In fact
+> it is likely massive overkill. None the less 1 MB is also still tiny
 
-> FYI: The EINVAL in vmx_set_nested_state() is caused by the following condition:
-> * vcpu->arch.hflags == 0
-> * kvm_state->hdr.vmx.smm.flags == KVM_STATE_NESTED_SMM_VMXON
+Is that calculated by something like max of possible host (small) page
+sizes?  I've no idea what's it for all archs, the max small page size I'm
+aware of is 64K, but I don't know a lot archs.
 
-This is a weird state indeed,
+> in the context of guest RAM sizes, so no one is going to notice the
+> padding holes in the file from this.
+> 
+> IOW, the 1 MB choice is an arbitrary, but somewhat informed choice.
 
-'vcpu->arch.hflags == 0' means we're not in SMM and not in guest mode
-but kvm_state->hdr.vmx.smm.flags == KVM_STATE_NESTED_SMM_VMXON is a
-reflection of vmx->nested.smm.vmxon (see
-vmx_get_nested_state()). vmx->nested.smm.vmxon gets set (conditioally)
-in vmx_enter_smm() and gets cleared in vmx_leave_smm() which means the
-vCPU must be in SMM to have it set.
-
-In case the vCPU is in SMM upon migration, HF_SMM_MASK must be set from
-kvm_vcpu_ioctl_x86_set_vcpu_events() -> kvm_smm_changed() but QEMU's
-kvm_put_vcpu_events() calls kvm_put_nested_state() _before_
-kvm_put_vcpu_events(). This can explain "vcpu->arch.hflags == 0".
-
-Paolo, Max, any idea how this is supposed to work?
+I see, thanks.  Shall we document it clearly?  Then if there's a need to
+adjust that value we will know what to reference.
 
 -- 
-Vitaly
+Peter Xu
 
 
