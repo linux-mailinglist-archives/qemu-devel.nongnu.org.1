@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7B77DDE6F
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EADB67DDEAF
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:49:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy7Ys-0005ZX-JB; Wed, 01 Nov 2023 05:30:54 -0400
+	id 1qy7pN-0007pm-KB; Wed, 01 Nov 2023 05:47:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qy7Yq-0005ZP-Ui
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:30:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qy7Ym-0004H5-GA
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:30:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698831047;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9q1dXugD+IvA8nZ8zxDNF3WwnZ4sbRQUi8H6md4yIME=;
- b=cuGZq3+Stff3FOUpKMJ6Tc42A4pCNrvK4mJJl0DZjyLpTbalBfxAvE/UO12hFWHeikae23
- /tbBsTGTNSzKhnFD7VV20PquDEsOffpzk6Sbg1ZzGqyZU0egzOSZ7Ik69MRxskqauOFUe6
- qUVVXdAmDHDC5uJjup5nGPcmkEvOddA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-38-EsxNyRX1PEmshtTZCMSmwA-1; Wed,
- 01 Nov 2023 05:30:43 -0400
-X-MC-Unique: EsxNyRX1PEmshtTZCMSmwA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7886F3C025A1;
- Wed,  1 Nov 2023 09:30:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.47])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 48848134;
- Wed,  1 Nov 2023 09:30:41 +0000 (UTC)
-Date: Wed, 1 Nov 2023 09:30:39 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v2 28/29] migration: Add direct-io parameter
-Message-ID: <ZUIav68fksPZpIJm@redhat.com>
-References: <ZTkpllWQdLSMw3pP@redhat.com> <87cywvenbd.fsf@suse.de>
- <ZUDC4aoPZZQAF6JU@redhat.com> <878r7jdjrf.fsf@suse.de>
- <ZUEE9XP4YTJkZTv7@redhat.com> <875y2meua3.fsf@suse.de>
- <ZUEbzvRLdGjl4gl+@redhat.com> <8734xqeqly.fsf@suse.de>
- <ZUEkOb8M4fgfEITi@redhat.com> <87wmv2d33p.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qy7pH-0007pL-8t
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:47:51 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qy7p9-0006Va-24
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:47:49 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9d2d8343dc4so534057766b.0
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 02:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698832060; x=1699436860; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=oXLs3Xqwu3EQGMhzh0IBLELUWzR+kAm8cZuXw221QVk=;
+ b=CFkj438YDtOd8mcB0ppQs7etEG/9pqbOMPRsqGCBdgxxr/vOXYD4pQxWR63W7n2mSJ
+ tc+oDO+IVkHbvzrbO/XZaYKXbld0aj2adxBNqupof52xdi5+QZ1Cp09wCr1mcHVl/ZER
+ kp5r+41i+VNUjDIEu6kP3u1YNvrtv2cI2cpaUCaD3+TDRsQFLdu9OMskdm2aAd+qAEUV
+ mdd5YrBGW2pyiiCNyKy8kXLcbeYt3aEkVjN+RXIv8+mjLaIeQrHoAqGOA4pnktRknUgb
+ EhY2fZlI/ReqcHEGvJ3Zw7Cck8D6FGbasIJpCIWnV7IXJnjVBRp/v2utkgWYLioRH+xs
+ dTVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698832060; x=1699436860;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oXLs3Xqwu3EQGMhzh0IBLELUWzR+kAm8cZuXw221QVk=;
+ b=B7yydxtnm7vesUTn8jMXjBQvPeAhZyZB74W0UYQEsi3YemAhTo09jhZVpjOev90CSr
+ mtG0ojNVvEUlOptH5ECIFU4RYtG6z1IIjTbLHJLy9LdXRBleitVbi3FLwcQ/OSBLBDcu
+ 4cO4676R3rLeydHAVFQKk/2eTdITxKxO/XHcPF17Nfxw1Tz87f0KUmlsj+R3Hy1IF0HV
+ ndf6RMElnh5rbgHwP4x/ksXuPXblDo8W5aS0AU596+DN9l8PYIpYO9ZSzg3xOHSvwYko
+ 2wLZUwQguPfBS32WvMRANaG4Ned30w8giyMM1kjN6j+HJZv/CSm19CmGmrLCxZXts/oc
+ t0/Q==
+X-Gm-Message-State: AOJu0YywWwRWZeEexduO7IQOrgJ1jEgKehtSoLkGdbjqzhADsRo4bL21
+ 9doCuJ8DkPjVWncZBoVFP+6p5w==
+X-Google-Smtp-Source: AGHT+IGvSVo6kNsWc+6DovWmER4P1xtEO8j2OJcL9RImazcykKg+9sPxSWRnenyg9yI4mwOPUyGW0g==
+X-Received: by 2002:a17:907:1b0c:b0:9cf:18ce:95e6 with SMTP id
+ mp12-20020a1709071b0c00b009cf18ce95e6mr1780773ejc.62.1698832059782; 
+ Wed, 01 Nov 2023 02:47:39 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ a12-20020a1709065f8c00b0099bd5d28dc4sm2197666eju.195.2023.11.01.02.47.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Nov 2023 02:47:39 -0700 (PDT)
+Date: Wed, 1 Nov 2023 10:47:38 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v7 03/16] target/riscv: add rv64i CPU
+Message-ID: <20231101-7790a66535f1b97cd3a6f439@orel>
+References: <20231031203916.197332-1-dbarboza@ventanamicro.com>
+ <20231031203916.197332-4-dbarboza@ventanamicro.com>
+ <20231101-f72b888f87063028f40c6e7a@orel>
+ <5162c752-7907-458f-a976-b89f6623f9e7@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87wmv2d33p.fsf@suse.de>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+In-Reply-To: <5162c752-7907-458f-a976-b89f6623f9e7@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,66 +93,131 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 04:05:46PM -0300, Fabiano Rosas wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
+On Wed, Nov 01, 2023 at 06:27:02AM -0300, Daniel Henrique Barboza wrote:
 > 
-> > On Tue, Oct 31, 2023 at 12:52:41PM -0300, Fabiano Rosas wrote:
-> >> Daniel P. Berrangé <berrange@redhat.com> writes:
-> >> >
-> >> > I guess I'm not seeing the problem still.  A single FD is passed across
-> >> > from libvirt, but QEMU is free to turn that into *many* FDs for its
-> >> > internal use, using dup() and then setting O_DIRECT on as many/few of
-> >> > the dup()d FDs as its wants to.
-> >> 
-> >> The problem is that duplicated FDs share the file status flags. If we
-> >> set O_DIRECT on the multifd channels and the main thread happens to do
-> >> an unaligned write with qemu_file_put* then the filesystem will fail
-> >> that write.
-> >
-> > Doh, I had forgotten that sharing.
-> >
-> > Do we have any synchronization between multifd  channels and the main
-> > thread ?  eg does the main thread wait for RAM sending completion
-> > before carrying on writing other non-RAM data ?
 > 
-> We do have, but the issue with that approach is that there are no rules
-> for adding data into the stream. Anyone could add a qemu_put_* call
-> right in the middle of the section for whatever reason.
+> On 11/1/23 06:02, Andrew Jones wrote:
+> > On Tue, Oct 31, 2023 at 05:39:03PM -0300, Daniel Henrique Barboza wrote:
+> > > We don't have any form of a 'bare bones' CPU. rv64, our default CPUs,
+> > > comes with a lot of defaults. This is fine for most regular uses but
+> > > it's not suitable when more control of what is actually loaded in the
+> > > CPU is required.
+> > > 
+> > > A bare-bones CPU would be annoying to deal with if not by profile
+> > > support, a way to load a multitude of extensions with a single flag. Profile
+> > > support is going to be implemented shortly, so let's add a CPU for it.
+> > > 
+> > > The new 'rv64i' CPU will have only RVI loaded. It is inspired in the
+> > > profile specification that dictates, for RVA22U64 [1]:
+> > > 
+> > > "RVA22U64 Mandatory Base
+> > >   RV64I is the mandatory base ISA for RVA22U64"
+> > > 
+> > > And so it seems that RV64I is the mandatory base ISA for all profiles
+> > > listed in [1], making it an ideal CPU to use with profile support.
+> > > 
+> > > rv64i is a CPU of type TYPE_RISCV_BARE_CPU. It has a mix of features
+> > > from pre-existent CPUs:
+> > > 
+> > > - it allows extensions to be enabled, like generic CPUs;
+> > > - it will not inherit extension defaults, like vendor CPUs.
+> > > 
+> > > This is the minimum extension set to boot OpenSBI and buildroot using
+> > > rv64i:
+> > > 
+> > > ./build/qemu-system-riscv64 -nographic -M virt \
+> > >      -cpu rv64i,g=true,c=true,s=true,u=true
+> > > 
+> > > Our minimal riscv,isa in this case will be:
+> > > 
+> > >   # cat /proc/device-tree/cpus/cpu@0/riscv,isa
+> > > rv64imafdc_zicntr_zicsr_zifencei_zihpm_zca_zcd#
+> > > 
+> > > [1] https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc
+> > > 
+> > > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> > > ---
+> > >   target/riscv/cpu-qom.h |  2 ++
+> > >   target/riscv/cpu.c     | 25 +++++++++++++++++++++++++
+> > >   2 files changed, 27 insertions(+)
+> > > 
+> > > diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+> > > index 7831e86d37..ea9a752280 100644
+> > > --- a/target/riscv/cpu-qom.h
+> > > +++ b/target/riscv/cpu-qom.h
+> > > @@ -25,6 +25,7 @@
+> > >   #define TYPE_RISCV_CPU "riscv-cpu"
+> > >   #define TYPE_RISCV_DYNAMIC_CPU "riscv-dynamic-cpu"
+> > >   #define TYPE_RISCV_VENDOR_CPU "riscv-vendor-cpu"
+> > > +#define TYPE_RISCV_BARE_CPU "riscv-bare-cpu"
+> > >   #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
+> > >   #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
+> > > @@ -35,6 +36,7 @@
+> > >   #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
+> > >   #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
+> > >   #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
+> > > +#define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
+> > >   #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
+> > >   #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
+> > >   #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
+> > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > > index 822970345c..98b2a4061a 100644
+> > > --- a/target/riscv/cpu.c
+> > > +++ b/target/riscv/cpu.c
+> > > @@ -544,6 +544,18 @@ static void rv128_base_cpu_init(Object *obj)
+> > >       set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+> > >   #endif
+> > >   }
+> > > +
+> > > +static void rv64i_bare_cpu_init(Object *obj)
+> > > +{
+> > > +    CPURISCVState *env = &RISCV_CPU(obj)->env;
+> > > +    riscv_cpu_set_misa(env, MXL_RV64, RVI);
+> > > +
+> > > +    /* Set latest version of privileged specification */
+> > > +    env->priv_ver = PRIV_VERSION_LATEST;
+> > 
+> > The beauty of rv64i is we'll finally know exactly what we're configuring
+> > when we select it and some set of extensions. With that in mind I think
+> > we should also be explicit about which version of the priv spec is
+> > implemented, but we can't just pick a version now, since we may need to
+> > update it later. I think we have the following options:
+> > 
+> >   1. Expose priv version properties (v1_10_0, ...) and either require the
+> >      user to select one or default to the latest. (Any versions we don't
+> >      want to support for rv64i would error out if selected.)
 > 
-> That is almost a separate matter due to our current compatibility model
-> being based on capabilities rather than resilience of the stream
-> format. So extraneous data in the stream always causes the migration to
-> break.
+> This is already the case but it's a string property instead of booleans:
 > 
-> But with the O_DIRECT situation we'd be adding another aspect to
-> this. Not only changing the code requires syncing capabilities (as it
-> does today), but it would also require knowing which parts of the stream
-> can be interrupted by new data and which cannot.
+> $ ./build/qemu-system-riscv64 -M virt -cpu rv64i,priv_spec="v1.11.0"
+> $ ./build/qemu-system-riscv64 -M virt -cpu rv64i,priv_spec="v1.10.0"
+> $ ./build/qemu-system-riscv64 -M virt -cpu rv64i,priv_spec="not_valid"
+> qemu-system-riscv64: Unsupported privilege spec version 'not_valid'
 > 
-> So while it would probably work, it's also a little fragile. If QEMU
-> were given 2 FDs or given access to the file, then only the multifd
-> channels would get O_DIRECT and they are guaranteed to not have
-> extraneous unaligned data showing up.
+> If users set 'priv_spec' we'll use it, otherwise rv64i will default to 'latest'.
 
-So the problem with add-fd is that when requesting a FD, the monitor
-code masks flags with O_ACCMODE.  What if we extended it such that
-the monitor masked with O_ACCMODE | O_DIRECT.
+I think I'd prefer we don't have a default, but maybe in practice it'll be
+OK, since once we have S-mode profiles (which will most likely always be
+used with rv64i) then they'll override the default anyway.
 
-That would let us pass 1 plain FD and one O_DIRECT fd, and be able
-to ask for each separately by setting O_DIRECT or not.
+> 
+> In case we do not want string values (and yeah, it's extra work to parse it, check
+> if it's the right val and so on) then we can add priv spec bools that users would
+> set on or off. We would need to deprecate "priv_spec" as it is.
 
-Existing users of add-fd are not likely to be affected since none of
-them will be using O_DIRECT.
+Yes, we should switch to booleans for cpu-model-expansion. I suppose we
+should keep the priv_ver default until we switch to booleans, though, in
+order to avoid encouraging more deprecated priv_spec usage in the
+meantime.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
+> This can be done outside of this work (we would need a RFC first probably).
 
+I can live with that.
+
+Thanks,
+drew
 
