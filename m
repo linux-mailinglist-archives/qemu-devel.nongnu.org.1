@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BCA7DE264
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6642B7DE26A
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:33:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyCEv-0002KE-Lq; Wed, 01 Nov 2023 10:30:37 -0400
+	id 1qyCGl-0003JQ-Ll; Wed, 01 Nov 2023 10:32:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyCEk-0002Jm-N7
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:30:26 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qyCGj-0003IH-5S
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:32:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyCEj-0001YN-93
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:30:26 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qyCGh-0001yC-Nl
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:32:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698849022;
+ s=mimecast20190719; t=1698849146;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x35l4fYXVQgNst9kIHk732d7Ok3OR3+/LPDmEqx9RNA=;
- b=TrGyl/rUjxJ528ifG/Y6W4NgfpJXIxAE5YNCsblEoDgTgUc1BVSQ5uICKizx1LzM2GHfy3
- fWAf14Er6w9gGk5gYpz7gCOG4XT+eYs0tP6ZnDT1hQXkfBQ0mpDlDfn7ZZGaVH36dnZnt0
- u4y/YRKDVQfZzmjCJ1+whhV7z5OdTyA=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wCdhzb6Oe1+xQ6qXsKLFwLlQ1p2CP2lcBL6Kuupzrlw=;
+ b=V+ogodnFDb8t+XJCHR/0WPMnpb7WQ6qi/WPH+rPrKJFs+HdBqiiPeEHPxnhQyAIk7342FK
+ t8Vu5ogBU7u0DvkRXzFKWi9FpeworJfST+iadwMRl4l5plXXZ6YWqPHUUXywyokow8OTLe
+ uXe4rId5aghqMj0LJH6MsSkKmCMKKnU=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-FxcYL2c4N3WcewrKrY6Szw-1; Wed, 01 Nov 2023 10:30:19 -0400
-X-MC-Unique: FxcYL2c4N3WcewrKrY6Szw-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7789a2b35f1so91403785a.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:30:19 -0700 (PDT)
+ us-mta-45-ci7itM_1PaGQIta3dnfbZw-1; Wed, 01 Nov 2023 10:32:23 -0400
+X-MC-Unique: ci7itM_1PaGQIta3dnfbZw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9a681c3470fso470308666b.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:32:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698849019; x=1699453819;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=x35l4fYXVQgNst9kIHk732d7Ok3OR3+/LPDmEqx9RNA=;
- b=v7jhhQkadC/w0w0y+hY5DzrPAJW4tq0Jb+Uyk2897MIEdZpfOVuO45cQf8+sI2PU6Y
- pDiUML9ubHBo5eTaM9Ri0R9KFHv3Iy+jnYniikvntk7i1g9/mJWWgv00Q34XVAyU3IcR
- Q/Bv1o3gIPm+oHzR9HZjkYS8kGF0hcaNv1nvqA2kvuLZVH+R0wGnrFPRNKmu6D576Zfx
- ly282UMnDP4/4wf1YysReuCWP6wdx4OpUIaKBE71rfNoRQ7F/hQO2P6rp/jrjQjjSmmk
- 7eHEcgANe5BJaBAZpRWIvcEsco1vVX4ffM12vW4fd+NT8YO/bycQXIOl+76576NFAiUc
- uoNw==
-X-Gm-Message-State: AOJu0YxPm+HpsApc+VBo3aFVQXyEEhc2MhNM1ZMP/liuETMadkVQ1RqD
- fRapsa9DYLDOVu3DzQDHD46ybyyxBD/SznSnl/mCnru1/VZ5K937WVdDXndL3jRKyYVX3oqAtt0
- kv2oBrCWYitviQz8=
-X-Received: by 2002:a05:620a:640a:b0:773:b634:b05a with SMTP id
- pz10-20020a05620a640a00b00773b634b05amr16304776qkn.2.1698849019238; 
- Wed, 01 Nov 2023 07:30:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1Y1lSNcTWebwgyG4XPficmq/LsGMjBO2ZZ041FkVmtLjitqzwZvuZS31/VHABE3vQvJ3f5w==
-X-Received: by 2002:a05:620a:640a:b0:773:b634:b05a with SMTP id
- pz10-20020a05620a640a00b00773b634b05amr16304756qkn.2.1698849018952; 
- Wed, 01 Nov 2023 07:30:18 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- bp8-20020a05620a458800b0076cbcf8ad3bsm1458291qkb.55.2023.11.01.07.30.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 07:30:18 -0700 (PDT)
-Date: Wed, 1 Nov 2023 10:29:51 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v2 23/29] migration/ram: Add a wrapper for fixed-ram
- shadow bitmap
-Message-ID: <ZUJg30op1uqsMAA0@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-24-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1698849142; x=1699453942;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wCdhzb6Oe1+xQ6qXsKLFwLlQ1p2CP2lcBL6Kuupzrlw=;
+ b=bqz/yMcBmdgPJbAHiM5eao/vfwW23/9MObSKOLliWBzhmDAqWnAPBbk87rItVn/UJi
+ Yb+fhWi4PUrw4FfYo5ei9nENk16MBIQRtKj9RCq3rQ3Q4n3Ap92cy/EAVGe5YyOLhSEM
+ 89z3q5ehXkste/Sa4qZxFG0hQ2H5CqFpA/Zxuoz8SZiiIFD9/L8Fnx9YJIWep8x3Z94i
+ wGtvOgokjEtN/mMFg+IS5sMnj0UxBtxKJRNYsLTVl56ZvRZPuaPLhbTIHl8Lw+6EZJgQ
+ 5YIFL4RG4Z5gzJCpGj0Sfbxd8R7WV5+pmS4KJB14BBmOhpuxb9XHRfx8pWnHNPWfxfkG
+ AbtQ==
+X-Gm-Message-State: AOJu0YwYOJAb2k5D/hhctq77mj9mU0yu3MMAzxJrap7Wso/E9xVLvHIM
+ p0lyW/8BVB4BOHAvg75Buqon5wfY0siqwkV9YqunUfJ1/x7fDVJ5CFWNYASeidp/SD/ENkeYpcR
+ h8cuU7JU8A6N49rs=
+X-Received: by 2002:a17:907:a0a:b0:9bf:9c58:e91e with SMTP id
+ bb10-20020a1709070a0a00b009bf9c58e91emr1767701ejc.56.1698849142174; 
+ Wed, 01 Nov 2023 07:32:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7a8O5uHtYGwz5RtUULekujnvBR/L9JmuCDdKk8eZnPKoMp/HvBZ+aAG/wlOg6klDQxjoDeg==
+X-Received: by 2002:a17:907:a0a:b0:9bf:9c58:e91e with SMTP id
+ bb10-20020a1709070a0a00b009bf9c58e91emr1767694ejc.56.1698849141919; 
+ Wed, 01 Nov 2023 07:32:21 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
+ ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.googlemail.com with ESMTPSA id
+ i22-20020a508716000000b0053ff311f388sm1163329edb.23.2023.11.01.07.32.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 Nov 2023 07:32:21 -0700 (PDT)
+Message-ID: <e688ba46-08b8-4115-a39f-37a019c393fa@redhat.com>
+Date: Wed, 1 Nov 2023 15:32:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231023203608.26370-24-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] tools: build qemu-vmsr-helper
+Content-Language: en-US
+To: Anthony Harivel <aharivel@redhat.com>, qemu-devel@nongnu.org
+Cc: mtosatti@redhat.com, berrange@redhat.com
+References: <20231031144605.64822-1-aharivel@redhat.com>
+ <20231031144605.64822-3-aharivel@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20231031144605.64822-3-aharivel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -100,52 +103,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 23, 2023 at 05:36:02PM -0300, Fabiano Rosas wrote:
-> We'll need to set the shadow_bmap bits from outside ram.c soon and
-> TARGET_PAGE_BITS is poisoned, so add a wrapper to it.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-
-Merge this into existing patch to add ram.c usage?
-
-> ---
->  migration/ram.c | 5 +++++
->  migration/ram.h | 1 +
->  2 files changed, 6 insertions(+)
-> 
-> diff --git a/migration/ram.c b/migration/ram.c
-> index cea6971ab2..8e34c1b597 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -3160,6 +3160,11 @@ static void ram_save_shadow_bmap(QEMUFile *f)
->      }
->  }
->  
-> +void ramblock_set_shadow_bmap_atomic(RAMBlock *block, ram_addr_t offset)
-> +{
-> +    set_bit_atomic(offset >> TARGET_PAGE_BITS, block->shadow_bmap);
-> +}
+On 10/31/23 15:46, Anthony Harivel wrote:
 > +
->  /**
->   * ram_save_iterate: iterative stage for migration
->   *
-> diff --git a/migration/ram.h b/migration/ram.h
-> index 145c915ca7..1acadffb06 100644
-> --- a/migration/ram.h
-> +++ b/migration/ram.h
-> @@ -75,6 +75,7 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *rb);
->  bool ramblock_page_is_discarded(RAMBlock *rb, ram_addr_t start);
->  void postcopy_preempt_shutdown_file(MigrationState *s);
->  void *postcopy_preempt_thread(void *opaque);
-> +void ramblock_set_shadow_bmap_atomic(RAMBlock *block, ram_addr_t offset);
->  
->  /* ram cache */
->  int colo_init_ram_cache(void);
-> -- 
-> 2.35.3
-> 
+> +static uint64_t vmsr_read_msr(uint32_t reg, unsigned int cpu_id)
+> +{
+> +    int fd;
+> +    uint64_t data;
+> +
+> +    char path[MAX_PATH_LEN];
+> +    snprintf(path, MAX_PATH_LEN, "/dev/cpu/%u/msr", cpu_id);
 
--- 
-Peter Xu
+If you allow any CPU here, the thread id is really unused.  You can 
+however call sched_getaffinity(), and check that the CPU id is included 
+in the thread's affinity.  sched_getaffinity() does not need any extra 
+capability.
+
+Paolo
 
 
