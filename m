@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C77D7DDDC5
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 09:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E43187DDE02
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:05:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy6hm-0006fA-0X; Wed, 01 Nov 2023 04:36:02 -0400
+	id 1qy780-0004sp-HR; Wed, 01 Nov 2023 05:03:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qy6hi-0006ch-53
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 04:35:58 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qy77I-0004Ji-5E
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:02:25 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qy6hf-0002q6-Qx
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 04:35:57 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6b5e6301a19so6583238b3a.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 01:35:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qy77D-000754-LO
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:02:23 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2c6b48cb2b6so51839351fa.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 02:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698827753; x=1699432553;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4PZFp14IYzQo0B0uHIpmTW9p+9pV9WLTUtKd18ITaOg=;
- b=LJ0GwLVMDFaNAeYjoYt6cLKk9qUxgS9tlVlp0caWl3Sm+8GLWqVchvivadLF0f9vuz
- z2NWiSRYPL7v0pCGKVOYQ24Yih+igAdA0CZDxI+tnKgWLuzt0a6Jkhoxi9EmhGRo3jiz
- VkF6gf8ML8BM1rRBJYYNuVywSfwAwFehJhOQLgbyq2l8btRCvZjp9KG08Ntn0bo+bKTD
- 77Z2Z0nUAOgw4pC+lDhmDMRtVVSSQktoRNGOUluGshfORoC9Z4UE/NJlg8dsyephTihF
- N2oSNdq28R2QvQpu33MqmexeZP0Q49OEwQ7v4L+aXVBpFyK3VRaszjtbLO1IXJNKNz0M
- 9r7g==
+ d=ventanamicro.com; s=google; t=1698829337; x=1699434137; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=BbWy+GHxZi9qc46hpzl9C/c05pgvIqcP+LMqFuEtn40=;
+ b=U8Q9i3RVPIudvdMg2/vpNc3x9Sq1CVMN3Mf7oDWzAmWt0BZEdfhpLLSAgxjvuYm2ik
+ SuknkYRwpdkKxRJszUUFvHUiycOjxKMjyx42bNm5u3vszPR0Yr8/eCiD3VUKfOD1L9dv
+ J6BRkJG23f3yMcLQba6pqc5Rt1SAfDHxSch1J8UVESB2Cn/QEYh9nJzk6Ig5CnjvOAx1
+ Lxbm/JAoWjTrj04NeCvhEyIS4aB4dQVSj8kolFzWku9WgQOgZ4bKCCV3iB9d9NdwrKQs
+ oo9r9qLOsx1FEgzKkZmHJKZ9qucsAv0w3amcrIMzefFaFXC3Rzf4eEQA1aUsqpX5yLsL
+ Bd9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698827753; x=1699432553;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4PZFp14IYzQo0B0uHIpmTW9p+9pV9WLTUtKd18ITaOg=;
- b=wA2B8/F2HM67hka60v41VJ53+M5rdyaIoH8GpSopD16hKPabT2Hu+1Ao5CCiaLx85z
- T/wpJYHX30SOtddGKAbL3mW+9EXIh4wDzxCT/misUs2KOKvujmCG+fEaknOqytAj4E97
- LWDwGwbLmiblx2YEMPGYYndAQ/YzwOArGZodx+tZDQz7saaN2BfOKIrSGzW2RXyHl+X7
- U00k/OQ8z/WJ0QS80dzzHoohIwTbZ4T0KS9yFVLabG2Hi7gbG9Xx5QGWz7aBgeIN1Vng
- YwYmqX6CWm2Ib1Zs2PPWiATBJ1L+owXn4/JNhIFPJOhvH4VJ4T5w7JimqglCVQQfIX2k
- nQRQ==
-X-Gm-Message-State: AOJu0YyTDXgXoEoBzh2+ieanOOfMaylI1+DQGA6sKhJLYqRmYwOxVmYS
- FDwfTHV2llddxTfrst89Ka2jug==
-X-Google-Smtp-Source: AGHT+IFxPGTjMt8DuiowXct30i9/r5Oc/NDmcyBt34pzDnISgJC2Pj+bpEinhxE5oN5dGE7xNSYA8Q==
-X-Received: by 2002:a05:6a20:8f18:b0:162:ee29:d3c0 with SMTP id
- b24-20020a056a208f1800b00162ee29d3c0mr19744500pzk.42.1698827753338; 
- Wed, 01 Nov 2023 01:35:53 -0700 (PDT)
-Received: from [157.82.205.15] ([157.82.205.15])
+ d=1e100.net; s=20230601; t=1698829337; x=1699434137;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BbWy+GHxZi9qc46hpzl9C/c05pgvIqcP+LMqFuEtn40=;
+ b=Rx15/1JONe9PM0qucOaPuZ4jk2v3d36UxYlkQQmKz70YbpGVkdTE2oONyjSITZMhBM
+ zKzfLcIIW4A7sJ01Oo2W3I2jZWvD+rGGqwYMaZuCWTlDQDB/dUTGGKh5bHoTa1pHx5Zi
+ eIbaNgzV2dp5PJMGTtPFfwnVf0ERBse/j0+4bwqPE3HbX6zutg6zAqiR/J225TbqLbte
+ 7eXmYJZidzBnuRHw4qsPwgMsMjhGaKNrHOqGDIdREYfC+atMvW6KQnEunV/Y2SEaeVlY
+ 5pFfDh9gsEjI5Q26it1ijyXE6L5MrpT5qVVnmTIR3GCPvIJkxpAfGFvEDOyrX2pg7/R9
+ hxCg==
+X-Gm-Message-State: AOJu0Yz/DaeseRLPvKcOrWs35Lu2vmD0wDqXCPgkIKLcf5uTSssMSVcA
+ 9nPrGAIOuixxCbHPSquAsvEMvUGipjCyFztCxss=
+X-Google-Smtp-Source: AGHT+IG7KGt/Bdh1CQjPm9VzjCUwPjFG5ZEiiMZpOBrCcfT8XfSjB6lTlFhlITi2Vf9eCZaRV4jnOQ==
+X-Received: by 2002:ac2:4463:0:b0:503:9eb:47f0 with SMTP id
+ y3-20020ac24463000000b0050309eb47f0mr10574513lfl.59.1698829337183; 
+ Wed, 01 Nov 2023 02:02:17 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- bb9-20020a170902bc8900b001bc2831e1a8sm861076plb.80.2023.11.01.01.35.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Nov 2023 01:35:52 -0700 (PDT)
-Message-ID: <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
-Date: Wed, 1 Nov 2023 17:35:50 +0900
+ n2-20020a05600c4f8200b003fefaf299b6sm854409wmq.38.2023.11.01.02.02.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Nov 2023 02:02:16 -0700 (PDT)
+Date: Wed, 1 Nov 2023 10:02:15 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v7 03/16] target/riscv: add rv64i CPU
+Message-ID: <20231101-f72b888f87063028f40c6e7a@orel>
+References: <20231031203916.197332-1-dbarboza@ventanamicro.com>
+ <20231031203916.197332-4-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
- enable RSS
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>, qemu-devel@nongnu.org,
- Andrew Melnychenko <andrew@daynix.com>
-References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
- <20231030051356.33123-12-akihiko.odaki@daynix.com>
- <CAOEp5OdEEVcojjwCOU+9Z5yBKN+e5iNbAMOA5d-97D81N4Y0tw@mail.gmail.com>
- <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
- <CAOEp5Oern10jW8Pi-_mceU_ZJVD=a1f3tW8rB2O4efLX45-nvw@mail.gmail.com>
- <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
- <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
- <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
- <20231101023805-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231101023805-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231031203916.197332-4-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,21 +94,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/11/01 15:38, Michael S. Tsirkin wrote:
-> On Wed, Nov 01, 2023 at 01:50:00PM +0900, Akihiko Odaki wrote:
->> We had another discussion regarding migration for patch "virtio-net: Do not
->> clear VIRTIO_NET_F_HASH_REPORT". It does change the runtime behavior so we
->> need to take migration into account. I still think the patch does not
->> require a compatibility flag since it only exposes a new feature and does
->> not prevent migrating from old QEMU that exposes less features. It instead
->> fixes the case where migrating between hosts with different tap feature
->> sets.
+On Tue, Oct 31, 2023 at 05:39:03PM -0300, Daniel Henrique Barboza wrote:
+> We don't have any form of a 'bare bones' CPU. rv64, our default CPUs,
+> comes with a lot of defaults. This is fine for most regular uses but
+> it's not suitable when more control of what is actually loaded in the
+> CPU is required.
 > 
-> When in doubt, add a compat flag.
+> A bare-bones CPU would be annoying to deal with if not by profile
+> support, a way to load a multitude of extensions with a single flag. Profile
+> support is going to be implemented shortly, so let's add a CPU for it.
+> 
+> The new 'rv64i' CPU will have only RVI loaded. It is inspired in the
+> profile specification that dictates, for RVA22U64 [1]:
+> 
+> "RVA22U64 Mandatory Base
+>  RV64I is the mandatory base ISA for RVA22U64"
+> 
+> And so it seems that RV64I is the mandatory base ISA for all profiles
+> listed in [1], making it an ideal CPU to use with profile support.
+> 
+> rv64i is a CPU of type TYPE_RISCV_BARE_CPU. It has a mix of features
+> from pre-existent CPUs:
+> 
+> - it allows extensions to be enabled, like generic CPUs;
+> - it will not inherit extension defaults, like vendor CPUs.
+> 
+> This is the minimum extension set to boot OpenSBI and buildroot using
+> rv64i:
+> 
+> ./build/qemu-system-riscv64 -nographic -M virt \
+>     -cpu rv64i,g=true,c=true,s=true,u=true
+> 
+> Our minimal riscv,isa in this case will be:
+> 
+>  # cat /proc/device-tree/cpus/cpu@0/riscv,isa
+> rv64imafdc_zicntr_zicsr_zifencei_zihpm_zca_zcd#
+> 
+> [1] https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu-qom.h |  2 ++
+>  target/riscv/cpu.c     | 25 +++++++++++++++++++++++++
+>  2 files changed, 27 insertions(+)
+> 
+> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+> index 7831e86d37..ea9a752280 100644
+> --- a/target/riscv/cpu-qom.h
+> +++ b/target/riscv/cpu-qom.h
+> @@ -25,6 +25,7 @@
+>  #define TYPE_RISCV_CPU "riscv-cpu"
+>  #define TYPE_RISCV_DYNAMIC_CPU "riscv-dynamic-cpu"
+>  #define TYPE_RISCV_VENDOR_CPU "riscv-vendor-cpu"
+> +#define TYPE_RISCV_BARE_CPU "riscv-bare-cpu"
+>  
+>  #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
+>  #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
+> @@ -35,6 +36,7 @@
+>  #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
+>  #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
+>  #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
+> +#define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
+>  #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
+>  #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
+>  #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 822970345c..98b2a4061a 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -544,6 +544,18 @@ static void rv128_base_cpu_init(Object *obj)
+>      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+>  #endif
+>  }
+> +
+> +static void rv64i_bare_cpu_init(Object *obj)
+> +{
+> +    CPURISCVState *env = &RISCV_CPU(obj)->env;
+> +    riscv_cpu_set_misa(env, MXL_RV64, RVI);
+> +
+> +    /* Set latest version of privileged specification */
+> +    env->priv_ver = PRIV_VERSION_LATEST;
 
-Personally I'm confident about the migration compatibility with patch 
-"virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT". virtio-net already 
-does the same thing when the tap implementation on the destination 
-implements virtio-net header support while the counterpart of the source 
-does not.
+The beauty of rv64i is we'll finally know exactly what we're configuring
+when we select it and some set of extensions. With that in mind I think
+we should also be explicit about which version of the priv spec is
+implemented, but we can't just pick a version now, since we may need to
+update it later. I think we have the following options:
+
+ 1. Expose priv version properties (v1_10_0, ...) and either require the
+    user to select one or default to the latest. (Any versions we don't
+    want to support for rv64i would error out if selected.)
+
+ 2. Add multiple rv64i base cpu types where the version is also specified
+    in the name, e.g. rv64i_1_12_0, and then maybe have an rv64i alias
+    which always points at the latest.
+
+A nice thing about (1) is that we can expose the boolean version
+properties in cpu model expansion. A nice thing about (2) is that the user
+will either be forced to select an explicit version or, if we have the
+alias, libvirt will convert 'rv64i' into its full name when storing it
+in the XML. But, we can force the user to select a version with (1) too by
+not providing a default. While that adds a burden of always having to
+provide a version, it's not a big deal for a barebones cpu, since all
+extensions necessary to create a useful cpu are also required. And,
+profiles alleviate the burden. For example, rva22s64 mandates Ss1p12, so
+that profile will automatically set the v1_12_0 property.
+
+I think we should implement (1) without a default.
+
+> +#ifndef CONFIG_USER_ONLY
+> +    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+
+I think we should require the user provide one of sv39, sv48, ... rather
+than have a default for this too. S-mode profiles will again automatically
+set this to what it mandates, relieving the burden.
+
+> +#endif
+> +}
+>  #else
+>  static void rv32_base_cpu_init(Object *obj)
+>  {
+> @@ -1732,6 +1744,13 @@ void riscv_cpu_list(void)
+>          .instance_init = initfn              \
+>      }
+>  
+> +#define DEFINE_BARE_CPU(type_name, initfn) \
+> +    {                                      \
+> +        .name = type_name,                 \
+> +        .parent = TYPE_RISCV_BARE_CPU,     \
+> +        .instance_init = initfn            \
+> +    }
+> +
+>  static const TypeInfo riscv_cpu_type_infos[] = {
+>      {
+>          .name = TYPE_RISCV_CPU,
+> @@ -1754,6 +1773,11 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+>          .parent = TYPE_RISCV_CPU,
+>          .abstract = true,
+>      },
+> +    {
+> +        .name = TYPE_RISCV_BARE_CPU,
+> +        .parent = TYPE_RISCV_CPU,
+> +        .abstract = true,
+> +    },
+>      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
+>      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
+>  #if defined(TARGET_RISCV32)
+> @@ -1770,6 +1794,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+>      DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906,  rv64_thead_c906_cpu_init),
+>      DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_init),
+>      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
+> +    DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
+>  #endif
+>  };
+>  
+> -- 
+> 2.41.0
+>
+
+Thanks,
+drew
 
