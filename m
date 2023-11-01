@@ -2,51 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA847DE5A1
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 18:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95EC7DE5E7
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 19:16:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyFNQ-0001F2-OR; Wed, 01 Nov 2023 13:51:36 -0400
+	id 1qyFjl-0007F4-0c; Wed, 01 Nov 2023 14:14:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qyFNN-0001EM-1M; Wed, 01 Nov 2023 13:51:33 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qyFNL-0006U0-48; Wed, 01 Nov 2023 13:51:32 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CECDF2F5C3;
- Wed,  1 Nov 2023 20:51:32 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E656A32B22;
- Wed,  1 Nov 2023 20:51:26 +0300 (MSK)
-Message-ID: <0834e809-6255-42e7-b72c-e0a21dd15901@tls.msk.ru>
-Date: Wed, 1 Nov 2023 20:51:26 +0300
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qyFji-0007Ec-DF
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 14:14:38 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qyFjg-0002r1-Ot
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 14:14:38 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 385BB21850;
+ Wed,  1 Nov 2023 18:14:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698862475; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kvycZSImFG44hzrOzYRIctNFtPAQEvLG8sGfLh3lPlE=;
+ b=T+qaPMQAiyTPKcmBiykka2Vm0Cu1ebuMRVkMcCenG0P49R1Ax2TCI+SwMXoBB3twYuReQ6
+ v/XCykfAcCUNkTc+QPwzh2+3dBar5KGHzN1OTNGSA6FX0SZ21u6u8+21+KIb99kAA944bf
+ TWuW6tJHcTORX7mmutOGvmqX4IJqPWA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698862475;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kvycZSImFG44hzrOzYRIctNFtPAQEvLG8sGfLh3lPlE=;
+ b=std3L6tNwpFfnwScomSK0KLa03nIK6eTox12Y/ksixDqWv5kokZOn8LILSA3mHlxJR0hfM
+ gx8OFBvrGbN/LtBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BE1A613460;
+ Wed,  1 Nov 2023 18:14:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id zuotIoqVQmWybwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 01 Nov 2023 18:14:34 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Juan
+ Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v2 21/29] migration/multifd: Add pages to the receiving
+ side
+In-Reply-To: <ZUKMSQEcYlXRej01@x1n>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-22-farosas@suse.de> <ZUF7VG+CWvuOEbqD@x1n>
+ <87il6mcrf5.fsf@suse.de> <ZUJ01lcAJS1PaAIw@x1n> <87msvxfl0f.fsf@suse.de>
+ <ZUKMSQEcYlXRej01@x1n>
+Date: Wed, 01 Nov 2023 15:14:32 -0300
+Message-ID: <87il6lfiif.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/8] qemu-img: rebase: stop when reaching EOF of old
- backing file
-Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- eblake@redhat.com, den@virtuozzo.com
-References: <20230919165804.439110-1-andrey.drobyshev@virtuozzo.com>
- <20230919165804.439110-2-andrey.drobyshev@virtuozzo.com>
- <b19cfb5c-658f-4bf2-a872-7eaa252d68b4@tls.msk.ru>
- <676efe0e-0c13-433b-9ca5-18c14920050d@virtuozzo.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <676efe0e-0c13-433b-9ca5-18c14920050d@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,26 +87,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-01.11.2023 18:38, Andrey Drobyshev wrote:
-> Hi Michael,
-> 
-> Since this series is already merged in master, I'm not sure whether it's
-> necessary to forward this particular patch to qemu-stable, or it should
-> rather be cherry-picked to -stable by one of the block maintainers.
+Peter Xu <peterx@redhat.com> writes:
 
-It's been my job lately to pick something up for stable, once it gets
-applied to master.  But it is usually the patch author or subsystem
-maintainer to mark a change as a candidate for -stable, - I can't decide
-about every change out there, since I don't have enough expertise in
-every area.  You Cc: qemu-stable@ and I pick it up.  I do look at stuff
-being applied to master from time to time though, and ask if I see
-something which might be worth to pick, as in this case.
+> On Wed, Nov 01, 2023 at 02:20:32PM -0300, Fabiano Rosas wrote:
+>> I wonder if adapting multifd to use a QIOTask for the channels would
+>> make sense as an intermediary step. Seems simpler and would force us to
+>> format multifd in more generic terms.
+>
+> Isn't QIOTask event based, too?
+>
+> From my previous experience, making it not gcontext based, if we already
+> have threads, are easier.  But maybe I didn't really get what you meant.
 
-BTW, there's another change in this series which might be a good candidate
-too, - "qemu-img: rebase: use backing files' BlockBackend for buffer
-alignment".  Once again, I dunno if it's worth to pick it up or not,
-it's basically up to you to decide.  Basically, you understand much
-better what the implications are and if the change fixes actual bug.
+Sorry, I wasn't thinking about the context aspect. I agree it's easier
+without it.
 
-/mjt
+I was talking about having standardized dispatch and completion code for
+multifd without being a whole thread pool. So just something that takes
+a function and a pointer to data, runs that in a thread with some
+locking and returns in a sane way. Every thread we create in the
+migration code has a different mechanism to return after an error and a
+different way to do cleanup. The QIOTask seemed to fit that at a high
+level.
+
+I would be happy with just the return + cleanup part really. We've been
+doing work around those areas for a while. If we could reuse generic
+code for that it would be nice.
 
