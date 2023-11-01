@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E947DDBD5
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 05:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2468D7DDBC9
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 05:13:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy2a0-0005vB-RK; Wed, 01 Nov 2023 00:11:44 -0400
+	id 1qy2Zz-0005uV-6f; Wed, 01 Nov 2023 00:11:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qy2Zw-0005te-R5
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 00:11:41 -0400
-Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
+ id 1qy2Zw-0005tV-Fz
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 00:11:40 -0400
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qy2Zt-0007Th-Is
+ id 1qy2Zu-0007Ua-FC
  for qemu-devel@nongnu.org; Wed, 01 Nov 2023 00:11:40 -0400
-Received: by mail-ua1-x92f.google.com with SMTP id
- a1e0cc1a2514c-7ae1a075fc5so2747075241.3
- for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 21:11:37 -0700 (PDT)
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6ce344fa7e4so4148084a34.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 21:11:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698811896; x=1699416696; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698811897; x=1699416697; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4p8wrPdaYIxaYzGyn8OPmsP+9poF/RLZEgS4slSafqI=;
- b=XbV3ldrQ+8n4Tnz30bbXLzsIDlNsmwXfth5G66RAqAhwr5PMHeMIt+eketjCGcSaOJ
- V0BKSv8zeGFOl49B733dyy6xSej8rOmaczcdC7wndldDRu03ls08FQ4zoiivwv6rYePA
- LLkMQM7EHYEL5osS0khZWgbZqVeNoQuW/hadZCKNzTT6Sj8Z7xMxbW0m9e1+JWVZvy9q
- PStBw6oqHaUSAuzTW4/YPc9/9PUvhs20hC+qldpax/BjHIKn7JalgWZA0fmjkDBqvriL
- uxM9qR3pjQ22qa1yf2Vs8wo9qBCD5aO1xdmQl5rS7+KwO9zcWwZpzXI+ZxWkEwPAGWMd
- KZXw==
+ bh=utggYnwKzfLZC2Lm9oCFCSsyrgo11I+wqXfkXP7b2R8=;
+ b=DR3uY1s5VY26HLz1v1ii9IMd6ftHTEJP3ZoptmcaEVqday9APJY6Z+4tHtTqEK5V6J
+ 9ZCvhh9447ft+1iunmWmdBuCAqnNJDQdNEBtc/n/YszyIa9wei3IS0lFdfRR/zNCzXap
+ GLGrjP+sHEy9X79N3sNyISFa2MNcjRC30Z6uthR16cmIOyWzCHLaGiAv2Z0wvYyMNzPp
+ CkTeBSzzXIS789ZUmlpBcT6l8WSqOXCpS9Hl3e/ex4WCIREDDvqa6CFDYLdBx7g/yA+0
+ EnluJ5DJmf7SVUEpmwvN8TZXoMz0z4c9t5HO/wwcAmwzSVOgSIO1MnLCXCQ+P4+o3j4m
+ QYoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698811896; x=1699416696;
+ d=1e100.net; s=20230601; t=1698811897; x=1699416697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4p8wrPdaYIxaYzGyn8OPmsP+9poF/RLZEgS4slSafqI=;
- b=epHBzy4mw/eD1teAultrurjzI09ob7NuRiv3i5FzGX/ssM1ik2gj3/tKiDh1KHBpPO
- 91QOCkK2sH/Z1Uu5zS1fRqXfNnufcxI8EdS0Lyg9J2AStjKLYSgn2SZq741LdWs5Lo2d
- JEV8JUhZlN7QcygYQhaF81+9b0cQMxN5GdQweZ01PmZoSmOgymG7uNdOALXPaAOikSf6
- EWupCTMLmnldst6EBNYZp7Sdv21a7S+c1r+OzPJqcz5F64hGp5xHWVW8y6zYyXKdqoVs
- zSBVMMFp/7UvqQOi+7S8/kHwDGupK7cQNQJVF3kO24cz6EJVjtogIbfVlBU0Rk6ih8k+
- PFUQ==
-X-Gm-Message-State: AOJu0YyC0hcjGICHIE/5rFDxaSYb5JPI7dfrBcUtNAxdrxOokFNPiTrF
- lN/AqZUicKTT+QIdt0OxIC4/LODSAv79jd10oao=
-X-Google-Smtp-Source: AGHT+IGRpOi5jVUUdyKGifNWd/G1O9AhZCZ5tZ/MoTHydrX878ZweJ8DqQtZblWs8Lc5cELGfsodvQ==
-X-Received: by 2002:a67:b24c:0:b0:44d:5e09:e387 with SMTP id
- s12-20020a67b24c000000b0044d5e09e387mr13530660vsh.20.1698811896076; 
- Tue, 31 Oct 2023 21:11:36 -0700 (PDT)
+ bh=utggYnwKzfLZC2Lm9oCFCSsyrgo11I+wqXfkXP7b2R8=;
+ b=lsdLFQ+vCP+myn6tIdyIPJa/Afjtr5PLQftAThbQ5Wm0bJGegKzarBjUFRdAoxKi7K
+ 00tu6P9HP0xsu8AyLoQUyTxiz0vjPJm1tlBKUpYGS5550EYygLVOnL0Gtsdd0BMrpxoP
+ scfCvqoYSUVh6SQtjiqxYeX41lUVrhUeo66aVviyEn6JSfFgtqfoctLULPEyOePHqhm/
+ ozCmIZPCckgu6NxLcm4fMFoW7LWcAwGa6EdUflJY4YWkDc7f0bSdYBjKxI7e3pr63i3N
+ YL96IagQoQIZc13CgeAO++snQtq+8HT4S0yYVKP/LyBGHZQsfWIPSVVr41f9vm8lLPgO
+ lXnA==
+X-Gm-Message-State: AOJu0YzXPAeK0++GImqORFm1znyQpLqj8Fd4ILISKWwlUDJviihYT+rY
+ VNB3UKPTEYoaJoFosbTymeOtCEnCCVO5xUHLz6Q=
+X-Google-Smtp-Source: AGHT+IGBsCd255/IOCCt8gtiTn3hdFgFfYwVhHKGwmAQqYFGKIewsefOM9/Mljg35irUlhGXz0RFqg==
+X-Received: by 2002:a9d:6290:0:b0:6cd:92d:c835 with SMTP id
+ x16-20020a9d6290000000b006cd092dc835mr15397140otk.27.1698811897106; 
+ Tue, 31 Oct 2023 21:11:37 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k8-20020aa79728000000b006875df4773fsm359576pfg.163.2023.10.31.21.11.35
+ k8-20020aa79728000000b006875df4773fsm359576pfg.163.2023.10.31.21.11.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Oct 2023 21:11:35 -0700 (PDT)
+ Tue, 31 Oct 2023 21:11:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 02/21] target/sparc: Split psr and xcc into components
-Date: Tue, 31 Oct 2023 21:11:13 -0700
-Message-Id: <20231101041132.174501-3-richard.henderson@linaro.org>
+Subject: [PATCH v2 03/21] target/sparc: Remove CC_OP_LOGIC
+Date: Tue, 31 Oct 2023 21:11:14 -0700
+Message-Id: <20231101041132.174501-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231101041132.174501-1-richard.henderson@linaro.org>
 References: <20231101041132.174501-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
- envelope-from=richard.henderson@linaro.org; helo=mail-ua1-x92f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,867 +90,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Step in removing CC_OP: change the representation of CC_OP_FLAGS.
-The 8 bits are distributed between 6 variables, which should make
-it easy to keep up to date.
-
-The code within cc_helper.c is quite ugly but is only temporary.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/sparc/target_cpu.h |  17 +-
- target/sparc/cpu.h            |  30 ++-
- linux-user/sparc/cpu_loop.c   |   6 +-
- target/sparc/cc_helper.c      |  51 +++--
- target/sparc/machine.c        |  45 ++++-
- target/sparc/translate.c      | 362 +++++++++++++---------------------
- target/sparc/win_helper.c     |  52 ++++-
- 7 files changed, 291 insertions(+), 272 deletions(-)
+ target/sparc/cpu.h       |  1 -
+ target/sparc/cc_helper.c | 14 +--------
+ target/sparc/translate.c | 66 ++++++++++++++++------------------------
+ 3 files changed, 28 insertions(+), 53 deletions(-)
 
-diff --git a/linux-user/sparc/target_cpu.h b/linux-user/sparc/target_cpu.h
-index 1f4bed50f4..5f62c5eb75 100644
---- a/linux-user/sparc/target_cpu.h
-+++ b/linux-user/sparc/target_cpu.h
-@@ -26,6 +26,17 @@
- # define TARGET_STACK_BIAS 0
- #endif
- 
-+static void set_syscall_C(CPUSPARCState *env, bool val)
-+{
-+#ifndef TARGET_SPARC64
-+    env->icc_C = val;
-+#elif defined(TARGET_ABI32)
-+    env->icc_C = (uint64_t)val << 32;
-+#else
-+    env->xcc_C = val;
-+#endif
-+}
-+
- static inline void cpu_clone_regs_child(CPUSPARCState *env, target_ulong newsp,
-                                         unsigned flags)
- {
-@@ -58,11 +69,7 @@ static inline void cpu_clone_regs_child(CPUSPARCState *env, target_ulong newsp,
-          * do the pc advance twice.
-          */
-         env->regwptr[WREG_O0] = 0;
--#if defined(TARGET_SPARC64) && !defined(TARGET_ABI32)
--        env->xcc &= ~PSR_CARRY;
--#else
--        env->psr &= ~PSR_CARRY;
--#endif
-+        set_syscall_C(env, 0);
-         env->pc = env->npc;
-         env->npc = env->npc + 4;
-     }
 diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 955329f6c9..ea8a04c6e3 100644
+index ea8a04c6e3..202c34f7ca 100644
 --- a/target/sparc/cpu.h
 +++ b/target/sparc/cpu.h
-@@ -149,7 +149,7 @@ enum {
-  */
- enum {
-     CC_OP_DYNAMIC, /* must use dynamic code to get cc_op */
--    CC_OP_FLAGS,   /* all cc are back in status register */
-+    CC_OP_FLAGS,   /* all cc are back in cc_*_[NZCV] registers */
-     CC_OP_DIV,     /* modify N, Z and V, C = 0*/
-     CC_OP_ADD,     /* modify all flags, CC_DST = res, CC_SRC = src1 */
-     CC_OP_ADDX,    /* modify all flags, CC_DST = res, CC_SRC = src1 */
-@@ -458,6 +458,32 @@ struct CPUArchState {
-     target_ulong npc;      /* next program counter */
-     target_ulong y;        /* multiply/divide register */
+@@ -159,7 +159,6 @@ enum {
+     CC_OP_SUBX,    /* modify all flags, CC_DST = res, CC_SRC = src1 */
+     CC_OP_TSUB,    /* modify all flags, CC_DST = res, CC_SRC = src1 */
+     CC_OP_TSUBTV,  /* modify all flags except V, CC_DST = res, CC_SRC = src1 */
+-    CC_OP_LOGIC,   /* modify N and Z, C = V = 0, CC_DST = res */
+     CC_OP_NB,
+ };
  
-+    /*
-+     * Bit 31 is for icc, bit 63 for xcc.
-+     * Other bits are garbage.
-+     */
-+    target_long cc_N;
-+    target_long cc_V;
-+
-+    /*
-+     * Z is represented as == 0; any non-zero value is !Z.
-+     * For sparc64, the high 32-bits of icc.Z are garbage.
-+     */
-+    target_ulong icc_Z;
-+#ifdef TARGET_SPARC64
-+    target_ulong xcc_Z;
-+#endif
-+
-+    /*
-+     * For sparc32, icc.C is boolean.
-+     * For sparc64, xcc.C is boolean;
-+     *              icc.C is bit 32 with other bits garbage.
-+     */
-+    target_ulong icc_C;
-+#ifdef TARGET_SPARC64
-+    target_ulong xcc_C;
-+#endif
-+
-     /* emulator internal flags handling */
-     target_ulong cc_src, cc_src2;
-     target_ulong cc_dst;
-@@ -466,7 +492,6 @@ struct CPUArchState {
-     target_ulong cond; /* conditional branch result (XXX: save it in a
-                           temporary register when possible) */
- 
--    uint32_t psr;      /* processor state register */
-     target_ulong fsr;      /* FPU state register */
-     CPU_DoubleU fpr[TARGET_DPREGS];  /* floating point registers */
-     uint32_t cwp;      /* index of current register window (extracted
-@@ -522,7 +547,6 @@ struct CPUArchState {
- #define MAXTL_MAX 8
- #define MAXTL_MASK (MAXTL_MAX - 1)
-     trap_state ts[MAXTL_MAX];
--    uint32_t xcc;               /* Extended integer condition codes */
-     uint32_t asi;
-     uint32_t pstate;
-     uint32_t tl;
-diff --git a/linux-user/sparc/cpu_loop.c b/linux-user/sparc/cpu_loop.c
-index b36bb2574b..c1a2362041 100644
---- a/linux-user/sparc/cpu_loop.c
-+++ b/linux-user/sparc/cpu_loop.c
-@@ -197,10 +197,8 @@ static uint32_t do_getpsr(CPUSPARCState *env)
- /* Avoid ifdefs below for the abi32 and abi64 paths. */
- #ifdef TARGET_ABI32
- #define TARGET_TT_SYSCALL  (TT_TRAP + 0x10) /* t_linux */
--#define syscall_cc         psr
- #else
- #define TARGET_TT_SYSCALL  (TT_TRAP + 0x6d) /* tl0_linux64 */
--#define syscall_cc         xcc
- #endif
- 
- /* Avoid ifdefs below for the v9 and pre-v9 hw traps. */
-@@ -240,10 +238,10 @@ void cpu_loop (CPUSPARCState *env)
-                 break;
-             }
-             if ((abi_ulong)ret >= (abi_ulong)(-515)) {
--                env->syscall_cc |= PSR_CARRY;
-+                set_syscall_C(env, 1);
-                 ret = -ret;
-             } else {
--                env->syscall_cc &= ~PSR_CARRY;
-+                set_syscall_C(env, 0);
-             }
-             env->regwptr[0] = ret;
-             /* next instruction */
 diff --git a/target/sparc/cc_helper.c b/target/sparc/cc_helper.c
-index 7ad5b9b29e..46bec69d96 100644
+index 46bec69d96..1622300a14 100644
 --- a/target/sparc/cc_helper.c
 +++ b/target/sparc/cc_helper.c
-@@ -21,16 +21,6 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- 
--static uint32_t compute_all_flags(CPUSPARCState *env)
--{
--    return env->psr & PSR_ICC;
--}
--
--static uint32_t compute_C_flags(CPUSPARCState *env)
--{
--    return env->psr & PSR_CARRY;
--}
--
- static inline uint32_t get_NZ_icc(int32_t dst)
- {
-     uint32_t ret = 0;
-@@ -44,16 +34,6 @@ static inline uint32_t get_NZ_icc(int32_t dst)
+@@ -378,16 +378,6 @@ static uint32_t compute_all_tsubtv(CPUSPARCState *env)
+     return ret;
  }
  
+-static uint32_t compute_all_logic(CPUSPARCState *env)
+-{
+-    return get_NZ_icc(CC_DST);
+-}
+-
+-static uint32_t compute_C_logic(CPUSPARCState *env)
+-{
+-    return 0;
+-}
+-
  #ifdef TARGET_SPARC64
--static uint32_t compute_all_flags_xcc(CPUSPARCState *env)
--{
--    return env->xcc & PSR_ICC;
--}
--
--static uint32_t compute_C_flags_xcc(CPUSPARCState *env)
--{
--    return env->xcc & PSR_CARRY;
--}
--
- static inline uint32_t get_NZ_xcc(target_long dst)
+ static uint32_t compute_all_logic_xcc(CPUSPARCState *env)
  {
-     uint32_t ret = 0;
-@@ -422,7 +402,6 @@ typedef struct CCTable {
+@@ -411,13 +401,12 @@ static const CCTable icc_table[CC_OP_NB] = {
+     [CC_OP_SUBX] = { compute_all_subx, compute_C_subx },
+     [CC_OP_TSUB] = { compute_all_tsub, compute_C_sub },
+     [CC_OP_TSUBTV] = { compute_all_tsubtv, compute_C_sub },
+-    [CC_OP_LOGIC] = { compute_all_logic, compute_C_logic },
+ };
  
- static const CCTable icc_table[CC_OP_NB] = {
-     /* CC_OP_DYNAMIC should never happen */
--    [CC_OP_FLAGS] = { compute_all_flags, compute_C_flags },
-     [CC_OP_DIV] = { compute_all_div, compute_C_div },
-     [CC_OP_ADD] = { compute_all_add, compute_C_add },
-     [CC_OP_ADDX] = { compute_all_addx, compute_C_addx },
-@@ -438,7 +417,6 @@ static const CCTable icc_table[CC_OP_NB] = {
  #ifdef TARGET_SPARC64
  static const CCTable xcc_table[CC_OP_NB] = {
      /* CC_OP_DYNAMIC should never happen */
--    [CC_OP_FLAGS] = { compute_all_flags_xcc, compute_C_flags_xcc },
-     [CC_OP_DIV] = { compute_all_logic_xcc, compute_C_logic },
+-    [CC_OP_DIV] = { compute_all_logic_xcc, compute_C_logic },
++    [CC_OP_DIV] = { compute_all_logic_xcc, compute_C_div },
      [CC_OP_ADD] = { compute_all_add_xcc, compute_C_add_xcc },
      [CC_OP_ADDX] = { compute_all_addx_xcc, compute_C_addx_xcc },
-@@ -454,18 +432,37 @@ static const CCTable xcc_table[CC_OP_NB] = {
- 
- void helper_compute_psr(CPUSPARCState *env)
- {
--    uint32_t new_psr;
-+    if (CC_OP == CC_OP_FLAGS) {
-+        return;
-+    }
- 
--    new_psr = icc_table[CC_OP].compute_all(env);
--    env->psr = new_psr;
-+    uint32_t icc = icc_table[CC_OP].compute_all(env);
- #ifdef TARGET_SPARC64
--    new_psr = xcc_table[CC_OP].compute_all(env);
--    env->xcc = new_psr;
-+    uint32_t xcc = xcc_table[CC_OP].compute_all(env);
-+
-+    env->cc_N = deposit64(-(icc & PSR_NEG), 32, 32, -(xcc & PSR_NEG));
-+    env->cc_V = deposit64(-(icc & PSR_OVF), 32, 32, -(xcc & PSR_OVF));
-+    env->icc_C = (uint64_t)icc << (32 - PSR_CARRY_SHIFT);
-+    env->xcc_C = (xcc >> PSR_CARRY_SHIFT) & 1;
-+    env->xcc_Z = ~xcc & PSR_ZERO;
-+#else
-+    env->cc_N = -(icc & PSR_NEG);
-+    env->cc_V = -(icc & PSR_OVF);
-+    env->icc_C = (icc >> PSR_CARRY_SHIFT) & 1;
- #endif
-+    env->icc_Z = ~icc & PSR_ZERO;
-+
-     CC_OP = CC_OP_FLAGS;
- }
- 
- uint32_t helper_compute_C_icc(CPUSPARCState *env)
- {
-+    if (CC_OP == CC_OP_FLAGS) {
-+#ifdef TARGET_SPARC64
-+        return extract64(env->icc_C, 32, 1);
-+#else
-+        return env->icc_C;
-+#endif
-+    }
-     return icc_table[CC_OP].compute_c(env) >> PSR_CARRY_SHIFT;
- }
-diff --git a/target/sparc/machine.c b/target/sparc/machine.c
-index 274e1217df..44dfc07014 100644
---- a/target/sparc/machine.c
-+++ b/target/sparc/machine.c
-@@ -83,6 +83,42 @@ static const VMStateInfo vmstate_psr = {
-     .put = put_psr,
+     [CC_OP_TADD] = { compute_all_add_xcc, compute_C_add_xcc },
+@@ -426,7 +415,6 @@ static const CCTable xcc_table[CC_OP_NB] = {
+     [CC_OP_SUBX] = { compute_all_subx_xcc, compute_C_subx_xcc },
+     [CC_OP_TSUB] = { compute_all_sub_xcc, compute_C_sub_xcc },
+     [CC_OP_TSUBTV] = { compute_all_sub_xcc, compute_C_sub_xcc },
+-    [CC_OP_LOGIC] = { compute_all_logic_xcc, compute_C_logic },
  };
+ #endif
  
-+#ifdef TARGET_SPARC64
-+static int get_xcc(QEMUFile *f, void *opaque, size_t size,
-+                   const VMStateField *field)
-+{
-+    SPARCCPU *cpu = opaque;
-+    CPUSPARCState *env = &cpu->env;
-+    uint32_t val = qemu_get_be32(f);
-+
-+    /* Do not clobber icc.[NV] */
-+    env->cc_N = deposit64(env->cc_N, 32, 32, -(val & PSR_NEG));
-+    env->cc_V = deposit64(env->cc_V, 32, 32, -(val & PSR_OVF));
-+    env->xcc_Z = ~val & PSR_ZERO;
-+    env->xcc_C = (val >> PSR_CARRY_SHIFT) & 1;
-+
-+    return 0;
-+}
-+
-+static int put_xcc(QEMUFile *f, void *opaque, size_t size,
-+                   const VMStateField *field, JSONWriter *vmdesc)
-+{
-+    SPARCCPU *cpu = opaque;
-+    CPUSPARCState *env = &cpu->env;
-+    uint32_t val = cpu_get_ccr(env);
-+
-+    /* Extract just xcc out of ccr and shift into legacy position. */
-+    qemu_put_be32(f, (val & 0xf0) << (20 - 4));
-+    return 0;
-+}
-+
-+static const VMStateInfo vmstate_xcc = {
-+    .name = "xcc",
-+    .get = get_xcc,
-+    .put = put_xcc,
-+};
-+#endif
-+
- static int cpu_pre_save(void *opaque)
- {
-     SPARCCPU *cpu = opaque;
-@@ -155,7 +191,14 @@ const VMStateDescription vmstate_sparc_cpu = {
-         VMSTATE_UINT32(env.mmu_version, SPARCCPU),
-         VMSTATE_STRUCT_ARRAY(env.ts, SPARCCPU, MAXTL_MAX, 0,
-                              vmstate_trap_state, trap_state),
--        VMSTATE_UINT32(env.xcc, SPARCCPU),
-+        {
-+            .name = "xcc",
-+            .version_id = 0,
-+            .size = sizeof(uint32_t),
-+            .info = &vmstate_xcc,
-+            .flags = VMS_SINGLE,
-+            .offset = 0,
-+        },
-         VMSTATE_UINT32(env.asi, SPARCCPU),
-         VMSTATE_UINT32(env.pstate, SPARCCPU),
-         VMSTATE_UINT32(env.tl, SPARCCPU),
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 986a88c4e1..261f142636 100644
+index 261f142636..b11d89343b 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -107,19 +107,35 @@
- static TCGv_ptr cpu_regwptr;
- static TCGv cpu_cc_src, cpu_cc_src2, cpu_cc_dst;
- static TCGv_i32 cpu_cc_op;
--static TCGv_i32 cpu_psr;
- static TCGv cpu_fsr, cpu_pc, cpu_npc;
- static TCGv cpu_regs[32];
- static TCGv cpu_y;
- static TCGv cpu_tbr;
- static TCGv cpu_cond;
-+static TCGv cpu_cc_N;
-+static TCGv cpu_cc_V;
-+static TCGv cpu_icc_Z;
-+static TCGv cpu_icc_C;
- #ifdef TARGET_SPARC64
--static TCGv_i32 cpu_xcc, cpu_fprs;
-+static TCGv cpu_xcc_Z;
-+static TCGv cpu_xcc_C;
-+static TCGv_i32 cpu_fprs;
- static TCGv cpu_gsr;
- #else
- # define cpu_fprs               ({ qemu_build_not_reached(); (TCGv)NULL; })
- # define cpu_gsr                ({ qemu_build_not_reached(); (TCGv)NULL; })
- #endif
-+
-+#ifdef TARGET_SPARC64
-+#define cpu_cc_Z  cpu_xcc_Z
-+#define cpu_cc_C  cpu_xcc_C
-+#else
-+#define cpu_cc_Z  cpu_icc_Z
-+#define cpu_cc_C  cpu_icc_C
-+#define cpu_xcc_Z ({ qemu_build_not_reached(); NULL; })
-+#define cpu_xcc_C ({ qemu_build_not_reached(); NULL; })
-+#endif
-+
- /* Floating point registers */
- static TCGv_i64 cpu_fpr[TARGET_DPREGS];
- 
-@@ -366,31 +382,6 @@ static void gen_goto_tb(DisasContext *s, int tb_num,
-     }
- }
- 
--// XXX suboptimal
--static void gen_mov_reg_N(TCGv reg, TCGv_i32 src)
--{
--    tcg_gen_extu_i32_tl(reg, src);
--    tcg_gen_extract_tl(reg, reg, PSR_NEG_SHIFT, 1);
--}
--
--static void gen_mov_reg_Z(TCGv reg, TCGv_i32 src)
--{
--    tcg_gen_extu_i32_tl(reg, src);
--    tcg_gen_extract_tl(reg, reg, PSR_ZERO_SHIFT, 1);
--}
--
--static void gen_mov_reg_V(TCGv reg, TCGv_i32 src)
--{
--    tcg_gen_extu_i32_tl(reg, src);
--    tcg_gen_extract_tl(reg, reg, PSR_OVF_SHIFT, 1);
--}
--
--static void gen_mov_reg_C(TCGv reg, TCGv_i32 src)
--{
--    tcg_gen_extu_i32_tl(reg, src);
--    tcg_gen_extract_tl(reg, reg, PSR_CARRY_SHIFT, 1);
--}
--
- static void gen_op_add_cc(TCGv dst, TCGv src1, TCGv src2)
- {
-     tcg_gen_mov_tl(cpu_cc_src, src1);
-@@ -640,13 +631,11 @@ static void gen_op_mulscc(TCGv dst, TCGv src1, TCGv src2)
-     tcg_gen_deposit_tl(cpu_y, t0, cpu_cc_src, 31, 1);
- 
-     // b1 = N ^ V;
--    gen_mov_reg_N(t0, cpu_psr);
--    gen_mov_reg_V(r_temp, cpu_psr);
--    tcg_gen_xor_tl(t0, t0, r_temp);
-+    tcg_gen_xor_tl(t0, cpu_cc_N, cpu_cc_V);
- 
-     // T0 = (b1 << 31) | (T0 >> 1);
-     // src1 = T0;
--    tcg_gen_shli_tl(t0, t0, 31);
-+    tcg_gen_andi_tl(t0, t0, 1u << 31);
-     tcg_gen_shri_tl(cpu_cc_src, cpu_cc_src, 1);
-     tcg_gen_or_tl(cpu_cc_src, cpu_cc_src, t0);
- 
-@@ -825,114 +814,12 @@ static void gen_op_eval_ba(TCGv dst)
-     tcg_gen_movi_tl(dst, 1);
- }
- 
--// Z
--static void gen_op_eval_be(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_Z(dst, src);
--}
--
--// Z | (N ^ V)
--static void gen_op_eval_ble(TCGv dst, TCGv_i32 src)
--{
--    TCGv t0 = tcg_temp_new();
--    gen_mov_reg_N(t0, src);
--    gen_mov_reg_V(dst, src);
--    tcg_gen_xor_tl(dst, dst, t0);
--    gen_mov_reg_Z(t0, src);
--    tcg_gen_or_tl(dst, dst, t0);
--}
--
--// N ^ V
--static void gen_op_eval_bl(TCGv dst, TCGv_i32 src)
--{
--    TCGv t0 = tcg_temp_new();
--    gen_mov_reg_V(t0, src);
--    gen_mov_reg_N(dst, src);
--    tcg_gen_xor_tl(dst, dst, t0);
--}
--
--// C | Z
--static void gen_op_eval_bleu(TCGv dst, TCGv_i32 src)
--{
--    TCGv t0 = tcg_temp_new();
--    gen_mov_reg_Z(t0, src);
--    gen_mov_reg_C(dst, src);
--    tcg_gen_or_tl(dst, dst, t0);
--}
--
--// C
--static void gen_op_eval_bcs(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_C(dst, src);
--}
--
--// V
--static void gen_op_eval_bvs(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_V(dst, src);
--}
--
- // 0
- static void gen_op_eval_bn(TCGv dst)
- {
-     tcg_gen_movi_tl(dst, 0);
- }
- 
--// N
--static void gen_op_eval_bneg(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_N(dst, src);
--}
--
--// !Z
--static void gen_op_eval_bne(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_Z(dst, src);
--    tcg_gen_xori_tl(dst, dst, 0x1);
--}
--
--// !(Z | (N ^ V))
--static void gen_op_eval_bg(TCGv dst, TCGv_i32 src)
--{
--    gen_op_eval_ble(dst, src);
--    tcg_gen_xori_tl(dst, dst, 0x1);
--}
--
--// !(N ^ V)
--static void gen_op_eval_bge(TCGv dst, TCGv_i32 src)
--{
--    gen_op_eval_bl(dst, src);
--    tcg_gen_xori_tl(dst, dst, 0x1);
--}
--
--// !(C | Z)
--static void gen_op_eval_bgu(TCGv dst, TCGv_i32 src)
--{
--    gen_op_eval_bleu(dst, src);
--    tcg_gen_xori_tl(dst, dst, 0x1);
--}
--
--// !C
--static void gen_op_eval_bcc(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_C(dst, src);
--    tcg_gen_xori_tl(dst, dst, 0x1);
--}
--
--// !N
--static void gen_op_eval_bpos(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_N(dst, src);
--    tcg_gen_xori_tl(dst, dst, 0x1);
--}
--
--// !V
--static void gen_op_eval_bvc(TCGv dst, TCGv_i32 src)
--{
--    gen_mov_reg_V(dst, src);
--    tcg_gen_xori_tl(dst, dst, 0x1);
--}
--
- /*
-   FPSR bit field FCC1 | FCC0:
-    0 =
-@@ -1249,34 +1136,22 @@ static void gen_compare(DisasCompare *cmp, bool xcc, unsigned int cond,
-         TCG_COND_ALWAYS, /* vc:  !V -> 1 */
+@@ -1117,48 +1117,24 @@ static void gen_compare(DisasCompare *cmp, bool xcc, unsigned int cond,
+         -1, /* no overflow */
      };
  
--    TCGv_i32 r_src;
--    TCGv r_dst;
-+    TCGv t1, t2;
+-    static int logic_cond[16] = {
+-        TCG_COND_NEVER,
+-        TCG_COND_EQ,     /* eq:  Z */
+-        TCG_COND_LE,     /* le:  Z | (N ^ V) -> Z | N */
+-        TCG_COND_LT,     /* lt:  N ^ V -> N */
+-        TCG_COND_EQ,     /* leu: C | Z -> Z */
+-        TCG_COND_NEVER,  /* ltu: C -> 0 */
+-        TCG_COND_LT,     /* neg: N */
+-        TCG_COND_NEVER,  /* vs:  V -> 0 */
+-        TCG_COND_ALWAYS,
+-        TCG_COND_NE,     /* ne:  !Z */
+-        TCG_COND_GT,     /* gt:  !(Z | (N ^ V)) -> !(Z | N) */
+-        TCG_COND_GE,     /* ge:  !(N ^ V) -> !N */
+-        TCG_COND_NE,     /* gtu: !(C | Z) -> !Z */
+-        TCG_COND_ALWAYS, /* geu: !C -> 1 */
+-        TCG_COND_GE,     /* pos: !N */
+-        TCG_COND_ALWAYS, /* vc:  !V -> 1 */
+-    };
+-
+     TCGv t1, t2;
  
--#ifdef TARGET_SPARC64
--    if (xcc) {
--        r_src = cpu_xcc;
--    } else {
--        r_src = cpu_psr;
--    }
--#else
--    r_src = cpu_psr;
--#endif
-+    cmp->is_bool = false;
+     cmp->is_bool = false;
  
      switch (dc->cc_op) {
-     case CC_OP_LOGIC:
-         cmp->cond = logic_cond[cond];
-     do_compare_dst_0:
--        cmp->is_bool = false;
-         cmp->c2 = tcg_constant_tl(0);
--#ifdef TARGET_SPARC64
--        if (!xcc) {
--            cmp->c1 = tcg_temp_new();
--            tcg_gen_ext32s_tl(cmp->c1, cpu_cc_dst);
--            break;
-+        if (TARGET_LONG_BITS == 32 || xcc) {
-+            cmp->c1 = cpu_cc_dst;
-+        } else {
-+            cmp->c1 = t1 = tcg_temp_new();
-+            tcg_gen_ext32s_tl(t1, cpu_cc_dst);
-         }
--#endif
--        cmp->c1 = cpu_cc_dst;
--        break;
-+        return;
- 
+-    case CC_OP_LOGIC:
+-        cmp->cond = logic_cond[cond];
+-    do_compare_dst_0:
+-        cmp->c2 = tcg_constant_tl(0);
+-        if (TARGET_LONG_BITS == 32 || xcc) {
+-            cmp->c1 = cpu_cc_dst;
+-        } else {
+-            cmp->c1 = t1 = tcg_temp_new();
+-            tcg_gen_ext32s_tl(t1, cpu_cc_dst);
+-        }
+-        return;
+-
      case CC_OP_SUB:
          switch (cond) {
-@@ -1287,92 +1162,127 @@ static void gen_compare(DisasCompare *cmp, bool xcc, unsigned int cond,
+         case 6:  /* neg */
+         case 14: /* pos */
+             cmp->cond = (cond == 6 ? TCG_COND_LT : TCG_COND_GE);
+-            goto do_compare_dst_0;
++            cmp->c2 = tcg_constant_tl(0);
++            if (TARGET_LONG_BITS == 32 || xcc) {
++                cmp->c1 = cpu_cc_dst;
++            } else {
++                cmp->c1 = t1 = tcg_temp_new();
++                tcg_gen_ext32s_tl(t1, cpu_cc_dst);
++            }
++            return;
  
          case 7: /* overflow */
          case 15: /* !overflow */
--            goto do_dynamic;
-+            break;
+@@ -3652,7 +3628,8 @@ TRANS(NOP_v9, 64, trans_NOP, a)
  
-         default:
-             cmp->cond = subcc_cond[cond];
--            cmp->is_bool = false;
--#ifdef TARGET_SPARC64
--            if (!xcc) {
-+            if (TARGET_LONG_BITS == 32 || xcc) {
-+                cmp->c1 = cpu_cc_src;
-+                cmp->c2 = cpu_cc_src2;
-+            } else {
-                 /* Note that sign-extension works for unsigned compares as
-                    long as both operands are sign-extended.  */
--                cmp->c1 = tcg_temp_new();
--                cmp->c2 = tcg_temp_new();
--                tcg_gen_ext32s_tl(cmp->c1, cpu_cc_src);
--                tcg_gen_ext32s_tl(cmp->c2, cpu_cc_src2);
--                break;
-+                cmp->c1 = t1 = tcg_temp_new();
-+                tcg_gen_ext32s_tl(t1, cpu_cc_src);
-+                cmp->c2 = t2 = tcg_temp_new();
-+                tcg_gen_ext32s_tl(t2, cpu_cc_src2);
-             }
--#endif
--            cmp->c1 = cpu_cc_src;
--            cmp->c2 = cpu_cc_src2;
--            break;
-+            return;
-         }
-         break;
+ static bool do_arith_int(DisasContext *dc, arg_r_r_ri_cc *a, int cc_op,
+                          void (*func)(TCGv, TCGv, TCGv),
+-                         void (*funci)(TCGv, TCGv, target_long))
++                         void (*funci)(TCGv, TCGv, target_long),
++                         bool logic_cc)
+ {
+     TCGv dst, src1;
  
-     default:
--    do_dynamic:
-         gen_helper_compute_psr(tcg_env);
-         dc->cc_op = CC_OP_FLAGS;
--        /* FALLTHRU */
-+        break;
- 
-     case CC_OP_FLAGS:
--        /* We're going to generate a boolean result.  */
--        cmp->cond = TCG_COND_NE;
--        cmp->is_bool = true;
--        cmp->c1 = r_dst = tcg_temp_new();
--        cmp->c2 = tcg_constant_tl(0);
-+        break;
-+    }
- 
--        switch (cond) {
--        case 0x0:
--            gen_op_eval_bn(r_dst);
--            break;
--        case 0x1:
--            gen_op_eval_be(r_dst, r_src);
--            break;
--        case 0x2:
--            gen_op_eval_ble(r_dst, r_src);
--            break;
--        case 0x3:
--            gen_op_eval_bl(r_dst, r_src);
--            break;
--        case 0x4:
--            gen_op_eval_bleu(r_dst, r_src);
--            break;
--        case 0x5:
--            gen_op_eval_bcs(r_dst, r_src);
--            break;
--        case 0x6:
--            gen_op_eval_bneg(r_dst, r_src);
--            break;
--        case 0x7:
--            gen_op_eval_bvs(r_dst, r_src);
--            break;
--        case 0x8:
--            gen_op_eval_ba(r_dst);
--            break;
--        case 0x9:
--            gen_op_eval_bne(r_dst, r_src);
--            break;
--        case 0xa:
--            gen_op_eval_bg(r_dst, r_src);
--            break;
--        case 0xb:
--            gen_op_eval_bge(r_dst, r_src);
--            break;
--        case 0xc:
--            gen_op_eval_bgu(r_dst, r_src);
--            break;
--        case 0xd:
--            gen_op_eval_bcc(r_dst, r_src);
--            break;
--        case 0xe:
--            gen_op_eval_bpos(r_dst, r_src);
--            break;
--        case 0xf:
--            gen_op_eval_bvc(r_dst, r_src);
--            break;
-+    cmp->c1 = t1 = tcg_temp_new();
-+    cmp->c2 = tcg_constant_tl(0);
-+
-+    switch (cond & 7) {
-+    case 0x0: /* never */
-+        cmp->cond = TCG_COND_NEVER;
-+        cmp->c1 = cmp->c2;
-+        break;
-+
-+    case 0x1: /* eq: Z */
-+        cmp->cond = TCG_COND_EQ;
-+        if (TARGET_LONG_BITS == 32 || xcc) {
-+            tcg_gen_mov_tl(t1, cpu_cc_Z);
-+        } else {
-+            tcg_gen_ext32u_tl(t1, cpu_icc_Z);
-         }
-         break;
-+
-+    case 0x2: /* le: Z | (N ^ V) */
-+        /*
-+         * Simplify:
-+         *   cc_Z || (N ^ V) < 0        NE
-+         *   cc_Z && !((N ^ V) < 0)     EQ
-+         *   cc_Z & ~((N ^ V) >> TLB)   EQ
-+         */
-+        cmp->cond = TCG_COND_EQ;
-+        tcg_gen_xor_tl(t1, cpu_cc_N, cpu_cc_V);
-+        tcg_gen_sextract_tl(t1, t1, xcc ? 63 : 31, 1);
-+        tcg_gen_andc_tl(t1, xcc ? cpu_cc_Z : cpu_icc_Z, t1);
-+        if (TARGET_LONG_BITS == 64 && !xcc) {
-+            tcg_gen_ext32u_tl(t1, t1);
-+        }
-+        break;
-+
-+    case 0x3: /* lt: N ^ V */
-+        cmp->cond = TCG_COND_LT;
-+        tcg_gen_xor_tl(t1, cpu_cc_N, cpu_cc_V);
-+        if (TARGET_LONG_BITS == 64 && !xcc) {
-+            tcg_gen_ext32s_tl(t1, t1);
-+        }
-+        break;
-+
-+    case 0x4: /* leu: Z | C */
-+        /*
-+         * Simplify:
-+         *   cc_Z == 0 || cc_C != 0     NE
-+         *   cc_Z != 0 && cc_C == 0     EQ
-+         *   cc_Z & (cc_C ? 0 : -1)     EQ
-+         *   cc_Z & (cc_C - 1)          EQ
-+         */
-+        cmp->cond = TCG_COND_EQ;
-+        if (TARGET_LONG_BITS == 32 || xcc) {
-+            tcg_gen_subi_tl(t1, cpu_cc_C, 1);
-+            tcg_gen_and_tl(t1, t1, cpu_cc_Z);
-+        } else {
-+            tcg_gen_extract_tl(t1, cpu_icc_C, 32, 1);
-+            tcg_gen_subi_tl(t1, t1, 1);
-+            tcg_gen_and_tl(t1, t1, cpu_icc_Z);
-+            tcg_gen_ext32u_tl(t1, t1);
-+        }
-+        break;
-+
-+    case 0x5: /* ltu: C */
-+        cmp->cond = TCG_COND_NE;
-+        cmp->is_bool = true;
-+        if (TARGET_LONG_BITS == 32 || xcc) {
-+            tcg_gen_mov_tl(t1, cpu_cc_C);
-+        } else {
-+            tcg_gen_extract_tl(t1, cpu_icc_C, 32, 1);
-+        }
-+        break;
-+
-+    case 0x6: /* neg: N */
-+        cmp->cond = TCG_COND_LT;
-+        if (TARGET_LONG_BITS == 32 || xcc) {
-+            tcg_gen_mov_tl(t1, cpu_cc_N);
-+        } else {
-+            tcg_gen_ext32s_tl(t1, cpu_cc_N);
-+        }
-+        break;
-+
-+    case 0x7: /* vs: V */
-+        cmp->cond = TCG_COND_LT;
-+        if (TARGET_LONG_BITS == 32 || xcc) {
-+            tcg_gen_mov_tl(t1, cpu_cc_V);
-+        } else {
-+            tcg_gen_ext32s_tl(t1, cpu_cc_V);
-+        }
-+        break;
-+    }
-+    if (cond & 8) {
-+        cmp->cond = tcg_invert_cond(cmp->cond);
-+        cmp->is_bool = false;
+@@ -3661,7 +3638,9 @@ static bool do_arith_int(DisasContext *dc, arg_r_r_ri_cc *a, int cc_op,
+         return false;
      }
- }
  
-@@ -5513,17 +5423,21 @@ void sparc_tcg_init(void)
- 
-     static const struct { TCGv_i32 *ptr; int off; const char *name; } r32[] = {
- #ifdef TARGET_SPARC64
--        { &cpu_xcc, offsetof(CPUSPARCState, xcc), "xcc" },
-         { &cpu_fprs, offsetof(CPUSPARCState, fprs), "fprs" },
- #endif
-         { &cpu_cc_op, offsetof(CPUSPARCState, cc_op), "cc_op" },
--        { &cpu_psr, offsetof(CPUSPARCState, psr), "psr" },
-     };
- 
-     static const struct { TCGv *ptr; int off; const char *name; } rtl[] = {
- #ifdef TARGET_SPARC64
-         { &cpu_gsr, offsetof(CPUSPARCState, gsr), "gsr" },
-+        { &cpu_xcc_Z, offsetof(CPUSPARCState, xcc_Z), "xcc_Z" },
-+        { &cpu_xcc_C, offsetof(CPUSPARCState, xcc_C), "xcc_C" },
- #endif
-+        { &cpu_cc_N, offsetof(CPUSPARCState, cc_N), "cc_N" },
-+        { &cpu_cc_V, offsetof(CPUSPARCState, cc_V), "cc_V" },
-+        { &cpu_icc_Z, offsetof(CPUSPARCState, icc_Z), "icc_Z" },
-+        { &cpu_icc_C, offsetof(CPUSPARCState, icc_C), "icc_C" },
-         { &cpu_cond, offsetof(CPUSPARCState, cond), "cond" },
-         { &cpu_cc_src, offsetof(CPUSPARCState, cc_src), "cc_src" },
-         { &cpu_cc_src2, offsetof(CPUSPARCState, cc_src2), "cc_src2" },
-diff --git a/target/sparc/win_helper.c b/target/sparc/win_helper.c
-index bf2c90c780..f0ff6bf5db 100644
---- a/target/sparc/win_helper.c
-+++ b/target/sparc/win_helper.c
-@@ -53,23 +53,44 @@ void cpu_set_cwp(CPUSPARCState *env, int new_cwp)
- 
- target_ulong cpu_get_psr(CPUSPARCState *env)
- {
-+    target_ulong icc = 0;
+-    if (a->cc) {
++    if (logic_cc) {
++        dst = cpu_cc_N;
++    } else if (a->cc && cc_op > CC_OP_FLAGS) {
+         dst = cpu_cc_dst;
+     } else {
+         dst = gen_dest_gpr(dc, a->rd);
+@@ -3677,6 +3656,17 @@ static bool do_arith_int(DisasContext *dc, arg_r_r_ri_cc *a, int cc_op,
+     } else {
+         func(dst, src1, cpu_regs[a->rs2_or_imm]);
+     }
 +
-     helper_compute_psr(env);
- 
-+    icc |= ((int32_t)env->cc_N < 0) << PSR_NEG_SHIFT;
-+    icc |= ((int32_t)env->cc_V < 0) << PSR_OVF_SHIFT;
-+    icc |= ((int32_t)env->icc_Z == 0) << PSR_ZERO_SHIFT;
-+    if (TARGET_LONG_BITS == 64) {
-+        icc |= extract64(env->icc_C, 32, 1) << PSR_CARRY_SHIFT;
-+    } else {
-+        icc |= env->icc_C << PSR_CARRY_SHIFT;
++    if (logic_cc) {
++        if (TARGET_LONG_BITS == 64) {
++            tcg_gen_mov_tl(cpu_icc_Z, cpu_cc_N);
++            tcg_gen_movi_tl(cpu_icc_C, 0);
++        }
++        tcg_gen_mov_tl(cpu_cc_Z, cpu_cc_N);
++        tcg_gen_movi_tl(cpu_cc_C, 0);
++        tcg_gen_movi_tl(cpu_cc_V, 0);
 +    }
 +
- #if !defined(TARGET_SPARC64)
--    return env->version | (env->psr & PSR_ICC) |
-+    return env->version | icc |
-         (env->psref ? PSR_EF : 0) |
-         (env->psrpil << 8) |
-         (env->psrs ? PSR_S : 0) |
-         (env->psrps ? PSR_PS : 0) |
-         (env->psret ? PSR_ET : 0) | env->cwp;
- #else
--    return env->psr & PSR_ICC;
-+    return icc;
- #endif
- }
+     gen_store_gpr(dc, a->rd, dst);
  
- void cpu_put_psr_icc(CPUSPARCState *env, target_ulong val)
+     if (a->cc) {
+@@ -3693,16 +3683,16 @@ static bool do_arith(DisasContext *dc, arg_r_r_ri_cc *a, int cc_op,
  {
--    env->psr = val & PSR_ICC;
-+    if (TARGET_LONG_BITS == 64) {
-+        /* Do not clobber xcc.[NV] */
-+        env->cc_N = deposit64(env->cc_N, 0, 32, -(val & PSR_NEG));
-+        env->cc_V = deposit64(env->cc_V, 0, 32, -(val & PSR_OVF));
-+        env->icc_C = -(val & PSR_CARRY);
-+    } else {
-+        env->cc_N = -(val & PSR_NEG);
-+        env->cc_V = -(val & PSR_OVF);
-+        env->icc_C = (val >> PSR_CARRY_SHIFT) & 1;
-+    }
-+    env->icc_Z = ~val & PSR_ZERO;
+     if (a->cc) {
+         assert(cc_op >= 0);
+-        return do_arith_int(dc, a, cc_op, func_cc, NULL);
++        return do_arith_int(dc, a, cc_op, func_cc, NULL, false);
+     }
+-    return do_arith_int(dc, a, cc_op, func, funci);
++    return do_arith_int(dc, a, cc_op, func, funci, false);
  }
  
- void cpu_put_psr_raw(CPUSPARCState *env, target_ulong val)
-@@ -249,17 +270,32 @@ void helper_restored(CPUSPARCState *env)
- 
- target_ulong cpu_get_ccr(CPUSPARCState *env)
+ static bool do_logic(DisasContext *dc, arg_r_r_ri_cc *a,
+                      void (*func)(TCGv, TCGv, TCGv),
+                      void (*funci)(TCGv, TCGv, target_long))
  {
--    target_ulong psr;
-+    target_ulong ccr = 0;
- 
--    psr = cpu_get_psr(env);
-+    helper_compute_psr(env);
- 
--    return ((env->xcc >> 20) << 4) | ((psr & PSR_ICC) >> 20);
-+    ccr |= (env->icc_C >> 32) & 1;
-+    ccr |= ((int32_t)env->cc_V < 0) << 1;
-+    ccr |= ((int32_t)env->icc_Z == 0) << 2;
-+    ccr |= ((int32_t)env->cc_N < 0) << 3;
-+
-+    ccr |= env->xcc_C << 4;
-+    ccr |= (env->cc_V < 0) << 5;
-+    ccr |= (env->xcc_Z == 0) << 6;
-+    ccr |= (env->cc_N < 0) << 7;
-+
-+    return ccr;
+-    return do_arith_int(dc, a, CC_OP_LOGIC, func, funci);
++    return do_arith_int(dc, a, CC_OP_FLAGS, func, funci, a->cc);
  }
  
- void cpu_put_ccr(CPUSPARCState *env, target_ulong val)
+ TRANS(ADD, ALL, do_arith, a, CC_OP_ADD,
+@@ -3754,7 +3744,6 @@ static bool trans_ADDC(DisasContext *dc, arg_r_r_ri_cc *a)
  {
--    env->xcc = (val >> 4) << 20;
--    env->psr = (val & 0xf) << 20;
-+    env->cc_N = deposit64(-(val & 0x08), 32, 32, -(val & 0x80));
-+    env->cc_V = deposit64(-(val & 0x02), 32, 32, -(val & 0x20));
-+    env->icc_C = (uint64_t)val << 32;
-+    env->xcc_C = (val >> 4) & 1;
-+    env->icc_Z = ~val & 0x04;
-+    env->xcc_Z = ~val & 0x40;
-+
-     CC_OP = CC_OP_FLAGS;
- }
- 
+     switch (dc->cc_op) {
+     case CC_OP_DIV:
+-    case CC_OP_LOGIC:
+         /* Carry is known to be zero.  Fall back to plain ADD.  */
+         return do_arith(dc, a, CC_OP_ADD,
+                         tcg_gen_add_tl, tcg_gen_addi_tl, gen_op_add_cc);
+@@ -3778,7 +3767,6 @@ static bool trans_SUBC(DisasContext *dc, arg_r_r_ri_cc *a)
+ {
+     switch (dc->cc_op) {
+     case CC_OP_DIV:
+-    case CC_OP_LOGIC:
+         /* Carry is known to be zero.  Fall back to plain SUB.  */
+         return do_arith(dc, a, CC_OP_SUB,
+                         tcg_gen_sub_tl, tcg_gen_subi_tl, gen_op_sub_cc);
 -- 
 2.34.1
 
