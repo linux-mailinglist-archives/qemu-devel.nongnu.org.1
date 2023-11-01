@@ -2,75 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95EC7DE5E7
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 19:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7883F7DE653
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 20:19:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyFjl-0007F4-0c; Wed, 01 Nov 2023 14:14:41 -0400
+	id 1qyGjU-00058P-TW; Wed, 01 Nov 2023 15:18:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qyFji-0007Ec-DF
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 14:14:38 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qyFjg-0002r1-Ot
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 14:14:38 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 385BB21850;
- Wed,  1 Nov 2023 18:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1698862475; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyGjS-000588-0S
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 15:18:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyGjP-00006H-Hj
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 15:18:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698866302;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=kvycZSImFG44hzrOzYRIctNFtPAQEvLG8sGfLh3lPlE=;
- b=T+qaPMQAiyTPKcmBiykka2Vm0Cu1ebuMRVkMcCenG0P49R1Ax2TCI+SwMXoBB3twYuReQ6
- v/XCykfAcCUNkTc+QPwzh2+3dBar5KGHzN1OTNGSA6FX0SZ21u6u8+21+KIb99kAA944bf
- TWuW6tJHcTORX7mmutOGvmqX4IJqPWA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1698862475;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kvycZSImFG44hzrOzYRIctNFtPAQEvLG8sGfLh3lPlE=;
- b=std3L6tNwpFfnwScomSK0KLa03nIK6eTox12Y/ksixDqWv5kokZOn8LILSA3mHlxJR0hfM
- gx8OFBvrGbN/LtBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BE1A613460;
- Wed,  1 Nov 2023 18:14:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id zuotIoqVQmWybwAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 01 Nov 2023 18:14:34 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Juan
- Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v2 21/29] migration/multifd: Add pages to the receiving
- side
-In-Reply-To: <ZUKMSQEcYlXRej01@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-22-farosas@suse.de> <ZUF7VG+CWvuOEbqD@x1n>
- <87il6mcrf5.fsf@suse.de> <ZUJ01lcAJS1PaAIw@x1n> <87msvxfl0f.fsf@suse.de>
- <ZUKMSQEcYlXRej01@x1n>
-Date: Wed, 01 Nov 2023 15:14:32 -0300
-Message-ID: <87il6lfiif.fsf@suse.de>
+ bh=YB2p/Yge7SrWi7crm8YFi5rd/npzGYBR5qPMQ7ZlBto=;
+ b=WZpIu7aNcBf7mvq9W+7tgYdeEs1WMVPoON9MCCsCV6pxEDKwOGOjDxpt2lt+Q73PdsQkkJ
+ eru+TyOaiFlPY+S6mzjORd3GztcuehjC0nK8eKTnXoPIVhqvXUd9mXX7Om4l3eZQn4tZey
+ nVhRVdycWD+drpHiNIZyqamw+RmmOq4=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-648-lkozvxoNPg6BAaCa7S42CQ-1; Wed, 01 Nov 2023 15:18:16 -0400
+X-MC-Unique: lkozvxoNPg6BAaCa7S42CQ-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-5a7b5754de7so394967b3.0
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 12:18:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698866296; x=1699471096;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YB2p/Yge7SrWi7crm8YFi5rd/npzGYBR5qPMQ7ZlBto=;
+ b=rYVDaceSr7gzUx1oUyRezexvTICoKZ4uJbdtvuVnYz9CpzLXgLSHKo9kT7RpSyOWbo
+ ynXYluoMM2rxY65zOek1J6BmwgxodDmlGl4sone2S0y3eLhjjLu7IUVjzAhDwIrCY96d
+ h9jyMFRvEHvl/5IyjqEdURhAuOvkqIXa6ahysRBGDgu58s1ELPfzTfcn7saviFAP79xp
+ uYTApATULZCNxbhTM4I1iLr/EpQD4ijCa0EgvsWtq1+SYkqJXqJJ6xVTrNAJqREGz0bT
+ CiZQCMQB3indPv9VtEOestBSWTcubXffOEgAj3u/GrmCJKah3HCyYIYUHCDUwdrFtQWl
+ RyTw==
+X-Gm-Message-State: AOJu0YwgVM4BSA4mnj28xaDGUiITbguST1LPgNVI8/xe8mhag4CGXvi4
+ Zb2gh5Y5L9fXOy0mCulhCVXT9ST80OfQzigupL3QVTg7rSdAZ2OePFrz+YFMlWCp62eROt+1NW5
+ KSZXFCLeu3dJrEIs=
+X-Received: by 2002:a05:690c:4502:b0:5a7:ba54:5127 with SMTP id
+ gt2-20020a05690c450200b005a7ba545127mr10832102ywb.3.1698866295916; 
+ Wed, 01 Nov 2023 12:18:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFN5qBl/6mGwc75mKrFts6Lvq2OdOInmBT9Xs/WUwkp/M7ZAk7srkCTedY/JVdFMah3kMn/UA==
+X-Received: by 2002:a05:690c:4502:b0:5a7:ba54:5127 with SMTP id
+ gt2-20020a05690c450200b005a7ba545127mr10832091ywb.3.1698866295668; 
+ Wed, 01 Nov 2023 12:18:15 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ v14-20020a0cf90e000000b0063d5d173a51sm1731537qvn.50.2023.11.01.12.18.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Nov 2023 12:18:15 -0700 (PDT)
+Date: Wed, 1 Nov 2023 15:16:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: stefanha@redhat.com, jag.raman@oracle.com, qemu-devel@nongnu.org,
+ john.levon@nutanix.com, David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v6 1/5] softmmu: Per-AddressSpace bounce buffering
+Message-ID: <ZUKkGcg+PPn/6M+L@x1n>
+References: <20231101131611.775299-1-mnissler@rivosinc.com>
+ <20231101131611.775299-2-mnissler@rivosinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231101131611.775299-2-mnissler@rivosinc.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,30 +103,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Wed, Nov 01, 2023 at 06:16:07AM -0700, Mattias Nissler wrote:
+> Instead of using a single global bounce buffer, give each AddressSpace
+> its own bounce buffer. The MapClient callback mechanism moves to
+> AddressSpace accordingly.
+> 
+> This is in preparation for generalizing bounce buffer handling further
+> to allow multiple bounce buffers, with a total allocation limit
+> configured per AddressSpace.
+> 
+> Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
 
-> On Wed, Nov 01, 2023 at 02:20:32PM -0300, Fabiano Rosas wrote:
->> I wonder if adapting multifd to use a QIOTask for the channels would
->> make sense as an intermediary step. Seems simpler and would force us to
->> format multifd in more generic terms.
->
-> Isn't QIOTask event based, too?
->
-> From my previous experience, making it not gcontext based, if we already
-> have threads, are easier.  But maybe I didn't really get what you meant.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Sorry, I wasn't thinking about the context aspect. I agree it's easier
-without it.
+-- 
+Peter Xu
 
-I was talking about having standardized dispatch and completion code for
-multifd without being a whole thread pool. So just something that takes
-a function and a pointer to data, runs that in a thread with some
-locking and returns in a sane way. Every thread we create in the
-migration code has a different mechanism to return after an error and a
-different way to do cleanup. The QIOTask seemed to fit that at a high
-level.
-
-I would be happy with just the return + cleanup part really. We've been
-doing work around those areas for a while. If we could reuse generic
-code for that it would be nice.
 
