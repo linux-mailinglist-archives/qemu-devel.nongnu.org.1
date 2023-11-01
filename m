@@ -2,40 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8167DDEB5
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C267DDED8
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 11:00:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy7rr-0000Fj-TD; Wed, 01 Nov 2023 05:50:32 -0400
+	id 1qy802-00021U-4x; Wed, 01 Nov 2023 05:58:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qy7rp-0000FM-9e; Wed, 01 Nov 2023 05:50:29 -0400
+ id 1qy7zz-00020p-2r; Wed, 01 Nov 2023 05:58:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qy7rn-0006wd-BM; Wed, 01 Nov 2023 05:50:28 -0400
+ id 1qy7zx-000056-3e; Wed, 01 Nov 2023 05:58:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 150612F359;
- Wed,  1 Nov 2023 12:50:22 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 87B9A2F360;
+ Wed,  1 Nov 2023 12:58:54 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D8610329B1;
- Wed,  1 Nov 2023 12:50:16 +0300 (MSK)
-Message-ID: <b19cfb5c-658f-4bf2-a872-7eaa252d68b4@tls.msk.ru>
-Date: Wed, 1 Nov 2023 12:50:16 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id D1508329B6;
+ Wed,  1 Nov 2023 12:58:48 +0300 (MSK)
+Message-ID: <29190e8c-f2e0-4ee2-8e3e-cefc4a616af1@tls.msk.ru>
+Date: Wed, 1 Nov 2023 12:58:48 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/8] qemu-img: rebase: stop when reaching EOF of old
- backing file
+Subject: Re: [PATCH v2 0/2] Accompany -nostdlib with -fno-stack-protector
 Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- eblake@redhat.com, den@virtuozzo.com
-References: <20230919165804.439110-1-andrey.drobyshev@virtuozzo.com>
- <20230919165804.439110-2-andrey.drobyshev@virtuozzo.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org
+References: <20230731091042.139159-1-akihiko.odaki@daynix.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230919165804.439110-2-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20230731091042.139159-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -61,22 +72,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-19.09.2023 19:57, Andrey Drobyshev via wrote:
-> In case when we're rebasing within one backing chain, and when target image
-> is larger than old backing file, bdrv_is_allocated_above() ends up setting
-> *pnum = 0.  As a result, target offset isn't getting incremented, and we
-> get stuck in an infinite for loop.  Let's detect this case and proceed
-> further down the loop body, as the offsets beyond the old backing size need
-> to be explicitly zeroed.
+31.07.2023 12:10, Akihiko Odaki:
+> A build of GCC 13.2 will have stack protector enabled by default if it was
+> configured with --enable-default-ssp option. For such a compiler, it is
+> necessary to explicitly disable stack protector when linking without
+> standard libraries.
 > 
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> Reviewed-by: Denis V. Lunev <den@openvz.org>
-> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+> This is a tree-wide change to add -fno-stack-protector where -nostdlib is
+> present.
 
-Is this change not for -stable anymore?  First version of this patch has been
-Cc'd to stable, this one is not.
-
-Thanks,
+Should we perhaps pick this up for -stable too?
+The changes seems to be harmless for older compiler and lets to test
+qemu with more recent compiler.
 
 /mjt
 
