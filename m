@@ -2,86 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950D77DE8B7
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 00:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA847DE5A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 18:53:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyKAx-0003Eb-By; Wed, 01 Nov 2023 18:59:03 -0400
+	id 1qyFNQ-0001F2-OR; Wed, 01 Nov 2023 13:51:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qyKAv-0003E3-EA; Wed, 01 Nov 2023 18:59:01 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qyKAt-0002pj-Du; Wed, 01 Nov 2023 18:59:01 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-52bd9ddb741so491189a12.0; 
- Wed, 01 Nov 2023 15:58:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698879536; x=1699484336; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CckwcfZjnx8OWAA1F6cuamHaIQgScmGzNHu0wkEZzow=;
- b=Bw76+vOHZc7lIAMeUgKaKbUhoBzlAfgOv5wtgiaugbuz/lg64Ckib1ow93RjLh/GgL
- GnUn330nqTV6mhqmvelLPNJ/UfP6fXBrlChfdXdG08GWDrBWhO34DqRvuTs+4qXvkzOq
- CYc+CfxfuiunSJ/1Q+IttiFA1j42ESnXyq6U8zACeF+ugvumKpPFe/Oa3vZ5ajFcI+EM
- fjBZQxKl9h3oYwwDniq/G0jwb8OqQ4B2HcZ/ed1GeYwGWV4q0bTZIEoXZHWVlgYG1Ahp
- FZiwdX7uiFBrjQjoMddifPKXKzEc2As2KoOjVQHzQOmhWhQi7j2z2DZjZNPn4U20Mi9T
- 7rpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698879536; x=1699484336;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CckwcfZjnx8OWAA1F6cuamHaIQgScmGzNHu0wkEZzow=;
- b=YIe6+yk8xIFy+yrwkqYF+Kd19qv4dPI58db4bPDUtcL/wIJ8QCpWrD3+a2IClOLgGw
- rsv9a8bvwcfelZQADd3BPIwE5JYX1ByBPZIjv9hCwtkpt3tZEQKdMT/Lmr3bRi1GOIK3
- 3KGHkHWbu9mKzsA3Y/7XBS/aQmAoHsBmqgkw6Zo9aKeIWn48MOTxhf2ayRBvXgGzXET2
- 4y+yHwFzfnsTBuLzgdHUYD9E8FbFf15T9+ZjVvb8CnmrINW1pH1H5QOp066NKZQPuBWR
- 9qD3WtNQOd0o1/U768qzi6wD13+FWi1h560HJAR8HXijQ3t24jbhpU4ptMYe9EyIiDkw
- YIfw==
-X-Gm-Message-State: AOJu0Yz6V37PFRpgNMYXAhEXafsPoN2R80wiD1tfWL0gWBpsLer6o31F
- ldSdOh9jECUyOifa+eUrOlA=
-X-Google-Smtp-Source: AGHT+IHtNePqsrLx7EeDpQhlqRdFZ4xx6jVZ5043Yc41a+qzaeg0/tjo/vvwpV6Lg/bFT4Ur6gHziw==
-X-Received: by 2002:a17:906:806:b0:9a2:26d8:f184 with SMTP id
- e6-20020a170906080600b009a226d8f184mr2497994ejd.51.1698879536323; 
- Wed, 01 Nov 2023 15:58:56 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-191-047-044.77.191.pool.telefonica.de.
- [77.191.47.44]) by smtp.gmail.com with ESMTPSA id
- gz6-20020a170906f2c600b009c758b6cdefsm433113ejb.128.2023.11.01.15.58.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Nov 2023 15:58:55 -0700 (PDT)
-Date: Wed, 01 Nov 2023 17:37:33 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH 0/6] Various tracing patches
-In-Reply-To: <CAFEAcA8XE3xUcc0kmN-1ki6eKZmGiTFM7Xavsvmc3+rMCJk7QQ@mail.gmail.com>
-References: <20231028122415.14869-1-shentey@gmail.com>
- <CAFEAcA8XE3xUcc0kmN-1ki6eKZmGiTFM7Xavsvmc3+rMCJk7QQ@mail.gmail.com>
-Message-ID: <692B785D-C756-4279-BA7C-D41AAE536001@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qyFNN-0001EM-1M; Wed, 01 Nov 2023 13:51:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qyFNL-0006U0-48; Wed, 01 Nov 2023 13:51:32 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CECDF2F5C3;
+ Wed,  1 Nov 2023 20:51:32 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E656A32B22;
+ Wed,  1 Nov 2023 20:51:26 +0300 (MSK)
+Message-ID: <0834e809-6255-42e7-b72c-e0a21dd15901@tls.msk.ru>
+Date: Wed, 1 Nov 2023 20:51:26 +0300
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/8] qemu-img: rebase: stop when reaching EOF of old
+ backing file
+Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ eblake@redhat.com, den@virtuozzo.com
+References: <20230919165804.439110-1-andrey.drobyshev@virtuozzo.com>
+ <20230919165804.439110-2-andrey.drobyshev@virtuozzo.com>
+ <b19cfb5c-658f-4bf2-a872-7eaa252d68b4@tls.msk.ru>
+ <676efe0e-0c13-433b-9ca5-18c14920050d@virtuozzo.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <676efe0e-0c13-433b-9ca5-18c14920050d@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,43 +63,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+01.11.2023 18:38, Andrey Drobyshev wrote:
+> Hi Michael,
+> 
+> Since this series is already merged in master, I'm not sure whether it's
+> necessary to forward this particular patch to qemu-stable, or it should
+> rather be cherry-picked to -stable by one of the block maintainers.
 
+It's been my job lately to pick something up for stable, once it gets
+applied to master.  But it is usually the patch author or subsystem
+maintainer to mark a change as a candidate for -stable, - I can't decide
+about every change out there, since I don't have enough expertise in
+every area.  You Cc: qemu-stable@ and I pick it up.  I do look at stuff
+being applied to master from time to time though, and ask if I see
+something which might be worth to pick, as in this case.
 
-Am 31=2E Oktober 2023 16:17:32 UTC schrieb Peter Maydell <peter=2Emaydell@=
-linaro=2Eorg>:
->On Sat, 28 Oct 2023 at 13:24, Bernhard Beschow <shentey@gmail=2Ecom> wrot=
-e:
->>
->> This series enhances the tracing experience of some i=2EMX devices by a=
-dding new
->> trace events and by converting from DPRINTF=2E SMBus gets also converte=
-d from
->> DPRINTF to trace events=2E Finally, when tracing memory region operatio=
-ns, host
->> pointers aren't traced any longer and are substituted by their memory r=
-egion
->> names=2E
->>
->> Bernhard Beschow (6):
->>   hw/watchdog/wdt_imx2: Trace MMIO access
->>   hw/watchdog/wdt_imx2: Trace timer activity
->>   hw/misc/imx7_snvs: Trace MMIO access
->>   hw/misc/imx6_ccm: Convert DPRINTF to trace events
->>   hw/i2c/pm_smbus: Convert DPRINTF to trace events
->>   system/memory: Trace names of MemoryRegions rather than host pointers
->
->Since these are mostly arm devices I've taken patches 1-5
->into target-arm=2Enext (with the addition of "Hz" to the
->frequency traces in patch 4)=2E
+BTW, there's another change in this series which might be a good candidate
+too, - "qemu-img: rebase: use backing files' BlockBackend for buffer
+alignment".  Once again, I dunno if it's worth to pick it up or not,
+it's basically up to you to decide.  Basically, you understand much
+better what the implications are and if the change fixes actual bug.
 
-Excellent=2E Thanks!
-
-Best regards,
-Bernhard
-
-> Patch 6 looks like it needs
->further discussion=2E
->
->thanks
->-- PMM
+/mjt
 
