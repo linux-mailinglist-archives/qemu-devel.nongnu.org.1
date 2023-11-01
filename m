@@ -2,83 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55657DDE32
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405617DDE33
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:14:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy79o-0005j8-OY; Wed, 01 Nov 2023 05:05:00 -0400
+	id 1qy7EY-0000Ba-OB; Wed, 01 Nov 2023 05:09:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qy79k-0005iZ-Vr
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:04:57 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qy79i-0007m8-PD
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:04:56 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-32db188e254so4388398f8f.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 02:04:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698829493; x=1699434293; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=MO9B0R7Shwr827oL+bH7ZWxS0k7NUZgu+FJBW4q/RnM=;
- b=gpn35zsWzIqsg0idZxliUg82airZAzC/bneqiixfPZ2dyokH41CXhP17dfY1m+aEZF
- 9Syg9HBgJjE8iUHGzcjYA163WM4+RvFQs9m6rb6zofzA6PYVWHb5ajHfj2U5mgpoG5t/
- nOOm8Q9HVtARpSyUxG6oU5tLQEYxXHGcN2jvHEDbfWbxRvGRpj7s1gkJOJf8e4/KZKDs
- 1IpOFRnfj17Eb+vNrF+CrgWHTBihx2HWXg3sGenYkUgvLDSjTlFmuO7NWT02dJml675n
- 84CWXvMpY+F4czfal6+hOOjBtYn5p9NrlQjQ/X2tBT2f44+KyaT6M89OUr/JsVhuO71e
- LbnA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qy7EV-00008n-Sn
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:09:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qy7EU-0008Ru-4i
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:09:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698829788;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zyljAw343015hYEoeEMGm63ljx3DiOt5UDG1FNIarHE=;
+ b=Vq88EwxSToDXz4u96DE9YWVGkRGub1w/qL1V7Bd3R6mLYXhDTJaV4hrVeKEaYH8MQB7a3S
+ D2B/Hn4HDFfzMfngX9E5CCkEWeVQkSR5peDvCz4nmqgGzFXP18W/ORd9aoUBMt9KfWuydZ
+ 8gDTroOHjvMGl2vCq06ka/CZoi9taYc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-611-pV_qAZG-N3mWRX6kWW2J6Q-1; Wed, 01 Nov 2023 05:09:47 -0400
+X-MC-Unique: pV_qAZG-N3mWRX6kWW2J6Q-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9c778321afdso479478566b.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 02:09:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698829493; x=1699434293;
+ d=1e100.net; s=20230601; t=1698829785; x=1699434585;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MO9B0R7Shwr827oL+bH7ZWxS0k7NUZgu+FJBW4q/RnM=;
- b=vtr21ojc+qCdk1WrUSwjNPfkATZRZgkouflSSFNfDieIvjiul4Rc8ZQeO00tdWwnJD
- KD0feHXfvXUr4VJcvyuFfC5yLQTPrmKtRmVeEDUBPSChF8wVFm+slAWRHq4HWUoBJgVs
- ZYXgsq2VNx65/wMgY1mo7RHM1fUjMINScw+c+JIE4AT/2uFAFubjyHDGd0o8DxGQrhjk
- VM4Z2E5jftvb++fWhq+076/ZfR5q+a/QNDG0XRVgJAXtc9ANyGPHrg5adheSDyYWZoNO
- 3lRkE5G16jul02816zzavSHauMVb/xRE/2LmU1XLRpMJ4weEOFr7rsnFx9P6mBunq/t1
- 4/RA==
-X-Gm-Message-State: AOJu0YzXx9FN4mJZrX8JMbvsOMvM3aX0FXhwMmnK88lalTP/QBVODT2Y
- PJgVvotlxXb8casVCt8ZRmMTOw==
-X-Google-Smtp-Source: AGHT+IHWR83/znWDYdB29ztl+VTRXCBfApccmwEHAjd8buLdweAolg/T0Xwt+jRoCgLBUxwd0kftJQ==
-X-Received: by 2002:a5d:43c3:0:b0:32d:a476:5285 with SMTP id
- v3-20020a5d43c3000000b0032da4765285mr10939771wrr.31.1698829493084; 
- Wed, 01 Nov 2023 02:04:53 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ bh=zyljAw343015hYEoeEMGm63ljx3DiOt5UDG1FNIarHE=;
+ b=eiMNGnhEhXoNvd9LB52mvv3mTzQ/lrDEqfbN+r62UKYFQe14oLpsPKc92ttbN85qrg
+ BoC50KqAc0kVD53g/wJL7+PbZM4WcTyIFaUws78LaV61eMRzBMNkvbHdjjbr/0fwjLom
+ dSFWhRCcj1oUg4tIs+WXstq+G6MSf3uRw3lltIlUUVwKHPqXs4mMUJWk8jcdHRfqCenl
+ 9ZwDaCUgDLeOjeKxSr9emJFI1OMT9QbMMrFow0ylsfuBghaXkn1mPH9UYg2dziINGnsy
+ UFf4wW+d88HKf1buxCLUFgkLUYObUN0a2vHZRbEfssG4BouuLYygQFSAY6xm70MELYmb
+ 4ROg==
+X-Gm-Message-State: AOJu0YyihyARn8CD6bZlYfwvF+CNJV+aWyPFEcmx9KkOIbOfP26x/4Nl
+ Wa6aqHTLO4Vh1606QYa77a1RkThnB5Obq+FhjwUOsa6AG+IAZLXAJm40uHRJpxHHAzrs+bEEv0d
+ bZ73z3CleclryEHTOfqmFAOw=
+X-Received: by 2002:a17:907:930a:b0:9a2:1e03:1572 with SMTP id
+ bu10-20020a170907930a00b009a21e031572mr1541694ejc.19.1698829785654; 
+ Wed, 01 Nov 2023 02:09:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnAdiskL8Th9uztV1crZQbwJHC2yqVoY2yCvbyaAB2t0nlywf2XkbIOXUTv3S/mDNJrau85A==
+X-Received: by 2002:a17:907:930a:b0:9a2:1e03:1572 with SMTP id
+ bu10-20020a170907930a00b009a21e031572mr1541678ejc.19.1698829785351; 
+ Wed, 01 Nov 2023 02:09:45 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f7:e470:9af7:1504:1b35:8a09])
  by smtp.gmail.com with ESMTPSA id
- o6-20020a5d6706000000b003232380ffd7sm3631682wru.102.2023.11.01.02.04.52
+ lg10-20020a170906f88a00b009b94fe3fc47sm2146941ejb.159.2023.11.01.02.09.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 02:04:52 -0700 (PDT)
-Date: Wed, 1 Nov 2023 10:04:51 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v7 05/16] target/riscv/tcg: add 'zic64b' support
-Message-ID: <20231101-d3052159641c3d81a06d2ba5@orel>
-References: <20231031203916.197332-1-dbarboza@ventanamicro.com>
- <20231031203916.197332-6-dbarboza@ventanamicro.com>
+ Wed, 01 Nov 2023 02:09:44 -0700 (PDT)
+Date: Wed, 1 Nov 2023 05:09:41 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+Message-ID: <20231101050838-mutt-send-email-mst@kernel.org>
+References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
+ <20231030051356.33123-12-akihiko.odaki@daynix.com>
+ <CAOEp5OdEEVcojjwCOU+9Z5yBKN+e5iNbAMOA5d-97D81N4Y0tw@mail.gmail.com>
+ <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
+ <CAOEp5Oern10jW8Pi-_mceU_ZJVD=a1f3tW8rB2O4efLX45-nvw@mail.gmail.com>
+ <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
+ <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
+ <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
+ <20231101023805-mutt-send-email-mst@kernel.org>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231031203916.197332-6-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,39 +108,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 05:39:05PM -0300, Daniel Henrique Barboza wrote:
-> zic64b is defined in the RVA22U64 profile [1] as a named feature for
-> "Cache blocks must be 64 bytes in size, naturally aligned in the address
-> space". It's a fantasy name for 64 bytes cache blocks. The RVA22U64
-> profile mandates this feature, meaning that applications using this
-> profile expects 64 bytes cache blocks.
+On Wed, Nov 01, 2023 at 05:35:50PM +0900, Akihiko Odaki wrote:
+> On 2023/11/01 15:38, Michael S. Tsirkin wrote:
+> > On Wed, Nov 01, 2023 at 01:50:00PM +0900, Akihiko Odaki wrote:
+> > > We had another discussion regarding migration for patch "virtio-net: Do not
+> > > clear VIRTIO_NET_F_HASH_REPORT". It does change the runtime behavior so we
+> > > need to take migration into account. I still think the patch does not
+> > > require a compatibility flag since it only exposes a new feature and does
+> > > not prevent migrating from old QEMU that exposes less features. It instead
+> > > fixes the case where migrating between hosts with different tap feature
+> > > sets.
+> > 
+> > When in doubt, add a compat flag.
 > 
-> To make the upcoming RVA22U64 implementation complete, we'll zic64b as
-> a 'named feature', not a regular extension. This means that:
-> 
-> - it won't be exposed to users;
-> - it won't be written in riscv,isa.
-> 
-> This will be extended to other named extensions in the future, so we're
-> creating some common boilerplate for them as well.
-> 
-> zic64b is default to 'true' since we're already using 64 bytes blocks.
-> If any cache block size (cbo{m,p,z}_blocksize) is changed to something
-> different than 64, zic64b is set to 'false'.
-> 
-> Our profile implementation will then be able to check the current state
-> of zic64b and take the appropriate action (e.g. throw a warning).
-> 
-> [1] https://github.com/riscv/riscv-profiles/releases/download/v1.0/profiles.pdf
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu.c         |  6 ++++++
->  target/riscv/cpu.h         |  1 +
->  target/riscv/cpu_cfg.h     |  1 +
->  target/riscv/tcg/tcg-cpu.c | 14 ++++++++++++++
->  4 files changed, 22 insertions(+)
->
+> Personally I'm confident about the migration compatibility with patch
+> "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT". virtio-net already does
+> the same thing when the tap implementation on the destination implements
+> virtio-net header support while the counterpart of the source does not.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Trust me there's been so many times where we were very sure and
+problems come up later. Just don't enable new functionality for
+old machine types, problem solved. Why is this hard?
+
+-- 
+MST
+
 
