@@ -2,72 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD507DE548
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 18:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CA27DE565
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 18:33:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyEvI-0004DV-Ma; Wed, 01 Nov 2023 13:22:32 -0400
+	id 1qyF43-0005t9-4S; Wed, 01 Nov 2023 13:31:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qyEvF-0004B8-6O
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 13:22:29 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyF40-0005t0-JP
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 13:31:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qyEvC-00014L-Ro
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 13:22:28 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyF3y-0002ph-RN
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 13:31:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698859345;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1698859889;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZArrblthc2H73QniWmHZeD/EftDFxgAHlAXYueVYkZk=;
- b=IiolpWbM2VbUCi7tQEFRtprWDSS1/x8quyCS6MxI8H6x5pHZnGzjtt/HJJEYlVLWtvIsNY
- +/i30AW7PllKARFOseGdNmTh4sie2ANuVHuKq5MUmZwvP2JFv2LQoBWksL2oW+Ru7vbCg1
- 1oApOivIjn8zNrFINnVpNKrDka59Cgw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-372-yTVFoxysMlKgcNvUsngfzg-1; Wed,
- 01 Nov 2023 13:22:18 -0400
-X-MC-Unique: yTVFoxysMlKgcNvUsngfzg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2A88E1C18CCA;
- Wed,  1 Nov 2023 17:22:18 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.47])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 280B410F5B;
- Wed,  1 Nov 2023 17:22:17 +0000 (UTC)
-Date: Wed, 1 Nov 2023 17:22:15 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Denis V. Lunev" <den@virtuozzo.com>
-Cc: Hanna Czenczek <hreitz@redhat.com>,
- Mike Maslenkin <mike.maslenkin@gmail.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, kwolf@redhat.com, den@openvz.org
-Subject: Re: [PATCH v2 1/1] qemu-img: do not erase destination file in
- qemu-img dd command
-Message-ID: <ZUKJR1oMhrcF3V35@redhat.com>
-References: <20230930203157.85766-1-mike.maslenkin@gmail.com>
- <15609bb5-95d0-3d38-4c44-bcd313dc723b@virtuozzo.com>
- <CAL77WPAHSG-B3J_G8JzJHS5OhjsnsDs_wjYyGyPcBbeyS0z8=A@mail.gmail.com>
- <d29be9a0-3765-10b1-24f1-6aa053e4213f@virtuozzo.com>
- <5f3a8585-18ed-4e05-ac6b-ac21178dfe79@redhat.com>
- <ZUKB9YwvUcNLp7B3@redhat.com>
- <a222db3e-727d-4bd1-b842-7badd009f843@virtuozzo.com>
+ bh=jxRVxCEFpq3ca9V/3DEWKkwtBRcoOTYLnhUhDq54NdQ=;
+ b=f/hG8jt8j0g6vDeQeDoC/9WrX/Et8MWw3JTpmidp3kzl4YR495tvQGyfJTEdwhzxJ4qlmF
+ DkGNQudXMmCC+PD8tnRVPyFBJWkgcvL96vScpRWa+bgV9JgHT1kIt2Bm0fGody+ByB3mbi
+ yZmbDeqrv8Ske+oZt054SMD/xh0ZKzs=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-a2bhd44aPyORmrP-laV0SQ-1; Wed, 01 Nov 2023 13:31:28 -0400
+X-MC-Unique: a2bhd44aPyORmrP-laV0SQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-77a029ff1a9so94630085a.0
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 10:31:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698859888; x=1699464688;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jxRVxCEFpq3ca9V/3DEWKkwtBRcoOTYLnhUhDq54NdQ=;
+ b=ap5gZSKESiyxlAj5iKG3Dv5xWHf3/jDFCVBuX5K3aEsGXmSUfPVJjZl51+sjlXlkr9
+ CrCxvq2OGqRVrtuCuzQuI6N56VrLyun94XyWRxnb8hNJIXpV6kqltx/ZL0xSgfN63ATY
+ fOYedhQwxD1jqpNiADkiSwwsT8+W0dxgr5JmVK9OQp0BP59x5Gb3S5fAoY3ou7aAXvhd
+ T4wy2GPGttevTXGmjJH+ZJMFsjHttuDz2mBM5cTbcW5KhRe/gc74CVPMh6P5RpkwhfZP
+ ERg7hIxOGX5dZkpHfFa5Kb/pNQIh7xzE6SVXWoqsn9tUyszm5BjWU43SrLYMIm5iGGoY
+ ghQQ==
+X-Gm-Message-State: AOJu0YwIN71ZIVLvyeJbotU40IcuqLW0JcdzoJPqBt7ym+f87qK4hsnT
+ MbKhn2fiUtkkKamtrtI5iTKvqQLlaplubYS9EpRw+++hxpsoWms+w9T7gNNm3Q1FkzEl+LQVie9
+ +mjhUEc6LMs9yDRE=
+X-Received: by 2002:a05:620a:24c3:b0:76f:27af:2797 with SMTP id
+ m3-20020a05620a24c300b0076f27af2797mr19139917qkn.0.1698859887848; 
+ Wed, 01 Nov 2023 10:31:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFG+cFP9DmUSjIUHm9pm1JFmhXYZ/bc2DbR1LwXGx4IDAgpNQl1xVO8rn6+YHtHRuWWveLadQ==
+X-Received: by 2002:a05:620a:24c3:b0:76f:27af:2797 with SMTP id
+ m3-20020a05620a24c300b0076f27af2797mr19139893qkn.0.1698859887454; 
+ Wed, 01 Nov 2023 10:31:27 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ d11-20020a05620a204b00b007742218dc42sm1615134qka.119.2023.11.01.10.31.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Nov 2023 10:31:27 -0700 (PDT)
+Date: Wed, 1 Nov 2023 13:30:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ Nikolay Borisov <nborisov@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 15/29] migration/ram: Add support for 'fixed-ram'
+ outgoing migration
+Message-ID: <ZUKDg1A0OF2mbjWu@x1n>
+References: <20231023203608.26370-1-farosas@suse.de>
+ <20231023203608.26370-16-farosas@suse.de>
+ <ZTjiblfeOCTY56e4@redhat.com> <ZUJteaz84IYy1LC6@x1n>
+ <ZUJ0MhujevGlKFbo@redhat.com> <ZUJ7tuCj3MTWFSKN@x1n>
+ <ZUJ+uMRAnZFOoPID@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a222db3e-727d-4bd1-b842-7badd009f843@virtuozzo.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <ZUJ+uMRAnZFOoPID@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -89,93 +105,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 01, 2023 at 06:03:36PM +0100, Denis V. Lunev wrote:
-> On 11/1/23 17:51, Daniel P. Berrangé wrote:
-> > On Tue, Oct 31, 2023 at 03:33:52PM +0100, Hanna Czenczek wrote:
-> > > On 01.10.23 22:46, Denis V. Lunev wrote:
-> > > > Can you please not top-post. This makes the discussion complex. This
-> > > > approach is followed in this mailing list and in other similar lists
-> > > > like LKML.
-> > > > 
-> > > > On 10/1/23 19:08, Mike Maslenkin wrote:
-> > > > > I thought about "conv=notrunc", but my main concern is changed virtual
-> > > > > disk metadata.
-> > > > > It depends on how qemu-img used.
-> > > > > May be I followed to wrong pattern, but pros and cons of adding "conv"
-> > > > > parameter was not in my mind in scope of the first patch version.
-> > > > > I see 4 obvious ways of using `qemu-img dd`:
-> > > > > 1. Copy virtual disk data between images of same format. I think disk
-> > > > > geometry must be preserved in this case.
-> > > > > 2. Copy virtual disk data between different formats. It is a valid
-> > > > > pattern? May be `qemu-img convert` should to be used instead?
-> > > > > 3. Merge snapshots to specified disk image, i.e read current state and
-> > > > > write it to new disk image.
-> > > > > 4. Copy virtual disk data to raw binary file. Actually this patch
-> > > > > breaks 'dd' behavior for this case when source image is less (in terms
-> > > > > of logical blocks) than existed raw binary file.
-> > > > >       May be for this case condition can be improved to smth like
-> > > > >      if (strcmp(fmt, "raw") || !g_file_test(out.filename,
-> > > > > G_FILE_TEST_EXISTS)) . And parameter "conv=notrunc" may be implemented
-> > > > > additionally for this case.
-> > > > My personal opinion is that qemu dd when you will need to
-> > > > extract the SOME data from the original image and process
-> > > > it further. Thus I use it to copy some data into raw binary
-> > > > file. My next goal here would add ability to put data into
-> > > > stdout that would be beneficial for. Though this is out of the
-> > > > equation at the moment.
-> > > > 
-> > > > Though, speaking about the approach, I would say that the
-> > > > patch changes current behavior which is not totally buggy
-> > > > under a matter of this or that taste. It should be noted that
-> > > > we are here in Linux world, not in the Mac world where we
-> > > > were in position to avoid options and selections.
-> > > > 
-> > > > Thus my opinion that original behavior is to be preserved
-> > > > as somebody is relying on it. The option you are proposing
-> > > > seems valuable to me also and thus the switch is to be added.
-> > > > The switch is well-defined in the original 'dd' world thus
-> > > > either conv= option would be good, either nocreat or notrunc.
-> > > > For me 'nocreat' seems more natural.
-> > > > 
-> > > > Anyway, the last word here belongs to either Hanna or Kevin ;)
-> > > Personally, and honestly, I see no actual use for qemu-img dd at all,
-> > > because we’re trying to mimic a subset of an interface of a rather complex
-> > > program that has been designed to do what it does. We can only fail at
-> > > that.  Personally, whenever I need dd functionality, I use
-> > > qemu-storage-daemon’s fuse export, and then use the actual dd program on
-> > > top.  Alternatively, qemu-img convert is our native interface;
-> > > unfortunately, its feature set is lacking when compared to qemu-img dd, but
-> > > I think it would be better to improve that rather than working on qemu-img
-> > > dd.
-> > Is there a clear view of what gaps exist in 'qemu-img convert', and more
-> > importantly, how much work is it to close the gaps, such that 'dd' could
-> > potentially be deprecated & eventually removed ?
+On Wed, Nov 01, 2023 at 04:37:12PM +0000, Daniel P. Berrangé wrote:
+> It doesn't contain thread number information directly, but it can
+> be implicit from the data layout.
+> 
+> If you want parallel I/O, each thread has to know it is the only
+> one reading/writing to a particular region of the file. With the
+> fixed RAM layout in this series, the file offset directly maps
+> to the memory region. So if a thread has been given a guest page
+> to save it knows it will be the only thing writing to the file
+> at that offset. There is no relationship at all between the
+> number of threads and the file layout.
+> 
+> If you can't directly map pages to file offsets, then you need
+> some other way to lay out date such that each thread can safely
+> write. If you split up a file based on fixed size chunks, then
+> the number of chunks you end up with in the file is likely to be
+> a multiple of the number of threads you had saving data.
+
+What I was thinking is provision fixed size chunk in ramblock address
+space, e.g. 64M pages for each thread.  It compresses with a local buffer,
+then request the file offsets to write only after the compression
+completed, because we'll need that to request file offset.
+
+> 
+> This means if you restore using a different number of threads,
+> you can't evenly assign file chunks to each restore thread.
+> 
+> There's no info about thread IDs in the file, but the data layout
+> reflects how mcuh threads were doing work.
+> 
+> > Assuming decompress can do the same by assigning different chunks to each
+> > decompress thread, no matter how many are there.
 > > 
-> I am using 'qemu-img dd' as a way to get (some) content
-> from the image. I have dreamed about getting it to
-> stdout.
+> > Would that work?
+> 
+> Again you get uneven workloads if the number of restore threads is
+> different than the save threads, as some threads will have to process
+> more chunks than other threads. If the chunks are small this might
+> not matter, if they are big it could matter.
 
-FWIW, you can use qemu-img convert to extract a subset of data from an
-image by layering in the 'raw' format.
+Maybe you meant when the chunk size is only calculated from thread numbers,
+and when chunk is very large?
 
-  qemu-img convert --image-opts \
-      driver=raw,offset=1024,size=512,file.driver=file,file.filename=demo.img data.bin
+If we have fixed size ramblock chunks, the number of chunks can be mostly
+irrelevant, e.g. for 4G guest it can contain 4G/64M=128 chunks.  128 chunks
+can easily be decompressed concurrently with mostly whatever number of recv
+threads.
 
-somewhat annoyingly it forces 'size' to be a multiple of 512. That makes
-sense if you're using the output as backing for a VM disk, but for simply
-extracting data, conceptually it shouldn't be needed.
+Parallel IO is not a problem either, afaict, if each thread can request its
+file offset to read/write.  The write side is a bit tricky if with what I
+said above, it can only be requested and exclusively assigned to the writer
+thread after compression has finished and the thread knows how many bytes
+it needs to put the results.  On read side we know the binary size of each
+chunk, so we can already mark each chunk exclusive to the each reader
+thread.
 
-Yes, the syntax gets hairy with image opts :-)
+Thanks,
 
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
