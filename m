@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BFA7DE4DA
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 17:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E76F7DE4DD
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 17:53:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyER1-0008WR-GR; Wed, 01 Nov 2023 12:51:15 -0400
+	id 1qyESA-0000pJ-3u; Wed, 01 Nov 2023 12:52:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qyEQy-0008RK-OX
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:51:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qyEQw-0000sn-Ha
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:51:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698857469;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vkoebwqEhrsth0r4s8LL3d6VNW5ZZmPwQnbVD/EkyfM=;
- b=QBPDv0NgtBbTAkURz/k3UUu3vZsovGWyBjjLsABmukvcqWJt9ZzKDZyopcFh/AT8AOzmYE
- IORxuvLS38PZ6nxn1RmVcOCBtSD9V/pM7q3ExbD50LsEGir9FNkXrTXtOWdsXhbeJGwIL/
- +r12OyHZMlC9yV7U2p08I3s5GEusrYY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-42-8XIO69JoNzyNdjVEaYrDkA-1; Wed, 01 Nov 2023 12:51:05 -0400
-X-MC-Unique: 8XIO69JoNzyNdjVEaYrDkA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qyES8-0000mw-5F
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:52:24 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qyES6-00015H-1H
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:52:23 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 617C3101A52D;
- Wed,  1 Nov 2023 16:51:04 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.47])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 54C8710F52;
- Wed,  1 Nov 2023 16:51:03 +0000 (UTC)
-Date: Wed, 1 Nov 2023 16:51:01 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: "Denis V. Lunev" <den@virtuozzo.com>,
- Mike Maslenkin <mike.maslenkin@gmail.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, kwolf@redhat.com, den@openvz.org
-Subject: Re: [PATCH v2 1/1] qemu-img: do not erase destination file in
- qemu-img dd command
-Message-ID: <ZUKB9YwvUcNLp7B3@redhat.com>
-References: <20230930203157.85766-1-mike.maslenkin@gmail.com>
- <15609bb5-95d0-3d38-4c44-bcd313dc723b@virtuozzo.com>
- <CAL77WPAHSG-B3J_G8JzJHS5OhjsnsDs_wjYyGyPcBbeyS0z8=A@mail.gmail.com>
- <d29be9a0-3765-10b1-24f1-6aa053e4213f@virtuozzo.com>
- <5f3a8585-18ed-4e05-ac6b-ac21178dfe79@redhat.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 03B1021A47;
+ Wed,  1 Nov 2023 16:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1698857539; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mVq+jvlte7YTB4DiiKEnaf8os16HhKBTh4htTE+P1Yg=;
+ b=TRDibI2XsZEFe5HXi+F+zM3Y4HsnyzfXScvPgV6RPLfk6fR+B59TSSc+PLbn3Bf+yeuR9X
+ BGgG7UfzLAKRRyGzsA+oorE+Ump0L0rL0rOAfwyLKMnrXYmDTRs1/tOiy/7SrtrQ7IMoin
+ cfGprc1ftZ6sZY6nmLybRqA+v3BAnm8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1698857539;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mVq+jvlte7YTB4DiiKEnaf8os16HhKBTh4htTE+P1Yg=;
+ b=s3WNpZqCIMSiKR2/xWA1e9L5IpHfD05TL1aHPoUYBJtI+6R2tqhfKMAbFnLRslj2ovCox8
+ G+j0Zs1MPYXmH3DA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8B0E01348D;
+ Wed,  1 Nov 2023 16:52:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id I0i3DEKCQmWXSwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 01 Nov 2023 16:52:18 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, "Daniel P. Berrange"
+ <berrange@redhat.com>
+Subject: Re: [PATCH V2 6/6] tests/qtest: migration: add reboot mode test
+In-Reply-To: <4c70d707-d33a-4f33-bd1c-a0811776daed@oracle.com>
+References: <1698263069-406971-1-git-send-email-steven.sistare@oracle.com>
+ <1698263069-406971-7-git-send-email-steven.sistare@oracle.com>
+ <87ttq5fvh7.fsf@suse.de> <19355543-0534-4f9e-b85a-54b8f46e73b6@oracle.com>
+ <4c70d707-d33a-4f33-bd1c-a0811776daed@oracle.com>
+Date: Wed, 01 Nov 2023 13:52:16 -0300
+Message-ID: <87pm0tfmbj.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f3a8585-18ed-4e05-ac6b-ac21178dfe79@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,78 +83,111 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 03:33:52PM +0100, Hanna Czenczek wrote:
-> On 01.10.23 22:46, Denis V. Lunev wrote:
-> > Can you please not top-post. This makes the discussion complex. This
-> > approach is followed in this mailing list and in other similar lists
-> > like LKML.
-> > 
-> > On 10/1/23 19:08, Mike Maslenkin wrote:
-> > > I thought about "conv=notrunc", but my main concern is changed virtual
-> > > disk metadata.
-> > > It depends on how qemu-img used.
-> > > May be I followed to wrong pattern, but pros and cons of adding "conv"
-> > > parameter was not in my mind in scope of the first patch version.
-> > > I see 4 obvious ways of using `qemu-img dd`:
-> > > 1. Copy virtual disk data between images of same format. I think disk
-> > > geometry must be preserved in this case.
-> > > 2. Copy virtual disk data between different formats. It is a valid
-> > > pattern? May be `qemu-img convert` should to be used instead?
-> > > 3. Merge snapshots to specified disk image, i.e read current state and
-> > > write it to new disk image.
-> > > 4. Copy virtual disk data to raw binary file. Actually this patch
-> > > breaks 'dd' behavior for this case when source image is less (in terms
-> > > of logical blocks) than existed raw binary file.
-> > >      May be for this case condition can be improved to smth like
-> > >     if (strcmp(fmt, "raw") || !g_file_test(out.filename,
-> > > G_FILE_TEST_EXISTS)) . And parameter "conv=notrunc" may be implemented
-> > > additionally for this case.
-> > My personal opinion is that qemu dd when you will need to
-> > extract the SOME data from the original image and process
-> > it further. Thus I use it to copy some data into raw binary
-> > file. My next goal here would add ability to put data into
-> > stdout that would be beneficial for. Though this is out of the
-> > equation at the moment.
-> > 
-> > Though, speaking about the approach, I would say that the
-> > patch changes current behavior which is not totally buggy
-> > under a matter of this or that taste. It should be noted that
-> > we are here in Linux world, not in the Mac world where we
-> > were in position to avoid options and selections.
-> > 
-> > Thus my opinion that original behavior is to be preserved
-> > as somebody is relying on it. The option you are proposing
-> > seems valuable to me also and thus the switch is to be added.
-> > The switch is well-defined in the original 'dd' world thus
-> > either conv= option would be good, either nocreat or notrunc.
-> > For me 'nocreat' seems more natural.
-> > 
-> > Anyway, the last word here belongs to either Hanna or Kevin ;)
-> 
-> Personally, and honestly, I see no actual use for qemu-img dd at all,
-> because we’re trying to mimic a subset of an interface of a rather complex
-> program that has been designed to do what it does. We can only fail at
-> that.  Personally, whenever I need dd functionality, I use
-> qemu-storage-daemon’s fuse export, and then use the actual dd program on
-> top.  Alternatively, qemu-img convert is our native interface;
-> unfortunately, its feature set is lacking when compared to qemu-img dd, but
-> I think it would be better to improve that rather than working on qemu-img
-> dd.
+Steven Sistare <steven.sistare@oracle.com> writes:
 
-Is there a clear view of what gaps exist in 'qemu-img convert', and more
-importantly, how much work is it to close the gaps, such that 'dd' could
-potentially be deprecated & eventually removed ? 
+> On 11/1/2023 9:57 AM, Steven Sistare wrote:
+>> On 11/1/2023 9:34 AM, Fabiano Rosas wrote:
+>>> Steve Sistare <steven.sistare@oracle.com> writes:
+>>>
+>>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>>>> ---
+>>>>  tests/qtest/migration-test.c | 27 +++++++++++++++++++++++++++
+>>>>  1 file changed, 27 insertions(+)
+>>>>
+>>>> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>>>> index e1c1105..de29fc5 100644
+>>>> --- a/tests/qtest/migration-test.c
+>>>> +++ b/tests/qtest/migration-test.c
+>>>> @@ -2001,6 +2001,31 @@ static void test_precopy_file_offset_bad(void)
+>>>>      test_file_common(&args, false);
+>>>>  }
+>>>>  
+>>>> +static void *test_mode_reboot_start(QTestState *from, QTestState *to)
+>>>> +{
+>>>> +    migrate_set_parameter_str(from, "mode", "cpr-reboot");
+>>>> +    migrate_set_parameter_str(to, "mode", "cpr-reboot");
+>>>> +
+>>>> +    migrate_set_capability(from, "x-ignore-shared", true);
+>>>> +    migrate_set_capability(to, "x-ignore-shared", true);
+>>>> +
+>>>> +    return NULL;
+>>>> +}
+>>>> +
+>>>> +static void test_mode_reboot(void)
+>>>> +{
+>>>> +    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+>>>> +                                           FILE_TEST_FILENAME);
+>>>> +    MigrateCommon args = {
+>>>> +        .start.use_shmem = true,
+>>>> +        .connect_uri = uri,
+>>>> +        .listen_uri = "defer",
+>>>> +        .start_hook = test_mode_reboot_start
+>>>> +    };
+>>>> +
+>>>> +    test_file_common(&args, true);
+>>>> +}
+>>>> +
+>>>>  static void test_precopy_tcp_plain(void)
+>>>>  {
+>>>>      MigrateCommon args = {
+>>>> @@ -3056,6 +3081,8 @@ int main(int argc, char **argv)
+>>>>      qtest_add_func("/migration/precopy/file/offset/bad",
+>>>>                     test_precopy_file_offset_bad);
+>>>>  
+>>>> +    qtest_add_func("/migration/mode/reboot", test_mode_reboot);
+>>>> +
+>>>>  #ifdef CONFIG_GNUTLS
+>>>>      qtest_add_func("/migration/precopy/unix/tls/psk",
+>>>>                     test_precopy_unix_tls_psk);
+>>>
+>>> We have an issue with this test on CI:
+>>>
+>>> $ df -h /dev/shm
+>>> Filesystem      Size  Used Avail Use% Mounted on
+>>> shm              64M     0   64M   0% /dev/shm
+>>>
+>>> These are shared CI runners, so AFAICT there's no way to increase the
+>>> shared memory size.
+>>>
+>>> Reducing the memory for this single test also wouldn't work because we
+>>> can run migration-test for different archs in parallel + there's the
+>>> ivshmem_test which uses 4M.
+>>>
+>>> Maybe just leave it out of CI? Laptops will probably have enough shared
+>>> memory to not hit this. If we add a warning comment to the test, might
+>>> be enough.
+>> 
+>> in test_migrate_start, I could set memory_size very small if use_shmem, and adjust 
+>> start_address and end_address. Can you suggest a safe size?
 
+We need at least ~4M for the MAGIC_MARKER logic to work. Then each
+architecture will have a minimum memory size it needs to even be able to
+boot. Then we'll need ~2M (to be safe) for the a-b code itself.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+One issue I can see already is that ppc needs at least 256M to boot. We
+currently only test ppc with KVM, but we need to make sure the custom
+runners (not even sure we have ppc baremetal) would have enough shared
+memory. Another issue is that there's not much stopping us from testing
+ppc with TCG as well. In fact, I'm highly in favor of bringing back
+s390x and ppc64le with TCG for migration-test. It's just a pain to test
+those otherwise.
 
+x86 seems like it could go as low as ~6M.
+
+aarch64 only needs 512k for the kernel, but I'm not having success with
+less than 110M. Probably some firmware + device tree taking up space,
+I'm not sure.
+
+>
+> Ugh, I would also need to dynamically change TEST_MEM_END and ARM_TEST_MEM_END in
+> a-b-bootblock.S and a-b-kernel.S, like I do for the suspend_me variable in my
+> work-in-progress patch "tests/qtest: option to suspend during migration".
+
+I'm leaning towards just checking the GITLAB_CI environment variable and
+skipping the test on CI.
+
+Juan, any preference?
 
