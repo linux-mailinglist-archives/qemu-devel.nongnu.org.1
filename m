@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC957DE1DF
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5847DE1E0
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:07:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyBri-0006Tz-Bj; Wed, 01 Nov 2023 10:06:38 -0400
+	id 1qyBrg-0006TW-VB; Wed, 01 Nov 2023 10:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qyBre-0006Sq-CW
+ id 1qyBre-0006Sp-BD
  for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:06:34 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qyBrZ-0004mi-VI
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:06:32 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1cc29f39e7aso33315455ad.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:04:25 -0700 (PDT)
+ id 1qyBrc-0004n0-E5
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:06:33 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1cbf47fa563so55054585ad.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:04:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1698847465; x=1699452265;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1698847470; x=1699452270;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=qRz2igsaHGlLla5mzeRdKPoAHcy4/c7V9DIdpyXPrGg=;
- b=0TuJIajakkdXNJS2sJV7gSu5o/jEwdpHLyaIzEbHwcYera08tWG/UySjxRy0ducffv
- EwyJ9hM0TRYpl28Hw/5nnj3jtF3hSVbkQSH5bZt9xYQ6iZs9n0PGElLegWKzrY9obNbb
- X50xPB1R8LYQkUb1wlP1HXa55lriPqifkQogHVxKc/9EB1ZFckjU5TTe7yrzXm1ZzW3m
- EpCKA3q7UykuQODfoTuFduNgjN2ecPh5PF4DNEiZt3SLwLZ7B2OrXrtzhxYqS38ts1A4
- XmsG9pwISRj+Fb3fVck+Qwln/gLoc+KTeq/Y4JndSHaIjIu9He5sZXNuPAmNXH5LYZug
- P9sg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gZP4vNAsT35dRdMludcCQFY3Ho41hZp6SlZrV2FLesw=;
+ b=1B0lnbDf5/7NzMgDK1Rq+wgQLI8FZUOJsrBdz2QMx/OqcM3+a6ySK9FoV8y2iC887X
+ LXmggUJGx8LelUTXKjU4+Y1Kgc/TwFRfJsqFi+obWQWT7HhmNrsqi+L40uZ/s7MMR5AK
+ dokWuu5micqy5h5cOlhqoU3ZTPBKekAGA2ZuZokk6KRQTF0hnY3bnrfT5QMO6zhJI2LC
+ 9pIMZL7BsHu9am04M2Hu6Bp6bXbHC3CVilzHX6hWM/SE2UVsKVo84/elGnRNO50PLz59
+ KrzMKdyCv7U0P/lzFIIoVC5LOlYABxfj3veR48EHZYQVNSdAtbSHo9Bos34hNMd+b7EF
+ ydMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698847465; x=1699452265;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qRz2igsaHGlLla5mzeRdKPoAHcy4/c7V9DIdpyXPrGg=;
- b=V+Ditx4MehUDGbeUn0tsAonhnEIJ+ps4/WK/FPPTkqbxiMZ3BVHeKBO7oC8+uRfALY
- dWmzPcP/wQEiDqkrRYnbZUsYzvXSUzzaZwUxEyD1WAr1dJU8xqlXsiLvavcvv3PJswWb
- l01BTSqNBwDAoXQoEe+A19mh/APuJhEwXNYGvOMJAArrjfuaXm+XujTSubVtlyJ43XHp
- P020uyQpIeD0qwOrpbvE35zLDrr/Z6Pc00k+vn+FVu6xCsiHexubV3g3LiaWoxYWGBCY
- EemKvLjrjsaFhizSttd5nfJkVcYY3njBvbyTtMFyI08arY6g+DiMVtu5HjX7lA2VMMY8
- WwFA==
-X-Gm-Message-State: AOJu0YzDWkodHJHu8wb/aJh48eu+TwEcXGhPmJmewQSHIBtt9oMbWHZI
- MH5XeC8EmniLMskRDKncw+dKEVVE3Sdw4B7DxudaDqn7
-X-Google-Smtp-Source: AGHT+IEhFlcQo9bhOgX/z+eNIw7ej4IIC2GLcfZxDRsf6fqD2c2Snh+00NVhQv0wV7qMMg248HVPXQ==
-X-Received: by 2002:a17:902:cac4:b0:1c9:e68a:1b58 with SMTP id
- y4-20020a170902cac400b001c9e68a1b58mr9581606pld.54.1698847464410; 
- Wed, 01 Nov 2023 07:04:24 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698847470; x=1699452270;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gZP4vNAsT35dRdMludcCQFY3Ho41hZp6SlZrV2FLesw=;
+ b=pmAzgLwF2mlVfUlj3ztVDuXCupQgEV9viI8l/UVFXGgeS/zqIPnR1jdMeqty0hkUfj
+ tmdl54U0SiMX3oHulrYgwCnOJaQAoFJ7O5v8EKBQLjEDznvX25o7DO9Hv+8UuoKIBvYc
+ iUNuY0DYYSljX1iyfZe3k+ZP/n+y06o4RmYIca9XF4Cd60KJCJjA8VOlhU4Xp+Q0Tz/R
+ kvdniHBwQx9JyYTo81VE7jLzRi515A6t3XCjanLdo7psJgHjZUTR25bUXE7NAuOPksHD
+ WpIVQ0DQygsG+rAv+s+N8Heq00auCXJpYBhJnpfpQeHRb0a1vu+jqFufO0efPYD2bGbu
+ 7tZg==
+X-Gm-Message-State: AOJu0YxkpmUhw6eHpbb9wzkxySiVjgWEtQZUdZU3SWkR6vZouJaRrTcm
+ 5dpGHt22g0l9jJBVt+UFKjnKGBUCj0iQ7EQdRJa/4XLE
+X-Google-Smtp-Source: AGHT+IGC4NfBtgr1miJPH20oVyTzbwZ3fRdAgvbISGSh1CvniaVqvecWKv9trOUoD1LjWaIBv47NsA==
+X-Received: by 2002:a17:902:6803:b0:1cc:b71:c96f with SMTP id
+ h3-20020a170902680300b001cc0b71c96fmr10806633plk.41.1698847469994; 
+ Wed, 01 Nov 2023 07:04:29 -0700 (PDT)
 Received: from localhost.localdomain ([125.71.94.114])
  by smtp.gmail.com with ESMTPSA id
- jn7-20020a170903050700b001cc32261bdcsm1396118plb.248.2023.11.01.07.04.18
+ jn7-20020a170903050700b001cc32261bdcsm1396118plb.248.2023.11.01.07.04.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 07:04:23 -0700 (PDT)
+ Wed, 01 Nov 2023 07:04:29 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Hyman Huang <yong.huang@smartx.com>
-Subject: [v3 0/6] dirtylimit: miscellaneous patches 
-Date: Wed,  1 Nov 2023 22:04:03 +0800
-Message-Id: <cover.1698847223.git.yong.huang@smartx.com>
+Subject: [v3 1/6] system/dirtylimit: Fix a race situation
+Date: Wed,  1 Nov 2023 22:04:04 +0800
+Message-Id: <27c86239e21eda03d11ce5a3d07da3c229f562e3.1698847223.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <cover.1698847223.git.yong.huang@smartx.com>
+References: <cover.1698847223.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x635.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,46 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3:
-- do nothing but rebase on master
+Fix a race situation for global variable dirtylimit_state.
 
-v2:
-- rebase on master.
-- fix the document typo.
+Also, replace usleep by g_usleep to increase platform
+accessibility to the sleep function.
 
-v1:
-This is a miscellaneous patchset for dirtylimit that contains
-the following parts:
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-Id: <f25558b3d94083ce6909da5b5cfb922ae5935626.1697815117.git.yong.huang@smartx.com>
+---
+ system/dirtylimit.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-1. dirtylimit module: fix for a race situation and
-   replace usleep by g_usleep.
-2. migration test: add dirtylimit test case.
-3. guestperf for migration: add support for dirtylimit migration.
-4. docs for migration: add dirtylimit section. 
-
-Please review, thanks.
-
-Regards,
-
-Hyman Huang (6):
-  system/dirtylimit: Fix a race situation
-  system/dirtylimit: Drop the reduplicative check
-  tests: Add migration dirty-limit capability test
-  tests/migration: Introduce dirty-ring-size option into guestperf
-  tests/migration: Introduce dirty-limit into guestperf
-  docs/migration: Add the dirty limit section
-
- docs/devel/migration.rst                |  71 ++++++++++
- system/dirtylimit.c                     |  24 ++--
- tests/migration/guestperf/comparison.py |  23 ++++
- tests/migration/guestperf/engine.py     |  23 +++-
- tests/migration/guestperf/hardware.py   |   8 +-
- tests/migration/guestperf/progress.py   |  16 ++-
- tests/migration/guestperf/scenario.py   |  11 +-
- tests/migration/guestperf/shell.py      |  24 +++-
- tests/qtest/migration-test.c            | 164 ++++++++++++++++++++++++
- 9 files changed, 346 insertions(+), 18 deletions(-)
-
+diff --git a/system/dirtylimit.c b/system/dirtylimit.c
+index fa959d7743..3666c4cb7c 100644
+--- a/system/dirtylimit.c
++++ b/system/dirtylimit.c
+@@ -411,12 +411,20 @@ void dirtylimit_set_all(uint64_t quota,
+ 
+ void dirtylimit_vcpu_execute(CPUState *cpu)
+ {
+-    if (dirtylimit_in_service() &&
+-        dirtylimit_vcpu_get_state(cpu->cpu_index)->enabled &&
+-        cpu->throttle_us_per_full) {
+-        trace_dirtylimit_vcpu_execute(cpu->cpu_index,
+-                cpu->throttle_us_per_full);
+-        usleep(cpu->throttle_us_per_full);
++    if (cpu->throttle_us_per_full) {
++        dirtylimit_state_lock();
++
++        if (dirtylimit_in_service() &&
++            dirtylimit_vcpu_get_state(cpu->cpu_index)->enabled) {
++            dirtylimit_state_unlock();
++            trace_dirtylimit_vcpu_execute(cpu->cpu_index,
++                    cpu->throttle_us_per_full);
++
++            g_usleep(cpu->throttle_us_per_full);
++            return;
++        }
++
++        dirtylimit_state_unlock();
+     }
+ }
+ 
 -- 
 2.39.1
 
