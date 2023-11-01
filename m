@@ -2,78 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9197DE437
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 16:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E837DE446
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 16:56:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyDWH-0005He-3W; Wed, 01 Nov 2023 11:52:37 -0400
+	id 1qyDZc-0006Ix-3R; Wed, 01 Nov 2023 11:56:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qyDWC-0005HK-KP
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 11:52:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyDZZ-0006IX-Tb
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 11:56:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qyDWA-00073x-Je
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 11:52:32 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyDZY-0007wM-29
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 11:56:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698853948;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1698854158;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=nsON3eq9jQS237h286CkVp9xhZXQYQL9uET3qz4/TYk=;
- b=ZhU3nHqlz7iGQ+KHYys9+1TwRCx3Lz3r2p/f0iMbYZQ8QGV5czlEimZfv2LhOB5uhEjm1u
- CQV2Vv2mQu7k3wB7eI9eh3+hn5RmATsd1cF2MKJ59+L9hUvmeENGe+V++fFEp5zWCe61e0
- C1R6aCUmxYQjLWuR9PS1C+K72KDcdzg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aeEOZnWoJ0B9WYKfzwMnTHWLz0u9QxE9iBRr0kTPLA0=;
+ b=fw3SFaznZva09JgZaIn5mBjhPc0mRl+NaE46ljMImFOcpFdHJrhhSzw620Yz3e1eLhcgFl
+ fnW35T4yYaZsEQROrULqzGZfEQry4qXUKWuLNYmXlik0K/dfR0hY5Vb6unj+8KEmW0vGYW
+ 8mdJXyYkIRI3IdNaDfTA3l6j8WreLl8=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-jwhwCymTPNqFFBVFSnmytw-1; Wed, 01 Nov 2023 11:52:22 -0400
-X-MC-Unique: jwhwCymTPNqFFBVFSnmytw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3032085A5B5;
- Wed,  1 Nov 2023 15:52:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.47])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7964A40C6EBC;
- Wed,  1 Nov 2023 15:52:20 +0000 (UTC)
-Date: Wed, 1 Nov 2023 15:52:18 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
- Nikolay Borisov <nborisov@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 15/29] migration/ram: Add support for 'fixed-ram'
- outgoing migration
-Message-ID: <ZUJ0MhujevGlKFbo@redhat.com>
+ us-mta-121-Ac8S4C5fOmCJh32QvnQ5lA-1; Wed, 01 Nov 2023 11:55:57 -0400
+X-MC-Unique: Ac8S4C5fOmCJh32QvnQ5lA-1
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-6ce29f5dc6cso2103574a34.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 08:55:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698854156; x=1699458956;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aeEOZnWoJ0B9WYKfzwMnTHWLz0u9QxE9iBRr0kTPLA0=;
+ b=J0VbsSxpkV+VLUaEekmaqTeWbS9p9B0jYcwOB8NswbA+IhHE3drSvuUQVcVRVECo7P
+ CTlnuLuHIaWX+h7amFDDO2W5QDjl3Ahh0mV9Gy1knknGtq9o+qWXb5okS9A5LHI4JxV7
+ Rg5k9u5zM5gMrb3FZ/EglEUOuki5NYENtkKZIEqhLeUww17bHkVGjpR+vibel++nPkCU
+ JNf8hD2p8Sy1BZoMbVNiJV0r1vJhikoZmlxa8ZzWDO2EQPImat40b8dhCSGlB/BjISf3
+ m1tTPCzU9TbhUbFjRvg49XK5vbW3oVQvtZwn3Vgpt+lOpiHnrQ1AKy+uMMBDn2dgIybr
+ 3v3Q==
+X-Gm-Message-State: AOJu0Yz54SwgzibS1TVkRx5hW3f+Ku7yUaSO3soB8JN79lCsctvGmOAI
+ qIEaTbhiKUUBxQT0gmn7teNiofF7LHaJYpzHPX3xU/cLVQ2CnHbdEozMTYTua2Yn0zNWiM/pQcS
+ HOB/zLOPHLIUXL20=
+X-Received: by 2002:a05:6830:2a0b:b0:6b9:d3bd:3985 with SMTP id
+ y11-20020a0568302a0b00b006b9d3bd3985mr16652396otu.1.1698854156591; 
+ Wed, 01 Nov 2023 08:55:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFRAvE0N2hufHW4UvHT1Wrsu6fZU+PqEIz+NApiO0UlLa4wZeZbfQpWpyaIG4GZZl2qvvXp/g==
+X-Received: by 2002:a05:6830:2a0b:b0:6b9:d3bd:3985 with SMTP id
+ y11-20020a0568302a0b00b006b9d3bd3985mr16652373otu.1.1698854156233; 
+ Wed, 01 Nov 2023 08:55:56 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ y14-20020ac8524e000000b00419801b1094sm1495500qtn.13.2023.11.01.08.55.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Nov 2023 08:55:55 -0700 (PDT)
+Date: Wed, 1 Nov 2023 11:55:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [PATCH v2 21/29] migration/multifd: Add pages to the receiving
+ side
+Message-ID: <ZUJ01lcAJS1PaAIw@x1n>
 References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-16-farosas@suse.de>
- <ZTjiblfeOCTY56e4@redhat.com> <ZUJteaz84IYy1LC6@x1n>
+ <20231023203608.26370-22-farosas@suse.de> <ZUF7VG+CWvuOEbqD@x1n>
+ <87il6mcrf5.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZUJteaz84IYy1LC6@x1n>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <87il6mcrf5.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,114 +98,100 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 01, 2023 at 11:23:37AM -0400, Peter Xu wrote:
-> On Wed, Oct 25, 2023 at 10:39:58AM +0100, Daniel P. Berrangé wrote:
-> > If I'm reading the code correctly the new format has some padding
-> > such that each "ramblock pages" region starts on a 1 MB boundary.
-> > 
-> > eg so we get:
-> > 
-> >  --------------------------------
-> >  | ramblock 1 header            |
-> >  --------------------------------
-> >  | ramblock 1 fixed-ram header  |
-> >  --------------------------------
-> >  | padding to next 1MB boundary |
-> >  | ...                          |
-> >  --------------------------------
-> >  | ramblock 1 pages             |
-> >  | ...                          |
-> >  --------------------------------
-> >  | ramblock 2 header            |
-> >  --------------------------------
-> >  | ramblock 2 fixed-ram header  |
-> >  --------------------------------
-> >  | padding to next 1MB boundary |
-> >  | ...                          |
-> >  --------------------------------
-> >  | ramblock 2 pages             |
-> >  | ...                          |
-> >  --------------------------------
-> >  | ...                          |
-> >  --------------------------------
-> >  | RAM_SAVE_FLAG_EOS            |
-> >  --------------------------------
-> >  | ...                          |
-> >  -------------------------------
+On Tue, Oct 31, 2023 at 08:18:06PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> When reading the series, I was thinking one more thing on whether fixed-ram
-> would like to leverage compression in the future?
-
-Libvirt currently supports compression of saved state images, so yes,
-I think compression is a desirable feature.
-
-Due to libvirt's architecture it does compression on the stream and
-the final step in the sequence bounc buffers into suitably aligned
-memory required for O_DIRECT.
-
-> To be exact, not really fixed-ram as a feature, but non-live snapshot as
-> the real use case.  More below.
+> > On Mon, Oct 23, 2023 at 05:36:00PM -0300, Fabiano Rosas wrote:
+> >> Currently multifd does not need to have knowledge of pages on the
+> >> receiving side because all the information needed is within the
+> >> packets that come in the stream.
+> >> 
+> >> We're about to add support to fixed-ram migration, which cannot use
+> >> packets because it expects the ramblock section in the migration file
+> >> to contain only the guest pages data.
+> >> 
+> >> Add a pointer to MultiFDPages in the multifd_recv_state and use the
+> >> pages similarly to what we already do on the sending side. The pages
+> >> are used to transfer data between the ram migration code in the main
+> >> migration thread and the multifd receiving threads.
+> >> 
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >
+> > If it'll be new code to maintain anyway, I think we don't necessarily
+> > always use multifd structs, right?
+> >
 > 
-> I just noticed that compression can be a great feature to have for such use
-> case, where the image size can be further shrinked noticeably.  In this
-> case, speed of savevm may not matter as much as image size (as compression
-> can take some more cpu overhead): VM will be stopped anyway.
+> For the sending side, unrelated to this series, I'm experimenting with
+> defining a generic structure to be passed into multifd:
 > 
-> With current fixed-ram layout, we probably can't have compression due to
-> two reasons:
+> struct MultiFDData_t {
+>     void *opaque;
+>     size_t size;
+>     bool ready;
+>     void (*cleanup_fn)(void *);
+> };
 > 
->   - We offset each page with page alignment in the final image, and that's
->     where fixed-ram as the term comes from; more fundamentally,
+> The client code (ram.c) would use the opaque field to put whatever it
+> wants in it. Maybe we could have a similar concept on the receiving
+> side?
 > 
->   - We allow src VM to run (dropping auto-pause as the plan, even if we
->     plan to guarantee it not run; QEMU still can't take that as
->     guaranteed), then we need page granule on storing pages, and then it's
->     hard to know the size of each page after compressed.
+> Here's a PoC I'm writing, if you're interested:
 > 
-> If with the guarantee that VM is stopped, I think compression should be
-> easy to get?  Because right after dropping the page-granule requirement, we
-> can compress in chunks, storing binary in the image, one page written once.
-> We may lose O_DIRECT but we can consider the hardware accelerators on
-> [de]compress if necessary.
+> https://github.com/farosas/qemu/commits/multifd-packet-cleanups
+> 
+> (I'm delaying sending this to the list because we already have a
+> reasonable backlog of features and refactorings to merge.)
 
-We can keep O_DIRECT if we buffer in QEMU between compressor output
-and disk I/O, which is what libvirt does. QEMU would still be saving
-at least one extra copy compared to libvirt
+I went through the idea, I agree it's reasonable to generalize multifd to
+drop the page constraints.  Actually I'm wondering maybe it should be
+better that we have a thread pool model for migration, then multifd can be
+based on that.
 
+Something like: job submissions, proper locks, notifications, quits,
+etc. with a bunch of API to manipulate the thread pool.
 
-The fixed RAM layout was primarily intended to allow easy parallel
-I/O without needing any synchronization between threads. In theory
-fixed RAM layout even allows you todo something fun like
+And actually.. I just noticed we have. :) See util/thread-pool.c.  I didn't
+have closer look, but that looks like something good if we can work on top
+(e.g., I don't think we want the bottom halfs..), or refactor to satisfy
+all our needs from migration pov.  Not something I'm asking right away, but
+maybe we can at least keep an eye on.
 
-   maped_addr = mmap(save-stat-fd, offset, ramblocksize);
-   memcpy(ramblock, maped_addr, ramblocksize)
-   munmap(maped_addr)
+> 
+> > Rather than introducing MultiFDPages_t into recv side, can we allow pages
+> > to be distributed in chunks of (ramblock, start_offset, end_offset) tuples?
+> > That'll be much more efficient than per-page.  We don't need page granule
+> > here on recv side, we want to load chunks of mem fast.
+> >
+> > We don't even need page granule on sender side, but since only myself cared
+> > about perf.. and obviously the plan is to even drop auto-pause, then VM can
+> > be running there, so sender must do that per-page for now.  But now on recv
+> > side VM must be stopped before all ram loaded, so there's no such problem.
+> > And since we'll introduce new code anyway, IMHO we can decide how to do
+> > that even if we want to reuse multifd.
+> >
+> > Main thread can assign these (ramblock, start_offset, end_offset) jobs to
+> > recv threads.  If ramblock is too small (e.g. 1M), assign it anyway to one
+> > thread.  If ramblock is >512MB, cut it into slices and feed them to multifd
+> > threads one by one.  All the rest can be the same.
+> >
+> > Would that be better?  I would expect measurable loading speed difference
+> > with much larger chunks and with that range-based tuples.
+> 
+> I need to check how that would interact with the existing recv_thread
+> code. Hopefully there's nothing there preventing us from using a
+> different data structure.
 
-which would still be buffered I/O without O_DIRECT, but might be better
-than many writes() as you avoid 1000's of syscalls.
+Sure, thanks.  Maybe there's a good way to provide a middle ground on both
+"less code changes" and "easily maintainable", if that helps on this series
+being merged.
 
-Anyway back to compression, I think if you wanted to allow for parallel
-I/O, then it would require a different "fixed ram" approach, where each
-multifd  thread requested use of a 64 MB region, compressed until that
-was full, then asked for another 64 MB region, repeat until done.
+What I want to make sure is we don't introduce new complicated logic but
+even not doing the job as correct as we can.
 
-The reason we didn't want to break up the file format into regions like
-this is because we wanted to allow for flexbility into configuration on
-save / restore. eg  you might save using 7 threads, but restore using
-3 threads. We didn't want the on-disk layout to have any structural
-artifact that was related to the number of threads saving data, as that
-would make restore less efficient. eg 2 threads would process 2 chunks
-each and  and 1 thread would process 3 chunks, which is unbalanced.
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
