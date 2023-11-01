@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5367DDFB3
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 11:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C577DDFC4
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 11:50:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy8hs-00057t-7f; Wed, 01 Nov 2023 06:44:16 -0400
+	id 1qy8mk-0007Sq-Cj; Wed, 01 Nov 2023 06:49:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qy8hp-00057O-Kz; Wed, 01 Nov 2023 06:44:13 -0400
+ id 1qy8mi-0007Sd-Jg; Wed, 01 Nov 2023 06:49:16 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qy8hn-0007gP-H6; Wed, 01 Nov 2023 06:44:13 -0400
+ id 1qy8mg-00005J-9C; Wed, 01 Nov 2023 06:49:16 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id D605A75606C;
- Wed,  1 Nov 2023 11:44:15 +0100 (CET)
+ by localhost (Postfix) with SMTP id DAE44756082;
+ Wed,  1 Nov 2023 11:49:18 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 547C0756062; Wed,  1 Nov 2023 11:44:15 +0100 (CET)
+ id A43E9756062; Wed,  1 Nov 2023 11:49:18 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4FFC2745681;
- Wed,  1 Nov 2023 11:44:15 +0100 (CET)
-Date: Wed, 1 Nov 2023 11:44:15 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id A2691745681;
+ Wed,  1 Nov 2023 11:49:18 +0100 (CET)
+Date: Wed, 1 Nov 2023 11:49:18 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: clg@kaod.org, Greg Kurz <groug@kaod.org>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 0/8] Misc clean ups to target/ppc exception handling
-In-Reply-To: <cover.1698158152.git.balaton@eik.bme.hu>
-Message-ID: <c5d4e1dd-5da9-8efe-20f4-4bcdc24357fe@eik.bme.hu>
-References: <cover.1698158152.git.balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ philmd@linaro.org, shentey@gmail.com
+Subject: Re: [PATCH v2 0/3] ide: implement simple legacy/native mode switching
+ for PCI IDE controllers
+In-Reply-To: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+Message-ID: <fbaa0311-c11f-4440-bd5f-852f5ca7ff01@eik.bme.hu>
+References: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
@@ -59,32 +59,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 24 Oct 2023, BALATON Zoltan wrote:
-> These are some small clean ups for target/ppc/excp_helper.c trying to
-> make this code a bit simpler. No functional change is intended. This
-> series was submitted before but only partially merged due to freeze
-> and conflicting series os thia was postponed then to avoid conflicts.
+On Tue, 24 Oct 2023, Mark Cave-Ayland wrote:
+> This series adds a simple implementation of legacy/native mode switching for PCI
+> IDE controllers and updates the via-ide device to use it.
 
-Ping?
+This is needed for my amigaone machine to boot (as that uses the legacy 
+mode of this controller) so is somebody looking at merging this series in 
+time for next release? Only one week left until the freeze.
 
-> v4: Rebased on master dropping what was merged
+Regards,
+BALATON Zoltan
+
+> The approach I take here is to add a new pci_ide_update_mode() function which handles
+> management of the PCI BARs and legacy IDE ioports for each mode to avoid exposing
+> details of the internal logic to individual PCI IDE controllers.
 >
-> BALATON Zoltan (7):
->  target/ppc: Use env_cpu for cpu_abort in excp_helper
->  target/ppc: Readability improvements in exception handlers
->  target/ppc: Fix gen_sc to use correct nip
->  target/ppc: Simplify syscall exception handlers
->  target/ppc: Clean up ifdefs in excp_helper.c, part 1
->  target/ppc: Clean up ifdefs in excp_helper.c, part 2
->  target/ppc: Clean up ifdefs in excp_helper.c, part 3
+> As noted in [1] this is extracted from a local WIP branch I have which contains
+> further work in this area. However for the moment I've kept it simple (and
+> restricted it to the via-ide device) which is good enough for Zoltan's PPC
+> images whilst paving the way for future improvements after 8.2.
 >
-> Nicholas Piggin (1):
->  target/ppc: Move patching nip from exception handler to helper_scv
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >
-> target/ppc/cpu.h         |   1 +
-> target/ppc/excp_helper.c | 420 ++++++++++++---------------------------
-> target/ppc/translate.c   |  16 +-
-> 3 files changed, 139 insertions(+), 298 deletions(-)
+> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
+>
+> v2:
+> - Rebase onto master
+> - Mask the bottom 4 bits of PCI_CLASS_PROG in pci_ide_update_mode() in patch 1
+> - Add patch 2 to remove the default BAR addresses to avoid confusion
+> - Don't set PCI_INTERRUPT_PIN directly in via_ide_reset() as it is already set
+>  by pci_ide_update_mode() in patch 3, and reword the commit message accordingly
+> - Add Tested-By tags from Zoltan and Bernhard
+>
+>
+> Mark Cave-Ayland (3):
+>  ide/pci.c: introduce pci_ide_update_mode() function
+>  ide/via: don't attempt to set default BAR addresses
+>  hw/ide/via: implement legacy/native mode switching
+>
+> hw/ide/pci.c         | 90 ++++++++++++++++++++++++++++++++++++++++++++
+> hw/ide/via.c         | 25 ++++++++----
+> include/hw/ide/pci.h |  1 +
+> 3 files changed, 109 insertions(+), 7 deletions(-)
 >
 >
 
