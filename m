@@ -2,54 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF0A7DE749
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 22:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 973557DE76E
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 22:27:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyIUa-0007ji-Ku; Wed, 01 Nov 2023 17:11:12 -0400
+	id 1qyIjO-000432-NO; Wed, 01 Nov 2023 17:26:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qyIUY-0007jK-8T; Wed, 01 Nov 2023 17:11:10 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qyIj6-00042N-Kj
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 17:26:13 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qyIUV-000751-W5; Wed, 01 Nov 2023 17:11:09 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 79939756082;
- Wed,  1 Nov 2023 22:11:13 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4248E756078; Wed,  1 Nov 2023 22:11:13 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4041075606C;
- Wed,  1 Nov 2023 22:11:13 +0100 (CET)
-Date: Wed, 1 Nov 2023 22:11:13 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
- philmd@linaro.org, npiggin@gmail.com, clg@kaod.org, 
- david@gibson.dropbear.id.au, harshpb@linux.ibm.com, dave@treblig.org, 
- jasowang@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com, 
- mst@redhat.com, david@redhat.com, kraxel@redhat.com, 
- marcandre.lureau@redhat.com, qemu-ppc@nongnu.org
-Subject: Re: [PATCH 1/7] spapr/pci: Correct "does not support hotplugging
- error messages
-In-Reply-To: <c69961b0-54c6-4885-bbf4-597727be35fc@gmail.com>
-Message-ID: <937323b3-5293-bdac-48fc-5af5d2c4f8f4@eik.bme.hu>
-References: <20231031111059.3407803-1-armbru@redhat.com>
- <20231031111059.3407803-2-armbru@redhat.com>
- <c69961b0-54c6-4885-bbf4-597727be35fc@gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qyIj2-0001tk-Ju
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 17:26:12 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A1LCLLp029800; Wed, 1 Nov 2023 21:25:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zWP8XF9VpHmBmiRltgV8jTIqQ3p5xjzKykUfF1veHuY=;
+ b=qQO2nHL3fQ5n1F5porQrWdqSCKxsuP8483vuKAXWFGVnWIM8wj33ogczHQezVOlZnfdk
+ NEHyYxpN/3cc8WDVZctVooyYvU1NNJbXlX+Z8Z8uL1SZQvThxPBmKHA7ZwNSO/NWnLpX
+ zvICiaevuHxQXKgyoYcmRvdwbVGQ7IamQK6TE25paarb/U688jJfOeIlQmdHuYNXdYoF
+ H73zuokB+qIQNGfNlfIKlzj1l77NYlRxfXn2cyb8xxd6OXLJ718aoJ4xGd0nfWhrX+MK
+ 7mbuq2XDRFm8fYxMgX7dVodIACFo+2XD6fYvl8mREWCuoviRu3Gs6iaxls6O9Wwf/+OG kw== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u3xcrrgc9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Nov 2023 21:25:44 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A1JZWKa011389; Wed, 1 Nov 2023 21:25:43 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u1euk9sd2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Nov 2023 21:25:43 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3A1LPg2913238790
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 1 Nov 2023 21:25:42 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7412C5805D;
+ Wed,  1 Nov 2023 21:25:42 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 03E9E58043;
+ Wed,  1 Nov 2023 21:25:42 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed,  1 Nov 2023 21:25:41 +0000 (GMT)
+Message-ID: <e7a4c833-3e61-4a7f-ab9e-3921eb581613@linux.ibm.com>
+Date: Wed, 1 Nov 2023 17:25:41 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/14] tpm_crb: use a single read-as-mem/write-as-mmio
+ mapping
+Content-Language: en-US
+To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20231031040021.65582-1-j@getutm.app>
+ <20231031040021.65582-5-j@getutm.app>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20231031040021.65582-5-j@getutm.app>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: doz6aAG9f9TqXPoEtFDLRrH6Akbzarup
+X-Proofpoint-GUID: doz6aAG9f9TqXPoEtFDLRrH6Akbzarup
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-01_20,2023-11-01_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ mlxlogscore=999 spamscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2311010158
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,59 +109,303 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 1 Nov 2023, Daniel Henrique Barboza wrote:
-> On 10/31/23 08:10, Markus Armbruster wrote:
->> When dynamic-reconfiguration is off, hot plug / unplug can fail with
->> "Bus 'spapr-pci-host-bridge' does not support hotplugging".
->> spapr-pci-host-bridge is a device, not a bus.  Report the name of the
->> bus it provides instead: 'pci.0'.
->> 
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->
-> Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->
-> Feel free to queue it up. Thanks,
->
->
-> Daniel
->
->>   hw/ppc/spapr_pci.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->> 
->> diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
->> index 370c5a90f2..ebb32ad90b 100644
->> --- a/hw/ppc/spapr_pci.c
->> +++ b/hw/ppc/spapr_pci.c
->> @@ -1551,7 +1551,7 @@ static void spapr_pci_pre_plug(HotplugHandler 
->> *plug_handler,
->>            */
->>           if (plugged_dev->hotplugged) {
->>               error_setg(errp, QERR_BUS_NO_HOTPLUG,
->> -                       object_get_typename(OBJECT(phb)));
->> +                       phb->parent_obj.bus->qbus.name);
 
-I could not find it mentioned in the docs but it was said the parent 
-pointer is private and one should not access it but cast to the parent 
-object instead. Or here may even use pci_get_bus(pdev) maybe after moving 
-the asserts before it to make sure the device is valid. But I don't mind 
-so you can commit it as it is if nobody notices.
 
-Regards,
-BALATON Zoltan
+On 10/31/23 00:00, Joelle van Dyne wrote:
+> On Apple Silicon, when Windows performs a LDP on the CRB MMIO space,
+> the exception is not decoded by hardware and we cannot trap the MMIO
+> read. This led to the idea from @agraf to use the same mapping type as
+> ROM devices: namely that reads should be seen as memory type and
+> writes should trap as MMIO.
+> 
+> Once that was done, the second memory mapping of the command buffer
+> region was redundent and was removed.
+> 
+> A note about the removal of the read trap for `CRB_LOC_STATE`:
+> The only usage was to return the most up-to-date value for
+> `tpmEstablished`. However, `tpmEstablished` is only cleared when a
+> TPM2_HashStart operation is called which only exists for locality 4.
+> We do not handle locality 4. Indeed, the comment for the write handler
+> of `CRB_LOC_CTRL` makes the same argument for why it is not calling
+> the backend to reset the `tpmEstablished` bit (to 1).
+> As this bit is unused, we do not need to worry about updating it for
+> reads.
+> 
+> In order to maintain migration compatibility with older versions of
+> QEMU, we store a copy of the register data and command data which is
+> used only during save/restore.
+> 
+> Signed-off-by: Joelle van Dyne <j@getutm.app>
+> ---
 
->>               return;
->>           }
->>       }
->> @@ -1672,7 +1672,7 @@ static void spapr_pci_unplug_request(HotplugHandler 
->> *plug_handler,
->>         if (!phb->dr_enabled) {
->>           error_setg(errp, QERR_BUS_NO_HOTPLUG,
->> -                   object_get_typename(OBJECT(phb)));
->> +                   phb->parent_obj.bus->qbus.name);
->>           return;
->>       }
->> 
->
->
+> diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
+> index bee0b71fee..605e8576e9 100644
+> --- a/hw/tpm/tpm_crb_common.c
+> +++ b/hw/tpm/tpm_crb_common.c
+> @@ -31,31 +31,12 @@
+>   #include "qom/object.h"
+>   #include "tpm_crb.h"
+> 
+> -static uint64_t tpm_crb_mmio_read(void *opaque, hwaddr addr,
+> -                                  unsigned size)
+> +static uint8_t tpm_crb_get_active_locty(TPMCRBState *s, uint32_t *regs)
+>   {
+> -    TPMCRBState *s = opaque;
+> -    void *regs = (void *)&s->regs + (addr & ~3);
+> -    unsigned offset = addr & 3;
+> -    uint32_t val = *(uint32_t *)regs >> (8 * offset);
+> -
+> -    switch (addr) {
+> -    case A_CRB_LOC_STATE:
+> -        val |= !tpm_backend_get_tpm_established_flag(s->tpmbe);
+> -        break;
+> -    }
+> -
+> -    trace_tpm_crb_mmio_read(addr, size, val);
+> -
+> -    return val;
+> -}
+> -
+> -static uint8_t tpm_crb_get_active_locty(TPMCRBState *s)
+> -{
+> -    if (!ARRAY_FIELD_EX32(s->regs, CRB_LOC_STATE, locAssigned)) {
+> +    if (!ARRAY_FIELD_EX32(regs, CRB_LOC_STATE, locAssigned)) {
+>           return TPM_CRB_NO_LOCALITY;
+>       }
+> -    return ARRAY_FIELD_EX32(s->regs, CRB_LOC_STATE, activeLocality);
+> +    return ARRAY_FIELD_EX32(regs, CRB_LOC_STATE, activeLocality);
+>   }
+> 
+>   static void tpm_crb_mmio_write(void *opaque, hwaddr addr,
+> @@ -63,35 +44,47 @@ static void tpm_crb_mmio_write(void *opaque, hwaddr addr,
+>   {
+>       TPMCRBState *s = opaque;
+>       uint8_t locty =  addr >> 12;
+> +    uint32_t *regs;
+> +    void *mem;
+> 
+>       trace_tpm_crb_mmio_write(addr, size, val);
+> +    regs = memory_region_get_ram_ptr(&s->mmio);
+> +    mem = &regs[R_CRB_DATA_BUFFER];
+> +    assert(regs);
+> +
+> +    if (addr >= A_CRB_DATA_BUFFER) {
+
+
+Can you write here /* receive TPM command bytes */ ?
+
+
+> +        assert(addr + size <= TPM_CRB_ADDR_SIZE);
+> +        assert(size <= sizeof(val));
+> +        memcpy(mem + addr - A_CRB_DATA_BUFFER, &val, size);
+
+> +        memory_region_set_dirty(&s->mmio, addr, size);
+> +        return;
+> +    }
+> 
+>       switch (addr) {
+>       case A_CRB_CTRL_REQ:
+>           switch (val) {
+>           case CRB_CTRL_REQ_CMD_READY:
+> -            ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> +            ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+>                                tpmIdle, 0);
+>               break;
+>           case CRB_CTRL_REQ_GO_IDLE:
+> -            ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> +            ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+>                                tpmIdle, 1);
+>               break;
+>           }
+>           break;
+>       case A_CRB_CTRL_CANCEL:
+>           if (val == CRB_CANCEL_INVOKE &&
+> -            s->regs[R_CRB_CTRL_START] & CRB_START_INVOKE) {
+> +            regs[R_CRB_CTRL_START] & CRB_START_INVOKE) {
+>               tpm_backend_cancel_cmd(s->tpmbe);
+>           }
+>           break;
+>       case A_CRB_CTRL_START:
+>           if (val == CRB_START_INVOKE &&
+> -            !(s->regs[R_CRB_CTRL_START] & CRB_START_INVOKE) &&
+> -            tpm_crb_get_active_locty(s) == locty) {
+> -            void *mem = memory_region_get_ram_ptr(&s->cmdmem);
+> +            !(regs[R_CRB_CTRL_START] & CRB_START_INVOKE) &&
+> +            tpm_crb_get_active_locty(s, regs) == locty) {
+> 
+> -            s->regs[R_CRB_CTRL_START] |= CRB_START_INVOKE;
+> +            regs[R_CRB_CTRL_START] |= CRB_START_INVOKE;
+>               s->cmd = (TPMBackendCmd) {
+>                   .in = mem,
+>                   .in_len = MIN(tpm_cmd_get_size(mem), s->be_buffer_size),
+> @@ -108,26 +101,27 @@ static void tpm_crb_mmio_write(void *opaque, hwaddr addr,
+>               /* not loc 3 or 4 */
+>               break;
+>           case CRB_LOC_CTRL_RELINQUISH:
+> -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
+> +            ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+>                                locAssigned, 0);
+> -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
+> +            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
+>                                Granted, 0);
+>               break;
+>           case CRB_LOC_CTRL_REQUEST_ACCESS:
+> -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
+> +            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
+>                                Granted, 1);
+> -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
+> +            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
+>                                beenSeized, 0);
+> -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
+> +            ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+>                                locAssigned, 1);
+>               break;
+>           }
+>           break;
+>       }
+> +
+> +    memory_region_set_dirty(&s->mmio, 0, A_CRB_DATA_BUFFER);
+>   }
+> 
+>   const MemoryRegionOps tpm_crb_memory_ops = {
+> -    .read = tpm_crb_mmio_read,
+>       .write = tpm_crb_mmio_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>       .valid = {
+> @@ -138,12 +132,16 @@ const MemoryRegionOps tpm_crb_memory_ops = {
+> 
+>   void tpm_crb_request_completed(TPMCRBState *s, int ret)
+>   {
+> -    s->regs[R_CRB_CTRL_START] &= ~CRB_START_INVOKE;
+> +    uint32_t *regs = memory_region_get_ram_ptr(&s->mmio);
+> +
+> +    assert(regs);
+> +    regs[R_CRB_CTRL_START] &= ~CRB_START_INVOKE;
+>       if (ret != 0) {
+> -        ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> +        ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+>                            tpmSts, 1); /* fatal error */
+>       }
+> -    memory_region_set_dirty(&s->cmdmem, 0, CRB_CTRL_CMD_SIZE);
+> +
+> +    memory_region_set_dirty(&s->mmio, 0, TPM_CRB_ADDR_SIZE);
+>   }
+> 
+>   enum TPMVersion tpm_crb_get_version(TPMCRBState *s)
+> @@ -160,45 +158,50 @@ int tpm_crb_pre_save(TPMCRBState *s)
+> 
+>   void tpm_crb_reset(TPMCRBState *s, uint64_t baseaddr)
+>   {
+> +    uint32_t *regs = memory_region_get_ram_ptr(&s->mmio);
+> +
+> +    assert(regs);
+>       if (s->ppi_enabled) {
+>           tpm_ppi_reset(&s->ppi);
+>       }
+>       tpm_backend_reset(s->tpmbe);
+> 
+> -    memset(s->regs, 0, sizeof(s->regs));
+> +    memset(regs, 0, TPM_CRB_ADDR_SIZE);
+> 
+> -    ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
+> +    ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+>                        tpmRegValidSts, 1);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> +    ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+> +                     tpmEstablished, 1);
+> +    ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+>                        tpmIdle, 1);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        InterfaceType, CRB_INTF_TYPE_CRB_ACTIVE);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        InterfaceVersion, CRB_INTF_VERSION_CRB);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        CapLocality, CRB_INTF_CAP_LOCALITY_0_ONLY);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        CapCRBIdleBypass, CRB_INTF_CAP_IDLE_FAST);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        CapDataXferSizeSupport, CRB_INTF_CAP_XFER_SIZE_64);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        CapFIFO, CRB_INTF_CAP_FIFO_NOT_SUPPORTED);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        CapCRB, CRB_INTF_CAP_CRB_SUPPORTED);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        InterfaceSelector, CRB_INTF_IF_SELECTOR_CRB);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+>                        RID, 0b0000);
+> -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID2,
+> +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID2,
+>                        VID, PCI_VENDOR_ID_IBM);
+> 
+>       baseaddr += A_CRB_DATA_BUFFER;
+> -    s->regs[R_CRB_CTRL_CMD_SIZE] = CRB_CTRL_CMD_SIZE;
+> -    s->regs[R_CRB_CTRL_CMD_LADDR] = (uint32_t)baseaddr;
+> -    s->regs[R_CRB_CTRL_CMD_HADDR] = (uint32_t)(baseaddr >> 32);
+> -    s->regs[R_CRB_CTRL_RSP_SIZE] = CRB_CTRL_CMD_SIZE;
+> -    s->regs[R_CRB_CTRL_RSP_LADDR] = (uint32_t)baseaddr;
+> -    s->regs[R_CRB_CTRL_RSP_HADDR] = (uint32_t)(baseaddr >> 32);
+> +    regs[R_CRB_CTRL_CMD_SIZE] = CRB_CTRL_CMD_SIZE;
+> +    regs[R_CRB_CTRL_CMD_LADDR] = (uint32_t)baseaddr;
+> +    regs[R_CRB_CTRL_CMD_HADDR] = (uint32_t)(baseaddr >> 32);
+> +    regs[R_CRB_CTRL_RSP_SIZE] = CRB_CTRL_CMD_SIZE;
+> +    regs[R_CRB_CTRL_RSP_LADDR] = (uint32_t)baseaddr;
+> +    regs[R_CRB_CTRL_RSP_HADDR] = (uint32_t)(baseaddr >> 32);
+> 
+>       s->be_buffer_size = MIN(tpm_backend_get_buffer_size(s->tpmbe),
+>                               CRB_CTRL_CMD_SIZE);
+> @@ -206,15 +209,33 @@ void tpm_crb_reset(TPMCRBState *s, uint64_t baseaddr)
+>       if (tpm_backend_startup_tpm(s->tpmbe, s->be_buffer_size) < 0) {
+>           exit(1);
+>       }
+> +
+> +    memory_region_rom_device_set_romd(&s->mmio, true);
+> +    memory_region_set_dirty(&s->mmio, 0, TPM_CRB_ADDR_SIZE);
+>   }
+> 
+>   void tpm_crb_init_memory(Object *obj, TPMCRBState *s, Error **errp)
+>   {
+> -    memory_region_init_io(&s->mmio, obj, &tpm_crb_memory_ops, s,
+> -        "tpm-crb-mmio", sizeof(s->regs));
+> -    memory_region_init_ram(&s->cmdmem, obj,
+> -        "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
+> +    memory_region_init_rom_device_nomigrate(&s->mmio, obj, &tpm_crb_memory_ops,
+> +        s, "tpm-crb-mem", TPM_CRB_ADDR_SIZE, errp);
+>       if (s->ppi_enabled) {
+>           tpm_ppi_init_memory(&s->ppi, obj);
+>       }
+>   }
+> +
+> +void tpm_crb_mem_save(TPMCRBState *s, uint32_t *saved_regs, void *saved_cmdmem)
+> +{
+> +    uint32_t *regs = memory_region_get_ram_ptr(&s->mmio);
+> +
+> +    memcpy(saved_regs, regs, TPM_CRB_R_MAX);
+> +    memcpy(saved_cmdmem, &regs[R_CRB_DATA_BUFFER], A_CRB_DATA_BUFFER);
+
+I find it confusing that this function is here rather than in 
+tpm_crb_non_pre_save().
+
+The size should be CRB_CTRL_CMD_SIZE.
+
+> +}
+> +
+> +void tpm_crb_mem_load(TPMCRBState *s, const uint32_t *saved_regs,
+> +                      const void *saved_cmdmem)
+> +{
+> +    uint32_t *regs = memory_region_get_ram_ptr(&s->mmio);
+> +
+> +    memcpy(regs, saved_regs, TPM_CRB_R_MAX);
+> +    memcpy(&regs[R_CRB_DATA_BUFFER], saved_cmdmem, A_CRB_DATA_BUFFER);
+> +}
+
+Same comments; size seems wrong.
 
