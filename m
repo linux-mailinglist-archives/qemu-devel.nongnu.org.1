@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB567DDE54
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3404D7DDE55
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 10:20:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy7OH-0008H6-0b; Wed, 01 Nov 2023 05:19:57 -0400
+	id 1qy7OZ-000081-5b; Wed, 01 Nov 2023 05:20:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qy7OD-0008G9-O5
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:19:53 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ id 1qy7OX-00007P-HM
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:20:13 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qy7OC-00024p-8d
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:19:53 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2c5b7764016so74708901fa.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 02:19:51 -0700 (PDT)
+ id 1qy7OR-00027a-7b
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 05:20:13 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4094301d505so22172805e9.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 02:20:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698830390; x=1699435190; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1698830405; x=1699435205; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=PvfGYQAf8rR+gkB7UGOsowdVVBIDkfG8GVzI7GEQYcw=;
- b=FmDAvb2Tx/JCZlL/ECjXZkcRQ2HU6P53i8SHVtBR4llep2A8cv4hJqIYjnpzE9cYlV
- 7s3ZTmc/Bt3i4dRO6MJnCWDQeiVmags0Q4+vmXiX/5yfjPH0AH/VWxXz6xcrOgLUfNxh
- jiFMcpVnoWvD3N293DjFEFdEruixVHsJ5zCh/D/H3ifx2WR4xxiLHAB+GcRa9LqtkUUU
- mjyvld81rOsN9cFCPLgp3eMAeeYdF5TcPY8llIih7ql21Pges1lwIlZB5VIC/9/N2Uy4
- QNUhGXbmFNJ6PNdSWeBBCm2EkwBpUBuy4eknud/4MMHip067pSo854OdnzvjBe4Y4qIG
- CLng==
+ bh=xBjhJ5h56RysEJavvjefa4FFMqiMf0Olmr+Ynb5EgOk=;
+ b=d25o8Rnbu8fjGKazQl6XmXd8sS1irglqq6Es+RrE2jpwakH9uqce1M9fq8u56D2Aty
+ azNCZ+cJWPtbtjUy3J9u0vRbiZSNiP3O18gSmGsHgQhePWqUvUaEqpSNAnKE8Ne7Y9pM
+ 4dQsENgvZKI7R0MZ9aoUGX49Mvqf5CV8u0hxGi0r12wsnz0B/uoz5WPt8ejJP/YFo+7U
+ U1eusaaFTl67PUqduRDeoyNO4eAZeFajbreDCQoWECW/XuZU9SI9oJSOSL2E5UGMIpel
+ 6woTNFCF5EZFol4CiQZhf7M5LDV5IKwdEN0ylTrRVhWjmQgiknB/IsF2lojVCmt0V65E
+ uaLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698830390; x=1699435190;
+ d=1e100.net; s=20230601; t=1698830405; x=1699435205;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PvfGYQAf8rR+gkB7UGOsowdVVBIDkfG8GVzI7GEQYcw=;
- b=GQNFyDS9ua7W8cu8Yt9Qhro1WFt2amtXjksxixebPAQmt33g3dvuCl3gvvbkS3NRyf
- h6WD1jQqqLJ1N77vKLduLcxnqsdAWg6Zx5qB6VHSfkbk4HM3kiX5sPko7WSQmrz0Ewm6
- HgMjLHYwEg0hAwqsFtfeFJiIfbNB91r4jddGAXItzUVKiOzacilYrC9rHkQ2wiI5+sa6
- d7gxfEW1Bf+kLJ9Loc3NFObRhPKc/7hfCIQ9QpgrkY12vgOKPxZqgqjj43KPFkKQUI9P
- tpSK1+0taGV/sh4Iij6IUfH1PH5UzscTFXQhU1m4+I2BYqe9xGqX1vMLJaWvAlo/qaNZ
- 4CqQ==
-X-Gm-Message-State: AOJu0YzyFcFt0pUxncsFxlBS7WaHgLN9JkH+m8lwMvWdsCxsuMgpLmNU
- MjZCtbm65F8j9GB+akFK6V+pkg==
-X-Google-Smtp-Source: AGHT+IHIyIEhW0carXk8e0fOpyJtDG7aku4kSUBFTbORoP+bs6ReasJAb0B3a9wdTkyHN9Svwe69Tg==
-X-Received: by 2002:a2e:9198:0:b0:2b9:412a:111d with SMTP id
- f24-20020a2e9198000000b002b9412a111dmr12667236ljg.42.1698830390023; 
- Wed, 01 Nov 2023 02:19:50 -0700 (PDT)
+ bh=xBjhJ5h56RysEJavvjefa4FFMqiMf0Olmr+Ynb5EgOk=;
+ b=Bv1c9DqIY2M9o17fM4xt9iMkB11vWwVAa7biNIVcDRdw8wQ4Azmc8t30zufeq74Fkn
+ CbHX4clbbPcIpRC5q8CzFLNbP7lyh9bxgKjr60VCApd5ioSnW7/BHZGj43o0stK65cpr
+ hVA9IPXNvY8EP2e/mW952uYrjBm7Z/UagmucTXntIA02dNF01J1GlQCJVpF7P9HSiv7z
+ HlSW6vmGIBacYOckArWagVp9oUyagJ643C8au8c9cUS3vNYPXGsTTFiR2iP1i49JSt02
+ G3ceo2q8FpXrC9X85ECROgqtGP3qBGYEDMOfGKFek3/fNERu/3A/7rsUOV2LUbhQE9Zw
+ T5Ug==
+X-Gm-Message-State: AOJu0YyljsFjliP8DeERWPwq5sfta3Zh9h9C5x+OSDRjXIOVGhgyonIq
+ uGmq2pfrj6Dnh1dou+wnoDABcw==
+X-Google-Smtp-Source: AGHT+IG4GeJ0/INF8AFnrSQgEUfhPwgwUkZaUoccIFuT76bP5/XrDK91exdtyTU8pz5LhzwDJjfXQw==
+X-Received: by 2002:a05:600c:198a:b0:406:8496:bd8b with SMTP id
+ t10-20020a05600c198a00b004068496bd8bmr12993942wmq.9.1698830405650; 
+ Wed, 01 Nov 2023 02:20:05 -0700 (PDT)
 Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
  [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- p14-20020adfcc8e000000b0032dbf32bd56sm3688282wrj.37.2023.11.01.02.19.49
+ v12-20020a05600c444c00b0040641a9d49bsm886889wmn.17.2023.11.01.02.20.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 02:19:49 -0700 (PDT)
-Date: Wed, 1 Nov 2023 10:19:48 +0100
+ Wed, 01 Nov 2023 02:20:03 -0700 (PDT)
+Date: Wed, 1 Nov 2023 10:20:03 +0100
 From: Andrew Jones <ajones@ventanamicro.com>
 To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
  bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
  palmer@rivosinc.com
-Subject: Re: [PATCH v7 01/16] target/riscv: create TYPE_RISCV_VENDOR_CPU
-Message-ID: <20231101-2b306f5b57863cf8136f568a@orel>
+Subject: Re: [PATCH v7 02/16] target/riscv/tcg: do not use "!generic" CPU
+ checks
+Message-ID: <20231101-ec7856944e5893c9ce4c536b@orel>
 References: <20231031203916.197332-1-dbarboza@ventanamicro.com>
- <20231031203916.197332-2-dbarboza@ventanamicro.com>
+ <20231031203916.197332-3-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231031203916.197332-2-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x232.google.com
+In-Reply-To: <20231031203916.197332-3-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,26 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 05:39:01PM -0300, Daniel Henrique Barboza wrote:
-> We want to add a new CPU type for bare CPUs that will inherit specific
-> traits of the 2 existing types:
+On Tue, Oct 31, 2023 at 05:39:02PM -0300, Daniel Henrique Barboza wrote:
+> Our current logic in get/setters of MISA and multi-letter extensions
+> works because we have only 2 CPU types, generic and vendor, and by using
+> "!generic" we're implying that we're talking about vendor CPUs. When adding
+> a third CPU type this logic will break so let's handle it beforehand.
 > 
-> - it will allow for extensions to be enabled/disabled, like generic
->   CPUs;
+> In set_misa_ext_cfg() and set_multi_ext_cfg(), check for "vendor" cpu instead
+> of "not generic". The "generic CPU" checks remaining are from
+> riscv_cpu_add_misa_properties() and cpu_add_multi_ext_prop() before
+> applying default values for the extensions.
 > 
-> - it will NOT inherit defaults, like vendor CPUs.
+> This leaves us with:
 > 
-> We can make this conditions met by adding an explicit type for the
-> existing vendor CPUs and change the existing logic to not imply that
-> "not generic" means vendor CPUs.
+> - vendor CPUs will not allow extension enablement, all other CPUs will;
 > 
-> Let's add the "vendor" CPU type first.
+> - generic CPUs will inherit default values for extensions, all others
+>   won't.
+> 
+> And now we can add a new, third CPU type, that will allow extensions to
+> be enabled and will not inherit defaults, without changing the existing
+> logic.
 > 
 > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
->  target/riscv/cpu-qom.h |  1 +
->  target/riscv/cpu.c     | 30 +++++++++++++++++++++---------
->  2 files changed, 22 insertions(+), 9 deletions(-)
+>  target/riscv/tcg/tcg-cpu.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
 >
 
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
