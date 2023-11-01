@@ -2,90 +2,131 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E837DE446
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 16:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 903337DE47E
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 17:20:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyDZc-0006Ix-3R; Wed, 01 Nov 2023 11:56:04 -0400
+	id 1qyDvd-0003jJ-DI; Wed, 01 Nov 2023 12:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyDZZ-0006IX-Tb
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 11:56:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>) id 1qyDvb-0003j2-8t
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:18:47 -0400
+Received: from mail-db8eur05on2112.outbound.protection.outlook.com
+ ([40.107.20.112] helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyDZY-0007wM-29
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 11:56:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698854158;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=aeEOZnWoJ0B9WYKfzwMnTHWLz0u9QxE9iBRr0kTPLA0=;
- b=fw3SFaznZva09JgZaIn5mBjhPc0mRl+NaE46ljMImFOcpFdHJrhhSzw620Yz3e1eLhcgFl
- fnW35T4yYaZsEQROrULqzGZfEQry4qXUKWuLNYmXlik0K/dfR0hY5Vb6unj+8KEmW0vGYW
- 8mdJXyYkIRI3IdNaDfTA3l6j8WreLl8=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-Ac8S4C5fOmCJh32QvnQ5lA-1; Wed, 01 Nov 2023 11:55:57 -0400
-X-MC-Unique: Ac8S4C5fOmCJh32QvnQ5lA-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6ce29f5dc6cso2103574a34.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 08:55:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698854156; x=1699458956;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aeEOZnWoJ0B9WYKfzwMnTHWLz0u9QxE9iBRr0kTPLA0=;
- b=J0VbsSxpkV+VLUaEekmaqTeWbS9p9B0jYcwOB8NswbA+IhHE3drSvuUQVcVRVECo7P
- CTlnuLuHIaWX+h7amFDDO2W5QDjl3Ahh0mV9Gy1knknGtq9o+qWXb5okS9A5LHI4JxV7
- Rg5k9u5zM5gMrb3FZ/EglEUOuki5NYENtkKZIEqhLeUww17bHkVGjpR+vibel++nPkCU
- JNf8hD2p8Sy1BZoMbVNiJV0r1vJhikoZmlxa8ZzWDO2EQPImat40b8dhCSGlB/BjISf3
- m1tTPCzU9TbhUbFjRvg49XK5vbW3oVQvtZwn3Vgpt+lOpiHnrQ1AKy+uMMBDn2dgIybr
- 3v3Q==
-X-Gm-Message-State: AOJu0Yz54SwgzibS1TVkRx5hW3f+Ku7yUaSO3soB8JN79lCsctvGmOAI
- qIEaTbhiKUUBxQT0gmn7teNiofF7LHaJYpzHPX3xU/cLVQ2CnHbdEozMTYTua2Yn0zNWiM/pQcS
- HOB/zLOPHLIUXL20=
-X-Received: by 2002:a05:6830:2a0b:b0:6b9:d3bd:3985 with SMTP id
- y11-20020a0568302a0b00b006b9d3bd3985mr16652396otu.1.1698854156591; 
- Wed, 01 Nov 2023 08:55:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRAvE0N2hufHW4UvHT1Wrsu6fZU+PqEIz+NApiO0UlLa4wZeZbfQpWpyaIG4GZZl2qvvXp/g==
-X-Received: by 2002:a05:6830:2a0b:b0:6b9:d3bd:3985 with SMTP id
- y11-20020a0568302a0b00b006b9d3bd3985mr16652373otu.1.1698854156233; 
- Wed, 01 Nov 2023 08:55:56 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- y14-20020ac8524e000000b00419801b1094sm1495500qtn.13.2023.11.01.08.55.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 08:55:55 -0700 (PDT)
-Date: Wed, 1 Nov 2023 11:55:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH v2 21/29] migration/multifd: Add pages to the receiving
- side
-Message-ID: <ZUJ01lcAJS1PaAIw@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-22-farosas@suse.de> <ZUF7VG+CWvuOEbqD@x1n>
- <87il6mcrf5.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>) id 1qyDvW-0003Uw-Rf
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:18:47 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lgnYOilZk+E3EtXLFMSP3xIyNpJ6srTyeW59pRvcZvji6DZ3/M6/NJb59czMy7MQiIYidpPj86sRQTXqxZ+iSHBwAaXQE3Y/O6myutkmyrZVjcdq1oz03+G99N4cgueh87oxEWO0kwS9Xj2F8pFlu/J68DQFTl0doQvVfBaDc4Crw5YNO8V92N0nFsedRUpBfWQMt3zEqG4AqX0PGX+XB0l6HAat7/tzTfcuBv29YPGJi6ao2uQ0r1uoLEKJAuuWECw88f3N7cD5XnGFJ4gViG4NJc0J6bXAPhY4bKLTJhz0kdruUkfIZXAqK7LW+ZLSsiMGvLsHm8z2VtRy2bsVtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=keUiuyYyxMsSru08nL4vCOT1gXYajH6PlSuIIeEHU+0=;
+ b=btcMTUaMi6UkexMjIh1ujUdujOBgRxCgi1Ov3YPnIkn5KNs1HmRrWv0Os2rujZhjRpEHAGIZyojuoQnnHxzLRZI6LOPxtWrI5Ku2fYZRqZfWPiizeGbfPlggGb09dEqcwxrFD6zeD8rZVJlNlrYzc7EEDd8PADj/V1vlLXiG19nFdfMgVPTfVvy7MWUcHB+MT6Awd/dZxBE75gIgG9k3YuxWfxH1k+MhakV7Gz661xI9PVxhR7AO8yEayMeQF95kw+9ImN3fYc/bAQZtf1g7/CajV2mbufIR8Y1sBiqK6fJkS0PpTh0B/ScVZ1wffcYfYTB9gSoMijyJT+fScZ9j5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=keUiuyYyxMsSru08nL4vCOT1gXYajH6PlSuIIeEHU+0=;
+ b=MdHqmcD3XMHRtXkGyN9WkwJxdoOtjaWrWA+DzI0/L3FQF63NKXTVq/XkVulXvIwhpldKE2PcsSCz1F6UFdMF5Nv2pXSxXfO17midcg3wBfsA+4vK39ShKZQHwulQTvLS7TazJiZ2vZZ3PJK7I74qEWISMKADgtvk2hd3SLjikele7Zh3sAzuAdKCjsLAc58hNxYBk+oer6sLbQJqzyz76ZRJtp2Khj8sphJq8MVYYk8cbCU5wdghxLdksg7L1J7ufpH/7U33Rm1btBYTp1yqNQflcDL4OhN+N65TPkIZPvruSicEGPc8A60yQX1h4imAXeclwPl0zvVpGN0QpxXhWA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
+ by GV1PR08MB7804.eurprd08.prod.outlook.com (2603:10a6:150:5b::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19; Wed, 1 Nov
+ 2023 16:13:34 +0000
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::c196:49d8:108c:2254]) by PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::c196:49d8:108c:2254%6]) with mapi id 15.20.6933.029; Wed, 1 Nov 2023
+ 16:13:34 +0000
+Message-ID: <f588c351-a7cc-48a7-9ac0-201171a9ed4b@virtuozzo.com>
+Date: Wed, 1 Nov 2023 17:13:32 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kvm: emit GUEST_PANICKED event in case of abnormal KVM
+ exit
+Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, den@openvz.org
+References: <20231101152311.181817-1-andrey.drobyshev@virtuozzo.com>
+From: "Denis V. Lunev" <den@virtuozzo.com>
+In-Reply-To: <20231101152311.181817-1-andrey.drobyshev@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR0102CA0020.eurprd01.prod.exchangelabs.com
+ (2603:10a6:802::33) To PAXPR08MB6956.eurprd08.prod.outlook.com
+ (2603:10a6:102:1db::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87il6mcrf5.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|GV1PR08MB7804:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7dbccca9-d0c6-46fa-1c00-08dbdaf57f7b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wJ0AIlWvA95KSWq4rBA+cPFNakB706ZPlKiF2LmjkrINm4gkCLmIYWDGMsin+uTqqtwMHUMwr0n8ngTnN5PsrvS+WXKih0wQcelhlGngZaOwRalNM59eCBGpGE6e3D07nZ0GyWAItMffR0WYhp9u63t/mfFS4k1jvsuQ3LIknN/FwQUXxZ2J6nfvwvo4K76W2A8TzzofTk2Jh4f4sAuQxP9OVoa1auxMlnfsRZWXMDZz+G4GpNYQdNqcVfwB9rxcmbeJL+wg8HqGmBAdSnMNTwrp05Ylbu7H/ZUbIG5KjguG+SAA8mdi9ydf0HmdBH8OukTOdPekRlPrr5juqCQ4Yn5LXSdiH4jabE8och0MNwFDTN5w8PfDDFQQHm4TgQGjH5XRxyu1XKX1/KymmI3oSk6l49A3hSSb6XC5pNnlb9hLUIJwKtaTvoAc6Byc+5iLBR0trmp0dY8WjhrpfkooCJOn92VcjqvIjrgyNFeD41e4hhVey9EiAx/UUOG/7IGoJtjcI6MNFlbDQJ5cyIjaoUD/LB3V5VfRtobBN8kWOZeOT5Ln0wUcWxGwqpRlqlnS6f/VmMfmTUdqvLwb3agBZrlbNMhYkyg+THLwEiUTUZMt285fJ0kX1QaHPxkQXUDPAW2FwsFxb2GE+Ex1cDa6PA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(39850400004)(346002)(376002)(366004)(136003)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(31686004)(6512007)(2616005)(26005)(38100700002)(86362001)(31696002)(36756003)(83380400001)(2906002)(6506007)(5660300002)(8676002)(6486002)(478600001)(107886003)(53546011)(66946007)(66556008)(316002)(8936002)(66476007)(4326008)(41300700001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NDFkaVI0a1FiWVJYbzBKVUZRdUhnamY2WGg0V2lveng3a2Nta1pFa2VYVjlU?=
+ =?utf-8?B?cWVtK01lSnh5aHl4dTh4dGJnenlQY3g2ZEoycDNwWGJNVElQVVE4MHpHNlNN?=
+ =?utf-8?B?UTlZR0xmelVjOEZmQmd5a3MxOFhsMHorRFA1RkVGRlFTYmUrWXd5Nnk1RmU2?=
+ =?utf-8?B?UTIvaXEvT0ZDR2VUQ0F6SmZPQzJER0R2K2VNTWdGZGQvTTBFZXUwaVFZTy81?=
+ =?utf-8?B?L1FMbUYwd2JZZkNiMDdMZXF3dVo0Q2JQSmp3WEdVVUhBSHE0M0t3K24xN1FR?=
+ =?utf-8?B?M0hBcUM0M0V2bjZab0hMYkx3ZUM2SzBnN2VsczNzMnhFRUl4ZHkzQlJYdkx3?=
+ =?utf-8?B?ZlVlV2xIcXhDTXRWdVJyT2M2NndJNHUxSWNZY1dMU09OVjVVcUtBbExZaUhJ?=
+ =?utf-8?B?bFY2YzZWSGhqWTRFbVM4aHhVcENXaEhWOEVqR1BvRmVEUkRQWmxhZklnOUdP?=
+ =?utf-8?B?Q2pKczFuT1J4dFB3V2Y4Z08zRmt6cDgrZWI2Y1VPa21lYXlRUjFValRJRDVz?=
+ =?utf-8?B?ZHZQUFVrVHEyMVdmWXA0dmZQcDkzeWJXZmdWTW50QVprajlLTmdrYUlSc3c0?=
+ =?utf-8?B?a3ZQNFNjOStQSlVyVFo0U3FOY3BoaFNReXc1cS9zMjRpT3JBVEhRVjdENWRs?=
+ =?utf-8?B?aWJ6ck1WdmhvMVBLTFg2TSszaURFRWNab2Y0TnphOWx3UzJ0SVhiQk5WemZn?=
+ =?utf-8?B?dkw2THJkM3htb1BiMmhPRkMrSmpCTXVUTW9Tb0p2WTl2WGpsYURMNDVGZ0lr?=
+ =?utf-8?B?Q2xla3ErODAvdE1iYTFnS0pzaTJXaEVGN3RibWY0WDlWWk5TS0xHNHNLcmc4?=
+ =?utf-8?B?b3VDY2JmWXFMRGxkQkJBMDRwZ3ZaOUZBZzJsNjJyVjRhWWlVSUtKVkFzdTZy?=
+ =?utf-8?B?b0VxRXkyR2htV2pvM0ZXQVJkaGoxRE9XMlNMOXB2UEF1bEM5VG5VRDRWeC84?=
+ =?utf-8?B?K29ZdDRRanAyOEUzbXFueHo5UEpiUzQ4U2xsdit5QU1aRHhocEdra1FvZGhU?=
+ =?utf-8?B?bUxlWXJ6VnVTZlRqN00zVkl4dVFxSlo1OTRYelJKSGhHMWorSTFlelNKUWo3?=
+ =?utf-8?B?S0NCaVROQTdRWm42Z2wvakVKZHltbnJQMEF0R2NkcUFCL2RQMzhPSDFJKzZI?=
+ =?utf-8?B?bDJBRFk4NWFmalFHV1dmcEh5bXo1UzE4K3lnSHJYK2hEak9xTm92UU1iWE9q?=
+ =?utf-8?B?YitZaGxoRU1MdWpWamcyUnJsd21CeE1QUFVuQ2g4b3FFaytqNEx1K1V0dGFO?=
+ =?utf-8?B?dVZEaktpS0E3dFFnYnhjUXlHV3kxRGZkR2hLSG1jWjhubHNNL0VrT01TMG5Y?=
+ =?utf-8?B?dDJRamRXVWpzSnU2d2pVc2ZoMVVvblRzRTI5eDRRK0FwVzdhWFU0N1BVSGwz?=
+ =?utf-8?B?cHoyRWswMFVVSHFQb3RObHpIRFlGdjQ4a1JQWmFzQjdHMjFkVFIxbElqV2NS?=
+ =?utf-8?B?R0t1SzBIUzNTS1BVV2QxaVQxUXNMNXB5c2hxbCs4bFVqN00zUUtXVHl3RjFQ?=
+ =?utf-8?B?MTI1ME1rZ21CRVJsVFM5WkRMeE1NWVBWT3ZvWklPTDdleSt5bFJ2RXh0ZkV3?=
+ =?utf-8?B?TEdNM0IxaUhGT1pJTml4cEY0TGJudFg3MnlncHBERy9XemhKbDczaHhPMzlU?=
+ =?utf-8?B?aklEbU5pKzIwNDV3OWIyaE5vYVoxTzRyRlVZdHRROHoyeE91dHdLVDZvNHcx?=
+ =?utf-8?B?ME9ONytYc3krSTFJMlNybjBGZ0c2cEZhZ0tjbzZQdXNBMDBwMy9EK0hhSEVJ?=
+ =?utf-8?B?QzlqTUNnalFRVENXTlhGTWsvZnhSdzFBNmg5SEtnVldORVdWT2JZQmRLajND?=
+ =?utf-8?B?WUtDRzZxOEJUcVB5ZWM1NE5qVUw2cmQ0MDRJbHZIdXV3Z3Z0RDd0STQvelhU?=
+ =?utf-8?B?RURycmxweC9xamY1RVJJcU9FRWtaaVJjVkxqS05aTzdLQU5KdkpVaHJheU8r?=
+ =?utf-8?B?WHhjUTRyejRFWjV4bTV4Vjk2UGx0cmFZZUVKVFFpMWovV2lUbGRSNVU4SENu?=
+ =?utf-8?B?ZUpvK0dUWUk4M1FTdHhjQm1hNnVrT2l4cGRKazJuaEFpTTNZYVNPQTMvOWYy?=
+ =?utf-8?B?UWlrTWJsMG0remhxUFBPdnFXdFNFbGVFeHA5U1JHRTR3eUxCQmZjZDdkdGY2?=
+ =?utf-8?Q?IGxe6ws4bQ7DJpRgq+8AUMPsk?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7dbccca9-d0c6-46fa-1c00-08dbdaf57f7b
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Nov 2023 16:13:34.4903 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +4/iwrXITWaaeHuf3CvRXHG+Ov2Wg2Qnxvd6YQq3vHkWxic7K8hknQQRp5u7xkuExnCdbiZqHAp7Sgz0RznZKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB7804
+Received-SPF: pass client-ip=40.107.20.112; envelope-from=den@virtuozzo.com;
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,97 +142,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 08:18:06PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > On Mon, Oct 23, 2023 at 05:36:00PM -0300, Fabiano Rosas wrote:
-> >> Currently multifd does not need to have knowledge of pages on the
-> >> receiving side because all the information needed is within the
-> >> packets that come in the stream.
-> >> 
-> >> We're about to add support to fixed-ram migration, which cannot use
-> >> packets because it expects the ramblock section in the migration file
-> >> to contain only the guest pages data.
-> >> 
-> >> Add a pointer to MultiFDPages in the multifd_recv_state and use the
-> >> pages similarly to what we already do on the sending side. The pages
-> >> are used to transfer data between the ram migration code in the main
-> >> migration thread and the multifd receiving threads.
-> >> 
-> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >
-> > If it'll be new code to maintain anyway, I think we don't necessarily
-> > always use multifd structs, right?
-> >
-> 
-> For the sending side, unrelated to this series, I'm experimenting with
-> defining a generic structure to be passed into multifd:
-> 
-> struct MultiFDData_t {
->     void *opaque;
->     size_t size;
->     bool ready;
->     void (*cleanup_fn)(void *);
-> };
-> 
-> The client code (ram.c) would use the opaque field to put whatever it
-> wants in it. Maybe we could have a similar concept on the receiving
-> side?
-> 
-> Here's a PoC I'm writing, if you're interested:
-> 
-> https://github.com/farosas/qemu/commits/multifd-packet-cleanups
-> 
-> (I'm delaying sending this to the list because we already have a
-> reasonable backlog of features and refactorings to merge.)
-
-I went through the idea, I agree it's reasonable to generalize multifd to
-drop the page constraints.  Actually I'm wondering maybe it should be
-better that we have a thread pool model for migration, then multifd can be
-based on that.
-
-Something like: job submissions, proper locks, notifications, quits,
-etc. with a bunch of API to manipulate the thread pool.
-
-And actually.. I just noticed we have. :) See util/thread-pool.c.  I didn't
-have closer look, but that looks like something good if we can work on top
-(e.g., I don't think we want the bottom halfs..), or refactor to satisfy
-all our needs from migration pov.  Not something I'm asking right away, but
-maybe we can at least keep an eye on.
-
-> 
-> > Rather than introducing MultiFDPages_t into recv side, can we allow pages
-> > to be distributed in chunks of (ramblock, start_offset, end_offset) tuples?
-> > That'll be much more efficient than per-page.  We don't need page granule
-> > here on recv side, we want to load chunks of mem fast.
-> >
-> > We don't even need page granule on sender side, but since only myself cared
-> > about perf.. and obviously the plan is to even drop auto-pause, then VM can
-> > be running there, so sender must do that per-page for now.  But now on recv
-> > side VM must be stopped before all ram loaded, so there's no such problem.
-> > And since we'll introduce new code anyway, IMHO we can decide how to do
-> > that even if we want to reuse multifd.
-> >
-> > Main thread can assign these (ramblock, start_offset, end_offset) jobs to
-> > recv threads.  If ramblock is too small (e.g. 1M), assign it anyway to one
-> > thread.  If ramblock is >512MB, cut it into slices and feed them to multifd
-> > threads one by one.  All the rest can be the same.
-> >
-> > Would that be better?  I would expect measurable loading speed difference
-> > with much larger chunks and with that range-based tuples.
-> 
-> I need to check how that would interact with the existing recv_thread
-> code. Hopefully there's nothing there preventing us from using a
-> different data structure.
-
-Sure, thanks.  Maybe there's a good way to provide a middle ground on both
-"less code changes" and "easily maintainable", if that helps on this series
-being merged.
-
-What I want to make sure is we don't introduce new complicated logic but
-even not doing the job as correct as we can.
-
--- 
-Peter Xu
-
+On 11/1/23 16:23, Andrey Drobyshev wrote:
+> Currently we emit GUEST_PANICKED event in case kvm_vcpu_ioctl() returns
+> KVM_EXIT_SYSTEM_EVENT with the event type KVM_SYSTEM_EVENT_CRASH.  Let's
+> extend this scenario and emit GUEST_PANICKED in case of an abnormal KVM
+> exit.  That's a natural thing to do since in this case guest is no
+> longer operational anyway.
+>
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> Acked-by: Denis V. Lunev <den@virtuozzo.com>
+> ---
+>   accel/kvm/kvm-all.c | 19 +++++++++++++++----
+>   1 file changed, 15 insertions(+), 4 deletions(-)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index e39a810a4e..d74b3f0b0e 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2816,6 +2816,14 @@ static void kvm_eat_signals(CPUState *cpu)
+>       } while (sigismember(&chkset, SIG_IPI));
+>   }
+>   
+> +static void kvm_emit_guest_crash(CPUState *cpu)
+> +{
+> +    kvm_cpu_synchronize_state(cpu);
+> +    qemu_mutex_lock_iothread();
+> +    qemu_system_guest_panicked(cpu_get_crash_info(cpu));
+> +    qemu_mutex_unlock_iothread();
+> +}
+> +
+>   int kvm_cpu_exec(CPUState *cpu)
+>   {
+>       struct kvm_run *run = cpu->kvm_run;
+> @@ -2969,21 +2977,24 @@ int kvm_cpu_exec(CPUState *cpu)
+>                   ret = EXCP_INTERRUPT;
+>                   break;
+>               case KVM_SYSTEM_EVENT_CRASH:
+> -                kvm_cpu_synchronize_state(cpu);
+> -                qemu_mutex_lock_iothread();
+> -                qemu_system_guest_panicked(cpu_get_crash_info(cpu));
+> -                qemu_mutex_unlock_iothread();
+> +                kvm_emit_guest_crash(cpu);
+>                   ret = 0;
+>                   break;
+>               default:
+>                   DPRINTF("kvm_arch_handle_exit\n");
+>                   ret = kvm_arch_handle_exit(cpu, run);
+> +                if (ret < 0) {
+> +                    kvm_emit_guest_crash(cpu);
+> +                }
+>                   break;
+>               }
+>               break;
+>           default:
+>               DPRINTF("kvm_arch_handle_exit\n");
+>               ret = kvm_arch_handle_exit(cpu, run);
+> +            if (ret < 0) {
+> +                kvm_emit_guest_crash(cpu);
+> +            }
+>               break;
+>           }
+>       } while (ret == 0);
+This allows to gracefully handle this problem in production
+and reset the guest using on_crash action in libvirt.
 
