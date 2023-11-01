@@ -2,65 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7883F7DE653
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 20:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6427DE656
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 20:20:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyGjU-00058P-TW; Wed, 01 Nov 2023 15:18:28 -0400
+	id 1qyGl4-00069i-V9; Wed, 01 Nov 2023 15:20:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyGjS-000588-0S
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 15:18:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyGl2-00069W-73
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 15:20:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyGjP-00006H-Hj
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 15:18:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698866302;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YB2p/Yge7SrWi7crm8YFi5rd/npzGYBR5qPMQ7ZlBto=;
- b=WZpIu7aNcBf7mvq9W+7tgYdeEs1WMVPoON9MCCsCV6pxEDKwOGOjDxpt2lt+Q73PdsQkkJ
- eru+TyOaiFlPY+S6mzjORd3GztcuehjC0nK8eKTnXoPIVhqvXUd9mXX7Om4l3eZQn4tZey
- nVhRVdycWD+drpHiNIZyqamw+RmmOq4=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyGl0-0000Ls-Q6
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 15:20:03 -0400
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-lkozvxoNPg6BAaCa7S42CQ-1; Wed, 01 Nov 2023 15:18:16 -0400
-X-MC-Unique: lkozvxoNPg6BAaCa7S42CQ-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-5a7b5754de7so394967b3.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 12:18:16 -0700 (PDT)
+ us-mta-443-WcSgO22lNoG0wuT5bOUBjw-1; Wed, 01 Nov 2023 15:19:59 -0400
+X-MC-Unique: WcSgO22lNoG0wuT5bOUBjw-1
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-6d312683a53so19253a34.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 12:19:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698866296; x=1699471096;
+ d=1e100.net; s=20230601; t=1698866399; x=1699471199;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YB2p/Yge7SrWi7crm8YFi5rd/npzGYBR5qPMQ7ZlBto=;
- b=rYVDaceSr7gzUx1oUyRezexvTICoKZ4uJbdtvuVnYz9CpzLXgLSHKo9kT7RpSyOWbo
- ynXYluoMM2rxY65zOek1J6BmwgxodDmlGl4sone2S0y3eLhjjLu7IUVjzAhDwIrCY96d
- h9jyMFRvEHvl/5IyjqEdURhAuOvkqIXa6ahysRBGDgu58s1ELPfzTfcn7saviFAP79xp
- uYTApATULZCNxbhTM4I1iLr/EpQD4ijCa0EgvsWtq1+SYkqJXqJJ6xVTrNAJqREGz0bT
- CiZQCMQB3indPv9VtEOestBSWTcubXffOEgAj3u/GrmCJKah3HCyYIYUHCDUwdrFtQWl
- RyTw==
-X-Gm-Message-State: AOJu0YwgVM4BSA4mnj28xaDGUiITbguST1LPgNVI8/xe8mhag4CGXvi4
- Zb2gh5Y5L9fXOy0mCulhCVXT9ST80OfQzigupL3QVTg7rSdAZ2OePFrz+YFMlWCp62eROt+1NW5
- KSZXFCLeu3dJrEIs=
-X-Received: by 2002:a05:690c:4502:b0:5a7:ba54:5127 with SMTP id
- gt2-20020a05690c450200b005a7ba545127mr10832102ywb.3.1698866295916; 
- Wed, 01 Nov 2023 12:18:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFN5qBl/6mGwc75mKrFts6Lvq2OdOInmBT9Xs/WUwkp/M7ZAk7srkCTedY/JVdFMah3kMn/UA==
-X-Received: by 2002:a05:690c:4502:b0:5a7:ba54:5127 with SMTP id
- gt2-20020a05690c450200b005a7ba545127mr10832091ywb.3.1698866295668; 
- Wed, 01 Nov 2023 12:18:15 -0700 (PDT)
+ bh=isHcJK8WmxdYGmLYDkJd2kzo5ICSHSGg17SNmzNpiSs=;
+ b=jIkD0AtXR7hseszNDrBr6eOQS46e9eQAv0qJKKa/1WF3VGHNn3rrQt1OF7uCgTMzOv
+ wllXxrBkskCqlY59bgwQzM3K5JaMx+g0L/hMsO96oL9lTil5Z+frMYWHFyqIeuNR/A5b
+ eqcRdkaulL6EbunwS7drg7i8NKr1dBSCVHzNqgQN4B5Z5vmn8yFyhaNUQKRVJlLBUa/+
+ aDzsbtfT3rIF5ThiLq9X/FgYnh+zMoKlo8qPGt7tvczaWTPoGgRKpFoqQKJVGJr13oIQ
+ HmI/V5woojJA07ufXTY5XDgUuKxcxS02lVTG7hyZZrZ/Q8rxXXn80AYphsG8TkmMTPrs
+ GBYA==
+X-Gm-Message-State: AOJu0YwGLa3uhy947z5IjKLgX0HB3bsUC4txiNp2s9/Spnf8iuH5WyZs
+ nJvP8Vv5y5nYVa0pPHPBdNKQAeQ5q8LhlxgPeMWXmPo+KHw/EI/1teOCt5z5SxJYxglGftDZjxj
+ o6/jBjexSAk3oZvc=
+X-Received: by 2002:a05:6830:390d:b0:6bd:6d51:e9e5 with SMTP id
+ br13-20020a056830390d00b006bd6d51e9e5mr19372230otb.0.1698866399217; 
+ Wed, 01 Nov 2023 12:19:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENI+uiSuWPYLTh8YOAmJoQP/F2EVpJmTdyaWUR5xAvypdNlsuAMm6spAVgxVGTWizDTUcy2A==
+X-Received: by 2002:a05:6830:390d:b0:6bd:6d51:e9e5 with SMTP id
+ br13-20020a056830390d00b006bd6d51e9e5mr19372211otb.0.1698866398920; 
+ Wed, 01 Nov 2023 12:19:58 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- v14-20020a0cf90e000000b0063d5d173a51sm1731537qvn.50.2023.11.01.12.18.14
+ 3-20020ac85643000000b00419b5274381sm1643678qtt.94.2023.11.01.12.19.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 12:18:15 -0700 (PDT)
-Date: Wed, 1 Nov 2023 15:16:41 -0400
+ Wed, 01 Nov 2023 12:19:58 -0700 (PDT)
+Date: Wed, 1 Nov 2023 15:18:24 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Mattias Nissler <mnissler@rivosinc.com>
 Cc: stefanha@redhat.com, jag.raman@oracle.com, qemu-devel@nongnu.org,
@@ -70,24 +61,22 @@ Cc: stefanha@redhat.com, jag.raman@oracle.com, qemu-devel@nongnu.org,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH v6 1/5] softmmu: Per-AddressSpace bounce buffering
-Message-ID: <ZUKkGcg+PPn/6M+L@x1n>
+Subject: Re: [PATCH v6 2/5] softmmu: Support concurrent bounce buffers
+Message-ID: <ZUKkgL9RiYogDxkG@x1n>
 References: <20231101131611.775299-1-mnissler@rivosinc.com>
- <20231101131611.775299-2-mnissler@rivosinc.com>
+ <20231101131611.775299-3-mnissler@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231101131611.775299-2-mnissler@rivosinc.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20231101131611.775299-3-mnissler@rivosinc.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,14 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 01, 2023 at 06:16:07AM -0700, Mattias Nissler wrote:
-> Instead of using a single global bounce buffer, give each AddressSpace
-> its own bounce buffer. The MapClient callback mechanism moves to
-> AddressSpace accordingly.
+On Wed, Nov 01, 2023 at 06:16:08AM -0700, Mattias Nissler wrote:
+> When DMA memory can't be directly accessed, as is the case when
+> running the device model in a separate process without shareable DMA
+> file descriptors, bounce buffering is used.
 > 
-> This is in preparation for generalizing bounce buffer handling further
-> to allow multiple bounce buffers, with a total allocation limit
-> configured per AddressSpace.
+> It is not uncommon for device models to request mapping of several DMA
+> regions at the same time. Examples include:
+>  * net devices, e.g. when transmitting a packet that is split across
+>    several TX descriptors (observed with igb)
+>  * USB host controllers, when handling a packet with multiple data TRBs
+>    (observed with xhci)
+> 
+> Previously, qemu only provided a single bounce buffer per AddressSpace
+> and would fail DMA map requests while the buffer was already in use. In
+> turn, this would cause DMA failures that ultimately manifest as hardware
+> errors from the guest perspective.
+> 
+> This change allocates DMA bounce buffers dynamically instead of
+> supporting only a single buffer. Thus, multiple DMA mappings work
+> correctly also when RAM can't be mmap()-ed.
+> 
+> The total bounce buffer allocation size is limited individually for each
+> AddressSpace. The default limit is 4096 bytes, matching the previous
+> maximum buffer size. A new x-max-bounce-buffer-size parameter is
+> provided to configure the limit for PCI devices.
 > 
 > Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
 
