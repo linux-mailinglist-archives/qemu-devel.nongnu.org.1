@@ -2,83 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F437DE1E5
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:08:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DBD7DE1DE
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 15:06:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyBsw-0008Jc-Ga; Wed, 01 Nov 2023 10:07:54 -0400
+	id 1qyBpx-0005jW-Uf; Wed, 01 Nov 2023 10:04:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qyBsi-0008AA-6s
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:07:42 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qyBsV-00059H-5c
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:07:36 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1cc131e52f1so7909155ad.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1698847525; x=1699452325;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TzzPa37+vveYYM4giPSatH9IvOY1pw04HIwine/8Tgg=;
- b=DcxsFIGkKwWLVtnXtr0ExrYFxNtbKWCYFXxh528UNLMmaoj2IS02q0YoiiMOs7vXCn
- euImTpIcG7ypTHhmFRrDdYM9UYvFbqfmVZEeaKENa2ol2JHkTx5h2cxE815oZ/jLZ8vI
- eTQncKym0yjgSeOgrZ5KD+CKmH8LkoBY9DDYYa91jjqqlGo/IesUl7mh9CBW7RId41sK
- 7TMcC511S8EPR6TQzA6+2pBV8QZ6n6SYZPv0He22L7IEYZ7w/pX4VPZ0Eds5xrArKyHi
- GhJ+8gpozx9ztDJhngv9HHwf74ZEMn6/GZsgEfnEzCeYBMu3B8Do/NWoECYKPOiJ7eX1
- Y/Cw==
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1qyBpu-0005j3-Sj
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:04:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1qyBpr-0004nc-0g
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 10:04:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698847478;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KU8sdn3CDmnUGLVhZ2woY8ZKBPjZCE6EPlmsSYG4PRQ=;
+ b=IgDcKRvCQiQWSkNvTOd+YX4wlpmBcKu0HSxJuYYGyX2go0GYq6DGsf3hDfFJgFIIxMQyAF
+ my+rPogONnOFgqWNIxiaXbopkHSAVd2i3lXTc5T7sAY+NC99bJknActHdsC62jb/8P1qXh
+ cPSSKCX56IT/9yvzX3husaAYq0hKmjk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-496-IdZyG5LXNbqy8KCDGj6z_A-1; Wed, 01 Nov 2023 10:04:36 -0400
+X-MC-Unique: IdZyG5LXNbqy8KCDGj6z_A-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4090fa518bbso47886945e9.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 07:04:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698847525; x=1699452325;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TzzPa37+vveYYM4giPSatH9IvOY1pw04HIwine/8Tgg=;
- b=qRMcg2MBvQUV1es/5Y/Ny0j7SN1yL0mudO2VS4FmM3rTbd4VuF++TbrW+TVJtGBafl
- czS9CqTl4QOEcwuIvmuRBreUkWELKz0zDzS58NmhMuqnhRV7f4fgCrqixqEvUjRS3iOR
- d/17ViWxrH3cm1o9e1R2kEztt3D1dytFeXVrXvsfTw+d31TTKiHvGJlNlB2GOBIbCfrD
- M4xVaCRoW1W2YcbMvE4BDm+VenccxP/UFUnnHILJd1rNjrsVKVT5/IAzEt2mNS27V2lk
- 2Pon805HO7z9rj2FjLQnRopJUWX2TCTO94zKu7GCikM+Ne1a5AkHQ13Vd7hZRNQ6HKjQ
- RYXQ==
-X-Gm-Message-State: AOJu0YwkTqt9vvDBdF4IQuA1RKLi7u1pRWbokX1sa77q2f6w+iPhkvac
- ftSJaRUDcAszTF5hmNyQ9Evc1FoxqVqFuhgKHC6SpBhe
-X-Google-Smtp-Source: AGHT+IEdYl6ope62G/udRkSb4hOmWZxm3IV7o+btlktPj+Xlgl7RAOO8e4PrwkKHhtphfLyVapgbBA==
-X-Received: by 2002:a17:903:228a:b0:1cc:3004:750c with SMTP id
- b10-20020a170903228a00b001cc3004750cmr3507375plh.20.1698847525070; 
- Wed, 01 Nov 2023 07:05:25 -0700 (PDT)
-Received: from localhost.localdomain ([125.71.94.114])
+ d=1e100.net; s=20230601; t=1698847473; x=1699452273;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KU8sdn3CDmnUGLVhZ2woY8ZKBPjZCE6EPlmsSYG4PRQ=;
+ b=J85sSioAiuiPT4RmOYKHoaMPJr2oS+w+bClZSVE6DEs7i9PwAv2nPxUBw0+SEGebRi
+ DmVJ6jXGnJcdlIguazyjV85t61/81sSMZ1IW8GByEcP3B8BkSujW+/CCACReW7zgbm37
+ 1vCoB+cygfUWVgvbFU1uxlzh59Ugfy/ds7wS7LsN0AR3DNgwmyepPQgUMcr2SKXiy5ot
+ GJVfAZp6bzod8On9Cr+/i5l8BuqbjVSRjX9NXwW2+5V8KTn7lerh6yehftU23gmLHBDW
+ uWIJI1DOgMz2LPMGxgHRwDX521tBWWCNPMClCJs0RRsH+jfc52bbomogu+vs6bGxfA/c
+ fJrg==
+X-Gm-Message-State: AOJu0YxLxea47kENFnBBrvn3MvXMXKv+fK7MpCn97HC6ZR4I2WbOkqPY
+ XZSpQbZWHRSqRkoQBJ80ei8uuYz2Oymt1yCGkSH2cENNv6+RCKT5M8rlW8MjvdUl5l7WMxGV9Sh
+ IkWTUgg95dogs0cSynDUs5MoPMnK3pdESECgxhBu7/mc7BGchXw9r7hm5EoT8Xfk6prpn2tnl3C
+ E=
+X-Received: by 2002:a5d:64af:0:b0:32f:a3fb:8357 with SMTP id
+ m15-20020a5d64af000000b0032fa3fb8357mr936595wrp.6.1698847472821; 
+ Wed, 01 Nov 2023 07:04:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHV0V8FtHtZfHv9dKvRDGy3JkUIh64RgV7hXzJdY6A1SEodVe+DYhpOWtVd22PSTWKR91uu3A==
+X-Received: by 2002:a5d:64af:0:b0:32f:a3fb:8357 with SMTP id
+ m15-20020a5d64af000000b0032fa3fb8357mr936564wrp.6.1698847472461; 
+ Wed, 01 Nov 2023 07:04:32 -0700 (PDT)
+Received: from fedora (g2.ign.cz. [91.219.240.8])
  by smtp.gmail.com with ESMTPSA id
- jn7-20020a170903050700b001cc32261bdcsm1396118plb.248.2023.11.01.07.05.18
+ w17-20020a5d6811000000b0032d2f09d991sm4267660wru.33.2023.11.01.07.04.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 07:05:24 -0700 (PDT)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Hyman Huang <yong.huang@smartx.com>
-Subject: [v3 6/6] docs/migration: Add the dirty limit section
-Date: Wed,  1 Nov 2023 22:04:09 +0800
-Message-Id: <0f2b2c63fec22ea23e4926cdeb567b7a0ebd8152.1698847223.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1698847223.git.yong.huang@smartx.com>
-References: <cover.1698847223.git.yong.huang@smartx.com>
+ Wed, 01 Nov 2023 07:04:31 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Eiichi Tsukata <eiichi.tsukata@nutanix.com>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, Maxim Levitsky <mlevitsk@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "mtosatti@redhat.com"
+ <mtosatti@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] target/i386/kvm: call kvm_put_vcpu_events() before
+ kvm_put_nested_state()
+In-Reply-To: <D3D6327A-CFF0-43F2-BA39-B48EE2A53041@nutanix.com>
+References: <20231026054201.87845-1-eiichi.tsukata@nutanix.com>
+ <D761458A-9296-492B-85B9-F196C7D11CDA@nutanix.com>
+ <78ddc3c3-6cfa-b48c-5d73-903adec6ac4a@linaro.org>
+ <87wmv93gv5.fsf@redhat.com>
+ <D3D6327A-CFF0-43F2-BA39-B48EE2A53041@nutanix.com>
+Date: Wed, 01 Nov 2023 15:04:31 +0100
+Message-ID: <87edh9h8nk.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,100 +106,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The dirty limit feature has been introduced since the 8.1
-QEMU release but has not reflected in the document, add a
-section for that.
+Eiichi Tsukata <eiichi.tsukata@nutanix.com> writes:
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <36194a8a23d937392bf13d9fff8e898030c827a3.1697815117.git.yong.huang@smartx.com>
----
- docs/devel/migration.rst | 71 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+> FYI: The EINVAL in vmx_set_nested_state() is caused by the following condition:
+> * vcpu->arch.hflags == 0
+> * kvm_state->hdr.vmx.smm.flags == KVM_STATE_NESTED_SMM_VMXON
 
-diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-index be913630c3..12c35f9bc4 100644
---- a/docs/devel/migration.rst
-+++ b/docs/devel/migration.rst
-@@ -590,6 +590,77 @@ path.
-      Return path  - opened by main thread, written by main thread AND postcopy
-      thread (protected by rp_mutex)
- 
-+Dirty limit
-+=====================
-+The dirty limit, short for dirty page rate upper limit, is a new capability
-+introduced in the 8.1 QEMU release that uses a new algorithm based on the KVM
-+dirty ring to throttle down the guest during live migration.
-+
-+The algorithm framework is as follows:
-+
-+::
-+
-+  ------------------------------------------------------------------------------
-+  main   --------------> throttle thread ------------> PREPARE(1) <--------
-+  thread  \                                                |              |
-+           \                                               |              |
-+            \                                              V              |
-+             -\                                        CALCULATE(2)       |
-+               \                                           |              |
-+                \                                          |              |
-+                 \                                         V              |
-+                  \                                    SET PENALTY(3) -----
-+                   -\                                      |
-+                     \                                     |
-+                      \                                    V
-+                       -> virtual CPU thread -------> ACCEPT PENALTY(4)
-+  ------------------------------------------------------------------------------
-+
-+When the qmp command qmp_set_vcpu_dirty_limit is called for the first time,
-+the QEMU main thread starts the throttle thread. The throttle thread, once
-+launched, executes the loop, which consists of three steps:
-+
-+  - PREPARE (1)
-+
-+     The entire work of PREPARE (1) is preparation for the second stage,
-+     CALCULATE(2), as the name implies. It involves preparing the dirty
-+     page rate value and the corresponding upper limit of the VM:
-+     The dirty page rate is calculated via the KVM dirty ring mechanism,
-+     which tells QEMU how many dirty pages a virtual CPU has had since the
-+     last KVM_EXIT_DIRTY_RING_FULL exception; The dirty page rate upper
-+     limit is specified by caller, therefore fetch it directly.
-+
-+  - CALCULATE (2)
-+
-+     Calculate a suitable sleep period for each virtual CPU, which will be
-+     used to determine the penalty for the target virtual CPU. The
-+     computation must be done carefully in order to reduce the dirty page
-+     rate progressively down to the upper limit without oscillation. To
-+     achieve this, two strategies are provided: the first is to add or
-+     subtract sleep time based on the ratio of the current dirty page rate
-+     to the limit, which is used when the current dirty page rate is far
-+     from the limit; the second is to add or subtract a fixed time when
-+     the current dirty page rate is close to the limit.
-+
-+  - SET PENALTY (3)
-+
-+     Set the sleep time for each virtual CPU that should be penalized based
-+     on the results of the calculation supplied by step CALCULATE (2).
-+
-+After completing the three above stages, the throttle thread loops back
-+to step PREPARE (1) until the dirty limit is reached.
-+
-+On the other hand, each virtual CPU thread reads the sleep duration and
-+sleeps in the path of the KVM_EXIT_DIRTY_RING_FULL exception handler, that
-+is ACCEPT PENALTY (4). Virtual CPUs tied with writing processes will
-+obviously exit to the path and get penalized, whereas virtual CPUs involved
-+with read processes will not.
-+
-+In summary, thanks to the KVM dirty ring technology, the dirty limit
-+algorithm will restrict virtual CPUs as needed to keep their dirty page
-+rate inside the limit. This leads to more steady reading performance during
-+live migration and can aid in improving large guest responsiveness.
-+
- Postcopy
- ========
- 
+This is a weird state indeed,
+
+'vcpu->arch.hflags == 0' means we're not in SMM and not in guest mode
+but kvm_state->hdr.vmx.smm.flags == KVM_STATE_NESTED_SMM_VMXON is a
+reflection of vmx->nested.smm.vmxon (see
+vmx_get_nested_state()). vmx->nested.smm.vmxon gets set (conditioally)
+in vmx_enter_smm() and gets cleared in vmx_leave_smm() which means the
+vCPU must be in SMM to have it set.
+
+In case the vCPU is in SMM upon migration, HF_SMM_MASK must be set from
+kvm_vcpu_ioctl_x86_set_vcpu_events() -> kvm_smm_changed() but QEMU's
+kvm_put_vcpu_events() calls kvm_put_nested_state() _before_
+kvm_put_vcpu_events(). This can explain "vcpu->arch.hflags == 0".
+
+Paolo, Max, any idea how this is supposed to work?
+
 -- 
-2.39.1
+Vitaly
 
 
