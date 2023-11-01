@@ -2,94 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A36A7DE48D
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 17:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90227DE491
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 17:27:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyE2B-0005rY-5a; Wed, 01 Nov 2023 12:25:35 -0400
+	id 1qyE2t-00068w-VR; Wed, 01 Nov 2023 12:26:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyE28-0005qV-Ij
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:25:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qyE2s-00067s-5Z
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:26:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyE26-0004q6-9t
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:25:32 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qyE2q-0004u0-16
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 12:26:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698855928;
+ s=mimecast20190719; t=1698855973;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lV0lZ/cuKTzK6ZGPzgxQhzShraSWRWjAi5HDooYYPOQ=;
- b=JUBthhbSVJl6zjKzJLxDCS5hgD55RCG9cQI/TADj2bNd5qkI7uQief7Y1RiRv8TIMtiSE5
- BHOrBuEr0GmZDBubcae2wBfz2ufXKr9xchhgIlZAUGRYoklPAOEa0en57f2FsuKtoZNaZS
- sm+9x7xtjQ36tWD7C28E0OI4AiyAse4=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cNeXAznQxI6QyeLLhG1+vkLTHuYD8FwJwAQ6zdhejy4=;
+ b=A+BKEpf1fLgJOSshv9ALKw3IsRpxDjG2iIkAKqIiQleTqNUMULVlcWBvREuFOsDUKHc1r3
+ Eo4QaHAadU+rTzdjZRR1nkAD3WUj3i2FA+teOfq7cEVySfmccyNGWgyHn1iPltGTAFfVAC
+ rxiJDrBmW2d68y9sh57vSaEzMupz+9k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-5Fv3mp3hMRqQZsypzuctug-1; Wed, 01 Nov 2023 12:25:27 -0400
-X-MC-Unique: 5Fv3mp3hMRqQZsypzuctug-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-77a02ceef95so116034285a.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 09:25:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698855926; x=1699460726;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lV0lZ/cuKTzK6ZGPzgxQhzShraSWRWjAi5HDooYYPOQ=;
- b=VCuKHGJc4qllAslI5AGh0gf23ZChKxemmwRHPy2O09D+pu8gD24dgLznr4+NYfPVEb
- sd6GY4mJa5p/ahlxju113u/q6rwysrRpPDVPbhCiq7vLCnP37C9PMMDJ3EurqSFtCh1a
- Nt40Wa7zMTnQ0MkcWw+9o57x6epgmjjJh32G+fYAr92xbypdR64bCC736LnSSQ7e6tq4
- 9c1hguKGNb+PCxOkfG1e6hzop94IELv55JS1mV7TFlSCG+dQch963dOo+i1B8MFodTtg
- iGtPXENFm28dXzgAhjA7zaD3Hi9hZ/nX90Vn3knD7yb3ay7YqESWzuXOys7VSpB4LWNV
- 6PKA==
-X-Gm-Message-State: AOJu0Yx2tNYdkhTpggd1QKKtYSRMPE3YkxN/+hpRA+86F22wn0yMoeWz
- fD965UDZPialdIL8gJ4+d/ChAqMRHse8g92pLtmYs2ZeUQZPCKOMCXPciuJQLHU/ShOC0FELfmn
- 4iipICvTVpz625cw=
-X-Received: by 2002:a05:620a:2b43:b0:76d:95d3:800f with SMTP id
- dp3-20020a05620a2b4300b0076d95d3800fmr16160868qkb.3.1698855926466; 
- Wed, 01 Nov 2023 09:25:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3ww5IklR2SuIzER2oa3ZCustCSjNHi9lEGRGC9E/lnJK0BfsZMPtg1eSzA6PMKb5HjHE8XQ==
-X-Received: by 2002:a05:620a:2b43:b0:76d:95d3:800f with SMTP id
- dp3-20020a05620a2b4300b0076d95d3800fmr16160844qkb.3.1698855926127; 
- Wed, 01 Nov 2023 09:25:26 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- y6-20020a05620a0e0600b0076e672f535asm1535760qkm.57.2023.11.01.09.25.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 09:25:25 -0700 (PDT)
-Date: Wed, 1 Nov 2023 12:24:22 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- armbru@redhat.com, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
- Nikolay Borisov <nborisov@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 15/29] migration/ram: Add support for 'fixed-ram'
- outgoing migration
-Message-ID: <ZUJ7tuCj3MTWFSKN@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-16-farosas@suse.de>
- <ZTjiblfeOCTY56e4@redhat.com> <ZUJteaz84IYy1LC6@x1n>
- <ZUJ0MhujevGlKFbo@redhat.com>
+ us-mta-96-mXcIBtYeO46eqnQzfpr4EA-1; Wed, 01 Nov 2023 12:26:09 -0400
+X-MC-Unique: mXcIBtYeO46eqnQzfpr4EA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D9790185A781;
+ Wed,  1 Nov 2023 16:26:08 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AE248492BE0;
+ Wed,  1 Nov 2023 16:26:07 +0000 (UTC)
+Date: Wed, 1 Nov 2023 11:26:06 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: "Denis V. Lunev" <den@virtuozzo.com>, 
+ Mike Maslenkin <mike.maslenkin@gmail.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, kwolf@redhat.com, den@openvz.org
+Subject: Re: [PATCH v2 1/1] qemu-img: do not erase destination file in
+ qemu-img dd command
+Message-ID: <ftgqxlzwmrzc7y7c4mk4cy4cjnr3xzz5nwp4siso57wr4hau7w@hq6osdgqcymg>
+References: <20230930203157.85766-1-mike.maslenkin@gmail.com>
+ <15609bb5-95d0-3d38-4c44-bcd313dc723b@virtuozzo.com>
+ <CAL77WPAHSG-B3J_G8JzJHS5OhjsnsDs_wjYyGyPcBbeyS0z8=A@mail.gmail.com>
+ <d29be9a0-3765-10b1-24f1-6aa053e4213f@virtuozzo.com>
+ <5f3a8585-18ed-4e05-ac6b-ac21178dfe79@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZUJ0MhujevGlKFbo@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <5f3a8585-18ed-4e05-ac6b-ac21178dfe79@redhat.com>
+User-Agent: NeoMutt/20231023
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,144 +87,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 01, 2023 at 03:52:18PM +0000, Daniel P. Berrangé wrote:
-> On Wed, Nov 01, 2023 at 11:23:37AM -0400, Peter Xu wrote:
-> > On Wed, Oct 25, 2023 at 10:39:58AM +0100, Daniel P. Berrangé wrote:
-> > > If I'm reading the code correctly the new format has some padding
-> > > such that each "ramblock pages" region starts on a 1 MB boundary.
-> > > 
-> > > eg so we get:
-> > > 
-> > >  --------------------------------
-> > >  | ramblock 1 header            |
-> > >  --------------------------------
-> > >  | ramblock 1 fixed-ram header  |
-> > >  --------------------------------
-> > >  | padding to next 1MB boundary |
-> > >  | ...                          |
-> > >  --------------------------------
-> > >  | ramblock 1 pages             |
-> > >  | ...                          |
-> > >  --------------------------------
-> > >  | ramblock 2 header            |
-> > >  --------------------------------
-> > >  | ramblock 2 fixed-ram header  |
-> > >  --------------------------------
-> > >  | padding to next 1MB boundary |
-> > >  | ...                          |
-> > >  --------------------------------
-> > >  | ramblock 2 pages             |
-> > >  | ...                          |
-> > >  --------------------------------
-> > >  | ...                          |
-> > >  --------------------------------
-> > >  | RAM_SAVE_FLAG_EOS            |
-> > >  --------------------------------
-> > >  | ...                          |
-> > >  -------------------------------
-> > 
-> > When reading the series, I was thinking one more thing on whether fixed-ram
-> > would like to leverage compression in the future?
-> 
-> Libvirt currently supports compression of saved state images, so yes,
-> I think compression is a desirable feature.
+On Tue, Oct 31, 2023 at 03:33:52PM +0100, Hanna Czenczek wrote:
+> Personally, and honestly, I see no actual use for qemu-img dd at all,
+> because we’re trying to mimic a subset of an interface of a rather complex
+> program that has been designed to do what it does. We can only fail at
+> that.  Personally, whenever I need dd functionality, I use
+> qemu-storage-daemon’s fuse export, and then use the actual dd program on
+> top.  Alternatively, qemu-img convert is our native interface;
+> unfortunately, its feature set is lacking when compared to qemu-img dd, but
+> I think it would be better to improve that rather than working on qemu-img
+> dd.
 
-Ah, yeah this will work too; one more copy as you mentioned below, but
-assume that's not a major concern so far (or.. will it?).
+I also agree that 'qemu-img dd' is not where we should focus; we have
+a two-way feature gap (dd can do things convert can't, and convert can
+do things dd can't), where the IDEAL world would be convert can do
+everything and then dd is then a thin wrapper that calls into convert
+under the hood.  Otherwise, we will forever be chasing bugs between
+two similar but divergent implementations, and the one that gets more
+testing (convert) will be the only one that gets timely fixes.
 
-> 
-> Due to libvirt's architecture it does compression on the stream and
-> the final step in the sequence bounc buffers into suitably aligned
-> memory required for O_DIRECT.
-> 
-> > To be exact, not really fixed-ram as a feature, but non-live snapshot as
-> > the real use case.  More below.
-> > 
-> > I just noticed that compression can be a great feature to have for such use
-> > case, where the image size can be further shrinked noticeably.  In this
-> > case, speed of savevm may not matter as much as image size (as compression
-> > can take some more cpu overhead): VM will be stopped anyway.
-> > 
-> > With current fixed-ram layout, we probably can't have compression due to
-> > two reasons:
-> > 
-> >   - We offset each page with page alignment in the final image, and that's
-> >     where fixed-ram as the term comes from; more fundamentally,
-> > 
-> >   - We allow src VM to run (dropping auto-pause as the plan, even if we
-> >     plan to guarantee it not run; QEMU still can't take that as
-> >     guaranteed), then we need page granule on storing pages, and then it's
-> >     hard to know the size of each page after compressed.
-> > 
-> > If with the guarantee that VM is stopped, I think compression should be
-> > easy to get?  Because right after dropping the page-granule requirement, we
-> > can compress in chunks, storing binary in the image, one page written once.
-> > We may lose O_DIRECT but we can consider the hardware accelerators on
-> > [de]compress if necessary.
-> 
-> We can keep O_DIRECT if we buffer in QEMU between compressor output
-> and disk I/O, which is what libvirt does. QEMU would still be saving
-> at least one extra copy compared to libvirt
-> 
-> 
-> The fixed RAM layout was primarily intended to allow easy parallel
-> I/O without needing any synchronization between threads. In theory
-> fixed RAM layout even allows you todo something fun like
-> 
->    maped_addr = mmap(save-stat-fd, offset, ramblocksize);
->    memcpy(ramblock, maped_addr, ramblocksize)
->    munmap(maped_addr)
-> 
-> which would still be buffered I/O without O_DIRECT, but might be better
-> than many writes() as you avoid 1000's of syscalls.
-> 
-> Anyway back to compression, I think if you wanted to allow for parallel
-> I/O, then it would require a different "fixed ram" approach, where each
-> multifd  thread requested use of a 64 MB region, compressed until that
-> was full, then asked for another 64 MB region, repeat until done.
+I should have objected much harder when 'qemu-img dd' was first
+proposed.  Oh well.
 
-Right, we need a constant buffer per-thread if so.
+Here's at least one prior discussion on the mailing list, in 2016(!),
+where we proposed enhancing qemu-img dd to add at least seek=; but the
+patch was never accepted.  I know there are other bugs lurking in dd
+(being unable to choose different offsets for the input and output
+file, via skip= vs. seek=, makes it hard to use compared to regular
+dd); which backs up my claim that qemu-img dd is low priority.
+
+https://lists.gnu.org/archive/html/qemu-devel/2016-08/msg03896.html
+
+And to some extent, with some convoluted JSON or --image-opts (I
+recommend trying it with qemu-storage-daemon, rather than directly in
+qemu-img), you CAN open subsets of any other image by layering a raw
+BDS with offset/size clamps on top of anything else.  It's just that
+we don't have many written examples stating how to do that, although
+we DO have such an example in the qemu-nbd documentation:
+
+| Start a long-running server listening with encryption on port 10810,
+| and allow clients with a specific X.509 certificate to connect to
+| a 1 megabyte subset of a raw file, using the export name 'subset':
+| 
+| ::
+| 
+|   qemu-nbd \
+|     --object tls-creds-x509,id=tls0,endpoint=server,dir=/path/to/qemutls \
+|     --object 'authz-simple,id=auth0,identity=CN=laptop.example.com,,\
+|               O=Example Org,,L=London,,ST=London,,C=GB' \
+|     --tls-creds tls0 --tls-authz auth0 \
+|     -t -x subset -p 10810 \
+|     --image-opts driver=raw,offset=1M,size=1M,file.driver=file,file.filename=file.raw
 
 > 
-> The reason we didn't want to break up the file format into regions like
-> this is because we wanted to allow for flexbility into configuration on
-> save / restore. eg  you might save using 7 threads, but restore using
-> 3 threads. We didn't want the on-disk layout to have any structural
-> artifact that was related to the number of threads saving data, as that
-> would make restore less efficient. eg 2 threads would process 2 chunks
-> each and  and 1 thread would process 3 chunks, which is unbalanced.
+> Summary: If we do this under a new conv=notrunc, fine with me.  I just don’t
+> think qemu-img dd is something that should be used at all.
 
-I didn't follow on why the image needs to contain thread number
-information.
-
-Can the sub-header for each compressed chunk be described as (assuming
-under specific ramblock header, so ramblock is known):
-
-  - size of compressed data
-  - (start_offset, end_offset) of pages this chunk of data represents
-
-Then when saving, we assign 64M to each thread no matter how many are
-there, for each thread it first compresses 64M into binary, knowing the
-size, then request for a writeback to image, with the chunk header and
-binary flushed.
-
-Then the final image will be a sequence of chunks for each ramblock.
-
-Assuming decompress can do the same by assigning different chunks to each
-decompress thread, no matter how many are there.
-
-Would that work?
-
-To go back to the original topic: I think it's fine if Libvirt will do the
-compression, that is more flexible indeed to do per-file with whatever
-compression algorithm the uesr wants, and even cover non-RAM data.
-
-I think such considerations / thoughts over compression solution may also
-be nice to be documented in the docs/ under this feature.
-
-Thanks,
+I'm not even sure it is worth adding anything to qemu-img dd.  At this
+point, that would just be increasing its technical debt; we're better
+off putting lipstick on a pig.
 
 -- 
-Peter Xu
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
