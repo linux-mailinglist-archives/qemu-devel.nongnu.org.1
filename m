@@ -2,165 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820D47DDADA
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 03:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AAF7DDAF0
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 Nov 2023 03:26:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qy0gA-0003S3-ER; Tue, 31 Oct 2023 22:09:59 -0400
+	id 1qy0uH-0006OS-03; Tue, 31 Oct 2023 22:24:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eiichi.tsukata@nutanix.com>)
- id 1qy0g6-0003Rq-3n
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 22:09:54 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eiichi.tsukata@nutanix.com>)
- id 1qy0g1-0004nG-GS
- for qemu-devel@nongnu.org; Tue, 31 Oct 2023 22:09:53 -0400
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39VNTIwZ000794; Tue, 31 Oct 2023 19:09:44 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:references:in-reply-to
- :content-type:content-id:content-transfer-encoding:mime-version;
- s=proofpoint20171006; bh=Bscjw4JND+QeS2XRAK5ihZXkoTSkm3BaVliXGX
- 4b+Rk=; b=nzuWTA4t+xfzjCKxtvuyZHX+7jnjhccovPC3S2H+VOn6ei1sKmdf45
- rK6RlUejia8E8nh1hvAv5jS09y2GOZM4HLGjj0T/eyPhTyanzzmJ5pUnMATCJOC8
- 3cD1ZnTbqw5X77vRX7/uOsaNMy7h7VQPjARI0XRGgv3P8SWqPYL1m/MI/zdANM+S
- jgR9r+U2HHn0mTx/nRW5Z6d5dv9ZUxzZam0bxysXew+MG6LJn8NPZcMt9vH/RF9M
- WSEyszKVRPMIZQvY4wsqw9vrFAJAGr12NzWtuKXgqrX8jQp8SUlXJOljAtBlVmdn
- GwGkBp9Bya+SHgPMSeO4ozf2uZ16tVNg==
-Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3u11uuxsp7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 31 Oct 2023 19:09:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BPMiyRAM+Uc0r0NpuoitP8BCaVPIddZJB4OCmpdhLuSydRGkE2RqX1StCzEEzBoRWbG5GTgyiXLrM/+/742qYohvkUAZel7di0lWaKQYOQJIlzFqG+3x5DES7Jk1VNej+E+7KXhqUF9A3F+Bc3q1+MeBs0yYFani9Y3mNWr62SX5WTfSeHqTiHLMi3I8DJCqOOC1TAHA9YHKhZlNJ+VBOREHMXaWWXQPJPRr5w/BKkBK4sXhnFTPX9H0lXU9baWO/1ErXL4IJ7pNtH+5mTG/4yZKIxleOz8FPIubIdV2WrzcaYRulmPUduYH83uuuwo68juDW+oX5Ai/tdnZFG3hsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Bscjw4JND+QeS2XRAK5ihZXkoTSkm3BaVliXGX4b+Rk=;
- b=Zqu3w95tmUu/oSn0FdXIYFD5LSxsF/yQFM0U5UlIeaiVuJSG3YM6gkSodyc1/eEvS31+n8xNpylM+6b+iVSql8ghDEL3osC/xkDJa4elzbT4ZP8rRuHHS+bHHqj6P+YDmukRPKeRW0ivrNXH8g0BlVynkE4aRxbkZEvXIyWldeTnk752q6iZV9Qg54E25v6TndfM3txbTHmpF4dZlQBjbDsjhmSxcUw/KrCXR6amHpOJaRvIOhoFMPvHJ/9LLg1KI6MesWicPBgweyx+mCvpfyu9X/P0y526uogQUq2rggIy5KBAbo3W75WvrxDZysZq5erFit2GUVXyfvQU3VcpNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Bscjw4JND+QeS2XRAK5ihZXkoTSkm3BaVliXGX4b+Rk=;
- b=KNUfbJd7hoJj/QnifMgpszdcWURcqZ9fBrxyyJPCzGxDt4ft0KfRScgj7nlaWoL032soAi2kQNBab4inoVd/KkPbjQ5sKCjZ//EeN5N95y9ZuJrL3eQHNtJZY73vFFQD8aecrqiYnQn+Pk/RZQjj7b0rzx0Hp8o15D72OyTFQRHCECYmb/z9VZzs9HFMrwDVJ6988qzYY085SNEoKUWLRCYUsjPwaTOEv7mtBr0guOxiFoz01HFLHGMEoX0q0fiq+qB+AJwEODkt+Lf7w+Tnn+FrYa8vmm0rsGdLLgQoizl4Semclq5qRtSm5TrRv13esH7DdE2WdhbnEut0C0P7ZA==
-Received: from CH0PR02MB8041.namprd02.prod.outlook.com (2603:10b6:610:106::10)
- by CO6PR02MB7620.namprd02.prod.outlook.com (2603:10b6:303:ae::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.29; Wed, 1 Nov
- 2023 02:09:41 +0000
-Received: from CH0PR02MB8041.namprd02.prod.outlook.com
- ([fe80::22f:727b:8c9a:e456]) by CH0PR02MB8041.namprd02.prod.outlook.com
- ([fe80::22f:727b:8c9a:e456%6]) with mapi id 15.20.6933.019; Wed, 1 Nov 2023
- 02:09:40 +0000
-From: Eiichi Tsukata <eiichi.tsukata@nutanix.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-CC: =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "mtosatti@redhat.com"
- <mtosatti@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Maxim Levitsky
- <mlevitsk@redhat.com>
-Subject: Re: [PATCH] target/i386/kvm: call kvm_put_vcpu_events() before
- kvm_put_nested_state()
-Thread-Topic: [PATCH] target/i386/kvm: call kvm_put_vcpu_events() before
- kvm_put_nested_state()
-Thread-Index: AQHaB89aXI5Xqc3T6k+NVdRuk3VgqLBbkLwAgAAA7YCAADJMAIAI/UwA
-Date: Wed, 1 Nov 2023 02:09:40 +0000
-Message-ID: <D3D6327A-CFF0-43F2-BA39-B48EE2A53041@nutanix.com>
-References: <20231026054201.87845-1-eiichi.tsukata@nutanix.com>
- <D761458A-9296-492B-85B9-F196C7D11CDA@nutanix.com>
- <78ddc3c3-6cfa-b48c-5d73-903adec6ac4a@linaro.org> <87wmv93gv5.fsf@redhat.com>
-In-Reply-To: <87wmv93gv5.fsf@redhat.com>
-Accept-Language: ja-JP, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3731.700.6)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR02MB8041:EE_|CO6PR02MB7620:EE_
-x-ms-office365-filtering-correlation-id: 9c705b98-37de-4edb-cb00-08dbda7f9b7a
-x-proofpoint-crosstenant: true
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: pPjFVPloBztQeAF3Wlq8CIgzK1zosa5zbGrt4MAaMSAqqyk3szZwI8CzjGH5YIiMgICFS0cuay+RO2ExzoC6jOXlSOMZJzuiBLCQhhz3/D2KonREixlGQ5GDvA4zhRKlk96/4VCQzFrgzBL2nktoUQR3Vz7FqcFOmqcELpOL9TsAAW9eFmTW8Ytq951XevQl8FdFwRT5XW4wTVbKT/eWips91ZQ0x+Ki5Mdsaz/42gLAkZMlH3hdrckLSxPf47hXatwxA2N2tS+soM2WvJp34a4YXOJNzVqTGyPYxSc2NUfScl0AoDUyS7DxIo0eHy16KCP59E1bMwxwcv4VzHe1vXxZTFsk7xsPzAQAg2WtcgMHwxkGnlejdzWcGwI6weHyaORWBtX5tOMROhDBVX8xn5SqZP+ZQRX0K0dRbiAi+9RS3f++OpsmA9qsKxbxbP7i46JStdygtk+1IvfXJVMwOGHYq2e5Yi7mMKzba8foWvkemA4v0qKQ9DWGGjZhQtPpKDsfnM5jdrZYknywwoXOBxBWwdqZ3zyggtGjnbcKbK+c+vLzgZ1IyZyO42/hMNan77eF4jwVK5AMEQpyLVPY5FPQgIvYZb6g4HD3xYiHPNUnMMZ0R9joiyrEhdnz9Tt0IO5BZOpqa0kaWZmU94MLsA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR02MB8041.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39860400002)(366004)(396003)(376002)(136003)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(38100700002)(5660300002)(64756008)(6916009)(122000001)(66476007)(66946007)(66556008)(66446008)(54906003)(6512007)(316002)(8676002)(8936002)(41300700001)(76116006)(44832011)(91956017)(4326008)(478600001)(86362001)(2906002)(6486002)(53546011)(6506007)(38070700009)(71200400001)(33656002)(36756003)(83380400001)(966005)(2616005)(26005)(45980500001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MFZOQ2dvbDRoVzdVanBUMUQ4TXZzd2c4dnhpUmxLVnVoRG5MZmJqbXhMUWlm?=
- =?utf-8?B?alNHdU03YWI3dUg0OXFNc2REUWxBcUJ0S1NMZ2J0emxJTEp0TEtROWdiR2lo?=
- =?utf-8?B?b2cwMURQMUdURlZBcEljbWQwWGdLMzJoSStKRHdoRi9EdGs1dUo2MHhGZlU0?=
- =?utf-8?B?SE0zMGtaNEZVbGcwellvU2Y5cW50QkhRWFp1aWlkbUM1VzNKOHcyelI5ejdG?=
- =?utf-8?B?RkdxWm9aRzd1TzNFTkRBcmZiSkNLNGhVTXQwRFpzWkcxWHMrVW5KM3p0K3lP?=
- =?utf-8?B?aXhuUjBFeDFTTTIzRUhMUi9LL1dnLytpbnpyMGZVbUx2SXJEaTVRYTNXVnJV?=
- =?utf-8?B?SjJ5ZHlCZHpualZ4TENLQUpyUC9nb0dxQ2VKWWwvQlU3OXoyZ3hQbEIrcjI0?=
- =?utf-8?B?TFFJNzQ0WGU2RllDdkFCYzlXWWVNQWUrbUlxYkRzbHVwaFNtME8xaU5EUUM0?=
- =?utf-8?B?clZCWFBwTXVpMkFnMmNIMUhmRjV5Yll3Nk5QSkl5S1BKSFJwSlEwczlVV2Jm?=
- =?utf-8?B?dUdhTUlmblFZNitRekgxMkIxdXpPQVJyanlOdUh6Y281TktpcHJXTmN4bUcv?=
- =?utf-8?B?WkNDUkU2dkFWd0htTjllUUF2U2JNdmx0Y0tEblRYTTNvVi9WakFoeks4OFRB?=
- =?utf-8?B?NHBUNFBuTGdQRUQ2WXFPbGxpaHdkSkZ0clRIZ0hWOTBjMnRUT2dvTXozaUQy?=
- =?utf-8?B?UHVqT20xWTVQSzYrbXZaMmpHWm0vWmliOWNVaTAwOEExZ0wvSFlLMU9QSGtU?=
- =?utf-8?B?cVBQMmdxV0NVNnJmR0cvTkEreW5uajhBVlQzQVE5K3hRdFFtNTdiam1ib0pt?=
- =?utf-8?B?OG00ak1ja2ZtNk93a1M1aitnWWVEbzNrZmcybnJacG5uT2c4ZjhMRlpabEph?=
- =?utf-8?B?QjQ2RzdpdVFNWnc4RFNxeDBPRGJGSUpMNFRySWN3c2hFV0U5L1ZyYmhYTHJJ?=
- =?utf-8?B?Nng3R3JpNmlRWkNJeUhPQzNteGUrYWR3NFVOVWNiOFh4enBhNGhxa2VyOWNh?=
- =?utf-8?B?cElnVGxYZXRPcDJkVXR2RnRLRE1lMGJJdUNMUXptOFZwSytQVU90emFyeXQz?=
- =?utf-8?B?OUU0NzRtTzFiZUs4blUxcEJaWHJza2NDNUp5U1hiOEM4QjRXbm5IR3lodVR2?=
- =?utf-8?B?bGl0ZFFvOEtBZjFTMklNMG5PTHcyY0xiS1BHdXYvS1BCd09JakJwTThGTDFn?=
- =?utf-8?B?WEdpakRBU2NzUW9KMUw0Mnp0TStMZWtNa2x1aHJ1VEZMMkZJeWN2a283YTUw?=
- =?utf-8?B?V2xVb0FXRTNxUUZGdWxXWTA2K1lIY3oxei9vdkJwMURNVis0MEpuN2RXSFpq?=
- =?utf-8?B?b0pZaHo5ZUlNbERYalhZUDlLdnkvT2M2N0tjaHdDUjQ1Sk4rOXhBSDJ0RnRY?=
- =?utf-8?B?MUFsSEFkNjhWbFFRYmhsekhZcHd2THVQMHFLVEgySFdWZU0wdmxMUEwvZ1l1?=
- =?utf-8?B?dFpjS0dodWFlQjhNN0tvZ0s4Wjd0TnRxNVd1VFNkdXB4dFpvVjBjWmptYng1?=
- =?utf-8?B?L3FtT095ZmN0RStOc1dZS3c0aC9QZUlhS1RzL3o3QWZraUdhYkFIT0trbHVh?=
- =?utf-8?B?aVRJUWJqWGNBNXdmOWRtT0FQbHh3bTlvbVhlTDh2UHhaa251K0RWSEpiRHVN?=
- =?utf-8?B?bG1UczlyQkFZRElrRkN6ZFZIUEF3L1U4U3B5bkh3QVNCdFlOMm94SHg2RllO?=
- =?utf-8?B?QTJlK1lWS1I3SEZua0c4Rk0rTFBsRWNJaEJhZUFxTUNTRTk2OGM4QysvZ2I0?=
- =?utf-8?B?ZjI4RjdXc0xqQnZFNVZNTFh5TFlaR1VHWWF1bEtUY1Q0R3NNVFhkcUdOWlA4?=
- =?utf-8?B?QlBIS2h1clpyTG5EZ2tqUFNzV2EvbjFheDlvdVZQaDduY3RyWnh6M2w3OE9H?=
- =?utf-8?B?akxHUTFZQmFFNDVoWnNleFQ1L2FpcUd0bVZrdTRjcEVyaWd4TncvOCtnaWl2?=
- =?utf-8?B?V0g5UEdaTDd1Z1JDYkg2Wmh2TEFGVEtrYXRoejB6VG1EYm4zNDJtVWZlWkJw?=
- =?utf-8?B?RzU5L2NoRWhncGFFL1NsWlhRU0Y2ZzVvRHIxZVNGWWlNbDcxVEZFeWR0ZFZ1?=
- =?utf-8?B?ZER2YVhBTmlUY3VzaWNHZDlMa1l4ZHAzR0ZlWmhUcnBuQ0JvUlQ0ZEdueHMw?=
- =?utf-8?B?NW14WVloTDBOQ2llWkphWjlINEU3UkdSWXVheFFJL1h6bndOWEhPUnA2bVNa?=
- =?utf-8?Q?dzM2GimgSthYja9o0UpwEP8=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9C89B62294478045B6E4FE83F81B0E7B@namprd02.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
+ id 1qy0uF-0006O5-03
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 22:24:31 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
+ id 1qy0uC-0007De-F4
+ for qemu-devel@nongnu.org; Tue, 31 Oct 2023 22:24:30 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-9adb9fa7200so89442566b.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Oct 2023 19:24:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698805465; x=1699410265; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=JykctbLIqjznSk9poO/FFYEuTHHswdbcfuut5yZUzbQ=;
+ b=MHimCqY1rc7Zt82Fu+UhbN3l6eZoRl0Oy8OgPQDUPLt0vpK/WSomHe9lunMJoUt5zT
+ oRLmjGSHsem21NyAhNHcV/M39O93pmvkQ0rdWUPLLrpEve8WnuK/CxfIGonoRrGUAec7
+ VU7Z2eD3zonML8J8aPfqsJCMVjppOvWexKWuNJl/xd4sGi0FxziT8WLFqWcVY4kKrQKx
+ bA2Q8FazTGlfijryOYuTWmKWnv6goTjLhMPNeBiC+zXbWW2ZjuaC6BDhR5krtDiLX29x
+ 6f5uv/njnvJyaSbFWpfgt8lmeqAYk8ekrDazPCQLpj6VBRkG67SmeOLVnLdXG9fE8PJZ
+ /nFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698805465; x=1699410265;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JykctbLIqjznSk9poO/FFYEuTHHswdbcfuut5yZUzbQ=;
+ b=PZKz5XGJDBzT0AAhj8D3VncLjC9AVscxArvjLhOIvMMFdzHEKUrpM/GuqkuLa2BFh5
+ 43MGrAfcIDl1eFD13HFehOVfsWodx19PZnFi21YSL+qPKlJ7DdUX31jcDPM72u268BZd
+ EvVpwPtb+5nxAnn+Uo1aW4o7jSIrydtYA5ZCo+HtLLsCmhvjFW3UbP5ZjvtVc0Yu4Jfr
+ wFfIgTY2e+2u7jcXu1OCNDCMSAmbJ5qA1w5+CoodJJL/y1HZzOurq30LngDPvmJzz1P/
+ gkBvpw1wah+FrlFGc1Lu0hMwobkoS3YGUaTvv9+GjINKO0lfKRENLUTcPVUELVd+9rw8
+ +A3w==
+X-Gm-Message-State: AOJu0YwRfiZTaI9jwyRWcKSTPOfAYcV78TkAJ9Rl9JK9/L1dwPkapnFL
+ UygBS0r2a78q+M0LksbvIrFihTwIAE2IZ2EG4ko=
+X-Google-Smtp-Source: AGHT+IHZKugDXiFGDLW0HewjhnWu2NdA937CCGBsgEjjusZbRUuqDzJ/W/EqO5BOgsK76AR+ztQZrqkoWRhY6MYu9Gw=
+X-Received: by 2002:a17:906:ef09:b0:9bd:a5a9:34de with SMTP id
+ f9-20020a170906ef0900b009bda5a934demr936603ejs.23.1698805465066; Tue, 31 Oct
+ 2023 19:24:25 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB8041.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c705b98-37de-4edb-cb00-08dbda7f9b7a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Nov 2023 02:09:40.7091 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +2CUWtvsziTLmBsa2+9isnNm0/8BNdnqvqpog/i07zx9F8qR8DVxdS0k/pgAOZ2UHplwOgplVDgqaG7ToHtQakcT/h1NUJybmfsBs0sgyoI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB7620
-X-Proofpoint-ORIG-GUID: u9_a8H-HDSvi3LYoTpS2sg4IRog7zdW9
-X-Proofpoint-GUID: u9_a8H-HDSvi3LYoTpS2sg4IRog7zdW9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-31_10,2023-10-31_03,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=eiichi.tsukata@nutanix.com; helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.481,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230730064057.357598-1-dinahbaum123@gmail.com>
+ <20230730064057.357598-2-dinahbaum123@gmail.com> <87r0omzz78.fsf@pond.sub.org>
+In-Reply-To: <87r0omzz78.fsf@pond.sub.org>
+From: Dinah B <dinahbaum123@gmail.com>
+Date: Tue, 31 Oct 2023 22:24:13 -0400
+Message-ID: <CAH50XRd_7w1OzLpyBZt-MRL4HMA6_MoKg28qO3h65UU2Dt2uFw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] qapi: Moved architecture agnostic data types to
+ `machine`
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>
+Content-Type: multipart/alternative; boundary="00000000000049b27106090df8df"
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=dinahbaum123@gmail.com; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -177,130 +91,485 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RllJOiBUaGUgRUlOVkFMIGluIHZteF9zZXRfbmVzdGVkX3N0YXRlKCkgaXMgY2F1c2VkIGJ5IHRo
-ZSBmb2xsb3dpbmcgY29uZGl0aW9uOg0KKiB2Y3B1LT5hcmNoLmhmbGFncyA9PSAwDQoqIGt2bV9z
-dGF0ZS0+aGRyLnZteC5zbW0uZmxhZ3MgPT0gS1ZNX1NUQVRFX05FU1RFRF9TTU1fVk1YT04NCg0K
-UGxlYXNlIGZlZWwgZnJlZSB0byBhc2sgbWUgYW55IG1vcmUgZGF0YSBwb2ludHMgeW91IG5lZWQu
-DQoNClRoYW5rcywNCkVpaWNoaQ0KDQo+IE9uIE9jdCAyNiwgMjAyMywgYXQgMTc6NTIsIFZpdGFs
-eSBLdXpuZXRzb3YgPHZrdXpuZXRzQHJlZGhhdC5jb20+IHdyb3RlOg0KPiANCj4gQ2MnaW5nIE1h
-eCA6LSkgQXQgZmlyc3QgZ2xhbmNlIHRoZSBjb25kaXRpb24gaW4gdm14X3NldF9uZXN0ZWRfc3Rh
-dGUoKQ0KPiBpcyBjb3JyZWN0IHNvIEkgZ3Vlc3Mgd2UgZWl0aGVyIGhhdmUgYSBzdGFsZQ0KPiBL
-Vk1fU1RBVEVfTkVTVEVEX1JVTl9QRU5ESU5HIHdoZW4gaW4gU01NIG9yIHN0YWxlIHNtbS5mbGFn
-cyB3aGVuIG91dHNpZGUNCj4gb2YgaXQuLi4NCj4gDQo+IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOp
-IDxwaGlsbWRAbGluYXJvLm9yZz4gd3JpdGVzOg0KPiANCj4+IENjJ2luZyBWaXRhbHkuDQo+PiAN
-Cj4+IE9uIDI2LzEwLzIzIDA3OjQ5LCBFaWljaGkgVHN1a2F0YSB3cm90ZToNCj4+PiBIaSBhbGws
-DQo+Pj4gDQo+Pj4gSGVyZSBpcyBhZGRpdGlvbmFsIGRldGFpbHMgb24gdGhlIGlzc3VlLg0KPj4+
-IA0KPj4+IFdlJ3ZlIGZvdW5kIHRoaXMgaXNzdWUgd2hlbiB0ZXN0aW5nIFdpbmRvd3MgVmlydHVh
-bCBTZWN1cmUgTW9kZSAoVlNNKSBWTXMuDQo+Pj4gV2Ugc29tZXRpbWVzIHNhdyBsaXZlIG1pZ3Jh
-dGlvbiBmYWlsdXJlcyBvZiBWU00tZW5hYmxlZCBWTXMuIEl0IHR1cm5lZA0KPj4+IG91dCB0aGF0
-IHRoZSBpc3N1ZSBoYXBwZW5zIGR1cmluZyBsaXZlIG1pZ3JhdGlvbiB3aGVuIFZNcyBjaGFuZ2Ug
-Ym9vdCByZWxhdGVkDQo+Pj4gRUZJIHZhcmlhYmxlcyAoZXg6IEJvb3RPcmRlciwgQm9vdDAwMDEp
-Lg0KPj4+IEFmdGVyIHNvbWUgZGVidWdnaW5nLCBJJ3ZlIGZvdW5kIHRoZSByYWNlIEkgbWVudGlv
-bmVkIGluIHRoZSBjb21taXQgbWVzc2FnZS4NCj4+PiANCj4+PiBTeW1wdG9tDQo+Pj4gPT09PT09
-PQ0KPj4+IA0KPj4+IFdoZW4gaXQgaGFwcG5lcyB3aXRoIHRoZSBsYXRlc3QgUWVtdSB3aGljaCBo
-YXMgY29tbWl0IGh0dHBzOi8vdXJsZGVmZW5zZS5wcm9vZnBvaW50LmNvbS92Mi91cmw/dT1odHRw
-cy0zQV9fZ2l0aHViLmNvbV9xZW11X3FlbXVfY29tbWl0XzcxOTFmMjRjN2ZjZmJjMTIxNmQwOSZk
-PUR3SUZhUSZjPXM4ODNHcFVDT0NoS09IaW9jWXRHY2cmcj1keTAxRHI0THk4bWh2blVkeDFwWmho
-VDFia3E0aDl6NWFWV3UzcGFvWnRrJm09dzd3OWVvV0RKa3pOcE1BUDEtLWxqVEVrR2tIWmtCXzgx
-SkJyMnZkSzQ3U0syUlFGeUFKSEk1ZjEzbjJieWJRRiZzPW9yUjdwOWlpVUZtdzk4VnVoeEItVWM2
-SnRuOTFMZG0xVjZxT2hJcVJLbmMmZT0gDQo+Pj4gUWVtdSBzaG93cyB0aGUgZm9sbG93aW5nIGVy
-cm9yIG1lc3NhZ2Ugb24gZGVzdGluYXRpb24uDQo+Pj4gDQo+Pj4gICBxZW11LXN5c3RlbS14ODZf
-NjQ6IEZhaWxlZCB0byBwdXQgcmVnaXN0ZXJzIGFmdGVyIGluaXQ6IEludmFsaWQgYXJndW1lbnQN
-Cj4+PiANCj4+PiBJZiBpdCBoYXBwZW5zIHdpdGggb2xkZXIgUWVtdSB3aGljaCBkb2Vzbid0IGhh
-dmUgdGhlIGNvbW1pdCwgdGhlbiB3ZSBzZWUgIENQVSBkdW1wIHNvbWV0aGluZyBsaWtlIHRoaXM6
-DQo+Pj4gDQo+Pj4gICBLVk0gaW50ZXJuYWwgZXJyb3IuIFN1YmVycm9yOiAzDQo+Pj4gICBleHRy
-YSBkYXRhWzBdOiAweDAwMDAwMDAwODAwMDBiMGUNCj4+PiAgIGV4dHJhIGRhdGFbMV06IDB4MDAw
-MDAwMDAwMDAwMDAzMQ0KPj4+ICAgZXh0cmEgZGF0YVsyXTogMHgwMDAwMDAwMDAwMDAwNjgzDQo+
-Pj4gICBleHRyYSBkYXRhWzNdOiAweDAwMDAwMDAwN2Y4MDkwMDANCj4+PiAgIGV4dHJhIGRhdGFb
-NF06IDB4MDAwMDAwMDAwMDAwMDAyNg0KPj4+ICAgUkFYPTAwMDAwMDAwMDAwMDAwMDAgUkJYPTAw
-MDAwMDAwMDAwMDAwMDAgUkNYPTAwMDAwMDAwMDAwMDAwMDAgUkRYPTAwMDAwMDAwMDAwMDBmNjEN
-Cj4+PiAgIFJTST0wMDAwMDAwMDAwMDAwMDAwIFJEST0wMDAwMDAwMDAwMDAwMDAwIFJCUD0wMDAw
-MDAwMDAwMDAwMDAwIFJTUD0wMDAwMDAwMDAwMDAwMDAwDQo+Pj4gICBSOCA9MDAwMDAwMDAwMDAw
-MDAwMCBSOSA9MDAwMDAwMDAwMDAwMDAwMCBSMTA9MDAwMDAwMDAwMDAwMDAwMCBSMTE9MDAwMDAw
-MDAwMDAwMDAwMA0KPj4+ICAgUjEyPTAwMDAwMDAwMDAwMDAwMDAgUjEzPTAwMDAwMDAwMDAwMDAw
-MDAgUjE0PTAwMDAwMDAwMDAwMDAwMDAgUjE1PTAwMDAwMDAwMDAwMDAwMDANCj4+PiAgIFJJUD0w
-MDAwMDAwMDAwMDBmZmYwIFJGTD0wMDAxMDAwMiBbLS0tLS0tLV0gQ1BMPTAgSUk9MCBBMjA9MSBT
-TU09MCBITFQ9MA0KPj4+ICAgRVMgPTAwMjAgMDAwMDAwMDAwMDAwMDAwMCBmZmZmZmZmZiAwMGMw
-OTMwMCBEUEw9MCBEUyAgIFstV0FdDQo+Pj4gICBDUyA9MDAzOCAwMDAwMDAwMDAwMDAwMDAwIGZm
-ZmZmZmZmIDAwYTA5YjAwIERQTD0wIENTNjQgWy1SQV0NCj4+PiAgIFNTID0wMDIwIDAwMDAwMDAw
-MDAwMDAwMDAgZmZmZmZmZmYgMDBjMDkzMDAgRFBMPTAgRFMgICBbLVdBXQ0KPj4+ICAgRFMgPTAw
-MjAgMDAwMDAwMDAwMDAwMDAwMCBmZmZmZmZmZiAwMGMwOTMwMCBEUEw9MCBEUyAgIFstV0FdDQo+
-Pj4gICBGUyA9MDAyMCAwMDAwMDAwMDAwMDAwMDAwIGZmZmZmZmZmIDAwYzA5MzAwIERQTD0wIERT
-ICAgWy1XQV0NCj4+PiAgIEdTID0wMDIwIDAwMDAwMDAwMDAwMDAwMDAgZmZmZmZmZmYgMDBjMDkz
-MDAgRFBMPTAgRFMgICBbLVdBXQ0KPj4+ICAgTERUPTAwMDAgMDAwMDAwMDAwMDAwMDAwMCBmZmZm
-ZmZmZiAwMGMwMDAwMA0KPj4+ICAgVFIgPTAwNDAgMDAwMDAwMDA3ZjdkZjA1MCAwMDA2OGZmZiAw
-MDgwOGIwMCBEUEw9MCBUU1M2NC1idXN5DQo+Pj4gICBHRFQ9ICAgICAwMDAwMDAwMDdmN2RmMDAw
-IDAwMDAwMDRmDQo+Pj4gICBJRFQ9ICAgICAwMDAwMDAwMDdmODM2MDAwIDAwMDAwMWZmDQo+Pj4g
-ICBDUjA9ODAwMTAwMzMgQ1IyPTAwMDAwMDAwMDAwMGZmZjAgQ1IzPTAwMDAwMDAwN2Y4MDkwMDAg
-Q1I0PTAwMDAwNjY4DQo+Pj4gICBEUjA9MDAwMDAwMDAwMDAwMDAwMCBEUjE9MDAwMDAwMDAwMDAw
-MDAwMCBEUjI9MDAwMDAwMDAwMDAwMDAwMCBEUjM9MDAwMDAwMDAwMDAwMDAwMCAgICBEUjY9MDAw
-MDAwMDBmZmZmMGZmMCBEUjc9MDAwMDAwMDAwMDAwMDQwMA0KPj4+ICAgRUZFUj0wMDAwMDAwMDAw
-MDAwZDAwDQo+Pj4gICBDb2RlPT8/ID8/ID8/ID8/ID8/ID8/ID8/ID8/ID8/ID8/ID8/ID8/ID8/
-ID8/ID8/ID8/ID8/ID8/ID8/ID8/IDw/Pz4gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8g
-Pz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8gPz8N
-Cj4+PiANCj4+PiBJbiB0aGUgYWJvdmUgZHVtcCwgQ1IzIGlzIHBvaW50aW5nIHRvIFNNUkFNIHJl
-Z2lvbiB0aG91Z2ggU01NPTAuDQo+Pj4gDQo+Pj4gUmVwcm8NCj4+PiA9PT09PQ0KPj4+IA0KPj4+
-IFJlcHJvIHN0ZXAgaXMgcHJldHR5IHNpbXBsZS4NCj4+PiANCj4+PiAqIFJ1biBTTU0gZW5hYmxl
-ZCBMaW51eCBndWVzdCB3aXRoIHNlY3VyZSBib290IGVuYWJsZWQgT1ZNRi4NCj4+PiAqIFJ1biB0
-aGUgZm9sbG93aW5nIHNjcmlwdCBpbiB0aGUgZ3Vlc3QuDQo+Pj4gDQo+Pj4gICAvdXNyL2xpYmV4
-ZWMvcWVtdS1rdm0gJg0KPj4+ICAgd2hpbGUgdHJ1ZQ0KPj4+ICAgZG8NCj4+PiAgICAgZWZpYm9v
-dG1nciAtbiAxDQo+Pj4gICBkb25lDQo+Pj4gDQo+Pj4gKiBEbyBsaXZlIG1pZ3JhdGlvbg0KPj4+
-IA0KPj4+IE9uIG15IGVudmlyb25tZW50LCBsaXZlIG1pZ3JhdGlvbiBmYWlscyBpbiAyMCUuDQo+
-Pj4gDQo+Pj4gVk1YIHNwZWNpZmljDQo+Pj4gPT09PT09PT09PT09DQo+Pj4gDQo+Pj4gVGhpcyBp
-c3N1ZSBpcyBWTVggc2VwY2lmaWMgYW5kIFNWTSBpcyBub3QgYWZmZWN0ZWQgYXMgdGhlIHZhbGlk
-YXRpb24NCj4+PiBpbiBzdm1fc2V0X25lc3RlZF9zdGF0ZSgpIGlzIGEgYml0IGRpZmZlcmVudCBm
-cm9tIFZNWCBvbmUuDQo+Pj4gDQo+Pj4gVk1YOg0KPj4+IA0KPj4+ICAgc3RhdGljIGludCB2bXhf
-c2V0X25lc3RlZF9zdGF0ZShzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsDQo+Pj4gICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBrdm1fbmVzdGVkX3N0YXRlIF9fdXNlciAqdXNl
-cl9rdm1fbmVzdGVkX3N0YXRlLA0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBzdHJ1Y3Qga3ZtX25lc3RlZF9zdGF0ZSAqa3ZtX3N0YXRlKQ0KPj4+ICAgew0KPj4+ICAgLi4g
-ICAgICAgICAgIC8qICAgICAgICAgICAgICogU01NIHRlbXBvcmFyaWx5IGRpc2FibGVzIFZNWCwg
-c28gd2UgY2Fubm90IGJlIGluIGd1ZXN0IG1vZGUsDQo+Pj4gICAgICAgICAgKiBub3IgY2FuIFZN
-TEFVTkNIL1ZNUkVTVU1FIGJlIHBlbmRpbmcuICBPdXRzaWRlIFNNTSwgU01NIGZsYWdzDQo+Pj4g
-ICAgICAgICAgKiBtdXN0IGJlIHplcm8uDQo+Pj4gICAgICAgICAgKi8gICAgICAgICAgIGlmIChp
-c19zbW0odmNwdSkgPw0KPj4+ICAgICAgICAgICAgICAgICAoa3ZtX3N0YXRlLT5mbGFncyAmDQo+
-Pj4gICAgICAgICAgICAgICAgICAoS1ZNX1NUQVRFX05FU1RFRF9HVUVTVF9NT0RFIHwgS1ZNX1NU
-QVRFX05FU1RFRF9SVU5fUEVORElORykpDQo+Pj4gICAgICAgICAgICAgICAgIDoga3ZtX3N0YXRl
-LT5oZHIudm14LnNtbS5mbGFncykNCj4+PiAgICAgICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7
-DQo+Pj4gICAuLg0KPj4+IA0KPj4+IFNWTToNCj4+PiANCj4+PiAgIHN0YXRpYyBpbnQgc3ZtX3Nl
-dF9uZXN0ZWRfc3RhdGUoc3RydWN0IGt2bV92Y3B1ICp2Y3B1LA0KPj4+ICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBzdHJ1Y3Qga3ZtX25lc3RlZF9zdGF0ZSBfX3VzZXIgKnVzZXJf
-a3ZtX25lc3RlZF9zdGF0ZSwNCj4+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-c3RydWN0IGt2bV9uZXN0ZWRfc3RhdGUgKmt2bV9zdGF0ZSkNCj4+PiAgIHsNCj4+PiAgIC4uICAg
-ICAgICAgICAvKiBTTU0gdGVtcG9yYXJpbHkgZGlzYWJsZXMgU1ZNLCBzbyB3ZSBjYW5ub3QgYmUg
-aW4gZ3Vlc3QgbW9kZS4gICovICAgICAgICAgICBpZiAoaXNfc21tKHZjcHUpICYmIChrdm1fc3Rh
-dGUtPmZsYWdzICYgS1ZNX1NUQVRFX05FU1RFRF9HVUVTVF9NT0RFKSkNCj4+PiAgICAgICAgICAg
-ICAgICAgcmV0dXJuIC1FSU5WQUw7DQo+Pj4gICAuLg0KPj4+IA0KPj4+IFRoYW5rcywNCj4+PiAN
-Cj4+PiBFaWljaGkNCj4+PiANCj4+Pj4gT24gT2N0IDI2LCAyMDIzLCBhdCAxNDo0MiwgRWlpY2hp
-IFRzdWthdGEgPGVpaWNoaS50c3VrYXRhQG51dGFuaXguY29tPiB3cm90ZToNCj4+Pj4gDQo+Pj4+
-IGt2bV9wdXRfdmNwdV9ldmVudHMoKSBuZWVkcyB0byBiZSBjYWxsZWQgYmVmb3JlIGt2bV9wdXRf
-bmVzdGVkX3N0YXRlKCkNCj4+Pj4gYmVjYXVzZSB2Q1BVJ3MgaGZsYWcgaXMgcmVmZXJyZWQgaW4g
-S1ZNIHZteF9nZXRfbmVzdGVkX3N0YXRlKCkNCj4+Pj4gdmFsaWRhdGlvbi4gT3RoZXJ3aXNlIGt2
-bV9wdXRfbmVzdGVkX3N0YXRlKCkgY2FuIGZhaWwgd2l0aCAtRUlOVkFMIHdoZW4NCj4+Pj4gYSB2
-Q1BVIGlzIGluIFZNWCBvcGVyYXRpb24gYW5kIGVudGVycyBTTU0gbW9kZS4gVGhpcyBsZWFkcyB0
-byBsaXZlDQo+Pj4+IG1pZ3JhdGlvbiBmYWlsdXJlLg0KPj4+PiANCj4+Pj4gU2lnbmVkLW9mZi1i
-eTogRWlpY2hpIFRzdWthdGEgPGVpaWNoaS50c3VrYXRhQG51dGFuaXguY29tPg0KPj4+PiAtLS0N
-Cj4+Pj4gdGFyZ2V0L2kzODYva3ZtL2t2bS5jIHwgMTMgKysrKysrKysrLS0tLQ0KPj4+PiAxIGZp
-bGUgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPj4+PiANCj4+Pj4g
-ZGlmZiAtLWdpdCBhL3RhcmdldC9pMzg2L2t2bS9rdm0uYyBiL3RhcmdldC9pMzg2L2t2bS9rdm0u
-Yw0KPj4+PiBpbmRleCBlN2MwNTRjYzE2Li5jZDYzNWM5MTQyIDEwMDY0NA0KPj4+PiAtLS0gYS90
-YXJnZXQvaTM4Ni9rdm0va3ZtLmMNCj4+Pj4gKysrIGIvdGFyZ2V0L2kzODYva3ZtL2t2bS5jDQo+
-Pj4+IEBAIC00NzQxLDYgKzQ3NDEsMTUgQEAgaW50IGt2bV9hcmNoX3B1dF9yZWdpc3RlcnMoQ1BV
-U3RhdGUgKmNwdSwgaW50IGxldmVsKQ0KPj4+PiAgICAgICAgIHJldHVybiByZXQ7DQo+Pj4+ICAg
-ICB9DQo+Pj4+IA0KPj4+PiArICAgIC8qDQo+Pj4+ICsgICAgICogbXVzdCBiZSBiZWZvcmUga3Zt
-X3B1dF9uZXN0ZWRfc3RhdGUgc28gdGhhdCBIRl9TTU1fTUFTSyBpcyBzZXQgZHVyaW5nDQo+Pj4+
-ICsgICAgICogU01NLg0KPj4+PiArICAgICAqLw0KPj4+PiArICAgIHJldCA9IGt2bV9wdXRfdmNw
-dV9ldmVudHMoeDg2X2NwdSwgbGV2ZWwpOw0KPj4+PiArICAgIGlmIChyZXQgPCAwKSB7DQo+Pj4+
-ICsgICAgICAgIHJldHVybiByZXQ7DQo+Pj4+ICsgICAgfQ0KPj4+PiArDQo+Pj4+ICAgICBpZiAo
-bGV2ZWwgPj0gS1ZNX1BVVF9SRVNFVF9TVEFURSkgew0KPj4+PiAgICAgICAgIHJldCA9IGt2bV9w
-dXRfbmVzdGVkX3N0YXRlKHg4Nl9jcHUpOw0KPj4+PiAgICAgICAgIGlmIChyZXQgPCAwKSB7DQo+
-Pj4+IEBAIC00Nzg3LDEwICs0Nzk2LDYgQEAgaW50IGt2bV9hcmNoX3B1dF9yZWdpc3RlcnMoQ1BV
-U3RhdGUgKmNwdSwgaW50IGxldmVsKQ0KPj4+PiAgICAgaWYgKHJldCA8IDApIHsNCj4+Pj4gICAg
-ICAgICByZXR1cm4gcmV0Ow0KPj4+PiAgICAgfQ0KPj4+PiAtICAgIHJldCA9IGt2bV9wdXRfdmNw
-dV9ldmVudHMoeDg2X2NwdSwgbGV2ZWwpOw0KPj4+PiAtICAgIGlmIChyZXQgPCAwKSB7DQo+Pj4+
-IC0gICAgICAgIHJldHVybiByZXQ7DQo+Pj4+IC0gICAgfQ0KPj4+PiAgICAgaWYgKGxldmVsID49
-IEtWTV9QVVRfUkVTRVRfU1RBVEUpIHsNCj4+Pj4gICAgICAgICByZXQgPSBrdm1fcHV0X21wX3N0
-YXRlKHg4Nl9jcHUpOw0KPj4+PiAgICAgICAgIGlmIChyZXQgPCAwKSB7DQo+Pj4+IC0tIA0KPj4+
-PiAyLjQxLjANCj4+Pj4gDQo+Pj4gDQo+Pj4gDQo+PiANCj4gDQo+IC0tIA0KPiBWaXRhbHkNCg0K
-DQo=
+--00000000000049b27106090df8df
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+I noticed that qapi now has a machine-common category - do you think these
+changes would be more appropriate in that file
+rather than "machine" for the revision?
+
+Thanks and sorry for the delay,
+-Dinah
+
+On Tue, Aug 1, 2023 at 9:09=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
+> wrote:
+
+> Dinah Baum <dinahbaum123@gmail.com> writes:
+>
+> > Signed-off-by: Dinah Baum <dinahbaum123@gmail.com>
+> > ---
+> >  qapi/machine-target.json | 78 +---------------------------------------
+> >  qapi/machine.json        | 77 +++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 78 insertions(+), 77 deletions(-)
+> >
+> > diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+> > index f0a6b72414..3ee2f7ca6b 100644
+> > --- a/qapi/machine-target.json
+> > +++ b/qapi/machine-target.json
+> > @@ -4,83 +4,7 @@
+> >  # This work is licensed under the terms of the GNU GPL, version 2 or
+> later.
+> >  # See the COPYING file in the top-level directory.
+> >
+> > -##
+> > -# @CpuModelInfo:
+> > -#
+> > -# Virtual CPU model.
+> > -#
+> > -# A CPU model consists of the name of a CPU definition, to which delta
+> > -# changes are applied (e.g. features added/removed). Most magic values
+> > -# that an architecture might require should be hidden behind the name.
+> > -# However, if required, architectures can expose relevant properties.
+> > -#
+> > -# @name: the name of the CPU definition the model is based on
+> > -#
+> > -# @props: a dictionary of QOM properties to be applied
+> > -#
+> > -# Since: 2.8
+> > -##
+> > -{ 'struct': 'CpuModelInfo',
+> > -  'data': { 'name': 'str',
+> > -            '*props': 'any' } }
+> > -
+> > -##
+> > -# @CpuModelExpansionType:
+> > -#
+> > -# An enumeration of CPU model expansion types.
+> > -#
+> > -# @static: Expand to a static CPU model, a combination of a static
+> > -#     base model name and property delta changes.  As the static base
+> > -#     model will never change, the expanded CPU model will be the
+> > -#     same, independent of QEMU version, machine type, machine
+> > -#     options, and accelerator options.  Therefore, the resulting
+> > -#     model can be used by tooling without having to specify a
+> > -#     compatibility machine - e.g. when displaying the "host" model.
+> > -#     The @static CPU models are migration-safe.
+> > -#
+> > -# @full: Expand all properties.  The produced model is not guaranteed
+> > -#     to be migration-safe, but allows tooling to get an insight and
+> > -#     work with model details.
+> > -#
+> > -# Note: When a non-migration-safe CPU model is expanded in static
+> > -#     mode, some features enabled by the CPU model may be omitted,
+> > -#     because they can't be implemented by a static CPU model
+> > -#     definition (e.g. cache info passthrough and PMU passthrough in
+> > -#     x86). If you need an accurate representation of the features
+> > -#     enabled by a non-migration-safe CPU model, use @full.  If you
+> > -#     need a static representation that will keep ABI compatibility
+> > -#     even when changing QEMU version or machine-type, use @static
+> > -#     (but keep in mind that some features may be omitted).
+> > -#
+> > -# Since: 2.8
+> > -##
+> > -{ 'enum': 'CpuModelExpansionType',
+> > -  'data': [ 'static', 'full' ] }
+> > -
+> > -##
+> > -# @CpuModelCompareResult:
+> > -#
+> > -# An enumeration of CPU model comparison results.  The result is
+> > -# usually calculated using e.g. CPU features or CPU generations.
+> > -#
+> > -# @incompatible: If model A is incompatible to model B, model A is not
+> > -#     guaranteed to run where model B runs and the other way around.
+> > -#
+> > -# @identical: If model A is identical to model B, model A is
+> > -#     guaranteed to run where model B runs and the other way around.
+> > -#
+> > -# @superset: If model A is a superset of model B, model B is
+> > -#     guaranteed to run where model A runs.  There are no guarantees
+> > -#     about the other way.
+> > -#
+> > -# @subset: If model A is a subset of model B, model A is guaranteed to
+> > -#     run where model B runs.  There are no guarantees about the other
+> > -#     way.
+> > -#
+> > -# Since: 2.8
+> > -##
+> > -{ 'enum': 'CpuModelCompareResult',
+> > -  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
+> > +{ 'include': 'machine.json' }
+> >
+> >  ##
+> >  # @CpuModelBaselineInfo:
+> > diff --git a/qapi/machine.json b/qapi/machine.json
+> > index a08b6576ca..192c781310 100644
+> > --- a/qapi/machine.json
+> > +++ b/qapi/machine.json
+> > @@ -1691,3 +1691,80 @@
+> >  { 'command': 'dumpdtb',
+> >    'data': { 'filename': 'str' },
+> >    'if': 'CONFIG_FDT' }
+> > +
+> > +##
+> > +# @CpuModelInfo:
+> > +#
+> > +# Virtual CPU model.
+> > +#
+> > +# A CPU model consists of the name of a CPU definition, to which delta
+> > +# changes are applied (e.g. features added/removed). Most magic values
+> > +# that an architecture might require should be hidden behind the name.
+> > +# However, if required, architectures can expose relevant properties.
+> > +#
+> > +# @name: the name of the CPU definition the model is based on
+> > +#
+> > +# @props: a dictionary of QOM properties to be applied
+> > +#
+> > +# Since: 2.8
+> > +##
+> > +{ 'struct': 'CpuModelInfo',
+> > +  'data': { 'name': 'str', '*props': 'any' } }
+> > +
+> > +##
+> > +# @CpuModelExpansionType:
+> > +#
+> > +# An enumeration of CPU model expansion types.
+> > +#
+> > +# @static: Expand to a static CPU model, a combination of a static
+> > +#     base model name and property delta changes.  As the static base
+> > +#     model will never change, the expanded CPU model will be the
+> > +#     same, independent of QEMU version, machine type, machine
+> > +#     options, and accelerator options.  Therefore, the resulting
+> > +#     model can be used by tooling without having to specify a
+> > +#     compatibility machine - e.g. when displaying the "host" model.
+> > +#     The @static CPU models are migration-safe.
+> > +#
+> > +# @full: Expand all properties.  The produced model is not guaranteed
+> > +#     to be migration-safe, but allows tooling to get an insight and
+> > +#     work with model details.
+> > +#
+> > +# Note: When a non-migration-safe CPU model is expanded in static
+> > +#     mode, some features enabled by the CPU model may be omitted,
+> > +#     because they can't be implemented by a static CPU model
+> > +#     definition (e.g. cache info passthrough and PMU passthrough in
+> > +#     x86). If you need an accurate representation of the features
+> > +#     enabled by a non-migration-safe CPU model, use @full.  If you
+> > +#     need a static representation that will keep ABI compatibility
+> > +#     even when changing QEMU version or machine-type, use @static
+> > +#     (but keep in mind that some features may be omitted).
+> > +#
+> > +# Since: 2.8
+> > +##
+> > +{ 'enum': 'CpuModelExpansionType',
+> > +  'data': [ 'static', 'full' ] }
+> > +
+> > +##
+> > +# @CpuModelCompareResult:
+> > +#
+> > +# An enumeration of CPU model comparison results.  The result is
+> > +# usually calculated using e.g.  CPU features or CPU generations.
+>
+> Single space after e.g., please.
+>
+> > +#
+> > +# @incompatible: If model A is incompatible to model B, model A is not
+> > +#     guaranteed to run where model B runs and the other way around.
+> > +#
+> > +# @identical: If model A is identical to model B, model A is
+> > +#     guaranteed to run where model B runs and the other way around.
+> > +#
+> > +# @superset: If model A is a superset of model B, model B is
+> > +#     guaranteed to run where model A runs.  There are no guarantees
+> > +#     about the other way.
+> > +#
+> > +# @subset: If model A is a subset of model B, model A is guaranteed to
+> > +#     run where model B runs.  There are no guarantees about the other
+> > +#     way.
+> > +#
+> > +# Since: 2.8
+> > +##
+> > +{ 'enum': 'CpuModelCompareResult',
+> > +  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
+>
+> With that
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>
+>
+
+--00000000000049b27106090df8df
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi,</div><div><br></div><div>I noticed that qapi now =
+has a machine-common category - do you think these changes would be more ap=
+propriate in that file</div><div>rather than &quot;machine&quot; for the re=
+vision?<br></div><div><br></div><div>Thanks and sorry for the delay,<br></d=
+iv><div>-Dinah<br></div></div><br><div class=3D"gmail_quote"><div dir=3D"lt=
+r" class=3D"gmail_attr">On Tue, Aug 1, 2023 at 9:09=E2=80=AFAM Markus Armbr=
+uster &lt;<a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wr=
+ote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px=
+ 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Dinah Baum =
+&lt;<a href=3D"mailto:dinahbaum123@gmail.com" target=3D"_blank">dinahbaum12=
+3@gmail.com</a>&gt; writes:<br>
+<br>
+&gt; Signed-off-by: Dinah Baum &lt;<a href=3D"mailto:dinahbaum123@gmail.com=
+" target=3D"_blank">dinahbaum123@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 qapi/machine-target.json | 78 +---------------------------------=
+------<br>
+&gt;=C2=A0 qapi/machine.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 77 ++++++++++++++=
++++++++++++++++++++++++++<br>
+&gt;=C2=A0 2 files changed, 78 insertions(+), 77 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/qapi/machine-target.json b/qapi/machine-target.json<br>
+&gt; index f0a6b72414..3ee2f7ca6b 100644<br>
+&gt; --- a/qapi/machine-target.json<br>
+&gt; +++ b/qapi/machine-target.json<br>
+&gt; @@ -4,83 +4,7 @@<br>
+&gt;=C2=A0 # This work is licensed under the terms of the GNU GPL, version =
+2 or later.<br>
+&gt;=C2=A0 # See the COPYING file in the top-level directory.<br>
+&gt;=C2=A0 <br>
+&gt; -##<br>
+&gt; -# @CpuModelInfo:<br>
+&gt; -#<br>
+&gt; -# Virtual CPU model.<br>
+&gt; -#<br>
+&gt; -# A CPU model consists of the name of a CPU definition, to which delt=
+a<br>
+&gt; -# changes are applied (e.g. features added/removed). Most magic value=
+s<br>
+&gt; -# that an architecture might require should be hidden behind the name=
+.<br>
+&gt; -# However, if required, architectures can expose relevant properties.=
+<br>
+&gt; -#<br>
+&gt; -# @name: the name of the CPU definition the model is based on<br>
+&gt; -#<br>
+&gt; -# @props: a dictionary of QOM properties to be applied<br>
+&gt; -#<br>
+&gt; -# Since: 2.8<br>
+&gt; -##<br>
+&gt; -{ &#39;struct&#39;: &#39;CpuModelInfo&#39;,<br>
+&gt; -=C2=A0 &#39;data&#39;: { &#39;name&#39;: &#39;str&#39;,<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*props&#39;: &#39;any&=
+#39; } }<br>
+&gt; -<br>
+&gt; -##<br>
+&gt; -# @CpuModelExpansionType:<br>
+&gt; -#<br>
+&gt; -# An enumeration of CPU model expansion types.<br>
+&gt; -#<br>
+&gt; -# @static: Expand to a static CPU model, a combination of a static<br=
+>
+&gt; -#=C2=A0 =C2=A0 =C2=A0base model name and property delta changes.=C2=
+=A0 As the static base<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0model will never change, the expanded CPU model =
+will be the<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0same, independent of QEMU version, machine type,=
+ machine<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0options, and accelerator options.=C2=A0 Therefor=
+e, the resulting<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0model can be used by tooling without having to s=
+pecify a<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0compatibility machine - e.g. when displaying the=
+ &quot;host&quot; model.<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0The @static CPU models are migration-safe.<br>
+&gt; -#<br>
+&gt; -# @full: Expand all properties.=C2=A0 The produced model is not guara=
+nteed<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0to be migration-safe, but allows tooling to get =
+an insight and<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0work with model details.<br>
+&gt; -#<br>
+&gt; -# Note: When a non-migration-safe CPU model is expanded in static<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0mode, some features enabled by the CPU model may=
+ be omitted,<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0because they can&#39;t be implemented by a stati=
+c CPU model<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0definition (e.g. cache info passthrough and PMU =
+passthrough in<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0x86). If you need an accurate representation of =
+the features<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0enabled by a non-migration-safe CPU model, use @=
+full.=C2=A0 If you<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0need a static representation that will keep ABI =
+compatibility<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0even when changing QEMU version or machine-type,=
+ use @static<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0(but keep in mind that some features may be omit=
+ted).<br>
+&gt; -#<br>
+&gt; -# Since: 2.8<br>
+&gt; -##<br>
+&gt; -{ &#39;enum&#39;: &#39;CpuModelExpansionType&#39;,<br>
+&gt; -=C2=A0 &#39;data&#39;: [ &#39;static&#39;, &#39;full&#39; ] }<br>
+&gt; -<br>
+&gt; -##<br>
+&gt; -# @CpuModelCompareResult:<br>
+&gt; -#<br>
+&gt; -# An enumeration of CPU model comparison results.=C2=A0 The result is=
+<br>
+&gt; -# usually calculated using e.g. CPU features or CPU generations.<br>
+&gt; -#<br>
+&gt; -# @incompatible: If model A is incompatible to model B, model A is no=
+t<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0guaranteed to run where model B runs and the oth=
+er way around.<br>
+&gt; -#<br>
+&gt; -# @identical: If model A is identical to model B, model A is<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0guaranteed to run where model B runs and the oth=
+er way around.<br>
+&gt; -#<br>
+&gt; -# @superset: If model A is a superset of model B, model B is<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0guaranteed to run where model A runs.=C2=A0 Ther=
+e are no guarantees<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0about the other way.<br>
+&gt; -#<br>
+&gt; -# @subset: If model A is a subset of model B, model A is guaranteed t=
+o<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0run where model B runs.=C2=A0 There are no guara=
+ntees about the other<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0way.<br>
+&gt; -#<br>
+&gt; -# Since: 2.8<br>
+&gt; -##<br>
+&gt; -{ &#39;enum&#39;: &#39;CpuModelCompareResult&#39;,<br>
+&gt; -=C2=A0 &#39;data&#39;: [ &#39;incompatible&#39;, &#39;identical&#39;,=
+ &#39;superset&#39;, &#39;subset&#39; ] }<br>
+&gt; +{ &#39;include&#39;: &#39;machine.json&#39; }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 ##<br>
+&gt;=C2=A0 # @CpuModelBaselineInfo:<br>
+&gt; diff --git a/qapi/machine.json b/qapi/machine.json<br>
+&gt; index a08b6576ca..192c781310 100644<br>
+&gt; --- a/qapi/machine.json<br>
+&gt; +++ b/qapi/machine.json<br>
+&gt; @@ -1691,3 +1691,80 @@<br>
+&gt;=C2=A0 { &#39;command&#39;: &#39;dumpdtb&#39;,<br>
+&gt;=C2=A0 =C2=A0 &#39;data&#39;: { &#39;filename&#39;: &#39;str&#39; },<br=
+>
+&gt;=C2=A0 =C2=A0 &#39;if&#39;: &#39;CONFIG_FDT&#39; }<br>
+&gt; +<br>
+&gt; +##<br>
+&gt; +# @CpuModelInfo:<br>
+&gt; +#<br>
+&gt; +# Virtual CPU model.<br>
+&gt; +#<br>
+&gt; +# A CPU model consists of the name of a CPU definition, to which delt=
+a<br>
+&gt; +# changes are applied (e.g. features added/removed). Most magic value=
+s<br>
+&gt; +# that an architecture might require should be hidden behind the name=
+.<br>
+&gt; +# However, if required, architectures can expose relevant properties.=
+<br>
+&gt; +#<br>
+&gt; +# @name: the name of the CPU definition the model is based on<br>
+&gt; +#<br>
+&gt; +# @props: a dictionary of QOM properties to be applied<br>
+&gt; +#<br>
+&gt; +# Since: 2.8<br>
+&gt; +##<br>
+&gt; +{ &#39;struct&#39;: &#39;CpuModelInfo&#39;,<br>
+&gt; +=C2=A0 &#39;data&#39;: { &#39;name&#39;: &#39;str&#39;, &#39;*props&#=
+39;: &#39;any&#39; } }<br>
+&gt; +<br>
+&gt; +##<br>
+&gt; +# @CpuModelExpansionType:<br>
+&gt; +#<br>
+&gt; +# An enumeration of CPU model expansion types.<br>
+&gt; +#<br>
+&gt; +# @static: Expand to a static CPU model, a combination of a static<br=
+>
+&gt; +#=C2=A0 =C2=A0 =C2=A0base model name and property delta changes.=C2=
+=A0 As the static base<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0model will never change, the expanded CPU model =
+will be the<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0same, independent of QEMU version, machine type,=
+ machine<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0options, and accelerator options.=C2=A0 Therefor=
+e, the resulting<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0model can be used by tooling without having to s=
+pecify a<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0compatibility machine - e.g. when displaying the=
+ &quot;host&quot; model.<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0The @static CPU models are migration-safe.<br>
+&gt; +#<br>
+&gt; +# @full: Expand all properties.=C2=A0 The produced model is not guara=
+nteed<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0to be migration-safe, but allows tooling to get =
+an insight and<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0work with model details.<br>
+&gt; +#<br>
+&gt; +# Note: When a non-migration-safe CPU model is expanded in static<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0mode, some features enabled by the CPU model may=
+ be omitted,<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0because they can&#39;t be implemented by a stati=
+c CPU model<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0definition (e.g. cache info passthrough and PMU =
+passthrough in<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0x86). If you need an accurate representation of =
+the features<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0enabled by a non-migration-safe CPU model, use @=
+full.=C2=A0 If you<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0need a static representation that will keep ABI =
+compatibility<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0even when changing QEMU version or machine-type,=
+ use @static<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0(but keep in mind that some features may be omit=
+ted).<br>
+&gt; +#<br>
+&gt; +# Since: 2.8<br>
+&gt; +##<br>
+&gt; +{ &#39;enum&#39;: &#39;CpuModelExpansionType&#39;,<br>
+&gt; +=C2=A0 &#39;data&#39;: [ &#39;static&#39;, &#39;full&#39; ] }<br>
+&gt; +<br>
+&gt; +##<br>
+&gt; +# @CpuModelCompareResult:<br>
+&gt; +#<br>
+&gt; +# An enumeration of CPU model comparison results.=C2=A0 The result is=
+<br>
+&gt; +# usually calculated using e.g.=C2=A0 CPU features or CPU generations=
+.<br>
+<br>
+Single space after e.g., please.<br>
+<br>
+&gt; +#<br>
+&gt; +# @incompatible: If model A is incompatible to model B, model A is no=
+t<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0guaranteed to run where model B runs and the oth=
+er way around.<br>
+&gt; +#<br>
+&gt; +# @identical: If model A is identical to model B, model A is<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0guaranteed to run where model B runs and the oth=
+er way around.<br>
+&gt; +#<br>
+&gt; +# @superset: If model A is a superset of model B, model B is<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0guaranteed to run where model A runs.=C2=A0 Ther=
+e are no guarantees<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0about the other way.<br>
+&gt; +#<br>
+&gt; +# @subset: If model A is a subset of model B, model A is guaranteed t=
+o<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0run where model B runs.=C2=A0 There are no guara=
+ntees about the other<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0way.<br>
+&gt; +#<br>
+&gt; +# Since: 2.8<br>
+&gt; +##<br>
+&gt; +{ &#39;enum&#39;: &#39;CpuModelCompareResult&#39;,<br>
+&gt; +=C2=A0 &#39;data&#39;: [ &#39;incompatible&#39;, &#39;identical&#39;,=
+ &#39;superset&#39;, &#39;subset&#39; ] }<br>
+<br>
+With that<br>
+Reviewed-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" tar=
+get=3D"_blank">armbru@redhat.com</a>&gt;<br>
+<br>
+</blockquote></div>
+
+--00000000000049b27106090df8df--
 
