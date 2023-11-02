@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D141A7DEC04
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 05:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 292BD7DEC0F
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 05:59:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyPbG-0000XD-2c; Thu, 02 Nov 2023 00:46:34 -0400
+	id 1qyPlz-0002Q4-Kt; Thu, 02 Nov 2023 00:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leohou1402@gmail.com>)
- id 1qyPbE-0000Wt-M9
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:46:32 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyPlx-0002Pd-Ia
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:57:37 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <leohou1402@gmail.com>)
- id 1qyPbC-0003Td-G3
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:46:32 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6c10f098a27so522492b3a.2
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 21:46:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyPlv-0001jR-QT
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:57:37 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1cc1e1e74beso4427935ad.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 21:57:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698900388; x=1699505188; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:to:from:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XgQi/LXnSgZer0xSlcrZQZbooc8iUiiCEGAwbSSf7dw=;
- b=ZYEly/JVvVWR87rNnx9mOzDrfaJMqrUDBsUZ5BwKXvAkfQLjCqON/q/KyxZ6UqITHF
- D6HCD2UHR6cMtQN6mQxJFzTSUU+5NYI5BLRVOoJGmCRpP8znwuBLf5CAPUb8hz4fo1Mu
- VV+jo/GP4jEa/9evwjYRVa49qIMuuxdN71t5ZIA52daw2Z+2HAVaBK6fv7eswwcV8DFr
- h1mNAY6h/fyubyQ7RV82pv0I0Rj8vAKmn7ef1kVe4LXrwwJZ0oSlOYTNwfTBhCXZ855O
- 7fqbs7ufjHSSGC8uXAy2SI9YTlEIRih/DnjdliGzZ229/fGTf9gpVj1vcRgK3pRaf54E
- Tt2w==
+ d=linaro.org; s=google; t=1698901054; x=1699505854; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=tVMN87Vbxw/oAf0073ldPqNd9mQM9WENYeJXn07CA6M=;
+ b=Q0QXV2OMdgbND0GZT31bnOzqxTXJ2tBB4jYM1hv5DzhWcZTMz0ha0Wtp6XKYBbSack
+ Dc4V+NRe1iC75ZdzxL7cLBCajSqrd+ZA8RdOTmk4fX0MLhz0zT/pRZZxM0AjrufZYiER
+ iAynGwi63ZIFjg7pe45r3lIRTkX66eEIHus591Cs2krnSwJKbj1fh4tmJYFZ8T1dHntb
+ DOf3KAUHUum9gaO9SHRAiUSaDhCqEiEaofNeUpogVTl2X0ucH8/iOUU+UyPXNfOgBzrF
+ xC0cc/ndwwgTgv6L4KpqCcTUpr4cMSNDiC+mPCE4MF+iaibIbNZaE26Dp8VDSMAB85nU
+ gSVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698900388; x=1699505188;
- h=content-transfer-encoding:in-reply-to:references:to:from:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=XgQi/LXnSgZer0xSlcrZQZbooc8iUiiCEGAwbSSf7dw=;
- b=g0G7A7RRUcCFzwiAvFIG+P0k1A7GGbbrau0+Hoj0w5CiCLuttclCFMRzDCj+qXhc7P
- 8QJZlwnx1J7u+5MfCgzYwzkmK4iszkgmVB8WhLI7S+mJ6viozuEfaJHOmtF44Ym1ozPo
- l6qKPmTNyNHEedpln1D2nG9kFJy1f8OVgEyGxArKSj/FgLjPWSFujwx1vDLF4fVSnzGi
- jpsuWU2EOgGGzzj0QwnhXCFcfQl4uHJVvxnGoKgk2rGfc4sddaamED5u8fG3Ud6Pv8wL
- cu9ywH5xSArDpjmamLZ+VA2HFmQC5lBY96p51p/CMVqCgEv8rWIVkDs1D5yyQUwCkc7o
- dD/Q==
-X-Gm-Message-State: AOJu0YzNMwtQk90qtd6nSoOU9+2/vmg4TCp8oUutT3QwUbnEkaO+Z4yL
- W/57+Ygm5jTRdzOi7J2QWNeBr7P5XGYaNJ9t
-X-Google-Smtp-Source: AGHT+IFfTrUHUhQIm7nLFP1Y4K5qN3fkCEB2JnzNjEToaacro5IvoiWd33jSbZC2N9X8kVrMJ+22vQ==
-X-Received: by 2002:a05:6a21:7989:b0:180:d66b:7e7 with SMTP id
- bh9-20020a056a21798900b00180d66b07e7mr10234526pzc.4.1698900388592; 
- Wed, 01 Nov 2023 21:46:28 -0700 (PDT)
-Received: from [10.100.201.23] ([40.83.119.27])
+ d=1e100.net; s=20230601; t=1698901054; x=1699505854;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tVMN87Vbxw/oAf0073ldPqNd9mQM9WENYeJXn07CA6M=;
+ b=q19wdaw+OX37VhOwNndHMExERuvR9qLEpzxV/l1gPmjL4i5mSzTojOrscwUjKdTP4x
+ 8J51H8fiHc5T2bqvqsP1X7+V/4BQREGbfqs5LIYU+8fh9EqfhR4QqFdOnz+gn0fT/9ZG
+ yD1SvJ/tBKP9FEKBSbgExIXc+3c7CAIEEDZxvwWLfLmr606tZ3trhv8bItvbZkswxzQu
+ N0DaPGRSyHU+9to7YI07R0ApXaj4hYqfUkuTpiVGpikuttEidl8eISm7J3veI00nNkTM
+ JbEFz9s3ysC5RAFq0+xBbK/vFfQIRiGe8Di7ER0U00bcVYoLPQ5avZW4qOR55pl4XiJp
+ GQVA==
+X-Gm-Message-State: AOJu0YzVRqDRzfBmJj6voVxvadIc/15TlBwuMywoyNx1zDpMvscuPfz7
+ V4OvmQfVYrt5EAFedWdLwD2Vql2ygx6dfFmPSiQ=
+X-Google-Smtp-Source: AGHT+IGVASDKLNSYjPWwKmuNKMTxNMa8SU9ms3dDVVxUHAphqLSF0S5/l+whwpmRTK0MOFUu+0hnAQ==
+X-Received: by 2002:a17:902:e5c2:b0:1cc:3fc9:7d09 with SMTP id
+ u2-20020a170902e5c200b001cc3fc97d09mr13459790plf.15.1698901053891; 
+ Wed, 01 Nov 2023 21:57:33 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- bf2-20020a170902b90200b001c5eb37e92csm2055663plb.305.2023.11.01.21.46.27
- for <qemu-devel@nongnu.org>
+ jw13-20020a170903278d00b001b03f208323sm2100805plb.64.2023.11.01.21.57.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Nov 2023 21:46:28 -0700 (PDT)
-Message-ID: <0a514711-41cc-43ec-ba2d-16109eae783d@gmail.com>
-Date: Thu, 2 Nov 2023 12:46:23 +0800
+ Wed, 01 Nov 2023 21:57:33 -0700 (PDT)
+Message-ID: <4579e4ce-ad21-4901-9ecd-8ef6eace2616@linaro.org>
+Date: Wed, 1 Nov 2023 21:57:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOWbnuWkjTogRnc6IOadpeiHqkxlbyBIb3XnmoTpgq7ku7Y=?=
-From: leohou <leohou1402@gmail.com>
-To: qemu-devel@nongnu.org
-References: <3ab81ab1.1faf.18b8df8f26e.Coremail.leohou163@163.com>
- <202311021133346289459@gmail.com>
-In-Reply-To: <202311021133346289459@gmail.com>
+Subject: Re: [PATCH v4 26/33] machine: Use error handling when CPU type is
+ checked
+Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20231102002500.1750692-1-gshan@redhat.com>
+ <20231102002500.1750692-27-gshan@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231102002500.1750692-27-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=leohou1402@gmail.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,35 +95,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/11/2 11:33, leohou1402@gmail.com wrote:
-> On 31/10/23 16:13:32 Philippe Mathieu-Daudé wrote:
->> Hi Leo,
->>
->> On 31/10/23 04:10, Leo Hou wrote:
->>> hi , all
->>>          Does qemu plan to support CPU heterogeneity?
->> Short answer is yes. When will this be available is yet to
->> be determined, as a lot of work is required.
->
->
->> I'm going to talk about the challenges and possible roadmap
->> later today, feel free to join the call scheduled at 2pm CET
->> on https://meet.jit.si/kvmcallmeeting.
->> (See
->> https://lore.kernel.org/qemu-devel/calendar-1ad16449-09cc-40fb-ab4a-24eafcc62d2a@google.com/)
->
-> Hi Philippe
->
->
-> Thank you for your reply. I didn't check my email in time
->   because of the mailbox problem. Now I will reply to you
->   by changing my email address.
->
-> With regard to your discussion, is it convenient to announce
-> the results of the discussion now?
-
-Is there a need for the architecture of the main cpu and several 
-coprocessors?
+On 11/1/23 17:24, Gavin Shan wrote:
+> QEMU will be terminated if the specified CPU type isn't supported
+> in machine_run_board_init(). The list of supported CPU type names
+> is tracked by mc->valid_cpu_types.
+> 
+> The error handling can be used to propagate error messages, to be
+> consistent how the errors are handled for other situations in the
+> same function.
+> 
+> No functional change intended.
+> 
+> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> ---
+>   hw/core/machine.c | 14 ++++++++------
+>   1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index 50edaab737..1c17a0d5bf 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1393,6 +1393,7 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+>       MachineClass *machine_class = MACHINE_GET_CLASS(machine);
+>       ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>       CPUClass *cc;
+> +    Error *local_err = NULL;
 
 
+This...
+
+>   
+>       /* This checkpoint is required by replay to separate prior clock
+>          reading from the other reads, because timer polling functions query
+> @@ -1465,15 +1466,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+>   
+>           if (!machine_class->valid_cpu_types[i]) {
+>               /* The user specified CPU is not valid */
+> -            error_report("Invalid CPU type: %s", machine->cpu_type);
+> -            error_printf("The valid types are: %s",
+> -                         machine_class->valid_cpu_types[0]);
+> +            error_setg(&local_err, "Invalid CPU type: %s", machine->cpu_type);
+
+... could go in this block.
+
+Though I don't see why you can't write to errp directly?
+
+
+r~
 
