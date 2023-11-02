@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBE07DF4D6
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:23:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C44487DF4E1
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:25:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyYbI-00044K-VF; Thu, 02 Nov 2023 10:23:12 -0400
+	id 1qyYcf-0004rO-Ap; Thu, 02 Nov 2023 10:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyYbG-00043i-FC
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:23:10 -0400
-Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qyYcd-0004rF-Ku
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:24:35 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyYbE-0006L0-Fj
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:23:10 -0400
-Received: by mail-yw1-x112a.google.com with SMTP id
- 00721157ae682-5a7af20c488so12003427b3.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 07:23:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qyYcb-0006Uj-MY
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:24:35 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-32d9d8284abso586540f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 07:24:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698934987; x=1699539787; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tcx80Eb6maYvFsC20lR4ADPayTdRxB5tZ19syECYs8Q=;
- b=lUx0qcuIYJ/ACM996xELAlB9b6/YJmBBBVBQITdc+qmYoGcZUxsbkcGpq4b+awGBu2
- uZN2xtMs4/YXmM3GiBa2Hl6H4/eYvZ/4lQ9HIcFUQUVwmZKZZGuBvRWmP0OS9F7CFmaO
- PQlFameIyeJ/YJIvHpy2X6fp2HegLafXhlIb5ilDFg2ck1rRFhLWCNacJBd32F2scJv2
- dsAz5jww3LHCV1f5Q3xBSnd4vcRWt8xm4UWsQIMwOPFmeJlBMBBzSQyiB3LpSYpLId0V
- 0/WIj/fd3FJ27V5Nw3kI8s4yvWyiGx5nyzrP8oFzRoxOBwSmdh9sNIL4UccbjPa2q/HE
- 1C8Q==
+ d=linaro.org; s=google; t=1698935072; x=1699539872; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=yAFQGJDE/C23pdXk4N0KgItDy90QsCH+ABHO8StoC0w=;
+ b=t0Lr83CdBBBDdGI11CoopvQZDIa+uJ5Fl+mhUM9s6J/cZDRHfGsun6avCnWZ/Gupaa
+ 19wh1D6I4wlkaHB8yQURsol9DlIB+M3zrX8w9hrs2KqawaKETr/7H/F2GpKc6jMoTAu7
+ +Inz5FDA+MwzE2pf+eytwvmGHATb7k5V7RNVs5xUNBJa5iC+Of7ryhzHWrAoGcuva/dm
+ andKmYQ3e9QMon0/Dv3pi0Q7Hl0yAnppjpQcHatyr5iQ0NIpwNJ2K2OcBvZHyRCUkQdz
+ H1dWiGu7/8mtym6tJ2LC4MAXqb49x+/5Rpw74hjL8vmxlFvOlW1IMBncNNh8HZEKDdhG
+ 4TWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698934987; x=1699539787;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tcx80Eb6maYvFsC20lR4ADPayTdRxB5tZ19syECYs8Q=;
- b=LfkdjAAPiZlYktWQVWTEUoDTxSmVgHo8Njqp8+mGMwsCyAviqbhkuKY/HHa0tEnt9S
- ahOYbfx7ZoAYmAgWlkVUq0cO1VyljkqxVSN/1xRh65sdJrVCotHNH1AHNa0d4SBO7mJg
- 5mJUVaMYFvnzVGn1sRyyLqMfbiLndAp3r8AmAPB6DRs8I28KXbVakBGjLq0FpjZvx69U
- ONgNRpn1N9RTsKc1221cuPOgrpYzdKUERmhLo6/waogPuPwiQcLFgpFo5yKN9yBfLcdH
- 3tMWiDMehyXAR40po7UyveeWb3a2PnSEQ7XHKc2DFtDcT+UJQxYRqdP094QJpwBnEPBV
- XiTA==
-X-Gm-Message-State: AOJu0Yw8tLYVkJzVhIqhIs86OdGgb9+Nx8Qo0x06ZhkWuLOcQtvIBiAp
- GwiQ4oN/OuuIf3xlmMx00dqRPA==
-X-Google-Smtp-Source: AGHT+IFwBHxMvo3m/BXO9bm7OZptX62eZYSP7PElMSx0aByCupALYRTneUHOCLdvmH5Q5Og/6zQnQg==
-X-Received: by 2002:a81:5754:0:b0:5a7:dda6:cbaf with SMTP id
- l81-20020a815754000000b005a7dda6cbafmr18066950ywb.19.1698934987346; 
- Thu, 02 Nov 2023 07:23:07 -0700 (PDT)
-Received: from [192.168.68.107] ([179.193.10.161])
- by smtp.gmail.com with ESMTPSA id
- s128-20020a817786000000b00585f60e970esm1266368ywc.134.2023.11.02.07.23.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 07:23:07 -0700 (PDT)
-Message-ID: <1b880a60-ec12-4f69-8fc0-cd109d32b6cf@ventanamicro.com>
-Date: Thu, 2 Nov 2023 11:23:04 -0300
+ d=1e100.net; s=20230601; t=1698935072; x=1699539872;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yAFQGJDE/C23pdXk4N0KgItDy90QsCH+ABHO8StoC0w=;
+ b=ZuFbpakasXFIi1sUhTRK+IyvzSJfTjrq6XR812Jqg3Lus+ZghacY6pTKoD16M31Vp3
+ /Pf7OegDf8oMaRhsxHo02GyiDpaTlUEeXiVODLhQLnbgOrAWTjPanFbVtczpXj/jmZa8
+ qTKn7R9SV4cEeagIHcqT+IRyF2F4hxzSgO7M81tMIotiPuDDOi20mbsmMKqkhAJ3/jkZ
+ yzdVrm+9Ltphc0TAqEKhHNbaZYlIH12wRkmoO/w0v9yi/i8SW/NiEy/NWgM8g4Ie41sa
+ XVVd9+BpoJxIfNV+UTTHV79mL9QJri9TDMfBdFeJh/INSCRm1p86EoAtF8Z3JslsSFBR
+ SEaA==
+X-Gm-Message-State: AOJu0YyTf2B3iiqAkmxnaJh5Y69CTMPipoH71BykG7FMmNnE79U5fL71
+ riMK6ztdCqHEnhkjVY9zxZeKfw==
+X-Google-Smtp-Source: AGHT+IGiiKlVkYsgu6Oj2ngzUoeemO5D247iDWnP65sPaewo1PidxGKBzXqMOUfX0JNQB49bZYbNmw==
+X-Received: by 2002:a05:6000:1569:b0:32f:7bee:f300 with SMTP id
+ 9-20020a056000156900b0032f7beef300mr15634586wrz.4.1698935071795; 
+ Thu, 02 Nov 2023 07:24:31 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ o15-20020a5d58cf000000b0032db1d741a6sm2602150wrf.99.2023.11.02.07.24.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Nov 2023 07:24:31 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id E4E20656E4;
+ Thu,  2 Nov 2023 14:24:30 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Greg Manning <gmanning@rapitasystems.com>
+Cc: qemu-devel@nongnu.org,   luoyonggang@gmail.com,
+ richard.henderson@linaro.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 0/1] Enable plugin support for windows
+In-Reply-To: <20231102110016.9494-1-gmanning@rapitasystems.com> (Greg
+ Manning's message of "Thu, 2 Nov 2023 10:59:41 +0000")
+User-Agent: mu4e 1.11.23; emacs 29.1
+Date: Thu, 02 Nov 2023 14:24:30 +0000
+Message-ID: <87msvw44ip.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 06/19] target/riscv: add rv64i CPU
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20231101204204.345470-1-dbarboza@ventanamicro.com>
- <20231101204204.345470-7-dbarboza@ventanamicro.com>
- <20231102-c79d19ccf4a301e3e8fc0ebd@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231102-c79d19ccf4a301e3e8fc0ebd@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,156 +95,108 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+(Add Paolo to cc for meson questions)
 
-On 11/2/23 06:59, Andrew Jones wrote:
-> On Wed, Nov 01, 2023 at 05:41:51PM -0300, Daniel Henrique Barboza wrote:
->> We don't have any form of a 'bare bones' CPU. rv64, our default CPUs,
->> comes with a lot of defaults. This is fine for most regular uses but
->> it's not suitable when more control of what is actually loaded in the
->> CPU is required.
->>
->> A bare-bones CPU would be annoying to deal with if not by profile
->> support, a way to load a multitude of extensions with a single flag.
->> Profile support is going to be implemented shortly, so let's add a CPU
->> for it.
->>
->> The new 'rv64i' CPU will have only RVI loaded. It is inspired in the
->> profile specification that dictates, for RVA22U64 [1]:
->>
->> "RVA22U64 Mandatory Base
->>   RV64I is the mandatory base ISA for RVA22U64"
->>
->> And so it seems that RV64I is the mandatory base ISA for all profiles
->> listed in [1], making it an ideal CPU to use with profile support.
->>
->> rv64i is a CPU of type TYPE_RISCV_BARE_CPU. It has a mix of features
->> from pre-existent CPUs:
->>
->> - it allows extensions to be enabled, like generic CPUs;
->> - it will not inherit extension defaults, like vendor CPUs.
->>
->> This is the minimum extension set to boot OpenSBI and buildroot using
->> rv64i:
->>
->> ./build/qemu-system-riscv64 -nographic -M virt \
->>      -cpu rv64i,sv39=true,g=true,c=true,s=true,u=true
->>
->> Our minimal riscv,isa in this case will be:
->>
->>   # cat /proc/device-tree/cpus/cpu@0/riscv,isa
->> rv64imafdc_zicntr_zicsr_zifencei_zihpm_zca_zcd#
->>
->> [1] https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu-qom.h |  2 ++
->>   target/riscv/cpu.c     | 23 +++++++++++++++++++++++
->>   2 files changed, 25 insertions(+)
->>
->> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
->> index 7831e86d37..ea9a752280 100644
->> --- a/target/riscv/cpu-qom.h
->> +++ b/target/riscv/cpu-qom.h
->> @@ -25,6 +25,7 @@
->>   #define TYPE_RISCV_CPU "riscv-cpu"
->>   #define TYPE_RISCV_DYNAMIC_CPU "riscv-dynamic-cpu"
->>   #define TYPE_RISCV_VENDOR_CPU "riscv-vendor-cpu"
->> +#define TYPE_RISCV_BARE_CPU "riscv-bare-cpu"
->>   
->>   #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
->>   #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
->> @@ -35,6 +36,7 @@
->>   #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
->>   #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
->>   #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
->> +#define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
->>   #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
->>   #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
->>   #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index f7c1989d14..4a6e544eaf 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -544,6 +544,16 @@ static void rv128_base_cpu_init(Object *obj)
->>       set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
->>   #endif
->>   }
->> +
->> +static void rv64i_bare_cpu_init(Object *obj)
->> +{
->> +    CPURISCVState *env = &RISCV_CPU(obj)->env;
->> +    riscv_cpu_set_misa(env, MXL_RV64, RVI);
->> +
->> +    /* Remove the defaults from the parent class */
->> +    RISCV_CPU(obj)->cfg.ext_zicntr = false;
->> +    RISCV_CPU(obj)->cfg.ext_zihpm = false;
-> 
-> Good catch since v1, but having to do this is a bit gross. I'd prefer the
-> parent class not enable any extensions. Each CPU type that needs these
-> can just set them themselves.
+Greg Manning <gmanning@rapitasystems.com> writes:
 
-It's less work to disable it for bare CPUs than to enable these 2 extensions for every
-other existing CPUs. These 2 extensions need to be enabled by default to preserve
-existing behavior.
+> This patch enables plugin support on windows.
+>
+> qemu plugins on windows now correctly load/link the qemu_plugin_*
+> symbols when they are loaded[1]. This works by creating a delay-loaded
+> .lib file with dlltool[2], then linking the plugins against that to get
+> them compiled. No messing around with function pointers required.
+>
+> The .lib file is created with "qemu.exe" as the name of the DLL.
+> The only input to the creation of the .lib file is a list of
+> qemu_plugin_* api symbol names.
+>
+> When the DLL is being loaded, it will fail to find qemu.exe[3], but
+> the windows linker has a 'dll loading failed' hook you can put in the
+> plugin.
+>
+> I've implemented this hook to check if the file that's failed to load is
+> 'qemu.exe', and if so, substitute in a handle to the top-level
+> executable. Symbol linking then continues in the normal way.
+>
+> As such, windows plugins work for me, and with minimal change to actual
+> qemu code.
 
-For the future we can, for example, create a new parent device (e.g. TYPE_RISCV_CPU_LEGACY)
-that enables these extensions. Current CPUs can inherit from it. TYPE_RISCV_CPU can then
-remain pristine, no default extensions.
+Excellent work - I'm glad you can make it work without having to hack
+the rest of the plugins too much. I'm afraid I can't do much to test
+this but overall I'm much happier to merge this.
 
-Thanks,
+However can we split the patches into slightly smaller chunks. Maybe
+something like:
 
+  - add the QEMU_PLUGIN_API annotations
+  - introduce the windows linker bits
+  - filter the plugins that can't be built for windows
+  - flip the switch in configure to allow plugins to be built on Windows
 
-Daniel
+Also what are we going to do for testing? Most qemu developers are using
+POSIX systems so I'm worried about support bit rotting. We do have some
+windows coverage in CI but currently only running qtest. There are some
+"make check-tcg" tests which are softmmu but I suspect getting the
+cross-compilers on windows would be a blocker. Do we know the state of
+the avocado tests? We have some minimal testing there which could be
+extended as all you need is avocado working and some binary images to
+run. I've just posted a patch to update them:
 
-> 
->> +}
->>   #else
->>   static void rv32_base_cpu_init(Object *obj)
->>   {
->> @@ -1753,6 +1763,13 @@ void riscv_cpu_list(void)
->>           .instance_init = initfn              \
->>       }
->>   
->> +#define DEFINE_BARE_CPU(type_name, initfn) \
->> +    {                                      \
->> +        .name = type_name,                 \
->> +        .parent = TYPE_RISCV_BARE_CPU,     \
->> +        .instance_init = initfn            \
->> +    }
->> +
->>   static const TypeInfo riscv_cpu_type_infos[] = {
->>       {
->>           .name = TYPE_RISCV_CPU,
->> @@ -1775,6 +1792,11 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->>           .parent = TYPE_RISCV_CPU,
->>           .abstract = true,
->>       },
->> +    {
->> +        .name = TYPE_RISCV_BARE_CPU,
->> +        .parent = TYPE_RISCV_CPU,
->> +        .abstract = true,
->> +    },
->>       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
->>       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
->>   #if defined(TARGET_RISCV32)
->> @@ -1791,6 +1813,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->>       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906,  rv64_thead_c906_cpu_init),
->>       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_init),
->>       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
->> +    DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
->>   #endif
->>   };
->>   
->> -- 
->> 2.41.0
->>
-> 
-> We'll probably need to bring back the satp supported mode setting, as
-> suggested on a previous patch, but otherwise
-> 
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> 
-> Thanks,
-> drew
+  Message-Id: <20231101135004.1572916-1-alex.bennee@linaro.org>
+  Date: Wed,  1 Nov 2023 13:50:03 +0000
+  Subject: [RFC PATCH] tests/avocado: update the tcg_plugins test
+  From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
+
+> [1]: Except lockstep, which uses unix sockets. It could be changed to
+>      use another communication mechanism, but that felt outside what I'm
+>      trying to achieve here.
+>
+> [2]: This would be the first use of dlltool in qemu. Is that OK? do we
+>      need anything in meson to check it exists?
+
+Paolo any comments on the meson bits?
+
+>
+> [3]: If qemu moved to a single executable model, and we got the name
+>      right when creating the .lib, then the dll hook would not be
+>      needed at all.
+>
+> Limitations/things I'm worried about
+>
+> * There is some amount of meson/Makefile tweaking going on here, and
+>   while what I've got works for me, I'm not very familiar with meson,
+>   and might not be doing things The Right Way.
+>
+> * plugin/FFI bindings authors would have to copy this hook themselves,
+>   or implement something equivalent. Also they need the
+>   qemu_plugin_api.lib file, which I think I've added to the set of
+>   installed files.
+>
+> * License for win32_linker.c - I'm happy to put this under whatever
+>   license seems most convenient. Given qemu-plugin.h is already GPL,
+>   all plugins will be GPL anyway.
+
+While there may be private downstream plugins being used behind closed
+doors we very much don't want to encourage binary only plugins so GPL is
+fine.
+
+> Greg Manning (1):
+>   plugins: enable plugins for windows
+>
+>  configure                      |  9 ++----
+>  contrib/plugins/Makefile       | 27 ++++++++++++++++--
+>  contrib/plugins/win32_linker.c | 34 +++++++++++++++++++++++
+>  include/qemu/qemu-plugin.h     | 50 ++++++++++++++++++++++++++++++++--
+>  meson.build                    |  5 ++++
+>  plugins/meson.build            | 17 ++++++++++++
+>  tests/plugin/meson.build       | 14 ++++++++--
+>  7 files changed, 141 insertions(+), 15 deletions(-)
+>  create mode 100644 contrib/plugins/win32_linker.c
+>
+> --
+> 2.42.0
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
