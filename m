@@ -2,173 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA50A7DF9E1
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 19:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8E47DFA58
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 19:52:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qycNr-0005V0-83; Thu, 02 Nov 2023 14:25:35 -0400
+	id 1qycmE-0005pA-FI; Thu, 02 Nov 2023 14:50:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qycNo-0005UZ-5x
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:25:32 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qycmB-0005ob-UT
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:50:44 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qycNl-0004yK-PA
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:25:31 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A2FkZdd010265; Thu, 2 Nov 2023 18:24:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : in-reply-to : references : date : message-id : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=y29DbySuD5XhlPtmypE4KLkE42je9lXf6ckOKqIGJOo=;
- b=VG2IXeIH5c6sJIhdXWFApoOGJmiDMR43zzho8DYdWQsNZhBgouOpCC1p3o/pC+SyGPfU
- Qa5dsVYWmLyL8B34UV95KNR52fxUVdxsRHkovKhVGoqGNZPibwZfAoCaJ75axPPr2d5B
- iishAVGKmD6bzWx0geIRxivU0Kv+hCjki/X+KI5KiCGA47xYljeogmO3+rso107h6mnJ
- yPx3FKSeTXzQI4/hrJgEuAFSV26lCh5xi7xxibBAfrZwdWD29PSI+3Sk6gfmlixNkyh4
- qyy5xXbzej1l6rXgc4AIWBlicGXkDkRsk4st6OySvIjpw7VvZft9o+0UAlFj5xQMmnUr /w== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3u0tuujdcx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 02 Nov 2023 18:24:57 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3A2H175b009098; Thu, 2 Nov 2023 18:24:56 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3u14x8uh6j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 02 Nov 2023 18:24:56 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=abEuaB479gYXOoNnlpUQ8lwhFAzfGGS6wW8eWYIyJBjTmA2+ZgwSsDbTvSkOYxXJ+yAxM8txjYfwcsRdko2bxKUheTOZoACRLbt3jtSo8cVMR/JNV8AIwkmXDJ0zbalJZJmoaJjjh+gR5sQwWHiClV6vs4Te+uJNWPFaaXuJ85iPs7X833IAwhgmYmfsiIohffCB/L5fHWDFE4n6GWdO9c8C2JXP/xp/GzHTTlSDdDcOPLIxwkj5c8FhOmpHNVbECutsHctQft5sHwKYjWsqVRk5X1sKCJFlnqKkECOEcIyGe4vUuDgk0u/oRXxv13C3RRYdJMuAponIc4UufQwKTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y29DbySuD5XhlPtmypE4KLkE42je9lXf6ckOKqIGJOo=;
- b=IUBlR/Hv2qG8s7tQIe99ktMl1qhNI1hx6ibACV8jBlUm466UXqmanK28r0r3cASvlG3aZQebBvAkbayk+lSBmvBXTs0Sag74QYj0YezUHKdMYmYWlJQpZUpgy6WVUEET1C4lyR3RToxBmf5xOd09fLBDQpwx3w/8/hGozX28tNHKPjPr+TXhvBWpxJ7pnJGVLmeZRSAlHPAUSp+c5harmtVSuKtWFXC0jX+Ic1T9VVIgSv6Ai5VwFA8HUXwHCPWG3x4fkOoeJ79VTC76AMf54/Z06EaE0+T5wqisgjnFzonQALMJY9IRbQk+dSz+Ud0tCK8YN/jU2yzV1JJocgl2Bw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y29DbySuD5XhlPtmypE4KLkE42je9lXf6ckOKqIGJOo=;
- b=JvWaAs75rXiL5qP2lIXwgsNxFELdxu3ukbCCEXromfCJ2QgmYXZxYgNX9vymIZWfsukeSC9NhEuSMCHP7CfcAFByOrXynRRhS+okipDm0rVoG+3C4d665tL9Tr/ai8iyUAn6oAATEl3nC/rk/yz9HKcJk6cGwHYcmvjqv0xi2Ak=
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
- by SJ2PR10MB7860.namprd10.prod.outlook.com (2603:10b6:a03:574::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19; Thu, 2 Nov
- 2023 18:24:54 +0000
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::6d2c:be3a:dbc5:6f9e]) by PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::6d2c:be3a:dbc5:6f9e%4]) with mapi id 15.20.6954.021; Thu, 2 Nov 2023
- 18:24:54 +0000
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org, Omar Sandoval
- <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>, =?utf-8?Q?Daniel?=
- =?utf-8?Q?_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH v3 qemu 2/3] dump: Allow directly outputting raw kdump
- format
-In-Reply-To: <CAJ+F1CKOWYwrjmLoiQRC=s8XBBE-x2qvABNX1bUVgQdtG-+Q8w@mail.gmail.com>
-References: <20230918233233.1431858-1-stephen.s.brennan@oracle.com>
- <20230918233233.1431858-3-stephen.s.brennan@oracle.com>
- <CAJ+F1CKOWYwrjmLoiQRC=s8XBBE-x2qvABNX1bUVgQdtG-+Q8w@mail.gmail.com>
-Date: Thu, 02 Nov 2023 11:24:52 -0700
-Message-ID: <8734xo3te3.fsf@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1PR13CA0273.namprd13.prod.outlook.com
- (2603:10b6:208:2bc::8) To PH8PR10MB6597.namprd10.prod.outlook.com
- (2603:10b6:510:226::20)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qycm9-0006fE-7Y
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:50:43 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A2IoUq5021409; Thu, 2 Nov 2023 18:50:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=/lP4lU6GOCigivVj18bvJMlVe45XriqKmPN2V30vwLw=;
+ b=DbZdaeBSjAW3XeOLkV+t9rGV1gKXLcbwE1L/EcNY+j8WV7Pg9faz4DMyWEbKFWI17sLm
+ 904YQna6YY6dG5zSvXg99Q818fRr/wDVm4F18m3XTwsLDN/dhHseDLAqjo06ehOc2vqM
+ x5JHB+MtLq+uUOUmho77kE6iotjLF0p/IHDPvd7PbZ34FJOstuvYaRBDDJXnHf/tuNx8
+ S1dmE6iHFu3/c98lStZxrmM7f7hSsRPTgWEaleTPowVYZH3WvLQ1uVMkZnSnGg4Zgsm3
+ p+40JZ+HCh5hiFEPMsYbVwadm9NCRMofJXS9ld4y1i9q0P7cFwV2qkV84DsSXpdGw07R PQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u4hd4806j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Nov 2023 18:50:36 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A2IoWKk021468;
+ Thu, 2 Nov 2023 18:50:36 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u4hd48060-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Nov 2023 18:50:36 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A2HHsdL000725; Thu, 2 Nov 2023 18:50:35 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u1cmth38y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Nov 2023 18:50:35 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3A2IoYSM10814090
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Nov 2023 18:50:34 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1006858053;
+ Thu,  2 Nov 2023 18:50:34 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C74075805D;
+ Thu,  2 Nov 2023 18:50:33 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Thu,  2 Nov 2023 18:50:33 +0000 (GMT)
+Message-ID: <33cc4e46-c48c-4fd8-bcec-b57698598a0e@linux.ibm.com>
+Date: Thu, 2 Nov 2023 14:50:33 -0400
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|SJ2PR10MB7860:EE_
-X-MS-Office365-Filtering-Correlation-Id: d586a28d-60e2-4a62-1a34-08dbdbd102e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Q39za0/J7lCaU37InjmZZWxU2xZ/IeaOBgg1CiAUe81QPI1iNVJwYZxc0u6qQzYziZRFSYTxZ1G6Vcrv7XW9330noDTJaIUb5lAqmnp1WF6YAbbsA4epoZe8Lcd227N1/kowbVMFax5FiObmJjaG3JycniPf/zxLtIyrBrn5tglzhIHnP5Agai9YYBBjMwUVclEGq9jfssiXApafFOzRJGr24T+nQa7su4czzalwDkqX6OCp86GU4XKC/X855r+LUXFkLrK37QU4WFXQ8OgCBnpl/Bsy4Ivz/cqwRwlyE2sNYtRsT+HBYM7fDVe5Zq3/2x2gnIGYmYp5UGnJ6iZIdlIasgZtIMg11uKx3wzQ9O24i5pN2Fb/VL5zcjQ7dzlC+HPLXijnJGrtT9uzL2Guh25WMDhnIqG0R5du+Ln0XeyD7hqukrqhgy0BlP6hgUxxcS7dTEMCGYjxp9oMVuxS02GbTe9SCR1/zpx+/T6062R0QFvkCxcLRebzbn+b37gizE8SrlSIk+i8sJZxWQnnE1QmGeQkNUrKh9e9tCmpj4ZXV7KQBHOGifUMj3MWaUwEZZ+LRCq32nHrhE3FrhiMVLj1QMr9O+GkRzcB4ILn3cc20rUlPLj6gZOeyuo3RTDY
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR10MB6597.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(346002)(39860400002)(136003)(366004)(376002)(230922051799003)(230173577357003)(230273577357003)(64100799003)(451199024)(186009)(1800799009)(66899024)(36756003)(6512007)(2616005)(86362001)(38100700002)(2906002)(83380400001)(53546011)(5660300002)(478600001)(4326008)(6506007)(54906003)(8936002)(6916009)(66476007)(316002)(41300700001)(6486002)(66946007)(966005)(66556008)(8676002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OHBwelQ4NGpzeDIrUHlEZDMxeHl4NExiWUFkb0dFajdkVmJLUTZlSW82bkth?=
- =?utf-8?B?K3M4SzYzN05zS3VTWmFtMTYyTTF2Zm9vSTdvNldSU3cwVzV0ZmszakhrZFZN?=
- =?utf-8?B?eEhZN2FSclMvU2lqbDVhU1VOWWVzMmw1VkMyUmpRODl1Q1QyWDRUbm12M21x?=
- =?utf-8?B?Nmp3V2Fpby90TnBhUnFES0RjREVNWDF0anVMOEFqQmVLOE1ZSEg1SkplZmtM?=
- =?utf-8?B?OXNnVXl4OS9WK1BkbEdYRVN1NnE0ZXJXNVYwL3FuK01HV29RY3ZMc0FaTjNw?=
- =?utf-8?B?OUc5ZWJwSkpCV1lRSWpWNXJQL3BBeVRxUEFIRjQyYnFSL0g5dWNYaWtGelMw?=
- =?utf-8?B?THB1b2FUdEh0dy9jWWZ6RS9CU3ppUDFISzVOdk5UbnE5UTQrV29xSWpJcEJW?=
- =?utf-8?B?Nm9RekdoMjJhSE9RaWJ5TXl1ZXNnL1dGeUZlaFo3blN1Y3U4TUUxR0NiTzho?=
- =?utf-8?B?Y2hHVU5Id3AwTU4zZmlkN1h3MHUzNlp0c2VoU1pkSHQrSC9JSVFVclg3Qit2?=
- =?utf-8?B?RlptU0ZxaE9tSWFNOTFVbUI0djNESFpvZ3JBUngybzViYm5WUkJYRWR5dkE4?=
- =?utf-8?B?TkxzRW5rYmNuTDgxVlJNblc0QmsrVWE4VjhKK0VkUGJ6cGcrbGdZTEhWYUN1?=
- =?utf-8?B?YWtMUm1qd3hkZHlyRFZmbytUMWRYZjlUMXpnZ0pTVUcyUjF5L1VKUlp5bkc0?=
- =?utf-8?B?WTN3OEFNUXJTNllwOGVPQWVnSE9HaXA5VUlldXF5c3U0RTFveklDUWhsZjJN?=
- =?utf-8?B?Y3pKNFFDbmRxR3pyamUxNHZKa2tHS1lGT0FTY3NIVFVrRDV6NXQ3REdyMlJF?=
- =?utf-8?B?cVVyZEthVGMxNHkxRG9PNDJaY0ZEeG12cWJDYkd2cXlpR0JRQ2FLc09kRTF4?=
- =?utf-8?B?dkZ5dHU2RmFWRmVUcVFzSktOd1FsQlhKcm9ldHo4Szk1YURpbHR6SldRU3JZ?=
- =?utf-8?B?Y3NjdVFnS3JDRWpHTFc1a2wxN2NQRVlwR1RoeHdBQnpwOHh0Si8zcDBpbE10?=
- =?utf-8?B?Tm5ZeElBQTRPQ0hnS2I2UGVmck81MVZhY3BCQ3VhaUYwVDJvOFpLejk2VXNG?=
- =?utf-8?B?NG9Lc2VzN0FnWHpUZDl2cTc1Q25OWG9wS003bjI1SDcvTFhBYlhNSk9yVkhE?=
- =?utf-8?B?TlZpK3IxRHpiNkN0dkV1VlJ0Skk5bGxpcWFLVm1YcFBiVjUzeC9OTGlwMUxE?=
- =?utf-8?B?eVcwTjRselhtZUNnUUcvdVhMc1pJeGtpNEUxOU41NFRnNzNjczBaeFJiK0g4?=
- =?utf-8?B?V3pZNkI3cDFuVlI2UFF1TXA4ZTFmUmFySWNLb3Q2L0g3TEkzT2pKSlY1amxR?=
- =?utf-8?B?SmxjMUdhNHJmWXJwWlNwMnRadFlvVkZCZGFERWYzVEw2ZWlSWk1RYi9wMUcx?=
- =?utf-8?B?bDd4b1ZKUitWOXhJUm1wSi9uYkkvcWpPa21OczBZaDJiQzNWR21HM1M4OXFP?=
- =?utf-8?B?a0ZIYkMxY1BUREwvbHZmRFU0b205ZVpUQmo1VS8wQ0JHRzRrVFdrUzE1RVdx?=
- =?utf-8?B?ZXkySnNlWnJHMExuQzVkQUpick9tQWFDVW02QWphR3BZVlEwSGlra1dPUGFZ?=
- =?utf-8?B?ZmN0VFFzUXBTbzZsd2k2cC8xTFF0SW9vUC9ibUJ3V1ZSYzJuQWxTNnV2MXhn?=
- =?utf-8?B?Z3Nnd1ZJczhMZ0dTM0FseVNnL0tSWHM0NVdHS0M4SFUyalEwWUs4RWFWekVz?=
- =?utf-8?B?bnJ0aDJLdkd2UGRKbFpPUENYWHZzV0Nqd2V2VHB5eDVzdzcyekdlb3lkM1Bx?=
- =?utf-8?B?S3dWTzdCR0QrTmVmak5EaFZyUDcycGIybVcvSHVZSVdRaVFFRjRuUHFvVVpm?=
- =?utf-8?B?cjBWcW14eGdwSFZ6VXJFSFN2SmRoeFZaazdzQVlMc2VEbUgzcE43Mjl1Q1VI?=
- =?utf-8?B?Q1pNNStubjdXalJJa1Z5cFYydDVFdGUzckVSMnM4RTNnSHowUmEwZmFMdW9L?=
- =?utf-8?B?YVZYRFo3K1JLU1hLRDNyNE5lSjVZOVZ6ZTk1N3J3ckVhZEtJdWJSR3FMbHgr?=
- =?utf-8?B?dWxRYXVMUERTZTdXcWhkU2twVk55N3B6RHEvV1dlbEJSOVNvcXBiVE5JczBG?=
- =?utf-8?B?Y3RpMWpLbEJVSHViY2tHeGp2aWIreHY2Z0UxNmIvK2RzTHYvQUJsdjJQNWFm?=
- =?utf-8?B?d1g4dkZYdXF6YnptUzB4SEV4S2tZa1ZrUVVCM1FPTUpiY2pTbWtiaVZITE55?=
- =?utf-8?Q?OtHdfyvZ7Z7RRXc8M4aoOCU=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: xavlu3P4wXHQddh+wvg34fG8znbxrMXEExQbQ3VdmhiWv9TXZ2Ny11Eohrsx84rrwcYzQtb0usDoLY2wIMVxlmecy7LomRqsW+Jni1jSPt4om39sL3JQf6Fyb2UuENaurltIzqIph88vxDBIbpVM4c4fthX3HaSVG80Vpp0r8RDm0IoYq6NQPUxYOzERsbI4oyO/dIeMOhmW7YKqET7MWW7qYI+kBNbKjoMdBGEf5Y22sP9n9HsQ8J+aqNfAZkqPeGN/olWvP+XUoLZnfdU6MoyE3XJwD9wLB+M5zYwtaSB0AVMU6W7QjvK1tL6070w4EayTXGPTM75RjnvjjTC3HssXJ2ApgUT59uagi+wUSgvzMlAArryGGlwuh+mJBD7VAE+C88P9CaUcg9zILglMUpf5VE2DasNkNcUdRbjHbVChzqoqGTpBEcVB38bEr7vovXkkLaNTCfc0fi/4wOi+wI5Wy4ilIW1xQIqkfiKa/hhQmsCWwZ91bzZbL5hg5QGop8tZ5iHIOr2G5k660uMU+otILPduS/rqi53sOzRMzMF/FRJSx9EmLMZsw7rJ1CmZq5smj+KTP+TPceD0AJP3bnS02MW3BwXbEvnyB32Lmq5z2BB9uCWqJ30+y4/OJuM58Z6Fm+qnxDkF2sfAso2d1vudeRd3wiEm9QP4ltJX9idu3IsMribZTdDm7VaVCw7CIpHODnFgXXYzHwMnE6828zG88gRZVaxw0yq16gkpZ0ATm3Apy9wvrmchg2IgGs/D0ZS+1MvCTnbTulPV0DCCgOIj5cVTxP6nWAfEoS3nU9N8LGcwYQTIl/Gs21RluV0pVSCXQzyy2Pp5tmupVqQShWJccgS3OOgeHGilufjqZUQF8MYG4O5kFvoXW61jg9Y0
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d586a28d-60e2-4a62-1a34-08dbdbd102e6
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2023 18:24:54.8062 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LGl3yNVfKkx663axOireSccdD34OGGMNwc+Rjo+Ujx1SL9snx+0ea4TUEFUJSyrm5yHBaqSByUK4b/aq2pWR/NLdubLAN6SaXp0xLVf0yN0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7860
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/14] tpm_crb: move ACPI table building to device
+ interface
+Content-Language: en-US
+To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20231031040021.65582-1-j@getutm.app>
+ <20231031040021.65582-6-j@getutm.app>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20231031040021.65582-6-j@getutm.app>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EOAD28NL1oovhuyI5qPLi--knVTDL-It
+X-Proofpoint-ORIG-GUID: dMJJmwfRArPKlk-JGClMdzkZeVdS5beB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-02_08,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 bulkscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
- definitions=main-2311020150
-X-Proofpoint-GUID: 8kw3Bw8PKwuLXajpJLKabMHiC7Dap3KN
-X-Proofpoint-ORIG-GUID: 8kw3Bw8PKwuLXajpJLKabMHiC7Dap3KN
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=stephen.s.brennan@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ adultscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 phishscore=0
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2311020152
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -185,162 +122,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
 
-> Hi Stephen
->
-> On Tue, Sep 19, 2023 at 3:32=E2=80=AFAM Stephen Brennan
-> <stephen.s.brennan@oracle.com> wrote:
->>
->> The flattened format (currently output by QEMU) is used by makedumpfile
->> only when it is outputting a vmcore to a file which is not seekable. The
->> flattened format functions essentially as a set of instructions of the
->> form "seek to the given offset, then write the given bytes out".
->>
->> The flattened format can be reconstructed using makedumpfile -R, or
->> makedumpfile-R.pl, but it is a slow process because it requires copying
->> the entire vmcore. The flattened format can also be directly read by
->> crash, but still, it requires a lengthy reassembly phase.
->>
->> To sum up, the flattened format is not an ideal one: it should only be
->> used on files which are actually not seekable. This is the exact
->> strategy which makedumpfile uses, as seen in the implementation of
->> "write_buffer()" in makedumpfile [1]. However, QEMU has always used the
->> flattened format. For compatibility it is best not to change the default
->> output format without warning. So, add a flag to DumpState which changes
->> the output to use the normal (i.e. raw) format. This flag will be added
->> to the QMP and HMP commands in the next change.
->>
->> [1]: https://github.com/makedumpfile/makedumpfile/blob/f23bb943568188a27=
-46dbf9b6692668f5a2ac3b6/makedumpfile.c#L5008-L5040
->>
->> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
->> ---
->>  dump/dump.c           | 32 +++++++++++++++++++++++++-------
->>  include/sysemu/dump.h |  1 +
->>  2 files changed, 26 insertions(+), 7 deletions(-)
->>
->> diff --git a/dump/dump.c b/dump/dump.c
->> index 74071a1565..10aa2c79e0 100644
->> --- a/dump/dump.c
->> +++ b/dump/dump.c
->> @@ -814,6 +814,10 @@ static int write_start_flat_header(DumpState *s)
->>      MakedumpfileHeader *mh;
->>      int ret =3D 0;
->>
->> +    if (s->kdump_raw) {
->> +        return 0;
->> +    }
->> +
->>      QEMU_BUILD_BUG_ON(sizeof *mh > MAX_SIZE_MDF_HEADER);
->>      mh =3D g_malloc0(MAX_SIZE_MDF_HEADER);
->>
->> @@ -837,6 +841,10 @@ static int write_end_flat_header(DumpState *s)
->>  {
->>      MakedumpfileDataHeader mdh;
->>
->> +    if (s->kdump_raw) {
->> +        return 0;
->> +    }
->> +
->>      mdh.offset =3D END_FLAG_FLAT_HEADER;
->>      mdh.buf_size =3D END_FLAG_FLAT_HEADER;
->>
->> @@ -853,13 +861,21 @@ static int write_buffer(DumpState *s, off_t offset=
-, const void *buf, size_t size
->>  {
->>      size_t written_size;
->>      MakedumpfileDataHeader mdh;
->> +    loff_t seek_loc;
->
-> Any reason to use loff_t over off_t here? It fails to compile on win32
-> for ex. I can touch on PR commit otherwise.
 
-I think that was an oversight on my part: lseek() uses off_t.
+On 10/31/23 00:00, Joelle van Dyne wrote:
+> This logic is similar to TPM TIS ISA device. Since TPM CRB can only
+> support TPM 2.0 backends, we check for this in realize.
 
-I see that qemu is compiled with _FILE_OFFSET_BITS=3D64 so off_t should be
-64 bits even on 32-bit architectures. So this should be off_t. I believe
-the compile error would also happen in qmp_dump_guest_memory() where I
-have:
+The problem on x86_64 is that the creation of the ACPI doesn't seem to 
+get invoked. The device then ends up not working under Linux. The 
+problem seems to be
 
-    if (kdump_raw && lseek(fd, 0, SEEK_CUR) =3D=3D (loff_t) -1) {
+.parent = TYPE_DEVICE
 
-If it's easiest for you to tweak it in the PR, please do. Otherwise I
-can respin the series replacing loff_t with off_t.
+When I change this to TYPE_ISA_DEVICE it starts generating the ACPI 
+table. I am not sure what other side effects this may have, though.
 
-Thank you,
-Stephen
-
->>
->> -    mdh.offset =3D cpu_to_be64(offset);
->> -    mdh.buf_size =3D cpu_to_be64(size);
->> +    if (s->kdump_raw) {
->> +        seek_loc =3D lseek(s->fd, offset, SEEK_SET);
->> +        if (seek_loc =3D=3D (off_t) -1) {
->> +            return -1;
->> +        }
->> +    } else {
->> +        mdh.offset =3D cpu_to_be64(offset);
->> +        mdh.buf_size =3D cpu_to_be64(size);
->>
->> -    written_size =3D qemu_write_full(s->fd, &mdh, sizeof(mdh));
->> -    if (written_size !=3D sizeof(mdh)) {
->> -        return -1;
->> +        written_size =3D qemu_write_full(s->fd, &mdh, sizeof(mdh));
->> +        if (written_size !=3D sizeof(mdh)) {
->> +            return -1;
->> +        }
->>      }
->>
->>      written_size =3D qemu_write_full(s->fd, buf, size);
->> @@ -1775,7 +1791,8 @@ static void vmcoreinfo_update_phys_base(DumpState =
-*s)
->>
->>  static void dump_init(DumpState *s, int fd, bool has_format,
->>                        DumpGuestMemoryFormat format, bool paging, bool h=
-as_filter,
->> -                      int64_t begin, int64_t length, Error **errp)
->> +                      int64_t begin, int64_t length, bool kdump_raw,
->> +                      Error **errp)
->>  {
->>      ERRP_GUARD();
->>      VMCoreInfoState *vmci =3D vmcoreinfo_find();
->> @@ -1786,6 +1803,7 @@ static void dump_init(DumpState *s, int fd, bool h=
-as_format,
->>      s->has_format =3D has_format;
->>      s->format =3D format;
->>      s->written_size =3D 0;
->> +    s->kdump_raw =3D kdump_raw;
->>
->>      /* kdump-compressed is conflict with paging and filter */
->>      if (has_format && format !=3D DUMP_GUEST_MEMORY_FORMAT_ELF) {
->> @@ -2168,7 +2186,7 @@ void qmp_dump_guest_memory(bool paging, const char=
- *file,
->>      dump_state_prepare(s);
->>
->>      dump_init(s, fd, has_format, format, paging, has_begin,
->> -              begin, length, errp);
->> +              begin, length, false, errp);
->>      if (*errp) {
->>          qatomic_set(&s->status, DUMP_STATUS_FAILED);
->>          return;
->> diff --git a/include/sysemu/dump.h b/include/sysemu/dump.h
->> index e27af8fb34..d702854853 100644
->> --- a/include/sysemu/dump.h
->> +++ b/include/sysemu/dump.h
->> @@ -157,6 +157,7 @@ typedef struct DumpState {
->>      MemoryMappingList list;
->>      bool resume;
->>      bool detached;
->> +    bool kdump_raw;
->>      hwaddr memory_offset;
->>      int fd;
->>
->> --
->> 2.39.3
->>
->
->
-> --=20
-> Marc-Andr=C3=A9 Lureau
+    Stefan
+> 
+> Signed-off-by: Joelle van Dyne <j@getutm.app>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>   hw/tpm/tpm_crb.h        |  2 ++
+>   hw/i386/acpi-build.c    | 23 -----------------------
+>   hw/tpm/tpm_crb.c        | 16 ++++++++++++++++
+>   hw/tpm/tpm_crb_common.c | 19 +++++++++++++++++++
+>   4 files changed, 37 insertions(+), 23 deletions(-)
+> 
+> diff --git a/hw/tpm/tpm_crb.h b/hw/tpm/tpm_crb.h
+> index 36863e1664..e6a86e3fd1 100644
+> --- a/hw/tpm/tpm_crb.h
+> +++ b/hw/tpm/tpm_crb.h
+> @@ -73,5 +73,7 @@ void tpm_crb_init_memory(Object *obj, TPMCRBState *s, Error **errp);
+>   void tpm_crb_mem_save(TPMCRBState *s, uint32_t *saved_regs, void *saved_cmdmem);
+>   void tpm_crb_mem_load(TPMCRBState *s, const uint32_t *saved_regs,
+>                         const void *saved_cmdmem);
+> +void tpm_crb_build_aml(TPMIf *ti, Aml *scope, uint32_t baseaddr, uint32_t size,
+> +                       bool build_ppi);
+>   
+>   #endif /* TPM_TPM_CRB_H */
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index 80db183b78..ce3f7b2d91 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -1441,9 +1441,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+>       uint32_t nr_mem = machine->ram_slots;
+>       int root_bus_limit = 0xFF;
+>       PCIBus *bus = NULL;
+> -#ifdef CONFIG_TPM
+> -    TPMIf *tpm = tpm_find();
+> -#endif
+>       bool cxl_present = false;
+>       int i;
+>       VMBusBridge *vmbus_bridge = vmbus_bridge_find();
+> @@ -1790,26 +1787,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+>           }
+>       }
+>   
+> -#ifdef CONFIG_TPM
+> -    if (TPM_IS_CRB(tpm)) {
+> -        dev = aml_device("TPM");
+> -        aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
+> -        aml_append(dev, aml_name_decl("_STR",
+> -                                      aml_string("TPM 2.0 Device")));
+> -        crs = aml_resource_template();
+> -        aml_append(crs, aml_memory32_fixed(TPM_CRB_ADDR_BASE,
+> -                                           TPM_CRB_ADDR_SIZE, AML_READ_WRITE));
+> -        aml_append(dev, aml_name_decl("_CRS", crs));
+> -
+> -        aml_append(dev, aml_name_decl("_STA", aml_int(0xf)));
+> -        aml_append(dev, aml_name_decl("_UID", aml_int(1)));
+> -
+> -        tpm_build_ppi_acpi(tpm, dev);
+> -
+> -        aml_append(sb_scope, dev);
+> -    }
+> -#endif
+> -
+>       if (pcms->sgx_epc.size != 0) {
+>           uint64_t epc_base = pcms->sgx_epc.base;
+>           uint64_t epc_size = pcms->sgx_epc.size;
+> diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
+> index 99c64dd72a..8d57295b15 100644
+> --- a/hw/tpm/tpm_crb.c
+> +++ b/hw/tpm/tpm_crb.c
+> @@ -19,6 +19,8 @@
+>   #include "qemu/module.h"
+>   #include "qapi/error.h"
+>   #include "exec/address-spaces.h"
+> +#include "hw/acpi/acpi_aml_interface.h"
+> +#include "hw/acpi/tpm.h"
+>   #include "hw/qdev-properties.h"
+>   #include "hw/pci/pci_ids.h"
+>   #include "hw/acpi/tpm.h"
+> @@ -121,6 +123,11 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
+>           return;
+>       }
+>   
+> +    if (tpm_crb_none_get_version(TPM_IF(s)) != TPM_VERSION_2_0) {
+> +        error_setg(errp, "TPM CRB only supports TPM 2.0 backends");
+> +        return;
+> +    }
+> +
+>       tpm_crb_init_memory(OBJECT(s), &s->state, errp);
+>   
+>       /* only used for migration */
+> @@ -142,10 +149,17 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
+>       }
+>   }
+>   
+> +static void build_tpm_crb_none_aml(AcpiDevAmlIf *adev, Aml *scope)
+> +{
+> +    tpm_crb_build_aml(TPM_IF(adev), scope, TPM_CRB_ADDR_BASE, TPM_CRB_ADDR_SIZE,
+> +                      true);
+> +}
+> +
+>   static void tpm_crb_none_class_init(ObjectClass *klass, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>       TPMIfClass *tc = TPM_IF_CLASS(klass);
+> +    AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
+>   
+>       dc->realize = tpm_crb_none_realize;
+>       device_class_set_props(dc, tpm_crb_none_properties);
+> @@ -154,6 +168,7 @@ static void tpm_crb_none_class_init(ObjectClass *klass, void *data)
+>       tc->model = TPM_MODEL_TPM_CRB;
+>       tc->get_version = tpm_crb_none_get_version;
+>       tc->request_completed = tpm_crb_none_request_completed;
+> +    adevc->build_dev_aml = build_tpm_crb_none_aml;
+>   
+>       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+>   }
+> @@ -166,6 +181,7 @@ static const TypeInfo tpm_crb_none_info = {
+>       .class_init  = tpm_crb_none_class_init,
+>       .interfaces = (InterfaceInfo[]) {
+>           { TYPE_TPM_IF },
+> +        { TYPE_ACPI_DEV_AML_IF },
+>           { }
+>       }
+>   };
+> diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
+> index 605e8576e9..4fff0c6b59 100644
+> --- a/hw/tpm/tpm_crb_common.c
+> +++ b/hw/tpm/tpm_crb_common.c
+> @@ -239,3 +239,22 @@ void tpm_crb_mem_load(TPMCRBState *s, const uint32_t *saved_regs,
+>       memcpy(regs, saved_regs, TPM_CRB_R_MAX);
+>       memcpy(&regs[R_CRB_DATA_BUFFER], saved_cmdmem, A_CRB_DATA_BUFFER);
+>   }
+> +
+> +void tpm_crb_build_aml(TPMIf *ti, Aml *scope, uint32_t baseaddr, uint32_t size,
+> +                       bool build_ppi)
+> +{
+> +    Aml *dev, *crs;
+> +
+> +    dev = aml_device("TPM");
+> +    aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
+> +    aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")));
+> +    aml_append(dev, aml_name_decl("_UID", aml_int(1)));
+> +    aml_append(dev, aml_name_decl("_STA", aml_int(0xF)));
+> +    crs = aml_resource_template();
+> +    aml_append(crs, aml_memory32_fixed(baseaddr, size, AML_READ_WRITE));
+> +    aml_append(dev, aml_name_decl("_CRS", crs));
+> +    if (build_ppi) {
+> +        tpm_build_ppi_acpi(ti, dev);
+> +    }
+> +    aml_append(scope, dev);
+> +}
 
