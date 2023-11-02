@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434AA7DE9D6
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:02:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1757DEA25
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:36:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyM5x-0004gC-VS; Wed, 01 Nov 2023 21:02:01 -0400
+	id 1qyMXh-0005hX-Op; Wed, 01 Nov 2023 21:30:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qyM5v-0004fO-Q3; Wed, 01 Nov 2023 21:01:59 -0400
-Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyMXY-0005Up-DE
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:32 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qyM5u-0006Xq-6C; Wed, 01 Nov 2023 21:01:59 -0400
-Received: by mail-vk1-xa36.google.com with SMTP id
- 71dfb90a1353d-4a19dac27c4so182942e0c.1; 
- Wed, 01 Nov 2023 18:01:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyMXU-0001T6-8q
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:31 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6c32a20d5dbso152057b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:30:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698886917; x=1699491717; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q092ZBeTjzQvBJNPvec2m+1w27uaIYVwxg3OgbQG0bo=;
- b=CIcUReQvi3HTk47QdaBClgzzWKowu4Cbs+CwQn9KHghnqQ53BPHg1UCBSPLooZpTFe
- Wb+WFhGlBtJdZczeWNXUKIz6oK1iACoejekINS6EW4ItJWgkDhIE9AjqpMxQWoPPX/tr
- FGLcKrAeytQ7FtgMfpypyvUzgPF+lKsTsebRA8JXLQDQE0c8AEbVLtAjGMxz0XxhxwHh
- 1+EWT2UScvpEp0QMeAP3trPOVGqZzD74TYG225N5RjDuupLaQJNudWs2Qwl4mDbP+AZq
- ibSxusynVzzr2ptGGWTC84HusLNHqPl1TBqYyXQEku2vjKkvlwexp0A//1iiamp+iXAQ
- JrKA==
+ d=linaro.org; s=google; t=1698888622; x=1699493422; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=o8KMijT5BRG/XgxSXOrKXNRoT7wL1vkrpStXGeBhOig=;
+ b=og3iY1W8LiEGlQblUPQir9ffAZrFVMESvxVkTllmnK+gwCtjYQeXGbpHpsOBrDfFYp
+ D6bXXakVSeIVcwxVfh+eDPaGJv6g0S48oM8hUQ1OZDJua96Dsxy5UyKSdf8GSP+ts6bu
+ I5DsvdF88JuiX4I5Tidym8dotbXmRwKeSS+dLMykJv2mncmsc0foVe/RPlIKc0Qf723/
+ xHJFzRXxOhbmzxk/suaAgkTx0v/gVTQrxrvl5JOFgle2xaEHfR2JhUm9Njvdwq/XKLnq
+ gJxkrmi2O+Gz3sKmeXuAXBR5I/hbYgjPUAlomd+4nojhVPh1b6cG+ION6/0kvTbf90S3
+ u2Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698886917; x=1699491717;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=q092ZBeTjzQvBJNPvec2m+1w27uaIYVwxg3OgbQG0bo=;
- b=QUzBPl40xYxzCELCJv5ns46OHB+eV4SWOVuhCtShk/y8+zEbbkykZcuXEgjXVKOI0X
- sCalEUqOSfIdZonB7WlakI990jYnlbm19j9hHmuo3RhIkY0v8pbxv7D+oJzV7Rex/Lie
- S9Ft5LRNS3ttnK0UOIk1hx04EAU/Q2awk8FelZ3qkmYFcar9nflX5C/KWClDceZG3SRA
- CoPjB6DSREMSmmQCme33XCFjRm5tygV/1iuSjSvvXk1yoywsszCd33zfpxM4rrdG58uT
- WC901DjJC+RE6UgAHncH8+qH4IxcjMYFvSaSo3WZQBKsEvmtlVAJMsOLFjIgDPllgYk+
- /5UA==
-X-Gm-Message-State: AOJu0Yw7pFWWDUUJIGhngdrf0hsDI6l2EV1DTEWOww0HWv1Fdu5DIkac
- IjjXvI0UfsOUaz+TuIBEM8tK4tgEpPihTmxq+ts=
-X-Google-Smtp-Source: AGHT+IG9B3gzuWlQL78qZ/xUKqs2MyAYyBP1pvodWo8zsh9ChYF20Q0/+oezOh7ObSYY+qxwBBW+qMGqDe89QETiYFc=
-X-Received: by 2002:a67:b008:0:b0:452:5de9:d303 with SMTP id
- z8-20020a67b008000000b004525de9d303mr16454436vse.30.1698886916504; Wed, 01
- Nov 2023 18:01:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698888622; x=1699493422;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o8KMijT5BRG/XgxSXOrKXNRoT7wL1vkrpStXGeBhOig=;
+ b=WvrBPYU/glCbfsxz4JswHHAjXCL3uNa/Cfga3EeDHpOFS/UiuxT+4eDVhJcXlDjlkh
+ HBMTUtUOK4z8MF0kCu2g2YGj1vkG7be97kCXaZk32gXwUsVpMn+X/nv/+/Xj56sF3cL0
+ X9jFqqoCz9fpIJUPcunwYONIC3V1f9w7ZrLpKUYGURUU1qj0HP1Ngr3UYHAeK7paLijR
+ 0/fU8mX4dQjH3iVujlSWHOHdz2g0DU7fVkL2bHHaHtUbfA5/U7g1Z19OPMrdUWWKpP1V
+ ygQQwA4YRWB1GHw0VJTL9JlIHpOiJqKhaprISgFuxcrEpAEQniqMeWMzAIVl5Qtd2oBk
+ MHQQ==
+X-Gm-Message-State: AOJu0Yw5vjwebtWDGTtoeknHPl5IhoqPV4RlHVfrVyEo1xdCU/RIbZgI
+ vWsc8xGCtAnD7jd8BC+vzo1j4rxN8NHcLall/LY=
+X-Google-Smtp-Source: AGHT+IF+TjryKkwSYNlcmp9MUCMv+NeEJ4jqe1npD1ANt2V6fbg6Z2OPsrnQ53naiuSHuJv1FIzSzw==
+X-Received: by 2002:a05:6a00:939a:b0:6b8:3375:4885 with SMTP id
+ ka26-20020a056a00939a00b006b833754885mr16595731pfb.1.1698888617568; 
+ Wed, 01 Nov 2023 18:30:17 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ r23-20020aa78457000000b006979f70fdd5sm1784191pfn.219.2023.11.01.18.30.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Nov 2023 18:30:17 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: deller@gmx.de
+Subject: [PATCH v3 00/88] target/hppa: Implement hppa64 cpu
+Date: Wed,  1 Nov 2023 18:28:48 -0700
+Message-Id: <20231102013016.369010-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20231030081607.115118-1-liweiwei@iscas.ac.cn>
- <20231030081607.115118-2-liweiwei@iscas.ac.cn>
-In-Reply-To: <20231030081607.115118-2-liweiwei@iscas.ac.cn>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 2 Nov 2023 11:01:29 +1000
-Message-ID: <CAKmqyKPgcynzcRFhmF1R1VBNg4Q2T9r+ymv+F6qv3FzVb+yUqw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] MAINTAINERS: update mail address for Weiwei Li
-To: Weiwei Li <liweiwei@iscas.ac.cn>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com, lazyparser@gmail.com, 
- Weiwei Li <liwei1518@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa36.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,37 +88,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 6:17=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> wr=
-ote:
->
-> My Iscas mail account will be disabled soon, change to my personal
-> gmail account.
->
-> Signed-off-by: Weiwei Li <liwei1518@gmail.com>
+This is the pa2.0 cpu that should populate Helge's C3700 workstation.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+I have adjusted both user and system binaries to always support the
+64-bit cpu but default to the 32-bit cpu.
 
-Alistair
+Changes for v3:
+  * Rebased.
+  * Improve TLB lookups and flushing:
+    - Separate PSW.P mmu_idx, so that we don't need to flush when
+      PSW.P changes.  This was the majority of all TLB flushing.
+    - Use an interval tree for TLB lookup, rather than a linear
+      search across an array.
+  * Incorporate some of Helge's machine patches.
 
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index cd8d6b140f..aa5c5d4bff 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -323,7 +323,7 @@ RISC-V TCG CPUs
->  M: Palmer Dabbelt <palmer@dabbelt.com>
->  M: Alistair Francis <alistair.francis@wdc.com>
->  M: Bin Meng <bin.meng@windriver.com>
-> -R: Weiwei Li <liweiwei@iscas.ac.cn>
-> +R: Weiwei Li <liwei1518@gmail.com>
->  R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->  R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
->  L: qemu-riscv@nongnu.org
-> --
-> 2.25.1
->
->
+
+r~
+
+
+Helge Deller (9):
+  target/hppa: sar register allows only 5 bits on 32-bit CPU
+  target/hppa: Fix interruption based on default PSW
+  target/hppa: Add pa2.0 cpu local tlb flushes
+  target/hppa: Clear upper bits in mtctl for pa1.x
+  hw/pci-host/astro: Map Astro chip into 64-bit I/O memory region
+  hw/pci-host/astro: Trigger CPU irq on CPU HPA in high memory
+  hw/hppa: Turn on 64-bit CPU for C3700 machine
+  hw/hppa: Allow C3700 with 64-bit and B160L with 32-bit CPU only
+  hw/hppa: Map PDC ROM and I/O memory area into lower memory
+
+Richard Henderson (79):
+  target/hppa: Include PSW_P in tb flags and mmu index
+  target/hppa: Rename hppa_tlb_entry to HPPATLBEntry
+  target/hppa: Use IntervalTreeNode in HPPATLBEntry
+  target/hppa: Always report one page to tlb_set_page
+  target/hppa: Split out hppa_flush_tlb_range
+  target/hppa: Populate an interval tree with valid tlb entries
+  tcg: Improve expansion of deposit of constant
+  tcg: Improve expansion of deposit into a constant
+  target/hppa: Remove get_temp
+  target/hppa: Remove get_temp_tl
+  target/hppa: Remove load_const
+  target/hppa: Fix hppa64 case in machine.c
+  target/hppa: Fix load in do_load_32
+  target/hppa: Truncate rotate count in trans_shrpw_sar
+  target/hppa: Fix trans_ds for hppa64
+  target/hppa: Fix do_add, do_sub for hppa64
+  target/hppa: Fix bb_sar for hppa64
+  target/hppa: Fix extrw and depw with sar for hppa64
+  target/hppa: Introduce TYPE_HPPA64_CPU
+  target/hppa: Make HPPA_BTLB_ENTRIES variable
+  target/hppa: Implement cpu_list
+  target/hppa: Implement hppa_cpu_class_by_name
+  target/hppa: Update cpu_hppa_get/put_psw for hppa64
+  target/hppa: Handle absolute addresses for pa2.0
+  target/hppa: Adjust hppa_cpu_dump_state for hppa64
+  target/hppa: Fix hppa64 addressing
+  target/hppa: Pass DisasContext to copy_iaoq_entry
+  target/hppa: Always use copy_iaoq_entry to set cpu_iaoq_[fb]
+  target/hppa: Use copy_iaoq_entry for link in do_ibranch
+  target/hppa: Mask inputs in copy_iaoq_entry
+  target/hppa: Pass d to do_cond
+  target/hppa: Pass d to do_sub_cond
+  target/hppa: Pass d to do_log_cond
+  target/hppa: Pass d to do_sed_cond
+  target/hppa: Pass d to do_unit_cond
+  linux-user/hppa: Fixes for TARGET_ABI32
+  target/hppa: Drop attempted gdbstub support for hppa64
+  target/hppa: Remove TARGET_HPPA64
+  target/hppa: Decode d for logical instructions
+  target/hppa: Decode d for unit instructions
+  target/hppa: Decode d for cmpclr instructions
+  target/hppa: Decode d for add instructions
+  target/hppa: Decode d for sub instructions
+  target/hppa: Decode d for bb instructions
+  target/hppa: Decode d for cmpb instructions
+  target/hppa: Decode CMPIB double-word
+  target/hppa: Decode ADDB double-word
+  target/hppa: Implement LDD, LDCD, LDDA, STD, STDA
+  target/hppa: Implement DEPD, DEPDI
+  target/hppa: Implement EXTRD
+  target/hppa: Implement SHRPD
+  target/hppa: Implement CLRBTS, POPBTS, PUSHBTS, PUSHNOM
+  target/hppa: Implement STDBY
+  target/hppa: Implement IDTLBT, IITLBT
+  hw/hppa: Use uint32_t instead of target_ureg
+  target/hppa: Remove TARGET_REGISTER_BITS
+  target/hppa: Remove most of the TARGET_REGISTER_BITS redirections
+  target/hppa: Remove remaining TARGET_REGISTER_BITS redirections
+  target/hppa: Adjust vmstate_env for pa2.0 tlb
+  target/hppa: Use tcg_temp_new_i64 not tcg_temp_new
+  target/hppa: Replace tcg_gen_*_tl with tcg_gen_*_i64
+  target/hppa: Implement HADD
+  target/hppa: Implement HSUB
+  target/hppa: Implement HAVG
+  target/hppa: Implement HSHL, HSHR
+  target/hppa: Implement HSHLADD, HSHRADD
+  target/hppa: Implement MIXH, MIXW
+  target/hppa: Implement PERMH
+  target/hppa: Precompute zero into DisasContext
+  target/hppa: Return zero for r0 from load_gpr
+  include/hw/elf: Remove truncating signed casts
+  hw/hppa: Translate phys addresses for the cpu
+  linux-user/hppa: Drop EXCP_DUMP from handled exceptions
+  target/hppa: Implement pa2.0 data prefetch instructions
+  target/hppa: Avoid async_safe_run_on_cpu on uniprocessor system
+  target/hppa: Add unwind_breg to CPUHPPAState
+  target/hppa: Create raise_exception_with_ior
+  target/hppa: Update IIAOQ, IIASQ for pa2.0
+  target/hppa: Improve interrupt logging
+
+ configs/targets/hppa-linux-user.mak |    1 +
+ include/hw/elf_ops.h                |   17 +-
+ linux-user/hppa/target_elf.h        |    2 +-
+ target/hppa/cpu-param.h             |   22 +-
+ target/hppa/cpu-qom.h               |    1 +
+ target/hppa/cpu.h                   |  180 ++-
+ target/hppa/helper.h                |   55 +-
+ target/hppa/insns.decode            |  189 ++-
+ hw/hppa/machine.c                   |  167 ++-
+ hw/pci-host/astro.c                 |   11 +-
+ linux-user/hppa/cpu_loop.c          |    4 -
+ linux-user/hppa/signal.c            |    6 +-
+ target/hppa/cpu.c                   |   70 +-
+ target/hppa/gdbstub.c               |   32 +-
+ target/hppa/helper.c                |  101 +-
+ target/hppa/int_helper.c            |   77 +-
+ target/hppa/machine.c               |  190 ++-
+ target/hppa/mem_helper.c            |  436 ++++--
+ target/hppa/op_helper.c             |  310 +++-
+ target/hppa/sys_helper.c            |   14 +-
+ target/hppa/translate.c             | 2144 ++++++++++++++++-----------
+ tcg/tcg-op.c                        |  323 ++--
+ target/hppa/trace-events            |    1 +
+ 23 files changed, 2790 insertions(+), 1563 deletions(-)
+
+-- 
+2.34.1
+
 
