@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49737DEF55
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D127DEF56
 	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:00:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyUU2-00079n-5V; Thu, 02 Nov 2023 05:59:26 -0400
+	id 1qyUU0-00078v-NI; Thu, 02 Nov 2023 05:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qyUU0-00078z-BM; Thu, 02 Nov 2023 05:59:24 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1qyUTx-000785-OV; Thu, 02 Nov 2023 05:59:21 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qyUTy-0008IL-Jg; Thu, 02 Nov 2023 05:59:24 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so152243566b.0; 
- Thu, 02 Nov 2023 02:59:21 -0700 (PDT)
+ id 1qyUTv-0008Hz-KG; Thu, 02 Nov 2023 05:59:21 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5401bab7525so1227622a12.2; 
+ Thu, 02 Nov 2023 02:59:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698919161; x=1699523961; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698919157; x=1699523957; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
- :reply-to; bh=o4kNLxNW6GoGk5ERMBQ1l4n66RoV5YMHckzIeSuI258=;
- b=QZML1Z56a9mK/veiwd+IwmYeBRuL0/Ier7rqxfqKhZePrGpB3E/W11VXDN5EsYf4Du
- fVYRvXYjgc0ECjjjyMs0fRqH345jQoX1McEpMtx1oRJzBMwoT5IWOI3JYGPoo9KGdT/A
- ddPY9WFpD4kop97WKMUS6XswgRLqqmt4eT+OcdHN5hsZanY7g45ck5K2mZSg9E+2nT1j
- j0berh9I6XlryRogFV/nmdvn9qlVXaUOQ4seITcqVwhtp5q6tfqoK2q9y/mkvqSXflE0
- nzSDGg1cMJ0NTPAbtnWh3FJu+KiwR/r+mPPU6fIbKd0LikvxypAOGfEa5QoHP5xalSlu
- a7ag==
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PGB9pNtDuCkcqudpHSxApPG4Hxyl2dRueatHmhaU/tU=;
+ b=f3qNCWQUgISe9Cwdzan4HBr4RJ33024hQQBQZytopAe0UT5ykMpxcZXsBN1rQo7Yvf
+ 9rt3gmOiwbaxoMgcyXlWqjJNkivJ6IOoqa3JI0ixmG8aQcplc1H7NfSPBjW5XNlwSyzD
+ dtSpDIE1idctEG1u3tig/UKDkSyo0O46BdzOGWVB+ksds1e+mNagAfLVUUlyVlm2r75h
+ ThZceiai/N0JjQZTbbvqMx2rXZUFoA/Ui4zjcNfWs4dCgRDezMqtVjc2nN+a92+CDsmS
+ Ls9K0T5AKrIGAhPCKIVP9e53NErSHkMFMuDUyT6uvIGP3kEIFoGwXLr7KjdSurQCZR6f
+ YCew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698919161; x=1699523961;
+ d=1e100.net; s=20230601; t=1698919157; x=1699523957;
  h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o4kNLxNW6GoGk5ERMBQ1l4n66RoV5YMHckzIeSuI258=;
- b=jWtW6TN3U0uu3lYfoB3V7WnD8TyVFDHIGJdD+ImLKLqs/WPu8DDakmTK3XbnYwf5eB
- 6zYxtjh0j+pop+EUDb/bwLBnttTgTUcpLms8Q3rJSAuqsFM61UQXuWR2KTbJH+tQPFxD
- xsgCGPVTWZr4A0E6MW1JfL30X4gC1g2LCtbjYYRjsdwcmdgAe5RVxMvldolzlhJsvKG0
- 7Kf5DsVi1yBfuIgZMNNFoOrAaRRvVZpVnCH+nwrRLib6I7gMfb9q53E3v+EEEldx9ikQ
- POvnKoCTrhNODriH4gFryCPDLLP3bR4zIGLS6VW+cWVY5+5kpyFXuBh8UFMKtZ9PWoOG
- jf2Q==
-X-Gm-Message-State: AOJu0YziC6q7FGD76wSxkuyut+Mc18pW0JylyinEYMviAzpH6EllD7jf
- B99k9p64R/o6FgnmBkMQbolleGnQa28=
-X-Google-Smtp-Source: AGHT+IHcBH7ppQsalrVqEDTHUtBPxE+ieHamvWwH3zPV1QqzTg9vnKVyO1hxfvJ1oVreBAcLBZC6Jg==
-X-Received: by 2002:a17:906:f9c6:b0:9c7:5186:de2a with SMTP id
- lj6-20020a170906f9c600b009c75186de2amr4034361ejb.6.1698919160684; 
- Thu, 02 Nov 2023 02:59:20 -0700 (PDT)
+ bh=PGB9pNtDuCkcqudpHSxApPG4Hxyl2dRueatHmhaU/tU=;
+ b=PS7YS78NlGn4lhqwFjRpSmFQno7EG1aWANjrIMtRjgUjPaEs0aw6cKsiZBT9Jiwm4q
+ wB1Gpmwau0hCkI6ze2/PZB4s8p+uQMXMscK6xEad2BYIXHKwJCdLEecBvthSyzZznANS
+ 9JnA87RgxjrXfJjkxp5Ohz76oz7r0KCkvz1SyeyboXzmV/7sgIqYU1+wkzY6C3eTTtPs
+ 952tzyzPoPzRvcVC/HE9v/4vPqjO0BTWHN4C5ceICrWt4wG9+KJDfrJGnPcM4maoepHH
+ C0tcMdZUALJimw3hpQGFKBGRh1tbBacAP5Fiji/4gsyA33gw/7Z2xJgpnnf/Wge93hjd
+ Fydw==
+X-Gm-Message-State: AOJu0YzbIFLFwkFv+v2zLXJKM34i67Y0YDLn60FWDcVapBLRZ9FWNYAI
+ NyVWa8mxTWw+2+mWUwjva0U=
+X-Google-Smtp-Source: AGHT+IHOlwY8NhkHc7X9bjOXWv9Vm56u/dVFG0JKbT8uaIjbS7CxjnJB8YqOdzjs0K9uogLkTjNJEQ==
+X-Received: by 2002:a17:906:4fc8:b0:9be:ddad:61db with SMTP id
+ i8-20020a1709064fc800b009beddad61dbmr3481845ejw.56.1698919157128; 
+ Thu, 02 Nov 2023 02:59:17 -0700 (PDT)
 Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- t20-20020aa7d714000000b00536031525e5sm2098096edq.91.2023.11.02.02.59.20
+ b22-20020a1709062b5600b0099bd0b5a2bcsm922486ejg.101.2023.11.02.02.59.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 02:59:20 -0700 (PDT)
-Date: Thu, 02 Nov 2023 09:03:02 +0000
+ Thu, 02 Nov 2023 02:59:16 -0700 (PDT)
+Date: Thu, 02 Nov 2023 09:05:30 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, balaton@eik.bme.hu,
- philmd@linaro.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_0/3=5D_ide=3A_implement_simple_legac?=
- =?US-ASCII?Q?y/native_mode_switching_for_PCI_IDE_controllers?=
-In-Reply-To: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
-References: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
-Message-ID: <60E06D0C-329C-4A84-A53D-745730F10487@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_6/6=5D_system/memory=3A_Trace_names?=
+ =?US-ASCII?Q?_of_MemoryRegions_rather_than_host_pointers?=
+In-Reply-To: <fd799a65-8dbd-4206-241b-6b9a300caf8c@linaro.org>
+References: <20231028122415.14869-1-shentey@gmail.com>
+ <20231028122415.14869-7-shentey@gmail.com>
+ <fd799a65-8dbd-4206-241b-6b9a300caf8c@linaro.org>
+Message-ID: <3125D7B5-AE22-42E7-817D-A961E96AE548@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,55 +101,231 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 24=2E Oktober 2023 22:40:53 UTC schrieb Mark Cave-Ayland <mark=2Ecave-a=
-yland@ilande=2Eco=2Euk>:
->This series adds a simple implementation of legacy/native mode switching =
-for PCI
->IDE controllers and updates the via-ide device to use it=2E
+Am 30=2E Oktober 2023 03:36:44 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
+philmd@linaro=2Eorg>:
+>Hi Bernhard,
 >
->The approach I take here is to add a new pci_ide_update_mode() function w=
-hich handles
->management of the PCI BARs and legacy IDE ioports for each mode to avoid =
-exposing
->details of the internal logic to individual PCI IDE controllers=2E
+>On 28/10/23 14:24, Bernhard Beschow wrote:
+>> Tracing the host pointer of the accessed MemoryRegion seems to be a deb=
+ug
+>> feature for developing QEMU itself=2E When analyzing guest behavior by =
+comparing
+>> traces, these pointers generate a lot of noise since the pointers diffe=
+r between
+>> QEMU invocations, making this task harder than it needs to be=2E Moreov=
+er, the
+>> pointers seem to be redundant to the names already assigned to MemoryRe=
+gions=2E
 >
->As noted in [1] this is extracted from a local WIP branch I have which co=
-ntains
->further work in this area=2E However for the moment I've kept it simple (=
-and
->restricted it to the via-ide device) which is good enough for Zoltan's PP=
-C
->images whilst paving the way for future improvements after 8=2E2=2E
+>I tried that few years ago but this got lost:
+>https://lore=2Ekernel=2Eorg/qemu-devel/20210307074833=2E143106-1-f4bug@am=
+sat=2Eorg/
 >
->Signed-off-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
+>> Remove the pointers from the traces and trace the names where missing=
+=2E When
+>> developing QEMU, developers could just add the host pointer tracing for
+>> themselves=2E
+>
+>But sometimes an object exposing a MR is instantiated multiple times,
+>each time, and now you can not distinct which object is accessed=2E
+>
+>IIRC a suggestion was to cache the QOM parent path and display that,
+>which should be constant to diff tracing logs=2E But then IIRC again the
+>issue was the QOM path is resolved once the object is realized, which
+>happens *after* we initialize the MR within the object=2E Maybe the
+>solution is to add a memory_region_qom_pathname() getter and do lazy
+>initialization?
 
-FWIW:
-Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
+Would logging the guest rather than the host address (in addition to the M=
+R name) work?
+
+Best regards,
+Bernhard
 
 >
->[1] https://lists=2Egnu=2Eorg/archive/html/qemu-devel/2023-10/msg05403=2E=
-html
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> ---
+>>   docs/devel/tracing=2Erst |  4 ++--
+>>   system/memory=2Ec        | 26 ++++++++++++++++----------
+>>   system/trace-events    | 12 ++++++------
+>>   3 files changed, 24 insertions(+), 18 deletions(-)
+>>=20
+>> diff --git a/docs/devel/tracing=2Erst b/docs/devel/tracing=2Erst
+>> index d288480db1=2E=2E8c31d5f76e 100644
+>> --- a/docs/devel/tracing=2Erst
+>> +++ b/docs/devel/tracing=2Erst
+>> @@ -18,8 +18,8 @@ events::
+>>         $ qemu --trace "memory_region_ops_*" =2E=2E=2E
+>>       =2E=2E=2E
+>> -    719585@1608130130=2E441188:memory_region_ops_read cpu 0 mr 0x562fd=
+fbb3820 addr 0x3cc value 0x67 size 1
+>> -    719585@1608130130=2E441190:memory_region_ops_write cpu 0 mr 0x562f=
+dfbd2f00 addr 0x3d4 value 0x70e size 2
+>> +    719585@1608130130=2E441188:memory_region_ops_read cpu 0 addr 0x3cc=
+ value 0x67 size 1
+>> +    719585@1608130130=2E441190:memory_region_ops_write cpu 0 addr 0x3d=
+4 value 0x70e size 2
 >
->v2:
->- Rebase onto master
->- Mask the bottom 4 bits of PCI_CLASS_PROG in pci_ide_update_mode() in pa=
-tch 1
->- Add patch 2 to remove the default BAR addresses to avoid confusion
->- Don't set PCI_INTERRUPT_PIN directly in via_ide_reset() as it is alread=
-y set
->  by pci_ide_update_mode() in patch 3, and reword the commit message acco=
-rdingly
->- Add Tested-By tags from Zoltan and Bernhard
+>Is this example missing the MR name?
 >
->
->Mark Cave-Ayland (3):
->  ide/pci=2Ec: introduce pci_ide_update_mode() function
->  ide/via: don't attempt to set default BAR addresses
->  hw/ide/via: implement legacy/native mode switching
->
-> hw/ide/pci=2Ec         | 90 ++++++++++++++++++++++++++++++++++++++++++++
-> hw/ide/via=2Ec         | 25 ++++++++----
-> include/hw/ide/pci=2Eh |  1 +
-> 3 files changed, 109 insertions(+), 7 deletions(-)
+>>     This output comes from the "log" trace backend that is enabled by d=
+efault when
+>>   ``=2E/configure --enable-trace-backends=3DBACKENDS`` was not explicit=
+ly specified=2E
+>> diff --git a/system/memory=2Ec b/system/memory=2Ec
+>> index 4928f2525d=2E=2E076a992b74 100644
+>> --- a/system/memory=2Ec
+>> +++ b/system/memory=2Ec
+>> @@ -444,10 +444,11 @@ static MemTxResult  memory_region_read_accessor(M=
+emoryRegion *mr,
+>>         tmp =3D mr->ops->read(mr->opaque, addr, size);
+>>       if (mr->subpage) {
+>> -        trace_memory_region_subpage_read(get_cpu_index(), mr, addr, tm=
+p, size);
+>> +        trace_memory_region_subpage_read(get_cpu_index(), addr, tmp, s=
+ize,
+>> +                                         memory_region_name(mr));
+>>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
+_READ)) {
+>>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
+>> -        trace_memory_region_ops_read(get_cpu_index(), mr, abs_addr, tm=
+p, size,
+>> +        trace_memory_region_ops_read(get_cpu_index(), abs_addr, tmp, s=
+ize,
+>>                                        memory_region_name(mr));
+>>       }
+>>       memory_region_shift_read_access(value, shift, mask, tmp);
+>> @@ -467,10 +468,11 @@ static MemTxResult memory_region_read_with_attrs_=
+accessor(MemoryRegion *mr,
+>>         r =3D mr->ops->read_with_attrs(mr->opaque, addr, &tmp, size, at=
+trs);
+>>       if (mr->subpage) {
+>> -        trace_memory_region_subpage_read(get_cpu_index(), mr, addr, tm=
+p, size);
+>> +        trace_memory_region_subpage_read(get_cpu_index(), addr, tmp, s=
+ize,
+>> +                                         memory_region_name(mr));
+>>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
+_READ)) {
+>>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
+>> -        trace_memory_region_ops_read(get_cpu_index(), mr, abs_addr, tm=
+p, size,
+>> +        trace_memory_region_ops_read(get_cpu_index(), abs_addr, tmp, s=
+ize,
+>>                                        memory_region_name(mr));
+>>       }
+>>       memory_region_shift_read_access(value, shift, mask, tmp);
+>> @@ -488,10 +490,11 @@ static MemTxResult memory_region_write_accessor(M=
+emoryRegion *mr,
+>>       uint64_t tmp =3D memory_region_shift_write_access(value, shift, m=
+ask);
+>>         if (mr->subpage) {
+>> -        trace_memory_region_subpage_write(get_cpu_index(), mr, addr, t=
+mp, size);
+>> +        trace_memory_region_subpage_write(get_cpu_index(), addr, tmp, =
+size,
+>> +                                          memory_region_name(mr));
+>>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
+_WRITE)) {
+>>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
+>> -        trace_memory_region_ops_write(get_cpu_index(), mr, abs_addr, t=
+mp, size,
+>> +        trace_memory_region_ops_write(get_cpu_index(), abs_addr, tmp, =
+size,
+>>                                         memory_region_name(mr));
+>>       }
+>>       mr->ops->write(mr->opaque, addr, tmp, size);
+>> @@ -509,10 +512,11 @@ static MemTxResult memory_region_write_with_attrs=
+_accessor(MemoryRegion *mr,
+>>       uint64_t tmp =3D memory_region_shift_write_access(value, shift, m=
+ask);
+>>         if (mr->subpage) {
+>> -        trace_memory_region_subpage_write(get_cpu_index(), mr, addr, t=
+mp, size);
+>> +        trace_memory_region_subpage_write(get_cpu_index(), addr, tmp, =
+size,
+>> +                                          memory_region_name(mr));
+>>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
+_WRITE)) {
+>>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
+>> -        trace_memory_region_ops_write(get_cpu_index(), mr, abs_addr, t=
+mp, size,
+>> +        trace_memory_region_ops_write(get_cpu_index(), abs_addr, tmp, =
+size,
+>>                                         memory_region_name(mr));
+>>       }
+>>       return mr->ops->write_with_attrs(mr->opaque, addr, tmp, size, att=
+rs);
+>> @@ -1356,7 +1360,8 @@ static uint64_t memory_region_ram_device_read(voi=
+d *opaque,
+>>           break;
+>>       }
+>>   -    trace_memory_region_ram_device_read(get_cpu_index(), mr, addr, d=
+ata, size);
+>> +    trace_memory_region_ram_device_read(get_cpu_index(), addr, data, s=
+ize,
+>> +                                        memory_region_name(mr));
+>>         return data;
+>>   }
+>> @@ -1366,7 +1371,8 @@ static void memory_region_ram_device_write(void *=
+opaque, hwaddr addr,
+>>   {
+>>       MemoryRegion *mr =3D opaque;
+>>   -    trace_memory_region_ram_device_write(get_cpu_index(), mr, addr, =
+data, size);
+>> +    trace_memory_region_ram_device_write(get_cpu_index(), addr, data, =
+size,
+>> +                                         memory_region_name(mr));
+>>         switch (size) {
+>>       case 1:
+>> diff --git a/system/trace-events b/system/trace-events
+>> index 69c9044151=2E=2E21f1c005e0 100644
+>> --- a/system/trace-events
+>> +++ b/system/trace-events
+>> @@ -9,12 +9,12 @@ cpu_in(unsigned int addr, char size, unsigned int val=
+) "addr 0x%x(%c) value %u"
+>>   cpu_out(unsigned int addr, char size, unsigned int val) "addr 0x%x(%c=
+) value %u"
+>>     # memory=2Ec
+>> -memory_region_ops_read(int cpu_index, void *mr, uint64_t addr, uint64_=
+t value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" va=
+lue 0x%"PRIx64" size %u name '%s'"
+>> -memory_region_ops_write(int cpu_index, void *mr, uint64_t addr, uint64=
+_t value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" v=
+alue 0x%"PRIx64" size %u name '%s'"
+>> -memory_region_subpage_read(int cpu_index, void *mr, uint64_t offset, u=
+int64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"PR=
+Ix64" size %u"
+>> -memory_region_subpage_write(int cpu_index, void *mr, uint64_t offset, =
+uint64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"P=
+RIx64" size %u"
+>> -memory_region_ram_device_read(int cpu_index, void *mr, uint64_t addr, =
+uint64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRI=
+x64" size %u"
+>> -memory_region_ram_device_write(int cpu_index, void *mr, uint64_t addr,=
+ uint64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PR=
+Ix64" size %u"
+>> +memory_region_ops_read(int cpu_index, uint64_t addr, uint64_t value, u=
+nsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64" =
+size %u name '%s'"
+>> +memory_region_ops_write(int cpu_index, uint64_t addr, uint64_t value, =
+unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64"=
+ size %u name '%s'"
+>> +memory_region_subpage_read(int cpu_index, uint64_t offset, uint64_t va=
+lue, unsigned size, const char *name) "cpu %d offset 0x%"PRIx64" value 0x%"=
+PRIx64" size %u name '%s'"
+>> +memory_region_subpage_write(int cpu_index, uint64_t offset, uint64_t v=
+alue, unsigned size, const char *name) "cpu %d offset 0x%"PRIx64" value 0x%=
+"PRIx64" size %u name '%s'"
+>> +memory_region_ram_device_read(int cpu_index, uint64_t addr, uint64_t v=
+alue, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"P=
+RIx64" size %u name '%s'"
+>> +memory_region_ram_device_write(int cpu_index, uint64_t addr, uint64_t =
+value, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"=
+PRIx64" size %u name '%s'"
+>>   memory_region_sync_dirty(const char *mr, const char *listener, int gl=
+obal) "mr '%s' listener '%s' synced (global=3D%d)"
+>>   flatview_new(void *view, void *root) "%p (root %p)"
+>>   flatview_destroy(void *view, void *root) "%p (root %p)"
 >
 
