@@ -2,90 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B6F7DFBD4
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 22:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324197DFC4A
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 23:19:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyeo1-00015r-Iy; Thu, 02 Nov 2023 17:00:45 -0400
+	id 1qyg0Z-00087b-EZ; Thu, 02 Nov 2023 18:17:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyenu-00014y-S8
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 17:00:39 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyg0X-00087I-17
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:17:45 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyenp-0008KF-Pr
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 17:00:38 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-5afa5dbc378so17392947b3.0
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 14:00:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyg0U-0001NH-57
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:17:44 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6c3443083f2so779037b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 15:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698958831; x=1699563631; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1698963460; x=1699568260; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6tij+y3GKq7vIhBMugA7qgadmRNb9RcDsnJ7ejspyAI=;
- b=VlQlGWGd1zgxqGNQHZUGpsA/5dGavFqFuBArgAJdh6Mq0V+cGYnsoxPfFsxldyu1JC
- /pFFmDlmWx24/ohnrfX8IEvhtRKyBhzV026oZWjFp8vyXJgUUCuL3ZEail7g6RefRMZ5
- QgUlGHM2mN6OUHcTtUIujBpJCeBvNySNysK1OG+1MlAdURluTImJGW1dFa1W0WJgEcZ6
- pKr9um7jbuJW1lOlnefTS7myaLlDE0BSW8+mHA2t12dOpbI6NY8w6sMgAOocm2Zzg5Ta
- YMxY5fYINfTr7Ka67/aTl2YZtLevyLOC5taG1cj7fwJ141im+45YOGSMDURjM4YxAvB0
- IyXQ==
+ bh=Eca06IWM2KVXj0SQXZ12gVCGaRyRUaSk+4BrwFTTyFc=;
+ b=qUtWEsQRrjDHeb5UDJJYv1Ma8vPNr6NI3VV9+sEjcY7yAw9u07EZbO+x+sWenyk2zJ
+ 9x+ybv69TK/VohUCkoBsp6OBz/MaxqhrVyuv8+pauCXtV9CvXNM1Jc09gMBAUBdkO6yL
+ yHyxje6qLEH0VSxx5oSU7/+0foHW/s5QRRlTLiiYW9cFsur9t3B8zz/Nsq81N4CQLDK1
+ NkvMrrYLDiPRUQtHbMu00brdPAWeIJCtwGqzqB3UBKiln7PJKWShMDMKoW1KUpBq6kIe
+ i9fTNZRd+2asxQkeSgn/W/9GPwm30YRRSYZMkgaV1XPIp14nc/bxrXUaO4CmRrvW65TG
+ pnyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698958831; x=1699563631;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1698963460; x=1699568260;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6tij+y3GKq7vIhBMugA7qgadmRNb9RcDsnJ7ejspyAI=;
- b=FzNlr0WtIkYV27Bx4sXTgwkFA5nb6gusjxxAdvlmlcZLqfTrCBBiTs0SqFNKwsfZ6f
- Yu55LLTwTfqeuttuuIjjGIHECKw7bHs3l2KKxxyTmwNFPgy6814VoUo9UfU35jxBeYAN
- wXOkEx2Df2zGtUGnViu9Jiu9zk0PEHVHCjqLGp6J4IwJ8SNsbMEVrrvXTECNcQ5TTxLn
- 6g/hlzlOTb5VHSFGbk/GqcsUwpVyUPC/r0N1zzz2P0tTJ0dAOBwiieBCPz7V7TPRaJ9Y
- p8Ms0tjOLQFdqk8ZIcCP5iXtRRS2IK2xtmxCioDNHCc2i+smHjp9zLhS3MZ94GsTQR0o
- VSug==
-X-Gm-Message-State: AOJu0YwszWgEUDIMpBPJacTMXryr2Oub+eHvFgSVNiL0tFGNQ7ulWuA4
- 0UBvnyZbLa4bJYbqXCPsx751aw==
-X-Google-Smtp-Source: AGHT+IG8aBOlJYDugsHb6GFWCmRTaUk7KiFmO7uUJAeZa0A/owiygAlu3hur0TdVREeT2dJTnrFllQ==
-X-Received: by 2002:a81:4e07:0:b0:5a8:5824:b953 with SMTP id
- c7-20020a814e07000000b005a85824b953mr911399ywb.8.1698958830967; 
- Thu, 02 Nov 2023 14:00:30 -0700 (PDT)
-Received: from [192.168.68.107] ([179.193.10.161])
+ bh=Eca06IWM2KVXj0SQXZ12gVCGaRyRUaSk+4BrwFTTyFc=;
+ b=oDiqysYOyj2hMnH4NnnsKpAU2FdCrfRl1ebZVBC+yU5Zhn9e+/FP6wplT4/45ipDPX
+ SMfznyIbhwqJ8mdv2nnZsRxjjKfFpMbkd9DXqTHkqsfUiLtT5kT69ZEwAn30eQzH6F5f
+ zJQspj+3Q4YKnhGS0Wd+QsjCSzOJ6nsVjC769Rjp87cAWLBEeFeR1b0gml5rjNPw3JXW
+ 8JTfm0T3XCj6JSLlObfJR41Ar4N1/bGZ+qCxjoMvBlLX3mdM8R+K/QwY5pDiGW/rKB0f
+ Ri0+TjS1S5eIO9dFd8DGCheWURywaI5Ml4aZ69LC4FZPxasBDRimuTv6v/y8AcNrYkqH
+ 5ZLA==
+X-Gm-Message-State: AOJu0YwfALZE4iwB519Gl70fw2NGPoE/nqp19hMTaoomCqIz74JE+CWg
+ EL+ezcuFanf2bL6qJbB9upEFxN4xFhYLdJ4t53k=
+X-Google-Smtp-Source: AGHT+IH1ZWkOq6vGvzajHZGP4fIDuIB3K67vc2oodNg+5e0Jt2KHZAcatUxzDQBnu2lE4CK5nXRxKA==
+X-Received: by 2002:a05:6a20:938c:b0:15e:108c:35b0 with SMTP id
+ x12-20020a056a20938c00b0015e108c35b0mr19987288pzh.4.1698963460230; 
+ Thu, 02 Nov 2023 15:17:40 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- bz5-20020a05690c084500b005af98b6f795sm178490ywb.23.2023.11.02.14.00.24
+ t18-20020a170902d21200b001cc5225c20bsm183613ply.137.2023.11.02.15.17.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 14:00:29 -0700 (PDT)
-Message-ID: <64055d84-7a8f-4fc5-85db-dcaa7a36e120@ventanamicro.com>
-Date: Thu, 2 Nov 2023 18:00:22 -0300
+ Thu, 02 Nov 2023 15:17:39 -0700 (PDT)
+Message-ID: <8b925fff-1351-4e8b-bfb5-8e0eb1421802@linaro.org>
+Date: Thu, 2 Nov 2023 15:17:37 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/13] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
+Subject: Re: [PATCH v2 00/35] tcg: Introduce TCG_COND_TST{EQ,NE}
 Content-Language: en-US
-To: Sunil V L <sunilvl@ventanamicro.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Anup Patel <apatel@ventanamicro.com>, Atish Kumar Patra
- <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
-References: <20231102170223.2619260-1-sunilvl@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231102170223.2619260-1-sunilvl@ventanamicro.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, pbonzini@redhat.com
+References: <20231028194522.245170-1-richard.henderson@linaro.org>
+In-Reply-To: <20231028194522.245170-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1129.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,182 +93,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sunil,
+Ping.  Running out of days before soft-freeze.  :-)
 
+r~
 
-While doing unrelated work (running Gitlab on my series built on top of
-current riscv-to-apply.next), I hit the following error:
-
-https://gitlab.com/danielhb/qemu/-/jobs/5448178994
-
-==========
-
-4/257 ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match) ERROR
-   4/257 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                ERROR           7.77s   killed by signal 6 SIGABRT
->>> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 MALLOC_PERTURB_=159 QTEST_QEMU_BINARY=./qemu-system-i386 /builds/danielhb/qemu/build/tests/qtest/bios-tables-test --tap -k
-
-acpi-test: Warning! DSDT binary file mismatch. Actual [aml:/tmp/aml-IOYVD2], Expected [aml:tests/data/acpi/microvm/DSDT].
-See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
-to see ASL diff between mismatched files install IASL, rebuild QEMU from scratch and re-run tests with V=1 environment variable set**
-ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match)
-(test program exited with status code -6)
-
-(...)
-
-Summary of Failures:
-4571  4/257 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                ERROR           7.77s   killed by signal 6 SIGABRT
-4572  7/257 qemu:qtest+qtest-aarch64 / qtest-aarch64/bios-tables-test          ERROR          66.00s   killed by signal 6 SIGABRT
-4573  Ok:                 247
-4574  Expected Fail:      0
-4575  Fail:               2
-4576  Unexpected Pass:    0
-4577  Skipped:            8
-4578  Timeout:            0
-
-==========
-
-(qtest-aarch64/bios-tables-test' fails with the same error message as 'qtest-i386/bios-tables-test')
-
-
-To be sure, since I ran a hacked version of your patches in that Gitlab pipeline, I
-removed your ACPI patches from riscv-to-apply.next, applied this new version, and then
-tried to run the x86 qtest locally. It still fails, same error:
-
-$ rm -rf build && ./configure --target-list=x86_64-softmmu
-$ make -j && QTEST_QEMU_BINARY=./build/qemu-system-x86_64 ./build/tests/qtest/bios-tables-test
-
-(...)
-# starting QEMU: exec ./build/qemu-system-x86_64 -qtest unix:/tmp/qtest-508977.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-508977.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -machine microvm -accel kvm -accel tcg -net none  -machine microvm,acpi=on,ioapic2=off,rtc=off -drive id=hd0,if=none,file=tests/acpi-test-disk-eyxyvN,format=raw -device virtio-blk-device,drive=hd0  -accel qtest
-acpi-test: Warning! DSDT binary file mismatch. Actual [aml:/tmp/aml-H9IUD2], Expected [aml:tests/data/acpi/microvm/DSDT].
-See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
-to see ASL diff between mismatched files install IASL, rebuild QEMU from scratch and re-run tests with V=1 environment variable set**
-ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match)
-not ok /x86_64/acpi/microvm - ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match)
-
-
-I did a 'git bisect' and it pointed to the following patch:
-
-
-$ git bisect good
-e63248d45e8f8488706ed13a7b83266e578deafd is the first bad commit
-commit e63248d45e8f8488706ed13a7b83266e578deafd
-Author: Sunil V L <sunilvl@ventanamicro.com>
-Date:   Thu Nov 2 22:32:13 2023 +0530
-
-     hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
-     
-     With common function to add virtio in DSDT created now, update microvm
-     code also to use it instead of duplicate code.
-     
-     Suggested-by: Andrew Jones <ajones@ventanamicro.com>
-     Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-     Acked-by: Alistair Francis <alistair.francis@wdc.com>
-     Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-  hw/i386/acpi-microvm.c | 15 ++-------------
-  1 file changed, 2 insertions(+), 13 deletions(-)
-$
-
-This suggests a problem in patch 03. I suggest doing a bisect on your own to be sure.
-
-Unfortunately these tests will block the pipeline, forbidding us to merge it. I'm afraid
-you'll need to fix it and send a v7.
-
-
-
-Thanks,
-
-Daniel
-
-
-On 11/2/23 14:02, Sunil V L wrote:
-> This series primarily enables external interrupt controllers (AIA and PLIC)
-> in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO and
-> MMU related information.
+On 10/28/23 12:44, Richard Henderson wrote:
+> Expose a pair of comparison operators that map to the "test"
+> comparison that is available on many architectures.
 > 
-> Below ECRs for these changes are approved by ASWG and will be
-> available in next ACPI spec release.
+> Changes for v2:
+>    * Add TCGCond to tcg_target_const_match.
+>      This fixes a long-standing issue with ppc and s390x backends,
+>      in that CMPI for signed comparisons has signed immediate and
+>      CMPLI for unsigned comparisons has unsigned immediate.
+>      But now allows different immediates for the TST comparisons.
+>    * tcg/i386: Generate TEST x,x for power-of-two in {7,15,31,63}.
+>    * tcg/i386: Generate BT n,x for other power-of-two.
+>    * tcg/ppc: tcg_target_const_match improvements
+>    * tcg/s390x: tcg_target_const_match improvements
+>    * target/m68k: Use TST{EQ,NE} for gen_fcc_cond.
 > 
-> 1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
-> 2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
+> I wanted more testing, so I went looking for low-hanging fruit.
+> I didn't see any within target/arm, probably due to how we represent NZCV,
+> and I didn't want to overlap anything that Paolo might be doing with
+> target/i386, so I landed on trget/m68k.  Tested via our float_convd.
 > 
-> First two patches in this series are to migrate a couple of functions from
-> ARM architecture to common code so that RISC-V doesn't need to duplicate
-> the same.
 > 
-> The patch set is based on Alistair's riscv-to-apply.next branch.
+> r~
 > 
-> These changes are also available in  riscv_acpi_b2_v6 branch at:
-> https://github.com/vlsunil/qemu/
 > 
-> Changes since v5:
-> 	1) Fixed the issue in PATCH 2 reported by Daniel found when built with
-> 	   clang + --enable-debug.
+> Richard Henderson (35):
+>    tcg: Introduce TCG_COND_TST{EQ,NE}
+>    tcg/optimize: Split out arg_is_const_val
+>    tcg/optimize: Split out do_constant_folding_cond1
+>    tcg/optimize: Do swap_commutative2 in do_constant_folding_cond2
+>    tcg/optimize: Split out arg_new_constant
+>    tcg/optimize: Handle TCG_COND_TST{EQ,NE}
+>    tcg: Add TCGConst argument to tcg_target_const_match
+>    tcg/aarch64: Support TCG_COND_TST{EQ,NE}
+>    tcg/aarch64: Generate TBZ, TBNZ
+>    tcg/aarch64: Generate CBNZ for TSTNE of UINT32_MAX
+>    tcg/arm: Support TCG_COND_TST{EQ,NE}
+>    tcg/i386: Pass x86 condition codes to tcg_out_cmov
+>    tcg/i386: Move tcg_cond_to_jcc[] into tcg_out_cmp
+>    tcg/i386: Support TCG_COND_TST{EQ,NE}
+>    tcg/i386: Improve TSTNE/TESTEQ vs powers of two
+>    tcg/loongarch64: Support TCG_COND_TST{EQ,NE}
+>    tcg/mips: Support TCG_COND_TST{EQ,NE}
+>    tcg/riscv: Support TCG_COND_TST{EQ,NE}
+>    tcg/sparc64: Implement tcg_out_extrl_i64_i32
+>    tcg/sparc64: Hoist read of tcg_cond_to_rcond
+>    tcg/sparc64: Pass TCGCond to tcg_out_cmp
+>    tcg/sparc64: Support TCG_COND_TST{EQ,NE}
+>    tcg/ppc: Sink tcg_to_bc usage into tcg_out_bc
+>    tcg/ppc: Use cr0 in tcg_to_bc and tcg_to_isel
+>    tcg/ppc: Tidy up tcg_target_const_match
+>    tcg/ppc: Add TCG_CT_CONST_CMP
+>    tcg/ppc: Support TCG_COND_TST{EQ,NE}
+>    tcg/s390x: Split constraint A into J+U
+>    tcg/s390x: Add TCG_CT_CONST_CMP
+>    tcg/s390x: Support TCG_COND_TST{EQ,NE}
+>    tcg/tci: Support TCG_COND_TST{EQ,NE}
+>    target/alpha: Use TCG_COND_TST{EQ,NE} for BLB{C,S}
+>    target/alpha: Use TCG_COND_TST{EQ,NE} for CMOVLB{C,S}
+>    target/alpha: Use TCG_COND_TSTNE for gen_fold_mzero
+>    target/m68k: Use TCG_COND_TST{EQ,NE} in gen_fcc_cond
 > 
-> Changes since v4:
-> 	1) Updated copyright for new files as per SPDX format suggested by Drew.
-> 	2) Updated RINTC patch to avoid code duplication as suggested by Drew.
-> 	3) Moved mmu offset below cmo in MMU patch as suggested by Drew.
-> 	4) Updated tags.
+>   docs/devel/tcg-ops.rst           |   2 +
+>   include/tcg/tcg-cond.h           |  49 +++-
+>   tcg/aarch64/tcg-target-con-set.h |   5 +-
+>   tcg/aarch64/tcg-target-con-str.h |   1 +
+>   tcg/i386/tcg-target-con-set.h    |   6 +-
+>   tcg/i386/tcg-target-con-str.h    |   1 +
+>   tcg/ppc/tcg-target-con-set.h     |   5 +-
+>   tcg/ppc/tcg-target-con-str.h     |   1 +
+>   tcg/s390x/tcg-target-con-set.h   |   8 +-
+>   tcg/s390x/tcg-target-con-str.h   |   3 +-
+>   target/alpha/translate.c         |  94 +++----
+>   target/m68k/translate.c          |  74 +++--
+>   tcg/optimize.c                   | 464 +++++++++++++++++++++++--------
+>   tcg/tcg.c                        |  38 ++-
+>   tcg/tci.c                        |  14 +
+>   tcg/aarch64/tcg-target.c.inc     | 165 ++++++++---
+>   tcg/arm/tcg-target.c.inc         |  62 +++--
+>   tcg/i386/tcg-target.c.inc        | 178 ++++++++----
+>   tcg/loongarch64/tcg-target.c.inc |  59 ++--
+>   tcg/mips/tcg-target.c.inc        |  44 ++-
+>   tcg/ppc/tcg-target.c.inc         | 277 +++++++++++++-----
+>   tcg/riscv/tcg-target.c.inc       |  23 +-
+>   tcg/s390x/tcg-target.c.inc       | 246 ++++++++++------
+>   tcg/sparc64/tcg-target.c.inc     |  70 +++--
+>   tcg/tci/tcg-target.c.inc         |   3 +-
+>   25 files changed, 1342 insertions(+), 550 deletions(-)
 > 
-> Changes since v3:
-> 	1) Addressed comments from Daniel and Drew.
-> 	2) Added a new patch in microvm to use common function for virtio in DSDT.
-> 	3) Rebased to latest riscv-to-apply.next branch and added tags.
-> 
-> Changes since v2:
->          1) Rebased to latest riscv-to-apply.next branch which needed
->             changing ext_icboz to ext_zicboz in CMO patch.
->          2) Fixed node type in MMU node.
->          3) Added latest tags.
-> 
-> Changes since v1:
->          1) As per Igor's suggestion, migrated fw_cfg and virtio creation
->             functions to device specific file instead of generic aml-build.c.
->             Since ACPI is optional, new files are created and enabled for
->             build only when CONFIG_ACPI is enabled.
->          2) As per Igor's suggestion, properties are added to the GPEX PCI
->             host to indicate MMIO ranges. The platform fw can initialize
->             these to appropriate values and the DSDT generator can fetch
->             the information from the host bus itself. This makes the code
->             generic instead of machine specific.
->          3) Added PLIC patch from Haibo.
->          4) Rebased to latest riscv-to-apply.next and added RB tags as
->             appropriate.
-> Sunil V L (13):
->    hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
->    hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
->    hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
->    hw/riscv: virt: Make few IMSIC macros and functions public
->    hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
->    hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
->    hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
->    hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
->    hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
->    hw/pci-host/gpex: Define properties for MMIO ranges
->    hw/riscv/virt: Update GPEX MMIO related properties
->    hw/riscv/virt-acpi-build.c: Add IO controllers and devices
->    hw/riscv/virt-acpi-build.c: Add PLIC in MADT
-> 
->   hw/arm/virt-acpi-build.c        |  51 +----
->   hw/i386/acpi-microvm.c          |  15 +-
->   hw/nvram/fw_cfg-acpi.c          |  23 +++
->   hw/nvram/meson.build            |   1 +
->   hw/pci-host/gpex-acpi.c         |  13 ++
->   hw/pci-host/gpex.c              |  12 ++
->   hw/riscv/Kconfig                |   1 +
->   hw/riscv/virt-acpi-build.c      | 323 +++++++++++++++++++++++++++++---
->   hw/riscv/virt.c                 |  72 ++++---
->   hw/virtio/meson.build           |   1 +
->   hw/virtio/virtio-acpi.c         |  32 ++++
->   include/hw/nvram/fw_cfg_acpi.h  |  15 ++
->   include/hw/pci-host/gpex.h      |  28 ++-
->   include/hw/riscv/virt.h         |  26 +++
->   include/hw/virtio/virtio-acpi.h |  16 ++
->   15 files changed, 498 insertions(+), 131 deletions(-)
->   create mode 100644 hw/nvram/fw_cfg-acpi.c
->   create mode 100644 hw/virtio/virtio-acpi.c
->   create mode 100644 include/hw/nvram/fw_cfg_acpi.h
->   create mode 100644 include/hw/virtio/virtio-acpi.h
-> 
+
 
