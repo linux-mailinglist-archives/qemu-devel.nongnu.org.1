@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F5A7DFC8B
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 23:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C1A7DFC8E
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 23:46:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qygQv-0006Ls-7J; Thu, 02 Nov 2023 18:45:01 -0400
+	id 1qygQx-0006MW-2L; Thu, 02 Nov 2023 18:45:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qygQs-0006Kw-MG
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:44:58 -0400
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
+ id 1qygQv-0006Lx-5G
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:45:01 -0400
+Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qygQr-00035Z-1F
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:44:58 -0400
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-5a84204e7aeso18253707b3.0
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 15:44:56 -0700 (PDT)
+ id 1qygQt-000366-KI
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:45:00 -0400
+Received: by mail-yw1-x1133.google.com with SMTP id
+ 00721157ae682-5a7c011e113so18117857b3.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 15:44:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698965095; x=1699569895; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1698965098; x=1699569898; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UgRWfBwtayel4L85jalnEfEZ38BIg1pZr2LRgGnFOd0=;
- b=Ts1DmK96R9/fzEkvcNe4FCWRh2qelFGJpelB5PZTkEKKynOCojUR64jr6iF6HUTTeI
- 3E1BFE+Iv2y8YfKBNRX6LJizLvB6wDlvPyeLqmGmok/kSUL4y7nEONPIq2U2hfpOscaR
- Bm3fQZ4UoVIyQQ9Nt/NIYZLSbb9N4Fc5b19nyLtlGox2y9vPpDlhx+RXRVnQ37gMXaWB
- 2ZSjHpsDgNf/m/Vv381v1NKv57T/BHYT8wlZlKSYbHVbmtk59leAOX3QjCt1GGZJvaO9
- +Dng5FoP3OYB5N3K18saLBfiz521uwxgKVlmJJWwiBDWmUUJjZW/mr9S51/Mq5ZTGVt3
- m/Mw==
+ bh=sTkfJDvkYoxTBEbJifhirI/L74ZejS3SnvVD4McotF8=;
+ b=iSm1/Iwk2j6AXzT+7qJvoz8kWfUsEJbgrFWW2FkrRf2X1nlupIi6EfkCZ0feUDyDh/
+ uOftWWEKA5YLOLcfOJPIQ9NH2sSssdbaC5t55Ck6uqLlCU/VflLMtAVCPyCd17FR6WEF
+ Ub/L0Spc6zosXPK44G1xwCaeVug2t7JOalMBSJV3PaHGsElTIA0LHNPoWoy67GQFWI8d
+ 0Zu5li67DwcOr4pAC69Dp2KwaglHLwjON9jmpmShrueaUbeG3os6QC+h16BZ23TOk6BE
+ gBwuDNUKMMRaBfW8PuoLRv3BF7ExGXx8AriXScFl0jDR/u6XQLkWDrNtRYvKYSzznm1R
+ bnuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698965095; x=1699569895;
+ d=1e100.net; s=20230601; t=1698965098; x=1699569898;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UgRWfBwtayel4L85jalnEfEZ38BIg1pZr2LRgGnFOd0=;
- b=qwRm9x7muTXbcgUQ6QKDwuUAPyP9hA+Kp4iTSs/YwCX37MiBUjXEg2hM2lfAVzkAgd
- nwWsxRoxQj/kI5qtrt//q/W8fOuGCTHc6kjyfwUTB8+Ax6O05jKYjb+QPlV5vMczj1pF
- 7SFlSf7+iYohMgN+HxR9l1ScuOj4vBpQmDFDB11ElT9IkWFhsQ5UizGVsl9z+gzaWwpb
- lsX7qLTrQaU3pNyaK29ZBHET5Wvai0U+mqVt5TAC1aVY/qMRW0st1v5yVuNYn7UAP/ZQ
- KY3ab0lOB53zbBlNY8B4RQXFCbWeBm3m/gV42zYG5ZRug0eVcG66AAHhCGpwA+34Wsm6
- C8xA==
-X-Gm-Message-State: AOJu0YwXG5zcb1R9XY1ntw2uJGHLkMUiT8Aw2NQrdZPoXP28HxRcpVus
- s8GCzvffjHmW/8/6aNnh+/NTJV89yb43aHRbdKI=
-X-Google-Smtp-Source: AGHT+IFX6GxYJH9QBvazUTjmFHogeDaJDBUREZ5C/s32SbnTMThsVN9BsZyV7X0YMRhntG8ZEL3eww==
-X-Received: by 2002:a05:690c:86:b0:5a7:ba53:6544 with SMTP id
- be6-20020a05690c008600b005a7ba536544mr1314006ywb.12.1698965095301; 
- Thu, 02 Nov 2023 15:44:55 -0700 (PDT)
+ bh=sTkfJDvkYoxTBEbJifhirI/L74ZejS3SnvVD4McotF8=;
+ b=d9BePA7xk2FoDAQ5cGudrqRVJLBAAcPTmzBdoHGaN0d/7CpfhgG9WnCjNEBiLyZPOU
+ 5tZfnoeFrIoRYATVCoqSC77sgJ8xVP8HushlMbScGsmdLGMbFIbI+caLIUAcYCCDHKl+
+ 8SFgr8gB69aloL+ojB24O9KEl+gZvz3Z+iMx10VFQwWtNgORI3gsRWgBBHaThjMrHBpV
+ agyWxadcpvauYc77NP40RRtYhwV6vJJFEb0rsROurUVEiYpiBOfKmsGKujHtnS1EutvF
+ HU76oNxM6j1KbEskr7+xjH//83d1D1iHqRGnXtiyS9SZbINUgU5qSybq4xiGt/Sf3RcM
+ ue8Q==
+X-Gm-Message-State: AOJu0YyMfeD/eHD055dHJV6TIRIEfo+4mfDlrxNtBvJJGPiTUkmV/WGe
+ Q6Dsvu502CnhDqYuJ0hxfA8VRiPGdEf2bnco+C4=
+X-Google-Smtp-Source: AGHT+IFLuFKALlq5afzmT/0zQg0lTAhyUN2qQneKhY3IMhKpDJ5A61V1Kpa5MHSWbA+74zSydppVUg==
+X-Received: by 2002:a81:65c6:0:b0:58a:83cd:115d with SMTP id
+ z189-20020a8165c6000000b0058a83cd115dmr1017127ywb.50.1698965097941; 
+ Thu, 02 Nov 2023 15:44:57 -0700 (PDT)
 Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- ce10-20020a05690c098a00b0059b24bd4f2asm259523ywb.57.2023.11.02.15.44.53
+ ce10-20020a05690c098a00b0059b24bd4f2asm259523ywb.57.2023.11.02.15.44.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 15:44:54 -0700 (PDT)
+ Thu, 02 Nov 2023 15:44:57 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v9 02/19] target/riscv/tcg: do not use "!generic" CPU checks
-Date: Thu,  2 Nov 2023 19:44:28 -0300
-Message-ID: <20231102224445.527355-3-dbarboza@ventanamicro.com>
+Subject: [PATCH v9 03/19] target/riscv/tcg: update priv_ver on user_set
+ extensions
+Date: Thu,  2 Nov 2023 19:44:29 -0300
+Message-ID: <20231102224445.527355-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231102224445.527355-1-dbarboza@ventanamicro.com>
 References: <20231102224445.527355-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,86 +94,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Our current logic in get/setters of MISA and multi-letter extensions
-works because we have only 2 CPU types, generic and vendor, and by using
-"!generic" we're implying that we're talking about vendor CPUs. When adding
-a third CPU type this logic will break so let's handle it beforehand.
+We'll add a new bare CPU type that won't have any default priv_ver. This
+means that the CPU will default to priv_ver = 0, i.e. 1.10.0.
 
-In set_misa_ext_cfg() and set_multi_ext_cfg(), check for "vendor" cpu instead
-of "not generic". The "generic CPU" checks remaining are from
-riscv_cpu_add_misa_properties() and cpu_add_multi_ext_prop() before
-applying default values for the extensions.
+At the same we'll allow these CPUs to enable extensions at will, but
+then, if the extension has a priv_ver newer than 1.10, we'll end up
+disabling it. Users will then need to manually set priv_ver to something
+other than 1.10 to enable the extensions they want, which is not ideal.
 
-This leaves us with:
+Change the setter() of extensions to allow user enabled extensions to
+bump the priv_ver of the CPU. This will make it convenient for users to
+enable extensions for CPUs that doesn't set a default priv_ver.
 
-- vendor CPUs will not allow extension enablement, all other CPUs will;
-
-- generic CPUs will inherit default values for extensions, all others
-  won't.
-
-And now we can add a new, third CPU type, that will allow extensions to
-be enabled and will not inherit defaults, without changing the existing
-logic.
+This change does not affect any existing CPU: vendor CPUs does not allow
+extensions to be enabled, and generic CPUs are already set to priv_ver
+LATEST.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 1a3351b142..08f8dded56 100644
+index 08f8dded56..0e684ab86f 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -654,6 +654,11 @@ static bool riscv_cpu_is_generic(Object *cpu_obj)
-     return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+@@ -114,6 +114,22 @@ static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
+     g_assert_not_reached();
  }
  
-+static bool riscv_cpu_is_vendor(Object *cpu_obj)
++static void cpu_validate_multi_ext_priv_ver(CPURISCVState *env,
++                                            uint32_t ext_offset)
 +{
-+    return object_dynamic_cast(cpu_obj, TYPE_RISCV_VENDOR_CPU) != NULL;
++    int ext_priv_ver;
++
++    if (env->priv_ver == PRIV_VERSION_LATEST) {
++        return;
++    }
++
++    ext_priv_ver = cpu_cfg_ext_get_min_version(ext_offset);
++
++    if (env->priv_ver < ext_priv_ver) {
++        env->priv_ver = ext_priv_ver;
++    }
 +}
 +
- /*
-  * We'll get here via the following path:
-  *
-@@ -716,7 +721,7 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
-     target_ulong misa_bit = misa_ext_cfg->misa_bit;
-     RISCVCPU *cpu = RISCV_CPU(obj);
-     CPURISCVState *env = &cpu->env;
--    bool generic_cpu = riscv_cpu_is_generic(obj);
-+    bool vendor_cpu = riscv_cpu_is_vendor(obj);
-     bool prev_val, value;
- 
-     if (!visit_type_bool(v, name, &value, errp)) {
-@@ -730,7 +735,7 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
-     }
- 
-     if (value) {
--        if (!generic_cpu) {
-+        if (vendor_cpu) {
-             g_autofree char *cpuname = riscv_cpu_get_name(cpu);
-             error_setg(errp, "'%s' CPU does not allow enabling extensions",
-                        cpuname);
-@@ -835,7 +840,7 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+ static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
+                                     bool value)
  {
-     const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
-     RISCVCPU *cpu = RISCV_CPU(obj);
--    bool generic_cpu = riscv_cpu_is_generic(obj);
-+    bool vendor_cpu = riscv_cpu_is_vendor(obj);
-     bool prev_val, value;
+@@ -742,6 +758,14 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+             return;
+         }
  
-     if (!visit_type_bool(v, name, &value, errp)) {
-@@ -859,7 +864,7 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
++        if (misa_bit == RVH && env->priv_ver < PRIV_VERSION_1_12_0) {
++            /*
++             * Note: the 'priv_spec' command line option, if present,
++             * will take precedence over this priv_ver bump.
++             */
++            env->priv_ver = PRIV_VERSION_1_12_0;
++        }
++
+         env->misa_ext |= misa_bit;
+         env->misa_ext_mask |= misa_bit;
+     } else {
+@@ -871,6 +895,14 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
          return;
      }
  
--    if (value && !generic_cpu) {
-+    if (value && vendor_cpu) {
-         g_autofree char *cpuname = riscv_cpu_get_name(cpu);
-         error_setg(errp, "'%s' CPU does not allow enabling extensions",
-                    cpuname);
++    if (value) {
++        /*
++         * Note: the 'priv_spec' command line option, if present,
++         * will take precedence over this priv_ver bump.
++         */
++        cpu_validate_multi_ext_priv_ver(&cpu->env, multi_ext_cfg->offset);
++    }
++
+     isa_ext_update_enabled(cpu, multi_ext_cfg->offset, value);
+ }
+ 
 -- 
 2.41.0
 
