@@ -2,66 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB38A7DF3E3
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:33:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AE97DF3F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:36:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyXp2-0004ov-9N; Thu, 02 Nov 2023 09:33:20 -0400
+	id 1qyXrq-0006uG-9k; Thu, 02 Nov 2023 09:36:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qyXoy-0004oR-Nb; Thu, 02 Nov 2023 09:33:16 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qyXrl-0006mD-Lc
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:36:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qyXov-0007Am-0S; Thu, 02 Nov 2023 09:33:16 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c0f:4c13:0:640:3c7:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 7E82B60B2F;
- Thu,  2 Nov 2023 16:33:07 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8005::1:a] (unknown
- [2a02:6b8:b081:8005::1:a])
- by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 6XX5W30OfiE0-r5TsVIfE; Thu, 02 Nov 2023 16:33:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1698931987;
- bh=GKfgYpiDDm/5hDVGGd3u/NJMwW44sWsNlV3VRAdgjWA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=Isp7CGYppyOJXVZJclf+H1RCjOZ2n1KjvK36m6a1QICM8fU8w0TwQnFO6SXYciHi4
- YlSWBOKXVj44FpfUid+rC4K2dWFG5iImakAhijaM1wVaUkzrZhh2ADmv3ZSoJKzZBC
- Xlbus2KXvUkc5A1RckG+xkyG0Av6b74D2z/ZyrEw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <6629ff0a-d0c5-47a8-9894-95a22eadbe2c@yandex-team.ru>
-Date: Thu, 2 Nov 2023 16:33:06 +0300
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qyXri-0007mP-Bv
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:36:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698932162;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=i1YLGun92tB7ms+f77cDRxSljEyb6bcvbQmNWzz8D5w=;
+ b=N8xUePDhdNTquq7bdy+M9KO/oB8sciLcpUlE3GKKRyIC69SeeAdlhFvRJB2E93sd8O0lN/
+ iANUiBvVHOfQTGDCPaJGtEP5Wtv/k9jvmseipXCU/Enj3vJ8gZgjfjnVsddfVf+iUm00kr
+ 2Y/UIFqhv0aCCoRtlxTqoQzytLyws/c=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-YUNJgQvJN6uXXDczMNNAbA-1; Thu, 02 Nov 2023 09:35:58 -0400
+X-MC-Unique: YUNJgQvJN6uXXDczMNNAbA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-53e02a0ebfdso726653a12.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 06:35:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698932157; x=1699536957;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=i1YLGun92tB7ms+f77cDRxSljEyb6bcvbQmNWzz8D5w=;
+ b=XiQ84V40CoyfmL9dRACpmNisHmYrtsysnomQHbN3V0pC5H8NCsCI/ylzfqormUSs/S
+ H7Hy0Gj205NhRBrLuVgOSEBPpeLfUKdUWlR8IJYu8v9hQdBTyJb8RU4k7iuB0wNpQvhQ
+ RV59w3KxUN47IRIgCzlpW2hAVQfqS99HUFfxeNyrZax+IN8wSd6uVrhKaChHFJPKeiP6
+ AV7q744271536XoG2Cuki2Mleq29L17aQMijpWYwlKQmL/1Npo9jMWrut7GPCGJssXLu
+ ZrOAvhCBc/hbYk8DCbprMO1xxf64v5R2RivGMm32ikKM+N0QZ7++QwUQh2pnE+1ef7qN
+ skFg==
+X-Gm-Message-State: AOJu0Yy/D3YEJ+8IibMFFG7jqmGAxiNjZB6W4jpI5D8yDUoe/S0UCyqQ
+ zPBo9ZJTvRxc0EUWgM48O9nadmvhfGGc1SXmtVMhXaJsaBIwLsmosda2m9jVUScaRu0s4ZmIGU8
+ SOOKWalXaQ1UAyD5GTMJWsfSW+8sxgS0=
+X-Received: by 2002:a50:9fc9:0:b0:542:d56c:ed67 with SMTP id
+ c67-20020a509fc9000000b00542d56ced67mr13011373edf.4.1698932156812; 
+ Thu, 02 Nov 2023 06:35:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEH08fR3/JeRnMPIH8y+zZwPWOM7H6owKWv7at1m2chY4mtBDG/5w8KGZvGm1Q/G/2WRgcZcy/zVRVdjebj1m8=
+X-Received: by 2002:a50:9fc9:0:b0:542:d56c:ed67 with SMTP id
+ c67-20020a509fc9000000b00542d56ced67mr13011357edf.4.1698932156529; Thu, 02
+ Nov 2023 06:35:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block-jobs: add final flush
-Content-Language: en-US
-To: Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, jsnow@redhat.com,
- Evanzhang@archeros.com, den@openvz.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
-References: <20231004135632.18196-1-vsementsov@yandex-team.ru>
- <fd7da9d6-be5a-40f7-9c59-593ac8de41d1@redhat.com>
- <1ca2a1ea-4a6c-4fa1-9619-bfa160a8fb95@yandex-team.ru>
- <069ba523-344e-46ae-aca3-6b401fc840dd@redhat.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <069ba523-344e-46ae-aca3-6b401fc840dd@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20230927151205.70930-1-peter.maydell@linaro.org>
+ <20230927151205.70930-8-peter.maydell@linaro.org>
+ <66663c7e-3ab8-ae62-cd55-52c89bcd7733@linaro.org>
+In-Reply-To: <66663c7e-3ab8-ae62-cd55-52c89bcd7733@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Thu, 2 Nov 2023 17:35:44 +0400
+Message-ID: <CAMxuvay+8eyRbYGtUdSBW2Yk8qUTse0DEhWNGoPurTygv1uHjA@mail.gmail.com>
+Subject: Re: [PATCH 7/8] docs/specs/vmcoreinfo: Convert to rST
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,73 +96,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02.11.23 15:59, Hanna Czenczek wrote:
-> On 01.11.23 20:53, Vladimir Sementsov-Ogievskiy wrote:
->> On 31.10.23 17:05, Hanna Czenczek wrote:
->>> On 04.10.23 15:56, Vladimir Sementsov-Ogievskiy wrote:
->>>> From: Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
->>>>
->>>> Actually block job is not completed without the final flush. It's
->>>> rather unexpected to have broken target when job was successfully
->>>> completed long ago and now we fail to flush or process just
->>>> crashed/killed.
->>>>
->>>> Mirror job already has mirror_flush() for this. So, it's OK.
->>>>
->>>> Add similar things for other jobs: backup, stream, commit.
->>>>
->>>> Note, that stream has (documented) different treatment of IGNORE
->>>> action: it don't retry the operation, continue execution and report
->>>> error at last. We keep it for final flush too.
->>>>
->>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>>> ---
->>>>
->>>> Was: [PATCH v4] block-jobs: flush target at the end of .run()
->>>>    But now rewritten.
->>>> Supersedes: <20230725174008.1147467-1-vsementsov@yandex-team.ru>
->>>>
->>>>   block/backup.c             |  2 +-
->>>>   block/block-copy.c         |  7 +++++++
->>>>   block/commit.c             | 16 ++++++++++++----
->>>>   block/stream.c             | 21 +++++++++++++++++----
->>>>   include/block/block-copy.h |  1 +
->>>>   5 files changed, 38 insertions(+), 9 deletions(-)
->>>
->>> [...]
->>>
->>>> diff --git a/block/commit.c b/block/commit.c
->>>> index aa45beb0f0..5205c77ec9 100644
->>>> --- a/block/commit.c
->>>> +++ b/block/commit.c
->>>
->>> [...]
->>>
->>>> @@ -187,7 +187,15 @@ static int coroutine_fn commit_run(Job *job, Error **errp)
->>>>           }
->>>>       }
->>>> -    return 0;
->>>> +    do {
->>>> +        ret = blk_co_flush(s->base);
->>>> +        if (ret < 0) {
->>>> +            action = block_job_error_action(&s->common, s->on_error,
->>>> +                                            false, -ret);
->>>> +        }
->>>> +    } while (ret < 0 && action != BLOCK_ERROR_ACTION_REPORT);
->>>
->>> Do we need to yield in this loop somewhere so that BLOCK_ERROR_ACTION_STOP can pause the job?
->>>
->>
->> block_job_error_action calls job_pause_locked() itself in this case
-> 
-> But that doesn’t really pause the job, does it?  As far as I understand, it increases job->pause_count, then enters the job, and the job is then supposed to yield at some point so job_pause_point_locked() is called, which sees the increased job->pause_count and will actually pause the job.
-> 
+On Tue, Oct 31, 2023 at 7:43=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> On 27/9/23 17:12, Peter Maydell wrote:
+> > Convert docs/specs/vmcoreinfo.txt to rST format.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-Oops right, I missed that (not good for block-jobs maintainer :/)
-Will resend, thanks for reviewing
+Acked-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
--- 
-Best regards,
-Vladimir
+> > ---
+> >   MAINTAINERS                                   |  1 +
+> >   docs/specs/index.rst                          |  1 +
+> >   docs/specs/{vmcoreinfo.txt =3D> vmcoreinfo.rst} | 33 ++++++++++------=
+---
+> >   3 files changed, 19 insertions(+), 16 deletions(-)
+> >   rename docs/specs/{vmcoreinfo.txt =3D> vmcoreinfo.rst} (50%)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 9e27cad11c3..23ee617acaf 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -2805,6 +2805,7 @@ F: include/sysemu/dump.h
+> >   F: qapi/dump.json
+> >   F: scripts/dump-guest-memory.py
+> >   F: stubs/dump.c
+> > +F: docs/specs/vmcoreinfo.rst
+>
+> Good :)
+>
+> Cc'ing Marc-Andr=C3=A9.
+>
+> >   Error reporting
+> >   M: Markus Armbruster <armbru@redhat.com>
+> > diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+> > index 8d30968650b..7a56ccb2155 100644
+> > --- a/docs/specs/index.rst
+> > +++ b/docs/specs/index.rst
+> > @@ -30,3 +30,4 @@ guest hardware that is specific to QEMU.
+> >      pvpanic
+> >      standard-vga
+> >      virt-ctlr
+> > +   vmcoreinfo
+> > diff --git a/docs/specs/vmcoreinfo.txt b/docs/specs/vmcoreinfo.rst
+> > similarity index 50%
+> > rename from docs/specs/vmcoreinfo.txt
+> > rename to docs/specs/vmcoreinfo.rst
+> > index bcbca6fe47c..462b04474d3 100644
+> > --- a/docs/specs/vmcoreinfo.txt
+> > +++ b/docs/specs/vmcoreinfo.rst
+> > @@ -2,19 +2,19 @@
+> >   VMCoreInfo device
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > -The `-device vmcoreinfo` will create a fw_cfg entry for a guest to
+> > +The ``-device vmcoreinfo`` will create a ``fw_cfg`` entry for a guest =
+to
+> >   store dump details.
+> >
+> > -etc/vmcoreinfo
+> > -**************
+> > +``etc/vmcoreinfo``
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > -A guest may use this fw_cfg entry to add information details to qemu
+> > +A guest may use this ``fw_cfg`` entry to add information details to qe=
+mu
+> >   dumps.
+> >
+> >   The entry of 16 bytes has the following layout, in little-endian::
+> >
+> > -#define VMCOREINFO_FORMAT_NONE 0x0
+> > -#define VMCOREINFO_FORMAT_ELF 0x1
+> > +    #define VMCOREINFO_FORMAT_NONE 0x0
+> > +    #define VMCOREINFO_FORMAT_ELF 0x1
+> >
+> >       struct FWCfgVMCoreInfo {
+> >           uint16_t host_format;  /* formats host supports */
+> > @@ -26,17 +26,17 @@ The entry of 16 bytes has the following layout, in =
+little-endian::
+> >   Only full write (of 16 bytes) are considered valid for further
+> >   processing of entry values.
+> >
+> > -A write of 0 in guest_format will disable further processing of
+> > +A write of 0 in ``guest_format`` will disable further processing of
+> >   vmcoreinfo entry values & content.
+> >
+> > -You may write a guest_format that is not supported by the host, in
+> > +You may write a ``guest_format`` that is not supported by the host, in
+> >   which case the entry data can be ignored by qemu (but you may still
+> > -access it through a debugger, via vmcoreinfo_realize::vmcoreinfo_state=
+).
+> > +access it through a debugger, via ``vmcoreinfo_realize::vmcoreinfo_sta=
+te``).
+> >
+> >   Format & content
+> > -****************
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > -As of qemu 2.11, only VMCOREINFO_FORMAT_ELF is supported.
+> > +As of qemu 2.11, only ``VMCOREINFO_FORMAT_ELF`` is supported.
+>
+> Maybe s/qemu/QEMU/, otherwise:
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+> >   The entry gives location and size of an ELF note that is appended in
+> >   qemu dumps.
+> > @@ -44,10 +44,11 @@ qemu dumps.
+> >   The note format/class must be of the target bitness and the size must
+> >   be less than 1Mb.
+> >
+> > -If the ELF note name is "VMCOREINFO", it is expected to be the Linux
+> > -vmcoreinfo note (see Documentation/ABI/testing/sysfs-kernel-vmcoreinfo
+> > -in Linux source). In this case, qemu dump code will read the content
+> > -as a key=3Dvalue text file, looking for "NUMBER(phys_base)" key
+> > +If the ELF note name is ``VMCOREINFO``, it is expected to be the Linux
+> > +vmcoreinfo note (see `the kernel documentation for its format
+> > +<https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-kernel-vmc=
+oreinfo>`_).
+> > +In this case, qemu dump code will read the content
+> > +as a key=3Dvalue text file, looking for ``NUMBER(phys_base)`` key
+> >   value. The value is expected to be more accurate than architecture
+> >   guess of the value. This is useful for KASLR-enabled guest with
+> > -ancient tools not handling the VMCOREINFO note.
+> > +ancient tools not handling the ``VMCOREINFO`` note.
+>
 
 
