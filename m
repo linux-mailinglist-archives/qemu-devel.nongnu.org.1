@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A287DEA59
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4DB7DEA43
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:41:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMcc-0000Hy-HB; Wed, 01 Nov 2023 21:35:46 -0400
+	id 1qyMeP-0006K6-Om; Wed, 01 Nov 2023 21:37:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMbN-0006iQ-8r
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:30 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qyMeG-0005xd-JV
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:28 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMbJ-0002DP-Ou
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:27 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1cc329ce84cso3327915ad.2
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:34:25 -0700 (PDT)
+ id 1qyMeE-0004IH-Vm
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:28 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6ba54c3ed97so493501b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:37:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698888864; x=1699493664; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698889045; x=1699493845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IyMEcH+XK8Eknr0xQsBIB3lMxzOGskoIpAWKROo/aKo=;
- b=yEfILW/1+/WndNI6j3OMo2Tj4lACg0VHUJ135DiukZHCSBhC4b22O0jBxBGYDyavHE
- Unp2dgKLbHCuNIZDVCjg3kUtNJQfwY0QUmTyFnTFzzI0W886E+c5T1z7WfspJQg8GTss
- Adb4Olg0eIBWs5qCED+aM2yN30Th/Zf7UiJb/VmuszVt/9LGItrgPZmlgE7DrFUaIA1k
- W05/sZR8Ym9qTW0lOtWVhXJ5wTKyxhiY9CWy9dHmpZGXqSlvQBHLPfrq0Oh5lv/8UKAU
- IJKBBGHH333wsiiyN+J3pG+EtKfXeIfjTamxIv0Tv13Vn75YP+q5sqqVuC404KXZRmy0
- aULw==
+ bh=M7+4SBqNUCdb83UyaUX4TiYteHeHosFCPYbW+VU+89Y=;
+ b=sBOWiJ2GnrUePOmASQ6Xa3iFuugnWMczNPDwjwyqQWEgjE2Uveu1sKrGzbDFUDh2O9
+ xIWLI0m+HUONXIIlFDQKW89k9r2O8w0FX6TLkP5R+Xgw0z9U5jHkHRwSjmSMjOq5gbtU
+ jwEWAYhR1WOZMbSUvfuPmF1lLglH3rzK6VJSSnL4uwimIOgSU7QZEKcu1Skiiny5QeSe
+ rvPXXxpZN5ViRyOqFywkWb6oWOgvzJopqT6pnFIvg68uHvG53T0fDXgdZ0JJU32vydi8
+ J2epGxPuHu2MXjjRI7d6KIlHruY4KWNKT+0dYwRGJ7OkCftbN4051zDWSdDIX/Zixnr3
+ rYXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698888864; x=1699493664;
+ d=1e100.net; s=20230601; t=1698889045; x=1699493845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IyMEcH+XK8Eknr0xQsBIB3lMxzOGskoIpAWKROo/aKo=;
- b=QbJWxkoOSs+HJccmjJf464Ek/hcThiDdN/lzEgQP3g611CWrQeIkJLvcucJz34FgpU
- 6hX85suzs4wVGkUbldbxs4yHm6ASLONPutKpbyhEGOJ92HJZPHhdMfzWF0O6zjd6na6m
- mRzhIFVQSvjfLZnutMnJMhDRn67wYf9peVskcgOfbSkf8zUbDTXRP6qJlDgfBZL4rdfA
- sEji2G/ZrfqIJ94L1BkLjX26E2dAAqha3KI5CaBW6by9rlqASXIFTh0E3/UTVlxKbS1m
- JoN0N0IaMXViRkgRm2gfwZdMnnv/RiTLKwHOExOVkf4lbEYHS4HtX+2wQijmr29wi+xs
- 688w==
-X-Gm-Message-State: AOJu0Yxz9dNYw46iJslTnMvRMwUraxoYZ0pi8y2ZO2x4q8hjxjNGA64f
- NH07g/H3VimdzzPuMVUtwrXLuNGCXfNqjETHt18=
-X-Google-Smtp-Source: AGHT+IHps9FFCQvtVHxGpu/T22ecdScBRw2ZPpKb9gyklKYUOtNlofbOFAbWcApqaLWEPJxMAWiuJQ==
-X-Received: by 2002:a17:902:e5c2:b0:1cc:3fc9:7d09 with SMTP id
- u2-20020a170902e5c200b001cc3fc97d09mr13100680plf.15.1698888864317; 
- Wed, 01 Nov 2023 18:34:24 -0700 (PDT)
+ bh=M7+4SBqNUCdb83UyaUX4TiYteHeHosFCPYbW+VU+89Y=;
+ b=OSaIsyZlACIDpIiiF3VYDCSSNvWMVVq9pBboWDQhhz3H8dDp+rvDTnYWKudJFZbI9f
+ pkDiVSYxWeFMKiR51Bwo4/iBr/mcr4vZhqjqIN5JVsVYgBLWY8V3eN+NIDqvHRSR2uy1
+ XzI/ZAz6CyqY/87jmTQkTuQOB05+KVxOyfwVxYI8pqdwzbEb0R6VhkLE3AvpB75AXl7z
+ e60hI/cAPHH9zrml8vfedHrDQeh9rHKt4s15EHymP8038DCtZltLpqL1w2Jn8zxewJ25
+ OJvqs9xqaWW7ImLb5AaGhBz28Rm0/yQk/lyzIHuelbyulJm2QeI/1/B5R/Of7CD/BKI2
+ bTvA==
+X-Gm-Message-State: AOJu0Yzrsmyvo6PTZsEoZcxeV5q4WGLPUBHBWjqHLUsQ8AY7vtOMJoIx
+ SCQTiItqdDByOXlHzs03IFde6i7I8Zb3kLWnxZY=
+X-Google-Smtp-Source: AGHT+IEuDoHy4nQ6MDU5KNuT2lAxSS/eAir0t5Ft/8bRwUq+vfx9gN8EzQdwlWk0eOFDNV3DAjomTw==
+X-Received: by 2002:a05:6a21:27a4:b0:170:3e5b:bccd with SMTP id
+ rn36-20020a056a2127a400b001703e5bbccdmr14877986pzb.30.1698889045602; 
+ Wed, 01 Nov 2023 18:37:25 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- t2-20020a1709027fc200b001a98f844e60sm1918125plb.263.2023.11.01.18.34.23
+ v20-20020aa78514000000b006934e7ceb79sm1800230pfn.32.2023.11.01.18.37.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:34:24 -0700 (PDT)
+ Wed, 01 Nov 2023 18:37:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 79/88] target/hppa: Clear upper bits in mtctl for pa1.x
-Date: Wed,  1 Nov 2023 18:30:07 -0700
-Message-Id: <20231102013016.369010-80-richard.henderson@linaro.org>
+Subject: [PATCH v3 80/88] target/hppa: Add unwind_breg to CPUHPPAState
+Date: Wed,  1 Nov 2023 18:30:08 -0700
+Message-Id: <20231102013016.369010-81-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,33 +90,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+Fill in the insn_start value during form_gva, and copy
+it out to the env field in hppa_restore_state_to_opc.
+The value is not yet consumed.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ target/hppa/cpu.h       |  8 +++++++-
+ target/hppa/cpu.c       |  1 +
+ target/hppa/translate.c | 13 ++++++++++++-
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index ea8e7e99a4..144794d089 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -45,7 +45,7 @@
+ #define MMU_IDX_TO_P(MIDX)          (((MIDX) - MMU_KERNEL_IDX) & 1)
+ #define PRIV_P_TO_MMU_IDX(PRIV, P)  ((PRIV) * 2 + !!(P) + MMU_KERNEL_IDX)
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 1
++#define TARGET_INSN_START_EXTRA_WORDS 2
+ 
+ /* No need to flush MMU_PHYS_IDX  */
+ #define HPPA_MMU_FLUSH_MASK                             \
+@@ -208,6 +208,12 @@ typedef struct CPUArchState {
+     target_ulong cr_back[2]; /* back of cr17/cr18 */
+     target_ulong shadow[7];  /* shadow registers */
+ 
++    /*
++     * During unwind of a memory insn, the base register of the address.
++     * This is used to construct CR_IOR for pa2.0.
++     */
++    uint32_t unwind_breg;
++
+     /*
+      * ??? The number of entries isn't specified by the architecture.
+      * BTLBs are not supported in 64-bit machines.
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index e1597ba8a5..04de1689d7 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -80,6 +80,7 @@ static void hppa_restore_state_to_opc(CPUState *cs,
+     if (data[1] != (target_ulong)-1) {
+         cpu->env.iaoq_b = data[1];
+     }
++    cpu->env.unwind_breg = data[2];
+     /*
+      * Since we were executing the instruction at IAOQ_F, and took some
+      * sort of action that provoked the cpu_restore_state, we can infer
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index d9595c5c7c..f7621590e4 100644
+index f7621590e4..27846f5ad8 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -2060,7 +2060,13 @@ static bool trans_mtctl(DisasContext *ctx, arg_mtctl *a)
+@@ -44,6 +44,7 @@ typedef struct DisasCond {
+ typedef struct DisasContext {
+     DisasContextBase base;
+     CPUState *cs;
++    TCGOp *insn_start;
  
- #ifndef CONFIG_USER_ONLY
-     nullify_over(ctx);
--    reg = load_gpr(ctx, a->r);
+     uint64_t iaoq_f;
+     uint64_t iaoq_b;
+@@ -234,6 +235,13 @@ void hppa_translate_init(void)
+                                         "iasq_b");
+ }
+ 
++static void set_insn_breg(DisasContext *ctx, int breg)
++{
++    assert(ctx->insn_start != NULL);
++    tcg_set_insn_start_param(ctx->insn_start, 2, breg);
++    ctx->insn_start = NULL;
++}
 +
-+    if (ctx->is_pa20) {
-+        reg = load_gpr(ctx, a->r);
-+    } else {
-+        reg = tcg_temp_new_i64();
-+        tcg_gen_ext32u_i64(reg, load_gpr(ctx, a->r));
-+    }
+ static DisasCond cond_make_f(void)
+ {
+     return (DisasCond){
+@@ -1324,6 +1332,8 @@ static void form_gva(DisasContext *ctx, TCGv_i64 *pgva, TCGv_i64 *pofs,
+     TCGv_i64 ofs;
+     TCGv_i64 addr;
  
-     switch (ctl) {
-     case CR_IT:
++    set_insn_breg(ctx, rb);
++
+     /* Note that RX is mutually exclusive with DISP.  */
+     if (rx) {
+         ofs = tcg_temp_new_i64();
+@@ -4455,7 +4465,8 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+ 
+-    tcg_gen_insn_start(ctx->iaoq_f, ctx->iaoq_b);
++    tcg_gen_insn_start(ctx->iaoq_f, ctx->iaoq_b, 0);
++    ctx->insn_start = tcg_last_op();
+ }
+ 
+ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
 -- 
 2.34.1
 
