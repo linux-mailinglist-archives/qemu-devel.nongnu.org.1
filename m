@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690A07DED55
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 08:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC117DED7E
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 08:37:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyS9w-00075F-QY; Thu, 02 Nov 2023 03:30:33 -0400
+	id 1qySA7-00085E-TE; Thu, 02 Nov 2023 03:30:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qyS9t-0006qY-4h
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:30:29 -0400
+ id 1qySA5-0007up-M8
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:30:42 -0400
 Received: from mgamail.intel.com ([134.134.136.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qyS9r-0003PH-39
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:30:28 -0400
+ id 1qySA3-0003OZ-0B
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:30:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698910227; x=1730446227;
+ t=1698910239; x=1730446239;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VD1ocG9/fRSfYw95BHHJrAKocj8tx/oJLWrA9fiPlz4=;
- b=CRUfU71eQID7TlNq2O9ChE2dFsW3JLmIMYj+Xs/lzM/aQovPFSrRjwgM
- GMQObZ4FjBQDFEi1EHWqq1rBXeYICzp/m5I0LFcARjL1MIKj+vXjmf24N
- pj+DkLtkpRu3hrMBuDX+9a37W8WhnEJHjnPlb4W+f3VJM84Hohn42TaFa
- cVj+v19wJAn7a+nZQ07aGJWW5jgS9yohGiQZd4DaeIAmfLRjbey593LKD
- SBSaEfvBHa29TE3seXRW+WC/vVype9ygf7xBvaj3WMP57fvBWGccSQxC5
- 0qnzwkxnJwi7Fbp9t1fHnGi587xcJw5KvE3gzq/iwTxzkheyQsSQXzhbX Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="452953291"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="452953291"
+ bh=ZRnUM1UmhA0Av1npfuEYFt+Mmoe6CHlwX/e7PIpFUAQ=;
+ b=QVES2LhTZ/dkJ+QfomgZ9uRv90j5e+nAa4fqYQCPLdHp8NBkDWG5qKIk
+ fppWx4j26LhkXlPcbuL+bmZwejbpP932twHeIReEaalxZl8WSvwF8KH1A
+ HbkFbj5x47jyC0ntCsg49EC8m3zKcPyVXzgtMolnyByOsxWXUWOlHBeWC
+ QRvB5NJznXCMkZM7qnWttueVaOrg4ajr5DuAPOfpPydRHuE/ss+gKrBPG
+ dfoQpjbsQgoKl5HlTkNwdq+04+Fawf63OFeaDafh9WWcmdkfkVhYecVDu
+ 0gCsL+ja06ZqLg+u6qPKPvZXZ0pso+BIPkVkHBxCFojl+YqyGpMs1fRB2 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="452953301"
+X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="452953301"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2023 00:30:16 -0700
+ 02 Nov 2023 00:30:21 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="711055567"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="711055567"
+X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="711055613"
+X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="711055613"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2023 00:30:11 -0700
+ 02 Nov 2023 00:30:16 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -48,14 +48,13 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 25/41] Add iommufd configure option
-Date: Thu,  2 Nov 2023 15:12:46 +0800
-Message-Id: <20231102071302.1818071-26-zhenzhong.duan@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v4 26/41] backends/iommufd: Introduce the iommufd object
+Date: Thu,  2 Nov 2023 15:12:47 +0800
+Message-Id: <20231102071302.1818071-27-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
 References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
@@ -85,81 +84,560 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds "--enable-iommufd/--disable-iommufd" to enable or disable
-iommufd support, enabled by default.
+From: Eric Auger <eric.auger@redhat.com>
 
+Introduce an iommufd object which allows the interaction
+with the host /dev/iommu device.
+
+The /dev/iommu can have been already pre-opened outside of qemu,
+in which case the fd can be passed directly along with the
+iommufd object:
+
+This allows the iommufd object to be shared accross several
+subsystems (VFIO, VDPA, ...). For example, libvirt would open
+the /dev/iommu once.
+
+If no fd is passed along with the iommufd object, the /dev/iommu
+is opened by the qemu code.
+
+The CONFIG_IOMMUFD option must be set to compile this new object.
+
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- meson.build                   | 6 ++++++
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 3 +++
- 3 files changed, 11 insertions(+)
+v4: add CONFIG_IOMMUFD check, document default case
 
-diff --git a/meson.build b/meson.build
-index dcef8b1e79..72a57288a0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -560,6 +560,10 @@ have_tpm = get_option('tpm') \
-   .require(targetos != 'windows', error_message: 'TPM emulation only available on POSIX systems') \
-   .allowed()
+ MAINTAINERS              |   7 ++
+ qapi/qom.json            |  22 ++++
+ include/sysemu/iommufd.h |  46 +++++++
+ backends/iommufd-stub.c  |  59 +++++++++
+ backends/iommufd.c       | 257 +++++++++++++++++++++++++++++++++++++++
+ backends/Kconfig         |   4 +
+ backends/meson.build     |   5 +
+ backends/trace-events    |  12 ++
+ qemu-options.hx          |  13 ++
+ 9 files changed, 425 insertions(+)
+ create mode 100644 include/sysemu/iommufd.h
+ create mode 100644 backends/iommufd-stub.c
+ create mode 100644 backends/iommufd.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cd8d6b140f..6f35159255 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2135,6 +2135,13 @@ F: hw/vfio/ap.c
+ F: docs/system/s390x/vfio-ap.rst
+ L: qemu-s390x@nongnu.org
  
-+have_iommufd = get_option('iommufd') \
-+  .require(targetos == 'linux', error_message: 'iommufd is supported only on Linux') \
-+  .allowed()
++iommufd
++M: Yi Liu <yi.l.liu@intel.com>
++M: Eric Auger <eric.auger@redhat.com>
++S: Supported
++F: backends/iommufd.c
++F: include/sysemu/iommufd.h
 +
- # vhost
- have_vhost_user = get_option('vhost_user') \
-   .disable_auto_if(targetos != 'linux') \
-@@ -2133,6 +2137,7 @@ if get_option('tcg').allowed()
+ vhost
+ M: Michael S. Tsirkin <mst@redhat.com>
+ S: Supported
+diff --git a/qapi/qom.json b/qapi/qom.json
+index c53ef978ff..27300add48 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -794,6 +794,24 @@
+ { 'struct': 'VfioUserServerProperties',
+   'data': { 'socket': 'SocketAddress', 'device': 'str' } }
+ 
++##
++# @IOMMUFDProperties:
++#
++# Properties for iommufd objects.
++#
++# @fd: file descriptor name previously passed via 'getfd' command,
++#     which represents a pre-opened /dev/iommu.  This allows the
++#     iommufd object to be shared accross several subsystems
++#     (VFIO, VDPA, ...), and the file descriptor to be shared
++#     with other process, e.g. DPDK.  (default: QEMU opens
++#     /dev/iommu by itself)
++#
++# Since: 8.2
++##
++{ 'struct': 'IOMMUFDProperties',
++  'data': { '*fd': 'str' },
++  'if': 'CONFIG_IOMMUFD' }
++
+ ##
+ # @RngProperties:
+ #
+@@ -934,6 +952,8 @@
+     'input-barrier',
+     { 'name': 'input-linux',
+       'if': 'CONFIG_LINUX' },
++    { 'name': 'iommufd',
++      'if': 'CONFIG_IOMMUFD' },
+     'iothread',
+     'main-loop',
+     { 'name': 'memory-backend-epc',
+@@ -1003,6 +1023,8 @@
+       'input-barrier':              'InputBarrierProperties',
+       'input-linux':                { 'type': 'InputLinuxProperties',
+                                       'if': 'CONFIG_LINUX' },
++      'iommufd':                    { 'type': 'IOMMUFDProperties',
++                                      'if': 'CONFIG_IOMMUFD' },
+       'iothread':                   'IothreadProperties',
+       'main-loop':                  'MainLoopProperties',
+       'memory-backend-epc':         { 'type': 'MemoryBackendEpcProperties',
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+new file mode 100644
+index 0000000000..f0e5c7eeb8
+--- /dev/null
++++ b/include/sysemu/iommufd.h
+@@ -0,0 +1,46 @@
++#ifndef SYSEMU_IOMMUFD_H
++#define SYSEMU_IOMMUFD_H
++
++#include "qom/object.h"
++#include "qemu/thread.h"
++#include "exec/hwaddr.h"
++#include "exec/cpu-common.h"
++
++#define TYPE_IOMMUFD_BACKEND "iommufd"
++OBJECT_DECLARE_TYPE(IOMMUFDBackend, IOMMUFDBackendClass,
++                    IOMMUFD_BACKEND)
++#define IOMMUFD_BACKEND(obj) \
++    OBJECT_CHECK(IOMMUFDBackend, (obj), TYPE_IOMMUFD_BACKEND)
++#define IOMMUFD_BACKEND_GET_CLASS(obj) \
++    OBJECT_GET_CLASS(IOMMUFDBackendClass, (obj), TYPE_IOMMUFD_BACKEND)
++#define IOMMUFD_BACKEND_CLASS(klass) \
++    OBJECT_CLASS_CHECK(IOMMUFDBackendClass, (klass), TYPE_IOMMUFD_BACKEND)
++struct IOMMUFDBackendClass {
++    ObjectClass parent_class;
++};
++
++struct IOMMUFDBackend {
++    Object parent;
++
++    /*< protected >*/
++    int fd;            /* /dev/iommu file descriptor */
++    bool owned;        /* is the /dev/iommu opened internally */
++    QemuMutex lock;
++    uint32_t users;
++
++    /*< public >*/
++};
++
++int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
++void iommufd_backend_disconnect(IOMMUFDBackend *be);
++
++int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id);
++void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas_id);
++void iommufd_backend_free_id(int fd, uint32_t id);
++int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
++                            ram_addr_t size, void *vaddr, bool readonly);
++int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                              hwaddr iova, ram_addr_t size);
++int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
++                               uint32_t pt_id, uint32_t *out_hwpt);
++#endif
+diff --git a/backends/iommufd-stub.c b/backends/iommufd-stub.c
+new file mode 100644
+index 0000000000..02ac844c17
+--- /dev/null
++++ b/backends/iommufd-stub.c
+@@ -0,0 +1,59 @@
++/*
++ * iommufd container backend stub
++ *
++ * Copyright (C) 2023 Intel Corporation.
++ * Copyright Red Hat, Inc. 2023
++ *
++ * Authors: Yi Liu <yi.l.liu@intel.com>
++ *          Eric Auger <eric.auger@redhat.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "qemu/osdep.h"
++#include "sysemu/iommufd.h"
++#include "qemu/error-report.h"
++
++int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
++{
++    return 0;
++}
++void iommufd_backend_disconnect(IOMMUFDBackend *be)
++{
++}
++void iommufd_backend_free_id(int fd, uint32_t id)
++{
++}
++int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id)
++{
++    return 0;
++}
++void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas_id)
++{
++}
++int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
++                            ram_addr_t size, void *vaddr, bool readonly)
++{
++    return 0;
++}
++int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                              hwaddr iova, ram_addr_t size)
++{
++    return 0;
++}
++int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
++                               uint32_t pt_id, uint32_t *out_hwpt)
++{
++    return 0;
++}
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+new file mode 100644
+index 0000000000..a526d58824
+--- /dev/null
++++ b/backends/iommufd.c
+@@ -0,0 +1,257 @@
++/*
++ * iommufd container backend
++ *
++ * Copyright (C) 2023 Intel Corporation.
++ * Copyright Red Hat, Inc. 2023
++ *
++ * Authors: Yi Liu <yi.l.liu@intel.com>
++ *          Eric Auger <eric.auger@redhat.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "sysemu/iommufd.h"
++#include "qapi/error.h"
++#include "qapi/qmp/qerror.h"
++#include "qemu/module.h"
++#include "qom/object_interfaces.h"
++#include "qemu/error-report.h"
++#include "monitor/monitor.h"
++#include "trace.h"
++#include <sys/ioctl.h>
++#include <linux/iommufd.h>
++
++static void iommufd_backend_init(Object *obj)
++{
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
++
++    be->fd = -1;
++    be->users = 0;
++    be->owned = true;
++    qemu_mutex_init(&be->lock);
++}
++
++static void iommufd_backend_finalize(Object *obj)
++{
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
++
++    if (be->owned) {
++        close(be->fd);
++        be->fd = -1;
++    }
++}
++
++static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
++{
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
++    int fd = -1;
++
++    fd = monitor_fd_param(monitor_cur(), str, errp);
++    if (fd == -1) {
++        error_prepend(errp, "Could not parse remote object fd %s:", str);
++        return;
++    }
++    qemu_mutex_lock(&be->lock);
++    be->fd = fd;
++    be->owned = false;
++    qemu_mutex_unlock(&be->lock);
++    trace_iommu_backend_set_fd(be->fd);
++}
++
++static void iommufd_backend_class_init(ObjectClass *oc, void *data)
++{
++    object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
++}
++
++int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
++{
++    int fd, ret = 0;
++
++    qemu_mutex_lock(&be->lock);
++    if (be->users == UINT32_MAX) {
++        error_setg(errp, "too many connections");
++        ret = -E2BIG;
++        goto out;
++    }
++    if (be->owned && !be->users) {
++        fd = qemu_open_old("/dev/iommu", O_RDWR);
++        if (fd < 0) {
++            error_setg_errno(errp, errno, "/dev/iommu opening failed");
++            ret = fd;
++            goto out;
++        }
++        be->fd = fd;
++    }
++    be->users++;
++out:
++    trace_iommufd_backend_connect(be->fd, be->owned,
++                                  be->users, ret);
++    qemu_mutex_unlock(&be->lock);
++    return ret;
++}
++
++void iommufd_backend_disconnect(IOMMUFDBackend *be)
++{
++    qemu_mutex_lock(&be->lock);
++    if (!be->users) {
++        goto out;
++    }
++    be->users--;
++    if (!be->users && be->owned) {
++        close(be->fd);
++        be->fd = -1;
++    }
++out:
++    trace_iommufd_backend_disconnect(be->fd, be->users);
++    qemu_mutex_unlock(&be->lock);
++}
++
++static int iommufd_backend_alloc_ioas(int fd, uint32_t *ioas_id)
++{
++    int ret;
++    struct iommu_ioas_alloc alloc_data  = {
++        .size = sizeof(alloc_data),
++        .flags = 0,
++    };
++
++    ret = ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data);
++    if (ret) {
++        error_report("Failed to allocate ioas %m");
++    }
++
++    *ioas_id = alloc_data.out_ioas_id;
++    trace_iommufd_backend_alloc_ioas(fd, *ioas_id, ret);
++
++    return ret;
++}
++
++void iommufd_backend_free_id(int fd, uint32_t id)
++{
++    int ret;
++    struct iommu_destroy des = {
++        .size = sizeof(des),
++        .id = id,
++    };
++
++    ret = ioctl(fd, IOMMU_DESTROY, &des);
++    trace_iommufd_backend_free_id(fd, id, ret);
++    if (ret) {
++        error_report("Failed to free id: %u %m", id);
++    }
++}
++
++int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id)
++{
++    int ret;
++
++    ret = iommufd_backend_alloc_ioas(be->fd, ioas_id);
++    trace_iommufd_backend_get_ioas(be->fd, *ioas_id, ret);
++    return ret;
++}
++
++void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas_id)
++{
++    iommufd_backend_free_id(be->fd, ioas_id);
++    trace_iommufd_backend_put_ioas(be->fd, ioas_id);
++}
++
++int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
++                            ram_addr_t size, void *vaddr, bool readonly)
++{
++    int ret;
++    struct iommu_ioas_map map = {
++        .size = sizeof(map),
++        .flags = IOMMU_IOAS_MAP_READABLE |
++                 IOMMU_IOAS_MAP_FIXED_IOVA,
++        .ioas_id = ioas_id,
++        .__reserved = 0,
++        .user_va = (uintptr_t)vaddr,
++        .iova = iova,
++        .length = size,
++    };
++
++    if (!readonly) {
++        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
++    }
++
++    ret = ioctl(be->fd, IOMMU_IOAS_MAP, &map);
++    trace_iommufd_backend_map_dma(be->fd, ioas_id, iova, size,
++                                  vaddr, readonly, ret);
++    if (ret) {
++        error_report("IOMMU_IOAS_MAP failed: %m");
++    }
++    return !ret ? 0 : -errno;
++}
++
++int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                              hwaddr iova, ram_addr_t size)
++{
++    int ret;
++    struct iommu_ioas_unmap unmap = {
++        .size = sizeof(unmap),
++        .ioas_id = ioas_id,
++        .iova = iova,
++        .length = size,
++    };
++
++    ret = ioctl(be->fd, IOMMU_IOAS_UNMAP, &unmap);
++    trace_iommufd_backend_unmap_dma(be->fd, ioas_id, iova, size, ret);
++    /*
++     * TODO: IOMMUFD doesn't support mapping PCI BARs for now.
++     * It's not a problem if there is no p2p dma, relax it here
++     * and avoid many noisy trigger from vIOMMU side.
++     */
++    if (ret && errno == ENOENT) {
++        ret = 0;
++    }
++    if (ret) {
++        error_report("IOMMU_IOAS_UNMAP failed: %m");
++    }
++    return !ret ? 0 : -errno;
++}
++
++int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
++                               uint32_t pt_id, uint32_t *out_hwpt)
++{
++    int ret;
++    struct iommu_hwpt_alloc alloc_hwpt = {
++        .size = sizeof(struct iommu_hwpt_alloc),
++        .flags = 0,
++        .dev_id = dev_id,
++        .pt_id = pt_id,
++        .__reserved = 0,
++    };
++
++    ret = ioctl(iommufd, IOMMU_HWPT_ALLOC, &alloc_hwpt);
++    trace_iommufd_backend_alloc_hwpt(iommufd, dev_id, pt_id,
++                                     alloc_hwpt.out_hwpt_id, ret);
++
++    if (ret) {
++        error_report("IOMMU_HWPT_ALLOC failed: %m");
++    } else {
++        *out_hwpt = alloc_hwpt.out_hwpt_id;
++    }
++    return !ret ? 0 : -errno;
++}
++
++static const TypeInfo iommufd_backend_info = {
++    .name = TYPE_IOMMUFD_BACKEND,
++    .parent = TYPE_OBJECT,
++    .instance_size = sizeof(IOMMUFDBackend),
++    .instance_init = iommufd_backend_init,
++    .instance_finalize = iommufd_backend_finalize,
++    .class_size = sizeof(IOMMUFDBackendClass),
++    .class_init = iommufd_backend_class_init,
++    .interfaces = (InterfaceInfo[]) {
++        { TYPE_USER_CREATABLE },
++        { }
++    }
++};
++
++static void register_types(void)
++{
++    type_register_static(&iommufd_backend_info);
++}
++
++type_init(register_types);
+diff --git a/backends/Kconfig b/backends/Kconfig
+index f35abc1609..2cb23f62fa 100644
+--- a/backends/Kconfig
++++ b/backends/Kconfig
+@@ -1 +1,5 @@
+ source tpm/Kconfig
++
++config IOMMUFD
++    bool
++    depends on VFIO
+diff --git a/backends/meson.build b/backends/meson.build
+index 914c7c4afb..05ac57ff15 100644
+--- a/backends/meson.build
++++ b/backends/meson.build
+@@ -20,6 +20,11 @@ if have_vhost_user
+   system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('vhost-user.c'))
  endif
- config_host_data.set('CONFIG_TPM', have_tpm)
- config_host_data.set('CONFIG_TSAN', get_option('tsan'))
-+config_host_data.set('CONFIG_IOMMUFD', have_iommufd)
- config_host_data.set('CONFIG_USB_LIBUSB', libusb.found())
- config_host_data.set('CONFIG_VDE', vde.found())
- config_host_data.set('CONFIG_VHOST', have_vhost)
-@@ -4075,6 +4080,7 @@ summary_info += {'vhost-user-crypto support': have_vhost_user_crypto}
- summary_info += {'vhost-user-blk server support': have_vhost_user_blk_server}
- summary_info += {'vhost-vdpa support': have_vhost_vdpa}
- summary_info += {'build guest agent': have_ga}
-+summary_info += {'iommufd support': have_iommufd}
- summary(summary_info, bool_yn: true, section: 'Configurable features')
+ system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
++if have_iommufd
++  system_ss.add(files('iommufd.c'))
++else
++  system_ss.add(files('iommufd-stub.c'))
++endif
+ if have_vhost_user_crypto
+   system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
+ endif
+diff --git a/backends/trace-events b/backends/trace-events
+index 652eb76a57..e5f828bca2 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -5,3 +5,15 @@ dbus_vmstate_pre_save(void)
+ dbus_vmstate_post_load(int version_id) "version_id: %d"
+ dbus_vmstate_loading(const char *id) "id: %s"
+ dbus_vmstate_saving(const char *id) "id: %s"
++
++# iommufd.c
++iommufd_backend_connect(int fd, bool owned, uint32_t users, int ret) "fd=%d owned=%d users=%d (%d)"
++iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
++iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
++iommufd_backend_get_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
++iommufd_backend_put_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
++iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
++iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
++iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
++iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
++iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u out_hwpt=%u (%d)"
+diff --git a/qemu-options.hx b/qemu-options.hx
+index e26230bac5..ddfaddf8ce 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -5210,6 +5210,19 @@ SRST
  
- # Compilation information
-diff --git a/meson_options.txt b/meson_options.txt
-index 3c7398f3c6..91bb958cae 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -109,6 +109,8 @@ option('dbus_display', type: 'feature', value: 'auto',
-        description: '-display dbus support')
- option('tpm', type : 'feature', value : 'auto',
-        description: 'TPM support')
-+option('iommufd', type : 'feature', value : 'auto',
-+       description: 'iommufd support')
+         The ``share`` boolean option is on by default with memfd.
  
- # Do not enable it by default even for Mingw32, because it doesn't
- # work on Wine.
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 7ca4b77eae..1effc46f7d 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -125,6 +125,7 @@ meson_options_help() {
-   printf "%s\n" '  guest-agent-msi Build MSI package for the QEMU Guest Agent'
-   printf "%s\n" '  hvf             HVF acceleration support'
-   printf "%s\n" '  iconv           Font glyph conversion support'
-+  printf "%s\n" '  iommufd         iommufd support'
-   printf "%s\n" '  jack            JACK sound support'
-   printf "%s\n" '  keyring         Linux keyring support'
-   printf "%s\n" '  kvm             KVM acceleration support'
-@@ -342,6 +343,8 @@ _meson_option_parse() {
-     --enable-install-blobs) printf "%s" -Dinstall_blobs=true ;;
-     --disable-install-blobs) printf "%s" -Dinstall_blobs=false ;;
-     --interp-prefix=*) quote_sh "-Dinterp_prefix=$2" ;;
-+    --enable-iommufd) printf "%s" -Diommufd=enabled ;;
-+    --disable-iommufd) printf "%s" -Diommufd=disabled ;;
-     --enable-jack) printf "%s" -Djack=enabled ;;
-     --disable-jack) printf "%s" -Djack=disabled ;;
-     --enable-keyring) printf "%s" -Dkeyring=enabled ;;
++#ifdef CONFIG_IOMMUFD
++    ``-object iommufd,id=id[,fd=fd]``
++        Creates an iommufd backend which allows control of DMA mapping
++        through the /dev/iommu device.
++
++        The ``id`` parameter is a unique ID which frontends (such as
++        vfio-pci of vdpa) will use to connect with the iommufd backend.
++
++        The ``fd`` parameter is an optional pre-opened file descriptor
++        resulting from /dev/iommu opening. Usually the iommufd is shared
++        across all subsystems, bringing the benefit of centralized
++        reference counting.
++#endif
+     ``-object rng-builtin,id=id``
+         Creates a random number generator backend which obtains entropy
+         from QEMU builtin functions. The ``id`` parameter is a unique ID
 -- 
 2.34.1
 
