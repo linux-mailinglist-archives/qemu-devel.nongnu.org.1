@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8C67DF90C
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952A27DF903
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:42:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybg5-0004QL-JN; Thu, 02 Nov 2023 13:40:23 -0400
+	id 1qybfR-0003sr-Rw; Thu, 02 Nov 2023 13:39:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybej-0003HN-Da
+ id 1qybei-0003HA-Qn
  for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:39:00 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybef-0002rx-B3
+ id 1qybef-0002sH-Aq
  for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:56 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-32d895584f1so662242f8f.1
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-32f7c80ab33so705278f8f.0
  for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698946730; x=1699551530; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698946731; x=1699551531; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KWyGEYTzfH2Abe6/qvv9Qz9Xy/UG4t+1CI7YQLR7W1Q=;
- b=jKRjq5+Xj+GZWXmghtiQDmDvxnYChqujeyC3rZHRI3p9JZ4SqAVP/VyKorWTogl6/U
- EXh0ffpRTWGtkuTpGoUoYfGHt6ibunT3YDTc2VhDHmqjm/S07tBPHJFLJz07QPBNxYNh
- XQaB42lFEX86Ct6qfqTC4o3yA+7HM4wui5Q/lNL9PCCkLwLcOBaGF+AAdTAZ8ZOf5ljO
- l97HJ/ADjXEld59v5pl7aURcBnwEKnft25UqO5s1/eVNDEVRU4exbJ0oUFDjpsSzB21B
- gcP9qZk9OjCq1jaJgPS862yY3TQ7+2kCCUoBL466wgSUuxhvc3mzrKF6c+ZN4llDLq54
- A4Pg==
+ :reply-to; bh=Xl1Sssr8bZ1VD/O15KLMZF+fxbdudckI1BnKAqrNXHo=;
+ b=xDf7vfIJb7ZnpOKxmogljLKIVc8qzg+qUNXpkuZQaEpkr+yt0x7439G6vk1sjN03c/
+ OvZ73XeBj4Cpa5DOyh4pdvHfg+lCxOm2hlmQFp9DoPXIfIM+SsrChWoyYQN7jsZba/S9
+ ufAw+NU3vCydP+RTdrY585oaEmP4ugsOXCL8SLmTJzAbUJUHzTtrItk0aA4jUtfo+8a1
+ SIwLeh3CAWDTrzIKhP4593W24r6xTSZUbPKbvN3HdjXUDU9B2DDJ4d0kisSYKVZ/sm7g
+ LSR3Ln71LNAIRoKaaZMk2WEVy1xHyms0AxNtAC5hbxPg30yKle+tm1REyQ03MCCnA2G8
+ 7fWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698946730; x=1699551530;
+ d=1e100.net; s=20230601; t=1698946731; x=1699551531;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KWyGEYTzfH2Abe6/qvv9Qz9Xy/UG4t+1CI7YQLR7W1Q=;
- b=HJWOwDAOX7VungykAilj1KPDqnB39HVTS0u5gFqHci49Hewd2L+Jnp59bL5KAsfdTE
- kasKfnsbtgQyZOQtg8ps2IhsGZnLXTroUeySSc249H5ds/2BprqsmP568CpEiKEEAlsY
- 5L5cojL8XRgoX/1/mV+lmr7vnNTFb7xgsQqoQfayqsHZ4ZJHZzRP87Y1+afpgCxZcwLo
- 9NSwZ8fSVGbeaZQquKJqw34hJOz4J3gNzzlXARZpc7EDreDxgLhj4BIM9nHLrDWUPCVL
- vcNJb7NYq40dWnYqaBPP7JWphdp1iqLS3pDGt7O/JxyLG9fT6dd/ZpHipigECUeO00qi
- 5LGA==
-X-Gm-Message-State: AOJu0YyLuhwkdyqtpvFuwzmJ2yBIgqjq2asy4umPDkYCsOetxEu9NN7R
- R4SMrxyws4Gg4Zvz1vr2/bfHD95KKQdFUZLRcpo=
-X-Google-Smtp-Source: AGHT+IHDZsSXPr5WaFs/6lMO69pWvGLjPyPvJ1Y2tFI+NrinacZnPVdK0CAB7H+V889SucZZhuDKUg==
-X-Received: by 2002:a5d:5987:0:b0:32f:8181:7d2b with SMTP id
- n7-20020a5d5987000000b0032f81817d2bmr12347763wri.32.1698946730472; 
+ bh=Xl1Sssr8bZ1VD/O15KLMZF+fxbdudckI1BnKAqrNXHo=;
+ b=YYtQX9c/AqDFVWjV+RITwdhWmzpNZEOaWbOEREFWwnYPaVohDa6+HAmI8oW4UR0LHw
+ 4yOqPp9RGmvMUqhKE7pOXAMCX8Ga8dMZ+jYH2sp4EVoh/5ikEk1nGqsE+cgrtMNK1bCX
+ bTPbpQ2jiBGU3tiCfdt2D0CucoEYKb6KURsDufqI3nBtATuEug6+O4QKUmySneziAtz7
+ CBU7ZGLsuKBdTNvCCwOxcAFi58FWpy30ER9Nyp5QZOGNQUlZXk5rRE1N3WCiwuCnpVlk
+ fPz+QJ/swbvJKASz1ZO7by4HOSDwiE+zY7y4DRVkLneRyWnOZ1yoBwxXhmIRurzm4T0F
+ 8N7Q==
+X-Gm-Message-State: AOJu0YwAlh8x1C643r1jKaA0wvh5KRq9AsgqU7fC58ZY/9gOxwG7aDKf
+ b4NAE4f0iyWuo0c6qmRsrDDjNzYTNpG9kwt4Ug4=
+X-Google-Smtp-Source: AGHT+IEQLoEkfecKWfM1GPXGggvL/xYcxeDe0/sT02q9m9J53c8suzwoF1CJIYgbhpXC7VpBn76B4Q==
+X-Received: by 2002:adf:f605:0:b0:32d:89b5:7fd9 with SMTP id
+ t5-20020adff605000000b0032d89b57fd9mr14318080wrp.56.1698946730889; 
  Thu, 02 Nov 2023 10:38:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,18 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 02 Nov 2023 10:38:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/33] target/arm: Make FEAT_MOPS SET* insns handle Xs == XZR
- correctly
-Date: Thu,  2 Nov 2023 17:38:27 +0000
-Message-Id: <20231102173835.609985-26-peter.maydell@linaro.org>
+Subject: [PULL 26/33] target/arm: Fix SVE STR increment
+Date: Thu,  2 Nov 2023 17:38:28 +0000
+Message-Id: <20231102173835.609985-27-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,72 +91,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of the registers used by the FEAT_MOPS instructions cannot use
-31 as a register field value; this is CONSTRAINED UNPREDICTABLE to
-NOP or UNDEF (we UNDEF).  However, it is permitted for the "source
-value" register for the memset insns SET* to be 31, which (as usual
-for most data-processing insns) means it should be the zero register
-XZR. We forgot to handle this case, with the effect that trying to
-set memory to zero with a "SET* Xd, Xn, XZR" sets the memory to
-the value that happens to be in the low byte of SP.
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Handle XZR when getting the SET* data value from the register file.
+The previous change missed updating one of the increments and
+one of the MemOps.  Add a test case for all vector lengths.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org
+Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231030174000.3792225-4-peter.maydell@linaro.org
+Message-id: 20231031143215.29764-1-richard.henderson@linaro.org
+[PMM: fixed checkpatch nit]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/helper-a64.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ target/arm/tcg/translate-sve.c    |  5 ++--
+ tests/tcg/aarch64/sve-str.c       | 49 +++++++++++++++++++++++++++++++
+ tests/tcg/aarch64/Makefile.target |  6 +++-
+ 3 files changed, 57 insertions(+), 3 deletions(-)
+ create mode 100644 tests/tcg/aarch64/sve-str.c
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 84f54750fc2..ce4800b8d13 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -1206,6 +1206,15 @@ static void check_setg_alignment(CPUARMState *env, uint64_t ptr, uint64_t size,
-     }
- }
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 7b39962f209..296e7d1ce22 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -4294,7 +4294,7 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
+         t0 = tcg_temp_new_i64();
+         t1 = tcg_temp_new_i64();
+         t16 = tcg_temp_new_i128();
+-        for (i = 0; i < len_align; i += 8) {
++        for (i = 0; i < len_align; i += 16) {
+             tcg_gen_ld_i64(t0, base, vofs + i);
+             tcg_gen_ld_i64(t1, base, vofs + i + 8);
+             tcg_gen_concat_i64_i128(t16, t0, t1);
+@@ -4320,7 +4320,8 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
+         t16 = tcg_temp_new_i128();
+         tcg_gen_concat_i64_i128(t16, t0, t1);
  
-+static uint64_t arm_reg_or_xzr(CPUARMState *env, int reg)
+-        tcg_gen_qemu_st_i128(t16, clean_addr, midx, MO_LEUQ);
++        tcg_gen_qemu_st_i128(t16, clean_addr, midx,
++                             MO_LE | MO_128 | MO_ATOM_NONE);
+         tcg_gen_addi_i64(clean_addr, clean_addr, 16);
+ 
+         tcg_gen_brcondi_ptr(TCG_COND_LTU, i, len_align, loop);
+diff --git a/tests/tcg/aarch64/sve-str.c b/tests/tcg/aarch64/sve-str.c
+new file mode 100644
+index 00000000000..ae271c9d87e
+--- /dev/null
++++ b/tests/tcg/aarch64/sve-str.c
+@@ -0,0 +1,49 @@
++#include <stdio.h>
++#include <sys/prctl.h>
++
++#define N  (256 + 16)
++
++static int __attribute__((noinline)) test(int vl)
 +{
-+    /*
-+     * Runtime equivalent of cpu_reg() -- return the CPU register value,
-+     * for contexts when index 31 means XZR (not SP).
-+     */
-+    return reg == 31 ? 0 : env->xregs[reg];
++    unsigned char buf[N];
++    int err = 0;
++
++    for (int i = 0; i < N; ++i) {
++        buf[i] = (unsigned char)i;
++    }
++
++    asm volatile (
++        "mov z0.b, #255\n\t"
++        "str z0, %0"
++        : : "m" (buf) : "z0", "memory");
++
++    for (int i = 0; i < vl; ++i) {
++        if (buf[i] != 0xff) {
++            fprintf(stderr, "vl %d, index %d, expected 255, got %d\n",
++                    vl, i, buf[i]);
++            err = 1;
++        }
++    }
++
++    for (int i = vl; i < N; ++i) {
++        if (buf[i] != (unsigned char)i) {
++            fprintf(stderr, "vl %d, index %d, expected %d, got %d\n",
++                    vl, i, (unsigned char)i, buf[i]);
++            err = 1;
++        }
++    }
++
++    return err;
 +}
 +
- /*
-  * For the Memory Set operation, our implementation chooses
-  * always to use "option A", where we update Xd to the final
-@@ -1226,7 +1235,7 @@ static void do_setp(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-     int rd = mops_destreg(syndrome);
-     int rs = mops_srcreg(syndrome);
-     int rn = mops_sizereg(syndrome);
--    uint8_t data = env->xregs[rs];
-+    uint8_t data = arm_reg_or_xzr(env, rs);
-     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
-     uint64_t toaddr = env->xregs[rd];
-     uint64_t setsize = env->xregs[rn];
-@@ -1286,7 +1295,7 @@ static void do_setm(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-     int rd = mops_destreg(syndrome);
-     int rs = mops_srcreg(syndrome);
-     int rn = mops_sizereg(syndrome);
--    uint8_t data = env->xregs[rs];
-+    uint8_t data = arm_reg_or_xzr(env, rs);
-     uint64_t toaddr = env->xregs[rd] + env->xregs[rn];
-     uint64_t setsize = -env->xregs[rn];
-     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
-@@ -1349,7 +1358,7 @@ static void do_sete(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-     int rd = mops_destreg(syndrome);
-     int rs = mops_srcreg(syndrome);
-     int rn = mops_sizereg(syndrome);
--    uint8_t data = env->xregs[rs];
-+    uint8_t data = arm_reg_or_xzr(env, rs);
-     uint64_t toaddr = env->xregs[rd] + env->xregs[rn];
-     uint64_t setsize = -env->xregs[rn];
-     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
++int main()
++{
++    int err = 0;
++
++    for (int i = 16; i <= 256; i += 16) {
++        if (prctl(PR_SVE_SET_VL, i, 0, 0, 0, 0) == i) {
++            err |= test(i);
++        }
++    }
++    return err;
++}
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 0c84b61ae0e..cded1d01fcd 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -103,7 +103,11 @@ sha512-sve: CFLAGS=-O3 -march=armv8.1-a+sve
+ sha512-sve: sha512.c
+ 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+ 
+-TESTS += sha512-sve
++sve-str: CFLAGS=-O1 -march=armv8.1-a+sve
++sve-str: sve-str.c
++	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
++
++TESTS += sha512-sve sve-str
+ 
+ ifneq ($(GDB),)
+ GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
 -- 
 2.34.1
 
