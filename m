@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4DB7DEA43
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 903217DEA52
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:44:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMeP-0006K6-Om; Wed, 01 Nov 2023 21:37:37 -0400
+	id 1qyMeT-0006aR-Eh; Wed, 01 Nov 2023 21:37:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMeG-0005xd-JV
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:28 -0400
+ id 1qyMeJ-0006BA-GG
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:32 -0400
 Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMeE-0004IH-Vm
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:28 -0400
+ id 1qyMeF-0004IQ-Tf
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:30 -0400
 Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6ba54c3ed97so493501b3a.2
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:37:26 -0700 (PDT)
+ d2e1a72fcca58-6c0f14d6875so475586b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:37:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698889045; x=1699493845; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698889046; x=1699493846; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M7+4SBqNUCdb83UyaUX4TiYteHeHosFCPYbW+VU+89Y=;
- b=sBOWiJ2GnrUePOmASQ6Xa3iFuugnWMczNPDwjwyqQWEgjE2Uveu1sKrGzbDFUDh2O9
- xIWLI0m+HUONXIIlFDQKW89k9r2O8w0FX6TLkP5R+Xgw0z9U5jHkHRwSjmSMjOq5gbtU
- jwEWAYhR1WOZMbSUvfuPmF1lLglH3rzK6VJSSnL4uwimIOgSU7QZEKcu1Skiiny5QeSe
- rvPXXxpZN5ViRyOqFywkWb6oWOgvzJopqT6pnFIvg68uHvG53T0fDXgdZ0JJU32vydi8
- J2epGxPuHu2MXjjRI7d6KIlHruY4KWNKT+0dYwRGJ7OkCftbN4051zDWSdDIX/Zixnr3
- rYXA==
+ bh=l8fr3+CRJQ2fSyTIfaR9JmF1licLAR+9v7s8wM6sbYc=;
+ b=qocJiGYF7GrzYxqW/Q/7plufTCnRFgIbK05yjToCR48tBsXgn69AZ9rmqqkoI7dhWJ
+ eLLJ/noslY9BBrw0ZcznObQCaX0oULayWREKo2YWucSFJ6oRVw/lIXiUuvzXZIXJg270
+ o4nDBgtOHyELybFEceNWyTcG2fY1B+g7nTLV3OauZQKmkdirGV9TT9JOkZ9cYnL+psSj
+ p4wiX/CVuJ+iqFweKbkCWQYMoRXQuvJMW2zyXYPtfv9uM38D21LxXLTidFOeWPKcVVJr
+ js8QDmt+zW2cv2w8AVa4MDH/GqAbVrkJxdL+VBeznnb2i0BXf0L+PY/xp0+KkDVfNKIb
+ HtbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698889045; x=1699493845;
+ d=1e100.net; s=20230601; t=1698889046; x=1699493846;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M7+4SBqNUCdb83UyaUX4TiYteHeHosFCPYbW+VU+89Y=;
- b=OSaIsyZlACIDpIiiF3VYDCSSNvWMVVq9pBboWDQhhz3H8dDp+rvDTnYWKudJFZbI9f
- pkDiVSYxWeFMKiR51Bwo4/iBr/mcr4vZhqjqIN5JVsVYgBLWY8V3eN+NIDqvHRSR2uy1
- XzI/ZAz6CyqY/87jmTQkTuQOB05+KVxOyfwVxYI8pqdwzbEb0R6VhkLE3AvpB75AXl7z
- e60hI/cAPHH9zrml8vfedHrDQeh9rHKt4s15EHymP8038DCtZltLpqL1w2Jn8zxewJ25
- OJvqs9xqaWW7ImLb5AaGhBz28Rm0/yQk/lyzIHuelbyulJm2QeI/1/B5R/Of7CD/BKI2
- bTvA==
-X-Gm-Message-State: AOJu0Yzrsmyvo6PTZsEoZcxeV5q4WGLPUBHBWjqHLUsQ8AY7vtOMJoIx
- SCQTiItqdDByOXlHzs03IFde6i7I8Zb3kLWnxZY=
-X-Google-Smtp-Source: AGHT+IEuDoHy4nQ6MDU5KNuT2lAxSS/eAir0t5Ft/8bRwUq+vfx9gN8EzQdwlWk0eOFDNV3DAjomTw==
-X-Received: by 2002:a05:6a21:27a4:b0:170:3e5b:bccd with SMTP id
- rn36-20020a056a2127a400b001703e5bbccdmr14877986pzb.30.1698889045602; 
- Wed, 01 Nov 2023 18:37:25 -0700 (PDT)
+ bh=l8fr3+CRJQ2fSyTIfaR9JmF1licLAR+9v7s8wM6sbYc=;
+ b=Q4ut4iF7BCzVXDLhUED72uhSY5FOtJVpaVEzlxjYjaqkoYIP3ryEcF7ZkW5K7KfFll
+ C5FA8yaARebgiKXNdxtdSoFldKUrzingZ41eIDIScLZAo/+RJuJ9s+xah5uIM0L2641/
+ G7MrBKi9HrX+Ik2n4gqFKeeFD0vkzArxiNINP35hXVZ16cmIvnhr6qVYxYRbgkQoM5nv
+ Bo7GnvF1I0sqfciKevhVMS304nN+YT6SiT/yaVKDKz631bg1FGLZxu0kTSrgMAafkv/c
+ 8mXQqyXgDQJzbikKuSXZziue4ToyaJ3/triNzELDbZ+91HxZQCVbbNnxcmHMzCg29kvU
+ szcw==
+X-Gm-Message-State: AOJu0YxAfKLmkuZCFiI0hbBef8hV3czlwh6UUh5eMpern9aSwhxouOGX
+ gseRTrgSquMLmXWYQNDis3XKZUdKBb5GYqU9b4w=
+X-Google-Smtp-Source: AGHT+IFd3KaPriYjQVHvfkfUg6bzz1On7CBy8y1guR2YVoQONoXcKg558qHaY6Ow5UmJ7yOOPpy8NA==
+X-Received: by 2002:a05:6a00:cd1:b0:6c0:1096:e7d3 with SMTP id
+ b17-20020a056a000cd100b006c01096e7d3mr16849331pfv.18.1698889046413; 
+ Wed, 01 Nov 2023 18:37:26 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  v20-20020aa78514000000b006934e7ceb79sm1800230pfn.32.2023.11.01.18.37.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:37:25 -0700 (PDT)
+ Wed, 01 Nov 2023 18:37:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 80/88] target/hppa: Add unwind_breg to CPUHPPAState
-Date: Wed,  1 Nov 2023 18:30:08 -0700
-Message-Id: <20231102013016.369010-81-richard.henderson@linaro.org>
+Subject: [PATCH v3 81/88] target/hppa: Create raise_exception_with_ior
+Date: Wed,  1 Nov 2023 18:30:09 -0700
+Message-Id: <20231102013016.369010-82-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
@@ -90,100 +90,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fill in the insn_start value during form_gva, and copy
-it out to the env field in hppa_restore_state_to_opc.
-The value is not yet consumed.
+Handle pa2.0 logic for filling in ISR+IOR.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h       |  8 +++++++-
- target/hppa/cpu.c       |  1 +
- target/hppa/translate.c | 13 ++++++++++++-
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ target/hppa/mem_helper.c | 64 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 51 insertions(+), 13 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index ea8e7e99a4..144794d089 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -45,7 +45,7 @@
- #define MMU_IDX_TO_P(MIDX)          (((MIDX) - MMU_KERNEL_IDX) & 1)
- #define PRIV_P_TO_MMU_IDX(PRIV, P)  ((PRIV) * 2 + !!(P) + MMU_KERNEL_IDX)
- 
--#define TARGET_INSN_START_EXTRA_WORDS 1
-+#define TARGET_INSN_START_EXTRA_WORDS 2
- 
- /* No need to flush MMU_PHYS_IDX  */
- #define HPPA_MMU_FLUSH_MASK                             \
-@@ -208,6 +208,12 @@ typedef struct CPUArchState {
-     target_ulong cr_back[2]; /* back of cr17/cr18 */
-     target_ulong shadow[7];  /* shadow registers */
- 
-+    /*
-+     * During unwind of a memory insn, the base register of the address.
-+     * This is used to construct CR_IOR for pa2.0.
-+     */
-+    uint32_t unwind_breg;
-+
-     /*
-      * ??? The number of entries isn't specified by the architecture.
-      * BTLBs are not supported in 64-bit machines.
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index e1597ba8a5..04de1689d7 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -80,6 +80,7 @@ static void hppa_restore_state_to_opc(CPUState *cs,
-     if (data[1] != (target_ulong)-1) {
-         cpu->env.iaoq_b = data[1];
-     }
-+    cpu->env.unwind_breg = data[2];
-     /*
-      * Since we were executing the instruction at IAOQ_F, and took some
-      * sort of action that provoked the cpu_restore_state, we can infer
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index f7621590e4..27846f5ad8 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -44,6 +44,7 @@ typedef struct DisasCond {
- typedef struct DisasContext {
-     DisasContextBase base;
-     CPUState *cs;
-+    TCGOp *insn_start;
- 
-     uint64_t iaoq_f;
-     uint64_t iaoq_b;
-@@ -234,6 +235,13 @@ void hppa_translate_init(void)
-                                         "iasq_b");
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 602e6c809f..858ce6ec7f 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -289,6 +289,53 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     return excp == EXCP_DTLB_MISS ? -1 : phys;
  }
  
-+static void set_insn_breg(DisasContext *ctx, int breg)
++G_NORETURN static void
++raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
++                         vaddr addr, bool mmu_disabled)
 +{
-+    assert(ctx->insn_start != NULL);
-+    tcg_set_insn_start_param(ctx->insn_start, 2, breg);
-+    ctx->insn_start = NULL;
++    CPUState *cs = env_cpu(env);
++
++    cs->exception_index = excp;
++
++    if (env->psw & PSW_Q) {
++        /*
++         * For pa1.x, the offset and space never overlap, and so we
++         * simply extract the high and low part of the virtual address.
++         *
++         * For pa2.0, the formation of these are described in section
++         * "Interruption Parameter Registers", page 2-15.
++         */
++        env->cr[CR_IOR] = (uint32_t)addr;
++        env->cr[CR_ISR] = addr >> 32;
++
++        if (hppa_is_pa20(env)) {
++            if (mmu_disabled) {
++                /*
++                 * If data translation was disabled, the ISR contains
++                 * the upper portion of the abs address, zero-extended.
++                 */
++                env->cr[CR_ISR] &= 0x3fffffff;
++            } else {
++                /*
++                 * If data translation was enabled, the upper two bits
++                 * of the IOR (the b field) are equal to the two space
++                 * bits from the base register used to form the gva.
++                 */
++                uint64_t b;
++
++                cpu_restore_state(cs, retaddr);
++
++                b = env->gr[env->unwind_breg];
++                b >>= (env->psw & PSW_W ? 62 : 30);
++                env->cr[CR_IOR] |= b << 62;
++
++                cpu_loop_exit(cs);
++            }
++        }
++    }
++    cpu_loop_exit_restore(cs, retaddr);
 +}
 +
- static DisasCond cond_make_f(void)
- {
-     return (DisasCond){
-@@ -1324,6 +1332,8 @@ static void form_gva(DisasContext *ctx, TCGv_i64 *pgva, TCGv_i64 *pofs,
-     TCGv_i64 ofs;
-     TCGv_i64 addr;
- 
-+    set_insn_breg(ctx, rb);
+ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+                        MMUAccessType type, int mmu_idx,
+                        bool probe, uintptr_t retaddr)
+@@ -318,14 +365,10 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+             return false;
+         }
+         trace_hppa_tlb_fill_excp(env, addr, size, type, mmu_idx);
 +
-     /* Note that RX is mutually exclusive with DISP.  */
-     if (rx) {
-         ofs = tcg_temp_new_i64();
-@@ -4455,7 +4465,8 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+         /* Failure.  Raise the indicated exception.  */
+-        cs->exception_index = excp;
+-        if (cpu->env.psw & PSW_Q) {
+-            /* ??? Needs tweaking for hppa64.  */
+-            cpu->env.cr[CR_IOR] = addr;
+-            cpu->env.cr[CR_ISR] = addr >> 32;
+-        }
+-        cpu_loop_exit_restore(cs, retaddr);
++        raise_exception_with_ior(env, excp, retaddr,
++                                 addr, mmu_idx == MMU_PHYS_IDX);
+     }
  
--    tcg_gen_insn_start(ctx->iaoq_f, ctx->iaoq_b);
-+    tcg_gen_insn_start(ctx->iaoq_f, ctx->iaoq_b, 0);
-+    ctx->insn_start = tcg_last_op();
- }
- 
- static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     trace_hppa_tlb_fill_success(env, addr & TARGET_PAGE_MASK,
+@@ -553,16 +596,11 @@ target_ulong HELPER(lpa)(CPUHPPAState *env, target_ulong addr)
+     excp = hppa_get_physical_address(env, addr, MMU_KERNEL_IDX, 0,
+                                      &phys, &prot, NULL);
+     if (excp >= 0) {
+-        if (env->psw & PSW_Q) {
+-            /* ??? Needs tweaking for hppa64.  */
+-            env->cr[CR_IOR] = addr;
+-            env->cr[CR_ISR] = addr >> 32;
+-        }
+         if (excp == EXCP_DTLB_MISS) {
+             excp = EXCP_NA_DTLB_MISS;
+         }
+         trace_hppa_tlb_lpa_failed(env, addr);
+-        hppa_dynamic_excp(env, excp, GETPC());
++        raise_exception_with_ior(env, excp, GETPC(), addr, false);
+     }
+     trace_hppa_tlb_lpa_success(env, addr, phys);
+     return phys;
 -- 
 2.34.1
 
