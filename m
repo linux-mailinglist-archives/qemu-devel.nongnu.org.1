@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292437DF90B
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:44:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61ADC7DF8E1
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:40:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybfW-0003vI-BF; Thu, 02 Nov 2023 13:39:50 -0400
+	id 1qybes-0003N5-Aj; Thu, 02 Nov 2023 13:39:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybec-0003Cx-6p
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:50 -0400
+ id 1qybed-0003Eg-FL
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:51 -0400
 Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeY-0002jQ-PR
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:49 -0400
+ id 1qybeY-0002jZ-SA
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:51 -0400
 Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40790b0a224so9545565e9.0
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:45 -0700 (PDT)
+ 5b1f17b1804b1-40853c639abso8954725e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698946725; x=1699551525; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LqJpZDE/iTKqMgJkXz9zHkvEVRtZ8ol0kkFTVeB0qSA=;
- b=Jf7gvPzJkiaCUGfhwAEfYBT6RGPd8n+SqNTS9k8PVJUisYVunVAnTFsi9UY16OgDsv
- hlzOiw7JowZlGn0U2EFFYR/TYoYcoZGUmfxWD3eiwGqWGYJBdwHg4ldHZ9Fah3MJn20C
- JD+2unIXRmPmeH8HOr72MczWzyv3wc3RlT3FYsfsTtDzZa3by5cXgYhiAIifp+SmiDBF
- eFeqgmF98pN8FMIzyFkeaTnTy2H1PxRmgl+AQbZr9FL9sLiSEHaptyN0i0CRQz4M/yJ2
- QIAdStJ6+sfddWqELQywRDTzu3zlHnb+A42TxHENR5uBn9OcVxZT0GzCEig9EzXrthTI
- 5jYw==
+ :reply-to; bh=E2aA9Ap+poLvHcptWhfJUzZe/Ew9suv4NHGXesXSWP0=;
+ b=gKfoSO/uksXTd5U+zAGzh60uMQE72tXBl+aIzJof3UiVb3yniXwISP+c70HdFGWZfK
+ MAWiPBWCfcAlwA3pzia5lVYJY57sLxE0z84P4AGKYTtjXMhVgCqEQcr7DLxPrurV70m7
+ uMV5y1v5FZi/5p0LQzlqQIfPaBcq4NGBSZZ0FRvkp5z7pPapRSxoz3GwbvdYCj28KjmJ
+ 6LXGDLjiFyDW9x+ppKKST0Wrd5hYewOfYEjE8P4C2fykReH4DhYQkwCHXqk8/6IFWGwL
+ L9zzRk7332DjSU/rFZmwsxSgaIGqbhoDSzConez+FOv4EI/g3UtUiNvDttg5rmNk8CbT
+ EOZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698946725; x=1699551525;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LqJpZDE/iTKqMgJkXz9zHkvEVRtZ8ol0kkFTVeB0qSA=;
- b=Cax4o8jKKwDYw+77QTyBi3uLoMhInhh1pfsqQGiYUHrDRd0lVV2/OigP26ENtcK/g6
- Es3Q6vOhslgHes/GWWWmY1IClHDNn0P5f6sAgOeufIRtAReeuCjQLgUIb224HZsNTTFm
- 9aRJT2mXtZjpHfRWSX6Hn0+tRPe882CkYtV5jnPq1K2+u8kib3unMyiVr+CaEdQzdbKw
- MLzlpR8pxWtERBvUgAeOZu8ceKQcaUeG5YspC7HDwSof2pgOzEd5BxtbhRLq2Fzjqndx
- yvqQU4wQWwLm0SgcDampHKsOs4L66OMOGagIJpIv4KYx+eyq3se01+gNQy12DbwSvVnr
- /7tw==
-X-Gm-Message-State: AOJu0YwVUw3xNuLpFoWecEZ1hxlRqM+7gyMRIYBnmzDKTmj0pA1ZNZlD
- KMTxMMeeGEtiGtGnd0Ftw0qxlfUGqhLAo2TLKXQ=
-X-Google-Smtp-Source: AGHT+IGMjbZhMWm0i66xMiKPYJsnkzVsWpZcmjHOih9+wbs7qvaORgFZDGQz9xHuD2A9U7BbnD51uw==
-X-Received: by 2002:a05:6000:1445:b0:32f:7a07:be07 with SMTP id
- v5-20020a056000144500b0032f7a07be07mr15668891wrx.17.1698946724884; 
- Thu, 02 Nov 2023 10:38:44 -0700 (PDT)
+ bh=E2aA9Ap+poLvHcptWhfJUzZe/Ew9suv4NHGXesXSWP0=;
+ b=L4/nUIohjWLIEa8GVyClXut4n03mDT4uL+o87xhN44nWvEi8WIQYr6fTe7NMPuX1XX
+ duyZC48cyvY9/0TKMjZQVh50RGfgSFeUjTSjdyFYDoJBBuCOiYzk31JjIFyK5l+2DY4I
+ pil+iuIEf8C+NeMnm4QKyywlPYqY4iIFLJOvv9zyGbRBb9OdWtX22h9eoqAuhENcAsPL
+ Ke01ENNNWk8DYzB3f1TCwL1xkgVNCWU8mwdblBJio01s1PXoK9NRiY2Nk7MoBOdDRMLc
+ a54mZxActu6fp0Fg5qGSK7vynnn/ztrP0P6RBxFu6ZmEp5edAlwyM0Nc9TDWQryTIQYq
+ 6CZA==
+X-Gm-Message-State: AOJu0Yz4M9TxmpVdqaBwmho/Y2JIs6MATSnAe4Yo2yneNfRgSHC3aYGI
+ GyTwL2ngy9qpU87GaEmo87NUlxO7sttmvNp2ynE=
+X-Google-Smtp-Source: AGHT+IGcKk4SULxrm8e1429TNMiUDdF7uO4LaTBcgECfgcVzLvCa0OCXEPMUzXfewnPeP02jrALk4Q==
+X-Received: by 2002:adf:f6d0:0:b0:313:eb09:c029 with SMTP id
+ y16-20020adff6d0000000b00313eb09c029mr14404237wrp.43.1698946725356; 
+ Thu, 02 Nov 2023 10:38:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 10:38:44 -0700 (PDT)
+ Thu, 02 Nov 2023 10:38:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/33] docs/specs/virt-ctlr: Convert to rST
-Date: Thu,  2 Nov 2023 17:38:15 +0000
-Message-Id: <20231102173835.609985-14-peter.maydell@linaro.org>
+Subject: [PULL 14/33] docs/specs/vmcoreinfo: Convert to rST
+Date: Thu,  2 Nov 2023 17:38:16 +0000
+Message-Id: <20231102173835.609985-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
@@ -91,79 +91,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert docs/specs/virt-ctlr.txt to rST format.
-
-I added the name of the device to give readers a bit more idea
-of which device we're actually documenting here.
+Convert docs/specs/vmcoreinfo.txt to rST format.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230927151205.70930-7-peter.maydell@linaro.org
+Message-id: 20230927151205.70930-8-peter.maydell@linaro.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- MAINTAINERS                                 |  1 +
- docs/specs/index.rst                        |  1 +
- docs/specs/{virt-ctlr.txt => virt-ctlr.rst} | 12 +++++-------
- 3 files changed, 7 insertions(+), 7 deletions(-)
- rename docs/specs/{virt-ctlr.txt => virt-ctlr.rst} (70%)
+ MAINTAINERS               |  1 +
+ docs/specs/index.rst      |  1 +
+ docs/specs/vmcoreinfo.rst | 54 +++++++++++++++++++++++++++++++++++++++
+ docs/specs/vmcoreinfo.txt | 53 --------------------------------------
+ 4 files changed, 56 insertions(+), 53 deletions(-)
+ create mode 100644 docs/specs/vmcoreinfo.rst
+ delete mode 100644 docs/specs/vmcoreinfo.txt
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index b5e1765d7a6..11f3bdbfa78 100644
+index 11f3bdbfa78..6d654cc1277 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1283,6 +1283,7 @@ F: include/hw/char/goldfish_tty.h
- F: include/hw/intc/goldfish_pic.h
- F: include/hw/intc/m68k_irqc.h
- F: include/hw/misc/virt_ctrl.h
-+F: docs/specs/virt-ctlr.rst
+@@ -2884,6 +2884,7 @@ F: include/sysemu/dump.h
+ F: qapi/dump.json
+ F: scripts/dump-guest-memory.py
+ F: stubs/dump.c
++F: docs/specs/vmcoreinfo.rst
  
- MicroBlaze Machines
- -------------------
+ Error reporting
+ M: Markus Armbruster <armbru@redhat.com>
 diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index ee84b8109d6..8d30968650b 100644
+index 8d30968650b..7a56ccb2155 100644
 --- a/docs/specs/index.rst
 +++ b/docs/specs/index.rst
-@@ -29,3 +29,4 @@ guest hardware that is specific to QEMU.
-    ivshmem-spec
+@@ -30,3 +30,4 @@ guest hardware that is specific to QEMU.
     pvpanic
     standard-vga
-+   virt-ctlr
-diff --git a/docs/specs/virt-ctlr.txt b/docs/specs/virt-ctlr.rst
-similarity index 70%
-rename from docs/specs/virt-ctlr.txt
-rename to docs/specs/virt-ctlr.rst
-index 24d38084f7f..ad3edde82d2 100644
---- a/docs/specs/virt-ctlr.txt
-+++ b/docs/specs/virt-ctlr.rst
-@@ -1,9 +1,9 @@
- Virtual System Controller
- =========================
- 
--This device is a simple interface defined for the pure virtual machine with no
--hardware reference implementation to allow the guest kernel to send command
--to the host hypervisor.
-+The ``virt-ctrl`` device is a simple interface defined for the pure
-+virtual machine with no hardware reference implementation to allow the
-+guest kernel to send command to the host hypervisor.
- 
- The specification can evolve, the current state is defined as below.
- 
-@@ -11,14 +11,12 @@ This is a MMIO mapped device using 256 bytes.
- 
- Two 32bit registers are defined:
- 
--1- the features register (read-only, address 0x00)
+    virt-ctlr
++   vmcoreinfo
+diff --git a/docs/specs/vmcoreinfo.rst b/docs/specs/vmcoreinfo.rst
+new file mode 100644
+index 00000000000..6541aa116f7
+--- /dev/null
++++ b/docs/specs/vmcoreinfo.rst
+@@ -0,0 +1,54 @@
++=================
++VMCoreInfo device
++=================
++
++The ``-device vmcoreinfo`` will create a ``fw_cfg`` entry for a guest to
++store dump details.
++
++``etc/vmcoreinfo``
++==================
++
++A guest may use this ``fw_cfg`` entry to add information details to QEMU
++dumps.
++
++The entry of 16 bytes has the following layout, in little-endian::
++
++    #define VMCOREINFO_FORMAT_NONE 0x0
++    #define VMCOREINFO_FORMAT_ELF 0x1
++
++    struct FWCfgVMCoreInfo {
++        uint16_t host_format;  /* formats host supports */
++        uint16_t guest_format; /* format guest supplies */
++        uint32_t size;         /* size of vmcoreinfo region */
++        uint64_t paddr;        /* physical address of vmcoreinfo region */
++    };
++
++Only full write (of 16 bytes) are considered valid for further
++processing of entry values.
++
++A write of 0 in ``guest_format`` will disable further processing of
++vmcoreinfo entry values & content.
++
++You may write a ``guest_format`` that is not supported by the host, in
++which case the entry data can be ignored by QEMU (but you may still
++access it through a debugger, via ``vmcoreinfo_realize::vmcoreinfo_state``).
++
++Format & content
++================
++
++As of QEMU 2.11, only ``VMCOREINFO_FORMAT_ELF`` is supported.
++
++The entry gives location and size of an ELF note that is appended in
++qemu dumps.
++
++The note format/class must be of the target bitness and the size must
++be less than 1Mb.
++
++If the ELF note name is ``VMCOREINFO``, it is expected to be the Linux
++vmcoreinfo note (see `the kernel documentation for its format
++<https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-kernel-vmcoreinfo>`_).
++In this case, qemu dump code will read the content
++as a key=value text file, looking for ``NUMBER(phys_base)`` key
++value. The value is expected to be more accurate than architecture
++guess of the value. This is useful for KASLR-enabled guest with
++ancient tools not handling the ``VMCOREINFO`` note.
+diff --git a/docs/specs/vmcoreinfo.txt b/docs/specs/vmcoreinfo.txt
+deleted file mode 100644
+index bcbca6fe47c..00000000000
+--- a/docs/specs/vmcoreinfo.txt
++++ /dev/null
+@@ -1,53 +0,0 @@
+-=================
+-VMCoreInfo device
+-=================
 -
-+the features register (read-only, address 0x00)
-    This register allows the device to report features supported by the
-    controller.
-    The only feature supported for the moment is power control (0x01).
- 
--2- the command register (write-only, address 0x04)
+-The `-device vmcoreinfo` will create a fw_cfg entry for a guest to
+-store dump details.
 -
-+the command register (write-only, address 0x04)
-    This register allows the kernel to send the commands to the hypervisor.
-    The implemented commands are part of the power control feature and
-    are reset (1), halt (2) and panic (3).
+-etc/vmcoreinfo
+-**************
+-
+-A guest may use this fw_cfg entry to add information details to qemu
+-dumps.
+-
+-The entry of 16 bytes has the following layout, in little-endian::
+-
+-#define VMCOREINFO_FORMAT_NONE 0x0
+-#define VMCOREINFO_FORMAT_ELF 0x1
+-
+-    struct FWCfgVMCoreInfo {
+-        uint16_t host_format;  /* formats host supports */
+-        uint16_t guest_format; /* format guest supplies */
+-        uint32_t size;         /* size of vmcoreinfo region */
+-        uint64_t paddr;        /* physical address of vmcoreinfo region */
+-    };
+-
+-Only full write (of 16 bytes) are considered valid for further
+-processing of entry values.
+-
+-A write of 0 in guest_format will disable further processing of
+-vmcoreinfo entry values & content.
+-
+-You may write a guest_format that is not supported by the host, in
+-which case the entry data can be ignored by qemu (but you may still
+-access it through a debugger, via vmcoreinfo_realize::vmcoreinfo_state).
+-
+-Format & content
+-****************
+-
+-As of qemu 2.11, only VMCOREINFO_FORMAT_ELF is supported.
+-
+-The entry gives location and size of an ELF note that is appended in
+-qemu dumps.
+-
+-The note format/class must be of the target bitness and the size must
+-be less than 1Mb.
+-
+-If the ELF note name is "VMCOREINFO", it is expected to be the Linux
+-vmcoreinfo note (see Documentation/ABI/testing/sysfs-kernel-vmcoreinfo
+-in Linux source). In this case, qemu dump code will read the content
+-as a key=value text file, looking for "NUMBER(phys_base)" key
+-value. The value is expected to be more accurate than architecture
+-guess of the value. This is useful for KASLR-enabled guest with
+-ancient tools not handling the VMCOREINFO note.
 -- 
 2.34.1
 
