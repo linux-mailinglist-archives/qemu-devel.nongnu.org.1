@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44487DF4E1
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:25:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F347DF4E3
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:26:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyYcf-0004rO-Ap; Thu, 02 Nov 2023 10:24:37 -0400
+	id 1qyYda-0005U0-08; Thu, 02 Nov 2023 10:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qyYcd-0004rF-Ku
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:24:35 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qyYcb-0006Uj-MY
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:24:35 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-32d9d8284abso586540f8f.3
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 07:24:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698935072; x=1699539872; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yAFQGJDE/C23pdXk4N0KgItDy90QsCH+ABHO8StoC0w=;
- b=t0Lr83CdBBBDdGI11CoopvQZDIa+uJ5Fl+mhUM9s6J/cZDRHfGsun6avCnWZ/Gupaa
- 19wh1D6I4wlkaHB8yQURsol9DlIB+M3zrX8w9hrs2KqawaKETr/7H/F2GpKc6jMoTAu7
- +Inz5FDA+MwzE2pf+eytwvmGHATb7k5V7RNVs5xUNBJa5iC+Of7ryhzHWrAoGcuva/dm
- andKmYQ3e9QMon0/Dv3pi0Q7Hl0yAnppjpQcHatyr5iQ0NIpwNJ2K2OcBvZHyRCUkQdz
- H1dWiGu7/8mtym6tJ2LC4MAXqb49x+/5Rpw74hjL8vmxlFvOlW1IMBncNNh8HZEKDdhG
- 4TWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698935072; x=1699539872;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yAFQGJDE/C23pdXk4N0KgItDy90QsCH+ABHO8StoC0w=;
- b=ZuFbpakasXFIi1sUhTRK+IyvzSJfTjrq6XR812Jqg3Lus+ZghacY6pTKoD16M31Vp3
- /Pf7OegDf8oMaRhsxHo02GyiDpaTlUEeXiVODLhQLnbgOrAWTjPanFbVtczpXj/jmZa8
- qTKn7R9SV4cEeagIHcqT+IRyF2F4hxzSgO7M81tMIotiPuDDOi20mbsmMKqkhAJ3/jkZ
- yzdVrm+9Ltphc0TAqEKhHNbaZYlIH12wRkmoO/w0v9yi/i8SW/NiEy/NWgM8g4Ie41sa
- XVVd9+BpoJxIfNV+UTTHV79mL9QJri9TDMfBdFeJh/INSCRm1p86EoAtF8Z3JslsSFBR
- SEaA==
-X-Gm-Message-State: AOJu0YyTf2B3iiqAkmxnaJh5Y69CTMPipoH71BykG7FMmNnE79U5fL71
- riMK6ztdCqHEnhkjVY9zxZeKfw==
-X-Google-Smtp-Source: AGHT+IGiiKlVkYsgu6Oj2ngzUoeemO5D247iDWnP65sPaewo1PidxGKBzXqMOUfX0JNQB49bZYbNmw==
-X-Received: by 2002:a05:6000:1569:b0:32f:7bee:f300 with SMTP id
- 9-20020a056000156900b0032f7beef300mr15634586wrz.4.1698935071795; 
- Thu, 02 Nov 2023 07:24:31 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o15-20020a5d58cf000000b0032db1d741a6sm2602150wrf.99.2023.11.02.07.24.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 07:24:31 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E4E20656E4;
- Thu,  2 Nov 2023 14:24:30 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Greg Manning <gmanning@rapitasystems.com>
-Cc: qemu-devel@nongnu.org,   luoyonggang@gmail.com,
- richard.henderson@linaro.org, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 0/1] Enable plugin support for windows
-In-Reply-To: <20231102110016.9494-1-gmanning@rapitasystems.com> (Greg
- Manning's message of "Thu, 2 Nov 2023 10:59:41 +0000")
-User-Agent: mu4e 1.11.23; emacs 29.1
-Date: Thu, 02 Nov 2023 14:24:30 +0000
-Message-ID: <87msvw44ip.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyYdY-0005Sw-3f
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:25:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyYdW-0006qW-7l
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:25:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698935128;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZruysNYiW5kjOO84rQGiRez4WN8ZN6SUOBtXT+edmxE=;
+ b=fjQDa+sqtpHHbuPKpZuNSgvjQUW6ZhtMTbi8v5IjAZyjsmChrzvAL9G7/qmtoYY9K0StOU
+ uGIkr7k1kxuRYQoYDEKQEel3RPVdwTMRQ7McWDV4bq4uQQ9hy/eJwYhiGaah5eTAHUKEZa
+ 9YholEc4P9DDloMkWDpYC1/uPISuRkE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-lxJkK8pcOJOlCXF8a-ZtfQ-1; Thu, 02 Nov 2023 10:25:26 -0400
+X-MC-Unique: lxJkK8pcOJOlCXF8a-ZtfQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4BBAF101A53B;
+ Thu,  2 Nov 2023 14:25:26 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D1BC25C0;
+ Thu,  2 Nov 2023 14:25:26 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 170C021E6A1F; Thu,  2 Nov 2023 15:25:25 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>,  qemu-devel@nongnu.org,  Fabiano Rosas
+ <farosas@suse.de>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
+ <thuth@redhat.com>
+Subject: Configuring migration (was: [PATCH v3 3/4] migration/qapi: Replace
+ @MigrateSetParameters with @MigrationParameters)
+References: <20230905162335.235619-1-peterx@redhat.com>
+ <20230905162335.235619-4-peterx@redhat.com>
+ <87fs30is78.fsf@pond.sub.org> <ZRsff7Lmy7TnggK9@x1n>
+ <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
+ <878r8ajngg.fsf@pond.sub.org> <ZSWvYgKcGXlucXx6@x1n>
+ <875y3dixzp.fsf@pond.sub.org> <8734yhgrzl.fsf@pond.sub.org>
+ <ZShI4AucDGvUvJiS@x1n> <877cnrjd71.fsf@pond.sub.org>
+ <87zfzz82xq.fsf@secure.mitica>
+Date: Thu, 02 Nov 2023 15:25:25 +0100
+In-Reply-To: <87zfzz82xq.fsf@secure.mitica> (Juan Quintela's message of "Tue, 
+ 31 Oct 2023 12:08:17 +0100")
+Message-ID: <87msvw6xm2.fsf_-_@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,109 +92,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Juan Quintela <quintela@redhat.com> writes:
 
-(Add Paolo to cc for meson questions)
-
-Greg Manning <gmanning@rapitasystems.com> writes:
-
-> This patch enables plugin support on windows.
+> Markus Armbruster <armbru@redhat.com> wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>>
+>>> On Wed, Oct 11, 2023 at 04:21:02PM +0200, Markus Armbruster wrote:
 >
-> qemu plugins on windows now correctly load/link the qemu_plugin_*
-> symbols when they are loaded[1]. This works by creating a delay-loaded
-> .lib file with dlltool[2], then linking the plugins against that to get
-> them compiled. No messing around with function pointers required.
+>>> IIRC both of them used to be the goals: either allow compat properties for
+>>> old machine types, or specify migration parameters in cmdline for easier
+>>> debugging and tests.  I use "-global" in mostly every migration test script
+>>> after it's introduced.
+>>
+>> You use -global just because it's easier than using monitor commands,
+>> correct?
 >
-> The .lib file is created with "qemu.exe" as the name of the DLL.
-> The only input to the creation of the .lib file is a list of
-> qemu_plugin_* api symbol names.
+> It is long history.  But to make things easier I will try to resume.
+> In the beggining there was no "defer" method, so it was imposible to
+> setup migration-channels and that kind of information.
+> So we created that -global migration properties.
 >
-> When the DLL is being loaded, it will fail to find qemu.exe[3], but
-> the windows linker has a 'dll loading failed' hook you can put in the
-> plugin.
+> Time pass, and we need to fix that for real, because more and more
+> migration parameters need to be set bofer we start incoming migration.
+> So we create migration "defer" method.  And now we can set things from
+> the command line/QMP.
 >
-> I've implemented this hook to check if the file that's failed to load is
-> 'qemu.exe', and if so, substitute in a handle to the top-level
-> executable. Symbol linking then continues in the normal way.
+> But when one is testing (i.e. migration developers), using the global
+> property is much easier.
 >
-> As such, windows plugins work for me, and with minimal change to actual
-> qemu code.
+> I am always tempted to modify the monitor command line to allow "read
+> the commands from this file at startup".
+>
+>> Configuration is almost entirely special (own QMP commands for
+>> everything), with a little abuse of general infrastructure stirred in
+>> (-global, compat props).  Having capabilities in addition to parameters
+>> is a useless complication.  Too many features of questionable utility
+>> with way too many configuration knobs.
+>
+> I also remember that one.
+> In the beggining all migration options were bools.  So we have named
+> capabilities.  At some point we needed parameters that were not bools,
+> so we had to get the parameters thing because all the migration code
+> supposed that the capabilities were bool.
+>
+> No, I am not defending the choices we made at the time, but that is how
+> it happened.
 
-Excellent work - I'm glad you can make it work without having to hack
-the rest of the plugins too much. I'm afraid I can't do much to test
-this but overall I'm much happier to merge this.
+Decisions that make sense at the time can stop making sense later.
 
-However can we split the patches into slightly smaller chunks. Maybe
-something like:
+>               To be fair, when I have a new "bool" to add to migration,
+> I am never sure if I have to add it as a capability or as a parameter
+> that returns bool.
 
-  - add the QEMU_PLUGIN_API annotations
-  - introduce the windows linker bits
-  - filter the plugins that can't be built for windows
-  - flip the switch in configure to allow plugins to be built on Windows
+I'd be unsure, too.
 
-Also what are we going to do for testing? Most qemu developers are using
-POSIX systems so I'm worried about support bit rotting. We do have some
-windows coverage in CI but currently only running qtest. There are some
-"make check-tcg" tests which are softmmu but I suspect getting the
-cross-compilers on windows would be a blocker. Do we know the state of
-the avocado tests? We have some minimal testing there which could be
-extended as all you need is avocado working and some binary images to
-run. I've just posted a patch to update them:
 
-  Message-Id: <20231101135004.1572916-1-alex.bennee@linaro.org>
-  Date: Wed,  1 Nov 2023 13:50:03 +0000
-  Subject: [RFC PATCH] tests/avocado: update the tcg_plugins test
-  From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
+Migration has its own idiosyncratic configuration interface, even though
+its configuration needs are not special at all.  This is due to a long
+history of decisions that made sense at the time.
 
-> [1]: Except lockstep, which uses unix sockets. It could be changed to
->      use another communication mechanism, but that felt outside what I'm
->      trying to achieve here.
->
-> [2]: This would be the first use of dlltool in qemu. Is that OK? do we
->      need anything in meson to check it exists?
+What kind of interface would we choose if we could start over now?
 
-Paolo any comments on the meson bits?
+Let's have a look at what I consider the two most complex piece of
+configuration to date, namely block backends and QOM objects.
 
->
-> [3]: If qemu moved to a single executable model, and we got the name
->      right when creating the .lib, then the dll hook would not be
->      needed at all.
->
-> Limitations/things I'm worried about
->
-> * There is some amount of meson/Makefile tweaking going on here, and
->   while what I've got works for me, I'm not very familiar with meson,
->   and might not be doing things The Right Way.
->
-> * plugin/FFI bindings authors would have to copy this hook themselves,
->   or implement something equivalent. Also they need the
->   qemu_plugin_api.lib file, which I think I've added to the set of
->   installed files.
->
-> * License for win32_linker.c - I'm happy to put this under whatever
->   license seems most convenient. Given qemu-plugin.h is already GPL,
->   all plugins will be GPL anyway.
+In both cases, configuration is a QAPI object type: BlockdevOptions and
+ObjectOptions.
 
-While there may be private downstream plugins being used behind closed
-doors we very much don't want to encourage binary only plugins so GPL is
-fine.
+The common members are the configuration common to all block backends /
+objects.  One of them is the type of block backend ("driver" in block
+parlance) or QOM object ("qom-type").
 
-> Greg Manning (1):
->   plugins: enable plugins for windows
->
->  configure                      |  9 ++----
->  contrib/plugins/Makefile       | 27 ++++++++++++++++--
->  contrib/plugins/win32_linker.c | 34 +++++++++++++++++++++++
->  include/qemu/qemu-plugin.h     | 50 ++++++++++++++++++++++++++++++++--
->  meson.build                    |  5 ++++
->  plugins/meson.build            | 17 ++++++++++++
->  tests/plugin/meson.build       | 14 ++++++++--
->  7 files changed, 141 insertions(+), 15 deletions(-)
->  create mode 100644 contrib/plugins/win32_linker.c
->
-> --
-> 2.42.0
+A type's variant members are the configuration specific to that type.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+This is suitably expressive.
+
+We create a state object for a given configuration object with
+blockdev-add / object-add.
+
+For block devices, we even have a way to modify a state object's
+configuration: blockdev-reopen.  For QOM objects, there's qom-set, but I
+don't expect that to work in the general case.  Where "not work" can
+range from "does nothing" to "explodes".
+
+Now let's try to apply this to migration.
+
+As long as we can have just one migration, we need just one QAPI object
+to configure it.
+
+We could create the object with -object / object_add.  For convenience,
+we'd probably want to create one with default configuration
+automatically on demand.
+
+We could use qom-set to change configuration.  If we're not comfortable
+with using qom-set for production, we could do something like
+blockdev-reopen instead.
+
+
+Could we move towards such a design?  Turn the existing ad hoc interface
+into compatibility sugar for it?
+
 
