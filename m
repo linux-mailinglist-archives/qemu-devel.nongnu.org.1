@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982717DEA2B
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD8B7DEA26
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:36:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMbz-0007JS-Jq; Wed, 01 Nov 2023 21:35:07 -0400
+	id 1qyMbS-0006ea-Sl; Wed, 01 Nov 2023 21:34:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMb1-0006Qv-8R
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:07 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qyMb2-0006Rg-K0
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:09 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMaz-0001wc-Oh
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:07 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1cc2f17ab26so3324855ad.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:34:05 -0700 (PDT)
+ id 1qyMb0-0001wn-Hy
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:08 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-5bcf83a8f6cso299972a12.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698888844; x=1699493644; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698888845; x=1699493645; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZCnWYkK+U1pZwjN+BpVp2KIVyq7cUxKa4TKDY4mlg8c=;
- b=WSMzlmBFWbaTNiHJpJ7az+9GYY/XDjW1VJR3IywlMO9hFRs4rVocdD9rxw9CfZn3f6
- 1OwYYnYKkMzALn9ZNzR93zVBkQTH/9tGiKdEH3bzXzQeQ3VJ5pSKDxzdWmjGS6IhAlOd
- Xaqk1awhB1Rf0rQltculmD39bmwf30M3VYgveCmGHSfwFfyts31kKTkHBhirB+wN15df
- C7pk6Lddbj536sAucBIGkUeb4BVQFDadxtygUqDRR8Xp2YOw3V0WioH8jaeGiWqAIKkU
- Rgr1Jy6VPSVVNGi68FswAKPcIbYcudOsx+vIn8hwxy4b0gc0DWlBmGspt1EXq/IWFq/S
- rPZw==
+ bh=9RvtTlFNNWCEOZgJIZtJEKBeoV+IetUrnsa+fT4YgGk=;
+ b=TvyS/dMdNiQYnw7n9clcsABTnmGpSy4V68GRwHNT5WrF3CS5fr5Lhipa1IGX9AJvFV
+ N3oJD1kIXRkc8hl5rwnMfGsOonUU/HX4ikXyl8G6+xtIzQgfIoqnCYCvO37K+71ibO6c
+ xc4FBNarzCjg2/5UyuUvOYb2JfgFCqPWxFZGNmJYFtZTR50qG2lYiy77100shTG9DovY
+ VcTq7LqMPARJrXIRPfmc7TP20xRjg41DsxuSbTXjFRyatd8Z9N9qFXquJfHVMBZK4sv3
+ 7GHh9Rg6goWxWAzfMmjg4WDXA371J3T0lZCnYiebGAxuNl+M6CAn1OFNdu2JcG6sDEYv
+ bzHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698888844; x=1699493644;
+ d=1e100.net; s=20230601; t=1698888845; x=1699493645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZCnWYkK+U1pZwjN+BpVp2KIVyq7cUxKa4TKDY4mlg8c=;
- b=wwRlvduEq6pml9ErbtGSkq5NLmMUoQyRfeFWSjvus0h/6o6gnC5CU3H7aZR28HRLwx
- kxsCm8nHNj/AqZAQAiCUXTDFY7nqae3EDezhJ+rxTnazu2lBDX5KrOsVlj6/D3ZO7swT
- 1kQv3XjOLRTrgdV5A6RPph5WI3hyyPm4GQCQyHYSC++O9WJjiHduO/2im0mAfscPNqaK
- M6ZIC9IBq46OKmU+92oJK9rFkbgdHfPMIgGksa48T8RyKEpNi2Wgw9pOITX9/6EbBBk/
- 2aw/jONnlei13qeVAnnBTsUFSosuZM94hnK/AM9HQIzC8TYNI9l/j4UGAlzgI++lAdWE
- xF9w==
-X-Gm-Message-State: AOJu0YxXRySAzYwbvqMyjAR4pjaOGdjyLwnANxc0mf4rGNBb2XgMfuGj
- SJV5fsbtU5/dL36pJmPjp/aJfiRv+c3dYmTNXGc=
-X-Google-Smtp-Source: AGHT+IGdsr/5RGpe1U39yOJh8mNgnzRI5jYnoQLr3GXhGYiaAGQw/mASeHdgMOx3AwOYmubEqRyCvA==
-X-Received: by 2002:a17:902:e809:b0:1cc:6d2c:fb59 with SMTP id
- u9-20020a170902e80900b001cc6d2cfb59mr6171084plg.28.1698888844257; 
+ bh=9RvtTlFNNWCEOZgJIZtJEKBeoV+IetUrnsa+fT4YgGk=;
+ b=vua8YIkMlsOxl9NrIX37x4wjIEg6a+KIo4tE4DY7soOv3XFHgjSSUUJ/TDb8g/74ct
+ F1GtHLuN0ho3gxgE9ushWHw8P7OsYvTiFoZhwnfXpuUCT6xeZdynbOfzFFL59YJvUDnm
+ KgvxEC5hed2i4w5bpEw/VTVsCSgxuEkoKsqUFygizM8zVfbzklHSUETO0G+rOF+aLpwp
+ QaYmZqpPFkXga6TMHM0NgLKCywoPwsut9V8XLEFT+oc8OklWIrm34IdVbRz8ZnSbVxn7
+ eVqqJ2n2/9+DwgnyYSV7KQYUMv/U1xYDeNBIT+M/foSaPj2yoXKhiKNM3BGDoXpRNlIM
+ bvAw==
+X-Gm-Message-State: AOJu0YxfEU5mjlHMpr64FZMo4BE1WcFkDV3QJMkzYIQIaP66LtK4NNeS
+ O7/KToYntX1R94mqBKwm5u2lcdhPqhKR3prmcVU=
+X-Google-Smtp-Source: AGHT+IEMakaCyDrbMmZgmBYUeCGZtFPc/w+veunr1uLxtVy6LE6qW7kv7ZozZEG2TZ+tRpsW9H4/lA==
+X-Received: by 2002:a05:6a20:3d82:b0:17b:689e:c751 with SMTP id
+ s2-20020a056a203d8200b0017b689ec751mr15609338pzi.5.1698888844915; 
  Wed, 01 Nov 2023 18:34:04 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- t2-20020a1709027fc200b001a98f844e60sm1918125plb.263.2023.11.01.18.34.03
+ t2-20020a1709027fc200b001a98f844e60sm1918125plb.263.2023.11.01.18.34.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:34:03 -0700 (PDT)
+ Wed, 01 Nov 2023 18:34:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 53/88] target/hppa: Implement CLRBTS, POPBTS, PUSHBTS,
- PUSHNOM
-Date: Wed,  1 Nov 2023 18:29:41 -0700
-Message-Id: <20231102013016.369010-54-richard.henderson@linaro.org>
+Subject: [PATCH v3 54/88] target/hppa: Implement STDBY
+Date: Wed,  1 Nov 2023 18:29:42 -0700
+Message-Id: <20231102013016.369010-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,40 +92,315 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode | 2 ++
- target/hppa/translate.c  | 6 ++++++
- 2 files changed, 8 insertions(+)
+ target/hppa/helper.h     |   5 ++
+ target/hppa/insns.decode |   1 +
+ target/hppa/op_helper.c  | 178 +++++++++++++++++++++++++++++++++++++--
+ target/hppa/translate.c  |  31 +++++++
+ 4 files changed, 210 insertions(+), 5 deletions(-)
 
+diff --git a/target/hppa/helper.h b/target/hppa/helper.h
+index 647f043c85..9920d38ded 100644
+--- a/target/hppa/helper.h
++++ b/target/hppa/helper.h
+@@ -16,6 +16,11 @@ DEF_HELPER_FLAGS_3(stby_b_parallel, TCG_CALL_NO_WG, void, env, tl, tr)
+ DEF_HELPER_FLAGS_3(stby_e, TCG_CALL_NO_WG, void, env, tl, tr)
+ DEF_HELPER_FLAGS_3(stby_e_parallel, TCG_CALL_NO_WG, void, env, tl, tr)
+ 
++DEF_HELPER_FLAGS_3(stdby_b, TCG_CALL_NO_WG, void, env, tl, tr)
++DEF_HELPER_FLAGS_3(stdby_b_parallel, TCG_CALL_NO_WG, void, env, tl, tr)
++DEF_HELPER_FLAGS_3(stdby_e, TCG_CALL_NO_WG, void, env, tl, tr)
++DEF_HELPER_FLAGS_3(stdby_e_parallel, TCG_CALL_NO_WG, void, env, tl, tr)
++
+ DEF_HELPER_FLAGS_1(ldc_check, TCG_CALL_NO_RWG, void, tl)
+ 
+ DEF_HELPER_FLAGS_4(probe, TCG_CALL_NO_WG, tr, env, tl, i32, i32)
 diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 6f0c3f6ea5..ba7731b517 100644
+index ba7731b517..9d8c6a1a16 100644
 --- a/target/hppa/insns.decode
 +++ b/target/hppa/insns.decode
-@@ -381,6 +381,8 @@ bl              111010 ..... ..... 101 ........... n:1 .        &BL l=2 \
-                 disp=%assemble_22
- b_gate          111010 ..... ..... 001 ........... .   .        @bl
- blr             111010 l:5   x:5   010 00000000000 n:1 0
-+nopbts          111010 00000 00000 010 0---------1   0 1    # clrbts/popbts
-+nopbts          111010 00000 ----- 010 00000000000   0 1    # pushbts/pushnom
- bv              111010 b:5   x:5   110 00000000000 n:1 0
- bve             111010 b:5   00000 110 10000000000 n:1 -        l=0
- bve             111010 b:5   00000 111 10000000000 n:1 -        l=2
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 897b44d7e3..91249d89ca 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3782,6 +3782,12 @@ static bool trans_bve(DisasContext *ctx, arg_bve *a)
- #endif
+@@ -228,6 +228,7 @@ lda             000011 ..... ..... .. . 0 -- 0100      ......   @ldstx size=3
+ sta             000011 ..... ..... .. . 1 -- 1110      ......   @stim5 size=2
+ sta             000011 ..... ..... .. . 1 -- 1111      ......   @stim5 size=3
+ stby            000011 b:5 r:5 sp:2 a:1 1 -- 1100 m:1   .....   disp=%im5_0
++stdby           000011 b:5 r:5 sp:2 a:1 1 -- 1101 m:1   .....   disp=%im5_0
+ 
+ @fldstwx        ...... b:5 x:5   sp:2 scale:1 ....... m:1 ..... \
+                 &ldst t=%rt64 disp=0 size=2
+diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+index 837e2b3117..94c9ca5858 100644
+--- a/target/hppa/op_helper.c
++++ b/target/hppa/op_helper.c
+@@ -56,11 +56,11 @@ void HELPER(tcond)(CPUHPPAState *env, target_ureg cond)
+     }
  }
  
-+static bool trans_nopbts(DisasContext *ctx, arg_nopbts *a)
+-static void atomic_store_3(CPUHPPAState *env, target_ulong addr,
+-                           uint32_t val, uintptr_t ra)
++static void atomic_store_mask32(CPUHPPAState *env, target_ulong addr,
++                                uint32_t val, uint32_t mask, uintptr_t ra)
+ {
+     int mmu_idx = cpu_mmu_index(env, 0);
+-    uint32_t old, new, cmp, mask, *haddr;
++    uint32_t old, new, cmp, *haddr;
+     void *vaddr;
+ 
+     vaddr = probe_access(env, addr, 3, MMU_DATA_STORE, mmu_idx, ra);
+@@ -81,6 +81,35 @@ static void atomic_store_3(CPUHPPAState *env, target_ulong addr,
+     }
+ }
+ 
++static void atomic_store_mask64(CPUHPPAState *env, target_ulong addr,
++                                uint64_t val, uint64_t mask,
++                                int size, uintptr_t ra)
 +{
-+    /* All branch target stack instructions implement as nop. */
-+    return ctx->is_pa20;
++#ifdef CONFIG_ATOMIC64
++    int mmu_idx = cpu_mmu_index(env, 0);
++    uint64_t old, new, cmp, *haddr;
++    void *vaddr;
++
++    vaddr = probe_access(env, addr, size, MMU_DATA_STORE, mmu_idx, ra);
++    if (vaddr == NULL) {
++        cpu_loop_exit_atomic(env_cpu(env), ra);
++    }
++    haddr = (uint64_t *)((uintptr_t)vaddr & -8);
++
++    old = *haddr;
++    while (1) {
++        new = be32_to_cpu((cpu_to_be32(old) & ~mask) | (val & mask));
++        cmp = qatomic_cmpxchg__nocheck(haddr, old, new);
++        if (cmp == old) {
++            return;
++        }
++        old = cmp;
++    }
++#else
++    cpu_loop_exit_atomic(env_cpu(env), ra);
++#endif
 +}
 +
- /*
-  * Float class 0
-  */
+ static void do_stby_b(CPUHPPAState *env, target_ulong addr, target_ureg val,
+                       bool parallel, uintptr_t ra)
+ {
+@@ -94,7 +123,7 @@ static void do_stby_b(CPUHPPAState *env, target_ulong addr, target_ureg val,
+     case 1:
+         /* The 3 byte store must appear atomic.  */
+         if (parallel) {
+-            atomic_store_3(env, addr, val, ra);
++            atomic_store_mask32(env, addr, val, 0x00ffffffu, ra);
+         } else {
+             cpu_stb_data_ra(env, addr, val >> 16, ra);
+             cpu_stw_data_ra(env, addr + 1, val, ra);
+@@ -106,6 +135,62 @@ static void do_stby_b(CPUHPPAState *env, target_ulong addr, target_ureg val,
+     }
+ }
+ 
++static void do_stdby_b(CPUHPPAState *env, target_ulong addr, uint64_t val,
++                       bool parallel, uintptr_t ra)
++{
++    switch (addr & 7) {
++    case 7:
++        cpu_stb_data_ra(env, addr, val, ra);
++        break;
++    case 6:
++        cpu_stw_data_ra(env, addr, val, ra);
++        break;
++    case 5:
++        /* The 3 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask32(env, addr, val, 0x00ffffffu, ra);
++        } else {
++            cpu_stb_data_ra(env, addr, val >> 16, ra);
++            cpu_stw_data_ra(env, addr + 1, val, ra);
++        }
++        break;
++    case 4:
++        cpu_stl_data_ra(env, addr, val, ra);
++        break;
++    case 3:
++        /* The 5 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask64(env, addr, val, 0x000000ffffffffffull, 5, ra);
++        } else {
++            cpu_stb_data_ra(env, addr, val >> 32, ra);
++            cpu_stl_data_ra(env, addr + 1, val, ra);
++        }
++        break;
++    case 2:
++        /* The 6 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask64(env, addr, val, 0x0000ffffffffffffull, 6, ra);
++        } else {
++            cpu_stw_data_ra(env, addr, val >> 32, ra);
++            cpu_stl_data_ra(env, addr + 2, val, ra);
++        }
++        break;
++    case 1:
++        /* The 7 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask64(env, addr, val, 0x00ffffffffffffffull, 7, ra);
++        } else {
++            cpu_stb_data_ra(env, addr, val >> 48, ra);
++            cpu_stw_data_ra(env, addr + 1, val >> 32, ra);
++            cpu_stl_data_ra(env, addr + 3, val, ra);
++        }
++        break;
++    default:
++        cpu_stl_data_ra(env, addr, val, ra);
++        break;
++    }
++}
++
+ void HELPER(stby_b)(CPUHPPAState *env, target_ulong addr, target_ureg val)
+ {
+     do_stby_b(env, addr, val, false, GETPC());
+@@ -117,6 +202,17 @@ void HELPER(stby_b_parallel)(CPUHPPAState *env, target_ulong addr,
+     do_stby_b(env, addr, val, true, GETPC());
+ }
+ 
++void HELPER(stdby_b)(CPUHPPAState *env, target_ulong addr, target_ureg val)
++{
++    do_stdby_b(env, addr, val, false, GETPC());
++}
++
++void HELPER(stdby_b_parallel)(CPUHPPAState *env, target_ulong addr,
++                              target_ureg val)
++{
++    do_stdby_b(env, addr, val, true, GETPC());
++}
++
+ static void do_stby_e(CPUHPPAState *env, target_ulong addr, target_ureg val,
+                       bool parallel, uintptr_t ra)
+ {
+@@ -124,7 +220,68 @@ static void do_stby_e(CPUHPPAState *env, target_ulong addr, target_ureg val,
+     case 3:
+         /* The 3 byte store must appear atomic.  */
+         if (parallel) {
+-            atomic_store_3(env, addr - 3, val, ra);
++            atomic_store_mask32(env, addr - 3, val, 0xffffff00u, ra);
++        } else {
++            cpu_stw_data_ra(env, addr - 3, val >> 16, ra);
++            cpu_stb_data_ra(env, addr - 1, val >> 8, ra);
++        }
++        break;
++    case 2:
++        cpu_stw_data_ra(env, addr - 2, val >> 16, ra);
++        break;
++    case 1:
++        cpu_stb_data_ra(env, addr - 1, val >> 24, ra);
++        break;
++    default:
++        /* Nothing is stored, but protection is checked and the
++           cacheline is marked dirty.  */
++        probe_write(env, addr, 0, cpu_mmu_index(env, 0), ra);
++        break;
++    }
++}
++
++static void do_stdby_e(CPUHPPAState *env, target_ulong addr, uint64_t val,
++                       bool parallel, uintptr_t ra)
++{
++    switch (addr & 7) {
++    case 7:
++        /* The 7 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask64(env, addr - 7, val,
++                                0xffffffffffffff00ull, 7, ra);
++        } else {
++            cpu_stl_data_ra(env, addr - 7, val >> 32, ra);
++            cpu_stw_data_ra(env, addr - 3, val >> 16, ra);
++            cpu_stb_data_ra(env, addr - 1, val >> 8, ra);
++        }
++        break;
++    case 6:
++        /* The 6 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask64(env, addr - 6, val,
++                                0xffffffffffff0000ull, 6, ra);
++        } else {
++            cpu_stl_data_ra(env, addr - 6, val >> 32, ra);
++            cpu_stw_data_ra(env, addr - 2, val >> 16, ra);
++        }
++        break;
++    case 5:
++        /* The 5 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask64(env, addr - 5, val,
++                                0xffffffffff000000ull, 5, ra);
++        } else {
++            cpu_stl_data_ra(env, addr - 5, val >> 32, ra);
++            cpu_stb_data_ra(env, addr - 1, val >> 24, ra);
++        }
++        break;
++    case 4:
++        cpu_stl_data_ra(env, addr - 4, val >> 32, ra);
++        break;
++    case 3:
++        /* The 3 byte store must appear atomic.  */
++        if (parallel) {
++            atomic_store_mask32(env, addr - 3, val, 0xffffff00u, ra);
+         } else {
+             cpu_stw_data_ra(env, addr - 3, val >> 16, ra);
+             cpu_stb_data_ra(env, addr - 1, val >> 8, ra);
+@@ -155,6 +312,17 @@ void HELPER(stby_e_parallel)(CPUHPPAState *env, target_ulong addr,
+     do_stby_e(env, addr, val, true, GETPC());
+ }
+ 
++void HELPER(stdby_e)(CPUHPPAState *env, target_ulong addr, target_ureg val)
++{
++    do_stdby_e(env, addr, val, false, GETPC());
++}
++
++void HELPER(stdby_e_parallel)(CPUHPPAState *env, target_ulong addr,
++                              target_ureg val)
++{
++    do_stdby_e(env, addr, val, true, GETPC());
++}
++
+ void HELPER(ldc_check)(target_ulong addr)
+ {
+     if (unlikely(addr & 0xf)) {
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 91249d89ca..e16b1c5399 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -3052,6 +3052,37 @@ static bool trans_stby(DisasContext *ctx, arg_stby *a)
+     return nullify_end(ctx);
+ }
+ 
++static bool trans_stdby(DisasContext *ctx, arg_stby *a)
++{
++    TCGv_reg ofs, val;
++    TCGv_tl addr;
++
++    nullify_over(ctx);
++
++    form_gva(ctx, &addr, &ofs, a->b, 0, 0, a->disp, a->sp, a->m,
++             ctx->mmu_idx == MMU_PHYS_IDX);
++    val = load_gpr(ctx, a->r);
++    if (a->a) {
++        if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
++            gen_helper_stdby_e_parallel(tcg_env, addr, val);
++        } else {
++            gen_helper_stdby_e(tcg_env, addr, val);
++        }
++    } else {
++        if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
++            gen_helper_stdby_b_parallel(tcg_env, addr, val);
++        } else {
++            gen_helper_stdby_b(tcg_env, addr, val);
++        }
++    }
++    if (a->m) {
++        tcg_gen_andi_reg(ofs, ofs, ~7);
++        save_gpr(ctx, a->b, ofs);
++    }
++
++    return nullify_end(ctx);
++}
++
+ static bool trans_lda(DisasContext *ctx, arg_ldst *a)
+ {
+     int hold_mmu_idx = ctx->mmu_idx;
 -- 
 2.34.1
 
