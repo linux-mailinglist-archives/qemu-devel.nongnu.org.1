@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10857DF1CE
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D69C37DF1BC
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:54:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyW7m-0002cZ-3b; Thu, 02 Nov 2023 07:44:34 -0400
+	id 1qyW7f-0001uF-5G; Thu, 02 Nov 2023 07:44:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW7M-000051-1F
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:44:08 -0400
+ id 1qyW7V-0001QU-JO
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:44:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW7J-00063t-U2
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:44:07 -0400
+ id 1qyW7T-00065k-1C
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:44:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698925445;
+ s=mimecast20190719; t=1698925454;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=juXYONqV+/W0nBHoFpD72iSqcDaEYIDEPx7/03c+W6Y=;
- b=Ilvsc7CuldllT+4phK0F5EQL4GlqLv6sEsUI/A0sl6na1QGhS10d3KYksri5Uv8AVDV5KT
- kxDmz2WSBCDesmvs4uifC61u6nzE96YcGbhbGAChp4VrRDYYWNRIS1lvJc+6m+6Vh12SVa
- QLrpSnThshcE0StWLYXoISvPRrn170M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-q6u3DRwIPHumia6WlCgZjg-1; Thu, 02 Nov 2023 07:44:01 -0400
-X-MC-Unique: q6u3DRwIPHumia6WlCgZjg-1
+ bh=A3urJpzcWBNu+N6FvtT6GHVVyu20J9BGWB+Gu+5Odqc=;
+ b=P8UPdE5oXJZO9YlgfGV2xtcfRn96+8oFokt09TAoAGG2Jyypoup4eHw/X1KD4E12fq5J5Q
+ 7tK3gDE8L5jsAXk7MpcUnGG3qgERLXUqBsbUDJHdbPS17/NDgc4dl7H4Ot5Q6i4d5rPsIm
+ da5TGiv+5uQlXyMzElXmfqwmL+IO+7Y=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-bFZVhtncMQC8XQuQrStdiQ-1; Thu,
+ 02 Nov 2023 07:44:09 -0400
+X-MC-Unique: bFZVhtncMQC8XQuQrStdiQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCBF5101A52D;
- Thu,  2 Nov 2023 11:43:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A933380662F;
+ Thu,  2 Nov 2023 11:44:07 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 844BB2026D4C;
- Thu,  2 Nov 2023 11:43:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 365552026D4C;
+ Thu,  2 Nov 2023 11:44:00 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -77,9 +77,9 @@ Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Stefan Weil <sw@weilnetz.de>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Fam Zheng <fam@euphon.net>, Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 23/40] cpr: relax vhost migration blockers
-Date: Thu,  2 Nov 2023 12:40:37 +0100
-Message-ID: <20231102114054.44360-24-quintela@redhat.com>
+Subject: [PULL 24/40] cpr: reboot mode
+Date: Thu,  2 Nov 2023 12:40:38 +0100
+Message-ID: <20231102114054.44360-25-quintela@redhat.com>
 In-Reply-To: <20231102114054.44360-1-quintela@redhat.com>
 References: <20231102114054.44360-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -112,59 +112,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-vhost blocks migration if logging is not supported to track dirty
-memory, and vhost-user blocks it if the log cannot be saved to a shm fd.
+Add the cpr-reboot migration mode.  Usage:
 
-vhost-vdpa blocks migration if both hosts do not support all the device's
-features using a shadow VQ, for tracking requests and dirty memory.
+$ qemu-system-$arch -monitor stdio ...
+QEMU 8.1.50 monitor - type 'help' for more information
+(qemu) migrate_set_capability x-ignore-shared on
+(qemu) migrate_set_parameter mode cpr-reboot
+(qemu) migrate -d file:vm.state
+(qemu) info status
+VM status: paused (postmigrate)
+(qemu) quit
 
-vhost-scsi blocks migration if storage cannot be shared across hosts,
-or if state cannot be migrated.
+$ qemu-system-$arch -monitor stdio -incoming defer ...
+QEMU 8.1.50 monitor - type 'help' for more information
+(qemu) migrate_set_capability x-ignore-shared on
+(qemu) migrate_set_parameter mode cpr-reboot
+(qemu) migrate_incoming file:vm.state
+(qemu) info status
+VM status: running
 
-None of these conditions apply if the old and new qemu processes do
-not run concurrently, and if new qemu starts on the same host as old,
-which is the case for cpr.
-
-Narrow the scope of these blockers so they only apply to normal mode.
-They will not block cpr modes when they are added in subsequent patches.
-
-No functional change until a new mode is added.
+In this mode, the migrate command saves state to a file, allowing one
+to quit qemu, reboot to an updated kernel, and restart an updated version
+of qemu.  The caller must specify a migration URI that writes to and reads
+from a file.  Unlike normal mode, the use of certain local storage options
+does not block the migration, but the caller must not modify guest block
+devices between the quit and restart.  To avoid saving guest RAM to the
+file, the memory backend must be shared, and the @x-ignore-shared migration
+capability must be set.  Guest RAM must be non-volatile across reboot, such
+as by backing it with a dax device, but this is not enforced.  The restarted
+qemu arguments must match those used to initially start qemu, plus the
+-incoming option.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <1698263069-406971-5-git-send-email-steven.sistare@oracle.com>
+Message-ID: <1698263069-406971-6-git-send-email-steven.sistare@oracle.com>
 ---
- hw/scsi/vhost-scsi.c | 2 +-
- hw/virtio/vhost.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ qapi/migration.json              | 15 ++++++++++++++-
+ hw/core/qdev-properties-system.c |  2 +-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 5d9e06a9bb..3126df9e1d 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -210,7 +210,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
-                 "When external environment supports it (Orchestrator migrates "
-                 "target SCSI device state or use shared storage over network), "
-                 "set 'migratable' property to true to enable migration.");
--        if (migrate_add_blocker(&vsc->migration_blocker, errp) < 0) {
-+        if (migrate_add_blocker_normal(&vsc->migration_blocker, errp) < 0) {
-             goto free_virtio;
-         }
-     }
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index aa7b272452..9c9ae7109e 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1527,7 +1527,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     }
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 47c02a9346..3daeffc95d 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -636,9 +636,22 @@
+ #
+ # @normal: the original form of migration. (since 8.2)
+ #
++# @cpr-reboot: The migrate command saves state to a file, allowing one to
++#              quit qemu, reboot to an updated kernel, and restart an updated
++#              version of qemu.  The caller must specify a migration URI
++#              that writes to and reads from a file.  Unlike normal mode,
++#              the use of certain local storage options does not block the
++#              migration, but the caller must not modify guest block devices
++#              between the quit and restart.  To avoid saving guest RAM to the
++#              file, the memory backend must be shared, and the @x-ignore-shared
++#              migration capability must be set.  Guest RAM must be non-volatile
++#              across reboot, such as by backing it with a dax device, but this
++#              is not enforced.  The restarted qemu arguments must match those
++#              used to initially start qemu, plus the -incoming option.
++#              (since 8.2)
+ ##
+ { 'enum': 'MigMode',
+-  'data': [ 'normal' ] }
++  'data': [ 'normal', 'cpr-reboot' ] }
  
-     if (hdev->migration_blocker != NULL) {
--        r = migrate_add_blocker(&hdev->migration_blocker, errp);
-+        r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
-         if (r < 0) {
-             goto fail_busyloop;
-         }
+ ##
+ # @BitmapMigrationBitmapAliasTransform:
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index b9179e8917..2f1dbb3fd7 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -680,7 +680,7 @@ QEMU_BUILD_BUG_ON(sizeof(MigMode) != sizeof(int));
+ const PropertyInfo qdev_prop_mig_mode = {
+     .name = "MigMode",
+     .description = "mig_mode values, "
+-                   "normal",
++                   "normal,cpr-reboot",
+     .enum_table = &MigMode_lookup,
+     .get = qdev_propinfo_get_enum,
+     .set = qdev_propinfo_set_enum,
 -- 
 2.41.0
 
