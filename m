@@ -2,82 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05787DFB47
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 21:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B6F7DFBD4
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 22:02:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qye1J-0004O6-49; Thu, 02 Nov 2023 16:10:25 -0400
+	id 1qyeo1-00015r-Iy; Thu, 02 Nov 2023 17:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qye1H-0004NM-Cm
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 16:10:23 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qyenu-00014y-S8
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 17:00:39 -0400
+Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qye1F-0006tR-VF
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 16:10:23 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-1dcfe9cd337so664324fac.2
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 13:10:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qyenp-0008KF-Pr
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 17:00:38 -0400
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-5afa5dbc378so17392947b3.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 14:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698955820; x=1699560620; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=I5FNvjn0ATHflRyMpKMII8LXHmYInbpSNP8db9bDXig=;
- b=KaXWFLWNwNfwWTd3/AeTqlau+laoTIMvwDiSeSbqCbrMWOD8LtYmbvbWHNsxoJzPeZ
- Hm/7ilcjzpbAszIAh06j41tq0TGB5jykQRAyiX0OzoXdEaOLrjhlJ/7HV5MPA4Q1GFZq
- caH2r+0+4oMQ55aMZM3DfE6WkOuH0O3D1/ARuV83yTHbdni2KppdFeqMjatCqT/lg3Pj
- kvdNUbLKmhAoB6cisXFasFLxuNREZa1PJGH2jWcTgJWzzi141qShzsRsaQrJNQI9e249
- ZOfM7ytC9zM7iLtVKgyXkfbjgjn1tCOqZK7O45C0xzoKWlFtMXnh8oDl9suCZvsj7Fjr
- gBRQ==
+ d=ventanamicro.com; s=google; t=1698958831; x=1699563631; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6tij+y3GKq7vIhBMugA7qgadmRNb9RcDsnJ7ejspyAI=;
+ b=VlQlGWGd1zgxqGNQHZUGpsA/5dGavFqFuBArgAJdh6Mq0V+cGYnsoxPfFsxldyu1JC
+ /pFFmDlmWx24/ohnrfX8IEvhtRKyBhzV026oZWjFp8vyXJgUUCuL3ZEail7g6RefRMZ5
+ QgUlGHM2mN6OUHcTtUIujBpJCeBvNySNysK1OG+1MlAdURluTImJGW1dFa1W0WJgEcZ6
+ pKr9um7jbuJW1lOlnefTS7myaLlDE0BSW8+mHA2t12dOpbI6NY8w6sMgAOocm2Zzg5Ta
+ YMxY5fYINfTr7Ka67/aTl2YZtLevyLOC5taG1cj7fwJ141im+45YOGSMDURjM4YxAvB0
+ IyXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698955820; x=1699560620;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=I5FNvjn0ATHflRyMpKMII8LXHmYInbpSNP8db9bDXig=;
- b=muIoMvCfQIkLL9WB+OZff826M12nWLBAnG8nArTmEwzKT585EK4Ww7UIizVFQ5xot4
- ZVowdJK6cTVEpCICLDmEYEBvkEV6h6/W9dFHEmiJQ9eOCe7nf4zR3Gh9YAh8LoNKNuoN
- YWRm/C4dypC7dPiBzQazdLLeJjHzypXXVFEJELMmmrCkaRtW2Qx4JQTET01pchktnBMr
- 0gLmvGjWyVV7f672amB+rcNTjCZFvn/6zlWhv+mkfF9gaiqX8/G/lZRJUHDbOWIByUkt
- iGb5JLL9eTpTWFoXGhidO3WbkeDgqgcGawZ+x2pdY0rw8huLYURbAkmE3hkUkrogIvzA
- cdrA==
-X-Gm-Message-State: AOJu0Yx3mz7uDZQRDSnIOQxcu1Fyx/yT0Rp+kRtdmoJodo7WcelvkJ1A
- QuIbu8NDzflKG/ftvqbQPwcmefjY17g=
-X-Google-Smtp-Source: AGHT+IELFP0IYIEgLw2K78iacyY9c3/ewZWJnjQ0UoQ8zERXTBEufjTHZNKYgxFwCHjNqL4IXep4yQ==
-X-Received: by 2002:a05:6870:35d0:b0:1ea:2447:5181 with SMTP id
- c16-20020a05687035d000b001ea24475181mr18864447oak.9.1698955820036; 
- Thu, 02 Nov 2023 13:10:20 -0700 (PDT)
-Received: from taylor-ubuntu.austin.rr.com (cpe-68-203-8-61.austin.res.rr.com.
- [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- z9-20020a056870e14900b001e98b1544fesm63543oaa.9.2023.11.02.13.10.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 13:10:19 -0700 (PDT)
-From: Taylor Simpson <ltaylorsimpson@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Taylor Simpson <ltaylorsimpson@gmail.com>
-Subject: [PATCH 3/3] Hexagon (target/hexagon) Enable more short-circuit
- packets (HVX)
-Date: Thu,  2 Nov 2023 14:10:06 -0600
-Message-Id: <20231102201006.33143-4-ltaylorsimpson@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231102201006.33143-1-ltaylorsimpson@gmail.com>
-References: <20231102201006.33143-1-ltaylorsimpson@gmail.com>
+ d=1e100.net; s=20230601; t=1698958831; x=1699563631;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6tij+y3GKq7vIhBMugA7qgadmRNb9RcDsnJ7ejspyAI=;
+ b=FzNlr0WtIkYV27Bx4sXTgwkFA5nb6gusjxxAdvlmlcZLqfTrCBBiTs0SqFNKwsfZ6f
+ Yu55LLTwTfqeuttuuIjjGIHECKw7bHs3l2KKxxyTmwNFPgy6814VoUo9UfU35jxBeYAN
+ wXOkEx2Df2zGtUGnViu9Jiu9zk0PEHVHCjqLGp6J4IwJ8SNsbMEVrrvXTECNcQ5TTxLn
+ 6g/hlzlOTb5VHSFGbk/GqcsUwpVyUPC/r0N1zzz2P0tTJ0dAOBwiieBCPz7V7TPRaJ9Y
+ p8Ms0tjOLQFdqk8ZIcCP5iXtRRS2IK2xtmxCioDNHCc2i+smHjp9zLhS3MZ94GsTQR0o
+ VSug==
+X-Gm-Message-State: AOJu0YwszWgEUDIMpBPJacTMXryr2Oub+eHvFgSVNiL0tFGNQ7ulWuA4
+ 0UBvnyZbLa4bJYbqXCPsx751aw==
+X-Google-Smtp-Source: AGHT+IG8aBOlJYDugsHb6GFWCmRTaUk7KiFmO7uUJAeZa0A/owiygAlu3hur0TdVREeT2dJTnrFllQ==
+X-Received: by 2002:a81:4e07:0:b0:5a8:5824:b953 with SMTP id
+ c7-20020a814e07000000b005a85824b953mr911399ywb.8.1698958830967; 
+ Thu, 02 Nov 2023 14:00:30 -0700 (PDT)
+Received: from [192.168.68.107] ([179.193.10.161])
+ by smtp.gmail.com with ESMTPSA id
+ bz5-20020a05690c084500b005af98b6f795sm178490ywb.23.2023.11.02.14.00.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Nov 2023 14:00:29 -0700 (PDT)
+Message-ID: <64055d84-7a8f-4fc5-85db-dcaa7a36e120@ventanamicro.com>
+Date: Thu, 2 Nov 2023 18:00:22 -0300
 MIME-Version: 1.0
-Content-Type: test/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oa1-x32.google.com
-X-Spam_score_int: 2
-X-Spam_score: 0.2
-X-Spam_bar: /
-X-Spam_report: (0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, EMPTY_MESSAGE=2.32,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/13] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
+Content-Language: en-US
+To: Sunil V L <sunilvl@ventanamicro.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Anup Patel <apatel@ventanamicro.com>, Atish Kumar Patra
+ <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
+References: <20231102170223.2619260-1-sunilvl@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231102170223.2619260-1-sunilvl@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1129.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,392 +108,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Look for read-after-write instead of overlap of reads and writes
-HVX instructions with helpers have pass-by-reference semantics, so
-we check for overlaps of reads and writes within the same instruction.
+Sunil,
 
-Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
----
- target/hexagon/translate.h          | 88 +++++++++++++++++++++++------
- target/hexagon/translate.c          | 58 ++-----------------
- target/hexagon/gen_analyze_funcs.py | 51 +++++++++++------
- target/hexagon/hex_common.py        | 10 ++++
- 4 files changed, 120 insertions(+), 87 deletions(-)
 
-diff --git a/target/hexagon/translate.h b/target/hexagon/translate.h
-index 7bb19ee672..7f47db71e8 100644
---- a/target/hexagon/translate.h
-+++ b/target/hexagon/translate.h
-@@ -50,23 +50,27 @@ typedef struct DisasContext {
-     int tmp_vregs_num[VECTOR_TEMPS_MAX];
-     int vreg_log[NUM_VREGS];
-     int vreg_log_idx;
-+    DECLARE_BITMAP(vregs_written, NUM_VREGS);
-+    DECLARE_BITMAP(insn_vregs_written, NUM_VREGS);
-     DECLARE_BITMAP(vregs_updated_tmp, NUM_VREGS);
-     DECLARE_BITMAP(vregs_updated, NUM_VREGS);
-     DECLARE_BITMAP(vregs_select, NUM_VREGS);
-     DECLARE_BITMAP(predicated_future_vregs, NUM_VREGS);
-     DECLARE_BITMAP(predicated_tmp_vregs, NUM_VREGS);
--    DECLARE_BITMAP(vregs_read, NUM_VREGS);
-+    DECLARE_BITMAP(insn_vregs_read, NUM_VREGS);
-     int qreg_log[NUM_QREGS];
-     int qreg_log_idx;
--    DECLARE_BITMAP(qregs_read, NUM_QREGS);
-+    DECLARE_BITMAP(qregs_written, NUM_QREGS);
-+    DECLARE_BITMAP(insn_qregs_written, NUM_QREGS);
-+    DECLARE_BITMAP(insn_qregs_read, NUM_QREGS);
-     bool pre_commit;
-     bool need_commit;
-     TCGCond branch_cond;
-     target_ulong branch_dest;
-     bool is_tight_loop;
-     bool short_circuit;
--    bool has_hvx_helper;
-     bool read_after_write;
-+    bool has_hvx_overlap;
-     TCGv new_value[TOTAL_PER_THREAD_REGS];
-     TCGv new_pred_value[NUM_PREGS];
-     TCGv pred_written;
-@@ -146,10 +150,25 @@ intptr_t ctx_future_vreg_off(DisasContext *ctx, int regnum,
- intptr_t ctx_tmp_vreg_off(DisasContext *ctx, int regnum,
-                           int num, bool alloc_ok);
- 
-+static inline void ctx_start_hvx_insn(DisasContext *ctx)
-+{
-+    bitmap_zero(ctx->insn_vregs_written, NUM_VREGS);
-+    bitmap_zero(ctx->insn_vregs_read, NUM_VREGS);
-+    bitmap_zero(ctx->insn_qregs_written, NUM_QREGS);
-+    bitmap_zero(ctx->insn_qregs_read, NUM_QREGS);
-+}
-+
- static inline void ctx_log_vreg_write(DisasContext *ctx,
-                                       int rnum, VRegWriteType type,
--                                      bool is_predicated)
-+                                      bool is_predicated, bool has_helper)
- {
-+    if (has_helper) {
-+        set_bit(rnum, ctx->insn_vregs_written);
-+        if (test_bit(rnum, ctx->insn_vregs_read)) {
-+            ctx->has_hvx_overlap = true;
-+        }
-+    }
-+    set_bit(rnum, ctx->vregs_written);
-     if (type != EXT_TMP) {
-         if (!test_bit(rnum, ctx->vregs_updated)) {
-             ctx->vreg_log[ctx->vreg_log_idx] = rnum;
-@@ -175,42 +194,77 @@ static inline void ctx_log_vreg_write(DisasContext *ctx,
- 
- static inline void ctx_log_vreg_write_pair(DisasContext *ctx,
-                                            int rnum, VRegWriteType type,
--                                           bool is_predicated)
-+                                           bool is_predicated, bool has_helper)
- {
--    ctx_log_vreg_write(ctx, rnum ^ 0, type, is_predicated);
--    ctx_log_vreg_write(ctx, rnum ^ 1, type, is_predicated);
-+    ctx_log_vreg_write(ctx, rnum ^ 0, type, is_predicated, has_helper);
-+    ctx_log_vreg_write(ctx, rnum ^ 1, type, is_predicated, has_helper);
- }
- 
--static inline void ctx_log_vreg_read(DisasContext *ctx, int rnum)
-+static inline void ctx_log_vreg_read(DisasContext *ctx, int rnum,
-+                                     bool has_helper)
- {
--    set_bit(rnum, ctx->vregs_read);
-+    if (has_helper) {
-+        set_bit(rnum, ctx->insn_vregs_read);
-+        if (test_bit(rnum, ctx->insn_vregs_written)) {
-+            ctx->has_hvx_overlap = true;
-+        }
-+    }
-+    if (test_bit(rnum, ctx->vregs_written)) {
-+        ctx->read_after_write = true;
-+    }
- }
- 
--static inline void ctx_log_vreg_read_new(DisasContext *ctx, int rnum)
-+static inline void ctx_log_vreg_read_new(DisasContext *ctx, int rnum,
-+                                         bool has_helper)
- {
-     g_assert(is_gather_store_insn(ctx) ||
-              test_bit(rnum, ctx->vregs_updated) ||
-              test_bit(rnum, ctx->vregs_select) ||
-              test_bit(rnum, ctx->vregs_updated_tmp));
--    set_bit(rnum, ctx->vregs_read);
-+    if (has_helper) {
-+        set_bit(rnum, ctx->insn_vregs_read);
-+        if (test_bit(rnum, ctx->insn_vregs_written)) {
-+            ctx->has_hvx_overlap = true;
-+        }
-+    }
-+    if (is_gather_store_insn(ctx)) {
-+        ctx->read_after_write = true;
-+    }
- }
- 
--static inline void ctx_log_vreg_read_pair(DisasContext *ctx, int rnum)
-+static inline void ctx_log_vreg_read_pair(DisasContext *ctx, int rnum,
-+                                          bool has_helper)
- {
--    ctx_log_vreg_read(ctx, rnum ^ 0);
--    ctx_log_vreg_read(ctx, rnum ^ 1);
-+    ctx_log_vreg_read(ctx, rnum ^ 0, has_helper);
-+    ctx_log_vreg_read(ctx, rnum ^ 1, has_helper);
- }
- 
- static inline void ctx_log_qreg_write(DisasContext *ctx,
--                                      int rnum)
-+                                      int rnum, bool has_helper)
- {
-+    if (has_helper) {
-+        set_bit(rnum, ctx->insn_qregs_written);
-+        if (test_bit(rnum, ctx->insn_qregs_read)) {
-+            ctx->has_hvx_overlap = true;
-+        }
-+    }
-+    set_bit(rnum, ctx->qregs_written);
-     ctx->qreg_log[ctx->qreg_log_idx] = rnum;
-     ctx->qreg_log_idx++;
- }
- 
--static inline void ctx_log_qreg_read(DisasContext *ctx, int qnum)
-+static inline void ctx_log_qreg_read(DisasContext *ctx,
-+                                     int qnum, bool has_helper)
- {
--    set_bit(qnum, ctx->qregs_read);
-+    if (has_helper) {
-+        set_bit(qnum, ctx->insn_qregs_read);
-+        if (test_bit(qnum, ctx->insn_qregs_written)) {
-+            ctx->has_hvx_overlap = true;
-+        }
-+    }
-+    if (test_bit(qnum, ctx->qregs_written)) {
-+        ctx->read_after_write = true;
-+    }
- }
- 
- extern TCGv hex_gpr[TOTAL_PER_THREAD_REGS];
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 9dab26ee17..3545480080 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -378,60 +378,10 @@ static bool need_commit(DisasContext *ctx)
-         return true;
-     }
- 
--    if (pkt->num_insns == 1) {
--        if (pkt->pkt_has_hvx) {
--            /*
--             * The HVX instructions with generated helpers use
--             * pass-by-reference, so they need the read/write overlap
--             * check below.
--             * The HVX instructions with overrides are OK.
--             */
--            if (!ctx->has_hvx_helper) {
--                return false;
--            }
--        } else {
--            return false;
--        }
--    }
--
--    if (ctx->read_after_write) {
-+    if (ctx->read_after_write || ctx->has_hvx_overlap) {
-         return true;
-     }
- 
--    /* Check for overlap between HVX reads and writes */
--    for (int i = 0; i < ctx->vreg_log_idx; i++) {
--        int vnum = ctx->vreg_log[i];
--        if (test_bit(vnum, ctx->vregs_read)) {
--            return true;
--        }
--    }
--    if (!bitmap_empty(ctx->vregs_updated_tmp, NUM_VREGS)) {
--        int i = find_first_bit(ctx->vregs_updated_tmp, NUM_VREGS);
--        while (i < NUM_VREGS) {
--            if (test_bit(i, ctx->vregs_read)) {
--                return true;
--            }
--            i = find_next_bit(ctx->vregs_updated_tmp, NUM_VREGS, i + 1);
--        }
--    }
--    if (!bitmap_empty(ctx->vregs_select, NUM_VREGS)) {
--        int i = find_first_bit(ctx->vregs_select, NUM_VREGS);
--        while (i < NUM_VREGS) {
--            if (test_bit(i, ctx->vregs_read)) {
--                return true;
--            }
--            i = find_next_bit(ctx->vregs_select, NUM_VREGS, i + 1);
--        }
--    }
--
--    /* Check for overlap between HVX predicate reads and writes */
--    for (int i = 0; i < ctx->qreg_log_idx; i++) {
--        int qnum = ctx->qreg_log[i];
--        if (test_bit(qnum, ctx->qregs_read)) {
--            return true;
--        }
--    }
--
-     return false;
- }
- 
-@@ -453,8 +403,8 @@ static void mark_implicit_pred_reads(DisasContext *ctx)
- static void analyze_packet(DisasContext *ctx)
- {
-     Packet *pkt = ctx->pkt;
--    ctx->has_hvx_helper = false;
-     ctx->read_after_write = false;
-+    ctx->has_hvx_overlap = false;
-     for (int i = 0; i < pkt->num_insns; i++) {
-         Insn *insn = &pkt->insn[i];
-         ctx->insn = insn;
-@@ -485,13 +435,13 @@ static void gen_start_packet(DisasContext *ctx)
-     ctx->future_vregs_idx = 0;
-     ctx->tmp_vregs_idx = 0;
-     ctx->vreg_log_idx = 0;
-+    bitmap_zero(ctx->vregs_written, NUM_VREGS);
-     bitmap_zero(ctx->vregs_updated_tmp, NUM_VREGS);
-     bitmap_zero(ctx->vregs_updated, NUM_VREGS);
-     bitmap_zero(ctx->vregs_select, NUM_VREGS);
-     bitmap_zero(ctx->predicated_future_vregs, NUM_VREGS);
-     bitmap_zero(ctx->predicated_tmp_vregs, NUM_VREGS);
--    bitmap_zero(ctx->vregs_read, NUM_VREGS);
--    bitmap_zero(ctx->qregs_read, NUM_QREGS);
-+    bitmap_zero(ctx->qregs_written, NUM_QREGS);
-     ctx->qreg_log_idx = 0;
-     for (i = 0; i < STORES_MAX; i++) {
-         ctx->store_width[i] = 0;
-diff --git a/target/hexagon/gen_analyze_funcs.py b/target/hexagon/gen_analyze_funcs.py
-index 40b9473c44..4541174590 100755
---- a/target/hexagon/gen_analyze_funcs.py
-+++ b/target/hexagon/gen_analyze_funcs.py
-@@ -52,7 +52,10 @@ def analyze_read(f, tag, regtype, regid, regno):
-         if regtype in {"R",  "C"}:
-             f.write(f"    ctx_log_reg_read_pair(ctx, {regN});\n")
-         elif regtype == "V":
--            f.write(f"    ctx_log_vreg_read_pair(ctx, {regN});\n")
-+            f.write(
-+                f"    ctx_log_vreg_read_pair(ctx, {regN}, "
-+                "insn_has_hvx_helper);\n"
-+            )
-         else:
-             hex_common.bad_register(regtype, regid)
-     elif hex_common.is_single(regid):
-@@ -62,9 +65,15 @@ def analyze_read(f, tag, regtype, regid, regno):
-             elif regtype == "P":
-                 f.write(f"    ctx_log_pred_read(ctx, {regN});\n")
-             elif regtype in {"V", "O"}:
--                f.write(f"    ctx_log_vreg_read(ctx, {regN});\n")
-+                f.write(
-+                    f"    ctx_log_vreg_read(ctx, {regN}, "
-+                    "insn_has_hvx_helper);\n"
-+                )
-             elif regtype == "Q":
--                f.write(f"    ctx_log_qreg_read(ctx, {regN});\n")
-+                f.write(
-+                    f"    ctx_log_qreg_read(ctx, {regN}, "
-+                    "insn_has_hvx_helper);\n"
-+                )
-             else:
-                 hex_common.bad_register(regtype, regid)
-         elif hex_common.is_new_val(regtype, regid, tag):
-@@ -73,7 +82,10 @@ def analyze_read(f, tag, regtype, regid, regno):
-             elif regtype == "P":
-                 f.write(f"    ctx_log_pred_read_new(ctx, {regN});\n")
-             elif regtype == "O":
--                f.write(f"    ctx_log_vreg_read_new(ctx, {regN});\n")
-+                f.write(
-+                    f"    ctx_log_vreg_read_new(ctx, {regN}, "
-+                    "insn_has_hvx_helper);\n"
-+                )
-             else:
-                 hex_common.bad_register(regtype, regid)
-         else:
-@@ -90,7 +102,8 @@ def analyze_write(f, tag, regtype, regid, regno):
-         elif regtype == "V":
-             f.write(
-                 f"    ctx_log_vreg_write_pair(ctx, {regN}, "
--                f"{vreg_write_type(tag)}, {predicated});\n"
-+                f"{vreg_write_type(tag)}, {predicated}, "
-+                "insn_has_hvx_helper);\n"
-             )
-         else:
-             hex_common.bad_register(regtype, regid)
-@@ -102,10 +115,14 @@ def analyze_write(f, tag, regtype, regid, regno):
-         elif regtype == "V":
-             f.write(
-                 f"    ctx_log_vreg_write(ctx, {regN}, "
--                f"{vreg_write_type(tag)}, {predicated});\n"
-+                f"{vreg_write_type(tag)}, {predicated}, "
-+                "insn_has_hvx_helper);\n"
-             )
-         elif regtype == "Q":
--            f.write(f"    ctx_log_qreg_write(ctx, {regN});\n")
-+            f.write(
-+                f"    ctx_log_qreg_write(ctx, {regN}, "
-+                "insn_has_hvx_helper);\n"
-+            )
-         else:
-             hex_common.bad_register(regtype, regid)
-     else:
-@@ -132,6 +149,17 @@ def gen_analyze_func(f, tag, regs, imms):
-     f.write("{\n")
- 
-     f.write("    Insn *insn G_GNUC_UNUSED = ctx->insn;\n")
-+    if (hex_common.is_hvx_insn(tag)):
-+        if hex_common.has_hvx_helper(tag):
-+            f.write(
-+                "    const bool G_GNUC_UNUSED insn_has_hvx_helper = true;\n"
-+            )
-+            f.write("    ctx_start_hvx_insn(ctx);\n")
-+        else:
-+            f.write(
-+                "    const bool G_GNUC_UNUSED insn_has_hvx_helper = false;\n"
-+            )
-+
- 
-     ## Declare the operands
-     i = 0
-@@ -153,15 +181,6 @@ def gen_analyze_func(f, tag, regs, imms):
-             analyze_write(f, tag, regtype, regid, i)
-         i += 1
- 
--    has_generated_helper = not hex_common.skip_qemu_helper(
--        tag
--    ) and not hex_common.is_idef_parser_enabled(tag)
--
--    ## Mark HVX instructions with generated helpers
--    if (has_generated_helper and
--        "A_CVI" in hex_common.attribdict[tag]):
--        f.write("    ctx->has_hvx_helper = true;\n")
--
-     f.write("}\n\n")
- 
- 
-diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
-index 0da65d6dd6..befe3590c2 100755
---- a/target/hexagon/hex_common.py
-+++ b/target/hexagon/hex_common.py
-@@ -307,6 +307,16 @@ def is_idef_parser_enabled(tag):
-     return tag in idef_parser_enabled
- 
- 
-+def is_hvx_insn(tag):
-+    return "A_CVI" in attribdict[tag]
-+
-+
-+def has_hvx_helper(tag):
-+    return (is_hvx_insn(tag) and
-+            not skip_qemu_helper(tag) and
-+            not is_idef_parser_enabled(tag))
-+
-+
- def imm_name(immlett):
-     return f"{immlett}iV"
- 
--- 
-2.34.1
+While doing unrelated work (running Gitlab on my series built on top of
+current riscv-to-apply.next), I hit the following error:
 
+https://gitlab.com/danielhb/qemu/-/jobs/5448178994
+
+==========
+
+4/257 ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match) ERROR
+   4/257 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                ERROR           7.77s   killed by signal 6 SIGABRT
+>>> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 MALLOC_PERTURB_=159 QTEST_QEMU_BINARY=./qemu-system-i386 /builds/danielhb/qemu/build/tests/qtest/bios-tables-test --tap -k
+
+acpi-test: Warning! DSDT binary file mismatch. Actual [aml:/tmp/aml-IOYVD2], Expected [aml:tests/data/acpi/microvm/DSDT].
+See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
+to see ASL diff between mismatched files install IASL, rebuild QEMU from scratch and re-run tests with V=1 environment variable set**
+ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match)
+(test program exited with status code -6)
+
+(...)
+
+Summary of Failures:
+4571  4/257 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                ERROR           7.77s   killed by signal 6 SIGABRT
+4572  7/257 qemu:qtest+qtest-aarch64 / qtest-aarch64/bios-tables-test          ERROR          66.00s   killed by signal 6 SIGABRT
+4573  Ok:                 247
+4574  Expected Fail:      0
+4575  Fail:               2
+4576  Unexpected Pass:    0
+4577  Skipped:            8
+4578  Timeout:            0
+
+==========
+
+(qtest-aarch64/bios-tables-test' fails with the same error message as 'qtest-i386/bios-tables-test')
+
+
+To be sure, since I ran a hacked version of your patches in that Gitlab pipeline, I
+removed your ACPI patches from riscv-to-apply.next, applied this new version, and then
+tried to run the x86 qtest locally. It still fails, same error:
+
+$ rm -rf build && ./configure --target-list=x86_64-softmmu
+$ make -j && QTEST_QEMU_BINARY=./build/qemu-system-x86_64 ./build/tests/qtest/bios-tables-test
+
+(...)
+# starting QEMU: exec ./build/qemu-system-x86_64 -qtest unix:/tmp/qtest-508977.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-508977.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -machine microvm -accel kvm -accel tcg -net none  -machine microvm,acpi=on,ioapic2=off,rtc=off -drive id=hd0,if=none,file=tests/acpi-test-disk-eyxyvN,format=raw -device virtio-blk-device,drive=hd0  -accel qtest
+acpi-test: Warning! DSDT binary file mismatch. Actual [aml:/tmp/aml-H9IUD2], Expected [aml:tests/data/acpi/microvm/DSDT].
+See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
+to see ASL diff between mismatched files install IASL, rebuild QEMU from scratch and re-run tests with V=1 environment variable set**
+ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match)
+not ok /x86_64/acpi/microvm - ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion failed: (all_tables_match)
+
+
+I did a 'git bisect' and it pointed to the following patch:
+
+
+$ git bisect good
+e63248d45e8f8488706ed13a7b83266e578deafd is the first bad commit
+commit e63248d45e8f8488706ed13a7b83266e578deafd
+Author: Sunil V L <sunilvl@ventanamicro.com>
+Date:   Thu Nov 2 22:32:13 2023 +0530
+
+     hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
+     
+     With common function to add virtio in DSDT created now, update microvm
+     code also to use it instead of duplicate code.
+     
+     Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+     Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+     Acked-by: Alistair Francis <alistair.francis@wdc.com>
+     Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+  hw/i386/acpi-microvm.c | 15 ++-------------
+  1 file changed, 2 insertions(+), 13 deletions(-)
+$
+
+This suggests a problem in patch 03. I suggest doing a bisect on your own to be sure.
+
+Unfortunately these tests will block the pipeline, forbidding us to merge it. I'm afraid
+you'll need to fix it and send a v7.
+
+
+
+Thanks,
+
+Daniel
+
+
+On 11/2/23 14:02, Sunil V L wrote:
+> This series primarily enables external interrupt controllers (AIA and PLIC)
+> in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO and
+> MMU related information.
+> 
+> Below ECRs for these changes are approved by ASWG and will be
+> available in next ACPI spec release.
+> 
+> 1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
+> 2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
+> 
+> First two patches in this series are to migrate a couple of functions from
+> ARM architecture to common code so that RISC-V doesn't need to duplicate
+> the same.
+> 
+> The patch set is based on Alistair's riscv-to-apply.next branch.
+> 
+> These changes are also available in  riscv_acpi_b2_v6 branch at:
+> https://github.com/vlsunil/qemu/
+> 
+> Changes since v5:
+> 	1) Fixed the issue in PATCH 2 reported by Daniel found when built with
+> 	   clang + --enable-debug.
+> 
+> Changes since v4:
+> 	1) Updated copyright for new files as per SPDX format suggested by Drew.
+> 	2) Updated RINTC patch to avoid code duplication as suggested by Drew.
+> 	3) Moved mmu offset below cmo in MMU patch as suggested by Drew.
+> 	4) Updated tags.
+> 
+> Changes since v3:
+> 	1) Addressed comments from Daniel and Drew.
+> 	2) Added a new patch in microvm to use common function for virtio in DSDT.
+> 	3) Rebased to latest riscv-to-apply.next branch and added tags.
+> 
+> Changes since v2:
+>          1) Rebased to latest riscv-to-apply.next branch which needed
+>             changing ext_icboz to ext_zicboz in CMO patch.
+>          2) Fixed node type in MMU node.
+>          3) Added latest tags.
+> 
+> Changes since v1:
+>          1) As per Igor's suggestion, migrated fw_cfg and virtio creation
+>             functions to device specific file instead of generic aml-build.c.
+>             Since ACPI is optional, new files are created and enabled for
+>             build only when CONFIG_ACPI is enabled.
+>          2) As per Igor's suggestion, properties are added to the GPEX PCI
+>             host to indicate MMIO ranges. The platform fw can initialize
+>             these to appropriate values and the DSDT generator can fetch
+>             the information from the host bus itself. This makes the code
+>             generic instead of machine specific.
+>          3) Added PLIC patch from Haibo.
+>          4) Rebased to latest riscv-to-apply.next and added RB tags as
+>             appropriate.
+> Sunil V L (13):
+>    hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
+>    hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
+>    hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
+>    hw/riscv: virt: Make few IMSIC macros and functions public
+>    hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
+>    hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
+>    hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
+>    hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
+>    hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
+>    hw/pci-host/gpex: Define properties for MMIO ranges
+>    hw/riscv/virt: Update GPEX MMIO related properties
+>    hw/riscv/virt-acpi-build.c: Add IO controllers and devices
+>    hw/riscv/virt-acpi-build.c: Add PLIC in MADT
+> 
+>   hw/arm/virt-acpi-build.c        |  51 +----
+>   hw/i386/acpi-microvm.c          |  15 +-
+>   hw/nvram/fw_cfg-acpi.c          |  23 +++
+>   hw/nvram/meson.build            |   1 +
+>   hw/pci-host/gpex-acpi.c         |  13 ++
+>   hw/pci-host/gpex.c              |  12 ++
+>   hw/riscv/Kconfig                |   1 +
+>   hw/riscv/virt-acpi-build.c      | 323 +++++++++++++++++++++++++++++---
+>   hw/riscv/virt.c                 |  72 ++++---
+>   hw/virtio/meson.build           |   1 +
+>   hw/virtio/virtio-acpi.c         |  32 ++++
+>   include/hw/nvram/fw_cfg_acpi.h  |  15 ++
+>   include/hw/pci-host/gpex.h      |  28 ++-
+>   include/hw/riscv/virt.h         |  26 +++
+>   include/hw/virtio/virtio-acpi.h |  16 ++
+>   15 files changed, 498 insertions(+), 131 deletions(-)
+>   create mode 100644 hw/nvram/fw_cfg-acpi.c
+>   create mode 100644 hw/virtio/virtio-acpi.c
+>   create mode 100644 include/hw/nvram/fw_cfg_acpi.h
+>   create mode 100644 include/hw/virtio/virtio-acpi.h
+> 
 
