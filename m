@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41177DF906
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 588817DF900
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:42:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybfG-0003Ow-GD; Thu, 02 Nov 2023 13:39:30 -0400
+	id 1qybfH-0003TN-Kg; Thu, 02 Nov 2023 13:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybef-0003FN-Jh
+ id 1qybef-0003FM-Hq
  for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:53 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybea-0002l8-1S
+ id 1qybeb-0002lP-Op
  for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:52 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40859c466efso8808465e9.3
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:47 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40853c639abso8954925e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698946726; x=1699551526; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698946727; x=1699551527; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uKA7bn5x9XExQ1qcDE6U/Plr8Mt6ZUx9Ro4D4g9gp3I=;
- b=iKH9OZijOU6qzxIy9L2zPGBID+Tu58jVZ/PtVAoKj8qxhBM28cUWoH/O5qS7lcbjho
- 8O9IxISmICpvnNniQXeeo4IwGTj+NkWbj98aOAgBzMSQJZfF9T04KILveajNEfpEjjol
- T3Fo1usA7hrs5ymHeubWRxjfzGMJPJ8qsgRd+4dk0/EOlFSD8CXj+StrAwk4rnxpLnrZ
- zjqBWOTEMxL+iB2nYcuoQloN5aLxFGglGlMVlyoapvZMMV2GfPNth48u56Lq/QWzilcZ
- DCrO29z5pXrI32qGF5BYUmFBQ65KmqaeYbi7XCje0XMLCGi3wOYtUO25aHsgXVzdiHc7
- GSLw==
+ :reply-to; bh=OufKB18os/HPYVeDiWWwuMKqpNGGWOwdFVtfIjwPxs4=;
+ b=uiwep+gxo5/Zlk+jrA/DtLTGNFb180/b59j6myLzJTgSd93z97x5Fe8OVTQPi2hFNG
+ M/57+ZolPTYO9GkF5LpLZZOJCj2yfA7hEH0NmM9XUyjXXRnqo2zMWIsOalQCo/FJLJfM
+ Z8jz0wIjG5+hzle8lusgMIOtrN9C8W7r5OdtMc7eMN9jOxrxtCH9Xyi/ds0VdtPG171m
+ BIOC+WHADq4uSj/j5anR7Ypuus0/L7E0dqDMSjqSNH26VMU/UhLDGm6+QGAqSZQflMJq
+ hq+HoajBjg4tvKC/H9NLF2T4HRAQDWxK4Nel+3WiUxyEegZWbARlsWwjBNvo9DRRKUJM
+ LGog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698946726; x=1699551526;
+ d=1e100.net; s=20230601; t=1698946727; x=1699551527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uKA7bn5x9XExQ1qcDE6U/Plr8Mt6ZUx9Ro4D4g9gp3I=;
- b=LBiR+Pn5Er1fwclT7aYlvDPDNX/Q47x9pwuEHohxILudNp0ypqf3/sU8t3Q+lQ3aJ1
- SngQxjIa02lwClM9T6f0h1TLAf6avu0lSgCaThYa6pk+0UH2rMBckjifdp3VbAeibLOR
- I2x6u+ix1ZkPh/nbpbXb/x0QAhU62iPz1SGix0ttOJQ6H9zXUn7UtIlKuixj31CWeZMb
- uNylWOOJj/MmUIgezWprl/7/OyFm0B/RY16xpxAeNmbr/Sj0c3DlwjNwf/lr6BUluLj8
- RaoxjDaapJlvvF4hSfbpveauA5u3oEnNThrLC/s8V1ykEC8WL8nrQuoAKdZdnNDvai+l
- HNuQ==
-X-Gm-Message-State: AOJu0YzfJtRtamrHFmJwC+WUmEY8riC8M0U4u6SFUPR8QIH1AhP/dQnu
- IrcSm496gEOfH4+joc4Zy3AwpB7C15pIC/yFUos=
-X-Google-Smtp-Source: AGHT+IExnIqyamcyxZxUSPXbKAb5QSwrFWALySqqDrCUeMvmYhBxVx7O0y4coEhnYC8e6WmbuZbD0Q==
-X-Received: by 2002:a5d:64c8:0:b0:32f:9977:eefd with SMTP id
- f8-20020a5d64c8000000b0032f9977eefdmr6914028wri.42.1698946726702; 
- Thu, 02 Nov 2023 10:38:46 -0700 (PDT)
+ bh=OufKB18os/HPYVeDiWWwuMKqpNGGWOwdFVtfIjwPxs4=;
+ b=CO7xEPoRBX0gmbDrlhWtC0eX2axeSyrqw6hM+zVhUrH8q0tcoxEMYCfEh1WromRjYT
+ Ar/WSwyijgSLMWzC3VoPzNl9Y60hGC8+al3UNSqfvhJJ9vF9W/41mpJoKF+FIC9wzIol
+ o4Kbk1rdI25CF/1pWX0v4dgdyrya3yaq+mtp5iU3TmLgjka3d6vDRu4h29YB7K73zoCm
+ LmEWVxIJr4w/HrlOdoHJETHPG7xOER1YcSr/X9KzsmRtkaiSoSoOTro0WXxfdVvX0VPE
+ qGW5+1WAy5xJGnVWmL6fqtdNZOnrP8wXOMq5mZJfx7jPa5CmUO/7pItHGnFHw1zva7MV
+ mpfg==
+X-Gm-Message-State: AOJu0Yz4MBk1XRrl/S5nuWdm+BMDnj/+H0NHge+ZZoIPpQB9YIY2QU5S
+ 4RFKqM/GWgkafozuL7lAtKN6wKAZE1T0q3mQ4go=
+X-Google-Smtp-Source: AGHT+IH7xisEN015V9C0X0XX01NbuLVmx3WppQlCldnqKei6YVQqNO55/DYCnyMY+W1AVjd8xt/wuQ==
+X-Received: by 2002:a5d:5e87:0:b0:32d:a427:7fda with SMTP id
+ ck7-20020a5d5e87000000b0032da4277fdamr17673036wrb.48.1698946727193; 
+ Thu, 02 Nov 2023 10:38:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.46
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 02 Nov 2023 10:38:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/33] hw/arm/pxa2xx_gpio: Pass CPU using QOM link property
-Date: Thu,  2 Nov 2023 17:38:19 +0000
-Message-Id: <20231102173835.609985-18-peter.maydell@linaro.org>
+Subject: [PULL 18/33] hw/watchdog/wdt_imx2: Trace MMIO access
+Date: Thu,  2 Nov 2023 17:38:20 +0000
+Message-Id: <20231102173835.609985-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,63 +91,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Instead of passing the CPU index and resolving it,
-use a QOM link to directly pass the CPU.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231030083706.63685-1-philmd@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20231028122415.14869-2-shentey@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/pxa2xx_gpio.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ hw/watchdog/wdt_imx2.c   | 24 ++++++++++++++++++------
+ hw/watchdog/trace-events |  4 ++++
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/hw/arm/pxa2xx_gpio.c b/hw/arm/pxa2xx_gpio.c
-index e7c3d99224a..c8db5e8e2b7 100644
---- a/hw/arm/pxa2xx_gpio.c
-+++ b/hw/arm/pxa2xx_gpio.c
-@@ -32,7 +32,6 @@ struct PXA2xxGPIOInfo {
-     MemoryRegion iomem;
-     qemu_irq irq0, irq1, irqX;
-     int lines;
--    int ncpu;
-     ARMCPU *cpu;
+diff --git a/hw/watchdog/wdt_imx2.c b/hw/watchdog/wdt_imx2.c
+index e776a2fbd40..885ebd39787 100644
+--- a/hw/watchdog/wdt_imx2.c
++++ b/hw/watchdog/wdt_imx2.c
+@@ -17,6 +17,7 @@
+ #include "hw/qdev-properties.h"
  
-     /* XXX: GNU C vectors are more suitable */
-@@ -266,12 +265,11 @@ static const MemoryRegionOps pxa_gpio_ops = {
- DeviceState *pxa2xx_gpio_init(hwaddr base,
-                               ARMCPU *cpu, DeviceState *pic, int lines)
+ #include "hw/watchdog/wdt_imx2.h"
++#include "trace.h"
+ 
+ static void imx2_wdt_interrupt(void *opaque)
  {
--    CPUState *cs = CPU(cpu);
-     DeviceState *dev;
- 
-     dev = qdev_new(TYPE_PXA2XX_GPIO);
-     qdev_prop_set_int32(dev, "lines", lines);
--    qdev_prop_set_int32(dev, "ncpu", cs->cpu_index);
-+    object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-@@ -303,8 +301,6 @@ static void pxa2xx_gpio_realize(DeviceState *dev, Error **errp)
+@@ -67,20 +68,29 @@ static void imx2_wdt_reset(DeviceState *dev)
+ static uint64_t imx2_wdt_read(void *opaque, hwaddr addr, unsigned int size)
  {
-     PXA2xxGPIOInfo *s = PXA2XX_GPIO(dev);
+     IMX2WdtState *s = IMX2_WDT(opaque);
++    uint16_t value = 0;
  
--    s->cpu = ARM_CPU(qemu_get_cpu(s->ncpu));
--
-     qdev_init_gpio_in(dev, pxa2xx_gpio_set, s->lines);
-     qdev_init_gpio_out(dev, s->handler, s->lines);
+     switch (addr) {
+     case IMX2_WDT_WCR:
+-        return s->wcr;
++        value = s->wcr;
++        break;
+     case IMX2_WDT_WSR:
+-        return s->wsr;
++        value = s->wsr;
++        break;
+     case IMX2_WDT_WRSR:
+-        return s->wrsr;
++        value = s->wrsr;
++        break;
+     case IMX2_WDT_WICR:
+-        return s->wicr;
++        value = s->wicr;
++        break;
+     case IMX2_WDT_WMCR:
+-        return s->wmcr;
++        value = s->wmcr;
++        break;
+     }
+-    return 0;
++
++    trace_imx2_wdt_read(addr, value);
++
++    return value;
  }
-@@ -339,7 +335,7 @@ static const VMStateDescription vmstate_pxa2xx_gpio_regs = {
  
- static Property pxa2xx_gpio_properties[] = {
-     DEFINE_PROP_INT32("lines", PXA2xxGPIOInfo, lines, 0),
--    DEFINE_PROP_INT32("ncpu", PXA2xxGPIOInfo, ncpu, 0),
-+    DEFINE_PROP_LINK("cpu", PXA2xxGPIOInfo, cpu, TYPE_ARM_CPU, ARMCPU *),
-     DEFINE_PROP_END_OF_LIST(),
- };
+ static void imx_wdt2_update_itimer(IMX2WdtState *s, bool start)
+@@ -137,6 +147,8 @@ static void imx2_wdt_write(void *opaque, hwaddr addr,
+ {
+     IMX2WdtState *s = IMX2_WDT(opaque);
  
++    trace_imx2_wdt_write(addr, value);
++
+     switch (addr) {
+     case IMX2_WDT_WCR:
+         if (s->wcr_locked) {
+diff --git a/hw/watchdog/trace-events b/hw/watchdog/trace-events
+index 2739570652b..874968cc06a 100644
+--- a/hw/watchdog/trace-events
++++ b/hw/watchdog/trace-events
+@@ -17,6 +17,10 @@ cmsdk_apb_watchdog_lock(uint32_t lock) "CMSDK APB watchdog: lock %" PRIu32
+ aspeed_wdt_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
+ aspeed_wdt_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+ 
++# wdt_imx2.c
++imx2_wdt_read(uint32_t addr, uint16_t data) "[0x%" PRIx32 "] -> 0x%" PRIx16
++imx2_wdt_write(uint32_t addr, uint16_t data) "[0x%" PRIx32 "] <- 0x%" PRIx16
++
+ # spapr_watchdog.c
+ spapr_watchdog_start(uint64_t flags, uint64_t num, uint64_t timeout) "Flags 0x%" PRIx64 " num=%" PRId64 " %" PRIu64 "ms"
+ spapr_watchdog_stop(uint64_t num, uint64_t ret) "num=%" PRIu64 " ret=%" PRId64
 -- 
 2.34.1
 
