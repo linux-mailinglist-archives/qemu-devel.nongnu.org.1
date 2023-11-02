@@ -2,102 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24927DFA59
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 19:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1697DFB49
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 21:11:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qycmv-00062c-2c; Thu, 02 Nov 2023 14:51:29 -0400
+	id 1qye1G-0004N3-KQ; Thu, 02 Nov 2023 16:10:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qycms-0005xm-VH; Thu, 02 Nov 2023 14:51:26 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qycmr-0007Xo-7Y; Thu, 02 Nov 2023 14:51:26 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A2IlsYT005396; Thu, 2 Nov 2023 18:51:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=3doe3cTTk0DyLIRXdJa7hYoNldaR5cMbSmIQQPxlIlg=;
- b=P2zdl84k1xjEpAYbSyB3x+oQU+g1D6uTqwf5UzalShiKVJPqLi1hbt7gCpQqvL/RYebJ
- rinIl972/wx2S2ATiqbVWNRSGVfq8KZ1HttLRJrmZg68L7GWHhh6U61MhJ6KCv9tMwjc
- O1VPYF/8e2R+QGUdBkIhEKRQ5CxDHmTs2sl4ToBBPQ78t7KFajlKmJ6orsZhvb+Xqmxo
- +ByDINlkin7aUfWAlGI7IV9u2MrrwL2260WqBbatZ9wkngWmZewFDGA4OuvgAXMUva0D
- tLMchlkwKOuKw2+JHsRjQFd0QULEcmF7S97uAXRmoh6ITSg8ju0oPHI4hfP6ls8CWyNb Xw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u4h72rh4d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Nov 2023 18:51:21 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A2Ilvs0005671;
- Thu, 2 Nov 2023 18:51:20 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u4h72rgt4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Nov 2023 18:51:20 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A2HiVmt007664; Thu, 2 Nov 2023 18:50:51 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u1dmp0sbc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Nov 2023 18:50:51 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A2Ioo6r60948742
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Nov 2023 18:50:50 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DEADC5805A;
- Thu,  2 Nov 2023 18:50:49 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E5B6B58054;
- Thu,  2 Nov 2023 18:50:48 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.184.176]) by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  2 Nov 2023 18:50:48 +0000 (GMT)
-Message-ID: <0cb53eda95889a41d485b993003a10600a7d4424.camel@linux.ibm.com>
-Subject: Re: [PATCH] s390/sclp: fix SCLP facility map
-From: Eric Farman <farman@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Date: Thu, 02 Nov 2023 14:50:48 -0400
-In-Reply-To: <20231024100703.929679-1-hca@linux.ibm.com>
-References: <20231024100703.929679-1-hca@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qye1E-0004MU-4h
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 16:10:20 -0400
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qye1C-0006se-O1
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 16:10:19 -0400
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-1dcfe9cd337so664291fac.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 13:10:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1698955816; x=1699560616; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XYffJWKxPAG1+woL4v6dzrkVET0Jn4SD6hAm7Qu4mFw=;
+ b=lZxuLGErTvn1/W6ZFfq2K21P00DgT7ly1VnNiqaT2dMFPZPcxRNAyIPzvuoNut0+AB
+ gNKMNWR4xA5YeGxU61mtmckz0RGQWipkzMctHHtWmcz1X6ZTEGVpJFy2IthvvfwCwRrA
+ 5v0KibalB+8ZT+iVaJyxZokTWPwheTn+25ZhBXn2Byn1KhUItvlP/yJ6VJKdHK1nODKL
+ k/wSnn8nYaM755G2SSlwJVp6FnFzsDGB59LW0EDyx7w3A7mDkUrvGEIlnt/Msk3TwWEq
+ sN5b8zj2K/lvj1FU4qdg4jRgEm80JIHbY3x/vJOwm9vk1SQtS7FuM+uMwwrJSt5+Fs9Y
+ g/lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698955816; x=1699560616;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XYffJWKxPAG1+woL4v6dzrkVET0Jn4SD6hAm7Qu4mFw=;
+ b=vHi45FouBP6fk8RwLL4jARhW72MOTv74NZukkc/UQ/rh2D/IaQvAlVPofAJGKJvi+2
+ sGB6/vOuMfa25euqTbFRFyLwFkKTw5Pb+T5gjRyf5RjjCg7VrlaAjD5Yw+tghDbwSbfI
+ LUkaB1WqNTWNYYJs38/kWs1ZCzJljt5STU5aBPP8lz2a1IJw8o0gpW50cxhZMODsbOZ3
+ /XOnHngT9XtR81lmOoX1JXI+/tLFegGznAIVqCdvzI2F7luCQpexsGcKDWqKWihyQ1vS
+ TpohJYHVtw9RKHHcJLE7v8fVvVm4QaRpTZsV43rXnppUIR4nS5s77yRNhhovmRQizdOp
+ msNg==
+X-Gm-Message-State: AOJu0Yx+Pj1E+IcGPCIiwdtZnuhl5/1ywSVemy5emVrVJ+AauJ8dXzdO
+ metzV/YQFsIkddGswlul/CwffI0jsFk=
+X-Google-Smtp-Source: AGHT+IGHskeqgz8SMWzyGQKjJk8uFX+a5OtuRNU6uPB0yuPbVUZgv3/3xZf/zE3Pb+pZasT+uU4gJg==
+X-Received: by 2002:a05:6871:5209:b0:1d0:f5bd:6e9 with SMTP id
+ ht9-20020a056871520900b001d0f5bd06e9mr19647831oac.22.1698955816365; 
+ Thu, 02 Nov 2023 13:10:16 -0700 (PDT)
+Received: from taylor-ubuntu.austin.rr.com (cpe-68-203-8-61.austin.res.rr.com.
+ [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
+ z9-20020a056870e14900b001e98b1544fesm63543oaa.9.2023.11.02.13.10.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Nov 2023 13:10:15 -0700 (PDT)
+From: Taylor Simpson <ltaylorsimpson@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Taylor Simpson <ltaylorsimpson@gmail.com>
+Subject: [PATCH 0/3] Hexagon (target/hexagon) Enable more short-circuit packets
+Date: Thu,  2 Nov 2023 14:10:03 -0600
+Message-Id: <20231102201006.33143-1-ltaylorsimpson@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tphAdjKbF-lO4whqozU41MBNkQcLYprJ
-X-Proofpoint-ORIG-GUID: Usa5pFJZp--QYOo_yCFRDH_oLYeEmhD5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-02_09,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1015
- impostorscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 adultscore=0 phishscore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
- definitions=main-2311020154
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: test/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-oa1-x2f.google.com
+X-Spam_score_int: 2
+X-Spam_score: 0.2
+X-Spam_bar: /
+X-Spam_report: (0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, EMPTY_MESSAGE=2.32,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,33 +89,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KCtjYyBxZW11LWRldmVsKQoKT24gVHVlLCAyMDIzLTEwLTI0IGF0IDEyOjA3ICswMjAwLCBIZWlr
-byBDYXJzdGVucyB3cm90ZToKPiBRZW11J3MgU0NMUCBpbXBsZW1lbnRhdGlvbiBpbmNvcnJlY3Rs
-eSByZXBvcnRzIHRoYXQgaXQgc3VwcG9ydHMgQ1BVCj4gcmVjb25maWd1cmF0aW9uLiBJZiBhIGd1
-ZXN0IGlzc3VlcyBhIENQVSByZWNvbmZpZ3VyYXRpb24gcmVxdWVzdCBpdAo+IGlzIHJlamVjdGVk
-IGFzIGludmFsaWQgY29tbWFuZC4KPiAKPiBGaXggdGhlIFNDTFBfSEFTX0NQVV9JTkZPIG1hc2ss
-IGFuZCByZW1vdmUgdGhlIHVudXNlZAo+IFNDTFBfQ01EV19DT05GSUdVUkVfQ1BVIGFuZCBTQ0xQ
-X0NNRFdfREVDT05GSUdVUkVfQ1BVIGRlZmluZXMuCj4gCj4gUmV2aWV3ZWQtYnk6IEVyaWMgRmFy
-bWFuIDxmYXJtYW5AbGludXguaWJtLmNvbT4KPiBSZXZpZXdlZC1ieTogSGFsaWwgUGFzaWMgPHBh
-c2ljQGxpbnV4LmlibS5jb20+Cj4gU2lnbmVkLW9mZi1ieTogSGVpa28gQ2Fyc3RlbnMgPGhjYUBs
-aW51eC5pYm0uY29tPgo+IC0tLQo+IMKgaW5jbHVkZS9ody9zMzkweC9zY2xwLmggfCA0ICstLS0K
-PiDCoDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMyBkZWxldGlvbnMoLSkKClRob21h
-cywgYW55IGNvbmNlcm5zPyBDb3VsZCB0aGlzIGdldCBwaWNrZWQgdXAgZm9yIDguMiwgcGxlYXNl
-PwoKPiAKPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody9zMzkweC9zY2xwLmggYi9pbmNsdWRlL2h3
-L3MzOTB4L3NjbHAuaAo+IGluZGV4IDlhZWY2ZDkzNzAxMi4uYjRlY2QwNGUyMzQxIDEwMDY0NAo+
-IC0tLSBhL2luY2x1ZGUvaHcvczM5MHgvc2NscC5oCj4gKysrIGIvaW5jbHVkZS9ody9zMzkweC9z
-Y2xwLmgKPiBAQCAtMzgsMTAgKzM4LDggQEAKPiDCoCNkZWZpbmUgTUFYX1NUT1JBR0VfSU5DUkVN
-RU5UU8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgMTAyMAo+IMKgCj4gwqAvKiBD
-UFUgaG90cGx1ZyBTQ0xQIGNvZGVzICovCj4gLSNkZWZpbmUgU0NMUF9IQVNfQ1BVX0lORk/CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IDB4MEMwMDAwMDAwMDAw
-MDAwMFVMTAo+ICsjZGVmaW5lIFNDTFBfSEFTX0NQVV9JTkZPwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiAweDA4MDAwMDAwMDAwMDAwMDBVTEwKPiDCoCNkZWZp
-bmUgU0NMUF9DTURXX1JFQURfQ1BVX0lORk/CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCAweDAwMDEwMDAxCj4gLSNkZWZpbmUgU0NMUF9DTURXX0NPTkZJR1VSRV9DUFXCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAweDAwMTEwMDAxCj4gLSNkZWZpbmUgU0NMUF9DTURXX0RF
-Q09ORklHVVJFX0NQVcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgMHgwMDEwMDAwMQo+IMKg
-Cj4gwqAvKiBTQ0xQIFBDSSBjb2RlcyAqLwo+IMKgI2RlZmluZSBTQ0xQX0hBU19JT0FfUkVDT05G
-SUfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiAweDAwMDAwMDAwNDAwMDAw
-MDBVTEwK
+This patch series improves the set of packets that can short-circuit
+the commit packet logic and write the results directly during the
+execution of each instruction in the packet.
+
+The key observation is that checking for overlap between register reads
+and writes is different from read-after-write.  For example, this packet
+    { R0 = add(R0,R1); R6 = add(R6,R7) }
+has an overlap between the reads and writes without doing a read after a
+write.  Therefore, it is safe to write directly into the destination
+registers during instruction execution.
+
+Another example is a .new register read.  These can read from either the
+destination register or a temporary location.
+
+HVX instructions with generated helpers require special handling.
+The semantics of the helpers are pass-by-reference, so we still need the
+overlap check for these.
+
+
+Taylor Simpson (3):
+  Hexagon (target/hexagon) Analyze reads before writes
+  Hexagon (target/hexagon) Enable more short-circuit packets (scalar
+    core)
+  Hexagon (target/hexagon) Enable more short-circuit packets (HVX)
+
+ target/hexagon/translate.h          | 117 ++++++++++---
+ target/hexagon/translate.c          |  75 +--------
+ target/hexagon/README               |   7 +-
+ target/hexagon/gen_analyze_funcs.py | 252 ++++++++++++----------------
+ target/hexagon/gen_tcg_funcs.py     |   2 +-
+ target/hexagon/hex_common.py        |  10 ++
+ 6 files changed, 227 insertions(+), 236 deletions(-)
+
+-- 
+2.34.1
 
 
