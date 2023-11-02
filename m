@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2447DEB6F
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 04:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 856D27DEBB4
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 05:16:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyOSs-0000Kg-He; Wed, 01 Nov 2023 23:33:50 -0400
+	id 1qyP6K-00020x-3X; Thu, 02 Nov 2023 00:14:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leohou1402@gmail.com>)
- id 1qyOSp-0000IP-TB
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 23:33:47 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyP6F-00020b-R7
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:14:31 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <leohou1402@gmail.com>)
- id 1qyOSh-0006UP-NX
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 23:33:41 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6b20a48522fso506144b3a.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 20:33:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qyP6D-0006Rc-By
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:14:31 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1c9b7c234a7so4242695ad.3
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 21:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698896018; x=1699500818; darn=nongnu.org;
- h=content-transfer-encoding:message-id:mime-version:references
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=gaqe7hSpMVmgdPVFNLAm3Xl7Tsl/kyGbZCIuZbAWbi0=;
- b=RR0lppTc7iCxX0jEDRuJLItPWJLECUZ1v5/wRAGz3Elh5WAhanb7P2FPjwoLg2Iuuj
- 6eyy53UP5r6ySoPYtS+6Ol3MO6+z4HWNfTWCSqlw+LU84VbdPktwrcC7Y4ihTDN1Zc5L
- ywAd+OhxzKatssQZDpW9vT9KRlhd87E7+5LJ6abbj/6oqN/V6eV+NBSCyJChsKUhUYjv
- a6wJeqIipcxaRnOlcivuPrhTHxLNGegIPDyGFz7Ot+Ea8ozrQ0t4QO/4Bhf7AaHyt44u
- 0CO4cYSlOFHAWcZQnwqChrpTW2zbUX0uKIf4V1Bs2XrcL8+m0Pd+d6WwM1IxIHWMn05S
- 4yMA==
+ d=linaro.org; s=google; t=1698898468; x=1699503268; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=B67XhsM6szQCsiwbo0t/UrspcEy05/rlvNMPecuSUok=;
+ b=ThfYVIYTtYU1v8AXfPljnlbSbO60pSmdTDqboskGg3WfNkZdEVgSK8vM/zvZoWFMOh
+ 2fVvTffSgUylK5GeIfU9JgZGBJCogo1dFRiJRmeku0fBmSGBq6aVsVX7A7P/SoRVtoj6
+ C4Hpl7+wFbgh7rkg9okghLGzIujODvxqYuEu1qHv2vKCgdqH5474V4VdFnGC8dfcruiz
+ pBFWyrnOjginXu7543feA1yg7TzJYydBBF8ldB6qJG79tTdpa6Dw8kCD7DB2q0JiNQx1
+ 9UmvUdrDoORjY35WnZDLiLLctuRpGizJOM8XbQh9MMNZb0dCuQc7V8UCbcb/g1ZKun0w
+ kFBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698896018; x=1699500818;
- h=content-transfer-encoding:message-id:mime-version:references
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gaqe7hSpMVmgdPVFNLAm3Xl7Tsl/kyGbZCIuZbAWbi0=;
- b=fEQ9dIxA0HvzcYL9/dkXBTP5vLo+PPFfVXnY9AbfhtLktsIJF74hEA2OlSPtwbMVZ5
- tQweYSCVEEqocv6xja7JLjgcbcoFaFqrODV/vSP0s74scszqwwhlvSFoI3rHWubx2gm1
- hrGFuqbEkP0DxCgwxl9aRCkrZ/Nnehl3YAuyVAR4a9z6VE/NQldIcMLPP+Nv0D20Y1Fz
- 9M/VUtT4yDR/hk9BEZSNnjLMQCeQqNzBpaV+tXp22dZZzkpGsCYaJzeLBihNmOiQHTg3
- d/n6hcj3C9a99QAGkSd9+YYj0QnMkZtcL/TRUVYP3vzvEAgdOPJtzTVyueFoKw8Pm7B3
- IuMw==
-X-Gm-Message-State: AOJu0YzhYJIwii80N5A4xwWgbJKV/yKI6Wx4ZMo7h3fEdRwGDb+Zx4AT
- L4mZ2398ngStMT2lVG4ioUU=
-X-Google-Smtp-Source: AGHT+IFlb16PmkYSgPT05OOrXdEPXIpK8wWZllUjdFgYYQuwfVUcAsPFCQwB8vwVnRvpPvdTLn4XLA==
-X-Received: by 2002:a05:6a00:1307:b0:6bd:8c4a:ab8f with SMTP id
- j7-20020a056a00130700b006bd8c4aab8fmr16506647pfu.2.1698896017682; 
- Wed, 01 Nov 2023 20:33:37 -0700 (PDT)
-Received: from DESKTOP-2O3KOGU ([40.83.119.27])
+ d=1e100.net; s=20230601; t=1698898468; x=1699503268;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=B67XhsM6szQCsiwbo0t/UrspcEy05/rlvNMPecuSUok=;
+ b=wycD/Tuy0j8NwDpVuAf/HRBiCMZMF1TXp7IA5HVJTTKgS4LQSbCjbowilPrD70J0Wx
+ KR7GGvyClAD+MPuryu1vO9iDQ6FUVZzWVHn/7uXxb6mE9L4mv8HKwnl01kmuLTy1mvfQ
+ +Rx2PsLrZW+VKhJW9oqUm164ZLaLI7I8Nv458jM6EJu54UmPbA6Xs+7YSytDtLAPgb93
+ sYlMCil/jIfhyTvbzAkybH4hfb4Hwguh8btb6gbU8+W4wbHWShMHp9GwT3VgV7L1Y5vn
+ 3r+XjkqOQ2jhMFGhKygSQKJcSrk+fKC1mhGZ1nIp2j9t0v1a8kvMw2jrQghD9UO39H5R
+ wVyg==
+X-Gm-Message-State: AOJu0Yyuw5EbrJaOTGA0lgUylsYLFGaSKWJfU+ABlKpXYrFnLnZUhKdv
+ aYiEh3AY4wJ3jEZuIlTWuLxIUg==
+X-Google-Smtp-Source: AGHT+IG7Xmj8VcSBnFHt6oXXJeJBWrMAihEvgQMNr8V78hrpILTP6A/1A2TrUd8fQyYoaPL/d3QExg==
+X-Received: by 2002:a17:902:e0c5:b0:1c8:8f5f:b610 with SMTP id
+ e5-20020a170902e0c500b001c88f5fb610mr15095258pla.13.1698898467852; 
+ Wed, 01 Nov 2023 21:14:27 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- x25-20020a056a00271900b00688965c5227sm1855406pfv.120.2023.11.01.20.33.36
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 01 Nov 2023 20:33:37 -0700 (PDT)
-Date: Thu, 2 Nov 2023 11:33:35 +0800
-From: "leohou1402@gmail.com" <leohou1402@gmail.com>
-To: philmd <philmd@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-Subject: =?utf-8?B?5Zue5aSNOiBGdzog5p2l6IeqTGVvIEhvdeeahOmCruS7tg==?=
-References: <3ab81ab1.1faf.18b8df8f26e.Coremail.leohou163@163.com>
-X-Priority: 3
-X-GUID: 27789758-A5A8-4C54-94B1-E153A657355C
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.25.228[cn]
-Mime-Version: 1.0
-Message-ID: <202311021133346289459@gmail.com>
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=leohou1402@gmail.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ jk5-20020a170903330500b001c61e628e9dsm2029348plb.77.2023.11.01.21.14.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 Nov 2023 21:14:27 -0700 (PDT)
+Message-ID: <3ee2adaa-3ea3-4ce0-ba77-32bbf64a4a33@linaro.org>
+Date: Wed, 1 Nov 2023 21:14:25 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 25/33] machine: Constify
+ MachineClass::valid_cpu_types[i]
+Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+References: <20231102002500.1750692-1-gshan@redhat.com>
+ <20231102002500.1750692-26-gshan@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231102002500.1750692-26-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,20 +94,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMzEvMTAvMjMgMTY6MTM6MzIgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6Cj5IaSBM
-ZW8sCj4KPk9uIDMxLzEwLzIzIDA0OjEwLCBMZW8gSG91IHdyb3RlOgo+PiBoaSAsIGFsbAo+PsKg
-IMKgwqDCoMKgwqAgRG9lcyBxZW11IHBsYW4gdG8gc3VwcG9ydCBDUFUgaGV0ZXJvZ2VuZWl0eT8K
-Cj4KCj5TaG9ydCBhbnN3ZXIgaXMgeWVzLiBXaGVuIHdpbGwgdGhpcyBiZSBhdmFpbGFibGUgaXMg
-eWV0IHRvCj5iZSBkZXRlcm1pbmVkLCBhcyBhIGxvdCBvZiB3b3JrIGlzIHJlcXVpcmVkLgoKCgo+
-SSdtIGdvaW5nIHRvIHRhbGsgYWJvdXQgdGhlIGNoYWxsZW5nZXMgYW5kIHBvc3NpYmxlIHJvYWRt
-YXAKPmxhdGVyIHRvZGF5LCBmZWVsIGZyZWUgdG8gam9pbiB0aGUgY2FsbCBzY2hlZHVsZWQgYXQg
-MnBtIENFVAo+b24gaHR0cHM6Ly9tZWV0LmppdC5zaS9rdm1jYWxsbWVldGluZy4KPihTZWUgCj5o
-dHRwczovL2xvcmUua2VybmVsLm9yZy9xZW11LWRldmVsL2NhbGVuZGFyLTFhZDE2NDQ5LTA5Y2Mt
-NDBmYi1hYjRhLTI0ZWFmY2M2MmQyYUBnb29nbGUuY29tLykKCgpIaSBQaGlsaXBwZQoKClRoYW5r
-IHlvdSBmb3IgeW91ciByZXBseS4gSSBkaWRuJ3QgY2hlY2sgbXkgZW1haWwgaW4gdGltZQogYmVj
-YXVzZSBvZiB0aGUgbWFpbGJveCBwcm9ibGVtLiBOb3cgSSB3aWxsIHJlcGx5IHRvIHlvdQogYnkg
-Y2hhbmdpbmcgbXkgZW1haWwgYWRkcmVzcy4KCldpdGggcmVnYXJkIHRvIHlvdXIgZGlzY3Vzc2lv
-biwgaXMgaXQgY29udmVuaWVudCB0byBhbm5vdW5jZSAKdGhlIHJlc3VsdHMgb2YgdGhlIGRpc2N1
-c3Npb24gbm93Pwo=
+On 11/1/23 17:24, Gavin Shan wrote:
+> Constify MachineClass::valid_cpu_types[i], as suggested by Richard
+> Henderson.
+> 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/m68k/q800.c      | 2 +-
+>   include/hw/boards.h | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
