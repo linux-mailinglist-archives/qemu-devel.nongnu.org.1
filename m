@@ -2,105 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C431F7DF1CF
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 170FF7DF1E6
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 13:01:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyWBm-0003hJ-5o; Thu, 02 Nov 2023 07:48:43 -0400
+	id 1qyWN8-00059J-VX; Thu, 02 Nov 2023 08:00:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW9a-0000Ab-TV
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:46:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qyWMw-000567-AH
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:00:14 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW9W-0006xh-Bw
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:46:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698925579;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nU3JuMWHygF67xfbq/l2au3y8PAann8vt1M9q4g8gpU=;
- b=Tw6Qz3C/2Yd2YISv19HAG/OUl0Yu2wGViMroBoPkcs43Q25LJ1fACalZg34eGZn3NltcOL
- bbch+hP5O78HEx8uglkuiv3c+LlKPz8NNrnYnXoBFqxxvzJ/9NZzTSqsnd5ZVX2k5PmQLX
- jtut5yln8X3wKualmiiqZRZhTIq4k0Y=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-VqLnO8mIO529w4tlw41hDQ-1; Thu,
- 02 Nov 2023 07:46:15 -0400
-X-MC-Unique: VqLnO8mIO529w4tlw41hDQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B73E33C14911;
- Thu,  2 Nov 2023 11:46:13 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 25D7C2026D6E;
- Thu,  2 Nov 2023 11:46:06 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>, qemu-block@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>, qemu-s390x@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Leonardo Bras <leobras@redhat.com>, Corey Minyard <cminyard@mvista.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Halil Pasic <pasic@linux.ibm.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Li Zhijian <lizhijian@fujitsu.com>, Eric Blake <eblake@redhat.com>,
- "Denis V. Lunev" <den@openvz.org>, Hanna Reitz <hreitz@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-arm@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Corey Minyard <minyard@acm.org>,
- John Snow <jsnow@redhat.com>, Jeff Cody <codyprime@gmail.com>,
- Peter Xu <peterx@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Juan Quintela <quintela@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Stefan Weil <sw@weilnetz.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Fam Zheng <fam@euphon.net>, Het Gala <het.gala@nutanix.com>,
- Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-Subject: [PULL 40/40] migration: modify test_multifd_tcp_none() to use new
- QAPI syntax.
-Date: Thu,  2 Nov 2023 12:40:54 +0100
-Message-ID: <20231102114054.44360-41-quintela@redhat.com>
-In-Reply-To: <20231102114054.44360-1-quintela@redhat.com>
-References: <20231102114054.44360-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qyWMq-0004pK-PP
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:00:14 -0400
+Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:88b:0:640:d9e4:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 184E761C16;
+ Thu,  2 Nov 2023 15:00:04 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8005::1:a] (unknown
+ [2a02:6b8:b081:8005::1:a])
+ by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 20WUYM5OdW20-gWRYnCeu; Thu, 02 Nov 2023 15:00:03 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1698926403;
+ bh=1AX98m8z+gRt1dJg6otmmLlfI+XZ3b+watOzdOSgJ1s=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=vnawbDrXy+PWO9TKBDGHgWTH7kQpIKCgu4VrIBs0mYCsNC1UO0Lg2sXr7kgF+DsJK
+ mgWy+wY5AM+R1dhML1SeguPjo1mrfMvWurEZLXcu8OTC4g3IRk+03/ynyjFF2A+LHa
+ LE8+Gt9mK2taHIMuGE34bpthrvJG2PCf6SqTTq/k=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <d69f0aeb-303a-4721-b25b-52a08b8cd63f@yandex-team.ru>
+Date: Thu, 2 Nov 2023 15:00:01 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/4] pci hotplug tracking
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ eduardo@habkost.net, berrange@redhat.com, pbonzini@redhat.com,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, den-plotnikov@yandex-team.ru,
+ yc-core@yandex-team.ru, Peter Krempa <pkrempa@redhat.com>,
+ nshirokovskiy@openvz.org, devel@lists.libvirt.org
+References: <20231005092926.56231-1-vsementsov@yandex-team.ru>
+ <20231102072800-mutt-send-email-mst@kernel.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20231102072800-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -112,40 +79,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Het Gala <het.gala@nutanix.com>
+On 02.11.23 14:31, Michael S. Tsirkin wrote:
+> On Thu, Oct 05, 2023 at 12:29:22PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>> Hi all!
+>>
+>> Main thing this series does is DEVICE_ON event - a counter-part to
+>> DEVICE_DELETED. A guest-driven event that device is powered-on.
+>> Details are in patch 2. The new event is paried with corresponding
+>> command query-hotplug.
+> 
+> Several things questionable here:
+> 1. depending on guest activity you can get as many
+>     DEVICE_ON events as you like
 
-modify multifd tcp common test to incorporate the new QAPI
-syntax defined.
+No, I've made it so it may be sent only once per device
 
-Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-Signed-off-by: Het Gala <het.gala@nutanix.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231023182053.8711-15-farosas@suse.de>
----
- tests/qtest/migration-test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> 2. it's just for shpc and native pcie - things are
+>     confusing enough for management, we should make sure
+>     it can work for all devices
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 047b7194df..e803b46039 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -1310,7 +1310,12 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
- 
-     migrate_prepare_for_dirty_mem(from);
-     qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
--                             "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
-+                             "  'arguments': { "
-+                             "      'channels': [ { 'channel-type': 'main',"
-+                             "      'addr': { 'transport': 'socket',"
-+                             "                'type': 'inet',"
-+                             "                'host': '127.0.0.1',"
-+                             "                'port': '0' } } ] } }");
- 
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
+Agree, I'm thinking about it
+
+> 3. what about non hotpluggable devices? do we want the event for them?
+> 
+
+I think, yes, especially if we make async=true|false flag for device_add, so that successful device_add must be always followed by DEVICE_ON - like device_del is followed by DEVICE_DELETED.
+
+Maybe, to generalize, it should be called not DEVICE_ON (which mostly relate to hotplug controller statuses) but DEVICE_ADDED - a full counterpart for DEVICE_DELETED.
+
+> 
+> I feel this needs actual motivation so we can judge what's the
+> right way to do it.
+
+My first motivation for this series was the fact that successful device_add doesn't guarantee that hard disk successfully hotplugged to the guest. It relates to some problems with shpc/pcie hotplug we had in the past, and they are mostly fixed. But still, for management tool it's good to understand that all actions related to hotplug controller are done and we have "green light".
+
+Recently new motivation come, as I described in my "ping" letter <6bd19a07-5224-464d-b54d-1d738f5ba8f7@yandex-team.ru>, that we have a performance degradation because of 7bed89958bfbf40df, which introduces drain_call_rcu() in device_add, to make it more synchronous. So, my suggestion is make it instead more asynchronous (probably with special flag) and rely on DEVICE_ON event.
+
+> 
+> 
+>>
+>> v8:
+>>   - improve naming, wording and style
+>>   - make new QMP interface experimental
+>>
+>>
+>> Vladimir Sementsov-Ogievskiy (4):
+>>    qapi/qdev.json: unite DEVICE_* event data into single structure
+>>    qapi: add DEVICE_ON and query-hotplug infrastructure
+>>    shpc: implement DEVICE_ON event and query-hotplug
+>>    pcie: implement DEVICE_ON event and query-hotplug
+>>
+>>   hw/core/hotplug.c               |  12 +++
+>>   hw/pci-bridge/pci_bridge_dev.c  |  14 +++
+>>   hw/pci-bridge/pcie_pci_bridge.c |   1 +
+>>   hw/pci/pcie.c                   |  83 +++++++++++++++
+>>   hw/pci/pcie_port.c              |   1 +
+>>   hw/pci/shpc.c                   |  86 +++++++++++++++
+>>   include/hw/hotplug.h            |  11 ++
+>>   include/hw/pci/pci_bridge.h     |   2 +
+>>   include/hw/pci/pcie.h           |   2 +
+>>   include/hw/pci/shpc.h           |   2 +
+>>   include/hw/qdev-core.h          |   7 ++
+>>   include/monitor/qdev.h          |   6 ++
+>>   qapi/qdev.json                  | 178 +++++++++++++++++++++++++++++---
+>>   softmmu/qdev-monitor.c          |  58 +++++++++++
+>>   14 files changed, 451 insertions(+), 12 deletions(-)
+>>
+>> -- 
+>> 2.34.1
+> 
+
 -- 
-2.41.0
+Best regards,
+Vladimir
 
 
