@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30D57DE94F
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E167DE956
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:31:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyLaS-0005HM-Ej; Wed, 01 Nov 2023 20:29:28 -0400
+	id 1qyLaS-0005Mv-G3; Wed, 01 Nov 2023 20:29:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLa5-0004G3-Vh
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:29:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLaE-00053W-Ci
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:29:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLa1-0000xa-5n
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:29:05 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLaB-0000zI-EA
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:29:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698884939;
+ s=mimecast20190719; t=1698884948;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OC1d58jd9vw7FWm5+m+uWaccwd9dDLTDogObjDndsL8=;
- b=avh7iyvc0lQPYzk0nHiwqRxGVJu2+zF6p1QjQ9+d4sh34/Vni3j5mor1YbV+S58IqeX5+3
- Lsr2SUnV4Go/z5GIv9Ev2s0BAeYqaCHnVz+tbj7RSjj0sTBfFzba2ZMMgAW6RS2jlfhLNy
- xAi1b//oO5QyMa7ZRPTkf9rOU2xyTNA=
+ bh=mUYAWAgEVEr1A2KN57k8VCVL1L41DWZFhQwoZMR9o9o=;
+ b=QUs+WcrVksEIPOdZkQmHkTT4svvp/c3W4wSAEUcMqW4SQsn2no+2pPimMSAFh4N2g40pZH
+ z5Fbo1JkSmDJBVhOPtqOLm8cBIwj52W42nq8FOf5c7zzPtme0PhkG3fPA1OeH4DYtTCaiw
+ YH/DumyRL1Y1fyYrUTqCuc9acO+ALOY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-dhTE4DibNIm1VBia0-XplA-1; Wed, 01 Nov 2023 20:28:51 -0400
-X-MC-Unique: dhTE4DibNIm1VBia0-XplA-1
+ us-mta-345-uaTAYfPbM9eDgzS2C9qUeg-1; Wed, 01 Nov 2023 20:29:06 -0400
+X-MC-Unique: uaTAYfPbM9eDgzS2C9qUeg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4784D812C33;
- Thu,  2 Nov 2023 00:28:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 02D1A812C27;
+ Thu,  2 Nov 2023 00:29:04 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.70])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 80AA6C1290F;
- Thu,  2 Nov 2023 00:28:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C569FC1290F;
+ Thu,  2 Nov 2023 00:28:49 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,24 +62,24 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
  iii@linux.ibm.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
  shan.gavin@gmail.com
-Subject: [PATCH v4 12/33] target/m68k: Use generic helper to show CPU model
+Subject: [PATCH v4 13/33] target/mips: Use generic helper to show CPU model
  names
-Date: Thu,  2 Nov 2023 10:24:39 +1000
-Message-ID: <20231102002500.1750692-13-gshan@redhat.com>
+Date: Thu,  2 Nov 2023 10:24:40 +1000
+Message-ID: <20231102002500.1750692-14-gshan@redhat.com>
 In-Reply-To: <20231102002500.1750692-1-gshan@redhat.com>
 References: <20231102002500.1750692-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -97,47 +97,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For target/m68k, the registered CPU type name is always the
+For target/mips, the registered CPU type name is always the
 combination of the CPU model name and suffix. Use cpu_model_from_type()
 to show the CPU model names.
 
+Besides, mips_cpu_list() is reimplemented to dynamically fetch the CPU
+model names from the registered CPU types , instead of the staticly
+defined array.
+
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/m68k/helper.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ target/mips/cpu-defs.c.inc         |  9 ---------
+ target/mips/cpu.c                  | 18 ++++++++++++++++++
+ target/mips/sysemu/mips-qmp-cmds.c |  3 +--
+ 3 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index 0a1544cd68..47f2cee69a 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -49,14 +49,11 @@ static gint m68k_cpu_list_compare(gconstpointer a, gconstpointer b)
+diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
+index c0c389c59a..fbf787d8ce 100644
+--- a/target/mips/cpu-defs.c.inc
++++ b/target/mips/cpu-defs.c.inc
+@@ -1018,15 +1018,6 @@ const mips_def_t mips_defs[] =
+ };
+ const int mips_defs_number = ARRAY_SIZE(mips_defs);
  
- static void m68k_cpu_list_entry(gpointer data, gpointer user_data)
- {
--    ObjectClass *c = data;
--    const char *typename;
--    char *name;
+-void mips_cpu_list(void)
+-{
+-    int i;
 -
--    typename = object_class_get_name(c);
--    name = g_strndup(typename, strlen(typename) - strlen("-" TYPE_M68K_CPU));
--    qemu_printf("%s\n", name);
--    g_free(name);
+-    for (i = 0; i < ARRAY_SIZE(mips_defs); i++) {
+-        qemu_printf("MIPS '%s'\n", mips_defs[i].name);
+-    }
+-}
+-
+ static void fpu_init (CPUMIPSState *env, const mips_def_t *def)
+ {
+     int i;
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index a0023edd43..131978563b 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -565,6 +565,24 @@ static const struct TCGCPUOps mips_tcg_ops = {
+ };
+ #endif /* CONFIG_TCG */
+ 
++static void mips_cpu_list_entry(gpointer data, gpointer user_data)
++{
 +    const char *typename = object_class_get_name(OBJECT_CLASS(data));
 +    char *model = cpu_model_from_type(typename);
 +
 +    qemu_printf("  %s\n", model);
 +    g_free(model);
- }
- 
- void m68k_cpu_list(void)
-@@ -65,6 +62,7 @@ void m68k_cpu_list(void)
- 
-     list = object_class_get_list(TYPE_M68K_CPU, false);
-     list = g_slist_sort(list, m68k_cpu_list_compare);
++}
++
++void mips_cpu_list(void)
++{
++    GSList *list;
++    list = object_class_get_list_sorted(TYPE_MIPS_CPU, false);
 +    qemu_printf("Available CPUs:\n");
-     g_slist_foreach(list, m68k_cpu_list_entry, NULL);
-     g_slist_free(list);
- }
++    g_slist_foreach(list, mips_cpu_list_entry, NULL);
++    g_slist_free(list);
++}
++
+ static void mips_cpu_class_init(ObjectClass *c, void *data)
+ {
+     MIPSCPUClass *mcc = MIPS_CPU_CLASS(c);
+diff --git a/target/mips/sysemu/mips-qmp-cmds.c b/target/mips/sysemu/mips-qmp-cmds.c
+index 6db4626412..7340ac70ba 100644
+--- a/target/mips/sysemu/mips-qmp-cmds.c
++++ b/target/mips/sysemu/mips-qmp-cmds.c
+@@ -19,8 +19,7 @@ static void mips_cpu_add_definition(gpointer data, gpointer user_data)
+ 
+     typename = object_class_get_name(oc);
+     info = g_malloc0(sizeof(*info));
+-    info->name = g_strndup(typename,
+-                           strlen(typename) - strlen("-" TYPE_MIPS_CPU));
++    info->name = cpu_model_from_type(typename);
+     info->q_typename = g_strdup(typename);
+ 
+     QAPI_LIST_PREPEND(*cpu_list, info);
 -- 
 2.41.0
 
