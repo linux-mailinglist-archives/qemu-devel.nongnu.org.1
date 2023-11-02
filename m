@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D17A7DED84
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 08:37:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C567DED51
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 08:31:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qySBP-0005mT-P1; Thu, 02 Nov 2023 03:32:03 -0400
+	id 1qyS8D-0003ER-KV; Thu, 02 Nov 2023 03:28:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qySBJ-0005EC-Ag
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:31:58 -0400
-Received: from mgamail.intel.com ([134.134.136.31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qySBH-0003PH-JZ
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:31:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698910315; x=1730446315;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=T+1+8hQGhVkQiItYHEuZThhC59tnU8gRzCkf2uADcnc=;
- b=AUhix5dMTbvcEV8EJjD8dRkyB2GnT7t2C0gisUrjQPYMDYC6CTP3srYK
- KsFP9+X3jUPlAezSWsCGm/JoBUvttsqEP9zsg4AgIlUgLGrqlMDLf82vW
- fIF963KBAa5z41q9VLngllCHql4bRWL9OyJUEZi1yjHa/t10M2UpA4bcJ
- 014fU9F2QwC/rIKbp5KCWXuLaLAWH9qUYu5V9FWG4ffc9lUyPxyb9JHS9
- xnU3s+KcAztNbav5dzHFjpH4CSTjBW17256ofetBA/fKXBg1th7N4Wci/
- AcYUfkRi5pjcEAikUXSdyRnoeQNHZ5+ntJ8xB6oBJ+GYFULTn2LHk0tMw w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="452953576"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="452953576"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2023 00:31:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="711055859"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="711055859"
-Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
- by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2023 00:31:19 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 41/41] vfio: Compile out iommufd for PPC target
-Date: Thu,  2 Nov 2023 15:13:02 +0800
-Message-Id: <20231102071302.1818071-42-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
-References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qyS8B-0003DZ-MC
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:28:43 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qyS8A-0003Hi-2N
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:28:43 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-409299277bbso4417085e9.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 00:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698910119; x=1699514919; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=bQs93aMYfASDblqZAecRC/6iObYeY9wecDvgSeUOO0Q=;
+ b=e1b57ercaKfWg2yGBLzc57ACJPzY6pyL1m32QYrYm79x2xPDAqwc0WfOxVCOElu/bQ
+ HeX7wmen9G8/mYC43hZ2I76DWbqd8HVHJNeLVyIOejlZ+EtpAZP+eojQ7rMmU70UwmZg
+ 1u0szbWBLW1WkgOQvXjB+HGgi4QQJl64M9bPZ3plVT887DPs60wWcD0hw/ts19fpRNR/
+ Fj3WyPB77lMiAcwqtAolsJ0z86A1WwFZlWMk5CQ44cFF7owMCMO2S7dgAMiDsyVP+7lh
+ mf92f0w+pPXRMOpfD9RIDW+gPlOUK9SJpP4gcigETL27MyJt7qKYL8GdqqQ335AfM2p4
+ V2aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698910119; x=1699514919;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bQs93aMYfASDblqZAecRC/6iObYeY9wecDvgSeUOO0Q=;
+ b=a3UHF+Mpkv+cIGbX+M7Hbc6DBIIG2tlfZr3SqDLDsKuMKkqd/idC5lzR/UhrXB7xee
+ U7eSI+wcfyGHlw1+lpyb8kaiG3TrNNzEK0gVytN6pyZ8pNo0da47M3yRIzIjKtAWjsqF
+ dA5Xb9Wtm8ybxZmT0XgLFmNnG5a0Zl/c5e2bUND2khtfc7ZtI1dmyxiJzbSCG70hRayC
+ q40kizHzfH+Gck7kVNsWkyCjZvad7ahu91Sv5EvWgByfmdeld7mQWpNElbmt3pfPUXFl
+ 03rKYswls26XLfS4y9m6xivYxcCE0gbB4vCJTxaGYwtwNVxTyokBCx+mlfWA7XGruE8F
+ 9MgQ==
+X-Gm-Message-State: AOJu0YyB3ayIi1ZpedfHRFjOkNz7x7rt2tuRLC+KMvj2CeNC4RbKzCB4
+ 6l2mSdJ3CA6X3vVwx7nr1bYKDw==
+X-Google-Smtp-Source: AGHT+IG4oPUaV4UTSDwnTu5Fae8Fhfg1IOTPZaDaOCLpyw33uH6lvQ8f1nKYArH4G5zFr85yTGckug==
+X-Received: by 2002:a05:600c:4594:b0:406:54e4:359c with SMTP id
+ r20-20020a05600c459400b0040654e4359cmr14341163wmo.19.1698910119455; 
+ Thu, 02 Nov 2023 00:28:39 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-219-113.abo.bbox.fr.
+ [176.131.219.113]) by smtp.gmail.com with ESMTPSA id
+ k11-20020a05600c0b4b00b00401b242e2e6sm1890592wmr.47.2023.11.02.00.28.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Nov 2023 00:28:39 -0700 (PDT)
+Message-ID: <d897c14b-d193-f148-1afe-aa64e348da52@linaro.org>
+Date: Thu, 2 Nov 2023 08:28:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 2/3] linux-user: Report AArch64 hwcap2 fields above bit 31
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20231030174000.3792225-1-peter.maydell@linaro.org>
+ <20231030174000.3792225-3-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231030174000.3792225-3-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.31;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.777,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,88 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since PPC doesn't support IOMMUFD, make iommufd related code
-compiled out.
+On 30/10/23 18:39, Peter Maydell wrote:
+> The AArch64 ELF hwcap2 field is 64 bits, but our get_elf_hwcap2()
+> works with uint32_t, so it accidentally fails to report any hwcaps
+> over bit 31.  Use uint64_t here.
+> 
+> The Arm hwcap2 is only 32 bits (because the ELF format makes these
+> fields be the size of "long" in the ABI), but since it shares the
+> prototype declaration for get_elf_hwcap2() it is easier to also
+> expand it to 64 bits.
+> 
+> The only hwcap fields we implement already that are affected by this
+> are the HBC and MOPS ones, neither of which were implemented in a
+> previous release, so this doesn't need backporting to older stable
+> branches.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   linux-user/loader.h  | 2 +-
+>   linux-user/elfload.c | 8 ++++----
+>   2 files changed, 5 insertions(+), 5 deletions(-)
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/vfio/common.c     | 2 +-
- hw/vfio/pci.c        | 2 +-
- hw/vfio/platform.c   | 2 +-
- backends/meson.build | 4 ++--
- hw/vfio/meson.build  | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 1c9203183d..000717cef3 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1504,7 +1504,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
- {
-     const VFIOIOMMUOps *ops;
- 
--#ifdef CONFIG_IOMMUFD
-+#if defined(CONFIG_IOMMUFD) && !defined(TARGET_PPC)
-     if (vbasedev->iommufd) {
-         ops = &vfio_iommufd_ops;
-     } else
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index d8f658ea47..2287e45119 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3550,7 +3550,7 @@ static Property vfio_pci_dev_properties[] = {
-                                    qdev_prop_nv_gpudirect_clique, uint8_t),
-     DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
-                                 OFF_AUTOPCIBAR_OFF),
--#ifdef CONFIG_IOMMUFD
-+#if defined(CONFIG_IOMMUFD) && !defined(TARGET_PPC)
-     DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
-                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
- #endif
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index aa0b2b9583..c8f4ae5a06 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -648,7 +648,7 @@ static Property vfio_platform_dev_properties[] = {
-     DEFINE_PROP_UINT32("mmap-timeout-ms", VFIOPlatformDevice,
-                        mmap_timeout, 1100),
-     DEFINE_PROP_BOOL("x-irqfd", VFIOPlatformDevice, irqfd_allowed, true),
--#ifdef CONFIG_IOMMUFD
-+#if defined(CONFIG_IOMMUFD) && !defined(TARGET_PPC)
-     DEFINE_PROP_LINK("iommufd", VFIOPlatformDevice, vbasedev.iommufd,
-                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
- #endif
-diff --git a/backends/meson.build b/backends/meson.build
-index 05ac57ff15..9dbdfa87f7 100644
---- a/backends/meson.build
-+++ b/backends/meson.build
-@@ -21,9 +21,9 @@ if have_vhost_user
- endif
- system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
- if have_iommufd
--  system_ss.add(files('iommufd.c'))
-+  system_ss.add(when: 'TARGET_PPC', if_false: files('iommufd.c'))
- else
--  system_ss.add(files('iommufd-stub.c'))
-+  system_ss.add(when: 'TARGET_PPC', if_false: files('iommufd-stub.c'))
- endif
- if have_vhost_user_crypto
-   system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
-diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index 9cae2c9e21..4423bb3cd4 100644
---- a/hw/vfio/meson.build
-+++ b/hw/vfio/meson.build
-@@ -8,7 +8,7 @@ vfio_ss.add(files(
-   'migration.c',
- ))
- if have_iommufd
--  vfio_ss.add(files('iommufd.c'))
-+  vfio_ss.add(when: 'TARGET_PPC', if_false: files('iommufd.c'))
- endif
- vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
-   'display.c',
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
