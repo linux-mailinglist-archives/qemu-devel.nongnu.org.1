@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFDC7DFB48
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 21:11:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC907DFB46
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 21:11:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qye1H-0004NJ-19; Thu, 02 Nov 2023 16:10:23 -0400
+	id 1qye1H-0004NL-IK; Thu, 02 Nov 2023 16:10:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qye1F-0004Me-7L
+ id 1qye1F-0004Mq-UU
  for qemu-devel@nongnu.org; Thu, 02 Nov 2023 16:10:21 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qye1D-0006sm-BJ
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 16:10:20 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1ef370c2e1aso748232fac.2
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 13:10:18 -0700 (PDT)
+ id 1qye1E-0006t6-IM
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 16:10:21 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1dd71c0a41fso772503fac.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 13:10:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698955817; x=1699560617; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698955819; x=1699560619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Dj0lmMHru47k51oEUfPxD/8OwW94ztW1wUywnekyGis=;
- b=eMXl1hfMMTHaTjPnsPG0OEAwcZobXtl6P2Cunk50XTI8sim+X/hRtFyqF1yl1jgzSo
- r5NmKB71Mhy+zEEUDvoJHwZ9Ds7WsQWY+ThvyM3eJ1lztyFI9VWv8p0CV8i2bJW0oeiy
- 13UL004UogkOdcwSHShsmnj10O3lV+FSUi2gZuVdWi/AArQDhFpsnUAsZMC91twUMHbL
- varNTx3jEyVgFfyuYiUmwCWgSO/w43CJKAa2OZM3+yDIyvhyrF0qmUcD5jpMq0mPtbiZ
- Z6bIHz+T1BaMXip9uHUKv4dM/24iA6iS5PLFJs6Cv74SZeNcFxnpNe9PcHZ3rosOk7qm
- DVbw==
+ bh=l7NDoqZemMXsjA53+STr4Q/JGMDoeNsO3GVH3o1yeV4=;
+ b=Z0jzkIeiR73kkfdNxMy6IcpqO5SPd1U2CfvkqzWedBO93/kHfegjvuk8Ro80pKWjyh
+ FqXh7TGR5WYYqyu/Bq9Tx4dhkxBHk0Ys5izmIfb+rd01Ur0sw6ym4eLoVelDZ8+y6BLE
+ vX8r2xr8fDMZSeA4RNSaKMI8VrJsamoOoshNryaeRrqS5d33lJvyqqBtDYxh2D8P0leh
+ G9pUxrXZOAZiV8GkgmwMfNEUAYXryONR8nu9LLuoyf/8exWHWoMw5Kvb/VlcHPsR8CDO
+ eDQWnMSX4s2qaECQMSaw66iXwelwWZz/V5f4CLDN18iytLP1eWOfwfbd6BdjY2VH6tgT
+ G/Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698955817; x=1699560617;
+ d=1e100.net; s=20230601; t=1698955819; x=1699560619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Dj0lmMHru47k51oEUfPxD/8OwW94ztW1wUywnekyGis=;
- b=Fm5vGa6QIxlqiWBYhIqwAS4yWk+QUSLt8RTXjx7OVaSsGcKp0OkLfy/SLp7LC+5duz
- jW6RBH+oravkTYPmk+NV7HM8PML6mjc9irZrjc4Rc61whP9OwBnI8q2hvQHgeyFJ60wI
- Sh5o2Lq8+LYp/c6mIgPUpflVEW4VDybsylci2ug8zNRMJxGXxKCmY0GGvSNwe5GvMGhO
- cVsxPcvhjbtCLCWbf/7RhWJffagmDkRdxMmLnSkRBRvGiNE1UwQFxGM2Td+Bt/pOVlgh
- +hdn6in0LhBObGTooOwWKEPI/6UJtIz4mhULjRU0PhUZsSIy/HDqX09+uOaGARxBZFFF
- i7aw==
-X-Gm-Message-State: AOJu0YyqxNA4OKVpePsyMtyxoVQ02Dgdg/pBIqmDlJkUAMgNBWh5gRud
- fG+NiZx2YjbB7IwhpXnDSj1dW2UUCkA=
-X-Google-Smtp-Source: AGHT+IGvn2YAPCTzazw37vH736mwsgPh7zHY8SguZvrpgkOwyA+nhdPW7UO06xs2jX07DcIv9qbFWg==
-X-Received: by 2002:a05:6871:a509:b0:1e9:bd5c:ae38 with SMTP id
- wc9-20020a056871a50900b001e9bd5cae38mr20472401oab.2.1698955817590; 
- Thu, 02 Nov 2023 13:10:17 -0700 (PDT)
+ bh=l7NDoqZemMXsjA53+STr4Q/JGMDoeNsO3GVH3o1yeV4=;
+ b=VEkcrp0kUwgFYyj0y0ve6qL8Dbm7L0CHYfTCDEuuDANZYsSIbNJu/qkfNt5N0qNmmx
+ eO4dznaZRlGTZzwpmv6KhPBEssEXo4Mbe1KA7CagU+qE2AEfvk0d0oUfBR+jIxWX3zE4
+ rsHA45v7kUtHLqL6oWZ0kPK6jcc7JIot9EixuCBNAySviNe2pasHPowpvpBH+YElnQrD
+ WZ0v/0Fk/gslmduMHCN3umRcSS1AD2XI9ozeq7hp55ldjTsBQE+749RlS97WahuHYFtv
+ N5/Vql6n2VYRhx5Dl/Miz/9s73QqMsD3gc5iVCCNLdnmlBgVSFJSB8OpI1LDqG34bSwR
+ LcUA==
+X-Gm-Message-State: AOJu0YyELNTGDu1tdt6BHfJQhh45XgMeb74F5w3R+8fORmRnIycl9mgi
+ 2hQSNMcSMrEo+1071D8SkLf/00I+Hlo=
+X-Google-Smtp-Source: AGHT+IGE5spTkSp2xMzqIATfIUqr0JAe7/eo8b69ZzzHGRegjU1kQLKTBHc+7EvmtNesUbaVCM+ivA==
+X-Received: by 2002:a05:6870:860c:b0:1ea:a11:71f4 with SMTP id
+ h12-20020a056870860c00b001ea0a1171f4mr23238447oal.59.1698955818854; 
+ Thu, 02 Nov 2023 13:10:18 -0700 (PDT)
 Received: from taylor-ubuntu.austin.rr.com (cpe-68-203-8-61.austin.res.rr.com.
  [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- z9-20020a056870e14900b001e98b1544fesm63543oaa.9.2023.11.02.13.10.16
+ z9-20020a056870e14900b001e98b1544fesm63543oaa.9.2023.11.02.13.10.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 13:10:16 -0700 (PDT)
+ Thu, 02 Nov 2023 13:10:18 -0700 (PDT)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Taylor Simpson <ltaylorsimpson@gmail.com>
-Subject: [PATCH 1/3] Hexagon (target/hexagon) Analyze reads before writes
-Date: Thu,  2 Nov 2023 14:10:04 -0600
-Message-Id: <20231102201006.33143-2-ltaylorsimpson@gmail.com>
+Subject: [PATCH 2/3] Hexagon (target/hexagon) Enable more short-circuit
+ packets (scalar core)
+Date: Thu,  2 Nov 2023 14:10:05 -0600
+Message-Id: <20231102201006.33143-3-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102201006.33143-1-ltaylorsimpson@gmail.com>
 References: <20231102201006.33143-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: test/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oa1-x2e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: 2
 X-Spam_score: 0.2
 X-Spam_bar: /
@@ -92,389 +93,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We divide gen_analyze_funcs.py into 3 phases
-    Declare the operands
-    Analyze the register reads
-    Analyze the register writes
+Look for read-after-write instead of overlap of reads and writes
 
-We also create special versions of ctx_log_*_read for new operands
-    Check that the operand is written before the read
+Here is an example with overalp but no read-after-write:
+0x000200fc:  0x38103876	{	R0 = add(R0,R1); R6 = add(R6,R7) }
 
-This is a precursor to improving the analysis for short-circuiting
-the packet semantics in a subsequent commit
+BEFORE:
+ ---- 00000000000200fc
+ mov_i32 loc2,$0x0
+ mov_i32 loc2,r0
+ add_i32 loc3,loc2,r1
+ mov_i32 loc2,loc3
+ mov_i32 loc4,$0x0
+ mov_i32 loc4,r6
+ add_i32 loc5,loc4,r7
+ mov_i32 loc4,loc5
+ mov_i32 r0,loc2
+ mov_i32 r6,loc4
+
+AFTER:
+ ---- 00000000000200fc
+ add_i32 loc2,r0,r1
+ mov_i32 r0,loc2
+ add_i32 loc3,r6,r7
+ mov_i32 r6,loc3
+
+We can also short-circuit packets with .new values by reading from the
+real destination instead of the temporary.
+0x00020100:  0x78005ff3	{	R19 = #0xff
+0x00020104:  0x2002e204		if (cmp.eq(N19.new,R2)) jump:t PC+8 }
+
+BEFORE:
+ ---- 0000000000020100
+ mov_i32 pc,$0x20108
+ mov_i32 loc8,$0x0
+ mov_i32 loc8,$0xff
+ setcond_i32 loc10,loc8,r2,eq
+ mov_i32 loc6,loc10
+ mov_i32 r19,loc8
+ add_i32 pkt_cnt,pkt_cnt,$0x2
+ add_i32 insn_cnt,insn_cnt,$0x4
+ brcond_i32 loc6,$0x0,eq,$L1
+ goto_tb $0x0
+ mov_i32 pc,$0x20108
+ exit_tb $0x7fbb54000040
+ set_label $L1
+ goto_tb $0x1
+ exit_tb $0x7fbb54000041
+ set_label $L0
+ exit_tb $0x7fbb54000043
+
+AFTER:
+ ---- 0000000000020100
+ mov_i32 pc,$0x20108
+ mov_i32 r19,$0xff
+ setcond_i32 loc7,r19,r2,eq
+ mov_i32 loc4,loc7
+ add_i32 pkt_cnt,pkt_cnt,$0x2
+ add_i32 insn_cnt,insn_cnt,$0x4
+ brcond_i32 loc4,$0x0,eq,$L1
+ goto_tb $0x0
+ mov_i32 pc,$0x20108
+ exit_tb $0x7f9764000040
+ set_label $L1
+ goto_tb $0x1
+ exit_tb $0x7f9764000041
+ set_label $L0
+ exit_tb $0x7f9764000043
 
 Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/translate.h          |  24 ++-
- target/hexagon/README               |   7 +-
- target/hexagon/gen_analyze_funcs.py | 221 +++++++++++-----------------
- 3 files changed, 111 insertions(+), 141 deletions(-)
+ target/hexagon/translate.h      | 13 +++++++------
+ target/hexagon/translate.c      | 19 +++----------------
+ target/hexagon/gen_tcg_funcs.py |  2 +-
+ 3 files changed, 11 insertions(+), 23 deletions(-)
 
 diff --git a/target/hexagon/translate.h b/target/hexagon/translate.h
-index 4dd59c6726..b2fe3a048d 100644
+index b2fe3a048d..7bb19ee672 100644
 --- a/target/hexagon/translate.h
 +++ b/target/hexagon/translate.h
-@@ -75,6 +75,8 @@ typedef struct DisasContext {
-     TCGv dczero_addr;
- } DisasContext;
+@@ -38,12 +38,10 @@ typedef struct DisasContext {
+     int reg_log[REG_WRITES_MAX];
+     int reg_log_idx;
+     DECLARE_BITMAP(regs_written, TOTAL_PER_THREAD_REGS);
+-    DECLARE_BITMAP(regs_read, TOTAL_PER_THREAD_REGS);
+     DECLARE_BITMAP(predicated_regs, TOTAL_PER_THREAD_REGS);
+     int preg_log[PRED_WRITES_MAX];
+     int preg_log_idx;
+     DECLARE_BITMAP(pregs_written, NUM_PREGS);
+-    DECLARE_BITMAP(pregs_read, NUM_PREGS);
+     uint8_t store_width[STORES_MAX];
+     bool s1_store_processed;
+     int future_vregs_idx;
+@@ -68,6 +66,7 @@ typedef struct DisasContext {
+     bool is_tight_loop;
+     bool short_circuit;
+     bool has_hvx_helper;
++    bool read_after_write;
+     TCGv new_value[TOTAL_PER_THREAD_REGS];
+     TCGv new_pred_value[NUM_PREGS];
+     TCGv pred_written;
+@@ -88,13 +87,14 @@ static inline void ctx_log_pred_write(DisasContext *ctx, int pnum)
  
-+bool is_gather_store_insn(DisasContext *ctx);
-+
- static inline void ctx_log_pred_write(DisasContext *ctx, int pnum)
+ static inline void ctx_log_pred_read(DisasContext *ctx, int pnum)
  {
-     if (!test_bit(pnum, ctx->pregs_written)) {
-@@ -89,6 +91,12 @@ static inline void ctx_log_pred_read(DisasContext *ctx, int pnum)
-     set_bit(pnum, ctx->pregs_read);
+-    set_bit(pnum, ctx->pregs_read);
++    if (test_bit(pnum, ctx->pregs_written)) {
++        ctx->read_after_write = true;
++    }
  }
  
-+static inline void ctx_log_pred_read_new(DisasContext *ctx, int pnum)
-+{
-+    g_assert(test_bit(pnum, ctx->pregs_written));
-+    set_bit(pnum, ctx->pregs_read);
-+}
-+
+ static inline void ctx_log_pred_read_new(DisasContext *ctx, int pnum)
+ {
+     g_assert(test_bit(pnum, ctx->pregs_written));
+-    set_bit(pnum, ctx->pregs_read);
+ }
+ 
  static inline void ctx_log_reg_write(DisasContext *ctx, int rnum,
-                                      bool is_predicated)
+@@ -125,13 +125,14 @@ static inline void ctx_log_reg_write_pair(DisasContext *ctx, int rnum,
+ 
+ static inline void ctx_log_reg_read(DisasContext *ctx, int rnum)
  {
-@@ -120,6 +128,12 @@ static inline void ctx_log_reg_read(DisasContext *ctx, int rnum)
-     set_bit(rnum, ctx->regs_read);
+-    set_bit(rnum, ctx->regs_read);
++    if (test_bit(rnum, ctx->regs_written)) {
++        ctx->read_after_write = true;
++    }
  }
  
-+static inline void ctx_log_reg_read_new(DisasContext *ctx, int rnum)
-+{
-+    g_assert(test_bit(rnum, ctx->regs_written));
-+    set_bit(rnum, ctx->regs_read);
-+}
-+
+ static inline void ctx_log_reg_read_new(DisasContext *ctx, int rnum)
+ {
+     g_assert(test_bit(rnum, ctx->regs_written));
+-    set_bit(rnum, ctx->regs_read);
+ }
+ 
  static inline void ctx_log_reg_read_pair(DisasContext *ctx, int rnum)
- {
-     ctx_log_reg_read(ctx, rnum);
-@@ -171,6 +185,15 @@ static inline void ctx_log_vreg_read(DisasContext *ctx, int rnum)
-     set_bit(rnum, ctx->vregs_read);
- }
- 
-+static inline void ctx_log_vreg_read_new(DisasContext *ctx, int rnum)
-+{
-+    g_assert(is_gather_store_insn(ctx) ||
-+             test_bit(rnum, ctx->vregs_updated) ||
-+             test_bit(rnum, ctx->vregs_select) ||
-+             test_bit(rnum, ctx->vregs_updated_tmp));
-+    set_bit(rnum, ctx->vregs_read);
-+}
-+
- static inline void ctx_log_vreg_read_pair(DisasContext *ctx, int rnum)
- {
-     ctx_log_vreg_read(ctx, rnum ^ 0);
-@@ -205,7 +228,6 @@ extern TCGv hex_vstore_addr[VSTORES_MAX];
- extern TCGv hex_vstore_size[VSTORES_MAX];
- extern TCGv hex_vstore_pending[VSTORES_MAX];
- 
--bool is_gather_store_insn(DisasContext *ctx);
- void process_store(DisasContext *ctx, int slot_num);
- 
- FIELD(PROBE_PKT_SCALAR_STORE_S0, MMU_IDX,       0, 2)
-diff --git a/target/hexagon/README b/target/hexagon/README
-index 69b2ffe9bb..7dd74629eb 100644
---- a/target/hexagon/README
-+++ b/target/hexagon/README
-@@ -183,10 +183,11 @@ when the override is present.
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index 666c061180..9dab26ee17 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -394,20 +394,8 @@ static bool need_commit(DisasContext *ctx)
+         }
      }
  
- We also generate an analyze_<tag> function for each instruction.  Currently,
--these functions record the writes to registers by calling ctx_log_*.  During
-+these functions record the reads and writes to registers by calling ctx_log_*.  During
- gen_start_packet, we invoke the analyze_<tag> function for each instruction in
--the packet, and we mark the implicit writes.  After the analysis is performed,
--we initialize the result register for each of the predicated assignments.
-+the packet, and we mark the implicit writes.  The analysis determines if the packet
-+semantics can be short-circuited.  If not, we initialize the result register for each
-+of the predicated assignments.
- 
- In addition to instruction semantics, we use a generator to create the decode
- tree.  This generation is also a two step process.  The first step is to run
-diff --git a/target/hexagon/gen_analyze_funcs.py b/target/hexagon/gen_analyze_funcs.py
-index c3b521abef..40b9473c44 100755
---- a/target/hexagon/gen_analyze_funcs.py
-+++ b/target/hexagon/gen_analyze_funcs.py
-@@ -22,157 +22,90 @@
- import string
- import hex_common
- 
+-    /* Check for overlap between register reads and writes */
+-    for (int i = 0; i < ctx->reg_log_idx; i++) {
+-        int rnum = ctx->reg_log[i];
+-        if (test_bit(rnum, ctx->regs_read)) {
+-            return true;
+-        }
+-    }
 -
- ##
- ## Helpers for gen_analyze_func
- ##
- def is_predicated(tag):
-     return "A_CONDEXEC" in hex_common.attribdict[tag]
+-    /* Check for overlap between predicate reads and writes */
+-    for (int i = 0; i < ctx->preg_log_idx; i++) {
+-        int pnum = ctx->preg_log[i];
+-        if (test_bit(pnum, ctx->pregs_read)) {
+-            return true;
+-        }
++    if (ctx->read_after_write) {
++        return true;
+     }
  
-+def vreg_write_type(tag):
-+    newv = "EXT_DFL"
-+    if hex_common.is_new_result(tag):
-+        newv = "EXT_NEW"
-+    elif hex_common.is_tmp_result(tag):
-+        newv = "EXT_TMP"
-+    return newv
- 
--def analyze_opn_old(f, tag, regtype, regid, regno):
-+def declare_regn(f, tag, regtype, regid, regno):
-     regN = f"{regtype}{regid}N"
--    predicated = "true" if is_predicated(tag) else "false"
--    if regtype == "R":
--        if regid in {"ss", "tt"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_reg_read_pair(ctx, {regN});\n")
--        elif regid in {"dd", "ee", "xx", "yy"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_reg_write_pair(ctx, {regN}, {predicated});\n")
--        elif regid in {"s", "t", "u", "v"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
--        elif regid in {"d", "e", "x", "y"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_reg_write(ctx, {regN}, {predicated});\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "P":
--        if regid in {"s", "t", "u", "v"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_pred_read(ctx, {regN});\n")
--        elif regid in {"d", "e", "x"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_pred_write(ctx, {regN});\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "C":
--        if regid == "ss":
--            f.write(
--                f"    const int {regN} = insn->regno[{regno}] "
--                "+ HEX_REG_SA0;\n"
--            )
-+    if regtype == "C":
-+        f.write(
-+            f"    const int {regN} = insn->regno[{regno}] "
-+            "+ HEX_REG_SA0;\n"
-+        )
-+    else:
-+        f.write(f"    const int {regN} = insn->regno[{regno}];\n")
-+
-+def analyze_read(f, tag, regtype, regid, regno):
-+    regN = f"{regtype}{regid}N"
-+    if hex_common.is_pair(regid):
-+        if regtype in {"R",  "C"}:
-             f.write(f"    ctx_log_reg_read_pair(ctx, {regN});\n")
--        elif regid == "dd":
--            f.write(f"    const int {regN} = insn->regno[{regno}] " "+ HEX_REG_SA0;\n")
--            f.write(f"    ctx_log_reg_write_pair(ctx, {regN}, {predicated});\n")
--        elif regid == "s":
--            f.write(
--                f"    const int {regN} = insn->regno[{regno}] "
--                "+ HEX_REG_SA0;\n"
--            )
--            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
--        elif regid == "d":
--            f.write(f"    const int {regN} = insn->regno[{regno}] " "+ HEX_REG_SA0;\n")
--            f.write(f"    ctx_log_reg_write(ctx, {regN}, {predicated});\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "M":
--        if regid == "u":
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "V":
--        newv = "EXT_DFL"
--        if hex_common.is_new_result(tag):
--            newv = "EXT_NEW"
--        elif hex_common.is_tmp_result(tag):
--            newv = "EXT_TMP"
--        if regid in {"dd", "xx"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(
--                f"    ctx_log_vreg_write_pair(ctx, {regN}, {newv}, " f"{predicated});\n"
--            )
--        elif regid in {"uu", "vv"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
-+        elif regtype == "V":
-             f.write(f"    ctx_log_vreg_read_pair(ctx, {regN});\n")
--        elif regid in {"s", "u", "v", "w"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_vreg_read(ctx, {regN});\n")
--        elif regid in {"d", "x", "y"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_vreg_write(ctx, {regN}, {newv}, " f"{predicated});\n")
+     /* Check for overlap between HVX reads and writes */
+@@ -466,6 +454,7 @@ static void analyze_packet(DisasContext *ctx)
+ {
+     Packet *pkt = ctx->pkt;
+     ctx->has_hvx_helper = false;
++    ctx->read_after_write = false;
+     for (int i = 0; i < pkt->num_insns; i++) {
+         Insn *insn = &pkt->insn[i];
+         ctx->insn = insn;
+@@ -490,11 +479,9 @@ static void gen_start_packet(DisasContext *ctx)
+     ctx->next_PC = next_PC;
+     ctx->reg_log_idx = 0;
+     bitmap_zero(ctx->regs_written, TOTAL_PER_THREAD_REGS);
+-    bitmap_zero(ctx->regs_read, TOTAL_PER_THREAD_REGS);
+     bitmap_zero(ctx->predicated_regs, TOTAL_PER_THREAD_REGS);
+     ctx->preg_log_idx = 0;
+     bitmap_zero(ctx->pregs_written, NUM_PREGS);
+-    bitmap_zero(ctx->pregs_read, NUM_PREGS);
+     ctx->future_vregs_idx = 0;
+     ctx->tmp_vregs_idx = 0;
+     ctx->vreg_log_idx = 0;
+diff --git a/target/hexagon/gen_tcg_funcs.py b/target/hexagon/gen_tcg_funcs.py
+index f5246cee6d..3d24ae7960 100755
+--- a/target/hexagon/gen_tcg_funcs.py
++++ b/target/hexagon/gen_tcg_funcs.py
+@@ -198,7 +198,7 @@ def genptr_decl_new(f, tag, regtype, regid, regno):
+         if regid in {"t", "u", "v"}:
+             f.write(
+                 f"    TCGv {regtype}{regid}N = "
+-                f"ctx->new_pred_value[insn->regno[{regno}]];\n"
++                f"get_result_pred(ctx, insn->regno[{regno}]);\n"
+             )
          else:
              hex_common.bad_register(regtype, regid)
--    elif regtype == "Q":
--        if regid in {"d", "e", "x"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_qreg_write(ctx, {regN});\n")
--        elif regid in {"s", "t", "u", "v"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_qreg_read(ctx, {regN});\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "G":
--        if regid in {"dd"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
--        elif regid in {"d"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
--        elif regid in {"ss"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
--        elif regid in {"s"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "S":
--        if regid in {"dd"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
--        elif regid in {"d"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
--        elif regid in {"ss"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
--        elif regid in {"s"}:
--            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
-+    elif hex_common.is_single(regid):
-+        if hex_common.is_old_val(regtype, regid, tag):
-+            if regtype in {"R", "C", "M"}:
-+                f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
-+            elif regtype == "P":
-+                f.write(f"    ctx_log_pred_read(ctx, {regN});\n")
-+            elif regtype in {"V", "O"}:
-+                f.write(f"    ctx_log_vreg_read(ctx, {regN});\n")
-+            elif regtype == "Q":
-+                f.write(f"    ctx_log_qreg_read(ctx, {regN});\n")
-+            else:
-+                hex_common.bad_register(regtype, regid)
-+        elif hex_common.is_new_val(regtype, regid, tag):
-+            if regtype == "N":
-+                f.write(f"    ctx_log_reg_read_new(ctx, {regN});\n")
-+            elif regtype == "P":
-+                f.write(f"    ctx_log_pred_read_new(ctx, {regN});\n")
-+            elif regtype == "O":
-+                f.write(f"    ctx_log_vreg_read_new(ctx, {regN});\n")
-+            else:
-+                hex_common.bad_register(regtype, regid)
-         else:
-             hex_common.bad_register(regtype, regid)
-     else:
-         hex_common.bad_register(regtype, regid)
- 
--
--def analyze_opn_new(f, tag, regtype, regid, regno):
-+def analyze_write(f, tag, regtype, regid, regno):
-     regN = f"{regtype}{regid}N"
--    if regtype == "N":
--        if regid in {"s", "t"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "P":
--        if regid in {"t", "u", "v"}:
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_pred_read(ctx, {regN});\n")
--        else:
--            hex_common.bad_register(regtype, regid)
--    elif regtype == "O":
--        if regid == "s":
--            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
--            f.write(f"    ctx_log_vreg_read(ctx, {regN});\n")
-+    predicated = "true" if is_predicated(tag) else "false"
-+    if hex_common.is_pair(regid):
-+        if regtype in {"R", "C"}:
-+            f.write(f"    ctx_log_reg_write_pair(ctx, {regN}, {predicated});\n")
-+        elif regtype == "V":
-+            f.write(
-+                f"    ctx_log_vreg_write_pair(ctx, {regN}, "
-+                f"{vreg_write_type(tag)}, {predicated});\n"
-+            )
-         else:
-             hex_common.bad_register(regtype, regid)
--    else:
--        hex_common.bad_register(regtype, regid)
--
--
--def analyze_opn(f, tag, regtype, regid, i):
--    if hex_common.is_pair(regid):
--        analyze_opn_old(f, tag, regtype, regid, i)
-     elif hex_common.is_single(regid):
--        if hex_common.is_old_val(regtype, regid, tag):
--            analyze_opn_old(f, tag, regtype, regid, i)
--        elif hex_common.is_new_val(regtype, regid, tag):
--            analyze_opn_new(f, tag, regtype, regid, i)
-+        if regtype in {"R", "C"}:
-+            f.write(f"    ctx_log_reg_write(ctx, {regN}, {predicated});\n")
-+        elif regtype == "P":
-+            f.write(f"    ctx_log_pred_write(ctx, {regN});\n")
-+        elif regtype == "V":
-+            f.write(
-+                f"    ctx_log_vreg_write(ctx, {regN}, "
-+                f"{vreg_write_type(tag)}, {predicated});\n"
-+            )
-+        elif regtype == "Q":
-+            f.write(f"    ctx_log_qreg_write(ctx, {regN});\n")
-         else:
-             hex_common.bad_register(regtype, regid)
-     else:
-@@ -187,11 +120,11 @@ def analyze_opn(f, tag, regtype, regid, i):
- ##     {
- ##         Insn *insn G_GNUC_UNUSED = ctx->insn;
- ##         const int RdN = insn->regno[0];
--##         ctx_log_reg_write(ctx, RdN, false);
- ##         const int RsN = insn->regno[1];
--##         ctx_log_reg_read(ctx, RsN);
- ##         const int RtN = insn->regno[2];
-+##         ctx_log_reg_read(ctx, RsN);
- ##         ctx_log_reg_read(ctx, RtN);
-+##         ctx_log_reg_write(ctx, RdN, false);
- ##     }
- ##
- def gen_analyze_func(f, tag, regs, imms):
-@@ -200,10 +133,24 @@ def gen_analyze_func(f, tag, regs, imms):
- 
-     f.write("    Insn *insn G_GNUC_UNUSED = ctx->insn;\n")
- 
-+    ## Declare the operands
-+    i = 0
-+    for regtype, regid in regs:
-+        declare_regn(f, tag, regtype, regid, i)
-+        i += 1
-+
-+    ## Analyze the register reads
-+    i = 0
-+    for regtype, regid in regs:
-+        if hex_common.is_read(regid):
-+            analyze_read(f, tag, regtype, regid, i)
-+        i += 1
-+
-+    ## Analyze the register writes
-     i = 0
--    ## Analyze all the registers
-     for regtype, regid in regs:
--        analyze_opn(f, tag, regtype, regid, i)
-+        if hex_common.is_written(regid):
-+            analyze_write(f, tag, regtype, regid, i)
-         i += 1
- 
-     has_generated_helper = not hex_common.skip_qemu_helper(
-@@ -240,13 +187,13 @@ def main():
-     tagimms = hex_common.get_tagimms()
- 
-     with open(sys.argv[-1], "w") as f:
--        f.write("#ifndef HEXAGON_TCG_FUNCS_H\n")
--        f.write("#define HEXAGON_TCG_FUNCS_H\n\n")
-+        f.write("#ifndef HEXAGON_ANALYZE_FUNCS_H\n")
-+        f.write("#define HEXAGON_ANALYZE_FUNCS_H\n\n")
- 
-         for tag in hex_common.tags:
-             gen_analyze_func(f, tag, tagregs[tag], tagimms[tag])
- 
--        f.write("#endif    /* HEXAGON_TCG_FUNCS_H */\n")
-+        f.write("#endif    /* HEXAGON_ANALYZE_FUNCS_H */\n")
- 
- 
- if __name__ == "__main__":
 -- 
 2.34.1
 
