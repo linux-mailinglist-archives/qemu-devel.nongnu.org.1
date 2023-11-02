@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379C17DF911
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:46:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8C67DF90C
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:44:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybfO-0003l4-Ns; Thu, 02 Nov 2023 13:39:38 -0400
+	id 1qybg5-0004QL-JN; Thu, 02 Nov 2023 13:40:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeh-0003H8-OM
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:59 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qybej-0003HN-Da
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:39:00 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybed-0002pq-EK
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:55 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4079ed65582so9470815e9.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:50 -0700 (PDT)
+ id 1qybef-0002rx-B3
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:56 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-32d895584f1so662242f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698946730; x=1699551530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KvWivuRtwwwvha4YHNrmTGvIkSjxbhYcjuu+AWQQ3Q0=;
- b=TBt8No7ybyc+cpj3PYpbLojzVQpoZXIl1qLCvJnHkCWoQHqTl9iHSoiJkvxgIuKBzY
- d5epeotaxEvidTOYjzuCB7YIwLVkdLEz7iIUXSEFzcTQnKNlPBgpaQcksLHYZI6C+UW3
- bnC9yM6MPxf2AbGsvndxKb5KQFx6a9X1pvURT7xapMTVtnl7dx+L9AUf/ill5R2UwrVL
- OVMb/hY14MGPkjTn+cDcagXClJ4D14B1bB91INGnqCrHly8nixpLFQfHExAY0x14bLds
- fkW7nJ8Q5hEIL4kgSRPtqAPJK3wpWGKW1VTTXDJrjQOLQzzKLc5evZDZ8tFR3Q3UqKjY
- nA8A==
+ :reply-to; bh=KWyGEYTzfH2Abe6/qvv9Qz9Xy/UG4t+1CI7YQLR7W1Q=;
+ b=jKRjq5+Xj+GZWXmghtiQDmDvxnYChqujeyC3rZHRI3p9JZ4SqAVP/VyKorWTogl6/U
+ EXh0ffpRTWGtkuTpGoUoYfGHt6ibunT3YDTc2VhDHmqjm/S07tBPHJFLJz07QPBNxYNh
+ XQaB42lFEX86Ct6qfqTC4o3yA+7HM4wui5Q/lNL9PCCkLwLcOBaGF+AAdTAZ8ZOf5ljO
+ l97HJ/ADjXEld59v5pl7aURcBnwEKnft25UqO5s1/eVNDEVRU4exbJ0oUFDjpsSzB21B
+ gcP9qZk9OjCq1jaJgPS862yY3TQ7+2kCCUoBL466wgSUuxhvc3mzrKF6c+ZN4llDLq54
+ A4Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698946730; x=1699551530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KvWivuRtwwwvha4YHNrmTGvIkSjxbhYcjuu+AWQQ3Q0=;
- b=Xr/SNfkX5qlwAdgBWK/20yHiHTeeppdS3di8+pX3+svmR95+WH4a+UE9b0uUbQ/sDG
- t5i701bkBEwSJDfB1tUoeIxtWhvo8jBEGg/vMihY8M2KISnyacrZH9NOM5ntdL6vlYaZ
- U2lfJpDYJ7dVwdLnocSQEyf2h+56fDLPGu1UaAfAqBbH9cVnm8o1e4tKhBvajgh6qHeR
- v8MXKxYdNU/fqhpkByXkMSE9sCEbotf4rTvJ3llxVR4/Z0rZMB4ewZUFpiQVkkL/kphy
- QSHKl8YouQebLh3qs8vhLC+xarp7SuBebMZEQFuhA1I1G9H9wyq15J2KSBvOkUg0HJer
- mN8Q==
-X-Gm-Message-State: AOJu0YzOGB0Lr8/XgIdb5K5h8yaajfcVtryZNdEDtMMYtz8Rv8UvkXOO
- n5/aJFAXWQAbsL/Q6gqZeDF+EMelqZix979qSS8=
-X-Google-Smtp-Source: AGHT+IH01xPQzTlzf9qht2cyojlLwM2pmNjA8u/XDbNQcnbywlPRh2IctkwAHOOmf2St9Oe+RZlqgg==
-X-Received: by 2002:adf:f211:0:b0:32d:a7b0:62b with SMTP id
- p17-20020adff211000000b0032da7b0062bmr12903123wro.26.1698946730007; 
+ bh=KWyGEYTzfH2Abe6/qvv9Qz9Xy/UG4t+1CI7YQLR7W1Q=;
+ b=HJWOwDAOX7VungykAilj1KPDqnB39HVTS0u5gFqHci49Hewd2L+Jnp59bL5KAsfdTE
+ kasKfnsbtgQyZOQtg8ps2IhsGZnLXTroUeySSc249H5ds/2BprqsmP568CpEiKEEAlsY
+ 5L5cojL8XRgoX/1/mV+lmr7vnNTFb7xgsQqoQfayqsHZ4ZJHZzRP87Y1+afpgCxZcwLo
+ 9NSwZ8fSVGbeaZQquKJqw34hJOz4J3gNzzlXARZpc7EDreDxgLhj4BIM9nHLrDWUPCVL
+ vcNJb7NYq40dWnYqaBPP7JWphdp1iqLS3pDGt7O/JxyLG9fT6dd/ZpHipigECUeO00qi
+ 5LGA==
+X-Gm-Message-State: AOJu0YyLuhwkdyqtpvFuwzmJ2yBIgqjq2asy4umPDkYCsOetxEu9NN7R
+ R4SMrxyws4Gg4Zvz1vr2/bfHD95KKQdFUZLRcpo=
+X-Google-Smtp-Source: AGHT+IHDZsSXPr5WaFs/6lMO69pWvGLjPyPvJ1Y2tFI+NrinacZnPVdK0CAB7H+V889SucZZhuDKUg==
+X-Received: by 2002:a5d:5987:0:b0:32f:8181:7d2b with SMTP id
+ n7-20020a5d5987000000b0032f81817d2bmr12347763wri.32.1698946730472; 
  Thu, 02 Nov 2023 10:38:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.49
+ e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 10:38:49 -0700 (PDT)
+ Thu, 02 Nov 2023 10:38:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/33] linux-user: Report AArch64 hwcap2 fields above bit 31
-Date: Thu,  2 Nov 2023 17:38:26 +0000
-Message-Id: <20231102173835.609985-25-peter.maydell@linaro.org>
+Subject: [PULL 25/33] target/arm: Make FEAT_MOPS SET* insns handle Xs == XZR
+ correctly
+Date: Thu,  2 Nov 2023 17:38:27 +0000
+Message-Id: <20231102173835.609985-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,72 +92,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AArch64 ELF hwcap2 field is 64 bits, but our get_elf_hwcap2()
-works with uint32_t, so it accidentally fails to report any hwcaps
-over bit 31.  Use uint64_t here.
+Most of the registers used by the FEAT_MOPS instructions cannot use
+31 as a register field value; this is CONSTRAINED UNPREDICTABLE to
+NOP or UNDEF (we UNDEF).  However, it is permitted for the "source
+value" register for the memset insns SET* to be 31, which (as usual
+for most data-processing insns) means it should be the zero register
+XZR. We forgot to handle this case, with the effect that trying to
+set memory to zero with a "SET* Xd, Xn, XZR" sets the memory to
+the value that happens to be in the low byte of SP.
 
-The Arm hwcap2 is only 32 bits (because the ELF format makes these
-fields be the size of "long" in the ABI), but since it shares the
-prototype declaration for get_elf_hwcap2() it is easier to also
-expand it to 64 bits.
-
-The only hwcap fields we implement already that are affected by this
-are the HBC and MOPS ones, neither of which were implemented in a
-previous release, so this doesn't need backporting to older stable
-branches.
+Handle XZR when getting the SET* data value from the register file.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231030174000.3792225-3-peter.maydell@linaro.org
+Message-id: 20231030174000.3792225-4-peter.maydell@linaro.org
 ---
- linux-user/loader.h  | 2 +-
- linux-user/elfload.c | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ target/arm/tcg/helper-a64.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index a0834290e7d..e102e6f4108 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -103,7 +103,7 @@ uint32_t get_elf_hwcap(void);
- const char *elf_hwcap_str(uint32_t bit);
- #endif
- #if defined(TARGET_AARCH64) || defined(TARGET_ARM)
--uint32_t get_elf_hwcap2(void);
-+uint64_t get_elf_hwcap2(void);
- const char *elf_hwcap2_str(uint32_t bit);
- #endif
- 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 3f3975352af..4cd6891d7b6 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -552,10 +552,10 @@ uint32_t get_elf_hwcap(void)
-     return hwcaps;
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index 84f54750fc2..ce4800b8d13 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -1206,6 +1206,15 @@ static void check_setg_alignment(CPUARMState *env, uint64_t ptr, uint64_t size,
+     }
  }
  
--uint32_t get_elf_hwcap2(void)
-+uint64_t get_elf_hwcap2(void)
- {
-     ARMCPU *cpu = ARM_CPU(thread_cpu);
--    uint32_t hwcaps = 0;
-+    uint64_t hwcaps = 0;
- 
-     GET_FEATURE_ID(aa32_aes, ARM_HWCAP2_ARM_AES);
-     GET_FEATURE_ID(aa32_pmull, ARM_HWCAP2_ARM_PMULL);
-@@ -818,10 +818,10 @@ uint32_t get_elf_hwcap(void)
-     return hwcaps;
- }
- 
--uint32_t get_elf_hwcap2(void)
-+uint64_t get_elf_hwcap2(void)
- {
-     ARMCPU *cpu = ARM_CPU(thread_cpu);
--    uint32_t hwcaps = 0;
-+    uint64_t hwcaps = 0;
- 
-     GET_FEATURE_ID(aa64_dcpodp, ARM_HWCAP2_A64_DCPODP);
-     GET_FEATURE_ID(aa64_sve2, ARM_HWCAP2_A64_SVE2);
++static uint64_t arm_reg_or_xzr(CPUARMState *env, int reg)
++{
++    /*
++     * Runtime equivalent of cpu_reg() -- return the CPU register value,
++     * for contexts when index 31 means XZR (not SP).
++     */
++    return reg == 31 ? 0 : env->xregs[reg];
++}
++
+ /*
+  * For the Memory Set operation, our implementation chooses
+  * always to use "option A", where we update Xd to the final
+@@ -1226,7 +1235,7 @@ static void do_setp(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
+     int rd = mops_destreg(syndrome);
+     int rs = mops_srcreg(syndrome);
+     int rn = mops_sizereg(syndrome);
+-    uint8_t data = env->xregs[rs];
++    uint8_t data = arm_reg_or_xzr(env, rs);
+     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
+     uint64_t toaddr = env->xregs[rd];
+     uint64_t setsize = env->xregs[rn];
+@@ -1286,7 +1295,7 @@ static void do_setm(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
+     int rd = mops_destreg(syndrome);
+     int rs = mops_srcreg(syndrome);
+     int rn = mops_sizereg(syndrome);
+-    uint8_t data = env->xregs[rs];
++    uint8_t data = arm_reg_or_xzr(env, rs);
+     uint64_t toaddr = env->xregs[rd] + env->xregs[rn];
+     uint64_t setsize = -env->xregs[rn];
+     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
+@@ -1349,7 +1358,7 @@ static void do_sete(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
+     int rd = mops_destreg(syndrome);
+     int rs = mops_srcreg(syndrome);
+     int rn = mops_sizereg(syndrome);
+-    uint8_t data = env->xregs[rs];
++    uint8_t data = arm_reg_or_xzr(env, rs);
+     uint64_t toaddr = env->xregs[rd] + env->xregs[rn];
+     uint64_t setsize = -env->xregs[rn];
+     uint32_t memidx = FIELD_EX32(mtedesc, MTEDESC, MIDX);
 -- 
 2.34.1
 
