@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AF57DF1A6
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8887DF164
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:42:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyW54-0002JB-Dt; Thu, 02 Nov 2023 07:41:46 -0400
+	id 1qyW5D-0002Td-7K; Thu, 02 Nov 2023 07:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW52-0002Hf-Gr
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:44 -0400
+ id 1qyW5A-0002Nx-Pt
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW50-0004Fb-7C
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:44 -0400
+ id 1qyW58-0004It-Bf
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698925301;
+ s=mimecast20190719; t=1698925309;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dTJsFVzWMxcTx8RaEnOML6rvjwsf9n7SjqNHr3G+kgQ=;
- b=S0ESznTgO3FjZW9//bnYoqjcn/M8y5F8DQz8tkYSXVAM7PmUlz1mEJRpK/BbefN4lrL/6w
- TWZcXnaE0Dd5Wly13JYYc/+ZZj2M22CyiVZ2k850rW4SeGbPliZe0XUj+E/rHmDW7pHAkL
- Y3RVJbZ9V8bOV29t0iCFQ3EdYwMifjY=
+ bh=XdFHJUBuMGnAWFqd7hEgg2x2gUonHhaiV5RCE6MlQuA=;
+ b=c0oqMVgEUf++Cguu+QcbwA7dN9oWJJ9eFcS+Id10kpOh6+I+s95ko4o75a+veMjAbI41Xm
+ bEVTtL1Qroq3wysFxk/Mh2Q4dCh2BPKr2PATJkQsTcDSYyIqZYVwA1nkyN6TC99oNtTtoN
+ a+v3hTrDu9JXE8niZ1Scc5R3FcjWOvA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-ckeaTPGOO-eCpusz1XqLIg-1; Thu, 02 Nov 2023 07:41:36 -0400
-X-MC-Unique: ckeaTPGOO-eCpusz1XqLIg-1
+ us-mta-264-iTrQHR-5NQ67VMAxITjLEw-1; Thu, 02 Nov 2023 07:41:44 -0400
+X-MC-Unique: iTrQHR-5NQ67VMAxITjLEw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 48DEB185A782;
- Thu,  2 Nov 2023 11:41:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3C04811E8E;
+ Thu,  2 Nov 2023 11:41:41 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 171132026D4C;
- Thu,  2 Nov 2023 11:41:26 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 962532026D4C;
+ Thu,  2 Nov 2023 11:41:34 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -76,11 +76,10 @@ Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Stefan Weil <sw@weilnetz.de>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Fam Zheng <fam@euphon.net>
-Subject: [PULL 04/40] hw/s390x/s390-stattrib: Don't call
- register_savevm_live() during instance_init()
-Date: Thu,  2 Nov 2023 12:40:18 +0100
-Message-ID: <20231102114054.44360-5-quintela@redhat.com>
+ Fam Zheng <fam@euphon.net>, Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PULL 05/40] migration: Create vmstate_register_any()
+Date: Thu,  2 Nov 2023 12:40:19 +0100
+Message-ID: <20231102114054.44360-6-quintela@redhat.com>
 In-Reply-To: <20231102114054.44360-1-quintela@redhat.com>
 References: <20231102114054.44360-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -111,80 +110,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+We have lots of cases where we are using an instance_id==0 when we
+should be using VMSTATE_INSTANCE_ID_ANY (-1).  Basically everything
+that can have more than one needs to have a proper instance_id or -1
+and the system will take one for it.
 
-We must not call register_savevm_live() from an instance_init() function
-(since this could be called multiple times during device introspection).
-Move this to the realize() function instead.
+vmstate_register_any(): We register with -1.
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231020150554.664422-4-thuth@redhat.com>
+Message-ID: <20231020090731.28701-2-quintela@redhat.com>
 ---
- hw/s390x/s390-stattrib.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ include/migration/vmstate.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-index 4f1ab57437..c483b62a9b 100644
---- a/hw/s390x/s390-stattrib.c
-+++ b/hw/s390x/s390-stattrib.c
-@@ -331,6 +331,17 @@ static const TypeInfo qemu_s390_stattrib_info = {
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 1af181877c..1ea97ccf2d 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -1230,6 +1230,23 @@ static inline int vmstate_register(VMStateIf *obj, int instance_id,
+                                           opaque, -1, 0, NULL);
+ }
  
- /* Generic abstract object: */
- 
-+static SaveVMHandlers savevm_s390_stattrib_handlers = {
-+    .save_setup = cmma_save_setup,
-+    .save_live_iterate = cmma_save_iterate,
-+    .save_live_complete_precopy = cmma_save_complete,
-+    .state_pending_exact = cmma_state_pending,
-+    .state_pending_estimate = cmma_state_pending,
-+    .save_cleanup = cmma_save_cleanup,
-+    .load_state = cmma_load,
-+    .is_active = cmma_active,
-+};
++/**
++ * vmstate_register_any() - legacy function to register state
++ * serialisation description and let the function choose the id
++ *
++ * New code shouldn't be using this function as QOM-ified devices have
++ * dc->vmsd to store the serialisation description.
++ *
++ * Returns: 0 on success, -1 on failure
++ */
++static inline int vmstate_register_any(VMStateIf *obj,
++                                       const VMStateDescription *vmsd,
++                                       void *opaque)
++{
++    return vmstate_register_with_alias_id(obj, VMSTATE_INSTANCE_ID_ANY, vmsd,
++                                          opaque, -1, 0, NULL);
++}
 +
- static void s390_stattrib_realize(DeviceState *dev, Error **errp)
- {
-     bool ambiguous = false;
-@@ -338,7 +349,11 @@ static void s390_stattrib_realize(DeviceState *dev, Error **errp)
-     object_resolve_path_type("", TYPE_S390_STATTRIB, &ambiguous);
-     if (ambiguous) {
-         error_setg(errp, "storage_attributes device already exists");
-+        return;
-     }
-+
-+    register_savevm_live(TYPE_S390_STATTRIB, 0, 0,
-+                         &savevm_s390_stattrib_handlers, dev);
- }
- 
- static Property s390_stattrib_props[] = {
-@@ -356,24 +371,10 @@ static void s390_stattrib_class_init(ObjectClass *oc, void *data)
-     device_class_set_props(dc, s390_stattrib_props);
- }
- 
--static SaveVMHandlers savevm_s390_stattrib_handlers = {
--    .save_setup = cmma_save_setup,
--    .save_live_iterate = cmma_save_iterate,
--    .save_live_complete_precopy = cmma_save_complete,
--    .state_pending_exact = cmma_state_pending,
--    .state_pending_estimate = cmma_state_pending,
--    .save_cleanup = cmma_save_cleanup,
--    .load_state = cmma_load,
--    .is_active = cmma_active,
--};
--
- static void s390_stattrib_instance_init(Object *obj)
- {
-     S390StAttribState *sas = S390_STATTRIB(obj);
- 
--    register_savevm_live(TYPE_S390_STATTRIB, 0, 0,
--                         &savevm_s390_stattrib_handlers, sas);
--
-     sas->migration_cur_gfn = 0;
- }
+ void vmstate_unregister(VMStateIf *obj, const VMStateDescription *vmsd,
+                         void *opaque);
  
 -- 
 2.41.0
