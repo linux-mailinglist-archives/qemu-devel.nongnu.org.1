@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297977DF8E9
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:40:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AC67DF913
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:46:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybfS-0003tT-2g; Thu, 02 Nov 2023 13:39:42 -0400
+	id 1qybfI-0003Vi-PC; Thu, 02 Nov 2023 13:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybej-0003HP-Dz
+ id 1qybek-0003Hi-7h
  for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:39:00 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeg-0002ys-Rl
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:56 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-32f8441dfb5so745309f8f.0
+ id 1qybeh-0002zF-5H
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:57 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40906fc54fdso9422745e9.0
  for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698946733; x=1699551533; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sPFWc1s7OJlbSKqVGRhWCnDV7XV3swiqvpQRbW+f2QQ=;
- b=Tsu/4h8JLzq7JobhgKmiSIYx25jhrH4Oh+tCwfQ9ikKfZ5Q+TScVl6WamPcdmoIFVm
- 00bmmKVluXSzVxVXwUt1wwW8iaKRduaSuesd9TKjMobFj4btYZPoF1Beq2K4iLiNJSJD
- HYSLv8kgdlnZMY4upEcrvenVulytjgi97PO6/heER8Inhm8NjCA3kGe/ijQaJ6ohxk5T
- CBpgO/Ndj8xwjB1wDDljl2Jb8fLJVEz9SsnFJkuYzZ+EfZyFFG1rTZat38v2x7qP99Ft
- dVaNg5kB1jdDm65CvcI7rqEKKZ7v9GqnzyOqgvXY3HK1gNZ7E7SP6uzt4cAFBgkL9rlE
- DSlA==
+ :reply-to; bh=Q7gNhyKm+XeQ9PyUruTJ7pm1OOgSYvOzpb6f9nuBc4M=;
+ b=yAbiL+LBGQmM+teNocOqgKn6/Xu4h7l66wgctuplQV5H0R+1Og+dFwd9a48R49q2m0
+ bD0vLc0+o65yWXEkt5ifjxbCyzTHUBN1LV3BvGCNlC04KKgP+OsNYLfOr1odLHnJTwxK
+ c9mf11eFnbjDz8tPk2KRL49hop3iSdbHx/uXUMbrSc+8WKObk//XiACdv5nqHw7XhmDg
+ 7FVAu10GAvyVbxIMYoNzAytHHouEOWqN3Sgwe0f0KR1WTxDoHGEHZ5o/7F1X7q9PEFTS
+ 99yqDGFuFk1CfVH3zWW+xmrVtk1BJ6iuWmbPIXN7PYCfKUo5UvrNnw1Xvj3Zb4Q26H5d
+ qL/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698946733; x=1699551533;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sPFWc1s7OJlbSKqVGRhWCnDV7XV3swiqvpQRbW+f2QQ=;
- b=v9s90g1y7cDKHz5u4tfD9cF8KwDWlKtyPD4sXBCT9tV+kxYfFhByVgTMKZi7Gshj4x
- YINmwTNcT9cU76dSy+hM+RM0J+1VTf33OKOAr1vsuCO53hsQwE4ROjkJBhCYVsA5CpJU
- 72PJh23PA5utMVOvZMjFBliCQUJgl93T8oGpaHqSqwnzcmzE1w5epjxCpYdTUcgh9QS8
- KHMN1kA9dC9kK0VcHONIbCBoKAOXxeeZHUMK8TRlP0r9AO9OQDpnoLXFNa2Dv7xX8VvH
- 7tC+H2yvpFVR11M1pxHL90gsJbRCBFBIkxtJmaJfld2sP5SR3KCdxsp35W/34ZRVSeyY
- MUIg==
-X-Gm-Message-State: AOJu0YyI/sPRECvNkbvdiGgXGIaKCkJacEoFLRXP3elPEvgqz7qopBmC
- 9fKIuxC1IuIW6lEbd4cHu96YUnL3CjImvZxY020=
-X-Google-Smtp-Source: AGHT+IEqt4R6Kkumr4m2kvihdkeHVRMPMYAXxGBk2raHs9cdOmfETfrE02+sHGUgovTcwN3Pp+hP7A==
-X-Received: by 2002:a05:6000:2ce:b0:32f:7e24:ddaf with SMTP id
- o14-20020a05600002ce00b0032f7e24ddafmr16011841wry.10.1698946733031; 
+ bh=Q7gNhyKm+XeQ9PyUruTJ7pm1OOgSYvOzpb6f9nuBc4M=;
+ b=cnZ97TIKuB4/9THN84mEFy/74ic6RfEGwCYfE0zohr7+4QC9Di951pnncSBZUOWPJ8
+ mBVuZ16rWmQVBSkMRC7kucUJJaOFeaLz/F6uEQL5zxdWqfTXq8xIzc1nArY7YaDAvQHp
+ TYoBoToacVf7BU/FEal35M6f/b2ZmmEtfpjBsz0iDKmphWhXHwqZ/oEYtibu+qsnUcy5
+ G1Cnucw8MzA0fYgv2ATwd78ckCB7WK9CElppUpeyiDLtc14B+iWLKHq/rPsGbb+kTGt5
+ D0EQSyhVGyRJY4k+WpAy6W0qbQxC23nGyD8eIXiAVcgzxu7WcOExLPRVhHB7HvYWPwqT
+ 1KCA==
+X-Gm-Message-State: AOJu0YxM5sNfkwM9UQcapjh8KCXm6eyXSP9M5AW4lfaZWZsrWsAZPj3n
+ 2YuknA3OpUOtmALL0GBpJURX0LlEaQanYDoMsI4=
+X-Google-Smtp-Source: AGHT+IFk4N0bWq93qDCUyOMMaVxyH2BaP6piyj5H+D8zzZfMTbRMUjO2UGVVt0OzAEpcg+Be07eP4Q==
+X-Received: by 2002:a5d:6c68:0:b0:32f:7f09:160f with SMTP id
+ r8-20020a5d6c68000000b0032f7f09160fmr14221324wrz.12.1698946733563; 
  Thu, 02 Nov 2023 10:38:53 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.52
+ e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 10:38:52 -0700 (PDT)
+ Thu, 02 Nov 2023 10:38:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/33] hw/char/stm32f2xx_usart: Add more definitions for CR1
- register
-Date: Thu,  2 Nov 2023 17:38:31 +0000
-Message-Id: <20231102173835.609985-30-peter.maydell@linaro.org>
+Subject: [PULL 30/33] target/arm: Correctly propagate stage 1 BTI guarded bit
+ in a two-stage walk
+Date: Thu,  2 Nov 2023 17:38:32 +0000
+Message-Id: <20231102173835.609985-31-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,39 +91,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
+In a two-stage translation, the result of the BTI guarded bit should
+be the guarded bit from the first stage of translation, as there is
+no BTI guard information in stage two.  Our code tried to do this,
+but got it wrong, because we currently have two fields where the GP
+bit information might live (ARMCacheAttrs::guarded and
+CPUTLBEntryFull::extra::arm::guarded), and we were storing the GP bit
+in the latter during the stage 1 walk but trying to copy the former
+in combine_cacheattrs().
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
-Message-id: 20231030151528.1138131-4-hans-erik.floryd@rt-labs.com
+Remove the duplicated storage, and always use the field in
+CPUTLBEntryFull; correctly propagate the stage 1 value to the output
+in get_phys_addr_twostage().
+
+Note for stable backports: in v8.0 and earlier the field is named
+result->f.guarded, not result->f.extra.arm.guarded.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1950
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20231031173723.26582-1-peter.maydell@linaro.org
 ---
- include/hw/char/stm32f2xx_usart.h | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ target/arm/internals.h | 1 -
+ target/arm/ptw.c       | 7 +++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/char/stm32f2xx_usart.h b/include/hw/char/stm32f2xx_usart.h
-index 65bcc85470d..fdfa7424a70 100644
---- a/include/hw/char/stm32f2xx_usart.h
-+++ b/include/hw/char/stm32f2xx_usart.h
-@@ -48,10 +48,12 @@
- #define USART_SR_TC   (1 << 6)
- #define USART_SR_RXNE (1 << 5)
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f7224e6f4d9..c837506e448 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1181,7 +1181,6 @@ typedef struct ARMCacheAttrs {
+     unsigned int attrs:8;
+     unsigned int shareability:2; /* as in the SH field of the VMSAv8-64 PTEs */
+     bool is_s2_format:1;
+-    bool guarded:1;              /* guarded bit of the v8-64 PTE */
+ } ARMCacheAttrs;
  
--#define USART_CR1_UE  (1 << 13)
--#define USART_CR1_RXNEIE  (1 << 5)
--#define USART_CR1_TE  (1 << 3)
--#define USART_CR1_RE  (1 << 2)
-+#define USART_CR1_UE     (1 << 13)
-+#define USART_CR1_TXEIE  (1 << 7)
-+#define USART_CR1_TCEIE  (1 << 6)
-+#define USART_CR1_RXNEIE (1 << 5)
-+#define USART_CR1_TE     (1 << 3)
-+#define USART_CR1_RE     (1 << 2)
+ /* Fields that are valid upon success. */
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 53713e03006..1762b058aec 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3032,7 +3032,6 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
  
- #define TYPE_STM32F2XX_USART "stm32f2xx-usart"
- OBJECT_DECLARE_SIMPLE_TYPE(STM32F2XXUsartState, STM32F2XX_USART)
+     assert(!s1.is_s2_format);
+     ret.is_s2_format = false;
+-    ret.guarded = s1.guarded;
+ 
+     if (s1.attrs == 0xf0) {
+         tagged = true;
+@@ -3175,7 +3174,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     hwaddr ipa;
+     int s1_prot, s1_lgpgsz;
+     ARMSecuritySpace in_space = ptw->in_space;
+-    bool ret, ipa_secure;
++    bool ret, ipa_secure, s1_guarded;
+     ARMCacheAttrs cacheattrs1;
+     ARMSecuritySpace ipa_space;
+     uint64_t hcr;
+@@ -3202,6 +3201,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+      */
+     s1_prot = result->f.prot;
+     s1_lgpgsz = result->f.lg_page_size;
++    s1_guarded = result->f.extra.arm.guarded;
+     cacheattrs1 = result->cacheattrs;
+     memset(result, 0, sizeof(*result));
+ 
+@@ -3252,6 +3252,9 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     result->cacheattrs = combine_cacheattrs(hcr, cacheattrs1,
+                                             result->cacheattrs);
+ 
++    /* No BTI GP information in stage 2, we just use the S1 value */
++    result->f.extra.arm.guarded = s1_guarded;
++
+     /*
+      * Check if IPA translates to secure or non-secure PA space.
+      * Note that VSTCR overrides VTCR and {N}SW overrides {N}SA.
 -- 
 2.34.1
 
