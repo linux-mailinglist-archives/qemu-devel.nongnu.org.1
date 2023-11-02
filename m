@@ -2,82 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA507DF377
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B05B87DF38A
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:19:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyXYc-0006lg-DW; Thu, 02 Nov 2023 09:16:22 -0400
+	id 1qyXaz-0007ZG-S6; Thu, 02 Nov 2023 09:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qyXYY-0006lU-73
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:16:18 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qyXYW-0005vM-L4
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:16:17 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40906fc54fdso7241935e9.0
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 06:16:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698930974; x=1699535774; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NHHmrHZWTpsfN0yGjjha0yJjQ2QbYwe+WP0MTPEWdk0=;
- b=K7HRb6yw/ROKf0LSbJ2vI2xkP5kg3j4rgOtOp52mQcQwAi1CDaek3HlNTb9AGfQUmK
- 9sRERmaU5jFdXvFqmGcKFiqa886d1A0lnOccyYLGkTnDtPF1H0nFW0N3uR3CFkIJGKJe
- lXEDTGnFiqnzhhezKaZenbims7wisHxp16ca06iw3RJ0r3cMpqcAyp4UQ5EIl0WkGQ2H
- FGsACt5vR5vWVaQ+vvn+igNryXbCjYcR6dY9TLTRGbOFguwZL3bcr0uWFcwlbQq0Ep85
- kJGcZdrM3XV8zCtNy+mMsnsw9fCP07h9iYFtULYLGEIdwDsONxLwsSHxhZvxTg+PNxah
- f57Q==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qyXav-0007Z1-I8
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:18:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qyXat-0007Oe-GM
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:18:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698931122;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TMIj/hF5hAP1fkNBDfEw4wOlEx5Sw35cEC7GEjsufoM=;
+ b=gEWMVJlbydTEOg+KHIysdIRb7Ixs6Qk4ecLS2MYvvRbQzw5CUwYN0nL0VSrgn3r8cKtXyU
+ AixeAmwbtCjhQ9dXju5ZBH0I9tpO8w2H6S2yMaQd+X56dl9CvH+/LZjDlZ8ZldEO7PJMQq
+ s8RneaJQxZH/uWLM1YWZhaj+IrQC2nY=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-671-QMLzNWxuOFaT4MpPh_pvgQ-1; Thu, 02 Nov 2023 09:18:41 -0400
+X-MC-Unique: QMLzNWxuOFaT4MpPh_pvgQ-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-1eb43ff49b2so1143750fac.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 06:18:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698930974; x=1699535774;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NHHmrHZWTpsfN0yGjjha0yJjQ2QbYwe+WP0MTPEWdk0=;
- b=kw72+3s0erkUbWFIuxwtFYmqWujZ3JkBX0PtDDFIZJSkIV/msAMAd8Y6NQ13wdhykD
- yuLWc78UFQlUcBnW+QyxP8CQym3l2uv9b2PV7d5k0dx3cy4/CQVYWVKr48wmxtq/QAr7
- 1Hq8Jsy9Um+hvdeop1V/LYIvxMVQ42UX7o2dMrreJY6iDySnFDD4G/QRGs8pDeB91FYG
- bZUHDNLDc2iMdRHudrnsBSedm744QPlXK7EARr7kngYj8MOiM50+VOPoqMRoaYqn21VD
- LLOpeyqSKl0oVHv/k3aeZCRm50yvIzQP7TQJBw9tMESntLn/UynSEie9dQQMKbOUbptC
- a8lQ==
-X-Gm-Message-State: AOJu0YxjflFl8jXwUjhuPjzZEa30N3E7dln9xBVvpsGCLS7zz7OMWsL3
- iz4OZTKBNZYDHu0T6YO+bhnJJhnMxZOW/NFuCQI=
-X-Google-Smtp-Source: AGHT+IHh496tBQIkcKz2dQN0yA+yQP+qLWX1URTZ1vHeA9hdHDhwvlDeZOZTBfuvYpBmZllM6PIbzg==
-X-Received: by 2002:a05:6000:401f:b0:32d:9718:b32a with SMTP id
- cp31-20020a056000401f00b0032d9718b32amr15665707wrb.0.1698930974310; 
- Thu, 02 Nov 2023 06:16:14 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- z2-20020adff1c2000000b0032d9a1f2ec3sm2456179wro.27.2023.11.02.06.16.13
+ d=1e100.net; s=20230601; t=1698931120; x=1699535920;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TMIj/hF5hAP1fkNBDfEw4wOlEx5Sw35cEC7GEjsufoM=;
+ b=OjR762yJDs9H9lGLihjgzTU2+3tMyFaWFMcymZjp2tJzKEp9lcQufhNsRY1SOEY4gB
+ /ryC4C5vlkqmCyZdHuuGvbGaM1hjPxvRHYWW6CIjMF3kuNe5pHUq3tTiMboqz+eTSKy3
+ MYznVyr2pGTvX7YnCxktZfHadUeG1VTvA7kefV2PS6o1ZMe85p+uR4gIKmMmhf9rN8UJ
+ s6MHgpAUYJi14S3Sd9qgUHToKxF25q6/6SekcQ/o0p3J0UF3E8hCEuy5IP005GuedHfV
+ XTTkL4NAhLMwn4hWZzvawzVF08Gc5+4ZfidXEs8KadM2kYm0NPuD+atmQk5Jz2xRm8nE
+ F2VA==
+X-Gm-Message-State: AOJu0YwIu9B3L1a2yeVwUjQNO7Ec/1sBw5dC4znFoKK3mgygzC4ddQJ9
+ Q3lE0++nciVK0U0SSouWSI5OZCWzq1sve9JPBcE24s0gORECnwbUoioIW/EaPFZN53RtOngltZX
+ y8ioe95um+QgVeJI=
+X-Received: by 2002:a05:6870:700e:b0:1e9:9469:a858 with SMTP id
+ u14-20020a056870700e00b001e99469a858mr21269816oae.39.1698931120386; 
+ Thu, 02 Nov 2023 06:18:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbFBwotZ6Fw5jebk8JVChBUNwa7tCXz3w5kac73S2tO50qZJLhu5/RG5IcItbgG+ANJwPHCQ==
+X-Received: by 2002:a05:6870:700e:b0:1e9:9469:a858 with SMTP id
+ u14-20020a056870700e00b001e99469a858mr21269804oae.39.1698931120079; 
+ Thu, 02 Nov 2023 06:18:40 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:174:efc3:a5be:5586:34a6:1108])
+ by smtp.gmail.com with ESMTPSA id
+ j127-20020a0de085000000b00592236855cesm1191138ywe.61.2023.11.02.06.18.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 06:16:14 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 894C05F781;
- Thu,  2 Nov 2023 13:16:13 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org,   Fabiano Rosas <farosas@suse.de>,   Peter Xu
- <peterx@redhat.com>,   Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH] migration: Unlock mutex in error case
-In-Reply-To: <20231102091245.42045-1-quintela@redhat.com> (Juan Quintela's
- message of "Thu, 2 Nov 2023 10:12:45 +0100")
-User-Agent: mu4e 1.11.23; emacs 29.1
-Date: Thu, 02 Nov 2023 13:16:13 +0000
-Message-ID: <87ttq447oi.fsf@draig.linaro.org>
+ Thu, 02 Nov 2023 06:18:39 -0700 (PDT)
+Date: Thu, 2 Nov 2023 09:18:35 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Yuri Benditovich <yuri.benditovich@daynix.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ Andrew Melnychenko <andrew@daynix.com>
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+Message-ID: <20231102091717-mutt-send-email-mst@kernel.org>
+References: <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
+ <20231101023805-mutt-send-email-mst@kernel.org>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+ <20231101050838-mutt-send-email-mst@kernel.org>
+ <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+ <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
+ <20231102053202-mutt-send-email-mst@kernel.org>
+ <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
+ <20231102072540-mutt-send-email-mst@kernel.org>
+ <CAOEp5OdEudOFXuitG2NSBfuCQiwFJ72rYZsyvLFRfKR4kQvTDg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOEp5OdEudOFXuitG2NSBfuCQiwFJ72rYZsyvLFRfKR4kQvTDg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,37 +110,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On Thu, Nov 02, 2023 at 02:00:46PM +0200, Yuri Benditovich wrote:
+> 
+> 
+> On Thu, Nov 2, 2023 at 1:26 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> 
+>     On Thu, Nov 02, 2023 at 12:20:39PM +0200, Yuri Benditovich wrote:
+>     >
+>     >
+>     > On Thu, Nov 2, 2023 at 11:33 AM Michael S. Tsirkin <mst@redhat.com>
+>     wrote:
+>     >
+>     >     On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri Benditovich wrote:
+>     >     > Probably we mix two different patches in this discussion.
+>     >     > Focusing on the patch in the e-mail header:
+>     >     >
+>     >     > IMO it is not acceptable to fail QEMU run for one feature that we
+>     can't
+>     >     make
+>     >     > active when we silently drop all other features in such a case.
+>     >
+>     >     If the feature is off by default then it seems more reasonable
+>     >     and silent masking can be seen as a bug.
+>     >     Most virtio features are on by default this is why it's
+>     >     reasonable to mask them.
+>     >
+>     >
+>     >
+>     > If we are talking about RSS: setting it initially off is the development
+>     time
+>     > decision. 
+>     > When it will be completely stable there is no reason to keep it off by
+>     default,
+>     > so this is more a question of time and of a readiness of libvirt. 
+> 
+>     Well when we flip the default we'll need compat machinery for sure ;)
+> 
+> 
+> Of course, on the flip or default we'll need to keep compatibility to earlier
+> machine types.
+> But, because in the perspective it makes sense to make the RSS is on by
+> default, I do not think we need _now_ to make qemu fail to start if the ebpf
+> can't be loaded.
+>  
 
-> We were not unlocking bitmap mutex on the error case.
-> Coverity discovered the problem.
->
-> Fixes: a2326705e5 ("migration: Stop migration immediately in RDMA error p=
-aths")
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->  migration/ram.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 34724e8fe8..8c4df60f29 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -3040,6 +3040,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaq=
-ue)
->          ret =3D rdma_registration_start(f, RAM_CONTROL_ROUND);
->          if (ret < 0) {
->              qemu_file_set_error(f, ret);
-> +            qemu_mutex_unlock(&rs->bitmap_mutex);
+Generally if user asks for something and we can't do it, we must fail.
+If we can't apply a default we need a better default.
+qemu has a bug in that it can't generally distinguish between default set
+automatically and same default given on command line.
 
-I see the function uses the WITH_RCU_READ_LOCK_GUARD() macro to autofree
-the RCU lock so why not use WITH_QEMU_LOCK_GUARD() instead of manually
-checking the error cases?
+-- 
+MST
 
->              goto out;
->          }
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
