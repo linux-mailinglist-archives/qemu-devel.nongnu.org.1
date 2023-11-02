@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6FE7DF198
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EFF7DF1C9
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:55:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyW8e-00070r-ET; Thu, 02 Nov 2023 07:45:28 -0400
+	id 1qyWAT-0000mU-DE; Thu, 02 Nov 2023 07:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW8M-0006o6-DG
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:45:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qyW8V-00070t-Nq
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:45:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW8K-0006VU-Cd
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:45:10 -0400
+ id 1qyW8S-0006Yc-6w
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:45:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698925507;
+ s=mimecast20190719; t=1698925514;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yl0Cs6NY1VQbMa3jjRYU/J74F9V1nMKZ9OMcbMQ4+Fs=;
- b=fAqrdm8zsZ6ZUQi+gOx4K/uroSJolFhbmfMzsvqHCMGhnq0dmp1DxrgO/xg2GPTPlOgSya
- BZ3rQsCtmBhle0sur7PnUumnvftRioEjeLhxAo2Z3LtjsgRfAq0U4xfmVr2FBSsCW01w7l
- 7wYLsW9UoI/uClrHgSi50NPMpBFfx0k=
+ bh=ycH7Pzd60GdSUSqN4qjd6nf1GPx4gaBxv8xhqHyn4NY=;
+ b=doNClgo+FRTK6+Z3g3AJe6/1SEUatr5syB06DX45JoVKw8pbDeUzZ2Q1Ei/+e7Hqa7gzE5
+ YSySlT6pOGOHbl6VPsSoxTJpG2ATLrW04CkiSkEVpvKRSgU9VDdNM+rtzMuPIvLb0zOles
+ pRiDFz5qw6GBHRLCe1ifeWQxTdOE3C4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-8ZUhGCODNVqEZdHB7EOhmQ-1; Thu, 02 Nov 2023 07:45:04 -0400
-X-MC-Unique: 8ZUhGCODNVqEZdHB7EOhmQ-1
+ us-mta-27-DkTOmCTwMkqFttbCR704_Q-1; Thu, 02 Nov 2023 07:45:11 -0400
+X-MC-Unique: DkTOmCTwMkqFttbCR704_Q-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 730A7101A550;
- Thu,  2 Nov 2023 11:45:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 51906101A529;
+ Thu,  2 Nov 2023 11:45:10 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E88202026D4C;
- Thu,  2 Nov 2023 11:44:54 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C1DEE2026D4C;
+ Thu,  2 Nov 2023 11:45:02 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -78,25 +78,26 @@ Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Fam Zheng <fam@euphon.net>, Het Gala <het.gala@nutanix.com>,
  Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-Subject: [PULL 31/40] migration: convert migration 'uri' into 'MigrateAddress'
-Date: Thu,  2 Nov 2023 12:40:45 +0100
-Message-ID: <20231102114054.44360-32-quintela@redhat.com>
+Subject: [PULL 32/40] migration: convert socket backend to accept
+ MigrateAddress
+Date: Thu,  2 Nov 2023 12:40:46 +0100
+Message-ID: <20231102114054.44360-33-quintela@redhat.com>
 In-Reply-To: <20231102114054.44360-1-quintela@redhat.com>
 References: <20231102114054.44360-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,182 +115,191 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Het Gala <het.gala@nutanix.com>
 
-This patch parses 'migrate' and 'migrate-incoming' QAPI's 'uri'
-string containing migration connection related information
-and stores them inside well defined 'MigrateAddress' struct.
+Socket transport backend for 'migrate'/'migrate-incoming' QAPIs accept
+new wire protocol of MigrateAddress struct.
 
-Fabiano fixed for "file" transport.
+It is achived by parsing 'uri' string and storing migration parameters
+required for socket connection into well defined SocketAddress struct.
 
 Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
 Signed-off-by: Het Gala <het.gala@nutanix.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231023182053.8711-4-farosas@suse.de>
-Message-ID: <20231023182053.8711-5-farosas@suse.de>
+Message-ID: <20231023182053.8711-6-farosas@suse.de>
 ---
- migration/exec.h      |  4 +++
- migration/file.h      |  1 +
- migration/exec.c      |  1 -
- migration/file.c      |  2 +-
- migration/migration.c | 63 +++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 69 insertions(+), 2 deletions(-)
+ migration/socket.h    |  7 ++++---
+ migration/migration.c | 30 ++++++++++++++++++------------
+ migration/socket.c    | 39 +++++++++------------------------------
+ 3 files changed, 31 insertions(+), 45 deletions(-)
 
-diff --git a/migration/exec.h b/migration/exec.h
-index b210ffde7a..736cd71028 100644
---- a/migration/exec.h
-+++ b/migration/exec.h
-@@ -19,6 +19,10 @@
+diff --git a/migration/socket.h b/migration/socket.h
+index dc54df4e6c..5e4c33b8ea 100644
+--- a/migration/socket.h
++++ b/migration/socket.h
+@@ -19,13 +19,14 @@
  
- #ifndef QEMU_MIGRATION_EXEC_H
- #define QEMU_MIGRATION_EXEC_H
-+
-+#ifdef WIN32
-+const char *exec_get_cmd_path(void);
-+#endif
- void exec_start_incoming_migration(const char *host_port, Error **errp);
- 
- void exec_start_outgoing_migration(MigrationState *s, const char *host_port,
-diff --git a/migration/file.h b/migration/file.h
-index 90fa4849e0..3888a57105 100644
---- a/migration/file.h
-+++ b/migration/file.h
-@@ -11,4 +11,5 @@ void file_start_incoming_migration(const char *filename, Error **errp);
- 
- void file_start_outgoing_migration(MigrationState *s, const char *filename,
-                                    Error **errp);
-+int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp);
- #endif
-diff --git a/migration/exec.c b/migration/exec.c
-index 2bf882bbe1..32f5143dfd 100644
---- a/migration/exec.c
-+++ b/migration/exec.c
-@@ -27,7 +27,6 @@
- #include "qemu/cutils.h"
- 
- #ifdef WIN32
--const char *exec_get_cmd_path(void);
- const char *exec_get_cmd_path(void)
- {
-     g_autofree char *detected_path = g_new(char, MAX_PATH);
-diff --git a/migration/file.c b/migration/file.c
-index cf5b1bf365..ec069ef329 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -19,7 +19,7 @@
- 
- /* Remove the offset option from @filespec and return it in @offsetp. */
- 
--static int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
-+int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
- {
-     char *option = strstr(filespec, OFFSET_OPTION);
-     int ret;
-diff --git a/migration/migration.c b/migration/migration.c
-index ce9b7692ad..a1bace259e 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -66,6 +66,7 @@
- #include "sysemu/qtest.h"
- #include "options.h"
- #include "sysemu/dirtylimit.h"
+ #include "io/channel.h"
+ #include "io/task.h"
 +#include "qemu/sockets.h"
  
- static NotifierList migration_state_notifiers =
-     NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
-@@ -453,9 +454,62 @@ void migrate_add_address(SocketAddress *address)
-                       QAPI_CLONE(SocketAddress, address));
- }
+ void socket_send_channel_create(QIOTaskFunc f, void *data);
+ QIOChannel *socket_send_channel_create_sync(Error **errp);
+ int socket_send_channel_destroy(QIOChannel *send);
  
-+static bool migrate_uri_parse(const char *uri,
-+                              MigrationAddress **channel,
-+                              Error **errp)
-+{
-+    g_autoptr(MigrationAddress) addr = g_new0(MigrationAddress, 1);
-+    SocketAddress *saddr = NULL;
-+    InetSocketAddress *isock = &addr->u.rdma;
-+    strList **tail = &addr->u.exec.args;
-+
-+    if (strstart(uri, "exec:", NULL)) {
-+        addr->transport = MIGRATION_ADDRESS_TYPE_EXEC;
-+#ifdef WIN32
-+        QAPI_LIST_APPEND(tail, g_strdup(exec_get_cmd_path()));
-+        QAPI_LIST_APPEND(tail, g_strdup("/c"));
-+#else
-+        QAPI_LIST_APPEND(tail, g_strdup("/bin/sh"));
-+        QAPI_LIST_APPEND(tail, g_strdup("-c"));
-+#endif
-+        QAPI_LIST_APPEND(tail, g_strdup(uri + strlen("exec:")));
-+    } else if (strstart(uri, "rdma:", NULL)) {
-+        if (inet_parse(isock, uri + strlen("rdma:"), errp)) {
-+            qapi_free_InetSocketAddress(isock);
-+            return false;
-+        }
-+        addr->transport = MIGRATION_ADDRESS_TYPE_RDMA;
-+    } else if (strstart(uri, "tcp:", NULL) ||
-+                strstart(uri, "unix:", NULL) ||
-+                strstart(uri, "vsock:", NULL) ||
-+                strstart(uri, "fd:", NULL)) {
-+        addr->transport = MIGRATION_ADDRESS_TYPE_SOCKET;
-+        saddr = socket_parse(uri, errp);
-+        if (!saddr) {
-+            return false;
-+        }
-+        addr->u.socket.type = saddr->type;
-+        addr->u.socket.u = saddr->u;
-+    } else if (strstart(uri, "file:", NULL)) {
-+        addr->transport = MIGRATION_ADDRESS_TYPE_FILE;
-+        addr->u.file.filename = g_strdup(uri + strlen("file:"));
-+        if (file_parse_offset(addr->u.file.filename, &addr->u.file.offset,
-+                              errp)) {
-+            return false;
-+        }
-+    } else {
-+        error_setg(errp, "unknown migration protocol: %s", uri);
-+        return false;
-+    }
-+
-+    *channel = g_steal_pointer(&addr);
-+    return true;
-+}
-+
- static void qemu_start_incoming_migration(const char *uri, Error **errp)
- {
-     const char *p = NULL;
-+    g_autoptr(MigrationAddress) channel = NULL;
-     MigrationIncomingState *mis = migration_incoming_get_current();
+-void socket_start_incoming_migration(const char *str, Error **errp);
++void socket_start_incoming_migration(SocketAddress *saddr, Error **errp);
  
-     /* URI is not suitable for migration? */
-@@ -463,6 +517,10 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
-         return;
-     }
- 
-+    if (uri && !migrate_uri_parse(uri, &channel, errp)) {
-+        return;
-+    }
-+
+-void socket_start_outgoing_migration(MigrationState *s, const char *str,
+-                                     Error **errp);
++void socket_start_outgoing_migration(MigrationState *s,
++                                     SocketAddress *saddr, Error **errp);
+ #endif
+diff --git a/migration/migration.c b/migration/migration.c
+index a1bace259e..846877135a 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -524,10 +524,15 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
      migrate_set_state(&mis->state, MIGRATION_STATUS_NONE,
                        MIGRATION_STATUS_SETUP);
  
-@@ -1840,12 +1898,17 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
-     Error *local_err = NULL;
-     MigrationState *s = migrate_get_current();
-     const char *p = NULL;
-+    g_autoptr(MigrationAddress) channel = NULL;
- 
-     /* URI is not suitable for migration? */
-     if (!migration_channels_and_uri_compatible(uri, errp)) {
-         return;
+-    if (strstart(uri, "tcp:", &p) ||
+-        strstart(uri, "unix:", NULL) ||
+-        strstart(uri, "vsock:", NULL)) {
+-        socket_start_incoming_migration(p ? p : uri, errp);
++    if (channel->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
++        SocketAddress *saddr = &channel->u.socket;
++        if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
++            saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
++            saddr->type == SOCKET_ADDRESS_TYPE_VSOCK) {
++            socket_start_incoming_migration(saddr, errp);
++        } else if (saddr->type == SOCKET_ADDRESS_TYPE_FD) {
++            fd_start_incoming_migration(saddr->u.fd.str, errp);
++        }
+ #ifdef CONFIG_RDMA
+     } else if (strstart(uri, "rdma:", &p)) {
+         if (migrate_compress()) {
+@@ -546,8 +551,6 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
+ #endif
+     } else if (strstart(uri, "exec:", &p)) {
+         exec_start_incoming_migration(p, errp);
+-    } else if (strstart(uri, "fd:", &p)) {
+-        fd_start_incoming_migration(p, errp);
+     } else if (strstart(uri, "file:", &p)) {
+         file_start_incoming_migration(p, errp);
+     } else {
+@@ -1922,18 +1925,21 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
+         }
      }
  
-+    if (!migrate_uri_parse(uri, &channel, errp)) {
-+        return;
-+    }
-+
-     resume_requested = has_resume && resume;
-     if (!migrate_prepare(s, has_blk && blk, has_inc && inc,
-                          resume_requested, errp)) {
+-    if (strstart(uri, "tcp:", &p) ||
+-        strstart(uri, "unix:", NULL) ||
+-        strstart(uri, "vsock:", NULL)) {
+-        socket_start_outgoing_migration(s, p ? p : uri, &local_err);
++    if (channel->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
++        SocketAddress *saddr = &channel->u.socket;
++        if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
++            saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
++            saddr->type == SOCKET_ADDRESS_TYPE_VSOCK) {
++            socket_start_outgoing_migration(s, saddr, &local_err);
++        } else if (saddr->type == SOCKET_ADDRESS_TYPE_FD) {
++            fd_start_outgoing_migration(s, saddr->u.fd.str, &local_err);
++        }
+ #ifdef CONFIG_RDMA
+     } else if (strstart(uri, "rdma:", &p)) {
+         rdma_start_outgoing_migration(s, p, &local_err);
+ #endif
+     } else if (strstart(uri, "exec:", &p)) {
+         exec_start_outgoing_migration(s, p, &local_err);
+-    } else if (strstart(uri, "fd:", &p)) {
+-        fd_start_outgoing_migration(s, p, &local_err);
+     } else if (strstart(uri, "file:", &p)) {
+         file_start_outgoing_migration(s, p, &local_err);
+     } else {
+diff --git a/migration/socket.c b/migration/socket.c
+index 1b6f5baefb..98e3ea1514 100644
+--- a/migration/socket.c
++++ b/migration/socket.c
+@@ -28,6 +28,8 @@
+ #include "trace.h"
+ #include "postcopy-ram.h"
+ #include "options.h"
++#include "qapi/clone-visitor.h"
++#include "qapi/qapi-visit-sockets.h"
+ 
+ struct SocketOutgoingArgs {
+     SocketAddress *saddr;
+@@ -108,19 +110,19 @@ out:
+     object_unref(OBJECT(sioc));
+ }
+ 
+-static void
+-socket_start_outgoing_migration_internal(MigrationState *s,
+-                                         SocketAddress *saddr,
+-                                         Error **errp)
++void socket_start_outgoing_migration(MigrationState *s,
++                                     SocketAddress *saddr,
++                                     Error **errp)
+ {
+     QIOChannelSocket *sioc = qio_channel_socket_new();
+     struct SocketConnectData *data = g_new0(struct SocketConnectData, 1);
++    SocketAddress *addr = QAPI_CLONE(SocketAddress, saddr);
+ 
+     data->s = s;
+ 
+     /* in case previous migration leaked it */
+     qapi_free_SocketAddress(outgoing_args.saddr);
+-    outgoing_args.saddr = saddr;
++    outgoing_args.saddr = addr;
+ 
+     if (saddr->type == SOCKET_ADDRESS_TYPE_INET) {
+         data->hostname = g_strdup(saddr->u.inet.host);
+@@ -135,18 +137,6 @@ socket_start_outgoing_migration_internal(MigrationState *s,
+                                      NULL);
+ }
+ 
+-void socket_start_outgoing_migration(MigrationState *s,
+-                                     const char *str,
+-                                     Error **errp)
+-{
+-    Error *err = NULL;
+-    SocketAddress *saddr = socket_parse(str, &err);
+-    if (!err) {
+-        socket_start_outgoing_migration_internal(s, saddr, &err);
+-    }
+-    error_propagate(errp, err);
+-}
+-
+ static void socket_accept_incoming_migration(QIONetListener *listener,
+                                              QIOChannelSocket *cioc,
+                                              gpointer opaque)
+@@ -172,9 +162,8 @@ socket_incoming_migration_end(void *opaque)
+     object_unref(OBJECT(listener));
+ }
+ 
+-static void
+-socket_start_incoming_migration_internal(SocketAddress *saddr,
+-                                         Error **errp)
++void socket_start_incoming_migration(SocketAddress *saddr,
++                                     Error **errp)
+ {
+     QIONetListener *listener = qio_net_listener_new();
+     MigrationIncomingState *mis = migration_incoming_get_current();
+@@ -213,13 +202,3 @@ socket_start_incoming_migration_internal(SocketAddress *saddr,
+     }
+ }
+ 
+-void socket_start_incoming_migration(const char *str, Error **errp)
+-{
+-    Error *err = NULL;
+-    SocketAddress *saddr = socket_parse(str, &err);
+-    if (!err) {
+-        socket_start_incoming_migration_internal(saddr, &err);
+-    }
+-    qapi_free_SocketAddress(saddr);
+-    error_propagate(errp, err);
+-}
 -- 
 2.41.0
 
