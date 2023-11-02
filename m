@@ -2,97 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E707DF2F8
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 13:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7C87DF30A
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:00:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyXFS-0000jM-8x; Thu, 02 Nov 2023 08:56:34 -0400
+	id 1qyXIE-0001hp-3S; Thu, 02 Nov 2023 08:59:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qyXFJ-0000iY-PG
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:56:27 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qyXFG-0005cT-0h
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:56:25 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6bf03b98b9bso1589420b3a.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 05:56:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698929780; x=1699534580; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=RotDW/GtWu/s795efn/lt+82Q8L5Ej1qyRZIGLQ1Jcs=;
- b=i9zIniQZsNL7UPpaeWIWxxxxPCpe2k6dyNKLvTzc0wMZJiBQ8KF1RJE4dYeSKXtxEq
- KQLqHUQnfMbaWk0D6juolCsCd2ZgbczRI3N4UWbCnDPv04tneY7WdYe71t9YdlQ/UG+m
- Me3aWMzlmuQKok99emI4GcWDgASepXR9yms0/ta0NZ6hhcOFG2oBR5euYqk+YJHiKjlI
- lCFtz5tNu3AX3LFrNIuKSWb/QHlsxUI0UZ67Nyr0tEb1ZrXMInn+fZnpOzNCW1gIQKiK
- 99LcBOpfOFdPstxmsFpYiuNWy5kNv+9qDUDp8lZdskEFJgrg7hff5ntBbAwf/eHfcKW+
- AJtA==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qyXIC-0001hC-1Z
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:59:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qyXI9-0006W8-0B
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:59:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698929959;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8EQefUulZO24WgVIFoZ9kbz5Kt6vDcsYeMWprvwYdWM=;
+ b=WvQAl7CO+sQjNdWE2UEduMX6KMz1UnYfh08QgKb8Ph6vp9BFetXaJSYh7IX9GjKZ8ps0Dn
+ 1GilIAfFEP/y9Qt/TKB1ZnbxKWb7SvqFzVlTjL0IR1nJz309sm/RS5XrS5v1PaZgfm4f5M
+ TjoXnqsDwgfCGQDJN9x/1Y5B9CJnxhQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-W5RsBWT1POe5CzBzNYveEw-1; Thu, 02 Nov 2023 08:59:18 -0400
+X-MC-Unique: W5RsBWT1POe5CzBzNYveEw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-408f9cee5e8so5800765e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 05:59:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698929780; x=1699534580;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RotDW/GtWu/s795efn/lt+82Q8L5Ej1qyRZIGLQ1Jcs=;
- b=EXbNg7jpWMw2yT9N5X7jOSBVy6t3Hwx6nuXV9Xc/1plK6BwI6iC27LQ72XG5+/66ZE
- jo9WEm6PqYaVkzKV6K3QW9TNPEAmPLZIBNVguCgJE32O5cvg5cgwG1SzE2EPjnz+tU9W
- 8tFU6esaxTb5UktohS9h6a28JjsUovIPmeNdKoymqDbBZEMBRd4paI4mLn2h4iElsOoR
- k6kUfBIo5ypyNB5T3TuAstSAu2FVBlaGTi0BThDqmCHbU///S3Jq9Hi086AEqGymov98
- Bv+uIqhSeHMQaKVwpN0G1U3/O+llCJvFd8mlzJ4VDPw7NkzQyoU9H5M1PkXdsyLbHxwA
- AjnA==
-X-Gm-Message-State: AOJu0YzM4ifQQ9yJVPIkAXpRbRpNh6koCF0WwSTzWwPvS6CMcaJuHpK+
- EfdTiGXNQyOQJZcInenH/UeMiQ==
-X-Google-Smtp-Source: AGHT+IEUjnOWeSUjA0+adpuSGr13qB7eAaMO2Jg53s4rFogXJCrjDVLY/P242QFCbL0hKyMCxK0nGQ==
-X-Received: by 2002:a05:6a00:3a1c:b0:6c3:415a:5c05 with SMTP id
- fj28-20020a056a003a1c00b006c3415a5c05mr901292pfb.14.1698929780158; 
- Thu, 02 Nov 2023 05:56:20 -0700 (PDT)
-Received: from sunil-laptop ([106.51.188.78]) by smtp.gmail.com with ESMTPSA id
- n27-20020a056a000d5b00b006879493aca0sm2839538pfv.26.2023.11.02.05.56.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 05:56:19 -0700 (PDT)
-Date: Thu, 2 Nov 2023 18:26:07 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Anup Patel <apatel@ventanamicro.com>,
- Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [PATCH v5 02/13] hw/arm/virt-acpi-build.c: Migrate virtio
- creation to common location
-Message-ID: <ZUOcZ0CS1njX/OcJ@sunil-laptop>
-References: <20231030132058.763556-1-sunilvl@ventanamicro.com>
- <20231030132058.763556-3-sunilvl@ventanamicro.com>
- <fea78511-d3fa-4ad4-860f-419cd1845e1f@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1698929957; x=1699534757;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8EQefUulZO24WgVIFoZ9kbz5Kt6vDcsYeMWprvwYdWM=;
+ b=jELkQ6p7ko25qBBkJKGOcf8f7nQeNSqrDufhivRxcfzgSf7grhqV+ya9HbFtX4HRAw
+ Tdn0nmhqxJUJrEnKNiA3ehFTPvxPfEJSBL7NM7RgctnF9yU5+f91k0bqetEroLJ1u9i0
+ xosKEUK/eU85ajUu8A29PfXkLqieHOnH6VJE2mZdlNaafs0vDAjQLWWF0oqUWyN8Vho7
+ rmzuifZgw6JBRRvs043nxJQJM1cen3QIw6XfDVQMXBmKuO0+X+5Tavavx5dnlfbbE2kN
+ YXEbq/Q1B8plHhkLIMsODqpVMMiEcIvkmH8CXHNTgj62e0ZDkxB1TBivb85IIkTozAhi
+ RVow==
+X-Gm-Message-State: AOJu0YxCizTUYZu4ld3R4bkmG0Ldgw/MgpQkAoZ+QbV5CJhpQRK0Inoz
+ FxxZmuFZGte5XABq6USXfgRA9GqonZwIiwKMRXg68YR0Q943w7TnWcwoagt1A76RNCMaI5PVWZz
+ 3d03f62bunGAAm7E=
+X-Received: by 2002:a1c:720f:0:b0:408:3f87:cba with SMTP id
+ n15-20020a1c720f000000b004083f870cbamr14700461wmc.39.1698929957432; 
+ Thu, 02 Nov 2023 05:59:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH97prISZ1FwUBRFGW2HcjXQZ1o7DBSnl6iQzgjLgGM4ubALDPWAbKEtoXBwEjo7+rvVTQUMQ==
+X-Received: by 2002:a1c:720f:0:b0:408:3f87:cba with SMTP id
+ n15-20020a1c720f000000b004083f870cbamr14700447wmc.39.1698929957098; 
+ Thu, 02 Nov 2023 05:59:17 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d718:8590:77de:e1fd:a4df:d080?
+ (p200300cfd718859077dee1fda4dfd080.dip0.t-ipconnect.de.
+ [2003:cf:d718:8590:77de:e1fd:a4df:d080])
+ by smtp.gmail.com with ESMTPSA id
+ e22-20020a05600c109600b0040523bef620sm976895wmd.0.2023.11.02.05.59.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Nov 2023 05:59:16 -0700 (PDT)
+Message-ID: <069ba523-344e-46ae-aca3-6b401fc840dd@redhat.com>
+Date: Thu, 2 Nov 2023 13:59:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fea78511-d3fa-4ad4-860f-419cd1845e1f@ventanamicro.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block-jobs: add final flush
+Content-Language: en-US
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, jsnow@redhat.com,
+ Evanzhang@archeros.com, den@openvz.org,
+ Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
+References: <20231004135632.18196-1-vsementsov@yandex-team.ru>
+ <fd7da9d6-be5a-40f7-9c59-593ac8de41d1@redhat.com>
+ <1ca2a1ea-4a6c-4fa1-9619-bfa160a8fb95@yandex-team.ru>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <1ca2a1ea-4a6c-4fa1-9619-bfa160a8fb95@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,73 +106,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 02, 2023 at 09:10:05AM -0300, Daniel Henrique Barboza wrote:
-> Alistair, Sunil,
-> 
-> This patch is breaking riscv-to-apply.next build when using 'clang' and
-> --enable-debug:
-> 
-> URCE=600 -DNCURSES_WIDECHAR=1 -DSTRUCT_IOVEC_DEFINED -MD -MQ libcommon.fa.p/hw_virtio_virtio-acpi.c.o -MF libcommon.fa.p/hw_virtio_virtio-acpi.c.o.d -o libcommon.fa.p/hw_virtio_virtio-acpi.c.o -c ../hw/virtio/virtio-acpi.c
-> ../hw/virtio/virtio-acpi.c:14:12: error: variable 'virtio_base' set but not used [-Werror,-Wunused-but-set-variable]
->     hwaddr virtio_base = base;
->            ^
-> 1 error generated.
-> 
-> 
-> Looking at the code:
-> 
-> void virtio_acpi_dsdt_add(Aml *scope, const hwaddr base, const hwaddr size,
->                           uint32_t mmio_irq, long int start_index, int num)
-> {
->     long int i;
->     hwaddr virtio_base = base;  <------
-> 
->     for (i = start_index; i < start_index + num; i++) {
->         uint32_t irq = mmio_irq + i;
->         Aml *dev = aml_device("VR%02u", (unsigned)i);
->         aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0005")));
->         aml_append(dev, aml_name_decl("_UID", aml_int(i)));
->         aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
-> 
->         Aml *crs = aml_resource_template();
->         aml_append(crs, aml_memory32_fixed(base, size, AML_READ_WRITE));
->         aml_append(crs,
->                    aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
->                                  AML_EXCLUSIVE, &irq, 1));
->         aml_append(dev, aml_name_decl("_CRS", crs));
->         aml_append(scope, dev);
->         virtio_base += size;   <------
->     }
-> }
-> 
-> 'virtio_base' is initialized with 'base', and it is incremented in the loop, but
-> nothing else is done with it.
-> 
-> 
-> This solves it:
-> 
-> 
-> $ git diff
-> diff --git a/hw/virtio/virtio-acpi.c b/hw/virtio/virtio-acpi.c
-> index 682283800f..eaf6028e93 100644
-> --- a/hw/virtio/virtio-acpi.c
-> +++ b/hw/virtio/virtio-acpi.c
-> @@ -11,7 +11,6 @@ void virtio_acpi_dsdt_add(Aml *scope, const hwaddr base, const hwaddr size,
->                            uint32_t mmio_irq, long int start_index, int num)
->  {
->      long int i;
-> -    hwaddr virtio_base = base;
->      for (i = start_index; i < start_index + num; i++) {
->          uint32_t irq = mmio_irq + i;
-> @@ -27,6 +26,5 @@ void virtio_acpi_dsdt_add(Aml *scope, const hwaddr base, const hwaddr size,
->                                   AML_EXCLUSIVE, &irq, 1));
->          aml_append(dev, aml_name_decl("_CRS", crs));
->          aml_append(scope, dev);
-> -        virtio_base += size;
+On 01.11.23 20:53, Vladimir Sementsov-Ogievskiy wrote:
+> On 31.10.23 17:05, Hanna Czenczek wrote:
+>> On 04.10.23 15:56, Vladimir Sementsov-Ogievskiy wrote:
+>>> From: Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
+>>>
+>>> Actually block job is not completed without the final flush. It's
+>>> rather unexpected to have broken target when job was successfully
+>>> completed long ago and now we fail to flush or process just
+>>> crashed/killed.
+>>>
+>>> Mirror job already has mirror_flush() for this. So, it's OK.
+>>>
+>>> Add similar things for other jobs: backup, stream, commit.
+>>>
+>>> Note, that stream has (documented) different treatment of IGNORE
+>>> action: it don't retry the operation, continue execution and report
+>>> error at last. We keep it for final flush too.
+>>>
+>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>> ---
+>>>
+>>> Was: [PATCH v4] block-jobs: flush target at the end of .run()
+>>>    But now rewritten.
+>>> Supersedes: <20230725174008.1147467-1-vsementsov@yandex-team.ru>
+>>>
+>>>   block/backup.c             |  2 +-
+>>>   block/block-copy.c         |  7 +++++++
+>>>   block/commit.c             | 16 ++++++++++++----
+>>>   block/stream.c             | 21 +++++++++++++++++----
+>>>   include/block/block-copy.h |  1 +
+>>>   5 files changed, 38 insertions(+), 9 deletions(-)
+>>
+>> [...]
+>>
+>>> diff --git a/block/commit.c b/block/commit.c
+>>> index aa45beb0f0..5205c77ec9 100644
+>>> --- a/block/commit.c
+>>> +++ b/block/commit.c
+>>
+>> [...]
+>>
+>>> @@ -187,7 +187,15 @@ static int coroutine_fn commit_run(Job *job, 
+>>> Error **errp)
+>>>           }
+>>>       }
+>>> -    return 0;
+>>> +    do {
+>>> +        ret = blk_co_flush(s->base);
+>>> +        if (ret < 0) {
+>>> +            action = block_job_error_action(&s->common, s->on_error,
+>>> +                                            false, -ret);
+>>> +        }
+>>> +    } while (ret < 0 && action != BLOCK_ERROR_ACTION_REPORT);
+>>
+>> Do we need to yield in this loop somewhere so that 
+>> BLOCK_ERROR_ACTION_STOP can pause the job?
+>>
+>
+> block_job_error_action calls job_pause_locked() itself in this case
 
-Thanks Daniel for catching this. But proper fix would be to use
-virtio_base. Let me send next version with proper fix. Sorry about this.
+But that doesn’t really pause the job, does it?  As far as I understand, 
+it increases job->pause_count, then enters the job, and the job is then 
+supposed to yield at some point so job_pause_point_locked() is called, 
+which sees the increased job->pause_count and will actually pause the job.
 
-Thanks,
-Sunil
+Hanna
+
 
