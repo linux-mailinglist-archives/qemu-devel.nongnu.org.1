@@ -2,83 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17747DF049
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 735427DF06C
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:44:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyV4e-0001Qk-RX; Thu, 02 Nov 2023 06:37:16 -0400
+	id 1qyVAi-00036b-39; Thu, 02 Nov 2023 06:43:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyV4c-0001Pn-Ih
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:37:14 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyVAg-00035w-94
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:43:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyV4a-0007tz-2n
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:37:13 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyVAe-0003Ze-CU
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:43:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698921430;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=UnT8cMbPz4oB7XTJ2RU9UXCZ6SVVVIOTrvfk5J/CbnI=;
- b=TtbOInA/QpEeOO7k2cW/Hq+Sd5JubxtyVzzqaXBqRUo79dKYAZ2ShnU2/x5dC7TBWujXEe
- yIlhHHcv2f278eq22ApWiKhZvZtFvkkLLUYW/LCBQ2SFe+89A1xP/+j5jDv4+T2isoGzuR
- f1n7aF4afsmsnCHat4LGjXxPqZF4HHI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-EH_brPhsMpqIXVyOROqwVA-1; Thu, 02 Nov 2023 06:37:08 -0400
-X-MC-Unique: EH_brPhsMpqIXVyOROqwVA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-30e4943ca7fso363934f8f.3
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 03:37:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698921427; x=1699526227;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UnT8cMbPz4oB7XTJ2RU9UXCZ6SVVVIOTrvfk5J/CbnI=;
- b=mUYoguBnnh52cKEmqKpux2eg6WFXumkqKZhrqmNACEtq579iipQwLEJm4frtYKWFfJ
- dj+s04/RC6ZLUYlpcDhuYMz9OiBI0awSk5dee+NRqPXnu12DpLyAPVLCzr5F21mSVeFB
- ye1ST2UXyhymLYxUxj4g3/R8w7fxPFMCqWvGtpJ6gqrVXShcse5hAAlHHLQJo8C1y91v
- 9g6gaoCh75+3UAPK2JN1G6Lohaw5vD35XkgDjIKuPjJxNaoPYgLhmIx4zhW0RbwJ7AYN
- /N6UeqffVDoog00XHeUOx3cO7d6rBVjkDGJLrYUungwqPeH18Vym+XwpkgClsH3+sYE/
- thtg==
-X-Gm-Message-State: AOJu0YwtUuLBUQFyf9BDTmnrR6jGYni9XDha5tQwV2x3EPFHcv+TelPQ
- DyEHQ9wU0rXj//IWA7lc1JsjmEYYptdlk9aB8E8vP3bexuIWUtLjHkSG4BN3Pks09mkLvV8i6mb
- 0PycNsrgrVKu1qno=
-X-Received: by 2002:a05:6000:10f:b0:321:4de3:fd5c with SMTP id
- o15-20020a056000010f00b003214de3fd5cmr12938969wrx.51.1698921427179; 
- Thu, 02 Nov 2023 03:37:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEGub9PnFGlKPhkjrxznfPpE9NPmsE2+5m14c24enag9LliTATINWMRXDegrzszWWZ3s1NiVw==
-X-Received: by 2002:a05:6000:10f:b0:321:4de3:fd5c with SMTP id
- o15-20020a056000010f00b003214de3fd5cmr12938957wrx.51.1698921426884; 
- Thu, 02 Nov 2023 03:37:06 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- z2-20020adff1c2000000b0032d9a1f2ec3sm2088768wro.27.2023.11.02.03.37.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 03:37:06 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Hyman Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: [v3 6/6] docs/migration: Add the dirty limit section
-In-Reply-To: <0f2b2c63fec22ea23e4926cdeb567b7a0ebd8152.1698847223.git.yong.huang@smartx.com>
- (Hyman Huang's message of "Wed, 1 Nov 2023 22:04:09 +0800")
-References: <cover.1698847223.git.yong.huang@smartx.com>
- <0f2b2c63fec22ea23e4926cdeb567b7a0ebd8152.1698847223.git.yong.huang@smartx.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 02 Nov 2023 11:37:05 +0100
-Message-ID: <87lebg30ha.fsf@secure.mitica>
+ s=mimecast20190719; t=1698921807;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cD74fjOyUcW9h2vQKi01IRfuj9mPjcg3Re+fA6quSDc=;
+ b=RNfBY0k1II3ymGnJnAqabSLD/NxWLxEVwuFz1GtN9rguZJYTUM+LxzurOnDQsXqJ+xRhFW
+ JLUC4Nn28xU/zhRUabld78E+iTUTHgOob2EFUQrxSQQbbdXoyXSik8k8AqeOgMLElMbP1D
+ 24Wi7MZy6vjsQMf967Q7GkiiNGxdfCk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-AO_d-_YiMxiL6wlkkMCWng-1; Thu,
+ 02 Nov 2023 06:43:24 -0400
+X-MC-Unique: AO_d-_YiMxiL6wlkkMCWng-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 209C0280C294;
+ Thu,  2 Nov 2023 10:43:24 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.195.34])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EDEAC40C6EBC;
+ Thu,  2 Nov 2023 10:43:22 +0000 (UTC)
+Date: Thu, 2 Nov 2023 11:43:21 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: -drive if=none: can't we make this the default?
+Message-ID: <ZUN9SZ6VkvLHWNXs@redhat.com>
+References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+ <e3bb64a2-fb72-4e8d-a0b2-89ee35365fb3@tls.msk.ru>
+ <ZUFK/BHG2WMhAiWG@redhat.com>
+ <CAFEAcA_6nPW2f0+zvtYAg6d7ZJJMLxqFzNOyDY0wLgVFNcoahw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA_6nPW2f0+zvtYAg6d7ZJJMLxqFzNOyDY0wLgVFNcoahw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -87,7 +68,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,40 +81,151 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hyman Huang <yong.huang@smartx.com> wrote:
-> The dirty limit feature has been introduced since the 8.1
-> QEMU release but has not reflected in the document, add a
-> section for that.
->
-> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> Message-Id: <36194a8a23d937392bf13d9fff8e898030c827a3.1697815117.git.yong.huang@smartx.com>
+Am 01.11.2023 um 12:21 hat Peter Maydell geschrieben:
+> On Tue, 31 Oct 2023 at 18:45, Kevin Wolf <kwolf@redhat.com> wrote:
+> > Am 16.10.2023 um 13:58 hat Michael Tokarev geschrieben:
+> > > Almost everyone mentions -blockdev as a replacement for -drive.
+> >
+> > More specifically for -drive if=none. I honestly don't know many common
+> > use cases for that one.
+> 
+> One use case for it is "create a drive with a qcow2 backend to use
+> for -snapshot snapshots, but don't plug it into anything". See
+> https://translatedcode.wordpress.com/2015/07/06/tricks-for-debugging-qemu-savevm-snapshots/
+> I dunno whether that counts as "common", though :-)
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Ok, I was already wondering what good -snapshot was for an image that
+isn't even used, but what the article describes is actually not using
+-snapshot, but internal snapshots with savevm/loadvm, i.e. using the
+image to store the VM state.
 
-I queued the whole series.  I didn't comment about the guestperf script
-changes because I am not familiar with that part.
+This actually makes a lot of sense for if=none, as one of the few cases
+where "none" accurately tells what device it will be used with.
 
+> > For management tools, -blockdev is indeed what should be used, and that
+> > things are more explicit there is actually a feature, not a bug, for
+> > management tools.
+> >
+> > As a human user, in the common case where I don't care about the
+> > details, I don't want to type up an explicit -device. if=virtio gives me
+> > more directly what I want.
+> 
+> I can never remember if if=virtio is going to give me virtio-pci or
+> virtio-mmio, so my scripts all explicitly create a drive with "-drive if=none"
+> and a virtio-blk-pci device with "-device". I don't much mind being a
+> bit long-winded in a script file.
 
-> ---
->  docs/devel/migration.rst | 71 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 71 insertions(+)
->
-> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-> index be913630c3..12c35f9bc4 100644
-> --- a/docs/devel/migration.rst
-> +++ b/docs/devel/migration.rst
-> @@ -590,6 +590,77 @@ path.
->       Return path  - opened by main thread, written by main thread AND postcopy
->       thread (protected by rp_mutex)
->  
-> +Dirty limit
-> +=====================
+This makes me think that if=virtio-pci/virtio-mmio would make sense.
+Maybe even more generally if=<qdev-device-name> as long as it is a block
+device and therefore has a 'drive' property?
 
-Too long, I fixed it by hand.
+if=virtio already gets translated into a -device option internally
+anyway, so doing this for more device names shouldn't be that bad.
+
+> > So you only need it when you want to specify one of the more exotic
+> > -device options, which shouldn't happen that often. Well, it doesn't for
+> > me anyway, other people may have other use cases. Is that your case? If
+> > so, which options do you usually want to give to -device?
+> >
+> > > But I have to remind several issues with it:
+> > >
+> > > 1. While documentation has improved a lot, -blockdev is still mostly unknown
+> > >    to the masses.
+> >
+> > And for manual human use, that's okay anyway - you probably don't want
+> > to use it. But if you're writing scripts or even advanced management
+> > software, then you should use it.
+> >
+> > (Of course, in complex cases you may have to use it manually anyway
+> > because -drive has some limitations, but that should be the absolute
+> > exception.)
+> >
+> > > 2. -blockdev is just too verbose, one have to specify a lot of parameters just to
+> > >    do a simple thing which is solved with an extra parameter with -drive.
+> > >    Including various backing stores/chains for qcow2 files - this is terrible for
+> > >    using things manually from command line
+> >
+> > You don't have to specify the backing chain explicitly if you're happy
+> > with the default options with which the backing files are opened.
+> >
+> > -blockdev options are typically a bit longer than -drive ones, but not
+> > extremely. The separate -device that if=none gives you is already a
+> > similar amount of extra typing.
+> >
+> > -drive if=virtio,file=test.qcow2
+> > -drive if=none,file=test.qcow2,id=disk -device virtio-blk,drive=disk
+> > -blockdev qcow2,file.driver=file,file.filename=test.qcow2,node-name=disk -device virtio-blk,drive=disk
+> 
+> How did -blockdev end up with a different syntax for specifying the
+> ID of the drive (i.e. "node-name=foo" rather than "id=foo")
+> than everything else uses?
+
+I don't remember the details, but I believe this is historical baggage
+from -drive, which already used "id" for the BlockBackend (i.e. the
+whole block tree attached to a device), and then "node-name" was added
+for the BlockDriverState (the individual nodes in the tree).
+
+When later -blockdev came around and only defined nodes rather than
+whole trees, "node-name" was already there and doing the right thing.
+
+> > > 3. -blockdev does not work with -snapshot
+> > >
+> > > 4. Something else I forgot while typing all the above :)
+> > >
+> > > In my view, -blockdev is not a substitute for -drive, not at all, and it is
+> > > very user-unfriendly.  This is why -drive seems to be a good trade-off between
+> > > things like -hda (which is just too simplistic) and -blockdev which which is
+> > > way too verbose and lacks some automatic sugar like -snapshot.
+> >
+> > I would agree with that, but if=none already feels a bit unfriendly.
+> >
+> > Honestly, I would like to throw away the existing -drive and replace it
+> > with one that has a simpler implementation (as a wrapper around
+> > -blockdev) and I would be happy if it gained some additional options for
+> > passing through things to -device so that you don't have to bother with
+> > if=none even in the more complex cases any more.
+> >
+> > It would be pure syntactic sugar with a similar compatibility promise as
+> > in HMP (we won't break it just for fun, but we'll also not stop making
+> > sensible changes just because they make things look a bit different).
+> 
+> You really need to make -blockdev work with -snapshot first, though.
+> Pretty much none of my use cases will ever switch over to it until
+> that happens.
+
+-snapshot doesn't really make sense for -blockdev, because -blockdev
+defines a single node and -snapshot implies creating a temporary overlay
+which brings in two additional nodes. But the new -drive should of
+course still support that. It would just translate into multiple
+-blockdevs.
+
+> Also, you can't arbitrarily change the command-line compat
+> requirements because of how you've chosen to (re-)implement an
+> option. That doesn't mean the current syntax is set in stone, but
+> I'm pretty sure the command line isn't at the HMP "we can change
+> it without deprecation" level of compat promises.
+
+That's why we haven't done it yet, but I do think we need to change the
+compat requirements for -drive before we can move on and improve its
+state. Of course, there is a need for a stable interface for management
+tools, but for defining block device backends, that's -blockdev and not
+-drive.
+
+The problem with -drive is that it has grown organically for so long
+that nobody really understands what it's doing in detail. I can do a 90%
+(or more) compatible reimplementation of it, but the problem is that I
+can't tell what the remaining 10% consist of, so I can't explicitly
+deprecate that functionality before doing the rewrite.
+
+The other option would be introducing another high level option like
+-disk and deprecating -drive wholesale, but I don't think that would
+actually improve things for anyone. It would make the transition process
+more standard, but also much more painful because it breaks the 90%,
+too.
+
+Kevin
 
 
