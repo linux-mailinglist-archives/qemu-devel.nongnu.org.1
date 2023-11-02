@@ -2,97 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072BA7DEDBD
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 08:58:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5B07DEDE7
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 09:08:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qySZH-0007xk-Bg; Thu, 02 Nov 2023 03:56:43 -0400
+	id 1qySio-0001Wk-M4; Thu, 02 Nov 2023 04:06:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qySZF-0007xD-5F
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:56:41 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qySZD-0002rL-A1
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:56:40 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-507975d34e8so793927e87.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 00:56:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698911797; x=1699516597; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sF7Hj2hEa72zZ/WI2WhM366HtOJev2AIO3JWURIw6sU=;
- b=QMpwh9rIcW7tzjUdMD3hdLgZn+MZlGGafFD6XB0mMiqa5srE3CIxqUV6muVR3g89mI
- Zr4a00BsDy1aT3Ema2pm8h9CnSK5cQQmhaxEdMmA8h4sFhRyi1if4qR/KQYU2Pzr0C5h
- 7ntapHqkx9WmEoSQrL/Eu1HaUAIzL4BW4CTQNTBpjhE60G8svzRYZKVXy0ZW4mOq+gSE
- 3emWF1i9MBCPKsrClt6p+rCYY+PDezhMs0fL7xqI/1viAwTlbcX+vekoRgWNhqlgTMHm
- BwwWS+n1IANi1lXxDzhNO14o04km1V6iwaWseRm7yutTps06ovrPUKjI9Nqaxw3AoM1A
- 5MEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698911797; x=1699516597;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sF7Hj2hEa72zZ/WI2WhM366HtOJev2AIO3JWURIw6sU=;
- b=M7Yhk20Qi5AoxC6cndJKpAAst+yQBwuDfgosLxYbe4mbEtN1vv8/5C2BJ8b7CUxyEi
- /585qtwukRJqTDs54GxNyzKh0o0WzKDwhhkDhgg6vvBw6OGQN5oXYNbOLo+T68ykXJWT
- AFVFSMzKpS/dbrOHq4gDQpsE+wN4MSqOuMKd0FV5qI8n3juqboUowiBr6q6qz8KnbuPU
- L4pWijqNx/+tFZBuzdKQQo99VK5Dr2H4wQeXLtxGqMt+Q+UNLeSzCzXuBQItO4LJdWwZ
- eG7K8NH6DKgZbd49pGjUoBRc0l4dZiexQnYfbMsCBB+cysltI6ZNEm2H7vhQtquJUq/B
- U5BA==
-X-Gm-Message-State: AOJu0YxHsYxJBcs/konjicx+45YRTeN/OQ2xS8EqK04NDVxLKqXqqCeV
- NYWauIXXxRkcbvrPn9igwhGUbA==
-X-Google-Smtp-Source: AGHT+IEDdwE3MvYCzg2/HET8YVtdW4G6eMBMnVW6CLB9bmlSRPop4aAJnhIFzv6GCRwUrt05Io2EVA==
-X-Received: by 2002:ac2:4c25:0:b0:503:17fd:76bb with SMTP id
- u5-20020ac24c25000000b0050317fd76bbmr13953640lfq.39.1698911797037; 
- Thu, 02 Nov 2023 00:56:37 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-219-113.abo.bbox.fr.
- [176.131.219.113]) by smtp.gmail.com with ESMTPSA id
- a60-20020a509ec2000000b0053e3d8f1d9fsm1990812edf.67.2023.11.02.00.56.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 00:56:36 -0700 (PDT)
-Message-ID: <281434a9-f63a-3cda-fd25-5b243cf86a76@linaro.org>
-Date: Thu, 2 Nov 2023 08:56:33 +0100
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qySim-0001Wa-VO
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 04:06:32 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qySik-00051b-2W
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 04:06:32 -0400
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 42B5562A16;
+ Thu,  2 Nov 2023 11:06:25 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8005::1:a] (unknown
+ [2a02:6b8:b081:8005::1:a])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id N6SfJhIOm8c0-8ulCr97E; Thu, 02 Nov 2023 11:06:24 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1698912384;
+ bh=hi8ywannSJAxwu8acgeGakHHhqbxe2iULvKJ4qEWKu0=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=wTOHlLZxyAlJQ/1a7xGPEpfKVmQsQtM3ERgzil8wB7B7B/U5Okyl5+v1zNcldTVmU
+ pVl3K7BoW/kZC9tur2ukn3xxj3VZBvGkcVsz695bhT6bTBnV8/7QXaCLoXEMIpsYPQ
+ yn6Hiq6E9ZnzRPv5k/JCkk/Y5lvRuSQ9Es/aijEw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <880f6360-ca45-48de-b092-780f176988e0@yandex-team.ru>
+Date: Thu, 2 Nov 2023 11:06:24 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFC PATCH 0/5] hw/ppc/e500: Pass array of CPUs as array of
- canonical QOM paths
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/4] pci hotplug tracking
 Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Luc Michel <luc.michel@amd.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Bernhard Beschow <shentey@gmail.com>, qemu-ppc@nongnu.org,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- "Daniel P . Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20231030143957.82988-1-philmd@linaro.org>
- <81265616-df2d-460c-aea5-0af04b15cd8b@ventanamicro.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <81265616-df2d-460c-aea5-0af04b15cd8b@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: armbru@redhat.com, eblake@redhat.com, eduardo@habkost.net,
+ berrange@redhat.com, pbonzini@redhat.com, marcel.apfelbaum@gmail.com,
+ mst@redhat.com, philmd@linaro.org, den-plotnikov@yandex-team.ru,
+ yc-core@yandex-team.ru, mlevitsk@redhat.com,
+ Viktor Danilov <zaglossus@yandex-team.ru>, ds-gavr@yandex-team.ru
+References: <20231005092926.56231-1-vsementsov@yandex-team.ru>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20231005092926.56231-1-vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.777,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -104,49 +78,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/10/23 22:49, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 10/30/23 11:39, Philippe Mathieu-Daudé wrote:
->> Following the discussion with Peter on my "cpus: Step toward
->> removing global 'first_cpu'" series [*], we now pass the array
->> of CPUs via property. Since we can not pass array of "link"
->> properties, we pass the QOM path of each CPU as a QList(String).
->>
->> Tagged as RFC to discuss the idea of using qdev_prop_set_array
->> with qlist_append_str(object_get_canonical_path). Personally I
->> find it super simple.
-> 
-> I probably misunderstood the concept/problem but "super simple" is not 
-> the first
-> thing that came to my mind in patch 5 hehe
+Ping.
 
-Right, I probably forgot some paragraph here. I meant, passing QOM
-canonical path as a string between (qdev) objects seems much simpler
-than declaring a PropertyInfo for each type we want to pass, because
-this is within the same QEMU process and we don't need to serialize
-anything.
+And some addition. We have the case, when the commit
 
-See for example:
-$ git grep -h PropertyInfo hw/core/qdev-properties-system.c
-219:const PropertyInfo qdev_prop_drive = {
-228:const PropertyInfo qdev_prop_drive_iothread = {
-295:const PropertyInfo qdev_prop_chr = {
-369:const PropertyInfo qdev_prop_macaddr = {
-457:const PropertyInfo qdev_prop_netdev = {
-495:const PropertyInfo qdev_prop_audiodev = {
-585:const PropertyInfo qdev_prop_losttickpolicy = {
-615:const PropertyInfo qdev_prop_blocksize = {
-628:const PropertyInfo qdev_prop_blockdev_on_error = {
-642:const PropertyInfo qdev_prop_bios_chs_trans = {
-654:const PropertyInfo qdev_prop_fdc_drive_type = {
-666:const PropertyInfo qdev_prop_multifd_compression = {
-747:const PropertyInfo qdev_prop_reserved_region = {
-810:const PropertyInfo qdev_prop_pci_devfn = {
-916:const PropertyInfo qdev_prop_pci_host_devaddr = {
-926:const PropertyInfo qdev_prop_off_auto_pcibar = {
-996:const PropertyInfo qdev_prop_pcie_link_speed = {
-1084:const PropertyInfo qdev_prop_pcie_link_width = {
-1134:const PropertyInfo qdev_prop_uuid = {
-1147:const PropertyInfo qdev_prop_cpus390entitlement = {
+commit 7bed89958bfbf40df9ca681cefbdca63abdde39d
+Author: Maxim Levitsky <mlevitsk@redhat.com>
+Date:   Tue Oct 6 14:38:58 2020 +0200
+
+     device_core: use drain_call_rcu in in qmp_device_add
+     
+     Soon, a device removal might only happen on RCU callback execution.
+     This is okay for device-del which provides a DEVICE_DELETED event,
+     but not for the failure case of device-add.  To avoid changing
+     monitor semantics, just drain all pending RCU callbacks on error.
+
+sensibly slows down vm initialization (several calls to device_add of pc-dimm).
+
+And looking at commit message, I see that what I do in the series is exactly a suggestion to change monitor semantics.
+
+What do you think?
+
+Maybe we need a boolean "async" parameter for device_add, which will turn off drain_call_rcu() call and rely on user to handle DEVICE_ON?
+
+On 05.10.23 12:29, Vladimir Sementsov-Ogievskiy wrote:
+> Hi all!
+> 
+> Main thing this series does is DEVICE_ON event - a counter-part to
+> DEVICE_DELETED. A guest-driven event that device is powered-on.
+> Details are in patch 2. The new event is paried with corresponding
+> command query-hotplug.
+> 
+> 
+> v8:
+>   - improve naming, wording and style
+>   - make new QMP interface experimental
+> 
+> 
+> Vladimir Sementsov-Ogievskiy (4):
+>    qapi/qdev.json: unite DEVICE_* event data into single structure
+>    qapi: add DEVICE_ON and query-hotplug infrastructure
+>    shpc: implement DEVICE_ON event and query-hotplug
+>    pcie: implement DEVICE_ON event and query-hotplug
+> 
+>   hw/core/hotplug.c               |  12 +++
+>   hw/pci-bridge/pci_bridge_dev.c  |  14 +++
+>   hw/pci-bridge/pcie_pci_bridge.c |   1 +
+>   hw/pci/pcie.c                   |  83 +++++++++++++++
+>   hw/pci/pcie_port.c              |   1 +
+>   hw/pci/shpc.c                   |  86 +++++++++++++++
+>   include/hw/hotplug.h            |  11 ++
+>   include/hw/pci/pci_bridge.h     |   2 +
+>   include/hw/pci/pcie.h           |   2 +
+>   include/hw/pci/shpc.h           |   2 +
+>   include/hw/qdev-core.h          |   7 ++
+>   include/monitor/qdev.h          |   6 ++
+>   qapi/qdev.json                  | 178 +++++++++++++++++++++++++++++---
+>   softmmu/qdev-monitor.c          |  58 +++++++++++
+>   14 files changed, 451 insertions(+), 12 deletions(-)
+> 
+
+-- 
+Best regards,
+Vladimir
+
 
