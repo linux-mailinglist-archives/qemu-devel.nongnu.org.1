@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE887DF187
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6D37DF17E
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:44:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyW4Z-0001vi-Vl; Thu, 02 Nov 2023 07:41:16 -0400
+	id 1qyW4g-00020c-JA; Thu, 02 Nov 2023 07:41:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW4X-0001uO-RX
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qyW4e-0001y6-BR
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW4T-000452-N4
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:13 -0400
+ id 1qyW4a-00046j-Rs
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698925268;
+ s=mimecast20190719; t=1698925276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=WhT+P8/6U+nvarAERVRiWE+tWgt2ygDJenHlyXLV7rs=;
- b=YyY8FrZhfwiSNzdqXnUVv4BtM4kkqa4I94RQZFsi2cYcDeXfeU5PjlAKcn+YC1pwq5xkSx
- cvJ7xGgnvcwNQC9F5V5A93iIrcCQcFDFPTgBT/WZWCxuis+gN7036U+pISJpKDEq/dAQUl
- 4xwOzw2rEQA884Q57yghNevUFG41uWE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-194-ecR3ctlSOKi1jNIWgYyUGA-1; Thu, 02 Nov 2023 07:41:05 -0400
-X-MC-Unique: ecR3ctlSOKi1jNIWgYyUGA-1
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2hrQbpcQmjkjZUwzY0IzeCAEPzEo5tGlkuI99YW2Hnk=;
+ b=MXgC+2nTdoF45+bN2oiifPaontQyYb/AX3tVqTcVyQiWRHv5r/kGmSmYU6EpC7loHMTAqv
+ 4bvplRbesV7IQz+IRwlQ2h8UxVAAQdu+AgWUBoKXIC4hxPyzPUpYJmi+tM3qPshn9YyL6p
+ kEMeEjZr00zYd0BuxL7Ag80Ag4V088o=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613--tGWoiN3PIW9hjCeqAQlBA-1; Thu,
+ 02 Nov 2023 07:41:12 -0400
+X-MC-Unique: -tGWoiN3PIW9hjCeqAQlBA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB338185A782;
- Thu,  2 Nov 2023 11:41:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AC713806623;
+ Thu,  2 Nov 2023 11:41:11 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8701A2026D4C;
- Thu,  2 Nov 2023 11:40:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 026A42026D4C;
+ Thu,  2 Nov 2023 11:41:03 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -76,21 +77,23 @@ Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Stefan Weil <sw@weilnetz.de>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Fam Zheng <fam@euphon.net>
-Subject: [PULL 00/40] Migration 20231102 patches
-Date: Thu,  2 Nov 2023 12:40:14 +0100
-Message-ID: <20231102114054.44360-1-quintela@redhat.com>
+Subject: [PULL 01/40] hw/ipmi: Don't call vmstate_register() from
+ instance_init() functions
+Date: Thu,  2 Nov 2023 12:40:15 +0100
+Message-ID: <20231102114054.44360-2-quintela@redhat.com>
+In-Reply-To: <20231102114054.44360-1-quintela@redhat.com>
+References: <20231102114054.44360-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -108,159 +111,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6c9ae1ce82b65faa3f266fd103729878cf11e07e:
+From: Thomas Huth <thuth@redhat.com>
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2023-11-01 06:58:11 +0900)
+instance_init() can be called multiple times, e.g. during introspection
+of the device. We should not install the vmstate handlers here. Do it
+in the realize() function instead.
 
-are available in the Git repository at:
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Acked-by: Corey Minyard <cminyard@mvista.com>
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+Message-ID: <20231020145554.662751-1-thuth@redhat.com>
+---
+ hw/ipmi/ipmi_bmc_extern.c | 29 ++++++++++++-----------
+ hw/ipmi/isa_ipmi_bt.c     | 34 +++++++++++++-------------
+ hw/ipmi/isa_ipmi_kcs.c    | 50 +++++++++++++++++++--------------------
+ 3 files changed, 57 insertions(+), 56 deletions(-)
 
-  https://gitlab.com/juan.quintela/qemu.git tags/migration-20231102-pull-request
-
-for you to fetch changes up to 8e3766eefbb4036cbc280c1f1a0d28537929f7fb:
-
-  migration: modify test_multifd_tcp_none() to use new QAPI syntax. (2023-11-02 11:35:04 +0100)
-
-----------------------------------------------------------------
-Migration Pull request (20231102)
-
-Hi
-
-In this pull request:
-
-- migration reboot mode (steve)
-  * I disabled the test because our CI don't like programs using so
-    much shared memory.  Searching for a fix.
-- test for postcopy recover (fabiano)
-- MigrateAddress QAPI (het)
-- better return path error handling (peter)
-- traces for downtime (peter)
-- vmstate_register() check for duplicates (juan)
-  thomas find better solutions for s390x and ipmi.
-  now also works on s390x
-
-Please, apply.
-
-----------------------------------------------------------------
-
-Fabiano Rosas (2):
-  tests/migration-test: Add a test for postcopy hangs during RECOVER
-  migration: Convert the file backend to the new QAPI syntax
-
-Het Gala (10):
-  migration: New QAPI type 'MigrateAddress'
-  migration: convert migration 'uri' into 'MigrateAddress'
-  migration: convert socket backend to accept MigrateAddress
-  migration: convert rdma backend to accept MigrateAddress
-  migration: convert exec backend to accept MigrateAddress.
-  migration: New migrate and migrate-incoming argument 'channels'
-  migration: modify migration_channels_and_uri_compatible() for new QAPI
-    syntax
-  migration: Implement MigrateChannelList to qmp migration flow.
-  migration: Implement MigrateChannelList to hmp migration flow.
-  migration: modify test_multifd_tcp_none() to use new QAPI syntax.
-
-Juan Quintela (9):
-  migration: Create vmstate_register_any()
-  migration: Use vmstate_register_any()
-  migration: Use vmstate_register_any() for isa-ide
-  migration: Use VMSTATE_INSTANCE_ID_ANY for slirp
-  migration: Hack to maintain backwards compatibility for ppc
-  migration: Improve example and documentation of vmstate_register()
-  migration: Use vmstate_register_any() for audio
-  migration: Use vmstate_register_any() for eeprom93xx
-  migration: Use vmstate_register_any() for vmware_vga
-
-Peter Xu (9):
-  migration: Check in savevm_state_handler_insert for dups
-  migration: Set downtime_start even for postcopy
-  migration: Add migration_downtime_start|end() helpers
-  migration: Add per vmstate downtime tracepoints
-  migration: migration_stop_vm() helper
-  migration: Add tracepoints for downtime checkpoints
-  migration: Refactor error handling in source return path
-  migration: Allow network to fail even during recovery
-  migration: Change ram_dirty_bitmap_reload() retval to bool
-
-Steve Sistare (6):
-  migration: mode parameter
-  migration: per-mode blockers
-  cpr: relax blockdev migration blockers
-  cpr: relax vhost migration blockers
-  cpr: reboot mode
-  tests/qtest: migration: add reboot mode test
-
-Thomas Huth (4):
-  hw/ipmi: Don't call vmstate_register() from instance_init() functions
-  hw/s390x/s390-skeys: Don't call register_savevm_live() during
-    instance_init()
-  hw/s390x/s390-stattrib: Simplify handling of the "migration-enabled"
-    property
-  hw/s390x/s390-stattrib: Don't call register_savevm_live() during
-    instance_init()
-
- docs/devel/migration.rst            |  12 +-
- qapi/migration.json                 | 210 ++++++++++-
- include/hw/qdev-properties-system.h |   4 +
- include/migration/blocker.h         |  44 ++-
- include/migration/misc.h            |   1 +
- include/migration/vmstate.h         |  28 ++
- migration/exec.h                    |   8 +-
- migration/file.h                    |  10 +-
- migration/migration.h               |  14 +-
- migration/options.h                 |   1 +
- migration/qemu-file.h               |   1 +
- migration/ram.h                     |   5 +-
- migration/rdma.h                    |   6 +-
- migration/socket.h                  |   7 +-
- audio/audio.c                       |   2 +-
- backends/dbus-vmstate.c             |   3 +-
- backends/tpm/tpm_emulator.c         |   3 +-
- block/parallels.c                   |   2 +-
- block/qcow.c                        |   2 +-
- block/vdi.c                         |   2 +-
- block/vhdx.c                        |   2 +-
- block/vmdk.c                        |   2 +-
- block/vpc.c                         |   2 +-
- block/vvfat.c                       |   2 +-
- hw/core/qdev-properties-system.c    |  14 +
- hw/display/vmware_vga.c             |   2 +-
- hw/i2c/core.c                       |   2 +-
- hw/ide/isa.c                        |   2 +-
- hw/input/adb.c                      |   2 +-
- hw/input/ads7846.c                  |   2 +-
- hw/input/stellaris_input.c          |   3 +-
- hw/intc/xics.c                      |  18 +-
- hw/ipmi/ipmi_bmc_extern.c           |  29 +-
- hw/ipmi/isa_ipmi_bt.c               |  34 +-
- hw/ipmi/isa_ipmi_kcs.c              |  50 +--
- hw/net/eepro100.c                   |   3 +-
- hw/nvram/eeprom93xx.c               |   2 +-
- hw/pci/pci.c                        |   2 +-
- hw/ppc/spapr.c                      |  25 +-
- hw/ppc/spapr_nvdimm.c               |   3 +-
- hw/s390x/s390-skeys.c               |  36 +-
- hw/s390x/s390-stattrib.c            |  72 ++--
- hw/scsi/vhost-scsi.c                |   2 +-
- hw/timer/arm_timer.c                |   2 +-
- hw/virtio/vhost.c                   |   2 +-
- hw/virtio/virtio-mem.c              |   4 +-
- migration/exec.c                    |  74 ++--
- migration/file.c                    |  24 +-
- migration/migration-hmp-cmds.c      |  34 +-
- migration/migration.c               | 550 ++++++++++++++++++++--------
- migration/options.c                 |  21 ++
- migration/qemu-file.c               |   2 +-
- migration/ram.c                     |  61 +--
- migration/rdma.c                    |  33 +-
- migration/savevm.c                  |  95 ++++-
- migration/socket.c                  |  39 +-
- net/slirp.c                         |   5 +-
- stubs/migr-blocker.c                |  10 +
- system/vl.c                         |   2 +-
- tests/qtest/migration-test.c        | 150 +++++++-
- migration/trace-events              |   8 +-
- 61 files changed, 1316 insertions(+), 476 deletions(-)
-
+diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
+index e232d35ba2..2117dad35a 100644
+--- a/hw/ipmi/ipmi_bmc_extern.c
++++ b/hw/ipmi/ipmi_bmc_extern.c
+@@ -453,19 +453,6 @@ static void ipmi_bmc_extern_handle_reset(IPMIBmc *b)
+     continue_send(ibe);
+ }
+ 
+-static void ipmi_bmc_extern_realize(DeviceState *dev, Error **errp)
+-{
+-    IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(dev);
+-
+-    if (!qemu_chr_fe_backend_connected(&ibe->chr)) {
+-        error_setg(errp, "IPMI external bmc requires chardev attribute");
+-        return;
+-    }
+-
+-    qemu_chr_fe_set_handlers(&ibe->chr, can_receive, receive,
+-                             chr_event, NULL, ibe, NULL, true);
+-}
+-
+ static int ipmi_bmc_extern_post_migrate(void *opaque, int version_id)
+ {
+     IPMIBmcExtern *ibe = opaque;
+@@ -499,12 +486,26 @@ static const VMStateDescription vmstate_ipmi_bmc_extern = {
+     }
+ };
+ 
++static void ipmi_bmc_extern_realize(DeviceState *dev, Error **errp)
++{
++    IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(dev);
++
++    if (!qemu_chr_fe_backend_connected(&ibe->chr)) {
++        error_setg(errp, "IPMI external bmc requires chardev attribute");
++        return;
++    }
++
++    qemu_chr_fe_set_handlers(&ibe->chr, can_receive, receive,
++                             chr_event, NULL, ibe, NULL, true);
++
++    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
++}
++
+ static void ipmi_bmc_extern_init(Object *obj)
+ {
+     IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(obj);
+ 
+     ibe->extern_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, extern_timeout, ibe);
+-    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
+ }
+ 
+ static void ipmi_bmc_extern_finalize(Object *obj)
+diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
+index a83e7243d6..aec064d3cd 100644
+--- a/hw/ipmi/isa_ipmi_bt.c
++++ b/hw/ipmi/isa_ipmi_bt.c
+@@ -68,6 +68,21 @@ static void isa_ipmi_bt_lower_irq(IPMIBT *ib)
+     qemu_irq_lower(iib->irq);
+ }
+ 
++static const VMStateDescription vmstate_ISAIPMIBTDevice = {
++    .name = TYPE_IPMI_INTERFACE_PREFIX "isa-bt",
++    .version_id = 2,
++    .minimum_version_id = 2,
++    /*
++     * Version 1 had messed up the array transfer, it's not even usable
++     * because it used VMSTATE_VBUFFER_UINT32, but it did not transfer
++     * the buffer length, so random things would happen.
++     */
++    .fields      = (VMStateField[]) {
++        VMSTATE_STRUCT(bt, ISAIPMIBTDevice, 1, vmstate_IPMIBT, IPMIBT),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static void isa_ipmi_bt_realize(DeviceState *dev, Error **errp)
+ {
+     Error *err = NULL;
+@@ -102,30 +117,15 @@ static void isa_ipmi_bt_realize(DeviceState *dev, Error **errp)
+     qdev_set_legacy_instance_id(dev, iib->bt.io_base, iib->bt.io_length);
+ 
+     isa_register_ioport(isadev, &iib->bt.io, iib->bt.io_base);
+-}
+ 
+-static const VMStateDescription vmstate_ISAIPMIBTDevice = {
+-    .name = TYPE_IPMI_INTERFACE_PREFIX "isa-bt",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
+-    /*
+-     * Version 1 had messed up the array transfer, it's not even usable
+-     * because it used VMSTATE_VBUFFER_UINT32, but it did not transfer
+-     * the buffer length, so random things would happen.
+-     */
+-    .fields      = (VMStateField[]) {
+-        VMSTATE_STRUCT(bt, ISAIPMIBTDevice, 1, vmstate_IPMIBT, IPMIBT),
+-        VMSTATE_END_OF_LIST()
+-    }
+-};
++    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, dev);
++}
+ 
+ static void isa_ipmi_bt_init(Object *obj)
+ {
+     ISAIPMIBTDevice *iib = ISA_IPMI_BT(obj);
+ 
+     ipmi_bmc_find_and_link(obj, (Object **) &iib->bt.bmc);
+-
+-    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, iib);
+ }
+ 
+ static void *isa_ipmi_bt_get_backend_data(IPMIInterface *ii)
+diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
+index b2ed70b9da..b5dcb64616 100644
+--- a/hw/ipmi/isa_ipmi_kcs.c
++++ b/hw/ipmi/isa_ipmi_kcs.c
+@@ -67,6 +67,24 @@ static void isa_ipmi_kcs_lower_irq(IPMIKCS *ik)
+     qemu_irq_lower(iik->irq);
+ }
+ 
++static bool vmstate_kcs_before_version2(void *opaque, int version)
++{
++    return version <= 1;
++}
++
++static const VMStateDescription vmstate_ISAIPMIKCSDevice = {
++    .name = TYPE_IPMI_INTERFACE,
++    .version_id = 2,
++    .minimum_version_id = 1,
++    .fields      = (VMStateField[]) {
++        VMSTATE_VSTRUCT_TEST(kcs, ISAIPMIKCSDevice, vmstate_kcs_before_version2,
++                             0, vmstate_IPMIKCS, IPMIKCS, 1),
++        VMSTATE_VSTRUCT_V(kcs, ISAIPMIKCSDevice, 2, vmstate_IPMIKCS,
++                          IPMIKCS, 2),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static void ipmi_isa_realize(DeviceState *dev, Error **errp)
+ {
+     Error *err = NULL;
+@@ -101,31 +119,6 @@ static void ipmi_isa_realize(DeviceState *dev, Error **errp)
+     qdev_set_legacy_instance_id(dev, iik->kcs.io_base, iik->kcs.io_length);
+ 
+     isa_register_ioport(isadev, &iik->kcs.io, iik->kcs.io_base);
+-}
+-
+-static bool vmstate_kcs_before_version2(void *opaque, int version)
+-{
+-    return version <= 1;
+-}
+-
+-static const VMStateDescription vmstate_ISAIPMIKCSDevice = {
+-    .name = TYPE_IPMI_INTERFACE,
+-    .version_id = 2,
+-    .minimum_version_id = 1,
+-    .fields      = (VMStateField[]) {
+-        VMSTATE_VSTRUCT_TEST(kcs, ISAIPMIKCSDevice, vmstate_kcs_before_version2,
+-                             0, vmstate_IPMIKCS, IPMIKCS, 1),
+-        VMSTATE_VSTRUCT_V(kcs, ISAIPMIKCSDevice, 2, vmstate_IPMIKCS,
+-                          IPMIKCS, 2),
+-        VMSTATE_END_OF_LIST()
+-    }
+-};
+-
+-static void isa_ipmi_kcs_init(Object *obj)
+-{
+-    ISAIPMIKCSDevice *iik = ISA_IPMI_KCS(obj);
+-
+-    ipmi_bmc_find_and_link(obj, (Object **) &iik->kcs.bmc);
+ 
+     /*
+      * Version 1 had an incorrect name, it clashed with the BT
+@@ -135,6 +128,13 @@ static void isa_ipmi_kcs_init(Object *obj)
+     vmstate_register(NULL, 0, &vmstate_ISAIPMIKCSDevice, iik);
+ }
+ 
++static void isa_ipmi_kcs_init(Object *obj)
++{
++    ISAIPMIKCSDevice *iik = ISA_IPMI_KCS(obj);
++
++    ipmi_bmc_find_and_link(obj, (Object **) &iik->kcs.bmc);
++}
++
+ static void *isa_ipmi_kcs_get_backend_data(IPMIInterface *ii)
+ {
+     ISAIPMIKCSDevice *iik = ISA_IPMI_KCS(ii);
 -- 
 2.41.0
 
