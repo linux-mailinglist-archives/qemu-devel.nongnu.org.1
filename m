@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2463A7DF8E7
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F141F7DF901
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:42:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybfJ-0003Wa-GL; Thu, 02 Nov 2023 13:39:33 -0400
+	id 1qybff-0003wG-6N; Thu, 02 Nov 2023 13:39:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeg-0003GP-1L
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:54 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1qybeh-0003H9-SZ
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:39:00 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeb-0002lu-Pg
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:53 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40907b82ab9so13849115e9.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:48 -0700 (PDT)
+ id 1qybec-0002m0-L3
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:55 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-50939d39d0fso1531719e87.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698946728; x=1699551528; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nbey4SZJJmXe8K8MAAeguqkbXwo5FmAHlW76eEXbodE=;
- b=yqWPCkG8gRWiPSEa5W7styRvbGW2SqaJTDw8l2D+bsQSIR/qYp+4X1zhnGx+VZ5xYj
- 3nDJvhWS5uZMBWK8YEatqaS46cZcJKhaG3JEx8f4pXqyhtzXYjbCnFUY6LN403BcpQ2t
- unkEveSdD1h6h9CAg4LcYWT8Vkb3nMMmbzov5XF8rrETZOQFjGNROmKTZWZ0MOXaHV5z
- P5jSd/gXq+zwTdI9PyN85MRMvkTonRMSwmNx6D8rDiWNcMl8bsPpXGP0foQWLLYCiWBY
- llni3ifp7eZpYwQRgTl4X4yXjeKYut/ZDUQL1BOwG/U9bvvfuwzK0gP48zmkk06Vm++W
- cpxQ==
+ :reply-to; bh=yh53+flKs5wwSa/gf36dhongavYBcMPxUgxWx+dgFzI=;
+ b=HU2uuGkNOc0/fmjvXYm/8xop5QF+EzXJp1DoIUaZvVAftfKpTGdkqr8ok+9A2SzQRN
+ CYA0O1PRFf5BgWWcwApPck2P0OtRbXFXGti9+vbZuMg5FuSr9wJIJfJLEMIcXWHRj5YB
+ TkaD69G3vAHzhvv/XQX7lkfEynEySosvHB9ufhDzdRJQ0CsqCL1AISMgEvO+jyPofNLa
+ tOviSZCrZ8uPNB6y3vPpUCUXq0chrOMdphAPJVlx5T9b4PUD8tmDAjPSngmFMLRR+WsD
+ FlhW5jSuUuDt9bttIaEu5IA0Ph3BBZE0Kdr4W9ZV5CDOqK65MN5z10pRu/aqnNF3O7K+
+ RK2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698946728; x=1699551528;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nbey4SZJJmXe8K8MAAeguqkbXwo5FmAHlW76eEXbodE=;
- b=ugsjNJd2T5XxU/M5Ks1URmQtf1vMlC8ZOXDJxFKyRoaS1hwSjlu0yPAWZZOPAqHOXP
- 3pADi/s31cn0mALkYDQ1KpO8aMDRLOsHFfNbS5bEPfCwYD/RVkG4HVx+F9Qgdb/F1Pa9
- SHxlyeK3N/gRwmtZjKFCec8n0augfoEMJnhwfiWUtaPAjVLQcsb6G5eksXMjDIDPUlWp
- pTzsmUUm/NrI+43AX4N0Mfmu2n9vheC96VYxkJ+PQx/AkWN0d7XFx/Vr1yi3x8uHZfpu
- vxexPbRuH8Y4VbdwLAclMuZ9CkEcJ2x4mV/tHDO3a+WTFimebhNMayeZFCFKoem4Fdiw
- hvTw==
-X-Gm-Message-State: AOJu0Yw8SbjNggt6t2wzQ12rbhRCyuWoUts5Rbx70lTV/s7VLTlYrt3E
- dB9AeRGED4JOntOilehI0OPAQWzxKT3AmA36yfs=
-X-Google-Smtp-Source: AGHT+IFGDp3MY1wZQC139ixCudBr9Jnh+LihNxQPsUW55qWnKGPKi9wwf0BRwhiORuGYwKMB+StEMg==
-X-Received: by 2002:a05:6000:1846:b0:32d:8a7c:6efc with SMTP id
- c6-20020a056000184600b0032d8a7c6efcmr579699wri.9.1698946728049; 
+ bh=yh53+flKs5wwSa/gf36dhongavYBcMPxUgxWx+dgFzI=;
+ b=RIxGOkswDwFaBEMEzCvbnovvn8sEXOnZ9sO04gOx3g9OVHzM97VmS9Bowpzu4q6MpR
+ DhqomHhxVMllUn/ehW4wC480YSRSBq/zR2u3QpFfx9w3dMetrZdQrCBkxx0ZYsKgnd18
+ HFnf309sP9twVDITDfRGG6zxz3uM/68bbPhTXKnc6XWoiCC8htOxOg+dokY2tw8ciMls
+ rHMMSnm4uEohdGcgoa8ijoUPyFSJmmx8NrW9mUIL6mTWwKgdzTCVBcDH/G8FV2Qg5YD0
+ S+C3hHn1ITfAwTfk14SR1OfEWeJJmBM850SauYImS0OEaWIJn7/1Mbtafrj7CEnGNDpm
+ QYZw==
+X-Gm-Message-State: AOJu0YyGlidES8qTWsp/+f8Q/8l7YJG+2inf6f46eIqhNNi9vSqEhWpg
+ Pu9iQFyiS8baWZzQ4bPFSr9UxNtKCJCIMDlyOPA=
+X-Google-Smtp-Source: AGHT+IHnfg6XNJ22Ne2bzaVSkJl5amhgWnhDJ/mUODehxm4VhaF1A1W9wG9JmXfxeq+ybCVsfQFnlg==
+X-Received: by 2002:a05:6512:2037:b0:507:a1b3:2d47 with SMTP id
+ s23-20020a056512203700b00507a1b32d47mr14290036lfs.17.1698946728482; 
  Thu, 02 Nov 2023 10:38:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.47
+ e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 10:38:47 -0700 (PDT)
+ Thu, 02 Nov 2023 10:38:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/33] hw/misc/imx7_snvs: Trace MMIO access
-Date: Thu,  2 Nov 2023 17:38:22 +0000
-Message-Id: <20231102173835.609985-21-peter.maydell@linaro.org>
+Subject: [PULL 21/33] hw/misc/imx6_ccm: Convert DPRINTF to trace events
+Date: Thu,  2 Nov 2023 17:38:23 +0000
+Message-Id: <20231102173835.609985-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,54 +95,183 @@ From: Bernhard Beschow <shentey@gmail.com>
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231028122415.14869-4-shentey@gmail.com
+Message-id: 20231028122415.14869-5-shentey@gmail.com
+[PMM: Add "Hz" unit indicator to frequency traces]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/imx7_snvs.c  | 5 +++++
- hw/misc/trace-events | 4 ++++
- 2 files changed, 9 insertions(+)
+ hw/misc/imx6_ccm.c   | 41 ++++++++++++++---------------------------
+ hw/misc/trace-events | 15 +++++++++++++++
+ 2 files changed, 29 insertions(+), 27 deletions(-)
 
-diff --git a/hw/misc/imx7_snvs.c b/hw/misc/imx7_snvs.c
-index ee7698bd9cd..a245f96cd4e 100644
---- a/hw/misc/imx7_snvs.c
-+++ b/hw/misc/imx7_snvs.c
-@@ -16,9 +16,12 @@
- #include "hw/misc/imx7_snvs.h"
+diff --git a/hw/misc/imx6_ccm.c b/hw/misc/imx6_ccm.c
+index 4c830fd89ae..85af466c2be 100644
+--- a/hw/misc/imx6_ccm.c
++++ b/hw/misc/imx6_ccm.c
+@@ -15,18 +15,7 @@
+ #include "migration/vmstate.h"
+ #include "qemu/log.h"
  #include "qemu/module.h"
- #include "sysemu/runstate.h"
+-
+-#ifndef DEBUG_IMX6_CCM
+-#define DEBUG_IMX6_CCM 0
+-#endif
+-
+-#define DPRINTF(fmt, args...) \
+-    do { \
+-        if (DEBUG_IMX6_CCM) { \
+-            fprintf(stderr, "[%s]%s: " fmt , TYPE_IMX6_CCM, \
+-                                             __func__, ##args); \
+-        } \
+-    } while (0)
 +#include "trace.h"
  
- static uint64_t imx7_snvs_read(void *opaque, hwaddr offset, unsigned size)
+ static const char *imx6_ccm_reg_name(uint32_t reg)
  {
-+    trace_imx7_snvs_read(offset, 0);
-+
-     return 0;
- }
- 
-@@ -28,6 +31,8 @@ static void imx7_snvs_write(void *opaque, hwaddr offset,
-     const uint32_t value = v;
-     const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
- 
-+    trace_imx7_snvs_write(offset, value);
-+
-     if (offset == SNVS_LPCR && ((value & mask) == mask)) {
-         qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+@@ -263,7 +252,7 @@ static uint64_t imx6_analog_get_pll2_clk(IMX6CCMState *dev)
+         freq *= 20;
      }
+ 
+-    DPRINTF("freq = %u\n", (uint32_t)freq);
++    trace_imx6_analog_get_pll2_clk(freq);
+ 
+     return freq;
+ }
+@@ -275,7 +264,7 @@ static uint64_t imx6_analog_get_pll2_pfd0_clk(IMX6CCMState *dev)
+     freq = imx6_analog_get_pll2_clk(dev) * 18
+            / EXTRACT(dev->analog[CCM_ANALOG_PFD_528], PFD0_FRAC);
+ 
+-    DPRINTF("freq = %u\n", (uint32_t)freq);
++    trace_imx6_analog_get_pll2_pfd0_clk(freq);
+ 
+     return freq;
+ }
+@@ -287,7 +276,7 @@ static uint64_t imx6_analog_get_pll2_pfd2_clk(IMX6CCMState *dev)
+     freq = imx6_analog_get_pll2_clk(dev) * 18
+            / EXTRACT(dev->analog[CCM_ANALOG_PFD_528], PFD2_FRAC);
+ 
+-    DPRINTF("freq = %u\n", (uint32_t)freq);
++    trace_imx6_analog_get_pll2_pfd2_clk(freq);
+ 
+     return freq;
+ }
+@@ -315,7 +304,7 @@ static uint64_t imx6_analog_get_periph_clk(IMX6CCMState *dev)
+         break;
+     }
+ 
+-    DPRINTF("freq = %u\n", (uint32_t)freq);
++    trace_imx6_analog_get_periph_clk(freq);
+ 
+     return freq;
+ }
+@@ -327,7 +316,7 @@ static uint64_t imx6_ccm_get_ahb_clk(IMX6CCMState *dev)
+     freq = imx6_analog_get_periph_clk(dev)
+            / (1 + EXTRACT(dev->ccm[CCM_CBCDR], AHB_PODF));
+ 
+-    DPRINTF("freq = %u\n", (uint32_t)freq);
++    trace_imx6_ccm_get_ahb_clk(freq);
+ 
+     return freq;
+ }
+@@ -339,7 +328,7 @@ static uint64_t imx6_ccm_get_ipg_clk(IMX6CCMState *dev)
+     freq = imx6_ccm_get_ahb_clk(dev)
+            / (1 + EXTRACT(dev->ccm[CCM_CBCDR], IPG_PODF));
+ 
+-    DPRINTF("freq = %u\n", (uint32_t)freq);
++    trace_imx6_ccm_get_ipg_clk(freq);
+ 
+     return freq;
+ }
+@@ -351,7 +340,7 @@ static uint64_t imx6_ccm_get_per_clk(IMX6CCMState *dev)
+     freq = imx6_ccm_get_ipg_clk(dev)
+            / (1 + EXTRACT(dev->ccm[CCM_CSCMR1], PERCLK_PODF));
+ 
+-    DPRINTF("freq = %u\n", (uint32_t)freq);
++    trace_imx6_ccm_get_per_clk(freq);
+ 
+     return freq;
+ }
+@@ -385,7 +374,7 @@ static uint32_t imx6_ccm_get_clock_frequency(IMXCCMState *dev, IMXClk clock)
+         break;
+     }
+ 
+-    DPRINTF("Clock = %d) = %u\n", clock, freq);
++    trace_imx6_ccm_get_clock_frequency(clock, freq);
+ 
+     return freq;
+ }
+@@ -394,7 +383,7 @@ static void imx6_ccm_reset(DeviceState *dev)
+ {
+     IMX6CCMState *s = IMX6_CCM(dev);
+ 
+-    DPRINTF("\n");
++    trace_imx6_ccm_reset();
+ 
+     s->ccm[CCM_CCR] = 0x040116FF;
+     s->ccm[CCM_CCDR] = 0x00000000;
+@@ -483,7 +472,7 @@ static uint64_t imx6_ccm_read(void *opaque, hwaddr offset, unsigned size)
+ 
+     value = s->ccm[index];
+ 
+-    DPRINTF("reg[%s] => 0x%" PRIx32 "\n", imx6_ccm_reg_name(index), value);
++    trace_imx6_ccm_read(imx6_ccm_reg_name(index), value);
+ 
+     return (uint64_t)value;
+ }
+@@ -494,8 +483,7 @@ static void imx6_ccm_write(void *opaque, hwaddr offset, uint64_t value,
+     uint32_t index = offset >> 2;
+     IMX6CCMState *s = (IMX6CCMState *)opaque;
+ 
+-    DPRINTF("reg[%s] <= 0x%" PRIx32 "\n", imx6_ccm_reg_name(index),
+-            (uint32_t)value);
++    trace_imx6_ccm_write(imx6_ccm_reg_name(index), (uint32_t)value);
+ 
+     /*
+      * We will do a better implementation later. In particular some bits
+@@ -591,7 +579,7 @@ static uint64_t imx6_analog_read(void *opaque, hwaddr offset, unsigned size)
+         break;
+     }
+ 
+-    DPRINTF("reg[%s] => 0x%" PRIx32 "\n", imx6_analog_reg_name(index), value);
++    trace_imx6_analog_read(imx6_analog_reg_name(index), value);
+ 
+     return (uint64_t)value;
+ }
+@@ -602,8 +590,7 @@ static void imx6_analog_write(void *opaque, hwaddr offset, uint64_t value,
+     uint32_t index = offset >> 2;
+     IMX6CCMState *s = (IMX6CCMState *)opaque;
+ 
+-    DPRINTF("reg[%s] <= 0x%" PRIx32 "\n", imx6_analog_reg_name(index),
+-            (uint32_t)value);
++    trace_imx6_analog_write(imx6_analog_reg_name(index), (uint32_t)value);
+ 
+     switch (index) {
+     case CCM_ANALOG_PLL_ARM_SET:
 diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 24ba7cc4d0e..426a8472b69 100644
+index 426a8472b69..05ff692441b 100644
 --- a/hw/misc/trace-events
 +++ b/hw/misc/trace-events
-@@ -115,6 +115,10 @@ msf2_sysreg_write_pll_status(void) "Invalid write to read only PLL status regist
- imx7_gpr_read(uint64_t offset) "addr 0x%08" PRIx64
- imx7_gpr_write(uint64_t offset, uint64_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx64
+@@ -196,6 +196,21 @@ iotkit_secctl_s_write(uint32_t offset, uint64_t data, unsigned size) "IoTKit Sec
+ iotkit_secctl_ns_read(uint32_t offset, uint64_t data, unsigned size) "IoTKit SecCtl NS regs read: offset 0x%x data 0x%" PRIx64 " size %u"
+ iotkit_secctl_ns_write(uint32_t offset, uint64_t data, unsigned size) "IoTKit SecCtl NS regs write: offset 0x%x data 0x%" PRIx64 " size %u"
  
-+# imx7_snvs.c
-+imx7_snvs_read(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
-+imx7_snvs_write(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
++# imx6_ccm.c
++imx6_analog_get_periph_clk(uint32_t freq) "freq = %u Hz"
++imx6_analog_get_pll2_clk(uint32_t freq) "freq = %u Hz"
++imx6_analog_get_pll2_pfd0_clk(uint32_t freq) "freq = %u Hz"
++imx6_analog_get_pll2_pfd2_clk(uint32_t freq) "freq = %u Hz"
++imx6_analog_read(const char *reg, uint32_t value) "reg[%s] => 0x%" PRIx32
++imx6_analog_write(const char *reg, uint32_t value) "reg[%s] <= 0x%" PRIx32
++imx6_ccm_get_ahb_clk(uint32_t freq) "freq = %u Hz"
++imx6_ccm_get_ipg_clk(uint32_t freq) "freq = %u Hz"
++imx6_ccm_get_per_clk(uint32_t freq) "freq = %u Hz"
++imx6_ccm_get_clock_frequency(unsigned clock, uint32_t freq) "(Clock = %d) = %u"
++imx6_ccm_read(const char *reg, uint32_t value) "reg[%s] => 0x%" PRIx32
++imx6_ccm_reset(void) ""
++imx6_ccm_write(const char *reg, uint32_t value) "reg[%s] <= 0x%" PRIx32
 +
- # mos6522.c
- mos6522_set_counter(int index, unsigned int val) "T%d.counter=%d"
- mos6522_get_next_irq_time(uint16_t latch, int64_t d, int64_t delta) "latch=%d counter=0x%"PRIx64 " delta_next=0x%"PRIx64
+ # imx6ul_ccm.c
+ ccm_entry(void) ""
+ ccm_freq(uint32_t freq) "freq = %d"
 -- 
 2.34.1
 
