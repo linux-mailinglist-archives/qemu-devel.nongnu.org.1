@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336D87DEA5E
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:47:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D12837DEA19
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMXl-0005kd-VQ; Wed, 01 Nov 2023 21:30:46 -0400
+	id 1qyMXg-0005cn-Fn; Wed, 01 Nov 2023 21:30:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMXa-0005YW-CD
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:34 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1qyMXZ-0005Xe-P6
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:33 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMXV-0001Vr-AB
+ id 1qyMXU-0001TS-8t
  for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:33 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6b77ab73c6fso382025b3a.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:30:28 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6c32a20d5dbso152072b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:30:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698888627; x=1699493427; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698888623; x=1699493423; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nB70z+ZvL+Oe/IRdMH3NRlu18gtAh7HSDv+Gha4r1Og=;
- b=Fh2HxucCYNOCeGZHXeYKaA8BuuUVlme3P3zuwQ7ZdApseE4348qrD4Ole8SpKDmvXh
- wTmBYirB2T2HrhPOo8qrgJSvO6a+G7i4Nu8HAiSOLBjt+0NtzuQP2ILedtMdRGWHd8eS
- nlP4Ue8GWZS1NOEd66Abf0dPdmta15FaKUMrG6tcLcpafnTrQMEBvTFO5W8rbeyf6Cpa
- 2PHX8WtYFUDDO1fdt18ZT6yOPEkqrJUjd3LVOWSDc3W84hWXbU7EZdwMtBBpjj91FxcL
- XarOca/0i3KSYNDrWIgL3cH3GvPt2gcWOdeVrJUA7T8OC9pTHWMsae60KeZi6LIfXXYk
- KK3w==
+ bh=57r4dbvGmT9c7SflZoBSmAA2ZbZqs4+A6cLuNHSqKd0=;
+ b=D97rk0yuZMAldmA/xQResC7VUNBu8oQQfLpqmD5s5e3gCLg3xVjCxg7Vnbm+GeZmm6
+ zKYJMOUnGzBLRHRlFLRIu7O3BXDCdm6+1/nUZdaZO6XnkZyrBRQUOyj+ZvzvdtLueFmR
+ nipcI4xaUqqZzbF6Nups1tehdWJ0eqHHfBz+nMlxK/TcU4xNEpaX5tHB3kuxPYMZQEAE
+ bW6oUwekw8Yxu2ZBiKp3Q4Ivl9ILFzevZheV8BBB8RGvldazIxJHKLRlRfgPPNYFj9z9
+ karLsABklCT2YiZHllCdBWaP3mzEqzeOjxgeOZ5Uoq+9Hq/jVcoSezpwfB/663dtbNcg
+ HYBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698888627; x=1699493427;
+ d=1e100.net; s=20230601; t=1698888623; x=1699493423;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nB70z+ZvL+Oe/IRdMH3NRlu18gtAh7HSDv+Gha4r1Og=;
- b=ArfsUC0AJAkrqPeb4xkWzHOwWGhL9D00G0EpXbMOdOyHHLv7ZY5b6IVBQhqjyeOocE
- T6c3r+3BY5yVl2evHcNdLKu7HwPJtAs9/z3rT5t2/E8mJn7uNIMByGo6G11y9/c4SqIE
- yIkg6bYZDDLq0yQffM12JA8H6B2N0zF1966zwAzEsvcWh8/pLOa3C4Xvx3Hf2lPR5Qv4
- VM5jZa4X4ju7qY/UD8BdNjuCOXT84atyu1I1yc3x8y6pDEG0YtxJmqtI4DE1Zdd44v7l
- zpvPmmvdbSacVfXTG80tchqYB7abzp5rzGwaGIUq1MLU27uL+Mhb3ENCr3iniYFqBnNw
- fm7g==
-X-Gm-Message-State: AOJu0YxbILib5HfrqcxXUytwO8meiJRqGCOa5/xhUW0x/su9T0ot2x3N
- 0suEmOZDQQe9BcY+HV0ZtfohljhX/70pz45ThiA=
-X-Google-Smtp-Source: AGHT+IEdPuKfuBtTB/B+yYMmcDy/pjR1wKNSJbkrLDBRHnj8oS0caxfuCkfIR/QESmA68Sjj2NX73w==
-X-Received: by 2002:aa7:8894:0:b0:68b:e29c:b69 with SMTP id
- z20-20020aa78894000000b0068be29c0b69mr9513066pfe.9.1698888622587; 
- Wed, 01 Nov 2023 18:30:22 -0700 (PDT)
+ bh=57r4dbvGmT9c7SflZoBSmAA2ZbZqs4+A6cLuNHSqKd0=;
+ b=oVrkV4jFVdHhtB3WlUtw9CP5kCcVetA74hRBKFFQBeaTlzvQe7Wz6BmeD9yMRKeP81
+ 9c9rwKstKHosTUXcChgSkY83hEnjMCoaweK6I4520hCeqQMeK5Jf9c1iqY8ybWdKqF4R
+ jtwiaiybGfSwsm2CvLOSAPJUv1gpQj0fXI1f8FNIOwTq7nU79Xzm+ha3+FaIxg1wsTU6
+ k6ue/q+uSE2x/pT/6PKIbYj5DGM/SGjiIlgzSl+p8Q9vZ8/493tvonohNlhPf1NBzXGm
+ YMBx8wKBDiV61wHATV7lDJ4EC86X8N4C+MXjLm16Qr7Gu1Qzcmy1qp6WmmcggX0n1XOP
+ L9wA==
+X-Gm-Message-State: AOJu0YzFJqURkCR3TWcI9s8bx0LyW5/Kkcv0mrm9okJOJICxAdE3wNAp
+ pAMpQqC8b7fmsID3NU8FIRqeDQLxYx0Xb/579IU=
+X-Google-Smtp-Source: AGHT+IET/h2sKRMby4KbkeU1R7CbVYWlb8PQ00Jp/m06PVqokihPyGkgC6rbTgMMaFijzeu5QJr64A==
+X-Received: by 2002:a05:6a00:807:b0:6be:2991:d878 with SMTP id
+ m7-20020a056a00080700b006be2991d878mr17109310pfk.15.1698888623485; 
+ Wed, 01 Nov 2023 18:30:23 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  r23-20020aa78457000000b006979f70fdd5sm1784191pfn.219.2023.11.01.18.30.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:30:22 -0700 (PDT)
+ Wed, 01 Nov 2023 18:30:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 06/88] target/hppa: Populate an interval tree with valid
- tlb entries
-Date: Wed,  1 Nov 2023 18:28:54 -0700
-Message-Id: <20231102013016.369010-7-richard.henderson@linaro.org>
+Subject: [PATCH v3 07/88] tcg: Improve expansion of deposit of constant
+Date: Wed,  1 Nov 2023 18:28:55 -0700
+Message-Id: <20231102013016.369010-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,432 +90,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Complete the data structure conversion started earlier.  This reduces
-the perf overhead of hppa_get_physical_address from ~5% to ~0.25%.
+The extract2 expansion is too difficult for the optimizer to
+simplify.  If we have an immediate input, use and+or instead,
+skipping the and if the field becomes all 1's.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        |  24 +++++-
- target/hppa/cpu.c        |   2 +
- target/hppa/machine.c    |  51 ++++++++++++-
- target/hppa/mem_helper.c | 161 +++++++++++++++++++++++----------------
- 4 files changed, 167 insertions(+), 71 deletions(-)
+ tcg/tcg-op.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 1480d0237a..08de894393 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -176,7 +176,10 @@ typedef int64_t  target_sreg;
- #endif
- 
- typedef struct HPPATLBEntry {
--    IntervalTreeNode itree;
-+    union {
-+        IntervalTreeNode itree;
-+        struct HPPATLBEntry *unused_next;
-+    };
- 
-     target_ureg pa;
- 
-@@ -234,10 +237,22 @@ typedef struct CPUArchState {
- #define HPPA_TLB_ENTRIES        256
- #define HPPA_BTLB_ENTRIES       (HPPA_BTLB_FIXED + HPPA_BTLB_VARIABLE)
- 
--    /* ??? Implement a unified itlb/dtlb for the moment.  */
--    /* ??? We should use a more intelligent data structure.  */
--    HPPATLBEntry tlb[HPPA_TLB_ENTRIES];
-+    /* Index for round-robin tlb eviction. */
-     uint32_t tlb_last;
-+
-+    /*
-+     * For pa1.x, the partial initialized, still invalid tlb entry
-+     * which has had ITLBA performed, but not yet ITLBP.
-+     */
-+    HPPATLBEntry *tlb_partial;
-+
-+    /* Linked list of all invalid (unused) tlb entries. */
-+    HPPATLBEntry *tlb_unused;
-+
-+    /* Root of the search tree for all valid tlb entries. */
-+    IntervalTreeRoot tlb_root;
-+
-+    HPPATLBEntry tlb[HPPA_TLB_ENTRIES];
- } CPUHPPAState;
- 
- /**
-@@ -356,6 +371,7 @@ int hppa_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int hppa_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
- void hppa_cpu_dump_state(CPUState *cs, FILE *f, int);
- #ifndef CONFIG_USER_ONLY
-+void hppa_ptlbe(CPUHPPAState *env);
- hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr);
- bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                        MMUAccessType access_type, int mmu_idx,
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 1644297bf8..5e1240c631 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -137,8 +137,10 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
- #ifndef CONFIG_USER_ONLY
-     {
-         HPPACPU *cpu = HPPA_CPU(cs);
-+
-         cpu->alarm_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                         hppa_cpu_alarm_timer, cpu);
-+        hppa_ptlbe(&cpu->env);
-     }
- #endif
- }
-diff --git a/target/hppa/machine.c b/target/hppa/machine.c
-index 4535195ca2..ab3e8c81fa 100644
---- a/target/hppa/machine.c
-+++ b/target/hppa/machine.c
-@@ -72,8 +72,6 @@ static int get_tlb(QEMUFile *f, void *opaque, size_t size,
-     HPPATLBEntry *ent = opaque;
-     uint32_t val;
- 
--    memset(ent, 0, sizeof(*ent));
--
-     ent->itree.start = qemu_get_be64(f);
-     ent->pa = qemu_get_betr(f);
-     val = qemu_get_be32(f);
-@@ -122,6 +120,53 @@ static const VMStateInfo vmstate_tlb = {
-     .put = put_tlb,
- };
- 
-+static int tlb_pre_load(void *opaque)
-+{
-+    CPUHPPAState *env = opaque;
-+
-+    /*
-+     * Zap the entire tlb, on-the-side data structures and all.
-+     * Each tlb entry will have data re-filled by put_tlb.
-+     */
-+    memset(env->tlb, 0, sizeof(env->tlb));
-+    memset(&env->tlb_root, 0, sizeof(env->tlb_root));
-+    env->tlb_unused = NULL;
-+    env->tlb_partial = NULL;
-+
-+    return 0;
-+}
-+
-+static int tlb_post_load(void *opaque, int version_id)
-+{
-+    CPUHPPAState *env = opaque;
-+    HPPATLBEntry **unused = &env->tlb_unused;
-+    HPPATLBEntry *partial = NULL;
-+
-+    /*
-+     * Re-create the interval tree from the valid entries.
-+     * Truely invalid entries should have start == end == 0.
-+     * Otherwise it should be the in-flight tlb_partial entry.
-+     */
-+    for (uint32_t i = 0; i < ARRAY_SIZE(env->tlb); ++i) {
-+        HPPATLBEntry *e = &env->tlb[i];
-+
-+        if (e->entry_valid) {
-+            interval_tree_insert(&e->itree, &env->tlb_root);
-+        } else if (i < HPPA_BTLB_ENTRIES) {
-+            /* btlb not in unused list */
-+        } else if (partial == NULL && e->itree.start < e->itree.last) {
-+            partial = e;
-+        } else {
-+            *unused = e;
-+            unused = &e->unused_next;
-+        }
-+    }
-+    env->tlb_partial = partial;
-+    *unused = NULL;
-+
-+    return 0;
-+}
-+
- static VMStateField vmstate_env_fields[] = {
-     VMSTATE_UINTTR_ARRAY(gr, CPUHPPAState, 32),
-     VMSTATE_UINT64_ARRAY(fr, CPUHPPAState, 32),
-@@ -164,6 +209,8 @@ static const VMStateDescription vmstate_env = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .fields = vmstate_env_fields,
-+    .pre_load = tlb_pre_load,
-+    .post_load = tlb_post_load,
- };
- 
- static VMStateField vmstate_cpu_fields[] = {
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 828cceb29c..b1773ece61 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -27,16 +27,13 @@
- 
- static HPPATLBEntry *hppa_find_tlb(CPUHPPAState *env, vaddr addr)
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index 828eb9ee46..e305260099 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -608,6 +608,7 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
  {
--    int i;
-+    IntervalTreeNode *i = interval_tree_iter_first(&env->tlb_root, addr, addr);
+     uint32_t mask;
+     TCGv_i32 t1;
++    TCGTemp *ts;
  
--    for (i = 0; i < ARRAY_SIZE(env->tlb); ++i) {
--        HPPATLBEntry *ent = &env->tlb[i];
--        if (ent->itree.start <= addr && addr <= ent->itree.last) {
--            trace_hppa_tlb_find_entry(env, ent + i, ent->entry_valid,
--                                      ent->itree.start, ent->itree.last,
--                                      ent->pa);
--            return ent;
--        }
-+    if (i) {
-+        HPPATLBEntry *ent = container_of(i, HPPATLBEntry, itree);
-+        trace_hppa_tlb_find_entry(env, ent, ent->entry_valid,
-+                                  ent->itree.start, ent->itree.last, ent->pa);
-+        return ent;
-     }
-     trace_hppa_tlb_find_entry_not_found(env, addr);
-     return NULL;
-@@ -46,6 +43,7 @@ static void hppa_flush_tlb_ent(CPUHPPAState *env, HPPATLBEntry *ent,
-                                bool force_flush_btlb)
- {
-     CPUState *cs = env_cpu(env);
-+    bool is_btlb;
- 
-     if (!ent->entry_valid) {
-         return;
-@@ -58,50 +56,55 @@ static void hppa_flush_tlb_ent(CPUHPPAState *env, HPPATLBEntry *ent,
-                               ent->itree.last - ent->itree.start + 1,
-                               HPPA_MMU_FLUSH_MASK, TARGET_LONG_BITS);
- 
--    /* never clear BTLBs, unless forced to do so. */
--    if (ent < &env->tlb[HPPA_BTLB_ENTRIES] && !force_flush_btlb) {
-+    /* Never clear BTLBs, unless forced to do so. */
-+    is_btlb = ent < &env->tlb[HPPA_BTLB_ENTRIES];
-+    if (is_btlb && !force_flush_btlb) {
+     tcg_debug_assert(ofs < 32);
+     tcg_debug_assert(len > 0);
+@@ -623,6 +624,19 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
          return;
      }
  
-+    interval_tree_remove(&ent->itree, &env->tlb_root);
-     memset(ent, 0, sizeof(*ent));
--    ent->itree.start = -1;
++    /* Deposit of a constant into a value. */
++    ts = tcgv_i32_temp(arg2);
++    if (ts->kind == TEMP_CONST) {
++        uint32_t mask0 = deposit32(-1, ofs, len, 0);
++        uint32_t maski = deposit32(0, ofs, len, ts->val);
 +
-+    if (!is_btlb) {
-+        ent->unused_next = env->tlb_unused;
-+        env->tlb_unused = ent;
-+    }
- }
- 
--static HPPATLBEntry *hppa_flush_tlb_range(CPUHPPAState *env,
--                                          vaddr va_b, vaddr va_e)
-+static void hppa_flush_tlb_range(CPUHPPAState *env, vaddr va_b, vaddr va_e)
- {
--    HPPATLBEntry *empty = NULL;
-+    IntervalTreeNode *i, *n;
- 
--    /* Zap any old entries covering ADDR; notice empty entries on the way.  */
--    for (int i = HPPA_BTLB_ENTRIES; i < ARRAY_SIZE(env->tlb); ++i) {
--        HPPATLBEntry *ent = &env->tlb[i];
-+    i = interval_tree_iter_first(&env->tlb_root, va_b, va_e);
-+    for (; i ; i = n) {
-+        HPPATLBEntry *ent = container_of(i, HPPATLBEntry, itree);
- 
--        if (!ent->entry_valid) {
--            empty = ent;
--        } else if (va_e >= ent->itree.start && va_b <= ent->itree.last) {
--            hppa_flush_tlb_ent(env, ent, false);
--            empty = ent;
--        }
-+        /*
-+         * Find the next entry now: In the normal case the current entry
-+         * will be removed, but in the BTLB case it will remain.
-+         */
-+        n = interval_tree_iter_next(i, va_b, va_e);
-+        hppa_flush_tlb_ent(env, ent, false);
-     }
--    return empty;
- }
- 
- static HPPATLBEntry *hppa_alloc_tlb_ent(CPUHPPAState *env)
- {
--    HPPATLBEntry *ent;
--    uint32_t i;
-+    HPPATLBEntry *ent = env->tlb_unused;
- 
--    if (env->tlb_last < HPPA_BTLB_ENTRIES || env->tlb_last >= ARRAY_SIZE(env->tlb)) {
--        i = HPPA_BTLB_ENTRIES;
--        env->tlb_last = HPPA_BTLB_ENTRIES + 1;
--    } else {
--        i = env->tlb_last;
--        env->tlb_last++;
-+    if (ent == NULL) {
-+        uint32_t i = env->tlb_last;
-+
-+        if (i < HPPA_BTLB_ENTRIES || i >= ARRAY_SIZE(env->tlb)) {
-+            i = HPPA_BTLB_ENTRIES;
++        if (mask0 != ~maski) {
++            tcg_gen_andi_i32(ret, arg1, mask0);
 +        }
-+        env->tlb_last = i + 1;
-+
-+        ent = &env->tlb[i];
-+        hppa_flush_tlb_ent(env, ent, false);
-     }
- 
--    ent = &env->tlb[i];
--
--    hppa_flush_tlb_ent(env, ent, false);
-+    env->tlb_unused = ent->unused_next;
-     return ent;
- }
- 
-@@ -127,7 +130,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
- 
-     /* Find a valid tlb entry that matches the virtual address.  */
-     ent = hppa_find_tlb(env, addr);
--    if (ent == NULL || !ent->entry_valid) {
-+    if (ent == NULL) {
-         phys = 0;
-         prot = 0;
-         ret = (type == PAGE_EXEC) ? EXCP_ITLB_MISS : EXCP_DTLB_MISS;
-@@ -303,23 +306,23 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
- /* Insert (Insn/Data) TLB Address.  Note this is PA 1.1 only.  */
- void HELPER(itlba)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
- {
--    HPPATLBEntry *empty;
-+    HPPATLBEntry *ent;
- 
--    /* Zap any old entries covering ADDR; notice empty entries on the way.  */
-+    /* Zap any old entries covering ADDR. */
-     addr &= TARGET_PAGE_MASK;
--    empty = hppa_flush_tlb_range(env, addr, addr + TARGET_PAGE_SIZE - 1);
-+    hppa_flush_tlb_range(env, addr, addr + TARGET_PAGE_SIZE - 1);
- 
--    /* If we didn't see an empty entry, evict one.  */
--    if (empty == NULL) {
--        empty = hppa_alloc_tlb_ent(env);
-+    ent = env->tlb_partial;
-+    if (ent == NULL) {
-+        ent = hppa_alloc_tlb_ent(env);
-+        env->tlb_partial = ent;
-     }
- 
--    /* Note that empty->entry_valid == 0 already.  */
--    empty->itree.start = addr;
--    empty->itree.last = addr + TARGET_PAGE_SIZE - 1;
--    empty->pa = extract32(reg, 5, 20) << TARGET_PAGE_BITS;
--    trace_hppa_tlb_itlba(env, empty, empty->itree.start,
--                         empty->itree.last, empty->pa);
-+    /* Note that ent->entry_valid == 0 already.  */
-+    ent->itree.start = addr;
-+    ent->itree.last = addr + TARGET_PAGE_SIZE - 1;
-+    ent->pa = extract32(reg, 5, 20) << TARGET_PAGE_BITS;
-+    trace_hppa_tlb_itlba(env, ent, ent->itree.start, ent->itree.last, ent->pa);
- }
- 
- static void set_access_bits(CPUHPPAState *env, HPPATLBEntry *ent, target_ureg reg)
-@@ -333,6 +336,8 @@ static void set_access_bits(CPUHPPAState *env, HPPATLBEntry *ent, target_ureg re
-     ent->d = extract32(reg, 28, 1);
-     ent->t = extract32(reg, 29, 1);
-     ent->entry_valid = 1;
-+
-+    interval_tree_insert(&ent->itree, &env->tlb_root);
-     trace_hppa_tlb_itlbp(env, ent, ent->access_id, ent->u, ent->ar_pl2,
-                          ent->ar_pl1, ent->ar_type, ent->b, ent->d, ent->t);
- }
-@@ -340,14 +345,16 @@ static void set_access_bits(CPUHPPAState *env, HPPATLBEntry *ent, target_ureg re
- /* Insert (Insn/Data) TLB Protection.  Note this is PA 1.1 only.  */
- void HELPER(itlbp)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
- {
--    HPPATLBEntry *ent = hppa_find_tlb(env, addr);
-+    HPPATLBEntry *ent = env->tlb_partial;
- 
--    if (unlikely(ent == NULL)) {
--        qemu_log_mask(LOG_GUEST_ERROR, "ITLBP not following ITLBA\n");
--        return;
-+    if (ent) {
-+        env->tlb_partial = NULL;
-+        if (ent->itree.start <= addr && addr <= ent->itree.last) {
-+            set_access_bits(env, ent, reg);
-+            return;
-+        }
-     }
--
--    set_access_bits(env, ent, reg);
-+    qemu_log_mask(LOG_GUEST_ERROR, "ITLBP not following ITLBA\n");
- }
- 
- /* Purge (Insn/Data) TLB.  This is explicitly page-based, and is
-@@ -356,17 +363,15 @@ static void ptlb_work(CPUState *cpu, run_on_cpu_data data)
- {
-     CPUHPPAState *env = cpu_env(cpu);
-     target_ulong addr = (target_ulong) data.target_ptr;
--    HPPATLBEntry *ent = hppa_find_tlb(env, addr);
- 
--    if (ent && ent->entry_valid) {
--        hppa_flush_tlb_ent(env, ent, false);
--    }
-+    hppa_flush_tlb_range(env, addr, addr);
- }
- 
- void HELPER(ptlb)(CPUHPPAState *env, target_ulong addr)
- {
-     CPUState *src = env_cpu(env);
-     CPUState *cpu;
-+
-     trace_hppa_tlb_ptlb(env);
-     run_on_cpu_data data = RUN_ON_CPU_TARGET_PTR(addr);
- 
-@@ -378,16 +383,40 @@ void HELPER(ptlb)(CPUHPPAState *env, target_ulong addr)
-     async_safe_run_on_cpu(src, ptlb_work, data);
- }
- 
-+void hppa_ptlbe(CPUHPPAState *env)
-+{
-+    uint32_t i;
-+
-+    /* Zap the (non-btlb) tlb entries themselves. */
-+    memset(&env->tlb[HPPA_BTLB_ENTRIES], 0,
-+           sizeof(env->tlb) - HPPA_BTLB_ENTRIES * sizeof(env->tlb[0]));
-+    env->tlb_last = HPPA_BTLB_ENTRIES;
-+    env->tlb_partial = NULL;
-+
-+    /* Put them all onto the unused list. */
-+    env->tlb_unused = &env->tlb[HPPA_BTLB_ENTRIES];
-+    for (i = HPPA_BTLB_ENTRIES; i < ARRAY_SIZE(env->tlb) - 1; ++i) {
-+        env->tlb[i].unused_next = &env->tlb[i + 1];
++        tcg_gen_ori_i32(ret, ret, maski);
++        return;
 +    }
 +
-+    /* Re-initialize the interval tree with only the btlb entries. */
-+    memset(&env->tlb_root, 0, sizeof(env->tlb_root));
-+    for (i = 0; i < HPPA_BTLB_ENTRIES; ++i) {
-+        if (env->tlb[i].entry_valid) {
-+            interval_tree_insert(&env->tlb[i].itree, &env->tlb_root);
+     t1 = tcg_temp_ebb_new_i32();
+ 
+     if (TCG_TARGET_HAS_extract2_i32) {
+@@ -2229,6 +2243,7 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
+ {
+     uint64_t mask;
+     TCGv_i64 t1;
++    TCGTemp *ts;
+ 
+     tcg_debug_assert(ofs < 64);
+     tcg_debug_assert(len > 0);
+@@ -2244,6 +2259,19 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
+         return;
+     }
+ 
++    /* Deposit of a constant into a value. */
++    ts = tcgv_i64_temp(arg2);
++    if (ts->kind == TEMP_CONST) {
++        uint64_t mask0 = deposit64(-1, ofs, len, 0);
++        uint64_t maski = deposit64(0, ofs, len, ts->val);
++
++        if (mask0 != ~maski) {
++            tcg_gen_andi_i64(ret, arg1, mask0);
 +        }
++        tcg_gen_ori_i64(ret, ret, maski);
++        return;
 +    }
 +
-+    tlb_flush_by_mmuidx(env_cpu(env), HPPA_MMU_FLUSH_MASK);
-+}
-+
- /* Purge (Insn/Data) TLB entry.  This affects an implementation-defined
-    number of pages/entries (we choose all), and is local to the cpu.  */
- void HELPER(ptlbe)(CPUHPPAState *env)
- {
-     trace_hppa_tlb_ptlbe(env);
-     qemu_log_mask(CPU_LOG_MMU, "FLUSH ALL TLB ENTRIES\n");
--    memset(&env->tlb[HPPA_BTLB_ENTRIES], 0,
--        sizeof(env->tlb) - HPPA_BTLB_ENTRIES * sizeof(env->tlb[0]));
--    env->tlb_last = HPPA_BTLB_ENTRIES;
--    tlb_flush_by_mmuidx(env_cpu(env), HPPA_MMU_FLUSH_MASK);
-+    hppa_ptlbe(env);
- }
- 
- void cpu_hppa_change_prot_id(CPUHPPAState *env)
-@@ -483,9 +512,11 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
-                     (long long) virt_page, phys_page, len, slot);
-         if (slot < HPPA_BTLB_ENTRIES) {
-             btlb = &env->tlb[slot];
--            /* force flush of possibly existing BTLB entry */
-+
-+            /* Force flush of possibly existing BTLB entry. */
-             hppa_flush_tlb_ent(env, btlb, true);
--            /* create new BTLB entry */
-+
-+            /* Create new BTLB entry */
-             btlb->itree.start = virt_page << TARGET_PAGE_BITS;
-             btlb->itree.last = btlb->itree.start + len * TARGET_PAGE_SIZE - 1;
-             btlb->pa = phys_page << TARGET_PAGE_BITS;
+     if (TCG_TARGET_REG_BITS == 32) {
+         if (ofs >= 32) {
+             tcg_gen_deposit_i32(TCGV_HIGH(ret), TCGV_HIGH(arg1),
 -- 
 2.34.1
 
