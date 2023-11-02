@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68EB7DF9B1
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 19:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF377DF9B6
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 19:14:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qycBw-0007wR-Jc; Thu, 02 Nov 2023 14:13:16 -0400
+	id 1qycCr-0000Xf-3P; Thu, 02 Nov 2023 14:14:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qycBt-0007w0-Sz
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:13:14 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qycCo-0000XQ-FM
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:14:10 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qycBs-0000jz-9H
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:13:13 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-408002b5b9fso8793695e9.3
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 11:13:11 -0700 (PDT)
+ id 1qycCm-0000wI-Vz
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 14:14:10 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4084e49a5e5so10898225e9.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 11:14:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698948790; x=1699553590; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698948847; x=1699553647; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VbzoZRMPnFqJQwQjMoT8LX8hpxP19pA0nJzGBiYdEsA=;
- b=gju1IiNDwyjrXJMWYNyCYcKsS5Sm+LUfCCPEJCURbrw9retkUH0Redx8Rzb/4S7kUG
- qDWwN8qRvrJ6Bm+62/OsRjhSd7BNqMHfgMLWlicScdpYsYhEshkrAIc8XIA/0Ze6mPOE
- H+b2jcr51BZpIgX1m6K+SblDpXT4ZtbtLVq9n1BZabh0V01V8vk1A4+ulu5Nxft15mYC
- YhxnCF8ATGowju/enA81/AHbC+uzbQyW3+lyfQmIyXGIfc/tp16Js2AmsCUfw+rqhKQv
- XbqkkXgrQd/2kdLvLIO1AdZgUO0Ov2NxaLrB+8kdOU5ofGixmI0sovXdn+NptJ4uMeXO
- b7ig==
+ :reply-to; bh=OW3l1Z85RK2aI11BSO/Kgu2D/SejBjLO3Lal8dIF04E=;
+ b=sw8hPDuOuJZj6n+lmpuhO4YEijZQD2+1wiZIIDLPcIFvArD5sIw/JdGQaqTRmg4Meo
+ VS0mzErsUU67LAp76pEMn549ZnZe34tw0YodTV8t6ON3TaLMHvFvvsbtQfk0n/sKJYRn
+ GXUYJifuGbPv1CDDucj43W+MUzGNpYSepInTVVlt3RLs3IARnDcZYfmWyc+YOoxUcXoi
+ RQYF5D3Xbwu7ASV50W7mv4077zu+Ol32psS3512xSHndrgKk3cs/Zp3PgVN5qZoULNet
+ BhVx2MOu9QctHcIFVgUBBHi0kh9nz4/iwctfe+ajBcpCZ0+pNtejHnibwDzrtt36mSrK
+ nmrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698948790; x=1699553590;
+ d=1e100.net; s=20230601; t=1698948847; x=1699553647;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VbzoZRMPnFqJQwQjMoT8LX8hpxP19pA0nJzGBiYdEsA=;
- b=dYvbt6+sjO44oVoEeQHvoFZRwjLRsQluCDh+UaypnyaJVCvrbVhGM9C27NupXcY2nl
- xGyQBdguQurYw1H707KGfErAqnK9V3lWaUURiNqD6Qn8rm853V/UiUz7rLKmqenVTX/+
- G0i+EB0fbHGbXZUv+fXoYiSSraaAwd42sxpeqpXiELVf7d7+gkw6r+nF+SBW2vFs1GaB
- k+oXeTedbkfA6+Skm6siKCwF1k+BjMesbDxZ1J4qGOU79LUMKnuMmysZRehnXtF5XTac
- nhHjxI6NN2B3I2+CQh7yGPUL/XJ6inECBN+ATnr9551CBgkaQJC3AaXQzZ/DbJXqnt8j
- xOcQ==
-X-Gm-Message-State: AOJu0Yxl5jRaxQCqm4y2kf0+lIDsiE0ixuPYmEWlvXNv4RKAAv9BRmMO
- UG7xidCpPkWWkolv8+07svAVHg==
-X-Google-Smtp-Source: AGHT+IHpLg1xnpvSe9HefCSNJXHAGZ1+wxb+08gccjgLD8Ev4YxK67KlO8iiiwYH4m6Y/Br0EuyrqA==
-X-Received: by 2002:a05:600c:5204:b0:408:3f61:cb4f with SMTP id
- fb4-20020a05600c520400b004083f61cb4fmr14980718wmb.23.1698948790372; 
- Thu, 02 Nov 2023 11:13:10 -0700 (PDT)
+ bh=OW3l1Z85RK2aI11BSO/Kgu2D/SejBjLO3Lal8dIF04E=;
+ b=NCkKeU1M5kC45ddv2Usi9oqBvzanIfW/DRu6PPJte6cl9IwhbzINdpKkV2Wv0DbbUM
+ PGJ7J968SziGL2mHohnDo0Lk0jin63YQuS2LYdWNiPx50tddGVQf2w6wYXM6eHWSPqCM
+ vS1yJHpq2f54Z57aqdpMR/U6lP+x5sVAUmRxm33216qE05m5m7AzyHpEl2aIbr/NBFW7
+ ap1TvoDYKKkZ5z7d+NV1xa6EW3XkCXbz7qOOO+Z5dg2Ugy9d8ChxcVOFkLQ4NlcZKXsg
+ RBNmO7nBJU9c7WYdGWVe8oF2iK/ulIjOEMS3sJqe9bpVbTafXYtjAYWQSrl71iL2lmom
+ jS2g==
+X-Gm-Message-State: AOJu0YwcNiY+Ayz0FzbXWc2imT4wx598OUaI2wlcM+A3WVYSBKqO7ga6
+ 3LSNnVwPpevchS5l/Pu9jBvG0NCbhvWdsolhAX82fQ==
+X-Google-Smtp-Source: AGHT+IFTWOrTEN9Z4MQ1CiJ68kInPEZCjToEMSD22FhE3LPEU2emTVc1wcR0C61CvuzYTy/RtkiW4Q==
+X-Received: by 2002:a05:600c:2990:b0:402:ee71:29 with SMTP id
+ r16-20020a05600c299000b00402ee710029mr15709455wmd.10.1698948847528; 
+ Thu, 02 Nov 2023 11:14:07 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- l41-20020a05600c08a900b0040588d85b3asm3589666wmp.15.2023.11.02.11.13.10
+ j3-20020a05600c488300b004054dcbf92asm245350wmp.20.2023.11.02.11.14.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 11:13:10 -0700 (PDT)
+ Thu, 02 Nov 2023 11:14:07 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AB34E656E4;
- Thu,  2 Nov 2023 18:13:09 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id C24BC656E4;
+ Thu,  2 Nov 2023 18:14:06 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Greg Manning <gmanning@rapitasystems.com>
 Cc: qemu-devel@nongnu.org,   luoyonggang@gmail.com,
  richard.henderson@linaro.org,   Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 3/4] plugins: disable lockstep plugin on windows
-In-Reply-To: <20231102172053.17692-4-gmanning@rapitasystems.com> (Greg
- Manning's message of "Thu, 2 Nov 2023 17:19:46 +0000")
+Subject: Re: [PATCH v2 4/4] plugins: allow plugins to be enabled on windows
+In-Reply-To: <20231102172053.17692-5-gmanning@rapitasystems.com> (Greg
+ Manning's message of "Thu, 2 Nov 2023 17:19:47 +0000")
 User-Agent: mu4e 1.11.23; emacs 29.1
-Date: Thu, 02 Nov 2023 18:13:09 +0000
-Message-ID: <87v8ak2fd6.fsf@draig.linaro.org>
+Date: Thu, 02 Nov 2023 18:14:06 +0000
+Message-ID: <87pm0s2fbl.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,8 +96,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Greg Manning <gmanning@rapitasystems.com> writes:
 
-> The lockstep plugin uses unix sockets and would require a different
-> communication mechanism to work on Windows.
+> allow plugins to be enabled in the configure script on windows. Also,
+> add the qemu_plugin_api.lib to the installer.
 >
 > Signed-off-by: Greg Manning <gmanning@rapitasystems.com>
 
