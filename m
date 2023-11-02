@@ -2,72 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170FF7DF1E6
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C237DF1E5
 	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 13:01:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyWN8-00059J-VX; Thu, 02 Nov 2023 08:00:27 -0400
+	id 1qyWO1-0005gM-Ll; Thu, 02 Nov 2023 08:01:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qyWMw-000567-AH
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:00:14 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qyWMq-0004pK-PP
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:00:14 -0400
-Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:88b:0:640:d9e4:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 184E761C16;
- Thu,  2 Nov 2023 15:00:04 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8005::1:a] (unknown
- [2a02:6b8:b081:8005::1:a])
- by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 20WUYM5OdW20-gWRYnCeu; Thu, 02 Nov 2023 15:00:03 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1698926403;
- bh=1AX98m8z+gRt1dJg6otmmLlfI+XZ3b+watOzdOSgJ1s=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=vnawbDrXy+PWO9TKBDGHgWTH7kQpIKCgu4VrIBs0mYCsNC1UO0Lg2sXr7kgF+DsJK
- mgWy+wY5AM+R1dhML1SeguPjo1mrfMvWurEZLXcu8OTC4g3IRk+03/ynyjFF2A+LHa
- LE8+Gt9mK2taHIMuGE34bpthrvJG2PCf6SqTTq/k=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <d69f0aeb-303a-4721-b25b-52a08b8cd63f@yandex-team.ru>
-Date: Thu, 2 Nov 2023 15:00:01 +0300
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qyWNl-0005Vg-M2
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:01:07 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qyWNi-000567-Fl
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 08:01:04 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2c4fdf94666so11147931fa.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 05:01:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698926459; x=1699531259;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=owRR1/WmNiNh8kfqUtaMfSvZwJFYaQ28xuyjQ4uAfqU=;
+ b=PVXde1zOYhDC3Dz2eDVKcjBM+tMSOssU73CZ0M9fcf1usApXklaYwF/r0upXaOyStv
+ wlvcaXrhFt10SMBibwhIJ8RrNojofCm3qHyyAHG6soQX49vH9DUVJIjR7DqAAz2/mOt/
+ tWAwuiIfbzPsVw9YqUAIndxJFGBf8KwXqe1CHGBWqqkn+mdswKHmARjvzIL5N6F2EBd1
+ ZcMiIfruBrem2nKekWmYfPZH3W3dJNqIosij2AEzae1+lXpPBaUHgAicC+NZJLhtsC6t
+ Mhb1Qld4tf4FqEKvYQHYuHRtL+5lZmW6+MdboP8NO2ZwYJmDmjnRUhdfyQZWVhexsyhc
+ HzTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698926459; x=1699531259;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=owRR1/WmNiNh8kfqUtaMfSvZwJFYaQ28xuyjQ4uAfqU=;
+ b=sYFZFepUGLoW08u34lFXkTXUaasOBI+2aVlEkDVe+skbbksvwrsMIB2fLT5U0W8M2U
+ mmMFtvDKu+sqJqGCRJjCecCp0EAn29g6vSnhUyDHfrz0S5u31sWECxF7lNg4J5x7CE08
+ suGfIEImIbvlxjo4M9vTVB6foRRcYjxnR/T2Plzx6Gh+BtPiA+KZXEVCIt80jAxEpx6p
+ EMiSYoQh6VoZo0OygPSvvPQjRineFym4d2kE4I1r984Z7OUCHpg1uiIyRTPovJLXLDsg
+ HjApMT5ov/NAo0CawKVC+phMKrKf4UHoYJh+sexhpAiAXgBGrcWmX3mHKl/Y2nSWVdaR
+ jSog==
+X-Gm-Message-State: AOJu0YyeoUSqv4AqUT28YqCKOV3j4hWPzwmHtEmUxIfpTTPwMH4Osi9W
+ A1C6g8hF9WWSf7tH5IlQphMBScWdzuABTnSFSa3Sqg==
+X-Google-Smtp-Source: AGHT+IF0vDanModCEa3HUB6OtCRy6XdDjdJYKvW2tQ/kiTt5RJO/7eufMo2BoW6uyzvbWciA37Mo0G6jpBbzaXsVC9k=
+X-Received: by 2002:a05:651c:333:b0:2c5:1542:57e4 with SMTP id
+ b19-20020a05651c033300b002c5154257e4mr13684955ljp.31.1698926458794; Thu, 02
+ Nov 2023 05:00:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/4] pci hotplug tracking
-Content-Language: en-US
+References: <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
+ <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
+ <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
+ <20231101023805-mutt-send-email-mst@kernel.org>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+ <20231101050838-mutt-send-email-mst@kernel.org>
+ <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+ <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
+ <20231102053202-mutt-send-email-mst@kernel.org>
+ <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
+ <20231102072540-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231102072540-mutt-send-email-mst@kernel.org>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Thu, 2 Nov 2023 14:00:46 +0200
+Message-ID: <CAOEp5OdEudOFXuitG2NSBfuCQiwFJ72rYZsyvLFRfKR4kQvTDg@mail.gmail.com>
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
 To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- eduardo@habkost.net, berrange@redhat.com, pbonzini@redhat.com,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, den-plotnikov@yandex-team.ru,
- yc-core@yandex-team.ru, Peter Krempa <pkrempa@redhat.com>,
- nshirokovskiy@openvz.org, devel@lists.libvirt.org
-References: <20231005092926.56231-1-vsementsov@yandex-team.ru>
- <20231102072800-mutt-send-email-mst@kernel.org>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20231102072800-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>
+Content-Type: multipart/alternative; boundary="000000000000138ae406092a2411"
+Received-SPF: none client-ip=2a00:1450:4864:20::230;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -79,78 +97,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02.11.23 14:31, Michael S. Tsirkin wrote:
-> On Thu, Oct 05, 2023 at 12:29:22PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> Hi all!
->>
->> Main thing this series does is DEVICE_ON event - a counter-part to
->> DEVICE_DELETED. A guest-driven event that device is powered-on.
->> Details are in patch 2. The new event is paried with corresponding
->> command query-hotplug.
-> 
-> Several things questionable here:
-> 1. depending on guest activity you can get as many
->     DEVICE_ON events as you like
+--000000000000138ae406092a2411
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-No, I've made it so it may be sent only once per device
+On Thu, Nov 2, 2023 at 1:26=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
+wrote:
 
-> 2. it's just for shpc and native pcie - things are
->     confusing enough for management, we should make sure
->     it can work for all devices
+> On Thu, Nov 02, 2023 at 12:20:39PM +0200, Yuri Benditovich wrote:
+> >
+> >
+> > On Thu, Nov 2, 2023 at 11:33=E2=80=AFAM Michael S. Tsirkin <mst@redhat.=
+com>
+> wrote:
+> >
+> >     On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri Benditovich wrote:
+> >     > Probably we mix two different patches in this discussion.
+> >     > Focusing on the patch in the e-mail header:
+> >     >
+> >     > IMO it is not acceptable to fail QEMU run for one feature that we
+> can't
+> >     make
+> >     > active when we silently drop all other features in such a case.
+> >
+> >     If the feature is off by default then it seems more reasonable
+> >     and silent masking can be seen as a bug.
+> >     Most virtio features are on by default this is why it's
+> >     reasonable to mask them.
+> >
+> >
+> >
+> > If we are talking about RSS: setting it initially off is the developmen=
+t
+> time
+> > decision.
+> > When it will be completely stable there is no reason to keep it off by
+> default,
+> > so this is more a question of time and of a readiness of libvirt.
+>
+> Well when we flip the default we'll need compat machinery for sure ;)
+>
 
-Agree, I'm thinking about it
+Of course, on the flip or default we'll need to keep compatibility to
+earlier machine types.
+But, because in the perspective it makes sense to make the RSS is on by
+default, I do not think we need _now_ to make qemu fail to start if the
+ebpf can't be loaded.
 
-> 3. what about non hotpluggable devices? do we want the event for them?
-> 
 
-I think, yes, especially if we make async=true|false flag for device_add, so that successful device_add must be always followed by DEVICE_ON - like device_del is followed by DEVICE_DELETED.
+>
+> --
+> MST
+>
+>
 
-Maybe, to generalize, it should be called not DEVICE_ON (which mostly relate to hotplug controller statuses) but DEVICE_ADDED - a full counterpart for DEVICE_DELETED.
+--000000000000138ae406092a2411
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> I feel this needs actual motivation so we can judge what's the
-> right way to do it.
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Nov 2, 2023 at 1:26=E2=80=AFP=
+M Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com">mst@redhat.com</=
+a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0p=
+x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On=
+ Thu, Nov 02, 2023 at 12:20:39PM +0200, Yuri Benditovich wrote:<br>
+&gt; <br>
+&gt; <br>
+&gt; On Thu, Nov 2, 2023 at 11:33=E2=80=AFAM Michael S. Tsirkin &lt;<a href=
+=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.com</a>&gt; wrote:<=
+br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri Bend=
+itovich wrote:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Probably we mix two different patches in this =
+discussion.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Focusing on the patch in the e-mail header:<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; IMO it is not acceptable to fail QEMU run for =
+one feature that we can&#39;t<br>
+&gt;=C2=A0 =C2=A0 =C2=A0make<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; active when we silently drop all other feature=
+s in such a case.<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0If the feature is off by default then it seems more=
+ reasonable<br>
+&gt;=C2=A0 =C2=A0 =C2=A0and silent masking can be seen as a bug.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Most virtio features are on by default this is why =
+it&#39;s<br>
+&gt;=C2=A0 =C2=A0 =C2=A0reasonable to mask them.<br>
+&gt; <br>
+&gt; <br>
+&gt; <br>
+&gt; If we are talking about RSS: setting it initially off is the developme=
+nt time<br>
+&gt; decision.=C2=A0<br>
+&gt; When it will be completely stable there is no reason to keep it off by=
+ default,<br>
+&gt; so this is more a question of time and of a readiness of libvirt.=C2=
+=A0<br>
+<br>
+Well when we flip the default we&#39;ll need compat machinery for sure ;)<b=
+r></blockquote><div><br></div><div>Of course, on the flip or default we&#39=
+;ll need to keep compatibility to earlier machine types.</div><div>But, bec=
+ause in the perspective it makes sense to make the RSS is on by default, I =
+do not think we need _now_ to make qemu fail to start if the ebpf can&#39;t=
+ be loaded.</div><div>=C2=A0<br></div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">
+<br>
+-- <br>
+MST<br>
+<br>
+</blockquote></div></div>
 
-My first motivation for this series was the fact that successful device_add doesn't guarantee that hard disk successfully hotplugged to the guest. It relates to some problems with shpc/pcie hotplug we had in the past, and they are mostly fixed. But still, for management tool it's good to understand that all actions related to hotplug controller are done and we have "green light".
-
-Recently new motivation come, as I described in my "ping" letter <6bd19a07-5224-464d-b54d-1d738f5ba8f7@yandex-team.ru>, that we have a performance degradation because of 7bed89958bfbf40df, which introduces drain_call_rcu() in device_add, to make it more synchronous. So, my suggestion is make it instead more asynchronous (probably with special flag) and rely on DEVICE_ON event.
-
-> 
-> 
->>
->> v8:
->>   - improve naming, wording and style
->>   - make new QMP interface experimental
->>
->>
->> Vladimir Sementsov-Ogievskiy (4):
->>    qapi/qdev.json: unite DEVICE_* event data into single structure
->>    qapi: add DEVICE_ON and query-hotplug infrastructure
->>    shpc: implement DEVICE_ON event and query-hotplug
->>    pcie: implement DEVICE_ON event and query-hotplug
->>
->>   hw/core/hotplug.c               |  12 +++
->>   hw/pci-bridge/pci_bridge_dev.c  |  14 +++
->>   hw/pci-bridge/pcie_pci_bridge.c |   1 +
->>   hw/pci/pcie.c                   |  83 +++++++++++++++
->>   hw/pci/pcie_port.c              |   1 +
->>   hw/pci/shpc.c                   |  86 +++++++++++++++
->>   include/hw/hotplug.h            |  11 ++
->>   include/hw/pci/pci_bridge.h     |   2 +
->>   include/hw/pci/pcie.h           |   2 +
->>   include/hw/pci/shpc.h           |   2 +
->>   include/hw/qdev-core.h          |   7 ++
->>   include/monitor/qdev.h          |   6 ++
->>   qapi/qdev.json                  | 178 +++++++++++++++++++++++++++++---
->>   softmmu/qdev-monitor.c          |  58 +++++++++++
->>   14 files changed, 451 insertions(+), 12 deletions(-)
->>
->> -- 
->> 2.34.1
-> 
-
--- 
-Best regards,
-Vladimir
-
+--000000000000138ae406092a2411--
 
