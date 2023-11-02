@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856D27DEBB4
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 05:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D55577DEBEF
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 05:38:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyP6K-00020x-3X; Thu, 02 Nov 2023 00:14:36 -0400
+	id 1qyPSG-00073y-SK; Thu, 02 Nov 2023 00:37:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyP6F-00020b-R7
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:14:31 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyP6D-0006Rc-By
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:14:31 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c9b7c234a7so4242695ad.3
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 21:14:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698898468; x=1699503268; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=B67XhsM6szQCsiwbo0t/UrspcEy05/rlvNMPecuSUok=;
- b=ThfYVIYTtYU1v8AXfPljnlbSbO60pSmdTDqboskGg3WfNkZdEVgSK8vM/zvZoWFMOh
- 2fVvTffSgUylK5GeIfU9JgZGBJCogo1dFRiJRmeku0fBmSGBq6aVsVX7A7P/SoRVtoj6
- C4Hpl7+wFbgh7rkg9okghLGzIujODvxqYuEu1qHv2vKCgdqH5474V4VdFnGC8dfcruiz
- pBFWyrnOjginXu7543feA1yg7TzJYydBBF8ldB6qJG79tTdpa6Dw8kCD7DB2q0JiNQx1
- 9UmvUdrDoORjY35WnZDLiLLctuRpGizJOM8XbQh9MMNZb0dCuQc7V8UCbcb/g1ZKun0w
- kFBA==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qyPSF-00073p-9W
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:37:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qyPSC-000092-Uu
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 00:37:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698899831;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iukaMYfmqPA/rxx89fEB9cgg1TUol1/dtw4GDa+7DkY=;
+ b=abOiDU65e3GoPhLVAWJEfcgKZdch3h9qjmmyD7n6hHhLH+VL7S3jTtJch7Jma6ORDHz2ON
+ Obls+PHf67qmTMia8PsYyBRscJ1jLY0LNRKLUuy3JIZXIOlYkKF37HgOWzRlH7WSpbizYy
+ QwgGNTETDFi5a1JTny1Dvi5jZSVLrT8=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-AL3uX_rsNTKRSUucr9FMSA-1; Thu, 02 Nov 2023 00:37:09 -0400
+X-MC-Unique: AL3uX_rsNTKRSUucr9FMSA-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-66fe14725aeso6296636d6.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 21:37:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698898468; x=1699503268;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=B67XhsM6szQCsiwbo0t/UrspcEy05/rlvNMPecuSUok=;
- b=wycD/Tuy0j8NwDpVuAf/HRBiCMZMF1TXp7IA5HVJTTKgS4LQSbCjbowilPrD70J0Wx
- KR7GGvyClAD+MPuryu1vO9iDQ6FUVZzWVHn/7uXxb6mE9L4mv8HKwnl01kmuLTy1mvfQ
- +Rx2PsLrZW+VKhJW9oqUm164ZLaLI7I8Nv458jM6EJu54UmPbA6Xs+7YSytDtLAPgb93
- sYlMCil/jIfhyTvbzAkybH4hfb4Hwguh8btb6gbU8+W4wbHWShMHp9GwT3VgV7L1Y5vn
- 3r+XjkqOQ2jhMFGhKygSQKJcSrk+fKC1mhGZ1nIp2j9t0v1a8kvMw2jrQghD9UO39H5R
- wVyg==
-X-Gm-Message-State: AOJu0Yyuw5EbrJaOTGA0lgUylsYLFGaSKWJfU+ABlKpXYrFnLnZUhKdv
- aYiEh3AY4wJ3jEZuIlTWuLxIUg==
-X-Google-Smtp-Source: AGHT+IG7Xmj8VcSBnFHt6oXXJeJBWrMAihEvgQMNr8V78hrpILTP6A/1A2TrUd8fQyYoaPL/d3QExg==
-X-Received: by 2002:a17:902:e0c5:b0:1c8:8f5f:b610 with SMTP id
- e5-20020a170902e0c500b001c88f5fb610mr15095258pla.13.1698898467852; 
- Wed, 01 Nov 2023 21:14:27 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- jk5-20020a170903330500b001c61e628e9dsm2029348plb.77.2023.11.01.21.14.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Nov 2023 21:14:27 -0700 (PDT)
-Message-ID: <3ee2adaa-3ea3-4ce0-ba77-32bbf64a4a33@linaro.org>
-Date: Wed, 1 Nov 2023 21:14:25 -0700
+ d=1e100.net; s=20230601; t=1698899829; x=1699504629;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iukaMYfmqPA/rxx89fEB9cgg1TUol1/dtw4GDa+7DkY=;
+ b=FmXLpC5WvlN8/mrQh4pzumHjyG5G0H3DcmXt8559LDAo9eYinJJ4l9cZF9L2dnX/fx
+ bLBDTMgDhsHuKeXTlWD6bhYeUTcTAExwXH53FTCWkizKvIWucpZb3JpZ+EfhM07So4nl
+ pi3KCX8nI4/eCTFotbS9iQ4TIb8cyNgKhWxQLhc+PiKq680sBKqkfEld6t7xnT95m5LG
+ W2U6TgDHEnFqrT8RDx8PGuQF3klIp4rRUjC0oVk9Ar/Kiy+w/7MghHKly3WK+97Y/SLc
+ SzVCrN9/aoiQWnMySc0OaMZTHqVAM0ctdtLsb50iiGIfj8uw9P2cgBYqbi9qOFyeaT1k
+ 0Pmg==
+X-Gm-Message-State: AOJu0YyuKcS8tkhgGfWIzeUioQ4MmAxTvv6ZZ/Qg0m1m+00+dmcF4Bjw
+ qmsgTAo6by6V2ErGPbDhEhpTF/4UPp2d/Gjf+2Q9rF+nqv5IFFMFHaJc2ibwzxVux1/uvHGSsJX
+ JP19gHJwruyqYtHJai3Oiz2ovgJp6gCA=
+X-Received: by 2002:a05:6214:21aa:b0:66d:12c7:bf85 with SMTP id
+ t10-20020a05621421aa00b0066d12c7bf85mr22496631qvc.31.1698899829068; 
+ Wed, 01 Nov 2023 21:37:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYso8L6Zm38Nfu7wl9+PZECxvsvdakzJgWSgW5vXd1ec1y9ofNlPRGYhClFVcboRXjtazWLGWZRvAQ550dvpg=
+X-Received: by 2002:a05:6214:21aa:b0:66d:12c7:bf85 with SMTP id
+ t10-20020a05621421aa00b0066d12c7bf85mr22496618qvc.31.1698899828826; Wed, 01
+ Nov 2023 21:37:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 25/33] machine: Constify
- MachineClass::valid_cpu_types[i]
-Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-References: <20231102002500.1750692-1-gshan@redhat.com>
- <20231102002500.1750692-26-gshan@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231102002500.1750692-26-gshan@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20231019143455.2377694-1-eperezma@redhat.com>
+In-Reply-To: <20231019143455.2377694-1-eperezma@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 2 Nov 2023 12:36:56 +0800
+Message-ID: <CACGkMEtxkdg6-Dv1Qm2vd__PENMtg5hrekjXLa0kFhcz2XRdzQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/18] Map memory at destination .load_setup in
+ vDPA-net migration
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Shannon <shannon.nelson@amd.com>, 
+ Parav Pandit <parav@mellanox.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, yin31149@gmail.com,
+ Yajun Wu <yajunw@nvidia.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, Juan Quintela <quintela@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, si-wei.liu@oracle.com, 
+ Gautam Dawar <gdawar@xilinx.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,20 +102,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/23 17:24, Gavin Shan wrote:
-> Constify MachineClass::valid_cpu_types[i], as suggested by Richard
-> Henderson.
-> 
-> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/m68k/q800.c      | 2 +-
->   include/hw/boards.h | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
+On Thu, Oct 19, 2023 at 10:35=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redha=
+t.com> wrote:
+>
+> Current memory operations like pinning may take a lot of time at the
+> destination.  Currently they are done after the source of the migration i=
+s
+> stopped, and before the workload is resumed at the destination.  This is =
+a
+> period where neigher traffic can flow, nor the VM workload can continue
+> (downtime).
+>
+> We can do better as we know the memory layout of the guest RAM at the
+> destination from the moment the migration starts.  Moving that operation =
+allows
+> QEMU to communicate the kernel the maps while the workload is still runni=
+ng in
+> the source, so Linux can start mapping them.  Ideally, all IOMMU is confi=
+gured,
+> but if the vDPA parent driver uses on-chip IOMMU and .set_map we're still
+> saving all the pinning time.
+>
+> Note that further devices setup at the end of the migration may alter the=
+ guest
+> memory layout. But same as the previous point, many operations are still =
+done
+> incrementally, like memory pinning, so we're saving time anyway.
+>
+> The first bunch of patches just reorganizes the code, so memory related
+> operation parameters are shared between all vhost_vdpa devices.  This is
+> because the destination does not know what vhost_vdpa struct will have th=
+e
+> registered listener member, so it is easier to place them in a shared str=
+uct
+> rather to keep them in vhost_vdpa struct.  Future version may squash or o=
+mit
+> these patches.
+>
+> Only tested with vdpa_sim. I'm sending this before full benchmark, as som=
+e work
+> like [1] can be based on it, and Si-Wei agreed on benchmark this series w=
+ith
+> his experience.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I'd expect we can see some improvement even without other
+optimizations? For example, do we see improvement on mlx5?
 
+(Or we can probably add some delay to the simulator to see)
 
-r~
+Thanks
+
+>
+> Future directions on top of this series may include:
+> * Iterative migration of virtio-net devices, as it may reduce downtime pe=
+r [1].
+>   vhost-vdpa net can apply the configuration through CVQ in the destinati=
+on
+>   while the source is still migrating.
+> * Move more things ahead of migration time, like DRIVER_OK.
+> * Check that the devices of the destination are valid, and cancel the mig=
+ration
+>   in case it is not.
+>
+> [1] https://lore.kernel.org/qemu-devel/6c8ebb97-d546-3f1c-4cdd-54e23a566f=
+61@nvidia.com/T/
+>
+> Eugenio P=C3=A9rez (18):
+>   vdpa: add VhostVDPAShared
+>   vdpa: move iova tree to the shared struct
+>   vdpa: move iova_range to vhost_vdpa_shared
+>   vdpa: move shadow_data to vhost_vdpa_shared
+>   vdpa: use vdpa shared for tracing
+>   vdpa: move file descriptor to vhost_vdpa_shared
+>   vdpa: move iotlb_batch_begin_sent to vhost_vdpa_shared
+>   vdpa: move backend_cap to vhost_vdpa_shared
+>   vdpa: remove msg type of vhost_vdpa
+>   vdpa: move iommu_list to vhost_vdpa_shared
+>   vdpa: use VhostVDPAShared in vdpa_dma_map and unmap
+>   vdpa: use dev_shared in vdpa_iommu
+>   vdpa: move memory listener to vhost_vdpa_shared
+>   vdpa: do not set virtio status bits if unneeded
+>   vdpa: add vhost_vdpa_load_setup
+>   vdpa: add vhost_vdpa_net_load_setup NetClient callback
+>   vdpa: use shadow_data instead of first device v->shadow_vqs_enabled
+>   virtio_net: register incremental migration handlers
+>
+>  include/hw/virtio/vhost-vdpa.h |  43 +++++---
+>  include/net/net.h              |   4 +
+>  hw/net/virtio-net.c            |  23 +++++
+>  hw/virtio/vdpa-dev.c           |   7 +-
+>  hw/virtio/vhost-vdpa.c         | 183 ++++++++++++++++++---------------
+>  net/vhost-vdpa.c               | 127 ++++++++++++-----------
+>  hw/virtio/trace-events         |  14 +--
+>  7 files changed, 239 insertions(+), 162 deletions(-)
+>
+> --
+> 2.39.3
+>
+>
+
 
