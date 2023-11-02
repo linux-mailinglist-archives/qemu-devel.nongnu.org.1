@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890107DEA5C
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:46:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E55567DEA6C
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:51:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMed-0007ID-Sm; Wed, 01 Nov 2023 21:37:52 -0400
+	id 1qyMeV-00076f-CF; Wed, 01 Nov 2023 21:37:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMeO-0006Tx-Bo
+ id 1qyMeO-0006U5-D8
  for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:36 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMeM-0004LL-5x
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:35 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3b2e73a17a0so264556b6e.3
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:37:31 -0700 (PDT)
+ id 1qyMeM-0004MV-67
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:36 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3b2f28caab9so262958b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:37:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698889050; x=1699493850; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698889051; x=1699493851; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DfcfvCM44CNzCfVh5n1nc5lCu8ey+5nlcTa0SEohSWE=;
- b=WYyz7KrfjSySDJKYHhmvszBxmjRGUWdVJpin12zZcTw1JZpq12y/O6yqPnfqwxOPRG
- j4VHGlK66aarJ7uWUheEppCcY3Jj3ylaw7lVMs1vBWqD6BkcZ0DXAECI7xwlyJKTUaq+
- q9zmf+iVCBuYZNcf+9cst6a4C/vnzH8b00tQV891kRNOTptJ96dAH5e0WzrsVFRD+yXD
- UV/EgxQs4z7j1WQuIKOoTNLZh2oOrU+hwXXtlUkEBSLoj+JS7nx8DmprR3AgbKvS+weD
- q5UebbIEV34yWQ4WgRmJlLN22nPhjp3OvoSsjRZRwIGdUc+7VFVeT8bKB5nRtVgkUQZK
- 39wA==
+ bh=LIgodu9H6MNqcm2FpnHbkFw215Q/P+nlqcEfUhnn984=;
+ b=n2mceh4asuF27q/XfGBMLcAaZTPockRpNdCAXXKJR+S5GnF8DFiPUBorrYzTgspWI3
+ igH0OI/xqE0dzNNw9o2Bnd5r2MsPCgYy0z/2NhzmYJP1jRQhUdHg1oUP+mzu+fWrMhU8
+ kcjl48Qtq1/q4+7kRXTngJJPKjZoZuQsJayMPEQQR87r0T9mN6JUiQDJTyHC5E4XBaS1
+ U70YONDs2qo0+J3RK/JHv9kODodHhT8sJFesRs9ujPMR1EIIjeHzEelWfd1qSC7rhmUN
+ cwj2IZgaUJDeyOfcafvDds8O4h1eKAklI29TZfoYI0zoV1iPp7lWXgy+YyqBOoUtRQiG
+ JiJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698889050; x=1699493850;
+ d=1e100.net; s=20230601; t=1698889051; x=1699493851;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DfcfvCM44CNzCfVh5n1nc5lCu8ey+5nlcTa0SEohSWE=;
- b=bouZ9UKUeWQMADheGZf3Ffvwc0A3GV3n9XhUN89XswWO0pbddeDJegwHN5RlAyD+VC
- pNbobNuupjJlrSfiBB6GhGcp39++Xj+uVQ2UMN+aSZIW9Gsahr1eJ2XDzM56LavIQKN2
- tOhhfW8go3WisjuWRPNkZTtIipmvAqW+ws40qi3meZvoXPa7V/KQCKBmn49Yd6k+a8RG
- keF5MrYDrUQLSGiHELOjCgKKv9lcmyZZ/uNNbggTeR6F08Z5cqCZ9aUtWvRpmj5gkfoY
- qV9C0NVvHzrb5RdoSaIxOKoXEla6uDBsUsGiOl0g/Dw7A7rzDWoHkDdUX5Yu0IcyKGhz
- UD2w==
-X-Gm-Message-State: AOJu0Yx+UbUoFGCapu99N0RPEUhOUv7KviVR6UYDnPKey6ty28suim26
- m6XtRzHdInyQmVBO1d7VARLg8XAK8fbpWIEFfMY=
-X-Google-Smtp-Source: AGHT+IGjnKopjkcgyE2IXiMlOGakYEDXL1E+sjV93ePvpyF8LbJfuILKjnTMM12qr9BwQFxE0X4D0A==
-X-Received: by 2002:a05:6808:1790:b0:3b2:f54b:8b45 with SMTP id
- bg16-20020a056808179000b003b2f54b8b45mr23159348oib.40.1698889050483; 
- Wed, 01 Nov 2023 18:37:30 -0700 (PDT)
+ bh=LIgodu9H6MNqcm2FpnHbkFw215Q/P+nlqcEfUhnn984=;
+ b=Nv6m3TUIJsbSWn3LCex/5HGVcKsArdnqAJiKgInsedQMWDgW2F/SGZaA0rYtCW+4ZE
+ aEzlstNi6MvYYeX/Ys2P2+PqQ/PJjQuIPYKIH99gXaNjMGP8rZ6kdHYdD3adqadZ7/ey
+ VjBgLlWgHqa1dqcTEkg4W+UKH+Pd7AmjTayG4s7ZTgPTBFAbSyUTHL6POpKghY8QHOw0
+ 2KD+L+Eyia5q5jHXGfjS0SBVCIjjIDdSvznx2hF4MppiSEl7ooMEkPDAfsebB7MA6Ql4
+ nlpP6FpKIeOf5jpuWn+L/qE6ic4FP29p6+0pI2edNTrmihTtxzopWM0alduv3i3CdY1Q
+ LKBQ==
+X-Gm-Message-State: AOJu0YzWlF4Wr/rdiy+HDO6ClPGIXEHVtZjkBt1h9S0Ui/87i4/lXGLj
+ UwnbMtlcSCdRz8GiZ07s+9CAI+RoZNvayvlMSz0=
+X-Google-Smtp-Source: AGHT+IFAgYtEP8tWL6mzdIhgFd5IkmuUa7A0E4/rwAU4QCQ4grivv+N27Xst0NzZXm10e35FvFo3Xw==
+X-Received: by 2002:a05:6808:10c8:b0:3ae:251b:5552 with SMTP id
+ s8-20020a05680810c800b003ae251b5552mr23179902ois.12.1698889051341; 
+ Wed, 01 Nov 2023 18:37:31 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- v20-20020aa78514000000b006934e7ceb79sm1800230pfn.32.2023.11.01.18.37.29
+ v20-20020aa78514000000b006934e7ceb79sm1800230pfn.32.2023.11.01.18.37.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 01 Nov 2023 18:37:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 86/88] hw/hppa: Turn on 64-bit CPU for C3700 machine
-Date: Wed,  1 Nov 2023 18:30:14 -0700
-Message-Id: <20231102013016.369010-87-richard.henderson@linaro.org>
+Subject: [PATCH v3 87/88] hw/hppa: Allow C3700 with 64-bit and B160L with
+ 32-bit CPU only
+Date: Wed,  1 Nov 2023 18:30:15 -0700
+Message-Id: <20231102013016.369010-88-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,21 +93,81 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
+Prevent that users try to boot a 64-bit only C3700 machine with a 32-bit
+CPU, and to boot a 32-bit only B160L machine with a 64-bit CPU.
+
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/machine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/hppa/machine.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 43c7afb89d..da9ca85806 100644
+index da9ca85806..a3222d3a96 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -696,7 +696,7 @@ static void HP_C3700_machine_init_class_init(ObjectClass *oc, void *data)
-     NMIClass *nc = NMI_CLASS(oc);
+@@ -528,6 +528,12 @@ static void machine_HP_B160L_init(MachineState *machine)
+     /* Create CPUs and RAM.  */
+     translate = machine_HP_common_init_cpus(machine);
+ 
++    if (hppa_is_pa20(&cpu[0]->env)) {
++        error_report("The HP B160L workstation requires a 32-bit "
++                     "CPU. Use '-machine C3700' instead.");
++        exit(1);
++    }
++
+     /* Init Lasi chip */
+     lasi_dev = DEVICE(lasi_init());
+     memory_region_add_subregion(addr_space, translate(NULL, LASI_HPA),
+@@ -602,6 +608,12 @@ static void machine_HP_C3700_init(MachineState *machine)
+     /* Create CPUs and RAM.  */
+     translate = machine_HP_common_init_cpus(machine);
+ 
++    if (!hppa_is_pa20(&cpu[0]->env)) {
++        error_report("The HP C3000 workstation requires a 64-bit CPU. "
++                     "Use '-machine B160L' instead.");
++        exit(1);
++    }
++
+     /* Init Astro and the Elroys (PCI host bus chips).  */
+     astro = astro_init();
+     astro_dev = DEVICE(astro);
+@@ -659,6 +671,11 @@ static void hppa_nmi(NMIState *n, int cpu_index, Error **errp)
+     }
+ }
+ 
++static const char *HP_B160L_machine_valid_cpu_types[] = {
++    TYPE_HPPA_CPU,
++    NULL
++};
++
+ static void HP_B160L_machine_init_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -666,6 +683,7 @@ static void HP_B160L_machine_init_class_init(ObjectClass *oc, void *data)
+ 
+     mc->desc = "HP B160L workstation";
+     mc->default_cpu_type = TYPE_HPPA_CPU;
++    mc->valid_cpu_types = HP_B160L_machine_valid_cpu_types;
+     mc->init = machine_HP_B160L_init;
+     mc->reset = hppa_machine_reset;
+     mc->block_default_type = IF_SCSI;
+@@ -690,6 +708,11 @@ static const TypeInfo HP_B160L_machine_init_typeinfo = {
+     },
+ };
+ 
++static const char *HP_C3700_machine_valid_cpu_types[] = {
++    TYPE_HPPA64_CPU,
++    NULL
++};
++
+ static void HP_C3700_machine_init_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -697,6 +720,7 @@ static void HP_C3700_machine_init_class_init(ObjectClass *oc, void *data)
  
      mc->desc = "HP C3700 workstation";
--    mc->default_cpu_type = TYPE_HPPA_CPU;
-+    mc->default_cpu_type = TYPE_HPPA64_CPU;
+     mc->default_cpu_type = TYPE_HPPA64_CPU;
++    mc->valid_cpu_types = HP_C3700_machine_valid_cpu_types;
      mc->init = machine_HP_C3700_init;
      mc->reset = hppa_machine_reset;
      mc->block_default_type = IF_SCSI;
