@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A087DE958
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB007DE968
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:35:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyLZx-0003fy-Km; Wed, 01 Nov 2023 20:28:59 -0400
+	id 1qyLa9-0004Td-KN; Wed, 01 Nov 2023 20:29:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLZM-0003XL-5t
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:28:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLZT-0003jl-7z
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:28:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLZ7-0000ot-TX
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:28:19 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLZQ-0000sB-UL
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:28:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698884885;
+ s=mimecast20190719; t=1698884904;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PrUX3yxd9o5Wuqpgcczi/QtyifvLap04IdKHsDXgIqc=;
- b=JF+qjOCmBH84Afi7RqdL91Z0zbCpshlL0nSe9/z/nS0ncbFenrMd1Rucji75xH77gKDNyG
- d51j6+XqKlGtIunJjfD0AteRwAa8sGteRWBq2cPc26Sq/6CLcuOEsPn3FMYJiU3pOwj2b9
- 0OxAE923KRkmKWh3fZOuWUNfDELQL6o=
+ bh=VPhNran2hoBlFXd40/qPL20xEjS68JH/z9aQRfZaeHE=;
+ b=EOmGSJMjjlf9P5rL3LCHsG3utRKLr3qA1VI0Zb9ZjYIcl6rzGsGx/0u7+crRvwgvVw8gp9
+ Bd+EJHUytBkrtbbEuWDr5OTvpA8wx9touACJkgBm8k+0oaRuTAHkk1IXxGCtRBDzOs0iaV
+ 8t6mfSH5DmY0zufvJst8CaHNtRJllzU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-S1PvUwghNU62hutWkqrH-Q-1; Wed, 01 Nov 2023 20:28:03 -0400
-X-MC-Unique: S1PvUwghNU62hutWkqrH-Q-1
+ us-mta-282-QojiIemmMm2So50hgj4d9w-1; Wed, 01 Nov 2023 20:28:18 -0400
+X-MC-Unique: QojiIemmMm2So50hgj4d9w-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3151B85A58A;
- Thu,  2 Nov 2023 00:28:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4590D185A781;
+ Thu,  2 Nov 2023 00:28:16 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.70])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D2C3BC1290F;
- Thu,  2 Nov 2023 00:27:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B786AC1290F;
+ Thu,  2 Nov 2023 00:28:01 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,25 +62,25 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
  iii@linux.ibm.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
  shan.gavin@gmail.com
-Subject: [PATCH v4 09/33] target/hexagon: Use generic helper to show CPU model
+Subject: [PATCH v4 10/33] target/i386: Use generic helper to show CPU model
  names
-Date: Thu,  2 Nov 2023 10:24:36 +1000
-Message-ID: <20231102002500.1750692-10-gshan@redhat.com>
+Date: Thu,  2 Nov 2023 10:24:37 +1000
+Message-ID: <20231102002500.1750692-11-gshan@redhat.com>
 In-Reply-To: <20231102002500.1750692-1-gshan@redhat.com>
 References: <20231102002500.1750692-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,38 +97,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For target/hexagon, the registered CPU type name is always the
+For target/i386, the registered CPU type name is always the
 combination of the CPU model name and suffix. Use cpu_model_from_type()
-to show the CPU model names.
+to convert the CPU type name to the CPU model name.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/hexagon/cpu.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ target/i386/cpu.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index aa48f5fe89..cfff005a1a 100644
---- a/target/hexagon/cpu.c
-+++ b/target/hexagon/cpu.c
-@@ -34,13 +34,11 @@ static void hexagon_v73_cpu_init(Object *obj) { }
- 
- static void hexagon_cpu_list_entry(gpointer data, gpointer user_data)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index fc8484cb5e..f77149ed25 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1744,8 +1744,7 @@ static char *x86_cpu_class_get_model_name(X86CPUClass *cc)
  {
--    ObjectClass *oc = data;
--    char *name = g_strdup(object_class_get_name(oc));
--    if (g_str_has_suffix(name, HEXAGON_CPU_TYPE_SUFFIX)) {
--        name[strlen(name) - strlen(HEXAGON_CPU_TYPE_SUFFIX)] = '\0';
--    }
--    qemu_printf("  %s\n", name);
--    g_free(name);
-+    const char *typename = object_class_get_name(OBJECT_CLASS(data));
-+    char *model = cpu_model_from_type(typename);
-+
-+    qemu_printf("  %s\n", model);
-+    g_free(model);
+     const char *class_name = object_class_get_name(OBJECT_CLASS(cc));
+     assert(g_str_has_suffix(class_name, X86_CPU_TYPE_SUFFIX));
+-    return g_strndup(class_name,
+-                     strlen(class_name) - strlen(X86_CPU_TYPE_SUFFIX));
++    return cpu_model_from_type(class_name);
  }
  
- void hexagon_cpu_list(void)
+ typedef struct X86CPUVersionDefinition {
+@@ -5547,7 +5546,7 @@ static void x86_cpu_list_entry(gpointer data, gpointer user_data)
+ {
+     ObjectClass *oc = data;
+     X86CPUClass *cc = X86_CPU_CLASS(oc);
+-    g_autofree char *name = x86_cpu_class_get_model_name(cc);
++    g_autofree char *model = x86_cpu_class_get_model_name(cc);
+     g_autofree char *desc = g_strdup(cc->model_description);
+     g_autofree char *alias_of = x86_cpu_class_get_alias_of(cc);
+     g_autofree char *model_id = x86_cpu_class_get_model_id(cc);
+@@ -5571,7 +5570,7 @@ static void x86_cpu_list_entry(gpointer data, gpointer user_data)
+         desc = g_strdup_printf("%s (deprecated)", olddesc);
+     }
+ 
+-    qemu_printf("x86 %-20s  %s\n", name, desc);
++    qemu_printf("x86 %-20s  %s\n", model, desc);
+ }
+ 
+ /* list available CPU models and flags */
 -- 
 2.41.0
 
