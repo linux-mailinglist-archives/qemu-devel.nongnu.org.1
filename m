@@ -2,85 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4463D7DEFFE
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:31:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3297DF002
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:31:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyUyU-0007cg-Jb; Thu, 02 Nov 2023 06:30:55 -0400
+	id 1qyUz0-0007xL-46; Thu, 02 Nov 2023 06:31:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qyUyP-0007by-Aa
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:30:49 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qyUyN-000732-NC
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:30:49 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2c6b5841f61so8623811fa.0
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 03:30:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698921046; x=1699525846; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=LWGjKF9y54CRSKpwqMxi/CKTYjPa4clxASj9U3LZ10M=;
- b=FSQ01lms5wGXbItPtTslSZQUdVXWKM9NXyaKThTbnE6e867DPSvwnH5vxdaxEyd+a4
- oWNrVjSFSIuq8ztEF1BAty2HiTYSfgoia2TXgBSKdWcjP/lSoDZYNYoD6l+OX7vZMBaO
- dpbEjjBY2uFuYM79rln7efTpXsowTk85L893O3yztC+4u3rwG4jnj8PQSa9LzLyyx77w
- g12Wn+fMlF32kOKZFcOTM/SMPnZEUF0Mnytxm2NoZUBemkUyjcWxlsBDyGKPaGwLIrBI
- VWeQ0jUuYnFbe0BEAGnrti30ATJ37LMrwRpSaOF+sbT00c0gRDRZQQ1xOWJJ0tOoXww3
- EVGQ==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyUyu-0007mX-W3
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:31:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyUyt-00078a-H1
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:31:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698921078;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=ZrDxUyHhiQDhbGr1BUJQlY8m1jW4wCYclCj/yCYXkgU=;
+ b=IoOLFrTBEbjJ3ayp+Hws2ucidW2oZ8oiHRrFztHIYbPgjAjyri4bSejOLxjR+1o2RvL2J1
+ 2+uJyhAfy1Y5kgNQxbdZM+PUWRtCkYU5c680cydQedZGi9DY1e2YFU59kWlJKMJEPq/L+x
+ nw4NT2+CkodYPDQJGmGmX3PCr0sbPZM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-cfxqD5xkPe-n5s7VrNMLzw-1; Thu, 02 Nov 2023 06:31:17 -0400
+X-MC-Unique: cfxqD5xkPe-n5s7VrNMLzw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-407da05ee50so5141825e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 03:31:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698921046; x=1699525846;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LWGjKF9y54CRSKpwqMxi/CKTYjPa4clxASj9U3LZ10M=;
- b=hfNMoe9KBKlPHjvqn9Hrmks1Pvhud7XR1Lm60iWw4qdndNWW7rQL3cVJWyQYU2WRwQ
- JSOkKDmyGmgHTeQujmODLkrh88VIlGYR7exZ3CETRcksqDf/sk0nuJrkMAKFBj8yuFoS
- DrvvsVOutgWklEBNciY3cqOcIjSXcci//0nXE8fyE7VKLoIX99GFtSq9MTt0Q1UvVEQ9
- Ca7qX2vU3BHiL2BSbS18utrsLauOgYGD2fdTA2AbrMO/MV3bqo54rmNL8ulWU0PZvglu
- k6L0uwIorDpTMGCFIb1kfwDe8ZdqjAscM9qH/i3RJ+eMow46rhrb00WMGqT8fJb+hzNf
- V4iA==
-X-Gm-Message-State: AOJu0Yzk/VJXLBYD1k+flyI2p8rwwmdLjoOMc9luyZfk8h+CxQOX+4Hr
- W9F03ZMtljzgP8k8gCoJl3bwRg==
-X-Google-Smtp-Source: AGHT+IGCaMtdmhFPvg4EK3RJFGOYKsoc08g05vzHWP+J6xRz0jEmdmzuGMWsrHOjKTCsJN6lPMFZuQ==
-X-Received: by 2002:a05:651c:19ab:b0:2bc:dd8f:ccd7 with SMTP id
- bx43-20020a05651c19ab00b002bcdd8fccd7mr3807532ljb.16.1698921045858; 
- Thu, 02 Nov 2023 03:30:45 -0700 (PDT)
-Received: from [192.168.200.206] (83.11.185.48.ipv4.supernova.orange.pl.
- [83.11.185.48]) by smtp.gmail.com with ESMTPSA id
- u10-20020a2e2e0a000000b002c02e57c72bsm420410lju.140.2023.11.02.03.30.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 03:30:45 -0700 (PDT)
-Message-ID: <053c4e5b-f446-46e9-9672-30a501d44a42@linaro.org>
-Date: Thu, 2 Nov 2023 11:30:44 +0100
+ d=1e100.net; s=20230601; t=1698921076; x=1699525876;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZrDxUyHhiQDhbGr1BUJQlY8m1jW4wCYclCj/yCYXkgU=;
+ b=fPMRtxHCTKMs+XedQ1/XkNdw5YBZl+d2W8qAt903dmIriq3z649/wq2NJlZRD4p2tm
+ TOPZgim+VuSKXgmcJloAisT5XRkuymMJFyOL5LRcQvEEq01K0J3TdRs+ZnjdnlqMagAv
+ kfA6Z+E8/s5JUgRJ5f9y3Jy3A6zNpaAOAMCkNkq6ilOf7MhxeKtbokyRNyPvINlbfjzF
+ CI/bNR6Zp8kegGc9zK1uRPIvkzw2IrbTqdVs9/mX18G/CMdInoBgK+iI2049Y8WHU0qX
+ t2A2x/97rdePkWqtMStDY6Cj2hdUNItiO+2UQcNeQwNvOaGB14cXDC4N4lVwbPaR+N9y
+ RzOg==
+X-Gm-Message-State: AOJu0YxD2rQ+7H7EbtgGV5VUE/s7aZdLPAVnlUfT/Uy6dwi0ZbdDuRf2
+ tpDWaOf5qD+oaEHZ5++9M4bwOwhHLh822ulx8GELjlVxXh5JRRv3fwCAxBt1hmgXYw4x05GPBgT
+ DDwiHZ+K/hC6rZXI=
+X-Received: by 2002:a05:600c:46cf:b0:406:52f1:7e6f with SMTP id
+ q15-20020a05600c46cf00b0040652f17e6fmr15937157wmo.12.1698921075937; 
+ Thu, 02 Nov 2023 03:31:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEerTostmGfv9ORljrCTp9h4LzwZ2maXyZe+rPiRWmMUreaUWOkKrRHDK71youPj5ohDAxfVg==
+X-Received: by 2002:a05:600c:46cf:b0:406:52f1:7e6f with SMTP id
+ q15-20020a05600c46cf00b0040652f17e6fmr15937135wmo.12.1698921075535; 
+ Thu, 02 Nov 2023 03:31:15 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ f8-20020a05600c4e8800b004068de50c64sm2429229wmq.46.2023.11.02.03.31.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Nov 2023 03:31:15 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Hyman Huang <yong.huang@smartx.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
+ <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [v3 3/6] tests: Add migration dirty-limit capability test
+In-Reply-To: <e55a302df9da7dbc00ad825f47f57c1a756d303e.1698847223.git.yong.huang@smartx.com>
+ (Hyman Huang's message of "Wed, 1 Nov 2023 22:04:06 +0800")
+References: <cover.1698847223.git.yong.huang@smartx.com>
+ <e55a302df9da7dbc00ad825f47f57c1a756d303e.1698847223.git.yong.huang@smartx.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 02 Nov 2023 11:31:14 +0100
+Message-ID: <87pm0s30r1.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ide/ahci: fix legacy software reset
-Content-Language: pl-PL, en-GB, en-HK
-To: Niklas Cassel <nks@flawful.org>, John Snow <jsnow@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Michael Tokarev <mjt@tls.msk.ru>,
- Niklas Cassel <niklas.cassel@wdc.com>
-References: <20231005095322.1133817-1-nks@flawful.org>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20231005095322.1133817-1-nks@flawful.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,59 +100,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 5.10.2023 o 11:53, Niklas Cassel pisze:
-> From: Niklas Cassel<niklas.cassel@wdc.com>
-> 
-> Legacy software contains a standard mechanism for generating a reset to a
-> Serial ATA device - setting the SRST (software reset) bit in the Device
-> Control register.
-> 
-> Serial ATA has a more robust mechanism called COMRESET, also referred to
-> as port reset. A port reset is the preferred mechanism for error
-> recovery and should be used in place of software reset.
-> 
-> Commit e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
-> improved the handling of PxCI, such that PxCI gets cleared after handling
-> a non-NCQ, or NCQ command (instead of incorrectly clearing PxCI after
-> receiving an arbitrary FIS).
-> 
-> However, simply clearing PxCI after a non-NCQ, or NCQ command, is not
-> enough, we also need to clear PxCI when receiving a SRST in the Device
-> Control register.
-> 
-> This fixes an issue for FreeBSD where the device would fail to reset.
-> The problem was not noticed in Linux, because Linux uses a COMRESET
-> instead of a legacy software reset by default.
-> 
-> Fixes: e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
-> Reported-by: Marcin Juszkiewicz<marcin.juszkiewicz@linaro.org>
-> Signed-off-by: Niklas Cassel<niklas.cassel@wdc.com>
+Hyman Huang <yong.huang@smartx.com> wrote:
+> Add migration dirty-limit capability test if kernel support
+> dirty ring.
+>
+> Migration dirty-limit capability introduce dirty limit
+> capability, two parameters: x-vcpu-dirty-limit-period and
+> vcpu-dirty-limit are introduced to implement the live
+> migration with dirty limit.
+>
+> The test case does the following things:
+> 1. start src, dst vm and enable dirty-limit capability
+> 2. start migrate and set cancel it to check if dirty limit
+>    stop working.
+> 3. restart dst vm
+> 4. start migrate and enable dirty-limit capability
+> 5. check if migration satisfy the convergence condition
+>    during pre-switchover phase.
+>
+> Note that this test case involves many passes, so it runs
+> in slow mode only.
+>
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Message-Id: <a05e931ed147696bd5924e0582db67a734547a3f.1697815117.git.yong.huang@smartx.com>
 
-Sorry, I missed that patch earlier.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-FreeBSD 14-rc3 boots fine on aarch64. Thanks!
-
-Trying to mount root from cd9660:/dev/iso9660/14_0_RC3_AARCH64_BO [ro]...
-cd0 at ahcich0 bus 0 scbus0 target 0 lun 0
-cd0: <QEMU QEMU DVD-ROM 2.5+> Removable CD-ROM SCSI device
-cd0: Serial Number QM00001
-cd0: 150.000MB/s transfers (SATA 1.x, UDMA5, ATAPI 12bytes, PIO 8192bytes)
-cd0: 347MB (177954 2048 byte sectors)
-ada0 at ahcich1 bus 0 scbus1 target 0 lun 0
-ada0: <QEMU HARDDISK 2.5+> ATA-7 SATA device
-ada0: Serial Number QM00003
-ada0: 150.000MB/s transfers (SATA 1.x, UDMA5, PIO 8192bytes)
-ada0: Command Queueing enabled
-ada0: 504MB (1032192 512 byte sectors)
-ada1 at ahcich2 bus 0 scbus2 target 0 lun 0
-ada1: <QEMU HARDDISK 2.5+> ATA-7 SATA device
-ada1: Serial Number QM00005
-ada1: 150.000MB/s transfers (SATA 1.x, UDMA5, PIO 8192bytes)
-ada1: Command Queueing enabled
-ada1: 8192MB (16777216 512 byte sectors)
-
-Tested-by: Marcin Juszkiewicz<marcin.juszkiewicz@linaro.org>
 
