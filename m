@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DB77DF13F
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE887DF187
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:44:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyVzi-0000EW-U1; Thu, 02 Nov 2023 07:36:14 -0400
+	id 1qyW4Z-0001vi-Vl; Thu, 02 Nov 2023 07:41:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qyVzg-0000EL-Qi
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:36:12 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyW4X-0001uO-RX
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qyVze-0001Su-OL
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:36:12 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyW4T-000452-N4
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:41:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698924969;
+ s=mimecast20190719; t=1698925268;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2O0rYDEJEF42OZQvPvEMiClXYnYaYD7RXT9fk5V2NAQ=;
- b=QBvJf2V7rDzkRNb9+qyO1LQUvojtTGrW0PoyxZr5422mxJUSRXy/xd8xp2jUHPYdUyevNU
- ObBvLHhbMPWKn01ynmCwgoQd74FzRAFxtQ7vqG9tMpa8APSDp/rDIlYYwx4nL3OmOtYFfR
- VQzBGBOlLWCV21XV7Qe9K4i8Y3PrI0c=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=WhT+P8/6U+nvarAERVRiWE+tWgt2ygDJenHlyXLV7rs=;
+ b=YyY8FrZhfwiSNzdqXnUVv4BtM4kkqa4I94RQZFsi2cYcDeXfeU5PjlAKcn+YC1pwq5xkSx
+ cvJ7xGgnvcwNQC9F5V5A93iIrcCQcFDFPTgBT/WZWCxuis+gN7036U+pISJpKDEq/dAQUl
+ 4xwOzw2rEQA884Q57yghNevUFG41uWE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-Jq-TxIP3M2u5ciD_Nf0ZVg-1; Thu, 02 Nov 2023 07:36:07 -0400
-X-MC-Unique: Jq-TxIP3M2u5ciD_Nf0ZVg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-507a3ae32beso755231e87.2
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 04:36:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698924966; x=1699529766;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2O0rYDEJEF42OZQvPvEMiClXYnYaYD7RXT9fk5V2NAQ=;
- b=sSw0BYVctshfaidUAT+Ak20zVvrPmah4mb9flSumRTly8v1eFpOv0NtWIlCoNRCnY1
- m0QaEpq3OKa1I+R6OiMWtuD/7Wamq++4uObb8ChMjL6dzUYJB6safZD44cwHaNBlW0dp
- KBCPXfNG7Nt3MBibWnTfxcsVM9Hf9UVUORtCPCkpeakfGJH2dKW95b6iR+RiuSdR4+AW
- CG3UhqQS6vzkR4r/BWka7Oh7q5OfhjH4TElDw5v2aFH3vG4CC2UJNsTItYfO0ukUvqJt
- ExxwFsTptvU7AOMEcrm2NU7WguZ6WsqVllNW4WNqXCTMJwFesraxl+a9Wk1Dnr46vPo+
- oI1w==
-X-Gm-Message-State: AOJu0YzpJoDke6Ae9ur6drpZrR8HjLS4BVAvHbqwzMm0jVjlvRijvuRw
- xHbeAhb1Dd9JE48NKTn5HkmVaT1el0ug53qi28sCz40sQVF3dvzFZ6A6P5yjT90g0oDVK9P02XQ
- jK6ghCrg602IlaA8=
-X-Received: by 2002:a2e:9593:0:b0:2c5:70e:734a with SMTP id
- w19-20020a2e9593000000b002c5070e734amr14508408ljh.2.1698924965891; 
- Thu, 02 Nov 2023 04:36:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+P3SGWSdUlY6wxPezRPFaWMOjk+v+SU4Yn81kXt5sTgb5GIaHizupsiaTR7yTTcT9g4joNw==
-X-Received: by 2002:a2e:9593:0:b0:2c5:70e:734a with SMTP id
- w19-20020a2e9593000000b002c5070e734amr14508378ljh.2.1698924965387; 
- Thu, 02 Nov 2023 04:36:05 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:174:efc3:a5be:5586:34a6:1108])
- by smtp.gmail.com with ESMTPSA id
- n27-20020a05600c3b9b00b003feea62440bsm2625014wms.43.2023.11.02.04.36.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 04:36:04 -0700 (PDT)
-Date: Thu, 2 Nov 2023 07:35:58 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- eduardo@habkost.net, berrange@redhat.com, pbonzini@redhat.com,
- marcel.apfelbaum@gmail.com, philmd@linaro.org,
- den-plotnikov@yandex-team.ru, yc-core@yandex-team.ru
-Subject: Re: [PATCH v8 2/4] qapi: add DEVICE_ON and query-hotplug
- infrastructure
-Message-ID: <20231102073212-mutt-send-email-mst@kernel.org>
-References: <20231005092926.56231-1-vsementsov@yandex-team.ru>
- <20231005092926.56231-3-vsementsov@yandex-team.ru>
+ us-mta-194-ecR3ctlSOKi1jNIWgYyUGA-1; Thu, 02 Nov 2023 07:41:05 -0400
+X-MC-Unique: ecR3ctlSOKi1jNIWgYyUGA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB338185A782;
+ Thu,  2 Nov 2023 11:41:03 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.195.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8701A2026D4C;
+ Thu,  2 Nov 2023 11:40:55 +0000 (UTC)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>, qemu-s390x@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Leonardo Bras <leobras@redhat.com>, Corey Minyard <cminyard@mvista.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Halil Pasic <pasic@linux.ibm.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Li Zhijian <lizhijian@fujitsu.com>, Eric Blake <eblake@redhat.com>,
+ "Denis V. Lunev" <den@openvz.org>, Hanna Reitz <hreitz@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-arm@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Corey Minyard <minyard@acm.org>,
+ John Snow <jsnow@redhat.com>, Jeff Cody <codyprime@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Fam Zheng <fam@euphon.net>
+Subject: [PULL 00/40] Migration 20231102 patches
+Date: Thu,  2 Nov 2023 12:40:14 +0100
+Message-ID: <20231102114054.44360-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231005092926.56231-3-vsementsov@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -85,7 +92,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,360 +108,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 05, 2023 at 12:29:24PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> We have DEVICE_DELETED event, that signals that device_del command is
-> actually completed. But we don't have a counter-part for device_add.
-> Still it's sensible for SHPC and PCIe-native hotplug, as there are time
-> when the device in some intermediate state. Let's add an event that say
-> that the device is finally powered on, power indicator is on and
-> everything is OK for next manipulation on that device.
-> 
-> Motivations:
-> 1. To be sure that device is "accepted" by guest. Guest may ignore
-> hotplugged device for some reason (for example during OS booting).
-> Management wants to catch this and handle the problem, instead of
-> silent assume that everything is OK. So, if we don't get the event by
-> some timeout, we can report an error, try to unplug/plug the disk again
-> or do some other things to handle the problem.
-> 
-> 2. The device can't be removed (by blockdev-del) while power indicator
-> of hotplug controller is blinking (QEMU reports "guest is busy (power
-> indicator blinking)"). So, management should avoid removing the device
-> until it gets the DEVICE_ON event.
-> (Probably, better solution for this point is to automatically postpone
-> deletion until power indicator stops blinking)
-> 
-> 3. Also, management tool may make a GUI visualization of power
-> indicator with help of this event.
-> 
-> New query-hotplug command in additon to "device-on" state also provides
-> SHPC/PCIe-native specific hotplug controller properties (like leds)
-> that may help to determine real state of hotplug controller. That may
-> help to get additional information for further debugging when DEVICE_ON
-> / DEVICE_DELETED not come in time as expected.
-> 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  hw/core/hotplug.c      |  12 ++++
->  include/hw/hotplug.h   |  11 ++++
->  include/hw/qdev-core.h |   7 +++
->  include/monitor/qdev.h |   2 +
->  qapi/qdev.json         | 135 +++++++++++++++++++++++++++++++++++++++++
->  softmmu/qdev-monitor.c |  41 +++++++++++++
->  6 files changed, 208 insertions(+)
-> 
-> diff --git a/hw/core/hotplug.c b/hw/core/hotplug.c
-> index 17ac986685..9651fe7c85 100644
-> --- a/hw/core/hotplug.c
-> +++ b/hw/core/hotplug.c
-> @@ -57,6 +57,18 @@ void hotplug_handler_unplug(HotplugHandler *plug_handler,
->      }
->  }
->  
-> +HotplugInfo *hotplug_handler_get_state(HotplugHandler *plug_handler,
-> +                                       DeviceState *plugged_dev, Error **errp)
-> +{
-> +    HotplugHandlerClass *hdc = HOTPLUG_HANDLER_GET_CLASS(plug_handler);
-> +
-> +    if (hdc->get_hotplug_state) {
-> +        return hdc->get_hotplug_state(plug_handler, plugged_dev, errp);
-> +    }
-> +
-> +    return NULL;
-> +}
-> +
->  static const TypeInfo hotplug_handler_info = {
->      .name          = TYPE_HOTPLUG_HANDLER,
->      .parent        = TYPE_INTERFACE,
-> diff --git a/include/hw/hotplug.h b/include/hw/hotplug.h
-> index a9840ed485..23c57a0967 100644
-> --- a/include/hw/hotplug.h
-> +++ b/include/hw/hotplug.h
-> @@ -13,6 +13,7 @@
->  #define HOTPLUG_H
->  
->  #include "qom/object.h"
-> +#include "qapi/qapi-types-qdev.h"
->  
->  #define TYPE_HOTPLUG_HANDLER "hotplug-handler"
->  
-> @@ -60,6 +61,8 @@ struct HotplugHandlerClass {
->      hotplug_fn unplug_request;
->      hotplug_fn unplug;
->      bool (*is_hotpluggable_bus)(HotplugHandler *plug_handler, BusState *bus);
-> +    HotplugInfo *(*get_hotplug_state)(HotplugHandler *plug_handler,
-> +                                      DeviceState *plugged_dev, Error **errp);
->  };
->  
->  /**
-> @@ -96,4 +99,12 @@ void hotplug_handler_unplug_request(HotplugHandler *plug_handler,
->  void hotplug_handler_unplug(HotplugHandler *plug_handler,
->                              DeviceState *plugged_dev,
->                              Error **errp);
-> +
-> +/**
-> + * hotplug_handler_get_state:
-> + *
-> + * Calls #HotplugHandlerClass.get_hotplug_state callback of @plug_handler.
-> + */
-> +HotplugInfo *hotplug_handler_get_state(HotplugHandler *plug_handler,
-> +                                       DeviceState *plugged_dev, Error **errp);
->  #endif
-> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-> index 151d968238..a27ef2eb24 100644
-> --- a/include/hw/qdev-core.h
-> +++ b/include/hw/qdev-core.h
-> @@ -229,6 +229,13 @@ struct DeviceState {
->       * @realized: has device been realized?
->       */
->      bool realized;
-> +
-> +    /**
-> +     * @device_on_event_sent: When true means that DEVICE_ON event was already
-> +     *                        sent.
-> +     */
-> +    bool device_on_event_sent;
-> +
->      /**
->       * @pending_deleted_event: track pending deletion events during unplug
->       */
-> diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
-> index 1d57bf6577..c1c8798e89 100644
-> --- a/include/monitor/qdev.h
-> +++ b/include/monitor/qdev.h
-> @@ -36,4 +36,6 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
->   */
->  const char *qdev_set_id(DeviceState *dev, char *id, Error **errp);
->  
-> +void qdev_hotplug_device_on_event(DeviceState *dev);
-> +
->  #endif
-> diff --git a/qapi/qdev.json b/qapi/qdev.json
-> index 2899fac837..fa80694735 100644
-> --- a/qapi/qdev.json
-> +++ b/qapi/qdev.json
-> @@ -180,3 +180,138 @@
->  #      "timestamp": { "seconds": 1615570772, "microseconds": 202844 } }
->  ##
->  { 'event': 'DEVICE_UNPLUG_GUEST_ERROR', 'data': 'DeviceAndPath' }
-> +
-> +##
-> +# @LedStatus:
-> +#
-> +# @on: LED is on.
-> +#
-> +# @blinking: LED is blinking.
-> +#
-> +# @off: LED is off.
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'enum': 'LedStatus',
-> +  'data': [ 'on', 'blinking', 'off' ] }
-> +
+The following changes since commit 6c9ae1ce82b65faa3f266fd103729878cf11e07e:
 
-Querying LED status is by itself a reasonable thing.
-It's under guest control though - how do we avoid
-a flood of events?
+  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2023-11-01 06:58:11 +0900)
 
+are available in the Git repository at:
 
-> +##
-> +# @HotplugSHPCSlotState:
-> +#
-> +# Standard Hot-Plug Controller slot state.
-> +#
-> +# @power-only: Slot is powered on, but neither clock nor bus are
-> +#     connected.
-> +#
-> +# @enabled: Slot is powered on, clock and bus are connected, and the
-> +#     card is fully functional from a hardware standpoint.
-> +#
-> +# @disabled: Slot is disabled, card is safe to be removed.
-> +#
+  https://gitlab.com/juan.quintela/qemu.git tags/migration-20231102-pull-request
 
-Are these really the only 3 states a slot can be in?
-And do we care about power-only?
+for you to fetch changes up to 8e3766eefbb4036cbc280c1f1a0d28537929f7fb:
 
+  migration: modify test_multifd_tcp_none() to use new QAPI syntax. (2023-11-02 11:35:04 +0100)
 
-> +# Since: 8.2
-> +##
-> +{ 'enum': 'HotplugSHPCSlotState',
-> +  'data': [ 'power-only', 'enabled', 'disabled' ] }
-> +
-> +##
-> +# @HotplugSHPCState:
-> +#
-> +# Standard Hot Plug Controller state.
-> +#
-> +# @slot-state: The slot state field of SHPC Slot Status structure.
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'struct': 'HotplugSHPCState',
-> +  'data': { '*slot-state': 'HotplugSHPCSlotState' } }
-> +
-> +##
-> +# @HotplugPCIeNativeState:
-> +#
-> +# PCIe Native hotplug slot state.
-> +#
-> +# @power-on: PCIe Power Controller Control of Slot Control Register.
-> +#     True means Power On (Power Controller Control bit is 0), False
-> +#     means Power Off (Power Controller Control bit is 1).
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'struct': 'HotplugPCIeNativeState',
-> +  'data': { '*power-on': 'bool' } }
+----------------------------------------------------------------
+Migration Pull request (20231102)
 
-and here we don't care about enable?
+Hi
 
-> +
-> +##
-> +# @HotplugType:
-> +#
-> +# Type of hotplug controller / provider.
-> +#
-> +# @shpc: PCI Standard Hot-plug Controller
-> +#
-> +# @pcie-native: PCIe Native hotplug
-> +#
-> +# TODO: add @acpi type
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'enum': 'HotplugType',
-> +  'data': ['shpc', 'pcie-native'] }
-> +
-> +##
-> +# @HotplugInfo:
-> +#
-> +# Hotplug slot state.
-> +#
-> +# @type: type of the hotplug
-> +#
-> +# @bus: The QOM path of the parent bus where device is plugged into.
-> +#
-> +# @addr: The bus address for hotplugged device if applicable.
-> +#
-> +# @child: the hotplugged device
-> +#
-> +# @device-on: Device is powered-on by guest.  This state changes at
-> +#     most once for the device and corresponds to DEVICE_ON event.
-> +#
-> +# @power-led: Power indicator.  When power LED is on the device is
-> +#     ready and accepted by guest.  When it is off, device is safe to
-> +#     remove.  It is blinking while hot plug or unplug is in progress.
-> +#
-> +# @attention-led: The attention LED is normally off.  It is on to
-> +#     signal a problem.  Blinking is for helping users to locate the
-> +#     slot.
-> +#
-> +# Single: 8.2
-> +##
-> +{ 'union': 'HotplugInfo',
-> +  'base': { 'type': 'HotplugType',
-> +            'bus': 'DeviceAndPath',
-> +            '*addr': 'str',
-> +            'child': 'DeviceAndPath',
-> +            'device-on': 'bool',
-> +            '*power-led': 'LedStatus',
-> +            '*attention-led': 'LedStatus'},
-> +  'discriminator': 'type',
-> +  'data': { 'shpc': 'HotplugSHPCState',
-> +            'pcie-native': 'HotplugPCIeNativeState' } }
-> +
+In this pull request:
 
-What about ACPI hotplug?
+- migration reboot mode (steve)
+  * I disabled the test because our CI don't like programs using so
+    much shared memory.  Searching for a fix.
+- test for postcopy recover (fabiano)
+- MigrateAddress QAPI (het)
+- better return path error handling (peter)
+- traces for downtime (peter)
+- vmstate_register() check for duplicates (juan)
+  thomas find better solutions for s390x and ipmi.
+  now also works on s390x
 
+Please, apply.
 
+----------------------------------------------------------------
 
-> +##
-> +# @x-query-hotplug:
-> +#
-> +# Query the state of hotplug controller.
-> +#
-> +# @id: the device's ID or QOM path
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'command': 'x-query-hotplug',
-> +  'data': { 'id': 'str' },
-> +  'returns': 'HotplugInfo' }
-> +
-> +##
-> +# @X_DEVICE_ON:
-> +#
-> +# Emitted whenever the device insertion completion is acknowledged by
-> +# the guest.  For now only emitted for SHPC and PCIe-native hotplug.
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'event': 'X_DEVICE_ON', 'data': 'DeviceAndPath' }
-> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
-> index 74f4e41338..483da40cb9 100644
-> --- a/softmmu/qdev-monitor.c
-> +++ b/softmmu/qdev-monitor.c
-> @@ -25,6 +25,7 @@
->  #include "sysemu/arch_init.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-commands-qdev.h"
-> +#include "qapi/qapi-events-qdev.h"
->  #include "qapi/qmp/dispatch.h"
->  #include "qapi/qmp/qdict.h"
->  #include "qapi/qmp/qerror.h"
-> @@ -956,6 +957,36 @@ void qmp_device_del(const char *id, Error **errp)
->      }
->  }
->  
-> +HotplugInfo *qmp_x_query_hotplug(const char *id, Error **errp)
-> +{
-> +    DeviceState *dev = find_device_state(id, errp);
-> +    HotplugHandler *hotplug_ctrl;
-> +
-> +    if (!dev) {
-> +        return NULL;
-> +    }
-> +
-> +    if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
-> +        error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
-> +        return NULL;
-> +    }
-> +
-> +    if (!DEVICE_GET_CLASS(dev)->hotpluggable) {
-> +        error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
-> +                   object_get_typename(OBJECT(dev)));
-> +        return NULL;
-> +    }
-> +
-> +    hotplug_ctrl = qdev_get_hotplug_handler(dev);
-> +    /*
-> +     * hotpluggable device MUST have HotplugHandler, if it doesn't
-> +     * then something is very wrong with it.
-> +     */
-> +    g_assert(hotplug_ctrl);
-> +
-> +    return hotplug_handler_get_state(hotplug_ctrl, dev, errp);
-> +}
-> +
->  void hmp_device_add(Monitor *mon, const QDict *qdict)
->  {
->      Error *err = NULL;
-> @@ -1146,3 +1177,13 @@ bool qmp_command_available(const QmpCommand *cmd, Error **errp)
->      }
->      return true;
->  }
-> +
-> +void qdev_hotplug_device_on_event(DeviceState *dev)
-> +{
-> +    if (dev->device_on_event_sent) {
-> +        return;
-> +    }
-> +
-> +    dev->device_on_event_sent = true;
-> +    qapi_event_send_x_device_on(dev->id, dev->canonical_path);
-> +}
-> -- 
-> 2.34.1
+Fabiano Rosas (2):
+  tests/migration-test: Add a test for postcopy hangs during RECOVER
+  migration: Convert the file backend to the new QAPI syntax
+
+Het Gala (10):
+  migration: New QAPI type 'MigrateAddress'
+  migration: convert migration 'uri' into 'MigrateAddress'
+  migration: convert socket backend to accept MigrateAddress
+  migration: convert rdma backend to accept MigrateAddress
+  migration: convert exec backend to accept MigrateAddress.
+  migration: New migrate and migrate-incoming argument 'channels'
+  migration: modify migration_channels_and_uri_compatible() for new QAPI
+    syntax
+  migration: Implement MigrateChannelList to qmp migration flow.
+  migration: Implement MigrateChannelList to hmp migration flow.
+  migration: modify test_multifd_tcp_none() to use new QAPI syntax.
+
+Juan Quintela (9):
+  migration: Create vmstate_register_any()
+  migration: Use vmstate_register_any()
+  migration: Use vmstate_register_any() for isa-ide
+  migration: Use VMSTATE_INSTANCE_ID_ANY for slirp
+  migration: Hack to maintain backwards compatibility for ppc
+  migration: Improve example and documentation of vmstate_register()
+  migration: Use vmstate_register_any() for audio
+  migration: Use vmstate_register_any() for eeprom93xx
+  migration: Use vmstate_register_any() for vmware_vga
+
+Peter Xu (9):
+  migration: Check in savevm_state_handler_insert for dups
+  migration: Set downtime_start even for postcopy
+  migration: Add migration_downtime_start|end() helpers
+  migration: Add per vmstate downtime tracepoints
+  migration: migration_stop_vm() helper
+  migration: Add tracepoints for downtime checkpoints
+  migration: Refactor error handling in source return path
+  migration: Allow network to fail even during recovery
+  migration: Change ram_dirty_bitmap_reload() retval to bool
+
+Steve Sistare (6):
+  migration: mode parameter
+  migration: per-mode blockers
+  cpr: relax blockdev migration blockers
+  cpr: relax vhost migration blockers
+  cpr: reboot mode
+  tests/qtest: migration: add reboot mode test
+
+Thomas Huth (4):
+  hw/ipmi: Don't call vmstate_register() from instance_init() functions
+  hw/s390x/s390-skeys: Don't call register_savevm_live() during
+    instance_init()
+  hw/s390x/s390-stattrib: Simplify handling of the "migration-enabled"
+    property
+  hw/s390x/s390-stattrib: Don't call register_savevm_live() during
+    instance_init()
+
+ docs/devel/migration.rst            |  12 +-
+ qapi/migration.json                 | 210 ++++++++++-
+ include/hw/qdev-properties-system.h |   4 +
+ include/migration/blocker.h         |  44 ++-
+ include/migration/misc.h            |   1 +
+ include/migration/vmstate.h         |  28 ++
+ migration/exec.h                    |   8 +-
+ migration/file.h                    |  10 +-
+ migration/migration.h               |  14 +-
+ migration/options.h                 |   1 +
+ migration/qemu-file.h               |   1 +
+ migration/ram.h                     |   5 +-
+ migration/rdma.h                    |   6 +-
+ migration/socket.h                  |   7 +-
+ audio/audio.c                       |   2 +-
+ backends/dbus-vmstate.c             |   3 +-
+ backends/tpm/tpm_emulator.c         |   3 +-
+ block/parallels.c                   |   2 +-
+ block/qcow.c                        |   2 +-
+ block/vdi.c                         |   2 +-
+ block/vhdx.c                        |   2 +-
+ block/vmdk.c                        |   2 +-
+ block/vpc.c                         |   2 +-
+ block/vvfat.c                       |   2 +-
+ hw/core/qdev-properties-system.c    |  14 +
+ hw/display/vmware_vga.c             |   2 +-
+ hw/i2c/core.c                       |   2 +-
+ hw/ide/isa.c                        |   2 +-
+ hw/input/adb.c                      |   2 +-
+ hw/input/ads7846.c                  |   2 +-
+ hw/input/stellaris_input.c          |   3 +-
+ hw/intc/xics.c                      |  18 +-
+ hw/ipmi/ipmi_bmc_extern.c           |  29 +-
+ hw/ipmi/isa_ipmi_bt.c               |  34 +-
+ hw/ipmi/isa_ipmi_kcs.c              |  50 +--
+ hw/net/eepro100.c                   |   3 +-
+ hw/nvram/eeprom93xx.c               |   2 +-
+ hw/pci/pci.c                        |   2 +-
+ hw/ppc/spapr.c                      |  25 +-
+ hw/ppc/spapr_nvdimm.c               |   3 +-
+ hw/s390x/s390-skeys.c               |  36 +-
+ hw/s390x/s390-stattrib.c            |  72 ++--
+ hw/scsi/vhost-scsi.c                |   2 +-
+ hw/timer/arm_timer.c                |   2 +-
+ hw/virtio/vhost.c                   |   2 +-
+ hw/virtio/virtio-mem.c              |   4 +-
+ migration/exec.c                    |  74 ++--
+ migration/file.c                    |  24 +-
+ migration/migration-hmp-cmds.c      |  34 +-
+ migration/migration.c               | 550 ++++++++++++++++++++--------
+ migration/options.c                 |  21 ++
+ migration/qemu-file.c               |   2 +-
+ migration/ram.c                     |  61 +--
+ migration/rdma.c                    |  33 +-
+ migration/savevm.c                  |  95 ++++-
+ migration/socket.c                  |  39 +-
+ net/slirp.c                         |   5 +-
+ stubs/migr-blocker.c                |  10 +
+ system/vl.c                         |   2 +-
+ tests/qtest/migration-test.c        | 150 +++++++-
+ migration/trace-events              |   8 +-
+ 61 files changed, 1316 insertions(+), 476 deletions(-)
+
+-- 
+2.41.0
 
 
