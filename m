@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F4D7DF1AF
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 167107DF1BD
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:54:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyWBN-0002NG-Ty; Thu, 02 Nov 2023 07:48:18 -0400
+	id 1qyWBR-0002HJ-T4; Thu, 02 Nov 2023 07:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW94-0007zs-7O
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:45:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qyW9U-00009T-0N
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:46:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW8y-0006my-1Q
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:45:50 -0400
+ id 1qyW96-0006pW-FT
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:46:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698925546;
+ s=mimecast20190719; t=1698925553;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZoR74DbUPP8uRNJ2ffyTf+4uDK9sqUT1gBNiEWgLHEo=;
- b=YpGmgjQZ58DWvpgaUFubgEaDBt6qpBlpT9NFoD1BF6yAYEVBlw6ur5Oerxj7F+lNf06XTV
- rgbMlwDVd6Rckkl2vpW3Y0ANd5jULE0ne2o167mI82q4dKQy1j3j9JeCqBxRVm3zPeK4dP
- pp41wlFpBLAe0fyc+trtL6oqDmP247M=
+ bh=gOFojWNGrJUbdhy5+ee0DvQ26PDwcLZiSNtpVI4YL08=;
+ b=Fl4Y9o/bjcHqbhTDnf5XYGVcbNYSkaoQeOlNTXBTFRSSUHzsL3Z/rGzUP3PtACmUNihuBs
+ ClarRDOFYlmOfeGBFppGxeQWkE3YiSg2eu4NVYHfaeNWSDpJ3zLNHle/w2ASaTc6Adg8hp
+ cjaDF9SNtz7LfbXHnlT0ErqvKsU5/B4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-193K-0EdNNW_UYgUzV8F1w-1; Thu,
- 02 Nov 2023 07:45:43 -0400
-X-MC-Unique: 193K-0EdNNW_UYgUzV8F1w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-yHaOrIWFOfelOZBRgX_t6Q-1; Thu,
+ 02 Nov 2023 07:45:51 -0400
+X-MC-Unique: yHaOrIWFOfelOZBRgX_t6Q-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D8E0C2808FC7;
- Thu,  2 Nov 2023 11:45:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADFDE3C14908;
+ Thu,  2 Nov 2023 11:45:49 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 30B3A2026D4C;
- Thu,  2 Nov 2023 11:45:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3344A2026D6E;
+ Thu,  2 Nov 2023 11:45:42 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -78,26 +78,25 @@ Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Fam Zheng <fam@euphon.net>, Het Gala <het.gala@nutanix.com>,
  Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-Subject: [PULL 36/40] migration: New migrate and migrate-incoming argument
- 'channels'
-Date: Thu,  2 Nov 2023 12:40:50 +0100
-Message-ID: <20231102114054.44360-37-quintela@redhat.com>
+Subject: [PULL 37/40] migration: modify
+ migration_channels_and_uri_compatible() for new QAPI syntax
+Date: Thu,  2 Nov 2023 12:40:51 +0100
+Message-ID: <20231102114054.44360-38-quintela@redhat.com>
 In-Reply-To: <20231102114054.44360-1-quintela@redhat.com>
 References: <20231102114054.44360-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,337 +114,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Het Gala <het.gala@nutanix.com>
 
-MigrateChannelList allows to connect accross multiple interfaces.
-Add MigrateChannelList struct as argument to migration QAPIs.
+migration_channels_and_uri_compatible() check for transport mechanism
+suitable for multifd migration gets executed when the caller calls old
+uri syntax. It needs it to be run when using the modern MigrateChannel
+QAPI syntax too.
 
-We plan to include multiple channels in future, to connnect
-multiple interfaces. Hence, we choose 'MigrateChannelList'
-as the new argument over 'MigrateChannel' to make migration
-QAPIs future proof.
+After URI -> 'MigrateChannel' :
+migration_channels_and_uri_compatible() ->
+migration_channels_and_transport_compatible() passes object as argument
+and check for valid transport mechanism.
 
 Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
 Signed-off-by: Het Gala <het.gala@nutanix.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231023182053.8711-10-farosas@suse.de>
+Message-ID: <20231023182053.8711-12-farosas@suse.de>
 ---
- qapi/migration.json            | 113 ++++++++++++++++++++++++++++++++-
- migration/migration-hmp-cmds.c |   6 +-
- migration/migration.c          |  56 ++++++++++++++--
- system/vl.c                    |   2 +-
- 4 files changed, 167 insertions(+), 10 deletions(-)
+ migration/migration.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 182b150b87..975761eebd 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1641,6 +1641,34 @@
-     'rdma': 'InetSocketAddress',
-     'file': 'FileMigrationArgs' } }
- 
-+##
-+# @MigrationChannelType:
-+#
-+# The migration channel-type request options.
-+#
-+# @main: Main outbound migration channel.
-+#
-+# Since 8.1
-+##
-+{ 'enum': 'MigrationChannelType',
-+  'data': [ 'main' ] }
-+
-+##
-+# @MigrationChannel:
-+#
-+# Migration stream channel parameters.
-+#
-+# @channel-type: Channel type for transfering packet information.
-+#
-+# @addr: Migration endpoint configuration on destination interface.
-+#
-+# Since 8.1
-+##
-+{ 'struct': 'MigrationChannel',
-+  'data': {
-+      'channel-type': 'MigrationChannelType',
-+      'addr': 'MigrationAddress' } }
-+
- ##
- # @migrate:
- #
-@@ -1648,6 +1676,9 @@
- #
- # @uri: the Uniform Resource Identifier of the destination VM
- #
-+# @channels: list of migration stream channels with each stream in the
-+#     list connected to a destination interface endpoint.
-+#
- # @blk: do block migration (full disk copy)
- #
- # @inc: incremental disk copy migration
-@@ -1677,13 +1708,57 @@
- # 3. The user Monitor's "detach" argument is invalid in QMP and should
- #    not be used
- #
-+# 4. The uri argument should have the Uniform Resource Identifier of
-+#    default destination VM. This connection will be bound to default
-+#    network.
-+#
-+# 5. For now, number of migration streams is restricted to one, i.e
-+#    number of items in 'channels' list is just 1.
-+#
-+# 6. The 'uri' and 'channels' arguments are mutually exclusive;
-+#    exactly one of the two should be present.
-+#
- # Example:
- #
- # -> { "execute": "migrate", "arguments": { "uri": "tcp:0:4446" } }
- # <- { "return": {} }
-+# -> { "execute": "migrate",
-+#      "arguments": {
-+#          "channels": [ { "channel-type": "main",
-+#                          "addr": { "transport": "socket",
-+#                                    "type": "inet",
-+#                                    "host": "10.12.34.9",
-+#                                    "port": "1050" } } ] } }
-+# <- { "return": {} }
-+#
-+# -> { "execute": "migrate",
-+#      "arguments": {
-+#          "channels": [ { "channel-type": "main",
-+#                          "addr": { "transport": "exec",
-+#                                    "args": [ "/bin/nc", "-p", "6000",
-+#                                              "/some/sock" ] } } ] } }
-+# <- { "return": {} }
-+#
-+# -> { "execute": "migrate",
-+#      "arguments": {
-+#          "channels": [ { "channel-type": "main",
-+#                          "addr": { "transport": "rdma",
-+#                                    "host": "10.12.34.9",
-+#                                    "port": "1050" } } ] } }
-+# <- { "return": {} }
-+#
-+# -> { "execute": "migrate",
-+#      "arguments": {
-+#          "channels": [ { "channel-type": "main",
-+#                          "addr": { "transport": "file",
-+#                                    "filename": "/tmp/migfile",
-+#                                    "offset": "0x1000" } } ] } }
-+# <- { "return": {} }
-+#
- ##
- { 'command': 'migrate',
-   'data': {'uri': 'str',
-+           '*channels': [ 'MigrationChannel' ],
-            '*blk': { 'type': 'bool', 'features': [ 'deprecated' ] },
-            '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
-            '*detach': 'bool', '*resume': 'bool' } }
-@@ -1697,6 +1772,9 @@
- # @uri: The Uniform Resource Identifier identifying the source or
- #     address to listen on
- #
-+# @channels: list of migration stream channels with each stream in the
-+#     list connected to a destination interface endpoint.
-+#
- # Returns: nothing on success
- #
- # Since: 2.3
-@@ -1712,13 +1790,46 @@
- #
- # 3. The uri format is the same as for -incoming
- #
-+# 5. For now, number of migration streams is restricted to one, i.e
-+#    number of items in 'channels' list is just 1.
-+#
-+# 4. The 'uri' and 'channels' arguments are mutually exclusive;
-+#    exactly one of the two should be present.
-+#
- # Example:
- #
- # -> { "execute": "migrate-incoming",
- #      "arguments": { "uri": "tcp::4446" } }
- # <- { "return": {} }
-+#
-+# -> { "execute": "migrate",
-+#      "arguments": {
-+#          "channels": [ { "channel-type": "main",
-+#                          "addr": { "transport": "socket",
-+#                                    "type": "inet",
-+#                                    "host": "10.12.34.9",
-+#                                    "port": "1050" } } ] } }
-+# <- { "return": {} }
-+#
-+# -> { "execute": "migrate",
-+#      "arguments": {
-+#          "channels": [ { "channel-type": "main",
-+#                          "addr": { "transport": "exec",
-+#                                    "args": [ "/bin/nc", "-p", "6000",
-+#                                              "/some/sock" ] } } ] } }
-+# <- { "return": {} }
-+#
-+# -> { "execute": "migrate",
-+#      "arguments": {
-+#          "channels": [ { "channel-type": "main",
-+#                          "addr": { "transport": "rdma",
-+#                                    "host": "10.12.34.9",
-+#                                    "port": "1050" } } ] } }
-+# <- { "return": {} }
- ##
--{ 'command': 'migrate-incoming', 'data': {'uri': 'str' } }
-+{ 'command': 'migrate-incoming',
-+             'data': {'*uri': 'str',
-+                      '*channels': [ 'MigrationChannel' ] } }
- 
- ##
- # @xen-save-devices-state:
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index a170440991..6ec778a990 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -452,7 +452,7 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
-     Error *err = NULL;
-     const char *uri = qdict_get_str(qdict, "uri");
- 
--    qmp_migrate_incoming(uri, &err);
-+    qmp_migrate_incoming(uri, false, NULL, &err);
- 
-     hmp_handle_error(mon, err);
- }
-@@ -764,8 +764,8 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
-                     " use blockdev-mirror with NBD instead");
-     }
- 
--    qmp_migrate(uri, !!blk, blk, !!inc, inc,
--                false, false, true, resume, &err);
-+    qmp_migrate(uri, false, NULL, !!blk, blk, !!inc, inc,
-+                 false, false, true, resume, &err);
-     if (hmp_handle_error(mon, err)) {
-         return;
-     }
 diff --git a/migration/migration.c b/migration/migration.c
-index 04037b340c..a9cd5e2d5d 100644
+index a9cd5e2d5d..70725a89ab 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -506,11 +506,34 @@ static bool migrate_uri_parse(const char *uri,
-     return true;
+@@ -128,17 +128,20 @@ static bool migration_needs_multiple_sockets(void)
+     return migrate_multifd() || migrate_postcopy_preempt();
  }
  
--static void qemu_start_incoming_migration(const char *uri, Error **errp)
-+static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-+                                          MigrationChannelList *channels,
-+                                          Error **errp)
+-static bool uri_supports_multi_channels(const char *uri)
++static bool transport_supports_multi_channels(SocketAddress *saddr)
  {
-     g_autoptr(MigrationAddress) channel = NULL;
-     MigrationIncomingState *mis = migration_incoming_get_current();
+-    return strstart(uri, "tcp:", NULL) || strstart(uri, "unix:", NULL) ||
+-           strstart(uri, "vsock:", NULL);
++    return saddr->type == SOCKET_ADDRESS_TYPE_INET ||
++           saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
++           saddr->type == SOCKET_ADDRESS_TYPE_VSOCK;
+ }
  
-+    /*
-+     * Having preliminary checks for uri and channel
-+     */
-+    if (has_channels) {
-+        error_setg(errp, "'channels' argument should not be set yet.");
-+        return;
-+    }
-+
-+    if (uri && has_channels) {
-+        error_setg(errp, "'uri' and 'channels' arguments are mutually "
-+                   "exclusive; exactly one of the two should be present in "
-+                   "'migrate-incoming' qmp command ");
-+        return;
-+    }
-+
-+    if (!uri && !has_channels) {
-+        error_setg(errp, "neither 'uri' or 'channels' argument are "
-+                   "specified in 'migrate-incoming' qmp command ");
-+        return;
-+    }
-+
-     /* URI is not suitable for migration? */
-     if (!migration_channels_and_uri_compatible(uri, errp)) {
-         return;
-@@ -1681,7 +1704,8 @@ void migrate_del_blocker(Error **reasonp)
+ static bool
+-migration_channels_and_uri_compatible(const char *uri, Error **errp)
++migration_channels_and_transport_compatible(MigrationAddress *addr,
++                                            Error **errp)
+ {
+     if (migration_needs_multiple_sockets() &&
+-        !uri_supports_multi_channels(uri)) {
++        (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) &&
++        !transport_supports_multi_channels(&addr->u.socket)) {
+         error_setg(errp, "Migration requires multi-channel URIs (e.g. tcp)");
+         return false;
      }
- }
- 
--void qmp_migrate_incoming(const char *uri, Error **errp)
-+void qmp_migrate_incoming(const char *uri, bool has_channels,
-+                          MigrationChannelList *channels, Error **errp)
- {
-     Error *local_err = NULL;
-     static bool once = true;
-@@ -1699,7 +1723,7 @@ void qmp_migrate_incoming(const char *uri, Error **errp)
+@@ -534,15 +537,15 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
          return;
      }
  
--    qemu_start_incoming_migration(uri, &local_err);
-+    qemu_start_incoming_migration(uri, has_channels, channels, &local_err);
- 
-     if (local_err) {
-         yank_unregister_instance(MIGRATION_YANK_INSTANCE);
-@@ -1735,7 +1759,7 @@ void qmp_migrate_recover(const char *uri, Error **errp)
-      * only re-setup the migration stream and poke existing migration
-      * to continue using that newly established channel.
-      */
--    qemu_start_incoming_migration(uri, errp);
-+    qemu_start_incoming_migration(uri, false, NULL, errp);
- }
- 
- void qmp_migrate_pause(Error **errp)
-@@ -1892,7 +1916,8 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
-     return true;
- }
- 
--void qmp_migrate(const char *uri, bool has_blk, bool blk,
-+void qmp_migrate(const char *uri, bool has_channels,
-+                 MigrationChannelList *channels, bool has_blk, bool blk,
-                  bool has_inc, bool inc, bool has_detach, bool detach,
-                  bool has_resume, bool resume, Error **errp)
- {
-@@ -1901,6 +1926,27 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
-     MigrationState *s = migrate_get_current();
-     g_autoptr(MigrationAddress) channel = NULL;
- 
-+    /*
-+     * Having preliminary checks for uri and channel
-+     */
-+    if (has_channels) {
-+        error_setg(errp, "'channels' argument should not be set yet.");
-+        return;
-+    }
-+
-+    if (uri && has_channels) {
-+        error_setg(errp, "'uri' and 'channels' arguments are mutually "
-+                   "exclusive; exactly one of the two should be present in "
-+                   "'migrate' qmp command ");
-+        return;
-+    }
-+
-+    if (!uri && !has_channels) {
-+        error_setg(errp, "neither 'uri' or 'channels' argument are "
-+                   "specified in 'migrate' qmp command ");
-+        return;
-+    }
-+
-     /* URI is not suitable for migration? */
-     if (!migration_channels_and_uri_compatible(uri, errp)) {
+-    /* URI is not suitable for migration? */
+-    if (!migration_channels_and_uri_compatible(uri, errp)) {
+-        return;
+-    }
+-
+     if (uri && !migrate_uri_parse(uri, &channel, errp)) {
          return;
-diff --git a/system/vl.c b/system/vl.c
-index 92d29bf521..3fb569254a 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2702,7 +2702,7 @@ void qmp_x_exit_preconfig(Error **errp)
-     if (incoming) {
-         Error *local_err = NULL;
-         if (strcmp(incoming, "defer") != 0) {
--            qmp_migrate_incoming(incoming, &local_err);
-+            qmp_migrate_incoming(incoming, false, NULL, &local_err);
-             if (local_err) {
-                 error_reportf_err(local_err, "-incoming %s: ", incoming);
-                 exit(1);
+     }
+ 
++    /* transport mechanism not suitable for migration? */
++    if (!migration_channels_and_transport_compatible(channel, errp)) {
++        return;
++    }
++
+     migrate_set_state(&mis->state, MIGRATION_STATUS_NONE,
+                       MIGRATION_STATUS_SETUP);
+ 
+@@ -1947,15 +1950,15 @@ void qmp_migrate(const char *uri, bool has_channels,
+         return;
+     }
+ 
+-    /* URI is not suitable for migration? */
+-    if (!migration_channels_and_uri_compatible(uri, errp)) {
+-        return;
+-    }
+-
+     if (!migrate_uri_parse(uri, &channel, errp)) {
+         return;
+     }
+ 
++    /* transport mechanism not suitable for migration? */
++    if (!migration_channels_and_transport_compatible(channel, errp)) {
++        return;
++    }
++
+     resume_requested = has_resume && resume;
+     if (!migrate_prepare(s, has_blk && blk, has_inc && inc,
+                          resume_requested, errp)) {
 -- 
 2.41.0
 
