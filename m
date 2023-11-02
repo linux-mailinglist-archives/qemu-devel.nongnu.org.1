@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973027DF365
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA507DF377
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:16:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyXUP-0005F2-FA; Thu, 02 Nov 2023 09:12:01 -0400
+	id 1qyXYc-0006lg-DW; Thu, 02 Nov 2023 09:16:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyXUL-0005Bw-Im
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:11:57 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qyXYY-0006lU-73
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:16:18 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyXUI-0004er-Ja
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:11:57 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-9c3aec5f326so402926066b.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 06:11:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qyXYW-0005vM-L4
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:16:17 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40906fc54fdso7241935e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 06:16:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698930713; x=1699535513; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=/mhgwh+O7LcOjk4R1KCYBoDCcYoTeQDUs7aOxlaxBys=;
- b=olCgJnQwNaWhcyCs3cZIQXnFvvkdsmhy+3vrz+bHKJ823NTFQLrcMgtfBRjTVDkFqK
- fc0Ld/eutflcLo2IecSpkhsT3bQRjoR8HDBRd5UfOR3KJEbhycYbWBMpE5/zH263bRja
- 6UCBl7zb7ikIUh6xmOg5YgIOowe6MdxY4DkZuwJ0fowiKtKTD05YOs1eWmphb0uchtP2
- dqn15lBeOpbisXT7tbek02Pr0ZStXjgt+JIGaslb/XL5qnr/TvWfs2Ct64zV4qMrM4AO
- 1vpXx1xxaCOz89wG478gBTcnFKN9BJgvSqYMg+ceR8lQ+e8FPg2+2VVCl9JlRwmkpwt9
- ihHA==
+ d=linaro.org; s=google; t=1698930974; x=1699535774; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=NHHmrHZWTpsfN0yGjjha0yJjQ2QbYwe+WP0MTPEWdk0=;
+ b=K7HRb6yw/ROKf0LSbJ2vI2xkP5kg3j4rgOtOp52mQcQwAi1CDaek3HlNTb9AGfQUmK
+ 9sRERmaU5jFdXvFqmGcKFiqa886d1A0lnOccyYLGkTnDtPF1H0nFW0N3uR3CFkIJGKJe
+ lXEDTGnFiqnzhhezKaZenbims7wisHxp16ca06iw3RJ0r3cMpqcAyp4UQ5EIl0WkGQ2H
+ FGsACt5vR5vWVaQ+vvn+igNryXbCjYcR6dY9TLTRGbOFguwZL3bcr0uWFcwlbQq0Ep85
+ kJGcZdrM3XV8zCtNy+mMsnsw9fCP07h9iYFtULYLGEIdwDsONxLwsSHxhZvxTg+PNxah
+ f57Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698930713; x=1699535513;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/mhgwh+O7LcOjk4R1KCYBoDCcYoTeQDUs7aOxlaxBys=;
- b=n6AxP3I1uM/2CVezCdQ2JqisaQCcTP1j+dcCrOWDUIy/zlaxZN4jY+r+VC8i3s1jC/
- jOeM5LQtSssXCa0f49sFjoFPyHgyMxtoF7ecyv9jDpew9i+VqJ2767x3PXMCx+UAEcIX
- w6v8Y94KPSkP75vtZ4wMu2TMv3eVOzsoBp9gzMLCBBzvKBHA/+iuRTLXm39t+v7dvyzq
- Kx/VJi3TMZ+8BEi9aqAIgs6cGZp8h7wPQc7o47lbOH35yRfYTGpXQnriY9PLrV9JO3cD
- H21I0zt6YgIzX3scDkMYOiyjd2o5evb5El3Gie8L1zAPIc3vKzt2xn6yXb+UE0s25WT3
- yPFQ==
-X-Gm-Message-State: AOJu0YwuodxgupY40IT2JN7uW1eSNF2HH8/IRUoQETU7wzxI+TU3HQrS
- PrGTle+DtpHX0eAAzqjbgsPxUA==
-X-Google-Smtp-Source: AGHT+IELwNfbv14gpzI5Fmo8CawheYiXt5CUTJJX3D5ejCQeEzUeMCMpCah6Z4DL9Sdy8PR8uCRdsA==
-X-Received: by 2002:a17:907:3fa3:b0:9bd:d405:4e8a with SMTP id
- hr35-20020a1709073fa300b009bdd4054e8amr4428037ejc.17.1698930712479; 
- Thu, 02 Nov 2023 06:11:52 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- q22-20020a170906145600b009ad875d12d7sm1129954ejc.210.2023.11.02.06.11.51
+ d=1e100.net; s=20230601; t=1698930974; x=1699535774;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NHHmrHZWTpsfN0yGjjha0yJjQ2QbYwe+WP0MTPEWdk0=;
+ b=kw72+3s0erkUbWFIuxwtFYmqWujZ3JkBX0PtDDFIZJSkIV/msAMAd8Y6NQ13wdhykD
+ yuLWc78UFQlUcBnW+QyxP8CQym3l2uv9b2PV7d5k0dx3cy4/CQVYWVKr48wmxtq/QAr7
+ 1Hq8Jsy9Um+hvdeop1V/LYIvxMVQ42UX7o2dMrreJY6iDySnFDD4G/QRGs8pDeB91FYG
+ bZUHDNLDc2iMdRHudrnsBSedm744QPlXK7EARr7kngYj8MOiM50+VOPoqMRoaYqn21VD
+ LLOpeyqSKl0oVHv/k3aeZCRm50yvIzQP7TQJBw9tMESntLn/UynSEie9dQQMKbOUbptC
+ a8lQ==
+X-Gm-Message-State: AOJu0YxjflFl8jXwUjhuPjzZEa30N3E7dln9xBVvpsGCLS7zz7OMWsL3
+ iz4OZTKBNZYDHu0T6YO+bhnJJhnMxZOW/NFuCQI=
+X-Google-Smtp-Source: AGHT+IHh496tBQIkcKz2dQN0yA+yQP+qLWX1URTZ1vHeA9hdHDhwvlDeZOZTBfuvYpBmZllM6PIbzg==
+X-Received: by 2002:a05:6000:401f:b0:32d:9718:b32a with SMTP id
+ cp31-20020a056000401f00b0032d9718b32amr15665707wrb.0.1698930974310; 
+ Thu, 02 Nov 2023 06:16:14 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ z2-20020adff1c2000000b0032d9a1f2ec3sm2456179wro.27.2023.11.02.06.16.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 06:11:52 -0700 (PDT)
-Date: Thu, 2 Nov 2023 14:11:50 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v8 03/19] target/riscv/cpu.c: set satp_max_supported in
- cpu_riscv_set_satp()
-Message-ID: <20231102-b340fdccfc0cdf9bf9fb935f@orel>
-References: <20231101204204.345470-1-dbarboza@ventanamicro.com>
- <20231101204204.345470-4-dbarboza@ventanamicro.com>
- <20231102-b74e75db47b353355c6e5d66@orel>
- <c51fd5aa-22a9-40dd-9463-60ef23fb77c5@ventanamicro.com>
+ Thu, 02 Nov 2023 06:16:14 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 894C05F781;
+ Thu,  2 Nov 2023 13:16:13 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org,   Fabiano Rosas <farosas@suse.de>,   Peter Xu
+ <peterx@redhat.com>,   Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH] migration: Unlock mutex in error case
+In-Reply-To: <20231102091245.42045-1-quintela@redhat.com> (Juan Quintela's
+ message of "Thu, 2 Nov 2023 10:12:45 +0100")
+User-Agent: mu4e 1.11.23; emacs 29.1
+Date: Thu, 02 Nov 2023 13:16:13 +0000
+Message-ID: <87ttq447oi.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c51fd5aa-22a9-40dd-9463-60ef23fb77c5@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x629.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,78 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 02, 2023 at 09:53:50AM -0300, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 11/2/23 06:24, Andrew Jones wrote:
-> > On Wed, Nov 01, 2023 at 05:41:48PM -0300, Daniel Henrique Barboza wrote:
-> > > The setter() for the boolean attributes that set satp_mode (sv32, sv39,
-> > > sv48, sv57, sv64) considers that the CPU will always do a
-> > > set_satp_mode_max_supported() during cpu_init().
-> > > 
-> > > This is not the case for the KVM 'host' CPU, and we'll add another CPU
-> > > that won't set satp_mode_max() during cpu_init(). Users should be able
-> > > to set a max_support in these circunstances.
-> > > 
-> > > Allow cpu_riscv_set_satp() to set satp_mode_max_supported if the CPU
-> > > didn't set one prior.
-> > > 
-> > > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > > ---
-> > >   target/riscv/cpu.c | 11 +++++++++++
-> > >   1 file changed, 11 insertions(+)
-> > > 
-> > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > > index 822970345c..9f6837ecb7 100644
-> > > --- a/target/riscv/cpu.c
-> > > +++ b/target/riscv/cpu.c
-> > > @@ -1100,6 +1100,7 @@ static void cpu_riscv_get_satp(Object *obj, Visitor *v, const char *name,
-> > >   static void cpu_riscv_set_satp(Object *obj, Visitor *v, const char *name,
-> > >                                  void *opaque, Error **errp)
-> > >   {
-> > > +    RISCVCPU *cpu = RISCV_CPU(obj);
-> > >       RISCVSATPMap *satp_map = opaque;
-> > >       uint8_t satp = satp_mode_from_str(name);
-> > >       bool value;
-> > > @@ -1108,6 +1109,16 @@ static void cpu_riscv_set_satp(Object *obj, Visitor *v, const char *name,
-> > >           return;
-> > >       }
-> > > +    /*
-> > > +     * Allow users to set satp max supported if the CPU didn't
-> > > +     * set any during cpu_init(). First value set to 'true'
-> > > +     * in this case is assumed to be the max supported for
-> > > +     * the CPU.
-> > 
-> > Hmm, doesn't that mean if a user does
-> > 
-> >   -cpu rv64,sv39=true,sv48=true
-> > 
-> > then the max is set to sv39 instead of sv48?
-> > 
-> > I made a mistake in my last review by stating we shouldn't set the max
-> > supported satp for rv64i to the maximum satp that TCG supports. I forgot
-> > how all of it worked. Setting the _supported_ modes to the maximum that
-> > TCG supports makes sense as long as we don't default to any of them for
-> > rv64i. So, I think we should return the set_satp_mode_max_supported() to
-> > rv64i's definition (passing VM_1_10_SV57 or maybe even VM_1_10_SV64) and
-> > then change set_satp_mode_default_map() to error out for rv64i (or maybe
-> > for all "bare" type cpus).
-> 
-> Ok, then let's set max supported mode to SV64 (the maximum we allow).
-> 
-> Then we don't need to do anything else - setting a max supported value will allow
-> TCG to handle it accordingly with OpenSBI and the kernel, and a suitable satp_mode
-> will be picked by them. We can leave finalize() untouched.
-> 
-> I'll make a note in cpu_init() to remind ourselves that we're not setting a default
-> satp_mode value, but a *limit* for the satp_mode value the CPU can handle.
+Juan Quintela <quintela@redhat.com> writes:
 
-It's both. It's the limit and, in the absence of user input, its used as
-the default. Setting the limit is fine for a no-default cpu type, but
-allowing it to become the default is not. We need to also modify
-set_satp_mode_default_map() to only do what it does for non no-default
-cpus types.
+> We were not unlocking bitmap mutex on the error case.
+> Coverity discovered the problem.
+>
+> Fixes: a2326705e5 ("migration: Stop migration immediately in RDMA error p=
+aths")
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>  migration/ram.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 34724e8fe8..8c4df60f29 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -3040,6 +3040,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaq=
+ue)
+>          ret =3D rdma_registration_start(f, RAM_CONTROL_ROUND);
+>          if (ret < 0) {
+>              qemu_file_set_error(f, ret);
+> +            qemu_mutex_unlock(&rs->bitmap_mutex);
 
-Thanks,
-drew
+I see the function uses the WITH_RCU_READ_LOCK_GUARD() macro to autofree
+the RCU lock so why not use WITH_QEMU_LOCK_GUARD() instead of manually
+checking the error cases?
+
+>              goto out;
+>          }
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
