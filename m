@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEF17DE950
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:30:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A30D57DE94F
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:29:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyLaC-0004es-CO; Wed, 01 Nov 2023 20:29:12 -0400
+	id 1qyLaS-0005HM-Ej; Wed, 01 Nov 2023 20:29:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLZg-0003vn-Ig
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:28:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLa5-0004G3-Vh
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:29:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLZe-0000tr-DN
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:28:40 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLa1-0000xa-5n
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:29:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698884917;
+ s=mimecast20190719; t=1698884939;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CWuM8KoXEbBiZd6goD7A83eMe3YIM2InEy9tKhZ47iA=;
- b=FfKk7COhW0kLDZJbwTrTOctI9be/7mWoaNjHHBTa3jSbQGmT+mnF0XcI/YLOXCkf198Ta3
- bDfPGu1FwNFj1KzotY/qMa3Z/6DcvKxlUAtqyM2OFziBRRI6MOBOp/aKpkURaN55qxY/0h
- f+obMkXPYaXQMo6b7XGChfSloNItHME=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-dsoQOapfPiSZUEN68-Lntw-1; Wed,
- 01 Nov 2023 20:28:35 -0400
-X-MC-Unique: dsoQOapfPiSZUEN68-Lntw-1
+ bh=OC1d58jd9vw7FWm5+m+uWaccwd9dDLTDogObjDndsL8=;
+ b=avh7iyvc0lQPYzk0nHiwqRxGVJu2+zF6p1QjQ9+d4sh34/Vni3j5mor1YbV+S58IqeX5+3
+ Lsr2SUnV4Go/z5GIv9Ev2s0BAeYqaCHnVz+tbj7RSjj0sTBfFzba2ZMMgAW6RS2jlfhLNy
+ xAi1b//oO5QyMa7ZRPTkf9rOU2xyTNA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-146-dhTE4DibNIm1VBia0-XplA-1; Wed, 01 Nov 2023 20:28:51 -0400
+X-MC-Unique: dhTE4DibNIm1VBia0-XplA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 010B21C05AA4;
- Thu,  2 Nov 2023 00:28:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4784D812C33;
+ Thu,  2 Nov 2023 00:28:49 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.70])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C39BFC1290F;
- Thu,  2 Nov 2023 00:28:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 80AA6C1290F;
+ Thu,  2 Nov 2023 00:28:31 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,24 +62,24 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
  iii@linux.ibm.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
  shan.gavin@gmail.com
-Subject: [PATCH v4 11/33] target/loongarch: Use generic helper to show CPU
- model names
-Date: Thu,  2 Nov 2023 10:24:38 +1000
-Message-ID: <20231102002500.1750692-12-gshan@redhat.com>
+Subject: [PATCH v4 12/33] target/m68k: Use generic helper to show CPU model
+ names
+Date: Thu,  2 Nov 2023 10:24:39 +1000
+Message-ID: <20231102002500.1750692-13-gshan@redhat.com>
 In-Reply-To: <20231102002500.1750692-1-gshan@redhat.com>
 References: <20231102002500.1750692-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -97,53 +97,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For target/loongarch, the registered CPU type name is always the
+For target/m68k, the registered CPU type name is always the
 combination of the CPU model name and suffix. Use cpu_model_from_type()
 to show the CPU model names.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/loongarch/cpu.c                | 5 ++++-
- target/loongarch/loongarch-qmp-cmds.c | 3 +--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ target/m68k/helper.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index c6712e13f9..8c6b6f47ed 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -477,14 +477,17 @@ static void loongarch_la132_initfn(Object *obj)
- static void loongarch_cpu_list_entry(gpointer data, gpointer user_data)
- {
-     const char *typename = object_class_get_name(OBJECT_CLASS(data));
-+    char *model = cpu_model_from_type(typename);
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 0a1544cd68..47f2cee69a 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -49,14 +49,11 @@ static gint m68k_cpu_list_compare(gconstpointer a, gconstpointer b)
  
--    qemu_printf("%s\n", typename);
+ static void m68k_cpu_list_entry(gpointer data, gpointer user_data)
+ {
+-    ObjectClass *c = data;
+-    const char *typename;
+-    char *name;
+-
+-    typename = object_class_get_name(c);
+-    name = g_strndup(typename, strlen(typename) - strlen("-" TYPE_M68K_CPU));
+-    qemu_printf("%s\n", name);
+-    g_free(name);
++    const char *typename = object_class_get_name(OBJECT_CLASS(data));
++    char *model = cpu_model_from_type(typename);
++
 +    qemu_printf("  %s\n", model);
 +    g_free(model);
  }
  
- void loongarch_cpu_list(void)
- {
-     GSList *list;
-     list = object_class_get_list_sorted(TYPE_LOONGARCH_CPU, false);
+ void m68k_cpu_list(void)
+@@ -65,6 +62,7 @@ void m68k_cpu_list(void)
+ 
+     list = object_class_get_list(TYPE_M68K_CPU, false);
+     list = g_slist_sort(list, m68k_cpu_list_compare);
 +    qemu_printf("Available CPUs:\n");
-     g_slist_foreach(list, loongarch_cpu_list_entry, NULL);
+     g_slist_foreach(list, m68k_cpu_list_entry, NULL);
      g_slist_free(list);
  }
-diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
-index 6c25957881..815ceaf0ea 100644
---- a/target/loongarch/loongarch-qmp-cmds.c
-+++ b/target/loongarch/loongarch-qmp-cmds.c
-@@ -17,8 +17,7 @@ static void loongarch_cpu_add_definition(gpointer data, gpointer user_data)
-     CpuDefinitionInfo *info = g_new0(CpuDefinitionInfo, 1);
-     const char *typename = object_class_get_name(oc);
- 
--    info->name = g_strndup(typename,
--                           strlen(typename) - strlen("-" TYPE_LOONGARCH_CPU));
-+    info->name = cpu_model_from_type(typename);
-     info->q_typename = g_strdup(typename);
- 
-     QAPI_LIST_PREPEND(*cpu_list, info);
 -- 
 2.41.0
 
