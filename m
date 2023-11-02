@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABC87DEECB
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 10:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B130B7DEEF5
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 10:33:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyTwA-0007V3-PO; Thu, 02 Nov 2023 05:24:26 -0400
+	id 1qyU31-0001xw-95; Thu, 02 Nov 2023 05:31:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyTw9-0007Ur-F3
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:24:25 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qyU2z-0001xX-8z
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:31:29 -0400
+Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyTw4-0000z3-Br
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:24:25 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-53dfc28a2afso1100429a12.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 02:24:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qyU2x-0003Mc-O7
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:31:28 -0400
+Received: by mail-qv1-xf30.google.com with SMTP id
+ 6a1803df08f44-66d09b6d007so4247796d6.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 02:31:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698917058; x=1699521858; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=ThyEzkVNIiVb6nAy7TZXys/fnKFKeCuCXx4r7/agG6Y=;
- b=MiCHi/1CecC9OKiCLGDJaUbDIh6FMXtWQBuOEc2dtsyWm5DqFOXfVWLxS99SdHCEp6
- mFT8H/58Ot3EmiKMYo2l33JUWOh2/+aMvdzlE4PEqpNM8NsFmE9Lqt595c6chn6XbA+x
- AeSZfIT2EEZW0bw/FUxMq+pywn57eegdW/IY1ut4vtYaArNlsT7ijwR6YrYZWOrAoROZ
- /VNeJA11yejxHEo1W+oLhrLRdBY2BPtSAvCcrK/2tYj/s8SXwxDz1XOiVXhO3TavsZWN
- IJWYII5+/kkHgaXDM7Z91069imgET/1xVUOZp9tqgY4Y76woMSRp9uHxvbNeEyhyR0nY
- 8kOw==
+ d=ventanamicro.com; s=google; t=1698917486; x=1699522286; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=iZ69wLqdQU0zShrgzTql7BRgRfY24h8OWduSUJRUe80=;
+ b=UAas3eLrPGLNLF+Uiyw1Vt2GqdLsg/KFyrMzgncKoRlx5MSdeOM2SE8KII5/7wQC6s
+ Fg5v5b6KHttgFz5UzpfdNhUvNRj/2OEXpogfKD5nZH8DcTfDL/8xqIPchfTCeDRJir95
+ NFYUWNckbI52kV+r4ZmmJ+X4QiX6CrvWu00eYtmel3OPPOh6caGQ6EJUWXSsXj0X58id
+ 6ePE2XX+7/0f0CTzyd729vTl3yFBR3ZSJd5Fn5HKlCdpWABiazinFEu4YvsUQUmvqXmf
+ kFs0WSJFOvWd83RyLHFzXQq++NX9N41WxM7FFMccXV93C/MdEiHSCOc/9omapFYKd189
+ DfJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698917058; x=1699521858;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ThyEzkVNIiVb6nAy7TZXys/fnKFKeCuCXx4r7/agG6Y=;
- b=O+PyG3lJCOS8sjTKIlt4S4agDZycr6ZVXznIDa6+WS6stpuuvwvuFOqTY6xqGyemC3
- Wc+ZXoKL182FL2daSFGWK0UfPlL7cTMXDRQeNy7BeHZua6RfcjITPuVWM3CJKhycBraB
- zI0NOm3iqPYct1gJQfQbqDcA239o/RMebTQVNIYqdFSAsUudh5Kw815QgVT3C2g0rH3G
- GtyZrBfVXi008uAdvWCOFzjqr2yfMsDJKC+KdSpFmnNplPLv0zLy57yS/ON3xzI6QlVo
- cx3+JcwGB07xLVGgGqjOCfhzLDWZtY4ShNL691/HV22rQY8/HGtgPI0GEvyN1UM1a9XT
- /34g==
-X-Gm-Message-State: AOJu0YzZvdqdx+2rqGmrYD3OLlX51K6KgdI4Vn4WkLlLDFfY2yEL94a2
- /Fvf4lVOLDUdhuqCVC6bfZuZvw==
-X-Google-Smtp-Source: AGHT+IFlNBpRb5s8sOHt+eQ4iY4Cgl0IPb3HreUJXBAH0Gk6Ro7aLzZjNltpwOINWF5vckdlASEPUA==
-X-Received: by 2002:a50:cc8e:0:b0:542:e844:5c9b with SMTP id
- q14-20020a50cc8e000000b00542e8445c9bmr11704372edi.13.1698917058116; 
- Thu, 02 Nov 2023 02:24:18 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ d=1e100.net; s=20230601; t=1698917486; x=1699522286;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=iZ69wLqdQU0zShrgzTql7BRgRfY24h8OWduSUJRUe80=;
+ b=IrNcLqTFEgbKELuM05oRSzSstTYf2EyNkTOo/eexGTW3eUORu/FV+lC0ObDvneXt6L
+ lypvPm85YQ+8dYzIHqGZib4BHwuDVabWBjnPy0D2UCHkPzMDEQjHouZ2t67xpAndBgUG
+ Gw9zZp8ugmHPOXgOXyCltkcYIVlyMXiOHmYL/Y8Hta6nKIGpPflvJfTLS19mg9zducrZ
+ gqwjGlwUHOC12OwNNK70NS8Bix+zlyHAESIuqw4TNZ3NgqhA8sfubDtPj9Pm5RaSuB86
+ 5Z1EUUDkm6c4Nm02+Ribcw9Md+Gxai10Wnob/fncrINhJtwUu3GE729qACdgiTO/UBh8
+ hnWQ==
+X-Gm-Message-State: AOJu0YxV0qWFNV9mN45KdQRVm/S6x3ReXINnlV8KKjyMNLUE0wstw59B
+ tOisB9XUr6yN0VtgRTFlt/iKGw==
+X-Google-Smtp-Source: AGHT+IFD0wsHGig/ClHIyhEuEwbVQJe1u4uC5ZQVDPqbKDedj79C4+2vmpb62TZiPCjkZBdZCvSQUQ==
+X-Received: by 2002:a05:6214:2427:b0:66d:4766:5a83 with SMTP id
+ gy7-20020a056214242700b0066d47665a83mr21090472qvb.16.1698917486666; 
+ Thu, 02 Nov 2023 02:31:26 -0700 (PDT)
+Received: from [192.168.68.107] ([179.193.10.161])
  by smtp.gmail.com with ESMTPSA id
- m22-20020a509316000000b0053df23511b0sm2102493eda.29.2023.11.02.02.24.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 02:24:17 -0700 (PDT)
-Date: Thu, 2 Nov 2023 10:24:16 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v8 03/19] target/riscv/cpu.c: set satp_max_supported in
- cpu_riscv_set_satp()
-Message-ID: <20231102-b74e75db47b353355c6e5d66@orel>
-References: <20231101204204.345470-1-dbarboza@ventanamicro.com>
- <20231101204204.345470-4-dbarboza@ventanamicro.com>
+ u6-20020a0cc486000000b0065b2167fd63sm2203392qvi.65.2023.11.02.02.31.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Nov 2023 02:31:26 -0700 (PDT)
+Message-ID: <ff7efd3a-f1a1-4c49-a44e-c264103a1a09@ventanamicro.com>
+Date: Thu, 2 Nov 2023 06:31:21 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231101204204.345470-4-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x535.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] hw/ssi: ibex_spi_host: Clear the interrupt even if
+ disabled
+To: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: liweiwei@iscas.ac.cn, Alistair Francis <alistair.francis@wdc.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, bmeng.cn@gmail.com
+References: <20231102003424.2003428-1-alistair.francis@wdc.com>
+ <20231102003424.2003428-2-alistair.francis@wdc.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231102003424.2003428-2-alistair.francis@wdc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-qv1-xf30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,72 +99,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 01, 2023 at 05:41:48PM -0300, Daniel Henrique Barboza wrote:
-> The setter() for the boolean attributes that set satp_mode (sv32, sv39,
-> sv48, sv57, sv64) considers that the CPU will always do a
-> set_satp_mode_max_supported() during cpu_init().
+
+
+On 11/1/23 21:34, Alistair Francis wrote:
+> We currently don't clear the interrupts if they are disabled. This means
+> that if an interrupt occurs and the guest disables interrupts the QEMU
+> IRQ will remain high.
 > 
-> This is not the case for the KVM 'host' CPU, and we'll add another CPU
-> that won't set satp_mode_max() during cpu_init(). Users should be able
-> to set a max_support in these circunstances.
+> This doesn't immediately affect guests, but if the
+> guest re-enables interrupts it's possible that we will miss an
+> interrupt as it always remains set.
 > 
-> Allow cpu_riscv_set_satp() to set satp_mode_max_supported if the CPU
-> didn't set one prior.
+> Let's update the logic to always call qemu_set_irq() even if the
+> interrupts are disabled to ensure we set the level low. The level will
+> never be high unless interrupts are enabled, so we won't generate
+> interrupts when we shouldn't.
 > 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 > ---
->  target/riscv/cpu.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>   hw/ssi/ibex_spi_host.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 822970345c..9f6837ecb7 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1100,6 +1100,7 @@ static void cpu_riscv_get_satp(Object *obj, Visitor *v, const char *name,
->  static void cpu_riscv_set_satp(Object *obj, Visitor *v, const char *name,
->                                 void *opaque, Error **errp)
->  {
-> +    RISCVCPU *cpu = RISCV_CPU(obj);
->      RISCVSATPMap *satp_map = opaque;
->      uint8_t satp = satp_mode_from_str(name);
->      bool value;
-> @@ -1108,6 +1109,16 @@ static void cpu_riscv_set_satp(Object *obj, Visitor *v, const char *name,
->          return;
->      }
->  
-> +    /*
-> +     * Allow users to set satp max supported if the CPU didn't
-> +     * set any during cpu_init(). First value set to 'true'
-> +     * in this case is assumed to be the max supported for
-> +     * the CPU.
-
-Hmm, doesn't that mean if a user does
-
- -cpu rv64,sv39=true,sv48=true
-
-then the max is set to sv39 instead of sv48?
-
-I made a mistake in my last review by stating we shouldn't set the max
-supported satp for rv64i to the maximum satp that TCG supports. I forgot
-how all of it worked. Setting the _supported_ modes to the maximum that
-TCG supports makes sense as long as we don't default to any of them for
-rv64i. So, I think we should return the set_satp_mode_max_supported() to
-rv64i's definition (passing VM_1_10_SV57 or maybe even VM_1_10_SV64) and
-then change set_satp_mode_default_map() to error out for rv64i (or maybe
-for all "bare" type cpus).
-
-> +     */
-> +    if (value && cpu->cfg.satp_mode.supported == 0) {
-> +        set_satp_mode_max_supported(cpu, satp);
-> +    }
+> diff --git a/hw/ssi/ibex_spi_host.c b/hw/ssi/ibex_spi_host.c
+> index 1ee7d88c22..c300ec294d 100644
+> --- a/hw/ssi/ibex_spi_host.c
+> +++ b/hw/ssi/ibex_spi_host.c
+> @@ -205,9 +205,10 @@ static void ibex_spi_host_irq(IbexSPIHostState *s)
+>           if (err_irq) {
+>               s->regs[IBEX_SPI_HOST_INTR_STATE] |= R_INTR_STATE_ERROR_MASK;
+>           }
+> -        qemu_set_irq(s->host_err, err_irq);
+>       }
+>   
+> +    qemu_set_irq(s->host_err, err_irq);
 > +
->      satp_map->map = deposit32(satp_map->map, satp, 1, value);
->      satp_map->init |= 1 << satp;
->  }
-> -- 
-> 2.41.0
->
-
-Thanks,
-drew
+>       /* Event IRQ Enabled and Event IRQ Cleared */
+>       if (event_en && !status_pending) {
+>           if (FIELD_EX32(intr_test_reg, INTR_STATE,  SPI_EVENT)) {
+> @@ -229,8 +230,9 @@ static void ibex_spi_host_irq(IbexSPIHostState *s)
+>           if (event_irq) {
+>               s->regs[IBEX_SPI_HOST_INTR_STATE] |= R_INTR_STATE_SPI_EVENT_MASK;
+>           }
+> -        qemu_set_irq(s->event, event_irq);
+>       }
+> +
+> +    qemu_set_irq(s->event, event_irq);
+>   }
+>   
+>   static void ibex_spi_host_transfer(IbexSPIHostState *s)
 
