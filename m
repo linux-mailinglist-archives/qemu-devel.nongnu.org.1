@@ -2,83 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9497DEF54
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 075107DEF7A
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:07:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyUUb-0007Kl-EF; Thu, 02 Nov 2023 06:00:01 -0400
+	id 1qyUaL-0001mm-An; Thu, 02 Nov 2023 06:05:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyUUY-0007HA-Hq
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:59:58 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyUaI-0001mN-Ta
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:05:54 -0400
+Received: from mail-ej1-f41.google.com ([209.85.218.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyUUW-0008MD-Hd
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:59:58 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9cf83c044b7so103646166b.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 02:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698919194; x=1699523994; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=Rfex9AqMqvm0D0GVBj+NeYrHK1dfWjvlKEgYspPRf18=;
- b=nDKQumlP3sramqdv9+62+gvAlBvTfLc24HktLgpFw8Y8JROyAh3eLv2xBjpGfFWrMu
- wR1PbotFHWYjXMrMXNT3mTrJkmp4VdcYErNTU9Tcrm9hBqtlC++ZSuMSVYjXXb4rx8Uf
- OC7J6P2lXGqlZm96sM00S/xbfpfXBV9cfcIsCCdFpk69qW7Swq2pMxsxOB0Unq/oTy4F
- wDsIttDs969tAOfOL7yh7NN8gqUThOjzMBUjcpmmdcatEuOho79z0m4dGm1eR++wcip1
- wUanZvs57M2aHtq9vMKawlvSBDktU9zZjvkbynOELfSII9capwKq31hqc0M5GGWb+yD0
- yoJA==
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyUaG-0003Fr-M5
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:05:54 -0400
+Received: by mail-ej1-f41.google.com with SMTP id
+ a640c23a62f3a-9db6cf8309cso83821466b.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 03:05:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698919194; x=1699523994;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Rfex9AqMqvm0D0GVBj+NeYrHK1dfWjvlKEgYspPRf18=;
- b=QIC/eL86sqFfQyVOD6ZaeXPJs9C2heSgupiMxi5jIkyaa4ZrhXD5icCPylcz4FYsK2
- Dj0KcqJTBVxsuF0S+UGgKLpvHvrscHwf9q8bNWoGeCIXOwIQU8rCzM8ZK86DTfTxQDVy
- atfwYT8WP+ulzhMxgg6FTL3rSDMleUbHIWSTpCgEs54zyxI6gG7643iqz/3bDDEyTmfo
- NTHcdYV0AEL+6uJ29suqRWlMoFw5EEhhTmquS5AdntFo7d3Z0rr14djItD6E2fe5nJlh
- y/CejjIClWj23MhoigIbLyBRqYmUE2XCynA7lAIot1VKO5A5WoJG/1MRmlP10DJirLjY
- 4NPg==
-X-Gm-Message-State: AOJu0Yz4LcreXtTgdPi0IJ+e909BEtd4bCE8XXiNBq+JMEPVdBqcxN+E
- GWW6dJOcRfwkZEOnSpm5uXVgUA==
-X-Google-Smtp-Source: AGHT+IFsZ/02ekFiQ2q9pb6JUJVZnaT0TAhr/lWklSXXoqJGFaBNQg2Dd3/7LX+BhEerZvy558uexA==
-X-Received: by 2002:a17:906:478b:b0:9c7:4e5d:12bc with SMTP id
- cw11-20020a170906478b00b009c74e5d12bcmr3917656ejc.51.1698919194089; 
- Thu, 02 Nov 2023 02:59:54 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- lu12-20020a170906facc00b009875a6d28b0sm920688ejb.51.2023.11.02.02.59.53
+ d=1e100.net; s=20230601; t=1698919551; x=1699524351;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yUxHOvYH+zMZG+QzWCNt/CyAX933tj7z0dZqD9bg/nU=;
+ b=pLdD+kQj66xok3mm9VkwjI7urTvI+UckQXykVt452Oz1z3VruLKcGQlKitMs1Cz2aW
+ bbEcnU5bPPe+m0qh0N1YBqQABXs+f+j0dhg+knUiQW6Aq09lReQBkDWZGWh52VxzI4yT
+ o/FQhYbrWtBaL9689hCaW99t/fpSQz8BZdJu7j2GUAPA6BnDdYeUmajbJh9yDyQlpWpL
+ lynlAdXdr9hA4tKpGI8D8ceiqM/uPc4SfqlNIZoBLbLHrAspsnUxwPB9WHUDTiMfwxUH
+ pNvsMvG/3G0VVKs8gXTk26uK6JxR8MSq8Ai5i7tEHDobgRfE60NccbO4RdsjWoqsXkiF
+ UYew==
+X-Gm-Message-State: AOJu0Yxadry+/VSqX8PycNbufRbiBPtWigAjM9QRD7fvqq1Mt2trsh75
+ g4CKe4xUYJ4k+MIuaX/+pqzUNFE2bU4=
+X-Google-Smtp-Source: AGHT+IHWY4aMDNEiCyWN+jcmA+hhoDRq0S1e1YwZif1vctidX26ZnKIuAvlguCsz83VD6xvxQe4F8g==
+X-Received: by 2002:a17:907:eab:b0:9bf:5df1:38c9 with SMTP id
+ ho43-20020a1709070eab00b009bf5df138c9mr4161359ejc.9.1698919550675; 
+ Thu, 02 Nov 2023 03:05:50 -0700 (PDT)
+Received: from localhost.localdomain (ip-109-42-115-39.web.vodafone.de.
+ [109.42.115.39]) by smtp.gmail.com with ESMTPSA id
+ o21-20020a170906359500b009b97d9ae329sm927236ejb.198.2023.11.02.03.05.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 02:59:53 -0700 (PDT)
-Date: Thu, 2 Nov 2023 10:59:52 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v8 06/19] target/riscv: add rv64i CPU
-Message-ID: <20231102-c79d19ccf4a301e3e8fc0ebd@orel>
-References: <20231101204204.345470-1-dbarboza@ventanamicro.com>
- <20231101204204.345470-7-dbarboza@ventanamicro.com>
+ Thu, 02 Nov 2023 03:05:50 -0700 (PDT)
+From: Thomas Huth <huth@tuxfamily.org>
+To: qemu-devel@nongnu.org,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/10] m68k patches
+Date: Thu,  2 Nov 2023 11:05:33 +0100
+Message-ID: <20231102100543.4875-1-huth@tuxfamily.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231101204204.345470-7-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=209.85.218.41; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f41.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,140 +78,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 01, 2023 at 05:41:51PM -0300, Daniel Henrique Barboza wrote:
-> We don't have any form of a 'bare bones' CPU. rv64, our default CPUs,
-> comes with a lot of defaults. This is fine for most regular uses but
-> it's not suitable when more control of what is actually loaded in the
-> CPU is required.
-> 
-> A bare-bones CPU would be annoying to deal with if not by profile
-> support, a way to load a multitude of extensions with a single flag.
-> Profile support is going to be implemented shortly, so let's add a CPU
-> for it.
-> 
-> The new 'rv64i' CPU will have only RVI loaded. It is inspired in the
-> profile specification that dictates, for RVA22U64 [1]:
-> 
-> "RVA22U64 Mandatory Base
->  RV64I is the mandatory base ISA for RVA22U64"
-> 
-> And so it seems that RV64I is the mandatory base ISA for all profiles
-> listed in [1], making it an ideal CPU to use with profile support.
-> 
-> rv64i is a CPU of type TYPE_RISCV_BARE_CPU. It has a mix of features
-> from pre-existent CPUs:
-> 
-> - it allows extensions to be enabled, like generic CPUs;
-> - it will not inherit extension defaults, like vendor CPUs.
-> 
-> This is the minimum extension set to boot OpenSBI and buildroot using
-> rv64i:
-> 
-> ./build/qemu-system-riscv64 -nographic -M virt \
->     -cpu rv64i,sv39=true,g=true,c=true,s=true,u=true
-> 
-> Our minimal riscv,isa in this case will be:
-> 
->  # cat /proc/device-tree/cpus/cpu@0/riscv,isa
-> rv64imafdc_zicntr_zicsr_zifencei_zihpm_zca_zcd#
-> 
-> [1] https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu-qom.h |  2 ++
->  target/riscv/cpu.c     | 23 +++++++++++++++++++++++
->  2 files changed, 25 insertions(+)
-> 
-> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-> index 7831e86d37..ea9a752280 100644
-> --- a/target/riscv/cpu-qom.h
-> +++ b/target/riscv/cpu-qom.h
-> @@ -25,6 +25,7 @@
->  #define TYPE_RISCV_CPU "riscv-cpu"
->  #define TYPE_RISCV_DYNAMIC_CPU "riscv-dynamic-cpu"
->  #define TYPE_RISCV_VENDOR_CPU "riscv-vendor-cpu"
-> +#define TYPE_RISCV_BARE_CPU "riscv-bare-cpu"
->  
->  #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
->  #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
-> @@ -35,6 +36,7 @@
->  #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
->  #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
->  #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
-> +#define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
->  #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
->  #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
->  #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index f7c1989d14..4a6e544eaf 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -544,6 +544,16 @@ static void rv128_base_cpu_init(Object *obj)
->      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
->  #endif
->  }
-> +
-> +static void rv64i_bare_cpu_init(Object *obj)
-> +{
-> +    CPURISCVState *env = &RISCV_CPU(obj)->env;
-> +    riscv_cpu_set_misa(env, MXL_RV64, RVI);
-> +
-> +    /* Remove the defaults from the parent class */
-> +    RISCV_CPU(obj)->cfg.ext_zicntr = false;
-> +    RISCV_CPU(obj)->cfg.ext_zihpm = false;
+ Hi Stefan!
 
-Good catch since v1, but having to do this is a bit gross. I'd prefer the
-parent class not enable any extensions. Each CPU type that needs these
-can just set them themselves.
+The following changes since commit 6c9ae1ce82b65faa3f266fd103729878cf11e07e:
 
-> +}
->  #else
->  static void rv32_base_cpu_init(Object *obj)
->  {
-> @@ -1753,6 +1763,13 @@ void riscv_cpu_list(void)
->          .instance_init = initfn              \
->      }
->  
-> +#define DEFINE_BARE_CPU(type_name, initfn) \
-> +    {                                      \
-> +        .name = type_name,                 \
-> +        .parent = TYPE_RISCV_BARE_CPU,     \
-> +        .instance_init = initfn            \
-> +    }
-> +
->  static const TypeInfo riscv_cpu_type_infos[] = {
->      {
->          .name = TYPE_RISCV_CPU,
-> @@ -1775,6 +1792,11 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->          .parent = TYPE_RISCV_CPU,
->          .abstract = true,
->      },
-> +    {
-> +        .name = TYPE_RISCV_BARE_CPU,
-> +        .parent = TYPE_RISCV_CPU,
-> +        .abstract = true,
-> +    },
->      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
->      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
->  #if defined(TARGET_RISCV32)
-> @@ -1791,6 +1813,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->      DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906,  rv64_thead_c906_cpu_init),
->      DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_init),
->      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
-> +    DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
->  #endif
->  };
->  
-> -- 
-> 2.41.0
->
+  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2023-11-01 06:58:11 +0900)
 
-We'll probably need to bring back the satp supported mode setting, as
-suggested on a previous patch, but otherwise
+are available in the Git repository at:
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+  https://gitlab.com/huth/qemu.git tags/m68k-pull-2023-11-02
 
-Thanks,
-drew
+for you to fetch changes up to a35c20961bb776ed8a4a7377f946b0f3149d3fe7:
+
+  tests/avocado/machine_m68k_nextcube: Fix the download URL for the ROM image (2023-11-02 07:26:06 +0100)
+
+----------------------------------------------------------------
+* Avoid qemu_get_cpu() and first_cpu, and use properties instead
+* Mirror next-cube bios to address 0
+* Instantiate ESP SCSI controller in the next-cube machine
+* Fix URL in the next-cube avocado test
+
+----------------------------------------------------------------
+Philippe Mathieu-Daudé (7):
+      hw/m68k/irqc: Pass CPU using QOM link property
+      hw/m68k/mcf5206: Pass CPU using QOM link property
+      hw/m68k/mcf_intc: Expose MMIO region via SysBus API
+      hw/m68k/mcf_intc: Pass CPU using QOM link property
+      hw/m68k/next-cube: Do not open-code sysbus_create_simple()
+      hw/m68k/virt: Do not open-code sysbus_create_simple()
+      hw/char/mcf_uart: Have mcf_uart_create() return DeviceState
+
+Thomas Huth (3):
+      hw/m68k/next-cube: Mirror BIOS to address 0
+      m68k: Instantiate the ESP SCSI controller for the NeXTcube machine
+      tests/avocado/machine_m68k_nextcube: Fix the download URL for the ROM image
+
+ hw/char/mcf_uart.c                     |  13 ++--
+ hw/intc/m68k_irqc.c                    |  10 ++-
+ hw/m68k/an5206.c                       |   6 +-
+ hw/m68k/mcf5206.c                      |  15 +++-
+ hw/m68k/mcf5208.c                      |   6 +-
+ hw/m68k/mcf_intc.c                     |  21 ++++--
+ hw/m68k/next-cube.c                    | 130 +++++++++++++++++++++++++++++----
+ hw/m68k/virt.c                         |   9 +--
+ include/hw/intc/m68k_irqc.h            |   1 +
+ include/hw/m68k/mcf.h                  |   4 +-
+ tests/avocado/machine_m68k_nextcube.py |   4 +-
+ 11 files changed, 172 insertions(+), 47 deletions(-)
 
