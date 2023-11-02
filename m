@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16CE77DF8F8
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 292437DF90B
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:44:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybfM-0003Yp-A7; Thu, 02 Nov 2023 13:39:36 -0400
+	id 1qybfW-0003vI-BF; Thu, 02 Nov 2023 13:39:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybed-0003Ey-NV
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:51 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qybec-0003Cx-6p
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:50 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeY-0002jM-Qf
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:51 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32dc918d454so692487f8f.2
+ id 1qybeY-0002jQ-PR
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:49 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40790b0a224so9545565e9.0
  for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698946724; x=1699551524; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698946725; x=1699551525; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4k4TxZbAoPDPMNV3xOemPSGaAx8PeWmBzwgO2tihRic=;
- b=r6B/6sWvxHqQAG4uwXJpxYxb4QiPFFJcILbS8VhNLK4wscRyy8UgoR/9wX9x7yU5N8
- /hf2Hxqr2g8ZyIA2rbCAdllJDI+Xa5VIfvH5gE7/Jzs4/2jGtJqXZI5AAYrzQMMpTaoa
- r9emrZSyKHR55+CAzSH4vaNs5ka+ZBe2c3EijHBgPjeU6cVd1mWN1Lb5EZ0xtIHbR8gX
- ohqO6Iwcu9M9+c/lbNHavuLEqaHNa2cTwhhRXB0o5Klj8tUj3ueLxD1gEcZjx/yMDFHb
- 8fz/6PygwSA0K6HPE4UZIJ6QVKWK7OC2mYWNv/cEQ4UAi2uutpPzEsnTfcj8lnhTT1S/
- 4FOw==
+ :reply-to; bh=LqJpZDE/iTKqMgJkXz9zHkvEVRtZ8ol0kkFTVeB0qSA=;
+ b=Jf7gvPzJkiaCUGfhwAEfYBT6RGPd8n+SqNTS9k8PVJUisYVunVAnTFsi9UY16OgDsv
+ hlzOiw7JowZlGn0U2EFFYR/TYoYcoZGUmfxWD3eiwGqWGYJBdwHg4ldHZ9Fah3MJn20C
+ JD+2unIXRmPmeH8HOr72MczWzyv3wc3RlT3FYsfsTtDzZa3by5cXgYhiAIifp+SmiDBF
+ eFeqgmF98pN8FMIzyFkeaTnTy2H1PxRmgl+AQbZr9FL9sLiSEHaptyN0i0CRQz4M/yJ2
+ QIAdStJ6+sfddWqELQywRDTzu3zlHnb+A42TxHENR5uBn9OcVxZT0GzCEig9EzXrthTI
+ 5jYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698946724; x=1699551524;
+ d=1e100.net; s=20230601; t=1698946725; x=1699551525;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4k4TxZbAoPDPMNV3xOemPSGaAx8PeWmBzwgO2tihRic=;
- b=utQwtWAkM90GILpf5MQoyL1Lh108yLPPZTVS5XJkDJszvLNCIuExS7HMZkg09xR/GB
- EQeHQu898OMFsXWaql3XkRNu1sB1dhEFITFSqVfLZ3nJhsndGK22KbhGp8TH8ubExcJ1
- CUnqWtW+tYN4jRkxdlGbTk2/2F/SdzARJxq6P6R+H4OvZnHSH7oWCLOjpua6P10hWdvd
- GbPS+r5TEATyHXgU8eZZHREiRGe4amx0LAKuJM3Zhhlge7Vd9OcpGGoqs1D5rdzEmpNy
- ghswR+8bFYIP77xPCQbjXGDNkf+xOqvzEjqEY0UvfDSIRjq5CHOUfuFCKnjjBmsO0RNy
- fTkQ==
-X-Gm-Message-State: AOJu0Yz7iD2k2oHYGz6Cakc923cZ5ufrDJ9eIhrgGClPXLwPsfJv2+FX
- 4xSBk2mAnsAt9ursF71v4YfUPoPog7k4JHoErj8=
-X-Google-Smtp-Source: AGHT+IFdmvlZSzyzeihcYJ5xlvl3+VM5FQyEZGerH+VumEQeQvBx2vQkK1vih8J/TXRyYfG2ityE/A==
-X-Received: by 2002:a5d:508c:0:b0:32f:abf9:712b with SMTP id
- a12-20020a5d508c000000b0032fabf9712bmr1782361wrt.46.1698946724407; 
+ bh=LqJpZDE/iTKqMgJkXz9zHkvEVRtZ8ol0kkFTVeB0qSA=;
+ b=Cax4o8jKKwDYw+77QTyBi3uLoMhInhh1pfsqQGiYUHrDRd0lVV2/OigP26ENtcK/g6
+ Es3Q6vOhslgHes/GWWWmY1IClHDNn0P5f6sAgOeufIRtAReeuCjQLgUIb224HZsNTTFm
+ 9aRJT2mXtZjpHfRWSX6Hn0+tRPe882CkYtV5jnPq1K2+u8kib3unMyiVr+CaEdQzdbKw
+ MLzlpR8pxWtERBvUgAeOZu8ceKQcaUeG5YspC7HDwSof2pgOzEd5BxtbhRLq2Fzjqndx
+ yvqQU4wQWwLm0SgcDampHKsOs4L66OMOGagIJpIv4KYx+eyq3se01+gNQy12DbwSvVnr
+ /7tw==
+X-Gm-Message-State: AOJu0YwVUw3xNuLpFoWecEZ1hxlRqM+7gyMRIYBnmzDKTmj0pA1ZNZlD
+ KMTxMMeeGEtiGtGnd0Ftw0qxlfUGqhLAo2TLKXQ=
+X-Google-Smtp-Source: AGHT+IGMjbZhMWm0i66xMiKPYJsnkzVsWpZcmjHOih9+wbs7qvaORgFZDGQz9xHuD2A9U7BbnD51uw==
+X-Received: by 2002:a05:6000:1445:b0:32f:7a07:be07 with SMTP id
+ v5-20020a056000144500b0032f7a07be07mr15668891wrx.17.1698946724884; 
  Thu, 02 Nov 2023 10:38:44 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.43
+ e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 02 Nov 2023 10:38:44 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/33] docs/specs/standard-vga: Convert to rST
-Date: Thu,  2 Nov 2023 17:38:14 +0000
-Message-Id: <20231102173835.609985-13-peter.maydell@linaro.org>
+Subject: [PULL 13/33] docs/specs/virt-ctlr: Convert to rST
+Date: Thu,  2 Nov 2023 17:38:15 +0000
+Message-Id: <20231102173835.609985-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,256 +91,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert docs/specs/standard-vga.txt to rST format.
+Convert docs/specs/virt-ctlr.txt to rST format.
+
+I added the name of the device to give readers a bit more idea
+of which device we're actually documenting here.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230927151205.70930-6-peter.maydell@linaro.org
+Message-id: 20230927151205.70930-7-peter.maydell@linaro.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                 |  1 +
- docs/specs/index.rst        |  1 +
- docs/specs/standard-vga.rst | 94 +++++++++++++++++++++++++++++++++++++
- docs/specs/standard-vga.txt | 81 --------------------------------
- hw/display/vga-isa.c        |  2 +-
- hw/display/vga-pci.c        |  2 +-
- 6 files changed, 98 insertions(+), 83 deletions(-)
- create mode 100644 docs/specs/standard-vga.rst
- delete mode 100644 docs/specs/standard-vga.txt
+ MAINTAINERS                                 |  1 +
+ docs/specs/index.rst                        |  1 +
+ docs/specs/{virt-ctlr.txt => virt-ctlr.rst} | 12 +++++-------
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+ rename docs/specs/{virt-ctlr.txt => virt-ctlr.rst} (70%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e10bd085ff..b5e1765d7a6 100644
+index b5e1765d7a6..11f3bdbfa78 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2468,6 +2468,7 @@ F: hw/display/vga*
- F: hw/display/bochs-display.c
- F: include/hw/display/vga.h
- F: include/hw/display/bochs-vbe.h
-+F: docs/specs/standard-vga.rst
+@@ -1283,6 +1283,7 @@ F: include/hw/char/goldfish_tty.h
+ F: include/hw/intc/goldfish_pic.h
+ F: include/hw/intc/m68k_irqc.h
+ F: include/hw/misc/virt_ctrl.h
++F: docs/specs/virt-ctlr.rst
  
- ramfb
- M: Gerd Hoffmann <kraxel@redhat.com>
+ MicroBlaze Machines
+ -------------------
 diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index 52bfab2f68b..ee84b8109d6 100644
+index ee84b8109d6..8d30968650b 100644
 --- a/docs/specs/index.rst
 +++ b/docs/specs/index.rst
-@@ -28,3 +28,4 @@ guest hardware that is specific to QEMU.
-    edu
+@@ -29,3 +29,4 @@ guest hardware that is specific to QEMU.
     ivshmem-spec
     pvpanic
-+   standard-vga
-diff --git a/docs/specs/standard-vga.rst b/docs/specs/standard-vga.rst
-new file mode 100644
-index 00000000000..992f429ced1
---- /dev/null
-+++ b/docs/specs/standard-vga.rst
-@@ -0,0 +1,94 @@
-+
-+QEMU Standard VGA
-+=================
-+
-+Exists in two variants, for isa and pci.
-+
-+command line switches:
-+
-+``-vga std``
-+   picks isa for -M isapc, otherwise pci
-+``-device VGA``
-+   pci variant
-+``-device isa-vga``
-+   isa variant
-+``-device secondary-vga``
-+   legacy-free pci variant
-+
-+
-+PCI spec
-+--------
-+
-+Applies to the pci variant only for obvious reasons.
-+
-+PCI ID
-+   ``1234:1111``
-+
-+PCI Region 0
-+   Framebuffer memory, 16 MB in size (by default).
-+   Size is tunable via vga_mem_mb property.
-+
-+PCI Region 1
-+   Reserved (so we have the option to make the framebuffer bar 64bit).
-+
-+PCI Region 2
-+   MMIO bar, 4096 bytes in size (QEMU 1.3+)
-+
-+PCI ROM Region
-+   Holds the vgabios (QEMU 0.14+).
-+
-+
-+The legacy-free variant has no ROM and has ``PCI_CLASS_DISPLAY_OTHER``
-+instead of ``PCI_CLASS_DISPLAY_VGA``.
-+
-+
-+IO ports used
-+-------------
-+
-+Doesn't apply to the legacy-free pci variant, use the MMIO bar instead.
-+
-+``03c0 - 03df``
-+   standard vga ports
-+``01ce``
-+   bochs vbe interface index port
-+``01cf``
-+   bochs vbe interface data port (x86 only)
-+``01d0``
-+   bochs vbe interface data port
-+
-+
-+Memory regions used
-+-------------------
-+
-+``0xe0000000``
-+  Framebuffer memory, isa variant only.
-+
-+The pci variant used to mirror the framebuffer bar here, QEMU 0.14+
-+stops doing that (except when in ``-M pc-$old`` compat mode).
-+
-+
-+MMIO area spec
-+--------------
-+
-+Likewise applies to the pci variant only for obvious reasons.
-+
-+``0000 - 03ff``
-+  edid data blob.
-+``0400 - 041f``
-+  vga ioports (``0x3c0`` to ``0x3df``), remapped 1:1. Word access
-+  is supported, bytes are written in little endian order (aka index
-+  port first),  so indexed registers can be updated with a single
-+  mmio write (and thus only one vmexit).
-+``0500 - 0515``
-+  bochs dispi interface registers, mapped flat without index/data ports.
-+  Use ``(index << 1)`` as offset for (16bit) register access.
-+``0600 - 0607``
-+  QEMU extended registers.  QEMU 2.2+ only.
-+  The pci revision is 2 (or greater) when these registers are present.
-+  The registers are 32bit.
-+``0600``
-+  QEMU extended register region size, in bytes.
-+``0604``
-+  framebuffer endianness register.
-+  - ``0xbebebebe`` indicates big endian.
-+  - ``0x1e1e1e1e`` indicates little endian.
-diff --git a/docs/specs/standard-vga.txt b/docs/specs/standard-vga.txt
-deleted file mode 100644
-index 18f75f1b302..00000000000
---- a/docs/specs/standard-vga.txt
-+++ /dev/null
-@@ -1,81 +0,0 @@
+    standard-vga
++   virt-ctlr
+diff --git a/docs/specs/virt-ctlr.txt b/docs/specs/virt-ctlr.rst
+similarity index 70%
+rename from docs/specs/virt-ctlr.txt
+rename to docs/specs/virt-ctlr.rst
+index 24d38084f7f..ad3edde82d2 100644
+--- a/docs/specs/virt-ctlr.txt
++++ b/docs/specs/virt-ctlr.rst
+@@ -1,9 +1,9 @@
+ Virtual System Controller
+ =========================
+ 
+-This device is a simple interface defined for the pure virtual machine with no
+-hardware reference implementation to allow the guest kernel to send command
+-to the host hypervisor.
++The ``virt-ctrl`` device is a simple interface defined for the pure
++virtual machine with no hardware reference implementation to allow the
++guest kernel to send command to the host hypervisor.
+ 
+ The specification can evolve, the current state is defined as below.
+ 
+@@ -11,14 +11,12 @@ This is a MMIO mapped device using 256 bytes.
+ 
+ Two 32bit registers are defined:
+ 
+-1- the features register (read-only, address 0x00)
 -
--QEMU Standard VGA
--=================
++the features register (read-only, address 0x00)
+    This register allows the device to report features supported by the
+    controller.
+    The only feature supported for the moment is power control (0x01).
+ 
+-2- the command register (write-only, address 0x04)
 -
--Exists in two variants, for isa and pci.
--
--command line switches:
--    -vga std               [ picks isa for -M isapc, otherwise pci ]
--    -device VGA            [ pci variant ]
--    -device isa-vga        [ isa variant ]
--    -device secondary-vga  [ legacy-free pci variant ]
--
--
--PCI spec
----------
--
--Applies to the pci variant only for obvious reasons.
--
--PCI ID: 1234:1111
--
--PCI Region 0:
--   Framebuffer memory, 16 MB in size (by default).
--   Size is tunable via vga_mem_mb property.
--
--PCI Region 1:
--   Reserved (so we have the option to make the framebuffer bar 64bit).
--
--PCI Region 2:
--   MMIO bar, 4096 bytes in size (qemu 1.3+)
--
--PCI ROM Region:
--   Holds the vgabios (qemu 0.14+).
--
--
--The legacy-free variant has no ROM and has PCI_CLASS_DISPLAY_OTHER
--instead of PCI_CLASS_DISPLAY_VGA.
--
--
--IO ports used
---------------
--
--Doesn't apply to the legacy-free pci variant, use the MMIO bar instead.
--
--03c0 - 03df : standard vga ports
--01ce        : bochs vbe interface index port
--01cf        : bochs vbe interface data port (x86 only)
--01d0        : bochs vbe interface data port
--
--
--Memory regions used
---------------------
--
--0xe0000000 : Framebuffer memory, isa variant only.
--
--The pci variant used to mirror the framebuffer bar here, qemu 0.14+
--stops doing that (except when in -M pc-$old compat mode).
--
--
--MMIO area spec
----------------
--
--Likewise applies to the pci variant only for obvious reasons.
--
--0000 - 03ff : edid data blob.
--0400 - 041f : vga ioports (0x3c0 -> 0x3df), remapped 1:1.
--              word access is supported, bytes are written
--              in little endia order (aka index port first),
--              so indexed registers can be updated with a
--              single mmio write (and thus only one vmexit).
--0500 - 0515 : bochs dispi interface registers, mapped flat
--              without index/data ports.  Use (index << 1)
--              as offset for (16bit) register access.
--
--0600 - 0607 : qemu extended registers.  qemu 2.2+ only.
--              The pci revision is 2 (or greater) when
--              these registers are present.  The registers
--              are 32bit.
--  0600      : qemu extended register region size, in bytes.
--  0604      : framebuffer endianness register.
--              - 0xbebebebe indicates big endian.
--              - 0x1e1e1e1e indicates little endian.
-diff --git a/hw/display/vga-isa.c b/hw/display/vga-isa.c
-index 2a5437d8037..c096ec93e52 100644
---- a/hw/display/vga-isa.c
-+++ b/hw/display/vga-isa.c
-@@ -1,7 +1,7 @@
- /*
-  * QEMU ISA VGA Emulator.
-  *
-- * see docs/specs/standard-vga.txt for virtual hardware specs.
-+ * see docs/specs/standard-vga.rst for virtual hardware specs.
-  *
-  * Copyright (c) 2003 Fabrice Bellard
-  *
-diff --git a/hw/display/vga-pci.c b/hw/display/vga-pci.c
-index b351b8f299d..e4f45b4476d 100644
---- a/hw/display/vga-pci.c
-+++ b/hw/display/vga-pci.c
-@@ -1,7 +1,7 @@
- /*
-  * QEMU PCI VGA Emulator.
-  *
-- * see docs/specs/standard-vga.txt for virtual hardware specs.
-+ * see docs/specs/standard-vga.rst for virtual hardware specs.
-  *
-  * Copyright (c) 2003 Fabrice Bellard
-  *
++the command register (write-only, address 0x04)
+    This register allows the kernel to send the commands to the hypervisor.
+    The implemented commands are part of the power control feature and
+    are reset (1), halt (2) and panic (3).
 -- 
 2.34.1
 
