@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC747DEA6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB5A7DEA61
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:48:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMax-0006Jk-RC; Wed, 01 Nov 2023 21:34:04 -0400
+	id 1qyMax-0006K1-QM; Wed, 01 Nov 2023 21:34:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMas-0006FA-M4
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:33:58 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qyMas-0006Gf-Vo
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:33:59 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMaq-0001uN-79
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:33:57 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1cc1e1e74beso3387135ad.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:33:55 -0700 (PDT)
+ id 1qyMaq-0001uR-Lj
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:33:58 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-53fa455cd94so320825a12.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698888834; x=1699493634; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698888835; x=1699493635; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4omnBr4R3fX8NCviq/DiarTTVj7DsLckzrEJ1GuQtfo=;
- b=fYaPXWqnP6+CnNjMhKjFTuh9lXN+XL5QicoXN3kjRIXvj5fdkC0TY2xFucqEY9NS15
- /xkrrEN8DY5PFDUAxRUouwdZDCpD/+qepSZ+4mNGersDLZ/PLLV5mN+R1nWO5Ki1ljZR
- +P2DNYaFpjPsC7SlXlCzyTMbuq1a2Pnks0I0o5b3sW4ag6s+IfHKmmXDO4UjZP2ha1QO
- 2704B17DiLegMCGCD3FFE7XL29E2xWxt79VxWq+kg4BSBygfYarzXRPQHrRi/9BwX52B
- pUl27g7jV4CVG8PwdfENnUYrpaXdhDUDGEzL8DqhMq6EDjP4mDPuDHTjzekm82OYEzFf
- bF0g==
+ bh=ZQfRGRQVyJPekW6ejX/CWdupdE4Dg4Nz+X0zThatbog=;
+ b=YpiJnVtH1zSC4/diGZzMjvvHtakFeaLC0/mzUpRrmQa5FQm70TScs9wjNBvZYxXVon
+ PTTP8NhE08HbwS7ymsocIHhKKMS9o4cpUGSe5rs11kfBL7Ecw4b7vEO8FTTBszxHqc0K
+ 0EGuFmEjaAOuyls9tglQ3W3Dddmrgo9oPnLQx248rodApGd0gLk6HgOgkGRud0jDj3cT
+ 81TolzIKsLmnwaLrirMvBJvKeYRiGl+TuJ0KhlQ0i5CQW1b5oseZDLittORaWUihQyBo
+ cMmYcA+v2XD16GHPvFcHVUp4zJbZHzPXeJo68PmJr3D3TpMRo2tcVVtifOTmlJHfZOsg
+ RRvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698888834; x=1699493634;
+ d=1e100.net; s=20230601; t=1698888835; x=1699493635;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4omnBr4R3fX8NCviq/DiarTTVj7DsLckzrEJ1GuQtfo=;
- b=m4atGMFZ7bZAqOITFN4XtX+BJtTWRyVt3RVRYrDa9/X5y5evkXADI6JVOQj24f7qdt
- Ebgww7Mclr/Sfn4K4LRWG79mzJW1ATa66+PyUmPfCuRVHOPa9o3Ct6W/9+QYx6PUMeUP
- NCYGkkOiYT/xMBbssU0BxzN6cNNTijdjdLJ9yBtRJlvkRbdcu3MfsiX+BwapBSg3LCcd
- 97gts31WNAWADwKt0acqFlHNSJAzntxxX4E+LuCC8TlSsF9ntcy0lSgDDk1BTaAvj6LJ
- mn3LsTkDqGDrXw3+1CmwyhyShYaeFTpce+7HLuXQmlBLJRex93b2XAheYbH3/5baWMnh
- kXfQ==
-X-Gm-Message-State: AOJu0Yy1wvPvQcgU5jRNWEoxAl/fQCBDJzcBaMb19LkwDrqwWPaurFBE
- ollr6gEHezl/3mVOcP944Tk8HY6ZnmDc9aKEbVw=
-X-Google-Smtp-Source: AGHT+IE2SODdFY+G0+FWpFP/6S5CGAo53J9OKr5NVdJojlvgO0wy7d2WE1kaOJTB0xqa+TXWyZ0WRg==
-X-Received: by 2002:a17:903:2594:b0:1c6:117b:7086 with SMTP id
- jb20-20020a170903259400b001c6117b7086mr15205713plb.5.1698888834030; 
+ bh=ZQfRGRQVyJPekW6ejX/CWdupdE4Dg4Nz+X0zThatbog=;
+ b=L9G6RuvHNjwA1UfFnlw6ZZC0/SgbSdDtzUrZ4euZS47CFFmfJLcFmTJ30JtjPWVpiN
+ wOQWlZic5MQ/3udMWRLCDj2/5uu50f5+bJTurF6hHPvExuFe/FxpM/8bnQAQypumSAFy
+ MynbM5XcNLDDmHu2BorUrCRNDc+L/u2PwF1+qu6IqTjlZhkf6g8kGM9P+4RKoQ2OmrD/
+ TZl/k576P0peh8mg+aqkqYBajV6a+PvULyGTf6qRkvvMXk8En8lC8AEDtnXIC6omOOT1
+ sbkKfrqy1RsDVlliip+56J38wJyhfKlQhQ3B5R0QO2pNl4pUt8mkoN9WMw4fsMH5iaWJ
+ hW6w==
+X-Gm-Message-State: AOJu0YwNxav6hgpbOhhOpfEvNGcjwpYd8Kqn35jBOpZQkyTnOnlwNVyb
+ qYHbYqkoXS6KX2bMncwPK0BZc4p+zKDsgJENCxE=
+X-Google-Smtp-Source: AGHT+IFGGCqKKg2/bmm+oO/SRfHesjw4TwCbkxWPCfWGDMacRg6CsFS4MCuTpnUU2PIve2kQXhfdLA==
+X-Received: by 2002:a05:6a21:328c:b0:159:b4ba:a5bf with SMTP id
+ yt12-20020a056a21328c00b00159b4baa5bfmr17855351pzb.13.1698888834845; 
  Wed, 01 Nov 2023 18:33:54 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- t2-20020a1709027fc200b001a98f844e60sm1918125plb.263.2023.11.01.18.33.53
+ t2-20020a1709027fc200b001a98f844e60sm1918125plb.263.2023.11.01.18.33.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:33:53 -0700 (PDT)
+ Wed, 01 Nov 2023 18:33:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 40/88] target/hppa: Decode d for logical instructions
-Date: Wed,  1 Nov 2023 18:29:28 -0700
-Message-Id: <20231102013016.369010-41-richard.henderson@linaro.org>
+Subject: [PATCH v3 41/88] target/hppa: Decode d for unit instructions
+Date: Wed,  1 Nov 2023 18:29:29 -0700
+Message-Id: <20231102013016.369010-42-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,109 +92,141 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode | 10 ++++++----
- target/hppa/translate.c  | 15 +++++++--------
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ target/hppa/insns.decode | 14 +++++++-------
+ target/hppa/translate.c  | 25 ++++++++++++-------------
+ 2 files changed, 19 insertions(+), 20 deletions(-)
 
 diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index aebe03ccfd..26ca9f1063 100644
+index 26ca9f1063..03b1a11cac 100644
 --- a/target/hppa/insns.decode
 +++ b/target/hppa/insns.decode
-@@ -61,6 +61,7 @@
+@@ -59,7 +59,7 @@
+ # All insns that need to form a virtual address should use this set.
+ &ldst           t b x disp sp m scale size
  
- &rr_cf          t r cf
+-&rr_cf          t r cf
++&rr_cf_d        t r cf d
  &rrr_cf         t r1 r2 cf
-+&rrr_cf_d       t r1 r2 cf d
+ &rrr_cf_d       t r1 r2 cf d
  &rrr_cf_sh      t r1 r2 cf sh
- &rri_cf         t r i cf
- 
-@@ -73,6 +74,7 @@
- 
- @rr_cf          ...... r:5 ..... cf:4 ....... t:5       &rr_cf
- @rrr_cf         ...... r2:5 r1:5 cf:4 ....... t:5       &rrr_cf
-+@rrr_cf_d       ...... r2:5 r1:5 cf:4 ...... d:1 t:5    &rrr_cf_d
- @rrr_cf_sh      ...... r2:5 r1:5 cf:4 .... sh:2 . t:5   &rrr_cf_sh
- @rrr_cf_sh0     ...... r2:5 r1:5 cf:4 ....... t:5       &rrr_cf_sh sh=0
- @rri_cf         ...... r:5  t:5  cf:4 . ...........     &rri_cf i=%lowsign_11
-@@ -150,10 +152,10 @@ lci             000001 ----- ----- -- 01001100 0 t:5
- # Arith/Log
+@@ -72,7 +72,7 @@
+ # Format definitions
  ####
  
--andcm           000010 ..... ..... .... 000000 - .....  @rrr_cf
--and             000010 ..... ..... .... 001000 - .....  @rrr_cf
--or              000010 ..... ..... .... 001001 - .....  @rrr_cf
--xor             000010 ..... ..... .... 001010 0 .....  @rrr_cf
-+andcm           000010 ..... ..... .... 000000 . .....  @rrr_cf_d
-+and             000010 ..... ..... .... 001000 . .....  @rrr_cf_d
-+or              000010 ..... ..... .... 001001 . .....  @rrr_cf_d
-+xor             000010 ..... ..... .... 001010 . .....  @rrr_cf_d
- uxor            000010 ..... ..... .... 001110 0 .....  @rrr_cf
+-@rr_cf          ...... r:5 ..... cf:4 ....... t:5       &rr_cf
++@rr_cf_d        ...... r:5 ..... cf:4 ...... d:1 t:5    &rr_cf_d
+ @rrr_cf         ...... r2:5 r1:5 cf:4 ....... t:5       &rrr_cf
+ @rrr_cf_d       ...... r2:5 r1:5 cf:4 ...... d:1 t:5    &rrr_cf_d
+ @rrr_cf_sh      ...... r2:5 r1:5 cf:4 .... sh:2 . t:5   &rrr_cf_sh
+@@ -156,13 +156,13 @@ andcm           000010 ..... ..... .... 000000 . .....  @rrr_cf_d
+ and             000010 ..... ..... .... 001000 . .....  @rrr_cf_d
+ or              000010 ..... ..... .... 001001 . .....  @rrr_cf_d
+ xor             000010 ..... ..... .... 001010 . .....  @rrr_cf_d
+-uxor            000010 ..... ..... .... 001110 0 .....  @rrr_cf
++uxor            000010 ..... ..... .... 001110 . .....  @rrr_cf_d
  ds              000010 ..... ..... .... 010001 0 .....  @rrr_cf
  cmpclr          000010 ..... ..... .... 100010 0 .....  @rrr_cf
+-uaddcm          000010 ..... ..... .... 100110 0 .....  @rrr_cf
+-uaddcm_tc       000010 ..... ..... .... 100111 0 .....  @rrr_cf
+-dcor            000010 ..... 00000 .... 101110 0 .....  @rr_cf
+-dcor_i          000010 ..... 00000 .... 101111 0 .....  @rr_cf
++uaddcm          000010 ..... ..... .... 100110 . .....  @rrr_cf_d
++uaddcm_tc       000010 ..... ..... .... 100111 . .....  @rrr_cf_d
++dcor            000010 ..... 00000 .... 101110 . .....  @rr_cf_d
++dcor_i          000010 ..... 00000 .... 101111 . .....  @rr_cf_d
+ 
+ add             000010 ..... ..... .... 0110.. - .....  @rrr_cf_sh
+ add_l           000010 ..... ..... .... 1010.. 0 .....  @rrr_cf_sh
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 187d47f4c3..227d59b263 100644
+index 227d59b263..a0785bb32c 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -1405,11 +1405,10 @@ static void do_cmpclr(DisasContext *ctx, unsigned rt, TCGv_reg in1,
+@@ -1436,12 +1436,11 @@ static bool do_log_reg(DisasContext *ctx, arg_rrr_cf_d *a,
  }
  
- static void do_log(DisasContext *ctx, unsigned rt, TCGv_reg in1,
--                   TCGv_reg in2, unsigned cf,
-+                   TCGv_reg in2, unsigned cf, bool d,
-                    void (*fn)(TCGv_reg, TCGv_reg, TCGv_reg))
+ static void do_unit(DisasContext *ctx, unsigned rt, TCGv_reg in1,
+-                    TCGv_reg in2, unsigned cf, bool is_tc,
++                    TCGv_reg in2, unsigned cf, bool d, bool is_tc,
+                     void (*fn)(TCGv_reg, TCGv_reg, TCGv_reg))
  {
-     TCGv_reg dest = dest_gpr(ctx, rt);
+     TCGv_reg dest;
+     DisasCond cond;
 -    bool d = false;
  
-     /* Perform the operation, and writeback.  */
-     fn(dest, in1, in2);
-@@ -1422,7 +1421,7 @@ static void do_log(DisasContext *ctx, unsigned rt, TCGv_reg in1,
-     }
- }
- 
--static bool do_log_reg(DisasContext *ctx, arg_rrr_cf *a,
-+static bool do_log_reg(DisasContext *ctx, arg_rrr_cf_d *a,
-                        void (*fn)(TCGv_reg, TCGv_reg, TCGv_reg))
- {
-     TCGv_reg tcg_r1, tcg_r2;
-@@ -1432,7 +1431,7 @@ static bool do_log_reg(DisasContext *ctx, arg_rrr_cf *a,
-     }
-     tcg_r1 = load_gpr(ctx, a->r1);
-     tcg_r2 = load_gpr(ctx, a->r2);
--    do_log(ctx, a->t, tcg_r1, tcg_r2, a->cf, fn);
-+    do_log(ctx, a->t, tcg_r1, tcg_r2, a->cf, a->d, fn);
+     if (cf == 0) {
+         dest = dest_gpr(ctx, rt);
+@@ -2772,7 +2771,7 @@ static bool trans_cmpclr(DisasContext *ctx, arg_rrr_cf *a)
      return nullify_end(ctx);
  }
  
-@@ -2693,17 +2692,17 @@ static bool trans_sub_b_tsv(DisasContext *ctx, arg_rrr_cf *a)
-     return do_sub_reg(ctx, a, true, true, false);
+-static bool trans_uxor(DisasContext *ctx, arg_rrr_cf *a)
++static bool trans_uxor(DisasContext *ctx, arg_rrr_cf_d *a)
+ {
+     TCGv_reg tcg_r1, tcg_r2;
+ 
+@@ -2781,11 +2780,11 @@ static bool trans_uxor(DisasContext *ctx, arg_rrr_cf *a)
+     }
+     tcg_r1 = load_gpr(ctx, a->r1);
+     tcg_r2 = load_gpr(ctx, a->r2);
+-    do_unit(ctx, a->t, tcg_r1, tcg_r2, a->cf, false, tcg_gen_xor_reg);
++    do_unit(ctx, a->t, tcg_r1, tcg_r2, a->cf, a->d, false, tcg_gen_xor_reg);
+     return nullify_end(ctx);
  }
  
--static bool trans_andcm(DisasContext *ctx, arg_rrr_cf *a)
-+static bool trans_andcm(DisasContext *ctx, arg_rrr_cf_d *a)
+-static bool do_uaddcm(DisasContext *ctx, arg_rrr_cf *a, bool is_tc)
++static bool do_uaddcm(DisasContext *ctx, arg_rrr_cf_d *a, bool is_tc)
  {
-     return do_log_reg(ctx, a, tcg_gen_andc_reg);
+     TCGv_reg tcg_r1, tcg_r2, tmp;
+ 
+@@ -2796,21 +2795,21 @@ static bool do_uaddcm(DisasContext *ctx, arg_rrr_cf *a, bool is_tc)
+     tcg_r2 = load_gpr(ctx, a->r2);
+     tmp = tcg_temp_new();
+     tcg_gen_not_reg(tmp, tcg_r2);
+-    do_unit(ctx, a->t, tcg_r1, tmp, a->cf, is_tc, tcg_gen_add_reg);
++    do_unit(ctx, a->t, tcg_r1, tmp, a->cf, a->d, is_tc, tcg_gen_add_reg);
+     return nullify_end(ctx);
  }
  
--static bool trans_and(DisasContext *ctx, arg_rrr_cf *a)
-+static bool trans_and(DisasContext *ctx, arg_rrr_cf_d *a)
+-static bool trans_uaddcm(DisasContext *ctx, arg_rrr_cf *a)
++static bool trans_uaddcm(DisasContext *ctx, arg_rrr_cf_d *a)
  {
-     return do_log_reg(ctx, a, tcg_gen_and_reg);
+     return do_uaddcm(ctx, a, false);
  }
  
--static bool trans_or(DisasContext *ctx, arg_rrr_cf *a)
-+static bool trans_or(DisasContext *ctx, arg_rrr_cf_d *a)
+-static bool trans_uaddcm_tc(DisasContext *ctx, arg_rrr_cf *a)
++static bool trans_uaddcm_tc(DisasContext *ctx, arg_rrr_cf_d *a)
  {
-     if (a->cf == 0) {
-         unsigned r2 = a->r2;
-@@ -2755,7 +2754,7 @@ static bool trans_or(DisasContext *ctx, arg_rrr_cf *a)
-     return do_log_reg(ctx, a, tcg_gen_or_reg);
+     return do_uaddcm(ctx, a, true);
  }
  
--static bool trans_xor(DisasContext *ctx, arg_rrr_cf *a)
-+static bool trans_xor(DisasContext *ctx, arg_rrr_cf_d *a)
+-static bool do_dcor(DisasContext *ctx, arg_rr_cf *a, bool is_i)
++static bool do_dcor(DisasContext *ctx, arg_rr_cf_d *a, bool is_i)
  {
-     return do_log_reg(ctx, a, tcg_gen_xor_reg);
+     TCGv_reg tmp;
+ 
+@@ -2821,19 +2820,19 @@ static bool do_dcor(DisasContext *ctx, arg_rr_cf *a, bool is_i)
+     if (!is_i) {
+         tcg_gen_not_reg(tmp, tmp);
+     }
+-    tcg_gen_andi_reg(tmp, tmp, 0x11111111);
++    tcg_gen_andi_reg(tmp, tmp, (target_ureg)0x1111111111111111ull);
+     tcg_gen_muli_reg(tmp, tmp, 6);
+-    do_unit(ctx, a->t, load_gpr(ctx, a->r), tmp, a->cf, false,
++    do_unit(ctx, a->t, load_gpr(ctx, a->r), tmp, a->cf, a->d, false,
+             is_i ? tcg_gen_add_reg : tcg_gen_sub_reg);
+     return nullify_end(ctx);
+ }
+ 
+-static bool trans_dcor(DisasContext *ctx, arg_rr_cf *a)
++static bool trans_dcor(DisasContext *ctx, arg_rr_cf_d *a)
+ {
+     return do_dcor(ctx, a, false);
+ }
+ 
+-static bool trans_dcor_i(DisasContext *ctx, arg_rr_cf *a)
++static bool trans_dcor_i(DisasContext *ctx, arg_rr_cf_d *a)
+ {
+     return do_dcor(ctx, a, true);
  }
 -- 
 2.34.1
