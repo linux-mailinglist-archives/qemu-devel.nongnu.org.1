@@ -2,70 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EAA7DF4A2
+	by mail.lfdr.de (Postfix) with ESMTPS id B48287DF4A3
 	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:11:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyYPZ-0007pG-92; Thu, 02 Nov 2023 10:11:05 -0400
+	id 1qyYPp-00084p-LK; Thu, 02 Nov 2023 10:11:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyYPX-0007oL-Sr
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:11:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qyYPk-00083Y-4f; Thu, 02 Nov 2023 10:11:16 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyYPW-0005si-74
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:11:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698934261;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Crl62ADJ0uoEpbVHG3l3MIlFa/mnlR9JP+TsBeqPwfk=;
- b=D7y3d5Cy7S/B9nMP8y9fi+O8lgDToLqgo3DVIUfT8SWJi3tkv2Oi3xeG+Pi+TxVU8DZTKB
- HTz/nKD7dGG5sAGtffFvP9EEseTlBh+XnCQstSGNjwkalnrrLAjhigPBUpgyJDe1Xabmw1
- Jcrl+3/S8Xlgdu2a87qhSddI+PF2MQ8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-l-ISniKIOJSlCy_ej57rqg-1; Thu,
- 02 Nov 2023 10:10:55 -0400
-X-MC-Unique: l-ISniKIOJSlCy_ej57rqg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A0181C05193;
- Thu,  2 Nov 2023 14:10:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.195.34])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E66E02026D4C;
- Thu,  2 Nov 2023 14:10:53 +0000 (UTC)
-Date: Thu, 2 Nov 2023 15:10:52 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Michal Privoznik <mprivozn@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2 0/2] virtio-blk: add iothread-vq-mapping parameter
-Message-ID: <ZUOt7G+xdnLOBR5S@redhat.com>
-References: <20230918161604.1400051-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qyYPh-0005tn-CK; Thu, 02 Nov 2023 10:11:15 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 9E8E72FC71;
+ Thu,  2 Nov 2023 17:11:16 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1721732EE9;
+ Thu,  2 Nov 2023 17:11:09 +0300 (MSK)
+Message-ID: <2b923514-623c-4154-aa7f-b84937db8974@tls.msk.ru>
+Date: Thu, 2 Nov 2023 17:11:09 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230918161604.1400051-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: -drive if=none: can't we make this the default?
+Content-Language: en-US
+To: Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>, "Daniel P. Berrange"
+ <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+ <e3bb64a2-fb72-4e8d-a0b2-89ee35365fb3@tls.msk.ru>
+ <ZUFK/BHG2WMhAiWG@redhat.com>
+ <CAFEAcA_6nPW2f0+zvtYAg6d7ZJJMLxqFzNOyDY0wLgVFNcoahw@mail.gmail.com>
+ <ZUN9SZ6VkvLHWNXs@redhat.com>
+ <CAFEAcA8hssUvz8kb4VYXNZSyrQhRyo+=AebA-hskm64bmhG-MA@mail.gmail.com>
+ <ZUOs7j823+a6FBD2@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <ZUOs7j823+a6FBD2@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,50 +67,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 18.09.2023 um 18:16 hat Stefan Hajnoczi geschrieben:
-> virtio-blk and virtio-scsi devices need a way to specify the mapping between
-> IOThreads and virtqueues. At the moment all virtqueues are assigned to a single
-> IOThread or the main loop. This single thread can be a CPU bottleneck, so it is
-> necessary to allow finer-grained assignment to spread the load. With this
-> series applied, "pidstat -t 1" shows that guests with -smp 2 or higher are able
-> to exploit multiple IOThreads.
+02.11.2023 17:06, Kevin Wolf:
+> Am 02.11.2023 um 12:01 hat Peter Maydell geschrieben:
+>> Whoops, have I got the terminology wrong again? To me these are
+>> "snapshots" (they do store the whole VM state including the current
+>> state of the disk, and "qemu-img info" lists them as "snapshots"),
+>> whereas I never use the '-snapshot' option, so I never remember
+>> that we have two different things here. Sorry for introducing
+>> confusion :-(
 > 
-> This series introduces command-line syntax for the new iothread-vq-mapping
-> property is as follows:
-> 
->   --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0","vqs":[0,1,2]},...]},...'
-> 
-> IOThreads are specified by name and virtqueues are specified by 0-based
-> index.
-> 
-> It will be common to simply assign virtqueues round-robin across a set
-> of IOThreads. A convenient syntax that does not require specifying
-> individual virtqueue indices is available:
-> 
->   --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"},...]},...'
-> 
-> There is no way to reassign virtqueues at runtime and I expect that to be a
-> very rare requirement.
-> 
-> Note that JSON --device syntax is required for the iothread-vq-mapping
-> parameter because it's non-scalar.
-> 
-> Based-on: 20230912231037.826804-1-stefanha@redhat.com ("[PATCH v3 0/5] block-backend: process I/O in the current AioContext")
+> It is confusing, -snapshot really doesn't have the best name.
 
-Does this strictly depend on patch 5/5 of that series, or would it just
-be a missed opportunity for optimisation by unnecessarily running some
-requests from a different thread?
+Can we use -ephemeral for this?
 
-I suspect it does depend on the other virtio-blk series, though:
-
-[PATCH 0/4] virtio-blk: prepare for the multi-queue block layer
-https://patchew.org/QEMU/20230914140101.1065008-1-stefanha@redhat.com/
-
-Is this right?
-
-Given that soft freeze is early next week, maybe we should try to merge
-just the bare minimum of strictly necessary dependencies.
-
-Kevin
-
+/mjt
 
