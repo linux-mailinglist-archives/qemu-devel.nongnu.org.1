@@ -2,91 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D736D7DEE15
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 09:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CCA7DEE28
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 09:28:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qySsv-0004MR-B7; Thu, 02 Nov 2023 04:17:01 -0400
+	id 1qyT31-0007j2-TW; Thu, 02 Nov 2023 04:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qySss-0004Lf-Kg
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 04:16:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qyT2y-0007i6-4O
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 04:27:24 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qySsi-0007MA-93
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 04:16:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698913005;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=jaVjapOY9rl5GKxOKF8u5zLmvAQkMeicDz8SAsNacyM=;
- b=bL5qoWUeGtBgKRM0LdMAOtTlyww4RL+vbHaJOZ9hp/ChNrQ2XTaruG0cN/1yBfhx9OShXh
- Y9uAfe0xiEtdvGPoxmXeYw2Dpr2eZluWfVxQM4mZeCecuvEb1uSCJ6kbABu8rl089hnPQl
- mflnA709bLRsjnyIdiS1Tphvqn1F7fI=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-cHH2JHZEOaGBvQjAwvVztw-1; Thu, 02 Nov 2023 04:16:44 -0400
-X-MC-Unique: cHH2JHZEOaGBvQjAwvVztw-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-28035cf4306so1460324a91.0
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 01:16:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698913003; x=1699517803;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jaVjapOY9rl5GKxOKF8u5zLmvAQkMeicDz8SAsNacyM=;
- b=v54u4FmwvEzlu9tTyu2GGcCgiMkb9+fZp6yGqgrEXMSwAWgLULLhsbYcjv1ydaF39/
- tb21b78McWV6qu0XY/nfmIp9o7KtJT3JMjWNH8PKWOQR7RvbKTZGhH+qXzDOhUSbB1oy
- GXdRdrypgQrQejdxmsmr7BOjpdj7gc6ayFmqRk0p/QTn60UDoU4CqyuMrCX4J85Rjt89
- CjoHpdB6QfbPapnGv5TKYj5QLVn3slvdNv+6UMjGc+zMSEK67CkLNT9YGbr5omqtElQw
- eo+Eg69Xpf8IRxjky88YZKdOWRhUHEZEfGQkrs5Zx6+S1Ht7xwkFTE6d7rWJMg4cNPtx
- aoHg==
-X-Gm-Message-State: AOJu0Yyggnjv0tbDnDOg02ke4rqUFpl/JmcNVJm7zPd41F05u35l2na/
- Mtv0lW15aXaXUM+p/kLdQoShvHZIFKrgHcIwm4qME6PQ6ajwSMK2RHkmtfHzZdXRRScZDtvy9xK
- 4DiQOHYQ5sfzjkic=
-X-Received: by 2002:a17:90a:df06:b0:280:23e1:e4dd with SMTP id
- gp6-20020a17090adf0600b0028023e1e4ddmr11198099pjb.17.1698913003431; 
- Thu, 02 Nov 2023 01:16:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHa4QQjHC0F2HH1GmRqKcCfm7KZB3qTpRkBb+LvXiOuSDw+E5yUzC/+sJW8lRXzFCSiwrGuSQ==
-X-Received: by 2002:a17:90a:df06:b0:280:23e1:e4dd with SMTP id
- gp6-20020a17090adf0600b0028023e1e4ddmr11198084pjb.17.1698913003118; 
- Thu, 02 Nov 2023 01:16:43 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.120.135])
- by smtp.googlemail.com with ESMTPSA id
- 28-20020a17090a195c00b00263b9e75aecsm2125541pjh.41.2023.11.02.01.16.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 01:16:42 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Cc: peter.maydell@linaro.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH] tests/acpi/bios-tables-test: do not write new blobs unless
- there are changes
-Date: Thu,  2 Nov 2023 13:46:24 +0530
-Message-ID: <20231102081624.25229-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qyT2v-0001UQ-FU
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 04:27:23 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0f:4c13:0:640:3c7:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id C904C612A4;
+ Thu,  2 Nov 2023 11:27:16 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8005::1:a] (unknown
+ [2a02:6b8:b081:8005::1:a])
+ by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id ERSIAmGOkGk0-RjEtkciV; Thu, 02 Nov 2023 11:27:16 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1698913636;
+ bh=YJg0LJL5LqTgqm3x70PtdBzME7xxgHT/iSMldeX97ak=;
+ h=In-Reply-To:Cc:Date:References:To:From:Subject:Message-ID;
+ b=aHwGNF9x6VZVhz7WTcpH4MV9daAtBafYlLvTwQu5U3C2J/b02TwLJCjrSSl55m8OS
+ e+5PTHs9RbHrrDNrw9oErcklls0f18ZJTSz4Pc+8Q2vF3zOpFDnSgpslNKebYWncsI
+ TUYwiHg++H2MStlZkUej8nhqw7l/xC4bDM7FK7nE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <6bd19a07-5224-464d-b54d-1d738f5ba8f7@yandex-team.ru>
+Date: Thu, 2 Nov 2023 11:27:14 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/4] pci hotplug tracking
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-devel@nongnu.org
+Cc: armbru@redhat.com, eblake@redhat.com, eduardo@habkost.net,
+ berrange@redhat.com, pbonzini@redhat.com, marcel.apfelbaum@gmail.com,
+ mst@redhat.com, philmd@linaro.org, den-plotnikov@yandex-team.ru,
+ yc-core@yandex-team.ru, mlevitsk@redhat.com,
+ Viktor Danilov <zaglossus@yandex-team.ru>, ds-gavr@yandex-team.ru,
+ Peter Krempa <pkrempa@redhat.com>, nshirokovskiy@openvz.org,
+ devel@lists.libvirt.org
+References: <20231005092926.56231-1-vsementsov@yandex-team.ru>
+ <880f6360-ca45-48de-b092-780f176988e0@yandex-team.ru>
+In-Reply-To: <880f6360-ca45-48de-b092-780f176988e0@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -98,75 +81,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When dumping table blobs using rebuild-expected-aml.sh, table blobs from all
-test variants are dumped regardless of whether there are any actual changes to
-the tables or not. This creates lot of new files for various test variants that
-are not part of the git repository. This is because we do not check in all table
-blobs for all test variants into the repository. Only those blobs for those
-variants that are different from the generic test-variant agnostic blob are
-checked in.
+[cc Peter, Nikolay and libvirt list]
 
-This change makes the test smarter by checking if at all there are any changes
-in the tables from the checked-in gold master blobs. If there are no changes,
-no new files are written for test variants. However, existing files continue
-to be overwritten regardless of whether there are changes. Hence, new files
-will be generated only when there are actual changes in the tables.
-This would make analyzing changes to tables less confusing and there would
-be no need to clean useless untracked files when there are no table changes.
+On 02.11.23 11:06, Vladimir Sementsov-Ogievskiy wrote:
+> Ping.
+> 
+> And some addition. We have the case, when the commit
+> 
+> commit 7bed89958bfbf40df9ca681cefbdca63abdde39d
+> Author: Maxim Levitsky <mlevitsk@redhat.com>
+> Date:   Tue Oct 6 14:38:58 2020 +0200
+> 
+>      device_core: use drain_call_rcu in in qmp_device_add
+>      Soon, a device removal might only happen on RCU callback execution.
+>      This is okay for device-del which provides a DEVICE_DELETED event,
+>      but not for the failure case of device-add.  To avoid changing
+>      monitor semantics, just drain all pending RCU callbacks on error.
+> 
+> sensibly slows down vm initialization (several calls to device_add of pc-dimm).
+> 
+> And looking at commit message, I see that what I do in the series is exactly a suggestion to change monitor semantics.
+> 
+> What do you think?
+> 
+> Maybe we need a boolean "async" parameter for device_add, which will turn off drain_call_rcu() call and rely on user to handle DEVICE_ON?
+> 
+> On 05.10.23 12:29, Vladimir Sementsov-Ogievskiy wrote:
+>> Hi all!
+>>
+>> Main thing this series does is DEVICE_ON event - a counter-part to
+>> DEVICE_DELETED. A guest-driven event that device is powered-on.
+>> Details are in patch 2. The new event is paried with corresponding
+>> command query-hotplug.
+>>
+>>
+>> v8:
+>>   - improve naming, wording and style
+>>   - make new QMP interface experimental
+>>
+>>
+>> Vladimir Sementsov-Ogievskiy (4):
+>>    qapi/qdev.json: unite DEVICE_* event data into single structure
+>>    qapi: add DEVICE_ON and query-hotplug infrastructure
+>>    shpc: implement DEVICE_ON event and query-hotplug
+>>    pcie: implement DEVICE_ON event and query-hotplug
+>>
+>>   hw/core/hotplug.c               |  12 +++
+>>   hw/pci-bridge/pci_bridge_dev.c  |  14 +++
+>>   hw/pci-bridge/pcie_pci_bridge.c |   1 +
+>>   hw/pci/pcie.c                   |  83 +++++++++++++++
+>>   hw/pci/pcie_port.c              |   1 +
+>>   hw/pci/shpc.c                   |  86 +++++++++++++++
+>>   include/hw/hotplug.h            |  11 ++
+>>   include/hw/pci/pci_bridge.h     |   2 +
+>>   include/hw/pci/pcie.h           |   2 +
+>>   include/hw/pci/shpc.h           |   2 +
+>>   include/hw/qdev-core.h          |   7 ++
+>>   include/monitor/qdev.h          |   6 ++
+>>   qapi/qdev.json                  | 178 +++++++++++++++++++++++++++++---
+>>   softmmu/qdev-monitor.c          |  58 +++++++++++
+>>   14 files changed, 451 insertions(+), 12 deletions(-)
+>>
+> 
 
-CC: peter.maydell@linaro.org
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- tests/qtest/bios-tables-test.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 9f4bc15aab..743b509e93 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -109,6 +109,7 @@ static const char *iasl;
- #endif
- 
- static int verbosity_level;
-+static GArray *load_expected_aml(test_data *data);
- 
- static bool compare_signature(const AcpiSdtTable *sdt, const char *signature)
- {
-@@ -241,21 +242,32 @@ static void test_acpi_fadt_table(test_data *data)
- 
- static void dump_aml_files(test_data *data, bool rebuild)
- {
--    AcpiSdtTable *sdt;
-+    AcpiSdtTable *sdt, *exp_sdt;
-     GError *error = NULL;
-     gchar *aml_file = NULL;
-+    test_data exp_data = {};
-     gint fd;
-     ssize_t ret;
-     int i;
- 
-+    exp_data.tables = load_expected_aml(data);
-     for (i = 0; i < data->tables->len; ++i) {
-         const char *ext = data->variant ? data->variant : "";
-         sdt = &g_array_index(data->tables, AcpiSdtTable, i);
-+        exp_sdt = &g_array_index(exp_data.tables, AcpiSdtTable, i);
-         g_assert(sdt->aml);
-+        g_assert(exp_sdt->aml);
- 
-         if (rebuild) {
-             aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
-                                        sdt->aml, ext);
-+            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
-+                sdt->aml_len == exp_sdt->aml_len &&
-+                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
-+                /* identical tables, no need to write new files */
-+                g_free(aml_file);
-+                continue;
-+            }
-             fd = g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
-                         S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
-             if (fd < 0) {
 -- 
-2.42.0
+Best regards,
+Vladimir
 
 
