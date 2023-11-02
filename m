@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7F07DF8F3
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4057DF8E6
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:40:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybet-0003NB-IB; Thu, 02 Nov 2023 13:39:11 -0400
+	id 1qybfF-0003P8-Pl; Thu, 02 Nov 2023 13:39:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybea-0003CO-85
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:48 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qybeb-0003Cu-R6
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:50 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeU-0002iE-TX
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:47 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40838915cecso8911325e9.2
+ id 1qybeW-0002iH-0T
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:48 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-32f7c80ab33so705189f8f.0
  for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698946721; x=1699551521; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SskojryoeBaNET044RrLqzmul/SzDPe7Qrix3P3iV6A=;
- b=Lbw99UXgBzx1zpvzWitOWqHZJjOmtArgBnQ2+bkllEYdrCEF3xFxtC2TvZ66iS8LXs
- TRQLPztT1eYq8NpnbCQ2wH65d8tgjeISOXzWPwpfaWU6rDUtH+XVAAjCqTz5XrGGfJvD
- Wcrh1jIyyGUcOnxyIBSiB8654x/M28x1lQHQZIkdZTz7oG70zBBGJ0LmUFb3Z8ZKbjLg
- dZxgU1fbYWI5C1fDgnD+PPTWGe6Tzc+s4Hkss1b98NCco3oAUmeuAx33lIixG3ngjpt6
- vWMFbA2GoLSVCB1j/XI3b/BRd8JmgYA+LmvxaHSeFlj7sPyDuDtSCGPZjkp2tsOZFryT
- 74Iw==
+ :reply-to; bh=ec1nL91WJ0scl8pDrGtNON2/Nq+ssKE+wY9dEhgeD6s=;
+ b=a64F95qO6pEWsNMWNdswO+5Cbn3Nf63SmbOiJ7eKaPi5ROY/WuIEap35Hottj4zInN
+ aeBuyg/YR3Uew+xcRBU3pNqW1LSiw1a4/jxmfkfebbtAi0ipdHsD8rdpIUbDnNAW5i88
+ +Eie9qhvh1Bx0jR7/8ngc1oUtos7iqGiWdA8DJ2FeIYkRnolu7ExoDTuFpBZnXBkzVmU
+ GZFpHhVNHJLPATlTBcvPZigb79aR+zXJwHA1JZ7Mv5DToTB5oOGt3p23HA46T5yxFSlP
+ f88MVdQw/7g/PS7SapfXh47my0Q4wo0b4tHrOFsPyrALIFk5ogXEa9kMMKySrbhula/I
+ KyZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698946721; x=1699551521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SskojryoeBaNET044RrLqzmul/SzDPe7Qrix3P3iV6A=;
- b=YzsTIh2L5wZDOnHlzItfC+Oo11S2wArJZUhYN/USL/Wr8P0Dfuu0GOv5DAWHKDCqOM
- IfW832mZERTrO8z+swcMTOhXErMo+0+tv5xrN+Xh4IiEWReq43KosQ7vm9E818piDJHT
- xoFgq4ckZWzQt5HSyk/NVaJBetRAClxAFyJidgdWeKffSdNvcD8boeXhGJavrhq57Ok6
- f69VdwrrgCF31VNHUbEQY+Y+e0Gmmt8/7n5HB9hN38jfIAGorRvnpg0eFj1Zx7a4Nb4E
- /EyoP11i75CSgFcmGzQE9wigUlpijbhcATuubOWlzeD4pVpkG50pGDC4pbuQibgSLkq8
- oa2A==
-X-Gm-Message-State: AOJu0YxTydS8QljPGNK8q59pqeg/XZRY4HDvtA3shu9TSpF8ARUUz5vX
- TMNi6l7WSmwdm0Vx2eUFPQ5e9UVZ9tNcnBM8/zE=
-X-Google-Smtp-Source: AGHT+IGtAXTiO4wS30k67dFUqasx8CGp7uxI+7zmzOgtCpIJTb1K7mMszC0W997h+8XjNtDL32kvQg==
-X-Received: by 2002:a05:600c:5250:b0:409:5a92:4718 with SMTP id
- fc16-20020a05600c525000b004095a924718mr4542905wmb.36.1698946721228; 
+ bh=ec1nL91WJ0scl8pDrGtNON2/Nq+ssKE+wY9dEhgeD6s=;
+ b=qZ4fCaMCO/gsep68nYy7u1dVipP5gl/DG9dDTqC/hmy78teHLgIIvy5FCRmOeGPhsH
+ n8bD/mPumYbdgA8Pkscfi98PaXA5iTT9nz66n1rAuH/XzeLM/beMuzy0DmPLPCkUK4MS
+ Va8u51PMREvF+NX08xs7tr/Sb6nX76HCcbTeISOZN9imkbfi0c2pZOG4oOeogLhU5F7o
+ 3TohvI/6xHby7tH3G6HNFDuXDTqum/fhh/nnF6TOt/dB+hsd38M110fdx3MOwiIOqjv1
+ bQRDEr/nsxgcHGTVYD4Mp2Xo/v8qLh8npml63/ylDViD70jh9sn0ccJdpKoICSMVo8tE
+ g5Tg==
+X-Gm-Message-State: AOJu0YyNoR22sM2LE7y0fDwlsdgfs3j5cc6oIZqtQ/ZvgA6jruMNGVRU
+ RO+mEJll1QPeGX5drcz3lAj9ALQtr80sarDuCGE=
+X-Google-Smtp-Source: AGHT+IHAzRs+Ku+JlRxnD8P+oMJZwSuBlTJhHqGji9X0Q/UCyT9bvseo/bsulfspekPgwWjeUyI4sw==
+X-Received: by 2002:a5d:64ad:0:b0:32f:7867:11b with SMTP id
+ m13-20020a5d64ad000000b0032f7867011bmr16504117wrp.29.1698946721678; 
  Thu, 02 Nov 2023 10:38:41 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.40
+ e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 10:38:40 -0700 (PDT)
+ Thu, 02 Nov 2023 10:38:41 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/33] docs/specs/vmw_pvscsi-spec: Convert to rST
-Date: Thu,  2 Nov 2023 17:38:10 +0000
-Message-Id: <20231102173835.609985-9-peter.maydell@linaro.org>
+Subject: [PULL 09/33] docs/specs/edu: Convert to rST
+Date: Thu,  2 Nov 2023 17:38:11 +0000
+Message-Id: <20231102173835.609985-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,262 +90,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the docs/specs/vmw_pvscsi-spec.txt file to rST format.
-This conversion includes some minor wordsmithing of the text
-to fix some grammar nits.
+Convert docs/specs/edu.txt to rST format.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20230927151205.70930-2-peter.maydell@linaro.org
+Message-id: 20230927151205.70930-3-peter.maydell@linaro.org
 ---
- MAINTAINERS                    |   1 +
- docs/specs/index.rst           |   1 +
- docs/specs/vmw_pvscsi-spec.rst | 115 +++++++++++++++++++++++++++++++++
- docs/specs/vmw_pvscsi-spec.txt |  92 --------------------------
- 4 files changed, 117 insertions(+), 92 deletions(-)
- create mode 100644 docs/specs/vmw_pvscsi-spec.rst
- delete mode 100644 docs/specs/vmw_pvscsi-spec.txt
+ MAINTAINERS                     |  1 +
+ docs/specs/{edu.txt => edu.rst} | 84 ++++++++++++++++++++-------------
+ docs/specs/index.rst            |  1 +
+ 3 files changed, 54 insertions(+), 32 deletions(-)
+ rename docs/specs/{edu.txt => edu.rst} (64%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 018ed62560f..73ec940bea0 100644
+index 73ec940bea0..8e10bd085ff 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2350,6 +2350,7 @@ S: Maintained
- F: hw/net/vmxnet*
- F: hw/scsi/vmw_pvscsi*
- F: tests/qtest/vmxnet3-test.c
-+F: docs/specs/vwm_pvscsi-spec.rst
+@@ -1882,6 +1882,7 @@ EDU
+ M: Jiri Slaby <jslaby@suse.cz>
+ S: Maintained
+ F: hw/misc/edu.c
++F: docs/specs/edu.rst
  
- Rocker
- M: Jiri Pirko <jiri@resnulli.us>
+ IDE
+ M: John Snow <jsnow@redhat.com>
+diff --git a/docs/specs/edu.txt b/docs/specs/edu.rst
+similarity index 64%
+rename from docs/specs/edu.txt
+rename to docs/specs/edu.rst
+index 08763108099..ae72737dbb4 100644
+--- a/docs/specs/edu.txt
++++ b/docs/specs/edu.rst
+@@ -2,9 +2,10 @@
+ EDU device
+ ==========
+ 
+-Copyright (c) 2014-2015 Jiri Slaby
++..
++   Copyright (c) 2014-2015 Jiri Slaby
+ 
+-This document is licensed under the GPLv2 (or later).
++   This document is licensed under the GPLv2 (or later).
+ 
+ This is an educational device for writing (kernel) drivers. Its original
+ intention was to support the Linux kernel lectures taught at the Masaryk
+@@ -15,10 +16,11 @@ The devices behaves very similar to the PCI bridge present in the COMBO6 cards
+ developed under the Liberouter wings. Both PCI device ID and PCI space is
+ inherited from that device.
+ 
+-Command line switches:
+-    -device edu[,dma_mask=mask]
++Command line switches
++---------------------
+ 
+-    dma_mask makes the virtual device work with DMA addresses with the given
++``-device edu[,dma_mask=mask]``
++    ``dma_mask`` makes the virtual device work with DMA addresses with the given
+     mask. For educational purposes, the device supports only 28 bits (256 MiB)
+     by default. Students shall set dma_mask for the device in the OS driver
+     properly.
+@@ -26,7 +28,8 @@ Command line switches:
+ PCI specs
+ ---------
+ 
+-PCI ID: 1234:11e8
++PCI ID:
++   ``1234:11e8``
+ 
+ PCI Region 0:
+    I/O memory, 1 MB in size. Users are supposed to communicate with the card
+@@ -35,24 +38,29 @@ PCI Region 0:
+ MMIO area spec
+ --------------
+ 
+-Only size == 4 accesses are allowed for addresses < 0x80. size == 4 or
+-size == 8 for the rest.
++Only ``size == 4`` accesses are allowed for addresses ``< 0x80``.
++``size == 4`` or ``size == 8`` for the rest.
+ 
+-0x00 (RO) : identification (0xRRrr00edu)
+-	    RR -- major version
+-	    rr -- minor version
++0x00 (RO) : identification
++            Value is in the form ``0xRRrr00edu`` where:
++	    - ``RR`` -- major version
++	    - ``rr`` -- minor version
+ 
+ 0x04 (RW) : card liveness check
+-	    It is a simple value inversion (~ C operator).
++	    It is a simple value inversion (``~`` C operator).
+ 
+ 0x08 (RW) : factorial computation
+ 	    The stored value is taken and factorial of it is put back here.
+ 	    This happens only after factorial bit in the status register (0x20
+ 	    below) is cleared.
+ 
+-0x20 (RW) : status register, bitwise OR
+-	    0x01 -- computing factorial (RO)
+-	    0x80 -- raise interrupt after finishing factorial computation
++0x20 (RW) : status register
++            Bitwise OR of:
++
++            0x01
++              computing factorial (RO)
++	    0x80
++              raise interrupt after finishing factorial computation
+ 
+ 0x24 (RO) : interrupt status register
+ 	    It contains values which raised the interrupt (see interrupt raise
+@@ -76,13 +84,19 @@ size == 8 for the rest.
+ 0x90 (RW) : DMA transfer count
+ 	    The size of the area to perform the DMA on.
+ 
+-0x98 (RW) : DMA command register, bitwise OR
+-	    0x01 -- start transfer
+-	    0x02 -- direction (0: from RAM to EDU, 1: from EDU to RAM)
+-	    0x04 -- raise interrupt 0x100 after finishing the DMA
++0x98 (RW) : DMA command register
++            Bitwise OR of:
++
++            0x01
++              start transfer
++	    0x02
++              direction (0: from RAM to EDU, 1: from EDU to RAM)
++	    0x04
++              raise interrupt 0x100 after finishing the DMA
+ 
+ IRQ controller
+ --------------
++
+ An IRQ is generated when written to the interrupt raise register. The value
+ appears in interrupt status register when the interrupt is raised and has to
+ be written to the interrupt acknowledge register to lower it.
+@@ -94,22 +108,28 @@ routine.
+ 
+ DMA controller
+ --------------
++
+ One has to specify, source, destination, size, and start the transfer. One
+ 4096 bytes long buffer at offset 0x40000 is available in the EDU device. I.e.
+ one can perform DMA to/from this space when programmed properly.
+ 
+ Example of transferring a 100 byte block to and from the buffer using a given
+-PCI address 'addr':
+-addr     -> DMA source address
+-0x40000  -> DMA destination address
+-100      -> DMA transfer count
+-1        -> DMA command register
+-while (DMA command register & 1)
+-	;
++PCI address ``addr``:
+ 
+-0x40000  -> DMA source address
+-addr+100 -> DMA destination address
+-100      -> DMA transfer count
+-3        -> DMA command register
+-while (DMA command register & 1)
+-	;
++::
++
++  addr     -> DMA source address
++  0x40000  -> DMA destination address
++  100      -> DMA transfer count
++  1        -> DMA command register
++  while (DMA command register & 1)
++      ;
++
++::
++
++  0x40000  -> DMA source address
++  addr+100 -> DMA destination address
++  100      -> DMA transfer count
++  3        -> DMA command register
++  while (DMA command register & 1)
++      ;
 diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index e58be38c41c..d23efbe2480 100644
+index d23efbe2480..30a0cf3d47e 100644
 --- a/docs/specs/index.rst
 +++ b/docs/specs/index.rst
-@@ -24,3 +24,4 @@ guest hardware that is specific to QEMU.
-    acpi_erst
+@@ -25,3 +25,4 @@ guest hardware that is specific to QEMU.
     sev-guest-firmware
     fw_cfg
-+   vmw_pvscsi-spec
-diff --git a/docs/specs/vmw_pvscsi-spec.rst b/docs/specs/vmw_pvscsi-spec.rst
-new file mode 100644
-index 00000000000..b6f434a4187
---- /dev/null
-+++ b/docs/specs/vmw_pvscsi-spec.rst
-@@ -0,0 +1,115 @@
-+==============================
-+VMWare PVSCSI Device Interface
-+==============================
-+
-+..
-+   Created by Dmitry Fleytman (dmitry@daynix.com), Daynix Computing LTD.
-+
-+This document describes the VMWare PVSCSI device interface specification,
-+based on the source code of the PVSCSI Linux driver from kernel 3.0.4.
-+
-+Overview
-+========
-+
-+The interface is based on a memory area shared between hypervisor and VM.
-+The memory area is obtained by driver as a device IO memory resource of
-+``PVSCSI_MEM_SPACE_SIZE`` length.
-+The shared memory consists of a registers area and a rings area.
-+The registers area is used to raise hypervisor interrupts and issue device
-+commands. The rings area is used to transfer data descriptors and SCSI
-+commands from VM to hypervisor and to transfer messages produced by
-+hypervisor to VM. Data itself is transferred via virtual scatter-gather DMA.
-+
-+PVSCSI Device Registers
-+=======================
-+
-+The length of the registers area is 1 page
-+(``PVSCSI_MEM_SPACE_COMMAND_NUM_PAGES``).  The structure of the
-+registers area is described by the ``PVSCSIRegOffset`` enum.  There
-+are registers to issue device commands (with optional short data),
-+issue device interrupts, and control interrupt masking.
-+
-+PVSCSI Device Rings
-+===================
-+
-+There are three rings in shared memory:
-+
-+Request ring (``struct PVSCSIRingReqDesc *req_ring``)
-+    ring for OS to device requests
-+
-+Completion ring (``struct PVSCSIRingCmpDesc *cmp_ring``)
-+    ring for device request completions
-+
-+Message ring (``struct PVSCSIRingMsgDesc *msg_ring``)
-+    ring for messages from device. This ring is optional and the
-+    guest might not configure it.
-+
-+There is a control area (``struct PVSCSIRingsState *rings_state``)
-+used to control rings operation.
-+
-+PVSCSI Device to Host Interrupts
-+================================
-+
-+The following interrupt types are supported by the PVSCSI device:
-+
-+Completion interrupts (completion ring notifications):
-+
-+- ``PVSCSI_INTR_CMPL_0``
-+- ``PVSCSI_INTR_CMPL_1``
-+
-+Message interrupts (message ring notifications):
-+
-+- ``PVSCSI_INTR_MSG_0``
-+- ``PVSCSI_INTR_MSG_1``
-+
-+Interrupts are controlled via the ``PVSCSI_REG_OFFSET_INTR_MASK``
-+register.  If a bit is set it means the interrupt is enabled, and if
-+it is clear then the interrupt is disabled.
-+
-+The interrupt modes supported are legacy, MSI and MSI-X.
-+In the case of legacy interrupts, the ``PVSCSI_REG_OFFSET_INTR_STATUS``
-+register is used to check which interrupt has arrived.  Interrupts are
-+acknowledged when the corresponding bit is written to the interrupt
-+status register.
-+
-+PVSCSI Device Operation Sequences
-+=================================
-+
-+Startup sequence
-+----------------
-+
-+a. Issue ``PVSCSI_CMD_ADAPTER_RESET`` command
-+b. Windows driver reads interrupt status register here
-+c. Issue ``PVSCSI_CMD_SETUP_MSG_RING`` command with no additional data,
-+   check status and disable device messages if error returned
-+   (Omitted if device messages disabled by driver configuration)
-+d. Issue ``PVSCSI_CMD_SETUP_RINGS`` command, provide rings configuration
-+   as ``struct PVSCSICmdDescSetupRings``
-+e. Issue ``PVSCSI_CMD_SETUP_MSG_RING`` command again, provide
-+   rings configuration as ``struct PVSCSICmdDescSetupMsgRing``
-+f. Unmask completion and message (if device messages enabled) interrupts
-+
-+Shutdown sequence
-+-----------------
-+
-+a. Mask interrupts
-+b. Flush request ring using ``PVSCSI_REG_OFFSET_KICK_NON_RW_IO``
-+c. Issue ``PVSCSI_CMD_ADAPTER_RESET`` command
-+
-+Send request
-+------------
-+
-+a. Fill next free request ring descriptor
-+b. Issue ``PVSCSI_REG_OFFSET_KICK_RW_IO`` for R/W operations
-+   or ``PVSCSI_REG_OFFSET_KICK_NON_RW_IO`` for other operations
-+
-+Abort command
-+-------------
-+
-+a. Issue ``PVSCSI_CMD_ABORT_CMD`` command
-+
-+Request completion processing
-+-----------------------------
-+
-+a. Upon completion interrupt arrival process completion
-+   and message (if enabled) rings
-diff --git a/docs/specs/vmw_pvscsi-spec.txt b/docs/specs/vmw_pvscsi-spec.txt
-deleted file mode 100644
-index 49affb2a423..00000000000
---- a/docs/specs/vmw_pvscsi-spec.txt
-+++ /dev/null
-@@ -1,92 +0,0 @@
--General Description
--===================
--
--This document describes VMWare PVSCSI device interface specification.
--Created by Dmitry Fleytman (dmitry@daynix.com), Daynix Computing LTD.
--Based on source code of PVSCSI Linux driver from kernel 3.0.4
--
--PVSCSI Device Interface Overview
--================================
--
--The interface is based on memory area shared between hypervisor and VM.
--Memory area is obtained by driver as device IO memory resource of
--PVSCSI_MEM_SPACE_SIZE length.
--The shared memory consists of registers area and rings area.
--The registers area is used to raise hypervisor interrupts and issue device
--commands. The rings area is used to transfer data descriptors and SCSI
--commands from VM to hypervisor and to transfer messages produced by
--hypervisor to VM. Data itself is transferred via virtual scatter-gather DMA.
--
--PVSCSI Device Registers
--=======================
--
--The length of the registers area is 1 page (PVSCSI_MEM_SPACE_COMMAND_NUM_PAGES).
--The structure of the registers area is described by the PVSCSIRegOffset enum.
--There are registers to issue device command (with optional short data),
--issue device interrupt, control interrupts masking.
--
--PVSCSI Device Rings
--===================
--
--There are three rings in shared memory:
--
--    1. Request ring (struct PVSCSIRingReqDesc *req_ring)
--        - ring for OS to device requests
--    2. Completion ring (struct PVSCSIRingCmpDesc *cmp_ring)
--        - ring for device request completions
--    3. Message ring (struct PVSCSIRingMsgDesc *msg_ring)
--        - ring for messages from device.
--       This ring is optional and the guest might not configure it.
--There is a control area (struct PVSCSIRingsState *rings_state) used to control
--rings operation.
--
--PVSCSI Device to Host Interrupts
--================================
--There are following interrupt types supported by PVSCSI device:
--    1. Completion interrupts (completion ring notifications):
--        PVSCSI_INTR_CMPL_0
--        PVSCSI_INTR_CMPL_1
--    2. Message interrupts (message ring notifications):
--        PVSCSI_INTR_MSG_0
--        PVSCSI_INTR_MSG_1
--
--Interrupts are controlled via PVSCSI_REG_OFFSET_INTR_MASK register
--Bit set means interrupt enabled, bit cleared - disabled
--
--Interrupt modes supported are legacy, MSI and MSI-X
--In case of legacy interrupts, register PVSCSI_REG_OFFSET_INTR_STATUS
--is used to check which interrupt has arrived.  Interrupts are
--acknowledged when the corresponding bit is written to the interrupt
--status register.
--
--PVSCSI Device Operation Sequences
--=================================
--
--1. Startup sequence:
--    a. Issue PVSCSI_CMD_ADAPTER_RESET command;
--    aa. Windows driver reads interrupt status register here;
--    b. Issue PVSCSI_CMD_SETUP_MSG_RING command with no additional data,
--       check status and disable device messages if error returned;
--       (Omitted if device messages disabled by driver configuration)
--    c. Issue PVSCSI_CMD_SETUP_RINGS command, provide rings configuration
--       as struct PVSCSICmdDescSetupRings;
--    d. Issue PVSCSI_CMD_SETUP_MSG_RING command again, provide
--       rings configuration as struct PVSCSICmdDescSetupMsgRing;
--    e. Unmask completion and message (if device messages enabled) interrupts.
--
--2. Shutdown sequences
--    a. Mask interrupts;
--    b. Flush request ring using PVSCSI_REG_OFFSET_KICK_NON_RW_IO;
--    c. Issue PVSCSI_CMD_ADAPTER_RESET command.
--
--3. Send request
--    a. Fill next free request ring descriptor;
--    b. Issue PVSCSI_REG_OFFSET_KICK_RW_IO for R/W operations;
--       or PVSCSI_REG_OFFSET_KICK_NON_RW_IO for other operations.
--
--4. Abort command
--    a. Issue PVSCSI_CMD_ABORT_CMD command;
--
--5. Request completion processing
--    a. Upon completion interrupt arrival process completion
--       and message (if enabled) rings.
+    vmw_pvscsi-spec
++   edu
 -- 
 2.34.1
 
