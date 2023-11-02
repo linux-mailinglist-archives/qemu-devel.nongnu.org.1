@@ -2,127 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7483A7DF8A0
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B637DF907
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:42:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybPC-0004jR-3z; Thu, 02 Nov 2023 13:22:54 -0400
+	id 1qyben-0003Fd-Vt; Thu, 02 Nov 2023 13:39:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
- id 1qybP9-0004hK-Bv
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:22:51 -0400
-Received: from mail-lo2gbr01on0707.outbound.protection.outlook.com
- ([2a01:111:f400:fe15::707]
- helo=GBR01-LO2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
- id 1qybP7-0004ME-Qa
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:22:51 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kzaC0tDd4f5BtqUDXe4BS77mPtmqkw/DLNj/0E3LIqH/LHpybvNUtyP1GaIlbvtoiCThdld2FJitZgzw1BECmVUnE5e1zsX0kvSdE8nlr6bdlOVaZHhrFvzPR5329iCKC/qVjXHSSQ6SoEBj81wSX2AU4Gy7+ARV/7/XPsHAAot4uU5yqJmBLBWzj3OG5hik8FoBewvA/8JvNXY/fPIysUXw/LQqUrxIDWBtgYCNMqDd2lOgYLODrJynWDn1M9kSZmcrJh3zKxOGGSDl4GZ+XYeobp8EpOzKAC/yskZNRvqudsKqik9lsYiXA6lNXSRnK3RMMz+yHPD1GrcWQbFJRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fqJenFpOkaZGD0stEfyWz444Z8zJate4MIi/ygJhhfk=;
- b=dIJbc+LuyQ88BIh2BjTI0Gl24EVrDtHSB2T0MCA/qE2iUnnPGRzSBjWAZ6wCzXgMqjy4ppO8duccj24B8cDQAVNSXfV5RWsLdeFkMqEV83q4Sp2Bl0MgcGX/h5mZMA1oPEcum7MkuTatFho9vl3VzWcl/73nY7HSAb7cC+Z5cvuvC5Pbm7xwV6DzczZQZNbOuLWYAgFNowpPbSkDgUTEjsuer5iE7mKdjJPSlyQL7vsOsmajou6L3MWvetE4VzSioX6uNgCpKtJnO+ZQhCd6lZXvPMNN/C6S2EKKy2TGM5K+KEUPUnhe5MLF/k/41Ri9ANqMy8xUHZLPq7XA/3lufg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=rapitasystems.com; dmarc=pass action=none
- header.from=rapitasystems.com; dkim=pass header.d=rapitasystems.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rapitasystems.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fqJenFpOkaZGD0stEfyWz444Z8zJate4MIi/ygJhhfk=;
- b=L2KgGk2Se0kd6PCh2P1pGcqS+E/ZU32jkAeV/dVdXLojPV601YZTRyR7jdzTBuFWpS4WNx/ScIQGvRdDqxxJJ4wmm5olSL6lU7tHFSg1ZAWxaAtj32In0uCpuxH9zZenjRFbM/6Rek0kf3fW2tmgwCP4JD+fJhRZqdU24UWpTQU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=rapitasystems.com;
-Received: from LO2P123MB4352.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:19a::8)
- by CWXP123MB3365.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:7b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19; Thu, 2 Nov
- 2023 17:22:38 +0000
-Received: from LO2P123MB4352.GBRP123.PROD.OUTLOOK.COM
- ([fe80::a33f:4559:b41e:cea9]) by LO2P123MB4352.GBRP123.PROD.OUTLOOK.COM
- ([fe80::a33f:4559:b41e:cea9%4]) with mapi id 15.20.6954.021; Thu, 2 Nov 2023
- 17:22:38 +0000
-From: Greg Manning <gmanning@rapitasystems.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qybeU-00038M-S7
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:46 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qybeQ-0002gy-SE
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:42 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4084b0223ccso8812835e9.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1698946717; x=1699551517; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oJYaKaW0K8dIbaugO4wx8grWssAr0pEnNmdnnPhUOJg=;
+ b=skMxmFStTzGxdYq/boqpL4UWRQGkn4W/lHnr1gBMCznsD4NUc5CsMqwRJpHS9VHNd+
+ xiuctvRs+C/OJsdk3NskuM0eBrPclvdqwtWyWk3OzENRCOgQTsJK40Yg6T92rui4gWMy
+ wXDzXuCsohdMCNfk/159SOIQ4A7CvlUzfNuPVn4Kb+HaOZxHgHWjT8Hw0+vpKTfKIqqK
+ HklA4ZuNwWIH26B+EntqbgGNiQj+N3YALp83UtspLAYRD3lho9ZUUCMVpsyFPM/+9Q+6
+ Yj2JOhSMgZmGo8HR9YFyrsmrDToSonai9smjgMWskqSHXx7wI1SZyLNHKbr4/mFbeY0N
+ 5huA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698946717; x=1699551517;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oJYaKaW0K8dIbaugO4wx8grWssAr0pEnNmdnnPhUOJg=;
+ b=Vp3dSh1LGkgJTLJsUxfJLlbGnjGPE97IugymG6rOce9yzvi8Q8C8i4gfWsYEFt9WJk
+ GHIh2javT8Mm5ADKvbth4lhm/6elbwLx8xDGRGuU+eIS00YUkKGrt8IG9mSvYSxmTzcY
+ 5gASe6R5aIkVVqqVOI15NCqizmFQzpcvQ4HmodmU9M69L3M/oduPnSB8muK/WBuV7xH6
+ ZnJaoaYYqWuMr8Ry5UncmduDNna9QcCcKJG+ghpje9Es6qyRb6FWCTOop6vKuB5fKQTC
+ 59+7qqaRdUgqDAqE+20TuN5RFUTKR5+CajK5OqAhai+PR1OcOCIAbsKgwgxuywIbhgyt
+ kJ0w==
+X-Gm-Message-State: AOJu0YxddG2c0wxEaLvc1f/VyM3TONpFuCoAHd3cwKrHD1m87PGqtm3h
+ hrlvGTZkw3/lYu7WZuY57snOqW/pUZwZlBM3lc0=
+X-Google-Smtp-Source: AGHT+IEq6DodLHEeWF2o1BA2puUQDNUvbxPH7t9WABFcPvO9rFZIrw3vt3KhO5DGtLnLbVU1Iulcxg==
+X-Received: by 2002:a5d:65d2:0:b0:32d:9b32:8a7e with SMTP id
+ e18-20020a5d65d2000000b0032d9b328a7emr12575114wrw.71.1698946716667; 
+ Thu, 02 Nov 2023 10:38:36 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.36
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Nov 2023 10:38:36 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: luoyonggang@gmail.com, richard.henderson@linaro.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Greg Manning <gmanning@rapitasystems.com>
-Subject: [PATCH v2 4/4] plugins: allow plugins to be enabled on windows
-Date: Thu,  2 Nov 2023 17:19:47 +0000
-Message-ID: <20231102172053.17692-5-gmanning@rapitasystems.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231102172053.17692-1-gmanning@rapitasystems.com>
-References: <20231102172053.17692-1-gmanning@rapitasystems.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO2P265CA0282.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a1::30) To LO2P123MB4352.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:19a::8)
+Subject: [PULL 00/33] target-arm queue
+Date: Thu,  2 Nov 2023 17:38:02 +0000
+Message-Id: <20231102173835.609985-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P123MB4352:EE_|CWXP123MB3365:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e91ec5a-e041-4c68-10d7-08dbdbc84ff9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qhSaavY8yrBSvJgM71qtTPzO/NIh3tFpsUX1EvhKi9wCbj3Ysj8a1Pmyurk4hh9Xj5E2+2xENjSBuU6FfLE3VFOaf/yhWP+yq3kPm0UEwDe0mV4xO8hW66GCFVTD/5PXy0tg9vxXU4r6G2vLCABgE31zOCaPNmSP0NY+wxM9lrVbxMRXlDw7u8W67q/NPZJs7eGWyBAJDdyas+/hP/Cia3/Lbx76wgzuEgJIJnODdQs4W1hbtkmMzU4jbhC1Uf98as1nRUln8XGkzLP1lEO0MkP+zbFtDNQtBcWB4nhvmQTSKTaJ5IpeOvCmYgYmxWcTXM+r6abof7whO8rPss6ZXd/Er47YzKqEnjd8JRbl1i6/0TnJzYB7DT04f9vqjd0pMI/14FVwXcKieJzk/QDsOaYoFuHzTb90Gavp5AgEqmdKBgyrVWq2fmUKV8oan1PoxvAvJhYgXCLVftT7UnuAcvPOjRSS5yGcrJA0xiPWf1yIuHmowvzHLW/eGWoynFMSK3CucZPFpp60kjhjdf5B7Qc5G1Afpv+IIQQGxwt+pe/f4wUANmXoO1JBA6x62jdm
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LO2P123MB4352.GBRP123.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(39840400004)(346002)(366004)(136003)(376002)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(66556008)(54906003)(6916009)(66476007)(66946007)(316002)(6506007)(478600001)(1076003)(6666004)(107886003)(2616005)(4326008)(26005)(8936002)(83380400001)(8676002)(6486002)(6512007)(5660300002)(36756003)(2906002)(38100700002)(41300700001)(86362001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?a8nd6/8C2DhtwB3Mq0YTub+2GSy0JUam3a86WwgsvG4XghDiOYCQZBttYa3b?=
- =?us-ascii?Q?0ivDdl6V16RIuUCbs68XV6bdV6/ykYeT0W1p20Gj5n22RpylLgvzA+haEtuG?=
- =?us-ascii?Q?TVYcR6rjIEXWJ5Tpf2O5rFEfDRXjRqXBzM6m5k2mXQxzZBClEI8sZ4zES9/i?=
- =?us-ascii?Q?a3BS5ynMkKoJRHo55PCHcwacvv7ugykGQL673Sr9bj4GhrphqawB3aF4BW5y?=
- =?us-ascii?Q?EiAXl35lZzWKv+2s0MaB3uoKxq5QUC/PxIQL1rtNNhBX/E6Sq5eOrGIroU2A?=
- =?us-ascii?Q?r9Bp6Z2Wx6Y1RMXgBfwv/YIYtIGuMtnjALPrIMwhppG+XxNqUEMKo/rxCa8X?=
- =?us-ascii?Q?1xYCdIyaGG/RnDrnCNl9dYCoklTKCdgUGV2+y2SQCcwNUeEOa4xIdO9zCH/0?=
- =?us-ascii?Q?YEKAjGFXc0XcaTjlQkVMlLtjzNXSXsZspgCRrtTkWAOiDOe8AMJG+nSlli2V?=
- =?us-ascii?Q?HGa9eV0t9ckHZnmDvHTTvNsCXVTkYr3zPTZ299JkJQhK96WuZW2xLuoysmYL?=
- =?us-ascii?Q?nyeSuSF4zBVGDatL3Ppt/etd9lDI7wGFszJ0qE7OxjJpOu5yfN3xawiuWS9L?=
- =?us-ascii?Q?t5xz2su02h52I50daKXPspJD8fL6ubOPbqlzHRSpibSFTGe307xo5mmat2r6?=
- =?us-ascii?Q?IxUTxl/YRP6ngDfX9zBzDSfQo28Es3AaBoIpGIf960CdRuJLFCNqhoTqVwTc?=
- =?us-ascii?Q?7M7MA1SG7AeDn+pL1x2zjJsmbGJUMK4zEJDzJpoJzRbmGXXXpXxvGRl2Ljvm?=
- =?us-ascii?Q?WKsAVdqD/jCdtjUwTaNBSG1pmx+lY+mF2aQItmfHhq7Ts1MGFPVVzq3I/rw9?=
- =?us-ascii?Q?17/C/68gM7uTu5K25Un3xQyVc7Q+xbleTTOGSiYl4hKSqd2DEI1D2UM+9mRr?=
- =?us-ascii?Q?ZbBKerWbSpKMxZ/ccr4VbqcqoLyrMZVQXdvehtOAIh/3VAYBf1OVUaKg9bqo?=
- =?us-ascii?Q?/PTv3BeOv/hl8wBDuCiVVpDB9BQnUNw7bXgaNxBAf4s3hBfBJaBJ5Bn5bqkq?=
- =?us-ascii?Q?g8tLsHXoIRfyTXrpJNab8bj+t89DmnanadjgbwPUhVkwZeINvke4ShX3Y4iG?=
- =?us-ascii?Q?EZ9jXgn2Mubgc9tUS8wAQWZdmGBlfU+VdJgl5TdYnmq9bT8zfP5KXFInj+Yb?=
- =?us-ascii?Q?/Gzy4olo12iXs9G+TJzEXcL/N9AJg5txvFjuMsgVIBbctEZ/jp5j9ZDXRL66?=
- =?us-ascii?Q?Ie4tSRiZpHA8N4NoVWH1Ms22YY7hy5Za/aa48Bp+hixeE8oZsX7A+queIHL5?=
- =?us-ascii?Q?pxqfSoH4Qd3VtUWHKRxvreWxTt9jCU/SVzI5unGDDMhEHeW3IWgYm6RAw+rS?=
- =?us-ascii?Q?sO/auACzVDQhHATiORD9Gq2NjFNTnh7LGRJPDznjtpHpADmTGzXbIsoGdhXi?=
- =?us-ascii?Q?yDrlPW0//qY68id2lVzsaV7yDLlnaKLAC+UJJ/2W2foTrJFNcGH/JEMQVZD3?=
- =?us-ascii?Q?qkheLHobpe/S36M+evC+MpRV1vx9b7WJTLbnyZnYPsn3zvGA54sQCjIZ+kJF?=
- =?us-ascii?Q?OrvqTH9Dtmd3mEWA2J+zj49+hNLIdKvt3ZNDIWE71l2duXqTKnUJos09TaIt?=
- =?us-ascii?Q?xZgJBmmrFcYxpywnwCKf2RUmLBWuQruUNna1iwl8L5vIZ8fr+iUFd0NQgRxs?=
- =?us-ascii?Q?ig=3D=3D?=
-X-OriginatorOrg: rapitasystems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e91ec5a-e041-4c68-10d7-08dbdbc84ff9
-X-MS-Exchange-CrossTenant-AuthSource: LO2P123MB4352.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2023 17:22:38.7491 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 63a1ab10-c4bd-4b99-881c-0040cec74971
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G3NRmpeAGAu4S7drnlU6aBGIjDRGmgJighxezinVA435pDBM4bhtl7uwmHTc1YThWaZhvEVNWQAN0faAPOPW4GEJk4A7lDBg3fQ1sSMcTSQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP123MB3365
-Received-SPF: pass client-ip=2a01:111:f400:fe15::707;
- envelope-from=gmanning@rapitasystems.com;
- helo=GBR01-LO2-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,49 +88,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-allow plugins to be enabled in the configure script on windows. Also,
-add the qemu_plugin_api.lib to the installer.
+Hi; here's the latest target-arm pull request. Nothing too
+exciting, just an accumulation of refactorings, minor features
+and bugfixes. (I checked that the tag has propagated to all
+the git.linaro.org mirrors.)
 
-Signed-off-by: Greg Manning <gmanning@rapitasystems.com>
----
- configure   | 6 ------
- meson.build | 5 +++++
- 2 files changed, 5 insertions(+), 6 deletions(-)
+thanks
+-- PMM
 
-diff --git a/configure b/configure
-index 04f2cdd166..1129e6dd94 100755
---- a/configure
-+++ b/configure
-@@ -1010,12 +1010,6 @@ if test "$targetos" = "bogus"; then
- fi
- 
- # test for any invalid configuration combinations
--if test "$targetos" = "windows"; then
--  if test "$plugins" = "yes"; then
--    error_exit "TCG plugins not currently supported on Windows platforms"
--  fi
--  plugins="no"
--fi
- if test "$tcg" = "disabled" ; then
-   if test "$plugins" = "yes"; then
-     error_exit "Can't enable plugins on non-TCG builds"
-diff --git a/meson.build b/meson.build
-index dcef8b1e79..b855224acc 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3904,6 +3904,11 @@ endforeach
- 
- if get_option('plugins')
-   install_headers('include/qemu/qemu-plugin.h')
-+  if targetos == 'windows'
-+    # On windows, we want to deliver the qemu_plugin_api.lib file in the qemu installer,
-+    # so that plugin authors can compile against it.
-+    install_data(win32_qemu_plugin_api_lib, install_dir: 'lib')
-+  endif
- endif
- 
- subdir('qga')
--- 
-2.42.0
+The following changes since commit 6c9ae1ce82b65faa3f266fd103729878cf11e07e:
 
+  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2023-11-01 06:58:11 +0900)
+
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20231102
+
+for you to fetch changes up to 1c98a821a2b3620c516f3da0d74719ed6f33bced:
+
+  tests/qtest: Introduce tests for AMD/Xilinx Versal TRNG device (2023-11-02 14:42:03 +0000)
+
+----------------------------------------------------------------
+target-arm queue:
+ * linux-user/elfload: Add missing arm64 hwcap values
+ * stellaris-gamepad: Convert to qdev
+ * docs/specs: Convert various txt docs to rST
+ * MAINTAINERS: Make sure that gicv3_internal.h is covered, too
+ * hw/arm/pxa2xx_gpio: Pass CPU using QOM link property
+ * hw/watchdog/wdt_imx2: Trace MMIO access and timer activity
+ * hw/misc/imx7_snvs: Trace MMIO access
+ * hw/misc/imx6_ccm: Convert DPRINTF to trace events
+ * hw/i2c/pm_smbus: Convert DPRINTF to trace events
+ * target/arm: Enable FEAT_MOPS insns in user-mode emulation
+ * linux-user: Report AArch64 hwcap2 fields above bit 31
+ * target/arm: Make FEAT_MOPS SET* insns handle Xs == XZR correctly
+ * target/arm: Fix SVE STR increment
+ * hw/char/stm32f2xx_usart: implement TX interrupts
+ * target/arm: Correctly propagate stage 1 BTI guarded bit in a two-stage walk
+ * xlnx-versal-virt: Add AMD/Xilinx TRNG device
+
+----------------------------------------------------------------
+Bernhard Beschow (5):
+      hw/watchdog/wdt_imx2: Trace MMIO access
+      hw/watchdog/wdt_imx2: Trace timer activity
+      hw/misc/imx7_snvs: Trace MMIO access
+      hw/misc/imx6_ccm: Convert DPRINTF to trace events
+      hw/i2c/pm_smbus: Convert DPRINTF to trace events
+
+Hans-Erik Floryd (3):
+      hw/char/stm32f2xx_usart: Extract common IRQ update code to update_irq()
+      hw/char/stm32f2xx_usart: Update IRQ when DR is written
+      hw/char/stm32f2xx_usart: Add more definitions for CR1 register
+
+Kevin Wolf (1):
+      qdev: Add qdev_prop_set_array()
+
+Marielle Novastrider (1):
+      linux-user/elfload: Add missing arm64 hwcap values
+
+Peter Maydell (17):
+      hw/input/stellaris_input: Rename to stellaris_gamepad
+      hw/input/stellaris_gamepad: Rename structs to our usual convention
+      hw/input/stellaris_gamepad: Remove StellarisGamepadButton struct
+      hw/input/stellaris_input: Convert to qdev
+      hw/input/stellaris_gamepad: Convert to qemu_input_handler_register()
+      docs/specs/vmw_pvscsi-spec: Convert to rST
+      docs/specs/edu: Convert to rST
+      docs/specs/ivshmem-spec: Convert to rST
+      docs/specs/pvpanic: Convert to rST
+      docs/specs/standard-vga: Convert to rST
+      docs/specs/virt-ctlr: Convert to rST
+      docs/specs/vmcoreinfo: Convert to rST
+      docs/specs/vmgenid: Convert to rST
+      target/arm: Enable FEAT_MOPS insns in user-mode emulation
+      linux-user: Report AArch64 hwcap2 fields above bit 31
+      target/arm: Make FEAT_MOPS SET* insns handle Xs == XZR correctly
+      target/arm: Correctly propagate stage 1 BTI guarded bit in a two-stage walk
+
+Philippe Mathieu-Daudé (1):
+      hw/arm/pxa2xx_gpio: Pass CPU using QOM link property
+
+Richard Henderson (1):
+      target/arm: Fix SVE STR increment
+
+Thomas Huth (1):
+      MAINTAINERS: Make sure that gicv3_internal.h is covered, too
+
+Tong Ho (3):
+      hw/misc: Introduce AMD/Xilix Versal TRNG device
+      hw/arm: xlnx-versal-virt: Add AMD/Xilinx TRNG device
+      tests/qtest: Introduce tests for AMD/Xilinx Versal TRNG device
+
+ MAINTAINERS                                       |   9 +-
+ docs/specs/{edu.txt => edu.rst}                   |  84 ++-
+ docs/specs/index.rst                              |   8 +
+ docs/specs/{ivshmem-spec.txt => ivshmem-spec.rst} |  63 +-
+ docs/specs/pci-ids.rst                            |   2 +-
+ docs/specs/{pvpanic.txt => pvpanic.rst}           |  41 +-
+ docs/specs/standard-vga.rst                       |  94 +++
+ docs/specs/standard-vga.txt                       |  81 ---
+ docs/specs/{virt-ctlr.txt => virt-ctlr.rst}       |  12 +-
+ docs/specs/vmcoreinfo.rst                         |  54 ++
+ docs/specs/vmcoreinfo.txt                         |  53 --
+ docs/specs/vmgenid.rst                            | 246 ++++++++
+ docs/specs/vmgenid.txt                            | 245 --------
+ docs/specs/vmw_pvscsi-spec.rst                    | 115 ++++
+ docs/specs/vmw_pvscsi-spec.txt                    |  92 ---
+ docs/system/devices/ivshmem.rst                   |   2 +-
+ include/hw/arm/xlnx-versal.h                      |   5 +
+ include/hw/char/stm32f2xx_usart.h                 |  10 +-
+ include/hw/input/gamepad.h                        |  18 -
+ include/hw/input/stellaris_gamepad.h              |  37 ++
+ include/hw/misc/xlnx-versal-trng.h                |  58 ++
+ include/hw/qdev-properties.h                      |   3 +
+ linux-user/loader.h                               |   2 +-
+ target/arm/cpu-features.h                         |   5 +
+ target/arm/internals.h                            |   1 -
+ hw/arm/pxa2xx_gpio.c                              |   8 +-
+ hw/arm/stellaris.c                                |  34 +-
+ hw/arm/xlnx-versal.c                              |  16 +
+ hw/char/stm32f2xx_usart.c                         |  29 +-
+ hw/core/qdev-properties.c                         |  21 +
+ hw/display/vga-isa.c                              |   2 +-
+ hw/display/vga-pci.c                              |   2 +-
+ hw/i2c/pm_smbus.c                                 |  18 +-
+ hw/input/stellaris_gamepad.c                      |  99 +++
+ hw/input/stellaris_input.c                        |  93 ---
+ hw/misc/imx6_ccm.c                                |  41 +-
+ hw/misc/imx7_snvs.c                               |   5 +
+ hw/misc/xlnx-versal-trng.c                        | 717 ++++++++++++++++++++++
+ hw/watchdog/wdt_imx2.c                            |  28 +-
+ linux-user/elfload.c                              |  11 +-
+ target/arm/cpu.c                                  |   2 +
+ target/arm/ptw.c                                  |   7 +-
+ target/arm/tcg/helper-a64.c                       |  15 +-
+ target/arm/tcg/translate-sve.c                    |   5 +-
+ tests/qtest/xlnx-versal-trng-test.c               | 485 +++++++++++++++
+ tests/tcg/aarch64/sve-str.c                       |  49 ++
+ hw/arm/Kconfig                                    |   3 +-
+ hw/i2c/trace-events                               |   6 +
+ hw/input/Kconfig                                  |   2 +-
+ hw/input/meson.build                              |   2 +-
+ hw/misc/Kconfig                                   |   3 +
+ hw/misc/meson.build                               |   3 +
+ hw/misc/trace-events                              |  19 +
+ hw/watchdog/trace-events                          |   6 +
+ tests/qtest/meson.build                           |   2 +-
+ tests/tcg/aarch64/Makefile.target                 |   6 +-
+ 56 files changed, 2302 insertions(+), 777 deletions(-)
+ rename docs/specs/{edu.txt => edu.rst} (64%)
+ rename docs/specs/{ivshmem-spec.txt => ivshmem-spec.rst} (88%)
+ rename docs/specs/{pvpanic.txt => pvpanic.rst} (64%)
+ create mode 100644 docs/specs/standard-vga.rst
+ delete mode 100644 docs/specs/standard-vga.txt
+ rename docs/specs/{virt-ctlr.txt => virt-ctlr.rst} (70%)
+ create mode 100644 docs/specs/vmcoreinfo.rst
+ delete mode 100644 docs/specs/vmcoreinfo.txt
+ create mode 100644 docs/specs/vmgenid.rst
+ delete mode 100644 docs/specs/vmgenid.txt
+ create mode 100644 docs/specs/vmw_pvscsi-spec.rst
+ delete mode 100644 docs/specs/vmw_pvscsi-spec.txt
+ delete mode 100644 include/hw/input/gamepad.h
+ create mode 100644 include/hw/input/stellaris_gamepad.h
+ create mode 100644 include/hw/misc/xlnx-versal-trng.h
+ create mode 100644 hw/input/stellaris_gamepad.c
+ delete mode 100644 hw/input/stellaris_input.c
+ create mode 100644 hw/misc/xlnx-versal-trng.c
+ create mode 100644 tests/qtest/xlnx-versal-trng-test.c
+ create mode 100644 tests/tcg/aarch64/sve-str.c
 
