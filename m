@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060BE7DF180
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:44:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F4A7DF189
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 12:44:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyW7F-0007Dz-Vk; Thu, 02 Nov 2023 07:44:02 -0400
+	id 1qyW7H-0007qb-Og; Thu, 02 Nov 2023 07:44:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW6Q-0004Eq-Ln
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:43:11 -0400
+ id 1qyW6W-0004RC-CA
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:43:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qyW6L-0005dd-KN
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:43:09 -0400
+ id 1qyW6U-0005q9-NC
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 07:43:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698925384;
+ s=mimecast20190719; t=1698925392;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6nMXgCoVhISLBJNOjtiuvCJB8LXGvZSvy0RxY6VNnQ8=;
- b=S8rpf6HHMRtvDfs8EIXR0Q+hYqa/Z0SpZrZEmuuuJzkZApwfJAv/LvKmxwdDtdUgEHYMyS
- mtDsI9KnuB5PrnojrxVs3nghGj4fWrW8JKZb5hMwryNTmD/u0UydOrOWiM2Ue8OHp+jwxS
- gj2c7oSTt2cSGxVrUokPna+E15/9kRk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-zh0O5OqGOmaFAuQ-9m0-vQ-1; Thu,
- 02 Nov 2023 07:43:00 -0400
-X-MC-Unique: zh0O5OqGOmaFAuQ-9m0-vQ-1
+ bh=F6LTTAnG40MiBbQV66ubOdXNTvJQQFJxxx2lJdYVZFw=;
+ b=HphSqhaAK7S4mUCglZ6VtJw52QNOS8rqDIR+C5+9ezt+rrmtz9aOXFFPVvucVhuxCzCQ4+
+ Z7OULYS9jsEZfusZI4R8DJM7Y14ihEQnTyUix9IAS19QfXgSjRBGdNKDjFuGvYioBzdxDZ
+ VxvV/4ZC9jq2pzkdvVl100t/9UHTmag=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-288-t1yMvx5TOfKDrZ5bQpS81A-1; Thu, 02 Nov 2023 07:43:08 -0400
+X-MC-Unique: t1yMvx5TOfKDrZ5bQpS81A-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 789CB3806623;
- Thu,  2 Nov 2023 11:42:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EC8AA831523;
+ Thu,  2 Nov 2023 11:43:05 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 418212026D4C;
- Thu,  2 Nov 2023 11:42:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BDE822026D4C;
+ Thu,  2 Nov 2023 11:42:58 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -77,9 +77,9 @@ Cc: Eric Farman <farman@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Stefan Weil <sw@weilnetz.de>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Fam Zheng <fam@euphon.net>
-Subject: [PULL 15/40] migration: Set downtime_start even for postcopy
-Date: Thu,  2 Nov 2023 12:40:29 +0100
-Message-ID: <20231102114054.44360-16-quintela@redhat.com>
+Subject: [PULL 16/40] migration: Add migration_downtime_start|end() helpers
+Date: Thu,  2 Nov 2023 12:40:30 +0100
+Message-ID: <20231102114054.44360-17-quintela@redhat.com>
 In-Reply-To: <20231102114054.44360-1-quintela@redhat.com>
 References: <20231102114054.44360-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -94,7 +94,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,51 +112,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Postcopy calculates its downtime separately.  It always sets
-MigrationState.downtime properly, but not MigrationState.downtime_start.
-
-Make postcopy do the same as other modes on properly recording the
-timestamp when the VM is going to be stopped.  Drop the temporary variable
-in postcopy_start() along the way.
+Unify the three users on recording downtimes with the same pair of helpers.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231030163346.765724-2-peterx@redhat.com>
+Message-ID: <20231030163346.765724-3-peterx@redhat.com>
 ---
- migration/migration.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ migration/migration.c | 37 ++++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 6abcbefd9c..6dcdc5be2b 100644
+index 6dcdc5be2b..8aac0c753e 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2126,7 +2126,6 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     int ret;
-     QIOChannelBuffer *bioc;
-     QEMUFile *fb;
--    int64_t time_at_stop = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-     uint64_t bandwidth = migrate_max_postcopy_bandwidth();
-     bool restart_block = false;
-     int cur_state = MIGRATION_STATUS_ACTIVE;
-@@ -2148,6 +2147,8 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+@@ -101,6 +101,24 @@ static int migration_maybe_pause(MigrationState *s,
+ static void migrate_fd_cancel(MigrationState *s);
+ static int close_return_path_on_source(MigrationState *s);
+ 
++static void migration_downtime_start(MigrationState *s)
++{
++    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++}
++
++static void migration_downtime_end(MigrationState *s)
++{
++    int64_t now = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++
++    /*
++     * If downtime already set, should mean that postcopy already set it,
++     * then that should be the real downtime already.
++     */
++    if (!s->downtime) {
++        s->downtime = now - s->downtime_start;
++    }
++}
++
+ static bool migration_needs_multiple_sockets(void)
+ {
+     return migrate_multifd() || migrate_postcopy_preempt();
+@@ -2147,7 +2165,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
      qemu_mutex_lock_iothread();
      trace_postcopy_start_set_run();
  
-+    ms->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-+
+-    ms->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    migration_downtime_start(ms);
+ 
      qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
      global_state_store();
-     ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
-@@ -2250,7 +2251,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+@@ -2251,7 +2269,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
      ms->postcopy_after_devices = true;
      migration_call_notifiers(ms);
  
--    ms->downtime =  qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - time_at_stop;
-+    ms->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - ms->downtime_start;
+-    ms->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - ms->downtime_start;
++    migration_downtime_end(ms);
  
      qemu_mutex_unlock_iothread();
+ 
+@@ -2347,7 +2365,7 @@ static int migration_completion_precopy(MigrationState *s,
+     int ret;
+ 
+     qemu_mutex_lock_iothread();
+-    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    migration_downtime_start(s);
+     qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+ 
+     s->vm_old_state = runstate_get();
+@@ -2704,15 +2722,8 @@ static void migration_calculate_complete(MigrationState *s)
+     int64_t end_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+     int64_t transfer_time;
+ 
++    migration_downtime_end(s);
+     s->total_time = end_time - s->start_time;
+-    if (!s->downtime) {
+-        /*
+-         * It's still not set, so we are precopy migration.  For
+-         * postcopy, downtime is calculated during postcopy_start().
+-         */
+-        s->downtime = end_time - s->downtime_start;
+-    }
+-
+     transfer_time = s->total_time - s->setup_time;
+     if (transfer_time) {
+         s->mbps = ((double) bytes * 8.0) / transfer_time / 1000;
+@@ -3131,7 +3142,7 @@ static void bg_migration_vm_start_bh(void *opaque)
+     s->vm_start_bh = NULL;
+ 
+     vm_start();
+-    s->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - s->downtime_start;
++    migration_downtime_end(s);
+ }
+ 
+ /**
+@@ -3198,7 +3209,7 @@ static void *bg_migration_thread(void *opaque)
+     s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
+ 
+     trace_migration_thread_setup_complete();
+-    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    migration_downtime_start(s);
+ 
+     qemu_mutex_lock_iothread();
  
 -- 
 2.41.0
