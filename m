@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DA97DEC58
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 06:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE007DECBE
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 07:01:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyQNQ-0003bX-J3; Thu, 02 Nov 2023 01:36:20 -0400
+	id 1qyQkt-0000yS-7l; Thu, 02 Nov 2023 02:00:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leohou1402@gmail.com>)
- id 1qyQNI-0003b7-OF
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 01:36:12 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <leohou1402@gmail.com>)
- id 1qyQNH-0007IH-4c
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 01:36:12 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1cc7077d34aso4290145ad.2
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 22:36:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698903369; x=1699508169; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3EQPZ+53daYZDLmyOKchtGaFy6eJO4MgoGn5GBWHPPs=;
- b=HCOEEuavcVFTN8MOvXLdsd6oDpnR8/y6OyxxzNowA4MHmavTdC+qF8FntzkSvYsEi9
- JHdk7JDb5tOoWwO99bSS/YKC74qOngqWW18YD1gkg/IZ8mQUDk9fdfOhqP+vIWUxg7va
- 1jFxaK96OqaACiqFGljEESMJwyJ6wy0xOwgx4RZpnWB8HOXaP0aDlSnGXYQVoSJmykmy
- ldXSNeWDBqj/F+mczNq0oicYmsazxBgHeGS9R4pauSftjYli1gfvMB1Doh1QhMN25Yr2
- FUiXF173+3+MLFEkEyB88IxPukTe71/D2+f36ak70wzOtoVSFzoPKu+E4ULlz626xuV1
- n2Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698903369; x=1699508169;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3EQPZ+53daYZDLmyOKchtGaFy6eJO4MgoGn5GBWHPPs=;
- b=OcvTO5PhH1t+iCdKLd7eSsY1MqhkPD3hG3tZMdjl7gAdugXq0CK5UKZ8oS3XZ5To3U
- nMB1xOMit7DGNIIeZl52kYRkkiPHWUjyA2SrxKHOembzisebHED/HcxbqfjF8/Nc/R3l
- a4Y/nluCbhHLYt8eFvMvDQjXYcdC7D5M+kcJuS681iQVwHeBWglGFgJQcif2pNy2gLAY
- VuodHcOYf97lcY7q1OHVMr0lW0y6NesQfcwEdVbNLcVDaXnkVurDqw4ukzABFykJaiu+
- OYnOpkt2lsmw+Bb6J+BBXrYGFH7p4oAdZAoobffitRUiCoHBatB4agkzwTs8/CsyMo8j
- dZmw==
-X-Gm-Message-State: AOJu0YzeJaFUFDRLG4yl2i711uI8Ysj3syESThBslDPhhPNetNOtxyTh
- sjHo4J2KfPOTMsdhIbS+YD0oAe4FezNnL8Fx
-X-Google-Smtp-Source: AGHT+IG1DLNhb+WkKi7CN1sUSJgyySHU9am19eXZq/P0qeVT5wOyIloWWyDt0k3HF5IcL+KRk1rgNQ==
-X-Received: by 2002:a17:902:ab43:b0:1c9:c3a7:f96d with SMTP id
- ij3-20020a170902ab4300b001c9c3a7f96dmr12335643plb.62.1698903369167; 
- Wed, 01 Nov 2023 22:36:09 -0700 (PDT)
-Received: from [10.100.201.23] ([40.83.119.27])
- by smtp.gmail.com with ESMTPSA id
- kb14-20020a170903338e00b001cc5225c220sm2185459plb.15.2023.11.01.22.36.07
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Nov 2023 22:36:08 -0700 (PDT)
-Message-ID: <e96c2abc-ead3-4b3b-992e-e5a2c48a8fa3@gmail.com>
-Date: Thu, 2 Nov 2023 13:36:04 +0800
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyQkk-0000xr-6c
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 02:00:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyQkf-0003sM-Ni
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 02:00:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698904819;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1qxDVk5/CFFc0lT9wHQXKfcD3o1Rayu719Yw9CcoEWk=;
+ b=UME19SwruRD0JdP4RRqQN+XOdB9CdIsXH61WTF/7hujTPmmc1wRdnu2xWlZP78Cwzokdyj
+ ZJR5diuGxy5CM4619STJN1FZnNpwUsRq/cI49X2gjh9ZPA9JpbvqBDOMgdnPDZnvazdSzO
+ GJG4w3hRzIoAIrNLqBn9mC1y+TQIjWc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-wLKQVQGlO3iF2BK3aQQ4JQ-1; Thu,
+ 02 Nov 2023 02:00:17 -0400
+X-MC-Unique: wLKQVQGlO3iF2BK3aQQ4JQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B8432806670;
+ Thu,  2 Nov 2023 06:00:17 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 41C37492BE0;
+ Thu,  2 Nov 2023 06:00:17 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 48BEF21E6A1F; Thu,  2 Nov 2023 07:00:16 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: quintela@redhat.com,  qemu-devel@nongnu.org,  philmd@linaro.org,
+ thuth@redhat.com,  kkostiuk@redhat.com,  berrange@redhat.com,
+ dwmw@amazon.co.uk,  pbonzini@redhat.com,  joe.jin@oracle.com
+Subject: Re: [PATCH v3 1/1] hmp: synchronize cpu state for lapic info
+References: <20231026211938.162815-1-dongli.zhang@oracle.com>
+ <87edhc9inl.fsf@secure.mitica>
+ <f0adae79-7c6c-3e52-3bd1-f2e094d4a735@oracle.com>
+Date: Thu, 02 Nov 2023 07:00:16 +0100
+In-Reply-To: <f0adae79-7c6c-3e52-3bd1-f2e094d4a735@oracle.com> (Dongli Zhang's
+ message of "Tue, 31 Oct 2023 15:24:20 -0700")
+Message-ID: <871qd8elu7.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOWbnuWkjTogRnc6IOadpeiHqkxlbyBIb3XnmoTpgq7ku7Y=?=
-Content-Language: en-US
-From: leohou <leohou1402@gmail.com>
-To: qemu-devel@nongnu.org
-References: <3ab81ab1.1faf.18b8df8f26e.Coremail.leohou163@163.com>
- <202311021133346289459@gmail.com>
- <0a514711-41cc-43ec-ba2d-16109eae783d@gmail.com>
-In-Reply-To: <0a514711-41cc-43ec-ba2d-16109eae783d@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=leohou1402@gmail.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,39 +86,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/11/2 12:46, leohou wrote:
-> On 2023/11/2 11:33, leohou1402@gmail.com wrote:
->> On 31/10/23 16:13:32 Philippe Mathieu-Daudé wrote:
->>> Hi Leo,
+Dongli Zhang <dongli.zhang@oracle.com> writes:
+
+> Hi Juan,
+>
+> On 10/30/23 09:31, Juan Quintela wrote:
+>> Dongli Zhang <dongli.zhang@oracle.com> wrote:
+>>> While the default "info lapic" always synchronizes cpu state ...
 >>>
->>> On 31/10/23 04:10, Leo Hou wrote:
->>>> hi , all
->>>>          Does qemu plan to support CPU heterogeneity?
->>> Short answer is yes. When will this be available is yet to
->>> be determined, as a lot of work is required.
->>
->>
->>> I'm going to talk about the challenges and possible roadmap
->>> later today, feel free to join the call scheduled at 2pm CET
->>> on https://meet.jit.si/kvmcallmeeting.
->>> (See
->>> https://lore.kernel.org/qemu-devel/calendar-1ad16449-09cc-40fb-ab4a-24eafcc62d2a@google.com/) 
+>>> mon_get_cpu()
+>>> -> mon_get_cpu_sync(mon, true)
+>>>    -> cpu_synchronize_state(cpu)
+>>>       -> ioctl KVM_GET_LAPIC (taking KVM as example)
 >>>
->>
->> Hi Philippe
->>
->>
->> Thank you for your reply. I didn't check my email in time
->>   because of the mailbox problem. Now I will reply to you
->>   by changing my email address.
->>
->> With regard to your discussion, is it convenient to announce
->> the results of the discussion now?
+>>> ... the cpu state is not synchronized when the apic-id is available as
+>>> argument.
+>>>
+>>> The cpu state should be synchronized when apic-id is available. Otherwi=
+se
+>>> the "info lapic <apic-id>" always returns stale data.
+>>>
+>>> Reference:
+>>> https://urldefense.com/v3/__https://lore.kernel.org/all/20211028155457.=
+967291-19-berrange@redhat.com/__;!!ACWV5N9M2RV99hQ!KOLfuCesLC4T6ka9bjf4x6nc=
+C34GPK9pVvWwOJhbwSZw2fwp3Mxlakk0fnR-NCoqRPKOX7X4SOAxozQBC7VQ$=20
+>>>
+>>> Cc: Joe Jin <joe.jin@oracle.com>
+>>> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+>>> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>>> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+>>=20
+>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>>=20
+>> But I wonder how I did get CC'd on this patch O:-)
+>>=20
 >
-> Is there a need for the architecture of the main cpu and several 
-> coprocessors?
+> Thank you very much!
 >
+> This component does not have a maintainer. I just blindly cc all suggested
+> reviewers :), in order to get it reviewed and merged.
 >
-Examples include SCP and MCP in the ARM N2 platform, or an ARM host 
-machine containing a risc-v coprocessor.
+> get_maintainer.pl: No maintainers found, printing recent contributors.
+> get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
+
+I posted a fix the other day:
+
+    Subject: [PATCH] MAINTAINERS: Fully cover target/i386/*
+    Message-ID: <20231030085336.2681386-1-armbru@redhat.com>
+    https://lore.kernel.org/all/20231030085336.2681386-1-armbru@redhat.com/
+
+> Thank you very much!
+
 
