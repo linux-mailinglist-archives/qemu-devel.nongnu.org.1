@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B95D7DF8E5
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AAA7DF8F7
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:41:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybed-0003CM-Qb; Thu, 02 Nov 2023 13:38:52 -0400
+	id 1qybfP-0003oT-3I; Thu, 02 Nov 2023 13:39:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeV-00038R-Rv
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:46 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1qybeh-0003Go-FE
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:55 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeS-0002h7-KY
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:43 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c515527310so17091641fa.2
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:39 -0700 (PDT)
+ id 1qybeS-0002hD-La
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:55 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-5094727fa67so1489934e87.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698946718; x=1699551518; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=I+vgPU4tOb8/bVT99xfNgupP4cOnz/a8+RCUWUXb08Y=;
- b=xsBUYtZ21QW2ODBNY2Anm9jX/PH+ONwkIppCMNI/ksUKJvG7CfKf+eo433CCrQGgPH
- pdbr5Z3rMDamxtSJufR62euZtgehM1E+IVx4kOUKL2v1l0TJwnF63cw2FooiptxJj2LQ
- pOZ43QugL5PkHT+HKI8AbRoR6Uo56vkaZwmIB6HxZFDxJeUwCNmW+RJm28pT+1qIvwF0
- jRdFxikuuAEf45HA9TvNvqdkw2IWX5bPFRisOXHZiH85HHW6C3OqvctYiWjq/BRfRQCx
- IeIL3oG3iDYy2uPVhbH4+SdlYNRzuYiep7LNpYVBOsuXmhZ7/m/oDDrgEnw4NMwUl7Zm
- KsdQ==
+ :reply-to; bh=sgDJG5akxTAKePXGw4lqiUSqBtfv2oC7eu7relbo21k=;
+ b=jtCdb26NTFuiGeyHLsl7Dg/73PJ1MzK/qJsVQzd/Sn99frgjU/iWWAmgLTfLxMZ7yv
+ 9blL8YfUrQTxNnfKsWME1txpWwp/0LTa32dbfMtuwf0m8VJLuOuXnQjg52lsatltnm4A
+ AtcaBx4unMsMmQ7SmkxFPv60xXCOTaUA3pmgEY0j6kd9Ypd0/eWtvqZuEtR7w0zG8z+t
+ q6mdmwZD29SmL5E0O5bzzHCEt/uSqMjMQlrIO6EgACfNaZO0+/IHYGExpA7pKza1v8XS
+ kqQmvqKyP7CKkEMRg+kAzc/V7a6ydoMbT+JlVhKi1w6k08wpLwKB+WAtxMT2luaUuhGA
+ Pn7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698946718; x=1699551518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I+vgPU4tOb8/bVT99xfNgupP4cOnz/a8+RCUWUXb08Y=;
- b=WNoHuDFO3Zgi/VCA8/a2MaRL+WY1i94/A1AOZIcdL6sqpCNXM6mf80MQ5BoLmQkmcw
- EPSEuZLEoHewoDqfOMaRRWekFF7qSG4TL0dh27h0oWC92hWEGAFE0gafzs/mBuDd12Fn
- TDzNLBdqitEn3xcDCxvrJ8CD2pBU+dKupn1PvzIzmaehWgUH867vj/ylvWMiPUt8te/j
- Zmup/lDTG6uvpOP83pGcWFXYKcnUNIHkaB22S8JCCltCxxhk9ZcMcAC/G9tNHDDoUHr4
- 5uVTDsB/Mam50UJyFvZ0JliiQYBiqYiqSirNUfl7MkP+otzYGceDsXamHP28WI1ZVt/y
- mWEg==
-X-Gm-Message-State: AOJu0Yx5TItuauKVNuLbriBV7JwpQsvwG2O9mxCvqwTm0/ByXPE9Qa6c
- tC0cf0y5W8Ag4LGw6ec26UAMVfL1eBWtTu1lVXM=
-X-Google-Smtp-Source: AGHT+IGP2MWxwvu5jGpX9+6HIFl/Jo2YngssnLMQ2otnJutndv35lU28Jy8U4MGyDVMl9oJmXwvBeg==
-X-Received: by 2002:a2e:9410:0:b0:2c4:fe14:a85 with SMTP id
- i16-20020a2e9410000000b002c4fe140a85mr17240272ljh.18.1698946717764; 
- Thu, 02 Nov 2023 10:38:37 -0700 (PDT)
+ bh=sgDJG5akxTAKePXGw4lqiUSqBtfv2oC7eu7relbo21k=;
+ b=NeAuZt2mZ33tigwDZ3TZMvNKp52XIuSleK5ENzuK66oeIDh5H/lTmGTJgiB8Inpili
+ mTrkpsbRt59kd6a/MLmRAFnEssOxc7tpuDUaiJGh+AuHT6r94c/tj17KO/b3EMBVu44n
+ OlRdtJcK875uBHgKFz9n70XCEAjhrWMjYTN2k+948vJaWQfCkApVyJOQXb92nEE2xDTo
+ 1O428dUHoO/P/ijC64hz9XJylQemIwcRaD2YgKuBN8/9JZ+cSqLupS3UboHRF1F7FSnZ
+ htTdbBvEHd3iiQSq0ku6qDDjezdEw5rOHels5AXPaSsHoG8koM9MtADKm8Su9dT1O0Pb
+ NM2A==
+X-Gm-Message-State: AOJu0YzOCc0ztQczIIFiWXUl42s11Znhw3c8TgJt80aE3H3Kwo5WIXnI
+ YJrKZffKgZmwCwYDPpZc5FYrrGIbxwNRmi6dtjE=
+X-Google-Smtp-Source: AGHT+IElpN7cTRenOxQRVJxKKQvmDF0XJhrCBET9R7uj5uniMjxEY0DQaNdQgPqc+yRG3BXFJgzVKg==
+X-Received: by 2002:ac2:5e86:0:b0:507:9702:c11d with SMTP id
+ b6-20020ac25e86000000b005079702c11dmr13281349lfq.64.1698946718357; 
+ Thu, 02 Nov 2023 10:38:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.36
+ e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 10:38:36 -0700 (PDT)
+ Thu, 02 Nov 2023 10:38:37 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/33] linux-user/elfload: Add missing arm64 hwcap values
-Date: Thu,  2 Nov 2023 17:38:03 +0000
-Message-Id: <20231102173835.609985-2-peter.maydell@linaro.org>
+Subject: [PULL 02/33] hw/input/stellaris_input: Rename to stellaris_gamepad
+Date: Thu,  2 Nov 2023 17:38:04 +0000
+Message-Id: <20231102173835.609985-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,67 +91,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marielle Novastrider <marielle@novastrider.com>
+This source file implements a stellaris gamepad device; rename
+it so that it is a closer match to the device name.
 
-Specifically DIT, LSE2, and MTE3.
-
-We already expose detection of these via the CPUID interface, but
-missed these from ELF hwcaps.
-
-Signed-off-by: Marielle Novastrider <marielle@novastrider.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231029210058.38986-1-marielle@novastrider.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: fixed conflict with feature tests moving to cpu-features.h]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20231030114802.3671871-2-peter.maydell@linaro.org
 ---
- target/arm/cpu-features.h | 5 +++++
- linux-user/elfload.c      | 3 +++
- 2 files changed, 8 insertions(+)
+ include/hw/input/{gamepad.h => stellaris_gamepad.h} | 6 +++---
+ hw/arm/stellaris.c                                  | 2 +-
+ hw/input/{stellaris_input.c => stellaris_gamepad.c} | 2 +-
+ hw/arm/Kconfig                                      | 2 +-
+ hw/input/Kconfig                                    | 2 +-
+ hw/input/meson.build                                | 2 +-
+ 6 files changed, 8 insertions(+), 8 deletions(-)
+ rename include/hw/input/{gamepad.h => stellaris_gamepad.h} (77%)
+ rename hw/input/{stellaris_input.c => stellaris_gamepad.c} (98%)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 66212cd7ecc..954d3582685 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -669,6 +669,11 @@ static inline bool isar_feature_aa64_mte(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 2;
- }
+diff --git a/include/hw/input/gamepad.h b/include/hw/input/stellaris_gamepad.h
+similarity index 77%
+rename from include/hw/input/gamepad.h
+rename to include/hw/input/stellaris_gamepad.h
+index 6f6aa2406aa..23cfd3c95f3 100644
+--- a/include/hw/input/gamepad.h
++++ b/include/hw/input/stellaris_gamepad.h
+@@ -8,11 +8,11 @@
+  * See the COPYING file in the top-level directory.
+  */
  
-+static inline bool isar_feature_aa64_mte3(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, MTE) >= 3;
-+}
-+
- static inline bool isar_feature_aa64_sme(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SME) != 0;
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 8761f9e26b8..3f3975352af 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -800,12 +800,14 @@ uint32_t get_elf_hwcap(void)
-     GET_FEATURE_ID(aa64_sm4, ARM_HWCAP_A64_SM4);
-     GET_FEATURE_ID(aa64_fp16, ARM_HWCAP_A64_FPHP | ARM_HWCAP_A64_ASIMDHP);
-     GET_FEATURE_ID(aa64_atomics, ARM_HWCAP_A64_ATOMICS);
-+    GET_FEATURE_ID(aa64_lse2, ARM_HWCAP_A64_USCAT);
-     GET_FEATURE_ID(aa64_rdm, ARM_HWCAP_A64_ASIMDRDM);
-     GET_FEATURE_ID(aa64_dp, ARM_HWCAP_A64_ASIMDDP);
-     GET_FEATURE_ID(aa64_fcma, ARM_HWCAP_A64_FCMA);
-     GET_FEATURE_ID(aa64_sve, ARM_HWCAP_A64_SVE);
-     GET_FEATURE_ID(aa64_pauth, ARM_HWCAP_A64_PACA | ARM_HWCAP_A64_PACG);
-     GET_FEATURE_ID(aa64_fhm, ARM_HWCAP_A64_ASIMDFHM);
-+    GET_FEATURE_ID(aa64_dit, ARM_HWCAP_A64_DIT);
-     GET_FEATURE_ID(aa64_jscvt, ARM_HWCAP_A64_JSCVT);
-     GET_FEATURE_ID(aa64_sb, ARM_HWCAP_A64_SB);
-     GET_FEATURE_ID(aa64_condm_4, ARM_HWCAP_A64_FLAGM);
-@@ -839,6 +841,7 @@ uint32_t get_elf_hwcap2(void)
-     GET_FEATURE_ID(aa64_rndr, ARM_HWCAP2_A64_RNG);
-     GET_FEATURE_ID(aa64_bti, ARM_HWCAP2_A64_BTI);
-     GET_FEATURE_ID(aa64_mte, ARM_HWCAP2_A64_MTE);
-+    GET_FEATURE_ID(aa64_mte3, ARM_HWCAP2_A64_MTE3);
-     GET_FEATURE_ID(aa64_sme, (ARM_HWCAP2_A64_SME |
-                               ARM_HWCAP2_A64_SME_F32F32 |
-                               ARM_HWCAP2_A64_SME_B16F32 |
+-#ifndef HW_INPUT_GAMEPAD_H
+-#define HW_INPUT_GAMEPAD_H
++#ifndef HW_INPUT_STELLARIS_GAMEPAD_H
++#define HW_INPUT_STELLARIS_GAMEPAD_H
+ 
+ 
+-/* stellaris_input.c */
++/* stellaris_gamepad.c */
+ void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode);
+ 
+ #endif
+diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+index aa5b0ddfaa5..96585dd7106 100644
+--- a/hw/arm/stellaris.c
++++ b/hw/arm/stellaris.c
+@@ -23,7 +23,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/arm/armv7m.h"
+ #include "hw/char/pl011.h"
+-#include "hw/input/gamepad.h"
++#include "hw/input/stellaris_gamepad.h"
+ #include "hw/irq.h"
+ #include "hw/watchdog/cmsdk-apb-watchdog.h"
+ #include "migration/vmstate.h"
+diff --git a/hw/input/stellaris_input.c b/hw/input/stellaris_gamepad.c
+similarity index 98%
+rename from hw/input/stellaris_input.c
+rename to hw/input/stellaris_gamepad.c
+index e6ee5e11f1b..3bab557cab3 100644
+--- a/hw/input/stellaris_input.c
++++ b/hw/input/stellaris_gamepad.c
+@@ -8,7 +8,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/input/gamepad.h"
++#include "hw/input/stellaris_gamepad.h"
+ #include "hw/irq.h"
+ #include "migration/vmstate.h"
+ #include "ui/console.h"
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 7e683484405..841f3131ea5 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -291,7 +291,7 @@ config STELLARIS
+     select SSD0303 # OLED display
+     select SSD0323 # OLED display
+     select SSI_SD
+-    select STELLARIS_INPUT
++    select STELLARIS_GAMEPAD
+     select STELLARIS_ENET # ethernet
+     select STELLARIS_GPTM # general purpose timer module
+     select UNIMP
+diff --git a/hw/input/Kconfig b/hw/input/Kconfig
+index 55865bb3869..f86e98c8293 100644
+--- a/hw/input/Kconfig
++++ b/hw/input/Kconfig
+@@ -20,7 +20,7 @@ config PL050
+ config PS2
+     bool
+ 
+-config STELLARIS_INPUT
++config STELLARIS_GAMEPAD
+     bool
+ 
+ config TSC2005
+diff --git a/hw/input/meson.build b/hw/input/meson.build
+index c0d44821800..640556bbbcc 100644
+--- a/hw/input/meson.build
++++ b/hw/input/meson.build
+@@ -5,7 +5,7 @@ system_ss.add(when: 'CONFIG_LM832X', if_true: files('lm832x.c'))
+ system_ss.add(when: 'CONFIG_PCKBD', if_true: files('pckbd.c'))
+ system_ss.add(when: 'CONFIG_PL050', if_true: files('pl050.c'))
+ system_ss.add(when: 'CONFIG_PS2', if_true: files('ps2.c'))
+-system_ss.add(when: 'CONFIG_STELLARIS_INPUT', if_true: files('stellaris_input.c'))
++system_ss.add(when: 'CONFIG_STELLARIS_GAMEPAD', if_true: files('stellaris_gamepad.c'))
+ system_ss.add(when: 'CONFIG_TSC2005', if_true: files('tsc2005.c'))
+ 
+ system_ss.add(when: 'CONFIG_VIRTIO_INPUT', if_true: files('virtio-input.c'))
 -- 
 2.34.1
 
