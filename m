@@ -2,142 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A334B7DF3AE
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D837DF3C7
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 14:29:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyXhI-0001HA-7W; Thu, 02 Nov 2023 09:25:20 -0400
+	id 1qyXkk-0002tv-Vl; Thu, 02 Nov 2023 09:28:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qyXhG-0001Gz-2b
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:25:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qyXkj-0002tn-EO
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:28:53 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qyXhD-0001p7-5B
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:25:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698931513;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=VCMoGHay3E7aF7R69T7S8uoajFTOhZ8UrVMcIY11jX0=;
- b=MgBd2CjQtxZqp8L2VFNgMdTZqDa+Cyggc8pKu7PkbabsVXHuxh7i5j4xhFPxuwxbLx39Ug
- gFZXQ7R+4O6SrMMTybm7XPgSpFeeJ2fW9zUbX0KGM7Xo7sgZ+OvsXszdeH3pa+6YC7d5sE
- 2KK/fYsebK8HutIIg89hhPGd9+f9Irc=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-Oyc_F3y3PLCPtnPh-Qxvow-1; Thu, 02 Nov 2023 09:25:11 -0400
-X-MC-Unique: Oyc_F3y3PLCPtnPh-Qxvow-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2c50257772bso9167741fa.3
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 06:25:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698931509; x=1699536309;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VCMoGHay3E7aF7R69T7S8uoajFTOhZ8UrVMcIY11jX0=;
- b=XHojImVvlC5/icSJHwWJ0OEhxyEtVG9cI5UrLLLGxJwLtUhFyOy6fAysdzCyhZXf7w
- 6AcIdGx7cXK2KnpCpBs8oTZ3jbdjxjewVHh0nMoi0NhsOcPCv5qIaB19P3PQVWpgpa7y
- jbvEVlzgSISBZp8yzMU9ZgO8b8FWzafWAKODHgIAS+g2KgCadHj4Rieuf40/KXI7f0hk
- YT3OQZ49VbYpAPl7j4rVFdZqStb3lh07aqNECITrzOVJsDQz7NSDIlEuLlOiHCFxgnIx
- z+7jaXEGG2F3gmcRwYmRdYqJN5dRI4cPIcCEE5obhtIH7q6umMSf4fT5Wci88MZzWSue
- Hswg==
-X-Gm-Message-State: AOJu0YyeZFbsQi7SArHC8QCaRrW4cpgMp/BhC8oTR4f3CxCPp6bwtvfj
- dDyxfRfxK+y1kdIu2GST2+l8Whv/TloTfVC+7geMIKXCK2SKZVeZ2mrQE10qfyxEP9LTyI40VlJ
- xGyNYilkXgiHttiOsa2BNr6/wyhVI2spfuinPK6vAe22Wrd3aUuU4OXaTW5MEPhdXDdXFOWs=
-X-Received: by 2002:a2e:9a86:0:b0:2bd:180d:67b1 with SMTP id
- p6-20020a2e9a86000000b002bd180d67b1mr15398322lji.51.1698931509657; 
- Thu, 02 Nov 2023 06:25:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGNaWlAkVP5vgyENBVBknkj5Kp/gSFI7UwgCMm8rkTBuXDutU0D0WuzwBY7VH2YnvnZioruNA==
-X-Received: by 2002:a2e:9a86:0:b0:2bd:180d:67b1 with SMTP id
- p6-20020a2e9a86000000b002bd180d67b1mr15398306lji.51.1698931509172; 
- Thu, 02 Nov 2023 06:25:09 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c716:3000:f155:cef2:ff4d:c7?
- (p200300cbc7163000f155cef2ff4d00c7.dip0.t-ipconnect.de.
- [2003:cb:c716:3000:f155:cef2:ff4d:c7])
- by smtp.gmail.com with ESMTPSA id
- d25-20020a05600c4c1900b003fe1c332810sm2851996wmp.33.2023.11.02.06.25.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 06:25:08 -0700 (PDT)
-Message-ID: <394b537c-2833-4c71-98c0-2db4d1b3d956@redhat.com>
-Date: Thu, 2 Nov 2023 14:25:07 +0100
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qyXkg-0004SO-Ct
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 09:28:53 -0400
+Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:88b:0:640:d9e4:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 35C0661AF8;
+ Thu,  2 Nov 2023 16:28:45 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8005::1:a] (unknown
+ [2a02:6b8:b081:8005::1:a])
+ by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id hSXpw40OjOs0-9n9BU32c; Thu, 02 Nov 2023 16:28:44 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1698931724;
+ bh=IqiMaXoKhlJAkSROKmJ7x+Y/MeFJV/u5OSi1GCVcg+M=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=yjSLyut0UyNDVUBe/I8gEaQVfoLhZotO3ZDAz2xu8G63R5KdU7Q5+XBCJuQdKCoQd
+ +4aCNfGyJjvZK0Tr8/NjK7jiQNrksDnxQyqXyibn2Ni8fJtelqtOHYsXRcf36TKbFQ
+ HQZhIp+DDhEY8tyJ/gqv222SJkHtrFja6VAAVG3M=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <70c14ba7-10a6-45de-95cd-6033f35bba32@yandex-team.ru>
+Date: Thu, 2 Nov 2023 16:28:43 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] virtio-mem: fix division by zero in
- virtio_mem_activate_memslots_to_plug()
+Subject: Re: [PATCH v8 0/4] pci hotplug tracking
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Mario Casquero <mcasquer@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>
-References: <20231023111341.219317-1-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20231023111341.219317-1-david@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ eduardo@habkost.net, berrange@redhat.com, pbonzini@redhat.com,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, den-plotnikov@yandex-team.ru,
+ yc-core@yandex-team.ru, Peter Krempa <pkrempa@redhat.com>,
+ nshirokovskiy@openvz.org, devel@lists.libvirt.org
+References: <20231005092926.56231-1-vsementsov@yandex-team.ru>
+ <20231102072800-mutt-send-email-mst@kernel.org>
+ <d69f0aeb-303a-4721-b25b-52a08b8cd63f@yandex-team.ru>
+ <20231102080801-mutt-send-email-mst@kernel.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20231102080801-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -149,40 +81,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23.10.23 13:13, David Hildenbrand wrote:
-> When running with "dynamic-memslots=off", we enter
-> virtio_mem_activate_memslots_to_plug() to return immediately again
-> because "vmem->dynamic_memslots == false". However, the compiler might
-> not optimize out calculating start_idx+end_idx, where we divide by
-> vmem->memslot_size. In such a configuration, the memslot size is 0 and
-> we'll get a division by zero:
+On 02.11.23 15:12, Michael S. Tsirkin wrote:
+> On Thu, Nov 02, 2023 at 03:00:01PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>> On 02.11.23 14:31, Michael S. Tsirkin wrote:
+>>> On Thu, Oct 05, 2023 at 12:29:22PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>>>> Hi all!
+>>>>
+>>>> Main thing this series does is DEVICE_ON event - a counter-part to
+>>>> DEVICE_DELETED. A guest-driven event that device is powered-on.
+>>>> Details are in patch 2. The new event is paried with corresponding
+>>>> command query-hotplug.
+>>>
+>>> Several things questionable here:
+>>> 1. depending on guest activity you can get as many
+>>>      DEVICE_ON events as you like
+>>
+>> No, I've made it so it may be sent only once per device
 > 
->      (qemu) qom-set vmem0 requested-size 3G
->      (qemu) q35.sh: line 38: 622940 Floating point exception(core dumped)
-> 
-> The same is true for virtio_mem_deactivate_unplugged_memslots(), however
-> we never really reach that code without a prior
-> virtio_mem_activate_memslots_to_plug() call.
-> 
-> Let's fix it by simply calling these functions only with
-> "dynamic-memslots=on".
-> 
-> This was found when using a debug build of QEMU.
-> 
-> Reprted-by: Mario Casquero <mcasquer@redhat.com>
-> Fixes: 177f9b1ee464 ("virtio-mem: Expose device memory dynamically via multiple memslots if enabled")
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
+> Maybe document that?
 
-Queued to
+Right, my fault
 
-https://github.com/davidhildenbrand/qemu.git mem-next
+> 
+>>> 2. it's just for shpc and native pcie - things are
+>>>      confusing enough for management, we should make sure
+>>>      it can work for all devices
+>>
+>> Agree, I'm thinking about it
+>>
+>>> 3. what about non hotpluggable devices? do we want the event for them?
+>>>
+>>
+>> I think, yes, especially if we make async=true|false flag for device_add, so that successful device_add must be always followed by DEVICE_ON - like device_del is followed by DEVICE_DELETED.
+>>
+>> Maybe, to generalize, it should be called not DEVICE_ON (which mostly relate to hotplug controller statuses) but DEVICE_ADDED - a full counterpart for DEVICE_DELETED.
+>>
+>>>
+>>> I feel this needs actual motivation so we can judge what's the
+>>> right way to do it.
+>>
+>> My first motivation for this series was the fact that successful device_add doesn't guarantee that hard disk successfully hotplugged to the guest. It relates to some problems with shpc/pcie hotplug we had in the past, and they are mostly fixed. But still, for management tool it's good to understand that all actions related to hotplug controller are done and we have "green light".
+> 
+> what does "successfully" mean though? E.g. a bunch of guests will not
+> properly show you the device if the disk is not formatted properly.
+
+Yes, I understand, that we may say only about "some degree of success".
+
+But here is some physical sense still: DEVICE_ON indicates, that it's now safe to call device_del. And calling device_del before DEVICE_ON is a kind of unexpected behavior.
+
+
+> 
+>>
+>> Recently new motivation come, as I described in my "ping" letter <6bd19a07-5224-464d-b54d-1d738f5ba8f7@yandex-team.ru>, that we have a performance degradation because of 7bed89958bfbf40df, which introduces drain_call_rcu() in device_add, to make it more synchronous. So, my suggestion is make it instead more asynchronous (probably with special flag) and rely on DEVICE_ON event.
+> 
+> This one?
+> 
+> commit 7bed89958bfbf40df9ca681cefbdca63abdde39d
+> Author: Maxim Levitsky <mlevitsk@redhat.com>
+> Date:   Tue Oct 6 14:38:58 2020 +0200
+> 
+>      device_core: use drain_call_rcu in in qmp_device_add
+>      
+>      Soon, a device removal might only happen on RCU callback execution.
+>      This is okay for device-del which provides a DEVICE_DELETED event,
+>      but not for the failure case of device-add.  To avoid changing
+>      monitor semantics, just drain all pending RCU callbacks on error.
+>      
+>      Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+>      Suggested-by: Stefan Hajnoczi <stefanha@gmail.com>
+>      Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>      Message-Id: <20200913160259.32145-4-mlevitsk@redhat.com>
+>      [Don't use it in qmp_device_del. - Paolo]
+>      Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> 
+> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+> index e9b7228480..bcfb90a08f 100644
+> --- a/softmmu/qdev-monitor.c
+> +++ b/softmmu/qdev-monitor.c
+> @@ -803,6 +803,18 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+>           return;
+>       }
+>       dev = qdev_device_add(opts, errp);
+> +
+> +    /*
+> +     * Drain all pending RCU callbacks. This is done because
+> +     * some bus related operations can delay a device removal
+> +     * (in this case this can happen if device is added and then
+> +     * removed due to a configuration error)
+> +     * to a RCU callback, but user might expect that this interface
+> +     * will finish its job completely once qmp command returns result
+> +     * to the user
+> +     */
+> +    drain_call_rcu();
+> +
+>       if (!dev) {
+>           qemu_opts_del(opts);
+>           return;
+> 
+> 
+> 
+> So maybe just move drain_call_rcu under if (!dev) then and be done with
+> it?
+> 
+
+Hmm, I read the commit message thinking that it saying about device removal by mistake and actually want to say both about device_add and device_del.. But I was wrong?
+
+Hmm, it directly say "just drain all pending RCU callbacks on error", but does that on success path as well.
+
+Yes, moving drain_call_rcu makes sense for me, and will close the second "motivation". I can make a patch.
 
 -- 
-Cheers,
-
-David / dhildenb
+Best regards,
+Vladimir
 
 
