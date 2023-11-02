@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D127DEF56
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4727DEEA9
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 10:11:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyUU0-00078v-NI; Thu, 02 Nov 2023 05:59:24 -0400
+	id 1qyThy-0004gD-HQ; Thu, 02 Nov 2023 05:09:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qyUTx-000785-OV; Thu, 02 Nov 2023 05:59:21 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qyThw-0004fq-9s
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:09:44 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qyUTv-0008Hz-KG; Thu, 02 Nov 2023 05:59:21 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5401bab7525so1227622a12.2; 
- Thu, 02 Nov 2023 02:59:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qyThu-0003Zx-3m
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 05:09:43 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2c54c8934abso10064201fa.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 02:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698919157; x=1699523957; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PGB9pNtDuCkcqudpHSxApPG4Hxyl2dRueatHmhaU/tU=;
- b=f3qNCWQUgISe9Cwdzan4HBr4RJ33024hQQBQZytopAe0UT5ykMpxcZXsBN1rQo7Yvf
- 9rt3gmOiwbaxoMgcyXlWqjJNkivJ6IOoqa3JI0ixmG8aQcplc1H7NfSPBjW5XNlwSyzD
- dtSpDIE1idctEG1u3tig/UKDkSyo0O46BdzOGWVB+ksds1e+mNagAfLVUUlyVlm2r75h
- ThZceiai/N0JjQZTbbvqMx2rXZUFoA/Ui4zjcNfWs4dCgRDezMqtVjc2nN+a92+CDsmS
- Ls9K0T5AKrIGAhPCKIVP9e53NErSHkMFMuDUyT6uvIGP3kEIFoGwXLr7KjdSurQCZR6f
- YCew==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698916180; x=1699520980;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=U2nWwmmtAy6EWIJ0uFwVcUBxmCZA/kFzcbNcHasMqjc=;
+ b=gUwHgDzr3HGKxfyxWk72ZNuMDQtjQxV8ccZrsVOEq7cz+3TujQsg5E6Q5jAz3GlZYD
+ mv6und6oXKPnEqOb+uLLy+JFxrfglIEU2WKi2rSiRndPSXTZWALZHG0wkedb3Q8dtH3o
+ jkvCPAhr4XtQmBOt3KV3EpL9zAHp71Dgb1+jQO8s3eXb7RfDAkAMDE2xAIP1fHL0CPlf
+ 7pWXN1E0J7Ck70v6eQqmjPNCbcWNiByzD5LJiWGagtySXA+GJgnGM2vOzuSbrZr5hHZe
+ CWvhxyAEDlrMncPGgsgeVCI5MfWZt5ZPBtXz0UzWDFQeJb1hluvIUL4IIoToqWKnjOy7
+ DA+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698919157; x=1699523957;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PGB9pNtDuCkcqudpHSxApPG4Hxyl2dRueatHmhaU/tU=;
- b=PS7YS78NlGn4lhqwFjRpSmFQno7EG1aWANjrIMtRjgUjPaEs0aw6cKsiZBT9Jiwm4q
- wB1Gpmwau0hCkI6ze2/PZB4s8p+uQMXMscK6xEad2BYIXHKwJCdLEecBvthSyzZznANS
- 9JnA87RgxjrXfJjkxp5Ohz76oz7r0KCkvz1SyeyboXzmV/7sgIqYU1+wkzY6C3eTTtPs
- 952tzyzPoPzRvcVC/HE9v/4vPqjO0BTWHN4C5ceICrWt4wG9+KJDfrJGnPcM4maoepHH
- C0tcMdZUALJimw3hpQGFKBGRh1tbBacAP5Fiji/4gsyA33gw/7Z2xJgpnnf/Wge93hjd
- Fydw==
-X-Gm-Message-State: AOJu0YzbIFLFwkFv+v2zLXJKM34i67Y0YDLn60FWDcVapBLRZ9FWNYAI
- NyVWa8mxTWw+2+mWUwjva0U=
-X-Google-Smtp-Source: AGHT+IHOlwY8NhkHc7X9bjOXWv9Vm56u/dVFG0JKbT8uaIjbS7CxjnJB8YqOdzjs0K9uogLkTjNJEQ==
-X-Received: by 2002:a17:906:4fc8:b0:9be:ddad:61db with SMTP id
- i8-20020a1709064fc800b009beddad61dbmr3481845ejw.56.1698919157128; 
- Thu, 02 Nov 2023 02:59:17 -0700 (PDT)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- b22-20020a1709062b5600b0099bd0b5a2bcsm922486ejg.101.2023.11.02.02.59.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 02:59:16 -0700 (PDT)
-Date: Thu, 02 Nov 2023 09:05:30 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_6/6=5D_system/memory=3A_Trace_names?=
- =?US-ASCII?Q?_of_MemoryRegions_rather_than_host_pointers?=
-In-Reply-To: <fd799a65-8dbd-4206-241b-6b9a300caf8c@linaro.org>
-References: <20231028122415.14869-1-shentey@gmail.com>
- <20231028122415.14869-7-shentey@gmail.com>
- <fd799a65-8dbd-4206-241b-6b9a300caf8c@linaro.org>
-Message-ID: <3125D7B5-AE22-42E7-817D-A961E96AE548@gmail.com>
+ d=1e100.net; s=20230601; t=1698916180; x=1699520980;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=U2nWwmmtAy6EWIJ0uFwVcUBxmCZA/kFzcbNcHasMqjc=;
+ b=ICGWLVRNi7fLbdiJw6c38dW61Ed4p4wIXa9JGvZQrk/LorWGDAUzDLjiUP15DRsXBM
+ ICgUo1pxw01wbicraSBTAfaV9DS28+LWn6L9T161Q2lgMjN9sSoF8SFnC87A8vZezLmY
+ MNm9VSZOhrzRJ+Ryixsai9RI0W1J9y80Y9Z7T3hAk2bbmyotbaQ+NFvoWPGRwALmBLKW
+ ICwj5HT6T8kVOlisKkh5sje8NDqrteoK7sPhh19OWx0XJ66sKHg9SwCjV6DhKY+8p9rL
+ dPU2rHELa/Eg8soSijFD07+jmdXEhtd6Z6gXcYccgXzRlB//b/LmHGz6bybEoAN+vWI4
+ 4h8w==
+X-Gm-Message-State: AOJu0Yw+PCry/MRk/wjuiXwfPcJKFYUin88RwlFEaU6ly11byVAh8T3A
+ P7Knoo1o7H3TqhPhDBOYAbYwaYSIuntgPl2ZZA3QCg==
+X-Google-Smtp-Source: AGHT+IH6w0NQLfqB/M8sxZ36l0dZO6Jr5oqw59Gcu9aEVwTAS7m0EnN7DZcYYYFIxTs4K2citw4a72eWhmOpm1lsX4I=
+X-Received: by 2002:a2e:a7d2:0:b0:2b9:4b2e:5420 with SMTP id
+ x18-20020a2ea7d2000000b002b94b2e5420mr17076947ljp.52.1698916179766; Thu, 02
+ Nov 2023 02:09:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
+ <20231030051356.33123-12-akihiko.odaki@daynix.com>
+ <CAOEp5OdEEVcojjwCOU+9Z5yBKN+e5iNbAMOA5d-97D81N4Y0tw@mail.gmail.com>
+ <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
+ <CAOEp5Oern10jW8Pi-_mceU_ZJVD=a1f3tW8rB2O4efLX45-nvw@mail.gmail.com>
+ <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
+ <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
+ <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
+ <20231101023805-mutt-send-email-mst@kernel.org>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+ <20231101050838-mutt-send-email-mst@kernel.org>
+ <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+In-Reply-To: <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Thu, 2 Nov 2023 11:09:27 +0200
+Message-ID: <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>
+Content-Type: multipart/alternative; boundary="000000000000660170060927bf3d"
+Received-SPF: none client-ip=2a00:1450:4864:20::234;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,233 +98,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000660170060927bf3d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Probably we mix two different patches in this discussion.
+Focusing on the patch in the e-mail header:
 
-Am 30=2E Oktober 2023 03:36:44 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
-philmd@linaro=2Eorg>:
->Hi Bernhard,
->
->On 28/10/23 14:24, Bernhard Beschow wrote:
->> Tracing the host pointer of the accessed MemoryRegion seems to be a deb=
-ug
->> feature for developing QEMU itself=2E When analyzing guest behavior by =
-comparing
->> traces, these pointers generate a lot of noise since the pointers diffe=
-r between
->> QEMU invocations, making this task harder than it needs to be=2E Moreov=
-er, the
->> pointers seem to be redundant to the names already assigned to MemoryRe=
-gions=2E
->
->I tried that few years ago but this got lost:
->https://lore=2Ekernel=2Eorg/qemu-devel/20210307074833=2E143106-1-f4bug@am=
-sat=2Eorg/
->
->> Remove the pointers from the traces and trace the names where missing=
-=2E When
->> developing QEMU, developers could just add the host pointer tracing for
->> themselves=2E
->
->But sometimes an object exposing a MR is instantiated multiple times,
->each time, and now you can not distinct which object is accessed=2E
->
->IIRC a suggestion was to cache the QOM parent path and display that,
->which should be constant to diff tracing logs=2E But then IIRC again the
->issue was the QOM path is resolved once the object is realized, which
->happens *after* we initialize the MR within the object=2E Maybe the
->solution is to add a memory_region_qom_pathname() getter and do lazy
->initialization?
+IMO it is not acceptable to fail QEMU run for one feature that we can't
+make active when we silently drop all other features in such a case.
 
-Would logging the guest rather than the host address (in addition to the M=
-R name) work?
+On Wed, Nov 1, 2023 at 11:15=E2=80=AFAM Akihiko Odaki <akihiko.odaki@daynix=
+.com>
+wrote:
 
-Best regards,
-Bernhard
+> On 2023/11/01 18:09, Michael S. Tsirkin wrote:
+> > On Wed, Nov 01, 2023 at 05:35:50PM +0900, Akihiko Odaki wrote:
+> >> On 2023/11/01 15:38, Michael S. Tsirkin wrote:
+> >>> On Wed, Nov 01, 2023 at 01:50:00PM +0900, Akihiko Odaki wrote:
+> >>>> We had another discussion regarding migration for patch "virtio-net:
+> Do not
+> >>>> clear VIRTIO_NET_F_HASH_REPORT". It does change the runtime behavior
+> so we
+> >>>> need to take migration into account. I still think the patch does no=
+t
+> >>>> require a compatibility flag since it only exposes a new feature and
+> does
+> >>>> not prevent migrating from old QEMU that exposes less features. It
+> instead
+> >>>> fixes the case where migrating between hosts with different tap
+> feature
+> >>>> sets.
+> >>>
+> >>> When in doubt, add a compat flag.
+> >>
+> >> Personally I'm confident about the migration compatibility with patch
+> >> "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT". virtio-net alread=
+y
+> does
+> >> the same thing when the tap implementation on the destination implemen=
+ts
+> >> virtio-net header support while the counterpart of the source does not=
+.
+> >
+> > Trust me there's been so many times where we were very sure and
+> > problems come up later. Just don't enable new functionality for
+> > old machine types, problem solved. Why is this hard?
+>
+> I see. I'll add a compatibility flag for VIRTIO_NET_F_HASH_REPORT
+> exposure; it should be quite easy.
+>
 
+--000000000000660170060927bf3d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Probably we mix two different patches in this discussion.<=
+div><div>Focusing on the patch in the e-mail header:</div><div><br></div><d=
+iv>IMO it is not acceptable to fail QEMU run for one feature that we can&#3=
+9;t make active when we silently drop all other features in such a case.</d=
+iv></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gma=
+il_attr">On Wed, Nov 1, 2023 at 11:15=E2=80=AFAM Akihiko Odaki &lt;<a href=
+=3D"mailto:akihiko.odaki@daynix.com">akihiko.odaki@daynix.com</a>&gt; wrote=
+:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
+8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On 2023/11/01 =
+18:09, Michael S. Tsirkin wrote:<br>
+&gt; On Wed, Nov 01, 2023 at 05:35:50PM +0900, Akihiko Odaki wrote:<br>
+&gt;&gt; On 2023/11/01 15:38, Michael S. Tsirkin wrote:<br>
+&gt;&gt;&gt; On Wed, Nov 01, 2023 at 01:50:00PM +0900, Akihiko Odaki wrote:=
+<br>
+&gt;&gt;&gt;&gt; We had another discussion regarding migration for patch &q=
+uot;virtio-net: Do not<br>
+&gt;&gt;&gt;&gt; clear VIRTIO_NET_F_HASH_REPORT&quot;. It does change the r=
+untime behavior so we<br>
+&gt;&gt;&gt;&gt; need to take migration into account. I still think the pat=
+ch does not<br>
+&gt;&gt;&gt;&gt; require a compatibility flag since it only exposes a new f=
+eature and does<br>
+&gt;&gt;&gt;&gt; not prevent migrating from old QEMU that exposes less feat=
+ures. It instead<br>
+&gt;&gt;&gt;&gt; fixes the case where migrating between hosts with differen=
+t tap feature<br>
+&gt;&gt;&gt;&gt; sets.<br>
+&gt;&gt;&gt;<br>
+&gt;&gt;&gt; When in doubt, add a compat flag.<br>
+&gt;&gt;<br>
+&gt;&gt; Personally I&#39;m confident about the migration compatibility wit=
+h patch<br>
+&gt;&gt; &quot;virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT&quot;. vir=
+tio-net already does<br>
+&gt;&gt; the same thing when the tap implementation on the destination impl=
+ements<br>
+&gt;&gt; virtio-net header support while the counterpart of the source does=
+ not.<br>
+&gt; <br>
+&gt; Trust me there&#39;s been so many times where we were very sure and<br=
 >
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->>   docs/devel/tracing=2Erst |  4 ++--
->>   system/memory=2Ec        | 26 ++++++++++++++++----------
->>   system/trace-events    | 12 ++++++------
->>   3 files changed, 24 insertions(+), 18 deletions(-)
->>=20
->> diff --git a/docs/devel/tracing=2Erst b/docs/devel/tracing=2Erst
->> index d288480db1=2E=2E8c31d5f76e 100644
->> --- a/docs/devel/tracing=2Erst
->> +++ b/docs/devel/tracing=2Erst
->> @@ -18,8 +18,8 @@ events::
->>         $ qemu --trace "memory_region_ops_*" =2E=2E=2E
->>       =2E=2E=2E
->> -    719585@1608130130=2E441188:memory_region_ops_read cpu 0 mr 0x562fd=
-fbb3820 addr 0x3cc value 0x67 size 1
->> -    719585@1608130130=2E441190:memory_region_ops_write cpu 0 mr 0x562f=
-dfbd2f00 addr 0x3d4 value 0x70e size 2
->> +    719585@1608130130=2E441188:memory_region_ops_read cpu 0 addr 0x3cc=
- value 0x67 size 1
->> +    719585@1608130130=2E441190:memory_region_ops_write cpu 0 addr 0x3d=
-4 value 0x70e size 2
+&gt; problems come up later. Just don&#39;t enable new functionality for<br=
 >
->Is this example missing the MR name?
->
->>     This output comes from the "log" trace backend that is enabled by d=
-efault when
->>   ``=2E/configure --enable-trace-backends=3DBACKENDS`` was not explicit=
-ly specified=2E
->> diff --git a/system/memory=2Ec b/system/memory=2Ec
->> index 4928f2525d=2E=2E076a992b74 100644
->> --- a/system/memory=2Ec
->> +++ b/system/memory=2Ec
->> @@ -444,10 +444,11 @@ static MemTxResult  memory_region_read_accessor(M=
-emoryRegion *mr,
->>         tmp =3D mr->ops->read(mr->opaque, addr, size);
->>       if (mr->subpage) {
->> -        trace_memory_region_subpage_read(get_cpu_index(), mr, addr, tm=
-p, size);
->> +        trace_memory_region_subpage_read(get_cpu_index(), addr, tmp, s=
-ize,
->> +                                         memory_region_name(mr));
->>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
-_READ)) {
->>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
->> -        trace_memory_region_ops_read(get_cpu_index(), mr, abs_addr, tm=
-p, size,
->> +        trace_memory_region_ops_read(get_cpu_index(), abs_addr, tmp, s=
-ize,
->>                                        memory_region_name(mr));
->>       }
->>       memory_region_shift_read_access(value, shift, mask, tmp);
->> @@ -467,10 +468,11 @@ static MemTxResult memory_region_read_with_attrs_=
-accessor(MemoryRegion *mr,
->>         r =3D mr->ops->read_with_attrs(mr->opaque, addr, &tmp, size, at=
-trs);
->>       if (mr->subpage) {
->> -        trace_memory_region_subpage_read(get_cpu_index(), mr, addr, tm=
-p, size);
->> +        trace_memory_region_subpage_read(get_cpu_index(), addr, tmp, s=
-ize,
->> +                                         memory_region_name(mr));
->>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
-_READ)) {
->>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
->> -        trace_memory_region_ops_read(get_cpu_index(), mr, abs_addr, tm=
-p, size,
->> +        trace_memory_region_ops_read(get_cpu_index(), abs_addr, tmp, s=
-ize,
->>                                        memory_region_name(mr));
->>       }
->>       memory_region_shift_read_access(value, shift, mask, tmp);
->> @@ -488,10 +490,11 @@ static MemTxResult memory_region_write_accessor(M=
-emoryRegion *mr,
->>       uint64_t tmp =3D memory_region_shift_write_access(value, shift, m=
-ask);
->>         if (mr->subpage) {
->> -        trace_memory_region_subpage_write(get_cpu_index(), mr, addr, t=
-mp, size);
->> +        trace_memory_region_subpage_write(get_cpu_index(), addr, tmp, =
-size,
->> +                                          memory_region_name(mr));
->>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
-_WRITE)) {
->>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
->> -        trace_memory_region_ops_write(get_cpu_index(), mr, abs_addr, t=
-mp, size,
->> +        trace_memory_region_ops_write(get_cpu_index(), abs_addr, tmp, =
-size,
->>                                         memory_region_name(mr));
->>       }
->>       mr->ops->write(mr->opaque, addr, tmp, size);
->> @@ -509,10 +512,11 @@ static MemTxResult memory_region_write_with_attrs=
-_accessor(MemoryRegion *mr,
->>       uint64_t tmp =3D memory_region_shift_write_access(value, shift, m=
-ask);
->>         if (mr->subpage) {
->> -        trace_memory_region_subpage_write(get_cpu_index(), mr, addr, t=
-mp, size);
->> +        trace_memory_region_subpage_write(get_cpu_index(), addr, tmp, =
-size,
->> +                                          memory_region_name(mr));
->>       } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS=
-_WRITE)) {
->>           hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
->> -        trace_memory_region_ops_write(get_cpu_index(), mr, abs_addr, t=
-mp, size,
->> +        trace_memory_region_ops_write(get_cpu_index(), abs_addr, tmp, =
-size,
->>                                         memory_region_name(mr));
->>       }
->>       return mr->ops->write_with_attrs(mr->opaque, addr, tmp, size, att=
-rs);
->> @@ -1356,7 +1360,8 @@ static uint64_t memory_region_ram_device_read(voi=
-d *opaque,
->>           break;
->>       }
->>   -    trace_memory_region_ram_device_read(get_cpu_index(), mr, addr, d=
-ata, size);
->> +    trace_memory_region_ram_device_read(get_cpu_index(), addr, data, s=
-ize,
->> +                                        memory_region_name(mr));
->>         return data;
->>   }
->> @@ -1366,7 +1371,8 @@ static void memory_region_ram_device_write(void *=
-opaque, hwaddr addr,
->>   {
->>       MemoryRegion *mr =3D opaque;
->>   -    trace_memory_region_ram_device_write(get_cpu_index(), mr, addr, =
-data, size);
->> +    trace_memory_region_ram_device_write(get_cpu_index(), addr, data, =
-size,
->> +                                         memory_region_name(mr));
->>         switch (size) {
->>       case 1:
->> diff --git a/system/trace-events b/system/trace-events
->> index 69c9044151=2E=2E21f1c005e0 100644
->> --- a/system/trace-events
->> +++ b/system/trace-events
->> @@ -9,12 +9,12 @@ cpu_in(unsigned int addr, char size, unsigned int val=
-) "addr 0x%x(%c) value %u"
->>   cpu_out(unsigned int addr, char size, unsigned int val) "addr 0x%x(%c=
-) value %u"
->>     # memory=2Ec
->> -memory_region_ops_read(int cpu_index, void *mr, uint64_t addr, uint64_=
-t value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" va=
-lue 0x%"PRIx64" size %u name '%s'"
->> -memory_region_ops_write(int cpu_index, void *mr, uint64_t addr, uint64=
-_t value, unsigned size, const char *name) "cpu %d mr %p addr 0x%"PRIx64" v=
-alue 0x%"PRIx64" size %u name '%s'"
->> -memory_region_subpage_read(int cpu_index, void *mr, uint64_t offset, u=
-int64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"PR=
-Ix64" size %u"
->> -memory_region_subpage_write(int cpu_index, void *mr, uint64_t offset, =
-uint64_t value, unsigned size) "cpu %d mr %p offset 0x%"PRIx64" value 0x%"P=
-RIx64" size %u"
->> -memory_region_ram_device_read(int cpu_index, void *mr, uint64_t addr, =
-uint64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PRI=
-x64" size %u"
->> -memory_region_ram_device_write(int cpu_index, void *mr, uint64_t addr,=
- uint64_t value, unsigned size) "cpu %d mr %p addr 0x%"PRIx64" value 0x%"PR=
-Ix64" size %u"
->> +memory_region_ops_read(int cpu_index, uint64_t addr, uint64_t value, u=
-nsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64" =
-size %u name '%s'"
->> +memory_region_ops_write(int cpu_index, uint64_t addr, uint64_t value, =
-unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"PRIx64"=
- size %u name '%s'"
->> +memory_region_subpage_read(int cpu_index, uint64_t offset, uint64_t va=
-lue, unsigned size, const char *name) "cpu %d offset 0x%"PRIx64" value 0x%"=
-PRIx64" size %u name '%s'"
->> +memory_region_subpage_write(int cpu_index, uint64_t offset, uint64_t v=
-alue, unsigned size, const char *name) "cpu %d offset 0x%"PRIx64" value 0x%=
-"PRIx64" size %u name '%s'"
->> +memory_region_ram_device_read(int cpu_index, uint64_t addr, uint64_t v=
-alue, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"P=
-RIx64" size %u name '%s'"
->> +memory_region_ram_device_write(int cpu_index, uint64_t addr, uint64_t =
-value, unsigned size, const char *name) "cpu %d addr 0x%"PRIx64" value 0x%"=
-PRIx64" size %u name '%s'"
->>   memory_region_sync_dirty(const char *mr, const char *listener, int gl=
-obal) "mr '%s' listener '%s' synced (global=3D%d)"
->>   flatview_new(void *view, void *root) "%p (root %p)"
->>   flatview_destroy(void *view, void *root) "%p (root %p)"
->
+&gt; old machine types, problem solved. Why is this hard?<br>
+<br>
+I see. I&#39;ll add a compatibility flag for VIRTIO_NET_F_HASH_REPORT <br>
+exposure; it should be quite easy.<br>
+</blockquote></div>
+
+--000000000000660170060927bf3d--
 
