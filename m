@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67FC7DFC8D
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6BA7DFC8C
 	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 23:46:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qygQp-0006Jg-Si; Thu, 02 Nov 2023 18:44:55 -0400
+	id 1qygQs-0006Ka-EC; Thu, 02 Nov 2023 18:44:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qygQn-0006Ir-JM
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:44:53 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
+ id 1qygQq-0006K4-6R
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:44:56 -0400
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qygQl-00034L-OZ
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:44:53 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-5af5b532d8fso17401467b3.2
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 15:44:51 -0700 (PDT)
+ id 1qygQo-00034p-LI
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 18:44:55 -0400
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-5a86b6391e9so17778347b3.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 15:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698965090; x=1699569890; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Cpr42aIIhMmoauO1120ZACmYjtIuev1dG8oOrH1nor4=;
- b=kPHMG1juSgW1NT4nv5jBH/uKWgOLHFvUjoYX514XJUFDhWPNiXEzGwp9kmtwgDxchO
- IShJCs9k+YzS7F4brS3V1bITkO0SQ/3+4Uu+vI3CJws13Bpw6D/zZSmZ0qrbAP0rP3iu
- 74rKGzQx9WO034XolrezNcNKueGzcGhiIDNy2OG4t7ExSysGh/2oKYEs9bPuYtP75h/+
- +TScpFgrh6HJlRLhWof0bjaUK0cdt+LkZMuKjJlqis5OT3KwkgYHrL+huCw8IYuCWRp7
- 1ui35ocl8NwhYQluTo4mcICKFzwD4KxhxN5hR5J2kw4XyyWtQ1LTmKIc5M9JySUrTAsq
- XR2A==
+ d=ventanamicro.com; s=google; t=1698965093; x=1699569893; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ttOZEwnMtrx2O8A3B+GxwhNzzyOqL9I46ZVTAWDu4h8=;
+ b=Gw0mGiKFvHiZCq2aoVI1H6GmhMyyqQdFUW+6dvf6db4LuDGyuSfPhEZcN2UiP1rxsb
+ 8yFJZ2DPFoZg/vv2wF3xxVa4uR2XhENEGQdOYq4gV0eob8ehG3lKucawMCAbll15jneX
+ AWarWqj2HxLJCIz22wneq1JW7OzdLLraNldkOA8eU2zci8ugQGMa0qCdS8jVUsBmQXws
+ MdJ+7qZW1LTO/pWeC3JOrRseLqAwT+NftrnTHpVSBwcDFfouUC3veHuAcCcndNRs6g05
+ TUXvZyzEJqgRVD0dqWN+PUOWUrM6MwodP01XXS6CiHtdM+2IygzYytH3yzslxmf0jtaV
+ u45Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698965090; x=1699569890;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Cpr42aIIhMmoauO1120ZACmYjtIuev1dG8oOrH1nor4=;
- b=UIa8XXn5nb101KTDpIVHjADnskNkii3eg7LqP6lgZHc9pzIyfK6lq46/TP+hhBbDIb
- 4+Nb4MQbr4bS24m4Fod0J8FtSf1CTVvDGNeQu6wADGa81AwnALpRvWJKDZqz7M+yKkrq
- 1ifkKOnUwfjkWVamxpkQJpLO+zcf9sR4SN9CTwbb51L3qPCDfhoSPpoxe8ghdxx/EjFb
- MacJsWjSK35A4N6JlC7CxbqHQcg9W9gEtGaXn5XZe121peP7GDBLfNohKH04tZOaPp+D
- NI+IywHVweGARKJzv5awjZTHJwrZzPcI677NfH229QDqyEPFBzPPYmkITvaK7/7avJFo
- GH6g==
-X-Gm-Message-State: AOJu0YxdD1RSdyANEStWSs+Y2ohcAFiML5quy+i4JPtpEPyLxvj9p9Mk
- nQjwBxjQQSd7yd1OJH3/vj8BG+2wX0NiOx/e/TE=
-X-Google-Smtp-Source: AGHT+IHO3j+eVGXUYubJ92E30+G9mY8xsYGAWW+dvuI/OmidZpTikTzCwgR+08ORIhhsiAi5dq9hVg==
-X-Received: by 2002:a0d:eb8b:0:b0:5a7:e3f9:a1fb with SMTP id
- u133-20020a0deb8b000000b005a7e3f9a1fbmr1266473ywe.42.1698965090238; 
- Thu, 02 Nov 2023 15:44:50 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698965093; x=1699569893;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ttOZEwnMtrx2O8A3B+GxwhNzzyOqL9I46ZVTAWDu4h8=;
+ b=ZoFSBrQkf2lhjVSTbNrRhZbr2OxvEvwGDsrSLlZIO9cgXbfwRzHEWVo1iXHOFniaoh
+ SNZD/serY9ECt1AVRj57+5z0eGqI9Xcwb1ls/WVjU8AnFya5CKV4EYrupuQE3vRQIdDu
+ VDqsmA17DT2xg1BEt4GKhGTYKP1b18DY3SEdBvfunlQWh6n6JoKfGz2eHK5nXrdFLlDJ
+ 4/36nzgHw+h/kNaKceGngwaOM0RDNzPUXqxJ8BDvxlchBic7VphpptuppfPKrbD9QIxJ
+ /f/q4GMYT81HRCB5j7Sc8EJgy6jsNbXaMUX7c6tmA0RByZYaOhe0bqyZapiFgBljPqOH
+ yYuQ==
+X-Gm-Message-State: AOJu0YzNOkcdFbDpiu4BjlbcGLReuQtKMRsW/wYG7Zt7f22guWDKkhBC
+ 7F22nn0OwhQvhs/tGUF7fnPqx3/E+3V+rNlLR+Y=
+X-Google-Smtp-Source: AGHT+IHCFgHGqSeR+lG4mJapzXoKRkaL7TuCDL4WpsD2b2zT5Hw349CdcBezOkmfNJkvP2zcjd07cw==
+X-Received: by 2002:a81:9211:0:b0:5a7:a81b:d9af with SMTP id
+ j17-20020a819211000000b005a7a81bd9afmr1210626ywg.7.1698965092759; 
+ Thu, 02 Nov 2023 15:44:52 -0700 (PDT)
 Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- ce10-20020a05690c098a00b0059b24bd4f2asm259523ywb.57.2023.11.02.15.44.47
+ ce10-20020a05690c098a00b0059b24bd4f2asm259523ywb.57.2023.11.02.15.44.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 15:44:49 -0700 (PDT)
+ Thu, 02 Nov 2023 15:44:52 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v9 00/19] rv64i and rva22u64 CPUs, RVA22U64 profile support
-Date: Thu,  2 Nov 2023 19:44:26 -0300
-Message-ID: <20231102224445.527355-1-dbarboza@ventanamicro.com>
+Subject: [PATCH v9 01/19] target/riscv: create TYPE_RISCV_VENDOR_CPU
+Date: Thu,  2 Nov 2023 19:44:27 -0300
+Message-ID: <20231102224445.527355-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231102224445.527355-1-dbarboza@ventanamicro.com>
+References: <20231102224445.527355-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1129.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,82 +93,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+We want to add a new CPU type for bare CPUs that will inherit specific
+traits of the 2 existing types:
 
-In this version two new patches were added, both while discussing v6
-with Alistair:
+- it will allow for extensions to be enabled/disabled, like generic
+  CPUs;
 
-- new 'rva22u64' CPU. This is a CPU suggested by Alistair and others to
-  allow users to use a profile without having to deal with profile
-  enablement. This is done in patch 18;
+- it will NOT inherit defaults, like vendor CPUs.
 
-- 'max' CPU profile restriction. There's no user benefit to have profile
-  support in a CPU that has all extensions enabled. This is done in
-  patch 19.
+We can make this conditions met by adding an explicit type for the
+existing vendor CPUs and change the existing logic to not imply that
+"not generic" means vendor CPUs.
 
-Other changes were done based on Drew's feedback on v8:
+Let's add the "vendor" CPU type first.
 
-- patch 3: handle RVH priv_ver bump if it's user enabled, and put some
-  comments explaining how it interacts with the 'priv_spec' user option.
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/cpu-qom.h |  1 +
+ target/riscv/cpu.c     | 30 +++++++++++++++++++++---------
+ 2 files changed, 22 insertions(+), 9 deletions(-)
 
-- patch 4: rv64i cpu_init() now sets max setp_mode to SV64, and
-  we're returning 'MBARE' as default satp_mode for all 'bare' CPUs
-  if the user doesn't set a satp_mode in the command line. This will do
-  what we want without having to change cpu_riscv_set_satp() and
-  satp_finalize(), so patches 3 and 4 from v8 were dropped. Drew saw the
-  diff of this patch and decided to keep his ack from v8;
-
-Patches based on riscv-to-apply.next.
-
-Patches missing acks: 3, 18, 19
-
-Changes from v8:
-- patches 3 and 4 from v8: dropped
-- patch 3 (patch 5 from v8):
-  - bump priv_ver when RVH is enabled
-  - add a disclaimer when bumping priv_ver about the priv_spec option
-    having precedence
-- patch 4 (patch 6 from v8):
-  - set set_satp_mode_max_supported() to SV64 in rv64i_bare_cpu_init()
-  - set PRIV_VERSION_1_10_0 in rv64i_bare_cpu_init()
-  - change set_satp_mode_default_map() to set MBARE for 'bare' CPUs
-- patch 18 (new):
-  - add rva22u64 CPU
-- patch 19 (new):
-  - forbid profile support for 'max' CPU
-- v8 link: https://lore.kernel.org/qemu-riscv/20231101204204.345470-1-dbarboza@ventanamicro.com/
-
-Daniel Henrique Barboza (19):
-  target/riscv: create TYPE_RISCV_VENDOR_CPU
-  target/riscv/tcg: do not use "!generic" CPU checks
-  target/riscv/tcg: update priv_ver on user_set extensions
-  target/riscv: add rv64i CPU
-  target/riscv: add zicbop extension flag
-  target/riscv/tcg: add 'zic64b' support
-  riscv-qmp-cmds.c: expose named features in cpu_model_expansion
-  target/riscv: add rva22u64 profile definition
-  target/riscv/kvm: add 'rva22u64' flag as unavailable
-  target/riscv/tcg: add user flag for profile support
-  target/riscv/tcg: add MISA user options hash
-  target/riscv/tcg: add riscv_cpu_write_misa_bit()
-  target/riscv/tcg: handle profile MISA bits
-  target/riscv/tcg: add hash table insert helpers
-  target/riscv/tcg: honor user choice for G MISA bits
-  target/riscv/tcg: validate profiles during finalize
-  riscv-qmp-cmds.c: add profile flags in cpu-model-expansion
-  target/riscv: add 'rva22u64' CPU
-  target/riscv/tcg: do not support profiles for 'max' CPU
-
- hw/riscv/virt.c               |   5 +
- target/riscv/cpu-qom.h        |   4 +
- target/riscv/cpu.c            | 130 +++++++++++-
- target/riscv/cpu.h            |  13 ++
- target/riscv/cpu_cfg.h        |   3 +
- target/riscv/kvm/kvm-cpu.c    |   7 +-
- target/riscv/riscv-qmp-cmds.c |  44 +++-
- target/riscv/tcg/tcg-cpu.c    | 370 ++++++++++++++++++++++++++++++----
- 8 files changed, 518 insertions(+), 58 deletions(-)
-
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index f3fbe37a2c..7831e86d37 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -24,6 +24,7 @@
+ 
+ #define TYPE_RISCV_CPU "riscv-cpu"
+ #define TYPE_RISCV_DYNAMIC_CPU "riscv-dynamic-cpu"
++#define TYPE_RISCV_VENDOR_CPU "riscv-vendor-cpu"
+ 
+ #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
+ #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index d73e1da2a2..4bb677275c 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1741,6 +1741,13 @@ void riscv_cpu_list(void)
+         .instance_init = initfn               \
+     }
+ 
++#define DEFINE_VENDOR_CPU(type_name, initfn) \
++    {                                        \
++        .name = type_name,                   \
++        .parent = TYPE_RISCV_VENDOR_CPU,     \
++        .instance_init = initfn              \
++    }
++
+ static const TypeInfo riscv_cpu_type_infos[] = {
+     {
+         .name = TYPE_RISCV_CPU,
+@@ -1758,21 +1765,26 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .parent = TYPE_RISCV_CPU,
+         .abstract = true,
+     },
++    {
++        .name = TYPE_RISCV_VENDOR_CPU,
++        .parent = TYPE_RISCV_CPU,
++        .abstract = true,
++    },
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
+ #if defined(TARGET_RISCV32)
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,   rv32_base_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_IBEX,             rv32_ibex_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E31,       rv32_sifive_e_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E34,       rv32_imafcu_nommu_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U34,       rv32_sifive_u_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_IBEX,        rv32_ibex_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E31,  rv32_sifive_e_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E34,  rv32_imafcu_nommu_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U34,  rv32_sifive_u_cpu_init),
+ #elif defined(TARGET_RISCV64)
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE64,   rv64_base_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E51,       rv64_sifive_e_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U54,       rv64_sifive_u_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_SHAKTI_C,         rv64_sifive_u_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_THEAD_C906,       rv64_thead_c906_cpu_init),
+-    DEFINE_CPU(TYPE_RISCV_CPU_VEYRON_V1,        rv64_veyron_v1_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_E51,  rv64_sifive_e_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U54,  rv64_sifive_u_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SHAKTI_C,    rv64_sifive_u_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906,  rv64_thead_c906_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_init),
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
+ #endif
+ };
 -- 
 2.41.0
 
