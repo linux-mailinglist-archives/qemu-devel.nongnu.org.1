@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CA27DEA30
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F3E7DEA5F
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:47:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMbT-0006g2-Am; Wed, 01 Nov 2023 21:34:36 -0400
+	id 1qyMcb-00006i-2K; Wed, 01 Nov 2023 21:35:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMbE-0006br-LK
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:22 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1qyMbG-0006cA-3g
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:23 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMbC-00025H-87
+ id 1qyMbC-00026J-Ot
  for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:34:20 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-5b8c39a2dceso292149a12.2
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:34:17 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1cc3bc5df96so3138395ad.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1698888857; x=1699493657; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dkyljCZpqzWzIh5N8Q5xG0nF40yxIPLXLpPcj7wj9PI=;
- b=qXjXhsdGFvQ/sM1V69tlwpAWY6CkRTB4YQTMArYz/1dRLijgjm8AdkPL2wrTXS66Pt
- 5ojtPYcNp+uaIijBTo7GVlM7L++iL5HfnOywGQ1B3iPRJTC2N5htDjRVeeajrXrNgZC2
- vmTRAVd74FQHBiWDdZbtF9yiVK2B79TS9YcVRb+UOO60JCbAHaG6mK+/lUKKqCYYtFzB
- gJQuO64+CnNalwMBPbII8DoG5DiTH3d9OO2Ho0nJ8yPzphub0mlOUJqPBToFC773LZYp
- b2ZMGXKz1y8qw+Jk7xfbpuflkCLEMCW+zvnYixU9JvkcuipktCdonUJWof+PnLcGqXgj
- YIZA==
+ bh=zVaSUdm8wIzLLsLpBUjpNJYI2RdNW+CR3uBhuw+VEbI=;
+ b=SrvU+cWSKj9/E1VZzglxJpvxuawlo4YLOlL9v1ig8rLk33u8H0M1eXQ4zNqGJIwSnv
+ Je0+sPfFZ2capC3e6fnS6K6aDl4zZvPT+VLC+m6O5dx8aMvlReW0xctxzPqn7VXNpII1
+ Z6kxNI5FkZB6tWSzdmYitTrEthpGOcUA1zGuJb6yfq985EYboxXJ1stPDzvo/VeX8Acn
+ mzSK6uBgw8JY9ehvKrlh0L1HcZ0n9wf4i2dA6shSl4aGywM33Y+PZuOjetwm+U3Erztp
+ Yv8gACupmwSCRhJ/m/o4gEfLcgJezi2aQ43NNO/M1mKF9Ic51FrBSffS2FDP5m5j5wj3
+ sFVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1698888857; x=1699493657;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dkyljCZpqzWzIh5N8Q5xG0nF40yxIPLXLpPcj7wj9PI=;
- b=g6HmzOZumAFP4sT3a8kYgRKFZ3PCs54hL2/Wfqzppd/iX/Os/mMxw+DtA0BgsbZkhU
- xGq+GWc5al1oa1xKfhAKO9L+jl9z9sgs57pEpKckQ9T+E11VaYiNHOQBurXlGbrr4D1q
- NbtHp4YOo7yhT1HEWVutQmHDMT3CGdXww9ALZhIxYw85uIFdepby2gsw2ePyI0ZDMyju
- Z1UnrH5hVN57nleoBINSCYbfPr1k+LATF/xuHOvIMWwBW35vA4r+5u+c/JHkBDYd8C+r
- q1u9V7UswHShX7/KTD935o7uHnT7naMT8+d62hNoVV93BsoKyctvlZD8JGH4kXgvqjxR
- 4flg==
-X-Gm-Message-State: AOJu0YyPHyJzgwG0CMYaAQfRUaVX6xjVEsAM7UMjEUmo8GUuSLKBOfKP
- sj+bWb7jwdrkqVgQecwISkUAxGB9IC8/FMwIi9w=
-X-Google-Smtp-Source: AGHT+IEbXcsWmXo2aP0d+F0cJGW9p7JmAqoVTE9FSS8aX2KRv1VVjuDuu/QSlH3TDU2ZXBQ78RlyMA==
-X-Received: by 2002:a17:903:2306:b0:1cc:3fc9:1802 with SMTP id
- d6-20020a170903230600b001cc3fc91802mr11885379plh.61.1698888856753; 
- Wed, 01 Nov 2023 18:34:16 -0700 (PDT)
+ bh=zVaSUdm8wIzLLsLpBUjpNJYI2RdNW+CR3uBhuw+VEbI=;
+ b=Qd/D16+7OF+Y1oNBy94DnAxi68ipUDPQHBwVUBLuK3rs9ZnAS7vvBkdlbTn4BmtdGe
+ r3KsVt+9UTibCjm4l1fK4aw8ZESULUamPO3yWKm4N/ItOQ4HSIsoyj/qwsQiyB3vOLjp
+ +ogt5O9ZgJAQMB9DwYBbCrso2zq8jytcX1SoXL2GbOKfiksGTBQc1rdAc3c39QpC0EzF
+ 4W8FwXlD/7dh2n2/+hxYVEWoxrVnoZfZBob3BZCIBoQHO1wixuk9UipSHvQeunlDwEIM
+ W27FkfY6DiXwN6v/igsStH1X/XDhCN9RGx0i8g1zpRtzlh5Jmm6STNrdA2HJytK2ToLc
+ 6UdQ==
+X-Gm-Message-State: AOJu0YxiKBqBuaYxq2jq0QtLIGCXii95R2yzt9MyAaj0WRI6K8HEKG+9
+ pm+tCO/h6UAREMomCe3fLaqwOBGx/GHGIAFTcNs=
+X-Google-Smtp-Source: AGHT+IGSKIq0wZ72BBhq7Uwj6BadZv6jyU0jdlQvLw/IM/6GJFapDgzpWOJlx50/055lcqJSf6cGRw==
+X-Received: by 2002:a17:902:bf41:b0:1cc:2095:b90 with SMTP id
+ u1-20020a170902bf4100b001cc20950b90mr13002747pls.55.1698888857559; 
+ Wed, 01 Nov 2023 18:34:17 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  t2-20020a1709027fc200b001a98f844e60sm1918125plb.263.2023.11.01.18.34.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:34:16 -0700 (PDT)
+ Wed, 01 Nov 2023 18:34:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 69/88] target/hppa: Implement PERMH
-Date: Wed,  1 Nov 2023 18:29:57 -0700
-Message-Id: <20231102013016.369010-70-richard.henderson@linaro.org>
+Subject: [PATCH v3 70/88] target/hppa: Fix interruption based on default PSW
+Date: Wed,  1 Nov 2023 18:29:58 -0700
+Message-Id: <20231102013016.369010-71-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,65 +90,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Helge Deller <deller@gmx.de>
+
+The default PSW is set by the operating system with the PDC_PSW
+firmware call.  Use that setting to decide if wide mode is to be
+enabled for interruptions and EIRR usage.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode |  2 ++
- target/hppa/translate.c  | 29 +++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ target/hppa/cpu.h        |  2 ++
+ target/hppa/int_helper.c | 18 ++++++++++++++----
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 22ec07f892..19e537df24 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -238,6 +238,8 @@ mixh_r          111110 ..... ..... 1 10 00100000 .....  @rrr
- mixw_l          111110 ..... ..... 1 00 00000000 .....  @rrr
- mixw_r          111110 ..... ..... 1 10 00000000 .....  @rrr
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index ea676ba062..ea8e7e99a4 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -137,6 +137,8 @@
+ #define PSW_SM_W         0x200      /* PA2.0 only : Enable Wide Mode */
  
-+permh           111110 r1:5  r2:5  0 c0:2 0 c1:2 c2:2 c3:2 0 t:5
+ #define CR_RC            0
++#define CR_PSW_DEFAULT   6          /* see SeaBIOS PDC_PSW firmware call */
++#define  PDC_PSW_WIDE_BIT 2
+ #define CR_PID1          8
+ #define CR_PID2          9
+ #define CR_PID3          12
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index f355c4c76b..a11d607b31 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -52,9 +52,17 @@ static void io_eir_write(void *opaque, hwaddr addr,
+                          uint64_t data, unsigned size)
+ {
+     HPPACPU *cpu = opaque;
+-    int le_bit = ~data & 31;
++    CPUHPPAState *env = &cpu->env;
++    int widthm1 = 31;
++    int le_bit;
+ 
+-    cpu->env.cr[CR_EIRR] |= (target_ulong)1 << le_bit;
++    /* The default PSW.W controls the width of EIRR. */
++    if (hppa_is_pa20(env) && env->cr[CR_PSW_DEFAULT] & PDC_PSW_WIDE_BIT) {
++        widthm1 = 63;
++    }
++    le_bit = ~data & widthm1;
 +
- ####
- # Index Mem
- ####
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 47ca71e2a3..36653486fb 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -2946,6 +2946,35 @@ static bool trans_mixw_r(DisasContext *ctx, arg_rrr *a)
-     return do_multimedia(ctx, a, gen_mixw_r);
++    env->cr[CR_EIRR] |= 1ull << le_bit;
+     eval_interrupt(cpu);
  }
  
-+static bool trans_permh(DisasContext *ctx, arg_permh *a)
-+{
-+    TCGv_i64 r, t0, t1, t2, t3;
-+
-+    if (!ctx->is_pa20) {
-+        return false;
-+    }
-+
-+    nullify_over(ctx);
-+
-+    r = load_gpr(ctx, a->r1);
-+    t0 = tcg_temp_new_i64();
-+    t1 = tcg_temp_new_i64();
-+    t2 = tcg_temp_new_i64();
-+    t3 = tcg_temp_new_i64();
-+
-+    tcg_gen_extract_i64(t0, r, (3 - a->c0) * 16, 16);
-+    tcg_gen_extract_i64(t1, r, (3 - a->c1) * 16, 16);
-+    tcg_gen_extract_i64(t2, r, (3 - a->c2) * 16, 16);
-+    tcg_gen_extract_i64(t3, r, (3 - a->c3) * 16, 16);
-+
-+    tcg_gen_deposit_i64(t0, t1, t0, 16, 48);
-+    tcg_gen_deposit_i64(t2, t3, t2, 16, 48);
-+    tcg_gen_deposit_i64(t0, t2, t0, 32, 32);
-+
-+    save_gpr(ctx, a->t, t0);
-+    return nullify_end(ctx);
-+}
-+
- static bool trans_ld(DisasContext *ctx, arg_ldst *a)
- {
-     if (!ctx->is_pa20 && a->size > MO_32) {
+@@ -104,8 +112,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+     /* step 1 */
+     env->cr[CR_IPSW] = old_psw = cpu_hppa_get_psw(env);
+ 
+-    /* step 2 -- note PSW_W == 0 for !HPPA64.  */
+-    cpu_hppa_put_psw(env, PSW_W | (i == EXCP_HPMC ? PSW_M : 0));
++    /* step 2 -- Note PSW_W is masked out again for pa1.x */
++    cpu_hppa_put_psw(env,
++                     (env->cr[CR_PSW_DEFAULT] & PDC_PSW_WIDE_BIT ? PSW_W : 0) |
++                     (i == EXCP_HPMC ? PSW_M : 0));
+ 
+     /* step 3 */
+     env->cr[CR_IIASQ] = iasq_f >> 32;
 -- 
 2.34.1
 
