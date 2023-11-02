@@ -2,79 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BF17DF538
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:39:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800D27DF56D
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:58:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyYq8-0008OY-Jh; Thu, 02 Nov 2023 10:38:32 -0400
+	id 1qyZ7e-0003k6-Mg; Thu, 02 Nov 2023 10:56:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qyYq1-0008ON-2O
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:38:25 -0400
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qyZ7b-0003j2-W4
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:56:36 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qyYpz-0002ru-61
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:38:24 -0400
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-4197fa36b6aso5252051cf.3
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 07:38:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qyZ7Z-0002Br-Rc
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:56:35 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1cc2f17ab26so8296355ad.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 07:56:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698935901; x=1699540701; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ejkseplvrMek9eThrnFfzFiF6xLK8EYoy7pSv61VTVU=;
- b=ZvVNDxBfWxErQK65DGEKauf8X/I0oropkCKgz3pkdj4KQ7liOf/T+cUxYY+tKqCCCk
- d8NG1KqskT1LoqGv9D3uc8RA8HIHuLBXzO0A0KewoAby6l2UNK/j6Sz5D+VZWhTf1MT8
- De6CWOw0NrgiZE4MaLEqqELBfyGjDuLcIEY3wfKUq+Mc4tOQO5I8TdAIQF17b0lKF/3W
- KbN2/VgbKLIkGitDi2JxS0D7klXKebLZxNNplTePSBlddAAkOsF4eFx+g0Gzlw/fuO0E
- 4jux5uWPu0cJiI/kiPPmaaSxSDNNOrC8ka9agwiHAHG80x7JkRg/yQv8u0vzB76k57iM
- fZvQ==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1698936990; x=1699541790;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=D/YjG/7Xcb/G67jCrNXb/iPzgXwcomh/COsWcoh+KA4=;
+ b=xkSbRy+/ziAkF7p/8Q84QcEGBf+G50alnenG+pT+oqEi2P82NW+95fJmvXDB+MiBvo
+ 935Piyu2KtsTL9I/91ILyv/8e1VP7P5+YMJPdjnru9qHvWElxAJ3kbT2gQGH7TJt77l9
+ LTmsv8IJxDoIm5nxD+gmjAN9trZSJT4MN9Ng5sBawcIxa2kyqHtUkwnTMQo1FXN0nGbk
+ AM2WV/OAka5/O8SaOMgI6qn+NPIaSRIwDkS4dFHiVxxkxAnxbtZPVMgBSRbIWJtEvKtr
+ 83vNahjg7Mn3j1CCnplGYRHNs4pfwmVBXsL0CJUeZE3SUVMDBfO1EZAFtsAMo5Eygt97
+ tcVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698935901; x=1699540701;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ejkseplvrMek9eThrnFfzFiF6xLK8EYoy7pSv61VTVU=;
- b=ji+9bzH7yjSqVo7VwB5qDc4a3L2eg108owyvbha9woV8I0UnkVNr/YlIGz4c2QJloj
- kP8ej+YaAHyrDTFpuFqqmuaG3dfGebnQlwbIkgWASwFqcVEoBkELCPI3j1F6wwVmWtts
- r6b9B5IdeojD6V5E/+tuPq5ua5femxQ8Mqo2DFCO5/PMtFSTJ/8uAlhSfVun76xS81Mi
- UhphHgGHFlo/dnOJNPmKW2NTv/fsaXpfYvOsPi8QUl9sT3a9tkpUl4hbAx31w5xEgShZ
- kR6lf672xeB7yJ+avex2HuMlvwf8BDrpQ3IfXb3eTjUTJaTvyCWtljEx6JGsM5z+Ssq8
- dIOA==
-X-Gm-Message-State: AOJu0Yxgkb0jj54WnAjgvJWRqHv7FIYR0clfXlaaEkGK3EwyJhctgCoZ
- uhpRVx4kTICuKo4pue1rtG2CpLDcSEPAbaBdiks=
-X-Google-Smtp-Source: AGHT+IFoxpbVfd9kGQmH4oLyyNdEkqHq45cTuLgdCGBQCNGf5CLOR7OGKv5Wb3kTPti3tHcbPIDa+2u9EqrOdlCFl6k=
-X-Received: by 2002:a05:622a:138b:b0:41c:e206:349b with SMTP id
- o11-20020a05622a138b00b0041ce206349bmr20516024qtk.68.1698935901187; Thu, 02
- Nov 2023 07:38:21 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698936990; x=1699541790;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=D/YjG/7Xcb/G67jCrNXb/iPzgXwcomh/COsWcoh+KA4=;
+ b=oXmfLTYPg2+YyRr1BI1w6OPUO32S8YcU8381pgp5Lbap5hG+kRCNcKhjhVDOCRityL
+ 0rX/joOLL8/nJOIFdhTcg8hukY2pVQiyXQVUrrJKji076ZRydtMRKpMmngfhuEELPF2K
+ Feq4Zhl6NnOjFYzmVCtTn4Og1BtgD4x9rTbyKNB9zG6WT9D3bHJB1le58eyEQF8JkZ3O
+ 29NCNZLXQhfjCMWZQ75yuy7JvAoLcXoWNDq7k2VwJ414Jj0ienh7pyvDiVz0P6OgGc9W
+ /m9XhnMWsexM45iaYt1CveZnv4usDMJYAr3AZ3QLSUzVupRPWYPAdGTAk4OaquRTL7jF
+ htow==
+X-Gm-Message-State: AOJu0YzTm+/bYwLD6Qf/megnT5SdyNZHxKceUtpvpdBqRxGop5rK+VaU
+ YBL4BBUESJXxhufaGu4fJQoEuA==
+X-Google-Smtp-Source: AGHT+IHJY7ZNUobeElthS+JHGdxCldX3d55m/QlSvm0peK82nHdWrXZI9bXFF+czv/KykfZajAOr3Q==
+X-Received: by 2002:a17:903:22c5:b0:1cc:4669:c0eb with SMTP id
+ y5-20020a17090322c500b001cc4669c0ebmr11499594plg.21.1698936990281; 
+ Thu, 02 Nov 2023 07:56:30 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ m1-20020a170902db0100b001c88f77a156sm3355plx.153.2023.11.02.07.56.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Nov 2023 07:56:29 -0700 (PDT)
+Message-ID: <2fbdee21-60f4-49ff-b61b-923c895f90ba@daynix.com>
+Date: Thu, 2 Nov 2023 23:56:27 +0900
 MIME-Version: 1.0
-References: <20230918233233.1431858-1-stephen.s.brennan@oracle.com>
- <20230918233233.1431858-3-stephen.s.brennan@oracle.com>
-In-Reply-To: <20230918233233.1431858-3-stephen.s.brennan@oracle.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 2 Nov 2023 18:38:09 +0400
-Message-ID: <CAJ+F1CKOWYwrjmLoiQRC=s8XBBE-x2qvABNX1bUVgQdtG-+Q8w@mail.gmail.com>
-Subject: Re: [PATCH v3 qemu 2/3] dump: Allow directly outputting raw kdump
- format
-To: Stephen Brennan <stephen.s.brennan@oracle.com>
-Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org, 
- Omar Sandoval <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+To: Yuri Benditovich <yuri.benditovich@daynix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ Andrew Melnychenko <andrew@daynix.com>
+References: <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
+ <CAOEp5Oern10jW8Pi-_mceU_ZJVD=a1f3tW8rB2O4efLX45-nvw@mail.gmail.com>
+ <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
+ <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
+ <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
+ <20231101023805-mutt-send-email-mst@kernel.org>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+ <20231101050838-mutt-send-email-mst@kernel.org>
+ <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+ <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
+ <20231102053202-mutt-send-email-mst@kernel.org>
+ <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::631;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,145 +108,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stephen
+On 2023/11/02 19:20, Yuri Benditovich wrote:
+> 
+> 
+> On Thu, Nov 2, 2023 at 11:33 AM Michael S. Tsirkin <mst@redhat.com 
+> <mailto:mst@redhat.com>> wrote:
+> 
+>     On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri Benditovich wrote:
+>      > Probably we mix two different patches in this discussion.
+>      > Focusing on the patch in the e-mail header:
+>      >
+>      > IMO it is not acceptable to fail QEMU run for one feature that we
+>     can't make
+>      > active when we silently drop all other features in such a case.
+> 
+>     If the feature is off by default then it seems more reasonable
+>     and silent masking can be seen as a bug.
+>     Most virtio features are on by default this is why it's
+>     reasonable to mask them.
+> 
+> 
+> If we are talking about RSS: setting it initially off is the development 
+> time decision.
+> When it will be completely stable there is no reason to keep it off by 
+> default, so this is more a question of time and of a readiness of libvirt.
 
-On Tue, Sep 19, 2023 at 3:32=E2=80=AFAM Stephen Brennan
-<stephen.s.brennan@oracle.com> wrote:
->
-> The flattened format (currently output by QEMU) is used by makedumpfile
-> only when it is outputting a vmcore to a file which is not seekable. The
-> flattened format functions essentially as a set of instructions of the
-> form "seek to the given offset, then write the given bytes out".
->
-> The flattened format can be reconstructed using makedumpfile -R, or
-> makedumpfile-R.pl, but it is a slow process because it requires copying
-> the entire vmcore. The flattened format can also be directly read by
-> crash, but still, it requires a lengthy reassembly phase.
->
-> To sum up, the flattened format is not an ideal one: it should only be
-> used on files which are actually not seekable. This is the exact
-> strategy which makedumpfile uses, as seen in the implementation of
-> "write_buffer()" in makedumpfile [1]. However, QEMU has always used the
-> flattened format. For compatibility it is best not to change the default
-> output format without warning. So, add a flag to DumpState which changes
-> the output to use the normal (i.e. raw) format. This flag will be added
-> to the QMP and HMP commands in the next change.
->
-> [1]: https://github.com/makedumpfile/makedumpfile/blob/f23bb943568188a274=
-6dbf9b6692668f5a2ac3b6/makedumpfile.c#L5008-L5040
->
-> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-> ---
->  dump/dump.c           | 32 +++++++++++++++++++++++++-------
->  include/sysemu/dump.h |  1 +
->  2 files changed, 26 insertions(+), 7 deletions(-)
->
-> diff --git a/dump/dump.c b/dump/dump.c
-> index 74071a1565..10aa2c79e0 100644
-> --- a/dump/dump.c
-> +++ b/dump/dump.c
-> @@ -814,6 +814,10 @@ static int write_start_flat_header(DumpState *s)
->      MakedumpfileHeader *mh;
->      int ret =3D 0;
->
-> +    if (s->kdump_raw) {
-> +        return 0;
-> +    }
-> +
->      QEMU_BUILD_BUG_ON(sizeof *mh > MAX_SIZE_MDF_HEADER);
->      mh =3D g_malloc0(MAX_SIZE_MDF_HEADER);
->
-> @@ -837,6 +841,10 @@ static int write_end_flat_header(DumpState *s)
->  {
->      MakedumpfileDataHeader mdh;
->
-> +    if (s->kdump_raw) {
-> +        return 0;
-> +    }
-> +
->      mdh.offset =3D END_FLAG_FLAT_HEADER;
->      mdh.buf_size =3D END_FLAG_FLAT_HEADER;
->
-> @@ -853,13 +861,21 @@ static int write_buffer(DumpState *s, off_t offset,=
- const void *buf, size_t size
->  {
->      size_t written_size;
->      MakedumpfileDataHeader mdh;
-> +    loff_t seek_loc;
+It is not ok to make "on" the default; that will enable RSS even when 
+eBPF steering support is not present and can result in performance 
+degradation.
 
-Any reason to use loff_t over off_t here? It fails to compile on win32
-for ex. I can touch on PR commit otherwise.
-
->
-> -    mdh.offset =3D cpu_to_be64(offset);
-> -    mdh.buf_size =3D cpu_to_be64(size);
-> +    if (s->kdump_raw) {
-> +        seek_loc =3D lseek(s->fd, offset, SEEK_SET);
-> +        if (seek_loc =3D=3D (off_t) -1) {
-> +            return -1;
-> +        }
-> +    } else {
-> +        mdh.offset =3D cpu_to_be64(offset);
-> +        mdh.buf_size =3D cpu_to_be64(size);
->
-> -    written_size =3D qemu_write_full(s->fd, &mdh, sizeof(mdh));
-> -    if (written_size !=3D sizeof(mdh)) {
-> -        return -1;
-> +        written_size =3D qemu_write_full(s->fd, &mdh, sizeof(mdh));
-> +        if (written_size !=3D sizeof(mdh)) {
-> +            return -1;
-> +        }
->      }
->
->      written_size =3D qemu_write_full(s->fd, buf, size);
-> @@ -1775,7 +1791,8 @@ static void vmcoreinfo_update_phys_base(DumpState *=
-s)
->
->  static void dump_init(DumpState *s, int fd, bool has_format,
->                        DumpGuestMemoryFormat format, bool paging, bool ha=
-s_filter,
-> -                      int64_t begin, int64_t length, Error **errp)
-> +                      int64_t begin, int64_t length, bool kdump_raw,
-> +                      Error **errp)
->  {
->      ERRP_GUARD();
->      VMCoreInfoState *vmci =3D vmcoreinfo_find();
-> @@ -1786,6 +1803,7 @@ static void dump_init(DumpState *s, int fd, bool ha=
-s_format,
->      s->has_format =3D has_format;
->      s->format =3D format;
->      s->written_size =3D 0;
-> +    s->kdump_raw =3D kdump_raw;
->
->      /* kdump-compressed is conflict with paging and filter */
->      if (has_format && format !=3D DUMP_GUEST_MEMORY_FORMAT_ELF) {
-> @@ -2168,7 +2186,7 @@ void qmp_dump_guest_memory(bool paging, const char =
-*file,
->      dump_state_prepare(s);
->
->      dump_init(s, fd, has_format, format, paging, has_begin,
-> -              begin, length, errp);
-> +              begin, length, false, errp);
->      if (*errp) {
->          qatomic_set(&s->status, DUMP_STATUS_FAILED);
->          return;
-> diff --git a/include/sysemu/dump.h b/include/sysemu/dump.h
-> index e27af8fb34..d702854853 100644
-> --- a/include/sysemu/dump.h
-> +++ b/include/sysemu/dump.h
-> @@ -157,6 +157,7 @@ typedef struct DumpState {
->      MemoryMappingList list;
->      bool resume;
->      bool detached;
-> +    bool kdump_raw;
->      hwaddr memory_offset;
->      int fd;
->
-> --
-> 2.39.3
->
-
-
---=20
-Marc-Andr=C3=A9 Lureau
+We will need OnOffAuto instead of a simple boolean value if we are going 
+to enable RSS when eBPF steering support is available; "auto" will be 
+the default and will enable RSS if and only if eBPF steering support is 
+available. "on" will not be default so it's better to validate if RSS is 
+available when the user explicitly specified "on" for the "rss" property.
 
