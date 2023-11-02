@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8C07DF8FC
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:41:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2463A7DF8E7
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 18:40:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qybfN-0003ZR-Os; Thu, 02 Nov 2023 13:39:37 -0400
+	id 1qybfJ-0003Wa-GL; Thu, 02 Nov 2023 13:39:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeh-0003Gp-Fg
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:55 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1qybeg-0003GP-1L
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:54 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qybeb-0002lX-Vn
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:54 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50939d39d0fso1531699e87.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:49 -0700 (PDT)
+ id 1qybeb-0002lu-Pg
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 13:38:53 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40907b82ab9so13849115e9.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 10:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698946727; x=1699551527; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698946728; x=1699551528; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=iD8xvESJqhMdvRBcqDuQwzM17Zf84AgBfxQAOku4bfg=;
- b=BB6Eu+7UYCnQUq9+1kXS46sSQX1D1IzbjlZkNGUicpvE/OnaClV26NzAhcqMvecS9+
- QgVxD8ggm+ttlamFf0fWRnd0aVBu9HNXXpldgYkMXcvRdx1JG/uEQ7i8k2sTe/CRC6U0
- dfhpKiBJ/bB9vE61CoOA5iq4yDKFtm8w5nR9NF0S1gtjdVeguC2bDhZKUDj9hbLkG1z0
- fXuNzIuUQQlS98ZIkiKtjn78LYryIeo3876dioUkslQ4fbcTgY9JmBL/MbZCQiZFq/Wu
- lC/MZtMGdcaqzZG4Znx6ia8tjJMKit+7H+pnHZUPw1eVmXj3UbE/KIB2+uHo6JaNmVwv
- bTdw==
+ :reply-to; bh=nbey4SZJJmXe8K8MAAeguqkbXwo5FmAHlW76eEXbodE=;
+ b=yqWPCkG8gRWiPSEa5W7styRvbGW2SqaJTDw8l2D+bsQSIR/qYp+4X1zhnGx+VZ5xYj
+ 3nDJvhWS5uZMBWK8YEatqaS46cZcJKhaG3JEx8f4pXqyhtzXYjbCnFUY6LN403BcpQ2t
+ unkEveSdD1h6h9CAg4LcYWT8Vkb3nMMmbzov5XF8rrETZOQFjGNROmKTZWZ0MOXaHV5z
+ P5jSd/gXq+zwTdI9PyN85MRMvkTonRMSwmNx6D8rDiWNcMl8bsPpXGP0foQWLLYCiWBY
+ llni3ifp7eZpYwQRgTl4X4yXjeKYut/ZDUQL1BOwG/U9bvvfuwzK0gP48zmkk06Vm++W
+ cpxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698946727; x=1699551527;
+ d=1e100.net; s=20230601; t=1698946728; x=1699551528;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iD8xvESJqhMdvRBcqDuQwzM17Zf84AgBfxQAOku4bfg=;
- b=hksqG/NZf6cWllQzBFMllRd94zesBpQKbWm6M6BCfIOyRqpb9nCkDOk3L3Uz7LHLD8
- NHK79SGzGHDvdPobKWa1HJx2ncyOj4iql2jTmRtpvRhEpquXC8c0wwo4PrZ7lx+XmU/b
- i5YYRJFUf8uqjc39Z1aehU4oWdIkawxj2xh+YPhCuT+kvDDSfmDrYZsZbnz7qyAvxM1O
- P4ofc6LMoUKLeWq+eDPzSMEvWqtPioroRXoyJlZ+U18sOFatCN9e7XgSI/Nc9IcOuyIT
- vZQviX23hO0MJqgnVuWghPLDcdvX15Qa92bHOSJIm0bzMTVS1t7Wu9i8lq/7svdbKuNo
- 2HAg==
-X-Gm-Message-State: AOJu0YxtvoATEuVXIJJxVAQPm/I+1HqAxn7Ur7/xek/nD7vtY/EulEOi
- gYiHP3zwc95FwVRPqGtvCU6UNxQCV29JVBbp2JE=
-X-Google-Smtp-Source: AGHT+IE8sO82x6+MGVGje2B+GxBYaoa5XxAa6eHax/2+AopM8tUgH3gB3/agzGqI569xV4B9xJ1ubg==
-X-Received: by 2002:a05:6512:b87:b0:509:4424:2e13 with SMTP id
- b7-20020a0565120b8700b0050944242e13mr4110590lfv.65.1698946727592; 
- Thu, 02 Nov 2023 10:38:47 -0700 (PDT)
+ bh=nbey4SZJJmXe8K8MAAeguqkbXwo5FmAHlW76eEXbodE=;
+ b=ugsjNJd2T5XxU/M5Ks1URmQtf1vMlC8ZOXDJxFKyRoaS1hwSjlu0yPAWZZOPAqHOXP
+ 3pADi/s31cn0mALkYDQ1KpO8aMDRLOsHFfNbS5bEPfCwYD/RVkG4HVx+F9Qgdb/F1Pa9
+ SHxlyeK3N/gRwmtZjKFCec8n0augfoEMJnhwfiWUtaPAjVLQcsb6G5eksXMjDIDPUlWp
+ pTzsmUUm/NrI+43AX4N0Mfmu2n9vheC96VYxkJ+PQx/AkWN0d7XFx/Vr1yi3x8uHZfpu
+ vxexPbRuH8Y4VbdwLAclMuZ9CkEcJ2x4mV/tHDO3a+WTFimebhNMayeZFCFKoem4Fdiw
+ hvTw==
+X-Gm-Message-State: AOJu0Yw8SbjNggt6t2wzQ12rbhRCyuWoUts5Rbx70lTV/s7VLTlYrt3E
+ dB9AeRGED4JOntOilehI0OPAQWzxKT3AmA36yfs=
+X-Google-Smtp-Source: AGHT+IFGDp3MY1wZQC139ixCudBr9Jnh+LihNxQPsUW55qWnKGPKi9wwf0BRwhiORuGYwKMB+StEMg==
+X-Received: by 2002:a05:6000:1846:b0:32d:8a7c:6efc with SMTP id
+ c6-20020a056000184600b0032d8a7c6efcmr579699wri.9.1698946728049; 
+ Thu, 02 Nov 2023 10:38:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  e16-20020adff350000000b003258934a4bcsm3046805wrp.42.2023.11.02.10.38.47
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 02 Nov 2023 10:38:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/33] hw/watchdog/wdt_imx2: Trace timer activity
-Date: Thu,  2 Nov 2023 17:38:21 +0000
-Message-Id: <20231102173835.609985-20-peter.maydell@linaro.org>
+Subject: [PULL 20/33] hw/misc/imx7_snvs: Trace MMIO access
+Date: Thu,  2 Nov 2023 17:38:22 +0000
+Message-Id: <20231102173835.609985-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
 References: <20231102173835.609985-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,49 +94,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Bernhard Beschow <shentey@gmail.com>
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20231028122415.14869-3-shentey@gmail.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20231028122415.14869-4-shentey@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/watchdog/wdt_imx2.c   | 4 ++++
- hw/watchdog/trace-events | 2 ++
- 2 files changed, 6 insertions(+)
+ hw/misc/imx7_snvs.c  | 5 +++++
+ hw/misc/trace-events | 4 ++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/hw/watchdog/wdt_imx2.c b/hw/watchdog/wdt_imx2.c
-index 885ebd39787..891d7beb2a1 100644
---- a/hw/watchdog/wdt_imx2.c
-+++ b/hw/watchdog/wdt_imx2.c
-@@ -23,6 +23,8 @@ static void imx2_wdt_interrupt(void *opaque)
- {
-     IMX2WdtState *s = IMX2_WDT(opaque);
+diff --git a/hw/misc/imx7_snvs.c b/hw/misc/imx7_snvs.c
+index ee7698bd9cd..a245f96cd4e 100644
+--- a/hw/misc/imx7_snvs.c
++++ b/hw/misc/imx7_snvs.c
+@@ -16,9 +16,12 @@
+ #include "hw/misc/imx7_snvs.h"
+ #include "qemu/module.h"
+ #include "sysemu/runstate.h"
++#include "trace.h"
  
-+    trace_imx2_wdt_interrupt();
+ static uint64_t imx7_snvs_read(void *opaque, hwaddr offset, unsigned size)
+ {
++    trace_imx7_snvs_read(offset, 0);
 +
-     s->wicr |= IMX2_WDT_WICR_WTIS;
-     qemu_set_irq(s->irq, 1);
+     return 0;
  }
-@@ -31,6 +33,8 @@ static void imx2_wdt_expired(void *opaque)
- {
-     IMX2WdtState *s = IMX2_WDT(opaque);
  
-+    trace_imx2_wdt_expired();
+@@ -28,6 +31,8 @@ static void imx7_snvs_write(void *opaque, hwaddr offset,
+     const uint32_t value = v;
+     const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
+ 
++    trace_imx7_snvs_write(offset, value);
 +
-     s->wrsr = IMX2_WDT_WRSR_TOUT;
+     if (offset == SNVS_LPCR && ((value & mask) == mask)) {
+         qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+     }
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index 24ba7cc4d0e..426a8472b69 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -115,6 +115,10 @@ msf2_sysreg_write_pll_status(void) "Invalid write to read only PLL status regist
+ imx7_gpr_read(uint64_t offset) "addr 0x%08" PRIx64
+ imx7_gpr_write(uint64_t offset, uint64_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx64
  
-     /* Perform watchdog action if watchdog is enabled */
-diff --git a/hw/watchdog/trace-events b/hw/watchdog/trace-events
-index 874968cc06a..ad3be1e9bdd 100644
---- a/hw/watchdog/trace-events
-+++ b/hw/watchdog/trace-events
-@@ -20,6 +20,8 @@ aspeed_wdt_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " si
- # wdt_imx2.c
- imx2_wdt_read(uint32_t addr, uint16_t data) "[0x%" PRIx32 "] -> 0x%" PRIx16
- imx2_wdt_write(uint32_t addr, uint16_t data) "[0x%" PRIx32 "] <- 0x%" PRIx16
-+imx2_wdt_interrupt(void) ""
-+imx2_wdt_expired(void) ""
- 
- # spapr_watchdog.c
- spapr_watchdog_start(uint64_t flags, uint64_t num, uint64_t timeout) "Flags 0x%" PRIx64 " num=%" PRId64 " %" PRIu64 "ms"
++# imx7_snvs.c
++imx7_snvs_read(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
++imx7_snvs_write(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
++
+ # mos6522.c
+ mos6522_set_counter(int index, unsigned int val) "T%d.counter=%d"
+ mos6522_get_next_irq_time(uint16_t latch, int64_t d, int64_t delta) "latch=%d counter=0x%"PRIx64 " delta_next=0x%"PRIx64
 -- 
 2.34.1
 
