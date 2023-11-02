@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A7B7DE94D
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB687DE955
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:31:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyLY2-0001QL-IE; Wed, 01 Nov 2023 20:26:58 -0400
+	id 1qyLYO-0001io-Rk; Wed, 01 Nov 2023 20:27:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLY0-0001IQ-Jd
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:26:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLYM-0001dX-FS
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:27:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLXy-00005I-Tx
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:26:56 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLYC-0000Oj-HL
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:27:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698884813;
+ s=mimecast20190719; t=1698884827;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=P3Pe8h1gxQNojxyblcrKbfzrPtU+j0YsRyLgYl0J4so=;
- b=ST+45jUwW1vSQi7eU4n4Q3sCbFX8iEk/FmfIrgSgEX8wXbhW9k078Gg70yt1HDWQW0tw7c
- ccWExIWwp5b9eGBApiLeCDqL8bMPyxyP3IqiwXTvNEHrxG3snYbGcuPT4uqkTKt7npdZ+S
- TWAJ0h40rsbFCv9gnAQsFYpy0RgB/lQ=
+ bh=sPdz+RQvMGR9ddBCdVF1ZuNtbpuFevHnVZeomBplTUs=;
+ b=OAD55TcbCis+GuB49gRFm67tUL1bUj4q6reNOGO5J1jp45PpqLvf4/OQM24rCfGvyAyCes
+ s/cVugHDZwUjD9FwEUoRqkRXNWhLR7nigtS2t+eWk0SpHpsS7dbbYzkjrplMcuNEEE04Ni
+ OYJCO/85FlhmDPTGAcz/xTHuMbcRZ+U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-STPSywg3P6i6lYjeLe4ghw-1; Wed, 01 Nov 2023 20:26:48 -0400
-X-MC-Unique: STPSywg3P6i6lYjeLe4ghw-1
+ us-mta-186-NWPrMAVtOCWw8mTnFDLfEw-1; Wed, 01 Nov 2023 20:27:03 -0400
+X-MC-Unique: NWPrMAVtOCWw8mTnFDLfEw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AE4D9811E7B;
- Thu,  2 Nov 2023 00:26:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4C6A185A781;
+ Thu,  2 Nov 2023 00:27:01 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.70])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 05E11C1290F;
- Thu,  2 Nov 2023 00:26:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 39EBBC1290F;
+ Thu,  2 Nov 2023 00:26:46 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,24 +62,25 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
  iii@linux.ibm.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
  shan.gavin@gmail.com
-Subject: [PATCH v4 04/33] cpu: Add helper cpu_model_from_type()
-Date: Thu,  2 Nov 2023 10:24:31 +1000
-Message-ID: <20231102002500.1750692-5-gshan@redhat.com>
+Subject: [PATCH v4 05/33] target/alpha: Use generic helper to show CPU model
+ names
+Date: Thu,  2 Nov 2023 10:24:32 +1000
+Message-ID: <20231102002500.1750692-6-gshan@redhat.com>
 In-Reply-To: <20231102002500.1750692-1-gshan@redhat.com>
 References: <20231102002500.1750692-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,71 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add helper cpu_model_from_type() to extract the CPU model name from
-the CPU type name in two circumstances: (1) The CPU type name is the
-combination of the CPU model name and suffix. (2) The CPU type name
-is same to the CPU model name.
+For target/alpha, the registered CPU type name is always the combination
+of the CPU model name and suffix. Use cpu_model_from_type() to show the
+CPU model names instead of the CPU type names.
 
-The helper will be used in the subsequent commits to conver the
-CPU type name to the CPU model name.
-
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- cpu-target.c          | 16 ++++++++++++++++
- include/hw/core/cpu.h | 12 ++++++++++++
- 2 files changed, 28 insertions(+)
+ target/alpha/cpu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/cpu-target.c b/cpu-target.c
-index 876b498233..344bad5736 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -265,6 +265,22 @@ ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
-     return NULL;
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index 9436859c7b..d4b35434cd 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -89,9 +89,11 @@ static void alpha_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+ static void alpha_cpu_list_entry(gpointer data, gpointer user_data)
+ {
+-    ObjectClass *oc = data;
++    const char *typename = object_class_get_name(OBJECT_CLASS(data));
++    char *model = cpu_model_from_type(typename);
+ 
+-    qemu_printf("  %s\n", object_class_get_name(oc));
++    qemu_printf("  %s\n", model);
++    g_free(model);
  }
  
-+char *cpu_model_from_type(const char *typename)
-+{
-+    const char *suffix = "-" CPU_RESOLVING_TYPE;
-+
-+    if (!object_class_by_name(typename)) {
-+        return NULL;
-+    }
-+
-+    if (strlen(typename) > strlen(suffix) &&
-+        !strcmp(typename + strlen(typename) - strlen(suffix), suffix)) {
-+        return g_strndup(typename, strlen(typename) - strlen(suffix));
-+    }
-+
-+    return g_strdup(typename);
-+}
-+
- const char *parse_cpu_option(const char *cpu_option)
- {
-     ObjectClass *oc;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index ee85aafdf5..8179c55759 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -779,6 +779,18 @@ void cpu_reset(CPUState *cpu);
-  */
- ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model);
- 
-+/**
-+ * cpu_model_from_type:
-+ * @typename: The CPU type name
-+ *
-+ * Extract the CPU model name from the CPU type name. The
-+ * CPU type name is either the combination of the CPU model
-+ * name and suffix, or same to the CPU model name.
-+ *
-+ * Returns: CPU model name or NULL if the CPU class doesn't exist
-+ */
-+char *cpu_model_from_type(const char *typename);
-+
- /**
-  * cpu_create:
-  * @typename: The CPU type.
+ void alpha_cpu_list(void)
 -- 
 2.41.0
 
