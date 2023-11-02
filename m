@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362D97DEA47
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:42:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE027DEA17
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:35:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMXp-0005kx-Py; Wed, 01 Nov 2023 21:30:49 -0400
+	id 1qyMYJ-0005nW-OM; Wed, 01 Nov 2023 21:31:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMXi-0005ij-Mp
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:42 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1qyMXp-0005lV-4X
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:49 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMXh-0001a8-87
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:42 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6b201a93c9cso456202b3a.0
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:30:40 -0700 (PDT)
+ id 1qyMXn-0001dG-1X
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:30:48 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5b94489e82eso309372a12.2
+ for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:30:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698888639; x=1699493439; darn=nongnu.org;
+ d=linaro.org; s=google; t=1698888646; x=1699493446; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Exykv+xKuErtsZmUvO9DLpku6Bz9Jw3PAqZ735n9fU=;
- b=C+1pZnEQK2LLMu7qmDJ6UUNMUqCcnjXLk53F9sALIWf1l80KGdluEQXTiteqSKmewb
- ga3MS3sSY/FJV+uSHlOeSvX+SD3XcAfqhvbSRTxM1mpb12j8dVE2VcGx0HvJ/+qoRDwa
- C9GN3Jbzo4Qta4lqt7m7JzpdAsXFbjBNAYgUjeuJGjBJfMl0SENQsF5aKxaLfnP5zIDH
- jeRiI40li15oSx6i2eP8H4QWSCPwJf5TLzuEVPTql677pm0Gp74C7Vfke1/zknzxir0l
- xIBdpli+P94ga2Pw9bnhPvnef9fwcxjk7bVtDzRadxJ0FjH/OvqPk7Nvz3cbRPMuT5ao
- Xb1w==
+ bh=BGX0hLDU7mlzZf7pxJoVlwonVpBOzxX6m78i0jjhfjQ=;
+ b=SeiyBbQCbKFY0xJHW3r6rfXbwDCKc7DKlBh+6w+Nyhcnf7r/0GN5GPdU6dGSzckylw
+ 9nKj4NJY4CNt3NJPGSRyztfeCatGxzSMT1CBerOwlgpZC/0858rXVIcRt2wpf4T5hgTq
+ 0QlfHJlOe/tis8hrLnTBBY2AmpNtpmpSy+hUO8r6nqErVaIdsdI6qjvlvwl/G/Eb+hvw
+ KooajPsqs1o54T0TFh1tvMXSEyRR1hgvzBbaEBvQZsSi5FB5uztWwBZQwwIRonxxdVn9
+ nBj2N+H1j1RSTkncYoaLx1hz7jdFVpO2pA5d5ax3Qb6UuO6PLGQ/719w8XAsHNuzqKJL
+ ZUnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698888639; x=1699493439;
+ d=1e100.net; s=20230601; t=1698888646; x=1699493446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/Exykv+xKuErtsZmUvO9DLpku6Bz9Jw3PAqZ735n9fU=;
- b=mTReqgIDFtfwup+orDU5a+VmywQYsRHT/nrzlow/FXNbgsaqvKRa0fetJY0ypr9wlI
- QpAUZpNGqABk2pXVrp5XUB9wpXANNJtr6dKVEHuJpCX5QnIS2guJEYKqFF/dbFi5QggF
- TVRjThzLrvDeqQgjbHsX4+OZx0CRQV0WMDVVc/dKZJ8oK4ueP6Dmh6oi5RD93h6gfRl1
- +Vvks+NS/k0Rigi1THQdn5zsW+iaBZCzcxyeMNel6fV0AffDQtm84+g6xZnwrI2T8lxy
- 9WhH9fFcZa6SFl97bSfqFjuoupaYXOwNwV6gxqk9Ho1VAmUZ8zCysmL5DFn8+UoZgm3G
- r/Ag==
-X-Gm-Message-State: AOJu0YxyvKYZrYAp81vAYKfVHB0ZNRFIty45Wc5BOCLLHCuhMw/qEhKU
- 8G+P5jdfSvt2Cpi7XmD+QR9XlfFhhXHdcAucRS8=
-X-Google-Smtp-Source: AGHT+IFRApAQbGiGzHYnJKX4kIoMYByG59hozKyurXwc9AJh6g9wb/gNAYtWpkvn+l5CpqXWxafNpA==
-X-Received: by 2002:a05:6a20:8e2a:b0:174:63a9:293 with SMTP id
- y42-20020a056a208e2a00b0017463a90293mr17273056pzj.48.1698888635809; 
- Wed, 01 Nov 2023 18:30:35 -0700 (PDT)
+ bh=BGX0hLDU7mlzZf7pxJoVlwonVpBOzxX6m78i0jjhfjQ=;
+ b=kq7tNULXcxHsZFhFVAcfrlEWvUGA714GYw5V0baTxhzvXjyDUZatpmmYEDK+cfIlBA
+ x5dP9w+iIDaxMFEjKR6EMW8fKZhvqMSzyNPPIi/Ut0T2DW27xir6mom+a4mBb4PvVs9L
+ lRcuFMBl0tv0vgD+mxPwLWSZMUBET5TfpWC5qQWWVO9VYCfN+hi+/An2+vbeYCvoKW+5
+ GKklly7+57qB9d7bL0Vr/R8qwQkDTk8sJxFFTR9fs1LH8Q1wZhh/uIxlbPUzM6KLvmhu
+ B1Lbo4x2FGYJN4JGpa7XmoDRmCpE+SgI6ICwUnP8Ay3xKWXyEBE8NRssuOYF5los2o1Y
+ 2IKg==
+X-Gm-Message-State: AOJu0YyOW+h64dtHdJKrrVLTrvrJv50cLDcB3iWgCZkMfEcKjONwhPj+
+ FhDASPXVbVMjvm7Sb46Pt/sCy1aqwG9PrlDmh3w=
+X-Google-Smtp-Source: AGHT+IFJ1N6lxQyaxhC+VaNJv+Nb/oVriiqK3wHIFO1/89tAiBAWoZ0oy+QI1J3z/0njB6aB9tEtBw==
+X-Received: by 2002:a05:6a20:431c:b0:181:99d4:8fe9 with SMTP id
+ h28-20020a056a20431c00b0018199d48fe9mr668500pzk.58.1698888639875; 
+ Wed, 01 Nov 2023 18:30:39 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- r23-20020aa78457000000b006979f70fdd5sm1784191pfn.219.2023.11.01.18.30.35
+ r23-20020aa78457000000b006979f70fdd5sm1784191pfn.219.2023.11.01.18.30.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:30:35 -0700 (PDT)
+ Wed, 01 Nov 2023 18:30:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 22/88] target/hppa: Implement hppa_cpu_class_by_name
-Date: Wed,  1 Nov 2023 18:29:10 -0700
-Message-Id: <20231102013016.369010-23-richard.henderson@linaro.org>
+Subject: [PATCH v3 23/88] target/hppa: Update cpu_hppa_get/put_psw for hppa64
+Date: Wed,  1 Nov 2023 18:29:11 -0700
+Message-Id: <20231102013016.369010-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
 References: <20231102013016.369010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,45 +90,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+With 64-bit registers, there are 16 carry bits in the PSW.
+Clear reserved bits based on cpu revision.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/hppa/target_elf.h |  2 +-
- target/hppa/cpu.c            | 10 +++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ target/hppa/helper.c | 63 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 52 insertions(+), 11 deletions(-)
 
-diff --git a/linux-user/hppa/target_elf.h b/linux-user/hppa/target_elf.h
-index 82b4e9535e..19cae8bd65 100644
---- a/linux-user/hppa/target_elf.h
-+++ b/linux-user/hppa/target_elf.h
-@@ -9,6 +9,6 @@
- #define HPPA_TARGET_ELF_H
- static inline const char *cpu_get_model(uint32_t eflags)
+diff --git a/target/hppa/helper.c b/target/hppa/helper.c
+index cba8160b3d..fa17fe6931 100644
+--- a/target/hppa/helper.c
++++ b/target/hppa/helper.c
+@@ -28,19 +28,35 @@
+ target_ureg cpu_hppa_get_psw(CPUHPPAState *env)
  {
--    return "any";
-+    return "hppa";
- }
- #endif
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 27c74f0d27..70ce0c3b99 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -158,7 +158,15 @@ static void hppa_cpu_initfn(Object *obj)
+     target_ureg psw;
++    target_ureg mask1 = (target_ureg)-1 / 0xf;
++    target_ureg maskf = (target_ureg)-1 / 0xffff * 0xf;
  
- static ObjectClass *hppa_cpu_class_by_name(const char *cpu_model)
- {
--    return object_class_by_name(TYPE_HPPA_CPU);
-+    g_autofree char *typename = g_strconcat(cpu_model, "-cpu", NULL);
-+    ObjectClass *oc = object_class_by_name(typename);
+     /* Fold carry bits down to 8 consecutive bits.  */
+-    /* ??? Needs tweaking for hppa64.  */
+-    /* .......b...c...d...e...f...g...h */
+-    psw = (env->psw_cb >> 4) & 0x01111111;
+-    /* .......b..bc..cd..de..ef..fg..gh */
++    /* ^^^b^^^c^^^d^^^e^^^f^^^g^^^h^^^i^^^j^^^k^^^l^^^m^^^n^^^o^^^p^^^^ */
++    /*                                 ^^^b^^^c^^^d^^^e^^^f^^^g^^^h^^^^ */
++    psw = (env->psw_cb >> 4) & mask1;
++    /* .......b...c...d...e...f...g...h...i...j...k...l...m...n...o...p */
++    /*                                 .......b...c...d...e...f...g...h */
+     psw |= psw >> 3;
+-    /* .............bcd............efgh */
+-    psw |= (psw >> 6) & 0x000f000f;
+-    /* .........................bcdefgh */
+-    psw |= (psw >> 12) & 0xf;
+-    psw |= env->psw_cb_msb << 7;
+-    psw = (psw & 0xff) << 8;
++    /* .......b..bc..cd..de..ef..fg..gh..hi..ij..jk..kl..lm..mn..no..op */
++    /*                                 .......b..bc..cd..de..ef..fg..gh */
++    psw |= psw >> 6;
++    psw &= maskf;
++    /* .............bcd............efgh............ijkl............mnop */
++    /*                                 .............bcd............efgh */
++    psw |= psw >> 12;
++    /* .............bcd.........bcdefgh........efghijkl........ijklmnop */
++    /*                                 .............bcd.........bcdefgh */
++    psw |= env->psw_cb_msb << (TARGET_REGISTER_BITS == 64 ? 39 : 7);
++    /* .............bcd........abcdefgh........efghijkl........ijklmnop */
++    /*                                 .............bcd........abcdefgh */
 +
-+    if (oc &&
-+        !object_class_is_abstract(oc) &&
-+        object_class_dynamic_cast(oc, TYPE_HPPA_CPU)) {
-+        return oc;
++    /* For hppa64, the two 8-bit fields are discontiguous. */
++    if (hppa_is_pa20(env)) {
++        psw = (psw & 0xff00000000ull) | ((psw & 0xff) << 8);
++    } else {
++        psw = (psw & 0xff) << 8;
 +    }
-+    return NULL;
- }
  
- static void hppa_cpu_list_entry(gpointer data, gpointer user_data)
+     psw |= env->psw_n * PSW_N;
+     psw |= (env->psw_v < 0) * PSW_V;
+@@ -51,13 +67,38 @@ target_ureg cpu_hppa_get_psw(CPUHPPAState *env)
+ 
+ void cpu_hppa_put_psw(CPUHPPAState *env, target_ureg psw)
+ {
++    uint64_t reserved;
+     target_ureg cb = 0;
+ 
++    /* Do not allow reserved bits to be set. */
++    if (hppa_is_pa20(env)) {
++        reserved = MAKE_64BIT_MASK(40, 24) | MAKE_64BIT_MASK(28, 4);
++        reserved |= PSW_G;                  /* PA1.x only */
++        reserved |= PSW_E;                  /* not implemented */
++    } else {
++        reserved = MAKE_64BIT_MASK(32, 32) | MAKE_64BIT_MASK(28, 2);
++        reserved |= PSW_O | PSW_W;          /* PA2.0 only */
++        reserved |= PSW_E | PSW_Y | PSW_Z;  /* not implemented */
++    }
++    psw &= ~reserved;
++
+     env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
+     env->psw_n = (psw / PSW_N) & 1;
+     env->psw_v = -((psw / PSW_V) & 1);
+-    env->psw_cb_msb = (psw >> 15) & 1;
+ 
++#if TARGET_REGISTER_BITS == 32
++    env->psw_cb_msb = (psw >> 15) & 1;
++#else
++    env->psw_cb_msb = (psw >> 39) & 1;
++    cb |= ((psw >> 38) & 1) << 60;
++    cb |= ((psw >> 37) & 1) << 56;
++    cb |= ((psw >> 36) & 1) << 52;
++    cb |= ((psw >> 35) & 1) << 48;
++    cb |= ((psw >> 34) & 1) << 44;
++    cb |= ((psw >> 33) & 1) << 40;
++    cb |= ((psw >> 32) & 1) << 36;
++    cb |= ((psw >> 15) & 1) << 32;
++#endif
+     cb |= ((psw >> 14) & 1) << 28;
+     cb |= ((psw >> 13) & 1) << 24;
+     cb |= ((psw >> 12) & 1) << 20;
 -- 
 2.34.1
 
