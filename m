@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06C37DEA6A
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 988A37DEA64
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:48:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMeV-00076P-Bv; Wed, 01 Nov 2023 21:37:44 -0400
+	id 1qyMcb-00007i-B6; Wed, 01 Nov 2023 21:35:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMeO-0006UG-Eu
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:36 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qyMbx-0007NH-Dm; Wed, 01 Nov 2023 21:35:05 -0400
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qyMeM-0004N5-6H
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 21:37:36 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3b2f28caab9so262963b6e.1
- for <qemu-devel@nongnu.org>; Wed, 01 Nov 2023 18:37:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qyMbt-0003Hx-No; Wed, 01 Nov 2023 21:35:03 -0400
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7b6043d0b82so171530241.1; 
+ Wed, 01 Nov 2023 18:35:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1698889052; x=1699493852; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1698888900; x=1699493700; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pp6zfL97EYv9sP49urhM/V8BoPWbAzzDBRAX05BVoII=;
- b=vzeeO8lkCdfCUvY8wfa8wteguJdhzHa8tK3HRju6R0eGLM0V2A3A08sQp12jZmv80h
- 52tWvkDkul2UkKp8vquHKKmi9azWVE/n6+kaj+WXhTrqqrEVlD5rHb22Au/u8QmFb5Ds
- 78MEQj2sNV2TKo5tR2+ml9K2dS5ZdPBH77Rl7P/+gyd5y3BguuzQC8LkwDJiodu2auIE
- ZbEfVaVPKWbVAtn6B3tSp0tmN9Y36TxUZvTWO+jm0/rI0gkLGOTLkI7efAqLmE+ZqSf2
- eeg+R7eW8dFlIGHqBNylvVohwftPnXYpUPZoD3xp+7VKER5lmzggectd0tTfJcCMI4fu
- 85YQ==
+ bh=d0fEepzzOLobmXkKvkxn5fftan2+46rKuOteSOs4DnA=;
+ b=NUE+HgPZZGJbEPblXIQ11LZB7SV4FPlm9keMkwUF1KQ/9nmSEmRkVtmfTfS19OmKpn
+ h0+owsv4u21OwXaph5Oxg2dHQlgI6NCwfVoYMnuN4i0NLmujLpl/fghDChM6LPk8bXiP
+ MsJLpajRyKhElHuDnUTYom5kbNW71EK1mUZMcJihFRJ6RZljvkPNoIwcV52SkTCkXcFJ
+ R2fMVcMX+Jdq4lWCpp+xlqDGG8Waaf/W4IttcODgjr/hcWhypCr9kuCgTpg384216PLW
+ 0gmW6YVHRjaYb9ryP6ipxCrxAJXPNbjPfWHLXvgVIndN2KUgtsFlsniDdGxFI615hT41
+ Rd0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698889052; x=1699493852;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1698888900; x=1699493700;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pp6zfL97EYv9sP49urhM/V8BoPWbAzzDBRAX05BVoII=;
- b=nzbWkFeqX5Keh4TKZYMj1i5a86OEVOvYHqtP8+6PpwFun7nf0O8x6iYfnDl5HVla2e
- kxQ1aakO3ploHcUJ1+T0Kg9VdKdIZ7VQcwSfZmOR7WKJJxeexnuuf9muwPd6TUzsvmso
- aocN2cNyJ1ZmfyI+Wl0NsAxq/5jk+18XoAkN2rIWZJBHMGbzgk9jO+tmDyvjhAgYSXFQ
- C2OZ+wG6/LMBpKOJq/qXDhXo9kMpvjrtRMBr0MdRHZbwfGXLB67sSlCAqV5jz1RbncrV
- AIbzleSMJD/1pTSvXO3CzC3mP65iENCOFhc4lVFz+CelgBAByL23DLBcuaIoDvc67PbR
- P/8A==
-X-Gm-Message-State: AOJu0YymzW8n75Hfjw48/LqH7ApwFMw4CohFxjWaD9RJaSIUkhXSlNeq
- kjTgS/micGg+ImKhxBoX7wEnkGKgLMw2Sg/YkPA=
-X-Google-Smtp-Source: AGHT+IEDyVklVQWhaRM7bRXhjUSt3FD1HSgJNC/tP+GVp7fSuZFlUfannmjDvnAmeHXuwdq7LEdKkQ==
-X-Received: by 2002:a05:6808:3084:b0:3b5:75ec:44fd with SMTP id
- bl4-20020a056808308400b003b575ec44fdmr5916939oib.13.1698889052163; 
- Wed, 01 Nov 2023 18:37:32 -0700 (PDT)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- v20-20020aa78514000000b006934e7ceb79sm1800230pfn.32.2023.11.01.18.37.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Nov 2023 18:37:31 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: [PATCH v3 88/88] hw/hppa: Map PDC ROM and I/O memory area into lower
- memory
-Date: Wed,  1 Nov 2023 18:30:16 -0700
-Message-Id: <20231102013016.369010-89-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231102013016.369010-1-richard.henderson@linaro.org>
-References: <20231102013016.369010-1-richard.henderson@linaro.org>
+ bh=d0fEepzzOLobmXkKvkxn5fftan2+46rKuOteSOs4DnA=;
+ b=Yv9K3xqQlBIgPTQwmVsPmZGU0pFtHp6fx57WbNwexWZR2rL9T4nQsPyiAcUYrE8Ajg
+ xKIK2PFnfadMRQqQmwKEzV3WvVOribGxX2wbhHA8ILW0nCVTIeC6Yq67rl5jVKtNhZjy
+ B05FOtXwI4fTptxgYdhjx1sBeXIS3RQtIr0q2JWgqbNAxXIgVMS+Y0KgtmoNwcj+PH63
+ d1gcyPCiCX/fG/9k+W3NyXMmEVUO83bOrjwqFQ7QORxSwHpq9pcgYap2Lz/f8sMi3H+9
+ ty1b0l67JxsW81gzXpe3i2fVILd8QbAYGAkgaDmSxYCay+xy4esxN1NYU85XPm8f0mwf
+ ZO0g==
+X-Gm-Message-State: AOJu0YyYToQHlaj1uFjamOHYvXCSMbOrUstEXs6uSGWYfy2q3wAMKNDc
+ NdkqGDvMLNwHi45b+BKadv8cnyKTn4H3jswfZxM=
+X-Google-Smtp-Source: AGHT+IGv7KVKTHgGJZHM7tcRclkdxkjvZHG0x7SlYe/lhdftnlco32lrfjz2Ngs87K1PsCLxqn+je/yhmCe6f/zG0n4=
+X-Received: by 2002:a67:c20f:0:b0:457:c8f5:60d9 with SMTP id
+ i15-20020a67c20f000000b00457c8f560d9mr16465071vsj.12.1698888899807; Wed, 01
+ Nov 2023 18:34:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20231030081607.115118-1-liweiwei@iscas.ac.cn>
+ <20231030081607.115118-2-liweiwei@iscas.ac.cn>
+In-Reply-To: <20231030081607.115118-2-liweiwei@iscas.ac.cn>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 2 Nov 2023 11:34:33 +1000
+Message-ID: <CAKmqyKNGK1UacY8--t+GQQeATd_Seo4J-gT-zuQvruFGGT58gg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] MAINTAINERS: update mail address for Weiwei Li
+To: Weiwei Li <liweiwei@iscas.ac.cn>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com, 
+ zhiwei_liu@linux.alibaba.com, lazyparser@gmail.com, 
+ Weiwei Li <liwei1518@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,51 +89,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On Mon, Oct 30, 2023 at 6:17=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> wr=
+ote:
+>
+> My Iscas mail account will be disabled soon, change to my personal
+> gmail account.
+>
+> Signed-off-by: Weiwei Li <liwei1518@gmail.com>
 
-When running a 64-bit CPU in 32-bit mode (e.g. when using a
-32-bit kernel) the PDC ROM and I/O area has to be accessible
-in the 0xf0000000 memory region.
+Thanks!
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- hw/hppa/machine.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+I hope you can continue working on QEMU :)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index a3222d3a96..e488914bba 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -603,6 +603,7 @@ static void machine_HP_C3700_init(MachineState *machine)
-     AstroState *astro;
-     DeviceState *astro_dev;
-     MemoryRegion *addr_space = get_system_memory();
-+    MemoryRegion *io_low_alias = g_new(MemoryRegion, 2);
-     TranslateFn *translate;
- 
-     /* Create CPUs and RAM.  */
-@@ -614,6 +615,20 @@ static void machine_HP_C3700_init(MachineState *machine)
-         exit(1);
-     }
- 
-+    /* map PDC ROM into lower memory region, needed if PSW.W=0 */
-+    memory_region_init_alias(&io_low_alias[0], NULL, "firmware-alias",
-+                             addr_space, translate(NULL, FIRMWARE_START),
-+                             FIRMWARE_END - FIRMWARE_START);
-+    memory_region_add_subregion(addr_space, (uint32_t) FIRMWARE_START,
-+                             &io_low_alias[0]);
-+
-+    /* map all of I/O area into lower memory region, needed if PSW.W=0 */
-+    memory_region_init_alias(&io_low_alias[1], NULL, "iomem-alias",
-+                             addr_space, translate(NULL, 0xf1000000UL),
-+                             0xf000000UL);
-+    memory_region_add_subregion(addr_space, (uint32_t) 0xf1000000UL,
-+                             &io_low_alias[1]);
-+
-     /* Init Astro and the Elroys (PCI host bus chips).  */
-     astro = astro_init();
-     astro_dev = DEVICE(astro);
--- 
-2.34.1
+Applied to riscv-to-apply.next
 
+Alistair
+
+> ---
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cd8d6b140f..aa5c5d4bff 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -323,7 +323,7 @@ RISC-V TCG CPUs
+>  M: Palmer Dabbelt <palmer@dabbelt.com>
+>  M: Alistair Francis <alistair.francis@wdc.com>
+>  M: Bin Meng <bin.meng@windriver.com>
+> -R: Weiwei Li <liweiwei@iscas.ac.cn>
+> +R: Weiwei Li <liwei1518@gmail.com>
+>  R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>  R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+>  L: qemu-riscv@nongnu.org
+> --
+> 2.25.1
+>
+>
 
