@@ -2,54 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48287DF4A3
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBD77DF4CD
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 15:20:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyYPp-00084p-LK; Thu, 02 Nov 2023 10:11:21 -0400
+	id 1qyYXA-0002a1-J6; Thu, 02 Nov 2023 10:18:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qyYPk-00083Y-4f; Thu, 02 Nov 2023 10:11:16 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qyYX7-0002XM-MR
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:18:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qyYPh-0005tn-CK; Thu, 02 Nov 2023 10:11:15 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9E8E72FC71;
- Thu,  2 Nov 2023 17:11:16 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1721732EE9;
- Thu,  2 Nov 2023 17:11:09 +0300 (MSK)
-Message-ID: <2b923514-623c-4154-aa7f-b84937db8974@tls.msk.ru>
-Date: Thu, 2 Nov 2023 17:11:09 +0300
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qyYX6-0004ub-6q
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 10:18:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698934730;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YAmYQAmp51i+PHc40s4THT8/1TLplt0nGX4p/H7ds+k=;
+ b=E321ME9JbRRsAyJrbLBj9o/Jafhd0gndwl+kWAHVH7iheLJJxiDMKxH9J19LIS1MqQEZrt
+ 7GN0XATlpYHp/AhZUp/8iV8ppgVRmqVEpIMRrguh/jXncbswayvqQ8Fywa8fV1XyG53QEi
+ e8I5jdIuZ8MzDcyS1MoFAF/7W+RgEHU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-696-GDfKgbWBONiCeRlv3vnXmQ-1; Thu, 02 Nov 2023 10:18:48 -0400
+X-MC-Unique: GDfKgbWBONiCeRlv3vnXmQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-408374a3d6bso6220245e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 07:18:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1698934727; x=1699539527;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YAmYQAmp51i+PHc40s4THT8/1TLplt0nGX4p/H7ds+k=;
+ b=rd3y+Ekwci2fUY9dNGLNQAt9yGKWPcwc4/C0ci5vN6dmeJaE1fpNn/RLngRWA1S49a
+ 1OeyBzYEquiSvYcSS/xToWnN4GYdSi+cAPYhcN5thsyTUagj++8nv8A9QYH/7NimW8U7
+ m8sFPYbeOpMZTxseDN8X9Vf6EvdEmrtdlfHnlfa1EvqcX+ppWnD2++foNtiXO/lLrjla
+ /zcrTiMJLo/YRkiSdsFX8WRT2VS8yxjTg3Uk1n4tiUqfyn3OMt8p4XyoN/8vyDrL6Evr
+ HaRL1hLGkR02BK7KcvOpPkHLQq0zQ1ChiWiwJC3VYRdmtRyzoSZHdW3I90GJ+eGmGqgJ
+ AOkQ==
+X-Gm-Message-State: AOJu0Yyr2mSU3UOPZEiOULiGWCwxTZ0RrdldrSYrAPfdRj2AfpQaPq//
+ aGTTlKqb+omOm/diC4ky23xjfjA7az5bDRme+YlbPy29lw9+B21UMsYvXt4yBJdYjAIz3Fp2X4S
+ NVhefgHy2kWpsxWVdoxFtl1Iu7CjkwFEHHAiNBYu1dOqcuK0bIVfDwMfOV086W1y9BC2XepSd
+X-Received: by 2002:a05:600c:1d83:b0:407:8ee2:997e with SMTP id
+ p3-20020a05600c1d8300b004078ee2997emr17069989wms.27.1698934727299; 
+ Thu, 02 Nov 2023 07:18:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFa8mpwecDva8clnsWhfFMCIbscdzop3vKIFikwmPNFL5rKYcSvoouH+D+U8c1ud5eHIAgiMQ==
+X-Received: by 2002:a05:600c:1d83:b0:407:8ee2:997e with SMTP id
+ p3-20020a05600c1d8300b004078ee2997emr17069965wms.27.1698934726942; 
+ Thu, 02 Nov 2023 07:18:46 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d718:8590:77de:e1fd:a4df:d080?
+ (p200300cfd718859077dee1fda4dfd080.dip0.t-ipconnect.de.
+ [2003:cf:d718:8590:77de:e1fd:a4df:d080])
+ by smtp.gmail.com with ESMTPSA id
+ r22-20020a05600c35d600b00401e32b25adsm3079298wmq.4.2023.11.02.07.18.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Nov 2023 07:18:46 -0700 (PDT)
+Message-ID: <4527971d-b408-400f-8004-591885c9fa80@redhat.com>
+Date: Thu, 2 Nov 2023 15:18:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: -drive if=none: can't we make this the default?
+Subject: Re: [PATCH v5 0/7] vhost-user: Back-end state migration
+To: qemu-devel@nongnu.org, virtio-fs@redhat.com
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, German Maglione
+ <gmaglione@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Anton Kuchin <antonkuchin@yandex-team.ru>
+References: <20231016134243.68248-1-hreitz@redhat.com>
 Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, "Daniel P. Berrange"
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
- <e3bb64a2-fb72-4e8d-a0b2-89ee35365fb3@tls.msk.ru>
- <ZUFK/BHG2WMhAiWG@redhat.com>
- <CAFEAcA_6nPW2f0+zvtYAg6d7ZJJMLxqFzNOyDY0wLgVFNcoahw@mail.gmail.com>
- <ZUN9SZ6VkvLHWNXs@redhat.com>
- <CAFEAcA8hssUvz8kb4VYXNZSyrQhRyo+=AebA-hskm64bmhG-MA@mail.gmail.com>
- <ZUOs7j823+a6FBD2@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <ZUOs7j823+a6FBD2@redhat.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20231016134243.68248-1-hreitz@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -67,18 +104,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-02.11.2023 17:06, Kevin Wolf:
-> Am 02.11.2023 um 12:01 hat Peter Maydell geschrieben:
->> Whoops, have I got the terminology wrong again? To me these are
->> "snapshots" (they do store the whole VM state including the current
->> state of the disk, and "qemu-img info" lists them as "snapshots"),
->> whereas I never use the '-snapshot' option, so I never remember
->> that we have two different things here. Sorry for introducing
->> confusion :-(
-> 
-> It is confusing, -snapshot really doesn't have the best name.
+On 16.10.23 15:42, Hanna Czenczek wrote:
+> Based-on: <20231004014532.1228637-1-stefanha@redhat.com>
+>            ([PATCH v2 0/3] vhost: clean up device reset)
+>
+> Based-on: <20231016083201.23736-1-hreitz@redhat.com>
+>            ([PATCH] vhost-user: Fix protocol feature bit conflict)
+>
+>
+> Hi,
+>
+> v5 is basically the same as v4, only that I’ve dropped the patch
+> deprecating F_STATUS (which doesn’t affect the rest of the series), that
+> I’ve amended the documentation in patch 1 as suggested by Stefan and
+> with help from Michael, and that I’ve rebased everything on top of the
+> F_SHARED_OBJECT changes that have been merged upstream.
 
-Can we use -ephemeral for this?
+Ping – both of the dependencies are merged.
 
-/mjt
+Hanna
+
 
