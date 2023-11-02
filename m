@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05277DEF82
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 562387DEF83
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 11:08:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyUaL-0001nN-Gg; Thu, 02 Nov 2023 06:05:57 -0400
+	id 1qyUaL-0001ni-UY; Thu, 02 Nov 2023 06:05:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyUaJ-0001mR-3N
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:05:55 -0400
-Received: from mail-ej1-f47.google.com ([209.85.218.47])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyUaK-0001mh-4v
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:05:56 -0400
+Received: from mail-ej1-f54.google.com ([209.85.218.54])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyUaH-0003Fv-HE
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:05:54 -0400
-Received: by mail-ej1-f47.google.com with SMTP id
- a640c23a62f3a-99bdeae1d0aso115437366b.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 03:05:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qyUaI-0003Fy-Ki
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 06:05:55 -0400
+Received: by mail-ej1-f54.google.com with SMTP id
+ a640c23a62f3a-99357737980so108573666b.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 03:05:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698919552; x=1699524352;
+ d=1e100.net; s=20230601; t=1698919553; x=1699524353;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1g5l7WLPwmx/2FQG+3S+vPUT3Z4s0SPpwegU2qPgNuw=;
- b=DmGo06lZAmdxB/qR6iawjZ6Ua5wd8G843uW44q9V/FUIOdORZJ+mCj0aKkN2NI8BmT
- 2Tf93/HgtAW9y0uApXeHuSDh4INskXBuVtVYZsL53ZjYrYwuOAz5S6jkThWt4rMO0h5K
- K7cjFwWrwi+Co6LujG2U19o8wsMCf3jJhDuy9I1jxg6M3eHGa8PYB/VvrLXgZVFjnE01
- 5wdm3kZb7lP/obRnj77cQ/93cC1VI1u8rrpA8LMC6YTqOxNj98ajnuT+NIHly9uSylYe
- Ay3WC9PbiKkFFLok4TKxeeZYGxFLkMgSs5yFnkiP6kABTYRpL7DWRoVFghXg87g6YbX5
- inNQ==
-X-Gm-Message-State: AOJu0YwYi2u5cut49FUtfNDyNl9ezLH6+ahTUz0wejsS5jYfoTshfrny
- 2bDEOnPHsgWW41KbAvK4wLS8LR+WtDQ=
-X-Google-Smtp-Source: AGHT+IF7TK1VDE/qV+giwDl1EcN/uXj6dlexmc51K3Ym1La852HYawzs7tI4SPPBuCrEGigJpkaRyA==
-X-Received: by 2002:a17:907:9289:b0:9bf:388e:8e93 with SMTP id
- bw9-20020a170907928900b009bf388e8e93mr3972942ejc.0.1698919551849; 
- Thu, 02 Nov 2023 03:05:51 -0700 (PDT)
+ bh=nL0Y9TbMWZl0LQx6cxYpTPkWBi5TFH+TySFwvCTQt/Q=;
+ b=I3+rRo9D1Ch11P+aZcxmJZWYxQP7QNlDyfBlRqMqCa0LGTp8x3/i1xbffm3NASyFVE
+ 6/zL89/4zmamHgMZpFcIYQBfJyaVEnGXdFia+HHTFsEtcOLH51b/wLF/z9JzNl10E6+F
+ NJ2mWXW4aC+h/NUePlWLZDk0Ps0fa6z8dhsRK4uti4ieQ86frR/OsjiUvMl0W7PcqwiH
+ 7BWO9ugoF/6ypBD3yMLwkyDo1lo5+4yk28ZENNqcUBKQihHdeYiotMjaAYVOT3KeSZH5
+ z/hZUT1W/j7ssPc6U7iI6MuTMNo+uhdMd+ZDmoyi2bTN9bMEdq8VP39OZEOJhCeseRNh
+ tWvQ==
+X-Gm-Message-State: AOJu0YyIOBg0ym0L1GBVmvsTJJVRAKIuafO8YlvfVk4FYb46P5XKF82O
+ lLqrhn+G3ABIG0zlu5F+aU8akJgcprE=
+X-Google-Smtp-Source: AGHT+IFfCmlouxEbqz43b+SCL2FixelTS49K8Q2MBO+8To5uo9gCFaNIWIgGGhIYgAXX0gx2Lw8skA==
+X-Received: by 2002:a17:907:7255:b0:9bf:10f3:e435 with SMTP id
+ ds21-20020a170907725500b009bf10f3e435mr4210725ejc.1.1698919552892; 
+ Thu, 02 Nov 2023 03:05:52 -0700 (PDT)
 Received: from localhost.localdomain (ip-109-42-115-39.web.vodafone.de.
  [109.42.115.39]) by smtp.gmail.com with ESMTPSA id
  o21-20020a170906359500b009b97d9ae329sm927236ejb.198.2023.11.02.03.05.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 03:05:51 -0700 (PDT)
+ Thu, 02 Nov 2023 03:05:52 -0700 (PDT)
 From: Thomas Huth <huth@tuxfamily.org>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/10] hw/m68k/irqc: Pass CPU using QOM link property
-Date: Thu,  2 Nov 2023 11:05:34 +0100
-Message-ID: <20231102100543.4875-2-huth@tuxfamily.org>
+Subject: [PULL 02/10] hw/m68k/mcf5206: Pass CPU using QOM link property
+Date: Thu,  2 Nov 2023 11:05:35 +0100
+Message-ID: <20231102100543.4875-3-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231102100543.4875-1-huth@tuxfamily.org>
 References: <20231102100543.4875-1-huth@tuxfamily.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.218.47; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f47.google.com
+Received-SPF: pass client-ip=209.85.218.54; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f54.google.com
 X-Spam_score_int: -13
 X-Spam_score: -1.4
 X-Spam_bar: -
 X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
  FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
  HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,86 +82,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Avoid the interrupt controller directly access the 'first_cpu'
-global. Pass 'cpu' from the board code.
+Avoid the interrupt controller directly access the first cpu via
+the qemu_get_cpu() call. Pass it as argument to mcf5206_init()
+from the board code.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231024083010.12453-2-philmd@linaro.org>
+Message-ID: <20231024083010.12453-3-philmd@linaro.org>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/intc/m68k_irqc.c         | 10 +++++++++-
- hw/m68k/virt.c              |  2 ++
- include/hw/intc/m68k_irqc.h |  1 +
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ hw/m68k/an5206.c  | 6 ++++--
+ hw/m68k/mcf5206.c | 9 ++++++++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/hw/intc/m68k_irqc.c b/hw/intc/m68k_irqc.c
-index 0c515e4ecb..e09705eeaf 100644
---- a/hw/intc/m68k_irqc.c
-+++ b/hw/intc/m68k_irqc.c
-@@ -11,6 +11,7 @@
- #include "cpu.h"
- #include "migration/vmstate.h"
- #include "monitor/monitor.h"
-+#include "hw/qdev-properties.h"
- #include "hw/nmi.h"
- #include "hw/intc/intc.h"
- #include "hw/intc/m68k_irqc.h"
-@@ -35,7 +36,7 @@ static void m68k_irqc_print_info(InterruptStatsProvider *obj, Monitor *mon)
- static void m68k_set_irq(void *opaque, int irq, int level)
+diff --git a/hw/m68k/an5206.c b/hw/m68k/an5206.c
+index 11ae4c9795..1e8e64f8bd 100644
+--- a/hw/m68k/an5206.c
++++ b/hw/m68k/an5206.c
+@@ -20,12 +20,14 @@
+ #define AN5206_MBAR_ADDR 0x10000000
+ #define AN5206_RAMBAR_ADDR 0x20000000
+ 
+-static void mcf5206_init(MemoryRegion *sysmem, uint32_t base)
++static void mcf5206_init(M68kCPU *cpu, MemoryRegion *sysmem, uint32_t base)
  {
-     M68KIRQCState *s = opaque;
--    M68kCPU *cpu = M68K_CPU(first_cpu);
-+    M68kCPU *cpu = M68K_CPU(s->cpu);
-     int i;
+     DeviceState *dev;
+     SysBusDevice *s;
  
-     if (level) {
-@@ -85,12 +86,19 @@ static const VMStateDescription vmstate_m68k_irqc = {
-     }
- };
+     dev = qdev_new(TYPE_MCF5206_MBAR);
++    object_property_set_link(OBJECT(dev), "m68k-cpu",
++                             OBJECT(cpu), &error_abort);
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
  
-+static Property m68k_irqc_properties[] = {
-+    DEFINE_PROP_LINK("m68k-cpu", M68KIRQCState, cpu,
-+                     TYPE_M68K_CPU, ArchCPU *),
+@@ -60,7 +62,7 @@ static void an5206_init(MachineState *machine)
+     memory_region_init_ram(sram, NULL, "an5206.sram", 512, &error_fatal);
+     memory_region_add_subregion(address_space_mem, AN5206_RAMBAR_ADDR, sram);
+ 
+-    mcf5206_init(address_space_mem, AN5206_MBAR_ADDR);
++    mcf5206_init(cpu, address_space_mem, AN5206_MBAR_ADDR);
+ 
+     /* Load kernel.  */
+     if (!kernel_filename) {
+diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
+index 2ab1b4f059..f920ca2ceb 100644
+--- a/hw/m68k/mcf5206.c
++++ b/hw/m68k/mcf5206.c
+@@ -10,6 +10,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "cpu.h"
++#include "hw/qdev-properties.h"
+ #include "hw/boards.h"
+ #include "hw/irq.h"
+ #include "hw/m68k/mcf.h"
+@@ -601,13 +602,19 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
+     s->timer[1] = m5206_timer_init(s->pic[10]);
+     s->uart[0] = mcf_uart_init(s->pic[12], serial_hd(0));
+     s->uart[1] = mcf_uart_init(s->pic[13], serial_hd(1));
+-    s->cpu = M68K_CPU(qemu_get_cpu(0));
+ }
+ 
++static Property mcf5206_mbar_properties[] = {
++    DEFINE_PROP_LINK("m68k-cpu", m5206_mbar_state, cpu,
++                     TYPE_M68K_CPU, M68kCPU *),
 +    DEFINE_PROP_END_OF_LIST(),
 +};
 +
- static void m68k_irqc_class_init(ObjectClass *oc, void *data)
-  {
+ static void mcf5206_mbar_class_init(ObjectClass *oc, void *data)
+ {
      DeviceClass *dc = DEVICE_CLASS(oc);
-     NMIClass *nc = NMI_CLASS(oc);
-     InterruptStatsProviderClass *ic = INTERRUPT_STATS_PROVIDER_CLASS(oc);
  
-+    device_class_set_props(dc, m68k_irqc_properties);
-     nc->nmi_monitor_handler = m68k_nmi;
-     dc->reset = m68k_irqc_reset;
-     dc->vmsd = &vmstate_m68k_irqc;
-diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index 2dd3c99894..e7dc188855 100644
---- a/hw/m68k/virt.c
-+++ b/hw/m68k/virt.c
-@@ -155,6 +155,8 @@ static void virt_init(MachineState *machine)
-     /* IRQ Controller */
- 
-     irqc_dev = qdev_new(TYPE_M68K_IRQC);
-+    object_property_set_link(OBJECT(irqc_dev), "m68k-cpu",
-+                             OBJECT(cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(irqc_dev), &error_fatal);
- 
-     /*
-diff --git a/include/hw/intc/m68k_irqc.h b/include/hw/intc/m68k_irqc.h
-index ef91f21812..693e33b0aa 100644
---- a/include/hw/intc/m68k_irqc.h
-+++ b/include/hw/intc/m68k_irqc.h
-@@ -33,6 +33,7 @@ typedef struct M68KIRQCState {
-     SysBusDevice parent_obj;
- 
-     uint8_t ipr;
-+    ArchCPU *cpu;
- 
-     /* statistics */
-     uint64_t stats_irq_count[M68K_IRQC_LEVEL_NUM];
++    device_class_set_props(dc, mcf5206_mbar_properties);
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     dc->desc = "MCF5206 system integration module";
+     dc->realize = mcf5206_mbar_realize;
 -- 
 2.41.0
 
