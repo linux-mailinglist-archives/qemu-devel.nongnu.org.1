@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D86F7DEA3F
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E55A7DEA62
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 02:48:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyMeq-0008Gk-Vo; Wed, 01 Nov 2023 21:38:05 -0400
+	id 1qyMfr-00056o-G8; Wed, 01 Nov 2023 21:39:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qyMeQ-0006bD-6B; Wed, 01 Nov 2023 21:37:38 -0400
-Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
+ id 1qyMfX-0004o9-43; Wed, 01 Nov 2023 21:38:51 -0400
+Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qyMeO-0004O1-35; Wed, 01 Nov 2023 21:37:37 -0400
-Received: by mail-vk1-xa36.google.com with SMTP id
- 71dfb90a1353d-49d14708479so185337e0c.2; 
- Wed, 01 Nov 2023 18:37:34 -0700 (PDT)
+ id 1qyMfU-0004Zo-Jm; Wed, 01 Nov 2023 21:38:45 -0400
+Received: by mail-vk1-xa2e.google.com with SMTP id
+ 71dfb90a1353d-4a87f9a3961so184195e0c.3; 
+ Wed, 01 Nov 2023 18:38:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1698889054; x=1699493854; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1698889123; x=1699493923; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wjWRa1Wzmn0jailQulhJtnO/Qew3pE9/7oExw7/ImvA=;
- b=mxSDG/EujA+nTTEecnGh8AXu8ICbMy9I/0xUavvoypz+P8P16jmo5AGpdEKqJuRjyv
- NlRkqlqOgh9W9ox13tf0m2fgdODXHR+14JGgt3aSDta8EEMOoLdLLda5sn9avfPbpb1D
- rkx4TJMDf5JEDoQakZpf+nxJ/sRuG0S13DVp75ZthINK5RFl/S2OwqSxUZ68LoNUNDq8
- 9g70SuO69fAgolTw0qtei3FdQd8qKwF+HE+jKvfHQGvasx5NYf6/5x4yawMM9xi9xVy4
- LrSjDu4dAhzzwq3bDtjodUtq/wp+Lsxc1p51LVy+0+aF54bahneRxIAqMrC04xb1vuvQ
- njhg==
+ bh=dNH0CSikb5DVX2eH8UOGhyJ2YnRz7YvLD3jmrY6Jb6g=;
+ b=mI10KDdwA946EmKCvnyPZ2MkbiQW5okM/YM4oDjq8fLehhvbCbUbWJfkchNV7B+3oQ
+ yhLC62NeQAE+hOCwq9s7diQnRalZLUO/vgJy3nixcwcxSdeAuJ4BAwB2QwTkL2hwdo+g
+ y1BBXg6qQq1twgDGpcBELLyJL94MuwV1mYcZnamKmp5GWh+c9e1X4ycgbOwK33VzBy0d
+ FNC0rLk9gSDMp9SxeAB3ErsjWDBFvpt2vzVbZvXQVc9/IPjcm6VWGFJUv4s64TnlvwBX
+ eSBYi7dL12UUBPIdL3Ht1phDRCnyMJwfGLnHl3BuoWH29kFTk2uzTQZ5QaR/GVu+bEe4
+ r8zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698889054; x=1699493854;
+ d=1e100.net; s=20230601; t=1698889123; x=1699493923;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wjWRa1Wzmn0jailQulhJtnO/Qew3pE9/7oExw7/ImvA=;
- b=VhO72l/tu8Xdw7O4IndqNT0edzOS+Q9/xfqNi1jINbpB1dPK7uqy0t56YavVZzM1u/
- mkGXrPNxnjvvdVXLEGEoej2fJmHQZA5Jd/ErkGDxYdyS4wCoLm+RuCVvf56jjVmO5frM
- bstSyf++4y7vuUozhb51HQYcGrl4RTx7VT27jztcDy/ZS7GvINijPBZ8kBMvcxpALwwq
- a7W5/71cd+aMWMxT4ljn+Ugudsw0hq9IgnT8Z/sQH89qDhZk3xAdW4weuXW5/ip/VEMZ
- 7kYMJ+HHNqKZStk1MAM4+PREKBz42cDAGyVdVBAsYMhdh3hk/YqyklRlsxm3WKo3gW3r
- 3+SA==
-X-Gm-Message-State: AOJu0YyPOhr58zce0xAPcpM0e33/bR17brlEWbzviPt2102GzA7QdZEB
- WnMz7MKJyKYSWy8x/m1nJToobRXCdum2vg/DHjI=
-X-Google-Smtp-Source: AGHT+IGOonc/JSV98RZo1jkrZU+LtEghGAi+lgwnXNXtVA+veY8zzZAARZEK11V76r88fj5lejZBDiDSXD6gp5btuLE=
-X-Received: by 2002:a1f:1c4b:0:b0:49a:56d2:562d with SMTP id
- c72-20020a1f1c4b000000b0049a56d2562dmr16031720vkc.4.1698889053683; Wed, 01
- Nov 2023 18:37:33 -0700 (PDT)
+ bh=dNH0CSikb5DVX2eH8UOGhyJ2YnRz7YvLD3jmrY6Jb6g=;
+ b=qtMpLNEkltmSJ1ahfY9KPdk04r8A9JOd/9dEPjBG91vKm3XN8aVs7EN4RewN9czEEw
+ /jYpgzz7usFwnGxCTmkS9EjePuYCJER7rNQtoSWS20LBqoQYZQ0litBfrt+NM+MGQWqI
+ 7yhRUdD7grUg5xu5cIn/K7SL+db/dPK/E45QbfxXBoe2zWYxk2vMTTVqDYCxifW/gVDV
+ DNRMcjXzYIS70GSu2XTIGE1b850UeHqm4w89n4h8sbONtyJ7cLqK2MdrKTz66GAnKTDx
+ 1PEc1Zul7FghMFDIRLe319GJ80lL6LpcMIQRpB4PL3a6xJ9cCNdEREXLqkJ4LZk3mvcH
+ Qrbg==
+X-Gm-Message-State: AOJu0Yy7ZksMajtIu0mvrJGg7ldAFzZ7s0xgJmyNqSVkpNI6wrSSq9jK
+ /wP8v36mbSMSWPT8mihe1dGcoml4EeUDVXct4KJfXQ8Dl4Y=
+X-Google-Smtp-Source: AGHT+IGTxg4CKomgParDvZjvMS3P6gYEcnQY05VaMgBVH1SuVJYj36nE5Tarsk20BLNdkNy+klAw8PUVLQg8ubdH4Og=
+X-Received: by 2002:a05:6122:71b:b0:48d:5be:2899 with SMTP id
+ 27-20020a056122071b00b0048d05be2899mr17603327vki.2.1698889122772; Wed, 01 Nov
+ 2023 18:38:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231030132058.763556-1-sunilvl@ventanamicro.com>
-In-Reply-To: <20231030132058.763556-1-sunilvl@ventanamicro.com>
+References: <20231026151828.754279-1-max.chou@sifive.com>
+In-Reply-To: <20231026151828.754279-1-max.chou@sifive.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 2 Nov 2023 11:37:07 +1000
-Message-ID: <CAKmqyKPdOmQZ_txUEdQbX0z5hbRy993Fep-MQPZMuXHZTzpU3w@mail.gmail.com>
-Subject: Re: [PATCH v5 00/13] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Anup Patel <apatel@ventanamicro.com>,
- Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>
+Date: Thu, 2 Nov 2023 11:38:16 +1000
+Message-ID: <CAKmqyKML9f5x7_0pjmPfYkTZFZ4Fm=0hwA7QGezoxjWMosXjNQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] Update RISC-V vector crypto to ratified v1.0.0
+To: Max Chou <max.chou@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2e;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,82 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 11:23=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.co=
-m> wrote:
+On Fri, Oct 27, 2023 at 1:19=E2=80=AFAM Max Chou <max.chou@sifive.com> wrot=
+e:
 >
-> This series primarily enables external interrupt controllers (AIA and PLI=
-C)
-> in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO an=
-d
-> MMU related information.
+> This patchset updates the RISC-V vector cryptography support to the
+> ratified version v1.0.0 (commit 1769c26, released on 2023/10).
 >
-> Below ECRs for these changes are approved by ASWG and will be
-> available in next ACPI spec release.
+> v2:
 >
-> 1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VK=
-sIKia7zR/view?usp=3Dsharing
-> 2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXs=
-af/view?usp=3Dsharing
+> - Fixed the instruction order at disassembler part.
+> - Fixed the vror.vi disassembler format.
+> - Verified by code examples provided by vector crypto spec repository
+>   (riscv-crypto).
+> - Rebased to riscv-to-apply.next branch (1f910f3)
 >
-> First two patches in this series are to migrate a couple of functions fro=
-m
-> ARM architecture to common code so that RISC-V doesn't need to duplicate
-> the same.
+> v1:
 >
-> The patch set is based on Alistair's riscv-to-apply.next branch.
+> - Support Zvkb, Zvkt, and other shorthand extensions(Zvkn, Zvknc, Zvkng,
+>   Zvks, Zvksc, Zvksg).
+> - Support the disassembler for vector crypto extensions.
+> - Moved vector crypto extensions from experimental extensions to ratified
+>   extensions.
+> - Replaced TAB indentations with spaces in disas/riscv.c.
 >
-> These changes are also available in  riscv_acpi_b2_v5 branch at:
-> https://github.com/vlsunil/qemu/
 >
-> Changes since v4:
->         1) Updated copyright for new files as per SPDX format suggested b=
-y Drew.
->         2) Updated RINTC patch to avoid code duplication as suggested by =
-Drew.
->         3) Moved mmu offset below cmo in MMU patch as suggested by Drew.
->         4) Updated tags.
->
-> Changes since v3:
->         1) Addressed comments from Daniel and Drew.
->         2) Added a new patch in microvm to use common function for virtio=
- in DSDT.
->         3) Rebased to latest riscv-to-apply.next branch and added tags.
->
-> Changes since v2:
->         1) Rebased to latest riscv-to-apply.next branch which needed
->            changing ext_icboz to ext_zicboz in CMO patch.
->         2) Fixed node type in MMU node.
->         3) Added latest tags.
->
-> Changes since v1:
->         1) As per Igor's suggestion, migrated fw_cfg and virtio creation
->            functions to device specific file instead of generic aml-build=
-.c.
->            Since ACPI is optional, new files are created and enabled for
->            build only when CONFIG_ACPI is enabled.
->         2) As per Igor's suggestion, properties are added to the GPEX PCI
->            host to indicate MMIO ranges. The platform fw can initialize
->            these to appropriate values and the DSDT generator can fetch
->            the information from the host bus itself. This makes the code
->            generic instead of machine specific.
->         3) Added PLIC patch from Haibo.
->         4) Rebased to latest riscv-to-apply.next and added RB tags as
->            appropriate.
->
-> Sunil V L (13):
->   hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
->   hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
->   hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
->   hw/riscv: virt: Make few IMSIC macros and functions public
->   hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
->   hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
->   hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
->   hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
->   hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
->   hw/pci-host/gpex: Define properties for MMIO ranges
->   hw/riscv/virt: Update GPEX MMIO related properties
->   hw/riscv/virt-acpi-build.c: Add IO controllers and devices
->   hw/riscv/virt-acpi-build.c: Add PLIC in MADT
+> Max Chou (14):
+>   target/riscv: Add cfg property for Zvkt extension
+>   target/riscv: Expose Zvkt extension property
+>   target/riscv: Add cfg property for Zvkb extension
+>   target/riscv: Replace Zvbb checking by Zvkb
+>   target/riscv: Expose Zvkb extension property
+>   target/riscv: Add cfg properties for Zvkn[c|g] extensions
+>   target/riscv: Expose Zvkn[c|g] extnesion properties
+>   target/riscv: Add cfg properties for Zvks[c|g] extensions
+>   target/riscv: Expose Zvks[c|g] extnesion properties
+>   target/riscv: Move vector crypto extensions to riscv_cpu_extensions
+>   disas/riscv: Add rv_fmt_vd_vs2_uimm format
+>   disas/riscv: Add rv_codec_vror_vi for vror.vi
+>   disas/riscv: Add support for vector crypto extensions
+>   disas/riscv: Replace TABs with space
 
 Thanks!
 
@@ -184,29 +132,16 @@ Applied to riscv-to-apply.next
 Alistair
 
 >
->  hw/arm/virt-acpi-build.c        |  51 +----
->  hw/i386/acpi-microvm.c          |  15 +-
->  hw/nvram/fw_cfg-acpi.c          |  23 +++
->  hw/nvram/meson.build            |   1 +
->  hw/pci-host/gpex-acpi.c         |  13 ++
->  hw/pci-host/gpex.c              |  12 ++
->  hw/riscv/Kconfig                |   1 +
->  hw/riscv/virt-acpi-build.c      | 323 +++++++++++++++++++++++++++++---
->  hw/riscv/virt.c                 |  72 ++++---
->  hw/virtio/meson.build           |   1 +
->  hw/virtio/virtio-acpi.c         |  32 ++++
->  include/hw/nvram/fw_cfg_acpi.h  |  15 ++
->  include/hw/pci-host/gpex.h      |  28 ++-
->  include/hw/riscv/virt.h         |  26 +++
->  include/hw/virtio/virtio-acpi.h |  16 ++
->  15 files changed, 498 insertions(+), 131 deletions(-)
->  create mode 100644 hw/nvram/fw_cfg-acpi.c
->  create mode 100644 hw/virtio/virtio-acpi.c
->  create mode 100644 include/hw/nvram/fw_cfg_acpi.h
->  create mode 100644 include/hw/virtio/virtio-acpi.h
+>  disas/riscv.c                            | 157 ++++++++++++++++++++++-
+>  disas/riscv.h                            |   2 +
+>  target/riscv/cpu.c                       |  36 ++++--
+>  target/riscv/cpu_cfg.h                   |   8 ++
+>  target/riscv/insn_trans/trans_rvvk.c.inc |  37 ++++--
+>  target/riscv/tcg/tcg-cpu.c               |  48 ++++++-
+>  6 files changed, 258 insertions(+), 30 deletions(-)
 >
 > --
-> 2.39.2
+> 2.34.1
 >
 >
 
