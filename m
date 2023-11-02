@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2402B7DE94A
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A7B7DE94D
 	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 01:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyLXr-0000qd-EA; Wed, 01 Nov 2023 20:26:47 -0400
+	id 1qyLY2-0001QL-IE; Wed, 01 Nov 2023 20:26:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLXm-0000pj-Tb
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:26:42 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLY0-0001IQ-Jd
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:26:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLXk-0008Pv-GD
- for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:26:42 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qyLXy-00005I-Tx
+ for qemu-devel@nongnu.org; Wed, 01 Nov 2023 20:26:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698884798;
+ s=mimecast20190719; t=1698884813;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:mime-version: content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8uJyglK7vgL432BP6OO5ELd0iDtmc4xQmrd3D40v+yI=;
- b=fP998wxKgCo1OEDiQuTy+Ye7TTzhbXSD+aEgDf9RnaKCPwqGggL2cp4AswQmxA2JX5Plvm
- 0nBeolIwviW8pbp0xZ0uY6mjo/katCIOOYqEYU9OKP89xb6hxzgHwD+wb9U/mQN9q085Q+
- XQSj+1pUvMkNbyxe6aKOWKzZxCMPd98=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-685-xbcJORs9Pj6TJyD6vJLMlA-1; Wed,
- 01 Nov 2023 20:26:33 -0400
-X-MC-Unique: xbcJORs9Pj6TJyD6vJLMlA-1
+ bh=P3Pe8h1gxQNojxyblcrKbfzrPtU+j0YsRyLgYl0J4so=;
+ b=ST+45jUwW1vSQi7eU4n4Q3sCbFX8iEk/FmfIrgSgEX8wXbhW9k078Gg70yt1HDWQW0tw7c
+ ccWExIWwp5b9eGBApiLeCDqL8bMPyxyP3IqiwXTvNEHrxG3snYbGcuPT4uqkTKt7npdZ+S
+ TWAJ0h40rsbFCv9gnAQsFYpy0RgB/lQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-139-STPSywg3P6i6lYjeLe4ghw-1; Wed, 01 Nov 2023 20:26:48 -0400
+X-MC-Unique: STPSywg3P6i6lYjeLe4ghw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B2A73821563;
- Thu,  2 Nov 2023 00:26:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AE4D9811E7B;
+ Thu,  2 Nov 2023 00:26:46 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.70])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D45D7C1290F;
- Thu,  2 Nov 2023 00:26:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 05E11C1290F;
+ Thu,  2 Nov 2023 00:26:31 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,15 +62,13 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
  iii@linux.ibm.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
  shan.gavin@gmail.com
-Subject: [PATCH v4 03/33] cpu: Call object_class_dynamic_cast() once in
- cpu_class_by_name()
-Date: Thu,  2 Nov 2023 10:24:30 +1000
-Message-ID: <20231102002500.1750692-4-gshan@redhat.com>
+Subject: [PATCH v4 04/33] cpu: Add helper cpu_model_from_type()
+Date: Thu,  2 Nov 2023 10:24:31 +1000
+Message-ID: <20231102002500.1750692-5-gshan@redhat.com>
 In-Reply-To: <20231102002500.1750692-1-gshan@redhat.com>
 References: <20231102002500.1750692-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
@@ -98,243 +96,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Add helper cpu_model_from_type() to extract the CPU model name from
+the CPU type name in two circumstances: (1) The CPU type name is the
+combination of the CPU model name and suffix. (2) The CPU type name
+is same to the CPU model name.
 
-For all targets, the CPU class returned from CPUClass::class_by_name()
-and object_class_dynamic_cast(oc, CPU_RESOLVING_TYPE) need to be
-compatible. Lets apply the check in cpu_class_by_name() for once,
-instead of having the check in CPUClass::class_by_name() for individual
-target. In order to make CPU_RESOLVING_TYPE visible to cpu_class_by_name(),
-the helper has to be moved to cpu-target.c
+The helper will be used in the subsequent commits to conver the
+CPU type name to the CPU model name.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- cpu-target.c           | 15 +++++++++++++++
- hw/core/cpu-common.c   | 14 --------------
- target/arm/cpu.c       |  4 +---
- target/avr/cpu.c       |  8 +-------
- target/cris/cpu.c      |  4 +---
- target/hexagon/cpu.c   |  4 +---
- target/loongarch/cpu.c |  8 +-------
- target/m68k/cpu.c      |  4 +---
- target/openrisc/cpu.c  |  4 +---
- target/riscv/cpu.c     |  4 +---
- target/tricore/cpu.c   |  4 +---
- target/xtensa/cpu.c    |  4 +---
- 12 files changed, 25 insertions(+), 52 deletions(-)
+ cpu-target.c          | 16 ++++++++++++++++
+ include/hw/core/cpu.h | 12 ++++++++++++
+ 2 files changed, 28 insertions(+)
 
 diff --git a/cpu-target.c b/cpu-target.c
-index 79363ae370..876b498233 100644
+index 876b498233..344bad5736 100644
 --- a/cpu-target.c
 +++ b/cpu-target.c
-@@ -250,6 +250,21 @@ void cpu_exec_initfn(CPUState *cpu)
- #endif
+@@ -265,6 +265,22 @@ ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
+     return NULL;
  }
  
-+ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
++char *cpu_model_from_type(const char *typename)
 +{
-+    CPUClass *cc = CPU_CLASS(object_class_by_name(typename));
-+    ObjectClass *oc;
++    const char *suffix = "-" CPU_RESOLVING_TYPE;
 +
-+    assert(cpu_model && cc->class_by_name);
-+    oc = cc->class_by_name(cpu_model);
-+    if (oc && !object_class_is_abstract(oc) &&
-+        object_class_dynamic_cast(oc, CPU_RESOLVING_TYPE)) {
-+        return oc;
++    if (!object_class_by_name(typename)) {
++        return NULL;
 +    }
 +
-+    return NULL;
++    if (strlen(typename) > strlen(suffix) &&
++        !strcmp(typename + strlen(typename) - strlen(suffix), suffix)) {
++        return g_strndup(typename, strlen(typename) - strlen(suffix));
++    }
++
++    return g_strdup(typename);
 +}
 +
  const char *parse_cpu_option(const char *cpu_option)
  {
      ObjectClass *oc;
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index bca0323e9f..1024de53bb 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -147,20 +147,6 @@ static bool cpu_common_has_work(CPUState *cs)
-     return false;
- }
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index ee85aafdf5..8179c55759 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -779,6 +779,18 @@ void cpu_reset(CPUState *cpu);
+  */
+ ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model);
  
--ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
--{
--    CPUClass *cc = CPU_CLASS(object_class_by_name(typename));
--    ObjectClass *oc;
--
--    assert(cpu_model && cc->class_by_name);
--    oc = cc->class_by_name(cpu_model);
--    if (oc && !object_class_is_abstract(oc)) {
--        return oc;
--    }
--
--    return NULL;
--}
--
- static void cpu_common_parse_features(const char *typename, char *features,
-                                       Error **errp)
- {
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 8c622d6b59..4942239b34 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2399,9 +2399,7 @@ static ObjectClass *arm_cpu_class_by_name(const char *cpu_model)
-     oc = object_class_by_name(typename);
-     g_strfreev(cpuname);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_ARM_CPU)) {
--        return NULL;
--    }
++/**
++ * cpu_model_from_type:
++ * @typename: The CPU type name
++ *
++ * Extract the CPU model name from the CPU type name. The
++ * CPU type name is either the combination of the CPU model
++ * name and suffix, or same to the CPU model name.
++ *
++ * Returns: CPU model name or NULL if the CPU class doesn't exist
++ */
++char *cpu_model_from_type(const char *typename);
 +
-     return oc;
- }
- 
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 113d522f75..a36cc48aae 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -154,13 +154,7 @@ static void avr_cpu_initfn(Object *obj)
- 
- static ObjectClass *avr_cpu_class_by_name(const char *cpu_model)
- {
--    ObjectClass *oc;
--
--    oc = object_class_by_name(cpu_model);
--    if (!object_class_dynamic_cast(oc, TYPE_AVR_CPU)) {
--        oc = NULL;
--    }
--    return oc;
-+    return object_class_by_name(cpu_model);
- }
- 
- static void avr_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-index 1cb431cd46..a5083a0077 100644
---- a/target/cris/cpu.c
-+++ b/target/cris/cpu.c
-@@ -95,9 +95,7 @@ static ObjectClass *cris_cpu_class_by_name(const char *cpu_model)
-     typename = g_strdup_printf(CRIS_CPU_TYPE_NAME("%s"), cpu_model);
-     oc = object_class_by_name(typename);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_CRIS_CPU)) {
--        oc = NULL;
--    }
-+
-     return oc;
- }
- 
-diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index bd5adb7acd..aa48f5fe89 100644
---- a/target/hexagon/cpu.c
-+++ b/target/hexagon/cpu.c
-@@ -63,9 +63,7 @@ static ObjectClass *hexagon_cpu_class_by_name(const char *cpu_model)
-     oc = object_class_by_name(typename);
-     g_strfreev(cpuname);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU)) {
--        return NULL;
--    }
-+
-     return oc;
- }
- 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 06d1b9bb95..c6712e13f9 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -643,15 +643,9 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
-         g_autofree char *typename
-             = g_strdup_printf(LOONGARCH_CPU_TYPE_NAME("%s"), cpu_model);
-         oc = object_class_by_name(typename);
--        if (!oc) {
--            return NULL;
--        }
-     }
- 
--    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)) {
--        return oc;
--    }
--    return NULL;
-+    return oc;
- }
- 
- void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index fe381cc5d3..6cd5b56d6f 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -111,9 +111,7 @@ static ObjectClass *m68k_cpu_class_by_name(const char *cpu_model)
-     typename = g_strdup_printf(M68K_CPU_TYPE_NAME("%s"), cpu_model);
-     oc = object_class_by_name(typename);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_M68K_CPU)) {
--        return NULL;
--    }
-+
-     return oc;
- }
- 
-diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index cc94f37e77..f7d53c592a 100644
---- a/target/openrisc/cpu.c
-+++ b/target/openrisc/cpu.c
-@@ -164,9 +164,7 @@ static ObjectClass *openrisc_cpu_class_by_name(const char *cpu_model)
-     typename = g_strdup_printf(OPENRISC_CPU_TYPE_NAME("%s"), cpu_model);
-     oc = object_class_by_name(typename);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_OPENRISC_CPU)) {
--        return NULL;
--    }
-+
-     return oc;
- }
- 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 018bad6f82..8b4024338c 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -636,9 +636,7 @@ static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
-     oc = object_class_by_name(typename);
-     g_strfreev(cpuname);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_RISCV_CPU)) {
--        return NULL;
--    }
-+
-     return oc;
- }
- 
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index 47e1c272cf..8acacdf0c0 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -132,9 +132,7 @@ static ObjectClass *tricore_cpu_class_by_name(const char *cpu_model)
-     typename = g_strdup_printf(TRICORE_CPU_TYPE_NAME("%s"), cpu_model);
-     oc = object_class_by_name(typename);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_TRICORE_CPU)) {
--        return NULL;
--    }
-+
-     return oc;
- }
- 
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index 5d1c090467..93e782a6e0 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -141,9 +141,7 @@ static ObjectClass *xtensa_cpu_class_by_name(const char *cpu_model)
-     typename = g_strdup_printf(XTENSA_CPU_TYPE_NAME("%s"), cpu_model);
-     oc = object_class_by_name(typename);
-     g_free(typename);
--    if (!object_class_dynamic_cast(oc, TYPE_XTENSA_CPU)) {
--        return NULL;
--    }
-+
-     return oc;
- }
- 
+ /**
+  * cpu_create:
+  * @typename: The CPU type.
 -- 
 2.41.0
 
