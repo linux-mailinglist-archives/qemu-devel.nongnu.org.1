@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1D07DED81
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 08:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 445B17DED60
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 08:32:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qySAb-00017z-4u; Thu, 02 Nov 2023 03:31:13 -0400
+	id 1qySAc-0001GJ-25; Thu, 02 Nov 2023 03:31:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qySAW-0000f3-Bh
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:31:08 -0400
+ id 1qySAY-0000px-Eo
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:31:10 -0400
 Received: from mgamail.intel.com ([134.134.136.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qySAU-0003OZ-8M
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:31:08 -0400
+ id 1qySAW-0003Ox-MA
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 03:31:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1698910266; x=1730446266;
+ t=1698910268; x=1730446268;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qYbjFJsZTdqafFCCXBwd0B8hhpm9nk9rj4ooJuAp0t4=;
- b=hFM+boJicjju8MKSXX0eFrWk60z+q0xcAnMsXo1ZZf8iQTSpHlZbmoe7
- Ca6w83hscW5tG/l1C9zftk3Fkoyj/Wr9MEpG2GTC0H+Z0AIWzZdBnHY9o
- hpO/i6JYW6OA1/iP7EJazDThUsvcnkNPiHazJWkz/+xTEVoNm8Mc/a2Nj
- vT7Q7raJgAObf6JobPYzz2P8IaX/BDLlmtHp7Tx6Fzb0SlJWtwx3XqA2p
- EjYoeIyugk7bPihJpn0NBga9By6+SlbbArtH8XzSWePWVvjESSs0yuRp3
- pV1UsgP/iosAetz1kqkzvfcRD1xcyamGyJ1QiOyRG/pRbIgqVacBzNsOA w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="452953387"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="452953387"
+ bh=N177sKSc3z0WYF39Q+c1NtUnCGcyPBi7xR3+aLU6nSY=;
+ b=KFr0IIESs9dk+6auAm/0yoJjqnjNuH9urrNqrXDDt7WgT1TLKQx0FVB9
+ kJj2KB1jLf8LpqtiljxpvQFDQtG1cB9WLBZUsXaSSLPrIHSWZXnCSxY05
+ 4Cv8ACXodpG95jvv/PzvbuuhX+v/cS0JZIEfhSb7xJW7DCf+JFH1pm6sh
+ pmKzslH4RIVgX6Vh6o7v3ckA0SaftsC5l1HK1YGMe4U7s/W9zyAub/+jZ
+ kv7wESdgCpCD0tTMbbiipw2bL4qFdrvX7SZBX3XzekJMN0WzMqjhdTrxY
+ 34I9sV1HIeiWx7AbxILUuF2KD4jstiyh/+JdtF7mILzw6+2n4uhsb6Sjv Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="452953407"
+X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="452953407"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2023 00:30:49 -0700
+ 02 Nov 2023 00:30:53 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="711055723"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="711055723"
+X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="711055740"
+X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; d="scan'208";a="711055740"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2023 00:30:45 -0700
+ 02 Nov 2023 00:30:49 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -48,10 +48,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 33/41] vfio/iommufd: Enable pci hot reset through iommufd
- cdev interface
-Date: Thu,  2 Nov 2023 15:12:54 +0800
-Message-Id: <20231102071302.1818071-34-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 34/41] vfio/pci: Allow the selection of a given iommu
+ backend
+Date: Thu,  2 Nov 2023 15:12:55 +0800
+Message-Id: <20231102071302.1818071-35-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
 References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
@@ -81,227 +81,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new callback iommufd_pci_hot_reset to do iommufd specific
-check and reset operation.
+From: Eric Auger <eric.auger@redhat.com>
 
+Now we support two types of iommu backends, let's add the capability
+to select one of them. This depends on whether an iommufd object has
+been linked with the vfio-pci device:
+
+if the user wants to use the legacy backend, it shall not
+link the vfio-pci device with any iommufd object:
+
+-device vfio-pci,host=0000:02:00.0
+
+This is called the legacy mode/backend.
+
+If the user wants to use the iommufd backend (/dev/iommu) it
+shall pass an iommufd object id in the vfio-pci device options:
+
+ -object iommufd,id=iommufd0
+ -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
+
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/pci.h        |   2 +
- hw/vfio/iommufd.c    | 142 +++++++++++++++++++++++++++++++++++++++++++
- hw/vfio/pci.c        |   4 +-
- hw/vfio/trace-events |   1 +
- 4 files changed, 147 insertions(+), 2 deletions(-)
+ hw/vfio/pci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 12cc765821..ec4a03aecd 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -218,6 +218,8 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
- 
- extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
- 
-+void vfio_pci_pre_reset(VFIOPCIDevice *vdev);
-+void vfio_pci_post_reset(VFIOPCIDevice *vdev);
- int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
-                                     struct vfio_pci_hot_reset_info **info_p);
- int vfio_legacy_pci_hot_reset(VFIODevice *vbasedev, bool single);
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 22f02f92a9..aedfe31c3c 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -24,6 +24,7 @@
- #include "sysemu/reset.h"
- #include "qemu/cutils.h"
- #include "qemu/chardev_open.h"
-+#include "pci.h"
- 
- static int iommufd_map(VFIOContainerBase *bcontainer, hwaddr iova,
-                        ram_addr_t size, void *vaddr, bool readonly)
-@@ -543,9 +544,150 @@ static void iommufd_detach_device(VFIODevice *vbasedev)
-     close(vbasedev->fd);
- }
- 
-+static VFIODevice *vfio_pci_find_by_iommufd_devid(__u32 devid)
-+{
-+    VFIODevice *vbasedev_iter;
-+
-+    QLIST_FOREACH(vbasedev_iter, &vfio_device_list, global_next) {
-+        if (vbasedev_iter->bcontainer->ops != &vfio_iommufd_ops) {
-+            continue;
-+        }
-+        if (devid == vbasedev_iter->devid) {
-+            return vbasedev_iter;
-+        }
-+    }
-+    return NULL;
-+}
-+
-+static int iommufd_pci_hot_reset(VFIODevice *vbasedev, bool single)
-+{
-+    VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-+    struct vfio_pci_hot_reset_info *info = NULL;
-+    struct vfio_pci_dependent_device *devices;
-+    struct vfio_pci_hot_reset *reset;
-+    int ret, i;
-+    bool multi = false;
-+
-+    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
-+
-+    if (!single) {
-+        vfio_pci_pre_reset(vdev);
-+    }
-+    vdev->vbasedev.needs_reset = false;
-+
-+    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
-+
-+    if (ret) {
-+        goto out_single;
-+    }
-+
-+    assert(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID);
-+
-+    devices = &info->devices[0];
-+
-+    if (!(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID_OWNED)) {
-+        if (!vdev->has_pm_reset) {
-+            for (i = 0; i < info->count; i++) {
-+                if (devices[i].devid == VFIO_PCI_DEVID_NOT_OWNED) {
-+                    error_report("vfio: Cannot reset device %s, "
-+                                 "depends on device %04x:%02x:%02x.%x "
-+                                 "which is not owned.",
-+                                 vdev->vbasedev.name, devices[i].segment,
-+                                 devices[i].bus, PCI_SLOT(devices[i].devfn),
-+                                 PCI_FUNC(devices[i].devfn));
-+                }
-+            }
-+        }
-+        ret = -EPERM;
-+        goto out_single;
-+    }
-+
-+    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
-+
-+    for (i = 0; i < info->count; i++) {
-+        VFIOPCIDevice *tmp;
-+        VFIODevice *vbasedev_iter;
-+
-+        trace_vfio_pci_hot_reset_dep_devices_iommufd(devices[i].segment,
-+                                             devices[i].bus,
-+                                             PCI_SLOT(devices[i].devfn),
-+                                             PCI_FUNC(devices[i].devfn),
-+                                             devices[i].devid);
-+
-+        /*
-+         * If a VFIO cdev device is resettable, all the dependent devices
-+         * are either bound to same iommufd or within same iommu_groups as
-+         * one of the iommufd bound devices.
-+         */
-+        assert(devices[i].devid != VFIO_PCI_DEVID_NOT_OWNED);
-+
-+        if (devices[i].devid == vdev->vbasedev.devid ||
-+            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
-+            continue;
-+        }
-+
-+        vbasedev_iter = vfio_pci_find_by_iommufd_devid(devices[i].devid);
-+        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
-+            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-+            continue;
-+        }
-+        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-+        if (single) {
-+            ret = -EINVAL;
-+            goto out_single;
-+        }
-+        vfio_pci_pre_reset(tmp);
-+        tmp->vbasedev.needs_reset = false;
-+        multi = true;
-+    }
-+
-+    if (!single && !multi) {
-+        ret = -EINVAL;
-+        goto out_single;
-+    }
-+
-+    /* Use zero length array for hot reset with iommufd backend */
-+    reset = g_malloc0(sizeof(*reset));
-+    reset->argsz = sizeof(*reset);
-+
-+     /* Bus reset! */
-+    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
-+    g_free(reset);
-+
-+    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
-+                                    ret ? strerror(errno) : "Success");
-+
-+    /* Re-enable INTx on affected devices */
-+    for (i = 0; i < info->count; i++) {
-+        VFIOPCIDevice *tmp;
-+        VFIODevice *vbasedev_iter;
-+
-+        if (devices[i].devid == vdev->vbasedev.devid ||
-+            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
-+            continue;
-+        }
-+
-+        vbasedev_iter = vfio_pci_find_by_iommufd_devid(devices[i].devid);
-+        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
-+            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-+            continue;
-+        }
-+        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-+        vfio_pci_post_reset(tmp);
-+    }
-+out_single:
-+    if (!single) {
-+        vfio_pci_post_reset(vdev);
-+    }
-+    g_free(info);
-+
-+    return ret;
-+}
-+
- const VFIOIOMMUOps vfio_iommufd_ops = {
-     .dma_map = iommufd_map,
-     .dma_unmap = iommufd_unmap,
-     .attach_device = iommufd_attach_device,
-     .detach_device = iommufd_detach_device,
-+    .pci_hot_reset = iommufd_pci_hot_reset,
- };
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index a6194b7bfe..eb662fd086 100644
+index eb662fd086..7a6696ca55 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -2374,7 +2374,7 @@ static int vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
-     return 0;
- }
+@@ -42,6 +42,7 @@
+ #include "qapi/error.h"
+ #include "migration/blocker.h"
+ #include "migration/qemu-file.h"
++#include "sysemu/iommufd.h"
  
--static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
-+void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
- {
-     PCIDevice *pdev = &vdev->pdev;
-     uint16_t cmd;
-@@ -2411,7 +2411,7 @@ static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
-     vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
- }
+ #define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
  
--static void vfio_pci_post_reset(VFIOPCIDevice *vdev)
-+void vfio_pci_post_reset(VFIOPCIDevice *vdev)
- {
-     Error *err = NULL;
-     int nr;
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index d85342b65f..e88a7d5ccc 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -34,6 +34,7 @@ vfio_check_af_flr(const char *name) "%s Supports FLR via AF cap"
- vfio_pci_hot_reset(const char *name, const char *type) " (%s) %s"
- vfio_pci_hot_reset_has_dep_devices(const char *name) "%s: hot reset dependent devices:"
- vfio_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int group_id) "\t%04x:%02x:%02x.%x group %d"
-+vfio_pci_hot_reset_dep_devices_iommufd(int domain, int bus, int slot, int function, int dev_id) "\t%04x:%02x:%02x.%x devid %d"
- vfio_pci_hot_reset_result(const char *name, const char *result) "%s hot reset: %s"
- vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device %s config:\n  size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
- vfio_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
+@@ -3551,6 +3552,10 @@ static Property vfio_pci_dev_properties[] = {
+      * DEFINE_PROP_STRING("vfiofd", VFIOPCIDevice, vfiofd_name),
+      * DEFINE_PROP_STRING("vfiogroupfd, VFIOPCIDevice, vfiogroupfd_name),
+      */
++#ifdef CONFIG_IOMMUFD
++    DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
++                     TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
++#endif
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
 -- 
 2.34.1
 
