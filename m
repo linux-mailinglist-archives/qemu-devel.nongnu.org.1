@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20287DEF16
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 10:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31C97DEF1B
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Nov 2023 10:42:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyUCV-0007UY-V3; Thu, 02 Nov 2023 05:41:19 -0400
+	id 1qyUCW-0007WF-GY; Thu, 02 Nov 2023 05:41:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1qyUCK-0007Tp-Ql; Thu, 02 Nov 2023 05:41:10 -0400
+ id 1qyUCN-0007UA-LI; Thu, 02 Nov 2023 05:41:12 -0400
 Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
  helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1qyUCE-0000ZH-GN; Thu, 02 Nov 2023 05:41:08 -0400
+ id 1qyUCK-0000b8-Ua; Thu, 02 Nov 2023 05:41:10 -0400
 Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3A29ebjg058695;
- Thu, 2 Nov 2023 17:40:37 +0800 (+08)
+ by Atcsqr.andestech.com with ESMTP id 3A29eg2w058830;
+ Thu, 2 Nov 2023 17:40:42 +0800 (+08)
  (envelope-from ethan84@andestech.com)
 Received: from ethan84-VirtualBox.andestech.com (10.0.12.51) by
  ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
- Thu, 2 Nov 2023 17:40:35 +0800
+ Thu, 2 Nov 2023 17:40:37 +0800
 To: <qemu-devel@nongnu.org>
 CC: <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
  <pbonzini@redhat.com>, <palmer@dabbelt.com>,
@@ -31,17 +31,20 @@ CC: <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
  <liweiwei@iscas.ac.cn>, <dbarboza@ventanamicro.com>,
  <hiwei_liu@linux.alibaba.com>, <qemu-riscv@nongnu.org>,
  <peterx@redhat.com>, <david@redhat.com>, Ethan Chen <ethan84@andestech.com>
-Subject: [PATCH v2 0/4] Support RISC-V IOPMP
-Date: Thu, 2 Nov 2023 17:40:11 +0800
-Message-ID: <20231102094015.208588-1-ethan84@andestech.com>
+Subject: [PATCH v2 1/4] exec/memattrs: Add iopmp source id, start address,
+ end address to MemTxAttrs
+Date: Thu, 2 Nov 2023 17:40:12 +0800
+Message-ID: <20231102094015.208588-2-ethan84@andestech.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231102094015.208588-1-ethan84@andestech.com>
+References: <20231102094015.208588-1-ethan84@andestech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.0.12.51]
 X-DNSRBL: 
 X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3A29ebjg058695
+X-MAIL: Atcsqr.andestech.com 3A29eg2w058830
 Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
  helo=Atcsqr.andestech.com
 X-Spam_score_int: -8
@@ -67,60 +70,28 @@ From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series implements IOPMP specification v1.0.0-draft4 rapid-k model.
+Signed-off-by: Ethan Chen <ethan84@andestech.com>
+---
+ include/exec/memattrs.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-When IOPMP is enabled, a DMA device ATCDMAC300 is added to RISC-V virt
-platform. This DMA devce is connected to the IOPMP and has the functionalities
-required by IOPMP, including:
-- Support specify source-id (SID)
-- Support asynchronous I/O to handle stall transcations
-
-IOPMP takes a transaction which partially match an entry as a partially hit
-error. The transaction size is depending on source device, destination device
-and bus.
-
-As v1 disccussion, new iommu translate_size() function is not suitable because
-the size may be modified in previos stage.
-
-In addtion to SID, start address and end address are also added to MemTxAttrs
-in v2. IOPMP matches transaction to an entry with those attributes.
-
-
-Changes for v2:
-
-  - Add iopmp_start_addr and iopmp_end_addr to MemTxAttrs.
-  - Remove translate_size().
-  - IOPMP: Get transaction info in attrs_to_index instead of using
-    translate_size().
-  - IOPMP: Fix some partially hit transactions are not detected.
-  - ATCDMAC300: Fix write stall is not resumed correctly.
-  - ATCDMAC300: Fix some partially hit errors are not detected.
-
-Ethan Chen (4):
-  exec/memattrs: Add iopmp source id, start address, end address to
-    MemTxAttrs
-  Add RISC-V IOPMP support
-  hw/dma: Add Andes ATCDMAC300 support
-  hw/riscv/virt: Add IOPMP support
-
- hw/dma/Kconfig                |   3 +
- hw/dma/atcdmac300.c           | 460 +++++++++++++++++
- hw/dma/meson.build            |   1 +
- hw/misc/Kconfig               |   3 +
- hw/misc/meson.build           |   1 +
- hw/misc/riscv_iopmp.c         | 902 ++++++++++++++++++++++++++++++++++
- hw/riscv/Kconfig              |   2 +
- hw/riscv/virt.c               |  68 +++
- include/exec/memattrs.h       |   6 +
- include/hw/dma/atcdmac300.h   | 171 +++++++
- include/hw/misc/riscv_iopmp.h | 330 +++++++++++++
- include/hw/riscv/virt.h       |  10 +-
- 12 files changed, 1956 insertions(+), 1 deletion(-)
- create mode 100644 hw/dma/atcdmac300.c
- create mode 100644 hw/misc/riscv_iopmp.c
- create mode 100644 include/hw/dma/atcdmac300.h
- create mode 100644 include/hw/misc/riscv_iopmp.h
-
+diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
+index d04170aa27..fc15e5d7d3 100644
+--- a/include/exec/memattrs.h
++++ b/include/exec/memattrs.h
+@@ -64,6 +64,12 @@ typedef struct MemTxAttrs {
+     unsigned int target_tlb_bit0 : 1;
+     unsigned int target_tlb_bit1 : 1;
+     unsigned int target_tlb_bit2 : 1;
++
++    /* IOPMP support up to 65535 sources */
++    unsigned int iopmp_sid:16;
++    /* Transaction infomation for IOPMP */
++    unsigned long long iopmp_start_addr;
++    unsigned long long iopmp_end_addr;
+ } MemTxAttrs;
+ 
+ /* Bus masters which don't specify any attributes will get this,
 -- 
 2.34.1
 
