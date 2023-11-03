@@ -2,72 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343C57E059A
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 16:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2187E05BF
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 16:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qywB2-0002Km-FW; Fri, 03 Nov 2023 11:33:40 -0400
+	id 1qywP9-00057S-LR; Fri, 03 Nov 2023 11:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qywB0-0002Jv-Av
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:33:38 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qywP7-00057D-W7
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:48:14 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qywAy-0005YV-MJ
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:33:38 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-53e2308198eso3761115a12.1
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 08:33:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qywP6-0000mD-H0
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:48:13 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-581e5a9413bso1159393eaf.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 08:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699025615; x=1699630415; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=I9QQ2Kb1TDHTSTEXasTasc4uaT9oP1TN/f4o+aoanwg=;
- b=NHgL6b/8avCLVRy+CVBYSCPBSy8eed/5nZ/aJu2OlPK3hkeLwWLxTAsTKlIeUnEIz7
- aiVtbcPU8RjeTBhMfUduvlaW8XzzOoDr4FE6iAFVnCHrQbR+MfA1Jq0SLYQBI5QfeDq0
- uIysPJyut9vc0ZZ5rNkOidBOPaciPlC53cQ//oG0+bXooqJDEbnZLFxUCoH4q1T5v2Sk
- M0mu8VPnsDne6yEdjHOWXehkmLB3rkUt7uMSCBuOki/LDs5h2z0n2T+zmsTOMt2WlCAD
- cEnFBA/LcsSRIW+Jf7x50CIqx2uWmhzzyusLfuAoulXI52if+gkIy0KI3axPTRTeBUcB
- Bv6A==
+ d=gmail.com; s=20230601; t=1699026491; x=1699631291; darn=nongnu.org;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Aw64VfmoFgT8Qau7yDbz9lb1DPvHg++RpQrP5oPGOo=;
+ b=hNzvvl9NfK7I42kcQiIYmKnPiN27anOFO26GwDglLoHUfp8VoJxB+t/MrDPSOaYsvb
+ Q9D4zK0Xoe1DovBeJzctsDPG3eyhlf7kafxD8BfXdfR/vPZmoMWAL3JQzmnW9OHdN6ep
+ HEpZQlgKb4sjllphxcF4wccOXQW82QHFI+4AA2VDwLBrQmBZKqRUjANoOAWc4djHP8NR
+ VgZ97vQIzQ39gRWHYQxmfOi8rGcv8rqJmmnNPWHgggV0Z0Wy1jMQZXbQT8kRZn6Ka78H
+ mAZN5mejpizp41Hf7/7qpUJ4le7IvrwfDJwxuWWbhBee3+AtVgA3pSBgdclzL5hLE8eb
+ adGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699025615; x=1699630415;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=I9QQ2Kb1TDHTSTEXasTasc4uaT9oP1TN/f4o+aoanwg=;
- b=SpNqUZ8gSy/+A3CIjtSGa4BCpJcT2dxh6RqVPf2oHeqwcB/nDmiDLsp/3uZknAW5iE
- iXKjK8Ywnx0HgRjIi2k9lN6yLOgdEQv0E7ktSf6PiHhhTpx7Te4B+Xz4qnUplp6TxJn5
- 2S37tg77rnRy32lpXund11vNIGiX4wPI+tq2Iwxa/bBwJA04/IVbGRr8spvH8WRokqKp
- 7H5KK6S7vliCzwaeepl6N9cW0FtlEaXvX7Eg3suphANP6JIesFgIIp4pqqtNgCGlRS8t
- WJAIeJqGqkMLdyeLo5ASX9MZPYsRRpPeExSYv3yL6wymobFH70lAEttaeK4ThaRgKwz3
- u3hw==
-X-Gm-Message-State: AOJu0YzQbX0FmdpFiIHbo8DTWnu/PCfeECPIirOnUYUfwhwN1CEtAOVZ
- /4gpGn0QQI0EJAFKTSlnTIWW4b3QgLjW0mo13ycxJw==
-X-Google-Smtp-Source: AGHT+IETFZUdV0Rel5A6+Ydik9Y8zfwJPjSI32kqP5K1tAjqXZbcsHecP8aJ0dTlJokb3BxwgBn9AkOTDMwys6ul6tU=
-X-Received: by 2002:a50:9b16:0:b0:543:bba1:426b with SMTP id
- o22-20020a509b16000000b00543bba1426bmr5765783edi.27.1699025614992; Fri, 03
- Nov 2023 08:33:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1699026491; x=1699631291;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Aw64VfmoFgT8Qau7yDbz9lb1DPvHg++RpQrP5oPGOo=;
+ b=QjZDvUn72QiSemLM6MmMyL0mXnvjlyrxX2UJ2aiwWOGtKfxlhTz+kCTd+KNJCaisrg
+ ycICqJV36SJtTRZ/mOKfcRvR1IwpHw2Z4QqEVFvAqenkZaJ/d+ha3IJtSqZF65lDSfZo
+ I/DKQa/MaOlu3cvhJPoKOHq7V7NSsPJ4jEGMdan9KIE1lDNf3WGlgQkUqQg5lzsS5W1L
+ of+SHqb05jiF9LuOvQ4GmZK01IXme+VjrRBnXFNXNYauvTNV0MfVz5yN3dF5eMScdH4S
+ 9jHjDteku/KARkfEkbaSrWNGETVYAVrPInC6VNJZ7oLQfzlOLyM+vJ+ZjWu7HiQg7i2u
+ EiSg==
+X-Gm-Message-State: AOJu0Yw5EgSjxusH03DHNDOCqIbi9N1lnpotN7+Qh/UXaGtsdhqRRjnX
+ WK6BZg+1z9dNnmuhNVkxUps=
+X-Google-Smtp-Source: AGHT+IHtDNgGoYDHC+i/bp4JCMlFHf1K+KvFYKztfI92w1l8Ts6ZKRFO3hdHa7RD+FvMinACgNtUQQ==
+X-Received: by 2002:a4a:e1af:0:b0:57b:6451:8c64 with SMTP id
+ 15-20020a4ae1af000000b0057b64518c64mr19445275ooy.9.1699026491001; 
+ Fri, 03 Nov 2023 08:48:11 -0700 (PDT)
+Received: from DESKTOPUU50BPD
+ (2603-8080-1f00-9c00-2639-f689-1715-fc7b.res6.spectrum.com.
+ [2603:8080:1f00:9c00:2639:f689:1715:fc7b])
+ by smtp.gmail.com with ESMTPSA id
+ y12-20020a4aaa4c000000b0058737149513sm345149oom.24.2023.11.03.08.48.10
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 03 Nov 2023 08:48:10 -0700 (PDT)
+From: <ltaylorsimpson@gmail.com>
+To: "'Anton Johansson'" <anjo@rev.ng>
+Cc: <qemu-devel@nongnu.org>
+References: <20231102201006.33143-1-ltaylorsimpson@gmail.com>
+ <7ko7g6b3i7unmncyhql2nlxkjzjtrjdggmcyg55sbxsvven7ad@awzjrozwrgmh>
+In-Reply-To: <7ko7g6b3i7unmncyhql2nlxkjzjtrjdggmcyg55sbxsvven7ad@awzjrozwrgmh>
+Subject: RE: [PATCH 0/3] Hexagon (target/hexagon) Enable more short-circuit
+ packets
+Date: Fri, 3 Nov 2023 10:48:09 -0500
+Message-ID: <09d101da0e6d$25916280$70b42780$@gmail.com>
 MIME-Version: 1.0
-References: <475d918d-ab0e-f717-7206-57a5beb28c7b@redhat.com>
- <CAFEAcA_w5fM57L81vpByTnOPvdn455xBXtU7UnHFGuJuq-0New@mail.gmail.com>
-In-Reply-To: <CAFEAcA_w5fM57L81vpByTnOPvdn455xBXtU7UnHFGuJuq-0New@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 3 Nov 2023 15:33:24 +0000
-Message-ID: <CAFEAcA90SQL3BdH9teaoLu-YLrcijzKpsDqib6KJjZjhrgEm1Q@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm: fix PMU IRQ registration
-To: Sebastian Ott <sebott@redhat.com>
-Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQEk06uHfN3a0MtaXrzDSZkamrufLgHaIVnNscRhwhA=
+Content-Language: en-us
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,28 +99,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 3 Nov 2023 at 14:27, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Fri, 3 Nov 2023 at 14:14, Sebastian Ott <sebott@redhat.com> wrote:
-> >
-> > Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
-> > PMU IRQ registration fails for arm64 guests:
-> >
-> > [    0.563689] hw perfevents: unable to request IRQ14 for ARM PMU counters
-> > [    0.565160] armv8-pmu: probe of pmu failed with error -22
-> >
-> > That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
-> > where the PMU IRQ is actually referred by its PPI index. Fix that by using
-> > INTID_TO_PPI() in that case.
-> >
-> > Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
-> > Signed-off-by: Sebastian Ott <sebott@redhat.com>
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1960
->
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Looks like a problem with git send-email =E2=98=B9
 
-...and applied to target-arm.next, thanks.
+I will troubleshoot ...
 
--- PMM
+
+> -----Original Message-----
+> From: Anton Johansson <anjo@rev.ng>
+> Sent: Thursday, November 2, 2023 6:44 PM
+> To: Taylor Simpson <ltaylorsimpson@gmail.com>
+> Cc: qemu-devel@nongnu.org
+> Subject: Re: [PATCH 0/3] Hexagon (target/hexagon) Enable more short-
+> circuit packets
+>=20
+> Hi, Taylor!:) Always nice to see your name pop up here. The patches =
+seem to
+> have been sent as attachments for whatever reason.
+>=20
+> / Anton
+
 
