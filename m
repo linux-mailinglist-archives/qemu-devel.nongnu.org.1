@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5BE7E03BF
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 14:28:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B457E03E5
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 14:45:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyuCK-0005kE-A7; Fri, 03 Nov 2023 09:26:52 -0400
+	id 1qyuSK-0000ZE-5H; Fri, 03 Nov 2023 09:43:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qyuCH-0005j3-Kf
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:26:49 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyuSI-0000XA-6E
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:43:22 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qyuCE-0002jQ-Dv
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:26:49 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-507c5249d55so2658902e87.3
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 06:26:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyuSG-00089Y-9m
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:43:21 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-50939d39d0fso2697126e87.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 06:43:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1699018004; x=1699622804;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mfZZxVHH8uI+pAbH73jyBBWZDILcgiPj8rsnNR2pp0E=;
- b=VfRqJRwNCkMM9oY3H2uydwzWQrHdPlhzdm2++8R/M96owOCJEzyz9vjpAXVQYSrwzU
- 3KbW8wcqY/XASJuHcNQS94WCcm04+X6leeJ/FTwv9H89bdmV6ExumEbyGetcgRVQ4HCl
- DRUVOIOcGXmk2PM+TnUP7XustHbARcZhJ62xK/JbNRHBfdkydpv8+HSFPfNV4X1u0qEw
- 9TUvMPxxNh9fNCTD4DRwMr0/m/wTwB6+fLamN726RTwr8uYMgdCdXFaLHkFZccj9eKbg
- OkZO8OSn5FjnfYSQTurB6CaC2qlihXBdV6R3++s1d/vp0dL9nr9YcFJvaEAhEIs8a2WZ
- CVXA==
+ d=linaro.org; s=google; t=1699018997; x=1699623797; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IYnlTVJGZbW/5iq63BGoN+7roxf+37ZtkPDAGvl8K1w=;
+ b=LgumCssSu6fYlABw4nBfWaZWavaaXZgoDtdlpUpnAecgfA5nYPI7DVmN2Gqx6/HPRW
+ QZMDtr0kTVbNiSwJrZ4kYhrS67amWnYhpz6R4S+LRFU7upR9Pdzt+0lFnKbGF8tZzZuR
+ CjXLNblSOYkx7Z+7YR8c0RyTzAoj6BAAt59TubgjbwF+cxoXuruPuxSkRa2GNOPJgsiD
+ q2gJTaemx2B2VajW/t/hK8TC6wmZlJr22qrWoYn6GpmEez0YzYbmp5M8fmPZ5ReLvu03
+ QBxP2aW0MLqNxhlpNsOfp/Q4OIn6+V4tsUA76oYcFwvPcGrn5pE+VqaAqIzwir20tfoY
+ 1XXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699018004; x=1699622804;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mfZZxVHH8uI+pAbH73jyBBWZDILcgiPj8rsnNR2pp0E=;
- b=eD2paCV+3SOvesa8T89seBFLNuBQv/UjBSlPt+poG5acEgsjJ5bIgFZXRCEEaPvm8r
- 4nX3u7GZkUPnScR+dUVTCyXcrzeGIsA8REFRzNlrqDU/AysHiUmzAbGHwiABbtgf+hGI
- YneX0dV7YQXoVHeRQygB0WGMjbFkBQfZvH0jDRqBwFnA5FH4PyntCdKYWo+c3TWPy8yU
- BbItCJTBGYBV06FTjIRHc+yMCXfWKe/+Vsr9zXn+o5UTApdspLXJTLTpdYLeyKW1miiz
- uTRxY9togHv024pbRvbeHEhShWIa0JFCxKS1yKp9h9EMA4bvmA220P0CnEbYueiACxnE
- azaw==
-X-Gm-Message-State: AOJu0YzEaEgRkbx0oIn6JP0B+YBgllLRqrEiQ1dU+BBpKfylVSVe68q8
- GcbfAaD6+tXGSClzfIU71rs0Uj/9nU7m8HUgY0K4mw==
-X-Google-Smtp-Source: AGHT+IExiCVIYn/KuInHIAHS2cel7+jPjYOti3/oL8jd7t58E1oPRAcfytHgHN3UC8zlwS0PDAgd7e1/OLVMR6MzMnk=
-X-Received: by 2002:a05:6512:3d17:b0:500:cb2b:8678 with SMTP id
- d23-20020a0565123d1700b00500cb2b8678mr20023230lfv.40.1699018004111; Fri, 03
- Nov 2023 06:26:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1699018997; x=1699623797;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IYnlTVJGZbW/5iq63BGoN+7roxf+37ZtkPDAGvl8K1w=;
+ b=iTVTYaVd0yJVUXZyBJtVWHlSoHdpJfwH2FZ3pifFyF6IiubwigxRBHkKoK4UkCt0tv
+ uQe62ZDUWcUzPTEPPZId022GlzlGUYU1YWrkFfs+G4hc11uAkoIUU93+Y1hbTdrv9h4r
+ 4eTkjSdKZHVblBrJNQeJv+HkaMwNespyGTskSmGwsb3+I64l5IGRgDcg/mKmgOWdYB7Q
+ LW81qY71qpqqP2y2ENZsmQ3dbwVLopVIgF1JfYtxaTxQwzie1GCIq0vQ6A7rmrVTc7E3
+ Zgq0ilKzeMsuFVF2IYnvutldMxN9JmchMHnWNl9fdRuHMBjvyytfEFAEtByVYo+hvh3Z
+ lRyw==
+X-Gm-Message-State: AOJu0YzL496xbOb3Ww3UwvCcyNY9YCgS62GLhk69cuXrU+0c7I0vGuLm
+ NmtLYCOwvzcy1R7lnWeefGaN9QvCu8xbcFJc3tK4Yw==
+X-Google-Smtp-Source: AGHT+IFO2+pHfHG6Kp4Cs2caNvDyC1QdJsHJqxruGOnxekGq0mZLoiXpCIBY6TRUk7GNugMGZmPHj4Ml4VUcjZuXw+g=
+X-Received: by 2002:a19:f51a:0:b0:503:778:9ad2 with SMTP id
+ j26-20020a19f51a000000b0050307789ad2mr15426559lfb.19.1699018996939; Fri, 03
+ Nov 2023 06:43:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231030051356.33123-1-akihiko.odaki@daynix.com>
- <20231030051356.33123-16-akihiko.odaki@daynix.com>
-In-Reply-To: <20231030051356.33123-16-akihiko.odaki@daynix.com>
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
-Date: Fri, 3 Nov 2023 15:26:32 +0200
-Message-ID: <CAOEp5OdGOJXGtOcKGANHMp7g71aFDn5B=80Ap5-Si2UeiqMERQ@mail.gmail.com>
-Subject: Re: [PATCH v6 15/21] virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000009a37ad06093f7446"
-Received-SPF: none client-ip=2a00:1450:4864:20::131;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231020074501.283063-1-dbarboza@ventanamicro.com>
+ <CAKmqyKNdRzBg_Y=K1AKyo3JnVhN2n_XEF4hu6GD8pC+9-QeKqw@mail.gmail.com>
+In-Reply-To: <CAKmqyKNdRzBg_Y=K1AKyo3JnVhN2n_XEF4hu6GD8pC+9-QeKqw@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 3 Nov 2023 13:43:05 +0000
+Message-ID: <CAFEAcA_oriuA5WNEL_XGVHWA-vwbF7_GVqswt0NiwqE4xb4ycg@mail.gmail.com>
+Subject: Re: [PATCH] linux-user/riscv: change default cpu to 'max'
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,97 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009a37ad06093f7446
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Oct 30, 2023 at 7:15=E2=80=AFAM Akihiko Odaki <akihiko.odaki@daynix=
-.com>
-wrote:
-
-> virtio-net can report hash values even if the peer does not have a
-> virtio-net header.
+On Mon, 23 Oct 2023 at 02:15, Alistair Francis <alistair23@gmail.com> wrote=
+:
 >
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  hw/net/virtio-net.c | 2 --
->  1 file changed, 2 deletions(-)
+> On Fri, Oct 20, 2023 at 5:46=E2=80=AFPM Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+> >
+> > Commit f57d5f8004 deprecated the 'any' CPU type but failed to change th=
+e
+> > default CPU for linux-user. The result is that all linux-users
+> > invocations that doesn't specify a different CPU started to show a
+> > deprecation warning:
+> >
+> > $ ./build/qemu-riscv64  ./foo-novect.out
+> > qemu-riscv64: warning: The 'any' CPU is deprecated and will be removed =
+in the future.
+> >
+> > Change the default CPU for RISC-V linux-user from 'any' to 'max'.
+> >
+> > Reported-by: Richard Henderson <richard.henderson@linaro.org>
+> > Fixes: f57d5f8004 ("target/riscv: deprecate the 'any' CPU type")
+> > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 >
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index e30105884c..bdb4579f98 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -774,8 +774,6 @@ static uint64_t virtio_net_get_features(VirtIODevice
-> *vdev, uint64_t features,
->          virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
->          virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
->          virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
-> -
-> -        virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
->      }
+> Thanks!
 >
->
-IMO, we should not enable any advanced features for backends without
-vnet_hdr unless we have a strong reason to do so.
-( HOST_TSO and GUEST_TSO are performance boosters and they are not
-supported without vnet_hdr )
-I'd rather disable also RSS under this "if".
+> Applied to riscv-to-apply.next
 
+Hi -- did this patch get lost along the way? It doesn't seem to
+be upstream yet.
 
-
->      if (!peer_has_vnet_hdr(n) || !peer_has_ufo(n)) {
-> --
-> 2.42.0
->
->
-
---0000000000009a37ad06093f7446
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 30, 2023 at 7:15=E2=80=AF=
-AM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.od=
-aki@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">virtio-net can report hash values even if the peer does not h=
-ave a<br>
-virtio-net header.<br>
-<br>
-Signed-off-by: Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com=
-" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
----<br>
-=C2=A0hw/net/virtio-net.c | 2 --<br>
-=C2=A01 file changed, 2 deletions(-)<br>
-<br>
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c<br>
-index e30105884c..bdb4579f98 100644<br>
---- a/hw/net/virtio-net.c<br>
-+++ b/hw/net/virtio-net.c<br>
-@@ -774,8 +774,6 @@ static uint64_t virtio_net_get_features(VirtIODevice *v=
-dev, uint64_t features,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_clear_feature(&amp;features, VIRTI=
-O_NET_F_HOST_USO);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_clear_feature(&amp;features, VIRTI=
-O_NET_F_GUEST_USO4);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_clear_feature(&amp;features, VIRTI=
-O_NET_F_GUEST_USO6);<br>
--<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_clear_feature(&amp;features, VIRTIO_NET=
-_F_HASH_REPORT);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br></blockquote><div><br></div><div>IMO, we should not enable any advanced=
- features for backends without vnet_hdr unless we have a strong reason to d=
-o so.</div><div>( HOST_TSO and GUEST_TSO are performance boosters and they =
-are=C2=A0not supported without vnet_hdr )</div><div>I&#39;d rather disable =
-also RSS under this &quot;if&quot;.</div><div><br></div><div>=C2=A0</div><b=
-lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
-ft:1px solid rgb(204,204,204);padding-left:1ex">
-=C2=A0 =C2=A0 =C2=A0if (!peer_has_vnet_hdr(n) || !peer_has_ufo(n)) {<br>
--- <br>
-2.42.0<br>
-<br>
-</blockquote></div></div>
-
---0000000000009a37ad06093f7446--
+thanks
+-- PMM
 
