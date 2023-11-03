@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25B27E09E3
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 21:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AED7E09F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 21:11:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qz0Qy-0003gD-93; Fri, 03 Nov 2023 16:06:24 -0400
+	id 1qz0R5-0004Br-35; Fri, 03 Nov 2023 16:06:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qz0Qs-0003bs-CC
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:06:18 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qz0R1-000454-Jh
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:06:27 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qz0Qj-0006wt-VH
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:06:18 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40859c464daso18013395e9.1
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 13:06:09 -0700 (PDT)
+ id 1qz0Ql-0006yR-IT
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:06:27 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4094301d505so18922925e9.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 13:06:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699041968; x=1699646768; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699041970; x=1699646770; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zPpQxgdh5VY8ZdTdWSvmFC1MKBcKGy7bnnvLXL/ucsM=;
- b=KDnV+bJy98NMeaD2/vPwIv6wBUiQnmbpfVQNDo9HSI3R0sjOADsZ8hNr7jhEA747RD
- UGiV/FnL58s0fDdq/Y2WMmxULLIbfL67nIjuGdu8ketbTNKiUPVBmMUo7PiNTw4pQ8m6
- arMDW7jF4P1FMN16dTSYaqKB52saFNa4Gqz/9+cFDxT0pNRNTINhoDL5ScbsmrPbYJVg
- 90Y+YUbW6hM7WRB2vwJm93nLeLi55w38eN6pPbJh8DVx18DCkwITDEiu63nF/4Ktzufi
- 0X6JY0tmWOOdx9gFdcB5wc5H8h3OHEBnVFSJiI8z2dSCV0n7HCgmi1r+/bgaoE1wAlpH
- kIkQ==
+ bh=BM/WoalBWQwPuHSNHPl39Pw79pHu/OHGkHed2Wz/1M0=;
+ b=EssZ6ximDOKaQznSwK77KU4i1/W2FxhR7atYhepvmg6+mf/SPMb2pQ6L5ijTC70dyO
+ 0cRMmaMEaSCwG9U2tZTUkX47dbJUNSQ9qb8JiR7rgb65IUwMZzpP5P+kpWf8meT941qm
+ J+vIwa7Gxpgwhg7ueFYqOpswfGSLSacM9bQkaFtSZwUscX/qgXaIpkgLV8+9fGM6NPq+
+ HHTokn9nH1J/zkDwceUk+A+0zBmpztcjB7KxQaZ+P1ZOU97AoIQKjbh+XQWLNtdnUf5I
+ Myuwi85nh5rb/X09qxEeavPN1yYRP4EpR3emLa2KseKEMqhRtVz2C3HRPdYOX+ZPyEYR
+ fmng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699041968; x=1699646768;
+ d=1e100.net; s=20230601; t=1699041970; x=1699646770;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zPpQxgdh5VY8ZdTdWSvmFC1MKBcKGy7bnnvLXL/ucsM=;
- b=GSSoDl+Stpdw3evNkz2YjxJ8cJn456Cx8u1CTAnjAOK3bmVvs/wZ+Z5P73FlJrwYJd
- cKHolHJJX5UY8URU/M8Tg/jv0CkNaxq41FifHD6qmw0gRT7Fr26ILheQ0jK/oxqzrVtY
- 8N4A+Arh6KstMYiOWn2GqpFgLXJrCtuw9OScJd8ADKdkPqTtUb9fzbSvfOBPU3W88QBY
- mISnsXQIMUj9FaDBrTh5GobLp20bmH0rt4KD67W5m2fzpTThCrC6l6SFAfkR3lbzZa3W
- 3pXcNQb5vDk69bBmz4ZReq6/zO6IZXZ5Tg3QuKvZGsDWHYvRjASilZMUAQKH/NV6jFv9
- Kgpg==
-X-Gm-Message-State: AOJu0YxX0TR527AhVJtoTk1Ug+bwTI7T9YVCpI0C+UclUHQq08sLc5ZO
- rDCPWlpA6qg/zwUa8y8sDiRMVA==
-X-Google-Smtp-Source: AGHT+IFM6OAclTpVDoEZyTprZJQoEXhkGB6ua3u5lqTYwFGwh/I4TJMtwA3MFg4FbK9OCEpY9OrlBA==
-X-Received: by 2002:a05:600c:4445:b0:405:3251:47a1 with SMTP id
- v5-20020a05600c444500b00405325147a1mr17614556wmn.40.1699041968086; 
- Fri, 03 Nov 2023 13:06:08 -0700 (PDT)
+ bh=BM/WoalBWQwPuHSNHPl39Pw79pHu/OHGkHed2Wz/1M0=;
+ b=OukvcbSYXaztc6CJnhlnaDpXSpxed+KAIbioZObaPaVJrPixTGjCKnmlllZTH5ns1O
+ GaK6gyIodXVfNv9vz7/vijqTtlqgUgUWugTT7Yz+Pt4vDff7V/1SsODQH5ZDNqCLKLaB
+ /ynJlkjvirKupugRGlnDWoNUy23EdH5krPLVsKR2P3JqfliooULiPyyStwqOOdVab0Di
+ XU1NeutlXYtji75sLUFd03un0GN2PaJi8zPl254SGXKJrJu6M19ko5BiMGJhTMqc7oh5
+ ZSSr8rpfXeUWYUbeRmCOt9aTGelhYH2aIRbyo8dR/CQBWElB/SbRJi4VFZquLQUmZ31t
+ S58A==
+X-Gm-Message-State: AOJu0YycXVNpBIc7ElnspfzuOXxFcx8pakInrs/FbT7a0B/H6CPHDFmT
+ loEs4L8exuRFS5eBwVV4iFl1yg==
+X-Google-Smtp-Source: AGHT+IEliE94OTH7Hncq1cvTOUk5H9lDwSF4rkmthVXPnQPEm7fpphVN3i9I/dzUeHyWDmu5jyJSQg==
+X-Received: by 2002:a05:600c:4f92:b0:401:a0b1:aef6 with SMTP id
+ n18-20020a05600c4f9200b00401a0b1aef6mr19860363wmq.2.1699041970242; 
+ Fri, 03 Nov 2023 13:06:10 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- u17-20020a05600c19d100b00405c7591b09sm3572232wmq.35.2023.11.03.13.06.05
+ l7-20020a05600c1d0700b00405bbfd5d16sm3567011wms.7.2023.11.03.13.06.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Nov 2023 13:06:05 -0700 (PDT)
+ Fri, 03 Nov 2023 13:06:08 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BEB5965758;
+ by draig.lan (Postfix) with ESMTP id D4D4D65759;
  Fri,  3 Nov 2023 19:59:59 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,24 +90,24 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Rolnik <mrolnik@gmail.com>,
  Greg Manning <gmanning@rapitasystems.com>
-Subject: [PATCH 28/29] plugins: disable lockstep plugin on windows
-Date: Fri,  3 Nov 2023 19:59:55 +0000
-Message-Id: <20231103195956.1998255-29-alex.bennee@linaro.org>
+Subject: [PATCH 29/29] plugins: allow plugins to be enabled on windows
+Date: Fri,  3 Nov 2023 19:59:56 +0000
+Message-Id: <20231103195956.1998255-30-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231103195956.1998255-1-alex.bennee@linaro.org>
 References: <20231103195956.1998255-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,35 +125,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Greg Manning <gmanning@rapitasystems.com>
 
-The lockstep plugin uses unix sockets and would require a different
-communication mechanism to work on Windows.
+allow plugins to be enabled in the configure script on windows. Also,
+add the qemu_plugin_api.lib to the installer.
 
 Signed-off-by: Greg Manning <gmanning@rapitasystems.com>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231102172053.17692-4-gmanning@rapitasystems.com>
+Message-Id: <20231102172053.17692-5-gmanning@rapitasystems.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/Makefile | 6 ++++++
- 1 file changed, 6 insertions(+)
+ configure   | 6 ------
+ meson.build | 5 +++++
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index 751fa38619..1783750cf6 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -17,7 +17,13 @@ NAMES += execlog
- NAMES += hotblocks
- NAMES += hotpages
- NAMES += howvec
-+
-+# The lockstep example communicates using unix sockets,
-+# and can't be easily made to work on windows.
-+ifneq ($(CONFIG_WIN32),y)
- NAMES += lockstep
-+endif
-+
- NAMES += hwprofile
- NAMES += cache
- NAMES += drcov
+diff --git a/configure b/configure
+index 04f2cdd166..1129e6dd94 100755
+--- a/configure
++++ b/configure
+@@ -1010,12 +1010,6 @@ if test "$targetos" = "bogus"; then
+ fi
+ 
+ # test for any invalid configuration combinations
+-if test "$targetos" = "windows"; then
+-  if test "$plugins" = "yes"; then
+-    error_exit "TCG plugins not currently supported on Windows platforms"
+-  fi
+-  plugins="no"
+-fi
+ if test "$tcg" = "disabled" ; then
+   if test "$plugins" = "yes"; then
+     error_exit "Can't enable plugins on non-TCG builds"
+diff --git a/meson.build b/meson.build
+index dcef8b1e79..b855224acc 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3904,6 +3904,11 @@ endforeach
+ 
+ if get_option('plugins')
+   install_headers('include/qemu/qemu-plugin.h')
++  if targetos == 'windows'
++    # On windows, we want to deliver the qemu_plugin_api.lib file in the qemu installer,
++    # so that plugin authors can compile against it.
++    install_data(win32_qemu_plugin_api_lib, install_dir: 'lib')
++  endif
+ endif
+ 
+ subdir('qga')
 -- 
 2.39.2
 
