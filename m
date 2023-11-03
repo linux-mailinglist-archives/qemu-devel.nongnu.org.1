@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A29D7DFF4C
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BC77DFF4F
 	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 08:03:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyoBs-00064V-2p; Fri, 03 Nov 2023 03:02:00 -0400
+	id 1qyoBx-00065g-5L; Fri, 03 Nov 2023 03:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qyoBp-00063l-Ir
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:01:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qyoBv-00065B-6X
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:02:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qyoBm-0000wU-IP
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:01:57 -0400
+ id 1qyoBs-0000xa-1r
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:02:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698994913;
+ s=mimecast20190719; t=1698994919;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a/97ELOFFgRZw3+KK7vgHBNgSfLau25BCHwiLcMW7c4=;
- b=YfrR5kIT8ou1a25t+Mlafg1VnI7c3heBaROnys26Qp+CB/Fmt6JtaDyBryLGvrALbJi+JW
- 3cumLxsauROe6BPsO25Di6+Qt+njo8Grs0ZPP4gkbuWBYqRtZve9g6SB4Sxxr4sFsO/eXi
- b71sE/GnMGbocOJctS9Wr8Arjnnal38=
+ bh=naVkma1I8TWwxMoJt4IYPuegIpP/uso5GkqRyi+ZnDM=;
+ b=arxCASPHtE5LwUnshbPq3FXA8BiSbZ+R1Wj1yM6KKP0c3KUVPUinfFu6gtg5hZQ3x7uH69
+ lYc1FdtXexVfTe8kRNcHIq/dEJ0z2oefCqxNcaHaRit9g9zpIieuXmLICHl/aJipZXB3RC
+ q7oFCPC00yuO3S3ezJ7AgV/d+RqwJXA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-114-DpHo7ow9OCiqKcPbcCj70Q-1; Fri,
- 03 Nov 2023 03:01:49 -0400
-X-MC-Unique: DpHo7ow9OCiqKcPbcCj70Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-ppUCRbciOfCUfcvz9cCCiQ-1; Fri,
+ 03 Nov 2023 03:01:54 -0400
+X-MC-Unique: ppUCRbciOfCUfcvz9cCCiQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6578829AB448;
- Fri,  3 Nov 2023 07:01:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DDE9A3C0C107;
+ Fri,  3 Nov 2023 07:01:53 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 408CF2166B27;
- Fri,  3 Nov 2023 07:01:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B6D331121309;
+ Fri,  3 Nov 2023 07:01:52 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -57,16 +57,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  richard.henderson@linaro.org, Beraldo Leal <bleal@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Stephen Brennan <stephen.s.brennan@oracle.com>
-Subject: [PULL 2/8] dump: Allow directly outputting raw kdump format
-Date: Fri,  3 Nov 2023 11:01:30 +0400
-Message-ID: <20231103070136.437557-3-marcandre.lureau@redhat.com>
+Subject: [PULL 3/8] dump: Add command interface for kdump-raw formats
+Date: Fri,  3 Nov 2023 11:01:31 +0400
+Message-ID: <20231103070136.437557-4-marcandre.lureau@redhat.com>
 In-Reply-To: <20231103070136.437557-1-marcandre.lureau@redhat.com>
 References: <20231103070136.437557-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -74,7 +74,7 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,129 +94,231 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stephen Brennan <stephen.s.brennan@oracle.com>
 
-The flattened format (currently output by QEMU) is used by makedumpfile
-only when it is outputting a vmcore to a file which is not seekable. The
-flattened format functions essentially as a set of instructions of the
-form "seek to the given offset, then write the given bytes out".
+The QMP dump API represents the dump format as an enumeration. Add three
+new enumerators, one for each supported kdump compression, each named
+"kdump-raw-*".
 
-The flattened format can be reconstructed using makedumpfile -R, or
-makedumpfile-R.pl, but it is a slow process because it requires copying
-the entire vmcore. The flattened format can also be directly read by
-crash, but still, it requires a lengthy reassembly phase.
-
-To sum up, the flattened format is not an ideal one: it should only be
-used on files which are actually not seekable. This is the exact
-strategy which makedumpfile uses, as seen in the implementation of
-"write_buffer()" in makedumpfile [1]. However, QEMU has always used the
-flattened format. For compatibility it is best not to change the default
-output format without warning. So, add a flag to DumpState which changes
-the output to use the normal (i.e. raw) format. This flag will be added
-to the QMP and HMP commands in the next change.
-
-[1]: https://github.com/makedumpfile/makedumpfile/blob/f23bb943568188a2746dbf9b6692668f5a2ac3b6/makedumpfile.c#L5008-L5040
+For the HMP command line, rather than adding a new flag corresponding to
+each format, it seems more human-friendly to add a single flag "-R" to
+switch the kdump formats to "raw" mode. The choice of "-R" also
+correlates nicely to the "makedumpfile -R" option, which would serve to
+reassemble a flattened vmcore.
 
 Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-[ Marc-André: replace loff_t with off_t ]
+[ Marc-André: replace loff_t with off_t, indent fixes ]
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230918233233.1431858-3-stephen.s.brennan@oracle.com>
+Message-Id: <20230918233233.1431858-4-stephen.s.brennan@oracle.com>
 ---
- include/sysemu/dump.h |  1 +
- dump/dump.c           | 32 +++++++++++++++++++++++++-------
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ qapi/dump.json       | 24 ++++++++++++++++++++----
+ dump/dump-hmp-cmds.c | 21 +++++++++++++++++----
+ dump/dump.c          | 33 ++++++++++++++++++++++++++++++++-
+ hmp-commands.hx      |  9 +++++++--
+ 4 files changed, 76 insertions(+), 11 deletions(-)
 
-diff --git a/include/sysemu/dump.h b/include/sysemu/dump.h
-index e27af8fb34..d702854853 100644
---- a/include/sysemu/dump.h
-+++ b/include/sysemu/dump.h
-@@ -157,6 +157,7 @@ typedef struct DumpState {
-     MemoryMappingList list;
-     bool resume;
-     bool detached;
-+    bool kdump_raw;
-     hwaddr memory_offset;
-     int fd;
+diff --git a/qapi/dump.json b/qapi/dump.json
+index 4ae1f722a9..5cbc237ad9 100644
+--- a/qapi/dump.json
++++ b/qapi/dump.json
+@@ -15,11 +15,23 @@
+ #
+ # @elf: elf format
+ #
+-# @kdump-zlib: kdump-compressed format with zlib-compressed
++# @kdump-zlib: makedumpfile flattened, kdump-compressed format with zlib
++#     compression
+ #
+-# @kdump-lzo: kdump-compressed format with lzo-compressed
++# @kdump-lzo: makedumpfile flattened, kdump-compressed format with lzo
++#     compression
+ #
+-# @kdump-snappy: kdump-compressed format with snappy-compressed
++# @kdump-snappy: makedumpfile flattened, kdump-compressed format with snappy
++#     compression
++#
++# @kdump-raw-zlib: raw assembled kdump-compressed format with zlib compression
++#     (since 8.2)
++#
++# @kdump-raw-lzo: raw assembled kdump-compressed format with lzo compression
++#     (since 8.2)
++#
++# @kdump-raw-snappy: raw assembled kdump-compressed format with snappy
++#     compression (since 8.2)
+ #
+ # @win-dmp: Windows full crashdump format, can be used instead of ELF
+ #     converting (since 2.13)
+@@ -27,7 +39,11 @@
+ # Since: 2.0
+ ##
+ { 'enum': 'DumpGuestMemoryFormat',
+-  'data': [ 'elf', 'kdump-zlib', 'kdump-lzo', 'kdump-snappy', 'win-dmp' ] }
++  'data': [
++      'elf',
++      'kdump-zlib', 'kdump-lzo', 'kdump-snappy',
++      'kdump-raw-zlib', 'kdump-raw-lzo', 'kdump-raw-snappy',
++      'win-dmp' ] }
  
-diff --git a/dump/dump.c b/dump/dump.c
-index eec34c4738..0f913e1f5c 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -814,6 +814,10 @@ static int write_start_flat_header(DumpState *s)
-     MakedumpfileHeader *mh;
-     int ret = 0;
+ ##
+ # @dump-guest-memory:
+diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
+index b038785fee..b428ec33df 100644
+--- a/dump/dump-hmp-cmds.c
++++ b/dump/dump-hmp-cmds.c
+@@ -19,6 +19,7 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict *qdict)
+     bool paging = qdict_get_try_bool(qdict, "paging", false);
+     bool zlib = qdict_get_try_bool(qdict, "zlib", false);
+     bool lzo = qdict_get_try_bool(qdict, "lzo", false);
++    bool raw = qdict_get_try_bool(qdict, "raw", false);
+     bool snappy = qdict_get_try_bool(qdict, "snappy", false);
+     const char *file = qdict_get_str(qdict, "filename");
+     bool has_begin = qdict_haskey(qdict, "begin");
+@@ -40,16 +41,28 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict *qdict)
+         dump_format = DUMP_GUEST_MEMORY_FORMAT_WIN_DMP;
+     }
  
-+    if (s->kdump_raw) {
-+        return 0;
-+    }
-+
-     QEMU_BUILD_BUG_ON(sizeof *mh > MAX_SIZE_MDF_HEADER);
-     mh = g_malloc0(MAX_SIZE_MDF_HEADER);
- 
-@@ -837,6 +841,10 @@ static int write_end_flat_header(DumpState *s)
- {
-     MakedumpfileDataHeader mdh;
- 
-+    if (s->kdump_raw) {
-+        return 0;
-+    }
-+
-     mdh.offset = END_FLAG_FLAT_HEADER;
-     mdh.buf_size = END_FLAG_FLAT_HEADER;
- 
-@@ -853,13 +861,21 @@ static int write_buffer(DumpState *s, off_t offset, const void *buf, size_t size
- {
-     size_t written_size;
-     MakedumpfileDataHeader mdh;
-+    off_t seek_loc;
- 
--    mdh.offset = cpu_to_be64(offset);
--    mdh.buf_size = cpu_to_be64(size);
-+    if (s->kdump_raw) {
-+        seek_loc = lseek(s->fd, offset, SEEK_SET);
-+        if (seek_loc == (off_t) -1) {
-+            return -1;
-+        }
-+    } else {
-+        mdh.offset = cpu_to_be64(offset);
-+        mdh.buf_size = cpu_to_be64(size);
- 
--    written_size = qemu_write_full(s->fd, &mdh, sizeof(mdh));
--    if (written_size != sizeof(mdh)) {
--        return -1;
-+        written_size = qemu_write_full(s->fd, &mdh, sizeof(mdh));
-+        if (written_size != sizeof(mdh)) {
-+            return -1;
+-    if (zlib) {
+-        dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_ZLIB;
++    if (zlib && raw) {
++        if (raw) {
++            dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB;
++        } else {
++            dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_ZLIB;
 +        }
      }
  
-     written_size = qemu_write_full(s->fd, buf, size);
-@@ -1775,7 +1791,8 @@ static void vmcoreinfo_update_phys_base(DumpState *s)
+     if (lzo) {
+-        dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_LZO;
++        if (raw) {
++            dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_LZO;
++        } else {
++            dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_LZO;
++        }
+     }
  
- static void dump_init(DumpState *s, int fd, bool has_format,
-                       DumpGuestMemoryFormat format, bool paging, bool has_filter,
--                      int64_t begin, int64_t length, Error **errp)
-+                      int64_t begin, int64_t length, bool kdump_raw,
-+                      Error **errp)
- {
-     ERRP_GUARD();
-     VMCoreInfoState *vmci = vmcoreinfo_find();
-@@ -1786,6 +1803,7 @@ static void dump_init(DumpState *s, int fd, bool has_format,
-     s->has_format = has_format;
-     s->format = format;
-     s->written_size = 0;
-+    s->kdump_raw = kdump_raw;
+     if (snappy) {
+-        dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_SNAPPY;
++        if (raw) {
++            dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_SNAPPY;
++        } else {
++            dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_SNAPPY;
++        }
+     }
  
-     /* kdump-compressed is conflict with paging and filter */
-     if (has_format && format != DUMP_GUEST_MEMORY_FORMAT_ELF) {
-@@ -2168,7 +2186,7 @@ void qmp_dump_guest_memory(bool paging, const char *file,
+     if (has_begin) {
+diff --git a/dump/dump.c b/dump/dump.c
+index 0f913e1f5c..44b27fef45 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -2090,6 +2090,7 @@ void qmp_dump_guest_memory(bool paging, const char *file,
+     int fd = -1;
+     DumpState *s;
+     bool detach_p = false;
++    bool kdump_raw = false;
+ 
+     if (runstate_check(RUN_STATE_INMIGRATE)) {
+         error_setg(errp, "Dump not allowed during incoming migration.");
+@@ -2103,6 +2104,29 @@ void qmp_dump_guest_memory(bool paging, const char *file,
+         return;
+     }
+ 
++    /*
++     * externally, we represent kdump-raw-* as separate formats, but internally
++     * they are handled the same, except for the "raw" flag
++     */
++    if (has_format) {
++        switch (format) {
++        case DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB:
++            format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_ZLIB;
++            kdump_raw = true;
++            break;
++        case DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_LZO:
++            format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_LZO;
++            kdump_raw = true;
++            break;
++        case DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_SNAPPY:
++            format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_SNAPPY;
++            kdump_raw = true;
++            break;
++        default:
++            break;
++        }
++    }
++
+     /*
+      * kdump-compressed format need the whole memory dumped, so paging or
+      * filter is not supported here.
+@@ -2166,6 +2190,10 @@ void qmp_dump_guest_memory(bool paging, const char *file,
+         error_setg(errp, QERR_INVALID_PARAMETER, "protocol");
+         return;
+     }
++    if (kdump_raw && lseek(fd, 0, SEEK_CUR) == (off_t) -1) {
++        error_setg(errp, "kdump-raw formats require a seekable file");
++        return;
++    }
+ 
+     if (!dump_migration_blocker) {
+         error_setg(&dump_migration_blocker,
+@@ -2186,7 +2214,7 @@ void qmp_dump_guest_memory(bool paging, const char *file,
      dump_state_prepare(s);
  
      dump_init(s, fd, has_format, format, paging, has_begin,
--              begin, length, errp);
-+              begin, length, false, errp);
+-              begin, length, false, errp);
++              begin, length, kdump_raw, errp);
      if (*errp) {
          qatomic_set(&s->status, DUMP_STATUS_FAILED);
          return;
+@@ -2214,15 +2242,18 @@ DumpGuestMemoryCapability *qmp_query_dump_guest_memory_capability(Error **errp)
+ 
+     /* kdump-zlib is always available */
+     QAPI_LIST_APPEND(tail, DUMP_GUEST_MEMORY_FORMAT_KDUMP_ZLIB);
++    QAPI_LIST_APPEND(tail, DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB);
+ 
+     /* add new item if kdump-lzo is available */
+ #ifdef CONFIG_LZO
+     QAPI_LIST_APPEND(tail, DUMP_GUEST_MEMORY_FORMAT_KDUMP_LZO);
++    QAPI_LIST_APPEND(tail, DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_LZO);
+ #endif
+ 
+     /* add new item if kdump-snappy is available */
+ #ifdef CONFIG_SNAPPY
+     QAPI_LIST_APPEND(tail, DUMP_GUEST_MEMORY_FORMAT_KDUMP_SNAPPY);
++    QAPI_LIST_APPEND(tail, DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_SNAPPY);
+ #endif
+ 
+     if (win_dump_available(NULL)) {
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 63eac22734..c0a27688b6 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1085,14 +1085,16 @@ ERST
+ 
+     {
+         .name       = "dump-guest-memory",
+-        .args_type  = "paging:-p,detach:-d,windmp:-w,zlib:-z,lzo:-l,snappy:-s,filename:F,begin:l?,length:l?",
+-        .params     = "[-p] [-d] [-z|-l|-s|-w] filename [begin length]",
++        .args_type  = "paging:-p,detach:-d,windmp:-w,zlib:-z,lzo:-l,snappy:-s,raw:-R,filename:F,begin:l?,length:l?",
++        .params     = "[-p] [-d] [-z|-l|-s|-w] [-R] filename [begin length]",
+         .help       = "dump guest memory into file 'filename'.\n\t\t\t"
+                       "-p: do paging to get guest's memory mapping.\n\t\t\t"
+                       "-d: return immediately (do not wait for completion).\n\t\t\t"
+                       "-z: dump in kdump-compressed format, with zlib compression.\n\t\t\t"
+                       "-l: dump in kdump-compressed format, with lzo compression.\n\t\t\t"
+                       "-s: dump in kdump-compressed format, with snappy compression.\n\t\t\t"
++                      "-R: when using kdump (-z, -l, -s), use raw rather than makedumpfile-flattened\n\t\t\t"
++                      "    format\n\t\t\t"
+                       "-w: dump in Windows crashdump format (can be used instead of ELF-dump converting),\n\t\t\t"
+                       "    for Windows x86 and x64 guests with vmcoreinfo driver only.\n\t\t\t"
+                       "begin: the starting physical address.\n\t\t\t"
+@@ -1115,6 +1117,9 @@ SRST
+     dump in kdump-compressed format, with lzo compression.
+   ``-s``
+     dump in kdump-compressed format, with snappy compression.
++  ``-R``
++    when using kdump (-z, -l, -s), use raw rather than makedumpfile-flattened
++    format
+   ``-w``
+     dump in Windows crashdump format (can be used instead of ELF-dump converting),
+     for Windows x64 guests with vmcoreinfo driver only
 -- 
 2.41.0
 
