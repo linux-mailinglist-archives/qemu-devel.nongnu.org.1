@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F107E030F
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 13:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635097E0311
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 13:40:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qytQh-0002Qc-5O; Fri, 03 Nov 2023 08:37:39 -0400
+	id 1qytSO-0003Q6-Mn; Fri, 03 Nov 2023 08:39:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytQc-0002QA-Vc
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:37:35 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytSM-0003Pc-Sm
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:39:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytQa-000418-W2
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:37:34 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytS8-0004FZ-TP
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:39:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699015051;
+ s=mimecast20190719; t=1699015147;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=jBzojreZv9lYAEvbo/wIk//pz8tYY0jG875CdIilT4g=;
- b=T92ugxh++zdg6+2kTNgRQUZ2DUrKelJnridLCHhjO+24DmklFTv4T+Nn6bttmZ6Kuhnlc1
- cxF4Xxkoh3exDHtumk8U0cka8K7xvODn9sCDaGb3khC3oDXUmzUSc+vL4RORPcx1W9Hf8Y
- zhaREg/KnUWVcEr2MJsjuTzZ902wK00=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-3_f79LA5MKOpjrXmkcDxsw-1; Fri, 03 Nov 2023 08:37:30 -0400
-X-MC-Unique: 3_f79LA5MKOpjrXmkcDxsw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=wbyziZS25bIZ5oznhshcF/4nLIUWopLpXH5L0uOVoaU=;
+ b=ZToTfPOlyRQdDgVev8Z9oeJzCSpLysOT2lDUuWEUX47p0rvm8VH/uJad0x1iDVeKAdwy7M
+ ldYAb9qSHY4qLVNqA++7zvitKyErE56QzBHQIoeDmVfYWoBC98nI/TUVmsIeUwN9nssyrC
+ rtE+fIpqib+JzGATbiGlkkiQwwLw6bE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-300-LDOXof3mNaOHljEUAqp73A-1; Fri,
+ 03 Nov 2023 08:39:03 -0400
+X-MC-Unique: LDOXof3mNaOHljEUAqp73A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C4C882A660;
- Fri,  3 Nov 2023 12:37:30 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA8E13816CA3;
+ Fri,  3 Nov 2023 12:39:02 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.51])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C794C1121308;
- Fri,  3 Nov 2023 12:37:28 +0000 (UTC)
-Date: Fri, 3 Nov 2023 07:37:27 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7DB292166B26;
+ Fri,  3 Nov 2023 12:39:01 +0000 (UTC)
+Date: Fri, 3 Nov 2023 07:38:59 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Kevin Wolf <kwolf@redhat.com>
 Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
  pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 16/24] block: Mark bdrv_replace_node() GRAPH_WRLOCK
-Message-ID: <qv27qnwfdeqpbimbj463kgfztmtmdpm4ptxlqptikpjw4chu4o@5r6wvf2avfy4>
+Subject: Re: [PATCH 19/24] block: Introduce bdrv_co_change_backing_file()
+Message-ID: <ahzauozaldcymjqwhptnw66t24ka6ohd4gueycanajkyqlnhhp@hs464kzele6e>
 References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-17-kwolf@redhat.com>
- <3dndhoo6fq2pes3dldplykyg7svuwyfntix5txvotr3zpklnly@gf6yi37ijtmm>
- <ZUTMRxsxLbw4OePX@redhat.com>
+ <20231027155333.420094-20-kwolf@redhat.com>
+ <s5jvuqejqapizbe7oyxonoocabd2rnfbhfejcerdn32ddrgtzr@6m6a2yij2zuu>
+ <ZUTMi/AIqPeqQXN6@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZUTMRxsxLbw4OePX@redhat.com>
+In-Reply-To: <ZUTMi/AIqPeqQXN6@redhat.com>
 User-Agent: NeoMutt/20231023
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -64,9 +64,8 @@ X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,74 +81,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 03, 2023 at 11:32:39AM +0100, Kevin Wolf wrote:
-...
-> > > -    GLOBAL_STATE_CODE();
+On Fri, Nov 03, 2023 at 11:33:47AM +0100, Kevin Wolf wrote:
+> Am 30.10.2023 um 14:57 hat Eric Blake geschrieben:
+> > On Fri, Oct 27, 2023 at 05:53:28PM +0200, Kevin Wolf wrote:
+> > > bdrv_change_backing_file() is called both inside and outside coroutine
+> > > context. This makes it difficult for it to take the graph lock
+> > > internally. It also means that driver implementations need to be able to
+> > > run outside of coroutines, too. Switch it to the usual model with a
+> > > coroutine based implementation and a co_wrapper instead. The new
+> > > function is marked GRAPH_RDLOCK.
+> > > 
+> > > As the co_wrapper now runs the function in the AioContext of the node
+> > > (as it should always have done), this is not GLOBAL_STATE_CODE() any
+> > > more.
+> > > 
+> > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> > > ---
+> > >  include/block/block-global-state.h |  3 +-
+> > >  include/block/block-io.h           |  8 ++++
+> > >  include/block/block_int-common.h   |  5 ++-
+> > >  block.c                            | 11 ++---
+> > >  block/qcow2.c                      | 18 +++++----
+> > >  block/qed.c                        | 64 +++++++++++++++---------------
+> > >  tests/unit/test-bdrv-drain.c       |  8 ++--
+> > >  7 files changed, 65 insertions(+), 52 deletions(-)
+> > > 
+> > > +++ b/block/qcow2.c
+> > > @@ -6155,9 +6159,9 @@ BlockDriver bdrv_qcow2 = {
+> > >      .bdrv_co_save_vmstate   = qcow2_co_save_vmstate,
+> > >      .bdrv_co_load_vmstate   = qcow2_co_load_vmstate,
+> > >  
+> > > -    .is_format                  = true,
+> > > -    .supports_backing           = true,
+> > > -    .bdrv_change_backing_file   = qcow2_change_backing_file,
+> > > +    .is_format                      = true,
+> > > +    .supports_backing               = true,
+> > > +    .bdrv_co_change_backing_file    = qcow2_co_change_backing_file,
+> > >  
+> > >      .bdrv_refresh_limits        = qcow2_refresh_limits,
+> > >      .bdrv_co_invalidate_cache   = qcow2_co_invalidate_cache,
+> > 
+> > Here, you only realigned = on a portion of the initializer...
+> > 
+> > > diff --git a/block/qed.c b/block/qed.c
+> > > index 686ad711f7..996aa384fe 100644
+> > > --- a/block/qed.c
+> > > +++ b/block/qed.c
+> > >  static BlockDriver bdrv_qed = {
+> > > -    .format_name              = "qed",
+> > > -    .instance_size            = sizeof(BDRVQEDState),
+> > > -    .create_opts              = &qed_create_opts,
+> > > -    .is_format                = true,
+> > > -    .supports_backing         = true,
 > > > -
-> > > -    /* Make sure that @from doesn't go away until we have successfully attached
-> > > -     * all of its parents to @to. */
+> > > -    .bdrv_probe               = bdrv_qed_probe,
 > > 
-> > Useful comment that you just moved here in the previous patch...
-> > 
-> > > -    bdrv_ref(from);
-...
-> > > @@ -5717,9 +5699,15 @@ BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *options,
-> > >          goto fail;
-> > >      }
-> > >  
-> > > +    bdrv_ref(bs);
-> > 
-> > ...but now it is gone.  Intentional?
+> > ...while here, you are doing it on the entire block.  This shows why I
+> > personally dislike aligning =, but I tolerate it when it is already
+> > prevailing style.  Still, it feels weird to be inconsistent within the
+> > same patch.
 > 
-> I figured it was obvious enough that bdrv_ref() is always called to make
-> sure that the node doesn't go away too early, but I can add it back.
+> It's because qcow2 already had multiple different indentations, but qed
+> had everything aligned to the same column. I can update qcow2.
 
-Your call.
-
-> > > @@ -94,8 +95,12 @@ static void commit_abort(Job *job)
-> > >       * XXX Can (or should) we somehow keep 'consistent read' blocked even
-> > >       * after the failed/cancelled commit job is gone? If we already wrote
-> > >       * something to base, the intermediate images aren't valid any more. */
-> > > -    bdrv_replace_node(s->commit_top_bs, s->commit_top_bs->backing->bs,
-> > > -                      &error_abort);
-> > > +    commit_top_backing_bs = s->commit_top_bs->backing->bs;
-> > > +    bdrv_drained_begin(commit_top_backing_bs);
-> > > +    bdrv_graph_wrlock(commit_top_backing_bs);
-> > 
-> > Here, and elsewhere in the patch, drained_begin/end is outside
-> > wr(un)lock...
-> > 
-> > > +    bdrv_replace_node(s->commit_top_bs, commit_top_backing_bs, &error_abort);
-> > > +    bdrv_graph_wrunlock();
-> > > +    bdrv_drained_end(commit_top_backing_bs);
-> > >  
-> > >      bdrv_unref(s->commit_top_bs);
-> > >      bdrv_unref(top_bs);
-> > > @@ -425,7 +430,11 @@ fail:
-> > >      /* commit_top_bs has to be replaced after deleting the block job,
-> > >       * otherwise this would fail because of lack of permissions. */
-> > >      if (commit_top_bs) {
-> > > +        bdrv_graph_wrlock(top);
-> > > +        bdrv_drained_begin(top);
-> > >          bdrv_replace_node(commit_top_bs, top, &error_abort);
-> > > +        bdrv_drained_end(top);
-> > > +        bdrv_graph_wrunlock();
-> > 
-> > ...but here you do it in the opposite order.  Intentional?
-> 
-> No, this is actually wrong. bdrv_drained_begin() has a nested event
-> loop, and running a nested event loop while holding the graph lock can
-> cause deadlocks, so it's forbidden. Thanks for catching this!
-
-That's what review is for!
-
-> 
-> Since the two comments above are the only thing you found in the review,
-> I'll just directly fix them while applying the series.
-
-Sounds good to me. With the deadlock fixed by swapping order,
-
-Reviewed-by: Eric Blake <eblake@redhat.com>
+It's your call how you want it to look (as I stated, we are already
+inconsistent on style; my preference is a version with less churn, but
+I also understand preserving the existing style as a way to avoid
+churn).  Whatever the end result, it doesn't affect my R-b.
 
 -- 
 Eric Blake, Principal Software Engineer
