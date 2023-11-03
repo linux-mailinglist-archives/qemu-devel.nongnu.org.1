@@ -2,82 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCF27E0661
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 17:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348187E06F6
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 17:47:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qywym-0005cD-2G; Fri, 03 Nov 2023 12:25:04 -0400
+	id 1qyxIQ-0002VT-W1; Fri, 03 Nov 2023 12:45:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qywyj-0005bh-KD
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 12:25:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qyxIO-0002Um-Jc; Fri, 03 Nov 2023 12:45:20 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qywyh-0001v8-Kp
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 12:25:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699028698;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rQ9w9kMwiZXpa5cDEvhkM4a1+FdHL2Zar8VWi0HxfX8=;
- b=GFjshsdSEQS+x08BMAzSnWwZ4RVVhnx6u4fcfqmUOgPs/BskvpLEp6CYKrJZCialkoULCH
- wmBYoy2MIkg8s8Lj+/T/+tfl/YZdped+kUX0h4BjeH2FvCF9Ggrh6qfzjOr1acb1JFHcl1
- Wbmz4e9pFhafb+kMJfzW8d/f7n+XGfc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-oRY51m6VMfC3n6IDbZPZ8g-1; Fri, 03 Nov 2023 12:24:54 -0400
-X-MC-Unique: oRY51m6VMfC3n6IDbZPZ8g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F09F101A550;
- Fri,  3 Nov 2023 16:24:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E543D2166B26;
- Fri,  3 Nov 2023 16:24:53 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D80AA21E6A1F; Fri,  3 Nov 2023 17:24:52 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,  Luc
- Michel <luc.michel@amd.com>,  Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>,  Alistair Francis <alistair.francis@wdc.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Bernhard Beschow <shentey@gmail.com>,  qemu-ppc@nongnu.org,  "Edgar E .
- Iglesias" <edgar.iglesias@gmail.com>,  "Daniel P . Berrange"
- <berrange@redhat.com>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 3/5] hw/ppc/e500: QOM-attach CPUs to the machine container
-References: <20231030143957.82988-1-philmd@linaro.org>
- <20231030143957.82988-4-philmd@linaro.org>
- <874ji32sj9.fsf@pond.sub.org>
- <8ef2a102-3d3a-3979-6610-036c68262f6f@linaro.org>
-Date: Fri, 03 Nov 2023 17:24:52 +0100
-In-Reply-To: <8ef2a102-3d3a-3979-6610-036c68262f6f@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 3 Nov 2023 12:09:48
- +0100")
-Message-ID: <87r0l6ls8b.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qyxI9-0006wi-2W; Fri, 03 Nov 2023 12:45:20 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A3GBLVY008542; Fri, 3 Nov 2023 16:44:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=S8iUcBn0EoU7C1Xa9hRucvLUjG0XiFlvD5eNxxIhJlU=;
+ b=E/peyoOBF7OB0qCr+F4I50uqHoJUzZtOoUQOOKu5ansugw6vtIAXGtswLLYW2M4bVgVw
+ iO24PGiUf+yP8vRO+bFZHsDKTmZJjFHo9RmvTDXgqrgBw++MNO1N3qb8sJpL40qTOVDa
+ rZvN9Iv07/VY95yZHCU4Z7Bq6DVYJNwdKTwbPgefK8i5qIzd+9rSKJ7oOWRMqcqQVeG5
+ VgjjK9q8NL6AJ2bA8ESCuyoRAtaWd8MWPNnQ9Y1NpnOlhnwc1kuYiWVcERq4f+Aw1qWa
+ iD9cwmBv1/infYlEYDm1QRiSlyKp7hVJG1cpW8MgSOeKYUWv3SJwTskTII8OfmmAW+8j 5w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u53td9tmb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Nov 2023 16:44:58 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A3Giw7T009823;
+ Fri, 3 Nov 2023 16:44:58 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u53td9tm0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Nov 2023 16:44:57 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A3GOAYr000598; Fri, 3 Nov 2023 16:44:57 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u1cmtqhqs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Nov 2023 16:44:56 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3A3Gita666060658
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Nov 2023 16:44:55 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3932F2004B;
+ Fri,  3 Nov 2023 16:44:55 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C737820043;
+ Fri,  3 Nov 2023 16:44:54 +0000 (GMT)
+Received: from [9.171.47.192] (unknown [9.171.47.192])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Nov 2023 16:44:54 +0000 (GMT)
+Message-ID: <cbbffb85272fab70d1051d98ce024031215afe6e.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/4] target/s390x: CC fixes
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Date: Fri, 03 Nov 2023 17:44:54 +0100
+In-Reply-To: <a7d962b5-d9d2-41f6-9f28-b84490cad0f8@redhat.com>
+References: <20231031053718.347100-1-iii@linux.ibm.com>
+ <a7d962b5-d9d2-41f6-9f28-b84490cad0f8@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -IZX1f-VmmqhlsEI7n79vkQobIrwBGv0
+X-Proofpoint-GUID: W_6VYuBJ3VkQXGv6sCwWlGv4TosNa5u5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-03_15,2023-11-02_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=901
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 clxscore=1015 bulkscore=0 mlxscore=0
+ adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2311030139
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,194 +113,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+On Tue, 2023-10-31 at 09:38 +0100, David Hildenbrand wrote:
+> On 31.10.23 06:32, Ilya Leoshkevich wrote:
+> > Hi,
+> >=20
+> > This series fixes two issues with updating CC. David was suggesting
+> > a
+> > bigger rewrite [1], but I did not dare do this (yet). Instead,
+> > these
+>=20
+> I started coding that up but was distracted by other things; last
+> time I=20
+> looked at that, I concluded that the way we are calculating the carry
+> in=20
+> not suitable when we're doing two additions (like ADD LOGICAL WITH
+> CARRY).
 
-> On 3/11/23 08:40, Markus Armbruster wrote:
->> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
->>=20
->>> Instead of having CPUs dangling in the /unattached/device
->>> bucket, attach them to the machine container.
->>>
->>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->>> ---
->>>   hw/ppc/e500.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
->>> index e04114fb3c..f8177c0280 100644
->>> --- a/hw/ppc/e500.c
->>> +++ b/hw/ppc/e500.c
->>> @@ -946,6 +946,7 @@ void ppce500_init(MachineState *machine)
->>>               exit(1);
->>>           }
->>>   +        object_property_add_child(OBJECT(machine), "cpu[*]", OBJECT(=
-cs));
->>>           /*
->>>            * Secondary CPU starts in halted state for now. Needs to cha=
-nge
->>>            * when implementing non-kernel boot.
->> A peek at "info qom-tree" confirms the CPU is in /machine/unattached/.
->> Along with most onboard devices.  Details below.
->>
->> Quick test...  I count 563 machines.  394 seem to have CPU(s) in or
->> below /machine/unattached/, 129 elsewhere, and 40 I can't easily
->> examine, because they don't start to monitor without additional CLI
->> arguments.
->>
->> Where should CPUs be?
->
-> It is machine specific.
->
-> - For System-on-Chip, it would be in /soc
->
-> - For systems that fully model CPU topology, I'd expect a consistent
->   topology path. (If it is part of a cluster, in that /cluster).
->
-> - For mainframes, it should be part of the CPU cards that can be
->   inserted?
->
-> - For a single Pentium CPU, maybe /machine is sufficient.
->
->> Is /machine/unattached/ basically where we dump products of lazy
->> modelling?
->
-> Unfortunately, yes. Also where CLI created devices are I guess.
+Do you per chance remember any details? IIUC the code in question is:
 
-No, these go into /machine/peripheral/ (with id=3D...) or
-/machine/peripheral-anon/ (without).
+static DisasJumpType op_addc64(DisasContext *s, DisasOps *o)
+{
+    compute_carry(s);
 
-/unattached has a different role: it's where objects without a parent go
-when a parent is needed.  For instance, when a device without a QOM
-parent gets realized, device_set_realized() makes it a child of
-/unattached/.  Similar logic in hw/core/gpio.c, system/ioport.c and
-system/memory.c.
+    TCGv_i64 zero =3D tcg_constant_i64(0);
+    tcg_gen_add2_i64(o->out, cc_src, o->in1, zero, cc_src, zero);
+    tcg_gen_add2_i64(o->out, cc_src, o->out, cc_src, o->in2, zero);
 
->> If yes, should we try to empty it out?
->
-> If it is useful. For components expected to be referenced externally
-> by humans, probably. If only used by scripts, maybe not, except if
-> human have to debug.
->
->> If we shouldn't, then why move this one out?
->
-> When looking for a component in the tree, I start to look at /machine,
-> having to fish for it elsewhere is not very natural. I'd change your
-> question by:
-> - Why do we need /unattached?
+    return DISAS_NEXT;
+}
 
-Because we can't be bothered to pick parents?
+This looks correct to me, because the 128-bit result of the first
+addition is passed fully to the second addition, and the upper half is
+always either 0 or 1.
 
-Perhaps an excusable shortcut when we had to convert a big pile of
-devices to QOM.  But we take the shortcut for new objects, too.
-Surprise, surprise.
+I played with chaining ADD-LOGICAL-WITH-CARRYs with various inputs, and
+could not produce any wrong calculations in the emulation.
 
-> or
-> - Why do we have 2 different folders, /machine and /unattached?
-> If it is a headache, why not just simply merge them both?
+Best regards,
+Ilya
 
-I guess a justification for having both could be:
-
-    /machine/: somebody spent a brain wave or two on the proper parent
-
-    /unattached/: what's a parent, and why should I care?
-
-Merging them would lose information.  Do we care?
-
->> $ qemu-system-ppc -nodefaults -S -display none -M ppce500 -monitor stdio
->> QEMU 8.1.50 monitor - type 'help' for more information
->> (qemu) info qom-tree
->> /machine (ppce500-machine)
->>    /e500-ccsr (e500-ccsr)
->>      /e500-ccsr[0] (memory-region)
->>      /e500-pci-bar0[0] (memory-region)
->>    /pci-host (e500-pcihost)
->>      /bm-e500[0] (memory-region)
->>      /pci bus memory[0] (memory-region)
->>      /pci-conf-data[0] (memory-region)
->>      /pci-conf-idx[0] (memory-region)
->>      /pci-container[0] (memory-region)
->>      /pci-pio[0] (memory-region)
->>      /pci.0 (PCI)
->>      /pci.reg[0] (memory-region)
->>    /peripheral (container)
->>    /peripheral-anon (container)
-> [...]
->
->>    /unattached (container)
->>      /device[0] (e500v2_v30-powerpc-cpu)
->>        /unnamed-gpio-in[0] (irq)
->>        /unnamed-gpio-in[1] (irq)
->>        /unnamed-gpio-in[2] (irq)
->>        /unnamed-gpio-in[3] (irq)
->>        /unnamed-gpio-in[4] (irq)
->>        /unnamed-gpio-in[5] (irq)
->>        /unnamed-gpio-in[6] (irq)
->>      /device[1] (mpc-i2c)
->>        /i2c (i2c-bus)
->>        /mpc-i2c[0] (memory-region)
->>      /device[2] (ds1338)
->>      /device[3] (unimplemented-device)
->>        /esdhc[0] (memory-region)
->>      /device[4] (generic-sdhci)
->>        /sd-bus (sdhci-bus)
->>        /sdhci[0] (memory-region)
->>      /device[5] (mpc8544-guts)
->>        /mpc8544.guts[0] (memory-region)
->>      /device[6] (e500-host-bridge)
->>        /bus master container[0] (memory-region)
->>        /bus master[0] (memory-region)
->>      /device[7] (e500-spin)
->>        /e500 spin pv device[0] (memory-region)
->>      /device[8] (mpc8xxx_gpio)
->>        /mpc8xxx_gpio[0] (memory-region)
->>        /unnamed-gpio-in[0] (irq)
->>        /unnamed-gpio-in[10] (irq)
->>        /unnamed-gpio-in[11] (irq)
->>        /unnamed-gpio-in[12] (irq)
->>        /unnamed-gpio-in[13] (irq)
->>        /unnamed-gpio-in[14] (irq)
->>        /unnamed-gpio-in[15] (irq)
->>        /unnamed-gpio-in[16] (irq)
->>        /unnamed-gpio-in[17] (irq)
->>        /unnamed-gpio-in[18] (irq)
->>        /unnamed-gpio-in[19] (irq)
->>        /unnamed-gpio-in[1] (irq)
->>        /unnamed-gpio-in[20] (irq)
->>        /unnamed-gpio-in[21] (irq)
->>        /unnamed-gpio-in[22] (irq)
->>        /unnamed-gpio-in[23] (irq)
->>        /unnamed-gpio-in[24] (irq)
->>        /unnamed-gpio-in[25] (irq)
->>        /unnamed-gpio-in[26] (irq)
->>        /unnamed-gpio-in[27] (irq)
->>        /unnamed-gpio-in[28] (irq)
->>        /unnamed-gpio-in[29] (irq)
->>        /unnamed-gpio-in[2] (irq)
->>        /unnamed-gpio-in[30] (irq)
->>        /unnamed-gpio-in[31] (irq)
->>        /unnamed-gpio-in[3] (irq)
->>        /unnamed-gpio-in[4] (irq)
->>        /unnamed-gpio-in[5] (irq)
->>        /unnamed-gpio-in[6] (irq)
->>        /unnamed-gpio-in[7] (irq)
->>        /unnamed-gpio-in[8] (irq)
->>        /unnamed-gpio-in[9] (irq)
->>      /device[9] (platform-bus-device)
->>        /platform bus[0] (memory-region)
->
-> Actually most of these do have a QOM parent.
-
-They don't or else they wouldn't be here.  Do you mean "the proper
-parent is obvious"?
-
-> Correctly placing them in the tree should help when trying to
-> resolve a component and avoiding an ambiguous match.
-
-Yes.
-
->>      /io[0] (memory-region)
->>      /non-qdev-gpio[0] (irq)
->>      /sysbus (System)
->>      /system[0] (memory-region)
-
+[...]
 
