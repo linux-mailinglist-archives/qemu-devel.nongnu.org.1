@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157B97E0281
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 13:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A4A7E02F6
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 13:33:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qysvo-0007um-RU; Fri, 03 Nov 2023 08:05:44 -0400
+	id 1qytLn-0008Cx-Ul; Fri, 03 Nov 2023 08:32:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qysvM-0007Xk-52
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:05:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytLk-0008Cl-K4
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:32:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qysvI-0001f4-SR
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:05:15 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytLf-00038N-RS
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:32:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699013111;
+ s=mimecast20190719; t=1699014746;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Po37/l/PnN1kE4BKj/BqCDJtnhPBibDBhhPnhzgrvoQ=;
- b=Vakv9sam2pieukPaRm36bL5i4XiqSTmx9A2CPaHN2O9OVI2kWSMfnpzo9zTsXzNpRvgCr9
- tsOJFivsoaPW4ut43P/shAcxbEqbla3sN+QUD/ncRcFFqktMKoeuy4cw25NFv6TPltvLiO
- AWQYy+oB0+X69hE3PBnUS8yYC/P4WWU=
+ bh=r0hliWXR/wDjE88eQ470ouuzIUzMvzd0ILVY4qo6cVs=;
+ b=f1+kywkajV8Uvv/w498E4/F5jlkMtYhL9dl2Ti5rl/jfqCOU4cqWy7Zhg/V/K2JRA9ySqs
+ 9H0Fg+oTWBnZbG06flkqps1cendQPcgwGismxag7fQSEcFoQdomGY4imhCsNVrJKzJ0ICl
+ t99LD1JIvAKyYNDc2WcrS/8JXt5PVFs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-WX0z8KULNASgPld8e0hcjg-1; Fri, 03 Nov 2023 08:05:08 -0400
-X-MC-Unique: WX0z8KULNASgPld8e0hcjg-1
+ us-mta-251-H-gzC3y9MfWXlwuvfKTaug-1; Fri, 03 Nov 2023 08:32:23 -0400
+X-MC-Unique: H-gzC3y9MfWXlwuvfKTaug-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCB2385A59D;
- Fri,  3 Nov 2023 12:05:04 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.195.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2F2FC492BE0;
- Fri,  3 Nov 2023 12:05:03 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hyman Huang <yong.huang@smartx.com>, Thomas Huth <thuth@redhat.com>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 7/7] migration: Unlock mutex in error case
-Date: Fri,  3 Nov 2023 13:04:48 +0100
-Message-ID: <20231103120448.58428-8-quintela@redhat.com>
-In-Reply-To: <20231103120448.58428-1-quintela@redhat.com>
-References: <20231103120448.58428-1-quintela@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE1AF85A59D;
+ Fri,  3 Nov 2023 12:32:22 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.51])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A02EC492BE0;
+ Fri,  3 Nov 2023 12:32:21 +0000 (UTC)
+Date: Fri, 3 Nov 2023 07:32:19 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, berrange@redhat.com, 
+ peter.maydell@linaro.org, pbonzini@redhat.com, philmd@linaro.org
+Subject: Re: [PATCH v2 12/12] qdev: Rework array properties based on list
+ visitor
+Message-ID: <4qjmbspladtbvyusklkk6hyz54azlcuxwpleskzardyyd5k35q@mmtrmcaemhrl>
+References: <20231030142658.182193-1-kwolf@redhat.com>
+ <20231030142658.182193-13-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231030142658.182193-13-kwolf@redhat.com>
+User-Agent: NeoMutt/20231023
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,148 +81,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We were not unlocking bitmap mutex on the error case.  To fix it
-forever change to enclose the code with WITH_QEMU_LOCK_GUARD().
-Coverity CID 1523750.
+On Mon, Oct 30, 2023 at 03:26:58PM +0100, Kevin Wolf wrote:
+> Until now, array properties are actually implemented with a hack that
+> uses multiple properties on the QOM level: a static "foo-len" property
+> and after it is set, dynamically created "foo[i]" properties.
+> 
+> In external interfaces (-device on the command line and device_add in
+> QMP), this interface was broken by commit f3558b1b ('qdev: Base object
+> creation on QDict rather than QemuOpts') because QDicts are unordered
+> and therefore it could happen that QEMU tried to set the indexed
+> properties before setting the length, which fails and effectively makes
+> array properties inaccessible. In particular, this affects the 'ports'
+> property of the 'rocker' device, which used to be configured like this:
+> 
+> -device rocker,len-ports=2,ports[0]=dev0,ports[1]=dev1
 
-Fixes: a2326705e5 ("migration: Stop migration immediately in RDMA error paths")
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231103074245.55166-1-quintela@redhat.com>
----
- migration/ram.c | 106 ++++++++++++++++++++++++------------------------
- 1 file changed, 53 insertions(+), 53 deletions(-)
+If you tweak the commit message, you might also want to mention that
+this form is a shell-glob deathtrap (if you are unlucky enough to have
+a file named rocker,len-ports=2,ports0=dev0,ports1=dev1 in the current
+directory), and therefore should have used shell quoting...
 
-diff --git a/migration/ram.c b/migration/ram.c
-index a0f3b86663..8c7886ab79 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3030,71 +3030,71 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
-      * MAX_WAIT (if curious, further see commit 4508bd9ed8053ce) below, which
-      * guarantees that we'll at least released it in a regular basis.
-      */
--    qemu_mutex_lock(&rs->bitmap_mutex);
--    WITH_RCU_READ_LOCK_GUARD() {
--        if (ram_list.version != rs->last_version) {
--            ram_state_reset(rs);
--        }
--
--        /* Read version before ram_list.blocks */
--        smp_rmb();
--
--        ret = rdma_registration_start(f, RAM_CONTROL_ROUND);
--        if (ret < 0) {
--            qemu_file_set_error(f, ret);
--            goto out;
--        }
--
--        t0 = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
--        i = 0;
--        while ((ret = migration_rate_exceeded(f)) == 0 ||
--               postcopy_has_request(rs)) {
--            int pages;
--
--            if (qemu_file_get_error(f)) {
--                break;
-+    WITH_QEMU_LOCK_GUARD(&rs->bitmap_mutex) {
-+        WITH_RCU_READ_LOCK_GUARD() {
-+            if (ram_list.version != rs->last_version) {
-+                ram_state_reset(rs);
-             }
- 
--            pages = ram_find_and_save_block(rs);
--            /* no more pages to sent */
--            if (pages == 0) {
--                done = 1;
--                break;
--            }
-+            /* Read version before ram_list.blocks */
-+            smp_rmb();
- 
--            if (pages < 0) {
--                qemu_file_set_error(f, pages);
--                break;
-+            ret = rdma_registration_start(f, RAM_CONTROL_ROUND);
-+            if (ret < 0) {
-+                qemu_file_set_error(f, ret);
-+                goto out;
-             }
- 
--            rs->target_page_count += pages;
-+            t0 = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
-+            i = 0;
-+            while ((ret = migration_rate_exceeded(f)) == 0 ||
-+                   postcopy_has_request(rs)) {
-+                int pages;
- 
--            /*
--             * During postcopy, it is necessary to make sure one whole host
--             * page is sent in one chunk.
--             */
--            if (migrate_postcopy_ram()) {
--                compress_flush_data();
--            }
-+                if (qemu_file_get_error(f)) {
-+                    break;
-+                }
-+
-+                pages = ram_find_and_save_block(rs);
-+                /* no more pages to sent */
-+                if (pages == 0) {
-+                    done = 1;
-+                    break;
-+                }
- 
--            /*
--             * we want to check in the 1st loop, just in case it was the 1st
--             * time and we had to sync the dirty bitmap.
--             * qemu_clock_get_ns() is a bit expensive, so we only check each
--             * some iterations
--             */
--            if ((i & 63) == 0) {
--                uint64_t t1 = (qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - t0) /
--                              1000000;
--                if (t1 > MAX_WAIT) {
--                    trace_ram_save_iterate_big_wait(t1, i);
-+                if (pages < 0) {
-+                    qemu_file_set_error(f, pages);
-                     break;
-                 }
-+
-+                rs->target_page_count += pages;
-+
-+                /*
-+                 * During postcopy, it is necessary to make sure one whole host
-+                 * page is sent in one chunk.
-+                 */
-+                if (migrate_postcopy_ram()) {
-+                    compress_flush_data();
-+                }
-+
-+                /*
-+                 * we want to check in the 1st loop, just in case it was the 1st
-+                 * time and we had to sync the dirty bitmap.
-+                 * qemu_clock_get_ns() is a bit expensive, so we only check each
-+                 * some iterations
-+                 */
-+                if ((i & 63) == 0) {
-+                    uint64_t t1 = (qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - t0) /
-+                        1000000;
-+                    if (t1 > MAX_WAIT) {
-+                        trace_ram_save_iterate_big_wait(t1, i);
-+                        break;
-+                    }
-+                }
-+                i++;
-             }
--            i++;
-         }
-     }
--    qemu_mutex_unlock(&rs->bitmap_mutex);
- 
-     /*
-      * Must occur before EOS (or any QEMUFile operation)
+> 
+> This patch reworks the external interface so that instead of using a
+> separate top-level property for the length and for each element, we use
+> a single true array property that accepts a list value. In the external
+> interfaces, this is naturally expressed as a JSON list and makes array
+> properties accessible again. The new syntax looks like this:
+> 
+> -device '{"driver":"rocker","ports":["dev0","dev1"]}'
+
+...at which point, the fact that you HAVE to use shell quoting to get
+JSON through the command line is less onerous than if the older syntax
+had been safe without quotes.
+
 -- 
-2.41.0
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
