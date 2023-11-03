@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259EC7E0018
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:46:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 281337E001E
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:55:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyqjy-00062g-Or; Fri, 03 Nov 2023 05:45:22 -0400
+	id 1qyqsi-0007hB-81; Fri, 03 Nov 2023 05:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyqjw-000627-Sr
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:45:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyqsg-0007gc-Gb
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:54:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyqjv-0001nm-BC
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:45:20 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyqse-0004An-Q1
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:54:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699004717;
+ s=mimecast20190719; t=1699005259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=LDsXqmr735XngXXLrmtT2VOrSnX1jNpmU/ylsdRgnPk=;
- b=dh8nwsl6jGbZqYJy/hEQ7jLMHP2BqGo+Lpoc7MaJJPq2T2+xsuZp4yDf2xBOFK6zPO0K7q
- qaKf07paBQe6fhNToeCypzRoQWjCjdTlSmYkuuhvwxOUl47l2lg/9MGwe7IILTKEwFnRjW
- n0jFbsNNJutnJYSYNsQhCq6Eev1CH8A=
+ bh=ZbimX18bN5rkvA3LCXn56Wt3+sgD7d2Eaf3HfDsukow=;
+ b=EpkbPos55Ua56TvhfffQxT3JF2yxRZcS+mPywwuiDGloAKMQxY6nhZV0Qri1QmOJn/QbiW
+ OQVujaH6r55MkpvkfIoxt9MrIee5WLtRVLZWXVRSSVVJ6/bwN0ZYSe6z/egupgBtvuWs0b
+ GSqEtgrkFZsX4jk+ar9ChEKv9bhERCc=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-oWCxn9RZM4qJD_TW9fOYhg-1; Fri, 03 Nov 2023 05:45:14 -0400
-X-MC-Unique: oWCxn9RZM4qJD_TW9fOYhg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-689-XyCqpidfPdasWKR1zGRMsQ-1; Fri, 03 Nov 2023 05:54:17 -0400
+X-MC-Unique: XyCqpidfPdasWKR1zGRMsQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3929E8F15C6;
- Fri,  3 Nov 2023 09:45:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C6A4185A781;
+ Fri,  3 Nov 2023 09:54:17 +0000 (UTC)
 Received: from redhat.com (unknown [10.39.194.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0CF2C25C0;
- Fri,  3 Nov 2023 09:45:12 +0000 (UTC)
-Date: Fri, 3 Nov 2023 10:45:11 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6E63C1C060BA;
+ Fri,  3 Nov 2023 09:54:16 +0000 (UTC)
+Date: Fri, 3 Nov 2023 10:54:15 +0100
 From: Kevin Wolf <kwolf@redhat.com>
 To: Eric Blake <eblake@redhat.com>
 Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com,
  pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 04/24] block: Mark bdrv_root_attach_child() GRAPH_WRLOCK
-Message-ID: <ZUTBJ0j7ZZDiqSdX@redhat.com>
+Subject: Re: [PATCH 09/24] block: Mark bdrv_(un)freeze_backing_chain() and
+ callers GRAPH_RDLOCK
+Message-ID: <ZUTDR7ePRtH/gK6P@redhat.com>
 References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-5-kwolf@redhat.com>
- <iniiwlxhldnjmb65cr5cfao4tsynwpu5apfkqcuhhupwkodpvl@hfdxidvzspyc>
+ <20231027155333.420094-10-kwolf@redhat.com>
+ <eqtsucwg72w4lstprikpxve4oocw6od5zywsxth74zfrwszb6i@rxmwm5zu56mq>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <iniiwlxhldnjmb65cr5cfao4tsynwpu5apfkqcuhhupwkodpvl@hfdxidvzspyc>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <eqtsucwg72w4lstprikpxve4oocw6od5zywsxth74zfrwszb6i@rxmwm5zu56mq>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,39 +81,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 27.10.2023 um 22:22 hat Eric Blake geschrieben:
-> On Fri, Oct 27, 2023 at 05:53:13PM +0200, Kevin Wolf wrote:
-> > Instead of taking the writer lock internally, require callers to already
-> > hold it when calling bdrv_root_attach_child(). These callers will
-> > typically already hold the graph lock once the locking work is
-> > completed, which means that they can't call functions that take it
-> > internally.
+Am 27.10.2023 um 23:00 hat Eric Blake geschrieben:
+> On Fri, Oct 27, 2023 at 05:53:18PM +0200, Kevin Wolf wrote:
+> > This adds GRAPH_RDLOCK annotations to declare that callers of
+> > bdrv_(un)freeze_backing_chain() need to hold a reader lock for the
+> > graph because it calls bdrv_filter_or_cow_child(), which accesses
+> > bs->file/backing.
+> > 
+> > Use the opportunity to make bdrv_is_backing_chain_frozen() static, it
+> > has no external callers.
 > > 
 > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 > > ---
-> >  include/block/block_int-global-state.h | 13 +++++++------
-> >  block.c                                |  5 +----
-> >  block/block-backend.c                  |  2 ++
-> >  blockjob.c                             |  2 ++
-> >  4 files changed, 12 insertions(+), 10 deletions(-)
-> > 
-> > +++ b/block.c
-> > @@ -3214,8 +3214,6 @@ BdrvChild *bdrv_root_attach_child(BlockDriverState *child_bs,
+> >  block/copy-on-read.h               |  3 ++-
+> >  include/block/block-global-state.h | 11 ++++++-----
+> >  block.c                            |  5 +++--
+> >  block/commit.c                     |  6 ++++++
+> >  block/copy-on-read.c               | 19 +++++++++++++++----
+> >  block/mirror.c                     |  3 +++
+> >  block/stream.c                     | 16 +++++++++++-----
+> >  7 files changed, 46 insertions(+), 17 deletions(-)
+> >
+> ...
+> > +++ b/block/copy-on-read.c
+> ...
+> > -static void cor_close(BlockDriverState *bs)
+> > +static void GRAPH_UNLOCKED cor_close(BlockDriverState *bs)
+> >  {
+> >      BDRVStateCOR *s = bs->opaque;
 > >  
-> >      GLOBAL_STATE_CODE();
-> >  
-> > -    bdrv_graph_wrlock(child_bs);
-> > -
-> >      child = bdrv_attach_child_common(child_bs, child_name, child_class,
+> > +    GLOBAL_STATE_CODE();
+> > +
+> >      if (s->chain_frozen) {
+> > +        bdrv_graph_rdlock_main_loop();
+> >          s->chain_frozen = false;
+> >          bdrv_unfreeze_backing_chain(bs, s->bottom_bs);
+> > +        bdrv_graph_rdunlock_main_loop();
 > 
-> Do we need some sort of assertion that the caller did indeed grab the
-> lock at this point?  Or is that redundant with assertions made in all
-> helper functions we are calling where the lock already matters?
+> Why the two-line addition here...
+> 
+> >      }
+> >  
+> >      bdrv_unref(s->bottom_bs);
 
-The GRAPH_WRLOCK in the header file makes it a compiler error with TSA
-enabled if the caller doesn't already hold the lock. And our CI has some
-builds with TSA, so even if the maintainer only uses gcc, we'll catch
-it.
+I don't remember if there were more reasons without having a closer look
+at the code, but just here from the context, bdrv_unref() is supposed to
+be called without the graph lock held. We don't enforce this yet because
+there are some cases that are not easy to fix, but I don't want to make
+adding the GRAPH_UNLOCKED annotation to bdrv_unref() harder than it
+needs to be.
+
+> > @@ -263,12 +271,15 @@ static BlockDriver bdrv_copy_on_read = {
+> >  };
+> >  
+> >  
+> > -void bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
+> > +void no_coroutine_fn bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
+> >  {
+> >      BDRVStateCOR *s = cor_filter_bs->opaque;
+> >  
+> > +    GLOBAL_STATE_CODE();
+> > +
+> >      /* unfreeze, as otherwise bdrv_replace_node() will fail */
+> >      if (s->chain_frozen) {
+> > +        GRAPH_RDLOCK_GUARD_MAINLOOP();
+> >          s->chain_frozen = false;
+> >          bdrv_unfreeze_backing_chain(cor_filter_bs, s->bottom_bs);
+> >      }
+> 
+> ...vs. the magic one-line per-scope change here?  Both work, so I
+> don't see any problems, but it does seem odd to mix styles in the same
+> patch.  (I can see other places where you have intentionally picked
+> the version that required the least reindenting; adding a scope just
+> to use GRAPH_RDLOCK_GUARD_MAINLOOP() without having to carefully pair
+> an unlock on every early exit path is fewer lines of code overall, but
+> more lines of churn in the patch itself.)
+
+Generally I used the scoped locks only when I was quite sure that
+nothing in the function will require dropping the lock. The safe default
+is individually locking smaller sections.
+
+With GRAPH_RDLOCK_GUARD_MAINLOOP(), the whole situation is a bit fuzzy
+because it doesn't actually do anything apart from asserting that we
+don't need real locking. So taking it while calling functions that want
+to be called unlocked still works in practice, but it's a bit unclean,
+and it would conflict with an actual GRAPH_UNLOCKED annotation.
 
 Kevin
 
