@@ -2,69 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACE57E0028
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 11:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DD57E0193
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 11:33:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyr3s-0001jR-JI; Fri, 03 Nov 2023 06:05:56 -0400
+	id 1qyrT4-00077Z-6A; Fri, 03 Nov 2023 06:31:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyr3r-0001j0-0N
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:05:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyr3p-0007OP-FV
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:05:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699005952;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3qdWY7gLTE8zUc4F6PrIksYiDnuk3fw86un2/vnTE7c=;
- b=htgDwBWZLUydDWtBe6sHnFlUC1I8Gm7Tb8oH4Zp4KpE4SxyvaN4IIHK0ve6+nCnsgYlQhE
- gsk2dcThaQ7iWw8L5iU2ixr1XDtU5rKTYO9vDbUOR4CRpYQTBKMPLFec8zDsv88NlwAltf
- PYgMk9dTgXS22LIewSkndsk0ERu3jCc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-399-eeEn1H_xMh6z8DIe_wU57Q-1; Fri, 03 Nov 2023 06:05:48 -0400
-X-MC-Unique: eeEn1H_xMh6z8DIe_wU57Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7D96F185A785;
- Fri,  3 Nov 2023 10:05:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4E4AD492BFA;
- Fri,  3 Nov 2023 10:05:47 +0000 (UTC)
-Date: Fri, 3 Nov 2023 11:05:46 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com,
- pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 23/24] block: Take graph lock for most of .bdrv_open
-Message-ID: <ZUTF+hkXxLLOE1/R@redhat.com>
-References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-24-kwolf@redhat.com>
- <pmp364kq4s6ejk5xdcofx3ccfqphtmp22a3h3ddfay6nc2ltd2@asi3pud6qxhj>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyrSo-00076P-J9
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:31:42 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyrSn-0007DE-4k
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:31:42 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5409bc907edso3030951a12.0
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 03:31:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699007499; x=1699612299; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Eys/IWnb3DxbpIl3NRnotg/vXnqsWHId75uMKpeHbIc=;
+ b=n6MCnmziOdZS4mta7d9Y7EnfaCrJPDWlgsymmwxGLCA1vUiek/2FBWD0cxFQSVOp6d
+ DceRE72sRyvmQFyN8adj/ohILYl8PJOez/rQ2UEsNiQ2F8AQGx4jvDitNd92eXgY/TwJ
+ 2W+WoNBkgHAIBVHK+FJkD31WN0zoSd14cVPuym8rkY09TrfCTXZEJykldKRTisSQwz6Y
+ XSf8rH6QKOebg+dd6Ork0yvokD/apmJ4CW3MlBkCc5VEV86vrDX/A4klcO28GrM8eX1l
+ ym6qt9785Hlv8S3LnoDP8Oz3zhIVvDIiLAgW/kTzBgoqGo8ufaWOVMRBWzh62nI0LMcw
+ IxZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699007499; x=1699612299;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Eys/IWnb3DxbpIl3NRnotg/vXnqsWHId75uMKpeHbIc=;
+ b=BZMu4OKkjCFTV09BY/716AN1AsB9SKBasPkQptWYOQHkFzRbfypUvah4rOYL9B7Kbl
+ sLkanNQQ4lLAGRCS8CL8zrWwfeK/ZfG6/SeNuY7Of2XcojfxdenSA20skYF79vDprTZG
+ ek4OIfy/QDfMmXA/nkpH4DylzuCGyZTbxo11b5TJ+5uIit7zM7kBISG0NFmSIWhfTUd5
+ y4yOGkwqeyhk7FDLvb5jElqkCyYUw13NV1UnhuUiFICOfkjTjVlpuf3Il9czG5wPnh3G
+ E1q5ohkxskxBM1/z9TbvTEr84TEQeVvOxrSEUqwegQHRXzIElH9GciX6dZKRqCA3Rlap
+ 9+Vg==
+X-Gm-Message-State: AOJu0Yyc+Lp1wEJRpgdNblwepgsSjGZvqeEzGWTkLJmiKi5VUgBX6J/5
+ c6PXlJQkgeHRYFGG13n9hOLB/IgwUtX5/ZHH3bS3cMAu3+xVPNJZ
+X-Google-Smtp-Source: AGHT+IFLRptqH3jBSKnV0mkNkD2mwuNQU3tLYJhu7GabuIWFdOwZw9YjAynfoZ6jf9CH4hrQmVYxrYYfEIOBLfY3hjY=
+X-Received: by 2002:aa7:c550:0:b0:53e:5957:aa4e with SMTP id
+ s16-20020aa7c550000000b0053e5957aa4emr18445076edr.20.1699007499212; Fri, 03
+ Nov 2023 03:31:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <pmp364kq4s6ejk5xdcofx3ccfqphtmp22a3h3ddfay6nc2ltd2@asi3pud6qxhj>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20231025092159.1782638-1-armbru@redhat.com>
+ <20231025092159.1782638-2-armbru@redhat.com>
+ <CAFn=p-Y58FTVshF_y99bTOXJNRaec=_rGnJGrEtcRBMZbPq2LA@mail.gmail.com>
+In-Reply-To: <CAFn=p-Y58FTVshF_y99bTOXJNRaec=_rGnJGrEtcRBMZbPq2LA@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 3 Nov 2023 10:31:27 +0000
+Message-ID: <CAFEAcA8KaWXTinOLFitnYuTnqz2yXmgYdyUzE6FVFMvwwbLucA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] sphinx/qapidoc: Tidy up pylint warning
+ raise-missing-from
+To: John Snow <jsnow@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ michael.roth@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,96 +90,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 30.10.2023 um 22:34 hat Eric Blake geschrieben:
-> On Fri, Oct 27, 2023 at 05:53:32PM +0200, Kevin Wolf wrote:
-> > Most implementations of .bdrv_open first open their file child (which is
-> > an operation that internally takes the write lock and therefore we
-> > shouldn't hold the graph lock while calling it), and afterwards many
-> > operations that require holding the graph lock, e.g. for accessing
-> > bs->file.
-> > 
-> > This changes block drivers that follow this pattern to take the graph
-> > lock after opening the child node.
-> > 
-> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > ---
-> >  block/blkdebug.c          | 16 ++++++++++------
-> >  block/bochs.c             |  4 ++++
-> >  block/cloop.c             |  4 ++++
-> >  block/copy-before-write.c |  2 ++
-> >  block/copy-on-read.c      |  4 ++--
-> >  block/crypto.c            |  4 ++++
-> >  block/dmg.c               |  5 +++++
-> >  block/filter-compress.c   |  2 ++
-> >  block/parallels.c         |  4 ++--
-> >  block/preallocate.c       |  4 ++++
-> >  block/qcow.c              | 11 +++++++----
-> >  block/raw-format.c        |  6 ++++--
-> >  block/snapshot-access.c   |  3 +++
-> >  block/throttle.c          |  3 +++
-> >  block/vdi.c               |  4 ++--
-> >  block/vpc.c               |  4 ++--
-> >  16 files changed, 60 insertions(+), 20 deletions(-)
-> > 
-> 
-> > +++ b/block/qcow.c
-> > @@ -124,9 +124,11 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
-> >  
-> >      ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
-> >      if (ret < 0) {
-> > -        goto fail;
-> > +        goto fail_unlocked;
-> >      }
-> >  
-> > +    bdrv_graph_rdlock_main_loop();
-> > +
-> >      ret = bdrv_pread(bs->file, 0, sizeof(header), &header, 0);
-> >      if (ret < 0) {
-> >          goto fail;
-> > @@ -301,11 +303,9 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
-> >      }
-> >  
-> >      /* Disable migration when qcow images are used */
-> > -    bdrv_graph_rdlock_main_loop();
-> >      error_setg(&s->migration_blocker, "The qcow format used by node '%s' "
-> >                 "does not support live migration",
-> >                 bdrv_get_device_or_node_name(bs));
-> > -    bdrv_graph_rdunlock_main_loop();
-> >  
-> >      ret = migrate_add_blocker(s->migration_blocker, errp);
-> >      if (ret < 0) {
-> > @@ -316,9 +316,12 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
-> >      qobject_unref(encryptopts);
-> >      qapi_free_QCryptoBlockOpenOptions(crypto_opts);
-> >      qemu_co_mutex_init(&s->lock);
-> > +    bdrv_graph_rdunlock_main_loop();
-> >      return 0;
-> >  
-> > - fail:
-> > +fail:
-> 
-> Why the change in indentation?  At least emacs intentionally prefers
-> to indent top-level labels 1 column in, so that they cannot be
-> confused with function declarations in the first column.  But that's cosmetic.
+On Fri, 3 Nov 2023 at 03:08, John Snow <jsnow@redhat.com> wrote:
+>
+> On Wed, Oct 25, 2023 at 6:10=E2=80=AFAM Markus Armbruster <armbru@redhat.=
+com> wrote:
+> >
+> > Pylint advises:
+> >
+> >     docs/sphinx/qapidoc.py:518:12: W0707: Consider explicitly re-raisin=
+g using 'raise ExtensionError(str(err)) from err' (raise-missing-from)
+> >
+> > From its manual:
+> >
+> >     Python's exception chaining shows the traceback of the current
+> >     exception, but also of the original exception.  When you raise a
+> >     new exception after another exception was caught it's likely that
+> >     the second exception is a friendly re-wrapping of the first
+> >     exception.  In such cases `raise from` provides a better link
+> >     between the two tracebacks in the final error.
+> >
+> > Makes sense, so do it.
+> >
+> > Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>
+> In this case it probably doesn't make a difference because Sphinx has
+> its own formatting for displaying the errors, but it's good hygiene.
+>
+> Reviewed-by: John Snow <jsnow@redhat.com>
 
-The coding style document isn't explicit about it, but the overwhelming
-majority of code both in the block layer and QEMU in general prefers the
-style without indentation:
+Has somebody checked that the error Sphinx shows to the user
+is still the friendly one? The only reason to raise
+this error is so that Sphinx will catch it and display
+the friendly string, so anything about tracebacks is a red
+herring -- if the traceback is shown to the user then we got
+something wrong.
 
-$ git grep '^ [A-Za-z_]\+:$' | wc -l
-392
-$ git grep '^[A-Za-z_]\+:$' | wc -l
-2739
-
-$ git grep '^ [A-Za-z_]\+:$' block | wc -l
-27
-$ git grep '^[A-Za-z_]\+:$' block | wc -l
-332
-
-So I wanted to add the new label with the usual convention, but also not
-make the function inconsistent, which is why I reindented the existing
-label.
-
-Kevin
-
+thanks
+-- PMM
 
