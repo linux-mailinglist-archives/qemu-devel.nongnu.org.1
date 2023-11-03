@@ -2,68 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29587E05D0
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 16:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C8A7E0602
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 17:01:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qywX4-0000Dc-6t; Fri, 03 Nov 2023 11:56:26 -0400
+	id 1qywaG-0001sR-5G; Fri, 03 Nov 2023 11:59:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qywX2-0000D2-0v
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:56:24 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qywa1-0001qm-Gp
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:59:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qywX0-00033d-4j
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:56:23 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qywZz-0003kH-Cy
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:59:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699026980;
+ s=mimecast20190719; t=1699027165;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BEjJiIQthPPktbfXOjRgyqU7/620QG5bi24SPV3+O3Q=;
- b=WGCHEJqNMmpocLcMBV9D2/NRkGVjorM5XlO7trr2VPJgelHSWoTX/DbMuoC+bu1WSLeQ6N
- by9ZfBYbTkWqMyoBN19nB0ufKDENhWbnmJhGxL5trmhYDN84TkTsBdh7djFd91nlrJhXZn
- aDVR+gMlaRZSWMnSTo7QvY01s2RY8Tc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-53-zba0I6HINK2-Pwc3YQNbUQ-1; Fri,
- 03 Nov 2023 11:56:17 -0400
-X-MC-Unique: zba0I6HINK2-Pwc3YQNbUQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D13FB3822E8F;
- Fri,  3 Nov 2023 15:56:16 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E98B2166B27;
- Fri,  3 Nov 2023 15:56:16 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5205521E6A1F; Fri,  3 Nov 2023 16:56:15 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Fiona Ebner
- <f.ebner@proxmox.com>,  qemu-devel@nongnu.org,  qemu-block@nongnu.org,
- eblake@redhat.com,  hreitz@redhat.com,  jsnow@redhat.com,
- den@virtuozzo.com,  t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
- active mode
-References: <20231009094619.469668-1-f.ebner@proxmox.com>
- <a5c48627-0bef-46cd-9426-587b358fe32d@yandex-team.ru>
- <993bfa5d-1a91-4b32-9bd8-165b7abba4f0@proxmox.com>
- <99dd287b-816b-4f4f-b156-32f94bbb62c2@yandex-team.ru>
- <87o7gbyy8w.fsf@pond.sub.org> <ZUTffE0wfjLH2u+e@redhat.com>
-Date: Fri, 03 Nov 2023 16:56:15 +0100
-In-Reply-To: <ZUTffE0wfjLH2u+e@redhat.com> (Kevin Wolf's message of "Fri, 3
- Nov 2023 12:54:36 +0100")
-Message-ID: <87cywqn84g.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=XOuB5/FcgCaoX9Hqa1qgJGLYrjDEGTIOBu+u/Pv3hrk=;
+ b=Du7kFzZdED092gmWnwI+PNoJaL74Lp+FAdlrrI1tRIcCqUX3OP8kW9fVWKIEw+HaEbW/rB
+ X0n1xY9IMlEWYdTmwWjmJf86tv3y0A6m32Y0Hxtqris5XqA5GMT150hedQdur+tZrMc8Te
+ UfeX/QmZpkPUg0Yx8oJxj7AZOpKfxIg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-371-2WUxjLe1PWOL5dW766nDTQ-1; Fri, 03 Nov 2023 11:59:24 -0400
+X-MC-Unique: 2WUxjLe1PWOL5dW766nDTQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4090181eec2so14343125e9.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 08:59:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699027162; x=1699631962;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XOuB5/FcgCaoX9Hqa1qgJGLYrjDEGTIOBu+u/Pv3hrk=;
+ b=n4y3yxz0te9r3uv3oloj9AfIN2fOaZADlrQfwqdg+yv/gS6cnTRJBeNWAN58pLyF7k
+ FL6KRMyL+oVkrNtAgETwbYNrwjcC9nvUM237GKCBaO8M05XMqGCvWDSB84Q4cbReT2Lc
+ 4iSm7FmaDWN4ArTx0vwETvyDN3rFewtcSTnMXZeFTSMC0G/GWUG0ABRxibFY9Li99lwW
+ 58LA97fKstrBN7zW/Qq3Fl4Qtqv2jiY7+qyGZVgdTKNq10Z+Y2R8+gRrimJehHb686ED
+ pZObmjQa+63kpzHbngDtfuTUy2o0ADPxcfBpfi+mwP+G2FbLXnyCxWC23gyYgWTWz177
+ xFrg==
+X-Gm-Message-State: AOJu0Yz62peX90G9zTnYv0v57fOEsSZl3AkQimD3VRgVb5UTNEB3sWH9
+ vp0I0+LJsw77CGjP/RPdM+RohEe5cWS7KxePEjsecX+bF0ajkH5Gy01M/r3/D9RJwTRr/9wRi6G
+ YF2S3nzIJ3VtLVkI=
+X-Received: by 2002:a05:600c:4f85:b0:404:7670:90b8 with SMTP id
+ n5-20020a05600c4f8500b00404767090b8mr19909635wmq.27.1699027162653; 
+ Fri, 03 Nov 2023 08:59:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqoZa/6t5uc3kvX7IvWv9yJkz0aE/Wo1PchvU3dVitaxWsaHpXzdwpa+fKyn7A/w22IDwyFw==
+X-Received: by 2002:a05:600c:4f85:b0:404:7670:90b8 with SMTP id
+ n5-20020a05600c4f8500b00404767090b8mr19909619wmq.27.1699027162361; 
+ Fri, 03 Nov 2023 08:59:22 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d718:8590:77de:e1fd:a4df:d080?
+ (p200300cfd718859077dee1fda4dfd080.dip0.t-ipconnect.de.
+ [2003:cf:d718:8590:77de:e1fd:a4df:d080])
+ by smtp.gmail.com with ESMTPSA id
+ r13-20020a05600c458d00b00406443c8b4fsm2901317wmo.19.2023.11.03.08.59.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 Nov 2023 08:59:21 -0700 (PDT)
+Message-ID: <ee9a27a6-732f-4f3d-90ad-9fe059919c7d@redhat.com>
+Date: Fri, 3 Nov 2023 16:59:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] iotests/271: check disk usage on subcluster-based
+ discard/unmap
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
+ berto@igalia.com, den@virtuozzo.com
+References: <20231020215622.789260-1-andrey.drobyshev@virtuozzo.com>
+ <20231020215622.789260-8-andrey.drobyshev@virtuozzo.com>
+ <90298f38-fe14-4659-87a3-9b4bd2f516df@redhat.com>
+In-Reply-To: <90298f38-fe14-4659-87a3-9b4bd2f516df@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -88,120 +105,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kevin Wolf <kwolf@redhat.com> writes:
+On 03.11.23 16:51, Hanna Czenczek wrote:
+> On 20.10.23 23:56, Andrey Drobyshev wrote: 
 
-> Am 03.11.2023 um 10:36 hat Markus Armbruster geschrieben:
->> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
->> 
->> > On 11.10.23 13:18, Fiona Ebner wrote:
->> >> Am 10.10.23 um 19:55 schrieb Vladimir Sementsov-Ogievskiy:
->> >>> On 09.10.23 12:46, Fiona Ebner wrote:
->> >>>>
->> >>>> Initially, I tried to go for a more general 'job-change' command, but
->> >>>> I couldn't figure out a way to avoid mutual inclusion between
->> >>>> block-core.json and job.json.
->> >>>>
->> >>>
->> >>> What is the problem with it? I still think that job-change would be better.
->> >>>
->> >> If going for job-change in job.json, the dependencies would be
->> >> job-change -> JobChangeOptions -> JobChangeOptionsMirror -> MirrorCopyMode
->> >> query-jobs -> JobInfo -> JobInfoMirror
->> >> and we can't include block-core.json in job.json, because an inclusion
->> >> loop gives a build error.
->> 
->> Let me try to understand this.
->> 
->> Command job-change needs its argument type JobChangeOptions.
->> 
->> JobChangeOptions is a union, and JobChangeOptionsMirror is one of its
->> branches.
->> 
->> JobChangeOptionsMirror needs MirrorCopyMode from block-core.json.
->> 
->> block-core.json needs job.json for JobType and JobStatus.
->> 
->> >> Could be made to work by moving MirrorCopyMode (and
->> >> JobChangeOptionsMirror, JobInfoMirror) to job.json or some place that
->> >> can be included by both job.json and block-core.json. Moving the
->> >> type-specific definitions to the general job.json didn't feel right to
->> >> me. Including another file with type-specific definitions in job.json
->> >> feels slightly less wrong, but still not quite right and I didn't want
->> >> to create a new file just for MirrorCopyMode (and
->> >> JobChangeOptionsMirror, JobInfoMirror).
->> >> And going further and moving all mirror-related things to a separate
->> >> file would require moving along things like NewImageMode with it or
->> >> create yet another file for such general things used by multiple block-jobs.
->> >> If preferred, I can try and go with some version of the above.
->> >> 
->> >
->> > OK, I see the problem. Seems, that all requires some good refactoring. But that's a preexisting big work, and should not hold up your series. I'm OK to proceed with block-job-change.
->> 
->> Saving ourselves some internal refactoring is a poor excuse for
->> undesirable external interfaces.
+[...]
+
+>> @@ -528,6 +543,14 @@ for use_backing_file in yes no; do
+>>       else
+>>           _make_test_img -o extended_l2=on 1M
+>>       fi
+>> +    # Write cluster #0 and discard its subclusters #0-#3
+>> +    $QEMU_IO -c 'write -q 0 64k' "$TEST_IMG"
+>> +    before=$(disk_usage "$TEST_IMG")
+>> +    $QEMU_IO -c 'discard -q 0 8k' "$TEST_IMG"
+>> +    after=$(disk_usage "$TEST_IMG")
+>> +    _verify_du_delta $before $after 8192
+>> +    alloc="$(seq 4 31)"; zero="$(seq 0 3)"
+>> +    _verify_l2_bitmap 0
+>>       # Write clusters #0-#2 and then discard them
+>>       $QEMU_IO -c 'write -q 0 128k' "$TEST_IMG"
+>>       $QEMU_IO -c 'discard -q 0 128k' "$TEST_IMG"
 >
-> I'm not sure how undesirable it is. We have block-job-* commands for
-> pretty much every other operation, so it's only consistent to have
-> block-job-change, too.
-
-Is the job abstraction a failure?
-
-We have
-
-    block-job- command      since   job- command    since
-    -----------------------------------------------------
-    block-job-set-speed     1.1
-    block-job-cancel        1.1     job-cancel      3.0
-    block-job-pause         1.3     job-pause       3.0
-    block-job-resume        1.3     job-resume      3.0
-    block-job-complete      1.3     job-complete    3.0
-    block-job-dismiss       2.12    job-dismiss     3.0
-    block-job-finalize      2.12    job-finalize    3.0
-    block-job-change        8.2
-    query-block-jobs        1.1     query-jobs
-
-I was under the impression that we added the (more general) job-
-commands to replace the (less general) block-job commands, and we're
-keeping the latter just for compatibility.  Am I mistaken?
-
-Which one should be used?
-
-Why not deprecate the one that shouldn't be used?
-
-The addition of block-job-change without even trying to do job-change
-makes me wonder: have we given up on the job- interface?
-
-I'm okay with giving up on failures.  All I want is clarity.  Right now,
-I feel thoroughly confused about the status block-jobs and jobs, and how
-they're related.
-
-> Having job-change, too, might be nice in theory, but we don't have even
-> a potential user for it at this point (i.e. a job type that isn't a
-> block job, but for which changing options at runtime makes sense).
+> Similarly to above, I think it would be good if we combined this 
+> following case with the one you added, i.e. to write 128k from the 
+> beginning, drop the write here, and change the discard to be “discard 
+> -q 8k 120k”, i.e. skip the subclusters we have already discarded, to 
+> see that this is still combined to discard the whole first cluster.
 >
->> We need to answer two questions before we do that:
->> 
->> 1. How much work would the refactoring be?
->> 
->> 2. Is the interface improvement this enables worth the work?
->> 
->> Let's start with 1.
->> 
->> An obvious solution is to split JobType and JobStatus off job.json to
->> break the dependency of block-core.json on job.json.
->> 
->> But I'd like us to investigate another one.  block-core.json is *huge*.
->> It's almost a quarter of the entire QAPI schema.  Can we spin out block
->> jobs into block-job.json?  Moves the dependency on job.json from
->> block-core.json to block-job.json.
+> ...Ah, see, and when I try this, the following assertion fails:
 >
-> It also makes job.json depend on block-job.json instead of
-> block-core.json, so you only moved the problem without solving it.
+> qemu-io: ../block/qcow2-cache.c:156: qcow2_cache_destroy: Assertion 
+> `c->entries[i].ref == 0' failed.
+> ./common.rc: line 220: 128894 Aborted                 (core dumped) ( 
+> VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec 
+> "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
+>
+> Looks like an L2 table is leaked somewhere.  That’s why SCRI should be 
+> a g_auto()-able type.
 
-block-job.json needs block-core.json and job.json.
+Forgot to add: This single test case here is the only place where we 
+test the added functionality.  I think there should be more cases. It 
+doesn’t really make sense now that 271 has so many cases for writing 
+zeroes, but so few for discarding, now that discarding works on 
+subclusters.  Most of them should at least be considered whether we can 
+run them for discard as well.
 
-job.json needs block-core.json.
+I didn’t want to push for such an extensive set of tests, but, well, now 
+it turned out I overlooked a bug in patch 4, and only found it because I 
+thought “this place might also make a nice test case for this series”.
 
-No circle so far.
+Hanna
 
 
