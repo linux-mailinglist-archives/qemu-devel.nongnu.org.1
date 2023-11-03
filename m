@@ -2,69 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CFF7DFE5D
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 610B57DFE61
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:28:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyknS-0003cy-Cn; Thu, 02 Nov 2023 23:24:35 -0400
+	id 1qykqT-0007ie-Q1; Thu, 02 Nov 2023 23:27:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qyknG-0003ap-TW
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:24:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qykqP-0007i8-Qj; Thu, 02 Nov 2023 23:27:37 -0400
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qyknF-0006Ed-HU
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:24:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698981861;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3CbyVJiDYHJ6voWZheNaIUgF9YHWUlnF7/vU30a3jA4=;
- b=UUJBIXoVt8zYzNyrnXg0OQkjLMUBMvRXS7E+8Cq1gFPCY86epZZu+hfWruOtGBP9o4imvl
- rsGhZuPPeUzZovobw3Y0uuewSy0NuhAY/cBtj0LN+GBYzytTuFBm0yQ6FaZQkiKbiy6IiP
- 4zG5cEXuvTTTzv6Jc5NEqwlZ6ykT/QU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-oLF6-qVQMAmyM-zN1c0uKw-1; Thu, 02 Nov 2023 23:24:16 -0400
-X-MC-Unique: oLF6-qVQMAmyM-zN1c0uKw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 45479185A780;
- Fri,  3 Nov 2023 03:24:16 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.17])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 87CED2166B26;
- Fri,  3 Nov 2023 03:24:15 +0000 (UTC)
-Date: Fri, 3 Nov 2023 11:24:05 +0800
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/33] target-arm queue
-Message-ID: <20231103032405.GA772136@fedora>
-References: <20231102173835.609985-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qykqL-0007dj-If; Thu, 02 Nov 2023 23:27:37 -0400
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 3A33R9X3038433;
+ Fri, 3 Nov 2023 11:27:09 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
+ (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Fri, 3 Nov 2023
+ 11:27:10 +0800
+Date: Fri, 3 Nov 2023 11:27:05 +0800
+To: Peter Xu <peterx@redhat.com>
+CC: <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>,
+ <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
+ <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
+ <in.meng@windriver.com>, <liweiwei@iscas.ac.cn>,
+ <dbarboza@ventanamicro.com>, <hiwei_liu@linux.alibaba.com>,
+ <qemu-riscv@nongnu.org>, <david@redhat.com>
+Subject: Re: [PATCH v2 1/4] exec/memattrs: Add iopmp source id, start
+ address, end address to MemTxAttrs
+Message-ID: <ZURoiSFQJ+eCi6Xs@ethan84-VirtualBox>
+References: <20231102094015.208588-1-ethan84@andestech.com>
+ <20231102094015.208588-2-ethan84@andestech.com>
+ <ZUOo3fGmqM/gVyTR@x1n>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="2ELJ9jgMLyMkRWhE"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231102173835.609985-1-peter.maydell@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <ZUOo3fGmqM/gVyTR@x1n>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 3A33R9X3038433
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,33 +67,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Nov 02, 2023 at 09:49:17AM -0400, Peter Xu wrote:
+> On Thu, Nov 02, 2023 at 05:40:12PM +0800, Ethan Chen wrote:
+> > Signed-off-by: Ethan Chen <ethan84@andestech.com>
+> > ---
+> >  include/exec/memattrs.h | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
+> > index d04170aa27..fc15e5d7d3 100644
+> > --- a/include/exec/memattrs.h
+> > +++ b/include/exec/memattrs.h
+> > @@ -64,6 +64,12 @@ typedef struct MemTxAttrs {
+> >      unsigned int target_tlb_bit0 : 1;
+> >      unsigned int target_tlb_bit1 : 1;
+> >      unsigned int target_tlb_bit2 : 1;
+> > +
+> > +    /* IOPMP support up to 65535 sources */
+> > +    unsigned int iopmp_sid:16;
+> 
+> There's MemTxAttrs.requester_id, SID for pci, same length.  Reuse it?
 
---2ELJ9jgMLyMkRWhE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+OK, I will reuse it.
 
-Applied, thanks.
+> 
+> > +    /* Transaction infomation for IOPMP */
+> > +    unsigned long long iopmp_start_addr;
+> > +    unsigned long long iopmp_end_addr;
+> 
+> PS: encoding addresses into memattrs is.. strange, but since I know nothing
+> about iopmp, I'll leave that for other reviewers.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+Current IOMMU translate function only have address need to be translate. 
+In IOPMP, It needs the transfer start and end address to check this transfer
+is valid or not.
 
---2ELJ9jgMLyMkRWhE
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> Currently MemTxAttrs are passed as a whole int on the stack, if it keeps
+> growing we may start to consider a pointer, but need to check the side
+> effects of unexpected fields modified within a call.
 
------BEGIN PGP SIGNATURE-----
+It's good for me to use a pointer.
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVEZ9UACgkQnKSrs4Gr
-c8iaxAf/VkLe3eemTjxPHioPGzPzbWVWxuVbR7uz31UT/mVFVqWtzpwyF5SfajIE
-ho7CcWf9aIReZI0XqpzgxygTQ6kAy3aT+LnLW3NJxh5yAb89lGkSjrvFC93axWHS
-zhkmuR4FBxYglikN/rHFHW13Ffdp3TocLcsmLcahZcK8JNDRjfWhH6Nywawwm9V8
-K3niRKdz5H+77A8+RQZt+agm+vsMdtUT+HPF3cbE6i8696fyJ7ZgFht00JfTPeLg
-BFd6ZjQ4lerInAgg/NvcIAABEE0/sEdVodIjVW5Q0URjZdZci51R6y2gySy/Tup6
-onrNhD71OzqV+Ez0Q7T48EH//oABgg==
-=HcZ4
------END PGP SIGNATURE-----
-
---2ELJ9jgMLyMkRWhE--
-
+Thanks,
+Ethan Chen
 
