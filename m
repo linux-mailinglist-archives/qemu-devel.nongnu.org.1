@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2297DFE3D
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22387DFE46
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:18:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qykY6-0005Qu-Nd; Thu, 02 Nov 2023 23:08:42 -0400
+	id 1qykgI-0007iy-W0; Thu, 02 Nov 2023 23:17:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qykY4-0005QT-Ix
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:08:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qykY2-0000fH-TY
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:08:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698980917;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d1okX6rLO94QMDHPv1W2lNMISYjlmezNTUKMwze2R0E=;
- b=ebSXXx1dBgD5EbPaRJRjM8uk5EiofgBVO324zxIO3YE2RixfyurDjUdSXXGTyXAj7gJSyr
- CaPrjp3448+D2kskQH3wnZ/DHDoGLLeGaSRvzbfiIkXXzgMXK/EhPWHTPjT5yCbssEIFc5
- pLGEIOQyoKS6XSFym9xTe5QT3wlcmes=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-463-iAZ5SnWDNz-YGxqqRmET6Q-1; Thu, 02 Nov 2023 23:08:35 -0400
-X-MC-Unique: iAZ5SnWDNz-YGxqqRmET6Q-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-6b1f7baa5ceso1396998b3a.2
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 20:08:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1qykgB-0007hk-OG
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:17:07 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1qykg9-0003Bh-P0
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:17:03 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6c0f14d6875so1669116b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 20:17:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1698981420; x=1699586220; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=pSo8/xWA1h+NiRRDtSfTewm0FT3ASIneHMhutcA3mhY=;
+ b=htzUSw0ZV7BQWb63bnBg0l1vaDbnUG05f8FqNMKqU1lk8I5S+FTYVGKSnOfCJRrwMp
+ j0qoAHca7E//XP93B+M3ENX1ugfu0kRiPu8jBwPVmBM8O1qOvYQ/QJv3jIJlFTA6rgKs
+ nsGgtlGW8qnFhDm5Ub1oE2prUcf4iJt7dP+TMc2oZvdgE47kk1407tMpdUR1jdByw4X4
+ IdxTCH9GfUtEdVqh3uiPZSELyM0zff7c5iiGQfzDDPYMQRFweLbLyxFrciw7qs6hE+C2
+ k1URYdyj4s+JP2Bly3EzyD4PR5nWK6lG/Dhgiqciu4J+691wpbF8kQb7SkKxo5XePvOi
+ JqnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698980914; x=1699585714;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=d1okX6rLO94QMDHPv1W2lNMISYjlmezNTUKMwze2R0E=;
- b=VjJ/sSUz+Wg8Ifd0wl8rWYpMffxBXM2scU5r5x3TzOccuW4a1/CmI17QTmWPr/1BsI
- dBgo1rSLl1YFeDccknX26/svUxJjRTDPu9C+iOjJ1tSeLKfwAM6V/tzMBnbq5a+aEX6Q
- jptBrUXzQxpM2w98R7y5i2efG2qELvi1GSRXu40Yrmj8hkUlbZ2rM1jcNauaa44R1aLd
- iS9I5/GM1UlqbNnAieR/eFcd6J9cl9yqwjhZKdJ8naCVrLafXOiM7vWNodMzcXvQkAr5
- obiQuk14d/n9sFjEuopsrFSqz/jPL197Kuc/V/2j2PSAWkYq4JjsmTeexqxy2uH93JAq
- cZDQ==
-X-Gm-Message-State: AOJu0YygyDqDoXPB8oDLCG08JcrOFZU4bMHs0pWX0uy/q8sgnz+SReUZ
- jQHBo3u+r09hE4WGqd9xEsHNGuu+ZIOto/of3F3jvbKULLjwQuFHvbk496W0scw08NPDhAv6COl
- /x49C6ojFIP0UedOUyPgVvW2GQR/nhRo=
-X-Received: by 2002:a05:6a21:4881:b0:181:ed8b:4826 with SMTP id
- av1-20020a056a21488100b00181ed8b4826mr921949pzc.55.1698980914729; 
- Thu, 02 Nov 2023 20:08:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEjvTJaYbQUtnprnUD8bqALB8yFUFd/p1OTJ707YzRAFW4HPGSyZG5Rm9WIXfL/AYpiyWmTZKzsHfKyPA+ic6w=
-X-Received: by 2002:a05:6a21:4881:b0:181:ed8b:4826 with SMTP id
- av1-20020a056a21488100b00181ed8b4826mr921937pzc.55.1698980914403; Thu, 02 Nov
- 2023 20:08:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1698981420; x=1699586220;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pSo8/xWA1h+NiRRDtSfTewm0FT3ASIneHMhutcA3mhY=;
+ b=WYSYFZOkj4vAQV5q5WJ/eMdYtU7+v0X69oO5ivrFVM32RV9qG3kDDrMKj6IaldELbE
+ iqbqR/E5jg/Zb7359rnyBcMqFOG3yqwX2yeFCGRYJt4iS6inYniZfs4d8G0IkzM/U0+5
+ lwkYjbJsq0HwsfEWAKeYTAAAIsmKMc0QBGRX0AwwmK6d+yueoA+644z2wWshSibId1wV
+ 5+f7YZK0fa2L02iPq/9mUssOBDxJKARJ4YQ02J2aDWpeoP0Tp1QKX04eJOw4TOLpiNl2
+ nZL694+gTMmW+0fM4KQPQUeSY/XdsgwNBLGuCglgpynDGIUknVqvodFnqz49SU6bUgbU
+ TsRA==
+X-Gm-Message-State: AOJu0YzrhaFYs6a35rUTqbcK0h+Sq45oVucenX4apgQA+KewPUgyHxdv
+ FLsyoEuuve1kzG7PimnNKYRWYA==
+X-Google-Smtp-Source: AGHT+IEuO0WlR/5QnZ05uMhD5SWdHMsZ1jo3+MFECyb8xZvdLKGurDjlRoW02UiNtJjvW13yq45Rig==
+X-Received: by 2002:a05:6a20:1453:b0:152:6b63:f1e7 with SMTP id
+ a19-20020a056a20145300b001526b63f1e7mr20008900pzi.1.1698981419699; 
+ Thu, 02 Nov 2023 20:16:59 -0700 (PDT)
+Received: from sunil-pc.Dlink ([106.51.188.78])
+ by smtp.gmail.com with ESMTPSA id
+ y17-20020a17090aca9100b0027cf4c554dasm499971pjt.11.2023.11.02.20.16.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Nov 2023 20:16:59 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Anup Patel <apatel@ventanamicro.com>,
+ Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>,
+ Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v7 00/13] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
+Date: Fri,  3 Nov 2023 08:46:36 +0530
+Message-Id: <20231103031649.2769834-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20231025092159.1782638-1-armbru@redhat.com>
- <20231025092159.1782638-2-armbru@redhat.com>
-In-Reply-To: <20231025092159.1782638-2-armbru@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Thu, 2 Nov 2023 23:08:23 -0400
-Message-ID: <CAFn=p-Y58FTVshF_y99bTOXJNRaec=_rGnJGrEtcRBMZbPq2LA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] sphinx/qapidoc: Tidy up pylint warning
- raise-missing-from
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, michael.roth@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,52 +106,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 6:10=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> Pylint advises:
->
->     docs/sphinx/qapidoc.py:518:12: W0707: Consider explicitly re-raising =
-using 'raise ExtensionError(str(err)) from err' (raise-missing-from)
->
-> From its manual:
->
->     Python's exception chaining shows the traceback of the current
->     exception, but also of the original exception.  When you raise a
->     new exception after another exception was caught it's likely that
->     the second exception is a friendly re-wrapping of the first
->     exception.  In such cases `raise from` provides a better link
->     between the two tracebacks in the final error.
->
-> Makes sense, so do it.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+This series primarily enables external interrupt controllers (AIA and PLIC)
+in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO and
+MMU related information.
 
-In this case it probably doesn't make a difference because Sphinx has
-its own formatting for displaying the errors, but it's good hygiene.
+Below ECRs for these changes are approved by ASWG and will be
+available in next ACPI spec release.
 
-Reviewed-by: John Snow <jsnow@redhat.com>
+1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
+2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
 
-> ---
->  docs/sphinx/qapidoc.py | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-> index 8f3b9997a1..658c288f8f 100644
-> --- a/docs/sphinx/qapidoc.py
-> +++ b/docs/sphinx/qapidoc.py
-> @@ -515,7 +515,7 @@ def run(self):
->          except QAPIError as err:
->              # Launder QAPI parse errors into Sphinx extension errors
->              # so they are displayed nicely to the user
-> -            raise ExtensionError(str(err))
-> +            raise ExtensionError(str(err)) from err
->
->      def do_parse(self, rstlist, node):
->          """Parse rST source lines and add them to the specified node
-> --
-> 2.41.0
->
->
+First two patches in this series are to migrate a couple of functions from
+ARM architecture to common code so that RISC-V doesn't need to duplicate
+the same.
+
+The patch set is based on Alistair's riscv-to-apply.next branch.
+
+These changes are also available in  riscv_acpi_b2_v7 branch at:
+https://github.com/vlsunil/qemu/
+
+Changes since v6:
+	1) Fixed the qtest failure issue reported by Daniel in PATCH 2.
+
+Changes since v5:
+	1) Fixed the issue in PATCH 2 reported by Daniel found when built with
+	   clang + --enable-debug.
+
+Changes since v4:
+	1) Updated copyright for new files as per SPDX format suggested by Drew.
+	2) Updated RINTC patch to avoid code duplication as suggested by Drew.
+	3) Moved mmu offset below cmo in MMU patch as suggested by Drew.
+	4) Updated tags.
+
+Changes since v3:
+	1) Addressed comments from Daniel and Drew.
+	2) Added a new patch in microvm to use common function for virtio in DSDT.
+	3) Rebased to latest riscv-to-apply.next branch and added tags.
+
+Changes since v2:
+        1) Rebased to latest riscv-to-apply.next branch which needed
+           changing ext_icboz to ext_zicboz in CMO patch.
+        2) Fixed node type in MMU node.
+        3) Added latest tags.
+
+Changes since v1:
+        1) As per Igor's suggestion, migrated fw_cfg and virtio creation
+           functions to device specific file instead of generic aml-build.c.
+           Since ACPI is optional, new files are created and enabled for
+           build only when CONFIG_ACPI is enabled.
+        2) As per Igor's suggestion, properties are added to the GPEX PCI
+           host to indicate MMIO ranges. The platform fw can initialize
+           these to appropriate values and the DSDT generator can fetch
+           the information from the host bus itself. This makes the code
+           generic instead of machine specific.
+        3) Added PLIC patch from Haibo.
+        4) Rebased to latest riscv-to-apply.next and added RB tags as
+           appropriate.
+
+Sunil V L (13):
+  hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
+  hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
+  hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
+  hw/riscv: virt: Make few IMSIC macros and functions public
+  hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
+  hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
+  hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
+  hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
+  hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
+  hw/pci-host/gpex: Define properties for MMIO ranges
+  hw/riscv/virt: Update GPEX MMIO related properties
+  hw/riscv/virt-acpi-build.c: Add IO controllers and devices
+  hw/riscv/virt-acpi-build.c: Add PLIC in MADT
+
+ hw/arm/virt-acpi-build.c        |  51 +----
+ hw/i386/acpi-microvm.c          |  15 +-
+ hw/nvram/fw_cfg-acpi.c          |  23 +++
+ hw/nvram/meson.build            |   1 +
+ hw/pci-host/gpex-acpi.c         |  13 ++
+ hw/pci-host/gpex.c              |  12 ++
+ hw/riscv/Kconfig                |   1 +
+ hw/riscv/virt-acpi-build.c      | 323 +++++++++++++++++++++++++++++---
+ hw/riscv/virt.c                 |  72 ++++---
+ hw/virtio/meson.build           |   1 +
+ hw/virtio/virtio-acpi.c         |  33 ++++
+ include/hw/nvram/fw_cfg_acpi.h  |  15 ++
+ include/hw/pci-host/gpex.h      |  28 ++-
+ include/hw/riscv/virt.h         |  26 +++
+ include/hw/virtio/virtio-acpi.h |  16 ++
+ 15 files changed, 499 insertions(+), 131 deletions(-)
+ create mode 100644 hw/nvram/fw_cfg-acpi.c
+ create mode 100644 hw/virtio/virtio-acpi.c
+ create mode 100644 include/hw/nvram/fw_cfg_acpi.h
+ create mode 100644 include/hw/virtio/virtio-acpi.h
+
+-- 
+2.39.2
 
 
