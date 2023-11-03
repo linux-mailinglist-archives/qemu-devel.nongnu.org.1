@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B827E09C8
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 21:03:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B807E09BC
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 21:01:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qz0Kv-00086i-Dz; Fri, 03 Nov 2023 16:00:09 -0400
+	id 1qz0Kq-00082y-KW; Fri, 03 Nov 2023 16:00:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qz0Kr-000847-Df
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:05 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qz0Kn-00081h-AP
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:01 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qz0Km-0005KB-0L
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:05 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40859c464daso17976205e9.1
+ id 1qz0Kl-0005K7-Ix
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:01 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-408382da7f0so18074665e9.0
  for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 12:59:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699041598; x=1699646398; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=PagTFhtGro2QGC99VR/E/0PR8y9aQjyT8Q40jlAqxEQ=;
- b=dbSNcBILQLYCmxmaQckcCyEGiF9dp0gVYsUcNnUhF2xFot3ZDECk2DhYIE6ikEdq3P
- NcXjNpOp1IoIDg4NFfiANtbzl5B4w0LAF0cqDyy15as03+W7A6MMWUwSOJ6Vh/bmdXQ4
- SRvvWmohRDMZIdGMfs45VTfq5iDIhU2PO7ij60YhZDLk8YopFKSV90ku9ck5o5vh+hCy
- FOUqvRLAmp+F6HFV/ajBx6z/qFkLx/KUPYc45cgp+RCDzKdv1FSKZrkDmOD2hNkzpqzr
- m4F+0t/SC9ImBFHVk4fSGPvfiACi0gvRaAvgu1HySOu5H9oQsQ8ahB4OeJNUc7VbbTQb
- 0+Ew==
+ d=linaro.org; s=google; t=1699041597; x=1699646397; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=B8f4GTCXoafF/KsbNQ8bEyDSKUwReC+SK1TUkgZ9c4E=;
+ b=yyiUJVCAbWpvx/rF4wb1moai1c8mFga3Qdn+mau3PtxuxulbuUrlrA4eSrEBm3Jc/6
+ a0XlFgPW3Tu58stVMrg8/a3yPWiyS3EMymhvrgAOrDk53B64gpI/FgMLmsDB6D9QDClk
+ xXgbADJWva4VGlR3Zf1X7pWostwOvuad866Iz8A+9M5nW1H0Xspd5nWXKHTSqz98CceT
+ ERO2uVMqyLadT6ZQM82cWsvPXNi8Ajc9h2YKfWB+fmR/M0Mg1UHGTbmTjlc427Itzpw0
+ AQ4ra0zcirV2hGajfRbMdBriwDBmZlfYGF8cohWJ0DGaFukCgm0ls9rlynkk1mAWx/y8
+ nCeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699041598; x=1699646398;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PagTFhtGro2QGC99VR/E/0PR8y9aQjyT8Q40jlAqxEQ=;
- b=WUFoqbIL4e0EtXnUvHlQrYmgEU+n4HWKH1dNPWEh20E1PTWE5HDTlwOn4Dmj6zPFCS
- UFvAbuvyxRkEqvCCBrVdjGXNY6z9AFm5I57bsOEOjcyR/fgBHtKi21P8rvsD+ype/FSS
- tpC1b1Sjg8R2WSDJsS7ZVNm6xSJisWyHi06eUk3t6QJFGU7W47NNcWwHQQLCZbQm/Gsz
- gFMC92Vsg4RzSAAHQ/cfjM1HXMn0cmsSzXllgXbFNZlZU3IdU4co6fYxl/PskygD89N2
- XB47X0v1ggPFy9EAacSf1BFxdub9swlYF7/fjreJ1SMp0bqZWstnCn6Gx6OabJztEWU3
- 9KvA==
-X-Gm-Message-State: AOJu0Ywzz5BDdMsXC5L419WHg26QcuY2kfDNdgG0OwmVCilsOEKFKwTG
- bBi69YUWCMgRnrbGkSy49AWqxA==
-X-Google-Smtp-Source: AGHT+IEMRaiLjCm1G9HJ7wGse8RzZhQ6r3da1z0kyX9veTDuMJ1CUYwFVYa4c1IJyaA0GTO/N4FD0w==
-X-Received: by 2002:a05:600c:358a:b0:408:59d4:f3d8 with SMTP id
- p10-20020a05600c358a00b0040859d4f3d8mr19375356wmq.18.1699041597730; 
+ d=1e100.net; s=20230601; t=1699041597; x=1699646397;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=B8f4GTCXoafF/KsbNQ8bEyDSKUwReC+SK1TUkgZ9c4E=;
+ b=WMDJ5qA/4S/MRuR2VF1MD5rmhVR3UWx4frlLsrIzIrO21QL/EWXJT2youdaRjwkSmU
+ BCybnZfqc5gMF1UUlRflFc61mbM2fgm62vvmljnUTIryBP8imOO7OumO8VZsn03PkMbi
+ lNjZhFzJzN0ZPwHhgrlb3PKeKbW88x9FcHFc9e4+0zqDmZcljIjFndj3b5WrtB3n1uJJ
+ OVsbDL+LXyFyioBt84Z9fJi1/LCXIxOpV0TrDQv0VgwP+gkpClklAj3GEfFfBLNz174d
+ ox5Vb1JE/ueqwDWywSNJYyimmJOdnnpJ8eYufmk3MuYXMkcvsOrGwym7ykMHCKM0PyOY
+ VgZg==
+X-Gm-Message-State: AOJu0YxJf779/EwvuMKflUyHwHfAfYhLjZ+mfuFWpDRl0+Ws30WYdyDj
+ 5OxFzbAmIc7DSj2prPmtIVP3FA==
+X-Google-Smtp-Source: AGHT+IEK7pd4jyXMt0uxE8PejqcTXUP+gN3FPxdh3K37uWj7HWzaCIc9vgoQMzVLLPcwmwH6//s2TA==
+X-Received: by 2002:a05:600c:4e91:b0:408:4918:590e with SMTP id
+ f17-20020a05600c4e9100b004084918590emr17896853wmq.39.1699041597490; 
  Fri, 03 Nov 2023 12:59:57 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- y23-20020a05600c341700b00406408dc788sm3402021wmp.44.2023.11.03.12.59.57
+ r18-20020a05600c35d200b00401e32b25adsm3557288wmq.4.2023.11.03.12.59.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 03 Nov 2023 12:59:57 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AAAC9656E5;
+ by draig.lan (Postfix) with ESMTP id BDC2A65740;
  Fri,  3 Nov 2023 19:59:56 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -87,23 +88,26 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Bin Meng <bin.meng@windriver.com>, Beraldo Leal <bleal@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH 00/29] gdbstub and plugin read register and windows support
-Date: Fri,  3 Nov 2023 19:59:27 +0000
-Message-Id: <20231103195956.1998255-1-alex.bennee@linaro.org>
+ Michael Rolnik <mrolnik@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 01/29] default-configs: Add TARGET_XML_FILES definition
+Date: Fri,  3 Nov 2023 19:59:28 +0000
+Message-Id: <20231103195956.1998255-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231103195956.1998255-1-alex.bennee@linaro.org>
+References: <20231103195956.1998255-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,136 +123,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Here are my final updates for the 8.2 cycle which I can hopefully
-merge if we get enough review. Aside from the usual tweaks and fixes
-there are two new features:
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-TCG Plugin Register Access
+loongarch64-linux-user has references to XML files so include them.
 
-This is based on Akihiko's previously posted series with some changes
-by myself. I wasn't keen on the plugin facing API so I've re-written
-it to use an opaque handle and hide the gdb details from the plugin. I
-think this allows for potential future improvements as well as being
-ready for up-coming heterogeneous support. The new API allowed for
-making the execlog register tracking a bit more flexible and able to
-track multiple registers.
+Fixes: d32688ecdb ("default-configs: Add loongarch linux-user support")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20231030054834.39145-6-akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ configs/targets/loongarch64-linux-user.mak | 1 +
+ 1 file changed, 1 insertion(+)
 
-Windows Support
-
-This fairly late breaking patch finally adds support for Windows to
-the TCG plugins subsystem. I'm pretty pleased with Greg's approach
-which improves on previous attempts by avoiding re-implementing a
-linker for POSIX targets. I don't have access to Windows though so I'm
-calling on Windows users to test the solution.
-
-The following patches still need review:
-
-  contrib/plugins: extend execlog to track register changes
-  plugins: add an API to read registers
-  gdbstub: expose api to find registers
-  tests/avocado: update the tcg_plugins test
-  tests/tcg: add an explicit gdbstub register tester
-  target/arm: hide aliased MIDR from gdbstub
-  target/arm: hide all versions of DBGD[RS]AR from gdbstub
-  target/arm: hide the 32bit version of PAR from gdbstub
-  gdb-xml: fix duplicate register in arm-neon.xml
-
-Akihiko Odaki (16):
-  default-configs: Add TARGET_XML_FILES definition
-  gdbstub: Add num_regs member to GDBFeature
-  gdbstub: Introduce gdb_find_static_feature()
-  gdbstub: Introduce GDBFeatureBuilder
-  target/arm: Use GDBFeature for dynamic XML
-  target/ppc: Use GDBFeature for dynamic XML
-  target/riscv: Use GDBFeature for dynamic XML
-  gdbstub: Use GDBFeature for gdb_register_coprocessor
-  gdbstub: Use GDBFeature for GDBRegisterState
-  gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
-  gdbstub: Simplify XML lookup
-  gdbstub: Infer number of core registers from XML
-  hw/core/cpu: Remove gdb_get_dynamic_xml member
-  gdbstub: Add members to identify registers to GDBFeature
-  cpu: Call plugin hooks only when ready
-  plugins: Use different helpers when reading registers
-
-Alex Bennée (9):
-  gdb-xml: fix duplicate register in arm-neon.xml
-  target/arm: hide the 32bit version of PAR from gdbstub
-  target/arm: hide all versions of DBGD[RS]AR from gdbstub
-  target/arm: hide aliased MIDR from gdbstub
-  tests/tcg: add an explicit gdbstub register tester
-  tests/avocado: update the tcg_plugins test
-  gdbstub: expose api to find registers
-  plugins: add an API to read registers
-  contrib/plugins: extend execlog to track register changes
-
-Greg Manning (4):
-  plugins: add dllexport and dllimport to api funcs
-  plugins: make test/example plugins work on windows
-  plugins: disable lockstep plugin on windows
-  plugins: allow plugins to be enabled on windows
-
- docs/devel/tcg-plugins.rst                    |  10 +-
- configure                                     |   9 +-
- configs/targets/loongarch64-linux-user.mak    |   1 +
- meson.build                                   |   5 +
- accel/tcg/plugin-helpers.h                    |   3 +-
- include/exec/gdbstub.h                        | 121 +++++++-
- include/hw/core/cpu.h                         |   7 +-
- include/qemu/plugin.h                         |   1 +
- include/qemu/qemu-plugin.h                    | 104 ++++++-
- target/arm/cpu.h                              |  27 +-
- target/arm/internals.h                        |  14 +-
- target/hexagon/internal.h                     |   4 +-
- target/microblaze/cpu.h                       |   4 +-
- target/ppc/cpu-qom.h                          |   4 +-
- target/ppc/cpu.h                              |   2 -
- target/riscv/cpu.h                            |   5 +-
- target/s390x/cpu.h                            |   2 -
- accel/tcg/plugin-gen.c                        |  43 ++-
- contrib/plugins/execlog.c                     | 180 +++++++++---
- contrib/plugins/win32_linker.c                |  34 +++
- cpu-target.c                                  |  11 -
- gdbstub/gdbstub.c                             | 273 +++++++++++++-----
- hw/core/cpu-common.c                          |  15 +-
- plugins/api.c                                 | 114 +++++++-
- target/arm/cpu.c                              |   2 -
- target/arm/cpu64.c                            |   1 -
- target/arm/debug_helper.c                     |   8 +-
- target/arm/gdbstub.c                          | 230 +++++++--------
- target/arm/gdbstub64.c                        | 122 ++++----
- target/arm/helper.c                           |   4 +-
- target/avr/cpu.c                              |   1 -
- target/hexagon/cpu.c                          |   4 +-
- target/hexagon/gdbstub.c                      |  10 +-
- target/i386/cpu.c                             |   2 -
- target/loongarch/cpu.c                        |   2 -
- target/loongarch/gdbstub.c                    |  13 +-
- target/m68k/cpu.c                             |   1 -
- target/m68k/helper.c                          |  26 +-
- target/microblaze/cpu.c                       |   6 +-
- target/microblaze/gdbstub.c                   |   9 +-
- target/ppc/cpu_init.c                         |   7 -
- target/ppc/gdbstub.c                          | 114 ++++----
- target/riscv/cpu.c                            |  15 -
- target/riscv/gdbstub.c                        | 139 +++++----
- target/rx/cpu.c                               |   1 -
- target/s390x/cpu.c                            |   1 -
- target/s390x/gdbstub.c                        | 105 ++++---
- contrib/plugins/Makefile                      |  26 +-
- gdb-xml/arm-neon.xml                          |   2 +-
- plugins/meson.build                           |  17 ++
- plugins/qemu-plugins.symbols                  |   2 +
- scripts/feature_to_c.py                       |  58 +++-
- tests/avocado/tcg_plugins.py                  |  28 +-
- tests/plugin/meson.build                      |  14 +-
- tests/tcg/multiarch/Makefile.target           |  11 +-
- tests/tcg/multiarch/gdbstub/registers.py      | 188 ++++++++++++
- .../multiarch/system/Makefile.softmmu-target  |  13 +-
- 57 files changed, 1577 insertions(+), 598 deletions(-)
- create mode 100644 contrib/plugins/win32_linker.c
- create mode 100644 tests/tcg/multiarch/gdbstub/registers.py
-
+diff --git a/configs/targets/loongarch64-linux-user.mak b/configs/targets/loongarch64-linux-user.mak
+index 7d1b964020..43b8a2160f 100644
+--- a/configs/targets/loongarch64-linux-user.mak
++++ b/configs/targets/loongarch64-linux-user.mak
+@@ -1,3 +1,4 @@
+ # Default configuration for loongarch64-linux-user
+ TARGET_ARCH=loongarch64
+ TARGET_BASE_ARCH=loongarch
++TARGET_XML_FILES=gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
 -- 
 2.39.2
 
