@@ -2,70 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281337E001E
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3277E001F
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:55:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyqsi-0007hB-81; Fri, 03 Nov 2023 05:54:24 -0400
+	id 1qyqtq-00081S-4D; Fri, 03 Nov 2023 05:55:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyqsg-0007gc-Gb
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:54:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qyqse-0004An-Q1
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:54:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699005259;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ZbimX18bN5rkvA3LCXn56Wt3+sgD7d2Eaf3HfDsukow=;
- b=EpkbPos55Ua56TvhfffQxT3JF2yxRZcS+mPywwuiDGloAKMQxY6nhZV0Qri1QmOJn/QbiW
- OQVujaH6r55MkpvkfIoxt9MrIee5WLtRVLZWXVRSSVVJ6/bwN0ZYSe6z/egupgBtvuWs0b
- GSqEtgrkFZsX4jk+ar9ChEKv9bhERCc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-XyCqpidfPdasWKR1zGRMsQ-1; Fri, 03 Nov 2023 05:54:17 -0400
-X-MC-Unique: XyCqpidfPdasWKR1zGRMsQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C6A4185A781;
- Fri,  3 Nov 2023 09:54:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6E63C1C060BA;
- Fri,  3 Nov 2023 09:54:16 +0000 (UTC)
-Date: Fri, 3 Nov 2023 10:54:15 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com,
- pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 09/24] block: Mark bdrv_(un)freeze_backing_chain() and
- callers GRAPH_RDLOCK
-Message-ID: <ZUTDR7ePRtH/gK6P@redhat.com>
-References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-10-kwolf@redhat.com>
- <eqtsucwg72w4lstprikpxve4oocw6od5zywsxth74zfrwszb6i@rxmwm5zu56mq>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qyqtW-0007su-Kh
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:55:19 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qyqtU-0004wc-K5
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:55:14 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-27ff7fe7fbcso1703687a91.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 02:55:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1699005311; x=1699610111;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IXFNir4/M9QIA7yF8Yfbd7hUHCm+tdqkUFtCJb3xW04=;
+ b=WufnW4X8NbNdqsm5BC2SFE6zWnlSwldWqY7OqAC2Kkg4TplGSSV9Wh+lIIF2h95DAA
+ ymdiB57IX4eW7wQrjCEMZO6MMhIH3rQUm7QtGWZFX8XgM8trf1faaV2F465f+ZPUswqx
+ 6sHKhqYlRHmoJo82f6GuKYhs1jjVaIA7HPJPBnn+zF7Pl/ncAqTWlTPnwlzhc7geVdHa
+ xU0g/qqZNqcPsySBMv8QII/1uGBuUAYFHLNbo3Vz8y5+o2lBa1ffVbOlLZP96ph798QK
+ VhiDzn+wu3ZwmxXF15mw9Xf2FaxHgtoPL/mRGUNtSNLk2yGRa7vFxnWNKnXDXEEc7CBE
+ rkrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699005311; x=1699610111;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IXFNir4/M9QIA7yF8Yfbd7hUHCm+tdqkUFtCJb3xW04=;
+ b=uHUjMkLyt5T9t1iMGmqgSljwh/Vzp76FqQ+muYAnb0W7GNo7RzZ5iHApua+wgi6MQI
+ Mw6MD8xL50xj9/dH/PmHp0MG/3dGKT92usEvjhh2hE876ZZl9JGYMlovLzEydfyzv4n7
+ cXfFh1Nih9NvZ5AW4P1gkW+JoPGrriW7uQd110Xt8CoTI7i1nv865B/Zo0nTkyZRKOan
+ 6pgcUZnp720NLRPTMxrYe1dGyFYxkh5YXCq+5yxlVBmt0luAb7L141RuVqmahzZb/R47
+ PEO6ObVRuL6wSkNF3ySMtlaxE3bPOAPkMFOotgawPTSoAG/yOI54464wTEI6oF3b6Bvu
+ pfeA==
+X-Gm-Message-State: AOJu0YxvzKEteQBowEkb84EuADtTI1tpeUmEiBk3UbcPEO1heW8md2No
+ 5j7zOJv+7rvwiyA/7yz972flag==
+X-Google-Smtp-Source: AGHT+IEo/fva+lSP+W7ggUsb9noQnysFx4SWiYVavoW/fsr3kg7egrPbn5HksngxMmLCgNPcv8mAcA==
+X-Received: by 2002:a17:90a:9284:b0:280:2406:7021 with SMTP id
+ n4-20020a17090a928400b0028024067021mr15155505pjo.35.1699005310935; 
+ Fri, 03 Nov 2023 02:55:10 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ mf4-20020a17090b184400b00280215e7aebsm1030623pjb.15.2023.11.03.02.55.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 Nov 2023 02:55:10 -0700 (PDT)
+Message-ID: <dbd1d662-bf90-4982-b316-281923a0d778@daynix.com>
+Date: Fri, 3 Nov 2023 18:55:07 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eqtsucwg72w4lstprikpxve4oocw6od5zywsxth74zfrwszb6i@rxmwm5zu56mq>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+To: Yuri Benditovich <yuri.benditovich@daynix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>
+References: <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
+ <CAOEp5Oern10jW8Pi-_mceU_ZJVD=a1f3tW8rB2O4efLX45-nvw@mail.gmail.com>
+ <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
+ <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
+ <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
+ <20231101023805-mutt-send-email-mst@kernel.org>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+ <20231101050838-mutt-send-email-mst@kernel.org>
+ <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+ <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
+ <20231102053202-mutt-send-email-mst@kernel.org>
+ <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
+ <2fbdee21-60f4-49ff-b61b-923c895f90ba@daynix.com>
+ <CAOEp5Oc+wGmxTAezMz4f03kuqsngHAcpi7pqPQDT=PWuy=L7BA@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CAOEp5Oc+wGmxTAezMz4f03kuqsngHAcpi7pqPQDT=PWuy=L7BA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1029.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,92 +109,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 27.10.2023 um 23:00 hat Eric Blake geschrieben:
-> On Fri, Oct 27, 2023 at 05:53:18PM +0200, Kevin Wolf wrote:
-> > This adds GRAPH_RDLOCK annotations to declare that callers of
-> > bdrv_(un)freeze_backing_chain() need to hold a reader lock for the
-> > graph because it calls bdrv_filter_or_cow_child(), which accesses
-> > bs->file/backing.
-> > 
-> > Use the opportunity to make bdrv_is_backing_chain_frozen() static, it
-> > has no external callers.
-> > 
-> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > ---
-> >  block/copy-on-read.h               |  3 ++-
-> >  include/block/block-global-state.h | 11 ++++++-----
-> >  block.c                            |  5 +++--
-> >  block/commit.c                     |  6 ++++++
-> >  block/copy-on-read.c               | 19 +++++++++++++++----
-> >  block/mirror.c                     |  3 +++
-> >  block/stream.c                     | 16 +++++++++++-----
-> >  7 files changed, 46 insertions(+), 17 deletions(-)
-> >
-> ...
-> > +++ b/block/copy-on-read.c
-> ...
-> > -static void cor_close(BlockDriverState *bs)
-> > +static void GRAPH_UNLOCKED cor_close(BlockDriverState *bs)
-> >  {
-> >      BDRVStateCOR *s = bs->opaque;
-> >  
-> > +    GLOBAL_STATE_CODE();
-> > +
-> >      if (s->chain_frozen) {
-> > +        bdrv_graph_rdlock_main_loop();
-> >          s->chain_frozen = false;
-> >          bdrv_unfreeze_backing_chain(bs, s->bottom_bs);
-> > +        bdrv_graph_rdunlock_main_loop();
+On 2023/11/03 18:35, Yuri Benditovich wrote:
 > 
-> Why the two-line addition here...
 > 
-> >      }
-> >  
-> >      bdrv_unref(s->bottom_bs);
-
-I don't remember if there were more reasons without having a closer look
-at the code, but just here from the context, bdrv_unref() is supposed to
-be called without the graph lock held. We don't enforce this yet because
-there are some cases that are not easy to fix, but I don't want to make
-adding the GRAPH_UNLOCKED annotation to bdrv_unref() harder than it
-needs to be.
-
-> > @@ -263,12 +271,15 @@ static BlockDriver bdrv_copy_on_read = {
-> >  };
-> >  
-> >  
-> > -void bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
-> > +void no_coroutine_fn bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
-> >  {
-> >      BDRVStateCOR *s = cor_filter_bs->opaque;
-> >  
-> > +    GLOBAL_STATE_CODE();
-> > +
-> >      /* unfreeze, as otherwise bdrv_replace_node() will fail */
-> >      if (s->chain_frozen) {
-> > +        GRAPH_RDLOCK_GUARD_MAINLOOP();
-> >          s->chain_frozen = false;
-> >          bdrv_unfreeze_backing_chain(cor_filter_bs, s->bottom_bs);
-> >      }
+> On Thu, Nov 2, 2023 at 4:56 PM Akihiko Odaki <akihiko.odaki@daynix.com 
+> <mailto:akihiko.odaki@daynix.com>> wrote:
 > 
-> ...vs. the magic one-line per-scope change here?  Both work, so I
-> don't see any problems, but it does seem odd to mix styles in the same
-> patch.  (I can see other places where you have intentionally picked
-> the version that required the least reindenting; adding a scope just
-> to use GRAPH_RDLOCK_GUARD_MAINLOOP() without having to carefully pair
-> an unlock on every early exit path is fewer lines of code overall, but
-> more lines of churn in the patch itself.)
+>     On 2023/11/02 19:20, Yuri Benditovich wrote:
+>      >
+>      >
+>      > On Thu, Nov 2, 2023 at 11:33 AM Michael S. Tsirkin
+>     <mst@redhat.com <mailto:mst@redhat.com>
+>      > <mailto:mst@redhat.com <mailto:mst@redhat.com>>> wrote:
+>      >
+>      >     On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri Benditovich wrote:
+>      >      > Probably we mix two different patches in this discussion.
+>      >      > Focusing on the patch in the e-mail header:
+>      >      >
+>      >      > IMO it is not acceptable to fail QEMU run for one feature
+>     that we
+>      >     can't make
+>      >      > active when we silently drop all other features in such a
+>     case.
+>      >
+>      >     If the feature is off by default then it seems more reasonable
+>      >     and silent masking can be seen as a bug.
+>      >     Most virtio features are on by default this is why it's
+>      >     reasonable to mask them.
+>      >
+>      >
+>      > If we are talking about RSS: setting it initially off is the
+>     development
+>      > time decision.
+>      > When it will be completely stable there is no reason to keep it
+>     off by
+>      > default, so this is more a question of time and of a readiness of
+>     libvirt.
+> 
+>     It is not ok to make "on" the default; that will enable RSS even when
+>     eBPF steering support is not present and can result in performance
+>     degradation.
+> 
+> 
+> Exactly as it is today - with vhost=on the host does not suggest RSS 
+> without  eBPF.
+> I do not understand what you call "performance degradation", can you 
+> describe the scenario?
 
-Generally I used the scoped locks only when I was quite sure that
-nothing in the function will require dropping the lock. The safe default
-is individually locking smaller sections.
-
-With GRAPH_RDLOCK_GUARD_MAINLOOP(), the whole situation is a bit fuzzy
-because it doesn't actually do anything apart from asserting that we
-don't need real locking. So taking it while calling functions that want
-to be called unlocked still works in practice, but it's a bit unclean,
-and it would conflict with an actual GRAPH_UNLOCKED annotation.
-
-Kevin
-
+I was not clear, but I was talking about the case of vhost=off or peers 
+other than tap (e.g., user). rss=on employs in-qemu RSS, which incurs 
+overheads for such configurations.
 
