@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AEB7DFE52
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 825367DFE4B
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:19:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qykgt-0007xE-Mi; Thu, 02 Nov 2023 23:17:47 -0400
+	id 1qykh0-000821-NA; Thu, 02 Nov 2023 23:17:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qykgr-0007wG-FB
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:17:45 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1qykgy-00081G-NP
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:17:52 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qykgp-0003zT-SA
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:17:45 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2809414efa9so1558660a91.1
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 20:17:43 -0700 (PDT)
+ id 1qykgw-000426-Pf
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:17:52 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-5a9bc2ec556so1278393a12.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 20:17:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1698981462; x=1699586262; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1698981469; x=1699586269; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KcgJ4FRc9yz2b5H8HRo0vnvqFidecDDHMaAJ2DLpido=;
- b=PhSgh4m3wLXExQJK7X/KmHoHefV8mYDB7w7eXk/8mufFUBYt5O9ELUnVtur7+wM5sT
- oM+GgN3jOZb2xZKkoqyFJiGMDRTbge5eFdr/HItVgRrHWeZQduUYe2qLBfwPXJJFZiZb
- XSW66CcLsfM+4sEQsAbHuN6tiUcimU2qWl2Jsnr+0BPlutQmjCjubBs6OTafX4mhk/hw
- HCRPV+rL19DzZnTngP9AoAlDeetjSR8YEzsk+aVwDgaw9clJBKYxmG29cO2cJ5e7FmN2
- 4wYCv9r8o/3zismYK246yBAxPZtSBvuPjrtgCxtYR5i7r2t4tMU5DkfjouKsOVwoZYg8
- zZqg==
+ bh=ozwEIx8DJpOuIHNR2h+O+1SfwqWBoYWeAIIvl7CgSBg=;
+ b=iP0fRV4QzCaBrddUlFNUMpB9702SbbMCk0pra7n5GG8C29o0DYH1zr/J0qOKqtN2GM
+ mDel/AbuPVftlFkUSvlhiu9Kaes+ABcGBZmALH6xXgQXpKt2koCDVWLa719AvGuIUQJm
+ 9VQXfkS3v8eDwBEMZ0wslO+gWpBy6RfFiZAwtsW/1LwqX9/lcWAGep3khRcGHJwPX/hJ
+ rXOJRSHkwj6GkzV7dzxYqKSjcYNTcSl/Ti3hK+6iVW+z0pVTVWi5vj18xE/zm25K8Gqu
+ 44Obbc8CDf9UoX0fMi6fp6ZeWs8HGQ9BkoWLhOM3SZ/YG96POW9vkTb7EKSR7tXFL0h6
+ k2JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698981462; x=1699586262;
+ d=1e100.net; s=20230601; t=1698981469; x=1699586269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KcgJ4FRc9yz2b5H8HRo0vnvqFidecDDHMaAJ2DLpido=;
- b=JIg0ioKXfYJNbE/y6p8eKAQeW16YSGvQV29VCkf2c2hO4u4rhHm+iDQg7j7EJIKd12
- dvveht3VnnHSc6MozSEwOOvMNyiw7C3qlP+EcsRdGrodR6MPj0Hs1bHFsG4+CMPxJIGb
- bmTzFEoYK2AUIB1Cqnu4RZQj9D31oaxgvjXv8EZGr/9xrpj9jcXWDMvsRG/r3kxPePbN
- dgIoZTjFma5qvW1m1KvPLUWsM+NH/e6Wu5BkJ3Z/exgiQWmqkqzqfgLVXAOV2Gw5qfI7
- kEA7p6brVP4t0uW5Mj7DiTUaizQdVieMkKH+hScHwf7E2nHemUe7dm0wRaSGPzJnh0Br
- yoZg==
-X-Gm-Message-State: AOJu0Yw2xxyWbPLVYdMDOBKFGHI4XQyxgEOZrDoYsE+lagN0pFt9ncPz
- UyeGvuCugIaSN4eonLGZoVLtlw==
-X-Google-Smtp-Source: AGHT+IFqJ9SDqudq3JfSE0kcr1/ZL7WLg5HmrpLDwHJ5N/H/7TnfHafeSgIKF08dmivE1A27ykQNWw==
-X-Received: by 2002:a17:90b:23c7:b0:280:1dca:f6a3 with SMTP id
- md7-20020a17090b23c700b002801dcaf6a3mr15187217pjb.43.1698981462660; 
- Thu, 02 Nov 2023 20:17:42 -0700 (PDT)
+ bh=ozwEIx8DJpOuIHNR2h+O+1SfwqWBoYWeAIIvl7CgSBg=;
+ b=v17epBoA5sjfs8ADOFowHgrKG4XtmOW2obNUbIOY5P6dt+Dh3bdZoYZXdb9/h1kb4w
+ C2SYwttzHZHI4z1S/KfICU+ol5CW5T3Ehf0nt28y0DNrUDglibw223UCjERtcmksPLmM
+ GZuzg8reuYVw8IiBAKVsHc3IQPK3p1P8M33RvTHpJ3B6OeJMFVH8L+8v8mkwP/6qseBz
+ iXpWjGK4gDtYCFshM7zSV0qAbnDgxnHAVoFNgKJTNN3+0gpFbVfTqiOtrJ3F3P+r3BUw
+ D30OcK2A29TbSAKX3ndN8I6yHLrlDxILzfvXX+cUscti7IXtAzn/clkSwwA2W2ir0Fcx
+ 1bAQ==
+X-Gm-Message-State: AOJu0Yz9sqa0jVNl47H4xODmwiL1679jmW82WjfvGPIJH9tpZt0EWNiQ
+ WmdOZRK0WVAdiQaU3rAJdtbIEw==
+X-Google-Smtp-Source: AGHT+IEQm6Zt3/tZZYpWooL/i/hYb5JEGDmt8KuOeHjoVT6hokt569UiQtYZLTOL4NK7qhYTYzwJtg==
+X-Received: by 2002:a05:6a20:840d:b0:180:7df:76ab with SMTP id
+ c13-20020a056a20840d00b0018007df76abmr15536747pzd.44.1698981468815; 
+ Thu, 02 Nov 2023 20:17:48 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.78])
  by smtp.gmail.com with ESMTPSA id
- y17-20020a17090aca9100b0027cf4c554dasm499971pjt.11.2023.11.02.20.17.36
+ y17-20020a17090aca9100b0027cf4c554dasm499971pjt.11.2023.11.02.20.17.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Nov 2023 20:17:42 -0700 (PDT)
+ Thu, 02 Nov 2023 20:17:48 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org,
@@ -78,16 +78,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>,
  Sunil V L <sunilvl@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>
-Subject: [PATCH v7 07/13] hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
-Date: Fri,  3 Nov 2023 08:46:43 +0530
-Message-Id: <20231103031649.2769834-8-sunilvl@ventanamicro.com>
+Subject: [PATCH v7 08/13] hw/riscv/virt-acpi-build.c: Add CMO information in
+ RHCT
+Date: Fri,  3 Nov 2023 08:46:44 +0530
+Message-Id: <20231103031649.2769834-9-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231103031649.2769834-1-sunilvl@ventanamicro.com>
 References: <20231103031649.2769834-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,8 +111,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add APLIC structures for each socket in the MADT when system is configured
-with APLIC as the external wired interrupt controller.
+When CMO related extensions like Zicboz, Zicbom and Zicbop are enabled, the
+block size for those extensions need to be communicated via CMO node in
+RHCT. Add CMO node in RHCT if any of those CMO extensions are detected.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
@@ -119,61 +121,115 @@ Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/riscv/virt-acpi-build.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ hw/riscv/virt-acpi-build.c | 64 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 56 insertions(+), 8 deletions(-)
 
 diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 6bb21014fd..ec49c8804b 100644
+index ec49c8804b..506d487ede 100644
 --- a/hw/riscv/virt-acpi-build.c
 +++ b/hw/riscv/virt-acpi-build.c
-@@ -274,6 +274,8 @@ static void build_madt(GArray *table_data,
-     uint8_t  guest_index_bits = imsic_num_bits(s->aia_guests + 1);
-     uint16_t imsic_max_hart_per_socket = 0;
-     uint8_t  hart_index_bits;
-+    uint64_t aplic_addr;
-+    uint32_t gsi_base;
-     uint8_t  socket;
+@@ -140,6 +140,7 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
+  * 5.2.36 RISC-V Hart Capabilities Table (RHCT)
+  * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/16
+  *      https://drive.google.com/file/d/1nP3nFiH4jkPMp6COOxP6123DCZKR-tia/view
++ *      https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view
+  */
+ static void build_rhct(GArray *table_data,
+                        BIOSLinker *linker,
+@@ -149,8 +150,8 @@ static void build_rhct(GArray *table_data,
+     MachineState *ms = MACHINE(s);
+     const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
+     size_t len, aligned_len;
+-    uint32_t isa_offset, num_rhct_nodes;
+-    RISCVCPU *cpu;
++    uint32_t isa_offset, num_rhct_nodes, cmo_offset = 0;
++    RISCVCPU *cpu = &s->soc[0].harts[0];
+     char *isa;
  
-     for (socket = 0; socket < riscv_socket_count(ms); socket++) {
-@@ -319,6 +321,38 @@ static void build_madt(GArray *table_data,
-         build_append_int_noprefix(table_data, IMSIC_MMIO_GROUP_MIN_SHIFT, 1);
+     AcpiTable table = { .sig = "RHCT", .rev = 1, .oem_id = s->oem_id,
+@@ -166,6 +167,9 @@ static void build_rhct(GArray *table_data,
+ 
+     /* ISA + N hart info */
+     num_rhct_nodes = 1 + ms->smp.cpus;
++    if (cpu->cfg.ext_zicbom || cpu->cfg.ext_zicboz) {
++        num_rhct_nodes++;
++    }
+ 
+     /* Number of RHCT nodes*/
+     build_append_int_noprefix(table_data, num_rhct_nodes, 4);
+@@ -177,7 +181,6 @@ static void build_rhct(GArray *table_data,
+     isa_offset = table_data->len - table.table_offset;
+     build_append_int_noprefix(table_data, 0, 2);   /* Type 0 */
+ 
+-    cpu = &s->soc[0].harts[0];
+     isa = riscv_isa_string(cpu);
+     len = 8 + strlen(isa) + 1;
+     aligned_len = (len % 2) ? (len + 1) : len;
+@@ -193,14 +196,59 @@ static void build_rhct(GArray *table_data,
+         build_append_int_noprefix(table_data, 0x0, 1);   /* Optional Padding */
      }
  
-+    if (s->aia_type != VIRT_AIA_TYPE_NONE) {
-+        /* APLICs */
-+        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
-+            aplic_addr = s->memmap[VIRT_APLIC_S].base +
-+                             s->memmap[VIRT_APLIC_S].size * socket;
-+            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
-+            build_append_int_noprefix(table_data, 0x1A, 1);    /* Type */
-+            build_append_int_noprefix(table_data, 36, 1);      /* Length */
-+            build_append_int_noprefix(table_data, 1, 1);       /* Version */
-+            build_append_int_noprefix(table_data, socket, 1);  /* APLIC ID */
-+            build_append_int_noprefix(table_data, 0, 4);       /* Flags */
-+            build_append_int_noprefix(table_data, 0, 8);       /* Hardware ID */
-+            /* Number of IDCs */
-+            if (s->aia_type == VIRT_AIA_TYPE_APLIC) {
-+                build_append_int_noprefix(table_data,
-+                                          s->soc[socket].num_harts,
-+                                          2);
-+            } else {
-+                build_append_int_noprefix(table_data, 0, 2);
-+            }
-+            /* Total External Interrupt Sources Supported */
-+            build_append_int_noprefix(table_data, VIRT_IRQCHIP_NUM_SOURCES, 2);
-+            /* Global System Interrupt Base */
-+            build_append_int_noprefix(table_data, gsi_base, 4);
-+            /* APLIC Address */
-+            build_append_int_noprefix(table_data, aplic_addr, 8);
-+            /* APLIC size */
++    /* CMO node */
++    if (cpu->cfg.ext_zicbom || cpu->cfg.ext_zicboz) {
++        cmo_offset = table_data->len - table.table_offset;
++        build_append_int_noprefix(table_data, 1, 2);    /* Type */
++        build_append_int_noprefix(table_data, 10, 2);   /* Length */
++        build_append_int_noprefix(table_data, 0x1, 2);  /* Revision */
++        build_append_int_noprefix(table_data, 0, 1);    /* Reserved */
++
++        /* CBOM block size */
++        if (cpu->cfg.cbom_blocksize) {
 +            build_append_int_noprefix(table_data,
-+                                      s->memmap[VIRT_APLIC_S].size, 4);
++                                      __builtin_ctz(cpu->cfg.cbom_blocksize),
++                                      1);
++        } else {
++            build_append_int_noprefix(table_data, 0, 1);
++        }
++
++        /* CBOP block size */
++        build_append_int_noprefix(table_data, 0, 1);
++
++        /* CBOZ block size */
++        if (cpu->cfg.cboz_blocksize) {
++            build_append_int_noprefix(table_data,
++                                      __builtin_ctz(cpu->cfg.cboz_blocksize),
++                                      1);
++        } else {
++            build_append_int_noprefix(table_data, 0, 1);
 +        }
 +    }
 +
-     acpi_table_end(linker, &table);
- }
+     /* Hart Info Node */
+     for (int i = 0; i < arch_ids->len; i++) {
++        len = 16;
++        int num_offsets = 1;
+         build_append_int_noprefix(table_data, 0xFFFF, 2);  /* Type */
+-        build_append_int_noprefix(table_data, 16, 2);      /* Length */
+-        build_append_int_noprefix(table_data, 0x1, 2);     /* Revision */
+-        build_append_int_noprefix(table_data, 1, 2);    /* Number of offsets */
+-        build_append_int_noprefix(table_data, i, 4);    /* ACPI Processor UID */
+-        build_append_int_noprefix(table_data, isa_offset, 4); /* Offsets[0] */
++
++        /* Length */
++        if (cmo_offset) {
++            len += 4;
++            num_offsets++;
++        }
++
++        build_append_int_noprefix(table_data, len, 2);
++        build_append_int_noprefix(table_data, 0x1, 2); /* Revision */
++        /* Number of offsets */
++        build_append_int_noprefix(table_data, num_offsets, 2);
++        build_append_int_noprefix(table_data, i, 4);   /* ACPI Processor UID */
++
++        /* Offsets */
++        build_append_int_noprefix(table_data, isa_offset, 4);
++        if (cmo_offset) {
++            build_append_int_noprefix(table_data, cmo_offset, 4);
++        }
+     }
  
+     acpi_table_end(linker, &table);
 -- 
 2.39.2
 
