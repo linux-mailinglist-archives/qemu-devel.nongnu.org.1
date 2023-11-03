@@ -2,52 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBC37DFF2B
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 07:26:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E04BB7DFF53
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 08:03:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qync8-0007mW-Co; Fri, 03 Nov 2023 02:25:04 -0400
+	id 1qyoBp-000636-BB; Fri, 03 Nov 2023 03:01:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qync4-0007VP-L9
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 02:25:00 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qync2-0004Kd-4S
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 02:25:00 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cxh+jskURl46g2AA--.6049S3;
- Fri, 03 Nov 2023 14:23:40 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxH93hkURlQfg4AA--.60029S12; 
- Fri, 03 Nov 2023 14:23:39 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qyoBj-00062g-6v
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:01:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qyoBf-0000ua-AO
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:01:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698994904;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=J9zawrpA5xIsvvPzacvF9Z0p7AhDM3PTZ8bnbz22bg8=;
+ b=RhUnsfZJxBsIulQhV15CzibT6rwp3IGzUvADMpUQACctDrsH2c8gEUAe2FN7pgJWI4hwPD
+ TIgHO+vqeFN4Fa/ZF3F2akniR4oNsnEia1JghjG7Sszx8AmERwJL+ABEjBeVnAI8p65kDw
+ Dgshvj4Ps1QyCVqe/pjbwNTEzUsFW1E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-EvQpInKYP7a_7T_lqW1Zhw-1; Fri, 03 Nov 2023 03:01:41 -0400
+X-MC-Unique: EvQpInKYP7a_7T_lqW1Zhw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A3A5B185A781;
+ Fri,  3 Nov 2023 07:01:40 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.31])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 643A62166B26;
+ Fri,  3 Nov 2023 07:01:39 +0000 (UTC)
+From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.com,
-	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 10/10] linux-user/loongarch64: Add LASX sigcontext save/restore
-Date: Fri,  3 Nov 2023 14:23:32 +0800
-Message-Id: <20231103062332.2413724-11-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20231103062332.2413724-1-gaosong@loongson.cn>
-References: <20231103062332.2413724-1-gaosong@loongson.cn>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ richard.henderson@linaro.org, Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [PULL 0/8] Dump patches
+Date: Fri,  3 Nov 2023 11:01:28 +0400
+Message-ID: <20231103070136.437557-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxH93hkURlQfg4AA--.60029S12
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,144 +88,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231101030816.2353416-7-gaosong@loongson.cn>
----
- linux-user/loongarch64/signal.c | 68 ++++++++++++++++++++++++++++++---
- 1 file changed, 62 insertions(+), 6 deletions(-)
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-diff --git a/linux-user/loongarch64/signal.c b/linux-user/loongarch64/signal.c
-index 9c9b446a91..39ea82c814 100644
---- a/linux-user/loongarch64/signal.c
-+++ b/linux-user/loongarch64/signal.c
-@@ -49,6 +49,14 @@ struct target_lsx_context {
-     abi_uint  fcsr;
- } QEMU_ALIGNED(LSX_CTX_ALIGN);
- 
-+#define LASX_CTX_MAGIC          0x41535801
-+#define LASX_CTX_ALIGN          32
-+struct target_lasx_context {
-+    abi_ulong regs[4 * 32];
-+    abi_ulong fcc;
-+    abi_uint  fcsr;
-+} QEMU_ALIGNED(LASX_CTX_ALIGN);
-+
- #define CONTEXT_INFO_ALIGN      16
- struct target_sctx_info {
-     abi_uint  magic;
-@@ -93,6 +101,7 @@ struct extctx_layout {
-     unsigned int flags;
-     struct ctx_layout fpu;
-     struct ctx_layout lsx;
-+    struct ctx_layout lasx;
-     struct ctx_layout end;
- };
- 
-@@ -125,10 +134,12 @@ static abi_ptr setup_extcontext(CPULoongArchState *env,
-     /* For qemu, there is no lazy fp context switch, so fp always present. */
-     extctx->flags = SC_USED_FP;
- 
--    if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE)) {
-+    if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, ASXE)) {
-+        sp = extframe_alloc(extctx, &extctx->lasx,
-+                        sizeof(struct target_lasx_context), LASX_CTX_ALIGN, sp);
-+    } else if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE)) {
-         sp = extframe_alloc(extctx, &extctx->lsx,
-                         sizeof(struct target_lsx_context), LSX_CTX_ALIGN, sp);
--
-     } else {
-         sp = extframe_alloc(extctx, &extctx->fpu,
-                         sizeof(struct target_fpu_context), FPU_CTX_ALIGN, sp);
-@@ -155,7 +166,24 @@ static void setup_sigframe(CPULoongArchState *env,
-      * Set extension context
-      */
- 
--    if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE)) {
-+    if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, ASXE)) {
-+        struct target_lasx_context *lasx_ctx;
-+        info = extctx->lasx.haddr;
-+
-+        __put_user(LASX_CTX_MAGIC, &info->magic);
-+        __put_user(extctx->lasx.size, &info->size);
-+
-+        lasx_ctx = (struct target_lasx_context *)(info + 1);
-+
-+        for (i = 0; i < 32; ++i) {
-+            __put_user(env->fpr[i].vreg.UD(0), &lasx_ctx->regs[4 * i]);
-+            __put_user(env->fpr[i].vreg.UD(1), &lasx_ctx->regs[4 * i + 1]);
-+            __put_user(env->fpr[i].vreg.UD(2), &lasx_ctx->regs[4 * i + 2]);
-+            __put_user(env->fpr[i].vreg.UD(3), &lasx_ctx->regs[4 * i + 3]);
-+        }
-+        __put_user(read_fcc(env), &lasx_ctx->fcc);
-+        __put_user(env->fcsr0, &lasx_ctx->fcsr);
-+    } else if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE)) {
-         struct target_lsx_context *lsx_ctx;
-         info = extctx->lsx.haddr;
- 
-@@ -230,6 +258,15 @@ static bool parse_extcontext(struct extctx_layout *extctx, abi_ptr frame)
-             extctx->lsx.size = size;
-             extctx->size += size;
-             break;
-+        case LASX_CTX_MAGIC:
-+            if (size < (sizeof(struct target_sctx_info) +
-+                        sizeof(struct target_lasx_context))) {
-+                return false;
-+            }
-+            extctx->lasx.gaddr = frame;
-+            extctx->lasx.size = size;
-+            extctx->size += size;
-+            break;
-         default:
-             return false;
-         }
-@@ -250,7 +287,21 @@ static void restore_sigframe(CPULoongArchState *env,
-         __get_user(env->gpr[i], &sc->sc_regs[i]);
-     }
- 
--    if (extctx->lsx.haddr) {
-+    if (extctx->lasx.haddr) {
-+        struct target_lasx_context *lasx_ctx =
-+            extctx->lasx.haddr + sizeof(struct target_sctx_info);
-+
-+        for (i = 0; i < 32; ++i) {
-+            __get_user(env->fpr[i].vreg.UD(0), &lasx_ctx->regs[4 * i]);
-+            __get_user(env->fpr[i].vreg.UD(1), &lasx_ctx->regs[4 * i + 1]);
-+            __get_user(env->fpr[i].vreg.UD(2), &lasx_ctx->regs[4 * i + 2]);
-+            __get_user(env->fpr[i].vreg.UD(3), &lasx_ctx->regs[4 * i + 3]);
-+        }
-+        __get_user(fcc, &lasx_ctx->fcc);
-+        write_fcc(env, fcc);
-+        __get_user(env->fcsr0, &lasx_ctx->fcsr);
-+        restore_fp_status(env);
-+    } else if (extctx->lsx.haddr) {
-         struct target_lsx_context *lsx_ctx =
-             extctx->lsx.haddr + sizeof(struct target_sctx_info);
- 
-@@ -314,7 +365,10 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-         return;
-     }
- 
--    if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE)) {
-+    if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, ASXE)) {
-+        extctx.lasx.haddr = (void *)frame + (extctx.lasx.gaddr - frame_addr);
-+        extctx.end.haddr = (void *)frame + (extctx.end.gaddr - frame_addr);
-+    } else if (FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE)) {
-         extctx.lsx.haddr = (void *)frame + (extctx.lsx.gaddr - frame_addr);
-         extctx.end.haddr = (void *)frame + (extctx.end.gaddr - frame_addr);
-     } else {
-@@ -364,7 +418,9 @@ long do_rt_sigreturn(CPULoongArchState *env)
-         goto badframe;
-     }
- 
--    if (extctx.lsx.gaddr) {
-+    if (extctx.lasx.gaddr) {
-+        extctx.lasx.haddr = (void *)frame + (extctx.lasx.gaddr - frame_addr);
-+    } else if (extctx.lsx.gaddr) {
-         extctx.lsx.haddr = (void *)frame + (extctx.lsx.gaddr - frame_addr);
-     } else if (extctx.fpu.gaddr) {
-         extctx.fpu.haddr = (void *)frame + (extctx.fpu.gaddr - frame_addr);
+The following changes since commit 6c9ae1ce82b65faa3f266fd103729878cf11e07e:
+
+  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2023-11-01 06:58:11 +0900)
+
+are available in the Git repository at:
+
+  https://gitlab.com/marcandre.lureau/qemu.git tags/dump-pull-request
+
+for you to fetch changes up to 4023839757b2c01e0350ce92902c6f74dce7d011:
+
+  dump: Drop redundant check for empty dump (2023-11-02 18:40:50 +0400)
+
+----------------------------------------------------------------
+dump queue
+
+Hi
+
+The "dump" queue, with:
+- [PATCH v3 qemu 0/3] Allow dump-guest-memory to output standard kdump format
+- [PATCH v2 0/5] dump: Minor fixes & improvements
+
+----------------------------------------------------------------
+
+Markus Armbruster (5):
+  dump: Rename qmp_dump_guest_memory() parameter to match QAPI schema
+  dump: Fix g_array_unref(NULL) in dump-guest-memory
+  dump: Recognize "fd:" protocols on Windows hosts
+  dump: Improve some dump-guest-memory error messages
+  dump: Drop redundant check for empty dump
+
+Stephen Brennan (3):
+  dump: Pass DumpState to write_ functions
+  dump: Allow directly outputting raw kdump format
+  dump: Add command interface for kdump-raw formats
+
+ qapi/dump.json        |  24 +++++--
+ include/sysemu/dump.h |   3 +-
+ dump/dump-hmp-cmds.c  |  21 ++++--
+ dump/dump.c           | 158 +++++++++++++++++++++++-------------------
+ hmp-commands.hx       |   9 ++-
+ 5 files changed, 134 insertions(+), 81 deletions(-)
+
 -- 
-2.25.1
+2.41.0
 
 
