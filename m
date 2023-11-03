@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF547DFFE2
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:01:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F147DFFE8
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:09:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyq3F-0002LI-4U; Fri, 03 Nov 2023 05:01:13 -0400
+	id 1qyqAA-0004CK-77; Fri, 03 Nov 2023 05:08:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyq3B-0002KA-St
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:01:09 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qyq3A-00052U-0L
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:01:09 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40906fc54fdso14226435e9.0
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 02:01:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1699002066; x=1699606866; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=pcC47FSKbo5Fm1RgD6cevhhdU0V0PFmltnzdC/P9+54=;
- b=UCnQjOZVHxiEAoiZDK9qhn/4KyNk+dnblyazR1IXTYP7EANOJ/e+NkBfBPTGAxgzu3
- fPCB8R+a3qiDKTeAAxrFOmxEggMs85jQ8os9ouYCW84SjDkQwyyABc1GlZ7p9hqXMyKq
- Zz3+4OLjfexG2xP14vqWvHmhr/8mQIsOlz78TAzECoTUW+VS9XGVjqVQ21mTJQWJQ6rL
- PESIDf+JkpY42Hkgl+vEw4XSSSbnnuj0fgLDwqLAdkK12qF3Y6/GljvEvtTvb9qAgDWz
- rkVfuTcxmfbgRGw7pUaJHpZOyGq3Slf987Ijn7m9sEjQSxY88+0TOS/Jb/MdULeGh5Gm
- gyzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699002066; x=1699606866;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pcC47FSKbo5Fm1RgD6cevhhdU0V0PFmltnzdC/P9+54=;
- b=bYoVFfCvwVLFC3HDy8y3bk6EM+ROQi5UYb6clh9NTK20ajv00cYIm3crplLTJaT0Z7
- WfRzVX/ZPH0co0tFpBoiTFE5Js+Egk9hgZSVk1tcXKxszI67lpGAcEAcTNJOYes/YTZc
- 4PjGphU+O1HQf7o0LaM8+vKamjgyglJRUb0suP9FqQjc54obEGziQ4z7A5QHV3Z84Qzs
- f10UBNThpCa3QHycIDdlKw1Blyo3CQuYv6y27OrN5XdrFgjjXdVYqDWMCPjoU87fh2DM
- Gv8hAbP90K95MHQcxuQVDFFWL3d2aoULjvYWsj+SXfhCoBQXLf3yxMrmrinUd9esxNm1
- Vzwg==
-X-Gm-Message-State: AOJu0YxihrEbie4ebkGQH6rwe2nDg0KorPKF6fwGfmNN/2VmNViVIy4q
- W7ywCmrrh9oZfU5QLoX9ne1oEQ==
-X-Google-Smtp-Source: AGHT+IEde1P1qOxij7mpgdgAW1P6VXmF7MUNqVjD5JvaPFaNcGTMmx9gOE2+2SkYhSMs01rqDaicNg==
-X-Received: by 2002:a5d:5002:0:b0:32d:88dc:b219 with SMTP id
- e2-20020a5d5002000000b0032d88dcb219mr15733516wrt.45.1699002066182; 
- Fri, 03 Nov 2023 02:01:06 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- z16-20020a5d6550000000b0032dbf6bf7a2sm1313810wrv.97.2023.11.03.02.01.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Nov 2023 02:01:05 -0700 (PDT)
-Date: Fri, 3 Nov 2023 10:01:04 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v9 19/19] target/riscv/tcg: do not support profiles for
- 'max' CPU
-Message-ID: <20231103-00c3877949914a4e56f4be79@orel>
-References: <20231102224445.527355-1-dbarboza@ventanamicro.com>
- <20231102224445.527355-20-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyqA5-0004BZ-UG
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:08:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyqA4-0007lU-6k
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:08:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699002491;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=3p0+QtNUIXsXPhjbvkAscPxWkVyIBO+YHmcaHAM2u/g=;
+ b=ajp4zHv/W1rjuA3S7hx345OUQwcg7aP+ioqPxTFUjC/eM0epgUqlY53zpW/8v2zKQ3q+G4
+ 9qG32nkRcE4C6E4LjHFa1vRFXnF06gqe/nsl0LUxj1XTor2bqXBKDxKYAig/CrOiUyoqAb
+ YcZsfCOw7Ykc3S10wczwGORG7wfbSUs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-k_TsiylJOdeawxWPiNeOkw-1; Fri,
+ 03 Nov 2023 05:08:07 -0400
+X-MC-Unique: k_TsiylJOdeawxWPiNeOkw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1C895381A88F;
+ Fri,  3 Nov 2023 09:08:07 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C9244C016B3;
+ Fri,  3 Nov 2023 09:08:06 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D41A621E6A1F; Fri,  3 Nov 2023 10:08:05 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: Sam Li <faithilikerun@gmail.com>,  qemu-devel@nongnu.org,  Kevin Wolf
+ <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  dlemoal@kernel.org,
+ hare@suse.de,  dmitry.fomichev@wdc.com,  stefanha@redhat.com,
+ qemu-block@nongnu.org,  Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v5 2/4] qcow2: add configurations for zoned format
+ extension
+References: <20231030121847.4522-1-faithilikerun@gmail.com>
+ <20231030121847.4522-3-faithilikerun@gmail.com>
+ <i43illqyyzu7wbotuw2fbuft7izdmfo7jkwnds4yrigewachhw@7pudpozwjer5>
+Date: Fri, 03 Nov 2023 10:08:05 +0100
+In-Reply-To: <i43illqyyzu7wbotuw2fbuft7izdmfo7jkwnds4yrigewachhw@7pudpozwjer5>
+ (Eric Blake's message of "Mon, 30 Oct 2023 09:53:36 -0500")
+Message-ID: <878r7f19xm.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231102224445.527355-20-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,88 +86,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 02, 2023 at 07:44:45PM -0300, Daniel Henrique Barboza wrote:
-> There's no gain in allowing the 'max' CPU to support profiles, since it
-> already contains everything that QEMU can support. And we'll open the
-> door for 'unorthodox' stuff like users disabling profiles of the 'max'
-> CPU.
+Eric Blake <eblake@redhat.com> writes:
 
-I don't see a lot of value in this patch, but maybe I'm just too cruel to
-users that don't know what they're doing. I even see a negative value to
-this patch because I can conceive of writing a script where I generally
-want to use rv64i with my explicit list of profiles/extensions, but then
-I may want to temporarily "boost" my CPU to 'max' for some reason. If
-I write my script like
+> On Mon, Oct 30, 2023 at 08:18:45PM +0800, Sam Li wrote:
+>> To configure the zoned format feature on the qcow2 driver, it
+>> requires settings as: the device size, zone model, zone size,
+>> zone capacity, number of conventional zones, limits on zone
+>> resources (max append bytes, max open zones, and max_active_zones).
+>> 
+>> To create a qcow2 file with zoned format, use command like this:
+>> $ qemu-img create -f qcow2 test.qcow2 -o size=768M -o
+>> zone_size=64M -o zone_capacity=64M -o conventional_zones=0 -o
+>> max_append_bytes=4096 -o max_open_zones=0 -o max_active_zones=0
+>> -o zone_model=host-managed
+>> 
+>> Signed-off-by: Sam Li <faithilikerun@gmail.com>
+>> 
+>> fix config?
+>
+> Is this comment supposed to be part of the commit message?  If not,...
+>
+>> ---
+>
+> ...place it here under the divider, so 'git am' won't include it, if there is nothing further to change on this patch.
 
- CPU=rv64i
- EXTENSIONS=profile=on,extension=on
- qemu -cpu $CPU,$EXTENSIONS ...
+[...]
 
-then I can't just do
+>> +++ b/qapi/block-core.json
+>> @@ -4981,6 +4981,21 @@
+>>  { 'enum': 'Qcow2CompressionType',
+>>    'data': [ 'zlib', { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
+>>  
+>> +##
+>> +# @Qcow2ZoneModel:
+>> +#
+>> +# Zoned device model used in qcow2 image file
+>> +#
+>> +# @non-zoned: non-zoned model is for regular block devices
+>> +#
+>> +# @host-managed: host-managed model only allows sequential write over the
+>> +#     device zones
+>> +#
+>> +# Since 8.2
+>> +##
+>> +{ 'enum': 'Qcow2ZoneModel',
+>> +  'data': ['non-zoned', 'host-managed'] }
+>> +
+>>  ##
+>>  # @BlockdevCreateOptionsQcow2:
+>>  #
+>> @@ -5023,6 +5038,27 @@
+>>  # @compression-type: The image cluster compression method
+>>  #     (default: zlib, since 5.1)
+>>  #
+>> +# @zone-model: @Qcow2ZoneModel.  The zone device model.
+>> +#     (default: non-zoned, since 8.2)
+>> +#
+>> +# @zone-size: Total number of bytes within zones (since 8.2)
+>
+> If @zone-model is "non-zoned", does it make sense to even allow
+> @zone-size and friends?  Should this use a QMP union, where you can
+> pass in the remaining zone-* fields only when zone-model is set to
+> host-managed?
 
- CPU=max ./my-script
+Valid question; needs an answer.
 
-to boost my CPU, since max will error out when it sees profiles being
-enabled (even though that should be no-op for it). Instead, I need to
-do
+>> +#
+>> +# @zone-capacity: The number of usable logical blocks within zones
+>> +#     in bytes.  A zone capacity is always smaller or equal to the
+>> +#     zone size (since 8.2)
+>> +#
+>> +# @conventional-zones: The number of conventional zones of the
+>> +#     zoned device (since 8.2)
+>> +#
+>> +# @max-open-zones: The maximal number of open zones (since 8.2)
+>> +#
+>> +# @max-active-zones: The maximal number of zones in the implicit
+>> +#     open, explicit open or closed state (since 8.2)
+>> +#
+>> +# @max-append-bytes: The maximal number of bytes of a zone
+>> +#     append request that can be issued to the device.  It must be
+>> +#     512-byte aligned (since 8.2)
+>> +#
+>>  # Since: 2.12
+>>  ##
+>>  { 'struct': 'BlockdevCreateOptionsQcow2',
+>> @@ -5039,7 +5075,14 @@
+>>              '*preallocation':   'PreallocMode',
+>>              '*lazy-refcounts':  'bool',
+>>              '*refcount-bits':   'int',
+>> -            '*compression-type':'Qcow2CompressionType' } }
+>> +            '*compression-type':'Qcow2CompressionType',
+>> +            '*zone-model':         'Qcow2ZoneModel',
+>> +            '*zone-size':          'size',
+>> +            '*zone-capacity':      'size',
+>> +            '*conventional-zones': 'uint32',
+>> +            '*max-open-zones':     'uint32',
+>> +            '*max-active-zones':   'uint32',
+>> +            '*max-append-bytes':   'uint32' } }
+>
+> In other words, I'm envisioning something like an optional
+> '*zone':'ZoneStruct', where:
+>
+> { 'struct': 'ZoneHostManaged',
+>   'data': { 'size': 'size', '*capacity': 'size', ..., '*max-append-bytes': 'uint32' } }
+> { 'union': 'ZoneStruct',
+>   'base': { 'model': 'Qcow2ZoneModel' },
+>   'discriminator': 'model',
+>   'data': { 'non-zoned': {},
+>             'host-managed': 'ZoneHostManaged' } }
+>
+> then over the wire, QMP can use the existing:
+> { ..., "compression-type":"zstd" }
+>
+> as a synonym for the new but explicit non-zoned:
+> { ..., "compression-type":"zstd", "zone":{"mode":"non-zoned"} }
 
- CPU=max EXTENSIONS= ./my-script
+I.e. @zone is optional, and defaults to {"mode": "non-zoned"}.
 
-which isn't horrible, but a bit annoying.
+> and when we want to use zones, we pass:
+> { ..., "compression-type":"zstd", "zone":{"mode":"host-managed", "size":16777216} }
+>
+> where you don't have to have zone- prefixing everywhere because it is
+> instead contained in the smart union object where it is obvious from
+> the 'mode' field what other fields should be present.
 
-So, personally, I would drop this patch.
-
-Thanks,
-drew
-
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/tcg/tcg-cpu.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 553fb337e7..9a964a426e 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -825,6 +825,11 @@ static bool riscv_cpu_is_vendor(Object *cpu_obj)
->      return object_dynamic_cast(cpu_obj, TYPE_RISCV_VENDOR_CPU) != NULL;
->  }
->  
-> +static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
-> +{
-> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
-> +}
-> +
->  /*
->   * We'll get here via the following path:
->   *
-> @@ -1003,6 +1008,12 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
->          return;
->      }
->  
-> +    if (riscv_cpu_has_max_extensions(obj)) {
-> +        error_setg(errp, "Profile %s is not available for the 'max' CPU",
-> +                   profile->name);
-> +        return;
-> +    }
-> +
->      if (cpu->env.misa_mxl != MXL_RV64) {
->          error_setg(errp, "Profile %s only available for 64 bit CPUs",
->                     profile->name);
-> @@ -1251,11 +1262,6 @@ static void riscv_init_max_cpu_extensions(Object *obj)
->      }
->  }
->  
-> -static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
-> -{
-> -    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
-> -}
-> -
->  static void tcg_cpu_instance_init(CPUState *cs)
->  {
->      RISCVCPU *cpu = RISCV_CPU(cs);
-> -- 
-> 2.41.0
-> 
 
