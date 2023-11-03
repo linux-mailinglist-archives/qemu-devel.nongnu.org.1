@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F423A7E09BD
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 21:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9620D7E09E9
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 21:10:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qz0Lf-0000GC-B4; Fri, 03 Nov 2023 16:00:55 -0400
+	id 1qz0MA-0000R6-Gl; Fri, 03 Nov 2023 16:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qz0L2-00089Z-U2
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:18 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qz0L6-0008E7-HZ
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:31 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qz0Kr-0005Pg-2V
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:13 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32ded3eb835so1645395f8f.0
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 13:00:04 -0700 (PDT)
+ id 1qz0Kt-0005Zo-I4
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 16:00:19 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4084095722aso18038505e9.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 13:00:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699041603; x=1699646403; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699041605; x=1699646405; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=65Q39Xa13SVlTaipeikSzc52X5lKj+6VWg/aEmU5DfA=;
- b=S/5189rdrzIODu6XJTAI8OjJ17L3wbY6u0e5W33XW1+CZD1BdBp39jqplM+Pml/8BP
- Ca9s1Be8kPQMtEn1lY7EL8q6oSDYetBEn/8pHP6v4lF0qZ6arzgfA3yqL+QumdV0Em2T
- RIZpQTRTlfW75DNot5v+idoFXyShv+D/PDFldBuCFzCvPkgEtcmoNbCOEN3E0YOezxye
- Xfv4YcXdpLFxdwUXQx6SnFAbfzdj/gsJjqIN5ORDOrleitsixBvA0VxDEZ0hLSvMeTiH
- /9NCmXQtG9AhMHOtu0kOr4aAzaa6d18WbaTh1wMiqRCMy/DDngWqEU4VP2hIVbfxP70c
- YIag==
+ bh=gQBmthjE4Bad5l9sCVp+GlTua9zlFcXkP6f/oLdBKC4=;
+ b=Uiu1e0lKk26Ch7mB6iK5CApVrS6He7SykNOKdw3a8K78Guha2Vp+hXduSQxi5pmcKs
+ U7Oa19GOg+8bZ3Th1l0N/PZiUCCd+mCodQLGz8MDA8sMiNymp+B5IANDQEcFIXRQoEIz
+ cgRPD+qbHJjnuz27q1kVPX0mk8xqX5GvDAWVbpfS2QmLwUjeVSwSshmzzTx+r5HmNbdh
+ kaiUW4KJNOq51ApccZ/DrJqBH5yidQqdJcL5E77ze7pTila/5dKhwG6BhH8piFZtIW2E
+ uiC8nGjZJhZZO0TlHZ6iGjmRFOGH2kIV9ONBLFnUzha9pk1MWYRUzJtoWjtCcVyoViwC
+ rZZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699041603; x=1699646403;
+ d=1e100.net; s=20230601; t=1699041605; x=1699646405;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=65Q39Xa13SVlTaipeikSzc52X5lKj+6VWg/aEmU5DfA=;
- b=PIEjfRhtNMbno7NJ7iEzT9soyIkHEMC8R91VO+LIHs5q20pLvqqNYLOHctnCRpHf+u
- Yu0Bd65Wqb2WjmV+CR/s2c1LtgPxjTqAzDl/sKOHc0IDGjq5Y+77mzH/6b4MT9dk5nm+
- JoPFT+iq9+RHFQZgIG4JqfESax0yTrJ4btm1+eiir5VAGPJfe1ZDXUfnermAosgwnJEH
- 9fMbVBb2/wmsQKSnt5tyDzbfWUkzi5d3tZZe7NKGvth1WHUzZHfhgMyMmT5ATu8ih3Gm
- HNFYY80bfc63eToq1r7z6qBZvxhp22eaj9DQ1+psssemerGUDxI6EB2qDH/jEw9SC3Tv
- miLQ==
-X-Gm-Message-State: AOJu0YxQO6RXaQzTWyCk6m+2XLNek4MM+4bxWFvE5fXbJyqtA/iCOdk3
- 6gvuj/NMzLf+ZlaaJ6cf3412pA==
-X-Google-Smtp-Source: AGHT+IEtA6hYBnHPwdvSz5GT3qX6EMm13oEByQJ4PyK4LVFNSbisTGOhKcWdDuy/Wla6efCDICCTyw==
-X-Received: by 2002:a5d:67c7:0:b0:31a:d871:7ae7 with SMTP id
- n7-20020a5d67c7000000b0031ad8717ae7mr15801970wrw.29.1699041603100; 
- Fri, 03 Nov 2023 13:00:03 -0700 (PDT)
+ bh=gQBmthjE4Bad5l9sCVp+GlTua9zlFcXkP6f/oLdBKC4=;
+ b=bgXKnwH9/CsGXxAfld0fewJuQWE/g+MdM8AMvB5yIAkVBRJ24a4hLfx+u5NHNId4Va
+ x4aQBbwevaiObPGq9hQGi96Xd9EQAtFZ82iT+d95NTnsK09yXhvq6Dknm9s1Ruvt6Zgx
+ WGvqpaLA3zpA9R+A74+o4AUGcBecple4+O12i7PQOvIlIspRiViI548xNpN6gHwoe02X
+ PASwQq4b0hwuPa1OOm26NBqunCObQrYKO5lJo1jVVgOS86r5yUA7qoEgwhtJhzVvX1Hb
+ 3n9mK65cFZDFyGOkuoHk82VPZzI/F0pc3vtD3ZLudj96XlGxDlqSezx6uifv9RTgyc4V
+ Z+5w==
+X-Gm-Message-State: AOJu0Yz/ToXpqw61NgWnQ1TdNRw3XkhM0D5uII4Gfmh2iRr8NtZ+sAT3
+ Y4+MDJUHEklZ4KAoH+H/Ve4kCA==
+X-Google-Smtp-Source: AGHT+IHqYg/M5gjqkCiZL+uf8NhsD8G22cGYfugCpR8KLpc1Zuu2eqHUwfBe0VExHvNff+CUWRnqiQ==
+X-Received: by 2002:a05:600c:d8:b0:409:718b:33e0 with SMTP id
+ u24-20020a05600c00d800b00409718b33e0mr2193666wmm.16.1699041605356; 
+ Fri, 03 Nov 2023 13:00:05 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p12-20020adfe60c000000b0032d886039easm2608287wrm.14.2023.11.03.12.59.58
+ f14-20020a05600c154e00b004097881d7a8sm385873wmg.0.2023.11.03.12.59.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 03 Nov 2023 13:00:00 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5461F65746;
+ by draig.lan (Postfix) with ESMTP id 6EDA865747;
  Fri,  3 Nov 2023 19:59:57 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,18 +88,19 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Bin Meng <bin.meng@windriver.com>, Beraldo Leal <bleal@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH 07/29] tests/avocado: update the tcg_plugins test
-Date: Fri,  3 Nov 2023 19:59:34 +0000
-Message-Id: <20231103195956.1998255-8-alex.bennee@linaro.org>
+ Michael Rolnik <mrolnik@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 08/29] gdbstub: Add num_regs member to GDBFeature
+Date: Fri,  3 Nov 2023 19:59:35 +0000
+Message-Id: <20231103195956.1998255-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231103195956.1998255-1-alex.bennee@linaro.org>
 References: <20231103195956.1998255-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,75 +123,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are a number of things that are broken on the test currently so
-lets fix that up:
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-  - replace retired Debian kernel for tuxrun_baseline one
-  - remove "detected repeat instructions test" since ea185a55
-  - log total counted instructions/memory accesses
+Currently the number of registers exposed to GDB is written as magic
+numbers in code. Derive the number of registers GDB actually see from
+XML files to replace the magic numbers in code later.
 
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20231025093128.33116-2-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/avocado/tcg_plugins.py | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ include/exec/gdbstub.h  |  1 +
+ scripts/feature_to_c.py | 46 +++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 45 insertions(+), 2 deletions(-)
 
-diff --git a/tests/avocado/tcg_plugins.py b/tests/avocado/tcg_plugins.py
-index 642d2e49e3..15fd87b2c1 100644
---- a/tests/avocado/tcg_plugins.py
-+++ b/tests/avocado/tcg_plugins.py
-@@ -54,13 +54,11 @@ def run_vm(self, kernel_path, kernel_command_line,
- class PluginKernelNormal(PluginKernelBase):
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 1a01c35f8e..a43aa34dad 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -13,6 +13,7 @@
+ typedef struct GDBFeature {
+     const char *xmlname;
+     const char *xml;
++    int num_regs;
+ } GDBFeature;
  
-     def _grab_aarch64_kernel(self):
--        kernel_url = ('http://security.debian.org/'
--                      'debian-security/pool/updates/main/l/linux-signed-arm64/'
--                      'linux-image-4.19.0-12-arm64_4.19.152-1_arm64.deb')
--        kernel_sha1 = '2036c2792f80ac9c4ccaae742b2e0a28385b6010'
--        kernel_deb = self.fetch_asset(kernel_url, asset_hash=kernel_sha1)
--        kernel_path = self.extract_from_deb(kernel_deb,
--                                            "/boot/vmlinuz-4.19.0-12-arm64")
-+        kernel_url = ('https://storage.tuxboot.com/20230331/arm64/Image')
-+        kernel_sha256 = 'ce95a7101a5fecebe0fe630deee6bd97b32ba41bc8754090e9ad8961ea8674c7'
-+        kernel_path = self.fetch_asset(kernel_url,
-+                                       asset_hash=kernel_sha256,
-+                                       algorithm = "sha256")
-         return kernel_path
  
-     def test_aarch64_virt_insn(self):
-@@ -88,6 +86,10 @@ def test_aarch64_virt_insn(self):
-             m = re.search(br"insns: (?P<count>\d+)", s)
-             if "count" not in m.groupdict():
-                 self.fail("Failed to find instruction count")
-+            else:
-+                count = int(m.group("count"))
-+                self.log.info(f"Counted: {count} instructions")
+diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
+index bcbcb83beb..e04d6b2df7 100644
+--- a/scripts/feature_to_c.py
++++ b/scripts/feature_to_c.py
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-import os, sys
++import os, sys, xml.etree.ElementTree
+ 
+ def writeliteral(indent, bytes):
+     sys.stdout.write(' ' * indent)
+@@ -39,10 +39,52 @@ def writeliteral(indent, bytes):
+     with open(input, 'rb') as file:
+         read = file.read()
+ 
++    parser = xml.etree.ElementTree.XMLPullParser(['start', 'end'])
++    parser.feed(read)
++    events = parser.read_events()
++    event, element = next(events)
++    if event != 'start':
++        sys.stderr.write(f'unexpected event: {event}\n')
++        exit(1)
++    if element.tag != 'feature':
++        sys.stderr.write(f'unexpected start tag: {element.tag}\n')
++        exit(1)
 +
- 
-     def test_aarch64_virt_insn_icount(self):
-         """
-@@ -111,9 +113,13 @@ def test_aarch64_virt_insn_icount(self):
- 
-         with plugin_log as lf, \
-              mmap.mmap(lf.fileno(), 0, access=mmap.ACCESS_READ) as s:
--            m = re.search(br"detected repeat execution @ (?P<addr>0x[0-9A-Fa-f]+)", s)
--            if m is not None and "addr" in m.groupdict():
--                self.fail("detected repeated instructions")
++    regnum = 0
++    regnums = []
++    tags = ['feature']
++    for event, element in events:
++        if event == 'end':
++            if element.tag != tags[len(tags) - 1]:
++                sys.stderr.write(f'unexpected end tag: {element.tag}\n')
++                exit(1)
 +
-+            m = re.search(br"insns: (?P<count>\d+)", s)
-+            if "count" not in m.groupdict():
-+                self.fail("Failed to find instruction count")
-+            else:
-+                count = int(m.group("count"))
-+                self.log.info(f"Counted: {count} instructions")
++            tags.pop()
++            if element.tag == 'feature':
++                break
++        elif event == 'start':
++            if len(tags) < 2 and element.tag == 'reg':
++                if 'regnum' in element.attrib:
++                    regnum = int(element.attrib['regnum'])
++
++                regnums.append(regnum)
++                regnum += 1
++
++            tags.append(element.tag)
++        else:
++            raise Exception(f'unexpected event: {event}\n')
++
++    if len(tags):
++        sys.stderr.write('unterminated feature tag\n')
++        exit(1)
++
++    base_reg = min(regnums)
++    num_regs = max(regnums) - base_reg + 1 if len(regnums) else 0
++
+     sys.stdout.write('    {\n')
+     writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
+     sys.stdout.write(',\n')
+     writeliteral(8, read)
+-    sys.stdout.write('\n    },\n')
++    sys.stdout.write(f',\n        {num_regs},\n    }},\n')
  
-     def test_aarch64_virt_mem_icount(self):
-         """
-@@ -145,3 +151,5 @@ def test_aarch64_virt_mem_icount(self):
-                 callback = int(m[1])
-                 if inline != callback:
-                     self.fail("mismatched access counts")
-+                else:
-+                    self.log.info(f"Counted {inline} memory accesses")
+ sys.stdout.write('    { NULL }\n};\n')
 -- 
 2.39.2
 
