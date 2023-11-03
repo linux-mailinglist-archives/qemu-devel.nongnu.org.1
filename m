@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979967DFE02
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 03:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2297DFE3D
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:09:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyk47-0007oW-AP; Thu, 02 Nov 2023 22:37:43 -0400
+	id 1qykY6-0005Qu-Nd; Thu, 02 Nov 2023 23:08:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qyk45-0007ni-JD
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 22:37:41 -0400
-Received: from mail-pf1-f173.google.com ([209.85.210.173])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qyk43-0007b6-Jo
- for qemu-devel@nongnu.org; Thu, 02 Nov 2023 22:37:41 -0400
-Received: by mail-pf1-f173.google.com with SMTP id
- d2e1a72fcca58-6bd32d1a040so1727399b3a.3
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 19:37:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qykY4-0005QT-Ix
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:08:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qykY2-0000fH-TY
+ for qemu-devel@nongnu.org; Thu, 02 Nov 2023 23:08:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698980917;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=d1okX6rLO94QMDHPv1W2lNMISYjlmezNTUKMwze2R0E=;
+ b=ebSXXx1dBgD5EbPaRJRjM8uk5EiofgBVO324zxIO3YE2RixfyurDjUdSXXGTyXAj7gJSyr
+ CaPrjp3448+D2kskQH3wnZ/DHDoGLLeGaSRvzbfiIkXXzgMXK/EhPWHTPjT5yCbssEIFc5
+ pLGEIOQyoKS6XSFym9xTe5QT3wlcmes=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-iAZ5SnWDNz-YGxqqRmET6Q-1; Thu, 02 Nov 2023 23:08:35 -0400
+X-MC-Unique: iAZ5SnWDNz-YGxqqRmET6Q-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6b1f7baa5ceso1396998b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 20:08:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698979057; x=1699583857;
+ d=1e100.net; s=20230601; t=1698980914; x=1699585714;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z+CpJmkFDEzoJYwEPKX+ZMiF/NtA1dtRsWU46idzkV4=;
- b=Vi7WWqhexUm5xp/7J1nnBCsSKf0VfYpwF3U4HnvAISbfzJDHd67KKxtffomXfUhqs2
- eQ94dWBUZ8ygXxvp2zEZh85Utr1NZOt20Fv+psXIkdg2GMyDBarbzIaiCLhIoPcf1/Mo
- mY0bmCK19vDw1fnyoAGwitz5u6JbOu0xQFOsZm0qWesfSYfOuGrGoE4lz+vi7sAXkGnn
- MNHsGpNBuwB/U2wBIWYwIEaxyUOANOPDpf19ZW2G4xYfnsLfYRKmAW9Q3GFGFNO11xEx
- JUIyBGtMmK1TQl5a3qrv49P71D4yQCun4snuzSZeX7BsvYjx+zzMxzNiVE5iU6t3GR7C
- RczQ==
-X-Gm-Message-State: AOJu0YwnN1kMHrrYNcJS7EaV3ZpYtp9ApTOIcfFETflulJVkKIbKsPj1
- w5sNeZtkCRtnQUSldz2c6fnc/3pl/e8=
-X-Google-Smtp-Source: AGHT+IGJnJTTMrTKZcN28yCTc4rX84+ed6JKUDCLzNsWcRD2cod/tuLeb3qfOXcm8lstXeIz6i+XJQ==
-X-Received: by 2002:a05:6a00:9385:b0:68c:69c8:e0f0 with SMTP id
- ka5-20020a056a00938500b0068c69c8e0f0mr22622473pfb.18.1698979057053; 
- Thu, 02 Nov 2023 19:37:37 -0700 (PDT)
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com.
- [209.85.216.50]) by smtp.gmail.com with ESMTPSA id
- a24-20020aa78658000000b006b287c0ed63sm375908pfo.137.2023.11.02.19.37.35
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Nov 2023 19:37:35 -0700 (PDT)
-Received: by mail-pj1-f50.google.com with SMTP id
- 98e67ed59e1d1-28003daaaa6so1467744a91.0
- for <qemu-devel@nongnu.org>; Thu, 02 Nov 2023 19:37:35 -0700 (PDT)
-X-Received: by 2002:a17:90a:34d:b0:280:c576:31b9 with SMTP id
- 13-20020a17090a034d00b00280c57631b9mr6061983pjf.38.1698979055086; Thu, 02 Nov
- 2023 19:37:35 -0700 (PDT)
+ bh=d1okX6rLO94QMDHPv1W2lNMISYjlmezNTUKMwze2R0E=;
+ b=VjJ/sSUz+Wg8Ifd0wl8rWYpMffxBXM2scU5r5x3TzOccuW4a1/CmI17QTmWPr/1BsI
+ dBgo1rSLl1YFeDccknX26/svUxJjRTDPu9C+iOjJ1tSeLKfwAM6V/tzMBnbq5a+aEX6Q
+ jptBrUXzQxpM2w98R7y5i2efG2qELvi1GSRXu40Yrmj8hkUlbZ2rM1jcNauaa44R1aLd
+ iS9I5/GM1UlqbNnAieR/eFcd6J9cl9yqwjhZKdJ8naCVrLafXOiM7vWNodMzcXvQkAr5
+ obiQuk14d/n9sFjEuopsrFSqz/jPL197Kuc/V/2j2PSAWkYq4JjsmTeexqxy2uH93JAq
+ cZDQ==
+X-Gm-Message-State: AOJu0YygyDqDoXPB8oDLCG08JcrOFZU4bMHs0pWX0uy/q8sgnz+SReUZ
+ jQHBo3u+r09hE4WGqd9xEsHNGuu+ZIOto/of3F3jvbKULLjwQuFHvbk496W0scw08NPDhAv6COl
+ /x49C6ojFIP0UedOUyPgVvW2GQR/nhRo=
+X-Received: by 2002:a05:6a21:4881:b0:181:ed8b:4826 with SMTP id
+ av1-20020a056a21488100b00181ed8b4826mr921949pzc.55.1698980914729; 
+ Thu, 02 Nov 2023 20:08:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEjvTJaYbQUtnprnUD8bqALB8yFUFd/p1OTJ707YzRAFW4HPGSyZG5Rm9WIXfL/AYpiyWmTZKzsHfKyPA+ic6w=
+X-Received: by 2002:a05:6a21:4881:b0:181:ed8b:4826 with SMTP id
+ av1-20020a056a21488100b00181ed8b4826mr921937pzc.55.1698980914403; Thu, 02 Nov
+ 2023 20:08:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231031040021.65582-1-j@getutm.app>
- <20231031040021.65582-6-j@getutm.app>
- <33cc4e46-c48c-4fd8-bcec-b57698598a0e@linux.ibm.com>
-In-Reply-To: <33cc4e46-c48c-4fd8-bcec-b57698598a0e@linux.ibm.com>
-From: Joelle van Dyne <j@getutm.app>
-Date: Thu, 2 Nov 2023 19:37:24 -0700
-X-Gmail-Original-Message-ID: <CA+E+eSACJs1oHPjqT4h7F32+y+HS_en45aVYSPKoUyAmoax11w@mail.gmail.com>
-Message-ID: <CA+E+eSACJs1oHPjqT4h7F32+y+HS_en45aVYSPKoUyAmoax11w@mail.gmail.com>
-Subject: Re: [PATCH v4 05/14] tpm_crb: move ACPI table building to device
- interface
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20231025092159.1782638-1-armbru@redhat.com>
+ <20231025092159.1782638-2-armbru@redhat.com>
+In-Reply-To: <20231025092159.1782638-2-armbru@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Thu, 2 Nov 2023 23:08:23 -0400
+Message-ID: <CAFn=p-Y58FTVshF_y99bTOXJNRaec=_rGnJGrEtcRBMZbPq2LA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] sphinx/qapidoc: Tidy up pylint warning
+ raise-missing-from
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, michael.roth@amd.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.210.173; envelope-from=osy86dev@gmail.com;
- helo=mail-pf1-f173.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,195 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 2, 2023 at 11:50=E2=80=AFAM Stefan Berger <stefanb@linux.ibm.co=
+On Wed, Oct 25, 2023 at 6:10=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
 m> wrote:
 >
+> Pylint advises:
 >
+>     docs/sphinx/qapidoc.py:518:12: W0707: Consider explicitly re-raising =
+using 'raise ExtensionError(str(err)) from err' (raise-missing-from)
 >
-> On 10/31/23 00:00, Joelle van Dyne wrote:
-> > This logic is similar to TPM TIS ISA device. Since TPM CRB can only
-> > support TPM 2.0 backends, we check for this in realize.
+> From its manual:
 >
-> The problem on x86_64 is that the creation of the ACPI doesn't seem to
-> get invoked. The device then ends up not working under Linux. The
-> problem seems to be
+>     Python's exception chaining shows the traceback of the current
+>     exception, but also of the original exception.  When you raise a
+>     new exception after another exception was caught it's likely that
+>     the second exception is a friendly re-wrapping of the first
+>     exception.  In such cases `raise from` provides a better link
+>     between the two tracebacks in the final error.
 >
-> .parent =3D TYPE_DEVICE
+> Makes sense, so do it.
 >
-> When I change this to TYPE_ISA_DEVICE it starts generating the ACPI
-> table. I am not sure what other side effects this may have, though.
-Ah sorry, this is probably a side effect of the patch I dropped where
-the bus was moved back from ISA to SysBus. The patch was dropped
-because people complained that the side effects of a new device
-appearing on the ISA bus during migration is unknown. That means we
-will probably have to add some logic to call the ACPI build methods on
-non-ISA devices.
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
+In this case it probably doesn't make a difference because Sphinx has
+its own formatting for displaying the errors, but it's good hygiene.
+
+Reviewed-by: John Snow <jsnow@redhat.com>
+
+> ---
+>  docs/sphinx/qapidoc.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->     Stefan
-> >
-> > Signed-off-by: Joelle van Dyne <j@getutm.app>
-> > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> > ---
-> >   hw/tpm/tpm_crb.h        |  2 ++
-> >   hw/i386/acpi-build.c    | 23 -----------------------
-> >   hw/tpm/tpm_crb.c        | 16 ++++++++++++++++
-> >   hw/tpm/tpm_crb_common.c | 19 +++++++++++++++++++
-> >   4 files changed, 37 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/hw/tpm/tpm_crb.h b/hw/tpm/tpm_crb.h
-> > index 36863e1664..e6a86e3fd1 100644
-> > --- a/hw/tpm/tpm_crb.h
-> > +++ b/hw/tpm/tpm_crb.h
-> > @@ -73,5 +73,7 @@ void tpm_crb_init_memory(Object *obj, TPMCRBState *s,=
- Error **errp);
-> >   void tpm_crb_mem_save(TPMCRBState *s, uint32_t *saved_regs, void *sav=
-ed_cmdmem);
-> >   void tpm_crb_mem_load(TPMCRBState *s, const uint32_t *saved_regs,
-> >                         const void *saved_cmdmem);
-> > +void tpm_crb_build_aml(TPMIf *ti, Aml *scope, uint32_t baseaddr, uint3=
-2_t size,
-> > +                       bool build_ppi);
-> >
-> >   #endif /* TPM_TPM_CRB_H */
-> > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> > index 80db183b78..ce3f7b2d91 100644
-> > --- a/hw/i386/acpi-build.c
-> > +++ b/hw/i386/acpi-build.c
-> > @@ -1441,9 +1441,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker=
-,
-> >       uint32_t nr_mem =3D machine->ram_slots;
-> >       int root_bus_limit =3D 0xFF;
-> >       PCIBus *bus =3D NULL;
-> > -#ifdef CONFIG_TPM
-> > -    TPMIf *tpm =3D tpm_find();
-> > -#endif
-> >       bool cxl_present =3D false;
-> >       int i;
-> >       VMBusBridge *vmbus_bridge =3D vmbus_bridge_find();
-> > @@ -1790,26 +1787,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linke=
-r,
-> >           }
-> >       }
-> >
-> > -#ifdef CONFIG_TPM
-> > -    if (TPM_IS_CRB(tpm)) {
-> > -        dev =3D aml_device("TPM");
-> > -        aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")))=
-;
-> > -        aml_append(dev, aml_name_decl("_STR",
-> > -                                      aml_string("TPM 2.0 Device")));
-> > -        crs =3D aml_resource_template();
-> > -        aml_append(crs, aml_memory32_fixed(TPM_CRB_ADDR_BASE,
-> > -                                           TPM_CRB_ADDR_SIZE, AML_READ=
-_WRITE));
-> > -        aml_append(dev, aml_name_decl("_CRS", crs));
-> > -
-> > -        aml_append(dev, aml_name_decl("_STA", aml_int(0xf)));
-> > -        aml_append(dev, aml_name_decl("_UID", aml_int(1)));
-> > -
-> > -        tpm_build_ppi_acpi(tpm, dev);
-> > -
-> > -        aml_append(sb_scope, dev);
-> > -    }
-> > -#endif
-> > -
-> >       if (pcms->sgx_epc.size !=3D 0) {
-> >           uint64_t epc_base =3D pcms->sgx_epc.base;
-> >           uint64_t epc_size =3D pcms->sgx_epc.size;
-> > diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
-> > index 99c64dd72a..8d57295b15 100644
-> > --- a/hw/tpm/tpm_crb.c
-> > +++ b/hw/tpm/tpm_crb.c
-> > @@ -19,6 +19,8 @@
-> >   #include "qemu/module.h"
-> >   #include "qapi/error.h"
-> >   #include "exec/address-spaces.h"
-> > +#include "hw/acpi/acpi_aml_interface.h"
-> > +#include "hw/acpi/tpm.h"
-> >   #include "hw/qdev-properties.h"
-> >   #include "hw/pci/pci_ids.h"
-> >   #include "hw/acpi/tpm.h"
-> > @@ -121,6 +123,11 @@ static void tpm_crb_none_realize(DeviceState *dev,=
- Error **errp)
-> >           return;
-> >       }
-> >
-> > +    if (tpm_crb_none_get_version(TPM_IF(s)) !=3D TPM_VERSION_2_0) {
-> > +        error_setg(errp, "TPM CRB only supports TPM 2.0 backends");
-> > +        return;
-> > +    }
-> > +
-> >       tpm_crb_init_memory(OBJECT(s), &s->state, errp);
-> >
-> >       /* only used for migration */
-> > @@ -142,10 +149,17 @@ static void tpm_crb_none_realize(DeviceState *dev=
-, Error **errp)
-> >       }
-> >   }
-> >
-> > +static void build_tpm_crb_none_aml(AcpiDevAmlIf *adev, Aml *scope)
-> > +{
-> > +    tpm_crb_build_aml(TPM_IF(adev), scope, TPM_CRB_ADDR_BASE, TPM_CRB_=
-ADDR_SIZE,
-> > +                      true);
-> > +}
-> > +
-> >   static void tpm_crb_none_class_init(ObjectClass *klass, void *data)
-> >   {
-> >       DeviceClass *dc =3D DEVICE_CLASS(klass);
-> >       TPMIfClass *tc =3D TPM_IF_CLASS(klass);
-> > +    AcpiDevAmlIfClass *adevc =3D ACPI_DEV_AML_IF_CLASS(klass);
-> >
-> >       dc->realize =3D tpm_crb_none_realize;
-> >       device_class_set_props(dc, tpm_crb_none_properties);
-> > @@ -154,6 +168,7 @@ static void tpm_crb_none_class_init(ObjectClass *kl=
-ass, void *data)
-> >       tc->model =3D TPM_MODEL_TPM_CRB;
-> >       tc->get_version =3D tpm_crb_none_get_version;
-> >       tc->request_completed =3D tpm_crb_none_request_completed;
-> > +    adevc->build_dev_aml =3D build_tpm_crb_none_aml;
-> >
-> >       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-> >   }
-> > @@ -166,6 +181,7 @@ static const TypeInfo tpm_crb_none_info =3D {
-> >       .class_init  =3D tpm_crb_none_class_init,
-> >       .interfaces =3D (InterfaceInfo[]) {
-> >           { TYPE_TPM_IF },
-> > +        { TYPE_ACPI_DEV_AML_IF },
-> >           { }
-> >       }
-> >   };
-> > diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
-> > index 605e8576e9..4fff0c6b59 100644
-> > --- a/hw/tpm/tpm_crb_common.c
-> > +++ b/hw/tpm/tpm_crb_common.c
-> > @@ -239,3 +239,22 @@ void tpm_crb_mem_load(TPMCRBState *s, const uint32=
-_t *saved_regs,
-> >       memcpy(regs, saved_regs, TPM_CRB_R_MAX);
-> >       memcpy(&regs[R_CRB_DATA_BUFFER], saved_cmdmem, A_CRB_DATA_BUFFER)=
-;
-> >   }
-> > +
-> > +void tpm_crb_build_aml(TPMIf *ti, Aml *scope, uint32_t baseaddr, uint3=
-2_t size,
-> > +                       bool build_ppi)
-> > +{
-> > +    Aml *dev, *crs;
-> > +
-> > +    dev =3D aml_device("TPM");
-> > +    aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
-> > +    aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")=
-));
-> > +    aml_append(dev, aml_name_decl("_UID", aml_int(1)));
-> > +    aml_append(dev, aml_name_decl("_STA", aml_int(0xF)));
-> > +    crs =3D aml_resource_template();
-> > +    aml_append(crs, aml_memory32_fixed(baseaddr, size, AML_READ_WRITE)=
-);
-> > +    aml_append(dev, aml_name_decl("_CRS", crs));
-> > +    if (build_ppi) {
-> > +        tpm_build_ppi_acpi(ti, dev);
-> > +    }
-> > +    aml_append(scope, dev);
-> > +}
+> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+> index 8f3b9997a1..658c288f8f 100644
+> --- a/docs/sphinx/qapidoc.py
+> +++ b/docs/sphinx/qapidoc.py
+> @@ -515,7 +515,7 @@ def run(self):
+>          except QAPIError as err:
+>              # Launder QAPI parse errors into Sphinx extension errors
+>              # so they are displayed nicely to the user
+> -            raise ExtensionError(str(err))
+> +            raise ExtensionError(str(err)) from err
+>
+>      def do_parse(self, rstlist, node):
+>          """Parse rST source lines and add them to the specified node
+> --
+> 2.41.0
+>
+>
+
 
