@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910207E02F8
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 13:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F107E030F
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 13:38:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qytNB-0000Rm-18; Fri, 03 Nov 2023 08:34:01 -0400
+	id 1qytQh-0002Qc-5O; Fri, 03 Nov 2023 08:37:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytN9-0000Qm-1R
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:33:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytQc-0002QA-Vc
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:37:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytN7-0003IV-FX
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:33:58 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qytQa-000418-W2
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 08:37:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699014836;
+ s=mimecast20190719; t=1699015051;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=YvvkLEhgEVkDplTibgF07Uyw7nvrGuZ7ct+7CqaOmqg=;
- b=eUlQBtow4Eb8WpjsE13o2pFNc6+zOWpM7vbe2glig6mP8TUOXtthJnoE0PrMoW5kBNp3aV
- MCRQHeA+FSxWm9TcDzxbnmkRBvyxBACWLJlMtPxjpr3N0bZ18DZun49lrzA09GlVF+b6f9
- zVaTsl/tuB4knT59LsbAJco4mIhk984=
+ bh=jBzojreZv9lYAEvbo/wIk//pz8tYY0jG875CdIilT4g=;
+ b=T92ugxh++zdg6+2kTNgRQUZ2DUrKelJnridLCHhjO+24DmklFTv4T+Nn6bttmZ6Kuhnlc1
+ cxF4Xxkoh3exDHtumk8U0cka8K7xvODn9sCDaGb3khC3oDXUmzUSc+vL4RORPcx1W9Hf8Y
+ zhaREg/KnUWVcEr2MJsjuTzZ902wK00=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-mAPC72eAOVefPlCs7nsRmg-1; Fri, 03 Nov 2023 08:33:52 -0400
-X-MC-Unique: mAPC72eAOVefPlCs7nsRmg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-650-3_f79LA5MKOpjrXmkcDxsw-1; Fri, 03 Nov 2023 08:37:30 -0400
+X-MC-Unique: 3_f79LA5MKOpjrXmkcDxsw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 65431811E7D;
- Fri,  3 Nov 2023 12:33:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C4C882A660;
+ Fri,  3 Nov 2023 12:37:30 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.51])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 12C9640C6EBC;
- Fri,  3 Nov 2023 12:33:50 +0000 (UTC)
-Date: Fri, 3 Nov 2023 07:33:48 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C794C1121308;
+ Fri,  3 Nov 2023 12:37:28 +0000 (UTC)
+Date: Fri, 3 Nov 2023 07:37:27 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Kevin Wolf <kwolf@redhat.com>
 Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
  pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 04/24] block: Mark bdrv_root_attach_child() GRAPH_WRLOCK
-Message-ID: <wocucqfzltsw5vxoin7o4dgnpzbguaws3zp3gnkrtfpplny2ef@qqodbohq4exn>
+Subject: Re: [PATCH 16/24] block: Mark bdrv_replace_node() GRAPH_WRLOCK
+Message-ID: <qv27qnwfdeqpbimbj463kgfztmtmdpm4ptxlqptikpjw4chu4o@5r6wvf2avfy4>
 References: <20231027155333.420094-1-kwolf@redhat.com>
- <20231027155333.420094-5-kwolf@redhat.com>
- <iniiwlxhldnjmb65cr5cfao4tsynwpu5apfkqcuhhupwkodpvl@hfdxidvzspyc>
- <ZUTBJ0j7ZZDiqSdX@redhat.com>
+ <20231027155333.420094-17-kwolf@redhat.com>
+ <3dndhoo6fq2pes3dldplykyg7svuwyfntix5txvotr3zpklnly@gf6yi37ijtmm>
+ <ZUTMRxsxLbw4OePX@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZUTBJ0j7ZZDiqSdX@redhat.com>
+In-Reply-To: <ZUTMRxsxLbw4OePX@redhat.com>
 User-Agent: NeoMutt/20231023
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,43 +82,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 03, 2023 at 10:45:11AM +0100, Kevin Wolf wrote:
-> Am 27.10.2023 um 22:22 hat Eric Blake geschrieben:
-> > On Fri, Oct 27, 2023 at 05:53:13PM +0200, Kevin Wolf wrote:
-> > > Instead of taking the writer lock internally, require callers to already
-> > > hold it when calling bdrv_root_attach_child(). These callers will
-> > > typically already hold the graph lock once the locking work is
-> > > completed, which means that they can't call functions that take it
-> > > internally.
-> > > 
-> > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > > ---
-> > >  include/block/block_int-global-state.h | 13 +++++++------
-> > >  block.c                                |  5 +----
-> > >  block/block-backend.c                  |  2 ++
-> > >  blockjob.c                             |  2 ++
-> > >  4 files changed, 12 insertions(+), 10 deletions(-)
-> > > 
-> > > +++ b/block.c
-> > > @@ -3214,8 +3214,6 @@ BdrvChild *bdrv_root_attach_child(BlockDriverState *child_bs,
-> > >  
-> > >      GLOBAL_STATE_CODE();
-> > >  
-> > > -    bdrv_graph_wrlock(child_bs);
+On Fri, Nov 03, 2023 at 11:32:39AM +0100, Kevin Wolf wrote:
+...
+> > > -    GLOBAL_STATE_CODE();
 > > > -
-> > >      child = bdrv_attach_child_common(child_bs, child_name, child_class,
+> > > -    /* Make sure that @from doesn't go away until we have successfully attached
+> > > -     * all of its parents to @to. */
 > > 
-> > Do we need some sort of assertion that the caller did indeed grab the
-> > lock at this point?  Or is that redundant with assertions made in all
-> > helper functions we are calling where the lock already matters?
+> > Useful comment that you just moved here in the previous patch...
+> > 
+> > > -    bdrv_ref(from);
+...
+> > > @@ -5717,9 +5699,15 @@ BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *options,
+> > >          goto fail;
+> > >      }
+> > >  
+> > > +    bdrv_ref(bs);
+> > 
+> > ...but now it is gone.  Intentional?
 > 
-> The GRAPH_WRLOCK in the header file makes it a compiler error with TSA
-> enabled if the caller doesn't already hold the lock. And our CI has some
-> builds with TSA, so even if the maintainer only uses gcc, we'll catch
-> it.
+> I figured it was obvious enough that bdrv_ref() is always called to make
+> sure that the node doesn't go away too early, but I can add it back.
 
-TSA is awesome - guaranteeing code correctness during CI has been an
-awesome result of this massive refactoring effort.
+Your call.
+
+> > > @@ -94,8 +95,12 @@ static void commit_abort(Job *job)
+> > >       * XXX Can (or should) we somehow keep 'consistent read' blocked even
+> > >       * after the failed/cancelled commit job is gone? If we already wrote
+> > >       * something to base, the intermediate images aren't valid any more. */
+> > > -    bdrv_replace_node(s->commit_top_bs, s->commit_top_bs->backing->bs,
+> > > -                      &error_abort);
+> > > +    commit_top_backing_bs = s->commit_top_bs->backing->bs;
+> > > +    bdrv_drained_begin(commit_top_backing_bs);
+> > > +    bdrv_graph_wrlock(commit_top_backing_bs);
+> > 
+> > Here, and elsewhere in the patch, drained_begin/end is outside
+> > wr(un)lock...
+> > 
+> > > +    bdrv_replace_node(s->commit_top_bs, commit_top_backing_bs, &error_abort);
+> > > +    bdrv_graph_wrunlock();
+> > > +    bdrv_drained_end(commit_top_backing_bs);
+> > >  
+> > >      bdrv_unref(s->commit_top_bs);
+> > >      bdrv_unref(top_bs);
+> > > @@ -425,7 +430,11 @@ fail:
+> > >      /* commit_top_bs has to be replaced after deleting the block job,
+> > >       * otherwise this would fail because of lack of permissions. */
+> > >      if (commit_top_bs) {
+> > > +        bdrv_graph_wrlock(top);
+> > > +        bdrv_drained_begin(top);
+> > >          bdrv_replace_node(commit_top_bs, top, &error_abort);
+> > > +        bdrv_drained_end(top);
+> > > +        bdrv_graph_wrunlock();
+> > 
+> > ...but here you do it in the opposite order.  Intentional?
+> 
+> No, this is actually wrong. bdrv_drained_begin() has a nested event
+> loop, and running a nested event loop while holding the graph lock can
+> cause deadlocks, so it's forbidden. Thanks for catching this!
+
+That's what review is for!
+
+> 
+> Since the two comments above are the only thing you found in the review,
+> I'll just directly fix them while applying the series.
+
+Sounds good to me. With the deadlock fixed by swapping order,
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
 -- 
 Eric Blake, Principal Software Engineer
