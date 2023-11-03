@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F507DFF63
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 08:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD787DFF72
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 08:39:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyoZQ-0000zn-FH; Fri, 03 Nov 2023 03:26:20 -0400
+	id 1qyokt-0003A4-MI; Fri, 03 Nov 2023 03:38:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qyoZN-0000zT-Jg
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:26:17 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyokp-00039V-KD
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:38:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qyoZK-0001ZW-FA
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:26:17 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyokn-000572-9P
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 03:38:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1698996371;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=g+ADesTLoxgqVJakPYzQ3xu9smRiqRbB8V9FjvP3Isc=;
- b=Od3oWUeElAxMvumcfR+Z28DzgbndApnhMHfVyxz2e0tI6Rffm3/Mna2bntIzdneBNSa9Rw
- H0801nNSx2OU9KGfPDeS8CtdbGW6D4lgIBDCM9eDybD/wPD5Nx9OQHZRi3KppzpyyhE0BX
- idyIGZPxVcNHZHT6xOM3ckJroXFDf3A=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1698997083;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=g3OibgvsE8DF+VP2+O3OKF8/Be2n0w+KPm1i2Kvp4x8=;
+ b=U6MPFdTrVLr/MikcnyQyjx7pjqbayT+wfI+jISHYrOFddAzLhWL+kOKL01Gk0AZAnNoxq5
+ CpCO/L7ZSSn44Co7H/hqcCl/cVaHkeriYOqbm/E+Ztv2DoXOJC0kZBZJSE9qHMvEdEpw4a
+ +xHON8VO5k6btk571LXrYI8TQzFiYfQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-m0vL0mKMOc-3wBVfpv15Tg-1; Fri, 03 Nov 2023 03:26:09 -0400
-X-MC-Unique: m0vL0mKMOc-3wBVfpv15Tg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9ae686dafedso121670066b.3
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 00:26:09 -0700 (PDT)
+ us-mta-219-yh7MJAJHOiiNs90WXcmdLQ-1; Fri, 03 Nov 2023 03:38:02 -0400
+X-MC-Unique: yh7MJAJHOiiNs90WXcmdLQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-32d9b520d15so809522f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 00:38:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1698996368; x=1699601168;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g+ADesTLoxgqVJakPYzQ3xu9smRiqRbB8V9FjvP3Isc=;
- b=DMFffJne7RDvvDf+9GPnwGb52vHQs7Phcn6HhjxEqHzjSeaWfq4orh+lgrjuw5Brd5
- ggmyGCKN0Cy9Wye4rT5xeU6zfNCJvUvqXOTzeyM2qUFMaQhShixyTsXTxoYKCDgLEx8O
- YaBkbnHtcgEYWtvfjkjZwAyvJn+qncs/mRZ6/MlskDZVPNNYIP80BI18xUf5tKcEP0y3
- YM3Y38zBZI/dwMQzy+NI5hsT3UerwWXXu/a1hqLmrWFI8yb/ZsoeMV+5CFk/jZDXTfuZ
- 22eAYkiCeTHoMYnnJcl9422WdBk/SBqneR52i9BYsigNXbnMhm3TFD5LtBV4Uaf35Sco
- 2Bog==
-X-Gm-Message-State: AOJu0YykQWRHQBOa22aNXaalWtVRvTdtjg8yxZLGnC35vLB2qm12zkHX
- 0uEvSyP8x96ZUl67jWzfwVAbN9vgPzA49YFpB8byyqkwzr3qyTUNdNQlE4FoIVnE0UIjwBFYvon
- r+MC8MkgPvWOnmpD3kgsgjdHadcXALAoexGt67MtXjOlxu9yIZShhkavdufCRGPhtbxK1fr9ft0
- g=
-X-Received: by 2002:a17:907:6d0f:b0:9be:6ccb:6a8f with SMTP id
- sa15-20020a1709076d0f00b009be6ccb6a8fmr5933662ejc.48.1698996368058; 
- Fri, 03 Nov 2023 00:26:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGx+eNiXWZV3kq9gLVy80n7IuIrKKzMPIROhqW5d9eZJ48HcvWnx08aNWt/G/3ZJ0S+pG3Wlg==
-X-Received: by 2002:a17:907:6d0f:b0:9be:6ccb:6a8f with SMTP id
- sa15-20020a1709076d0f00b009be6ccb6a8fmr5933651ejc.48.1698996367615; 
- Fri, 03 Nov 2023 00:26:07 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
- by smtp.gmail.com with ESMTPSA id
- h3-20020a170906260300b0099bd1ce18fesm588707ejc.10.2023.11.03.00.26.06
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1698997081; x=1699601881;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=g3OibgvsE8DF+VP2+O3OKF8/Be2n0w+KPm1i2Kvp4x8=;
+ b=smgfO6j1BJgs3FmOW5oFU1tCaK39Wtb2sJxvQOg9hLmt7ToNpgD4Y03Yfm4ALAALrm
+ F3enPHPByP+JpULMM5bXiAaSkYKS6thT8IxBechnIX9SS9h8gjMOYsLtdHSfmmm4ikD/
+ u0QMTei6zqS+a7Q4UoG8T1Cj/HtKiRI+RrC/IQJu0ReM+v/xGe/hht0CIaCkhIHIk1xt
+ LlWPVlnP3JKS7istBUCL0kczROBoEpmREd6PxjjXG+ISD8JOvgc0y78jBqZfBIbRGr7d
+ hf5U4TgoqUvK3DlMp77TgeI+weepemqgrr+PjqqpVT69BbGZvTwiFkYuDwzZ5Ik925cF
+ wdjA==
+X-Gm-Message-State: AOJu0YzHLMvyutQl5homCGlT+WwNhZ3eRLrhZ1kpqVAGNRebRZdEOPCf
+ bCC9Q2mOh88CuDl4LyWh9UzNyjrhYQrs04WyWLo3cm0ESS4xc7Bm0wm/YDoHDMnA7ho/624ivC4
+ RUpX2LSSnrVCkRgk=
+X-Received: by 2002:a05:6000:1f16:b0:31f:afeb:4e7e with SMTP id
+ bv22-20020a0560001f1600b0031fafeb4e7emr22503925wrb.37.1698997081159; 
+ Fri, 03 Nov 2023 00:38:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTIXS04xg1rS9aVSjhqaa76Tmomt0i6OjJ6ph2zn9p1hZqFhwe+qHXNZq8AQwRp7M6TJ83VQ==
+X-Received: by 2002:a05:6000:1f16:b0:31f:afeb:4e7e with SMTP id
+ bv22-20020a0560001f1600b0031fafeb4e7emr22503910wrb.37.1698997080839; 
+ Fri, 03 Nov 2023 00:38:00 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ e4-20020adfef04000000b0032dde679398sm1188309wro.8.2023.11.03.00.37.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Nov 2023 00:26:07 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [qemu-web PATCH] container: silence httpd logs
-Date: Fri,  3 Nov 2023 08:26:06 +0100
-Message-ID: <20231103072606.221620-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ Fri, 03 Nov 2023 00:38:00 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH] migration: Unlock mutex in error case
+In-Reply-To: <87ttq447oi.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
+ =?utf-8?Q?e=22's?= message of "Thu, 02 Nov 2023 13:16:13 +0000")
+References: <87ttq447oi.fsf@draig.linaro.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Fri, 03 Nov 2023 08:37:59 +0100
+Message-ID: <87h6m32so8.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -94,60 +100,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The httpd logs for qemu.org are huge and are exhausting the disk
-space on the web server.  Silence them, they are of limited use
-and also a possible privacy issue.
+Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
+> Juan Quintela <quintela@redhat.com> writes:
+>
+>> We were not unlocking bitmap mutex on the error case.
+>> Coverity discovered the problem.
+>>
+>> Fixes: a2326705e5 ("migration: Stop migration immediately in RDMA error =
+paths")
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> ---
+>>  migration/ram.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/migration/ram.c b/migration/ram.c
+>> index 34724e8fe8..8c4df60f29 100644
+>> --- a/migration/ram.c
+>> +++ b/migration/ram.c
+>> @@ -3040,6 +3040,7 @@ static int ram_save_iterate(QEMUFile *f, void *opa=
+que)
+>>          ret =3D rdma_registration_start(f, RAM_CONTROL_ROUND);
+>>          if (ret < 0) {
+>>              qemu_file_set_error(f, ret);
+>> +            qemu_mutex_unlock(&rs->bitmap_mutex);
+>
+> I see the function uses the WITH_RCU_READ_LOCK_GUARD() macro to autofree
+> the RCU lock so why not use WITH_QEMU_LOCK_GUARD() instead of manually
+> checking the error cases?
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- container/conf.d/git.conf    | 2 ++
- container/conf.d/noname.conf | 2 ++
- container/conf.d/www.conf    | 2 ++
- 3 files changed, 6 insertions(+)
+You are right.
 
-diff --git a/container/conf.d/git.conf b/container/conf.d/git.conf
-index 13093c5..a3df4a7 100644
---- a/container/conf.d/git.conf
-+++ b/container/conf.d/git.conf
-@@ -2,6 +2,8 @@
-     ServerName git.qemu.org
-     ServerAlias git.qemu.org
- 
-+    CustomLog /dev/null common
-+
-     RewriteEngine On
- 
-     RewriteRule ^/(git/)?([^/?;]+)\.git(/?|/HEAD|/info/.*|/objects/.*|/git-(upload|receive)-pack)$ http://gitlab.com/qemu-project/$2$3 [R,L]
-diff --git a/container/conf.d/noname.conf b/container/conf.d/noname.conf
-index db17b95..9080c64 100644
---- a/container/conf.d/noname.conf
-+++ b/container/conf.d/noname.conf
-@@ -2,6 +2,8 @@
-     ServerName qemu.org
-     ServerAlias qemu.org
- 
-+    CustomLog /dev/null common
-+
-     RewriteEngine On
- 
-     RewriteRule ^(.*) https://www.qemu.org$0 [R=301]
-diff --git a/container/conf.d/www.conf b/container/conf.d/www.conf
-index 1904b5a..d9f6360 100644
---- a/container/conf.d/www.conf
-+++ b/container/conf.d/www.conf
-@@ -2,6 +2,8 @@
-     ServerName www.qemu.org
-     ServerAlias www.qemu.org
- 
-+    CustomLog /dev/null common
-+
-     RewriteEngine On
-     RewriteRule ^/docs/master(/.*|$) https://qemu-project.gitlab.io/qemu$1 [NE,P,L]
-     Header edit Location ^(http:|https:)?//qemu-project\.gitlab\.io/qemu/ https://www.qemu.org/docs/master/
--- 
-2.41.0
+Changing to that.
+
+Later, Juan.
 
 
