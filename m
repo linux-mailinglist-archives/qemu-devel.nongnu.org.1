@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA9D7E061A
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 17:03:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4587E061E
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 17:03:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qywcW-00041h-Pw; Fri, 03 Nov 2023 12:02:04 -0400
+	id 1qywdE-00050Q-06; Fri, 03 Nov 2023 12:02:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qywcU-00040q-Nc
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 12:02:02 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qywdA-0004yw-Fn
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 12:02:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qywcR-0004Mf-Gv
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 12:02:02 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A3FERAD027268; Fri, 3 Nov 2023 16:01:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id; s=corp-2023-03-30;
- bh=blw1igxzn88xL1apWnJzyKWnO5zYL5R0WWASLE48pmw=;
- b=XPAmZj37ZGZP98iNBwPaMHmWpl12SuIg/6eV0EYpU7FnHNc/1H4E8Ss2kN/rDpD4Dy+t
- dFTQHDqiC9m1OJkhXT9SJG1x7EyjiFYeGRQM4zmpJMWDAaDe955xp1FzpjnIZGBmuap6
- KNDurcBFDWPWYj2GUrGkHAXpeaaANQ7Kd4jBs7aqtFzhKrDqhWgCd+gdPyng2oyF7uoO
- V0k7DiBIiZjZCv24K5bgYvp3vUaRsAHOVsLH5pzGLlX5/d4HrwXEW6/NpKJpL2c2h9W7
- n+WBvQSWl/m1hnVyWSev6t84lTZtT+pSLlVcJbA4wZ2QwDx2esltULQbowPQlf9EDbJd sg== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3u0t6bc5mh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 03 Nov 2023 16:01:32 +0000
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3A3EYQJo022427; Fri, 3 Nov 2023 16:01:31 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3u0rraa6fh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 03 Nov 2023 16:01:31 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A3G1VJY020774;
- Fri, 3 Nov 2023 16:01:31 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3u0rraa6en-1; Fri, 03 Nov 2023 16:01:31 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH] monitor: flush messages on abort
-Date: Fri,  3 Nov 2023 09:01:29 -0700
-Message-Id: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-03_15,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311030135
-X-Proofpoint-GUID: WVo7Eqdcb0xCuku98gbyVCpoYkw0ttHw
-X-Proofpoint-ORIG-GUID: WVo7Eqdcb0xCuku98gbyVCpoYkw0ttHw
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qywd8-0004Ui-Sw
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 12:02:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699027360;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1jY6IfPiXv0DVgUjALsMmduOCXb+/KMBs6lBjj+WKis=;
+ b=Rz6sp5Iqp8ZZftujA2g816TGHhUwpEr9sxAVvnI8ZL2JaNgUH3DFBQ6vf9Icf3lWSj2aDb
+ HEH8EJ6mvYYdTXf/WCrIsMIRhb2QS1oveieZ4XyJAqnfH7K5n0/r+BMbuBLqNKXGXN5LpE
+ 4h/qnnX609KCEZvacirQ80uuvXKWWZQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-694-u8skFhkjPOW3GptXZb3-gA-1; Fri, 03 Nov 2023 12:02:36 -0400
+X-MC-Unique: u8skFhkjPOW3GptXZb3-gA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C71FC84EBC5;
+ Fri,  3 Nov 2023 16:02:35 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A19232166B27;
+ Fri,  3 Nov 2023 16:02:35 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B16A821E6A1F; Fri,  3 Nov 2023 17:02:34 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org, michael.roth@amd.com
+Subject: Re: [PATCH 1/1] sphinx/qapidoc: Tidy up pylint warning
+ raise-missing-from
+References: <20231025092159.1782638-1-armbru@redhat.com>
+ <20231025092159.1782638-2-armbru@redhat.com>
+ <CAFn=p-Y58FTVshF_y99bTOXJNRaec=_rGnJGrEtcRBMZbPq2LA@mail.gmail.com>
+ <CAFEAcA8KaWXTinOLFitnYuTnqz2yXmgYdyUzE6FVFMvwwbLucA@mail.gmail.com>
+Date: Fri, 03 Nov 2023 17:02:34 +0100
+In-Reply-To: <CAFEAcA8KaWXTinOLFitnYuTnqz2yXmgYdyUzE6FVFMvwwbLucA@mail.gmail.com>
+ (Peter Maydell's message of "Fri, 3 Nov 2023 10:31:27 +0000")
+Message-ID: <878r7en7tx.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,75 +86,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Buffered monitor output is lost when abort() is called.  The pattern
-error_report() followed by abort() occurs about 60 times, so valuable
-information is being lost when the abort is called in the context of a
-monitor command.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-To fix, install a SIGABRT handler to flush the monitor buffer to stderr.
+> On Fri, 3 Nov 2023 at 03:08, John Snow <jsnow@redhat.com> wrote:
+>>
+>> On Wed, Oct 25, 2023 at 6:10=E2=80=AFAM Markus Armbruster <armbru@redhat=
+.com> wrote:
+>> >
+>> > Pylint advises:
+>> >
+>> >     docs/sphinx/qapidoc.py:518:12: W0707: Consider explicitly re-raisi=
+ng using 'raise ExtensionError(str(err)) from err' (raise-missing-from)
+>> >
+>> > From its manual:
+>> >
+>> >     Python's exception chaining shows the traceback of the current
+>> >     exception, but also of the original exception.  When you raise a
+>> >     new exception after another exception was caught it's likely that
+>> >     the second exception is a friendly re-wrapping of the first
+>> >     exception.  In such cases `raise from` provides a better link
+>> >     between the two tracebacks in the final error.
+>> >
+>> > Makes sense, so do it.
+>> >
+>> > Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>>
+>> In this case it probably doesn't make a difference because Sphinx has
+>> its own formatting for displaying the errors, but it's good hygiene.
+>>
+>> Reviewed-by: John Snow <jsnow@redhat.com>
+>
+> Has somebody checked that the error Sphinx shows to the user
+> is still the friendly one? The only reason to raise
+> this error is so that Sphinx will catch it and display
+> the friendly string, so anything about tracebacks is a red
+> herring -- if the traceback is shown to the user then we got
+> something wrong.
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- monitor/monitor.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+The exception type doesn't change, only the backtrace stored within the
+exception.  Can't see how its catching could be affected.
 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index dc352f9..65dace0 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -701,6 +701,43 @@ void monitor_cleanup(void)
-     }
- }
- 
-+#ifdef CONFIG_LINUX
-+
-+static void monitor_abort(int signal, siginfo_t *info, void *c)
-+{
-+    Monitor *mon = monitor_cur();
-+
-+    if (!mon || qemu_mutex_trylock(&mon->mon_lock)) {
-+        return;
-+    }
-+
-+    if (mon->outbuf && mon->outbuf->len) {
-+        fputs("SIGABRT received: ", stderr);
-+        fputs(mon->outbuf->str, stderr);
-+        if (mon->outbuf->str[mon->outbuf->len - 1] != '\n') {
-+            fputc('\n', stderr);
-+        }
-+    }
-+
-+    qemu_mutex_unlock(&mon->mon_lock);
-+}
-+
-+static void monitor_add_abort_handler(void)
-+{
-+    struct sigaction act;
-+
-+    memset(&act, 0, sizeof(act));
-+    act.sa_sigaction = monitor_abort;
-+    act.sa_flags = SA_SIGINFO;
-+    sigaction(SIGABRT,  &act, NULL);
-+}
-+
-+#else
-+
-+static void monitor_add_abort_handler(void) {}
-+
-+#endif
-+
- static void monitor_qapi_event_init(void)
- {
-     monitor_qapi_event_state = g_hash_table_new(qapi_event_throttle_hash,
-@@ -712,6 +749,7 @@ void monitor_init_globals(void)
-     monitor_qapi_event_init();
-     qemu_mutex_init(&monitor_lock);
-     coroutine_mon = g_hash_table_new(NULL, NULL);
-+    monitor_add_abort_handler();
- 
-     /*
-      * The dispatcher BH must run in the main loop thread, since we
--- 
-1.8.3.1
+To be sure, stick a '} at the beginning of qapi-schema.json and run
+sphinx-build.  Result:
+
+    Extension error:
+    /work/armbru/qemu/docs/../qapi/qapi-schema.json:1:1: expected '{', '[',=
+ string, or boolean
+
+Satisfied?
 
 
