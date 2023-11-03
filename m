@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31C47E01B9
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 12:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 313087E01BC
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 12:10:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qys16-0002Th-Cm; Fri, 03 Nov 2023 07:07:08 -0400
+	id 1qys3p-0003Zq-2T; Fri, 03 Nov 2023 07:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qys13-0002RT-O9
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 07:07:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qys10-0000yq-UK
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 07:07:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699009621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=CijK49EREiB073wU04McO5D2utSs63Bn7Z82EngYAuU=;
- b=EB2btNF291ZUIQ/yOAjJwlxBjlFseP/gFqYo1ulsnA6jiaWaJDCvgLwZBgOnu9+EgGUz2Q
- vOVwoWEk6fa90tcHmLlO435wQTwgpt6ox2Q6NidS9szD8wES/EVFbHCk8a33YIqnbtb8Qt
- fxIcnygjgnzs9qF5HmZTPlTp8QPOIYY=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-foGOuUUNPnuOU6VLKWK6Dw-1; Fri, 03 Nov 2023 07:06:59 -0400
-X-MC-Unique: foGOuUUNPnuOU6VLKWK6Dw-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1cc56a9ece7so16475945ad.3
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 04:06:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qys3n-0003ZZ-AM
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 07:09:55 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qys3l-0001gO-Dm
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 07:09:55 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-407c3adef8eso16848175e9.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 04:09:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699009791; x=1699614591; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=duysefl+2NL/KJGW8keL3aZWbNjyZCifsZpSeU+nR8Q=;
+ b=UoGzhO9l0UfLp80ta4fG1sIKHUwY4KRIG2IfbsT+BCK3UNfSwdR2viZtd667y/hv5o
+ KmtmdeFVZMcNNZDAkklS5AV7KDGsCm5H3xqstkTJpr3QlQYDmC/txACWKQVDmYZ87mzx
+ SDmcvs0t0WTuqljK1vaDVGjBmkS4bnsCrzrO+6jaCLe0rBtOzoYOrCBm85pWi/d+3o1B
+ 6eHVhhMpgCUqmbgmYPSDZQQ1ob38IrKXxTv4iKusm6F9i+gHADmsnKc2TniRzgCN2fpm
+ 8sbHAN2Ak0jktNwTFkyL1aGtAvdqRpAITUE+108rHzxG2O82E6RGmoeKBV7hjipSlQVU
+ z6iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699009618; x=1699614418;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CijK49EREiB073wU04McO5D2utSs63Bn7Z82EngYAuU=;
- b=TVEXlM6he7A6gvV5eiIy+ThIMFG4oc5I8sltMeY1NNvdPXS5BA9lnjfoUb3mb2rOSC
- nWhj/d58ShoxEOPMD6Tl2sy86weN0PHsEqoujjfP0nR9zQ7hW/Iyrw+6U1NHAwLIiedz
- kPccbffiIiTNLU62ZsX6ml1yTtODtdwiM877wM6X0fpE7cTEA+JiSbAuzOZNx93dkU3J
- WpwOzkU2kQHZ/nHVEbc6F7MIUQuPDXJ5koK6wepj6QJqtH//k/Tu/aIAY45u+fn7581K
- m/IDDcScbeNiuL7HRt4uQcL22rQovXkQO2GFVyHQtoebXSqBY1EbZUMuFjtcd3EK/iJ9
- +WMQ==
-X-Gm-Message-State: AOJu0Ywzjd1UCGY12mNNoAUyng0nrl7+tlkh1oDhbSQQQH2F+sMPZQju
- oM8CiYw2UH6YUHdENdFJ75q8AKW3/rhNmn/OuMliqMQkPwNCbZ3tPUOjc/ZpJJCDf7iiy5ZYnBh
- Pj+D9nF0by3qWJ94=
-X-Received: by 2002:a17:902:ce89:b0:1cc:47e7:5d3e with SMTP id
- f9-20020a170902ce8900b001cc47e75d3emr20249843plg.58.1699009617985; 
- Fri, 03 Nov 2023 04:06:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF0v4bGhLDe2a4XeByYZTLRxcU19EOgiQDbOYdU0qnSN7ntD1onISEC+mS7rziZk/G88KvmGA==
-X-Received: by 2002:a17:902:ce89:b0:1cc:47e7:5d3e with SMTP id
- f9-20020a170902ce8900b001cc47e75d3emr20249808plg.58.1699009617354; 
- Fri, 03 Nov 2023 04:06:57 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.156.16])
- by smtp.googlemail.com with ESMTPSA id
- jj5-20020a170903048500b001b896d0eb3dsm1200085plb.8.2023.11.03.04.06.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Nov 2023 04:06:56 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, imammedo@redhat.com,
- David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Subject: [PATCH v5] tests/avocado: add test to exercize processor address
- space memory bound checks
-Date: Fri,  3 Nov 2023 16:36:43 +0530
-Message-ID: <20231103110643.11664-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
+ d=1e100.net; s=20230601; t=1699009791; x=1699614591;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=duysefl+2NL/KJGW8keL3aZWbNjyZCifsZpSeU+nR8Q=;
+ b=WN9A9X6RBWSH+X4w1cnWwGPOtSIXnzxpP6bLnsnoRiwVxaRZqLU9GGm1j0AbZqtwxL
+ t7ZKDxUSJN9Z/dwcoi3HrTOTWfAEtMVvdScyCFhRJg9Smw5g69Klux6Q2neJZ1RDxjBZ
+ +kV74qgWscaCKJqy0R7vbF1T+D7x/qhR/gFp55SkN0xH0hwIVqZP+yHOtv8/t428eU4Q
+ lTlgmebmX56pSPiz1osD5ZUKKUoDsnEHQAVDFCI9mccXAyyFEq2Whk0zlESkYEzLwAf9
+ +GMayovkRP6uq3fkKo5LSDT+w+JBIK2VYZtq8lnWuwjS5iNNPTN+axTjrE4W583w1j7Y
+ YwjA==
+X-Gm-Message-State: AOJu0YxoCXu96sovv6pnr3jAS8OKLi+LR+/PsuTkO3IQJSLMteIBmfHu
+ FnV9fZ1eD8+uDDU9+s5UrHo3Bw==
+X-Google-Smtp-Source: AGHT+IGVx4/bMhb6r4CL7dD2aJq0C+DVgy2yjy++ad/Ihqk83Qb1YM62BcbwJYIPAX9AVbspl5ycig==
+X-Received: by 2002:a05:600c:1c04:b0:407:5b7c:2f6a with SMTP id
+ j4-20020a05600c1c0400b004075b7c2f6amr17666995wms.0.1699009791580; 
+ Fri, 03 Nov 2023 04:09:51 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h02-176-172-52-228.dsl.sta.abo.bbox.fr.
+ [176.172.52.228]) by smtp.gmail.com with ESMTPSA id
+ i17-20020a05600c481100b004063d8b43e7sm2063761wmo.48.2023.11.03.04.09.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 Nov 2023 04:09:51 -0700 (PDT)
+Message-ID: <8ef2a102-3d3a-3979-6610-036c68262f6f@linaro.org>
+Date: Fri, 3 Nov 2023 12:09:48 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 3/5] hw/ppc/e500: QOM-attach CPUs to the machine container
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Luc Michel <luc.michel@amd.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Bernhard Beschow <shentey@gmail.com>, qemu-ppc@nongnu.org,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20231030143957.82988-1-philmd@linaro.org>
+ <20231030143957.82988-4-philmd@linaro.org> <874ji32sj9.fsf@pond.sub.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <874ji32sj9.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -59
+X-Spam_score: -6.0
+X-Spam_bar: ------
+X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.938,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,423 +101,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU has validations to make sure that a VM is not started with more memory
-(static and hotpluggable memory) than what the guest processor can address
-directly with its addressing bits. This change adds a test to make sure QEMU
-fails to start with a specific error message when an attempt is made to
-start a VM with more memory than what the processor can directly address.
-The test also checks for passing cases when the address space of the processor
-is capable of addressing all memory. Boundary cases are tested.
+On 3/11/23 08:40, Markus Armbruster wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> Instead of having CPUs dangling in the /unattached/device
+>> bucket, attach them to the machine container.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   hw/ppc/e500.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+>> index e04114fb3c..f8177c0280 100644
+>> --- a/hw/ppc/e500.c
+>> +++ b/hw/ppc/e500.c
+>> @@ -946,6 +946,7 @@ void ppce500_init(MachineState *machine)
+>>               exit(1);
+>>           }
+>>   
+>> +        object_property_add_child(OBJECT(machine), "cpu[*]", OBJECT(cs));
+>>           /*
+>>            * Secondary CPU starts in halted state for now. Needs to change
+>>            * when implementing non-kernel boot.
+> 
+> A peek at "info qom-tree" confirms the CPU is in /machine/unattached/.
+> Along with most onboard devices.  Details below.
+> 
+> Quick test...  I count 563 machines.  394 seem to have CPU(s) in or
+> below /machine/unattached/, 129 elsewhere, and 40 I can't easily
+> examine, because they don't start to monitor without additional CLI
+> arguments.
+> 
+> Where should CPUs be?
 
-CC: imammedo@redhat.com
-CC: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- tests/avocado/mem-addr-space-check.py | 361 ++++++++++++++++++++++++++
- 1 file changed, 361 insertions(+)
- create mode 100644 tests/avocado/mem-addr-space-check.py
+It is machine specific.
 
-Changelog:
-v5:
-  - made the negative test cases (ones that do not result in QEMU crash)
-    more robust by checking the non-existence of the "phys-bits too low"
-    log.
-  - added a new test case for AMD HT window where QEMU starts fine.
-  - rebased.
-  - cosmetic typo/comment adjustments.
+- For System-on-Chip, it would be in /soc
 
-Tests all pass:
-$ ./pyvenv/bin/avocado run tests/avocado/mem-addr-space-check.py --tap -
-1..15
-ok 1 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_pse36
-ok 2 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_pae
-ok 3 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium_pse36
-ok 4 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium_pae
-ok 5 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium2
-ok 6 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_nonpse36
-ok 7 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_70_amd
-ok 8 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_71_amd
-ok 9 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_70_amd
-ok 10 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_71_amd
-ok 11 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_71_intel
-ok 12 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_71_amd_41bits
-ok 13 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_71_amd_41bits
-ok 14 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q35_intel_cxl
-ok 15 tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35_intel_cxl
+- For systems that fully model CPU topology, I'd expect a consistent
+   topology path. (If it is part of a cluster, in that /cluster).
 
-v4: incorporated changes related to suggestions from David.
-v3: added pae tests as well.
-v2: added 64-bit tests. Added cxl tests.
+- For mainframes, it should be part of the CPU cards that can be
+   inserted?
 
-diff --git a/tests/avocado/mem-addr-space-check.py b/tests/avocado/mem-addr-space-check.py
-new file mode 100644
-index 0000000000..6b4ada5857
---- /dev/null
-+++ b/tests/avocado/mem-addr-space-check.py
-@@ -0,0 +1,361 @@
-+# Check for crash when using memory beyond the available guest processor
-+# address space.
-+#
-+# Copyright (c) 2023 Red Hat, Inc.
-+#
-+# Author:
-+#  Ani Sinha <anisinha@redhat.com>
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+
-+from avocado_qemu import QemuSystemTest
-+import signal
-+import time
-+
-+class MemAddrCheck(QemuSystemTest):
-+    # first, lets test some 32-bit processors.
-+    # for all 32-bit cases, pci64_hole_size is 0.
-+    def test_phybits_low_pse36(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        With pse36 feature ON, a processor has 36 bits of addressing. So it can
-+        access up to a maximum of 64GiB of memory. Memory hotplug region begins
-+        at 4 GiB boundary when "above_4g_mem_size" is 0 (this would be true when
-+        we have 0.5 GiB of VM memory, see pc_q35_init()). This means total
-+        hotpluggable memory size is 60 GiB. Per slot, we reserve 1 GiB of memory
-+        for dimm alignment for all newer machines (see enforce_aligned_dimm
-+        property for pc machines and pc_get_device_memory_range()). That leaves
-+        total hotpluggable actual memory size of 59 GiB. If the VM is started
-+        with 0.5 GiB of memory, maxmem should be set to a maximum value of
-+        59.5 GiB to ensure that the processor can address all memory directly.
-+        Note that 64-bit pci hole size is 0 in this case. If maxmem is set to
-+        59.6G, QEMU should fail to start with a message "phy-bits are too low".
-+        If maxmem is set to 59.5G with all other QEMU parameters identical, QEMU
-+        should start fine.
-+        """
-+        self.vm.add_args('-S', '-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.6G',
-+                         '-cpu', 'pentium,pse36=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_pae(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        With pae feature ON, a processor has 36 bits of addressing. So it can
-+        access up to a maximum of 64GiB of memory. Rest is the same as the case
-+        with pse36 above.
-+        """
-+        self.vm.add_args('-S', '-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.6G',
-+                         '-cpu', 'pentium,pae=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_pentium_pse36(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Setting maxmem to 59.5G and making sure that QEMU can start with the
-+        same options as the failing case above with pse36 cpu feature.
-+        """
-+        self.vm.add_args('-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.5G',
-+                         '-cpu', 'pentium,pse36=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_pentium_pae(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Test is same as above but now with pae cpu feature turned on.
-+        Setting maxmem to 59.5G and making sure that QEMU can start fine
-+        with the same options as the case above.
-+        """
-+        self.vm.add_args('-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.5G',
-+                         '-cpu', 'pentium,pae=on', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_pentium2(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Pentium2 has 36 bits of addressing, so its same as pentium
-+        with pse36 ON.
-+        """
-+        self.vm.add_args('-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=59.5G',
-+                         '-cpu', 'pentium2', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_nonpse36(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Pentium processor has 32 bits of addressing without pse36 or pae
-+        so it can access physical address up to 4 GiB. Setting maxmem to
-+        4 GiB should make QEMU fail to start with "phys-bits too low"
-+        message because the region for memory hotplug is always placed
-+        above 4 GiB due to the PCI hole and simplicity.
-+        """
-+        self.vm.add_args('-S', '-machine', 'q35', '-m',
-+                         '512,slots=1,maxmem=4G',
-+                         '-cpu', 'pentium', '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    # now lets test some 64-bit CPU cases.
-+    def test_phybits_low_tcg_q35_70_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        For q35 7.1 machines and above, there is a HT window that starts at
-+        1024 GiB and ends at 1 TiB - 1. If the max GPA falls in this range,
-+        "above_4G" memory is adjusted to start at 1 TiB boundary for AMD cpus
-+        in the default case. Lets test without that case for machines 7.0.
-+        For q35-7.0 machines, "above 4G" memory starts are 4G.
-+        pci64_hole size is 32 GiB. Since TCG_PHYS_ADDR_BITS is defined to
-+        be 40, TCG emulated CPUs have maximum of 1 TiB (1024 GiB) of
-+        directly addressible memory.
-+        Hence, maxmem value at most can be
-+        1024 GiB - 4 GiB - 1 GiB per slot for alignment - 32 GiB + 0.5 GiB
-+        which is equal to 987.5 GiB. Setting the value to 988 GiB should
-+        make QEMU fail with the error message.
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
-+                         '512,slots=1,maxmem=988G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_tcg_q35_71_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        AMD_HT_START is defined to be at 1012 GiB. So for q35 machines
-+        version > 7.0 and AMD cpus, instead of 1024 GiB limit for 40 bit
-+        processor address space, it has to be 1012 GiB , that is 12 GiB
-+        less than the case above in order to accomodate HT hole.
-+        Make sure QEMU fails when maxmem size is 976 GiB (12 GiB less
-+        than 988 GiB).
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=976G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_tcg_q35_70_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same as q35-7.0 AMD case except that here we check that QEMU can
-+        successfully start when maxmem is < 988G.
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
-+                         '512,slots=1,maxmem=987.5G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_tcg_q35_71_amd(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same as q35-7.1 AMD case except that here we check that QEMU can
-+        successfully start when maxmem is < 976G.
-+        """
-+        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=975.5G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_tcg_q35_71_intel(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same parameters as test_phybits_low_tcg_q35_71_amd() but use
-+        Intel cpu instead. QEMU should start fine in this case as
-+        "above_4G" memory starts at 4G.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'Skylake-Server',
-+                         '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=976G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_tcg_q35_71_amd_41bits(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        AMD processor with 41 bits. Max cpu hw address = 2 TiB.
-+        By setting maxram above 1012 GiB  - 32 GiB - 4 GiB = 976 GiB, we can
-+        force "above_4G" memory to start at 1 TiB for q35-7.1 machines
-+        (max GPA will be above AMD_HT_START which is defined as 1012 GiB).
-+
-+        With pci_64_hole size at 32 GiB, in this case, maxmem should be 991.5
-+        GiB with 1 GiB per slot for alignment and 0.5 GiB as non-hotplug
-+        memory for the VM (1024 - 32 - 1 + 0.5). With 992 GiB, QEMU should
-+        fail to start.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
-+                         '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=992G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_tcg_q35_71_amd_41bits(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        AMD processor with 41 bits. Max cpu hw address = 2 TiB.
-+        Same as above but by setting maxram beween 976 GiB and 992 Gib,
-+        QEMU should start fine.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
-+                         '-machine', 'pc-q35-7.1', '-m',
-+                         '512,slots=1,maxmem=990G',
-+                         '-display', 'none',
-+                         '-object', 'memory-backend-ram,id=mem1,size=1G',
-+                         '-device', 'pc-dimm,id=vm0,memdev=mem1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_low_tcg_q35_intel_cxl(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        cxl memory window starts after memory device range. Here, we use 1 GiB
-+        of cxl window memory. 4G_mem end aligns at 4G. pci64_hole is 32 GiB and
-+        starts after the cxl memory window.
-+        So maxmem here should be at most 986 GiB considering all memory boundary
-+        alignment constraints with 40 bits (1 TiB) of processor physical bits.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
-+                         '-machine', 'q35,cxl=on', '-m',
-+                         '512,slots=1,maxmem=987G',
-+                         '-display', 'none',
-+                         '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1',
-+                         '-M', 'cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=1G')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        self.vm.wait()
-+        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
-+
-+    def test_phybits_ok_tcg_q35_intel_cxl(self):
-+        """
-+        :avocado: tags=machine:q35
-+        :avocado: tags=arch:x86_64
-+
-+        Same as above but here we do not reserve any cxl memory window. Hence,
-+        with the exact same parameters as above, QEMU should start fine even
-+        with cxl enabled.
-+        """
-+        self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
-+                         '-machine', 'q35,cxl=on', '-m',
-+                         '512,slots=1,maxmem=987G',
-+                         '-display', 'none',
-+                         '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1')
-+        self.vm.set_qmp_monitor(enabled=False)
-+        self.vm.launch()
-+        time.sleep(3)
-+        self.vm.shutdown()
-+        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
--- 
-2.42.0
+- For a single Pentium CPU, maybe /machine is sufficient.
+
+> Is /machine/unattached/ basically where we dump products of lazy
+> modelling?
+
+Unfortunately, yes. Also where CLI created devices are I guess.
+
+> If yes, should we try to empty it out?
+
+If it is useful. For components expected to be referenced externally
+by humans, probably. If only used by scripts, maybe not, except if
+human have to debug.
+
+> If we shouldn't, then why move this one out?
+
+When looking for a component in the tree, I start to look at /machine,
+having to fish for it elsewhere is not very natural. I'd change your
+question by:
+- Why do we need /unattached?
+or
+- Why do we have 2 different folders, /machine and /unattached?
+If it is a headache, why not just simply merge them both?
+
+> $ qemu-system-ppc -nodefaults -S -display none -M ppce500 -monitor stdio
+> QEMU 8.1.50 monitor - type 'help' for more information
+> (qemu) info qom-tree
+> /machine (ppce500-machine)
+>    /e500-ccsr (e500-ccsr)
+>      /e500-ccsr[0] (memory-region)
+>      /e500-pci-bar0[0] (memory-region)
+>    /pci-host (e500-pcihost)
+>      /bm-e500[0] (memory-region)
+>      /pci bus memory[0] (memory-region)
+>      /pci-conf-data[0] (memory-region)
+>      /pci-conf-idx[0] (memory-region)
+>      /pci-container[0] (memory-region)
+>      /pci-pio[0] (memory-region)
+>      /pci.0 (PCI)
+>      /pci.reg[0] (memory-region)
+>    /peripheral (container)
+>    /peripheral-anon (container)
+[...]
+
+>    /unattached (container)
+>      /device[0] (e500v2_v30-powerpc-cpu)
+>        /unnamed-gpio-in[0] (irq)
+>        /unnamed-gpio-in[1] (irq)
+>        /unnamed-gpio-in[2] (irq)
+>        /unnamed-gpio-in[3] (irq)
+>        /unnamed-gpio-in[4] (irq)
+>        /unnamed-gpio-in[5] (irq)
+>        /unnamed-gpio-in[6] (irq)
+>      /device[1] (mpc-i2c)
+>        /i2c (i2c-bus)
+>        /mpc-i2c[0] (memory-region)
+>      /device[2] (ds1338)
+>      /device[3] (unimplemented-device)
+>        /esdhc[0] (memory-region)
+>      /device[4] (generic-sdhci)
+>        /sd-bus (sdhci-bus)
+>        /sdhci[0] (memory-region)
+>      /device[5] (mpc8544-guts)
+>        /mpc8544.guts[0] (memory-region)
+>      /device[6] (e500-host-bridge)
+>        /bus master container[0] (memory-region)
+>        /bus master[0] (memory-region)
+>      /device[7] (e500-spin)
+>        /e500 spin pv device[0] (memory-region)
+>      /device[8] (mpc8xxx_gpio)
+>        /mpc8xxx_gpio[0] (memory-region)
+>        /unnamed-gpio-in[0] (irq)
+>        /unnamed-gpio-in[10] (irq)
+>        /unnamed-gpio-in[11] (irq)
+>        /unnamed-gpio-in[12] (irq)
+>        /unnamed-gpio-in[13] (irq)
+>        /unnamed-gpio-in[14] (irq)
+>        /unnamed-gpio-in[15] (irq)
+>        /unnamed-gpio-in[16] (irq)
+>        /unnamed-gpio-in[17] (irq)
+>        /unnamed-gpio-in[18] (irq)
+>        /unnamed-gpio-in[19] (irq)
+>        /unnamed-gpio-in[1] (irq)
+>        /unnamed-gpio-in[20] (irq)
+>        /unnamed-gpio-in[21] (irq)
+>        /unnamed-gpio-in[22] (irq)
+>        /unnamed-gpio-in[23] (irq)
+>        /unnamed-gpio-in[24] (irq)
+>        /unnamed-gpio-in[25] (irq)
+>        /unnamed-gpio-in[26] (irq)
+>        /unnamed-gpio-in[27] (irq)
+>        /unnamed-gpio-in[28] (irq)
+>        /unnamed-gpio-in[29] (irq)
+>        /unnamed-gpio-in[2] (irq)
+>        /unnamed-gpio-in[30] (irq)
+>        /unnamed-gpio-in[31] (irq)
+>        /unnamed-gpio-in[3] (irq)
+>        /unnamed-gpio-in[4] (irq)
+>        /unnamed-gpio-in[5] (irq)
+>        /unnamed-gpio-in[6] (irq)
+>        /unnamed-gpio-in[7] (irq)
+>        /unnamed-gpio-in[8] (irq)
+>        /unnamed-gpio-in[9] (irq)
+>      /device[9] (platform-bus-device)
+>        /platform bus[0] (memory-region)
+
+Actually most of these do have a QOM parent.
+
+Correctly placing them in the tree should help when trying to
+resolve a component and avoiding an ambiguous match.
+
+>      /io[0] (memory-region)
+>      /non-qdev-gpio[0] (irq)
+>      /sysbus (System)
+>      /system[0] (memory-region)
+> 
 
 
