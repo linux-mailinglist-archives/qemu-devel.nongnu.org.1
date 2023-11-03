@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6B47E0492
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 15:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F257E04AD
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 15:29:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyv1D-0003Ic-AT; Fri, 03 Nov 2023 10:19:27 -0400
+	id 1qyv9V-0005nb-Su; Fri, 03 Nov 2023 10:28:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qyv0v-0003E5-65
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:19:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qyv0m-0002f8-6M
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:19:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699021138;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+30kyaHZ1KGC4l+463f0VC0JPFRvELxQfgTo1BGI5Pg=;
- b=KcCO8bmYc62jP0xysPuin85o6/5xOm0Fe9YhSLdKlxOQJlqNC+26+x/2zsouXvGog01Lhc
- 5JYDw+prvtxOxkY2Jx36cdQG9mqFHL/BnQVjKX2+6z/LxxGoPzu3crQofH2GnusQAracqh
- dRQmCL8IA0FYe5lhNS4qJCv4saEUzso=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-557-ykV4ZQjlMNiF56aKtQ9BnA-1; Fri, 03 Nov 2023 10:18:57 -0400
-X-MC-Unique: ykV4ZQjlMNiF56aKtQ9BnA-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-da033914f7cso2453777276.0
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 07:18:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyv9L-0005gJ-0p
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:27:53 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyv9H-0004U1-3r
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:27:50 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-53e70b0a218so3659659a12.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 07:27:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699021663; x=1699626463; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3d8YdsY7amKu4t+7ONvQkOry155R+fswCQzg9jFrA4U=;
+ b=ish/nJdDbmg1QFv/1aBlbu5L1wlh940DouKqsGpGa83/WXTnLlHLdqqhqKD/Fn1UFP
+ 1KVGmEog1MMicJvnrctCrirfDhZi1q0kxBrKzAnDt7s63Wq1I4NzhmcV2RjV2faNOTNG
+ s1t/trAQkakvfBv8Bd+ccbKymkjwb629n7CsaCrcyXWV+ORHsZhd3cW6XQwjd0j+5Nlw
+ yqwXKABVwNBuWnQj+9RewA1Opa0dQUfoT6ULiYpHZYuK5HoUT/xcKxtvuzewPkYhzJs0
+ nluY2jlxmtDKVCshtn7UWs0gN8W2toE8uOukhQhTsIwRbZTF5bF1ytPlF+qXDX6g4RNa
+ xq6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699021137; x=1699625937;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+30kyaHZ1KGC4l+463f0VC0JPFRvELxQfgTo1BGI5Pg=;
- b=Dy+Wulqsp7UwCVcHZV2SX1zB5u51A/SkrISA7/rEGO88dm3Db1x4T/+LtPK+wFsulA
- 1gbGAFiD8Y9Tlrf7eCFDtdi5a+bGl9jWNOjGcB/Ek+74bNoql4Bl6ZACVlSq9KBbhqiS
- TeBFraT7GJ9z3gT6P5u0ansQ+PKyaEkZCOAHmzcuxSwqsXtqThxBL6b0yImmpLIw3GuK
- VfNyfnLuXBDYWV2ZHqUHaErBlQXl6xZYjBLZqCwleKkYIREWp91auxwO5iEsdO6MxXea
- Pkcg5VtoTB8b4HMUDCafa4L+Y4EoMDYgj9TaUDPWa1nTp86bWrfELJQsyS338Bs0csAl
- aLNw==
-X-Gm-Message-State: AOJu0Yx6Pv2Mtjna7KtHz+2+LLq+0UHjBOzqNCsl/rCoCoJroDnHJ53x
- 4e3AOY4wknvDh+nufAcFSoYvQUX/t3jk8Y09CCrNj4detbokFv9LIVr1IM58g3Gpn1fcSNi6WS8
- 5EoY/+ENQuPi3EnxaFvCE5iX38OTc89U=
-X-Received: by 2002:a25:d016:0:b0:da0:c49a:5fe2 with SMTP id
- h22-20020a25d016000000b00da0c49a5fe2mr21925748ybg.24.1699021136945; 
- Fri, 03 Nov 2023 07:18:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVtAOwAlcLPvIGkPc0alD5ad7H2U1sejhXdAu7juZkOr92q+DBOvCwUwdIomnthdR/KMP99O00MIJ4/axAYBM=
-X-Received: by 2002:a25:d016:0:b0:da0:c49a:5fe2 with SMTP id
- h22-20020a25d016000000b00da0c49a5fe2mr21925734ybg.24.1699021136724; Fri, 03
- Nov 2023 07:18:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1699021663; x=1699626463;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3d8YdsY7amKu4t+7ONvQkOry155R+fswCQzg9jFrA4U=;
+ b=r0BqTerFSyLfIUJaHlf1jPHv6HcGrOq9OSU7RnmXkC8eWWluTpEePBfw9jSkVF0JLo
+ sCosPDsgSyZ6VxdZ5Zf4IJmNw0NGa+s5yqvPBzN3QRPaADF8ThLMibEnIlasVgkAv1Am
+ IFNkANcCsFhEc7hjvxRUPEtT5/aqMxgsebtDcUU469D2J0eUOb24SgqY6kK/60Xquegs
+ iBehxVgZWVj9cLIUD6S+8d38z1gP0OPHDA4KtikS+2rwdCLN9t/m1IjmC0toF+6sW0h4
+ lxsKWRtVqHCE3uW4FeEe8upVzeHlesosYhxCt6sC6Y6lNv/KE20rE1avcptffps1CIKe
+ Yhtg==
+X-Gm-Message-State: AOJu0YxUCXw+mTnRN3Lfjo9pB1RPwDALjjLWyyOng1sN5A+68E+OhQyk
+ cbqe5R75EtJxLBrpt3e5FW/EKdrmU+VaI7Cg/9QUFhLVxkasKjF/
+X-Google-Smtp-Source: AGHT+IFnNNiGPk9IIaasJsAWrq9aThkl7ajEpIraKfCdeOYLvzRJ3aS+8O4HnLWU46bHZ3dS+HYfb7OtpwuCTPpmwDo=
+X-Received: by 2002:a05:6402:3586:b0:540:ef06:23d7 with SMTP id
+ y6-20020a056402358600b00540ef0623d7mr22878930edc.1.1699021663523; Fri, 03 Nov
+ 2023 07:27:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1698194366.git.yin31149@gmail.com>
- <d66b0aee501cdad7954231900c35a11cad1e13db.1698194366.git.yin31149@gmail.com>
-In-Reply-To: <d66b0aee501cdad7954231900c35a11cad1e13db.1698194366.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 3 Nov 2023 15:18:20 +0100
-Message-ID: <CAJaqyWc2=hbzfDhtAKPn9vebNnmz5EQoK=ecwU0-xbcEBuwwTw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
+References: <475d918d-ab0e-f717-7206-57a5beb28c7b@redhat.com>
+In-Reply-To: <475d918d-ab0e-f717-7206-57a5beb28c7b@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 3 Nov 2023 14:27:32 +0000
+Message-ID: <CAFEAcA_w5fM57L81vpByTnOPvdn455xBXtU7UnHFGuJuq-0New@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm: fix PMU IRQ registration
+To: Sebastian Ott <sebott@redhat.com>
+Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,43 +84,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 25, 2023 at 3:02=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
+On Fri, 3 Nov 2023 at 14:14, Sebastian Ott <sebott@redhat.com> wrote:
 >
-> Enable SVQ with VIRTIO_NET_F_HASH_REPORT feature.
+> Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
+> PMU IRQ registration fails for arm64 guests:
 >
+> [    0.563689] hw perfevents: unable to request IRQ14 for ARM PMU counters
+> [    0.565160] armv8-pmu: probe of pmu failed with error -22
+>
+> That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
+> where the PMU IRQ is actually referred by its PPI index. Fix that by using
+> INTID_TO_PPI() in that case.
+>
+> Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
+> Signed-off-by: Sebastian Ott <sebott@redhat.com>
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1960
 
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
-> v4:
->   - no changes
->
-> v3: https://lore.kernel.org/all/c3b69f0a65600722c1e4d3aa14d53a71e8ffb888.=
-1697902949.git.yin31149@gmail.com/
->   - no code changes
->
-> v2: https://lore.kernel.org/all/a67d4abc2c8c5c7636addc729daa5432fa8193bd.=
-1693297766.git.yin31149@gmail.com/
->
->  net/vhost-vdpa.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index e59d40b8ae..54f748d49d 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -121,6 +121,7 @@ static const uint64_t vdpa_svq_device_features =3D
->      BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR) |
->      /* VHOST_F_LOG_ALL is exposed by SVQ */
->      BIT_ULL(VHOST_F_LOG_ALL) |
-> +    BIT_ULL(VIRTIO_NET_F_HASH_REPORT) |
->      BIT_ULL(VIRTIO_NET_F_RSC_EXT) |
->      BIT_ULL(VIRTIO_NET_F_STANDBY) |
->      BIT_ULL(VIRTIO_NET_F_SPEED_DUPLEX);
-> --
-> 2.25.1
->
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
+thanks
+-- PMM
 
