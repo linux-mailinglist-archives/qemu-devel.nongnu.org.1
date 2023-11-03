@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE4D7E03FF
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 14:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD167E0432
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 15:03:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyuXa-0004Ig-Kq; Fri, 03 Nov 2023 09:48:51 -0400
+	id 1qyukA-00085t-C7; Fri, 03 Nov 2023 10:01:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyuWP-00030h-1Z
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:47:38 -0400
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyuWF-00012G-0H
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:47:36 -0400
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-5a8ee23f043so24670877b3.3
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 06:47:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1699019244; x=1699624044; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hp/4gepqKul36MZCUM+mQHBpekqDm7Rw4aTrnP++/Eg=;
- b=gbrN6xj3mcB9x+Z5QJCwKUWAE80Lx0Tii5e+LQpwEHzU8dK387IHMUEk97vZldn/Dw
- jSg6nTBMEK4X09eHwGBmJ8s2YHN5CM+QnyeNg+cFssW59QEIQqpkl4wEBHaVxWCLndnP
- BOIuMB/kRM+o9cnVtd6kfhfpZzVOf3DzmM6UvKQMne04kl1Mn8BbL8lOZivJ5UFnBooS
- nRIs7eZjRj3/G+t69cekq/2yZMxgU+zq5tUdn4lLEJjGavM/vqOoJGVbQEoT7AO6rc2K
- uuhgdER8wXDkq+07mjsIVYPOMrCkYsjAvSfVOXmtkN2xXHH040vha9qxS1ISkUwqeFwl
- WZXg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyuk7-00085d-Dr
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:01:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qyuk5-0005S1-Et
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:01:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699020104;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7n1dCPTrSo26XAAGGMdCsD4Sm7sV/sMWNUraIPSDf2U=;
+ b=fMI2V0DNHKoYpk7Nj2/azCvTFF2ATEE5pblG/6b8v+ZvOSmD2cjg98QR8HOtQhGR3OtjqZ
+ aBzCmD3wdztRt6y30I2++Nr/ywMXZKgJcLthXzhOtYHxTyyNM80QBC4ZHm4XX0L8zDjV0+
+ 3gyfdWPnEjEeDBoebmFAZ8Bg4K20d5Q=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-368-LnSUTLwtNcmMRXsmg5888Q-1; Fri, 03 Nov 2023 10:01:42 -0400
+X-MC-Unique: LnSUTLwtNcmMRXsmg5888Q-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-41cd9e05c8bso2357441cf.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 07:01:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699019244; x=1699624044;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hp/4gepqKul36MZCUM+mQHBpekqDm7Rw4aTrnP++/Eg=;
- b=OjoCQC4zFV3l6Ctc3wGGtx5zKBHL40F53PsXBJf3WaszeRPu7Ej1tpNf36xGBDNUHi
- NPsTJYk80tmoQb8O1eBw+1zmwAd5Sz2QtLSaDHMQ7h+VaEZu9jCT0TM1/GGRFjewfJkV
- ltGZnM/iR29fJF02tQizowDt3I/ks34oGQpPd+rRDA8Pwdx02WThmPKCxrA7lKSLKFZL
- ZETgIFxwf7y+KbpmHAYoDdhQs7A/T2G0BFLPxOVbVfuKNPgU5kH0QfQvk4CQAwA6k/Qd
- VEYp9KXoV5G46Grz4UJZT2mk7R85dBE6ZwNPfNfg9AHLqHfrVvDkQismNb3MV0E1PVcn
- 6b8A==
-X-Gm-Message-State: AOJu0YyQ/V2rGa/S3ofZHwJQYRze5JSLVFeF3KyXGtHxQFywU6v4q6Fx
- wCQjv+aRLplRnVF7qsOsVtuLYAuhcBdS6ITrF44=
-X-Google-Smtp-Source: AGHT+IELTcvGJQsZJFMdI3IcAi7VD5QxOnw5OL3zD2yQQgLK9F28cLcl3O5Mlk+6BFNF2q+0gm4wNQ==
-X-Received: by 2002:a81:78c8:0:b0:5a7:ed69:120 with SMTP id
- t191-20020a8178c8000000b005a7ed690120mr2760093ywc.6.1699019244352; 
- Fri, 03 Nov 2023 06:47:24 -0700 (PDT)
-Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- j68-20020a0df947000000b00582b239674esm935814ywf.129.2023.11.03.06.47.21
+ d=1e100.net; s=20230601; t=1699020102; x=1699624902;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7n1dCPTrSo26XAAGGMdCsD4Sm7sV/sMWNUraIPSDf2U=;
+ b=q489BmiqfJsO7N48omBrxFnAF9XFXTVU16MT3lQUnClUovx4+K8v1j4G4CTm0Rd3//
+ QRSQ/bnxLH6zrn+IZ8gEH94Ht1I8r3/wL7VADfn5OGEPm9XVreVqk7YnZmOcR6+mf0Hj
+ TQo4tLt4R29MK5IV6QeI3yzKu4yQsuUGz5Oj0SI5FWuo6NnghPo725s5q6ScLWa19mG1
+ 4zrxaIvSvH84Eak10tkLJx0ekPROBtu/pB70EIL4RxeZA824osg749wD1KVPLO2uWepk
+ phhEiw8jdxWHlTY0Sk9P0nodIOknWQv12MDilqEnOYAggR/0/gWHcdWLdNNgvI2tyQde
+ QDwQ==
+X-Gm-Message-State: AOJu0YzMTWUH/RaTrqFq0a+VABsAlgzNc4/GYZMsamdcWlayPustEil/
+ OTk7FilQOBHSdgdrGEF9JOq9v0Xdnl4f8EwQK0RBVHZ6k1aX6H8WDuLhOwf1mJtfFWaYET051oe
+ DHbsejiRJsNQWVcU=
+X-Received: by 2002:ac8:5b86:0:b0:41c:d5bf:ee35 with SMTP id
+ a6-20020ac85b86000000b0041cd5bfee35mr25081365qta.5.1699020101518; 
+ Fri, 03 Nov 2023 07:01:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXyfZnG2Z8gCsz6TxrFaXuzFP/M6p4tPaJzblJUG9oh9OI3JuXDlehM3XotU8kY5N+0sw60A==
+X-Received: by 2002:ac8:5b86:0:b0:41c:d5bf:ee35 with SMTP id
+ a6-20020ac85b86000000b0041cd5bfee35mr25081312qta.5.1699020100982; 
+ Fri, 03 Nov 2023 07:01:40 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ bb29-20020a05622a1b1d00b00418122186ccsm732974qtb.12.2023.11.03.07.01.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Nov 2023 06:47:23 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v10 18/18] target/riscv: add 'rva22u64' CPU
-Date: Fri,  3 Nov 2023 10:46:29 -0300
-Message-ID: <20231103134629.561732-19-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231103134629.561732-1-dbarboza@ventanamicro.com>
-References: <20231103134629.561732-1-dbarboza@ventanamicro.com>
+ Fri, 03 Nov 2023 07:01:40 -0700 (PDT)
+Date: Fri, 3 Nov 2023 10:01:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2] migration: Unlock mutex in error case
+Message-ID: <ZUT9Q8w6pdWXmR0S@x1n>
+References: <20231103074245.55166-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231103074245.55166-1-quintela@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,103 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This CPU was suggested by Alistair [1] and others during the profile
-design discussions. It consists of the bare 'rv64i' CPU with rva22u64
-enabled by default, like an alias of '-cpu rv64i,rva22u64=true'.
+On Fri, Nov 03, 2023 at 08:42:45AM +0100, Juan Quintela wrote:
+> We were not unlocking bitmap mutex on the error case.  To fix it
+> forever change to enclose the code with WITH_QEMU_LOCK_GUARD().
+> Coverity CID 1523750.
+> 
+> Fixes: a2326705e5 ("migration: Stop migration immediately in RDMA error paths")
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 
-Users now have an even easier way of consuming this user-mode profile by
-doing '-cpu rva22u64'. Extensions can be enabled/disabled at will on top
-of it.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-We can boot Linux with this "user-mode" CPU by doing:
-
--cpu rva22u64,sv39=true,s=true,zifencei=true
-
-[1] https://lore.kernel.org/qemu-riscv/CAKmqyKP7xzZ9Sx=-Lbx2Ob0qCfB7Z+JO944FQ2TQ+49mqo0q_Q@mail.gmail.com/
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
- target/riscv/cpu-qom.h     |  1 +
- target/riscv/cpu.c         | 17 +++++++++++++++++
- target/riscv/tcg/tcg-cpu.c |  9 +++++++++
- 3 files changed, 27 insertions(+)
-
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index ea9a752280..ac38ffc6cf 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -37,6 +37,7 @@
- #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
- #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
- #define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
-+#define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
- #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
- #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 5b78b7496d..1d59246151 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1539,6 +1539,15 @@ static Property riscv_cpu_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+#if defined(TARGET_RISCV64)
-+static void rva22u64_profile_cpu_init(Object *obj)
-+{
-+    rv64i_bare_cpu_init(obj);
-+
-+    RVA22U64.enabled = true;
-+}
-+#endif
-+
- static const gchar *riscv_gdb_arch_name(CPUState *cs)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-@@ -1829,6 +1838,13 @@ void riscv_cpu_list(void)
-         .instance_init = initfn            \
-     }
- 
-+#define DEFINE_PROFILE_CPU(type_name, initfn) \
-+    {                                         \
-+        .name = type_name,                    \
-+        .parent = TYPE_RISCV_BARE_CPU,        \
-+        .instance_init = initfn               \
-+    }
-+
- static const TypeInfo riscv_cpu_type_infos[] = {
-     {
-         .name = TYPE_RISCV_CPU,
-@@ -1873,6 +1889,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,   rv64_veyron_v1_cpu_init),
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
-     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
-+    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64, rva22u64_profile_cpu_init),
- #endif
- };
- 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 50683931e2..9276de9795 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1068,6 +1068,15 @@ static void riscv_cpu_add_profiles(Object *cpu_obj)
-         object_property_add(cpu_obj, profile->name, "bool",
-                             cpu_get_profile, cpu_set_profile,
-                             NULL, (void *)profile);
-+
-+        /*
-+         * CPUs might enable a profile right from the start.
-+         * Enable its mandatory extensions right away in this
-+         * case.
-+         */
-+        if (profile->enabled) {
-+            object_property_set_bool(cpu_obj, profile->name, true, NULL);
-+        }
-     }
- }
- 
 -- 
-2.41.0
+Peter Xu
 
 
