@@ -2,60 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD50B7DFE69
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 04:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348D57DFEDC
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 06:35:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qykss-00005L-Dx; Thu, 02 Nov 2023 23:30:10 -0400
+	id 1qymoX-0004Xh-Fx; Fri, 03 Nov 2023 01:33:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1qyksi-0008W4-0g; Thu, 02 Nov 2023 23:30:00 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qymoU-0004XG-Qa
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 01:33:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1qyksg-0008O3-34; Thu, 02 Nov 2023 23:29:59 -0400
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3A33TfPW039862;
- Fri, 3 Nov 2023 11:29:41 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Fri, 3 Nov 2023
- 11:29:39 +0800
-Date: Fri, 3 Nov 2023 11:29:39 +0800
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Peter Xu <peterx@redhat.com>, <qemu-devel@nongnu.org>,
- <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
- <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
- <in.meng@windriver.com>, <liweiwei@iscas.ac.cn>,
- <dbarboza@ventanamicro.com>, <hiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>, <david@redhat.com>
-Subject: Re: [PATCH v2 1/4] exec/memattrs: Add iopmp source id, start
- address, end address to MemTxAttrs
-Message-ID: <ZURpIyjhraORROn5@ethan84-VirtualBox>
-References: <20231102094015.208588-1-ethan84@andestech.com>
- <20231102094015.208588-2-ethan84@andestech.com>
- <ZUOo3fGmqM/gVyTR@x1n>
- <CAFEAcA86B-V0gFLhE9rPK2kG=XeFw7OJ4C==8g2i_WHSLW_HYQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qymoS-000471-Q9
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 01:33:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1698989623;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Dq9ga38Wc9r6rPlvgtK08TuHJimRt6SUpehIYoLC2P0=;
+ b=LnS38i0FneFztpH124GA3Q/AhigZ+fjUN/NbBuLVkL4Q2cbM5Q3IkMBuqy1kIwcd4v3UKO
+ 5+oeqBwbmxevrL78SvuTB71cVvYBsljF3hf6fRSbEJ3hRHSw9VAqelZ69gLvYLIi4R29wz
+ AK3ya+c+oA7qAoxxUEYJx1hwVWJPu94=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-581-LTphBWYrMIywf8fH1aUeJw-1; Fri, 03 Nov 2023 01:33:39 -0400
+X-MC-Unique: LTphBWYrMIywf8fH1aUeJw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4D703101A529;
+ Fri,  3 Nov 2023 05:33:39 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 14A662026D4C;
+ Fri,  3 Nov 2023 05:33:39 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 037EE21E6A1F; Fri,  3 Nov 2023 06:33:38 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: michael.roth@amd.com, John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH] tests/qapi-schema: Tidy up pylint warnings and advice
+References: <20231025092925.1785934-1-armbru@redhat.com>
+Date: Fri, 03 Nov 2023 06:33:37 +0100
+In-Reply-To: <20231025092925.1785934-1-armbru@redhat.com> (Markus Armbruster's
+ message of "Wed, 25 Oct 2023 11:29:25 +0200")
+Message-ID: <87sf5n2yfi.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA86B-V0gFLhE9rPK2kG=XeFw7OJ4C==8g2i_WHSLW_HYQ@mail.gmail.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Originating-IP: [10.0.12.51]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3A33TfPW039862
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,59 +77,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 02, 2023 at 01:53:05PM +0000, Peter Maydell wrote:
-> On Thu, 2 Nov 2023 at 13:49, Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Thu, Nov 02, 2023 at 05:40:12PM +0800, Ethan Chen wrote:
-> > > Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> > > ---
-> > >  include/exec/memattrs.h | 6 ++++++
-> > >  1 file changed, 6 insertions(+)
-> > >
-> > > diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-> > > index d04170aa27..fc15e5d7d3 100644
-> > > --- a/include/exec/memattrs.h
-> > > +++ b/include/exec/memattrs.h
-> > > @@ -64,6 +64,12 @@ typedef struct MemTxAttrs {
-> > >      unsigned int target_tlb_bit0 : 1;
-> > >      unsigned int target_tlb_bit1 : 1;
-> > >      unsigned int target_tlb_bit2 : 1;
-> > > +
-> > > +    /* IOPMP support up to 65535 sources */
-> > > +    unsigned int iopmp_sid:16;
-> >
-> > There's MemTxAttrs.requester_id, SID for pci, same length.  Reuse it?
-> >
-> > > +    /* Transaction infomation for IOPMP */
-> > > +    unsigned long long iopmp_start_addr;
-> > > +    unsigned long long iopmp_end_addr;
-> >
-> > PS: encoding addresses into memattrs is.. strange, but since I know nothing
-> > about iopmp, I'll leave that for other reviewers.
-> >
-> > Currently MemTxAttrs are passed as a whole int on the stack, if it keeps
-> > growing we may start to consider a pointer, but need to check the side
-> > effects of unexpected fields modified within a call.
-> 
-> Yeah, this struct is intended to model the various attributes that
-> get passed around on the bus alongside data in real hardware.
-> I'm pretty sure no real hardware is passing around start and
-> end transaction addresses on its bus with every read and
-> write, which suggests that we should be doing this some other
-> way than adding these fields to the MemTxAttrs struct.
+Markus Armbruster <armbru@redhat.com> writes:
 
-For AXI bus ADDR, LEN, SIZE are signals in read/write address channel.
-IOPMP will check that start address = ADDR, 
-and end address = ADDR + LEN * SIZE.
+> Pylint warns:
+>
+>     tests/qapi-schema/test-qapi.py:139:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+>     tests/qapi-schema/test-qapi.py:143:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+>
+> Add encoding='utf-8'.
+>
+> Pylint advises:
+>
+>     tests/qapi-schema/test-qapi.py:143:13: R1732: Consider using 'with' for resource-allocating operations (consider-using-with)
+>
+> Silence this by returning the value directly.
+>
+> Pylint advises:
+>
+>     tests/qapi-schema/test-qapi.py:221:4: R1722: Consider using sys.exit() (consider-using-sys-exit)
+>     tests/qapi-schema/test-qapi.py:226:4: R1722: Consider using sys.exit() (consider-using-sys-exit)
+>
+> Sure, why not.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Thanks,
-Ethan Chen
-
-
+Queued.
 
 
