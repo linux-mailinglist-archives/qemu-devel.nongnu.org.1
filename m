@@ -2,92 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E287E0573
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 16:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFAC7E057B
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 16:22:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyvym-0004Xp-Mv; Fri, 03 Nov 2023 11:21:00 -0400
+	id 1qyvzT-0005E5-Ky; Fri, 03 Nov 2023 11:21:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qyvyk-0004XS-WE
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:20:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qyvyj-0002jz-Hh
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:20:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699024856;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uY3JrLqTqkR8utRxdyW6ukuQBPjbsg8JAOYxdKSyCn8=;
- b=BlxdbZmdL0qGU4a+qoCm6wVKo4c8AaHx0M1Z2KZzD7vKtLsavboIHPfTbiTv9Mba1rdnen
- J27J4OiP/ejPs5fMXU02OgeSYfJRo+H68j2XpPwEnMBJLFiMPHR8XDk/gPnebATdQ2fYOU
- y+rRrYzBLk4fPhDqC2DBBKpnPY3p5LY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-zVx5GKutN6uK8IX-mdRwsA-1; Fri, 03 Nov 2023 11:20:55 -0400
-X-MC-Unique: zVx5GKutN6uK8IX-mdRwsA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-407d3e55927so13460275e9.1
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 08:20:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyvzQ-00058w-MT
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:21:40 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyvzB-0002li-7O
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 11:21:39 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2c5056059e0so30973721fa.3
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 08:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699024883; x=1699629683; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=K/q/6Fpok48r78qGBxR1lQWjm+mwOuYuSt34cZz3H8s=;
+ b=bJxqZGi+9xsSHZYWttfS+pTAtTBMBQu4liNFXWo3g4MqL+Wwox7Qmf47MPLbEH6Cfr
+ fKzl8Mk9nedR36Q4zp5tImOVguAxtFu/IFmHIwDWLpWyb4oVIahLJXQjPcl1O3x8wQ8V
+ 3FKie/f291VdGCguKkkhwB8gDhsmcIe4/ivL396ceFzodA96EkaSuLCaYcx2munR/1y2
+ uaYD4xauULfubB390mRG9tNHGQwkBaQWey3A9WKzO11Qydt4KF10xUwH4U2mwqBGomYZ
+ Gq4weQXsMeZMascyvc09qbqz3rycyKfNAJ7FBafflPq4meuZ7/dF2qewEWDj0k/eIOXa
+ zwcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699024854; x=1699629654;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uY3JrLqTqkR8utRxdyW6ukuQBPjbsg8JAOYxdKSyCn8=;
- b=EXZRJWuUKDI6IbGxBY1dF8MqrzO/A2NH3RlCKGbVLb5tgjSF8s3U0Glm5iDR5XnA3t
- hWx19O2rWT8xBZcPBN4L4dumAIXMb9hVRCQ2S63Q70dVYmGj/2l0SK1MTtZtqFkCssnh
- 2/k3yg9PGW0BgXNQPtLSlM15tRsEq/JtryRqddXxEZtZcxZPNhD+9WmdHEcx/kdeFF14
- 8S067/8N5F4cU62Ikfy0xk47xqcYYIahtyn09reb/ud2CNJH5l8UnarIR6dKMAo+rKPg
- Xb2mueYxCaj+tAkJwS6eM0bUSon3/Uj64vnGU+Y7zeQdNMvNEiMGWr+NWUfzccjRXIF5
- TCnw==
-X-Gm-Message-State: AOJu0YxH6NbCmv21UsZHfWQ7TnGru8+B0ws/ozMZAJevoh6mvgWxHnC3
- IN16jQ5UiuYAAnvTBuRZ1nGzdZxsu4eGivtjkJWFMcChOcRFVW5nijmV2UOF1aMHSirjS6D5Ab8
- b0osNZbBYBRrV1EM=
-X-Received: by 2002:a05:600c:a45:b0:409:67b8:1980 with SMTP id
- c5-20020a05600c0a4500b0040967b81980mr4158347wmq.21.1699024854307; 
- Fri, 03 Nov 2023 08:20:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsZQd8FSRmjWWSQs3W43U80GRLGVa5eOutsCIRshRte4/a6lxbod7wAoX3JfjeHMePM5iGlg==
-X-Received: by 2002:a05:600c:a45:b0:409:67b8:1980 with SMTP id
- c5-20020a05600c0a4500b0040967b81980mr4158334wmq.21.1699024853929; 
- Fri, 03 Nov 2023 08:20:53 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d718:8590:77de:e1fd:a4df:d080?
- (p200300cfd718859077dee1fda4dfd080.dip0.t-ipconnect.de.
- [2003:cf:d718:8590:77de:e1fd:a4df:d080])
+ d=1e100.net; s=20230601; t=1699024883; x=1699629683;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=K/q/6Fpok48r78qGBxR1lQWjm+mwOuYuSt34cZz3H8s=;
+ b=eSEWJMfrVwbJ7m4+dvgzPr+ZveFHRWRiXULwb2R8RP//8rKF/hE7cLCQopqeLToOAR
+ t9a/w7+lu14VGd8P+MeeTEBAV7fhWvCOGEjoUytuN34UFovx5wqClmGG8sYh2+PjkKWs
+ dkENWaOsq2WRWvKo8ReT0Qv3lR0BIFAP65WrUne9cMXqnuvAO8E8vr+tUkkslOpEY0hC
+ CmNedpWd/cNH/tJ8r90Zyu3M4jp3fUyOsxgfUM7srOuZRLTbbTRrsPeD/6RAYGMxZjb1
+ pYG7AY6HoTIE2dkmrPgX9vwXcaxQTLCD5SX9tMyoXL8EaepF3vPZAL+0gFU43O24KDaY
+ Tj+w==
+X-Gm-Message-State: AOJu0Yxv88PJnJU+anjYy3X8kOpmEbaPGh5HVrSHPTzto/2SnMmh9ucE
+ QWTTvApADyn3SZducqP+vFtSBz0wWbj5LWW22PA=
+X-Google-Smtp-Source: AGHT+IF2R0VgXiL+JhbsMGjRWwWPIY+1lxTKLC63sdaaLfj0Fs1LvixUYPw3H0oJ7Q1G30tnh+TFZw==
+X-Received: by 2002:a2e:88c2:0:b0:2c5:1df1:ac1 with SMTP id
+ a2-20020a2e88c2000000b002c51df10ac1mr17966154ljk.20.1699024882686; 
+ Fri, 03 Nov 2023 08:21:22 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n37-20020a05600c3ba500b003fee6e170f9sm2847310wms.45.2023.11.03.08.20.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Nov 2023 08:20:53 -0700 (PDT)
-Message-ID: <0b4f4294-8b01-4d6e-84a1-462d8b802062@redhat.com>
-Date: Fri, 3 Nov 2023 16:20:52 +0100
+ f16-20020a7bc8d0000000b0040684abb623sm2712165wml.24.2023.11.03.08.21.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Nov 2023 08:21:21 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Udo Steinberg <udo@hypervisor.org>
+Subject: [PATCH v3 0/3] virt: Report UART correctly in ACPI DBG2/SPCR
+Date: Fri,  3 Nov 2023 15:21:17 +0000
+Message-Id: <20231103152120.829962-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] iotests/common.rc: add disk_usage function
-Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
- berto@igalia.com, den@virtuozzo.com
-References: <20231020215622.789260-1-andrey.drobyshev@virtuozzo.com>
- <20231020215622.789260-7-andrey.drobyshev@virtuozzo.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20231020215622.789260-7-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,55 +89,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20.10.23 23:56, Andrey Drobyshev wrote:
-> Move the definition from iotests/250 to common.rc.  This is used to
-> detect real disk usage of sparse files.  In particular, we want to use
-> it for checking subclusters-based discards.
->
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   tests/qemu-iotests/250       | 5 -----
->   tests/qemu-iotests/common.rc | 6 ++++++
->   2 files changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/tests/qemu-iotests/250 b/tests/qemu-iotests/250
-> index af48f83aba..c0a0dbc0ff 100755
-> --- a/tests/qemu-iotests/250
-> +++ b/tests/qemu-iotests/250
-> @@ -52,11 +52,6 @@ _unsupported_imgopts data_file
->   # bdrv_co_truncate(bs->file) call in qcow2_co_truncate(), which might succeed
->   # anyway.
->   
-> -disk_usage()
-> -{
-> -    du --block-size=1 $1 | awk '{print $1}'
-> -}
-> -
->   size=2100M
->   
->   _make_test_img -o "cluster_size=1M,preallocation=metadata" $size
-> diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
-> index 95c12577dd..5d2ea26c7f 100644
-> --- a/tests/qemu-iotests/common.rc
-> +++ b/tests/qemu-iotests/common.rc
-> @@ -140,6 +140,12 @@ _optstr_add()
->       fi
->   }
->   
-> +# report real disk usage for sparse files
-> +disk_usage()
-> +{
-> +    du --block-size=1 $1 | awk '{print $1}'
+This patchseries is Udo's patch, plus the necessary extra patches
+that update the golden-reference files for bios-tables-test so that
+'make check' continues to pass.
 
-Pre-existing, but since you’re touching this now: Can you please change 
-the $1 to "$1"?
+Changes v2->v3:
+ * report the UART as requiring 32-bit accesses, not 16-bit;
+   it turns out that Linux has a bug where it fails to enable
+   the console if the ACPI table reports 16-bit access width
+ * ACPI table binaries regenerated to match that
 
-Hanna
+thanks
+-- PMM
 
-> +}
-> +
->   # Set the variables to the empty string to turn Valgrind off
->   # for specific processes, e.g.
->   # $ VALGRIND_QEMU_IO= ./check -qcow2 -valgrind 015
+Peter Maydell (2):
+  tests/qtest/bios-tables-test: Allow changes to virt SPCR and DBG2
+  tests/qtest/bios-tables-test: Update virt SPCR and DBG2 golden
+    references
+
+Udo Steinberg (1):
+  hw/arm/virt: Report correct register sizes in ACPI DBG2/SPCR tables.
+
+ hw/arm/virt-acpi-build.c  |   4 ++--
+ tests/data/acpi/virt/DBG2 | Bin 87 -> 87 bytes
+ tests/data/acpi/virt/SPCR | Bin 80 -> 80 bytes
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
 
 
