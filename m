@@ -2,86 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657437E083D
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 19:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D4D7E088C
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 19:57:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyyzz-0003Ws-48; Fri, 03 Nov 2023 14:34:27 -0400
+	id 1qyzL3-0000s3-1t; Fri, 03 Nov 2023 14:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1qyyzx-0003Wi-Ul
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 14:34:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1qyyzw-0008Vw-Cj
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 14:34:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699036462;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=O8zNvBXd6S2P/7V6beCc7C1ZuMahbSq4vIlsc/6LbU4=;
- b=a161kyLZa4ggRfeu5zgqaI35UEa2WCMdeli7O8XXPUpJ+cFhNXHvZZCgML0JLXRcOVICWt
- tftobiaQyJ4u0Uf9TJztl6/681QG8B9yroAKksD/Spxw8I6ZqoIqnjLC/wJBqi1XXFnKU+
- DzRrr8xf2CmjiOKypZJhoEHRosZBbdk=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-SmJk_totNJin-wq25Eiz0A-1; Fri, 03 Nov 2023 14:34:20 -0400
-X-MC-Unique: SmJk_totNJin-wq25Eiz0A-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-6c0f174540cso3094426a34.2
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 11:34:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyzL1-0000rg-03
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 14:56:11 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qyzKx-0005De-0d
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 14:56:10 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-5094727fa67so3130366e87.3
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 11:56:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699037764; x=1699642564; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=R/Qz4BRA1gjPk+dEXh6h6hhbMDtVGzlPlkIywNyzTUM=;
+ b=b0QBjV9fl629eql9D8Q4r86RAds2U2r1OZWtw9mADcIyqIR/5dz4gTfPo4H9cYTzm6
+ cxPE9F6Tvdb5V0G0PupF24IaLjvtvON3R5Q+SYGT3vQ60oqmItr11TJEcE7IPpsW+baI
+ t8HlvPRTnijhL3MI7tHBBBGLV6L3QLvN9iBFLnTb4jJSheVQvF3nsf1CZw7AR2FmCGIi
+ EJv/7QLjx0gJgdgkyrbl3LOOK04l0lu7NEKYnmpg2PE3wuw96zxrcN8jhdXKNyJluZFV
+ +WykOa68h5+sTJdyhgkoQO9qmytvij3OEI+ZyEhtgD+t11c0bOjR6nYEgYHkgwI4d3tx
+ 5X0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699036459; x=1699641259;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ d=1e100.net; s=20230601; t=1699037764; x=1699642564;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
  :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O8zNvBXd6S2P/7V6beCc7C1ZuMahbSq4vIlsc/6LbU4=;
- b=B1dCGElnm5WSTFG3xpfUbR2gBWjkW71/XnYFldKJQXORvWQF0nSKsNdeGOa+da7JuX
- x2gqHaQnWfv06u9hmDy5irMy2p3D0RjrJHkH3efD4O1q5y1Qi+1H2db72FKwmrhZyQ81
- fCdS0vc2a3N9yWl3fiL3C6FWgYDju+dlvQR8Za3LdZCKhml1Kn9uHmFBKUFSZ7RHfgjK
- Vnz97jnpTd9fdwh8Z54g8N+YfzcgPuyxcIgcm9BDKTcHt6+8J+0RYaZbijrUS+FRhyJL
- adr8r5NmQ2EL7PLZ4FdJ6L4s/Bi20YMc+rXxCO7Ufefiwfa/1ym6LNbwivv4XD8Dr4Nd
- Cy0g==
-X-Gm-Message-State: AOJu0YxyrghPQvdJ8ie7/XxI2DXI3aVAZ11fG9e5oSo6fsaJTPyaIA+x
- 9b4ueXmfegiQCEtX9uo43VT5gAsfdSnhrr/u7+F3rZTanvfDQLrqUa5Zjcenc0sEmuxm1p2zxUN
- Ba1t8NtVW1uDzftYYK8IyxkqEJkVzA24=
-X-Received: by 2002:a05:6830:3103:b0:6d3:e5c:768f with SMTP id
- b3-20020a056830310300b006d30e5c768fmr11961421ots.11.1699036459594; 
- Fri, 03 Nov 2023 11:34:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXAzxBNAXTuKA5fTtKOWH0UcHpRySrRLobuwcPowzMX1G9p3Ax0AFNHEPy2FtaspKSb778AgPmQ5FSpZD29tI=
-X-Received: by 2002:a05:6830:3103:b0:6d3:e5c:768f with SMTP id
- b3-20020a056830310300b006d30e5c768fmr11961409ots.11.1699036459324; Fri, 03
- Nov 2023 11:34:19 -0700 (PDT)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 3 Nov 2023 11:34:18 -0700
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20231016152704.221611-1-victortoso@redhat.com>
- <5drfnt5rr5jmjl7xv65355squ2zzjra23mdrk5q3avnbue4kqx@7pmoj2zwfggx>
- <CABJz62PV8s=Dmh9cpa-3cRaLdNmUnW5zo4MYUA3=6kDdW8QbcA@mail.gmail.com>
+ bh=R/Qz4BRA1gjPk+dEXh6h6hhbMDtVGzlPlkIywNyzTUM=;
+ b=OGiMoAcHxQFFd0Y2B3X9M7LxKNTjXFVMjK3xWKQsRSLrOljlBbpr4bVBbFim2qrJ01
+ Jx2WM5P8WNXfqCmFouQYqeGlmp/qrlRHiZKb/he217NgG3r1vz9LIR42q+zFBUa/VNth
+ 2ZVwAcec+SSXVbqIjq73Mr+dw6PosEhlmxpLEYbD3sGlR8bG2Ze2EnvZutXNTNBPJE4K
+ r86Cpjg7OEKACuCc06Rt11uxI0iJ4CkPUvYizOSvtKOpVr5+Ck4dsnZgH+CgFeQq8x4t
+ hWft3xjuxFt/smmbr5IpDOj8KiOpyEqGjwVrJkWrAsjOWuzdDr/stsyisIQCjy34JMid
+ VwtQ==
+X-Gm-Message-State: AOJu0YyobJpyLOt9ws3IxzpEr5/sWYrXG62npR77BhfnlxjPJJ42suOJ
+ CzLT3YsUS9PK5mioSMCAML5IFg==
+X-Google-Smtp-Source: AGHT+IGQF1CKoVhZc6rZPSrYhD+f4a71wnwtb3dk4/0hT3W+ymqnp2eCBG2ZOde66AojoBqcfpGCyg==
+X-Received: by 2002:a05:6512:1081:b0:500:daf6:3898 with SMTP id
+ j1-20020a056512108100b00500daf63898mr18623958lfg.26.1699037764476; 
+ Fri, 03 Nov 2023 11:56:04 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ q2-20020adff782000000b0032179c4a46dsm2483584wrp.100.2023.11.03.11.56.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Nov 2023 11:56:03 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH] hw/arm/vexpress-a9: Remove useless mapping of RAM at address 0
+Date: Fri,  3 Nov 2023 18:56:02 +0000
+Message-Id: <20231103185602.875849-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <CABJz62PV8s=Dmh9cpa-3cRaLdNmUnW5zo4MYUA3=6kDdW8QbcA@mail.gmail.com>
-Date: Fri, 3 Nov 2023 11:34:18 -0700
-Message-ID: <CABJz62MQ6oYMiPicbERYoV-DYozciDXB9p5mT11P4bsajYy+KA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] qapi-go: add generator for Golang interface
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,51 +87,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 31, 2023 at 09:42:10AM -0700, Andrea Bolognani wrote:
-> On Fri, Oct 27, 2023 at 07:33:30PM +0200, Victor Toso wrote:
-> > Hi,
-> >
-> > Daniel & Andrea, it would be great to have your take on the Go
-> > side of this series. If we can agree with an acceptable
-> > 'unstable' version of Go modules, we can start building on top of
-> > this:
-> >  - libraries/tools in Go to interact with QEMU
-> >  - qapi specs to fix limitations (e.g: Data type names)
-> >  - scripts/qapi library wrt to generating interfaces in other
-> >    languages other than C
-> >
-> > I would love to have this prior to 8.2 feature freeze if the
-> > idea and current code meet your expectations.
->
-> Apologies for not providing any feedback so far. I'll do my best to
-> get around to it by the end of the week.
+On the vexpress-a9 board we try to map both RAM and flash to address 0,
+as seen in "info mtree":
 
-Layering apologies on top of apologies: I started looking into this,
-but I have since realized that I need some more time to page all the
-months-old context back in and digest the whole thing. I'll continue
-next week.
+address-space: memory
+  0000000000000000-ffffffffffffffff (prio 0, i/o): system
+    0000000000000000-0000000003ffffff (prio 0, romd): alias vexpress.flashalias @vexpress.flash0 0000000000000000-0000000003ffffff
+    0000000000000000-0000000003ffffff (prio 0, ram): alias vexpress.lowmem @vexpress.highmem 0000000000000000-0000000003ffffff
+    0000000010000000-0000000010000fff (prio 0, i/o): arm-sysctl
+    0000000010004000-0000000010004fff (prio 0, i/o): pl041
+(etc)
 
-As an appetizer, one thing that I've noticed: you seem to ignore it
-when gen:false is included in a command definition, so we get
+The flash "wins" and the RAM mapping is useless (but also harmless).
 
-  type DeviceAddCommand struct {
-      MessageId string  `json:"-"`
-      Driver    string  `json:"driver"`
-      Bus       *string `json:"bus,omitempty"`
-      Id        *string `json:"id,omitempty"`
-  }
+This happened as a result of commit 6ec1588e in 2014, which changed
+"we always map the RAM to the low addresses for vexpress-a9" to "we
+always map flash in the low addresses", but forgot to stop mapping
+the RAM.
 
-which I don't think will work as it can't handle even the example
-used to document the command
+In real hardware, this low part of memory is remappable, both at
+runtime by the guest writing to a control register, and configurably
+as to what you get out of reset -- you can have the first flash
+device, or the second, or the DDR2 RAM, or the external AXI bus
+(which for QEMU means "nothing there").  In an ideal world we would
+support that remapping both at runtime and via a machine property to
+select the out-of-reset behaviour.
 
-  { "execute": "device_add",
-    "arguments": { "driver": "e1000", "id": "net1",
-                   "bus": "pci.0",
-                   "mac": "52:54:00:12:34:56" } }
+Pending anybody caring enough to implement the full remapping
+behaviour:
+ * remove the useless mapped-but-inaccessible lowram MR
+ * document that QEMU doesn't support remapping of low memory
 
-This command will probably require an ad-hoc implementation.
+Fixes: 6ec1588e ("hw/arm/vexpress: Alias NOR flash at 0 for vexpress-a9")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1761
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ docs/system/arm/vexpress.rst |  3 +++
+ hw/arm/vexpress.c            | 14 +++-----------
+ 2 files changed, 6 insertions(+), 11 deletions(-)
 
+diff --git a/docs/system/arm/vexpress.rst b/docs/system/arm/vexpress.rst
+index 3e3839e9231..38f29c73e71 100644
+--- a/docs/system/arm/vexpress.rst
++++ b/docs/system/arm/vexpress.rst
+@@ -58,6 +58,9 @@ Other differences between the hardware and the QEMU model:
+   ``vexpress-a15``, and have IRQs from 40 upwards. If a dtb is
+   provided on the command line then QEMU will edit it to include
+   suitable entries describing these transports for the guest.
++- QEMU does not currently support either dynamic or static remapping
++  of the area of memory at address 0: it is always mapped to alias
++  the first flash bank
+ 
+ Booting a Linux kernel
+ ----------------------
+diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
+index 8ff37f52ca1..c08ea34e924 100644
+--- a/hw/arm/vexpress.c
++++ b/hw/arm/vexpress.c
+@@ -177,7 +177,6 @@ struct VexpressMachineState {
+     MemoryRegion vram;
+     MemoryRegion sram;
+     MemoryRegion flashalias;
+-    MemoryRegion lowram;
+     MemoryRegion a15sram;
+     bool secure;
+     bool virt;
+@@ -276,7 +275,6 @@ static void a9_daughterboard_init(VexpressMachineState *vms,
+ {
+     MachineState *machine = MACHINE(vms);
+     MemoryRegion *sysmem = get_system_memory();
+-    ram_addr_t low_ram_size;
+ 
+     if (ram_size > 0x40000000) {
+         /* 1GB is the maximum the address space permits */
+@@ -284,17 +282,11 @@ static void a9_daughterboard_init(VexpressMachineState *vms,
+         exit(1);
+     }
+ 
+-    low_ram_size = ram_size;
+-    if (low_ram_size > 0x4000000) {
+-        low_ram_size = 0x4000000;
+-    }
+-    /* RAM is from 0x60000000 upwards. The bottom 64MB of the
++    /*
++     * RAM is from 0x60000000 upwards. The bottom 64MB of the
+      * address space should in theory be remappable to various
+-     * things including ROM or RAM; we always map the RAM there.
++     * things including ROM or RAM; we always map the flash there.
+      */
+-    memory_region_init_alias(&vms->lowram, NULL, "vexpress.lowmem",
+-                             machine->ram, 0, low_ram_size);
+-    memory_region_add_subregion(sysmem, 0x0, &vms->lowram);
+     memory_region_add_subregion(sysmem, 0x60000000, machine->ram);
+ 
+     /* 0x1e000000 A9MPCore (SCU) private memory region */
 -- 
-Andrea Bolognani / Red Hat / Virtualization
+2.34.1
 
 
