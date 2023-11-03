@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484D07E0481
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 15:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A067E0490
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 15:19:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyuxL-00023f-06; Fri, 03 Nov 2023 10:15:27 -0400
+	id 1qyv0d-0003Bp-SF; Fri, 03 Nov 2023 10:18:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1qyuxI-00022y-Lb
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:15:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qyv0a-0003B7-67
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:18:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1qyuxG-0001GW-He
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:15:23 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qyv0Y-0002ZG-DJ
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 10:18:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699020921;
+ s=mimecast20190719; t=1699021124;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=oUqO+lPnXw4HE5Xvy3d7PnKvCfvewKp1ujzp/SdHd7I=;
- b=XQi53fwSUNaBJBoagOg1XS4uDvWgEqit2Om/RoqvLKxNwkbxn35J+AvYU67GRdpYfOP9DR
- jHgwKzxZnKmrGFNNnlaoufYL9mrC1Ki7qplmm9tMEeWGNIEJSFymlPaYX1ZJq4TYfXO65t
- /ATGBM7RP7tMOLECe6q/VQI4zc/Q4BY=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=or69juIUzGr/Dr2IdAH2detajWJpJfYzJg/yx30M2WY=;
+ b=doT1wWXO1vTzzLRyP3mwHg6eW8YgnaMXH/Vwdi8nbkRRDK+mlSTYb2vvDZzR6bIrBwIWeA
+ Z/NuRA/sW4nfr5ghe/H58bxR6NsLAB5G7W78NR8DAVkR0ysEQFKmVfJDK2AEX7l1maJvGw
+ Ws/ljX5Rl1QPFvwJ3wcgigPtkzntG6Y=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-490-32ojAH7lMYis1r4T3nDSyg-1; Fri, 03 Nov 2023 10:14:11 -0400
-X-MC-Unique: 32ojAH7lMYis1r4T3nDSyg-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d0b251a6aso22215196d6.2
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 07:14:11 -0700 (PDT)
+ us-mta-642-OEw4tO59Nxe9_eUSix6Abw-1; Fri, 03 Nov 2023 10:18:43 -0400
+X-MC-Unique: OEw4tO59Nxe9_eUSix6Abw-1
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-d86766bba9fso1224486276.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 07:18:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699020849; x=1699625649;
- h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oUqO+lPnXw4HE5Xvy3d7PnKvCfvewKp1ujzp/SdHd7I=;
- b=vV9YGFtJO5u5XPTXw4p+BTAok8lF7w8pOBEMaXJeLoVWtwgs8Qf9KY0mTXharUV843
- XnA70qqoVyPOxdm6QnI2rcWFRVLtK+T24Spng4xCM8nhNLBw/otlhaFohorYoUUpsc0d
- ZTVLWcpPiseFaKqOmzXUp+z5mjDXL2m4ql4+gv0Ws3nzgcyT+1WgGXI0TQSNMXrZ7E8p
- RYkwV4GAAoYrXzJ0MWWPDWFjXDiE2dRuG7/ow7RHDdfXkNTxdECoiJNLLxD1cV1rdESb
- 4gitZYaqqxLsQh3VaZcq/Nqshk7UTomJDAH+0wrEMsBrA8tOGezKFp+R/VYcnTvNt2Dl
- rJbg==
-X-Gm-Message-State: AOJu0YxMGu7eL89ICqCTPKusfirNwJbiBWz9EAK1P8qCtk+ezZA6LeHa
- ZIyIszJA3RAJaSYQuicnv1HnPbuzVaXcBty5I00BCWdiNjoootMeXTaEVGj9BsjMhocbAzbFgto
- fGRjQ5ua+FgDGZf/i3UDNCmSFC+MaTDkPCizdPLEzsaAlnLp5zoyRFoEdwiFMyVdT8vFx22uO
-X-Received: by 2002:a05:6214:212e:b0:66d:6458:d9f8 with SMTP id
- r14-20020a056214212e00b0066d6458d9f8mr29946428qvc.54.1699020849508; 
- Fri, 03 Nov 2023 07:14:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHnOPlzlKPKMJd81/xceBkWCY3GSICsV4nl86wnlQ8O+rlzkAyQZU2h7rQjKBUNlpe8eY+oWw==
-X-Received: by 2002:a05:6214:212e:b0:66d:6458:d9f8 with SMTP id
- r14-20020a056214212e00b0066d6458d9f8mr29946396qvc.54.1699020849160; 
- Fri, 03 Nov 2023 07:14:09 -0700 (PDT)
-Received: from rh (p200300c93f06be0024aad376da864a75.dip0.t-ipconnect.de.
- [2003:c9:3f06:be00:24aa:d376:da86:4a75])
- by smtp.gmail.com with ESMTPSA id
- l10-20020a0ce6ca000000b0066d15724feesm767737qvn.68.2023.11.03.07.14.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Nov 2023 07:14:08 -0700 (PDT)
-Date: Fri, 3 Nov 2023 15:14:05 +0100 (CET)
-From: Sebastian Ott <sebott@redhat.com>
-To: qemu-devel@nongnu.org
-cc: Leif Lindholm <quic_llindhol@quicinc.com>, 
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH] hw/arm: fix PMU IRQ registration
-Message-ID: <475d918d-ab0e-f717-7206-57a5beb28c7b@redhat.com>
+ d=1e100.net; s=20230601; t=1699021123; x=1699625923;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=or69juIUzGr/Dr2IdAH2detajWJpJfYzJg/yx30M2WY=;
+ b=Zn2gGnBAGKFzEkOpswugMknYrCas1FEOcMT6dQkj2dmbkP8qBSaG+PzrlA3Bkicv+C
+ zEu7HWMdS276B903Z0Pqlh7G0wOLnmAL7cinYPZbblmiMIib6L6aSk7tOyh0gvVVPXw0
+ d0H9oUQvk4uZ85RrSkFyoaBq8Gdq7KCA9evSV6HiQdSbNNUFmmjizEJBCphiI5bcalh4
+ hbBq/YXFhQnx7+djta4AjRKPgyo0K9ulBhX6X3znO4VclJPCiUUMYnqMG8Fa2yXkrI7Y
+ 7Ig8rSuOCIxwAGrzjudHZg2fC1cFgH2O+DAjey5AYy0GZ3icPws1H/IAOkzI3GybYSS6
+ l3vQ==
+X-Gm-Message-State: AOJu0Ywr/SXsQCIq1oYF0ZRU5nMF5PxEDgxVWdG8wELw5W5F44SyAMj+
+ yM6qMHQPAm+u82OSiirKEzLn/SbYwFspVoIjaBYtXQ6hnOlt6H1mZmBRFEJk3i2BFWSN2DupnuN
+ YiG/eXOWqnkfT2qB9XMRpFFch99osPvs=
+X-Received: by 2002:a25:bcb:0:b0:da0:88a1:1e64 with SMTP id
+ 194-20020a250bcb000000b00da088a11e64mr20758701ybl.40.1699021122965; 
+ Fri, 03 Nov 2023 07:18:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhhO8uhc6QliZ9PTxwTgSc8eu+NtvJWfwWvA1UUzKJyauSTep8SKpFbeIDNyDnqfQRziNjyAIaSpFS2FsTHD0=
+X-Received: by 2002:a25:bcb:0:b0:da0:88a1:1e64 with SMTP id
+ 194-20020a250bcb000000b00da088a11e64mr20758682ybl.40.1699021122646; Fri, 03
+ Nov 2023 07:18:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sebott@redhat.com;
+References: <cover.1698194366.git.yin31149@gmail.com>
+ <dbf699acff8c226596136a55a6abe35ebfeac8b0.1698194366.git.yin31149@gmail.com>
+In-Reply-To: <dbf699acff8c226596136a55a6abe35ebfeac8b0.1698194366.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Fri, 3 Nov 2023 15:18:06 +0100
+Message-ID: <CAJaqyWep4TWqA9qNu8HFbGp0LJ-_Zq_RupfH2rMouLj=PZzNEg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] vdpa: Restore hash calculation state
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.47,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,37 +96,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
-PMU IRQ registration fails for arm64 guests:
+On Wed, Oct 25, 2023 at 3:02=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> This patch introduces vhost_vdpa_net_load_rss() to restore
+> the hash calculation state at device's startup.
+>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> ---
+> v4:
+>   - fix some typos pointed out by Michael
+>   - zero the `cfg` fields at the definition suggested by Michael
+>
+> v3: https://patchwork.kernel.org/project/qemu-devel/patch/b7cd0c8d6a58b16=
+b086f11714d2908ad35c67caa.1697902949.git.yin31149@gmail.com/
+>   - remove the `do_rss` argument in vhost_vdpa_net_load_rss()
+>   - zero reserved fields in "cfg" manually instead of using memset()
+> to prevent compiler "array-bounds" warning
+>
+> v2: https://lore.kernel.org/all/f5ffad10699001107022851e0560cb394039d6b0.=
+1693297766.git.yin31149@gmail.com/
+>   - resolve conflict with updated patch
+> "vdpa: Send all CVQ state load commands in parallel"
+>   - move the `table` declaration at the beginning of the
+> vhost_vdpa_net_load_rss()
+>
+> RFC: https://lore.kernel.org/all/a54ca70b12ebe2f3c391864e41241697ab1aba30=
+.1691762906.git.yin31149@gmail.com/
+>
+>  net/vhost-vdpa.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 91 insertions(+)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 7a226c93bc..e59d40b8ae 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -818,6 +818,88 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s=
+, const VirtIONet *n,
+>      return 0;
+>  }
+>
+> +static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n=
+,
+> +                                   struct iovec *out_cursor,
+> +                                   struct iovec *in_cursor)
+> +{
+> +    struct virtio_net_rss_config cfg =3D {};
+> +    ssize_t r;
+> +    g_autofree uint16_t *table =3D NULL;
 
-[    0.563689] hw perfevents: unable to request IRQ14 for ARM PMU counters
-[    0.565160] armv8-pmu: probe of pmu failed with error -22
+Nitpick, I think the table should actually be introduced in [1], not
+here. Otherwise, it adds unneeded complexity to review it.
 
-That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
-where the PMU IRQ is actually referred by its PPI index. Fix that by using
-INTID_TO_PPI() in that case.
+However I think it is fine if both series get merged one after another, so:
 
-Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
----
-  hw/arm/virt.c | 3 ++-
-  1 file changed, 2 insertions(+), 1 deletion(-)
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 92085d2d8f..0a16ab3095 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -631,7 +631,8 @@ static void fdt_add_pmu_nodes(const VirtMachineState *vms)
-          qemu_fdt_setprop(ms->fdt, "/pmu", "compatible",
-                           compat, sizeof(compat));
-          qemu_fdt_setprop_cells(ms->fdt, "/pmu", "interrupts",
--                               GIC_FDT_IRQ_TYPE_PPI, VIRTUAL_PMU_IRQ, irqflags);
-+                               GIC_FDT_IRQ_TYPE_PPI,
-+                               INTID_TO_PPI(VIRTUAL_PMU_IRQ), irqflags);
-      }
-  }
+[1] https://patchwork.kernel.org/project/qemu-devel/patch/cf5b78a16ed031898=
+2ceffb195f2227f6aad4ac1.1698195059.git.yin31149@gmail.com/
 
--- 
-2.41.0
+> +
+> +    /*
+> +     * According to VirtIO standard, "Initially the device has all hash
+> +     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
+> +     *
+> +     * Therefore, there is no need to send this CVQ command if the
+> +     * driver disables the all hash types, which aligns with
+> +     * the device's defaults.
+> +     *
+> +     * Note that the device's defaults can mismatch the driver's
+> +     * configuration only at live migration.
+> +     */
+> +    if (!n->rss_data.enabled ||
+> +        n->rss_data.hash_types =3D=3D VIRTIO_NET_HASH_REPORT_NONE) {
+> +        return 0;
+> +    }
+> +
+> +    table =3D g_malloc_n(n->rss_data.indirections_len,
+> +                       sizeof(n->rss_data.indirections_table[0]));
+> +    cfg.hash_types =3D cpu_to_le32(n->rss_data.hash_types);
+> +
+> +    /*
+> +     * According to VirtIO standard, "Field reserved MUST contain zeroes=
+.
+> +     * It is defined to make the structure to match the layout of
+> +     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
+> +     *
+> +     * Therefore, we need to zero the fields in
+> +     * struct virtio_net_rss_config, which corresponds to the
+> +     * `reserved` field in struct virtio_net_hash_config.
+> +     *
+> +     * Note that all other fields are zeroed at their definitions,
+> +     * except for the `indirection_table` field, where the actual data
+> +     * is stored in the `table` variable to ensure compatibility
+> +     * with RSS case. Therefore, we need to zero the `table` variable he=
+re.
+> +     */
+> +    table[0] =3D 0;
+> +
+> +    /*
+> +     * Considering that virtio_net_handle_rss() currently does not resto=
+re
+> +     * the hash key length parsed from the CVQ command sent from the gue=
+st
+> +     * into n->rss_data and uses the maximum key length in other code, s=
+o
+> +     * we also employ the maximum key length here.
+> +     */
+> +    cfg.hash_key_length =3D sizeof(n->rss_data.key);
+> +
+> +    const struct iovec data[] =3D {
+> +        {
+> +            .iov_base =3D &cfg,
+> +            .iov_len =3D offsetof(struct virtio_net_rss_config,
+> +                                indirection_table),
+> +        }, {
+> +            .iov_base =3D table,
+> +            .iov_len =3D n->rss_data.indirections_len *
+> +                       sizeof(n->rss_data.indirections_table[0]),
+> +        }, {
+> +            .iov_base =3D &cfg.max_tx_vq,
+> +            .iov_len =3D offsetof(struct virtio_net_rss_config, hash_key=
+_data) -
+> +                       offsetof(struct virtio_net_rss_config, max_tx_vq)=
+,
+> +        }, {
+> +            .iov_base =3D (void *)n->rss_data.key,
+> +            .iov_len =3D sizeof(n->rss_data.key),
+> +        }
+> +    };
+> +
+> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> +                                VIRTIO_NET_CTRL_MQ,
+> +                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
+> +                                data, ARRAY_SIZE(data));
+> +    if (unlikely(r < 0)) {
+> +        return r;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+>                                    const VirtIONet *n,
+>                                    struct iovec *out_cursor,
+> @@ -843,6 +925,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+>          return r;
+>      }
+>
+> +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPOR=
+T)) {
+> +        return 0;
+> +    }
+> +
+> +    r =3D vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor);
+> +    if (unlikely(r < 0)) {
+> +        return r;
+> +    }
+> +
+>      return 0;
+>  }
+>
+> --
+> 2.25.1
+>
 
 
