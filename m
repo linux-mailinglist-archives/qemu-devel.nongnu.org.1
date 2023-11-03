@@ -2,75 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F147DFFE8
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5887B7E000B
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 10:37:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyqAA-0004CK-77; Fri, 03 Nov 2023 05:08:22 -0400
+	id 1qyqb9-0001jf-Cj; Fri, 03 Nov 2023 05:36:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyqA5-0004BZ-UG
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:08:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qyqA4-0007lU-6k
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:08:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699002491;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3p0+QtNUIXsXPhjbvkAscPxWkVyIBO+YHmcaHAM2u/g=;
- b=ajp4zHv/W1rjuA3S7hx345OUQwcg7aP+ioqPxTFUjC/eM0epgUqlY53zpW/8v2zKQ3q+G4
- 9qG32nkRcE4C6E4LjHFa1vRFXnF06gqe/nsl0LUxj1XTor2bqXBKDxKYAig/CrOiUyoqAb
- YcZsfCOw7Ykc3S10wczwGORG7wfbSUs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-k_TsiylJOdeawxWPiNeOkw-1; Fri,
- 03 Nov 2023 05:08:07 -0400
-X-MC-Unique: k_TsiylJOdeawxWPiNeOkw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1C895381A88F;
- Fri,  3 Nov 2023 09:08:07 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C9244C016B3;
- Fri,  3 Nov 2023 09:08:06 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D41A621E6A1F; Fri,  3 Nov 2023 10:08:05 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: Sam Li <faithilikerun@gmail.com>,  qemu-devel@nongnu.org,  Kevin Wolf
- <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  dlemoal@kernel.org,
- hare@suse.de,  dmitry.fomichev@wdc.com,  stefanha@redhat.com,
- qemu-block@nongnu.org,  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v5 2/4] qcow2: add configurations for zoned format
- extension
-References: <20231030121847.4522-1-faithilikerun@gmail.com>
- <20231030121847.4522-3-faithilikerun@gmail.com>
- <i43illqyyzu7wbotuw2fbuft7izdmfo7jkwnds4yrigewachhw@7pudpozwjer5>
-Date: Fri, 03 Nov 2023 10:08:05 +0100
-In-Reply-To: <i43illqyyzu7wbotuw2fbuft7izdmfo7jkwnds4yrigewachhw@7pudpozwjer5>
- (Eric Blake's message of "Mon, 30 Oct 2023 09:53:36 -0500")
-Message-ID: <878r7f19xm.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qyqb7-0001jC-8X
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:36:13 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qyqb1-0006Jt-Bg
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 05:36:13 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2c514cbbe7eso26362611fa.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 02:36:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1699004164; x=1699608964;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=/pJepHZ88QkJoUsmv2+9NEU3TfxTCxoj37klCYMhTXo=;
+ b=G1Yg9jgM7YBfFUwbmIyMZCI4vtxfH6iGpLXx9FTjYOkglVDIkM3ncOHy302SfzfAJm
+ c0AKutPzxGTpwtBMWdk5QaZ/AMBbpB5CCevAPOUtOGPLRmJiIFKG33JwsEenpamweSc+
+ le8fBqk2VYXMJ2o8dTxW8MNagB1NtbGphpcti/6n25fllSTWMjnMo3EpW01N9eRxSL+2
+ kU31Oumw09G+MTg7p9J/UCQMkUeM2HS/KalbtP40zTsJoV/4bqULpshW5s3Pzi6mKNnN
+ WZ2XNKYQadsXCofLX/zTVtCvTHwI3gpE6ge2nStK7MQDvkidrPoyndaaNrmcr2ANLiF+
+ EcbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699004164; x=1699608964;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/pJepHZ88QkJoUsmv2+9NEU3TfxTCxoj37klCYMhTXo=;
+ b=lyFRpZv5G1cSNE6VyyQvKNxP6+Nv1qwLZtxK60pCv62rvGg62sw9011b96ADg7cAbi
+ TBiQznuE5IPNglWkA+Vky1P8pjnjSGOBvnGwxGBGy3IQ+cOiPah+87Chh4RUQxuvzfDr
+ u3fCb5vFsp71lzr/6jX+LaYAlEQnvV3lyidLQQieuJy+bq3gaGPt4VTQ4AaH/iJBEZ9X
+ lgoCm7ozgpuUjIjlw7jzI4IfaenZNfou/6TGqChQeLaJ6pnuRJW0Hp8aubg7NgO+9oRB
+ m4JS3zqaoL/rZIgN8saDKNzpsQQHTfxqPWdFTJxgFMr4ldovNXNJpbYT6yHuHDMgv12w
+ lt9g==
+X-Gm-Message-State: AOJu0YxiEkBWRJppjaYd7akNKuTUG0NpAzLqMZvud08zwcd8S/yzWLbP
+ tKv7SQLLUSWZMU9tEfYbuof60G4YwvMDwTm24fmEMA==
+X-Google-Smtp-Source: AGHT+IH6oZUDzy0JzOWixXak5WQQSan9UcDV+DRdbAkV229l0paVONEZHDPhXR5pWmNomeGU3p2b1EWQijnl+lk2ahQ=
+X-Received: by 2002:a2e:9f16:0:b0:2c5:3492:5d96 with SMTP id
+ u22-20020a2e9f16000000b002c534925d96mr16142759ljk.12.1699004164515; Fri, 03
+ Nov 2023 02:36:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
+ <CAOEp5Oern10jW8Pi-_mceU_ZJVD=a1f3tW8rB2O4efLX45-nvw@mail.gmail.com>
+ <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
+ <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
+ <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
+ <20231101023805-mutt-send-email-mst@kernel.org>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+ <20231101050838-mutt-send-email-mst@kernel.org>
+ <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+ <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
+ <20231102053202-mutt-send-email-mst@kernel.org>
+ <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
+ <2fbdee21-60f4-49ff-b61b-923c895f90ba@daynix.com>
+In-Reply-To: <2fbdee21-60f4-49ff-b61b-923c895f90ba@daynix.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Fri, 3 Nov 2023 11:35:53 +0200
+Message-ID: <CAOEp5Oc+wGmxTAezMz4f03kuqsngHAcpi7pqPQDT=PWuy=L7BA@mail.gmail.com>
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>
+Content-Type: multipart/alternative; boundary="000000000000b2bdd006093c3bc5"
+Received-SPF: none client-ip=2a00:1450:4864:20::233;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,129 +99,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Eric Blake <eblake@redhat.com> writes:
+--000000000000b2bdd006093c3bc5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On Mon, Oct 30, 2023 at 08:18:45PM +0800, Sam Li wrote:
->> To configure the zoned format feature on the qcow2 driver, it
->> requires settings as: the device size, zone model, zone size,
->> zone capacity, number of conventional zones, limits on zone
->> resources (max append bytes, max open zones, and max_active_zones).
->> 
->> To create a qcow2 file with zoned format, use command like this:
->> $ qemu-img create -f qcow2 test.qcow2 -o size=768M -o
->> zone_size=64M -o zone_capacity=64M -o conventional_zones=0 -o
->> max_append_bytes=4096 -o max_open_zones=0 -o max_active_zones=0
->> -o zone_model=host-managed
->> 
->> Signed-off-by: Sam Li <faithilikerun@gmail.com>
->> 
->> fix config?
->
-> Is this comment supposed to be part of the commit message?  If not,...
->
->> ---
->
-> ...place it here under the divider, so 'git am' won't include it, if there is nothing further to change on this patch.
+On Thu, Nov 2, 2023 at 4:56=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix.=
+com>
+wrote:
 
-[...]
-
->> +++ b/qapi/block-core.json
->> @@ -4981,6 +4981,21 @@
->>  { 'enum': 'Qcow2CompressionType',
->>    'data': [ 'zlib', { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
->>  
->> +##
->> +# @Qcow2ZoneModel:
->> +#
->> +# Zoned device model used in qcow2 image file
->> +#
->> +# @non-zoned: non-zoned model is for regular block devices
->> +#
->> +# @host-managed: host-managed model only allows sequential write over the
->> +#     device zones
->> +#
->> +# Since 8.2
->> +##
->> +{ 'enum': 'Qcow2ZoneModel',
->> +  'data': ['non-zoned', 'host-managed'] }
->> +
->>  ##
->>  # @BlockdevCreateOptionsQcow2:
->>  #
->> @@ -5023,6 +5038,27 @@
->>  # @compression-type: The image cluster compression method
->>  #     (default: zlib, since 5.1)
->>  #
->> +# @zone-model: @Qcow2ZoneModel.  The zone device model.
->> +#     (default: non-zoned, since 8.2)
->> +#
->> +# @zone-size: Total number of bytes within zones (since 8.2)
+> On 2023/11/02 19:20, Yuri Benditovich wrote:
+> >
+> >
+> > On Thu, Nov 2, 2023 at 11:33=E2=80=AFAM Michael S. Tsirkin <mst@redhat.=
+com
+> > <mailto:mst@redhat.com>> wrote:
+> >
+> >     On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri Benditovich wrote:
+> >      > Probably we mix two different patches in this discussion.
+> >      > Focusing on the patch in the e-mail header:
+> >      >
+> >      > IMO it is not acceptable to fail QEMU run for one feature that w=
+e
+> >     can't make
+> >      > active when we silently drop all other features in such a case.
+> >
+> >     If the feature is off by default then it seems more reasonable
+> >     and silent masking can be seen as a bug.
+> >     Most virtio features are on by default this is why it's
+> >     reasonable to mask them.
+> >
+> >
+> > If we are talking about RSS: setting it initially off is the developmen=
+t
+> > time decision.
+> > When it will be completely stable there is no reason to keep it off by
+> > default, so this is more a question of time and of a readiness of
+> libvirt.
 >
-> If @zone-model is "non-zoned", does it make sense to even allow
-> @zone-size and friends?  Should this use a QMP union, where you can
-> pass in the remaining zone-* fields only when zone-model is set to
-> host-managed?
-
-Valid question; needs an answer.
-
->> +#
->> +# @zone-capacity: The number of usable logical blocks within zones
->> +#     in bytes.  A zone capacity is always smaller or equal to the
->> +#     zone size (since 8.2)
->> +#
->> +# @conventional-zones: The number of conventional zones of the
->> +#     zoned device (since 8.2)
->> +#
->> +# @max-open-zones: The maximal number of open zones (since 8.2)
->> +#
->> +# @max-active-zones: The maximal number of zones in the implicit
->> +#     open, explicit open or closed state (since 8.2)
->> +#
->> +# @max-append-bytes: The maximal number of bytes of a zone
->> +#     append request that can be issued to the device.  It must be
->> +#     512-byte aligned (since 8.2)
->> +#
->>  # Since: 2.12
->>  ##
->>  { 'struct': 'BlockdevCreateOptionsQcow2',
->> @@ -5039,7 +5075,14 @@
->>              '*preallocation':   'PreallocMode',
->>              '*lazy-refcounts':  'bool',
->>              '*refcount-bits':   'int',
->> -            '*compression-type':'Qcow2CompressionType' } }
->> +            '*compression-type':'Qcow2CompressionType',
->> +            '*zone-model':         'Qcow2ZoneModel',
->> +            '*zone-size':          'size',
->> +            '*zone-capacity':      'size',
->> +            '*conventional-zones': 'uint32',
->> +            '*max-open-zones':     'uint32',
->> +            '*max-active-zones':   'uint32',
->> +            '*max-append-bytes':   'uint32' } }
+> It is not ok to make "on" the default; that will enable RSS even when
+> eBPF steering support is not present and can result in performance
+> degradation.
 >
-> In other words, I'm envisioning something like an optional
-> '*zone':'ZoneStruct', where:
->
-> { 'struct': 'ZoneHostManaged',
->   'data': { 'size': 'size', '*capacity': 'size', ..., '*max-append-bytes': 'uint32' } }
-> { 'union': 'ZoneStruct',
->   'base': { 'model': 'Qcow2ZoneModel' },
->   'discriminator': 'model',
->   'data': { 'non-zoned': {},
->             'host-managed': 'ZoneHostManaged' } }
->
-> then over the wire, QMP can use the existing:
-> { ..., "compression-type":"zstd" }
->
-> as a synonym for the new but explicit non-zoned:
-> { ..., "compression-type":"zstd", "zone":{"mode":"non-zoned"} }
 
-I.e. @zone is optional, and defaults to {"mode": "non-zoned"}.
+Exactly as it is today - with vhost=3Don the host does not suggest RSS
+without  eBPF.
+I do not understand what you call "performance degradation", can you
+describe the scenario?
 
-> and when we want to use zones, we pass:
-> { ..., "compression-type":"zstd", "zone":{"mode":"host-managed", "size":16777216} }
+
 >
-> where you don't have to have zone- prefixing everywhere because it is
-> instead contained in the smart union object where it is obvious from
-> the 'mode' field what other fields should be present.
+> We will need OnOffAuto instead of a simple boolean value if we are going
+> to enable RSS when eBPF steering support is available; "auto" will be
+> the default and will enable RSS if and only if eBPF steering support is
+> available. "on" will not be default so it's better to validate if RSS is
+> available when the user explicitly specified "on" for the "rss" property.
+>
 
+--000000000000b2bdd006093c3bc5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Nov 2, 2023 at 4:56=E2=80=AFP=
+M Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.oda=
+ki@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">On 2023/11/02 19:20, Yuri Benditovich wrote:<br>
+&gt; <br>
+&gt; <br>
+&gt; On Thu, Nov 2, 2023 at 11:33=E2=80=AFAM Michael S. Tsirkin &lt;<a href=
+=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.com</a> <br>
+&gt; &lt;mailto:<a href=3D"mailto:mst@redhat.com" target=3D"_blank">mst@red=
+hat.com</a>&gt;&gt; wrote:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri Bend=
+itovich wrote:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Probably we mix two different patches in this=
+ discussion.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Focusing on the patch in the e-mail header:<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; IMO it is not acceptable to fail QEMU run for=
+ one feature that we<br>
+&gt;=C2=A0 =C2=A0 =C2=A0can&#39;t make<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; active when we silently drop all other featur=
+es in such a case.<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0If the feature is off by default then it seems more=
+ reasonable<br>
+&gt;=C2=A0 =C2=A0 =C2=A0and silent masking can be seen as a bug.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Most virtio features are on by default this is why =
+it&#39;s<br>
+&gt;=C2=A0 =C2=A0 =C2=A0reasonable to mask them.<br>
+&gt; <br>
+&gt; <br>
+&gt; If we are talking about RSS: setting it initially off is the developme=
+nt <br>
+&gt; time decision.<br>
+&gt; When it will be completely stable there is no reason to keep it off by=
+ <br>
+&gt; default, so this is more a question of time and of a readiness of libv=
+irt.<br>
+<br>
+It is not ok to make &quot;on&quot; the default; that will enable RSS even =
+when <br>
+eBPF steering support is not present and can result in performance <br>
+degradation.<br></blockquote><div><br></div><div>Exactly as it is today - w=
+ith vhost=3Don the host does not suggest RSS without=C2=A0 eBPF.</div><div>=
+I do not understand what you call &quot;performance degradation&quot;, can =
+you describe the scenario?</div><div>=C2=A0</div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">
+<br>
+We will need OnOffAuto instead of a simple boolean value if we are going <b=
+r>
+to enable RSS when eBPF steering support is available; &quot;auto&quot; wil=
+l be <br>
+the default and will enable RSS if and only if eBPF steering support is <br=
+>
+available. &quot;on&quot; will not be default so it&#39;s better to validat=
+e if RSS is <br>
+available when the user explicitly specified &quot;on&quot; for the &quot;r=
+ss&quot; property.<br>
+</blockquote></div></div>
+
+--000000000000b2bdd006093c3bc5--
 
