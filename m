@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E807E03F0
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 14:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95D47E03EE
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 14:47:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyuVt-0001xB-At; Fri, 03 Nov 2023 09:47:05 -0400
+	id 1qyuVu-0001xR-Pi; Fri, 03 Nov 2023 09:47:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyuVh-0001v5-Qu
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:46:53 -0400
-Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
+ id 1qyuVk-0001x0-Mj
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:46:56 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qyuVd-0000tm-MA
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:46:53 -0400
-Received: by mail-yw1-x1135.google.com with SMTP id
- 00721157ae682-5a7c95b8d14so24875907b3.3
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 06:46:49 -0700 (PDT)
+ id 1qyuVg-0000u2-I5
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 09:46:56 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-5b383b4184fso25018727b3.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 06:46:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1699019208; x=1699624008; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1699019211; x=1699624011; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=712CYVy+EQ0Wv0Iz+priR4rRIhCm9vcc+O/gippj4S4=;
- b=FYjW2dbxlWigQClOkWIoH4vhfi6m3oSkySaegYgrYBZgDb8Mrc5zX03DlKKF0/Tusu
- KtPZZjWpc+6ZbFznD0DiNrqcML6Z+ZTmJy5cw1+WXJb8EZH9Fm35kWiADWcJvkRZG0HB
- JDXHEKnuK/sL6YDSHu7jsbXZbEChZ1ZxkKTr81pIHaFkZQP7LTnZk91q/D4of3eNtbrB
- CEDQ3rF2Ea+5Wd+RGcnmW+qljC86wzpMse+KAl5M8pb4RozoWeOVDl0vE2ZoskqyzhEX
- bdQF9qi77YBOwX4C36oh8J4YO8Erxfyaj89i0Qo6el4IAN1jmiLhisepEiduD2qnSZ+I
- QIDw==
+ bh=3OEvO7SQyhJrP9rp0ctSryMoxCk5U1udjA51dFqnCuw=;
+ b=F1K95Jg51VWv3kIib+RwyCgir4Um1/4M55MLesK9KP0ptVyW60n2VvITTcqVk46/VQ
+ JCrDwSeC5Xuk5YVXGgoide53HJ/92Sv4LTst5JKOQsB9K/Ajw6xxHKo7/rO0x6UyJOiW
+ 99JLj/LNDBfQPGdkhhXnwNY34Wcqp481Jyuti0mPJoKsiMtB9uXNFi/5/2BhYX5TnUCn
+ BmEFh0VjibhKr+oacLwk45a/vVjAKvGorOc/0qTzy4ang005oE6CMOXC3TmzOKpU9LZc
+ q42YY23emf7vDfYgESB85k6t7KvtQYmcySVQmtyLSaJ4Gioo4ALP3Tb4QP3Yi2aRONSC
+ Letw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699019208; x=1699624008;
+ d=1e100.net; s=20230601; t=1699019211; x=1699624011;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=712CYVy+EQ0Wv0Iz+priR4rRIhCm9vcc+O/gippj4S4=;
- b=WuS8BQoV7DHEbhwymNFjDrTCIEaf242eklsZ74XVrqvdXwME6lR96fdMPpK4WfcS9R
- ZKurUpuiN350L2x1Z0UCWNNGSkhUwDr96D+bJfWHR2xwXC53RLlh0B8PcGEHluDpLX/r
- /MB6uABlyPr4HxsqTPDLZg+Ns35q9WY83/4ge4/nyrUHpUvLFiI2MsFpWUn5vh1Fmyl+
- 5Wg6z4vHAkv6/wx62MCjRj19e+ySUhjhp2GFkTb0TWP9H6H4wygpgb159okHj0mIocNl
- +ZX5bfcbxzcsbkP2+iHDacBkLFE1k7ckwKGtpKkEZeWAZzMsuklDikME0UXil7hBw3ks
- TxGQ==
-X-Gm-Message-State: AOJu0YzlG9TWrQRE6g6aPQ7LzVDQT0FESsQ/U47XlA6SkQxvyEoj1Exc
- ywLqv57qGDr+H/s15Bp4uAkJc4qk/wd0bnbxYcQ=
-X-Google-Smtp-Source: AGHT+IGTNMEX5lpdxvJbuw+KljcCgvtPB4KsvAA2zkCCRXPe1SmV80SNUWv4Zge3G9JEzUkPOxKhrw==
-X-Received: by 2002:a81:8393:0:b0:5a7:b797:d1e4 with SMTP id
- t141-20020a818393000000b005a7b797d1e4mr2718401ywf.21.1699019208022; 
- Fri, 03 Nov 2023 06:46:48 -0700 (PDT)
+ bh=3OEvO7SQyhJrP9rp0ctSryMoxCk5U1udjA51dFqnCuw=;
+ b=gmllr01TRT6iWh9CBwchp16oHjghyVxy1DovbWvzwTbZGp3mTX37O7bQoB0FuZ0gtF
+ SsTgKTh0eK+z8jerIQd2FUCwAt1NswQKL6HoPh/JwSqjFdugpZIfEWcExVGMkFxOl1Ta
+ TzVqHjXRr+3LgB8q5B1LpPUP82LjmPF/DpcBpk4hd7SSxjAWLCUFaf3WPlfTrR//obmC
+ /jWTU85uph+8ldB4E6azxckydYaZH3s2k+KQDCIoh4Uj1u0uLt8jaoWPgqIOZXEoA9GH
+ EJIefd4151sAvCHCGBWfCxjB3Vz+D36a0kHBZQ1QQZm7SyEn4TcKd5iFO10DqCIVEsSw
+ y37Q==
+X-Gm-Message-State: AOJu0YzZFuxE8WtnYumqU3q2Ym50LMYw3mntI68Rrn18/f9CI9yoHuzn
+ FPIlrKlFoj4KO4qdMo7siwPh2ogY0aXIdFrZuro=
+X-Google-Smtp-Source: AGHT+IG06oXGQ7tMu64/njYheBRCcuj4ucdWUR3dkx8s9b5j0VhnpR9EV+GPLdpl/PeuITvkK+zmFg==
+X-Received: by 2002:a0d:d692:0:b0:59b:c0a8:2882 with SMTP id
+ y140-20020a0dd692000000b0059bc0a82882mr2762708ywd.46.1699019210795; 
+ Fri, 03 Nov 2023 06:46:50 -0700 (PDT)
 Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- j68-20020a0df947000000b00582b239674esm935814ywf.129.2023.11.03.06.46.45
+ j68-20020a0df947000000b00582b239674esm935814ywf.129.2023.11.03.06.46.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Nov 2023 06:46:47 -0700 (PDT)
+ Fri, 03 Nov 2023 06:46:50 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v10 05/18] target/riscv: add zicbop extension flag
-Date: Fri,  3 Nov 2023 10:46:16 -0300
-Message-ID: <20231103134629.561732-6-dbarboza@ventanamicro.com>
+Subject: [PATCH v10 06/18] target/riscv/tcg: add 'zic64b' support
+Date: Fri,  3 Nov 2023 10:46:17 -0300
+Message-ID: <20231103134629.561732-7-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231103134629.561732-1-dbarboza@ventanamicro.com>
 References: <20231103134629.561732-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1135.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,93 +93,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU already implements zicbom (Cache Block Management Operations) and
-zicboz (Cache Block Zero Operations). Commit 59cb29d6a5 ("target/riscv:
-add Zicbop cbo.prefetch{i, r, m} placeholder") added placeholders for
-what would be the instructions for zicbop (Cache Block Prefetch
-Operations), which are now no-ops.
+zic64b is defined in the RVA22U64 profile [1] as a named feature for
+"Cache blocks must be 64 bytes in size, naturally aligned in the address
+space". It's a fantasy name for 64 bytes cache blocks. The RVA22U64
+profile mandates this feature, meaning that applications using this
+profile expects 64 bytes cache blocks.
 
-The RVA22U64 profile mandates zicbop, which means that applications that
-run with this profile might expect zicbop to be present in the riscv,isa
-DT and might behave badly if it's absent.
+To make the upcoming RVA22U64 implementation complete, we'll zic64b as
+a 'named feature', not a regular extension. This means that:
 
-Adding zicbop as an extension will make our future RVA22U64
-implementation more in line with what userspace expects and, if/when
-cache block prefetch operations became relevant to QEMU, we already have
-the extension flag to turn then on/off as needed.
+- it won't be exposed to users;
+- it won't be written in riscv,isa.
+
+This will be extended to other named extensions in the future, so we're
+creating some common boilerplate for them as well.
+
+zic64b is default to 'true' since we're already using 64 bytes blocks.
+If any cache block size (cbo{m,p,z}_blocksize) is changed to something
+different than 64, zic64b is set to 'false'.
+
+Our profile implementation will then be able to check the current state
+of zic64b and take the appropriate action (e.g. throw a warning).
+
+[1] https://github.com/riscv/riscv-profiles/releases/download/v1.0/profiles.pdf
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- hw/riscv/virt.c        | 5 +++++
- target/riscv/cpu.c     | 3 +++
- target/riscv/cpu_cfg.h | 2 ++
- 3 files changed, 10 insertions(+)
+ target/riscv/cpu.c         |  6 ++++++
+ target/riscv/cpu.h         |  1 +
+ target/riscv/cpu_cfg.h     |  1 +
+ target/riscv/tcg/tcg-cpu.c | 31 +++++++++++++++++++++++++++++++
+ 4 files changed, 39 insertions(+)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 1732c42915..99c087240f 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -273,6 +273,11 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-                                   cpu_ptr->cfg.cboz_blocksize);
-         }
- 
-+        if (cpu_ptr->cfg.ext_zicbop) {
-+            qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbop-block-size",
-+                                  cpu_ptr->cfg.cbop_blocksize);
-+        }
-+
-         qemu_fdt_setprop_string(ms->fdt, cpu_name, "compatible", "riscv");
-         qemu_fdt_setprop_string(ms->fdt, cpu_name, "status", "okay");
-         qemu_fdt_setprop_cell(ms->fdt, cpu_name, "reg",
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 46a5550d72..07c3cb1c23 100644
+index 07c3cb1c23..4e3ee16a25 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -78,6 +78,7 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
-  */
- const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
-+    ISA_EXT_DATA_ENTRY(zicbop, PRIV_VERSION_1_12_0, ext_zicbop),
-     ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_zicboz),
-     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
-     ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_zicntr),
-@@ -1377,6 +1378,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zhinxmin", ext_zhinxmin, false),
- 
-     MULTI_EXT_CFG_BOOL("zicbom", ext_zicbom, true),
-+    MULTI_EXT_CFG_BOOL("zicbop", ext_zicbop, true),
-     MULTI_EXT_CFG_BOOL("zicboz", ext_zicboz, true),
- 
-     MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
-@@ -1473,6 +1475,7 @@ Property riscv_cpu_options[] = {
-     DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
- 
-     DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
-+    DEFINE_PROP_UINT16("cbop_blocksize", RISCVCPU, cfg.cbop_blocksize, 64),
-     DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
- 
+@@ -1445,6 +1445,12 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
      DEFINE_PROP_END_OF_LIST(),
+ };
+ 
++const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
++    MULTI_EXT_CFG_BOOL("zic64b", zic64b, true),
++
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ /* Deprecated entries marked for future removal */
+ const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[] = {
+     MULTI_EXT_CFG_BOOL("Zifencei", ext_zifencei, true),
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 8efc4d83ec..bf12f34082 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -745,6 +745,7 @@ typedef struct RISCVCPUMultiExtConfig {
+ extern const RISCVCPUMultiExtConfig riscv_cpu_extensions[];
+ extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
+ extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
++extern const RISCVCPUMultiExtConfig riscv_cpu_named_features[];
+ extern const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[];
+ extern Property riscv_cpu_options[];
+ 
 diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 634ff673b3..c21e4bcc47 100644
+index c21e4bcc47..414c4eba77 100644
 --- a/target/riscv/cpu_cfg.h
 +++ b/target/riscv/cpu_cfg.h
-@@ -65,6 +65,7 @@ struct RISCVCPUConfig {
-     bool ext_zicntr;
-     bool ext_zicsr;
-     bool ext_zicbom;
-+    bool ext_zicbop;
-     bool ext_zicboz;
-     bool ext_zicond;
-     bool ext_zihintntl;
-@@ -142,6 +143,7 @@ struct RISCVCPUConfig {
-     uint16_t vlen;
-     uint16_t elen;
-     uint16_t cbom_blocksize;
-+    uint16_t cbop_blocksize;
-     uint16_t cboz_blocksize;
-     bool mmu;
-     bool pmp;
+@@ -116,6 +116,7 @@ struct RISCVCPUConfig {
+     bool ext_smepmp;
+     bool rvv_ta_all_1s;
+     bool rvv_ma_all_1s;
++    bool zic64b;
+ 
+     uint32_t mvendorid;
+     uint64_t marchid;
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 3751f7711e..c33a355583 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -114,6 +114,19 @@ static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
+     g_assert_not_reached();
+ }
+ 
++static bool cpu_cfg_offset_is_named_feat(uint32_t ext_offset)
++{
++    const RISCVCPUMultiExtConfig *feat;
++
++    for (feat = riscv_cpu_named_features; feat->name != NULL; feat++) {
++        if (feat->offset == ext_offset) {
++            return true;
++        }
++    }
++
++    return false;
++}
++
+ static void cpu_validate_multi_ext_priv_ver(CPURISCVState *env,
+                                             uint32_t ext_offset)
+ {
+@@ -123,6 +136,10 @@ static void cpu_validate_multi_ext_priv_ver(CPURISCVState *env,
+         return;
+     }
+ 
++    if (cpu_cfg_offset_is_named_feat(ext_offset)) {
++        return;
++    }
++
+     ext_priv_ver = cpu_cfg_ext_get_min_version(ext_offset);
+ 
+     if (env->priv_ver < ext_priv_ver) {
+@@ -284,6 +301,18 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+     }
+ }
+ 
++static void riscv_cpu_validate_zic64b(RISCVCPU *cpu)
++{
++    cpu->cfg.zic64b = cpu->cfg.cbom_blocksize == 64 &&
++                      cpu->cfg.cbop_blocksize == 64 &&
++                      cpu->cfg.cboz_blocksize == 64;
++}
++
++static void riscv_cpu_validate_named_features(RISCVCPU *cpu)
++{
++    riscv_cpu_validate_zic64b(cpu);
++}
++
+ /*
+  * Check consistency between chosen extensions while setting
+  * cpu->cfg accordingly.
+@@ -648,6 +677,8 @@ void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+         return;
+     }
+ 
++    riscv_cpu_validate_named_features(cpu);
++
+     if (cpu->cfg.ext_smepmp && !cpu->cfg.pmp) {
+         /*
+          * Enhanced PMP should only be available
 -- 
 2.41.0
 
