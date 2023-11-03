@@ -2,81 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFD17E0196
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 11:35:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF7A7E01A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Nov 2023 11:44:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qyrVq-0001dJ-Et; Fri, 03 Nov 2023 06:34:50 -0400
+	id 1qyreD-00040m-6h; Fri, 03 Nov 2023 06:43:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qyrVo-0001YO-FF
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:34:48 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qyrVi-0007er-6z
- for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:34:48 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-540c54944c4so3783576a12.1
- for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 03:34:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699007679; x=1699612479; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7MBSReJr7/RZobr0kARCBIFw/Mu4RNvqu9rsmDd5hJg=;
- b=Z0TF0x9zCa3yd6vN9ldg99oDritVx+Au1yLxdHmOFs+kttkLVpdMmfYc62dHQrHI6E
- PYz25inLZHaofDyafP0DcmZKYjcBR60/U4oe8h1Jr4V4gHjnb7WFy1E1UnqFZEeoMy42
- r/5K4XFwMdoyMwX0LAUa5Wbt5ZY0ToUYGVt++JaSx4BoJVgvtKQe5t5RdGqNFgFeI0me
- GQmbkSCs7Lpn8Apc02HvO6W/yhSjM+6x4yHyPn71VQsFssbgIxLCpQW1BVMNI1dm/H78
- nOLWn+zPJ2QyosgOrc7GFKOG6P0hR46e+jEgBGJDOta8B56mZSgGmlDelucXW0FitbVk
- oHEw==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyreA-00040Y-Qq
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:43:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qyre7-0001vM-TN
+ for qemu-devel@nongnu.org; Fri, 03 Nov 2023 06:43:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699008201;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=cFfMoYK2y+vhqNcmhlIo+Hzsw922AAwrVDDImGGjBmI=;
+ b=YKlp/8UhuOYf55oKzJ0ntHxUE/hhbEiQuLlq3cvliKVoOdRrHsR9jBdL2zdZYiDJ5FQuyc
+ GC5WOaojdpXQh1gPVsLIVYGITgwmWFCjN3CgdRZnIv831HVRVZvn6R6PpF4T2htltAp5NT
+ 8q0CAY46affmOxt/MC3xH2LAVG7puLM=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-t-8Q9w0GMEyS2wz2LIDBYQ-1; Fri, 03 Nov 2023 06:43:19 -0400
+X-MC-Unique: t-8Q9w0GMEyS2wz2LIDBYQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-5082705f6dfso1741929e87.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Nov 2023 03:43:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699007679; x=1699612479;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7MBSReJr7/RZobr0kARCBIFw/Mu4RNvqu9rsmDd5hJg=;
- b=mqbjn8gH29motrYaZPgLLCQ6qjX/lfteuSw6d0wNscMc/a/IzZ1QLsfdXkcgcAEpv9
- EYY+JeJHvOJ0Bfak1rTtREEUSzzQQeT/ig2lPmr+Xps9DHi/00hnZL6CFH05Prh4eBM3
- i2nwr9GvQkTnXEHrf640UYDhhsagO1AxIykuIsol9yRcgrZZ4PjA4ePB1AsfFSTRZfEu
- eo7Ax2qVOVu05Hv8HnYlE1nDou3eY23YWXzpqvWgie3I4YaRxXLrzy33xLjGA9Yp7Tge
- VzrAQY2oG907JrDafGWmQZIR7BO8v3qaobiZDgABcUEuJPRJZQxjRk8E9V8fm7ZXVedO
- ZCZA==
-X-Gm-Message-State: AOJu0YyjHRy29Lhg6gRMT+S+8hbtL/05a6tkOy4CzRYPGcR5iKqhKgs/
- Pcguo+FoKAdlZ+/N7WDWamDP/cGFLvmwDRdfJSCBHA==
-X-Google-Smtp-Source: AGHT+IEtGI12iISl8e0E+UvxodiZaLCk75Tqo63auRf9k9szrkLajBERA0lypads4z19/pOOp8sd+jWaAeWlYhdCwnQ=
-X-Received: by 2002:aa7:c75a:0:b0:533:5d3d:7efe with SMTP id
- c26-20020aa7c75a000000b005335d3d7efemr2046122eds.6.1699007679417; Fri, 03 Nov
- 2023 03:34:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1699008198; x=1699612998;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cFfMoYK2y+vhqNcmhlIo+Hzsw922AAwrVDDImGGjBmI=;
+ b=fjaMz/TC+JKM7hQ4hsPelIv6MrPci3UZgD7p2mpWn9myRqlykEmgbdbl3EordIVSFC
+ NL39UE2vn8it3xWLRB56KiPGtUqrY+WYrmnO+cusXBXu3OxIVj7zcH0v9+TcMCQP9ENd
+ JlNaYM7HEj96pRV0VMPxVFVg/bIX0+Us6mCb1m5xdUPucDrRsdyyOyRw8RiWn0o1lgMN
+ Tpc+WNSqJs9J87q2ktZPFReZpny1lwwyB724KU7FC2qVPZ+Hk4RnlZ4+AOOFvnz0X0/R
+ ixg0N5XRhDsXZ9u6BR6HU1tQ0uJM5EYNWWAaPhxOXjW0KcJpBdZt1KPVVskeFm6kqQpG
+ 105w==
+X-Gm-Message-State: AOJu0Yycx1AlRb48ybsID+n89q8ORNHHBP2IWyAYkljacpfYZe52UbSM
+ /SImkTFgNRWVwU+kcQgM87KjwnQeyFJdoD2ruijlu8BZvuJSaCYrG8z+YW6JpxiZqiQ0cHFrKLi
+ Arponctwer79zMdk=
+X-Received: by 2002:a05:6512:21c2:b0:507:a9e1:5a3b with SMTP id
+ d2-20020a05651221c200b00507a9e15a3bmr14600718lft.0.1699008198300; 
+ Fri, 03 Nov 2023 03:43:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFc5KpVz10aCBIF17hnUPUvqnzjCVKuRCMzbax9wQONoI83YbJu6jksgHdtkt8HgFrpOjxYng==
+X-Received: by 2002:a05:6512:21c2:b0:507:a9e1:5a3b with SMTP id
+ d2-20020a05651221c200b00507a9e15a3bmr14600700lft.0.1699008197899; 
+ Fri, 03 Nov 2023 03:43:17 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ l22-20020adfa396000000b0032f7d1e2c7csm1536375wrb.95.2023.11.03.03.43.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Nov 2023 03:43:17 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  dgilbert@redhat.com,
+ pbonzini@redhat.com,  berrange@redhat.com,  armbru@redhat.com,
+ eblake@redhat.com,  manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com,  Het Gala <het.gala@nutanix.com>,  Peter
+ Xu <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v15 12/14] migration: Implement MigrateChannelList to
+ qmp migration flow.
+In-Reply-To: <20231023182053.8711-13-farosas@suse.de> (Fabiano Rosas's message
+ of "Mon, 23 Oct 2023 15:20:51 -0300")
+References: <20231023182053.8711-1-farosas@suse.de>
+ <20231023182053.8711-13-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Fri, 03 Nov 2023 11:43:16 +0100
+Message-ID: <87y1ff15iz.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <20231102094015.208588-1-ethan84@andestech.com>
- <20231102094015.208588-2-ethan84@andestech.com> <ZUOo3fGmqM/gVyTR@x1n>
- <CAFEAcA86B-V0gFLhE9rPK2kG=XeFw7OJ4C==8g2i_WHSLW_HYQ@mail.gmail.com>
- <ZURpIyjhraORROn5@ethan84-VirtualBox>
-In-Reply-To: <ZURpIyjhraORROn5@ethan84-VirtualBox>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 3 Nov 2023 10:34:28 +0000
-Message-ID: <CAFEAcA-1dJnsDyZpf2Dy9XuAdp6CFWSFCzV7eceUJ6RyFLaVPA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] exec/memattrs: Add iopmp source id, start address, 
- end address to MemTxAttrs
-To: Ethan Chen <ethan84@andestech.com>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
- richard.henderson@linaro.org, 
- pbonzini@redhat.com, palmer@dabbelt.com, alistair.francis@wdc.com, 
- in.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, 
- hiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, david@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.393,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,59 +102,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 3 Nov 2023 at 03:29, Ethan Chen <ethan84@andestech.com> wrote:
+Fabiano Rosas <farosas@suse.de> wrote:
+> From: Het Gala <het.gala@nutanix.com>
 >
-> On Thu, Nov 02, 2023 at 01:53:05PM +0000, Peter Maydell wrote:
-> > On Thu, 2 Nov 2023 at 13:49, Peter Xu <peterx@redhat.com> wrote:
-> > >
-> > > On Thu, Nov 02, 2023 at 05:40:12PM +0800, Ethan Chen wrote:
-> > > > Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> > > > ---
-> > > >  include/exec/memattrs.h | 6 ++++++
-> > > >  1 file changed, 6 insertions(+)
-> > > >
-> > > > diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-> > > > index d04170aa27..fc15e5d7d3 100644
-> > > > --- a/include/exec/memattrs.h
-> > > > +++ b/include/exec/memattrs.h
-> > > > @@ -64,6 +64,12 @@ typedef struct MemTxAttrs {
-> > > >      unsigned int target_tlb_bit0 : 1;
-> > > >      unsigned int target_tlb_bit1 : 1;
-> > > >      unsigned int target_tlb_bit2 : 1;
-> > > > +
-> > > > +    /* IOPMP support up to 65535 sources */
-> > > > +    unsigned int iopmp_sid:16;
-> > >
-> > > There's MemTxAttrs.requester_id, SID for pci, same length.  Reuse it?
-> > >
-> > > > +    /* Transaction infomation for IOPMP */
-> > > > +    unsigned long long iopmp_start_addr;
-> > > > +    unsigned long long iopmp_end_addr;
-> > >
-> > > PS: encoding addresses into memattrs is.. strange, but since I know nothing
-> > > about iopmp, I'll leave that for other reviewers.
-> > >
-> > > Currently MemTxAttrs are passed as a whole int on the stack, if it keeps
-> > > growing we may start to consider a pointer, but need to check the side
-> > > effects of unexpected fields modified within a call.
-> >
-> > Yeah, this struct is intended to model the various attributes that
-> > get passed around on the bus alongside data in real hardware.
-> > I'm pretty sure no real hardware is passing around start and
-> > end transaction addresses on its bus with every read and
-> > write, which suggests that we should be doing this some other
-> > way than adding these fields to the MemTxAttrs struct.
+> Integrate MigrateChannelList with all transport backends
+> (socket, exec and rdma) for both src and dest migration
+> endpoints for qmp migration.
 >
-> For AXI bus ADDR, LEN, SIZE are signals in read/write address channel.
-> IOPMP will check that start address = ADDR,
-> and end address = ADDR + LEN * SIZE.
+> For current series, limit the size of MigrateChannelList
+> to single element (single interface) as runtime check.
+>
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Yes, but you don't pass the start and end address on the AXI
-bus, so they don't go in QEMU's MemTxAttrs either.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-thanks
--- PMM
 
