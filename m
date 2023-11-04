@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C597E0F10
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F137E0F0D
 	for <lists+qemu-devel@lfdr.de>; Sat,  4 Nov 2023 12:27:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzEml-0003xa-Gp; Sat, 04 Nov 2023 07:25:51 -0400
+	id 1qzEmm-0003xx-W0; Sat, 04 Nov 2023 07:25:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1qzEmc-0003wL-0t
- for qemu-devel@nongnu.org; Sat, 04 Nov 2023 07:25:42 -0400
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1qzEmg-0003x5-NL
+ for qemu-devel@nongnu.org; Sat, 04 Nov 2023 07:25:46 -0400
 Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1qzEmY-0004Mp-Um
- for qemu-devel@nongnu.org; Sat, 04 Nov 2023 07:25:40 -0400
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1qzEmd-0004MQ-Vw
+ for qemu-devel@nongnu.org; Sat, 04 Nov 2023 07:25:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1699097130; bh=Feyv68vDnKce0cp8shSFLIDQwIOdHSVSSxODRVSXuTw=;
- h=From:Subject:Date:To:Cc:From;
- b=XHEWKcFNXIr68FRhQNGYHED7vmVa1wsFiwSnu8OYmx7V+g5egombXp8vIoWCtQ4ha
- Or5MlWjkx6ydambDSEGDBL8A9tvj7nL2YajP9zS8icidYDyRuGSK0THXLq1ZENAWx+
- y4b7jhOCfovF8cF2j+6u4Iw/7yqsTD0ifLwoEt8M=
+ t=1699097130; bh=3r4M8GjZnQGQv3n9KHlLjrTu+JGdSsG8tbswQMjK7gU=;
+ h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+ b=XCDPWbySHwnAvxa+TchJ4tx26rYP762MjfjBtp7SXSjXI8pi+SIBaWVmqRw1J1mKe
+ H8Wlo7ZCR506Us5apCDvtfjk7eH431jbl6YxveRZRA2UU8qOeIWecIU3riYbZPcYoI
+ 6SHQPbM5+jhRGJiAEkLnhAWD42wla7MhQw2neuQA=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Subject: [PATCH RFC 0/3] hw/misc/pvpanic: add support for normal shutdowns
-Date: Sat, 04 Nov 2023 12:25:21 +0100
-Message-Id: <20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de>
+Date: Sat, 04 Nov 2023 12:25:22 +0100
+Subject: [PATCH RFC 1/3] hw/misc/pvpanic: centralize definition of
+ supported events
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIACEqRmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2NDQwMT3YKygsS8zGTd4ozSkpT88jxdA6NUkyST5CQTSxNLJaC2gqLUtMw
- KsJHRSkFuzkqxtbUAxMCxm2cAAAA=
+Message-Id: <20231104-pvpanic-shutdown-v1-1-02353157891b@t-8ch.de>
+References: <20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de>
+In-Reply-To: <20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
  Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1699097130; l=1754;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1699097130; l=3171;
  i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=Feyv68vDnKce0cp8shSFLIDQwIOdHSVSSxODRVSXuTw=;
- b=6R58eTDU+8UB8DpfGo3hOrGe5yCZdjDUgSsifzjHkMDDETLRMzlutfuGAz+8uKezxKk2nT23C
- Kx+H2MUmuoRBIBNmZyGP/LcLDj33StrhIguNfoGDPe5pTI+KiX4caxT
+ bh=3r4M8GjZnQGQv3n9KHlLjrTu+JGdSsG8tbswQMjK7gU=;
+ b=IGM9RiM38eWKN4oXOKHeRdX1BBal9migDtnagjs2OBV/AmvdUO5R3JYhv6MZsv9lNeKMfIKIk
+ muaVftpkgY3BilI3Nx7QWKPo6mxt55/ZiNeYSivtPEkw7FIH2Yroo/3
 X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
@@ -67,49 +67,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shutdown requests are normally hardware dependent.
-By extending pvpanic to also handle shutdown requests, guests can
-submit such requests with an easily implementable and cross-platform
-mechanism.
-
-The background is the usage of minimal Linux kernels with different
-architectures for testing purposes.
-Poweroff support varies highly per architecture and requires a bunch of
-code to be compiled to work.
-pvpanic on the other hand is very small and uniform.
-
-I sent an RFC[0] for this before to qemu-devel and lkml which didn't
-generate feedback, so let's discuss the concrete proposal.
-
-Patch 1 and 2 are general cleanups, that seems useful even without this
-proposal being implemented.
-
-I'll send the corresponding Linux patch to LKML.
-
-[0] https://lore.kernel.org/all/984794aa-4af0-4c68-a74e-7420ec3151a5@t-8ch.de/
+The different components of pvpanic duplicate the list of supported
+events. Move it to the shared header file to minimize changes when new
+events are added.
 
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 ---
-Thomas Weißschuh (3):
-      hw/misc/pvpanic: centralize definition of supported events
-      tests/qtest/pvanic: use centralized definition of supported events
-      hw/misc/pvpanic: add support for normal shutdowns
+ hw/misc/pvpanic-isa.c     | 3 +--
+ hw/misc/pvpanic-pci.c     | 3 +--
+ hw/misc/pvpanic.c         | 3 +--
+ include/hw/misc/pvpanic.h | 2 ++
+ 4 files changed, 5 insertions(+), 6 deletions(-)
 
- docs/specs/pvpanic.rst                   | 2 ++
- hw/misc/pvpanic-isa.c                    | 3 +--
- hw/misc/pvpanic-pci.c                    | 3 +--
- hw/misc/pvpanic.c                        | 8 ++++++--
- include/hw/misc/pvpanic.h                | 2 ++
- include/standard-headers/linux/pvpanic.h | 1 +
- tests/qtest/pvpanic-pci-test.c           | 5 +++--
- tests/qtest/pvpanic-test.c               | 5 +++--
- 8 files changed, 19 insertions(+), 10 deletions(-)
----
-base-commit: d762bf97931b58839316b68a570eecc6143c9e3e
-change-id: 20231104-pvpanic-shutdown-02e4b4cb4949
+diff --git a/hw/misc/pvpanic-isa.c b/hw/misc/pvpanic-isa.c
+index ccec50f61bbd..9a923b786907 100644
+--- a/hw/misc/pvpanic-isa.c
++++ b/hw/misc/pvpanic-isa.c
+@@ -21,7 +21,6 @@
+ #include "hw/misc/pvpanic.h"
+ #include "qom/object.h"
+ #include "hw/isa/isa.h"
+-#include "standard-headers/linux/pvpanic.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(PVPanicISAState, PVPANIC_ISA_DEVICE)
+@@ -102,7 +101,7 @@ static void build_pvpanic_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
+ static Property pvpanic_isa_properties[] = {
+     DEFINE_PROP_UINT16(PVPANIC_IOPORT_PROP, PVPanicISAState, ioport, 0x505),
+     DEFINE_PROP_UINT8("events", PVPanicISAState, pvpanic.events,
+-                      PVPANIC_PANICKED | PVPANIC_CRASH_LOADED),
++                      PVPANIC_EVENTS),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/hw/misc/pvpanic-pci.c b/hw/misc/pvpanic-pci.c
+index fbcaa50731b3..8898d280d2ef 100644
+--- a/hw/misc/pvpanic-pci.c
++++ b/hw/misc/pvpanic-pci.c
+@@ -21,7 +21,6 @@
+ #include "hw/misc/pvpanic.h"
+ #include "qom/object.h"
+ #include "hw/pci/pci_device.h"
+-#include "standard-headers/linux/pvpanic.h"
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(PVPanicPCIState, PVPANIC_PCI_DEVICE)
+ 
+@@ -55,7 +54,7 @@ static void pvpanic_pci_realizefn(PCIDevice *dev, Error **errp)
+ 
+ static Property pvpanic_pci_properties[] = {
+     DEFINE_PROP_UINT8("events", PVPanicPCIState, pvpanic.events,
+-                      PVPANIC_PANICKED | PVPANIC_CRASH_LOADED),
++                      PVPANIC_EVENTS),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
+index 1540e9091a45..a4982cc5928e 100644
+--- a/hw/misc/pvpanic.c
++++ b/hw/misc/pvpanic.c
+@@ -21,13 +21,12 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/misc/pvpanic.h"
+ #include "qom/object.h"
+-#include "standard-headers/linux/pvpanic.h"
+ 
+ static void handle_event(int event)
+ {
+     static bool logged;
+ 
+-    if (event & ~(PVPANIC_PANICKED | PVPANIC_CRASH_LOADED) && !logged) {
++    if (event & ~PVPANIC_EVENTS && !logged) {
+         qemu_log_mask(LOG_GUEST_ERROR, "pvpanic: unknown event %#x.\n", event);
+         logged = true;
+     }
+diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
+index fab94165d03d..198047dc86ff 100644
+--- a/include/hw/misc/pvpanic.h
++++ b/include/hw/misc/pvpanic.h
+@@ -17,11 +17,13 @@
+ 
+ #include "exec/memory.h"
+ #include "qom/object.h"
++#include "standard-headers/linux/pvpanic.h"
+ 
+ #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
+ #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
+ 
+ #define PVPANIC_IOPORT_PROP "ioport"
++#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED)
+ 
+ /*
+  * PVPanicState for any device type
 
-Best regards,
 -- 
-Thomas Weißschuh <thomas@t-8ch.de>
+2.42.0
 
 
