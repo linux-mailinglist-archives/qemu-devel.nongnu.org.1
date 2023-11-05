@@ -2,68 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB937E1642
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2527E7E1644
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:13:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzjTx-00039p-DG; Sun, 05 Nov 2023 15:12:29 -0500
+	id 1qzjTx-00039q-FK; Sun, 05 Nov 2023 15:12:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjTv-00039T-IM
+ id 1qzjTv-00039a-Ql
  for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:27 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjTt-00027W-SY
+ id 1qzjTu-00027d-BU
  for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:27 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6bd73395bceso3090906b3a.0
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6b2018a11efso3987151b3a.0
  for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 12:12:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699215144; x=1699819944; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=oi6VFs4RCF9MHarAKm/2EY9p+ikytl5LOoXeVlUMQKI=;
- b=ouEnnFqrACLMAtShcbKEo+x1Br/hQGJsudBKyxziaY0mFKhbJer15RU6SH2XDui8cJ
- J0NPAA3Rx1j/ZMHj1W1WWxCMZR1XseF468aR3K4eKKQxq8KLVJgpcjlF3X6eu9DkGf6Y
- OvVi6+9MbjS7rDTZLUqONEFkoZCYbCRzUE7YDNynX+o6MCF9bt9xVlgsdQh1a4ZQTgIP
- yUbaIpiZisJiDx6DjwZ3gCCZixgcdRYt3ep76dhNPza0eiWes4VCMqLQwhp4vl0/PNqs
- Dv1fI8NDrl/sSIFKHQqtTljsyw9Dj5PsD4YtAQraSFrDIpxL8b77NGLzi9HXc7trIkFo
- /aNA==
+ d=linaro.org; s=google; t=1699215145; x=1699819945; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qG+TirgfLO1yyR3v2seUl0zyqvQ6ZRohRxES3/K7nSo=;
+ b=QmVv0FBq1qF2xTX+mHuACZURGPmJ0MOT9c7xIL54/kGoeYWS7aipdolChz+Wr8PrYX
+ zMqDNH5+UsALub5cA1nYCDIV1J3bG1Cj2FYPCPr1fhw6VxmVYlb80Lpi8J/TVU9pGcFo
+ sELufHuLNbU9Kg13MUs+m8Ucu+/S/2lX0rINVnhop+RPT52zkO9fgsWTPWcUgZ47Etvo
+ SolvZCF1M2DhJvFp4A2/a564mEQ8OQRVDRq7ElKGsKMVGsWc3P/1GMNC1/zGGXoJu6AL
+ UfpL8dl4Q1/lEzESQIbyJZ/O8gp3aSbEDB8U0DSdB6VCVtsXdHi6HmZwGzPTjz1beZz7
+ +FGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699215144; x=1699819944;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oi6VFs4RCF9MHarAKm/2EY9p+ikytl5LOoXeVlUMQKI=;
- b=vvN0CrkcT5U9ipXzCmJ+c+lg1b6UKfxvZD6ZrnlEgjf7L9yM7MLCDTKpGDoQgT3sx6
- iWCysexcNfneuUjYnRc76VmGmTx63TnAITVmae7f6zVsGHur/FLmL6j7IlT3Vl/6FzqT
- l4pwLeiA6VhZNtobbVbaKA6PkaobV1VExyfrJuSHl5lYgn1RCOh5VOqIm3EbOo1X/4Vy
- BlkEXf7ZxnZwRyLUm+saz/QkXRaP4BrSLbEuOohGT+lebjjunM5ZPOx/bvGlRcE+SI9n
- snwjKihpnrU2ZPQ5tZ/7BwkTNYtOsGtDwzbs2PdHzLLmAnVM3ikgcDWJeU8IR89lu72J
- btsA==
-X-Gm-Message-State: AOJu0YxenEwTE4YollunAZUdsCpXaC1W1sR+udz+NlM2jH5c/a92yH+P
- reO/LBeMc90Jj01ju5Sf+x5i4hFHBVI2DN3Jltk=
-X-Google-Smtp-Source: AGHT+IEnZM8Wtuq9JKQxdKzAOx43I04bmoPT+C0drEf1ZxqK11Ale/t5P/fnCERGQzgUedozFnzXAA==
-X-Received: by 2002:a05:6a00:15ce:b0:68b:e29c:b69 with SMTP id
- o14-20020a056a0015ce00b0068be29c0b69mr11049695pfu.9.1699215143891; 
- Sun, 05 Nov 2023 12:12:23 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699215145; x=1699819945;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qG+TirgfLO1yyR3v2seUl0zyqvQ6ZRohRxES3/K7nSo=;
+ b=iA3WPR1CVsIm6FvWdJGtt2PXe2lZx7KRZaa9Qm6Ldgix8WnoWxe1K2z3oDqNARO/eW
+ QUnDrlGkdvx2Jst/P22/zSe3ojIsAKroa+RJZ9L2AMoqe4feCZoVafJn/DOMMGQXd4RG
+ 5T1BgS3eqAihuqFPJpsxuzk61g0oLGBxyaaLV7VFEXClGwyyNdC+te/QR0uxDgO86HoI
+ 0hxglhGRRlC9PSeMHToYI8GutMzIPOrNluUrhp9kFs+f/8GbW0rjNFW5V80xQWmKKGIr
+ Cd/o/8aSRKjwfzLRoCZ5Pc6UVlywnzeaZm7todw7cWl7ieBJUFZuSdiXgjEGl4mO85CN
+ /kYQ==
+X-Gm-Message-State: AOJu0Yxfeq08uNw5kuzgJeln6v4kzrGoh/vwcxDg7VeIN0IczKh7Wf03
+ tNh3fVqfi9BijjGM4osOwBzegG8gOkqbptk2+ww=
+X-Google-Smtp-Source: AGHT+IE+QV13dDnnZv0fozZBr3mFGe94x/jSn3hFrAreeYl0+TFJdNsLtQBs7UB3H2wWUsy4VXz0dQ==
+X-Received: by 2002:a05:6a21:7785:b0:180:db7b:23f2 with SMTP id
+ bd5-20020a056a21778500b00180db7b23f2mr25375142pzc.61.1699215144694; 
+ Sun, 05 Nov 2023 12:12:24 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- u23-20020a056a00099700b006884549adc8sm4359777pfg.29.2023.11.05.12.12.23
- for <qemu-devel@nongnu.org>
+ u23-20020a056a00099700b006884549adc8sm4359777pfg.29.2023.11.05.12.12.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 12:12:23 -0800 (PST)
+ Sun, 05 Nov 2023 12:12:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/21] target/sparc: Cleanup condition codes
-Date: Sun,  5 Nov 2023 12:12:01 -0800
-Message-Id: <20231105201222.202395-1-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 01/21] target/sparc: Introduce cpu_put_psr_icc
+Date: Sun,  5 Nov 2023 12:12:02 -0800
+Message-Id: <20231105201222.202395-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231105201222.202395-1-richard.henderson@linaro.org>
+References: <20231105201222.202395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,60 +90,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
+Isolate linux-user from changes to icc representation.
 
-  Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/sparc/cpu.h        | 1 +
+ linux-user/sparc/signal.c | 2 +-
+ target/sparc/win_helper.c | 7 ++++++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-are available in the Git repository at:
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 758a4e8aaa..955329f6c9 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -619,6 +619,7 @@ void sparc_restore_state_to_opc(CPUState *cs,
+ /* win_helper.c */
+ target_ulong cpu_get_psr(CPUSPARCState *env1);
+ void cpu_put_psr(CPUSPARCState *env1, target_ulong val);
++void cpu_put_psr_icc(CPUSPARCState *env1, target_ulong val);
+ void cpu_put_psr_raw(CPUSPARCState *env1, target_ulong val);
+ #ifdef TARGET_SPARC64
+ void cpu_change_pstate(CPUSPARCState *env1, uint32_t new_pstate);
+diff --git a/linux-user/sparc/signal.c b/linux-user/sparc/signal.c
+index 2be9000b9e..dfcae707e0 100644
+--- a/linux-user/sparc/signal.c
++++ b/linux-user/sparc/signal.c
+@@ -164,7 +164,7 @@ static void restore_pt_regs(struct target_pt_regs *regs, CPUSPARCState *env)
+      */
+     uint32_t psr;
+     __get_user(psr, &regs->psr);
+-    env->psr = (psr & PSR_ICC) | (env->psr & ~PSR_ICC);
++    cpu_put_psr_icc(env, psr);
+ #endif
+ 
+     /* Note that pc and npc are handled in the caller. */
+diff --git a/target/sparc/win_helper.c b/target/sparc/win_helper.c
+index 3a7c0ff943..bf2c90c780 100644
+--- a/target/sparc/win_helper.c
++++ b/target/sparc/win_helper.c
+@@ -67,9 +67,14 @@ target_ulong cpu_get_psr(CPUSPARCState *env)
+ #endif
+ }
+ 
+-void cpu_put_psr_raw(CPUSPARCState *env, target_ulong val)
++void cpu_put_psr_icc(CPUSPARCState *env, target_ulong val)
+ {
+     env->psr = val & PSR_ICC;
++}
++
++void cpu_put_psr_raw(CPUSPARCState *env, target_ulong val)
++{
++    cpu_put_psr_icc(env, val);
+ #if !defined(TARGET_SPARC64)
+     env->psref = (val & PSR_EF) ? 1 : 0;
+     env->psrpil = (val & PSR_PIL) >> 8;
+-- 
+2.34.1
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-sp-20231105
-
-for you to fetch changes up to 2c4f56c9aa7e1e8a34428c4efe17788be11fb73f:
-
-  target/sparc: Check for invalid cond in gen_compare_reg (2023-11-05 12:07:21 -0800)
-
-----------------------------------------------------------------
-target/sparc: Explicitly compute condition codes
-
-----------------------------------------------------------------
-Richard Henderson (21):
-      target/sparc: Introduce cpu_put_psr_icc
-      target/sparc: Split psr and xcc into components
-      target/sparc: Remove CC_OP_LOGIC
-      target/sparc: Remove CC_OP_DIV
-      target/sparc: Remove CC_OP_ADD, CC_OP_ADDX, CC_OP_TADD
-      target/sparc: Remove CC_OP_SUB, CC_OP_SUBX, CC_OP_TSUB
-      target/sparc: Remove CC_OP_TADDTV, CC_OP_TSUBTV
-      target/sparc: Remove CC_OP leftovers
-      target/sparc: Remove DisasCompare.is_bool
-      target/sparc: Change DisasCompare.c2 to int
-      target/sparc: Always copy conditions into a new temporary
-      target/sparc: Do flush_cond in advance_jump_cond
-      target/sparc: Merge gen_branch2 into advance_pc
-      target/sparc: Merge advance_jump_uncond_{never,always} into advance_jump_cond
-      target/sparc: Pass displacement to advance_jump_cond
-      target/sparc: Merge gen_op_next_insn into only caller
-      target/sparc: Record entire jump condition in DisasContext
-      target/sparc: Discard cpu_cond at the end of each insn
-      target/sparc: Implement UDIVX and SDIVX inline
-      target/sparc: Implement UDIV inline
-      target/sparc: Check for invalid cond in gen_compare_reg
-
- linux-user/sparc/target_cpu.h |   17 +-
- target/sparc/cpu.h            |   58 +-
- target/sparc/helper.h         |   12 +-
- target/sparc/insns.decode     |    7 +-
- linux-user/sparc/cpu_loop.c   |   11 +-
- linux-user/sparc/signal.c     |    2 +-
- target/sparc/cc_helper.c      |  471 ---------------
- target/sparc/cpu.c            |    1 -
- target/sparc/helper.c         |  171 +++---
- target/sparc/int32_helper.c   |    5 -
- target/sparc/int64_helper.c   |    5 -
- target/sparc/machine.c        |   45 +-
- target/sparc/translate.c      | 1333 ++++++++++++++++++-----------------------
- target/sparc/win_helper.c     |   56 +-
- target/sparc/meson.build      |    1 -
- 15 files changed, 789 insertions(+), 1406 deletions(-)
- delete mode 100644 target/sparc/cc_helper.c
 
