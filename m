@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B36C7E1334
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 12:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2E87E1337
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 12:50:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzbco-000356-OQ; Sun, 05 Nov 2023 06:49:06 -0500
+	id 1qzbcw-00035f-2j; Sun, 05 Nov 2023 06:49:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzbcm-00034s-T6
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:49:05 -0500
+ id 1qzbcs-00035R-Ss
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:49:11 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzbcl-0002Js-DG
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:49:04 -0500
+ id 1qzbcq-0002K3-Ju
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:49:10 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzbcj-0003Yg-Tk; Sun, 05 Nov 2023 12:49:01 +0100
+ id 1qzbcp-0003Yo-8i; Sun, 05 Nov 2023 12:49:07 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>
-Subject: [PULL 8/9] hw/i386/pc: Support hv-balloon
-Date: Sun,  5 Nov 2023 12:47:56 +0100
-Message-ID: <4aa918607331990603479a9912d3c4d32504a0d0.1699184105.git.maciej.szmigiero@oracle.com>
+Subject: [PULL 9/9] MAINTAINERS: Add an entry for Hyper-V Dynamic Memory
+ Protocol
+Date: Sun,  5 Nov 2023 12:47:57 +0100
+Message-ID: <2b49ecabc6bf15efa6aa05f20a7c319ff65c4e11.1699184105.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <cover.1699184105.git.maciej.szmigiero@oracle.com>
 References: <cover.1699184105.git.maciej.szmigiero@oracle.com>
@@ -57,94 +58,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Add the necessary plumbing for the hv-balloon driver to the PC machine.
-
-Co-developed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/i386/Kconfig |  1 +
- hw/i386/pc.c    | 22 ++++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 94772c726b24..55850791df41 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -45,6 +45,7 @@ config PC
-     select ACPI_VMGENID
-     select VIRTIO_PMEM_SUPPORTED
-     select VIRTIO_MEM_SUPPORTED
-+    select HV_BALLOON_SUPPORTED
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8e8a7d5be5de..d4a480ce5a62 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2656,6 +2656,14 @@ F: hw/usb/canokey.c
+ F: hw/usb/canokey.h
+ F: docs/system/devices/canokey.rst
  
- config PC_PCI
-     bool
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 6031234a73f1..1aef21aa2c25 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -27,6 +27,7 @@
- #include "hw/i386/pc.h"
- #include "hw/char/serial.h"
- #include "hw/char/parallel.h"
-+#include "hw/hyperv/hv-balloon.h"
- #include "hw/i386/fw_cfg.h"
- #include "hw/i386/vmport.h"
- #include "sysemu/cpus.h"
-@@ -57,6 +58,7 @@
- #include "hw/i386/kvm/xen_evtchn.h"
- #include "hw/i386/kvm/xen_gnttab.h"
- #include "hw/i386/kvm/xen_xenstore.h"
-+#include "hw/mem/memory-device.h"
- #include "e820_memory_layout.h"
- #include "trace.h"
- #include CONFIG_DEVICES
-@@ -1422,6 +1424,21 @@ static void pc_memory_unplug(HotplugHandler *hotplug_dev,
-     error_propagate(errp, local_err);
- }
- 
-+static void pc_hv_balloon_pre_plug(HotplugHandler *hotplug_dev,
-+                                   DeviceState *dev, Error **errp)
-+{
-+    /* The vmbus handler has no hotplug handler; we should never end up here. */
-+    g_assert(!dev->hotplugged);
-+    memory_device_pre_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev), NULL,
-+                           errp);
-+}
++Hyper-V Dynamic Memory Protocol
++M: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
++S: Supported
++F: hw/hyperv/hv-balloon*.c
++F: hw/hyperv/hv-balloon*.h
++F: include/hw/hyperv/dynmem-proto.h
++F: include/hw/hyperv/hv-balloon.h
 +
-+static void pc_hv_balloon_plug(HotplugHandler *hotplug_dev,
-+                               DeviceState *dev, Error **errp)
-+{
-+    memory_device_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev));
-+}
-+
- static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-                                           DeviceState *dev, Error **errp)
- {
-@@ -1452,6 +1469,8 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-             return;
-         }
-         pcms->iommu = dev;
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_HV_BALLOON)) {
-+        pc_hv_balloon_pre_plug(hotplug_dev, dev, errp);
-     }
- }
- 
-@@ -1464,6 +1483,8 @@ static void pc_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-         x86_cpu_plug(hotplug_dev, dev, errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-         virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_HV_BALLOON)) {
-+        pc_hv_balloon_plug(hotplug_dev, dev, errp);
-     }
- }
- 
-@@ -1505,6 +1526,7 @@ static HotplugHandler *pc_get_hotplug_handler(MachineState *machine,
-         object_dynamic_cast(OBJECT(dev), TYPE_CPU) ||
-         object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI) ||
-         object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI) ||
-+        object_dynamic_cast(OBJECT(dev), TYPE_HV_BALLOON) ||
-         object_dynamic_cast(OBJECT(dev), TYPE_X86_IOMMU_DEVICE)) {
-         return HOTPLUG_HANDLER(machine);
-     }
+ Subsystems
+ ----------
+ Overall Audio backends
 
