@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE8A7E1648
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B05A57E1647
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:14:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzjUB-0003R0-EI; Sun, 05 Nov 2023 15:12:43 -0500
+	id 1qzjUC-0003Rb-Hg; Sun, 05 Nov 2023 15:12:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjU9-0003PU-7Q
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:41 -0500
-Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
+ id 1qzjUA-0003QX-CL
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:42 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjU7-0002Ab-KE
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:40 -0500
-Received: by mail-io1-xd32.google.com with SMTP id
- ca18e2360f4ac-7a956887c20so160798739f.1
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 12:12:39 -0800 (PST)
+ id 1qzjU8-0002As-Mv
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:42 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6b3c2607d9bso3078771b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 12:12:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699215158; x=1699819958; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699215159; x=1699819959; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DKj41VweZhjCF7fzIbibfC9ijUJvX4oDkwTltCV+TME=;
- b=K3CQE2wvFSRpvj1EZTY1UPGO9PeYcdRnw8QlZIs52tSwgcpcZZvswiBuBUCY87ju3M
- ivLSKhjK7iVpiuCEFOe95K0jRvzUurMonjFzW5DOf14m50s+GN+kD3QmSY67Uy4CErgR
- /pwgY2/umcxAW1RqBCh5o0Q957IWc7SDeyVeQClINMksO7CAN+tU3l02/W9P8CvjlDMb
- t3nSvpW2M8u13y5p5OZ6wIe43QfZSKKOu+NqLsP5nCq1T8GfD4r/v0En0b1xNnmb4+n/
- O8OsaFtiRarqXY/vOXMrfP9nzzW6Fjv2IvamA0fabEhWt1/sS/Dg5QbpDZQOUc9gOdvc
- tBdQ==
+ bh=tlzuFmbJ+lRCVWBnnRWRgKX8WhOt5plpowDBaUnKw9s=;
+ b=HpMYmjXNp3q02Lc3fHCvQ2aFyHqjZ5hhg/HiNzmvHa1rCHzFaiten4BDlJpJ0FaqXJ
+ ATOl+t3LTcEA1DWGve1W/3WoMh+10z85P4mOB3YYwWGTdzqBLgWm3HKWMsi/Bo1SuiZX
+ NfiM+8diq9GtUNmQ3OKqT8hPo5kKqVyEGU+QrG8xNraZzaiH065x671IlUeHQFIPFn6n
+ RrIA6sIhHt5+tpRQBl1JpZZQWs0SJ+nfHQjxnlJg+D/MRytip7n50azNnYRFRE2fQM5v
+ tercrT86LDj0ERqGAXU/835wLFRGhOySovoRIlPlbbKILaSp6Rx1MVd7ba/au/kDCrr2
+ 0Qxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699215158; x=1699819958;
+ d=1e100.net; s=20230601; t=1699215159; x=1699819959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DKj41VweZhjCF7fzIbibfC9ijUJvX4oDkwTltCV+TME=;
- b=aX8c09phHQcAdZpdULRVIIvafhp8peEYPDiGtorTdOIAlFDnt6rebnf16BhzRuancL
- cGJPeMZHic718PqZmGx7OiTzc578iPlH09J4bnGy+TGKbUZZ2lbyZQYdkyTyJJKqvOme
- d+x4UREg8hOMXfUCjQIyLFyDBtXgfFRjmMLIvcqWWb6apfedv8e2JtnLGTaJu3X0YlwN
- 9Bt46B63FUC2ghQGrWYpOCx2dEwQIty0ULRPcZ4a+49CWmVeZVsLta6lUxPxXx0h+SJK
- yCU52w3AHqYEGjGicwFx8UXcq5UgSOatZ5MIP6wVPn2wfeXgvfl1B6P8BLB0XBCOeH/B
- rq4A==
-X-Gm-Message-State: AOJu0YzNRj3kf3cZQdk/nirv2ZIk7Q+uWHFdYdRTXW0xCFWNYHtZIUaY
- 7gI5y8Gf2/9ce53eosmNWxAYBB5lh1PyVN4wV6k=
-X-Google-Smtp-Source: AGHT+IEW5G3ItXzj7A2reyTnTB+/038x2br1u+Xe2gbDvXI3pmqYJgIUubjv1Ft9+XkyS0XoxJgZ0w==
-X-Received: by 2002:a05:6602:1607:b0:7a9:afab:b984 with SMTP id
- x7-20020a056602160700b007a9afabb984mr33204503iow.17.1699215158442; 
- Sun, 05 Nov 2023 12:12:38 -0800 (PST)
+ bh=tlzuFmbJ+lRCVWBnnRWRgKX8WhOt5plpowDBaUnKw9s=;
+ b=K6AL6qqaGtXoRntzq+wyexUs/mPamBLekUELNU2NAH2VLR5zKyM8bYEzqBAkavkNIc
+ Xh6mxHr+5CJ17SbiK7pK15PruEyY4GnPMD4xmZMMMY/NBkGiub2tusRG6eI0DOktP1i2
+ dfgvyfx4vvjwjK2Qahe4QQVmqkUjephoPt8Jv37O/ygPEcTSNzAV1D6yKicKamdLDbnx
+ dih4fiIOlbI/1A+OiydnU4zlFMZ5FR5QT/5lqVR4swE+7avoRUsCdxWeNoEOizYQfur9
+ vdYNndSVnvMx6R4HVDEPlTgmDlx1csSK8c1IVJ9eNKoJvgprQJ9R3HZOxprVvbRjr8zZ
+ exNw==
+X-Gm-Message-State: AOJu0YzjFg88zJ4hKyq1m9IirltQ0GmTFqvYOAuP0aNA5bahCpoPlkSI
+ bAYHMvycg+scnzmQZckZe10peGNkLk9c/4z2v1M=
+X-Google-Smtp-Source: AGHT+IGZngWQEO4itYmIFVmch8Ho89QeunkqMkuA2/okMhwQS2MLe4ZcH8x0+u7BRuNPiK7D1fticg==
+X-Received: by 2002:a05:6a00:391a:b0:68f:f38d:f76c with SMTP id
+ fh26-20020a056a00391a00b0068ff38df76cmr23607474pfb.6.1699215159238; 
+ Sun, 05 Nov 2023 12:12:39 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- u23-20020a056a00099700b006884549adc8sm4359777pfg.29.2023.11.05.12.12.37
+ u23-20020a056a00099700b006884549adc8sm4359777pfg.29.2023.11.05.12.12.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 05 Nov 2023 12:12:38 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 17/21] target/sparc: Record entire jump condition in
- DisasContext
-Date: Sun,  5 Nov 2023 12:12:18 -0800
-Message-Id: <20231105201222.202395-18-richard.henderson@linaro.org>
+Subject: [PULL 18/21] target/sparc: Discard cpu_cond at the end of each insn
+Date: Sun,  5 Nov 2023 12:12:19 -0800
+Message-Id: <20231105201222.202395-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231105201222.202395-1-richard.henderson@linaro.org>
 References: <20231105201222.202395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d32;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,92 +90,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the original condition instead of consuming cpu_cond,
-which will now only be live along exception paths.
+If the insn raises no exceptions, there will be no path in which
+cpu_cond is used, and so the computation may be optimized away.
 
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ target/sparc/translate.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 0bbe4cff3b..5c9a3d45fa 100644
+index 5c9a3d45fa..3564c6032e 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -146,6 +146,12 @@ static TCGv_i64 cpu_fpr[TARGET_DPREGS];
- # define env64_field_offsetof(X)  ({ qemu_build_not_reached(); 0; })
- #endif
+@@ -171,6 +171,7 @@ typedef struct DisasContext {
+     target_ulong jump_pc[2];
  
-+typedef struct DisasCompare {
-+    TCGCond cond;
-+    TCGv c1;
-+    int c2;
-+} DisasCompare;
-+
- typedef struct DisasDelayException {
-     struct DisasDelayException *next;
-     TCGLabel *lab;
-@@ -159,7 +165,11 @@ typedef struct DisasContext {
-     DisasContextBase base;
-     target_ulong pc;    /* current Program Counter: integer or DYNAMIC_PC */
-     target_ulong npc;   /* next PC: integer or DYNAMIC_PC or JUMP_PC */
--    target_ulong jump_pc[2]; /* used when JUMP_PC pc value is used */
-+
-+    /* Used when JUMP_PC value is used. */
-+    DisasCompare jump;
-+    target_ulong jump_pc[2];
-+
      int mem_idx;
++    bool cpu_cond_live;
      bool fpu_enabled;
      bool address_mask_32bit;
-@@ -178,12 +188,6 @@ typedef struct DisasContext {
-     DisasDelayException *delay_excp_list;
- } DisasContext;
- 
--typedef struct {
--    TCGCond cond;
--    TCGv c1;
--    int c2;
--} DisasCompare;
--
- // This function uses non-native bit order
- #define GET_FIELD(X, FROM, TO)                                  \
-     ((X) >> (31 - (TO)) & ((1 << ((TO) - (FROM) + 1)) - 1))
-@@ -912,9 +916,9 @@ static void gen_generic_branch(DisasContext *dc)
- {
-     TCGv npc0 = tcg_constant_tl(dc->jump_pc[0]);
-     TCGv npc1 = tcg_constant_tl(dc->jump_pc[1]);
--    TCGv zero = tcg_constant_tl(0);
-+    TCGv c2 = tcg_constant_tl(dc->jump.c2);
- 
--    tcg_gen_movcond_tl(TCG_COND_NE, cpu_npc, cpu_cond, zero, npc0, npc1);
-+    tcg_gen_movcond_tl(dc->jump.cond, cpu_npc, dc->jump.c1, c2, npc0, npc1);
+ #ifndef CONFIG_USER_ONLY
+@@ -912,6 +913,19 @@ static void gen_op_eval_fbo(TCGv dst, TCGv src, unsigned int fcc_offset)
+     tcg_gen_xori_tl(dst, dst, 0x1);
  }
  
- /* call this function before using the condition register as it may
-@@ -2347,7 +2351,7 @@ static bool advance_pc(DisasContext *dc)
++static void finishing_insn(DisasContext *dc)
++{
++    /*
++     * From here, there is no future path through an unwinding exception.
++     * If the current insn cannot raise an exception, the computation of
++     * cpu_cond may be able to be elided.
++     */
++    if (dc->cpu_cond_live) {
++        tcg_gen_discard_tl(cpu_cond);
++        dc->cpu_cond_live = false;
++    }
++}
++
+ static void gen_generic_branch(DisasContext *dc)
+ {
+     TCGv npc0 = tcg_constant_tl(dc->jump_pc[0]);
+@@ -958,6 +972,7 @@ static void save_state(DisasContext *dc)
+ 
+ static void gen_exception(DisasContext *dc, int which)
+ {
++    finishing_insn(dc);
+     save_state(dc);
+     gen_helper_raise_exception(tcg_env, tcg_constant_i32(which));
+     dc->base.is_jmp = DISAS_NORETURN;
+@@ -999,6 +1014,8 @@ static void gen_check_align(DisasContext *dc, TCGv addr, int mask)
+ 
+ static void gen_mov_pc_npc(DisasContext *dc)
+ {
++    finishing_insn(dc);
++
+     if (dc->npc & 3) {
+         switch (dc->npc) {
          case JUMP_PC:
-             /* we can do a static jump */
-             l1 = gen_new_label();
--            tcg_gen_brcondi_tl(TCG_COND_NE, cpu_cond, 0, l1);
-+            tcg_gen_brcondi_tl(dc->jump.cond, dc->jump.c1, dc->jump.c2, l1);
+@@ -2339,6 +2356,8 @@ static bool advance_pc(DisasContext *dc)
+ {
+     TCGLabel *l1;
  
-             /* jump not taken */
-             gen_goto_tb(dc, 1, dc->jump_pc[1], dc->jump_pc[1] + 4);
-@@ -2434,9 +2438,10 @@ static bool advance_jump_cond(DisasContext *dc, DisasCompare *cmp,
++    finishing_insn(dc);
++
+     if (dc->npc & 3) {
+         switch (dc->npc) {
+         case DYNAMIC_PC:
+@@ -2383,6 +2402,8 @@ static bool advance_jump_cond(DisasContext *dc, DisasCompare *cmp,
+     target_ulong dest = address_mask_i(dc, dc->pc + disp * 4);
+     target_ulong npc;
+ 
++    finishing_insn(dc);
++
+     if (cmp->cond == TCG_COND_ALWAYS) {
+         if (annul) {
+             dc->pc = dest;
+@@ -2449,6 +2470,7 @@ static bool advance_jump_cond(DisasContext *dc, DisasCompare *cmp,
+             } else {
+                 tcg_gen_setcondi_tl(cmp->cond, cpu_cond, cmp->c1, cmp->c2);
              }
-         } else {
-             dc->pc = npc;
-+            dc->npc = JUMP_PC;
-+            dc->jump = *cmp;
-             dc->jump_pc[0] = dest;
-             dc->jump_pc[1] = npc + 4;
--            dc->npc = JUMP_PC;
++            dc->cpu_cond_live = true;
+         }
+     }
+     return true;
+@@ -2585,6 +2607,8 @@ static bool do_tcc(DisasContext *dc, int cond, int cc,
+         tcg_gen_addi_i32(trap, trap, TT_TRAP);
+     }
  
-             /* The condition for cpu_cond is always NE -- normalize. */
-             if (cmp->cond == TCG_COND_NE) {
++    finishing_insn(dc);
++
+     /* Trap always.  */
+     if (cond == 8) {
+         save_state(dc);
+@@ -3201,6 +3225,7 @@ TRANS(WRSTICK_CMPR, 64, do_wr_special, a, supervisor(dc), do_wrstick_cmpr)
+ 
+ static void do_wrpowerdown(DisasContext *dc, TCGv src)
+ {
++    finishing_insn(dc);
+     save_state(dc);
+     gen_helper_power_down(tcg_env);
+ }
+@@ -5080,6 +5105,8 @@ static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+     DisasDelayException *e, *e_next;
+     bool may_lookup;
+ 
++    finishing_insn(dc);
++
+     switch (dc->base.is_jmp) {
+     case DISAS_NEXT:
+     case DISAS_TOO_MANY:
 -- 
 2.34.1
 
