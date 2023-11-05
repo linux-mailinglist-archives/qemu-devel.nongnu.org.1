@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311C77E13F3
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD707E13F2
 	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 15:43:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzeKe-0005rW-TQ; Sun, 05 Nov 2023 09:42:32 -0500
+	id 1qzeKm-0005s7-EA; Sun, 05 Nov 2023 09:42:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKc-0005r4-49
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:30 -0500
-Received: from mout.kundenserver.de ([217.72.192.73])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKk-0005rp-4W
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:38 -0500
+Received: from mout.kundenserver.de ([212.227.17.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKa-0003Oj-Iq
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:29 -0500
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKi-0003Pp-JM
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:37 -0500
 Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
  (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MLR5h-1qhIMl26Xz-00IV4C; Sun, 05 Nov 2023 15:42:24 +0100
-Message-ID: <39a86e81-20fe-4e5e-9bdb-d876b3e85252@vivier.eu>
-Date: Sun, 5 Nov 2023 15:42:23 +0100
+ 1Mk0FS-1rjfKj3ZXs-00kNg3; Sun, 05 Nov 2023 15:42:34 +0100
+Message-ID: <a836c00b-c3fe-45ca-a759-62bcdb4c5345@vivier.eu>
+Date: Sun, 5 Nov 2023 15:42:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] macfb: don't clear interrupts when writing to
- DAFB_RESET
+Subject: Re: [PATCH 2/4] macfb: rename DAFB_RESET to DAFB_LUT_INDEX
 Content-Language: fr
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
 References: <20231026085650.917663-1-mark.cave-ayland@ilande.co.uk>
- <20231026085650.917663-2-mark.cave-ayland@ilande.co.uk>
+ <20231026085650.917663-3-mark.cave-ayland@ilande.co.uk>
 From: Laurent Vivier <laurent@vivier.eu>
 Autocrypt: addr=laurent@vivier.eu; keydata=
  xsFNBFYFJhkBEAC2me7w2+RizYOKZM+vZCx69GTewOwqzHrrHSG07MUAxJ6AY29/+HYf6EY2
@@ -72,35 +71,35 @@ Autocrypt: addr=laurent@vivier.eu; keydata=
  OpKgu3nD0ahBDqANU/ZmNNarBJEwvM2vfusmNnWm3QMIwxNuJghRyuFfx694Im1js0ZY3LEU
  JGSHFG4ZynA+ZFUPA6Xf0wHeJOxGKCGIyeKORsteIqgnkINW9fnKJw2pgk8qHkwVc3Vu+wGS
  ZiJK0xFusPQehjWTHn9WjMG1zvQ5TQQHxau/2FkP45+nRPco6vVFQe8JmgtRF8WFJA==
-In-Reply-To: <20231026085650.917663-2-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20231026085650.917663-3-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:EagZ7hKVSA5oS9j/O6UMmzqG+I2hi7eILFgfm8sDJo6iFvd/CFj
- XuDlC/Li9GDTHqlCtYSy2/DWshVtaAmzTAubTxVrL5SXO4lMzaRkqtjZO7megid+juvnLQ3
- KoYtkiBwvBzL4VH5Uw8nBvtpuwAocPxblegYDasdzdXQ/RBaFO5UwZOIQrWeZjKbR+eN2EK
- SHQjUPTxB8GqQuoUWqzjg==
-UI-OutboundReport: notjunk:1;M01:P0:LhC9ygcpbNA=;P5LLfwbsBPjulzJfmqVdVkERWIe
- Soz8gDWBsnahIRUY3bBe15KaGnneQqiMjGT+Hw2MOaUUTzaJyIIGxcQl13RMniHsq3kpn6kX5
- xvEDq+K7YJsrJW00cFqvf41kDO5e7YYecFNAYeLBhqrhGoX4b75AL/aW0BQ8+uSkoVdMM1BhF
- pe9Tlsnd4Gxu34py/K5JGN91ZamIBenSrrdgBhNuub8lVZRGCFSZkibEJrC5h2kxfJ2KrH3Fn
- yJdfmNRh1PZrnDEt22naFy6+MI/zS7YuiuiDf81sVA1ZAAsOU2394lxUSMGcsClxSRtgG+hSz
- IniwAoOxM/mx2RPlQpiXjmlOzTiq5CY5LLGXgvgF9OFFhmWanpW8BWlUWrFg5GAnT29x68siW
- E5GMVaewwezoEl8D+K9t56Beauy5vboECEceo3kLjMZUggx7ZajVdBEaUkFPNTq5cIhGyB2Qp
- T08DPIUGdiwCfh5WkJERHrJ9zlYcGAQjJgYt7Cd4sAAx4TRy9O5qck4z9MyMfyT0T9dviQgdS
- cGP/mVrXIXe+2w5R94Pmas9wjwSMsKhOnrrFEOTy2PReJXslkfpprMOkS1KSN6hWhoarz+dVT
- fIrO+d52Y9uD5sCVcrvKMMFtHOjHsoy0/v2ERWw0Za+tnFRIXgypf8pMRrNs6Wjvl0kURCDON
- ij0qIqWopeYlDrzxsp8gUQ5tGyvKa7Qd4voHIMdi+DdPCpmdWDwQqhumiUo77aJGfqgV2U944
- 4g1DLULGnlPlElOPgwz4Kz9pgWot6FFmSwG+jD5Sc9rJyZpXswry/Qku/9C5pIhMAWstXi7BU
- xcljX3h8e+iQzFjB6P6F1u5sZumgyYiAVL2IY4ylDQsMG7sZyZ0epkLXiP9xvXyngAY9f4j61
- 8M3HZO+kGrh1Kjw==
-Received-SPF: none client-ip=217.72.192.73; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:ZUFB7M5TiZDOsSrHhMh/nlFyXp2bs79bMaNP8lAxp4QB6Y8E99l
+ 6O7NOB30OvhbCCjGH7bvkIT7tMKj2dUMloXEJnF/MArM1droQkHao1UAdLGFSUa3FlT1eqU
+ yPugz//OBFCFEMB+/awQQC44FWW7IiaDvB+GuSNXbaonAvVF60gxXt/qcAIL+977Jc2dKTB
+ fGX9kdmcn2KEBXxKU7Qaw==
+UI-OutboundReport: notjunk:1;M01:P0:+AU/gD7/WQI=;jlkel5cY9eaZ4OdcXNv0fpNsk+X
+ dDqSnyPa6wI6HEn3uIvLCjEijVXyXsdDn2MfVnyhiAHBCaIzmOVNnUGEcnHda7x/qet9hb/69
+ FwXHG6pBxXxm0L9wSL1GK1j34s8opy5rhNbRpTaJQdSDPReFm7fXNhzT1a1wGB6gJAcmbfo94
+ kHgI5DQu7n6z8ZopbkujGREx7BsPz201TJHk4MMDcoBnxDEtFmbTN2G8EyZZUsdyH5xVL4B8+
+ NZpruXePBqiBD8CKP2iRUeAoct2WkID8F2lefRTZocXJt92ruBejcQFeEK+UcYPR6y/Z0IYFR
+ 1xtkJ6dfZC7QNU7ag01YXkUCGqkUAZSwA/Xkb1XbMWZiQLEEg2ifFgPT5wTAHg3jPhyPaDweh
+ vCcVxlRcfjWmmcvuEKDtxmMJS7sh3qSyzXmXhW+6QeG4FyHcDje52VSSwk7CHVBH7d1TyK8ix
+ SOM3d/vcvqOCNEYwQaJJ+cYR9a4yRHw+0U91+GhQCPlj3QrqKd45AYzMvPdoKLRCb79SDCYIu
+ DKzu/eDlRvF2AaYCYyskJun7/62M1RAAKiEZT3pIY7AnlVRpgwPjz8HzBtL+PtycmZlpK5MDP
+ SRfFHNX7zoeBGK5uxv2Dh0TXzv+zcTp5131/3J45Cn1y4RAkupwGco+Mie1nGW8hMdEbojj0B
+ UMKpuGSzvh6QbbJN2ed/Oe0HnWhhjDI0OfBJw742u52WdyLIrWz/TDjKiG1k5LpyqoKcDGiC2
+ ZJCs0lAswYT02MTD/GtPCQ05RvIcbabmVagMxgu+pH+Km9wqx4TlpIr7T1kaRSFU8sXPZLLY8
+ 477WBnqgdP8/7CDq3H0xhMaxDzv0oeAJmIAly5g8idbSaohg2ZvBZCjXXC/tSHrCzfDmrNvG2
+ 94IbgwfK4a/pviw==
+Received-SPF: none client-ip=212.227.17.24; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,24 +116,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Le 26/10/2023 à 10:56, Mark Cave-Ayland a écrit :
-> Traces from A/UX suggest that this register is only used to reset the framebuffer
-> LUT (colour lookup table) and not any other device state.
+> When A/UX uses the MacOS Device Manager Status (GetEntries) call to read the
+> contents of the CLUT, it is easy to see that the requested index is written to
+> the DAFB_RESET register. Update the palette_current index with the requested
+> value, and rename it to DAFB_LUT_INDEX to reflect its true purpose.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->   hw/display/macfb.c | 2 --
->   1 file changed, 2 deletions(-)
+>   hw/display/macfb.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 > diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-> index 2f8e016566..28db2e9f24 100644
+> index 28db2e9f24..eb4ce6b824 100644
 > --- a/hw/display/macfb.c
 > +++ b/hw/display/macfb.c
-> @@ -585,8 +585,6 @@ static void macfb_ctrl_write(void *opaque,
+> @@ -36,7 +36,7 @@
+>   #define DAFB_INTR_MASK      0x104
+>   #define DAFB_INTR_STAT      0x108
+>   #define DAFB_INTR_CLEAR     0x10c
+> -#define DAFB_RESET          0x200
+> +#define DAFB_LUT_INDEX      0x200
+>   #define DAFB_LUT            0x213
+>   
+>   #define DAFB_INTR_VBL   0x4
+> @@ -583,8 +583,8 @@ static void macfb_ctrl_write(void *opaque,
+>           s->regs[DAFB_INTR_STAT >> 2] &= ~DAFB_INTR_VBL;
+>           macfb_update_irq(s);
 >           break;
->       case DAFB_RESET:
->           s->palette_current = 0;
-> -        s->regs[DAFB_INTR_STAT >> 2] &= ~DAFB_INTR_VBL;
-> -        macfb_update_irq(s);
+> -    case DAFB_RESET:
+> -        s->palette_current = 0;
+> +    case DAFB_LUT_INDEX:
+> +        s->palette_current = (val & 0xff) * 3;
 >           break;
 >       case DAFB_LUT:
 >           s->color_palette[s->palette_current] = val;
