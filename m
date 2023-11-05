@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A387E1336
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 12:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F157E1331
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 12:49:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzbch-00033v-HQ; Sun, 05 Nov 2023 06:48:59 -0500
+	id 1qzbcm-00034X-TC; Sun, 05 Nov 2023 06:49:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzbcd-00033E-10
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:48:55 -0500
+ id 1qzbch-000344-WF
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:49:00 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzbcb-0002JF-G1
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:48:54 -0500
+ id 1qzbcg-0002JT-DH
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 06:48:59 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzbcZ-0003YM-7E; Sun, 05 Nov 2023 12:48:51 +0100
+ id 1qzbce-0003YW-Ig; Sun, 05 Nov 2023 12:48:56 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>
-Subject: [PULL 6/9] qapi: Add query-memory-devices support to hv-balloon
-Date: Sun,  5 Nov 2023 12:47:54 +0100
-Message-ID: <09c8d68234bfd32b2f1760400b0b6fea0085af07.1699184105.git.maciej.szmigiero@oracle.com>
+Subject: [PULL 7/9] qapi: Add HV_BALLOON_STATUS_REPORT event and its QMP query
+ command
+Date: Sun,  5 Nov 2023 12:47:55 +0100
+Message-ID: <73c1706e3d4be8f4a39ead876297839d389b0699.1699184105.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <cover.1699184105.git.maciej.szmigiero@oracle.com>
 References: <cover.1699184105.git.maciej.szmigiero@oracle.com>
@@ -57,166 +58,140 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Used by the driver to report its provided memory state information.
+Used by the hv-balloon driver for (optional) guest memory status reports.
 
-Co-developed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/core/machine-hmp-cmds.c | 15 +++++++++++++++
- hw/hyperv/hv-balloon.c     | 27 +++++++++++++++++++++++++-
- qapi/machine.json          | 39 ++++++++++++++++++++++++++++++++++++--
- 3 files changed, 78 insertions(+), 3 deletions(-)
+ hw/hyperv/hv-balloon.c | 30 +++++++++++++++++++-
+ monitor/monitor.c      |  1 +
+ qapi/machine.json      | 62 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 92 insertions(+), 1 deletion(-)
 
-diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-index 9a4b59c6f210..a6ff6a487583 100644
---- a/hw/core/machine-hmp-cmds.c
-+++ b/hw/core/machine-hmp-cmds.c
-@@ -253,6 +253,7 @@ void hmp_info_memory_devices(Monitor *mon, const QDict *qdict)
-     MemoryDeviceInfo *value;
-     PCDIMMDeviceInfo *di;
-     SgxEPCDeviceInfo *se;
-+    HvBalloonDeviceInfo *hi;
- 
-     for (info = info_list; info; info = info->next) {
-         value = info->value;
-@@ -310,6 +311,20 @@ void hmp_info_memory_devices(Monitor *mon, const QDict *qdict)
-                 monitor_printf(mon, "  node: %" PRId64 "\n", se->node);
-                 monitor_printf(mon, "  memdev: %s\n", se->memdev);
-                 break;
-+            case MEMORY_DEVICE_INFO_KIND_HV_BALLOON:
-+                hi = value->u.hv_balloon.data;
-+                monitor_printf(mon, "Memory device [%s]: \"%s\"\n",
-+                               MemoryDeviceInfoKind_str(value->type),
-+                               hi->id ? hi->id : "");
-+                if (hi->has_memaddr) {
-+                    monitor_printf(mon, "  memaddr: 0x%" PRIx64 "\n",
-+                                   hi->memaddr);
-+                }
-+                monitor_printf(mon, "  max-size: %" PRIu64 "\n", hi->max_size);
-+                if (hi->memdev) {
-+                    monitor_printf(mon, "  memdev: %s\n", hi->memdev);
-+                }
-+                break;
-             default:
-                 g_assert_not_reached();
-             }
 diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index 4d87f99375b5..c384f23a3b5e 100644
+index c384f23a3b5e..2d1464cd7dca 100644
 --- a/hw/hyperv/hv-balloon.c
 +++ b/hw/hyperv/hv-balloon.c
-@@ -1622,6 +1622,31 @@ static MemoryRegion *hv_balloon_md_get_memory_region(MemoryDeviceState *md,
-     return balloon->mr;
- }
+@@ -1099,7 +1099,35 @@ static void hv_balloon_handle_status_report(HvBalloon *balloon,
+     balloon->status_report.available *= HV_BALLOON_PAGE_SIZE;
+     balloon->status_report.received = true;
  
-+static void hv_balloon_md_fill_device_info(const MemoryDeviceState *md,
-+                                           MemoryDeviceInfo *info)
-+{
-+    HvBalloonDeviceInfo *hi = g_new0(HvBalloonDeviceInfo, 1);
-+    const HvBalloon *balloon = HV_BALLOON(md);
-+    DeviceState *dev = DEVICE(md);
-+
-+    if (dev->id) {
-+        hi->id = g_strdup(dev->id);
-+    }
-+
-+    if (balloon->hostmem) {
-+        hi->memdev = object_get_canonical_path(OBJECT(balloon->hostmem));
-+        hi->memaddr = balloon->addr;
-+        hi->has_memaddr = true;
-+        hi->max_size = memory_region_size(balloon->mr);
-+        /* TODO: expose current provided size or something else? */
-+    } else {
-+        hi->max_size = 0;
-+    }
-+
-+    info->u.hv_balloon.data = hi;
-+    info->type = MEMORY_DEVICE_INFO_KIND_HV_BALLOON;
+-    /* report event */
++    qapi_event_send_hv_balloon_status_report(balloon->status_report.committed,
++                                             balloon->status_report.available);
 +}
 +
- static void hv_balloon_decide_memslots(MemoryDeviceState *md,
-                                        unsigned int limit)
- {
-@@ -1709,5 +1734,5 @@ static void hv_balloon_class_init(ObjectClass *klass, void *data)
-     mdc->get_memory_region = hv_balloon_md_get_memory_region;
-     mdc->decide_memslots = hv_balloon_decide_memslots;
-     mdc->get_memslots = hv_balloon_get_memslots;
--    /* implement fill_device_info */
-+    mdc->fill_device_info = hv_balloon_md_fill_device_info;
++HvBalloonInfo *qmp_query_hv_balloon_status_report(Error **errp)
++{
++    HvBalloon *balloon;
++    HvBalloonInfo *info;
++
++    balloon = HV_BALLOON(object_resolve_path_type("", TYPE_HV_BALLOON, NULL));
++    if (!balloon) {
++        error_setg(errp, "no %s device present", TYPE_HV_BALLOON);
++        return NULL;
++    }
++
++    if (!balloon->status_report.enabled) {
++        error_setg(errp, "guest memory status reporting not enabled");
++        return NULL;
++    }
++
++    if (!balloon->status_report.received) {
++        error_setg(errp, "no guest memory status report received yet");
++        return NULL;
++    }
++
++    info = g_malloc0(sizeof(*info));
++    info->committed = balloon->status_report.committed;
++    info->available = balloon->status_report.available;
++    return info;
  }
+ 
+ static void hv_balloon_handle_unballoon_response(HvBalloon *balloon,
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index 941f87815aa4..01ede1babd3d 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -315,6 +315,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
+     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
+     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
++    [QAPI_EVENT_HV_BALLOON_STATUS_REPORT] = { 1000 * SCALE_MS },
+ };
+ 
+ /*
 diff --git a/qapi/machine.json b/qapi/machine.json
-index 6c9d2f6dcffe..2985d043c00d 100644
+index 2985d043c00d..b6d634b30d55 100644
 --- a/qapi/machine.json
 +++ b/qapi/machine.json
-@@ -1289,6 +1289,29 @@
-           }
- }
+@@ -1137,6 +1137,68 @@
+ { 'event': 'BALLOON_CHANGE',
+   'data': { 'actual': 'int' } }
  
 +##
-+# @HvBalloonDeviceInfo:
++# @HvBalloonInfo:
 +#
-+# hv-balloon provided memory state information
++# hv-balloon guest-provided memory status information.
 +#
-+# @id: device's ID
++# @committed: the amount of memory in use inside the guest plus the
++#     amount of the memory unusable inside the guest (ballooned out,
++#     offline, etc.)
 +#
-+# @memaddr: physical address in memory, where device is mapped
-+#
-+# @max-size: the maximum size of memory that the device can provide
-+#
-+# @memdev: memory backend linked with device
++# @available: the amount of the memory inside the guest available for
++#     new allocations ("free")
 +#
 +# Since: 8.2
 +##
-+{ 'struct': 'HvBalloonDeviceInfo',
-+  'data': { '*id': 'str',
-+            '*memaddr': 'size',
-+            'max-size': 'size',
-+            '*memdev': 'str'
-+          }
-+}
++{ 'struct': 'HvBalloonInfo',
++  'data': { 'committed': 'size', 'available': 'size' } }
 +
- ##
- # @MemoryDeviceInfoKind:
- #
-@@ -1300,10 +1323,13 @@
- #
- # @sgx-epc: since 6.2.
- #
-+# @hv-balloon: since 8.2.
-+#
- # Since: 2.1
- ##
- { 'enum': 'MemoryDeviceInfoKind',
--  'data': [ 'dimm', 'nvdimm', 'virtio-pmem', 'virtio-mem', 'sgx-epc' ] }
-+  'data': [ 'dimm', 'nvdimm', 'virtio-pmem', 'virtio-mem', 'sgx-epc',
-+            'hv-balloon' ] }
- 
- ##
- # @PCDIMMDeviceInfoWrapper:
-@@ -1337,6 +1363,14 @@
- { 'struct': 'SgxEPCDeviceInfoWrapper',
-   'data': { 'data': 'SgxEPCDeviceInfo' } }
- 
 +##
-+# @HvBalloonDeviceInfoWrapper:
++# @query-hv-balloon-status-report:
++#
++# Returns the hv-balloon driver data contained in the last received "STATUS"
++# message from the guest.
++#
++# Returns:
++# - @HvBalloonInfo on success
++# - If no hv-balloon device is present, guest memory status reporting
++#   is not enabled or no guest memory status report received yet,
++#   GenericError
 +#
 +# Since: 8.2
++#
++# Example:
++#
++# -> { "execute": "query-hv-balloon-status-report" }
++# <- { "return": {
++#          "committed": 816640000,
++#          "available": 3333054464
++#       }
++#    }
 +##
-+{ 'struct': 'HvBalloonDeviceInfoWrapper',
-+  'data': { 'data': 'HvBalloonDeviceInfo' } }
++{ 'command': 'query-hv-balloon-status-report', 'returns': 'HvBalloonInfo' }
++
++##
++# @HV_BALLOON_STATUS_REPORT:
++#
++# Emitted when the hv-balloon driver receives a "STATUS" message from
++# the guest.
++#
++# Note: this event is rate-limited.
++#
++# Since: 8.2
++#
++# Example:
++#
++# <- { "event": "HV_BALLOON_STATUS_REPORT",
++#      "data": { "committed": 816640000, "available": 3333054464 },
++#      "timestamp": { "seconds": 1600295492, "microseconds": 661044 } }
++#
++##
++{ 'event': 'HV_BALLOON_STATUS_REPORT',
++  'data': 'HvBalloonInfo' }
 +
  ##
- # @MemoryDeviceInfo:
+ # @MemoryInfo:
  #
-@@ -1351,7 +1385,8 @@
-             'nvdimm': 'PCDIMMDeviceInfoWrapper',
-             'virtio-pmem': 'VirtioPMEMDeviceInfoWrapper',
-             'virtio-mem': 'VirtioMEMDeviceInfoWrapper',
--            'sgx-epc': 'SgxEPCDeviceInfoWrapper'
-+            'sgx-epc': 'SgxEPCDeviceInfoWrapper',
-+            'hv-balloon': 'HvBalloonDeviceInfoWrapper'
-           }
- }
- 
 
