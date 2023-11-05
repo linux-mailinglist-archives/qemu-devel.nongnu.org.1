@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD707E13F2
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 15:43:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E789C7E13F1
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 15:43:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzeKm-0005s7-EA; Sun, 05 Nov 2023 09:42:40 -0500
+	id 1qzeKs-0005vW-Ai; Sun, 05 Nov 2023 09:42:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKk-0005rp-4W
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:38 -0500
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKq-0005uv-Bj
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:44 -0500
 Received: from mout.kundenserver.de ([212.227.17.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKi-0003Pp-JM
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:37 -0500
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKo-0003Uc-Ph
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:44 -0500
 Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
  (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1Mk0FS-1rjfKj3ZXs-00kNg3; Sun, 05 Nov 2023 15:42:34 +0100
-Message-ID: <a836c00b-c3fe-45ca-a759-62bcdb4c5345@vivier.eu>
-Date: Sun, 5 Nov 2023 15:42:33 +0100
+ 1McpW8-1rYA4Z0EDa-00ZtIH; Sun, 05 Nov 2023 15:42:41 +0100
+Message-ID: <68d70abe-605d-4ca4-b92b-28aededec9fc@vivier.eu>
+Date: Sun, 5 Nov 2023 15:42:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] macfb: rename DAFB_RESET to DAFB_LUT_INDEX
+Subject: Re: [PATCH 3/4] macfb: allow larger write accesses to the DAFB_LUT
+ register
 Content-Language: fr
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
 References: <20231026085650.917663-1-mark.cave-ayland@ilande.co.uk>
- <20231026085650.917663-3-mark.cave-ayland@ilande.co.uk>
+ <20231026085650.917663-4-mark.cave-ayland@ilande.co.uk>
 From: Laurent Vivier <laurent@vivier.eu>
 Autocrypt: addr=laurent@vivier.eu; keydata=
  xsFNBFYFJhkBEAC2me7w2+RizYOKZM+vZCx69GTewOwqzHrrHSG07MUAxJ6AY29/+HYf6EY2
@@ -71,27 +72,27 @@ Autocrypt: addr=laurent@vivier.eu; keydata=
  OpKgu3nD0ahBDqANU/ZmNNarBJEwvM2vfusmNnWm3QMIwxNuJghRyuFfx694Im1js0ZY3LEU
  JGSHFG4ZynA+ZFUPA6Xf0wHeJOxGKCGIyeKORsteIqgnkINW9fnKJw2pgk8qHkwVc3Vu+wGS
  ZiJK0xFusPQehjWTHn9WjMG1zvQ5TQQHxau/2FkP45+nRPco6vVFQe8JmgtRF8WFJA==
-In-Reply-To: <20231026085650.917663-3-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20231026085650.917663-4-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:ZUFB7M5TiZDOsSrHhMh/nlFyXp2bs79bMaNP8lAxp4QB6Y8E99l
- 6O7NOB30OvhbCCjGH7bvkIT7tMKj2dUMloXEJnF/MArM1droQkHao1UAdLGFSUa3FlT1eqU
- yPugz//OBFCFEMB+/awQQC44FWW7IiaDvB+GuSNXbaonAvVF60gxXt/qcAIL+977Jc2dKTB
- fGX9kdmcn2KEBXxKU7Qaw==
-UI-OutboundReport: notjunk:1;M01:P0:+AU/gD7/WQI=;jlkel5cY9eaZ4OdcXNv0fpNsk+X
- dDqSnyPa6wI6HEn3uIvLCjEijVXyXsdDn2MfVnyhiAHBCaIzmOVNnUGEcnHda7x/qet9hb/69
- FwXHG6pBxXxm0L9wSL1GK1j34s8opy5rhNbRpTaJQdSDPReFm7fXNhzT1a1wGB6gJAcmbfo94
- kHgI5DQu7n6z8ZopbkujGREx7BsPz201TJHk4MMDcoBnxDEtFmbTN2G8EyZZUsdyH5xVL4B8+
- NZpruXePBqiBD8CKP2iRUeAoct2WkID8F2lefRTZocXJt92ruBejcQFeEK+UcYPR6y/Z0IYFR
- 1xtkJ6dfZC7QNU7ag01YXkUCGqkUAZSwA/Xkb1XbMWZiQLEEg2ifFgPT5wTAHg3jPhyPaDweh
- vCcVxlRcfjWmmcvuEKDtxmMJS7sh3qSyzXmXhW+6QeG4FyHcDje52VSSwk7CHVBH7d1TyK8ix
- SOM3d/vcvqOCNEYwQaJJ+cYR9a4yRHw+0U91+GhQCPlj3QrqKd45AYzMvPdoKLRCb79SDCYIu
- DKzu/eDlRvF2AaYCYyskJun7/62M1RAAKiEZT3pIY7AnlVRpgwPjz8HzBtL+PtycmZlpK5MDP
- SRfFHNX7zoeBGK5uxv2Dh0TXzv+zcTp5131/3J45Cn1y4RAkupwGco+Mie1nGW8hMdEbojj0B
- UMKpuGSzvh6QbbJN2ed/Oe0HnWhhjDI0OfBJw742u52WdyLIrWz/TDjKiG1k5LpyqoKcDGiC2
- ZJCs0lAswYT02MTD/GtPCQ05RvIcbabmVagMxgu+pH+Km9wqx4TlpIr7T1kaRSFU8sXPZLLY8
- 477WBnqgdP8/7CDq3H0xhMaxDzv0oeAJmIAly5g8idbSaohg2ZvBZCjXXC/tSHrCzfDmrNvG2
- 94IbgwfK4a/pviw==
+X-Provags-ID: V03:K1:A70EGwZg0quMbaR9TEdRcvnHA08IIH4nkYQy5j26VFfds8FKOLu
+ K9YIPmIWDjXDtnvnSNpPuN1gvFpmBXA98baTCCl81+Df/Ox7lSVB/SL3YeXa+DtbdscvQ+s
+ mt/k1sm+i4+BYf2iNN90KpAYtWJoac6+q6wRmT3LHQNehcBKae3QGyKVF2Mq7gZ65+fgydu
+ p7rMJoBTXhTT7QUsbbR4g==
+UI-OutboundReport: notjunk:1;M01:P0:q+9BGktIkZU=;IWUvPA8NazuS9GKRmOQYA3vjFy2
+ HYIddakB7DznEEu8BxwuzG+M1Bg8LdXwNcub0m/hzuSdqy8Yt7B6CWir8MlfQSCIDnXK83TB8
+ Snknb8MJy1/c2XZqURnm/s7/b4jrGQyjAgdGLtOnv5TtRNlwj4kUTazutdJlRzQiEgIa4ZmE0
+ LZb2/I9OtaaFebK4SLQa4a1GSFQdUQmRtL+GOtwniLmOC4R05GjWdsrxy6iaBYxe2m0RQ7EuE
+ ODBUduCjtUR27lKhSklx7juBGWDmcGn059pEm9xkJS0qnO0KwINZQJ7DNQ4cN17HPbuI7ICHk
+ mML3oqll8xTSMdCT2S7yHKCTCQAzZ3S9VFwhrcPAZNXV5DhByXSJ389CdQ81w6CSX+mZ2SNUM
+ dEgzV2I5sd15jIyhiD4WfDv2EYRILUIcun2zQU08xb01gXh3WielKv4JzuupM6q0yEejwLj2X
+ 257jKQOk++1lFfwRwLj4wqdFBespwHRbQ3HXPdvgm9AFn7aQeK4wXB+BFDR+f6pMV5D8r0B1Z
+ Mgy11XoLa1LJOkWZNZTBv7YnPIU0yP95LUs6uMPavWo+9qa30EPS5jZnSLRzwQd+rlB5JKOhU
+ 5xtvWgTBVUExg37DxQ1vSHJYwzQYJZyQtEY3YmB5V8dQG5fRospGymtDbwdfgwnqcWkiI4PlA
+ PVAEoY71tpmL+MxeEUCpQyTzpTNQHKl4zuKLtHIle4/LPrCkmvRaobdtxpAr/mInxO+0hNuvJ
+ d1WDELIMTT6YWAiZwyWvv93zXRG0OakQdbRbPaEOChjCZeCzZU6x52MG8/c3eCA3+Bqu46tQl
+ IlcBM8+MWESlTyw8UIXBsutjzxC7iVlWEKEzA2m35Oj3UprY1YEHJ9UDYG52Iekf0t6ET4cJw
+ vTzmOsJ8u82o5WA==
 Received-SPF: none client-ip=212.227.17.24; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
@@ -116,10 +117,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Le 26/10/2023 à 10:56, Mark Cave-Ayland a écrit :
-> When A/UX uses the MacOS Device Manager Status (GetEntries) call to read the
-> contents of the CLUT, it is easy to see that the requested index is written to
-> the DAFB_RESET register. Update the palette_current index with the requested
-> value, and rename it to DAFB_LUT_INDEX to reflect its true purpose.
+> The original tests with MacOS showed that only the bottom 8 bits of the DAFB_LUT
+> register were used when writing to the LUT, however A/UX performs some of its
+> writes using 4 byte accesses. Expand the address range for the DAFB_LUT register
+> so that different size accesses write the correct value to the color_palette
+> array.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
@@ -127,29 +129,29 @@ Le 26/10/2023 à 10:56, Mark Cave-Ayland a écrit :
 >   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 > diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-> index 28db2e9f24..eb4ce6b824 100644
+> index eb4ce6b824..4a1c75d572 100644
 > --- a/hw/display/macfb.c
 > +++ b/hw/display/macfb.c
-> @@ -36,7 +36,7 @@
->   #define DAFB_INTR_MASK      0x104
+> @@ -37,7 +37,7 @@
 >   #define DAFB_INTR_STAT      0x108
 >   #define DAFB_INTR_CLEAR     0x10c
-> -#define DAFB_RESET          0x200
-> +#define DAFB_LUT_INDEX      0x200
->   #define DAFB_LUT            0x213
+>   #define DAFB_LUT_INDEX      0x200
+> -#define DAFB_LUT            0x213
+> +#define DAFB_LUT            0x210
 >   
 >   #define DAFB_INTR_VBL   0x4
-> @@ -583,8 +583,8 @@ static void macfb_ctrl_write(void *opaque,
->           s->regs[DAFB_INTR_STAT >> 2] &= ~DAFB_INTR_VBL;
->           macfb_update_irq(s);
+>   
+> @@ -586,8 +586,8 @@ static void macfb_ctrl_write(void *opaque,
+>       case DAFB_LUT_INDEX:
+>           s->palette_current = (val & 0xff) * 3;
 >           break;
-> -    case DAFB_RESET:
-> -        s->palette_current = 0;
-> +    case DAFB_LUT_INDEX:
-> +        s->palette_current = (val & 0xff) * 3;
->           break;
->       case DAFB_LUT:
->           s->color_palette[s->palette_current] = val;
+> -    case DAFB_LUT:
+> -        s->color_palette[s->palette_current] = val;
+> +    case DAFB_LUT ... DAFB_LUT + 3:
+> +        s->color_palette[s->palette_current] = val & 0xff;
+>           s->palette_current = (s->palette_current + 1) %
+>                                ARRAY_SIZE(s->color_palette);
+>           if (s->palette_current % 3) {
 
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
