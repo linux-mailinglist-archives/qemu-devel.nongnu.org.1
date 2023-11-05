@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E789C7E13F1
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4EC7E13F0
 	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 15:43:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzeKs-0005vW-Ai; Sun, 05 Nov 2023 09:42:46 -0500
+	id 1qzeKz-0005zr-Sb; Sun, 05 Nov 2023 09:42:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKq-0005uv-Bj
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:44 -0500
-Received: from mout.kundenserver.de ([212.227.17.24])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKx-0005yt-OA
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:51 -0500
+Received: from mout.kundenserver.de ([212.227.17.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKo-0003Uc-Ph
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:44 -0500
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKw-0003YH-2v
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:51 -0500
 Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
  (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1McpW8-1rYA4Z0EDa-00ZtIH; Sun, 05 Nov 2023 15:42:41 +0100
-Message-ID: <68d70abe-605d-4ca4-b92b-28aededec9fc@vivier.eu>
-Date: Sun, 5 Nov 2023 15:42:40 +0100
+ 1MCsLu-1r8PlI0QFM-008q03; Sun, 05 Nov 2023 15:42:48 +0100
+Message-ID: <0311bed8-2ba6-4f93-abe1-91f85993ef9b@vivier.eu>
+Date: Sun, 5 Nov 2023 15:42:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] macfb: allow larger write accesses to the DAFB_LUT
- register
+Subject: Re: [PATCH 4/4] macfb: allow reads from the DAFB_LUT register
 Content-Language: fr
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
 References: <20231026085650.917663-1-mark.cave-ayland@ilande.co.uk>
- <20231026085650.917663-4-mark.cave-ayland@ilande.co.uk>
+ <20231026085650.917663-5-mark.cave-ayland@ilande.co.uk>
 From: Laurent Vivier <laurent@vivier.eu>
 Autocrypt: addr=laurent@vivier.eu; keydata=
  xsFNBFYFJhkBEAC2me7w2+RizYOKZM+vZCx69GTewOwqzHrrHSG07MUAxJ6AY29/+HYf6EY2
@@ -72,28 +71,28 @@ Autocrypt: addr=laurent@vivier.eu; keydata=
  OpKgu3nD0ahBDqANU/ZmNNarBJEwvM2vfusmNnWm3QMIwxNuJghRyuFfx694Im1js0ZY3LEU
  JGSHFG4ZynA+ZFUPA6Xf0wHeJOxGKCGIyeKORsteIqgnkINW9fnKJw2pgk8qHkwVc3Vu+wGS
  ZiJK0xFusPQehjWTHn9WjMG1zvQ5TQQHxau/2FkP45+nRPco6vVFQe8JmgtRF8WFJA==
-In-Reply-To: <20231026085650.917663-4-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20231026085650.917663-5-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:A70EGwZg0quMbaR9TEdRcvnHA08IIH4nkYQy5j26VFfds8FKOLu
- K9YIPmIWDjXDtnvnSNpPuN1gvFpmBXA98baTCCl81+Df/Ox7lSVB/SL3YeXa+DtbdscvQ+s
- mt/k1sm+i4+BYf2iNN90KpAYtWJoac6+q6wRmT3LHQNehcBKae3QGyKVF2Mq7gZ65+fgydu
- p7rMJoBTXhTT7QUsbbR4g==
-UI-OutboundReport: notjunk:1;M01:P0:q+9BGktIkZU=;IWUvPA8NazuS9GKRmOQYA3vjFy2
- HYIddakB7DznEEu8BxwuzG+M1Bg8LdXwNcub0m/hzuSdqy8Yt7B6CWir8MlfQSCIDnXK83TB8
- Snknb8MJy1/c2XZqURnm/s7/b4jrGQyjAgdGLtOnv5TtRNlwj4kUTazutdJlRzQiEgIa4ZmE0
- LZb2/I9OtaaFebK4SLQa4a1GSFQdUQmRtL+GOtwniLmOC4R05GjWdsrxy6iaBYxe2m0RQ7EuE
- ODBUduCjtUR27lKhSklx7juBGWDmcGn059pEm9xkJS0qnO0KwINZQJ7DNQ4cN17HPbuI7ICHk
- mML3oqll8xTSMdCT2S7yHKCTCQAzZ3S9VFwhrcPAZNXV5DhByXSJ389CdQ81w6CSX+mZ2SNUM
- dEgzV2I5sd15jIyhiD4WfDv2EYRILUIcun2zQU08xb01gXh3WielKv4JzuupM6q0yEejwLj2X
- 257jKQOk++1lFfwRwLj4wqdFBespwHRbQ3HXPdvgm9AFn7aQeK4wXB+BFDR+f6pMV5D8r0B1Z
- Mgy11XoLa1LJOkWZNZTBv7YnPIU0yP95LUs6uMPavWo+9qa30EPS5jZnSLRzwQd+rlB5JKOhU
- 5xtvWgTBVUExg37DxQ1vSHJYwzQYJZyQtEY3YmB5V8dQG5fRospGymtDbwdfgwnqcWkiI4PlA
- PVAEoY71tpmL+MxeEUCpQyTzpTNQHKl4zuKLtHIle4/LPrCkmvRaobdtxpAr/mInxO+0hNuvJ
- d1WDELIMTT6YWAiZwyWvv93zXRG0OakQdbRbPaEOChjCZeCzZU6x52MG8/c3eCA3+Bqu46tQl
- IlcBM8+MWESlTyw8UIXBsutjzxC7iVlWEKEzA2m35Oj3UprY1YEHJ9UDYG52Iekf0t6ET4cJw
- vTzmOsJ8u82o5WA==
-Received-SPF: none client-ip=212.227.17.24; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:Vzk7YT2M3EcC6Dt4FpmKk560hmgo/wIxBPkb+5stD0azyIwAqS5
+ 8yLHeFt4UqPB8Ih2H6b8tKU7nT6In3sfWxP+ELRXeN5Mfd15DGTCkneF0Xte4BpfPzrgSY9
+ LcWaOkNnmaM0PlHdAx1Qh+pgOYyr6iYjcADLdTm+gOK45pSmCk0K0CBS4ewrzdYF5QbPUtp
+ /PgCTecGI7EU6UdF3rU1w==
+UI-OutboundReport: notjunk:1;M01:P0:Vp33Qk2EZLI=;h6/J5Q/BZdordh2Evrq7WWRZKOR
+ uD8maYmZZxQEHyOuGCM8e621KvQjJDHf+N8hj0PXBSJ/rd3oVc74D9fHFUqLUiDdZwsbbHao9
+ GJahbTLyg+QzoGW5SO3YuQf+AHHJY+q8IranXRGaHt51s8zSMQmheb8zen5CUAdApQnhqluKF
+ 76l45toRPJFGlWiN8Izm/g6QYe6hp747vdnRfanBrarnFVYlbF7AvyXNBWxePlbuZM/7/0nv7
+ E8gnx2Iy7k0GqlYMoXX3/yK34mG5xFd+X8XfSxZtjAvR0zZ4/kbgIAWuYY9zes9/y8sUFTdiz
+ s+tNh8BeO0prLgtNCd+RKhqjnriu0k+VsDH2+5316KXJOLsMrlUBtLuBdRGJd1KaMJVqQSp2T
+ r6D9EuIhzBUyCISnMaNvlousRVs2mGmVIc/OWL4IsrVEtc9O6gSylxgiaVK81l5FVnZFZTeEB
+ O9F+JnLklmQKnOkZq6TR6LFUIBVIuYuJ+MDe7SMizK4F0YABeP6XV0MkFWIU5UGRYEvMEG/g5
+ f8ckrAAJQTLHRf2GubuOnHbyxL9HV66Xs/6OcK3fwKt3Kvv3IgQUncIaDFEPDRwJFzrNozUUs
+ 4upmliC3r0TOFzNtcpBWbRniOH9Wx8mYZIRkdVkgn5ljokpOZueqqh1T2GLQygaTmXPS6AEQj
+ nlOuyyvhSRIE0I1KNGzuO3kCPGFj+RJH14ozLSmJEde/AIQi85JLZg1TgrurpiJa4ZZfgpSO8
+ L4TOsddBU/488TZVJ9kq9YQp9QLQkrY8sY3ClchhNanJLKGF61cXbGwOMKaiMkhmFCXkXSfTJ
+ eGjDuHgSCDk2ppn+flXt2/xBYwrDNu2aVRYpWZAg+GvUZ3s1ousTPsaii5UzVCGwKi+U+1qNN
+ BRjiik/OqLHpKYg==
+Received-SPF: none client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -117,41 +116,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Le 26/10/2023 à 10:56, Mark Cave-Ayland a écrit :
-> The original tests with MacOS showed that only the bottom 8 bits of the DAFB_LUT
-> register were used when writing to the LUT, however A/UX performs some of its
-> writes using 4 byte accesses. Expand the address range for the DAFB_LUT register
-> so that different size accesses write the correct value to the color_palette
-> array.
+> This enables A/UX to correctly retrieve the LUT entries when used with
+> applications that use the MacOS Device Manager Status (GetEntries) call.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->   hw/display/macfb.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   hw/display/macfb.c | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
 > diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-> index eb4ce6b824..4a1c75d572 100644
+> index 4a1c75d572..d61541ccb5 100644
 > --- a/hw/display/macfb.c
 > +++ b/hw/display/macfb.c
-> @@ -37,7 +37,7 @@
->   #define DAFB_INTR_STAT      0x108
->   #define DAFB_INTR_CLEAR     0x10c
->   #define DAFB_LUT_INDEX      0x200
-> -#define DAFB_LUT            0x213
-> +#define DAFB_LUT            0x210
->   
->   #define DAFB_INTR_VBL   0x4
->   
-> @@ -586,8 +586,8 @@ static void macfb_ctrl_write(void *opaque,
->       case DAFB_LUT_INDEX:
->           s->palette_current = (val & 0xff) * 3;
+> @@ -537,6 +537,11 @@ static uint64_t macfb_ctrl_read(void *opaque,
+>       case DAFB_MODE_SENSE:
+>           val = macfb_sense_read(s);
 >           break;
-> -    case DAFB_LUT:
-> -        s->color_palette[s->palette_current] = val;
 > +    case DAFB_LUT ... DAFB_LUT + 3:
-> +        s->color_palette[s->palette_current] = val & 0xff;
->           s->palette_current = (s->palette_current + 1) %
->                                ARRAY_SIZE(s->color_palette);
->           if (s->palette_current % 3) {
+> +        val = s->color_palette[s->palette_current];
+> +        s->palette_current = (s->palette_current + 1) %
+> +                             ARRAY_SIZE(s->color_palette);
+> +        break;
+>       default:
+>           if (addr < MACFB_CTRL_TOPADDR) {
+>               val = s->regs[addr >> 2];
 
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
