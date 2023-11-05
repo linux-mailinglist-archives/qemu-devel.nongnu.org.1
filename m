@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106DD7E1646
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9F37E1678
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:47:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzjUF-0003Tj-8Z; Sun, 05 Nov 2023 15:12:47 -0500
+	id 1qzk0H-0004tG-Jw; Sun, 05 Nov 2023 15:45:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjUC-0003Re-Bt
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:44 -0500
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ id 1qzk0F-0004sy-Jh
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:45:51 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjUA-0002BU-OJ
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:44 -0500
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3b2ea7cca04so2535829b6e.2
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 12:12:42 -0800 (PST)
+ id 1qzk0E-0007jn-3p
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:45:51 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1cc3542e328so24399395ad.1
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 12:45:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699215161; x=1699819961; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zrjDe++U+z4NdbdSF1KpBffvXljDcXxDhfAmqkSfyJ4=;
- b=ccEvUWLJ1geJr8FNp3N3ZY0fx53DMyMV3bXR0nGsjHccfbQl7KYixdJc0WfANJGpUh
- MjgS+lQ6aey4mLAd8VONgdiE46Pl9DbWHRZY/x9KJQTce6DG7DicrZ2IS91U5dXhIkDk
- 90gf/g5iSsQjplgtLIhfr32XdSmA7BHlF92S7jHrB2mgaT8pddzP/gUHg92CsQaB6nGx
- NoBoNCmnAw37NomxFLk2TyfHrqilB9tZH486XSJsetYSbpV6CKUq7LX7qHULa8JapCCd
- 0AVsQ753ZKbr92Goo302lpBNXeqDvew4auRLWX7Gqt0QKhtYV3Gl2qFZ7h28JUaJinoS
- DQ3g==
+ d=linaro.org; s=google; t=1699217148; x=1699821948; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aON9PUnPNCBPHUWAXq3+fkXVrOGocjWXKgYi+lkpAFc=;
+ b=xcbGi9phAoWhcie1XdEhBw9vbPh+lRrKntL1IupVq63WyQL2pk1YpPxyN6BzRAS4Oo
+ NT/Mihkfh6uKDDfWZ4Tpy002vkeeD4AIF+Xq675T4sKlidP8H+8SuLcZJ5oPfUdWN4AH
+ BfZDW/+lCNuN2u4BOrd7ojkMM46ny5gk06AXe/XupcXOaTPZt2N5KW7kPlDlCsH/Wf03
+ eLmM6JmBbo9vxOEd+OCH+XSBz+2E6FrsK+wX0xIcx0pLdO+wwDgC6QlpvoNOqBRHJiah
+ 1h5in7A4+krtRYRFDYaFhKFPOZ9xtee/LWgqv51tME/m6+SjqoT3ojb9fUiJr2C+w9wz
+ lRhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699215161; x=1699819961;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zrjDe++U+z4NdbdSF1KpBffvXljDcXxDhfAmqkSfyJ4=;
- b=LAEvTriB4A314sPLtbLkDH9nm9N8Mh8abPFD4VPHKEQuWhamiSEXa8C6Nd3wreDHM5
- JVKFfkVhV2Bq8YE/2WjHY2S//MPEVFFPZQSMz4nSUalLhL+Haj7RlUhYIuvvAw/3g250
- E7RVrloN9L7x7RsuHUXsCAcfEKyxXH5d7hySGZO/7/PJpCyACecoyyeYS/QtdYmQHIYB
- dDvICvrAC26AakzaoPBUn9Z++89mORHc4ZydXj3sYawaUbyIVzoo14xwvCJLT+dkKqVe
- w6D6qO8WLzNJVoZzUOGOTcGSjAkWSYap9q2Y7mEazlHSTmuGZJjntJWHgbAFujuupaw4
- dU5Q==
-X-Gm-Message-State: AOJu0YxIFikViViXsaZFB3UHKW2AiBlI4v4TOco2LGUoyvy3CO25LpDU
- E9dwO8TZ9xI5NvQlrR8r7e3PmS9fc5UmYV5NtTI=
-X-Google-Smtp-Source: AGHT+IHUdu0A4ylO7riK+BNYhVC0t/hIpsrLw4M7O8hCD/52tmLCci1hAlRKHVDRWTCLb3Giu0Bltw==
-X-Received: by 2002:a05:6808:5d0:b0:3b2:e0fa:61e4 with SMTP id
- d16-20020a05680805d000b003b2e0fa61e4mr30063879oij.25.1699215161530; 
- Sun, 05 Nov 2023 12:12:41 -0800 (PST)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- u23-20020a056a00099700b006884549adc8sm4359777pfg.29.2023.11.05.12.12.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 12:12:41 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 21/21] target/sparc: Check for invalid cond in gen_compare_reg
-Date: Sun,  5 Nov 2023 12:12:22 -0800
-Message-Id: <20231105201222.202395-22-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231105201222.202395-1-richard.henderson@linaro.org>
-References: <20231105201222.202395-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1699217148; x=1699821948;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aON9PUnPNCBPHUWAXq3+fkXVrOGocjWXKgYi+lkpAFc=;
+ b=oy1QFUAiFcVfCl4imdaJMVDjYF2nLZma0DGKXAWmOZ/8NkhMf0NKrU6X4aEhHmwbFe
+ GYdpdE+WIntcFyixjbGyjCJNhXOHF3KTYNS3Mz1Xd23zAl2dJky4rK2VHMR2EmXJebns
+ eLIVUI+mznPDgG+nCiUjnKFT6/OLy2c33n9gfZUDtv65iCQapYBUbb6r8jqHnXLXrUZj
+ EMZx0PLclOn/0E3haHM/BG1Q30ZkS6xNnGHfHso+dNB/RZFEx12uj4Fkl90Vum0t5bmY
+ zT0Vgywi+TxE+2a8mII/vXRD5OR6CFoQt8tgyZtYCHP1/DCfAXSzAZOAtY+eE3WV5Xkk
+ urcA==
+X-Gm-Message-State: AOJu0Yyu9Bj5P7Ki2gq2GgSUSwWj0pT1dRf23kcJ6qjpKAJaT12A0E9l
+ zYwcb0XtSj9PKX8MsTEJ2TwU2Q==
+X-Google-Smtp-Source: AGHT+IGC2UM1af6L5P4T0fMlGS+yC0rpNvhVH3AtMDXcIvslGbXx7azGjRkFsLnPmyLsRjRoCHBlPw==
+X-Received: by 2002:a17:902:ecd2:b0:1cc:6dfa:ca55 with SMTP id
+ a18-20020a170902ecd200b001cc6dfaca55mr17131276plh.25.1699217147936; 
+ Sun, 05 Nov 2023 12:45:47 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ z20-20020a1709028f9400b001c9b5b63e36sm4514319plo.32.2023.11.05.12.45.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 05 Nov 2023 12:45:47 -0800 (PST)
+Message-ID: <5ed73ae2-5e38-44fc-a575-82149e9685bc@linaro.org>
+Date: Sun, 5 Nov 2023 12:45:45 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/29] gdb-xml: fix duplicate register in arm-neon.xml
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20231103195956.1998255-1-alex.bennee@linaro.org>
+ <20231103195956.1998255-3-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231103195956.1998255-3-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,107 +94,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Consolidate the test here; drop the "inverted logic".
-Fix MOVr and FMOVR, which were missing the invalid test.
+On 11/3/23 12:59, Alex Bennée wrote:
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   gdb-xml/arm-neon.xml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/gdb-xml/arm-neon.xml b/gdb-xml/arm-neon.xml
+> index 9dce0a996f..d61f6b8549 100644
+> --- a/gdb-xml/arm-neon.xml
+> +++ b/gdb-xml/arm-neon.xml
+> @@ -76,7 +76,7 @@
+>     <reg name="q8" bitsize="128" type="neon_q"/>
+>     <reg name="q9" bitsize="128" type="neon_q"/>
+>     <reg name="q10" bitsize="128" type="neon_q"/>
+> -  <reg name="q10" bitsize="128" type="neon_q"/>
+> +  <reg name="q11" bitsize="128" type="neon_q"/>
+>     <reg name="q12" bitsize="128" type="neon_q"/>
+>     <reg name="q13" bitsize="128" type="neon_q"/>
+>     <reg name="q14" bitsize="128" type="neon_q"/>
 
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/sparc/translate.c | 45 +++++++++++++++++++++++-----------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 4b7d943bae..6fc333a6b8 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -1189,24 +1189,29 @@ static void gen_fcompare(DisasCompare *cmp, unsigned int cc, unsigned int cond)
-     }
- }
- 
--// Inverted logic
--static const TCGCond gen_tcg_cond_reg[8] = {
--    TCG_COND_NEVER,  /* reserved */
--    TCG_COND_NE,
--    TCG_COND_GT,
--    TCG_COND_GE,
--    TCG_COND_NEVER,  /* reserved */
--    TCG_COND_EQ,
--    TCG_COND_LE,
--    TCG_COND_LT,
--};
--
--static void gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
-+static bool gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
- {
--    cmp->cond = tcg_invert_cond(gen_tcg_cond_reg[cond]);
-+    static const TCGCond cond_reg[4] = {
-+        TCG_COND_NEVER,  /* reserved */
-+        TCG_COND_EQ,
-+        TCG_COND_LE,
-+        TCG_COND_LT,
-+    };
-+    TCGCond tcond;
-+
-+    if ((cond & 3) == 0) {
-+        return false;
-+    }
-+    tcond = cond_reg[cond & 3];
-+    if (cond & 4) {
-+        tcond = tcg_invert_cond(tcond);
-+    }
-+
-+    cmp->cond = tcond;
-     cmp->c1 = tcg_temp_new();
-     cmp->c2 = 0;
-     tcg_gen_mov_tl(cmp->c1, r_src);
-+    return true;
- }
- 
- static void gen_op_clear_ieee_excp_and_FTT(void)
-@@ -2504,11 +2509,9 @@ static bool trans_BPr(DisasContext *dc, arg_BPr *a)
-     if (!avail_64(dc)) {
-         return false;
-     }
--    if (gen_tcg_cond_reg[a->cond] == TCG_COND_NEVER) {
-+    if (!gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1))) {
-         return false;
-     }
--
--    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
-     return advance_jump_cond(dc, &cmp, a->a, a->i);
- }
- 
-@@ -4020,7 +4023,9 @@ static bool trans_MOVR(DisasContext *dc, arg_MOVR *a)
-     if (src2 == NULL) {
-         return false;
-     }
--    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
-+    if (!gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1))) {
-+        return false;
-+    }
-     return do_mov_cond(dc, &cmp, a->rd, src2);
- }
- 
-@@ -5007,6 +5012,9 @@ static bool do_fmovr(DisasContext *dc, arg_FMOVRs *a, bool is_128,
- {
-     DisasCompare cmp;
- 
-+    if (!gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1))) {
-+        return false;
-+    }
-     if (gen_trap_ifnofpu(dc)) {
-         return true;
-     }
-@@ -5015,7 +5023,6 @@ static bool do_fmovr(DisasContext *dc, arg_FMOVRs *a, bool is_128,
-     }
- 
-     gen_op_clear_ieee_excp_and_FTT();
--    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
-     func(dc, &cmp, a->rd, a->rs2);
-     return advance_pc(dc);
- }
--- 
-2.34.1
-
+r~
 
