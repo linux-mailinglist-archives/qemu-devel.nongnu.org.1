@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A063C7E1413
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 16:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F627E156E
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 18:15:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzewa-00023Q-C0; Sun, 05 Nov 2023 10:21:44 -0500
+	id 1qzggv-0006eX-L2; Sun, 05 Nov 2023 12:13:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roman@roolebo.dev>) id 1qzewY-00022v-AQ
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 10:21:42 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzggs-0006eP-LT
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 12:13:38 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <roman@roolebo.dev>) id 1qzewW-0002Om-Gt
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 10:21:42 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1cc316ccc38so30019105ad.1
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 07:21:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzggj-0004w9-ST
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 12:13:38 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-408382da7f0so28153545e9.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 09:13:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=roolebo.dev; s=mail; t=1699197698; x=1699802498; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=MN8rDsDSy/qp4b5uLx80qlm3rDpHoiPOiy4Aszo7r/8=;
- b=D9GGkzbQ+380m4ctMl6zURu0kJB3q8I5pEnXO0g93qIcRdpaC+xD8tOhElGPFiMR9F
- 35p0iioD97C47vCapnyrvnOHonyigwtpJKISJBspaD3s3fWeEH+yjrsBpMTVgYkJMztS
- eiPxviCH07z2MYZs2fdgs6XGxnP4dssDv1DpwzlIIw3c9FwVLoKBTiIcVADg6YYKQ5uY
- XXsyhnFlhZeSO5TjwmKn0KOT+uiaKTPoNGwIU7SI+WJ1OsGQIeA0MG5VL7FOvPPHRouv
- z91HJeQ3AAURKjr6YeBoX5K2Bn6loqoINYJ4h2PnHKzPOG1+nqbviOWRaHkypVhkTA90
- Dg2g==
+ d=linaro.org; s=google; t=1699204405; x=1699809205; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sT2Zy1AHMXQyOBzbST0Y1JWWLDq4zjSh8twGjwpeI5U=;
+ b=az5IXI8+NHARxGjFkVp8pH5LV9lz0GXyJ/B+yeJFf5tG7w5pTLkZk5uniObGVypHWF
+ yyN827jac4uKp+n1efw3FJ10mMsawYTiTwxXor4TiXwdFj3/qsbAGJWqwNdXyUPUeZin
+ gUspKoEv/6zHQpbyD+yLy4FSsovXXjI+GUlR894OVpcXkWm6oBRmU5vn9gZtNVeWi+I1
+ 9MK4zGta3Ut2CgP9wvQCQF0wuAWR6DDpFn55fcGENUiH316JWqkpI8maWV4Gc6Eb4zjJ
+ ja5eSPSkSAla04exqBEP7C9VQdZxAf2XIqjlk+9lLwyAHFXSV7IFdgBZyMzWJKE+Zc8d
+ A8IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699197698; x=1699802498;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MN8rDsDSy/qp4b5uLx80qlm3rDpHoiPOiy4Aszo7r/8=;
- b=FXOyg/kFCOPqlFPQhCrsObIbIc5M6cOO0+r01pakbIkg6PaPWm4hEUprGwvUcVrC8W
- WI4JHo3H9jSqXoygdVdf1X++xYRkEoNpdD5z3azNEDlvxOvj+jOouQoOJ7c17tKQwNy3
- kqnE0iBDoU6pOmC+P7nwOzCJ4NRvFaXE77LtOydRtCGBCRk+PrOdlants283GDSdxAo0
- ejCVAjvP5PasgHOwL/NJP2z9nxP7vMI4ekIGo0+6JPxGQN8AlT1LeGNpuXms65boDUN7
- ux8psrtJ+HUV6KplbdCRN1LW9auotKfmVlIvPt9CTnAhIF3bacUhMGFuCP1z42WG77Ph
- CanQ==
-X-Gm-Message-State: AOJu0Yyy75D3kDsgTxDzN+stEfP7GLf1MBKGw0qRQP91JpRaSyMk30kR
- POHTudu3hlsmkd+whU0nZiZovA==
-X-Google-Smtp-Source: AGHT+IEtr3GNLDN5mKzMgNMRdSBx685Rz8PDtJe2oAw4aXuPugQWKBIhSr4OVrGD7GaEtuorF4ziwA==
-X-Received: by 2002:a17:902:cec3:b0:1cc:5f51:b1ed with SMTP id
- d3-20020a170902cec300b001cc5f51b1edmr16533337plg.47.1699197698138; 
- Sun, 05 Nov 2023 07:21:38 -0800 (PST)
-Received: from localhost ([123.231.99.131]) by smtp.gmail.com with ESMTPSA id
- i2-20020a170902eb4200b001cc79f3c60csm4318890pli.31.2023.11.05.07.21.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 07:21:37 -0800 (PST)
-Date: Sun, 5 Nov 2023 20:51:33 +0530
-From: Roman Bolshakov <roman@roolebo.dev>
-To: Phil Dennis-Jordan <lists@philjordan.eu>
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
- dirty@apple.com, rbolshakov@ddn.com, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 2/3] i386: hvf: In kick_vcpu use hv_vcpu_interrupt to
- force exit
-Message-ID: <ZUey_ZynRm9XwQLD@roolebo.dev>
-References: <20230922140914.13906-1-phil@philjordan.eu>
- <20230922140914.13906-3-phil@philjordan.eu>
- <ZSLzq33DgMNYBsQT@roolebo.dev>
- <CAAibmn35JypPWfUophMgONTkgbYFvaaRhuD9+1kif9EOFx9HxQ@mail.gmail.com>
- <ZSMAr3hhxJryGpya@roolebo.dev>
- <CAAibmn3cMjnNWsQs8yCetc__Kr+ujn6Gn_ohGubVA3hCQbBy1w@mail.gmail.com>
- <CAGCz3vu=sX1m4PJiOvtTBza4iNUy6Hj+AtSAFi33zJ=dz_r7UA@mail.gmail.com>
- <CAGCz3vt2VB9i8+o-qFPpDptu81p3r00-TKfCV3O+=dQ0r3d88w@mail.gmail.com>
+ d=1e100.net; s=20230601; t=1699204405; x=1699809205;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sT2Zy1AHMXQyOBzbST0Y1JWWLDq4zjSh8twGjwpeI5U=;
+ b=Qiw0hbkZyao3MMBEWr9F1kuTZfH4wJgdsq1e2Mtbc7bUM3WSMZKLqj6EmKg+5PGreW
+ PbD36bksIWpyxBhlgsp9CsQumQIr/w9wAgd0Srve/A+mKhQhNTunNprBY2Oznu3EG6Yg
+ rc6LrH3JY5zycACvx3rgKTIuucrJuvPWQSRsbzQfx5QnRnVXx/j8HvE4ZF2vrajDyEkq
+ GxzLqnjFCEmyD+SkezaAUwyigZfHX7Y1k/lbxVXlsiAaH44XA7D+XFiF3mtGwzeMJONj
+ 1nLvjNXwtktCuplxKdERTgP0pdRXiRly2feiQFi+sH6i5kRvrXVo2bp5Knx1ioTK6Bls
+ z4xA==
+X-Gm-Message-State: AOJu0YxUembacqKnlC0Qc2E66rx5UhwlUEQQMQjkBt40EKKoC4AEJbN8
+ L8tdP2Hh8GrXF6DCRkfdDgMwxw==
+X-Google-Smtp-Source: AGHT+IFWbQPHiBatUnBFxY+600hcJhIfXz1XOuTG5eFWPuCg63+G1sr9gOt//bBPNtr6TlsYsYuiXQ==
+X-Received: by 2002:a05:600c:1d0e:b0:405:dbe2:df10 with SMTP id
+ l14-20020a05600c1d0e00b00405dbe2df10mr22301906wms.35.1699204404920; 
+ Sun, 05 Nov 2023 09:13:24 -0800 (PST)
+Received: from [192.168.69.115] (176-131-220-199.abo.bbox.fr.
+ [176.131.220.199]) by smtp.gmail.com with ESMTPSA id
+ z17-20020a5d44d1000000b00326b8a0e817sm7220183wrr.84.2023.11.05.09.13.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 05 Nov 2023 09:13:24 -0800 (PST)
+Message-ID: <dfc2f9e9-0098-2f22-3925-94283e30a71b@linaro.org>
+Date: Sun, 5 Nov 2023 18:13:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGCz3vt2VB9i8+o-qFPpDptu81p3r00-TKfCV3O+=dQ0r3d88w@mail.gmail.com>
-Received-SPF: none client-ip=2607:f8b0:4864:20::636;
- envelope-from=roman@roolebo.dev; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] hw/arm/vexpress-a9: Remove useless mapping of RAM at
+ address 0
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20231103185602.875849-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231103185602.875849-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.137,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,48 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 20, 2023 at 05:12:13PM +0200, Phil Dennis-Jordan wrote:
-> Hi Roman, hi Paolo,
+On 3/11/23 19:56, Peter Maydell wrote:
+> On the vexpress-a9 board we try to map both RAM and flash to address 0,
+> as seen in "info mtree":
 > 
-
-Hi Phil,
-
-Pardon for not responding earlier. I was travelling the last three weeks.
-
-I appreciate the time you spent on the rebase. I have compiled it and
-observed the same issue with SVGA like with your third patch.
-
-> Just an update on my investigation of the hv_vcpu_run ->
-> hv_vcpu_run_until issue. The graphical issues with the Windows XP VM
-> appear to be caused by the dirty memory page system not working as
-> expected. The emulated (Cirrus) VGA adapter uses dirty page tracking
-> to perform partial screen updates, so when pages aren't marked as
-> dirty, they don't get updated on the host console.
+> address-space: memory
+>    0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>      0000000000000000-0000000003ffffff (prio 0, romd): alias vexpress.flashalias @vexpress.flash0 0000000000000000-0000000003ffffff
+>      0000000000000000-0000000003ffffff (prio 0, ram): alias vexpress.lowmem @vexpress.highmem 0000000000000000-0000000003ffffff
+>      0000000010000000-0000000010000fff (prio 0, i/o): arm-sysctl
+>      0000000010004000-0000000010004fff (prio 0, i/o): pl041
+> (etc)
 > 
-
-That sounds awesome, I think you have tracked it down correctly. I have
-also looked at SVGA code and the only idea I had is dirty tracking is
-somehow not working properly.
-
-I observed similar issue when tried to add GDB stub for x86 hvf. The
-changes from GDB stub produced no apparent effect on the guest -
-breakpoints were there, in the memory but did not stop the guest and so
-on. I got lost why it didn't work back then.
-
-> This got me digging into how dirty memory tracking is actually
-> implemented in the Qemu hvf backend, and basically, it should never
-> have worked in the first place. When we get a write fault, the code
-> marks the *whole* 'logged' memory range as writable rather than just
-> the page that's just been dirtied. It just so happens that hv_vcpu_run
-> was causing EPT fault exits on those pages even after marking them
-> writable (?), and hv_vcpu_run_until() no longer does that. So
-> basically, this has been a Qemu bug masked by undesirable
-> hv_vcpu_run() behaviour. I'll start putting together a fix for this.
+> The flash "wins" and the RAM mapping is useless (but also harmless).
 > 
+> This happened as a result of commit 6ec1588e in 2014, which changed
+> "we always map the RAM to the low addresses for vexpress-a9" to "we
+> always map flash in the low addresses", but forgot to stop mapping
+> the RAM.
+> 
+> In real hardware, this low part of memory is remappable, both at
+> runtime by the guest writing to a control register, and configurably
+> as to what you get out of reset -- you can have the first flash
+> device, or the second, or the DDR2 RAM, or the external AXI bus
+> (which for QEMU means "nothing there").  In an ideal world we would
+> support that remapping both at runtime and via a machine property to
+> select the out-of-reset behaviour.
+> 
+> Pending anybody caring enough to implement the full remapping
+> behaviour:
+>   * remove the useless mapped-but-inaccessible lowram MR
+>   * document that QEMU doesn't support remapping of low memory
+> 
+> Fixes: 6ec1588e ("hw/arm/vexpress: Alias NOR flash at 0 for vexpress-a9")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1761
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/system/arm/vexpress.rst |  3 +++
+>   hw/arm/vexpress.c            | 14 +++-----------
+>   2 files changed, 6 insertions(+), 11 deletions(-)
 
-Sounds good, have you got anything to test or review? Meanwhile, I'll
-review the pending patches you sent.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Best regards,
-Roman
 
