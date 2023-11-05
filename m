@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DE87E1650
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:15:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 106DD7E1646
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 21:13:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzjUE-0003Sd-Dg; Sun, 05 Nov 2023 15:12:46 -0500
+	id 1qzjUF-0003Tj-8Z; Sun, 05 Nov 2023 15:12:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjUB-0003RI-RT
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:43 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1qzjUC-0003Re-Bt
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:44 -0500
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qzjUA-0002BF-6b
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:43 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5b92b852390so2993371a12.2
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 12:12:41 -0800 (PST)
+ id 1qzjUA-0002BU-OJ
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 15:12:44 -0500
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3b2ea7cca04so2535829b6e.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 12:12:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699215160; x=1699819960; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699215161; x=1699819961; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A78suQY9V9iQl5jBJ+5kjMF55wPobXhyeLKa16NEwCk=;
- b=gdhf2TTKcxEUD1++rP5SwjRo468jGxgzzRie/SXFFvjPXeuyZ6ZNEAy2dJyETw6Lij
- rJTPgZpMaHYcuNUmFlSMeN6dCGH/iUmuNXYMzgQ66dSvx8nT6TtJHWp4mbPGaM8Bw5gZ
- Qvir7em33NKTw7TcXM2eaO3y301cw0Q3TPEBfoWlJuUqLgy+Ewa/JMfZaEgD6ArjU2qs
- iSN4j5ziVYyev3lXSPBVuqiUOdAvc+o1SscMU/R6Xsy0v12oHeVNFuN4O/PQe6u0usC+
- JaqA78PNKcq11hcAGV4kFmxkDu9qXZySW5GNExQGpOAMFGr5+aJObnqlfEuJ/c1c5WWv
- mjDg==
+ bh=zrjDe++U+z4NdbdSF1KpBffvXljDcXxDhfAmqkSfyJ4=;
+ b=ccEvUWLJ1geJr8FNp3N3ZY0fx53DMyMV3bXR0nGsjHccfbQl7KYixdJc0WfANJGpUh
+ MjgS+lQ6aey4mLAd8VONgdiE46Pl9DbWHRZY/x9KJQTce6DG7DicrZ2IS91U5dXhIkDk
+ 90gf/g5iSsQjplgtLIhfr32XdSmA7BHlF92S7jHrB2mgaT8pddzP/gUHg92CsQaB6nGx
+ NoBoNCmnAw37NomxFLk2TyfHrqilB9tZH486XSJsetYSbpV6CKUq7LX7qHULa8JapCCd
+ 0AVsQ753ZKbr92Goo302lpBNXeqDvew4auRLWX7Gqt0QKhtYV3Gl2qFZ7h28JUaJinoS
+ DQ3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699215160; x=1699819960;
+ d=1e100.net; s=20230601; t=1699215161; x=1699819961;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A78suQY9V9iQl5jBJ+5kjMF55wPobXhyeLKa16NEwCk=;
- b=MIjpIErBf0Sfio3Dlased8E2omijB61FE1/7hbo5rtRbgUZjswImerX/Z89NzTN3gb
- DJKUV7feEDpBjwec+m2k4RYzbNnZvxWkaXRcLqQVPR/3cH4wwGw4rvLfI+Hv6dnaGkcC
- 6MvJeRmtxea7zI5mt4oz6eohEKX8mf3O9DlqmHxa2D+XAxcZzJ0x/ONmUeVXPfWejB6k
- VDSmE0D4iQEk998YJWzF3DUi/P85cx7/MSpNb4JlkEoX9MKo9BwvYxjZ2kKy43tu+gfz
- eP+KlmEGJLv+M76NNe8eSHMQF5UTYJqWcyeTiVC1lfLWe46JLrxI3KCSlyFPK1q7wQ10
- BQNQ==
-X-Gm-Message-State: AOJu0YyY+TpG14qhajL3egDdz2IJS1eBGW0VBmI/C0KO+kxDgBG+Nndj
- J9maAFQ+DaMuRNIdlboI3Ye4w0jv7djMT75mqA0=
-X-Google-Smtp-Source: AGHT+IFbAskkbgPgtWnrutcqyoQfbOwyiDYF/Ak/7jf77+0BApoIKGyKIi8UDBS0lhXVcLnaqT6G/A==
-X-Received: by 2002:a05:6a21:a597:b0:161:76a4:4f74 with SMTP id
- gd23-20020a056a21a59700b0016176a44f74mr38581984pzc.1.1699215160687; 
- Sun, 05 Nov 2023 12:12:40 -0800 (PST)
+ bh=zrjDe++U+z4NdbdSF1KpBffvXljDcXxDhfAmqkSfyJ4=;
+ b=LAEvTriB4A314sPLtbLkDH9nm9N8Mh8abPFD4VPHKEQuWhamiSEXa8C6Nd3wreDHM5
+ JVKFfkVhV2Bq8YE/2WjHY2S//MPEVFFPZQSMz4nSUalLhL+Haj7RlUhYIuvvAw/3g250
+ E7RVrloN9L7x7RsuHUXsCAcfEKyxXH5d7hySGZO/7/PJpCyACecoyyeYS/QtdYmQHIYB
+ dDvICvrAC26AakzaoPBUn9Z++89mORHc4ZydXj3sYawaUbyIVzoo14xwvCJLT+dkKqVe
+ w6D6qO8WLzNJVoZzUOGOTcGSjAkWSYap9q2Y7mEazlHSTmuGZJjntJWHgbAFujuupaw4
+ dU5Q==
+X-Gm-Message-State: AOJu0YxIFikViViXsaZFB3UHKW2AiBlI4v4TOco2LGUoyvy3CO25LpDU
+ E9dwO8TZ9xI5NvQlrR8r7e3PmS9fc5UmYV5NtTI=
+X-Google-Smtp-Source: AGHT+IHUdu0A4ylO7riK+BNYhVC0t/hIpsrLw4M7O8hCD/52tmLCci1hAlRKHVDRWTCLb3Giu0Bltw==
+X-Received: by 2002:a05:6808:5d0:b0:3b2:e0fa:61e4 with SMTP id
+ d16-20020a05680805d000b003b2e0fa61e4mr30063879oij.25.1699215161530; 
+ Sun, 05 Nov 2023 12:12:41 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  u23-20020a056a00099700b006884549adc8sm4359777pfg.29.2023.11.05.12.12.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 12:12:40 -0800 (PST)
+ Sun, 05 Nov 2023 12:12:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 20/21] target/sparc: Implement UDIV inline
-Date: Sun,  5 Nov 2023 12:12:21 -0800
-Message-Id: <20231105201222.202395-21-richard.henderson@linaro.org>
+Subject: [PULL 21/21] target/sparc: Check for invalid cond in gen_compare_reg
+Date: Sun,  5 Nov 2023 12:12:22 -0800
+Message-Id: <20231105201222.202395-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231105201222.202395-1-richard.henderson@linaro.org>
 References: <20231105201222.202395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,120 +90,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Consolidate the test here; drop the "inverted logic".
+Fix MOVr and FMOVR, which were missing the invalid test.
+
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  3 +-
- target/sparc/translate.c  | 67 +++++++++++++++++++++++++++++++--------
- 2 files changed, 56 insertions(+), 14 deletions(-)
+ target/sparc/translate.c | 45 +++++++++++++++++++++++-----------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 52f54b87cc..2d26404cb2 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -184,7 +184,8 @@ MULScc      10 ..... 100100 ..... . .............          @r_r_ri_cc1
- 
- UDIVX       10 ..... 001101 ..... . .............          @r_r_ri
- SDIVX       10 ..... 101101 ..... . .............          @r_r_ri
--UDIV        10 ..... 0.1110 ..... . .............          @r_r_ri_cc
-+UDIV        10 ..... 001110 ..... . .............          @r_r_ri
-+UDIVcc      10 ..... 011110 ..... . .............          @r_r_ri_cc1
- SDIV        10 ..... 0.1111 ..... . .............          @r_r_ri_cc
- 
- TADDcc      10 ..... 100000 ..... . .............          @r_r_ri_cc1
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 95cc4c71f4..4b7d943bae 100644
+index 4b7d943bae..6fc333a6b8 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -577,18 +577,6 @@ static void gen_op_smul(TCGv dst, TCGv src1, TCGv src2)
-     gen_op_multiply(dst, src1, src2, 1);
+@@ -1189,24 +1189,29 @@ static void gen_fcompare(DisasCompare *cmp, unsigned int cc, unsigned int cond)
+     }
  }
  
--static void gen_op_udiv(TCGv dst, TCGv src1, TCGv src2)
--{
--#ifdef TARGET_SPARC64
--    gen_helper_udiv(dst, tcg_env, src1, src2);
--    tcg_gen_ext32u_tl(dst, dst);
--#else
--    TCGv_i64 t64 = tcg_temp_new_i64();
--    gen_helper_udiv(t64, tcg_env, src1, src2);
--    tcg_gen_trunc_i64_tl(dst, t64);
--#endif
--}
+-// Inverted logic
+-static const TCGCond gen_tcg_cond_reg[8] = {
+-    TCG_COND_NEVER,  /* reserved */
+-    TCG_COND_NE,
+-    TCG_COND_GT,
+-    TCG_COND_GE,
+-    TCG_COND_NEVER,  /* reserved */
+-    TCG_COND_EQ,
+-    TCG_COND_LE,
+-    TCG_COND_LT,
+-};
 -
- static void gen_op_sdiv(TCGv dst, TCGv src1, TCGv src2)
+-static void gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
++static bool gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
  {
- #ifdef TARGET_SPARC64
-@@ -3568,7 +3556,7 @@ TRANS(UMUL, MUL, do_logic, a, gen_op_umul, NULL)
- TRANS(SMUL, MUL, do_logic, a, gen_op_smul, NULL)
- TRANS(MULScc, ALL, do_arith, a, NULL, NULL, gen_op_mulscc)
- 
--TRANS(UDIV, DIV, do_arith, a, gen_op_udiv, NULL, gen_op_udivcc)
-+TRANS(UDIVcc, DIV, do_arith, a, NULL, NULL, gen_op_udivcc)
- TRANS(SDIV, DIV, do_arith, a, gen_op_sdiv, NULL, gen_op_sdivcc)
- 
- /* TODO: Should have feature bit -- comes in with UltraSparc T2. */
-@@ -3591,6 +3579,59 @@ static bool trans_OR(DisasContext *dc, arg_r_r_ri_cc *a)
-     return do_logic(dc, a, tcg_gen_or_tl, tcg_gen_ori_tl);
+-    cmp->cond = tcg_invert_cond(gen_tcg_cond_reg[cond]);
++    static const TCGCond cond_reg[4] = {
++        TCG_COND_NEVER,  /* reserved */
++        TCG_COND_EQ,
++        TCG_COND_LE,
++        TCG_COND_LT,
++    };
++    TCGCond tcond;
++
++    if ((cond & 3) == 0) {
++        return false;
++    }
++    tcond = cond_reg[cond & 3];
++    if (cond & 4) {
++        tcond = tcg_invert_cond(tcond);
++    }
++
++    cmp->cond = tcond;
+     cmp->c1 = tcg_temp_new();
+     cmp->c2 = 0;
+     tcg_gen_mov_tl(cmp->c1, r_src);
++    return true;
  }
  
-+static bool trans_UDIV(DisasContext *dc, arg_r_r_ri *a)
-+{
-+    TCGv_i64 t1, t2;
-+    TCGv dst;
-+
-+    if (!avail_DIV(dc)) {
+ static void gen_op_clear_ieee_excp_and_FTT(void)
+@@ -2504,11 +2509,9 @@ static bool trans_BPr(DisasContext *dc, arg_BPr *a)
+     if (!avail_64(dc)) {
+         return false;
+     }
+-    if (gen_tcg_cond_reg[a->cond] == TCG_COND_NEVER) {
++    if (!gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1))) {
+         return false;
+     }
+-
+-    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
+     return advance_jump_cond(dc, &cmp, a->a, a->i);
+ }
+ 
+@@ -4020,7 +4023,9 @@ static bool trans_MOVR(DisasContext *dc, arg_MOVR *a)
+     if (src2 == NULL) {
+         return false;
+     }
+-    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
++    if (!gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1))) {
 +        return false;
 +    }
-+    /* For simplicity, we under-decoded the rs2 form. */
-+    if (!a->imm && a->rs2_or_imm & ~0x1f) {
-+        return false;
-+    }
-+
-+    if (unlikely(a->rs2_or_imm == 0)) {
-+        gen_exception(dc, TT_DIV_ZERO);
-+        return true;
-+    }
-+
-+    if (a->imm) {
-+        t2 = tcg_constant_i64((uint32_t)a->rs2_or_imm);
-+    } else {
-+        TCGLabel *lab;
-+        TCGv_i32 n2;
-+
-+        finishing_insn(dc);
-+        flush_cond(dc);
-+
-+        n2 = tcg_temp_new_i32();
-+        tcg_gen_trunc_tl_i32(n2, cpu_regs[a->rs2_or_imm]);
-+
-+        lab = delay_exception(dc, TT_DIV_ZERO);
-+        tcg_gen_brcondi_i32(TCG_COND_EQ, n2, 0, lab);
-+
-+        t2 = tcg_temp_new_i64();
-+#ifdef TARGET_SPARC64
-+        tcg_gen_ext32u_i64(t2, cpu_regs[a->rs2_or_imm]);
-+#else
-+        tcg_gen_extu_i32_i64(t2, cpu_regs[a->rs2_or_imm]);
-+#endif
-+    }
-+
-+    t1 = tcg_temp_new_i64();
-+    tcg_gen_concat_tl_i64(t1, gen_load_gpr(dc, a->rs1), cpu_y);
-+
-+    tcg_gen_divu_i64(t1, t1, t2);
-+    tcg_gen_umin_i64(t1, t1, tcg_constant_i64(UINT32_MAX));
-+
-+    dst = gen_dest_gpr(dc, a->rd);
-+    tcg_gen_trunc_i64_tl(dst, t1);
-+    gen_store_gpr(dc, a->rd, dst);
-+    return advance_pc(dc);
-+}
-+
- static bool trans_UDIVX(DisasContext *dc, arg_r_r_ri *a)
+     return do_mov_cond(dc, &cmp, a->rd, src2);
+ }
+ 
+@@ -5007,6 +5012,9 @@ static bool do_fmovr(DisasContext *dc, arg_FMOVRs *a, bool is_128,
  {
-     TCGv dst, src1, src2;
+     DisasCompare cmp;
+ 
++    if (!gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1))) {
++        return false;
++    }
+     if (gen_trap_ifnofpu(dc)) {
+         return true;
+     }
+@@ -5015,7 +5023,6 @@ static bool do_fmovr(DisasContext *dc, arg_FMOVRs *a, bool is_128,
+     }
+ 
+     gen_op_clear_ieee_excp_and_FTT();
+-    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
+     func(dc, &cmp, a->rd, a->rs2);
+     return advance_pc(dc);
+ }
 -- 
 2.34.1
 
