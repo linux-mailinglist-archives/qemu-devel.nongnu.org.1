@@ -2,90 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FCF7E139F
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 14:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 311C77E13F3
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 Nov 2023 15:43:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzd5h-0000F5-3q; Sun, 05 Nov 2023 08:23:01 -0500
+	id 1qzeKe-0005rW-TQ; Sun, 05 Nov 2023 09:42:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qzd5f-0000Er-Hu
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 08:22:59 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKc-0005r4-49
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:30 -0500
+Received: from mout.kundenserver.de ([217.72.192.73])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qzd5d-0004cm-Pw
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 08:22:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=awCpCMYwhetWW/A4XnXZiWCkQguf+Q0+OAXa+zaxBBE=; b=fQPVbUvlFx+bqXAT41BBsXpq+c
- snDHMFLKC2U6Uob2eXorRxJ+Oq871h4kZ1Nyd6xGGYGAfsH5QdG1qTH9/754q34o8wm0TIeBJPqGP
- e4QqSKXdqzHrt8Izrjn5xESnXCtD/zFBNd1YmC/QoA15ucUZdfXCvQPKHGmr2GCcnbhR2z3uFR3PU
- BD5Ple0vSARoQuZ58/1kKZgGTOKU9dM5S/sDx2oFKarVsSe3BZ7icp5zAej/OF6wIGuL1tPuOGvI1
- HnHl0YvzGEJOpOYCmWuuz04suYpUKHnOj+pxeradfWnhH4jDs3lCasMHyDEkN7KO6uvO6WVSXIEL0
- cTvDHt0mQmNrvdprZxtR8mDxYK/i/S9jnYwy4r9KXMLgNRGBVuBvpgtR6O3+3Nwe0HJk4FKtKcfX8
- G1pLbE+xQ4I/u0VW0FpunLwE65k96EVRObk7LnMLfTup4ftD4SFRZpKgj9uZRRMkrLe0poL49+Rif
- djO7vPsezCBCQ3ZfaQI5ACLdVHZTPUNI4bTW2F+o2wfHfsk0R/FyWQz6BI2H5XuSspYTE7NdgJ4aM
- RNRkoHWpm8slvh2lOB+SIaqZKWZD0LsYTqpYgBh5/GMljYv0xB8eusq1yhOQwcKyf/l2z5IBHu3E5
- WYl7R9J0cQRGuycCvVFXck8obAowTdVX/XJ88MMd0=;
-Received: from [2a00:23c4:8bb0:5400:7e14:8a70:c9ef:7e3d]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qzd5M-0009bg-1u; Sun, 05 Nov 2023 13:22:44 +0000
-Message-ID: <6e8467eb-a825-4f22-a542-b519c07417bf@ilande.co.uk>
-Date: Sun, 5 Nov 2023 13:22:48 +0000
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzeKa-0003Oj-Iq
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 09:42:29 -0500
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1MLR5h-1qhIMl26Xz-00IV4C; Sun, 05 Nov 2023 15:42:24 +0100
+Message-ID: <39a86e81-20fe-4e5e-9bdb-d876b3e85252@vivier.eu>
+Date: Sun, 5 Nov 2023 15:42:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20231101041132.174501-1-richard.henderson@linaro.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20231101041132.174501-1-richard.henderson@linaro.org>
+Subject: Re: [PATCH 1/4] macfb: don't clear interrupts when writing to
+ DAFB_RESET
+Content-Language: fr
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20231026085650.917663-1-mark.cave-ayland@ilande.co.uk>
+ <20231026085650.917663-2-mark.cave-ayland@ilande.co.uk>
+From: Laurent Vivier <laurent@vivier.eu>
+Autocrypt: addr=laurent@vivier.eu; keydata=
+ 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
+In-Reply-To: <20231026085650.917663-2-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:5400:7e14:8a70:c9ef:7e3d
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 00/21] target/sparc: Cleanup condition codes etc
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:EagZ7hKVSA5oS9j/O6UMmzqG+I2hi7eILFgfm8sDJo6iFvd/CFj
+ XuDlC/Li9GDTHqlCtYSy2/DWshVtaAmzTAubTxVrL5SXO4lMzaRkqtjZO7megid+juvnLQ3
+ KoYtkiBwvBzL4VH5Uw8nBvtpuwAocPxblegYDasdzdXQ/RBaFO5UwZOIQrWeZjKbR+eN2EK
+ SHQjUPTxB8GqQuoUWqzjg==
+UI-OutboundReport: notjunk:1;M01:P0:LhC9ygcpbNA=;P5LLfwbsBPjulzJfmqVdVkERWIe
+ Soz8gDWBsnahIRUY3bBe15KaGnneQqiMjGT+Hw2MOaUUTzaJyIIGxcQl13RMniHsq3kpn6kX5
+ xvEDq+K7YJsrJW00cFqvf41kDO5e7YYecFNAYeLBhqrhGoX4b75AL/aW0BQ8+uSkoVdMM1BhF
+ pe9Tlsnd4Gxu34py/K5JGN91ZamIBenSrrdgBhNuub8lVZRGCFSZkibEJrC5h2kxfJ2KrH3Fn
+ yJdfmNRh1PZrnDEt22naFy6+MI/zS7YuiuiDf81sVA1ZAAsOU2394lxUSMGcsClxSRtgG+hSz
+ IniwAoOxM/mx2RPlQpiXjmlOzTiq5CY5LLGXgvgF9OFFhmWanpW8BWlUWrFg5GAnT29x68siW
+ E5GMVaewwezoEl8D+K9t56Beauy5vboECEceo3kLjMZUggx7ZajVdBEaUkFPNTq5cIhGyB2Qp
+ T08DPIUGdiwCfh5WkJERHrJ9zlYcGAQjJgYt7Cd4sAAx4TRy9O5qck4z9MyMfyT0T9dviQgdS
+ cGP/mVrXIXe+2w5R94Pmas9wjwSMsKhOnrrFEOTy2PReJXslkfpprMOkS1KSN6hWhoarz+dVT
+ fIrO+d52Y9uD5sCVcrvKMMFtHOjHsoy0/v2ERWw0Za+tnFRIXgypf8pMRrNs6Wjvl0kURCDON
+ ij0qIqWopeYlDrzxsp8gUQ5tGyvKa7Qd4voHIMdi+DdPCpmdWDwQqhumiUo77aJGfqgV2U944
+ 4g1DLULGnlPlElOPgwz4Kz9pgWot6FFmSwG+jD5Sc9rJyZpXswry/Qku/9C5pIhMAWstXi7BU
+ xcljX3h8e+iQzFjB6P6F1u5sZumgyYiAVL2IY4ylDQsMG7sZyZ0epkLXiP9xvXyngAY9f4j61
+ 8M3HZO+kGrh1Kjw==
+Received-SPF: none client-ip=217.72.192.73; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,91 +116,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/11/2023 04:11, Richard Henderson wrote:
-> This was part of my guess for some of the performance problems.
+Le 26/10/2023 à 10:56, Mark Cave-Ayland a écrit :
+> Traces from A/UX suggest that this register is only used to reset the framebuffer
+> LUT (colour lookup table) and not any other device state.
 > 
-> I saw compute_all_sub quite high in the profile at some point, and I
-> believe that the test case has a partially rotated loop such that "cmp"
-> is in a delay slot, and so the gen_compare fast path for CC_OP_SUB is
-> not visible to the conditional branch that uses the output of the compare.
-> Which means that helper_compute_psr gets called more often that we'd like.
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/display/macfb.c | 2 --
+>   1 file changed, 2 deletions(-)
 > 
-> Since almost all Sparc instructions that set cc also have a version of
-> the instruction that does not set cc, we can trust that the compiler
-> has only used the cc-setting version when it is actually required.
-> Thus, unlike CISC processors, there is very little scope for optimization
-> of the flags -- we might as well compute them immediately.
-> 
-> Move away from CC_OP to explicit computation of conditions.  This is
-> modeled on target/arm for the (mostly) separate representation of the bits.
-> We can pack icc.[NV] and xcc.[NV] into the same target_ulong, but Z and C
-> cannot share.  (For "normal" setting of Z, we could share, but it is
-> possible to set xcc.Z and !icc.Z via explicit write to %ccr, and for
-> that we have to have two variables.)
-> 
-> After removing CC_OP, clean up the handling of conditions so that we can
-> minimize additional setcond required for env->cond.
-> 
-> Finally, inline some division, which can make use of the new out-of-line
-> exception path, which means we can expand UDIVX and SDIVX with very few
-> host insns.  The 64/32 UDIV insn needs only a few more.  Leave UDIVcc and
-> SDIV* out of line, as the overflow and saturation computation in these
-> cases is really too large to inline.
-> 
-> r~
+> diff --git a/hw/display/macfb.c b/hw/display/macfb.c
+> index 2f8e016566..28db2e9f24 100644
+> --- a/hw/display/macfb.c
+> +++ b/hw/display/macfb.c
+> @@ -585,8 +585,6 @@ static void macfb_ctrl_write(void *opaque,
+>           break;
+>       case DAFB_RESET:
+>           s->palette_current = 0;
+> -        s->regs[DAFB_INTR_STAT >> 2] &= ~DAFB_INTR_VBL;
+> -        macfb_update_irq(s);
+>           break;
+>       case DAFB_LUT:
+>           s->color_palette[s->palette_current] = val;
 
-I've tested this series by running through my OpenBIOS boot tests for SPARC32 and 
-SPARC64 and didn't spot any obvious regressions, so:
-
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-> Richard Henderson (21):
->    target/sparc: Introduce cpu_put_psr_icc
->    target/sparc: Split psr and xcc into components
->    target/sparc: Remove CC_OP_LOGIC
->    target/sparc: Remove CC_OP_DIV
->    target/sparc: Remove CC_OP_ADD, CC_OP_ADDX, CC_OP_TADD
->    target/sparc: Remove CC_OP_SUB, CC_OP_SUBX, CC_OP_TSUB
->    target/sparc: Remove CC_OP_TADDTV, CC_OP_TSUBTV
->    target/sparc: Remove CC_OP leftovers
->    target/sparc: Remove DisasCompare.is_bool
->    target/sparc: Change DisasCompare.c2 to int
->    target/sparc: Always copy conditions into a new temporary
->    target/sparc: Do flush_cond in advance_jump_cond
->    target/sparc: Merge gen_branch2 into advance_pc
->    target/sparc: Merge advance_jump_uncond_{never,always} into
->      advance_jump_cond
->    target/sparc: Pass displacement to advance_jump_cond
->    target/sparc: Merge gen_op_next_insn into only caller
->    target/sparc: Record entire jump condition in DisasContext
->    target/sparc: Discard cpu_cond at the end of each insn
->    target/sparc: Implement UDIVX and SDIVX inline
->    target/sparc: Implement UDIV inline
->    target/sparc: Check for invalid cond in gen_compare_reg
-> 
->   linux-user/sparc/target_cpu.h |   17 +-
->   target/sparc/cpu.h            |   58 +-
->   target/sparc/helper.h         |   12 +-
->   target/sparc/insns.decode     |    7 +-
->   linux-user/sparc/cpu_loop.c   |   11 +-
->   linux-user/sparc/signal.c     |    2 +-
->   target/sparc/cc_helper.c      |  471 ------------
->   target/sparc/cpu.c            |    1 -
->   target/sparc/helper.c         |  171 ++---
->   target/sparc/int32_helper.c   |    5 -
->   target/sparc/int64_helper.c   |    5 -
->   target/sparc/machine.c        |   45 +-
->   target/sparc/translate.c      | 1333 ++++++++++++++-------------------
->   target/sparc/win_helper.c     |   56 +-
->   target/sparc/meson.build      |    1 -
->   15 files changed, 789 insertions(+), 1406 deletions(-)
->   delete mode 100644 target/sparc/cc_helper.c
-> 
-
-
-ATB,
-
-Mark.
-
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
