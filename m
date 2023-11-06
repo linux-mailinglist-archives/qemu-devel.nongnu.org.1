@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633CC7E1B8D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA04F7E1BC8
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 09:17:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzuQH-0007xa-JD; Mon, 06 Nov 2023 02:53:25 -0500
+	id 1qzumI-0000RR-Fx; Mon, 06 Nov 2023 03:16:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qzuQB-0007xH-Pd
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:53:20 -0500
-Received: from smtpout1.mo529.mail-out.ovh.net ([178.32.125.2])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzulv-0000LX-FT
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 03:15:50 -0500
+Received: from mout.kundenserver.de ([212.227.17.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qzuQA-0003o7-7J
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:53:19 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.108.16.128])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 48AE920365;
- Mon,  6 Nov 2023 07:53:07 +0000 (UTC)
-Received: from kaod.org (37.59.142.106) by DAG6EX1.mxp5.local (172.16.2.51)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Mon, 6 Nov
- 2023 08:53:06 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-106R00621b0714a-0b6f-49ae-baa3-d73507d54f05,
- 210A19B55432F04E894651E454F511AC748DDD6E) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 88.179.9.154
-Date: Mon, 6 Nov 2023 08:53:03 +0100
-From: Greg Kurz <groug@kaod.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-CC: <qemu-devel@nongnu.org>, <quintela@redhat.com>, <peterx@redhat.com>,
- <farosas@suse.de>, <leobras@redhat.com>
-Subject: Re: [PATCH 20/71] hw/9pfs: Constify VMState
-Message-ID: <20231106085303.3a309407@bahia>
-In-Reply-To: <20231106065827.543129-21-richard.henderson@linaro.org>
-References: <20231106065827.543129-1-richard.henderson@linaro.org>
- <20231106065827.543129-21-richard.henderson@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qzult-0007xj-Jp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 03:15:47 -0500
+Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue108
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1MvsR7-1rJNQf1Elr-00sxME; Mon, 06
+ Nov 2023 09:15:42 +0100
+From: Laurent Vivier <laurent@vivier.eu>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 0/4] Q800 for 8.2 patches
+Date: Mon,  6 Nov 2023 09:15:37 +0100
+Message-ID: <20231106081541.53688-1-laurent@vivier.eu>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG1EX1.mxp5.local (172.16.2.1) To DAG6EX1.mxp5.local
- (172.16.2.51)
-X-Ovh-Tracer-GUID: 1f73c948-7cb8-4a8d-92eb-eb0688e6311f
-X-Ovh-Tracer-Id: 11196793099747825958
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedruddufedguddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeegkeejtdevgeekieelffdvtedvvdegtdduudeigffhhffgvdfhgeejteekheefkeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtiedpkeekrddujeelrdelrdduheegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehrihgthhgrrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpqhhuihhnthgvlhgrsehrvgguhhgrthdrtghomhdpphgvthgvrhigsehrvgguhhgrthdrtghomhdpfhgrrhhoshgrshesshhushgvrdguvgdplhgvohgsrhgrshesrhgvughhrghtrdgtohhmpdfovfetjfhoshhtpehmohehvdelpdhmohguvgepshhmthhpohhuth
-Received-SPF: pass client-ip=178.32.125.2; envelope-from=groug@kaod.org;
- helo=smtpout1.mo529.mail-out.ovh.net
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:b8aMe7HRoEH2FF7r+hBdppwZySWJ5ISW9R7PCco4ZTS+TbwTRCK
+ vTH2w2rOkXD8oWVJDN4MLfb1TwBPh9rZArtArj0jmQbFjDRQIiPsnOqNyGl3fKiB8Q82R7j
+ 7Tk+sCE9LSfsBj7ZTzvMBWu0BSttYzI7BFCa1hC2lPdhwBjUyNV00bfs72wBsLWnB0dc+Ra
+ GAX32ZYE5O1saBaHT7DQw==
+UI-OutboundReport: notjunk:1;M01:P0:Kir6RMs6OU8=;M7Txy+d+z2ye7Qh/mgPS5THEnHE
+ J1wLqLWgU2r+42D6NSzQEo84Gr7ID3YT3S2qmRroQjGDkV8J5CbCqrLB8k0hj3Vl2RMRfXn4s
+ R/0TPqdEKp/pD58tUFxBsuTvFEjSCMil4QODAkLrw2mEmkNUed3fTRCNaPSpPx78XFNkkg4PE
+ gQ/81Zm2nXEgvxq8eWymospTYG0jwX6Wkwe5eGKp1/lYX9yGlnK5RelFO/UyEtsR0WI7y0DHi
+ BJHpK0P8d6jeGOFt3CRMB8ID92xOKfFu2i+DoBK9iG38W3499RhTPYgtzglfWXS/UFCau+uPV
+ 2LTJqj6+eHiMOGd4at4dRYIcs+2HMTMA1NBM+m2BuCQBCOAg1HxQvkxbNETYI+M+u+bJhpixJ
+ 6VhSsC5IlWnUo138xkkbG/3+DjeQQQ3zAl7saz9gdKlrdMc4m7HGEpLlunNo+qdcjAd59w6Qi
+ oeHNT3u8xjA7C2Vr3cuSG8l/lUDz7QvjvBpv/VR5OyTJv+nFZwOunYsHPAdSK3bJaYXOaTOp2
+ oP+HEcZgQn2wJgrJCKbzA6Prv9kJv/UKuupFa28Ug4Gg3f9cNl6/MxnafKWGHk9W/D4R5kO6u
+ yVjbsJJRukZ9NMvQdoj8S3vnLGrf53IT6v9mMK+UH/gV/3T+476R5oRkOp/Q4klWjoZW3yti0
+ RUK960VqntkU5FPYwLgR1VBdXwIfjPVnvw75XjLGUAhuz3StkBu59WnE/3slJr35BnqxzAILq
+ agxpoyfPNbnXKQ/IRUVMxL9TBAqMcJ6uuG1AQNQfkGjX4q6GGR/OIgGztQ7vIgGqEX7/jVI2z
+ LX8OcsMs9bPTVyomCKKbzE3fHfxiN4s13A3bEUT7CWXk7y6+JPJLV4wSrM+vjDnLlrILWncYe
+ SOEbkxmDMke+mTg==
+Received-SPF: none client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,33 +70,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun,  5 Nov 2023 22:57:36 -0800
-Richard Henderson <richard.henderson@linaro.org> wrote:
+The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+  Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
 
-Acked-by: Greg Kurz <groug@kaod.org>
+are available in the Git repository at:
 
->  hw/9pfs/virtio-9p-device.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/9pfs/virtio-9p-device.c b/hw/9pfs/virtio-9p-device.c
-> index 5f522e68e9..efa41cfd73 100644
-> --- a/hw/9pfs/virtio-9p-device.c
-> +++ b/hw/9pfs/virtio-9p-device.c
-> @@ -237,7 +237,7 @@ static const VMStateDescription vmstate_virtio_9p = {
->      .name = "virtio-9p",
->      .minimum_version_id = 1,
->      .version_id = 1,
-> -    .fields = (VMStateField[]) {
-> +    .fields = (const VMStateField[]) {
->          VMSTATE_VIRTIO_DEVICE,
->          VMSTATE_END_OF_LIST()
->      },
+  https://github.com/vivier/qemu-m68k.git tags/q800-for-8.2-pull-request
 
+for you to fetch changes up to 95f3943210416e054751bc230d4cec7d87995525:
 
+  macfb: allow reads from the DAFB_LUT register (2023-11-05 15:48:36 +0100)
+
+----------------------------------------------------------------
+Q800 pull request 20231106
+
+macfb: A/UX fixes for colour LUT
+
+----------------------------------------------------------------
+
+Mark Cave-Ayland (4):
+  macfb: don't clear interrupts when writing to DAFB_RESET
+  macfb: rename DAFB_RESET to DAFB_LUT_INDEX
+  macfb: allow larger write accesses to the DAFB_LUT register
+  macfb: allow reads from the DAFB_LUT register
+
+ hw/display/macfb.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
 -- 
-Greg
+2.41.0
+
 
