@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4153F7E1DAC
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:57:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 939ED7E1DBC
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:59:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzwLr-0007a9-NP; Mon, 06 Nov 2023 04:56:59 -0500
+	id 1qzwLl-00078K-Oz; Mon, 06 Nov 2023 04:56:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzwLo-0007PW-G7
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:56:56 -0500
+ id 1qzwLh-00072r-Cs
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:56:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzwLm-0008T4-75
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:56:55 -0500
+ id 1qzwLf-0008S4-EO
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:56:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699264612;
+ s=mimecast20190719; t=1699264606;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MUYXOavKjr3nBQePklqtEwSaDfyRGwnYpWD8MCr0umI=;
- b=H61llI59f8ukE7Itvv9XqRKtVjlv0Oo3ym4XKoeeJ9KWqBrPwMY3R2ACF4LboF1S98IQd7
- riFP5ZWds07GDyEt3Vf3hN2fjRRxFyl/y+sF1H32TTTr/uuu+q6tqAnpuFCXGUmmh8DHqJ
- PSPv68Ox2PJLFVvFSLw/LFdjsoM8wTk=
+ bh=8y5okX3QpysGx0N17ejN+rdipmBjYxxyu1XjxtJ2Ujk=;
+ b=RziYUvMOuBPTFNt7Slh74JW7t5yHz+iy29t59C1m4CNOsX2/zUUB1LYKD1+Mz5IvbMxlAq
+ h/p/PetTVZG/6Buh0BY0cyd3fez4TfAVQjgkh1WZHpOnVTtiLpjiQmyK/GTvmhO4O1bXcE
+ BOrNG2JEbIC9wJW6ejFByDktH5Pr/iQ=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-3J0BHg1kNQG3KVhKNvuAGg-1; Mon,
- 06 Nov 2023 04:56:38 -0500
-X-MC-Unique: 3J0BHg1kNQG3KVhKNvuAGg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-MyyBXCcwOsyLpK2GnS4q4Q-1; Mon,
+ 06 Nov 2023 04:56:43 -0500
+X-MC-Unique: MyyBXCcwOsyLpK2GnS4q4Q-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F28EA3C0CD2A;
- Mon,  6 Nov 2023 09:56:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BC90028B72E2;
+ Mon,  6 Nov 2023 09:56:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 434601121306;
- Mon,  6 Nov 2023 09:56:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7B17E492BE0;
+ Mon,  6 Nov 2023 09:56:41 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL v2 13/24] ui/console: when PIXMAN is unavailable,
- don't draw placeholder msg
-Date: Mon,  6 Nov 2023 13:55:30 +0400
-Message-ID: <20231106095542.1852973-14-marcandre.lureau@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL v2 14/24] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
+ !PIXMAN
+Date: Mon,  6 Nov 2023 13:55:31 +0400
+Message-ID: <20231106095542.1852973-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106095542.1852973-1-marcandre.lureau@redhat.com>
 References: <20231106095542.1852973-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -86,34 +86,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-When we can't draw text, simply show a blank display.
+This simply means that 2d drawing updates won't be handled, but 3d
+should work.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- ui/console.c | 2 ++
+ hw/display/vhost-user-gpu.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/ui/console.c b/ui/console.c
-index a72c495b5a..8e688d3569 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -584,6 +584,7 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                                 const char *msg)
- {
-     DisplaySurface *surface = qemu_create_displaysurface(w, h);
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 1150521d9d..709c8a02a1 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -307,6 +307,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         dpy_gl_update(con, m->x, m->y, m->width, m->height);
+         break;
+     }
 +#ifdef CONFIG_PIXMAN
-     pixman_color_t bg = QEMU_PIXMAN_COLOR_BLACK;
-     pixman_color_t fg = QEMU_PIXMAN_COLOR_GRAY;
-     pixman_image_t *glyph;
-@@ -598,6 +599,7 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                  x+i, y, FONT_WIDTH, FONT_HEIGHT);
-         qemu_pixman_image_unref(glyph);
+     case VHOST_USER_GPU_UPDATE: {
+         VhostUserGpuUpdate *m = &msg->payload.update;
+ 
+@@ -334,6 +335,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         }
+         break;
      }
 +#endif
-     surface->flags |= QEMU_PLACEHOLDER_FLAG;
-     return surface;
- }
+     default:
+         g_warning("unhandled message %d %d", msg->request, msg->size);
+     }
 -- 
 2.41.0
 
