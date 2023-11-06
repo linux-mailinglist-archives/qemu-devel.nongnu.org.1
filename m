@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5D07E2C65
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:53:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B277E2C6F
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:54:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r04h7-00066g-Mw; Mon, 06 Nov 2023 13:51:29 -0500
+	id 1r04h6-00064W-JX; Mon, 06 Nov 2023 13:51:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04h1-0005v0-56
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:23 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ id 1r04h3-00062o-8H
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:25 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04gy-0000xz-7a
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:22 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-507c5249d55so6299778e87.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:51:18 -0800 (PST)
+ id 1r04gz-0000ys-Hh
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:24 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-32f70391608so2484566f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:51:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699296677; x=1699901477; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699296680; x=1699901480; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pitDltH9Qlw0pV6jb2flwtg/jHXkAlmdYF0xczgfric=;
- b=sKU07PzNCzY/IFAPsfClFZo+uXJp1G+G6HctQu/ZzXVeY5FysbmlQFw8r84Lh2Pd1+
- DSU3f5pJNxyJ7ncfYy10tNCLT2NHmdWgQzBhlqasYuN7XBa3PvGpwvFLylz7JXKofLVO
- ZQqUnw7ciN3orCLKctdUXpyh3BfPjP8nSB84A3EdUzZDF/O5RFEjKk5N1lOEJWF7+qdi
- s9tyCB4GJSVLqCIN+J/8pkBUvit740YMxIaPG/Bv+GIEaVkfPZA4ZSoCB2r01lKCBzVq
- QZH5FHxF2FF7thViRY1XDjnomQsRliSUCoSuAn330pcv2xWiFnKbV7HyYlHaNKlDgigP
- 5gFw==
+ bh=0xUeFsK/n6NpbgwE1ie7mSUcT/F4//4iG2nP+O0hn98=;
+ b=GjPra6NVrHSBss3avzccznKlnCTgYG9jkdukdcPmVvaYdjETqmL0ELvjpHEYhd9m2n
+ p441+TYoJb0sQOd25d4KC6P0eqLiPJEt8UT5rzNlHIglQ98CdAOOsMM6UJQSki6yqhNd
+ j9vGl4F4XoHhw+rWixX5Hf++cRh0/iun4EcfENufFwUfeYDWqLJUfxmk2BqRzJn+KZ2y
+ 9MncJQUeK4/BT6JJuWiGKTbhixYvZ5PogwCK8Nfttz0oU3IvrBWa9XJGUsTmrke9JLMf
+ 7SPpK0CUvGbjTnI39/ax1M48TeHEdqL/bWs7UZx35RLDom+MObg2gWFMJ1/zuIwwqT8o
+ HlCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699296677; x=1699901477;
+ d=1e100.net; s=20230601; t=1699296680; x=1699901480;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pitDltH9Qlw0pV6jb2flwtg/jHXkAlmdYF0xczgfric=;
- b=CH53rgqyaxj6RzSLQIsSShH/nj0gahUz92WTpg31YrLb9lSOzrR+9G8BpIMk1Gaixh
- zso7YDhyphzBBeYk2rMZe8hM83fOYQpJj7WyS7mOAjNx1pGjJxBBDIhbUfVRgwLd2gYC
- 1sBYzhHdREwUt4Z3rGQJv4ltMbNqgoMhfadlACEluknHKrPTFupw4Y97R9m9AMnoOcog
- 9aN4cl/ALoo8e/XhO0cBUexggxYH86Vlvekx/ww02indzVJn1E9iJ8aUukUONQjUEFXi
- v3SVqW2CI9C3U9g3W/O+PR+vIJMk7GfWrj3szJKa9en+qsXSKJv9KRid/R86G/6J9vkb
- dBQg==
-X-Gm-Message-State: AOJu0YzBGMMZ8kP+1HPJbS4bBMaagaaCsnAMhJNmDBLe4mKS/V3VoByh
- f6hZOBChFBZbirKlMYOhMCHtvw==
-X-Google-Smtp-Source: AGHT+IH0I3bj91VULb1n1+Ir7Zqqpfpl27F/ELlsXQ/UvfBrn/gmBNRk72FD0lcKgGVJ8rXTLNStKA==
-X-Received: by 2002:a19:e043:0:b0:508:136d:ab0c with SMTP id
- g3-20020a19e043000000b00508136dab0cmr18493505lfj.30.1699296677441; 
- Mon, 06 Nov 2023 10:51:17 -0800 (PST)
+ bh=0xUeFsK/n6NpbgwE1ie7mSUcT/F4//4iG2nP+O0hn98=;
+ b=J5+3QnsGqBcGmUFFhvz8E63evUEXScSVrL3ocSPbzzjLCfXN7CIr++IIRu9Qr/ijSt
+ 4iuczzCo5Au9dWw5DdhCj9o1FmJQWOfiYogh0GP2K6YAvo4UR8+rlUlSyjhOGSSe/OfK
+ RAljK3sqVATZmHdQPnJx7IXIAPoH2DCNnooz5u5PD+WGzuXQXxd1n7fzfjqNUYYJzDJ6
+ 7YARPcJIRo9OjqK1TxtYy/5CRq4leV2nWofBQG6S+cnvIAFwko1xxTucV2yR2d8gmlSu
+ d/5EtpUDKxVSdCHVq9Xhb4AtWCfAsP8F9SIDO+aHwtS2l2OGbedjMUXVyvCiOEzIgWMv
+ fSug==
+X-Gm-Message-State: AOJu0YxyCLp/Qb3fAhIcfNTO3e2S/oy2zzOeO4igRmv5+qbe6wAbYjLq
+ +QZNG2nCfdsX+7hDUd+ZDfDOAQ==
+X-Google-Smtp-Source: AGHT+IGIzoKI9gK8tTIEUwdPaKxIFsVA2iU/kKXQJtPydEd3sBy8olCoc+cO/YqAi+0BU105lhpTbQ==
+X-Received: by 2002:a05:6000:2aa:b0:32f:7c27:423b with SMTP id
+ l10-20020a05600002aa00b0032f7c27423bmr23539072wry.51.1699296679921; 
+ Mon, 06 Nov 2023 10:51:19 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a10-20020a5d53ca000000b00326dd5486dcsm291434wrw.107.2023.11.06.10.51.13
+ d16-20020adfe850000000b0032da40fd7bdsm326078wrn.24.2023.11.06.10.51.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 06 Nov 2023 10:51:15 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E5E1C6574F;
- Mon,  6 Nov 2023 18:51:12 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 087F265759;
+ Mon,  6 Nov 2023 18:51:13 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
@@ -73,18 +73,20 @@ Cc: qemu-arm@nongnu.org,
  John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 05/22] target/arm: hide aliased MIDR from gdbstub
-Date: Mon,  6 Nov 2023 18:50:55 +0000
-Message-Id: <20231106185112.2755262-6-alex.bennee@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Luis Machado <luis.machado@linaro.org>
+Subject: [PATCH 06/22] tests/tcg: add an explicit gdbstub register tester
+Date: Mon,  6 Nov 2023 18:50:56 +0000
+Message-Id: <20231106185112.2755262-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231106185112.2755262-1-alex.bennee@linaro.org>
 References: <20231106185112.2755262-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,28 +109,292 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is just a constant alias register with the same value as the
-"other" MIDR so it serves no purpose being presented to gdbstub.
+We already do a couple of "info registers" for specific tests but this
+is a more comprehensive multiarch test. It also has some output
+helpful for debugging the gdbstub by showing which XML features are
+advertised and what the underlying register numbers are.
 
+My initial motivation was to see if there are any duplicate register
+names exposed via the gdbstub while I was reviewing the proposed
+register interface for TCG plugins.
+
+Mismatches between the xml and remote-desc are reported for debugging
+but do not fail the test.
+
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Luis Machado <luis.machado@linaro.org>
+Message-Id: <20231012170426.1335442-1-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231103195956.1998255-6-alex.bennee@linaro.org>
----
- target/arm/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Message-Id: <20231103195956.1998255-7-alex.bennee@linaro.org>
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 104f9378b4..a681bcba62 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -8993,7 +8993,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-               .type = ARM_CP_CONST, .resetvalue = cpu->revidr },
-         };
-         ARMCPRegInfo id_v8_midr_alias_cp_reginfo = {
--            .name = "MIDR", .type = ARM_CP_ALIAS | ARM_CP_CONST,
-+            .name = "MIDR", .type = ARM_CP_ALIAS | ARM_CP_CONST | ARM_CP_NO_GDB,
-             .cp = 15, .crn = 0, .crm = 0, .opc1 = 0, .opc2 = 4,
-             .access = PL1_R, .resetvalue = cpu->midr
-         };
+---
+v3
+  - don't __str__ values when we don't need to
+  - handle _exit/_Exit disparity on Microblaze
+  - move seen test outside try/except
+  - report failed register reads
+---
+ tests/tcg/multiarch/Makefile.target           |  11 +-
+ tests/tcg/multiarch/gdbstub/registers.py      | 196 ++++++++++++++++++
+ .../multiarch/system/Makefile.softmmu-target  |  13 +-
+ 3 files changed, 218 insertions(+), 2 deletions(-)
+ create mode 100644 tests/tcg/multiarch/gdbstub/registers.py
+
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index f3bfaf1a22..d31ba8d6ae 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -93,12 +93,21 @@ run-gdbstub-thread-breakpoint: testthread
+ 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
+ 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-thread-breakpoint.py, \
+ 	hitting a breakpoint on non-main thread)
++
++run-gdbstub-registers: sha512
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
++		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
++	checking register enumeration)
++
+ else
+ run-gdbstub-%:
+ 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
+ endif
+ EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
+-	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint
++	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
++	      run-gdbstub-registers
+ 
+ # ARM Compatible Semi Hosting Tests
+ #
+diff --git a/tests/tcg/multiarch/gdbstub/registers.py b/tests/tcg/multiarch/gdbstub/registers.py
+new file mode 100644
+index 0000000000..4ae63f1cf0
+--- /dev/null
++++ b/tests/tcg/multiarch/gdbstub/registers.py
+@@ -0,0 +1,196 @@
++# Exercise the register functionality by exhaustively iterating
++# through all supported registers on the system.
++#
++# This is launched via tests/guest-debug/run-test.py but you can also
++# call it directly if using it for debugging/introspection:
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++import gdb
++import sys
++import xml.etree.ElementTree as ET
++
++initial_vlen = 0
++failcount = 0
++
++def report(cond, msg):
++    "Report success/fail of test."
++    if cond:
++        print("PASS: %s" % (msg))
++    else:
++        print("FAIL: %s" % (msg))
++        global failcount
++        failcount += 1
++
++
++def fetch_xml_regmap():
++    """
++    Iterate through the XML descriptions and validate.
++
++    We check for any duplicate registers and report them. Return a
++    reg_map hash containing the names, regnums and initial values of
++    all registers.
++    """
++
++    # First check the XML descriptions we have sent. Most arches
++    # support XML but a few of the ancient ones don't in which case we
++    # need to gracefully fail.
++
++    try:
++        xml = gdb.execute("maint print xml-tdesc", False, True)
++    except (gdb.error):
++        print("SKIP: target does not support XML")
++        return None
++
++    total_regs = 0
++    reg_map = {}
++    frame = gdb.selected_frame()
++
++    tree = ET.fromstring(xml)
++    for f in tree.findall("feature"):
++        name = f.attrib["name"]
++        regs = f.findall("reg")
++
++        total = len(regs)
++        total_regs += total
++        base = int(regs[0].attrib["regnum"])
++        top = int(regs[-1].attrib["regnum"])
++
++        print(f"feature: {name} has {total} registers from {base} to {top}")
++
++        for r in regs:
++            name = r.attrib["name"]
++            regnum = int(r.attrib["regnum"])
++            try:
++                value = frame.read_register(name)
++            except ValueError:
++                report(False, f"failed to read reg: {name}")
++
++            entry = { "name": name, "initial": value, "regnum": regnum }
++
++            if name in reg_map:
++                report(False, f"duplicate register {entry} vs {reg_map[name]}")
++                continue
++
++            reg_map[name] = entry
++
++    # Validate we match
++    report(total_regs == len(reg_map.keys()),
++           f"counted all {total_regs} registers in XML")
++
++    return reg_map
++
++def crosscheck_remote_xml(reg_map):
++    """
++    Cross-check the list of remote-registers with the XML info.
++    """
++
++    remote = gdb.execute("maint print remote-registers", False, True)
++    r_regs = remote.split("\n")
++
++    total_regs = len(reg_map.keys())
++    total_r_regs = 0
++
++    for r in r_regs:
++        fields = r.split()
++        # Some of the registers reported here are "pseudo" registers that
++        # gdb invents based on actual registers so we need to filter them
++        # out.
++        if len(fields) == 8:
++            r_name = fields[0]
++            r_regnum = int(fields[6])
++
++            # check in the XML
++            try:
++                x_reg = reg_map[r_name]
++            except KeyError:
++                report(False, f"{r_name} not in XML description")
++                continue
++
++            x_reg["seen"] = True
++            x_regnum = x_reg["regnum"]
++            if r_regnum != x_regnum:
++                report(False, f"{r_name} {r_regnum} == {x_regnum} (xml)")
++            else:
++                total_r_regs += 1
++
++    # Just print a mismatch in totals as gdb will filter out 64 bit
++    # registers on a 32 bit machine. Also print what is missing to
++    # help with debug.
++    if total_regs != total_r_regs:
++        print(f"xml-tdesc ({total_regs}) and remote-registers ({total_r_regs}) do not agree")
++
++        for x_key in reg_map.keys():
++            x_reg = reg_map[x_key]
++            if "seen" not in x_reg:
++                print(f"{x_reg} wasn't seen in remote-registers")
++
++def complete_and_diff(reg_map):
++    """
++    Let the program run to (almost) completion and then iterate
++    through all the registers we know about and report which ones have
++    changed.
++    """
++    # Let the program get to the end and we can check what changed
++    b = gdb.Breakpoint("_exit")
++    if b.pending: # workaround Microblaze weirdness
++        b.delete()
++        gdb.Breakpoint("_Exit")
++
++    gdb.execute("continue")
++
++    frame = gdb.selected_frame()
++    changed = 0
++
++    for e in reg_map.values():
++        name = e["name"]
++        old_val = e["initial"]
++
++        try:
++            new_val = frame.read_register(name)
++        except:
++            report(False, f"failed to read {name} at end of run")
++            continue
++
++        if new_val != old_val:
++            print(f"{name} changes from {old_val} to {new_val}")
++            changed += 1
++
++    # as long as something changed we can be confident its working
++    report(changed > 0, f"{changed} registers were changed")
++
++
++def run_test():
++    "Run through the tests"
++
++    reg_map = fetch_xml_regmap()
++
++    if reg_map is not None:
++        crosscheck_remote_xml(reg_map)
++        complete_and_diff(reg_map)
++
++
++#
++# This runs as the script it sourced (via -x, via run-test.py)
++#
++try:
++    inferior = gdb.selected_inferior()
++    arch = inferior.architecture()
++    print("ATTACHED: %s" % arch.name())
++except (gdb.error, AttributeError):
++    print("SKIPPING (not connected)", file=sys.stderr)
++    exit(0)
++
++if gdb.parse_and_eval('$pc') == 0:
++    print("SKIP: PC not set")
++    exit(0)
++
++try:
++    run_test()
++except (gdb.error):
++    print ("GDB Exception: %s" % (sys.exc_info()[0]))
++    failcount += 1
++    pass
++
++print("All tests complete: %d failures" % failcount)
++exit(failcount)
+diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+index dee4f58dea..32dc0f9830 100644
+--- a/tests/tcg/multiarch/system/Makefile.softmmu-target
++++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+@@ -48,9 +48,20 @@ run-gdbstub-untimely-packet: hello
+ 	$(call quiet-command, \
+ 		(! grep -Fq 'Packet instead of Ack, ignoring it' untimely-packet.gdb.err), \
+ 		"GREP", file untimely-packet.gdb.err)
++
++run-gdbstub-registers: memory
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) \
++		--output $<.registers.gdb.out \
++		--qargs \
++		"-monitor none -display none -chardev file$(COMMA)path=$<.out$(COMMA)id=output $(QEMU_OPTS)" \
++		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
++	softmmu gdbstub support)
+ else
+ run-gdbstub-%:
+ 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
+ endif
+ 
+-MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-interrupt run-gdbstub-untimely-packet
++MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-interrupt \
++	run-gdbstub-untimely-packet run-gdbstub-registers
 -- 
 2.39.2
 
