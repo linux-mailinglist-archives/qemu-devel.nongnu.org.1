@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313937E2595
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:33:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF2A7E25B2
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:34:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzzia-0005hL-IM; Mon, 06 Nov 2023 08:32:40 -0500
+	id 1qzzid-0005jR-11; Mon, 06 Nov 2023 08:32:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzziY-0005cg-3L
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:38 -0500
+ id 1qzzib-0005j2-Gz
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzziW-0003kX-LG
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:37 -0500
+ id 1qzziZ-0003kh-Sz
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699277556;
+ s=mimecast20190719; t=1699277558;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8JLXt3y25QXXkvUo2bcTmGhWuiwFD6poKz6ytX9hJb0=;
- b=fcNewoSy8RO3wsDlqEZ/TS7oc1etzNU+KfpK5IutEmzeHmZv7wWo5Vds7To1z7PcWdc9Cj
- 0iB+FdIICJQEWRyTK1CyOYkajf0TlyNBT2RQZxNw727f1+T5+kLEMRN9af6fOHGa94lUEN
- 1NRD2R9QYXRPsMwc16ZrhEIJbyMzDuk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-54NB0XAYMyeNmi09ornZGw-1; Mon,
- 06 Nov 2023 08:32:32 -0500
-X-MC-Unique: 54NB0XAYMyeNmi09ornZGw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=5l06+SbSlvQrNpED/nkKOOn53nxrTicxHGor4Ux3drg=;
+ b=Mun8fsfeDlvOIJL4imgBaeV0xTsvU9sG6iwH+1nbqJmxu45UJGFyeMmaQ6NMoUPZ63Fzaz
+ jsxOoAOYnjSfyl8hUFH6qavCRbrJFvijmvwvt5fJt0dh1s5UKbqi0s6cizfmnfBkQ/5gXm
+ h/p/ZBEhRBbK/YmLaX7LclK9PEagUZg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-252-c8D875A2NbiQvtNOZrx6jQ-1; Mon, 06 Nov 2023 08:32:36 -0500
+X-MC-Unique: c8D875A2NbiQvtNOZrx6jQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20F462815E25;
- Mon,  6 Nov 2023 13:32:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 287C889C662;
+ Mon,  6 Nov 2023 13:32:36 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0014F40C6EB9;
- Mon,  6 Nov 2023 13:32:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1D8BD2026D66;
+ Mon,  6 Nov 2023 13:32:34 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 02/10] ati-vga: Fix aperture sizes
-Date: Mon,  6 Nov 2023 17:32:11 +0400
-Message-ID: <20231106133219.2173660-3-marcandre.lureau@redhat.com>
+Subject: [PULL 03/10] ati-vga: Support unaligned access to GPIO DDC registers
+Date: Mon,  6 Nov 2023 17:32:12 +0400
+Message-ID: <20231106133219.2173660-4-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106133219.2173660-1-marcandre.lureau@redhat.com>
 References: <20231106133219.2173660-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -84,68 +84,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Apparently these should be half the memory region sizes confirmed at
-least by Radeon FCocde ROM while Rage 128 Pro ROMs don't seem to use
-these. Linux r100 DRM driver also checks for a bit in HOST_PATH_CNTL
-so we also add that even though the FCode ROM does not seem to set it.
+The GPIO_VGA_DDC and GPIO_DVI_DDC registers are used on Radeon for DDC
+access. Some drivers like the PPC Mac FCode ROM uses unaligned writes
+to these registers so implement this the same way as already done for
+GPIO_MONID which is used the same way for the Rage 128 Pro.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <d077d4f90d19db731df78da6f05058db074cada1.1698871239.git.balaton@eik.bme.hu>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <dff6ce16ccabdfd54ffda348bf57c6d8b810cd98.1698871239.git.balaton@eik.bme.hu>
 ---
- hw/display/ati_regs.h | 1 +
- hw/display/ati.c      | 7 +++++--
- hw/display/ati_dbg.c  | 1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ hw/display/ati.c | 37 ++++++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
-diff --git a/hw/display/ati_regs.h b/hw/display/ati_regs.h
-index d6282b2ef2..c697b328da 100644
---- a/hw/display/ati_regs.h
-+++ b/hw/display/ati_regs.h
-@@ -56,6 +56,7 @@
- #define CONFIG_APER_SIZE                        0x0108
- #define CONFIG_REG_1_BASE                       0x010c
- #define CONFIG_REG_APER_SIZE                    0x0110
-+#define HOST_PATH_CNTL                          0x0130
- #define MEM_CNTL                                0x0140
- #define MC_FB_LOCATION                          0x0148
- #define MC_AGP_LOCATION                         0x014C
 diff --git a/hw/display/ati.c b/hw/display/ati.c
-index 6e38e00502..9a9ea754bd 100644
+index 9a9ea754bd..538651c233 100644
 --- a/hw/display/ati.c
 +++ b/hw/display/ati.c
-@@ -349,14 +349,17 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
-                                       PCI_BASE_ADDRESS_0, size) & 0xfffffff0;
+@@ -319,11 +319,13 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
+     case DAC_CNTL:
+         val = s->regs.dac_cntl;
          break;
-     case CONFIG_APER_SIZE:
--        val = s->vga.vram_size;
-+        val = s->vga.vram_size / 2;
+-    case GPIO_VGA_DDC:
+-        val = s->regs.gpio_vga_ddc;
++    case GPIO_VGA_DDC ... GPIO_VGA_DDC + 3:
++        val = ati_reg_read_offs(s->regs.gpio_vga_ddc,
++                                addr - GPIO_VGA_DDC, size);
          break;
-     case CONFIG_REG_1_BASE:
-         val = pci_default_read_config(&s->dev,
-                                       PCI_BASE_ADDRESS_2, size) & 0xfffffff0;
+-    case GPIO_DVI_DDC:
+-        val = s->regs.gpio_dvi_ddc;
++    case GPIO_DVI_DDC ... GPIO_DVI_DDC + 3:
++        val = ati_reg_read_offs(s->regs.gpio_dvi_ddc,
++                                addr - GPIO_DVI_DDC, size);
          break;
-     case CONFIG_REG_APER_SIZE:
--        val = memory_region_size(&s->mm);
-+        val = memory_region_size(&s->mm) / 2;
-+        break;
-+    case HOST_PATH_CNTL:
-+        val = BIT(23); /* Radeon HDP_APER_CNTL */
+     case GPIO_MONID ... GPIO_MONID + 3:
+         val = ati_reg_read_offs(s->regs.gpio_monid,
+@@ -615,29 +617,34 @@ static void ati_mm_write(void *opaque, hwaddr addr,
+         s->regs.dac_cntl = data & 0xffffe3ff;
+         s->vga.dac_8bit = !!(data & DAC_8BIT_EN);
          break;
-     case MC_STATUS:
-         val = 5;
-diff --git a/hw/display/ati_dbg.c b/hw/display/ati_dbg.c
-index bd0ecd48c7..4aec1c383a 100644
---- a/hw/display/ati_dbg.c
-+++ b/hw/display/ati_dbg.c
-@@ -38,6 +38,7 @@ static struct ati_regdesc ati_reg_names[] = {
-     {"CONFIG_APER_SIZE", 0x0108},
-     {"CONFIG_REG_1_BASE", 0x010c},
-     {"CONFIG_REG_APER_SIZE", 0x0110},
-+    {"HOST_PATH_CNTL", 0x0130},
-     {"MEM_CNTL", 0x0140},
-     {"MC_FB_LOCATION", 0x0148},
-     {"MC_AGP_LOCATION", 0x014C},
+-    case GPIO_VGA_DDC:
++    /*
++     * GPIO regs for DDC access. Because some drivers access these via
++     * multiple byte writes we have to be careful when we send bits to
++     * avoid spurious changes in bitbang_i2c state. Only do it when either
++     * the enable bits are changed or output bits changed while enabled.
++     */
++    case GPIO_VGA_DDC ... GPIO_VGA_DDC + 3:
+         if (s->dev_id != PCI_DEVICE_ID_ATI_RAGE128_PF) {
+             /* FIXME: Maybe add a property to select VGA or DVI port? */
+         }
+         break;
+-    case GPIO_DVI_DDC:
++    case GPIO_DVI_DDC ... GPIO_DVI_DDC + 3:
+         if (s->dev_id != PCI_DEVICE_ID_ATI_RAGE128_PF) {
+-            s->regs.gpio_dvi_ddc = ati_i2c(&s->bbi2c, data, 0);
++            ati_reg_write_offs(&s->regs.gpio_dvi_ddc,
++                               addr - GPIO_DVI_DDC, data, size);
++            if ((addr <= GPIO_DVI_DDC + 2 && addr + size > GPIO_DVI_DDC + 2) ||
++                (addr == GPIO_DVI_DDC && (s->regs.gpio_dvi_ddc & 0x30000))) {
++                s->regs.gpio_dvi_ddc = ati_i2c(&s->bbi2c,
++                                               s->regs.gpio_dvi_ddc, 0);
++            }
+         }
+         break;
+     case GPIO_MONID ... GPIO_MONID + 3:
+         /* FIXME What does Radeon have here? */
+         if (s->dev_id == PCI_DEVICE_ID_ATI_RAGE128_PF) {
++            /* Rage128p accesses DDC via MONID(1-2) with additional mask bit */
+             ati_reg_write_offs(&s->regs.gpio_monid,
+                                addr - GPIO_MONID, data, size);
+-            /*
+-             * Rage128p accesses DDC used to get EDID via these bits.
+-             * Because some drivers access this via multiple byte writes
+-             * we have to be careful when we send bits to avoid spurious
+-             * changes in bitbang_i2c state. So only do it when mask is set
+-             * and either the enable bits are changed or output bits changed
+-             * while enabled.
+-             */
+             if ((s->regs.gpio_monid & BIT(25)) &&
+                 ((addr <= GPIO_MONID + 2 && addr + size > GPIO_MONID + 2) ||
+                  (addr == GPIO_MONID && (s->regs.gpio_monid & 0x60000)))) {
 -- 
 2.41.0
 
