@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ECBD7E2D61
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:57:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DADDF7E2D60
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:57:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r05h6-0006O4-Vb; Mon, 06 Nov 2023 14:55:33 -0500
+	id 1r05gO-00065d-Dd; Mon, 06 Nov 2023 14:54:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+aa7b7dce24b49c47a83c+7379+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1r05gm-0006Ju-EF; Mon, 06 Nov 2023 14:55:15 -0500
+ id 1r05g7-0005gv-6y; Mon, 06 Nov 2023 14:54:31 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+aa7b7dce24b49c47a83c+7379+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1r05gj-00065f-Hl; Mon, 06 Nov 2023 14:55:12 -0500
+ id 1r05fy-00065c-8v; Mon, 06 Nov 2023 14:54:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=tlzAB3Jn/UWpyGkQsCC1RyHcWVov5/+PrTpxS04M0Yo=; b=fJHIzraBFvJZJ10z0UlO4aRJj/
- hLvbp2Pve7Xl/DpKD8kAP6iuZkpDARbSazchWV2nc8WqXdLkAOWPBJ0Lk2e0/a8XPsBH9lHjQ/UxI
- 91IUnUT/jAODNLORFQq3LjMM2DWg996OBIWOvaGuxcMBiO5MW3/2MyaUIyygth+ZSHoLJTT5t1sFp
- 7g2rLRKqjSHzUjNaZaNsp87VNFib/Q0gk5yTJofnKN6v6uK31fS+rGaz43y/oPF/HTQjJW3s6KBI4
- 15d2ynXpAj+ssIMKEXqKfSBFkmHyIhsnEh+1qqeYiDOyf9x7nzgrzX1GgO43DYk68838vdbnaEMLA
- bi3Jrljw==;
+ bh=Q6WJzrf/gsQj4hekd5E3jTDYvSsFsIQ40+J5PbVDAlw=; b=hN6jXJARRmz2GcvDSca7kv1iBF
+ MD6IM83m3OlMumoHTu1tfa5Hh5TNwVAO2zuzdBV7ya9YTeAksrYH2KAvYWnvU5vZc9PtViL6FYuLD
+ 4rVMwVE/8xp2ESjC7pSdGhtZQW+Racktv0Jg7A9rDfvVCHY0fIMZ1JypA3E44pMAOX3VMdt2PSWfU
+ M2S/w5oq+ePOvVJq+1b+kHHcURRQ4CafaKAjihmSN/viVnhW+oLS/NDdiSmLhxkF316u0LnDdceA6
+ 3GnYTj3WXakTIuiyW6b2gdCJ2powAIsP/BxehtWnuN5+wA/bsvIwgA1DgVBkiJqDtFpodoETq8VrF
+ szF2/wkA==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1r05fc-00AkG9-37; Mon, 06 Nov 2023 19:54:02 +0000
+ id 1r05fe-00AkGA-0M; Mon, 06 Nov 2023 19:54:03 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1r05fc-001GP9-28; Mon, 06 Nov 2023 19:54:00 +0000
+ Hat Linux)) id 1r05fc-001GPF-2Q; Mon, 06 Nov 2023 19:54:00 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,9 +83,10 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH for-8.3 v2 36/46] hw/mips/jazz: use qemu_find_nic_info()
-Date: Mon,  6 Nov 2023 19:49:41 +0000
-Message-ID: <20231106195352.301038-37-dwmw2@infradead.org>
+Subject: [PATCH for-8.3 v2 37/46] hw/net/lasi_i82596: use
+ qemu_configure_nic_device()
+Date: Mon,  6 Nov 2023 19:49:42 +0000
+Message-ID: <20231106195352.301038-38-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106195352.301038-1-dwmw2@infradead.org>
 References: <20231106195352.301038-1-dwmw2@infradead.org>
@@ -120,54 +121,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Extract the MAC address from the NICInfo, or generate one explicitly if
-there was no corresponding NIC configuration, to put it in the PROM.
-
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/mips/jazz.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ hw/net/lasi_i82596.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index d33a76ad4d..39a82fc2be 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -113,15 +113,19 @@ static const MemoryRegionOps dma_dummy_ops = {
-     .endianness = DEVICE_NATIVE_ENDIAN,
- };
+diff --git a/hw/net/lasi_i82596.c b/hw/net/lasi_i82596.c
+index e37f7fabe9..c4c197aaa8 100644
+--- a/hw/net/lasi_i82596.c
++++ b/hw/net/lasi_i82596.c
+@@ -125,11 +125,10 @@ SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space,
+     static const MACAddr HP_MAC = {
+         .a = { 0x08, 0x00, 0x09, 0xef, 0x34, 0xf6 } };
  
--static void mips_jazz_init_net(NICInfo *nd, IOMMUMemoryRegion *rc4030_dma_mr,
-+static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
-                                DeviceState *rc4030, MemoryRegion *dp8393x_prom)
- {
-     DeviceState *dev;
-     SysBusDevice *sysbus;
-     int checksum, i;
-     uint8_t *prom;
-+    NICInfo *nd;
+-    qemu_check_nic_model(&nd_table[0], TYPE_LASI_82596);
+     dev = qdev_new(TYPE_LASI_82596);
+     s = SYSBUS_I82596(dev);
+     s->state.irq = lan_irq;
+-    qdev_set_nic_properties(dev, &nd_table[0]);
++    qemu_configure_nic_device(dev, true, NULL);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+     s->state.conf.macaddr = HP_MAC; /* set HP MAC prefix */
  
--    qemu_check_nic_model(nd, "dp83932");
-+    nd = qemu_find_nic_info("dp8393x", true, "dp82932");
-+    if (!nd) {
-+        return;
-+    }
- 
-     dev = qdev_new("dp8393x");
-     qdev_set_nic_properties(dev, nd);
-@@ -316,12 +320,7 @@ static void mips_jazz_init(MachineState *machine,
-     }
- 
-     /* Network controller */
--    if (nb_nics == 1) {
--        mips_jazz_init_net(&nd_table[0], rc4030_dma_mr, rc4030, dp8393x_prom);
--    } else if (nb_nics > 1) {
--        error_report("This machine only supports one NIC");
--        exit(1);
--    }
-+    mips_jazz_init_net(rc4030_dma_mr, rc4030, dp8393x_prom);
- 
-     /* SCSI adapter */
-     dev = qdev_new(TYPE_SYSBUS_ESP);
 -- 
 2.41.0
 
