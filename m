@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9567E2C5D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C14347E2C68
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:53:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r04h3-0005y1-8K; Mon, 06 Nov 2023 13:51:25 -0500
+	id 1r04hC-0006D9-Bi; Mon, 06 Nov 2023 13:51:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04h0-0005tf-Ue
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:22 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1r04h9-0006A6-6g
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:31 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04gy-0000y3-7C
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:22 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40853c639abso35600355e9.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:51:18 -0800 (PST)
+ id 1r04h3-00010R-TL
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:30 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-32deb2809daso2888957f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:51:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699296678; x=1699901478; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699296684; x=1699901484; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yl+xLH6GlZSHRHLCyoxTrOuqj2ZDEe6hXJbkzkboBr8=;
- b=HTWe0w/E2trBMfOvJhr/ke8uvchwLPtamqy9nvf35mCV/dm1WQi0paW0gMgcnk4une
- 6jdfufumiEIUqxtxrzbk6uiC72UD9X/UU3DNWNCkADJAdURYNge307/jvtGZ0l0Vb47B
- eUriogU549cRQ5x4I4i2B5jdfM7TXpMVt2o8V81FE2TJf8YnaiOujJ1aSqscLE+GWd9g
- 4NJvUJLfqZvBTTfUCbX8vML2VnyrBBI/miuP7Kc1FleKjJy2TNfZ939VZ1Ez6oxyaZqR
- iQgJ2KZAWYZirwGaLCVf0KCbkaPZo5ZVSDkncz2QLy1z0OkEV4ttDbCg9odcTM3RglFu
- RepQ==
+ bh=MH6reWsIJbO30PCgx+SNdzqaOig4Me7urqqeVULhhmk=;
+ b=NFRuOB0TaKNtfxjLBRk1q3FxAs5UfIdfMbP1LbDkbEJIRjFjGuaICeSeljxP65YAht
+ ukIY45kjUjlXFMiqsTCFg9jR7FoT6QfPEQJ/yIdbqndPViRFXRu4/GRCw7vQr3Hz0FAc
+ Je1Ua7YbxEV/Pqr0EQOMWYIZdCOqdAjYXEGNn4zYMNrt2ZsXravo4NiL61rXrwcBqqGa
+ lH/krMUzTJc+jP0qi/LIFgPmEUEFQowlTas1X/QZ3edpmeHHNKCfZXlBODH5i+htIrav
+ 1MniAk2ld2cPphCYEtPDnAKGHxyt1Yr1KWRIL1i/5NEr51avgUP6JSoe2zIs/WTXJ5Ox
+ 7UDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699296678; x=1699901478;
+ d=1e100.net; s=20230601; t=1699296684; x=1699901484;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yl+xLH6GlZSHRHLCyoxTrOuqj2ZDEe6hXJbkzkboBr8=;
- b=HL/fl9s1avpi04Hs2WK8tNHRSU7ObLFHKejeh743V7TT+ZkiHYLRpSEq1nENxB/ho4
- drIAwrNbka41J5cNs3Q7+BYd4Y06Pp59+G/VOQjYGn9GJo6jdbSz2pnCApq8SkMouV9G
- 3aGGQeV+hBDuaMUSkhVl5U3vglqHLpkgKYcgr/lSwVj0TTpUXaDt8mFt4UpcsCqS4mct
- 9RmJSZCDwZ3LHcrwlSEqcPJ/URkK8JTqWQL/IFEjTUp1FxrFYoyb9bHVQzHKYqgF+pCh
- wUTtBMYePRIsaHHsY9ITpln67nVzTSadrHM8MpEglYfQRv5K6oUccx0yb77Ehso7AsJu
- Gcdg==
-X-Gm-Message-State: AOJu0YwMPps5bBN8obAC/pIGhvrA34sHg2h2Q/oRRBTKUkpev483bZOT
- 1z7BWOyn2L4g5zmBexhvtI44Nw==
-X-Google-Smtp-Source: AGHT+IERBH6Tyizby9keCoCx2ukmTB6iDLQK3sDLo4qV2eWqpzDVKR11jpLnnFabYoAkh6zNWXXr8g==
-X-Received: by 2002:a05:600c:6011:b0:409:5d7d:b266 with SMTP id
- az17-20020a05600c601100b004095d7db266mr451625wmb.14.1699296677708; 
- Mon, 06 Nov 2023 10:51:17 -0800 (PST)
+ bh=MH6reWsIJbO30PCgx+SNdzqaOig4Me7urqqeVULhhmk=;
+ b=OuXmnfdjoVlG6fq2WR2WgcLbhQ575qI6qZ1Koz8+otkCi8y8IaMy/IuQYi3SXxWmHn
+ TXpGHa3h8m7mbUUR9jze4+1S8yag1hRg4hxeZK1pA4+9gNmDJbGJyDgTC6D90PrfKR7t
+ 5sjvZTvMA7b+iQ3xjjEsZYfozKLjYUG7tuXfCh/DlMkg/mKBxmP1naMAEPpPi6TtHPY9
+ L/Nf2Vh+oiHNWKTEXW1tZUlUBBy7D6WHmE/ht5MHo6XiIuVuRDMn6WDrnTP+MxUhX09F
+ UdpmuEBgWO4548Wu3IrQ8jj/elSAq+GEA6EUk7U9hyTQz7pbkiPypKOfizhFaOzIqxcZ
+ SVeg==
+X-Gm-Message-State: AOJu0Ywn35b34dfHmf2z/mRY5QiCWjbNBlgO34NW9l+hhRB2ryLUTa7u
+ zMuXXqf/AkDlH221ABuqlLtDHw==
+X-Google-Smtp-Source: AGHT+IGuIEE2gAXwrQZE3UFa+PBzatJ6z+dt46dqJUYQeOS8OrrGv5TgbikIqSF+x1btt+ckYBky4Q==
+X-Received: by 2002:a05:6000:154a:b0:32f:79e5:8109 with SMTP id
+ 10-20020a056000154a00b0032f79e58109mr27062604wry.2.1699296684299; 
+ Mon, 06 Nov 2023 10:51:24 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a1-20020a05600c348100b003fe1fe56202sm13473409wmq.33.2023.11.06.10.51.14
+ o12-20020a5d4a8c000000b0032fbd0c7d04sm304416wrq.55.2023.11.06.10.51.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 10:51:15 -0800 (PST)
+ Mon, 06 Nov 2023 10:51:19 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5D8B16575D;
+ by draig.lan (Postfix) with ESMTP id 763C665565;
  Mon,  6 Nov 2023 18:51:13 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -75,17 +75,17 @@ Cc: qemu-arm@nongnu.org,
  Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 10/22] gdbstub: Introduce GDBFeatureBuilder
-Date: Mon,  6 Nov 2023 18:51:00 +0000
-Message-Id: <20231106185112.2755262-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/22] cpu: Call plugin hooks only when ready
+Date: Mon,  6 Nov 2023 18:51:01 +0000
+Message-Id: <20231106185112.2755262-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231106185112.2755262-1-alex.bennee@linaro.org>
 References: <20231106185112.2755262-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,162 +110,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-GDBFeatureBuilder unifies the logic to generate dynamic GDBFeature.
+The initialization and exit hooks will not affect the state of vCPU
+outside TCG context, but they may depend on the state of vCPU.
+Therefore, it's better to call plugin hooks after the vCPU state is
+fully initialized and before it gets uninitialized.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231025093128.33116-4-akihiko.odaki@daynix.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20231025093128.33116-16-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231103195956.1998255-11-alex.bennee@linaro.org>
+Message-Id: <20231103195956.1998255-23-alex.bennee@linaro.org>
 ---
- include/exec/gdbstub.h | 50 ++++++++++++++++++++++++++++++++
- gdbstub/gdbstub.c      | 65 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 115 insertions(+)
+ cpu-target.c         | 11 -----------
+ hw/core/cpu-common.c | 10 ++++++++++
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 7fe00506c7..d8a3c56fa2 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -16,6 +16,12 @@ typedef struct GDBFeature {
-     int num_regs;
- } GDBFeature;
+diff --git a/cpu-target.c b/cpu-target.c
+index 79363ae370..00cd7f4d69 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -42,7 +42,6 @@
+ #include "hw/core/accel-cpu.h"
+ #include "trace/trace-root.h"
+ #include "qemu/accel.h"
+-#include "qemu/plugin.h"
  
-+typedef struct GDBFeatureBuilder {
-+    GDBFeature *feature;
-+    GPtrArray *xml;
-+    int base_reg;
-+} GDBFeatureBuilder;
-+
+ uintptr_t qemu_host_page_size;
+ intptr_t qemu_host_page_mask;
+@@ -143,11 +142,6 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
+     /* Wait until cpu initialization complete before exposing cpu. */
+     cpu_list_add(cpu);
  
- /* Get or set a register.  Returns the size of the register.  */
- typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
-@@ -44,6 +50,50 @@ void gdb_register_coprocessor(CPUState *cpu,
-  */
- int gdbserver_start(const char *port_or_device);
+-    /* Plugin initialization must wait until cpu_index assigned. */
+-    if (tcg_enabled()) {
+-        qemu_plugin_vcpu_init_hook(cpu);
+-    }
+-
+ #ifdef CONFIG_USER_ONLY
+     assert(qdev_get_vmsd(DEVICE(cpu)) == NULL ||
+            qdev_get_vmsd(DEVICE(cpu))->unmigratable);
+@@ -174,11 +168,6 @@ void cpu_exec_unrealizefn(CPUState *cpu)
+     }
+ #endif
  
-+/**
-+ * gdb_feature_builder_init() - Initialize GDBFeatureBuilder.
-+ * @builder: The builder to be initialized.
-+ * @feature: The feature to be filled.
-+ * @name: The name of the feature.
-+ * @xmlname: The name of the XML.
-+ * @base_reg: The base number of the register ID.
-+ */
-+void gdb_feature_builder_init(GDBFeatureBuilder *builder, GDBFeature *feature,
-+                              const char *name, const char *xmlname,
-+                              int base_reg);
+-    /* Call the plugin hook before clearing cpu->cpu_index in cpu_list_remove */
+-    if (tcg_enabled()) {
+-        qemu_plugin_vcpu_exit_hook(cpu);
+-    }
+-
+     cpu_list_remove(cpu);
+     /*
+      * Now that the vCPU has been removed from the RCU list, we can call
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index bab8942c30..0acfed4c0f 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -209,6 +209,11 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
+         cpu_resume(cpu);
+     }
+ 
++    /* Plugin initialization must wait until the cpu is fully realized. */
++    if (tcg_enabled()) {
++        qemu_plugin_vcpu_init_hook(cpu);
++    }
 +
-+/**
-+ * gdb_feature_builder_append_tag() - Append a tag.
-+ * @builder: The builder.
-+ * @format: The format of the tag.
-+ * @...: The values to be formatted.
-+ */
-+void G_GNUC_PRINTF(2, 3)
-+gdb_feature_builder_append_tag(const GDBFeatureBuilder *builder,
-+                               const char *format, ...);
-+
-+/**
-+ * gdb_feature_builder_append_reg() - Append a register.
-+ * @builder: The builder.
-+ * @name: The register's name; it must be unique within a CPU.
-+ * @bitsize: The register's size, in bits.
-+ * @regnum: The offset of the register's number in the feature.
-+ * @type: The type of the register.
-+ * @group: The register group to which this register belongs; it can be NULL.
-+ */
-+void gdb_feature_builder_append_reg(const GDBFeatureBuilder *builder,
-+                                    const char *name,
-+                                    int bitsize,
-+                                    int regnum,
-+                                    const char *type,
-+                                    const char *group);
-+
-+/**
-+ * gdb_feature_builder_end() - End building GDBFeature.
-+ * @builder: The builder.
-+ */
-+void gdb_feature_builder_end(const GDBFeatureBuilder *builder);
-+
- /**
-  * gdb_find_static_feature() - Find a static feature.
-  * @xmlname: The name of the XML.
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index ae24c4848f..ebb912da1b 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -422,6 +422,71 @@ static const char *get_feature_xml(const char *p, const char **newp,
-     return NULL;
+     /* NOTE: latest generic point where the cpu is fully realized */
  }
  
-+void gdb_feature_builder_init(GDBFeatureBuilder *builder, GDBFeature *feature,
-+                              const char *name, const char *xmlname,
-+                              int base_reg)
-+{
-+    char *header = g_markup_printf_escaped(
-+        "<?xml version=\"1.0\"?>"
-+        "<!DOCTYPE feature SYSTEM \"gdb-target.dtd\">"
-+        "<feature name=\"%s\">",
-+        name);
-+
-+    builder->feature = feature;
-+    builder->xml = g_ptr_array_new();
-+    g_ptr_array_add(builder->xml, header);
-+    builder->base_reg = base_reg;
-+    feature->xmlname = xmlname;
-+    feature->num_regs = 0;
-+}
-+
-+void gdb_feature_builder_append_tag(const GDBFeatureBuilder *builder,
-+                                    const char *format, ...)
-+{
-+    va_list ap;
-+    va_start(ap, format);
-+    g_ptr_array_add(builder->xml, g_markup_vprintf_escaped(format, ap));
-+    va_end(ap);
-+}
-+
-+void gdb_feature_builder_append_reg(const GDBFeatureBuilder *builder,
-+                                    const char *name,
-+                                    int bitsize,
-+                                    int regnum,
-+                                    const char *type,
-+                                    const char *group)
-+{
-+    if (builder->feature->num_regs < regnum) {
-+        builder->feature->num_regs = regnum;
-+    }
-+
-+    if (group) {
-+        gdb_feature_builder_append_tag(
-+            builder,
-+            "<reg name=\"%s\" bitsize=\"%d\" regnum=\"%d\" type=\"%s\" group=\"%s\"/>",
-+            name, bitsize, builder->base_reg + regnum, type, group);
-+    } else {
-+        gdb_feature_builder_append_tag(
-+            builder,
-+            "<reg name=\"%s\" bitsize=\"%d\" regnum=\"%d\" type=\"%s\"/>",
-+            name, bitsize, builder->base_reg + regnum, type);
-+    }
-+}
-+
-+void gdb_feature_builder_end(const GDBFeatureBuilder *builder)
-+{
-+    g_ptr_array_add(builder->xml, (void *)"</feature>");
-+    g_ptr_array_add(builder->xml, NULL);
-+
-+    builder->feature->xml = g_strjoinv(NULL, (void *)builder->xml->pdata);
-+
-+    for (guint i = 0; i < builder->xml->len - 2; i++) {
-+        g_free(g_ptr_array_index(builder->xml, i));
-+    }
-+
-+    g_ptr_array_free(builder->xml, TRUE);
-+}
-+
- const GDBFeature *gdb_find_static_feature(const char *xmlname)
+@@ -216,6 +221,11 @@ static void cpu_common_unrealizefn(DeviceState *dev)
  {
-     const GDBFeature *feature;
+     CPUState *cpu = CPU(dev);
+ 
++    /* Call the plugin hook before clearing the cpu is fully unrealized */
++    if (tcg_enabled()) {
++        qemu_plugin_vcpu_exit_hook(cpu);
++    }
++
+     /* NOTE: latest generic point before the cpu is fully unrealized */
+     cpu_exec_unrealizefn(cpu);
+ }
 -- 
 2.39.2
 
