@@ -2,80 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8E47E1EBE
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:45:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C574C7E1EC4
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:46:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzx66-0007mu-NK; Mon, 06 Nov 2023 05:44:46 -0500
+	id 1qzx7Q-0008Vs-SZ; Mon, 06 Nov 2023 05:46:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qzx64-0007mg-D0
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:44:44 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qzx62-00006K-PZ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:44:44 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9ae2cc4d17eso661921166b.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 02:44:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699267481; x=1699872281; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Jfozi9OyXu76kpg1nbFg5fBVMjodNtQRsaYFxnUf3W0=;
- b=lNXqvxVqpJCWXhrbxapFK/4cbt3yzPfGYIIu7G0JaiBsR92BE4F4sIM9MKFPVCszM4
- O3qzzMHQ+MmKH3S3tnukcvH2m6cvPEJHFkjuAXIqLTW0+iO1QH8saPQGXwk6vYjJ08Pi
- REcFjh4aUzqyedxmCCxcPCvj6Mo4f/4rapFi3Z0d9F4bHyrhU7XLIRrlrLBBpVA4LESo
- D3eOY9K9qLcctfIZpq1xfRXZNnaCYm+u+w0+tgSzQePlhHN/0RD8/NwRGTeivn5fVzph
- tPofOqYPhgr2pxwSPuZi58tm8BzSqgr+EI0cxS1H11mgDIKX3mVuM/uSbpAgNc4nuLzt
- nRRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699267481; x=1699872281;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Jfozi9OyXu76kpg1nbFg5fBVMjodNtQRsaYFxnUf3W0=;
- b=L4jCKAbnv0rNZoD+UWGlYae/N0kO67AEJ7/s/RuIx/8imujfn7Qxu4SH9DU64NKLcL
- PIrXegM7VluFd2cDkpfiIRVBUcwdzLtf+IsXcg4kLsTkV19ouTAdFRZkitbfRgOkWoBL
- k9W/VflmH8bd/xqvp76IInGm6kZ92z2VbvoqCAzzJsheQuTMDWcAwCaWENLIpTzq7SKt
- IsN/QLxtBm4FvozcW8++PAJOexHQ3AZambyazDctPFkB1bZxG8GPM4Z8XHFsRrslcuBq
- ovw9d0CiW6ChpjVou0gsy3M6cN+qu50E4U4L708+Fnx2Ygakg4Ae/qnpC+nPLfgVcneR
- 2UfQ==
-X-Gm-Message-State: AOJu0YxMc4PYzgnkf/XBmkdwkilf9/84ueC9QKSJJC4ZpDM9GOb5pcqB
- 5GLLheeHN2xe7gdXJT/iKNZ+sj/Dd0eqOCzffmY=
-X-Google-Smtp-Source: AGHT+IGYcA5JFeK+pPOfEJ7lojD0f8XliKlw0wh/PUqOJY28o2w61KxcEH5GmpnGnCKsLISh8bYnnQvBO1aTzQDaDPM=
-X-Received: by 2002:a17:907:1c21:b0:9d3:85b9:afcf with SMTP id
- nc33-20020a1709071c2100b009d385b9afcfmr14211188ejc.12.1699267480816; Mon, 06
- Nov 2023 02:44:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qzx7N-0008Vj-1v
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:46:05 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qzx7L-0000XV-5X
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:46:04 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 21BA4756066;
+ Mon,  6 Nov 2023 11:46:16 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 15F15756062; Mon,  6 Nov 2023 11:46:16 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1447C75607A;
+ Mon,  6 Nov 2023 11:46:16 +0100 (CET)
+Date: Mon, 6 Nov 2023 11:46:16 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+cc: qemu-devel@nongnu.org, stefanha@gmail.com, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PULL v2 22/24] hw/display: make ATI_VGA depend on PIXMAN
+In-Reply-To: <20231106095542.1852973-23-marcandre.lureau@redhat.com>
+Message-ID: <437bf91e-12b2-3463-b9ba-17c4cd672b59@eik.bme.hu>
+References: <20231106095542.1852973-1-marcandre.lureau@redhat.com>
+ <20231106095542.1852973-23-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-References: <20230907130936.767722-1-marcandre.lureau@redhat.com>
- <CAJ+F1CLUM+XRZppN2P6Z_c107HEKOGNE3r_ivfMqcOz2oOO6ag@mail.gmail.com>
- <ZQm5sWdhN8S7s95x@x1n>
-In-Reply-To: <ZQm5sWdhN8S7s95x@x1n>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 6 Nov 2023 14:44:27 +0400
-Message-ID: <CAJ+F1CK3Jw0GKo_So3JyOFc=RuONHx8JUF-KLHrSHYPY2OE6dg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] virtio-gpu: add blob migration support
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- kraxel@redhat.com, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>, 
- Laszlo Ersek <lersek@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1978272391-1699267576=:23658"
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,54 +63,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Tue, Sep 19, 2023 at 7:09=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+--3866299591-1978272391-1699267576=:23658
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Mon, 6 Nov 2023, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 >
-> On Tue, Sep 19, 2023 at 04:51:21PM +0400, Marc-Andr=C3=A9 Lureau wrote:
-> > Hi
-> >
-> > On Thu, Sep 7, 2023 at 5:15=E2=80=AFPM <marcandre.lureau@redhat.com> wr=
-ote:
-> > >
-> > > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > >
-> > > Hi,
-> > >
-> > > This is a follow-up of the previous patch "[PATCH] virtio-gpu: block =
-migration
-> > > of VMs with blob=3Dtrue". Now that migration support is implemented, =
-we can decide
-> > > to drop the migration blocker patch, or apply and revert it, so that
-> > > backporting of a quick fix is made easier.
-> > >
-> > > Fixes:
-> > > https://bugzilla.redhat.com/show_bug.cgi?id=3D2236353
-> > >
-> > > Marc-Andr=C3=A9 Lureau (5):
-> > >   virtio-gpu: block migration of VMs with blob=3Dtrue
-> > >   virtio-gpu: factor out restore mapping
-> > >   virtio-gpu: move scanout restoration to post_load
-> > >   virtio-gpu: add virtio-gpu/blob vmstate subsection
-> > >   Revert "virtio-gpu: block migration of VMs with blob=3Dtrue"
-> > >
-> > >  hw/display/virtio-gpu.c | 174 +++++++++++++++++++++++++++++++++-----=
---
-> > >  1 file changed, 146 insertions(+), 28 deletions(-)
+> To avoid a kconfig cycle, change "depends on PCI" to "select PCI".
 >
-> For migration:
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+Now I NACK it. I've sent a series that adds fallbacks to ati-vga without 
+pixman so it does not need to be disabled. This series should be rebased 
+on that then this patch and the fuloong one can be dropped. Could you 
+please try to do that?
+
+Regards,
+BALATON Zoltan
+
+> ---
+> configs/devices/mips64el-softmmu/default.mak | 3 +--
+> hw/display/Kconfig                           | 3 ++-
+> hw/display/meson.build                       | 2 +-
+> hw/mips/Kconfig                              | 2 ++
+> 4 files changed, 6 insertions(+), 4 deletions(-)
 >
-> Acked-by: Peter Xu <peterx@redhat.com>
+> diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/devices/mips64el-softmmu/default.mak
+> index d5188f7ea5..4d80d60511 100644
+> --- a/configs/devices/mips64el-softmmu/default.mak
+> +++ b/configs/devices/mips64el-softmmu/default.mak
+> @@ -1,9 +1,8 @@
+> # Default configuration for mips64el-softmmu
 >
-
-Anyone else to check this series? Laszlo perhaps?
-
-Or should I just send it as part of the next gpu-stuff PR?
-
-thanks
-
-
-
---=20
-Marc-Andr=C3=A9 Lureau
+> include ../mips-softmmu/common.mak
+> -CONFIG_FULOONG=y
+> +#CONFIG_FULOONG=y
+> CONFIG_LOONGSON3V=y
+> -CONFIG_ATI_VGA=y
+> CONFIG_RTL8139_PCI=y
+> CONFIG_JAZZ=y
+> CONFIG_VT82C686=y
+> diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+> index 1aafe1923d..8219225a1c 100644
+> --- a/hw/display/Kconfig
+> +++ b/hw/display/Kconfig
+> @@ -125,7 +125,8 @@ config DPCD
+> config ATI_VGA
+>     bool
+>     default y if PCI_DEVICES
+> -    depends on PCI
+> +    depends on PIXMAN
+> +    select PCI
+>     select VGA
+>     select BITBANG_I2C
+>     select DDC
+> diff --git a/hw/display/meson.build b/hw/display/meson.build
+> index 9c06aaee20..344dfe3d8c 100644
+> --- a/hw/display/meson.build
+> +++ b/hw/display/meson.build
+> @@ -62,7 +62,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_true: files('xlnx_dp.c'))
+>
+> system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
+>
+> -system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c', 'ati_2d.c', 'ati_dbg.c'))
+> +system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_dbg.c'), pixman])
+>
+>
+> if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
+> diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+> index ac1eb06a51..5d40795c0b 100644
+> --- a/hw/mips/Kconfig
+> +++ b/hw/mips/Kconfig
+> @@ -32,7 +32,9 @@ config JAZZ
+>
+> config FULOONG
+>     bool
+> +    default y if MIPS64
+>     select PCI_BONITO
+> +    depends on ATI_VGA
+>
+> config LOONGSON3V
+>     bool
+>
+--3866299591-1978272391-1699267576=:23658--
 
