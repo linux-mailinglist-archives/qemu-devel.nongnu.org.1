@@ -2,32 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A436B7E2694
+	by mail.lfdr.de (Postfix) with ESMTPS id A339E7E2693
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:23:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00Tl-0000qV-FL; Mon, 06 Nov 2023 09:21:25 -0500
+	id 1r00Tk-0000q6-TQ; Mon, 06 Nov 2023 09:21:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00Tk-0000qK-Cp
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:24 -0500
+ id 1r00Th-0000pP-GM
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:21 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00Ti-0005Pv-6k
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:23 -0500
+ id 1r00Tf-0005R3-Fd
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:21 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00TX-0000dF-BM; Mon, 06 Nov 2023 15:21:11 +0100
+ id 1r00Tc-0000dM-MV; Mon, 06 Nov 2023 15:21:16 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>
-Subject: [PULL 01/10] memory-device: Support empty memory devices
-Date: Mon,  6 Nov 2023 15:20:45 +0100
-Message-ID: <6c1b28e9e405da8cfb7296b9efa2b85650086784.1699279190.git.maciej.szmigiero@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/10] Revert "hw/virtio/virtio-pmem: Replace impossible check
+ by assertion"
+Date: Mon,  6 Nov 2023 15:20:46 +0100
+Message-ID: <2d7f1081864790eb1000e6ef34e202dae66a03d2.1699279190.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <cover.1699279190.git.maciej.szmigiero@oracle.com>
 References: <cover.1699279190.git.maciej.szmigiero@oracle.com>
@@ -55,140 +57,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Hildenbrand <david@redhat.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Let's support empty memory devices -- memory devices that don't have a
-memory device region in the current configuration. hv-balloon with an
-optional memdev is the primary use case.
+This reverts commit 5960f254dbb46f0c7a9f5f44bf4d27c19c34cb97 since the
+previous commit made this situation possible again.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/mem/memory-device.c         | 43 +++++++++++++++++++++++++++++++---
- include/hw/mem/memory-device.h |  7 +++++-
- 2 files changed, 46 insertions(+), 4 deletions(-)
+ hw/virtio/virtio-pmem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index ae38f48f1676..db702ccad554 100644
---- a/hw/mem/memory-device.c
-+++ b/hw/mem/memory-device.c
-@@ -20,6 +20,22 @@
- #include "exec/address-spaces.h"
- #include "trace.h"
- 
-+static bool memory_device_is_empty(const MemoryDeviceState *md)
-+{
-+    const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(md);
-+    Error *local_err = NULL;
-+    MemoryRegion *mr;
-+
-+    /* dropping const here is fine as we don't touch the memory region */
-+    mr = mdc->get_memory_region((MemoryDeviceState *)md, &local_err);
-+    if (local_err) {
-+        /* Not empty, we'll report errors later when ontaining the MR again. */
-+        error_free(local_err);
-+        return false;
-+    }
-+    return !mr;
-+}
-+
- static gint memory_device_addr_sort(gconstpointer a, gconstpointer b)
+diff --git a/hw/virtio/virtio-pmem.c b/hw/virtio/virtio-pmem.c
+index cc24812d2e92..c3512c2dae3f 100644
+--- a/hw/virtio/virtio-pmem.c
++++ b/hw/virtio/virtio-pmem.c
+@@ -147,7 +147,10 @@ static void virtio_pmem_fill_device_info(const VirtIOPMEM *pmem,
+ static MemoryRegion *virtio_pmem_get_memory_region(VirtIOPMEM *pmem,
+                                                    Error **errp)
  {
-     const MemoryDeviceState *md_a = MEMORY_DEVICE(a);
-@@ -249,6 +265,10 @@ static uint64_t memory_device_get_free_addr(MachineState *ms,
-         uint64_t next_addr;
-         Range tmp;
- 
-+        if (memory_device_is_empty(md)) {
-+            continue;
-+        }
-+
-         range_init_nofail(&tmp, mdc->get_addr(md),
-                           memory_device_get_region_size(md, &error_abort));
- 
-@@ -292,6 +312,7 @@ MemoryDeviceInfoList *qmp_memory_device_list(void)
-         const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(item->data);
-         MemoryDeviceInfo *info = g_new0(MemoryDeviceInfo, 1);
- 
-+        /* Let's query infotmation even for empty memory devices. */
-         mdc->fill_device_info(md, info);
- 
-         QAPI_LIST_APPEND(tail, info);
-@@ -311,7 +332,7 @@ static int memory_device_plugged_size(Object *obj, void *opaque)
-         const MemoryDeviceState *md = MEMORY_DEVICE(obj);
-         const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(obj);
- 
--        if (dev->realized) {
-+        if (dev->realized && !memory_device_is_empty(md)) {
-             *size += mdc->get_plugged_size(md, &error_abort);
-         }
-     }
-@@ -337,6 +358,11 @@ void memory_device_pre_plug(MemoryDeviceState *md, MachineState *ms,
-     uint64_t addr, align = 0;
-     MemoryRegion *mr;
- 
-+    /* We support empty memory devices even without device memory. */
-+    if (memory_device_is_empty(md)) {
-+        return;
+-    assert(pmem->memdev);
++    if (!pmem->memdev) {
++        error_setg(errp, "'%s' property must be set", VIRTIO_PMEM_MEMDEV_PROP);
++        return NULL;
 +    }
-+
-     if (!ms->device_memory) {
-         error_setg(errp, "the configuration is not prepared for memory devices"
-                          " (e.g., for memory hotplug), consider specifying the"
-@@ -380,10 +406,17 @@ out:
- void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
- {
-     const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(md);
--    const unsigned int memslots = memory_device_get_memslots(md);
--    const uint64_t addr = mdc->get_addr(md);
-+    unsigned int memslots;
-+    uint64_t addr;
-     MemoryRegion *mr;
  
-+    if (memory_device_is_empty(md)) {
-+        return;
-+    }
-+
-+    memslots = memory_device_get_memslots(md);
-+    addr = mdc->get_addr(md);
-+
-     /*
-      * We expect that a previous call to memory_device_pre_plug() succeeded, so
-      * it can't fail at this point.
-@@ -408,6 +441,10 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
-     const unsigned int memslots = memory_device_get_memslots(md);
-     MemoryRegion *mr;
- 
-+    if (memory_device_is_empty(md)) {
-+        return;
-+    }
-+
-     /*
-      * We expect that a previous call to memory_device_pre_plug() succeeded, so
-      * it can't fail at this point.
-diff --git a/include/hw/mem/memory-device.h b/include/hw/mem/memory-device.h
-index 3354d6c1667e..a1d62cc551ab 100644
---- a/include/hw/mem/memory-device.h
-+++ b/include/hw/mem/memory-device.h
-@@ -38,6 +38,10 @@ typedef struct MemoryDeviceState MemoryDeviceState;
-  * address in guest physical memory can either be specified explicitly
-  * or get assigned automatically.
-  *
-+ * Some memory device might not own a memory region in certain device
-+ * configurations. Such devices can logically get (un)plugged, however,
-+ * empty memory devices are mostly ignored by the memory device code.
-+ *
-  * Conceptually, memory devices only span one memory region. If multiple
-  * successive memory regions are used, a covering memory region has to
-  * be provided. Scattered memory regions are not supported for single
-@@ -91,7 +95,8 @@ struct MemoryDeviceClass {
-     uint64_t (*get_plugged_size)(const MemoryDeviceState *md, Error **errp);
- 
-     /*
--     * Return the memory region of the memory device.
-+     * Return the memory region of the memory device. If the device is
-+     * completely empty, returns NULL without an error.
-      *
-      * Called when (un)plugging the memory device, to (un)map the
-      * memory region in guest physical memory, but also to detect the
+     return &pmem->memdev->mr;
+ }
 
