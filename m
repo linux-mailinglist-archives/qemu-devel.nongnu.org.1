@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A577E28D0
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:35:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B54957E28BE
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:33:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r01b4-0007zp-Ok; Mon, 06 Nov 2023 10:33:03 -0500
+	id 1r01ar-0007vN-8V; Mon, 06 Nov 2023 10:32:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r01am-0007pk-WB
+ id 1r01am-0007pj-Us
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:45 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r01aj-0004NJ-PX
+ id 1r01aj-0004NK-Hf
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:44 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-507975d34e8so6588444e87.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:32:41 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40836ea8cbaso32647955e9.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:32:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699284759; x=1699889559; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=qJa4gYfgZcl5h2N0LrVJZTikFP2bZrpmPlNhrITaOPE=;
- b=LPz7fG/BkPliXpBngaM1tH/I0uLM3t26dzu1ejOnpLDl2UPAhw8oIBO7uB1vcurkFJ
- POtd4gjiREK+M8wUThcUXaWaSUHpKopnGrpDnzJCUxWIPRz7a9V2DVDH2CCit25mvqSP
- gz8RkL5PpjvVol80QQjn2xL1qfPXXjY/54tTDcxxpP0dMXu+zhkr/VB8yJCZQuht1onj
- Q0W0A639hivgBJSIel3LhJMKNT2GujQD5n373zP7GEI9eiLLV8KMeKMcWk8oIFJDdRJ4
- U/w7DWMa9TFo0Z3RhFYCGjQxDFEO9fteyIh/aCF5vzkXa2LVx0/7KV+gqYV2PqwdBY4M
- Tb2Q==
+ d=linaro.org; s=google; t=1699284760; x=1699889560; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=9IWF1UaMVtNNkX+uy7OYvvuM9TENlVQduNwTa/Gt+7k=;
+ b=s1flXPzkgar/v9qBs5/bFq5N14hUbWiA2xIAoml/qCPIJj564aR3FWAblaoMhP+57w
+ DF8zAXzp3co/SYCtqaizM1Yb0a8lzf/2LPq+UP7BHf2dPea8CmzPDEusgfG6uVhfddwy
+ 1c9c1SM5uvKiNis35/9Y1YrGZAIDe9YhRI80SWmfRTRSioiQnOKRZkYjgjEEi8XjW3kC
+ oiL7vxF5VMvraZPQmbPfT0i0IhhgHQ211EVyC2ZUF34NOwkNVfvL8MWGR/nkXcXrP+ry
+ WufaU0dg4bzOQfGD62BreNOhzlvjQVpt8whKgWGymMKZn/p/D0WXqLt1DsiRCHBoQ7nk
+ ScXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699284759; x=1699889559;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qJa4gYfgZcl5h2N0LrVJZTikFP2bZrpmPlNhrITaOPE=;
- b=lq6zuLWRw0RN8uNCksZs4hSbdWNUdHld4fmgm38/rVPEES9ojUMY+Orquvf4//ye9/
- kITJAMyVehdcAkORfXYCMRRORvLwchrLWjg+5jdSo9VpJZa4gLVfn90nVcjzYZBXOMyV
- AS8GuQME7OKGAGo73ooaag3RO3z76Q4SjvMts5JLY1P6HyowgoqIMP/+fvtrzK1KyKmr
- xYZcRxjqjaBFmVVQLKJ9mZ69Ylyhax1owAjAC9vYSgAgw0/yqNuMACrIABln+omnnWdf
- xaIAIxMD9QIAu41YromlXVAlRYfVyEgx3jG4Q+cjN6vOR1qQMzeW8U6LkRLApKglE31W
- zzNQ==
-X-Gm-Message-State: AOJu0Yze5fZJgyElIMV5qip6YPonmcNduo+M8ptsjT9GOsheRY+cyQvM
- UrDhmySac+Dtxlkyw1E9O/IiWJsQT0KMUCt4j5Q=
-X-Google-Smtp-Source: AGHT+IE4ExqjChKiH4hNk/KNd4zEvpdm6FA7wDkmkRsUmiGZS8V4PJCQWqQaYEisDnE8dA99S9HjWA==
-X-Received: by 2002:a05:6512:312f:b0:507:9ae3:6ba7 with SMTP id
- p15-20020a056512312f00b005079ae36ba7mr21689239lfd.67.1699284759284; 
+ d=1e100.net; s=20230601; t=1699284760; x=1699889560;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9IWF1UaMVtNNkX+uy7OYvvuM9TENlVQduNwTa/Gt+7k=;
+ b=VStAIc3fUH8fR/O9MS3dv3jf3/5XzKKN25l+VW3NgPhvKR6zKhhsb4BDXhRJcod6nK
+ BcfiWSnlRQ0Hl4OZbL9EG93ruaXffiLIey4YEqywurbVxQbrRxiT6/bZKzySbQHwAH+o
+ 1mAK2AOI12Zt7ZDABoj96p2VA9cjkWqG7KqwwnV9lZs2XPYzdRElfbIxotOdytWi4fpT
+ W3a2oawXzOwnjRsUK8jxnDh6xSs3i2XYwcPWCZfENduJ24HcJvdEzSPyjMTkWibuJUIa
+ cHWNiELt7ZzEAv82pY6kREnbg1oqNFlfit2tOvJ48gKnb2c1LetrTGwVeJ2lBT9M6gPw
+ hFgw==
+X-Gm-Message-State: AOJu0Yz9CI7XC9r5SgkyndgQpDXiIPRYpsZhYKHOJyF264cRQH7fOoV0
+ bjGI5PPMx7Vs4CxPKgHfH5c55/xvjmL5Ewlpbsg=
+X-Google-Smtp-Source: AGHT+IGWXPV+F5hmMtDhKdV5JEWP4DuVpgUxtsIj2j1OcSrytdXqC75gx3ixnDdLfJXzbRX1FItdTQ==
+X-Received: by 2002:a5d:4f05:0:b0:32d:9b30:9a76 with SMTP id
+ c5-20020a5d4f05000000b0032d9b309a76mr25713871wru.47.1699284759696; 
  Mon, 06 Nov 2023 07:32:39 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d5-20020adff2c5000000b0032da6f17ffdsm9752176wrp.38.2023.11.06.07.32.38
+ d5-20020adff2c5000000b0032da6f17ffdsm9752176wrp.38.2023.11.06.07.32.39
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 07:32:38 -0800 (PST)
+ Mon, 06 Nov 2023 07:32:39 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/12] target-arm queue
-Date: Mon,  6 Nov 2023 15:32:26 +0000
-Message-Id: <20231106153238.1426649-1-peter.maydell@linaro.org>
+Subject: [PULL 01/12] hw/arm/virt: fix PMU IRQ registration
+Date: Mon,  6 Nov 2023 15:32:27 +0000
+Message-Id: <20231106153238.1426649-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231106153238.1426649-1-peter.maydell@linaro.org>
+References: <20231106153238.1426649-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,72 +90,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here's another arm pullreq. These changes are all bug fixes
-(including some Coverity issue fixes), so are OK for applying
-either before or after softfreeze.
+From: Sebastian Ott <sebott@redhat.com>
 
-thanks
--- PMM
+Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
+PMU IRQ registration fails for arm64 guests:
 
-The following changes since commit 3e01f1147a16ca566694b97eafc941d62fa1e8d8:
+[    0.563689] hw perfevents: unable to request IRQ14 for ARM PMU counters
+[    0.565160] armv8-pmu: probe of pmu failed with error -22
 
-  Merge tag 'pull-sp-20231105' of https://gitlab.com/rth7680/qemu into staging (2023-11-06 09:34:22 +0800)
+That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
+where the PMU IRQ is actually referred by its PPI index. Fix that by using
+INTID_TO_PPI() in that case.
 
-are available in the Git repository at:
+Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1960
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 475d918d-ab0e-f717-7206-57a5beb28c7b@redhat.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/arm/virt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20231106
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 92085d2d8fb..0a16ab30958 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -631,7 +631,8 @@ static void fdt_add_pmu_nodes(const VirtMachineState *vms)
+         qemu_fdt_setprop(ms->fdt, "/pmu", "compatible",
+                          compat, sizeof(compat));
+         qemu_fdt_setprop_cells(ms->fdt, "/pmu", "interrupts",
+-                               GIC_FDT_IRQ_TYPE_PPI, VIRTUAL_PMU_IRQ, irqflags);
++                               GIC_FDT_IRQ_TYPE_PPI,
++                               INTID_TO_PPI(VIRTUAL_PMU_IRQ), irqflags);
+     }
+ }
+ 
+-- 
+2.34.1
 
-for you to fetch changes up to 5722fc471296d5f042df4b005a851cc8008df0c9:
-
-  target/arm: Fix A64 LDRA immediate decode (2023-11-06 15:00:29 +0000)
-
-----------------------------------------------------------------
-target-arm queue:
- * hw/arm/virt: fix PMU IRQ registration
- * hw/arm/virt: Report correct register sizes in ACPI DBG2/SPCR tables
- * hw/i386/intel_iommu: vtd_slpte_nonzero_rsvd(): assert no overflow
- * util/filemonitor-inotify: qemu_file_monitor_watch(): assert no overflow
- * mc146818rtc: rtc_set_time(): initialize tm to zeroes
- * block/nvme: nvme_process_completion() fix bound for cid
- * hw/core/loader: gunzip(): initialize z_stream
- * io/channel-socket: qio_channel_socket_flush(): improve msg validation
- * hw/arm/vexpress-a9: Remove useless mapping of RAM at address 0
- * target/arm: Fix A64 LDRA immediate decode
-
-----------------------------------------------------------------
-Peter Maydell (4):
-      tests/qtest/bios-tables-test: Allow changes to virt SPCR and DBG2
-      tests/qtest/bios-tables-test: Update virt SPCR and DBG2 golden references
-      hw/arm/vexpress-a9: Remove useless mapping of RAM at address 0
-      target/arm: Fix A64 LDRA immediate decode
-
-Sebastian Ott (1):
-      hw/arm/virt: fix PMU IRQ registration
-
-Udo Steinberg (1):
-      hw/arm/virt: Report correct register sizes in ACPI DBG2/SPCR tables.
-
-Vladimir Sementsov-Ogievskiy (6):
-      hw/i386/intel_iommu: vtd_slpte_nonzero_rsvd(): assert no overflow
-      util/filemonitor-inotify: qemu_file_monitor_watch(): assert no overflow
-      mc146818rtc: rtc_set_time(): initialize tm to zeroes
-      block/nvme: nvme_process_completion() fix bound for cid
-      hw/core/loader: gunzip(): initialize z_stream
-      io/channel-socket: qio_channel_socket_flush(): improve msg validation
-
- docs/system/arm/vexpress.rst |   3 +++
- target/arm/tcg/translate.h   |   5 +++++
- target/arm/tcg/a64.decode    |   2 +-
- block/nvme.c                 |   7 ++++---
- hw/arm/vexpress.c            |  14 +++-----------
- hw/arm/virt-acpi-build.c     |   4 ++--
- hw/arm/virt.c                |   3 ++-
- hw/core/loader.c             |   2 +-
- hw/i386/intel_iommu.c        |  23 ++++++++++++++++++++---
- hw/rtc/mc146818rtc.c         |   2 +-
- io/channel-socket.c          |   5 +++++
- util/filemonitor-inotify.c   |  25 +++++++++++++++++--------
- tests/data/acpi/virt/DBG2    | Bin 87 -> 87 bytes
- tests/data/acpi/virt/SPCR    | Bin 80 -> 80 bytes
- 14 files changed, 64 insertions(+), 31 deletions(-)
 
