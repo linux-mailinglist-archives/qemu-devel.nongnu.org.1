@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2AD7E1ACF
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0EFD7E1AA4
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:03:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztZy-0004i0-AZ; Mon, 06 Nov 2023 01:59:22 -0500
+	id 1qzta6-0005JQ-Do; Mon, 06 Nov 2023 01:59:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZY-0004Y2-G7
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:56 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1qztZZ-0004ZZ-9Y
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:57 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZW-0001R1-L4
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:56 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1cc330e8f58so27758475ad.3
+ id 1qztZX-0001RH-Gu
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:57 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1c9b7c234a7so37704895ad.3
  for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699253933; x=1699858733; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699253934; x=1699858734; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ex0sMAx8rqtWa5iF1okc4nAfkaRkYqLLJJTlpZ+IXRU=;
- b=UA6hTXhHUAr1mpmKWVVIhflc0+n6TmB/l5yzwT4xLvAfCz2zxUm/1dxKV24JHtTN7w
- ONXvIhLl7I36Zq+kHHg7ff4GXnGamfhQPKEB5xXaiNbM3Va/8T4SpLw/PS/5e4fAxGZb
- NquzFSBkLQougwO17HEFndDZIk7ObyXw6vx0wxY7uKY1fioZHwS/x/oJpWvBLzSj4uGQ
- ocfeOY/e4c6po7SYJR3640Ih7FXl83ATzA2OfDGUllXGAqDg1njux6O2QRwiFSST7W9v
- g0/k9yFE/5MH1QRgS4Fca9RRRzgSk+XE580VyDfzgesbQJ2RpLmuyh4tIpv/ZDLlVxi7
- kyVg==
+ bh=QZ5ZOT33XSJfzFXzv9z0z0E/PDyNVWXUtYL4PDowdaE=;
+ b=PTaUSNwrpvF8uZO2atkEHj/6nIed6Tifeb2AdqvKuG97WcI05p566eWlKdhKM7m0/l
+ c61C1ZuX5/dekD1N4xrOOv6lKZM6NQA8pMFv1vJU+HOWl52vmrtIEXo2E7QxMaQaN6Ra
+ CXPYQDtkvTNN6Il+7Bf92TU0iOIBUfBJBomNXfziZC7GjjIHqh7iguc+yrg1guRWh9bb
+ WnHvKsd9LWn44DROVstVi4c/jqVHFe2MRxiZ5Ct60YHOuKCT4xYTaG+rUPhvAzlMC1xS
+ SBCHZoDfiIn6BtnY2OtI6kkL8No3ep4tM2QDobYS4nWdCBEhnUcSSEZNoRe7YGrYb48H
+ 6BfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699253933; x=1699858733;
+ d=1e100.net; s=20230601; t=1699253934; x=1699858734;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ex0sMAx8rqtWa5iF1okc4nAfkaRkYqLLJJTlpZ+IXRU=;
- b=u5XDDOH1ZaeD2988SUc/X7wwht0kj9FZNRU9FHFNcbXn4NJMmuIbRf/nT8CCpLFdW4
- OQDbPx+Ls83GYtq3cftZv9xp20djxr9fUV2T3tX8rf/3Z/yKDONRysYZ4+OjOI6f4xEU
- X3PX6A8NnRl5v4pJBeIkmJGZaLThyCiyqKfkCO2RTnkYGU+jXo2PWWdz1PFR9vpKtaUk
- DaDetb0qE4a7yU4AcxgSKudpi9FDehrxJarLI0HPdU92kBVJudOw+cCZz14ZI/ziQ8f2
- RDv/MDAxEHpEhZvutNlk9hMWl+oIDepllIfHvs1k3DAPjs8CgDKiQkwmFrhTlvCg9DuT
- 0iqg==
-X-Gm-Message-State: AOJu0YyOai2V7K62dJdqgdxPFBe0zo7Vq9Kr5AN2+WSpXBbf1lFzboTW
- aP/Ed95t5t/44ttfSFkbb49/28FI5iGLwfaggC8=
-X-Google-Smtp-Source: AGHT+IGGm5MzwFEULtv7qqoxyq6DgB0pjMBM1t30+NQg64qqF1hCpLRr7kqqM0xXJ/qK8xIXJ7hLWw==
-X-Received: by 2002:a17:902:ea02:b0:1cc:5648:f15c with SMTP id
- s2-20020a170902ea0200b001cc5648f15cmr20296014plg.48.1699253933369; 
- Sun, 05 Nov 2023 22:58:53 -0800 (PST)
+ bh=QZ5ZOT33XSJfzFXzv9z0z0E/PDyNVWXUtYL4PDowdaE=;
+ b=ElnZEQST8LHm/FqqlabtOHqYZoKzdDdp3X0qB8wNuxf4iL26EtBLU+Uu3+GvlA0pO1
+ 8THVJ8rWw55d1QJFUosXm8sZXHEJWonpR/4HtCByoL2hIdnkpLwqL8t/VVBULwrUk486
+ hBLhbYTv6Z8GRv03hHCrORaJTfEj1rBmzwjlSESiDCcrW3/CuHPXt+XdRfZZpFUkCq1a
+ 8tcIwDiazbIlYoc696LbGyxJkQZziClVSAqgOKT0vwB3YsjZFxGjeO1BqxFl8Bam9Xsg
+ RbCnn+LaLLxf3uvDcwBJY3kOnJdDfkHG5l9d8tvfS5wZRY8C0o2DYKzDM22aouSlwGcL
+ hS4Q==
+X-Gm-Message-State: AOJu0YzZHRTggQrhm1o3foQa3sIqsX2oESAQj04XltNy5RyrqLtjYkX5
+ 5EChF2GMrwZartKCNnrRD+feCYxYv0G1rel70t8=
+X-Google-Smtp-Source: AGHT+IFQQOnMBegE6HGvj/+tYd6BxCcxOEkfxIoC5hrPFrUli/hsnlUCK0eR0Pe2jcSQb+GNqjv1og==
+X-Received: by 2002:a17:903:807:b0:1cc:2a23:cbab with SMTP id
+ kr7-20020a170903080700b001cc2a23cbabmr25271665plb.27.1699253934178; 
+ Sun, 05 Nov 2023 22:58:54 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.52
+ c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 05 Nov 2023 22:58:53 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 28/71] hw/gpio: Constify VMState
-Date: Sun,  5 Nov 2023 22:57:44 -0800
-Message-Id: <20231106065827.543129-29-richard.henderson@linaro.org>
+Subject: [PATCH 29/71] hw/hyperv: Constify VMState
+Date: Sun,  5 Nov 2023 22:57:45 -0800
+Message-Id: <20231106065827.543129-30-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,171 +92,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/gpio/aspeed_gpio.c  | 4 ++--
- hw/gpio/bcm2835_gpio.c | 2 +-
- hw/gpio/gpio_key.c     | 2 +-
- hw/gpio/imx_gpio.c     | 2 +-
- hw/gpio/max7310.c      | 2 +-
- hw/gpio/mpc8xxx.c      | 2 +-
- hw/gpio/npcm7xx_gpio.c | 2 +-
- hw/gpio/nrf51_gpio.c   | 2 +-
- hw/gpio/pl061.c        | 2 +-
- hw/gpio/sifive_gpio.c  | 2 +-
- hw/gpio/zaurus.c       | 2 +-
- 11 files changed, 12 insertions(+), 12 deletions(-)
+ hw/hyperv/vmbus.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
-index 1e267dd482..c1781e2ba3 100644
---- a/hw/gpio/aspeed_gpio.c
-+++ b/hw/gpio/aspeed_gpio.c
-@@ -1067,7 +1067,7 @@ static const VMStateDescription vmstate_gpio_regs = {
-     .name = TYPE_ASPEED_GPIO"/regs",
-     .version_id = 1,
-     .minimum_version_id = 1,
+diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
+index 271289f902..7183f4e367 100644
+--- a/hw/hyperv/vmbus.c
++++ b/hw/hyperv/vmbus.c
+@@ -526,7 +526,7 @@ static const VMStateDescription vmstate_gpadl = {
+     .name = "vmbus/gpadl",
+     .version_id = 0,
+     .minimum_version_id = 0,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(data_value,   GPIOSets),
-         VMSTATE_UINT32(data_read,    GPIOSets),
-         VMSTATE_UINT32(direction,    GPIOSets),
-@@ -1090,7 +1090,7 @@ static const VMStateDescription vmstate_aspeed_gpio = {
-     .name = TYPE_ASPEED_GPIO,
-     .version_id = 1,
-     .minimum_version_id = 1,
+         VMSTATE_UINT32(id, VMBusGpadl),
+         VMSTATE_UINT32(child_relid, VMBusGpadl),
+         VMSTATE_UINT32(num_gfns, VMBusGpadl),
+@@ -1489,7 +1489,7 @@ static const VMStateDescription vmstate_channel = {
+     .version_id = 0,
+     .minimum_version_id = 0,
+     .post_load = channel_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_ARRAY(sets, AspeedGPIOState, ASPEED_GPIO_MAX_NR_SETS,
-                              1, vmstate_gpio_regs, GPIOSets),
-         VMSTATE_UINT32_ARRAY(debounce_regs, AspeedGPIOState,
-diff --git a/hw/gpio/bcm2835_gpio.c b/hw/gpio/bcm2835_gpio.c
-index c995bba1d9..6bd50bb0b6 100644
---- a/hw/gpio/bcm2835_gpio.c
-+++ b/hw/gpio/bcm2835_gpio.c
-@@ -284,7 +284,7 @@ static const VMStateDescription vmstate_bcm2835_gpio = {
-     .name = "bcm2835_gpio",
-     .version_id = 1,
-     .minimum_version_id = 1,
+         VMSTATE_UINT32(id, VMBusChannel),
+         VMSTATE_UINT16(subchan_idx, VMBusChannel),
+         VMSTATE_UINT32(open_id, VMBusChannel),
+@@ -2380,7 +2380,7 @@ const VMStateDescription vmstate_vmbus_dev = {
+     .name = TYPE_VMBUS_DEVICE,
+     .version_id = 0,
+     .minimum_version_id = 0,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_ARRAY(fsel, BCM2835GpioState, 54),
-         VMSTATE_UINT32(lev0, BCM2835GpioState),
-         VMSTATE_UINT32(lev1, BCM2835GpioState),
-diff --git a/hw/gpio/gpio_key.c b/hw/gpio/gpio_key.c
-index 74f6138356..61bb587058 100644
---- a/hw/gpio/gpio_key.c
-+++ b/hw/gpio/gpio_key.c
-@@ -45,7 +45,7 @@ static const VMStateDescription vmstate_gpio_key = {
-     .name = "gpio-key",
-     .version_id = 1,
-     .minimum_version_id = 1,
+         VMSTATE_UINT8_ARRAY(instanceid.data, VMBusDevice, 16),
+         VMSTATE_UINT16(num_channels, VMBusDevice),
+         VMSTATE_STRUCT_VARRAY_POINTER_UINT16(channels, VMBusDevice,
+@@ -2549,7 +2549,7 @@ static const VMStateDescription vmstate_post_message_input = {
+     .name = "vmbus/hyperv_post_message_input",
+     .version_id = 0,
+     .minimum_version_id = 0,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_TIMER_PTR(timer, GPIOKEYState),
+         /*
+          * skip connection_id and message_type as they are validated before
+          * queueing and ignored on dequeueing
+@@ -2572,7 +2572,7 @@ static const VMStateDescription vmstate_rx_queue = {
+     .version_id = 0,
+     .minimum_version_id = 0,
+     .needed = vmbus_rx_queue_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(rx_queue_head, VMBus),
+         VMSTATE_UINT8(rx_queue_size, VMBus),
+         VMSTATE_STRUCT_ARRAY(rx_queue, VMBus,
+@@ -2589,7 +2589,7 @@ static const VMStateDescription vmstate_vmbus = {
+     .minimum_version_id = 0,
+     .pre_load = vmbus_pre_load,
+     .post_load = vmbus_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(state, VMBus),
+         VMSTATE_UINT32(version, VMBus),
+         VMSTATE_UINT32(target_vp, VMBus),
+@@ -2598,7 +2598,7 @@ static const VMStateDescription vmstate_vmbus = {
+                          vmstate_gpadl, VMBusGpadl, link),
          VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription * []) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_rx_queue,
+         NULL
      }
-diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
-index c7f98b7bb1..e53b00d951 100644
---- a/hw/gpio/imx_gpio.c
-+++ b/hw/gpio/imx_gpio.c
-@@ -277,7 +277,7 @@ static const VMStateDescription vmstate_imx_gpio = {
-     .name = TYPE_IMX_GPIO,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(dr, IMXGPIOState),
-         VMSTATE_UINT32(gdir, IMXGPIOState),
-         VMSTATE_UINT32(psr, IMXGPIOState),
-diff --git a/hw/gpio/max7310.c b/hw/gpio/max7310.c
-index 4470cfe985..86315714fb 100644
---- a/hw/gpio/max7310.c
-+++ b/hw/gpio/max7310.c
-@@ -155,7 +155,7 @@ static const VMStateDescription vmstate_max7310 = {
-     .name = "max7310",
+@@ -2643,7 +2643,7 @@ static const VMStateDescription vmstate_vmbus_bridge = {
+     .name = TYPE_VMBUS_BRIDGE,
      .version_id = 0,
      .minimum_version_id = 0,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(i2c_command_byte, MAX7310State),
-         VMSTATE_INT32(len, MAX7310State),
-         VMSTATE_UINT8(level, MAX7310State),
-diff --git a/hw/gpio/mpc8xxx.c b/hw/gpio/mpc8xxx.c
-index cb42acb6da..0b3f9e516d 100644
---- a/hw/gpio/mpc8xxx.c
-+++ b/hw/gpio/mpc8xxx.c
-@@ -48,7 +48,7 @@ static const VMStateDescription vmstate_mpc8xxx_gpio = {
-     .name = "mpc8xxx_gpio",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(dir, MPC8XXXGPIOState),
-         VMSTATE_UINT32(odr, MPC8XXXGPIOState),
-         VMSTATE_UINT32(dat, MPC8XXXGPIOState),
-diff --git a/hw/gpio/npcm7xx_gpio.c b/hw/gpio/npcm7xx_gpio.c
-index 3376901ab1..6e70ac1f24 100644
---- a/hw/gpio/npcm7xx_gpio.c
-+++ b/hw/gpio/npcm7xx_gpio.c
-@@ -377,7 +377,7 @@ static const VMStateDescription vmstate_npcm7xx_gpio = {
-     .name = "npcm7xx-gpio",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(pin_level, NPCM7xxGPIOState),
-         VMSTATE_UINT32(ext_level, NPCM7xxGPIOState),
-         VMSTATE_UINT32(ext_driven, NPCM7xxGPIOState),
-diff --git a/hw/gpio/nrf51_gpio.c b/hw/gpio/nrf51_gpio.c
-index 08396c69a4..ffc7dff796 100644
---- a/hw/gpio/nrf51_gpio.c
-+++ b/hw/gpio/nrf51_gpio.c
-@@ -280,7 +280,7 @@ static const VMStateDescription vmstate_nrf51_gpio = {
-     .name = TYPE_NRF51_GPIO,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(out, NRF51GPIOState),
-         VMSTATE_UINT32(in, NRF51GPIOState),
-         VMSTATE_UINT32(in_mask, NRF51GPIOState),
-diff --git a/hw/gpio/pl061.c b/hw/gpio/pl061.c
-index 899be861cc..86f2383655 100644
---- a/hw/gpio/pl061.c
-+++ b/hw/gpio/pl061.c
-@@ -87,7 +87,7 @@ static const VMStateDescription vmstate_pl061 = {
-     .name = "pl061",
-     .version_id = 4,
-     .minimum_version_id = 4,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(locked, PL061State),
-         VMSTATE_UINT32(data, PL061State),
-         VMSTATE_UINT32(old_out_data, PL061State),
-diff --git a/hw/gpio/sifive_gpio.c b/hw/gpio/sifive_gpio.c
-index 78bf29e996..995a43c795 100644
---- a/hw/gpio/sifive_gpio.c
-+++ b/hw/gpio/sifive_gpio.c
-@@ -326,7 +326,7 @@ static const VMStateDescription vmstate_sifive_gpio = {
-     .name = TYPE_SIFIVE_GPIO,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(value,     SIFIVEGPIOState),
-         VMSTATE_UINT32(input_en,  SIFIVEGPIOState),
-         VMSTATE_UINT32(output_en, SIFIVEGPIOState),
-diff --git a/hw/gpio/zaurus.c b/hw/gpio/zaurus.c
-index 7cf52a5041..5884804c58 100644
---- a/hw/gpio/zaurus.c
-+++ b/hw/gpio/zaurus.c
-@@ -222,7 +222,7 @@ static const VMStateDescription vmstate_scoop_regs = {
-     .version_id = 1,
-     .minimum_version_id = 0,
-     .post_load = scoop_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(status, ScoopInfo),
-         VMSTATE_UINT16(power, ScoopInfo),
-         VMSTATE_UINT32(gpio_level, ScoopInfo),
+         VMSTATE_STRUCT_POINTER(bus, VMBusBridge, vmstate_vmbus, VMBus),
+         VMSTATE_END_OF_LIST()
+     },
 -- 
 2.34.1
 
