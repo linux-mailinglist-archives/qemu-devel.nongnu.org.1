@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F067E2D7C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 21:01:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 095127E2D78
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 21:00:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r05hI-0007x9-QN; Mon, 06 Nov 2023 14:55:44 -0500
+	id 1r05gP-00066g-6a; Mon, 06 Nov 2023 14:54:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05gy-0006OM-3Q; Mon, 06 Nov 2023 14:55:25 -0500
+ id 1r05g7-0005gw-7Z; Mon, 06 Nov 2023 14:54:31 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05gn-00066j-IS; Mon, 06 Nov 2023 14:55:20 -0500
+ id 1r05g0-00066v-0s; Mon, 06 Nov 2023 14:54:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=vZowVkCjMFbp95UJRr5lu+JPxdNb9doXjcXZRlmZdv8=; b=Y/rkI5F0NcvCFoLbktSjr9lD+p
- JghtzoFzu1jDfHij1/EbcuKd66GBWDMTanBgalqLdoTiZOA/Vs2zIKMhAwjpEWhC+ogI3P5/QnQCW
- ee3GrAB/elUOQ5ZswbLXnTB04HdYuoyZ0IZ7KB3LfvtHV92kmes+GTH4SFL+BHuFQiu3iKxL3hk09
- ao5Od0E02mZsu2PxliLHdwYKYf7QvlXUrSJLbvKvuGmlm4k6bho2IPdG20Ysp2YAFS9TM3WOSH94j
- 0W9WhgZJl96jwmHF+1r7uuYiuvxpYSbQ3efgbg4ED59wjEdGIKiLh2g8faL+E72DdJnyM+9+xJoXV
- 9yAC6hug==;
+ bh=Z8O29x0pWQhZMVbX+dyJJms7pdOJv3y/EsgO2DOPUaY=; b=teESO/RtJYYuQVVx1IuFV0fYHO
+ QYkJ+WGnPXZGnQb1cse22y5yOxa7n7e0Kz9gFUDvPXwOrQ9QSYu4Ovjg0hvBHAzorWNmcxX8W8dC0
+ x87OOZSgAuxGCv05xk2sxU/hWkqL0IJNMWnplS8QUNwg4DDtGsMhPKdCNYRhSn6/w/mEAsw80nSGO
+ Yhpresf2n6tgaRnolyiqGAYkjI4+MQu9W54FKMH8udpcer0iA4y8o8+GsniLtFQBClqEJHf0SN35I
+ Qc3+cijtHnuNn01n3lUiCUsvyaNlcvNMpoPx6tLeT2rU/MhC43rFjcvlYrZ+/d5dzyzaxOxLw8cOS
+ 2rB2sH3w==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r05fd-007tb3-6F; Mon, 06 Nov 2023 19:54:02 +0000
+ id 1r05fd-007tb4-AH; Mon, 06 Nov 2023 19:54:02 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1r05fd-001GPu-1Y; Mon, 06 Nov 2023 19:54:01 +0000
+ Hat Linux)) id 1r05fd-001GPy-1n; Mon, 06 Nov 2023 19:54:01 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,10 +83,10 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH for-8.3 v2 45/46] net: remove qemu_show_nic_models(),
- qemu_find_nic_model()
-Date: Mon,  6 Nov 2023 19:49:50 +0000
-Message-ID: <20231106195352.301038-46-dwmw2@infradead.org>
+Subject: [PATCH for-8.3 v2 46/46] net: make nb_nics and nd_table[] static in
+ net/net.c
+Date: Mon,  6 Nov 2023 19:49:51 +0000
+Message-ID: <20231106195352.301038-47-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106195352.301038-1-dwmw2@infradead.org>
 References: <20231106195352.301038-1-dwmw2@infradead.org>
@@ -121,90 +121,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-These old functions can be removed now too. Let net_param_nic() print
-the full set of network devices directly, and also make it note that a
-list more specific to this platform/config will be available by using
-'-nic model=help' instead.
-
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- include/net/net.h |  3 ---
- net/net.c         | 39 ++++++---------------------------------
- 2 files changed, 6 insertions(+), 36 deletions(-)
+ include/net/net.h | 4 ----
+ net/net.c         | 3 +++
+ system/globals.c  | 2 --
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/include/net/net.h b/include/net/net.h
-index 1512650190..290e604f03 100644
+index 290e604f03..5a38766942 100644
 --- a/include/net/net.h
 +++ b/include/net/net.h
-@@ -201,9 +201,6 @@ void qemu_set_vnet_hdr_len(NetClientState *nc, int len);
- int qemu_set_vnet_le(NetClientState *nc, bool is_le);
- int qemu_set_vnet_be(NetClientState *nc, bool is_be);
- void qemu_macaddr_default_if_unset(MACAddr *macaddr);
--int qemu_show_nic_models(const char *arg, const char *const *models);
--int qemu_find_nic_model(NICInfo *nd, const char * const *models,
--                        const char *default_model);
- NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
-                             const char *alias);
- bool qemu_configure_nic_device(DeviceState *dev, bool match_default,
+@@ -245,10 +245,6 @@ struct NICInfo {
+     int nvectors;
+ };
+ 
+-extern int nb_nics;
+-extern NICInfo nd_table[MAX_NICS];
+-extern const char *host_net_devices[];
+-
+ /* from net.c */
+ extern NetClientStateList net_clients;
+ bool netdev_is_modern(const char *optstr);
 diff --git a/net/net.c b/net/net.c
-index ffc722069f..a3532a71a5 100644
+index a3532a71a5..957daad58d 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -962,38 +962,6 @@ GPtrArray *qemu_get_nic_models(const char *device_type)
-     return nic_models;
- }
+@@ -77,6 +77,9 @@ static NetdevQueue nd_queue = QSIMPLEQ_HEAD_INITIALIZER(nd_queue);
  
--int qemu_show_nic_models(const char *arg, const char *const *models)
--{
--    int i;
--
--    if (!arg || !is_help_option(arg)) {
--        return 0;
--    }
--
--    printf("Available NIC models:\n");
--    for (i = 0 ; models[i]; i++) {
--        printf("%s\n", models[i]);
--    }
--    return 1;
--}
--
--int qemu_find_nic_model(NICInfo *nd, const char * const *models,
--                        const char *default_model)
--{
--    int i;
--
--    if (!nd->model)
--        nd->model = g_strdup(default_model);
--
--    for (i = 0 ; models[i]; i++) {
--        if (strcmp(nd->model, models[i]) == 0)
--            return i;
--    }
--
--    error_report("Unsupported NIC model: %s", nd->model);
--    return -1;
--}
--
- static int net_init_nic(const Netdev *netdev, const char *name,
-                         NetClientState *peer, Error **errp)
- {
-@@ -1776,9 +1744,14 @@ static int net_param_nic(void *dummy, QemuOpts *opts, Error **errp)
-         }
-         if (is_help_option(type)) {
-             GPtrArray *nic_models = qemu_get_nic_models(TYPE_DEVICE);
-+            int i;
-             show_netdevs();
-             printf("\n");
--            qemu_show_nic_models(type, (const char **)nic_models->pdata);
-+            printf("Supported NIC models "
-+                   "(use -nic model=help for a filtered list):\n");
-+            for (i = 0 ; nic_models->pdata[i]; i++) {
-+                printf("%s\n", (char *)nic_models->pdata[i]);
-+            }
-             g_ptr_array_free(nic_models, true);
-             exit(0);
-         }
+ static GHashTable *nic_model_help;
+ 
++static int nb_nics;
++static NICInfo nd_table[MAX_NICS];
++
+ /***********************************************************/
+ /* network device redirectors */
+ 
+diff --git a/system/globals.c b/system/globals.c
+index e83b5428d1..b6d4e72530 100644
+--- a/system/globals.c
++++ b/system/globals.c
+@@ -36,8 +36,6 @@ int display_opengl;
+ const char* keyboard_layout;
+ bool enable_mlock;
+ bool enable_cpu_pm;
+-int nb_nics;
+-NICInfo nd_table[MAX_NICS];
+ int autostart = 1;
+ int vga_interface_type = VGA_NONE;
+ bool vga_interface_created;
 -- 
 2.41.0
 
