@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BA57E2788
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE617E27A3
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:50:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00mx-0003ek-Kc; Mon, 06 Nov 2023 09:41:15 -0500
+	id 1r00nx-0007GY-MP; Mon, 06 Nov 2023 09:42:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1r00mU-0003XZ-40; Mon, 06 Nov 2023 09:40:48 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1r00mQ-0001ks-VT; Mon, 06 Nov 2023 09:40:45 -0500
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SPDWs5w1Kz6K9BG;
- Mon,  6 Nov 2023 22:39:37 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 6 Nov 2023 14:40:37 +0000
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 6 Nov 2023 14:40:37 +0000
-To: Igor Mammedov <imammedo@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
- <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
- <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "andrew.jones@linux.dev"
- <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "will@kernel.org" <will@kernel.org>, "gshan@redhat.com"
- <gshan@redhat.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
- <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
- <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
- <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
- <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
- "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
- <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
- "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
- <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "lixianglai@loongson.cn" <lixianglai@loongson.cn>, Linuxarm
- <linuxarm@huawei.com>
-Subject: RE: [PATCH V6 3/9] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Topic: [PATCH V6 3/9] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Index: AQHZ/cNvZAwhAw6k7UmuT7OTRFemlbBdoEIAgA/iYFA=
-Date: Mon, 6 Nov 2023 14:40:37 +0000
-Message-ID: <53b571766ce7445c828badc2b45db598@huawei.com>
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
- <20231013105129.25648-4-salil.mehta@huawei.com>
- <20231027150536.3c481246@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231027150536.3c481246@imammedo.users.ipa.redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.148.208]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r00nu-0007AG-0U
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:42:14 -0500
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r00ns-0002E2-95
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:42:13 -0500
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2c50906f941so65533321fa.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:42:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699281729; x=1699886529; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cxQBX4prONbM7Syoc9xTNYWRY1Hp6Xw4jGv0zwqcn9Q=;
+ b=wgw7hq4x7bMU56a2FWR1YNVSwpm9EeQqrXlifyt0pSdxLYX8IXK0pZ6BPb9uUhS+qO
+ W4IeOCLh4VifEgjwwZTYcPLdVFK+mgty39ig4r4MX6nMre/s74LdRB6Ox6vWDhYV4a81
+ KF4+lXFIWUJ7L9tjX1DQfmA/V6x73MTvfxjfV9FnnQmWL7ILkn9nnyts12W4tVDdWL1e
+ 2mxjS0ReMNAlGQwhTSRwqgy31CYVnyt3HQwmx5+gIUg8pew0lyNsCWANijaW4Vlpi6ll
+ Rfh+rIO9Svml2X6qm8MIjHXUDWeja+/a4jVKS6EYlWrjGS2EBsq/TTg/wcQn+rFTvkVE
+ EGnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699281729; x=1699886529;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cxQBX4prONbM7Syoc9xTNYWRY1Hp6Xw4jGv0zwqcn9Q=;
+ b=V0RqHfQ/VQBhvj556dPDQSZY+HBQjAgXsbO3m6EPIIbUS+SgkoUyoiOd8/epO8XZ8Y
+ pMat1l9hoG2udvyoKU+AXZwk2wJT4WoizDmsUViZmYUiqokXX9YlQiJ/QYh5zAthLYl4
+ QYtuYYo6mV7+1aEABtxizrNU72iWOZPG1aCJsGkGd+5TlZ4Ewa3zQn9Ulu40EKVN1oOa
+ wBlfaUk/hLypzp72vvhAncTksYRKwyCXjVoI4jEbRMmAxGiunA7yHdULzV1dyV4Qotoc
+ 5arrUcAhc5rQwkPATK0K1usOpLAmjuWKRdTMWHGEKRvdv+e1kpDT1E7xW+i1mSJkpgxv
+ 8o+w==
+X-Gm-Message-State: AOJu0YwBKTlWinw33N88dxw4l2MgAqs3eIrKbp9Afl/8w6kw5VVTdWkw
+ 8YXzC+GgfJb3uOtGtqnbwHCAagTF2lS8/w3MScM=
+X-Google-Smtp-Source: AGHT+IEiFSlMzG/B6QFzKgyduS7MgXVrZxgvCZWjNh3XH62bKuwGRpz6S2dXZq8XKfvDbG078HveUg==
+X-Received: by 2002:a2e:8847:0:b0:2bb:78ad:56cb with SMTP id
+ z7-20020a2e8847000000b002bb78ad56cbmr22617269ljj.37.1699281728853; 
+ Mon, 06 Nov 2023 06:42:08 -0800 (PST)
+Received: from [192.168.69.115] (176-131-220-199.abo.bbox.fr.
+ [176.131.220.199]) by smtp.gmail.com with ESMTPSA id
+ 17-20020a05600c021100b004053e9276easm12173265wmi.32.2023.11.06.06.42.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Nov 2023 06:42:08 -0800 (PST)
+Message-ID: <2bac7544-b293-986c-c612-259f5d45663e@linaro.org>
+Date: Mon, 6 Nov 2023 15:42:06 +0100
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 2/4] tcg/optimize: Canonicalize subi to addi during
+ optimization
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20231026013945.1152174-1-richard.henderson@linaro.org>
+ <20231026013945.1152174-3-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231026013945.1152174-3-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.085,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,81 +91,15 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
+On 26/10/23 03:39, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/optimize.c | 14 +++++++++++++-
+>   1 file changed, 13 insertions(+), 1 deletion(-)
 
-> From: Igor Mammedov <imammedo@redhat.com>
-> Sent: Friday, October 27, 2023 2:06 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; Jonathan Cameron <jonathan.cameron@huawei.com>;
-> lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; andrew.jones@linux.dev; david@redhat.com;
-> philmd@linaro.org; eric.auger@redhat.com; oliver.upton@linux.dev;
-> pbonzini@redhat.com; mst@redhat.com; will@kernel.org; gshan@redhat.com;
-> rafael@kernel.org; alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V6 3/9] hw/acpi: Add ACPI CPU hotplug init stub
->=20
-> On Fri, 13 Oct 2023 11:51:23 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > ACPI CPU hotplug related initialization should only happen if ACPI_CPU_=
-HOTPLUG
-> > support has been enabled for particular architecture. Add cpu_hotplug_h=
-w_init()
-> > stub to avoid compilation break.
->=20
-> merge this with 4/9 that actually requires this to be done.
-
-Sure. No issues.
-
-
-Thanks
-Salil.
-
-
-> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> > Tested-by: Xianglai Li <lixianglai@loongson.cn>
-> > ---
-> >  hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug=
--
-> stub.c
-> > index 3fc4b14c26..c6c61bb9cd 100644
-> > --- a/hw/acpi/acpi-cpu-hotplug-stub.c
-> > +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
-> > @@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion
-> *parent, Object *owner,
-> >      return;
-> >  }
-> >
-> > +void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-> > +                         CPUHotplugState *state, hwaddr base_addr)
-> > +{
-> > +    return;
-> > +}
-> > +
-> >  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList
-> ***list)
-> >  {
-> >      return;
->=20
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
