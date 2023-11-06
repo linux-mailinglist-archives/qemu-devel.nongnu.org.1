@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122227E1A9D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:00:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3067E1AAA
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:03:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztZd-0004Za-Du; Mon, 06 Nov 2023 01:59:03 -0500
+	id 1qztZk-0004Zx-4m; Mon, 06 Nov 2023 01:59:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZO-0004V6-Pk
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:46 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qztZS-0004WJ-1z
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:53 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZM-0001Oj-GS
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:46 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1ccbb7f79cdso5485845ad.3
+ id 1qztZN-0001Ot-CQ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:49 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1cc394f4cdfso26402115ad.0
  for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699253923; x=1699858723; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699253924; x=1699858724; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vhaDOlXqK723HSaocfjU1ZCevxhmhF4yuGDJMeM3d5I=;
- b=DfILDRyzNDrR8ECbgoMra8J2l2D3unYez3+EyiQ8B+kbolZpjFa+SsZTuK4qKAxvg3
- 9zG00trlXnKRS7D+C2rIzME572xh1wbmvXW3CecJzRktynwg0oiKnRvdyj3GxBAu2qGw
- PlLGy+LUVpFOgl4O+Rha8856WR7zldbl74B7I4IWvwb7H4r+ZpyryWEI+hU5HI02ViR/
- Mhk2NKEU2rCiWrHhWsVbnpyUtsLHAjuNFViLemyN7sh3PB6CsKr8U20++2poCiFHwpfL
- d9zTtRO29qKBJ625M2xxG2HkcHXHO/yJR75RTrCxOvSbUGkwecgFLGsNb1x3HTgZDuz6
- AxhQ==
+ bh=KS5pbyfQkBJ8BXnndQLZdlQ4oCZm/2DiCmUpXy8qB3I=;
+ b=xK6En3YO3sUV7xPZKo4mFlaxU3pvxVAk3FhDoE62lZTxpmUI79X7smGxKhcimOzeRP
+ YYxjCFmodr6f+mN4OptdxKO/mxFz54owDWOhH+r/98Xom9KF1ymg2YDU6IfzRGaeAmUx
+ 3XNQDcYO+R+7O22HLBAOUAIFAdbz2+PLTFuRaam3zgmfJguf4ikoBwW24utYY0Dc/4fK
+ 3suzokdbFhAg/EqOuhNIfXDv343dI+r7wp/cPYa9L90swZPmeuilxYzOsZM9kI96Y/gh
+ eK33ZLFIXSzDIMJCXQecLAB6J7g7ieHFWF9j0I5ibZMTh5Qqhq6a8RtDyCx0bJVKqQHj
+ E5gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699253923; x=1699858723;
+ d=1e100.net; s=20230601; t=1699253924; x=1699858724;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vhaDOlXqK723HSaocfjU1ZCevxhmhF4yuGDJMeM3d5I=;
- b=WTdmcUrkxl28yZXBfA5+z6S30sUXI61d2OrKk2tTAY6oaq3TuOHL7O6VBLsrwXi9Fb
- ZLY7GRR/PJmy4UUymxzDM7TWieQtPLTI7qmnMRzQt9z9kC0/blkZITrFhhNB5urCLpZL
- ApLfM/ZqTw2FCB+S/r7w1neae+noNI4WSnDDPtYPNOfdjA5TQ/GlQ3rVCKNuIcAxnJUD
- mJpaG03zTPNyLlPCva/1JHKrQ3t2qjU/JA7e+JPh9tdR+Y9oiIftfGAZHPJz+xnftnAn
- 1PxubCG7M3tkDefUtQps5W2JVc8VAeZeJHoqxJwcNaJUVin30acg3ajTaFnsl653+vUI
- KZCQ==
-X-Gm-Message-State: AOJu0YzuikB9xB3bXu3IoySb4Zcm77IaN4hzQrbpaer+9DQ7ya5FlbJI
- YyXx0dyJbap6tpf3K4BTd1OZNCi+LONgCI8ho/Y=
-X-Google-Smtp-Source: AGHT+IH83f0Cf0hajY0vjmjAE1rk4AdIk8I8H51KPTNbZ0EPaIlwYfBrmw5Y9r0HzvEhxaCNH9HFNg==
-X-Received: by 2002:a17:902:d18d:b0:1cc:1106:cf5b with SMTP id
- m13-20020a170902d18d00b001cc1106cf5bmr20889551plb.19.1699253923326; 
- Sun, 05 Nov 2023 22:58:43 -0800 (PST)
+ bh=KS5pbyfQkBJ8BXnndQLZdlQ4oCZm/2DiCmUpXy8qB3I=;
+ b=eW6y4WGdO/pRSaTlwEyxm/7iymQbCB8mq4olP7XcA8dxvn2JMGyQo9MFCdmp6oPLlA
+ qaE0ZQ7yx03d2ZgddYOvWTzxe3n4AuSuoU/q3quuujerCFwB9CXwl6FVIy3yXzHsWkyU
+ 4cPrAlaJTi+W2ena0hHsEAsw4psW/ECNV5i92tPnISH1yfjLsaQ2xa3y95lo6mKvLGby
+ uMmylS6GOA/WlSW2/SIpRz3YZVKy3IesFhpTQXPwuKWHn5dBUsiw9tCT8napBAJXl3SX
+ W1iuQohnCXpK/JNubylwteAN0bI4/tBpNjOUMWe9XeqY2UW4OVZo4mEdJsE1mAaQwtEZ
+ 28QQ==
+X-Gm-Message-State: AOJu0YxVWveJY0/RIc21yvberxnDFdzkOb8a4gy4ADmRKTpBycZnBCjK
+ HYUBSvje5ohRjQf/k/4r1eVsXbYVBfKCrR3SbbM=
+X-Google-Smtp-Source: AGHT+IF6x85v+LXfMlV2qoF1MXUY9Xdkuj12UBsKUv0n15DbO+5Kd39o0JOX6RxrQTvCOi2RWMSlEQ==
+X-Received: by 2002:a17:902:da87:b0:1cc:4146:9eb0 with SMTP id
+ j7-20020a170902da8700b001cc41469eb0mr23674492plx.57.1699253924183; 
+ Sun, 05 Nov 2023 22:58:44 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.42
+ c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 22:58:42 -0800 (PST)
+ Sun, 05 Nov 2023 22:58:43 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 16/71] target/s390x: Constify VMState in machine.c
-Date: Sun,  5 Nov 2023 22:57:32 -0800
-Message-Id: <20231106065827.543129-17-richard.henderson@linaro.org>
+Subject: [PATCH 17/71] target/sparc: Constify VMState in machine.c
+Date: Sun,  5 Nov 2023 22:57:33 -0800
+Message-Id: <20231106065827.543129-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,139 +92,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/machine.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ target/sparc/machine.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/s390x/machine.c b/target/s390x/machine.c
-index 37a076858c..a125ebcc2f 100644
---- a/target/s390x/machine.c
-+++ b/target/s390x/machine.c
-@@ -66,7 +66,7 @@ static const VMStateDescription vmstate_fpu = {
+diff --git a/target/sparc/machine.c b/target/sparc/machine.c
+index 274e1217df..b1b1e16b13 100644
+--- a/target/sparc/machine.c
++++ b/target/sparc/machine.c
+@@ -10,7 +10,7 @@ static const VMStateDescription vmstate_cpu_timer = {
+     .name = "cpu_timer",
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = fpu_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(env.vregs[0][0], S390CPU),
-         VMSTATE_UINT64(env.vregs[1][0], S390CPU),
-         VMSTATE_UINT64(env.vregs[2][0], S390CPU),
-@@ -98,7 +98,7 @@ static const VMStateDescription vmstate_vregs = {
+         VMSTATE_UINT32(frequency, CPUTimer),
+         VMSTATE_UINT32(disabled, CPUTimer),
+         VMSTATE_UINT64(disabled_mask, CPUTimer),
+@@ -29,7 +29,7 @@ static const VMStateDescription vmstate_trap_state = {
+     .name = "trap_state",
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = vregs_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         /* vregs[0][0] -> vregs[15][0] and fregs are overlays */
-         VMSTATE_UINT64(env.vregs[16][0], S390CPU),
-         VMSTATE_UINT64(env.vregs[17][0], S390CPU),
-@@ -157,12 +157,12 @@ static bool riccb_needed(void *opaque)
-     return s390_has_feat(S390_FEAT_RUNTIME_INSTRUMENTATION);
- }
- 
--const VMStateDescription vmstate_riccb = {
-+static const VMStateDescription vmstate_riccb = {
-     .name = "cpu/riccb",
+         VMSTATE_UINT64(tpc, trap_state),
+         VMSTATE_UINT64(tnpc, trap_state),
+         VMSTATE_UINT64(tstate, trap_state),
+@@ -42,7 +42,7 @@ static const VMStateDescription vmstate_tlb_entry = {
+     .name = "tlb_entry",
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = riccb_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_ARRAY(env.riccb, S390CPU, 64),
+         VMSTATE_UINT64(tag, SparcTLBEntry),
+         VMSTATE_UINT64(tte, SparcTLBEntry),
          VMSTATE_END_OF_LIST()
-     }
-@@ -174,12 +174,12 @@ static bool exval_needed(void *opaque)
-     return cpu->env.ex_value != 0;
- }
- 
--const VMStateDescription vmstate_exval = {
-+static const VMStateDescription vmstate_exval = {
-     .name = "cpu/exval",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = exval_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(env.ex_value, S390CPU),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -190,12 +190,12 @@ static bool gscb_needed(void *opaque)
-     return s390_has_feat(S390_FEAT_GUARDED_STORAGE);
- }
- 
--const VMStateDescription vmstate_gscb = {
-+static const VMStateDescription vmstate_gscb = {
-     .name = "cpu/gscb",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = gscb_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64_ARRAY(env.gscb, S390CPU, 4),
-         VMSTATE_END_OF_LIST()
-         }
-@@ -206,12 +206,12 @@ static bool bpbc_needed(void *opaque)
-     return s390_has_feat(S390_FEAT_BPB);
- }
- 
--const VMStateDescription vmstate_bpbc = {
-+static const VMStateDescription vmstate_bpbc = {
-     .name = "cpu/bpbc",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = bpbc_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(env.bpbc, S390CPU),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -222,12 +222,12 @@ static bool etoken_needed(void *opaque)
-     return s390_has_feat(S390_FEAT_ETOKEN);
- }
- 
--const VMStateDescription vmstate_etoken = {
-+static const VMStateDescription vmstate_etoken = {
-     .name = "cpu/etoken",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = etoken_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(env.etoken, S390CPU),
-         VMSTATE_UINT64(env.etoken_extension, S390CPU),
-         VMSTATE_END_OF_LIST()
-@@ -239,12 +239,12 @@ static bool diag318_needed(void *opaque)
-     return s390_has_feat(S390_FEAT_DIAG_318);
- }
- 
--const VMStateDescription vmstate_diag318 = {
-+static const VMStateDescription vmstate_diag318 = {
-     .name = "cpu/diag318",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = diag318_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(env.diag318_info, S390CPU),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -256,7 +256,7 @@ const VMStateDescription vmstate_s390_cpu = {
+@@ -111,7 +111,7 @@ const VMStateDescription vmstate_sparc_cpu = {
+     .version_id = SPARC_VMSTATE_VER,
+     .minimum_version_id = SPARC_VMSTATE_VER,
      .pre_save = cpu_pre_save,
-     .version_id = 4,
-     .minimum_version_id = 3,
--    .fields      = (VMStateField[]) {
+-    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64_ARRAY(env.regs, S390CPU, 16),
-         VMSTATE_UINT64(env.psw.mask, S390CPU),
-         VMSTATE_UINT64(env.psw.addr, S390CPU),
-@@ -278,7 +278,7 @@ const VMStateDescription vmstate_s390_cpu = {
-                                irqstate_saved_size),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_fpu,
-         &vmstate_vregs,
-         &vmstate_riccb,
+         VMSTATE_UINTTL_ARRAY(env.gregs, SPARCCPU, 8),
+         VMSTATE_UINT32(env.nwindows, SPARCCPU),
+         VMSTATE_VARRAY_MULTIPLY(env.regbase, SPARCCPU, env.nwindows, 16,
 -- 
 2.34.1
 
