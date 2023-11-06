@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15177E2D7E
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 21:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C598B7E2D65
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:58:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r05gL-0005zo-Du; Mon, 06 Nov 2023 14:54:45 -0500
+	id 1r05g9-0005iG-BL; Mon, 06 Nov 2023 14:54:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05g5-0005dK-Oy; Mon, 06 Nov 2023 14:54:29 -0500
+ id 1r05g3-0005aP-7z; Mon, 06 Nov 2023 14:54:27 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05fy-000670-Jv; Mon, 06 Nov 2023 14:54:29 -0500
+ id 1r05fy-00066w-NI; Mon, 06 Nov 2023 14:54:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=wozYunS9mL+E+NW7be8DLpB1Vtj79zSyr6dMjYfNaXI=; b=IoLpE9gkE9J0qJIMBKoLN90jlx
- dKMP44wh/kmWLVGWQCMB36Wv1ZZxqGgjjpQRZKpKfNoKjUQp6AKep39tQtJrYYYL1KXOun27Tm2GN
- QPhq6Anifsq/JrWLTIvLeUf8+PeQuWGUxsCYIVdofOeqgT/Y3R2i7Ceuqu+p5rEqsxbFErCJgRe8l
- tjPGWVxf4PIHCp702jkTJGOC7W3uGhRjs7Dmu2eHpX8TfsYQ1Z9Dy665uJkun4qXq4HIkqgvzKhbm
- E16+bEzNUcXzYTZFZQCI8g9JOuLpX6dxzYS4NTMTL6BBFggj2Zc8r1GjsfOAnydeobZejFaVVLxr4
- k55ywrFg==;
+ bh=L5VhMhMWWBNBbH2l848PbF3Scoxc1bNY0ufdNZIbk1U=; b=iGwdZ+aCxnLlfra+boD9l6BbR5
+ ZecLaYSnhd2Mj6VGcRr5cKFp3OHC4upiyzuowHAzrNm+l9PPjYHAkA4bsuk85Y4nKk52kzr3+zyEd
+ WnS0EyMGlN6ZDfyfDTmHT/OpldPg+ZJbZZPEcHW5jilZh/O9C382WNiPYOg9DNJ13rHwCLDxJFCPm
+ Y+L4+sh6q+geRp+KAezyv3Z+Nb5xjuNyuOBLWRC7q+PqKSiqxSUwzaBCQGXmBFP4ccIZe+YhY+YYX
+ TdkNjwVq2/Gm1+kB1qfNHER9XVHZDiq28bZA9sEfSnKDxSIznvYI5NHm4VScCILsu+ZnzaauwqDEy
+ 7knI7PNw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r05fc-007tag-Lr; Mon, 06 Nov 2023 19:54:01 +0000
+ id 1r05fc-007tah-BC; Mon, 06 Nov 2023 19:54:01 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1r05fc-001GP1-1f; Mon, 06 Nov 2023 19:54:00 +0000
+ Hat Linux)) id 1r05fc-001GP5-1u; Mon, 06 Nov 2023 19:54:00 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,10 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH for-8.3 v2 34/46] hw/microblaze: use
- qemu_configure_nic_device()
-Date: Mon,  6 Nov 2023 19:49:39 +0000
-Message-ID: <20231106195352.301038-35-dwmw2@infradead.org>
+Subject: [PATCH for-8.3 v2 35/46] hw/mips/mipssim: use qemu_create_nic_device()
+Date: Mon,  6 Nov 2023 19:49:40 +0000
+Message-ID: <20231106195352.301038-36-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106195352.301038-1-dwmw2@infradead.org>
 References: <20231106195352.301038-1-dwmw2@infradead.org>
@@ -121,48 +120,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
+The MIPS SIM platform instantiates its NIC only if a corresponding
+configuration exists for it. Use qemu_create_nic_device() function for
+that.
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/microblaze/petalogix_ml605_mmu.c      | 3 +--
- hw/microblaze/petalogix_s3adsp1800_mmu.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ hw/mips/mipssim.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
-index fb7889cf67..0f5fabc32e 100644
---- a/hw/microblaze/petalogix_ml605_mmu.c
-+++ b/hw/microblaze/petalogix_ml605_mmu.c
-@@ -133,7 +133,6 @@ petalogix_ml605_init(MachineState *machine)
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ]);
+diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
+index 4f743f37eb..d930526fd6 100644
+--- a/hw/mips/mipssim.c
++++ b/hw/mips/mipssim.c
+@@ -110,13 +110,15 @@ static void main_cpu_reset(void *opaque)
+     }
+ }
  
-     /* axi ethernet and dma initialization. */
--    qemu_check_nic_model(&nd_table[0], "xlnx.axi-ethernet");
-     eth0 = qdev_new("xlnx.axi-ethernet");
-     dma = qdev_new("xlnx.axi-dma");
+-static void mipsnet_init(int base, qemu_irq irq, NICInfo *nd)
++static void mipsnet_init(int base, qemu_irq irq)
+ {
+     DeviceState *dev;
+     SysBusDevice *s;
  
-@@ -145,7 +144,7 @@ petalogix_ml605_init(MachineState *machine)
-                                   "axistream-connected-target", NULL);
-     cs = object_property_get_link(OBJECT(dma),
-                                   "axistream-control-connected-target", NULL);
--    qdev_set_nic_properties(eth0, &nd_table[0]);
-+    qemu_configure_nic_device(eth0, true, NULL);
-     qdev_prop_set_uint32(eth0, "rxmem", 0x1000);
-     qdev_prop_set_uint32(eth0, "txmem", 0x1000);
-     object_property_set_link(OBJECT(eth0), "axistream-connected", ds,
-diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-index 505639c298..dad46bd7f9 100644
---- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
-+++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-@@ -114,9 +114,8 @@ petalogix_s3adsp1800_init(MachineState *machine)
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, TIMER_BASEADDR);
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq[TIMER_IRQ]);
+-    dev = qdev_new("mipsnet");
+-    qdev_set_nic_properties(dev, nd);
++    dev = qemu_create_nic_device("mipsnet", true, NULL);
++    if (!dev) {
++        return;
++    }
  
--    qemu_check_nic_model(&nd_table[0], "xlnx.xps-ethernetlite");
-     dev = qdev_new("xlnx.xps-ethernetlite");
--    qdev_set_nic_properties(dev, &nd_table[0]);
-+    qemu_configure_nic_device(dev, true, NULL);
-     qdev_prop_set_uint32(dev, "tx-ping-pong", 0);
-     qdev_prop_set_uint32(dev, "rx-ping-pong", 0);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
+@@ -217,9 +219,8 @@ mips_mipssim_init(MachineState *machine)
+                       sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
+     }
+ 
+-    if (nd_table[0].used)
+-        /* MIPSnet uses the MIPS CPU INT0, which is interrupt 2. */
+-        mipsnet_init(0x4200, env->irq[2], &nd_table[0]);
++    /* MIPSnet uses the MIPS CPU INT0, which is interrupt 2. */
++    mipsnet_init(0x4200, env->irq[2]);
+ }
+ 
+ static void mips_mipssim_machine_init(MachineClass *mc)
 -- 
 2.41.0
 
