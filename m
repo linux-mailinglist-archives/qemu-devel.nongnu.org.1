@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6DD57E2B63
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 18:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5104C7E2B69
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 18:45:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r03bK-0005Tf-19; Mon, 06 Nov 2023 12:41:26 -0500
+	id 1r03et-0007xO-Ih; Mon, 06 Nov 2023 12:45:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r03bI-0005TC-0d
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:41:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r03eq-0007wv-LP
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:45:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r03b4-0005sO-Uc
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:41:23 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r03em-0006j5-Kd
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:45:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699292469;
+ s=mimecast20190719; t=1699292699;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ziINzhKYQb0ixzm3ye3DkbTQln1K75LKKUEyNyhq65Y=;
- b=Fg6JWpVqCYkOGpj2gFsDjtK/hiXGGMH/MYZD0JAkpYeg48Hol0WIWJbcUjclocPubT2lH1
- Uz/RcTyekJoa6r5U5Cy5pqJTmVLfAjK6DC6VQlyy/+dypPPC8Ej74EkWke4NHKTx8r3Xv4
- QzimZy3ZYQP/BsDeb5owHKA3MfjUrjQ=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YZUHhAmFtlrN+lohzBJX2U+0m1HWMz1LbnL3CWxlmHY=;
+ b=DgLO9OqIdfpAUcIiBsspOPO7Vgf0Ljx/Edkn9e/gpDgwBqPHRQT0HGuHIgNcgOJLtSlcT8
+ qaLEd9tw7o23zcl0WXuywX4MtD0F6af70WYFiJLGkAwFKam1VKpZncDMgogTjnr1msnpfT
+ xbyWydgNGRjioGHttA1D3GAQyWSE4gw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-fohD3OePOHWYTXV3TSAA-w-1; Mon, 06 Nov 2023 12:40:51 -0500
-X-MC-Unique: fohD3OePOHWYTXV3TSAA-w-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2c506abc320so41373271fa.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 09:40:51 -0800 (PST)
+ us-mta-668-YVjKI4LKNHOE8_05Z-y-Zg-1; Mon, 06 Nov 2023 12:44:58 -0500
+X-MC-Unique: YVjKI4LKNHOE8_05Z-y-Zg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-407da05ee50so30043125e9.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 09:44:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699292450; x=1699897250;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ziINzhKYQb0ixzm3ye3DkbTQln1K75LKKUEyNyhq65Y=;
- b=iupFHS7ITyDfcF/2Kypenwwxcrrh2Mssuo2LWcmUXq1zCyb+qOxIrF7qhItbVU5Zz3
- S+FZgdTHQntLUdyAewzP1WErCfof0TLDNWL6m/O/Bzzc8/RLYhHN2gM8ryDsjtqQpcNx
- SztF0eu1xRHAnFJBb/5vBHB6UDXUE3s2p8GTIbRx9cfzVbJ8Sc2pPQcLvGqSQ2Yry8pG
- Z7vDwJcb9CSkSfi494ZlRGDwFNDt74vCY5Hi1F0UbT2R4jHNsIh7CXvFNneCn4vscOMD
- dtG3TtZPST4r3rphVomgNYzSifrVOzLSrPkisnGXxW5vlqGt5gTakaWIP18svl1K+2nQ
- neAQ==
-X-Gm-Message-State: AOJu0YzCItPDsmF5wWgl3YMoGLf8M4+AEL9+SxChc9+scz78GsjTHi1a
- gIKj1UNPoFDUN3kbdsMCp/VtnvKxULpCjzMedigF2W1GC6xABHUPF+yvTAHJp7W1Ng3BEWzEjoh
- 1VTyhJhiUy5ej3fY=
-X-Received: by 2002:a2e:a4c9:0:b0:2c6:ed19:58a6 with SMTP id
- p9-20020a2ea4c9000000b002c6ed1958a6mr10462340ljm.33.1699292450019; 
- Mon, 06 Nov 2023 09:40:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF/WkKLAW+HPR0PDMdN9FG3X4uA5tJcXmxomJBYNJOtgCRXuskZT0uSPUpVLx4PszKyIchreg==
-X-Received: by 2002:a2e:a4c9:0:b0:2c6:ed19:58a6 with SMTP id
- p9-20020a2ea4c9000000b002c6ed1958a6mr10462328ljm.33.1699292449664; 
- Mon, 06 Nov 2023 09:40:49 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699292697; x=1699897497;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YZUHhAmFtlrN+lohzBJX2U+0m1HWMz1LbnL3CWxlmHY=;
+ b=wkvN8HWkFMb/Sn646EqaUmhHDwCQ/HOuZajFqvgQWzh59SrAszLMfdbhz7tLdgcKVy
+ lVWhoIPOHWTOXP8nnS39nY43/JoIAIEmciI84JuHmG6r/uLUV1J9hMc2yyNoLYhtBkBt
+ aXGVIoln6GzlGFsJIYv7ciJMH9lZeen2PsnPfA6ScDXHFYMgKty830puB/nRqcDL4HcK
+ fNCow3TN5WJqohgEV4WjedBCJHbXqpj1jD2CJWOjJaqrZ6Za0lZyfMKFvNPITG4Ab2v+
+ ylRjG+RJb8wnKzUO1ginqM005BhitmHHcrD1w8Hltd6ddaJA9o4TJb19TJ+pnrIcFw8s
+ 7t4g==
+X-Gm-Message-State: AOJu0Yzb5mNcDhioRvbK1k22zFUKHQ5+ltHl2Y0Bk9abXrSWqR1CdOxO
+ iJvEjmO9cmUXuBc2dU+FGPEw8BYsbOva/XHmLMDM824hAmx7ZGHD66Nd7/DaPAc33LkVOrMM3VC
+ SkUhU9ge3l8dSKk4=
+X-Received: by 2002:a7b:c4d5:0:b0:405:39c1:a98b with SMTP id
+ g21-20020a7bc4d5000000b0040539c1a98bmr358411wmk.20.1699292697036; 
+ Mon, 06 Nov 2023 09:44:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG2vlRaV0ayrWTqUw9jK2V0uP31GeQna+wOvtELbBkYXzTf3njr0QYIkkwYUiUeZQgjbU2Q6g==
+X-Received: by 2002:a7b:c4d5:0:b0:405:39c1:a98b with SMTP id
+ g21-20020a7bc4d5000000b0040539c1a98bmr358400wmk.20.1699292696701; 
+ Mon, 06 Nov 2023 09:44:56 -0800 (PST)
 Received: from redhat.com ([5.102.242.158]) by smtp.gmail.com with ESMTPSA id
- f13-20020a05600c4e8d00b0040596352951sm12757850wmq.5.2023.11.06.09.40.48
+ n3-20020a05600c4f8300b004064288597bsm13057822wmq.30.2023.11.06.09.44.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 09:40:49 -0800 (PST)
-Date: Mon, 6 Nov 2023 12:40:46 -0500
+ Mon, 06 Nov 2023 09:44:56 -0800 (PST)
+Date: Mon, 6 Nov 2023 12:44:53 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: zhujun2 <zhujun2@cmss.chinamobile.com>
-Cc: qemu-devel@nongnu.org, imammedo@redhat.com, anisinha@redhat.com,
- thuth@redhat.com, lvivier@redhat.com
-Subject: Re: [PATCH] tests: Fix printf format string in acpi-utils.c
-Message-ID: <20231106123942-mutt-send-email-mst@kernel.org>
-References: <20231027030930.7739-1-zhujun2@cmss.chinamobile.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Kevin Wolf <kwolf@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v3 0/6] migration: check required entries and sections
+ are loaded
+Message-ID: <20231106124405-mutt-send-email-mst@kernel.org>
+References: <20231106113601.2052601-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20231027030930.7739-1-zhujun2@cmss.chinamobile.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231106113601.2052601-1-marcandre.lureau@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,35 +103,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 26, 2023 at 08:09:30PM -0700, zhujun2 wrote:
-> Inside of acpi_fetch_table() arguments are
-> printed via fprintf but '%d' is used to print @flags (of type
-> uint). Use '%u' instead.
+On Mon, Nov 06, 2023 at 03:35:54PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Signed-off-by: zhujun2 <zhujun2@cmss.chinamobile.com>
-
-OK though I never expect this to matter.
-
-> ---
->  tests/qtest/acpi-utils.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi,
 > 
-> diff --git a/tests/qtest/acpi-utils.c b/tests/qtest/acpi-utils.c
-> index 673fc97586..6389f1f418 100644
-> --- a/tests/qtest/acpi-utils.c
-> +++ b/tests/qtest/acpi-utils.c
-> @@ -102,7 +102,7 @@ void acpi_fetch_table(QTestState *qts, uint8_t **aml, uint32_t *aml_len,
->              char *fname = NULL;
->              GError *error = NULL;
->  
-> -            fprintf(stderr, "Invalid '%.4s'(%d)\n", *aml, *aml_len);
-> +            fprintf(stderr, "Invalid '%.4s'(%u)\n", *aml, *aml_len);
->              fd = g_file_open_tmp("malformed-XXXXXX.dat", &fname, &error);
->              g_assert_no_error(error);
->              fprintf(stderr, "Dumping invalid table into '%s'\n", fname);
+> Surprisingly, the migration code doesn't check that required migration entries
+> and subsections are loaded. Either optional or required sections are both
+> ignored when missing. According to the documentation a "newer QEMU that knows
+> about a subsection can (with care) load a stream from an older QEMU that didn't
+> send the subsection". I propose this behaviour to be limited to "optional"
+> sections only.
+> 
+> This series has a few preliminary fixes, add new checks that entries are
+> loaded once and required ones have been loaded, add some tests and
+> documentation update.
+> 
+> thanks
+
+I think this kind of thing is better deferred to the next release -
+unless you have something specific in mind this fixes?
+
+> v3:
+>  - rebased, drop RFC status
+>  - switch from tracepoint + returning an error to report for missing
+>    subsections, as we worry about potential regressions
+>  - add r-b tags
+> 
+> v2:
+>  - add "migration: rename vmstate_save_needed->vmstate_section_needed"
+>  - add "migration: set file error on subsection loading"
+>  - add subsection tests
+>  - update the documentation
+> 
+> Marc-André Lureau (6):
+>   block/fdc: 'phase' is not needed on load
+>   virtio: make endian_needed() work during loading
+>   migration: check required subsections are loaded, once
+>   migration: check required entries are loaded, once
+>   test-vmstate: add some subsection tests
+>   docs/migration: reflect the changes about needed subsections
+> 
+>  docs/devel/migration.rst  |  17 +++---
+>  hw/block/fdc.c            |   5 ++
+>  hw/virtio/virtio.c        |   6 +-
+>  migration/savevm.c        |  43 ++++++++++++++
+>  migration/vmstate.c       |  40 ++++++++++++-
+>  tests/unit/test-vmstate.c | 116 ++++++++++++++++++++++++++++++++++++++
+>  6 files changed, 215 insertions(+), 12 deletions(-)
+> 
 > -- 
-> 2.17.1
-> 
-> 
+> 2.41.0
 
 
