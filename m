@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86DC7E1FAD
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4497E1FB6
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:13:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxRV-0002Js-6Y; Mon, 06 Nov 2023 06:06:53 -0500
+	id 1qzxRW-0002Vi-UO; Mon, 06 Nov 2023 06:06:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQw-0001Zh-Vg
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:06:20 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQz-0001ei-JZ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:06:26 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQg-0004NB-Nh
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:06:18 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40850b244beso33448295e9.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:06:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQw-0004O5-Jx
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:06:21 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4079ed65582so32860215e9.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:06:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268759; x=1699873559; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268766; x=1699873566; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WdevyuV5vDNMMgKGndHL1Lb3pKI2mM3BGOnKiVXcZMA=;
- b=n3lXasjQ9MspPMWhijtRr4yhgrqcXudFV+laNDcjzm6qh2crncIb9f+EJ/kuD4ysZm
- lh6s1TCnhg7o6kEpnYmMu6NtyWeV92AwDVMlyUuyt/9rTZjnSpivQeSL53GjwtHk4OJ/
- w6rKCxxoZqZZAUZsO7TBsF+HL5ZslLAiXHLkJuh9Oq04jPQbzfyXkCZrUFsJ8LD+T4Vt
- eAIZ76tWpwd6o3tV7JYmP1F58AgdV9CI+YfST+2ODpcL9j9gyNu5/fyy+Wbm4Su2noTv
- rG/frpzoMandao0+A3GXnecPths2LqPBno3N1/fkOfLFJ+JleIHjkT8hkBrFcHk2TjUO
- aKMA==
+ bh=R87QIdTSbuBFqtOuBBqCdN1J8XfSkpLJYhBFwzXT2iA=;
+ b=Kj/1LaOCc8ohvfAmi8Yz10wI2m4KbFPHjnDS4xi3yvwiMQPOAWM88ygVYIxCv7WE6o
+ igHycHZ1IARjealLc8DwDef/bsE6vWViPkuyzYcmuWVNarBlrOx7JnHX99TgWu4oSYd0
+ TXpckHGQTlrzg2IMJASV/+1uF+j2jqlMRGaxVcxpfsxZbxWXwlqZDWeH+iYuPiZjHhtg
+ o7fYOJTNTVFip8+civVvL77jpFN8ws/y37wyNxzxSLnelktqSKQzz+ph0NlJ1gpyHzyD
+ vdaPi1M2MBgBwbYNPaIzXZVaFh0oq08rVJaGb3L/eHoLhyvou3bbwRrksAPCONXIiqT4
+ yt+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268759; x=1699873559;
+ d=1e100.net; s=20230601; t=1699268766; x=1699873566;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WdevyuV5vDNMMgKGndHL1Lb3pKI2mM3BGOnKiVXcZMA=;
- b=srYKJGDXVIxL2Vk3P2CHThWD+iMXnJnYl9qeq5jQiYNBL2xcLjX+Sq8NJaZFkCUoD4
- h/gL4NpCMHHhCrCgLlMERx9yrPxb+Lruvi2VY8V4ExvGN7Qp3RXtIvl9pmNLChgHHN2P
- IPyNmJsZpTIG46VmguQjaCowjnoRfFexXHp5PzHT7JhTFyH+GDeC8HremApPIxp224Eq
- EoIDO2n3nVIFAhyEFOlKKbOSRlQN91vu2MAazCeCvLgdWXOrHWmYg/7f03CEw7B66h0W
- gdh46fvuGu0nmngFnkkPIEb3WyUNUTarEIKz/q8bB2a6eGQpkTWLZwgxOY9hWLO3WxxM
- gMPg==
-X-Gm-Message-State: AOJu0YwwAjOSxWm8Gx5HQRl1ajdIuPlIcnPiEKx31F7qAudoN7oQ3Av1
- /sthyRASJ30OJQFNelDYsU5Q0BVClm8HzUbZNjA=
-X-Google-Smtp-Source: AGHT+IHx5XXxhtGZu6ZCbciI1JQ5kvGzt8XZDokYAdmWLiQ+Wf2MWQYdjQaCgeHE7cevbJyqEkuPhw==
-X-Received: by 2002:a05:600c:1c9a:b0:401:d803:6243 with SMTP id
- k26-20020a05600c1c9a00b00401d8036243mr25577656wms.32.1699268759004; 
- Mon, 06 Nov 2023 03:05:59 -0800 (PST)
+ bh=R87QIdTSbuBFqtOuBBqCdN1J8XfSkpLJYhBFwzXT2iA=;
+ b=hDpq2HDUZw1F6P0OcN0RSchzZYK5N048TTKEhhsyzTQrE1tDxn5E4VnTIEPasxyc8/
+ 0SUmQEma63WKTobQtGRBQImOARWhClyAlhwP9baiZUgQf6hBT7MOKhqm05diTN3RHOmm
+ EtLTLjaoFvBiiCUC3Sq8p+N9TRAQFhzI3DDvtpc8ntRcb2jFHHfQBSUIZbP6QTI8dudj
+ zTHddzer3OVwT9XJkJ0kVhVNlhPICDsyT4LlqX0vNWHTmxL0TT+ec88xUm8zIAg/vXaM
+ JKGghEx8gjK2n+EYEi+ubp0eX0A8OFDm9biE03CdZVmOWHksRgn/BXSlr703Dfisrix0
+ sAqA==
+X-Gm-Message-State: AOJu0Yx24lytU/jkrNHlUh+zqhKw8M3pVFJ3e7w0/Bp2REkRYGUM36qf
+ 98cpLwMi27WK+OseY8cckyyv3ym7gBUh6Ky39xA=
+X-Google-Smtp-Source: AGHT+IEAb7mlXjiV+t8xOiAWlZzqIbRP1ddqvYwThww0DxTtH+DpaAZtlEj/6Pj1UY+lnDvwGergOA==
+X-Received: by 2002:a05:600c:3148:b0:405:1c19:b747 with SMTP id
+ h8-20020a05600c314800b004051c19b747mr24127659wmo.15.1699268765817; 
+ Mon, 06 Nov 2023 03:06:05 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- r13-20020a05600c458d00b00406443c8b4fsm11744176wmo.19.2023.11.06.03.05.56
+ i20-20020a05600c355400b0040839fcb217sm11896421wmq.8.2023.11.06.03.06.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:05:58 -0800 (PST)
+ Mon, 06 Nov 2023 03:06:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Richard W . M . Jones" <rjones@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PULL 20/60] target/riscv: Use env_archcpu() in [check_]nanbox()
-Date: Mon,  6 Nov 2023 12:02:52 +0100
-Message-ID: <20231106110336.358-21-philmd@linaro.org>
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 21/60] target/s390x: Use env_archcpu() in handle_diag_308()
+Date: Mon,  6 Nov 2023 12:02:53 +0100
+Message-ID: <20231106110336.358-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,63 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When CPUArchState* is available (here CPURISCVState*), we
+When CPUArchState* is available (here CPUS390XState*), we
 can use the fast env_archcpu() macro to get ArchCPU* (here
-RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
-when building with --enable-qom-cast-debug.
+S390CPU*). The QOM cast S390_CPU() macro will be slower when
+building with --enable-qom-cast-debug.
 
-Inspired-by: Richard W.M. Jones <rjones@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20231009110239.66778-3-philmd@linaro.org>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-Id: <20231009110239.66778-4-philmd@linaro.org>
 ---
- target/riscv/internals.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/s390x/diag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/internals.h b/target/riscv/internals.h
-index b5f823c7ec..8239ae83cc 100644
---- a/target/riscv/internals.h
-+++ b/target/riscv/internals.h
-@@ -87,7 +87,7 @@ enum {
- static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
+diff --git a/target/s390x/diag.c b/target/s390x/diag.c
+index 8ce18e08f3..27ffd48576 100644
+--- a/target/s390x/diag.c
++++ b/target/s390x/diag.c
+@@ -77,7 +77,7 @@ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
  {
-     /* the value is sign-extended instead of NaN-boxing for zfinx */
--    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-+    if (env_archcpu(env)->cfg.ext_zfinx) {
-         return (int32_t)f;
-     } else {
-         return f | MAKE_64BIT_MASK(32, 32);
-@@ -97,7 +97,7 @@ static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
- static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
- {
-     /* Disable NaN-boxing check when enable zfinx */
--    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-+    if (env_archcpu(env)->cfg.ext_zfinx) {
-         return (uint32_t)f;
-     }
- 
-@@ -113,7 +113,7 @@ static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
- static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
- {
-     /* the value is sign-extended instead of NaN-boxing for zfinx */
--    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-+    if (env_archcpu(env)->cfg.ext_zfinx) {
-         return (int16_t)f;
-     } else {
-         return f | MAKE_64BIT_MASK(16, 48);
-@@ -123,7 +123,7 @@ static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
- static inline float16 check_nanbox_h(CPURISCVState *env, uint64_t f)
- {
-     /* Disable nanbox check when enable zfinx */
--    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-+    if (env_archcpu(env)->cfg.ext_zfinx) {
-         return (uint16_t)f;
-     }
- 
+     bool valid;
+     CPUState *cs = env_cpu(env);
+-    S390CPU *cpu = S390_CPU(cs);
++    S390CPU *cpu = env_archcpu(env);
+     uint64_t addr =  env->regs[r1];
+     uint64_t subcode = env->regs[r3];
+     IplParameterBlock *iplb;
 -- 
 2.41.0
 
