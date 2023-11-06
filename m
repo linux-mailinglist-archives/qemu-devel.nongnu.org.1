@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053FF7E1F8A
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CCC7E2017
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:35:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxT3-00065c-CA; Mon, 06 Nov 2023 06:08:29 -0500
+	id 1qzxTA-0006W9-Az; Mon, 06 Nov 2023 06:08:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxT0-0005za-3e
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:26 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxT7-0006RH-2q
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:33 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSp-000580-36
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:25 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-32f7abbb8b4so2789448f8f.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:08:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSw-00059A-Sp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:32 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4081ccf69dcso31193415e9.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:08:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268893; x=1699873693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268900; x=1699873700; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1c+BV5Tpk9NJdk/9uGPTtpoehyOljryZgDubWA0xkSQ=;
- b=zJKWiuj/d1M0jet+WlNAkaoMgWmRdfR3EdQNLZpz+ZCu7OyjePrS191xn3ELHYReJk
- x1M8XyTdLIWUJ1UIpKBXixFJTwi27Oslz9aVO4so7/T7MecSVzVnOG5cDx/H4LEBLN88
- 63bmMmXAojejQy7ENg6YiH5tf5RgDafCnzMB7sDI8y81IrgaZaSrX4CnXCQqjUjSgNo5
- JwTbeMJkCB2DMY7lAlvIg8zwSXZlauANiMv+ZVZBMs/tQs83nshRKOpbcKaT/8cYMLM8
- UDdN3ZgopgNOToTalUSCmGZd58j8YVnAoNuPvWXsUWwqaKjL3+uLolujTAixKdcrqfff
- W8BQ==
+ bh=P0lV2v0Wmf5sVpflPIAh1iXlsF2JSjaFEuoVMwFWbSs=;
+ b=TVa8c+Zf6EpP0EoqMSSudJcZMrtvmV/ODQNhymVioVnUYSCEbknFx8rgmq3AZ2Admz
+ J60BbZs/EzUC9dlo0FGI6xnxpVpEtI+nUFca0+kM5nKkEUYjNchaRm82pMMgKP5g0xYq
+ FkmxLG5f0mCUQU4h+D5Zeq2QeLE7Xp1+ebNaTcwVDj6+c19CKO+4Jq7gDdyTHZXxLWlu
+ Jr1uZbwSdlB+pCgMBS5S3rYC51DWKbBuBYek26DKd1YIP7R7NuT8U5FVS8/ufF8FDZ1n
+ ZDBPpQwx2viWMdPR6iDpMvj/2eHCdN7ucZk0WsBVZIr5lRsg1yqEVksoPOwt3YdPw6mq
+ cDzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268893; x=1699873693;
+ d=1e100.net; s=20230601; t=1699268900; x=1699873700;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1c+BV5Tpk9NJdk/9uGPTtpoehyOljryZgDubWA0xkSQ=;
- b=I5G8e1BaethDspe5hAb7ELmDqB5r7n95xUFrGdAXWjZy/S5UmTL9O1+Ei9Byw92PIM
- 9JJpCk/SHaDvOveH6XTgSz6+V4TxD+Q1b5kAvDs9FkU9a7RMl2WEBhJCaKNkMSfW2Pyf
- vnLG3jXVDrqU4X3MmK2zqW++l0en6jF5eGMBlTYiAQbk0NrtBLaFZSphzQoy4LAGduPy
- o2DXdHsZ1VmU+P/lp9yQTUkL08sHSVN2bsZ60zj59ji2RUNDtrDfamxNH+GW5U/L8Co/
- mpetCvj20bgG+M2qmK9ZIIsyMGuTDnYLwBUxql43DoMLaKarshHAgj3tVVbcr3bKNO5r
- de6Q==
-X-Gm-Message-State: AOJu0Yw8+lkFJiKRCGy6y2nflW2ZOB9vBI+P9xHurZBKc30+quHufNMN
- eiZa0FdSsygbR1V4ALoQzB4+IpSvO+sQMtJOstw=
-X-Google-Smtp-Source: AGHT+IFUfEPgJeqeBUUqYn0HxWEHowevUtNbHp5ZBZ2R9PkQdeXdrg9oHvMCfdnh5DWjqHW4fF0gbg==
-X-Received: by 2002:a05:6000:1864:b0:32f:7c4d:8746 with SMTP id
- d4-20020a056000186400b0032f7c4d8746mr24071431wri.12.1699268893422; 
- Mon, 06 Nov 2023 03:08:13 -0800 (PST)
+ bh=P0lV2v0Wmf5sVpflPIAh1iXlsF2JSjaFEuoVMwFWbSs=;
+ b=Mt09HQ3CE3qe6MrcrzAA7JKkLlQ9tZUTfPF1WcOhVxDvEo1+OC0Tz3Zksv0BvD4w9H
+ GMLYoz67UP6V3kMZsfS71Mg12NLUzT6tZrdyoSS4HkJwQah4U0nAm76Jatb48ttSWzHL
+ XweNQRJa+9FTtXW/YMx4/bZGVp6+2drEgvt1A1wyPVcpxyOBU+YihxSiSBTRqmfGwwkB
+ /RbFornSt7Xvgi6i8JSEYmp+ZUVUt/T9bAuFnUhoWGthFLIghgUU4csNsAJ1CcQq+2lo
+ NtU+4rHhOKt4XWKdxWx5iihNhD72lvEfkgkFwmxPFZsg7SHqGNYZddWVY88hP6eV6rXO
+ QLtw==
+X-Gm-Message-State: AOJu0YxCNzFw/FnobqSumEvrEvEALwwaZTg63u7fGXgMnNISd/CeQqj4
+ KdcxS3O7C7Xs61qbOT+xx6hvcf12DNnDUAyn/s4=
+X-Google-Smtp-Source: AGHT+IE5qy7fo5hvbTA76kNpTwyuY8BAliZrJmEatPyDDOojWhCYCUN5LQHLcBtUF5POiIT/JDO9Og==
+X-Received: by 2002:a05:600c:3205:b0:403:aced:f7f4 with SMTP id
+ r5-20020a05600c320500b00403acedf7f4mr11411925wmp.12.1699268900310; 
+ Mon, 06 Nov 2023 03:08:20 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- h16-20020a05600004d000b0032dbf99bf4fsm9290025wri.89.2023.11.06.03.08.10
+ j19-20020a05600c1c1300b004060f0a0fd5sm11862251wms.13.2023.11.06.03.08.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:08:13 -0800 (PST)
+ Mon, 06 Nov 2023 03:08:20 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Laurent Vivier <laurent@vivier.eu>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 40/60] hw/cpu: Clean up global variable shadowing
-Date: Mon,  6 Nov 2023 12:03:12 +0100
-Message-ID: <20231106110336.358-41-philmd@linaro.org>
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 41/60] hw/loader: Clean up global variable shadowing in
+ rom_add_file()
+Date: Mon,  6 Nov 2023 12:03:13 +0100
+Message-ID: <20231106110336.358-42-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,111 +96,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  hw/core/machine.c:1302:22: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      const CPUArchId *cpus = possible_cpus->cpus;
+  hw/core/loader.c:1073:27: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+                       bool option_rom, MemoryRegion *mr,
+                            ^
+  include/sysemu/sysemu.h:57:22: note: previous declaration is here
+  extern QEMUOptionRom option_rom[MAX_OPTION_ROMS];
                        ^
-  hw/core/numa.c:69:17: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      uint16List *cpus = NULL;
-                  ^
-  hw/acpi/aml-build.c:2005:20: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      CPUArchIdList *cpus = ms->possible_cpus;
-                     ^
-  hw/core/machine-smp.c:77:14: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      unsigned cpus    = config->has_cpus ? config->cpus : 0;
-               ^
-  include/hw/core/cpu.h:589:17: note: previous declaration is here
-  extern CPUTailQ cpus;
-                  ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20231010115048.11856-2-philmd@linaro.org>
+Message-Id: <20231010115048.11856-3-philmd@linaro.org>
 ---
- include/hw/core/cpu.h     | 8 ++++----
- cpu-common.c              | 6 +++---
- linux-user/main.c         | 2 +-
- target/s390x/cpu_models.c | 2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
+ include/hw/loader.h | 2 +-
+ hw/core/loader.c    | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index eb943efb8f..77893d7b81 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -586,13 +586,13 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
- }
+diff --git a/include/hw/loader.h b/include/hw/loader.h
+index c4c14170ea..8685e27334 100644
+--- a/include/hw/loader.h
++++ b/include/hw/loader.h
+@@ -272,7 +272,7 @@ void pstrcpy_targphys(const char *name,
  
- typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
--extern CPUTailQ cpus;
-+extern CPUTailQ cpus_queue;
+ ssize_t rom_add_file(const char *file, const char *fw_dir,
+                      hwaddr addr, int32_t bootindex,
+-                     bool option_rom, MemoryRegion *mr, AddressSpace *as);
++                     bool has_option_rom, MemoryRegion *mr, AddressSpace *as);
+ MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
+                            size_t max_len, hwaddr addr,
+                            const char *fw_file_name,
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 4dd5a71fb7..7f0cbfb214 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -1070,7 +1070,7 @@ static void *rom_set_mr(Rom *rom, Object *owner, const char *name, bool ro)
  
--#define first_cpu        QTAILQ_FIRST_RCU(&cpus)
-+#define first_cpu        QTAILQ_FIRST_RCU(&cpus_queue)
- #define CPU_NEXT(cpu)    QTAILQ_NEXT_RCU(cpu, node)
--#define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus, node)
-+#define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus_queue, node)
- #define CPU_FOREACH_SAFE(cpu, next_cpu) \
--    QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus, node, next_cpu)
-+    QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus_queue, node, next_cpu)
+ ssize_t rom_add_file(const char *file, const char *fw_dir,
+                      hwaddr addr, int32_t bootindex,
+-                     bool option_rom, MemoryRegion *mr,
++                     bool has_option_rom, MemoryRegion *mr,
+                      AddressSpace *as)
+ {
+     MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
+@@ -1139,7 +1139,7 @@ ssize_t rom_add_file(const char *file, const char *fw_dir,
+                  basename);
+         snprintf(devpath, sizeof(devpath), "/rom@%s", fw_file_name);
  
- extern __thread CPUState *current_cpu;
- 
-diff --git a/cpu-common.c b/cpu-common.c
-index 45c745ecf6..c81fd72d16 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -73,7 +73,7 @@ static int cpu_get_free_index(void)
-     return max_cpu_index;
- }
- 
--CPUTailQ cpus = QTAILQ_HEAD_INITIALIZER(cpus);
-+CPUTailQ cpus_queue = QTAILQ_HEAD_INITIALIZER(cpus_queue);
- static unsigned int cpu_list_generation_id;
- 
- unsigned int cpu_list_generation_id_get(void)
-@@ -90,7 +90,7 @@ void cpu_list_add(CPUState *cpu)
-     } else {
-         assert(!cpu_index_auto_assigned);
-     }
--    QTAILQ_INSERT_TAIL_RCU(&cpus, cpu, node);
-+    QTAILQ_INSERT_TAIL_RCU(&cpus_queue, cpu, node);
-     cpu_list_generation_id++;
- }
- 
-@@ -102,7 +102,7 @@ void cpu_list_remove(CPUState *cpu)
-         return;
-     }
- 
--    QTAILQ_REMOVE_RCU(&cpus, cpu, node);
-+    QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
-     cpu->cpu_index = UNASSIGNED_CPU_INDEX;
-     cpu_list_generation_id++;
- }
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 0c23584a96..0cdaf30d34 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -156,7 +156,7 @@ void fork_end(int child)
-            Discard information about the parent threads.  */
-         CPU_FOREACH_SAFE(cpu, next_cpu) {
-             if (cpu != thread_cpu) {
--                QTAILQ_REMOVE_RCU(&cpus, cpu, node);
-+                QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
-             }
-         }
-         qemu_init_cpu_list();
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 4dead48650..5c455d00c0 100644
---- a/target/s390x/cpu_models.c
-+++ b/target/s390x/cpu_models.c
-@@ -757,7 +757,7 @@ void s390_set_qemu_cpu_model(uint16_t type, uint8_t gen, uint8_t ec_ga,
-     const S390CPUDef *def = s390_find_cpu_def(type, gen, ec_ga, NULL);
- 
-     g_assert(def);
--    g_assert(QTAILQ_EMPTY_RCU(&cpus));
-+    g_assert(QTAILQ_EMPTY_RCU(&cpus_queue));
- 
-     /* build the CPU model */
-     s390_qemu_cpu_model.def = def;
+-        if ((!option_rom || mc->option_rom_has_mr) && mc->rom_file_has_mr) {
++        if ((!has_option_rom || mc->option_rom_has_mr) && mc->rom_file_has_mr) {
+             data = rom_set_mr(rom, OBJECT(fw_cfg), devpath, true);
+         } else {
+             data = rom->data;
 -- 
 2.41.0
 
