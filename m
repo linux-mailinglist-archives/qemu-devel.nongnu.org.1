@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF077E1AE9
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:14:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 037097E1AEA
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:14:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztg4-0006RO-TK; Mon, 06 Nov 2023 02:05:40 -0500
+	id 1qztfx-0005a1-6f; Mon, 06 Nov 2023 02:05:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztdD-0001C1-J4
+ id 1qztdD-0001C3-It
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:46 -0500
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztd1-00022Y-Tl
+ id 1qztd1-00022s-Td
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:41 -0500
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5b8c39a2dceso2260013a12.2
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:28 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6ba54c3ed97so4305695b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699254147; x=1699858947; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699254148; x=1699858948; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W7VJPAoa0z4xCQmXZrm1hRkX2bwGlhHw1y5NMWV4Vs8=;
- b=HV7hmgzKRK4BC+NJPtX9o9Nd9V0s90YEJ1tfZ+oLnxT1SC0Ajf6a1qr1H5LgntJiCh
- WmYd6ylq9gpOeNZzcjaMQQfz5Et9jUubTpdf6AjORvczMODhGMs3MmWgPkb0Q7rTaTeJ
- +0zvG0SJepX8ODIUz/p+nQIGvK2kRrxmp5ET0JT/vCeKzH2sifXaaKipqOoLGrTbOABz
- VmBuus5r6gi886Qk5Ix1i6brELmYVRGHIGI2LlmI6VQl1f1k2xM64SI2GKjw+kKFw9Cx
- LyIKz6qakNQzZlS49z1A76ch39fjt1wm7O0P86OPqPho7vk5mJ1a26Av685/pEqc1oKZ
- 96xw==
+ bh=ZN+AUq0fMLCJmtXlKU3nsk7QrHFyeF7qawtkUtQVWh8=;
+ b=X34VlG4JT1JSD5fWVYxF4AAkshR+C6d65cnTUczr2W7j/xI2pg3e0Ai+2vebOh+vwo
+ rO/YFUSwoZ1hgI1OmPvXiQOu6MVcJ0e2xBpja+2dLuLaeirzQOyj2ArrETRgdRiBbapO
+ 27ab6I8T0WN96i7qMyoy0AWFjJr+UVEea7pHeIPGyqtse6Ty1tKOEdPUJuGGqxSjcBMb
+ E0q6VHtNtnMC6u+EUEcOw56AffixAcYQgxowlLTEveL0rjzVLrg5YEesw8R6sE8/u2sJ
+ o/9eNCMWJLPCHM32t3nMkvxYsezfx97XO48CVQ8ehIe9fLFq6+lr6XkZXal/XrabxaAc
+ x2zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699254147; x=1699858947;
+ d=1e100.net; s=20230601; t=1699254148; x=1699858948;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W7VJPAoa0z4xCQmXZrm1hRkX2bwGlhHw1y5NMWV4Vs8=;
- b=pXw9NAgyzt7TNqEHNx7Gd3uLNtMvEtHROR2et4rWfIb8FFMqjsxvPYtwxorX3ZmBnc
- bB2n3TT17pOSpGIsoTdvw4XurGy2O/1iuKQ2pWRY2LIP1k/Fh1/WKVw8lYeRw9mUWMxF
- +X7ePJlOdh+ysGdWrfd+QHMZFdMtYxtlX9DPWX9v+Mc6SeaPIPHDu/E2yM3X9If68Nf6
- s9hDHMg725kSe0U8Jw/97jg2JquVJNtDnaac/Xg4PEh0jJ6wvndkzPHu7LbGXT3p+DaZ
- g6K50pwhUEkDfZsfXP9cBCTnc4tcbMzWWYKi/0+M5JDGaNCiqsw/Fayd7KeUwLR8Abyv
- jXLQ==
-X-Gm-Message-State: AOJu0Ywb48VYwftZztyBmAecxTERK5k+n0ZVMTEXcATEjxI/H0dDwq3J
- a8DqvEuCT1leSqA30ndlRwodkfTQraJPOlo42hE=
-X-Google-Smtp-Source: AGHT+IElhmTF2Bgq8iY8a1lweijFSCUtz97gzjNtN1lgnQtrlNLae7gd6TdD1e9UpJOvU8owmOFhFg==
-X-Received: by 2002:a05:6a21:a594:b0:163:9f1d:b464 with SMTP id
- gd20-20020a056a21a59400b001639f1db464mr30149850pzc.5.1699254147322; 
- Sun, 05 Nov 2023 23:02:27 -0800 (PST)
+ bh=ZN+AUq0fMLCJmtXlKU3nsk7QrHFyeF7qawtkUtQVWh8=;
+ b=OXbMDxj3326L687TKViw1Z6c53utAXyTi6iJkmkBvQVUWCLB3YX+kTY6Skiw7XE+EP
+ WqO8/18O0CJvy1tWpbLdhhza2fJAabGCMhDwUun7uTHwf6uqGLnBvGI5vvWlmO95zP5p
+ dK/yJfBBaO2dMRtJ44ivXZt8bNGCbsGItsG6K/n0BM2/ALyFqI5wHWdIP7fjF7SiFZ1y
+ ilTLM+I4ri4KPsereaihd6TCdwacF/pjN80ZocR+PB6pPrd2AeTIOB4ry1ocoYhPjWWs
+ 7My2RuxS5FbYmGG64thT9RCGd6bzX1Y7kEyt2kwuyp57w0tOcpqQYauIzK0fqHRs0f3U
+ Ku9w==
+X-Gm-Message-State: AOJu0YxiVuYJK5srdPdclx7zhjh2rqRkuIvJH3nbMGdtwcP+fVREfEz6
+ t4//eay3QLSIXM9OPYaI/47ke/r7paa0kzlLvT8=
+X-Google-Smtp-Source: AGHT+IHdixrZ+apzK+cNleiC6cvYHw9VfwKF2x+XzPhWCWv0SxlZyOuceGtRJcsaYxgFz+GKMUb9kw==
+X-Received: by 2002:a05:6a20:a122:b0:148:f952:552b with SMTP id
+ q34-20020a056a20a12200b00148f952552bmr38185243pzk.51.1699254148264; 
+ Sun, 05 Nov 2023 23:02:28 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.26
+ 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 23:02:26 -0800 (PST)
+ Sun, 05 Nov 2023 23:02:27 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 68/71] replay: Constify VMState
-Date: Sun,  5 Nov 2023 22:58:24 -0800
-Message-Id: <20231106065827.543129-69-richard.henderson@linaro.org>
+Subject: [PATCH 69/71] util/fifo8: Constify VMState
+Date: Sun,  5 Nov 2023 22:58:25 -0800
+Message-Id: <20231106065827.543129-70-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,22 +92,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- replay/replay-snapshot.c | 2 +-
+ util/fifo8.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
-index 10a7cf7992..e5e39161e3 100644
---- a/replay/replay-snapshot.c
-+++ b/replay/replay-snapshot.c
-@@ -51,7 +51,7 @@ static const VMStateDescription vmstate_replay = {
-     .minimum_version_id = 2,
-     .pre_save = replay_pre_save,
-     .post_load = replay_post_load,
+diff --git a/util/fifo8.c b/util/fifo8.c
+index d4d1c135e0..de8fd0f1c5 100644
+--- a/util/fifo8.c
++++ b/util/fifo8.c
+@@ -109,7 +109,7 @@ const VMStateDescription vmstate_fifo8 = {
+     .name = "Fifo8",
+     .version_id = 1,
+     .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT64_ARRAY(cached_clock, ReplayState, REPLAY_CLOCK_COUNT),
-         VMSTATE_UINT64(current_icount, ReplayState),
-         VMSTATE_INT32(instruction_count, ReplayState),
+         VMSTATE_VBUFFER_UINT32(data, Fifo8, 1, NULL, capacity),
+         VMSTATE_UINT32(head, Fifo8),
+         VMSTATE_UINT32(num, Fifo8),
 -- 
 2.34.1
 
