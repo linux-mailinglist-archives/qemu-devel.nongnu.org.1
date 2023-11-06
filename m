@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607377E2C5C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB797E2C66
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:53:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r04hB-0006C9-TP; Mon, 06 Nov 2023 13:51:33 -0500
+	id 1r04gx-0005pT-2j; Mon, 06 Nov 2023 13:51:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04h6-00066E-Fx
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:28 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1r04gv-0005og-4V
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:17 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04gs-0000wo-Uh
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:28 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40839807e82so29787895e9.0
+ id 1r04gt-0000wx-Lt
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:51:16 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-32d895584f1so2892957f8f.1
  for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:51:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699296673; x=1699901473; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699296674; x=1699901474; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=33/OTwiED227CSIHrsxnwyK8KaSwVMt/PQqEs48aCOg=;
- b=UHw44YCoEBwWNni1lDQLOvmKyUxei6hATa0hKFJigWrFt8v77u/WJX0Le8G5EYjdFC
- vtmJgNiDQO7VUyJ4WUujuikWEKYetzLcZHpz41MOk2bm/0ape5aYK6QAp1/gre5Y27Lf
- 2rwHZx8gDWGp1IoO5LUz42e/rkdGeqiwXrxLZE34Pignc/wPPyyWRfrMFZm8r8RTp0ix
- Sao2AiFxiYxAK9y0dzwCqYG2SAPPPMC4WmOU/0o99w2nER0b32O87B0xJ6wGPgoHlonj
- wJggbP7iDaZ652Lcrj3I/MdyDBIAL2JwsL0AfllToFHcpt3CrkZcS3j1M9huUgmOBveH
- 9A5w==
+ bh=QOPhrZl7WNF8otYFyZDv53mbMT0F92opu0HK5hUSxKk=;
+ b=GSBkUg0mPBcZcRt24FiBAU+g9UWN/b69mnhEFOjlWIGCCRFPkvbgP+oJd7odTVQh9R
+ 4wWFI5m3u3d1ILkOceFvGcar0SgoipQfOqbEaMqyZg8uqGTqqbN8U+2tMsY7EAqUp3CP
+ ZuUGzXMuyJCbeo2ZAIEI0V3Ac/ie2yWwuiwVNoqdx9Mk9VT2QMiEwPWIgu7UtSw5Vukc
+ DOslx4qtyUqZ1/Nljlh0Q4mZ0mhhm7nkRI99K5QB8qSv10G9dEkfUtuBrU+oxz6p7otH
+ ZajvrlIcyAoxK68ghO/nT5CZVoly7Hxw02BzD2IxjaGjjfVJ65Kj3guYT8z5cJUeuzad
+ 4VUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699296673; x=1699901473;
+ d=1e100.net; s=20230601; t=1699296674; x=1699901474;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=33/OTwiED227CSIHrsxnwyK8KaSwVMt/PQqEs48aCOg=;
- b=NHNj5oPle/7cfAKmC/TmuRsoaH+q8E0m2RrIHNrtJTZXZvJBHrRwrvZsLVTqrUg6S1
- I9UhmunVG+Cytaq1nnuFyB2RJOplGOtCRO1Ytv6jjYqBUPYq3Y/vKWn2lcNcjTDj3fGw
- y8dgCfc7NnPukiG5ipzmJY2fZNjKokkb8LTtBU9i4/i7LNUE37ehqXCScEkncOQd8U2P
- /7fjGfZI/ZlhGWNGvaAZ9q7iDcoa/c6KeSiq1LSN+wR6Fc/CgAj6/TcWSUbaAwMhCI/3
- wLjeWKixHDI3kFMlD891DMRGFf6PSyRhDexsP0VmJbzEi0q3LMLEKwxuHQ2bSEK6MqVM
- oYSA==
-X-Gm-Message-State: AOJu0YzDWaZnOjjatW9kmUnEm+EvVF2AhggWQ0EtXZodNTDvieGfa3pv
- V36VasOn7Plb3OZ7NJ1ja3D1cw==
-X-Google-Smtp-Source: AGHT+IHWUvGepd79PZ17MnpM5nZR05WBB/7t1rKycp+p12y9cUy6bFsmalFq4xRWD8xIFEHFERK9QA==
-X-Received: by 2002:a05:600c:3b12:b0:406:45c1:4dd with SMTP id
- m18-20020a05600c3b1200b0040645c104ddmr441140wms.14.1699296673461; 
+ bh=QOPhrZl7WNF8otYFyZDv53mbMT0F92opu0HK5hUSxKk=;
+ b=vbBTgk1Cpwin9AYROxtTGN5q35kp5cdE+S2ZyNi2GrFlU95sskhfhOeRiSqjMf2qgL
+ 70qjqMspr3eBwoHgcw0NUSKohWYuzy51A2MNY67RbzsQVVeTliFCRdsnR0g7aFmkM2zG
+ JUcIzlvLeyNT/p1//RbldAY9JfCeLRxfnHhnjmtj/eQzRKXM6x6gnH0u/LuXlb8YcEw+
+ U3PJ1fJtM+2JHyBhEHINvn0nMIUxTprJlIlqG6AFCZzOorpSeQam9OHo6vRBQcHwT++Q
+ J9Ki382MuXTjfGVfiLOft3I6W3348FTzWPPgEiV/s9N1VoXVnAsvQnahjCr4zkByE6kc
+ R8PA==
+X-Gm-Message-State: AOJu0Yyd5CH+NJSpV6a3BytN2GTA4IFB6xAiRD/ihLT1bcm0x0oODEPA
+ QCBuYGq2f50f55Ty0GJkjZpWRg==
+X-Google-Smtp-Source: AGHT+IH0QY5Z2L7n6isopsBwJEEH53rwU+X7Q84YPntSymlToJOVP+H0waLbsvKKv4+Y/9NrWI1l8w==
+X-Received: by 2002:a5d:4242:0:b0:32d:9fc9:d145 with SMTP id
+ s2-20020a5d4242000000b0032d9fc9d145mr19775989wrr.41.1699296673683; 
  Mon, 06 Nov 2023 10:51:13 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a1-20020a05600c348100b003fe1fe56202sm13473371wmq.33.2023.11.06.10.51.12
+ g1-20020adfe401000000b0032d9523de65sm311361wrm.48.2023.11.06.10.51.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 10:51:12 -0800 (PST)
+ Mon, 06 Nov 2023 10:51:13 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9458E655DF;
+ by draig.lan (Postfix) with ESMTP id A7E46656D9;
  Mon,  6 Nov 2023 18:51:12 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,26 +73,25 @@ Cc: qemu-arm@nongnu.org,
  John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 01/22] default-configs: Add TARGET_XML_FILES definition
-Date: Mon,  6 Nov 2023 18:50:51 +0000
-Message-Id: <20231106185112.2755262-2-alex.bennee@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 02/22] gdb-xml: fix duplicate register in arm-neon.xml
+Date: Mon,  6 Nov 2023 18:50:52 +0000
+Message-Id: <20231106185112.2755262-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231106185112.2755262-1-alex.bennee@linaro.org>
 References: <20231106185112.2755262-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,30 +107,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-
-loongarch64-linux-user has references to XML files so include them.
-
-Fixes: d32688ecdb ("default-configs: Add loongarch linux-user support")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20231030054834.39145-6-akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20231103195956.1998255-2-alex.bennee@linaro.org>
-[AJB: remove base32 from list]
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20231103195956.1998255-3-alex.bennee@linaro.org>
 ---
- configs/targets/loongarch64-linux-user.mak | 1 +
- 1 file changed, 1 insertion(+)
+ gdb-xml/arm-neon.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/configs/targets/loongarch64-linux-user.mak b/configs/targets/loongarch64-linux-user.mak
-index 7d1b964020..d878e5a113 100644
---- a/configs/targets/loongarch64-linux-user.mak
-+++ b/configs/targets/loongarch64-linux-user.mak
-@@ -1,3 +1,4 @@
- # Default configuration for loongarch64-linux-user
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
-+TARGET_XML_FILES=gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
+diff --git a/gdb-xml/arm-neon.xml b/gdb-xml/arm-neon.xml
+index 9dce0a996f..d61f6b8549 100644
+--- a/gdb-xml/arm-neon.xml
++++ b/gdb-xml/arm-neon.xml
+@@ -76,7 +76,7 @@
+   <reg name="q8" bitsize="128" type="neon_q"/>
+   <reg name="q9" bitsize="128" type="neon_q"/>
+   <reg name="q10" bitsize="128" type="neon_q"/>
+-  <reg name="q10" bitsize="128" type="neon_q"/>
++  <reg name="q11" bitsize="128" type="neon_q"/>
+   <reg name="q12" bitsize="128" type="neon_q"/>
+   <reg name="q13" bitsize="128" type="neon_q"/>
+   <reg name="q14" bitsize="128" type="neon_q"/>
 -- 
 2.39.2
 
