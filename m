@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD247E276F
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:45:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E53A7E273B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:41:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00kJ-000754-Qj; Mon, 06 Nov 2023 09:38:32 -0500
+	id 1r00kN-0007GW-AF; Mon, 06 Nov 2023 09:38:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Ju2X=GT=redhat.com=clg@ozlabs.org>)
- id 1r00js-0006yY-GF
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:38:05 -0500
+ id 1r00k1-00071a-EQ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:38:17 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Ju2X=GT=redhat.com=clg@ozlabs.org>)
- id 1r00jp-00011S-UN
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:38:04 -0500
+ id 1r00js-00010D-7k
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:38:08 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SPDV117rgz4xWl;
- Tue,  7 Nov 2023 01:38:01 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SPDV32g43z4xkT;
+ Tue,  7 Nov 2023 01:38:03 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SPDTz39zMz4wc1;
- Tue,  7 Nov 2023 01:37:59 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SPDV153r5z4xkM;
+ Tue,  7 Nov 2023 01:38:01 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 19/22] vfio/container: Move
- vfio_container_add/del_section_window into spapr.c
-Date: Mon,  6 Nov 2023 15:36:50 +0100
-Message-ID: <20231106143653.302391-20-clg@redhat.com>
+Subject: [PULL 20/22] vfio/container: Move spapr specific init/deinit into
+ spapr.c
+Date: Mon,  6 Nov 2023 15:36:51 +0100
+Message-ID: <20231106143653.302391-21-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106143653.302391-1-clg@redhat.com>
 References: <20231106143653.302391-1-clg@redhat.com>
@@ -70,8 +70,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-vfio_container_add/del_section_window are spapr specific functions,
-so move them into spapr.c to make container.c cleaner.
+Move spapr specific init/deinit code into spapr.c and wrap
+them with vfio_spapr_container_init/deinit, this way footprint
+of spapr is further reduced, vfio_prereg_listener could also
+be made static.
+
+vfio_listener_release is unnecessary when prereg_listener is
+moved out, so have it removed.
 
 No functional changes intended.
 
@@ -80,228 +85,256 @@ Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/container.c | 90 ---------------------------------------------
- hw/vfio/spapr.c     | 90 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 90 insertions(+), 90 deletions(-)
+ include/hw/vfio/vfio-common.h |  4 +-
+ hw/vfio/container.c           | 82 +++++------------------------------
+ hw/vfio/spapr.c               | 81 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 95 insertions(+), 72 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 0c3d390e8bd5e990e1ccb1c7e077bde0baa812e9..ed5a8e4754d8105ce1a41ef72168473b2d5d239f 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -225,11 +225,14 @@ int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start);
+ int vfio_query_dirty_bitmap(VFIOContainer *container, VFIOBitmap *vbmap,
+                             hwaddr iova, hwaddr size);
+ 
++/* SPAPR specific */
+ int vfio_container_add_section_window(VFIOContainer *container,
+                                       MemoryRegionSection *section,
+                                       Error **errp);
+ void vfio_container_del_section_window(VFIOContainer *container,
+                                        MemoryRegionSection *section);
++int vfio_spapr_container_init(VFIOContainer *container, Error **errp);
++void vfio_spapr_container_deinit(VFIOContainer *container);
+ 
+ void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+@@ -289,7 +292,6 @@ vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
+ struct vfio_info_cap_header *
+ vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id);
+ #endif
+-extern const MemoryListener vfio_prereg_listener;
+ 
+ int vfio_spapr_create_window(VFIOContainer *container,
+                              MemoryRegionSection *section,
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 83c0f05bbaa3f43d4c56e1718eda8451bb59e9f1..7a3f005d1b615ba0fd95ab48d9a8babf452649a5 100644
+index 7a3f005d1b615ba0fd95ab48d9a8babf452649a5..204b244b114c465e4a62d46bef78f472e268620d 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -20,9 +20,6 @@
- 
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
--#ifdef CONFIG_KVM
--#include <linux/kvm.h>
--#endif
- #include <linux/vfio.h>
- 
- #include "hw/vfio/vfio-common.h"
-@@ -32,7 +29,6 @@
- #include "hw/hw.h"
- #include "qemu/error-report.h"
- #include "qemu/range.h"
--#include "sysemu/kvm.h"
- #include "sysemu/reset.h"
- #include "trace.h"
- #include "qapi/error.h"
-@@ -204,92 +200,6 @@ int vfio_dma_map(VFIOContainer *container, hwaddr iova,
-     return -errno;
+@@ -264,14 +264,6 @@ int vfio_query_dirty_bitmap(VFIOContainer *container, VFIOBitmap *vbmap,
+     return ret;
  }
  
--int vfio_container_add_section_window(VFIOContainer *container,
--                                      MemoryRegionSection *section,
--                                      Error **errp)
+-static void vfio_listener_release(VFIOContainer *container)
 -{
--    VFIOHostDMAWindow *hostwin;
--    hwaddr pgsize = 0;
--    int ret;
--
--    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
--        return 0;
+-    memory_listener_unregister(&container->listener);
+-    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+-        memory_listener_unregister(&container->prereg_listener);
 -    }
+-}
 -
--    /* For now intersections are not allowed, we may relax this later */
--    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
--        if (ranges_overlap(hostwin->min_iova,
--                           hostwin->max_iova - hostwin->min_iova + 1,
--                           section->offset_within_address_space,
--                           int128_get64(section->size))) {
--            error_setg(errp,
--                "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
--                "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
--                section->offset_within_address_space,
--                section->offset_within_address_space +
--                    int128_get64(section->size) - 1,
--                hostwin->min_iova, hostwin->max_iova);
--            return -EINVAL;
--        }
--    }
+ static struct vfio_info_cap_header *
+ vfio_get_iommu_type1_info_cap(struct vfio_iommu_type1_info *info, uint16_t id)
+ {
+@@ -612,69 +604,11 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     case VFIO_SPAPR_TCE_v2_IOMMU:
+     case VFIO_SPAPR_TCE_IOMMU:
+     {
+-        struct vfio_iommu_spapr_tce_info info;
+-        bool v2 = container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU;
 -
--    ret = vfio_spapr_create_window(container, section, &pgsize);
--    if (ret) {
--        error_setg_errno(errp, -ret, "Failed to create SPAPR window");
--        return ret;
--    }
+-        /*
+-         * The host kernel code implementing VFIO_IOMMU_DISABLE is called
+-         * when container fd is closed so we do not call it explicitly
+-         * in this file.
+-         */
+-        if (!v2) {
+-            ret = ioctl(fd, VFIO_IOMMU_ENABLE);
+-            if (ret) {
+-                error_setg_errno(errp, errno, "failed to enable container");
+-                ret = -errno;
+-                goto enable_discards_exit;
+-            }
+-        } else {
+-            container->prereg_listener = vfio_prereg_listener;
 -
--    vfio_host_win_add(container, section->offset_within_address_space,
--                      section->offset_within_address_space +
--                      int128_get64(section->size) - 1, pgsize);
--#ifdef CONFIG_KVM
--    if (kvm_enabled()) {
--        VFIOGroup *group;
--        IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
--        struct kvm_vfio_spapr_tce param;
--        struct kvm_device_attr attr = {
--            .group = KVM_DEV_VFIO_GROUP,
--            .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
--            .addr = (uint64_t)(unsigned long)&param,
--        };
--
--        if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
--                                          &param.tablefd)) {
--            QLIST_FOREACH(group, &container->group_list, container_next) {
--                param.groupfd = group->fd;
--                if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
--                    error_setg_errno(errp, errno,
--                                     "vfio: failed GROUP_SET_SPAPR_TCE for "
--                                     "KVM VFIO device %d and group fd %d",
--                                     param.tablefd, param.groupfd);
--                    return -errno;
--                }
--                trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
+-            memory_listener_register(&container->prereg_listener,
+-                                     &address_space_memory);
+-            if (container->error) {
+-                memory_listener_unregister(&container->prereg_listener);
+-                ret = -1;
+-                error_propagate_prepend(errp, container->error,
+-                    "RAM memory listener initialization failed: ");
+-                goto enable_discards_exit;
 -            }
 -        }
--    }
--#endif
--    return 0;
--}
 -
--void vfio_container_del_section_window(VFIOContainer *container,
--                                       MemoryRegionSection *section)
--{
--    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
--        return;
--    }
+-        info.argsz = sizeof(info);
+-        ret = ioctl(fd, VFIO_IOMMU_SPAPR_TCE_GET_INFO, &info);
++        ret = vfio_spapr_container_init(container, errp);
+         if (ret) {
+-            error_setg_errno(errp, errno,
+-                             "VFIO_IOMMU_SPAPR_TCE_GET_INFO failed");
+-            ret = -errno;
+-            if (v2) {
+-                memory_listener_unregister(&container->prereg_listener);
+-            }
+             goto enable_discards_exit;
+         }
 -
--    vfio_spapr_remove_window(container,
--                             section->offset_within_address_space);
--    if (vfio_host_win_del(container,
--                          section->offset_within_address_space,
--                          section->offset_within_address_space +
--                          int128_get64(section->size) - 1) < 0) {
--        hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
--                 __func__, section->offset_within_address_space);
--    }
--}
--
- int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
- {
-     int ret;
+-        if (v2) {
+-            container->pgsizes = info.ddw.pgsizes;
+-            /*
+-             * There is a default window in just created container.
+-             * To make region_add/del simpler, we better remove this
+-             * window now and let those iommu_listener callbacks
+-             * create/remove them when needed.
+-             */
+-            ret = vfio_spapr_remove_window(container, info.dma32_window_start);
+-            if (ret) {
+-                error_setg_errno(errp, -ret,
+-                                 "failed to remove existing window");
+-                goto enable_discards_exit;
+-            }
+-        } else {
+-            /* The default table uses 4K pages */
+-            container->pgsizes = 0x1000;
+-            vfio_host_win_add(container, info.dma32_window_start,
+-                              info.dma32_window_start +
+-                              info.dma32_window_size - 1,
+-                              0x1000);
+-        }
++        break;
+     }
+     }
+ 
+@@ -704,7 +638,11 @@ listener_release_exit:
+     QLIST_REMOVE(group, container_next);
+     QLIST_REMOVE(container, next);
+     vfio_kvm_device_del_group(group);
+-    vfio_listener_release(container);
++    memory_listener_unregister(&container->listener);
++    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU ||
++        container->iommu_type == VFIO_SPAPR_TCE_IOMMU) {
++        vfio_spapr_container_deinit(container);
++    }
+ 
+ enable_discards_exit:
+     vfio_ram_block_discard_disable(container, false);
+@@ -734,7 +672,11 @@ static void vfio_disconnect_container(VFIOGroup *group)
+      * group.
+      */
+     if (QLIST_EMPTY(&container->group_list)) {
+-        vfio_listener_release(container);
++        memory_listener_unregister(&container->listener);
++        if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU ||
++            container->iommu_type == VFIO_SPAPR_TCE_IOMMU) {
++            vfio_spapr_container_deinit(container);
++        }
+     }
+ 
+     if (ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER, &container->fd)) {
 diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 9ec1e95f6da7f920f368a61932dab8471b1856cf..9a7517c0421090b82c2dc5508b2aa9670287fbe7 100644
+index 9a7517c0421090b82c2dc5508b2aa9670287fbe7..00dbd7af11faa0222609a40818ba846e0411ba27 100644
 --- a/hw/vfio/spapr.c
 +++ b/hw/vfio/spapr.c
-@@ -11,6 +11,10 @@
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
-+#ifdef CONFIG_KVM
-+#include <linux/kvm.h>
-+#endif
-+#include "sysemu/kvm.h"
+@@ -15,6 +15,7 @@
+ #include <linux/kvm.h>
+ #endif
+ #include "sysemu/kvm.h"
++#include "exec/address-spaces.h"
  
  #include "hw/vfio/vfio-common.h"
  #include "hw/hw.h"
-@@ -253,3 +257,89 @@ int vfio_spapr_remove_window(VFIOContainer *container,
+@@ -139,7 +140,7 @@ static void vfio_prereg_listener_region_del(MemoryListener *listener,
+     trace_vfio_prereg_unregister(reg.vaddr, reg.size, ret ? -errno : 0);
+ }
  
-     return 0;
+-const MemoryListener vfio_prereg_listener = {
++static const MemoryListener vfio_prereg_listener = {
+     .name = "vfio-pre-reg",
+     .region_add = vfio_prereg_listener_region_add,
+     .region_del = vfio_prereg_listener_region_del,
+@@ -343,3 +344,81 @@ void vfio_container_del_section_window(VFIOContainer *container,
+                  __func__, section->offset_within_address_space);
+     }
  }
 +
-+int vfio_container_add_section_window(VFIOContainer *container,
-+                                      MemoryRegionSection *section,
-+                                      Error **errp)
++int vfio_spapr_container_init(VFIOContainer *container, Error **errp)
 +{
-+    VFIOHostDMAWindow *hostwin;
-+    hwaddr pgsize = 0;
-+    int ret;
++    struct vfio_iommu_spapr_tce_info info;
++    bool v2 = container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU;
++    int ret, fd = container->fd;
 +
-+    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
-+        return 0;
-+    }
++    /*
++     * The host kernel code implementing VFIO_IOMMU_DISABLE is called
++     * when container fd is closed so we do not call it explicitly
++     * in this file.
++     */
++    if (!v2) {
++        ret = ioctl(fd, VFIO_IOMMU_ENABLE);
++        if (ret) {
++            error_setg_errno(errp, errno, "failed to enable container");
++            return -errno;
++        }
++    } else {
++        container->prereg_listener = vfio_prereg_listener;
 +
-+    /* For now intersections are not allowed, we may relax this later */
-+    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
-+        if (ranges_overlap(hostwin->min_iova,
-+                           hostwin->max_iova - hostwin->min_iova + 1,
-+                           section->offset_within_address_space,
-+                           int128_get64(section->size))) {
-+            error_setg(errp,
-+                "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
-+                "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
-+                section->offset_within_address_space,
-+                section->offset_within_address_space +
-+                    int128_get64(section->size) - 1,
-+                hostwin->min_iova, hostwin->max_iova);
-+            return -EINVAL;
++        memory_listener_register(&container->prereg_listener,
++                                 &address_space_memory);
++        if (container->error) {
++            ret = -1;
++            error_propagate_prepend(errp, container->error,
++                    "RAM memory listener initialization failed: ");
++            goto listener_unregister_exit;
 +        }
 +    }
 +
-+    ret = vfio_spapr_create_window(container, section, &pgsize);
++    info.argsz = sizeof(info);
++    ret = ioctl(fd, VFIO_IOMMU_SPAPR_TCE_GET_INFO, &info);
 +    if (ret) {
-+        error_setg_errno(errp, -ret, "Failed to create SPAPR window");
-+        return ret;
++        error_setg_errno(errp, errno,
++                         "VFIO_IOMMU_SPAPR_TCE_GET_INFO failed");
++        ret = -errno;
++        goto listener_unregister_exit;
 +    }
 +
-+    vfio_host_win_add(container, section->offset_within_address_space,
-+                      section->offset_within_address_space +
-+                      int128_get64(section->size) - 1, pgsize);
-+#ifdef CONFIG_KVM
-+    if (kvm_enabled()) {
-+        VFIOGroup *group;
-+        IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
-+        struct kvm_vfio_spapr_tce param;
-+        struct kvm_device_attr attr = {
-+            .group = KVM_DEV_VFIO_GROUP,
-+            .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
-+            .addr = (uint64_t)(unsigned long)&param,
-+        };
-+
-+        if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
-+                                          &param.tablefd)) {
-+            QLIST_FOREACH(group, &container->group_list, container_next) {
-+                param.groupfd = group->fd;
-+                if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
-+                    error_setg_errno(errp, errno,
-+                                     "vfio: failed GROUP_SET_SPAPR_TCE for "
-+                                     "KVM VFIO device %d and group fd %d",
-+                                     param.tablefd, param.groupfd);
-+                    return -errno;
-+                }
-+                trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
-+            }
++    if (v2) {
++        container->pgsizes = info.ddw.pgsizes;
++        /*
++         * There is a default window in just created container.
++         * To make region_add/del simpler, we better remove this
++         * window now and let those iommu_listener callbacks
++         * create/remove them when needed.
++         */
++        ret = vfio_spapr_remove_window(container, info.dma32_window_start);
++        if (ret) {
++            error_setg_errno(errp, -ret,
++                             "failed to remove existing window");
++            goto listener_unregister_exit;
 +        }
++    } else {
++        /* The default table uses 4K pages */
++        container->pgsizes = 0x1000;
++        vfio_host_win_add(container, info.dma32_window_start,
++                          info.dma32_window_start +
++                          info.dma32_window_size - 1,
++                          0x1000);
 +    }
-+#endif
++
 +    return 0;
++
++listener_unregister_exit:
++    if (v2) {
++        memory_listener_unregister(&container->prereg_listener);
++    }
++    return ret;
 +}
 +
-+void vfio_container_del_section_window(VFIOContainer *container,
-+                                       MemoryRegionSection *section)
++void vfio_spapr_container_deinit(VFIOContainer *container)
 +{
-+    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
-+        return;
-+    }
-+
-+    vfio_spapr_remove_window(container,
-+                             section->offset_within_address_space);
-+    if (vfio_host_win_del(container,
-+                          section->offset_within_address_space,
-+                          section->offset_within_address_space +
-+                          int128_get64(section->size) - 1) < 0) {
-+        hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
-+                 __func__, section->offset_within_address_space);
++    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
++        memory_listener_unregister(&container->prereg_listener);
 +    }
 +}
 -- 
