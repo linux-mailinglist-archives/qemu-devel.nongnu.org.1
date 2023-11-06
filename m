@@ -2,83 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219B97E1E75
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:35:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 399EE7E1E78
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:37:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzwwh-0007W7-8h; Mon, 06 Nov 2023 05:35:03 -0500
+	id 1qzwyR-0000dt-8x; Mon, 06 Nov 2023 05:36:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qzwwc-0007VR-9C
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:34:58 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qzwwY-0006ZY-LY
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:34:58 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-53d8320f0easo7022519a12.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 02:34:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699266892; x=1699871692; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Zbf7X3lNTx2tNFEjIoUycJCq05+us145GWumPbZLqPo=;
- b=Y4z+b9MNT+SZ4VJ58HuzmE32iaoatKl+Fp9ZEtm86N1+PdMBRTCxi/HxNFXhaohG0e
- QGkClznNIlPuo/RAd4e9hgGVwGJMXwO3FREEAIIWBSJlc9F7+XEAZ9BIojF4YLHYUFBA
- U+nekbG7LHgtw4w8oJMFhB2lXm2Ur/wO9tygpjXAmRY+yMZe4gKB7zhQOj51XQAiY8SQ
- rOkvQaU11BX8N1OChpJVViVasg7EI8HzH2iml1cNnaLwPWexhjNw/WSTvzIrfjf5rHYm
- X/bVIs+vPT52517eA8us/1tMdq5qFZkkVUKyVIDe0RtjGINdY0c9AkJQOkPK/BUguSGr
- 2/rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699266892; x=1699871692;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Zbf7X3lNTx2tNFEjIoUycJCq05+us145GWumPbZLqPo=;
- b=u67JNQQYHfKk7gkbc7946WyUaO9rgBiX6RSMnrIkqxCopwFSx4nZzIlJjeqhI7lUpb
- sRVPqMGoWNiCPZS+qhmh4V2owo8R1qxGDfJovHwLFb8SAw76hc88yG6I7EgGS6k9T7sb
- lV1+9MINuQJsOLrR2XcwGUPETbdOz26pHkyfchs33xKktPKtzIl8uHwoxuC02BJcpaIC
- SuQ7XSZsM4r3XAPNBhnJ4hPNgosHcfQzcuu9ES/ZHkH11PIQgiMYk0hWVDOVOYjYVf/v
- zZ2uBFV1Htt1ggcfHQH0gAjA6wMhDqNvIaFWHRRMFmDayMpzAWsljr2zBTJ/jLTCCUF8
- 86iw==
-X-Gm-Message-State: AOJu0Yydg5uY2v5DOrRNrvDSrSDsbB4Eubw9JydG1ZLlPQEAEe26xm8I
- Jii8DY8MPrgEjn67J8q3T00I7MjFHnmtWyVnZKBTTw==
-X-Google-Smtp-Source: AGHT+IHaHCV25nWbJsj5oQ3tVP2gHlxGX6zufRNMUQmB+qyq2YsAh09utPl2UZJMiIsrRGRxBd0W5MHKrmi3zW1b0ns=
-X-Received: by 2002:a05:6402:1a39:b0:540:e598:a35f with SMTP id
- be25-20020a0564021a3900b00540e598a35fmr24343605edb.5.1699266892345; Mon, 06
- Nov 2023 02:34:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qzwyP-0000dl-7S
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:36:49 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qzwyN-00072C-2m
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:36:49 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 51AE5756088;
+ Mon,  6 Nov 2023 11:37:00 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 44E1A756087; Mon,  6 Nov 2023 11:37:00 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 426327560A3;
+ Mon,  6 Nov 2023 11:37:00 +0100 (CET)
+Date: Mon, 6 Nov 2023 11:37:00 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Howard Spoelstra <hsp.cat7@gmail.com>
+cc: qemu-devel qemu-devel <qemu-devel@nongnu.org>, 
+ Rene Engel <ReneEngel80@emailn.de>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: Error detecting linker while compiling qemu-system-ppc on
+ macOS
+In-Reply-To: <CABLmASHL3etTk7b1Tbg6rcZD+qGZXcPBkAR0+tcJP+EJdXF63Q@mail.gmail.com>
+Message-ID: <d11d3bba-4e6f-6303-8d9c-5d786128a23a@eik.bme.hu>
+References: <cover.1672868854.git.balaton@eik.bme.hu>
+ <4162db13bd1da9c6ddd77f185cef738e44790467.1672868854.git.balaton@eik.bme.hu>
+ <b821c773-a443-c70b-5d4c-787284028f8a@ilande.co.uk>
+ <389d8398-2b77-a64e-7034-79123da6cb86@eik.bme.hu>
+ <CABLmASHE7iiqHnOZxCfaqvz5zwUipG5vunHG_UK8krXu71HOgw@mail.gmail.com>
+ <bd0e4431-c5ec-2ef5-d847-8c59aa8cc55c@eik.bme.hu>
+ <ab9e33e5-70fc-0a76-c548-16ec787ea1af@ilande.co.uk>
+ <ed8ee369-c9a8-7853-3b65-7361fefc3c63@eik.bme.hu>
+ <ca5240e6-e00d-6213-22d6-f7b43d8bed18@ilande.co.uk>
+ <CABLmASGc6fybw7mL5JHUCukwoB6KjGaaWHct5mi20A2vXZhtaA@mail.gmail.com>
+ <CABLmASHL3etTk7b1Tbg6rcZD+qGZXcPBkAR0+tcJP+EJdXF63Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231102094015.208588-1-ethan84@andestech.com>
- <20231102094015.208588-2-ethan84@andestech.com> <ZUOo3fGmqM/gVyTR@x1n>
- <CAFEAcA86B-V0gFLhE9rPK2kG=XeFw7OJ4C==8g2i_WHSLW_HYQ@mail.gmail.com>
- <ZURpIyjhraORROn5@ethan84-VirtualBox>
- <CAFEAcA-1dJnsDyZpf2Dy9XuAdp6CFWSFCzV7eceUJ6RyFLaVPA@mail.gmail.com>
- <ZUhH3Rulnj64whB4@ethan84-VirtualBox>
-In-Reply-To: <ZUhH3Rulnj64whB4@ethan84-VirtualBox>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 6 Nov 2023 10:34:41 +0000
-Message-ID: <CAFEAcA_z1VCyeUFNMDSsxp-UYRLoMm-4=oo86JkJ3fmjoWdq_w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] exec/memattrs: Add iopmp source id, start address, 
- end address to MemTxAttrs
-To: Ethan Chen <ethan84@andestech.com>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
- richard.henderson@linaro.org, 
- pbonzini@redhat.com, palmer@dabbelt.com, alistair.francis@wdc.com, 
- in.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, 
- hiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, david@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; format=flowed; charset=US-ASCII
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,65 +71,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 6 Nov 2023 at 01:57, Ethan Chen <ethan84@andestech.com> wrote:
->
-> On Fri, Nov 03, 2023 at 10:34:28AM +0000, Peter Maydell wrote:
-> > On Fri, 3 Nov 2023 at 03:29, Ethan Chen <ethan84@andestech.com> wrote:
-> > >
-> > > On Thu, Nov 02, 2023 at 01:53:05PM +0000, Peter Maydell wrote:
-> > > > On Thu, 2 Nov 2023 at 13:49, Peter Xu <peterx@redhat.com> wrote:
-> > > > >
-> > > > > On Thu, Nov 02, 2023 at 05:40:12PM +0800, Ethan Chen wrote:
-> > > > > > Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> > > > > > ---
-> > > > > >  include/exec/memattrs.h | 6 ++++++
-> > > > > >  1 file changed, 6 insertions(+)
-> > > > > >
-> > > > > > diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-> > > > > > index d04170aa27..fc15e5d7d3 100644
-> > > > > > --- a/include/exec/memattrs.h
-> > > > > > +++ b/include/exec/memattrs.h
-> > > > > > @@ -64,6 +64,12 @@ typedef struct MemTxAttrs {
-> > > > > >      unsigned int target_tlb_bit0 : 1;
-> > > > > >      unsigned int target_tlb_bit1 : 1;
-> > > > > >      unsigned int target_tlb_bit2 : 1;
-> > > > > > +
-> > > > > > +    /* IOPMP support up to 65535 sources */
-> > > > > > +    unsigned int iopmp_sid:16;
-> > > > >
-> > > > > There's MemTxAttrs.requester_id, SID for pci, same length.  Reuse it?
-> > > > >
-> > > > > > +    /* Transaction infomation for IOPMP */
-> > > > > > +    unsigned long long iopmp_start_addr;
-> > > > > > +    unsigned long long iopmp_end_addr;
-> > > > >
-> > > > > PS: encoding addresses into memattrs is.. strange, but since I know nothing
-> > > > > about iopmp, I'll leave that for other reviewers.
-> > > > >
-> > > > > Currently MemTxAttrs are passed as a whole int on the stack, if it keeps
-> > > > > growing we may start to consider a pointer, but need to check the side
-> > > > > effects of unexpected fields modified within a call.
-> > > >
-> > > > Yeah, this struct is intended to model the various attributes that
-> > > > get passed around on the bus alongside data in real hardware.
-> > > > I'm pretty sure no real hardware is passing around start and
-> > > > end transaction addresses on its bus with every read and
-> > > > write, which suggests that we should be doing this some other
-> > > > way than adding these fields to the MemTxAttrs struct.
-> > >
-> > > For AXI bus ADDR, LEN, SIZE are signals in read/write address channel.
-> > > IOPMP will check that start address = ADDR,
-> > > and end address = ADDR + LEN * SIZE.
-> >
-> > Yes, but you don't pass the start and end address on the AXI
-> > bus, so they don't go in QEMU's MemTxAttrs either.
->
-> I will add those AXI bus signals to MemTxAttrs instead of using start and end
-> address in next revision.
+Hello,
 
-What AXI bus signals? You already get address and size in the
-actual memory transaction, they don't need to go in the MemTxAttrs.
+On Mon, 6 Nov 2023, Howard Spoelstra wrote:
+> Hi all,
+>
+> I'm getting a error while compiling on macOS (Intel). It seems linker
+> detection is passed an unknown argument "--version", whereas "-v" works OK?
+> See log below.
 
-thanks
--- PMM
+See also 
+https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg10375.html
+and the tickets listed in there. It should work with meson 1.2.x according 
+to Rene's ticket to Meson and you can install that from homebrew but it 
+seems it's not picked up. Why is it using 
+/Users/hsp/src/qemu-ppc/build/pyvenv/bin/python3.11 ? How many pythons do 
+you8 have on macOS? What does which python tell you and does it work 
+better when you add --python=/path/to/python/that/homebrew/meson/uses ?
+
+Regards,
+BALATON Zoltan
+
+> Thanks for looking into this,
+> Howard
+>
+> Build started at 2023-11-06T07:29:19.181487
+> Main binary: /Users/hsp/src/qemu-ppc/build/pyvenv/bin/python3.11
+> Build Options: -Db_pie=false -Ddocs=disabled -Dplugins=true '--native-file
+> config-meson.cross'
+> Python system: Darwin
+> The Meson build system
+> Version: 0.63.3
+> Source dir: /Users/hsp/src/qemu-ppc
+> Build dir: /Users/hsp/src/qemu-ppc/build
+> Build type: native build
+> Project name: qemu
+> Project version: 8.1.50
+> -----
+> Detecting compiler via: cc -m64 -mcx16 --version
+> compiler returned <Popen: returncode: 0 args: ['cc', '-m64', '-mcx16',
+> '--version']>
+> compiler stdout:
+> Apple clang version 15.0.0 (clang-1500.0.40.1)
+> Target: x86_64-apple-darwin22.6.0
+> Thread model: posix
+> InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+>
+> compiler stderr:
+>
+> Running command: cc -m64 -mcx16 -E -dM -
+> -----
+> Detecting linker via: cc -m64 -mcx16 -Wl,--version
+> linker returned <Popen: returncode: 1 args: ['cc', '-m64', '-mcx16',
+> '-Wl,--version']>
+> linker stdout:
+>
+> linker stderr:
+> ld: unknown options: --version
+> clang: error: linker command failed with exit code 1 (use -v to see
+> invocation)
+>
+> -----
+> Detecting Apple linker via: cc -m64 -mcx16 -Wl,-v
+> linker stdout:
+>
+> linker stderr:
+> @(#)PROGRAM:ld  PROJECT:dyld-1015.7
+> BUILD 18:48:43 Aug 22 2023
+> configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386
+> x86_64 x86_64h armv6m armv7k armv7m armv7em
+> will use ld-classic for: armv6 armv7 armv7s arm64_32 i386 armv6m armv7k
+> armv7m armv7em
+> LTO support using: LLVM version 15.0.0 (static support for 29, runtime is
+> 29)
+> TAPI support using: Apple TAPI version 15.0.0 (tapi-1500.0.12.3)
+> Library search paths:
+> /usr/local/lib
+> Framework search paths:
+> ld: Undefined symbols:
+>  _main, referenced from:
+>      <initial-undefines>
+> clang: error: linker command failed with exit code 1 (use -v to see
+> invocation)
+>
+>
+> ../meson.build:1:0: ERROR: Unable to detect linker for compiler `cc -m64
+> -mcx16 -Wl,--version`
+> stdout:
+> stderr: ld: unknown options: --version
+> clang: error: linker command failed with exit code 1 (use -v to see
+> invocation)
+>
 
