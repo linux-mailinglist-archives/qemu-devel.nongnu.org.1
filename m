@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7660D7E1AA6
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:03:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA4B7E1AC4
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:10:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztaB-0005Yq-2G; Mon, 06 Nov 2023 01:59:35 -0500
+	id 1qzta8-0005YT-HS; Mon, 06 Nov 2023 01:59:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZb-0004bR-FE
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:59:00 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qztZf-0004e8-8f
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:59:08 -0500
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZZ-0001Rh-Aj
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:59 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1cc68c1fac2so37967615ad.0
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:56 -0800 (PST)
+ id 1qztZb-0001Rz-90
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:59:02 -0500
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-5bd85b1939aso297733a12.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699253936; x=1699858736; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699253937; x=1699858737; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B22m9WYbEzILwWgSMaApfq7KsTrtmEtdsnM33qFpiEM=;
- b=uiI6ieJNEk0sHwY8vELWPfrwkR710ZILzEn0kR6WyCooQp1sb9NQEmswI3y8iY8q7C
- EP+lRmx+4jLfFeUrAbPBffGOH+l5pqb/H/sdn9rjmpfO/UEVwq6mHol8x/cyZt0HJde7
- SmdjnEhFI7sGWzqJzwITDdMVkb2NqxHArTirPbLtOeJUlWb5gWB1Cml0vu//crPP/bU/
- G5fmbtohbDyNCLofXqarx1l+aZCsfHnuC1SJkCT3B6bB8GXt67MaZdiWCoBe6X9Dld1Z
- T2uj29GawMYhAOeTtL8lAm++Z6RFYykOxiXbGcsnY3/5WQ7QFhoK7JNyxiUGQa946pJN
- nZBQ==
+ bh=ZhdGHofk/UGIfI32XkKyDOcSGvASTJZn9goVP8U1UKc=;
+ b=zLI9hXrPzHKGUEGP3LsP4vmV/oL3nDhzCkZ44oydkT+q0C5gBn9Op37uplCXaKr5+3
+ wKl9NFxFmgRfjcyj24aIUInM7cmCZOWMTRO8uWTRpPkbKBoqTQsuRG5WEgN2/Cab0vi0
+ sFT1IqXtTTaGzM6CHSKhm6+2oCl5BlQIYDcNjsYQTYU1XwgBYCo46shbTdW4i6F1I03A
+ jqUnb0FcrxKHX0cxLjgA4hw7awgzExVVa8/YA2mT5db+wqP8fzuAkaPea0U86xmiRISs
+ aMfJD0JIfi+gPrtjz/3kW90MIDUZ0LPRpnRGVkcLX90In+80Ut7orlzDv6mJzxigenic
+ AN3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699253936; x=1699858736;
+ d=1e100.net; s=20230601; t=1699253937; x=1699858737;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B22m9WYbEzILwWgSMaApfq7KsTrtmEtdsnM33qFpiEM=;
- b=cgsvejVe1wWtxTq3Zf+vosdxLDUQONqFMuQ/7Pothj/xeazBgMlo9waTAu/HhEpS2O
- OGyi1k/rxZxfqvO1PfoDlMGyMQ7u3UAXWsZB+igL3aIaE7UcA2Q/mEvOj9/vFFKcSZ/a
- hmy+2Y4vvFwiph5qhttrilijl8PTkThRRB/18OAIOO6Pd/vLi3Akpw7Xe6/Prehyt1Nu
- uHQiz2lNOmOx4646y5NRqdo/PA8lUkZBhTjIOTAz0Xh3d8AwQVL73G4rws8vtxv5Vzfh
- qFCpt2cWWrhcsR/i95iRSlEO0BvJw0+aT6omWe/7qQhP9PUV4G0soyif3XtCef16kpm9
- he8A==
-X-Gm-Message-State: AOJu0YwzmjoQPufoh6yStwlP3gVNSzyh8UYLSKSpwkLxOZhhvcH8cxxB
- s8kt+d6RgIKMWMaSwKJi6bcw4BkjuWXimIoavSg=
-X-Google-Smtp-Source: AGHT+IEtABpgnaNi9WITeKtuOX1gsEzZg4+77fNVFCPBmXHEDg7aRQ1YQidHskxlQd8NhIckPHtEDw==
-X-Received: by 2002:a17:902:d50b:b0:1cc:6fa1:c99f with SMTP id
- b11-20020a170902d50b00b001cc6fa1c99fmr18492110plg.57.1699253936159; 
- Sun, 05 Nov 2023 22:58:56 -0800 (PST)
+ bh=ZhdGHofk/UGIfI32XkKyDOcSGvASTJZn9goVP8U1UKc=;
+ b=JyfRqdu6PLCjwv9R0jbBJjoxAtzPKV3/XJhCoOgruKJw3IRJK4xUSUeGxPet5TIQCI
+ ni6X1XdfjUPRgchyR1KBDlXW68NG29yEIK8MToi2zDV8dJO9LLJPHukABZMWUCh5a1eo
+ pl53iJFIc+BXZhKAcZjyf1PQbVX9zbZ2yw43XpXKSqyPRPWhM6UFuxC/WzwdZ6tRd78t
+ 2wFMDmC6V7lUskmsOF43pITTP13yxSd6TyOZ8L1m9yIO7TUuQEWX5azim+ih+YIJQdWk
+ vMcnODjKjgAj6xWATnLZ1SLWTqg9oYbNJPCl280xqRA79Hu1YLUA2YvfAdRiMB2tfHuj
+ 3/0g==
+X-Gm-Message-State: AOJu0YwW5yr2eHb6Q8j9XWjcMWl+gCEuUXuTEwd65MyKwx0LKvcJmST1
+ kGce0a2t7HsfvljGfGfKa1RuSkECeqmmhftvees=
+X-Google-Smtp-Source: AGHT+IHcIOPwPbvWB0Qy2KJTRv7sJInNRTCuU4rfGooJzqjZVT5Aai2ZHK/gUF4y9RsuQqIptmVDTw==
+X-Received: by 2002:a05:6a20:914e:b0:16b:b824:b25c with SMTP id
+ x14-20020a056a20914e00b0016bb824b25cmr23836681pzc.25.1699253937172; 
+ Sun, 05 Nov 2023 22:58:57 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.55
+ c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 22:58:55 -0800 (PST)
+ Sun, 05 Nov 2023 22:58:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 31/71] hw/i386: Constify VMState
-Date: Sun,  5 Nov 2023 22:57:47 -0800
-Message-Id: <20231106065827.543129-32-richard.henderson@linaro.org>
+Subject: [PATCH 32/71] hw/ide: Constify VMState
+Date: Sun,  5 Nov 2023 22:57:48 -0800
+Message-Id: <20231106065827.543129-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,217 +92,257 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/i386/acpi-build.c       | 2 +-
- hw/i386/intel_iommu.c      | 2 +-
- hw/i386/kvm/clock.c        | 6 +++---
- hw/i386/kvm/xen_evtchn.c   | 4 ++--
- hw/i386/kvm/xen_gnttab.c   | 2 +-
- hw/i386/kvm/xen_overlay.c  | 2 +-
- hw/i386/kvm/xen_xenstore.c | 2 +-
- hw/i386/kvmvapic.c         | 6 +++---
- hw/i386/port92.c           | 2 +-
- hw/i386/vmmouse.c          | 2 +-
- hw/i386/xen/xen_platform.c | 2 +-
- hw/i386/xen/xen_pvdevice.c | 2 +-
- 12 files changed, 17 insertions(+), 17 deletions(-)
+ hw/ide/ahci-allwinner.c |  2 +-
+ hw/ide/ahci.c           |  8 ++++----
+ hw/ide/core.c           | 16 ++++++++--------
+ hw/ide/ich.c            |  2 +-
+ hw/ide/isa.c            |  2 +-
+ hw/ide/macio.c          |  2 +-
+ hw/ide/microdrive.c     |  2 +-
+ hw/ide/mmio.c           |  2 +-
+ hw/ide/pci.c            | 10 +++++-----
+ 9 files changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 80db183b78..edc979379c 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -2770,7 +2770,7 @@ static const VMStateDescription vmstate_acpi_build = {
-     .name = "acpi_build",
+diff --git a/hw/ide/ahci-allwinner.c b/hw/ide/ahci-allwinner.c
+index 227e747ba7..b173121006 100644
+--- a/hw/ide/ahci-allwinner.c
++++ b/hw/ide/ahci-allwinner.c
+@@ -97,7 +97,7 @@ static const VMStateDescription vmstate_allwinner_ahci = {
+     .name = "allwinner-ahci",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(patched, AcpiBuildState),
+         VMSTATE_UINT32_ARRAY(regs, AllwinnerAHCIState,
+                              ALLWINNER_AHCI_MMIO_SIZE / 4),
          VMSTATE_END_OF_LIST()
-     },
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 1c6c18622f..45fdc158f4 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3272,7 +3272,7 @@ static const VMStateDescription vtd_vmstate = {
-     .minimum_version_id = 1,
-     .priority = MIG_PRI_IOMMU,
-     .post_load = vtd_post_load,
+diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+index fcc5476e9e..3fc7949504 100644
+--- a/hw/ide/ahci.c
++++ b/hw/ide/ahci.c
+@@ -1661,7 +1661,7 @@ void ahci_reset(AHCIState *s)
+ static const VMStateDescription vmstate_ncq_tfs = {
+     .name = "ncq state",
+     .version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(root, IntelIOMMUState),
-         VMSTATE_UINT64(intr_root, IntelIOMMUState),
-         VMSTATE_UINT64(iq, IntelIOMMUState),
-diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c
-index e756b0aa43..40aa9a32c3 100644
---- a/hw/i386/kvm/clock.c
-+++ b/hw/i386/kvm/clock.c
-@@ -245,7 +245,7 @@ static const VMStateDescription kvmclock_reliable_get_clock = {
+         VMSTATE_UINT32(sector_count, NCQTransferState),
+         VMSTATE_UINT64(lba, NCQTransferState),
+         VMSTATE_UINT8(tag, NCQTransferState),
+@@ -1676,7 +1676,7 @@ static const VMStateDescription vmstate_ncq_tfs = {
+ static const VMStateDescription vmstate_ahci_device = {
+     .name = "ahci port",
+     .version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_IDE_BUS(port, AHCIDevice),
+         VMSTATE_IDE_DRIVE(port.ifs[0], AHCIDevice),
+         VMSTATE_UINT32(port_state, AHCIDevice),
+@@ -1793,7 +1793,7 @@ const VMStateDescription vmstate_ahci = {
+     .name = "ahci",
+     .version_id = 1,
+     .post_load = ahci_state_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT_VARRAY_POINTER_INT32(dev, AHCIState, ports,
+                                      vmstate_ahci_device, AHCIDevice),
+         VMSTATE_UINT32(control_regs.cap, AHCIState),
+@@ -1809,7 +1809,7 @@ const VMStateDescription vmstate_ahci = {
+ 
+ static const VMStateDescription vmstate_sysbus_ahci = {
+     .name = "sysbus-ahci",
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_AHCI(ahci, SysbusAHCIState),
+         VMSTATE_END_OF_LIST()
+     },
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index b5e0dcd29b..c87e015c6d 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -2906,7 +2906,7 @@ static const VMStateDescription vmstate_ide_atapi_gesn_state = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = kvmclock_clock_is_reliable_needed,
+     .needed = ide_atapi_gesn_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(clock_is_reliable, KVMClockState),
+         VMSTATE_BOOL(events.new_media, IDEState),
+         VMSTATE_BOOL(events.eject_request, IDEState),
          VMSTATE_END_OF_LIST()
-     }
-@@ -295,11 +295,11 @@ static const VMStateDescription kvmclock_vmsd = {
+@@ -2918,7 +2918,7 @@ static const VMStateDescription vmstate_ide_tray_state = {
+     .version_id = 1,
      .minimum_version_id = 1,
-     .pre_load = kvmclock_pre_load,
-     .pre_save = kvmclock_pre_save,
+     .needed = ide_tray_state_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(clock, KVMClockState),
+         VMSTATE_BOOL(tray_open, IDEState),
+         VMSTATE_BOOL(tray_locked, IDEState),
+         VMSTATE_END_OF_LIST()
+@@ -2932,7 +2932,7 @@ static const VMStateDescription vmstate_ide_drive_pio_state = {
+     .pre_save = ide_drive_pio_pre_save,
+     .post_load = ide_drive_pio_post_load,
+     .needed = ide_drive_pio_state_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(req_nb_sectors, IDEState),
+         VMSTATE_VARRAY_INT32(io_buffer, IDEState, io_buffer_total_len, 1,
+                              vmstate_info_uint8, uint8_t),
+@@ -2950,7 +2950,7 @@ const VMStateDescription vmstate_ide_drive = {
+     .version_id = 3,
+     .minimum_version_id = 0,
+     .post_load = ide_drive_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(mult_sectors, IDEState),
+         VMSTATE_INT32(identify_set, IDEState),
+         VMSTATE_BUFFER_TEST(identify_data, IDEState, is_identify_set),
+@@ -2973,7 +2973,7 @@ const VMStateDescription vmstate_ide_drive = {
+         VMSTATE_UINT8_V(cdrom_changed, IDEState, 3),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription * []) {
+-    .subsections = (const VMStateDescription*[]) {
 +    .subsections = (const VMStateDescription * const []) {
-         &kvmclock_reliable_get_clock,
+         &vmstate_ide_drive_pio_state,
+         &vmstate_ide_tray_state,
+         &vmstate_ide_atapi_gesn_state,
+@@ -2986,7 +2986,7 @@ static const VMStateDescription vmstate_ide_error_status = {
+     .version_id = 2,
+     .minimum_version_id = 1,
+     .needed = ide_error_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(error_status, IDEBus),
+         VMSTATE_INT64_V(retry_sector_num, IDEBus, 2),
+         VMSTATE_UINT32_V(retry_nsector, IDEBus, 2),
+@@ -2999,12 +2999,12 @@ const VMStateDescription vmstate_ide_bus = {
+     .name = "ide_bus",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(cmd, IDEBus),
+         VMSTATE_UINT8(unit, IDEBus),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription*[]) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_ide_error_status,
          NULL
      }
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index a731738411..25a49bf95f 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -240,7 +240,7 @@ static const VMStateDescription xen_evtchn_port_vmstate = {
-     .name = "xen_evtchn_port",
+diff --git a/hw/ide/ich.c b/hw/ide/ich.c
+index d61faab532..49f8eb8a7d 100644
+--- a/hw/ide/ich.c
++++ b/hw/ide/ich.c
+@@ -83,7 +83,7 @@
+ static const VMStateDescription vmstate_ich9_ahci = {
+     .name = "ich9_ahci",
      .version_id = 1,
-     .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(vcpu, XenEvtchnPort),
-         VMSTATE_UINT16(type, XenEvtchnPort),
-         VMSTATE_UINT16(type_val, XenEvtchnPort),
-@@ -255,7 +255,7 @@ static const VMStateDescription xen_evtchn_vmstate = {
-     .needed = xen_evtchn_is_needed,
-     .pre_load = xen_evtchn_pre_load,
-     .post_load = xen_evtchn_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(callback_param, XenEvtchnState),
-         VMSTATE_UINT32(nr_ports, XenEvtchnState),
-         VMSTATE_STRUCT_VARRAY_UINT32(port_table, XenEvtchnState, nr_ports, 1,
-diff --git a/hw/i386/kvm/xen_gnttab.c b/hw/i386/kvm/xen_gnttab.c
-index 21c30e3659..0cf2182605 100644
---- a/hw/i386/kvm/xen_gnttab.c
-+++ b/hw/i386/kvm/xen_gnttab.c
-@@ -126,7 +126,7 @@ static const VMStateDescription xen_gnttab_vmstate = {
-     .minimum_version_id = 1,
-     .needed = xen_gnttab_is_needed,
-     .post_load = xen_gnttab_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(nr_frames, XenGnttabState),
-         VMSTATE_VARRAY_UINT32(gnt_frame_gpas, XenGnttabState, nr_frames, 0,
-                               vmstate_info_uint64, uint64_t),
-diff --git a/hw/i386/kvm/xen_overlay.c b/hw/i386/kvm/xen_overlay.c
-index 39fda1b72c..526f7a6077 100644
---- a/hw/i386/kvm/xen_overlay.c
-+++ b/hw/i386/kvm/xen_overlay.c
-@@ -139,7 +139,7 @@ static const VMStateDescription xen_overlay_vmstate = {
-     .needed = xen_overlay_is_needed,
-     .pre_save = xen_overlay_pre_save,
-     .post_load = xen_overlay_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(shinfo_gpa, XenOverlayState),
-         VMSTATE_BOOL(long_mode, XenOverlayState),
+         VMSTATE_PCI_DEVICE(parent_obj, AHCIPCIState),
+         VMSTATE_AHCI(ahci, AHCIPCIState),
          VMSTATE_END_OF_LIST()
-diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-index 660d0b72f9..7ace113136 100644
---- a/hw/i386/kvm/xen_xenstore.c
-+++ b/hw/i386/kvm/xen_xenstore.c
-@@ -242,7 +242,7 @@ static const VMStateDescription xen_xenstore_vmstate = {
-     .needed = xen_xenstore_is_needed,
-     .pre_save = xen_xenstore_pre_save,
-     .post_load = xen_xenstore_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_ARRAY(req_data, XenXenstoreState,
-                             sizeof_field(XenXenstoreState, req_data)),
-         VMSTATE_UINT8_ARRAY(rsp_data, XenXenstoreState,
-diff --git a/hw/i386/kvmvapic.c b/hw/i386/kvmvapic.c
-index 43f8a8f679..f2b0aff479 100644
---- a/hw/i386/kvmvapic.c
-+++ b/hw/i386/kvmvapic.c
-@@ -802,7 +802,7 @@ static const VMStateDescription vmstate_handlers = {
-     .name = "kvmvapic-handlers",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(set_tpr, VAPICHandlers),
-         VMSTATE_UINT32(set_tpr_eax, VAPICHandlers),
-         VMSTATE_UINT32_ARRAY(get_tpr, VAPICHandlers, 8),
-@@ -815,7 +815,7 @@ static const VMStateDescription vmstate_guest_rom = {
-     .name = "kvmvapic-guest-rom",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UNUSED(8),     /* signature */
-         VMSTATE_UINT32(vaddr, GuestROMState),
-         VMSTATE_UINT32(fixup_start, GuestROMState),
-@@ -835,7 +835,7 @@ static const VMStateDescription vmstate_vapic = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = vapic_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(rom_state, VAPICROMState, 0, vmstate_guest_rom,
-                        GuestROMState),
-         VMSTATE_UINT32(state, VAPICROMState),
-diff --git a/hw/i386/port92.c b/hw/i386/port92.c
-index e1379a4f98..1070bfbf36 100644
---- a/hw/i386/port92.c
-+++ b/hw/i386/port92.c
-@@ -54,7 +54,7 @@ static const VMStateDescription vmstate_port92_isa = {
-     .name = "port92",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(outport, Port92State),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
-index 91320afa2f..a8d014d09a 100644
---- a/hw/i386/vmmouse.c
-+++ b/hw/i386/vmmouse.c
-@@ -277,7 +277,7 @@ static const VMStateDescription vmstate_vmmouse = {
-     .version_id = 0,
+diff --git a/hw/ide/isa.c b/hw/ide/isa.c
+index ea60c08116..cc865c83dc 100644
+--- a/hw/ide/isa.c
++++ b/hw/ide/isa.c
+@@ -58,7 +58,7 @@ static const VMStateDescription vmstate_ide_isa = {
+     .name = "isa-ide",
+     .version_id = 3,
      .minimum_version_id = 0,
-     .post_load = vmmouse_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_EQUAL(queue_size, VMMouseState, NULL),
-         VMSTATE_UINT32_ARRAY(queue, VMMouseState, VMMOUSE_QUEUE_SIZE),
-         VMSTATE_UINT16(nb_queue, VMMouseState),
-diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
-index 17457ff3de..9065c25933 100644
---- a/hw/i386/xen/xen_platform.c
-+++ b/hw/i386/xen/xen_platform.c
-@@ -510,7 +510,7 @@ static const VMStateDescription vmstate_xen_platform = {
-     .version_id = 4,
-     .minimum_version_id = 4,
-     .post_load = xen_platform_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PCIXenPlatformState),
-         VMSTATE_UINT8(flags, PCIXenPlatformState),
+         VMSTATE_IDE_BUS(bus, ISAIDEState),
+         VMSTATE_IDE_DRIVES(bus.ifs, ISAIDEState),
          VMSTATE_END_OF_LIST()
-diff --git a/hw/i386/xen/xen_pvdevice.c b/hw/i386/xen/xen_pvdevice.c
-index e62e06622b..ed621531d8 100644
---- a/hw/i386/xen/xen_pvdevice.c
-+++ b/hw/i386/xen/xen_pvdevice.c
-@@ -77,7 +77,7 @@ static const VMStateDescription vmstate_xen_pvdevice = {
-     .name = "xen-pvdevice",
+diff --git a/hw/ide/macio.c b/hw/ide/macio.c
+index dca1cc9efc..0d2c6ba910 100644
+--- a/hw/ide/macio.c
++++ b/hw/ide/macio.c
+@@ -361,7 +361,7 @@ static const VMStateDescription vmstate_pmac = {
+     .name = "ide",
+     .version_id = 5,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_IDE_BUS(bus, MACIOIDEState),
+         VMSTATE_IDE_DRIVES(bus.ifs, MACIOIDEState),
+         VMSTATE_BOOL(dma_active, MACIOIDEState),
+diff --git a/hw/ide/microdrive.c b/hw/ide/microdrive.c
+index 981cfbd97f..a7f415f0fc 100644
+--- a/hw/ide/microdrive.c
++++ b/hw/ide/microdrive.c
+@@ -336,7 +336,7 @@ static const VMStateDescription vmstate_microdrive = {
+     .name = "microdrive",
+     .version_id = 3,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(opt, MicroDriveState),
+         VMSTATE_UINT8(stat, MicroDriveState),
+         VMSTATE_UINT8(pins, MicroDriveState),
+diff --git a/hw/ide/mmio.c b/hw/ide/mmio.c
+index 3aeacab3bb..e8f41c0610 100644
+--- a/hw/ide/mmio.c
++++ b/hw/ide/mmio.c
+@@ -110,7 +110,7 @@ static const VMStateDescription vmstate_ide_mmio = {
+     .name = "mmio-ide",
+     .version_id = 3,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_IDE_BUS(bus, MMIOIDEState),
+         VMSTATE_IDE_DRIVES(bus.ifs, MMIOIDEState),
+         VMSTATE_END_OF_LIST()
+diff --git a/hw/ide/pci.c b/hw/ide/pci.c
+index a25b352537..841c9cc1d2 100644
+--- a/hw/ide/pci.c
++++ b/hw/ide/pci.c
+@@ -417,7 +417,7 @@ static const VMStateDescription vmstate_bmdma_current = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .needed = ide_bmdma_current_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, XenPVDevice),
+         VMSTATE_UINT32(cur_addr, BMDMAState),
+         VMSTATE_UINT32(cur_prd_last, BMDMAState),
+         VMSTATE_UINT32(cur_prd_addr, BMDMAState),
+@@ -431,7 +431,7 @@ static const VMStateDescription vmstate_bmdma_status = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = ide_bmdma_status_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(status, BMDMAState),
          VMSTATE_END_OF_LIST()
      }
+@@ -442,7 +442,7 @@ static const VMStateDescription vmstate_bmdma = {
+     .version_id = 3,
+     .minimum_version_id = 0,
+     .pre_save  = ide_bmdma_pre_save,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(cmd, BMDMAState),
+         VMSTATE_UINT8(migration_compat_status, BMDMAState),
+         VMSTATE_UINT32(addr, BMDMAState),
+@@ -451,7 +451,7 @@ static const VMStateDescription vmstate_bmdma = {
+         VMSTATE_UINT8(migration_retry_unit, BMDMAState),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription*[]) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_bmdma_current,
+         &vmstate_bmdma_status,
+         NULL
+@@ -478,7 +478,7 @@ const VMStateDescription vmstate_ide_pci = {
+     .version_id = 3,
+     .minimum_version_id = 0,
+     .post_load = ide_pci_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_PCI_DEVICE(parent_obj, PCIIDEState),
+         VMSTATE_STRUCT_ARRAY(bmdma, PCIIDEState, 2, 0,
+                              vmstate_bmdma, BMDMAState),
 -- 
 2.34.1
 
