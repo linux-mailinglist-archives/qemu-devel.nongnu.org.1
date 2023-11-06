@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19967E1FB5
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DFA7E2013
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:34:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxVG-0003mE-Vo; Mon, 06 Nov 2023 06:10:47 -0500
+	id 1qzxVI-0003rL-Jo; Mon, 06 Nov 2023 06:10:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUi-0002dz-AI
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:10:17 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUo-0002i4-8Q
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:10:19 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUe-0005vP-S1
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:10:11 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-507c78d258fso5608150e87.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:10:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUl-0005y2-At
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:10:17 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-32f9268bf8cso2605756f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:10:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699269006; x=1699873806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699269012; x=1699873812; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ut7p2F8ycBCH0WfVrPlQ2F/inhGj3Q9WVzKOY6zxb1o=;
- b=dZiqZ6SuCWJhRp09kzqGFqJ9zpa1LI1jj7bXZsewcO+Xf1YVLsAPUQz5h6ZPjBLmU7
- IPYaodMFu/QrDrvIHxaHme7IRucrgm8ZM108cx4uUawG6445kiU3v9t6obBpkzhpsgdZ
- q1JWjJOfGccPz0obOS7uMCRX3WIPpiyDCKFfQot17sfm76CHI/co96rgdZvu9fXoZ9Vq
- kzjk0CwugvWFnRl+EG8ghlS2S4a2fkGpcy2ZKrbo/2Oa//Rnv03xZi+IlM9nH+6dc/03
- /K1WEjn/aWiVc7jkhWrjfJFxFKhPGrB70gMhpqDiQQcfzPvOrt3G91Pfargd8iuOKMq1
- qSlg==
+ bh=cyEPFd8qKgVauKHH+mzQW+99WSkPGmQyoZYgi3VA9Vc=;
+ b=IyR6jb3K6mdeddZTNYaXFflbf55TmXSJ5Yf9iGwHR+1vSDv2ChfTX7IITAdBOQkCfe
+ wJvDm83oquqMkyeWaV0bXKU+44X+8YdcLk65fVK4qG4+7urbTLF8JxcJJw8DE8S1JbgL
+ 4Hf1dvvFUidty3H/jaslKQXCq/wErslU7c70YQkIqGCRh55zHXbq/Sz2A/5cgBkcAbVX
+ l6Cl+L1ez9Yw46iBGF2HSeqXQ+do7XomwITU8y+dUeSx8BRbObTyJRBIEprgivtyXZ0h
+ Bj2TjH6yitecC1jnaNCIwS+4j0kd5PlCMI357M0n1fl5wgyaMTJ5GnI7QyKeBrchTnXq
+ QHcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699269006; x=1699873806;
+ d=1e100.net; s=20230601; t=1699269012; x=1699873812;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ut7p2F8ycBCH0WfVrPlQ2F/inhGj3Q9WVzKOY6zxb1o=;
- b=WN4ljqyO6hzIhlUYu/i6IImQqNdTEnVEcQw+bUrs0+GDCWg7bpChlihCO2py9xFH8W
- BEqSWJMkmbxy1igOPxQi7Rlrj9CUskeF0lGWVx/OE7vJXmrm8Pov9fVHZAbRfjs9mDLW
- /Bs529PFC6mSRvglEf2/Ibc6uFEpff0brAp15PlnMZzCs7ZxARYsyFudimw1AvEoHV6g
- HXY9cPy3h/TZhwR+LDVX1qKwm6OscZzeT9nZOLR52/dthmzypQWtVlr/gIadJzGDbNEM
- BuA7AMv+hZvXdVlYbXBCgo/ifWGKmST1LED0m/Oi72h9KI+wXmvbYJ1yIvJGk5IXgb1U
- uGKA==
-X-Gm-Message-State: AOJu0YzHzj1pR9AEtguvBVHIkRkq7Kiv1OGu9Rbv7036GenK2mMvsiQK
- VM/ChMQsAUsEp8dgcg+BvCWine/BVmRzYDi4Fjo=
-X-Google-Smtp-Source: AGHT+IFV61WUgaftWSmxlAIXL8iGaW0THkIGj/tNK5wYBo9dUSgSqDELMeQc5HMjnGPaXiCVpA73WA==
-X-Received: by 2002:a05:6512:1599:b0:508:1470:6168 with SMTP id
- bp25-20020a056512159900b0050814706168mr25813290lfb.57.1699269006155; 
- Mon, 06 Nov 2023 03:10:06 -0800 (PST)
+ bh=cyEPFd8qKgVauKHH+mzQW+99WSkPGmQyoZYgi3VA9Vc=;
+ b=NF5jyjJ4tjK7uhsHp/dJQJ4i8RWVLeWJ8I2BEYItOxkX9HJab5kG+ZPqdVwxMyJbrO
+ xWWUO4d+r0Vt1OiMkRK/dNTDyKQfqcoI1jvwtS8+x4I9vXK9VYsbfq1Bq3PcAhXkPPcL
+ mN2dtFtRYEVmrF+ag9pKQd4bf6Raf5Aow5zlsCMbyYvlp7bfT1/CGnprDfWgj2+yWEgM
+ zWT+5O44f0ie4mn0pHLLQD3LiHmtL5yHqbG+w1WvqMuaKTkueaNlPcnrwCH1OPF9ojuh
+ ENTnIOyLVXdpHP9sUzthSM6Ep92wMUECGjEtH9ZJMujbBfJJWjCEMjoASAyzBj3+dcr6
+ jT4Q==
+X-Gm-Message-State: AOJu0YxE1U3BFYvySpjApXy/fi863Qpf9jJ8ShSsdotTGY6nub/yzIsS
+ uJn+MT81cuuIFmhSLBOTlZhETnXXNBpV9RI10T4=
+X-Google-Smtp-Source: AGHT+IEMIDW7hBBkWZ0URkD2CfnnnPG/ExOR7Okjzu2uwpb1mtEO/NwWscUpM9JIRDLHPNQlRwIx/g==
+X-Received: by 2002:a05:6000:1842:b0:32f:7b2e:2dd with SMTP id
+ c2-20020a056000184200b0032f7b2e02ddmr23663996wri.45.1699269012416; 
+ Mon, 06 Nov 2023 03:10:12 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- l9-20020adfe589000000b0032f7d7ec4adsm9119404wrm.92.2023.11.06.03.10.04
+ j5-20020adfe505000000b0031fd849e797sm8761303wrm.105.2023.11.06.03.10.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:10:05 -0800 (PST)
+ Mon, 06 Nov 2023 03:10:12 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Vikram Garhwal <vikram.garhwal@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PULL 57/60] MAINTAINERS: Add include/hw/timer/tmu012.h to the SH4
- R2D section
-Date: Mon,  6 Nov 2023 12:03:29 +0100
-Message-ID: <20231106110336.358-58-philmd@linaro.org>
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Subject: [PULL 58/60] MAINTAINERS: Add the CAN documentation file to the CAN
+ section
+Date: Mon,  6 Nov 2023 12:03:30 +0100
+Message-ID: <20231106110336.358-59-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,30 +97,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-tmu012.h is the header that belongs to hw/timer/sh_timer.c, so we
-should list it in the same section as sh_timer.c.
+Add can.rst to the corresponding section in MAINTAINERS, so that
+the maintainers get CC:-ed on corresponding patches.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Vikram Garhwal <vikram.garhwal@amd.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-Message-ID: <20231026080011.156325-1-thuth@redhat.com>
+Acked-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Message-ID: <20231027060931.242491-1-thuth@redhat.com>
+[PMD: Fixed typo in subject]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  MAINTAINERS | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c01c2e6ec0..3014e768f7 100644
+index 3014e768f7..c57868c94c 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1617,6 +1617,7 @@ F: hw/intc/sh_intc.c
- F: hw/pci-host/sh_pci.c
- F: hw/timer/sh_timer.c
- F: include/hw/sh4/sh_intc.h
-+F: include/hw/timer/tmu012.h
+@@ -2588,6 +2588,7 @@ W: https://canbus.pages.fel.cvut.cz/
+ F: net/can/*
+ F: hw/net/can/*
+ F: include/net/can_*.h
++F: docs/system/devices/can.rst
  
- Shix
- R: Yoshinori Sato <ysato@users.sourceforge.jp>
+ OpenPIC interrupt controller
+ M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 -- 
 2.41.0
 
