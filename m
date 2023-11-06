@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9EA7E1AC2
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 630107E1ACD
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:11:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztg2-0006Lm-T0; Mon, 06 Nov 2023 02:05:39 -0500
+	id 1qztf4-00045q-0h; Mon, 06 Nov 2023 02:04:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztd7-0000yY-HK
+ id 1qztd7-0000xl-Fg
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:44 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztcu-00021P-0F
+ id 1qztcu-00021T-L8
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:36 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6c396ef9a3dso1447386b3a.1
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:23 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1cc3bb32b5dso37782495ad.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699254142; x=1699858942; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699254143; x=1699858943; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6qb5wT872vgkkQeZLcaPPTqHv9wq2aCmdY3hodAPUnI=;
- b=Ts86OAMAH5KTXJeC6B1SuVz9wZl1HA8nhWu3fm7/B0SY5ICoi572s+DBX7Rq9HI6w4
- oSRvqI6E9+sWqW5aw/R5FeKLw1MQ2BCeAYd2I3uRYCG2QtROXBHsJ1kQEk9R7VJmrFja
- HbIs3I0iji3Tp9kG3hO9shUoz7ZWX0SarHmJhXfx6gkYkcdmH78SxVGNb9aRoX1QgEFQ
- OAHcJm5F5V9mITNWGW7oJx6quaN9Uj/qBOhFyRHFoUb8QzAm4biK6ArJarUaSXt+Qwvo
- Ev9MRn2GgZykHUgG5KT+zC9eOKFoTUWVOggnLF3oZMEJ6kwNcLUpcnvM3BYUmTx/SPjs
- lZvg==
+ bh=9H5O9Zda+vpUUqZvbTNZUrv7Fbtfcl7R0BVTLI0MHJY=;
+ b=XeyU8vDEzV6eSf3eMIfgRp5bT/+7aQ/ZQzNdKHSNLsrenFQtBJUpQ7A2HKpBQ0hr+E
+ Mgmb9RvxCxgayUGtx06kxeUNtr9EuGxw+KmXBxVgb6cX4j6j+vZfpmyI14BoCMjtkJYQ
+ XZQmBIDMB0/gSeu5Gw6A+e6ma/aUeLash7e/1nP5bCglrRIc6yH97OJ3Yq0ZcNoOegI5
+ 36y+QNSrzWxmp38SmQgqo+OXv/bm68hVH+YsiczRvZ3k7Qox8DizJ5iqalqvjkakmdpE
+ oUGZtdYQ4fLRc0ZRunaxBsNaHANHmc37forw8d89hlHBntlK0ZqWBit+iih/C+8zl1C2
+ Xl9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699254142; x=1699858942;
+ d=1e100.net; s=20230601; t=1699254143; x=1699858943;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6qb5wT872vgkkQeZLcaPPTqHv9wq2aCmdY3hodAPUnI=;
- b=EiCjKQSpI7mkbPb4mc/m84smZ0975MUfUDAJq+u1pu/kfzOu/j7kTuwtHWyLuscNnn
- NSH+x/dnFFj01WPqmRITk2kLrGzbEtWbS6KME4Geo23HTi9VAOsDPyLs651ntm/K4wE+
- c6RLfgGoQxhKx0wR1SYeALXyQz0z7iClf+/Xe6pD1bxymWJ9aKOjsL91H3F9JuNffWd4
- ZI0+TK+n63QGrKseigvdBKdQkjCWkIoWQ/WXdztukXw+kzCUG2epH8qj1afoHgZXzNMO
- b7Eqk5JvjT0OjJAMS8EMEiKiP9I/2ai40vKuJp1CgvaokTwHPGerI0hpVgoDRZ9/yxcT
- RLOQ==
-X-Gm-Message-State: AOJu0YxTyZ6qKIzAx+dfxSXMLKgrKNQMMX7LEeE0Mt1BgMV2QEv/ek78
- wzIIybGY9X+Ju0SxlrypGQMHtDzNBBepAZaSgbg=
-X-Google-Smtp-Source: AGHT+IH1C3pw1tDC9XZWZ01U++BOxOvNDfdm7OAf/ezzicCOmt0ZhldO1yCKFqnKrQJs9NWSZ8pohw==
-X-Received: by 2002:a05:6a20:daaa:b0:181:a5a7:291d with SMTP id
- iy42-20020a056a20daaa00b00181a5a7291dmr12622865pzb.6.1699254142249; 
- Sun, 05 Nov 2023 23:02:22 -0800 (PST)
+ bh=9H5O9Zda+vpUUqZvbTNZUrv7Fbtfcl7R0BVTLI0MHJY=;
+ b=SvjsHRblm4hSheisCMOhpFXeLYl70U5J+oMCaoS21G2cIqSIjMckxPTDU6hgsgUS7g
+ 3Kx5Zq5M0HTUUXfioGbOF6nf21fIR/NxP/Lbki0JgZXWlJuSvVpWgZbIPVAje7hjBSmd
+ jY19i5p67iOB13gMC9lb+4F/aCsNL4H+y7qjppMkHyh3Q9M4PFiPV3tFPkHnr0UqNAwi
+ L4LcF4nZ7UhIS0OuPZ2qZf5npqSRRC5AE185hfuLmIVreBwLSIXIaR3XNTTp2Rv9UpgX
+ HoRPQ7Kj5BOARZffaxthkbIaOql0wOelzF/x9fOuY6yxwoVzA+zgtQyq9W+fN2CcLCa3
+ Jl/w==
+X-Gm-Message-State: AOJu0Yz1DCof5rKf6U0riO1ab+QnMSvY6gLJJ7CGZX1e2qgd7AckPdbE
+ F4YrPKgVt23oNu6rXkeZr4dFToDc283Yu1n9/9I=
+X-Google-Smtp-Source: AGHT+IH6tFeje9p2o3FFx0gNtJhgZXZfJMz9zoS3coLKF2GhCNrswmhJLfricX6Ml608Rz3lMMUQkw==
+X-Received: by 2002:a17:90a:b88d:b0:27d:5964:4ef0 with SMTP id
+ o13-20020a17090ab88d00b0027d59644ef0mr25218187pjr.10.1699254143174; 
+ Sun, 05 Nov 2023 23:02:23 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.21
+ 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 23:02:21 -0800 (PST)
+ Sun, 05 Nov 2023 23:02:22 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 62/71] hw/misc/macio: Constify VMState
-Date: Sun,  5 Nov 2023 22:58:18 -0800
-Message-Id: <20231106065827.543129-63-richard.henderson@linaro.org>
+Subject: [PATCH 63/71] audio: Constify VMState
+Date: Sun,  5 Nov 2023 22:58:19 -0800
+Message-Id: <20231106065827.543129-64-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,132 +92,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/misc/macio/cuda.c      | 2 +-
- hw/misc/macio/gpio.c      | 2 +-
- hw/misc/macio/mac_dbdma.c | 8 ++++----
- hw/misc/macio/macio.c     | 4 ++--
- hw/misc/macio/pmu.c       | 6 +++---
- 5 files changed, 11 insertions(+), 11 deletions(-)
+ audio/audio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/misc/macio/cuda.c b/hw/misc/macio/cuda.c
-index 6336dcb194..41934e2cf8 100644
---- a/hw/misc/macio/cuda.c
-+++ b/hw/misc/macio/cuda.c
-@@ -487,7 +487,7 @@ static const VMStateDescription vmstate_cuda = {
-     .name = "cuda",
-     .version_id = 6,
-     .minimum_version_id = 6,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(mos6522_cuda.parent_obj, CUDAState, 0, vmstate_mos6522,
-                        MOS6522State),
-         VMSTATE_UINT8(last_b, CUDAState),
-diff --git a/hw/misc/macio/gpio.c b/hw/misc/macio/gpio.c
-index 4deb330471..549563747d 100644
---- a/hw/misc/macio/gpio.c
-+++ b/hw/misc/macio/gpio.c
-@@ -168,7 +168,7 @@ static const VMStateDescription vmstate_macio_gpio = {
-     .name = "macio_gpio",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_ARRAY(gpio_levels, MacIOGPIOState, 8),
-         VMSTATE_UINT8_ARRAY(gpio_regs, MacIOGPIOState, 36),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/misc/macio/mac_dbdma.c b/hw/misc/macio/mac_dbdma.c
-index 80a789f32b..2a528ea08c 100644
---- a/hw/misc/macio/mac_dbdma.c
-+++ b/hw/misc/macio/mac_dbdma.c
-@@ -807,7 +807,7 @@ static const VMStateDescription vmstate_dbdma_io = {
-     .name = "dbdma_io",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(addr, struct DBDMA_io),
-         VMSTATE_INT32(len, struct DBDMA_io),
-         VMSTATE_INT32(is_last, struct DBDMA_io),
-@@ -821,7 +821,7 @@ static const VMStateDescription vmstate_dbdma_cmd = {
-     .name = "dbdma_cmd",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(req_count, dbdma_cmd),
-         VMSTATE_UINT16(command, dbdma_cmd),
-         VMSTATE_UINT32(phy_addr, dbdma_cmd),
-@@ -836,7 +836,7 @@ static const VMStateDescription vmstate_dbdma_channel = {
-     .name = "dbdma_channel",
+diff --git a/audio/audio.c b/audio/audio.c
+index f91e05b72c..efb6cc0a01 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -1683,7 +1683,7 @@ static const VMStateDescription vmstate_audio = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .needed = vmstate_audio_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, struct DBDMA_channel, DBDMA_REGS),
-         VMSTATE_STRUCT(io, struct DBDMA_channel, 0, vmstate_dbdma_io, DBDMA_io),
-         VMSTATE_STRUCT(current, struct DBDMA_channel, 0, vmstate_dbdma_cmd,
-@@ -849,7 +849,7 @@ static const VMStateDescription vmstate_dbdma = {
-     .name = "dbdma",
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_ARRAY(channels, DBDMAState, DBDMA_CHANNELS, 1,
-                              vmstate_dbdma_channel, DBDMA_channel),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/misc/macio/macio.c b/hw/misc/macio/macio.c
-index 265c0bbd8d..c9f22f8515 100644
---- a/hw/misc/macio/macio.c
-+++ b/hw/misc/macio/macio.c
-@@ -376,7 +376,7 @@ static const VMStateDescription vmstate_macio_oldworld = {
-     .name = "macio-oldworld",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj.parent, OldWorldMacIOState),
          VMSTATE_END_OF_LIST()
      }
-@@ -396,7 +396,7 @@ static const VMStateDescription vmstate_macio_newworld = {
-     .name = "macio-newworld",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj.parent, NewWorldMacIOState),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/misc/macio/pmu.c b/hw/misc/macio/pmu.c
-index 58316d1871..e9a90da88f 100644
---- a/hw/misc/macio/pmu.c
-+++ b/hw/misc/macio/pmu.c
-@@ -668,7 +668,7 @@ static const VMStateDescription vmstate_pmu_adb = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = pmu_adb_state_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(adb_reply_size, PMUState),
-         VMSTATE_BUFFER(adb_reply, PMUState),
-         VMSTATE_END_OF_LIST()
-@@ -679,7 +679,7 @@ static const VMStateDescription vmstate_pmu = {
-     .name = "pmu",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(mos6522_pmu.parent_obj, PMUState, 0, vmstate_mos6522,
-                        MOS6522State),
-         VMSTATE_UINT8(last_b, PMUState),
-@@ -698,7 +698,7 @@ static const VMStateDescription vmstate_pmu = {
-         VMSTATE_INT64(one_sec_target, PMUState),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription * []) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_pmu_adb,
-         NULL
-     }
+ };
 -- 
 2.34.1
 
