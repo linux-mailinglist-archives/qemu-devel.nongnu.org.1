@@ -2,94 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602147E2787
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 012877E277D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:48:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00mI-00033B-Ct; Mon, 06 Nov 2023 09:40:34 -0500
+	id 1r00mj-0003ZI-Vi; Mon, 06 Nov 2023 09:41:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1r00mE-0002wu-0u
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:40:30 -0500
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r00mR-0003QG-7e
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:40:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1r00ly-0001d3-96
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:40:29 -0500
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r00mP-0001l3-1x
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:40:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699281613;
+ s=mimecast20190719; t=1699281640;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4DEQQanmv+KfsX/nCYCk+Ahv1t8iHzPcAuTU+SbBouk=;
- b=ON5jWPXuwwS7iKbdxrgk3iqVRezNUzitwerrqyBU3ALWIQH1U0ZOlahIHPUj/BQ+UzBuAF
- Tv0jmSJaqfSe7msCgLjm8QJ5TkQnN1yLz4pPJ23x6TDMpH2BGNOmZ5q0qOgYE+ijJ5FVrf
- 46golPprmiL01OxbQrRo89r0Gwvn7AY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=n6VvgbFqpnydvZ9tnhFu+yy9dDqWOGEKqDklI53exLg=;
+ b=cc8WEUxhaOApF37fo1rXfBCCDBQ7MFe5YCZS4hgn+c4S96cWnMkQVI0bMsWWizyeEmQ9wU
+ jhjsw4xfrjshZiYhCMt7gbdS7Sv+wBsDXRX/wdH3HEPI54z4l5Ddh6u7JVYaW+1W7sdOBk
+ aCElP/BbT8TlM9WDwuZnc+UccBhnh1I=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-491-_glMat_bMzCvQr2d3QqjWg-1; Mon, 06 Nov 2023 09:40:11 -0500
-X-MC-Unique: _glMat_bMzCvQr2d3QqjWg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4083c9b426fso28387285e9.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:40:11 -0800 (PST)
+ us-mta-459-BvjNos5oNm27mNK_vUf7SQ-1; Mon, 06 Nov 2023 09:40:38 -0500
+X-MC-Unique: BvjNos5oNm27mNK_vUf7SQ-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-41cd46aa351so49227811cf.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:40:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699281610; x=1699886410;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4DEQQanmv+KfsX/nCYCk+Ahv1t8iHzPcAuTU+SbBouk=;
- b=wBEa2Btk4dEE1bXitvs5hE04M2z/irijf78lR0Rxo0L3UeE2jPG3Kqec15JAa5sMRs
- W8Zc6WWvOPn6ms+eUbraCQ1aMU2h1IlWNOGFGT7pEAPex8B3nBNiUJ86cUGnmrjnPGVc
- zRX2ejHVk6h98AdMJ4Lpp8OfByulz3ErPJllvHO/mInxALz/6y4FlCH92PQg9TUhJHBr
- fvQeBiL/gcOc7kENM+zIs17r7d/HyuugtrmtxjbcPOCev/sPKZsOIZLo7hSuxtU4uVz4
- y2TnuG6Gi+j8/OioVGrLfaNZD79tWDlYw1FLlgtUNNeh2quX/MUYt2hNS3LXnSegxwOQ
- UEuA==
-X-Gm-Message-State: AOJu0Yy+XMw9gb7YhGhqYny7zUeJ9Z+qd6Ro7tKwL5V3yckUMqJhBURX
- /MdC6TEnTSj86zV7GgF7sRQTIY/sNDllLgSsEKeXOdTt4LpHem9trTMcL8SzjScX+61unpoqgnM
- xvF8cnNLo+LRC+nc=
-X-Received: by 2002:a05:600c:45c7:b0:409:7900:f3ef with SMTP id
- s7-20020a05600c45c700b004097900f3efmr5742447wmo.38.1699281610451; 
- Mon, 06 Nov 2023 06:40:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFtpDaxeOiCALrT7DJwP547tOoisLq10D3GIH0nYhOkNaKH9nPNZwZqs64bLkWsGPGkG5ThJQ==
-X-Received: by 2002:a05:600c:45c7:b0:409:7900:f3ef with SMTP id
- s7-20020a05600c45c700b004097900f3efmr5742431wmo.38.1699281610032; 
- Mon, 06 Nov 2023 06:40:10 -0800 (PST)
-Received: from ?IPV6:2003:cf:d718:8590:77de:e1fd:a4df:d080?
- (p200300cfd718859077dee1fda4dfd080.dip0.t-ipconnect.de.
- [2003:cf:d718:8590:77de:e1fd:a4df:d080])
- by smtp.gmail.com with ESMTPSA id
- i17-20020a05600c481100b004063d8b43e7sm12178421wmo.48.2023.11.06.06.40.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 06:40:09 -0800 (PST)
-Message-ID: <733d73da-f151-4cbd-843c-5c83419cda6c@redhat.com>
-Date: Mon, 6 Nov 2023 15:40:08 +0100
+ d=1e100.net; s=20230601; t=1699281638; x=1699886438;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=n6VvgbFqpnydvZ9tnhFu+yy9dDqWOGEKqDklI53exLg=;
+ b=armvtKc/07zO7l2ZsoFBAXP7XYDw3JwIgVd5gnVRm81+PhzMegcnxfxgEa8/k4PQKy
+ RCLX1UTHvoOshzavSvL2BVKLcJ8crTHhMTilURjlGrfbS96yzLOYZGqX/Hpme8ibvDMS
+ 0VP0crXRW8KbLOBFlOwixOo25j5JzBGa3T4iOJw2zobgQzUw3Y7NqU4GWUtshU6syT3a
+ ljnHqHyEX6H9GTs3bt0zrcV7PEUoV8KBwlEVQWwHgBTZT5/YlGptl4XiKl4cQACXDHqt
+ wEXHjHAeWswMe6vz1F3c3DNQQLJaJePD8DnHatQVBEYX5w8gczf3Wed/a1AgKl4A1+Fi
+ 5kzw==
+X-Gm-Message-State: AOJu0YwcfCqS1tBfn9NSwPoVLGYu8gQICrsr1VT47FahxrTmV7VpcTfp
+ pXI8RJGywE6BF5hR+v2u2M+4ZurdnifnAjbtl0lvnxTD9QpvJD0FnZNwXTGseC4NgMieeLwKeQs
+ qwsUSdJc85RHGV8c=
+X-Received: by 2002:ac8:7f4e:0:b0:41c:d1cf:23e1 with SMTP id
+ g14-20020ac87f4e000000b0041cd1cf23e1mr34766630qtk.62.1699281637784; 
+ Mon, 06 Nov 2023 06:40:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGBibR3VS6jYUWrkInLjBjJWoHVv06xyTkhvIH60b5VlaF1+FdOh5Leq+nyzxsLKPTNtYt6rQ==
+X-Received: by 2002:ac8:7f4e:0:b0:41c:d1cf:23e1 with SMTP id
+ g14-20020ac87f4e000000b0041cd1cf23e1mr34766583qtk.62.1699281637399; 
+ Mon, 06 Nov 2023 06:40:37 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ g20-20020ac84694000000b00419ab6ffedasm3408508qto.29.2023.11.06.06.40.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 06:40:36 -0800 (PST)
+Date: Mon, 6 Nov 2023 15:40:29 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, philmd@linaro.org,
+ clg@kaod.org, imp@bsdimp.com, kevans@freebsd.org,
+ richard.henderson@linaro.org, pbonzini@redhat.com,
+ peter.maydell@linaro.org, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
+ wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
+ quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com,
+ aleksandar.rikalo@syrmia.com, chenhuacai@kernel.org, crwulff@gmail.com,
+ marex@denx.de, shorne@gmail.com, npiggin@gmail.com,
+ ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
+ iii@linux.ibm.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
+ shan.gavin@gmail.com
+Subject: Re: [PATCH v4 02/33] hw/cpu: Call object_class_is_abstract() once
+ in cpu_class_by_name()
+Message-ID: <20231106154029.0354f0ed@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231102002500.1750692-3-gshan@redhat.com>
+References: <20231102002500.1750692-1-gshan@redhat.com>
+ <20231102002500.1750692-3-gshan@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/10] block: Convert qmp_query_block() to coroutine_fn
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, =?UTF-8?Q?Jo=C3=A3o_Silva?=
- <jsilva@suse.de>, Lin Ma <lma@suse.com>, Claudio Fontana <cfontana@suse.de>,
- Dario Faggioli <dfaggioli@suse.com>, Eric Blake <eblake@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-References: <20230609201910.12100-1-farosas@suse.de>
- <20230609201910.12100-10-farosas@suse.de>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230609201910.12100-10-farosas@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,239 +120,303 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.06.23 22:19, Fabiano Rosas wrote:
-> This is another caller of bdrv_get_allocated_file_size() that needs to
-> be converted to a coroutine because that function will be made
-> asynchronous when called (indirectly) from the QMP dispatcher.
->
-> This QMP command is a candidate because it calls bdrv_do_query_node_info(),
-> which in turn calls bdrv_get_allocated_file_size().
->
-> We've determined bdrv_do_query_node_info() to be coroutine-safe (see
-> previous commits), so we can just put this QMP command in a coroutine.
->
-> Since qmp_query_block() now expects to run in a coroutine, its callers
-> need to be converted as well. Convert hmp_info_block(), which calls
-> only coroutine-safe code, including qmp_query_named_block_nodes()
-> which has been converted to coroutine in the previous patches.
->
-> Now that all callers of bdrv_[co_]block_device_info() are using the
-> coroutine version, a few things happen:
->
->   - we can return to using bdrv_block_device_info() without a wrapper;
->
->   - bdrv_get_allocated_file_size() can stop being mixed;
->
->   - bdrv_co_get_allocated_file_size() needs to be put under the graph
->     lock because it is being called wthout the wrapper;
+On Thu,  2 Nov 2023 10:24:29 +1000
+Gavin Shan <gshan@redhat.com> wrote:
 
-But bdrv_do_query_node_info() is marked GRAPH_RDLOCK, so the whole 
-function must not be called without holding the lock.  I don’t 
-understand why we need to explicitly take it another time.
-
->   - bdrv_do_query_node_info() doesn't need to acquire the AioContext
->     because it doesn't call aio_poll anymore;
-
-In the past (very likely outdated, but still mentioning it) you’d need 
-to take the AioContext just in general when operating on a block device 
-that might be processed in a different AioContext than the main one, and 
-the current code runs in the main context, i.e. which is the situation 
-we have here.
-
-Speaking of contexts, I wonder how the threading is actually supposed to 
-work.  I assume QMP coroutines run in the main thread, so now we run 
-bdrv_co_get_allocated_file_size() in the main thread – is that correct, 
-or do we need to use bdrv_co_enter() like qmp_block_resize() does?  And 
-so, if we run it in the main thread, is it OK not to acquire the 
-AioContext around it to prevent interference from a potential I/O thread?
-
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>=20
+> Let CPUClass::class_by_name() handlers to return abstract classes,
+> and filter them once in the public cpu_class_by_name() method.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
 > ---
->   block.c                        |  2 +-
->   block/monitor/block-hmp-cmds.c |  2 +-
->   block/qapi.c                   | 18 +++++++++---------
->   hmp-commands-info.hx           |  1 +
->   include/block/block-hmp-cmds.h |  2 +-
->   include/block/block-io.h       |  2 +-
->   include/block/qapi.h           | 12 ++++--------
->   qapi/block-core.json           |  2 +-
->   8 files changed, 19 insertions(+), 22 deletions(-)
+>  hw/core/cpu-common.c   | 8 +++++++-
+>  include/hw/core/cpu.h  | 7 ++++---
+>  target/alpha/cpu.c     | 2 +-
+>  target/arm/cpu.c       | 3 +--
+>  target/avr/cpu.c       | 3 +--
+>  target/cris/cpu.c      | 3 +--
+>  target/hexagon/cpu.c   | 3 +--
+>  target/loongarch/cpu.c | 3 +--
+>  target/m68k/cpu.c      | 3 +--
+>  target/openrisc/cpu.c  | 3 +--
+>  target/riscv/cpu.c     | 3 +--
+>  target/rx/cpu.c        | 5 +----
+>  target/sh4/cpu.c       | 3 ---
+>  target/tricore/cpu.c   | 3 +--
+>  target/xtensa/cpu.c    | 3 +--
+>  15 files changed, 23 insertions(+), 32 deletions(-)
+>=20
+> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+> index bab8942c30..bca0323e9f 100644
+> --- a/hw/core/cpu-common.c
+> +++ b/hw/core/cpu-common.c
+> @@ -150,9 +150,15 @@ static bool cpu_common_has_work(CPUState *cs)
+>  ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_mod=
+el)
+>  {
+>      CPUClass *cc =3D CPU_CLASS(object_class_by_name(typename));
+> +    ObjectClass *oc;
+> =20
+>      assert(cpu_model && cc->class_by_name);
+> -    return cc->class_by_name(cpu_model);
+> +    oc =3D cc->class_by_name(cpu_model);
+> +    if (oc && !object_class_is_abstract(oc)) {
+> +        return oc;
+> +    }
+> +
+> +    return NULL;
+>  }
+> =20
+>  static void cpu_common_parse_features(const char *typename, char *featur=
+es,
+> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> index 18593db5b2..ee85aafdf5 100644
+> --- a/include/hw/core/cpu.h
+> +++ b/include/hw/core/cpu.h
+> @@ -102,7 +102,7 @@ struct SysemuCPUOps;
+>  /**
+>   * CPUClass:
+>   * @class_by_name: Callback to map -cpu command line model name to an
+> - * instantiatable CPU type.
+> + *                 instantiatable CPU type.
+>   * @parse_features: Callback to parse command line arguments.
+>   * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
+>   * @has_work: Callback for checking if there is work to do.
+> @@ -772,9 +772,10 @@ void cpu_reset(CPUState *cpu);
+>   * @typename: The CPU base type.
+>   * @cpu_model: The model string without any parameters.
+>   *
+> - * Looks up a CPU #ObjectClass matching name @cpu_model.
+> + * Looks up a concrete CPU #ObjectClass matching name @cpu_model.
+>   *
+> - * Returns: A #CPUClass or %NULL if not matching class is found.
+> + * Returns: A concrete #CPUClass or %NULL if no matching class is found
+> + *          or if the matching class is abstract.
+>   */
+>  ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_mod=
+el);
+> =20
+> diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+> index c7ae4d6a41..9436859c7b 100644
+> --- a/target/alpha/cpu.c
+> +++ b/target/alpha/cpu.c
+> @@ -126,7 +126,7 @@ static ObjectClass *alpha_cpu_class_by_name(const cha=
+r *cpu_model)
+>      int i;
+> =20
+>      oc =3D object_class_by_name(cpu_model);
+> -    if (oc !=3D NULL && object_class_dynamic_cast(oc, TYPE_ALPHA_CPU) !=
+=3D NULL &&
+I'd split 'oc !=3D NULL &&' into a separate patch=20
 
-This patch implicitly assumes that quite a lot of functions (at least 
-bdrv_query_info(), bdrv_query_image_info(), bdrv_do_query_node_info()) 
-are now run in coroutine context.  This assumption must be formalized by 
-annotating them all with coroutine_fn, and ideally adding a _co_ into 
-their name.
+> +    if (object_class_dynamic_cast(oc, TYPE_ALPHA_CPU) &&
+>          !object_class_is_abstract(oc)) {
 
-Also, those functions should be checked whether they call coroutine 
-wrappers, and made to use the native coroutine version now if so. (At 
-least I’d find that nicer, FWIW.)  I’ve seen at least bdrv_getlength() 
-in bdrv_do_query_node_info(), which could be a bdrv_co_getlength().
+stray abstract check leftover??
 
-> diff --git a/block.c b/block.c
-> index abed744b60..f94cee8930 100644
-> --- a/block.c
-> +++ b/block.c
-> @@ -6148,7 +6148,7 @@ BlockDeviceInfoList *bdrv_named_nodes_list(bool flat,
->   
->       list = NULL;
->       QTAILQ_FOREACH(bs, &graph_bdrv_states, node_list) {
-> -        BlockDeviceInfo *info = bdrv_co_block_device_info(NULL, bs, flat, errp);
-> +        BlockDeviceInfo *info = bdrv_block_device_info(NULL, bs, flat, errp);
->           if (!info) {
->               qapi_free_BlockDeviceInfoList(list);
->               return NULL;
-> diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-> index 26116fe831..1049f9b006 100644
-> --- a/block/monitor/block-hmp-cmds.c
-> +++ b/block/monitor/block-hmp-cmds.c
-> @@ -742,7 +742,7 @@ static void print_block_info(Monitor *mon, BlockInfo *info,
->       }
->   }
->   
-> -void hmp_info_block(Monitor *mon, const QDict *qdict)
-> +void coroutine_fn hmp_info_block(Monitor *mon, const QDict *qdict)
->   {
->       BlockInfoList *block_list, *info;
->       BlockDeviceInfoList *blockdev_list, *blockdev;
-> diff --git a/block/qapi.c b/block/qapi.c
-> index 20660e15d6..3b4bc0b782 100644
-> --- a/block/qapi.c
-> +++ b/block/qapi.c
-> @@ -41,10 +41,10 @@
->   #include "qemu/qemu-print.h"
->   #include "sysemu/block-backend.h"
->   
-> -BlockDeviceInfo *coroutine_fn bdrv_co_block_device_info(BlockBackend *blk,
-> -                                                        BlockDriverState *bs,
-> -                                                        bool flat,
-> -                                                        Error **errp)
-> +BlockDeviceInfo *coroutine_fn bdrv_block_device_info(BlockBackend *blk,
-> +                                                     BlockDriverState *bs,
-> +                                                     bool flat,
-> +                                                     Error **errp)
->   {
->       ImageInfo **p_image_info;
->       ImageInfo *backing_info;
-> @@ -235,8 +235,6 @@ static void bdrv_do_query_node_info(BlockDriverState *bs,
->       int ret;
->       Error *err = NULL;
->   
-> -    aio_context_acquire(bdrv_get_aio_context(bs));
-> -
->       size = bdrv_getlength(bs);
->       if (size < 0) {
->           error_setg_errno(errp, -size, "Can't get image size '%s'",
-> @@ -249,7 +247,9 @@ static void bdrv_do_query_node_info(BlockDriverState *bs,
->       info->filename        = g_strdup(bs->filename);
->       info->format          = g_strdup(bdrv_get_format_name(bs));
->       info->virtual_size    = size;
-> -    info->actual_size     = bdrv_get_allocated_file_size(bs);
-> +    bdrv_graph_co_rdlock();
-> +    info->actual_size     = bdrv_co_get_allocated_file_size(bs);
-> +    bdrv_graph_co_rdunlock();
->       info->has_actual_size = info->actual_size >= 0;
->       if (bs->encrypted) {
->           info->encrypted = true;
-> @@ -305,7 +305,7 @@ static void bdrv_do_query_node_info(BlockDriverState *bs,
->       }
->   
->   out:
-> -    aio_context_release(bdrv_get_aio_context(bs));
-> +    return;
->   }
->   
->   /**
-> @@ -668,7 +668,7 @@ bdrv_query_bds_stats(BlockDriverState *bs, bool blk_level)
->       return s;
->   }
->   
-> -BlockInfoList *qmp_query_block(Error **errp)
-> +BlockInfoList *coroutine_fn qmp_query_block(Error **errp)
->   {
->       BlockInfoList *head = NULL, **p_next = &head;
->       BlockBackend *blk;
-> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-> index 47d63d26db..996895f417 100644
-> --- a/hmp-commands-info.hx
-> +++ b/hmp-commands-info.hx
-> @@ -65,6 +65,7 @@ ERST
->           .help       = "show info of one block device or all block devices "
->                         "(-n: show named nodes; -v: show details)",
->           .cmd        = hmp_info_block,
-> +        .coroutine  = true,
->       },
->   
->   SRST
-> diff --git a/include/block/block-hmp-cmds.h b/include/block/block-hmp-cmds.h
-> index 71113cd7ef..6d9152318f 100644
-> --- a/include/block/block-hmp-cmds.h
-> +++ b/include/block/block-hmp-cmds.h
-> @@ -48,7 +48,7 @@ void hmp_eject(Monitor *mon, const QDict *qdict);
->   
->   void hmp_qemu_io(Monitor *mon, const QDict *qdict);
->   
-> -void hmp_info_block(Monitor *mon, const QDict *qdict);
-> +void coroutine_fn hmp_info_block(Monitor *mon, const QDict *qdict);
->   void hmp_info_blockstats(Monitor *mon, const QDict *qdict);
->   void hmp_info_block_jobs(Monitor *mon, const QDict *qdict);
->   void hmp_info_snapshots(Monitor *mon, const QDict *qdict);
-> diff --git a/include/block/block-io.h b/include/block/block-io.h
-> index f31e25cf56..43af816d75 100644
-> --- a/include/block/block-io.h
-> +++ b/include/block/block-io.h
-> @@ -87,7 +87,7 @@ int64_t co_wrapper_mixed_bdrv_rdlock bdrv_getlength(BlockDriverState *bs);
->   int64_t coroutine_fn GRAPH_RDLOCK
->   bdrv_co_get_allocated_file_size(BlockDriverState *bs);
->   
-> -int64_t co_wrapper_mixed_bdrv_rdlock
-> +int64_t co_wrapper_bdrv_rdlock
->   bdrv_get_allocated_file_size(BlockDriverState *bs);
->   
->   BlockMeasureInfo *bdrv_measure(BlockDriver *drv, QemuOpts *opts,
-> diff --git a/include/block/qapi.h b/include/block/qapi.h
-> index 5cb0202791..c37cba2a09 100644
-> --- a/include/block/qapi.h
-> +++ b/include/block/qapi.h
-> @@ -30,14 +30,10 @@
->   #include "block/snapshot.h"
->   #include "qapi/qapi-types-block-core.h"
->   
-> -BlockDeviceInfo *coroutine_fn bdrv_co_block_device_info(BlockBackend *blk,
-> -                                                        BlockDriverState *bs,
-> -                                                        bool flat,
-> -                                                        Error **errp);
-> -BlockDeviceInfo *co_wrapper bdrv_block_device_info(BlockBackend *blk,
-> -                                                   BlockDriverState *bs,
-> -                                                   bool flat,
-> -                                                   Error **errp);
-> +BlockDeviceInfo *coroutine_fn bdrv_block_device_info(BlockBackend *blk,
-> +                                                     BlockDriverState *bs,
-> +                                                     bool flat,
-> +                                                     Error **errp);
+>          return oc;
+>      }
+> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+> index 954328d72a..8c622d6b59 100644
+> --- a/target/arm/cpu.c
+> +++ b/target/arm/cpu.c
+> @@ -2399,8 +2399,7 @@ static ObjectClass *arm_cpu_class_by_name(const cha=
+r *cpu_model)
+>      oc =3D object_class_by_name(typename);
+>      g_strfreev(cpuname);
+>      g_free(typename);
+> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_ARM_CPU) ||
+> -        object_class_is_abstract(oc)) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_ARM_CPU)) {
+>          return NULL;
+>      }
+>      return oc;
+> diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+> index 14d8b9d1f0..113d522f75 100644
+> --- a/target/avr/cpu.c
+> +++ b/target/avr/cpu.c
+> @@ -157,8 +157,7 @@ static ObjectClass *avr_cpu_class_by_name(const char =
+*cpu_model)
+>      ObjectClass *oc;
+> =20
+>      oc =3D object_class_by_name(cpu_model);
+> -    if (object_class_dynamic_cast(oc, TYPE_AVR_CPU) =3D=3D NULL ||
+> -        object_class_is_abstract(oc)) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_AVR_CPU)) {
+>          oc =3D NULL;
+>      }
+>      return oc;
+> diff --git a/target/cris/cpu.c b/target/cris/cpu.c
+> index be4a44c218..1cb431cd46 100644
+> --- a/target/cris/cpu.c
+> +++ b/target/cris/cpu.c
+> @@ -95,8 +95,7 @@ static ObjectClass *cris_cpu_class_by_name(const char *=
+cpu_model)
+>      typename =3D g_strdup_printf(CRIS_CPU_TYPE_NAME("%s"), cpu_model);
+>      oc =3D object_class_by_name(typename);
+>      g_free(typename);
+> -    if (oc !=3D NULL && (!object_class_dynamic_cast(oc, TYPE_CRIS_CPU) ||
+> -                       object_class_is_abstract(oc))) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_CRIS_CPU)) {
+>          oc =3D NULL;
+>      }
+>      return oc;
+> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+> index 1adc11b713..bd5adb7acd 100644
+> --- a/target/hexagon/cpu.c
+> +++ b/target/hexagon/cpu.c
+> @@ -63,8 +63,7 @@ static ObjectClass *hexagon_cpu_class_by_name(const cha=
+r *cpu_model)
+>      oc =3D object_class_by_name(typename);
+>      g_strfreev(cpuname);
+>      g_free(typename);
+> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU) ||
+> -        object_class_is_abstract(oc)) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU)) {
+>          return NULL;
+>      }
+>      return oc;
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index ef1bf89dac..06d1b9bb95 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -648,8 +648,7 @@ static ObjectClass *loongarch_cpu_class_by_name(const=
+ char *cpu_model)
+>          }
+>      }
+> =20
+> -    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)
+> -        && !object_class_is_abstract(oc)) {
+> +    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)) {
+>          return oc;
+>      }
+>      return NULL;
+> diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+> index 538d9473c2..fe381cc5d3 100644
+> --- a/target/m68k/cpu.c
+> +++ b/target/m68k/cpu.c
+> @@ -111,8 +111,7 @@ static ObjectClass *m68k_cpu_class_by_name(const char=
+ *cpu_model)
+>      typename =3D g_strdup_printf(M68K_CPU_TYPE_NAME("%s"), cpu_model);
+>      oc =3D object_class_by_name(typename);
+>      g_free(typename);
+> -    if (oc !=3D NULL && (object_class_dynamic_cast(oc, TYPE_M68K_CPU) =
+=3D=3D NULL ||
+> -                       object_class_is_abstract(oc))) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_M68K_CPU)) {
+>          return NULL;
+>      }
+>      return oc;
+> diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
+> index f5a3d5273b..cc94f37e77 100644
+> --- a/target/openrisc/cpu.c
+> +++ b/target/openrisc/cpu.c
+> @@ -164,8 +164,7 @@ static ObjectClass *openrisc_cpu_class_by_name(const =
+char *cpu_model)
+>      typename =3D g_strdup_printf(OPENRISC_CPU_TYPE_NAME("%s"), cpu_model=
+);
+>      oc =3D object_class_by_name(typename);
+>      g_free(typename);
+> -    if (oc !=3D NULL && (!object_class_dynamic_cast(oc, TYPE_OPENRISC_CP=
+U) ||
+> -                       object_class_is_abstract(oc))) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_OPENRISC_CPU)) {
+>          return NULL;
+>      }
+>      return oc;
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index ac4a6c7eec..018bad6f82 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -636,8 +636,7 @@ static ObjectClass *riscv_cpu_class_by_name(const cha=
+r *cpu_model)
+>      oc =3D object_class_by_name(typename);
+>      g_strfreev(cpuname);
+>      g_free(typename);
+> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_RISCV_CPU) ||
+> -        object_class_is_abstract(oc)) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_RISCV_CPU)) {
+>          return NULL;
+>      }
+>      return oc;
+> diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+> index 4d0d3a0c8c..0063837e93 100644
+> --- a/target/rx/cpu.c
+> +++ b/target/rx/cpu.c
+> @@ -111,16 +111,13 @@ static ObjectClass *rx_cpu_class_by_name(const char=
+ *cpu_model)
+>      char *typename;
+> =20
+>      oc =3D object_class_by_name(cpu_model);
+> -    if (oc !=3D NULL && object_class_dynamic_cast(oc, TYPE_RX_CPU) !=3D =
+NULL &&
+> +    if (object_class_dynamic_cast(oc, TYPE_RX_CPU) &&
+>          !object_class_is_abstract(oc)) {
 
-As noted in general above, please continue to call it 
-bdrv_co_block_device_info(), though.  (I think) coroutine_fn functions 
-should have a _co_ in them, except when that’s really not possible (i.e. 
-when they’re QMP handlers).
+ditto wrt strays
 
-Hanna
+>          return oc;
+>      }
+>      typename =3D g_strdup_printf(RX_CPU_TYPE_NAME("%s"), cpu_model);
+>      oc =3D object_class_by_name(typename);
+>      g_free(typename);
+> -    if (oc !=3D NULL && object_class_is_abstract(oc)) {
+> -        oc =3D NULL;
+> -    }
+> =20
+>      return oc;
+>  }
+> diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+> index 788e41fea6..a8ec98b134 100644
+> --- a/target/sh4/cpu.c
+> +++ b/target/sh4/cpu.c
+> @@ -152,9 +152,6 @@ static ObjectClass *superh_cpu_class_by_name(const ch=
+ar *cpu_model)
+> =20
+>      typename =3D g_strdup_printf(SUPERH_CPU_TYPE_NAME("%s"), s);
+>      oc =3D object_class_by_name(typename);
+> -    if (oc !=3D NULL && object_class_is_abstract(oc)) {
+> -        oc =3D NULL;
+> -    }
 
->   int bdrv_query_snapshot_info_list(BlockDriverState *bs,
->                                     SnapshotInfoList **p_list,
->                                     Error **errp);
-> diff --git a/qapi/block-core.json b/qapi/block-core.json
-> index 9d4c92f2c9..a78dc92493 100644
-> --- a/qapi/block-core.json
-> +++ b/qapi/block-core.json
-> @@ -838,7 +838,7 @@
->   #    }
->   ##
->   { 'command': 'query-block', 'returns': ['BlockInfo'],
-> -  'allow-preconfig': true }
-> +  'allow-preconfig': true, 'coroutine': true }
->   
->   ##
->   # @BlockDeviceTimedStats:
+Why they do not do=20
+    object_class_dynamic_cast(oc, TYPE_ABSTRACT_FOO_CPU)=20
+here, do we really need this dynamic cast elsewhere at all?
+
+>  out:
+>      g_free(s);
+> diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+> index 5ca666ee12..47e1c272cf 100644
+> --- a/target/tricore/cpu.c
+> +++ b/target/tricore/cpu.c
+> @@ -132,8 +132,7 @@ static ObjectClass *tricore_cpu_class_by_name(const c=
+har *cpu_model)
+>      typename =3D g_strdup_printf(TRICORE_CPU_TYPE_NAME("%s"), cpu_model);
+>      oc =3D object_class_by_name(typename);
+>      g_free(typename);
+> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_TRICORE_CPU) ||
+> -        object_class_is_abstract(oc)) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_TRICORE_CPU)) {
+>          return NULL;
+>      }
+>      return oc;
+> diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+> index ea1dae7390..5d1c090467 100644
+> --- a/target/xtensa/cpu.c
+> +++ b/target/xtensa/cpu.c
+> @@ -141,8 +141,7 @@ static ObjectClass *xtensa_cpu_class_by_name(const ch=
+ar *cpu_model)
+>      typename =3D g_strdup_printf(XTENSA_CPU_TYPE_NAME("%s"), cpu_model);
+>      oc =3D object_class_by_name(typename);
+>      g_free(typename);
+> -    if (oc =3D=3D NULL || !object_class_dynamic_cast(oc, TYPE_XTENSA_CPU=
+) ||
+> -        object_class_is_abstract(oc)) {
+> +    if (!object_class_dynamic_cast(oc, TYPE_XTENSA_CPU)) {
+>          return NULL;
+>      }
+>      return oc;
 
 
