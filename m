@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C547E1DFC
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07FE7E1E03
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:12:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzwZ6-0006v7-Kh; Mon, 06 Nov 2023 05:10:40 -0500
+	id 1qzwaH-0007e2-Bm; Mon, 06 Nov 2023 05:11:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qzwZ4-0006uc-C9
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:10:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qzwZ2-0002L1-8X
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:10:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699265434;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MokpWFlmV1Tn5A62l2zEJkfJh1k9MgusHtDfFxa+wXw=;
- b=Uofsutyb+fIsO/8dNNHOgZCItvUQ+oe6PGd2hemwx+p86Igb2RgrdunskwNMKGEFRBvCqA
- +wpUp8lSxyzQ/F9RwSprl3ZOHE8zIix8OXVhr2NpEuihwOeaqh4nF+TTt0huTGlrGqs8w8
- 7PCzBS9f2O76DMIPfEuN1oXx1ij12YU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-OwXqxHH5OJaMk2ZGw7V_kg-1; Mon, 06 Nov 2023 05:10:29 -0500
-X-MC-Unique: OwXqxHH5OJaMk2ZGw7V_kg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EFC25185A783;
- Mon,  6 Nov 2023 10:10:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.95])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0F260492A;
- Mon,  6 Nov 2023 10:10:26 +0000 (UTC)
-Date: Mon, 6 Nov 2023 10:10:19 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: Re: [PATCH] monitor: flush messages on abort
-Message-ID: <ZUi7izJoVpU+iiuC@redhat.com>
-References: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
- <ZUUu2IuUQ/Od7+Vr@redhat.com>
- <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qzwaC-0007bQ-Uz
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:11:48 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qzwaB-0002da-8m
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 05:11:48 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-54394328f65so7048443a12.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 02:11:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699265505; x=1699870305; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rF+LwVl6ym/Lmp8o0AVuSwtcAV8h/oI3adg/ZE+VdP8=;
+ b=UhBLkrBUQCDBxKWZPjg1cTa/Jq6oFen35Nmm1fuUGPprM/7/EjKx3N/LTpArrVJA4P
+ 9W5J7K1w/V6qHweGFtRhA9MFQrKIhlchBdSeCiZqrJrSbv+DFhbCqAxgagfndiRs2jzS
+ Cu/llqQcsIeLyAiiETyTGjIJ+icTgxGqbUQfG2IMAOcdbeU5YYOO9lUkwh1t+180vPdw
+ tqcj3IyaWpWBaWKpnBQIX8CQzpZBFFguR8t9il1DZ6AmYYMAB1QxXZSrTKJ4qv0i1+H5
+ h7HMo2h44meB6NDaSLF6vBzFI7cGUW72wzLE/KyUx3RWkbSKd4ddgsEdz3Ggl+ho4zF7
+ AuyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699265505; x=1699870305;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rF+LwVl6ym/Lmp8o0AVuSwtcAV8h/oI3adg/ZE+VdP8=;
+ b=C9c6zSxZAYHdY9nijQbTD3Z6XudOqmCYvLhiha58lF4uSHRIAQYmRqDiC8SYMdsqJW
+ u8OLF8hUCQxVxl1He/5/2L99TE7MFBWn+1NTQ9JH65i1LU9uuuPllPuEtbjF6s/YoyE2
+ ZCEdYi4iAyvrfnyPvhfnTQ/c1Yy8ldYuT4hnxzURo7PBuzKNxrCMkWflYbv7KpsRTjM1
+ gPQwt1v2ngrLvk+pHofgbZTykgNt/kbJdRcAssKczHDLhpd9XrnkgkwxU06A4vlbKsnG
+ I+XiXYbMI3YBkNeqBR4xgK6pRXgo02l4fGfBECZreFFuue6aSJDgtVOoLQMA6snmBPux
+ mtyw==
+X-Gm-Message-State: AOJu0YxuI4BfgZfkjv3XCjaZsWthMlvsgFhopqYOh5pJonx9cJjWhh8v
+ SYzDDB+m5AaHeBWbqhHM/uV1KZr2WQwEHXZsV60=
+X-Google-Smtp-Source: AGHT+IGyDg7WzwubkJN9Or9PKm2filrSTh0d8y0iJOIF4LQ8pHmjq1JTWeju1kUV97/2O4QnICFsw+TVNYOhWIYNks0=
+X-Received: by 2002:a17:907:25cb:b0:9e0:727a:e491 with SMTP id
+ ae11-20020a17090725cb00b009e0727ae491mr2095622ejc.35.1699265504858; Mon, 06
+ Nov 2023 02:11:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20231106095542.1852973-1-marcandre.lureau@redhat.com>
+ <20231106095542.1852973-23-marcandre.lureau@redhat.com>
+ <4da573ce-756e-d31b-5c13-4e0f8245dd08@linaro.org>
+In-Reply-To: <4da573ce-756e-d31b-5c13-4e0f8245dd08@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 6 Nov 2023 14:11:32 +0400
+Message-ID: <CAJ+F1C+c73Aura=JEWyp7z4_3eiNzV1Z8BOeURjJ+2YUucatCA@mail.gmail.com>
+Subject: Re: [PULL v2 22/24] hw/display: make ATI_VGA depend on PIXMAN
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, stefanha@gmail.com, 
+ Paolo Bonzini <pbonzini@redhat.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,144 +87,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 03, 2023 at 03:51:00PM -0400, Steven Sistare wrote:
-> On 11/3/2023 1:33 PM, Daniel P. Berrangé wrote:
-> > On Fri, Nov 03, 2023 at 09:01:29AM -0700, Steve Sistare wrote:
-> >> Buffered monitor output is lost when abort() is called.  The pattern
-> >> error_report() followed by abort() occurs about 60 times, so valuable
-> >> information is being lost when the abort is called in the context of a
-> >> monitor command.
-> > 
-> > I'm curious, was there a particular abort() scenario that you hit ?
-> 
-> Yes, while tweaking the suspended state, and forgetting to add transitions:
-> 
->         error_report("invalid runstate transition: '%s' -> '%s'",
->         abort();
-> 
-> But I have previously hit this for other errors.
-> 
-> > For some crude statistics:
-> > 
-> >   $ for i in abort return exit goto ; do echo -n "$i: " ; git grep --after 1 error_report | grep $i | wc -l ; done
-> >   abort: 47
-> >   return: 512
-> >   exit: 458
-> >   goto: 177
-> > 
-> > to me those numbers say that calling "abort()" after error_report
-> > should be considered a bug, and we can blanket replace all the
-> > abort() calls with exit(EXIT_FAILURE), and thus avoid the need to
-> > special case flushing the monitor.
-> 
-> And presumably add an atexit handler to flush the monitor ala monitor_abort.
-> AFAICT currently no destructor is called for the monitor at exit time.
+Hi Philippe
 
-The HMP monitor flushes at each newline,  and exit() will take care of
-flushing stdout, so I don't think there's anything else needed.
+On Mon, Nov 6, 2023 at 2:03=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org> wrote:
+>
+> Hi Marc-Andr=C3=A9,
+>
+> Cc'ing Fuloong maintainers,
+>
+> On 6/11/23 10:55, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > To avoid a kconfig cycle, change "depends on PCI" to "select PCI".
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
+> > ---
+> >   configs/devices/mips64el-softmmu/default.mak | 3 +--
+> >   hw/display/Kconfig                           | 3 ++-
+> >   hw/display/meson.build                       | 2 +-
+> >   hw/mips/Kconfig                              | 2 ++
+> >   4 files changed, 6 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/dev=
+ices/mips64el-softmmu/default.mak
+> > index d5188f7ea5..4d80d60511 100644
+> > --- a/configs/devices/mips64el-softmmu/default.mak
+> > +++ b/configs/devices/mips64el-softmmu/default.mak
+> > @@ -1,9 +1,8 @@
+> >   # Default configuration for mips64el-softmmu
+> >
+> >   include ../mips-softmmu/common.mak
+> > -CONFIG_FULOONG=3Dy
+> > +#CONFIG_FULOONG=3Dy
+>
+> Why is the justification to disable this board? From the
+> bare "avoid a kconfig cycle" commit message, it is not
+> obvious to me.
 
-> > Also I think there's a decent case to be made for error_report()
-> > to call monitor_flush().
-> 
-> A good start, but that would not help for monitors with skip_flush=true, which 
-> need to format the buffered string in a json response, which is the case I 
-> tripped over.
+It's not actually disabled, it's enabled by default in kconfig.
 
-'skip_flush' is only set to 'true' when using a QMP monitor and invoking
-"hmp-monitor-command".
+>
+> >   CONFIG_LOONGSON3V=3Dy
+> > -CONFIG_ATI_VGA=3Dy
+> >   CONFIG_RTL8139_PCI=3Dy
+> >   CONFIG_JAZZ=3Dy
+> >   CONFIG_VT82C686=3Dy
+> > diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+> > index 1aafe1923d..8219225a1c 100644
+> > --- a/hw/display/Kconfig
+> > +++ b/hw/display/Kconfig
+> > @@ -125,7 +125,8 @@ config DPCD
+> >   config ATI_VGA
+> >       bool
+> >       default y if PCI_DEVICES
+> > -    depends on PCI
+> > +    depends on PIXMAN
+> > +    select PCI
+> >       select VGA
+> >       select BITBANG_I2C
+> >       select DDC
+> > diff --git a/hw/display/meson.build b/hw/display/meson.build
+> > index 9c06aaee20..344dfe3d8c 100644
+> > --- a/hw/display/meson.build
+> > +++ b/hw/display/meson.build
+> > @@ -62,7 +62,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_tru=
+e: files('xlnx_dp.c'))
+> >
+> >   system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
+> >
+> > -system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c'=
+, 'ati_2d.c', 'ati_dbg.c'))
+> > +system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d=
+.c', 'ati_dbg.c'), pixman])
+> >
+> >
+> >   if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
+> > diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+> > index ac1eb06a51..5d40795c0b 100644
+> > --- a/hw/mips/Kconfig
+> > +++ b/hw/mips/Kconfig
+> > @@ -32,7 +32,9 @@ config JAZZ
+> >
+> >   config FULOONG
+> >       bool
+> > +    default y if MIPS64
 
-In such a case, the error message needs to be built into a JSON error
-reply and sent over the socket. Your patch doesn't help this case
-since you've just printed to stderr.  I don't think it is reasonable
-to expect QMP monitors to send replies on SIG_ABRT anyway. So I don't
-think the skip_flush=true scenario is a problem to be concerned with.
+It's now enabled here by default for mips64
 
-> >> To fix, install a SIGABRT handler to flush the monitor buffer to stderr.
-> >>
-> >> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> >> ---
-> >>  monitor/monitor.c | 38 ++++++++++++++++++++++++++++++++++++++
-> >>  1 file changed, 38 insertions(+)
-> >>
-> >> diff --git a/monitor/monitor.c b/monitor/monitor.c
-> >> index dc352f9..65dace0 100644
-> >> --- a/monitor/monitor.c
-> >> +++ b/monitor/monitor.c
-> >> @@ -701,6 +701,43 @@ void monitor_cleanup(void)
-> >>      }
-> >>  }
-> >>  
-> >> +#ifdef CONFIG_LINUX
-> >> +
-> >> +static void monitor_abort(int signal, siginfo_t *info, void *c)
-> >> +{
-> >> +    Monitor *mon = monitor_cur();
-> >> +
-> >> +    if (!mon || qemu_mutex_trylock(&mon->mon_lock)) {
-> >> +        return;
-> >> +    }
-> >> +
-> >> +    if (mon->outbuf && mon->outbuf->len) {
-> >> +        fputs("SIGABRT received: ", stderr);
-> >> +        fputs(mon->outbuf->str, stderr);
-> >> +        if (mon->outbuf->str[mon->outbuf->len - 1] != '\n') {
-> >> +            fputc('\n', stderr);
-> >> +        }
-> >> +    }
-> >> +
-> >> +    qemu_mutex_unlock(&mon->mon_lock);
-> > 
-> > The SIGABRT handling does not only fire in response to abort()
-> > calls, but also in response to bad memory scenarios, so we have
-> > to be careful what we do in signal handlers.
-> > 
-> > In particular using mutexes in signal handlers is a big red
-> > flag generally. Mutex APIs are not declare async signal
-> > safe, so this code is technically a POSIX compliance
-> > violation.
-> 
-> Righto.  I would need to mask all signals in the sigaction to be on the safe(r) side.
+> >       select PCI_BONITO
+> > +    depends on ATI_VGA
+> >
+> >   config LOONGSON3V
+> >       bool
+>
+>
 
-This is still doomed, because SIGABRT could fire while 'mon_lock' is
-already held, and so this code would deadlock trying to acquire the
-lock.
 
-> > So I think we'd be safer just eliminating the explicit abort()
-> > calls and adding monitor_flush call to error_report.
-> 
-> I like adding a handler because it is future proof.  No need to play whack-a-mole when
-> developers re-introduce abort() calls in the future.  A minor benefit is I would not
-> need ack's from 50 maintainers to change 50 call sites from abort to exit.
-
-That's a bit of a crazy exaggeration. THe aborts() don't cover 50 different
-subsystems, and we don't require explicit acks from every subsystem maintainer
-for trivial cleanups like this.
-
-> A slight risk of the exit solution is that something bad happened at the call site, so 
-> qemu state can no longer be trusted.  Calling abort immediately may be safer than calling 
-> exit which will call the existing atexit handlers and could have side effects.
-
-If that was a real problem, then we already face it because we have
-~500 places already calling exit() and only 50 calling abort().
-
-> A third option is to define qemu_abort() which flushes the monitor, and replaces all abort
-> calls.  That avoids async-signal-mutex hand wringing, but is still subject to whack-a-mole.
-> 
-> So: atexit, signal handler, or qemu_abort?  I will go with your preference.
-
-Just replace abort -> exit.
-
-I'm not seeing a need for an atexit handler on top.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
