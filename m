@@ -2,79 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065917E2927
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF657E2940
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:00:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r01vT-0007tv-IH; Mon, 06 Nov 2023 10:54:07 -0500
+	id 1r020O-0001cQ-0x; Mon, 06 Nov 2023 10:59:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r01vR-0007r4-75
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:54:05 -0500
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ id 1r020E-0001c6-Uq; Mon, 06 Nov 2023 10:59:04 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r01vP-0008Vw-Jn
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:54:04 -0500
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2c5b7764016so62703741fa.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:54:02 -0800 (PST)
+ id 1r020D-0000w0-0n; Mon, 06 Nov 2023 10:59:02 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4083ac51d8aso35558395e9.2; 
+ Mon, 06 Nov 2023 07:59:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699286041; x=1699890841; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ d=gmail.com; s=20230601; t=1699286339; x=1699891139; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Nt6CguaXRq/YZ+PZ3lvfxXKUnqOduWpE0HGPF4W1wY0=;
- b=Olad5gXQo9jU+6cGexr6wlIPU1KBxFrgMSt0V7KN7LQBCpcr1f6VsoHQyymancuTXr
- JphtVgofWCKxtd8LcB6IeWGo9gaTGOtwVi9Sy7Z/aPUuPmAyZCImaGgP64SYiFzZhg5A
- 7KrnKv0WWuUMCEQRp5WoSb5n0E9usYmJwf3yPnCrJnn3fdqPZL53rfx3IMyFLHvzNcOp
- xmzqoOlPdNVZATixLIDqvZV8diBwCYl15On0PFSny7HEqZI0aU4ZYfl/QLLl96CGeIJ5
- 2Is0Vx+eu1vtaUuLTA62n7ryV97CBvbmTievODRZ81ptSIqMu4beIS73ObIYmVI2NUZ8
- XIog==
+ bh=YdRU2ICAmJ5fzVK5A8/S2GOgHKTlNLHwKSHWlkevpuU=;
+ b=csFHVWrG5M804KpbE92BLsFDaNX0WQ4MtqOYcTh9R6YJnC8QHwtNc6x+zSvEie4CZG
+ Zz3oUFuVmYUi0z+pmugt/1UQGCtqYDWHNoOfahDYarvwtAcXs0t5yEPYwOejX0HhgzaJ
+ CcyJFeWwHAaCmhHvrCq0zNqM57zCLDGko5rKbDHETVK7974dOp2BBk0LeU8FRYNpJJcx
+ 0PyNMtLYKkfmmwwD7H23iBiiLa9C15fIoxteiA/cSWNx9d9BGEWRwwOrSClMy7zNOzNu
+ VR5aZ1RlfdT37ul0z5uDgDZfcAc9Ua5hoQnpAJ8oG7PuKIrjJ1KgOjesYp5cwUTp66Cc
+ a6sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699286041; x=1699890841;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ d=1e100.net; s=20230601; t=1699286339; x=1699891139;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Nt6CguaXRq/YZ+PZ3lvfxXKUnqOduWpE0HGPF4W1wY0=;
- b=imFf3sWoyQpECJ7AAF4uBQedmn8+gbZ+WMgKDhVw1awgTmcSPv2Z5F9IJVkd+tk6PZ
- cQ9JC+4D4wI82xqOTACrwZ2MskkJgZvF9Y4fPfq9altAEWWD+cjlnXC4/sboifRTrYfw
- EgsKv2tvrACA+D9HjS0umOau9AoEMZLw8rwjOQTMW1K1NTuMJ42uYTsf1XSggc9Zl6je
- sek1hZpOBfuVQYJfmUqbxtaf8yKATJ5bC3xc3iGjaxO/7+xQDVdqZtUM5baIrAEj1dgb
- rpxE3sCChYkE/UxuioaDW8ATZuLJF5H4zz6zrNMopCRKiwq+gtTKV6qNdAsiZ6zfKe4e
- 4mrA==
-X-Gm-Message-State: AOJu0YyPbeTGc/ABI5MrmeDUtauO1xZuQLvUAhzKKBm5qqYGfTZuRGJz
- g5tHyyXuQLDa/OLpIELwHf0=
-X-Google-Smtp-Source: AGHT+IGCoYjqZL7KCS5nKOgoZCWqBe7yFIheTDPrXy3X0fCB+qVxX20b8MuMAQC0/PdVpz/QlzJQHg==
-X-Received: by 2002:a2e:8692:0:b0:2c5:2191:3f35 with SMTP id
- l18-20020a2e8692000000b002c521913f35mr24457967lji.2.1699286040925; 
- Mon, 06 Nov 2023 07:54:00 -0800 (PST)
+ bh=YdRU2ICAmJ5fzVK5A8/S2GOgHKTlNLHwKSHWlkevpuU=;
+ b=G3sBHtTrmmVKcJlOvebDn7N7BQG2HUNpSUJUYCF8uWpKj/V3vC0FqEEud+u5fvINOV
+ 2WD6hb50ggDI+RPI0d8n2ZGlR7lXpCX0I5R5chlm5mP7Em4uMJMYg4VUTw+Z8R0+r+AM
+ 3e0zFVyle7ERwrb8JAUq6FZKQgSV56PpgNfwpHVRonn4S2d1eIcZzrQCSEdGC68lVUyZ
+ VJAgQbC1DPuo7GjE8ViKHb5jI6aZFg957jiUxm+fp2oqWBitagRDk/NKiKz94qY80OHz
+ dA3Up1WKsKeFdFqsqk6U/fxOcmBwSDKTWTaOLw0SWzFW6LVs1Y0taLMxsRPfLJhJtduZ
+ UOnw==
+X-Gm-Message-State: AOJu0YwY5Jv9zmbNA9ILb78mXjCNW2Q3QPhXqNOzQnTW8g6R+uZBMBXJ
+ s9bVsw4j2zykcExDbpEYLks=
+X-Google-Smtp-Source: AGHT+IG+oPN1NQBnC7slICVrFKIK+QQJ+pHrO26W48S90buGxRQhChU5XJhSimZD7bEJ7PpCsy+dGA==
+X-Received: by 2002:a5d:6051:0:b0:32d:a4c4:f700 with SMTP id
+ j17-20020a5d6051000000b0032da4c4f700mr20821057wrt.38.1699286338898; 
+ Mon, 06 Nov 2023 07:58:58 -0800 (PST)
 Received: from [10.95.110.31] (54-240-197-231.amazon.com. [54.240.197.231])
  by smtp.gmail.com with ESMTPSA id
- t10-20020a05600c198a00b004064ac107cfsm12608013wmq.39.2023.11.06.07.54.00
+ bs14-20020a056000070e00b0032d8eecf901sm10060456wrb.3.2023.11.06.07.58.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 07:54:00 -0800 (PST)
+ Mon, 06 Nov 2023 07:58:58 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <d8838073-5169-4f84-bc98-912f5afa285b@xen.org>
-Date: Mon, 6 Nov 2023 15:53:56 +0000
+Message-ID: <e2cb5f62-9a32-4ea2-bb34-b551dcb0755c@xen.org>
+Date: Mon, 6 Nov 2023 15:58:54 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xen/pt: Emulate multifunction bit in header type
-To: Ross Lagerwall <ross.lagerwall@citrix.com>, xen-devel@lists.xenproject.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, qemu-devel@nongnu.org
-References: <20231103172601.1319375-1-ross.lagerwall@citrix.com>
+Subject: Re: [PATCH v4 06/17] hw/xen: automatically assign device index to
+ block devices
 Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-block@nongnu.org, xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+References: <20231106143507.1060610-1-dwmw2@infradead.org>
+ <20231106143507.1060610-7-dwmw2@infradead.org>
 Organization: Xen Project
-In-Reply-To: <20231103172601.1319375-1-ross.lagerwall@citrix.com>
+In-Reply-To: <20231106143507.1060610-7-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=xadimgnik@gmail.com; helo=mail-lj1-x22f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,16 +107,30 @@ Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/11/2023 17:26, Ross Lagerwall wrote:
-> The intention of the code appears to have been to unconditionally set
-> the multifunction bit but since the emulation mask is 0x00 it has no
-> effect. Instead, emulate the bit and set it based on the multifunction
-> property of the PCIDevice (which can be set using QAPI).
+On 06/11/2023 14:34, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> This allows making passthrough devices appear as functions in a Xen
-> guest.
+> There's no need to force the user to assign a vdev. We can automatically
+> assign one, starting at xvda and searching until we find the first disk
+> name that's unused.
 > 
-> Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+> This means we can now allow '-drive if=xen,file=xxx' to work without an
+> explicit separate -driver argument, just like if=virtio.
+> 
+> Rip out the legacy handling from the xenpv machine, which was scribbling
+> over any disks configured by the toolstack, and didn't work with anything
+> but raw images.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Acked-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>   blockdev.c                          |  15 +++-
+>   hw/block/xen-block.c                | 118 ++++++++++++++++++++++++++--
+>   hw/xen/xen_devconfig.c              |  28 -------
+>   hw/xenpv/xen_machine_pv.c           |   9 ---
+>   include/hw/xen/xen-legacy-backend.h |   1 -
+>   5 files changed, 125 insertions(+), 46 deletions(-)
+> 
 
 Reviewed-by: Paul Durrant <paul@xen.org>
 
