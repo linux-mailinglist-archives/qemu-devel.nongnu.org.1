@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05ABD7E1FAF
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:10:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6707D7E1FD6
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:23:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxS3-0004Dl-1n; Mon, 06 Nov 2023 06:07:27 -0500
+	id 1qzxS6-0004Iz-OI; Mon, 06 Nov 2023 06:07:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxRr-0003Ej-OP
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:15 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxS3-0004GB-1D
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:27 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxRq-0004f0-24
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:15 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4083740f92dso32048665e9.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:07:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxRw-0004hY-VH
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:26 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c501bd6ff1so60995751fa.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:07:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268832; x=1699873632; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268839; x=1699873639; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ysTm3sVa8NXK5p6adWouAn7jMZtjrRCTYZ5tPCHuc7A=;
- b=SK9E1JI1dOxnqGGJCkijNACBPJw8IblqzpEN80ymUERXe5Ci4AtDUe/d88dvqF1cB3
- gB/wHBvevbGtb72RFpdYZwhSknCvlB+sZe0V7FjnWzGEdRb6AdzxLEl9CM0Z2VPMcF4B
- 83oeBth1ED7cY1fYp0xW+HC81scKpHITX9NER3hwkesU6zFF76Pk7ct6UU/vCAUlZma8
- XT3jV+US6IPi3n25077Pb7PShULxrJ2SXnjwtNL4wRM7cSmeOF6YbmJJNOEK7hCM+xQ6
- 9NbopSINGFcDUav1vUpOvCVM8aj9t18vsmYopmvnNkGUsZIMb0nwC3mTDhABfocCT8rO
- dgzg==
+ bh=S8/5vIGDLKMGAXYMu1UZsIS0RjKQzcO4h+Duvu/oNU4=;
+ b=T/Wo+Xn8U0u/8Pu1u7PgUN2SrXwHUG4+yDMEJVtknA2Ms426kFrCl5kkQqS0pOgPKn
+ j4RT2uWEU7UtbTY7xrxW1jhG/kf3nb98Y3+ulGjjyTELu8/PiAOwvW16XWzUGN9L/xtm
+ /retS4fJySK7pDKsXpj5Kk1IvxWvaGnYK1THsh4DqTzg7O+a80olhdVDZZY4tcwy4hXB
+ 1KO3imu7EwikGTbYUjNsq4CkyYZeGvkbUYjGVr0Fk2jOk4M/muDLysLoTmvFRM8LDaHr
+ p17lkxdtLNlV9IpgCZ3vb0wSwS/fKGOjTImrhmouAulqp2wkbB0ZnBK8Dke8Bi60alwD
+ uMJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268832; x=1699873632;
+ d=1e100.net; s=20230601; t=1699268839; x=1699873639;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ysTm3sVa8NXK5p6adWouAn7jMZtjrRCTYZ5tPCHuc7A=;
- b=ctnUrHC3lgehV8m9ZNe1dzEjzABe8aEkbitLDnRPwO/TmhFDk3aW7E+dlGZ+TAz07n
- OTbIfr1mO1piX2Z6Lg2nzghzenuBdn9zHpErJzCMiskmHarq4p4L+A8A6UexQ1zlitkF
- ryxIlvVguug6AUlfolz6nsbuKSfYNn5XpfBE/7PLmplszjfGBeFRkPO1LftEgyoOM3s0
- l1NdjdeY0yvdkKLE7TnwjlzAjp+Uq8vW43gDTLgok4TE/VIBefqCsb0h3fzIa6R6jGVr
- UYhXiZnE91EtkEXtVoldF2W8WEYwxzpfb1XsoDqaCVzFGbZpkFOaG2wYLh5F03UcSBJ3
- NRfA==
-X-Gm-Message-State: AOJu0Yxx5PgmBMtSRG0Q6gwBPX1fDxY46tSBA/Kki/XZrbQ9X9S57JCE
- Eyxdn0A10OBM/ySsYXw+X83KI6t6fUyWFto5i1s=
-X-Google-Smtp-Source: AGHT+IGkZmXraGC+Dqk5EDM2vOTL7rIZmIj2iksC9goOWR5dfHU27l8hEGkXXJizaXpag9YQzn2U8A==
-X-Received: by 2002:a05:600c:4f55:b0:408:3707:b199 with SMTP id
- m21-20020a05600c4f5500b004083707b199mr21831254wmq.3.1699268832460; 
- Mon, 06 Nov 2023 03:07:12 -0800 (PST)
+ bh=S8/5vIGDLKMGAXYMu1UZsIS0RjKQzcO4h+Duvu/oNU4=;
+ b=WHuTHUqv/RT/zQybBdVw9Zx83VLKyku7gnbye8FpGOiaK7jCPRO/r8r0dk85R+7a37
+ UUEvJqZFbaLyDPk88rIPX5+aVblh1d+MAkQqSOYMrCmh1q48dXs3wjyOIsgsDOGzwa/9
+ dS1CS4auLmo2eF6PC4s5YPaqKnno4ydJPfkQA77x5qsBSORIHwFyoWvB4yL+DqNSW/VJ
+ SM7wzeEnwiNr117DXb+K6EmGcvC036Ayqpj6ettZ97ljH7DOCRWbTnVLy+0+QK7a//Yn
+ w9mVFalZqOc7F4Jw9OKG4qJX0Glf/mW1lViObjqTLlyjAXgYnDuBnaSjCp/FYdM1hlfA
+ FmuQ==
+X-Gm-Message-State: AOJu0Yz0iuR3cwAXh+mFgoU8Dyr1UlNrW6Vg9fKt70Zt8clD5lU1GynW
+ sxPLUfULUg9eIOKFmPDf0IfYWQ6h5ALdxamqgKg=
+X-Google-Smtp-Source: AGHT+IGUmAjl7n06mFubnd+gEr0baz8hJiaRcQUniE2ytONQaxbr97H+8iARFxziBtFUQ6m1v/mnVw==
+X-Received: by 2002:a2e:940e:0:b0:2c6:e46e:9849 with SMTP id
+ i14-20020a2e940e000000b002c6e46e9849mr10927288ljh.15.1699268838970; 
+ Mon, 06 Nov 2023 03:07:18 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- jg2-20020a05600ca00200b004065daba6casm11958500wmb.46.2023.11.06.03.07.10
+ v9-20020a05600c470900b003feea62440bsm11701095wmo.43.2023.11.06.03.07.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:07:12 -0800 (PST)
+ Mon, 06 Nov 2023 03:07:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PULL 31/60] target/mips: Fix TX79 LQ/SQ opcodes
-Date: Mon,  6 Nov 2023 12:03:03 +0100
-Message-ID: <20231106110336.358-32-philmd@linaro.org>
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 32/60] sysemu/kvm: Restrict kvmppc_get_radix_page_info() to ppc
+ targets
+Date: Mon,  6 Nov 2023 12:03:04 +0100
+Message-ID: <20231106110336.358-33-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,30 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The base register address offset is *signed*.
+kvm_get_radix_page_info() is only defined for ppc targets (in
+target/ppc/kvm.c). The declaration is not useful in other targets,
+reduce its scope.
+Rename using the 'kvmppc_' prefix following other declarations
+from target/ppc/kvm_ppc.h.
 
-Cc: qemu-stable@nongnu.org
-Fixes: aaaa82a9f9 ("target/mips/tx79: Introduce LQ opcode (Load Quadword)")
+Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-Id: <20231003070427.69621-2-philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230914090447.12557-1-philmd@linaro.org>
 ---
- target/mips/tcg/tx79.decode | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sysemu/kvm.h | 1 -
+ target/ppc/kvm.c     | 4 ++--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/target/mips/tcg/tx79.decode b/target/mips/tcg/tx79.decode
-index 57d87a2076..578b8c54c0 100644
---- a/target/mips/tcg/tx79.decode
-+++ b/target/mips/tcg/tx79.decode
-@@ -24,7 +24,7 @@
- @rs             ...... rs:5  ..... ..........  ......   &r sa=0      rt=0 rd=0
- @rd             ...... ..........  rd:5  ..... ......   &r sa=0 rs=0 rt=0
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 80b69d88f6..d614878164 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -521,7 +521,6 @@ int kvm_set_one_reg(CPUState *cs, uint64_t id, void *source);
+  * Returns: 0 on success, or a negative errno on failure.
+  */
+ int kvm_get_one_reg(CPUState *cs, uint64_t id, void *target);
+-struct ppc_radix_page_info *kvm_get_radix_page_info(void);
  
--@ldst            ...... base:5 rt:5 offset:16           &i
-+@ldst            ...... base:5 rt:5 offset:s16          &i
+ /* Notify resamplefd for EOI of specific interrupts. */
+ void kvm_resample_fd_notify(int gsi);
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index d0e2dcdc77..9b1abe2fc4 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -268,7 +268,7 @@ static void kvm_get_smmu_info(struct kvm_ppc_smmu_info *info, Error **errp)
+                      "KVM failed to provide the MMU features it supports");
+ }
  
- ###########################################################################
+-struct ppc_radix_page_info *kvm_get_radix_page_info(void)
++static struct ppc_radix_page_info *kvmppc_get_radix_page_info(void)
+ {
+     KVMState *s = KVM_STATE(current_accel());
+     struct ppc_radix_page_info *radix_page_info;
+@@ -2368,7 +2368,7 @@ static void kvmppc_host_cpu_class_init(ObjectClass *oc, void *data)
+     }
  
+ #if defined(TARGET_PPC64)
+-    pcc->radix_page_info = kvm_get_radix_page_info();
++    pcc->radix_page_info = kvmppc_get_radix_page_info();
+ 
+     if ((pcc->pvr & 0xffffff00) == CPU_POWERPC_POWER9_DD1) {
+         /*
 -- 
 2.41.0
 
