@@ -2,84 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF5D7E2A0A
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE467E2A63
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:51:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r02cH-00044M-GU; Mon, 06 Nov 2023 11:38:21 -0500
+	id 1r02oP-00079G-Ss; Mon, 06 Nov 2023 11:50:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r02cE-00043q-N5
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:38:18 -0500
-Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r02cC-0000He-5A
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:38:18 -0500
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-41b7fd8f458so30100871cf.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 08:38:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1699288695; x=1699893495; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uP48glW1B5M1ELOdnJI1eEPyMJZ1kwJPb8tmQvPETf8=;
- b=UYAg67DGfmu86ieMGwZBjtHq+sOsY7KqCtGJhurtPLoOrmO/YINY1iaM8Jriic8Bg9
- lbKoP6prgFRcieiWeBrTv+F5nEPNHeP7oGnGQmvHd7CTtlYjCoP+7usTKs+Sih4xcwqB
- s5wD0NJcKL8WgbqBLCMDE1CFJGwOjqC9io3JGCMyL+AwyvG1ziSaFEnLGrI7y/Sp9mc9
- 4Zn+zomL2GfpPwlA9Gtsbn3ISXTk2KSwT0M2OO33DelbA7AQauwkx3XRMol0Zj3S4AKk
- WuA+rMWo8wH+z8on8z/Jlrjuqx4SGG/CVeAgcK7COgM2bm6gy4anPcmGmQbp9Oqa31kz
- J1Sg==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r02oK-000770-0j
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:50:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r02oH-0002di-3O
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:50:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699289444;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OvMm6Xzj4qW1gD/UfFBX8i1ZQuO6u5RtLC9Zr3rXGDo=;
+ b=HuD9KuSMh4MvSuX4+rknkBD2Sqx18HCjXjF2NQKPZZ/SBSlkRFiF3OOcAokiMoi2uvbsma
+ EcIZKwXgs6BWdW8XoEAkuGLZXzMTVmaxMzWjAEAqpIX44rF2jvmfoZKEb5X+UqbrmEcHZW
+ jEz8mPxGwg06aAlTSrDWFo1LqBaK+mk=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-pFGu2gO7N_qoUDmRBjteOw-1; Mon, 06 Nov 2023 11:50:22 -0500
+X-MC-Unique: pFGu2gO7N_qoUDmRBjteOw-1
+Received: by mail-yb1-f200.google.com with SMTP id
+ 3f1490d57ef6-da0c7d27fb0so5353674276.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 08:50:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699288695; x=1699893495;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1699289421; x=1699894221;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uP48glW1B5M1ELOdnJI1eEPyMJZ1kwJPb8tmQvPETf8=;
- b=if8dswYSG9l3j7oEpWKf6/MYEbXC6kIbHpYidnzkO5R9br74hfM1KX+A5k2GfvmPSP
- 5CQlZ/GlKyCy5x2qkY5rcDnUJoMC4TRNT6dOug8kjUuBRaXUhqPXCNfjcryRnOXbuJ7M
- WXoUd9TkQrATgPCQRhhRquli+rsMKdhjSFF9vYnGvBkkSHlEKrF4ZbDl9Zt8IF7CKq14
- gTAnRxh9NxgeqcSZe9EAsPYteo0VFY43W6zosMOPzuuLsudYf7OW/567E1/2sTuz/0sv
- DIM+2ZEr1mmtwarFImFItmcyRix0j9P35EXmOZiNEE86REHV0xByZ4c5ManxpZEFrFOE
- c1Qw==
-X-Gm-Message-State: AOJu0YzBrsPET6DVE1vMyTCz8xqI/P77SCwMW1QQIboiZd+7iV2p6pgy
- 0P4sZsZRmFwhvp5+Buj9F3njYA==
-X-Google-Smtp-Source: AGHT+IEPPWoPzdB38J+OIA2Q0ZpxBFf2a6L7i+/FhGkgIYFZqws362sHfdT5O2Rib3KShBlSwPTSrA==
-X-Received: by 2002:a05:622a:1910:b0:41e:4744:4b42 with SMTP id
- w16-20020a05622a191000b0041e47444b42mr42822397qtc.56.1699288695166; 
- Mon, 06 Nov 2023 08:38:15 -0800 (PST)
-Received: from [192.168.68.107] ([179.193.10.161])
+ bh=OvMm6Xzj4qW1gD/UfFBX8i1ZQuO6u5RtLC9Zr3rXGDo=;
+ b=dzNeHkCLbM+9dGNdY79Yq1ERpNyqwEHrX+o6XhCh+YRpYrKrX/lLMkifhYqwYHvUW7
+ DjmkFgLpQg2p+XZ/gjRwXsbxwfDhCBO0bWyKxnlpZZ51NVxXidUZIhjDMLAAb0fYEjQF
+ ZWP7RxfJ5OLpmkoOKnBRFAdwpO+K5Qay7sDz2foRv4AXTX/yW5EYMAjqrM9AlLzweZIQ
+ o3lJoeBtLpwxpUacpkqeNjtyXDoY/gGjQxzQK9yYeWk9efjRooz91GCOV9v33f0Cwo8d
+ IeVlY3PiW/huU2//QTE01ia3GZmJXtzazKpFRnzdTDuGj7cqwlI5LxpEC4KyI7viFVCq
+ 1DmQ==
+X-Gm-Message-State: AOJu0Yx3MEtb8WgtoxH7ViwnBueW+EPRkUmZshy8bUMtWRglWJakigmN
+ CnDpcf3Sz03THqhH52NvURUdTUxpc2LpT1P0PqQM9FrnsUdwqbFVun97nAPBGm0k8JHxD454RhT
+ a6qSVRoRD2WTSpHg=
+X-Received: by 2002:a25:cb05:0:b0:da0:6933:d8d with SMTP id
+ b5-20020a25cb05000000b00da069330d8dmr30214261ybg.63.1699289421428; 
+ Mon, 06 Nov 2023 08:50:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHF2oux+fAFPxlTEfn1Hp8OvagyhmMZ88/qSk/rWa/+AdAW5YIcqfsPUO3RHqS8jmaeEds9Cg==
+X-Received: by 2002:a25:cb05:0:b0:da0:6933:d8d with SMTP id
+ b5-20020a25cb05000000b00da069330d8dmr30214238ybg.63.1699289421177; 
+ Mon, 06 Nov 2023 08:50:21 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- x5-20020ac87ec5000000b004181d77e08fsm3521434qtj.85.2023.11.06.08.38.13
+ mz20-20020a0562142d1400b006713142482fsm3576258qvb.74.2023.11.06.08.50.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 08:38:14 -0800 (PST)
-Message-ID: <0fbc4857-d9b3-4327-8a00-3fb277f05ef5@ventanamicro.com>
-Date: Mon, 6 Nov 2023 13:38:11 -0300
+ Mon, 06 Nov 2023 08:50:20 -0800 (PST)
+Message-ID: <976a6bb0-a517-4e25-9970-ca2e2c36d904@redhat.com>
+Date: Mon, 6 Nov 2023 17:50:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv: don't enable Zfa by default
+Subject: Re: [PATCH v4 10/41] vfio/common: Move giommu_list in base container
 Content-Language: en-US
-To: Jerry ZJ <jerry.zhangjian@sifive.com>, alistair.francis@wdc.com,
- palmer@dabbelt.com, frank.chang@sifive.com, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-References: <20231106111440.59995-1-jerry.zhangjian@sifive.com>
- <c2901c07-9eef-449c-857a-6d2553aeb170@ventanamicro.com>
- <b1df8107-d0f1-4827-94bd-3f8c7cd3ea57@Spark>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <b1df8107-d0f1-4827-94bd-3f8c7cd3ea57@Spark>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
+References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-11-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231102071302.1818071-11-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-qt1-x82a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,82 +104,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 11/6/23 12:21, Jerry ZJ wrote:
-> We do have some cases that failed. SiFive e-series cores (https://static.dev.sifive.com/SiFive-E21-Manual-v1p0.pdf <https://static.dev.sifive.com/SiFive-E21-Manual-v1p0.pdf>) do not have F extension (For example: rv32imc_zicsr_zifencei_zba_zbb). When we use the corresponding extension options to configure QEMU, i.e., rv32, i=true, m=true, a=true, c=true, Zicsr=true, Zifencei=true, zba=true, zbb=true, the QEMU will have the following error.
-> Zfa extension requires F extension
-
-Can you send your whole command line? I'm unable to reproduce it here. This
-will boot:
-
-./build/qemu-system-riscv32 -M virt -cpu rv32,i=true,m=true,a=true,c=true,zicsr=true,zifencei=true,zba=true,zbb=true --nographic
-
-
-In a side note, we have a new CPU type (still pending, not yet queue) called
-"rv64i", which comes only with 'RVI' enabled and nothing else - no defaults,
-nothing.
-
-I believe this use case you testing here would benefit from a "rv32i" CPU that
-does the same but for 32 bits. Then you can specify the whole CPU and not worry
-about hidden defaults. Does that makes sense?
-
+On 11/2/23 08:12, Zhenzhong Duan wrote:
+> From: Eric Auger <eric.auger@redhat.com>
 > 
-> IMHO, we should not enable Zfa extension by default, especially when Zfa requires F to be enabled implicitly.
+> Move the giommu_list field in the base container and store
+> the base container in the VFIOGuestIOMMU.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   include/hw/vfio/vfio-common.h         |  9 ---------
+>   include/hw/vfio/vfio-container-base.h |  9 +++++++++
+>   hw/vfio/common.c                      | 17 +++++++++++------
+>   hw/vfio/container-base.c              |  9 +++++++++
+>   hw/vfio/container.c                   |  8 --------
+>   5 files changed, 29 insertions(+), 23 deletions(-)
 
-If the rv32 use case you mentioned is really breaking because of zfa and
-Fm, I'm fine with disabling zfa because it's now a bug. We just need a
-reproducer.
 
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
-Daniel
+C.
+
 
 > 
-> Best Regards,
-> Jerry ZJ
-> *SiFive Inc. Taiwan*
-> On Nov 6, 2023 at 22:55 +0800, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, wrote:
->>
->>
->> On 11/6/23 08:14, Jerry Zhang Jian wrote:
->>> - Zfa requires F, we should not assume all CPUs have F extension
->>> support.
->>
->> We do not have a case where this happen, do we? The default CPUs have F
->> enabled (see misa_ext_cfgs[] in target/riscv/tcg/tcg-cpu.c), so zfa being
->> enable isn't a problem for them. Vendor CPUs might not have F enabled, but
->> they don't use the default values for extensions, so they're not affected.
->> Having zfa enabled by default does not hurt the default CPU setups we have.
->>
->> I am not a fan of these defaults for rv64 and so on, but once we set them to
->> 'true' people can complain if we set them to 'false' because it might break
->> existing configs in the wild. We need a strong case (i.e. a bug) to do so.
->>
->>
->> Thanks,
->>
->> Daniel
->>
->>
->>>
->>> Signed-off-by: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
->>> ---
->>> target/riscv/cpu.c | 2 +-
->>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->>> index ac4a6c7eec..c9f11509c8 100644
->>> --- a/target/riscv/cpu.c
->>> +++ b/target/riscv/cpu.c
->>> @@ -1247,7 +1247,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
->>> MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
->>> MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
->>> MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
->>> - MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
->>> + MULTI_EXT_CFG_BOOL("zfa", ext_zfa, false),
->>> MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
->>> MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
->>> MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 24a26345e5..6be082b8f2 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -95,7 +95,6 @@ typedef struct VFIOContainer {
+>       uint64_t max_dirty_bitmap_size;
+>       unsigned long pgsizes;
+>       unsigned int dma_max_mappings;
+> -    QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+>       QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
+>       QLIST_HEAD(, VFIOGroup) group_list;
+>       QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
+> @@ -104,14 +103,6 @@ typedef struct VFIOContainer {
+>       GList *iova_ranges;
+>   } VFIOContainer;
+>   
+> -typedef struct VFIOGuestIOMMU {
+> -    VFIOContainer *container;
+> -    IOMMUMemoryRegion *iommu_mr;
+> -    hwaddr iommu_offset;
+> -    IOMMUNotifier n;
+> -    QLIST_ENTRY(VFIOGuestIOMMU) giommu_next;
+> -} VFIOGuestIOMMU;
+> -
+>   typedef struct VFIORamDiscardListener {
+>       VFIOContainer *container;
+>       MemoryRegion *mr;
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> index 577f52ccbc..a11aec5755 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -29,8 +29,17 @@ typedef struct {
+>    */
+>   typedef struct VFIOContainerBase {
+>       const VFIOIOMMUOps *ops;
+> +    QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+>   } VFIOContainerBase;
+>   
+> +typedef struct VFIOGuestIOMMU {
+> +    VFIOContainerBase *bcontainer;
+> +    IOMMUMemoryRegion *iommu_mr;
+> +    hwaddr iommu_offset;
+> +    IOMMUNotifier n;
+> +    QLIST_ENTRY(VFIOGuestIOMMU) giommu_next;
+> +} VFIOGuestIOMMU;
+> +
+>   int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+>                              hwaddr iova, ram_addr_t size,
+>                              void *vaddr, bool readonly);
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index e610771888..43580bcc43 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -292,7 +292,7 @@ static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+>   static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>   {
+>       VFIOGuestIOMMU *giommu = container_of(n, VFIOGuestIOMMU, n);
+> -    VFIOContainerBase *bcontainer = &giommu->container->bcontainer;
+> +    VFIOContainerBase *bcontainer = giommu->bcontainer;
+>       hwaddr iova = iotlb->iova + giommu->iommu_offset;
+>       void *vaddr;
+>       int ret;
+> @@ -569,6 +569,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>                                        MemoryRegionSection *section)
+>   {
+>       VFIOContainer *container = container_of(listener, VFIOContainer, listener);
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       hwaddr iova, end;
+>       Int128 llend, llsize;
+>       void *vaddr;
+> @@ -612,7 +613,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>           giommu->iommu_mr = iommu_mr;
+>           giommu->iommu_offset = section->offset_within_address_space -
+>                                  section->offset_within_region;
+> -        giommu->container = container;
+> +        giommu->bcontainer = bcontainer;
+>           llend = int128_add(int128_make64(section->offset_within_region),
+>                              section->size);
+>           llend = int128_sub(llend, int128_one());
+> @@ -647,7 +648,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>               g_free(giommu);
+>               goto fail;
+>           }
+> -        QLIST_INSERT_HEAD(&container->giommu_list, giommu, giommu_next);
+> +        QLIST_INSERT_HEAD(&bcontainer->giommu_list, giommu, giommu_next);
+>           memory_region_iommu_replay(giommu->iommu_mr, &giommu->n);
+>   
+>           return;
+> @@ -732,6 +733,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+>                                        MemoryRegionSection *section)
+>   {
+>       VFIOContainer *container = container_of(listener, VFIOContainer, listener);
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       hwaddr iova, end;
+>       Int128 llend, llsize;
+>       int ret;
+> @@ -744,7 +746,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+>       if (memory_region_is_iommu(section->mr)) {
+>           VFIOGuestIOMMU *giommu;
+>   
+> -        QLIST_FOREACH(giommu, &container->giommu_list, giommu_next) {
+> +        QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
+>               if (MEMORY_REGION(giommu->iommu_mr) == section->mr &&
+>                   giommu->n.start == section->offset_within_region) {
+>                   memory_region_unregister_iommu_notifier(section->mr,
+> @@ -1206,7 +1208,9 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       vfio_giommu_dirty_notifier *gdn = container_of(n,
+>                                                   vfio_giommu_dirty_notifier, n);
+>       VFIOGuestIOMMU *giommu = gdn->giommu;
+> -    VFIOContainer *container = giommu->container;
+> +    VFIOContainerBase *bcontainer = giommu->bcontainer;
+> +    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+> +                                            bcontainer);
+>       hwaddr iova = iotlb->iova + giommu->iommu_offset;
+>       ram_addr_t translated_addr;
+>       int ret = -EINVAL;
+> @@ -1284,12 +1288,13 @@ static int vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainer *container,
+>   static int vfio_sync_dirty_bitmap(VFIOContainer *container,
+>                                     MemoryRegionSection *section)
+>   {
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>       ram_addr_t ram_addr;
+>   
+>       if (memory_region_is_iommu(section->mr)) {
+>           VFIOGuestIOMMU *giommu;
+>   
+> -        QLIST_FOREACH(giommu, &container->giommu_list, giommu_next) {
+> +        QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
+>               if (MEMORY_REGION(giommu->iommu_mr) == section->mr &&
+>                   giommu->n.start == section->offset_within_region) {
+>                   Int128 llend;
+> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+> index e929435751..20bcb9669a 100644
+> --- a/hw/vfio/container-base.c
+> +++ b/hw/vfio/container-base.c
+> @@ -34,8 +34,17 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+>   void vfio_container_init(VFIOContainerBase *bcontainer, const VFIOIOMMUOps *ops)
+>   {
+>       bcontainer->ops = ops;
+> +    QLIST_INIT(&bcontainer->giommu_list);
+>   }
+>   
+>   void vfio_container_destroy(VFIOContainerBase *bcontainer)
+>   {
+> +    VFIOGuestIOMMU *giommu, *tmp;
+> +
+> +    QLIST_FOREACH_SAFE(giommu, &bcontainer->giommu_list, giommu_next, tmp) {
+> +        memory_region_unregister_iommu_notifier(
+> +                MEMORY_REGION(giommu->iommu_mr), &giommu->n);
+> +        QLIST_REMOVE(giommu, giommu_next);
+> +        g_free(giommu);
+> +    }
+>   }
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 32a0251dd1..133d3c8f5c 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -556,7 +556,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>       container->dirty_pages_supported = false;
+>       container->dma_max_mappings = 0;
+>       container->iova_ranges = NULL;
+> -    QLIST_INIT(&container->giommu_list);
+>       QLIST_INIT(&container->vrdl_list);
+>       bcontainer = &container->bcontainer;
+>       vfio_container_init(bcontainer, &vfio_legacy_ops);
+> @@ -686,16 +685,9 @@ static void vfio_disconnect_container(VFIOGroup *group)
+>   
+>       if (QLIST_EMPTY(&container->group_list)) {
+>           VFIOAddressSpace *space = container->space;
+> -        VFIOGuestIOMMU *giommu, *tmp;
+>   
+>           QLIST_REMOVE(container, next);
+>   
+> -        QLIST_FOREACH_SAFE(giommu, &container->giommu_list, giommu_next, tmp) {
+> -            memory_region_unregister_iommu_notifier(
+> -                    MEMORY_REGION(giommu->iommu_mr), &giommu->n);
+> -            QLIST_REMOVE(giommu, giommu_next);
+> -            g_free(giommu);
+> -        }
+>           vfio_container_destroy(bcontainer);
+>   
+>           trace_vfio_disconnect_container(container->fd);
+
 
