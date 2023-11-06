@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CD47E2C84
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:59:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8CD7E2C8B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:00:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r04o0-0002rc-11; Mon, 06 Nov 2023 13:58:36 -0500
+	id 1r04o2-0002tN-42; Mon, 06 Nov 2023 13:58:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04ny-0002rH-2N
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:58:34 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1r04o0-0002sq-Lm
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:58:36 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r04nt-0002P5-VE
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:58:33 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-32f8441dfb5so3330639f8f.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:58:29 -0800 (PST)
+ id 1r04nv-0002PR-Vh
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:58:36 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-32faea0fa1fso2667540f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:58:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699297108; x=1699901908; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699297110; x=1699901910; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cWjpS4SxyhpG8vcouNGxzG6/OAkqKjRKLB6d8VxGNzw=;
- b=qcI1SZxPeTfW+rh4U4Xo/hL+SQDRnHs4l4g3ghanxAmpeoEvlVLrRLlA6Ef/Rb+d7Z
- ArcJsllrvmjlesW1elieXcbXRLu3Fi9PPNjW5uz/ekJDM8ozfDUHazgUUOX79hGrlPnU
- tJqI/G4ktct8ut42MCToU7wxRfjI7jiJhgbgNhWaY6jyz6nxRcsjDrk71wKKCm379mIX
- 8rj9COOiw9XoYWix+9ZMpsVlUEq+73fP6Bb7r9+FMULL0ibwMztWzQFsJeP/1brjfL+u
- 0H9tPxLszjQJLhPE7gOHLXqCgHZ66CYuYYsjGyyjSxNUvRMFUa531HzlRTJxQN7dEsj5
- FfOQ==
+ bh=nBk0h96fdhXpmhym+tL6OJZ4Em9fv1dR5en6dOONc7Y=;
+ b=o3HJ5cTe5age5k47XTbZLudSLrOQBuftdUwqCEFsYXVgrdCX0B5JvgvUULZUC3+bU5
+ VOT/09Y+43XNnbrOTYPHFzJsGO0s9Bj47ZZcErzFRI9u4ktF6oGusv0aYIZ2QjRi1mIj
+ hSM2ANIyLxpJpeg6F+rqYkjqfaOq+C1kl/MxFTcaFwta4L/E7oUn6po66w/tp7mTzaeN
+ eEYcKoKVAnFRux/yPXHaIwFXdZidnENxTl0jk7ufiX3amb607ETF1s1x5BVLYFe8sOW9
+ 7lyHj0HR2ttT3OBdQyXQFloAwG/VgaEpdtuP7NSNuPa0NyOsXXux2ogKNf60Ulma3mVD
+ Ifiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699297108; x=1699901908;
+ d=1e100.net; s=20230601; t=1699297110; x=1699901910;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cWjpS4SxyhpG8vcouNGxzG6/OAkqKjRKLB6d8VxGNzw=;
- b=MUa7xlD9J6aJSiPqcKAKfeZLrxT18IbxeRRHIZh1kftWMvEm8btAjE0hAjO9lkvI1P
- Ao1GyyCJPVlpKjGNkDGRVLELt+tLPbU28LTNm8E53r0tGVhlBOwNnOnhKl86NEwy1mHK
- lyMvcfL0ED5d7qfdDPVN/mDLIJbd2tivJ+/PptQfLcKs0+j54MTfCSsyz85gVaxAfG/U
- YhcXHAbCJrDRDQ4qgt4bSDUBCx3wu2eUOnp25Ko4thJczLDLEMNrK06VzR3toou2ecQd
- 9ur2IG5gLS213VsgR2ypO2Z/l8jJKRFVnXp+7xPpWriJushpALDjovogz3ezTV1gWvVm
- otwQ==
-X-Gm-Message-State: AOJu0Yx2d2LdMJvI6IzcIMWI6NmleZan5UM00OC3xQOwJT5LGmf1jisg
- 6JsHx3oZKm76UEMSYtJ7p3TdAQ==
-X-Google-Smtp-Source: AGHT+IGUFplPNCH4jr6UIkMihayOcQPS6n1ePrvdl0aHgCW7Iyi7vH/ohNFX26aI5v7Y6iQZlSVBbQ==
-X-Received: by 2002:a05:6000:1209:b0:32d:9d3a:d8c0 with SMTP id
- e9-20020a056000120900b0032d9d3ad8c0mr21565736wrx.60.1699297108460; 
- Mon, 06 Nov 2023 10:58:28 -0800 (PST)
+ bh=nBk0h96fdhXpmhym+tL6OJZ4Em9fv1dR5en6dOONc7Y=;
+ b=uhUy1EeFwHgR1re46cRWl2+R9f1Gv8S+HXpDTLjfLiscf04vtaYZBUzkPC+yHtZ+mX
+ g6yLdtITHD/AdHGsas1J3hDJStXHCk0DFNrW10d7M2FrYt/qjtfgKNBB9kffSSvNUsqG
+ 5We6vPEd4O/Qk31CuaElBHEf/5woBMplKTGGFaCPvlaV4dwKeyvAkbq43yAc7pyJncmv
+ 9IJrDW/hB7UGu8sVKPMAqzci6PIgUW9tgRm4JuY1ih5DQeajwfEEFWsA4tOL7sRHvPPr
+ Ur/RyzqEaMbSqkyg3Drlv/jKmjoxbpTc1AXJA57ONqjGTiFLZh4kk5LV6rt69h8pvKq4
+ xSSQ==
+X-Gm-Message-State: AOJu0YwyT0Ds+ktB8O94wUXjDzQwkXRd5BqHz2bBntJkhEEjx+uJzqZ0
+ 0vc12Kyy50JBGJbYYf2Rcudj9Q==
+X-Google-Smtp-Source: AGHT+IGBR3KFOX6LjpEix52+LLNcxsjj+KM1mxwPwkHEDsiOI5W1PBrlVYH1Vz2O9ZBFWBpldQPc+A==
+X-Received: by 2002:a5d:5a1b:0:b0:32d:8c67:be05 with SMTP id
+ bq27-20020a5d5a1b000000b0032d8c67be05mr326766wrb.22.1699297110409; 
+ Mon, 06 Nov 2023 10:58:30 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- k4-20020a5d6d44000000b0032dc1fc84f2sm327003wri.46.2023.11.06.10.58.27
+ t13-20020adff60d000000b0032f7c563ffasm323158wrp.36.2023.11.06.10.58.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 06 Nov 2023 10:58:27 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1989365762;
+ by draig.lan (Postfix) with ESMTP id 2D0C565763;
  Mon,  6 Nov 2023 18:51:14 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,25 +74,25 @@ Cc: qemu-arm@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
- luzhipeng <luzhipeng@cestc.cn>
-Subject: [PATCH 18/22] contrib/gitdm: add domain-map for Cestc
-Date: Mon,  6 Nov 2023 18:51:08 +0000
-Message-Id: <20231106185112.2755262-19-alex.bennee@linaro.org>
+ Yicong Yang <yangyicong@hisilicon.com>
+Subject: [PATCH 19/22] contrib/gitdm: map HiSilicon to Huawei
+Date: Mon,  6 Nov 2023 18:51:09 +0000
+Message-Id: <20231106185112.2755262-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231106185112.2755262-1-alex.bennee@linaro.org>
 References: <20231106185112.2755262-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,28 +108,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: luzhipeng <luzhipeng@cestc.cn>
+HiSilicon is a wholly owned subsidiary of Huawei so map the domain to
+the same company to avoid splitting the contributions.
 
-Signed-off-by: luzhipeng <luzhipeng@cestc.cn>
-Message-Id: <20230628072236.1925-1-luzhipeng@cestc.cn>
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231013154424.1536392-6-alex.bennee@linaro.org>
+Message-Id: <20231013154424.1536392-7-alex.bennee@linaro.org>
 ---
  contrib/gitdm/domain-map | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/contrib/gitdm/domain-map b/contrib/gitdm/domain-map
-index e676da8d47..38945cddf0 100644
+index 38945cddf0..42571fc1c4 100644
 --- a/contrib/gitdm/domain-map
 +++ b/contrib/gitdm/domain-map
-@@ -12,6 +12,7 @@ amd.com         AMD
- aspeedtech.com  ASPEED Technology Inc.
- baidu.com       Baidu
- bytedance.com   ByteDance
-+cestc.cn        Cestc
- cmss.chinamobile.com China Mobile
- citrix.com      Citrix
- crudebyte.com   Crudebyte
+@@ -22,6 +22,7 @@ fb.com          Facebook
+ fujitsu.com     Fujitsu
+ google.com      Google
+ greensocs.com   GreenSocs
++hisilicon.com   Huawei
+ huawei.com      Huawei
+ ibm.com         IBM
+ igalia.com      Igalia
 -- 
 2.39.2
 
