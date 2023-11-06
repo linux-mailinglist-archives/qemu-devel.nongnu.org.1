@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911297E28A3
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA047E28A5
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:28:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r01V9-0000Hs-J9; Mon, 06 Nov 2023 10:26:55 -0500
+	id 1r01WZ-0002mk-DJ; Mon, 06 Nov 2023 10:28:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daan.j.demeyer@gmail.com>)
- id 1r01Ur-000090-Ug
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:26:40 -0500
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <daan.j.demeyer@gmail.com>)
- id 1r01Uo-00033e-Ol
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:26:37 -0500
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2801d7f46f9so3748170a91.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:26:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699284391; x=1699889191; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=x4LpEv+pwTjdcAwF4xpHM37cbtA1PVwPNrLsJCgrL6w=;
- b=PF390xfAh70UbKYiFiWEnFJZMVs1CBb9qq9QekNeCrVQGpAtQyB7XqSRAbFR8Y09PN
- eA8AUIpJKK8SkPpFWlMjveekPd74T8gqwRw5PFVIDpOmXZ/4NYnNnDm7bWpyPPtBv97Z
- yrkg90jj9RRXNQ7T0LL7oQE05RQAQyUdmuozS0VtF4lynpAJRs5uYWjTRAQhL3gjtmj6
- G20+l1jw/qE/SxhAP8rzjz+wWpKoiI3SBvR86M92ljWFBvze0ufOiaaiEXNzM7UiTPnI
- ZoOm3xmBOjejEZ+lfJsVzNLzbhMKbnd/4pa285p/3S8scNoO5ChlkmWmYoJoQhxvvx/u
- 0RbQ==
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r01WX-0002mQ-OH
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:28:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r01WW-0003Ds-3E
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:28:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699284498;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jj5rjVbhExKuG/ag9YigwyelVThIKOIH76ffjDMd0uw=;
+ b=cFsUpygsDKRIqGIJLJmNRzVksBUWSJPVGaaujRJ5iWcz4rehgggTVxF8wuB3uQ/dsdv4y2
+ OXpX+LWdERYAkfzJxrWGxmUJZYsbg3M8TjPqocDqMFS3HerIEklQrk7rmo5erkKmmTn7p6
+ 5H83YG6ereHmZd8k6+6et8f2lrtayyQ=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-459-3GmcFyriP3K-6OrW5rgfbw-1; Mon, 06 Nov 2023 10:28:06 -0500
+X-MC-Unique: 3GmcFyriP3K-6OrW5rgfbw-1
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-6ce270bc429so5841768a34.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:28:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699284391; x=1699889191;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=x4LpEv+pwTjdcAwF4xpHM37cbtA1PVwPNrLsJCgrL6w=;
- b=qRbQ9Q7p/DFvNuerjUn3CnpOJUe7z6P9JxJVS57Y8xs4eHCTkXNo/AI5jlhUPhIMZz
- j9srNnDfGxX6duK8fyPlHSN4VZynTpwowUhMvaeDguEOY5QY0TnU/e4f7Zq6WVzYrgFq
- 9lbUMGFQ0/pDirHLF//a6YtgiO3ACESIe9G1SW6ICpIVniLZZ6NqbyUukPi08icHc4w/
- 5WssIY1d6xYWWzlI+1T1vnY+dQohNWRR0T3U8YiqK4kBUbHInd5B5abgHEwxADzRNw7E
- t9jlf068ggS0Cq1VdZMcXu+j4x27fslBPP5j5Q4HGuk2L2ec/4iDAxZ6YKB2nu2DYibg
- dHRQ==
-X-Gm-Message-State: AOJu0YzKav+Wx5DGQjjPe+emzMm0n5BHKRu7oUgCnqvXPxkTdMQ/qqWj
- TWgQR8KdAFH4NPYVgltXDl21a+m3f32SVjhMeppMnzjuH98=
-X-Google-Smtp-Source: AGHT+IHneaGbT3C6gj2FjJc2jLmhWR8Zp1CCaLiP6VFe6pRtSFgtNJLd4OfSAHBhhT0X9wtKmfoQIrPkKcM7VPhtP9U=
-X-Received: by 2002:a17:90a:f198:b0:27d:60b1:4f2c with SMTP id
- bv24-20020a17090af19800b0027d60b14f2cmr22602053pjb.4.1699284390916; Mon, 06
- Nov 2023 07:26:30 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699284486; x=1699889286;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jj5rjVbhExKuG/ag9YigwyelVThIKOIH76ffjDMd0uw=;
+ b=RPOQvswH42wjYbqu17N6Ia60xs76oA8Ao5fC1PNVIUfX4YFk/EoSHN7O/YP40ucty7
+ iHkCh8AkbbdQfVgYP4UNIa36Ptmug+YiNlYClP9vmOTxWTvIVw1EtNIljF8DupbLM0xe
+ O8m+cDHCdgMBz9NA0fyVcatN+v2OBA4pM38bK2lCH1shHKsOG+4EfwmiPAOQ9h2F+JD9
+ aErtduyAeMEIGaJj/QSWssnFkUWp/8Sbh4Eate+Pz7D3MD9y6EEq6fP8TSA/3IOKmg7e
+ i81nLyBnOaTyIG8xzppHL36MQPGqlyInkjuHNaABp46xC9QR+kMjeE9SE08lt4LNQuRO
+ ffzw==
+X-Gm-Message-State: AOJu0YzyR1jeyOQLFN9m6+PNKUWOf4F6EpT+H6DcIxod6EGyjUC8/evY
+ glTISaB/Z+WaZdmoNRHdPutuNFIDyjDRDi02G+sHEJfRQv3Wy1cqajWiAsq4/rCEXFrt/H+nXx+
+ bwlN5merz/t9tEQlGDDPV/OPPoECFdsQ=
+X-Received: by 2002:a05:6830:10f:b0:6b7:4a86:f038 with SMTP id
+ i15-20020a056830010f00b006b74a86f038mr29424505otp.15.1699284486048; 
+ Mon, 06 Nov 2023 07:28:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEfR/XlYD6NjsgSEmsNhDI6m6HvZvtqVEaYjDJAqwmlKyZhFMGrHAs9kNMKyh9OsgjzR+H4QtQP/21wl4axnsI=
+X-Received: by 2002:a05:6830:10f:b0:6b7:4a86:f038 with SMTP id
+ i15-20020a056830010f00b006b74a86f038mr29424489otp.15.1699284485758; Mon, 06
+ Nov 2023 07:28:05 -0800 (PST)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Nov 2023 07:28:04 -0800
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20231016152704.221611-1-victortoso@redhat.com>
+ <20231016152704.221611-5-victortoso@redhat.com>
 MIME-Version: 1.0
-References: <20231021134015.1119597-1-daan.j.demeyer@gmail.com>
- <ZTlSPbh2GnhOKExO@redhat.com>
- <CAO8sHcnh1mqaEchGSwYaFr7+LTau9yQRt_4zVJGrFsroWik3ew@mail.gmail.com>
-In-Reply-To: <CAO8sHcnh1mqaEchGSwYaFr7+LTau9yQRt_4zVJGrFsroWik3ew@mail.gmail.com>
-From: Daan De Meyer <daan.j.demeyer@gmail.com>
-Date: Mon, 6 Nov 2023 16:26:19 +0100
-Message-ID: <CAO8sHcmFqcHs=F7GTUj=Avn_K91q5sw97nLKEco=2kpCsMyCxg@mail.gmail.com>
-Subject: Re: [PATCH] Add class property to configure KVM device node to use
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, 
- Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20231016152704.221611-5-victortoso@redhat.com>
+Date: Mon, 6 Nov 2023 07:28:04 -0800
+Message-ID: <CABJz62O9YKuRHqW2_WUijzY5PfqmjxDjbU=7-O4cp0OO+JQi3g@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] qapi: golang: Generate qapi's alternate types in
+ Go
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=daan.j.demeyer@gmail.com; helo=mail-pj1-x1031.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,50 +97,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping
+On Mon, Oct 16, 2023 at 05:26:57PM +0200, Victor Toso wrote:
+> This patch handles QAPI alternate types and generates data structures
+> in Go that handles it.
+>
+> Alternate types are similar to Union but without a discriminator that
+> can be used to identify the underlying value on the wire. It is needed
+> to infer it. In Go, most of the types [*] are mapped as optional
+> fields and Marshal and Unmarshal methods will be handling the data
+> checks.
+>
+> Example:
+>
+> qapi:
+>   | { 'alternate': 'BlockdevRef',
+>   |   'data': { 'definition': 'BlockdevOptions',
+>   |             'reference': 'str' } }
+>
+> go:
+>   | type BlockdevRef struct {
+>   |         Definition *BlockdevOptions
+>   |         Reference  *string
+>   | }
+>
+> usage:
+>   | input := `{"driver":"qcow2","data-file":"/some/place/my-image"}`
+>   | k := BlockdevRef{}
+>   | err := json.Unmarshal([]byte(input), &k)
+>   | if err != nil {
+>   |     panic(err)
+>   | }
+>   | // *k.Definition.Qcow2.DataFile.Reference == "/some/place/my-image"
+>
+> [*] The exception for optional fields as default is to Types that can
+> accept JSON Null as a value. For this case, we translate NULL to a
+> member type called IsNull, which is boolean in Go.  This will be
+> explained better in the documentation patch of this series but the
+> main rationale is around Marshaling to and from JSON and Go data
+> structures.
 
-Daan
+These usage examples are great; in fact, I think they're too good to
+be relegated to the commit messages. I would like to see them in the
+actual documentation.
 
-On Sat, 28 Oct 2023 at 14:07, Daan De Meyer <daan.j.demeyer@gmail.com> wrot=
-e:
->
-> Anything else needed before this patch can be merged?
->
-> Cheers,
->
-> Daan
->
-> On Wed, 25 Oct 2023 at 19:37, Daniel P. Berrang=C3=A9 <berrange@redhat.co=
-m> wrote:
-> >
-> > On Sat, Oct 21, 2023 at 03:40:15PM +0200, Daan De Meyer wrote:
-> > > This allows passing the KVM device node to use as a file
-> > > descriptor via /dev/fdset/XX. Passing the device node to
-> > > use as a file descriptor allows running qemu unprivileged
-> > > even when the user running qemu is not in the kvm group
-> > > on distributions where access to /dev/kvm is gated behind
-> > > membership of the kvm group (as long as the process invoking
-> > > qemu is able to open /dev/kvm and passes the file descriptor
-> > > to qemu).
-> > >
-> > > Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
-> > > ---
-> > >  accel/kvm/kvm-all.c      | 25 ++++++++++++++++++++++++-
-> > >  include/sysemu/kvm_int.h |  1 +
-> > >  qemu-options.hx          |  8 +++++++-
-> > >  3 files changed, 32 insertions(+), 2 deletions(-)
-> >
-> > Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> >
-> >
-> > With regards,
-> > Daniel
-> > --
-> > |: https://berrange.com      -o-    https://www.flickr.com/photos/dberr=
-ange :|
-> > |: https://libvirt.org         -o-            https://fstop138.berrange=
-.com :|
-> > |: https://entangle-photo.org    -o-    https://www.instagram.com/dberr=
-ange :|
-> >
+At the same time, the current documentation seems to focus a lot on
+internals rather than usage. I think we really need two documents
+here:
+
+  * one for users of the library, with lots of usage examples
+    (ideally at least one for JSON->Go and one for Go->JSON for each
+    class of QAPI object) and little-to-no peeking behind the
+    curtains;
+
+  * one for QEMU developers / QAPI maintainers, which goes into
+    detail regarding the internals and explains the various design
+    choices and trade-offs.
+
+Some parts of the latter should probably be code comments instead. A
+reasonable balance will have to be found.
+
+> diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
+> +TEMPLATE_HELPER = """
+> +// Creates a decoder that errors on unknown Fields
+> +// Returns nil if successfully decoded @from payload to @into type
+> +// Returns error if failed to decode @from payload to @into type
+> +func StrictDecode(into interface{}, from []byte) error {
+> +\tdec := json.NewDecoder(strings.NewReader(string(from)))
+> +\tdec.DisallowUnknownFields()
+> +
+> +\tif err := dec.Decode(into); err != nil {
+> +\t\treturn err
+> +\t}
+> +\treturn nil
+> +}
+> +"""
+
+I think the use of \t here makes things a lot less readable. Can't
+you just do
+
+  TEMPLATE_HELPER = """
+  func StrictDecode() {
+      dec := ...
+      if err := ... {
+         return err
+      }
+      return nil
+  }
+  """
+
+I would actually recommend the use of textwrap.dedent() to make
+things less awkward:
+
+  TEMPLATE_HELPER = textwrap.dedent("""
+      func StrictDecode() {
+          dec := ...
+          if err := ... {
+             return err
+          }
+          return nil
+      }
+  """
+
+This is particularly useful for blocks of Go code that are not
+declared at the top level...
+
+> +        unmarshal_check_fields = f"""
+> +\t// Check for json-null first
+> +\tif string(data) == "null" {{
+> +\t\treturn errors.New(`null not supported for {name}`)
+> +\t}}"""
+
+... such as this one, which could be turned into:
+
+  unmarshal_check_fields = textwrap.dedent(f"""
+      // Check for json-null first
+      if string(data) == "null" {{
+          return errors.New(`null not supported for {name}`)
+      }}
+  """)
+
+Much more manageable, don't you think? :)
+
+
+On a partially related note: while I haven't yet looked closely at
+how much effort you've dedicated to producing pretty output, from a
+quick look at generate_struct_type() it seems that the answer is "not
+zero". I think it would be fine to simplify things there and produce
+ugly output, under the assumption that gofmt will be called on the
+generated code immediately afterwards. The C generator doesn't have
+this luxury, but we should take advantage of it.
+
+-- 
+Andrea Bolognani / Red Hat / Virtualization
+
 
