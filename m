@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701067E1FD4
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:22:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B47687E2652
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:11:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxVd-0005cH-LD; Mon, 06 Nov 2023 06:11:09 -0500
+	id 1r00JE-0004kF-AW; Mon, 06 Nov 2023 09:10:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qzxVb-0005Yw-Ec
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:11:07 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <jerry.zhangjian@sifive.com>)
+ id 1qzxZj-0002TG-Pz
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:15:29 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qzxVZ-0006GS-Fs
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:11:07 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9dd5879a126so388871966b.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:11:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jerry.zhangjian@sifive.com>)
+ id 1qzxZi-00073f-2S
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:15:23 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1cc5916d578so39391605ad.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:15:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699269064; x=1699873864; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+Z9zeQOb7QA1Wi4adABpYq8ujZP9kMXId+BkEQUXF/A=;
- b=NsRJQYHKBHtmDyAz4m+sqTnvEaDQyVFM8m0XlKIP4RczgMsbekJ7MV4m7Qxd8dfTjD
- Ip0TgstCfVfzaVFRS5lbDLU0bbmn7Ota2tEXH3jTO1UAUEO3cHPykYGXXKNIo976TfHQ
- KrLMT9qvdGlXkQQaDlFrq/Fig+WEW47efBYMFIwCeZHBHpyK35RUE/I7IvPmkTgrwIul
- gdUMICIsSruzCIX/CIkypPXxxSh2pFv5zuSK+JsEbmcLfCYtGb1rm7sag6neh4Bc83Ff
- amwfnkpEDj2HAHdBv0ycjGcOAOujczdD/pGN0ayKmSglPX1Z7CXXIFxlz6CCZHMGif5o
- lm0w==
+ d=sifive.com; s=google; t=1699269320; x=1699874120; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uRnDSQzaHmLdQycfNSQLpH4vuNFJ/S13XFN9b+1P9BI=;
+ b=BONnBvTNiojEDHowACad/Fykj3NrMOgv8HQMUH+ntgTycE2oOer1ghkep+5tBrZDSe
+ tKh75kTZOdWu/AG1d+XV84gFy2GXgrnTxkAIf2YRxiuPVhennUabZbIY1L9gwkcSwM3W
+ C3HumBOgQ4w87N7beneIoJxkk5kv/fDZImaPKHvd4P1mjOAvkdMtzLLK+q0d/5w2SWQc
+ pV2KU5qg/EOsBJzDY7Uu/mCVQjI3sa2qqdJu+PhFdkgMX0osMGEjQvnkhUjRcijtUG0J
+ 4qkklOSZeEoA0ZkUeVE5sQ8vEm1vkKxqaab0NbPQGvDeXg093BY3Z6AQVvHbwn/6DIoT
+ dJTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699269064; x=1699873864;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+Z9zeQOb7QA1Wi4adABpYq8ujZP9kMXId+BkEQUXF/A=;
- b=iyuT92BXn5YrastfYhtgN8mNsx+VqZu5Uc4AzAYOxkKdm8jkqJQv3KLtFcZP9g5ySf
- hKxUkA4pa4g/9hqBUtqqgtjEkMqAuPU6QGjyQSXlFfUhcL7xD7bzXbLDVpiMnnOiOodd
- uuyx+XWB6EJLuc+AuVe4r1hL15k2bHfm8jqT5QLvfqMmnG/LEsEcxdokK8lcXIpdgai1
- iJTAl/THA7j4o/8E1teDSNxMAlJCbYRL2pKBZvbKH7rrmaD9Ek2tzRMGxT6uVkMa3JJI
- uj+uFkQkZEqiF2r+ve8sTim4PRm9PGsemMRtVPTako7XUgB3S6U1XU/ckYlRi29IIumh
- ujTw==
-X-Gm-Message-State: AOJu0YyUocIfLhzhIBxWFIa4GJALNeAJYxABDRD83hirsa6fUh7es0yx
- rzTgKZiK7RodsnzApm7ejTIWRa6BNWPvx/VRbfM=
-X-Google-Smtp-Source: AGHT+IEPTu3uOtBOTInZ4akR2qJVunrzPAWzNZVb0IV3xScL0KaPPde1WPT89mrAAP7dONBFn+KR3H9iwSZ17GLcBII=
-X-Received: by 2002:a17:907:d94:b0:9ae:588e:142 with SMTP id
- go20-20020a1709070d9400b009ae588e0142mr13197892ejc.67.1699269063604; Mon, 06
- Nov 2023 03:11:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699269320; x=1699874120;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uRnDSQzaHmLdQycfNSQLpH4vuNFJ/S13XFN9b+1P9BI=;
+ b=i42t+URdOo6cRE8RbOKQJCS0va2WD/bPoT2rsswgpD/xCT818C+ClY2LLk/vVGMRxL
+ i0ySXMu6XbkdkwrFCjFqWhbCRQ0OnKCAdWjMVIUZVR6YjUdaij/GJd/y/KBPgxIeViKf
+ qwPfVsOXfs11lViaxaLQfmi1L1of9WEpqiUNp+5192tFobD+aPxZ4t3Boe35hgEA2X6X
+ z9Ma2Kgkhpxp0OWOhYjghBK8HcqALxPGcfB5LxWPELPsRyXJ/WUj02f4fNRHLxfy0TKF
+ 6Zy4Upxi2H3QPM3ERhk8yS7/yxEehEnUAdynMUsK5i4vEmZS/C9rBbZN0JJMhLO9mXr0
+ Nxrw==
+X-Gm-Message-State: AOJu0YzxeeOgcj2ARwhgcNQd6U2pyDmomMrTj6WsBr3KCKPMcpip4c29
+ LVSztU8jwY6sS4bIaidmfaoC7w==
+X-Google-Smtp-Source: AGHT+IFW3lNze4IS2+Q4FkgA1UKTZf6IwUYos7vmeewsbBL0Zg4ZmQcJYAHkXs3bx8Opo3kVhrkkHw==
+X-Received: by 2002:a17:903:78d:b0:1cc:520a:54c with SMTP id
+ kn13-20020a170903078d00b001cc520a054cmr16745854plb.56.1699269319608; 
+ Mon, 06 Nov 2023 03:15:19 -0800 (PST)
+Received: from localhost.localdomain (59-124-168-89.hinet-ip.hinet.net.
+ [59.124.168.89]) by smtp.gmail.com with ESMTPSA id
+ iy9-20020a170903130900b001c60a2b5c61sm5691375plb.134.2023.11.06.03.15.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 03:15:18 -0800 (PST)
+From: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
+To: alistair.francis@wdc.com, palmer@dabbelt.com, frank.chang@sifive.com,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Cc: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
+Subject: [PATCH] target/riscv: don't enable Zfa by default
+Date: Mon,  6 Nov 2023 19:14:40 +0800
+Message-ID: <20231106111440.59995-1-jerry.zhangjian@sifive.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <cover.1698871239.git.balaton@eik.bme.hu>
- <ed0fba3f74e48143f02228b83bf8796ca49f3e7d.1698871239.git.balaton@eik.bme.hu>
- <CAJ+F1CJx=dnLOO9QsjBVb9WHH1L1sBpfM8MqKPUZ+mAitCjWSA@mail.gmail.com>
- <4b0e7dc6-516e-a9da-2ac7-5bffb696d931@eik.bme.hu>
-In-Reply-To: <4b0e7dc6-516e-a9da-2ac7-5bffb696d931@eik.bme.hu>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 6 Nov 2023 15:10:50 +0400
-Message-ID: <CAJ+F1CJWEHa1Rt=U7JY+YC9DKWM0MohBgYEZZAGXaXam3vKgZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] ati-vga: Implement fallback for pixman routines
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-ej1-x62d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=jerry.zhangjian@sifive.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 06 Nov 2023 09:10:30 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,221 +90,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+- Zfa requires F, we should not assume all CPUs have F extension
+  support.
 
-On Mon, Nov 6, 2023 at 3:02=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.hu> =
-wrote:
->
-> On Mon, 6 Nov 2023, Marc-Andr=C3=A9 Lureau wrote:
-> > On Thu, Nov 2, 2023 at 12:46=E2=80=AFAM BALATON Zoltan <balaton@eik.bme=
-.hu> wrote:
-> >>
-> >> Pixman routines can fail if no implementation is available and it will
-> >> become optional soon so add fallbacks when pixman does not work.
-> >>
-> >> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> >> ---
-> >>  hw/display/ati.c     |  8 +++++
-> >>  hw/display/ati_2d.c  | 75 +++++++++++++++++++++++++++++++------------=
--
-> >>  hw/display/ati_int.h |  1 +
-> >>  3 files changed, 62 insertions(+), 22 deletions(-)
-> >>
-> >> diff --git a/hw/display/ati.c b/hw/display/ati.c
-> >> index 5e38d2c3de..f911fbc327 100644
-> >> --- a/hw/display/ati.c
-> >> +++ b/hw/display/ati.c
-> >> @@ -1047,6 +1047,7 @@ static Property ati_vga_properties[] =3D {
-> >>      DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
-> >>                         PCI_DEVICE_ID_ATI_RAGE128_PF),
-> >>      DEFINE_PROP_BOOL("guest_hwcursor", ATIVGAState, cursor_guest_mode=
-, false),
-> >> +    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, 3),
-> >>      DEFINE_PROP_END_OF_LIST()
-> >>  };
-> >>
-> >> @@ -1068,11 +1069,18 @@ static void ati_vga_class_init(ObjectClass *kl=
-ass, void *data)
-> >>      k->exit =3D ati_vga_exit;
-> >>  }
-> >>
-> >> +static void ati_vga_init(Object *o)
-> >> +{
-> >> +    object_property_set_description(o, "x-pixman", "Use pixman for: "
-> >> +                                    "1: fill, 2: blit");
-> >> +}
-> >> +
-> >>  static const TypeInfo ati_vga_info =3D {
-> >>      .name =3D TYPE_ATI_VGA,
-> >>      .parent =3D TYPE_PCI_DEVICE,
-> >>      .instance_size =3D sizeof(ATIVGAState),
-> >>      .class_init =3D ati_vga_class_init,
-> >> +    .instance_init =3D ati_vga_init,
-> >>      .interfaces =3D (InterfaceInfo[]) {
-> >>            { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-> >>            { },
-> >> diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-> >> index 7d786653e8..0e6b8e4367 100644
-> >> --- a/hw/display/ati_2d.c
-> >> +++ b/hw/display/ati_2d.c
-> >> @@ -92,6 +92,7 @@ void ati_2d_blt(ATIVGAState *s)
-> >>      switch (s->regs.dp_mix & GMC_ROP3_MASK) {
-> >>      case ROP3_SRCCOPY:
-> >>      {
-> >> +        bool fallback =3D false;
-> >>          unsigned src_x =3D (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
-> >>                         s->regs.src_x : s->regs.src_x + 1 - s->regs.ds=
-t_width);
-> >>          unsigned src_y =3D (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
-> >> @@ -122,27 +123,50 @@ void ati_2d_blt(ATIVGAState *s)
-> >>                  src_bits, dst_bits, src_stride, dst_stride, bpp, bpp,
-> >>                  src_x, src_y, dst_x, dst_y,
-> >>                  s->regs.dst_width, s->regs.dst_height);
-> >> -        if (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
-> >> +        if ((s->use_pixman & BIT(1)) &&
-> >> +            s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
-> >>              s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
-> >> -            pixman_blt((uint32_t *)src_bits, (uint32_t *)dst_bits,
-> >> -                       src_stride, dst_stride, bpp, bpp,
-> >> -                       src_x, src_y, dst_x, dst_y,
-> >> -                       s->regs.dst_width, s->regs.dst_height);
-> >> -        } else {
-> >> +            fallback =3D !pixman_blt((uint32_t *)src_bits, (uint32_t =
-*)dst_bits,
-> >> +                                   src_stride, dst_stride, bpp, bpp,
-> >> +                                   src_x, src_y, dst_x, dst_y,
-> >> +                                   s->regs.dst_width, s->regs.dst_hei=
-ght);
-> >> +        } else if (s->use_pixman & BIT(1)) {
-> >>              /* FIXME: We only really need a temporary if src and dst =
-overlap */
-> >>              int llb =3D s->regs.dst_width * (bpp / 8);
-> >>              int tmp_stride =3D DIV_ROUND_UP(llb, sizeof(uint32_t));
-> >>              uint32_t *tmp =3D g_malloc(tmp_stride * sizeof(uint32_t) =
-*
-> >>                                       s->regs.dst_height);
-> >> -            pixman_blt((uint32_t *)src_bits, tmp,
-> >> -                       src_stride, tmp_stride, bpp, bpp,
-> >> -                       src_x, src_y, 0, 0,
-> >> -                       s->regs.dst_width, s->regs.dst_height);
-> >> -            pixman_blt(tmp, (uint32_t *)dst_bits,
-> >> -                       tmp_stride, dst_stride, bpp, bpp,
-> >> -                       0, 0, dst_x, dst_y,
-> >> -                       s->regs.dst_width, s->regs.dst_height);
-> >> +            fallback =3D !pixman_blt((uint32_t *)src_bits, tmp,
-> >> +                                   src_stride, tmp_stride, bpp, bpp,
-> >> +                                   src_x, src_y, 0, 0,
-> >> +                                   s->regs.dst_width, s->regs.dst_hei=
-ght);
-> >> +            if (!fallback) {
-> >> +                fallback =3D !pixman_blt(tmp, (uint32_t *)dst_bits,
-> >> +                                       tmp_stride, dst_stride, bpp, b=
-pp,
-> >> +                                       0, 0, dst_x, dst_y,
-> >> +                                       s->regs.dst_width, s->regs.dst=
-_height);
-> >> +            }
-> >>              g_free(tmp);
-> >> +        } else {
-> >> +            fallback =3D true;
-> >> +        }
-> >> +        if (fallback) {
-> >> +            unsigned int y, i, j, bypp =3D bpp / 8;
-> >> +            unsigned int src_pitch =3D src_stride * sizeof(uint32_t);
-> >> +            unsigned int dst_pitch =3D dst_stride * sizeof(uint32_t);
-> >> +
-> >> +            for (y =3D 0; y < s->regs.dst_height; y++) {
-> >> +                i =3D dst_x * bypp;
-> >> +                j =3D src_x * bypp;
-> >> +                if (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
-> >> +                    i +=3D (dst_y + y) * dst_pitch;
-> >> +                    j +=3D (src_y + y) * src_pitch;
-> >> +                } else {
-> >> +                    i +=3D (dst_y + s->regs.dst_height - 1 - y) * dst=
-_pitch;
-> >> +                    j +=3D (src_y + s->regs.dst_height - 1 - y) * src=
-_pitch;
-> >> +                }
-> >> +                memmove(&dst_bits[i], &src_bits[j], s->regs.dst_width=
- * bypp);
-> >
-> > This doesn't seem to handle overlapping regions the same as the
-> > pixman-version. Or am I missing something?
->
-> memmove (as opposed to memcpy) allows overlapping regions and handles the=
-m
-> correctly so no temporary needed for this. I've tested it with MorphOS an=
-d
-> still got correct picture.
+Signed-off-by: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
+---
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-But it is calling memmove() for each line, you may have overlapping
-rectangles. Having a temporary like above should solve this issue,
-assuming it's the correct behaviour.
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ac4a6c7eec..c9f11509c8 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1247,7 +1247,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
+     MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+-    MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
++    MULTI_EXT_CFG_BOOL("zfa", ext_zfa, false),
+     MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
+     MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
+     MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
+-- 
+2.42.0
 
->
-> Regards,
-> BALATON Zoltan
->
-> >> +            }
-> >>          }
-> >>          if (dst_bits >=3D s->vga.vram_ptr + s->vga.vbe_start_addr &&
-> >>              dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
-> >> @@ -180,14 +204,21 @@ void ati_2d_blt(ATIVGAState *s)
-> >>
-> >>          dst_stride /=3D sizeof(uint32_t);
-> >>          DPRINTF("pixman_fill(%p, %d, %d, %d, %d, %d, %d, %x)\n",
-> >> -                dst_bits, dst_stride, bpp,
-> >> -                dst_x, dst_y,
-> >> -                s->regs.dst_width, s->regs.dst_height,
-> >> -                filler);
-> >> -        pixman_fill((uint32_t *)dst_bits, dst_stride, bpp,
-> >> -                    dst_x, dst_y,
-> >> -                    s->regs.dst_width, s->regs.dst_height,
-> >> -                    filler);
-> >> +                dst_bits, dst_stride, bpp, dst_x, dst_y,
-> >> +                s->regs.dst_width, s->regs.dst_height, filler);
-> >> +        if (!(s->use_pixman & BIT(0)) ||
-> >> +            !pixman_fill((uint32_t *)dst_bits, dst_stride, bpp, dst_x=
-, dst_y,
-> >> +                    s->regs.dst_width, s->regs.dst_height, filler)) {
-> >> +            /* fallback when pixman failed or we don't want to call i=
-t */
-> >> +            unsigned int x, y, i, bypp =3D bpp / 8;
-> >> +            unsigned int dst_pitch =3D dst_stride * sizeof(uint32_t);
-> >> +            for (y =3D 0; y < s->regs.dst_height; y++) {
-> >> +                i =3D dst_x * bypp + (dst_y + y) * dst_pitch;
-> >> +                for (x =3D 0; x < s->regs.dst_width; x++, i +=3D bypp=
-) {
-> >> +                    stn_he_p(&dst_bits[i], bypp, filler);
-> >> +                }
-> >> +            }
-> >> +        }
-> >>          if (dst_bits >=3D s->vga.vram_ptr + s->vga.vbe_start_addr &&
-> >>              dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
-> >>              s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_o=
-ffset) {
-> >> diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
-> >> index 8abb873f01..f5a47b82b0 100644
-> >> --- a/hw/display/ati_int.h
-> >> +++ b/hw/display/ati_int.h
-> >> @@ -90,6 +90,7 @@ struct ATIVGAState {
-> >>      char *model;
-> >>      uint16_t dev_id;
-> >>      uint8_t mode;
-> >> +    uint8_t use_pixman;
-> >>      bool cursor_guest_mode;
-> >>      uint16_t cursor_size;
-> >>      uint32_t cursor_offset;
-> >> --
-> >> 2.30.9
-> >>
-> >>
-> >
-> >
-> >
-
-
-
---=20
-Marc-Andr=C3=A9 Lureau
 
