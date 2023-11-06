@@ -2,73 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F397E21E6
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 13:40:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7AC7E224A
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 13:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzysT-0004Vm-DH; Mon, 06 Nov 2023 07:38:49 -0500
+	id 1qzz4h-0001Y3-VT; Mon, 06 Nov 2023 07:51:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qzysM-0004Ty-Uq
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:38:45 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qzysA-0000Jg-KT
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:38:38 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-507b96095abso5544059e87.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 04:38:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699274307; x=1699879107; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=QseeqxFQMkKzTjuxolDbun6eFvusMmaH3/5dQe0wdg8=;
- b=e0oS5ahFtOBMAo/nx6VO1fEOrtAtswgw1Bcd25cYpPanROTOtTc0X2w9LhV3Cwo53d
- IFy1C0kCVVnwxUYUu1eFph8gUBXI+6k5uI3N3TmisQT8SX0nN1srL3bT0E7H01PvJQsL
- 9wOV7KuBQ/1xOnU1V8vocwX6+xWGpeCUVqP7kk3ryL6Bj/NdyPy4bisQd/AVKCZC2drx
- B5m3nP26VJOHe94qKc1uzlCT+WzF0zi/PEmOA+kdvY7IVpCT3fyugOPyUzoYic6xkx4v
- S+eFvA3nASwWSKCSPqW3gKfNM/2a37xj2wYGp1mFmMdkA0krb2VfRz9T0SdInguu1q+2
- z93w==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qzz4X-0001Qj-7S
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:51:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qzz4T-0002sc-AC
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:51:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699275070;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AzcSdznnd4F/p1z5YnPzclINpY3HO0H5wg5gaRnbH18=;
+ b=Xr3uCY3hx1NE95P7ThKD5VXgx+5wKZFl18PgvAWohBOcy9wD6Nid6d+TvENKb0fdz2ihST
+ 8b2HubE7H8x5pmgZs03XBf4YWl4qjjEQBXLMVlT6izsSkYpkMoNDR6Zw71dw8KEd9Kwm1Z
+ Xfi8115+0JSWYgo95pWb4dHIzmV8id8=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-671-pA-OfynON66tDU1G1B5JYw-1; Mon, 06 Nov 2023 07:51:08 -0500
+X-MC-Unique: pA-OfynON66tDU1G1B5JYw-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c50255b905so43584761fa.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 04:51:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699274307; x=1699879107;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QseeqxFQMkKzTjuxolDbun6eFvusMmaH3/5dQe0wdg8=;
- b=vMPGvGuKbHUkjqJ5kKxjsHIzS3FBaQ3djNtQchhxvCgICbrXsK2UzL+/KjihhuOjSH
- qUIS1nN4ekCH/dKr8FU3F4rem4P9Gz8+Z+TyqyNAeAnp0vmyoPUJi8Hyx9ycu45svSMM
- bizTdN1OG/zqAd7cyRfWJBamX52j3kM0OQ7VS7G7nL1IWTlR3B5YXxWAbFbTljfD0SBd
- kiyWonEFjh6TrZ2WJucFhqKmo5j/9IT5ugDMIzJIBF+NXPiBuqr4Rt7RvbSi9C4Rohn/
- 2/Bz2J5sc0Qd20CdQLHwTlBMLknewhJfqjDBcI4IGCsYMRiebHwkW+ZrGFKqWgBJHvm+
- Uvaw==
-X-Gm-Message-State: AOJu0Yw22fZu/QwSuq4aBNbg7kOeDooZbVwPIScLQbUGXhH/bDoiP+OY
- x5Oswe1bZcU9zovjhg9y1G5kHlkRGc3D7tYlh8ZwcQ==
-X-Google-Smtp-Source: AGHT+IGvx/o+WFAQjLwZW/x15kNnShRuGhJjggYJNKZG2AmTRhagwB/k7PKX3NpyC/zdN6riyRdWWVNEFfs5dl5YEmc=
-X-Received: by 2002:a05:6512:33cf:b0:509:4c8a:525d with SMTP id
- d15-20020a05651233cf00b005094c8a525dmr10760742lfg.35.1699274307474; Mon, 06
- Nov 2023 04:38:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699275067; x=1699879867;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AzcSdznnd4F/p1z5YnPzclINpY3HO0H5wg5gaRnbH18=;
+ b=eQmXH6it1qZFcO+1GYA0sY7DKASkCfWqErsroovsepBjsb5KoY3m1yZaYpXj3jmb6N
+ MIZEYoIzxYxlCF7Gc9zy3Yhg7B4y1zB4RV+zmm35DJ4wvSZCHorhbf/xjPKvibRasn96
+ tiwp3QE83WVid27ijVCt8A3JixK0HCRJ7b5yoa9MGtjWDKk4I9HdV28nKsSJH6APxuvL
+ bVPg8XM7WHugdwbMObVwm4ISbFAsM4P6LaaGEuQG/Qk5+kQ/oWiMzda2BstJgd8o4S1A
+ e7AXhmWTHsA28565OEab+XvRNGE2bQg9pjn7QypaT+FZO76vB8Wc0xSab69K0PMamEDg
+ PlgA==
+X-Gm-Message-State: AOJu0YzOErZ9Y86jc6/wHG1j8Y5uRh78/98Y3Gs+UOUE/MTOyd34RWAn
+ GIk+xj59Cbk0fpey6XNr9ZmKI4YXQG1EilALwF8Ms8lt+SaEwxLK2yssSiqd9cqgk3MLIxzmyhd
+ Ht/AWEKFmf/BlZGM=
+X-Received: by 2002:a2e:a986:0:b0:2bc:c650:81b with SMTP id
+ x6-20020a2ea986000000b002bcc650081bmr26773058ljq.15.1699275067283; 
+ Mon, 06 Nov 2023 04:51:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFdZLrXR9yMj5PcryzYoSidWZzFvzCx4Wv6i3LOJwuc+arSgJN1Qaddzl9c6Mf1mLVAD3NgZA==
+X-Received: by 2002:a2e:a986:0:b0:2bc:c650:81b with SMTP id
+ x6-20020a2ea986000000b002bcc650081bmr26773041ljq.15.1699275066885; 
+ Mon, 06 Nov 2023 04:51:06 -0800 (PST)
+Received: from ?IPV6:2003:cf:d718:8590:77de:e1fd:a4df:d080?
+ (p200300cfd718859077dee1fda4dfd080.dip0.t-ipconnect.de.
+ [2003:cf:d718:8590:77de:e1fd:a4df:d080])
+ by smtp.gmail.com with ESMTPSA id
+ p6-20020a05600c358600b004053a6b8c41sm11984973wmq.12.2023.11.06.04.51.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Nov 2023 04:51:06 -0800 (PST)
+Message-ID: <622d78ae-1732-46e1-9e45-0a4bff8075df@redhat.com>
+Date: Mon, 6 Nov 2023 13:51:04 +0100
 MIME-Version: 1.0
-References: <20231017125941.810461-1-vsementsov@yandex-team.ru>
-In-Reply-To: <20231017125941.810461-1-vsementsov@yandex-team.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 6 Nov 2023 12:38:16 +0000
-Message-ID: <CAFEAcA9LpNoaPjg7UVHTQ1qtJG=LYB4GHKy2wCTNNt4tGQ=PgA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] coverity fixes
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, yc-core@yandex-team.ru, 
- davydov-max@yandex-team.ru
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/10] block: Convert qmp_query_named_block_nodes to
+ coroutine
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, =?UTF-8?Q?Jo=C3=A3o_Silva?=
+ <jsilva@suse.de>, Lin Ma <lma@suse.com>, Claudio Fontana <cfontana@suse.de>,
+ Dario Faggioli <dfaggioli@suse.com>, Eric Blake <eblake@redhat.com>
+References: <20230609201910.12100-1-farosas@suse.de>
+ <20230609201910.12100-8-farosas@suse.de>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230609201910.12100-8-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,26 +106,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023 at 13:59, Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
+On 09.06.23 22:19, Fabiano Rosas wrote:
+> From: Lin Ma <lma@suse.com>
 >
-> v3: rebase on master (two patches dropped, as already merged)
->     add r-b marks
+> We're converting callers of bdrv_get_allocated_file_size() to run in
+> coroutines because that function will be made asynchronous when called
+> (indirectly) from the QMP dispatcher.
 >
-> v2:
-> 01: add explanations, new assert and avoid extra assignment
->     add CIDs [thx to Paolo]
-> 02: add explanation, improve wording
-> 04,07: s/{0}/{}
-> 06,08: improve wording
+> This QMP command is a candidate because it indirectly calls
+> bdrv_get_allocated_file_size() through bdrv_block_device_info() ->
+> bdrv_query_image_info() -> bdrv_query_image_info().
 >
-> Hi! Here are some improvements to handle issues found by Coverity (not
-> public Coverity site, so there are no CIDs).
+> The previous patches have determined that bdrv_query_image_info() and
+> bdrv_do_query_node_info() are coroutine-safe so we can just make the
+> QMP command run in a coroutine.
 >
+> Signed-off-by: Lin Ma <lma@suse.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>   block.c              | 2 +-
+>   blockdev.c           | 6 +++---
+>   qapi/block-core.json | 3 ++-
+>   3 files changed, 6 insertions(+), 5 deletions(-)
 
-Looks like nobody picked this up, and they all got reviewed,
-so I'm going to apply it via the target-arm.next tree.
+(I see patch 9 does something with HMP code, but) hmp_info_block() calls 
+qmp_query_named_block_nodes(), and I don’t think it may call such a 
+coroutine_fn directly.
 
-thanks
--- PMM
+> diff --git a/block.c b/block.c
+> index f94cee8930..abed744b60 100644
+> --- a/block.c
+> +++ b/block.c
+> @@ -6148,7 +6148,7 @@ BlockDeviceInfoList *bdrv_named_nodes_list(bool flat,
+>   
+>       list = NULL;
+>       QTAILQ_FOREACH(bs, &graph_bdrv_states, node_list) {
+> -        BlockDeviceInfo *info = bdrv_block_device_info(NULL, bs, flat, errp);
+> +        BlockDeviceInfo *info = bdrv_co_block_device_info(NULL, bs, flat, errp);
+
+As far as I understand, only functions marked as coroutine_fn may call 
+other coroutine_fn.  Regardless of whether bdrv_named_nodes_list() is 
+only called by another coroutine_fn, we still have to mark it as 
+coroutine_fn, too (and probably rename it to bdrv_co_named_nodes_list()).
+
+Also, this function (bdrv_named_nodes_list()) uses 
+GRAPH_RDLOCK_GUARD_MAINLOOP().  Is that the correct thing to use in a 
+coroutine context?
+
+Hanna
+
+>           if (!info) {
+>               qapi_free_BlockDeviceInfoList(list);
+>               return NULL;
+> diff --git a/blockdev.c b/blockdev.c
+> index e6eba61484..8b5f7d06c8 100644
+> --- a/blockdev.c
+> +++ b/blockdev.c
+> @@ -2818,9 +2818,9 @@ void qmp_drive_backup(DriveBackup *backup, Error **errp)
+>       blockdev_do_action(&action, errp);
+>   }
+>   
+> -BlockDeviceInfoList *qmp_query_named_block_nodes(bool has_flat,
+> -                                                 bool flat,
+> -                                                 Error **errp)
+> +BlockDeviceInfoList *coroutine_fn qmp_query_named_block_nodes(bool has_flat,
+> +                                                              bool flat,
+> +                                                              Error **errp)
+>   {
+>       bool return_flat = has_flat && flat;
+>   
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index 5dd5f7e4b0..9d4c92f2c9 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -1972,7 +1972,8 @@
+>   { 'command': 'query-named-block-nodes',
+>     'returns': [ 'BlockDeviceInfo' ],
+>     'data': { '*flat': 'bool' },
+> -  'allow-preconfig': true }
+> +  'allow-preconfig': true,
+> +  'coroutine': true}
+>   
+>   ##
+>   # @XDbgBlockGraphNodeType:
+
 
