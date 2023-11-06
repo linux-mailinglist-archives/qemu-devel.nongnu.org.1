@@ -2,84 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5727E266E
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 276257E268E
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:23:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00OH-0007fB-H5; Mon, 06 Nov 2023 09:15:45 -0500
+	id 1r00Tk-0000pn-Fc; Mon, 06 Nov 2023 09:21:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1r00O8-0007ZV-UK
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:37 -0500
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1r00O6-0004H7-Qp
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:36 -0500
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-5a7fb84f6ceso47847337b3.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:15:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1699280132; x=1699884932;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qKJ9yAKrrbkrYK2WaAH0CGJg5UQnpLX4LeD1O8VDjBI=;
- b=RPGkSKpEJn1hO7LykNqCtqWLODBMv3k2EFj1cmU5DB6Y4QhDQcvmEN3NZuIIP0BBdK
- SQQDTLxItR1YVgY4mZjnQgYtV53ViREHQ+Zsd0dNqTKwCpBvigv/hgaPUbmcZEpKUOy1
- m/+kYoI+yfz7/U6TGkDllOtcGxb1hG1EB9PCC2/xSt6NAaPcD5frFreoTpOoVXNf7zKQ
- 6dV8R7OMpi/6i193mZVXgJTPE7hkCKzSZO4qO0T0NT7yv11+Sk31m22bCFWHrLHYwDhz
- ccsD37QgIiIwfaBg6iFZNUpEURz92RThLSrI+96q9+jsLTYw0DbcWEYvUjoo665tSDxE
- qyyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699280132; x=1699884932;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qKJ9yAKrrbkrYK2WaAH0CGJg5UQnpLX4LeD1O8VDjBI=;
- b=XnprtLKTC1ceh/UqLVvMcB7n1KSCwi9vO2Ie9IhaiTlA2XA+dh7xVi0SrT+4UeeU9c
- R4IW5UQq0qWn9VUmnCuwcG9rJmC8+p4wSw7ajGZe2S/usCSKxTk9A6BJHSFsf73fjkOG
- ZWmweshxn3N6mKXXAS6mCJg9DBu7TmX2CUt02NLOxl4MOLFKFdINbwD/WU9h1Hr+gFmd
- E9O4oN1kFlXQsmRYjiQkV+rTtNGfB2zaTXYYePMI29gaYdS0Q41fAGHfCSGxl1rvnDsN
- jyYDNARWTg/ifGbZn7Ux1a+CxAVNZtTkHWtkckahg70JlKGM4bnfYetdtvoeT+5w56d7
- z3pg==
-X-Gm-Message-State: AOJu0Yw1gNhijcGQfGY6UkQgJPFMMdUVA5PdaUgFAIQWWn+lr9LGAEx1
- LPt2ZD5673dHOwEsfUREbMKVk0p3xA0Lngk9MsYASA==
-X-Google-Smtp-Source: AGHT+IHeLHDwgHqC31J+ig0cLMT+WJOmHmm/l+VIs661N/8s/W81gLZ31emhhP3oJisRw6T2SIYIM7+uTnkA4W3PhYc=
-X-Received: by 2002:a25:410e:0:b0:d9c:a3b8:f39d with SMTP id
- o14-20020a25410e000000b00d9ca3b8f39dmr23055569yba.65.1699280132268; Mon, 06
- Nov 2023 06:15:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r00Th-0000pO-Do
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:21 -0500
+Received: from vps-vb.mhejs.net ([37.28.154.113])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r00Te-0005P1-Er
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:20 -0500
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r00TS-0000d8-0N; Mon, 06 Nov 2023 15:21:06 +0100
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+To: qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>
+Subject: [PULL 00/10] Hyper-V Dynamic Memory Protocol driver (hv-balloon) pull
+ req fixed
+Date: Mon,  6 Nov 2023 15:20:44 +0100
+Message-ID: <cover.1699279190.git.maciej.szmigiero@oracle.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <20230922140914.13906-1-phil@philjordan.eu>
- <20230922140914.13906-3-phil@philjordan.eu>
- <ZSLzq33DgMNYBsQT@roolebo.dev>
- <CAAibmn35JypPWfUophMgONTkgbYFvaaRhuD9+1kif9EOFx9HxQ@mail.gmail.com>
- <ZSMAr3hhxJryGpya@roolebo.dev>
- <CAAibmn3cMjnNWsQs8yCetc__Kr+ujn6Gn_ohGubVA3hCQbBy1w@mail.gmail.com>
- <CAGCz3vu=sX1m4PJiOvtTBza4iNUy6Hj+AtSAFi33zJ=dz_r7UA@mail.gmail.com>
- <CAGCz3vt2VB9i8+o-qFPpDptu81p3r00-TKfCV3O+=dQ0r3d88w@mail.gmail.com>
- <ZUey_ZynRm9XwQLD@roolebo.dev>
-In-Reply-To: <ZUey_ZynRm9XwQLD@roolebo.dev>
-From: Phil Dennis-Jordan <phil@philjordan.eu>
-Date: Mon, 6 Nov 2023 15:15:21 +0100
-Message-ID: <CAAibmn30d9EjtDrXrR8d1dg=hsA96WbajdiFdQkR=LXsbz_PYA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] i386: hvf: In kick_vcpu use hv_vcpu_interrupt to
- force exit
-To: Roman Bolshakov <roman@roolebo.dev>
-Cc: Phil Dennis-Jordan <lists@philjordan.eu>, qemu-devel@nongnu.org,
- dirty@apple.com, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000a896a106097c7c94"
-Received-SPF: neutral client-ip=2607:f8b0:4864:20::112d;
- envelope-from=phil@philjordan.eu; helo=mail-yw1-x112d.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,87 +54,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a896a106097c7c94
-Content-Type: text/plain; charset="UTF-8"
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Hi Roman,
+Hi Stefan,
 
-On Sun, 5 Nov 2023 at 16:21, Roman Bolshakov <roman@roolebo.dev> wrote:
+Fixed the CI pipeline issues with yesterday's pull request, and:
+the following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
 
-> > This got me digging into how dirty memory tracking is actually
-> > implemented in the Qemu hvf backend, and basically, it should never
-> > have worked in the first place. When we get a write fault, the code
-> > marks the *whole* 'logged' memory range as writable rather than just
-> > the page that's just been dirtied. It just so happens that hv_vcpu_run
-> > was causing EPT fault exits on those pages even after marking them
-> > writable (?), and hv_vcpu_run_until() no longer does that. So
-> > basically, this has been a Qemu bug masked by undesirable
-> > hv_vcpu_run() behaviour. I'll start putting together a fix for this.
-> >
->
-> Sounds good, have you got anything to test or review? Meanwhile, I'll
-> review the pending patches you sent.
->
+  Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
 
-Sorry, I've likewise been busy with other things the last 2-3 weeks.
+are available in the Git repository at:
 
-As far as I'm aware, we don't actually know 100% for certain if there's a
-race condition when using hv_vcpu_interrupt(), right? (As I mentioned, the
-patches with hv_vcpu_run_until and a hv_vcpu_interrupt-only kick have been
-running without issue for months on dozens to hundreds of VMs.) So before
-we add the complexity of the hybrid hv_vcpu_interrupt & signal-based kick
-to the codebase, I'd like to test out hv_vcpu_interrupt's behaviour in
-isolation and actually force the edge cases we're worried about. But yeah,
-I haven't got around to doing that yet. :-) I'm hoping to take a crack at
-it later this week or next week, probably using
-https://github.com/mist64/hvdos as a starting point.
+  https://github.com/maciejsszmigiero/qemu.git tags/pull-hv-balloon-20231106
 
-Thanks for reviewing and testing the first set of patches!
+for you to fetch changes up to 00313b517d09c0b141fb32997791f911c28fd3ff:
 
-Phil
+  MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol (2023-11-06 14:08:10 +0100)
 
---000000000000a896a106097c7c94
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+----------------------------------------------------------------
+Hyper-V Dynamic Memory protocol driver.
 
-<div dir=3D"ltr"><div>Hi Roman,</div><br><div class=3D"gmail_quote"><div di=
-r=3D"ltr" class=3D"gmail_attr">On Sun, 5 Nov 2023 at 16:21, Roman Bolshakov=
- &lt;<a href=3D"mailto:roman@roolebo.dev">roman@roolebo.dev</a>&gt; wrote:<=
-/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
-rder-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt; This got me digging into how dirty memory tracking is actually<br>
-&gt; implemented in the Qemu hvf backend, and basically, it should never<br=
->
-&gt; have worked in the first place. When we get a write fault, the code<br=
->
-&gt; marks the *whole* &#39;logged&#39; memory range as writable rather tha=
-n just<br>
-&gt; the page that&#39;s just been dirtied. It just so happens that hv_vcpu=
-_run<br>
-&gt; was causing EPT fault exits on those pages even after marking them<br>
-&gt; writable (?), and hv_vcpu_run_until() no longer does that. So<br>
-&gt; basically, this has been a Qemu bug masked by undesirable<br>
-&gt; hv_vcpu_run() behaviour. I&#39;ll start putting together a fix for thi=
-s.<br>
-&gt; <br>
-<br>
-Sounds good, have you got anything to test or review? Meanwhile, I&#39;ll<b=
-r>
-review the pending patches you sent.<br></blockquote><div><br></div><div>So=
-rry, I&#39;ve likewise been busy with other things the last 2-3 weeks.</div=
-><div><br></div><div>As far as I&#39;m aware, we don&#39;t actually know 10=
-0% for certain if there&#39;s a race condition when using hv_vcpu_interrupt=
-(), right? (As I mentioned, the patches with=C2=A0hv_vcpu_run_until and a h=
-v_vcpu_interrupt-only kick have been running without issue for months on do=
-zens to hundreds of VMs.) So before we add the complexity of the hybrid hv_=
-vcpu_interrupt &amp; signal-based kick to the codebase, I&#39;d like to tes=
-t out=C2=A0hv_vcpu_interrupt&#39;s behaviour in isolation and actually forc=
-e the edge cases we&#39;re worried about. But yeah, I haven&#39;t got aroun=
-d to doing that yet. :-) I&#39;m hoping to take a crack at it later this we=
-ek or next week, probably using <a href=3D"https://github.com/mist64/hvdos"=
->https://github.com/mist64/hvdos</a> as a starting point.</div><div><br></d=
-iv><div>Thanks for reviewing and testing the first set of patches!</div><di=
-v><br></div><div>Phil</div><div><br></div></div></div>
+This driver is like virtio-balloon on steroids for Windows guests:
+it allows both changing the guest memory allocation via ballooning and
+inserting pieces of extra RAM into it on demand from a provided memory
+backend via Windows-native Hyper-V Dynamic Memory protocol.
 
---000000000000a896a106097c7c94--
+* Preparatory patches to support empty memory devices and ones with
+large alignment requirements.
+
+* Revert of recently added "hw/virtio/virtio-pmem: Replace impossible
+check by assertion" commit 5960f254dbb4 since this series makes this
+situation possible again.
+
+* Protocol definitions.
+
+* Hyper-V DM protocol driver (hv-balloon) base (ballooning only).
+
+* Hyper-V DM protocol driver (hv-balloon) hot-add support.
+
+* qapi query-memory-devices support for the driver.
+
+* qapi HV_BALLOON_STATUS_REPORT event.
+
+* The relevant PC machine plumbing.
+
+* New MAINTAINERS entry for the above.
+
+----------------------------------------------------------------
+David Hildenbrand (2):
+      memory-device: Support empty memory devices
+      memory-device: Drop size alignment check
+
+Maciej S. Szmigiero (8):
+      Revert "hw/virtio/virtio-pmem: Replace impossible check by assertion"
+      Add Hyper-V Dynamic Memory Protocol definitions
+      Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) base
+      Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) hot-add support
+      qapi: Add query-memory-devices support to hv-balloon
+      qapi: Add HV_BALLOON_STATUS_REPORT event and its QMP query command
+      hw/i386/pc: Support hv-balloon
+      MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol
+
+ Kconfig.host                              |    3 +
+ MAINTAINERS                               |    8 +
+ hw/core/machine-hmp-cmds.c                |   15 +
+ hw/hyperv/Kconfig                         |   10 +
+ hw/hyperv/hv-balloon-internal.h           |   33 +
+ hw/hyperv/hv-balloon-our_range_memslots.c |  201 ++++
+ hw/hyperv/hv-balloon-our_range_memslots.h |  110 ++
+ hw/hyperv/hv-balloon-page_range_tree.c    |  228 ++++
+ hw/hyperv/hv-balloon-page_range_tree.h    |  118 ++
+ hw/hyperv/hv-balloon-stub.c               |   19 +
+ hw/hyperv/hv-balloon.c                    | 1769 +++++++++++++++++++++++++++++
+ hw/hyperv/meson.build                     |    1 +
+ hw/hyperv/trace-events                    |   18 +
+ hw/i386/Kconfig                           |    1 +
+ hw/i386/pc.c                              |   22 +
+ hw/mem/memory-device.c                    |   49 +-
+ hw/virtio/virtio-pmem.c                   |    5 +-
+ include/hw/hyperv/dynmem-proto.h          |  423 +++++++
+ include/hw/hyperv/hv-balloon.h            |   18 +
+ include/hw/mem/memory-device.h            |    7 +-
+ meson.build                               |   28 +-
+ meson_options.txt                         |    2 +
+ monitor/monitor.c                         |    1 +
+ qapi/machine.json                         |  101 +-
+ scripts/meson-buildoptions.sh             |    3 +
+ tests/qtest/qmp-cmd-test.c                |    1 +
+ 26 files changed, 3180 insertions(+), 14 deletions(-)
+ create mode 100644 hw/hyperv/hv-balloon-internal.h
+ create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.c
+ create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.h
+ create mode 100644 hw/hyperv/hv-balloon-page_range_tree.c
+ create mode 100644 hw/hyperv/hv-balloon-page_range_tree.h
+ create mode 100644 hw/hyperv/hv-balloon-stub.c
+ create mode 100644 hw/hyperv/hv-balloon.c
+ create mode 100644 include/hw/hyperv/dynmem-proto.h
+ create mode 100644 include/hw/hyperv/hv-balloon.h
 
