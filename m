@@ -2,80 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CDDC7E1A77
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F7E7E1A76
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 07:47:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztMo-0001kb-HR; Mon, 06 Nov 2023 01:45:46 -0500
+	id 1qztNa-0001sa-FX; Mon, 06 Nov 2023 01:46:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hsp.cat7@gmail.com>)
- id 1qztMk-0001kQ-TC
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:45:42 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hsp.cat7@gmail.com>)
- id 1qztMj-0007jT-5r
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:45:42 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-53b32dca0bfso8233474a12.0
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:45:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699253139; x=1699857939; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=U+AqvDxTeRtd5HBrV0965pMk2bMFdHFuO6m8bfS4Juk=;
- b=bn0tPasQN7zX2+/UzxEiL6ryu9NqvJr5yEOOKH7pD9g5Tf4IGE5olBy8xF6h9IvJ6j
- Wly+RvUV9L0r7vfJHggztdNJ5nokb0hC94ztZ56Bzbli2Mx8LEoCnFtK/3T/ltGeOh0I
- mvgWffjGzCthsDjcbFcy7TD+vT9wP0V/MRCb1UY/OKmbxzkO+XudGUiNfBU3w1YI301F
- guVbOMuYrhnZvlwoi5STUvvUCwm7Gby4004edNSzXZbZlmWIFYufmCxyeK+1jGCnnA9Y
- 4IJagmge4YT0Rmy1HXqAn6ODzMjMIjqBM77nidn4F1scbMXU/SElDeNOXNH81TFMR4aF
- tXPQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qztNT-0001sA-Q6
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:46:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qztNS-0007wP-7p
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:46:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699253184;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=lnpsB3aZQmq90xWoSUBI9m4vTd5DV6nDULOcMBSv9N0=;
+ b=RsTSPCX2z/1VVmnu3Tp+vVWEFw80O6IEbTnVpt9BJjJVy4Z+twLepZSVD9pWSD+gwSlEIt
+ n2h50E13W89EgwtZvgKJDliXHk2CamErKB2N5qWXkctDQKZy0/mIRtzQbdLusRn20U4Tf7
+ 80nPgX3uF8htvRz03UgHcEGuX1aYD24=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-205-tDxm5OOGO36wJEyBgvRZCQ-1; Mon, 06 Nov 2023 01:46:22 -0500
+X-MC-Unique: tDxm5OOGO36wJEyBgvRZCQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9d891685063so290565266b.2
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:46:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699253139; x=1699857939;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U+AqvDxTeRtd5HBrV0965pMk2bMFdHFuO6m8bfS4Juk=;
- b=b53Ew8PJE/IHHP/N4YExHxSosDZ2xASLpk+9CdlOw5S9YpGAciWOtnhzFmWv0BjeT0
- 1u6BNSZ9ZOPXi/IhXKqdMp6vqopydIZTk/e1+W0b6muhY4w6PgHLK8zcpsnvMef6cdVg
- XtVV+V4Xg15pMEX7E1aJTpKHkEo4CDN+Z3I0ct0wiGpWS0QkGD6dac2fPXzrMQ9WUAiE
- k5oKSk7RpLs4A7p7CLKgGK9Lh+0VEs38MV0qbj8wkwzzaNTLd9s853BzhO2ku0fjTUqa
- Nz1fx0rOd3EyH4rkJanuB60sVRw8lk15l9jrtSRUqvgzOjfNEmOKgsQUA9AtzLjRKLHA
- VjAg==
-X-Gm-Message-State: AOJu0Yz6oj8xYUo1yPSEPKFnztBvIMm0mNTLkKchpVPQ+jS/TuwnRu5i
- aV+bUclHoQMj4WxVSlDXWs+YZJG91IBWIVHc92NTI8Vfb+c=
-X-Google-Smtp-Source: AGHT+IEtJ+gf1vn+0KSPgw1vTiiThrKWCG4tMA3SLi6vyft1mv4GKEMqkHMrCBixIC+53zrOXJu50lL3TV2VJbyBwPA=
-X-Received: by 2002:a50:d68c:0:b0:544:3cd4:5c50 with SMTP id
- r12-20020a50d68c000000b005443cd45c50mr6221640edi.14.1699253138695; Sun, 05
- Nov 2023 22:45:38 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699253181; x=1699857981;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lnpsB3aZQmq90xWoSUBI9m4vTd5DV6nDULOcMBSv9N0=;
+ b=ttBjHnGZPsJVfKDEKmnuK9RQKBWPuuBxZHQ53I5QM6uD0ZE3Iwl5fZ9FYeyHqXMDVr
+ Ea3/EmeS7VQPHbG/IiO9QyxnJ8yTnm+YrNs1xOCpWxO7VOL7aYZBb987B9k1KA8yNhXJ
+ Dt6TBbaJrlOPOzfDT3r/WjZ9jD/SU/AXpkNQ7HUqPG81epuLLgXX1l+8p18Unt/6yJQA
+ fMjH+jPGOQwHeF5jig4qpvQSlF2mQQKCtja5e63UE3BjLxSLFZo4q4fDKLspMi6UBjrV
+ llnVYK48xn4HWXYBQ8vmGJ0Sp4joSHCUWMKpwZS2B2JCzg5kGDWYTPde4SwnAyRjEPlH
+ UQMQ==
+X-Gm-Message-State: AOJu0YwgMsEManfZr7jDL+hRXsYAURMtOu294vf8GcchIUA+1JpmqEgD
+ 43BzRPQQVWawjBQLF4tLMbNgGBld7JG2i4d0zSoL9xzz/BYtxyy6kPBc1wt4D1cVEYpDhJOKG/C
+ Z12O3xtQ83EdYmyQ=
+X-Received: by 2002:a17:907:a03:b0:9e0:dcf:17ec with SMTP id
+ bb3-20020a1709070a0300b009e00dcf17ecmr2290859ejc.30.1699253181744; 
+ Sun, 05 Nov 2023 22:46:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE33AdjywWiHor4ZOXmaeVArfMkELqsPIPkSs1k8t7VkrErV68AORWTHOPyRijuMxSN+Ymt9g==
+X-Received: by 2002:a17:907:a03:b0:9e0:dcf:17ec with SMTP id
+ bb3-20020a1709070a0300b009e00dcf17ecmr2290844ejc.30.1699253181437; 
+ Sun, 05 Nov 2023 22:46:21 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-177-215.web.vodafone.de.
+ [109.43.177.215]) by smtp.gmail.com with ESMTPSA id
+ q6-20020a170906b28600b009a1dbf55665sm3730465ejz.161.2023.11.05.22.46.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 05 Nov 2023 22:46:21 -0800 (PST)
+Message-ID: <c9d79f3c-18ea-4163-94f4-beb4c11d1b4b@redhat.com>
+Date: Mon, 6 Nov 2023 07:46:19 +0100
 MIME-Version: 1.0
-References: <cover.1672868854.git.balaton@eik.bme.hu>
- <4162db13bd1da9c6ddd77f185cef738e44790467.1672868854.git.balaton@eik.bme.hu>
- <b821c773-a443-c70b-5d4c-787284028f8a@ilande.co.uk>
- <389d8398-2b77-a64e-7034-79123da6cb86@eik.bme.hu>
- <CABLmASHE7iiqHnOZxCfaqvz5zwUipG5vunHG_UK8krXu71HOgw@mail.gmail.com>
- <bd0e4431-c5ec-2ef5-d847-8c59aa8cc55c@eik.bme.hu>
- <ab9e33e5-70fc-0a76-c548-16ec787ea1af@ilande.co.uk>
- <ed8ee369-c9a8-7853-3b65-7361fefc3c63@eik.bme.hu>
- <ca5240e6-e00d-6213-22d6-f7b43d8bed18@ilande.co.uk>
- <CABLmASGc6fybw7mL5JHUCukwoB6KjGaaWHct5mi20A2vXZhtaA@mail.gmail.com>
-In-Reply-To: <CABLmASGc6fybw7mL5JHUCukwoB6KjGaaWHct5mi20A2vXZhtaA@mail.gmail.com>
-From: Howard Spoelstra <hsp.cat7@gmail.com>
-Date: Mon, 6 Nov 2023 07:45:25 +0100
-Message-ID: <CABLmASHL3etTk7b1Tbg6rcZD+qGZXcPBkAR0+tcJP+EJdXF63Q@mail.gmail.com>
-Subject: Error detecting linker while compiling qemu-system-ppc on macOS
-To: qemu-devel qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000b729480609763305"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=hsp.cat7@gmail.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] hmp: synchronize cpu state for lapic info
+To: Markus Armbruster <armbru@redhat.com>,
+ Dongli Zhang <dongli.zhang@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: quintela@redhat.com, qemu-devel@nongnu.org, philmd@linaro.org,
+ kkostiuk@redhat.com, berrange@redhat.com, dwmw@amazon.co.uk,
+ pbonzini@redhat.com, joe.jin@oracle.com
+References: <20231026211938.162815-1-dongli.zhang@oracle.com>
+ <87edhc9inl.fsf@secure.mitica>
+ <f0adae79-7c6c-3e52-3bd1-f2e094d4a735@oracle.com>
+ <871qd8elu7.fsf@pond.sub.org>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <871qd8elu7.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,125 +148,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b729480609763305
-Content-Type: text/plain; charset="UTF-8"
+On 02/11/2023 07.00, Markus Armbruster wrote:
+> Dongli Zhang <dongli.zhang@oracle.com> writes:
+> 
+>> Hi Juan,
+>>
+>> On 10/30/23 09:31, Juan Quintela wrote:
+>>> Dongli Zhang <dongli.zhang@oracle.com> wrote:
+>>>> While the default "info lapic" always synchronizes cpu state ...
+>>>>
+>>>> mon_get_cpu()
+>>>> -> mon_get_cpu_sync(mon, true)
+>>>>     -> cpu_synchronize_state(cpu)
+>>>>        -> ioctl KVM_GET_LAPIC (taking KVM as example)
+>>>>
+>>>> ... the cpu state is not synchronized when the apic-id is available as
+>>>> argument.
+>>>>
+>>>> The cpu state should be synchronized when apic-id is available. Otherwise
+>>>> the "info lapic <apic-id>" always returns stale data.
+>>>>
+>>>> Reference:
+>>>> https://urldefense.com/v3/__https://lore.kernel.org/all/20211028155457.967291-19-berrange@redhat.com/__;!!ACWV5N9M2RV99hQ!KOLfuCesLC4T6ka9bjf4x6ncC34GPK9pVvWwOJhbwSZw2fwp3Mxlakk0fnR-NCoqRPKOX7X4SOAxozQBC7VQ$
+>>>>
+>>>> Cc: Joe Jin <joe.jin@oracle.com>
+>>>> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+>>>> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+>>>> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+>>>
+>>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>>>
+>>> But I wonder how I did get CC'd on this patch O:-)
+>>>
+>>
+>> Thank you very much!
+>>
+>> This component does not have a maintainer. I just blindly cc all suggested
+>> reviewers :), in order to get it reviewed and merged.
+>>
+>> get_maintainer.pl: No maintainers found, printing recent contributors.
+>> get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
+> 
+> I posted a fix the other day:
+> 
+>      Subject: [PATCH] MAINTAINERS: Fully cover target/i386/*
+>      Message-ID: <20231030085336.2681386-1-armbru@redhat.com>
+>      https://lore.kernel.org/all/20231030085336.2681386-1-armbru@redhat.com/
 
-Hi all,
+I wrote a slightly better patch a month ago already (since these files do 
+not only belong to TCG, but also to the other accelerators):
 
-I'm getting a error while compiling on macOS (Intel). It seems linker
-detection is passed an unknown argument "--version", whereas "-v" works OK?
-See log below.
+  https://lore.kernel.org/qemu-devel/20230929134551.395438-1-thuth@redhat.com/
 
-Thanks for looking into this,
-Howard
+Unfortunately, it got ignored so far :-(
 
-Build started at 2023-11-06T07:29:19.181487
-Main binary: /Users/hsp/src/qemu-ppc/build/pyvenv/bin/python3.11
-Build Options: -Db_pie=false -Ddocs=disabled -Dplugins=true '--native-file
-config-meson.cross'
-Python system: Darwin
-The Meson build system
-Version: 0.63.3
-Source dir: /Users/hsp/src/qemu-ppc
-Build dir: /Users/hsp/src/qemu-ppc/build
-Build type: native build
-Project name: qemu
-Project version: 8.1.50
------
-Detecting compiler via: cc -m64 -mcx16 --version
-compiler returned <Popen: returncode: 0 args: ['cc', '-m64', '-mcx16',
-'--version']>
-compiler stdout:
-Apple clang version 15.0.0 (clang-1500.0.40.1)
-Target: x86_64-apple-darwin22.6.0
-Thread model: posix
-InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+  Thomas
 
-compiler stderr:
-
-Running command: cc -m64 -mcx16 -E -dM -
------
-Detecting linker via: cc -m64 -mcx16 -Wl,--version
-linker returned <Popen: returncode: 1 args: ['cc', '-m64', '-mcx16',
-'-Wl,--version']>
-linker stdout:
-
-linker stderr:
-ld: unknown options: --version
-clang: error: linker command failed with exit code 1 (use -v to see
-invocation)
-
------
-Detecting Apple linker via: cc -m64 -mcx16 -Wl,-v
-linker stdout:
-
-linker stderr:
-@(#)PROGRAM:ld  PROJECT:dyld-1015.7
-BUILD 18:48:43 Aug 22 2023
-configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386
-x86_64 x86_64h armv6m armv7k armv7m armv7em
-will use ld-classic for: armv6 armv7 armv7s arm64_32 i386 armv6m armv7k
-armv7m armv7em
-LTO support using: LLVM version 15.0.0 (static support for 29, runtime is
-29)
-TAPI support using: Apple TAPI version 15.0.0 (tapi-1500.0.12.3)
-Library search paths:
-/usr/local/lib
-Framework search paths:
-ld: Undefined symbols:
-  _main, referenced from:
-      <initial-undefines>
-clang: error: linker command failed with exit code 1 (use -v to see
-invocation)
-
-
-../meson.build:1:0: ERROR: Unable to detect linker for compiler `cc -m64
--mcx16 -Wl,--version`
-stdout:
-stderr: ld: unknown options: --version
-clang: error: linker command failed with exit code 1 (use -v to see
-invocation)
-
---000000000000b729480609763305
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi all,</div><div><br></div><div>I&#39;m getting a er=
-ror while compiling on macOS (Intel). It seems linker detection is passed a=
-n unknown argument &quot;--version&quot;, whereas &quot;-v&quot; works OK?<=
-/div><div>See log below.</div><div><br></div><div>Thanks for looking into t=
-his,<br></div><div>Howard<br></div><div><br></div><div>Build started at 202=
-3-11-06T07:29:19.181487<br>Main binary: /Users/hsp/src/qemu-ppc/build/pyven=
-v/bin/python3.11<br>Build Options: -Db_pie=3Dfalse -Ddocs=3Ddisabled -Dplug=
-ins=3Dtrue &#39;--native-file config-meson.cross&#39;<br>Python system: Dar=
-win<br>The Meson build system<br>Version: 0.63.3<br>Source dir: /Users/hsp/=
-src/qemu-ppc<br>Build dir: /Users/hsp/src/qemu-ppc/build<br>Build type: nat=
-ive build<br>Project name: qemu<br>Project version: 8.1.50<br>-----<br>Dete=
-cting compiler via: cc -m64 -mcx16 --version<br>compiler returned &lt;Popen=
-: returncode: 0 args: [&#39;cc&#39;, &#39;-m64&#39;, &#39;-mcx16&#39;, &#39=
-;--version&#39;]&gt;<br>compiler stdout:<br>Apple clang version 15.0.0 (cla=
-ng-1500.0.40.1)<br>Target: x86_64-apple-darwin22.6.0<br>Thread model: posix=
-<br>InstalledDir: /Library/Developer/CommandLineTools/usr/bin<br><br>compil=
-er stderr:<br><br>Running command: cc -m64 -mcx16 -E -dM -<br>-----<br>Dete=
-cting linker via: cc -m64 -mcx16 -Wl,--version<br>linker returned &lt;Popen=
-: returncode: 1 args: [&#39;cc&#39;, &#39;-m64&#39;, &#39;-mcx16&#39;, &#39=
-;-Wl,--version&#39;]&gt;<br>linker stdout:<br><br>linker stderr:<br>ld: unk=
-nown options: --version <br>clang: error: linker command failed with exit c=
-ode 1 (use -v to see invocation)<br><br>-----<br>Detecting Apple linker via=
-: cc -m64 -mcx16 -Wl,-v<br>linker stdout:<br><br>linker stderr:<br>@(#)PROG=
-RAM:ld =C2=A0PROJECT:dyld-1015.7<br>BUILD 18:48:43 Aug 22 2023<br>configure=
-d to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x8=
-6_64h armv6m armv7k armv7m armv7em<br>will use ld-classic for: armv6 armv7 =
-armv7s arm64_32 i386 armv6m armv7k armv7m armv7em<br>LTO support using: LLV=
-M version 15.0.0 (static support for 29, runtime is 29)<br>TAPI support usi=
-ng: Apple TAPI version 15.0.0 (tapi-1500.0.12.3)<br>Library search paths:<b=
-r>	/usr/local/lib<br>Framework search paths:<br>ld: Undefined symbols:<br>=
-=C2=A0 _main, referenced from:<br>=C2=A0 =C2=A0 =C2=A0 &lt;initial-undefine=
-s&gt;<br>clang: error: linker command failed with exit code 1 (use -v to se=
-e invocation)<br><br><br>../meson.build:1:0: ERROR: Unable to detect linker=
- for compiler `cc -m64 -mcx16 -Wl,--version`<br>stdout: <br>stderr: ld: unk=
-nown options: --version <br>clang: error: linker command failed with exit c=
-ode 1 (use -v to see invocation)<br><br><br></div></div>
-
---000000000000b729480609763305--
 
