@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BADC7E209E
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 13:01:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F397E21E6
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 13:40:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzyHw-0008Ie-3k; Mon, 06 Nov 2023 07:01:04 -0500
+	id 1qzysT-0004Vm-DH; Mon, 06 Nov 2023 07:38:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qzyHk-00088K-8g
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:00:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qzyHh-00087z-6f
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:00:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699272047;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=IbieIwyWzLirg/Hvt1WTxU/mrvv7xLivYl1QUrbmPxU=;
- b=BFE8LDky/bBR9M/5SO3ZI7KOmmi5x7nPs07h4y37DId5nPXNW1GgNaleK+PFUPFrjGmP4y
- Lrybb/3umszHt79K7pWXsaUM2DET/Rr6GZ9ZY4LPt54xDA4z7ECDG+jyu4AJA9By38QyWu
- A//wbI6LPz6FBK2u2ujC0ELq0POk/BA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-NisguugwMEaanM55aMXLxQ-1; Mon, 06 Nov 2023 07:00:26 -0500
-X-MC-Unique: NisguugwMEaanM55aMXLxQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5321D185A782
- for <qemu-devel@nongnu.org>; Mon,  6 Nov 2023 12:00:26 +0000 (UTC)
-Received: from localhost (unknown [10.45.226.200])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E36E2C1596F;
- Mon,  6 Nov 2023 12:00:25 +0000 (UTC)
-Date: Mon, 6 Nov 2023 13:00:24 +0100
-From: Victor Toso <victortoso@redhat.com>
-To: Andrea Bolognani <abologna@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- John Snow <jsnow@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [PATCH v2 00/11] qapi-go: add generator for Golang interface
-Message-ID: <sqe4yeak64kqw5njznkojw4t24i3nj6luqi3mlrzshvnic3njh@24vb4dminwyr>
-References: <20231016152704.221611-1-victortoso@redhat.com>
- <5drfnt5rr5jmjl7xv65355squ2zzjra23mdrk5q3avnbue4kqx@7pmoj2zwfggx>
- <CABJz62PV8s=Dmh9cpa-3cRaLdNmUnW5zo4MYUA3=6kDdW8QbcA@mail.gmail.com>
- <CABJz62MQ6oYMiPicbERYoV-DYozciDXB9p5mT11P4bsajYy+KA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qzysM-0004Ty-Uq
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:38:45 -0500
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qzysA-0000Jg-KT
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 07:38:38 -0500
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-507b96095abso5544059e87.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 04:38:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699274307; x=1699879107; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=QseeqxFQMkKzTjuxolDbun6eFvusMmaH3/5dQe0wdg8=;
+ b=e0oS5ahFtOBMAo/nx6VO1fEOrtAtswgw1Bcd25cYpPanROTOtTc0X2w9LhV3Cwo53d
+ IFy1C0kCVVnwxUYUu1eFph8gUBXI+6k5uI3N3TmisQT8SX0nN1srL3bT0E7H01PvJQsL
+ 9wOV7KuBQ/1xOnU1V8vocwX6+xWGpeCUVqP7kk3ryL6Bj/NdyPy4bisQd/AVKCZC2drx
+ B5m3nP26VJOHe94qKc1uzlCT+WzF0zi/PEmOA+kdvY7IVpCT3fyugOPyUzoYic6xkx4v
+ S+eFvA3nASwWSKCSPqW3gKfNM/2a37xj2wYGp1mFmMdkA0krb2VfRz9T0SdInguu1q+2
+ z93w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699274307; x=1699879107;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QseeqxFQMkKzTjuxolDbun6eFvusMmaH3/5dQe0wdg8=;
+ b=vMPGvGuKbHUkjqJ5kKxjsHIzS3FBaQ3djNtQchhxvCgICbrXsK2UzL+/KjihhuOjSH
+ qUIS1nN4ekCH/dKr8FU3F4rem4P9Gz8+Z+TyqyNAeAnp0vmyoPUJi8Hyx9ycu45svSMM
+ bizTdN1OG/zqAd7cyRfWJBamX52j3kM0OQ7VS7G7nL1IWTlR3B5YXxWAbFbTljfD0SBd
+ kiyWonEFjh6TrZ2WJucFhqKmo5j/9IT5ugDMIzJIBF+NXPiBuqr4Rt7RvbSi9C4Rohn/
+ 2/Bz2J5sc0Qd20CdQLHwTlBMLknewhJfqjDBcI4IGCsYMRiebHwkW+ZrGFKqWgBJHvm+
+ Uvaw==
+X-Gm-Message-State: AOJu0Yw22fZu/QwSuq4aBNbg7kOeDooZbVwPIScLQbUGXhH/bDoiP+OY
+ x5Oswe1bZcU9zovjhg9y1G5kHlkRGc3D7tYlh8ZwcQ==
+X-Google-Smtp-Source: AGHT+IGvx/o+WFAQjLwZW/x15kNnShRuGhJjggYJNKZG2AmTRhagwB/k7PKX3NpyC/zdN6riyRdWWVNEFfs5dl5YEmc=
+X-Received: by 2002:a05:6512:33cf:b0:509:4c8a:525d with SMTP id
+ d15-20020a05651233cf00b005094c8a525dmr10760742lfg.35.1699274307474; Mon, 06
+ Nov 2023 04:38:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="4tetgfd5jqsx6fzb"
-Content-Disposition: inline
-In-Reply-To: <CABJz62MQ6oYMiPicbERYoV-DYozciDXB9p5mT11P4bsajYy+KA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+References: <20231017125941.810461-1-vsementsov@yandex-team.ru>
+In-Reply-To: <20231017125941.810461-1-vsementsov@yandex-team.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 6 Nov 2023 12:38:16 +0000
+Message-ID: <CAFEAcA9LpNoaPjg7UVHTQ1qtJG=LYB4GHKy2wCTNNt4tGQ=PgA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] coverity fixes
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, yc-core@yandex-team.ru, 
+ davydov-max@yandex-team.ru
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,84 +85,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 17 Oct 2023 at 13:59, Vladimir Sementsov-Ogievskiy
+<vsementsov@yandex-team.ru> wrote:
+>
+> v3: rebase on master (two patches dropped, as already merged)
+>     add r-b marks
+>
+> v2:
+> 01: add explanations, new assert and avoid extra assignment
+>     add CIDs [thx to Paolo]
+> 02: add explanation, improve wording
+> 04,07: s/{0}/{}
+> 06,08: improve wording
+>
+> Hi! Here are some improvements to handle issues found by Coverity (not
+> public Coverity site, so there are no CIDs).
+>
 
---4tetgfd5jqsx6fzb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Looks like nobody picked this up, and they all got reviewed,
+so I'm going to apply it via the target-arm.next tree.
 
-Hi,
-
-On Fri, Nov 03, 2023 at 11:34:18AM -0700, Andrea Bolognani wrote:
-> On Tue, Oct 31, 2023 at 09:42:10AM -0700, Andrea Bolognani wrote:
-> > On Fri, Oct 27, 2023 at 07:33:30PM +0200, Victor Toso wrote:
-> > > Hi,
-> > >
-> > > Daniel & Andrea, it would be great to have your take on the Go
-> > > side of this series. If we can agree with an acceptable
-> > > 'unstable' version of Go modules, we can start building on top of
-> > > this:
-> > >  - libraries/tools in Go to interact with QEMU
-> > >  - qapi specs to fix limitations (e.g: Data type names)
-> > >  - scripts/qapi library wrt to generating interfaces in other
-> > >    languages other than C
-> > >
-> > > I would love to have this prior to 8.2 feature freeze if the
-> > > idea and current code meet your expectations.
-> >
-> > Apologies for not providing any feedback so far. I'll do my best to
-> > get around to it by the end of the week.
->=20
-> Layering apologies on top of apologies: I started looking into this,
-> but I have since realized that I need some more time to page all the
-> months-old context back in and digest the whole thing. I'll continue
-> next week.
->=20
-> As an appetizer, one thing that I've noticed: you seem to ignore it
-> when gen:false is included in a command definition, so we get
->=20
->   type DeviceAddCommand struct {
->       MessageId string  `json:"-"`
->       Driver    string  `json:"driver"`
->       Bus       *string `json:"bus,omitempty"`
->       Id        *string `json:"id,omitempty"`
->   }
->=20
-> which I don't think will work as it can't handle even the example
-> used to document the command
->=20
->   { "execute": "device_add",
->     "arguments": { "driver": "e1000", "id": "net1",
->                    "bus": "pci.0",
->                    "mac": "52:54:00:12:34:56" } }
->=20
-> This command will probably require an ad-hoc implementation.
-
-Indeed, thanks for catching this.
-
-Cheers,
-Victor
-
---4tetgfd5jqsx6fzb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmVI1VcACgkQl9kSPeN6
-SE8Hug/+OyCrXkUn2E7PdtjFpoNTbcw4tknpIHlmrB/cYRdDUpYswBe0GUCr7I4g
-VYpRUlp6Jcw/Q3cG7/IGSAN6PN4sOVHcZNlyz+bpxc9eP1DREsvGM1xpPApY/xNM
-faodCwuFaFjhNgNCWKt5LRsXo7J2ehMt9VY0DVMgmp1TvauNYr3OolXYlvrj8uIq
-qyXUkrvNzW9j4m9xJbUH+Q1k2IygrsFIpZcn4A2GeqYtqL28CB43AqP5LCGz8Lu0
-ETLocmmOytOVfYGc6B9DRCEQgAMhZ07qwQDWWQUwZ6QcTHfscwrSpiF2W5MRd0ET
-2jIx7mCvcwpBZ74Ro9dnH+DYy6C9QgHpFhAZJeURulerfVlAgzaAfoXxIQp2LCGu
-o/hi9xnebeYSxEONUVbbUy5D2Jjsl9CQvu6H+SsHiIeru5piey+EunqL0BdpxFu/
-fzaQvtz18t0Z96LAGIaTJ+UkB1IGUBzmLguX0LY2z7RyHO/laiNDzgXbocfR8HCs
-8petRdoMOD9P8v2j58YZPHNl9oBvf4UoRqzy7XoCyRrfHFc9+WD6kRzTN/V9Z+L1
-uikPeh43GO5YmDcnEJxWB4nJORQtY1bgjW6yXi4wYIcmxGPY/PZGvaSFJOYEmNyE
-vlMcGwO2KKbvZ4V16BQ/MFP+1DmfocJPKljT+5gdTlDAiQMM9sQ=
-=zOBr
------END PGP SIGNATURE-----
-
---4tetgfd5jqsx6fzb--
-
+thanks
+-- PMM
 
