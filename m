@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD8B7E1D2C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:27:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DDC7E1D2D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:27:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzvri-0008To-Ls; Mon, 06 Nov 2023 04:25:50 -0500
+	id 1qzvse-0000MC-KK; Mon, 06 Nov 2023 04:26:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzvre-0008Ta-3m
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:25:46 -0500
-Received: from vps-vb.mhejs.net ([37.28.154.113])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzvrc-0002wI-8K
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:25:45 -0500
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qzvrW-0008LG-QR; Mon, 06 Nov 2023 10:25:38 +0100
-Message-ID: <06dcbd6b-dac0-4360-8102-25dfc69ec8a2@maciej.szmigiero.name>
-Date: Mon, 6 Nov 2023 10:25:33 +0100
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qzvsa-0000Hv-Tk
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:26:45 -0500
+Received: from mail-vk1-xa34.google.com ([2607:f8b0:4864:20::a34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qzvsZ-00031B-F3
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:26:44 -0500
+Received: by mail-vk1-xa34.google.com with SMTP id
+ 71dfb90a1353d-49618e09f16so1674783e0c.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 01:26:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699262794; x=1699867594; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fgBg17yc0RZukCZpMjAWchUiOeRRIqInlX1XTPSIHbs=;
+ b=gM4inNC+c9P8nsvxbMvnSR5jQYFyhyWfatw8leGMMx2pPW0j+4wzSVCj+UkpY8Qth9
+ n/fsBjgrDPzZcDAykVDU2AFSARdBgYj/a3CwgpEzVh+Ys0TAxV1HBDhhJmWmRP23bSJl
+ O1/yUwOpIwftHRTGCDt6/4ntWy2saT8Wa9mNHypK4hrjkngBx0AM1WiojR9XAqTECpqm
+ ndvYPRtp6cvC5k4R7cgpI5/3uxsQb0whX0DCuyT90xb5em38V4hyOoEBbDLXSuMalCgb
+ M1EM4M6orjsIMCZbacSRKKJutPEei1hQ+VJQ6VZs2XjoHoIfsg4l9iGe4RSRzAgY1Awe
+ TyzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699262794; x=1699867594;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fgBg17yc0RZukCZpMjAWchUiOeRRIqInlX1XTPSIHbs=;
+ b=f+OQ1JE4HDkhlnv+0xmK2LikJDawBzflLYHOBptmOlwVf1QsfiRLArin7ERRB9akaM
+ cMLIrIPDXLj8ED7MwBh5P2pUKu49DgkfW0stPcBRJiLd5jyNHSkmzmJNIUCMkxpoLqgi
+ DSWVmYHvSM8sb7gAw+AKskFXnaHHu2tsipZbkHFNufVMYvHfz28m4+Wy6S9FzADGOWCM
+ KsqNTqvcQ4YGkX19wACbmJ39QUY2yaG1fK/KyY6yFrghJUDhvccOVDdWmyt5lpkw4Vy0
+ VPbdn6892s/tsW8U1cDTs1xRWTFQxNZfEGJGBtjE+4J22Z2SEer13I/NxmD67H+AumL2
+ G/Ag==
+X-Gm-Message-State: AOJu0YwGvjiODsxZMHTyeaJwQHjHX9G4lQ3a2ryGK4azM36SAE8LIcCH
+ fdHG8L01nfz5xuA+923sOJe63eFuK/xD3JlprTM=
+X-Google-Smtp-Source: AGHT+IHVFJmTyv1+pcx4N4TSK9aKgUoE1U8bO8X4DTWRYPJnaREu/KrJpGOblaeNAAmY09AwXYJrccI4SaYgxKTzEcU=
+X-Received: by 2002:a1f:b6d6:0:b0:4ac:22c7:89d5 with SMTP id
+ g205-20020a1fb6d6000000b004ac22c789d5mr3235871vkf.2.1699262793643; Mon, 06
+ Nov 2023 01:26:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/9] Hyper-V Dynamic Memory Protocol driver (hv-balloon)
-Content-Language: en-US, pl-PL
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>
-References: <cover.1699184105.git.maciej.szmigiero@oracle.com>
- <CAJSP0QX7SxmMZDP4kQKQt6wkMTiVY6hVSoEtSBN4874NaxbJuw@mail.gmail.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <CAJSP0QX7SxmMZDP4kQKQt6wkMTiVY6hVSoEtSBN4874NaxbJuw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+References: <20231106065827.543129-1-richard.henderson@linaro.org>
+ <20231106065827.543129-49-richard.henderson@linaro.org>
+In-Reply-To: <20231106065827.543129-49-richard.henderson@linaro.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 6 Nov 2023 19:26:06 +1000
+Message-ID: <CAKmqyKNdjQfTq+kfbi+bSEy5O1hEqCWjH74mJV3BF5_aT92UMw@mail.gmail.com>
+Subject: Re: [PATCH 48/71] hw/riscv: Constify VMState
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, quintela@redhat.com, peterx@redhat.com, 
+ farosas@suse.de, leobras@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a34;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa34.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,49 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6.11.2023 02:33, Stefan Hajnoczi wrote:
-> On Sun, 5 Nov 2023 at 19:49, Maciej S. Szmigiero
-> <mail@maciej.szmigiero.name> wrote:
->>
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>
->> The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
->>
->>    Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
->>
->> are available in the Git repository at:
->>
->>    https://github.com/maciejsszmigiero/qemu.git tags/pull-hv-balloon-20231105
->>
->> for you to fetch changes up to 2b49ecabc6bf15efa6aa05f20a7c319ff65c4e11:
->>
->>    MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol (2023-11-03 20:31:10 +0100)
-> 
-> Hi Maciej,
-> Please take a look at this CI system build failure:
-> 
-> /usr/bin/ld: libqemuutil.a.p/meson-generated_.._qapi_qapi-commands-machine.c.o:
-> in function `qmp_marshal_query_hv_balloon_status_report':
-> /builds/qemu-project/qemu/build/qapi/qapi-commands-machine.c:1000:
-> undefined reference to `qmp_query_hv_balloon_status_report'
-> 
-> https://gitlab.com/qemu-project/qemu/-/jobs/5463619044
-> 
-> I have dropped this pull request from the staging tree for the time being.
-> 
-> You can run the GitLab CI by pushing to a personal qemu.git fork on
-> GitLab with "git push -o ci.variable=QEMU_CI=1 ..." and it's often
-> possible to reproduce the CI jobs locally using the Docker build tests
-> (see "make docker-help").
-> 
-Oops, was testing the driver but forgot to also recently test the
-configuration when the driver is disabled in QEMU build config.
+On Mon, Nov 6, 2023 at 5:14=E2=80=AFPM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Will fix this ASAP.
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
-> Stefan
+Alistair
 
-Thanks,
-Maciej
-
+> ---
+>  hw/riscv/virt-acpi-build.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+> index 7331248f59..d3bfaf502e 100644
+> --- a/hw/riscv/virt-acpi-build.c
+> +++ b/hw/riscv/virt-acpi-build.c
+> @@ -374,7 +374,7 @@ static const VMStateDescription vmstate_virt_acpi_bui=
+ld =3D {
+>      .name =3D "virt_acpi_build",
+>      .version_id =3D 1,
+>      .minimum_version_id =3D 1,
+> -    .fields =3D (VMStateField[]) {
+> +    .fields =3D (const VMStateField[]) {
+>          VMSTATE_BOOL(patched, AcpiBuildState),
+>          VMSTATE_END_OF_LIST()
+>      },
+> --
+> 2.34.1
+>
+>
 
