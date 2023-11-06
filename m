@@ -2,53 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013D17E272C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 987637E272A
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:40:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00jJ-0004Ua-MH; Mon, 06 Nov 2023 09:37:29 -0500
+	id 1r00jJ-0004Sb-Dj; Mon, 06 Nov 2023 09:37:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Ju2X=GT=redhat.com=clg@ozlabs.org>)
- id 1r00j6-0003ak-1E
+ id 1r00j5-0003aj-9O
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:37:16 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Ju2X=GT=redhat.com=clg@ozlabs.org>)
- id 1r00iy-0000l4-Go
+ id 1r00j0-0000lQ-EH
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:37:15 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SPDSr5F9nz4xWQ;
- Tue,  7 Nov 2023 01:37:00 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SPDSv5fjmz4xjb;
+ Tue,  7 Nov 2023 01:37:03 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SPDSq1wxqz4xjN;
- Tue,  7 Nov 2023 01:36:58 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SPDSs23TSz4xjV;
+ Tue,  7 Nov 2023 01:37:01 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/22] vfio queue
-Date: Mon,  6 Nov 2023 15:36:31 +0100
-Message-ID: <20231106143653.302391-1-clg@redhat.com>
+ Eric Auger <eric.auger@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PULL 01/22] memory: Let ReservedRegion use Range
+Date: Mon,  6 Nov 2023 15:36:32 +0100
+Message-ID: <20231106143653.302391-2-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231106143653.302391-1-clg@redhat.com>
+References: <20231106143653.302391-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=Ju2X=GT=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,114 +70,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
+From: Eric Auger <eric.auger@redhat.com>
 
-  Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
+A reserved region is a range tagged with a type. Let's directly use
+the Range type in the prospect to reuse some of the library helpers
+shipped with the Range type.
 
-are available in the Git repository at:
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: "Michael S. Tsirkin" <mst@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/exec/memory.h            | 4 ++--
+ hw/core/qdev-properties-system.c | 9 ++++++---
+ hw/virtio/virtio-iommu.c         | 6 +++---
+ 3 files changed, 11 insertions(+), 8 deletions(-)
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20231106
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 9087d027690a88627f600cf3de45ea9e8c926763..d94314d6fc3b3de6ef1fa7c4f70837728a8309fb 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -24,6 +24,7 @@
+ #include "qemu/bswap.h"
+ #include "qemu/queue.h"
+ #include "qemu/int128.h"
++#include "qemu/range.h"
+ #include "qemu/notify.h"
+ #include "qom/object.h"
+ #include "qemu/rcu.h"
+@@ -79,8 +80,7 @@ extern unsigned int global_dirty_tracking;
+ typedef struct MemoryRegionOps MemoryRegionOps;
+ 
+ struct ReservedRegion {
+-    hwaddr low;
+-    hwaddr high;
++    Range range;
+     unsigned type;
+ };
+ 
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 2f1dbb3fd75176f7b2004e733bdfcb34557aa95f..b5ccafa29e901d09b6bb6e7e1f3cdb46e9ad92da 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -705,7 +705,7 @@ static void get_reserved_region(Object *obj, Visitor *v, const char *name,
+     int rc;
+ 
+     rc = snprintf(buffer, sizeof(buffer), "0x%"PRIx64":0x%"PRIx64":%u",
+-                  rr->low, rr->high, rr->type);
++                  range_lob(&rr->range), range_upb(&rr->range), rr->type);
+     assert(rc < sizeof(buffer));
+ 
+     visit_type_str(v, name, &p, errp);
+@@ -717,6 +717,7 @@ static void set_reserved_region(Object *obj, Visitor *v, const char *name,
+     Property *prop = opaque;
+     ReservedRegion *rr = object_field_prop_ptr(obj, prop);
+     const char *endptr;
++    uint64_t lob, upb;
+     char *str;
+     int ret;
+ 
+@@ -724,7 +725,7 @@ static void set_reserved_region(Object *obj, Visitor *v, const char *name,
+         return;
+     }
+ 
+-    ret = qemu_strtou64(str, &endptr, 16, &rr->low);
++    ret = qemu_strtou64(str, &endptr, 16, &lob);
+     if (ret) {
+         error_setg(errp, "start address of '%s'"
+                    " must be a hexadecimal integer", name);
+@@ -734,7 +735,7 @@ static void set_reserved_region(Object *obj, Visitor *v, const char *name,
+         goto separator_error;
+     }
+ 
+-    ret = qemu_strtou64(endptr + 1, &endptr, 16, &rr->high);
++    ret = qemu_strtou64(endptr + 1, &endptr, 16, &upb);
+     if (ret) {
+         error_setg(errp, "end address of '%s'"
+                    " must be a hexadecimal integer", name);
+@@ -744,6 +745,8 @@ static void set_reserved_region(Object *obj, Visitor *v, const char *name,
+         goto separator_error;
+     }
+ 
++    range_set_bounds(&rr->range, lob, upb);
++
+     ret = qemu_strtoui(endptr + 1, &endptr, 10, &rr->type);
+     if (ret) {
+         error_setg(errp, "type of '%s'"
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index be51635895ce88cb69ec987a5c7d3fa33a703c9e..e5e46e1b557e19edc461b117dbfddcfd8f1dcc5d 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -645,8 +645,8 @@ static ssize_t virtio_iommu_fill_resv_mem_prop(VirtIOIOMMU *s, uint32_t ep,
+         prop.head.type = cpu_to_le16(VIRTIO_IOMMU_PROBE_T_RESV_MEM);
+         prop.head.length = cpu_to_le16(length);
+         prop.subtype = subtype;
+-        prop.start = cpu_to_le64(s->reserved_regions[i].low);
+-        prop.end = cpu_to_le64(s->reserved_regions[i].high);
++        prop.start = cpu_to_le64(range_lob(&s->reserved_regions[i].range));
++        prop.end = cpu_to_le64(range_upb(&s->reserved_regions[i].range));
+ 
+         memcpy(buf, &prop, size);
+ 
+@@ -897,7 +897,7 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+     for (i = 0; i < s->nb_reserved_regions; i++) {
+         ReservedRegion *reg = &s->reserved_regions[i];
+ 
+-        if (addr >= reg->low && addr <= reg->high) {
++        if (range_contains(&reg->range, addr)) {
+             switch (reg->type) {
+             case VIRTIO_IOMMU_RESV_MEM_T_MSI:
+                 entry.perm = flag;
+-- 
+2.41.0
 
-for you to fetch changes up to a2347c60a86a7c2a227ebab186a195d16e1e3901:
-
-  vfio/common: Move vfio_host_win_add/del into spapr.c (2023-11-06 13:23:23 +0100)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Support for non 64b IOVA space
-* Introduction of a PCIIOMMUOps callback structure to ease future
-  extensions
-* Fix for a buffer overrun when writing the VF token
-* PPC cleanups preparing ground for IOMMUFD support
-
-----------------------------------------------------------------
-Cédric Le Goater (4):
-      util/uuid: Add UUID_STR_LEN definition
-      vfio/pci: Fix buffer overrun when writing the VF token
-      util/uuid: Remove UUID_FMT_LEN
-      util/uuid: Define UUID_STR_LEN from UUID_NONE string
-
-Eric Auger (12):
-      memory: Let ReservedRegion use Range
-      memory: Introduce memory_region_iommu_set_iova_ranges
-      vfio: Collect container iova range info
-      virtio-iommu: Rename reserved_regions into prop_resv_regions
-      range: Make range_compare() public
-      util/reserved-region: Add new ReservedRegion helpers
-      virtio-iommu: Introduce per IOMMUDevice reserved regions
-      range: Introduce range_inverse_array()
-      virtio-iommu: Record whether a probe request has been issued
-      virtio-iommu: Implement set_iova_ranges() callback
-      virtio-iommu: Consolidate host reserved regions and property set ones
-      test: Add some tests for range and resv-mem helpers
-
-Yi Liu (1):
-      hw/pci: modify pci_setup_iommu() to set PCIIOMMUOps
-
-Zhenzhong Duan (5):
-      vfio/container: Move IBM EEH related functions into spapr_pci_vfio.c
-      vfio/container: Move vfio_container_add/del_section_window into spapr.c
-      vfio/container: Move spapr specific init/deinit into spapr.c
-      vfio/spapr: Make vfio_spapr_create/remove_window static
-      vfio/common: Move vfio_host_win_add/del into spapr.c
-
- docs/devel/index-api.rst         |   1 +
- docs/devel/pci.rst               |   8 +
- include/exec/memory.h            |  36 ++++-
- include/hw/pci/pci.h             |  36 ++++-
- include/hw/pci/pci_bus.h         |   2 +-
- include/hw/vfio/vfio-common.h    |  16 +-
- include/hw/vfio/vfio.h           |   7 -
- include/hw/virtio/virtio-iommu.h |   7 +-
- include/qemu/range.h             |  14 ++
- include/qemu/reserved-region.h   |  32 ++++
- include/qemu/uuid.h              |   5 +-
- block/parallels-ext.c            |   2 +-
- block/vdi.c                      |   2 +-
- hw/alpha/typhoon.c               |   6 +-
- hw/arm/smmu-common.c             |   6 +-
- hw/core/qdev-properties-system.c |  11 +-
- hw/hyperv/vmbus.c                |   4 +-
- hw/i386/amd_iommu.c              |   6 +-
- hw/i386/intel_iommu.c            |   6 +-
- hw/pci-host/astro.c              |   6 +-
- hw/pci-host/designware.c         |   6 +-
- hw/pci-host/dino.c               |   6 +-
- hw/pci-host/pnv_phb3.c           |   6 +-
- hw/pci-host/pnv_phb4.c           |   6 +-
- hw/pci-host/ppce500.c            |   6 +-
- hw/pci-host/raven.c              |   6 +-
- hw/pci-host/sabre.c              |   6 +-
- hw/pci/pci.c                     |  18 ++-
- hw/ppc/ppc440_pcix.c             |   6 +-
- hw/ppc/spapr_pci.c               |   6 +-
- hw/ppc/spapr_pci_vfio.c          | 100 +++++++++++-
- hw/remote/iommu.c                |   6 +-
- hw/s390x/s390-pci-bus.c          |   8 +-
- hw/vfio/ap.c                     |   1 -
- hw/vfio/ccw.c                    |   1 -
- hw/vfio/common.c                 |  80 ++--------
- hw/vfio/container.c              | 328 ++++++---------------------------------
- hw/vfio/helpers.c                |   1 -
- hw/vfio/pci.c                    |   2 +-
- hw/vfio/spapr.c                  | 282 +++++++++++++++++++++++++++++++--
- hw/virtio/virtio-iommu-pci.c     |   8 +-
- hw/virtio/virtio-iommu.c         | 161 +++++++++++++++++--
- migration/savevm.c               |   4 +-
- system/memory.c                  |  13 ++
- tests/unit/test-resv-mem.c       | 316 +++++++++++++++++++++++++++++++++++++
- tests/unit/test-uuid.c           |   2 +-
- util/range.c                     |  61 +++++++-
- util/reserved-region.c           |  91 +++++++++++
- util/uuid.c                      |   2 +-
- hw/virtio/trace-events           |   1 +
- tests/unit/meson.build           |   1 +
- util/meson.build                 |   1 +
- 52 files changed, 1303 insertions(+), 452 deletions(-)
- create mode 100644 docs/devel/pci.rst
- delete mode 100644 include/hw/vfio/vfio.h
- create mode 100644 include/qemu/reserved-region.h
- create mode 100644 tests/unit/test-resv-mem.c
- create mode 100644 util/reserved-region.c
 
