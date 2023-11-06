@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F199A7E1ACA
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 369CF7E1ACE
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:11:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztdy-0002lT-Sk; Mon, 06 Nov 2023 02:03:30 -0500
+	id 1qztdl-0001RZ-W6; Mon, 06 Nov 2023 02:03:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztd0-0000cA-PV
+ id 1qztd1-0000cQ-4s
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:32 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztcj-0001zb-MA
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:22 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5b9a7357553so3264768a12.0
+ id 1qztcp-0001zk-IR
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:26 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-27ff7fe7fbcso3818714a91.1
  for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699254132; x=1699858932; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699254133; x=1699858933; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dA/G+LV4+Fdy+76bVhkpBzPTtexXhIXWrwKeneJAp7s=;
- b=GkMlue6KF1HNbKDLpmtVF/AUej30kUxln+FqCRKnCSLOJYvVg8+SvVf90gE4HtKYmb
- eyGXuo85Dpy8SPHkAkpqlVn26g6GNxcyjK/X7NOyew2kINKvkP0fqHzLgHeztM8QCAF1
- 49XrMQ/kR/iMcYCl91oUNixiBXFUGt7Q3Bqmi8CTHe50HefknULMnKwONpMWAUysGcsJ
- EVLxOZzBo60R/da03qjekqPKeA0CCWXNPcIbrZJCiEjawsaxmO3xxixMD8Tg7rQzN8a+
- qV8G0crtEOtIvFPmj5Rx3JqzAUQ5yqFXWXGhMrHh71OUSpqoSRDyg6H5/QIAmwCJx/LG
- 6Y4A==
+ bh=G+Nu0pFkUhooXTXvaItjSl51/axbBnM72tzErMTLic8=;
+ b=xqVNFeQ80WhUlQf0VLVRWiXg8W/TPej5o0nCCgqFlINgImfrvVX3Zj2aypN9h+hR27
+ 4uNYSo00YnFBG8b6GLp/AGwLCG9TBYNlKpyL+YW9S0cX4p0CXlXEp2Hbdqg9FQIB7QaO
+ eJsiupoVevz+uQTxWY9gaSNsxP8v7cpZZvj2u5B7wEDPXPujtjDuvLJ4uMzdZSh2+AqN
+ 4qEYKbz4zMzgsHgLF6Hxt9+thiVFjvw+jbsU6S3Xtzjrw/4lVkISJ7Vv7Wk7zJ6HZc4T
+ O2FyjtuyqbVAGebYWyemMkfk3DvAfXKOnp9nlCZ/5/lr/JRTi0hGyAHj+UuqiWTxuC2c
+ NrGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699254132; x=1699858932;
+ d=1e100.net; s=20230601; t=1699254133; x=1699858933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dA/G+LV4+Fdy+76bVhkpBzPTtexXhIXWrwKeneJAp7s=;
- b=bh1Eak8o6OgsDfxw+45/eTu7z/zAhA6i/NBsJ0midVt8GZCtWYfHy0nluu42nchYJO
- DiN8hZzgYpejDTv/ECi6dHWZh0BtZMlrVGRVugwTKBadrypKM+ykbQ61Ck4c2tTBZEaj
- 8oiQKn/U6t8As4yEvm5C6T7DrQIIaSY0YwKmrLOMH3YFMew0Nych+/OoJisB0nbOnymq
- E9wBKVdtd4nC6C/GU3Uyb1n5kkEM+rgH+QugJ1reCQYZoIScGC8+vlDdYqvq9fRKivj0
- LX94R1oaPOiESqcCGBHYiUd3cTF+8J+X+HRT9TcLaiNjg1b+5AfPx02JGElEQhteWJ0B
- ac/g==
-X-Gm-Message-State: AOJu0YzQgkJg/W2KWQKuYniFaocY+7Fu9d58ugMcUzj+4Lyaxoq6hmR3
- 0Vn1r4+FZrIe2LUTxdS09mQ7NAld2ZSbW2N7h/g=
-X-Google-Smtp-Source: AGHT+IEsVODmhh91IsZR3cOytHwu3VFB9FwPS+hpoz9HL12JrStqcK+u1ALSpGZPyodhFDfgN0KcIA==
-X-Received: by 2002:a17:90a:f48d:b0:280:46ac:be71 with SMTP id
- bx13-20020a17090af48d00b0028046acbe71mr20555311pjb.15.1699254132214; 
+ bh=G+Nu0pFkUhooXTXvaItjSl51/axbBnM72tzErMTLic8=;
+ b=ugXBczn8Oiie9xtZbrwDYXbgwzExbCxil2W/1U3kL9gz7/POLQ6lvJsrgA/0B7dxnI
+ tlNpolCupBkcNA3IDWQl529eV3kvSlx7vZ4/7tNgfjdKcDL2xQcWgz/L3yIJEYIT7MYI
+ CxeWRy4AVyTEjCM21cjN7ILdW8ZeaNz4LI+TDkK6NxL8jMXR1dkunpS3332h5fGs6fWC
+ moJoecs5QDKFhWs+OOV/Fu8HwUpBSafCRZxwIW/6L/c5Fik0eEweYnOqUoMImdNUSXtK
+ /wie/9uQlnWzyRnAonM4zHpwgCaafFyUewdEu91xcH4n7avJadcmGYmNeaz0amX+2vSg
+ 4RVA==
+X-Gm-Message-State: AOJu0YyccaVX5fENDpsra34h8yoNkhvLrveImQy9MA0CZh617bWfBUpC
+ qwtGaRE/3OR7ztst5nm/Iq3BQ9JtFsnY7VlpFk8=
+X-Google-Smtp-Source: AGHT+IFCPI1mMT3dMuO7izTP9b1VKK4pCkKvJCiZUBBXRNIotofbsogODHlBrqsuNbaPHT7cwxv78Q==
+X-Received: by 2002:a17:90a:28f:b0:280:1d67:16a6 with SMTP id
+ w15-20020a17090a028f00b002801d6716a6mr23968240pja.34.1699254132969; 
  Sun, 05 Nov 2023 23:02:12 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.11
+ 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 23:02:11 -0800 (PST)
+ Sun, 05 Nov 2023 23:02:12 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 49/71] hw/rtc: Constify VMState
-Date: Sun,  5 Nov 2023 22:58:05 -0800
-Message-Id: <20231106065827.543129-50-richard.henderson@linaro.org>
+Subject: [PATCH 50/71] hw/s390x: Constify VMState
+Date: Sun,  5 Nov 2023 22:58:06 -0800
+Message-Id: <20231106065827.543129-51-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,207 +92,299 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/rtc/allwinner-rtc.c   | 2 +-
- hw/rtc/aspeed_rtc.c      | 2 +-
- hw/rtc/ds1338.c          | 2 +-
- hw/rtc/exynos4210_rtc.c  | 2 +-
- hw/rtc/goldfish_rtc.c    | 2 +-
- hw/rtc/ls7a_rtc.c        | 2 +-
- hw/rtc/m48t59.c          | 2 +-
- hw/rtc/mc146818rtc.c     | 6 +++---
- hw/rtc/pl031.c           | 6 +++---
- hw/rtc/twl92230.c        | 4 ++--
- hw/rtc/xlnx-zynqmp-rtc.c | 2 +-
- 11 files changed, 16 insertions(+), 16 deletions(-)
+ hw/s390x/ccw-device.c     |  2 +-
+ hw/s390x/css.c            | 36 ++++++++++++++++++------------------
+ hw/s390x/event-facility.c |  8 ++++----
+ hw/s390x/ipl.c            |  8 ++++----
+ hw/s390x/sclpquiesce.c    |  2 +-
+ hw/s390x/virtio-ccw.c     |  4 ++--
+ 6 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/hw/rtc/allwinner-rtc.c b/hw/rtc/allwinner-rtc.c
-index 7e493f0e79..2ac50b30cb 100644
---- a/hw/rtc/allwinner-rtc.c
-+++ b/hw/rtc/allwinner-rtc.c
-@@ -305,7 +305,7 @@ static const VMStateDescription allwinner_rtc_vmstate = {
-     .name = "allwinner-rtc",
+diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
+index 95f269ab44..fb8c1acc64 100644
+--- a/hw/s390x/ccw-device.c
++++ b/hw/s390x/ccw-device.c
+@@ -66,7 +66,7 @@ const VMStateDescription vmstate_ccw_dev = {
+     .name = "s390_ccw_dev",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, AwRtcState, AW_RTC_REGS_NUM),
+         VMSTATE_STRUCT_POINTER(sch, CcwDevice, vmstate_subch_dev, SubchDev),
          VMSTATE_END_OF_LIST()
      }
-diff --git a/hw/rtc/aspeed_rtc.c b/hw/rtc/aspeed_rtc.c
-index fa861e2d49..589d9a5a7a 100644
---- a/hw/rtc/aspeed_rtc.c
-+++ b/hw/rtc/aspeed_rtc.c
-@@ -137,7 +137,7 @@ static const MemoryRegionOps aspeed_rtc_ops = {
- static const VMStateDescription vmstate_aspeed_rtc = {
-     .name = TYPE_ASPEED_RTC,
-     .version_id = 2,
+diff --git a/hw/s390x/css.c b/hw/s390x/css.c
+index 95d1b3a3ce..e7119f7fb2 100644
+--- a/hw/s390x/css.c
++++ b/hw/s390x/css.c
+@@ -32,7 +32,7 @@ static const VMStateDescription vmstate_crw = {
+     .name = "s390_crw",
+     .version_id = 1,
+     .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(reg, AspeedRtcState, 0x18),
-         VMSTATE_INT64(offset, AspeedRtcState),
+         VMSTATE_UINT16(flags, CRW),
+         VMSTATE_UINT16(rsid, CRW),
          VMSTATE_END_OF_LIST()
-diff --git a/hw/rtc/ds1338.c b/hw/rtc/ds1338.c
-index 36d8121ddd..e479661c39 100644
---- a/hw/rtc/ds1338.c
-+++ b/hw/rtc/ds1338.c
-@@ -46,7 +46,7 @@ static const VMStateDescription vmstate_ds1338 = {
-     .name = "ds1338",
-     .version_id = 2,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_I2C_SLAVE(parent_obj, DS1338State),
-         VMSTATE_INT64(offset, DS1338State),
-         VMSTATE_UINT8_V(wday_offset, DS1338State, 2),
-diff --git a/hw/rtc/exynos4210_rtc.c b/hw/rtc/exynos4210_rtc.c
-index cc7101c530..319371f97d 100644
---- a/hw/rtc/exynos4210_rtc.c
-+++ b/hw/rtc/exynos4210_rtc.c
-@@ -122,7 +122,7 @@ static const VMStateDescription vmstate_exynos4210_rtc_state = {
-     .name = "exynos4210.rtc",
+@@ -43,7 +43,7 @@ static const VMStateDescription vmstate_crw_container = {
+     .name = "s390_crw_container",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(reg_intp, Exynos4210RTCState),
-         VMSTATE_UINT32(reg_rtccon, Exynos4210RTCState),
-         VMSTATE_UINT32(reg_ticcnt, Exynos4210RTCState),
-diff --git a/hw/rtc/goldfish_rtc.c b/hw/rtc/goldfish_rtc.c
-index 19a56402a0..01acf30b27 100644
---- a/hw/rtc/goldfish_rtc.c
-+++ b/hw/rtc/goldfish_rtc.c
-@@ -242,7 +242,7 @@ static const VMStateDescription goldfish_rtc_vmstate = {
-     .version_id = 2,
-     .pre_save = goldfish_rtc_pre_save,
-     .post_load = goldfish_rtc_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(tick_offset_vmstate, GoldfishRTCState),
-         VMSTATE_UINT64(alarm_next, GoldfishRTCState),
-         VMSTATE_UINT32(alarm_running, GoldfishRTCState),
-diff --git a/hw/rtc/ls7a_rtc.c b/hw/rtc/ls7a_rtc.c
-index 1f9e38a735..ac28c1165b 100644
---- a/hw/rtc/ls7a_rtc.c
-+++ b/hw/rtc/ls7a_rtc.c
-@@ -454,7 +454,7 @@ static const VMStateDescription vmstate_ls7a_rtc = {
-     .minimum_version_id = 1,
-     .pre_save = ls7a_rtc_pre_save,
-     .post_load = ls7a_rtc_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT64(offset_toy, LS7ARtcState),
-         VMSTATE_INT64(offset_rtc, LS7ARtcState),
-         VMSTATE_UINT32_ARRAY(toymatch, LS7ARtcState, TIMER_NUMS),
-diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c
-index 2e2c849985..aa44c4b20c 100644
---- a/hw/rtc/m48t59.c
-+++ b/hw/rtc/m48t59.c
-@@ -526,7 +526,7 @@ static const VMStateDescription vmstate_m48t59 = {
-     .name = "m48t59",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(lock, M48t59State),
-         VMSTATE_UINT16(addr, M48t59State),
-         VMSTATE_VBUFFER_UINT32(buffer, M48t59State, 0, NULL, size),
-diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
-index c27c362db9..a66a520441 100644
---- a/hw/rtc/mc146818rtc.c
-+++ b/hw/rtc/mc146818rtc.c
-@@ -817,7 +817,7 @@ static const VMStateDescription vmstate_rtc_irq_reinject_on_ack_count = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = rtc_irq_reinject_on_ack_count_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(irq_reinject_on_ack_count, MC146818RtcState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -829,7 +829,7 @@ static const VMStateDescription vmstate_rtc = {
-     .minimum_version_id = 1,
-     .pre_save = rtc_pre_save,
-     .post_load = rtc_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BUFFER(cmos_data, MC146818RtcState),
-         VMSTATE_UINT8(cmos_index, MC146818RtcState),
-         VMSTATE_UNUSED(7*4),
-@@ -845,7 +845,7 @@ static const VMStateDescription vmstate_rtc = {
-         VMSTATE_UINT64_V(next_alarm_time, MC146818RtcState, 3),
+         VMSTATE_STRUCT(crw, CrwContainer, 0, vmstate_crw, CRW),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_rtc_irq_reinject_on_ack_count,
-         NULL
-     }
-diff --git a/hw/rtc/pl031.c b/hw/rtc/pl031.c
-index b01d0e75d1..837b0bdf9b 100644
---- a/hw/rtc/pl031.c
-+++ b/hw/rtc/pl031.c
-@@ -290,7 +290,7 @@ static const VMStateDescription vmstate_pl031_tick_offset = {
+@@ -59,7 +59,7 @@ static const VMStateDescription vmstate_chp_info = {
+     .name = "s390_chp_info",
+     .version_id = 1,
      .minimum_version_id = 1,
-     .needed = pl031_tick_offset_needed,
-     .post_load = pl031_tick_offset_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(tick_offset, PL031State),
+         VMSTATE_UINT8(in_use, ChpInfo),
+         VMSTATE_UINT8(type, ChpInfo),
+         VMSTATE_UINT8(is_virtual, ChpInfo),
+@@ -77,7 +77,7 @@ static const VMStateDescription vmstate_scsw = {
+     .name = "s390_scsw",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT16(flags, SCSW),
+         VMSTATE_UINT16(ctrl, SCSW),
+         VMSTATE_UINT32(cpa, SCSW),
+@@ -92,7 +92,7 @@ static const VMStateDescription vmstate_pmcw = {
+     .name = "s390_pmcw",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(intparm, PMCW),
+         VMSTATE_UINT16(flags, PMCW),
+         VMSTATE_UINT16(devno, PMCW),
+@@ -113,7 +113,7 @@ static const VMStateDescription vmstate_schib = {
+     .name = "s390_schib",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT(pmcw, SCHIB, 0, vmstate_pmcw, PMCW),
+         VMSTATE_STRUCT(scsw, SCHIB, 0, vmstate_scsw, SCSW),
+         VMSTATE_UINT64(mba, SCHIB),
+@@ -127,7 +127,7 @@ static const VMStateDescription vmstate_ccw1 = {
+     .name = "s390_ccw1",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(cmd_code, CCW1),
+         VMSTATE_UINT8(flags, CCW1),
+         VMSTATE_UINT16(count, CCW1),
+@@ -140,7 +140,7 @@ static const VMStateDescription vmstate_ciw = {
+     .name = "s390_ciw",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(type, CIW),
+         VMSTATE_UINT8(command, CIW),
+         VMSTATE_UINT16(count, CIW),
+@@ -152,7 +152,7 @@ static const VMStateDescription vmstate_sense_id = {
+     .name = "s390_sense_id",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(reserved, SenseId),
+         VMSTATE_UINT16(cu_type, SenseId),
+         VMSTATE_UINT8(cu_model, SenseId),
+@@ -168,7 +168,7 @@ static const VMStateDescription vmstate_orb = {
+     .name = "s390_orb",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(intparm, ORB),
+         VMSTATE_UINT16(ctrl0, ORB),
+         VMSTATE_UINT8(lpm, ORB),
+@@ -188,7 +188,7 @@ static const VMStateDescription vmstate_schdev_orb = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = vmstate_schdev_orb_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT(orb, SubchDev, 1, vmstate_orb, ORB),
          VMSTATE_END_OF_LIST()
      }
-@@ -303,7 +303,7 @@ static const VMStateDescription vmstate_pl031 = {
-     .pre_save = pl031_pre_save,
-     .pre_load = pl031_pre_load,
-     .post_load = pl031_post_load,
+@@ -207,7 +207,7 @@ const VMStateDescription vmstate_subch_dev = {
+     .minimum_version_id = 1,
+     .post_load = subch_dev_post_load,
+     .pre_save = subch_dev_pre_save,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(tick_offset_vmstate, PL031State),
-         VMSTATE_UINT32(mr, PL031State),
-         VMSTATE_UINT32(lr, PL031State),
-@@ -312,7 +312,7 @@ static const VMStateDescription vmstate_pl031 = {
-         VMSTATE_UINT32(is, PL031State),
+         VMSTATE_UINT8_EQUAL(cssid, SubchDev, "Bug!"),
+         VMSTATE_UINT8_EQUAL(ssid, SubchDev, "Bug!"),
+         VMSTATE_UINT16(migrated_schid, SubchDev),
+@@ -223,7 +223,7 @@ const VMStateDescription vmstate_subch_dev = {
+         VMSTATE_UINT8(ccw_no_data_cnt, SubchDev),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription*[]) {
+-    .subsections = (const VMStateDescription * []) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_pl031_tick_offset,
+         &vmstate_schdev_orb,
          NULL
      }
-diff --git a/hw/rtc/twl92230.c b/hw/rtc/twl92230.c
-index 64c61c3dae..efd19a76e6 100644
---- a/hw/rtc/twl92230.c
-+++ b/hw/rtc/twl92230.c
-@@ -768,7 +768,7 @@ static const VMStateDescription vmstate_menelaus_tm = {
-     .name = "menelaus_tm",
+@@ -264,12 +264,12 @@ static int pre_save_ind_addr(void *opaque)
+     return 0;
+ }
+ 
+-const VMStateDescription vmstate_ind_addr_tmp = {
++static const VMStateDescription vmstate_ind_addr_tmp = {
+     .name = "s390_ind_addr_tmp",
+     .pre_save = pre_save_ind_addr,
+     .post_load = post_load_ind_addr,
+ 
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(len, IndAddrPtrTmp),
+         VMSTATE_UINT64(addr, IndAddrPtrTmp),
+         VMSTATE_END_OF_LIST()
+@@ -278,7 +278,7 @@ const VMStateDescription vmstate_ind_addr_tmp = {
+ 
+ const VMStateDescription vmstate_ind_addr = {
+     .name = "s390_ind_addr_tmp",
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_WITH_TMP(IndAddr*, IndAddrPtrTmp, vmstate_ind_addr_tmp),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -293,7 +293,7 @@ static const VMStateDescription vmstate_css_img = {
+     .name = "s390_css_img",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         /* Subchannel sets have no relevant state. */
+         VMSTATE_STRUCT_ARRAY(chpids, CssImage, MAX_CHPID + 1, 0,
+                              vmstate_chp_info, ChpInfo),
+@@ -330,7 +330,7 @@ static const VMStateDescription vmstate_css = {
+     .name = "s390_css",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_QTAILQ_V(pending_crws, ChannelSubSys, 1, vmstate_crw_container,
+                          CrwContainer, sibling),
+         VMSTATE_BOOL(sei_pending, ChannelSubSys),
+diff --git a/hw/s390x/event-facility.c b/hw/s390x/event-facility.c
+index 6891e3cd73..f9829de953 100644
+--- a/hw/s390x/event-facility.c
++++ b/hw/s390x/event-facility.c
+@@ -367,7 +367,7 @@ static const VMStateDescription vmstate_event_facility_mask64 = {
+     .version_id = 0,
+     .minimum_version_id = 0,
+     .needed = vmstate_event_facility_mask64_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(receive_mask_pieces[RECV_MASK_LOWER], SCLPEventFacility),
+         VMSTATE_END_OF_LIST()
+      }
+@@ -378,7 +378,7 @@ static const VMStateDescription vmstate_event_facility_mask_length = {
+     .version_id = 0,
+     .minimum_version_id = 0,
+     .needed = vmstate_event_facility_mask_length_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT16(mask_length, SCLPEventFacility),
+         VMSTATE_END_OF_LIST()
+      }
+@@ -388,11 +388,11 @@ static const VMStateDescription vmstate_event_facility = {
+     .name = "vmstate-event-facility",
      .version_id = 0,
      .minimum_version_id = 0,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16_HACK(tm_sec, struct tm),
-         VMSTATE_UINT16_HACK(tm_min, struct tm),
-         VMSTATE_UINT16_HACK(tm_hour, struct tm),
-@@ -810,7 +810,7 @@ static const VMStateDescription vmstate_menelaus = {
+         VMSTATE_UINT32(receive_mask_pieces[RECV_MASK_UPPER], SCLPEventFacility),
+         VMSTATE_END_OF_LIST()
+      },
+-    .subsections = (const VMStateDescription * []) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_event_facility_mask64,
+         &vmstate_event_facility_mask_length,
+         NULL
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index 515dcf51b5..63fa6b0a7a 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -60,7 +60,7 @@ static const VMStateDescription vmstate_iplb_extended = {
+     .version_id = 0,
      .minimum_version_id = 0,
-     .pre_save = menelaus_pre_save,
-     .post_load = menelaus_post_load,
+     .needed = iplb_extended_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(firstbyte, MenelausState),
-         VMSTATE_UINT8(reg, MenelausState),
-         VMSTATE_UINT8_ARRAY(vcore, MenelausState, 5),
-diff --git a/hw/rtc/xlnx-zynqmp-rtc.c b/hw/rtc/xlnx-zynqmp-rtc.c
-index 3e7d61a41c..613c6407a6 100644
---- a/hw/rtc/xlnx-zynqmp-rtc.c
-+++ b/hw/rtc/xlnx-zynqmp-rtc.c
-@@ -244,7 +244,7 @@ static const VMStateDescription vmstate_rtc = {
+         VMSTATE_UINT8_ARRAY(reserved_ext, IplParameterBlock, 4096 - 200),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -70,13 +70,13 @@ static const VMStateDescription vmstate_iplb = {
+     .name = "ipl/iplb",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8_ARRAY(reserved1, IplParameterBlock, 110),
+         VMSTATE_UINT16(devno, IplParameterBlock),
+         VMSTATE_UINT8_ARRAY(reserved2, IplParameterBlock, 88),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription*[]) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_iplb_extended,
+         NULL
+     }
+@@ -86,7 +86,7 @@ static const VMStateDescription vmstate_ipl = {
+     .name = "ipl",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(compat_start_addr, S390IPLState),
+         VMSTATE_UINT64(compat_bios_start_addr, S390IPLState),
+         VMSTATE_STRUCT(iplb, S390IPLState, 0, vmstate_iplb, IplParameterBlock),
+diff --git a/hw/s390x/sclpquiesce.c b/hw/s390x/sclpquiesce.c
+index a641089929..14936aa94b 100644
+--- a/hw/s390x/sclpquiesce.c
++++ b/hw/s390x/sclpquiesce.c
+@@ -72,7 +72,7 @@ static const VMStateDescription vmstate_sclpquiesce = {
+     .name = TYPE_SCLP_QUIESCE,
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_BOOL(event_pending, SCLPEvent),
+         VMSTATE_END_OF_LIST()
+      }
+diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
+index 80453718a3..b4676909dd 100644
+--- a/hw/s390x/virtio-ccw.c
++++ b/hw/s390x/virtio-ccw.c
+@@ -87,7 +87,7 @@ const VMStateDescription vmstate_virtio_ccw_dev_tmp = {
+     .name = "s390_virtio_ccw_dev_tmp",
+     .pre_save = virtio_ccw_dev_tmp_pre_save,
+     .post_load = virtio_ccw_dev_tmp_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT16(config_vector, VirtioCcwDeviceTmp),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -98,7 +98,7 @@ const VMStateDescription vmstate_virtio_ccw_dev = {
+     .version_id = 1,
      .minimum_version_id = 1,
-     .pre_save = rtc_pre_save,
-     .post_load = rtc_post_load,
+     .post_load = virtio_ccw_dev_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, XlnxZynqMPRTC, XLNX_ZYNQMP_RTC_R_MAX),
-         VMSTATE_UINT32(tick_offset, XlnxZynqMPRTC),
-         VMSTATE_END_OF_LIST(),
+         VMSTATE_CCW_DEVICE(parent_obj, VirtioCcwDevice),
+         VMSTATE_PTR_TO_IND_ADDR(indicators, VirtioCcwDevice),
+         VMSTATE_PTR_TO_IND_ADDR(indicators2, VirtioCcwDevice),
 -- 
 2.34.1
 
