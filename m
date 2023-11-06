@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84037E2D7F
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 21:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E75F67E2D6A
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:58:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r05hU-0000ix-3C; Mon, 06 Nov 2023 14:55:56 -0500
+	id 1r05hF-0007Vc-Fi; Mon, 06 Nov 2023 14:55:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05gy-0006OJ-1Q; Mon, 06 Nov 2023 14:55:25 -0500
+ id 1r05gy-0006OL-3F; Mon, 06 Nov 2023 14:55:25 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05go-00066f-G7; Mon, 06 Nov 2023 14:55:23 -0500
+ id 1r05gn-00066l-VO; Mon, 06 Nov 2023 14:55:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=bVGb2+EtT3pxaWvqPLp7baiGIuRpc42koRGOsdWnaUk=; b=MJ//FNBUN0RR6akkNu4HqHKoF/
- R9fft9mzeG8dISAeh7sAKjvw25oviaBrJnG/og5qIgXhZbVXZK1rmkc69JssbKNk7QArI2kmUcYYj
- C5USwiZDMQgHEsHs43rPFggc3num0yEhn1ZKi28t+3u1eqYJ50Mdzpun87OFaCIsQ0EQlU6Rjq4Jo
- xWbtNqjyAx01Ci5xYgGe0q6tbuObyhIBhBrXp9Mplg9Hcbsc5sl+fnEAJqlv76RltSJj+6OcSRvuD
- 45B/PxRcpYjSrHAjo+fIdLcfWUZ7GYtjz/fJz/h0FNtbZ1EiDhXPTYM3xA/133TyrM55GBqrl8yPs
- kKfkBZlw==;
+ bh=54+9O4MqgKMWNsVDV15P7KT3O3JFiZ0ZmbsNt5OSIo4=; b=uNNnb4D/Jn1NaKTOnlwcXQoBXr
+ a7fpJfDZDugOPHlTeDJm5R48ox/KWkG8Kq4VkoW7MrTotDiXX/DNpR8Lx0OIXTa/wlniktk7vXmfZ
+ dHj8fjR/z8Yert6javbL8WnB15z9bB7adrZkTchjktVEBMCdmcasEitmq3xKy5xZoKnog4LvVBdId
+ gVI2G1ARrSNVDtX1PsfPalbOtKhwBGGDEjoobpG7heQ4S3MtgTVZP7KUMi9uX7qnJBCY4WT97Q0hh
+ U8N4avC/qXHuGQuPqJSQ2fsHmTqLfcJSfOEFwq8K+TIzHHPFbtH22DRt5MHxbLdfAwAEyyUd639pH
+ CmTmGuNw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r05fZ-007taD-Lg; Mon, 06 Nov 2023 19:53:58 +0000
+ id 1r05fZ-007taE-M3; Mon, 06 Nov 2023 19:53:58 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1r05fZ-001GN0-2k; Mon, 06 Nov 2023 19:53:57 +0000
+ Hat Linux)) id 1r05fZ-001GN4-37; Mon, 06 Nov 2023 19:53:57 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,9 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH for-8.3 v2 07/46] hw/alpha/dp264: use pci_init_nic_devices()
-Date: Mon,  6 Nov 2023 19:49:12 +0000
-Message-ID: <20231106195352.301038-8-dwmw2@infradead.org>
+Subject: [PATCH for-8.3 v2 08/46] hw/arm/sbsa-ref: use pci_init_nic_devices()
+Date: Mon,  6 Nov 2023 19:49:13 +0000
+Message-ID: <20231106195352.301038-9-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106195352.301038-1-dwmw2@infradead.org>
 References: <20231106195352.301038-1-dwmw2@infradead.org>
@@ -121,25 +121,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
 ---
- hw/alpha/dp264.c | 4 +---
+ hw/arm/sbsa-ref.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
-index 03495e1e60..52a1fa310b 100644
---- a/hw/alpha/dp264.c
-+++ b/hw/alpha/dp264.c
-@@ -124,9 +124,7 @@ static void clipper_init(MachineState *machine)
-     pci_vga_init(pci_bus);
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index bce44690e5..7ad8e1fcea 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -689,9 +689,7 @@ static void create_pcie(SBSAMachineState *sms)
  
-     /* Network setup.  e1000 is good enough, failing Tulip support.  */
--    for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
--    }
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
+     pci = PCI_HOST_BRIDGE(dev);
+     if (pci->bus) {
+-        for (i = 0; i < nb_nics; i++) {
+-            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
+-        }
++        pci_init_nic_devices(pci->bus, mc->default_nic);
+     }
  
-     /* Super I/O */
-     isa_create_simple(isa_bus, TYPE_SMC37C669_SUPERIO);
+     pci_create_simple(pci->bus, -1, "bochs-display");
 -- 
 2.41.0
 
