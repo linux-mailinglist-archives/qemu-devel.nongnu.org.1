@@ -2,91 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0542D7E266D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5727E266E
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:16:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00Nu-0007Si-CB; Mon, 06 Nov 2023 09:15:22 -0500
+	id 1r00OH-0007fB-H5; Mon, 06 Nov 2023 09:15:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r00Nr-0007SR-Jb
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r00Np-00049K-W9
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699280117;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ujbeXdUIL7sE74Kv8liWhge+ZcVbN5TaUWLp5Cb9+EU=;
- b=O//yjPZcho3qt5O2esVwV4ZEnTRoH7z7PwZOnFkDvV8CjoXT7fzF7RnvPkKBO++tyICwIK
- 8OprZZ5XpfibE9nLvoFXAmePXussgmVwX8tbCkcYyisZTBnB1LCilQjDQx4LdRPfDabPq7
- oyw8L779QChJYwmNXl3aAw3DWsuXP+M=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-buu5JSYzPlGKJFVeECpq6w-1; Mon, 06 Nov 2023 09:15:15 -0500
-X-MC-Unique: buu5JSYzPlGKJFVeECpq6w-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-778a65923bdso568024285a.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:15:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1r00O8-0007ZV-UK
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:37 -0500
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1r00O6-0004H7-Qp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:36 -0500
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-5a7fb84f6ceso47847337b3.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:15:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1699280132; x=1699884932;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=qKJ9yAKrrbkrYK2WaAH0CGJg5UQnpLX4LeD1O8VDjBI=;
+ b=RPGkSKpEJn1hO7LykNqCtqWLODBMv3k2EFj1cmU5DB6Y4QhDQcvmEN3NZuIIP0BBdK
+ SQQDTLxItR1YVgY4mZjnQgYtV53ViREHQ+Zsd0dNqTKwCpBvigv/hgaPUbmcZEpKUOy1
+ m/+kYoI+yfz7/U6TGkDllOtcGxb1hG1EB9PCC2/xSt6NAaPcD5frFreoTpOoVXNf7zKQ
+ 6dV8R7OMpi/6i193mZVXgJTPE7hkCKzSZO4qO0T0NT7yv11+Sk31m22bCFWHrLHYwDhz
+ ccsD37QgIiIwfaBg6iFZNUpEURz92RThLSrI+96q9+jsLTYw0DbcWEYvUjoo665tSDxE
+ qyyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699280114; x=1699884914;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ujbeXdUIL7sE74Kv8liWhge+ZcVbN5TaUWLp5Cb9+EU=;
- b=AuV6vugwwEyi/eES6IiS7jAvgZ/tGGvfgFgmqEEq7ZpQbe2P5O4P4KiIUPP222Q8t8
- g3EM3fdfg0kUaY1QlrixrNtTA2oU9ijDjNQJQaaQCHxj98Vqr6O+NKpkubtlNigWHb6I
- DQyjZ0R9jwjje0stst6KFC6lOJkInaCtpPrFNE/vVu5p50+Z5zKH6IyNOCCWoMuDpeav
- Lyf+ORrTsURc6Y0Csh+3t5Kz1D22KcOoHpm3mLQIC8ixBTYsBOypKSSmaS/IM1mqZk2x
- VD9VvWGPcGG6gBN6f3nEywOX/TOeiehO8o4iARtDzsIzGvRxk/2/eoFSxCpXFM1ium+Q
- gXSw==
-X-Gm-Message-State: AOJu0YzxAl0j961B2gvx76iSM8Wn15Dec/vvOazbkRS9inoXoSo8EFX1
- q9m6dSAxs+4RzC/BSmjHKcgyIpZ46I+llq71jYbf3Lhx182eeM06Xwuqrclef+NytVOMGWIx7/W
- 1RYmHOmueN1WWYpr9tmIweEM=
-X-Received: by 2002:a05:620a:3189:b0:77a:282:bfb2 with SMTP id
- bi9-20020a05620a318900b0077a0282bfb2mr34259095qkb.8.1699280114596; 
- Mon, 06 Nov 2023 06:15:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGm66TEevY+vLd3VtmyLewSKfUORpLqbIo7rN/UQOBaEE5L9eAHuwb/Zd4iVMqgRcoaxOROAg==
-X-Received: by 2002:a05:620a:3189:b0:77a:282:bfb2 with SMTP id
- bi9-20020a05620a318900b0077a0282bfb2mr34259071qkb.8.1699280114280; 
- Mon, 06 Nov 2023 06:15:14 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- k11-20020a05620a414b00b007777521dca4sm3317599qko.21.2023.11.06.06.15.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 06:15:13 -0800 (PST)
-Date: Mon, 6 Nov 2023 15:15:11 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, peter.maydell@linaro.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] tests/acpi/bios-tables-test: do not write new blobs
- unless there are changes
-Message-ID: <20231106151511.57c1e397@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231102081624.25229-1-anisinha@redhat.com>
-References: <20231102081624.25229-1-anisinha@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1699280132; x=1699884932;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qKJ9yAKrrbkrYK2WaAH0CGJg5UQnpLX4LeD1O8VDjBI=;
+ b=XnprtLKTC1ceh/UqLVvMcB7n1KSCwi9vO2Ie9IhaiTlA2XA+dh7xVi0SrT+4UeeU9c
+ R4IW5UQq0qWn9VUmnCuwcG9rJmC8+p4wSw7ajGZe2S/usCSKxTk9A6BJHSFsf73fjkOG
+ ZWmweshxn3N6mKXXAS6mCJg9DBu7TmX2CUt02NLOxl4MOLFKFdINbwD/WU9h1Hr+gFmd
+ E9O4oN1kFlXQsmRYjiQkV+rTtNGfB2zaTXYYePMI29gaYdS0Q41fAGHfCSGxl1rvnDsN
+ jyYDNARWTg/ifGbZn7Ux1a+CxAVNZtTkHWtkckahg70JlKGM4bnfYetdtvoeT+5w56d7
+ z3pg==
+X-Gm-Message-State: AOJu0Yw1gNhijcGQfGY6UkQgJPFMMdUVA5PdaUgFAIQWWn+lr9LGAEx1
+ LPt2ZD5673dHOwEsfUREbMKVk0p3xA0Lngk9MsYASA==
+X-Google-Smtp-Source: AGHT+IHeLHDwgHqC31J+ig0cLMT+WJOmHmm/l+VIs661N/8s/W81gLZ31emhhP3oJisRw6T2SIYIM7+uTnkA4W3PhYc=
+X-Received: by 2002:a25:410e:0:b0:d9c:a3b8:f39d with SMTP id
+ o14-20020a25410e000000b00d9ca3b8f39dmr23055569yba.65.1699280132268; Mon, 06
+ Nov 2023 06:15:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230922140914.13906-1-phil@philjordan.eu>
+ <20230922140914.13906-3-phil@philjordan.eu>
+ <ZSLzq33DgMNYBsQT@roolebo.dev>
+ <CAAibmn35JypPWfUophMgONTkgbYFvaaRhuD9+1kif9EOFx9HxQ@mail.gmail.com>
+ <ZSMAr3hhxJryGpya@roolebo.dev>
+ <CAAibmn3cMjnNWsQs8yCetc__Kr+ujn6Gn_ohGubVA3hCQbBy1w@mail.gmail.com>
+ <CAGCz3vu=sX1m4PJiOvtTBza4iNUy6Hj+AtSAFi33zJ=dz_r7UA@mail.gmail.com>
+ <CAGCz3vt2VB9i8+o-qFPpDptu81p3r00-TKfCV3O+=dQ0r3d88w@mail.gmail.com>
+ <ZUey_ZynRm9XwQLD@roolebo.dev>
+In-Reply-To: <ZUey_ZynRm9XwQLD@roolebo.dev>
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+Date: Mon, 6 Nov 2023 15:15:21 +0100
+Message-ID: <CAAibmn30d9EjtDrXrR8d1dg=hsA96WbajdiFdQkR=LXsbz_PYA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] i386: hvf: In kick_vcpu use hv_vcpu_interrupt to
+ force exit
+To: Roman Bolshakov <roman@roolebo.dev>
+Cc: Phil Dennis-Jordan <lists@philjordan.eu>, qemu-devel@nongnu.org,
+ dirty@apple.com, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000a896a106097c7c94"
+Received-SPF: neutral client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=phil@philjordan.eu; helo=mail-yw1-x112d.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,86 +95,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu,  2 Nov 2023 13:46:24 +0530
-Ani Sinha <anisinha@redhat.com> wrote:
+--000000000000a896a106097c7c94
+Content-Type: text/plain; charset="UTF-8"
 
-> When dumping table blobs using rebuild-expected-aml.sh, table blobs from all
-> test variants are dumped regardless of whether there are any actual changes to
-> the tables or not. This creates lot of new files for various test variants that
-> are not part of the git repository. This is because we do not check in all table
-> blobs for all test variants into the repository. Only those blobs for those
-> variants that are different from the generic test-variant agnostic blob are
-> checked in.
-> 
-> This change makes the test smarter by checking if at all there are any changes
-> in the tables from the checked-in gold master blobs.
+Hi Roman,
 
-> If there are no changes, no new files are written for test variants.
-> However, existing files continue to be overwritten regardless of whether there are changes.
-> Hence, new files will be generated only when there are actual changes in the tables.
+On Sun, 5 Nov 2023 at 16:21, Roman Bolshakov <roman@roolebo.dev> wrote:
 
-You lost me in those 3 sentences. Perhaps rephrasing and adding examples
-wold make it readable. (aka what's (not)writen and when)
+> > This got me digging into how dirty memory tracking is actually
+> > implemented in the Qemu hvf backend, and basically, it should never
+> > have worked in the first place. When we get a write fault, the code
+> > marks the *whole* 'logged' memory range as writable rather than just
+> > the page that's just been dirtied. It just so happens that hv_vcpu_run
+> > was causing EPT fault exits on those pages even after marking them
+> > writable (?), and hv_vcpu_run_until() no longer does that. So
+> > basically, this has been a Qemu bug masked by undesirable
+> > hv_vcpu_run() behaviour. I'll start putting together a fix for this.
+> >
+>
+> Sounds good, have you got anything to test or review? Meanwhile, I'll
+> review the pending patches you sent.
+>
 
+Sorry, I've likewise been busy with other things the last 2-3 weeks.
 
-> This would make analyzing changes to tables less confusing and there would
-> be no need to clean useless untracked files when there are no table changes.
+As far as I'm aware, we don't actually know 100% for certain if there's a
+race condition when using hv_vcpu_interrupt(), right? (As I mentioned, the
+patches with hv_vcpu_run_until and a hv_vcpu_interrupt-only kick have been
+running without issue for months on dozens to hundreds of VMs.) So before
+we add the complexity of the hybrid hv_vcpu_interrupt & signal-based kick
+to the codebase, I'd like to test out hv_vcpu_interrupt's behaviour in
+isolation and actually force the edge cases we're worried about. But yeah,
+I haven't got around to doing that yet. :-) I'm hoping to take a crack at
+it later this week or next week, probably using
+https://github.com/mist64/hvdos as a starting point.
 
-what happens if an absolutely new table has been introduced which
-is not mentioned in tests yet (will it be dumped or not)?
+Thanks for reviewing and testing the first set of patches!
 
-> 
-> CC: peter.maydell@linaro.org
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->  tests/qtest/bios-tables-test.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> index 9f4bc15aab..743b509e93 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -109,6 +109,7 @@ static const char *iasl;
->  #endif
->  
->  static int verbosity_level;
-> +static GArray *load_expected_aml(test_data *data);
->  
->  static bool compare_signature(const AcpiSdtTable *sdt, const char *signature)
->  {
-> @@ -241,21 +242,32 @@ static void test_acpi_fadt_table(test_data *data)
->  
->  static void dump_aml_files(test_data *data, bool rebuild)
->  {
-> -    AcpiSdtTable *sdt;
-> +    AcpiSdtTable *sdt, *exp_sdt;
->      GError *error = NULL;
->      gchar *aml_file = NULL;
-> +    test_data exp_data = {};
->      gint fd;
->      ssize_t ret;
->      int i;
->  
-> +    exp_data.tables = load_expected_aml(data);
->      for (i = 0; i < data->tables->len; ++i) {
->          const char *ext = data->variant ? data->variant : "";
->          sdt = &g_array_index(data->tables, AcpiSdtTable, i);
-> +        exp_sdt = &g_array_index(exp_data.tables, AcpiSdtTable, i);
->          g_assert(sdt->aml);
-> +        g_assert(exp_sdt->aml);
->  
->          if (rebuild) {
->              aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
->                                         sdt->aml, ext);
-> +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
-> +                sdt->aml_len == exp_sdt->aml_len &&
-> +                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
-> +                /* identical tables, no need to write new files */
-> +                g_free(aml_file);
-> +                continue;
-> +            }
->              fd = g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
->                          S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
->              if (fd < 0) {
+Phil
 
+--000000000000a896a106097c7c94
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi Roman,</div><br><div class=3D"gmail_quote"><div di=
+r=3D"ltr" class=3D"gmail_attr">On Sun, 5 Nov 2023 at 16:21, Roman Bolshakov=
+ &lt;<a href=3D"mailto:roman@roolebo.dev">roman@roolebo.dev</a>&gt; wrote:<=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; This got me digging into how dirty memory tracking is actually<br>
+&gt; implemented in the Qemu hvf backend, and basically, it should never<br=
+>
+&gt; have worked in the first place. When we get a write fault, the code<br=
+>
+&gt; marks the *whole* &#39;logged&#39; memory range as writable rather tha=
+n just<br>
+&gt; the page that&#39;s just been dirtied. It just so happens that hv_vcpu=
+_run<br>
+&gt; was causing EPT fault exits on those pages even after marking them<br>
+&gt; writable (?), and hv_vcpu_run_until() no longer does that. So<br>
+&gt; basically, this has been a Qemu bug masked by undesirable<br>
+&gt; hv_vcpu_run() behaviour. I&#39;ll start putting together a fix for thi=
+s.<br>
+&gt; <br>
+<br>
+Sounds good, have you got anything to test or review? Meanwhile, I&#39;ll<b=
+r>
+review the pending patches you sent.<br></blockquote><div><br></div><div>So=
+rry, I&#39;ve likewise been busy with other things the last 2-3 weeks.</div=
+><div><br></div><div>As far as I&#39;m aware, we don&#39;t actually know 10=
+0% for certain if there&#39;s a race condition when using hv_vcpu_interrupt=
+(), right? (As I mentioned, the patches with=C2=A0hv_vcpu_run_until and a h=
+v_vcpu_interrupt-only kick have been running without issue for months on do=
+zens to hundreds of VMs.) So before we add the complexity of the hybrid hv_=
+vcpu_interrupt &amp; signal-based kick to the codebase, I&#39;d like to tes=
+t out=C2=A0hv_vcpu_interrupt&#39;s behaviour in isolation and actually forc=
+e the edge cases we&#39;re worried about. But yeah, I haven&#39;t got aroun=
+d to doing that yet. :-) I&#39;m hoping to take a crack at it later this we=
+ek or next week, probably using <a href=3D"https://github.com/mist64/hvdos"=
+>https://github.com/mist64/hvdos</a> as a starting point.</div><div><br></d=
+iv><div>Thanks for reviewing and testing the first set of patches!</div><di=
+v><br></div><div>Phil</div><div><br></div></div></div>
+
+--000000000000a896a106097c7c94--
 
