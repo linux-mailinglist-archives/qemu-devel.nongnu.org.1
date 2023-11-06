@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55F67E1ADC
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B67947E1A98
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:00:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzta7-0005S9-5p; Mon, 06 Nov 2023 01:59:31 -0500
+	id 1qztaB-0005aV-IG; Mon, 06 Nov 2023 01:59:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZi-0004g8-Ok
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:59:08 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qztZk-0004hE-LP
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:59:10 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZf-0001Si-MR
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:59:05 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1cc9b626a96so17806275ad.2
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:59:03 -0800 (PST)
+ id 1qztZi-0001Sw-Ep
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:59:07 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1cc3388621cso39856505ad.1
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:59:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699253942; x=1699858742; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699253943; x=1699858743; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m+xKlBCTvSXenMUD53ZEaQCvJkOxpiWeki4MTKxLW1Q=;
- b=X+Z6Mt3FQHfaSMsW/vSgw7DSbZpdbMLvf/a69pMNxEUfuR0GviYxIGOV1hP842BmIZ
- do9pV94m8BF+4p2VNvtYRDumxhXcyMROoe9V9D0qHyZNw0+33QuJhnVN5zB+QXFm1VVO
- jdGPFAHdEpxVaqNvGGopze6nKQjwCuPx7r2VKZZmaLXpyKmqEy9DZofZsQJZFXWdr6U9
- tKSyUSqVlfoYjPd7R6NyfyPcJGBe+sBsa4uAbmC6vUbsTNo+qRKGYglgvV6V5nc1qbP3
- fCLBOwvs6PfHChoDvlCkwffZjrpC0oDcNjt/5PPCorWARmZvZI87KEbwLu5FceSFJfUT
- GJNw==
+ bh=GK0r0bvGCZ9eQqWkzgeODTyST+S/GfSxl8+D4j9zUNc=;
+ b=c9COxtpxhL5xCJIbmpNemZir7TiFq8fRYxfT2kGRUPj7aOo6uAf4nxwwNK69sEkyFR
+ s12h0PyTae2xFHM6UJUMS595fg5onl0xNO7DyUssj90H7fS89884Qg1gQ8QR8cJeHjDY
+ qYX69X4vVFN2qdTHQlayq27u6bDmJk7h52qFHO7rimO+h5e/yUDTS5aYR2QSiRg6VUth
+ iriX22sZWdba+tEVw1L9wUpEfo7fu/23AnXY2/kt3+KXZLCYQkUCkiXgPHZu86KpzRlO
+ ZA0fNxpUyVAuxhHEvIpI+RWIVVYxJHjdZOYPz+Ejy8oMytyOnMojVbilZ6x7Wc5c5m8s
+ IovA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699253942; x=1699858742;
+ d=1e100.net; s=20230601; t=1699253943; x=1699858743;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m+xKlBCTvSXenMUD53ZEaQCvJkOxpiWeki4MTKxLW1Q=;
- b=uC6jNVaG9HYEnOBSeM2WWl35WBjm42WMlYKqVlFlHjnl+UxGf8uCXohWPXOtGoSxrb
- D2YzbRaTmFZM122e4rAG5k28/gegknNQg3tRp1ZShm0fHmU9SnWBX4rlqutmk3HYlBvn
- dfamwvstsXvuxuKGcoVHW7kTFrNkauQiKTkORoi3LYFWBKzSrJZjf5SAg4Gyise3kqsp
- guHrjANn3Cb/RAzKk5X+icYasyvND3QP1uaFIa2EOYuI25EbGJ4B5GbIO/rLs/TznxkI
- YMd+J+43tjvLHd7zhLAm3W/D8YXFmUbn4lfgDP/keP+lCfhrVVNhJf/tgAuvD/mpzbgv
- vCTQ==
-X-Gm-Message-State: AOJu0YxQLIfmRQu2qJCbTDH3BcJpcaXS9PKW+ipMIxPVoKXI8G/3S8tb
- LEtaPRBhZSmS95uIUZO4NwkeC27/M1vh41eXU2I=
-X-Google-Smtp-Source: AGHT+IEnl1mqPojsTk+yxNAhv8/9L9hFhX9InvlbC910gw8BYSdiZZ2AqwI7bjLyniZxPt+XRgbdUA==
-X-Received: by 2002:a17:902:fb45:b0:1cc:379b:3505 with SMTP id
- lf5-20020a170902fb4500b001cc379b3505mr16224531plb.49.1699253942504; 
- Sun, 05 Nov 2023 22:59:02 -0800 (PST)
+ bh=GK0r0bvGCZ9eQqWkzgeODTyST+S/GfSxl8+D4j9zUNc=;
+ b=EQpL2KFF+UvbLzlKrW8bqkEKtxKT2iAt6RNfOnfqynrYsvgsgL/I6ViI8yQfI/D+Bg
+ jE6cILEiOK3b0um8E/TvaRzin6TcfyQZCO2ZAyXT4c/io2VLNSPf1vPlB5E1Vl2m4rJS
+ rP8+KyNS9HrZH4GY0GMvcNoDkojNMnrcWk+P33T+zERJk7zBsRMU7XPGGc3ppBt91w5N
+ 0r+8AcAklvpGcqF6pMmeUVwuIMYeeAobnQqQ/kkfwU92a8FvWEoapyRYSnecKU38vw7D
+ n16BvFmTa+t3Ug0rohGGd0BD0moCzPjEQooR0s6KhGlU2eA+irplj7iRWrWcWqCDkndT
+ a8oA==
+X-Gm-Message-State: AOJu0YytuRjbsg+BGWcwGAaLzdmoJIqIlHAlytN85gPe0fGbSvsS2usL
+ BC9obtDTloLLWQ0exM3Lnn376m38FPi7Q1Dsn0Q=
+X-Google-Smtp-Source: AGHT+IHRBASwSCRj6zQuyGrgTSTu5gZ55oxRgbDcDPgvz7PCgDXBYgo9u+K157R2vXitHaQuhG1EuQ==
+X-Received: by 2002:a17:902:e544:b0:1ca:b8d3:f880 with SMTP id
+ n4-20020a170902e54400b001cab8d3f880mr12264150plf.20.1699253943399; 
+ Sun, 05 Nov 2023 22:59:03 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.59.01
+ c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.59.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 22:59:02 -0800 (PST)
+ Sun, 05 Nov 2023 22:59:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 38/71] hw/loongarch: Constify VMState
-Date: Sun,  5 Nov 2023 22:57:54 -0800
-Message-Id: <20231106065827.543129-39-richard.henderson@linaro.org>
+Subject: [PATCH 39/71] hw/m68k: Constify VMState
+Date: Sun,  5 Nov 2023 22:57:55 -0800
+Message-Id: <20231106065827.543129-40-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,22 +92,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/loongarch/acpi-build.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/m68k/next-cube.c | 4 ++--
+ hw/m68k/q800-glue.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-index ae292fc543..730bc4a748 100644
---- a/hw/loongarch/acpi-build.c
-+++ b/hw/loongarch/acpi-build.c
-@@ -564,7 +564,7 @@ static const VMStateDescription vmstate_acpi_build = {
-     .name = "acpi_build",
+diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+index fabd861941..baca38bf39 100644
+--- a/hw/m68k/next-cube.c
++++ b/hw/m68k/next-cube.c
+@@ -996,7 +996,7 @@ static const VMStateDescription next_rtc_vmstate = {
+     .name = "next-rtc",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(patched, AcpiBuildState),
-         VMSTATE_END_OF_LIST()
-     },
+         VMSTATE_UINT8_ARRAY(ram, NextRtc, 32),
+         VMSTATE_UINT8(command, NextRtc),
+         VMSTATE_UINT8(value, NextRtc),
+@@ -1011,7 +1011,7 @@ static const VMStateDescription next_pc_vmstate = {
+     .name = "next-pc",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(scr1, NeXTPC),
+         VMSTATE_UINT32(scr2, NeXTPC),
+         VMSTATE_UINT32(int_mask, NeXTPC),
+diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
+index f413b1599a..b5a7713863 100644
+--- a/hw/m68k/q800-glue.c
++++ b/hw/m68k/q800-glue.c
+@@ -189,7 +189,7 @@ static const VMStateDescription vmstate_glue = {
+     .name = "q800-glue",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(ipr, GLUEState),
+         VMSTATE_UINT8(auxmode, GLUEState),
+         VMSTATE_TIMER_PTR(nmi_release, GLUEState),
 -- 
 2.34.1
 
