@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE767E28C6
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DAD7E28C9
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:34:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r01bA-00007t-E4; Mon, 06 Nov 2023 10:33:08 -0500
+	id 1r01b5-00082Z-UW; Mon, 06 Nov 2023 10:33:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r01b2-00087m-J7
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:33:01 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1r01ao-0007uU-Rz
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:48 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r01ak-0004NP-3E
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:58 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-32fdc5be26dso240888f8f.2
+ id 1r01am-0004NR-5D
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:46 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-32f70391608so2387771f8f.2
  for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:32:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699284760; x=1699889560; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=96tTRZzTo5lzHBefnnTujQF6PrCnnI8GATKXvxfKeEQ=;
- b=zWqjR1ddkhTIGwIvRagN2yOwjg1ceqpktgrmNN6Ua6PNIiO28QrC45AGHO/LdrzS81
- 8SmV2elE5/WX0Fs10+LSyMQtnp/3BA3Gfx+hgSTSMeBtz/UGxvKpfjxWV50+Zs1Q+0Tl
- 8a7cf/jANjo2KxDVPmvJtWw9zulo4zgsS0SiwzW4jgVkPcXsQx6CuQ3d2nZP2UA+FPrh
- oOa+LlbtLo5tA43ho9x2STjtW5Do1PYqJ5QWtc5LhwcFlDmEhJL9cqcsHVPgPlZ7/y9b
- pUlHM9xfOP2qqKyo3Jc8TjodnQRr/xVtT3GNlWyfW8zNtkmOB2cGeFjaDux+frgNVv0W
- 9ntw==
+ :reply-to; bh=o46GjiNGnFh5PFXpDP7cZHY+Rtqpr/iySpofJQGEQas=;
+ b=Mp17wgKJ1QOfL7bgcNpbLlagl9uSSLKU1tUw1hUy8HrQhcd7Ak5cLTIet9XCrzRE7u
+ xfosD6IW/Wkq3eSyn4/1j9NaudPsBdtXkOsHdhlahhcL0EVpfFZo+WL5cVK0HeaZq7tE
+ 3TCCuNGhFNXJnvSll1j8gs3IznzqtnEt3ie9fd7zvWssD8lPPz+deJpCYhMj3LGSPNwZ
+ D+aSz4tI8uJwJHS/0UpZ1Fisub0QcimRdb9E0CjZ5e2QmNu9726uvgAUyWij4vXphrUa
+ raLAzRYhjVtVSOHgyL5ztN6ThpzWn8TZNLh6hUO7e3ieBaOEF8r7wxBOxm4QouUnNOWW
+ ePbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699284760; x=1699889560;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=96tTRZzTo5lzHBefnnTujQF6PrCnnI8GATKXvxfKeEQ=;
- b=dlPlZrzDu50zSelw0KjCqI1k2pK+o1spKgnhv615M6tQvgXrjd4R8jrr4LDyJpq9DR
- mCPbGnc54oLJIH9u0kjD/vukUqN3RiUBtx2YXP4BGzouuEuliI3kfaVTjshUGPEhiekW
- DWMoPP+eG6W0lA2BSPVlXWzEg9rOLC6NJXfFYSLx0E9xNV3K1BYCxNxEYpGCib0qw6wY
- XxxWMS9Sy49ZYAksAafgP/7JUaXNNUkPsluNVJc9XndmVRtG5h6w3eLptBTAGjrjrBXd
- 9djMQDFWI4ppz3UJ3NXadux3vFbLPX/P2h2q3b34PJ/PA/ul15tlKvNWZZc5rZk+8IR6
- ov1A==
-X-Gm-Message-State: AOJu0Yx9ZI6/S4fl8Im5gvNqJ+PbOCBuFdPkn40dSJtkXdBTfcK3MQ1N
- PSm4gujjbEICPjJC4dKiv21WIyDQfa5v84qG/Ek=
-X-Google-Smtp-Source: AGHT+IHPmlUuxICiAlHqKqrmW+5a8ZkaEN0/HJVPPXo7rZyZLxGpI7vsw0sE2E2Sxo6NiNFXhJ7VIw==
-X-Received: by 2002:a5d:4a0c:0:b0:32d:a3ee:6f73 with SMTP id
- m12-20020a5d4a0c000000b0032da3ee6f73mr21204628wrq.42.1699284760088; 
+ bh=o46GjiNGnFh5PFXpDP7cZHY+Rtqpr/iySpofJQGEQas=;
+ b=Uyq1sPb5YV4QejzZH1gTe/aNEUhA/HpRbmoSNR7p7wGfsscWO34jVh5jkI56i0pYr6
+ skq8lj2sNL9ZlWJD7OUn6pY8FmYWVE+0aEA/elHuflR2bBC7m91ZZx5EsROIVAD52BPN
+ JRP620Wbu+JLN1OixEyKSENPMw2psyDCYnr5zLwI6HiT29vHHsfncOROp2l8MbDZLNQC
+ PDXFl/5iiLLICqoNl5MC9XRsCtWg7q0lv/A0qKiwzyVGFtHkdgqad15ujRk0m2yiwcYD
+ pU3+QVqrOMyxxM2MM5FUKnBLAjUNbPJNIK5GU7s78P1ItZpszvsB7wsMhhDq3NQ3FoFL
+ jWrw==
+X-Gm-Message-State: AOJu0YzKUE8PHU9EGhrOYGee5QJCejrjEKIhFDAPdI07vt6Yxw+YIvmx
+ XNaNQOkRWX4Hc1np9DjeS8J7IdOFX7TMv70aU6g=
+X-Google-Smtp-Source: AGHT+IEhsO+lI4GUtLu8r0soW8hf+Ot3RWwNxqgq73ivVYCH9Lm/hIPUi/qgonZm7Au9pjWXfVKTYQ==
+X-Received: by 2002:a5d:5b08:0:b0:32d:bb4a:525c with SMTP id
+ bx8-20020a5d5b08000000b0032dbb4a525cmr35199425wrb.14.1699284760477; 
  Mon, 06 Nov 2023 07:32:40 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d5-20020adff2c5000000b0032da6f17ffdsm9752176wrp.38.2023.11.06.07.32.39
+ d5-20020adff2c5000000b0032da6f17ffdsm9752176wrp.38.2023.11.06.07.32.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 07:32:39 -0800 (PST)
+ Mon, 06 Nov 2023 07:32:40 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/12] tests/qtest/bios-tables-test: Allow changes to virt SPCR
- and DBG2
-Date: Mon,  6 Nov 2023 15:32:28 +0000
-Message-Id: <20231106153238.1426649-3-peter.maydell@linaro.org>
+Subject: [PULL 03/12] hw/arm/virt: Report correct register sizes in ACPI
+ DBG2/SPCR tables.
+Date: Mon,  6 Nov 2023 15:32:29 +0000
+Message-Id: <20231106153238.1426649-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106153238.1426649-1-peter.maydell@linaro.org>
 References: <20231106153238.1426649-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,22 +91,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow changes to the virt board SPCR and DBG2 -- we are going to fix
-an error in the UART descriptions there.
+From: Udo Steinberg <udo@hypervisor.org>
 
+Documentation for using the GAS in ACPI tables to report debug UART addresses at
+https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-debug-port-table
+states the following:
+
+- The Register Bit Width field contains the register stride and must be a
+  power of 2 that is at least as large as the access size.  On 32-bit
+  platforms this value cannot exceed 32.  On 64-bit platforms this value
+  cannot exceed 64.
+- The Access Size field is used to determine whether byte, WORD, DWORD, or
+  QWORD accesses are to be used.  QWORD accesses are only valid on 64-bit
+  architectures.
+
+Documentation for the ARM PL011 at
+https://developer.arm.com/documentation/ddi0183/latest/
+states that the registers are:
+
+- spaced 4 bytes apart (see Table 3-2), so register stride must be 32.
+- 16 bits in size in some cases (see individual registers), so access
+  size must be at least 2.
+
+Linux doesn't seem to care about this error in the table, but it does
+affect at least the NOVA microhypervisor.
+
+In theory we therefore have a choice between reporting the access
+size as 2 (16 bit accesses) or 3 (32-bit accesses).  In practice,
+Linux does not correctly handle the case where the table reports the
+access size as 2: as of kernel commit 750b95887e5678, the code in
+acpi_parse_spcr() tries to tell the serial driver to use 16 bit
+accesses by passing "mmio16" in the option string, but the PL011
+driver code in pl011_console_match() only recognizes "mmio" or
+"mmio32". The result is that unless the user has enabled 'earlycon'
+there is no console output from the guest kernel.
+
+We therefore choose to report the access size as 32 bits; this works
+for NOVA and also for Linux.  It is also what the UEFI firmware on a
+Raspberry Pi 4 reports, so we're in line with existing real-world
+practice.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1938
+Signed-off-by: Udo Steinberg <udo@hypervisor.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: minor commit message tweaks; use 32 bit accesses]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/arm/virt-acpi-build.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8bf..6673e2c4c13 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,3 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/virt/SPCR",
-+"tests/data/acpi/virt/DBG2",
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 9ce136cd88c..8bc35a483c9 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -482,7 +482,7 @@ build_spcr(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     build_append_int_noprefix(table_data, 3, 1); /* ARM PL011 UART */
+     build_append_int_noprefix(table_data, 0, 3); /* Reserved */
+     /* Base Address */
+-    build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 8, 0, 1,
++    build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 32, 0, 3,
+                      vms->memmap[VIRT_UART].base);
+     /* Interrupt Type */
+     build_append_int_noprefix(table_data,
+@@ -673,7 +673,7 @@ build_dbg2(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     build_append_int_noprefix(table_data, 34, 2);
+ 
+     /* BaseAddressRegister[] */
+-    build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 8, 0, 1,
++    build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 32, 0, 3,
+                      vms->memmap[VIRT_UART].base);
+ 
+     /* AddressSize[] */
 -- 
 2.34.1
 
