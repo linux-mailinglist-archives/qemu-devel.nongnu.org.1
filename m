@@ -2,90 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260117E2B01
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 18:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49C27E2B02
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 18:35:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r03Uz-0000hZ-Hs; Mon, 06 Nov 2023 12:34:53 -0500
+	id 1r03VC-0000lp-Us; Mon, 06 Nov 2023 12:35:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r03Uv-0000h2-4Y
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:34:49 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r03VA-0000lO-DH
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:35:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r03Ut-0004DW-Ic
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:34:48 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r03V8-0004GH-Po
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 12:35:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699292086;
+ s=mimecast20190719; t=1699292101;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pjtfdoPhiu6YhTNwxQ3V4nWfUTTKbOipm8LihzWqqvU=;
- b=cmn/YaKTl8B+c02QMtYUBUeNS+OiVpBF8I6fJxzV6+s05JXZd9pYQ3kl1WLhxymgoPXX2e
- tKwIj7dlbcNBflnFVjOdDZCVlbSHgvsin4zTPqiv4++ndFg8u1vPfHzjLntez3CLa+CzH3
- k2363Jt5gHSQVvZQ34vtZfmiFRyZTvc=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0F7BYeNOF8ehL/D4gkovhRx9kFJUvRloafDKG+KV9Qs=;
+ b=IZIYQZU5oTrrLtlVwQ7cHb7UDimzyPgGWH7dCzb+/dLIFrUwu5YEgdzXCYuodUezOWQJKG
+ EQSVRKlFlLSaocWhhAnbKtrxOZGRD7hXchSLJR4cmb6jh2l/9KAPBDfTYCPGFHnOwLFJ0c
+ LWsi1ueBMdy3FrLd3BYI0SZmKv6ZvD4=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-73-O0hsOh3hMKaWhkDhEAWExA-1; Mon, 06 Nov 2023 12:34:43 -0500
-X-MC-Unique: O0hsOh3hMKaWhkDhEAWExA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-41cc6fa3ea4so50713911cf.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 09:34:43 -0800 (PST)
+ us-mta-339-cGY9ojxgPnqQ3SCUL0BvrA-1; Mon, 06 Nov 2023 12:34:49 -0500
+X-MC-Unique: cGY9ojxgPnqQ3SCUL0BvrA-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-5079fe7cc7cso5399244e87.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 09:34:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699292083; x=1699896883;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pjtfdoPhiu6YhTNwxQ3V4nWfUTTKbOipm8LihzWqqvU=;
- b=dmrrQcg9ggppCfF0XPShC2d3VGWrEA9vCJJNZvtvQoqx2m3t4FKB9A3UV4sMzwhp98
- CCDJXdulRDU+Tfgt7Cukvb2DORxaSQuxCBO/A2nfGQO2RcZX2JsHZk8KgbtabXqOvcz8
- 0Penw5UJKOYMlj9NH8vPnI7yTuGGDdxZtpyPOgVWT8RsCPkIJsWy2AicfNqJ5Qa6IdtA
- esJ1cOiE7ln/oIxeJTDoVcXF8bUjswZcVF+Qh68fDrHwJXi/5tyg28d8qKBm6JkyGNI1
- VJbIe2blYM7eShdc71W0zw2sEOlY0ltfDmvn7WJeAO+DKt+gqxixywt+fxSaGIhTbjO6
- n76Q==
-X-Gm-Message-State: AOJu0YxPFu8WToQSassyjfI9PmDtEIb34ma/lD7Vj18B0zmr9liWWxJQ
- +H5UM2O/lkyEux87eA1uE2kGW7Q7UzOE3yQdl0INtQkDKBrTno9Efz3N3YBMeAFB1Vk0G+6I7sW
- 7ZhR/CGbBjR5TznU=
-X-Received: by 2002:a05:622a:13c8:b0:41e:a723:732 with SMTP id
- p8-20020a05622a13c800b0041ea7230732mr8511088qtk.33.1699292082900; 
- Mon, 06 Nov 2023 09:34:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEyFDuSU9NnEYIJ4tBYR3RXWIOI+U1Vy1SshKG4HF2h/o9oAZjEcojVcI2TVkJau5h0mqlbXA==
-X-Received: by 2002:a05:622a:13c8:b0:41e:a723:732 with SMTP id
- p8-20020a05622a13c800b0041ea7230732mr8511075qtk.33.1699292082655; 
- Mon, 06 Nov 2023 09:34:42 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- bq8-20020a05622a1c0800b0041abcc69050sm3552232qtb.95.2023.11.06.09.34.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 09:34:42 -0800 (PST)
-Message-ID: <a1ea92c7-6e3f-45dd-a8f5-528c15f2b826@redhat.com>
-Date: Mon, 6 Nov 2023 18:34:38 +0100
+ d=1e100.net; s=20230601; t=1699292088; x=1699896888;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0F7BYeNOF8ehL/D4gkovhRx9kFJUvRloafDKG+KV9Qs=;
+ b=wzh1Zn/TJxViQZyLHDp6u6NOCISvg0Dq3m2sPH9Lec68FDZQbZhU8DBYLLf8CBDSif
+ B5LzamVm1L2dpn9dc9DkOKYD9fUR3rZ4iR0KGuM5YchjcTfXOVNz5j4qLfZeueAgC8tT
+ mymUU+D28P0xSkMYcIDyot3GDtrMJYGBbHp3c2oHkCqx2F+yKhLkip5eARujZLj7TJWr
+ 9WG0+tN4tVxrdZ1/rBWxxIsmC7O3RQWYawCrSMcg2xog9p8VibEH0oSM5G0uZRmQk7du
+ iKWWRXecHZYvJnYCwekKColxDQbPPwU8mTObMW+ipPXKJIUbkaZJx7hvbbOf1alewAZG
+ 5PqQ==
+X-Gm-Message-State: AOJu0YzrOhikKvRmqjameyldFXbv/cBNwbqjsvY91NAfViaGmDNdcqZT
+ aryFkrmCvsCo4YFljBiQVXTc9lP/KrdcEzoX0Z26F0IsbkicujO/qb5YbJGiFpOvlvuUOFSzF7d
+ 3X/kkSFDXUuS36xM=
+X-Received: by 2002:a05:6512:3d8e:b0:507:9854:3b95 with SMTP id
+ k14-20020a0565123d8e00b0050798543b95mr26558012lfv.14.1699292087845; 
+ Mon, 06 Nov 2023 09:34:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEZMTjB26C1diZGoFeNLxgYBVnMxlXsc4nebZG5PB3sxJLm94VLYljqXtBHK1quSN+q8FVBzQ==
+X-Received: by 2002:a05:6512:3d8e:b0:507:9854:3b95 with SMTP id
+ k14-20020a0565123d8e00b0050798543b95mr26557991lfv.14.1699292087456; 
+ Mon, 06 Nov 2023 09:34:47 -0800 (PST)
+Received: from redhat.com ([5.102.242.158]) by smtp.gmail.com with ESMTPSA id
+ e14-20020a5d530e000000b0032daf848f68sm161956wrv.59.2023.11.06.09.34.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 09:34:46 -0800 (PST)
+Date: Mon, 6 Nov 2023 12:34:44 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: viresh.kumar@linaro.org, lulu@redhat.com, qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH] virtio: rng: Check notifier helpers for
+ VIRTIO_CONFIG_IRQ_IDX
+Message-ID: <20231106123302-mutt-send-email-mst@kernel.org>
+References: <20231025171841.3379663-1-mathieu.poirier@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 23/41] vfio/spapr: Move prereg_listener into spapr
- container
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>
-References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-24-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231102071302.1818071-24-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231025171841.3379663-1-mathieu.poirier@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -94,7 +81,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,113 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/2/23 08:12, Zhenzhong Duan wrote:
-> No functional changes intended.
+On Wed, Oct 25, 2023 at 11:18:41AM -0600, Mathieu Poirier wrote:
+> Since the driver doesn't support interrupts, we must return early when
+> index is set to VIRTIO_CONFIG_IRQ_IDX.  Basically the same thing Viresh
+> did for "91208dd297f2 virtio: i2c: Check notifier helpers for
+> VIRTIO_CONFIG_IRQ_IDX".
 > 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Fixes: 544f0278afca ("virtio: introduce macro VIRTIO_CONFIG_IRQ_IDX")
+> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
+So vhost-user-rng is now switching to use the generic base device.
+Alex could you help suggest how to rebase this on top of your series please?
 
 > ---
->   include/hw/vfio/vfio-common.h |  1 -
->   hw/vfio/spapr.c               | 24 ++++++++++++++++--------
->   2 files changed, 16 insertions(+), 9 deletions(-)
+>  hw/virtio/vhost-user-rng.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 055f679363..ed6148c058 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -78,7 +78,6 @@ struct VFIOGroup;
->   typedef struct VFIOContainer {
->       VFIOContainerBase bcontainer;
->       int fd; /* /dev/vfio/vfio, empowered by the attached groups */
-> -    MemoryListener prereg_listener;
->       unsigned iommu_type;
->       QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
->       QLIST_HEAD(, VFIOGroup) group_list;
-> diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-> index 5be1911aad..68c3dd6c75 100644
-> --- a/hw/vfio/spapr.c
-> +++ b/hw/vfio/spapr.c
-> @@ -26,6 +26,7 @@
->   
->   typedef struct VFIOSpaprContainer {
->       VFIOContainer container;
-> +    MemoryListener prereg_listener;
->   } VFIOSpaprContainer;
->   
->   static bool vfio_prereg_listener_skipped_section(MemoryRegionSection *section)
-> @@ -48,8 +49,9 @@ static void *vfio_prereg_gpa_to_vaddr(MemoryRegionSection *section, hwaddr gpa)
->   static void vfio_prereg_listener_region_add(MemoryListener *listener,
->                                               MemoryRegionSection *section)
->   {
-> -    VFIOContainer *container = container_of(listener, VFIOContainer,
-> -                                            prereg_listener);
-> +    VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
-> +                                                  prereg_listener);
-> +    VFIOContainer *container = &scontainer->container;
->       VFIOContainerBase *bcontainer = &container->bcontainer;
->       const hwaddr gpa = section->offset_within_address_space;
->       hwaddr end;
-> @@ -107,8 +109,9 @@ static void vfio_prereg_listener_region_add(MemoryListener *listener,
->   static void vfio_prereg_listener_region_del(MemoryListener *listener,
->                                               MemoryRegionSection *section)
->   {
-> -    VFIOContainer *container = container_of(listener, VFIOContainer,
-> -                                            prereg_listener);
-> +    VFIOSpaprContainer *scontainer = container_of(listener, VFIOSpaprContainer,
-> +                                                  prereg_listener);
-> +    VFIOContainer *container = &scontainer->container;
->       const hwaddr gpa = section->offset_within_address_space;
->       hwaddr end;
->       int ret;
-> @@ -445,6 +448,8 @@ static void setup_spapr_ops(VFIOContainerBase *bcontainer)
->   int vfio_spapr_container_init(VFIOContainer *container, Error **errp)
->   {
->       VFIOContainerBase *bcontainer = &container->bcontainer;
-> +    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
-> +                                                  container);
->       struct vfio_iommu_spapr_tce_info info;
->       bool v2 = container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU;
->       int ret, fd = container->fd;
-> @@ -463,9 +468,9 @@ int vfio_spapr_container_init(VFIOContainer *container, Error **errp)
->               return -errno;
->           }
->       } else {
-> -        container->prereg_listener = vfio_prereg_listener;
-> +        scontainer->prereg_listener = vfio_prereg_listener;
->   
-> -        memory_listener_register(&container->prereg_listener,
-> +        memory_listener_register(&scontainer->prereg_listener,
->                                    &address_space_memory);
->           if (bcontainer->error) {
->               ret = -1;
-> @@ -513,7 +518,7 @@ int vfio_spapr_container_init(VFIOContainer *container, Error **errp)
->   
->   listener_unregister_exit:
->       if (v2) {
-> -        memory_listener_unregister(&container->prereg_listener);
-> +        memory_listener_unregister(&scontainer->prereg_listener);
->       }
->       return ret;
->   }
-> @@ -523,7 +528,10 @@ void vfio_spapr_container_deinit(VFIOContainer *container)
->       VFIOHostDMAWindow *hostwin, *next;
->   
->       if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
-> -        memory_listener_unregister(&container->prereg_listener);
-> +        VFIOSpaprContainer *scontainer = container_of(container,
-> +                                                      VFIOSpaprContainer,
-> +                                                      container);
-> +        memory_listener_unregister(&scontainer->prereg_listener);
->       }
->       QLIST_FOREACH_SAFE(hostwin, &container->hostwin_list, hostwin_next,
->                          next) {
+> diff --git a/hw/virtio/vhost-user-rng.c b/hw/virtio/vhost-user-rng.c
+> index 201a39e220c5..62142b717f73 100644
+> --- a/hw/virtio/vhost-user-rng.c
+> +++ b/hw/virtio/vhost-user-rng.c
+> @@ -129,6 +129,14 @@ static void vu_rng_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
+>  {
+>      VHostUserRNG *rng = VHOST_USER_RNG(vdev);
+>  
+> +    /*
+> +     * We don't support interrupts, return early if index is set to
+> +     * VIRTIO_CONFIG_IRQ_IDX.
+> +     */
+> +    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
+> +        return;
+> +    }
+> +
+>      vhost_virtqueue_mask(&rng->vhost_dev, vdev, idx, mask);
+>  }
+>  
+> @@ -136,6 +144,14 @@ static bool vu_rng_guest_notifier_pending(VirtIODevice *vdev, int idx)
+>  {
+>      VHostUserRNG *rng = VHOST_USER_RNG(vdev);
+>  
+> +    /*
+> +     * We don't support interrupts, return early if index is set to
+> +     * VIRTIO_CONFIG_IRQ_IDX.
+> +     */
+> +    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
+> +        return false;
+> +    }
+> +
+>      return vhost_virtqueue_pending(&rng->vhost_dev, idx);
+>  }
+>  
+> -- 
+> 2.34.1
 
 
