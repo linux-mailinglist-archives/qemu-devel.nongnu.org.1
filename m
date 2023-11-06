@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824EA7E28C5
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 376377E28C8
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:34:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r01b9-0008T5-BN; Mon, 06 Nov 2023 10:33:07 -0500
+	id 1r01bC-00009G-7D; Mon, 06 Nov 2023 10:33:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r01aw-00082V-RS
+ id 1r01aw-00082P-PW
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:57 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r01ao-0004Nz-KD
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:54 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-50939d39d0fso6002592e87.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:32:45 -0800 (PST)
+ id 1r01am-0004O4-Of
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:32:52 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-32d834ec222so2395881f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:32:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699284762; x=1699889562; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699284763; x=1699889563; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FyfVKDCKSbX1qCn7TkWmEojEjptuQVtP+7ASpyyGWlA=;
- b=UeTsLrCnVxGEK/w5UMn66GN06CHTupRR1mYGkrm4AGFo474MEjXyLRqyYu6kZM5Nzo
- 7uAoVmmOos6ak7KuMutlY3xgVNx4QBkGcjRHQmMHIxv3tr8EbY7x2wQehwCKowfuT7cW
- otDW16PKPSSFg9BeTHrgrExDmGt0F/Xsbbs49WZNAXurldYuzknDQYJ/zeECuGsMhB2z
- NSceld2Me1jmiKqolwrS0nxcoEonwP7LKE/UKCX2a23fTz2M6pnKjtUyQzq5NJXmk6gx
- qOCydbJXgJPWBsRqHusUbm4jqzhD/bUb4m0cErwZsnO0HllDyExyupnN6pIjrdrJYQ1p
- h/EA==
+ :reply-to; bh=nlNPCN/IoODLnyMcuMdcFvSi7ZKXsxk62aEPG2/TY9M=;
+ b=ObA0z+6v0qdVJvh9S15f0K34nasikDNEw/JTvjtfFsz/xnCdQwrE29B4D+UcYERInC
+ S2eqflDceoT5I6vN86JQkBSwZNnKipXjKGqPfFOcuG9XLhyez1Bz7X/0VSw6H8w9qLcj
+ LmWSyphX2FmSqX608Bl2OLmtc0z1f70hmYCki7t61tphsmkMHCrouLswYuSOh87t4Hs2
+ bzgQfKl2LV92I2mXGBGrSbK7eODpFQRVimM3MOlca7QjXB7s4yuYhFPBQwlzIczYRG5x
+ f9NozbuqYF0onFx/oGq/oClDUnAGHvNe7KtIv1yMbekGjj56DpOKYt9vOXQ/6fDWc6t3
+ 0s0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699284762; x=1699889562;
+ d=1e100.net; s=20230601; t=1699284763; x=1699889563;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FyfVKDCKSbX1qCn7TkWmEojEjptuQVtP+7ASpyyGWlA=;
- b=Hc+AKVyTl9+T5s2L+uJmHx49kvNYbwuXSS/ey4EKF+X05rLzNFbeRL//OuGm26t0vB
- d86gr+/xvezzrMcbGZFOl3aAdHkRhT1OLZ8THgJarsvMSzQEM7IzKEEpz/rociJ9EYc3
- g765vEaJhRT0L6ne/T4IlxwXU94HOR8jNj1Ge+xukiDAFZ+PZXIhJZxATOeu0k/q5D/f
- h2r0Ba8dAc4fN4dUy+ghjqQkW63nDygb4eqooou1wdcu2nsLLQzdvWmwqFBivNVzQgWh
- ARfekvcxcT67KO8zKGBXuToN0v4LIvde4ACaSkiueh0+3UpmQ6YRhrKwZeCOasXOMXAT
- R92A==
-X-Gm-Message-State: AOJu0YyW52CNN5EIErrLNEcigJ7inpJHPvV252UKKx+tcoHQ94zPGA/p
- 3LvX7+cKiZTmk2SaBamY7V647eIAtSMocCkif6c=
-X-Google-Smtp-Source: AGHT+IHpA+9iodkCC+N81AJKeuqWQ4mEodPKR4+xQGDolCORbisS34N1oAUcEw8UKzhsnX6+5ysoSQ==
-X-Received: by 2002:a05:6512:488e:b0:509:d97:c850 with SMTP id
- eq14-20020a056512488e00b005090d97c850mr19935769lfb.31.1699284762704; 
- Mon, 06 Nov 2023 07:32:42 -0800 (PST)
+ bh=nlNPCN/IoODLnyMcuMdcFvSi7ZKXsxk62aEPG2/TY9M=;
+ b=KYl+7/2djtXFJ4nzhEzlTPu9u4EB7kAU4fZiO1Wet/TDDbkhh8gS/a0K2AzWjXGjJv
+ rW2cXXufjhBFLhZZ3p5dcrcYcAK9C8KX+Mf7quXOrnWcJiJWEOP3SiKbmDCuVwUd9PJB
+ EO9MlQQb5Wtmp/lkcG22uS6yMO6oDZJgAuxOxf09FhwSZRf3V7rRNA/GQUlDKERsg0IE
+ GEGPJ14erfyOEpzD4kHqSW+y7eTYyXJhGq19cp0gpDJX+ecUHXx04YSpgNr8EtlpWBoe
+ B6nuiCvhHEUIWpDKe4Bb7p9NicD6LRAjPnFlev9Hane/weE7cH3kPAACN5/KJB4Jifqh
+ h1wA==
+X-Gm-Message-State: AOJu0YxlYqad2k5ZSIEiakcA+lsAu21e2OYUzmKkcbKM4UNI+OWHjgvh
+ EWj18mWDClpENrUySRZV5ZBo13cB/nbH6+9N0qY=
+X-Google-Smtp-Source: AGHT+IHddsHSh75iVtEg9kq2V7YTnM1C4B7AwdgHfSCrKfaAxxcWT6oZ7a3sZPdVH98aSY2JuFsweA==
+X-Received: by 2002:a05:6000:178e:b0:32f:8d4a:efa8 with SMTP id
+ e14-20020a056000178e00b0032f8d4aefa8mr18920746wrg.23.1699284763144; 
+ Mon, 06 Nov 2023 07:32:43 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  d5-20020adff2c5000000b0032da6f17ffdsm9752176wrp.38.2023.11.06.07.32.42
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 06 Nov 2023 07:32:42 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/12] mc146818rtc: rtc_set_time(): initialize tm to zeroes
-Date: Mon,  6 Nov 2023 15:32:33 +0000
-Message-Id: <20231106153238.1426649-8-peter.maydell@linaro.org>
+Subject: [PULL 08/12] block/nvme: nvme_process_completion() fix bound for cid
+Date: Mon,  6 Nov 2023 15:32:34 +0000
+Message-Id: <20231106153238.1426649-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106153238.1426649-1-peter.maydell@linaro.org>
 References: <20231106153238.1426649-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,31 +92,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-set_time() function doesn't set all the fields, so it's better to
-initialize tm structure. And Coverity will be happier about it.
+NVMeQueuePair::reqs has length NVME_NUM_REQS, which less than
+NVME_QUEUE_SIZE by 1.
 
+Fixes: 1086e95da17050 ("block/nvme: switch to a NVMeRequest freelist")
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
-Message-id: 20231017125941.810461-4-vsementsov@yandex-team.ru
+Message-id: 20231017125941.810461-5-vsementsov@yandex-team.ru
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/rtc/mc146818rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/nvme.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
-index c27c362db9e..2d391a83969 100644
---- a/hw/rtc/mc146818rtc.c
-+++ b/hw/rtc/mc146818rtc.c
-@@ -599,7 +599,7 @@ static void rtc_get_time(MC146818RtcState *s, struct tm *tm)
- 
- static void rtc_set_time(MC146818RtcState *s)
- {
--    struct tm tm;
-+    struct tm tm = {};
-     g_autofree const char *qom_path = object_get_canonical_path(OBJECT(s));
- 
-     rtc_get_time(s, &tm);
+diff --git a/block/nvme.c b/block/nvme.c
+index 96b3f8f2fa1..0a0a0a6b36c 100644
+--- a/block/nvme.c
++++ b/block/nvme.c
+@@ -417,9 +417,10 @@ static bool nvme_process_completion(NVMeQueuePair *q)
+             q->cq_phase = !q->cq_phase;
+         }
+         cid = le16_to_cpu(c->cid);
+-        if (cid == 0 || cid > NVME_QUEUE_SIZE) {
+-            warn_report("NVMe: Unexpected CID in completion queue: %"PRIu32", "
+-                        "queue size: %u", cid, NVME_QUEUE_SIZE);
++        if (cid == 0 || cid > NVME_NUM_REQS) {
++            warn_report("NVMe: Unexpected CID in completion queue: %" PRIu32
++                        ", should be within: 1..%u inclusively", cid,
++                        NVME_NUM_REQS);
+             continue;
+         }
+         trace_nvme_complete_command(s, q->index, cid);
 -- 
 2.34.1
 
