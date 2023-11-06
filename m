@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DD17E2C6A
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F8A7E2C6B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:54:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r04jA-0003Kf-C9; Mon, 06 Nov 2023 13:53:36 -0500
+	id 1r04jk-0006pd-1I; Mon, 06 Nov 2023 13:54:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1r04j6-00035h-51
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:53:33 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r04jh-0006Rw-Bb
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:54:09 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1r04j3-0001Lt-LP
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:53:31 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-99bdeae1d0aso741332966b.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:53:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r04jf-0001gB-Gi
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:54:08 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5406c099cebso7993282a12.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:54:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1699296804; x=1699901604; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AvezSN2jJpAYK7j7CUTaQfw7kMn0xMWGYU6eD5jFk+g=;
- b=Qdd2thuFAsahpi9JsNqkm88pTUFo+xT5dVU7n4fNwVILdptyqQf9zWt15fGwBk8KMh
- Bt5r2meSzvBWVddfy1uE2gwEa0LWQHTXJmD/lwd3+L+BqYjuSAKRyBYZ1PrVWbu7dfSY
- fxSN2x82RqAFFbR+03rtDCtf0o6VG3BjxtKDZth/aoeP7c33GIYZ5XgXOdFbnF2ESpL6
- HMAmXjvCqHN77W7L29Pac3wvGCk+OSnbRQm5cl8VrhXf2ADl5lu0OHa3f8fo3IEcd3EM
- J20C7JnSv7Mj86CbG1uuIhpplBPJKiU5tVIsTVq9MDuGGH01/CqKO4eGnUWNqeMOLMS1
- M40w==
+ d=linaro.org; s=google; t=1699296845; x=1699901645; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AWyNCT41O/cD+GcfrlVN7Nm3WeuSnMVYzvPDZMqtGO0=;
+ b=bQI04tvYkCn+79uGHoYjDS8/qdl19kXQ0bITOQrr5lzh1c1tUedpQlwYxxj0KM1YYe
+ oQg9m22bpjjcXoOSt7G81SeYYeD5OdtRZIoVdCedHH5MF/hLtyOyioyKA/Q1evi4CSvg
+ hlMv1XwXKp8J2kO60LnXXmHWP5F9Q0QSecwXwwqTOk2jmTjFD5OFiK/baEKX1FlZ1p2H
+ WmkhMLKhFrLcJRkBSbGOqKTng5p6mgdrLQtT+efbD/LBl7fEXRvq7pOgmY0z14DttDSo
+ 2nkrel3IQe1SWfbsqOs6RLJ3CjlU44bn+A2UoTsz8MbJ8SbtJSSYphtvSUIFUIEMtUb4
+ ohww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699296804; x=1699901604;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AvezSN2jJpAYK7j7CUTaQfw7kMn0xMWGYU6eD5jFk+g=;
- b=vbNbxDw/RW00V8+1SssGnE5Lcy5MdAuVS0Xry/O0WPxXYTmY4I54+tRUykOBUnzvsm
- xw5XBh06sajJbIne3xQV63zi2kZYB3gmhC96+B5zbYbdwjUkjtAKUo+AiQkVXopOaC6d
- XTXoSi1QifU2Bd/TwaGU8choaPv9bnGTyM21ZxALC4fr4zhxqfoMoMncZTFyGKtIKJqa
- K4KzUwgUIsDfaM2IGi1ycEusYBCg+bi8LFS6D6SDaWmFB9FTsWJTRHVtgmJYoHAfHB/T
- 6lu7Ru6nDYFdtE8oT1+okEQRpLR/L29K7FstQ5falysM6eLaf+wTHPKvNeq5HuGaGcX6
- hDeg==
-X-Gm-Message-State: AOJu0Ywcmlvh6N91etP+3z0sjJjk2CgKo6GidAGnjR5vS8awFhaaJxVi
- oiW/t+aFCIX33ivhP/+cAJdvem0A9jFAatd2qxOrkszuifiOZ+9F
-X-Google-Smtp-Source: AGHT+IHx0OJL+JY5shdJCys5leKZwHv2sibPwjGSaTqLhwziuvZTX9fzyuiNQ4abjwWLIawdFGdfhvhmMVIDcRHs1Lo=
-X-Received: by 2002:a17:906:4f96:b0:9dc:2291:d384 with SMTP id
- o22-20020a1709064f9600b009dc2291d384mr9161184eju.22.1699296803977; Mon, 06
- Nov 2023 10:53:23 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699296845; x=1699901645;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AWyNCT41O/cD+GcfrlVN7Nm3WeuSnMVYzvPDZMqtGO0=;
+ b=Zj1/dD9NqY4waEQAH/sn4TRo0cdDENgRqey9ZwACZccoblEF8CVX5PwaEyMTIHBrgW
+ rKzjVSEInyahYBmgeLteB34/HkSFVxZKqmodAE8ESkrB9nPhAZFoz0Z1OURAcrIvF9kN
+ F3N6RfkLwrA9n8hgmLKTzB3SZND7ghUYOy11hQb2LsRkXvsxIYQ0tT3s+H5mZX+1bvQ2
+ egn6GONKw1ZcCYmfoixYCm9KSK3jCLbnDljdFC5cGY0LIGzsvktlcjqgnGu2NAuAG9HW
+ aEel8Jneey7GVl/x0l6M+q+YtKqoESTWgYkrZFaW6fI4yDKAqs7Y1PfolICY190vur70
+ X63Q==
+X-Gm-Message-State: AOJu0YxQYWxBgtC+b2TgD4WxDAR7p4R4DifT+8f7yZhovn+yhn4o12eV
+ yMt2JD6vv2ZeBE+L4Kfhokq7NQ==
+X-Google-Smtp-Source: AGHT+IGfxBF0JQROFXZVJvr+6lwnJSM+FfX8Z9WRIE5M1FGyXvI2yTBjeQlKaSwTJB7AFHHzQZ0ipg==
+X-Received: by 2002:a17:907:94d3:b0:9d4:2080:61d2 with SMTP id
+ dn19-20020a17090794d300b009d4208061d2mr15141015ejc.2.1699296845428; 
+ Mon, 06 Nov 2023 10:54:05 -0800 (PST)
+Received: from [192.168.69.115] ([176.172.125.26])
+ by smtp.gmail.com with ESMTPSA id
+ q23-20020a1709064c9700b0099bcdfff7cbsm134356eju.160.2023.11.06.10.54.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Nov 2023 10:54:05 -0800 (PST)
+Message-ID: <1b1ea848-e3f9-501a-e01b-ba438baad60d@linaro.org>
+Date: Mon, 6 Nov 2023 19:54:03 +0100
 MIME-Version: 1.0
-References: <20231025193822.2813204-1-hao.xiang@bytedance.com>
- <20231025193822.2813204-2-hao.xiang@bytedance.com> <87zg041c42.fsf@suse.de>
- <CAAYibXh+E-ZJ7SKMJie=NG8x8_hP9B5AxYZMXxXY2cK9QuuPrw@mail.gmail.com>
- <87msw0nrfb.fsf@suse.de>
-In-Reply-To: <87msw0nrfb.fsf@suse.de>
-From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Mon, 6 Nov 2023 10:53:13 -0800
-Message-ID: <CAAYibXgPr_8wYOqf8QaWcytPRJUGcjhJmtWCni8J1dej27Jf+Q@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH 01/16] Cherry pick a set of patches that
- enables multifd zero page feature.
-To: Fabiano Rosas <farosas@suse.de>
-Cc: quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com, 
- bryan.zhang@bytedance.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=hao.xiang@bytedance.com; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 23/35] tcg/ppc: Sink tcg_to_bc usage into tcg_out_bc
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20231028194522.245170-1-richard.henderson@linaro.org>
+ <20231028194522.245170-24-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231028194522.245170-24-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.085,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,72 +93,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 30, 2023 at 6:58=E2=80=AFAM Fabiano Rosas <farosas@suse.de> wro=
-te:
->
-> Hao Xiang <hao.xiang@bytedance.com> writes:
->
-> > On Fri, Oct 27, 2023 at 5:30=E2=80=AFAM Fabiano Rosas <farosas@suse.de>=
- wrote:
-> >>
-> >> Hao Xiang <hao.xiang@bytedance.com> writes:
-> >>
-> >> > Juan Quintela had a patchset enabling zero page checking in multifd
-> >> > threads.
-> >> >
-> >> > https://lore.kernel.org/all/20220802063907.18882-13-quintela@redhat.=
-com/
-> >>
-> >> Hmm, risky to base your series on code more than an year old. We shoul=
-d
-> >> bother Juan so he sends an updated version for review.
-> >>
-> >> I have concerns about that series. First is why are we doing payload
-> >> processing (i.e. zero page detection) in the multifd thread. And that
-> >> affects your series directly, because AFAICS we're now doing more
-> >> processing still.
-> >>
-> >
-> > I am pretty new to QEMU so my take could be wrong. We can wait for Juan
-> > to comment here. My understanding is that the migration main loop was o=
-riginally
-> > designed to handle single sender thread (before multifd feature). Zero
-> > page checking
-> > is a pretty CPU intensive operation. So in case of multifd, we scaled
-> > up the number
-> > of sender threads in order to saturate network traffic.
->
-> Right. That's all fine.
->
-> > Doing zero page checking in the
-> > main loop is not going to scale with this new design.
->
-> Yep. Moving work outside of the main loop is reasonable. Juan is
-> focusing on separating the migration code from the QEMUFile internals,
-> so moving zero page into multifd is a step in the right direction from
-> that perspective.
->
-> > In fact, we
-> > (Bytedance) has merged
-> > Juan's change into our internal QEMU and we have been using this
-> > feature since last
-> > year. I was told that it improved performance pretty significantly.
-> > Ideally, I would love to
-> > see zero page checking be done in a separate thread pool so we can
-> > scale it independently
-> > from the sender threads but doing it in the sender thread is an
-> > inexpensive way to scale.
->
-> Yep, you got the point. And I acknowledge that reusing the sender
-> threads is the natural next step. Even if we go that route, let's make
-> sure it still leaves us space to separate pre-processing from actual
-> sending.
+On 28/10/23 21:45, Richard Henderson wrote:
+> Rename the current tcg_out_bc function to tcg_out_bc_lab, and
+> create a new function that takes an integer displacement + link.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/ppc/tcg-target.c.inc | 28 +++++++++++++++++-----------
+>   1 file changed, 17 insertions(+), 11 deletions(-)
 
-Totally agree. Right now, pre-processing is more than zero page
-checking. One can turn on compression/decompression and those are done
-before actual sending as well. Currently, using CPU (even multiple
-threads) to do compression/decompression doesn't quite match today's
-large network throughput but hardware acceleration like Intel's QAT
-can really make a difference. To make that happen, there needs some
-refactoring on the multifd sender/receiver path.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
