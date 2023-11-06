@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453607E1AF4
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122227E1A9D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:00:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztZZ-0004XL-2U; Mon, 06 Nov 2023 01:58:57 -0500
+	id 1qztZd-0004Za-Du; Mon, 06 Nov 2023 01:59:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZN-0004UI-DY
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:45 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1qztZO-0004V6-Pk
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:46 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZL-0001OV-M6
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:45 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-5b97ca78da8so2678933a12.3
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:43 -0800 (PST)
+ id 1qztZM-0001Oj-GS
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:46 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1ccbb7f79cdso5485845ad.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699253922; x=1699858722; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699253923; x=1699858723; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2PhUC+9kvh84R2fbWfuNd1Ay5hqcHoYqA4DGopSo4Pk=;
- b=eAyAlVgZhPZl0fsMM8xsZSSvJb86JXFrh8cLWg3xqVwPkC1nGpJUwh8i98XZddCxcP
- tUjBtA79ppJBFcd8hgO0WAf3sFImX/D4UEFXgmAuFqJZMAYt8+bRH4kmS//L3jNbyGdh
- 7mmoYVPxubqQt1ofcxnln6sjvvCbaZIt+3jnvmhYo0LXTEWPWZk2kRznZJg6/d6JNPJL
- Kzgjbx4VGUKKChI3mZzK+IFq6AcnOeD2xgLtTELC/muJeFCsrI9OeZy9oOGEOkISjFSM
- 48UgzDHndXuB2T8zZ72XfCckgWmr+rzKfeq5tq3EMuyXEPVLamYJfRrfUoAXprvI/UZz
- 1a1Q==
+ bh=vhaDOlXqK723HSaocfjU1ZCevxhmhF4yuGDJMeM3d5I=;
+ b=DfILDRyzNDrR8ECbgoMra8J2l2D3unYez3+EyiQ8B+kbolZpjFa+SsZTuK4qKAxvg3
+ 9zG00trlXnKRS7D+C2rIzME572xh1wbmvXW3CecJzRktynwg0oiKnRvdyj3GxBAu2qGw
+ PlLGy+LUVpFOgl4O+Rha8856WR7zldbl74B7I4IWvwb7H4r+ZpyryWEI+hU5HI02ViR/
+ Mhk2NKEU2rCiWrHhWsVbnpyUtsLHAjuNFViLemyN7sh3PB6CsKr8U20++2poCiFHwpfL
+ d9zTtRO29qKBJ625M2xxG2HkcHXHO/yJR75RTrCxOvSbUGkwecgFLGsNb1x3HTgZDuz6
+ AxhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699253922; x=1699858722;
+ d=1e100.net; s=20230601; t=1699253923; x=1699858723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2PhUC+9kvh84R2fbWfuNd1Ay5hqcHoYqA4DGopSo4Pk=;
- b=HP6E+1A2BSo9x1QlmzFn/wbcgGit55yW3BU3XSfO9Sv6bhUktZVfRKHToD157k4U6X
- X/TFTctsxf1JhD1NLkR7DX0G7fPMuE+UseOGOs7Ub+odDyScF/XYV4Ov4zTi1NILaoED
- pcbClqnDT0uAupwQnqSVNBFj1nLL+FZr4WhIPM0GsdkjStDOmH23ry+vRNFRv/vPR1it
- zbi8Gu9pcC03+daZ1jgLYJg03ibcw6DZelcAW0o6Kk+/Q5wx1/Y61p7c5KX8N0JljL5b
- JD3zjO7x4oQXyj8ABGxG7XmJTNg3o8cADreyWBZThh2QYfyD5FG9KtZqcsmE+RXCEEry
- nflw==
-X-Gm-Message-State: AOJu0YyGabBYuW2905Tn6zAivdZmdMSacMVO2yvLuo4ubkP+2wLKCCxW
- fNqwXWOHeH3vkktNTNuXLYSjGyJ42B2KD06+7HI=
-X-Google-Smtp-Source: AGHT+IFi0Eow7VHiWTJm+o7XPOfEHzQK2iWkCtoMqHTUEMGpIdSqyKBkdVs9Rf7y5L8TN3AkfwksNw==
-X-Received: by 2002:a05:6a21:32aa:b0:15f:b5:bfee with SMTP id
- yt42-20020a056a2132aa00b0015f00b5bfeemr27173650pzb.5.1699253922405; 
- Sun, 05 Nov 2023 22:58:42 -0800 (PST)
+ bh=vhaDOlXqK723HSaocfjU1ZCevxhmhF4yuGDJMeM3d5I=;
+ b=WTdmcUrkxl28yZXBfA5+z6S30sUXI61d2OrKk2tTAY6oaq3TuOHL7O6VBLsrwXi9Fb
+ ZLY7GRR/PJmy4UUymxzDM7TWieQtPLTI7qmnMRzQt9z9kC0/blkZITrFhhNB5urCLpZL
+ ApLfM/ZqTw2FCB+S/r7w1neae+noNI4WSnDDPtYPNOfdjA5TQ/GlQ3rVCKNuIcAxnJUD
+ mJpaG03zTPNyLlPCva/1JHKrQ3t2qjU/JA7e+JPh9tdR+Y9oiIftfGAZHPJz+xnftnAn
+ 1PxubCG7M3tkDefUtQps5W2JVc8VAeZeJHoqxJwcNaJUVin30acg3ajTaFnsl653+vUI
+ KZCQ==
+X-Gm-Message-State: AOJu0YzuikB9xB3bXu3IoySb4Zcm77IaN4hzQrbpaer+9DQ7ya5FlbJI
+ YyXx0dyJbap6tpf3K4BTd1OZNCi+LONgCI8ho/Y=
+X-Google-Smtp-Source: AGHT+IH83f0Cf0hajY0vjmjAE1rk4AdIk8I8H51KPTNbZ0EPaIlwYfBrmw5Y9r0HzvEhxaCNH9HFNg==
+X-Received: by 2002:a17:902:d18d:b0:1cc:1106:cf5b with SMTP id
+ m13-20020a170902d18d00b001cc1106cf5bmr20889551plb.19.1699253923326; 
+ Sun, 05 Nov 2023 22:58:43 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.41
+ c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 05 Nov 2023 22:58:42 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 15/71] target/riscv: Constify VMState in machine.c
-Date: Sun,  5 Nov 2023 22:57:31 -0800
-Message-Id: <20231106065827.543129-16-richard.henderson@linaro.org>
+Subject: [PATCH 16/71] target/s390x: Constify VMState in machine.c
+Date: Sun,  5 Nov 2023 22:57:32 -0800
+Message-Id: <20231106065827.543129-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,139 +92,139 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/machine.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ target/s390x/machine.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index c7c862cdd3..7d857f479b 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -49,7 +49,7 @@ static const VMStateDescription vmstate_pmp_entry = {
-     .name = "cpu/pmp/entry",
+diff --git a/target/s390x/machine.c b/target/s390x/machine.c
+index 37a076858c..a125ebcc2f 100644
+--- a/target/s390x/machine.c
++++ b/target/s390x/machine.c
+@@ -66,7 +66,7 @@ static const VMStateDescription vmstate_fpu = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .needed = fpu_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(addr_reg, pmp_entry_t),
-         VMSTATE_UINT8(cfg_reg, pmp_entry_t),
-         VMSTATE_END_OF_LIST()
-@@ -62,7 +62,7 @@ static const VMStateDescription vmstate_pmp = {
-     .minimum_version_id = 1,
-     .needed = pmp_needed,
-     .post_load = pmp_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_ARRAY(env.pmp_state.pmp, RISCVCPU, MAX_RISCV_PMPS,
-                              0, vmstate_pmp_entry, pmp_entry_t),
-         VMSTATE_END_OF_LIST()
-@@ -82,7 +82,7 @@ static const VMStateDescription vmstate_hyper = {
-     .version_id = 2,
-     .minimum_version_id = 2,
-     .needed = hyper_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(env.hstatus, RISCVCPU),
-         VMSTATE_UINTTL(env.hedeleg, RISCVCPU),
-         VMSTATE_UINT64(env.hideleg, RISCVCPU),
-@@ -135,7 +135,7 @@ static const VMStateDescription vmstate_vector = {
-     .version_id = 2,
-     .minimum_version_id = 2,
-     .needed = vector_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64_ARRAY(env.vreg, RISCVCPU, 32 * RV_VLEN_MAX / 64),
-         VMSTATE_UINTTL(env.vxrm, RISCVCPU),
-         VMSTATE_UINTTL(env.vxsat, RISCVCPU),
-@@ -160,7 +160,7 @@ static const VMStateDescription vmstate_pointermasking = {
+         VMSTATE_UINT64(env.vregs[0][0], S390CPU),
+         VMSTATE_UINT64(env.vregs[1][0], S390CPU),
+         VMSTATE_UINT64(env.vregs[2][0], S390CPU),
+@@ -98,7 +98,7 @@ static const VMStateDescription vmstate_vregs = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = pointermasking_needed,
+     .needed = vregs_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(env.mmte, RISCVCPU),
-         VMSTATE_UINTTL(env.mpmmask, RISCVCPU),
-         VMSTATE_UINTTL(env.mpmbase, RISCVCPU),
-@@ -186,7 +186,7 @@ static const VMStateDescription vmstate_rv128 = {
+         /* vregs[0][0] -> vregs[15][0] and fregs are overlays */
+         VMSTATE_UINT64(env.vregs[16][0], S390CPU),
+         VMSTATE_UINT64(env.vregs[17][0], S390CPU),
+@@ -157,12 +157,12 @@ static bool riccb_needed(void *opaque)
+     return s390_has_feat(S390_FEAT_RUNTIME_INSTRUMENTATION);
+ }
+ 
+-const VMStateDescription vmstate_riccb = {
++static const VMStateDescription vmstate_riccb = {
+     .name = "cpu/riccb",
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = rv128_needed,
+     .needed = riccb_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL_ARRAY(env.gprh, RISCVCPU, 32),
-         VMSTATE_UINT64(env.mscratchh, RISCVCPU),
-         VMSTATE_UINT64(env.sscratchh, RISCVCPU),
-@@ -215,7 +215,7 @@ static const VMStateDescription vmstate_kvmtimer = {
-     .minimum_version_id = 1,
-     .needed = kvmtimer_needed,
-     .post_load = cpu_kvmtimer_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(env.kvm_timer_time, RISCVCPU),
-         VMSTATE_UINT64(env.kvm_timer_compare, RISCVCPU),
-         VMSTATE_UINT64(env.kvm_timer_state, RISCVCPU),
-@@ -249,7 +249,7 @@ static const VMStateDescription vmstate_debug = {
-     .minimum_version_id = 2,
-     .needed = debug_needed,
-     .post_load = debug_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(env.trigger_cur, RISCVCPU),
-         VMSTATE_UINTTL_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
-         VMSTATE_UINTTL_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
-@@ -280,7 +280,7 @@ static const VMStateDescription vmstate_smstateen = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = smstateen_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64_ARRAY(env.mstateen, RISCVCPU, 4),
-         VMSTATE_UINT64_ARRAY(env.hstateen, RISCVCPU, 4),
-         VMSTATE_UINT64_ARRAY(env.sstateen, RISCVCPU, 4),
-@@ -301,7 +301,7 @@ static const VMStateDescription vmstate_envcfg = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = envcfg_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(env.menvcfg, RISCVCPU),
-         VMSTATE_UINTTL(env.senvcfg, RISCVCPU),
-         VMSTATE_UINT64(env.henvcfg, RISCVCPU),
-@@ -321,7 +321,7 @@ static const VMStateDescription vmstate_pmu_ctr_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = pmu_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(mhpmcounter_val, PMUCTRState),
-         VMSTATE_UINTTL(mhpmcounterh_val, PMUCTRState),
-         VMSTATE_UINTTL(mhpmcounter_prev, PMUCTRState),
-@@ -343,7 +343,7 @@ static const VMStateDescription vmstate_jvt = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = jvt_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL(env.jvt, RISCVCPU),
+         VMSTATE_UINT8_ARRAY(env.riccb, S390CPU, 64),
          VMSTATE_END_OF_LIST()
      }
-@@ -354,7 +354,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-     .version_id = 8,
-     .minimum_version_id = 8,
-     .post_load = riscv_cpu_post_load,
+@@ -174,12 +174,12 @@ static bool exval_needed(void *opaque)
+     return cpu->env.ex_value != 0;
+ }
+ 
+-const VMStateDescription vmstate_exval = {
++static const VMStateDescription vmstate_exval = {
+     .name = "cpu/exval",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = exval_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
-         VMSTATE_UINT64_ARRAY(env.fpr, RISCVCPU, 32),
-         VMSTATE_UINT8_ARRAY(env.miprio, RISCVCPU, 64),
-@@ -405,7 +405,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+         VMSTATE_UINT64(env.ex_value, S390CPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -190,12 +190,12 @@ static bool gscb_needed(void *opaque)
+     return s390_has_feat(S390_FEAT_GUARDED_STORAGE);
+ }
  
+-const VMStateDescription vmstate_gscb = {
++static const VMStateDescription vmstate_gscb = {
+     .name = "cpu/gscb",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = gscb_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64_ARRAY(env.gscb, S390CPU, 4),
+         VMSTATE_END_OF_LIST()
+         }
+@@ -206,12 +206,12 @@ static bool bpbc_needed(void *opaque)
+     return s390_has_feat(S390_FEAT_BPB);
+ }
+ 
+-const VMStateDescription vmstate_bpbc = {
++static const VMStateDescription vmstate_bpbc = {
+     .name = "cpu/bpbc",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = bpbc_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_BOOL(env.bpbc, S390CPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -222,12 +222,12 @@ static bool etoken_needed(void *opaque)
+     return s390_has_feat(S390_FEAT_ETOKEN);
+ }
+ 
+-const VMStateDescription vmstate_etoken = {
++static const VMStateDescription vmstate_etoken = {
+     .name = "cpu/etoken",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = etoken_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(env.etoken, S390CPU),
+         VMSTATE_UINT64(env.etoken_extension, S390CPU),
+         VMSTATE_END_OF_LIST()
+@@ -239,12 +239,12 @@ static bool diag318_needed(void *opaque)
+     return s390_has_feat(S390_FEAT_DIAG_318);
+ }
+ 
+-const VMStateDescription vmstate_diag318 = {
++static const VMStateDescription vmstate_diag318 = {
+     .name = "cpu/diag318",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = diag318_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(env.diag318_info, S390CPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -256,7 +256,7 @@ const VMStateDescription vmstate_s390_cpu = {
+     .pre_save = cpu_pre_save,
+     .version_id = 4,
+     .minimum_version_id = 3,
+-    .fields      = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64_ARRAY(env.regs, S390CPU, 16),
+         VMSTATE_UINT64(env.psw.mask, S390CPU),
+         VMSTATE_UINT64(env.psw.addr, S390CPU),
+@@ -278,7 +278,7 @@ const VMStateDescription vmstate_s390_cpu = {
+                                irqstate_saved_size),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription * []) {
+-    .subsections = (const VMStateDescription*[]) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_pmp,
-         &vmstate_hyper,
-         &vmstate_vector,
+         &vmstate_fpu,
+         &vmstate_vregs,
+         &vmstate_riccb,
 -- 
 2.34.1
 
