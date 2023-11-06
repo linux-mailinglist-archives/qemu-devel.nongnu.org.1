@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A96D7E1B22
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DB57E1B20
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:26:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztzk-00072D-In; Mon, 06 Nov 2023 02:26:05 -0500
+	id 1qztyn-0004kH-IX; Mon, 06 Nov 2023 02:25:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztz4-0006oE-TJ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:25:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qztye-0004QS-4W
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztys-0006gx-P3
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:25:17 -0500
+ id 1qztyc-0006Tq-A0
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699255506;
+ s=mimecast20190719; t=1699255489;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2dTeKlsF2I7zQAqovNNgVB/FgoobsTX2dh4aN4tFqx4=;
- b=CLUKTDI3+ytttteCKYHHhxs/RKcHPj5dN+cvaThHENkF8a2vN3vDC48+aOdxIzmxF8OLBu
- GAjuR6TitfmfOwBWyNV+cR1YjSdWryxyicx8dCSG06Y+JVQFkIBH6rF6OaFvuHAsQ1HtgW
- /gI0csJwqq/rbP4EdiUsSK73IPhOa48=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-rW2jCDvyPrafsGfIbTaC6w-1; Mon, 06 Nov 2023 02:24:41 -0500
-X-MC-Unique: rW2jCDvyPrafsGfIbTaC6w-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=Or88Qnnb1pNKafV+dN1nEsCv88CQRy2MEUGRfMqaD8E=;
+ b=GnqWBpdM+rNUUuCJXiBPpQ3HeA5rF72/4aqH3X0PMi4oS8owNtb9MgqMS4B37TgHKxieAK
+ bKQ2IDRDyCZYoP18U6VSnCWKZORL5gNtBgAOMjxws6ck1cuJDEb8pnY8poI/lfK4+wyMAH
+ Dylv+inlI80Lmjly1BhH2jRnLCeNTsw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-KcO-QkpMOGOtTABhn2rvyw-1; Mon,
+ 06 Nov 2023 02:24:46 -0500
+X-MC-Unique: KcO-QkpMOGOtTABhn2rvyw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0EB7285A58A;
- Mon,  6 Nov 2023 07:24:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAFC338116FA;
+ Mon,  6 Nov 2023 07:24:45 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 03C1340C6EB9;
- Mon,  6 Nov 2023 07:24:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4C83E5039;
+ Mon,  6 Nov 2023 07:24:44 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 20/23] arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
-Date: Mon,  6 Nov 2023 11:23:09 +0400
-Message-ID: <20231106072313.1742543-21-marcandre.lureau@redhat.com>
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ qemu-ppc@nongnu.org (open list:sam460ex)
+Subject: [PULL 21/23] hw/sm501: allow compiling without PIXMAN
+Date: Mon,  6 Nov 2023 11:23:10 +0400
+Message-ID: <20231106072313.1742543-22-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 References: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,62 +86,130 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The Display Port has some strong PIXMAN dependency.
+Change the "x-pixman" property default value and use the fallback path
+when PIXMAN support is disabled.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/arm/Kconfig         | 3 ++-
- hw/display/Kconfig     | 5 +++++
- hw/display/meson.build | 2 +-
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ hw/display/sm501.c | 46 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 13 deletions(-)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index e35007ed41..8ce288a40c 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -451,7 +451,7 @@ config STM32F405_SOC
- config XLNX_ZYNQMP_ARM
-     bool
-     default y
--    depends on TCG && AARCH64
-+    depends on TCG && AARCH64 && PIXMAN
-     select AHCI
-     select ARM_GIC
-     select CADENCE
-@@ -463,6 +463,7 @@ config XLNX_ZYNQMP_ARM
-     select XILINX_AXI
-     select XILINX_SPIPS
-     select XLNX_CSU_DMA
-+    select XLNX_DISPLAYPORT
-     select XLNX_ZYNQMP
-     select XLNX_ZDMA
-     select USB_DWC3
-diff --git a/hw/display/Kconfig b/hw/display/Kconfig
-index 4d8b0cec40..1aafe1923d 100644
---- a/hw/display/Kconfig
-+++ b/hw/display/Kconfig
-@@ -134,3 +134,8 @@ config MACFB
-     bool
-     select FRAMEBUFFER
-     depends on NUBUS
+diff --git a/hw/display/sm501.c b/hw/display/sm501.c
+index 0eecd00701..33fd08955d 100644
+--- a/hw/display/sm501.c
++++ b/hw/display/sm501.c
+@@ -438,6 +438,12 @@
+ #define SM501_HWC_WIDTH                 64
+ #define SM501_HWC_HEIGHT                64
+ 
++#ifdef CONFIG_PIXMAN
++#define DEFAULT_X_PIXMAN 7
++#else
++#define DEFAULT_X_PIXMAN 0
++#endif
 +
-+config XLNX_DISPLAYPORT
-+    bool
-+    # defaults to "N", enabled by specific boards
-+    depends on PIXMAN
-diff --git a/hw/display/meson.build b/hw/display/meson.build
-index 2b64fd9f9d..9c06aaee20 100644
---- a/hw/display/meson.build
-+++ b/hw/display/meson.build
-@@ -58,7 +58,7 @@ if config_all_devices.has_key('CONFIG_QXL')
- endif
+ /* SM501 local memory size taken from "linux/drivers/mfd/sm501.c" */
+ static const uint32_t sm501_mem_local_size[] = {
+     [0] = 4 * MiB,
+@@ -730,7 +736,6 @@ static void sm501_2d_operation(SM501State *s)
+     switch (cmd) {
+     case 0: /* BitBlt */
+     {
+-        static uint32_t tmp_buf[16384];
+         unsigned int src_x = (s->twoD_source >> 16) & 0x01FFF;
+         unsigned int src_y = s->twoD_source & 0xFFFF;
+         uint32_t src_base = s->twoD_source_base & 0x03FFFFFF;
+@@ -828,9 +833,11 @@ static void sm501_2d_operation(SM501State *s)
+                 de = db + (width + (height - 1) * dst_pitch) * bypp;
+                 overlap = (db < se && sb < de);
+             }
++#ifdef CONFIG_PIXMAN
+             if (overlap && (s->use_pixman & BIT(2))) {
+                 /* pixman can't do reverse blit: copy via temporary */
+                 int tmp_stride = DIV_ROUND_UP(width * bypp, sizeof(uint32_t));
++                static uint32_t tmp_buf[16384];
+                 uint32_t *tmp = tmp_buf;
  
- system_ss.add(when: 'CONFIG_DPCD', if_true: files('dpcd.c'))
--system_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx_dp.c'))
-+system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_true: files('xlnx_dp.c'))
+                 if (tmp_stride * sizeof(uint32_t) * height > sizeof(tmp_buf)) {
+@@ -860,9 +867,12 @@ static void sm501_2d_operation(SM501State *s)
+                                        dst_pitch * bypp / sizeof(uint32_t),
+                                        8 * bypp, 8 * bypp, src_x, src_y,
+                                        dst_x, dst_y, width, height);
+-            } else {
++            } else
++#else
++            {
+                 fallback = true;
+             }
++#endif
+             if (fallback) {
+                 uint8_t *sp = s->local_mem + src_base;
+                 uint8_t *d = s->local_mem + dst_base;
+@@ -894,20 +904,23 @@ static void sm501_2d_operation(SM501State *s)
+             color = cpu_to_le16(color);
+         }
  
- system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
++#ifdef CONFIG_PIXMAN
+         if (!(s->use_pixman & BIT(0)) || (width == 1 && height == 1) ||
+             !pixman_fill((uint32_t *)&s->local_mem[dst_base],
+                          dst_pitch * bypp / sizeof(uint32_t), 8 * bypp,
+-                         dst_x, dst_y, width, height, color)) {
+-            /* fallback when pixman failed or we don't want to call it */
+-            uint8_t *d = s->local_mem + dst_base;
+-            unsigned int x, y, i;
+-            for (y = 0; y < height; y++) {
+-                i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
+-                for (x = 0; x < width; x++, i += bypp) {
+-                    stn_he_p(&d[i], bypp, color);
++                         dst_x, dst_y, width, height, color))
++#endif
++            {
++                /* fallback when pixman failed or we don't want to call it */
++                uint8_t *d = s->local_mem + dst_base;
++                unsigned int x, y, i;
++                for (y = 0; y < height; y++) {
++                    i = (dst_x + (dst_y + y) * dst_pitch) * bypp;
++                    for (x = 0; x < width; x++, i += bypp) {
++                        stn_he_p(&d[i], bypp, color);
++                    }
+                 }
+             }
+-        }
+         break;
+     }
+     default:
+@@ -1878,6 +1891,12 @@ static void sm501_reset(SM501State *s)
+ static void sm501_init(SM501State *s, DeviceState *dev,
+                        uint32_t local_mem_bytes)
+ {
++#ifndef CONFIG_PIXMAN
++    if (s->use_pixman != 0) {
++        warn_report("x-pixman != 0, not effective without PIXMAN");
++    }
++#endif
++
+     s->local_mem_size_index = get_local_mem_size_index(local_mem_bytes);
+ 
+     /* local memory */
+@@ -2038,7 +2057,8 @@ static void sm501_realize_sysbus(DeviceState *dev, Error **errp)
+ 
+ static Property sm501_sysbus_properties[] = {
+     DEFINE_PROP_UINT32("vram-size", SM501SysBusState, vram_size, 0),
+-    DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, 7),
++    /* this a debug option, prefer PROP_UINT over PROP_BIT for simplicity */
++    DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, DEFAULT_X_PIXMAN),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+@@ -2126,7 +2146,7 @@ static void sm501_realize_pci(PCIDevice *dev, Error **errp)
+ 
+ static Property sm501_pci_properties[] = {
+     DEFINE_PROP_UINT32("vram-size", SM501PCIState, vram_size, 64 * MiB),
+-    DEFINE_PROP_UINT8("x-pixman", SM501PCIState, state.use_pixman, 7),
++    DEFINE_PROP_UINT8("x-pixman", SM501PCIState, state.use_pixman, DEFAULT_X_PIXMAN),
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
 -- 
 2.41.0
