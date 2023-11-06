@@ -2,57 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D557E2058
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 069F47E205E
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:51:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzy1h-0001Jo-3T; Mon, 06 Nov 2023 06:44:17 -0500
+	id 1qzy2p-00026S-9c; Mon, 06 Nov 2023 06:45:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1qzy1e-0001IO-GC
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:44:14 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1qzy1c-0004pg-Ri
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:44:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=vBjlULdVvtFrK0HLLPtwPIDxh3uhYdmMjr1TskNH934=; b=cVVAUVbqla2d9yVFZzJ0HY/1Zy
- zkxC9g5Xgh+uMA4mIKZ65aesawmvzH0vOQp9B17B7u0WtROCIubX/XLLZBb+uUdK7vtV6MvaA0l/N
- GmzVBDH33KZ4kdkewGXJ9uwO7xvXeqEnCoFjzura2gf9d0ar+HSG8hPm60wLc+sYONqUWH+DZslg7
- omSCH4xTyEJmDi4k1DlYXk3IXb/qsX8cxsTOqyU0XIfttMCTRwngknDnHUkIMQMoTLBBeQwgU8XZs
- iUzyo9NeOY1+aH6KhbEa4Tog4hIahHhIQDE3H/neVRZGviN0DWjJ0X92G3GKQBzjiaP73tY1ycFdK
- OvVAXxFV0gq/EDLZDyLjl77aQhiW7pEW0aLJVXV/qqIJZHcNEEhmpi2ACdLCl9cUbOpMy53DvUmXH
- rgqKiiIaYM9DdemR3n2yiffmulXRWeaC4nU8Le6cDYIuKds0yBz1Jz8KPPeTnwGB2afeCuQCXjl6M
- SSpPL1Pdh+o8yjiYyjIry8I85JMfjO4D2sKh+oMCTZfoNK9zZK0jhApBFxv7C5JUX1iNlSOnVdWbb
- cKBZhiPoIxmMxNJqGULBz9Wvg4Y3CQzydr6mSLcYWib7y4PQ56M1wjHu7+cltRGdUT0MzmZoBoKo7
- PUzF9kjZmTwAApSyHgpIqI+4vO8EMHgd7vPJR+A6o=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy2U-00025Q-Os
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:45:06 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy2T-00053k-9M
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:45:06 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4083ac51d8aso33496365e9.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:45:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699271103; x=1699875903; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HAp2vJsfIjryO6ERGLNtaKXCTt6QsFuHAbc0TgTsKDY=;
+ b=fd9387ShaL67S3Ue/jpUGyr2Ng3Md64LQkHToJ3+9YwFCYL5HyV9sJN3cbwzwY4Ye7
+ X91Iwwf4tDROU7E6bB600ChseiHQLOMhGXI9xtRohi+nmEPMT+yLlbV6HRkZ9zNMXSoQ
+ LN8xh8j+vxG93P0LuFYiOXxnJRgeyM9Hdeyzf0gmaI4VdUyrulrd5mvvxxR+ye/UFipp
+ CO0WBpm1CnmDgC4hTGbBEB7UNOU0VLweezjZSWYsqk/11rntzBKdWfbnvh/GufMBxXXu
+ pyrXXNZw3zQyLqMRbRlKZjLH+8KAn1qBPt6feOl0LIdnH7OTDQ6HPBONFCRrIYJevPrm
+ 7J6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699271103; x=1699875903;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HAp2vJsfIjryO6ERGLNtaKXCTt6QsFuHAbc0TgTsKDY=;
+ b=cDB0+TQXAlfKIF5nZQlIzi21ezW6z5dL6+DkXPGKe+D/xgKbABGKejOqNx1tCThWe2
+ ZDY5GnhLUkT9mxmxij1JBzGPGozvNqdEZXWB3m8nL/Td07hmuLvrctx2jryctzr1jhJQ
+ VVAMjj3JaMv9AUsp8j3FcHtX1GZZ7v8WYozhPwPIDouPlL1aYYvLqt5tS+zQcqRKbFO2
+ GqtEn1B96g1Q3a7qWa1XaxWvGujE0v3S8QNXS4Ui/7uWQbjjqZfZfvpu1sjE5yI+MlNr
+ GeSpcGQOJ4upCx5BgTSR5PGE4RR8Mk55sq+4lAbFcoLsA2+BhveesvNUD0mTEHmlc8c3
+ NxFg==
+X-Gm-Message-State: AOJu0YzCJIOhvmXu6iuu7c2uyzkRfuHC1xToe1nFAwr5fCCGdTL611y3
+ yZOQZ+mooQs3ShwfDqq+9DZBKU14nM0loz5YAs4=
+X-Google-Smtp-Source: AGHT+IH8uhVqmwlFAlrNzHT463yaf9s+mG4L6XlPwBjsoMZFRvmiH2nbz6DpXiQPy+pIxCyp67WKwQ==
+X-Received: by 2002:a05:600c:a0a:b0:409:5580:bc9f with SMTP id
+ z10-20020a05600c0a0a00b004095580bc9fmr13581608wmp.34.1699271103429; 
+ Mon, 06 Nov 2023 03:45:03 -0800 (PST)
+Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
+ by smtp.gmail.com with ESMTPSA id
+ j19-20020a05600c191300b004090ca6d785sm12055182wmq.2.2023.11.06.03.45.01
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 06 Nov 2023 03:45:03 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de,
- leobras@redhat.com, Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 20/71] hw/9pfs: Constify VMState
-Date: Mon, 06 Nov 2023 12:44:07 +0100
-Message-ID: <62937420.3DG5BLcfXi@silver>
-In-Reply-To: <20231106065827.543129-21-richard.henderson@linaro.org>
-References: <20231106065827.543129-1-richard.henderson@linaro.org>
- <20231106065827.543129-21-richard.henderson@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/4] target/s390x/cpu: Restrict CPUS390XState declaration to
+ 'cpu.h'
+Date: Mon,  6 Nov 2023 12:44:55 +0100
+Message-ID: <20231106114500.5269-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,29 +93,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Monday, November 6, 2023 7:57:36 AM CET Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+In order to restrict CPUS390XState declaration to "cpu.h" (both
+target-specific):
+- have the following prototypes take a S390CPU* instead:
+  . css_do_sic()
+  . sclp_service_call()
+  . sclp_service_call_protected()
+- restrict cpu_get_tb_cpu_state() definition to TCG
 
-Acked-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Philippe Mathieu-Daudé (4):
+  hw/s390x/css: Have css_do_sic() take S390CPU instead of CPUS390XState
+  hw/s390x/sclp: Have sclp_service_call[_protected]() take S390CPU*
+  target/s390x/cpu: Restrict cpu_get_tb_cpu_state() definition to TCG
+  target/s390x/cpu: Restrict CPUS390XState declaration to 'cpu.h'
 
->  hw/9pfs/virtio-9p-device.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/9pfs/virtio-9p-device.c b/hw/9pfs/virtio-9p-device.c
-> index 5f522e68e9..efa41cfd73 100644
-> --- a/hw/9pfs/virtio-9p-device.c
-> +++ b/hw/9pfs/virtio-9p-device.c
-> @@ -237,7 +237,7 @@ static const VMStateDescription vmstate_virtio_9p = {
->      .name = "virtio-9p",
->      .minimum_version_id = 1,
->      .version_id = 1,
-> -    .fields = (VMStateField[]) {
-> +    .fields = (const VMStateField[]) {
->          VMSTATE_VIRTIO_DEVICE,
->          VMSTATE_END_OF_LIST()
->      },
-> 
+ include/hw/s390x/css.h         |  2 +-
+ include/hw/s390x/sclp.h        |  5 ++---
+ target/s390x/cpu-qom.h         |  2 --
+ target/s390x/cpu.h             | 11 ++++++++---
+ hw/s390x/css.c                 |  3 ++-
+ hw/s390x/sclp.c                |  7 ++++---
+ target/s390x/kvm/kvm.c         |  4 ++--
+ target/s390x/tcg/misc_helper.c |  5 +++--
+ 8 files changed, 22 insertions(+), 17 deletions(-)
 
+-- 
+2.41.0
 
 
