@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53CA7E2027
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EEC7E1F95
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:09:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxQx-0001Kt-9d; Mon, 06 Nov 2023 06:06:20 -0500
+	id 1qzxR8-0001S0-9U; Mon, 06 Nov 2023 06:06:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQT-000127-8t
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:49 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQa-0001Br-6V
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:57 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQQ-0004KE-Cs
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:48 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-32dcd3e5f3fso2648056f8f.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:05:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQX-0004Lq-Gj
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:55 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40907b82ab9so31032475e9.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:05:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268745; x=1699873545; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268752; x=1699873552; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9TEM4y15WADC11ywrbeYDwNqe54vVpabH+nFuXXR9vo=;
- b=DDcTivuoAhQfj6RSh7yuR+7K2AVdOWgiSRdgQmx7FHUn6x1zjVndhc/DZ5JguQjKSv
- Zvm0vYst6JDUfzK8vte64voW1t4XR27Y/KQmk/uF8v4+BqztEWRyy1K9IYhKwUwLZafd
- gp4O97zNJz17/D79eT5mq44TvCzLUtt8WGshgY+1hiJplCe+Z/SjpNBTcPyI/VizUyOI
- azAlqlnFQ8UQIGf/H5fgEQtRO83SCdZpedowVPMVWeulvnM7XN2CwdmFRKYRz0KfpjKi
- 9Ox+iOaXwobN6/nD2b6/6LXIvMkVjHeJ4QMtP7lwSxPClbGTKErtHQZXfX3aPjwfJP9Q
- XxrA==
+ bh=oZ4xqFJalLvpzsW1bcHeUL/13mhLi/mzZSAy+mux2v0=;
+ b=QrGpKoJ+ZHnculWUTSEqv2x+dQvx34HmqcAoNg3rnaUvJfSUNSKNMsl2+ESXeRFx4N
+ ZyiaT54qEsy0P3/cvO+2GAIE0v9/gQLuEqjFaVbqo/0rqHy/WEmZuWg+/Gc6tXjOs/3f
+ 0FyOsiOEqK4NFBIia5GdVxUxu9c9doDre+aVRops+lgQEEDo4XnQ5/fCCvJ4Exjn5PdW
+ uZFol2pzW1HKx0aE2QVsPJLl8EDNmBCkPlwua47ANoRR8zfXOunTAtaOd8Cbi1o4hm9o
+ 92dp88kXn7FCcaTwpu+LasrqUtqTq+yOAjZW9opJeh+Mynv9Wa1Si3quKUV+gK0COdr5
+ YLVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268745; x=1699873545;
+ d=1e100.net; s=20230601; t=1699268752; x=1699873552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9TEM4y15WADC11ywrbeYDwNqe54vVpabH+nFuXXR9vo=;
- b=ZntkFLW4DCCZ+LnUcpYvjHwE10T0tj4QDlm6ogaU+VYAcPcxn2vulSh6wt/CSI3ljT
- Q5FBZiCMo/LQex0whaXrCXt/LZ5SL/1D5ZllXi0d5FjxcRSfsNo8sdkGgTJ+iQ5cAiQE
- 893Og9ygDQY96bKJKWK8QbRWRGTmB4x55gQhl7FMSkFDuONARIZLI19bFyFX2CXnD8+D
- 6IflnIA+uJur4uOmf3iv+8nIbYTd2Nr5WjHwTBCjkRRIBBvh/kYitHJXYD2UyjZ/XeXv
- t+63kiZzILHH2upnfCYpZIu1SwfVxiHOegdw+zEM9qMIdXix3wlGh8X4CGUn+eQpTGgH
- PYGg==
-X-Gm-Message-State: AOJu0YzrAZVPCauKx1J5JWp/KiF1hedJuOpljcNbAboNnoT/b0WKiUMs
- BbsWMzutS4zuzejeMPU1Y3FEb6h5zxCs014CNb8=
-X-Google-Smtp-Source: AGHT+IGOZ/6VrX2QMc3mxuvaPC+0EbE+IDekhwAIoTOTC+UFQrQ0DCYUI0TONme61tWRfDpdV25NAA==
-X-Received: by 2002:a05:6000:1c0f:b0:32f:ba72:e80b with SMTP id
- ba15-20020a0560001c0f00b0032fba72e80bmr6504480wrb.54.1699268744791; 
- Mon, 06 Nov 2023 03:05:44 -0800 (PST)
+ bh=oZ4xqFJalLvpzsW1bcHeUL/13mhLi/mzZSAy+mux2v0=;
+ b=ETFKS/GtUaXXkodbZNXqdKu35E4hyaNhg8wyAUjI0wE1Plgzaw96hbFHB9aenmvxlL
+ PKYOYQhDngb7HiH3dH3TZG9iB+yMMm33JX/5P23tojwf3TgFk/fu1xEZEE4gP6Is3Mrb
+ vXbKvoEuKYR7SBfN7ECWmKTgZve9EEMeTanAKsrshDZWS6wxtcEuEJgzm8PDKd061XEr
+ qJ6k5DbdzLGc4ke7UOJSTTKkx9STvpxkx5aOiIgEweT6rxZqFl5h1Q9/0hKH6zUT+emn
+ k3IBlB/Oe8wZVyH8aQT9v6tXj4UCgh6fkJ8FIwcskGJ705N9JHdYc6btCyiO+yS5IbRq
+ Oohg==
+X-Gm-Message-State: AOJu0YyPATaox5GI7IAkAEB80c+W1gngzHM70RO+Y+OVSmfhnLU22vxe
+ KPs7QYEUcUiggCH3otfIetsJiPZpHkj4o/sN2Ng=
+X-Google-Smtp-Source: AGHT+IG9mJw0F90hy4Uu6xuSpQrJC5TM2lMXtp6Q5jTJMspVFVuvMPHpaiGipu7vhxIPNtgi1AXh6Q==
+X-Received: by 2002:a7b:c7c9:0:b0:406:45c1:4dd with SMTP id
+ z9-20020a7bc7c9000000b0040645c104ddmr10153754wmk.14.1699268751703; 
+ Mon, 06 Nov 2023 03:05:51 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- c12-20020adffb0c000000b0032fc5f5abafsm6040847wrr.96.2023.11.06.03.05.42
+ bh5-20020a05600c3d0500b004094e565e71sm12164949wmb.23.2023.11.06.03.05.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:05:44 -0800 (PST)
+ Mon, 06 Nov 2023 03:05:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 18/60] target/riscv: Move TYPE_RISCV_CPU_BASE definition to
- 'cpu.h'
-Date: Mon,  6 Nov 2023 12:02:50 +0100
-Message-ID: <20231106110336.358-19-philmd@linaro.org>
+ Alistair Francis <alistair.francis@wdc.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 19/60] target/ppc: Use env_archcpu() in helper_book3s_msgsndp()
+Date: Mon,  6 Nov 2023 12:02:51 +0100
+Message-ID: <20231106110336.358-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,68 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
-definitions which are target specific. Such target specific
-definition taints "cpu-qom.h".
+When CPUArchState* is available (here CPUPPCState*), we
+can use the fast env_archcpu() macro to get ArchCPU* (here
+PowerPCCPU*). The QOM cast POWERPC_CPU() macro will be
+slower when building with --enable-qom-cast-debug.
 
-Since "cpu-qom.h" must be target agnostic, remove its target
-specific definition uses by moving TYPE_RISCV_CPU_BASE to
-"target/riscv/cpu.h".
-
-"target/riscv/cpu-qom.h" is now fully target agnostic.
-Add a comment clarifying that in the header.
-
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231013140116.255-12-philmd@linaro.org>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-Id: <20231009110239.66778-2-philmd@linaro.org>
 ---
- target/riscv/cpu-qom.h | 8 +-------
- target/riscv/cpu.h     | 6 ++++++
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ target/ppc/excp_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index b78169093f..76efb614a6 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -1,5 +1,5 @@
- /*
-- * QEMU RISC-V CPU QOM header
-+ * QEMU RISC-V CPU QOM header (target agnostic)
-  *
-  * Copyright (c) 2023 Ventana Micro Systems Inc.
-  *
-@@ -44,12 +44,6 @@
- #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
- #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
- 
--#if defined(TARGET_RISCV32)
--# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
--#elif defined(TARGET_RISCV64)
--# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
--#endif
--
- typedef struct CPUArchState CPURISCVState;
- 
- OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 144cc94cce..d832696418 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -34,6 +34,12 @@
- 
- #define CPU_RESOLVING_TYPE TYPE_RISCV_CPU
- 
-+#if defined(TARGET_RISCV32)
-+# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
-+#elif defined(TARGET_RISCV64)
-+# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
-+#endif
-+
- #define TCG_GUEST_DEFAULT_MO 0
- 
- /*
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 7926114d5c..a42743a3e0 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -3136,7 +3136,7 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
+ void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+ {
+     CPUState *cs = env_cpu(env);
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
++    PowerPCCPU *cpu = env_archcpu(env);
+     CPUState *ccs;
+     uint32_t nr_threads = cs->nr_threads;
+     int ttir = rb & PPC_BITMASK(57, 63);
 -- 
 2.41.0
 
