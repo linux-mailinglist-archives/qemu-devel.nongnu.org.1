@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF30B7E1B12
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C665C7E1B29
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:26:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztxz-0001ra-70; Mon, 06 Nov 2023 02:24:11 -0500
+	id 1qztxy-0001qO-MQ; Mon, 06 Nov 2023 02:24:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztxq-0001kA-9l
+ id 1qztxq-0001kC-Db
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztxo-0006Lj-Fg
+ id 1qztxo-0006Lb-HN
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699255439;
+ s=mimecast20190719; t=1699255436;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jFWiW+q7/NUsYxRAkT/uCzkDHbVVeqZ11g2tKjRCj84=;
- b=N8c/6Jjsqato8Hn3ryJeIUaapn67dxASMIX74sg+YbKlorZXs5QGpos3vSqDRz2jhDNy5e
- l6NhKN/4bl9x4PzDd4cDz8fT0eTUGFSlfvbQxcYAMo4kOAO1NaW6EM/PtkWcXcNcTC/Bgy
- 7MS5O9B+8CzbvL8hWUB3uzEy+3VrF70=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-z9ixZ4p1Nueo6SuA74XIgQ-1; Mon, 06 Nov 2023 02:23:51 -0500
-X-MC-Unique: z9ixZ4p1Nueo6SuA74XIgQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=bmV56O8rUuNhsZEmD3/vWvetTBu+YFNXX7Trndub2hs=;
+ b=Hj3lYzXd14w4nZjh+eXPOMnZNJix2pmAXiJYkKqITvjWCLT14Nm4Kws3x71PHrpEJNiIkh
+ RDWs1ocyWgGD6oU6e6H0EijoWM9rHgoEMbTCzMcT6Xz0IkqbUMIr12fcDcW/18+nmbCuYX
+ 2ssntQHZGPBiwVDHKbp2egSZWtu1UVw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-m-rYAdAXMzG1d4d34jPEjg-1; Mon,
+ 06 Nov 2023 02:23:55 -0500
+X-MC-Unique: m-rYAdAXMzG1d4d34jPEjg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2ECC3185A780;
- Mon,  6 Nov 2023 07:23:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAC633C14900;
+ Mon,  6 Nov 2023 07:23:54 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3C26B10102;
- Mon,  6 Nov 2023 07:23:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D668325C0;
+ Mon,  6 Nov 2023 07:23:53 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 08/23] vl: move display early init before default devices
-Date: Mon,  6 Nov 2023 11:22:57 +0400
-Message-ID: <20231106072313.1742543-9-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 09/23] ui/console: allow to override the default VC
+Date: Mon,  6 Nov 2023 11:22:58 +0400
+Message-ID: <20231106072313.1742543-10-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 References: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -85,78 +85,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The next commit needs to have the display registered itself before
-creating the default VCs.
+If a display is backed by a specialized VC, allow to override the
+default "vc:80Cx24C".
+
+As suggested by Paolo, if the display doesn't implement a VC (get_vc()
+returns NULL), use a fallback that will use a muxed console on stdio.
+
+This changes the behaviour of "qemu -display none", to create a muxed
+serial/monitor by default (on TTY & not daemonized).
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- system/vl.c | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ include/ui/console.h |  2 ++
+ system/vl.c          | 27 +++++++++++++++++----------
+ ui/console.c         | 14 ++++++++++++++
+ 3 files changed, 33 insertions(+), 10 deletions(-)
 
+diff --git a/include/ui/console.h b/include/ui/console.h
+index acb61a7f15..a4a49ffc64 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -462,12 +462,14 @@ struct QemuDisplay {
+     DisplayType type;
+     void (*early_init)(DisplayOptions *opts);
+     void (*init)(DisplayState *ds, DisplayOptions *opts);
++    const char *vc;
+ };
+ 
+ void qemu_display_register(QemuDisplay *ui);
+ bool qemu_display_find_default(DisplayOptions *opts);
+ void qemu_display_early_init(DisplayOptions *opts);
+ void qemu_display_init(DisplayState *ds, DisplayOptions *opts);
++const char *qemu_display_get_vc(DisplayOptions *opts);
+ void qemu_display_help(void);
+ 
+ /* vnc.c */
 diff --git a/system/vl.c b/system/vl.c
-index e9819408df..cf46e438cc 100644
+index cf46e438cc..bd7fad770b 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -1352,6 +1352,23 @@ static void qemu_disable_default_devices(void)
-     }
- }
- 
-+static void qemu_setup_display(void)
-+{
-+    if (dpy.type == DISPLAY_TYPE_DEFAULT && !display_remote) {
-+        if (!qemu_display_find_default(&dpy)) {
-+            dpy.type = DISPLAY_TYPE_NONE;
-+#if defined(CONFIG_VNC)
-+            vnc_parse("localhost:0,to=99,id=default");
-+#endif
-+        }
-+    }
-+    if (dpy.type == DISPLAY_TYPE_DEFAULT) {
-+        dpy.type = DISPLAY_TYPE_NONE;
-+    }
-+
-+    qemu_display_early_init(&dpy);
-+}
-+
+@@ -1372,6 +1372,7 @@ static void qemu_setup_display(void)
  static void qemu_create_default_devices(void)
  {
      MachineClass *machine_class = MACHINE_GET_CLASS(current_machine);
-@@ -1401,18 +1418,6 @@ static void qemu_create_default_devices(void)
- #endif
++    const char *vc = qemu_display_get_vc(&dpy);
+ 
+     if (is_daemonized()) {
+         /* According to documentation and historically, -nographic redirects
+@@ -1390,24 +1391,30 @@ static void qemu_create_default_devices(void)
+         }
      }
  
--    if (dpy.type == DISPLAY_TYPE_DEFAULT && !display_remote) {
--        if (!qemu_display_find_default(&dpy)) {
--            dpy.type = DISPLAY_TYPE_NONE;
--#if defined(CONFIG_VNC)
--            vnc_parse("localhost:0,to=99,id=default");
--#endif
--        }
--    }
--    if (dpy.type == DISPLAY_TYPE_DEFAULT) {
--        dpy.type = DISPLAY_TYPE_NONE;
--    }
--
-     /* If no default VGA is requested, the default is "none".  */
-     if (default_vga) {
-         vga_model = get_default_vga_model(machine_class);
-@@ -1937,7 +1942,6 @@ static void qemu_create_early_backends(void)
-                      "ignoring option");
+-    if (nographic) {
+-        if (default_parallel)
++    if (nographic || (!vc && !is_daemonized() && isatty(STDOUT_FILENO))) {
++        if (default_parallel) {
+             add_device_config(DEV_PARALLEL, "null");
++        }
+         if (default_serial && default_monitor) {
+             add_device_config(DEV_SERIAL, "mon:stdio");
+         } else {
+-            if (default_serial)
++            if (default_serial) {
+                 add_device_config(DEV_SERIAL, "stdio");
+-            if (default_monitor)
++            }
++            if (default_monitor) {
+                 monitor_parse("stdio", "readline", false);
++            }
+         }
+     } else {
+-        if (default_serial)
+-            add_device_config(DEV_SERIAL, "vc:80Cx24C");
+-        if (default_parallel)
+-            add_device_config(DEV_PARALLEL, "vc:80Cx24C");
+-        if (default_monitor)
+-            monitor_parse("vc:80Cx24C", "readline", false);
++        if (default_serial) {
++            add_device_config(DEV_SERIAL, vc ?: "null");
++        }
++        if (default_parallel) {
++            add_device_config(DEV_PARALLEL, vc ?: "null");
++        }
++        if (default_monitor && vc) {
++            monitor_parse(vc, "readline", false);
++        }
      }
  
--    qemu_display_early_init(&dpy);
-     qemu_console_early_init();
+     if (default_net) {
+diff --git a/ui/console.c b/ui/console.c
+index 8ee66d10c5..a758ed62ad 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1675,6 +1675,20 @@ void qemu_display_init(DisplayState *ds, DisplayOptions *opts)
+     dpys[opts->type]->init(ds, opts);
+ }
  
-     if (dpy.has_gl && dpy.gl != DISPLAYGL_MODE_OFF && display_opengl == 0) {
-@@ -3666,6 +3670,7 @@ void qemu_init(int argc, char **argv)
-     suspend_mux_open();
- 
-     qemu_disable_default_devices();
-+    qemu_setup_display();
-     qemu_create_default_devices();
-     qemu_create_early_backends();
- 
++const char *qemu_display_get_vc(DisplayOptions *opts)
++{
++    assert(opts->type < DISPLAY_TYPE__MAX);
++    if (opts->type == DISPLAY_TYPE_NONE) {
++        return NULL;
++    }
++    assert(dpys[opts->type] != NULL);
++    if (dpys[opts->type]->vc) {
++        return dpys[opts->type]->vc;
++    } else {
++        return "vc:80Cx24C";
++    }
++}
++
+ void qemu_display_help(void)
+ {
+     int idx;
 -- 
 2.41.0
 
