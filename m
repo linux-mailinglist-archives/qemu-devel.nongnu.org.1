@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF8E7E2D59
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D2C7E2D69
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:58:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r05gW-00068m-BA; Mon, 06 Nov 2023 14:54:56 -0500
+	id 1r05gH-0005ue-Hp; Mon, 06 Nov 2023 14:54:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05gF-0005sG-GF; Mon, 06 Nov 2023 14:54:39 -0500
+ id 1r05g5-0005dS-SB; Mon, 06 Nov 2023 14:54:29 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05fy-00066h-Tw; Mon, 06 Nov 2023 14:54:39 -0500
+ id 1r05fy-00066d-RO; Mon, 06 Nov 2023 14:54:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=zmRxefaOlZ1QCUdKZwdqB/DEaAmsXLMPcBmPIeG+a8A=; b=CULtrOgTvy2P+uj3GUT44YcvX5
- Oa6Y9aiFioc+wiiL3dwrqXBdUNnksVq5ypvQ8/iMRfKOBx30TQhHQ4xdg8TcHy3QzBAAzuWa5p5E6
- nAIseoMtwSdN7oulDwRDgsx4hWFaqLK5k21qgGeYz33T+m+tv9KF+lE8wc6IX/1xdg+bkhfP7LsXT
- vj6e+cD+9NazieNKE7mcE+KO7hcPrgfrRPO9WXY1UF5Z3DYohZxea8vDJmI0JNHzzwwWHoEFHJIfy
- /kpmpy6SbXnR/74ud8Czsbx3eS7b9jlYt0PS+b1R9fy6omZBi0VOBU5iT8gXsk8z74k/wRowc2fWB
- KZa17tGQ==;
+ bh=iPxcn58/AAKxiN1dNS5rnN7sTmuNEYb7/WSBfAbgKcA=; b=fPGcPwmGo3ugBewrtdrZNE+JjU
+ IwQ8TwjJlCXqIs5LwqTUGVc9/cjiKknmyIEDT8XxwIrT5cPra8FZ3SGi4c9tjn5lLxKxRNuNGYGar
+ w1D2e/9a2V+oNL8N50mzzkxfwmNlamjQ2pM+ZtXueIvd0maGoIm3DeYJwwGCs7DJy6tfxTA4jSYem
+ TSbdlbAV5GbWKYb9P4fQ/BSwnX6Bzek/8as7+KqwDyeBmcCscLtX8AQ0pGrbNdzqZA3uf1pIeT9pA
+ pSboYoNmaWKquUAxmRErJYeQ+7GUOc+1Ye5kiDOo0GsdXjJv7ZV+c5NaNobxqMEWsovVXhVwyLih6
+ UIgzKYsA==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r05fb-007tac-T3; Mon, 06 Nov 2023 19:54:00 +0000
+ id 1r05fc-007tae-3G; Mon, 06 Nov 2023 19:54:00 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1r05fc-001GOn-0l; Mon, 06 Nov 2023 19:54:00 +0000
+ Hat Linux)) id 1r05fc-001GOs-10; Mon, 06 Nov 2023 19:54:00 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,10 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH for-8.3 v2 31/46] hw/net/etraxfs-eth: use
- qemu_configure_nic_device()
-Date: Mon,  6 Nov 2023 19:49:36 +0000
-Message-ID: <20231106195352.301038-32-dwmw2@infradead.org>
+Subject: [PATCH for-8.3 v2 32/46] hw/m68k/mcf5208: use qemu_create_nic_device()
+Date: Mon,  6 Nov 2023 19:49:37 +0000
+Message-ID: <20231106195352.301038-33-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106195352.301038-1-dwmw2@infradead.org>
 References: <20231106195352.301038-1-dwmw2@infradead.org>
@@ -97,12 +96,13 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
 Received-SPF: none client-ip=2001:8b0:10b:1236::1;
  envelope-from=BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org;
  helo=casper.infradead.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,70 +122,54 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/cris/axis_dev88.c      | 9 ++++-----
- hw/net/etraxfs_eth.c      | 5 ++---
- include/hw/cris/etraxfs.h | 2 +-
- 3 files changed, 7 insertions(+), 9 deletions(-)
+ hw/m68k/mcf5208.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/hw/cris/axis_dev88.c b/hw/cris/axis_dev88.c
-index d82050d927..5556634921 100644
---- a/hw/cris/axis_dev88.c
-+++ b/hw/cris/axis_dev88.c
-@@ -308,15 +308,14 @@ void axisdev88_init(MachineState *machine)
- 
-     /* Add the two ethernet blocks.  */
-     dma_eth = g_malloc0(sizeof dma_eth[0] * 4); /* Allocate 4 channels.  */
--    etraxfs_eth_init(&nd_table[0], 0x30034000, 1, &dma_eth[0], &dma_eth[1]);
--    if (nb_nics > 1) {
--        etraxfs_eth_init(&nd_table[1], 0x30036000, 2, &dma_eth[2], &dma_eth[3]);
--    }
- 
-+    etraxfs_eth_init(0x30034000, 1, &dma_eth[0], &dma_eth[1]);
-     /* The DMA Connector block is missing, hardwire things for now.  */
-     etraxfs_dmac_connect_client(etraxfs_dmac, 0, &dma_eth[0]);
-     etraxfs_dmac_connect_client(etraxfs_dmac, 1, &dma_eth[1]);
--    if (nb_nics > 1) {
-+
-+    if (qemu_find_nic_info("etraxfs-eth", true, "fseth")) {
-+        etraxfs_eth_init(0x30036000, 2, &dma_eth[2], &dma_eth[3]);
-         etraxfs_dmac_connect_client(etraxfs_dmac, 6, &dma_eth[2]);
-         etraxfs_dmac_connect_client(etraxfs_dmac, 7, &dma_eth[3]);
+diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
+index d22d8536db..c1a5bde571 100644
+--- a/hw/m68k/mcf5208.c
++++ b/hw/m68k/mcf5208.c
+@@ -206,16 +206,16 @@ static void mcf5208_sys_init(MemoryRegion *address_space, qemu_irq *pic)
      }
-diff --git a/hw/net/etraxfs_eth.c b/hw/net/etraxfs_eth.c
-index 1b82aec794..ab60eaac04 100644
---- a/hw/net/etraxfs_eth.c
-+++ b/hw/net/etraxfs_eth.c
-@@ -646,15 +646,14 @@ static void etraxfs_eth_class_init(ObjectClass *klass, void *data)
+ }
  
- /* Instantiate an ETRAXFS Ethernet MAC.  */
- DeviceState *
--etraxfs_eth_init(NICInfo *nd, hwaddr base, int phyaddr,
-+etraxfs_eth_init(hwaddr base, int phyaddr,
-                  struct etraxfs_dma_client *dma_out,
-                  struct etraxfs_dma_client *dma_in)
+-static void mcf_fec_init(MemoryRegion *sysmem, NICInfo *nd, hwaddr base,
+-                         qemu_irq *irqs)
++static void mcf_fec_init(MemoryRegion *sysmem, hwaddr base, qemu_irq *irqs)
  {
      DeviceState *dev;
--    qemu_check_nic_model(nd, "fseth");
+     SysBusDevice *s;
+     int i;
  
-     dev = qdev_new("etraxfs-eth");
+-    qemu_check_nic_model(nd, TYPE_MCF_FEC_NET);
+-    dev = qdev_new(TYPE_MCF_FEC_NET);
 -    qdev_set_nic_properties(dev, nd);
-+    qemu_configure_nic_device(dev, true, "fseth");
-     qdev_prop_set_uint32(dev, "phyaddr", phyaddr);
++    dev = qemu_create_nic_device(TYPE_MCF_FEC_NET, true, NULL);
++    if (!dev) {
++        return;
++    }
  
-     /*
-diff --git a/include/hw/cris/etraxfs.h b/include/hw/cris/etraxfs.h
-index 467b529dc0..012c4e9974 100644
---- a/include/hw/cris/etraxfs.h
-+++ b/include/hw/cris/etraxfs.h
-@@ -31,7 +31,7 @@
- #include "hw/sysbus.h"
- #include "qapi/error.h"
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
+@@ -267,17 +267,9 @@ static void mcf5208evb_init(MachineState *machine)
  
--DeviceState *etraxfs_eth_init(NICInfo *nd, hwaddr base, int phyaddr,
-+DeviceState *etraxfs_eth_init(hwaddr base, int phyaddr,
-                               struct etraxfs_dma_client *dma_out,
-                               struct etraxfs_dma_client *dma_in);
+     mcf5208_sys_init(address_space_mem, pic);
  
+-    if (nb_nics > 1) {
+-        error_report("Too many NICs");
+-        exit(1);
+-    }
+-    if (nd_table[0].used) {
+-        mcf_fec_init(address_space_mem, &nd_table[0],
+-                     0xfc030000, pic + 36);
+-    }
++    mcf_fec_init(address_space_mem, 0xfc030000, pic + 36);
+ 
+     g_free(pic);
+-
+     /*  0xfc000000 SCM.  */
+     /*  0xfc004000 XBS.  */
+     /*  0xfc008000 FlexBus CS.  */
 -- 
 2.41.0
 
