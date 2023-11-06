@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A317E1A42
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 07:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA70E7E1A43
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 07:35:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztAh-0007lV-69; Mon, 06 Nov 2023 01:33:15 -0500
+	id 1qztCV-0008U9-2c; Mon, 06 Nov 2023 01:35:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qztAf-0007l6-9Z
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:33:13 -0500
-Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
+ id 1qztCP-0008Sn-04
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:35:01 -0500
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qztAd-0005Yp-S9
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:33:13 -0500
-Received: by mail-qt1-x82e.google.com with SMTP id
- d75a77b69052e-41eae4f0ee6so8105721cf.3
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:33:10 -0800 (PST)
+ id 1qztCL-0005jE-Q5
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:35:00 -0500
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-418201cb9e9so28316961cf.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:34:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699252389; x=1699857189; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699252496; x=1699857296; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fRXP+ZoCneuNGIjxwzjTwvfnxeMN/u7HIZsT5LVa77Q=;
- b=DUkI2K0gqxUqioFbV7HhPX7lXk4CF2Djjky3t2Zlcvj/G+hUjc+eMaRHN4SZp5VS9s
- Jt12YtyLY4rJmeZ1NMYrQvkEJEii2B8BbLEZ7mLOKCdu3zj6Hb6J6oYm4dwh9YN/tzXW
- 119aJtqxo0rvypxhe0WdjcJo6iICXj/NFxlyL/g2OEEuE6Tl9EmPpPrwc1ofYJugIDGt
- kpOIo7J699F3yX3aATbB3rRlT9nwh9Ak/d0wvUpVRLDZqQD9zEqbkXKnukal4ClZUSJx
- 81sPJcaRBVeYaamamAKV+hqvW5LX697GaEf0wHNy2blgRe66HawutiZzWm/eSZ8dRs07
- pbbA==
+ bh=fGpUp2UKUSvGL6EstICtpjvo6BfeSIzz8tXe6SxfjNQ=;
+ b=jiSKxJ9t4lDBgiGBHqjRj5VcYY2MuY6T9U5EfkO85e5oB5hfPtx41OiKhql7uNi/cO
+ 9DbC2qSIb0RTBjHhHUqKqSkikr6dTZGOc7kkpduPNhd5NU9n022kjlKQDDQ2vvOqPM5V
+ xMM8FUpqwR0Kuh29Ux2FbgduIAkZD1dLzSrQtRUySIB2XxGQwJ5grd0sn9e7iNzfYnol
+ jvAyjOp2uhuM3GiCGUeqMKYf6A5EsQ8TR9/bCaPOjVUaBdTszGx8GMcqw4st/RouzF2a
+ 53+QQsjq3xJZO7Jnz68XR/IuzHS/sjHJbphBKUlpjdx1orV5/DQxjUFs6RgZWcmm/fRq
+ Mhrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699252389; x=1699857189;
+ d=1e100.net; s=20230601; t=1699252496; x=1699857296;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fRXP+ZoCneuNGIjxwzjTwvfnxeMN/u7HIZsT5LVa77Q=;
- b=VF9SRg1Y9MBJvnJUXXYkIw6yCnHNhiWPFWDNNC2pR+cDf6qNtqdbBSaPLu1SHNCjoI
- R2eRwiSFo9NKp6UxuqWenvwIv2ZYoczFWNuwQe5ddFcQNFkW+gAxmI11Sv5HaaueCjHq
- IuEVDRP68Gz2m5lBc7Vp6zji7PPLmCAnBlYi8Et7M9SWcU8zgAf1lTGFKhE9+TuPetCi
- mdRdZ/5j1yyF4uQfctsIqKOhmpa5X7SUq577fN96z3uU1uJKUTWL+Sd3dGmN7QfSsBPs
- wnm1zHNOlHJ6ajaka90j2HkwXi0zThcDd7sbJc+F/XZ6jAKvfAzh+TacKUaJJb21NAZH
- F8CQ==
-X-Gm-Message-State: AOJu0YweAMb5pftqGj/lZtPzOlyl/NIUWKvtmQWPBrbIULBIFYP1qVHn
- 2k4cM9Yl9Y1X3ALK14ZnWYe4Gh4jCPPJnB/Qy8M=
-X-Google-Smtp-Source: AGHT+IGEM5XaxI8UEjNIkzkYYihryHx958epKFffhTuk9ufSdnpwVuZ2evQdXPzubnOo53HnIWwZ1zJTV5U1QK2Aj0E=
-X-Received: by 2002:a05:622a:550:b0:41c:e1a7:664 with SMTP id
- m16-20020a05622a055000b0041ce1a70664mr30168047qtx.59.1699252389105; Sun, 05
- Nov 2023 22:33:09 -0800 (PST)
+ bh=fGpUp2UKUSvGL6EstICtpjvo6BfeSIzz8tXe6SxfjNQ=;
+ b=M3Ni6eYnt7M99SKfjH/+L42WRMuKcqi/zpplku8cSMZ2ACmjQ/ufQfCLdvaBke/NeU
+ tTlTOou3brtTFg0k0AsfaGJCWCVihi2Vgf1wQArNE9/8vOHztAEAfQb/QtPefhiZjRmw
+ ellmCYJ2gyVKkVC0Cqwr4vqrUBc25nIy2I2+DpFmVavl1pgTaRsI92WY2ZHC7uXh0MW8
+ VQxorkrDhwPgtXYq8m/EO0YiNoRJoSbNdISw3ZqQLHf2RaSgb++62qJQ/6a8a2TdfXdH
+ dU7HdRRn6rQjdmrF3np6ige/JYloyAeAJ8xlTSKNt2gW2ZImMmE7oRwS/i50LToX6Gz6
+ gV+w==
+X-Gm-Message-State: AOJu0YwW4fH0lEmXIV7ABswqUoFPmc2EQVEgGOAWYXPfEZ3Sbdz4+RMI
+ 3lxYndpL8iyPEIacpbJ5tgRxqznDEYM4QaA5DTM=
+X-Google-Smtp-Source: AGHT+IF5FN9w+Tj3VzY095rG3wmtmd0EIV+NT7KmxXLNmKFYdeHyaPUjvsFE6JBRm+jj7YDmDKavTbHp2pwa4Il+mX8=
+X-Received: by 2002:a05:622a:3:b0:41c:cd2a:f066 with SMTP id
+ x3-20020a05622a000300b0041ccd2af066mr36744512qtw.34.1699252496388; Sun, 05
+ Nov 2023 22:34:56 -0800 (PST)
 MIME-Version: 1.0
 References: <6f8b1f96-4520-49d5-8a09-b2935ab4bd9d@t-online.de>
- <20231105172552.8405-2-vr_qemu@t-online.de>
-In-Reply-To: <20231105172552.8405-2-vr_qemu@t-online.de>
+ <20231105172552.8405-1-vr_qemu@t-online.de>
+In-Reply-To: <20231105172552.8405-1-vr_qemu@t-online.de>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 6 Nov 2023 10:32:57 +0400
-Message-ID: <CAJ+F1CKvNncNFg+ZP=ZS2gKdNE3WuaOpudazCJ8nD5W1=Rh+wA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] hw/audio/hda-codec: reenable the audio mixer
+Date: Mon, 6 Nov 2023 10:34:45 +0400
+Message-ID: <CAJ+F1CKjY0V_qZ6cjxLVCpM2PcCtKpGGB+jH8jB4Skh5WmbnXA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] hw/audio/hda-codec: fix multiplication overflow
 To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Martin Kletzander <mkletzan@redhat.com>
+ qemu-devel@nongnu.org, M_O_Bz <M_O_Bz@163.com>, linwei6@ruijie.com.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,79 +89,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
 On Sun, Nov 5, 2023 at 9:26=E2=80=AFPM Volker R=C3=BCmelin <vr_qemu@t-onlin=
 e.de> wrote:
 >
-> Commit b7639b7dd0 ("hw/audio: Simplify hda audio init") inverted
-> the sense of hda codec property mixer during initialization.
-> Change the code so that mixer=3Don enables the hda mixer emulation
-> and mixer=3Doff disables the hda mixer emulation.
+> After a relatively short time, there is an multiplication overflow
+> when multiplying (now - buft_start) with hda_bytes_per_second().
+> While the uptime now - buft_start only overflows after 2**63 ns
+> =3D 292.27 years, this happens hda_bytes_per_second() times faster
+> with the multiplication. At 44100 samples/s * 2 channels
+> * 2 bytes/channel =3D 176400 bytes/s that is 14.52 hours. After the
+> multiplication overflow the affected audio stream stalls.
 >
-> With this change audio playback and recording streams don't start
-> muted by default.
+> Replace the multiplication and following division with muldiv64()
+> to prevent a multiplication overflow.
 >
-> Fixes: b7639b7dd0 ("hw/audio: Simplify hda audio init")
+> Fixes: 280c1e1cdb ("audio/hda: create millisecond timers that handle IO")
+> Reported-by: M_O_Bz <m_o_bz@163.com>
 > Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online.de>
 
 Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
 > ---
->  hw/audio/hda-codec.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>  hw/audio/hda-codec.c | 29 +++++++++++++++++++++--------
+>  1 file changed, 21 insertions(+), 8 deletions(-)
 >
 > diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-> index f756e419bb..0bc20d49f6 100644
+> index b9ad1f4c39..f756e419bb 100644
 > --- a/hw/audio/hda-codec.c
 > +++ b/hw/audio/hda-codec.c
-> @@ -868,10 +868,10 @@ static Property hda_audio_properties[] =3D {
->  static void hda_audio_init_output(HDACodecDevice *hda, Error **errp)
+> @@ -22,6 +22,7 @@
+>  #include "hw/qdev-properties.h"
+>  #include "intel-hda.h"
+>  #include "migration/vmstate.h"
+> +#include "qemu/host-utils.h"
+>  #include "qemu/module.h"
+>  #include "intel-hda-defs.h"
+>  #include "audio/audio.h"
+> @@ -189,9 +190,9 @@ struct HDAAudioState {
+>      bool     use_timer;
+>  };
+>
+> -static inline int64_t hda_bytes_per_second(HDAAudioStream *st)
+> +static inline uint32_t hda_bytes_per_second(HDAAudioStream *st)
 >  {
->      HDAAudioState *a =3D HDA_AUDIO(hda);
-> -    const struct desc_codec *desc =3D &output_nomixemu;
-> +    const struct desc_codec *desc =3D &output_mixemu;
+> -    return 2LL * st->as.nchannels * st->as.freq;
+> +    return 2 * (uint32_t)st->as.nchannels * (uint32_t)st->as.freq;
+>  }
 >
->      if (!a->mixer) {
-> -        desc =3D &output_mixemu;
-> +        desc =3D &output_nomixemu;
->      }
+>  static inline void hda_timer_sync_adjust(HDAAudioStream *st, int64_t tar=
+get_pos)
+> @@ -222,12 +223,18 @@ static void hda_audio_input_timer(void *opaque)
 >
->      hda_audio_init(hda, desc, errp);
-> @@ -880,10 +880,10 @@ static void hda_audio_init_output(HDACodecDevice *h=
-da, Error **errp)
->  static void hda_audio_init_duplex(HDACodecDevice *hda, Error **errp)
->  {
->      HDAAudioState *a =3D HDA_AUDIO(hda);
-> -    const struct desc_codec *desc =3D &duplex_nomixemu;
-> +    const struct desc_codec *desc =3D &duplex_mixemu;
+>      int64_t now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
 >
->      if (!a->mixer) {
-> -        desc =3D &duplex_mixemu;
-> +        desc =3D &duplex_nomixemu;
->      }
+> -    int64_t buft_start =3D st->buft_start;
+> +    int64_t uptime =3D now - st->buft_start;
+>      int64_t wpos =3D st->wpos;
+>      int64_t rpos =3D st->rpos;
+> +    int64_t wanted_rpos;
 >
->      hda_audio_init(hda, desc, errp);
-
-It could be even further simplified:
-
-    hda_audio_init(hda, a->mixer ? &output_mixemu : &output_nomixemu, errp)=
-;
-
-> @@ -892,10 +892,10 @@ static void hda_audio_init_duplex(HDACodecDevice *h=
-da, Error **errp)
->  static void hda_audio_init_micro(HDACodecDevice *hda, Error **errp)
->  {
->      HDAAudioState *a =3D HDA_AUDIO(hda);
-> -    const struct desc_codec *desc =3D &micro_nomixemu;
-> +    const struct desc_codec *desc =3D &micro_mixemu;
+> -    int64_t wanted_rpos =3D hda_bytes_per_second(st) * (now - buft_start=
+)
+> -                          / NANOSECONDS_PER_SECOND;
+> +    if (uptime <=3D 0) {
+> +        /* wanted_rpos <=3D 0 */
+> +        goto out_timer;
+> +    }
+> +
+> +    wanted_rpos =3D muldiv64(uptime, hda_bytes_per_second(st),
+> +                           NANOSECONDS_PER_SECOND);
+>      wanted_rpos &=3D -4; /* IMPORTANT! clip to frames */
 >
->      if (!a->mixer) {
-> -        desc =3D &micro_mixemu;
-> +        desc =3D &micro_nomixemu;
->      }
+>      if (wanted_rpos <=3D rpos) {
+> @@ -286,12 +293,18 @@ static void hda_audio_output_timer(void *opaque)
 >
->      hda_audio_init(hda, desc, errp);
+>      int64_t now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+>
+> -    int64_t buft_start =3D st->buft_start;
+> +    int64_t uptime =3D now - st->buft_start;
+>      int64_t wpos =3D st->wpos;
+>      int64_t rpos =3D st->rpos;
+> +    int64_t wanted_wpos;
+> +
+> +    if (uptime <=3D 0) {
+> +        /* wanted_wpos <=3D 0 */
+> +        goto out_timer;
+> +    }
+>
+> -    int64_t wanted_wpos =3D hda_bytes_per_second(st) * (now - buft_start=
+)
+> -                          / NANOSECONDS_PER_SECOND;
+> +    wanted_wpos =3D muldiv64(uptime, hda_bytes_per_second(st),
+> +                           NANOSECONDS_PER_SECOND);
+>      wanted_wpos &=3D -4; /* IMPORTANT! clip to frames */
+>
+>      if (wanted_wpos <=3D wpos) {
 > --
 > 2.35.3
 >
