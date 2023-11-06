@@ -2,109 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012877E277D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BA57E2788
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:48:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00mj-0003ZI-Vi; Mon, 06 Nov 2023 09:41:02 -0500
+	id 1r00mx-0003ek-Kc; Mon, 06 Nov 2023 09:41:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r00mR-0003QG-7e
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:40:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1r00mU-0003XZ-40; Mon, 06 Nov 2023 09:40:48 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r00mP-0001l3-1x
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:40:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699281640;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=n6VvgbFqpnydvZ9tnhFu+yy9dDqWOGEKqDklI53exLg=;
- b=cc8WEUxhaOApF37fo1rXfBCCDBQ7MFe5YCZS4hgn+c4S96cWnMkQVI0bMsWWizyeEmQ9wU
- jhjsw4xfrjshZiYhCMt7gbdS7Sv+wBsDXRX/wdH3HEPI54z4l5Ddh6u7JVYaW+1W7sdOBk
- aCElP/BbT8TlM9WDwuZnc+UccBhnh1I=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-BvjNos5oNm27mNK_vUf7SQ-1; Mon, 06 Nov 2023 09:40:38 -0500
-X-MC-Unique: BvjNos5oNm27mNK_vUf7SQ-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41cd46aa351so49227811cf.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:40:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699281638; x=1699886438;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=n6VvgbFqpnydvZ9tnhFu+yy9dDqWOGEKqDklI53exLg=;
- b=armvtKc/07zO7l2ZsoFBAXP7XYDw3JwIgVd5gnVRm81+PhzMegcnxfxgEa8/k4PQKy
- RCLX1UTHvoOshzavSvL2BVKLcJ8crTHhMTilURjlGrfbS96yzLOYZGqX/Hpme8ibvDMS
- 0VP0crXRW8KbLOBFlOwixOo25j5JzBGa3T4iOJw2zobgQzUw3Y7NqU4GWUtshU6syT3a
- ljnHqHyEX6H9GTs3bt0zrcV7PEUoV8KBwlEVQWwHgBTZT5/YlGptl4XiKl4cQACXDHqt
- wEXHjHAeWswMe6vz1F3c3DNQQLJaJePD8DnHatQVBEYX5w8gczf3Wed/a1AgKl4A1+Fi
- 5kzw==
-X-Gm-Message-State: AOJu0YwcfCqS1tBfn9NSwPoVLGYu8gQICrsr1VT47FahxrTmV7VpcTfp
- pXI8RJGywE6BF5hR+v2u2M+4ZurdnifnAjbtl0lvnxTD9QpvJD0FnZNwXTGseC4NgMieeLwKeQs
- qwsUSdJc85RHGV8c=
-X-Received: by 2002:ac8:7f4e:0:b0:41c:d1cf:23e1 with SMTP id
- g14-20020ac87f4e000000b0041cd1cf23e1mr34766630qtk.62.1699281637784; 
- Mon, 06 Nov 2023 06:40:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGBibR3VS6jYUWrkInLjBjJWoHVv06xyTkhvIH60b5VlaF1+FdOh5Leq+nyzxsLKPTNtYt6rQ==
-X-Received: by 2002:ac8:7f4e:0:b0:41c:d1cf:23e1 with SMTP id
- g14-20020ac87f4e000000b0041cd1cf23e1mr34766583qtk.62.1699281637399; 
- Mon, 06 Nov 2023 06:40:37 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- g20-20020ac84694000000b00419ab6ffedasm3408508qto.29.2023.11.06.06.40.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 06:40:36 -0800 (PST)
-Date: Mon, 6 Nov 2023 15:40:29 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Gavin Shan <gshan@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, philmd@linaro.org,
- clg@kaod.org, imp@bsdimp.com, kevans@freebsd.org,
- richard.henderson@linaro.org, pbonzini@redhat.com,
- peter.maydell@linaro.org, b.galvani@gmail.com,
- strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
- wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
- quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
- laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
- edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
- aurelien@aurel32.net, jiaxun.yang@flygoat.com,
- aleksandar.rikalo@syrmia.com, chenhuacai@kernel.org, crwulff@gmail.com,
- marex@denx.de, shorne@gmail.com, npiggin@gmail.com,
- ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
- iii@linux.ibm.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
- shan.gavin@gmail.com
-Subject: Re: [PATCH v4 02/33] hw/cpu: Call object_class_is_abstract() once
- in cpu_class_by_name()
-Message-ID: <20231106154029.0354f0ed@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231102002500.1750692-3-gshan@redhat.com>
-References: <20231102002500.1750692-1-gshan@redhat.com>
- <20231102002500.1750692-3-gshan@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1r00mQ-0001ks-VT; Mon, 06 Nov 2023 09:40:45 -0500
+Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SPDWs5w1Kz6K9BG;
+ Mon,  6 Nov 2023 22:39:37 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 6 Nov 2023 14:40:37 +0000
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Mon, 6 Nov 2023 14:40:37 +0000
+To: Igor Mammedov <imammedo@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
+ <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "andrew.jones@linux.dev"
+ <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
+ "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "will@kernel.org" <will@kernel.org>, "gshan@redhat.com"
+ <gshan@redhat.com>, "rafael@kernel.org" <rafael@kernel.org>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
+ <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
+ <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
+ <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
+ <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
+ <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
+ "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
+ <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
+ "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
+ <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
+ "lixianglai@loongson.cn" <lixianglai@loongson.cn>, Linuxarm
+ <linuxarm@huawei.com>
+Subject: RE: [PATCH V6 3/9] hw/acpi: Add ACPI CPU hotplug init stub
+Thread-Topic: [PATCH V6 3/9] hw/acpi: Add ACPI CPU hotplug init stub
+Thread-Index: AQHZ/cNvZAwhAw6k7UmuT7OTRFemlbBdoEIAgA/iYFA=
+Date: Mon, 6 Nov 2023 14:40:37 +0000
+Message-ID: <53b571766ce7445c828badc2b45db598@huawei.com>
+References: <20231013105129.25648-1-salil.mehta@huawei.com>
+ <20231013105129.25648-4-salil.mehta@huawei.com>
+ <20231027150536.3c481246@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231027150536.3c481246@imammedo.users.ipa.redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.148.208]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,306 +90,81 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu,  2 Nov 2023 10:24:29 +1000
-Gavin Shan <gshan@redhat.com> wrote:
+Hi Igor,
 
-> From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> From: Igor Mammedov <imammedo@redhat.com>
+> Sent: Friday, October 27, 2023 2:06 PM
+> To: Salil Mehta <salil.mehta@huawei.com>
+> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
+> philippe@linaro.org; Jonathan Cameron <jonathan.cameron@huawei.com>;
+> lpieralisi@kernel.org; peter.maydell@linaro.org;
+> richard.henderson@linaro.org; andrew.jones@linux.dev; david@redhat.com;
+> philmd@linaro.org; eric.auger@redhat.com; oliver.upton@linux.dev;
+> pbonzini@redhat.com; mst@redhat.com; will@kernel.org; gshan@redhat.com;
+> rafael@kernel.org; alex.bennee@linaro.org; linux@armlinux.org.uk;
+> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
+m>
+> Subject: Re: [PATCH V6 3/9] hw/acpi: Add ACPI CPU hotplug init stub
 >=20
-> Let CPUClass::class_by_name() handlers to return abstract classes,
-> and filter them once in the public cpu_class_by_name() method.
+> On Fri, 13 Oct 2023 11:51:23 +0100
+> Salil Mehta <salil.mehta@huawei.com> wrote:
 >=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> ---
->  hw/core/cpu-common.c   | 8 +++++++-
->  include/hw/core/cpu.h  | 7 ++++---
->  target/alpha/cpu.c     | 2 +-
->  target/arm/cpu.c       | 3 +--
->  target/avr/cpu.c       | 3 +--
->  target/cris/cpu.c      | 3 +--
->  target/hexagon/cpu.c   | 3 +--
->  target/loongarch/cpu.c | 3 +--
->  target/m68k/cpu.c      | 3 +--
->  target/openrisc/cpu.c  | 3 +--
->  target/riscv/cpu.c     | 3 +--
->  target/rx/cpu.c        | 5 +----
->  target/sh4/cpu.c       | 3 ---
->  target/tricore/cpu.c   | 3 +--
->  target/xtensa/cpu.c    | 3 +--
->  15 files changed, 23 insertions(+), 32 deletions(-)
+> > ACPI CPU hotplug related initialization should only happen if ACPI_CPU_=
+HOTPLUG
+> > support has been enabled for particular architecture. Add cpu_hotplug_h=
+w_init()
+> > stub to avoid compilation break.
 >=20
-> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-> index bab8942c30..bca0323e9f 100644
-> --- a/hw/core/cpu-common.c
-> +++ b/hw/core/cpu-common.c
-> @@ -150,9 +150,15 @@ static bool cpu_common_has_work(CPUState *cs)
->  ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_mod=
-el)
->  {
->      CPUClass *cc =3D CPU_CLASS(object_class_by_name(typename));
-> +    ObjectClass *oc;
-> =20
->      assert(cpu_model && cc->class_by_name);
-> -    return cc->class_by_name(cpu_model);
-> +    oc =3D cc->class_by_name(cpu_model);
-> +    if (oc && !object_class_is_abstract(oc)) {
-> +        return oc;
-> +    }
-> +
-> +    return NULL;
->  }
-> =20
->  static void cpu_common_parse_features(const char *typename, char *featur=
-es,
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index 18593db5b2..ee85aafdf5 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -102,7 +102,7 @@ struct SysemuCPUOps;
->  /**
->   * CPUClass:
->   * @class_by_name: Callback to map -cpu command line model name to an
-> - * instantiatable CPU type.
-> + *                 instantiatable CPU type.
->   * @parse_features: Callback to parse command line arguments.
->   * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
->   * @has_work: Callback for checking if there is work to do.
-> @@ -772,9 +772,10 @@ void cpu_reset(CPUState *cpu);
->   * @typename: The CPU base type.
->   * @cpu_model: The model string without any parameters.
->   *
-> - * Looks up a CPU #ObjectClass matching name @cpu_model.
-> + * Looks up a concrete CPU #ObjectClass matching name @cpu_model.
->   *
-> - * Returns: A #CPUClass or %NULL if not matching class is found.
-> + * Returns: A concrete #CPUClass or %NULL if no matching class is found
-> + *          or if the matching class is abstract.
->   */
->  ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_mod=
-el);
-> =20
-> diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-> index c7ae4d6a41..9436859c7b 100644
-> --- a/target/alpha/cpu.c
-> +++ b/target/alpha/cpu.c
-> @@ -126,7 +126,7 @@ static ObjectClass *alpha_cpu_class_by_name(const cha=
-r *cpu_model)
->      int i;
-> =20
->      oc =3D object_class_by_name(cpu_model);
-> -    if (oc !=3D NULL && object_class_dynamic_cast(oc, TYPE_ALPHA_CPU) !=
-=3D NULL &&
-I'd split 'oc !=3D NULL &&' into a separate patch=20
+> merge this with 4/9 that actually requires this to be done.
 
-> +    if (object_class_dynamic_cast(oc, TYPE_ALPHA_CPU) &&
->          !object_class_is_abstract(oc)) {
+Sure. No issues.
 
-stray abstract check leftover??
 
->          return oc;
->      }
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 954328d72a..8c622d6b59 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2399,8 +2399,7 @@ static ObjectClass *arm_cpu_class_by_name(const cha=
-r *cpu_model)
->      oc =3D object_class_by_name(typename);
->      g_strfreev(cpuname);
->      g_free(typename);
-> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_ARM_CPU) ||
-> -        object_class_is_abstract(oc)) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_ARM_CPU)) {
->          return NULL;
->      }
->      return oc;
-> diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-> index 14d8b9d1f0..113d522f75 100644
-> --- a/target/avr/cpu.c
-> +++ b/target/avr/cpu.c
-> @@ -157,8 +157,7 @@ static ObjectClass *avr_cpu_class_by_name(const char =
-*cpu_model)
->      ObjectClass *oc;
-> =20
->      oc =3D object_class_by_name(cpu_model);
-> -    if (object_class_dynamic_cast(oc, TYPE_AVR_CPU) =3D=3D NULL ||
-> -        object_class_is_abstract(oc)) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_AVR_CPU)) {
->          oc =3D NULL;
->      }
->      return oc;
-> diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-> index be4a44c218..1cb431cd46 100644
-> --- a/target/cris/cpu.c
-> +++ b/target/cris/cpu.c
-> @@ -95,8 +95,7 @@ static ObjectClass *cris_cpu_class_by_name(const char *=
-cpu_model)
->      typename =3D g_strdup_printf(CRIS_CPU_TYPE_NAME("%s"), cpu_model);
->      oc =3D object_class_by_name(typename);
->      g_free(typename);
-> -    if (oc !=3D NULL && (!object_class_dynamic_cast(oc, TYPE_CRIS_CPU) ||
-> -                       object_class_is_abstract(oc))) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_CRIS_CPU)) {
->          oc =3D NULL;
->      }
->      return oc;
-> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-> index 1adc11b713..bd5adb7acd 100644
-> --- a/target/hexagon/cpu.c
-> +++ b/target/hexagon/cpu.c
-> @@ -63,8 +63,7 @@ static ObjectClass *hexagon_cpu_class_by_name(const cha=
-r *cpu_model)
->      oc =3D object_class_by_name(typename);
->      g_strfreev(cpuname);
->      g_free(typename);
-> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU) ||
-> -        object_class_is_abstract(oc)) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU)) {
->          return NULL;
->      }
->      return oc;
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index ef1bf89dac..06d1b9bb95 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -648,8 +648,7 @@ static ObjectClass *loongarch_cpu_class_by_name(const=
- char *cpu_model)
->          }
->      }
-> =20
-> -    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)
-> -        && !object_class_is_abstract(oc)) {
-> +    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)) {
->          return oc;
->      }
->      return NULL;
-> diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-> index 538d9473c2..fe381cc5d3 100644
-> --- a/target/m68k/cpu.c
-> +++ b/target/m68k/cpu.c
-> @@ -111,8 +111,7 @@ static ObjectClass *m68k_cpu_class_by_name(const char=
- *cpu_model)
->      typename =3D g_strdup_printf(M68K_CPU_TYPE_NAME("%s"), cpu_model);
->      oc =3D object_class_by_name(typename);
->      g_free(typename);
-> -    if (oc !=3D NULL && (object_class_dynamic_cast(oc, TYPE_M68K_CPU) =
-=3D=3D NULL ||
-> -                       object_class_is_abstract(oc))) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_M68K_CPU)) {
->          return NULL;
->      }
->      return oc;
-> diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-> index f5a3d5273b..cc94f37e77 100644
-> --- a/target/openrisc/cpu.c
-> +++ b/target/openrisc/cpu.c
-> @@ -164,8 +164,7 @@ static ObjectClass *openrisc_cpu_class_by_name(const =
-char *cpu_model)
->      typename =3D g_strdup_printf(OPENRISC_CPU_TYPE_NAME("%s"), cpu_model=
-);
->      oc =3D object_class_by_name(typename);
->      g_free(typename);
-> -    if (oc !=3D NULL && (!object_class_dynamic_cast(oc, TYPE_OPENRISC_CP=
-U) ||
-> -                       object_class_is_abstract(oc))) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_OPENRISC_CPU)) {
->          return NULL;
->      }
->      return oc;
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index ac4a6c7eec..018bad6f82 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -636,8 +636,7 @@ static ObjectClass *riscv_cpu_class_by_name(const cha=
-r *cpu_model)
->      oc =3D object_class_by_name(typename);
->      g_strfreev(cpuname);
->      g_free(typename);
-> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_RISCV_CPU) ||
-> -        object_class_is_abstract(oc)) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_RISCV_CPU)) {
->          return NULL;
->      }
->      return oc;
-> diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-> index 4d0d3a0c8c..0063837e93 100644
-> --- a/target/rx/cpu.c
-> +++ b/target/rx/cpu.c
-> @@ -111,16 +111,13 @@ static ObjectClass *rx_cpu_class_by_name(const char=
- *cpu_model)
->      char *typename;
-> =20
->      oc =3D object_class_by_name(cpu_model);
-> -    if (oc !=3D NULL && object_class_dynamic_cast(oc, TYPE_RX_CPU) !=3D =
-NULL &&
-> +    if (object_class_dynamic_cast(oc, TYPE_RX_CPU) &&
->          !object_class_is_abstract(oc)) {
+Thanks
+Salil.
 
-ditto wrt strays
 
->          return oc;
->      }
->      typename =3D g_strdup_printf(RX_CPU_TYPE_NAME("%s"), cpu_model);
->      oc =3D object_class_by_name(typename);
->      g_free(typename);
-> -    if (oc !=3D NULL && object_class_is_abstract(oc)) {
-> -        oc =3D NULL;
-> -    }
-> =20
->      return oc;
->  }
-> diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-> index 788e41fea6..a8ec98b134 100644
-> --- a/target/sh4/cpu.c
-> +++ b/target/sh4/cpu.c
-> @@ -152,9 +152,6 @@ static ObjectClass *superh_cpu_class_by_name(const ch=
-ar *cpu_model)
-> =20
->      typename =3D g_strdup_printf(SUPERH_CPU_TYPE_NAME("%s"), s);
->      oc =3D object_class_by_name(typename);
-> -    if (oc !=3D NULL && object_class_is_abstract(oc)) {
-> -        oc =3D NULL;
-> -    }
-
-Why they do not do=20
-    object_class_dynamic_cast(oc, TYPE_ABSTRACT_FOO_CPU)=20
-here, do we really need this dynamic cast elsewhere at all?
-
->  out:
->      g_free(s);
-> diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-> index 5ca666ee12..47e1c272cf 100644
-> --- a/target/tricore/cpu.c
-> +++ b/target/tricore/cpu.c
-> @@ -132,8 +132,7 @@ static ObjectClass *tricore_cpu_class_by_name(const c=
-har *cpu_model)
->      typename =3D g_strdup_printf(TRICORE_CPU_TYPE_NAME("%s"), cpu_model);
->      oc =3D object_class_by_name(typename);
->      g_free(typename);
-> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_TRICORE_CPU) ||
-> -        object_class_is_abstract(oc)) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_TRICORE_CPU)) {
->          return NULL;
->      }
->      return oc;
-> diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-> index ea1dae7390..5d1c090467 100644
-> --- a/target/xtensa/cpu.c
-> +++ b/target/xtensa/cpu.c
-> @@ -141,8 +141,7 @@ static ObjectClass *xtensa_cpu_class_by_name(const ch=
-ar *cpu_model)
->      typename =3D g_strdup_printf(XTENSA_CPU_TYPE_NAME("%s"), cpu_model);
->      oc =3D object_class_by_name(typename);
->      g_free(typename);
-> -    if (oc =3D=3D NULL || !object_class_dynamic_cast(oc, TYPE_XTENSA_CPU=
-) ||
-> -        object_class_is_abstract(oc)) {
-> +    if (!object_class_dynamic_cast(oc, TYPE_XTENSA_CPU)) {
->          return NULL;
->      }
->      return oc;
+> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > Tested-by: Xianglai Li <lixianglai@loongson.cn>
+> > ---
+> >  hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug=
+-
+> stub.c
+> > index 3fc4b14c26..c6c61bb9cd 100644
+> > --- a/hw/acpi/acpi-cpu-hotplug-stub.c
+> > +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
+> > @@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion
+> *parent, Object *owner,
+> >      return;
+> >  }
+> >
+> > +void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+> > +                         CPUHotplugState *state, hwaddr base_addr)
+> > +{
+> > +    return;
+> > +}
+> > +
+> >  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList
+> ***list)
+> >  {
+> >      return;
+>=20
 
 
