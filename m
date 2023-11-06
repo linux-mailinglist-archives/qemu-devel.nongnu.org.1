@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86D27E1B11
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:24:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 361187E1B14
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:25:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzty0-0001tf-4o; Mon, 06 Nov 2023 02:24:12 -0500
+	id 1qzty0-0001uJ-MF; Mon, 06 Nov 2023 02:24:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztxr-0001km-6k
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qztxw-0001r8-Ry
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztxp-0006Lr-FV
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:02 -0500
+ id 1qztxu-0006NI-F2
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699255440;
+ s=mimecast20190719; t=1699255445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6TPHZZbPX5YwmR+v8bRhw73QvmNTbMk63utWKnSQejU=;
- b=Ycwaya0s6MMddnuDRz3WsKGoaQ8rQJCuYD5RMibA6xBW+0M0w1IUnw9ORtLq+YrxAgqopu
- Yms+xWEuCoC6T4UB7PITYaVYLAttQzdJhpOQ8OxEE0ydpjgK3YY/4N2o7Tqj1sc2fbaMKM
- O1EA38NNrLdGEt9Ff+PSMZtBLyT4nhE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-ziRx6VXROq6fNhjijQjPrg-1; Mon,
- 06 Nov 2023 02:23:59 -0500
-X-MC-Unique: ziRx6VXROq6fNhjijQjPrg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=OF57uTjyyH4Nb4VhTNI4KzssnPCjcAVOb7bSOaBnuvo=;
+ b=OMIJUsw2ZUQfnV00Nmch6dpYL9FNMQex/os35wXoHQ+poC92AvWEFLV9vSVureuWEWKTRa
+ HObQNxOwkOf8VSDszNU6I18CPjUgmQuAs/levngCOx+eFLYv/hEL9D6riiLPnHilNrx9w6
+ kZ5MvzVH/ENt3P7sJaSJjs7nL6XmJiw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-357-7urx8DtHM82-wB1CxiMBlQ-1; Mon, 06 Nov 2023 02:24:04 -0500
+X-MC-Unique: 7urx8DtHM82-wB1CxiMBlQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F51729ABA3A;
- Mon,  6 Nov 2023 07:23:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2699185A780;
+ Mon,  6 Nov 2023 07:24:03 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1238C1C060AE;
- Mon,  6 Nov 2023 07:23:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EBF511121307;
+ Mon,  6 Nov 2023 07:24:02 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 10/23] ui/vc: console-vc requires PIXMAN
-Date: Mon,  6 Nov 2023 11:22:59 +0400
-Message-ID: <20231106072313.1742543-11-marcandre.lureau@redhat.com>
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 11/23] qmp/hmp: disable screendump if PIXMAN is missing
+Date: Mon,  6 Nov 2023 11:23:00 +0400
+Message-ID: <20231106072313.1742543-12-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 References: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
@@ -65,7 +67,7 @@ X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,94 +87,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Add stubs for the fallback paths.
-
-get_vc() now returns NULL by default if !PIXMAN.
+The command requires color conversion and line-by-line feeding. We could
+have a simple fallback for simple formats though.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- ui/console-vc-stubs.c | 33 +++++++++++++++++++++++++++++++++
- ui/console.c          |  3 +++
- ui/meson.build        |  2 +-
- 3 files changed, 37 insertions(+), 1 deletion(-)
- create mode 100644 ui/console-vc-stubs.c
+ qapi/ui.json     | 3 ++-
+ ui/ui-hmp-cmds.c | 2 ++
+ ui/ui-qmp-cmds.c | 2 ++
+ hmp-commands.hx  | 2 ++
+ 4 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/ui/console-vc-stubs.c b/ui/console-vc-stubs.c
-new file mode 100644
-index 0000000000..2afc52329f
---- /dev/null
-+++ b/ui/console-vc-stubs.c
-@@ -0,0 +1,33 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * QEMU VC stubs
-+ */
-+#include "qemu/osdep.h"
-+
-+#include "qapi/error.h"
-+#include "qemu/error-report.h"
-+#include "qemu/option.h"
-+#include "chardev/char.h"
-+#include "ui/console-priv.h"
-+
-+void qemu_text_console_select(QemuTextConsole *c)
-+{
-+}
-+
-+const char *
-+qemu_text_console_get_label(QemuTextConsole *c)
-+{
-+    return NULL;
-+}
-+
-+void qemu_text_console_update_cursor(void)
-+{
-+}
-+
-+void qemu_text_console_handle_keysym(QemuTextConsole *s, int keysym)
-+{
-+}
-+
-+void qemu_console_early_init(void)
-+{
-+}
-diff --git a/ui/console.c b/ui/console.c
-index a758ed62ad..a72c495b5a 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1685,8 +1685,11 @@ const char *qemu_display_get_vc(DisplayOptions *opts)
-     if (dpys[opts->type]->vc) {
-         return dpys[opts->type]->vc;
-     } else {
-+#ifdef CONFIG_PIXMAN
-         return "vc:80Cx24C";
-+#endif
+diff --git a/qapi/ui.json b/qapi/ui.json
+index 006616aa77..e74cc3efb6 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -200,7 +200,8 @@
+ { 'command': 'screendump',
+   'data': {'filename': 'str', '*device': 'str', '*head': 'int',
+            '*format': 'ImageFormat'},
+-  'coroutine': true }
++  'coroutine': true,
++  'if': 'CONFIG_PIXMAN' }
+ 
+ ##
+ # == Spice
+diff --git a/ui/ui-hmp-cmds.c b/ui/ui-hmp-cmds.c
+index c671389473..26c8ced1f2 100644
+--- a/ui/ui-hmp-cmds.c
++++ b/ui/ui-hmp-cmds.c
+@@ -437,6 +437,7 @@ void sendkey_completion(ReadLineState *rs, int nb_args, const char *str)
      }
-+    return NULL;
  }
  
- void qemu_display_help(void)
-diff --git a/ui/meson.build b/ui/meson.build
-index 0a1e8272a3..3085e10a72 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -6,7 +6,6 @@ system_ss.add(png)
- system_ss.add(files(
-   'clipboard.c',
-   'console.c',
--  'console-vc.c',
-   'cursor.c',
-   'input-keymap.c',
-   'input-legacy.c',
-@@ -19,6 +18,7 @@ system_ss.add(files(
-   'ui-qmp-cmds.c',
-   'util.c',
- ))
-+system_ss.add(when: pixman, if_true: files('console-vc.c'), if_false: files('console-vc-stubs.c'))
- if dbus_display
-   system_ss.add(files('dbus-module.c'))
- endif
++#ifdef CONFIG_PIXMAN
+ void coroutine_fn
+ hmp_screendump(Monitor *mon, const QDict *qdict)
+ {
+@@ -458,6 +459,7 @@ hmp_screendump(Monitor *mon, const QDict *qdict)
+ end:
+     hmp_handle_error(mon, err);
+ }
++#endif
+ 
+ void hmp_client_migrate_info(Monitor *mon, const QDict *qdict)
+ {
+diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
+index debc07d678..d772e1cb7f 100644
+--- a/ui/ui-qmp-cmds.c
++++ b/ui/ui-qmp-cmds.c
+@@ -212,6 +212,7 @@ void qmp_client_migrate_info(const char *protocol, const char *hostname,
+     error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "protocol", "'spice'");
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ #ifdef CONFIG_PNG
+ /**
+  * png_save: Take a screenshot as PNG
+@@ -391,3 +392,4 @@ qmp_screendump(const char *filename, const char *device,
+         }
+     }
+ }
++#endif /* CONFIG_PIXMAN */
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 63eac22734..c343d82fbc 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -252,6 +252,7 @@ SRST
+ 
+ ERST
+ 
++#ifdef CONFIG_PIXMAN
+     {
+         .name       = "screendump",
+         .args_type  = "filename:F,format:-fs,device:s?,head:i?",
+@@ -267,6 +268,7 @@ SRST
+ ``screendump`` *filename*
+   Save screen into PPM image *filename*.
+ ERST
++#endif
+ 
+     {
+         .name       = "logfile",
 -- 
 2.41.0
 
