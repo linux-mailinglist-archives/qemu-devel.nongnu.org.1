@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33DE7E1B2B
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:26:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6A47E1B27
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:26:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztyr-0005U3-GH; Mon, 06 Nov 2023 02:25:05 -0500
+	id 1qztyr-0005dC-Nt; Mon, 06 Nov 2023 02:25:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztyj-0004tG-QP
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:58 -0500
+ id 1qztyn-0005Or-Dp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:25:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztyh-0006Uj-Fd
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:24:57 -0500
+ id 1qztyk-0006VF-Kg
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:25:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699255494;
+ s=mimecast20190719; t=1699255498;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=keLfkghX2/N7TKnXbXJ/FeXnBd82lE6vU0DmoqeQtkw=;
- b=ifqp5gPGntnUzq2JCyeouEM1AVNEZtCsy0beL3KGYyzCfkmvXnjhLOMzY95ulzk07lvCgd
- 79u5DmPU5WyQpzchcAnMM+/zlWDiOtNX7OpIjfyvXsa7jaxMK14X8NkgKTGaztAZIJzmiv
- BQE8vssfdYZ/n9fKGifjK9oAF/6hav4=
+ bh=6kBUA9yGxtLPPI3qJQwdmQleDbF7xoQOdD4TcKeoWhI=;
+ b=JU+8YO1ITEkXQUk0uz2rnNOTs0VzOE5htxbZQG96C2K+wbuEgKlVDCbfboHQzBxBTLCuoL
+ tGBxZ6j9EctTnIOf8z5xjjnU2VBgMmQBgCTtjZxvuPBknLowFp7mLBDyLvHdGjVIRr9QOf
+ 0/O3FIoqhByR1UJhKVRrwwjzlnmcZSo=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-425-jB_vks_OMm2nVTC-a1j-Cw-1; Mon,
- 06 Nov 2023 02:24:50 -0500
-X-MC-Unique: jB_vks_OMm2nVTC-a1j-Cw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-1kgZbn1CM320OPPL2YeEsQ-1; Mon,
+ 06 Nov 2023 02:24:54 -0500
+X-MC-Unique: 1kgZbn1CM320OPPL2YeEsQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4391A1C29EB2;
- Mon,  6 Nov 2023 07:24:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EE7F1C29EA1;
+ Mon,  6 Nov 2023 07:24:54 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 389D15039;
- Mon,  6 Nov 2023 07:24:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5005840C6EB9;
+ Mon,  6 Nov 2023 07:24:53 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 22/23] hw/display: make ATI_VGA depend on PIXMAN
-Date: Mon,  6 Nov 2023 11:23:11 +0400
-Message-ID: <20231106072313.1742543-23-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 23/23] build-sys: make pixman actually optional
+Date: Mon,  6 Nov 2023 11:23:12 +0400
+Message-ID: <20231106072313.1742543-24-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 References: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -86,73 +88,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-To avoid a kconfig cycle, change "depends on PCI" to "select PCI".
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- configs/devices/mips64el-softmmu/default.mak | 3 +--
- hw/display/Kconfig                           | 3 ++-
- hw/display/meson.build                       | 2 +-
- hw/mips/Kconfig                              | 2 ++
- 4 files changed, 6 insertions(+), 4 deletions(-)
+ meson.build | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/devices/mips64el-softmmu/default.mak
-index d5188f7ea5..4d80d60511 100644
---- a/configs/devices/mips64el-softmmu/default.mak
-+++ b/configs/devices/mips64el-softmmu/default.mak
-@@ -1,9 +1,8 @@
- # Default configuration for mips64el-softmmu
+diff --git a/meson.build b/meson.build
+index ad1e0155ee..a35cd860aa 100644
+--- a/meson.build
++++ b/meson.build
+@@ -817,9 +817,6 @@ if not get_option('pixman').auto() or have_system or have_tools
+   pixman = dependency('pixman-1', required: get_option('pixman'), version:'>=0.21.8',
+                       method: 'pkg-config')
+ endif
+-if not pixman.found() and (have_system or have_tools)
+-  error('FIXME: pixman is currently required')
+-endif
  
- include ../mips-softmmu/common.mak
--CONFIG_FULOONG=y
-+#CONFIG_FULOONG=y
- CONFIG_LOONGSON3V=y
--CONFIG_ATI_VGA=y
- CONFIG_RTL8139_PCI=y
- CONFIG_JAZZ=y
- CONFIG_VT82C686=y
-diff --git a/hw/display/Kconfig b/hw/display/Kconfig
-index 1aafe1923d..8219225a1c 100644
---- a/hw/display/Kconfig
-+++ b/hw/display/Kconfig
-@@ -125,7 +125,8 @@ config DPCD
- config ATI_VGA
-     bool
-     default y if PCI_DEVICES
--    depends on PCI
-+    depends on PIXMAN
-+    select PCI
-     select VGA
-     select BITBANG_I2C
-     select DDC
-diff --git a/hw/display/meson.build b/hw/display/meson.build
-index 9c06aaee20..344dfe3d8c 100644
---- a/hw/display/meson.build
-+++ b/hw/display/meson.build
-@@ -62,7 +62,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_true: files('xlnx_dp.c'))
+ zlib = dependency('zlib', required: true)
  
- system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
- 
--system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c', 'ati_2d.c', 'ati_dbg.c'))
-+system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_dbg.c'), pixman])
- 
- 
- if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index ac1eb06a51..5d40795c0b 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -32,7 +32,9 @@ config JAZZ
- 
- config FULOONG
-     bool
-+    default y if MIPS64
-     select PCI_BONITO
-+    depends on ATI_VGA
- 
- config LOONGSON3V
-     bool
 -- 
 2.41.0
 
