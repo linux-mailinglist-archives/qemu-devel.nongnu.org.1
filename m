@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BD47E2783
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403127E2782
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:48:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00jN-0004lg-P4; Mon, 06 Nov 2023 09:37:33 -0500
+	id 1r00jP-0005En-LR; Mon, 06 Nov 2023 09:37:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Ju2X=GT=redhat.com=clg@ozlabs.org>)
- id 1r00jG-0004C4-V3
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:37:27 -0500
+ id 1r00jI-0004Sw-Pp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:37:28 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Ju2X=GT=redhat.com=clg@ozlabs.org>)
- id 1r00jB-0000sm-Pz
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:37:26 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SPDTC3PdGz4xkK;
- Tue,  7 Nov 2023 01:37:19 +1100 (AEDT)
+ id 1r00jG-0000sE-4w
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:37:28 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SPDTG532bz4xkN;
+ Tue,  7 Nov 2023 01:37:22 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SPDT91xnYz4xkG;
- Tue,  7 Nov 2023 01:37:16 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SPDTD0CQlz4xkL;
+ Tue,  7 Nov 2023 01:37:19 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Auger <eric.auger@redhat.com>, Yanghang Liu <yanghliu@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 07/22] virtio-iommu: Introduce per IOMMUDevice reserved regions
-Date: Mon,  6 Nov 2023 15:36:38 +0100
-Message-ID: <20231106143653.302391-8-clg@redhat.com>
+Subject: [PULL 08/22] range: Introduce range_inverse_array()
+Date: Mon,  6 Nov 2023 15:36:39 +0100
+Message-ID: <20231106143653.302391-9-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106143653.302391-1-clg@redhat.com>
 References: <20231106143653.302391-1-clg@redhat.com>
@@ -71,120 +72,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-For the time being the per device reserved regions are
-just a duplicate of IOMMU wide reserved regions. Subsequent
-patches will combine those with host reserved regions, if any.
+This helper reverses a list of regions within a [low, high]
+span, turning original regions into holes and original
+holes into actual regions, covering the whole UINT64_MAX span.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Yanghang Liu <yanghliu@redhat.com>
 Reviewed-by: "Michael S. Tsirkin" <mst@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/virtio/virtio-iommu.h |  1 +
- hw/virtio/virtio-iommu.c         | 37 +++++++++++++++++++++++++-------
- 2 files changed, 30 insertions(+), 8 deletions(-)
+ include/qemu/range.h |  8 +++++++
+ util/range.c         | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
-index eea4564782215dac7205557c241e5ce2d7e40713..70b8ace34dfb7f24ff6cf41a21ecd283ca9ee512 100644
---- a/include/hw/virtio/virtio-iommu.h
-+++ b/include/hw/virtio/virtio-iommu.h
-@@ -39,6 +39,7 @@ typedef struct IOMMUDevice {
-     AddressSpace  as;
-     MemoryRegion root;          /* The root container of the device */
-     MemoryRegion bypass_mr;     /* The alias of shared memory MR */
-+    GList *resv_regions;
- } IOMMUDevice;
+diff --git a/include/qemu/range.h b/include/qemu/range.h
+index aa671da143cf82470658311599ac473c837b8102..205e1da76dc5b29327f590b8293a826ced63c25d 100644
+--- a/include/qemu/range.h
++++ b/include/qemu/range.h
+@@ -225,4 +225,12 @@ int range_compare(Range *a, Range *b);
  
- typedef struct IOMMUPciBus {
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 979cdb56483c7de5d79a7a3f4c1fe996fc261c64..0e2370663d348e60678343dabd1f943792051315 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -26,6 +26,7 @@
- #include "sysemu/kvm.h"
- #include "sysemu/reset.h"
- #include "sysemu/sysemu.h"
-+#include "qemu/reserved-region.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "trace.h"
-@@ -378,6 +379,19 @@ static void virtio_iommu_put_domain(gpointer data)
-     g_free(domain);
+ GList *range_list_insert(GList *list, Range *data);
+ 
++/*
++ * Inverse an array of sorted ranges over the [low, high] span, ie.
++ * original ranges becomes holes in the newly allocated inv_ranges
++ */
++void range_inverse_array(GList *in_ranges,
++                         GList **out_ranges,
++                         uint64_t low, uint64_t high);
++
+ #endif
+diff --git a/util/range.c b/util/range.c
+index 782cb8b21c77867864a0da1b31a3638f465d1ae6..9605ccfcbed9749dc8c2a665a037300c97981d28 100644
+--- a/util/range.c
++++ b/util/range.c
+@@ -66,3 +66,58 @@ GList *range_list_insert(GList *list, Range *data)
+ 
+     return list;
  }
- 
-+static void add_prop_resv_regions(IOMMUDevice *sdev)
++
++static inline
++GList *append_new_range(GList *list, uint64_t lob, uint64_t upb)
 +{
-+    VirtIOIOMMU *s = sdev->viommu;
-+    int i;
++    Range *new = g_new0(Range, 1);
 +
-+    for (i = 0; i < s->nr_prop_resv_regions; i++) {
-+        ReservedRegion *reg = g_new0(ReservedRegion, 1);
-+
-+        *reg = s->prop_resv_regions[i];
-+        sdev->resv_regions = resv_region_list_insert(sdev->resv_regions, reg);
-+    }
++    range_set_bounds(new, lob, upb);
++    return g_list_append(list, new);
 +}
 +
- static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
-                                               int devfn)
- {
-@@ -408,6 +422,7 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
- 
-         memory_region_init(&sdev->root, OBJECT(s), name, UINT64_MAX);
-         address_space_init(&sdev->as, &sdev->root, TYPE_VIRTIO_IOMMU);
-+        add_prop_resv_regions(sdev);
- 
-         /*
-          * Build the IOMMU disabled container with aliases to the
-@@ -629,17 +644,23 @@ static ssize_t virtio_iommu_fill_resv_mem_prop(VirtIOIOMMU *s, uint32_t ep,
- {
-     struct virtio_iommu_probe_resv_mem prop = {};
-     size_t size = sizeof(prop), length = size - sizeof(prop.head), total;
--    int i;
-+    IOMMUDevice *sdev;
-+    GList *l;
- 
--    total = size * s->nr_prop_resv_regions;
-+    sdev = container_of(virtio_iommu_mr(s, ep), IOMMUDevice, iommu_mr);
-+    if (!sdev) {
-+        return -EINVAL;
++
++void range_inverse_array(GList *in, GList **rev,
++                         uint64_t low, uint64_t high)
++{
++    Range *r, *rn;
++    GList *l = in, *out = *rev;
++
++    for (l = in; l && range_upb(l->data) < low; l = l->next) {
++        continue;
 +    }
- 
-+    total = size * g_list_length(sdev->resv_regions);
-     if (total > free) {
-         return -ENOSPC;
-     }
- 
--    for (i = 0; i < s->nr_prop_resv_regions; i++) {
--        unsigned subtype = s->prop_resv_regions[i].type;
--        Range *range = &s->prop_resv_regions[i].range;
-+    for (l = sdev->resv_regions; l; l = l->next) {
-+        ReservedRegion *reg = l->data;
-+        unsigned subtype = reg->type;
-+        Range *range = &reg->range;
- 
-         assert(subtype == VIRTIO_IOMMU_RESV_MEM_T_RESERVED ||
-                subtype == VIRTIO_IOMMU_RESV_MEM_T_MSI);
-@@ -857,7 +878,7 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
-     bool bypass_allowed;
-     int granule;
-     bool found;
--    int i;
-+    GList *l;
- 
-     interval.low = addr;
-     interval.high = addr + 1;
-@@ -895,8 +916,8 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
-         goto unlock;
-     }
- 
--    for (i = 0; i < s->nr_prop_resv_regions; i++) {
--        ReservedRegion *reg = &s->prop_resv_regions[i];
-+    for (l = sdev->resv_regions; l; l = l->next) {
-+        ReservedRegion *reg = l->data;
- 
-         if (range_contains(&reg->range, addr)) {
-             switch (reg->type) {
++
++    if (!l) {
++        out = append_new_range(out, low, high);
++        goto exit;
++    }
++    r = (Range *)l->data;
++
++    /* first range lob is greater than min, insert a first range */
++    if (range_lob(r) > low) {
++        out = append_new_range(out, low, MIN(range_lob(r) - 1, high));
++    }
++
++    /* insert a range inbetween each original range until we reach high */
++    for (; l->next; l = l->next) {
++        r = (Range *)l->data;
++        rn = (Range *)l->next->data;
++        if (range_lob(r) >= high) {
++            goto exit;
++        }
++        if (range_compare(r, rn)) {
++            out = append_new_range(out, range_upb(r) + 1,
++                                   MIN(range_lob(rn) - 1, high));
++        }
++    }
++
++    /* last range */
++    r = (Range *)l->data;
++
++    /* last range upb is less than max, insert a last range */
++    if (range_upb(r) <  high) {
++        out = append_new_range(out, range_upb(r) + 1, high);
++    }
++exit:
++    *rev = out;
++}
 -- 
 2.41.0
 
