@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69AB7E1FCA
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A4E7E1FBF
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:16:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxSK-0004Vz-5t; Mon, 06 Nov 2023 06:07:44 -0500
+	id 1qzxSR-00057Y-Pz; Mon, 06 Nov 2023 06:07:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSH-0004SR-NJ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:42 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSP-00052h-Oz
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:49 -0500
 Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSG-0004m5-5P
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:41 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSN-0004nh-PK
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:07:49 -0500
 Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-408382da7f0so32552115e9.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:07:39 -0800 (PST)
+ 5b1f17b1804b1-407da05f05aso30531645e9.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:07:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268858; x=1699873658; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268865; x=1699873665; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/8FQLEYTqFB9Ro3y1RtUGoGmFmjKyGG2i99735loRZ8=;
- b=WF6E+sNXVZX/Z+5pGUBibdCMZcz4zUcXLMjWEZE8U35cfkkuvb1O99TDaEPBQh8Rm8
- zYfiXeRlni+swHKXl2RYdTVAJShEUu5Ssm+p1LnmAGRywT9b5hP4oi8moHQ0A6lBOCFb
- VHpypHN/gZbNOUGMxcm7sfQa2GmmGR1SaPBY5wMpGpKSJ+OSmZGh+RFT/HGCEHivRmBX
- GqXPvktynv1dKAt5Xs4kXbXq8DoT/v1VkuodmY7RE/NWmBg8pHRNKdbeziQ+8ZoFn/FF
- xqsDgUzojnCJIHirq23Nc55SA9QwqCc8/ClXOvUQNyKT0w7lXtBnnL5ZdC8hm7CfBS1l
- NXNg==
+ bh=95fjXxwoCEM5MPpLzleCUNmgt+EGYy9i69c6BsnNRfk=;
+ b=kERgngPfzLr+WVZnHNuV8FB/4VhXK2sIKy6Z1w4OBpLpmkzh6UQjABs2JT4ReH/42a
+ CtozWKHH6GfDCpAZpYyosuV7Y4pcLhDOEvAdiIMRewQ+e6i2DLChWDRzZvRnPpadgVyB
+ RvVrMj6bmDrlH0orddAi0D8MpWBxd6Sv8L8XRAYEjkZDMMYddBx4KT2XmT7qklUKK9hO
+ CUZf5j6furb962uoz/9X/pO3CFOXhSnRhIt7vl2RGqa1ujGYzJs0gZpTYEB0ilMNizfI
+ 4jXAR1+ECfLCz8/6v7g4FLkbdHmUlEiezSRL/P+WRGYVMqspAOrtf/7Pn/eG9F4Y18+a
+ KyDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268858; x=1699873658;
+ d=1e100.net; s=20230601; t=1699268865; x=1699873665;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/8FQLEYTqFB9Ro3y1RtUGoGmFmjKyGG2i99735loRZ8=;
- b=VyXSo792PtSpZ4IEfNpi2lsSYjUBruJx7hyY4EdTOuaFrvz1ax1QVVsJ+rNTgbw4GH
- u/gJidMxRcbtYWnXYW/cqH+z9GJMGgZPaJHXvHyOKkqEE2gOVgICoLbcsxfsKtznxTWr
- GJ2bl1q6JVNWczIY7LCKaTAx62nuglNVer1Oh/xnNSo+g2Ho75Ya+cgj5mJS8AmSibBK
- dVib2qEX68ZIgzndHaLDs/dIj1mO/NUKrHXcRYIYycGjscQQ3UcUeAaGuxDEfcyPgaKw
- iydrfhOguUvgGbqecXIs/ZLzCK7GUbQ6fW3kS57vyjvGcYf0oJvOgrcnDKxeYTDzhYeF
- +WMw==
-X-Gm-Message-State: AOJu0YwO9KJD0UKKUB3G0NGIoyTfzXFUwmF17Jvtl8RKOLoPz4KKlW4k
- mTClKx2AbBhVTbBF6B2jRk6lPAFchoXgG1FFS/s=
-X-Google-Smtp-Source: AGHT+IGSllHpaGQMqKbvX8OyPw5FMMgGznDw9vfBmKkgEXMDizlL7BCd/fkfmOdW9htoRowrrHTYDQ==
-X-Received: by 2002:a5d:6dae:0:b0:32f:7c01:5376 with SMTP id
- u14-20020a5d6dae000000b0032f7c015376mr22752718wrs.31.1699268858733; 
- Mon, 06 Nov 2023 03:07:38 -0800 (PST)
+ bh=95fjXxwoCEM5MPpLzleCUNmgt+EGYy9i69c6BsnNRfk=;
+ b=DDAhvGNYaZmKqVfASzm/tZssUU3YGh9l/4Y2c75Kkoyd45yAtEq0vb35Hutx8S/Hk9
+ mvrPEkSWpagfU+51/uFYw3joR3D/9Mf2RcCLySNXm+8lg0TC65XxCNftJ8T2+EAcSPz0
+ jw/EslAP+Gf6hfEaUx4ImCyYeD6sDKSLBnG5oQEpumPtOP1MAwl51GC/e0tLurXLBcGM
+ zpH+JKleIv/3W8x3e9LuSYaUDQqrCDTqOBzTmyDXr+z6FkZ5J31YSgqgaWxJ1MBEm7mj
+ eB1XB1DjsTJl8j+tL/NaOxVaO4MNLxf8VOjOoDhaohKVfohcvwxXg0WtuxlNePyx87qm
+ na1A==
+X-Gm-Message-State: AOJu0Yx/o5PELHv0SHtSyobHyr8MsZhbnx82kGcWDu4hqx43a32qRFr5
+ TGWXH0zCHILWxEJobKx/azvrdgUojo4u/TBff2s=
+X-Google-Smtp-Source: AGHT+IFA2chfzU/RG3fUnF9L1zuwbrR/mZ3//aX7n36RLMNo0C4jCT70SUW9S7M0scEuKtQWCV9uyw==
+X-Received: by 2002:a05:600c:4c9a:b0:409:57ec:9d7e with SMTP id
+ g26-20020a05600c4c9a00b0040957ec9d7emr13786805wmp.21.1699268865155; 
+ Mon, 06 Nov 2023 03:07:45 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- z13-20020a5d4d0d000000b0031ad5fb5a0fsm9131295wrt.58.2023.11.06.03.07.36
+ f20-20020a05600c43d400b003fbe4cecc3bsm11518827wmn.16.2023.11.06.03.07.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:07:38 -0800 (PST)
+ Mon, 06 Nov 2023 03:07:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 35/60] target/ppc: Prohibit target specific KVM prototypes on
- user emulation
-Date: Mon,  6 Nov 2023 12:03:07 +0100
-Message-ID: <20231106110336.358-36-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>
+Subject: [PULL 36/60] target/nios2: Create IRQs *after* accelerator vCPU is
+ realized
+Date: Mon,  6 Nov 2023 12:03:08 +0100
+Message-ID: <20231106110336.358-37-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
@@ -82,7 +79,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,35 +95,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-None of these target-specific prototypes should be used
-by user emulation. Remove their declaration there, so we
-get a compile failure if ever used (instead of having to
-deal with linker and its possible optimizations, such
-dead code removal).
+Architecture specific hardware doesn't have a particular dependency
+on the accelerator vCPU (created with cpu_exec_realizefn), and can
+be initialized *after* the vCPU is realized. Doing so allows further
+generic API simplification (in few commits).
 
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-Id: <20231003070427.69621-5-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230918160257.30127-12-philmd@linaro.org>
 ---
- target/ppc/kvm_ppc.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/nios2/cpu.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-index 6a4dd9c560..1975fb5ee6 100644
---- a/target/ppc/kvm_ppc.h
-+++ b/target/ppc/kvm_ppc.h
-@@ -13,6 +13,10 @@
- #include "exec/hwaddr.h"
- #include "cpu.h"
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index 15e499f828..a27732bf2b 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -199,14 +199,6 @@ static void nios2_cpu_realizefn(DeviceState *dev, Error **errp)
+     Nios2CPUClass *ncc = NIOS2_CPU_GET_CLASS(dev);
+     Error *local_err = NULL;
  
-+#ifdef CONFIG_USER_ONLY
-+#error Cannot include kvm_ppc.h from user emulation
+-#ifndef CONFIG_USER_ONLY
+-    if (cpu->eic_present) {
+-        qdev_init_gpio_in_named(DEVICE(cpu), eic_set_irq, "EIC", 1);
+-    } else {
+-        qdev_init_gpio_in_named(DEVICE(cpu), iic_set_irq, "IRQ", 32);
+-    }
+-#endif
+-
+     cpu_exec_realizefn(cs, &local_err);
+     if (local_err != NULL) {
+         error_propagate(errp, local_err);
+@@ -220,6 +212,14 @@ static void nios2_cpu_realizefn(DeviceState *dev, Error **errp)
+     /* We have reserved storage for cpuid; might as well use it. */
+     cpu->env.ctrl[CR_CPUID] = cs->cpu_index;
+ 
++#ifndef CONFIG_USER_ONLY
++    if (cpu->eic_present) {
++        qdev_init_gpio_in_named(DEVICE(cpu), eic_set_irq, "EIC", 1);
++    } else {
++        qdev_init_gpio_in_named(DEVICE(cpu), iic_set_irq, "IRQ", 32);
++    }
 +#endif
 +
- #ifdef CONFIG_KVM
+     ncc->parent_realize(dev, errp);
+ }
  
- uint32_t kvmppc_get_tbfreq(void);
 -- 
 2.41.0
 
