@@ -2,73 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915157E1859
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 02:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D16C7E1868
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 02:58:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzoUr-0007Q0-I7; Sun, 05 Nov 2023 20:33:45 -0500
+	id 1qzorn-0001oB-LE; Sun, 05 Nov 2023 20:57:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qzoUm-0007Ph-LM
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 20:33:41 -0500
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qzoUk-00074x-Cs
- for qemu-devel@nongnu.org; Sun, 05 Nov 2023 20:33:40 -0500
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-5875e2b27c5so2096552eaf.3
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 17:33:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699234417; x=1699839217; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UhJEbIMpYGQXpluS3MwgnixomBKzFuGEX0uA8gUuChk=;
- b=nQFjisb7BqkWvnm/K6qV8A7KdCoaOKQZOH8BJcfbCosOMtGJawbqQqzJRJjtSN75L6
- SvEyHkjZJIC9Zsy6yCAs6OpLPooGIgMQRXZq+RH7rTQToad6SF2yziYJQe5BAU0EXu97
- jpDe2RVaLCkBcQuuX5pxjNCKIN1O8BdL+72gO7VFpSeANAOYv1zfV+ice5LMIpfX1lid
- KqG4HAgmfh9mf5qLU1w/0Apns4DVhUHy15K64wE+/JmBHnHXE/m7ADkTMsGgTmwgURh9
- ImGV3z5RsuIoL4EbdjQA91z3RBUmXH8aLp0t8EGb6giPu7jDrOwDlMeBLYGOMgIIBTqY
- GuBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699234417; x=1699839217;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UhJEbIMpYGQXpluS3MwgnixomBKzFuGEX0uA8gUuChk=;
- b=crac/XbH9Vo82g8ujRSr6EVMXF2mfaO3LRnSm0HJX0YrYKnCMyGGZZqt4KuM3Z1I41
- K3nmzPZqyf/AEc0HTjLuSv52z8TAEVgydngUwi9PFxrx6FbgJva5vqfvUxBByJS0zH8v
- +FGQnlUV8KkKxf8BtxcwxCEQCqUXqe7ofoA0uZnTRql995zDs2c7oqo1BFuvJ98j7x3+
- WGrAzwo4/pqq+m/nfATCxIZgscNg3L6Nq6iFIqhf/TfExZ2mAy3QEN1lO8E2xLPRdTK/
- fr3YRQz/TCS7NuAlRR7wFFuH/uw7aqMlP9nLLUpI6z5lBcNzy3uoXsDqK+oJhGcG5nyt
- Ruvg==
-X-Gm-Message-State: AOJu0YzFp4FfytfTyukLygZYig5vEowG951pGq2ZG3FoVr1r9ViY0fmS
- 4kbRjmau5M+wBGAdkZFBYlEuYAQrsHzMPsi2gqc=
-X-Google-Smtp-Source: AGHT+IFtWtv+lVVopeTO+TQql9ZUjVrwb9YV3dkChw/ejEHCUxaAWjj43rFu7/1fHGGg9DPckYK7A2y8gxVqCCXbGpU=
-X-Received: by 2002:a4a:b487:0:b0:581:ff09:62e4 with SMTP id
- b7-20020a4ab487000000b00581ff0962e4mr25959491ooo.2.1699234416738; Sun, 05 Nov
- 2023 17:33:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qzorj-0001nu-MY; Sun, 05 Nov 2023 20:57:23 -0500
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1qzorg-0002QH-Kz; Sun, 05 Nov 2023 20:57:23 -0500
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 3A61ur3x094826;
+ Mon, 6 Nov 2023 09:56:53 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
+ (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Mon, 6 Nov 2023
+ 09:56:50 +0800
+Date: Mon, 6 Nov 2023 09:56:45 +0800
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: Peter Xu <peterx@redhat.com>, <qemu-devel@nongnu.org>,
+ <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
+ <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
+ <in.meng@windriver.com>, <liweiwei@iscas.ac.cn>,
+ <dbarboza@ventanamicro.com>, <hiwei_liu@linux.alibaba.com>,
+ <qemu-riscv@nongnu.org>, <david@redhat.com>
+Subject: Re: [PATCH v2 1/4] exec/memattrs: Add iopmp source id, start
+ address, end address to MemTxAttrs
+Message-ID: <ZUhH3Rulnj64whB4@ethan84-VirtualBox>
+References: <20231102094015.208588-1-ethan84@andestech.com>
+ <20231102094015.208588-2-ethan84@andestech.com>
+ <ZUOo3fGmqM/gVyTR@x1n>
+ <CAFEAcA86B-V0gFLhE9rPK2kG=XeFw7OJ4C==8g2i_WHSLW_HYQ@mail.gmail.com>
+ <ZURpIyjhraORROn5@ethan84-VirtualBox>
+ <CAFEAcA-1dJnsDyZpf2Dy9XuAdp6CFWSFCzV7eceUJ6RyFLaVPA@mail.gmail.com>
 MIME-Version: 1.0
-References: <cover.1699184105.git.maciej.szmigiero@oracle.com>
-In-Reply-To: <cover.1699184105.git.maciej.szmigiero@oracle.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 6 Nov 2023 09:33:24 +0800
-Message-ID: <CAJSP0QX7SxmMZDP4kQKQt6wkMTiVY6hVSoEtSBN4874NaxbJuw@mail.gmail.com>
-Subject: Re: [PULL 0/9] Hyper-V Dynamic Memory Protocol driver (hv-balloon)
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA-1dJnsDyZpf2Dy9XuAdp6CFWSFCzV7eceUJ6RyFLaVPA@mail.gmail.com>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 3A61ur3x094826
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,113 +70,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 5 Nov 2023 at 19:49, Maciej S. Szmigiero
-<mail@maciej.szmigiero.name> wrote:
->
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->
-> The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
->
->   Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
->
-> are available in the Git repository at:
->
->   https://github.com/maciejsszmigiero/qemu.git tags/pull-hv-balloon-20231105
->
-> for you to fetch changes up to 2b49ecabc6bf15efa6aa05f20a7c319ff65c4e11:
->
->   MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol (2023-11-03 20:31:10 +0100)
+On Fri, Nov 03, 2023 at 10:34:28AM +0000, Peter Maydell wrote:
+> On Fri, 3 Nov 2023 at 03:29, Ethan Chen <ethan84@andestech.com> wrote:
+> >
+> > On Thu, Nov 02, 2023 at 01:53:05PM +0000, Peter Maydell wrote:
+> > > On Thu, 2 Nov 2023 at 13:49, Peter Xu <peterx@redhat.com> wrote:
+> > > >
+> > > > On Thu, Nov 02, 2023 at 05:40:12PM +0800, Ethan Chen wrote:
+> > > > > Signed-off-by: Ethan Chen <ethan84@andestech.com>
+> > > > > ---
+> > > > >  include/exec/memattrs.h | 6 ++++++
+> > > > >  1 file changed, 6 insertions(+)
+> > > > >
+> > > > > diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
+> > > > > index d04170aa27..fc15e5d7d3 100644
+> > > > > --- a/include/exec/memattrs.h
+> > > > > +++ b/include/exec/memattrs.h
+> > > > > @@ -64,6 +64,12 @@ typedef struct MemTxAttrs {
+> > > > >      unsigned int target_tlb_bit0 : 1;
+> > > > >      unsigned int target_tlb_bit1 : 1;
+> > > > >      unsigned int target_tlb_bit2 : 1;
+> > > > > +
+> > > > > +    /* IOPMP support up to 65535 sources */
+> > > > > +    unsigned int iopmp_sid:16;
+> > > >
+> > > > There's MemTxAttrs.requester_id, SID for pci, same length.  Reuse it?
+> > > >
+> > > > > +    /* Transaction infomation for IOPMP */
+> > > > > +    unsigned long long iopmp_start_addr;
+> > > > > +    unsigned long long iopmp_end_addr;
+> > > >
+> > > > PS: encoding addresses into memattrs is.. strange, but since I know nothing
+> > > > about iopmp, I'll leave that for other reviewers.
+> > > >
+> > > > Currently MemTxAttrs are passed as a whole int on the stack, if it keeps
+> > > > growing we may start to consider a pointer, but need to check the side
+> > > > effects of unexpected fields modified within a call.
+> > >
+> > > Yeah, this struct is intended to model the various attributes that
+> > > get passed around on the bus alongside data in real hardware.
+> > > I'm pretty sure no real hardware is passing around start and
+> > > end transaction addresses on its bus with every read and
+> > > write, which suggests that we should be doing this some other
+> > > way than adding these fields to the MemTxAttrs struct.
+> >
+> > For AXI bus ADDR, LEN, SIZE are signals in read/write address channel.
+> > IOPMP will check that start address = ADDR,
+> > and end address = ADDR + LEN * SIZE.
+> 
+> Yes, but you don't pass the start and end address on the AXI
+> bus, so they don't go in QEMU's MemTxAttrs either.
 
-Hi Maciej,
-Please take a look at this CI system build failure:
+I will add those AXI bus signals to MemTxAttrs instead of using start and end
+address in next revision.
 
-/usr/bin/ld: libqemuutil.a.p/meson-generated_.._qapi_qapi-commands-machine.c.o:
-in function `qmp_marshal_query_hv_balloon_status_report':
-/builds/qemu-project/qemu/build/qapi/qapi-commands-machine.c:1000:
-undefined reference to `qmp_query_hv_balloon_status_report'
+Thanks,
+Ethan Chen
 
-https://gitlab.com/qemu-project/qemu/-/jobs/5463619044
-
-I have dropped this pull request from the staging tree for the time being.
-
-You can run the GitLab CI by pushing to a personal qemu.git fork on
-GitLab with "git push -o ci.variable=QEMU_CI=1 ..." and it's often
-possible to reproduce the CI jobs locally using the Docker build tests
-(see "make docker-help").
-
-Stefan
-
->
-> ----------------------------------------------------------------
-> Hyper-V Dynamic Memory protocol driver.
->
-> This driver is like virtio-balloon on steroids for Windows guests:
-> it allows both changing the guest memory allocation via ballooning and
-> inserting pieces of extra RAM into it on demand from a provided memory
-> backend via Windows-native Hyper-V Dynamic Memory protocol.
->
-> * Protocol definitions.
->
-> * Hyper-V DM protocol driver (hv-balloon) base (ballooning only).
->
-> * Hyper-V DM protocol driver (hv-balloon) hot-add support.
->
-> * qapi query-memory-devices support for the driver.
->
-> * qapi HV_BALLOON_STATUS_REPORT event.
->
-> * The relevant PC machine plumbing.
->
-> * New MAINTAINERS entry for the above.
->
-> ----------------------------------------------------------------
-> David Hildenbrand (2):
->       memory-device: Support empty memory devices
->       memory-device: Drop size alignment check
->
-> Maciej S. Szmigiero (7):
->       Add Hyper-V Dynamic Memory Protocol definitions
->       Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) base
->       Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) hot-add support
->       qapi: Add query-memory-devices support to hv-balloon
->       qapi: Add HV_BALLOON_STATUS_REPORT event and its QMP query command
->       hw/i386/pc: Support hv-balloon
->       MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol
->
->  Kconfig.host                              |    3 +
->  MAINTAINERS                               |    8 +
->  hw/core/machine-hmp-cmds.c                |   15 +
->  hw/hyperv/Kconfig                         |   10 +
->  hw/hyperv/hv-balloon-internal.h           |   33 +
->  hw/hyperv/hv-balloon-our_range_memslots.c |  201 ++++
->  hw/hyperv/hv-balloon-our_range_memslots.h |  110 ++
->  hw/hyperv/hv-balloon-page_range_tree.c    |  228 ++++
->  hw/hyperv/hv-balloon-page_range_tree.h    |  118 ++
->  hw/hyperv/hv-balloon.c                    | 1766 +++++++++++++++++++++++++++++
->  hw/hyperv/meson.build                     |    1 +
->  hw/hyperv/trace-events                    |   18 +
->  hw/i386/Kconfig                           |    1 +
->  hw/i386/pc.c                              |   22 +
->  hw/mem/memory-device.c                    |   49 +-
->  include/hw/hyperv/dynmem-proto.h          |  423 +++++++
->  include/hw/hyperv/hv-balloon.h            |   18 +
->  include/hw/mem/memory-device.h            |    7 +-
->  meson.build                               |   28 +-
->  meson_options.txt                         |    2 +
->  monitor/monitor.c                         |    1 +
->  qapi/machine.json                         |  101 +-
->  scripts/meson-buildoptions.sh             |    3 +
->  23 files changed, 3153 insertions(+), 13 deletions(-)
->  create mode 100644 hw/hyperv/hv-balloon-internal.h
->  create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.c
->  create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.h
->  create mode 100644 hw/hyperv/hv-balloon-page_range_tree.c
->  create mode 100644 hw/hyperv/hv-balloon-page_range_tree.h
->  create mode 100644 hw/hyperv/hv-balloon.c
->  create mode 100644 include/hw/hyperv/dynmem-proto.h
->  create mode 100644 include/hw/hyperv/hv-balloon.h
->
 
